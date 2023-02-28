@@ -2,7 +2,7 @@ import spec from '../spec/nodes-2023-02-28.json' assert { type: 'json' }
 const entries = Object.entries(spec)
 
 export type NodeInput = { name: string; type: string; opts: any }
-export type NodeOutput = { name: string; type: string; opts: any }
+export type NodeOutput = { type: string; name: string }
 export type EnumHash = string
 export type EnumName = string
 export class NodeDecl {
@@ -16,16 +16,24 @@ export class NodeDecl {
     codegen() {
         const out: string[] = []
         const p = (x: string) => out.push(x)
-        p(`type ${this.name}_input = {`)
+        // inputs
+        p(`\n// ${this.name} -------------------------------`)
+        p(`export class ${this.name} {`)
+        p(`    constructor(public p: ${this.name}_input){}`)
+        // p(`    }`)
+        p(`}`)
+        p(`export type ${this.name}_input = {`)
         this.inputs.forEach((i) => {
             p(`    ${i.name}: ${i.type}`)
         })
         p(`}`)
-        p(`type ${this.name}_output = any`)
-        p(`class ${this.name} {`)
-        p(`    constructor(public p: ${this.name}_input){`)
-        p(`    }`)
+        // outputs
+        p(`export type ${this.name}_output = {`)
+        this.outputs.forEach((i) => {
+            p(`    ${i.name}: ${i.type}`)
+        })
         p(`}`)
+
         return out.join('\n')
     }
 }
@@ -45,7 +53,13 @@ export class MAIN {
             const outputs: NodeOutput[] = []
             const node = new NodeDecl(nodeName, inputs, outputs)
             this.nodes.push(node)
-
+            const outputNamer: { [key: string]: number } = {}
+            for (const opt of nodeDef.output) {
+                const at = outputNamer[opt] ??= 0
+                const name = at === 0 ? opt : `${opt}_${at}`
+                outputs.push({ type: opt, name })
+                outputNamer[opt]++
+            }
             for (const ipt of requiredInputs) {
                 const inputName = ipt[0]
                 const typeDef = ipt[1]
@@ -85,16 +99,15 @@ export class MAIN {
     }
     codegen = (): string => {
         return [
-            `// TYPES`,
+            `// TYPES -------------------------------`,
             ...[...this.knownTypes.values()].map((t) => `type ${t} = any`),
-            `// ENUMS`,
+            `\n// ENUMS -------------------------------`,
             ...[...this.knownEnums.values()].map((e) => {
                 if (e.values.length > 0) {
                     return `type ${e.name} = ${e.values.map((v) => `'${v}'`).join(' | ')}`
                 }
                 return `type ${e.name} = never`
             }),
-            `// NODES`,
             this.nodes.map((n) => n.codegen()).join('\n'),
         ].join('\n')
     }
