@@ -1,15 +1,16 @@
+import * as rt from './runtime.ts'
 // TYPES -------------------------------
-type MODEL = any
-type INT = any
-type FLOAT = any
-type CONDITIONING = any
-type LATENT = any
-type STRING = any
-type CLIP = any
-type VAE = any
-type IMAGE = any
-type MASK = any
-type CONTROL_NET = any
+type MODEL = rt.Signal<'MODEL'>
+type INT = rt.Signal<'INT'>
+type FLOAT = rt.Signal<'FLOAT'>
+type CONDITIONING = rt.Signal<'CONDITIONING'>
+type LATENT = rt.Signal<'LATENT'>
+type STRING = rt.Signal<'STRING'>
+type CLIP = rt.Signal<'CLIP'>
+type VAE = rt.Signal<'VAE'>
+type IMAGE = rt.Signal<'IMAGE'>
+type MASK = rt.Signal<'MASK'>
+type CONTROL_NET = rt.Signal<'CONTROL_NET'>
 
 // ENUMS -------------------------------
 type enum_KSampler_sampler_name =
@@ -57,6 +58,7 @@ type enum_ControlNetLoader_control_net_name = 'controlnetPreTrained_openposeV10.
 // KSampler -------------------------------
 export class KSampler {
     constructor(public p: KSampler_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type KSampler_input = {
     model: MODEL
@@ -70,100 +72,84 @@ export type KSampler_input = {
     latent_image: LATENT
     denoise: FLOAT
 }
-export type KSampler_output = {
-    LATENT: LATENT
-}
 
 // CheckpointLoader -------------------------------
 export class CheckpointLoader {
     constructor(public p: CheckpointLoader_input) {}
+    MODEL = new rt.Signal('MODEL')
+    CLIP = new rt.Signal('CLIP')
+    VAE = new rt.Signal('VAE')
 }
 export type CheckpointLoader_input = {
     config_name: enum_CheckpointLoader_config_name
     ckpt_name: enum_CheckpointLoader_ckpt_name
 }
-export type CheckpointLoader_output = {
-    MODEL: MODEL
-    CLIP: CLIP
-    VAE: VAE
-}
 
 // CLIPTextEncode -------------------------------
 export class CLIPTextEncode {
     constructor(public p: CLIPTextEncode_input) {}
+    CONDITIONING = new rt.Signal('CONDITIONING')
 }
 export type CLIPTextEncode_input = {
     text: STRING
     clip: CLIP
 }
-export type CLIPTextEncode_output = {
-    CONDITIONING: CONDITIONING
-}
 
 // VAEDecode -------------------------------
 export class VAEDecode {
     constructor(public p: VAEDecode_input) {}
+    IMAGE = new rt.Signal('IMAGE')
 }
 export type VAEDecode_input = {
     samples: LATENT
     vae: VAE
 }
-export type VAEDecode_output = {
-    IMAGE: IMAGE
-}
 
 // VAEEncode -------------------------------
 export class VAEEncode {
     constructor(public p: VAEEncode_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type VAEEncode_input = {
     pixels: IMAGE
     vae: VAE
 }
-export type VAEEncode_output = {
-    LATENT: LATENT
-}
 
 // VAEEncodeForInpaint -------------------------------
 export class VAEEncodeForInpaint {
     constructor(public p: VAEEncodeForInpaint_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type VAEEncodeForInpaint_input = {
     pixels: IMAGE
     vae: VAE
     mask: MASK
 }
-export type VAEEncodeForInpaint_output = {
-    LATENT: LATENT
-}
 
 // VAELoader -------------------------------
 export class VAELoader {
     constructor(public p: VAELoader_input) {}
+    VAE = new rt.Signal('VAE')
 }
 export type VAELoader_input = {
     vae_name: enum_VAELoader_vae_name
-}
-export type VAELoader_output = {
-    VAE: VAE
 }
 
 // EmptyLatentImage -------------------------------
 export class EmptyLatentImage {
     constructor(public p: EmptyLatentImage_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type EmptyLatentImage_input = {
     width: INT
     height: INT
     batch_size: INT
 }
-export type EmptyLatentImage_output = {
-    LATENT: LATENT
-}
 
 // LatentUpscale -------------------------------
 export class LatentUpscale {
     constructor(public p: LatentUpscale_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type LatentUpscale_input = {
     samples: LATENT
@@ -171,9 +157,6 @@ export type LatentUpscale_input = {
     width: INT
     height: INT
     crop: enum_LatentUpscale_crop
-}
-export type LatentUpscale_output = {
-    LATENT: LATENT
 }
 
 // SaveImage -------------------------------
@@ -184,34 +167,30 @@ export type SaveImage_input = {
     images: IMAGE
     filename_prefix: STRING
 }
-export type SaveImage_output = {}
 
 // LoadImage -------------------------------
 export class LoadImage {
     constructor(public p: LoadImage_input) {}
+    IMAGE = new rt.Signal('IMAGE')
 }
 export type LoadImage_input = {
     image: enum_LoadImage_image
-}
-export type LoadImage_output = {
-    IMAGE: IMAGE
 }
 
 // LoadImageMask -------------------------------
 export class LoadImageMask {
     constructor(public p: LoadImageMask_input) {}
+    MASK = new rt.Signal('MASK')
 }
 export type LoadImageMask_input = {
     image: enum_LoadImage_image
     channel: enum_LoadImageMask_channel
 }
-export type LoadImageMask_output = {
-    MASK: MASK
-}
 
 // ImageScale -------------------------------
 export class ImageScale {
     constructor(public p: ImageScale_input) {}
+    IMAGE = new rt.Signal('IMAGE')
 }
 export type ImageScale_input = {
     image: IMAGE
@@ -220,36 +199,30 @@ export type ImageScale_input = {
     height: INT
     crop: enum_LatentUpscale_crop
 }
-export type ImageScale_output = {
-    IMAGE: IMAGE
-}
 
 // ImageInvert -------------------------------
 export class ImageInvert {
     constructor(public p: ImageInvert_input) {}
+    IMAGE = new rt.Signal('IMAGE')
 }
 export type ImageInvert_input = {
     image: IMAGE
-}
-export type ImageInvert_output = {
-    IMAGE: IMAGE
 }
 
 // ConditioningCombine -------------------------------
 export class ConditioningCombine {
     constructor(public p: ConditioningCombine_input) {}
+    CONDITIONING = new rt.Signal('CONDITIONING')
 }
 export type ConditioningCombine_input = {
     conditioning_1: CONDITIONING
     conditioning_2: CONDITIONING
 }
-export type ConditioningCombine_output = {
-    CONDITIONING: CONDITIONING
-}
 
 // ConditioningSetArea -------------------------------
 export class ConditioningSetArea {
     constructor(public p: ConditioningSetArea_input) {}
+    CONDITIONING = new rt.Signal('CONDITIONING')
 }
 export type ConditioningSetArea_input = {
     conditioning: CONDITIONING
@@ -259,13 +232,11 @@ export type ConditioningSetArea_input = {
     y: INT
     strength: FLOAT
 }
-export type ConditioningSetArea_output = {
-    CONDITIONING: CONDITIONING
-}
 
 // KSamplerAdvanced -------------------------------
 export class KSamplerAdvanced {
     constructor(public p: KSamplerAdvanced_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type KSamplerAdvanced_input = {
     model: MODEL
@@ -282,25 +253,21 @@ export type KSamplerAdvanced_input = {
     end_at_step: INT
     return_with_leftover_noise: enum_KSamplerAdvanced_return_with_leftover_noise
 }
-export type KSamplerAdvanced_output = {
-    LATENT: LATENT
-}
 
 // SetLatentNoiseMask -------------------------------
 export class SetLatentNoiseMask {
     constructor(public p: SetLatentNoiseMask_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type SetLatentNoiseMask_input = {
     samples: LATENT
     mask: MASK
 }
-export type SetLatentNoiseMask_output = {
-    LATENT: LATENT
-}
 
 // LatentComposite -------------------------------
 export class LatentComposite {
     constructor(public p: LatentComposite_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type LatentComposite_input = {
     samples_to: LATENT
@@ -309,37 +276,31 @@ export type LatentComposite_input = {
     y: INT
     feather: INT
 }
-export type LatentComposite_output = {
-    LATENT: LATENT
-}
 
 // LatentRotate -------------------------------
 export class LatentRotate {
     constructor(public p: LatentRotate_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type LatentRotate_input = {
     samples: LATENT
     rotation: enum_LatentRotate_rotation
 }
-export type LatentRotate_output = {
-    LATENT: LATENT
-}
 
 // LatentFlip -------------------------------
 export class LatentFlip {
     constructor(public p: LatentFlip_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type LatentFlip_input = {
     samples: LATENT
     flip_method: enum_LatentFlip_flip_method
 }
-export type LatentFlip_output = {
-    LATENT: LATENT
-}
 
 // LatentCrop -------------------------------
 export class LatentCrop {
     constructor(public p: LatentCrop_input) {}
+    LATENT = new rt.Signal('LATENT')
 }
 export type LatentCrop_input = {
     samples: LATENT
@@ -348,13 +309,12 @@ export type LatentCrop_input = {
     x: INT
     y: INT
 }
-export type LatentCrop_output = {
-    LATENT: LATENT
-}
 
 // LoraLoader -------------------------------
 export class LoraLoader {
     constructor(public p: LoraLoader_input) {}
+    MODEL = new rt.Signal('MODEL')
+    CLIP = new rt.Signal('CLIP')
 }
 export type LoraLoader_input = {
     model: MODEL
@@ -363,26 +323,21 @@ export type LoraLoader_input = {
     strength_model: FLOAT
     strength_clip: FLOAT
 }
-export type LoraLoader_output = {
-    MODEL: MODEL
-    CLIP: CLIP
-}
 
 // CLIPLoader -------------------------------
 export class CLIPLoader {
     constructor(public p: CLIPLoader_input) {}
+    CLIP = new rt.Signal('CLIP')
 }
 export type CLIPLoader_input = {
     clip_name: enum_CLIPLoader_clip_name
     stop_at_clip_layer: INT
 }
-export type CLIPLoader_output = {
-    CLIP: CLIP
-}
 
 // ControlNetApply -------------------------------
 export class ControlNetApply {
     constructor(public p: ControlNetApply_input) {}
+    CONDITIONING = new rt.Signal('CONDITIONING')
 }
 export type ControlNetApply_input = {
     conditioning: CONDITIONING
@@ -390,52 +345,41 @@ export type ControlNetApply_input = {
     image: IMAGE
     strength: FLOAT
 }
-export type ControlNetApply_output = {
-    CONDITIONING: CONDITIONING
-}
 
 // ControlNetLoader -------------------------------
 export class ControlNetLoader {
     constructor(public p: ControlNetLoader_input) {}
+    CONTROL_NET = new rt.Signal('CONTROL_NET')
 }
 export type ControlNetLoader_input = {
     control_net_name: enum_ControlNetLoader_control_net_name
-}
-export type ControlNetLoader_output = {
-    CONTROL_NET: CONTROL_NET
 }
 
 // DiffControlNetLoader -------------------------------
 export class DiffControlNetLoader {
     constructor(public p: DiffControlNetLoader_input) {}
+    CONTROL_NET = new rt.Signal('CONTROL_NET')
 }
 export type DiffControlNetLoader_input = {
     model: MODEL
     control_net_name: enum_ControlNetLoader_control_net_name
 }
-export type DiffControlNetLoader_output = {
-    CONTROL_NET: CONTROL_NET
-}
 
 // T2IAdapterLoader -------------------------------
 export class T2IAdapterLoader {
     constructor(public p: T2IAdapterLoader_input) {}
+    CONTROL_NET = new rt.Signal('CONTROL_NET')
 }
 export type T2IAdapterLoader_input = {
     t2i_adapter_name: enum_CLIPLoader_clip_name
-}
-export type T2IAdapterLoader_output = {
-    CONTROL_NET: CONTROL_NET
 }
 
 // VAEDecodeTiled -------------------------------
 export class VAEDecodeTiled {
     constructor(public p: VAEDecodeTiled_input) {}
+    IMAGE = new rt.Signal('IMAGE')
 }
 export type VAEDecodeTiled_input = {
     samples: LATENT
     vae: VAE
-}
-export type VAEDecodeTiled_output = {
-    IMAGE: IMAGE
 }

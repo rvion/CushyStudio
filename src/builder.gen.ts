@@ -21,6 +21,9 @@ export class NodeDecl {
         p(`export class ${this.name} {`)
         p(`    constructor(public p: ${this.name}_input){}`)
         // p(`    }`)
+        this.outputs.forEach((i) => {
+            p(`    ${i.name} = new rt.Signal('${i.type}')`)
+        })
         p(`}`)
         p(`export type ${this.name}_input = {`)
         this.inputs.forEach((i) => {
@@ -28,11 +31,8 @@ export class NodeDecl {
         })
         p(`}`)
         // outputs
-        p(`export type ${this.name}_output = {`)
-        this.outputs.forEach((i) => {
-            p(`    ${i.name}: ${i.type}`)
-        })
-        p(`}`)
+        // p(`export type ${this.name}_output = {`)
+        // p(`}`)
 
         return out.join('\n')
     }
@@ -99,8 +99,9 @@ export class MAIN {
     }
     codegen = (): string => {
         return [
+            `import * as rt from './runtime.ts'`,
             `// TYPES -------------------------------`,
-            ...[...this.knownTypes.values()].map((t) => `type ${t} = any`),
+            ...[...this.knownTypes.values()].map((t) => `type ${t} = rt.Signal<'${t}'>`),
             `\n// ENUMS -------------------------------`,
             ...[...this.knownEnums.values()].map((e) => {
                 if (e.values.length > 0) {
