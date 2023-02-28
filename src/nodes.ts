@@ -1,3 +1,4 @@
+// deno-lint-ignore-file
 interface RootObject {
   KSampler: KSampler;
   CheckpointLoader: CheckpointLoader;
