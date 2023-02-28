@@ -4,5 +4,6 @@ alias se='source .env'
 
 # misc
 alias dgen='deno run --allow-read --allow-write --allow-env --allow-net src/nodes.gen.ts'
-alias dtest='deno run --allow-read src/test.ts'
+alias dbuild='deno run --allow-read --allow-write src/builder.gen.ts'
 alias dmain='deno run src/main.ts'
+alias dflow='deno run src/flowToCode.ts'
