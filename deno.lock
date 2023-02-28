@@ -1,0 +1,22 @@
+{
+  "version": "2",
+  "remote": {
+    "https://deno.land/x/base64@v0.2.1/base.ts": "47dc8d68f07dc91524bdd6db36eccbe59cf4d935b5fc09f27357a3944bb3ff7b",
+    "https://deno.land/x/base64@v0.2.1/base64url.ts": "18bbf879b31f1f32cca8adaa2b6885ae325c2cec6a66c5817b684ca12c46ad5e",
+    "https://deno.land/x/dotenv@v3.2.2/mod.ts": "077b48773de9205266a0b44c3c3a3c3083449ed64bb0b6cc461b95720678d38e",
+    "https://deno.land/x/dotenv@v3.2.2/util.ts": "693730877b13f8ead2b79b2aa31e2a0652862f7dc0c5f6d2f313f4d39c7b7670",
+    "https://deno.land/x/json_to_ts@v1.7.0/deps.ts": "cfdb0fa78feea383aa6befae38a39b0aaa01e6e3ac1c83797728b959633963fe",
+    "https://deno.land/x/json_to_ts@v1.7.0/mod.ts": "34e7c4a20406e7b2727e60fc29322e3c81efbbaa6e4686f4262c81945c2ec422",
+    "https://deno.land/x/json_to_ts@v1.7.0/src/get-interfaces.ts": "0cf12a2bfb0ad15fdd71330b7a8db7e2766e083ce317b5e42b6a83735551329e",
+    "https://deno.land/x/json_to_ts@v1.7.0/src/get-names.ts": "8810d42b66876f9dd9b7dd1cd8f165a104e49b3052704315d858250cd8b3d6ad",
+    "https://deno.land/x/json_to_ts@v1.7.0/src/get-type-structure.ts": "58b0ed667d33503cdf879ba736091847db8622538abe300572cd8c0759a7f376",
+    "https://deno.land/x/json_to_ts@v1.7.0/src/index.ts": "ce34739e914fb4d104c552b907359cf23c19b4c01f02c01b45efa6fc4a5dd778",
+    "https://deno.land/x/json_to_ts@v1.7.0/src/model.ts": "dfb3ec215a1ff58c2b1ef6057e1110e9d4bb789173323e9fc1bd516446f48fbd",
+    "https://deno.land/x/json_to_ts@v1.7.0/src/util.ts": "af28753103ebf03309c05a672d9926389b2694ee564d5bedf6e7e2100bb0e213",
+    "https://deno.land/x/sha1@v1.0.3/deps.ts": "2e1af51a48c8507017fdb057b950366601b177fb7e73d5de54c1b3e0e115d72e",
+    "https://deno.land/x/sha1@v1.0.3/mod.ts": "146a101c9776cc9c807053c93f23e4b321ade5251f65745df418f4a75d5fd27b",
+    "https://denopkg.com/chiefbiiko/std-encoding@v1.0.0/mod.ts": "4a927e5cd1d9b080d72881eb285b3b94edb6dadc1828aeb194117645f4481ac0",
+    "https://esm.sh/pluralize@8.0.0": "9866ef6ce206e5c71cbb161aebc18c36ce869a4ed571d38b64b09ae170316d46",
+    "https://esm.sh/v108/pluralize@8.0.0/deno/pluralize.js": "b469dcbaba907e0ad2ce0b01f0dfa9d18a2a2d497b38290b020e0b8938cf36bb"
+  }
+}
