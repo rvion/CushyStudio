@@ -1,19 +1,22 @@
 import * as rt from './builder.ts'
-const node5 = new rt.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
-const node4 = new rt.CheckpointLoader({ config_name: 'v1-inference.yaml', ckpt_name: 'v1-5-pruned-emaonly.ckpt' })
-const node6 = new rt.CLIPTextEncode({ clip: 0 as any, text: 'masterpiece best quality girl' })
-const node7 = new rt.CLIPTextEncode({ clip: 0 as any, text: 'bad hands' })
-const node3 = new rt.KSampler({
-    model: 0 as any,
-    positive: 0 as any,
-    negative: 0 as any,
-    latent_image: 0 as any,
-    seed: 8566257,
-    steps: true,
-    cfg: 20,
-    sampler_name: 8,
-    scheduler: 'sample_euler',
-    denoise: 'normal',
+const CheckpointLoader_4 = new rt.CheckpointLoader({
+    config_name: 'v1-inference.yaml',
+    ckpt_name: 'v1-5-pruned-emaonly.ckpt',
 })
-const node8 = new rt.VAEDecode({ samples: 0 as any, vae: 0 as any })
-const node9 = new rt.SaveImage({ images: 0 as any, filename_prefix: 'ComfyUI' })
+const EmptyLatentImage_5 = new rt.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
+const CLIPTextEncode_6 = new rt.CLIPTextEncode({ text: 'masterpiece best quality girl', clip: CheckpointLoader_4.CLIP })
+const CLIPTextEncode_7 = new rt.CLIPTextEncode({ text: 'bad hands', clip: CheckpointLoader_4.CLIP })
+const KSampler_3 = new rt.KSampler({
+    seed: 8566257,
+    steps: 20,
+    cfg: 8,
+    sampler_name: 'sample_euler',
+    scheduler: 'normal',
+    denoise: 1,
+    model: CheckpointLoader_4.MODEL,
+    positive: CLIPTextEncode_6.CONDITIONING,
+    negative: CLIPTextEncode_7.CONDITIONING,
+    latent_image: EmptyLatentImage_5.LATENT,
+})
+const VAEDecode_8 = new rt.VAEDecode({ samples: KSampler_3.LATENT, vae: CheckpointLoader_4.VAE })
+const SaveImage_9 = new rt.SaveImage({ filename_prefix: 'ComfyUI', images: VAEDecode_8.IMAGE })
