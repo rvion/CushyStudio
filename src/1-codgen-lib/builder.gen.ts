@@ -22,16 +22,15 @@ export class NodeDecl {
         p(`export class ${this.name} {`)
         p(`    static inputs = ${JSON.stringify(this.inputs)}`)
         p(`    static outputs = ${JSON.stringify(this.outputs)}`)
-        p(`    constructor(public p: ${this.name}_input){}`)
+        p(`    constructor(public p: {`)
+        this.inputs.forEach((i) => p(`    ${i.name}: ${i.type}`))
+        p(`    }){}`)
         this.outputs.forEach((i) => {
             p(`    ${i.name} = new rt.Signal<'${i.type}'>('${i.type}')`)
         })
         p(`}`)
-        p(`export type ${this.name}_input = {`)
-        this.inputs.forEach((i) => {
-            p(`    ${i.name}: ${i.type}`)
-        })
-        p(`}`)
+        // p(`export type ${this.name}_input = {`)
+        // p(`}`)
 
         return out.join('\n')
     }
