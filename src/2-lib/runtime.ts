@@ -1,3 +1,4 @@
+export type NodeUID = string
 export class NodeOutput<T> {
     constructor(
         //
@@ -19,19 +20,26 @@ export abstract class ComfyBase {
     }
 }
 
-let number = 1
+let nextUID = 1
 
-export abstract class ComfyNode<ComfyNode_input> {
-    uid = number++
+export abstract class ComfyNode<ComfyNode_input extends object> {
     toJSON() {
-        return {}
+        const out: any = {}
+        for (const [k, v] of Object.entries(this.p)) {
+            out[k] = v instanceof NodeOutput ? [v.node.uid, v.slotIx] : v
+        }
+        return {
+            inputs: out,
+            class_type: this.constructor.name,
+        }
     }
     constructor(
         //
         public comfy: ComfyBase,
+        public uid: string = (nextUID++).toString(),
         public p: ComfyNode_input,
     ) {
-        this.comfy
+        this.comfy.nodes.set(this.uid.toString(), this)
     }
 }
 

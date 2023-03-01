@@ -53,7 +53,7 @@ for (const nodeID of sortedNodes) {
             pi(`${name}: ${signal}, `)
         } else pi(`${name}: ${jsEscapeStr(value)}, `)
     }
-    p(`})`)
+    p(`}, '${nodeID}')`)
 }
 
 // console.log(out)

@@ -133,7 +133,9 @@ export class MAIN {
 
         p(`\n// Entrypoint --------------------------`)
         p(`export class Comfy extends rt.ComfyBase {`)
-        for (const n of this.knownNodes) p(`    ${n}= (args: ${n}_input) => new ${n}(this, args)`)
+        for (const n of this.knownNodes) {
+            p(`    ${n}= (args: ${n}_input, uid?: rt.NodeUID) => new ${n}(this, uid, args)`)
+        }
         p(`}`)
 
         return out
