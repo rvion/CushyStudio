@@ -1,7 +1,6 @@
 import spec from './nodes.json' assert { type: 'json' }
 
 const entries = Object.entries(spec)
-console.log(`test`)
 
 export type NodeInput = { name: string; type: string; opts: any }
 export type NodeOutput = { type: string; name: string }
@@ -49,7 +48,7 @@ export class MAIN {
     constructor() {
         for (const [nodeName, nodeDef] of entries) {
             this.knownNodes.push(nodeName)
-            console.log(nodeName)
+            // console.log(nodeName)
             const requiredInputs = Object.entries(nodeDef.input.required)
             const inputs: NodeInput[] = []
             const outputs: NodeOutput[] = []
@@ -132,7 +131,11 @@ export class MAIN {
         return out
     }
 }
-console.log(`test`)
+// console.log(`test`)
 const main = new MAIN()
 const code = main.codegen()
-Deno.writeTextFileSync('./src/builder.ts', code)
+const target = './src/2-lib/builder.ts'
+Deno.writeTextFileSync(target, code)
+await new Promise((yes) => setTimeout(yes, 100))
+await Deno.run({ cmd: ['deno', 'fmt', target] }).status
+await new Promise((yes) => setTimeout(yes, 100))
