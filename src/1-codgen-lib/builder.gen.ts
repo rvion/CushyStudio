@@ -24,8 +24,8 @@ export class NodeDecl {
         p(`    static outputs = ${JSON.stringify(this.outputs)}`)
         // p(`    constructor(public comfy: Comfy, public p: ${this.name}_input)`)
         // p(`    {}`)
-        this.outputs.forEach((i) => {
-            p(`    ${i.name} = new rt.Signal<'${i.type}'>('${i.type}')`)
+        this.outputs.forEach((i, ix) => {
+            p(`    ${i.name} = new rt.NodeOutput<'${i.type}'>(this, ${ix}, '${i.type}')`)
         })
         p(`}`)
         p(`export type ${this.name}_input = {`)
@@ -103,7 +103,7 @@ export class MAIN {
         if (t === 'FLOAT') return 'number'
         if (t === 'INT') return 'number'
         if (t === 'STRING') return 'string'
-        return `rt.Signal<'${t}'>`
+        return `rt.NodeOutput<'${t}'>`
     }
 
     codegen = (): string => {

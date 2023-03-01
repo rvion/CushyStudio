@@ -1,6 +1,12 @@
-export class Signal<T> {
-    constructor(public type: T) {}
+export class NodeOutput<T> {
+    constructor(
+        //
+        public node: ComfyNode<any>,
+        public slotIx: number,
+        public type: T,
+    ) {}
 }
+
 export abstract class ComfyBase {
     nodes = new Map<string, ComfyNode<any>>()
     toJSON() {
