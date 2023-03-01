@@ -58,12 +58,3 @@ for (const nodeID of sortedNodes) {
 
 // console.log(out)
 await saveTsFile('./src/3-import-history/history-entry-as-code.ts', out)
-// links have this shape:
-// [
-//     9, //id
-//     8, // from id
-//     0,// from output ix
-//     9, // to id
-//     0, // to input ix
-//     "IMAGE" // type
-// ]
