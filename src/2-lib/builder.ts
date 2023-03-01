@@ -1,4 +1,5 @@
 import * as rt from './runtime.ts'
+
 // TYPES -------------------------------
 type MODEL = rt.Signal<'MODEL'>
 type INT = number
@@ -502,12 +503,12 @@ export type ControlNetApply_input = {
 }
 
 // ControlNetLoader -------------------------------
-export class ControlNetLoader {
+export class ControlNetLoader extends rt.ComfyNode<ControlNetLoader_input> {
     static inputs = [{ 'name': 'control_net_name', 'type': 'enum_ControlNetLoader_control_net_name' }]
     static outputs = [{ 'type': 'CONTROL_NET', 'name': 'CONTROL_NET' }]
-    constructor(public comfy: Comfy, public p: ControlNetLoader_input) {}
     CONTROL_NET = new rt.Signal<'CONTROL_NET'>('CONTROL_NET')
 }
+
 export type ControlNetLoader_input = {
     control_net_name: enum_ControlNetLoader_control_net_name
 }
@@ -585,7 +586,7 @@ export const nodes = {
 export type NodeType = keyof typeof nodes
 
 // Entrypoint --------------------------
-export class Comfy {
+export class Comfy extends rt.ComfyBase {
     KSampler = (args: KSampler_input) => new KSampler(this, args)
     CheckpointLoader = (args: CheckpointLoader_input) => new CheckpointLoader(this, args)
     CLIPTextEncode = (args: CLIPTextEncode_input) => new CLIPTextEncode(this, args)
