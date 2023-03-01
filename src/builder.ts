@@ -1,11 +1,11 @@
 import * as rt from './runtime.ts'
 // TYPES -------------------------------
 type MODEL = rt.Signal<'MODEL'>
-type INT = rt.Signal<'INT'>
-type FLOAT = rt.Signal<'FLOAT'>
+type INT = number
+type FLOAT = number
 type CONDITIONING = rt.Signal<'CONDITIONING'>
 type LATENT = rt.Signal<'LATENT'>
-type STRING = rt.Signal<'STRING'>
+type STRING = boolean
 type CLIP = rt.Signal<'CLIP'>
 type VAE = rt.Signal<'VAE'>
 type IMAGE = rt.Signal<'IMAGE'>

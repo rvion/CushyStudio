@@ -40,7 +40,7 @@ export class NodeDecl {
 import * as mod from 'https://deno.land/std@0.119.0/hash/mod.ts'
 
 export class MAIN {
-    knownTypes = new Set()
+    knownTypes = new Set<string>()
     knownNodes: string[] = []
     knownEnums = new Map<EnumHash, { name: EnumName; values: string[] }>()
     nodes: NodeDecl[] = []
@@ -98,13 +98,22 @@ export class MAIN {
             }
         }
     }
+    toTSType = (t: string) => {
+        if (t === 'FLOAT') return 'number'
+        if (t === 'INT') return 'number'
+        if (t === 'STRING') return 'boolean'
+        return `rt.Signal<'${t}'>`
+    }
     codegen = (): string => {
         let out = ''
         const p = (txt: string) => out += txt + '\n'
         p(`import * as rt from './runtime.ts'`)
 
         p(`// TYPES -------------------------------`)
-        for (const t of this.knownTypes.values()) p(`type ${t} = rt.Signal<'${t}'>`)
+        for (const t of this.knownTypes.values()) {
+            const tsType = this.toTSType(t)
+            p(`type ${t} = ${tsType}`)
+        }
 
         p(`\n// ENUMS -------------------------------`)
         for (const e of this.knownEnums.values()) {
