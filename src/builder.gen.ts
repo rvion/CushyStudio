@@ -24,7 +24,7 @@ export class NodeDecl {
         p(`    static outputs = ${JSON.stringify(this.outputs)}`)
         p(`    constructor(public p: ${this.name}_input){}`)
         this.outputs.forEach((i) => {
-            p(`    ${i.name} = new rt.Signal('${i.type}')`)
+            p(`    ${i.name} = new rt.Signal<'${i.type}'>('${i.type}')`)
         })
         p(`}`)
         p(`export type ${this.name}_input = {`)
@@ -101,7 +101,7 @@ export class MAIN {
     toTSType = (t: string) => {
         if (t === 'FLOAT') return 'number'
         if (t === 'INT') return 'number'
-        if (t === 'STRING') return 'boolean'
+        if (t === 'STRING') return 'string'
         return `rt.Signal<'${t}'>`
     }
     codegen = (): string => {
