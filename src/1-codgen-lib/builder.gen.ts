@@ -38,6 +38,7 @@ export class NodeDecl {
 }
 
 import * as mod from 'https://deno.land/std@0.119.0/hash/mod.ts'
+import { saveTsFile } from '../0-utils/saveTsFile.ts'
 
 export class MAIN {
     knownTypes = new Set<string>()
@@ -134,8 +135,4 @@ export class MAIN {
 // console.log(`test`)
 const main = new MAIN()
 const code = main.codegen()
-const target = './src/2-lib/builder.ts'
-Deno.writeTextFileSync(target, code)
-await new Promise((yes) => setTimeout(yes, 100))
-await Deno.run({ cmd: ['deno', 'fmt', target] }).status
-await new Promise((yes) => setTimeout(yes, 100))
+await saveTsFile('./src/2-lib/builder.ts', code)
