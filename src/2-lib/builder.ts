@@ -1,5 +1,4 @@
 import * as rt from './runtime.ts'
-
 // TYPES -------------------------------
 type MODEL = rt.Signal<'MODEL'>
 type INT = number
@@ -59,7 +58,7 @@ type enum_ControlNetLoader_control_net_name = 'controlnetPreTrained_openposeV10.
 // NODES -------------------------------
 
 // KSampler -------------------------------
-export class KSampler {
+export class KSampler extends rt.ComfyNode<KSampler_input> {
     static inputs = [
         { 'name': 'model', 'type': 'MODEL' },
         { 'name': 'seed', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 18446744073709552000 } },
@@ -73,7 +72,6 @@ export class KSampler {
         { 'name': 'denoise', 'type': 'FLOAT', 'opts': { 'default': 1, 'min': 0, 'max': 1, 'step': 0.01 } },
     ]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: KSampler_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type KSampler_input = {
@@ -90,7 +88,7 @@ export type KSampler_input = {
 }
 
 // CheckpointLoader -------------------------------
-export class CheckpointLoader {
+export class CheckpointLoader extends rt.ComfyNode<CheckpointLoader_input> {
     static inputs = [{ 'name': 'config_name', 'type': 'enum_CheckpointLoader_config_name' }, {
         'name': 'ckpt_name',
         'type': 'enum_CheckpointLoader_ckpt_name',
@@ -99,7 +97,6 @@ export class CheckpointLoader {
         'type': 'VAE',
         'name': 'VAE',
     }]
-    constructor(public comfy: Comfy, public p: CheckpointLoader_input) {}
     MODEL = new rt.Signal<'MODEL'>('MODEL')
     CLIP = new rt.Signal<'CLIP'>('CLIP')
     VAE = new rt.Signal<'VAE'>('VAE')
@@ -110,13 +107,12 @@ export type CheckpointLoader_input = {
 }
 
 // CLIPTextEncode -------------------------------
-export class CLIPTextEncode {
+export class CLIPTextEncode extends rt.ComfyNode<CLIPTextEncode_input> {
     static inputs = [{ 'name': 'text', 'type': 'STRING', 'opts': { 'multiline': true, 'dynamic_prompt': true } }, {
         'name': 'clip',
         'type': 'CLIP',
     }]
     static outputs = [{ 'type': 'CONDITIONING', 'name': 'CONDITIONING' }]
-    constructor(public comfy: Comfy, public p: CLIPTextEncode_input) {}
     CONDITIONING = new rt.Signal<'CONDITIONING'>('CONDITIONING')
 }
 export type CLIPTextEncode_input = {
@@ -125,10 +121,9 @@ export type CLIPTextEncode_input = {
 }
 
 // VAEDecode -------------------------------
-export class VAEDecode {
+export class VAEDecode extends rt.ComfyNode<VAEDecode_input> {
     static inputs = [{ 'name': 'samples', 'type': 'LATENT' }, { 'name': 'vae', 'type': 'VAE' }]
     static outputs = [{ 'type': 'IMAGE', 'name': 'IMAGE' }]
-    constructor(public comfy: Comfy, public p: VAEDecode_input) {}
     IMAGE = new rt.Signal<'IMAGE'>('IMAGE')
 }
 export type VAEDecode_input = {
@@ -137,10 +132,9 @@ export type VAEDecode_input = {
 }
 
 // VAEEncode -------------------------------
-export class VAEEncode {
+export class VAEEncode extends rt.ComfyNode<VAEEncode_input> {
     static inputs = [{ 'name': 'pixels', 'type': 'IMAGE' }, { 'name': 'vae', 'type': 'VAE' }]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: VAEEncode_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type VAEEncode_input = {
@@ -149,13 +143,12 @@ export type VAEEncode_input = {
 }
 
 // VAEEncodeForInpaint -------------------------------
-export class VAEEncodeForInpaint {
+export class VAEEncodeForInpaint extends rt.ComfyNode<VAEEncodeForInpaint_input> {
     static inputs = [{ 'name': 'pixels', 'type': 'IMAGE' }, { 'name': 'vae', 'type': 'VAE' }, {
         'name': 'mask',
         'type': 'MASK',
     }]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: VAEEncodeForInpaint_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type VAEEncodeForInpaint_input = {
@@ -165,10 +158,9 @@ export type VAEEncodeForInpaint_input = {
 }
 
 // VAELoader -------------------------------
-export class VAELoader {
+export class VAELoader extends rt.ComfyNode<VAELoader_input> {
     static inputs = [{ 'name': 'vae_name', 'type': 'enum_VAELoader_vae_name' }]
     static outputs = [{ 'type': 'VAE', 'name': 'VAE' }]
-    constructor(public comfy: Comfy, public p: VAELoader_input) {}
     VAE = new rt.Signal<'VAE'>('VAE')
 }
 export type VAELoader_input = {
@@ -176,14 +168,13 @@ export type VAELoader_input = {
 }
 
 // EmptyLatentImage -------------------------------
-export class EmptyLatentImage {
+export class EmptyLatentImage extends rt.ComfyNode<EmptyLatentImage_input> {
     static inputs = [
         { 'name': 'width', 'type': 'INT', 'opts': { 'default': 512, 'min': 64, 'max': 4096, 'step': 64 } },
         { 'name': 'height', 'type': 'INT', 'opts': { 'default': 512, 'min': 64, 'max': 4096, 'step': 64 } },
         { 'name': 'batch_size', 'type': 'INT', 'opts': { 'default': 1, 'min': 1, 'max': 64 } },
     ]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: EmptyLatentImage_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type EmptyLatentImage_input = {
@@ -193,7 +184,7 @@ export type EmptyLatentImage_input = {
 }
 
 // LatentUpscale -------------------------------
-export class LatentUpscale {
+export class LatentUpscale extends rt.ComfyNode<LatentUpscale_input> {
     static inputs = [
         { 'name': 'samples', 'type': 'LATENT' },
         { 'name': 'upscale_method', 'type': 'enum_LatentUpscale_upscale_method' },
@@ -202,7 +193,6 @@ export class LatentUpscale {
         { 'name': 'crop', 'type': 'enum_LatentUpscale_crop' },
     ]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: LatentUpscale_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type LatentUpscale_input = {
@@ -214,14 +204,13 @@ export type LatentUpscale_input = {
 }
 
 // SaveImage -------------------------------
-export class SaveImage {
+export class SaveImage extends rt.ComfyNode<SaveImage_input> {
     static inputs = [{ 'name': 'images', 'type': 'IMAGE' }, {
         'name': 'filename_prefix',
         'type': 'STRING',
         'opts': { 'default': 'ComfyUI' },
     }]
     static outputs = []
-    constructor(public comfy: Comfy, public p: SaveImage_input) {}
 }
 export type SaveImage_input = {
     images: IMAGE
@@ -229,10 +218,9 @@ export type SaveImage_input = {
 }
 
 // LoadImage -------------------------------
-export class LoadImage {
+export class LoadImage extends rt.ComfyNode<LoadImage_input> {
     static inputs = [{ 'name': 'image', 'type': 'enum_LoadImage_image' }]
     static outputs = [{ 'type': 'IMAGE', 'name': 'IMAGE' }]
-    constructor(public comfy: Comfy, public p: LoadImage_input) {}
     IMAGE = new rt.Signal<'IMAGE'>('IMAGE')
 }
 export type LoadImage_input = {
@@ -240,13 +228,12 @@ export type LoadImage_input = {
 }
 
 // LoadImageMask -------------------------------
-export class LoadImageMask {
+export class LoadImageMask extends rt.ComfyNode<LoadImageMask_input> {
     static inputs = [{ 'name': 'image', 'type': 'enum_LoadImage_image' }, {
         'name': 'channel',
         'type': 'enum_LoadImageMask_channel',
     }]
     static outputs = [{ 'type': 'MASK', 'name': 'MASK' }]
-    constructor(public comfy: Comfy, public p: LoadImageMask_input) {}
     MASK = new rt.Signal<'MASK'>('MASK')
 }
 export type LoadImageMask_input = {
@@ -255,7 +242,7 @@ export type LoadImageMask_input = {
 }
 
 // ImageScale -------------------------------
-export class ImageScale {
+export class ImageScale extends rt.ComfyNode<ImageScale_input> {
     static inputs = [
         { 'name': 'image', 'type': 'IMAGE' },
         { 'name': 'upscale_method', 'type': 'enum_LatentUpscale_upscale_method' },
@@ -264,7 +251,6 @@ export class ImageScale {
         { 'name': 'crop', 'type': 'enum_LatentUpscale_crop' },
     ]
     static outputs = [{ 'type': 'IMAGE', 'name': 'IMAGE' }]
-    constructor(public comfy: Comfy, public p: ImageScale_input) {}
     IMAGE = new rt.Signal<'IMAGE'>('IMAGE')
 }
 export type ImageScale_input = {
@@ -276,10 +262,9 @@ export type ImageScale_input = {
 }
 
 // ImageInvert -------------------------------
-export class ImageInvert {
+export class ImageInvert extends rt.ComfyNode<ImageInvert_input> {
     static inputs = [{ 'name': 'image', 'type': 'IMAGE' }]
     static outputs = [{ 'type': 'IMAGE', 'name': 'IMAGE' }]
-    constructor(public comfy: Comfy, public p: ImageInvert_input) {}
     IMAGE = new rt.Signal<'IMAGE'>('IMAGE')
 }
 export type ImageInvert_input = {
@@ -287,13 +272,12 @@ export type ImageInvert_input = {
 }
 
 // ConditioningCombine -------------------------------
-export class ConditioningCombine {
+export class ConditioningCombine extends rt.ComfyNode<ConditioningCombine_input> {
     static inputs = [{ 'name': 'conditioning_1', 'type': 'CONDITIONING' }, {
         'name': 'conditioning_2',
         'type': 'CONDITIONING',
     }]
     static outputs = [{ 'type': 'CONDITIONING', 'name': 'CONDITIONING' }]
-    constructor(public comfy: Comfy, public p: ConditioningCombine_input) {}
     CONDITIONING = new rt.Signal<'CONDITIONING'>('CONDITIONING')
 }
 export type ConditioningCombine_input = {
@@ -302,7 +286,7 @@ export type ConditioningCombine_input = {
 }
 
 // ConditioningSetArea -------------------------------
-export class ConditioningSetArea {
+export class ConditioningSetArea extends rt.ComfyNode<ConditioningSetArea_input> {
     static inputs = [
         { 'name': 'conditioning', 'type': 'CONDITIONING' },
         { 'name': 'width', 'type': 'INT', 'opts': { 'default': 64, 'min': 64, 'max': 4096, 'step': 64 } },
@@ -312,7 +296,6 @@ export class ConditioningSetArea {
         { 'name': 'strength', 'type': 'FLOAT', 'opts': { 'default': 1, 'min': 0, 'max': 10, 'step': 0.01 } },
     ]
     static outputs = [{ 'type': 'CONDITIONING', 'name': 'CONDITIONING' }]
-    constructor(public comfy: Comfy, public p: ConditioningSetArea_input) {}
     CONDITIONING = new rt.Signal<'CONDITIONING'>('CONDITIONING')
 }
 export type ConditioningSetArea_input = {
@@ -325,7 +308,7 @@ export type ConditioningSetArea_input = {
 }
 
 // KSamplerAdvanced -------------------------------
-export class KSamplerAdvanced {
+export class KSamplerAdvanced extends rt.ComfyNode<KSamplerAdvanced_input> {
     static inputs = [
         { 'name': 'model', 'type': 'MODEL' },
         { 'name': 'add_noise', 'type': 'enum_KSamplerAdvanced_add_noise' },
@@ -342,7 +325,6 @@ export class KSamplerAdvanced {
         { 'name': 'return_with_leftover_noise', 'type': 'enum_KSamplerAdvanced_return_with_leftover_noise' },
     ]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: KSamplerAdvanced_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type KSamplerAdvanced_input = {
@@ -362,10 +344,9 @@ export type KSamplerAdvanced_input = {
 }
 
 // SetLatentNoiseMask -------------------------------
-export class SetLatentNoiseMask {
+export class SetLatentNoiseMask extends rt.ComfyNode<SetLatentNoiseMask_input> {
     static inputs = [{ 'name': 'samples', 'type': 'LATENT' }, { 'name': 'mask', 'type': 'MASK' }]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: SetLatentNoiseMask_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type SetLatentNoiseMask_input = {
@@ -374,7 +355,7 @@ export type SetLatentNoiseMask_input = {
 }
 
 // LatentComposite -------------------------------
-export class LatentComposite {
+export class LatentComposite extends rt.ComfyNode<LatentComposite_input> {
     static inputs = [
         { 'name': 'samples_to', 'type': 'LATENT' },
         { 'name': 'samples_from', 'type': 'LATENT' },
@@ -383,7 +364,6 @@ export class LatentComposite {
         { 'name': 'feather', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 4096, 'step': 8 } },
     ]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: LatentComposite_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type LatentComposite_input = {
@@ -395,13 +375,12 @@ export type LatentComposite_input = {
 }
 
 // LatentRotate -------------------------------
-export class LatentRotate {
+export class LatentRotate extends rt.ComfyNode<LatentRotate_input> {
     static inputs = [{ 'name': 'samples', 'type': 'LATENT' }, {
         'name': 'rotation',
         'type': 'enum_LatentRotate_rotation',
     }]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: LatentRotate_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type LatentRotate_input = {
@@ -410,13 +389,12 @@ export type LatentRotate_input = {
 }
 
 // LatentFlip -------------------------------
-export class LatentFlip {
+export class LatentFlip extends rt.ComfyNode<LatentFlip_input> {
     static inputs = [{ 'name': 'samples', 'type': 'LATENT' }, {
         'name': 'flip_method',
         'type': 'enum_LatentFlip_flip_method',
     }]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: LatentFlip_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type LatentFlip_input = {
@@ -425,7 +403,7 @@ export type LatentFlip_input = {
 }
 
 // LatentCrop -------------------------------
-export class LatentCrop {
+export class LatentCrop extends rt.ComfyNode<LatentCrop_input> {
     static inputs = [
         { 'name': 'samples', 'type': 'LATENT' },
         { 'name': 'width', 'type': 'INT', 'opts': { 'default': 512, 'min': 64, 'max': 4096, 'step': 64 } },
@@ -434,7 +412,6 @@ export class LatentCrop {
         { 'name': 'y', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 4096, 'step': 8 } },
     ]
     static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
-    constructor(public comfy: Comfy, public p: LatentCrop_input) {}
     LATENT = new rt.Signal<'LATENT'>('LATENT')
 }
 export type LatentCrop_input = {
@@ -446,7 +423,7 @@ export type LatentCrop_input = {
 }
 
 // LoraLoader -------------------------------
-export class LoraLoader {
+export class LoraLoader extends rt.ComfyNode<LoraLoader_input> {
     static inputs = [
         { 'name': 'model', 'type': 'MODEL' },
         { 'name': 'clip', 'type': 'CLIP' },
@@ -455,7 +432,6 @@ export class LoraLoader {
         { 'name': 'strength_clip', 'type': 'FLOAT', 'opts': { 'default': 1, 'min': 0, 'max': 10, 'step': 0.01 } },
     ]
     static outputs = [{ 'type': 'MODEL', 'name': 'MODEL' }, { 'type': 'CLIP', 'name': 'CLIP' }]
-    constructor(public comfy: Comfy, public p: LoraLoader_input) {}
     MODEL = new rt.Signal<'MODEL'>('MODEL')
     CLIP = new rt.Signal<'CLIP'>('CLIP')
 }
@@ -468,14 +444,13 @@ export type LoraLoader_input = {
 }
 
 // CLIPLoader -------------------------------
-export class CLIPLoader {
+export class CLIPLoader extends rt.ComfyNode<CLIPLoader_input> {
     static inputs = [{ 'name': 'clip_name', 'type': 'enum_CLIPLoader_clip_name' }, {
         'name': 'stop_at_clip_layer',
         'type': 'INT',
         'opts': { 'default': -1, 'min': -24, 'max': -1, 'step': 1 },
     }]
     static outputs = [{ 'type': 'CLIP', 'name': 'CLIP' }]
-    constructor(public comfy: Comfy, public p: CLIPLoader_input) {}
     CLIP = new rt.Signal<'CLIP'>('CLIP')
 }
 export type CLIPLoader_input = {
@@ -484,7 +459,7 @@ export type CLIPLoader_input = {
 }
 
 // ControlNetApply -------------------------------
-export class ControlNetApply {
+export class ControlNetApply extends rt.ComfyNode<ControlNetApply_input> {
     static inputs = [
         { 'name': 'conditioning', 'type': 'CONDITIONING' },
         { 'name': 'control_net', 'type': 'CONTROL_NET' },
@@ -492,7 +467,6 @@ export class ControlNetApply {
         { 'name': 'strength', 'type': 'FLOAT', 'opts': { 'default': 1, 'min': 0, 'max': 10, 'step': 0.01 } },
     ]
     static outputs = [{ 'type': 'CONDITIONING', 'name': 'CONDITIONING' }]
-    constructor(public comfy: Comfy, public p: ControlNetApply_input) {}
     CONDITIONING = new rt.Signal<'CONDITIONING'>('CONDITIONING')
 }
 export type ControlNetApply_input = {
@@ -508,19 +482,17 @@ export class ControlNetLoader extends rt.ComfyNode<ControlNetLoader_input> {
     static outputs = [{ 'type': 'CONTROL_NET', 'name': 'CONTROL_NET' }]
     CONTROL_NET = new rt.Signal<'CONTROL_NET'>('CONTROL_NET')
 }
-
 export type ControlNetLoader_input = {
     control_net_name: enum_ControlNetLoader_control_net_name
 }
 
 // DiffControlNetLoader -------------------------------
-export class DiffControlNetLoader {
+export class DiffControlNetLoader extends rt.ComfyNode<DiffControlNetLoader_input> {
     static inputs = [{ 'name': 'model', 'type': 'MODEL' }, {
         'name': 'control_net_name',
         'type': 'enum_ControlNetLoader_control_net_name',
     }]
     static outputs = [{ 'type': 'CONTROL_NET', 'name': 'CONTROL_NET' }]
-    constructor(public comfy: Comfy, public p: DiffControlNetLoader_input) {}
     CONTROL_NET = new rt.Signal<'CONTROL_NET'>('CONTROL_NET')
 }
 export type DiffControlNetLoader_input = {
@@ -529,10 +501,9 @@ export type DiffControlNetLoader_input = {
 }
 
 // T2IAdapterLoader -------------------------------
-export class T2IAdapterLoader {
+export class T2IAdapterLoader extends rt.ComfyNode<T2IAdapterLoader_input> {
     static inputs = [{ 'name': 't2i_adapter_name', 'type': 'enum_CLIPLoader_clip_name' }]
     static outputs = [{ 'type': 'CONTROL_NET', 'name': 'CONTROL_NET' }]
-    constructor(public comfy: Comfy, public p: T2IAdapterLoader_input) {}
     CONTROL_NET = new rt.Signal<'CONTROL_NET'>('CONTROL_NET')
 }
 export type T2IAdapterLoader_input = {
@@ -540,10 +511,9 @@ export type T2IAdapterLoader_input = {
 }
 
 // VAEDecodeTiled -------------------------------
-export class VAEDecodeTiled {
+export class VAEDecodeTiled extends rt.ComfyNode<VAEDecodeTiled_input> {
     static inputs = [{ 'name': 'samples', 'type': 'LATENT' }, { 'name': 'vae', 'type': 'VAE' }]
     static outputs = [{ 'type': 'IMAGE', 'name': 'IMAGE' }]
-    constructor(public comfy: Comfy, public p: VAEDecodeTiled_input) {}
     IMAGE = new rt.Signal<'IMAGE'>('IMAGE')
 }
 export type VAEDecodeTiled_input = {

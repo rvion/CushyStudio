@@ -19,11 +19,11 @@ export class NodeDecl {
         const p = (x: string) => out.push(x)
         // inputs
         p(`\n// ${this.name} -------------------------------`)
-        p(`export class ${this.name} {`)
+        p(`export class ${this.name} extends rt.ComfyNode<${this.name}_input>{`)
         p(`    static inputs = ${JSON.stringify(this.inputs)}`)
         p(`    static outputs = ${JSON.stringify(this.outputs)}`)
-        p(`    constructor(public comfy: Comfy, public p: ${this.name}_input)`)
-        p(`    {}`)
+        // p(`    constructor(public comfy: Comfy, public p: ${this.name}_input)`)
+        // p(`    {}`)
         this.outputs.forEach((i) => {
             p(`    ${i.name} = new rt.Signal<'${i.type}'>('${i.type}')`)
         })
@@ -132,7 +132,7 @@ export class MAIN {
         p(`export type NodeType = keyof typeof nodes`)
 
         p(`\n// Entrypoint --------------------------`)
-        p(`export class Comfy {`)
+        p(`export class Comfy extends rt.ComfyBase {`)
         for (const n of this.knownNodes) p(`    ${n}= (args: ${n}_input) => new ${n}(this, args)`)
         p(`}`)
 
