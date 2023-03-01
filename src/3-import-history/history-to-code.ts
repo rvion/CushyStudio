@@ -3,6 +3,7 @@ import { TEdge, toposort } from '../0-utils/toposort.ts'
 import { jsEscapeStr } from '../0-utils/jsEscapeStr.ts'
 
 import flow from './history-entry.json' assert { type: 'json' }
+import { saveTsFile } from '../0-utils/saveTsFile.ts'
 
 const flowNodes = Object.entries(flow)
 const ids = Object.keys(flow)
@@ -15,14 +16,14 @@ for (const [id, node] of flowNodes) {
         if (Array.isArray(input)) {
             const from = input[0]
             const to = id
-            console.log(from, to)
+            // console.log(from, to)
             edges.push([from, to] as TEdge)
         }
     }
 }
-
+console.log(`1. toposrt (${edges.map((e) => e.join('->')).join(',')})`)
 const sortedNodes = toposort(ids, edges)
-let out: string = `import * as rt from './builder.ts'\n`
+let out: string = `import * as rt from '../2-lib/builder.ts'\n`
 const p = (text: string) => out += text + '\n'
 const pi = (text: string) => out += text
 
@@ -34,17 +35,11 @@ for (const nodeID of sortedNodes) {
     // @ts-ignore
     const node = flow[nodeID]
     const classType = node.class_type
-    // const nth = nodeCounter[classType] ??= 0
     const varName = `${classType}_${nodeID}`
     generatedName.set(nodeID, varName)
-    // nodeCounter[classType]++
-    console.log(nodeID, classType)
     const cls = nodes[classType as NodeType]
-    console.log(classType, ' => ', cls.outputs)
-    // const outputs = cls.outputs
     let outoutIx = 0
     for (const o of cls.outputs ?? []) {
-        console.log('🟢', `${nodeID}-${outoutIx} = ${varName}.${o.name}`)
         availableSignals.set(`${nodeID}-${outoutIx++}`, `${varName}.${o.name}`)
     }
 
@@ -59,8 +54,8 @@ for (const nodeID of sortedNodes) {
     p(`})`)
 }
 
-console.log(out)
-Deno.writeTextFileSync('.src/3-import-history/history-entry-as-code.ts', out)
+// console.log(out)
+await saveTsFile('./src/3-import-history/history-entry-as-code.ts', out)
 // links have this shape:
 // [
 //     9, //id
