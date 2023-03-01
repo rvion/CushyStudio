@@ -3,9 +3,10 @@ alias sa='source .aliases'
 alias se='source .env'
 
 # misc
-alias dgen='deno run --allow-read --allow-write --allow-env --allow-net src/nodes.gen.ts'
-alias dbuild='deno run --allow-read --allow-write src/builder.gen.ts'
+alias dbuild='deno run --allow-read --allow-write src/1-codgen-lib/builder.gen.ts'
+alias dflow='deno run --allow-write src/3-import-history/history-to-code.ts'
 alias dmain='deno run src/main.ts'
-alias dflow1='deno run --allow-write src/flowV1ToCode.ts'
-alias dflow2='deno run --allow-write src/flowV2ToCode.ts'
-alias dflow='deno run --allow-write src/flowV2ToCode.ts'
+
+# legacy
+alias dflow-old='deno run --allow-write src/99-import-from-ui/uiToCode.ts'
+alias dgen='deno run --allow-read --allow-write --allow-env --allow-net src/99-generate-interfaces/nodes.gen.ts'
