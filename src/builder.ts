@@ -55,8 +55,23 @@ type enum_LoraLoader_lora_name = 'charturnerbetaLora_charturnbetalora.safetensor
 type enum_CLIPLoader_clip_name = never
 type enum_ControlNetLoader_control_net_name = 'controlnetPreTrained_openposeV10.safetensors'
 
+// NODES -------------------------------
+
 // KSampler -------------------------------
 export class KSampler {
+    static inputs = [
+        { 'name': 'model', 'type': 'MODEL' },
+        { 'name': 'seed', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 18446744073709552000 } },
+        { 'name': 'steps', 'type': 'INT', 'opts': { 'default': 20, 'min': 1, 'max': 10000 } },
+        { 'name': 'cfg', 'type': 'FLOAT', 'opts': { 'default': 8, 'min': 0, 'max': 100 } },
+        { 'name': 'sampler_name', 'type': 'enum_KSampler_sampler_name' },
+        { 'name': 'scheduler', 'type': 'enum_KSampler_scheduler' },
+        { 'name': 'positive', 'type': 'CONDITIONING' },
+        { 'name': 'negative', 'type': 'CONDITIONING' },
+        { 'name': 'latent_image', 'type': 'LATENT' },
+        { 'name': 'denoise', 'type': 'FLOAT', 'opts': { 'default': 1, 'min': 0, 'max': 1, 'step': 0.01 } },
+    ]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: KSampler_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -75,6 +90,14 @@ export type KSampler_input = {
 
 // CheckpointLoader -------------------------------
 export class CheckpointLoader {
+    static inputs = [{ 'name': 'config_name', 'type': 'enum_CheckpointLoader_config_name' }, {
+        'name': 'ckpt_name',
+        'type': 'enum_CheckpointLoader_ckpt_name',
+    }]
+    static outputs = [{ 'type': 'MODEL', 'name': 'MODEL' }, { 'type': 'CLIP', 'name': 'CLIP' }, {
+        'type': 'VAE',
+        'name': 'VAE',
+    }]
     constructor(public p: CheckpointLoader_input) {}
     MODEL = new rt.Signal('MODEL')
     CLIP = new rt.Signal('CLIP')
@@ -87,6 +110,11 @@ export type CheckpointLoader_input = {
 
 // CLIPTextEncode -------------------------------
 export class CLIPTextEncode {
+    static inputs = [{ 'name': 'text', 'type': 'STRING', 'opts': { 'multiline': true, 'dynamic_prompt': true } }, {
+        'name': 'clip',
+        'type': 'CLIP',
+    }]
+    static outputs = [{ 'type': 'CONDITIONING', 'name': 'CONDITIONING' }]
     constructor(public p: CLIPTextEncode_input) {}
     CONDITIONING = new rt.Signal('CONDITIONING')
 }
@@ -97,6 +125,8 @@ export type CLIPTextEncode_input = {
 
 // VAEDecode -------------------------------
 export class VAEDecode {
+    static inputs = [{ 'name': 'samples', 'type': 'LATENT' }, { 'name': 'vae', 'type': 'VAE' }]
+    static outputs = [{ 'type': 'IMAGE', 'name': 'IMAGE' }]
     constructor(public p: VAEDecode_input) {}
     IMAGE = new rt.Signal('IMAGE')
 }
@@ -107,6 +137,8 @@ export type VAEDecode_input = {
 
 // VAEEncode -------------------------------
 export class VAEEncode {
+    static inputs = [{ 'name': 'pixels', 'type': 'IMAGE' }, { 'name': 'vae', 'type': 'VAE' }]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: VAEEncode_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -117,6 +149,11 @@ export type VAEEncode_input = {
 
 // VAEEncodeForInpaint -------------------------------
 export class VAEEncodeForInpaint {
+    static inputs = [{ 'name': 'pixels', 'type': 'IMAGE' }, { 'name': 'vae', 'type': 'VAE' }, {
+        'name': 'mask',
+        'type': 'MASK',
+    }]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: VAEEncodeForInpaint_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -128,6 +165,8 @@ export type VAEEncodeForInpaint_input = {
 
 // VAELoader -------------------------------
 export class VAELoader {
+    static inputs = [{ 'name': 'vae_name', 'type': 'enum_VAELoader_vae_name' }]
+    static outputs = [{ 'type': 'VAE', 'name': 'VAE' }]
     constructor(public p: VAELoader_input) {}
     VAE = new rt.Signal('VAE')
 }
@@ -137,6 +176,12 @@ export type VAELoader_input = {
 
 // EmptyLatentImage -------------------------------
 export class EmptyLatentImage {
+    static inputs = [
+        { 'name': 'width', 'type': 'INT', 'opts': { 'default': 512, 'min': 64, 'max': 4096, 'step': 64 } },
+        { 'name': 'height', 'type': 'INT', 'opts': { 'default': 512, 'min': 64, 'max': 4096, 'step': 64 } },
+        { 'name': 'batch_size', 'type': 'INT', 'opts': { 'default': 1, 'min': 1, 'max': 64 } },
+    ]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: EmptyLatentImage_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -148,6 +193,14 @@ export type EmptyLatentImage_input = {
 
 // LatentUpscale -------------------------------
 export class LatentUpscale {
+    static inputs = [
+        { 'name': 'samples', 'type': 'LATENT' },
+        { 'name': 'upscale_method', 'type': 'enum_LatentUpscale_upscale_method' },
+        { 'name': 'width', 'type': 'INT', 'opts': { 'default': 512, 'min': 64, 'max': 4096, 'step': 64 } },
+        { 'name': 'height', 'type': 'INT', 'opts': { 'default': 512, 'min': 64, 'max': 4096, 'step': 64 } },
+        { 'name': 'crop', 'type': 'enum_LatentUpscale_crop' },
+    ]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: LatentUpscale_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -161,6 +214,12 @@ export type LatentUpscale_input = {
 
 // SaveImage -------------------------------
 export class SaveImage {
+    static inputs = [{ 'name': 'images', 'type': 'IMAGE' }, {
+        'name': 'filename_prefix',
+        'type': 'STRING',
+        'opts': { 'default': 'ComfyUI' },
+    }]
+    static outputs = []
     constructor(public p: SaveImage_input) {}
 }
 export type SaveImage_input = {
@@ -170,6 +229,8 @@ export type SaveImage_input = {
 
 // LoadImage -------------------------------
 export class LoadImage {
+    static inputs = [{ 'name': 'image', 'type': 'enum_LoadImage_image' }]
+    static outputs = [{ 'type': 'IMAGE', 'name': 'IMAGE' }]
     constructor(public p: LoadImage_input) {}
     IMAGE = new rt.Signal('IMAGE')
 }
@@ -179,6 +240,11 @@ export type LoadImage_input = {
 
 // LoadImageMask -------------------------------
 export class LoadImageMask {
+    static inputs = [{ 'name': 'image', 'type': 'enum_LoadImage_image' }, {
+        'name': 'channel',
+        'type': 'enum_LoadImageMask_channel',
+    }]
+    static outputs = [{ 'type': 'MASK', 'name': 'MASK' }]
     constructor(public p: LoadImageMask_input) {}
     MASK = new rt.Signal('MASK')
 }
@@ -189,6 +255,14 @@ export type LoadImageMask_input = {
 
 // ImageScale -------------------------------
 export class ImageScale {
+    static inputs = [
+        { 'name': 'image', 'type': 'IMAGE' },
+        { 'name': 'upscale_method', 'type': 'enum_LatentUpscale_upscale_method' },
+        { 'name': 'width', 'type': 'INT', 'opts': { 'default': 512, 'min': 1, 'max': 4096, 'step': 1 } },
+        { 'name': 'height', 'type': 'INT', 'opts': { 'default': 512, 'min': 1, 'max': 4096, 'step': 1 } },
+        { 'name': 'crop', 'type': 'enum_LatentUpscale_crop' },
+    ]
+    static outputs = [{ 'type': 'IMAGE', 'name': 'IMAGE' }]
     constructor(public p: ImageScale_input) {}
     IMAGE = new rt.Signal('IMAGE')
 }
@@ -202,6 +276,8 @@ export type ImageScale_input = {
 
 // ImageInvert -------------------------------
 export class ImageInvert {
+    static inputs = [{ 'name': 'image', 'type': 'IMAGE' }]
+    static outputs = [{ 'type': 'IMAGE', 'name': 'IMAGE' }]
     constructor(public p: ImageInvert_input) {}
     IMAGE = new rt.Signal('IMAGE')
 }
@@ -211,6 +287,11 @@ export type ImageInvert_input = {
 
 // ConditioningCombine -------------------------------
 export class ConditioningCombine {
+    static inputs = [{ 'name': 'conditioning_1', 'type': 'CONDITIONING' }, {
+        'name': 'conditioning_2',
+        'type': 'CONDITIONING',
+    }]
+    static outputs = [{ 'type': 'CONDITIONING', 'name': 'CONDITIONING' }]
     constructor(public p: ConditioningCombine_input) {}
     CONDITIONING = new rt.Signal('CONDITIONING')
 }
@@ -221,6 +302,15 @@ export type ConditioningCombine_input = {
 
 // ConditioningSetArea -------------------------------
 export class ConditioningSetArea {
+    static inputs = [
+        { 'name': 'conditioning', 'type': 'CONDITIONING' },
+        { 'name': 'width', 'type': 'INT', 'opts': { 'default': 64, 'min': 64, 'max': 4096, 'step': 64 } },
+        { 'name': 'height', 'type': 'INT', 'opts': { 'default': 64, 'min': 64, 'max': 4096, 'step': 64 } },
+        { 'name': 'x', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 4096, 'step': 64 } },
+        { 'name': 'y', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 4096, 'step': 64 } },
+        { 'name': 'strength', 'type': 'FLOAT', 'opts': { 'default': 1, 'min': 0, 'max': 10, 'step': 0.01 } },
+    ]
+    static outputs = [{ 'type': 'CONDITIONING', 'name': 'CONDITIONING' }]
     constructor(public p: ConditioningSetArea_input) {}
     CONDITIONING = new rt.Signal('CONDITIONING')
 }
@@ -235,6 +325,22 @@ export type ConditioningSetArea_input = {
 
 // KSamplerAdvanced -------------------------------
 export class KSamplerAdvanced {
+    static inputs = [
+        { 'name': 'model', 'type': 'MODEL' },
+        { 'name': 'add_noise', 'type': 'enum_KSamplerAdvanced_add_noise' },
+        { 'name': 'noise_seed', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 18446744073709552000 } },
+        { 'name': 'steps', 'type': 'INT', 'opts': { 'default': 20, 'min': 1, 'max': 10000 } },
+        { 'name': 'cfg', 'type': 'FLOAT', 'opts': { 'default': 8, 'min': 0, 'max': 100 } },
+        { 'name': 'sampler_name', 'type': 'enum_KSampler_sampler_name' },
+        { 'name': 'scheduler', 'type': 'enum_KSampler_scheduler' },
+        { 'name': 'positive', 'type': 'CONDITIONING' },
+        { 'name': 'negative', 'type': 'CONDITIONING' },
+        { 'name': 'latent_image', 'type': 'LATENT' },
+        { 'name': 'start_at_step', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 10000 } },
+        { 'name': 'end_at_step', 'type': 'INT', 'opts': { 'default': 10000, 'min': 0, 'max': 10000 } },
+        { 'name': 'return_with_leftover_noise', 'type': 'enum_KSamplerAdvanced_return_with_leftover_noise' },
+    ]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: KSamplerAdvanced_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -256,6 +362,8 @@ export type KSamplerAdvanced_input = {
 
 // SetLatentNoiseMask -------------------------------
 export class SetLatentNoiseMask {
+    static inputs = [{ 'name': 'samples', 'type': 'LATENT' }, { 'name': 'mask', 'type': 'MASK' }]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: SetLatentNoiseMask_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -266,6 +374,14 @@ export type SetLatentNoiseMask_input = {
 
 // LatentComposite -------------------------------
 export class LatentComposite {
+    static inputs = [
+        { 'name': 'samples_to', 'type': 'LATENT' },
+        { 'name': 'samples_from', 'type': 'LATENT' },
+        { 'name': 'x', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 4096, 'step': 8 } },
+        { 'name': 'y', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 4096, 'step': 8 } },
+        { 'name': 'feather', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 4096, 'step': 8 } },
+    ]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: LatentComposite_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -279,6 +395,11 @@ export type LatentComposite_input = {
 
 // LatentRotate -------------------------------
 export class LatentRotate {
+    static inputs = [{ 'name': 'samples', 'type': 'LATENT' }, {
+        'name': 'rotation',
+        'type': 'enum_LatentRotate_rotation',
+    }]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: LatentRotate_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -289,6 +410,11 @@ export type LatentRotate_input = {
 
 // LatentFlip -------------------------------
 export class LatentFlip {
+    static inputs = [{ 'name': 'samples', 'type': 'LATENT' }, {
+        'name': 'flip_method',
+        'type': 'enum_LatentFlip_flip_method',
+    }]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: LatentFlip_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -299,6 +425,14 @@ export type LatentFlip_input = {
 
 // LatentCrop -------------------------------
 export class LatentCrop {
+    static inputs = [
+        { 'name': 'samples', 'type': 'LATENT' },
+        { 'name': 'width', 'type': 'INT', 'opts': { 'default': 512, 'min': 64, 'max': 4096, 'step': 64 } },
+        { 'name': 'height', 'type': 'INT', 'opts': { 'default': 512, 'min': 64, 'max': 4096, 'step': 64 } },
+        { 'name': 'x', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 4096, 'step': 8 } },
+        { 'name': 'y', 'type': 'INT', 'opts': { 'default': 0, 'min': 0, 'max': 4096, 'step': 8 } },
+    ]
+    static outputs = [{ 'type': 'LATENT', 'name': 'LATENT' }]
     constructor(public p: LatentCrop_input) {}
     LATENT = new rt.Signal('LATENT')
 }
@@ -312,6 +446,14 @@ export type LatentCrop_input = {
 
 // LoraLoader -------------------------------
 export class LoraLoader {
+    static inputs = [
+        { 'name': 'model', 'type': 'MODEL' },
+        { 'name': 'clip', 'type': 'CLIP' },
+        { 'name': 'lora_name', 'type': 'enum_LoraLoader_lora_name' },
+        { 'name': 'strength_model', 'type': 'FLOAT', 'opts': { 'default': 1, 'min': 0, 'max': 10, 'step': 0.01 } },
+        { 'name': 'strength_clip', 'type': 'FLOAT', 'opts': { 'default': 1, 'min': 0, 'max': 10, 'step': 0.01 } },
+    ]
+    static outputs = [{ 'type': 'MODEL', 'name': 'MODEL' }, { 'type': 'CLIP', 'name': 'CLIP' }]
     constructor(public p: LoraLoader_input) {}
     MODEL = new rt.Signal('MODEL')
     CLIP = new rt.Signal('CLIP')
@@ -326,6 +468,12 @@ export type LoraLoader_input = {
 
 // CLIPLoader -------------------------------
 export class CLIPLoader {
+    static inputs = [{ 'name': 'clip_name', 'type': 'enum_CLIPLoader_clip_name' }, {
+        'name': 'stop_at_clip_layer',
+        'type': 'INT',
+        'opts': { 'default': -1, 'min': -24, 'max': -1, 'step': 1 },
+    }]
+    static outputs = [{ 'type': 'CLIP', 'name': 'CLIP' }]
     constructor(public p: CLIPLoader_input) {}
     CLIP = new rt.Signal('CLIP')
 }
@@ -336,6 +484,13 @@ export type CLIPLoader_input = {
 
 // ControlNetApply -------------------------------
 export class ControlNetApply {
+    static inputs = [
+        { 'name': 'conditioning', 'type': 'CONDITIONING' },
+        { 'name': 'control_net', 'type': 'CONTROL_NET' },
+        { 'name': 'image', 'type': 'IMAGE' },
+        { 'name': 'strength', 'type': 'FLOAT', 'opts': { 'default': 1, 'min': 0, 'max': 10, 'step': 0.01 } },
+    ]
+    static outputs = [{ 'type': 'CONDITIONING', 'name': 'CONDITIONING' }]
     constructor(public p: ControlNetApply_input) {}
     CONDITIONING = new rt.Signal('CONDITIONING')
 }
@@ -348,6 +503,8 @@ export type ControlNetApply_input = {
 
 // ControlNetLoader -------------------------------
 export class ControlNetLoader {
+    static inputs = [{ 'name': 'control_net_name', 'type': 'enum_ControlNetLoader_control_net_name' }]
+    static outputs = [{ 'type': 'CONTROL_NET', 'name': 'CONTROL_NET' }]
     constructor(public p: ControlNetLoader_input) {}
     CONTROL_NET = new rt.Signal('CONTROL_NET')
 }
@@ -357,6 +514,11 @@ export type ControlNetLoader_input = {
 
 // DiffControlNetLoader -------------------------------
 export class DiffControlNetLoader {
+    static inputs = [{ 'name': 'model', 'type': 'MODEL' }, {
+        'name': 'control_net_name',
+        'type': 'enum_ControlNetLoader_control_net_name',
+    }]
+    static outputs = [{ 'type': 'CONTROL_NET', 'name': 'CONTROL_NET' }]
     constructor(public p: DiffControlNetLoader_input) {}
     CONTROL_NET = new rt.Signal('CONTROL_NET')
 }
@@ -367,6 +529,8 @@ export type DiffControlNetLoader_input = {
 
 // T2IAdapterLoader -------------------------------
 export class T2IAdapterLoader {
+    static inputs = [{ 'name': 't2i_adapter_name', 'type': 'enum_CLIPLoader_clip_name' }]
+    static outputs = [{ 'type': 'CONTROL_NET', 'name': 'CONTROL_NET' }]
     constructor(public p: T2IAdapterLoader_input) {}
     CONTROL_NET = new rt.Signal('CONTROL_NET')
 }
@@ -376,6 +540,8 @@ export type T2IAdapterLoader_input = {
 
 // VAEDecodeTiled -------------------------------
 export class VAEDecodeTiled {
+    static inputs = [{ 'name': 'samples', 'type': 'LATENT' }, { 'name': 'vae', 'type': 'VAE' }]
+    static outputs = [{ 'type': 'IMAGE', 'name': 'IMAGE' }]
     constructor(public p: VAEDecodeTiled_input) {}
     IMAGE = new rt.Signal('IMAGE')
 }
@@ -383,3 +549,37 @@ export type VAEDecodeTiled_input = {
     samples: LATENT
     vae: VAE
 }
+
+// INDEX -------------------------------
+export const nodes = {
+    KSampler,
+    CheckpointLoader,
+    CLIPTextEncode,
+    VAEDecode,
+    VAEEncode,
+    VAEEncodeForInpaint,
+    VAELoader,
+    EmptyLatentImage,
+    LatentUpscale,
+    SaveImage,
+    LoadImage,
+    LoadImageMask,
+    ImageScale,
+    ImageInvert,
+    ConditioningCombine,
+    ConditioningSetArea,
+    KSamplerAdvanced,
+    SetLatentNoiseMask,
+    LatentComposite,
+    LatentRotate,
+    LatentFlip,
+    LatentCrop,
+    LoraLoader,
+    CLIPLoader,
+    ControlNetApply,
+    ControlNetLoader,
+    DiffControlNetLoader,
+    T2IAdapterLoader,
+    VAEDecodeTiled,
+}
+export type NodeType = keyof typeof nodes

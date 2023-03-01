@@ -1,5 +1,6 @@
-import spec from '../spec/nodes-2023-02-28.json' assert { type: 'json' }
+import spec from './nodes.json' assert { type: 'json' }
 const entries = Object.entries(spec)
+console.log(`test`)
 
 export type NodeInput = { name: string; type: string; opts: any }
 export type NodeOutput = { type: string; name: string }
@@ -19,8 +20,9 @@ export class NodeDecl {
         // inputs
         p(`\n// ${this.name} -------------------------------`)
         p(`export class ${this.name} {`)
+        p(`    static inputs = ${JSON.stringify(this.inputs)}`)
+        p(`    static outputs = ${JSON.stringify(this.outputs)}`)
         p(`    constructor(public p: ${this.name}_input){}`)
-        // p(`    }`)
         this.outputs.forEach((i) => {
             p(`    ${i.name} = new rt.Signal('${i.type}')`)
         })
@@ -30,9 +32,6 @@ export class NodeDecl {
             p(`    ${i.name}: ${i.type}`)
         })
         p(`}`)
-        // outputs
-        // p(`export type ${this.name}_output = {`)
-        // p(`}`)
 
         return out.join('\n')
     }
@@ -42,11 +41,13 @@ import * as mod from 'https://deno.land/std@0.119.0/hash/mod.ts'
 
 export class MAIN {
     knownTypes = new Set()
+    knownNodes: string[] = []
     knownEnums = new Map<EnumHash, { name: EnumName; values: string[] }>()
     nodes: NodeDecl[] = []
 
     constructor() {
         for (const [nodeName, nodeDef] of entries) {
+            this.knownNodes.push(nodeName)
             console.log(nodeName)
             const requiredInputs = Object.entries(nodeDef.input.required)
             const inputs: NodeInput[] = []
@@ -98,22 +99,30 @@ export class MAIN {
         }
     }
     codegen = (): string => {
-        return [
-            `import * as rt from './runtime.ts'`,
-            `// TYPES -------------------------------`,
-            ...[...this.knownTypes.values()].map((t) => `type ${t} = rt.Signal<'${t}'>`),
-            `\n// ENUMS -------------------------------`,
-            ...[...this.knownEnums.values()].map((e) => {
-                if (e.values.length > 0) {
-                    return `type ${e.name} = ${e.values.map((v) => `'${v}'`).join(' | ')}`
-                }
-                return `type ${e.name} = never`
-            }),
-            this.nodes.map((n) => n.codegen()).join('\n'),
-        ].join('\n')
+        let out = ''
+        const p = (txt: string) => out += txt + '\n'
+        p(`import * as rt from './runtime.ts'`)
+
+        p(`// TYPES -------------------------------`)
+        for (const t of this.knownTypes.values()) p(`type ${t} = rt.Signal<'${t}'>`)
+
+        p(`\n// ENUMS -------------------------------`)
+        for (const e of this.knownEnums.values()) {
+            if (e.values.length > 0) p(`type ${e.name} = ${e.values.map((v) => `'${v}'`).join(' | ')}`)
+            else p(`type ${e.name} = never`)
+        }
+        p(`\n// NODES -------------------------------`)
+        for (const n of this.nodes) p(n.codegen())
+
+        p(`\n// INDEX -------------------------------`)
+        p(`export const nodes = {`)
+        for (const n of this.knownNodes) p(`    ${n},`)
+        p(`}`)
+        p(`export type NodeType = keyof typeof nodes`)
+        return out
     }
 }
-
+console.log(`test`)
 const main = new MAIN()
 const code = main.codegen()
 Deno.writeTextFileSync('./src/builder.ts', code)
