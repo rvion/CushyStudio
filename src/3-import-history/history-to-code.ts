@@ -1,8 +1,8 @@
-import { nodes, NodeType } from './builder.ts'
-import { TEdge, toposort } from './toposort.ts'
+import { nodes, NodeType } from '../2-lib/builder.ts'
+import { TEdge, toposort } from '../0-utils/toposort.ts'
+import { jsEscapeStr } from '../0-utils/jsEscapeStr.ts'
 
-import flow from './flow-v2.json' assert { type: 'json' }
-import { jsEscapeStr } from './jsEscapeStr.ts'
+import flow from './history-entry.json' assert { type: 'json' }
 
 const flowNodes = Object.entries(flow)
 const ids = Object.keys(flow)
@@ -60,7 +60,7 @@ for (const nodeID of sortedNodes) {
 }
 
 console.log(out)
-Deno.writeTextFileSync('./src/flowAsCode.ts', out)
+Deno.writeTextFileSync('.src/3-import-history/history-entry-as-code.ts', out)
 // links have this shape:
 // [
 //     9, //id

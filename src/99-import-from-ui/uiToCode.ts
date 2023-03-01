@@ -1,8 +1,8 @@
-import { nodes, NodeType } from './builder.ts'
-import { TEdge, toposort } from './toposort.ts'
+import { nodes, NodeType } from '../2-lib/builder.ts'
+import { TEdge, toposort } from '../0-utils/toposort.ts'
+import { jsEscapeStr } from '../0-utils/jsEscapeStr.ts'
 
-import flow from './flow-v1.json' assert { type: 'json' }
-import { jsEscapeStr } from './jsEscapeStr.ts'
+import flow from './ui.json' assert { type: 'json' }
 
 const ids = flow.nodes.map((n) => n.id.toString())
 const edges: TEdge[] = []

@@ -1,4 +1,5 @@
-import * as rt from './builder.ts'
+import * as rt from '../2-lib/builder.ts'
+
 const CheckpointLoader_4 = new rt.CheckpointLoader({
     config_name: 'v1-inference.yaml',
     ckpt_name: 'v1-5-pruned-emaonly.ckpt',

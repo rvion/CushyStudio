@@ -1,4 +1,5 @@
 import spec from './nodes.json' assert { type: 'json' }
+
 const entries = Object.entries(spec)
 console.log(`test`)
 
