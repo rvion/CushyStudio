@@ -22,15 +22,15 @@ export class NodeDecl {
         p(`export class ${this.name} {`)
         p(`    static inputs = ${JSON.stringify(this.inputs)}`)
         p(`    static outputs = ${JSON.stringify(this.outputs)}`)
-        p(`    constructor(public p: {`)
-        this.inputs.forEach((i) => p(`    ${i.name}: ${i.type}`))
-        p(`    }){}`)
+        p(`    constructor(public comfy: Comfy, public p: ${this.name}_input)`)
+        p(`    {}`)
         this.outputs.forEach((i) => {
             p(`    ${i.name} = new rt.Signal<'${i.type}'>('${i.type}')`)
         })
         p(`}`)
-        // p(`export type ${this.name}_input = {`)
-        // p(`}`)
+        p(`export type ${this.name}_input = {`)
+        this.inputs.forEach((i) => p(`    ${i.name}: ${i.type}`))
+        p(`}`)
 
         return out.join('\n')
     }
@@ -98,12 +98,14 @@ export class MAIN {
             }
         }
     }
+
     toTSType = (t: string) => {
         if (t === 'FLOAT') return 'number'
         if (t === 'INT') return 'number'
         if (t === 'STRING') return 'string'
         return `rt.Signal<'${t}'>`
     }
+
     codegen = (): string => {
         let out = ''
         const p = (txt: string) => out += txt + '\n'
@@ -128,6 +130,12 @@ export class MAIN {
         for (const n of this.knownNodes) p(`    ${n},`)
         p(`}`)
         p(`export type NodeType = keyof typeof nodes`)
+
+        p(`\n// Entrypoint --------------------------`)
+        p(`export class Comfy {`)
+        for (const n of this.knownNodes) p(`    ${n}= (args: ${n}_input) => new ${n}(this, args)`)
+        p(`}`)
+
         return out
     }
 }

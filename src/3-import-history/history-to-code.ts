@@ -23,9 +23,11 @@ for (const [id, node] of flowNodes) {
 }
 console.log(`1. toposrt (${edges.map((e) => e.join('->')).join(',')})`)
 const sortedNodes = toposort(ids, edges)
-let out: string = `import * as rt from '../2-lib/builder.ts'\n`
+let out: string = ''
 const p = (text: string) => out += text + '\n'
 const pi = (text: string) => out += text
+p(`import {Comfy} rt from '../2-lib/builder.ts'`)
+p(`const c = new Comfy()`)
 
 // const nodeCounter: { [nodeType: string]: number } = {}
 const generatedName = new Map<string, string>()
@@ -44,7 +46,7 @@ for (const nodeID of sortedNodes) {
     }
 
     if (node == null) throw new Error('node not found')
-    pi(`const ${varName} = new rt.${classType}({`)
+    pi(`const ${varName} = c.${classType}({`)
     for (const [name, value] of Object.entries(node.inputs) ?? []) {
         if (Array.isArray(value)) {
             const signal = availableSignals.get(value.join('-'))
