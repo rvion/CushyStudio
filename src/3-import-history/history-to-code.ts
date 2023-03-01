@@ -26,8 +26,8 @@ const sortedNodes = toposort(ids, edges)
 let out: string = ''
 const p = (text: string) => out += text + '\n'
 const pi = (text: string) => out += text
-p(`import {Comfy} rt from '../2-lib/builder.ts'`)
-p(`const c = new Comfy()`)
+p(`import {Comfy} from '../2-lib/builder.ts'`)
+p(`export const c = new Comfy()`)
 
 // const nodeCounter: { [nodeType: string]: number } = {}
 const generatedName = new Map<string, string>()
@@ -46,7 +46,7 @@ for (const nodeID of sortedNodes) {
     }
 
     if (node == null) throw new Error('node not found')
-    pi(`const ${varName} = c.${classType}({`)
+    pi(`export const ${varName} = c.${classType}({`)
     for (const [name, value] of Object.entries(node.inputs) ?? []) {
         if (Array.isArray(value)) {
             const signal = availableSignals.get(value.join('-'))

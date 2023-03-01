@@ -5,6 +5,7 @@ alias se='source .env'
 # misc
 alias dbuild='deno run --allow-read --allow-write --allow-run src/1-codgen-lib/builder.gen.ts'
 alias dflow='deno run --allow-write --allow-run src/3-import-history/history-to-code.ts'
+alias dtest='deno run src/3-import-history/test.ts'
 alias dmain='deno run src/main.ts'
 
 # legacy
