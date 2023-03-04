@@ -103,11 +103,10 @@ export class MAIN {
             p(`    ${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
         }
         p(`\n// misc \n`)
-        for (const n of this.nodes) {
-            p(
-                `    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`,
-            )
-        }
+        // prettier-ignore
+        // for (const n of this.nodes) {
+        //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
+        // }
         p(`}`)
         b.writeTS('./src/core/dsl.ts')
     }
