@@ -10,18 +10,15 @@ export type EnumName = string
 
 export class MAIN {
     knownTypes = new Set<string>()
-    knownNodes: string[] = []
     knownEnums = new Map<EnumHash, { name: EnumName; values: string[] }>()
     nodes: NodeDecl[] = []
 
     constructor() {
         for (const [nodeName, nodeDef] of entries) {
-            this.knownNodes.push(nodeName)
-            // console.log(nodeName)
             const requiredInputs = Object.entries(nodeDef.input.required)
             const inputs: NodeInput[] = []
             const outputs: NodeOutput[] = []
-            const node = new NodeDecl(nodeName, inputs, outputs)
+            const node = new NodeDecl(nodeName, nodeDef.category, inputs, outputs)
             this.nodes.push(node)
             const outputNamer: { [key: string]: number } = {}
             for (const opt of nodeDef.output) {
@@ -94,14 +91,22 @@ export class MAIN {
 
         p(`\n// INDEX -------------------------------`)
         p(`export const nodes = {`)
-        for (const n of this.knownNodes) p(`    ${n},`)
+        for (const n of this.nodes) p(`    ${n.name},`)
         p(`}`)
         p(`export type NodeType = keyof typeof nodes`)
 
         p(`\n// Entrypoint --------------------------`)
         p(`export class Comfy extends rt.ComfyBase {`)
-        for (const n of this.knownNodes) {
-            p(`    ${n}= (args: ${n}_input, uid?: rt.NodeUID) => new ${n}(this, uid, args)`)
+
+        // prettier-ignore
+        for (const n of this.nodes) {
+            p(`    ${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
+        }
+        p(`\n// misc \n`)
+        for (const n of this.nodes) {
+            p(
+                `    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`,
+            )
         }
         p(`}`)
         b.writeTS('./src/core/dsl.ts')
@@ -112,9 +117,12 @@ export class NodeDecl {
     constructor(
         //
         public name: string,
+        public category: string,
         public inputs: NodeInput[],
         public outputs: NodeOutput[],
-    ) {}
+    ) {
+        this.category = this.category.replaceAll('/', '_')
+    }
 
     codegen() {
         const b = new CodeBuffer()
