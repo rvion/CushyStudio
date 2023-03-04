@@ -1,5 +1,6 @@
-import * as rt from './runtime'
+// FILE GENERATED: do not edit. Changes made manually will be overwritten.
 
+import * as rt from './runtime'
 // TYPES -------------------------------
 type MODEL = rt.NodeOutput<'MODEL'>
 type INT = number
@@ -15,21 +16,21 @@ type CONTROL_NET = rt.NodeOutput<'CONTROL_NET'>
 
 // ENUMS -------------------------------
 type enum_KSampler_sampler_name =
+    | 'ddim'
+    | 'sample_dpm_2'
+    | 'sample_dpm_2_ancestral'
+    | 'sample_dpm_adaptive'
+    | 'sample_dpm_fast'
+    | 'sample_dpmpp_2m'
+    | 'sample_dpmpp_2s_ancestral'
+    | 'sample_dpmpp_sde'
     | 'sample_euler'
     | 'sample_euler_ancestral'
     | 'sample_heun'
-    | 'sample_dpm_2'
-    | 'sample_dpm_2_ancestral'
     | 'sample_lms'
-    | 'sample_dpm_fast'
-    | 'sample_dpm_adaptive'
-    | 'sample_dpmpp_2s_ancestral'
-    | 'sample_dpmpp_sde'
-    | 'sample_dpmpp_2m'
-    | 'ddim'
     | 'uni_pc'
     | 'uni_pc_bh2'
-type enum_KSampler_scheduler = 'karras' | 'normal' | 'simple' | 'ddim_uniform'
+type enum_KSampler_scheduler = 'ddim_uniform' | 'karras' | 'normal' | 'simple'
 type enum_CheckpointLoader_config_name =
     | 'anything_v3.yaml'
     | 'v1-inference.yaml'
@@ -44,18 +45,17 @@ type enum_CheckpointLoader_config_name =
     | 'v2-inpainting-inference.yaml'
 type enum_CheckpointLoader_ckpt_name = 'AbyssOrangeMix2_hard.safetensors' | 'v1-5-pruned-emaonly.ckpt'
 type enum_VAELoader_vae_name = 'vae-ft-mse-840000-ema-pruned.safetensors'
-type enum_LatentUpscale_upscale_method = 'nearest-exact' | 'bilinear' | 'area'
-type enum_LatentUpscale_crop = 'disabled' | 'center'
+type enum_LatentUpscale_upscale_method = 'area' | 'bilinear' | 'nearest-exact'
+type enum_LatentUpscale_crop = 'center' | 'disabled'
 type enum_LoadImage_image =
     | '4PGjFvX.png'
     | 'Fp2S_heacAErVip.webp'
     | 'example.png'
     | 'testcnet.jfif'
     | 'workflow.json'
-type enum_LoadImageMask_channel = 'alpha' | 'red' | 'green' | 'blue'
-type enum_KSamplerAdvanced_add_noise = 'enable' | 'disable'
-type enum_KSamplerAdvanced_return_with_leftover_noise = 'disable' | 'enable'
-type enum_LatentRotate_rotation = 'none' | '90 degrees' | '180 degrees' | '270 degrees'
+type enum_LoadImageMask_channel = 'alpha' | 'blue' | 'green' | 'red'
+type enum_KSamplerAdvanced_add_noise = 'disable' | 'enable'
+type enum_LatentRotate_rotation = '180 degrees' | '270 degrees' | '90 degrees' | 'none'
 type enum_LatentFlip_flip_method = 'x-axis: vertically' | 'y-axis: horizontally'
 type enum_LoraLoader_lora_name = 'charturnerbetaLora_charturnbetalora.safetensors'
 type enum_CLIPLoader_clip_name = never
@@ -97,18 +97,12 @@ export type KSampler_input = {
 export class CheckpointLoader extends rt.ComfyNode<CheckpointLoader_input> {
     static inputs = [
         { name: 'config_name', type: 'enum_CheckpointLoader_config_name' },
-        {
-            name: 'ckpt_name',
-            type: 'enum_CheckpointLoader_ckpt_name',
-        },
+        { name: 'ckpt_name', type: 'enum_CheckpointLoader_ckpt_name' },
     ]
     static outputs = [
         { type: 'MODEL', name: 'MODEL' },
         { type: 'CLIP', name: 'CLIP' },
-        {
-            type: 'VAE',
-            name: 'VAE',
-        },
+        { type: 'VAE', name: 'VAE' },
     ]
     MODEL = new rt.NodeOutput<'MODEL'>(this, 0, 'MODEL')
     CLIP = new rt.NodeOutput<'CLIP'>(this, 1, 'CLIP')
@@ -123,10 +117,7 @@ export type CheckpointLoader_input = {
 export class CLIPTextEncode extends rt.ComfyNode<CLIPTextEncode_input> {
     static inputs = [
         { name: 'text', type: 'STRING', opts: { multiline: true, dynamic_prompt: true } },
-        {
-            name: 'clip',
-            type: 'CLIP',
-        },
+        { name: 'clip', type: 'CLIP' },
     ]
     static outputs = [{ type: 'CONDITIONING', name: 'CONDITIONING' }]
     CONDITIONING = new rt.NodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
@@ -169,10 +160,7 @@ export class VAEEncodeForInpaint extends rt.ComfyNode<VAEEncodeForInpaint_input>
     static inputs = [
         { name: 'pixels', type: 'IMAGE' },
         { name: 'vae', type: 'VAE' },
-        {
-            name: 'mask',
-            type: 'MASK',
-        },
+        { name: 'mask', type: 'MASK' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
     LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
@@ -233,11 +221,7 @@ export type LatentUpscale_input = {
 export class SaveImage extends rt.ComfyNode<SaveImage_input> {
     static inputs = [
         { name: 'images', type: 'IMAGE' },
-        {
-            name: 'filename_prefix',
-            type: 'STRING',
-            opts: { default: 'ComfyUI' },
-        },
+        { name: 'filename_prefix', type: 'STRING', opts: { default: 'ComfyUI' } },
     ]
     static outputs = []
 }
@@ -260,10 +244,7 @@ export type LoadImage_input = {
 export class LoadImageMask extends rt.ComfyNode<LoadImageMask_input> {
     static inputs = [
         { name: 'image', type: 'enum_LoadImage_image' },
-        {
-            name: 'channel',
-            type: 'enum_LoadImageMask_channel',
-        },
+        { name: 'channel', type: 'enum_LoadImageMask_channel' },
     ]
     static outputs = [{ type: 'MASK', name: 'MASK' }]
     MASK = new rt.NodeOutput<'MASK'>(this, 0, 'MASK')
@@ -307,10 +288,7 @@ export type ImageInvert_input = {
 export class ConditioningCombine extends rt.ComfyNode<ConditioningCombine_input> {
     static inputs = [
         { name: 'conditioning_1', type: 'CONDITIONING' },
-        {
-            name: 'conditioning_2',
-            type: 'CONDITIONING',
-        },
+        { name: 'conditioning_2', type: 'CONDITIONING' },
     ]
     static outputs = [{ type: 'CONDITIONING', name: 'CONDITIONING' }]
     CONDITIONING = new rt.NodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
@@ -357,7 +335,7 @@ export class KSamplerAdvanced extends rt.ComfyNode<KSamplerAdvanced_input> {
         { name: 'latent_image', type: 'LATENT' },
         { name: 'start_at_step', type: 'INT', opts: { default: 0, min: 0, max: 10000 } },
         { name: 'end_at_step', type: 'INT', opts: { default: 10000, min: 0, max: 10000 } },
-        { name: 'return_with_leftover_noise', type: 'enum_KSamplerAdvanced_return_with_leftover_noise' },
+        { name: 'return_with_leftover_noise', type: 'enum_KSamplerAdvanced_add_noise' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
     LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
@@ -375,7 +353,7 @@ export type KSamplerAdvanced_input = {
     latent_image: LATENT
     start_at_step: INT
     end_at_step: INT
-    return_with_leftover_noise: enum_KSamplerAdvanced_return_with_leftover_noise
+    return_with_leftover_noise: enum_KSamplerAdvanced_add_noise
 }
 
 // SetLatentNoiseMask -------------------------------
@@ -416,10 +394,7 @@ export type LatentComposite_input = {
 export class LatentRotate extends rt.ComfyNode<LatentRotate_input> {
     static inputs = [
         { name: 'samples', type: 'LATENT' },
-        {
-            name: 'rotation',
-            type: 'enum_LatentRotate_rotation',
-        },
+        { name: 'rotation', type: 'enum_LatentRotate_rotation' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
     LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
@@ -433,10 +408,7 @@ export type LatentRotate_input = {
 export class LatentFlip extends rt.ComfyNode<LatentFlip_input> {
     static inputs = [
         { name: 'samples', type: 'LATENT' },
-        {
-            name: 'flip_method',
-            type: 'enum_LatentFlip_flip_method',
-        },
+        { name: 'flip_method', type: 'enum_LatentFlip_flip_method' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
     LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
@@ -494,11 +466,7 @@ export type LoraLoader_input = {
 export class CLIPLoader extends rt.ComfyNode<CLIPLoader_input> {
     static inputs = [
         { name: 'clip_name', type: 'enum_CLIPLoader_clip_name' },
-        {
-            name: 'stop_at_clip_layer',
-            type: 'INT',
-            opts: { default: -1, min: -24, max: -1, step: 1 },
-        },
+        { name: 'stop_at_clip_layer', type: 'INT', opts: { default: -1, min: -24, max: -1, step: 1 } },
     ]
     static outputs = [{ type: 'CLIP', name: 'CLIP' }]
     CLIP = new rt.NodeOutput<'CLIP'>(this, 0, 'CLIP')
@@ -540,10 +508,7 @@ export type ControlNetLoader_input = {
 export class DiffControlNetLoader extends rt.ComfyNode<DiffControlNetLoader_input> {
     static inputs = [
         { name: 'model', type: 'MODEL' },
-        {
-            name: 'control_net_name',
-            type: 'enum_ControlNetLoader_control_net_name',
-        },
+        { name: 'control_net_name', type: 'enum_ControlNetLoader_control_net_name' },
     ]
     static outputs = [{ type: 'CONTROL_NET', name: 'CONTROL_NET' }]
     CONTROL_NET = new rt.NodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')

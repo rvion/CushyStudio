@@ -76,7 +76,7 @@ export class MAIN {
     codegen = (): void => {
         const b = new CodeBuffer()
         const p = b.w
-        p(`import * as rt from './runtime.ts'`)
+        p(`import * as rt from './runtime'`)
 
         p(`// TYPES -------------------------------`)
         for (const t of this.knownTypes.values()) {
@@ -104,7 +104,7 @@ export class MAIN {
             p(`    ${n}= (args: ${n}_input, uid?: rt.NodeUID) => new ${n}(this, uid, args)`)
         }
         p(`}`)
-        b.writeTS('./src/2-lib/builder.ts')
+        b.writeTS('./src/lib/builder.ts')
     }
 }
 
