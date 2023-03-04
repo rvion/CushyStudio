@@ -10,7 +10,7 @@
                     {
                         "default": 0,
                         "min": 0,
-                        "max": 18446744073709551615
+                        "max": 18446744073709552000
                     }
                 ],
                 "steps": [
@@ -24,24 +24,24 @@
                 "cfg": [
                     "FLOAT",
                     {
-                        "default": 8.0,
-                        "min": 0.0,
-                        "max": 100.0
+                        "default": 8,
+                        "min": 0,
+                        "max": 100
                     }
                 ],
                 "sampler_name": [
                     [
-                        "sample_euler",
-                        "sample_euler_ancestral",
-                        "sample_heun",
-                        "sample_dpm_2",
-                        "sample_dpm_2_ancestral",
-                        "sample_lms",
-                        "sample_dpm_fast",
-                        "sample_dpm_adaptive",
-                        "sample_dpmpp_2s_ancestral",
-                        "sample_dpmpp_sde",
-                        "sample_dpmpp_2m",
+                        "euler",
+                        "euler_ancestral",
+                        "heun",
+                        "dpm_2",
+                        "dpm_2_ancestral",
+                        "lms",
+                        "dpm_fast",
+                        "dpm_adaptive",
+                        "dpmpp_2s_ancestral",
+                        "dpmpp_sde",
+                        "dpmpp_2m",
                         "ddim",
                         "uni_pc",
                         "uni_pc_bh2"
@@ -67,9 +67,9 @@
                 "denoise": [
                     "FLOAT",
                     {
-                        "default": 1.0,
-                        "min": 0.0,
-                        "max": 1.0,
+                        "default": 1,
+                        "min": 0,
+                        "max": 1,
                         "step": 0.01
                     }
                 ]
@@ -117,6 +117,26 @@
         "description": "",
         "category": "loaders"
     },
+    "CheckpointLoaderSimple": {
+        "input": {
+            "required": {
+                "ckpt_name": [
+                    [
+                        "AbyssOrangeMix2_hard.safetensors",
+                        "v1-5-pruned-emaonly.ckpt"
+                    ]
+                ]
+            }
+        },
+        "output": [
+            "MODEL",
+            "CLIP",
+            "VAE"
+        ],
+        "name": "CheckpointLoaderSimple",
+        "description": "",
+        "category": "loaders"
+    },
     "CLIPTextEncode": {
         "input": {
             "required": {
@@ -136,6 +156,30 @@
             "CONDITIONING"
         ],
         "name": "CLIPTextEncode",
+        "description": "",
+        "category": "conditioning"
+    },
+    "CLIPSetLastLayer": {
+        "input": {
+            "required": {
+                "clip": [
+                    "CLIP"
+                ],
+                "stop_at_clip_layer": [
+                    "INT",
+                    {
+                        "default": -1,
+                        "min": -24,
+                        "max": -1,
+                        "step": 1
+                    }
+                ]
+            }
+        },
+        "output": [
+            "CLIP"
+        ],
+        "name": "CLIPSetLastLayer",
         "description": "",
         "category": "conditioning"
     },
@@ -325,11 +369,7 @@
             "required": {
                 "image": [
                     [
-                        "4PGjFvX.png",
-                        "Fp2S_heacAErVip.webp",
-                        "example.png",
-                        "testcnet.jfif",
-                        "workflow.json"
+                        "example.png"
                     ]
                 ]
             }
@@ -346,11 +386,7 @@
             "required": {
                 "image": [
                     [
-                        "4PGjFvX.png",
-                        "Fp2S_heacAErVip.webp",
-                        "example.png",
-                        "testcnet.jfif",
-                        "workflow.json"
+                        "example.png"
                     ]
                 ],
                 "channel": [
@@ -494,9 +530,9 @@
                 "strength": [
                     "FLOAT",
                     {
-                        "default": 1.0,
-                        "min": 0.0,
-                        "max": 10.0,
+                        "default": 1,
+                        "min": 0,
+                        "max": 10,
                         "step": 0.01
                     }
                 ]
@@ -526,7 +562,7 @@
                     {
                         "default": 0,
                         "min": 0,
-                        "max": 18446744073709551615
+                        "max": 18446744073709552000
                     }
                 ],
                 "steps": [
@@ -540,24 +576,24 @@
                 "cfg": [
                     "FLOAT",
                     {
-                        "default": 8.0,
-                        "min": 0.0,
-                        "max": 100.0
+                        "default": 8,
+                        "min": 0,
+                        "max": 100
                     }
                 ],
                 "sampler_name": [
                     [
-                        "sample_euler",
-                        "sample_euler_ancestral",
-                        "sample_heun",
-                        "sample_dpm_2",
-                        "sample_dpm_2_ancestral",
-                        "sample_lms",
-                        "sample_dpm_fast",
-                        "sample_dpm_adaptive",
-                        "sample_dpmpp_2s_ancestral",
-                        "sample_dpmpp_sde",
-                        "sample_dpmpp_2m",
+                        "euler",
+                        "euler_ancestral",
+                        "heun",
+                        "dpm_2",
+                        "dpm_2_ancestral",
+                        "lms",
+                        "dpm_fast",
+                        "dpm_adaptive",
+                        "dpmpp_2s_ancestral",
+                        "dpmpp_sde",
+                        "dpmpp_2m",
                         "ddim",
                         "uni_pc",
                         "uni_pc_bh2"
@@ -779,25 +815,23 @@
                     "CLIP"
                 ],
                 "lora_name": [
-                    [
-                        "charturnerbetaLora_charturnbetalora.safetensors"
-                    ]
+                    []
                 ],
                 "strength_model": [
                     "FLOAT",
                     {
-                        "default": 1.0,
-                        "min": 0.0,
-                        "max": 10.0,
+                        "default": 1,
+                        "min": 0,
+                        "max": 10,
                         "step": 0.01
                     }
                 ],
                 "strength_clip": [
                     "FLOAT",
                     {
-                        "default": 1.0,
-                        "min": 0.0,
-                        "max": 10.0,
+                        "default": 1,
+                        "min": 0,
+                        "max": 10,
                         "step": 0.01
                     }
                 ]
@@ -816,15 +850,6 @@
             "required": {
                 "clip_name": [
                     []
-                ],
-                "stop_at_clip_layer": [
-                    "INT",
-                    {
-                        "default": -1,
-                        "min": -24,
-                        "max": -1,
-                        "step": 1
-                    }
                 ]
             }
         },
@@ -850,9 +875,9 @@
                 "strength": [
                     "FLOAT",
                     {
-                        "default": 1.0,
-                        "min": 0.0,
-                        "max": 10.0,
+                        "default": 1,
+                        "min": 0,
+                        "max": 10,
                         "step": 0.01
                     }
                 ]
@@ -869,9 +894,7 @@
         "input": {
             "required": {
                 "control_net_name": [
-                    [
-                        "controlnetPreTrained_openposeV10.safetensors"
-                    ]
+                    []
                 ]
             }
         },
@@ -889,9 +912,7 @@
                     "MODEL"
                 ],
                 "control_net_name": [
-                    [
-                        "controlnetPreTrained_openposeV10.safetensors"
-                    ]
+                    []
                 ]
             }
         },

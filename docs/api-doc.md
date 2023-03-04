@@ -2,10 +2,9 @@
 
 ## Misc intersting comfyUI urls
 
-- http://127.0.0.1:8188/object_info
-- http://127.0.0.1:8188/history
-- http://127.0.0.1:8188/queue
-
+-   http://192.168.1.19:8188/object_info
+-   http://192.168.1.19:8188/history
+-   http://192.168.1.19:8188/queue
 
 ```sh
 curl http://$SERVER_IP/object_info
