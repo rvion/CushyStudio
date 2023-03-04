@@ -16,17 +16,17 @@ type CONTROL_NET = rt.NodeOutput<'CONTROL_NET'>
 // ENUMS -------------------------------
 type enum_KSampler_sampler_name =
     | 'ddim'
-    | 'sample_dpm_2'
-    | 'sample_dpm_2_ancestral'
-    | 'sample_dpm_adaptive'
-    | 'sample_dpm_fast'
-    | 'sample_dpmpp_2m'
-    | 'sample_dpmpp_2s_ancestral'
-    | 'sample_dpmpp_sde'
-    | 'sample_euler'
-    | 'sample_euler_ancestral'
-    | 'sample_heun'
-    | 'sample_lms'
+    | 'dpm_2'
+    | 'dpm_2_ancestral'
+    | 'dpm_adaptive'
+    | 'dpm_fast'
+    | 'dpmpp_2m'
+    | 'dpmpp_2s_ancestral'
+    | 'dpmpp_sde'
+    | 'euler'
+    | 'euler_ancestral'
+    | 'heun'
+    | 'lms'
     | 'uni_pc'
     | 'uni_pc_bh2'
 type enum_KSampler_scheduler = 'ddim_uniform' | 'karras' | 'normal' | 'simple'
@@ -46,19 +46,12 @@ type enum_CheckpointLoader_ckpt_name = 'AbyssOrangeMix2_hard.safetensors' | 'v1-
 type enum_VAELoader_vae_name = 'vae-ft-mse-840000-ema-pruned.safetensors'
 type enum_LatentUpscale_upscale_method = 'area' | 'bilinear' | 'nearest-exact'
 type enum_LatentUpscale_crop = 'center' | 'disabled'
-type enum_LoadImage_image =
-    | '4PGjFvX.png'
-    | 'Fp2S_heacAErVip.webp'
-    | 'example.png'
-    | 'testcnet.jfif'
-    | 'workflow.json'
+type enum_LoadImage_image = 'example.png'
 type enum_LoadImageMask_channel = 'alpha' | 'blue' | 'green' | 'red'
 type enum_KSamplerAdvanced_add_noise = 'disable' | 'enable'
 type enum_LatentRotate_rotation = '180 degrees' | '270 degrees' | '90 degrees' | 'none'
 type enum_LatentFlip_flip_method = 'x-axis: vertically' | 'y-axis: horizontally'
-type enum_LoraLoader_lora_name = 'charturnerbetaLora_charturnbetalora.safetensors'
-type enum_CLIPLoader_clip_name = never
-type enum_ControlNetLoader_control_net_name = 'controlnetPreTrained_openposeV10.safetensors'
+type enum_LoraLoader_lora_name = never
 
 // NODES -------------------------------
 
@@ -112,6 +105,22 @@ export type CheckpointLoader_input = {
     ckpt_name: enum_CheckpointLoader_ckpt_name
 }
 
+// CheckpointLoaderSimple -------------------------------
+export class CheckpointLoaderSimple extends rt.ComfyNode<CheckpointLoaderSimple_input> {
+    static inputs = [{ name: 'ckpt_name', type: 'enum_CheckpointLoader_ckpt_name' }]
+    static outputs = [
+        { type: 'MODEL', name: 'MODEL' },
+        { type: 'CLIP', name: 'CLIP' },
+        { type: 'VAE', name: 'VAE' },
+    ]
+    MODEL = new rt.NodeOutput<'MODEL'>(this, 0, 'MODEL')
+    CLIP = new rt.NodeOutput<'CLIP'>(this, 1, 'CLIP')
+    VAE = new rt.NodeOutput<'VAE'>(this, 2, 'VAE')
+}
+export type CheckpointLoaderSimple_input = {
+    ckpt_name: enum_CheckpointLoader_ckpt_name
+}
+
 // CLIPTextEncode -------------------------------
 export class CLIPTextEncode extends rt.ComfyNode<CLIPTextEncode_input> {
     static inputs = [
@@ -124,6 +133,20 @@ export class CLIPTextEncode extends rt.ComfyNode<CLIPTextEncode_input> {
 export type CLIPTextEncode_input = {
     text: STRING
     clip: CLIP
+}
+
+// CLIPSetLastLayer -------------------------------
+export class CLIPSetLastLayer extends rt.ComfyNode<CLIPSetLastLayer_input> {
+    static inputs = [
+        { name: 'clip', type: 'CLIP' },
+        { name: 'stop_at_clip_layer', type: 'INT', opts: { default: -1, min: -24, max: -1, step: 1 } },
+    ]
+    static outputs = [{ type: 'CLIP', name: 'CLIP' }]
+    CLIP = new rt.NodeOutput<'CLIP'>(this, 0, 'CLIP')
+}
+export type CLIPSetLastLayer_input = {
+    clip: CLIP
+    stop_at_clip_layer: INT
 }
 
 // VAEDecode -------------------------------
@@ -463,16 +486,12 @@ export type LoraLoader_input = {
 
 // CLIPLoader -------------------------------
 export class CLIPLoader extends rt.ComfyNode<CLIPLoader_input> {
-    static inputs = [
-        { name: 'clip_name', type: 'enum_CLIPLoader_clip_name' },
-        { name: 'stop_at_clip_layer', type: 'INT', opts: { default: -1, min: -24, max: -1, step: 1 } },
-    ]
+    static inputs = [{ name: 'clip_name', type: 'enum_LoraLoader_lora_name' }]
     static outputs = [{ type: 'CLIP', name: 'CLIP' }]
     CLIP = new rt.NodeOutput<'CLIP'>(this, 0, 'CLIP')
 }
 export type CLIPLoader_input = {
-    clip_name: enum_CLIPLoader_clip_name
-    stop_at_clip_layer: INT
+    clip_name: enum_LoraLoader_lora_name
 }
 
 // ControlNetApply -------------------------------
@@ -495,36 +514,36 @@ export type ControlNetApply_input = {
 
 // ControlNetLoader -------------------------------
 export class ControlNetLoader extends rt.ComfyNode<ControlNetLoader_input> {
-    static inputs = [{ name: 'control_net_name', type: 'enum_ControlNetLoader_control_net_name' }]
+    static inputs = [{ name: 'control_net_name', type: 'enum_LoraLoader_lora_name' }]
     static outputs = [{ type: 'CONTROL_NET', name: 'CONTROL_NET' }]
     CONTROL_NET = new rt.NodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
 }
 export type ControlNetLoader_input = {
-    control_net_name: enum_ControlNetLoader_control_net_name
+    control_net_name: enum_LoraLoader_lora_name
 }
 
 // DiffControlNetLoader -------------------------------
 export class DiffControlNetLoader extends rt.ComfyNode<DiffControlNetLoader_input> {
     static inputs = [
         { name: 'model', type: 'MODEL' },
-        { name: 'control_net_name', type: 'enum_ControlNetLoader_control_net_name' },
+        { name: 'control_net_name', type: 'enum_LoraLoader_lora_name' },
     ]
     static outputs = [{ type: 'CONTROL_NET', name: 'CONTROL_NET' }]
     CONTROL_NET = new rt.NodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
 }
 export type DiffControlNetLoader_input = {
     model: MODEL
-    control_net_name: enum_ControlNetLoader_control_net_name
+    control_net_name: enum_LoraLoader_lora_name
 }
 
 // T2IAdapterLoader -------------------------------
 export class T2IAdapterLoader extends rt.ComfyNode<T2IAdapterLoader_input> {
-    static inputs = [{ name: 't2i_adapter_name', type: 'enum_CLIPLoader_clip_name' }]
+    static inputs = [{ name: 't2i_adapter_name', type: 'enum_LoraLoader_lora_name' }]
     static outputs = [{ type: 'CONTROL_NET', name: 'CONTROL_NET' }]
     CONTROL_NET = new rt.NodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
 }
 export type T2IAdapterLoader_input = {
-    t2i_adapter_name: enum_CLIPLoader_clip_name
+    t2i_adapter_name: enum_LoraLoader_lora_name
 }
 
 // VAEDecodeTiled -------------------------------
@@ -545,7 +564,9 @@ export type VAEDecodeTiled_input = {
 export const nodes = {
     KSampler,
     CheckpointLoader,
+    CheckpointLoaderSimple,
     CLIPTextEncode,
+    CLIPSetLastLayer,
     VAEDecode,
     VAEEncode,
     VAEEncodeForInpaint,
@@ -580,7 +601,11 @@ export class Comfy extends rt.ComfyBase {
     KSampler = (args: KSampler_input, uid?: rt.NodeUID) => new KSampler(this, uid, args)
     CheckpointLoader = (args: CheckpointLoader_input, uid?: rt.NodeUID) =>
         new CheckpointLoader(this, uid, args)
+    CheckpointLoaderSimple = (args: CheckpointLoaderSimple_input, uid?: rt.NodeUID) =>
+        new CheckpointLoaderSimple(this, uid, args)
     CLIPTextEncode = (args: CLIPTextEncode_input, uid?: rt.NodeUID) => new CLIPTextEncode(this, uid, args)
+    CLIPSetLastLayer = (args: CLIPSetLastLayer_input, uid?: rt.NodeUID) =>
+        new CLIPSetLastLayer(this, uid, args)
     VAEDecode = (args: VAEDecode_input, uid?: rt.NodeUID) => new VAEDecode(this, uid, args)
     VAEEncode = (args: VAEEncode_input, uid?: rt.NodeUID) => new VAEEncode(this, uid, args)
     VAEEncodeForInpaint = (args: VAEEncodeForInpaint_input, uid?: rt.NodeUID) =>
