@@ -25,7 +25,7 @@ const sortedNodes = toposort(ids, edges)
 const b = new CodeBuffer()
 const p = b.w
 const pi = b.append
-p(`import {Comfy} from '../2-lib/builder.ts'`)
+p(`import { Comfy } from '../core/dsl'\n`)
 p(`export const demo = new Comfy()`)
 
 // const nodeCounter: { [nodeType: string]: number } = {}
@@ -55,4 +55,4 @@ for (const nodeID of sortedNodes) {
     p(`}, '${nodeID}')`)
 }
 
-b.writeTS('./src/loader/entry.ts')
+b.writeTS('./src/compiler/entry.ts')
