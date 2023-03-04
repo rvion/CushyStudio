@@ -1,6 +1,5 @@
-// FILE GENERATED: do not edit. Changes made manually will be overwritten.
-
 import * as rt from './runtime'
+
 // TYPES -------------------------------
 type MODEL = rt.NodeOutput<'MODEL'>
 type INT = number

@@ -36,8 +36,9 @@ export class CodeBuffer {
 
     bar = (text: string) => this.w(renderBar(text, '// '))
     writeTS = (path: string) => {
-        const prefix = `// FILE GENERATED: do not edit. Changes made manually will be overwritten.\n\n`
-        const outPretty = prefix + prettify(this.content)
+        // const prefix = `// FILE GENERATED: do not edit. Changes made manually will be overwritten.\n\n`
+        // const outPretty = prefix + prettify(this.content)
+        const outPretty = prettify(this.content)
         writeFileSync(path, outPretty, 'utf-8')
     }
 }

@@ -1,4 +1,4 @@
-import { nodes, NodeType } from '../lib/builder'
+import { nodes, NodeType } from '../core/dsl'
 import { TEdge, toposort } from '../utils/toposort'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
 

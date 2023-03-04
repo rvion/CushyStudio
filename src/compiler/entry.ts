@@ -1,4 +1,5 @@
-import { Comfy } from '../lib/builder'
+import { Comfy } from '../core/dsl'
+
 export const demo = new Comfy()
 export const CheckpointLoader_4 = demo.CheckpointLoader(
     { config_name: 'v1-inference.yaml', ckpt_name: 'v1-5-pruned-emaonly.ckpt' },

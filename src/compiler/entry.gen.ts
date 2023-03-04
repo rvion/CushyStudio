@@ -1,5 +1,5 @@
 import flow from './entry.in.json' assert { type: 'json' }
-import { nodes, NodeType } from '../lib/builder'
+import { nodes, NodeType } from '../core/dsl'
 import { TEdge, toposort } from '../utils/toposort'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { CodeBuffer } from '../generator/CodeBuffer'
@@ -55,4 +55,4 @@ for (const nodeID of sortedNodes) {
     p(`}, '${nodeID}')`)
 }
 
-b.writeTS('./src/loader/b.ts')
+b.writeTS('./src/loader/entry.ts')
