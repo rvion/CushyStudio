@@ -91,6 +91,11 @@ I’ve found it to be the easiest way to write really high performance programs 
 It provides GPU accelerated functionality for common operations in deep neural nets.
 You could use it directly yourself, but other libraries like TensorFlow already have built abstractions backed by cuDNN.
 
+-----------
+
+- copy "C:\Program Files\NVIDIA\CUDNN\v8.8\bin"
+- into "C:\Users\user\dev\intuition\venv\Lib\site-packages\torch\lib"
+
 ------------
 
 https://gnuwin32.sourceforge.net/packages/wget.htm
