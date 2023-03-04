@@ -1,11 +1,5 @@
 {
-  "[typescript]": {
-    "editor.defaultFormatter": "denoland.vscode-deno"
-  },
   "editor.formatOnSave": true,
-  "deno.enable": true,
-  "deno.unstable": true,
-  "deno.lint": false,
   "peacock.color": "#2c0432",
   "workbench.colorCustomizations": {
     "activityBar.activeBackground": "#560861",
