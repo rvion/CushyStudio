@@ -1,1 +1,2 @@
-console.log("Deno test!");
+export const main = true
+console.log('Deno test!')

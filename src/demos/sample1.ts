@@ -1,3 +1,5 @@
+export const x = 1
+
 // import * as x from './builder.ts'
 
 // const seed = x.Seed()

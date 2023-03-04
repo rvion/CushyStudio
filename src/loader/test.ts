@@ -1,6 +1,6 @@
-import { saveJSONFile } from '../utils/saveTsFile.ts'
-import { demo } from './history-entry-as-code.ts'
+import { writeFileSync } from 'fs'
+import { demo } from './entry'
 
 console.log(demo.toJSON())
 
-saveJSONFile('./src/3-import-history/history-entry.out.json', demo)
+writeFileSync('./src/loader/entry.out.json', JSON.stringify(demo, null, 4))

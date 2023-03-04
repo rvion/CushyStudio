@@ -1,18 +1,12 @@
-import { Comfy } from '../lib/builder.ts'
+import { Comfy } from '../lib/builder'
 export const demo = new Comfy()
 export const CheckpointLoader_4 = demo.CheckpointLoader(
-    {
-        config_name: 'v1-inference.yaml',
-        ckpt_name: 'v1-5-pruned-emaonly.ckpt',
-    },
+    { config_name: 'v1-inference.yaml', ckpt_name: 'v1-5-pruned-emaonly.ckpt' },
     '4',
 )
 export const EmptyLatentImage_5 = demo.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 }, '5')
 export const CLIPTextEncode_6 = demo.CLIPTextEncode(
-    {
-        text: 'masterpiece best quality girl',
-        clip: CheckpointLoader_4.CLIP,
-    },
+    { text: 'masterpiece best quality girl', clip: CheckpointLoader_4.CLIP },
     '6',
 )
 export const CLIPTextEncode_7 = demo.CLIPTextEncode({ text: 'bad hands', clip: CheckpointLoader_4.CLIP }, '7')
