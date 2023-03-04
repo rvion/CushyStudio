@@ -9,7 +9,7 @@
         "build": "tsc && vite build",
         "preview": "vite preview",
         "js": "node --loader ts-node/esm --experimental-specifier-resolution=node --experimental-modules",
-        "dsl": "yarn js src/core/dsl.gen.ts",
+        "core": "yarn js src/core/dsl.gen.ts",
         "compile": "yarn js src/compiler/entry.gen.ts"
     },
     "dependencies": {
