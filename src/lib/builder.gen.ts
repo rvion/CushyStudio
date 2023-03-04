@@ -37,7 +37,7 @@ export class NodeDecl {
 }
 
 import * as mod from 'https://deno.land/std@0.119.0/hash/mod.ts'
-import { saveTsFile } from '../0-utils/saveTsFile.ts'
+import { saveTsFile } from '../utils/saveTsFile.ts'
 
 export class MAIN {
     knownTypes = new Set<string>()

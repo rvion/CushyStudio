@@ -1,9 +1,9 @@
-import { nodes, NodeType } from '../2-lib/builder.ts'
-import { TEdge, toposort } from '../0-utils/toposort.ts'
-import { jsEscapeStr } from '../0-utils/jsEscapeStr.ts'
+import { nodes, NodeType } from '../lib/builder.ts'
+import { TEdge, toposort } from '../utils/toposort.ts'
+import { jsEscapeStr } from '../utils/jsEscapeStr.ts'
 
 import flow from './history-entry.json' assert { type: 'json' }
-import { saveTsFile } from '../0-utils/saveTsFile.ts'
+import { saveTsFile } from '../utils/saveTsFile.ts'
 
 const flowNodes = Object.entries(flow)
 const ids = Object.keys(flow)
@@ -24,8 +24,8 @@ for (const [id, node] of flowNodes) {
 console.log(`1. toposrt (${edges.map((e) => e.join('->')).join(',')})`)
 const sortedNodes = toposort(ids, edges)
 let out: string = ''
-const p = (text: string) => out += text + '\n'
-const pi = (text: string) => out += text
+const p = (text: string) => (out += text + '\n')
+const pi = (text: string) => (out += text)
 p(`import {Comfy} from '../2-lib/builder.ts'`)
 p(`export const demo = new Comfy()`)
 
