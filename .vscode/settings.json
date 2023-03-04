@@ -20,5 +20,6 @@
         "titleBar.activeForeground": "#e7e7e7",
         "titleBar.inactiveBackground": "#2c043299",
         "titleBar.inactiveForeground": "#e7e7e799"
-    }
+    },
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true
 }
