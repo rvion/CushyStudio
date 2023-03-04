@@ -1,7 +1,5 @@
 import { Comfy } from '../2-lib/builder.ts'
-
 export const demo = new Comfy()
-
 export const CheckpointLoader_4 = demo.CheckpointLoader({
     config_name: 'v1-inference.yaml',
     ckpt_name: 'v1-5-pruned-emaonly.ckpt',
