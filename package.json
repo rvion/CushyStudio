@@ -11,7 +11,8 @@
         "js": "node --loader ts-node/esm --experimental-specifier-resolution=node --experimental-modules",
         "core": "yarn js src/core/dsl.gen.ts",
         "compile": "yarn js src/compiler/entry.gen.ts",
-        "def": "yarn js src/core/nodes.fetch.ts"
+        "def": "yarn js src/core/nodes.fetch.ts",
+        "sample": "yarn js src/compiler/entry.fetch.ts"
     },
     "dependencies": {
         "cors": "^2.8.5",

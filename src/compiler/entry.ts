@@ -16,7 +16,7 @@ export const KSampler_3 = demo.KSampler(
         seed: 8566257,
         steps: 20,
         cfg: 8,
-        sampler_name: 'sample_euler',
+        sampler_name: 'euler',
         scheduler: 'normal',
         denoise: 1,
         model: CheckpointLoader_4.MODEL,
