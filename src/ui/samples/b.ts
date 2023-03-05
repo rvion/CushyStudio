@@ -4,9 +4,11 @@ type NodeUID = string
 class ComfyBase {}
 class ComfyNode<T>{
     constructor(a:any,b:any,c:any){}
+    a="ok"
 }
 class NodeOutput<T> {
     constructor(a:any,b:any,c:any){}
+    a=1
 }
 
 // TYPES -------------------------------

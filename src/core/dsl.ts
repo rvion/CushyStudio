@@ -105,9 +105,9 @@ export class KSampler extends ComfyNode.ComfyNode<KSampler_input> {
 }
 export type KSampler_input = {
     model: MODEL | HasSingle_MODEL
-    seed: INT | HasSingle_INT
-    steps: INT | HasSingle_INT
-    cfg: FLOAT | HasSingle_FLOAT
+    seed: INT
+    steps: INT
+    cfg: FLOAT
     sampler_name: enum_KSampler_sampler_name | HasSingle_enum_KSampler_sampler_name
     scheduler: enum_KSampler_scheduler | HasSingle_enum_KSampler_scheduler
     positive: CONDITIONING | HasSingle_CONDITIONING

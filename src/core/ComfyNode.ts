@@ -1,11 +1,12 @@
-import type { ComfyNodeJSON } from './ComfyNodeJSON'
 import type { NodeProgress } from '../client/api'
+import type { ComfyNodeJSON } from './ComfyNodeJSON'
 import type { NodeInput } from './dsl.gen'
 
-import { NodeOutput } from './NodeOutput'
-import { ComfyBase } from './ComfyBase'
+import { makeObservable, observable } from 'mobx'
 import { sleep } from '../utils/sleep'
+import { ComfyBase } from './ComfyBase'
 import { getUID } from './ComfyNodeUID'
+import { NodeOutput } from './NodeOutput'
 
 export abstract class ComfyNode<ComfyNode_input extends object> {
     artifacts: { images: string[] }[] = []
@@ -14,7 +15,7 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
     get allArtifactsImgs(): string[] {
         return this.artifacts //
             .flatMap((a) => a.images)
-            .map((i) => `${this.comfy.serverHost}/view/${i}`)
+            .map((i) => `http://${this.comfy.serverHost}/view/${i}`)
     }
 
     async get() {
@@ -29,6 +30,7 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
         public inputs: ComfyNode_input,
     ) {
         this.comfy.nodes.set(this.uid.toString(), this)
+        makeObservable(this, { artifacts: observable })
     }
 
     toJSON(): ComfyNodeJSON {
