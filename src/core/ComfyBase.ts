@@ -1,4 +1,4 @@
-import WebSocket, { MessageEvent } from 'ws'
+import * as WS from 'ws'
 import { ApiPromptInput, ComfyStatus, WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from '../client/api'
 import { ComfyNode, NodeUID } from './runtime'
 
@@ -10,10 +10,12 @@ export abstract class ComfyBase {
     nodes = new Map<string, ComfyNode<any>>()
 
     constructor() {
-        const ws = new WebSocket(`ws://${this.serverHost}/ws`)
+        const ws = window //
+            ? new WebSocket(`ws://${this.serverHost}/ws`)
+            : new WS.WebSocket(`ws://${this.serverHost}/ws`)
         ws.binaryType = 'arraybuffer'
         ws.onopen = () => console.log('connected')
-        ws.onmessage = (e: MessageEvent) => {
+        ws.onmessage = (e: WS.MessageEvent) => {
             const msg: WsMsg = JSON.parse(e.data as any)
             // console.log('🟢 msg', msg)
             if (msg.type === 'status') return this.onStatus(msg)
