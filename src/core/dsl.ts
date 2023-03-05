@@ -1,17 +1,19 @@
 import * as rt from './runtime'
+import * as ComfyBase from './ComfyBase'
+import { NodeOutput } from './NodeOutput'
 
 // TYPES -------------------------------
-type MODEL = rt.NodeOutput<'MODEL'>
+type MODEL = NodeOutput<'MODEL'>
 type INT = number
 type FLOAT = number
-type CONDITIONING = rt.NodeOutput<'CONDITIONING'>
-type LATENT = rt.NodeOutput<'LATENT'>
+type CONDITIONING = NodeOutput<'CONDITIONING'>
+type LATENT = NodeOutput<'LATENT'>
 type STRING = string
-type CLIP = rt.NodeOutput<'CLIP'>
-type VAE = rt.NodeOutput<'VAE'>
-type IMAGE = rt.NodeOutput<'IMAGE'>
-type MASK = rt.NodeOutput<'MASK'>
-type CONTROL_NET = rt.NodeOutput<'CONTROL_NET'>
+type CLIP = NodeOutput<'CLIP'>
+type VAE = NodeOutput<'VAE'>
+type IMAGE = NodeOutput<'IMAGE'>
+type MASK = NodeOutput<'MASK'>
+type CONTROL_NET = NodeOutput<'CONTROL_NET'>
 
 // ENUMS -------------------------------
 type enum_KSampler_sampler_name =
@@ -70,7 +72,7 @@ export class KSampler extends rt.ComfyNode<KSampler_input> {
         { name: 'denoise', type: 'FLOAT', opts: { default: 1, min: 0, max: 1, step: 0.01 } },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type KSampler_input = {
     model: MODEL
@@ -96,9 +98,9 @@ export class CheckpointLoader extends rt.ComfyNode<CheckpointLoader_input> {
         { type: 'CLIP', name: 'CLIP' },
         { type: 'VAE', name: 'VAE' },
     ]
-    MODEL = new rt.NodeOutput<'MODEL'>(this, 0, 'MODEL')
-    CLIP = new rt.NodeOutput<'CLIP'>(this, 1, 'CLIP')
-    VAE = new rt.NodeOutput<'VAE'>(this, 2, 'VAE')
+    MODEL = new NodeOutput<'MODEL'>(this, 0, 'MODEL')
+    CLIP = new NodeOutput<'CLIP'>(this, 1, 'CLIP')
+    VAE = new NodeOutput<'VAE'>(this, 2, 'VAE')
 }
 export type CheckpointLoader_input = {
     config_name: enum_CheckpointLoader_config_name
@@ -113,9 +115,9 @@ export class CheckpointLoaderSimple extends rt.ComfyNode<CheckpointLoaderSimple_
         { type: 'CLIP', name: 'CLIP' },
         { type: 'VAE', name: 'VAE' },
     ]
-    MODEL = new rt.NodeOutput<'MODEL'>(this, 0, 'MODEL')
-    CLIP = new rt.NodeOutput<'CLIP'>(this, 1, 'CLIP')
-    VAE = new rt.NodeOutput<'VAE'>(this, 2, 'VAE')
+    MODEL = new NodeOutput<'MODEL'>(this, 0, 'MODEL')
+    CLIP = new NodeOutput<'CLIP'>(this, 1, 'CLIP')
+    VAE = new NodeOutput<'VAE'>(this, 2, 'VAE')
 }
 export type CheckpointLoaderSimple_input = {
     ckpt_name: enum_CheckpointLoader_ckpt_name
@@ -128,7 +130,7 @@ export class CLIPTextEncode extends rt.ComfyNode<CLIPTextEncode_input> {
         { name: 'clip', type: 'CLIP' },
     ]
     static outputs = [{ type: 'CONDITIONING', name: 'CONDITIONING' }]
-    CONDITIONING = new rt.NodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
+    CONDITIONING = new NodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
 }
 export type CLIPTextEncode_input = {
     text: STRING
@@ -142,7 +144,7 @@ export class CLIPSetLastLayer extends rt.ComfyNode<CLIPSetLastLayer_input> {
         { name: 'stop_at_clip_layer', type: 'INT', opts: { default: -1, min: -24, max: -1, step: 1 } },
     ]
     static outputs = [{ type: 'CLIP', name: 'CLIP' }]
-    CLIP = new rt.NodeOutput<'CLIP'>(this, 0, 'CLIP')
+    CLIP = new NodeOutput<'CLIP'>(this, 0, 'CLIP')
 }
 export type CLIPSetLastLayer_input = {
     clip: CLIP
@@ -156,7 +158,7 @@ export class VAEDecode extends rt.ComfyNode<VAEDecode_input> {
         { name: 'vae', type: 'VAE' },
     ]
     static outputs = [{ type: 'IMAGE', name: 'IMAGE' }]
-    IMAGE = new rt.NodeOutput<'IMAGE'>(this, 0, 'IMAGE')
+    IMAGE = new NodeOutput<'IMAGE'>(this, 0, 'IMAGE')
 }
 export type VAEDecode_input = {
     samples: LATENT
@@ -170,7 +172,7 @@ export class VAEEncode extends rt.ComfyNode<VAEEncode_input> {
         { name: 'vae', type: 'VAE' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type VAEEncode_input = {
     pixels: IMAGE
@@ -185,7 +187,7 @@ export class VAEEncodeForInpaint extends rt.ComfyNode<VAEEncodeForInpaint_input>
         { name: 'mask', type: 'MASK' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type VAEEncodeForInpaint_input = {
     pixels: IMAGE
@@ -197,7 +199,7 @@ export type VAEEncodeForInpaint_input = {
 export class VAELoader extends rt.ComfyNode<VAELoader_input> {
     static inputs = [{ name: 'vae_name', type: 'enum_VAELoader_vae_name' }]
     static outputs = [{ type: 'VAE', name: 'VAE' }]
-    VAE = new rt.NodeOutput<'VAE'>(this, 0, 'VAE')
+    VAE = new NodeOutput<'VAE'>(this, 0, 'VAE')
 }
 export type VAELoader_input = {
     vae_name: enum_VAELoader_vae_name
@@ -211,7 +213,7 @@ export class EmptyLatentImage extends rt.ComfyNode<EmptyLatentImage_input> {
         { name: 'batch_size', type: 'INT', opts: { default: 1, min: 1, max: 64 } },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type EmptyLatentImage_input = {
     width: INT
@@ -229,7 +231,7 @@ export class LatentUpscale extends rt.ComfyNode<LatentUpscale_input> {
         { name: 'crop', type: 'enum_LatentUpscale_crop' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type LatentUpscale_input = {
     samples: LATENT
@@ -256,7 +258,7 @@ export type SaveImage_input = {
 export class LoadImage extends rt.ComfyNode<LoadImage_input> {
     static inputs = [{ name: 'image', type: 'enum_LoadImage_image' }]
     static outputs = [{ type: 'IMAGE', name: 'IMAGE' }]
-    IMAGE = new rt.NodeOutput<'IMAGE'>(this, 0, 'IMAGE')
+    IMAGE = new NodeOutput<'IMAGE'>(this, 0, 'IMAGE')
 }
 export type LoadImage_input = {
     image: enum_LoadImage_image
@@ -269,7 +271,7 @@ export class LoadImageMask extends rt.ComfyNode<LoadImageMask_input> {
         { name: 'channel', type: 'enum_LoadImageMask_channel' },
     ]
     static outputs = [{ type: 'MASK', name: 'MASK' }]
-    MASK = new rt.NodeOutput<'MASK'>(this, 0, 'MASK')
+    MASK = new NodeOutput<'MASK'>(this, 0, 'MASK')
 }
 export type LoadImageMask_input = {
     image: enum_LoadImage_image
@@ -286,7 +288,7 @@ export class ImageScale extends rt.ComfyNode<ImageScale_input> {
         { name: 'crop', type: 'enum_LatentUpscale_crop' },
     ]
     static outputs = [{ type: 'IMAGE', name: 'IMAGE' }]
-    IMAGE = new rt.NodeOutput<'IMAGE'>(this, 0, 'IMAGE')
+    IMAGE = new NodeOutput<'IMAGE'>(this, 0, 'IMAGE')
 }
 export type ImageScale_input = {
     image: IMAGE
@@ -300,7 +302,7 @@ export type ImageScale_input = {
 export class ImageInvert extends rt.ComfyNode<ImageInvert_input> {
     static inputs = [{ name: 'image', type: 'IMAGE' }]
     static outputs = [{ type: 'IMAGE', name: 'IMAGE' }]
-    IMAGE = new rt.NodeOutput<'IMAGE'>(this, 0, 'IMAGE')
+    IMAGE = new NodeOutput<'IMAGE'>(this, 0, 'IMAGE')
 }
 export type ImageInvert_input = {
     image: IMAGE
@@ -313,7 +315,7 @@ export class ConditioningCombine extends rt.ComfyNode<ConditioningCombine_input>
         { name: 'conditioning_2', type: 'CONDITIONING' },
     ]
     static outputs = [{ type: 'CONDITIONING', name: 'CONDITIONING' }]
-    CONDITIONING = new rt.NodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
+    CONDITIONING = new NodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
 }
 export type ConditioningCombine_input = {
     conditioning_1: CONDITIONING
@@ -331,7 +333,7 @@ export class ConditioningSetArea extends rt.ComfyNode<ConditioningSetArea_input>
         { name: 'strength', type: 'FLOAT', opts: { default: 1, min: 0, max: 10, step: 0.01 } },
     ]
     static outputs = [{ type: 'CONDITIONING', name: 'CONDITIONING' }]
-    CONDITIONING = new rt.NodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
+    CONDITIONING = new NodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
 }
 export type ConditioningSetArea_input = {
     conditioning: CONDITIONING
@@ -360,7 +362,7 @@ export class KSamplerAdvanced extends rt.ComfyNode<KSamplerAdvanced_input> {
         { name: 'return_with_leftover_noise', type: 'enum_KSamplerAdvanced_add_noise' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type KSamplerAdvanced_input = {
     model: MODEL
@@ -385,7 +387,7 @@ export class SetLatentNoiseMask extends rt.ComfyNode<SetLatentNoiseMask_input> {
         { name: 'mask', type: 'MASK' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type SetLatentNoiseMask_input = {
     samples: LATENT
@@ -402,7 +404,7 @@ export class LatentComposite extends rt.ComfyNode<LatentComposite_input> {
         { name: 'feather', type: 'INT', opts: { default: 0, min: 0, max: 4096, step: 8 } },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type LatentComposite_input = {
     samples_to: LATENT
@@ -419,7 +421,7 @@ export class LatentRotate extends rt.ComfyNode<LatentRotate_input> {
         { name: 'rotation', type: 'enum_LatentRotate_rotation' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type LatentRotate_input = {
     samples: LATENT
@@ -433,7 +435,7 @@ export class LatentFlip extends rt.ComfyNode<LatentFlip_input> {
         { name: 'flip_method', type: 'enum_LatentFlip_flip_method' },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type LatentFlip_input = {
     samples: LATENT
@@ -450,7 +452,7 @@ export class LatentCrop extends rt.ComfyNode<LatentCrop_input> {
         { name: 'y', type: 'INT', opts: { default: 0, min: 0, max: 4096, step: 8 } },
     ]
     static outputs = [{ type: 'LATENT', name: 'LATENT' }]
-    LATENT = new rt.NodeOutput<'LATENT'>(this, 0, 'LATENT')
+    LATENT = new NodeOutput<'LATENT'>(this, 0, 'LATENT')
 }
 export type LatentCrop_input = {
     samples: LATENT
@@ -473,8 +475,8 @@ export class LoraLoader extends rt.ComfyNode<LoraLoader_input> {
         { type: 'MODEL', name: 'MODEL' },
         { type: 'CLIP', name: 'CLIP' },
     ]
-    MODEL = new rt.NodeOutput<'MODEL'>(this, 0, 'MODEL')
-    CLIP = new rt.NodeOutput<'CLIP'>(this, 1, 'CLIP')
+    MODEL = new NodeOutput<'MODEL'>(this, 0, 'MODEL')
+    CLIP = new NodeOutput<'CLIP'>(this, 1, 'CLIP')
 }
 export type LoraLoader_input = {
     model: MODEL
@@ -488,7 +490,7 @@ export type LoraLoader_input = {
 export class CLIPLoader extends rt.ComfyNode<CLIPLoader_input> {
     static inputs = [{ name: 'clip_name', type: 'enum_LoraLoader_lora_name' }]
     static outputs = [{ type: 'CLIP', name: 'CLIP' }]
-    CLIP = new rt.NodeOutput<'CLIP'>(this, 0, 'CLIP')
+    CLIP = new NodeOutput<'CLIP'>(this, 0, 'CLIP')
 }
 export type CLIPLoader_input = {
     clip_name: enum_LoraLoader_lora_name
@@ -503,7 +505,7 @@ export class ControlNetApply extends rt.ComfyNode<ControlNetApply_input> {
         { name: 'strength', type: 'FLOAT', opts: { default: 1, min: 0, max: 10, step: 0.01 } },
     ]
     static outputs = [{ type: 'CONDITIONING', name: 'CONDITIONING' }]
-    CONDITIONING = new rt.NodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
+    CONDITIONING = new NodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
 }
 export type ControlNetApply_input = {
     conditioning: CONDITIONING
@@ -516,7 +518,7 @@ export type ControlNetApply_input = {
 export class ControlNetLoader extends rt.ComfyNode<ControlNetLoader_input> {
     static inputs = [{ name: 'control_net_name', type: 'enum_LoraLoader_lora_name' }]
     static outputs = [{ type: 'CONTROL_NET', name: 'CONTROL_NET' }]
-    CONTROL_NET = new rt.NodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
+    CONTROL_NET = new NodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
 }
 export type ControlNetLoader_input = {
     control_net_name: enum_LoraLoader_lora_name
@@ -529,7 +531,7 @@ export class DiffControlNetLoader extends rt.ComfyNode<DiffControlNetLoader_inpu
         { name: 'control_net_name', type: 'enum_LoraLoader_lora_name' },
     ]
     static outputs = [{ type: 'CONTROL_NET', name: 'CONTROL_NET' }]
-    CONTROL_NET = new rt.NodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
+    CONTROL_NET = new NodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
 }
 export type DiffControlNetLoader_input = {
     model: MODEL
@@ -540,7 +542,7 @@ export type DiffControlNetLoader_input = {
 export class T2IAdapterLoader extends rt.ComfyNode<T2IAdapterLoader_input> {
     static inputs = [{ name: 't2i_adapter_name', type: 'enum_LoraLoader_lora_name' }]
     static outputs = [{ type: 'CONTROL_NET', name: 'CONTROL_NET' }]
-    CONTROL_NET = new rt.NodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
+    CONTROL_NET = new NodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
 }
 export type T2IAdapterLoader_input = {
     t2i_adapter_name: enum_LoraLoader_lora_name
@@ -553,7 +555,7 @@ export class VAEDecodeTiled extends rt.ComfyNode<VAEDecodeTiled_input> {
         { name: 'vae', type: 'VAE' },
     ]
     static outputs = [{ type: 'IMAGE', name: 'IMAGE' }]
-    IMAGE = new rt.NodeOutput<'IMAGE'>(this, 0, 'IMAGE')
+    IMAGE = new NodeOutput<'IMAGE'>(this, 0, 'IMAGE')
 }
 export type VAEDecodeTiled_input = {
     samples: LATENT
@@ -597,36 +599,27 @@ export const nodes = {
 export type NodeType = keyof typeof nodes
 
 // Entrypoint --------------------------
-export class Comfy extends rt.ComfyBase {
+export class Comfy extends ComfyBase.ComfyBase {
     KSampler = (args: KSampler_input, uid?: rt.NodeUID) => new KSampler(this, uid, args)
-    CheckpointLoader = (args: CheckpointLoader_input, uid?: rt.NodeUID) =>
-        new CheckpointLoader(this, uid, args)
-    CheckpointLoaderSimple = (args: CheckpointLoaderSimple_input, uid?: rt.NodeUID) =>
-        new CheckpointLoaderSimple(this, uid, args)
+    CheckpointLoader = (args: CheckpointLoader_input, uid?: rt.NodeUID) => new CheckpointLoader(this, uid, args)
+    CheckpointLoaderSimple = (args: CheckpointLoaderSimple_input, uid?: rt.NodeUID) => new CheckpointLoaderSimple(this, uid, args)
     CLIPTextEncode = (args: CLIPTextEncode_input, uid?: rt.NodeUID) => new CLIPTextEncode(this, uid, args)
-    CLIPSetLastLayer = (args: CLIPSetLastLayer_input, uid?: rt.NodeUID) =>
-        new CLIPSetLastLayer(this, uid, args)
+    CLIPSetLastLayer = (args: CLIPSetLastLayer_input, uid?: rt.NodeUID) => new CLIPSetLastLayer(this, uid, args)
     VAEDecode = (args: VAEDecode_input, uid?: rt.NodeUID) => new VAEDecode(this, uid, args)
     VAEEncode = (args: VAEEncode_input, uid?: rt.NodeUID) => new VAEEncode(this, uid, args)
-    VAEEncodeForInpaint = (args: VAEEncodeForInpaint_input, uid?: rt.NodeUID) =>
-        new VAEEncodeForInpaint(this, uid, args)
+    VAEEncodeForInpaint = (args: VAEEncodeForInpaint_input, uid?: rt.NodeUID) => new VAEEncodeForInpaint(this, uid, args)
     VAELoader = (args: VAELoader_input, uid?: rt.NodeUID) => new VAELoader(this, uid, args)
-    EmptyLatentImage = (args: EmptyLatentImage_input, uid?: rt.NodeUID) =>
-        new EmptyLatentImage(this, uid, args)
+    EmptyLatentImage = (args: EmptyLatentImage_input, uid?: rt.NodeUID) => new EmptyLatentImage(this, uid, args)
     LatentUpscale = (args: LatentUpscale_input, uid?: rt.NodeUID) => new LatentUpscale(this, uid, args)
     SaveImage = (args: SaveImage_input, uid?: rt.NodeUID) => new SaveImage(this, uid, args)
     LoadImage = (args: LoadImage_input, uid?: rt.NodeUID) => new LoadImage(this, uid, args)
     LoadImageMask = (args: LoadImageMask_input, uid?: rt.NodeUID) => new LoadImageMask(this, uid, args)
     ImageScale = (args: ImageScale_input, uid?: rt.NodeUID) => new ImageScale(this, uid, args)
     ImageInvert = (args: ImageInvert_input, uid?: rt.NodeUID) => new ImageInvert(this, uid, args)
-    ConditioningCombine = (args: ConditioningCombine_input, uid?: rt.NodeUID) =>
-        new ConditioningCombine(this, uid, args)
-    ConditioningSetArea = (args: ConditioningSetArea_input, uid?: rt.NodeUID) =>
-        new ConditioningSetArea(this, uid, args)
-    KSamplerAdvanced = (args: KSamplerAdvanced_input, uid?: rt.NodeUID) =>
-        new KSamplerAdvanced(this, uid, args)
-    SetLatentNoiseMask = (args: SetLatentNoiseMask_input, uid?: rt.NodeUID) =>
-        new SetLatentNoiseMask(this, uid, args)
+    ConditioningCombine = (args: ConditioningCombine_input, uid?: rt.NodeUID) => new ConditioningCombine(this, uid, args)
+    ConditioningSetArea = (args: ConditioningSetArea_input, uid?: rt.NodeUID) => new ConditioningSetArea(this, uid, args)
+    KSamplerAdvanced = (args: KSamplerAdvanced_input, uid?: rt.NodeUID) => new KSamplerAdvanced(this, uid, args)
+    SetLatentNoiseMask = (args: SetLatentNoiseMask_input, uid?: rt.NodeUID) => new SetLatentNoiseMask(this, uid, args)
     LatentComposite = (args: LatentComposite_input, uid?: rt.NodeUID) => new LatentComposite(this, uid, args)
     LatentRotate = (args: LatentRotate_input, uid?: rt.NodeUID) => new LatentRotate(this, uid, args)
     LatentFlip = (args: LatentFlip_input, uid?: rt.NodeUID) => new LatentFlip(this, uid, args)
@@ -634,12 +627,9 @@ export class Comfy extends rt.ComfyBase {
     LoraLoader = (args: LoraLoader_input, uid?: rt.NodeUID) => new LoraLoader(this, uid, args)
     CLIPLoader = (args: CLIPLoader_input, uid?: rt.NodeUID) => new CLIPLoader(this, uid, args)
     ControlNetApply = (args: ControlNetApply_input, uid?: rt.NodeUID) => new ControlNetApply(this, uid, args)
-    ControlNetLoader = (args: ControlNetLoader_input, uid?: rt.NodeUID) =>
-        new ControlNetLoader(this, uid, args)
-    DiffControlNetLoader = (args: DiffControlNetLoader_input, uid?: rt.NodeUID) =>
-        new DiffControlNetLoader(this, uid, args)
-    T2IAdapterLoader = (args: T2IAdapterLoader_input, uid?: rt.NodeUID) =>
-        new T2IAdapterLoader(this, uid, args)
+    ControlNetLoader = (args: ControlNetLoader_input, uid?: rt.NodeUID) => new ControlNetLoader(this, uid, args)
+    DiffControlNetLoader = (args: DiffControlNetLoader_input, uid?: rt.NodeUID) => new DiffControlNetLoader(this, uid, args)
+    T2IAdapterLoader = (args: T2IAdapterLoader_input, uid?: rt.NodeUID) => new T2IAdapterLoader(this, uid, args)
     VAEDecodeTiled = (args: VAEDecodeTiled_input, uid?: rt.NodeUID) => new VAEDecodeTiled(this, uid, args)
 
     // misc

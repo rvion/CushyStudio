@@ -1,50 +1,18 @@
+import type { NodeProgress } from '../client/api'
+
+import { NodeOutput } from './NodeOutput'
+import { ComfyBase } from './ComfyBase'
 import { sleep } from '../utils/sleep'
 
 export type NodeUID = string
-export class NodeOutput<T> {
-    constructor(
-        //
-        public node: ComfyNode<any>,
-        public slotIx: number,
-        public type: T,
-    ) {}
-}
-
-/** top level base class */
-export abstract class ComfyBase {
-    async get() {
-        const out: ApiPromptInput = {
-            client_id: 'dd78de15f4fb45d29166925ed85b44c0',
-            extra_data: { extra_pnginfo: { it: 'works' } },
-            prompt: this.toJSON(),
-        }
-        const res = await fetch('http://192.168.1.19:8188/prompt', {
-            method: 'POST',
-            body: JSON.stringify(out),
-        })
-        return res
-    }
-
-    nodes = new Map<string, ComfyNode<any>>()
-    toJSON() {
-        const nodes = Array.from(this.nodes.values())
-        const out: { [key: string]: any } = {}
-        for (const node of nodes) {
-            out[node.uid] = node.toJSON()
-        }
-        return out
-    }
-}
 
 let nextUID = 1
 
-type ApiPromptInput = {
-    client_id: 'dd78de15f4fb45d29166925ed85b44c0'
-    extra_data: { extra_pnginfo: any }
-    prompt: any
-}
 /** base node api */
 export abstract class ComfyNode<ComfyNode_input extends object> {
+    outputs: { images: string[] }[] = []
+    progress: NodeProgress | null = null
+
     async get() {
         await this.comfy.get()
         await sleep(1000)
