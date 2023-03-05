@@ -23,7 +23,7 @@ export const ComfyScriptUI = observer(function ComfyScriptUI_() {
     return (
         <div className='row'>
             <MenuUI st={st} />
-            <div>{st.file && st.file.getValue()}</div>
+            {/* <div style={{ width: '10rem' }}>{st.file && st.file.getValue()}</div> */}
             <Editor //
                 onMount={(editor, monaco) => {
                     const compilerOptions: TypescriptOptions = {

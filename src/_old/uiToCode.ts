@@ -18,7 +18,7 @@ b.w(`import * as rt from './builder.ts'\n`)
 for (const nodeID of sortedNodes) {
     const node = flow.nodes.find((n) => nodeID === n.id.toString())!
     const cls = nodes[node.type as NodeType]
-    if (node == null) throw new Error('node not found')
+    if (node == null) throw new Error('node not found:' + nodeID)
     b.w(`const node${nodeID} = new rt.${node.type}({`)
 
     const filled = new Set()

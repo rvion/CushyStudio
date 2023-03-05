@@ -5,7 +5,7 @@ import type { NodeInput } from './dsl.gen'
 import { makeObservable, observable } from 'mobx'
 import { sleep } from '../utils/sleep'
 import { ComfyBase } from './ComfyBase'
-import { getUID } from './ComfyNodeUID'
+// import { getUID } from './ComfyNodeUID'
 import { NodeOutput } from './NodeOutput'
 
 export abstract class ComfyNode<ComfyNode_input extends object> {
@@ -26,7 +26,7 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
     constructor(
         //
         public comfy: ComfyBase,
-        public uid: string = getUID(),
+        public uid: string = comfy.getUID(),
         public inputs: ComfyNode_input,
     ) {
         this.comfy.nodes.set(this.uid.toString(), this)

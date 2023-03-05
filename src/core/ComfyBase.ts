@@ -10,6 +10,9 @@ export abstract class ComfyBase {
     serverHost = `${this.serverIP}:${this.serverPort}`
     nodes = new Map<string, ComfyNode<any>>()
 
+    private _nextUID = 1
+    getUID = () => (this._nextUID++).toString()
+
     constructor() {
         const ws =
             typeof window !== 'undefined'
@@ -30,7 +33,7 @@ export abstract class ComfyBase {
 
     getNodeOrCrash = (nodeID: ComfyNodeUID): ComfyNode<any> => {
         const node = this.nodes.get(nodeID)
-        if (node == null) throw new Error('Node not found')
+        if (node == null) throw new Error('Node not found:' + nodeID)
         return node
     }
 
