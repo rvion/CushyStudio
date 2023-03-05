@@ -1,12 +1,27 @@
 import Editor from '@monaco-editor/react'
+import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import { useMemo } from 'react'
 import { virtualFilesystem } from './files'
 import { MenuUI } from './MenuUI'
 
+import * as T from 'monaco-editor/esm/vs/editor/editor.api'
+
+type ITextModel = ReturnType<typeof T.editor.createModel>
+
+class St {
+    file: ITextModel | null = null
+    constructor() {
+        makeAutoObservable(this)
+    }
+}
+
 export const ComfyScriptUI = observer(function ComfyScriptUI_() {
+    const st = useMemo(() => new St(), [])
     return (
         <div className='row'>
             <MenuUI />
+            <div>{st.file && st.file.getValue()}</div>
             <Editor //
                 onMount={(editor, monaco) => {
                     for (const file of Object.values(virtualFilesystem)) {
@@ -14,6 +29,7 @@ export const ComfyScriptUI = observer(function ComfyScriptUI_() {
                         const model = monaco.editor.createModel(file.value, 'typescript', uri)
                     }
                     const aModel = monaco.editor.getModel(monaco.Uri.parse(`file:///a.ts`))
+                    st.file = aModel
                     editor.setModel(aModel)
                 }}
                 height='100vh'
