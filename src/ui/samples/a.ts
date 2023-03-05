@@ -1,5 +1,5 @@
-export const sample1 = `
-import { Comfy } from '../core/dsl'
+export const a__ = `
+import { Comfy } from './b'
 
 export const C = new Comfy()
 

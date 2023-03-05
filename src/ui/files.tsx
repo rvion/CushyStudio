@@ -1,15 +1,16 @@
-import { sample1 } from './sample1'
+import { a__ } from './samples/a'
+import { b__ } from './samples/b'
 
 export const virtualFilesystem = {
     'a.ts': {
         name: 'a.ts',
         language: 'typescript',
-        value: sample1,
+        value: a__,
     },
     'b.ts': {
         name: 'b.ts',
         language: 'typescript',
-        value: 'export const BB = 1',
+        value: b__,
     },
     'c.ts': {
         name: 'c.ts',

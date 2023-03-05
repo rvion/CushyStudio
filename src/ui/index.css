@@ -4,7 +4,7 @@ body {
 }
 /* * { font-size: 20px; } */
 
-
+.gap { gap: .5rem }
 .row { display: flex; flex-direction: row; }
 .col { display: flex; flex-direction: column; }
 .grow { flex-grow: 1; }
@@ -15,4 +15,12 @@ body {
     padding: 10px;
     width: 10rem;
     flex-shrink: 0;
+}
+
+.node{
+    padding: .1rem;
+    min-height: 2rem;
+    border-radius: .1rem;
+    border: 1px solid #292929;
+    background: #4b4b4b;
 }
