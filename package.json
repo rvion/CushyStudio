@@ -12,7 +12,9 @@
         "core": "yarn js src/core/dsl.gen.ts",
         "compile": "yarn js src/compiler/entry.gen.ts",
         "def": "yarn js src/core/nodes.fetch.ts",
-        "sample": "yarn js src/compiler/entry.fetch.ts"
+        "sample": "yarn js src/compiler/entry.fetch.ts",
+        "test": "yarn js src/compiler/test.ts",
+        "test2": "yarn js src/compiler/test2.ts"
     },
     "dependencies": {
         "cors": "^2.8.5",

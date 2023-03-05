@@ -8,6 +8,7 @@ export class NodeOutput<T> {
     ) {}
 }
 
+/** top level base class */
 export abstract class ComfyBase {
     nodes = new Map<string, ComfyNode<any>>()
     toJSON() {
@@ -22,9 +23,28 @@ export abstract class ComfyBase {
 
 let nextUID = 1
 
+type ApiPromptInput = {
+    client_id: '608cdd92650d442297aa857f5f93a27f'
+    extra_data: { extra_pnginfo: any }
+    prompt: any
+}
+/** base node api */
 export abstract class ComfyNode<ComfyNode_input extends object> {
-    toJSON() {
-        const out: any = {}
+    async get() {
+        const out: ApiPromptInput = {
+            client_id: '608cdd92650d442297aa857f5f93a27f',
+            extra_data: { extra_pnginfo: { it: 'works' } },
+            prompt: this.comfy.toJSON(),
+        }
+        const res = await fetch('http://192.168.1.19:8188/prompt', {
+            method: 'POST',
+            body: JSON.stringify(out),
+        })
+        // console.log(res)
+    }
+
+    toJSON(): NodeJSON {
+        const out: { [key: string]: any } = {}
         for (const [k, v] of Object.entries(this.p)) {
             out[k] = v instanceof NodeOutput ? [v.node.uid, v.slotIx] : v
         }
