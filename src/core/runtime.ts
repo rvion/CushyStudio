@@ -1,3 +1,5 @@
+import { sleep } from '../utils/sleep'
+
 export type NodeUID = string
 export class NodeOutput<T> {
     constructor(
@@ -10,6 +12,19 @@ export class NodeOutput<T> {
 
 /** top level base class */
 export abstract class ComfyBase {
+    async get() {
+        const out: ApiPromptInput = {
+            client_id: 'dd78de15f4fb45d29166925ed85b44c0',
+            extra_data: { extra_pnginfo: { it: 'works' } },
+            prompt: this.toJSON(),
+        }
+        const res = await fetch('http://192.168.1.19:8188/prompt', {
+            method: 'POST',
+            body: JSON.stringify(out),
+        })
+        return res
+    }
+
     nodes = new Map<string, ComfyNode<any>>()
     toJSON() {
         const nodes = Array.from(this.nodes.values())
@@ -24,23 +39,25 @@ export abstract class ComfyBase {
 let nextUID = 1
 
 type ApiPromptInput = {
-    client_id: '608cdd92650d442297aa857f5f93a27f'
+    client_id: 'dd78de15f4fb45d29166925ed85b44c0'
     extra_data: { extra_pnginfo: any }
     prompt: any
 }
 /** base node api */
 export abstract class ComfyNode<ComfyNode_input extends object> {
     async get() {
-        const out: ApiPromptInput = {
-            client_id: '608cdd92650d442297aa857f5f93a27f',
-            extra_data: { extra_pnginfo: { it: 'works' } },
-            prompt: this.comfy.toJSON(),
-        }
-        const res = await fetch('http://192.168.1.19:8188/prompt', {
-            method: 'POST',
-            body: JSON.stringify(out),
-        })
-        // console.log(res)
+        await this.comfy.get()
+        await sleep(1000)
+
+        // const out: ApiPromptInput = {
+        //     client_id: 'dd78de15f4fb45d29166925ed85b44c0',
+        //     extra_data: { extra_pnginfo: { it: 'works' } },
+        //     prompt: this.comfy.toJSON(),
+        // }
+        // const res = await fetch('http://192.168.1.19:8188/prompt', {
+        //     method: 'POST',
+        //     body: JSON.stringify(out),
+        // })
     }
 
     toJSON(): NodeJSON {

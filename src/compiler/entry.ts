@@ -7,11 +7,11 @@ export const CheckpointLoader_4 = demo.CheckpointLoader(
 )
 export const EmptyLatentImage_5 = demo.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 }, '5')
 export const CLIPTextEncode_6 = demo.CLIPTextEncode(
-    { text: 'masterpiece best quality girl', clip: CheckpointLoader_4.CLIP },
+    { text: 'masterpiece cat', clip: CheckpointLoader_4.CLIP },
     '6',
 )
 export const CLIPTextEncode_7 = demo.CLIPTextEncode({ text: 'bad hands', clip: CheckpointLoader_4.CLIP }, '7')
-export const KSampler_3 = demo.KSampler(
+export const sampler = demo.KSampler(
     {
         seed: 8566257,
         steps: 20,
@@ -26,5 +26,5 @@ export const KSampler_3 = demo.KSampler(
     },
     '3',
 )
-export const VAEDecode_8 = demo.VAEDecode({ samples: KSampler_3.LATENT, vae: CheckpointLoader_4.VAE }, '8')
-export const SaveImage_9 = demo.SaveImage({ filename_prefix: 'ComfyUI', images: VAEDecode_8.IMAGE }, '9')
+export const VAEDecode_8 = demo.VAEDecode({ samples: sampler.LATENT, vae: CheckpointLoader_4.VAE }, '8')
+export const image = demo.SaveImage({ filename_prefix: 'ComfyUI', images: VAEDecode_8.IMAGE }, '9')
