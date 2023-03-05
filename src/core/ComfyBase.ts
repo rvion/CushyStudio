@@ -19,7 +19,7 @@ export abstract class ComfyBase {
         ws.onopen = () => console.log('connected')
         ws.onmessage = (e: WS.MessageEvent) => {
             const msg: WsMsg = JSON.parse(e.data as any)
-            console.log('>>', msg.type)
+            console.log('>>', JSON.stringify(msg))
             if (msg.type === 'status') return this.onStatus(msg)
             if (msg.type === 'progress') return this.onProgress(msg)
             if (msg.type === 'executing') return this.onExecuting(msg)
@@ -51,8 +51,8 @@ export abstract class ComfyBase {
     onExecuted = (msg: WsMsgExecuted) => {
         this.currentExecutingNode = null
         const node = this.getNodeOrCrash(msg.data.node)
-        node.outputs.push(msg.data.output)
-        console.log(node.outputs)
+        node.artifacts.push(msg.data.output)
+        console.log(node.artifacts)
     }
 
     async get() {

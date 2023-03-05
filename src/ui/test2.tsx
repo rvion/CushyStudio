@@ -25,6 +25,11 @@ export function ComfyScriptUI() {
                     return (
                         <div key={node.uid} className='node'>
                             <div>{node.constructor.name}</div>
+                            {node.allArtifactsImgs.map((url) => (
+                                <div key={url}>
+                                    <img key={url} src={url} />
+                                </div>
+                            ))}
                         </div>
                     )
                 })}

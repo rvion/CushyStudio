@@ -8,8 +8,14 @@ import { sleep } from '../utils/sleep'
 import { getUID } from './ComfyNodeUID'
 
 export abstract class ComfyNode<ComfyNode_input extends object> {
-    outputs: { images: string[] }[] = []
+    artifacts: { images: string[] }[] = []
     progress: NodeProgress | null = null
+
+    get allArtifactsImgs(): string[] {
+        return this.artifacts //
+            .flatMap((a) => a.images)
+            .map((i) => `${this.comfy.serverHost}/view/${i}`)
+    }
 
     async get() {
         await this.comfy.get()
