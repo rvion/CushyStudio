@@ -1,10 +1,24 @@
+import type { St } from './ComfyScriptUI'
 import { observer } from 'mobx-react-lite'
 import { C } from '../compiler/entry'
+import { Comfy } from '../core/dsl'
 
-export const MenuUI = observer(function MenuUI_(p: {}) {
+export const MenuUI = observer(function MenuUI_(p: { st: St }) {
     return (
         <div className='col menu gap'>
             <h3>Nodes</h3>
+            <button
+                onClick={async () => {
+                    //
+                    const code = p.st.file?.getValue()
+                    if (code == null) return console.log('❌')
+                    console.log(code)
+                    const fn = new Function('C', `return (async () => { ${code} })()`)
+                    await fn(new Comfy())
+                }}
+            >
+                TEST
+            </button>
             {[...C.nodes.values()].map((node) => {
                 return (
                     <div key={node.uid} className='node'>

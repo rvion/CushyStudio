@@ -11,7 +11,7 @@ import { c__ } from './samples/c'
 type TypescriptOptions = T.languages.typescript.CompilerOptions
 type ITextModel = ReturnType<typeof T.editor.createModel>
 
-class St {
+export class St {
     file: ITextModel | null = null
     constructor() {
         makeAutoObservable(this)
@@ -22,7 +22,7 @@ export const ComfyScriptUI = observer(function ComfyScriptUI_() {
     const st = useMemo(() => new St(), [])
     return (
         <div className='row'>
-            <MenuUI />
+            <MenuUI st={st} />
             <div>{st.file && st.file.getValue()}</div>
             <Editor //
                 onMount={(editor, monaco) => {
