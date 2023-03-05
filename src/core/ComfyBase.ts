@@ -1,6 +1,7 @@
 import * as WS from 'ws'
 import { ApiPromptInput, ComfyStatus, WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from '../client/api'
-import { ComfyNode, NodeUID } from './runtime'
+import { ComfyNodeUID } from './ComfyNodeUID'
+import { ComfyNode } from './ComfyNode'
 
 /** top level base class */
 export abstract class ComfyBase {
@@ -10,14 +11,15 @@ export abstract class ComfyBase {
     nodes = new Map<string, ComfyNode<any>>()
 
     constructor() {
-        const ws = window //
-            ? new WebSocket(`ws://${this.serverHost}/ws`)
-            : new WS.WebSocket(`ws://${this.serverHost}/ws`)
+        const ws =
+            typeof window !== 'undefined'
+                ? new WebSocket(`ws://${this.serverHost}/ws`)
+                : new WS.WebSocket(`ws://${this.serverHost}/ws`)
         ws.binaryType = 'arraybuffer'
         ws.onopen = () => console.log('connected')
         ws.onmessage = (e: WS.MessageEvent) => {
             const msg: WsMsg = JSON.parse(e.data as any)
-            // console.log('🟢 msg', msg)
+            console.log('>>', msg.type)
             if (msg.type === 'status') return this.onStatus(msg)
             if (msg.type === 'progress') return this.onProgress(msg)
             if (msg.type === 'executing') return this.onExecuting(msg)
@@ -26,7 +28,7 @@ export abstract class ComfyBase {
         }
     }
 
-    getNodeOrCrash = (nodeID: NodeUID): ComfyNode<any> => {
+    getNodeOrCrash = (nodeID: ComfyNodeUID): ComfyNode<any> => {
         const node = this.nodes.get(nodeID)
         if (node == null) throw new Error('Node not found')
         return node

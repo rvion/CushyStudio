@@ -1,4 +1,4 @@
-import type { ComfyNode } from './runtime'
+import { ComfyNode } from './ComfyNode'
 
 export class NodeOutput<T> {
     constructor(

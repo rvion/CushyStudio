@@ -1,17 +1,15 @@
-import { useState } from 'react'
-
 import Editor from '@monaco-editor/react'
 import { KnownFiles, virtualFilesystem } from './files'
 import { C } from '../compiler/entry'
 
 const defaultFile: KnownFiles = 'a.ts'
 
-export function Test2() {
-    const [fileName, setFileName] = useState(defaultFile)
-    const file = virtualFilesystem[fileName]
+export function ComfyScriptUI() {
+    // const [fileName, setFileName] = useState(defaultFile)
+    // const file = virtualFilesystem[fileName]
 
     return (
-        <>
+        <div className='row'>
             <div className='col menu gap'>
                 <h3>Nodes</h3>
                 {/* <button disabled={fileName === 'a.ts'} onClick={() => setFileName('a.ts')}>
@@ -67,7 +65,7 @@ export function Test2() {
                 // defaultLanguage={file.language}
                 // defaultValue={file.value}
             />
-        </>
+        </div>
     )
 }
 

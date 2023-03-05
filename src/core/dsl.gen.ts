@@ -3,7 +3,7 @@ import spec from './nodes.json' assert { type: 'json' }
 
 const entries = Object.entries(spec)
 
-export type NodeInput = { name: string; type: string; opts: any }
+export type NodeInput = { name: string; type: string; opts?: any }
 export type NodeOutput = { type: string; name: string }
 export type EnumHash = string
 export type EnumName = string
@@ -67,15 +67,17 @@ export class MAIN {
         if (t === 'FLOAT') return 'number'
         if (t === 'INT') return 'number'
         if (t === 'STRING') return 'string'
-        return `rt.NodeOutput<'${t}'>`
+        return `NodeOutput<'${t}'>`
     }
 
     codegen = (): void => {
         const b = new CodeBuffer()
         const p = b.w
         p(`import * as rt from './runtime'\n`)
+        p(`import { ComfyBase } from './ComfyBase'`)
+        p(`import { NodeOutput } from './NodeOutput'`)
 
-        p(`// TYPES -------------------------------`)
+        p(`\n// TYPES -------------------------------`)
         for (const t of this.knownTypes.values()) {
             const tsType = this.toTSType(t)
             p(`type ${t} = ${tsType}`)
@@ -86,6 +88,15 @@ export class MAIN {
             if (e.values.length > 0) p(`type ${e.name} = ${e.values.map((v) => `'${v}'`).join(' | ')}`)
             else p(`type ${e.name} = never`)
         }
+
+        p(`\n// INTERFACES --------------------------`)
+        for (const t of this.knownTypes.values()) {
+            p(`export interface HasSingle_${t} { _${t}: ${t} } // prettier-ignore`)
+        }
+        for (const t of this.knownEnums.values()) {
+            p(`export interface HasSingle_${t.name} { _${t.name}: ${t.name} } // prettier-ignore`)
+        }
+
         p(`\n// NODES -------------------------------`)
         for (const n of this.nodes) p(n.codegen())
 
@@ -96,7 +107,7 @@ export class MAIN {
         p(`export type NodeType = keyof typeof nodes`)
 
         p(`\n// Entrypoint --------------------------`)
-        p(`export class Comfy extends rt.ComfyBase {`)
+        p(`export class Comfy extends ComfyBase {`)
 
         // prettier-ignore
         for (const n of this.nodes) {
@@ -134,11 +145,19 @@ export class NodeDecl {
         // p(`    constructor(public comfy: Comfy, public p: ${this.name}_input)`)
         // p(`    {}`)
         this.outputs.forEach((i, ix) => {
-            p(`    ${i.name} = new rt.NodeOutput<'${i.type}'>(this, ${ix}, '${i.type}')`)
+            p(`    ${i.name} = new NodeOutput<'${i.type}'>(this, ${ix}, '${i.type}')`)
         })
+        // INTERFACE
+        let x: { [key: string]: number } = {}
+        for (const i of this.outputs) x[i.type] = (x[i.type] ?? 0) + 1
+        for (const i of this.outputs) {
+            if (x[i.type] === 1) p(`    get _${i.type}() { return this.${i.name} } // prettier-ignore`)
+        }
+        // CLASS END
         p(`}`)
+
         p(`export type ${this.name}_input = {`)
-        this.inputs.forEach((i) => p(`    ${i.name}: ${i.type}`))
+        for (const i of this.inputs) p(`    ${i.name}: ${i.type} | HasSingle_${i.type}`)
         p(`}`)
 
         return b.content
