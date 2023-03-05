@@ -1,1 +1,18 @@
-* { font-size: 20px; }
+body {
+    margin: 0;
+    padding: 0;
+}
+/* * { font-size: 20px; } */
+
+
+.row { display: flex; flex-direction: row; }
+.col { display: flex; flex-direction: column; }
+.grow { flex-grow: 1; }
+
+.menu {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    width: 10rem;
+    flex-shrink: 0;
+}
