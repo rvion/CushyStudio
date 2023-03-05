@@ -8,8 +8,6 @@ import { sleep } from '../utils/sleep'
 import { getUID } from './ComfyNodeUID'
 
 export abstract class ComfyNode<ComfyNode_input extends object> {
-    // abstract __inputs: NodeInput[]
-    // abstract __outputs: NodeInput[]
     outputs: { images: string[] }[] = []
     progress: NodeProgress | null = null
 
