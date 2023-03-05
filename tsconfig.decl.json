@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "useDefineForClassFields": true,
+        "lib": ["DOM", "DOM.Iterable", "ESNext"],
+        "allowJs": false,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "declaration": true,
+        "emitDeclarationOnly": true,
+        "outFile": "src/ui/samples/comfy.txt",
+        "jsx": "react-jsx"
+    },
+    "include": ["src/core/dsl.ts"],
+    "exclude": ["tsconfig.node.json"],
+    "references": [{ "path": "./tsconfig.node.json" }]
+}

@@ -6,6 +6,7 @@ import { virtualFilesystem } from './files'
 import { MenuUI } from './MenuUI'
 
 import * as T from 'monaco-editor/esm/vs/editor/editor.api'
+import { c__ } from './samples/c'
 
 type TypescriptOptions = T.languages.typescript.CompilerOptions
 type ITextModel = ReturnType<typeof T.editor.createModel>
@@ -34,6 +35,7 @@ export const ComfyScriptUI = observer(function ComfyScriptUI_() {
                         // lib: ['ES5'],
                     }
                     monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
+                    monaco.languages.typescript.typescriptDefaults.addExtraLib(c__, 'global.d.ts')
 
                     for (const file of Object.values(virtualFilesystem)) {
                         const uri = monaco.Uri.parse(`file:///${file.name}`)
