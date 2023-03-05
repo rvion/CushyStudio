@@ -6,8 +6,8 @@ import { CodeBuffer } from '../generator/CodeBuffer'
 
 const flowNodes = Object.entries(flow)
 const ids = Object.keys(flow)
-
 const edges: TEdge[] = []
+
 for (const [id, node] of flowNodes) {
     const cls = nodes[node.class_type as NodeType]
     const inputs = Object.entries(node.inputs)
