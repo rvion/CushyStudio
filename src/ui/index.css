@@ -2,14 +2,17 @@ body {
     margin: 0;
     padding: 0;
 }
-/* * { font-size: 20px; } */
 
+/* UTILS ---------------------------------------- */
 .gap { gap: .5rem }
 .row { display: flex; flex-direction: row; }
 .col { display: flex; flex-direction: column; }
 .grow { flex-grow: 1; }
 .wrap { flex-wrap: wrap; }
+.items-center { align-items: center; }
+.px {padding: 0 1rem;}
 
+/* CORE ---------------------------------------- */
 .menu {
     background-color: #333;
     color: #fff;
@@ -29,3 +32,9 @@ body {
 .prop {border-top: 1px solid #333333;}
 .propName { color: #c6c6c6; width: 10rem; }
 .propValue { color: #fff; font-weight: normal; }
+
+.appbar {
+    color: white;
+    height: 2rem;
+    background: #363636;
+}

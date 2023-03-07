@@ -12,6 +12,7 @@ export const ComfyScriptUI = observer(function ComfyScriptUI_() {
     const st = useMemo(() => new EditorState(), [])
     return (
         <div className='col'>
+            <div className='appbar row items-center gap px'>Menu</div>
             <div className='row'>
                 <MenuUI st={st} />
                 <MonacoEditor //
@@ -37,6 +38,9 @@ export const ComfyScriptUI = observer(function ComfyScriptUI_() {
                         editor.setModel(aModel)
                     }}
                 />
+                <div className='menu'>
+                    <div>Documentation</div>
+                </div>
             </div>
             {/* <div>OK {st.file && st.file.getValue()}</div> */}
         </div>

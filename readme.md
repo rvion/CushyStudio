@@ -8,7 +8,6 @@
 yarn sync # update ./src/core/ComfySpec.json from server
 yarn lib # generate a type-safe library from the spec fetched
 yarn dev # start the UI dev-server
-
 ```
 
 ---

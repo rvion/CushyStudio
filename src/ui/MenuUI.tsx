@@ -32,14 +32,17 @@ export const MenuUI = observer(function MenuUI_(p: { st: EditorState }) {
                 TEST
             </button>
             {VERSIONS && (
-                <div>
-                    <div>{VERSIONS.length} Versions</div>
+                <div className='row gap'>
+                    Version
                     <div className='row'>
-                        <input type='number' value={st.focus} onChange={(ev) => (st.focus = parseInt(ev.target.value, 10))} />
-
-                        {/* {VERSIONS.map((v, ix) => (
-                            <div key={ix}>{ix}</div>
-                        ))} */}
+                        <input
+                            min={0}
+                            max={VERSIONS.length - 1}
+                            type='number'
+                            value={st.focus}
+                            onChange={(ev) => (st.focus = parseInt(ev.target.value, 10))}
+                        />{' '}
+                        / {VERSIONS.length}
                     </div>
                 </div>
             )}
