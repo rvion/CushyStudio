@@ -7,7 +7,13 @@ const entries = Object.entries(spec)
 export type EnumHash = string
 export type EnumName = string
 
-export class MAIN {
+const PRIMITIVES: { [key: string]: string } = {
+    FLOAT: 'number',
+    INT: 'number',
+    STRING: 'string',
+}
+
+export class LibCodegenerator {
     knownTypes = new Set<string>()
     knownEnums = new Map<EnumHash, { name: EnumName; values: string[] }>()
     nodes: NodeDecl[] = []
@@ -62,12 +68,7 @@ export class MAIN {
         }
     }
 
-    toTSType = (t: string) => {
-        if (t === 'FLOAT') return 'number'
-        if (t === 'INT') return 'number'
-        if (t === 'STRING') return 'string'
-        return `ComfyNodeOutput<'${t}'>`
-    }
+    toTSType = (t: string) => PRIMITIVES[t] ?? `ComfyNodeOutput<'${t}'>`
 
     codegen = (): void => {
         const b = new CodeBuffer()
@@ -110,6 +111,11 @@ export class MAIN {
         for (const n of this.nodes) p(`    ${n.name},`)
         p(`}`)
         p(`export type NodeType = keyof typeof nodes`)
+
+        p(`export const schemas = {`)
+        for (const n of this.nodes) p(`    ${n.name}: ${n.name}_schema,`)
+        p(`}`)
+        p(`export type ComfyNodeType = keyof typeof nodes`)
 
         p(`\n// Entrypoint --------------------------`)
         p(`export class Comfy extends ComfyFlow {`)
@@ -161,13 +167,17 @@ export class NodeDecl {
 
         p(`// prettier-ignore`)
         p(`export const ${this.name}_schema: ComfyNodeSchema = {`)
+        p(`    type: '${this.name}',`)
         p(`    input: ${JSON.stringify(this.inputs)},`)
         p(`    outputs: ${JSON.stringify(this.outputs)},`)
         p(`    category: ${JSON.stringify(this.category)},`)
         p(`}`)
 
         p(`export type ${this.name}_input = {`)
-        for (const i of this.inputs) p(`    ${i.name}: ${i.type} | HasSingle_${i.type}`)
+        for (const i of this.inputs) {
+            const type = PRIMITIVES[i.type] ? i.type : `${i.type} | HasSingle_${i.type}`
+            p(`    ${i.name}: ${type}`)
+        }
         p(`}`)
 
         return b.content
@@ -175,5 +185,5 @@ export class NodeDecl {
 }
 
 // console.log(`test`)
-const main = new MAIN()
+const main = new LibCodegenerator()
 main.codegen()

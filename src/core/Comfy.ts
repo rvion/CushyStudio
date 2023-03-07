@@ -5,7 +5,10 @@ import { ComfyNode } from './ComfyNode'
 import { ComfyFlow } from './ComfyFlow'
 
 // TYPES -------------------------------
+type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
 type CONDITIONING = ComfyNodeOutput<'CONDITIONING'>
+type CLIP_VISION = ComfyNodeOutput<'CLIP_VISION'>
+type STYLE_MODEL = ComfyNodeOutput<'STYLE_MODEL'>
 type CONTROL_NET = ComfyNodeOutput<'CONTROL_NET'>
 type LATENT = ComfyNodeOutput<'LATENT'>
 type MODEL = ComfyNodeOutput<'MODEL'>
@@ -68,6 +71,9 @@ export interface HasSingle_CLIP { _CLIP: CLIP } // prettier-ignore
 export interface HasSingle_VAE { _VAE: VAE } // prettier-ignore
 export interface HasSingle_IMAGE { _IMAGE: IMAGE } // prettier-ignore
 export interface HasSingle_MASK { _MASK: MASK } // prettier-ignore
+export interface HasSingle_CLIP_VISION { _CLIP_VISION: CLIP_VISION } // prettier-ignore
+export interface HasSingle_STYLE_MODEL { _STYLE_MODEL: STYLE_MODEL } // prettier-ignore
+export interface HasSingle_CLIP_VISION_OUTPUT { _CLIP_VISION_OUTPUT: CLIP_VISION_OUTPUT } // prettier-ignore
 export interface HasSingle_CONTROL_NET { _CONTROL_NET: CONTROL_NET } // prettier-ignore
 export interface HasSingle_enum_KSampler_sampler_name { _enum_KSampler_sampler_name: enum_KSampler_sampler_name } // prettier-ignore
 export interface HasSingle_enum_KSampler_scheduler { _enum_KSampler_scheduler: enum_KSampler_scheduler } // prettier-ignore
@@ -94,7 +100,7 @@ export class KSampler extends ComfyNode<KSampler_input> {
 }
 // prettier-ignore
 export const KSampler_schema: ComfyNodeSchema = {
-    type:'KSampler',
+    type: 'KSampler',
     input: [{"name":"model","type":"MODEL"},{"name":"seed","type":"INT","opts":{"default":0,"min":0,"max":18446744073709552000}},{"name":"steps","type":"INT","opts":{"default":20,"min":1,"max":10000}},{"name":"cfg","type":"FLOAT","opts":{"default":8,"min":0,"max":100}},{"name":"sampler_name","type":"enum_KSampler_sampler_name"},{"name":"scheduler","type":"enum_KSampler_scheduler"},{"name":"positive","type":"CONDITIONING"},{"name":"negative","type":"CONDITIONING"},{"name":"latent_image","type":"LATENT"},{"name":"denoise","type":"FLOAT","opts":{"default":1,"min":0,"max":1,"step":0.01}}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
     category: "sampling",
@@ -126,7 +132,7 @@ export class CheckpointLoader extends ComfyNode<CheckpointLoader_input> {
 }
 // prettier-ignore
 export const CheckpointLoader_schema: ComfyNodeSchema = {
-    type:'CheckpointLoader',
+    type: 'CheckpointLoader',
     input: [{"name":"config_name","type":"enum_CheckpointLoader_config_name"},{"name":"ckpt_name","type":"enum_CheckpointLoader_ckpt_name"}],
     outputs: [{"type":"MODEL","name":"MODEL"},{"type":"CLIP","name":"CLIP"},{"type":"VAE","name":"VAE"}],
     category: "loaders",
@@ -150,7 +156,7 @@ export class CheckpointLoaderSimple extends ComfyNode<CheckpointLoaderSimple_inp
 }
 // prettier-ignore
 export const CheckpointLoaderSimple_schema: ComfyNodeSchema = {
-    type:'CheckpointLoaderSimple',
+    type: 'CheckpointLoaderSimple',
     input: [{"name":"ckpt_name","type":"enum_CheckpointLoader_ckpt_name"}],
     outputs: [{"type":"MODEL","name":"MODEL"},{"type":"CLIP","name":"CLIP"},{"type":"VAE","name":"VAE"}],
     category: "loaders",
@@ -169,8 +175,8 @@ export class CLIPTextEncode extends ComfyNode<CLIPTextEncode_input> {
 }
 // prettier-ignore
 export const CLIPTextEncode_schema: ComfyNodeSchema = {
-    type:'CLIPTextEncode',
-    input: [{"name":"text","type":"STRING","opts":{"multiline":true,"dynamic_prompt":true}},{"name":"clip","type":"CLIP"}],
+    type: 'CLIPTextEncode',
+    input: [{"name":"text","type":"STRING","opts":{"multiline":true}},{"name":"clip","type":"CLIP"}],
     outputs: [{"type":"CONDITIONING","name":"CONDITIONING"}],
     category: "conditioning",
 }
@@ -189,7 +195,7 @@ export class CLIPSetLastLayer extends ComfyNode<CLIPSetLastLayer_input> {
 }
 // prettier-ignore
 export const CLIPSetLastLayer_schema: ComfyNodeSchema = {
-    type:'CLIPSetLastLayer',
+    type: 'CLIPSetLastLayer',
     input: [{"name":"clip","type":"CLIP"},{"name":"stop_at_clip_layer","type":"INT","opts":{"default":-1,"min":-24,"max":-1,"step":1}}],
     outputs: [{"type":"CLIP","name":"CLIP"}],
     category: "conditioning",
@@ -209,7 +215,7 @@ export class VAEDecode extends ComfyNode<VAEDecode_input> {
 }
 // prettier-ignore
 export const VAEDecode_schema: ComfyNodeSchema = {
-    type:'VAEDecode',
+    type: 'VAEDecode',
     input: [{"name":"samples","type":"LATENT"},{"name":"vae","type":"VAE"}],
     outputs: [{"type":"IMAGE","name":"IMAGE"}],
     category: "latent",
@@ -229,7 +235,7 @@ export class VAEEncode extends ComfyNode<VAEEncode_input> {
 }
 // prettier-ignore
 export const VAEEncode_schema: ComfyNodeSchema = {
-    type:'VAEEncode',
+    type: 'VAEEncode',
     input: [{"name":"pixels","type":"IMAGE"},{"name":"vae","type":"VAE"}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
     category: "latent",
@@ -249,7 +255,7 @@ export class VAEEncodeForInpaint extends ComfyNode<VAEEncodeForInpaint_input> {
 }
 // prettier-ignore
 export const VAEEncodeForInpaint_schema: ComfyNodeSchema = {
-    type:'VAEEncodeForInpaint',
+    type: 'VAEEncodeForInpaint',
     input: [{"name":"pixels","type":"IMAGE"},{"name":"vae","type":"VAE"},{"name":"mask","type":"MASK"}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
     category: "latent_inpaint",
@@ -270,7 +276,7 @@ export class VAELoader extends ComfyNode<VAELoader_input> {
 }
 // prettier-ignore
 export const VAELoader_schema: ComfyNodeSchema = {
-    type:'VAELoader',
+    type: 'VAELoader',
     input: [{"name":"vae_name","type":"enum_VAELoader_vae_name"}],
     outputs: [{"type":"VAE","name":"VAE"}],
     category: "loaders",
@@ -289,7 +295,7 @@ export class EmptyLatentImage extends ComfyNode<EmptyLatentImage_input> {
 }
 // prettier-ignore
 export const EmptyLatentImage_schema: ComfyNodeSchema = {
-    type:'EmptyLatentImage',
+    type: 'EmptyLatentImage',
     input: [{"name":"width","type":"INT","opts":{"default":512,"min":64,"max":4096,"step":64}},{"name":"height","type":"INT","opts":{"default":512,"min":64,"max":4096,"step":64}},{"name":"batch_size","type":"INT","opts":{"default":1,"min":1,"max":64}}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
     category: "latent",
@@ -310,7 +316,7 @@ export class LatentUpscale extends ComfyNode<LatentUpscale_input> {
 }
 // prettier-ignore
 export const LatentUpscale_schema: ComfyNodeSchema = {
-    type:'LatentUpscale',
+    type: 'LatentUpscale',
     input: [{"name":"samples","type":"LATENT"},{"name":"upscale_method","type":"enum_LatentUpscale_upscale_method"},{"name":"width","type":"INT","opts":{"default":512,"min":64,"max":4096,"step":64}},{"name":"height","type":"INT","opts":{"default":512,"min":64,"max":4096,"step":64}},{"name":"crop","type":"enum_LatentUpscale_crop"}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
     category: "latent",
@@ -331,7 +337,7 @@ export class SaveImage extends ComfyNode<SaveImage_input> {
 }
 // prettier-ignore
 export const SaveImage_schema: ComfyNodeSchema = {
-    type:'SaveImage',
+    type: 'SaveImage',
     input: [{"name":"images","type":"IMAGE"},{"name":"filename_prefix","type":"STRING","opts":{"default":"ComfyUI"}}],
     outputs: [],
     category: "image",
@@ -351,7 +357,7 @@ export class LoadImage extends ComfyNode<LoadImage_input> {
 }
 // prettier-ignore
 export const LoadImage_schema: ComfyNodeSchema = {
-    type:'LoadImage',
+    type: 'LoadImage',
     input: [{"name":"image","type":"enum_LoadImage_image"}],
     outputs: [{"type":"IMAGE","name":"IMAGE"}],
     category: "image",
@@ -370,7 +376,7 @@ export class LoadImageMask extends ComfyNode<LoadImageMask_input> {
 }
 // prettier-ignore
 export const LoadImageMask_schema: ComfyNodeSchema = {
-    type:'LoadImageMask',
+    type: 'LoadImageMask',
     input: [{"name":"image","type":"enum_LoadImage_image"},{"name":"channel","type":"enum_LoadImageMask_channel"}],
     outputs: [{"type":"MASK","name":"MASK"}],
     category: "image",
@@ -390,7 +396,7 @@ export class ImageScale extends ComfyNode<ImageScale_input> {
 }
 // prettier-ignore
 export const ImageScale_schema: ComfyNodeSchema = {
-    type:'ImageScale',
+    type: 'ImageScale',
     input: [{"name":"image","type":"IMAGE"},{"name":"upscale_method","type":"enum_LatentUpscale_upscale_method"},{"name":"width","type":"INT","opts":{"default":512,"min":1,"max":4096,"step":1}},{"name":"height","type":"INT","opts":{"default":512,"min":1,"max":4096,"step":1}},{"name":"crop","type":"enum_LatentUpscale_crop"}],
     outputs: [{"type":"IMAGE","name":"IMAGE"}],
     category: "image",
@@ -413,7 +419,7 @@ export class ImageInvert extends ComfyNode<ImageInvert_input> {
 }
 // prettier-ignore
 export const ImageInvert_schema: ComfyNodeSchema = {
-    type:'ImageInvert',
+    type: 'ImageInvert',
     input: [{"name":"image","type":"IMAGE"}],
     outputs: [{"type":"IMAGE","name":"IMAGE"}],
     category: "image",
@@ -432,7 +438,7 @@ export class ConditioningCombine extends ComfyNode<ConditioningCombine_input> {
 }
 // prettier-ignore
 export const ConditioningCombine_schema: ComfyNodeSchema = {
-    type:'ConditioningCombine',
+    type: 'ConditioningCombine',
     input: [{"name":"conditioning_1","type":"CONDITIONING"},{"name":"conditioning_2","type":"CONDITIONING"}],
     outputs: [{"type":"CONDITIONING","name":"CONDITIONING"}],
     category: "conditioning",
@@ -452,7 +458,7 @@ export class ConditioningSetArea extends ComfyNode<ConditioningSetArea_input> {
 }
 // prettier-ignore
 export const ConditioningSetArea_schema: ComfyNodeSchema = {
-    type:'ConditioningSetArea',
+    type: 'ConditioningSetArea',
     input: [{"name":"conditioning","type":"CONDITIONING"},{"name":"width","type":"INT","opts":{"default":64,"min":64,"max":4096,"step":64}},{"name":"height","type":"INT","opts":{"default":64,"min":64,"max":4096,"step":64}},{"name":"x","type":"INT","opts":{"default":0,"min":0,"max":4096,"step":64}},{"name":"y","type":"INT","opts":{"default":0,"min":0,"max":4096,"step":64}},{"name":"strength","type":"FLOAT","opts":{"default":1,"min":0,"max":10,"step":0.01}}],
     outputs: [{"type":"CONDITIONING","name":"CONDITIONING"}],
     category: "conditioning",
@@ -476,7 +482,7 @@ export class KSamplerAdvanced extends ComfyNode<KSamplerAdvanced_input> {
 }
 // prettier-ignore
 export const KSamplerAdvanced_schema: ComfyNodeSchema = {
-    type:'KSamplerAdvanced',
+    type: 'KSamplerAdvanced',
     input: [{"name":"model","type":"MODEL"},{"name":"add_noise","type":"enum_KSamplerAdvanced_add_noise"},{"name":"noise_seed","type":"INT","opts":{"default":0,"min":0,"max":18446744073709552000}},{"name":"steps","type":"INT","opts":{"default":20,"min":1,"max":10000}},{"name":"cfg","type":"FLOAT","opts":{"default":8,"min":0,"max":100}},{"name":"sampler_name","type":"enum_KSampler_sampler_name"},{"name":"scheduler","type":"enum_KSampler_scheduler"},{"name":"positive","type":"CONDITIONING"},{"name":"negative","type":"CONDITIONING"},{"name":"latent_image","type":"LATENT"},{"name":"start_at_step","type":"INT","opts":{"default":0,"min":0,"max":10000}},{"name":"end_at_step","type":"INT","opts":{"default":10000,"min":0,"max":10000}},{"name":"return_with_leftover_noise","type":"enum_KSamplerAdvanced_add_noise"}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
     category: "sampling",
@@ -507,7 +513,7 @@ export class SetLatentNoiseMask extends ComfyNode<SetLatentNoiseMask_input> {
 }
 // prettier-ignore
 export const SetLatentNoiseMask_schema: ComfyNodeSchema = {
-    type:'SetLatentNoiseMask',
+    type: 'SetLatentNoiseMask',
     input: [{"name":"samples","type":"LATENT"},{"name":"mask","type":"MASK"}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
     category: "latent_inpaint",
@@ -527,7 +533,7 @@ export class LatentComposite extends ComfyNode<LatentComposite_input> {
 }
 // prettier-ignore
 export const LatentComposite_schema: ComfyNodeSchema = {
-    type:'LatentComposite',
+    type: 'LatentComposite',
     input: [{"name":"samples_to","type":"LATENT"},{"name":"samples_from","type":"LATENT"},{"name":"x","type":"INT","opts":{"default":0,"min":0,"max":4096,"step":8}},{"name":"y","type":"INT","opts":{"default":0,"min":0,"max":4096,"step":8}},{"name":"feather","type":"INT","opts":{"default":0,"min":0,"max":4096,"step":8}}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
     category: "latent",
@@ -550,10 +556,10 @@ export class LatentRotate extends ComfyNode<LatentRotate_input> {
 }
 // prettier-ignore
 export const LatentRotate_schema: ComfyNodeSchema = {
-    type:'LatentRotate',
+    type: 'LatentRotate',
     input: [{"name":"samples","type":"LATENT"},{"name":"rotation","type":"enum_LatentRotate_rotation"}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
-    category: "latent",
+    category: "latent_transform",
 }
 export type LatentRotate_input = {
     samples: LATENT | HasSingle_LATENT
@@ -570,10 +576,10 @@ export class LatentFlip extends ComfyNode<LatentFlip_input> {
 }
 // prettier-ignore
 export const LatentFlip_schema: ComfyNodeSchema = {
-    type:'LatentFlip',
+    type: 'LatentFlip',
     input: [{"name":"samples","type":"LATENT"},{"name":"flip_method","type":"enum_LatentFlip_flip_method"}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
-    category: "latent",
+    category: "latent_transform",
 }
 export type LatentFlip_input = {
     samples: LATENT | HasSingle_LATENT
@@ -590,10 +596,10 @@ export class LatentCrop extends ComfyNode<LatentCrop_input> {
 }
 // prettier-ignore
 export const LatentCrop_schema: ComfyNodeSchema = {
-    type:'LatentCrop',
+    type: 'LatentCrop',
     input: [{"name":"samples","type":"LATENT"},{"name":"width","type":"INT","opts":{"default":512,"min":64,"max":4096,"step":64}},{"name":"height","type":"INT","opts":{"default":512,"min":64,"max":4096,"step":64}},{"name":"x","type":"INT","opts":{"default":0,"min":0,"max":4096,"step":8}},{"name":"y","type":"INT","opts":{"default":0,"min":0,"max":4096,"step":8}}],
     outputs: [{"type":"LATENT","name":"LATENT"}],
-    category: "latent",
+    category: "latent_transform",
 }
 export type LatentCrop_input = {
     samples: LATENT | HasSingle_LATENT
@@ -615,7 +621,7 @@ export class LoraLoader extends ComfyNode<LoraLoader_input> {
 }
 // prettier-ignore
 export const LoraLoader_schema: ComfyNodeSchema = {
-    type:'LoraLoader',
+    type: 'LoraLoader',
     input: [{"name":"model","type":"MODEL"},{"name":"clip","type":"CLIP"},{"name":"lora_name","type":"enum_LoraLoader_lora_name"},{"name":"strength_model","type":"FLOAT","opts":{"default":1,"min":0,"max":10,"step":0.01}},{"name":"strength_clip","type":"FLOAT","opts":{"default":1,"min":0,"max":10,"step":0.01}}],
     outputs: [{"type":"MODEL","name":"MODEL"},{"type":"CLIP","name":"CLIP"}],
     category: "loaders",
@@ -638,13 +644,54 @@ export class CLIPLoader extends ComfyNode<CLIPLoader_input> {
 }
 // prettier-ignore
 export const CLIPLoader_schema: ComfyNodeSchema = {
-    type:'CLIPLoader',
+    type: 'CLIPLoader',
     input: [{"name":"clip_name","type":"enum_LoraLoader_lora_name"}],
     outputs: [{"type":"CLIP","name":"CLIP"}],
     category: "loaders",
 }
 export type CLIPLoader_input = {
     clip_name: enum_LoraLoader_lora_name | HasSingle_enum_LoraLoader_lora_name
+}
+
+// |=============================================================================|
+// | CLIPVisionEncode                                                            |
+// |=============================================================================|
+export class CLIPVisionEncode extends ComfyNode<CLIPVisionEncode_input> {
+    $schema = CLIPVisionEncode_schema
+    CLIP_VISION_OUTPUT = new ComfyNodeOutput<'CLIP_VISION_OUTPUT'>(this, 0, 'CLIP_VISION_OUTPUT')
+    get _CLIP_VISION_OUTPUT() { return this.CLIP_VISION_OUTPUT } // prettier-ignore
+}
+// prettier-ignore
+export const CLIPVisionEncode_schema: ComfyNodeSchema = {
+    type: 'CLIPVisionEncode',
+    input: [{"name":"clip_vision","type":"CLIP_VISION"},{"name":"image","type":"IMAGE"}],
+    outputs: [{"type":"CLIP_VISION_OUTPUT","name":"CLIP_VISION_OUTPUT"}],
+    category: "conditioning_style_model",
+}
+export type CLIPVisionEncode_input = {
+    clip_vision: CLIP_VISION | HasSingle_CLIP_VISION
+    image: IMAGE | HasSingle_IMAGE
+}
+
+// |=============================================================================|
+// | StyleModelApply                                                             |
+// |=============================================================================|
+export class StyleModelApply extends ComfyNode<StyleModelApply_input> {
+    $schema = StyleModelApply_schema
+    CONDITIONING = new ComfyNodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
+    get _CONDITIONING() { return this.CONDITIONING } // prettier-ignore
+}
+// prettier-ignore
+export const StyleModelApply_schema: ComfyNodeSchema = {
+    type: 'StyleModelApply',
+    input: [{"name":"conditioning","type":"CONDITIONING"},{"name":"style_model","type":"STYLE_MODEL"},{"name":"clip_vision_output","type":"CLIP_VISION_OUTPUT"}],
+    outputs: [{"type":"CONDITIONING","name":"CONDITIONING"}],
+    category: "conditioning_style_model",
+}
+export type StyleModelApply_input = {
+    conditioning: CONDITIONING | HasSingle_CONDITIONING
+    style_model: STYLE_MODEL | HasSingle_STYLE_MODEL
+    clip_vision_output: CLIP_VISION_OUTPUT | HasSingle_CLIP_VISION_OUTPUT
 }
 
 // |=============================================================================|
@@ -657,7 +704,7 @@ export class ControlNetApply extends ComfyNode<ControlNetApply_input> {
 }
 // prettier-ignore
 export const ControlNetApply_schema: ComfyNodeSchema = {
-    type:'ControlNetApply',
+    type: 'ControlNetApply',
     input: [{"name":"conditioning","type":"CONDITIONING"},{"name":"control_net","type":"CONTROL_NET"},{"name":"image","type":"IMAGE"},{"name":"strength","type":"FLOAT","opts":{"default":1,"min":0,"max":10,"step":0.01}}],
     outputs: [{"type":"CONDITIONING","name":"CONDITIONING"}],
     category: "conditioning",
@@ -679,7 +726,7 @@ export class ControlNetLoader extends ComfyNode<ControlNetLoader_input> {
 }
 // prettier-ignore
 export const ControlNetLoader_schema: ComfyNodeSchema = {
-    type:'ControlNetLoader',
+    type: 'ControlNetLoader',
     input: [{"name":"control_net_name","type":"enum_LoraLoader_lora_name"}],
     outputs: [{"type":"CONTROL_NET","name":"CONTROL_NET"}],
     category: "loaders",
@@ -698,7 +745,7 @@ export class DiffControlNetLoader extends ComfyNode<DiffControlNetLoader_input> 
 }
 // prettier-ignore
 export const DiffControlNetLoader_schema: ComfyNodeSchema = {
-    type:'DiffControlNetLoader',
+    type: 'DiffControlNetLoader',
     input: [{"name":"model","type":"MODEL"},{"name":"control_net_name","type":"enum_LoraLoader_lora_name"}],
     outputs: [{"type":"CONTROL_NET","name":"CONTROL_NET"}],
     category: "loaders",
@@ -718,13 +765,51 @@ export class T2IAdapterLoader extends ComfyNode<T2IAdapterLoader_input> {
 }
 // prettier-ignore
 export const T2IAdapterLoader_schema: ComfyNodeSchema = {
-    type:'T2IAdapterLoader',
+    type: 'T2IAdapterLoader',
     input: [{"name":"t2i_adapter_name","type":"enum_LoraLoader_lora_name"}],
     outputs: [{"type":"CONTROL_NET","name":"CONTROL_NET"}],
     category: "loaders",
 }
 export type T2IAdapterLoader_input = {
     t2i_adapter_name: enum_LoraLoader_lora_name | HasSingle_enum_LoraLoader_lora_name
+}
+
+// |=============================================================================|
+// | StyleModelLoader                                                            |
+// |=============================================================================|
+export class StyleModelLoader extends ComfyNode<StyleModelLoader_input> {
+    $schema = StyleModelLoader_schema
+    STYLE_MODEL = new ComfyNodeOutput<'STYLE_MODEL'>(this, 0, 'STYLE_MODEL')
+    get _STYLE_MODEL() { return this.STYLE_MODEL } // prettier-ignore
+}
+// prettier-ignore
+export const StyleModelLoader_schema: ComfyNodeSchema = {
+    type: 'StyleModelLoader',
+    input: [{"name":"style_model_name","type":"enum_LoraLoader_lora_name"}],
+    outputs: [{"type":"STYLE_MODEL","name":"STYLE_MODEL"}],
+    category: "loaders",
+}
+export type StyleModelLoader_input = {
+    style_model_name: enum_LoraLoader_lora_name | HasSingle_enum_LoraLoader_lora_name
+}
+
+// |=============================================================================|
+// | CLIPVisionLoader                                                            |
+// |=============================================================================|
+export class CLIPVisionLoader extends ComfyNode<CLIPVisionLoader_input> {
+    $schema = CLIPVisionLoader_schema
+    CLIP_VISION = new ComfyNodeOutput<'CLIP_VISION'>(this, 0, 'CLIP_VISION')
+    get _CLIP_VISION() { return this.CLIP_VISION } // prettier-ignore
+}
+// prettier-ignore
+export const CLIPVisionLoader_schema: ComfyNodeSchema = {
+    type: 'CLIPVisionLoader',
+    input: [{"name":"clip_name","type":"enum_LoraLoader_lora_name"}],
+    outputs: [{"type":"CLIP_VISION","name":"CLIP_VISION"}],
+    category: "loaders",
+}
+export type CLIPVisionLoader_input = {
+    clip_name: enum_LoraLoader_lora_name | HasSingle_enum_LoraLoader_lora_name
 }
 
 // |=============================================================================|
@@ -737,7 +822,7 @@ export class VAEDecodeTiled extends ComfyNode<VAEDecodeTiled_input> {
 }
 // prettier-ignore
 export const VAEDecodeTiled_schema: ComfyNodeSchema = {
-    type:'VAEDecodeTiled',
+    type: 'VAEDecodeTiled',
     input: [{"name":"samples","type":"LATENT"},{"name":"vae","type":"VAE"}],
     outputs: [{"type":"IMAGE","name":"IMAGE"}],
     category: "_for_testing",
@@ -775,12 +860,17 @@ export const nodes = {
     LatentCrop,
     LoraLoader,
     CLIPLoader,
+    CLIPVisionEncode,
+    StyleModelApply,
     ControlNetApply,
     ControlNetLoader,
     DiffControlNetLoader,
     T2IAdapterLoader,
+    StyleModelLoader,
+    CLIPVisionLoader,
     VAEDecodeTiled,
 }
+export type NodeType = keyof typeof nodes
 export const schemas = {
     KSampler: KSampler_schema,
     CheckpointLoader: CheckpointLoader_schema,
@@ -808,10 +898,14 @@ export const schemas = {
     LatentCrop: LatentCrop_schema,
     LoraLoader: LoraLoader_schema,
     CLIPLoader: CLIPLoader_schema,
+    CLIPVisionEncode: CLIPVisionEncode_schema,
+    StyleModelApply: StyleModelApply_schema,
     ControlNetApply: ControlNetApply_schema,
     ControlNetLoader: ControlNetLoader_schema,
     DiffControlNetLoader: DiffControlNetLoader_schema,
     T2IAdapterLoader: T2IAdapterLoader_schema,
+    StyleModelLoader: StyleModelLoader_schema,
+    CLIPVisionLoader: CLIPVisionLoader_schema,
     VAEDecodeTiled: VAEDecodeTiled_schema,
 }
 export type ComfyNodeType = keyof typeof nodes
@@ -845,10 +939,14 @@ export class Comfy extends ComfyFlow {
     LatentCrop = (args: LatentCrop_input, uid?: ComfyNodeUID) => new LatentCrop(this, uid, args)
     LoraLoader = (args: LoraLoader_input, uid?: ComfyNodeUID) => new LoraLoader(this, uid, args)
     CLIPLoader = (args: CLIPLoader_input, uid?: ComfyNodeUID) => new CLIPLoader(this, uid, args)
+    CLIPVisionEncode = (args: CLIPVisionEncode_input, uid?: ComfyNodeUID) => new CLIPVisionEncode(this, uid, args)
+    StyleModelApply = (args: StyleModelApply_input, uid?: ComfyNodeUID) => new StyleModelApply(this, uid, args)
     ControlNetApply = (args: ControlNetApply_input, uid?: ComfyNodeUID) => new ControlNetApply(this, uid, args)
     ControlNetLoader = (args: ControlNetLoader_input, uid?: ComfyNodeUID) => new ControlNetLoader(this, uid, args)
     DiffControlNetLoader = (args: DiffControlNetLoader_input, uid?: ComfyNodeUID) => new DiffControlNetLoader(this, uid, args)
     T2IAdapterLoader = (args: T2IAdapterLoader_input, uid?: ComfyNodeUID) => new T2IAdapterLoader(this, uid, args)
+    StyleModelLoader = (args: StyleModelLoader_input, uid?: ComfyNodeUID) => new StyleModelLoader(this, uid, args)
+    CLIPVisionLoader = (args: CLIPVisionLoader_input, uid?: ComfyNodeUID) => new CLIPVisionLoader(this, uid, args)
     VAEDecodeTiled = (args: VAEDecodeTiled_input, uid?: ComfyNodeUID) => new VAEDecodeTiled(this, uid, args)
 
     // misc
