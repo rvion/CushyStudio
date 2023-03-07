@@ -13,14 +13,18 @@ body {
 .px {padding: 0 1rem;}
 
 /* CORE ---------------------------------------- */
-.menu {
-    background-color: #333;
+button:hover { filter: brightness(1.2); }
+button.success { background: #2e8b57; }
+button {
+    border: none;
+    background: gray;
     color: #fff;
-    padding: 10px;
-    width: 20rem;
-    flex-shrink: 0;
+    padding: .5rem;
+    border-radius: .1rem;
+    cursor: pointer;
+    outline: none;
 }
-
+/* CORE ---------------------------------------- */
 .node{
     padding: .7rem;
     min-height: 2rem;
@@ -36,5 +40,22 @@ body {
 .appbar {
     color: white;
     height: 2rem;
-    background: #363636;
+    background: #161616;
+}
+
+/* MENU */
+.menu {
+    background-color: #181818;
+    color: #fff;
+    border-right: 1px solid #2a2a2a;
+    width: 20rem;
+    flex-shrink: 0;
+}
+.menuPaneTitle, .menuPaneContent { padding: .5rem; }
+.menuPane { border-top: 1px solid #333333; }
+.menuPaneTitle {
+    color: #c6c6c6;
+    background-color: #292929;
+    /* font-size: 1.2rem; */
+    font-weight: bold;
 }
