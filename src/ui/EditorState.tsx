@@ -10,7 +10,8 @@ export class EditorState {
         setInterval(async () => {
             const code = this.file?.getValue()
             if (code == null) return console.log('❌')
-            const BUILD = new Function('C', `return ${code}`)
+            const finalCode = code.replace(`export {}`, '')
+            const BUILD = new Function('C', `return (async() => { ${finalCode} })()`)
             const project = new Comfy({ noEval: true })
             await BUILD(project)
             this.liveModel = project

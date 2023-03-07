@@ -22,13 +22,20 @@ export const ComfyScriptUI = observer(function ComfyScriptUI_() {
                         const compilerOptions: TypescriptOptions = {
                             // allowJs: true,
                             // allowSyntheticDefaultImports: true,
-                            alwaysStrict: true,
+                            // alwaysStrict: true,
+                            strict: true,
+                            // esModuleInterop: true,
+                            // moduleDetection: 'force',
+                            // lib: ['ESNext'],
                             module: monaco.languages.typescript.ModuleKind.ESNext,
                             target: monaco.languages.typescript.ScriptTarget.ESNext,
+                            moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+                            // allowNonTsExtensions: true,
                             // lib: ['ES5'],
                         }
                         monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
                         monaco.languages.typescript.typescriptDefaults.addExtraLib(c__, 'global.d.ts')
+                        console.log(monaco.languages.typescript.typescriptVersion)
                         for (const file of Object.values(virtualFilesystem)) {
                             const uri = monaco.Uri.parse(`file:///${file.name}`)
                             const model = monaco.editor.createModel(file.value, 'typescript', uri)

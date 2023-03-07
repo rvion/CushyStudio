@@ -1,4 +1,4 @@
-export const a__ = `(async() => {
+export const a__ = `export {}
 
 const ckpt = C.CheckpointLoader({ config_name: 'v1-inference_clip_skip_2.yaml', ckpt_name: 'v1-5-pruned-emaonly.ckpt' }) // prettier-ignore
 const latent_image = C.EmptyLatentImage({ width: 512, height: 512, batch_size: 3 })
@@ -11,10 +11,7 @@ const image = C.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
 await image.get()
 
 for (let i = 0; i < 8; i++) {
-    console.log(\`test \${i}\`)
     sampler.inputs.cfg += 10
     await image.get()
 }
-
-})()
 `
