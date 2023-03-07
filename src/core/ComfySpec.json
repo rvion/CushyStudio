@@ -143,8 +143,7 @@
                 "text": [
                     "STRING",
                     {
-                        "multiline": true,
-                        "dynamic_prompt": true
+                        "multiline": true
                     }
                 ],
                 "clip": [
@@ -731,7 +730,7 @@
         ],
         "name": "LatentRotate",
         "description": "",
-        "category": "latent"
+        "category": "latent/transform"
     },
     "LatentFlip": {
         "input": {
@@ -752,7 +751,7 @@
         ],
         "name": "LatentFlip",
         "description": "",
-        "category": "latent"
+        "category": "latent/transform"
     },
     "LatentCrop": {
         "input": {
@@ -803,7 +802,7 @@
         ],
         "name": "LatentCrop",
         "description": "",
-        "category": "latent"
+        "category": "latent/transform"
     },
     "LoraLoader": {
         "input": {
@@ -859,6 +858,45 @@
         "name": "CLIPLoader",
         "description": "",
         "category": "loaders"
+    },
+    "CLIPVisionEncode": {
+        "input": {
+            "required": {
+                "clip_vision": [
+                    "CLIP_VISION"
+                ],
+                "image": [
+                    "IMAGE"
+                ]
+            }
+        },
+        "output": [
+            "CLIP_VISION_OUTPUT"
+        ],
+        "name": "CLIPVisionEncode",
+        "description": "",
+        "category": "conditioning/style_model"
+    },
+    "StyleModelApply": {
+        "input": {
+            "required": {
+                "conditioning": [
+                    "CONDITIONING"
+                ],
+                "style_model": [
+                    "STYLE_MODEL"
+                ],
+                "clip_vision_output": [
+                    "CLIP_VISION_OUTPUT"
+                ]
+            }
+        },
+        "output": [
+            "CONDITIONING"
+        ],
+        "name": "StyleModelApply",
+        "description": "",
+        "category": "conditioning/style_model"
     },
     "ControlNetApply": {
         "input": {
@@ -935,6 +973,36 @@
             "CONTROL_NET"
         ],
         "name": "T2IAdapterLoader",
+        "description": "",
+        "category": "loaders"
+    },
+    "StyleModelLoader": {
+        "input": {
+            "required": {
+                "style_model_name": [
+                    []
+                ]
+            }
+        },
+        "output": [
+            "STYLE_MODEL"
+        ],
+        "name": "StyleModelLoader",
+        "description": "",
+        "category": "loaders"
+    },
+    "CLIPVisionLoader": {
+        "input": {
+            "required": {
+                "clip_name": [
+                    []
+                ]
+            }
+        },
+        "output": [
+            "CLIP_VISION"
+        ],
+        "name": "CLIPVisionLoader",
         "description": "",
         "category": "loaders"
     },
