@@ -1,14 +1,24 @@
-import type { St } from './ComfyScriptUI'
-import { observer } from 'mobx-react-lite'
-import { Comfy } from '../core/Comfy'
-import { comfyColors } from '../core/ComfyColors'
+import type { ComfyNodeJSON, ComfyProjectJSON } from '../core/ComfyNodeJSON'
+import type { EditorState } from './EditorState'
 
-export const MenuUI = observer(function MenuUI_(p: { st: St }) {
-    const liveModel = p.st.liveModel
-    const NODES = liveModel ? [...liveModel.nodes.values()] : []
+import { Comfy, schemas } from '../core/Comfy'
+import { observer } from 'mobx-react-lite'
+import { comfyColors } from '../core/ComfyColors'
+import { ComfyNodeUID } from '../core/ComfyNodeUID'
+import { ComfyNodeSchema } from '../core/ComfyNodeSchema'
+
+export const MenuUI = observer(function MenuUI_(p: { st: EditorState }) {
+    const st = p.st
+    const project: Comfy | null = p.st.liveModel
+    // const NODES = liveModel ? [...liveModel.nodes.values()] : []
+    const VERSIONS: ComfyProjectJSON[] = project?.VERSIONS ?? []
+    const NODES: [uid: ComfyNodeUID, json: ComfyNodeJSON][] =
+        st.focus in VERSIONS //
+            ? Object.entries(VERSIONS[st.focus])
+            : []
     return (
         <div className='col menu gap'>
-            <h3>Nodes</h3>
+            {/* <h3>Nodes</h3> */}
             <button
                 onClick={async () => {
                     //
@@ -21,29 +31,42 @@ export const MenuUI = observer(function MenuUI_(p: { st: St }) {
             >
                 TEST
             </button>
-            <div>
-                Versions
-                <div>{liveModel?.VERSIONS.length}</div>
-            </div>
-            {NODES.map((node) => {
+            {VERSIONS && (
+                <div>
+                    <div>{VERSIONS.length} Versions</div>
+                    <div className='row'>
+                        <input type='number' value={st.focus} onChange={(ev) => (st.focus = parseInt(ev.target.value, 10))} />
+
+                        {/* {VERSIONS.map((v, ix) => (
+                            <div key={ix}>{ix}</div>
+                        ))} */}
+                    </div>
+                </div>
+            )}
+
+            {NODES.map(([uid, node]) => {
+                const name = node.class_type
+                const schema: ComfyNodeSchema = schemas[name]
+                const curr = project?.nodes.get(uid)
                 return (
-                    <div key={node.uid} className='node' style={{ backgroundColor: comfyColors[node.$schema.category] }}>
-                        <div>{node.constructor.name}</div>
+                    <div key={uid} className='node' style={{ backgroundColor: comfyColors[schema.category] }}>
+                        <div>{name}</div>
                         <div>
-                            {node.$schema.input.map((input) => (
+                            {schema.input.map((input) => (
                                 <div key={input.name} className='prop row'>
                                     <div className='propName'>
                                         {/* ::{node.$schema.category} */}
                                         {input.name}
                                     </div>
                                     <div className='propValue'>
-                                        {JSON.stringify(node.serializeValue(input.name, node.inputs[input.name]))}
+                                        {node.inputs[input.name]}
+                                        {/* {JSON.stringify(node.serializeValue(input.name, node.inputs[input.name]))} */}
                                     </div>
                                 </div>
                             ))}
                         </div>
                         <div className='row wrap'>
-                            {node.allArtifactsImgs.map((url) => (
+                            {curr?.allArtifactsImgs.map((url) => (
                                 <div key={url}>
                                     <img
                                         style={{

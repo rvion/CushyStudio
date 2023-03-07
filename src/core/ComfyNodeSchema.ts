@@ -1,4 +1,7 @@
+import type { ComfyNodeType } from './Comfy'
+
 export type ComfyNodeSchema = {
+    type: ComfyNodeType
     input: NodeInput[]
     outputs: NodeOutput[]
     category: string

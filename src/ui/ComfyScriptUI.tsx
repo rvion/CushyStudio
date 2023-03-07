@@ -1,67 +1,44 @@
-import Editor from '@monaco-editor/react'
-import { makeAutoObservable } from 'mobx'
+import MonacoEditor from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { virtualFilesystem } from './files'
 import { MenuUI } from './MenuUI'
 
-import * as T from 'monaco-editor/esm/vs/editor/editor.api'
 import { c__ } from './samples/c'
-import { Comfy } from '../core/Comfy'
-
-type TypescriptOptions = T.languages.typescript.CompilerOptions
-type ITextModel = ReturnType<typeof T.editor.createModel>
-
-export class St {
-    file: ITextModel | null = null
-
-    liveModel: Comfy | null = (() => {
-        setInterval(async () => {
-            const code = this.file?.getValue()
-            if (code == null) return console.log('❌')
-            const BUILD = new Function('C', `return ${code}`)
-            const project = new Comfy({ noEval: true })
-            await BUILD(project)
-            this.liveModel = project
-        }, 1000)
-        return null
-    })()
-
-    constructor() {
-        makeAutoObservable(this)
-    }
-}
+import { EditorState } from './EditorState'
+import { TypescriptOptions } from './TypescriptOptions'
 
 export const ComfyScriptUI = observer(function ComfyScriptUI_() {
-    const st = useMemo(() => new St(), [])
+    const st = useMemo(() => new EditorState(), [])
     return (
-        <div className='row'>
-            <MenuUI st={st} />
-            {/* <div style={{ width: '10rem' }}>{st.file && st.file.getValue()}</div> */}
-            <Editor //
-                onMount={(editor, monaco) => {
-                    const compilerOptions: TypescriptOptions = {
-                        // allowJs: true,
-                        // allowSyntheticDefaultImports: true,
-                        alwaysStrict: true,
-                        module: monaco.languages.typescript.ModuleKind.ESNext,
-                        target: monaco.languages.typescript.ScriptTarget.ESNext,
-                        // lib: ['ES5'],
-                    }
-                    monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
-                    monaco.languages.typescript.typescriptDefaults.addExtraLib(c__, 'global.d.ts')
-
-                    for (const file of Object.values(virtualFilesystem)) {
-                        const uri = monaco.Uri.parse(`file:///${file.name}`)
-                        const model = monaco.editor.createModel(file.value, 'typescript', uri)
-                    }
-                    const aModel = monaco.editor.getModel(monaco.Uri.parse(`file:///a.ts`))
-                    st.file = aModel
-                    editor.setModel(aModel)
-                }}
-                height='100vh'
-                theme='vs-dark'
-            />
+        <div className='col'>
+            <div className='row'>
+                <MenuUI st={st} />
+                <MonacoEditor //
+                    height='100vh'
+                    theme='vs-dark'
+                    onMount={(editor, monaco) => {
+                        const compilerOptions: TypescriptOptions = {
+                            // allowJs: true,
+                            // allowSyntheticDefaultImports: true,
+                            alwaysStrict: true,
+                            module: monaco.languages.typescript.ModuleKind.ESNext,
+                            target: monaco.languages.typescript.ScriptTarget.ESNext,
+                            // lib: ['ES5'],
+                        }
+                        monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
+                        monaco.languages.typescript.typescriptDefaults.addExtraLib(c__, 'global.d.ts')
+                        for (const file of Object.values(virtualFilesystem)) {
+                            const uri = monaco.Uri.parse(`file:///${file.name}`)
+                            const model = monaco.editor.createModel(file.value, 'typescript', uri)
+                        }
+                        const aModel = monaco.editor.getModel(monaco.Uri.parse(`file:///a.ts`))
+                        st.file = aModel
+                        editor.setModel(aModel)
+                    }}
+                />
+            </div>
+            {/* <div>OK {st.file && st.file.getValue()}</div> */}
         </div>
     )
 })

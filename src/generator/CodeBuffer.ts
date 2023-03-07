@@ -1,7 +1,7 @@
 import { writeFileSync } from 'fs'
 
-import { prettify } from './prettify'
-import { renderBar } from './renderBar'
+import { prettify } from './CodeFormatter'
+import { renderBar } from './CodeComments'
 
 /** this class is used to buffer text and then write it to a file */
 export class CodeBuffer {

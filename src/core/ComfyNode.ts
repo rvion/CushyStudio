@@ -42,7 +42,7 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
         }
         return {
             inputs: out,
-            class_type: this.constructor.name,
+            class_type: this.$schema.type,
         }
     }
 
