@@ -747,39 +747,6 @@ export type VAEDecodeTiled_input = {
     vae: VAE | HasSingle_VAE
 }
 
-export type ComfyNodeType =
-    | 'KSampler'
-    | 'CheckpointLoader'
-    | 'CheckpointLoaderSimple'
-    | 'CLIPTextEncode'
-    | 'CLIPSetLastLayer'
-    | 'VAEDecode'
-    | 'VAEEncode'
-    | 'VAEEncodeForInpaint'
-    | 'VAELoader'
-    | 'EmptyLatentImage'
-    | 'LatentUpscale'
-    | 'SaveImage'
-    | 'LoadImage'
-    | 'LoadImageMask'
-    | 'ImageScale'
-    | 'ImageInvert'
-    | 'ConditioningCombine'
-    | 'ConditioningSetArea'
-    | 'KSamplerAdvanced'
-    | 'SetLatentNoiseMask'
-    | 'LatentComposite'
-    | 'LatentRotate'
-    | 'LatentFlip'
-    | 'LatentCrop'
-    | 'LoraLoader'
-    | 'CLIPLoader'
-    | 'ControlNetApply'
-    | 'ControlNetLoader'
-    | 'DiffControlNetLoader'
-    | 'T2IAdapterLoader'
-    | 'VAEDecodeTiled'
-
 // INDEX -------------------------------
 export const nodes = {
     KSampler,
@@ -847,7 +814,7 @@ export const schemas = {
     T2IAdapterLoader: T2IAdapterLoader_schema,
     VAEDecodeTiled: VAEDecodeTiled_schema,
 }
-export type NodeType = keyof typeof nodes
+export type ComfyNodeType = keyof typeof nodes
 
 // Entrypoint --------------------------
 export class Comfy extends ComfyFlow {

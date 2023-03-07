@@ -1,5 +1,5 @@
 import flow from './entry.in.json' assert { type: 'json' }
-import { nodes, NodeType } from '../core/Comfy'
+import { nodes, ComfyNodeType, schemas } from '../core/Comfy'
 import { TEdge, toposort } from '../utils/toposort'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { CodeBuffer } from '../generator/CodeBuffer'
@@ -9,7 +9,7 @@ const ids = Object.keys(flow)
 const edges: TEdge[] = []
 
 for (const [id, node] of flowNodes) {
-    const cls = nodes[node.class_type as NodeType]
+    const cls = nodes[node.class_type as ComfyNodeType]
     const inputs = Object.entries(node.inputs)
     for (const [name, input] of inputs) {
         if (Array.isArray(input)) {
@@ -38,9 +38,9 @@ for (const nodeID of sortedNodes) {
     const classType = node.class_type
     const varName = `${classType}_${nodeID}`
     generatedName.set(nodeID, varName)
-    const cls = nodes[classType as NodeType]
+    const schema = schemas[classType as ComfyNodeType]
     let outoutIx = 0
-    for (const o of cls.outputs ?? []) {
+    for (const o of schema.outputs ?? []) {
         availableSignals.set(`${nodeID}-${outoutIx++}`, `${varName}.${o.name}`)
     }
 
