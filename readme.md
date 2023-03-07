@@ -1,6 +1,21 @@
 # Intuition
 
+-   a dev-oridented IDE to build and run any stable diffusion pipeline.
+-   a typescript SDK to integrate any complex stable diffusion pipelines into your project
+-   a SDK generator toolkit to generate SDKs for your own language.
+-   built on top / aims to merge with the ComfyUI project.
+
+planned features:
+
+    - SDK generator for a few languages (typescript, C++) so anyone can embed satble diffusion pipeline
+    - standalone web editor to `build` and `build` any complex stable diffusion
+    - type-safety everywhere and best-in-class editor support both for `generated SDK` and `standalone IDE`
+
 ---
+
+## Comfy Wishlist
+
+-   [ ] `store` node for persistng node output across flow evaluation
 
 ## main scripts
 
