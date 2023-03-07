@@ -33,10 +33,12 @@ button {
     background: #4b4b4b;
 }
 
+/* Property Panel ---------------------------------------- */
 .prop {border-top: 1px solid #333333;}
-.propName { color: #c6c6c6; width: 10rem; }
+.propName { color: #c6c6c6; width: 10rem; text-align: right; margin-right: 1rem; }
 .propValue { color: #fff; font-weight: normal; }
 
+/* App Bar ---------------------------------------- */
 .appbar {
     color: white;
     height: 2rem;
@@ -58,4 +60,13 @@ button {
     background-color: #292929;
     /* font-size: 1.2rem; */
     font-weight: bold;
+}
+
+.nodeRef{
+    border-radius: 100%;
+    line-height:1.3rem;
+    text-align: center;
+    width: 1.3rem;
+    height: 1.3rem;
+    border: 1px solid white
 }
