@@ -5,11 +5,9 @@
 ## main scripts
 
 ```sh
-# update ./src/core/ComfySpec.json from server
-yarn sync
-
-# generate a type-safe library from the spec fetched
-yarn lib
+yarn sync # update ./src/core/ComfySpec.json from server
+yarn lib # generate a type-safe library from the spec fetched
+yarn dev # start the UI dev-server
 
 ```
 
@@ -23,12 +21,10 @@ needed:
 -   yarn: package manager
 -   nvm: node version manager
 
-````sh
-
 ```sh
 # use node 19
 nvm use 19 --default
 
 # install all dependencies
 yarn install
-````
+```
