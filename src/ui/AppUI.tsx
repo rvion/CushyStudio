@@ -7,6 +7,7 @@ import { NodeListUI } from './NodeListUI'
 
 import { EditorState, stContext, useSt } from './EditorState'
 import { MenuPaneUI } from './MenuPane'
+import { NodeRefUI } from './NodeRefUI'
 
 export const AppUI = observer(function AppUI_() {
     const st = useMemo(() => new EditorState(), [Math.random()])
@@ -42,5 +43,27 @@ export const AppUI = observer(function AppUI_() {
 
 export const ArtifactsUI = observer(function ArtifactsUI_(p: {}) {
     const st = useSt()
-    return <div>st.por</div>
+    return (
+        <div>
+            {st.project.outputs.map((o, ix) => {
+                return (
+                    <div key={ix}>
+                        <h3>Step {ix}</h3>
+                        <div className='row wrap'>
+                            <NodeRefUI nodeUID={o.data.node} />
+                            {o.data.output.images.map((url) => (
+                                <div key={url}>
+                                    <img
+                                        style={{ width: '5rem', height: '5rem' }}
+                                        key={url}
+                                        src={`http://${st.project.serverHost}/view/${url}`}
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )
+            })}
+        </div>
+    )
 })

@@ -4,6 +4,7 @@ import { ComfyNodeUID } from './ComfyNodeUID'
 import { ComfyNode } from './ComfyNode'
 import { sleep } from '../utils/sleep'
 import { ComfyNodeJSON, ComfyProjectJSON } from './ComfyNodeJSON'
+import { makeAutoObservable, makeObservable, observable } from 'mobx'
 
 export type RunMode = 'fake' | 'real'
 /** top level base class */
@@ -13,7 +14,7 @@ export abstract class ComfyProject {
     serverHost = `${this.serverIP}:${this.serverPort}`
     nodes = new Map<string, ComfyNode<any>>()
 
-    typedefs: string = ''
+    // typedefs: string = ''
 
     isRunning = false
     runningMode: RunMode = 'fake'
@@ -60,6 +61,7 @@ export abstract class ComfyProject {
             if (msg.type === 'executed') return this.onExecuted(msg)
             throw new Error('Unknown message type: ' + msg)
         }
+        makeObservable(this, { outputs: observable })
     }
 
     getNodeOrCrash = (nodeID: ComfyNodeUID): ComfyNode<any> => {
@@ -82,9 +84,13 @@ export abstract class ComfyProject {
         if (msg.data.node == null) return // 🔴 @comfy: why is that null sometimes ?
         this.currentExecutingNode = this.getNodeOrCrash(msg.data.node)
     }
+    currentStep = 0
+    outputs: WsMsgExecuted[] = []
     onExecuted = (msg: WsMsgExecuted) => {
+        this.outputs.push(msg)
         this.currentExecutingNode = null
         const node = this.getNodeOrCrash(msg.data.node)
+        this.currentStep++
         node.artifacts.push(msg.data.output)
         console.log(node.artifacts)
     }
