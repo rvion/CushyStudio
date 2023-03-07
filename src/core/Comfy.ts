@@ -2,7 +2,7 @@ import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { ComfyNodeSchema } from './ComfyNodeSchema'
 import { ComfyNodeUID } from './ComfyNodeUID'
 import { ComfyNode } from './ComfyNode'
-import { ComfyFlow } from './ComfyFlow'
+import { ComfyProject } from './ComfyProject'
 
 // TYPES -------------------------------
 type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
@@ -911,7 +911,7 @@ export const schemas = {
 export type ComfyNodeType = keyof typeof nodes
 
 // Entrypoint --------------------------
-export class Comfy extends ComfyFlow {
+export class Comfy extends ComfyProject {
     KSampler = (args: KSampler_input, uid?: ComfyNodeUID) => new KSampler(this, uid, args)
     CheckpointLoader = (args: CheckpointLoader_input, uid?: ComfyNodeUID) => new CheckpointLoader(this, uid, args)
     CheckpointLoaderSimple = (args: CheckpointLoaderSimple_input, uid?: ComfyNodeUID) =>

@@ -5,7 +5,7 @@ import { VersionPickerUI } from './VersionPickerUI'
 import { MainActionsUI } from './MainActionsUI'
 import { NodeListUI } from './NodeListUI'
 
-import { EditorState, stContext } from './EditorState'
+import { EditorState, stContext, useSt } from './EditorState'
 import { MenuPaneUI } from './MenuPane'
 
 export const AppUI = observer(function AppUI_() {
@@ -23,6 +23,9 @@ export const AppUI = observer(function AppUI_() {
                         <MenuPaneUI title='actions'>
                             <MainActionsUI />
                         </MenuPaneUI>
+                        <MenuPaneUI title='Artifacts'>
+                            <ArtifactsUI />
+                        </MenuPaneUI>
                     </div>
                     <ComfyCodeEditorUI />
                     <div className='menu'>
@@ -35,4 +38,9 @@ export const AppUI = observer(function AppUI_() {
             </div>
         </stContext.Provider>
     )
+})
+
+export const ArtifactsUI = observer(function ArtifactsUI_(p: {}) {
+    const st = useSt()
+    return <div>st.por</div>
 })

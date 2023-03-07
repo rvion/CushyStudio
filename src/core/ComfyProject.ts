@@ -5,17 +5,46 @@ import { ComfyNode } from './ComfyNode'
 import { sleep } from '../utils/sleep'
 import { ComfyNodeJSON, ComfyProjectJSON } from './ComfyNodeJSON'
 
+export type RunMode = 'fake' | 'real'
 /** top level base class */
-export abstract class ComfyFlow {
+export abstract class ComfyProject {
     serverIP = '192.168.1.19'
     serverPort = 8188
     serverHost = `${this.serverIP}:${this.serverPort}`
     nodes = new Map<string, ComfyNode<any>>()
 
+    typedefs: string = ''
+
+    isRunning = false
+    runningMode: RunMode = 'fake'
+
+    EVAL = async (code: string, mode: RunMode = 'fake'): Promise<boolean> => {
+        if (this.isRunning) return false
+        this.runningMode = mode
+        if (mode === 'real') this.isRunning = true
+        if (code == null) {
+            console.log('❌', 'no code to run')
+            this.isRunning = false
+            return false
+        }
+        try {
+            const finalCode = code.replace(`export {}`, '')
+            const BUILD = new Function('C', `return (async() => { ${finalCode} })()`)
+            await BUILD(this)
+            console.log('✅')
+            this.isRunning = false
+            return true
+        } catch (error) {
+            console.log('❌', error)
+            this.isRunning = false
+            return false
+        }
+    }
+
     private _nextUID = 1
     getUID = () => (this._nextUID++).toString()
 
-    constructor(public opts: { noEval?: boolean } = {}) {
+    constructor() {
         const ws =
             typeof window !== 'undefined'
                 ? new WebSocket(`ws://${this.serverHost}/ws`)
@@ -65,7 +94,7 @@ export abstract class ComfyFlow {
     async get() {
         const currentJSON = this.toJSON()
         this.VERSIONS.push(currentJSON)
-        if (this.opts.noEval) return null
+        if (this.runningMode === 'fake') return null
         const out: ApiPromptInput = {
             client_id: 'super',
             extra_data: { extra_pnginfo: { it: 'works' } },

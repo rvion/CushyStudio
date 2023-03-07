@@ -1,28 +1,29 @@
-import type { ITextModel } from './TypescriptOptions'
+// import type { ITextModel } from './TypescriptOptions'
 
 import { makeAutoObservable } from 'mobx'
 import { Comfy } from '../core/Comfy'
 import { createContext, useContext } from 'react'
+import { RunMode } from '../core/ComfyProject'
 
 export class EditorState {
-    file: ITextModel | null = null
+    // file: ITextModel | null = null
+    project: Comfy = new Comfy()
     focus: number = 0
-    project: Comfy | null = null
+    code: string = ''
 
-    eval_real = async (otps?: { noEval: true }) => {
-        const code = this.file?.getValue()
-        if (code == null) return console.log('❌')
-        const finalCode = code.replace(`export {}`, '')
-        const BUILD = new Function('C', `return (async() => { ${finalCode} })()`)
-        const project = new Comfy(otps)
-        await BUILD(project)
-        console.log('✅', project, otps)
-        this.project = project
+    run = async () => {
+        return this.udpateCode(this.code, 'real')
+    }
+
+    udpateCode = async (code: string, mode: RunMode) => {
+        this.code = code
+        const project = new Comfy()
+        const result = await project.EVAL(code, mode)
+        if (result) this.project = project
     }
 
     constructor() {
         makeAutoObservable(this)
-        setTimeout(() => this.eval_real({ noEval: true }), 1000)
     }
 }
 

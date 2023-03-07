@@ -5,10 +5,15 @@ export const MainActionsUI = observer(function MainActionsUI_() {
     const st = useSt()
     return (
         <div className='row gap'>
-            <button className='success' onClick={() => st.eval_real()}>
+            <button className='success' onClick={() => st.run()}>
                 Eval
             </button>
-            <button onClick={() => st.eval_real()}>Preview</button>
+            {st.project.isRunning ? (
+                <button className='success' onClick={() => (st.project.isRunning = false)}>
+                    Abort
+                </button>
+            ) : null}
+            {/* <button onClick={() => st.udpateCode()}>Preview</button> */}
         </div>
     )
 })
