@@ -1,5 +1,5 @@
 import flow from './entry.in.json' assert { type: 'json' }
-import { nodes, NodeType } from '../core/dsl'
+import { nodes, NodeType } from '../core/Comfy'
 import { TEdge, toposort } from '../utils/toposort'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { CodeBuffer } from '../generator/CodeBuffer'

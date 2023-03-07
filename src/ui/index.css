@@ -19,9 +19,13 @@ body {
 }
 
 .node{
-    padding: .1rem;
+    padding: .7rem;
     min-height: 2rem;
     border-radius: .1rem;
     border: 1px solid #292929;
     background: #4b4b4b;
 }
+
+.prop {border-top: 1px solid #333333;}
+.propName { color: #c6c6c6; width: 10rem; }
+.propValue { color: #fff; font-weight: normal; }

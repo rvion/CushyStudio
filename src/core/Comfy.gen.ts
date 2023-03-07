@@ -1,10 +1,9 @@
 import { CodeBuffer } from '../generator/CodeBuffer'
-import spec from './nodes.json' assert { type: 'json' }
+import { NodeInput, NodeOutput } from './ComfyNodeSchema'
+import spec from './ComfySpec.json' assert { type: 'json' }
 
 const entries = Object.entries(spec)
 
-export type NodeInput = { name: string; type: string; opts?: any }
-export type NodeOutput = { type: string; name: string }
 export type EnumHash = string
 export type EnumName = string
 
@@ -67,20 +66,26 @@ export class MAIN {
         if (t === 'FLOAT') return 'number'
         if (t === 'INT') return 'number'
         if (t === 'STRING') return 'string'
-        return `NodeOutput<'${t}'>`
+        return `ComfyNodeOutput<'${t}'>`
     }
 
     codegen = (): void => {
         const b = new CodeBuffer()
         const p = b.w
-        p(`import * as rt from './runtime'\n`)
-        p(`import { ComfyBase } from './ComfyBase'`)
-        p(`import { NodeOutput } from './NodeOutput'`)
+        p(`import { ComfyNodeOutput } from './ComfyNodeOutput'`)
+        p(`import { ComfyNodeSchema } from './ComfyNodeSchema'`)
+        p(`import { ComfyNodeUID } from './ComfyNodeUID'`)
+        p(`import { ComfyNode } from './ComfyNode'`)
+        p(`import { ComfyFlow } from './ComfyFlow'`)
 
         p(`\n// TYPES -------------------------------`)
-        for (const t of this.knownTypes.values()) {
-            const tsType = this.toTSType(t)
-            p(`type ${t} = ${tsType}`)
+        const types = [...this.knownTypes.values()] //
+            .map((comfyType) => ({ comfyType, tsType: this.toTSType(comfyType) }))
+            .sort((a, b) => b.tsType.length - a.tsType.length)
+
+        for (const t of types) {
+            // const tsType = this.toTSType(t)
+            p(`type ${t.comfyType} = ${t.tsType}`)
         }
 
         p(`\n// ENUMS -------------------------------`)
@@ -107,11 +112,11 @@ export class MAIN {
         p(`export type NodeType = keyof typeof nodes`)
 
         p(`\n// Entrypoint --------------------------`)
-        p(`export class Comfy extends ComfyBase {`)
+        p(`export class Comfy extends ComfyFlow {`)
 
         // prettier-ignore
         for (const n of this.nodes) {
-            p(`    ${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
+            p(`    ${n.name} = (args: ${n.name}_input, uid?: ComfyNodeUID) => new ${n.name}(this, uid, args)`)
         }
         p(`\n// misc \n`)
         // prettier-ignore
@@ -119,7 +124,7 @@ export class MAIN {
         //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
         // }
         p(`}`)
-        b.writeTS('./src/core/dsl.ts')
+        b.writeTS('./src/core/Comfy.ts')
     }
 }
 
@@ -138,14 +143,12 @@ export class NodeDecl {
         const b = new CodeBuffer()
         const p = b.w
         // inputs
-        p(`\n// ${this.name} -------------------------------`)
-        p(`export class ${this.name} extends rt.ComfyNode<${this.name}_input>{`)
-        p(`    static inputs = ${JSON.stringify(this.inputs)}`)
-        p(`    static outputs = ${JSON.stringify(this.outputs)}`)
-        // p(`    constructor(public comfy: Comfy, public p: ${this.name}_input)`)
-        // p(`    {}`)
+        // p(`\n// ${this.name} -------------------------------`)
+        b.bar(this.name)
+        p(`export class ${this.name} extends ComfyNode<${this.name}_input>{`)
+        p(`    $schema = ${this.name}_schema`)
         this.outputs.forEach((i, ix) => {
-            p(`    ${i.name} = new NodeOutput<'${i.type}'>(this, ${ix}, '${i.type}')`)
+            p(`    ${i.name} = new ComfyNodeOutput<'${i.type}'>(this, ${ix}, '${i.type}')`)
         })
         // INTERFACE
         let x: { [key: string]: number } = {}
@@ -154,6 +157,13 @@ export class NodeDecl {
             if (x[i.type] === 1) p(`    get _${i.type}() { return this.${i.name} } // prettier-ignore`)
         }
         // CLASS END
+        p(`}`)
+
+        p(`// prettier-ignore`)
+        p(`export const ${this.name}_schema: ComfyNodeSchema = {`)
+        p(`    input: ${JSON.stringify(this.inputs)},`)
+        p(`    outputs: ${JSON.stringify(this.outputs)},`)
+        p(`    category: ${JSON.stringify(this.category)},`)
         p(`}`)
 
         p(`export type ${this.name}_input = {`)

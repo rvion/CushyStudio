@@ -7,12 +7,26 @@ import { MenuUI } from './MenuUI'
 
 import * as T from 'monaco-editor/esm/vs/editor/editor.api'
 import { c__ } from './samples/c'
+import { Comfy } from '../core/Comfy'
 
 type TypescriptOptions = T.languages.typescript.CompilerOptions
 type ITextModel = ReturnType<typeof T.editor.createModel>
 
 export class St {
     file: ITextModel | null = null
+
+    liveModel: Comfy | null = (() => {
+        setInterval(async () => {
+            const code = this.file?.getValue()
+            if (code == null) return console.log('❌')
+            const BUILD = new Function('C', `return ${code}`)
+            const project = new Comfy({ noEval: true })
+            await BUILD(project)
+            this.liveModel = project
+        }, 1000)
+        return null
+    })()
+
     constructor() {
         makeAutoObservable(this)
     }

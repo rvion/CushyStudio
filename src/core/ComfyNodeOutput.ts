@@ -1,6 +1,6 @@
 import { ComfyNode } from './ComfyNode'
 
-export class NodeOutput<T> {
+export class ComfyNodeOutput<T> {
     constructor(
         //
         public node: ComfyNode<any>,

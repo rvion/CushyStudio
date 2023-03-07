@@ -1,4 +1,4 @@
-import { Comfy } from '../core/dsl'
+import { Comfy } from '../core/Comfy'
 
 export const C = new Comfy()
 

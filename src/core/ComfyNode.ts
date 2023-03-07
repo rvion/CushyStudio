@@ -1,16 +1,15 @@
 import type { NodeProgress } from '../client/api'
+import type { ComfyFlow } from './ComfyFlow'
 import type { ComfyNodeJSON } from './ComfyNodeJSON'
-import type { NodeInput } from './dsl.gen'
+import type { ComfyNodeSchema, NodeInput } from './ComfyNodeSchema'
 
 import { makeObservable, observable } from 'mobx'
-import { sleep } from '../utils/sleep'
-import { ComfyBase } from './ComfyBase'
-// import { getUID } from './ComfyNodeUID'
-import { NodeOutput } from './NodeOutput'
+import { ComfyNodeOutput } from './ComfyNodeOutput'
 
 export abstract class ComfyNode<ComfyNode_input extends object> {
     artifacts: { images: string[] }[] = []
     progress: NodeProgress | null = null
+    abstract $schema: ComfyNodeSchema
 
     get allArtifactsImgs(): string[] {
         return this.artifacts //
@@ -20,12 +19,15 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
 
     async get() {
         await this.comfy.get()
-        await sleep(1000)
     }
 
+    // previewInput(name: string): string {
+    //     const i = this.inputs[name]
+    //     if (i instanceof )
+    // }
     constructor(
         //
-        public comfy: ComfyBase,
+        public comfy: ComfyFlow,
         public uid: string = comfy.getUID(),
         public inputs: ComfyNode_input,
     ) {
@@ -45,18 +47,18 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
     }
 
     getExpecteTypeForField(name: string): string {
-        return (this.constructor as any).inputs.find((i: NodeInput) => i.name === name)!.type
+        return this.$schema.input.find((i: NodeInput) => i.name === name)!.type
     }
 
-    getOutputForType(type: string): NodeOutput<any> {
-        const i: NodeInput = (this.constructor as any).outputs.find((i: NodeInput) => i.type === type)!
+    getOutputForType(type: string): ComfyNodeOutput<any> {
+        const i: NodeInput = this.$schema.outputs.find((i: NodeInput) => i.type === type)!
         const val = (this as any)[i.name]
-        if (val instanceof NodeOutput) return val
+        if (val instanceof ComfyNodeOutput) return val
         throw new Error(`Expected ${i.name} to be a NodeOutput`)
     }
 
-    private serializeValue(field: string, value: unknown): unknown {
-        if (value instanceof NodeOutput) return [value.node.uid, value.slotIx]
+    serializeValue(field: string, value: unknown): unknown {
+        if (value instanceof ComfyNodeOutput) return [value.node.uid, value.slotIx]
         if (value instanceof ComfyNode) {
             const expectedType = this.getExpecteTypeForField(field)
             const output = value.getOutputForType(expectedType)

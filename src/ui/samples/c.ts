@@ -207,78 +207,30 @@ declare module "core/dsl" {
     type enum_LatentRotate_rotation = '180 degrees' | '270 degrees' | '90 degrees' | 'none';
     type enum_LatentFlip_flip_method = 'x-axis: vertically' | 'y-axis: horizontally';
     type enum_LoraLoader_lora_name = never;
-    export interface HasSingle_MODEL {
-        _MODEL: MODEL;
-    }
-    export interface HasSingle_INT {
-        _INT: INT;
-    }
-    export interface HasSingle_FLOAT {
-        _FLOAT: FLOAT;
-    }
-    export interface HasSingle_CONDITIONING {
-        _CONDITIONING: CONDITIONING;
-    }
-    export interface HasSingle_LATENT {
-        _LATENT: LATENT;
-    }
-    export interface HasSingle_STRING {
-        _STRING: STRING;
-    }
-    export interface HasSingle_CLIP {
-        _CLIP: CLIP;
-    }
-    export interface HasSingle_VAE {
-        _VAE: VAE;
-    }
-    export interface HasSingle_IMAGE {
-        _IMAGE: IMAGE;
-    }
-    export interface HasSingle_MASK {
-        _MASK: MASK;
-    }
-    export interface HasSingle_CONTROL_NET {
-        _CONTROL_NET: CONTROL_NET;
-    }
-    export interface HasSingle_enum_KSampler_sampler_name {
-        _enum_KSampler_sampler_name: enum_KSampler_sampler_name;
-    }
-    export interface HasSingle_enum_KSampler_scheduler {
-        _enum_KSampler_scheduler: enum_KSampler_scheduler;
-    }
-    export interface HasSingle_enum_CheckpointLoader_config_name {
-        _enum_CheckpointLoader_config_name: enum_CheckpointLoader_config_name;
-    }
-    export interface HasSingle_enum_CheckpointLoader_ckpt_name {
-        _enum_CheckpointLoader_ckpt_name: enum_CheckpointLoader_ckpt_name;
-    }
-    export interface HasSingle_enum_VAELoader_vae_name {
-        _enum_VAELoader_vae_name: enum_VAELoader_vae_name;
-    }
-    export interface HasSingle_enum_LatentUpscale_upscale_method {
-        _enum_LatentUpscale_upscale_method: enum_LatentUpscale_upscale_method;
-    }
-    export interface HasSingle_enum_LatentUpscale_crop {
-        _enum_LatentUpscale_crop: enum_LatentUpscale_crop;
-    }
-    export interface HasSingle_enum_LoadImage_image {
-        _enum_LoadImage_image: enum_LoadImage_image;
-    }
-    export interface HasSingle_enum_LoadImageMask_channel {
-        _enum_LoadImageMask_channel: enum_LoadImageMask_channel;
-    }
-    export interface HasSingle_enum_KSamplerAdvanced_add_noise {
-        _enum_KSamplerAdvanced_add_noise: enum_KSamplerAdvanced_add_noise;
-    }
-    export interface HasSingle_enum_LatentRotate_rotation {
-        _enum_LatentRotate_rotation: enum_LatentRotate_rotation;
-    }
-    export interface HasSingle_enum_LatentFlip_flip_method {
-        _enum_LatentFlip_flip_method: enum_LatentFlip_flip_method;
-    }
-    export interface HasSingle_enum_LoraLoader_lora_name {
-        _enum_LoraLoader_lora_name: enum_LoraLoader_lora_name;
-    }
+    export interface HasSingle_MODEL { _MODEL: MODEL; }
+    export interface HasSingle_INT { _INT: INT; }
+    export interface HasSingle_FLOAT { _FLOAT: FLOAT; }
+    export interface HasSingle_CONDITIONING { _CONDITIONING: CONDITIONING; }
+    export interface HasSingle_LATENT { _LATENT: LATENT; }
+    export interface HasSingle_STRING { _STRING: STRING; }
+    export interface HasSingle_CLIP { _CLIP: CLIP; }
+    export interface HasSingle_VAE { _VAE: VAE; }
+    export interface HasSingle_IMAGE { _IMAGE: IMAGE; }
+    export interface HasSingle_MASK { _MASK: MASK; }
+    export interface HasSingle_CONTROL_NET { _CONTROL_NET: CONTROL_NET; }
+    export interface HasSingle_enum_KSampler_sampler_name { _enum_KSampler_sampler_name: enum_KSampler_sampler_name; }
+    export interface HasSingle_enum_KSampler_scheduler { _enum_KSampler_scheduler: enum_KSampler_scheduler; }
+    export interface HasSingle_enum_CheckpointLoader_config_name { _enum_CheckpointLoader_config_name: enum_CheckpointLoader_config_name; }
+    export interface HasSingle_enum_CheckpointLoader_ckpt_name { _enum_CheckpointLoader_ckpt_name: enum_CheckpointLoader_ckpt_name; }
+    export interface HasSingle_enum_VAELoader_vae_name { _enum_VAELoader_vae_name: enum_VAELoader_vae_name; }
+    export interface HasSingle_enum_LatentUpscale_upscale_method { _enum_LatentUpscale_upscale_method: enum_LatentUpscale_upscale_method; }
+    export interface HasSingle_enum_LatentUpscale_crop { _enum_LatentUpscale_crop: enum_LatentUpscale_crop; }
+    export interface HasSingle_enum_LoadImage_image { _enum_LoadImage_image: enum_LoadImage_image; }
+    export interface HasSingle_enum_LoadImageMask_channel { _enum_LoadImageMask_channel: enum_LoadImageMask_channel; }
+    export interface HasSingle_enum_KSamplerAdvanced_add_noise { _enum_KSamplerAdvanced_add_noise: enum_KSamplerAdvanced_add_noise; }
+    export interface HasSingle_enum_LatentRotate_rotation { _enum_LatentRotate_rotation: enum_LatentRotate_rotation; }
+    export interface HasSingle_enum_LatentFlip_flip_method { _enum_LatentFlip_flip_method: enum_LatentFlip_flip_method; }
+    export interface HasSingle_enum_LoraLoader_lora_name { _enum_LoraLoader_lora_name: enum_LoraLoader_lora_name; }
     export class KSampler extends ComfyNode.ComfyNode<KSampler_input> {
         static inputs: ({
             name: string;

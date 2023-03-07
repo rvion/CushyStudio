@@ -2,9 +2,11 @@ import * as WS from 'ws'
 import { ApiPromptInput, ComfyStatus, WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from '../client/api'
 import { ComfyNodeUID } from './ComfyNodeUID'
 import { ComfyNode } from './ComfyNode'
+import { sleep } from '../utils/sleep'
+import { ComfyNodeJSON, ComfyProjectJSON } from './ComfyNodeJSON'
 
 /** top level base class */
-export abstract class ComfyBase {
+export abstract class ComfyFlow {
     serverIP = '192.168.1.19'
     serverPort = 8188
     serverHost = `${this.serverIP}:${this.serverPort}`
@@ -13,7 +15,7 @@ export abstract class ComfyBase {
     private _nextUID = 1
     getUID = () => (this._nextUID++).toString()
 
-    constructor() {
+    constructor(public opts: { noEval?: boolean } = {}) {
         const ws =
             typeof window !== 'undefined'
                 ? new WebSocket(`ws://${this.serverHost}/ws`)
@@ -58,22 +60,28 @@ export abstract class ComfyBase {
         console.log(node.artifacts)
     }
 
+    VERSIONS: ComfyProjectJSON[] = []
+
     async get() {
+        const currentJSON = this.toJSON()
+        this.VERSIONS.push(currentJSON)
+        if (this.opts.noEval) return null
         const out: ApiPromptInput = {
             client_id: 'super',
             extra_data: { extra_pnginfo: { it: 'works' } },
-            prompt: this.toJSON(),
+            prompt: currentJSON,
         }
         const res = await fetch(`http://${this.serverHost}/prompt`, {
             method: 'POST',
             body: JSON.stringify(out),
         })
+        await sleep(1000)
         return res
     }
 
-    toJSON() {
+    toJSON(): ComfyProjectJSON {
         const nodes = Array.from(this.nodes.values())
-        const out: { [key: string]: any } = {}
+        const out: { [key: string]: ComfyNodeJSON } = {}
         for (const node of nodes) {
             out[node.uid] = node.toJSON()
         }

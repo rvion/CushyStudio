@@ -1,7 +1,7 @@
 export const b__ = `
 const rt = {} as any
 type NodeUID = string
-class ComfyBase {}
+class ComfyFlow {}
 class ComfyNode<T>{
     constructor(a:any,b:any,c:any){}
     a="ok"
@@ -608,7 +608,7 @@ export const nodes = {
 export type NodeType = keyof typeof nodes
 
 // Entrypoint --------------------------
-export class Comfy extends ComfyBase {
+export class Comfy extends ComfyFlow {
     KSampler = (args: KSampler_input, uid?: NodeUID) => new KSampler(this, uid, args)
     CheckpointLoader = (args: CheckpointLoader_input, uid?: NodeUID) => new CheckpointLoader(this, uid, args)
     CheckpointLoaderSimple = (args: CheckpointLoaderSimple_input, uid?: NodeUID) => new CheckpointLoaderSimple(this, uid, args)
