@@ -7,6 +7,7 @@ import { VersionPickerUI } from './VersionPickerUI'
 import { ArtifactsUI } from './ArtifactsUI'
 import { StepListUI } from './StepListUI'
 import { ProjectInfoUI } from './ProjectInfoUI'
+import { VisUI } from './VisUI'
 
 export const AppLayoutUI = observer(function AppLayoutUI_(p: {}) {
     return (
@@ -98,7 +99,7 @@ const defaultLayout = (): LayoutData => ({
                                 minHeight: 280,
                                 id: 'Graph',
                                 title: 'Graph',
-                                content: <div></div>,
+                                content: <VisUI />,
                             },
                         ],
                     },

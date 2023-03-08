@@ -1,10 +1,15 @@
+import type { VisEdges, VisNodes } from '../ui/VisUI'
+
+import { makeObservable, observable } from 'mobx'
 import * as WS from 'ws'
 import { ApiPromptInput, ComfyStatus, WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from '../client/api'
-import { ComfyNodeUID } from './ComfyNodeUID'
-import { ComfyNode } from './ComfyNode'
 import { sleep } from '../utils/sleep'
+import { ComfyNode } from './ComfyNode'
 import { ComfyNodeJSON, ComfyProjectJSON } from './ComfyNodeJSON'
-import { makeAutoObservable, makeObservable, observable } from 'mobx'
+import { ComfyNodeUID } from './ComfyNodeUID'
+import { schemas } from './Comfy'
+import { ComfyNodeSchema } from './ComfyNodeSchema'
+import { comfyColors } from './ComfyColors'
 
 export type RunMode = 'fake' | 'real'
 /** top level base class */
@@ -16,6 +21,32 @@ export abstract class ComfyProject {
     nodes = new Map<string, ComfyNode<any>>()
 
     // typedefs: string = ''
+    get visData(): { nodes: VisNodes[]; edges: VisEdges[] } {
+        const json: ComfyProjectJSON = this.VERSIONS[0]
+        const nodes: VisNodes[] = []
+        const edges: VisEdges[] = []
+        if (json == null) return { nodes: [], edges: [] }
+        for (const [uid, node] of Object.entries(json)) {
+            const schema: ComfyNodeSchema = schemas[node.class_type]
+            const color = comfyColors[schema.category]
+            nodes.push({ id: uid, label: node.class_type, color, font: { color: 'white' }, shape: 'box' })
+            for (const [name, val] of Object.entries(node.inputs)) {
+                if (val instanceof Array) {
+                    const [from, slotIx] = val
+                    edges.push({
+                        id: `${from}-${uid}-${slotIx}`,
+                        from,
+                        to: uid,
+                        arrows: 'to',
+                        label: name,
+                        labelHighlightBold: false,
+                        length: 200,
+                    })
+                }
+            }
+        }
+        return { nodes, edges }
+    }
 
     isRunning = false
     runningMode: RunMode = 'fake'

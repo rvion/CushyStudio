@@ -37,6 +37,8 @@
         "react-dom": "^18.2.0",
         "ts-node": "^10.9.1",
         "type-fest": "^3.6.1",
+        "vis-data": "^7.1.4",
+        "vis-network": "^9.1.4",
         "ws": "^8.12.1"
     },
     "devDependencies": {
