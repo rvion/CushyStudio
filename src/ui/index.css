@@ -37,6 +37,9 @@ button {
     cursor: pointer;
     outline: none;
 }
+button.active {
+    background: rgb(66, 136, 240);
+}
 /* CORE ---------------------------------------- */
 .node{
     /* padding: .7rem; */

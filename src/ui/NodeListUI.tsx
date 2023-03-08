@@ -18,6 +18,7 @@ export const NodeListUI = observer(function NodeListUI_(p: {}) {
             : []
     return (
         <div className='col gap px'>
+            <div>Prompt {st.focus + 1}</div>
             {NODES.map(([uid, node]) => (
                 <NodeUI key={uid} uid={uid} node={node} />
             ))}
@@ -30,6 +31,7 @@ export const NodeUI = observer(function NodeUI_(p: {
     uid: ComfyNodeUID
     node: ComfyNodeJSON
 }) {
+    const st = useSt()
     const { uid, node } = p
     const curr = useSt().project.nodes.get(uid)!
     const name = curr.$schema.type
@@ -55,11 +57,16 @@ export const NodeUI = observer(function NodeUI_(p: {
                 })}
             </div>
             <div className='row wrap'>
-                {curr?.allArtifactsImgs.map((url) => (
+                {curr.artifactsForStep(st.focus).map((url) => (
                     <div key={url}>
                         <img style={{ width: '5rem', height: '5rem' }} key={url} src={url} />
                     </div>
                 ))}
+                {/* {curr?.allArtifactsImgs.map((url) => (
+                    <div key={url}>
+                        <img style={{ width: '5rem', height: '5rem' }} key={url} src={url} />
+                    </div>
+                ))} */}
             </div>
         </div>
     )

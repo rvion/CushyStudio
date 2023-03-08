@@ -11,6 +11,10 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
     progress: NodeProgress | null = null
     abstract $schema: ComfyNodeSchema
 
+    artifactsForStep(step: number): string[] {
+        return this.artifacts[step]?.images.map((i) => `http://${this.comfy.serverHost}/view/${i}`) ?? []
+    }
+
     get allArtifactsImgs(): string[] {
         return this.artifacts //
             .flatMap((a) => a.images)

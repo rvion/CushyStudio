@@ -5,12 +5,12 @@ import { NodeRefUI } from './NodeRefUI'
 export const ArtifactsUI = observer(function ArtifactsUI_(p: {}) {
     const st = useSt()
     return (
-        <div>
+        <div className='row gap'>
             {st.project.outputs.map((o, ix) => {
                 return (
                     <div key={ix}>
-                        <h3>Step {ix}</h3>
-                        <div className='row wrap'>
+                        <h3>Prompt {ix + 1}</h3>
+                        <div className='col wrap'>
                             <NodeRefUI nodeUID={o.data.node} />
                             {o.data.output.images.map((url) => (
                                 <div key={url}>

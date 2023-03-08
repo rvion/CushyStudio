@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 export const MainActionsUI = observer(function MainActionsUI_() {
     const st = useSt()
     return (
-        <div className='row gap'>
+        <div className='col gap grow'>
             {/* <div>Step: {st.project.currentStep}</div> */}
             <button className='success' onClick={() => st.run()}>
                 Eval

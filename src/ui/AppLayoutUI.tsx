@@ -94,6 +94,12 @@ const defaultLayout = (): LayoutData => ({
                                 title: 'Images',
                                 content: <ArtifactsUI />,
                             },
+                            {
+                                minHeight: 280,
+                                id: 'Graph',
+                                title: 'Graph',
+                                content: <div></div>,
+                            },
                         ],
                     },
                 ],
@@ -107,9 +113,9 @@ const defaultLayout = (): LayoutData => ({
                         title: 'Library',
                         content: (
                             <>
-                                <MainActionsUI />
+                                {/* <MainActionsUI />
                                 <VersionPickerUI />
-                                <NodeListUI />
+                                <NodeListUI /> */}
                             </>
                         ),
                     },
