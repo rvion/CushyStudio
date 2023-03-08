@@ -9,6 +9,7 @@ import { makeAutoObservable, makeObservable, observable } from 'mobx'
 export type RunMode = 'fake' | 'real'
 /** top level base class */
 export abstract class ComfyProject {
+    name: string = 'Default Project'
     serverIP = '192.168.1.19'
     serverPort = 8188
     serverHost = `${this.serverIP}:${this.serverPort}`

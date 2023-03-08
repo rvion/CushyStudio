@@ -1,16 +1,29 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: #383838;
+    font-family: 'Roboto', sans-serif;
 }
+/* COLORS --------------------------------------- */
+.g-loaders { background-color: #446011 }
+.g-latent { background-color: #464689 }
+.g-latent-transform {  background-color: #464689 }
+.g-conditioning { background-color: #481413 }
+.g-conditioning-style_model {  background-color: #0d430d }
+.g-sampling { background-color: #634a1b}
+.g-image { background-color: #541a54}
 
 /* UTILS ---------------------------------------- */
-.gap { gap: .5rem }
+.gap { gap: .7rem }
 .row { display: flex; flex-direction: row; }
 .col { display: flex; flex-direction: column; }
 .grow { flex-grow: 1; }
 .wrap { flex-wrap: wrap; }
 .items-center { align-items: center; }
-.px {padding: 0 1rem;}
+.items-baseline { align-items: baseline; }
+.content-center {justify-content: center;}
+.px {padding: 0 .6rem;}
+.darker {filter: brightness(.9);}
 
 /* CORE ---------------------------------------- */
 button:hover { filter: brightness(1.2); }
@@ -26,17 +39,17 @@ button {
 }
 /* CORE ---------------------------------------- */
 .node{
-    padding: .7rem;
+    /* padding: .7rem; */
     min-height: 2rem;
-    border-radius: .1rem;
+    border-radius: .3rem;
     border: 1px solid #292929;
-    background: #4b4b4b;
+    background: #323232;
 }
 
 /* Property Panel ---------------------------------------- */
 .prop {border-top: 1px solid #333333;}
-.propName { color: #c6c6c6; width: 10rem; text-align: right; margin-right: 1rem; }
-.propValue { color: #fff; font-weight: normal; }
+.propName { color: #c6c6c6; width: 6rem; text-align: right; margin-right: 1rem; }
+.propValue { color: #fff; font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 
 /* App Bar ---------------------------------------- */
 .appbar {
@@ -70,3 +83,5 @@ button {
     height: 1.3rem;
     border: 1px solid white
 }
+/* LAYOUT */
+/* .dock-divider {background-color: red;} */

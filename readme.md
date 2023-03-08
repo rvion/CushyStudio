@@ -1,10 +1,15 @@
-# Intuition
+# ComfyIDE & ComfyScript
 
--   a dev-oridented IDE to build and run any stable diffusion pipeline.
--   a typescript SDK to integrate any complex stable diffusion pipelines into your project
--   type-safety everywhere and best-in-class editor support both for `generated SDK` and `standalone IDE`
--   a SDK generator toolkit to generate SDKs for your own language.
--   built on top / aims to merge with the ComfyUI project.
+monorepo for _ComfyIDE & ComfyScript_
+
+**ComfyScript**: a typescript SDK to integrate any complex stable diffusion pipelines into your project
+
+**ComfyIDE** an IDE to design and experiment with stable diffusion pipelines
+
+# Goals:
+
+-   type-safety everywhere
+-   best-in-class editor support both for `generated SDK` and within the `standalone IDE`.
 
 ---
 

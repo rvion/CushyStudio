@@ -9,7 +9,7 @@ export const VersionPickerUI = observer(function VersionPickerUI_() {
     const VERSIONS: ComfyProjectJSON[] = project?.VERSIONS ?? []
     if (VERSIONS.length === 0) return null
     return (
-        <div className='row gap'>
+        <div className='row gap content-center' style={{ padding: '10px', margin: 'auto' }}>
             Version
             <div className='row'>
                 <input
