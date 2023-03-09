@@ -17,6 +17,7 @@ export const VisUI = observer(function VisUI_(p: {}) {
             nodes: nodes,
             edges: edges,
         }
+        // https://visjs.github.io/vis-network/docs/network/layout.html
         var options: VisOptions = {
             layout: {
                 improvedLayout: true,
