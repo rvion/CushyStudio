@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from './ComfyIDEState'
+import { useSt } from './stContext'
 import { LabelUI } from './LabelUI'
 import { MainActionsUI } from './MainActionsUI'
 
@@ -17,11 +17,7 @@ export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
             <LabelUI title='Prompts'>
                 <div className='row wrap gap'>
                     {st.project.prompts.map((v, ix) => (
-                        <button
-                            //
-                            onClick={() => (st.focus = ix)}
-                            className={st.focus === ix ? 'active' : undefined}
-                        >
+                        <button key={ix} onClick={() => (st.focus = ix)} className={st.focus === ix ? 'active' : undefined}>
                             {ix + 1}
                         </button>
                     ))}

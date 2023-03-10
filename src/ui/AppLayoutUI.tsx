@@ -51,7 +51,7 @@ const defaultLayout = (): LayoutData => ({
 
             {
                 mode: 'vertical',
-                minWidth: 180,
+                minWidth: 300,
                 children: [
                     {
                         tabs: [
@@ -97,12 +97,12 @@ const defaultLayout = (): LayoutData => ({
                     {
                         // mode: 'vertical',
                         tabs: [
-                            {
-                                minHeight: 280,
-                                id: 'Graph',
-                                title: 'Graph',
-                                content: <VisUI />,
-                            },
+                            // {
+                            //     minHeight: 280,
+                            //     id: 'Graph',
+                            //     title: 'Graph',
+                            //     content: <VisUI />,
+                            // },
                         ],
                     },
                     {
@@ -113,6 +113,12 @@ const defaultLayout = (): LayoutData => ({
                                 id: 'artifacts',
                                 title: 'Images',
                                 content: <ArtifactsUI />,
+                            },
+                            {
+                                minHeight: 280,
+                                id: 'Graph',
+                                title: 'Graph',
+                                content: <VisUI />,
                             },
                         ],
                     },

@@ -3,7 +3,7 @@ import * as visData from 'vis-data'
 import * as visNetwork from 'vis-network'
 import type { Edge, Node, Options } from 'vis-network/declarations/network/Network'
 import { useLayoutEffect } from 'react'
-import { useSt } from './ComfyIDEState'
+import { useSt } from './stContext'
 
 export const VisUI = observer(function VisUI_(p: {}) {
     const st = useSt()
@@ -23,8 +23,9 @@ export const VisUI = observer(function VisUI_(p: {}) {
                 improvedLayout: true,
                 hierarchical: {
                     sortMethod: 'directed',
+                    shakeTowards: 'leaves',
                     direction: 'LR',
-                    shakeTowards: 'roots',
+                    // parentCentralization: false,
                 },
             },
         }

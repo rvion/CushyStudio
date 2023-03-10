@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from './ComfyIDEState'
+import { useSt } from './stContext'
 import { NodeRefUI } from './NodeRefUI'
 
 export const ArtifactsUI = observer(function ArtifactsUI_(p: {}) {

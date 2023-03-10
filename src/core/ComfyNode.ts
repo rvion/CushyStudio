@@ -6,36 +6,36 @@ import type { ComfyNodeSchema, NodeInput } from './ComfyNodeSchema'
 import { makeObservable, observable } from 'mobx'
 import { ComfyNodeOutput } from './ComfyNodeOutput'
 
+/** ComfyNode
+ * - correspond to a signal in the graph
+ * - belongs to a script
+ */
 export abstract class ComfyNode<ComfyNode_input extends object> {
     artifacts: { images: string[] }[] = []
     progress: NodeProgress | null = null
     abstract $schema: ComfyNodeSchema
 
     artifactsForStep(step: number): string[] {
-        return this.artifacts[step]?.images.map((i) => `http://${this.comfy.serverHost}/view/${i}`) ?? []
+        return this.artifacts[step]?.images.map((i) => `http://${this.script.serverHost}/view/${i}`) ?? []
     }
 
     get allArtifactsImgs(): string[] {
         return this.artifacts //
             .flatMap((a) => a.images)
-            .map((i) => `http://${this.comfy.serverHost}/view/${i}`)
+            .map((i) => `http://${this.script.serverHost}/view/${i}`)
     }
 
     async get() {
-        await this.comfy.get()
+        await this.script.get()
     }
 
-    // previewInput(name: string): string {
-    //     const i = this.inputs[name]
-    //     if (i instanceof )
-    // }
     constructor(
         //
-        public comfy: ComfyScript,
-        public uid: string = comfy.getUID(),
+        public script: ComfyScript,
+        public uid: string = script.getUID(),
         public inputs: ComfyNode_input,
     ) {
-        this.comfy.nodes.set(this.uid.toString(), this)
+        this.script.nodes.set(this.uid.toString(), this)
         makeObservable(this, { artifacts: observable })
     }
 

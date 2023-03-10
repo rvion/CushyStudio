@@ -25,6 +25,7 @@ monorepo for _ComfyIDE & ComfyScript_
 main front classes
 
 -   ComfyIDEState
+    -   ComfyManager
     -   ComfyProject[]
         -   ComfyScript..
             -   code

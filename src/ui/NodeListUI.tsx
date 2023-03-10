@@ -1,5 +1,5 @@
 import { ComfyNodeJSON, ComfyPromptJSON } from '../core/ComfyNodeJSON'
-import { useSt } from './ComfyIDEState'
+import { useSt } from './stContext'
 import { Comfy, schemas } from '../core/Comfy'
 import { observer } from 'mobx-react-lite'
 import { comfyColors } from '../core/ComfyColors'
