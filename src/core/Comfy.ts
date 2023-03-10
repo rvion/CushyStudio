@@ -1,27 +1,26 @@
-import { ComfyNodeOutput } from './ComfyNodeOutput'
-import { ComfyNodeSchema } from './ComfyNodeSchema'
-import { ComfyNodeUID } from './ComfyNodeUID'
-import { ComfyNode } from './ComfyNode'
-import { ComfyGraph } from './ComfyGraph'
+import type { ComfyNodeOutput } from './ComfyNodeOutput'
+import type { ComfyNodeSchema } from './ComfyNodeSchema'
+import type { ComfyNodeUID } from './ComfyNodeUID'
+import type { ComfyNode } from './ComfyNode'
 
 // TYPES -------------------------------
-type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
-type CONDITIONING = ComfyNodeOutput<'CONDITIONING'>
-type CLIP_VISION = ComfyNodeOutput<'CLIP_VISION'>
-type STYLE_MODEL = ComfyNodeOutput<'STYLE_MODEL'>
-type CONTROL_NET = ComfyNodeOutput<'CONTROL_NET'>
-type LATENT = ComfyNodeOutput<'LATENT'>
-type MODEL = ComfyNodeOutput<'MODEL'>
-type IMAGE = ComfyNodeOutput<'IMAGE'>
-type CLIP = ComfyNodeOutput<'CLIP'>
-type MASK = ComfyNodeOutput<'MASK'>
-type VAE = ComfyNodeOutput<'VAE'>
-type INT = number
-type FLOAT = number
-type STRING = string
+export type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
+export type CONDITIONING = ComfyNodeOutput<'CONDITIONING'>
+export type CLIP_VISION = ComfyNodeOutput<'CLIP_VISION'>
+export type STYLE_MODEL = ComfyNodeOutput<'STYLE_MODEL'>
+export type CONTROL_NET = ComfyNodeOutput<'CONTROL_NET'>
+export type LATENT = ComfyNodeOutput<'LATENT'>
+export type MODEL = ComfyNodeOutput<'MODEL'>
+export type IMAGE = ComfyNodeOutput<'IMAGE'>
+export type CLIP = ComfyNodeOutput<'CLIP'>
+export type MASK = ComfyNodeOutput<'MASK'>
+export type VAE = ComfyNodeOutput<'VAE'>
+export type INT = number
+export type FLOAT = number
+export type STRING = string
 
 // ENUMS -------------------------------
-type enum_KSampler_sampler_name =
+export type enum_KSampler_sampler_name =
     | 'ddim'
     | 'dpm_2'
     | 'dpm_2_ancestral'
@@ -36,8 +35,8 @@ type enum_KSampler_sampler_name =
     | 'lms'
     | 'uni_pc'
     | 'uni_pc_bh2'
-type enum_KSampler_scheduler = 'ddim_uniform' | 'karras' | 'normal' | 'simple'
-type enum_CheckpointLoader_config_name =
+export type enum_KSampler_scheduler = 'ddim_uniform' | 'karras' | 'normal' | 'simple'
+export type enum_CheckpointLoader_config_name =
     | 'anything_v3.yaml'
     | 'v1-inference.yaml'
     | 'v1-inference_clip_skip_2.yaml'
@@ -49,16 +48,16 @@ type enum_CheckpointLoader_config_name =
     | 'v2-inference.yaml'
     | 'v2-inference_fp32.yaml'
     | 'v2-inpainting-inference.yaml'
-type enum_CheckpointLoader_ckpt_name = 'AbyssOrangeMix2_hard.safetensors' | 'v1-5-pruned-emaonly.ckpt'
-type enum_VAELoader_vae_name = 'vae-ft-mse-840000-ema-pruned.safetensors'
-type enum_LatentUpscale_upscale_method = 'area' | 'bilinear' | 'nearest-exact'
-type enum_LatentUpscale_crop = 'center' | 'disabled'
-type enum_LoadImage_image = 'example.png'
-type enum_LoadImageMask_channel = 'alpha' | 'blue' | 'green' | 'red'
-type enum_KSamplerAdvanced_add_noise = 'disable' | 'enable'
-type enum_LatentRotate_rotation = '180 degrees' | '270 degrees' | '90 degrees' | 'none'
-type enum_LatentFlip_flip_method = 'x-axis: vertically' | 'y-axis: horizontally'
-type enum_LoraLoader_lora_name = never
+export type enum_CheckpointLoader_ckpt_name = 'AbyssOrangeMix2_hard.safetensors' | 'v1-5-pruned-emaonly.ckpt'
+export type enum_VAELoader_vae_name = 'vae-ft-mse-840000-ema-pruned.safetensors'
+export type enum_LatentUpscale_upscale_method = 'area' | 'bilinear' | 'nearest-exact'
+export type enum_LatentUpscale_crop = 'center' | 'disabled'
+export type enum_LoadImage_image = 'example.png'
+export type enum_LoadImageMask_channel = 'alpha' | 'blue' | 'green' | 'red'
+export type enum_KSamplerAdvanced_add_noise = 'disable' | 'enable'
+export type enum_LatentRotate_rotation = '180 degrees' | '270 degrees' | '90 degrees' | 'none'
+export type enum_LatentFlip_flip_method = 'x-axis: vertically' | 'y-axis: horizontally'
+export type enum_LoraLoader_lora_name = never
 
 // INTERFACES --------------------------
 export interface HasSingle_MODEL { _MODEL: MODEL } // prettier-ignore
@@ -93,10 +92,8 @@ export interface HasSingle_enum_LoraLoader_lora_name { _enum_LoraLoader_lora_nam
 // |=============================================================================|
 // | KSampler                                                                    |
 // |=============================================================================|
-export class KSampler extends ComfyNode<KSampler_input> {
-    $schema = KSampler_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface KSampler extends HasSingle_LATENT, ComfyNode<KSampler_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const KSampler_schema: ComfyNodeSchema = {
@@ -121,14 +118,10 @@ export type KSampler_input = {
 // |=============================================================================|
 // | CheckpointLoader                                                            |
 // |=============================================================================|
-export class CheckpointLoader extends ComfyNode<CheckpointLoader_input> {
-    $schema = CheckpointLoader_schema
-    MODEL = new ComfyNodeOutput<'MODEL'>(this, 0, 'MODEL')
-    CLIP = new ComfyNodeOutput<'CLIP'>(this, 1, 'CLIP')
-    VAE = new ComfyNodeOutput<'VAE'>(this, 2, 'VAE')
-    get _MODEL() { return this.MODEL } // prettier-ignore
-    get _CLIP() { return this.CLIP } // prettier-ignore
-    get _VAE() { return this.VAE } // prettier-ignore
+export interface CheckpointLoader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, ComfyNode<CheckpointLoader_input> {
+    MODEL: ComfyNodeOutput<'MODEL', 0>
+    CLIP: ComfyNodeOutput<'CLIP', 1>
+    VAE: ComfyNodeOutput<'VAE', 2>
 }
 // prettier-ignore
 export const CheckpointLoader_schema: ComfyNodeSchema = {
@@ -145,14 +138,14 @@ export type CheckpointLoader_input = {
 // |=============================================================================|
 // | CheckpointLoaderSimple                                                      |
 // |=============================================================================|
-export class CheckpointLoaderSimple extends ComfyNode<CheckpointLoaderSimple_input> {
-    $schema = CheckpointLoaderSimple_schema
-    MODEL = new ComfyNodeOutput<'MODEL'>(this, 0, 'MODEL')
-    CLIP = new ComfyNodeOutput<'CLIP'>(this, 1, 'CLIP')
-    VAE = new ComfyNodeOutput<'VAE'>(this, 2, 'VAE')
-    get _MODEL() { return this.MODEL } // prettier-ignore
-    get _CLIP() { return this.CLIP } // prettier-ignore
-    get _VAE() { return this.VAE } // prettier-ignore
+export interface CheckpointLoaderSimple
+    extends HasSingle_MODEL,
+        HasSingle_CLIP,
+        HasSingle_VAE,
+        ComfyNode<CheckpointLoaderSimple_input> {
+    MODEL: ComfyNodeOutput<'MODEL', 0>
+    CLIP: ComfyNodeOutput<'CLIP', 1>
+    VAE: ComfyNodeOutput<'VAE', 2>
 }
 // prettier-ignore
 export const CheckpointLoaderSimple_schema: ComfyNodeSchema = {
@@ -168,10 +161,8 @@ export type CheckpointLoaderSimple_input = {
 // |=============================================================================|
 // | CLIPTextEncode                                                              |
 // |=============================================================================|
-export class CLIPTextEncode extends ComfyNode<CLIPTextEncode_input> {
-    $schema = CLIPTextEncode_schema
-    CONDITIONING = new ComfyNodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
-    get _CONDITIONING() { return this.CONDITIONING } // prettier-ignore
+export interface CLIPTextEncode extends HasSingle_CONDITIONING, ComfyNode<CLIPTextEncode_input> {
+    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
 }
 // prettier-ignore
 export const CLIPTextEncode_schema: ComfyNodeSchema = {
@@ -188,10 +179,8 @@ export type CLIPTextEncode_input = {
 // |=============================================================================|
 // | CLIPSetLastLayer                                                            |
 // |=============================================================================|
-export class CLIPSetLastLayer extends ComfyNode<CLIPSetLastLayer_input> {
-    $schema = CLIPSetLastLayer_schema
-    CLIP = new ComfyNodeOutput<'CLIP'>(this, 0, 'CLIP')
-    get _CLIP() { return this.CLIP } // prettier-ignore
+export interface CLIPSetLastLayer extends HasSingle_CLIP, ComfyNode<CLIPSetLastLayer_input> {
+    CLIP: ComfyNodeOutput<'CLIP', 0>
 }
 // prettier-ignore
 export const CLIPSetLastLayer_schema: ComfyNodeSchema = {
@@ -208,10 +197,8 @@ export type CLIPSetLastLayer_input = {
 // |=============================================================================|
 // | VAEDecode                                                                   |
 // |=============================================================================|
-export class VAEDecode extends ComfyNode<VAEDecode_input> {
-    $schema = VAEDecode_schema
-    IMAGE = new ComfyNodeOutput<'IMAGE'>(this, 0, 'IMAGE')
-    get _IMAGE() { return this.IMAGE } // prettier-ignore
+export interface VAEDecode extends HasSingle_IMAGE, ComfyNode<VAEDecode_input> {
+    IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
 // prettier-ignore
 export const VAEDecode_schema: ComfyNodeSchema = {
@@ -228,10 +215,8 @@ export type VAEDecode_input = {
 // |=============================================================================|
 // | VAEEncode                                                                   |
 // |=============================================================================|
-export class VAEEncode extends ComfyNode<VAEEncode_input> {
-    $schema = VAEEncode_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface VAEEncode extends HasSingle_LATENT, ComfyNode<VAEEncode_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const VAEEncode_schema: ComfyNodeSchema = {
@@ -248,10 +233,8 @@ export type VAEEncode_input = {
 // |=============================================================================|
 // | VAEEncodeForInpaint                                                         |
 // |=============================================================================|
-export class VAEEncodeForInpaint extends ComfyNode<VAEEncodeForInpaint_input> {
-    $schema = VAEEncodeForInpaint_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface VAEEncodeForInpaint extends HasSingle_LATENT, ComfyNode<VAEEncodeForInpaint_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const VAEEncodeForInpaint_schema: ComfyNodeSchema = {
@@ -269,10 +252,8 @@ export type VAEEncodeForInpaint_input = {
 // |=============================================================================|
 // | VAELoader                                                                   |
 // |=============================================================================|
-export class VAELoader extends ComfyNode<VAELoader_input> {
-    $schema = VAELoader_schema
-    VAE = new ComfyNodeOutput<'VAE'>(this, 0, 'VAE')
-    get _VAE() { return this.VAE } // prettier-ignore
+export interface VAELoader extends HasSingle_VAE, ComfyNode<VAELoader_input> {
+    VAE: ComfyNodeOutput<'VAE', 0>
 }
 // prettier-ignore
 export const VAELoader_schema: ComfyNodeSchema = {
@@ -288,10 +269,8 @@ export type VAELoader_input = {
 // |=============================================================================|
 // | EmptyLatentImage                                                            |
 // |=============================================================================|
-export class EmptyLatentImage extends ComfyNode<EmptyLatentImage_input> {
-    $schema = EmptyLatentImage_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface EmptyLatentImage extends HasSingle_LATENT, ComfyNode<EmptyLatentImage_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const EmptyLatentImage_schema: ComfyNodeSchema = {
@@ -309,10 +288,8 @@ export type EmptyLatentImage_input = {
 // |=============================================================================|
 // | LatentUpscale                                                               |
 // |=============================================================================|
-export class LatentUpscale extends ComfyNode<LatentUpscale_input> {
-    $schema = LatentUpscale_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface LatentUpscale extends HasSingle_LATENT, ComfyNode<LatentUpscale_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const LatentUpscale_schema: ComfyNodeSchema = {
@@ -332,9 +309,7 @@ export type LatentUpscale_input = {
 // |=============================================================================|
 // | SaveImage                                                                   |
 // |=============================================================================|
-export class SaveImage extends ComfyNode<SaveImage_input> {
-    $schema = SaveImage_schema
-}
+export interface SaveImage extends ComfyNode<SaveImage_input> {}
 // prettier-ignore
 export const SaveImage_schema: ComfyNodeSchema = {
     type: 'SaveImage',
@@ -350,10 +325,8 @@ export type SaveImage_input = {
 // |=============================================================================|
 // | LoadImage                                                                   |
 // |=============================================================================|
-export class LoadImage extends ComfyNode<LoadImage_input> {
-    $schema = LoadImage_schema
-    IMAGE = new ComfyNodeOutput<'IMAGE'>(this, 0, 'IMAGE')
-    get _IMAGE() { return this.IMAGE } // prettier-ignore
+export interface LoadImage extends HasSingle_IMAGE, ComfyNode<LoadImage_input> {
+    IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
 // prettier-ignore
 export const LoadImage_schema: ComfyNodeSchema = {
@@ -369,10 +342,8 @@ export type LoadImage_input = {
 // |=============================================================================|
 // | LoadImageMask                                                               |
 // |=============================================================================|
-export class LoadImageMask extends ComfyNode<LoadImageMask_input> {
-    $schema = LoadImageMask_schema
-    MASK = new ComfyNodeOutput<'MASK'>(this, 0, 'MASK')
-    get _MASK() { return this.MASK } // prettier-ignore
+export interface LoadImageMask extends HasSingle_MASK, ComfyNode<LoadImageMask_input> {
+    MASK: ComfyNodeOutput<'MASK', 0>
 }
 // prettier-ignore
 export const LoadImageMask_schema: ComfyNodeSchema = {
@@ -389,10 +360,8 @@ export type LoadImageMask_input = {
 // |=============================================================================|
 // | ImageScale                                                                  |
 // |=============================================================================|
-export class ImageScale extends ComfyNode<ImageScale_input> {
-    $schema = ImageScale_schema
-    IMAGE = new ComfyNodeOutput<'IMAGE'>(this, 0, 'IMAGE')
-    get _IMAGE() { return this.IMAGE } // prettier-ignore
+export interface ImageScale extends HasSingle_IMAGE, ComfyNode<ImageScale_input> {
+    IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
 // prettier-ignore
 export const ImageScale_schema: ComfyNodeSchema = {
@@ -412,10 +381,8 @@ export type ImageScale_input = {
 // |=============================================================================|
 // | ImageInvert                                                                 |
 // |=============================================================================|
-export class ImageInvert extends ComfyNode<ImageInvert_input> {
-    $schema = ImageInvert_schema
-    IMAGE = new ComfyNodeOutput<'IMAGE'>(this, 0, 'IMAGE')
-    get _IMAGE() { return this.IMAGE } // prettier-ignore
+export interface ImageInvert extends HasSingle_IMAGE, ComfyNode<ImageInvert_input> {
+    IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
 // prettier-ignore
 export const ImageInvert_schema: ComfyNodeSchema = {
@@ -431,10 +398,8 @@ export type ImageInvert_input = {
 // |=============================================================================|
 // | ConditioningCombine                                                         |
 // |=============================================================================|
-export class ConditioningCombine extends ComfyNode<ConditioningCombine_input> {
-    $schema = ConditioningCombine_schema
-    CONDITIONING = new ComfyNodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
-    get _CONDITIONING() { return this.CONDITIONING } // prettier-ignore
+export interface ConditioningCombine extends HasSingle_CONDITIONING, ComfyNode<ConditioningCombine_input> {
+    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
 }
 // prettier-ignore
 export const ConditioningCombine_schema: ComfyNodeSchema = {
@@ -451,10 +416,8 @@ export type ConditioningCombine_input = {
 // |=============================================================================|
 // | ConditioningSetArea                                                         |
 // |=============================================================================|
-export class ConditioningSetArea extends ComfyNode<ConditioningSetArea_input> {
-    $schema = ConditioningSetArea_schema
-    CONDITIONING = new ComfyNodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
-    get _CONDITIONING() { return this.CONDITIONING } // prettier-ignore
+export interface ConditioningSetArea extends HasSingle_CONDITIONING, ComfyNode<ConditioningSetArea_input> {
+    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
 }
 // prettier-ignore
 export const ConditioningSetArea_schema: ComfyNodeSchema = {
@@ -475,10 +438,8 @@ export type ConditioningSetArea_input = {
 // |=============================================================================|
 // | KSamplerAdvanced                                                            |
 // |=============================================================================|
-export class KSamplerAdvanced extends ComfyNode<KSamplerAdvanced_input> {
-    $schema = KSamplerAdvanced_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface KSamplerAdvanced extends HasSingle_LATENT, ComfyNode<KSamplerAdvanced_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const KSamplerAdvanced_schema: ComfyNodeSchema = {
@@ -506,10 +467,8 @@ export type KSamplerAdvanced_input = {
 // |=============================================================================|
 // | SetLatentNoiseMask                                                          |
 // |=============================================================================|
-export class SetLatentNoiseMask extends ComfyNode<SetLatentNoiseMask_input> {
-    $schema = SetLatentNoiseMask_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface SetLatentNoiseMask extends HasSingle_LATENT, ComfyNode<SetLatentNoiseMask_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const SetLatentNoiseMask_schema: ComfyNodeSchema = {
@@ -526,10 +485,8 @@ export type SetLatentNoiseMask_input = {
 // |=============================================================================|
 // | LatentComposite                                                             |
 // |=============================================================================|
-export class LatentComposite extends ComfyNode<LatentComposite_input> {
-    $schema = LatentComposite_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface LatentComposite extends HasSingle_LATENT, ComfyNode<LatentComposite_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const LatentComposite_schema: ComfyNodeSchema = {
@@ -549,10 +506,8 @@ export type LatentComposite_input = {
 // |=============================================================================|
 // | LatentRotate                                                                |
 // |=============================================================================|
-export class LatentRotate extends ComfyNode<LatentRotate_input> {
-    $schema = LatentRotate_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface LatentRotate extends HasSingle_LATENT, ComfyNode<LatentRotate_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const LatentRotate_schema: ComfyNodeSchema = {
@@ -569,10 +524,8 @@ export type LatentRotate_input = {
 // |=============================================================================|
 // | LatentFlip                                                                  |
 // |=============================================================================|
-export class LatentFlip extends ComfyNode<LatentFlip_input> {
-    $schema = LatentFlip_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface LatentFlip extends HasSingle_LATENT, ComfyNode<LatentFlip_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const LatentFlip_schema: ComfyNodeSchema = {
@@ -589,10 +542,8 @@ export type LatentFlip_input = {
 // |=============================================================================|
 // | LatentCrop                                                                  |
 // |=============================================================================|
-export class LatentCrop extends ComfyNode<LatentCrop_input> {
-    $schema = LatentCrop_schema
-    LATENT = new ComfyNodeOutput<'LATENT'>(this, 0, 'LATENT')
-    get _LATENT() { return this.LATENT } // prettier-ignore
+export interface LatentCrop extends HasSingle_LATENT, ComfyNode<LatentCrop_input> {
+    LATENT: ComfyNodeOutput<'LATENT', 0>
 }
 // prettier-ignore
 export const LatentCrop_schema: ComfyNodeSchema = {
@@ -612,12 +563,9 @@ export type LatentCrop_input = {
 // |=============================================================================|
 // | LoraLoader                                                                  |
 // |=============================================================================|
-export class LoraLoader extends ComfyNode<LoraLoader_input> {
-    $schema = LoraLoader_schema
-    MODEL = new ComfyNodeOutput<'MODEL'>(this, 0, 'MODEL')
-    CLIP = new ComfyNodeOutput<'CLIP'>(this, 1, 'CLIP')
-    get _MODEL() { return this.MODEL } // prettier-ignore
-    get _CLIP() { return this.CLIP } // prettier-ignore
+export interface LoraLoader extends HasSingle_MODEL, HasSingle_CLIP, ComfyNode<LoraLoader_input> {
+    MODEL: ComfyNodeOutput<'MODEL', 0>
+    CLIP: ComfyNodeOutput<'CLIP', 1>
 }
 // prettier-ignore
 export const LoraLoader_schema: ComfyNodeSchema = {
@@ -637,10 +585,8 @@ export type LoraLoader_input = {
 // |=============================================================================|
 // | CLIPLoader                                                                  |
 // |=============================================================================|
-export class CLIPLoader extends ComfyNode<CLIPLoader_input> {
-    $schema = CLIPLoader_schema
-    CLIP = new ComfyNodeOutput<'CLIP'>(this, 0, 'CLIP')
-    get _CLIP() { return this.CLIP } // prettier-ignore
+export interface CLIPLoader extends HasSingle_CLIP, ComfyNode<CLIPLoader_input> {
+    CLIP: ComfyNodeOutput<'CLIP', 0>
 }
 // prettier-ignore
 export const CLIPLoader_schema: ComfyNodeSchema = {
@@ -656,10 +602,8 @@ export type CLIPLoader_input = {
 // |=============================================================================|
 // | CLIPVisionEncode                                                            |
 // |=============================================================================|
-export class CLIPVisionEncode extends ComfyNode<CLIPVisionEncode_input> {
-    $schema = CLIPVisionEncode_schema
-    CLIP_VISION_OUTPUT = new ComfyNodeOutput<'CLIP_VISION_OUTPUT'>(this, 0, 'CLIP_VISION_OUTPUT')
-    get _CLIP_VISION_OUTPUT() { return this.CLIP_VISION_OUTPUT } // prettier-ignore
+export interface CLIPVisionEncode extends HasSingle_CLIP_VISION_OUTPUT, ComfyNode<CLIPVisionEncode_input> {
+    CLIP_VISION_OUTPUT: ComfyNodeOutput<'CLIP_VISION_OUTPUT', 0>
 }
 // prettier-ignore
 export const CLIPVisionEncode_schema: ComfyNodeSchema = {
@@ -676,10 +620,8 @@ export type CLIPVisionEncode_input = {
 // |=============================================================================|
 // | StyleModelApply                                                             |
 // |=============================================================================|
-export class StyleModelApply extends ComfyNode<StyleModelApply_input> {
-    $schema = StyleModelApply_schema
-    CONDITIONING = new ComfyNodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
-    get _CONDITIONING() { return this.CONDITIONING } // prettier-ignore
+export interface StyleModelApply extends HasSingle_CONDITIONING, ComfyNode<StyleModelApply_input> {
+    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
 }
 // prettier-ignore
 export const StyleModelApply_schema: ComfyNodeSchema = {
@@ -697,10 +639,8 @@ export type StyleModelApply_input = {
 // |=============================================================================|
 // | ControlNetApply                                                             |
 // |=============================================================================|
-export class ControlNetApply extends ComfyNode<ControlNetApply_input> {
-    $schema = ControlNetApply_schema
-    CONDITIONING = new ComfyNodeOutput<'CONDITIONING'>(this, 0, 'CONDITIONING')
-    get _CONDITIONING() { return this.CONDITIONING } // prettier-ignore
+export interface ControlNetApply extends HasSingle_CONDITIONING, ComfyNode<ControlNetApply_input> {
+    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
 }
 // prettier-ignore
 export const ControlNetApply_schema: ComfyNodeSchema = {
@@ -719,10 +659,8 @@ export type ControlNetApply_input = {
 // |=============================================================================|
 // | ControlNetLoader                                                            |
 // |=============================================================================|
-export class ControlNetLoader extends ComfyNode<ControlNetLoader_input> {
-    $schema = ControlNetLoader_schema
-    CONTROL_NET = new ComfyNodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
-    get _CONTROL_NET() { return this.CONTROL_NET } // prettier-ignore
+export interface ControlNetLoader extends HasSingle_CONTROL_NET, ComfyNode<ControlNetLoader_input> {
+    CONTROL_NET: ComfyNodeOutput<'CONTROL_NET', 0>
 }
 // prettier-ignore
 export const ControlNetLoader_schema: ComfyNodeSchema = {
@@ -738,10 +676,8 @@ export type ControlNetLoader_input = {
 // |=============================================================================|
 // | DiffControlNetLoader                                                        |
 // |=============================================================================|
-export class DiffControlNetLoader extends ComfyNode<DiffControlNetLoader_input> {
-    $schema = DiffControlNetLoader_schema
-    CONTROL_NET = new ComfyNodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
-    get _CONTROL_NET() { return this.CONTROL_NET } // prettier-ignore
+export interface DiffControlNetLoader extends HasSingle_CONTROL_NET, ComfyNode<DiffControlNetLoader_input> {
+    CONTROL_NET: ComfyNodeOutput<'CONTROL_NET', 0>
 }
 // prettier-ignore
 export const DiffControlNetLoader_schema: ComfyNodeSchema = {
@@ -758,10 +694,8 @@ export type DiffControlNetLoader_input = {
 // |=============================================================================|
 // | T2IAdapterLoader                                                            |
 // |=============================================================================|
-export class T2IAdapterLoader extends ComfyNode<T2IAdapterLoader_input> {
-    $schema = T2IAdapterLoader_schema
-    CONTROL_NET = new ComfyNodeOutput<'CONTROL_NET'>(this, 0, 'CONTROL_NET')
-    get _CONTROL_NET() { return this.CONTROL_NET } // prettier-ignore
+export interface T2IAdapterLoader extends HasSingle_CONTROL_NET, ComfyNode<T2IAdapterLoader_input> {
+    CONTROL_NET: ComfyNodeOutput<'CONTROL_NET', 0>
 }
 // prettier-ignore
 export const T2IAdapterLoader_schema: ComfyNodeSchema = {
@@ -777,10 +711,8 @@ export type T2IAdapterLoader_input = {
 // |=============================================================================|
 // | StyleModelLoader                                                            |
 // |=============================================================================|
-export class StyleModelLoader extends ComfyNode<StyleModelLoader_input> {
-    $schema = StyleModelLoader_schema
-    STYLE_MODEL = new ComfyNodeOutput<'STYLE_MODEL'>(this, 0, 'STYLE_MODEL')
-    get _STYLE_MODEL() { return this.STYLE_MODEL } // prettier-ignore
+export interface StyleModelLoader extends HasSingle_STYLE_MODEL, ComfyNode<StyleModelLoader_input> {
+    STYLE_MODEL: ComfyNodeOutput<'STYLE_MODEL', 0>
 }
 // prettier-ignore
 export const StyleModelLoader_schema: ComfyNodeSchema = {
@@ -796,10 +728,8 @@ export type StyleModelLoader_input = {
 // |=============================================================================|
 // | CLIPVisionLoader                                                            |
 // |=============================================================================|
-export class CLIPVisionLoader extends ComfyNode<CLIPVisionLoader_input> {
-    $schema = CLIPVisionLoader_schema
-    CLIP_VISION = new ComfyNodeOutput<'CLIP_VISION'>(this, 0, 'CLIP_VISION')
-    get _CLIP_VISION() { return this.CLIP_VISION } // prettier-ignore
+export interface CLIPVisionLoader extends HasSingle_CLIP_VISION, ComfyNode<CLIPVisionLoader_input> {
+    CLIP_VISION: ComfyNodeOutput<'CLIP_VISION', 0>
 }
 // prettier-ignore
 export const CLIPVisionLoader_schema: ComfyNodeSchema = {
@@ -815,10 +745,8 @@ export type CLIPVisionLoader_input = {
 // |=============================================================================|
 // | VAEDecodeTiled                                                              |
 // |=============================================================================|
-export class VAEDecodeTiled extends ComfyNode<VAEDecodeTiled_input> {
-    $schema = VAEDecodeTiled_schema
-    IMAGE = new ComfyNodeOutput<'IMAGE'>(this, 0, 'IMAGE')
-    get _IMAGE() { return this.IMAGE } // prettier-ignore
+export interface VAEDecodeTiled extends HasSingle_IMAGE, ComfyNode<VAEDecodeTiled_input> {
+    IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
 // prettier-ignore
 export const VAEDecodeTiled_schema: ComfyNodeSchema = {
@@ -833,44 +761,6 @@ export type VAEDecodeTiled_input = {
 }
 
 // INDEX -------------------------------
-export const nodes = {
-    KSampler,
-    CheckpointLoader,
-    CheckpointLoaderSimple,
-    CLIPTextEncode,
-    CLIPSetLastLayer,
-    VAEDecode,
-    VAEEncode,
-    VAEEncodeForInpaint,
-    VAELoader,
-    EmptyLatentImage,
-    LatentUpscale,
-    SaveImage,
-    LoadImage,
-    LoadImageMask,
-    ImageScale,
-    ImageInvert,
-    ConditioningCombine,
-    ConditioningSetArea,
-    KSamplerAdvanced,
-    SetLatentNoiseMask,
-    LatentComposite,
-    LatentRotate,
-    LatentFlip,
-    LatentCrop,
-    LoraLoader,
-    CLIPLoader,
-    CLIPVisionEncode,
-    StyleModelApply,
-    ControlNetApply,
-    ControlNetLoader,
-    DiffControlNetLoader,
-    T2IAdapterLoader,
-    StyleModelLoader,
-    CLIPVisionLoader,
-    VAEDecodeTiled,
-}
-export type NodeType = keyof typeof nodes
 export const schemas = {
     KSampler: KSampler_schema,
     CheckpointLoader: CheckpointLoader_schema,
@@ -908,46 +798,45 @@ export const schemas = {
     CLIPVisionLoader: CLIPVisionLoader_schema,
     VAEDecodeTiled: VAEDecodeTiled_schema,
 }
-export type ComfyNodeType = keyof typeof nodes
+export type ComfyNodeType = keyof typeof schemas
 
 // Entrypoint --------------------------
-export class Comfy extends ComfyGraph {
-    KSampler = (args: KSampler_input, uid?: ComfyNodeUID) => new KSampler(this, uid, args)
-    CheckpointLoader = (args: CheckpointLoader_input, uid?: ComfyNodeUID) => new CheckpointLoader(this, uid, args)
-    CheckpointLoaderSimple = (args: CheckpointLoaderSimple_input, uid?: ComfyNodeUID) =>
-        new CheckpointLoaderSimple(this, uid, args)
-    CLIPTextEncode = (args: CLIPTextEncode_input, uid?: ComfyNodeUID) => new CLIPTextEncode(this, uid, args)
-    CLIPSetLastLayer = (args: CLIPSetLastLayer_input, uid?: ComfyNodeUID) => new CLIPSetLastLayer(this, uid, args)
-    VAEDecode = (args: VAEDecode_input, uid?: ComfyNodeUID) => new VAEDecode(this, uid, args)
-    VAEEncode = (args: VAEEncode_input, uid?: ComfyNodeUID) => new VAEEncode(this, uid, args)
-    VAEEncodeForInpaint = (args: VAEEncodeForInpaint_input, uid?: ComfyNodeUID) => new VAEEncodeForInpaint(this, uid, args)
-    VAELoader = (args: VAELoader_input, uid?: ComfyNodeUID) => new VAELoader(this, uid, args)
-    EmptyLatentImage = (args: EmptyLatentImage_input, uid?: ComfyNodeUID) => new EmptyLatentImage(this, uid, args)
-    LatentUpscale = (args: LatentUpscale_input, uid?: ComfyNodeUID) => new LatentUpscale(this, uid, args)
-    SaveImage = (args: SaveImage_input, uid?: ComfyNodeUID) => new SaveImage(this, uid, args)
-    LoadImage = (args: LoadImage_input, uid?: ComfyNodeUID) => new LoadImage(this, uid, args)
-    LoadImageMask = (args: LoadImageMask_input, uid?: ComfyNodeUID) => new LoadImageMask(this, uid, args)
-    ImageScale = (args: ImageScale_input, uid?: ComfyNodeUID) => new ImageScale(this, uid, args)
-    ImageInvert = (args: ImageInvert_input, uid?: ComfyNodeUID) => new ImageInvert(this, uid, args)
-    ConditioningCombine = (args: ConditioningCombine_input, uid?: ComfyNodeUID) => new ConditioningCombine(this, uid, args)
-    ConditioningSetArea = (args: ConditioningSetArea_input, uid?: ComfyNodeUID) => new ConditioningSetArea(this, uid, args)
-    KSamplerAdvanced = (args: KSamplerAdvanced_input, uid?: ComfyNodeUID) => new KSamplerAdvanced(this, uid, args)
-    SetLatentNoiseMask = (args: SetLatentNoiseMask_input, uid?: ComfyNodeUID) => new SetLatentNoiseMask(this, uid, args)
-    LatentComposite = (args: LatentComposite_input, uid?: ComfyNodeUID) => new LatentComposite(this, uid, args)
-    LatentRotate = (args: LatentRotate_input, uid?: ComfyNodeUID) => new LatentRotate(this, uid, args)
-    LatentFlip = (args: LatentFlip_input, uid?: ComfyNodeUID) => new LatentFlip(this, uid, args)
-    LatentCrop = (args: LatentCrop_input, uid?: ComfyNodeUID) => new LatentCrop(this, uid, args)
-    LoraLoader = (args: LoraLoader_input, uid?: ComfyNodeUID) => new LoraLoader(this, uid, args)
-    CLIPLoader = (args: CLIPLoader_input, uid?: ComfyNodeUID) => new CLIPLoader(this, uid, args)
-    CLIPVisionEncode = (args: CLIPVisionEncode_input, uid?: ComfyNodeUID) => new CLIPVisionEncode(this, uid, args)
-    StyleModelApply = (args: StyleModelApply_input, uid?: ComfyNodeUID) => new StyleModelApply(this, uid, args)
-    ControlNetApply = (args: ControlNetApply_input, uid?: ComfyNodeUID) => new ControlNetApply(this, uid, args)
-    ControlNetLoader = (args: ControlNetLoader_input, uid?: ComfyNodeUID) => new ControlNetLoader(this, uid, args)
-    DiffControlNetLoader = (args: DiffControlNetLoader_input, uid?: ComfyNodeUID) => new DiffControlNetLoader(this, uid, args)
-    T2IAdapterLoader = (args: T2IAdapterLoader_input, uid?: ComfyNodeUID) => new T2IAdapterLoader(this, uid, args)
-    StyleModelLoader = (args: StyleModelLoader_input, uid?: ComfyNodeUID) => new StyleModelLoader(this, uid, args)
-    CLIPVisionLoader = (args: CLIPVisionLoader_input, uid?: ComfyNodeUID) => new CLIPVisionLoader(this, uid, args)
-    VAEDecodeTiled = (args: VAEDecodeTiled_input, uid?: ComfyNodeUID) => new VAEDecodeTiled(this, uid, args)
+export interface ComfySetup {
+    KSampler(args: KSampler_input, uid?: ComfyNodeUID): KSampler
+    CheckpointLoader(args: CheckpointLoader_input, uid?: ComfyNodeUID): CheckpointLoader
+    CheckpointLoaderSimple(args: CheckpointLoaderSimple_input, uid?: ComfyNodeUID): CheckpointLoaderSimple
+    CLIPTextEncode(args: CLIPTextEncode_input, uid?: ComfyNodeUID): CLIPTextEncode
+    CLIPSetLastLayer(args: CLIPSetLastLayer_input, uid?: ComfyNodeUID): CLIPSetLastLayer
+    VAEDecode(args: VAEDecode_input, uid?: ComfyNodeUID): VAEDecode
+    VAEEncode(args: VAEEncode_input, uid?: ComfyNodeUID): VAEEncode
+    VAEEncodeForInpaint(args: VAEEncodeForInpaint_input, uid?: ComfyNodeUID): VAEEncodeForInpaint
+    VAELoader(args: VAELoader_input, uid?: ComfyNodeUID): VAELoader
+    EmptyLatentImage(args: EmptyLatentImage_input, uid?: ComfyNodeUID): EmptyLatentImage
+    LatentUpscale(args: LatentUpscale_input, uid?: ComfyNodeUID): LatentUpscale
+    SaveImage(args: SaveImage_input, uid?: ComfyNodeUID): SaveImage
+    LoadImage(args: LoadImage_input, uid?: ComfyNodeUID): LoadImage
+    LoadImageMask(args: LoadImageMask_input, uid?: ComfyNodeUID): LoadImageMask
+    ImageScale(args: ImageScale_input, uid?: ComfyNodeUID): ImageScale
+    ImageInvert(args: ImageInvert_input, uid?: ComfyNodeUID): ImageInvert
+    ConditioningCombine(args: ConditioningCombine_input, uid?: ComfyNodeUID): ConditioningCombine
+    ConditioningSetArea(args: ConditioningSetArea_input, uid?: ComfyNodeUID): ConditioningSetArea
+    KSamplerAdvanced(args: KSamplerAdvanced_input, uid?: ComfyNodeUID): KSamplerAdvanced
+    SetLatentNoiseMask(args: SetLatentNoiseMask_input, uid?: ComfyNodeUID): SetLatentNoiseMask
+    LatentComposite(args: LatentComposite_input, uid?: ComfyNodeUID): LatentComposite
+    LatentRotate(args: LatentRotate_input, uid?: ComfyNodeUID): LatentRotate
+    LatentFlip(args: LatentFlip_input, uid?: ComfyNodeUID): LatentFlip
+    LatentCrop(args: LatentCrop_input, uid?: ComfyNodeUID): LatentCrop
+    LoraLoader(args: LoraLoader_input, uid?: ComfyNodeUID): LoraLoader
+    CLIPLoader(args: CLIPLoader_input, uid?: ComfyNodeUID): CLIPLoader
+    CLIPVisionEncode(args: CLIPVisionEncode_input, uid?: ComfyNodeUID): CLIPVisionEncode
+    StyleModelApply(args: StyleModelApply_input, uid?: ComfyNodeUID): StyleModelApply
+    ControlNetApply(args: ControlNetApply_input, uid?: ComfyNodeUID): ControlNetApply
+    ControlNetLoader(args: ControlNetLoader_input, uid?: ComfyNodeUID): ControlNetLoader
+    DiffControlNetLoader(args: DiffControlNetLoader_input, uid?: ComfyNodeUID): DiffControlNetLoader
+    T2IAdapterLoader(args: T2IAdapterLoader_input, uid?: ComfyNodeUID): T2IAdapterLoader
+    StyleModelLoader(args: StyleModelLoader_input, uid?: ComfyNodeUID): StyleModelLoader
+    CLIPVisionLoader(args: CLIPVisionLoader_input, uid?: ComfyNodeUID): CLIPVisionLoader
+    VAEDecodeTiled(args: VAEDecodeTiled_input, uid?: ComfyNodeUID): VAEDecodeTiled
 
     // misc
 }

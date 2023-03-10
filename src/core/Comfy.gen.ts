@@ -73,11 +73,11 @@ export class LibCodegenerator {
     codegen = (): void => {
         const b = new CodeBuffer()
         const p = b.w
-        p(`import { ComfyNodeOutput } from './ComfyNodeOutput'`)
-        p(`import { ComfyNodeSchema } from './ComfyNodeSchema'`)
-        p(`import { ComfyNodeUID } from './ComfyNodeUID'`)
-        p(`import { ComfyNode } from './ComfyNode'`)
-        p(`import { ComfyScript } from './ComfyScript'`)
+        p(`import type { ComfyNodeOutput } from './ComfyNodeOutput'`)
+        p(`import type { ComfyNodeSchema } from './ComfyNodeSchema'`)
+        p(`import type { ComfyNodeUID } from './ComfyNodeUID'`)
+        p(`import type { ComfyNode } from './ComfyNode'`)
+        // p(`import { ComfyScript } from './ComfyScript'`)
 
         p(`\n// TYPES -------------------------------`)
         const types = [...this.knownTypes.values()] //
@@ -86,13 +86,13 @@ export class LibCodegenerator {
 
         for (const t of types) {
             // const tsType = this.toTSType(t)
-            p(`type ${t.comfyType} = ${t.tsType}`)
+            p(`export type ${t.comfyType} = ${t.tsType}`)
         }
 
         p(`\n// ENUMS -------------------------------`)
         for (const e of this.knownEnums.values()) {
-            if (e.values.length > 0) p(`type ${e.name} = ${e.values.map((v) => `'${v}'`).join(' | ')}`)
-            else p(`type ${e.name} = never`)
+            if (e.values.length > 0) p(`export type ${e.name} = ${e.values.map((v) => `'${v}'`).join(' | ')}`)
+            else p(`export type ${e.name} = never`)
         }
 
         p(`\n// INTERFACES --------------------------`)
@@ -107,22 +107,22 @@ export class LibCodegenerator {
         for (const n of this.nodes) p(n.codegen())
 
         p(`\n// INDEX -------------------------------`)
-        p(`export const nodes = {`)
-        for (const n of this.nodes) p(`    ${n.name},`)
-        p(`}`)
-        p(`export type NodeType = keyof typeof nodes`)
+        // p(`export const nodes = {`)
+        // for (const n of this.nodes) p(`    ${n.name},`)
+        // p(`}`)
+        // p(`export type NodeType = keyof typeof nodes`)
 
         p(`export const schemas = {`)
         for (const n of this.nodes) p(`    ${n.name}: ${n.name}_schema,`)
         p(`}`)
-        p(`export type ComfyNodeType = keyof typeof nodes`)
+        p(`export type ComfyNodeType = keyof typeof schemas`)
 
         p(`\n// Entrypoint --------------------------`)
-        p(`export class Comfy extends ComfyScript {`)
+        p(`export interface ComfySetup {`)
 
         // prettier-ignore
         for (const n of this.nodes) {
-            p(`    ${n.name} = (args: ${n.name}_input, uid?: ComfyNodeUID) => new ${n.name}(this, uid, args)`)
+            p(`    ${n.name}(args: ${n.name}_input, uid?: ComfyNodeUID): ${n.name}`)
         }
         p(`\n// misc \n`)
         // prettier-ignore
@@ -148,20 +148,23 @@ export class NodeDecl {
     codegen() {
         const b = new CodeBuffer()
         const p = b.w
+
+        // single type interfaces
+        let x: { [key: string]: number } = {}
+        for (const i of this.outputs) x[i.type] = (x[i.type] ?? 0) + 1
+        const ifaces = this.outputs.filter((i) => x[i.type] === 1).map((i) => `HasSingle_${i.type}`)
+        ifaces.push(`ComfyNode<${this.name}_input>`)
         // inputs
         // p(`\n// ${this.name} -------------------------------`)
         b.bar(this.name)
-        p(`export class ${this.name} extends ComfyNode<${this.name}_input>{`)
-        p(`    $schema = ${this.name}_schema`)
+        p(`export interface ${this.name} extends ${ifaces.join(', ')} {`)
+        // p(`    $schema: ${this.name}_schema`)
         this.outputs.forEach((i, ix) => {
-            p(`    ${i.name} = new ComfyNodeOutput<'${i.type}'>(this, ${ix}, '${i.type}')`)
+            p(`    ${i.name}: ComfyNodeOutput<'${i.type}', ${ix}>,`)
         })
         // INTERFACE
-        let x: { [key: string]: number } = {}
-        for (const i of this.outputs) x[i.type] = (x[i.type] ?? 0) + 1
-        for (const i of this.outputs) {
-            if (x[i.type] === 1) p(`    get _${i.type}() { return this.${i.name} } // prettier-ignore`)
-        }
+        // if (x[i.type] === 1) p(`    get _${i.type}() { return this.${i.name} } // prettier-ignore`)
+        // }
         // CLASS END
         p(`}`)
 

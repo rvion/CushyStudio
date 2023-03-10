@@ -13,7 +13,7 @@ import { ComfyNodeOutput } from './ComfyNodeOutput'
 export abstract class ComfyNode<ComfyNode_input extends object> {
     artifacts: { images: string[] }[] = []
     progress: NodeProgress | null = null
-    abstract $schema: ComfyNodeSchema
+
     get manager() { return this.graph.manager } // prettier-ignore
 
     artifactsForStep(step: number): string[] {
@@ -33,6 +33,7 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
     constructor(
         //
         public graph: ComfyGraph,
+        public $schema: ComfyNodeSchema,
         public uid: string = graph.getUID(),
         public inputs: ComfyNode_input,
     ) {

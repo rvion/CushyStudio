@@ -1,10 +1,10 @@
 import { ComfyNode } from './ComfyNode'
 
-export class ComfyNodeOutput<T> {
+export class ComfyNodeOutput<T, Ix extends number = number> {
     constructor(
         //
         public node: ComfyNode<any>,
-        public slotIx: number,
+        public slotIx: Ix,
         public type: T,
     ) {}
 }
