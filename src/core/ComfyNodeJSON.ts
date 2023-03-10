@@ -5,6 +5,6 @@ export type ComfyNodeJSON = {
     class_type: ComfyNodeType
 }
 
-export type ComfyProjectJSON = {
+export type ComfyPromptJSON = {
     [key: string]: ComfyNodeJSON
 }

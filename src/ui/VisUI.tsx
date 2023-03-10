@@ -3,12 +3,12 @@ import * as visData from 'vis-data'
 import * as visNetwork from 'vis-network'
 import type { Edge, Node, Options } from 'vis-network/declarations/network/Network'
 import { useLayoutEffect } from 'react'
-import { useSt } from './EditorState'
+import { useSt } from './ComfyIDEState'
 
 export const VisUI = observer(function VisUI_(p: {}) {
     const st = useSt()
+    const foo = st.project.visData
     const x = useLayoutEffect(() => {
-        const foo = st.project.visData
         var nodes = new visData.DataSet(foo.nodes)
         var edges = new visData.DataSet(foo.edges)
         var container = document.getElementById('mynetwork')!
@@ -30,12 +30,8 @@ export const VisUI = observer(function VisUI_(p: {}) {
         }
         var network = new visNetwork.Network(container, data, options)
         return
-    }, [])
-    return (
-        <div style={{ height: '100%' }} id='mynetwork'>
-            OKOK
-        </div>
-    )
+    }, [foo])
+    return <div style={{ height: '100%' }} id='mynetwork'></div>
 })
 
 export type VisNodes = Node // { id: string; label: string; color?: string; font?: { color: string } }

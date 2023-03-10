@@ -20,6 +20,16 @@ monorepo for _ComfyIDE & ComfyScript_
 -   [ ] `store` node for persistng node output across flow evaluation
 -   [ ] `promptID` that can be sent to the server to be included in every `'status'` , `'progress'` , `'executing'` & `'executed'` update payloads
 
+## Concepts:
+
+main front classes
+
+-   ComfyIDEState
+    -   ComfyProject[]
+        -   ComfyScript..
+            -   code
+            -   versions[]
+
 ## main scripts
 
 ```sh

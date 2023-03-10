@@ -1,5 +1,5 @@
-import { ComfyNodeJSON, ComfyProjectJSON } from '../core/ComfyNodeJSON'
-import { useSt } from './EditorState'
+import { ComfyNodeJSON, ComfyPromptJSON } from '../core/ComfyNodeJSON'
+import { useSt } from './ComfyIDEState'
 import { Comfy, schemas } from '../core/Comfy'
 import { observer } from 'mobx-react-lite'
 import { comfyColors } from '../core/ComfyColors'
@@ -11,13 +11,13 @@ export const NodeListUI = observer(function NodeListUI_(p: {}) {
     const st = useSt()
     const project: Comfy | null = st.project
     if (project == null) return null
-    const VERSIONS: ComfyProjectJSON[] = project.VERSIONS
+    const VERSIONS: ComfyPromptJSON[] = project.prompts
     const NODES: [uid: ComfyNodeUID, json: ComfyNodeJSON][] =
         st.focus in VERSIONS //
             ? Object.entries(VERSIONS[st.focus])
             : []
     return (
-        <div className='col gap px'>
+        <div className='col gap'>
             <div>Prompt {st.focus + 1}</div>
             {NODES.map(([uid, node]) => (
                 <NodeUI key={uid} uid={uid} node={node} />

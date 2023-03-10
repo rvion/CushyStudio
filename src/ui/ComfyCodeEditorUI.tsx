@@ -2,7 +2,7 @@ import MonacoEditor from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
 import { virtualFilesystem } from './files'
 import { c__ } from './samples/c'
-import { useSt } from './EditorState'
+import { useSt } from './ComfyIDEState'
 import { TypescriptOptions } from './TypescriptOptions'
 
 export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: {}) {

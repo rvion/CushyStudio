@@ -1,4 +1,4 @@
-import { useSt } from './EditorState'
+import { useSt } from './ComfyIDEState'
 import { observer } from 'mobx-react-lite'
 import { comfyColors } from '../core/ComfyColors'
 import { ComfyNodeUID } from '../core/ComfyNodeUID'

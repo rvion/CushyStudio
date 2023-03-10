@@ -1,12 +1,12 @@
-import { ComfyProjectJSON } from '../core/ComfyNodeJSON'
-import { useSt } from './EditorState'
+import { ComfyPromptJSON } from '../core/ComfyNodeJSON'
+import { useSt } from './ComfyIDEState'
 import { observer } from 'mobx-react-lite'
 import { Comfy } from '../core/Comfy'
 
 export const VersionPickerUI = observer(function VersionPickerUI_() {
     const st = useSt()
     const project: Comfy | null = st.project
-    const VERSIONS: ComfyProjectJSON[] = project?.VERSIONS ?? []
+    const VERSIONS: ComfyPromptJSON[] = project?.prompts ?? []
     if (VERSIONS.length === 0) return null
     return (
         <div className='row gap content-center' style={{ padding: '10px', margin: 'auto' }}>

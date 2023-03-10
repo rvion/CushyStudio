@@ -1,5 +1,5 @@
 import type { NodeProgress } from '../client/api'
-import type { ComfyProject } from './ComfyProject'
+import type { ComfyScript } from './ComfyScript'
 import type { ComfyNodeJSON } from './ComfyNodeJSON'
 import type { ComfyNodeSchema, NodeInput } from './ComfyNodeSchema'
 
@@ -31,7 +31,7 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
     // }
     constructor(
         //
-        public comfy: ComfyProject,
+        public comfy: ComfyScript,
         public uid: string = comfy.getUID(),
         public inputs: ComfyNode_input,
     ) {

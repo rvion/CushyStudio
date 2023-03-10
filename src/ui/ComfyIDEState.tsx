@@ -3,11 +3,19 @@
 import { makeAutoObservable } from 'mobx'
 import { Comfy } from '../core/Comfy'
 import { createContext, useContext } from 'react'
-import { RunMode } from '../core/ComfyProject'
+import { RunMode } from '../core/ComfyScript'
 
-export class EditorState {
-    // file: ITextModel | null = null
+/** global IDE State */
+export class ComfyIDEState {
+    serverIP = '192.168.1.19'
+    serverPort = 8188
+    get serverHost() { return `${this.serverIP}:${this.serverPort}` } // prettier-ignore
+
+    /** initial project */
     project: Comfy = new Comfy()
+
+    /** list of known projects */
+    projects: Comfy[] = [this.project]
     focus: number = 0
     code: string = ''
 
@@ -27,9 +35,15 @@ export class EditorState {
     }
 }
 
-export const stContext = createContext<EditorState | null>(null)
+export const stContext = createContext<ComfyIDEState | null>(null)
+
 export const useSt = () => {
     const st = useContext(stContext)
     if (st == null) throw new Error('no st in context')
     return st
+}
+export const useProject = () => {
+    const st = useContext(stContext)
+    if (st == null) throw new Error('no st in context')
+    return st.project
 }

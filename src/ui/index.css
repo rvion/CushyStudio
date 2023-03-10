@@ -4,6 +4,7 @@ body {
     background-color: #383838;
     font-family: 'Roboto', sans-serif;
 }
+
 /* COLORS --------------------------------------- */
 .g-loaders { background-color: #446011 }
 .g-latent { background-color: #464689 }
@@ -15,6 +16,7 @@ body {
 
 /* UTILS ---------------------------------------- */
 .gap { gap: .7rem }
+.gap1 { gap: .3rem }
 .row { display: flex; flex-direction: row; }
 .col { display: flex; flex-direction: column; }
 .grow { flex-grow: 1; }
@@ -22,7 +24,8 @@ body {
 .items-center { align-items: center; }
 .items-baseline { align-items: baseline; }
 .content-center {justify-content: center;}
-.px {padding: 0 .6rem;}
+.px {padding-left: .6rem; padding-right: .6rem;}
+.py {padding-top: .6rem; padding-bottom: .6rem;}
 .darker {filter: brightness(.9);}
 
 /* CORE ---------------------------------------- */
@@ -88,3 +91,25 @@ button.active {
 }
 /* LAYOUT */
 /* .dock-divider {background-color: red;} */
+
+
+.label{
+    color: #95a1ac;
+    /* font-weight: bold */
+}
+input {
+    background-color: #292929;
+    color: #fff;
+    border: 1px solid #333333;
+    font-size: 1em;
+    padding: .1rem .3rem;
+};
+
+.dock-tab > div{
+    background-color: red;
+}
+
+.dock-tabpane {
+    box-sizing: border-box;
+    padding: 10px;
+}

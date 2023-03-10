@@ -77,7 +77,7 @@ export class LibCodegenerator {
         p(`import { ComfyNodeSchema } from './ComfyNodeSchema'`)
         p(`import { ComfyNodeUID } from './ComfyNodeUID'`)
         p(`import { ComfyNode } from './ComfyNode'`)
-        p(`import { ComfyProject } from './ComfyProject'`)
+        p(`import { ComfyScript } from './ComfyScript'`)
 
         p(`\n// TYPES -------------------------------`)
         const types = [...this.knownTypes.values()] //
@@ -118,7 +118,7 @@ export class LibCodegenerator {
         p(`export type ComfyNodeType = keyof typeof nodes`)
 
         p(`\n// Entrypoint --------------------------`)
-        p(`export class Comfy extends ComfyProject {`)
+        p(`export class Comfy extends ComfyScript {`)
 
         // prettier-ignore
         for (const n of this.nodes) {
