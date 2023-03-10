@@ -3,6 +3,7 @@ import * as WS from 'ws'
 import { makeAutoObservable } from 'mobx'
 import { WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
+import { ComfyTypingsGenerator } from './Comfy.gen'
 
 /**
  * global State
@@ -24,6 +25,11 @@ export class ComfyManager {
     fetchPrompHistory = async () => {
         const x = await fetch(`http://${this.serverHost}/history`, {}).then((x) => x.json())
     }
+
+    schemaGenerator = new ComfyTypingsGenerator()
+    $schema: Comfy = (fetchObjectsSchema = async () => {
+        const x = await fetch(`http://${this.serverHost}/object_info`, {}).then((x) => x.json())
+    })
 
     constructor() {
         this.startWSClient()

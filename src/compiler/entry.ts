@@ -1,4 +1,4 @@
-import { Comfy } from '../core/Comfy'
+// import { Comfy } from '../core/Comfy'
 import { ComfyManager } from '../core/ComfyManager'
 import { ComfyProject } from '../core/ComfyProject'
 

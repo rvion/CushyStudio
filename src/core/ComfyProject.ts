@@ -23,7 +23,7 @@ export class ComfyProject {
         throw new Error('🔴 not implemented yet')
     }
 
-    versions: ComfyGraph[] = [new ComfyGraph(this)]
+    versions: ComfyGraph[] = []
 
     get script() {
         return this.versions[this.focus]

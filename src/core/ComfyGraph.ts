@@ -22,6 +22,9 @@ export class ComfyGraph {
 
     constructor(public project: ComfyProject) {
         makeObservable(this, { outputs: observable })
+        // dynamically implement ComfySetup interface
+        const schema = this.project.manager.
+
     }
 
     private _nextUID = 1

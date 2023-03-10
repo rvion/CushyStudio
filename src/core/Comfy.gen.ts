@@ -1,8 +1,7 @@
 import { CodeBuffer } from '../generator/CodeBuffer'
 import { NodeInput, NodeOutput } from './ComfyNodeSchema'
-import spec from './ComfySpec.json' assert { type: 'json' }
-
-const entries = Object.entries(spec)
+import spec2 from './ComfySpec.json' assert { type: 'json' }
+import { ComfySpec } from './ComfySpecType'
 
 export type EnumHash = string
 export type EnumName = string
@@ -13,12 +12,13 @@ const PRIMITIVES: { [key: string]: string } = {
     STRING: 'string',
 }
 
-export class LibCodegenerator {
+export class ComfyTypingsGenerator {
     knownTypes = new Set<string>()
     knownEnums = new Map<EnumHash, { name: EnumName; values: string[] }>()
     nodes: NodeDecl[] = []
 
-    constructor() {
+    constructor(public spec: ComfySpec) {
+        const entries = Object.entries(spec)
         for (const [nodeName, nodeDef] of entries) {
             const requiredInputs = Object.entries(nodeDef.input.required)
             const inputs: NodeInput[] = []
@@ -188,5 +188,5 @@ export class NodeDecl {
 }
 
 // console.log(`test`)
-const main = new LibCodegenerator()
+const main = new ComfyTypingsGenerator(spec2 as any)
 main.codegen()
