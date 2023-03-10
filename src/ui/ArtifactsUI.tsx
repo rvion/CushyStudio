@@ -17,7 +17,7 @@ export const ArtifactsUI = observer(function ArtifactsUI_(p: {}) {
                                     <img
                                         style={{ width: '5rem', height: '5rem' }}
                                         key={url}
-                                        src={`http://${st.project.serverHost}/view/${url}`}
+                                        src={`http://${st.serverHost}/view/${url}`}
                                     />
                                 </div>
                             ))}

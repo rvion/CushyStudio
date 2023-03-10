@@ -1,7 +1,7 @@
 import * as WS from 'ws'
 
 import { makeAutoObservable } from 'mobx'
-import { WsMsg } from '../client/api'
+import { WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
 
 /**
@@ -16,7 +16,7 @@ export class ComfyManager {
     get serverHost() { return `${this.serverIP}:${this.serverPort}` } // prettier-ignore
 
     /** initial project */
-    project: ComfyProject = new ComfyProject()
+    project: ComfyProject = new ComfyProject(this)
 
     /** list of known projects */
     projects: ComfyProject[] = [this.project]

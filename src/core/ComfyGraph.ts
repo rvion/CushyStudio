@@ -1,8 +1,7 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 
 import { makeObservable, observable } from 'mobx'
-import * as WS from 'ws'
-import { ApiPromptInput, ComfyStatus, WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from '../client/api'
+import { ApiPromptInput, ComfyStatus, WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyAPI'
 import { sleep } from '../utils/sleep'
 import { ComfyNode } from './ComfyNode'
 import { ComfyNodeJSON, ComfyPromptJSON } from './ComfyNodeJSON'
@@ -10,14 +9,22 @@ import { ComfyNodeUID } from './ComfyNodeUID'
 import { schemas } from './Comfy'
 import { ComfyNodeSchema } from './ComfyNodeSchema'
 import { comfyColors } from './ComfyColors'
+import { ComfyManager } from './ComfyManager'
+import { ComfyProject } from './ComfyProject'
 
 export type RunMode = 'fake' | 'real'
-/** top level base class */
-export abstract class ComfyScript {
-    name: string = 'Default Project'
-    nodes = new Map<string, ComfyNode<any>>()
 
-    // typedefs: string = ''
+export class ComfyGraph {
+    // name: string = 'Default Project'
+    nodes = new Map<string, ComfyNode<any>>()
+    get manager(): ComfyManager { return this.project.manager } // prettier-ignore
+    isRunning = false
+
+    constructor(public project: ComfyProject) {
+        makeObservable(this, { outputs: observable })
+    }
+
+    /** return json for visjs network visualisation */
     get visData(): { nodes: VisNodes[]; edges: VisEdges[] } {
         const json: ComfyPromptJSON = this.prompts[0]
         const nodes: VisNodes[] = []
@@ -45,12 +52,9 @@ export abstract class ComfyScript {
         return { nodes, edges }
     }
 
-    isRunning = false
-    runningMode: RunMode = 'fake'
-
     EVAL = async (code: string, mode: RunMode = 'fake'): Promise<boolean> => {
         if (this.isRunning) return false
-        this.runningMode = mode
+        // this.runningMode = mode
         if (mode === 'real') this.isRunning = true
         if (code == null) {
             console.log('❌', 'no code to run')
@@ -73,25 +77,6 @@ export abstract class ComfyScript {
 
     private _nextUID = 1
     getUID = () => (this._nextUID++).toString()
-
-    constructor() {
-        const ws =
-            typeof window !== 'undefined'
-                ? new WebSocket(`ws://${this.serverHost}/ws`)
-                : new WS.WebSocket(`ws://${this.serverHost}/ws`)
-        ws.binaryType = 'arraybuffer'
-        ws.onopen = () => console.log('connected')
-        ws.onmessage = (e: WS.MessageEvent) => {
-            const msg: WsMsg = JSON.parse(e.data as any)
-            console.log('>>', JSON.stringify(msg))
-            if (msg.type === 'status') return this.onStatus(msg)
-            if (msg.type === 'progress') return this.onProgress(msg)
-            if (msg.type === 'executing') return this.onExecuting(msg)
-            if (msg.type === 'executed') return this.onExecuted(msg)
-            throw new Error('Unknown message type: ' + msg)
-        }
-        makeObservable(this, { outputs: observable })
-    }
 
     getNodeOrCrash = (nodeID: ComfyNodeUID): ComfyNode<any> => {
         const node = this.nodes.get(nodeID)
@@ -124,8 +109,6 @@ export abstract class ComfyScript {
         console.log(node.artifacts)
     }
 
-    prompts: ComfyPromptJSON[] = []
-
     async get() {
         const currentJSON = this.toJSON()
         this.prompts.push(currentJSON)
@@ -135,7 +118,7 @@ export abstract class ComfyScript {
             extra_data: { extra_pnginfo: { it: 'works' } },
             prompt: currentJSON,
         }
-        const res = await fetch(`http://${this.serverHost}/prompt`, {
+        const res = await fetch(`http://${this.manager.serverHost}/prompt`, {
             method: 'POST',
             body: JSON.stringify(out),
         })

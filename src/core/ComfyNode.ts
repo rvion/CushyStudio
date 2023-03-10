@@ -1,5 +1,5 @@
-import type { NodeProgress } from '../client/api'
-import type { ComfyScript } from './ComfyScript'
+import type { NodeProgress } from './ComfyAPI'
+import type { ComfyGraph } from './ComfyGraph'
 import type { ComfyNodeJSON } from './ComfyNodeJSON'
 import type { ComfyNodeSchema, NodeInput } from './ComfyNodeSchema'
 
@@ -14,15 +14,16 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
     artifacts: { images: string[] }[] = []
     progress: NodeProgress | null = null
     abstract $schema: ComfyNodeSchema
+    get manager() { return this.script.manager } // prettier-ignore
 
     artifactsForStep(step: number): string[] {
-        return this.artifacts[step]?.images.map((i) => `http://${this.script.serverHost}/view/${i}`) ?? []
+        return this.artifacts[step]?.images.map((i) => `http://${this.manager.serverHost}/view/${i}`) ?? []
     }
 
     get allArtifactsImgs(): string[] {
         return this.artifacts //
             .flatMap((a) => a.images)
-            .map((i) => `http://${this.script.serverHost}/view/${i}`)
+            .map((i) => `http://${this.manager.serverHost}/view/${i}`)
     }
 
     async get() {
@@ -31,7 +32,7 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
 
     constructor(
         //
-        public script: ComfyScript,
+        public script: ComfyGraph,
         public uid: string = script.getUID(),
         public inputs: ComfyNode_input,
     ) {

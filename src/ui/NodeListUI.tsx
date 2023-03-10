@@ -6,11 +6,11 @@ import { comfyColors } from '../core/ComfyColors'
 import { ComfyNodeUID } from '../core/ComfyNodeUID'
 import { ComfyNodeSchema } from '../core/ComfyNodeSchema'
 import { NodeRefUI } from './NodeRefUI'
+import { ComfyManager } from '../core/ComfyManager'
 
 export const NodeListUI = observer(function NodeListUI_(p: {}) {
     const st = useSt()
-    const project: Comfy | null = st.project
-    if (project == null) return null
+    const project = st.project.script
     const VERSIONS: ComfyPromptJSON[] = project.prompts
     const NODES: [uid: ComfyNodeUID, json: ComfyNodeJSON][] =
         st.focus in VERSIONS //

@@ -13,7 +13,7 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: {}) {
             theme='vs-dark'
             onChange={(value) => {
                 if (value == null) return
-                st.udpateCode(value, 'fake')
+                st.project.udpateCode(value, 'fake')
             }}
             onMount={(editor, monaco) => {
                 const compilerOptions: TypescriptOptions = {
@@ -32,7 +32,7 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: {}) {
                 }
                 const aModel = monaco.editor.getModel(monaco.Uri.parse(`file:///a.ts`))
                 // st.file = aModel
-                st.udpateCode(virtualFilesystem['a.ts'].value, 'fake')
+                st.project.udpateCode(virtualFilesystem['a.ts'].value, 'fake')
                 editor.setModel(aModel)
             }}
         />
