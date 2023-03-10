@@ -24,57 +24,6 @@ export class ComfyGraph {
         makeObservable(this, { outputs: observable })
     }
 
-    /** return json for visjs network visualisation */
-    get visData(): { nodes: VisNodes[]; edges: VisEdges[] } {
-        const json: ComfyPromptJSON = this.prompts[0]
-        const nodes: VisNodes[] = []
-        const edges: VisEdges[] = []
-        if (json == null) return { nodes: [], edges: [] }
-        for (const [uid, node] of Object.entries(json)) {
-            const schema: ComfyNodeSchema = schemas[node.class_type]
-            const color = comfyColors[schema.category]
-            nodes.push({ id: uid, label: node.class_type, color, font: { color: 'white' }, shape: 'box' })
-            for (const [name, val] of Object.entries(node.inputs)) {
-                if (val instanceof Array) {
-                    const [from, slotIx] = val
-                    edges.push({
-                        id: `${from}-${uid}-${slotIx}`,
-                        from,
-                        to: uid,
-                        arrows: 'to',
-                        label: name,
-                        labelHighlightBold: false,
-                        length: 200,
-                    })
-                }
-            }
-        }
-        return { nodes, edges }
-    }
-
-    EVAL = async (code: string, mode: RunMode = 'fake'): Promise<boolean> => {
-        if (this.isRunning) return false
-        // this.runningMode = mode
-        if (mode === 'real') this.isRunning = true
-        if (code == null) {
-            console.log('❌', 'no code to run')
-            this.isRunning = false
-            return false
-        }
-        try {
-            const finalCode = code.replace(`export {}`, '')
-            const BUILD = new Function('C', `return (async() => { ${finalCode} })()`)
-            await BUILD(this)
-            console.log('✅')
-            this.isRunning = false
-            return true
-        } catch (error) {
-            console.log('❌', error)
-            this.isRunning = false
-            return false
-        }
-    }
-
     private _nextUID = 1
     getUID = () => (this._nextUID++).toString()
 
@@ -109,6 +58,7 @@ export class ComfyGraph {
         console.log(node.artifacts)
     }
 
+    // COMMIT --------------------------------------------
     async get() {
         const currentJSON = this.toJSON()
         this.prompts.push(currentJSON)
@@ -126,6 +76,8 @@ export class ComfyGraph {
         return res
     }
 
+    // OUTPUTS --------------------------------------------
+    /** Comfy Prompt JSON format */
     toJSON(): ComfyPromptJSON {
         const nodes = Array.from(this.nodes.values())
         const out: { [key: string]: ComfyNodeJSON } = {}
@@ -133,5 +85,33 @@ export class ComfyGraph {
             out[node.uid] = node.toJSON()
         }
         return out
+    }
+
+    /** visjs JSON format (network visualisation) */
+    get visData(): { nodes: VisNodes[]; edges: VisEdges[] } {
+        const json: ComfyPromptJSON = this.prompts[0]
+        const nodes: VisNodes[] = []
+        const edges: VisEdges[] = []
+        if (json == null) return { nodes: [], edges: [] }
+        for (const [uid, node] of Object.entries(json)) {
+            const schema: ComfyNodeSchema = schemas[node.class_type]
+            const color = comfyColors[schema.category]
+            nodes.push({ id: uid, label: node.class_type, color, font: { color: 'white' }, shape: 'box' })
+            for (const [name, val] of Object.entries(node.inputs)) {
+                if (val instanceof Array) {
+                    const [from, slotIx] = val
+                    edges.push({
+                        id: `${from}-${uid}-${slotIx}`,
+                        from,
+                        to: uid,
+                        arrows: 'to',
+                        label: name,
+                        labelHighlightBold: false,
+                        length: 200,
+                    })
+                }
+            }
+        }
+        return { nodes, edges }
     }
 }

@@ -14,7 +14,7 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
     artifacts: { images: string[] }[] = []
     progress: NodeProgress | null = null
     abstract $schema: ComfyNodeSchema
-    get manager() { return this.script.manager } // prettier-ignore
+    get manager() { return this.graph.manager } // prettier-ignore
 
     artifactsForStep(step: number): string[] {
         return this.artifacts[step]?.images.map((i) => `http://${this.manager.serverHost}/view/${i}`) ?? []
@@ -27,28 +27,26 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
     }
 
     async get() {
-        await this.script.get()
+        await this.graph.get()
     }
 
     constructor(
         //
-        public script: ComfyGraph,
-        public uid: string = script.getUID(),
+        public graph: ComfyGraph,
+        public uid: string = graph.getUID(),
         public inputs: ComfyNode_input,
     ) {
-        this.script.nodes.set(this.uid.toString(), this)
+        this.graph.nodes.set(this.uid.toString(), this)
         makeObservable(this, { artifacts: observable })
     }
 
     toJSON(): ComfyNodeJSON {
-        const out: { [key: string]: any } = {}
+        const inputs: { [key: string]: any } = {}
+        const class_type = this.$schema.type
         for (const [name, val] of Object.entries(this.inputs)) {
-            out[name] = this.serializeValue(name, val)
+            inputs[name] = this.serializeValue(name, val)
         }
-        return {
-            inputs: out,
-            class_type: this.$schema.type,
-        }
+        return { inputs, class_type }
     }
 
     getExpecteTypeForField(name: string): string {
@@ -72,13 +70,3 @@ export abstract class ComfyNode<ComfyNode_input extends object> {
         return value
     }
 }
-
-// const out: ApiPromptInput = {
-//     client_id: 'dd78de15f4fb45d29166925ed85b44c0',
-//     extra_data: { extra_pnginfo: { it: 'works' } },
-//     prompt: this.comfy.toJSON(),
-// }
-// const res = await fetch('http://192.168.1.19:8188/prompt', {
-//     method: 'POST',
-//     body: JSON.stringify(out),
-// })
