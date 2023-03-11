@@ -15,7 +15,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     artifacts: { images: string[] }[] = []
     progress: NodeProgress | null = null
 
-    get manager() { return this.graph.manager } // prettier-ignore
+    get manager() { return this.graph.client } // prettier-ignore
 
     artifactsForStep(step: number): string[] {
         return this.artifacts[step]?.images.map((i) => `http://${this.manager.serverHost}/view/${i}`) ?? []
@@ -38,7 +38,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         public uid: string = graph.getUID(),
         public json: ComfyNodeJSON,
     ) {
-        this.$schema = graph.project.manager.schema[json.class_type]
+        this.$schema = graph.project.client.schema[json.class_type]
         this.graph.nodes.set(this.uid.toString(), this)
         makeObservable(this, { artifacts: observable })
     }

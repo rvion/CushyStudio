@@ -16,3 +16,5 @@ export type Tagged<O, Tab> = O & { __tag?: Tab }
 export type Branded<O, Brand> = O & { __brand: Brand }
 
 export type Maybe<T> = T | null | undefined
+
+export const deepCopyNaive = <T>(x: T): T => JSON.parse(JSON.stringify(x))

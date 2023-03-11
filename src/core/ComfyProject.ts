@@ -14,7 +14,7 @@ export class ComfyProject {
     code: string = ''
     // script: ComfyScript = new ComfyScript(this)
 
-    constructor(public manager: ComfyClient) {
+    constructor(public client: ComfyClient) {
         makeAutoObservable(this)
     }
 
@@ -23,15 +23,11 @@ export class ComfyProject {
         throw new Error('🔴 not implemented yet')
     }
 
-    versions: ComfyGraph[] = []
+    graphs: ComfyGraph[] = []
 
-    get script() {
-        return this.versions[this.focus]
-    }
-
-    get outputs() {
-        return this.script.outputs
-    }
+    get currentGraph() { return this.graphs[this.focus] } // prettier-ignore
+    get currentOutputs() { return this.currentGraph.outputs } // prettier-ignore
+    get schema() { return this.client.schema } // prettier-ignore
 
     run = async () => {
         return this.udpateCode(this.code, 'real')
@@ -68,7 +64,7 @@ export class ComfyProject {
 
     udpateCode = async (code: string, mode: RunMode) => {
         this.code = code
-        const script = new ComfyGraph(this)
+        // const script = new ComfyGraph(this)
         // const result = await script.EVAL(code, mode)
         // if (result) this.script = script
     }

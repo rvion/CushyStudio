@@ -16,8 +16,12 @@ export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
             </LabelUI>
             <LabelUI title='Prompts'>
                 <div className='row wrap gap'>
-                    {st.project.prompts.map((v, ix) => (
-                        <button key={ix} onClick={() => (st.focus = ix)} className={st.focus === ix ? 'active' : undefined}>
+                    {st.project.graphs.map((v, ix) => (
+                        <button
+                            key={ix}
+                            onClick={() => (project.focus = ix)}
+                            className={project.focus === ix ? 'active' : undefined}
+                        >
                             {ix + 1}
                         </button>
                     ))}

@@ -1,12 +1,13 @@
 import { ComfyPromptJSON } from '../core/ComfyPrompt'
 import { useSt } from './stContext'
 import { observer } from 'mobx-react-lite'
-import { Comfy } from '../core/Comfy'
+import { ComfyProject } from '../core/ComfyProject'
+import { ComfyGraph } from '../core/ComfyGraph'
 
 export const VersionPickerUI = observer(function VersionPickerUI_() {
     const st = useSt()
-    const project: Comfy | null = st.project
-    const VERSIONS: ComfyPromptJSON[] = project?.prompts ?? []
+    const project: ComfyProject = st.project
+    const VERSIONS: ComfyGraph[] = project.graphs
     if (VERSIONS.length === 0) return null
     return (
         <div className='row gap content-center' style={{ padding: '10px', margin: 'auto' }}>
@@ -16,8 +17,8 @@ export const VersionPickerUI = observer(function VersionPickerUI_() {
                     min={0}
                     max={VERSIONS.length - 1}
                     type='number'
-                    value={st.focus}
-                    onChange={(ev) => (st.focus = parseInt(ev.target.value, 10))}
+                    value={project.focus}
+                    onChange={(ev) => (project.focus = parseInt(ev.target.value, 10))}
                 />{' '}
                 / {VERSIONS.length}
             </div>

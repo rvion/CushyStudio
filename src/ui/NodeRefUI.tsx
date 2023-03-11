@@ -7,7 +7,7 @@ export const NodeRefUI = observer(function NodeRefUI_(p: { nodeUID: ComfyNodeUID
     const st = useSt()
     const project = st.project
     if (project == null) return null
-    const node = project.nodes.get(p.nodeUID)
+    const node = project.currentGraph.nodes.get(p.nodeUID)
     if (node == null) {
         return <>❌ error</>
     } else {

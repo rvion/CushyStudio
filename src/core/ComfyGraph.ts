@@ -1,41 +1,40 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 
 import { makeObservable, observable } from 'mobx'
-import { ApiPromptInput, ComfyStatus, WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyAPI'
-import { sleep } from './ComfyUtils'
-import { ComfyNode } from './ComfyNode'
-import { ComfyNodeJSON, ComfyPromptJSON } from './ComfyPrompt'
-import { ComfyNodeUID } from './ComfyNodeUID'
-import { comfyColors } from './ComfyColors'
+import { ApiPromptInput, ComfyStatus, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyAPI'
 import { ComfyClient } from './ComfyClient'
+import { comfyColors } from './ComfyColors'
+import { ComfyNode } from './ComfyNode'
+import { ComfyNodeUID } from './ComfyNodeUID'
 import { ComfyProject } from './ComfyProject'
+import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfyNodeSchema } from './ComfySchema'
+import { deepCopyNaive, sleep } from './ComfyUtils'
 
 export type RunMode = 'fake' | 'real'
 
 export class ComfyGraph {
-    // name: string = 'Default Project'
+    get client(): ComfyClient { return this.project.client } // prettier-ignore
+    get schema() { return this.client.schema } // prettier-ignore
     nodes = new Map<string, ComfyNode<any>>()
-    get manager(): ComfyClient { return this.project.manager } // prettier-ignore
     isRunning = false
 
     constructor(
         //
         public project: ComfyProject,
-        public json: ComfyPromptJSON,
+        public json: ComfyPromptJSON = {},
     ) {
         makeObservable(this, { outputs: observable })
         for (const [uid, node] of Object.entries(json)) {
             new ComfyNode(this, uid, node)
         }
         // dynamically implement ComfySetup interface
-        const spec = project.manager.schema
-        const schema = this.project.manager.schema //
+        const spec = project.client.schema
+        const schema = this.project.client.schema //
     }
 
     private _nextUID = 1
     getUID = () => (this._nextUID++).toString()
-
     getNodeOrCrash = (nodeID: ComfyNodeUID): ComfyNode<any> => {
         const node = this.nodes.get(nodeID)
         if (node == null) throw new Error('Node not found:' + nodeID)
@@ -67,20 +66,19 @@ export class ComfyGraph {
         console.log(node.artifacts)
     }
 
-    prompts: ComfyPromptJSON[] = [] // 🔴
     runningMode: RunMode = 'fake' // 🔴
 
     // COMMIT --------------------------------------------
     async get() {
-        const currentJSON = this.toJSON()
-        this.prompts.push(currentJSON)
+        const currentJSON = deepCopyNaive(this.json)
+        this.project.graphs.push(new ComfyGraph(this.project, currentJSON))
         if (this.runningMode === 'fake') return null
         const out: ApiPromptInput = {
             client_id: 'super',
             extra_data: { extra_pnginfo: { it: 'works' } },
             prompt: currentJSON,
         }
-        const res = await fetch(`http://${this.manager.serverHost}/prompt`, {
+        const res = await fetch(`http://${this.client.serverHost}/prompt`, {
             method: 'POST',
             body: JSON.stringify(out),
         })
@@ -90,18 +88,19 @@ export class ComfyGraph {
 
     // OUTPUTS --------------------------------------------
     /** Comfy Prompt JSON format */
-    toJSON(): ComfyPromptJSON {
-        const nodes = Array.from(this.nodes.values())
-        const out: { [key: string]: ComfyNodeJSON } = {}
-        for (const node of nodes) {
-            out[node.uid] = node.toJSON()
-        }
-        return out
-    }
+    // toJSON(): ComfyPromptJSON {
+    //     const nodes = Array.from(this.nodes.values())
+    //     const out: { [key: string]: ComfyNodeJSON } = {}
+    //     for (const node of nodes) {
+    //         out[node.uid] = node.toJSON()
+    //     }
+    //     return out
+    // }
 
     /** visjs JSON format (network visualisation) */
     get visData(): { nodes: VisNodes[]; edges: VisEdges[] } {
-        const json: ComfyPromptJSON = this.prompts[0]
+        const json: ComfyPromptJSON = this.json
+        const schemas = this.project.client.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }

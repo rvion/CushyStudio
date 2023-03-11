@@ -6,7 +6,7 @@ export const ArtifactsUI = observer(function ArtifactsUI_(p: {}) {
     const st = useSt()
     return (
         <div className='row gap'>
-            {st.project.outputs.map((o, ix) => {
+            {st.project.currentOutputs.map((o, ix) => {
                 return (
                     <div key={ix}>
                         <h3>Prompt {ix + 1}</h3>

@@ -1,5 +1,4 @@
 import { CodeBuffer } from './CodeBuffer'
-import { NodeInput, NodeOutput } from './ComfyNodeSchema'
 // import spec2 from './_ComfySampleSpec.json' assert { type: 'json' }
 import { ComfySchema } from './ComfySchema'
 
