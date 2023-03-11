@@ -1,11 +1,11 @@
-import type { ComfySpec } from './ComfySpecType'
+import type { ComfySchema } from './ComfySchema'
 import type { Maybe } from './ComfyUtils'
 
 import { makeAutoObservable } from 'mobx'
-import { ComfyManager } from './ComfyManager'
+import { ComfyClient } from './ComfyClient'
 
 /** helper to instanciate a comfy manager up-to-date with latest backend setup */
-export class ComfyBackendInfos {
+export class ComfyServerInfos {
     serverIP = '192.168.1.19'
     serverPort = 8188
     get serverHost() { return `${this.serverIP}:${this.serverPort}` } // prettier-ignore
@@ -14,11 +14,11 @@ export class ComfyBackendInfos {
         makeAutoObservable(this)
     }
 
-    manager: Maybe<ComfyManager>
-    connect = async (): Promise<ComfyManager> => {
-        const schema: ComfySpec = await this.fetchObjectsSchema()
+    manager: Maybe<ComfyClient>
+    connect = async (): Promise<ComfyClient> => {
+        const schema: ComfySchema = await this.fetchObjectsSchema()
         console.log('🚀 ~ file: ComfyBackendInfos.ts:20 ~ ComfyBackendInfos ~ connect= ~ schema:', schema)
-        this.manager = new ComfyManager({
+        this.manager = new ComfyClient({
             serverIP: this.serverIP,
             serverPort: this.serverPort,
             spec: schema,
@@ -27,7 +27,7 @@ export class ComfyBackendInfos {
     }
 
     /** retri e the comfy spec from the schema*/
-    fetchObjectsSchema = async (): Promise<ComfySpec> => {
+    fetchObjectsSchema = async (): Promise<ComfySchema> => {
         const x = await fetch(`http://${this.serverHost}/object_info`, {}).then((x) => x.json())
         return x
     }

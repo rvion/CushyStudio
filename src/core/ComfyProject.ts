@@ -1,7 +1,7 @@
 import { RunMode } from './ComfyGraph'
 import { makeAutoObservable } from 'mobx'
 import { ComfyGraph } from './ComfyGraph'
-import { ComfyManager } from './ComfyManager'
+import { ComfyClient } from './ComfyClient'
 import { ComfyPromptJSON } from './ComfyNodeJSON'
 
 export class ComfyProject {
@@ -14,7 +14,7 @@ export class ComfyProject {
     code: string = ''
     // script: ComfyScript = new ComfyScript(this)
 
-    constructor(public manager: ComfyManager) {
+    constructor(public manager: ComfyClient) {
         makeAutoObservable(this)
     }
 

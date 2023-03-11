@@ -3,12 +3,12 @@ import 'rc-dock/dist/rc-dock-dark.css'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
-import { ComfyBackendInfos } from '../core/ComfyBackendInfos'
+import { ComfyServerInfos } from '../core/ComfyServerInfos'
 import { AppLayoutUI } from './AppLayoutUI'
 import { stContext } from './stContext'
 
 export const AppUI = observer(function AppUI_() {
-    const backend = useMemo(() => new ComfyBackendInfos(), [])
+    const backend = useMemo(() => new ComfyServerInfos(), [])
 
     if (backend.manager)
         return (

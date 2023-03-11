@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
-import { ComfyManager } from '../core/ComfyManager'
+import { ComfyClient } from '../core/ComfyClient'
 
-export const stContext = createContext<ComfyManager | null>(null)
+export const stContext = createContext<ComfyClient | null>(null)
 
 export const useSt = () => {
     const st = useContext(stContext)

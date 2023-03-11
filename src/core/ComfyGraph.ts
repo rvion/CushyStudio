@@ -9,21 +9,31 @@ import { ComfyNodeUID } from './ComfyNodeUID'
 import { schemas } from './Comfy'
 import { ComfyNodeSchema } from './ComfyNodeSchema'
 import { comfyColors } from './ComfyColors'
-import { ComfyManager } from './ComfyManager'
+import { ComfyClient } from './ComfyClient'
 import { ComfyProject } from './ComfyProject'
+import { ComfyNodeSchema } from './ComfySchema'
 
 export type RunMode = 'fake' | 'real'
 
 export class ComfyGraph {
     // name: string = 'Default Project'
     nodes = new Map<string, ComfyNode<any>>()
-    get manager(): ComfyManager { return this.project.manager } // prettier-ignore
+    get manager(): ComfyClient { return this.project.manager } // prettier-ignore
     isRunning = false
 
-    constructor(public project: ComfyProject) {
+    constructor(
+        //
+        public project: ComfyProject,
+        public json: ComfyPromptJSON,
+    ) {
         makeObservable(this, { outputs: observable })
+        const spec = project.manager.spec
+        for (const [uid, node] of Object.entries(json)) {
+            const schema: ComfyNodeSchema = spec[node.class_type]
+            new ComfyNode(this, schema, uid, node.inputs)
+        }
         // dynamically implement ComfySetup interface
-        const schema = this.project.manager.schema //
+        const schema = this.project.manager.spec //
     }
 
     private _nextUID = 1
@@ -59,6 +69,9 @@ export class ComfyGraph {
         node.artifacts.push(msg.data.output)
         console.log(node.artifacts)
     }
+
+    prompts: ComfyPromptJSON[] = [] // 🔴
+    runningMode: RunMode = 'fake' // 🔴
 
     // COMMIT --------------------------------------------
     async get() {

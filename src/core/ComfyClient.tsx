@@ -4,12 +4,12 @@ import { makeAutoObservable } from 'mobx'
 import { WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
 import { ComfyTypingsGenerator } from './ComfyTypingsGenerator'
-import { ComfySpec } from './ComfySpecType'
+import { ComfySchema } from './ComfySchema'
 
 export type ComfyManagerOptions = {
     serverIP: string
     serverPort: number
-    spec: ComfySpec
+    spec: ComfySchema
 }
 
 /**
@@ -18,10 +18,10 @@ export type ComfyManagerOptions = {
  *  - manages list of known / open projects
  *  - dispatches messages to the right projects
  */
-export class ComfyManager {
+export class ComfyClient {
     serverIP: string
     serverPort: number
-    spec: ComfySpec
+    spec: ComfySchema
     schemaGenerator: ComfyTypingsGenerator
     libDTS: string
     constructor(opts: ComfyManagerOptions) {

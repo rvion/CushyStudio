@@ -5,6 +5,7 @@ import type { ComfyNodeSchema, NodeInput } from './ComfyNodeSchema'
 
 import { makeObservable, observable } from 'mobx'
 import { ComfyNodeOutput } from './ComfyNodeOutput'
+import { ComfyNodeSchema } from './ComfySchema'
 
 /** ComfyNode
  * - correspond to a signal in the graph
@@ -30,24 +31,16 @@ export class ComfyNode<ComfyNode_input extends object> {
         await this.graph.get()
     }
 
+    $schema: ComfyNodeSchema
     constructor(
         //
         public graph: ComfyGraph,
-        public $schema: ComfyNodeSchema,
         public uid: string = graph.getUID(),
-        public inputs: ComfyNode_input,
+        public json: ComfyNodeJSON,
     ) {
+        this.$schema = graph.project.manager.spec[json.class_type]
         this.graph.nodes.set(this.uid.toString(), this)
         makeObservable(this, { artifacts: observable })
-    }
-
-    toJSON(): ComfyNodeJSON {
-        const inputs: { [key: string]: any } = {}
-        const class_type = this.$schema.type
-        for (const [name, val] of Object.entries(this.inputs)) {
-            inputs[name] = this.serializeValue(name, val)
-        }
-        return { inputs, class_type }
     }
 
     getExpecteTypeForField(name: string): string {

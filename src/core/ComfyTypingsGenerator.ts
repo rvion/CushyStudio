@@ -1,7 +1,7 @@
 import { CodeBuffer } from './CodeBuffer'
 import { NodeInput, NodeOutput } from './ComfyNodeSchema'
 // import spec2 from './_ComfySampleSpec.json' assert { type: 'json' }
-import { ComfySpec } from './ComfySpecType'
+import { ComfySchema } from './ComfySchema'
 
 export type EnumHash = string
 export type EnumName = string
@@ -17,7 +17,7 @@ export class ComfyTypingsGenerator {
     knownEnums = new Map<EnumHash, { name: EnumName; values: string[] }>()
     nodes: _NodeDecl[] = []
 
-    constructor(public spec: ComfySpec) {
+    constructor(public spec: ComfySchema) {
         const entries = Object.entries(spec)
         for (const [nodeName, nodeDef] of entries) {
             const requiredInputs = Object.entries(nodeDef.input.required)
@@ -110,10 +110,10 @@ export class ComfyTypingsGenerator {
         // p(`}`)
         // p(`export type NodeType = keyof typeof nodes`)
 
-        p(`export const schemas = {`)
-        for (const n of this.nodes) p(`    ${n.name}: ${n.name}_schema,`)
+        p(`export type Schemas = {`)
+        for (const n of this.nodes) p(`    ${n.name}: ComfyNodeSchema,`)
         p(`}`)
-        p(`export type ComfyNodeType = keyof typeof schemas`)
+        p(`export type ComfyNodeType = keyof Schemas`)
 
         p(`\n// Entrypoint --------------------------`)
         p(`export interface ComfySetup {`)

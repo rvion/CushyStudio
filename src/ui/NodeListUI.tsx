@@ -8,10 +8,10 @@ import { useSt } from './stContext'
 
 export const NodeListUI = observer(function NodeListUI_(p: {}) {
     const st = useSt()
-    const project = st.project.script
+    const project = st.project
     const VERSIONS: ComfyPromptJSON[] = project.prompts
     const NODES: [uid: ComfyNodeUID, json: ComfyNodeJSON][] =
-        st.focus in VERSIONS //
+        project.focus in VERSIONS //
             ? Object.entries(VERSIONS[st.focus])
             : []
     return (

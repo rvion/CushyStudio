@@ -1,10 +1,8 @@
 /** type of the file sent by the backend at /object_info */
-export type ComfySpec = { [nodeTypeName: string]: ComfyNodeSpec }
+export type ComfySchema = { [nodeTypeName: string]: ComfyNodeSchema }
 
-export type ComfyNodeSpec = {
-    input: {
-        required: { [inputName: string]: ComfyInputSpec }
-    }
+export type ComfyNodeSchema = {
+    input: { required: { [inputName: string]: ComfyInputSpec } }
     output: string[]
     name: string
     description: string
@@ -23,7 +21,7 @@ export type ComfyInputOpts = {
     [key: string]: any
 }
 
-const x: ComfySpec = {
+const x: ComfySchema = {
     KSampler: {
         input: {
             required: {

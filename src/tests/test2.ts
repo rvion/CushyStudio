@@ -9,3 +9,5 @@
 //     sampler.inputs.cfg += 3
 //     await image.get()
 // }
+
+export const x = 1

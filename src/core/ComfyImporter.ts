@@ -3,22 +3,23 @@ import { ComfyNodeType, schemas } from './Comfy'
 import { TEdge, toposort } from './toposort'
 import { jsEscapeStr } from './ComfyUtils'
 import { CodeBuffer } from './CodeBuffer'
-import { ComfyManager } from './ComfyManager'
+import { ComfyClient } from './ComfyClient'
 import { ComfyPromptJSON } from './ComfyNodeJSON'
+import { ComfyNodeSchema } from './ComfySchema'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 export class ComfyImporter {
     constructor(
         //
-        public manager: ComfyManager,
+        public manager: ComfyClient,
     ) {}
-    convert = (flow: ComfyPromptJSON) => {
+    convertFlowToCode = (flow: ComfyPromptJSON): string => {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
         const edges: TEdge[] = []
-
+        const schema = this.manager.spec
         for (const [id, node] of flowNodes) {
-            const cls = nodes[node.class_type as ComfyNodeType]
+            const cls: ComfyNodeSchema = schema[node.class_type as ComfyNodeType]
             const inputs = Object.entries(node.inputs)
             for (const [name, input] of inputs) {
                 if (Array.isArray(input)) {
@@ -64,6 +65,7 @@ export class ComfyImporter {
             p(`}, '${nodeID}')`)
         }
 
-        b.writeTS('./src/compiler/entry.ts')
+        // b.writeTS('./src/compiler/entry.ts')
+        return b.content
     }
 }
