@@ -4,10 +4,8 @@ import { makeObservable, observable } from 'mobx'
 import { ApiPromptInput, ComfyStatus, WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyAPI'
 import { sleep } from './ComfyUtils'
 import { ComfyNode } from './ComfyNode'
-import { ComfyNodeJSON, ComfyPromptJSON } from './ComfyNodeJSON'
+import { ComfyNodeJSON, ComfyPromptJSON } from './ComfyPrompt'
 import { ComfyNodeUID } from './ComfyNodeUID'
-import { schemas } from './Comfy'
-import { ComfyNodeSchema } from './ComfyNodeSchema'
 import { comfyColors } from './ComfyColors'
 import { ComfyClient } from './ComfyClient'
 import { ComfyProject } from './ComfyProject'
@@ -27,13 +25,12 @@ export class ComfyGraph {
         public json: ComfyPromptJSON,
     ) {
         makeObservable(this, { outputs: observable })
-        const spec = project.manager.spec
         for (const [uid, node] of Object.entries(json)) {
-            const schema: ComfyNodeSchema = spec[node.class_type]
-            new ComfyNode(this, schema, uid, node.inputs)
+            new ComfyNode(this, uid, node)
         }
         // dynamically implement ComfySetup interface
-        const schema = this.project.manager.spec //
+        const spec = project.manager.schema
+        const schema = this.project.manager.schema //
     }
 
     private _nextUID = 1

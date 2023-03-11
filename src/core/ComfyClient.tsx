@@ -21,15 +21,16 @@ export type ComfyManagerOptions = {
 export class ComfyClient {
     serverIP: string
     serverPort: number
-    spec: ComfySchema
-    schemaGenerator: ComfyTypingsGenerator
-    libDTS: string
+    schema: ComfySchema
+    dtsGenerator: ComfyTypingsGenerator
+    dts: string
+
     constructor(opts: ComfyManagerOptions) {
         this.serverIP = opts.serverIP
         this.serverPort = opts.serverPort
-        this.spec = opts.spec
-        this.schemaGenerator = new ComfyTypingsGenerator(this.spec)
-        this.libDTS = this.schemaGenerator.codegenDTS()
+        this.schema = opts.spec
+        this.dtsGenerator = new ComfyTypingsGenerator(this.schema)
+        this.dts = this.dtsGenerator.codegenDTS()
         this.startWSClient()
         makeAutoObservable(this)
     }

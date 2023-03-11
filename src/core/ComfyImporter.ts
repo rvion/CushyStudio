@@ -4,7 +4,7 @@ import { TEdge, toposort } from './toposort'
 import { jsEscapeStr } from './ComfyUtils'
 import { CodeBuffer } from './CodeBuffer'
 import { ComfyClient } from './ComfyClient'
-import { ComfyPromptJSON } from './ComfyNodeJSON'
+import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfyNodeSchema } from './ComfySchema'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
@@ -17,7 +17,7 @@ export class ComfyImporter {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
         const edges: TEdge[] = []
-        const schema = this.manager.spec
+        const schema = this.manager.schema
         for (const [id, node] of flowNodes) {
             const cls: ComfyNodeSchema = schema[node.class_type as ComfyNodeType]
             const inputs = Object.entries(node.inputs)

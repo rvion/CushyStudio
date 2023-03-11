@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { comfyColors } from '../core/ComfyColors'
-import { ComfyNodeJSON, ComfyPromptJSON } from '../core/ComfyNodeJSON'
+import { ComfyNodeJSON, ComfyPromptJSON } from '../core/ComfyPrompt'
 import { ComfyNodeSchema } from '../core/ComfyNodeSchema'
 import { ComfyNodeUID } from '../core/ComfyNodeUID'
 import { NodeRefUI } from './NodeRefUI'

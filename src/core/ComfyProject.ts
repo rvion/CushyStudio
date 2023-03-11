@@ -2,7 +2,7 @@ import { RunMode } from './ComfyGraph'
 import { makeAutoObservable } from 'mobx'
 import { ComfyGraph } from './ComfyGraph'
 import { ComfyClient } from './ComfyClient'
-import { ComfyPromptJSON } from './ComfyNodeJSON'
+import { ComfyPromptJSON } from './ComfyPrompt'
 
 export class ComfyProject {
     /** project name */

@@ -1,4 +1,4 @@
-import { ComfyPromptJSON } from '../core/ComfyNodeJSON'
+import { ComfyPromptJSON } from '../core/ComfyPrompt'
 import { useSt } from './stContext'
 import { observer } from 'mobx-react-lite'
 import { Comfy } from '../core/Comfy'

@@ -1,6 +1,6 @@
 import type { NodeProgress } from './ComfyAPI'
 import type { ComfyGraph } from './ComfyGraph'
-import type { ComfyNodeJSON } from './ComfyNodeJSON'
+import type { ComfyNodeJSON } from './ComfyPrompt'
 import type { ComfyNodeSchema, NodeInput } from './ComfyNodeSchema'
 
 import { makeObservable, observable } from 'mobx'
@@ -38,7 +38,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         public uid: string = graph.getUID(),
         public json: ComfyNodeJSON,
     ) {
-        this.$schema = graph.project.manager.spec[json.class_type]
+        this.$schema = graph.project.manager.schema[json.class_type]
         this.graph.nodes.set(this.uid.toString(), this)
         makeObservable(this, { artifacts: observable })
     }

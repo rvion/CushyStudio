@@ -1,6 +1,3 @@
-// import { writeFileSync } from 'fs'
-// import { prettify } from './CodeFormatter'
-
 /** this class is used to buffer text and then write it to a file */
 export class CodeBuffer {
     constructor(private _indent: number = 0, lines: string[] = []) {
@@ -33,6 +30,7 @@ export class CodeBuffer {
     }
 
     bar = (text: string) => this.w(renderBar(text, '// '))
+
     // writeTS = (path: string) => {
     //     // const prefix = `// FILE GENERATED: do not edit. Changes made manually will be overwritten.\n\n`
     //     // const outPretty = prefix + prettify(this.content)
