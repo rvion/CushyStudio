@@ -1,7 +1,6 @@
 import { writeFileSync } from 'fs'
 
 import { prettify } from './CodeFormatter'
-import { renderBar } from './CodeComments'
 
 /** this class is used to buffer text and then write it to a file */
 export class CodeBuffer {
@@ -47,4 +46,13 @@ export const repeatStr = (x: number, str: string): string => {
     let out = ''
     for (let i = 0; i < x; i++) out += str
     return out
+}
+
+export const renderBar = (text: string, prefix: string = '') => {
+    const ___bar___ = '============================================================================='
+    return (
+        `${prefix}|${___bar___}|\n` +
+        `${prefix}| ${text} ${repeatStr(___bar___.length - text.length - 4, ' ')}  |\n` +
+        `${prefix}|${___bar___}|`
+    )
 }

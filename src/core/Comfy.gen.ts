@@ -1,6 +1,6 @@
-import { CodeBuffer } from '../generator/CodeBuffer'
+import { CodeBuffer } from './CodeBuffer'
 import { NodeInput, NodeOutput } from './ComfyNodeSchema'
-import spec2 from './ComfySpec.json' assert { type: 'json' }
+import spec2 from './_ComfySampleSpec.json' assert { type: 'json' }
 import { ComfySpec } from './ComfySpecType'
 
 export type EnumHash = string
