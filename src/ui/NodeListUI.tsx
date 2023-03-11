@@ -1,12 +1,10 @@
-import { ComfyNodeJSON, ComfyPromptJSON } from '../core/ComfyNodeJSON'
-import { useSt } from './stContext'
-import { Comfy, schemas } from '../core/Comfy'
 import { observer } from 'mobx-react-lite'
 import { comfyColors } from '../core/ComfyColors'
-import { ComfyNodeUID } from '../core/ComfyNodeUID'
+import { ComfyNodeJSON, ComfyPromptJSON } from '../core/ComfyNodeJSON'
 import { ComfyNodeSchema } from '../core/ComfyNodeSchema'
+import { ComfyNodeUID } from '../core/ComfyNodeUID'
 import { NodeRefUI } from './NodeRefUI'
-import { ComfyManager } from '../core/ComfyManager'
+import { useSt } from './stContext'
 
 export const NodeListUI = observer(function NodeListUI_(p: {}) {
     const st = useSt()

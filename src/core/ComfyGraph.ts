@@ -2,7 +2,7 @@ import type { VisEdges, VisNodes } from '../ui/VisUI'
 
 import { makeObservable, observable } from 'mobx'
 import { ApiPromptInput, ComfyStatus, WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyAPI'
-import { sleep } from '../utils/sleep'
+import { sleep } from './ComfyUtils'
 import { ComfyNode } from './ComfyNode'
 import { ComfyNodeJSON, ComfyPromptJSON } from './ComfyNodeJSON'
 import { ComfyNodeUID } from './ComfyNodeUID'
@@ -23,8 +23,7 @@ export class ComfyGraph {
     constructor(public project: ComfyProject) {
         makeObservable(this, { outputs: observable })
         // dynamically implement ComfySetup interface
-        const schema = this.project.manager.
-
+        const schema = this.project.manager.schema //
     }
 
     private _nextUID = 1

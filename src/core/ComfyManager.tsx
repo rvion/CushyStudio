@@ -3,7 +3,14 @@ import * as WS from 'ws'
 import { makeAutoObservable } from 'mobx'
 import { WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
-import { ComfyTypingsGenerator } from './Comfy.gen'
+import { ComfyTypingsGenerator } from './ComfyTypingsGenerator'
+import { ComfySpec } from './ComfySpecType'
+
+export type ComfyManagerOptions = {
+    serverIP: string
+    serverPort: number
+    spec: ComfySpec
+}
 
 /**
  * global State
@@ -12,9 +19,24 @@ import { ComfyTypingsGenerator } from './Comfy.gen'
  *  - dispatches messages to the right projects
  */
 export class ComfyManager {
-    serverIP = '192.168.1.19'
-    serverPort = 8188
-    get serverHost() { return `${this.serverIP}:${this.serverPort}` } // prettier-ignore
+    serverIP: string
+    serverPort: number
+    spec: ComfySpec
+    schemaGenerator: ComfyTypingsGenerator
+    libDTS: string
+    constructor(opts: ComfyManagerOptions) {
+        this.serverIP = opts.serverIP
+        this.serverPort = opts.serverPort
+        this.spec = opts.spec
+        this.schemaGenerator = new ComfyTypingsGenerator(this.spec)
+        this.libDTS = this.schemaGenerator.codegenDTS()
+        this.startWSClient()
+        makeAutoObservable(this)
+    }
+
+    get serverHost() {
+        return `${this.serverIP}:${this.serverPort}`
+    }
 
     /** initial project */
     project: ComfyProject = new ComfyProject(this)
@@ -26,15 +48,12 @@ export class ComfyManager {
         const x = await fetch(`http://${this.serverHost}/history`, {}).then((x) => x.json())
     }
 
-    schemaGenerator = new ComfyTypingsGenerator()
-    $schema: Comfy = (fetchObjectsSchema = async () => {
+    // $schema: Comfy =
+    fetchObjectsSchema = async () => {
         const x = await fetch(`http://${this.serverHost}/object_info`, {}).then((x) => x.json())
-    })
-
-    constructor() {
-        this.startWSClient()
-        makeAutoObservable(this)
     }
+
+    static Init = () => {}
 
     startWSClient = () => {
         const ws =

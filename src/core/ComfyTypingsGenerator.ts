@@ -1,6 +1,6 @@
 import { CodeBuffer } from './CodeBuffer'
 import { NodeInput, NodeOutput } from './ComfyNodeSchema'
-import spec2 from './_ComfySampleSpec.json' assert { type: 'json' }
+// import spec2 from './_ComfySampleSpec.json' assert { type: 'json' }
 import { ComfySpec } from './ComfySpecType'
 
 export type EnumHash = string
@@ -15,7 +15,7 @@ const PRIMITIVES: { [key: string]: string } = {
 export class ComfyTypingsGenerator {
     knownTypes = new Set<string>()
     knownEnums = new Map<EnumHash, { name: EnumName; values: string[] }>()
-    nodes: NodeDecl[] = []
+    nodes: _NodeDecl[] = []
 
     constructor(public spec: ComfySpec) {
         const entries = Object.entries(spec)
@@ -23,7 +23,7 @@ export class ComfyTypingsGenerator {
             const requiredInputs = Object.entries(nodeDef.input.required)
             const inputs: NodeInput[] = []
             const outputs: NodeOutput[] = []
-            const node = new NodeDecl(nodeName, nodeDef.category, inputs, outputs)
+            const node = new _NodeDecl(nodeName, nodeDef.category, inputs, outputs)
             this.nodes.push(node)
             const outputNamer: { [key: string]: number } = {}
             for (const opt of nodeDef.output) {
@@ -68,9 +68,7 @@ export class ComfyTypingsGenerator {
         }
     }
 
-    toTSType = (t: string) => PRIMITIVES[t] ?? `ComfyNodeOutput<'${t}'>`
-
-    codegen = (): void => {
+    codegenDTS = (): string => {
         const b = new CodeBuffer()
         const p = b.w
         p(`import type { ComfyNodeOutput } from './ComfyNodeOutput'`)
@@ -130,11 +128,14 @@ export class ComfyTypingsGenerator {
         //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
         // }
         p(`}`)
-        b.writeTS('./src/core/Comfy.ts')
+        // b.writeTS('./src/core/Comfy.ts')
+        return b.content
     }
+
+    private toTSType = (t: string) => PRIMITIVES[t] ?? `ComfyNodeOutput<'${t}'>`
 }
 
-export class NodeDecl {
+class _NodeDecl {
     constructor(
         //
         public name: string,
@@ -145,7 +146,7 @@ export class NodeDecl {
         this.category = this.category.replaceAll('/', '_')
     }
 
-    codegen() {
+    codegen(): string {
         const b = new CodeBuffer()
         const p = b.w
 
@@ -188,5 +189,5 @@ export class NodeDecl {
 }
 
 // console.log(`test`)
-const main = new ComfyTypingsGenerator(spec2 as any)
-main.codegen()
+// const main = new ComfyTypingsGenerator(spec2 as any)
+// main.codegen()

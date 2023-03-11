@@ -1,7 +1,7 @@
 // import flow from '../compiler/entry.in.json' assert { type: 'json' }
 import { ComfyNodeType, schemas } from './Comfy'
 import { TEdge, toposort } from './toposort'
-import { jsEscapeStr } from '../utils/jsEscapeStr'
+import { jsEscapeStr } from './ComfyUtils'
 import { CodeBuffer } from './CodeBuffer'
 import { ComfyManager } from './ComfyManager'
 import { ComfyPromptJSON } from './ComfyNodeJSON'

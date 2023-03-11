@@ -5,6 +5,8 @@ body {
     font-family: 'Roboto', sans-serif;
 }
 
+* { box-sizing: border-box;}
+
 /* COLORS --------------------------------------- */
 .g-loaders { background-color: #446011 }
 .g-latent { background-color: #464689 }
@@ -24,6 +26,7 @@ body {
 .items-center { align-items: center; }
 .items-baseline { align-items: baseline; }
 .content-center {justify-content: center;}
+.self-stretch { align-self: stretch; }
 .px {padding-left: .6rem; padding-right: .6rem;}
 .py {padding-top: .6rem; padding-bottom: .6rem;}
 .darker {filter: brightness(.9);}
@@ -40,9 +43,35 @@ button {
     cursor: pointer;
     outline: none;
 }
-button.active {
-    background: rgb(66, 136, 240);
+button.large { padding: 1rem; }
+button.active { background: rgb(66, 136, 240); }
+button.primary { background: rgb(28, 90, 197); }
+
+/* WELCOME SCREEN ---------------------------------------- */
+.welcome-popup  {
+    background-color: #a1a0a0;
+    color: #fff;
+    padding: 1rem;
+    border-radius: .3rem;
+    padding: 5rem;
+    /* width: 20rem; */
+    /* height: 20rem; */
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.28);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(6.3px);
+    border: 1px solid rgba(255, 255, 255, 0.29);
 }
+.welcome-screen input {padding: .5rem;}
+.welcome-screen {
+    background: linear-gradient( 45deg, #464689, #541a54 );
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 /* CORE ---------------------------------------- */
 .node{
     /* padding: .7rem; */
