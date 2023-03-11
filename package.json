@@ -19,8 +19,7 @@
         "compile": "yarn js src/compiler/entry.gen.ts",
         "sample": "yarn js src/compiler/entry.fetch.ts",
         "test": "yarn js src/compiler/test.ts",
-        "test2": "yarn js src/compiler/test2.ts",
-        "decls": "tsc -p tsconfig.decl.json"
+        "test2": "yarn js src/compiler/test2.ts"
     },
     "dependencies": {
         "@monaco-editor/react": "^4.4.6",
