@@ -1,7 +1,7 @@
 import type { ComfyNodeOutput } from './ComfyNodeOutput'
 import type { ComfyNodeUID } from './ComfyNodeUID'
 import type { ComfyNode } from './ComfyNode'
-import type { ComfyNodeSchema } from './ComfySchema'
+import { ComfyNodeSchemaJSON } from './ComfySchemaJSON'
 
 // TYPES -------------------------------
 export type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
@@ -552,41 +552,41 @@ export type VAEDecodeTiled_input = {
 
 // INDEX -------------------------------
 export type Schemas = {
-    KSampler: ComfyNodeSchema
-    CheckpointLoader: ComfyNodeSchema
-    CheckpointLoaderSimple: ComfyNodeSchema
-    CLIPTextEncode: ComfyNodeSchema
-    CLIPSetLastLayer: ComfyNodeSchema
-    VAEDecode: ComfyNodeSchema
-    VAEEncode: ComfyNodeSchema
-    VAEEncodeForInpaint: ComfyNodeSchema
-    VAELoader: ComfyNodeSchema
-    EmptyLatentImage: ComfyNodeSchema
-    LatentUpscale: ComfyNodeSchema
-    SaveImage: ComfyNodeSchema
-    LoadImage: ComfyNodeSchema
-    LoadImageMask: ComfyNodeSchema
-    ImageScale: ComfyNodeSchema
-    ImageInvert: ComfyNodeSchema
-    ConditioningCombine: ComfyNodeSchema
-    ConditioningSetArea: ComfyNodeSchema
-    KSamplerAdvanced: ComfyNodeSchema
-    SetLatentNoiseMask: ComfyNodeSchema
-    LatentComposite: ComfyNodeSchema
-    LatentRotate: ComfyNodeSchema
-    LatentFlip: ComfyNodeSchema
-    LatentCrop: ComfyNodeSchema
-    LoraLoader: ComfyNodeSchema
-    CLIPLoader: ComfyNodeSchema
-    CLIPVisionEncode: ComfyNodeSchema
-    StyleModelApply: ComfyNodeSchema
-    ControlNetApply: ComfyNodeSchema
-    ControlNetLoader: ComfyNodeSchema
-    DiffControlNetLoader: ComfyNodeSchema
-    T2IAdapterLoader: ComfyNodeSchema
-    StyleModelLoader: ComfyNodeSchema
-    CLIPVisionLoader: ComfyNodeSchema
-    VAEDecodeTiled: ComfyNodeSchema
+    KSampler: ComfyNodeSchemaJSON
+    CheckpointLoader: ComfyNodeSchemaJSON
+    CheckpointLoaderSimple: ComfyNodeSchemaJSON
+    CLIPTextEncode: ComfyNodeSchemaJSON
+    CLIPSetLastLayer: ComfyNodeSchemaJSON
+    VAEDecode: ComfyNodeSchemaJSON
+    VAEEncode: ComfyNodeSchemaJSON
+    VAEEncodeForInpaint: ComfyNodeSchemaJSON
+    VAELoader: ComfyNodeSchemaJSON
+    EmptyLatentImage: ComfyNodeSchemaJSON
+    LatentUpscale: ComfyNodeSchemaJSON
+    SaveImage: ComfyNodeSchemaJSON
+    LoadImage: ComfyNodeSchemaJSON
+    LoadImageMask: ComfyNodeSchemaJSON
+    ImageScale: ComfyNodeSchemaJSON
+    ImageInvert: ComfyNodeSchemaJSON
+    ConditioningCombine: ComfyNodeSchemaJSON
+    ConditioningSetArea: ComfyNodeSchemaJSON
+    KSamplerAdvanced: ComfyNodeSchemaJSON
+    SetLatentNoiseMask: ComfyNodeSchemaJSON
+    LatentComposite: ComfyNodeSchemaJSON
+    LatentRotate: ComfyNodeSchemaJSON
+    LatentFlip: ComfyNodeSchemaJSON
+    LatentCrop: ComfyNodeSchemaJSON
+    LoraLoader: ComfyNodeSchemaJSON
+    CLIPLoader: ComfyNodeSchemaJSON
+    CLIPVisionEncode: ComfyNodeSchemaJSON
+    StyleModelApply: ComfyNodeSchemaJSON
+    ControlNetApply: ComfyNodeSchemaJSON
+    ControlNetLoader: ComfyNodeSchemaJSON
+    DiffControlNetLoader: ComfyNodeSchemaJSON
+    T2IAdapterLoader: ComfyNodeSchemaJSON
+    StyleModelLoader: ComfyNodeSchemaJSON
+    CLIPVisionLoader: ComfyNodeSchemaJSON
+    VAEDecodeTiled: ComfyNodeSchemaJSON
 }
 export type ComfyNodeType = keyof Schemas
 

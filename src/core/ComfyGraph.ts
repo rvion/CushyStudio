@@ -8,14 +8,16 @@ import { ComfyNode } from './ComfyNode'
 import { ComfyNodeUID } from './ComfyNodeUID'
 import { ComfyProject } from './ComfyProject'
 import { ComfyPromptJSON } from './ComfyPrompt'
-import { ComfyNodeSchema } from './ComfySchema'
+import { ComfyNodeSchemaJSON } from './ComfySchemaJSON'
 import { deepCopyNaive, sleep } from './ComfyUtils'
+import { ComfySchema } from './ComfySchema'
 
 export type RunMode = 'fake' | 'real'
 
 export class ComfyGraph {
     get client(): ComfyClient { return this.project.client } // prettier-ignore
     get schema() { return this.client.schema } // prettier-ignore
+    get nodesArray() { return Array.from(this.nodes.values()) } // prettier-ignore
     nodes = new Map<string, ComfyNode<any>>()
     isRunning = false
 
@@ -86,26 +88,15 @@ export class ComfyGraph {
         return res
     }
 
-    // OUTPUTS --------------------------------------------
-    /** Comfy Prompt JSON format */
-    // toJSON(): ComfyPromptJSON {
-    //     const nodes = Array.from(this.nodes.values())
-    //     const out: { [key: string]: ComfyNodeJSON } = {}
-    //     for (const node of nodes) {
-    //         out[node.uid] = node.toJSON()
-    //     }
-    //     return out
-    // }
-
     /** visjs JSON format (network visualisation) */
     get visData(): { nodes: VisNodes[]; edges: VisEdges[] } {
         const json: ComfyPromptJSON = this.json
-        const schemas = this.project.client.schema
+        const schemas: ComfySchema = this.project.client.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }
         for (const [uid, node] of Object.entries(json)) {
-            const schema: ComfyNodeSchema = schemas[node.class_type]
+            const schema: ComfyNodeSchemaJSON = schemas[node.class_type]
             const color = comfyColors[schema.category]
             nodes.push({ id: uid, label: node.class_type, color, font: { color: 'white' }, shape: 'box' })
             for (const [name, val] of Object.entries(node.inputs)) {
@@ -126,3 +117,14 @@ export class ComfyGraph {
         return { nodes, edges }
     }
 }
+
+// OUTPUTS --------------------------------------------
+/** Comfy Prompt JSON format */
+// toJSON(): ComfyPromptJSON {
+//     const nodes = Array.from(this.nodes.values())
+//     const out: { [key: string]: ComfyNodeJSON } = {}
+//     for (const node of nodes) {
+//         out[node.uid] = node.toJSON()
+//     }
+//     return out
+// }

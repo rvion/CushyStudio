@@ -3,13 +3,13 @@ import * as WS from 'ws'
 import { makeAutoObservable } from 'mobx'
 import { WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
-import { ComfyTypingsGenerator } from './ComfyTypingsGenerator'
 import { ComfySchema } from './ComfySchema'
+import { ComfySchemaJSON } from './ComfySchemaJSON'
 
 export type ComfyManagerOptions = {
     serverIP: string
     serverPort: number
-    spec: ComfySchema
+    spec: ComfySchemaJSON
 }
 
 /**
@@ -22,15 +22,13 @@ export class ComfyClient {
     serverIP: string
     serverPort: number
     schema: ComfySchema
-    dtsGenerator: ComfyTypingsGenerator
     dts: string
 
     constructor(opts: ComfyManagerOptions) {
         this.serverIP = opts.serverIP
         this.serverPort = opts.serverPort
-        this.schema = opts.spec
-        this.dtsGenerator = new ComfyTypingsGenerator(this.schema)
-        this.dts = this.dtsGenerator.codegenDTS()
+        this.schema = new ComfySchema(opts.spec)
+        this.dts = this.schema.codegenDTS()
         this.startWSClient()
         makeAutoObservable(this)
     }

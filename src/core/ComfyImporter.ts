@@ -1,25 +1,22 @@
 // import flow from '../compiler/entry.in.json' assert { type: 'json' }
-import { ComfyNodeType } from './Comfy'
-import { TEdge, toposort } from './toposort'
-import { jsEscapeStr } from './ComfyUtils'
 import { CodeBuffer } from './CodeBuffer'
+import { ComfyNodeType } from './Comfy'
 import { ComfyClient } from './ComfyClient'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfyNodeSchema } from './ComfySchema'
+import { jsEscapeStr } from './ComfyUtils'
+import { TEdge, toposort } from './toposort'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 export class ComfyImporter {
-    constructor(
-        //
-        public manager: ComfyClient,
-    ) {}
+    constructor(public client: ComfyClient) {}
     convertFlowToCode = (flow: ComfyPromptJSON): string => {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
         const edges: TEdge[] = []
-        const schema = this.manager.schema
+        const schema = this.client.schema
         for (const [id, node] of flowNodes) {
-            const cls: ComfyNodeSchema = schema[node.class_type as ComfyNodeType]
+            // const cls: ComfyNodeSchema = schema.nodesByName[node.class_type]
             const inputs = Object.entries(node.inputs)
             for (const [name, input] of inputs) {
                 if (Array.isArray(input)) {
@@ -48,7 +45,7 @@ export class ComfyImporter {
             const classType = node.class_type
             const varName = `${classType}_${nodeID}`
             generatedName.set(nodeID, varName)
-            const schema = schemas[classType as ComfyNodeType]
+            const schema: ComfyNodeSchema = this.client.schema.nodesByName[classType as ComfyNodeType]
             let outoutIx = 0
             for (const o of schema.outputs ?? []) {
                 availableSignals.set(`${nodeID}-${outoutIx++}`, `${varName}.${o.name}`)

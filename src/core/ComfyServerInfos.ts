@@ -1,4 +1,4 @@
-import type { ComfySchema } from './ComfySchema'
+import { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
 
 import { makeAutoObservable } from 'mobx'
@@ -16,7 +16,7 @@ export class ComfyServerInfos {
 
     manager: Maybe<ComfyClient>
     connect = async (): Promise<ComfyClient> => {
-        const schema: ComfySchema = await this.fetchObjectsSchema()
+        const schema: ComfySchemaJSON = await this.fetchObjectsSchema()
         console.log('🚀 ~ file: ComfyBackendInfos.ts:20 ~ ComfyBackendInfos ~ connect= ~ schema:', schema)
         this.manager = new ComfyClient({
             serverIP: this.serverIP,
@@ -27,7 +27,7 @@ export class ComfyServerInfos {
     }
 
     /** retri e the comfy spec from the schema*/
-    fetchObjectsSchema = async (): Promise<ComfySchema> => {
+    fetchObjectsSchema = async (): Promise<ComfySchemaJSON> => {
         const x = await fetch(`http://${this.serverHost}/object_info`, {}).then((x) => x.json())
         return x
     }
