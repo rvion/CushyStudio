@@ -25,7 +25,6 @@
         "@monaco-editor/react": "^4.4.6",
         "cors": "^2.8.5",
         "esbuild": "^0.17.11",
-        "golden-layout": "^2.6.0",
         "mobx": "^6.8.0",
         "mobx-react-lite": "^3.4.1",
         "monaco-editor": "^0.36.1",
