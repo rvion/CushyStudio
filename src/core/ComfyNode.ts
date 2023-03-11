@@ -10,7 +10,7 @@ import { ComfyNodeOutput } from './ComfyNodeOutput'
  * - correspond to a signal in the graph
  * - belongs to a script
  */
-export abstract class ComfyNode<ComfyNode_input extends object> {
+export class ComfyNode<ComfyNode_input extends object> {
     artifacts: { images: string[] }[] = []
     progress: NodeProgress | null = null
 

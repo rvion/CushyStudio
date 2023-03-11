@@ -127,7 +127,7 @@ declare module "core/ComfyBase" {
     import { ComfyNodeUID } from "core/ComfyNodeUID";
     import { ComfyNode } from "core/ComfyNode";
     /** top level base class */
-    export abstract class ComfyBase {
+    export class ComfyBase {
         serverIP: string;
         serverPort: number;
         serverHost: string;
@@ -161,7 +161,7 @@ declare module "core/ComfyNode" {
     import type { ComfyNodeJSON } from "core/ComfyNodeJSON";
     import { ComfyBase } from "core/ComfyBase";
     import { NodeOutput } from "core/NodeOutput";
-    export abstract class ComfyNode<ComfyNode_input extends object> {
+    export class ComfyNode<ComfyNode_input extends object> {
         comfy: ComfyBase;
         uid: string;
         inputs: ComfyNode_input;
