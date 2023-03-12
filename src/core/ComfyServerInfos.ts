@@ -6,7 +6,7 @@
 
 /** helper to instanciate a comfy manager up-to-date with latest backend setup */
 // export class ComfyServerInfos {
-//     serverIP = '192.168.1.18'
+//     serverIP = '192.168.1.19'
 //     serverPort = 8188
 //     get serverHost() { return `${this.serverIP}:${this.serverPort}` } // prettier-ignore
 
