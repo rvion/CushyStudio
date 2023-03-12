@@ -5,7 +5,7 @@ import { TrieEntry as TreeValue } from './LabelUI'
 export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
     const client = useSt()
     return (
-        <div className='col gap'>
+        <div className='col gap1'>
             <div className='row gap'>
                 <button>Open</button>
 

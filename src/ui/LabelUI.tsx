@@ -8,8 +8,15 @@ export const TrieEntry = observer(function LabelUI_(p: {
     children: ReactNode
 }) {
     return (
-        <div className='label row gap1 items-baseline' onClick={p.onClick}>
-            <span>{p.title}:</span>
+        <div
+            style={{
+                textDecoration: p.onClick ? 'underline' : undefined,
+                cursor: p.onClick ? 'pointer' : undefined,
+            }}
+            className='label row gap1 items-baseline'
+            onClick={p.onClick}
+        >
+            <span style={{ width: '6rem' }}>{p.title}:</span>
             {p.children}
         </div>
     )

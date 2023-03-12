@@ -1,9 +1,7 @@
 import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
-import { virtualFilesystem } from './files'
-import { c__ } from './samples/c'
 import { useSt } from './stContext'
-import { IStandaloneCodeEditor, TypescriptOptions } from './TypescriptOptions'
+import { IStandaloneCodeEditor } from './TypescriptOptions'
 
 export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?: string }) {
     const client = useSt()
@@ -13,7 +11,8 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
             path={p.path}
             keepCurrentModel
             theme='vs-dark'
-            onChange={(value) => {
+            onChange={(value, ev) => {
+                console.log('🔴 onChange', value, ev)
                 if (value == null) return
                 client.project.udpateCode(value) // 🔴
             }}

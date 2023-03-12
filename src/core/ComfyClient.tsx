@@ -9,6 +9,7 @@ import { ComfyProject } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
 import { ComfySchemaJSON } from './ComfySchemaJSON'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
+import { a__ } from '../ui/samples/a'
 
 export type ComfyManagerOptions = {
     serverIP: string
@@ -93,6 +94,7 @@ export class ComfyClient {
         // 4. update monaco
         this.editor.updateSDKDTS()
         this.editor.updateLibDTS()
+        this.editor.updateCODE(a__)
         console.log('🟢 schema:', this.schema.nodes)
         return schema$
     }

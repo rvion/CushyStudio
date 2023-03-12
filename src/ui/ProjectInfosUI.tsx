@@ -7,7 +7,7 @@ export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
     const client = useSt()
     const project = client.project
     return (
-        <div className='col gap'>
+        <div className='col gap1'>
             <div className='row gap items-baseline'>
                 <MainActionsUI />
             </div>

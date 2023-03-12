@@ -1,4 +1,4 @@
-export const a__ = `export {}
+export const a__: string = `export {}
 const ckpt = C.CheckpointLoader({ config_name: 'v1-inference_clip_skip_2.yaml', ckpt_name: 'v1-5-pruned-emaonly.ckpt' })
 const latent_image = C.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
 const positive = C.CLIPTextEncode({ text: 'masterpiece cat', clip: ckpt })

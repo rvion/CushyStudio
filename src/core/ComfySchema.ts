@@ -142,6 +142,10 @@ export class ComfySchema {
         //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
         // }
         p(`}`)
+        p(`declare global {`)
+        p(`    export const C: ComfySetup & ComfyGraph`)
+        p(`}`)
+
         p('declare const C: ComfySetup & ComfyGraph')
         // b.writeTS('./src/core/Comfy.ts')
         return b.content
