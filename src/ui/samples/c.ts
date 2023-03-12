@@ -132,7 +132,6 @@ declare module "core/ComfyProject" {
         /** * project running is not the same as graph running; TODO: explain */
         isRunning: boolean;
         error: Maybe<string>;
-        runningMode: RunMode;
         run: (mode?: RunMode) => Promise<boolean>;
         udpateCode: (code: string) => Promise<void>;
     }
@@ -309,12 +308,12 @@ declare module "core/ComfyGraph" {
     export type RunMode = 'fake' | 'real';
     export class ComfyGraph {
         project: ComfyProject;
-        json: ComfyPromptJSON;
         get client(): ComfyClient;
         get schema(): ComfySchema;
         get nodesArray(): ComfyNode<any>[];
         nodes: Map<string, ComfyNode<any>>;
         isRunning: boolean;
+        get json(): ComfyPromptJSON;
         constructor(project: ComfyProject, json?: ComfyPromptJSON);
         private _nextUID;
         getUID: () => string;
@@ -341,7 +340,6 @@ declare module "core/ComfyNode" {
     import type { NodeProgress } from "core/ComfyAPI";
     import type { ComfyGraph } from "core/ComfyGraph";
     import type { ComfyNodeJSON } from "core/ComfyPrompt";
-    import { ComfyNodeOutput } from "core/ComfyNodeOutput";
     import { ComfyNodeSchema } from "core/ComfySchema";
     /** ComfyNode
      * - correspond to a signal in the graph
@@ -350,22 +348,29 @@ declare module "core/ComfyNode" {
     export class ComfyNode<ComfyNode_input extends object> {
         graph: ComfyGraph;
         uid: string;
-        json: ComfyNodeJSON;
         artifacts: {
             images: string[];
         }[];
         progress: NodeProgress | null;
         $schema: ComfyNodeSchema;
         get inputs(): ComfyNode_input;
+        json: ComfyNodeJSON;
+        /** update a node */
         set(p: Partial<ComfyNode_input>): void;
-        constructor(graph: ComfyGraph, uid: string, json: ComfyNodeJSON);
+        constructor(graph: ComfyGraph, uid: string, xxx: ComfyNodeJSON);
+        _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): {
+            class_type: string;
+            inputs: {
+                [inputName: string]: any;
+            };
+        };
         get manager(): import("core/ComfyClient").ComfyClient;
         artifactsForStep(step: number): string[];
         get allArtifactsImgs(): string[];
         get(): Promise<void>;
-        getExpecteTypeForField(name: string): string;
-        getOutputForType(type: string): ComfyNodeOutput<any>;
         serializeValue(field: string, value: unknown): unknown;
+        private _getExpecteTypeForField;
+        private _getOutputForType;
     }
 }
 declare module "core/ComfyNodeOutput" {
