@@ -1,7 +1,7 @@
 import type { ComfyNodeOutput } from './ComfyNodeOutput'
 import type { ComfyNodeUID } from './ComfyNodeUID'
 import type { ComfyNode } from './ComfyNode'
-import { ComfyNodeSchemaJSON } from './ComfySchemaJSON'
+import type { ComfyNodeSchemaJSON } from './ComfySchemaJSON'
 
 // TYPES -------------------------------
 export type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>

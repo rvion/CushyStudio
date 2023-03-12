@@ -1,4 +1,4 @@
-import type { ComfyNodeType } from './Comfy'
+// import type { ComfyNodeType } from './Comfy'
 
 export type ComfyPromptJSON = {
     [key: string]: ComfyNodeJSON
@@ -6,5 +6,5 @@ export type ComfyPromptJSON = {
 
 export type ComfyNodeJSON = {
     inputs: { [key: string]: any }
-    class_type: ComfyNodeType
+    class_type: string
 }

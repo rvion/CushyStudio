@@ -12,13 +12,13 @@
         "module": "ESNext",
         "moduleResolution": "Node",
         "resolveJsonModule": true,
-        "isolatedModules": true,
+        // "isolatedModules": true,
         "declaration": true,
         "emitDeclarationOnly": true,
-        "outFile": "src/ui/samples/comfy.txt",
+        "outFile": "dts/Comfy.d.ts",
         "jsx": "react-jsx"
     },
-    "include": ["src/core/dsl.ts"],
+    "include": ["src/core/_dts.ts"],
     "exclude": ["tsconfig.node.json"],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

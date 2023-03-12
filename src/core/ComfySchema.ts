@@ -86,9 +86,9 @@ export class ComfySchema {
         const b = new CodeBuffer()
         const p = b.w
         p(`import type { ComfyNodeOutput } from './ComfyNodeOutput'`)
-        p(`import type { ComfyNodeSchema } from './ComfyNodeSchema'`)
         p(`import type { ComfyNodeUID } from './ComfyNodeUID'`)
         p(`import type { ComfyNode } from './ComfyNode'`)
+        p(`import type { ComfyNodeSchemaJSON } from './ComfySchemaJSON'`)
 
         p(`\n// TYPES -------------------------------`)
         const types = [...this.knownTypes.values()] //
@@ -124,7 +124,7 @@ export class ComfySchema {
         // p(`export type NodeType = keyof typeof nodes`)
 
         p(`export type Schemas = {`)
-        for (const n of this.nodes) p(`    ${n.name}: ComfyNodeSchema,`)
+        for (const n of this.nodes) p(`    ${n.name}: ComfyNodeSchemaJSON,`)
         p(`}`)
         p(`export type ComfyNodeType = keyof Schemas`)
 
