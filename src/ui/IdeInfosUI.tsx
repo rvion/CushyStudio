@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
+import { TreeValue } from './LabelUI'
 import { useSt } from './stContext'
-import { TreeValue as TreeValue } from './LabelUI'
 
 export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
     const client = useSt()

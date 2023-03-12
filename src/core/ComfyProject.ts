@@ -52,6 +52,7 @@ export class ComfyProject {
     error: Maybe<string> = null
     runningMode: RunMode = 'fake'
     run = async (mode: RunMode = 'fake'): Promise<boolean> => {
+        this.graphs = []
         // if (this.isRunning) return false
         this.runningMode = mode
         // if (mode === 'real') this.isRunning = true

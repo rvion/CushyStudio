@@ -2,9 +2,12 @@ import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
 import { useSt } from './stContext'
 import { IStandaloneCodeEditor } from './TypescriptOptions'
+import { WelcomeScreenUI } from './WelcomeScreenUI'
 
 export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?: string }) {
     const client = useSt()
+    // 🔴 fix this later
+    // if (client.schema.nodes.length === 0) return <WelcomeScreenUI />
     return (
         <MonacoEditor //
             height='100vh'
