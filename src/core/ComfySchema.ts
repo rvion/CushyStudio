@@ -82,14 +82,15 @@ export class ComfySchema {
             }
         }
     }
-    codegenDTS = (): string => {
+    codegenDTS = (useLocalPath = false): string => {
         const b = new CodeBuffer()
         const p = b.w
-        p(`import type { ComfyNodeOutput } from './ComfyNodeOutput'`)
-        p(`import type { ComfyNodeUID } from './ComfyNodeUID'`)
-        p(`import type { ComfyNode } from './ComfyNode'`)
-        p(`import type { ComfyNodeSchemaJSON } from './ComfySchemaJSON'`)
-
+        const prefix = useLocalPath ? '.' : 'core'
+        p(`import type { ComfyNodeOutput } from '${prefix}/ComfyNodeOutput'`)
+        p(`import type { ComfyNodeUID } from '${prefix}/ComfyNodeUID'`)
+        p(`import type { ComfyNode } from '${prefix}/ComfyNode'`)
+        p(`import type { ComfyNodeSchemaJSON } from '${prefix}/ComfySchemaJSON'`)
+        p(`import type { ComfyGraph } from '${prefix}/ComfyGraph'`)
         p(`\n// TYPES -------------------------------`)
         const types = [...this.knownTypes.values()] //
             .map((comfyType) => ({ comfyType, tsType: this.toTSType(comfyType) }))
@@ -135,12 +136,13 @@ export class ComfySchema {
         for (const n of this.nodes) {
             p(`    ${n.name}(args: ${n.name}_input, uid?: ComfyNodeUID): ${n.name}`)
         }
-        p(`\n// misc \n`)
+        // p(`\n// misc \n`)
         // prettier-ignore
         // for (const n of this.nodes) {
         //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
         // }
         p(`}`)
+        p('declare const C: ComfySetup & ComfyGraph')
         // b.writeTS('./src/core/Comfy.ts')
         return b.content
     }

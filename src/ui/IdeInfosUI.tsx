@@ -32,13 +32,17 @@ export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
             <TreeValue title='websocket'>
                 {client.wsStatusEmoji} {client.wsStatus}
             </TreeValue>
+            <TreeValue onClick={client.editor.openSDK} title='SDK'>
+                <div>0.1.0</div>
+            </TreeValue>
             <TreeValue title='schema'>
                 {client.schemaStatusEmoji} {client.schema.nodes.length} nodes;
                 <button onClick={client.fetchObjectsSchema}>Load</button>
             </TreeValue>
             <TreeValue title='dts'>
-                {client.schemaStatusEmoji} {client.schema.nodes.length} nodes;
-                <button onClick={client.fetchObjectsSchema}>Load</button>
+                {client.dtsStatusEmoji} {client.dts.length} chars;
+                <button onClick={client.editor.openLib}>Show</button>
+                {/* <button onClick={() => {}}>Load</button> */}
             </TreeValue>
         </div>
     )

@@ -2,6 +2,7 @@ import type { ComfyNodeOutput } from './ComfyNodeOutput'
 import type { ComfyNodeUID } from './ComfyNodeUID'
 import type { ComfyNode } from './ComfyNode'
 import type { ComfyNodeSchemaJSON } from './ComfySchemaJSON'
+import type { ComfyGraph } from './ComfyGraph'
 
 // TYPES -------------------------------
 export type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
@@ -630,3 +631,5 @@ export interface ComfySetup {
 
     // misc
 }
+
+declare const C: ComfySetup & ComfyGraph

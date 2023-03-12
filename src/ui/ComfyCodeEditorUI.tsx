@@ -17,12 +17,13 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
                 if (value == null) return
                 client.project.udpateCode(value) // 🔴
             }}
-            beforeMount={(monaco: Monaco) => client.setupMonaco(monaco)}
+            beforeMount={(monaco: Monaco) => client.editor.setupMonaco(monaco)}
             onMount={(editor: IStandaloneCodeEditor, monaco: Monaco) => {
-                client.editorRef.current = editor
-                if (client.monacoRef.current !== monaco) {
+                client.editor.editorRef.current = editor
+                const prevMonaco = client.editor.monacoRef.current
+                if (prevMonaco !== monaco) {
                     console.log('🔴 invalid monacoRef.current')
-                    console.log('🔴', client.monacoRef.current)
+                    console.log('🔴', prevMonaco)
                     console.log('🔴', monaco)
                     throw new Error('monacoRef.current!==monaco')
                 }

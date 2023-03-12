@@ -1,12 +1,14 @@
 import * as WS from 'ws'
+import type { IStandaloneCodeEditor, TypescriptOptions } from '../ui/TypescriptOptions'
 
+import { Monaco } from '@monaco-editor/react'
 import { makeAutoObservable, observable } from 'mobx'
+import { c__ } from '../ui/samples/c'
 import { WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
 import { ComfySchemaJSON } from './ComfySchemaJSON'
-import { Monaco } from '@monaco-editor/react'
-import { TypescriptOptions, IStandaloneCodeEditor, ITextModel } from '../ui/TypescriptOptions'
+import { ComfyScriptEditor } from './ComfyScriptEditor'
 
 export type ComfyManagerOptions = {
     serverIP: string
@@ -27,61 +29,26 @@ export class ComfyClient {
     dts: string
     project: ComfyProject
     projects: ComfyProject[] = []
+    editor: ComfyScriptEditor
     // dtsModel?: ITextModel
 
-    setupMonaco(monaco: Monaco) {
-        if (this.monacoRef.current === monaco) return
-        this.monacoRef.current = monaco
-        const compilerOptions: TypescriptOptions = {
-            strict: true,
-            module: monaco.languages.typescript.ModuleKind.ESNext,
-            target: monaco.languages.typescript.ScriptTarget.ESNext,
-            moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-        }
-        monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
-        console.log('using typescript:', monaco.languages.typescript.typescriptVersion)
-    }
+    // openProject = () => {
+    //     const monaco = this.monacoRef.current
+    //     if (monaco == null) return console.log('🔴 monaco not ready')
 
-    updateSchema = (monaco: Monaco) => {
-        // monaco.languages.typescript.typescriptDefaults.addExtraLib(this.dts, 'global.d.ts')
-        // monaco.languages.typescript.typescriptDefaults.addExtraLib(this.dts, 'global.d.ts')
-        if (!this.editorRef.current) throw new Error('editorRef.current is null')
-
-        const fakeDTSUri = monaco.Uri.parse(`file:///global.d.ts`)
-        let fakeDTSmodel = monaco.editor.getModel(fakeDTSUri)
-        if (fakeDTSmodel) {
-            console.log('🟢 updating fake global.d.ts')
-            fakeDTSmodel.setValue(this.dts)
-        } else {
-            console.log('🟢 creating fake global.d.ts')
-            fakeDTSmodel = monaco.editor.createModel(this.dts, 'typescript', fakeDTSUri)
-        }
-        const knownURIs = monaco.editor.getModels().map((i) => i.uri)
-        console.log('🟢', knownURIs)
-        const globalDTSModel = monaco.editor.getModel(monaco.Uri.parse(`file:///global.d.ts`))
-        this.editorRef.current.setModel(globalDTSModel)
-        // this.dtsModel = model
-    }
-
-    openProject = () => {
-        const monaco = this.monacoRef.current
-        if (monaco == null) return console.log('🔴 monaco not ready')
-
-        // // for (const file of Object.values(virtualFilesystem)) {
-        // const uri = monaco.Uri.parse(`file:///${file.name}`)
-        // const model = monaco.editor.createModel(file.value, 'typescript', uri)
-        // // }
-        // const aModel = monaco.editor.getModel(monaco.Uri.parse(`file:///a.ts`))
-        // // st.file = aModel
-        // client.project.udpateCode(virtualFilesystem['a.ts'].value)
-    }
-
-    editorRef = observable({ current: null as IStandaloneCodeEditor | null }, { current: observable.ref })
-    monacoRef = observable({ current: null as Monaco | null }, { current: observable.ref })
+    //     // // for (const file of Object.values(virtualFilesystem)) {
+    //     // const uri = monaco.Uri.parse(`file:///${file.name}`)
+    //     // const model = monaco.editor.createModel(file.value, 'typescript', uri)
+    //     // // }
+    //     // const aModel = monaco.editor.getModel(monaco.Uri.parse(`file:///a.ts`))
+    //     // // st.file = aModel
+    //     // client.project.udpateCode(virtualFilesystem['a.ts'].value)
+    // }
 
     constructor(opts: ComfyManagerOptions) {
         this.serverIP = opts.serverIP
         this.serverPort = opts.serverPort
+        this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema(opts.spec)
         this.project = ComfyProject.INIT(this)
         this.projects.push(this.project)
@@ -124,8 +91,8 @@ export class ComfyClient {
         // 3. update dts
         this.dts = this.schema.codegenDTS()
         // 4. update monaco
-        this.updateSchema(this.monacoRef.current!)
-
+        this.editor.updateSDKDTS()
+        this.editor.updateLibDTS()
         console.log('🟢 schema:', this.schema.nodes)
         return schema$
     }
@@ -140,6 +107,11 @@ export class ComfyClient {
 
     get schemaStatusEmoji() {
         if (this.schema.nodes.length > 10) return '🟢'
+        return '🔴'
+    }
+
+    get dtsStatusEmoji() {
+        if (this.dts.length > 10_000) return '🟢'
         return '🔴'
     }
 
