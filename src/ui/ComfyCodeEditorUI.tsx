@@ -1,39 +1,39 @@
-import MonacoEditor from '@monaco-editor/react'
+import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
 import { virtualFilesystem } from './files'
 import { c__ } from './samples/c'
 import { useSt } from './stContext'
-import { TypescriptOptions } from './TypescriptOptions'
+import { IStandaloneCodeEditor, TypescriptOptions } from './TypescriptOptions'
 
-export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: {}) {
-    const st = useSt()
+export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?: string }) {
+    const client = useSt()
     return (
         <MonacoEditor //
             height='100vh'
+            path={p.path}
+            keepCurrentModel
             theme='vs-dark'
             onChange={(value) => {
                 if (value == null) return
-                st.project.udpateCode(value, 'fake')
+                client.project.udpateCode(value) // 🔴
             }}
-            onMount={(editor, monaco) => {
-                const compilerOptions: TypescriptOptions = {
-                    strict: true,
-                    module: monaco.languages.typescript.ModuleKind.ESNext,
-                    target: monaco.languages.typescript.ScriptTarget.ESNext,
-                    moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+            beforeMount={(monaco: Monaco) => client.setupMonaco(monaco)}
+            onMount={(editor: IStandaloneCodeEditor, monaco: Monaco) => {
+                client.editorRef.current = editor
+                if (client.monacoRef.current !== monaco) {
+                    console.log('🔴 invalid monacoRef.current')
+                    console.log('🔴', client.monacoRef.current)
+                    console.log('🔴', monaco)
+                    throw new Error('monacoRef.current!==monaco')
                 }
-                monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
-                monaco.languages.typescript.typescriptDefaults.addExtraLib(c__, 'global.d.ts')
-                console.log(monaco.languages.typescript.typescriptVersion)
-
-                for (const file of Object.values(virtualFilesystem)) {
-                    const uri = monaco.Uri.parse(`file:///${file.name}`)
-                    const model = monaco.editor.createModel(file.value, 'typescript', uri)
-                }
-                const aModel = monaco.editor.getModel(monaco.Uri.parse(`file:///a.ts`))
-                // st.file = aModel
-                st.project.udpateCode(virtualFilesystem['a.ts'].value, 'fake')
-                editor.setModel(aModel)
+                // for (const file of Object.values(virtualFilesystem)) {
+                //     const uri = monaco.Uri.parse(`file:///${file.name}`)
+                //     const model = monaco.editor.createModel(file.value, 'typescript', uri)
+                // }
+                // const aModel = monaco.editor.getModel(monaco.Uri.parse(`file:///a.ts`))
+                // // st.file = aModel
+                // client.project.udpateCode(virtualFilesystem['a.ts'].value)
+                // editor.setModel(aModel)
             }}
         />
     )

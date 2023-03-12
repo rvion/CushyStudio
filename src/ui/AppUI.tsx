@@ -6,16 +6,26 @@ import { useMemo } from 'react'
 import { ComfyServerInfos } from '../core/ComfyServerInfos'
 import { AppLayoutUI } from './AppLayoutUI'
 import { stContext } from './stContext'
+import { ComfyClient } from '../core/ComfyClient'
 
 export const AppUI = observer(function AppUI_() {
     const backend = useMemo(() => new ComfyServerInfos(), [])
+    const client = useMemo(
+        () =>
+            new ComfyClient({
+                serverIP: '192.168.1.19',
+                serverPort: 8188,
+                spec: {},
+            }),
+        [],
+    )
 
-    if (backend.manager)
-        return (
-            <stContext.Provider value={backend.manager}>
-                <AppLayoutUI />
-            </stContext.Provider>
-        )
+    // if (backend.client)
+    return (
+        <stContext.Provider value={client}>
+            <AppLayoutUI />
+        </stContext.Provider>
+    )
 
     return (
         <div className='welcome-screen'>
@@ -43,6 +53,9 @@ export const AppUI = observer(function AppUI_() {
                 </div>
                 <button className='primary large self-stretch' onClick={() => backend.connect()}>
                     Connect
+                </button>
+                <button className='primary large self-stretch' onClick={() => backend.connect()}>
+                    Connect Test
                 </button>
             </div>
         </div>

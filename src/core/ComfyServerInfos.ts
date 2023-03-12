@@ -14,21 +14,27 @@ export class ComfyServerInfos {
         makeAutoObservable(this)
     }
 
-    manager: Maybe<ComfyClient>
+    client: Maybe<ComfyClient>
     connect = async (): Promise<ComfyClient> => {
-        const schema: ComfySchemaJSON = await this.fetchObjectsSchema()
+        const schema: ComfySchemaJSON = await this.fetchObjectsSchema2()
         console.log('🚀 ~ file: ComfyBackendInfos.ts:20 ~ ComfyBackendInfos ~ connect= ~ schema:', schema)
-        this.manager = new ComfyClient({
+        this.client = new ComfyClient({
             serverIP: this.serverIP,
             serverPort: this.serverPort,
             spec: schema,
         })
-        return this.manager
+        return this.client
+    }
+    /** retri e the comfy spec from the schema*/
+    fetchObjectsSchema2 = async (): Promise<ComfySchemaJSON> => {
+        const base = window.location.href
+        const res = await fetch(`${base}/object_infos.json`, {})
+        return res.json()
     }
 
     /** retri e the comfy spec from the schema*/
     fetchObjectsSchema = async (): Promise<ComfySchemaJSON> => {
-        const x = await fetch(`http://${this.serverHost}/object_info`, {}).then((x) => x.json())
-        return x
+        const res = await fetch(`http://${this.serverHost}/object_info`, {})
+        return res.json()
     }
 }

@@ -1,10 +1,16 @@
-import { RunMode } from './ComfyGraph'
+import type { Maybe } from './ComfyUtils'
+import type { RunMode } from './ComfyGraph'
+
 import { makeAutoObservable } from 'mobx'
 import { ComfyGraph } from './ComfyGraph'
 import { ComfyClient } from './ComfyClient'
 import { ComfyPromptJSON } from './ComfyPrompt'
+import { nanoid } from 'nanoid'
 
 export class ComfyProject {
+    /** unique project id */
+    id: string = nanoid()
+
     /** project name */
     name: string = 'Untitled'
 
@@ -14,7 +20,14 @@ export class ComfyProject {
     code: string = ''
     // script: ComfyScript = new ComfyScript(this)
 
-    constructor(public client: ComfyClient) {
+    static INIT = (client: ComfyClient) => {
+        const project = new ComfyProject(client)
+        const graph = new ComfyGraph(project)
+        project.graphs.push(graph)
+        return project
+    }
+
+    private constructor(public client: ComfyClient) {
         makeAutoObservable(this)
     }
 
@@ -29,18 +42,14 @@ export class ComfyProject {
     get currentOutputs() { return this.currentGraph.outputs } // prettier-ignore
     get schema() { return this.client.schema } // prettier-ignore
 
-    run = async () => {
-        return this.udpateCode(this.code, 'real')
-    }
-
-    // runningMode: RunMode = 'fake'
-
     /** * project running is not the same as graph running; TODO: explain */
     isRunning = false
 
-    EVAL = async (mode: RunMode = 'fake'): Promise<boolean> => {
+    error: Maybe<string> = null
+    runningMode: RunMode = 'fake'
+    run = async (mode: RunMode = 'fake'): Promise<boolean> => {
         // if (this.isRunning) return false
-        // this.runningMode = mode
+        this.runningMode = mode
         // if (mode === 'real') this.isRunning = true
         if (this.code == null) {
             console.log('❌', 'no code to run')
@@ -62,7 +71,7 @@ export class ComfyProject {
         }
     }
 
-    udpateCode = async (code: string, mode: RunMode) => {
+    udpateCode = async (code: string) => {
         this.code = code
         // const script = new ComfyGraph(this)
         // const result = await script.EVAL(code, mode)

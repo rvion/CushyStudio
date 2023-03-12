@@ -8,9 +8,8 @@ import { ComfyNode } from './ComfyNode'
 import { ComfyNodeUID } from './ComfyNodeUID'
 import { ComfyProject } from './ComfyProject'
 import { ComfyPromptJSON } from './ComfyPrompt'
-import { ComfyNodeSchemaJSON } from './ComfySchemaJSON'
+import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
 import { deepCopyNaive, sleep } from './ComfyUtils'
-import { ComfySchema } from './ComfySchema'
 
 export type RunMode = 'fake' | 'real'
 
@@ -26,13 +25,24 @@ export class ComfyGraph {
         public project: ComfyProject,
         public json: ComfyPromptJSON = {},
     ) {
+        // console.log('COMFY GRAPH')
         makeObservable(this, { outputs: observable })
         for (const [uid, node] of Object.entries(json)) {
             new ComfyNode(this, uid, node)
         }
         // dynamically implement ComfySetup interface
-        const spec = project.client.schema
-        const schema = this.project.client.schema //
+        const schema = project.schema
+        console.log('🔴', schema.nodes)
+        for (const node of schema.nodes) {
+            console.log(`node: ${node.name}`)
+            Object.defineProperty(this, node.name, {
+                value: (inputs: any) =>
+                    new ComfyNode(this, this.getUID(), {
+                        class_type: node.name as any,
+                        inputs,
+                    }),
+            })
+        }
     }
 
     private _nextUID = 1
@@ -91,14 +101,20 @@ export class ComfyGraph {
     /** visjs JSON format (network visualisation) */
     get visData(): { nodes: VisNodes[]; edges: VisEdges[] } {
         const json: ComfyPromptJSON = this.json
-        const schemas: ComfySchema = this.project.client.schema
+        const schemas: ComfySchema = this.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }
         for (const [uid, node] of Object.entries(json)) {
-            const schema: ComfyNodeSchemaJSON = schemas[node.class_type]
+            const schema: ComfyNodeSchema = schemas.nodesByName[node.class_type]
             const color = comfyColors[schema.category]
-            nodes.push({ id: uid, label: node.class_type, color, font: { color: 'white' }, shape: 'box' })
+            nodes.push({
+                id: uid,
+                label: node.class_type,
+                color,
+                font: { color: 'white' },
+                shape: 'box',
+            })
             for (const [name, val] of Object.entries(node.inputs)) {
                 if (val instanceof Array) {
                     const [from, slotIx] = val

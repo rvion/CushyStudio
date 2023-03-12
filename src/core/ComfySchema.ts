@@ -1,3 +1,4 @@
+import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from './CodeBuffer'
 import { ComfySchemaJSON } from './ComfySchemaJSON'
 
@@ -18,17 +19,29 @@ export class ComfySchema {
     nodes: ComfyNodeSchema[] = []
     nodesByName: { [key: string]: ComfyNodeSchema } = {}
 
-    constructor(public spec: ComfySchemaJSON) {
+    constructor(spec: ComfySchemaJSON) {
+        this.update(spec)
+        makeAutoObservable(this)
+    }
+
+    update(spec: ComfySchemaJSON) {
+        // reset spec
+        this.knownTypes.clear()
+        this.knownEnums.clear()
+        this.nodes.splice(0, this.nodes.length)
+        this.nodesByName = {}
+
+        // compile spec
         const entries = Object.entries(spec)
-        for (const [nodeName, nodeDef] of entries) {
-            const requiredInputs = Object.entries(nodeDef.input.required)
+        for (const [nodeTypeName, nodeTypeDef] of entries) {
+            const requiredInputs = Object.entries(nodeTypeDef.input.required)
             const inputs: NodeInputExt[] = []
             const outputs: NodeOutputExt[] = []
-            const node = new ComfyNodeSchema(nodeName, nodeDef.category, inputs, outputs)
-            this.nodesByName[nodeName] = node
+            const node = new ComfyNodeSchema(nodeTypeName, nodeTypeDef.category, inputs, outputs)
+            this.nodesByName[nodeTypeName] = node
             this.nodes.push(node)
             const outputNamer: { [key: string]: number } = {}
-            for (const opt of nodeDef.output) {
+            for (const opt of nodeTypeDef.output) {
                 const at = (outputNamer[opt] ??= 0)
                 const name = at === 0 ? opt : `${opt}_${at}`
                 outputs.push({ type: opt, name })
@@ -53,7 +66,7 @@ export class ComfySchema {
                     const similarEnum = this.knownEnums.get(hash)
                     if (similarEnum != null) typeName = similarEnum.name
                     else {
-                        typeName = `enum_${nodeName}_${inputName}`
+                        typeName = `enum_${nodeTypeName}_${inputName}`
                         this.knownEnums.set(hash, { name: typeName, values: enumValues })
                     }
                 } else {
@@ -69,7 +82,6 @@ export class ComfySchema {
             }
         }
     }
-
     codegenDTS = (): string => {
         const b = new CodeBuffer()
         const p = b.w

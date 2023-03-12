@@ -15,44 +15,55 @@ const defaultLayout = (): LayoutData => ({
     dockbox: {
         mode: 'horizontal',
         children: [
+            // {
+            //     mode: 'vertical',
+            //     children: [
+            //         {
+            //             tabs: [
+            //                 {
+            //                     minWidth: 180,
+            //                     minHeight: 200,
+            //                     id: 'ide',
+            //                     title: 'IDE',
+            //                     content: <IdeInfosUI />,
+            //                 },
+            //             ],
+            //         },
+            //         // {
+            //         //     size: 9999,
+            //         //     tabs: [
+            //         //         {
+            //         //             minWidth: 280,
+            //         //             id: 'assets',
+            //         //             title: 'Assets',
+            //         //             content: (
+            //         //                 <>
+            //         //                     {/* <MainActionsUI />
+            //         //                     <VersionPickerUI />
+            //         //                     <NodeListUI /> */}
+            //         //                 </>
+            //         //             ),
+            //         //         },
+            //         //     ],
+            //         // },
+            //     ],
+            // },
+
             {
                 mode: 'vertical',
+                minWidth: 300,
                 children: [
                     {
                         tabs: [
                             {
                                 minWidth: 180,
-                                minHeight: 200,
+                                minHeight: 300,
                                 id: 'ide',
                                 title: 'IDE',
                                 content: <IdeInfosUI />,
                             },
                         ],
                     },
-                    {
-                        size: 9999,
-                        tabs: [
-                            {
-                                minWidth: 280,
-                                id: 'assets',
-                                title: 'Assets',
-                                content: (
-                                    <>
-                                        {/* <MainActionsUI />
-                                        <VersionPickerUI />
-                                        <NodeListUI /> */}
-                                    </>
-                                ),
-                            },
-                        ],
-                    },
-                ],
-            },
-
-            {
-                mode: 'vertical',
-                minWidth: 300,
-                children: [
                     {
                         tabs: [
                             {
@@ -90,8 +101,8 @@ const defaultLayout = (): LayoutData => ({
                         size: 99999,
                         tabs: [
                             { id: 'Editor1', title: 'Script', content: <ComfyCodeEditorUI /> },
-                            { id: 'Editor2', title: 'dts', content: <ComfyCodeEditorUI /> },
-                            { id: 'Editor3', title: 'object_infos', content: <ComfyCodeEditorUI /> },
+                            // { id: 'Editor2', title: 'dts', content: <ComfyCodeEditorUI path='schema.d.ts' /> },
+                            // { id: 'Editor3', title: 'object_infos', content: <ComfyCodeEditorUI /> },
                         ],
                     },
                     {
@@ -119,6 +130,18 @@ const defaultLayout = (): LayoutData => ({
                                 id: 'Graph',
                                 title: 'Graph',
                                 content: <VisUI />,
+                            },
+                            {
+                                minWidth: 280,
+                                id: 'assets',
+                                title: 'Assets',
+                                content: (
+                                    <>
+                                        {/* <MainActionsUI />
+                                        <VersionPickerUI />
+                                        <NodeListUI /> */}
+                                    </>
+                                ),
                             },
                         ],
                     },
