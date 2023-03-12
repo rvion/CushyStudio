@@ -32,6 +32,7 @@ export class ComfyImporter {
         const b = new CodeBuffer()
         const p = b.w
         const pi = b.append
+        p(`export {}`)
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 
@@ -66,6 +67,7 @@ export class ComfyImporter {
             p(`}, '${nodeID}')`)
         }
 
+        p('await C.get()')
         // b.writeTS('./src/compiler/entry.ts')
         return b.content
     }
