@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from './stContext'
-import { TrieEntry as TreeValue } from './LabelUI'
+import { TreeValue as TreeValue } from './LabelUI'
 
 export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
     const client = useSt()
@@ -35,13 +35,15 @@ export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
             <TreeValue onClick={client.editor.openSDK} title='SDK'>
                 <div>0.1.0</div>
             </TreeValue>
+            <TreeValue onClick={() => client.editor.openCODE()} title='code'>
+                {client.project.code.length} chars
+            </TreeValue>
             <TreeValue title='schema'>
                 {client.schemaStatusEmoji} {client.schema.nodes.length} nodes;
                 <button onClick={client.fetchObjectsSchema}>Load</button>
             </TreeValue>
-            <TreeValue title='dts'>
+            <TreeValue title='dts' onClick={client.editor.openLib}>
                 {client.dtsStatusEmoji} {client.dts.length} chars;
-                <button onClick={client.editor.openLib}>Show</button>
                 {/* <button onClick={() => {}}>Load</button> */}
             </TreeValue>
         </div>

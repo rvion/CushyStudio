@@ -12,7 +12,7 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
             keepCurrentModel
             theme='vs-dark'
             onChange={(value, ev) => {
-                console.log('🔴 onChange', value, ev)
+                // console.log('🔴 onChange', value, ev)
                 if (value == null) return
                 client.project.udpateCode(value) // 🔴
             }}

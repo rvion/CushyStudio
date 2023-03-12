@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from './stContext'
-import { TrieEntry } from './LabelUI'
+import { TreeValue } from './LabelUI'
 import { MainActionsUI } from './MainActionsUI'
 
 export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
@@ -11,17 +11,17 @@ export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
             <div className='row gap items-baseline'>
                 <MainActionsUI />
             </div>
-            <TrieEntry title='Name'>
+            <TreeValue title='Name'>
                 <input //
                     type='text'
                     value={project.name}
                     onChange={(ev) => (project.name = ev.target.value)}
                 />
-            </TrieEntry>
-            <TrieEntry onClick={() => client.editor.openCODE()} title='code'>
+            </TreeValue>
+            <TreeValue onClick={() => client.editor.openCODE()} title='code'>
                 ...
-            </TrieEntry>
-            <TrieEntry title='Prompts'>
+            </TreeValue>
+            <TreeValue title='Prompts'>
                 <div className='row wrap gap'>
                     {client.project.graphs.map((v, ix) => (
                         <button
@@ -33,7 +33,7 @@ export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
                         </button>
                     ))}
                 </div>
-            </TrieEntry>
+            </TreeValue>
         </div>
     )
 })

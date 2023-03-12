@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import type { ReactNode } from 'react'
 
-export const TrieEntry = observer(function LabelUI_(p: {
+export const TreeValue = observer(function TreeValue_(p: {
     //
     onClick?: () => void
     title: ReactNode
