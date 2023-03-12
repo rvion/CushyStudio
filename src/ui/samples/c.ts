@@ -49,11 +49,11 @@ declare module "core/ComfyAPI" {
     };
 }
 declare module "ui/TypescriptOptions" {
-    import * as T from 'monaco-editor/esm/vs/editor/editor.api';
-    export type TypescriptOptions = T.languages.typescript.CompilerOptions;
-    export type ITextModel = ReturnType<typeof T.editor.createModel>;
-    export type IStandaloneCodeEditor = import('monaco-editor').editor.IStandaloneCodeEditor;
-    export type Monaco = typeof import('/Users/loco/dev/intuition/node_modules/monaco-editor/esm/vs/editor/editor.api');
+    
+    export type TypescriptOptions = any
+    export type ITextModel = any
+    export type IStandaloneCodeEditor = any
+    export type Monaco = any;
 }
 declare module "ui/samples/c" {
     export const c__: string;
@@ -201,18 +201,18 @@ declare module "core/ComfySchema" {
     }
 }
 declare module "core/ComfyScriptEditor" {
-    import type { Monaco } from '@monaco-editor/react';
+    
     import { ComfyClient } from "core/ComfyClient";
     export class ComfyScriptEditor {
         client: ComfyClient;
         constructor(client: ComfyClient);
         editorRef: {
-            current: import("monaco-editor").editor.IStandaloneCodeEditor | null;
+            current: any
         };
         monacoRef: {
-            current: typeof import("monaco-editor") | null;
+            current: any
         };
-        setupMonaco(monaco: Monaco): void;
+        setupMonaco(monaco: any): void;
         private sdk_path;
         private lib_path;
         updateSDKDTS: () => void;
@@ -264,16 +264,16 @@ declare module "core/ComfyClient" {
 }
 declare module "ui/stContext" {
     import { ComfyClient } from "core/ComfyClient";
-    export const stContext: import("react").Context<ComfyClient | null>;
+    export const stContext: any
     export const useSt: () => ComfyClient;
     export const useProject: () => import("core/ComfyProject").ComfyProject;
 }
 declare module "ui/VisUI" {
-    import type { Edge, Node, Options } from 'vis-network/declarations/network/Network';
-    export const VisUI: import("react").FunctionComponent<{}>;
-    export type VisNodes = Node;
-    export type VisEdges = Edge;
-    export type VisOptions = Options;
+    
+    export const VisUI:any
+    export type VisNodes = any;
+    export type VisEdges = any;
+    export type VisOptions = any;
 }
 declare module "core/ComfyColors" {
     export const comfyColors: {
