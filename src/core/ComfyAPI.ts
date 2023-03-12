@@ -16,4 +16,4 @@ export type WsMsgExecuting = { type: 'executing'; data: { node: ComfyNodeUID } }
 export type WsMsgExecuted = { type: 'executed'; data: { node: ComfyNodeUID; output: { images: string[] } } }
 
 export type NodeProgress = { value: number; max: number }
-export type ComfyStatus = { exec_info: { queue_remaining: number } }
+export type ComfyStatus = { exec_info: { queue_remaining: number }; sid: string }

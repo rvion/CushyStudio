@@ -2,7 +2,7 @@ import type { NodeProgress } from './ComfyAPI'
 import type { ComfyGraph } from './ComfyGraph'
 import type { ComfyNodeJSON } from './ComfyPrompt'
 
-import { makeAutoObservable, makeObservable, observable } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
 

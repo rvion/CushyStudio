@@ -1,15 +1,15 @@
-import * as WS from 'ws'
-import type { IStandaloneCodeEditor, TypescriptOptions } from '../ui/TypescriptOptions'
+import type { ComfySchemaJSON } from './ComfySchemaJSON'
+import type { Maybe } from './ComfyUtils'
 
-import { Monaco } from '@monaco-editor/react'
-import { makeAutoObservable, observable } from 'mobx'
-import { c__ } from '../ui/samples/c'
+import * as WS from 'ws'
+
+import { makeAutoObservable } from 'mobx'
+import { a__ } from '../ui/samples/a'
 import { WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
-import { ComfySchemaJSON } from './ComfySchemaJSON'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
-import { a__ } from '../ui/samples/a'
+import { initialize } from 'esbuild'
 
 export type ComfyManagerOptions = {
     serverIP: string
@@ -105,10 +105,17 @@ export class ComfyClient {
     }
     static Init = () => {}
 
-    wsStatus = 'disconnected'
+    // TODO: finish this
+    get wsStatusTxt() {
+        if (this.ws == null) return 'not initialized'
+        if (this.ws?.readyState === WebSocket.OPEN) return 'connected'
+        if (this.ws?.readyState === WebSocket.CLOSED) return 'disconnected'
+        return 'connecting'
+    }
+    wsStatus: 'on' | 'off' = 'off'
     get wsStatusEmoji() {
-        if (this.wsStatus === 'connected') return '🟢'
-        if (this.wsStatus === 'disconnected') return '🔴'
+        if (this.wsStatus === 'on') return '🟢'
+        if (this.wsStatus === 'off') return '🔴'
         return '❓'
     }
 
@@ -122,7 +129,12 @@ export class ComfyClient {
         return '🔴'
     }
 
+    ws: Maybe<WS.WebSocket | WebSocket> = null
     startWSClient = () => {
+        if (this.ws) {
+            if (this.ws?.readyState === WebSocket.OPEN) this.ws.close()
+            this.wsStatus = 'off'
+        }
         const ws =
             typeof window !== 'undefined'
                 ? new WebSocket(`ws://${this.serverHost}/ws`)
@@ -130,7 +142,7 @@ export class ComfyClient {
         ws.binaryType = 'arraybuffer'
         ws.onopen = () => {
             console.log('connected')
-            this.wsStatus = 'connected'
+            this.wsStatus = 'on'
         }
         ws.onmessage = (e: WS.MessageEvent) => {
             const msg: WsMsg = JSON.parse(e.data as any)
@@ -142,5 +154,6 @@ export class ComfyClient {
             if (msg.type === 'executed') return this.project.currentGraph.onExecuted(msg)
             throw new Error('Unknown message type: ' + msg)
         }
+        this.ws = ws
     }
 }

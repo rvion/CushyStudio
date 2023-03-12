@@ -142,3 +142,8 @@ input {
     box-sizing: border-box;
     padding: 10px;
 }
+
+.TreeValue:hover{
+    background-color: rgb(62, 62, 62);
+
+}

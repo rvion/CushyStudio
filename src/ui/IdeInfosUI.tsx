@@ -31,6 +31,7 @@ export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
             </TreeValue>
             <TreeValue title='websocket'>
                 {client.wsStatusEmoji} {client.wsStatus}
+                <button onClick={client.startWSClient}>Connect</button>
             </TreeValue>
             <TreeValue title='schema'>
                 {client.schemaStatusEmoji} {client.schema.nodes.length} nodes;
