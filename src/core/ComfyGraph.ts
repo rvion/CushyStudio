@@ -34,7 +34,7 @@ export class ComfyGraph {
         const schema = project.schema
         console.log('🔴', schema.nodes)
         for (const node of schema.nodes) {
-            console.log(`node: ${node.name}`)
+            // console.log(`node: ${node.name}`)
             Object.defineProperty(this, node.name, {
                 value: (inputs: any) =>
                     new ComfyNode(this, this.getUID(), {

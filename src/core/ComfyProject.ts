@@ -20,10 +20,13 @@ export class ComfyProject {
     code: string = ''
     // script: ComfyScript = new ComfyScript(this)
 
+    MAIN!: ComfyGraph
+
     static INIT = (client: ComfyClient) => {
         const project = new ComfyProject(client)
-        const graph = new ComfyGraph(project)
-        project.graphs.push(graph)
+        project.MAIN = new ComfyGraph(project)
+        // const graph = new ComfyGraph(project)
+        // project.graphs.push(graph)
         return project
     }
 
@@ -38,7 +41,8 @@ export class ComfyProject {
 
     graphs: ComfyGraph[] = []
 
-    get currentGraph() { return this.graphs[this.focus] } // prettier-ignore
+    // 🔴 not the right abstraction anymore
+    get currentGraph() { return this.graphs[this.focus] ?? this.MAIN } // prettier-ignore
     get currentOutputs() { return this.currentGraph.outputs } // prettier-ignore
     get schema() { return this.client.schema } // prettier-ignore
 
@@ -60,6 +64,7 @@ export class ComfyProject {
             const finalCode = this.code.replace(`export {}`, '')
             const BUILD = new Function('C', `return (async() => { ${finalCode} })()`)
             const emptyGraph = new ComfyGraph(this)
+            this.MAIN = emptyGraph
             await BUILD(emptyGraph)
             console.log('✅')
             // this.isRunning = false

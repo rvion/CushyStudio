@@ -28,16 +28,20 @@ export class ComfyScriptEditor {
     }
 
     // monaco.languages.typescript.typescriptDefaults.addExtraLib(c__, 'base.d.ts')
+    // monaco.languages.typescript.typescriptDefaults.addExtraLib(this.dts, 'global.d.ts')
+
     private sdk_path = `file:///core/sdk.d.ts`
     private lib_path = `file:///core/global.d.ts`
+    private CODE_path = `file:///TEMP.ts`
 
     updateSDKDTS = () => this.updateFile(this.sdk_path, c__)
     updateLibDTS = () => this.updateFile(this.lib_path, this.client.dts)
+    updateCODE = (code: string) => this.updateFile(this.CODE_path, code)
 
     updateFile = (path: string, content: string) => {
         const monaco = this.monacoRef.current
         if (!monaco) throw new Error('🔴 monaco is null')
-        // monaco.languages.typescript.typescriptDefaults.addExtraLib(this.dts, 'global.d.ts')
+
         const uri = monaco.Uri.parse(path)
         let model = monaco.editor.getModel(uri)
         if (model) {
@@ -58,6 +62,7 @@ export class ComfyScriptEditor {
 
     openLib = () => this.openPathInEditor(this.lib_path)
     openSDK = () => this.openPathInEditor(this.sdk_path)
+    openCODE = () => this.openPathInEditor(this.CODE_path)
 
     openPathInEditor = (path: string) => {
         const monaco = this.monacoRef.current

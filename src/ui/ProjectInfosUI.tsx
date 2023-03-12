@@ -18,6 +18,9 @@ export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
                     onChange={(ev) => (project.name = ev.target.value)}
                 />
             </TrieEntry>
+            <TrieEntry onClick={() => client.editor.openCODE()} title='code'>
+                ...
+            </TrieEntry>
             <TrieEntry title='Prompts'>
                 <div className='row wrap gap'>
                     {client.project.graphs.map((v, ix) => (
