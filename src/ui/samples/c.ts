@@ -99,6 +99,7 @@ declare module "core/ComfyProject" {
         /** current  */
         focus: number;
         code: string;
+        MAIN: ComfyGraph;
         static INIT: (client: ComfyClient) => ComfyProject;
         private constructor();
         /** converts a ComfyPromptJSON into it's canonical normal-form script */
@@ -215,11 +216,14 @@ declare module "core/ComfyScriptEditor" {
         setupMonaco(monaco: any): void;
         private sdk_path;
         private lib_path;
+        private CODE_path;
         updateSDKDTS: () => void;
         updateLibDTS: () => void;
+        updateCODE: (code: string) => void;
         updateFile: (path: string, content: string) => void;
         openLib: () => void;
         openSDK: () => void;
+        openCODE: () => void;
         openPathInEditor: (path: string) => void;
     }
 }
