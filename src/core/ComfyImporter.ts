@@ -32,8 +32,8 @@ export class ComfyImporter {
         const b = new CodeBuffer()
         const p = b.w
         const pi = b.append
-        p(`import { Comfy } from '../core/dsl'\n`)
-        p(`export const demo = new Comfy()`)
+        // p(`import { Comfy } from '../core/dsl'\n`)
+        // p(`export const demo = new Comfy()`)
 
         // const nodeCounter: { [nodeType: string]: number } = {}
         const generatedName = new Map<string, string>()
@@ -52,12 +52,16 @@ export class ComfyImporter {
             }
 
             if (node == null) throw new Error('node not found')
-            pi(`export const ${varName} = demo.${classType}({`)
+            pi(`const ${varName} = C.${classType}({`)
             for (const [name, value] of Object.entries(node.inputs) ?? []) {
+                const isValidJSIdentifier = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(name)
+                const name2 = isValidJSIdentifier ? name : `'${name}'`
                 if (Array.isArray(value)) {
                     const signal = availableSignals.get(value.join('-'))
-                    pi(`${name}: ${signal}, `)
-                } else pi(`${name}: ${jsEscapeStr(value)}, `)
+                    pi(`${name2}: ${signal}, `)
+                } else {
+                    pi(`${name2}: ${jsEscapeStr(value)}, `)
+                }
             }
             p(`}, '${nodeID}')`)
         }
