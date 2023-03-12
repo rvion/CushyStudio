@@ -1,4 +1,5 @@
 export const c__:string = `
+
 declare module "core/ComfyNodeUID" {
     export type ComfyNodeUID = string;
 }
@@ -46,17 +47,34 @@ declare module "core/ComfyAPI" {
         exec_info: {
             queue_remaining: number;
         };
+        sid: string;
     };
 }
-declare module "ui/TypescriptOptions" {
-    
-    export type TypescriptOptions = any
-    export type ITextModel = any
-    export type IStandaloneCodeEditor = any
-    export type Monaco = any;
-}
-declare module "ui/samples/c" {
-    export const c__: string;
+declare module "core/ComfySchemaJSON" {
+    /** type of the file sent by the backend at /object_info */
+    export type ComfySchemaJSON = {
+        [nodeTypeName: string]: ComfyNodeSchemaJSON;
+    };
+    export type ComfyNodeSchemaJSON = {
+        input: {
+            required: {
+                [inputName: string]: ComfyInputSpec;
+            };
+        };
+        output: string[];
+        name: string;
+        description: string;
+        category: string;
+    };
+    export type ComfyInputSpec = [ComfyInputType] | [ComfyInputType, ComfyInputOpts];
+    export type ComfyInputType = 
+    /** node name or primitive */
+    string
+    /** enum */
+     | string[];
+    export type ComfyInputOpts = {
+        [key: string]: any;
+    };
 }
 declare module "core/ComfyUtils" {
     export const exhaust: (x: never) => never;
@@ -72,6 +90,9 @@ declare module "core/ComfyUtils" {
     };
     export type Maybe<T> = T | null | undefined;
     export const deepCopyNaive: <T>(x: T) => T;
+}
+declare module "ui/samples/a" {
+    export const a__: string;
 }
 declare module "core/ComfyPrompt" {
     export type ComfyPromptJSON = {
@@ -138,32 +159,6 @@ declare module "core/CodeBuffer" {
     export const repeatStr: (x: number, str: string) => string;
     export const renderBar: (text: string, prefix?: string) => string;
 }
-declare module "core/ComfySchemaJSON" {
-    /** type of the file sent by the backend at /object_info */
-    export type ComfySchemaJSON = {
-        [nodeTypeName: string]: ComfyNodeSchemaJSON;
-    };
-    export type ComfyNodeSchemaJSON = {
-        input: {
-            required: {
-                [inputName: string]: ComfyInputSpec;
-            };
-        };
-        output: string[];
-        name: string;
-        description: string;
-        category: string;
-    };
-    export type ComfyInputSpec = [ComfyInputType] | [ComfyInputType, ComfyInputOpts];
-    export type ComfyInputType = 
-    /** node name or primitive */
-    string
-    /** enum */
-     | string[];
-    export type ComfyInputOpts = {
-        [key: string]: any;
-    };
-}
 declare module "core/ComfySchema" {
     import { ComfySchemaJSON } from "core/ComfySchemaJSON";
     export type EnumHash = string;
@@ -201,6 +196,16 @@ declare module "core/ComfySchema" {
         codegen(): string;
     }
 }
+declare module "ui/TypescriptOptions" {
+    
+    export type TypescriptOptions = any
+    export type ITextModel = any
+    export type IStandaloneCodeEditor = any
+    export type Monaco = any;
+}
+declare module "ui/samples/c" {
+    export const c__: string;
+}
 declare module "core/ComfyScriptEditor" {
     
     import { ComfyClient } from "core/ComfyClient";
@@ -231,13 +236,12 @@ declare module "core/ComfyScriptEditor" {
         hasModel: (path: string) => boolean | null;
     }
 }
-declare module "ui/samples/a" {
-    export const a__: string;
-}
 declare module "core/ComfyClient" {
+    import type { ComfySchemaJSON } from "core/ComfySchemaJSON";
+    import type { Maybe } from "core/ComfyUtils";
+    
     import { ComfyProject } from "core/ComfyProject";
     import { ComfySchema } from "core/ComfySchema";
-    import { ComfySchemaJSON } from "core/ComfySchemaJSON";
     import { ComfyScriptEditor } from "core/ComfyScriptEditor";
     export type ComfyManagerOptions = {
         serverIP: string;
@@ -266,10 +270,12 @@ declare module "core/ComfyClient" {
         /** retri e the comfy spec from the schema*/
         fetchObjectsSchema: () => Promise<ComfySchemaJSON>;
         static Init: () => void;
-        wsStatus: string;
+        get wsStatusTxt(): "not initialized" | "connected" | "disconnected" | "connecting";
+        wsStatus: 'on' | 'off';
         get wsStatusEmoji(): "🟢" | "🔴" | "❓";
         get schemaStatusEmoji(): "🟢" | "🔴";
         get dtsStatusEmoji(): "🟢" | "🔴";
+        ws: Maybe<WebSocket>;
         startWSClient: () => void;
     }
 }

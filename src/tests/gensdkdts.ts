@@ -35,6 +35,10 @@ for (const [from, to] of [
     [`current: import("monaco-editor").editor.IStandaloneCodeEditor | null;`, `current: any`],
     [`current: typeof import("monaco-editor") | null;`, `current: any`],
     [`setupMonaco(monaco: Monaco): void;`, `setupMonaco(monaco: any): void;`],
+    // ws stuff
+    [`import * as WS from 'ws';`, ''],
+    [`/// <reference types="ws" />`, ''],
+    [`WS.WebSocket | WebSocket`, 'WebSocket'],
 ]) {
     out = out.replace(from, to)
 }
