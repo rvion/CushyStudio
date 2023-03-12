@@ -152,12 +152,14 @@ export class ComfyClient {
         if (file.type === 'image/png') {
             const pngInfo = await getPngMetadata(this, file)
             console.log(pngInfo)
-            if (pngInfo && pngInfo.workflow) {
-                const data = JSON.parse(pngInfo.workflow)
+            if (pngInfo && pngInfo.prompt) {
+                const data = JSON.parse(pngInfo.prompt)
                 console.log(data)
                 const project = ComfyProject.FROM_JSON(this, data)
                 this.projects.push(project)
                 this.project = project
+                this.editor.updateCODE(project.code)
+                this.project.udpateCode(project.code)
             }
         }
         // else if (file.type === 'application/json' || file.name.endsWith('.json')) {
