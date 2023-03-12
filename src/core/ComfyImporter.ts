@@ -1,6 +1,5 @@
 // import flow from '../compiler/entry.in.json' assert { type: 'json' }
 import { CodeBuffer } from './CodeBuffer'
-import { ComfyNodeType } from './Comfy'
 import { ComfyClient } from './ComfyClient'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfyNodeSchema } from './ComfySchema'
@@ -46,7 +45,7 @@ export class ComfyImporter {
             const classType = node.class_type
             const varName = `${classType}_${nodeID}`
             generatedName.set(nodeID, varName)
-            const schema: ComfyNodeSchema = this.client.schema.nodesByName[classType as ComfyNodeType]
+            const schema: ComfyNodeSchema = this.client.schema.nodesByName[classType]
             let outoutIx = 0
             for (const o of schema.outputs ?? []) {
                 availableSignals.set(`${nodeID}-${outoutIx++}`, `${varName}.${o.name}`)

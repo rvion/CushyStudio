@@ -105,37 +105,6 @@ declare module "core/ComfyPrompt" {
         class_type: string;
     };
 }
-declare module "core/ComfyProject" {
-    import type { Maybe } from "core/ComfyUtils";
-    import type { RunMode } from "core/ComfyGraph";
-    import { ComfyGraph } from "core/ComfyGraph";
-    import { ComfyClient } from "core/ComfyClient";
-    import { ComfyPromptJSON } from "core/ComfyPrompt";
-    export class ComfyProject {
-        client: ComfyClient;
-        /** unique project id */
-        id: string;
-        /** project name */
-        name: string;
-        /** current  */
-        focus: number;
-        code: string;
-        MAIN: ComfyGraph;
-        static INIT: (client: ComfyClient) => ComfyProject;
-        private constructor();
-        /** converts a ComfyPromptJSON into it's canonical normal-form script */
-        static LoadFromComfyPromptJSON: (json: ComfyPromptJSON) => never;
-        graphs: ComfyGraph[];
-        get currentGraph(): ComfyGraph;
-        get currentOutputs(): import("core/ComfyAPI").WsMsgExecuted[];
-        get schema(): import("core/ComfySchema").ComfySchema;
-        /** * project running is not the same as graph running; TODO: explain */
-        isRunning: boolean;
-        error: Maybe<string>;
-        run: (mode?: RunMode) => Promise<boolean>;
-        udpateCode: (code: string) => Promise<void>;
-    }
-}
 declare module "core/CodeBuffer" {
     /** this class is used to buffer text and then write it to a file */
     export class CodeBuffer {
@@ -195,6 +164,53 @@ declare module "core/ComfySchema" {
         codegen(): string;
     }
 }
+declare module "core/toposort" {
+    export type TNode = string;
+    export type TEdge = [TNode, TNode];
+    export function toposort(nodes: TNode[], edges: TEdge[]): TNode[];
+}
+declare module "core/ComfyImporter" {
+    import { ComfyClient } from "core/ComfyClient";
+    import { ComfyPromptJSON } from "core/ComfyPrompt";
+    /** Converts Comfy JSON prompts to ComfyScript code */
+    export class ComfyImporter {
+        client: ComfyClient;
+        constructor(client: ComfyClient);
+        convertFlowToCode: (flow: ComfyPromptJSON) => string;
+    }
+}
+declare module "core/ComfyProject" {
+    import type { Maybe } from "core/ComfyUtils";
+    import type { RunMode } from "core/ComfyGraph";
+    import { ComfyGraph } from "core/ComfyGraph";
+    import { ComfyClient } from "core/ComfyClient";
+    import { ComfyPromptJSON } from "core/ComfyPrompt";
+    export class ComfyProject {
+        client: ComfyClient;
+        /** unique project id */
+        id: string;
+        /** project name */
+        name: string;
+        /** current  */
+        focus: number;
+        code: string;
+        MAIN: ComfyGraph;
+        static INIT: (client: ComfyClient) => ComfyProject;
+        static FROM_JSON: (client: ComfyClient, json: ComfyPromptJSON) => ComfyProject;
+        private constructor();
+        /** converts a ComfyPromptJSON into it's canonical normal-form script */
+        static LoadFromComfyPromptJSON: (json: ComfyPromptJSON) => never;
+        graphs: ComfyGraph[];
+        get currentGraph(): ComfyGraph;
+        get currentOutputs(): import("core/ComfyAPI").WsMsgExecuted[];
+        get schema(): import("core/ComfySchema").ComfySchema;
+        /** * project running is not the same as graph running; TODO: explain */
+        isRunning: boolean;
+        error: Maybe<string>;
+        run: (mode?: RunMode) => Promise<boolean>;
+        udpateCode: (code: string) => Promise<void>;
+    }
+}
 declare module "ui/TypescriptOptions" {
     
     export type TypescriptOptions = any
@@ -234,6 +250,14 @@ declare module "core/ComfyScriptEditor" {
         hasCODE: () => boolean | null;
         hasModel: (path: string) => boolean | null;
     }
+}
+declare module "core/getPngMetadata" {
+    /** code copy-pasted from ComfyUI repo */
+    import type { ComfyClient } from "core/ComfyClient";
+    export type TextChunks = {
+        [key: string]: string;
+    };
+    export function getPngMetadata(client: ComfyClient, file: File): Promise<TextChunks>;
 }
 declare module "core/ComfyClient" {
     import type { ComfySchemaJSON } from "core/ComfySchemaJSON";
@@ -276,6 +300,9 @@ declare module "core/ComfyClient" {
         get dtsStatusEmoji(): "🟢" | "🔴";
         ws: Maybe<WebSocket>;
         startWSClient: () => void;
+        notify: (msg: string) => import("react-toastify").Id;
+        /** Loads workflow data from the specified file */
+        handleFile(file: File): Promise<void>;
     }
 }
 declare module "ui/stContext" {
