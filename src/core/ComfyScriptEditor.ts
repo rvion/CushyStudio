@@ -74,4 +74,17 @@ export class ComfyScriptEditor {
         if (!editor) throw new Error('editor is null')
         editor.setModel(libModel)
     }
+
+    hasLib = () => this.hasModel(this.lib_path)
+    hasSDK = () => this.hasModel(this.sdk_path)
+    hasCODE = () => this.hasModel(this.CODE_path)
+    hasModel = (path: string) => {
+        const monaco = this.monacoRef.current
+        if (!monaco) return null
+        // if (!monaco) throw new Error('monaco is null')
+        const libURI = monaco.Uri.parse(path)
+        const libModel = monaco.editor.getModel(libURI)
+        if (libModel == null) return false
+        return true
+    }
 }

@@ -2,7 +2,7 @@ import type { NodeProgress } from './ComfyAPI'
 import type { ComfyGraph } from './ComfyGraph'
 import type { ComfyNodeJSON } from './ComfyPrompt'
 
-import { makeObservable, observable } from 'mobx'
+import { makeAutoObservable, makeObservable, observable } from 'mobx'
 import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
 
@@ -15,6 +15,14 @@ export class ComfyNode<ComfyNode_input extends object> {
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema
 
+    get inputs(): ComfyNode_input {
+        return this.json.inputs as any
+    }
+
+    set(p: Partial<ComfyNode_input>) {
+        Object.assign(this.json.inputs, p)
+    }
+
     constructor(
         //
         public graph: ComfyGraph,
@@ -23,7 +31,8 @@ export class ComfyNode<ComfyNode_input extends object> {
     ) {
         this.$schema = graph.schema.nodesByName[json.class_type]
         this.graph.nodes.set(this.uid.toString(), this)
-        makeObservable(this, { artifacts: observable })
+        makeAutoObservable(this)
+        // makeObservable(this, { artifacts: observable })
     }
 
     get manager() { return this.graph.client } // prettier-ignore

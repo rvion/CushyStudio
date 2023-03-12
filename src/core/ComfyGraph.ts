@@ -30,9 +30,11 @@ export class ComfyGraph {
         for (const [uid, node] of Object.entries(json)) {
             new ComfyNode(this, uid, node)
         }
-        // dynamically implement ComfySetup interface
+        // inject properties:
+        // TODO: rewrite with a single defineProperties call
+        // with propery object being defined on the client
+        // to remove all this extra work
         const schema = project.schema
-        console.log('🔴', schema.nodes)
         for (const node of schema.nodes) {
             // console.log(`node: ${node.name}`)
             Object.defineProperty(this, node.name, {

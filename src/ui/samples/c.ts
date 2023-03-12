@@ -225,7 +225,14 @@ declare module "core/ComfyScriptEditor" {
         openSDK: () => void;
         openCODE: () => void;
         openPathInEditor: (path: string) => void;
+        hasLib: () => boolean | null;
+        hasSDK: () => boolean | null;
+        hasCODE: () => boolean | null;
+        hasModel: (path: string) => boolean | null;
     }
+}
+declare module "ui/samples/a" {
+    export const a__: string;
 }
 declare module "core/ComfyClient" {
     import { ComfyProject } from "core/ComfyProject";
@@ -343,6 +350,8 @@ declare module "core/ComfyNode" {
         }[];
         progress: NodeProgress | null;
         $schema: ComfyNodeSchema;
+        get inputs(): ComfyNode_input;
+        set(p: Partial<ComfyNode_input>): void;
         constructor(graph: ComfyGraph, uid: string, json: ComfyNodeJSON);
         get manager(): import("core/ComfyClient").ComfyClient;
         artifactsForStep(step: number): string[];

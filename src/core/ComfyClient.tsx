@@ -56,6 +56,10 @@ export class ComfyClient {
         this.dts = this.schema.codegenDTS()
         this.startWSClient()
         makeAutoObservable(this)
+        setTimeout(async () => {
+            await this.fetchObjectsSchema()
+            this.editor.openCODE()
+        }, 1000)
     }
 
     get serverHost() {
@@ -95,6 +99,7 @@ export class ComfyClient {
         this.editor.updateSDKDTS()
         this.editor.updateLibDTS()
         this.editor.updateCODE(a__)
+        this.project.udpateCode(a__)
         console.log('🟢 schema:', this.schema.nodes)
         return schema$
     }
