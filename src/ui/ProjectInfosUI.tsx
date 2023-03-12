@@ -8,9 +8,11 @@ export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
     const project = client.project
     return (
         <div className='col gap1'>
-            <div className='row gap items-baseline'>
-                <MainActionsUI />
-            </div>
+            <TreeValue title='Project'>
+                <select>
+                    <option value=''>test</option>
+                </select>
+            </TreeValue>
             <TreeValue title='Name'>
                 <input //
                     type='text'
@@ -21,17 +23,22 @@ export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
             <TreeValue onClick={() => client.editor.openCODE()} title='code'>
                 ...
             </TreeValue>
+            <div className='row gap items-baseline'></div>
             <TreeValue title='Prompts'>
-                <div className='row wrap gap'>
-                    {client.project.graphs.map((v, ix) => (
-                        <button
-                            key={ix}
-                            onClick={() => (project.focus = ix)}
-                            className={project.focus === ix ? 'active' : undefined}
-                        >
-                            {ix + 1}
-                        </button>
-                    ))}
+                <div className='col grow gap'>
+                    <MainActionsUI />
+                    <div className='row wrap gap'>
+                        {client.project.graphs.map((v, ix) => (
+                            <button
+                                style={{ minWidth: '2rem', border: '1px solid #625858' }}
+                                key={ix}
+                                onClick={() => (project.focus = ix)}
+                                className={project.focus === ix ? 'active' : undefined}
+                            >
+                                {ix + 1}
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </TreeValue>
         </div>

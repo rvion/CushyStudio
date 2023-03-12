@@ -50,31 +50,33 @@ export class ComfyProject {
     isRunning = false
 
     error: Maybe<string> = null
-    runningMode: RunMode = 'fake'
+    // runningMode: RunMode = 'fake'
     run = async (mode: RunMode = 'fake'): Promise<boolean> => {
         this.graphs = []
         // if (this.isRunning) return false
-        this.runningMode = mode
+        // this.runningMode = mode
         // if (mode === 'real') this.isRunning = true
         if (this.code == null) {
             console.log('❌', 'no code to run')
             // this.isRunning = false
             return false
         }
-        try {
-            const finalCode = this.code.replace(`export {}`, '')
-            const BUILD = new Function('C', `return (async() => { ${finalCode} })()`)
-            const emptyGraph = new ComfyGraph(this)
-            this.MAIN = emptyGraph
-            await BUILD(emptyGraph)
-            console.log('✅')
-            // this.isRunning = false
-            return true
-        } catch (error) {
-            console.log('❌', error)
-            // this.isRunning = false
-            return false
-        }
+        // try {
+        const finalCode = this.code.replace(`export {}`, '')
+        const BUILD = new Function('C', `return (async() => { ${finalCode} })()`)
+        const emptyGraph = new ComfyGraph(this)
+        emptyGraph.runningMode = mode
+
+        this.MAIN = emptyGraph
+        await BUILD(emptyGraph)
+        console.log('✅')
+        // this.isRunning = false
+        return true
+        // } catch (error) {
+        //     console.log('❌', error)
+        //     // this.isRunning = false
+        //     return false
+        // }
     }
 
     udpateCode = async (code: string) => {

@@ -12,6 +12,9 @@ export const MainActionsUI = observer(function MainActionsUI_() {
             <button className='success' onClick={() => project.run()}>
                 Eval
             </button>
+            <button className='success' onClick={() => project.run('real')}>
+                RUN
+            </button>
             {graph.isRunning ? (
                 <button className='success' onClick={() => (graph.isRunning = false)}>
                     Abort

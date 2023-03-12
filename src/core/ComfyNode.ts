@@ -2,9 +2,11 @@ import type { NodeProgress } from './ComfyAPI'
 import type { ComfyGraph } from './ComfyGraph'
 import type { ComfyNodeJSON } from './ComfyPrompt'
 
-import { makeAutoObservable } from 'mobx'
+import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
+
+configure({ enforceActions: 'never' })
 
 /** ComfyNode
  * - correspond to a signal in the graph
@@ -19,20 +21,45 @@ export class ComfyNode<ComfyNode_input extends object> {
         return this.json.inputs as any
     }
 
+    json: ComfyNodeJSON
+
+    /** update a node */
     set(p: Partial<ComfyNode_input>) {
-        Object.assign(this.json.inputs, p)
+        for (const [key, value] of Object.entries(p)) {
+            this.json.inputs[key] = this.serializeValue(key, value)
+        }
+        // Object.assign(this.json.inputs, p)
     }
 
     constructor(
         //
         public graph: ComfyGraph,
         public uid: string = graph.getUID(),
-        public json: ComfyNodeJSON,
+        xxx: ComfyNodeJSON,
     ) {
-        this.$schema = graph.schema.nodesByName[json.class_type]
+        // console.log('CONSTRUCTING', xxx.class_type, uid)
+        this.$schema = graph.schema.nodesByName[xxx.class_type]
+        let ix = 0
+        this.json = this._convertPromptExtToPrompt(xxx)
         this.graph.nodes.set(this.uid.toString(), this)
         makeAutoObservable(this)
+        const extensions: { [key: string]: any } = {}
+        for (const x of this.$schema.outputs) {
+            extensions[x.name] = new ComfyNodeOutput(this, ix++, x.name)
+            // console.log(`  - .${x.name} as ComfyNodeOutput(${ix})`)
+        }
+        extendObservable(this, extensions)
+        // console.log(Object.keys(Object.getOwnPropertyDescriptors(this)).join(','))
         // makeObservable(this, { artifacts: observable })
+    }
+
+    _convertPromptExtToPrompt(promptExt: ComfyNodeJSON) {
+        const inputsExt = Object.entries(promptExt.inputs)
+        const inputs: { [inputName: string]: any } = {}
+        for (const [name, value] of inputsExt) {
+            inputs[name] = this.serializeValue(name, value)
+        }
+        return { class_type: this.$schema.name, inputs }
     }
 
     get manager() { return this.graph.client } // prettier-ignore
@@ -51,24 +78,31 @@ export class ComfyNode<ComfyNode_input extends object> {
         await this.graph.get()
     }
 
-    getExpecteTypeForField(name: string): string {
-        return this.$schema.inputs.find((i: NodeInputExt) => i.name === name)!.type
-    }
-
-    getOutputForType(type: string): ComfyNodeOutput<any> {
-        const i: NodeInputExt = this.$schema.outputs.find((i: NodeInputExt) => i.type === type)!
-        const val = (this as any)[i.name]
-        if (val instanceof ComfyNodeOutput) return val
-        throw new Error(`Expected ${i.name} to be a NodeOutput`)
-    }
-
     serializeValue(field: string, value: unknown): unknown {
+        if (value == null) throw new Error('🔴 null ??')
         if (value instanceof ComfyNodeOutput) return [value.node.uid, value.slotIx]
         if (value instanceof ComfyNode) {
-            const expectedType = this.getExpecteTypeForField(field)
-            const output = value.getOutputForType(expectedType)
+            // console.log('🔴 Value is COmfyNodeç')
+            const expectedType = this._getExpecteTypeForField(field)
+            const output = value._getOutputForType(expectedType)
             return [value.uid, output.slotIx]
         }
         return value
+    }
+
+    private _getExpecteTypeForField(name: string): string {
+        // console.log('>>name', name)
+        const input = this.$schema.inputs.find((i: NodeInputExt) => i.name === name)
+        // console.log('>>name', name, input)
+        if (input == null) throw new Error('🔴 input not found asdf')
+        return input.type
+    }
+
+    private _getOutputForType(type: string): ComfyNodeOutput<any> {
+        const i: NodeInputExt = this.$schema.outputs.find((i: NodeInputExt) => i.type === type)!
+        const val = (this as any)[i.name]
+        console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
+        if (val instanceof ComfyNodeOutput) return val
+        throw new Error(`Expected ${i.name} to be a NodeOutput`)
     }
 }

@@ -45,10 +45,10 @@ export class ComfyScriptEditor {
         const uri = monaco.Uri.parse(path)
         let model = monaco.editor.getModel(uri)
         if (model) {
-            console.log(`🟢 updating ${path} global.d.ts`)
+            console.log(`[💾] updating ${path}`)
             model.setValue(content)
         } else {
-            console.log('🟢 creating fake global.d.ts')
+            console.log(`[💾] creating ${path}`)
             model = monaco.editor.createModel(content, 'typescript', uri)
         }
 

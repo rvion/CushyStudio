@@ -56,10 +56,10 @@ const defaultLayout = (): LayoutData => ({
                     {
                         tabs: [
                             {
-                                minWidth: 180,
+                                minWidth: 320,
                                 minHeight: 300,
                                 id: 'ide',
-                                title: 'IDE',
+                                title: 'Client Config',
                                 content: <IdeInfosUI />,
                             },
                         ],
@@ -67,29 +67,30 @@ const defaultLayout = (): LayoutData => ({
                     {
                         tabs: [
                             {
-                                minHeight: 200,
+                                minHeight: 250,
+                                minWidth: 320,
                                 id: 'project-infos',
-                                title: 'Project',
+                                title: 'Project Config',
                                 content: <ProjectInfosUI />,
                             },
                         ],
                     },
-                    {
-                        size: 9999,
-                        tabs: [
-                            {
-                                minWidth: 280,
-                                id: 'nodes',
-                                title: 'Node List',
-                                content: (
-                                    <>
-                                        {/* <VersionPickerUI /> */}
-                                        <NodeListUI />
-                                    </>
-                                ),
-                            },
-                        ],
-                    },
+                    // {
+                    //     size: 9999,
+                    //     tabs: [
+                    //         {
+                    //             minWidth: 320,
+                    //             id: 'nodes',
+                    //             title: 'Node List',
+                    //             content: (
+                    //                 <>
+                    //                     {/* <VersionPickerUI /> */}
+                    //                     <NodeListUI />
+                    //                 </>
+                    //             ),
+                    //         },
+                    //     ],
+                    // },
                 ],
             },
             {
@@ -100,22 +101,22 @@ const defaultLayout = (): LayoutData => ({
                         // mode: 'vertical',
                         size: 99999,
                         tabs: [
-                            { id: 'Editor1', title: 'Script', content: <ComfyCodeEditorUI /> },
+                            { id: 'Editor1', title: 'Project Code', content: <ComfyCodeEditorUI /> },
                             // { id: 'Editor2', title: 'dts', content: <ComfyCodeEditorUI path='schema.d.ts' /> },
                             // { id: 'Editor3', title: 'object_infos', content: <ComfyCodeEditorUI /> },
                         ],
                     },
-                    {
-                        // mode: 'vertical',
-                        tabs: [
-                            // {
-                            //     minHeight: 280,
-                            //     id: 'Graph',
-                            //     title: 'Graph',
-                            //     content: <VisUI />,
-                            // },
-                        ],
-                    },
+                    // {
+                    //     // mode: 'vertical',
+                    //     tabs: [
+                    //         // {
+                    //         //     minHeight: 280,
+                    //         //     id: 'Graph',
+                    //         //     title: 'Graph',
+                    //         //     content: <VisUI />,
+                    //         // },
+                    //     ],
+                    // },
                     {
                         // mode: 'vertical',
                         tabs: [
@@ -147,23 +148,17 @@ const defaultLayout = (): LayoutData => ({
                     },
                 ],
             },
-            // {
-            //     mode: 'vertical',
-            //     tabs: [
-            //         {
-            //             minWidth: 280,
-            //             id: 'library',
-            //             title: 'Library',
-            //             content: (
-            //                 <>
-            //                     {/* <MainActionsUI />
-            //                     <VersionPickerUI />
-            //                     <NodeListUI /> */}
-            //                 </>
-            //             ),
-            //         },
-            //     ],
-            // },
+            {
+                mode: 'vertical',
+                tabs: [
+                    {
+                        minWidth: 280,
+                        id: 'node-list',
+                        title: 'Node list',
+                        content: <NodeListUI />,
+                    },
+                ],
+            },
             // {
             //     tabs: [{ id: 'tab3', title: 'tab1', content: <div>Hello World</div> }],
             // },

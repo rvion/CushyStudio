@@ -36,7 +36,7 @@ button:hover { filter: brightness(1.2); }
 button.success { background: #2e8b57; }
 button {
     border: none;
-    background: gray;
+    background: rgb(69, 69, 69);
     color: #fff;
     padding: .5rem;
     border-radius: .1rem;
@@ -126,6 +126,7 @@ button.primary { background: rgb(28, 90, 197); }
     color: #95a1ac;
     /* font-weight: bold */
 }
+select,
 input {
     background-color: #292929;
     color: #fff;

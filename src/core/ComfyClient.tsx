@@ -59,7 +59,8 @@ export class ComfyClient {
         setTimeout(async () => {
             await this.fetchObjectsSchema()
             this.editor.openCODE()
-        }, 1000)
+            this.project.run()
+        }, 500)
     }
 
     get serverHost() {
@@ -78,7 +79,7 @@ export class ComfyClient {
         const schema$: ComfySchemaJSON = await res.json()
         // console.log('🟢 schema$:', schema$)
         this.schema.update(schema$)
-        console.log('🟢 schema:', this.schema.nodes)
+        // console.log('🟢 schema:', this.schema.nodes)
         return schema$
     }
 
@@ -100,7 +101,7 @@ export class ComfyClient {
         this.editor.updateLibDTS()
         this.editor.updateCODE(a__)
         this.project.udpateCode(a__)
-        console.log('🟢 schema:', this.schema.nodes)
+        // console.log('🟢 schema:', this.schema.nodes)
         return schema$
     }
     static Init = () => {}
