@@ -47,6 +47,7 @@
         "@types/ws": "^8.5.4",
         "@vitejs/plugin-react": "^3.1.0",
         "typescript": "^4.9.5",
-        "vite": "^4.1.4"
+        "vite": "^4.1.4",
+        "vite-plugin-singlefile": "^0.13.3"
     }
 }
