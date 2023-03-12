@@ -47,6 +47,22 @@ export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
             <TreeValue onClick={() => client.editor.openCODE()} title='code'>
                 🟢 {client.project.code.length} chars
             </TreeValue>
+            <div
+                className='drop-zone'
+                // style={{ border: '1px solid #625858', padding: '1rem', margin: '1rem' }}
+                onDragOver={(event) => {
+                    event.stopPropagation()
+                    event.preventDefault()
+                }}
+                onDrop={async (event) => {
+                    event.preventDefault()
+                    event.stopPropagation()
+                    const file: File = event.dataTransfer.files[0]
+                    await client.handleFile(file)
+                }}
+            >
+                drop files here
+            </div>
         </div>
     )
 })

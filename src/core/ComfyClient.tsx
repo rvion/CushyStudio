@@ -4,12 +4,13 @@ import type { Maybe } from './ComfyUtils'
 import * as WS from 'ws'
 
 import { makeAutoObservable } from 'mobx'
+import { toast } from 'react-toastify'
 import { a__ } from '../ui/samples/a'
 import { WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
-import { initialize } from 'esbuild'
+import { getPngMetadata } from './getPngMetadata'
 
 export type ComfyManagerOptions = {
     serverIP: string
@@ -31,20 +32,6 @@ export class ComfyClient {
     project: ComfyProject
     projects: ComfyProject[] = []
     editor: ComfyScriptEditor
-    // dtsModel?: ITextModel
-
-    // openProject = () => {
-    //     const monaco = this.monacoRef.current
-    //     if (monaco == null) return console.log('🔴 monaco not ready')
-
-    //     // // for (const file of Object.values(virtualFilesystem)) {
-    //     // const uri = monaco.Uri.parse(`file:///${file.name}`)
-    //     // const model = monaco.editor.createModel(file.value, 'typescript', uri)
-    //     // // }
-    //     // const aModel = monaco.editor.getModel(monaco.Uri.parse(`file:///a.ts`))
-    //     // // st.file = aModel
-    //     // client.project.udpateCode(virtualFilesystem['a.ts'].value)
-    // }
 
     constructor(opts: ComfyManagerOptions) {
         this.serverIP = opts.serverIP
@@ -156,5 +143,30 @@ export class ComfyClient {
             throw new Error('Unknown message type: ' + msg)
         }
         this.ws = ws
+    }
+
+    notify = (msg: string) => toast(msg)
+
+    /** Loads workflow data from the specified file */
+    async handleFile(file: File) {
+        if (file.type === 'image/png') {
+            const pngInfo = await getPngMetadata(this, file)
+            console.log(pngInfo)
+            if (pngInfo && pngInfo.workflow) {
+                const data = JSON.parse(pngInfo.workflow)
+                console.log(data)
+                const project = ComfyProject.FROM_JSON(this, data)
+                this.projects.push(project)
+                this.project = project
+            }
+        }
+        // else if (file.type === 'application/json' || file.name.endsWith('.json')) {
+        //     const reader = new FileReader()
+        //     reader.onload = () => {
+        //         this.loadGraphData(JSON.parse(reader.result))
+        //     }
+        //     reader.readAsText(file)
+        // } else {
+        // }
     }
 }

@@ -6,6 +6,7 @@ import { ComfyGraph } from './ComfyGraph'
 import { ComfyClient } from './ComfyClient'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { nanoid } from 'nanoid'
+import { ComfyImporter } from './ComfyImporter'
 
 export class ComfyProject {
     /** unique project id */
@@ -27,6 +28,14 @@ export class ComfyProject {
         project.MAIN = new ComfyGraph(project)
         // const graph = new ComfyGraph(project)
         // project.graphs.push(graph)
+        return project
+    }
+
+    static FROM_JSON = (client: ComfyClient, json: ComfyPromptJSON) => {
+        const project = new ComfyProject(client)
+        project.MAIN = new ComfyGraph(project, json)
+        const code = new ComfyImporter(client).convertFlowToCode(json)
+        project.code = code
         return project
     }
 

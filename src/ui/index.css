@@ -148,3 +148,19 @@ input {
     background-color: rgb(62, 62, 62);
 
 }
+/* drop zone */
+.drop-zone {
+    background-color: #292929;
+    border: 1px solid #625858;
+    border-radius: .3rem;
+    padding: 1rem;
+    color: #fff;
+    /* font-size: 1.2rem; */
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    margin: .5rem;
+}
+.drop-zone:drop(active) {
+    background-color: #9a7070;
+}
