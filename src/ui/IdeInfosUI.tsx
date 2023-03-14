@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import TR from 'react-accessible-treeview'
+import { DropZoneUI } from './DropZoneUI'
 import { TreeValue } from './LabelUI'
 import { useSt } from './stContext'
 import { MenuTreeUI } from './TreeMenu'
@@ -8,6 +9,7 @@ export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
     const client = useSt()
     return (
         <div className='col gap1'>
+            <DropZoneUI />
             <MenuTreeUI />
             <div className='row gap'>
                 {/* <button>Open</button> */}
@@ -41,22 +43,6 @@ export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
             <TreeValue onClick={() => client.editor.openCODE()} title='code'>
                 🟢 {client.project.code.length} chars
             </TreeValue>
-            <div
-                className='drop-zone'
-                // style={{ border: '1px solid #625858', padding: '1rem', margin: '1rem' }}
-                onDragOver={(event) => {
-                    event.stopPropagation()
-                    event.preventDefault()
-                }}
-                onDrop={async (event) => {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    const file: File = event.dataTransfer.files[0]
-                    await client.handleFile(file)
-                }}
-            >
-                drop files here
-            </div>
         </div>
     )
 })

@@ -33,6 +33,7 @@ body {
 
 /* CORE ---------------------------------------- */
 button:hover { filter: brightness(1.2); }
+button:active { filter: brightness(.8); }
 button.success { background: #2e8b57; }
 button {
     border: none;
@@ -41,7 +42,7 @@ button {
     padding: .5rem;
     border-radius: .1rem;
     cursor: pointer;
-    outline: none;
+    /* outline: none; */
 }
 button.large { padding: 1rem; }
 button.active { background: rgb(66, 136, 240); }
@@ -189,3 +190,5 @@ input {
 .directory .tree .tree-node--selected { background: rgba(48, 107, 176); }
 .directory .tree-node__branch { display: block; }
 /* .directory .icon { vertical-align: middle; padding-right: 5px; } */
+
+.directory button { padding: 0 .2rem; }

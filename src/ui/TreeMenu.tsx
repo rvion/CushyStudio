@@ -7,13 +7,14 @@ import { useSt } from './stContext'
 export const MenuTreeUI = observer(function MenuTreeUI_(p: {}) {
     const client = useSt()
     const data = client.treeData
-    const expandedByDefault = data
-        .filter((t) => {
-            if (t.type === 'script') return false
-            if (t.type === 'graph') return false
-            return true
-        })
-        .map((d) => d.id)
+    const expandedByDefault = undefined
+    // const expandedByDefault = data
+    //     .filter((t) => {
+    //         if (t.type === 'script') return false
+    //         if (t.type === 'graph') return false
+    //         return true
+    //     })
+    //     .map((d) => d.id)
 
     return (
         <div>

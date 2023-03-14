@@ -30,9 +30,9 @@ export class ComfyGraph {
         return json
     }
 
-    get treeData(): ITreeNode {
+    treeData(ix: number): ITreeNode {
         return {
-            name: 'graph',
+            name: 'checkpoint ' + ix,
             type: 'graph',
             children: this.nodesArray.map((x) => x.treeData),
         }

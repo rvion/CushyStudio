@@ -51,12 +51,19 @@ export class ComfyClient {
             type: 'root',
             children: [
                 {
+                    name: 'projects',
+                    type: 'folder',
+                    action: (
+                        <div>
+                            <button>add</button>
+                        </div>
+                    ),
+                    children: this.projects.map((x) => x.treeData),
+                },
+                {
                     name: 'server',
                     type: 'client',
                     children: [
-                        //
-                        // { name: 'monaco', type: 'config' },
-                        // { name: 'sdk', type: 'script' },
                         {
                             name: 'IP',
                             type: 'config',
@@ -91,38 +98,49 @@ export class ComfyClient {
                             name: 'websocket',
                             type: 'script',
                             action: (
-                                <>
-                                    {this.wsStatusEmoji} {this.wsStatus}
-                                    {/* <button onClick={this.startWSClient}>Connect</button> */}
-                                </>
+                                <div style={{ marginLeft: 'auto' }}>
+                                    {/* {this.wsStatus} */}
+                                    <button onClick={this.startWSClient}>UPDATE</button>
+                                    {this.wsStatusEmoji}
+                                </div>
                             ),
                         },
-                        { name: 'schema', type: 'config', children: [] },
+                        {
+                            name: 'schema',
+                            type: 'config',
+                            action: (
+                                <div style={{ marginLeft: 'auto' }}>
+                                    {this.schema.nodes.length} nodes;
+                                    <button onClick={this.fetchObjectsSchema}>UPADTE</button>
+                                    {this.schemaStatusEmoji}
+                                </div>
+                            ),
+                        },
                     ],
                 },
 
                 {
-                    name: 'client',
+                    name: 'GUI',
                     type: 'client',
                     children: [
                         //
-                        { name: 'monaco', type: 'config', action: <button onClick={this.editor.openMonaco}>open</button> },
+                        { name: 'monaco', type: 'config', action: <button>open</button> },
+                        // { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
+                        // { name: 'lib', type: 'script', onClick: this.editor.openLib },
+                        // { name: 'websocket', type: 'script' },
+                    ],
+                },
+                {
+                    name: 'typings',
+                    type: 'client',
+                    children: [
+                        //
                         { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
-                        { name: 'schema', type: 'config', onClick: this.editor.openLib },
+                        { name: 'lib', type: 'script', onClick: this.editor.openLib },
                         // { name: 'websocket', type: 'script' },
                     ],
                 },
                 // { name: 'client', type: 'client' },
-                {
-                    name: 'projects',
-                    type: 'folder',
-                    action: (
-                        <div>
-                            <button>add</button>
-                        </div>
-                    ),
-                    children: this.projects.map((x) => x.treeData),
-                },
             ],
         })
     }

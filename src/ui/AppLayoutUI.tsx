@@ -134,17 +134,17 @@ const defaultLayout = (): LayoutData => ({
                             },
                         ],
                     },
-                    {
-                        tabs: [
-                            {
-                                minHeight: 250,
-                                minWidth: 320,
-                                id: 'project-infos',
-                                title: 'Project Config',
-                                content: <ProjectInfosUI />,
-                            },
-                        ],
-                    },
+                    // {
+                    //     tabs: [
+                    //         {
+                    //             minHeight: 250,
+                    //             minWidth: 320,
+                    //             id: 'project-infos',
+                    //             title: 'Project Config',
+                    //             content: <ProjectInfosUI />,
+                    //         },
+                    //     ],
+                    // },
                     // {
                     //     size: 9999,
                     //     tabs: [

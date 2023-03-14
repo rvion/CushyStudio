@@ -1,13 +1,12 @@
-import type { Maybe } from './ComfyUtils'
 import type { RunMode } from './ComfyGraph'
+import type { Maybe } from './ComfyUtils'
 
 import { makeAutoObservable } from 'mobx'
-import { ComfyGraph } from './ComfyGraph'
-import { ComfyClient } from './ComfyClient'
-import { ComfyPromptJSON } from './ComfyPrompt'
 import { nanoid } from 'nanoid'
+import { ComfyClient } from './ComfyClient'
+import { ComfyGraph } from './ComfyGraph'
 import { ComfyImporter } from './ComfyImporter'
-import { flattenTree, INode } from 'react-accessible-treeview'
+import { ComfyPromptJSON } from './ComfyPrompt'
 import { ITreeNode } from './tree'
 
 export class ComfyProject {
@@ -37,11 +36,36 @@ export class ComfyProject {
         return {
             name: 'project - ' + this.name,
             type: 'project',
+            action: (
+                <div>
+                    <button className='success' onClick={() => this.run()}>
+                        Eval
+                    </button>
+                    <button className='success' onClick={() => this.run('real')}>
+                        RUN
+                    </button>
+                </div>
+            ),
             children: [
                 //
-                { ...this.MAIN.treeData, name: 'Name', type: 'script', action: <input type='text' /> },
+                {
+                    ...this.MAIN.treeData,
+                    name: 'Name',
+                    type: 'script',
+                    action: (
+                        <input
+                            style={{ marginLeft: 'auto' }}
+                            onClick={(ev) => ev.stopPropagation()}
+                            onKeyUp={(ev) => ev.stopPropagation()}
+                            onKeyDown={(ev) => ev.stopPropagation()}
+                            type='text'
+                            value={this.name}
+                            onChange={(ev) => (this.name = ev.target.value)}
+                        />
+                    ),
+                },
                 { ...this.MAIN.treeData, name: 'Script', type: 'script' },
-                ...this.graphs.map((x) => x.treeData),
+                ...this.graphs.map((x, i) => x.treeData(i + 1)),
             ],
         }
     }
