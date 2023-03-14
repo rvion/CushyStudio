@@ -18,7 +18,7 @@ Handle loops, manual image selection steps.
 
 ## Getting started
 
-![](docs/images/2023-03-08-21-51-56.png)
+![](docs/images/2023-03-14_06-47-30.png)
 
 ## Installation
 
