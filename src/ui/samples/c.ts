@@ -81,8 +81,8 @@ declare module "core/ComfyUtils" {
     export const sleep: (ms: number) => Promise<unknown>;
     export function jsEscapeStr(x: any): any;
     /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tab> = O & {
-        __tag?: Tab;
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
     };
     /** same as Tagged, but even scriter */
     export type Branded<O, Brand> = O & {
@@ -141,6 +141,7 @@ declare module "core/ComfySchema" {
         name: string;
     };
     export class ComfySchema {
+        spec: ComfySchemaJSON;
         knownTypes: Set<string>;
         knownEnums: Map<string, {
             name: EnumName;
@@ -259,6 +260,28 @@ declare module "core/getPngMetadata" {
     };
     export function getPngMetadata(client: ComfyClient, file: File): Promise<TextChunks>;
 }
+declare module "core/AutoSaver" {
+    import { Tagged } from "core/ComfyUtils";
+    type LocalStorageKey = Tagged<string, 'localstorage'>;
+    export class AutoSaver<Data = any> {
+        /** localstorage key */
+        key: LocalStorageKey;
+        /** localstorage key */
+        getCurrent: () => Data;
+        constructor(
+        /** localstorage key */
+        key: LocalStorageKey, 
+        /** localstorage key */
+        getCurrent: () => Data);
+        discard: () => void;
+        private _disposer;
+        start: () => void;
+        stop: () => void;
+        load: () => Data | null;
+        private save;
+    }
+    export const load: (key: LocalStorageKey) => any;
+}
 declare module "core/ComfyClient" {
     import type { ComfySchemaJSON } from "core/ComfySchemaJSON";
     import type { Maybe } from "core/ComfyUtils";
@@ -266,7 +289,8 @@ declare module "core/ComfyClient" {
     import { ComfyProject } from "core/ComfyProject";
     import { ComfySchema } from "core/ComfySchema";
     import { ComfyScriptEditor } from "core/ComfyScriptEditor";
-    export type ComfyManagerOptions = {
+    import { AutoSaver } from "core/AutoSaver";
+    export type ComfyClientOptions = {
         serverIP: string;
         serverPort: number;
         spec: ComfySchemaJSON;
@@ -285,7 +309,19 @@ declare module "core/ComfyClient" {
         project: ComfyProject;
         projects: ComfyProject[];
         editor: ComfyScriptEditor;
-        constructor(opts: ComfyManagerOptions);
+        storageServerKey: string;
+        getStoredServerKey: () => void;
+        getConfig: () => {
+            serverIP: string;
+            serverPort: number;
+            spec: ComfySchemaJSON;
+        };
+        autosaver: AutoSaver<{
+            serverIP: string;
+            serverPort: number;
+            spec: ComfySchemaJSON;
+        }>;
+        constructor(opts: ComfyClientOptions);
         get serverHost(): string;
         fetchPrompHistory: () => Promise<any>;
         /** retri e the comfy spec from the schema*/
@@ -298,6 +334,7 @@ declare module "core/ComfyClient" {
         get wsStatusEmoji(): "🟢" | "🔴" | "❓";
         get schemaStatusEmoji(): "🟢" | "🔴";
         get dtsStatusEmoji(): "🟢" | "🔴";
+        sid: string;
         ws: Maybe<WebSocket>;
         startWSClient: () => void;
         notify: (msg: string) => import("react-toastify").Id;
