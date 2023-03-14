@@ -99,7 +99,7 @@ export class ComfyGraph {
         this.project.graphs.push(new ComfyGraph(this.project, currentJSON))
         if (this.runningMode === 'fake') return null
         const out: ApiPromptInput = {
-            client_id: 'super',
+            client_id: this.client.sid,
             extra_data: { extra_pnginfo: { it: 'works' } },
             prompt: currentJSON,
         }

@@ -136,7 +136,10 @@ export class ComfyClient {
             const msg: WsMsg = JSON.parse(e.data as any)
             console.log('>>', JSON.stringify(msg))
             // 🔴 ROUTING must be done at the API level
-            if (msg.type === 'status') return this.project.currentGraph.onStatus(msg)
+            if (msg.type === 'status') {
+                if (msg.data.sid) this.sid = msg.data.sid
+                return this.project.currentGraph.onStatus(msg)
+            }
             if (msg.type === 'progress') return this.project.currentGraph.onProgress(msg)
             if (msg.type === 'executing') return this.project.currentGraph.onExecuting(msg)
             if (msg.type === 'executed') return this.project.currentGraph.onExecuted(msg)
