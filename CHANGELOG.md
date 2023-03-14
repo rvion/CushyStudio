@@ -1,5 +1,7 @@
 2023-03-14
 
+-   🆕 NEW UI: setup material icons https://fonts.google.com/icons
+
 2023-03-13
 
 -   🆕 NEW misc: persist server `IP` and `PORT` in local storage
