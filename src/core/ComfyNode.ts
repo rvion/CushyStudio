@@ -101,7 +101,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     private _getOutputForType(type: string): ComfyNodeOutput<any> {
         const i: NodeInputExt = this.$schema.outputs.find((i: NodeInputExt) => i.type === type)!
         const val = (this as any)[i.name]
-        console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
+        // console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
         if (val instanceof ComfyNodeOutput) return val
         throw new Error(`Expected ${i.name} to be a NodeOutput`)
     }
