@@ -4,6 +4,8 @@
 
 [![Downloads][downloads-badge]][releases]
 
+**🔴 EARLY ACCESS - WIP 🔴**
+
 StableIDE is a **Full-featured** web-based stable-diffusion playground IDE.
 
 Build multi-step stable diffusion pipelines.
@@ -22,7 +24,11 @@ Handle loops, manual image selection steps.
 
 ## Installation
 
-install https://github.com/comfyanonymous/ComfyUI
+-   install https://github.com/comfyanonymous/ComfyUI
+-   start the server `python main.py --listen 0.0.0.0`
+-   start the client `yarn dev`
+-   open a web-browser with CORS disabled (e.g. `google-chrome --disable-web-security`) (🔴 temporary hack until cors properly supported)
+-   visit http://127.0.0.1:5173/
 
 ---
 
