@@ -144,7 +144,7 @@ export class ComfyClient {
                 : new WS.WebSocket(`ws://${this.serverHost}/ws`)
         ws.binaryType = 'arraybuffer'
         ws.onopen = () => {
-            console.log('connected')
+            console.log('[👢] connected')
             this.wsStatus = 'on'
         }
         ws.onmessage = (e: WS.MessageEvent) => {

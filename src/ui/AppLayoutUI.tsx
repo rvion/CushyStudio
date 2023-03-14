@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { ArtifactsUI } from './ArtifactsUI'
 import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
 import { IdeInfosUI } from './IdeInfosUI'
+import { ensureMonacoReady } from './Monaco'
 import { NodeListUI } from './NodeListUI'
 import { ProjectInfosUI } from './ProjectInfosUI'
 import { VisUI } from './VisUI'
@@ -49,7 +50,7 @@ class IDELayout {
 
 export const AppLayoutUI = observer(function AppLayoutUI_(p: {}) {
     const layout = useMemo(() => new IDELayout(), [])
-
+    const monaco = ensureMonacoReady()
     return (
         <DockLayout
             ref={layout.getRef}

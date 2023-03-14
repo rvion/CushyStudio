@@ -4,6 +4,7 @@ import type { Monaco } from '@monaco-editor/react'
 import { makeAutoObservable, observable } from 'mobx'
 import { c__ } from '../ui/samples/c'
 import { ComfyClient } from './ComfyClient'
+import { globalMonaco } from '../ui/Monaco'
 
 export class ComfyScriptEditor {
     constructor(public client: ComfyClient) {
@@ -11,21 +12,7 @@ export class ComfyScriptEditor {
     }
 
     editorRef = observable({ current: null as IStandaloneCodeEditor | null }, { current: observable.ref })
-    monacoRef = observable({ current: null as Monaco | null }, { current: observable.ref })
-
-    setupMonaco(monaco: Monaco) {
-        if (this.monacoRef.current === monaco) return
-        console.log('🟢 setup Monaco')
-        this.monacoRef.current = monaco
-        const compilerOptions: TypescriptOptions = {
-            strict: true,
-            module: monaco.languages.typescript.ModuleKind.ESNext,
-            target: monaco.languages.typescript.ScriptTarget.ESNext,
-            moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-        }
-        monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
-        console.log('[👁] using typescript:', monaco.languages.typescript.typescriptVersion)
-    }
+    // monacoRef = observable({ current: null as Monaco | null }, { current: observable.ref })
 
     // monaco.languages.typescript.typescriptDefaults.addExtraLib(c__, 'base.d.ts')
     // monaco.languages.typescript.typescriptDefaults.addExtraLib(this.dts, 'global.d.ts')
@@ -39,16 +26,16 @@ export class ComfyScriptEditor {
     updateCODE = (code: string) => this.updateFile(this.CODE_path, code)
 
     updateFile = (path: string, content: string) => {
-        const monaco = this.monacoRef.current
+        const monaco = globalMonaco
         if (!monaco) throw new Error('🔴 monaco is null')
 
         const uri = monaco.Uri.parse(path)
         let model = monaco.editor.getModel(uri)
         if (model) {
-            console.log(`[💾] updating ${path}`)
+            console.log(`[🔵] updating ${path}`)
             model.setValue(content)
         } else {
-            console.log(`[💾] creating ${path}`)
+            console.log(`[🔵] creating ${path}`)
             model = monaco.editor.createModel(content, 'typescript', uri)
         }
 
@@ -65,7 +52,7 @@ export class ComfyScriptEditor {
     openCODE = () => this.openPathInEditor(this.CODE_path)
 
     openPathInEditor = (path: string) => {
-        const monaco = this.monacoRef.current
+        const monaco = globalMonaco
         if (!monaco) throw new Error('monaco is null')
         const libURI = monaco.Uri.parse(path)
         const libModel = monaco.editor.getModel(libURI)
@@ -79,7 +66,7 @@ export class ComfyScriptEditor {
     hasSDK = () => this.hasModel(this.sdk_path)
     hasCODE = () => this.hasModel(this.CODE_path)
     hasModel = (path: string) => {
-        const monaco = this.monacoRef.current
+        const monaco = globalMonaco
         if (!monaco) return null
         // if (!monaco) throw new Error('monaco is null')
         const libURI = monaco.Uri.parse(path)

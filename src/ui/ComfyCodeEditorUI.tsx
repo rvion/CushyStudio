@@ -1,5 +1,6 @@
 import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
+import { globalMonaco } from './Monaco'
 import { useSt } from './stContext'
 import { IStandaloneCodeEditor } from './TypescriptOptions'
 import { WelcomeScreenUI } from './WelcomeScreenUI'
@@ -19,11 +20,11 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
                 if (value == null) return
                 client.project.udpateCode(value) // 🔴
             }}
-            beforeMount={(monaco: Monaco) => client.editor.setupMonaco(monaco)}
+            // beforeMount={(monaco: Monaco) => client.editor.setupMonaco(monaco)}
             onMount={(editor: IStandaloneCodeEditor, monaco: Monaco) => {
                 editor.updateOptions({ wordWrap: 'on' })
                 client.editor.editorRef.current = editor
-                const prevMonaco = client.editor.monacoRef.current
+                const prevMonaco = globalMonaco
                 if (prevMonaco !== monaco) {
                     console.log('🔴 invalid monacoRef.current')
                     console.log('🔴', prevMonaco)
