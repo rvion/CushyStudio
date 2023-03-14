@@ -25,7 +25,7 @@ export class ComfyGraph {
         for (const node of this.nodesArray) {
             json[node.uid] = node.json
         }
-        console.log('🔴', 'json', json) //JSON.stringify(json, null, 3))
+        // console.log('🔴', 'json', json) //JSON.stringify(json, null, 3))
         return json
     }
 
@@ -94,8 +94,7 @@ export class ComfyGraph {
     // COMMIT --------------------------------------------
     async get() {
         const currentJSON = deepCopyNaive(this.json)
-        console.log('[🚀] got', this.runningMode)
-        console.log('[🚀] got', currentJSON)
+        console.log('[🪜] checkpoint', currentJSON)
         this.project.graphs.push(new ComfyGraph(this.project, currentJSON))
         if (this.runningMode === 'fake') return null
         const out: ApiPromptInput = {

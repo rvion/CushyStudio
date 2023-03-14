@@ -78,7 +78,7 @@ export class ComfyProject {
 
         this.MAIN = emptyGraph
         await BUILD(emptyGraph)
-        console.log('✅')
+        console.log('✅ RUN SUCCESS')
         // this.isRunning = false
         return true
         // } catch (error) {

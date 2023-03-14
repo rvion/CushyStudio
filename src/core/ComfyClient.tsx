@@ -149,7 +149,7 @@ export class ComfyClient {
         }
         ws.onmessage = (e: WS.MessageEvent) => {
             const msg: WsMsg = JSON.parse(e.data as any)
-            console.log('>>', JSON.stringify(msg))
+            console.log(`[🐰] %c${msg.type} %c${JSON.stringify(msg.data)}`, 'color:#90bdff', 'color:gray')
             // 🔴 ROUTING must be done at the API level
             if (msg.type === 'status') {
                 if (msg.data.sid) this.sid = msg.data.sid

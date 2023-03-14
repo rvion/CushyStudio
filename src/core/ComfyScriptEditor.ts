@@ -24,7 +24,7 @@ export class ComfyScriptEditor {
             moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
         }
         monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
-        console.log('using typescript:', monaco.languages.typescript.typescriptVersion)
+        console.log('[👁] using typescript:', monaco.languages.typescript.typescriptVersion)
     }
 
     // monaco.languages.typescript.typescriptDefaults.addExtraLib(c__, 'base.d.ts')
