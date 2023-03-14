@@ -32,8 +32,11 @@ export const MenuTreeUI = observer(function MenuTreeUI_(p: {}) {
                     nodeRenderer={({ element, isBranch, isExpanded, getNodeProps, level, ...p }) => {
                         const elem: INodeExt = element as any as INodeExt
                         const type: ITreeNodeType = elem.type
+                        const nodeProps = getNodeProps()
+                        const isFocused = nodeProps.className.includes('tree-node--focused')
+                        console.log('🟢', nodeProps)
                         return (
-                            <div {...getNodeProps()} style={{ paddingLeft: 20 * (level - 1), display: 'flex' }}>
+                            <div {...nodeProps} style={{ paddingLeft: 20 * (level - 1), display: 'flex' }}>
                                 <TreeNodeIconUI node={type} />
                                 <span style={{ paddingLeft: '1rem' }}>{element.name}</span>
                                 {isBranch ? ( //
@@ -41,8 +44,14 @@ export const MenuTreeUI = observer(function MenuTreeUI_(p: {}) {
                                 ) : (
                                     <FileIcon filename={element.name} />
                                 )}
-                                <div className='grow'></div>
+                                {/* <div className='grow'></div> */}
                                 {elem.action}
+                                {isFocused && elem.tooltip}
+                                {/* {elem.tooltip && (
+                                    <div style={{ position: 'relative' }}>
+                                        <div style={{ position: 'absolute' }}>{elem.tooltip}</div>
+                                    </div>
+                                )} */}
                             </div>
                         )
                     }}

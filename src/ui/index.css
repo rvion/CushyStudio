@@ -79,6 +79,7 @@ button.primary { background: rgb(28, 90, 197); }
     border-radius: .3rem;
     border: 1px solid #292929;
     background: #323232;
+    min-width: 10rem;
 }
 
 /* Property Panel ---------------------------------------- */

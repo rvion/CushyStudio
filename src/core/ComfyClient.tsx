@@ -58,6 +58,36 @@ export class ComfyClient {
                         // { name: 'monaco', type: 'config' },
                         // { name: 'sdk', type: 'script' },
                         {
+                            name: 'IP',
+                            type: 'config',
+                            action: (
+                                <input
+                                    style={{ marginLeft: 'auto' }}
+                                    onClick={(ev) => ev.stopPropagation()}
+                                    onKeyUp={(ev) => ev.stopPropagation()}
+                                    onKeyDown={(ev) => ev.stopPropagation()}
+                                    type='text'
+                                    value={this.serverIP}
+                                    onChange={(ev) => (this.serverIP = ev.target.value)}
+                                />
+                            ),
+                        },
+                        {
+                            name: 'Port',
+                            type: 'config',
+                            action: (
+                                <input
+                                    style={{ marginLeft: 'auto' }}
+                                    type='number'
+                                    onClick={(ev) => ev.stopPropagation()}
+                                    onKeyUp={(ev) => ev.stopPropagation()}
+                                    onKeyDown={(ev) => ev.stopPropagation()}
+                                    value={this.serverPort}
+                                    onChange={(ev) => (this.serverPort = parseInt(ev.target.value, 10))}
+                                />
+                            ),
+                        },
+                        {
                             name: 'websocket',
                             type: 'script',
                             action: (
@@ -67,7 +97,7 @@ export class ComfyClient {
                                 </>
                             ),
                         },
-                        { name: 'schema', type: 'config' },
+                        { name: 'schema', type: 'config', children: [] },
                     ],
                 },
 
@@ -76,7 +106,7 @@ export class ComfyClient {
                     type: 'client',
                     children: [
                         //
-                        { name: 'monaco', type: 'config' },
+                        { name: 'monaco', type: 'config', action: <button onClick={this.editor.openMonaco}>open</button> },
                         { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
                         { name: 'schema', type: 'config', onClick: this.editor.openLib },
                         // { name: 'websocket', type: 'script' },

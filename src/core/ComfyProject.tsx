@@ -39,6 +39,7 @@ export class ComfyProject {
             type: 'project',
             children: [
                 //
+                { ...this.MAIN.treeData, name: 'Name', type: 'script', action: <input type='text' /> },
                 { ...this.MAIN.treeData, name: 'Script', type: 'script' },
                 ...this.graphs.map((x) => x.treeData),
             ],

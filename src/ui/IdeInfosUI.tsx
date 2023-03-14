@@ -10,26 +10,17 @@ export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
         <div className='col gap1'>
             <MenuTreeUI />
             <div className='row gap'>
-                <button>Open</button>
-
-                <button onClick={client.fetchObjectsSchema2}>Test</button>
+                {/* <button>Open</button> */}
+                {/* <button onClick={client.fetchObjectsSchema2}>Test</button> */}
             </div>
             <TreeValue title='server IP'>
-                <input
-                    type='text'
-                    value={client.serverIP}
-                    onChange={(ev) => {
-                        client.serverIP = ev.target.value
-                    }}
-                />
+                <input type='text' value={client.serverIP} onChange={(ev) => (client.serverIP = ev.target.value)} />
             </TreeValue>
             <TreeValue title='port'>
                 <input
                     type='number'
                     value={client.serverPort}
-                    onChange={(ev) => {
-                        client.serverPort = parseInt(ev.target.value, 10)
-                    }}
+                    onChange={(ev) => (client.serverPort = parseInt(ev.target.value, 10))}
                 />
             </TreeValue>
             <TreeValue title='websocket'>

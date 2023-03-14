@@ -19,13 +19,13 @@ export const NodeListUI = observer(function NodeListUI_(p: {}) {
         <div className='col gap'>
             <div>Prompt {project.focus + 1}</div>
             {nodes.map((node) => (
-                <NodeUI key={node.uid} node={node} />
+                <ComfyNodeUI key={node.uid} node={node} />
             ))}
         </div>
     )
 })
 
-export const NodeUI = observer(function NodeUI_(p: { node: ComfyNode<any> }) {
+export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<any> }) {
     const st = useSt()
     const project = st.project
     const node = p.node
