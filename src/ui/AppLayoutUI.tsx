@@ -1,17 +1,85 @@
 import { observer } from 'mobx-react-lite'
 import DockLayout, { LayoutData } from 'rc-dock'
+import { useMemo } from 'react'
 import { ArtifactsUI } from './ArtifactsUI'
 import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
-import { NodeListUI } from './NodeListUI'
 import { IdeInfosUI } from './IdeInfosUI'
+import { NodeListUI } from './NodeListUI'
 import { ProjectInfosUI } from './ProjectInfosUI'
 import { VisUI } from './VisUI'
 
+class IDELayout {
+    layout = defaultLayout()
+
+    dockLayout: DockLayout | null = null
+    getRef = (r: DockLayout | null) => (this.dockLayout = r)
+
+    constructor() {
+        this.spawnPopups()
+    }
+
+    spawnPopups = () => {
+        setInterval(() => {
+            this.addPopup()
+        }, 100_000)
+    }
+
+    addPopup = () => {
+        if (this.dockLayout == null) return
+        console.log('🟢 addPopup')
+        const uid = Math.random().toString(36).substr(2, 9)
+        const newTab = {
+            x: Math.random() * 1000,
+            y: Math.random() * 1000,
+            w: 200,
+            h: 200,
+            tabs: [
+                {
+                    minWidth: 180,
+                    minHeight: 200,
+                    id: 'ide-' + uid,
+                    title: 'test',
+                    content: <IdeInfosUI />,
+                },
+            ],
+        }
+        this.dockLayout.dockMove(newTab, null, 'float')
+    }
+}
+
 export const AppLayoutUI = observer(function AppLayoutUI_(p: {}) {
-    return <DockLayout defaultLayout={defaultLayout()} style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0 }} />
+    const layout = useMemo(() => new IDELayout(), [])
+
+    return (
+        <DockLayout
+            ref={layout.getRef}
+            defaultLayout={layout.layout}
+            style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0 }}
+        />
+    )
 })
 
 const defaultLayout = (): LayoutData => ({
+    floatbox: {
+        mode: 'float',
+        children: [
+            {
+                x: Math.random() * 1000,
+                y: Math.random() * 1000,
+                w: 200,
+                h: 200,
+                tabs: [
+                    {
+                        minWidth: 180,
+                        minHeight: 200,
+                        id: 'ide',
+                        title: 'IDE',
+                        content: <IdeInfosUI />,
+                    },
+                ],
+            },
+        ],
+    },
     dockbox: {
         mode: 'horizontal',
         children: [
