@@ -1,10 +1,9 @@
-import type { IStandaloneCodeEditor, TypescriptOptions } from '../ui/TypescriptOptions'
+import type { IStandaloneCodeEditor } from '../ui/TypescriptOptions'
 
-import type { Monaco } from '@monaco-editor/react'
 import { makeAutoObservable, observable } from 'mobx'
+import { globalMonaco } from '../ui/Monaco'
 import { c__ } from '../ui/samples/c'
 import { ComfyClient } from './ComfyClient'
-import { globalMonaco } from '../ui/Monaco'
 
 export class ComfyScriptEditor {
     constructor(public client: ComfyClient) {
@@ -13,7 +12,6 @@ export class ComfyScriptEditor {
 
     editorRef = observable({ current: null as IStandaloneCodeEditor | null }, { current: observable.ref })
     // monacoRef = observable({ current: null as Monaco | null }, { current: observable.ref })
-
     // monaco.languages.typescript.typescriptDefaults.addExtraLib(c__, 'base.d.ts')
     // monaco.languages.typescript.typescriptDefaults.addExtraLib(this.dts, 'global.d.ts')
 
