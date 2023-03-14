@@ -6,12 +6,13 @@ import * as WS from 'ws'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
 import { a__ } from '../ui/samples/a'
+import { AutoSaver } from './AutoSaver'
 import { WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { getPngMetadata } from './getPngMetadata'
-import { AutoSaver } from './AutoSaver'
+import { flattenTreeExt, INodeExt } from './tree'
 
 export type ComfyClientOptions = {
     serverIP: string
@@ -43,6 +44,28 @@ export class ComfyClient {
         spec: this.schema.spec,
     })
     autosaver = new AutoSaver('client', this.getConfig)
+
+    get treeData(): INodeExt[] {
+        return flattenTreeExt({
+            name: 'root' + this.serverHost,
+            type: 'root',
+            children: [
+                {
+                    name: 'client',
+                    type: 'client',
+                    children: [
+                        //
+                        { name: 'monaco', type: 'config' },
+                        { name: 'sdk', type: 'script' },
+                        { name: 'websocket', type: 'script' },
+                        { name: 'schema', type: 'config' },
+                    ],
+                },
+                // { name: 'client', type: 'client' },
+                { name: 'projects', type: 'folder', children: this.projects.map((x) => x.treeData) },
+            ],
+        })
+    }
 
     constructor(opts: ComfyClientOptions) {
         const prev = this.autosaver.load()

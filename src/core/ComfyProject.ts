@@ -7,6 +7,8 @@ import { ComfyClient } from './ComfyClient'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { nanoid } from 'nanoid'
 import { ComfyImporter } from './ComfyImporter'
+import { flattenTree, INode } from 'react-accessible-treeview'
+import { ITreeNode } from './tree'
 
 export class ComfyProject {
     /** unique project id */
@@ -29,6 +31,18 @@ export class ComfyProject {
         // const graph = new ComfyGraph(project)
         // project.graphs.push(graph)
         return project
+    }
+
+    get treeData(): ITreeNode {
+        return {
+            name: 'project - ' + this.name,
+            type: 'project',
+            children: [
+                //
+                { ...this.MAIN.treeData, name: 'Script', type: 'script' },
+                ...this.graphs.map((x) => x.treeData),
+            ],
+        }
     }
 
     static FROM_JSON = (client: ComfyClient, json: ComfyPromptJSON) => {

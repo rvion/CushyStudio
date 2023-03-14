@@ -1,11 +1,14 @@
 import { observer } from 'mobx-react-lite'
+import TR from 'react-accessible-treeview'
 import { TreeValue } from './LabelUI'
 import { useSt } from './stContext'
+import { MenuTreeUI } from './TreeMenu'
 
 export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
     const client = useSt()
     return (
         <div className='col gap1'>
+            <MenuTreeUI />
             <div className='row gap'>
                 <button>Open</button>
 

@@ -5,6 +5,7 @@ import type { ComfyNodeJSON } from './ComfyPrompt'
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
+import { ITreeNode } from './tree'
 
 configure({ enforceActions: 'never' })
 
@@ -19,6 +20,14 @@ export class ComfyNode<ComfyNode_input extends object> {
 
     get inputs(): ComfyNode_input {
         return this.json.inputs as any
+    }
+
+    get treeData(): ITreeNode {
+        return {
+            name: 'node',
+            type: 'node',
+            children: [],
+        }
     }
 
     json: ComfyNodeJSON

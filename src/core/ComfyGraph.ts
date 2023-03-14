@@ -10,6 +10,7 @@ import { ComfyProject } from './ComfyProject'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
 import { deepCopyNaive, sleep } from './ComfyUtils'
+import { ITreeNode } from './tree'
 
 export type RunMode = 'fake' | 'real'
 
@@ -27,6 +28,14 @@ export class ComfyGraph {
         }
         // console.log('🔴', 'json', json) //JSON.stringify(json, null, 3))
         return json
+    }
+
+    get treeData(): ITreeNode {
+        return {
+            name: 'graph',
+            type: 'graph',
+            children: this.nodesArray.map((x) => x.treeData),
+        }
     }
 
     constructor(

@@ -1090,6 +1090,11 @@ rc-util@^5.12.0, rc-util@^5.17.0, rc-util@^5.19.2, rc-util@^5.21.0, rc-util@^5.2
     "@babel/runtime" "^7.18.3"
     react-is "^16.12.0"
 
+react-accessible-treeview@^2.3.3:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/react-accessible-treeview/-/react-accessible-treeview-2.3.3.tgz#eb10cfa5c579212d66b34d23d892514b1d8592a6"
+  integrity sha512-uU35Txirt6NNoOKWjBmH+h7kGUNJpAuc8cCL47HmcnsrDJPWo5vZDB35Kv//7G5zd26Dgq3I2d+0jtHI4DpBHg==
+
 react-dom@^18.2.0:
   version "18.2.0"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.2.0.tgz#22aaf38708db2674ed9ada224ca4aa708d821e3d"
