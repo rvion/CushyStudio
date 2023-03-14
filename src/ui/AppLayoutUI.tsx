@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import DockLayout, { LayoutData } from 'rc-dock'
 import { useMemo } from 'react'
+import { TutorialUI } from '../core/TutorialUI'
 import { ArtifactsUI } from './ArtifactsUI'
 import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
 import { IdeInfosUI } from './IdeInfosUI'
@@ -20,9 +21,9 @@ class IDELayout {
     }
 
     spawnPopups = () => {
-        setInterval(() => {
+        setTimeout(() => {
             this.addPopup()
-        }, 100_000)
+        }, 5_000)
     }
 
     addPopup = () => {
@@ -40,7 +41,7 @@ class IDELayout {
                     minHeight: 200,
                     id: 'ide-' + uid,
                     title: 'test',
-                    content: <IdeInfosUI />,
+                    content: <TutorialUI />,
                 },
             ],
         }
@@ -64,21 +65,21 @@ const defaultLayout = (): LayoutData => ({
     floatbox: {
         mode: 'float',
         children: [
-            {
-                x: Math.random() * 1000,
-                y: Math.random() * 1000,
-                w: 200,
-                h: 200,
-                tabs: [
-                    {
-                        minWidth: 180,
-                        minHeight: 200,
-                        id: 'ide',
-                        title: 'IDE',
-                        content: <IdeInfosUI />,
-                    },
-                ],
-            },
+            // {
+            //     x: Math.random() * 1000,
+            //     y: Math.random() * 1000,
+            //     w: 200,
+            //     h: 200,
+            //     tabs: [
+            //         {
+            //             minWidth: 180,
+            //             minHeight: 200,
+            //             id: 'ide',
+            //             title: 'IDE',
+            //             content: <IdeInfosUI />,
+            //         },
+            //     ],
+            // },
         ],
     },
     dockbox: {
