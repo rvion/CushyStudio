@@ -1,12 +1,30 @@
-# ComfyIDE & ComfyScript
+<div align="center">
 
-monorepo for _ComfyIDE & ComfyScript_
+# StableIDE
+
+[![Downloads][downloads-badge]][releases]
+
+StableIDE is a **Full-featured** web-based stable-diffusion playground IDE.
+
+Build multi-step stable diffusion pipelines.
+Handle loops, manual image selection steps.
+
+[Getting started](#getting-started) •
+[Installation](#installation) •
+[Configuration](#configuration) •
+[Integrations](#third-party-integrations)
+
+</div>
+
+## Getting started
 
 ![](docs/images/2023-03-08-21-51-56.png)
 
-**ComfyScript**: a typescript SDK to integrate any complex stable diffusion pipelines into your project
+## Installation
 
-**ComfyIDE** an IDE to design and experiment with stable diffusion pipelines
+install https://github.com/comfyanonymous/ComfyUI
+
+---
 
 # Goals:
 
