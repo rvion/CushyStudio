@@ -19,13 +19,14 @@ export class ComfySchema {
     nodes: ComfyNodeSchema[] = []
     nodesByName: { [key: string]: ComfyNodeSchema } = {}
 
-    constructor(spec: ComfySchemaJSON) {
+    constructor(public spec: ComfySchemaJSON) {
         this.update(spec)
         makeAutoObservable(this)
     }
 
     update(spec: ComfySchemaJSON) {
         // reset spec
+        this.spec = spec
         this.knownTypes.clear()
         this.knownEnums.clear()
         this.nodes.splice(0, this.nodes.length)
