@@ -10,7 +10,7 @@ export const AppUI = observer(function AppUI_() {
     const client = useMemo(
         () =>
             new ComfyClient({
-                serverIP: '192.168.1.19',
+                serverIP: 'localhost',
                 serverPort: 8188,
                 spec: {},
             }),
