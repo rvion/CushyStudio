@@ -74,9 +74,6 @@ needed:
 -   nvm: node version manager
 
 ```sh
-# use node 19
-nvm use 19 --default
-
 # install all dependencies
 yarn install
 ```
