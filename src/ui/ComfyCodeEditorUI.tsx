@@ -21,6 +21,7 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
             }}
             beforeMount={(monaco: Monaco) => client.editor.setupMonaco(monaco)}
             onMount={(editor: IStandaloneCodeEditor, monaco: Monaco) => {
+                editor.updateOptions({ wordWrap: 'on' })
                 client.editor.editorRef.current = editor
                 const prevMonaco = client.editor.monacoRef.current
                 if (prevMonaco !== monaco) {
