@@ -11,8 +11,9 @@ import { ComfyProject } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { getPngMetadata } from './getPngMetadata'
+import { AutoSaver } from './AutoSaver'
 
-export type ComfyManagerOptions = {
+export type ComfyClientOptions = {
     serverIP: string
     serverPort: number
     spec: ComfySchemaJSON
@@ -33,7 +34,20 @@ export class ComfyClient {
     projects: ComfyProject[] = []
     editor: ComfyScriptEditor
 
-    constructor(opts: ComfyManagerOptions) {
+    storageServerKey = 'comfy-server'
+    getStoredServerKey = () => {}
+
+    getConfig = () => ({
+        serverIP: this.serverIP,
+        serverPort: this.serverPort,
+        spec: this.schema.spec,
+    })
+    autosaver = new AutoSaver('client', this.getConfig)
+
+    constructor(opts: ComfyClientOptions) {
+        const prev = this.autosaver.load()
+        if (prev) Object.assign(opts, prev)
+        this.autosaver.start()
         this.serverIP = opts.serverIP
         this.serverPort = opts.serverPort
         this.editor = new ComfyScriptEditor(this)
@@ -117,6 +131,7 @@ export class ComfyClient {
         return '🔴'
     }
 
+    sid: string = 'temporary'
     ws: Maybe<WS.WebSocket | WebSocket> = null
     startWSClient = () => {
         if (this.ws) {
