@@ -9,6 +9,7 @@ export type NodeExtensions = {
     type: ITreeNodeType
     action?: ReactNode
     onClick?: () => void
+    autoOpen?: boolean
     tooltip?: ReactNode
 }
 // ^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -17,6 +17,7 @@ body {
 .g-image { background-color: #541a54}
 
 /* UTILS ---------------------------------------- */
+.h100 { height: 100%; }
 .gap { gap: .7rem }
 .gap1 { gap: .3rem }
 .row { display: flex; flex-direction: row; }

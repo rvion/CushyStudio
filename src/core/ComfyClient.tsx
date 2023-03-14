@@ -53,6 +53,7 @@ export class ComfyClient {
                 {
                     name: 'projects',
                     type: 'folder',
+                    autoOpen: true,
                     action: (
                         <div>
                             <button>add</button>
@@ -61,8 +62,8 @@ export class ComfyClient {
                     children: this.projects.map((x) => x.treeData),
                 },
                 {
-                    name: 'server',
-                    type: 'client',
+                    name: 'Configuration',
+                    type: 'config',
                     children: [
                         {
                             name: 'IP',
@@ -116,6 +117,8 @@ export class ComfyClient {
                                 </div>
                             ),
                         },
+                        { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
+                        { name: 'lib', type: 'script', onClick: this.editor.openLib },
                     ],
                 },
 
@@ -130,16 +133,16 @@ export class ComfyClient {
                         // { name: 'websocket', type: 'script' },
                     ],
                 },
-                {
-                    name: 'typings',
-                    type: 'client',
-                    children: [
-                        //
-                        { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
-                        { name: 'lib', type: 'script', onClick: this.editor.openLib },
-                        // { name: 'websocket', type: 'script' },
-                    ],
-                },
+                // {
+                //     name: 'typings',
+                //     type: 'client',
+                //     children: [
+                //         //
+                //         { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
+                //         { name: 'lib', type: 'script', onClick: this.editor.openLib },
+                //         // { name: 'websocket', type: 'script' },
+                //     ],
+                // },
                 // { name: 'client', type: 'client' },
             ],
         })

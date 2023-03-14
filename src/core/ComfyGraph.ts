@@ -32,9 +32,10 @@ export class ComfyGraph {
 
     treeData(ix: number): ITreeNode {
         return {
-            name: 'checkpoint ' + ix,
+            name: 'checkpoint ' + (ix + 1),
             type: 'graph',
             children: this.nodesArray.map((x) => x.treeData),
+            onClick: () => (this.project.focus = ix),
         }
     }
 

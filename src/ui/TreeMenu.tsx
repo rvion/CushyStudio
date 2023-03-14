@@ -7,14 +7,15 @@ import { useSt } from './stContext'
 export const MenuTreeUI = observer(function MenuTreeUI_(p: {}) {
     const client = useSt()
     const data = client.treeData
-    const expandedByDefault = undefined
-    // const expandedByDefault = data
-    //     .filter((t) => {
-    //         if (t.type === 'script') return false
-    //         if (t.type === 'graph') return false
-    //         return true
-    //     })
-    //     .map((d) => d.id)
+    // const expandedByDefault = undefined
+    const expandedByDefault = data
+        .filter((t) => {
+            if (t.autoOpen) return true
+            // if (t.type === 'script') return false
+            // if (t.type === 'graph') return false
+            return false
+        })
+        .map((d) => d.id)
 
     return (
         <div>
@@ -25,7 +26,7 @@ export const MenuTreeUI = observer(function MenuTreeUI_(p: {}) {
                     onSelect={(props: ITreeViewOnSelectProps) => {
                         const node = props.element as INodeExt
                         console.log(node, props.isSelected ? '🟢' : '🔴')
-                        if (node.onClick) node.onClick()
+                        if (props.isSelected && node.onClick) node.onClick()
                     }}
                     // onSelect={(node: INodeExt) => {
                     // }))

@@ -14,7 +14,7 @@ export class ComfyProject {
     id: string = nanoid()
 
     /** project name */
-    name: string = 'Untitled'
+    name: string = 'DemoProject1'
 
     /** current  */
     focus: number = 0
@@ -34,7 +34,7 @@ export class ComfyProject {
 
     get treeData(): ITreeNode {
         return {
-            name: 'project - ' + this.name,
+            name: this.name,
             type: 'project',
             action: (
                 <div>
@@ -64,8 +64,8 @@ export class ComfyProject {
                         />
                     ),
                 },
-                { ...this.MAIN.treeData, name: 'Script', type: 'script' },
-                ...this.graphs.map((x, i) => x.treeData(i + 1)),
+                { ...this.MAIN.treeData, name: 'Script', type: 'script', onClick: () => this.client.editor.openCODE() },
+                ...this.graphs.map((x, i) => x.treeData(i)),
             ],
         }
     }
