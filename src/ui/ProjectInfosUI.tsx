@@ -38,7 +38,8 @@ export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
                 </div>
             </TreeValue>
             {client.project.graphs.map((v, ix) => (
-                <TreeValue title={`step ${ix}`} key={ix}>
+                // step ${ix}
+                <TreeValue title={``} key={ix}>
                     <button
                         style={{ minWidth: '2rem', border: '1px solid #625858' }}
                         key={ix}
