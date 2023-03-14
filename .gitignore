@@ -4,3 +4,4 @@ node_modules
 xformers
 dts
 dist
+.DS_Store
