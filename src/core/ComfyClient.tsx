@@ -51,18 +51,48 @@ export class ComfyClient {
             type: 'root',
             children: [
                 {
+                    name: 'server',
+                    type: 'client',
+                    children: [
+                        //
+                        // { name: 'monaco', type: 'config' },
+                        // { name: 'sdk', type: 'script' },
+                        {
+                            name: 'websocket',
+                            type: 'script',
+                            action: (
+                                <>
+                                    {this.wsStatusEmoji} {this.wsStatus}
+                                    {/* <button onClick={this.startWSClient}>Connect</button> */}
+                                </>
+                            ),
+                        },
+                        { name: 'schema', type: 'config' },
+                    ],
+                },
+
+                {
                     name: 'client',
                     type: 'client',
                     children: [
                         //
                         { name: 'monaco', type: 'config' },
-                        { name: 'sdk', type: 'script' },
-                        { name: 'websocket', type: 'script' },
-                        { name: 'schema', type: 'config' },
+                        { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
+                        { name: 'schema', type: 'config', onClick: this.editor.openLib },
+                        // { name: 'websocket', type: 'script' },
                     ],
                 },
                 // { name: 'client', type: 'client' },
-                { name: 'projects', type: 'folder', children: this.projects.map((x) => x.treeData) },
+                {
+                    name: 'projects',
+                    type: 'folder',
+                    action: (
+                        <div>
+                            <button>add</button>
+                        </div>
+                    ),
+                    children: this.projects.map((x) => x.treeData),
+                },
             ],
         })
     }

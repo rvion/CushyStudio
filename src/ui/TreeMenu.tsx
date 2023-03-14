@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import TreeView from 'react-accessible-treeview'
-import { ITreeNode, ITreeNodeType, TreeNodeIconUI } from '../core/tree'
+import TreeView, { ITreeViewOnSelectProps } from 'react-accessible-treeview'
+import { INodeExt, ITreeNode, ITreeNodeType, TreeNodeIconUI } from '../core/tree'
 import { FileIcon, FolderIcon } from './IconsUI'
 import { useSt } from './stContext'
 
@@ -21,9 +21,17 @@ export const MenuTreeUI = observer(function MenuTreeUI_(p: {}) {
                 <TreeView
                     data={data}
                     expandedIds={expandedByDefault}
+                    onSelect={(props: ITreeViewOnSelectProps) => {
+                        const node = props.element as INodeExt
+                        console.log(node, props.isSelected ? '🟢' : '🔴')
+                        if (node.onClick) node.onClick()
+                    }}
+                    // onSelect={(node: INodeExt) => {
+                    // }))
                     aria-label='directory tree'
                     nodeRenderer={({ element, isBranch, isExpanded, getNodeProps, level, ...p }) => {
-                        const type: ITreeNodeType = (element as any as ITreeNode).type
+                        const elem: INodeExt = element as any as INodeExt
+                        const type: ITreeNodeType = elem.type
                         return (
                             <div {...getNodeProps()} style={{ paddingLeft: 20 * (level - 1), display: 'flex' }}>
                                 <TreeNodeIconUI node={type} />
@@ -33,6 +41,8 @@ export const MenuTreeUI = observer(function MenuTreeUI_(p: {}) {
                                 ) : (
                                     <FileIcon filename={element.name} />
                                 )}
+                                <div className='grow'></div>
+                                {elem.action}
                             </div>
                         )
                     }}

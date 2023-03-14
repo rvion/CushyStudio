@@ -1,16 +1,24 @@
-import { INode } from 'react-accessible-treeview'
+import type { ReactNode } from 'react'
+import type { INode } from 'react-accessible-treeview'
+
 import { IconUI } from '../ui/IconUI'
 import { exhaust } from './ComfyUtils'
 
-export type INodeExt = INode & { type: ITreeNodeType }
+// VVVVVVVVVVVVVVVVVVVVVVVVVV
+export type NodeExtensions = {
+    type: ITreeNodeType
+    action?: ReactNode
+    onClick?: () => void
+}
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^
+export type INodeExt = INode & NodeExtensions
 
 export type ITreeNodeType = 'client' | 'graph' | 'node' | 'project' | 'script' | 'root' | 'folder' | 'config' | 'code'
 
-export interface ITreeNode {
-    type: ITreeNodeType
+export type ITreeNode = {
     name: string
     children?: ITreeNode[]
-}
+} & NodeExtensions
 
 export const flattenTreeExt = function (tree: ITreeNode): INodeExt[] {
     let count = 0
