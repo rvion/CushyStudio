@@ -4,7 +4,7 @@
 
 [![Downloads][downloads-badge]][releases]
 
-**🔴 EARLY ACCESS - WIP 🔴**
+**🔴 EARLY ACCESS - WIP - CURRENT MASTER BROKEN 🔴**
 
 StableIDE is a **Full-featured** web-based stable-diffusion playground IDE.
 
