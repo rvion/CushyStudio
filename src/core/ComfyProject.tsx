@@ -37,7 +37,7 @@ export class ComfyProject {
             name: this.name,
             type: 'project',
             action: (
-                <div>
+                <div style={{ marginLeft: 'auto' }}>
                     <button className='success' onClick={() => this.run()}>
                         Eval
                     </button>
