@@ -1,3 +1,18 @@
+2023-03-18
+
+-   🆕 NEW UI: word wrap button in toolbar
+-   🆕 NEW core: new `ScriptExecution` context
+-   🆕 NEW placeholder documentaion website at https://rvion.github.io/StableIDE/
+-   ❤️‍🩹 FIX too many small things to details them here #prealpha
+
+2023-03-17
+
+-   🆕 NEW UI: new Toolbar
+
+2023-03-15
+
+-   🆕 NEW UI: switch UI toolkit to fluentUI 9
+
 2023-03-14
 
 -   🆕 NEW UI: setup material icons https://fonts.google.com/icons
