@@ -5,7 +5,7 @@ import { TutorialUI } from '../core/TutorialUI'
 import { ArtifactsUI } from './ArtifactsUI'
 import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
 import { IdeInfosUI } from './IdeInfosUI'
-import { NodeListUI } from './NodeListUI'
+import { ExecutionUI } from './NodeListUI'
 import { ToolbarUI } from './ToolbarUI'
 import { VisUI } from './VisUI'
 
@@ -74,7 +74,7 @@ const defaultLayout = (): LayoutData => ({
                     {
                         tabs: [
                             {
-                                minWidth: 320,
+                                minWidth: 360,
                                 minHeight: 300,
                                 id: 'ide',
                                 title: 'Menu',
@@ -155,8 +155,8 @@ const defaultLayout = (): LayoutData => ({
                     {
                         minWidth: 280,
                         id: 'node-list',
-                        title: 'Node list',
-                        content: <NodeListUI />,
+                        title: 'Control Pane',
+                        content: <ExecutionUI />,
                     },
                 ],
             },

@@ -6,14 +6,27 @@ import type { ScriptStep_Iface } from './ScriptStep_Iface'
 
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
+import { ComfyGraph } from './ComfyGraph'
+import { deepCopyNaive } from './ComfyUtils'
 
 export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
-    name = 'prompt'
+    static promptID = 1
+    name = 'prompt-' + ScriptStep_prompt.promptID++
+
+    /** ready to be forked */
+    _graph: ComfyGraph
+
     constructor(
         //
         public execution: ScriptExecution,
         public prompt: ComfyPromptJSON,
     ) {
+        this._graph = new ComfyGraph(
+            //
+            this.execution.project,
+            this.execution,
+            deepCopyNaive(prompt),
+        )
         makeAutoObservable(this)
     }
 
