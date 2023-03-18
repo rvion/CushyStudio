@@ -21,5 +21,16 @@
         "titleBar.inactiveBackground": "#2c043299",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
-    "typescript.tsserver.experimental.enableProjectDiagnostics": true
+    "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        // so vscode remains fast
+        "**/ComfyUI": true,
+        "**/venv": true
+    }
 }
