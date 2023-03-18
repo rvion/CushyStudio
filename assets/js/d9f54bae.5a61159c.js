@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkwebsite=self.webpackChunkwebsite||[]).push([[7479],{6951:e=>{e.exports=JSON.parse('{"label":"StableIDE","permalink":"/blog/tags/stable-ide","allTagsPath":"/blog/tags","count":1}')}}]);
