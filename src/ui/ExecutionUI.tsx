@@ -43,10 +43,10 @@ export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { st
         <Card>
             <CardHeader description={p.step.msg}></CardHeader>
             <CardFooter>
-                <Button appearance='primary' icon={<I.CalendarMonthRegular />}>
+                <Button onClick={() => p.step.answer(true)} appearance='primary' icon={<I.CalendarMonthRegular />}>
                     Yes
                 </Button>
-                <Button appearance='primary' icon={<I.CalendarMonthRegular />}>
+                <Button onClick={() => p.step.answer(false)} appearance='primary' icon={<I.CalendarMonthRegular />}>
                     No
                 </Button>
             </CardFooter>
