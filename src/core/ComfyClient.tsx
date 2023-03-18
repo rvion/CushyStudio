@@ -186,7 +186,7 @@ export class ComfyClient {
         this.ws = ws
     }
 
-    notify = (msg: string) => toast(msg)
+    notify = (msg: string) => void toast(msg)
 
     /** Loads workflow data from the specified file */
     async handleFile(file: File) {

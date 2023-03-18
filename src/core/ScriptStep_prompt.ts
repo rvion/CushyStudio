@@ -34,7 +34,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface {
         }
     }
 
-    notifyEmptyPrompt = () => toast('No work to do', { type: 'warning' })
+    notifyEmptyPrompt = () => void toast('No work to do', { type: 'warning' })
 
     /** update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {

@@ -3,9 +3,8 @@ import type { ComfyNodeUID } from './ComfyNodeUID'
 import type { ComfyProject } from './ComfyProject'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { ScriptExecution } from './ScriptExecution'
-import { TEdge, TNode, toposort } from './toposort'
 
-import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
+// import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { makeObservable, observable } from 'mobx'
 import { WsMsgExecuted } from './ComfyAPI'
 import { ComfyClient } from './ComfyClient'
@@ -80,29 +79,29 @@ export class ComfyGraph {
         await step.finished
     }
 
-    JSON_forGitGraphVisualisation = (gitgraph: GitgraphUserApi<any>) => {
-        // extract graph
-        const ids: TNode[] = []
-        const edges: TEdge[] = []
-        for (const node of this.nodesArray) {
-            ids.push(node.uid)
-            for (const fromUID of node._incomingNodes()) edges.push([fromUID, node.uid])
-        }
-        // sort it
-        const sortedIds = toposort(ids, edges)
-        // renderit
-        const invisible = { renderDot: () => null, renderMessage: () => null }
-        const cache: { [key: string]: BranchUserApi<any> } = {}
-        const master = gitgraph.branch('master').commit(invisible)
-        for (const id of sortedIds) {
-            const node = this.nodes.get(id)!
-            const branch = master.branch(node.uid)
-            cache[id] = branch.commit({ body: node.$schema.name, renderDot: () => null, renderMessage: () => null })
-            for (const fromUID of node._incomingNodes())
-                cache[id] = branch.merge({ fastForward: true, branch: fromUID, commitOptions: invisible })
-            cache[id] = branch.commit({ body: node.$schema.name })
-        }
-    }
+    // JSON_forGitGraphVisualisation = (gitgraph: GitgraphUserApi<any>) => {
+    //     // extract graph
+    //     const ids: TNode[] = []
+    //     const edges: TEdge[] = []
+    //     for (const node of this.nodesArray) {
+    //         ids.push(node.uid)
+    //         for (const fromUID of node._incomingNodes()) edges.push([fromUID, node.uid])
+    //     }
+    //     // sort it
+    //     const sortedIds = toposort(ids, edges)
+    //     // renderit
+    //     const invisible = { renderDot: () => null, renderMessage: () => null }
+    //     const cache: { [key: string]: BranchUserApi<any> } = {}
+    //     const master = gitgraph.branch('master').commit(invisible)
+    //     for (const id of sortedIds) {
+    //         const node = this.nodes.get(id)!
+    //         const branch = master.branch(node.uid)
+    //         cache[id] = branch.commit({ body: node.$schema.name, renderDot: () => null, renderMessage: () => null })
+    //         for (const fromUID of node._incomingNodes())
+    //             cache[id] = branch.merge({ fastForward: true, branch: fromUID, commitOptions: invisible })
+    //         cache[id] = branch.commit({ body: node.$schema.name })
+    //     }
+    // }
 
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {

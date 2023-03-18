@@ -244,7 +244,7 @@ declare module "core/ScriptStep_prompt" {
         currentExecutingNode: ComfyNode<any> | null;
         /** update the progress value of the currently focused onde */
         onProgress: (msg: WsMsgProgress) => void;
-        notifyEmptyPrompt: () => import("react-toastify").Id;
+        notifyEmptyPrompt: () => undefined;
         /** update pointer to the currently executing node */
         onExecuting: (msg: WsMsgExecuting) => void;
         /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
@@ -347,7 +347,7 @@ declare module "ui/TypescriptOptions" {
     export type Monaco = any;
 }
 declare module "ui/Monaco" {
-    import * as monaco from 'monaco-editor';
+    const monaco: any
     export let globalMonaco: typeof monaco | null;
     export const ensureMonacoReady: () => typeof monaco | null;
 }
@@ -447,7 +447,7 @@ declare module "core/ComfyClient" {
         status: ComfyStatus | null;
         ws: Maybe<WebSocket>;
         startWSClient: () => void;
-        notify: (msg: string) => import("react-toastify").Id;
+        notify: (msg: string) => undefined;
         /** Loads workflow data from the specified file */
         handleFile(file: File): Promise<void>;
     }
@@ -476,7 +476,6 @@ declare module "core/ComfyGraph" {
     import type { ComfyProject } from "core/ComfyProject";
     import type { ComfyPromptJSON } from "core/ComfyPrompt";
     import type { ScriptExecution } from "core/ScriptExecution";
-    import { GitgraphUserApi } from '@gitgraph/core';
     import { WsMsgExecuted } from "core/ComfyAPI";
     import { ComfyClient } from "core/ComfyClient";
     import { ComfyNode } from "core/ComfyNode";
@@ -501,7 +500,6 @@ declare module "core/ComfyGraph" {
         /** wether it should really send the prompt to the backend */
         get runningMode(): RunMode;
         get(): Promise<void>;
-        JSON_forGitGraphVisualisation: (gitgraph: GitgraphUserApi<any>) => void;
         /** visjs JSON format (network visualisation) */
         get JSON_forVisDataVisualisation(): {
             nodes: VisNodes[];

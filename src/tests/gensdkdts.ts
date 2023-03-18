@@ -39,6 +39,8 @@ for (const [from, to] of [
     [`import * as WS from 'ws';`, ''],
     [`/// <reference types="ws" />`, ''],
     [`WS.WebSocket | WebSocket`, 'WebSocket'],
+    // monaco
+    [`import * as monaco from 'monaco-editor';`, 'const monaco: any'],
 ]) {
     out = out.replace(from, to)
 }
