@@ -182,7 +182,7 @@ export const MenuUI = observer(function MenuUI_() {
                     >
                         <TreeItemLayout iconBefore={<I.Server24Filled />}>IP: {client.serverIP}</TreeItemLayout>
                     </TreeItem>
-                    <TreeItem actions={<Actions />}>
+                    <TreeItem>
                         <TreeItemLayout iconBefore={<I.Server24Filled />}>Port: {client.serverPort}</TreeItemLayout>
                     </TreeItem>
                 </Tree>
