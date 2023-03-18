@@ -30,10 +30,10 @@ export class ScriptExecution {
         return this.steps[this.steps.length - 1]
     }
 
-    askBoolean = (msg: string) => {
+    askBoolean = (msg: string): Promise<boolean> => {
         const ask = new ScriptStep_askBoolean(msg)
         this.steps.push(ask)
-        return ask
+        return ask.finished
     }
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */

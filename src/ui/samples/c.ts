@@ -232,10 +232,14 @@ declare module "core/ScriptStep_prompt" {
     import type { ComfyPromptJSON } from "core/ComfyPrompt";
     import type { ComfyNode } from "core/ComfyNode";
     import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
+    import { ComfyGraph } from "core/ComfyGraph";
     export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         execution: ScriptExecution;
         prompt: ComfyPromptJSON;
+        static promptID: number;
         name: string;
+        /** ready to be forked */
+        _graph: ComfyGraph;
         constructor(execution: ScriptExecution, prompt: ComfyPromptJSON);
         _resolve: (value: this) => void;
         _rejects: (reason: any) => void;
@@ -304,7 +308,6 @@ declare module "core/ScriptExecution" {
     import { ScriptStep_prompt } from "core/ScriptStep_prompt";
     import { ComfyGraph } from "core/ComfyGraph";
     import { WsMsgExecuted } from "core/ComfyAPI";
-    import { ScriptStep_askBoolean } from "core/ScriptStep_ask";
     import { ScriptStep } from "core/ScriptStep";
     /** script runtime context */
     export class ScriptExecution {
@@ -320,7 +323,7 @@ declare module "core/ScriptExecution" {
         steps: ScriptStep[];
         /** current step */
         get step(): ScriptStep;
-        askBoolean: (msg: string) => ScriptStep_askBoolean;
+        askBoolean: (msg: string) => Promise<boolean>;
         /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
         outputs: WsMsgExecuted[];
         sendPromp: () => ScriptStep_prompt;
@@ -505,7 +508,7 @@ declare module "core/ComfyGraph" {
         /** return the coresponding comfy prompt  */
         get json(): ComfyPromptJSON;
         /** temporary proxy */
-        askBoolean: (msg: string) => void;
+        askBoolean: (msg: string) => Promise<boolean>;
         constructor(project: ComfyProject, executionContext: ScriptExecution, json?: ComfyPromptJSON);
         private _nextUID;
         getUID: () => string;

@@ -12,7 +12,7 @@ do {
     // sampler.inputs.cfg = 10
     latent_image.inputs.batch_size = batchSize++
     await C.get()
-} while ( batchSize < 3 )
-// } while ( await C.askBoolean('Continue?') )
+// } while ( batchSize < 3 )
+} while ( await C.askBoolean('Continue?') )
 
 `
