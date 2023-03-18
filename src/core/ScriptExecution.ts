@@ -5,7 +5,7 @@ import { deepCopyNaive } from './ComfyUtils'
 import { ComfyGraph } from './ComfyGraph'
 import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
 import { ScriptStep_Init } from './ScriptStep_Init'
-import { ScriptStep_ask } from './ScriptStep_ask'
+import { ScriptStep_askBoolean } from './ScriptStep_ask'
 import { ScriptStep } from './ScriptStep'
 import { makeAutoObservable } from 'mobx'
 
@@ -31,7 +31,9 @@ export class ScriptExecution {
     }
 
     askBoolean = (msg: string) => {
-        this.steps.push(new ScriptStep_ask(msg))
+        const ask = new ScriptStep_askBoolean(msg)
+        this.steps.push(ask)
+        return ask
     }
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */

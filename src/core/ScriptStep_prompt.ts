@@ -1,12 +1,13 @@
 import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from './ComfyAPI'
 import type { ScriptExecution } from './ScriptExecution'
-import { ScriptStep_Iface } from './ScriptStep_Iface'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { ComfyNode } from './ComfyNode'
+import type { ScriptStep_Iface } from './ScriptStep_Iface'
+
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
 
-export class ScriptStep_prompt implements ScriptStep_Iface {
+export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     name = 'prompt'
     constructor(
         //
@@ -16,9 +17,8 @@ export class ScriptStep_prompt implements ScriptStep_Iface {
         makeAutoObservable(this)
     }
 
-    _resolve: ((value: this) => void) | null = null
-    _rejects: ((reason: any) => void) | null = null
-
+    _resolve!: (value: this) => void
+    _rejects!: (reason: any) => void
     finished: Promise<this> = new Promise((resolve, rejects) => {
         this._resolve = resolve
         this._rejects = rejects

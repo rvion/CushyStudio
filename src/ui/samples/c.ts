@@ -219,26 +219,26 @@ declare module "core/ComfyProject" {
 }
 declare module "core/ScriptStep_Iface" {
     /** every ExecutionStep class must implements this interface  */
-    export interface ScriptStep_Iface {
+    export interface ScriptStep_Iface<Result> {
         /** name of the step */
         name: string;
         /** promise to await if you need to wait until the step is finished */
-        finished: Promise<this>;
+        finished: Promise<Result>;
     }
 }
 declare module "core/ScriptStep_prompt" {
     import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from "core/ComfyAPI";
     import type { ScriptExecution } from "core/ScriptExecution";
-    import { ScriptStep_Iface } from "core/ScriptStep_Iface";
     import type { ComfyPromptJSON } from "core/ComfyPrompt";
     import type { ComfyNode } from "core/ComfyNode";
-    export class ScriptStep_prompt implements ScriptStep_Iface {
+    import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
+    export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         execution: ScriptExecution;
         prompt: ComfyPromptJSON;
         name: string;
         constructor(execution: ScriptExecution, prompt: ComfyPromptJSON);
-        _resolve: ((value: this) => void) | null;
-        _rejects: ((reason: any) => void) | null;
+        _resolve: (value: this) => void;
+        _rejects: (reason: any) => void;
         finished: Promise<this>;
         /** pointer to the currently executing node */
         currentExecutingNode: ComfyNode<any> | null;
@@ -256,42 +256,55 @@ declare module "core/ScriptStep_prompt" {
     }
 }
 declare module "core/ScriptStep_Init" {
-    import { ScriptStep_Iface } from "core/ScriptStep_Iface";
-    export class ScriptStep_Init implements ScriptStep_Iface {
+    import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
+    export class ScriptStep_Init implements ScriptStep_Iface<true> {
         name: string;
-        finished: Promise<Awaited<this>>;
+        finished: Promise<true>;
     }
 }
 declare module "core/ScriptStep_ask" {
-    import { ScriptStep_Iface } from "core/ScriptStep_Iface";
-    export class ScriptStep_ask implements ScriptStep_Iface {
+    import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
+    export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
         msg: string;
         name: string;
         constructor(msg: string);
-        finished: Promise<Awaited<this>>;
+        _resolve: (value: boolean) => void;
+        _rejects: (reason: any) => void;
+        finished: Promise<boolean>;
+        answer: (value: boolean) => void;
+    }
+    export class ScriptStep_askString implements ScriptStep_Iface<string> {
+        msg: string;
+        name: string;
+        constructor(msg: string);
+        _resolve: (value: string) => void;
+        _rejects: (reason: any) => void;
+        finished: Promise<string>;
+        answer: (value: string) => void;
     }
 }
 declare module "core/ScriptStep_Output" {
-    import { ScriptStep_Iface } from "core/ScriptStep_Iface";
-    export class ScriptStep_Output implements ScriptStep_Iface {
+    import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
+    export class ScriptStep_Output implements ScriptStep_Iface<string[]> {
         images: string[];
         name: string;
+        finished: Promise<string[]>;
         constructor(images: string[]);
-        finished: Promise<Awaited<this>>;
     }
 }
 declare module "core/ScriptStep" {
     import type { ScriptStep_Output } from "core/ScriptStep_Output";
     import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
     import type { ScriptStep_Init } from "core/ScriptStep_Init";
-    import type { ScriptStep_ask } from "core/ScriptStep_ask";
-    export type ScriptStep = ScriptStep_Init | ScriptStep_prompt | ScriptStep_Output | ScriptStep_ask;
+    import type { ScriptStep_askBoolean, ScriptStep_askString } from "core/ScriptStep_ask";
+    export type ScriptStep = ScriptStep_Init | ScriptStep_prompt | ScriptStep_Output | ScriptStep_askBoolean | ScriptStep_askString;
 }
 declare module "core/ScriptExecution" {
     import type { ComfyProject } from "core/ComfyProject";
     import { ScriptStep_prompt } from "core/ScriptStep_prompt";
     import { ComfyGraph } from "core/ComfyGraph";
     import { WsMsgExecuted } from "core/ComfyAPI";
+    import { ScriptStep_askBoolean } from "core/ScriptStep_ask";
     import { ScriptStep } from "core/ScriptStep";
     /** script runtime context */
     export class ScriptExecution {
@@ -307,7 +320,7 @@ declare module "core/ScriptExecution" {
         steps: ScriptStep[];
         /** current step */
         get step(): ScriptStep;
-        askBoolean: (msg: string) => void;
+        askBoolean: (msg: string) => ScriptStep_askBoolean;
         /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
         outputs: WsMsgExecuted[];
         sendPromp: () => ScriptStep_prompt;
@@ -491,6 +504,7 @@ declare module "core/ComfyGraph" {
         isRunning: boolean;
         /** return the coresponding comfy prompt  */
         get json(): ComfyPromptJSON;
+        /** temporary proxy */
         askBoolean: (msg: string) => void;
         constructor(project: ComfyProject, executionContext: ScriptExecution, json?: ComfyPromptJSON);
         private _nextUID;

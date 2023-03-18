@@ -1,10 +1,39 @@
-import { makeAutoObservable } from 'mobx'
-import { ScriptStep_Iface } from './ScriptStep_Iface'
+import type { ScriptStep_Iface } from './ScriptStep_Iface'
 
-export class ScriptStep_ask implements ScriptStep_Iface {
-    name = 'ask'
+import { makeAutoObservable } from 'mobx'
+
+export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
+    name = 'ask-boolean'
     constructor(public msg: string) {
         makeAutoObservable(this)
     }
-    finished = Promise.resolve(this) // 🔴
+
+    _resolve!: (value: boolean) => void
+    _rejects!: (reason: any) => void
+    finished: Promise<boolean> = new Promise((resolve, rejects) => {
+        this._resolve = resolve
+        this._rejects = rejects
+    })
+
+    answer = (value: boolean) => {
+        this._resolve(value)
+    }
+}
+
+export class ScriptStep_askString implements ScriptStep_Iface<string> {
+    name = 'ask-string'
+    constructor(public msg: string) {
+        makeAutoObservable(this)
+    }
+
+    _resolve!: (value: string) => void
+    _rejects!: (reason: any) => void
+    finished: Promise<string> = new Promise((resolve, rejects) => {
+        this._resolve = resolve
+        this._rejects = rejects
+    })
+
+    answer = (value: string) => {
+        this._resolve(value)
+    }
 }

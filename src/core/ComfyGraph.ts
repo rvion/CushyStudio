@@ -28,7 +28,10 @@ export class ComfyGraph {
         return json
     }
 
-    askBoolean = (msg: string) => {}
+    /** temporary proxy */
+    askBoolean = (msg: string) => {
+        this.executionContext.askBoolean(msg)
+    }
 
     constructor(
         //
