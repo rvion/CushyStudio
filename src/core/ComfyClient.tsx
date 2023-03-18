@@ -60,7 +60,7 @@ export class ComfyClient {
         this.schema = new ComfySchema(opts.spec)
         this.project = ComfyProject.INIT(this)
         this.projects.push(this.project)
-        this.projects.push(ComfyProject.INIT(this))
+        // this.projects.push(ComfyProject.INIT(this))
         this.dts = this.schema.codegenDTS()
         this.startWSClient()
         makeAutoObservable(this)
