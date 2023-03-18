@@ -26,7 +26,15 @@ Handle loops, manual image selection steps.
 
 ## Getting started
 
-![](docs/images/2023-03-14_06-47-30.png)
+<!-- ![](docs/images/2023-03-14_06-47-30.png) -->
+
+![](docs/images/2023-03-18-23-13-27.png)
+
+## Features
+
+### Type-safe everywhere
+
+![](docs/images/2023-03-18-23-13-53.png)
 
 ## Installation
 
