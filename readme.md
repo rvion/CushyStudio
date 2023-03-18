@@ -4,6 +4,8 @@
 
 [![Downloads][downloads-badge]][releases]
 
+![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/StableIDE?style=social)
+
 **🔴 EARLY ACCESS - WIP - CURRENT MASTER BROKEN 🔴**
 
 StableIDE is a **Full-featured** web-based stable-diffusion playground IDE.
