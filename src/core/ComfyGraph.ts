@@ -1,15 +1,17 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
+import { TEdge, TNode, toposort } from './toposort'
+import type { ComfyNodeUID } from './ComfyNodeUID'
 
 import { makeObservable, observable } from 'mobx'
 import { ApiPromptInput, ComfyStatus, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyAPI'
 import { ComfyClient } from './ComfyClient'
 import { comfyColors } from './ComfyColors'
 import { ComfyNode } from './ComfyNode'
-import { ComfyNodeUID } from './ComfyNodeUID'
 import { ComfyProject } from './ComfyProject'
 import { ComfyPromptJSON } from './ComfyPrompt'
-import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
+import { ComfyNodeSchema, ComfySchema, NodeInputExt } from './ComfySchema'
 import { deepCopyNaive, sleep } from './ComfyUtils'
+import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 
 export type RunMode = 'fake' | 'real'
 
@@ -119,6 +121,33 @@ export class ComfyGraph {
         })
         await sleep(1000)
         return res
+    }
+
+    renderAsCommitGraph = (gitgraph: GitgraphUserApi<any>) => {
+        // extract graph
+        const ids: TNode[] = []
+        const edges: TEdge[] = []
+        for (const node of this.nodesArray) {
+            ids.push(node.uid)
+            for (const fromUID of node._incomingNodes()) {
+                edges.push([fromUID, node.uid])
+            }
+        }
+        // sort it
+        const sortedIds = toposort(ids, edges)
+
+        // renderit
+        const invisible = { renderDot: () => null, renderMessage: () => null }
+        const cache: { [key: string]: BranchUserApi<any> } = {}
+        const master = gitgraph.branch('master').commit(invisible)
+        for (const id of sortedIds) {
+            const node = this.nodes.get(id)!
+            const branch = master.branch(node.uid)
+            cache[id] = branch.commit({ body: node.$schema.name, renderDot: () => null, renderMessage: () => null })
+            for (const fromUID of node._incomingNodes())
+                cache[id] = branch.merge({ fastForward: true, branch: fromUID, commitOptions: invisible })
+            cache[id] = branch.commit({ body: node.$schema.name })
+        }
     }
 
     /** visjs JSON format (network visualisation) */

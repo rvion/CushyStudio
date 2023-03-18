@@ -1,17 +1,12 @@
 import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from './CodeBuffer'
+import { ComfyPrimitiveMapping, ComfyPrimitives } from './ComfyPrimitives'
 import { ComfySchemaJSON } from './ComfySchemaJSON'
-
-const PRIMITIVES: { [key: string]: string } = {
-    FLOAT: 'number',
-    INT: 'number',
-    STRING: 'string',
-}
 
 export type EnumHash = string
 export type EnumName = string
-export type NodeInputExt = { name: string; type: string; opts?: any }
-export type NodeOutputExt = { type: string; name: string }
+export type NodeInputExt = { name: string; type: string; opts?: any; isPrimitive: boolean }
+export type NodeOutputExt = { type: string; name: string; isPrimitive: boolean }
 
 export class ComfySchema {
     knownTypes = new Set<string>()
@@ -45,7 +40,7 @@ export class ComfySchema {
             for (const opt of nodeTypeDef.output) {
                 const at = (outputNamer[opt] ??= 0)
                 const name = at === 0 ? opt : `${opt}_${at}`
-                outputs.push({ type: opt, name })
+                outputs.push({ type: opt, name, isPrimitive: false })
                 outputNamer[opt]++
             }
             for (const ipt of requiredInputs) {
@@ -73,8 +68,14 @@ export class ComfySchema {
                 } else {
                     throw new Error('object type not supported')
                 }
+
                 if (typeName) {
-                    node.inputs.push({ name: inputName, type: typeName, opts: typeOpts })
+                    node.inputs.push({
+                        name: inputName,
+                        type: typeName,
+                        opts: typeOpts,
+                        isPrimitive: ComfyPrimitives.includes(typeName),
+                    })
                 } else {
                     console.log({ ipt, typeDef, typeStuff })
                     console.log({ typeStuff })
@@ -152,7 +153,7 @@ export class ComfySchema {
         return b.content
     }
 
-    private toTSType = (t: string) => PRIMITIVES[t] ?? `ComfyNodeOutput<'${t}'>`
+    private toTSType = (t: string) => ComfyPrimitiveMapping[t] ?? `ComfyNodeOutput<'${t}'>`
 }
 
 export class ComfyNodeSchema {
@@ -199,7 +200,7 @@ export class ComfyNodeSchema {
 
         p(`export type ${this.name}_input = {`)
         for (const i of this.inputs) {
-            const type = PRIMITIVES[i.type] ? i.type : `${i.type} | HasSingle_${i.type}`
+            const type = ComfyPrimitiveMapping[i.type] ? i.type : `${i.type} | HasSingle_${i.type}`
             p(`    ${i.name}: ${type}`)
         }
         p(`}`)

@@ -1129,6 +1129,18 @@
   dependencies:
     tslib "^2.1.0"
 
+"@gitgraph/core@1.5.0", "@gitgraph/core@^1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@gitgraph/core/-/core-1.5.0.tgz#fc27924b82eabc5fa1f90480df5239e0c84dcafa"
+  integrity sha512-8CeeHbkKoFHM1y9vfjYiHyEpzl1mEhVrg5c/eFgDBsntOYswoDKU2yOf6DjtVINcE60wmcuynBSJqjMkQo07Ww==
+
+"@gitgraph/react@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@gitgraph/react/-/react-1.6.0.tgz#45783da838d975c225849766c337028a92cd3f14"
+  integrity sha512-cLFNZDoEiNbsnMfdT82zeZti5saYghQamfCbTpVvCRr+BrrQ/k94glkZqYPXKKNTEqbQV6L9JeOfAk1hNiFYXA==
+  dependencies:
+    "@gitgraph/core" "1.5.0"
+
 "@griffel/core@^1.10.0", "@griffel/core@^1.9.0":
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/@griffel/core/-/core-1.10.0.tgz#60d2b360c35582fe5a5515570b835c7d5e2fa961"

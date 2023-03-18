@@ -55,8 +55,6 @@ export const MenuUI = observer(function MenuUI_() {
                 <TreeItemPersonaLayout media={<Avatar />}>content</TreeItemPersonaLayout>
             </TreeItem>
 
-            <AssetTreeUI />
-
             {/* PROJECTS */}
             <TreeItem id='projects'>
                 <TreeItemLayout
@@ -192,6 +190,7 @@ export const MenuUI = observer(function MenuUI_() {
                     </TreeItem>
                 </Tree>
             </TreeItem>
+            <AssetTreeUI />
         </Tree>
     )
 })

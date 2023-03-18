@@ -5,6 +5,7 @@ import type { ComfyNodeJSON } from './ComfyPrompt'
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
+import { ComfyNodeUID } from './ComfyNodeUID'
 
 configure({ enforceActions: 'never' })
 
@@ -21,25 +22,14 @@ export class ComfyNode<ComfyNode_input extends object> {
         return this.json.inputs as any
     }
 
-    // get treeData(): ITreeNode {
-    //     return {
-    //         name: 'node',
-    //         type: 'node',
-    //         // children: [],
-    //         tooltip: <ComfyNodeUI node={this} />,
-    //     }
-    // }
-
     json: ComfyNodeJSON
 
     /** update a node */
     set(p: Partial<ComfyNode_input>) {
-        for (const [key, value] of Object.entries(p)) {
-            this.json.inputs[key] = this.serializeValue(key, value)
-        }
-        // Object.assign(this.json.inputs, p)
+        for (const [key, value] of Object.entries(p)) this.json.inputs[key] = this.serializeValue(key, value)
     }
 
+    $outputs: ComfyNodeOutput<any>[] = []
     constructor(
         //
         public graph: ComfyGraph,
@@ -53,8 +43,11 @@ export class ComfyNode<ComfyNode_input extends object> {
         this.graph.nodes.set(this.uid.toString(), this)
         makeAutoObservable(this)
         const extensions: { [key: string]: any } = {}
+
         for (const x of this.$schema.outputs) {
-            extensions[x.name] = new ComfyNodeOutput(this, ix++, x.name)
+            const output = new ComfyNodeOutput(this, ix++, x.name)
+            extensions[x.name] = output
+            this.$outputs.push(output)
             // console.log(`  - .${x.name} as ComfyNodeOutput(${ix})`)
         }
         extendObservable(this, extensions)
@@ -69,6 +62,18 @@ export class ComfyNode<ComfyNode_input extends object> {
             inputs[name] = this.serializeValue(name, value)
         }
         return { class_type: this.$schema.name, inputs }
+    }
+
+    /** return the list of nodes piped into this node */
+    _incomingNodes() {
+        const incomingNodes: ComfyNodeUID[] = []
+        for (const [name, val] of Object.entries(this.inputs)) {
+            if (val instanceof Array) {
+                const [from, slotIx] = val
+                incomingNodes.push(from)
+            }
+        }
+        return incomingNodes
     }
 
     get manager() { return this.graph.client } // prettier-ignore

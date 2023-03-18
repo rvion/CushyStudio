@@ -6,6 +6,7 @@ export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
     // const client = useSt()
     return (
         <div className='col gap1 h100'>
+            {/* <VerticalGraph /> */}
             <MenuUI />
             <div className='grow'></div>
             <DropZoneUI />

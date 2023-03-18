@@ -24,6 +24,8 @@
     },
     "dependencies": {
         "@fluentui/react-components": "^9.18.1",
+        "@gitgraph/core": "^1.5.0",
+        "@gitgraph/react": "^1.6.0",
         "@monaco-editor/react": "^4.4.6",
         "esbuild": "^0.17.11",
         "mobx": "^6.8.0",
