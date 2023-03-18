@@ -10,7 +10,7 @@
 ![Twitter Follow](https://img.shields.io/twitter/follow/StableIDE?style=social)
 ![Discord](https://img.shields.io/discord/1086641379104542720)
 
-**🔴 EARLY ACCESS - WIP - CURRENT MASTER BROKEN 🔴**
+**🔴 EARLY ACCESS - MASTER BRANCH NOT WORKING 🔴**
 
 StableIDE is a **Full-featured** web-based stable-diffusion playground IDE.
 
@@ -31,6 +31,7 @@ Handle loops, manual image selection steps.
 ## Installation
 
 -   install https://github.com/comfyanonymous/ComfyUI
+-   download some models so you have a functional Comfy setup (see [this](scripts/download-models.sh))
 -   start the server `python main.py --listen 0.0.0.0`
 -   start the client `yarn dev`
 -   open a web-browser with CORS disabled (e.g. `google-chrome --disable-web-security`) (🔴 temporary hack until cors properly supported)
