@@ -185,6 +185,16 @@ export const MenuUI = observer(function MenuUI_() {
                     <TreeItem>
                         <TreeItemLayout iconBefore={<I.Server24Filled />}>Port: {client.serverPort}</TreeItemLayout>
                     </TreeItem>
+                    <TreeItem>
+                        <TreeItemLayout onClick={client.editor.openLib} iconBefore={<I.Library24Filled />}>
+                            Lib.d.ts
+                        </TreeItemLayout>
+                    </TreeItem>
+                    <TreeItem>
+                        <TreeItemLayout onClick={client.editor.openSDK} iconBefore={<I.Server24Filled />}>
+                            SDK.d.ts
+                        </TreeItemLayout>
+                    </TreeItem>
                 </Tree>
             </TreeItem>
 
