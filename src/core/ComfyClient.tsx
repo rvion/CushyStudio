@@ -161,6 +161,7 @@ export class ComfyClient {
             if (msg.type === 'status') {
                 if (msg.data.sid) this.sid = msg.data.sid
                 this.status = msg.data.status
+                return
             }
 
             // ensure current project is running
@@ -179,6 +180,7 @@ export class ComfyClient {
             if (msg.type === 'executed') return promptStep.onExecuted(msg)
 
             // unknown message payload ?
+            console.log('❌', 'Unknown message:', msg)
             throw new Error('Unknown message type: ' + msg)
         }
         this.ws = ws
