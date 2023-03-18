@@ -10,7 +10,6 @@ import { ComfyProject } from './ComfyProject'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
 import { deepCopyNaive, sleep } from './ComfyUtils'
-import { ITreeNode } from './tree'
 
 export type RunMode = 'fake' | 'real'
 
@@ -30,14 +29,14 @@ export class ComfyGraph {
         return json
     }
 
-    treeData(ix: number): ITreeNode {
-        return {
-            name: 'checkpoint ' + (ix + 1),
-            type: 'graph',
-            children: this.nodesArray.map((x) => x.treeData),
-            onClick: () => (this.project.focus = ix),
-        }
-    }
+    // treeData(ix: number): ITreeNode {
+    //     return {
+    //         name: 'checkpoint ' + (ix + 1),
+    //         type: 'graph',
+    //         children: this.nodesArray.map((x) => x.treeData),
+    //         onClick: () => (this.project.focus = ix),
+    //     }
+    // }
 
     constructor(
         //
@@ -106,6 +105,8 @@ export class ComfyGraph {
         const currentJSON = deepCopyNaive(this.json)
         console.log('[🪜] checkpoint', currentJSON)
         this.project.graphs.push(new ComfyGraph(this.project, currentJSON))
+        // update focus to the new graph
+        this.project.focus = this.project.graphs.length - 1
         if (this.runningMode === 'fake') return null
         const out: ApiPromptInput = {
             client_id: this.client.sid,

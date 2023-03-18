@@ -7,14 +7,15 @@ import { ComfyClient } from './ComfyClient'
 import { ComfyGraph } from './ComfyGraph'
 import { ComfyImporter } from './ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
-import { ITreeNode } from './tree'
+// import { ITreeNode } from './tree'
 
 export class ComfyProject {
+    static demoProjectIx = 1
     /** unique project id */
     id: string = nanoid()
 
     /** project name */
-    name: string = 'DemoProject1'
+    name: string = 'Demo Project ' + ComfyProject.demoProjectIx++
 
     /** current  */
     focus: number = 0
@@ -32,43 +33,44 @@ export class ComfyProject {
         return project
     }
 
-    get treeData(): ITreeNode {
-        return {
-            name: this.name,
-            type: 'project',
-            action: (
-                <div style={{ marginLeft: 'auto' }}>
-                    <button className='success' onClick={() => this.run()}>
-                        Eval
-                    </button>
-                    <button className='success' onClick={() => this.run('real')}>
-                        RUN
-                    </button>
-                </div>
-            ),
-            children: [
-                //
-                {
-                    ...this.MAIN.treeData,
-                    name: 'Name',
-                    type: 'script',
-                    action: (
-                        <input
-                            style={{ marginLeft: 'auto' }}
-                            onClick={(ev) => ev.stopPropagation()}
-                            onKeyUp={(ev) => ev.stopPropagation()}
-                            onKeyDown={(ev) => ev.stopPropagation()}
-                            type='text'
-                            value={this.name}
-                            onChange={(ev) => (this.name = ev.target.value)}
-                        />
-                    ),
-                },
-                { ...this.MAIN.treeData, name: 'Script', type: 'script', onClick: () => this.client.editor.openCODE() },
-                ...this.graphs.map((x, i) => x.treeData(i)),
-            ],
-        }
-    }
+    // get treeData(): ITreeNode {
+    //     return {
+    //         name: this.name,
+    //         key: this.id,
+    //         type: 'project',
+    //         action: (
+    //             <div style={{ marginLeft: 'auto' }}>
+    //                 <button className='success' onClick={() => this.run()}>
+    //                     Eval
+    //                 </button>
+    //                 <button className='success' onClick={() => this.run('real')}>
+    //                     RUN
+    //                 </button>
+    //             </div>
+    //         ),
+    //         children: [
+    //             //
+    //             {
+    //                 ...this.MAIN.treeData,
+    //                 name: 'Name',
+    //                 type: 'script',
+    //                 action: (
+    //                     <input
+    //                         style={{ marginLeft: 'auto' }}
+    //                         onClick={(ev) => ev.stopPropagation()}
+    //                         onKeyUp={(ev) => ev.stopPropagation()}
+    //                         onKeyDown={(ev) => ev.stopPropagation()}
+    //                         type='text'
+    //                         value={this.name}
+    //                         onChange={(ev) => (this.name = ev.target.value)}
+    //                     />
+    //                 ),
+    //             },
+    //             { ...this.MAIN.treeData, name: 'Script', type: 'script', onClick: () => this.client.editor.openCODE() },
+    //             ...this.graphs.map((x, i) => x.treeData(i)),
+    //         ],
+    //     }
+    // }
 
     static FROM_JSON = (client: ComfyClient, json: ComfyPromptJSON) => {
         const project = new ComfyProject(client)

@@ -1,6 +1,6 @@
-import type { IStandaloneCodeEditor } from '../ui/TypescriptOptions'
+import type { IStandaloneCodeEditor, ITextModel } from '../ui/TypescriptOptions'
 
-import { makeAutoObservable, observable } from 'mobx'
+import { autorun, makeAutoObservable, observable, reaction } from 'mobx'
 import { globalMonaco } from '../ui/Monaco'
 import { c__ } from '../ui/samples/c'
 import { ComfyClient } from './ComfyClient'
@@ -8,6 +8,12 @@ import { ComfyClient } from './ComfyClient'
 export class ComfyScriptEditor {
     constructor(public client: ComfyClient) {
         makeAutoObservable(this)
+        autorun(() => {
+            if (this.editorRef.current && this.curr) {
+                console.log('autorun updating')
+                this.editorRef.current.setModel(this.curr)
+            }
+        })
     }
 
     editorRef = observable({ current: null as IStandaloneCodeEditor | null }, { current: observable.ref })
@@ -49,15 +55,16 @@ export class ComfyScriptEditor {
     openSDK = () => this.openPathInEditor(this.sdk_path)
     openCODE = () => this.openPathInEditor(this.CODE_path)
 
+    curr: ITextModel | null = null
     openPathInEditor = (path: string) => {
         const monaco = globalMonaco
         if (!monaco) throw new Error('monaco is null')
         const libURI = monaco.Uri.parse(path)
         const libModel = monaco.editor.getModel(libURI)
+        this.curr = libModel
 
-        const editor = this.editorRef.current
-        if (!editor) throw new Error('editor is null')
-        editor.setModel(libModel)
+        // const editor = this.editorRef.current
+        // if (editor) editor.setModel(libModel)
     }
 
     hasLib = () => this.hasModel(this.lib_path)

@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
 import { DropZoneUI } from './DropZoneUI'
-import { MenuTreeUI } from './TreeMenu'
+import { MenuUI } from './menu/MenuUI'
 
 export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
     // const client = useSt()
     return (
         <div className='col gap1 h100'>
-            <MenuTreeUI />
+            <MenuUI />
             <div className='grow'></div>
             <DropZoneUI />
         </div>

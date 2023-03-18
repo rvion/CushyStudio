@@ -1,5 +1,6 @@
 import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
+import { useEffect } from 'react'
 import { globalMonaco } from './Monaco'
 import { useSt } from './stContext'
 import { IStandaloneCodeEditor } from './TypescriptOptions'
@@ -9,6 +10,7 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
     const client = useSt()
     // 🔴 fix this later
     // if (client.schema.nodes.length === 0) return <WelcomeScreenUI />
+    // useEffect
     return (
         <MonacoEditor //
             height='100vh'
@@ -23,14 +25,15 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
             // beforeMount={(monaco: Monaco) => client.editor.setupMonaco(monaco)}
             onMount={(editor: IStandaloneCodeEditor, monaco: Monaco) => {
                 editor.updateOptions({ wordWrap: 'on' })
+                if (client.editor.curr) editor.setModel(client.editor.curr)
                 client.editor.editorRef.current = editor
-                const prevMonaco = globalMonaco
-                if (prevMonaco !== monaco) {
-                    console.log('🔴 invalid monacoRef.current')
-                    console.log('🔴', prevMonaco)
-                    console.log('🔴', monaco)
-                    throw new Error('monacoRef.current!==monaco')
-                }
+                // const prevMonaco = globalMonaco
+                // if (prevMonaco !== monaco) {
+                //     console.log('🔴 invalid monacoRef.current')
+                //     console.log('🔴', prevMonaco)
+                //     console.log('🔴', monaco)
+                //     throw new Error('monacoRef.current!==monaco')
+                // }
                 // for (const file of Object.values(virtualFilesystem)) {
                 //     const uri = monaco.Uri.parse(`file:///${file.name}`)
                 //     const model = monaco.editor.createModel(file.value, 'typescript', uri)

@@ -12,7 +12,6 @@ import { ComfyProject } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { getPngMetadata } from './getPngMetadata'
-import { flattenTreeExt, INodeExt } from './tree'
 
 export type ComfyClientOptions = {
     serverIP: string
@@ -35,6 +34,8 @@ export class ComfyClient {
     projects: ComfyProject[] = []
     editor: ComfyScriptEditor
 
+    assets = new Map<string, boolean>()
+
     storageServerKey = 'comfy-server'
     getStoredServerKey = () => {}
 
@@ -45,108 +46,106 @@ export class ComfyClient {
     })
     autosaver = new AutoSaver('client', this.getConfig)
 
-    get treeData(): INodeExt[] {
-        return flattenTreeExt({
-            name: 'root' + this.serverHost,
-            type: 'root',
-            children: [
-                {
-                    name: 'projects',
-                    type: 'folder',
-                    autoOpen: true,
-                    action: (
-                        <div>
-                            <button>add</button>
-                        </div>
-                    ),
-                    children: this.projects.map((x) => x.treeData),
-                },
-                {
-                    name: 'Configuration',
-                    type: 'config',
-                    children: [
-                        {
-                            name: 'IP',
-                            type: 'config',
-                            action: (
-                                <input
-                                    style={{ marginLeft: 'auto' }}
-                                    onClick={(ev) => ev.stopPropagation()}
-                                    onKeyUp={(ev) => ev.stopPropagation()}
-                                    onKeyDown={(ev) => ev.stopPropagation()}
-                                    type='text'
-                                    value={this.serverIP}
-                                    onChange={(ev) => (this.serverIP = ev.target.value)}
-                                />
-                            ),
-                        },
-                        {
-                            name: 'Port',
-                            type: 'config',
-                            action: (
-                                <input
-                                    style={{ marginLeft: 'auto' }}
-                                    type='number'
-                                    onClick={(ev) => ev.stopPropagation()}
-                                    onKeyUp={(ev) => ev.stopPropagation()}
-                                    onKeyDown={(ev) => ev.stopPropagation()}
-                                    value={this.serverPort}
-                                    onChange={(ev) => (this.serverPort = parseInt(ev.target.value, 10))}
-                                />
-                            ),
-                        },
-                        {
-                            name: 'websocket',
-                            type: 'script',
-                            action: (
-                                <div style={{ marginLeft: 'auto' }}>
-                                    {/* {this.wsStatus} */}
-                                    <button onClick={this.startWSClient}>UPDATE</button>
-                                    {this.wsStatusEmoji}
-                                </div>
-                            ),
-                        },
-                        {
-                            name: 'schema',
-                            type: 'config',
-                            action: (
-                                <div style={{ marginLeft: 'auto' }}>
-                                    {this.schema.nodes.length} nodes;
-                                    <button onClick={this.fetchObjectsSchema}>UPADTE</button>
-                                    {this.schemaStatusEmoji}
-                                </div>
-                            ),
-                        },
-                        { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
-                        { name: 'lib', type: 'script', onClick: this.editor.openLib },
-                    ],
-                },
+    // get treeData(): INodeExt[] {
+    //     // const data = [
+    //     //     { type: 'script', name: '', children: [1, 4, 9, 10, 11], id: 0, parent: null },
+    //     //     { type: 'script', name: 'src', children: [2, 3], id: 1, parent: 0 },
+    //     //     { type: 'script', name: 'index.js', id: 2, parent: 1 },
+    //     //     { type: 'script', name: 'styles.css', id: 3, parent: 1 },
+    //     //     { type: 'script', name: 'node_modules', children: [5, 7], id: 4, parent: 0 },
+    //     //     { type: 'script', name: 'react-accessible-treeview', children: [6], id: 5, parent: 4 },
+    //     //     { type: 'script', name: 'bundle.js', id: 6, parent: 5 },
+    //     //     { type: 'script', name: 'react', children: [888], id: 7, parent: 4 },
+    //     //     { type: 'script', name: 'bundle.js', id: 888, parent: 7 },
+    //     //     { type: 'script', name: '.npmignore', id: 9, parent: 0 },
+    //     //     { type: 'script', name: 'package.json', id: 10, parent: 0 },
+    //     //     { type: 'script', name: 'webpack.config.js', id: 11, parent: 0 },
+    //     // ]
+    //     // return data
+    //     return flattenTreeExt({
+    //         name: 'root',
+    //         type: 'root',
+    //         children: [
+    //             {
+    //                 name: 'projects',
+    //                 type: 'folder',
+    //                 autoOpen: true,
+    //                 // action: (
+    //                 //     <div>
+    //                 //         <button>add</button>
+    //                 //     </div>
+    //                 // ),
+    //                 children: this.projects.map((x) => x.treeData),
+    //             },
+    //             {
+    //                 name: 'Configuration',
+    //                 type: 'config',
+    //                 children: [
+    //                     {
+    //                         name: 'IP',
+    //                         type: 'config',
+    //                         action: (
+    //                             <input
+    //                                 style={{ marginLeft: 'auto' }}
+    //                                 onClick={(ev) => ev.stopPropagation()}
+    //                                 onKeyUp={(ev) => ev.stopPropagation()}
+    //                                 onKeyDown={(ev) => ev.stopPropagation()}
+    //                                 type='text'
+    //                                 value={this.serverIP}
+    //                                 onChange={(ev) => (this.serverIP = ev.target.value)}
+    //                             />
+    //                         ),
+    //                     },
+    //                     {
+    //                         name: 'Port',
+    //                         type: 'config',
+    //                         action: (
+    //                             <input
+    //                                 style={{ marginLeft: 'auto' }}
+    //                                 type='number'
+    //                                 onClick={(ev) => ev.stopPropagation()}
+    //                                 onKeyUp={(ev) => ev.stopPropagation()}
+    //                                 onKeyDown={(ev) => ev.stopPropagation()}
+    //                                 value={this.serverPort}
+    //                                 onChange={(ev) => (this.serverPort = parseInt(ev.target.value, 10))}
+    //                             />
+    //                         ),
+    //                     },
+    //                     {
+    //                         name: 'websocket',
+    //                         type: 'script',
+    //                         action: (
+    //                             <div style={{ marginLeft: 'auto' }}>
+    //                                 {/* {this.wsStatus} */}
+    //                                 <button onClick={this.startWSClient}>UPDATE</button>
+    //                                 {this.wsStatusEmoji}
+    //                             </div>
+    //                         ),
+    //                     },
+    //                     {
+    //                         name: 'schema',
+    //                         type: 'config',
+    //                         action: (
+    //                             <div style={{ marginLeft: 'auto' }}>
+    //                                 {this.schema.nodes.length} nodes;
+    //                                 <button onClick={this.fetchObjectsSchema}>UPADTE</button>
+    //                                 {this.schemaStatusEmoji}
+    //                             </div>
+    //                         ),
+    //                     },
+    //                     { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
+    //                     { name: 'lib', type: 'script', onClick: this.editor.openLib },
+    //                 ],
+    //             },
 
-                {
-                    name: 'GUI',
-                    type: 'client',
-                    children: [
-                        //
-                        { name: 'monaco', type: 'config', action: <button>open</button> },
-                        // { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
-                        // { name: 'lib', type: 'script', onClick: this.editor.openLib },
-                        // { name: 'websocket', type: 'script' },
-                    ],
-                },
-                // {
-                //     name: 'typings',
-                //     type: 'client',
-                //     children: [
-                //         //
-                //         { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
-                //         { name: 'lib', type: 'script', onClick: this.editor.openLib },
-                //         // { name: 'websocket', type: 'script' },
-                //     ],
-                // },
-                // { name: 'client', type: 'client' },
-            ],
-        })
-    }
+    //             {
+    //                 name: 'GUI',
+    //                 type: 'client',
+    //                 children: [{ name: 'monaco', type: 'config', action: <button>open</button> }],
+    //             },
+    //         ],
+    //     })
+    // }
 
     constructor(opts: ComfyClientOptions) {
         const prev = this.autosaver.load()
@@ -158,6 +157,7 @@ export class ComfyClient {
         this.schema = new ComfySchema(opts.spec)
         this.project = ComfyProject.INIT(this)
         this.projects.push(this.project)
+        this.projects.push(ComfyProject.INIT(this))
         this.dts = this.schema.codegenDTS()
         this.startWSClient()
         makeAutoObservable(this)

@@ -1,0 +1,21 @@
+.table {
+    width: fit-content;
+    text-align: left;
+}
+
+.table tbody tr:nth-of-type(odd) {
+    background-color: rgb(235, 235, 235);
+}
+
+.table tbody tr:nth-of-type(even) {
+    background-color: rgb(220, 220, 220);
+}
+
+.table tr:hover {
+    filter: brightness(0.9);
+}
+
+.table th {
+    padding-right: 1rem;
+    background-color: rgb(174, 198, 180);
+}

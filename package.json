@@ -23,6 +23,7 @@
         "decl": "yarn js src/tests/gensdkdts.ts"
     },
     "dependencies": {
+        "@fluentui/react-components": "^9.18.1",
         "@monaco-editor/react": "^4.4.6",
         "esbuild": "^0.17.11",
         "mobx": "^6.8.0",
@@ -32,7 +33,6 @@
         "prettier": "^2.8.4",
         "rc-dock": "^3.2.17",
         "react": "^18.2.0",
-        "react-accessible-treeview": "^2.3.3",
         "react-dom": "^18.2.0",
         "react-toastify": "^9.1.1",
         "ts-node": "^10.9.1",
@@ -41,7 +41,7 @@
         "ws": "^8.13.0"
     },
     "devDependencies": {
-        "@types/node": "^18.15.0",
+        "@types/node": "^18.15.3",
         "@types/prettier": "^2.7.2",
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.11",

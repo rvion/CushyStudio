@@ -21,9 +21,9 @@ class IDELayout {
     }
 
     spawnPopups = () => {
-        setTimeout(() => {
-            this.addPopup()
-        }, 5_000)
+        // setTimeout(() => {
+        //     this.addPopup()
+        // }, 5_000)
     }
 
     addPopup = () => {
@@ -51,7 +51,6 @@ class IDELayout {
 
 export const AppLayoutUI = observer(function AppLayoutUI_(p: {}) {
     const layout = useMemo(() => new IDELayout(), [])
-    const monaco = ensureMonacoReady()
     return (
         <DockLayout
             ref={layout.getRef}
@@ -129,7 +128,7 @@ const defaultLayout = (): LayoutData => ({
                                 minWidth: 320,
                                 minHeight: 300,
                                 id: 'ide',
-                                title: 'Client Config',
+                                title: 'Menu',
                                 content: <IdeInfosUI />,
                             },
                         ],
@@ -172,6 +171,7 @@ const defaultLayout = (): LayoutData => ({
                         size: 99999,
                         tabs: [
                             { id: 'Editor1', title: 'Project Code', content: <ComfyCodeEditorUI /> },
+                            { id: 'Editor1', title: 'Project infos', content: <ComfyCodeEditorUI /> },
                             // { id: 'Editor2', title: 'dts', content: <ComfyCodeEditorUI path='schema.d.ts' /> },
                             // { id: 'Editor3', title: 'object_infos', content: <ComfyCodeEditorUI /> },
                         ],
