@@ -1,5 +1,7 @@
 2023-03-18
 
+-   🆕 NEW: add `askString` and `askBoolean` interractions
+-   🔥 MAJOR: new interraction system
 -   🆕 NEW UI: makes nodes foldable in execution dashboards
 -   🆕 NEW UI: add warning toast on empty prompt
 -   🆕 NEW UI: word wrap button in toolbar
