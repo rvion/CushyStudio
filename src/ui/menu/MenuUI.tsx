@@ -51,9 +51,9 @@ export const MenuUI = observer(function MenuUI_() {
             }}
         >
             {/* USER PREFERENCES */}
-            <TreeItem>
+            {/* <TreeItem>
                 <TreeItemPersonaLayout media={<Avatar />}>content</TreeItemPersonaLayout>
-            </TreeItem>
+            </TreeItem> */}
 
             {/* PROJECTS */}
             <TreeItem id='projects'>
