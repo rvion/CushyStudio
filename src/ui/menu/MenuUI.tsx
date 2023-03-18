@@ -67,7 +67,7 @@ export const MenuUI = observer(function MenuUI_() {
                     {client.projects.map((project) => (
                         <TreeItem
                             // PROJECT
-                            id={client.project.id}
+                            id={project.id}
                             key={project.id}
                             actions={
                                 <>
