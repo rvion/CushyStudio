@@ -9,7 +9,8 @@ import { useSt } from './stContext'
 export const NodeListUI = observer(function NodeListUI_(p: {}) {
     const st = useSt()
     const project = st.project
-    const graph: ComfyGraph = project.currentGraph
+    const graph: ComfyGraph | undefined = project.currentRun?.graph
+    if (graph == null) return <>no execution yet</>
     const nodes = graph.nodesArray
     return (
         <div className='col gap'>
@@ -26,7 +27,10 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
     const project = st.project
     const node = p.node
     const uid = node.uid
-    const curr: ComfyNode<any> = project.currentGraph.nodes.get(uid)!
+    const graph: ComfyGraph | undefined = project.currentRun?.graph
+    if (graph == null) return <>no execution yet</>
+
+    const curr: ComfyNode<any> = graph.nodes.get(uid)!
     const name = curr.$schema.name
     const schema: ComfyNodeSchema = curr.$schema
     const color = comfyColors[schema.category]
