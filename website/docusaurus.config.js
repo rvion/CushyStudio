@@ -6,8 +6,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'StableIDE',
+  tagline: '🎨 Generative Art Web-IDE and embeddable typescript SDK - based on ComfyUI',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -42,7 +42,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/rvion/StableIDE/tree/master/website',
         },
         blog: {
           showReadingTime: true,
@@ -127,7 +127,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} rvion (Rémi Vion)`,
       },
       prism: {
         theme: lightCodeTheme,
