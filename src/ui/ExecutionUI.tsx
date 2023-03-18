@@ -59,10 +59,9 @@ export const Execution_askStringUI = observer(function Execution_askUI_(p: { ste
     return (
         <Card>
             <CardHeader description={p.step.msg}></CardHeader>
-            <Label>{p.step.msg}</Label>
             <Input value={uiSt.value} onChange={(ev) => (uiSt.value = ev.target.value)} />
             <CardFooter>
-                <Button appearance='primary' icon={<I.CalendarMonthRegular />}>
+                <Button onClick={() => p.step.answer(uiSt.value)} appearance='primary' icon={<I.CalendarMonthRegular />}>
                     OK
                 </Button>
             </CardFooter>

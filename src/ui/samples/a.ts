@@ -1,10 +1,11 @@
 export const a__: string = `export {}
+
 const ckpt = C.CheckpointLoader({ config_name: 'v1-inference_clip_skip_2.yaml', ckpt_name: 'v1-5-pruned-emaonly.ckpt' })
 const latent_image = C.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
 
-const topic = await C.askString('what is your subject about? (e.g. "cat")') /* <- 🔥✨ */
+const topic = await C.askString('what is your subject about? (e.g. "cat")') /* <- 🔥1🔥 */
 
-const positive = C.CLIPTextEncode({ text: 'masterpiece cat', clip: ckpt })
+const positive = C.CLIPTextEncode({ text: 'masterpiece '+ topic /* <- 🔥2🔥 */, clip: ckpt })
 const negative = C.CLIPTextEncode({ text: 'bad hands', clip: ckpt })
 const sampler = C.KSampler({ seed: ${
     Math.round(Math.random() * 1000) /*8566257*/
@@ -16,6 +17,5 @@ let batchSize = 1
 do {
     latent_image.inputs.batch_size = batchSize++
     await C.get()
-} while ( await C.askBoolean('Continue?') /* <- 🔥✨ */ )
-
+} while ( await C.askBoolean('Continue?') /* <- 🔥3🔥 */ )
 `
