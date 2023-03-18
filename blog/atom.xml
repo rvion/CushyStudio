@@ -32,7 +32,7 @@
             <name>Rémi Vion</name>
             <uri>https://github.com/rvion</uri>
         </author>
-        <category label="docusaurus" term="docusaurus"/>
+        <category label="StableIDE" term="StableIDE"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[Long Blog Post]]></title>
@@ -46,7 +46,7 @@
             <uri>https://github.com/rvion</uri>
         </author>
         <category label="hello" term="hello"/>
-        <category label="docusaurus" term="docusaurus"/>
+        <category label="StableIDE" term="StableIDE"/>
     </entry>
     <entry>
         <title type="html"><![CDATA[First Blog Post]]></title>
@@ -60,6 +60,6 @@
             <uri>https://github.com/rvion</uri>
         </author>
         <category label="hola" term="hola"/>
-        <category label="docusaurus" term="docusaurus"/>
+        <category label="StableIDE" term="StableIDE"/>
     </entry>
 </feed>
