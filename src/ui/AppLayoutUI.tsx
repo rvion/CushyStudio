@@ -5,9 +5,8 @@ import { TutorialUI } from '../core/TutorialUI'
 import { ArtifactsUI } from './ArtifactsUI'
 import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
 import { IdeInfosUI } from './IdeInfosUI'
-import { ensureMonacoReady } from './Monaco'
 import { NodeListUI } from './NodeListUI'
-import { ProjectInfosUI } from './ProjectInfosUI'
+import { ToolbarUI } from './ToolbarUI'
 import { VisUI } from './VisUI'
 
 class IDELayout {
@@ -63,61 +62,11 @@ export const AppLayoutUI = observer(function AppLayoutUI_(p: {}) {
 const defaultLayout = (): LayoutData => ({
     floatbox: {
         mode: 'float',
-        children: [
-            // {
-            //     x: Math.random() * 1000,
-            //     y: Math.random() * 1000,
-            //     w: 200,
-            //     h: 200,
-            //     tabs: [
-            //         {
-            //             minWidth: 180,
-            //             minHeight: 200,
-            //             id: 'ide',
-            //             title: 'IDE',
-            //             content: <IdeInfosUI />,
-            //         },
-            //     ],
-            // },
-        ],
+        children: [],
     },
     dockbox: {
         mode: 'horizontal',
         children: [
-            // {
-            //     mode: 'vertical',
-            //     children: [
-            //         {
-            //             tabs: [
-            //                 {
-            //                     minWidth: 180,
-            //                     minHeight: 200,
-            //                     id: 'ide',
-            //                     title: 'IDE',
-            //                     content: <IdeInfosUI />,
-            //                 },
-            //             ],
-            //         },
-            //         // {
-            //         //     size: 9999,
-            //         //     tabs: [
-            //         //         {
-            //         //             minWidth: 280,
-            //         //             id: 'assets',
-            //         //             title: 'Assets',
-            //         //             content: (
-            //         //                 <>
-            //         //                     {/* <MainActionsUI />
-            //         //                     <VersionPickerUI />
-            //         //                     <NodeListUI /> */}
-            //         //                 </>
-            //         //             ),
-            //         //         },
-            //         //     ],
-            //         // },
-            //     ],
-            // },
-
             {
                 mode: 'vertical',
                 minWidth: 300,
@@ -133,33 +82,6 @@ const defaultLayout = (): LayoutData => ({
                             },
                         ],
                     },
-                    // {
-                    //     tabs: [
-                    //         {
-                    //             minHeight: 250,
-                    //             minWidth: 320,
-                    //             id: 'project-infos',
-                    //             title: 'Project Config',
-                    //             content: <ProjectInfosUI />,
-                    //         },
-                    //     ],
-                    // },
-                    // {
-                    //     size: 9999,
-                    //     tabs: [
-                    //         {
-                    //             minWidth: 320,
-                    //             id: 'nodes',
-                    //             title: 'Node List',
-                    //             content: (
-                    //                 <>
-                    //                     {/* <VersionPickerUI /> */}
-                    //                     <NodeListUI />
-                    //                 </>
-                    //             ),
-                    //         },
-                    //     ],
-                    // },
                 ],
             },
             {
@@ -170,8 +92,17 @@ const defaultLayout = (): LayoutData => ({
                         // mode: 'vertical',
                         size: 99999,
                         tabs: [
-                            { id: 'Editor1', title: 'Project Code', content: <ComfyCodeEditorUI /> },
-                            { id: 'Editor1', title: 'Project infos', content: <ComfyCodeEditorUI /> },
+                            {
+                                id: 'Editor1',
+                                title: 'Project Code',
+                                content: (
+                                    <>
+                                        <ToolbarUI />
+                                        <ComfyCodeEditorUI />
+                                    </>
+                                ),
+                            },
+                            // { id: 'Editor1', title: 'Project infos', content: <ComfyCodeEditorUI /> },
                             // { id: 'Editor2', title: 'dts', content: <ComfyCodeEditorUI path='schema.d.ts' /> },
                             // { id: 'Editor3', title: 'object_infos', content: <ComfyCodeEditorUI /> },
                         ],
