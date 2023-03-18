@@ -26,11 +26,12 @@ body {
 .wrap { flex-wrap: wrap; }
 .items-center { align-items: center; }
 .items-baseline { align-items: baseline; }
-.content-center {justify-content: center;}
+.content-center {justify-content: center; }
 .self-stretch { align-self: stretch; }
-.px {padding-left: .6rem; padding-right: .6rem;}
-.py {padding-top: .6rem; padding-bottom: .6rem;}
-.darker {filter: brightness(.9);}
+.px { padding-left: .6rem; padding-right: .6rem; }
+.py { padding-top: .6rem; padding-bottom: .6rem; }
+.darker { filter: brightness(.9); }
+.pointer { cursor: pointer; }
 
 /* CORE ---------------------------------------- */
 button:hover { filter: brightness(1.2); }

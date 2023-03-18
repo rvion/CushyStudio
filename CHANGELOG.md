@@ -1,5 +1,6 @@
 2023-03-18
 
+-   🆕 NEW UI: makes nodes foldable in execution dashboards
 -   🆕 NEW UI: add warning toast on empty prompt
 -   🆕 NEW UI: word wrap button in toolbar
 -   🆕 NEW core: new `ScriptExecution` context

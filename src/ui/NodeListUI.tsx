@@ -5,6 +5,8 @@ import { ComfyNode } from '../core/ComfyNode'
 import { ComfyNodeSchema } from '../core/ComfySchema'
 import { NodeRefUI } from './NodeRefUI'
 import { useSt } from './stContext'
+import * as I from '@fluentui/react-icons'
+import { useState } from 'react'
 
 export const NodeListUI = observer(function NodeListUI_(p: {}) {
     const st = useSt()
@@ -34,24 +36,33 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
     const name = curr.$schema.name
     const schema: ComfyNodeSchema = curr.$schema
     const color = comfyColors[schema.category]
+    const [folded, setFolded] = useState(false)
     return (
         <div key={uid} className='node'>
-            <div className='row gap darker' style={{ backgroundColor: color, padding: '0.5rem' }}>
+            <div
+                onClick={() => setFolded(!folded)}
+                className='row gap darker pointer'
+                style={{ backgroundColor: color, padding: '0.2rem' }}
+            >
                 <NodeRefUI nodeUID={uid} />
                 <div>{name}</div>
+                <div className='grow'></div>
+                {folded ? <I.ChevronDown24Filled /> : <I.ChevronRight24Filled />}
             </div>
-            <div>
-                {schema.inputs.map((input) => {
-                    let val = node.json.inputs[input.name]
-                    if (Array.isArray(val)) val = <NodeRefUI nodeUID={val[0]} />
-                    return (
-                        <div key={input.name} className='prop row'>
-                            <div className='propName'>{input.name}</div>
-                            <div className='propValue'>{val}</div>
-                        </div>
-                    )
-                })}
-            </div>
+            {folded && (
+                <div>
+                    {schema.inputs.map((input) => {
+                        let val = node.json.inputs[input.name]
+                        if (Array.isArray(val)) val = <NodeRefUI nodeUID={val[0]} />
+                        return (
+                            <div key={input.name} className='prop row'>
+                                <div className='propName'>{input.name}</div>
+                                <div className='propValue'>{val}</div>
+                            </div>
+                        )
+                    })}
+                </div>
+            )}
             <div className='row wrap'>
                 {curr.artifactsForStep(project.focus).map((url) => (
                     <div key={url}>
