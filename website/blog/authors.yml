@@ -3,14 +3,8 @@ rvion:
     title: Creator of StableIDE
     url: https://github.com/rvion
     image_url: https://github.com/rvion.png
-# yangshun:
-#     name: Yangshun Tay
-#     title: Front End Engineer @ Facebook
-#     url: https://github.com/yangshun
-#     image_url: https://github.com/yangshun.png
-
-# slorber:
-#     name: Sébastien Lorber
-#     title: Docusaurus maintainer
-#     url: https://sebastienlorber.com
-#     image_url: https://github.com/slorber.png
+# username:
+#     name: user name
+#     title: title
+#     url: https://github.com/username
+#     image_url: https://github.com/username.png
