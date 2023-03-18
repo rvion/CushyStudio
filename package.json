@@ -1,6 +1,11 @@
 {
     "name": "intuition",
     "private": true,
+    "author": {
+        "name": "rvion",
+        "url": "https://github.com/rvion/StableIDE",
+        "email": "vion.remi@gmail.com"
+    },
     "license": "unlicensed",
     "version": "0.2.0",
     "type": "module",
