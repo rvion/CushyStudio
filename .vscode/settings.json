@@ -32,5 +32,6 @@
         // so vscode remains fast
         "**/ComfyUI": true,
         "**/venv": true
-    }
+    },
+    "pasteImage.path": "docs/images"
 }
