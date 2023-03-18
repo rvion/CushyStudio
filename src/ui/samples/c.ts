@@ -91,20 +91,6 @@ declare module "core/ComfyUtils" {
     export type Maybe<T> = T | null | undefined;
     export const deepCopyNaive: <T>(x: T) => T;
 }
-declare module "ui/samples/a" {
-    export const a__: string;
-}
-declare module "core/ComfyPrompt" {
-    export type ComfyPromptJSON = {
-        [key: string]: ComfyNodeJSON;
-    };
-    export type ComfyNodeJSON = {
-        inputs: {
-            [key: string]: any;
-        };
-        class_type: string;
-    };
-}
 declare module "core/CodeBuffer" {
     /** this class is used to buffer text and then write it to a file */
     export class CodeBuffer {
@@ -127,6 +113,23 @@ declare module "core/CodeBuffer" {
     export const repeatStr: (x: number, str: string) => string;
     export const renderBar: (text: string, prefix?: string) => string;
 }
+declare module "core/ComfyPrompt" {
+    export type ComfyPromptJSON = {
+        [key: string]: ComfyNodeJSON;
+    };
+    export type ComfyNodeJSON = {
+        inputs: {
+            [key: string]: any;
+        };
+        class_type: string;
+    };
+}
+declare module "core/ComfyPrimitives" {
+    export const ComfyPrimitiveMapping: {
+        [key: string]: string;
+    };
+    export const ComfyPrimitives: string[];
+}
 declare module "core/ComfySchema" {
     import { ComfySchemaJSON } from "core/ComfySchemaJSON";
     export type EnumHash = string;
@@ -135,10 +138,12 @@ declare module "core/ComfySchema" {
         name: string;
         type: string;
         opts?: any;
+        isPrimitive: boolean;
     };
     export type NodeOutputExt = {
         type: string;
         name: string;
+        isPrimitive: boolean;
     };
     export class ComfySchema {
         spec: ComfySchemaJSON;
@@ -181,88 +186,140 @@ declare module "core/ComfyImporter" {
     }
 }
 declare module "core/ComfyProject" {
-    import type { Maybe } from "core/ComfyUtils";
     import type { RunMode } from "core/ComfyGraph";
-    import { ComfyGraph } from "core/ComfyGraph";
     import { ComfyClient } from "core/ComfyClient";
     import { ComfyPromptJSON } from "core/ComfyPrompt";
+    import { ScriptExecution } from "core/ScriptExecution";
     export class ComfyProject {
         client: ComfyClient;
+        static __demoProjectIx: number;
         /** unique project id */
         id: string;
         /** project name */
         name: string;
         /** current  */
         focus: number;
+        /** list of all project runs */
+        runs: ScriptExecution[];
+        /** last project run */
+        currentRun: ScriptExecution | null;
+        private constructor();
+        /** convenient getter to retrive current client shcema */
+        get schema(): import("core/ComfySchema").ComfySchema;
         code: string;
-        MAIN: ComfyGraph;
+        udpateCode: (code: string) => Promise<void>;
         static INIT: (client: ComfyClient) => ComfyProject;
         static FROM_JSON: (client: ComfyClient, json: ComfyPromptJSON) => ComfyProject;
-        private constructor();
         /** converts a ComfyPromptJSON into it's canonical normal-form script */
         static LoadFromComfyPromptJSON: (json: ComfyPromptJSON) => never;
-        graphs: ComfyGraph[];
-        get currentGraph(): ComfyGraph;
-        get currentOutputs(): import("core/ComfyAPI").WsMsgExecuted[];
-        get schema(): import("core/ComfySchema").ComfySchema;
         /** * project running is not the same as graph running; TODO: explain */
         isRunning: boolean;
-        error: Maybe<string>;
         run: (mode?: RunMode) => Promise<boolean>;
-        udpateCode: (code: string) => Promise<void>;
     }
 }
-declare module "ui/TypescriptOptions" {
-    
-    export type TypescriptOptions = any
-    export type ITextModel = any
-    export type IStandaloneCodeEditor = any
-    export type Monaco = any;
-}
-declare module "ui/samples/c" {
-    export const c__: string;
-}
-declare module "core/ComfyScriptEditor" {
-    
-    import { ComfyClient } from "core/ComfyClient";
-    export class ComfyScriptEditor {
-        client: ComfyClient;
-        constructor(client: ComfyClient);
-        editorRef: {
-            current: any
-        };
-        monacoRef: {
-            current: any
-        };
-        setupMonaco(monaco: any): void;
-        private sdk_path;
-        private lib_path;
-        private CODE_path;
-        updateSDKDTS: () => void;
-        updateLibDTS: () => void;
-        updateCODE: (code: string) => void;
-        updateFile: (path: string, content: string) => void;
-        openLib: () => void;
-        openSDK: () => void;
-        openCODE: () => void;
-        openPathInEditor: (path: string) => void;
-        hasLib: () => boolean | null;
-        hasSDK: () => boolean | null;
-        hasCODE: () => boolean | null;
-        hasModel: (path: string) => boolean | null;
+declare module "core/ScriptStep_Iface" {
+    /** every ExecutionStep class must implements this interface  */
+    export interface ScriptStep_Iface {
+        /** name of the step */
+        name: string;
+        /** promise to await if you need to wait until the step is finished */
+        finished: Promise<this>;
     }
 }
-declare module "core/getPngMetadata" {
-    /** code copy-pasted from ComfyUI repo */
-    import type { ComfyClient } from "core/ComfyClient";
-    export type TextChunks = {
-        [key: string]: string;
-    };
-    export function getPngMetadata(client: ComfyClient, file: File): Promise<TextChunks>;
+declare module "core/ScriptStep_prompt" {
+    import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from "core/ComfyAPI";
+    import type { ScriptExecution } from "core/ScriptExecution";
+    import { ScriptStep_Iface } from "core/ScriptStep_Iface";
+    import type { ComfyPromptJSON } from "core/ComfyPrompt";
+    import type { ComfyNode } from "core/ComfyNode";
+    export class ScriptStep_prompt implements ScriptStep_Iface {
+        execution: ScriptExecution;
+        prompt: ComfyPromptJSON;
+        name: string;
+        constructor(execution: ScriptExecution, prompt: ComfyPromptJSON);
+        _resolve: ((value: this) => void) | null;
+        _rejects: ((reason: any) => void) | null;
+        finished: Promise<this>;
+        /** pointer to the currently executing node */
+        currentExecutingNode: ComfyNode<any> | null;
+        /** update the progress value of the currently focused onde */
+        onProgress: (msg: WsMsgProgress) => void;
+        notifyEmptyPrompt: () => import("react-toastify").Id;
+        /** update pointer to the currently executing node */
+        onExecuting: (msg: WsMsgExecuting) => void;
+        /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
+        outputs: WsMsgExecuted[];
+        /** udpate execution list */
+        onExecuted: (msg: WsMsgExecuted) => void;
+        /** finish this step */
+        private _finish;
+    }
+}
+declare module "core/ScriptStep_Init" {
+    import { ScriptStep_Iface } from "core/ScriptStep_Iface";
+    export class ScriptStep_Init implements ScriptStep_Iface {
+        name: string;
+        finished: Promise<Awaited<this>>;
+    }
+}
+declare module "core/ScriptStep_ask" {
+    import { ScriptStep_Iface } from "core/ScriptStep_Iface";
+    export class ScriptStep_ask implements ScriptStep_Iface {
+        msg: string;
+        name: string;
+        constructor(msg: string);
+        finished: Promise<Awaited<this>>;
+    }
+}
+declare module "core/ScriptStep_Output" {
+    import { ScriptStep_Iface } from "core/ScriptStep_Iface";
+    export class ScriptStep_Output implements ScriptStep_Iface {
+        images: string[];
+        name: string;
+        constructor(images: string[]);
+        finished: Promise<Awaited<this>>;
+    }
+}
+declare module "core/ScriptStep" {
+    import type { ScriptStep_Output } from "core/ScriptStep_Output";
+    import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
+    import type { ScriptStep_Init } from "core/ScriptStep_Init";
+    import type { ScriptStep_ask } from "core/ScriptStep_ask";
+    export type ScriptStep = ScriptStep_Init | ScriptStep_prompt | ScriptStep_Output | ScriptStep_ask;
+}
+declare module "core/ScriptExecution" {
+    import type { ComfyProject } from "core/ComfyProject";
+    import { ScriptStep_prompt } from "core/ScriptStep_prompt";
+    import { ComfyGraph } from "core/ComfyGraph";
+    import { WsMsgExecuted } from "core/ComfyAPI";
+    import { ScriptStep } from "core/ScriptStep";
+    /** script runtime context */
+    export class ScriptExecution {
+        project: ComfyProject;
+        opts?: {
+            mock?: boolean | undefined;
+        } | undefined;
+        /** the main graph that will be updated along the script execution */
+        graph: ComfyGraph;
+        constructor(project: ComfyProject, opts?: {
+            mock?: boolean | undefined;
+        } | undefined);
+        steps: ScriptStep[];
+        /** current step */
+        get step(): ScriptStep;
+        askBoolean: (msg: string) => void;
+        /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
+        outputs: WsMsgExecuted[];
+        sendPromp: () => ScriptStep_prompt;
+        ctx: {};
+    }
+}
+declare module "ui/samples/a" {
+    export const a__: string;
 }
 declare module "core/AutoSaver" {
-    import { Tagged } from "core/ComfyUtils";
-    type LocalStorageKey = Tagged<string, 'localstorage'>;
+    import type { Tagged } from "core/ComfyUtils";
+    export type LocalStorageKey = Tagged<string, 'localstorage'>;
     export class AutoSaver<Data = any> {
         /** localstorage key */
         key: LocalStorageKey;
@@ -282,14 +339,65 @@ declare module "core/AutoSaver" {
     }
     export const load: (key: LocalStorageKey) => any;
 }
+declare module "ui/TypescriptOptions" {
+    
+    export type TypescriptOptions = any
+    export type ITextModel = any
+    export type IStandaloneCodeEditor = any
+    export type Monaco = any;
+}
+declare module "ui/Monaco" {
+    import * as monaco from 'monaco-editor';
+    export let globalMonaco: typeof monaco | null;
+    export const ensureMonacoReady: () => typeof monaco | null;
+}
+declare module "ui/samples/c" {
+    export const c__: string;
+}
+declare module "core/ComfyScriptEditor" {
+    import type { ITextModel } from "ui/TypescriptOptions";
+    import { ComfyClient } from "core/ComfyClient";
+    export class ComfyScriptEditor {
+        client: ComfyClient;
+        constructor(client: ComfyClient);
+        editorRef: {
+            current: any
+        };
+        private sdk_path;
+        private lib_path;
+        private CODE_path;
+        updateSDKDTS: () => void;
+        updateLibDTS: () => void;
+        updateCODE: (code: string) => void;
+        updateFile: (path: string, content: string) => void;
+        openLib: () => void;
+        openSDK: () => void;
+        openCODE: () => void;
+        curr: ITextModel | null;
+        openPathInEditor: (path: string) => void;
+        hasLib: () => boolean | null;
+        hasSDK: () => boolean | null;
+        hasCODE: () => boolean | null;
+        hasModel: (path: string) => boolean | null;
+    }
+}
+declare module "core/getPngMetadata" {
+    /** code copy-pasted from ComfyUI repo */
+    import type { ComfyClient } from "core/ComfyClient";
+    export type TextChunks = {
+        [key: string]: string;
+    };
+    export function getPngMetadata(client: ComfyClient, file: File): Promise<TextChunks>;
+}
 declare module "core/ComfyClient" {
     import type { ComfySchemaJSON } from "core/ComfySchemaJSON";
     import type { Maybe } from "core/ComfyUtils";
     
+    import { AutoSaver } from "core/AutoSaver";
+    import { ComfyStatus } from "core/ComfyAPI";
     import { ComfyProject } from "core/ComfyProject";
     import { ComfySchema } from "core/ComfySchema";
     import { ComfyScriptEditor } from "core/ComfyScriptEditor";
-    import { AutoSaver } from "core/AutoSaver";
     export type ComfyClientOptions = {
         serverIP: string;
         serverPort: number;
@@ -309,6 +417,7 @@ declare module "core/ComfyClient" {
         project: ComfyProject;
         projects: ComfyProject[];
         editor: ComfyScriptEditor;
+        assets: Map<string, boolean>;
         storageServerKey: string;
         getStoredServerKey: () => void;
         getConfig: () => {
@@ -335,6 +444,7 @@ declare module "core/ComfyClient" {
         get schemaStatusEmoji(): "🟢" | "🔴";
         get dtsStatusEmoji(): "🟢" | "🔴";
         sid: string;
+        status: ComfyStatus | null;
         ws: Maybe<WebSocket>;
         startWSClient: () => void;
         notify: (msg: string) => import("react-toastify").Id;
@@ -350,10 +460,10 @@ declare module "ui/stContext" {
 }
 declare module "ui/VisUI" {
     
-    export const VisUI:any
     export type VisNodes = any;
     export type VisEdges = any;
     export type VisOptions = any;
+    export const VisUI:any
 }
 declare module "core/ComfyColors" {
     export const comfyColors: {
@@ -362,39 +472,38 @@ declare module "core/ComfyColors" {
 }
 declare module "core/ComfyGraph" {
     import type { VisEdges, VisNodes } from "ui/VisUI";
-    import { ComfyStatus, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from "core/ComfyAPI";
+    import type { ComfyNodeUID } from "core/ComfyNodeUID";
+    import type { ComfyProject } from "core/ComfyProject";
+    import type { ComfyPromptJSON } from "core/ComfyPrompt";
+    import type { ScriptExecution } from "core/ScriptExecution";
+    import { GitgraphUserApi } from '@gitgraph/core';
+    import { WsMsgExecuted } from "core/ComfyAPI";
     import { ComfyClient } from "core/ComfyClient";
     import { ComfyNode } from "core/ComfyNode";
-    import { ComfyNodeUID } from "core/ComfyNodeUID";
-    import { ComfyProject } from "core/ComfyProject";
-    import { ComfyPromptJSON } from "core/ComfyPrompt";
     import { ComfySchema } from "core/ComfySchema";
     export type RunMode = 'fake' | 'real';
     export class ComfyGraph {
         project: ComfyProject;
+        executionContext: ScriptExecution;
         get client(): ComfyClient;
         get schema(): ComfySchema;
         get nodesArray(): ComfyNode<any>[];
         nodes: Map<string, ComfyNode<any>>;
         isRunning: boolean;
+        /** return the coresponding comfy prompt  */
         get json(): ComfyPromptJSON;
-        constructor(project: ComfyProject, json?: ComfyPromptJSON);
+        askBoolean: (msg: string) => void;
+        constructor(project: ComfyProject, executionContext: ScriptExecution, json?: ComfyPromptJSON);
         private _nextUID;
         getUID: () => string;
         getNodeOrCrash: (nodeID: ComfyNodeUID) => ComfyNode<any>;
-        currentExecutingNode: ComfyNode<any> | null;
-        clientID: string | null;
-        status: ComfyStatus | null;
-        onStatus: (msg: WsMsgStatus) => void;
-        onProgress: (msg: WsMsgProgress) => void;
-        onExecuting: (msg: WsMsgExecuting) => void;
-        currentStep: number;
         outputs: WsMsgExecuted[];
-        onExecuted: (msg: WsMsgExecuted) => void;
-        runningMode: RunMode;
-        get(): Promise<Response | null>;
+        /** wether it should really send the prompt to the backend */
+        get runningMode(): RunMode;
+        get(): Promise<void>;
+        JSON_forGitGraphVisualisation: (gitgraph: GitgraphUserApi<any>) => void;
         /** visjs JSON format (network visualisation) */
-        get visData(): {
+        get JSON_forVisDataVisualisation(): {
             nodes: VisNodes[];
             edges: VisEdges[];
         };
@@ -404,6 +513,7 @@ declare module "core/ComfyNode" {
     import type { NodeProgress } from "core/ComfyAPI";
     import type { ComfyGraph } from "core/ComfyGraph";
     import type { ComfyNodeJSON } from "core/ComfyPrompt";
+    import { ComfyNodeOutput } from "core/ComfyNodeOutput";
     import { ComfyNodeSchema } from "core/ComfySchema";
     /** ComfyNode
      * - correspond to a signal in the graph
@@ -421,6 +531,7 @@ declare module "core/ComfyNode" {
         json: ComfyNodeJSON;
         /** update a node */
         set(p: Partial<ComfyNode_input>): void;
+        $outputs: ComfyNodeOutput<any>[];
         constructor(graph: ComfyGraph, uid: string, xxx: ComfyNodeJSON);
         _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): {
             class_type: string;
@@ -428,6 +539,8 @@ declare module "core/ComfyNode" {
                 [inputName: string]: any;
             };
         };
+        /** return the list of nodes piped into this node */
+        _incomingNodes(): string[];
         get manager(): import("core/ComfyClient").ComfyClient;
         artifactsForStep(step: number): string[];
         get allArtifactsImgs(): string[];
