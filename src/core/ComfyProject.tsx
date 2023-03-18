@@ -3,7 +3,6 @@ import type { RunMode } from './ComfyGraph'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { ComfyClient } from './ComfyClient'
-import { ComfyGraph } from './ComfyGraph'
 import { ComfyImporter } from './ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ScriptExecution } from './ScriptExecution'
@@ -76,6 +75,7 @@ export class ComfyProject {
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
         const execution = new ScriptExecution(this, opts)
+        this.currentRun = execution
 
         // try {
         const finalCode = this.code.replace(`export {}`, '')
