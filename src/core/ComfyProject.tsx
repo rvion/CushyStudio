@@ -25,6 +25,10 @@ export class ComfyProject {
     /** last project run */
     currentRun: ScriptExecution | null = null
 
+    private constructor(public client: ComfyClient) {
+        makeAutoObservable(this)
+    }
+
     /** convenient getter to retrive current client shcema */
     get schema() { return this.client.schema } // prettier-ignore
 
@@ -45,10 +49,6 @@ export class ComfyProject {
         const code = new ComfyImporter(client).convertFlowToCode(json)
         project.code = code
         return project
-    }
-
-    private constructor(public client: ComfyClient) {
-        makeAutoObservable(this)
     }
 
     /** converts a ComfyPromptJSON into it's canonical normal-form script */
@@ -76,6 +76,7 @@ export class ComfyProject {
         const opts = mode === 'fake' ? { mock: true } : undefined
         const execution = new ScriptExecution(this, opts)
         this.currentRun = execution
+        this.runs.push(execution)
 
         // try {
         const finalCode = this.code.replace(`export {}`, '')

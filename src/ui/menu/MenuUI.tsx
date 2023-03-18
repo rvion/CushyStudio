@@ -18,6 +18,7 @@ import { observer } from 'mobx-react-lite'
 import { AssetTreeUI } from './AssetTreeUI'
 
 import { useSt } from '../stContext'
+import { ScriptStep_prompt } from '../../core/ScriptStep_prompt'
 
 const iconStyleProps: I.FluentIconsProps = {
     primaryFill: 'red',
@@ -116,37 +117,26 @@ export const MenuUI = observer(function MenuUI_() {
                                                     >
                                                         {step.name}
                                                     </TreeItemLayout>
+                                                    {step instanceof ScriptStep_prompt ? (
+                                                        <Tree>
+                                                            {run.graph.nodesArray.map((node, ix) => (
+                                                                <TreeItem key={ix} actions={<Actions />}>
+                                                                    <TreeItemLayout
+                                                                        //
+                                                                        iconBefore={<I.Cube16Regular />}
+                                                                        aside={<RenderAside />}
+                                                                    >
+                                                                        {ix + 1}. {node.$schema.name}
+                                                                    </TreeItemLayout>
+                                                                </TreeItem>
+                                                            ))}
+                                                        </Tree>
+                                                    ) : null}
                                                 </TreeItem>
                                             ))}
                                         </Tree>
                                     </TreeItem>
                                 ))}
-                                {/*
-                                // {project.graphs.map((graph, ix) => (
-                                //     <TreeItem key={ix} actions={<Actions />}>
-                                //         <TreeItemLayout
-                                //             //
-                                //             iconBefore={<I.CubeTree24Filled />}
-                                //             // aside={<RenderAside />}
-                                //         >
-                                //             Graph {ix + 1}
-                                //         </TreeItemLayout>
-                                //         <Tree>
-                                //             {graph.nodesArray.map((node, ix) => (
-                                //                 <TreeItem key={ix} actions={<Actions />}>
-                                //                     <TreeItemLayout
-                                //                         //
-                                //                         iconBefore={<I.Cube16Regular />}
-                                //                         aside={<RenderAside />}
-                                //                     >
-                                //                         Node {ix + 1}
-                                //                     </TreeItemLayout>
-                                //                 </TreeItem>
-                                //             ))}
-                                //         </Tree>
-                                //     </TreeItem>
-                                // ))}
-                                */}
                             </Tree>
                         </TreeItem>
                     ))}

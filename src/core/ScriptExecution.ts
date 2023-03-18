@@ -7,6 +7,7 @@ import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
 import { ScriptStep_Init } from './ScriptStep_Init'
 import { ScriptStep_ask } from './ScriptStep_ask'
 import { ScriptStep } from './ScriptStep'
+import { makeAutoObservable } from 'mobx'
 
 /** script runtime context */
 export class ScriptExecution {
@@ -19,6 +20,7 @@ export class ScriptExecution {
         public opts?: { mock?: boolean },
     ) {
         this.graph = new ComfyGraph(this.project, this)
+        makeAutoObservable(this)
     }
 
     steps: ScriptStep[] = [new ScriptStep_Init()]
