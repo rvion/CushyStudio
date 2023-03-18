@@ -5,7 +5,7 @@ import { TutorialUI } from '../core/TutorialUI'
 import { ArtifactsUI } from './ArtifactsUI'
 import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
 import { IdeInfosUI } from './IdeInfosUI'
-import { ExecutionUI } from './NodeListUI'
+import { ExecutionUI } from './ExecutionUI'
 import { ToolbarUI } from './ToolbarUI'
 import { VisUI } from './VisUI'
 

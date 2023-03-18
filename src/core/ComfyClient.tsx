@@ -67,7 +67,7 @@ export class ComfyClient {
         setTimeout(async () => {
             await this.fetchObjectsSchema()
             this.editor.openCODE()
-            this.project.run()
+            // this.project.run()
         }, 500)
     }
 

@@ -5,7 +5,7 @@ import { deepCopyNaive } from './ComfyUtils'
 import { ComfyGraph } from './ComfyGraph'
 import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
 import { ScriptStep_Init } from './ScriptStep_Init'
-import { ScriptStep_askBoolean } from './ScriptStep_ask'
+import { ScriptStep_askBoolean, ScriptStep_askString } from './ScriptStep_ask'
 import { ScriptStep } from './ScriptStep'
 import { makeAutoObservable } from 'mobx'
 
@@ -32,6 +32,12 @@ export class ScriptExecution {
 
     askBoolean = (msg: string): Promise<boolean> => {
         const ask = new ScriptStep_askBoolean(msg)
+        this.steps.push(ask)
+        return ask.finished
+    }
+
+    askString = (msg: string): Promise<string> => {
+        const ask = new ScriptStep_askString(msg)
         this.steps.push(ask)
         return ask.finished
     }

@@ -324,6 +324,7 @@ declare module "core/ScriptExecution" {
         /** current step */
         get step(): ScriptStep;
         askBoolean: (msg: string) => Promise<boolean>;
+        askString: (msg: string) => Promise<string>;
         /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
         outputs: WsMsgExecuted[];
         sendPromp: () => ScriptStep_prompt;
@@ -509,6 +510,7 @@ declare module "core/ComfyGraph" {
         get json(): ComfyPromptJSON;
         /** temporary proxy */
         askBoolean: (msg: string) => Promise<boolean>;
+        askString: (msg: string) => Promise<string>;
         constructor(project: ComfyProject, executionContext: ScriptExecution, json?: ComfyPromptJSON);
         private _nextUID;
         getUID: () => string;
