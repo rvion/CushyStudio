@@ -7,7 +7,7 @@ import { useSt } from './stContext'
 
 export const VisUI = observer(function VisUI_(p: {}) {
     const st = useSt()
-    const foo = st.project.currentGraph.visData
+    const foo = st.project.currentGraph.JSON_forVisDataVisualisation
     const x = useLayoutEffect(() => {
         var nodes = new visData.DataSet(foo.nodes)
         var edges = new visData.DataSet(foo.edges)

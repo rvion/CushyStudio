@@ -10,10 +10,6 @@ export const NodeListUI = observer(function NodeListUI_(p: {}) {
     const st = useSt()
     const project = st.project
     const graph: ComfyGraph = project.currentGraph
-    // const NODES: [uid: ComfyNodeUID, json: ComfyNodeJSON][] =
-    //     project.focus in graphs //
-    //         ? Object.entries(graphs[st.focus])
-    //         : []
     const nodes = graph.nodesArray
     return (
         <div className='col gap'>
@@ -34,7 +30,6 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
     const name = curr.$schema.name
     const schema: ComfyNodeSchema = curr.$schema
     const color = comfyColors[schema.category]
-    // const curr = project?.nodes.get(uid)
     return (
         <div key={uid} className='node'>
             <div className='row gap darker' style={{ backgroundColor: color, padding: '0.5rem' }}>

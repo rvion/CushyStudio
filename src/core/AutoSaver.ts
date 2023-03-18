@@ -1,7 +1,9 @@
-import { IReactionDisposer, reaction, toJS } from 'mobx'
-import { Tagged } from './ComfyUtils'
+import type { IReactionDisposer } from 'mobx'
+import type { Tagged } from './ComfyUtils'
 
-type LocalStorageKey = Tagged<string, 'localstorage'>
+import { reaction } from 'mobx'
+
+export type LocalStorageKey = Tagged<string, 'localstorage'>
 
 export class AutoSaver<Data = any> {
     constructor(

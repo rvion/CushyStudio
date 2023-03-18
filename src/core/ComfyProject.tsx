@@ -1,5 +1,4 @@
 import type { RunMode } from './ComfyGraph'
-import type { Maybe } from './ComfyUtils'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -7,74 +6,43 @@ import { ComfyClient } from './ComfyClient'
 import { ComfyGraph } from './ComfyGraph'
 import { ComfyImporter } from './ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
-// import { ITreeNode } from './tree'
+import { ScriptExecution } from './ScriptExecution'
 
 export class ComfyProject {
-    static demoProjectIx = 1
+    static __demoProjectIx = 1
+
     /** unique project id */
     id: string = nanoid()
 
     /** project name */
-    name: string = 'Demo Project ' + ComfyProject.demoProjectIx++
+    name: string = 'Demo Project ' + ComfyProject.__demoProjectIx++
 
     /** current  */
     focus: number = 0
 
+    /** list of all project runs */
+    runs: ScriptExecution[] = []
+
+    /** last project run */
+    currentRun: ScriptExecution | null = null
+
+    /** convenient getter to retrive current client shcema */
+    get schema() { return this.client.schema } // prettier-ignore
+
     code: string = ''
     // script: ComfyScript = new ComfyScript(this)
 
-    MAIN!: ComfyGraph
+    udpateCode = async (code: string) => {
+        this.code = code
+    }
 
     static INIT = (client: ComfyClient) => {
         const project = new ComfyProject(client)
-        project.MAIN = new ComfyGraph(project)
-        // const graph = new ComfyGraph(project)
-        // project.graphs.push(graph)
         return project
     }
 
-    // get treeData(): ITreeNode {
-    //     return {
-    //         name: this.name,
-    //         key: this.id,
-    //         type: 'project',
-    //         action: (
-    //             <div style={{ marginLeft: 'auto' }}>
-    //                 <button className='success' onClick={() => this.run()}>
-    //                     Eval
-    //                 </button>
-    //                 <button className='success' onClick={() => this.run('real')}>
-    //                     RUN
-    //                 </button>
-    //             </div>
-    //         ),
-    //         children: [
-    //             //
-    //             {
-    //                 ...this.MAIN.treeData,
-    //                 name: 'Name',
-    //                 type: 'script',
-    //                 action: (
-    //                     <input
-    //                         style={{ marginLeft: 'auto' }}
-    //                         onClick={(ev) => ev.stopPropagation()}
-    //                         onKeyUp={(ev) => ev.stopPropagation()}
-    //                         onKeyDown={(ev) => ev.stopPropagation()}
-    //                         type='text'
-    //                         value={this.name}
-    //                         onChange={(ev) => (this.name = ev.target.value)}
-    //                     />
-    //                 ),
-    //             },
-    //             { ...this.MAIN.treeData, name: 'Script', type: 'script', onClick: () => this.client.editor.openCODE() },
-    //             ...this.graphs.map((x, i) => x.treeData(i)),
-    //         ],
-    //     }
-    // }
-
     static FROM_JSON = (client: ComfyClient, json: ComfyPromptJSON) => {
         const project = new ComfyProject(client)
-        project.MAIN = new ComfyGraph(project, json)
         const code = new ComfyImporter(client).convertFlowToCode(json)
         project.code = code
         return project
@@ -89,36 +57,35 @@ export class ComfyProject {
         throw new Error('🔴 not implemented yet')
     }
 
-    graphs: ComfyGraph[] = []
+    // graphs: ComfyGraph[] = []
 
     // 🔴 not the right abstraction anymore
-    get currentGraph() { return this.graphs[this.focus] ?? this.MAIN } // prettier-ignore
-    get currentOutputs() { return this.currentGraph.outputs } // prettier-ignore
-    get schema() { return this.client.schema } // prettier-ignore
+    // get currentGraph() { return this.graphs[this.focus] ?? this.MAIN } // prettier-ignore
+    // get currentOutputs() { return this.currentGraph.outputs } // prettier-ignore
 
     /** * project running is not the same as graph running; TODO: explain */
     isRunning = false
 
-    error: Maybe<string> = null
     // runningMode: RunMode = 'fake'
     run = async (mode: RunMode = 'fake'): Promise<boolean> => {
-        this.graphs = []
-        // if (this.isRunning) return false
-        // this.runningMode = mode
-        // if (mode === 'real') this.isRunning = true
+        // ensure we have some code to run
         if (this.code == null) {
             console.log('❌', 'no code to run')
-            // this.isRunning = false
             return false
         }
+        // check if we're in "MOCK" mode
+        const opts = mode === 'fake' ? { mock: true } : undefined
+        const execution = new ScriptExecution(this, opts)
+
         // try {
         const finalCode = this.code.replace(`export {}`, '')
-        const BUILD = new Function('C', `return (async() => { ${finalCode} })()`)
-        const emptyGraph = new ComfyGraph(this)
-        emptyGraph.runningMode = mode
+        const ProjectScriptFn = new Function('C', `return (async() => { ${finalCode} })()`)
+        const graph = execution.graph
 
-        this.MAIN = emptyGraph
-        await BUILD(emptyGraph)
+        // graph.runningMode = mode
+        // this.MAIN = graph
+
+        await ProjectScriptFn(graph)
         console.log('[✅] RUN SUCCESS')
         // this.isRunning = false
         return true
@@ -127,12 +94,5 @@ export class ComfyProject {
         //     // this.isRunning = false
         //     return false
         // }
-    }
-
-    udpateCode = async (code: string) => {
-        this.code = code
-        // const script = new ComfyGraph(this)
-        // const result = await script.EVAL(code, mode)
-        // if (result) this.script = script
     }
 }

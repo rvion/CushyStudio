@@ -1,5 +1,7 @@
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
+import type { ScriptExecution } from './ScriptExecution'
+import { ScriptStep } from './ScriptStep'
 
 import * as WS from 'ws'
 
@@ -7,11 +9,12 @@ import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
 import { a__ } from '../ui/samples/a'
 import { AutoSaver } from './AutoSaver'
-import { WsMsg } from './ComfyAPI'
+import { ComfyStatus, WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { getPngMetadata } from './getPngMetadata'
+import { ScriptStep_prompt } from './ScriptStep_prompt'
 
 export type ComfyClientOptions = {
     serverIP: string
@@ -44,108 +47,8 @@ export class ComfyClient {
         serverPort: this.serverPort,
         spec: this.schema.spec,
     })
+
     autosaver = new AutoSaver('client', this.getConfig)
-
-    // get treeData(): INodeExt[] {
-    //     // const data = [
-    //     //     { type: 'script', name: '', children: [1, 4, 9, 10, 11], id: 0, parent: null },
-    //     //     { type: 'script', name: 'src', children: [2, 3], id: 1, parent: 0 },
-    //     //     { type: 'script', name: 'index.js', id: 2, parent: 1 },
-    //     //     { type: 'script', name: 'styles.css', id: 3, parent: 1 },
-    //     //     { type: 'script', name: 'node_modules', children: [5, 7], id: 4, parent: 0 },
-    //     //     { type: 'script', name: 'react-accessible-treeview', children: [6], id: 5, parent: 4 },
-    //     //     { type: 'script', name: 'bundle.js', id: 6, parent: 5 },
-    //     //     { type: 'script', name: 'react', children: [888], id: 7, parent: 4 },
-    //     //     { type: 'script', name: 'bundle.js', id: 888, parent: 7 },
-    //     //     { type: 'script', name: '.npmignore', id: 9, parent: 0 },
-    //     //     { type: 'script', name: 'package.json', id: 10, parent: 0 },
-    //     //     { type: 'script', name: 'webpack.config.js', id: 11, parent: 0 },
-    //     // ]
-    //     // return data
-    //     return flattenTreeExt({
-    //         name: 'root',
-    //         type: 'root',
-    //         children: [
-    //             {
-    //                 name: 'projects',
-    //                 type: 'folder',
-    //                 autoOpen: true,
-    //                 // action: (
-    //                 //     <div>
-    //                 //         <button>add</button>
-    //                 //     </div>
-    //                 // ),
-    //                 children: this.projects.map((x) => x.treeData),
-    //             },
-    //             {
-    //                 name: 'Configuration',
-    //                 type: 'config',
-    //                 children: [
-    //                     {
-    //                         name: 'IP',
-    //                         type: 'config',
-    //                         action: (
-    //                             <input
-    //                                 style={{ marginLeft: 'auto' }}
-    //                                 onClick={(ev) => ev.stopPropagation()}
-    //                                 onKeyUp={(ev) => ev.stopPropagation()}
-    //                                 onKeyDown={(ev) => ev.stopPropagation()}
-    //                                 type='text'
-    //                                 value={this.serverIP}
-    //                                 onChange={(ev) => (this.serverIP = ev.target.value)}
-    //                             />
-    //                         ),
-    //                     },
-    //                     {
-    //                         name: 'Port',
-    //                         type: 'config',
-    //                         action: (
-    //                             <input
-    //                                 style={{ marginLeft: 'auto' }}
-    //                                 type='number'
-    //                                 onClick={(ev) => ev.stopPropagation()}
-    //                                 onKeyUp={(ev) => ev.stopPropagation()}
-    //                                 onKeyDown={(ev) => ev.stopPropagation()}
-    //                                 value={this.serverPort}
-    //                                 onChange={(ev) => (this.serverPort = parseInt(ev.target.value, 10))}
-    //                             />
-    //                         ),
-    //                     },
-    //                     {
-    //                         name: 'websocket',
-    //                         type: 'script',
-    //                         action: (
-    //                             <div style={{ marginLeft: 'auto' }}>
-    //                                 {/* {this.wsStatus} */}
-    //                                 <button onClick={this.startWSClient}>UPDATE</button>
-    //                                 {this.wsStatusEmoji}
-    //                             </div>
-    //                         ),
-    //                     },
-    //                     {
-    //                         name: 'schema',
-    //                         type: 'config',
-    //                         action: (
-    //                             <div style={{ marginLeft: 'auto' }}>
-    //                                 {this.schema.nodes.length} nodes;
-    //                                 <button onClick={this.fetchObjectsSchema}>UPADTE</button>
-    //                                 {this.schemaStatusEmoji}
-    //                             </div>
-    //                         ),
-    //                     },
-    //                     { name: 'sdk', type: 'script', onClick: this.editor.openSDK },
-    //                     { name: 'lib', type: 'script', onClick: this.editor.openLib },
-    //                 ],
-    //             },
-
-    //             {
-    //                 name: 'GUI',
-    //                 type: 'client',
-    //                 children: [{ name: 'monaco', type: 'config', action: <button>open</button> }],
-    //             },
-    //         ],
-    //     })
-    // }
 
     constructor(opts: ComfyClientOptions) {
         const prev = this.autosaver.load()
@@ -236,6 +139,7 @@ export class ComfyClient {
     }
 
     sid: string = 'temporary'
+    status: ComfyStatus | null = null
     ws: Maybe<WS.WebSocket | WebSocket> = null
     startWSClient = () => {
         if (this.ws) {
@@ -254,14 +158,27 @@ export class ComfyClient {
         ws.onmessage = (e: WS.MessageEvent) => {
             const msg: WsMsg = JSON.parse(e.data as any)
             console.log(`[🐰] %c${msg.type} %c${JSON.stringify(msg.data)}`, 'color:#90bdff', 'color:gray')
-            // 🔴 ROUTING must be done at the API level
             if (msg.type === 'status') {
                 if (msg.data.sid) this.sid = msg.data.sid
-                return this.project.currentGraph.onStatus(msg)
+                this.status = msg.data.status
             }
-            if (msg.type === 'progress') return this.project.currentGraph.onProgress(msg)
-            if (msg.type === 'executing') return this.project.currentGraph.onExecuting(msg)
-            if (msg.type === 'executed') return this.project.currentGraph.onExecuted(msg)
+
+            // ensure current project is running
+            const project: ComfyProject = this.project
+            const currentRun: ScriptExecution | null = project.currentRun
+            if (currentRun == null) return console.log(`❌ received ${msg.type} but currentRun is null`)
+
+            // ensure current step is a prompt
+            const promptStep: ScriptStep = currentRun.step
+            if (!(promptStep instanceof ScriptStep_prompt))
+                return console.log(`❌ received ${msg.type} but currentStep is not prompt`)
+
+            // defer accumulation to ScriptStep_prompt
+            if (msg.type === 'progress') return promptStep.onProgress(msg)
+            if (msg.type === 'executing') return promptStep.onExecuting(msg)
+            if (msg.type === 'executed') return promptStep.onExecuted(msg)
+
+            // unknown message payload ?
             throw new Error('Unknown message type: ' + msg)
         }
         this.ws = ws

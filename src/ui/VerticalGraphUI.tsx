@@ -26,7 +26,7 @@ export const VerticalGraph = observer(function VerticalGraph_() {
             }}
         >
             {/* {graph.fooo()} */}
-            {graph.renderAsCommitGraph}
+            {graph.JSON_forGitGraphVisualisation}
         </Gitgraph>
     )
 })

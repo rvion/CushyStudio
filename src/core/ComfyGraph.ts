@@ -1,17 +1,17 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
-import { TEdge, TNode, toposort } from './toposort'
 import type { ComfyNodeUID } from './ComfyNodeUID'
+import type { ComfyProject } from './ComfyProject'
+import type { ComfyPromptJSON } from './ComfyPrompt'
+import type { ScriptExecution } from './ScriptExecution'
+import { TEdge, TNode, toposort } from './toposort'
 
+import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { makeObservable, observable } from 'mobx'
-import { ApiPromptInput, ComfyStatus, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyAPI'
+import { WsMsgExecuted } from './ComfyAPI'
 import { ComfyClient } from './ComfyClient'
 import { comfyColors } from './ComfyColors'
 import { ComfyNode } from './ComfyNode'
-import { ComfyProject } from './ComfyProject'
-import { ComfyPromptJSON } from './ComfyPrompt'
-import { ComfyNodeSchema, ComfySchema, NodeInputExt } from './ComfySchema'
-import { deepCopyNaive, sleep } from './ComfyUtils'
-import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
+import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
 
 export type RunMode = 'fake' | 'real'
 
@@ -22,27 +22,19 @@ export class ComfyGraph {
     nodes = new Map<string, ComfyNode<any>>()
     isRunning = false
 
-    get json() {
+    /** return the coresponding comfy prompt  */
+    get json(): ComfyPromptJSON {
         const json: ComfyPromptJSON = {}
-        for (const node of this.nodesArray) {
-            json[node.uid] = node.json
-        }
-        // console.log('🔴', 'json', json) //JSON.stringify(json, null, 3))
+        for (const node of this.nodesArray) json[node.uid] = node.json
         return json
     }
 
-    // treeData(ix: number): ITreeNode {
-    //     return {
-    //         name: 'checkpoint ' + (ix + 1),
-    //         type: 'graph',
-    //         children: this.nodesArray.map((x) => x.treeData),
-    //         onClick: () => (this.project.focus = ix),
-    //     }
-    // }
+    askBoolean = (msg: string) => {}
 
     constructor(
         //
         public project: ComfyProject,
+        public executionContext: ScriptExecution,
         json: ComfyPromptJSON = {},
     ) {
         // console.log('COMFY GRAPH')
@@ -75,67 +67,29 @@ export class ComfyGraph {
         return node
     }
 
-    currentExecutingNode: ComfyNode<any> | null = null
-    clientID: string | null = '06dd0f88-5af0-4527-b460-5f5b16d31782'
-    status: ComfyStatus | null = null
-    onStatus = (msg: WsMsgStatus) => {
-        if (msg.data.sid) this.clientID = msg.data.sid
-        if (msg.data.status) this.status = msg.data.status
-    }
-    onProgress = (msg: WsMsgProgress) => {
-        if (this.currentExecutingNode) this.currentExecutingNode.progress = msg.data
-    }
-    onExecuting = (msg: WsMsgExecuting) => {
-        if (msg.data.node == null) return // 🔴 @comfy: why is that null sometimes ?
-        this.currentExecutingNode = this.getNodeOrCrash(msg.data.node)
-    }
-    currentStep = 0
     outputs: WsMsgExecuted[] = []
-    onExecuted = (msg: WsMsgExecuted) => {
-        this.outputs.push(msg)
-        this.currentExecutingNode = null
-        const node = this.getNodeOrCrash(msg.data.node)
-        this.currentStep++
-        node.artifacts.push(msg.data.output)
-        console.log(node.artifacts)
-    }
 
-    runningMode: RunMode = 'fake' // 🔴
+    /** wether it should really send the prompt to the backend */
+    get runningMode(): RunMode {
+        return this.executionContext.opts?.mock ? 'fake' : 'real'
+    }
 
     // COMMIT --------------------------------------------
     async get() {
-        const currentJSON = deepCopyNaive(this.json)
-        console.log('[🪜] checkpoint', currentJSON)
-        this.project.graphs.push(new ComfyGraph(this.project, currentJSON))
-        // update focus to the new graph
-        this.project.focus = this.project.graphs.length - 1
-        if (this.runningMode === 'fake') return null
-        const out: ApiPromptInput = {
-            client_id: this.client.sid,
-            extra_data: { extra_pnginfo: { it: 'works' } },
-            prompt: currentJSON,
-        }
-        const res = await fetch(`http://${this.client.serverHost}/prompt`, {
-            method: 'POST',
-            body: JSON.stringify(out),
-        })
-        await sleep(1000)
-        return res
+        const step = this.executionContext.sendPromp()
+        await step.finished
     }
 
-    renderAsCommitGraph = (gitgraph: GitgraphUserApi<any>) => {
+    JSON_forGitGraphVisualisation = (gitgraph: GitgraphUserApi<any>) => {
         // extract graph
         const ids: TNode[] = []
         const edges: TEdge[] = []
         for (const node of this.nodesArray) {
             ids.push(node.uid)
-            for (const fromUID of node._incomingNodes()) {
-                edges.push([fromUID, node.uid])
-            }
+            for (const fromUID of node._incomingNodes()) edges.push([fromUID, node.uid])
         }
         // sort it
         const sortedIds = toposort(ids, edges)
-
         // renderit
         const invisible = { renderDot: () => null, renderMessage: () => null }
         const cache: { [key: string]: BranchUserApi<any> } = {}
@@ -151,7 +105,7 @@ export class ComfyGraph {
     }
 
     /** visjs JSON format (network visualisation) */
-    get visData(): { nodes: VisNodes[]; edges: VisEdges[] } {
+    get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
         const json: ComfyPromptJSON = this.json
         const schemas: ComfySchema = this.schema
         const nodes: VisNodes[] = []
@@ -160,39 +114,15 @@ export class ComfyGraph {
         for (const [uid, node] of Object.entries(json)) {
             const schema: ComfyNodeSchema = schemas.nodesByName[node.class_type]
             const color = comfyColors[schema.category]
-            nodes.push({
-                id: uid,
-                label: node.class_type,
-                color,
-                font: { color: 'white' },
-                shape: 'box',
-            })
+            nodes.push({ id: uid, label: node.class_type, color, font: { color: 'white' }, shape: 'box' })
             for (const [name, val] of Object.entries(node.inputs)) {
                 if (val instanceof Array) {
                     const [from, slotIx] = val
-                    edges.push({
-                        id: `${from}-${uid}-${slotIx}`,
-                        from,
-                        to: uid,
-                        arrows: 'to',
-                        label: name,
-                        labelHighlightBold: false,
-                        length: 200,
-                    })
+                    const edgeID = `${from}-${uid}-${slotIx}`
+                    edges.push({ id: edgeID, from, to: uid, arrows: 'to', label: name, labelHighlightBold: false, length: 200 })
                 }
             }
         }
         return { nodes, edges }
     }
 }
-
-// OUTPUTS --------------------------------------------
-/** Comfy Prompt JSON format */
-// toJSON(): ComfyPromptJSON {
-//     const nodes = Array.from(this.nodes.values())
-//     const out: { [key: string]: ComfyNodeJSON } = {}
-//     for (const node of nodes) {
-//         out[node.uid] = node.toJSON()
-//     }
-//     return out
-// }

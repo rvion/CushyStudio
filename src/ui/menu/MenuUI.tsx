@@ -97,30 +97,56 @@ export const MenuUI = observer(function MenuUI_() {
                                 {project.name}
                             </TreeItemLayout>
                             <Tree>
-                                {project.graphs.map((graph, ix) => (
+                                {project.runs.map((run, ix) => (
                                     <TreeItem key={ix} actions={<Actions />}>
                                         <TreeItemLayout
                                             //
                                             iconBefore={<I.CubeTree24Filled />}
                                             // aside={<RenderAside />}
                                         >
-                                            Graph {ix + 1}
+                                            Run {ix + 1}
                                         </TreeItemLayout>
                                         <Tree>
-                                            {graph.nodesArray.map((node, ix) => (
+                                            {run.steps.map((step, ix) => (
                                                 <TreeItem key={ix} actions={<Actions />}>
                                                     <TreeItemLayout
                                                         //
                                                         iconBefore={<I.Cube16Regular />}
                                                         aside={<RenderAside />}
                                                     >
-                                                        Node {ix + 1}
+                                                        {step.name}
                                                     </TreeItemLayout>
                                                 </TreeItem>
                                             ))}
                                         </Tree>
                                     </TreeItem>
                                 ))}
+                                {/*
+                                // {project.graphs.map((graph, ix) => (
+                                //     <TreeItem key={ix} actions={<Actions />}>
+                                //         <TreeItemLayout
+                                //             //
+                                //             iconBefore={<I.CubeTree24Filled />}
+                                //             // aside={<RenderAside />}
+                                //         >
+                                //             Graph {ix + 1}
+                                //         </TreeItemLayout>
+                                //         <Tree>
+                                //             {graph.nodesArray.map((node, ix) => (
+                                //                 <TreeItem key={ix} actions={<Actions />}>
+                                //                     <TreeItemLayout
+                                //                         //
+                                //                         iconBefore={<I.Cube16Regular />}
+                                //                         aside={<RenderAside />}
+                                //                     >
+                                //                         Node {ix + 1}
+                                //                     </TreeItemLayout>
+                                //                 </TreeItem>
+                                //             ))}
+                                //         </Tree>
+                                //     </TreeItem>
+                                // ))}
+                                */}
                             </Tree>
                         </TreeItem>
                     ))}

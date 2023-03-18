@@ -4,8 +4,7 @@ import { observer } from 'mobx-react-lite'
 export const MainActionsUI = observer(function MainActionsUI_() {
     const client = useSt()
     const project = client.project
-    const graph = project.currentGraph
-    // console.log('🟢 graph', project, graph)
+    const run = project.currentRun
     return (
         <div className='col gap grow'>
             {/* <div>Step: {st.project.currentStep}</div> */}
@@ -15,12 +14,16 @@ export const MainActionsUI = observer(function MainActionsUI_() {
             <button className='success' onClick={() => project.run('real')}>
                 RUN
             </button>
-            {graph.isRunning ? (
-                <button className='success' onClick={() => (graph.isRunning = false)}>
+            {run ? (
+                <button
+                    className='success'
+                    onClick={() => {
+                        console.log('🔴 TODO: implement prompt cancellation')
+                    }}
+                >
                     Abort
                 </button>
             ) : null}
-            {/* <button onClick={() => st.udpateCode()}>Preview</button> */}
         </div>
     )
 })

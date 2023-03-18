@@ -7,10 +7,11 @@ const sampler = C.KSampler({ seed: 8566257, steps: 20, cfg: 8, sampler_name: 'eu
 const vae = C.VAEDecode({ samples: sampler, vae: ckpt })
 const image = C.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
 
-for (const x of [1,2,3] ) {
-    sampler.inputs.cfg = 10*x
-    latent_image.inputs.batch_size = x
+let batchSize = 1
+do {
+    // sampler.inputs.cfg = 10
+    latent_image.inputs.batch_size = batchSize++
     await C.get()
-}
+} while ( await C.askBoolean('Continue?') )
 
 `
