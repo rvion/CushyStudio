@@ -190,22 +190,11 @@ declare module "core/ScriptStep_ask" {
         answer: (value: string) => void;
     }
 }
-declare module "core/ScriptStep_Output" {
-    import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
-    export class ScriptStep_Output implements ScriptStep_Iface<string[]> {
-        images: string[];
-        uid: string;
-        name: string;
-        finished: Promise<string[]>;
-        constructor(images: string[]);
-    }
-}
 declare module "core/ScriptStep" {
-    import type { ScriptStep_Output } from "core/ScriptStep_Output";
     import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
     import type { ScriptStep_Init } from "core/ScriptStep_Init";
     import type { ScriptStep_askBoolean, ScriptStep_askString } from "core/ScriptStep_ask";
-    export type ScriptStep = ScriptStep_Init | ScriptStep_prompt | ScriptStep_Output | ScriptStep_askBoolean | ScriptStep_askString;
+    export type ScriptStep = ScriptStep_Init | ScriptStep_prompt | ScriptStep_askBoolean | ScriptStep_askString;
 }
 declare module "core/ScriptExecution" {
     import type { ComfyProject } from "core/ComfyProject";
@@ -505,7 +494,6 @@ declare module "core/ComfyGraph" {
     import type { ComfyPromptJSON } from "core/ComfyPrompt";
     import type { ScriptExecution } from "core/ScriptExecution";
     import type { Maybe } from "core/ComfyUtils";
-    import { WsMsgExecuted } from "core/ComfyAPI";
     import { ComfyClient } from "core/ComfyClient";
     import { ComfyNode } from "core/ComfyNode";
     import { ComfySchema } from "core/ComfySchema";
@@ -528,7 +516,7 @@ declare module "core/ComfyGraph" {
         private _nextUID;
         getUID: () => string;
         getNodeOrCrash: (nodeID: ComfyNodeUID) => ComfyNode<any>;
-        outputs: WsMsgExecuted[];
+        get allArtifactsImgs(): string[];
         /** wether it should really send the prompt to the backend */
         get runningMode(): RunMode;
         get(): Promise<void>;
@@ -555,6 +543,7 @@ declare module "core/ComfyNode" {
         artifacts: {
             images: string[];
         }[];
+        get allArtifactsImgs(): string[];
         progress: NodeProgress | null;
         $schema: ComfyNodeSchema;
         status: 'executing' | 'done' | 'error' | 'waiting' | null;
@@ -574,8 +563,6 @@ declare module "core/ComfyNode" {
         /** return the list of nodes piped into this node */
         _incomingNodes(): string[];
         get manager(): import("core/ComfyClient").ComfyClient;
-        artifactsForStep(step: number): string[];
-        get allArtifactsImgs(): string[];
         get(): Promise<void>;
         serializeValue(field: string, value: unknown): unknown;
         private _getExpecteTypeForField;
