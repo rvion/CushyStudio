@@ -5,7 +5,7 @@ import { useSt } from './stContext'
 
 export const EditorPaneUI = observer(function EditorPaneUI_() {
     const client = useSt()
-    if (client.CORS_BUG)
+    if (client.CRITICAL_ERROR)
         return (
             <div
                 style={{
@@ -19,8 +19,8 @@ export const EditorPaneUI = observer(function EditorPaneUI_() {
                     flexDirection: 'column',
                 }}
             >
-                <h1>Failed to fetch ObjectInfos from backend</h1>
-                <h3>Possibly a CORS issue, check your navigator logs.</h3>
+                <h1>{client.CRITICAL_ERROR.title}</h1>
+                <h3>{client.CRITICAL_ERROR.help}</h3>
             </div>
         )
     return (

@@ -62,7 +62,7 @@ export class ComfyClient {
         this.projects.push(this.project)
         // this.projects.push(ComfyProject.INIT(this))
         this.dts = this.schema.codegenDTS()
-        this.startWSClient()
+        this.startWSClientSafe()
         makeAutoObservable(this)
         setTimeout(async () => {
             await this.fetchObjectsSchema()
@@ -91,7 +91,10 @@ export class ComfyClient {
     //     return schema$
     // }
 
-    CORS_BUG = false
+    CRITICAL_ERROR: Maybe<{
+        title: string
+        help: string
+    }> = null
 
     /** retri e the comfy spec from the schema*/
     fetchObjectsSchema = async (): Promise<ComfySchemaJSON> => {
@@ -107,7 +110,10 @@ export class ComfyClient {
             schema$ = await res.json()
         } catch (error) {
             console.log('🔴', error)
-            this.CORS_BUG = true
+            this.CRITICAL_ERROR = {
+                title: 'Failed to fetch ObjectInfos from backend.',
+                help: 'Possibly a CORS issue, check your navigator logs.',
+            }
             schema$ = {}
         }
 
@@ -153,15 +159,27 @@ export class ComfyClient {
     sid: string = 'temporary'
     status: ComfyStatus | null = null
     ws: Maybe<WS.WebSocket | WebSocket> = null
+    startWSClientSafe = () => {
+        try {
+            this.startWSClient()
+        } catch (error) {
+            console.log('🔴 failed to start websocket client')
+            this.CRITICAL_ERROR = {
+                title: 'Failed to start websocket client.',
+                help: 'Possibly a CORS issue, check your navigator logs.',
+            }
+        }
+    }
     startWSClient = () => {
         if (this.ws) {
             if (this.ws?.readyState === WebSocket.OPEN) this.ws.close()
             this.wsStatus = 'off'
         }
+        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
         const ws =
             typeof window !== 'undefined'
-                ? new WebSocket(`ws://${this.serverHost}/ws`)
-                : new WS.WebSocket(`ws://${this.serverHost}/ws`)
+                ? new WebSocket(`${protocol}://${this.serverHost}/ws`)
+                : new WS.WebSocket(`${protocol}://${this.serverHost}/ws`)
         ws.binaryType = 'arraybuffer'
         ws.onopen = () => {
             console.log('[👢] connected')
