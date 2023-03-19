@@ -80,16 +80,18 @@ export class ComfyClient {
         return x
     }
 
-    /** retri e the comfy spec from the schema*/
-    fetchObjectsSchema2 = async (): Promise<ComfySchemaJSON> => {
-        const base = window.location.href
-        const res = await fetch(`${base}/object_infos.json`, {})
-        const schema$: ComfySchemaJSON = await res.json()
-        // console.log('🟢 schema$:', schema$)
-        this.schema.update(schema$)
-        // console.log('🟢 schema:', this.schema.nodes)
-        return schema$
-    }
+    /** retrie the comfy spec from the schema*/
+    // fetchObjectsSchema2 = async (): Promise<ComfySchemaJSON> => {
+    //     const base = window.location.href
+    //     const res = await fetch(`${base}/object_infos.json`, {})
+    //     const schema$: ComfySchemaJSON = await res.json()
+    //     // console.log('🟢 schema$:', schema$)
+    //     this.schema.update(schema$)
+    //     // console.log('🟢 schema:', this.schema.nodes)
+    //     return schema$
+    // }
+
+    CORS_BUG = false
 
     /** retri e the comfy spec from the schema*/
     fetchObjectsSchema = async (): Promise<ComfySchemaJSON> => {
@@ -97,9 +99,19 @@ export class ComfyClient {
         const timeoutController = new AbortController()
         const timeoutID = setTimeout(() => timeoutController.abort(), 2000)
         const url = `http://${this.serverHost}/object_info`
-        const res = await fetch(url, { signal: timeoutController.signal })
-        clearTimeout(timeoutID)
-        const schema$: ComfySchemaJSON = await res.json()
+
+        let schema$: ComfySchemaJSON
+        try {
+            const res = await fetch(url, { signal: timeoutController.signal })
+            clearTimeout(timeoutID)
+            schema$ = await res.json()
+        } catch (error) {
+            console.log('🔴', error)
+            this.CORS_BUG = true
+            schema$ = {}
+        }
+
+        // console.log('🔴', res)
         // 2. update schmea
         this.schema.update(schema$)
         // 3. update dts
