@@ -1,5 +1,6 @@
 2023-03-19
 
+-   🔥 RENAME: rename `StableIDE` => `CushyStudio`
 -   ✨ NEW: add progress report
 -   💄 style: add title and github corner
 -   💄 style: add fancy reveal animations in the control pane
