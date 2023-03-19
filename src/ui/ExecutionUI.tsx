@@ -55,7 +55,7 @@ export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { st
 })
 
 export const Execution_askStringUI = observer(function Execution_askUI_(p: { step: ScriptStep_askString }) {
-    const uiSt = useLocalObservable(() => ({ value: '' }))
+    const uiSt = useLocalObservable(() => ({ value: p.step.def ?? '' }))
     return (
         <Card>
             <CardHeader description={p.step.msg}></CardHeader>

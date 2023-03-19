@@ -3,6 +3,7 @@ import type { ComfyNodeUID } from './ComfyNodeUID'
 import type { ComfyProject } from './ComfyProject'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { ScriptExecution } from './ScriptExecution'
+import type { Maybe } from './ComfyUtils'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { makeObservable, observable } from 'mobx'
@@ -29,8 +30,8 @@ export class ComfyGraph {
     }
 
     /** temporary proxy */
-    askBoolean = (msg: string): Promise<boolean> => this.executionContext.askBoolean(msg)
-    askString = (msg: string): Promise<string> => this.executionContext.askString(msg)
+    askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => this.executionContext.askBoolean(msg, def)
+    askString = (msg: string, def?: Maybe<string>): Promise<string> => this.executionContext.askString(msg, def)
 
     constructor(
         //

@@ -38,7 +38,7 @@ export class ScriptExecution {
         return ask.finished
     }
 
-    askString = (msg: string, def: string): Promise<string> => {
+    askString = (msg: string, def?: Maybe<string>): Promise<string> => {
         const ask = new ScriptStep_askString(msg, def)
         this.steps.unshift(ask)
         return ask.finished
