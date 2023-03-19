@@ -2,7 +2,7 @@ import type { IStandaloneCodeEditor, ITextModel } from '../ui/TypescriptOptions'
 
 import { autorun, makeAutoObservable, observable, reaction } from 'mobx'
 import { globalMonaco } from '../ui/Monaco'
-import { c__ } from '../ui/samples/c'
+import { c__ } from '../ui/sdkDTS'
 import { ComfyClient } from './ComfyClient'
 
 export class ComfyScriptEditor {
