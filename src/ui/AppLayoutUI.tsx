@@ -95,18 +95,6 @@ const defaultLayout = (): LayoutData => ({
                         size: 99999,
                         tabs: [
                             {
-                                minWidth: 300,
-                                id: 'node-list',
-                                title: 'Control Pane',
-                                content: <ExecutionUI />,
-                            },
-                        ],
-                    },
-                    {
-                        // mode: 'vertical',
-                        size: 99999,
-                        tabs: [
-                            {
                                 id: 'Editor1',
                                 title: 'Project Code',
                                 content: (
@@ -122,6 +110,18 @@ const defaultLayout = (): LayoutData => ({
                             //     title: 'Graph',
                             //     content: <VisUI />,
                             // },
+                        ],
+                    },
+                    {
+                        // mode: 'vertical',
+                        size: 99999,
+                        tabs: [
+                            {
+                                minWidth: 300,
+                                id: 'node-list',
+                                title: 'Control Pane',
+                                content: <ExecutionUI />,
+                            },
                         ],
                     },
                     // {
