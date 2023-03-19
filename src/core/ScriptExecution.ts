@@ -1,18 +1,20 @@
 import type { ComfyProject } from './ComfyProject'
 
 import { ScriptStep_prompt } from './ScriptStep_prompt'
-import { deepCopyNaive } from './ComfyUtils'
+import { deepCopyNaive, Maybe } from './ComfyUtils'
 import { ComfyGraph } from './ComfyGraph'
 import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
 import { ScriptStep_Init } from './ScriptStep_Init'
 import { ScriptStep_askBoolean, ScriptStep_askString } from './ScriptStep_ask'
 import { ScriptStep } from './ScriptStep'
 import { makeAutoObservable } from 'mobx'
+import { nanoid } from 'nanoid'
 
 /** script runtime context */
 export class ScriptExecution {
     /** the main graph that will be updated along the script execution */
     graph: ComfyGraph
+    uid = nanoid()
 
     constructor(
         //
@@ -27,18 +29,18 @@ export class ScriptExecution {
 
     /** current step */
     get step(): ScriptStep {
-        return this.steps[this.steps.length - 1]
+        return this.steps[0]
     }
 
-    askBoolean = (msg: string): Promise<boolean> => {
-        const ask = new ScriptStep_askBoolean(msg)
-        this.steps.push(ask)
+    askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => {
+        const ask = new ScriptStep_askBoolean(msg, def)
+        this.steps.unshift(ask)
         return ask.finished
     }
 
-    askString = (msg: string): Promise<string> => {
-        const ask = new ScriptStep_askString(msg)
-        this.steps.push(ask)
+    askString = (msg: string, def: string): Promise<string> => {
+        const ask = new ScriptStep_askString(msg, def)
+        this.steps.unshift(ask)
         return ask.finished
     }
 
@@ -49,7 +51,7 @@ export class ScriptExecution {
         const currentJSON = deepCopyNaive(this.graph.json)
         console.log('[🪜] checkpoint', currentJSON)
         const step = new ScriptStep_prompt(this, currentJSON)
-        this.steps.push(step)
+        this.steps.unshift(step)
 
         // if we're note really running prompts, just resolve the step and continue
         if (this.opts?.mock) {

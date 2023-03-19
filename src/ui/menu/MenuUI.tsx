@@ -46,7 +46,12 @@ export const MenuUI = observer(function MenuUI_() {
     return (
         <Tree
             aria-label='Tree'
-            defaultOpenItems={['projects', client.project.id]}
+            defaultOpenItems={[
+                //
+                'projects',
+                client.project.id,
+                client.project.currentRun?.uid ?? 'currentRun',
+            ]}
             ref={(e) => {
                 if (e) e.focus()
             }}
@@ -99,7 +104,7 @@ export const MenuUI = observer(function MenuUI_() {
                             </TreeItemLayout>
                             <Tree>
                                 {project.runs.map((run, ix) => (
-                                    <TreeItem key={ix} actions={<Actions />}>
+                                    <TreeItem id={run.uid} key={run.uid} actions={<Actions />}>
                                         <TreeItemLayout
                                             //
                                             iconBefore={<I.CubeTree24Filled />}

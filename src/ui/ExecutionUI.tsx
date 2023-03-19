@@ -20,17 +20,17 @@ export const ExecutionUI = observer(function ExecutionUI_(p: {}) {
         <div className='col gap'>
             {/* <h1>Run {}</h1> */}
             {run.steps.map((step, ix) => {
-                if (step instanceof ScriptStep_Init) return <div key={ix}>Init</div>
-                if (step instanceof ScriptStep_Output) return <div key={ix}>Output</div>
+                if (step instanceof ScriptStep_Init) return <Card key={step.uid}>Init</Card>
+                if (step instanceof ScriptStep_Output) return <Card key={step.uid}>Output</Card>
                 if (step instanceof ScriptStep_prompt)
                     return (
-                        <Card key={ix}>
+                        <Card key={step.uid}>
                             <CardHeader description={'Prompt'}></CardHeader>
                             <NodeListUI graph={step._graph} />
                         </Card>
                     )
-                if (step instanceof ScriptStep_askBoolean) return <Execution_askBooleanUI key={ix} step={step} />
-                if (step instanceof ScriptStep_askString) return <Execution_askStringUI key={ix} step={step} />
+                if (step instanceof ScriptStep_askBoolean) return <Execution_askBooleanUI key={step.uid} step={step} />
+                if (step instanceof ScriptStep_askString) return <Execution_askStringUI key={step.uid} step={step} />
 
                 return exhaust(step)
             })}

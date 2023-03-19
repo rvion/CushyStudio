@@ -74,13 +74,24 @@ const defaultLayout = (): LayoutData => ({
                     {
                         tabs: [
                             {
-                                minWidth: 360,
+                                minWidth: 300,
                                 minHeight: 300,
                                 id: 'ide',
                                 title: 'Menu',
                                 content: <IdeInfosUI />,
                             },
                         ],
+                    },
+                ],
+            },
+            {
+                mode: 'vertical',
+                tabs: [
+                    {
+                        minWidth: 300,
+                        id: 'node-list',
+                        title: 'Control Pane',
+                        content: <ExecutionUI />,
                     },
                 ],
             },
@@ -149,17 +160,7 @@ const defaultLayout = (): LayoutData => ({
                     },
                 ],
             },
-            {
-                mode: 'vertical',
-                tabs: [
-                    {
-                        minWidth: 280,
-                        id: 'node-list',
-                        title: 'Control Pane',
-                        content: <ExecutionUI />,
-                    },
-                ],
-            },
+
             // {
             //     tabs: [{ id: 'tab3', title: 'tab1', content: <div>Hello World</div> }],
             // },

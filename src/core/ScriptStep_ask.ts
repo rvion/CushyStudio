@@ -1,4 +1,5 @@
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
+import type { Maybe } from './ComfyUtils'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -6,7 +7,11 @@ import { nanoid } from 'nanoid'
 export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
     uid = nanoid()
     name = 'ask-boolean'
-    constructor(public msg: string) {
+    constructor(
+        //
+        public msg: string,
+        public def?: Maybe<boolean>,
+    ) {
         makeAutoObservable(this)
     }
 
@@ -25,7 +30,11 @@ export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
 export class ScriptStep_askString implements ScriptStep_Iface<string> {
     uid = nanoid()
     name = 'ask-string'
-    constructor(public msg: string) {
+    constructor(
+        //
+        public msg: string,
+        public def?: Maybe<string>,
+    ) {
         makeAutoObservable(this)
     }
 
