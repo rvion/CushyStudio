@@ -8,7 +8,7 @@
 
 ![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=social)
 ![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=social)
-![Discord](https://img.shields.io/discord/1086641379104542720)
+![Discord](https://img.shields.io/discord/1087008112969531513)
 
 **🔴 EARLY ACCESS - MASTER BRANCH NOT WORKING 🔴**
 
