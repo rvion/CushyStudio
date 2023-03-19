@@ -33,5 +33,5 @@
         "**/ComfyUI": true,
         "**/venv": true
     },
-    "pasteImage.path": "docs/images"
+    "pasteImage.path": "website/static/img/screenshots/"
 }

@@ -59,11 +59,12 @@ export default function HomepageFeatures(): JSX.Element {
     return (
         <section className={styles.features}>
             <div className='container'>
-                <div className='row'>
+                <img src={require('@site/static/img/screenshots/2023-03-18-23-13-27-v2.png').default} alt='' />
+                {/* <div className='row'>
                     {FeatureList.map((props, idx) => (
                         <Feature key={idx} {...props} />
                     ))}
-                </div>
+                </div> */}
             </div>
         </section>
     )
