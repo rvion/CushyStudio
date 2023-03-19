@@ -83,7 +83,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
                                 <img
                                     style={{ width: '5rem', height: '5rem' }}
                                     key={url}
-                                    src={'http://' + project.client.serverHost + '/view/' + url}
+                                    src={project.client.serverHostHTTP + '/view/' + url}
                                 />
                             </div>
                         ))}

@@ -71,12 +71,17 @@ export class ComfyClient {
         }, 500)
     }
 
-    get serverHost() {
-        return `${this.serverIP}:${this.serverPort}`
+    get serverHostHTTP() {
+        const protocol = window.location.protocol === 'https:' ? 'https' : 'http'
+        return `${protocol}://${this.serverIP}:${this.serverPort}`
+    }
+    get serverHostWs() {
+        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
+        return `${protocol}://${this.serverIP}:${this.serverPort}`
     }
 
     fetchPrompHistory = async () => {
-        const x = await fetch(`http://${this.serverHost}/history`, {}).then((x) => x.json())
+        const x = await fetch(`${this.serverHostHTTP}/history`, {}).then((x) => x.json())
         return x
     }
 
@@ -101,7 +106,7 @@ export class ComfyClient {
         // 1. fetch schema$
         const timeoutController = new AbortController()
         const timeoutID = setTimeout(() => timeoutController.abort(), 2000)
-        const url = `http://${this.serverHost}/object_info`
+        const url = `${this.serverHostHTTP}/object_info`
 
         let schema$: ComfySchemaJSON
         try {
@@ -178,8 +183,8 @@ export class ComfyClient {
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
         const ws =
             typeof window !== 'undefined'
-                ? new WebSocket(`${protocol}://${this.serverHost}/ws`)
-                : new WS.WebSocket(`${protocol}://${this.serverHost}/ws`)
+                ? new WebSocket(`$${this.serverHostWs}/ws`)
+                : new WS.WebSocket(`$${this.serverHostWs}/ws`)
         ws.binaryType = 'arraybuffer'
         ws.onopen = () => {
             console.log('[👢] connected')

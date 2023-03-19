@@ -90,13 +90,13 @@ export class ComfyNode<ComfyNode_input extends object> {
     get manager() { return this.graph.client } // prettier-ignore
 
     artifactsForStep(step: number): string[] {
-        return this.artifacts[step]?.images.map((i) => `http://${this.manager.serverHost}/view/${i}`) ?? []
+        return this.artifacts[step]?.images.map((i) => `${this.manager.serverHostHTTP}/view/${i}`) ?? []
     }
 
     get allArtifactsImgs(): string[] {
         return this.artifacts //
             .flatMap((a) => a.images)
-            .map((i) => `http://${this.manager.serverHost}/view/${i}`)
+            .map((i) => `${this.manager.serverHostHTTP}/view/${i}`)
     }
 
     async get() {
