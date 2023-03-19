@@ -9,7 +9,7 @@ export const ArtifactsUI = observer(function ArtifactsUI_(p: {}) {
             <h3>Project {st.project.name}</h3>
             {st.project.runs.map((run, ix) => {
                 return (
-                    <div>
+                    <div key={run.uid}>
                         <h3>Run {ix + 1} </h3>
                         {run.allOutputs.map((o, ix) => {
                             return (
