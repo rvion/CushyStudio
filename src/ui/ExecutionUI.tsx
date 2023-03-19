@@ -1,8 +1,10 @@
 import { Button, Card, CardFooter, CardHeader, Input, Label } from '@fluentui/react-components'
 import * as I from '@fluentui/react-icons'
+import { useSpring, animated } from '@react-spring/web'
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { ReactNode } from 'react'
+import { Fragment, ReactNode } from 'react'
 import { exhaust } from '../core/ComfyUtils'
+import { ScriptStep } from '../core/ScriptStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../core/ScriptStep_ask'
 import { ScriptStep_Init } from '../core/ScriptStep_Init'
 import { ScriptStep_Output } from '../core/ScriptStep_Output'
@@ -15,32 +17,47 @@ export const ExecutionUI = observer(function ExecutionUI_(p: {}) {
     const project = st.project
     const run = project.currentRun
     if (run == null) return <>no execution yet</>
-
     return (
         <div className='col gap'>
-            {/* <h1>Run {}</h1> */}
-            {run.steps.map((step, ix) => {
-                if (step instanceof ScriptStep_Init) return <Card key={step.uid}>Init</Card>
-                if (step instanceof ScriptStep_Output) return <Card key={step.uid}>Output</Card>
-                if (step instanceof ScriptStep_prompt)
-                    return (
-                        <Card key={step.uid}>
-                            <CardHeader description={'Prompt'}></CardHeader>
-                            <NodeListUI graph={step._graph} />
-                        </Card>
-                    )
-                if (step instanceof ScriptStep_askBoolean) return <Execution_askBooleanUI key={step.uid} step={step} />
-                if (step instanceof ScriptStep_askString) return <Execution_askStringUI key={step.uid} step={step} />
-
-                return exhaust(step)
-            })}
+            {run.steps.map((step) => (
+                <StepWrapperUI key={step.uid} step={step} />
+            ))}
         </div>
     )
 })
 
+export const StepWrapperUI = observer(function StepWrapperUI_(p: { step: ScriptStep }) {
+    const props = useSpring({
+        from: { opacity: 0, transform: 'translate3d(0,-20px,0)' },
+        to: { opacity: 1, transform: `translate3d(0,0px,0)` },
+    })
+
+    return (
+        <animated.div style={props}>
+            <Card>{renderStep(p.step)}</Card>
+        </animated.div>
+    )
+})
+
+const renderStep = (step: ScriptStep) => {
+    if (step instanceof ScriptStep_Init) return <Fragment key={step.uid}>Init</Fragment>
+    if (step instanceof ScriptStep_Output) return <Fragment key={step.uid}>Output</Fragment>
+    if (step instanceof ScriptStep_prompt)
+        return (
+            <Fragment key={step.uid}>
+                <CardHeader description={'Prompt'}></CardHeader>
+                <NodeListUI graph={step._graph} />
+            </Fragment>
+        )
+    if (step instanceof ScriptStep_askBoolean) return <Execution_askBooleanUI key={step.uid} step={step} />
+    if (step instanceof ScriptStep_askString) return <Execution_askStringUI key={step.uid} step={step} />
+
+    return exhaust(step)
+}
+
 export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { step: ScriptStep_askBoolean }) {
     return (
-        <Card>
+        <Fragment>
             <CardHeader description={p.step.msg}></CardHeader>
             <CardFooter>
                 <Button onClick={() => p.step.answer(true)} appearance='primary' icon={<I.CalendarMonthRegular />}>
@@ -50,14 +67,14 @@ export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { st
                     No
                 </Button>
             </CardFooter>
-        </Card>
+        </Fragment>
     )
 })
 
 export const Execution_askStringUI = observer(function Execution_askUI_(p: { step: ScriptStep_askString }) {
     const uiSt = useLocalObservable(() => ({ value: p.step.def ?? '' }))
     return (
-        <Card>
+        <Fragment>
             <CardHeader description={p.step.msg}></CardHeader>
             <Input value={uiSt.value} onChange={(ev) => (uiSt.value = ev.target.value)} />
             <CardFooter>
@@ -65,7 +82,7 @@ export const Execution_askStringUI = observer(function Execution_askUI_(p: { ste
                     OK
                 </Button>
             </CardFooter>
-        </Card>
+        </Fragment>
     )
 })
 

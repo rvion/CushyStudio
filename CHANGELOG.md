@@ -1,5 +1,6 @@
 2023-03-19
 
+-   💄 style: add fancy reveal animations in the control pane
 -   ✨ NEW: update Control API to support for default values
 -   ⏫ UPGRADE: unify ControlUis appearances (cards)
 -   ⏫ UPGRADE: reverse control pane order

@@ -46,6 +46,12 @@ export const MenuUI = observer(function MenuUI_() {
     return (
         <Tree
             aria-label='Tree'
+            // openItems={[
+            //     //
+            //     'projects',
+            //     client.project.id,
+            //     client.project.currentRun?.uid ?? 'currentRun',
+            // ]}
             defaultOpenItems={[
                 //
                 'projects',
