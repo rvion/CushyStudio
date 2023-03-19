@@ -33,7 +33,6 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
 })
 
 export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<any>; showArtifacts?: boolean }) {
-    const st = useSt()
     const node = p.node
     const uid = node.uid
     const graph: ComfyGraph | undefined = node.graph
