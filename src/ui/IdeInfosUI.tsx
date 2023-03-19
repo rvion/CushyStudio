@@ -1,18 +1,25 @@
-import { Link } from '@fluentui/react-components'
+import { Input, Label, Link } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { DropZoneUI } from './DropZoneUI'
 import { MenuUI } from './menu/MenuUI'
+import { useSt } from './stContext'
 
 export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
-    // const client = useSt()
+    const client = useSt()
     return (
         <div className='col gap1 h100'>
-            {/* <h1>
-                <Link target='_blank' href='https://github.com/rvion/CushyStudio'>
-                    CushyStudio
-                </Link>
-            </h1> */}
-            {/* <VerticalGraph /> */}
+            <Label>
+                Host <Input type='text' value={client.serverIP} onChange={(e) => (client.serverIP = e.target.value)} />
+            </Label>
+            <Label>
+                Port{' '}
+                <Input
+                    type='number'
+                    value={client.serverPort.toString()}
+                    onChange={(e) => (client.serverPort = parseInt(e.target.value, 10))}
+                />
+            </Label>
+            <button onClick={() => window.location.reload()}>connect</button>
             <MenuUI />
             <div className='grow'></div>
             <DropZoneUI />
