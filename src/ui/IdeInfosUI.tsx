@@ -19,7 +19,7 @@ export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
                     onChange={(e) => (client.serverPort = parseInt(e.target.value, 10))}
                 />
             </Label>
-            <button onClick={() => window.location.reload()}>connect</button>
+            <button onClick={() => setTimeout(() => window.location.reload(), 1000)}>connect</button>
             <MenuUI />
             <div className='grow'></div>
             <DropZoneUI />
