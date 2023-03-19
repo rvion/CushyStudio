@@ -76,18 +76,8 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
                 </div>
             )}
             <div className='row wrap'>
-                {curr.artifacts.map((artifact, ix) => (
-                    <Fragment key={ix}>
-                        {artifact.images.map((url) => (
-                            <div key={url}>
-                                <img
-                                    style={{ width: '5rem', height: '5rem' }}
-                                    key={url}
-                                    src={project.client.serverHostHTTP + '/view/' + url}
-                                />
-                            </div>
-                        ))}
-                    </Fragment>
+                {curr.allArtifactsImgs.map((url) => (
+                    <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
                 ))}
                 {/* {curr?.allArtifactsImgs.map((url) => (
                     <div key={url}>
