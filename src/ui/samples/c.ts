@@ -197,8 +197,6 @@ declare module "core/ComfyProject" {
         id: string;
         /** project name */
         name: string;
-        /** current  */
-        focus: number;
         /** list of all project runs */
         runs: ScriptExecution[];
         /** last project run */
@@ -329,6 +327,7 @@ declare module "core/ScriptExecution" {
         /** the main graph that will be updated along the script execution */
         graph: ComfyGraph;
         uid: string;
+        allOutputs: WsMsgExecuted['data']['output'][];
         constructor(project: ComfyProject, opts?: {
             mock?: boolean | undefined;
         } | undefined);
@@ -514,6 +513,7 @@ declare module "core/ComfyGraph" {
     export class ComfyGraph {
         project: ComfyProject;
         executionContext: ScriptExecution;
+        uid: string;
         get client(): ComfyClient;
         get schema(): ComfySchema;
         get nodesArray(): ComfyNode<any>[];
@@ -557,6 +557,8 @@ declare module "core/ComfyNode" {
         }[];
         progress: NodeProgress | null;
         $schema: ComfyNodeSchema;
+        status: 'executing' | 'done' | 'error' | 'waiting' | null;
+        get statusEmoji(): "" | "❌" | "🔥" | "✅" | "⏳";
         get inputs(): ComfyNode_input;
         json: ComfyNodeJSON;
         /** update a node */
