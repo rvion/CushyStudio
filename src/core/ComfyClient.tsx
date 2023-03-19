@@ -7,7 +7,7 @@ import * as WS from 'ws'
 
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { a__ } from '../ui/samples/a'
+import { DemoScript1 } from '../ui/DemoScript1'
 import { AutoSaver } from './AutoSaver'
 import { ComfyStatus, WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
@@ -107,8 +107,8 @@ export class ComfyClient {
         // 4. update monaco
         this.editor.updateSDKDTS()
         this.editor.updateLibDTS()
-        this.editor.updateCODE(a__)
-        this.project.udpateCode(a__)
+        this.editor.updateCODE(DemoScript1)
+        this.project.udpateCode(DemoScript1)
         // console.log('🟢 schema:', this.schema.nodes)
         return schema$
     }
