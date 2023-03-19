@@ -16,9 +16,6 @@ export class ComfyProject {
     /** project name */
     name: string = 'Demo Project ' + ComfyProject.__demoProjectIx++
 
-    /** current  */
-    focus: number = 0
-
     /** list of all project runs */
     runs: ScriptExecution[] = []
 

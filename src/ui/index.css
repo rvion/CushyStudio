@@ -25,6 +25,7 @@ body {
 .grow { flex-grow: 1; }
 .wrap { flex-wrap: wrap; }
 .items-center { align-items: center; }
+.items-start { align-items: flex-start; }
 .items-baseline { align-items: baseline; }
 .content-center {justify-content: center; }
 .self-stretch { align-self: stretch; }
@@ -168,4 +169,9 @@ input {
 
 .drop-zone:drop(active) {
     background-color: #9a7070;
+}
+
+
+#node-list{
+    overflow: auto;
 }

@@ -16,9 +16,23 @@ export const ExecutionUI = observer(function ExecutionUI_(p: {}) {
     const st = useSt()
     const project = st.project
     const run = project.currentRun
-    if (run == null) return <>no execution yet</>
+    if (run == null)
+        return (
+            <div
+                style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    // background: 'red',
+                    height: '100%',
+                    display: 'flex',
+                    overflow: 'auto',
+                }}
+            >
+                <h1>No execution yet, hit run in the Code Toolbar </h1>
+            </div>
+        )
     return (
-        <div className='col gap'>
+        <div className='col gap' style={{ overflow: 'auto' }}>
             {run.steps.map((step) => (
                 <StepWrapperUI key={step.uid} step={step} />
             ))}
@@ -45,7 +59,7 @@ const renderStep = (step: ScriptStep) => {
     if (step instanceof ScriptStep_prompt)
         return (
             <Fragment key={step.uid}>
-                <CardHeader description={'Prompt'}></CardHeader>
+                {/* <CardHeader description={'Prompt'}></CardHeader> */}
                 <NodeListUI graph={step._graph} />
             </Fragment>
         )

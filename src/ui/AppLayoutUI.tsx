@@ -52,6 +52,7 @@ export const AppLayoutUI = observer(function AppLayoutUI_(p: {}) {
     const layout = useMemo(() => new IDELayout(), [])
     return (
         <DockLayout
+            groups={{ custom: {} }}
             ref={layout.getRef}
             defaultLayout={layout.layout}
             style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0 }}
@@ -77,28 +78,30 @@ const defaultLayout = (): LayoutData => ({
                                 minWidth: 300,
                                 minHeight: 300,
                                 id: 'ide',
-                                title: 'Menu',
+                                title: 'CushyStudio',
                                 content: <IdeInfosUI />,
                             },
                         ],
                     },
                 ],
             },
-            {
-                mode: 'vertical',
-                tabs: [
-                    {
-                        minWidth: 300,
-                        id: 'node-list',
-                        title: 'Control Pane',
-                        content: <ExecutionUI />,
-                    },
-                ],
-            },
+
             {
                 mode: 'vertical',
                 size: 9999,
                 children: [
+                    {
+                        // mode: 'vertical',
+                        size: 99999,
+                        tabs: [
+                            {
+                                minWidth: 300,
+                                id: 'node-list',
+                                title: 'Control Pane',
+                                content: <ExecutionUI />,
+                            },
+                        ],
+                    },
                     {
                         // mode: 'vertical',
                         size: 99999,
@@ -116,6 +119,12 @@ const defaultLayout = (): LayoutData => ({
                             // { id: 'Editor1', title: 'Project infos', content: <ComfyCodeEditorUI /> },
                             // { id: 'Editor2', title: 'dts', content: <ComfyCodeEditorUI path='schema.d.ts' /> },
                             // { id: 'Editor3', title: 'object_infos', content: <ComfyCodeEditorUI /> },
+                            {
+                                minHeight: 280,
+                                id: 'Graph',
+                                title: 'Graph',
+                                content: <VisUI />,
+                            },
                         ],
                     },
                     // {
@@ -129,41 +138,36 @@ const defaultLayout = (): LayoutData => ({
                     //         // },
                     //     ],
                     // },
-                    {
-                        // mode: 'vertical',
-                        tabs: [
-                            {
-                                minHeight: 280,
-                                id: 'artifacts',
-                                title: 'Images',
-                                content: <ArtifactsUI />,
-                            },
-                            {
-                                minHeight: 280,
-                                id: 'Graph',
-                                title: 'Graph',
-                                content: <VisUI />,
-                            },
-                            {
-                                minWidth: 280,
-                                id: 'assets',
-                                title: 'Assets',
-                                content: (
-                                    <>
-                                        {/* <MainActionsUI />
-                                        <VersionPickerUI />
-                                        <NodeListUI /> */}
-                                    </>
-                                ),
-                            },
-                        ],
-                    },
                 ],
             },
 
-            // {
-            //     tabs: [{ id: 'tab3', title: 'tab1', content: <div>Hello World</div> }],
-            // },
+            {
+                // mode: 'vertical',
+                tabs: [
+                    {
+                        minWidth: 280,
+                        minHeight: 280,
+                        id: 'artifacts',
+                        title: 'Images',
+                        content: <ArtifactsUI />,
+                    },
+
+                    // {
+                    //     minWidth: 280,
+                    //     id: 'assets',
+                    //     title: 'Assets',
+                    //     content: (
+                    //         <>
+                    //             {/* <MainActionsUI />
+                    //                 <VersionPickerUI />
+                    //                 <NodeListUI /> */}
+                    //         </>
+                    //     ),
+                    // },
+                ],
+
+                // tabs: [{ id: 'tab3', title: 'tab1', content: <div>Hello World</div> }],
+            },
         ],
     },
 })

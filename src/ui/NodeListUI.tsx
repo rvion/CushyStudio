@@ -6,14 +6,14 @@ import { ComfyNodeSchema } from '../core/ComfySchema'
 import { NodeRefUI } from './NodeRefUI'
 import { useSt } from './stContext'
 import * as I from '@fluentui/react-icons'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 
 export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }) {
     const graph = p.graph
     if (graph == null) return <>no execution yet</>
     const nodes = graph.nodesArray
     return (
-        <div className='col gap'>
+        <div className='row wrap gap items-start'>
             {nodes.map((node) => (
                 <ComfyNodeUI key={node.uid} node={node} />
             ))}
@@ -26,7 +26,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
     const project = st.project
     const node = p.node
     const uid = node.uid
-    const graph: ComfyGraph | undefined = project.currentRun?.graph
+    const graph: ComfyGraph | undefined = node.graph
     if (graph == null) return <>no execution yet</>
 
     const curr: ComfyNode<any> = graph.nodes.get(uid)!
@@ -67,10 +67,18 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
                 </div>
             )}
             <div className='row wrap'>
-                {curr.artifactsForStep(project.focus).map((url) => (
-                    <div key={url}>
-                        <img style={{ width: '5rem', height: '5rem' }} key={url} src={url} />
-                    </div>
+                {curr.artifacts.map((artifact, ix) => (
+                    <Fragment key={ix}>
+                        {artifact.images.map((url) => (
+                            <div key={url}>
+                                <img
+                                    style={{ width: '5rem', height: '5rem' }}
+                                    key={url}
+                                    src={'http://' + project.client.serverHost + '/view/' + url}
+                                />
+                            </div>
+                        ))}
+                    </Fragment>
                 ))}
                 {/* {curr?.allArtifactsImgs.map((url) => (
                     <div key={url}>

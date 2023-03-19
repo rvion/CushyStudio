@@ -65,8 +65,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
             this._finish()
             return
         }
-        const graph = this._graph
-        const node = graph.getNodeOrCrash(msg.data.node)
+        const node = this._graph.getNodeOrCrash(msg.data.node)
         if (this.currentExecutingNode) this.currentExecutingNode.status = 'done'
         this.currentExecutingNode = node
         node.status = 'executing'
@@ -79,12 +78,12 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     onExecuted = (msg: WsMsgExecuted) => {
         this.outputs.push(msg)
         this.currentExecutingNode = null
-        const graph = this.execution.graph
-        const node = graph.getNodeOrCrash(msg.data.node)
+        const node = this._graph.getNodeOrCrash(msg.data.node)
         // const node = this.getNodeOrCrash(msg.data.node)
         // this.currentStep++
         node.artifacts.push(msg.data.output)
-        console.log(node.artifacts)
+        this.execution.allOutputs.push(msg.data.output)
+        console.log('🟢', this._graph.uid, node.uid, node.artifacts)
         this._finish()
     }
 

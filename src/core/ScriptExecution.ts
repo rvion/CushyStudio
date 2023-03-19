@@ -15,6 +15,7 @@ export class ScriptExecution {
     /** the main graph that will be updated along the script execution */
     graph: ComfyGraph
     uid = nanoid()
+    allOutputs: WsMsgExecuted['data']['output'][] = []
 
     constructor(
         //

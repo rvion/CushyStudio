@@ -7,11 +7,11 @@ export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
     // const client = useSt()
     return (
         <div className='col gap1 h100'>
-            <h1>
+            {/* <h1>
                 <Link target='_blank' href='https://github.com/rvion/CushyStudio'>
                     CushyStudio
                 </Link>
-            </h1>
+            </h1> */}
             {/* <VerticalGraph /> */}
             <MenuUI />
             <div className='grow'></div>
