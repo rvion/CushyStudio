@@ -342,8 +342,8 @@ declare module "core/ScriptExecution" {
         ctx: {};
     }
 }
-declare module "ui/samples/a" {
-    export const a__: string;
+declare module "ui/DemoScript1" {
+    export const DemoScript1: string;
 }
 declare module "core/AutoSaver" {
     import type { Tagged } from "core/ComfyUtils";
@@ -379,7 +379,7 @@ declare module "ui/Monaco" {
     export let globalMonaco: typeof monaco | null;
     export const ensureMonacoReady: () => typeof monaco | null;
 }
-declare module "ui/samples/c" {
+declare module "ui/sdkDTS" {
     export const c__: string;
 }
 declare module "core/ComfyScriptEditor" {
