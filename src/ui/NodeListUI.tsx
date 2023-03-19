@@ -36,6 +36,20 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
     const [folded, setFolded] = useState(false)
     return (
         <div key={uid} className='node'>
+            {node.progress || node.status === 'done' ? (
+                <div
+                    style={{
+                        background: '#339433',
+                        height: '0.4rem',
+                        width:
+                            node.status === 'done' //
+                                ? '100%'
+                                : `${(node.progress!.value / (node.progress!.max || 1)) * 100}%`,
+                    }}
+                >
+                    {/* {node.progress.value}/{node.progress.max} */}
+                </div>
+            ) : null}
             <div
                 onClick={() => setFolded(!folded)}
                 className='row gap darker pointer'
@@ -44,11 +58,6 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
                 <NodeRefUI nodeUID={uid} />
                 <div>{name}</div>
                 <div className='grow'></div>
-                {node.progress ? (
-                    <div>
-                        {node.progress.value}/{node.progress.max}
-                    </div>
-                ) : null}
                 {node.statusEmoji}
                 {folded ? <I.ChevronDown24Filled /> : <I.ChevronRight24Filled />}
             </div>
