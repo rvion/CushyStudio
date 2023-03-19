@@ -12,10 +12,12 @@ import { ComfyClient } from './ComfyClient'
 import { comfyColors } from './ComfyColors'
 import { ComfyNode } from './ComfyNode'
 import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
+import { nanoid } from 'nanoid'
 
 export type RunMode = 'fake' | 'real'
 
 export class ComfyGraph {
+    uid = nanoid()
     get client(): ComfyClient { return this.project.client } // prettier-ignore
     get schema() { return this.client.schema } // prettier-ignore
     get nodesArray() { return Array.from(this.nodes.values()) } // prettier-ignore
