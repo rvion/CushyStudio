@@ -16,7 +16,7 @@ const image = C.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
 do {
     await C.get()
     latent.inputs.batch_size++
-    sampler.inputs.seed ++
+    // sampler.inputs.seed ++
 } while (
     await C.askBoolean('Continue?')
 )
