@@ -168,6 +168,7 @@ export class ComfyClient {
         try {
             this.startWSClient()
         } catch (error) {
+            console.log(error)
             console.log('🔴 failed to start websocket client')
             this.CRITICAL_ERROR = {
                 title: 'Failed to start websocket client.',
@@ -182,9 +183,9 @@ export class ComfyClient {
         }
         const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
         const ws =
-            typeof window !== 'undefined'
-                ? new WebSocket(`$${this.serverHostWs}/ws`)
-                : new WS.WebSocket(`$${this.serverHostWs}/ws`)
+            typeof window !== 'undefined' //
+                ? new WebSocket(`${this.serverHostWs}/ws`)
+                : new WS.WebSocket(`${this.serverHostWs}/ws`)
         ws.binaryType = 'arraybuffer'
         ws.onopen = () => {
             console.log('[👢] connected')
