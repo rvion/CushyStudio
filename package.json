@@ -40,12 +40,12 @@
         "decl": "yarn js src/tests/gensdkdts.ts"
     },
     "dependencies": {
-        "@fluentui/react-components": "^9.18.1",
+        "@fluentui/react-components": "^9.18.2",
         "@gitgraph/core": "^1.5.0",
         "@gitgraph/react": "^1.6.0",
         "@monaco-editor/react": "^4.4.6",
         "@react-spring/web": "^9.7.1",
-        "esbuild": "^0.17.11",
+        "esbuild": "^0.17.12",
         "mobx": "^6.8.0",
         "mobx-react-lite": "^3.4.3",
         "monaco-editor": "^0.36.1",
@@ -67,8 +67,8 @@
         "@types/react-dom": "^18.0.11",
         "@types/ws": "^8.5.4",
         "@vitejs/plugin-react": "^3.1.0",
-        "typescript": "^4.9.5",
-        "vite": "^4.1.4",
+        "typescript": "^5.0.2",
+        "vite": "^4.2.0",
         "vite-plugin-singlefile": "^0.13.3"
     }
 }

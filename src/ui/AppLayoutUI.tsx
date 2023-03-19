@@ -7,7 +7,7 @@ import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
 import { IdeInfosUI } from './IdeInfosUI'
 import { ExecutionUI } from './ExecutionUI'
 import { ToolbarUI } from './ToolbarUI'
-import { VisUI } from './VisUI'
+// import { VisUI } from './VisUI'
 
 class IDELayout {
     layout = defaultLayout()
@@ -116,15 +116,12 @@ const defaultLayout = (): LayoutData => ({
                                     </>
                                 ),
                             },
-                            // { id: 'Editor1', title: 'Project infos', content: <ComfyCodeEditorUI /> },
-                            // { id: 'Editor2', title: 'dts', content: <ComfyCodeEditorUI path='schema.d.ts' /> },
-                            // { id: 'Editor3', title: 'object_infos', content: <ComfyCodeEditorUI /> },
-                            {
-                                minHeight: 280,
-                                id: 'Graph',
-                                title: 'Graph',
-                                content: <VisUI />,
-                            },
+                            // {
+                            //     minHeight: 280,
+                            //     id: 'Graph',
+                            //     title: 'Graph',
+                            //     content: <VisUI />,
+                            // },
                         ],
                     },
                     // {
