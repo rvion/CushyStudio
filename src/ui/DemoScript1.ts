@@ -1,6 +1,6 @@
 export const DemoScript1: string = `export {}
 
-const ckpt = C.CheckpointLoader({ config_name: 'v1-inference_clip_skip_2.yaml', ckpt_name: 'v1-5-pruned-emaonly.ckpt' })
+const ckpt = C.CheckpointLoaderSimple({ ckpt_name: 'v1-5-pruned-emaonly.ckpt' })
 const latent = C.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
 
 const TOPIC = await C.askString('what is your subject about? (e.g. "cat")', 'cat')
