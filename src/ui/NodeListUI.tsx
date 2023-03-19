@@ -7,23 +7,33 @@ import { NodeRefUI } from './NodeRefUI'
 import { useSt } from './stContext'
 import * as I from '@fluentui/react-icons'
 import { Fragment, useState } from 'react'
+import { Link } from '@fluentui/react-components'
 
 export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }) {
     const graph = p.graph
     if (graph == null) return <>no execution yet</>
     const nodes = graph.nodesArray
     return (
-        <div className='row wrap gap items-start'>
-            {nodes.map((node) => (
-                <ComfyNodeUI key={node.uid} node={node} />
-            ))}
+        <div>
+            <Link>Download Prompt</Link>
+            <div className='row gap'>
+                <div className='col '>
+                    {nodes.map((node) => (
+                        <ComfyNodeUI key={node.uid} node={node} />
+                    ))}
+                </div>
+                <div className='col'>
+                    {graph.allArtifactsImgs.map((url) => (
+                        <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
+                    ))}
+                </div>
+            </div>
         </div>
     )
 })
 
-export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<any> }) {
+export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<any>; showArtifacts?: boolean }) {
     const st = useSt()
-    const project = st.project
     const node = p.node
     const uid = node.uid
     const graph: ComfyGraph | undefined = node.graph
@@ -75,16 +85,18 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
                     })}
                 </div>
             )}
-            <div className='row wrap'>
-                {curr.allArtifactsImgs.map((url) => (
-                    <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
-                ))}
-                {/* {curr?.allArtifactsImgs.map((url) => (
+            {p.showArtifacts ? (
+                <div className='row wrap'>
+                    {curr.allArtifactsImgs.map((url) => (
+                        <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
+                    ))}
+                    {/* {curr?.allArtifactsImgs.map((url) => (
                     <div key={url}>
                         <img style={{ width: '5rem', height: '5rem' }} key={url} src={url} />
                     </div>
                 ))} */}
-            </div>
+                </div>
+            ) : null}
         </div>
     )
 })
