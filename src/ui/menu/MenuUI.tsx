@@ -45,6 +45,7 @@ export const MenuUI = observer(function MenuUI_() {
     const client = useSt()
     return (
         <Tree
+            size='small'
             aria-label='Tree'
             // openItems={[
             //     //
@@ -104,6 +105,7 @@ export const MenuUI = observer(function MenuUI_() {
                             <TreeItemLayout
                                 //
                                 iconBefore={<I.DocumentBulletList24Filled />}
+                                onClick={() => client.editor.openCODE()}
                                 // aside={<RenderAside />}
                             >
                                 {project.name}

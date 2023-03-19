@@ -1,7 +1,6 @@
-import { Button, Card, CardFooter, CardHeader, Input } from '@fluentui/react-components'
-import * as I from '@fluentui/react-icons'
+import { Card } from '@fluentui/react-components'
 import { useSpring, animated } from '@react-spring/web'
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { Fragment, ReactNode } from 'react'
 import { exhaust } from '../core/ComfyUtils'
 import { ScriptStep } from '../core/ScriptStep'
@@ -9,6 +8,8 @@ import { ScriptStep_askBoolean, ScriptStep_askString } from '../core/ScriptStep_
 import { ScriptStep_Init } from '../core/ScriptStep_Init'
 import { ScriptStep_Output } from '../core/ScriptStep_Output'
 import { ScriptStep_prompt } from '../core/ScriptStep_prompt'
+import { Execution_askBooleanUI } from './Execution_askBooleanUI'
+import { Execution_askStringUI } from './Execution_askStringUI'
 import { NodeListUI } from './NodeListUI'
 import { useSt } from './stContext'
 
@@ -68,46 +69,6 @@ const renderStep = (step: ScriptStep) => {
 
     return exhaust(step)
 }
-
-export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { step: ScriptStep_askBoolean }) {
-    return (
-        <Fragment>
-            <CardHeader description={p.step.msg}></CardHeader>
-            {p.step.locked ? (
-                <CardFooter>{p.step.value ? 'YES' : 'NO'}</CardFooter>
-            ) : (
-                <CardFooter>
-                    <div className='grow' />
-                    <Button onClick={() => p.step.answer(true)} appearance='primary' icon={<I.CalendarMonthRegular />}>
-                        Yes
-                    </Button>
-                    <Button onClick={() => p.step.answer(false)} appearance='primary' icon={<I.CalendarMonthRegular />}>
-                        No
-                    </Button>
-                </CardFooter>
-            )}
-        </Fragment>
-    )
-})
-
-export const Execution_askStringUI = observer(function Execution_askUI_(p: { step: ScriptStep_askString }) {
-    const uiSt = useLocalObservable(() => ({ value: p.step.def ?? '' }))
-    return (
-        <Fragment>
-            <CardHeader description={p.step.msg}></CardHeader>
-            <Input disabled={p.step.locked} value={uiSt.value} onChange={(ev) => (uiSt.value = ev.target.value)} />
-            {p.step.locked ? null : (
-                // <CardFooter>{p.step.value}</CardFooter>
-                <CardFooter>
-                    <div className='grow' />
-                    <Button onClick={() => p.step.answer(uiSt.value)} appearance='primary' icon={<I.CalendarMonthRegular />}>
-                        OK
-                    </Button>
-                </CardFooter>
-            )}
-        </Fragment>
-    )
-})
 
 export const ExecutionWrapperUI = observer(function ExecutionWrapperUI_(p: { children: ReactNode }) {
     return <Card>{p.children}</Card>
