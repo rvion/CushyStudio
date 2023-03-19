@@ -6,7 +6,7 @@ import type { ScriptExecution } from './ScriptExecution'
 import type { Maybe } from './ComfyUtils'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
-import { makeObservable, observable } from 'mobx'
+import { computed, makeObservable, observable } from 'mobx'
 import { WsMsgExecuted } from './ComfyAPI'
 import { ComfyClient } from './ComfyClient'
 import { comfyColors } from './ComfyColors'
@@ -42,7 +42,7 @@ export class ComfyGraph {
         json: ComfyPromptJSON = {},
     ) {
         // console.log('COMFY GRAPH')
-        makeObservable(this, { outputs: observable })
+        makeObservable(this, { allArtifactsImgs: computed })
         for (const [uid, node] of Object.entries(json)) {
             new ComfyNode(this, uid, node)
         }
@@ -71,7 +71,9 @@ export class ComfyGraph {
         return node
     }
 
-    outputs: WsMsgExecuted[] = []
+    get allArtifactsImgs(): string[] {
+        return this.nodesArray.flatMap((a) => a.allArtifactsImgs)
+    }
 
     /** wether it should really send the prompt to the backend */
     get runningMode(): RunMode {
