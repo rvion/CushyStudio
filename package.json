@@ -26,6 +26,7 @@
         "dev": "vite",
         "build": "tsc && vite build",
         "preview": "vite preview",
+        "check-bundle-size": "npx vite-bundle-visualizer",
         "[DEV]": " 🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉",
         "js": "node --loader ts-node/esm --experimental-specifier-resolution=node --experimental-modules",
         "web": "open -n -a \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --args --user-data-dir=\"/tmp/chrome_dev_test\" --disable-web-security",
