@@ -1,8 +1,10 @@
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
 
 import { makeAutoObservable } from 'mobx'
+import { nanoid } from 'nanoid'
 
 export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
+    uid = nanoid()
     name = 'ask-boolean'
     constructor(public msg: string) {
         makeAutoObservable(this)
@@ -21,6 +23,7 @@ export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
 }
 
 export class ScriptStep_askString implements ScriptStep_Iface<string> {
+    uid = nanoid()
     name = 'ask-string'
     constructor(public msg: string) {
         makeAutoObservable(this)

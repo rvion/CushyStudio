@@ -1,5 +1,8 @@
 /** every ExecutionStep class must implements this interface  */
 export interface ScriptStep_Iface<Result> {
+    /** uid */
+    uid: string
+
     /** name of the step */
     name: string
 
