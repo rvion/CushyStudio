@@ -3,10 +3,9 @@ import DockLayout, { LayoutData } from 'rc-dock'
 import { useMemo } from 'react'
 import { TutorialUI } from '../core/TutorialUI'
 import { ArtifactsUI } from './ArtifactsUI'
-import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
 import { IdeInfosUI } from './IdeInfosUI'
 import { ExecutionUI } from './ExecutionUI'
-import { ToolbarUI } from './ToolbarUI'
+import { EditorPaneUI } from './EditorPaneUI'
 // import { VisUI } from './VisUI'
 
 class IDELayout {
@@ -97,12 +96,7 @@ const defaultLayout = (): LayoutData => ({
                             {
                                 id: 'Editor1',
                                 title: 'Project Code',
-                                content: (
-                                    <>
-                                        <ToolbarUI />
-                                        <ComfyCodeEditorUI />
-                                    </>
-                                ),
+                                content: <EditorPaneUI />,
                             },
                             // {
                             //     minHeight: 280,

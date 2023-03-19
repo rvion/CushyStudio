@@ -15,14 +15,18 @@ export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
         makeAutoObservable(this)
     }
 
-    _resolve!: (value: boolean) => void
-    _rejects!: (reason: any) => void
+    locked: boolean = false
+    value: Maybe<boolean> = null
+    private _resolve!: (value: boolean) => void
+    private _rejects!: (reason: any) => void
     finished: Promise<boolean> = new Promise((resolve, rejects) => {
         this._resolve = resolve
         this._rejects = rejects
     })
 
     answer = (value: boolean) => {
+        this.locked = true
+        this.value = value
         this._resolve(value)
     }
 }
@@ -37,15 +41,18 @@ export class ScriptStep_askString implements ScriptStep_Iface<string> {
     ) {
         makeAutoObservable(this)
     }
-
-    _resolve!: (value: string) => void
-    _rejects!: (reason: any) => void
+    locked: boolean = false
+    value: Maybe<string> = null
+    private _resolve!: (value: string) => void
+    private _rejects!: (reason: any) => void
     finished: Promise<string> = new Promise((resolve, rejects) => {
         this._resolve = resolve
         this._rejects = rejects
     })
 
     answer = (value: string) => {
+        this.locked = true
+        this.value = value
         this._resolve(value)
     }
 }

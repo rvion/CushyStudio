@@ -73,14 +73,18 @@ export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { st
     return (
         <Fragment>
             <CardHeader description={p.step.msg}></CardHeader>
-            <CardFooter>
-                <Button onClick={() => p.step.answer(true)} appearance='primary' icon={<I.CalendarMonthRegular />}>
-                    Yes
-                </Button>
-                <Button onClick={() => p.step.answer(false)} appearance='primary' icon={<I.CalendarMonthRegular />}>
-                    No
-                </Button>
-            </CardFooter>
+            {p.step.locked ? (
+                <CardFooter>{p.step.value ? 'YES' : 'NO'}</CardFooter>
+            ) : (
+                <CardFooter>
+                    <Button onClick={() => p.step.answer(true)} appearance='primary' icon={<I.CalendarMonthRegular />}>
+                        Yes
+                    </Button>
+                    <Button onClick={() => p.step.answer(false)} appearance='primary' icon={<I.CalendarMonthRegular />}>
+                        No
+                    </Button>
+                </CardFooter>
+            )}
         </Fragment>
     )
 })
@@ -90,12 +94,15 @@ export const Execution_askStringUI = observer(function Execution_askUI_(p: { ste
     return (
         <Fragment>
             <CardHeader description={p.step.msg}></CardHeader>
-            <Input value={uiSt.value} onChange={(ev) => (uiSt.value = ev.target.value)} />
-            <CardFooter>
-                <Button onClick={() => p.step.answer(uiSt.value)} appearance='primary' icon={<I.CalendarMonthRegular />}>
-                    OK
-                </Button>
-            </CardFooter>
+            <Input disabled={p.step.locked} value={uiSt.value} onChange={(ev) => (uiSt.value = ev.target.value)} />
+            {p.step.locked ? null : (
+                // <CardFooter>{p.step.value}</CardFooter>
+                <CardFooter>
+                    <Button onClick={() => p.step.answer(uiSt.value)} appearance='primary' icon={<I.CalendarMonthRegular />}>
+                        OK
+                    </Button>
+                </CardFooter>
+            )}
         </Fragment>
     )
 })
