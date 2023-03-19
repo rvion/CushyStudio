@@ -20,7 +20,7 @@ export const ExecutionUI = observer(function ExecutionUI_(p: {}) {
         return (
             <div
                 style={{
-                    alignItems: 'center',
+                    // alignItems: 'center',
                     justifyContent: 'center',
                     // background: 'red',
                     height: '100%',
@@ -28,7 +28,7 @@ export const ExecutionUI = observer(function ExecutionUI_(p: {}) {
                     overflow: 'auto',
                 }}
             >
-                <h1>No execution yet, hit run in the Code Toolbar </h1>
+                <h3>No execution yet, hit run in the Code Toolbar </h3>
             </div>
         )
     return (

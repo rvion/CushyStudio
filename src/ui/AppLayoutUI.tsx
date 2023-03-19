@@ -94,27 +94,17 @@ const defaultLayout = (): LayoutData => ({
                         size: 99999,
                         tabs: [
                             {
-                                id: 'Editor1',
-                                title: 'Project Code',
-                                content: <EditorPaneUI />,
-                            },
-                            // {
-                            //     minHeight: 280,
-                            //     id: 'Graph',
-                            //     title: 'Graph',
-                            //     content: <VisUI />,
-                            // },
-                        ],
-                    },
-                    {
-                        // mode: 'vertical',
-                        size: 99999,
-                        tabs: [
-                            {
-                                minWidth: 300,
+                                minWidth: 400,
                                 id: 'node-list',
                                 title: 'Control Pane',
                                 content: <ExecutionUI />,
+                            },
+                            {
+                                minWidth: 400,
+                                minHeight: 280,
+                                id: 'artifacts',
+                                title: 'Images',
+                                content: <ArtifactsUI />,
                             },
                         ],
                     },
@@ -131,34 +121,50 @@ const defaultLayout = (): LayoutData => ({
                     // },
                 ],
             },
-
             {
                 // mode: 'vertical',
+                size: 99999,
                 tabs: [
                     {
-                        minWidth: 280,
-                        minHeight: 280,
-                        id: 'artifacts',
-                        title: 'Images',
-                        content: <ArtifactsUI />,
+                        id: 'Editor1',
+                        title: 'Project Code',
+                        content: <EditorPaneUI />,
                     },
-
                     // {
-                    //     minWidth: 280,
-                    //     id: 'assets',
-                    //     title: 'Assets',
-                    //     content: (
-                    //         <>
-                    //             {/* <MainActionsUI />
-                    //                 <VersionPickerUI />
-                    //                 <NodeListUI /> */}
-                    //         </>
-                    //     ),
+                    //     minHeight: 280,
+                    //     id: 'Graph',
+                    //     title: 'Graph',
+                    //     content: <VisUI />,
                     // },
                 ],
-
-                // tabs: [{ id: 'tab3', title: 'tab1', content: <div>Hello World</div> }],
             },
+            // {
+            //     // mode: 'vertical',
+            //     tabs: [
+            //         {
+            //             minWidth: 280,
+            //             minHeight: 280,
+            //             id: 'artifacts',
+            //             title: 'Images',
+            //             content: <ArtifactsUI />,
+            //         },
+
+            //         // {
+            //         //     minWidth: 280,
+            //         //     id: 'assets',
+            //         //     title: 'Assets',
+            //         //     content: (
+            //         //         <>
+            //         //             {/* <MainActionsUI />
+            //         //                 <VersionPickerUI />
+            //         //                 <NodeListUI /> */}
+            //         //         </>
+            //         //     ),
+            //         // },
+            //     ],
+
+            //     // tabs: [{ id: 'tab3', title: 'tab1', content: <div>Hello World</div> }],
+            // },
         ],
     },
 })
