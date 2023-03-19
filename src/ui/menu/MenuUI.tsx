@@ -19,6 +19,7 @@ import { AssetTreeUI } from './AssetTreeUI'
 
 import { useSt } from '../stContext'
 import { ScriptStep_prompt } from '../../core/ScriptStep_prompt'
+import { ExecutionStepIconUI } from './ExecutionStepIconUI'
 
 const iconStyleProps: I.FluentIconsProps = {
     primaryFill: 'red',
@@ -115,7 +116,7 @@ export const MenuUI = observer(function MenuUI_() {
                                     <TreeItem id={run.uid} key={run.uid} actions={<Actions />}>
                                         <TreeItemLayout
                                             //
-                                            iconBefore={<I.CubeTree24Filled />}
+                                            iconBefore={<I.PlayCircle24Regular />}
                                             // aside={<RenderAside />}
                                         >
                                             Run {ix + 1}
@@ -123,11 +124,7 @@ export const MenuUI = observer(function MenuUI_() {
                                         <Tree>
                                             {run.steps.map((step, ix) => (
                                                 <TreeItem key={ix} actions={<Actions />}>
-                                                    <TreeItemLayout
-                                                        //
-                                                        iconBefore={<I.Cube16Regular />}
-                                                        aside={<RenderAside />}
-                                                    >
+                                                    <TreeItemLayout iconBefore={ExecutionStepIconUI(step)}>
                                                         {step.name}
                                                     </TreeItemLayout>
                                                     {step instanceof ScriptStep_prompt ? (

@@ -1,5 +1,7 @@
 2023-03-19
 
+-   ⏫ UPGRADE: improve a few icons
+-   ⏫ UPGRADE: allow to re-open a script by clicking on the menu project title
 -   ⏫ UPGRADE: questions not lock once answered
 -   🎉 first RELEASE ! not perfectly functional, but it's a start !
 -   🔥 RENAME: rename `StableIDE` => `CushyStudio`

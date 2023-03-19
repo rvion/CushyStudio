@@ -6,7 +6,7 @@ import { exhaust } from '../core/ComfyUtils'
 import { ScriptStep } from '../core/ScriptStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../core/ScriptStep_ask'
 import { ScriptStep_Init } from '../core/ScriptStep_Init'
-import { ScriptStep_Output } from '../core/ScriptStep_Output'
+// import { ScriptStep_Output } from '../core/ScriptStep_Output'
 import { ScriptStep_prompt } from '../core/ScriptStep_prompt'
 import { Execution_askBooleanUI } from './Execution_askBooleanUI'
 import { Execution_askStringUI } from './Execution_askStringUI'
@@ -56,7 +56,7 @@ export const StepWrapperUI = observer(function StepWrapperUI_(p: { step: ScriptS
 
 const renderStep = (step: ScriptStep) => {
     if (step instanceof ScriptStep_Init) return <Fragment key={step.uid}>Init</Fragment>
-    if (step instanceof ScriptStep_Output) return <Fragment key={step.uid}>Output</Fragment>
+    // if (step instanceof ScriptStep_Output) return <Fragment key={step.uid}>Output</Fragment>
     if (step instanceof ScriptStep_prompt)
         return (
             <Fragment key={step.uid}>
