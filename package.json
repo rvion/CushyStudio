@@ -25,6 +25,7 @@
         "[UI]": "  ❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹❤️‍🩹",
         "dev": "vite",
         "build": "tsc && vite build",
+        "release": "yarn build && cp dist/index.html website/static/0.0.3-2023-03-19-index.html && yarn site:build && yarn site:deploy",
         "preview": "vite preview",
         "check-bundle-size": "npx vite-bundle-visualizer",
         "[DEV]": " 🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉",
