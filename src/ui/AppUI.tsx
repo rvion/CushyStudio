@@ -7,6 +7,7 @@ import { ComfyClient } from '../core/ComfyClient'
 import { ToastContainer } from 'react-toastify'
 import { ensureMonacoReady } from './Monaco'
 import { FluentProvider, webDarkTheme } from '@fluentui/react-components'
+import { GithubCorner } from './GithubCorner'
 
 export const AppUI = observer(function AppUI_() {
     const monaco = ensureMonacoReady()
@@ -25,8 +26,8 @@ export const AppUI = observer(function AppUI_() {
     return (
         <FluentProvider theme={webDarkTheme}>
             <stContext.Provider value={client}>
+                <GithubCorner />
                 <ToastContainer />
-
                 <AppLayoutUI />
             </stContext.Provider>
         </FluentProvider>
