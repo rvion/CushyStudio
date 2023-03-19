@@ -1,4 +1,4 @@
-import { Button, Card, CardFooter, CardHeader, Input, Label } from '@fluentui/react-components'
+import { Button, Card, CardFooter, CardHeader, Input } from '@fluentui/react-components'
 import * as I from '@fluentui/react-icons'
 import { useSpring, animated } from '@react-spring/web'
 import { observer, useLocalObservable } from 'mobx-react-lite'

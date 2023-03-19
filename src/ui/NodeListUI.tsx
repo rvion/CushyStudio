@@ -44,6 +44,12 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
                 <NodeRefUI nodeUID={uid} />
                 <div>{name}</div>
                 <div className='grow'></div>
+                {node.progress ? (
+                    <div>
+                        {node.progress.value}/{node.progress.max}
+                    </div>
+                ) : null}
+                {node.statusEmoji}
                 {folded ? <I.ChevronDown24Filled /> : <I.ChevronRight24Filled />}
             </div>
             {folded && (

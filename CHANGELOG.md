@@ -1,5 +1,7 @@
 2023-03-19
 
+-   ✨ NEW: add progress report
+-   💄 style: add title and github corner
 -   💄 style: add fancy reveal animations in the control pane
 -   ✨ NEW: update Control API to support for default values
 -   ⏫ UPGRADE: unify ControlUis appearances (cards)

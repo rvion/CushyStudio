@@ -46,6 +46,8 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     onProgress = (msg: WsMsgProgress) => {
         if (this.currentExecutingNode) {
             this.currentExecutingNode.progress = msg.data
+        } else {
+            console.log('❌ no current executing node', msg)
         }
     }
 
@@ -58,13 +60,16 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
             // 2023-03-18 rvion: if I understand correctly,
             // null here means there is no work to do.
             if (this.currentExecutingNode == null) this.notifyEmptyPrompt()
+            else this.currentExecutingNode.status = 'done'
             this.currentExecutingNode = null
             this._finish()
             return
         }
-        const graph = this.execution.graph
+        const graph = this._graph
         const node = graph.getNodeOrCrash(msg.data.node)
+        if (this.currentExecutingNode) this.currentExecutingNode.status = 'done'
         this.currentExecutingNode = node
+        node.status = 'executing'
     }
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */

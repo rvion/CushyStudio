@@ -6,6 +6,7 @@ import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
 import { ComfyNodeUID } from './ComfyNodeUID'
+import { exhaust } from './ComfyUtils'
 
 configure({ enforceActions: 'never' })
 
@@ -17,6 +18,16 @@ export class ComfyNode<ComfyNode_input extends object> {
     artifacts: { images: string[] }[] = []
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema
+    status: 'executing' | 'done' | 'error' | 'waiting' | null = null
+    get statusEmoji() {
+        const s = this.status
+        if (s === 'executing') return '🔥'
+        if (s === 'done') return '✅'
+        if (s === 'error') return '❌'
+        if (s === 'waiting') return '⏳'
+        if (s == null) return ''
+        return exhaust(s)
+    }
 
     get inputs(): ComfyNode_input {
         return this.json.inputs as any
