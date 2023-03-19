@@ -422,7 +422,8 @@ declare module "core/ComfyClient" {
             spec: ComfySchemaJSON;
         }>;
         constructor(opts: ComfyClientOptions);
-        get serverHost(): string;
+        get serverHostHTTP(): string;
+        get serverHostWs(): string;
         fetchPrompHistory: () => Promise<any>;
         /** retrie the comfy spec from the schema*/
         CRITICAL_ERROR: Maybe<{
