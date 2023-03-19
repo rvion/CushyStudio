@@ -1,5 +1,7 @@
 2023-03-19
 
+-   ⏫ UPGRADE: questions not lock once answered
+-   🎉 first RELEASE ! not perfectly functional, but it's a start !
 -   🔥 RENAME: rename `StableIDE` => `CushyStudio`
 -   ✨ NEW: add progress report
 -   💄 style: add title and github corner
