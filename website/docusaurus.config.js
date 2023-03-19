@@ -6,20 +6,22 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'StableIDE',
+  title: 'CushyStudio',
   tagline: '🎨 Generative Art Web-IDE and embeddable typescript SDK - based on ComfyUI',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://StableIDE.com',
+  url: 'https://CushyStudio.com',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/StableIDE/',
+  baseUrl: '/',
+  // baseUrl: '/CushyStudio/',
+  // base
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'rvion', // Usually your GitHub org/user name.
-  projectName: 'StableIDE', // Usually your repo name.
+  projectName: 'CushyStudio', // Usually your repo name.
 
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
@@ -42,7 +44,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/rvion/StableIDE/tree/master/website',
+            'https://github.com/rvion/CushyStudio/tree/master/website',
         },
         blog: {
           showReadingTime: true,
@@ -64,9 +66,9 @@ const config = {
       // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
-        title: 'StableIDE',
+        title: 'CushyStudio',
         logo: {
-          alt: 'StableIDE Logo',
+          alt: 'CushyStudio Logo',
           src: 'img/logo.svg',
         },
         items: [
@@ -92,7 +94,7 @@ const config = {
             items: [
               {
                 label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/StableIDE',
+                href: 'https://stackoverflow.com/questions/tagged/CushyStudio',
               },
               {
                 label: 'Discord',

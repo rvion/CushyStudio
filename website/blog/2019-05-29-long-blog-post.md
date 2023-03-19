@@ -2,7 +2,7 @@
 slug: long-blog-post
 title: Long Blog Post
 authors: rvion
-tags: [hello, StableIDE]
+tags: [hello, CushyStudio]
 ---
 
 This is the summary of a very long blog post,

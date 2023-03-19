@@ -1,18 +1,18 @@
 <div align="center">
 
-# StableIDE
+# CushyStudio
 
 [![Downloads][downloads-badge]][releases]
 
 <!-- https://shields.io/ -->
 
-![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/StableIDE?style=social)
-![Twitter Follow](https://img.shields.io/twitter/follow/StableIDE?style=social)
+![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=social)
+![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=social)
 ![Discord](https://img.shields.io/discord/1086641379104542720)
 
 **🔴 EARLY ACCESS - MASTER BRANCH NOT WORKING 🔴**
 
-StableIDE is a **Full-featured** web-based stable-diffusion playground IDE.
+CushyStudio is a **Full-featured** web-based stable-diffusion playground IDE.
 
 Build multi-step stable diffusion pipelines.
 Handle loops, manual image selection steps.

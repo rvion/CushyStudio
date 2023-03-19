@@ -17,7 +17,7 @@
 -   ✨ NEW UI: add warning toast on empty prompt
 -   ✨ NEW UI: word wrap button in toolbar
 -   ✨ NEW core: new `ScriptExecution` context
--   ✨ NEW placeholder documentaion website at https://rvion.github.io/StableIDE/
+-   ✨ NEW placeholder documentaion website at https://rvion.github.io/CushyStudio/
 -   ❤️‍🩹 FIX too many small things to details them here #prealpha
 
 2023-03-17
