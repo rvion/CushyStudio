@@ -77,6 +77,7 @@ export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { st
                 <CardFooter>{p.step.value ? 'YES' : 'NO'}</CardFooter>
             ) : (
                 <CardFooter>
+                    <div className='grow' />
                     <Button onClick={() => p.step.answer(true)} appearance='primary' icon={<I.CalendarMonthRegular />}>
                         Yes
                     </Button>
@@ -98,6 +99,7 @@ export const Execution_askStringUI = observer(function Execution_askUI_(p: { ste
             {p.step.locked ? null : (
                 // <CardFooter>{p.step.value}</CardFooter>
                 <CardFooter>
+                    <div className='grow' />
                     <Button onClick={() => p.step.answer(uiSt.value)} appearance='primary' icon={<I.CalendarMonthRegular />}>
                         OK
                     </Button>
