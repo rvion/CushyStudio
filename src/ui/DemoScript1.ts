@@ -18,6 +18,6 @@ do {
     latent.inputs.batch_size++
     // sampler.inputs.seed ++
 } while (
-    await C.askBoolean('Continue?')
+    await C.askBoolean('Continue and increase batch size?')
 )
 `

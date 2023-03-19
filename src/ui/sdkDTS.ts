@@ -1,5 +1,4 @@
 export const c__:string = `
-
 declare module "core/ComfyNodeUID" {
     export type ComfyNodeUID = string;
 }
@@ -50,6 +49,12 @@ declare module "core/ComfyAPI" {
         sid: string;
     };
 }
+declare module "ui/VisUI" {
+    
+    export type VisNodes = any;
+    export type VisEdges = any;
+    export type VisOptions = any;
+}
 declare module "core/ComfySchemaJSON" {
     /** type of the file sent by the backend at /object_info */
     export type ComfySchemaJSON = {
@@ -91,28 +96,6 @@ declare module "core/ComfyUtils" {
     export type Maybe<T> = T | null | undefined;
     export const deepCopyNaive: <T>(x: T) => T;
 }
-declare module "core/CodeBuffer" {
-    /** this class is used to buffer text and then write it to a file */
-    export class CodeBuffer {
-        private _indent;
-        constructor(_indent?: number, lines?: string[]);
-        tab: string;
-        content: string;
-        append: (str: string) => string;
-        writeLine: (txt: string) => this;
-        w: (txt: string, opts?: {
-            if: boolean;
-        }) => void;
-        newLine: () => string;
-        line: (...txts: string[]) => this;
-        indent: () => number;
-        deindent: () => number;
-        indented: (fn: () => void) => void;
-        bar: (text: string) => void;
-    }
-    export const repeatStr: (x: number, str: string) => string;
-    export const renderBar: (text: string, prefix?: string) => string;
-}
 declare module "core/ComfyPrompt" {
     export type ComfyPromptJSON = {
         [key: string]: ComfyNodeJSON;
@@ -123,97 +106,6 @@ declare module "core/ComfyPrompt" {
         };
         class_type: string;
     };
-}
-declare module "core/ComfyPrimitives" {
-    export const ComfyPrimitiveMapping: {
-        [key: string]: string;
-    };
-    export const ComfyPrimitives: string[];
-}
-declare module "core/ComfySchema" {
-    import { ComfySchemaJSON } from "core/ComfySchemaJSON";
-    export type EnumHash = string;
-    export type EnumName = string;
-    export type NodeInputExt = {
-        name: string;
-        type: string;
-        opts?: any;
-        isPrimitive: boolean;
-    };
-    export type NodeOutputExt = {
-        type: string;
-        name: string;
-        isPrimitive: boolean;
-    };
-    export class ComfySchema {
-        spec: ComfySchemaJSON;
-        knownTypes: Set<string>;
-        knownEnums: Map<string, {
-            name: EnumName;
-            values: string[];
-        }>;
-        nodes: ComfyNodeSchema[];
-        nodesByName: {
-            [key: string]: ComfyNodeSchema;
-        };
-        constructor(spec: ComfySchemaJSON);
-        update(spec: ComfySchemaJSON): void;
-        codegenDTS: (useLocalPath?: boolean) => string;
-        private toTSType;
-    }
-    export class ComfyNodeSchema {
-        name: string;
-        category: string;
-        inputs: NodeInputExt[];
-        outputs: NodeOutputExt[];
-        constructor(name: string, category: string, inputs: NodeInputExt[], outputs: NodeOutputExt[]);
-        codegen(): string;
-    }
-}
-declare module "core/toposort" {
-    export type TNode = string;
-    export type TEdge = [TNode, TNode];
-    export function toposort(nodes: TNode[], edges: TEdge[]): TNode[];
-}
-declare module "core/ComfyImporter" {
-    import { ComfyClient } from "core/ComfyClient";
-    import { ComfyPromptJSON } from "core/ComfyPrompt";
-    /** Converts Comfy JSON prompts to ComfyScript code */
-    export class ComfyImporter {
-        client: ComfyClient;
-        constructor(client: ComfyClient);
-        convertFlowToCode: (flow: ComfyPromptJSON) => string;
-    }
-}
-declare module "core/ComfyProject" {
-    import type { RunMode } from "core/ComfyGraph";
-    import { ComfyClient } from "core/ComfyClient";
-    import { ComfyPromptJSON } from "core/ComfyPrompt";
-    import { ScriptExecution } from "core/ScriptExecution";
-    export class ComfyProject {
-        client: ComfyClient;
-        static __demoProjectIx: number;
-        /** unique project id */
-        id: string;
-        /** project name */
-        name: string;
-        /** list of all project runs */
-        runs: ScriptExecution[];
-        /** last project run */
-        currentRun: ScriptExecution | null;
-        private constructor();
-        /** convenient getter to retrive current client shcema */
-        get schema(): import("core/ComfySchema").ComfySchema;
-        code: string;
-        udpateCode: (code: string) => Promise<void>;
-        static INIT: (client: ComfyClient) => ComfyProject;
-        static FROM_JSON: (client: ComfyClient, json: ComfyPromptJSON) => ComfyProject;
-        /** converts a ComfyPromptJSON into it's canonical normal-form script */
-        static LoadFromComfyPromptJSON: (json: ComfyPromptJSON) => never;
-        /** * project running is not the same as graph running; TODO: explain */
-        isRunning: boolean;
-        run: (mode?: RunMode) => Promise<boolean>;
-    }
 }
 declare module "core/ScriptStep_Iface" {
     /** every ExecutionStep class must implements this interface  */
@@ -277,8 +169,10 @@ declare module "core/ScriptStep_ask" {
         uid: string;
         name: string;
         constructor(msg: string, def?: Maybe<boolean>);
-        _resolve: (value: boolean) => void;
-        _rejects: (reason: any) => void;
+        locked: boolean;
+        value: Maybe<boolean>;
+        private _resolve;
+        private _rejects;
         finished: Promise<boolean>;
         answer: (value: boolean) => void;
     }
@@ -288,8 +182,10 @@ declare module "core/ScriptStep_ask" {
         uid: string;
         name: string;
         constructor(msg: string, def?: Maybe<string>);
-        _resolve: (value: string) => void;
-        _rejects: (reason: any) => void;
+        locked: boolean;
+        value: Maybe<string>;
+        private _resolve;
+        private _rejects;
         finished: Promise<string>;
         answer: (value: string) => void;
     }
@@ -367,17 +263,84 @@ declare module "core/AutoSaver" {
     }
     export const load: (key: LocalStorageKey) => any;
 }
+declare module "core/CodeBuffer" {
+    /** this class is used to buffer text and then write it to a file */
+    export class CodeBuffer {
+        private _indent;
+        constructor(_indent?: number, lines?: string[]);
+        tab: string;
+        content: string;
+        append: (str: string) => string;
+        writeLine: (txt: string) => this;
+        w: (txt: string, opts?: {
+            if: boolean;
+        }) => void;
+        newLine: () => string;
+        line: (...txts: string[]) => this;
+        indent: () => number;
+        deindent: () => number;
+        indented: (fn: () => void) => void;
+        bar: (text: string) => void;
+    }
+    export const repeatStr: (x: number, str: string) => string;
+    export const renderBar: (text: string, prefix?: string) => string;
+}
+declare module "core/ComfyPrimitives" {
+    export const ComfyPrimitiveMapping: {
+        [key: string]: string;
+    };
+    export const ComfyPrimitives: string[];
+}
+declare module "core/ComfySchema" {
+    import { ComfySchemaJSON } from "core/ComfySchemaJSON";
+    export type EnumHash = string;
+    export type EnumName = string;
+    export type NodeInputExt = {
+        name: string;
+        type: string;
+        opts?: any;
+        isPrimitive: boolean;
+    };
+    export type NodeOutputExt = {
+        type: string;
+        name: string;
+        isPrimitive: boolean;
+    };
+    export class ComfySchema {
+        spec: ComfySchemaJSON;
+        knownTypes: Set<string>;
+        knownEnums: Map<string, {
+            name: EnumName;
+            values: string[];
+        }>;
+        nodes: ComfyNodeSchema[];
+        nodesByName: {
+            [key: string]: ComfyNodeSchema;
+        };
+        constructor(spec: ComfySchemaJSON);
+        update(spec: ComfySchemaJSON): void;
+        codegenDTS: (useLocalPath?: boolean) => string;
+        private toTSType;
+    }
+    export class ComfyNodeSchema {
+        name: string;
+        category: string;
+        inputs: NodeInputExt[];
+        outputs: NodeOutputExt[];
+        constructor(name: string, category: string, inputs: NodeInputExt[], outputs: NodeOutputExt[]);
+        codegen(): string;
+    }
+}
 declare module "ui/TypescriptOptions" {
-    
+    import type * as T from 'monaco-editor/esm/vs/editor/editor.api';
     export type TypescriptOptions = any
     export type ITextModel = any
     export type IStandaloneCodeEditor = any
     export type Monaco = any;
 }
 declare module "ui/Monaco" {
-    const monaco: any
-    export let globalMonaco: typeof monaco | null;
-    export const ensureMonacoReady: () => typeof monaco | null;
+    export let globalMonaco: typeof import("monaco-editor") | null;
+    export const ensureMonacoReady: () => typeof import("monaco-editor") | null;
 }
 declare module "ui/sdkDTS" {
     export const c__: string;
@@ -461,8 +424,11 @@ declare module "core/ComfyClient" {
         constructor(opts: ComfyClientOptions);
         get serverHost(): string;
         fetchPrompHistory: () => Promise<any>;
-        /** retri e the comfy spec from the schema*/
-        fetchObjectsSchema2: () => Promise<ComfySchemaJSON>;
+        /** retrie the comfy spec from the schema*/
+        CRITICAL_ERROR: Maybe<{
+            title: string;
+            help: string;
+        }>;
         /** retri e the comfy spec from the schema*/
         fetchObjectsSchema: () => Promise<ComfySchemaJSON>;
         static Init: () => void;
@@ -474,24 +440,57 @@ declare module "core/ComfyClient" {
         sid: string;
         status: ComfyStatus | null;
         ws: Maybe<WebSocket>;
+        startWSClientSafe: () => void;
         startWSClient: () => void;
         notify: (msg: string) => undefined;
         /** Loads workflow data from the specified file */
         handleFile(file: File): Promise<void>;
     }
 }
-declare module "ui/stContext" {
-    import { ComfyClient } from "core/ComfyClient";
-    export const stContext: any
-    export const useSt: () => ComfyClient;
-    export const useProject: () => import("core/ComfyProject").ComfyProject;
+declare module "core/toposort" {
+    export type TNode = string;
+    export type TEdge = [TNode, TNode];
+    export function toposort(nodes: TNode[], edges: TEdge[]): TNode[];
 }
-declare module "ui/VisUI" {
-    
-    export type VisNodes = any;
-    export type VisEdges = any;
-    export type VisOptions = any;
-    export const VisUI:any
+declare module "core/ComfyImporter" {
+    import { ComfyClient } from "core/ComfyClient";
+    import { ComfyPromptJSON } from "core/ComfyPrompt";
+    /** Converts Comfy JSON prompts to ComfyScript code */
+    export class ComfyImporter {
+        client: ComfyClient;
+        constructor(client: ComfyClient);
+        convertFlowToCode: (flow: ComfyPromptJSON) => string;
+    }
+}
+declare module "core/ComfyProject" {
+    import type { RunMode } from "core/ComfyGraph";
+    import { ComfyClient } from "core/ComfyClient";
+    import { ComfyPromptJSON } from "core/ComfyPrompt";
+    import { ScriptExecution } from "core/ScriptExecution";
+    export class ComfyProject {
+        client: ComfyClient;
+        static __demoProjectIx: number;
+        /** unique project id */
+        id: string;
+        /** project name */
+        name: string;
+        /** list of all project runs */
+        runs: ScriptExecution[];
+        /** last project run */
+        currentRun: ScriptExecution | null;
+        private constructor();
+        /** convenient getter to retrive current client shcema */
+        get schema(): import("core/ComfySchema").ComfySchema;
+        code: string;
+        udpateCode: (code: string) => Promise<void>;
+        static INIT: (client: ComfyClient) => ComfyProject;
+        static FROM_JSON: (client: ComfyClient, json: ComfyPromptJSON) => ComfyProject;
+        /** converts a ComfyPromptJSON into it's canonical normal-form script */
+        static LoadFromComfyPromptJSON: (json: ComfyPromptJSON) => never;
+        /** * project running is not the same as graph running; TODO: explain */
+        isRunning: boolean;
+        run: (mode?: RunMode) => Promise<boolean>;
+    }
 }
 declare module "core/ComfyColors" {
     export const comfyColors: {
