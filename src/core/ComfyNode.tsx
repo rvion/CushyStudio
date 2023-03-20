@@ -25,6 +25,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema
     status: 'executing' | 'done' | 'error' | 'waiting' | null = null
+    get isExecuting() { return this.status === 'executing' } // prettier-ignore
     get statusEmoji() {
         const s = this.status
         if (s === 'executing') return '🔥'

@@ -1,6 +1,6 @@
-import { Link } from '@fluentui/react-components'
+import { Button, Link } from '@fluentui/react-components'
 import * as I from '@fluentui/react-icons'
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 import { comfyColors } from '../core/ComfyColors'
 import { ComfyGraph } from '../core/ComfyGraph'
@@ -11,15 +11,25 @@ import { NodeRefUI } from './NodeRefUI'
 export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }) {
     const graph = p.graph
     if (graph == null) return <>no execution yet</>
-    const nodes = graph.nodesArray
+    const uiSt = useLocalObservable(() => ({ seeAll: false }))
+    const nodes = uiSt.seeAll ? graph.nodesArray : graph.nodesArray.filter((f) => f.isExecuting)
     return (
-        <div>
-            <Link>Download Prompt</Link>
+        <div className='col gap'>
+            <div className='row space-between'>
+                {/* <Button>see all</Button> */}
+                <Button>
+                    <I.ArrowDownload16Filled />
+                    Download Prompt
+                </Button>
+            </div>
             <div className='row gap'>
                 <div className='col '>
                     {nodes.map((node) => (
                         <ComfyNodeUI key={node.uid} node={node} />
                     ))}
+                    <Button onClick={() => (uiSt.seeAll = !uiSt.seeAll)} size='small'>
+                        {uiSt.seeAll ? 'hide' : `+ {graph.nodesArray.length} nodes`}
+                    </Button>
                 </div>
                 <div className='col'>
                     {graph.allArtifactsImgs.map((url) => (

@@ -1,5 +1,6 @@
 2023-03-20
 
+-   💄 style: smaller node list by default (only show currently executing node)
 -   🧹 CLEAN: esling setup + fix all linting errors
 -   🔥 ELECTRON integration
 

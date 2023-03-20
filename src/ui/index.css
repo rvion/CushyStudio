@@ -24,6 +24,8 @@ body {
 .col { display: flex; flex-direction: column; }
 .grow { flex-grow: 1; }
 .wrap { flex-wrap: wrap; }
+.space-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
 .items-center { align-items: center; }
 .items-start { align-items: flex-start; }
 .items-baseline { align-items: baseline; }
