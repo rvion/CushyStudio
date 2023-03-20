@@ -1,10 +1,10 @@
-import { Input, Label, Link } from '@fluentui/react-components'
+import { Input, Label } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { DropZoneUI } from './DropZoneUI'
 import { MenuUI } from './menu/MenuUI'
 import { useSt } from './stContext'
 
-export const IdeInfosUI = observer(function IdeInfosUI_(p: {}) {
+export const IdeInfosUI = observer(function IdeInfosUI_() {
     const client = useSt()
     return (
         <div className='col gap1 h100'>

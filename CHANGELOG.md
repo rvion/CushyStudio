@@ -1,5 +1,6 @@
 2023-03-20
 
+-   🧹 CLEAN: esling setup + fix all linting errors
 -   🔥 ELECTRON integration
 
 2023-03-19

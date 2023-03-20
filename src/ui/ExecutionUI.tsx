@@ -6,14 +6,13 @@ import { exhaust } from '../core/ComfyUtils'
 import { ScriptStep } from '../core/ScriptStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../core/ScriptStep_ask'
 import { ScriptStep_Init } from '../core/ScriptStep_Init'
-// import { ScriptStep_Output } from '../core/ScriptStep_Output'
 import { ScriptStep_prompt } from '../core/ScriptStep_prompt'
 import { Execution_askBooleanUI } from './Execution_askBooleanUI'
 import { Execution_askStringUI } from './Execution_askStringUI'
 import { NodeListUI } from './NodeListUI'
 import { useSt } from './stContext'
 
-export const ExecutionUI = observer(function ExecutionUI_(p: {}) {
+export const ExecutionUI = observer(function ExecutionUI_() {
     const st = useSt()
     const project = st.project
     const run = project.currentRun

@@ -18,10 +18,10 @@ export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
     locked: boolean = false
     value: Maybe<boolean> = null
     private _resolve!: (value: boolean) => void
-    private _rejects!: (reason: any) => void
-    finished: Promise<boolean> = new Promise((resolve, rejects) => {
+    // private _rejects!: (reason: any) => void
+    finished: Promise<boolean> = new Promise((resolve, _rejects) => {
         this._resolve = resolve
-        this._rejects = rejects
+        // this._rejects = rejects
     })
 
     answer = (value: boolean) => {
@@ -44,10 +44,10 @@ export class ScriptStep_askString implements ScriptStep_Iface<string> {
     locked: boolean = false
     value: Maybe<string> = null
     private _resolve!: (value: string) => void
-    private _rejects!: (reason: any) => void
-    finished: Promise<string> = new Promise((resolve, rejects) => {
+    // private _rejects!: (reason: any) => void
+    finished: Promise<string> = new Promise((resolve, _rejects) => {
         this._resolve = resolve
-        this._rejects = rejects
+        // this._rejects = rejects
     })
 
     answer = (value: string) => {

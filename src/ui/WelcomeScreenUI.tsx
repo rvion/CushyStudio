@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from './stContext'
 
-export const WelcomeScreenUI = observer(function WelcomeScreenUI_(p: {}) {
+export const WelcomeScreenUI = observer(function WelcomeScreenUI_() {
     const client = useSt()
     return (
         <div className='welcome-screen'>

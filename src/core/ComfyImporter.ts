@@ -13,11 +13,10 @@ export class ComfyImporter {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
         const edges: TEdge[] = []
-        const schema = this.client.schema
         for (const [id, node] of flowNodes) {
             // const cls: ComfyNodeSchema = schema.nodesByName[node.class_type]
             const inputs = Object.entries(node.inputs)
-            for (const [name, input] of inputs) {
+            for (const [_name, input] of inputs) {
                 if (Array.isArray(input)) {
                     const from = input[0]
                     const to = id

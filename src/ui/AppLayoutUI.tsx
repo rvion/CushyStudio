@@ -47,7 +47,7 @@ class IDELayout {
     }
 }
 
-export const AppLayoutUI = observer(function AppLayoutUI_(p: {}) {
+export const AppLayoutUI = observer(function AppLayoutUI_() {
     const layout = useMemo(() => new IDELayout(), [])
     return (
         <DockLayout

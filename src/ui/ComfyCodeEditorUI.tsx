@@ -14,13 +14,13 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
             path={p.path}
             keepCurrentModel
             theme='vs-dark'
-            onChange={(value, ev) => {
+            onChange={(value) => {
                 // console.log('🔴 onChange', value, ev)
                 if (value == null) return
                 client.project.udpateCode(value) // 🔴
             }}
             // beforeMount={(monaco: Monaco) => client.editor.setupMonaco(monaco)}
-            onMount={(editor: IStandaloneCodeEditor, monaco: Monaco) => {
+            onMount={(editor: IStandaloneCodeEditor, _monaco: Monaco) => {
                 editor.updateOptions({
                     wordWrap: 'off',
                 })

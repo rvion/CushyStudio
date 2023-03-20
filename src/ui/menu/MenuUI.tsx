@@ -1,5 +1,4 @@
 import {
-    Avatar,
     Button,
     Input,
     Menu,
@@ -11,14 +10,14 @@ import {
     PopoverSurface,
     PopoverTrigger,
 } from '@fluentui/react-components'
-import { Tree, TreeItem, TreeItemLayout, TreeItemPersonaLayout } from '@fluentui/react-components/unstable'
+import { Tree, TreeItem, TreeItemLayout } from '@fluentui/react-components/unstable'
 
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
 import { AssetTreeUI } from './AssetTreeUI'
 
-import { useSt } from '../stContext'
 import { ScriptStep_prompt } from '../../core/ScriptStep_prompt'
+import { useSt } from '../stContext'
 import { ExecutionStepIconUI } from './ExecutionStepIconUI'
 
 const iconStyleProps: I.FluentIconsProps = {

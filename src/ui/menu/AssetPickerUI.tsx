@@ -1,5 +1,4 @@
-import { Dropdown, makeStyles, Option, shorthands, useId, DropdownProps, OptionGroup } from '@fluentui/react-components'
-import * as React from 'react'
+import { Dropdown, DropdownProps, makeStyles, Option, OptionGroup, shorthands, useId } from '@fluentui/react-components'
 
 const useStyles = makeStyles({
     root: {

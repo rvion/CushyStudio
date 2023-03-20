@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from './stContext'
 
-export const DropZoneUI = observer(function DropZoneUI_(p: {}) {
+export const DropZoneUI = observer(function DropZoneUI_() {
     const client = useSt()
     return (
         <div

@@ -49,7 +49,7 @@ export class ComfyProject {
     }
 
     /** converts a ComfyPromptJSON into it's canonical normal-form script */
-    static LoadFromComfyPromptJSON = (json: ComfyPromptJSON) => {
+    static LoadFromComfyPromptJSON = (_json: ComfyPromptJSON) => {
         throw new Error('🔴 not implemented yet')
     }
 

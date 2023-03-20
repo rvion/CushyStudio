@@ -70,7 +70,7 @@ export class ScriptExecution {
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
-        const res = void fetch(`${this.project.client.serverHostHTTP}/prompt`, {
+        void fetch(`${this.project.client.serverHostHTTP}/prompt`, {
             method: 'POST',
             body: JSON.stringify(out),
         })

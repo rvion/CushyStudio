@@ -2,10 +2,9 @@ import { Tree, TreeItem, TreeItemLayout } from '@fluentui/react-components/unsta
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../stContext'
-import { Multiselect } from './AssetPickerUI'
 import { Actions, HasProblem, IsOK } from './MenuUI'
 
-export const AssetTreeUI = observer(function AssetTreeUI_(p: {}) {
+export const AssetTreeUI = observer(function AssetTreeUI_() {
     const client = useSt()
 
     const onKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {

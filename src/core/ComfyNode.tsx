@@ -84,9 +84,9 @@ export class ComfyNode<ComfyNode_input extends object> {
     /** return the list of nodes piped into this node */
     _incomingNodes() {
         const incomingNodes: ComfyNodeUID[] = []
-        for (const [name, val] of Object.entries(this.inputs)) {
+        for (const [_name, val] of Object.entries(this.inputs)) {
             if (val instanceof Array) {
-                const [from, slotIx] = val
+                const [from, _slotIx] = val
                 incomingNodes.push(from)
             }
         }
