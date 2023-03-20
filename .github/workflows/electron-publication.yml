@@ -1,4 +1,8 @@
-name: electron
+name: CD
+
+env:
+    RV_TEST: coucou
+    GH_TOKEN: ${{ secrets.github_token }}
 
 on:
     push:
@@ -14,6 +18,9 @@ jobs:
                 os: [macos-latest, ubuntu-latest, windows-latest]
 
         steps:
+            - name: test env
+              run: echo $RV_TEST
+
             - name: Check out Git repository
               uses: actions/checkout@v1
 
@@ -27,24 +34,14 @@ jobs:
 
             - name: build-linux
               if: matrix.os == 'ubuntu-latest'
-              uses: actions/setup-node@v3.0.0
-              with:
-                  node-version: '16'
-                  GH_TOKEN: ${{ secrets.github_token }}
               run: yarn run binary:build:linux
 
             - name: build-mac
               if: matrix.os == 'macos-latest'
-              with:
-                  node-version: '16'
-                  GH_TOKEN: ${{ secrets.github_token }}
               run: yarn run binary:build:mac
 
             - name: build-win
               if: matrix.os == 'windows-latest'
-              with:
-                  node-version: '16'
-                  GH_TOKEN: ${{ secrets.github_token }}
               run: yarn run binary:build:win
 
             - name: release
