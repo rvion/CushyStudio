@@ -7,8 +7,12 @@
 <!-- https://shields.io/ -->
 
 ![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=social)
+
 ![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=social)
+
 [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
+
+[![CD](https://github.com/rvion/CushyStudio/actions/workflows/electron-publication.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/electron-publication.yml)
 
 <!-- ![Discord](https://img.shields.io/discord/1087008112969531513) -->
 
