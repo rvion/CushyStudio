@@ -1,4 +1,4 @@
-import { Button, Link } from '@fluentui/react-components'
+import { Button, Image } from '@fluentui/react-components'
 import * as I from '@fluentui/react-icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
@@ -15,25 +15,20 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
     const nodes = uiSt.seeAll ? graph.nodesArray : graph.nodesArray.filter((f) => f.isExecuting)
     return (
         <div className='col gap'>
-            <div className='row space-between'>
-                {/* <Button>see all</Button> */}
-                <Button>
-                    <I.ArrowDownload16Filled />
-                    Download Prompt
-                </Button>
-            </div>
+            <Button size='small' icon={<I.ArrowDownload16Filled />} className='absolute right-1' />
             <div className='row gap'>
-                <div className='col '>
+                <div className='col gap'>
                     {nodes.map((node) => (
                         <ComfyNodeUI key={node.uid} node={node} />
                     ))}
-                    <Button onClick={() => (uiSt.seeAll = !uiSt.seeAll)} size='small'>
-                        {uiSt.seeAll ? 'hide' : `+ {graph.nodesArray.length} nodes`}
+                    <Button onClick={() => (uiSt.seeAll = !uiSt.seeAll)} size='small' className='self-start'>
+                        {uiSt.seeAll ? 'hide' : `+ ${graph.nodesArray.length} nodes`}
                     </Button>
                 </div>
                 <div className='col'>
                     {graph.allArtifactsImgs.map((url) => (
-                        <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
+                        <Image onClick={() => {}} alt='prompt output' src={url} key={url} height={200} width={200} />
+                        // <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
                     ))}
                 </div>
             </div>

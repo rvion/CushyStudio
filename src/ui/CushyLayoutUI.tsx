@@ -6,9 +6,10 @@ import { ArtifactsUI } from './ArtifactsUI'
 import { IdeInfosUI } from './IdeInfosUI'
 import { ExecutionUI } from './ExecutionUI'
 import { EditorPaneUI } from './EditorPaneUI'
+import { CushyLayoutContext } from './LayoutCtx'
 // import { VisUI } from './VisUI'
 
-class IDELayout {
+export class CushyLayout {
     layout = defaultLayout()
 
     dockLayout: DockLayout | null = null
@@ -47,15 +48,17 @@ class IDELayout {
     }
 }
 
-export const AppLayoutUI = observer(function AppLayoutUI_() {
-    const layout = useMemo(() => new IDELayout(), [])
+export const CushyLayoutUI = observer(function AppLayoutUI_() {
+    const layout = useMemo(() => new CushyLayout(), [])
     return (
-        <DockLayout
-            groups={{ custom: {} }}
-            ref={layout.getRef}
-            defaultLayout={layout.layout}
-            style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0 }}
-        />
+        <CushyLayoutContext.Provider value={layout}>
+            <DockLayout
+                groups={{ custom: {} }}
+                ref={layout.getRef}
+                defaultLayout={layout.layout}
+                style={{ position: 'absolute', left: 0, top: 0, right: 0, bottom: 0 }}
+            />
+        </CushyLayoutContext.Provider>
     )
 })
 
