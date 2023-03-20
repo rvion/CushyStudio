@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import { TreeValue } from './LabelUI'
-import { useSt } from './stContext'
+// import { TreeValue } from './LabelUI'
+// import { useSt } from './stContext'
 
 export const ProjectInfosUI = observer(function ProjectInfosUI_(p: {}) {
-    const client = useSt()
-    const project = client.project
+    // const client = useSt()
+    // const project = client.project
     return null
     // return (
     //     <div className='col gap1'>
