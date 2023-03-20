@@ -1,5 +1,5 @@
 {
-    "name": "intuition",
+    "name": "cushy-studio",
     "description": "🎨 Generative Art Web-IDE and embeddable typescript SDK - based on ComfyUI",
     "private": true,
     "author": {
@@ -43,6 +43,7 @@
         "check-bundle-size": "npx vite-bundle-visualizer",
         "[DEV]": " 🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉",
         "js": "node --loader ts-node/esm --experimental-specifier-resolution=node --experimental-modules",
+        "js2": "node --loader ts-node --experimental-specifier-resolution=node --experimental-modules",
         "web": "open -n -a \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --args --user-data-dir=\"/tmp/chrome_dev_test\" --disable-web-security",
         "[CORE]": "👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁",
         "sync": "yarn js src/core/ComfySpec.fetch.ts",

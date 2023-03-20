@@ -1,6 +1,10 @@
 import { execSync } from 'child_process'
 import { readFileSync, writeFileSync } from 'fs'
 
+// export {}
+// const { execSync } = await import('child_process')
+// const { readFileSync, writeFileSync } = await import('fs')
+
 execSync(`tsc -p tsconfig.decl.json`, { stdio: 'inherit' })
 const originalDefPath = 'dts/Comfy.d.ts'
 const originalDefContent = readFileSync(originalDefPath, 'utf8')
