@@ -26,22 +26,22 @@ jobs:
               run: yarn install
 
             - name: build-linux
+              with:
+                  GH_TOKEN: ${{ secrets.github_token }}
               if: matrix.os == 'ubuntu-latest'
               run: yarn run binary:build:linux
-              with:
-                  GH_TOKEN: ${{ secrets.github_token }}
 
             - name: build-mac
+              with:
+                  GH_TOKEN: ${{ secrets.github_token }}
               if: matrix.os == 'macos-latest'
               run: yarn run binary:build:mac
-              with:
-                  GH_TOKEN: ${{ secrets.github_token }}
 
             - name: build-win
-              if: matrix.os == 'windows-latest'
-              run: yarn run binary:build:win
               with:
                   GH_TOKEN: ${{ secrets.github_token }}
+              if: matrix.os == 'windows-latest'
+              run: yarn run binary:build:win
 
             - name: release
               uses: softprops/action-gh-release@v1
