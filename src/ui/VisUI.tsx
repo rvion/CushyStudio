@@ -1,3 +1,7 @@
+// 2023-03-21 those deps are needed if I want to restore vis-* visualisation
+// | "vis-data": "^7.1.4",
+// | "vis-network": "^9.1.4",
+
 import type { Edge, Node, Options } from 'vis-network/declarations/network/Network'
 
 // import { observer } from 'mobx-react-lite'

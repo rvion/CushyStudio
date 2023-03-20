@@ -8,11 +8,11 @@
         "email": "vion.remi@gmail.com"
     },
     "license": "unlicensed",
-    "version": "0.0.15",
+    "version": "0.0.14",
     "main": "./out/main/index.js",
     "scripts": {
         "[RELEASE]": "🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀",
-        "release:minor": "bump patch -c -t -p",
+        "release:minor": "bump patch -c -t X.X.X -p",
         "[safety]": "😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷",
         "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
         "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
@@ -23,10 +23,9 @@
         "binary:prebuild": "electron-vite build",
         "binary:postinstall": "electron-builder install-app-deps",
         "binary:build": "yarn run typecheck && electron-vite build",
-        "binary:build:win2": "yarn run binary:build && electron-builder --win --config",
-        "binary:build:win": "electron-vite build && electron-builder --win --config",
-        "binary:build:mac": "electron-vite build && electron-builder --mac --config",
-        "binary:build:linux": "electron-vite build && electron-builder --linux --config",
+        "binary:build:win": "electron-vite build && electron-builder --win --config --publish always",
+        "binary:build:mac": "electron-vite build && electron-builder --mac --config --publish always",
+        "binary:build:linux": "electron-vite build && electron-builder --linux --config --publish always",
         "[SITE]": "🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥",
         "site:docusaurus": "         cd website && ./node_modules/.bin/docusaurus",
         "site:start": "              cd website && ./node_modules/.bin/docusaurus start",
@@ -78,8 +77,6 @@
         "react-dom": "^18.2.0",
         "react-toastify": "^9.1.1",
         "ts-node": "^10.9.1",
-        "vis-data": "^7.1.4",
-        "vis-network": "^9.1.4",
         "ws": "^8.13.0"
     },
     "devDependencies": {
