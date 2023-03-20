@@ -1,3 +1,7 @@
+2023-03-20
+
+-   🔥 ELECTRON integration
+
 2023-03-19
 
 -   ⏫ UPGRADE: improve a few icons
