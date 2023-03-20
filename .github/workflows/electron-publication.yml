@@ -1,4 +1,4 @@
-name: CD
+name: electron
 
 on:
     push:
@@ -28,14 +28,20 @@ jobs:
             - name: build-linux
               if: matrix.os == 'ubuntu-latest'
               run: yarn run binary:build:linux
+              with:
+                  GH_TOKEN: ${{ secrets.github_token }}
 
             - name: build-mac
               if: matrix.os == 'macos-latest'
               run: yarn run binary:build:mac
+              with:
+                  GH_TOKEN: ${{ secrets.github_token }}
 
             - name: build-win
               if: matrix.os == 'windows-latest'
               run: yarn run binary:build:win
+              with:
+                  GH_TOKEN: ${{ secrets.github_token }}
 
             - name: release
               uses: softprops/action-gh-release@v1
