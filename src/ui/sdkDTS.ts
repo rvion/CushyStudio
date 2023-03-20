@@ -172,7 +172,6 @@ declare module "core/ScriptStep_ask" {
         locked: boolean;
         value: Maybe<boolean>;
         private _resolve;
-        private _rejects;
         finished: Promise<boolean>;
         answer: (value: boolean) => void;
     }
@@ -185,7 +184,6 @@ declare module "core/ScriptStep_ask" {
         locked: boolean;
         value: Maybe<string>;
         private _resolve;
-        private _rejects;
         finished: Promise<string>;
         answer: (value: string) => void;
     }
@@ -476,7 +474,7 @@ declare module "core/ComfyProject" {
         static INIT: (client: ComfyClient) => ComfyProject;
         static FROM_JSON: (client: ComfyClient, json: ComfyPromptJSON) => ComfyProject;
         /** converts a ComfyPromptJSON into it's canonical normal-form script */
-        static LoadFromComfyPromptJSON: (json: ComfyPromptJSON) => never;
+        static LoadFromComfyPromptJSON: (_json: ComfyPromptJSON) => never;
         /** * project running is not the same as graph running; TODO: explain */
         isRunning: boolean;
         run: (mode?: RunMode) => Promise<boolean>;
@@ -492,8 +490,8 @@ declare module "core/ComfyGraph" {
     import type { ComfyNodeUID } from "core/ComfyNodeUID";
     import type { ComfyProject } from "core/ComfyProject";
     import type { ComfyPromptJSON } from "core/ComfyPrompt";
-    import type { ScriptExecution } from "core/ScriptExecution";
     import type { Maybe } from "core/ComfyUtils";
+    import type { ScriptExecution } from "core/ScriptExecution";
     import { ComfyClient } from "core/ComfyClient";
     import { ComfyNode } from "core/ComfyNode";
     import { ComfySchema } from "core/ComfySchema";
@@ -547,6 +545,7 @@ declare module "core/ComfyNode" {
         progress: NodeProgress | null;
         $schema: ComfyNodeSchema;
         status: 'executing' | 'done' | 'error' | 'waiting' | null;
+        get isExecuting(): boolean;
         get statusEmoji(): "" | "❌" | "🔥" | "✅" | "⏳";
         get inputs(): ComfyNode_input;
         json: ComfyNodeJSON;
