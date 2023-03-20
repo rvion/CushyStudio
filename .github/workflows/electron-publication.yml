@@ -26,21 +26,25 @@ jobs:
               run: yarn install
 
             - name: build-linux
-              with:
-                  GH_TOKEN: ${{ secrets.github_token }}
               if: matrix.os == 'ubuntu-latest'
+              uses: actions/setup-node@v3.0.0
+              with:
+                  node-version: '16'
+                  GH_TOKEN: ${{ secrets.github_token }}
               run: yarn run binary:build:linux
 
             - name: build-mac
-              with:
-                  GH_TOKEN: ${{ secrets.github_token }}
               if: matrix.os == 'macos-latest'
+              with:
+                  node-version: '16'
+                  GH_TOKEN: ${{ secrets.github_token }}
               run: yarn run binary:build:mac
 
             - name: build-win
-              with:
-                  GH_TOKEN: ${{ secrets.github_token }}
               if: matrix.os == 'windows-latest'
+              with:
+                  node-version: '16'
+                  GH_TOKEN: ${{ secrets.github_token }}
               run: yarn run binary:build:win
 
             - name: release
