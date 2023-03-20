@@ -15,22 +15,24 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
     const nodes = uiSt.seeAll ? graph.nodesArray : graph.nodesArray.filter((f) => f.isExecuting)
     return (
         <div className='col gap'>
-            <Button size='small' icon={<I.ArrowDownload16Filled />} className='absolute right-1' />
-            <div className='row gap'>
+            <div className='row space-between'>
                 <div className='col gap'>
                     {nodes.map((node) => (
                         <ComfyNodeUI key={node.uid} node={node} />
                     ))}
+                </div>
+                <div className='row gap'>
                     <Button onClick={() => (uiSt.seeAll = !uiSt.seeAll)} size='small' className='self-start'>
                         {uiSt.seeAll ? 'hide' : `+ ${graph.nodesArray.length} nodes`}
                     </Button>
+                    <Button size='small' icon={<I.ArrowDownload16Filled />} />
                 </div>
-                <div className='col'>
-                    {graph.allArtifactsImgs.map((url) => (
-                        <Image onClick={() => {}} alt='prompt output' src={url} key={url} height={200} width={200} />
-                        // <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
-                    ))}
-                </div>
+            </div>
+            <div className='row wrap'>
+                {graph.allArtifactsImgs.map((url) => (
+                    <Image onClick={() => {}} alt='prompt output' src={url} key={url} height={100} width={100} />
+                    // <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
+                ))}
             </div>
         </div>
     )
