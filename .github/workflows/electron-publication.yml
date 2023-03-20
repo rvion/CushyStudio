@@ -32,9 +32,9 @@ jobs:
             - name: Install Dependencies
               run: yarn install
 
-            - name: build-linux
-              if: matrix.os == 'ubuntu-latest'
-              run: yarn run binary:build:linux
+            # - name: build-linux
+            #   if: matrix.os == 'ubuntu-latest'
+            #   run: yarn run binary:build:linux
 
             - name: build-mac
               if: matrix.os == 'macos-latest'
