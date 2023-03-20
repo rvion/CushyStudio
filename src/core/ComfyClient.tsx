@@ -181,7 +181,6 @@ export class ComfyClient {
             if (this.ws?.readyState === WebSocket.OPEN) this.ws.close()
             this.wsStatus = 'off'
         }
-        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
         const ws =
             typeof window !== 'undefined' //
                 ? new WebSocket(`${this.serverHostWs}/ws`)
