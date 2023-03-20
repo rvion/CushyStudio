@@ -6,6 +6,7 @@ import { comfyColors } from '../core/ComfyColors'
 import { ComfyGraph } from '../core/ComfyGraph'
 import { ComfyNode } from '../core/ComfyNode'
 import { ComfyNodeSchema } from '../core/ComfySchema'
+import { useLayout } from './CushyLayoutCtx'
 import { NodeRefUI } from './NodeRefUI'
 
 export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }) {
@@ -13,6 +14,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
     if (graph == null) return <>no execution yet</>
     const uiSt = useLocalObservable(() => ({ seeAll: false }))
     const nodes = uiSt.seeAll ? graph.nodesArray : graph.nodesArray.filter((f) => f.isExecuting)
+    const layout = useLayout()
     return (
         <div className='col gap'>
             <div className='row space-between'>
@@ -30,7 +32,14 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
             </div>
             <div className='row wrap'>
                 {graph.allArtifactsImgs.map((url) => (
-                    <Image onClick={() => {}} alt='prompt output' src={url} key={url} height={100} width={100} />
+                    <Image
+                        onClick={() => layout.addImagePopup(url)}
+                        alt='prompt output'
+                        src={url}
+                        key={url}
+                        height={100}
+                        width={100}
+                    />
                     // <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
                 ))}
             </div>

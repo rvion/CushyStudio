@@ -1,12 +1,13 @@
 import { observer } from 'mobx-react-lite'
-import DockLayout, { LayoutData } from 'rc-dock'
+import DockLayout, { LayoutData, PanelData } from 'rc-dock'
 import { useMemo } from 'react'
 import { TutorialUI } from '../core/TutorialUI'
 import { ArtifactsUI } from './ArtifactsUI'
 import { IdeInfosUI } from './IdeInfosUI'
 import { ExecutionUI } from './ExecutionUI'
 import { EditorPaneUI } from './EditorPaneUI'
-import { CushyLayoutContext } from './LayoutCtx'
+import { CushyLayoutContext } from './CushyLayoutCtx'
+import { Image } from '@fluentui/react-components'
 // import { VisUI } from './VisUI'
 
 export class CushyLayout {
@@ -25,7 +26,30 @@ export class CushyLayout {
         // }, 5_000)
     }
 
-    addPopup = () => {
+    addImagePopup = (url: string) => {
+        if (this.dockLayout == null) return
+        console.log('🟢 show image in popup')
+        const uid = Math.random().toString(36).substr(2, 9)
+        const newTab: PanelData = {
+            x: Math.random() * 1000,
+            y: Math.random() * 1000,
+            w: 800,
+            h: 800,
+            tabs: [
+                {
+                    closable: true,
+                    minWidth: 180,
+                    minHeight: 200,
+                    id: 'ide-' + uid,
+                    title: 'test',
+                    content: <Image fit='contain' height={'100%'} alt='prompt output' src={url} key={url} />,
+                },
+            ],
+        }
+        this.dockLayout.dockMove(newTab, null, 'float')
+    }
+
+    addHelpPopup = () => {
         if (this.dockLayout == null) return
         console.log('🟢 addPopup')
         const uid = Math.random().toString(36).substr(2, 9)
