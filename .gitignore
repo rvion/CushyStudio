@@ -4,7 +4,16 @@ node_modules
 xformers
 dts
 dist
+
+# mac
 .DS_Store
+
+# in case of local ComfyUI clone
 ComfyUI
 
+# legacy-release files
 website/static/0.0.3-2023-03-19-index.html
+
+# electron
+dist
+out
