@@ -1,7 +1,6 @@
 lockfileVersion: 5.3
 
 specifiers:
-  '@electron/notarize': ^1.2.3
   '@fluentui/react-components': ^9.18.2
   '@fluentui/react-icons': ^2.0.196
   '@gitgraph/core': ^1.5.0
@@ -26,6 +25,7 @@ specifiers:
   react: ^18.2.0
   react-dom: ^18.2.0
   react-toastify: ^9.1.1
+  tauri-plugin-websocket-api: github:tauri-apps/tauri-plugin-websocket
   ts-node: ^10.9.1
   typescript: ^5.0.2
   vite: ^4.2.1
@@ -50,11 +50,11 @@ dependencies:
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-toastify: 9.1.1_react-dom@18.2.0+react@18.2.0
+  tauri-plugin-websocket-api: github.com/tauri-apps/tauri-plugin-websocket/ee8a3465278043d8bfa09f5d79fd9f23bf2a5aa9
   ts-node: 10.9.1_cac398dc69ef9ba81c05bffba6cf6d5b
   ws: 8.13.0
 
 devDependencies:
-  '@electron/notarize': 1.2.3
   '@tauri-apps/cli': 1.2.3
   '@types/node': 18.15.5
   '@types/prettier': 2.7.2
@@ -307,16 +307,6 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
     dev: false
-
-  /@electron/notarize/1.2.3:
-    resolution: {integrity: sha512-9oRzT56rKh5bspk3KpAVF8lPKHYQrBnRwcgiOeR0hdilVEQmszDaAu0IPCPrwwzJN0ugNs0rRboTreHMt/6mBQ==}
-    engines: {node: '>= 10.0.0'}
-    dependencies:
-      debug: 4.3.4
-      fs-extra: 9.1.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: true
 
   /@emotion/hash/0.9.0:
     resolution: {integrity: sha512-14FtKiHhy2QoPIzdTcvh//8OyBlknNs2nXRwIhG904opCby3l+9Xaf/wuPvICBF0rc1ZCNBd3nKe9cd2mecVkQ==}
@@ -1885,11 +1875,6 @@ packages:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
     dev: false
 
-  /at-least-node/1.0.0:
-    resolution: {integrity: sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==}
-    engines: {node: '>= 4.0.0'}
-    dev: true
-
   /bowser/2.11.0:
     resolution: {integrity: sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA==}
     dev: false
@@ -2026,16 +2011,6 @@ packages:
       to-regex-range: 5.0.1
     dev: true
 
-  /fs-extra/9.1.0:
-    resolution: {integrity: sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==}
-    engines: {node: '>=10'}
-    dependencies:
-      at-least-node: 1.0.0
-      graceful-fs: 4.2.11
-      jsonfile: 6.1.0
-      universalify: 2.0.0
-    dev: true
-
   /fsevents/2.3.2:
     resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -2055,10 +2030,6 @@ packages:
   /globals/11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
     engines: {node: '>=4'}
-    dev: true
-
-  /graceful-fs/4.2.11:
-    resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
     dev: true
 
   /has-flag/3.0.0:
@@ -2097,14 +2068,6 @@ packages:
     resolution: {integrity: sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==}
     engines: {node: '>=6'}
     hasBin: true
-    dev: true
-
-  /jsonfile/6.1.0:
-    resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
-    dependencies:
-      universalify: 2.0.0
-    optionalDependencies:
-      graceful-fs: 4.2.11
     dev: true
 
   /keyborg/2.0.0:
@@ -2594,11 +2557,6 @@ packages:
     hasBin: true
     dev: true
 
-  /universalify/2.0.0:
-    resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
-    engines: {node: '>= 10.0.0'}
-    dev: true
-
   /update-browserslist-db/1.0.10_browserslist@4.21.5:
     resolution: {integrity: sha512-OztqDenkfFkbSG+tRxBeAnCVPckDBcvibKd35yDONx6OU8N7sqgwc7rCbkJ/WcYtVRZ4ba68d6byhC21GFh7sQ==}
     hasBin: true
@@ -2693,4 +2651,12 @@ packages:
   /yn/3.1.1:
     resolution: {integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==}
     engines: {node: '>=6'}
+    dev: false
+
+  github.com/tauri-apps/tauri-plugin-websocket/ee8a3465278043d8bfa09f5d79fd9f23bf2a5aa9:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-websocket/tar.gz/ee8a3465278043d8bfa09f5d79fd9f23bf2a5aa9}
+    name: tauri-plugin-websocket-api
+    version: 0.0.0
+    dependencies:
+      '@tauri-apps/api': 1.2.0
     dev: false
