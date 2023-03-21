@@ -9,6 +9,7 @@ import { ScriptStep_askBoolean, ScriptStep_askString } from './ScriptStep_ask'
 import { ScriptStep } from './ScriptStep'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+import { fetch, Body } from '@tauri-apps/api/http'
 
 /** script runtime context */
 export class ScriptExecution {
@@ -72,7 +73,7 @@ export class ScriptExecution {
         // otherwise, we might get stuck
         void fetch(`${this.project.client.serverHostHTTP}/prompt`, {
             method: 'POST',
-            body: JSON.stringify(out),
+            body: Body.json(out),
         })
 
         // await sleep(1000)
