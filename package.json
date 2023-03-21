@@ -8,11 +8,11 @@
         "email": "vion.remi@gmail.com"
     },
     "license": "unlicensed",
-    "version": "0.0.17",
+    "version": "0.0.18",
     "type": "module",
     "scripts": {
         "[RELEASE]": "🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀🚀",
-        "release:minor": "bump patch -c -t -p -a",
+        "release:minor": "bump patch -c -t -p",
         "[safety]": "😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷😷",
         "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
         "typecheck:web": "tsc --noEmit -p tsconfig.web.json --composite false",
@@ -59,6 +59,7 @@
         "@monaco-editor/react": "^4.4.6",
         "@react-spring/web": "^9.7.1",
         "@tauri-apps/api": "^1.2.0",
+        "array.prototype.at": "^1.1.1",
         "esbuild": "^0.17.12",
         "mobx": "^6.8.0",
         "mobx-react-lite": "^3.4.3",
