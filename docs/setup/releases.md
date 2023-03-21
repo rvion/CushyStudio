@@ -79,3 +79,7 @@ Examples:
     and all markdown files in the "docs" directory.  Commits the updated files to git,
     and tags the commit as "Version 4.27.9934".
 ```
+
+---
+
+-   https://github.com/tauri-apps/tauri-action/blob/4c72e78a8e3c6cd564986c6cec3f2a437ee9c1d1/.github/workflows/test-action.yml#L23
