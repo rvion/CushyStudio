@@ -2,6 +2,7 @@ import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
 import type { ScriptExecution } from './ScriptExecution'
 import { ScriptStep } from './ScriptStep'
+import { fetch } from '@tauri-apps/api/http'
 
 import * as WS from 'ws'
 
@@ -81,20 +82,11 @@ export class ComfyClient {
     }
 
     fetchPrompHistory = async () => {
-        const x = await fetch(`${this.serverHostHTTP}/history`, {}).then((x) => x.json())
+        const res = await fetch(`${this.serverHostHTTP}/history`, { method: 'GET' })
+        console.log(res.data)
+        const x = res.data
         return x
     }
-
-    /** retrie the comfy spec from the schema*/
-    // fetchObjectsSchema2 = async (): Promise<ComfySchemaJSON> => {
-    //     const base = window.location.href
-    //     const res = await fetch(`${base}/object_infos.json`, {})
-    //     const schema$: ComfySchemaJSON = await res.json()
-    //     // console.log('🟢 schema$:', schema$)
-    //     this.schema.update(schema$)
-    //     // console.log('🟢 schema:', this.schema.nodes)
-    //     return schema$
-    // }
 
     CRITICAL_ERROR: Maybe<{
         title: string
@@ -104,15 +96,17 @@ export class ComfyClient {
     /** retri e the comfy spec from the schema*/
     fetchObjectsSchema = async (): Promise<ComfySchemaJSON> => {
         // 1. fetch schema$
-        const timeoutController = new AbortController()
-        const timeoutID = setTimeout(() => timeoutController.abort(), 2000)
+        // const timeoutController = new AbortController()
+        // const timeoutID = setTimeout(() => timeoutController.abort(), 2000)
         const url = `${this.serverHostHTTP}/object_info`
 
         let schema$: ComfySchemaJSON
         try {
-            const res = await fetch(url, { signal: timeoutController.signal })
-            clearTimeout(timeoutID)
-            schema$ = await res.json()
+            const res = await fetch(url, { method: 'GET', timeout: { secs: 3, nanos: 0 } })
+            console.log(res.data)
+            schema$ = res.data as any
+            // clearTimeout(timeoutID)
+            // schema$ = await res.json()
         } catch (error) {
             console.log('🔴', error)
             this.CRITICAL_ERROR = {

@@ -9,10 +9,13 @@ import { ensureMonacoReady } from './Monaco'
 import { FluentProvider, webDarkTheme } from '@fluentui/react-components'
 import { GithubCorner } from './GithubCorner'
 import { invoke } from '@tauri-apps/api'
+import { testCors } from './cors'
 
 invoke('greet', { name: 'World' })
     // `invoke` returns a Promise
     .then((response) => console.log('🟢', response))
+
+console.log(testCors())
 
 export const AppUI = observer(function AppUI_() {
     const monaco = ensureMonacoReady()
