@@ -19,6 +19,7 @@ import { AssetTreeUI } from './AssetTreeUI'
 import { ScriptStep_prompt } from '../../core/ScriptStep_prompt'
 import { useSt } from '../stContext'
 import { ExecutionStepIconUI } from './ExecutionStepIconUI'
+import { CivitaiUI } from './CIvitaiUI'
 
 const iconStyleProps: I.FluentIconsProps = {
     primaryFill: 'red',
@@ -45,14 +46,7 @@ export const MenuUI = observer(function MenuUI_() {
     const client = useSt()
     return (
         <Tree
-            size='small'
             aria-label='Tree'
-            // openItems={[
-            //     //
-            //     'projects',
-            //     client.project.id,
-            //     client.project.currentRun?.uid ?? 'currentRun',
-            // ]}
             defaultOpenItems={[
                 //
                 'projects',
@@ -63,19 +57,9 @@ export const MenuUI = observer(function MenuUI_() {
                 if (e) e.focus()
             }}
         >
-            {/* USER PREFERENCES */}
-            {/* <TreeItem>
-                <TreeItemPersonaLayout media={<Avatar />}>content</TreeItemPersonaLayout>
-            </TreeItem> */}
-
             {/* PROJECTS */}
             <TreeItem id='projects'>
-                <TreeItemLayout
-                    iconBefore={<I.DocumentBulletListMultiple24Regular />}
-                    // aside={<RenderAside />}
-                >
-                    Projects
-                </TreeItemLayout>
+                <TreeItemLayout iconBefore={<I.DocumentBulletListMultiple24Regular />}>Projects</TreeItemLayout>
                 <Tree>
                     {client.projects.map((project) => (
                         <TreeItem
@@ -226,6 +210,7 @@ export const MenuUI = observer(function MenuUI_() {
                 </Tree>
             </TreeItem>
             <AssetTreeUI />
+            <CivitaiUI />
         </Tree>
     )
 })
