@@ -50,7 +50,9 @@ declare module "core/ComfyAPI" {
     };
 }
 declare module "ui/VisUI" {
-    
+    type Node = any;
+    type Edge = any;
+    type Options = any;
     export type VisNodes = any;
     export type VisEdges = any;
     export type VisOptions = any;
@@ -323,7 +325,7 @@ declare module "ui/TypescriptOptions" {
     export type TypescriptOptions = any
     export type ITextModel = any
     export type IStandaloneCodeEditor = any
-    export type Monaco = any;
+    export type Monaco = typeof T;
 }
 declare module "ui/Monaco" {
     export let globalMonaco: typeof import("monaco-editor") | null;
@@ -411,8 +413,7 @@ declare module "core/ComfyClient" {
         constructor(opts: ComfyClientOptions);
         get serverHostHTTP(): string;
         get serverHostWs(): string;
-        fetchPrompHistory: () => Promise<any>;
-        /** retrie the comfy spec from the schema*/
+        fetchPrompHistory: () => Promise<unknown>;
         CRITICAL_ERROR: Maybe<{
             title: string;
             help: string;

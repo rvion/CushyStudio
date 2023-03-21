@@ -57,8 +57,8 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     onExecuting = (msg: WsMsgExecuting) => {
         if (msg.data.node == null) {
             console.log('🔴 null node')
-            // 2023-03-18 rvion: if I understand correctly,
-            // null here means there is no work to do.
+            // 2023-03-18 rvion: if I understand correctly, null here means there is no work to do.
+            // 2023-03-21 rvion: actually, it probably means the prompt is done
             if (this.currentExecutingNode == null) this.notifyEmptyPrompt()
             else this.currentExecutingNode.status = 'done'
             this.currentExecutingNode = null
@@ -77,14 +77,14 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     /** udpate execution list */
     onExecuted = (msg: WsMsgExecuted) => {
         this.outputs.push(msg)
-        this.currentExecutingNode = null
+        // this.currentExecutingNode = null
         const node = this._graph.getNodeOrCrash(msg.data.node)
         // const node = this.getNodeOrCrash(msg.data.node)
         // this.currentStep++
         node.artifacts.push(msg.data.output)
         this.execution.allOutputs.push(msg.data.output)
         console.log('🟢', this._graph.uid, node.uid, node.artifacts)
-        this._finish()
+        // this._finish()
     }
 
     /** finish this step */
