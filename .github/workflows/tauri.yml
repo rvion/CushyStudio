@@ -31,7 +31,7 @@ jobs:
             - name: install pnpm
               uses: pnpm/action-setup@v2
               with:
-              version: 7.x.x
+                  version: 7.x.x
             - name: install frontend dependencies
               run: pnpm install # change this to npm or pnpm depending on which one you use
             - uses: tauri-apps/tauri-action@v0
