@@ -1,3 +1,7 @@
+2023-03-21
+
+-   🔥 CI/CD: add electron release pipeline (win-only for now; mac and linux almost working)
+
 2023-03-20
 
 -   ✨ NEW: new image viewer
