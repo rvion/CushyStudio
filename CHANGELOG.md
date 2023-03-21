@@ -1,9 +1,12 @@
 2023-03-21
 
--   🔥 CI/CD: add electron release pipeline (win-only for now; mac and linux almost working)
+-   🔥 CIVITAI: POC civitai integration
+-   🔥 CI/CD: switch to tauri: https://tauri.app/
+-   🔥 CI/CD: remove electron
 
 2023-03-20
 
+-   🔥 CI/CD: add electron release pipeline (win-only for now; mac and linux almost working)
 -   ✨ NEW: new image viewer
 -   💄 style: smaller node list by default (only show currently executing node)
 -   🧹 CLEAN: esling setup + fix all linting errors
