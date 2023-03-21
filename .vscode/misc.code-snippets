@@ -1,14 +1,14 @@
 {
-   "create new observable react component": {
-      "scope": "typescriptreact",
-      "prefix": "ocomp",
-      "body": [
-         "export const $1UI = observer(function $1UI_(p: { $2 }){",
-         "return (<div>",
-         "$3",
-         "</div>)",
-         "})"
-      ],
-      "description": "scaffold a new React functional component"
-   }
+    "create new observable react component": {
+        "scope": "typescriptreact",
+        "prefix": "ocomp",
+        "body": ["export const $1UI = observer(function $1UI_(p: { $2 }){", "return (<div>", "$3", "</div>)", "})"],
+        "description": "scaffold a new React functional component"
+    },
+    "uist": {
+        "scope": "typescriptreact",
+        "prefix": "uist",
+        "body": ["const uiSt = useLocalObservable$1(() => ({$2}))"],
+        "description": "uist"
+    }
 }
