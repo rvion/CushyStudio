@@ -67,3 +67,29 @@ brew uninstall rust
 ## `cmd + option + i` to open devtools
 
 vscode > `cmf shifp p` => `rust-analyzer: restart server` to fix errors
+
+---
+
+test pipelines
+
+```
+brew install act
+```
+
+```
+cd src-tauri
+cargo tree -i tokio
+cargo tree -i request
+# -i = inversed
+cargo tree
+```
+
+# Feature flags
+
+https://docs.rs/tauri/latest/tauri/
+
+cliquer sur feature flags tout en haut
+
+disabling via cargo.toml
+
+        "beforeBuildCommand": "pnpm build",
