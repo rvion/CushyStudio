@@ -1,28 +1,17 @@
-import { Input, Label } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { DropZoneUI } from './DropZoneUI'
 import { MenuUI } from './menu/MenuUI'
+import { PConnectUI } from './pConnect/pConnect'
+import { PImportUI } from './pConnect/pImport'
 import { useSt } from './stContext'
 
 export const IdeInfosUI = observer(function IdeInfosUI_() {
-    const client = useSt()
     return (
-        <div className='col gap1 h100'>
-            <Label>
-                Host <Input type='text' value={client.serverIP} onChange={(e) => (client.serverIP = e.target.value)} />
-            </Label>
-            <Label>
-                Port{' '}
-                <Input
-                    type='number'
-                    value={client.serverPort.toString()}
-                    onChange={(e) => (client.serverPort = parseInt(e.target.value, 10))}
-                />
-            </Label>
-            <button onClick={() => setTimeout(() => window.location.reload(), 1000)}>connect</button>
+        <div className='col gap h100'>
             <MenuUI />
             <div className='grow'></div>
-            <DropZoneUI />
+            <PConnectUI />
+            <PImportUI />
         </div>
         //     <div className='row gap'>
         //         {/* <button>Open</button> */}
