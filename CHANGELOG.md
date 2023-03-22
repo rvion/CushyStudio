@@ -1,3 +1,13 @@
+2023-03-22
+
+-   POC gallery pane showing all images of all steps of all runs of all projects
+-   POC open / save dialog to (not yet implemented) open and save projects
+-   minor layout improvements
+-   POC built-in wildcards
+-   new `randomSeed()` basic implem
+-   some code cleanup
+-   failed attempts to improve the release pipeline (help needed)
+
 2023-03-21
 
 -   🔥 CIVITAI: POC civitai integration
