@@ -24,6 +24,9 @@ export class ComfyGraph {
     nodes = new Map<string, ComfyNode<any>>()
     isRunning = false
 
+    randomSeed() {
+        return Math.floor(Math.random() * 99999999)
+    }
     wildcards = wildcards
 
     /** return the coresponding comfy prompt  */

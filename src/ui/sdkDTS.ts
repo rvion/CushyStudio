@@ -714,6 +714,7 @@ declare module "core/ComfyGraph" {
         get nodesArray(): ComfyNode<any>[];
         nodes: Map<string, ComfyNode<any>>;
         isRunning: boolean;
+        randomSeed(): number;
         wildcards: {
             "3d_term": string[];
             actors: string[];
@@ -818,10 +819,10 @@ declare module "core/ComfyGraph" {
             forest_type: string[];
             fruit: string[];
             furniture: string[];
-            game: string[]; /** wether it should really send the prompt to the backend */
+            game: string[];
             gem: string[];
             gen_modifier: string[];
-            gender_ext: string[];
+            gender_ext: string[]; /** wether it should really send the prompt to the backend */
             gender: string[];
             genre: string[];
             hair_color: string[];
@@ -838,16 +839,17 @@ declare module "core/ComfyGraph" {
             horror: string[];
             identity: string[];
             interior: string[];
-            iso_stop: string[];
             /** visjs JSON format (network visualisation) */
+            iso_stop: string[];
             landscape: string[];
             legwear: string[];
             lingerie: string[];
+            /** visjs JSON format (network visualisation) */
             lipstick_shade: string[];
             lipstick: string[];
             location: string[];
-            makeup: string[];
             /** visjs JSON format (network visualisation) */
+            makeup: string[];
             male_adult: string[];
             male_young: string[];
             monster: string[];
@@ -865,7 +867,6 @@ declare module "core/ComfyGraph" {
             noun_romance: string[];
             noun_scifi: string[];
             occupation: string[];
-            /** visjs JSON format (network visualisation) */
             oil_painting: string[];
             outfit_cottagecore: string[];
             outfit_goth: string[];
@@ -878,8 +879,7 @@ declare module "core/ComfyGraph" {
             pop_culture: string[];
             pop_location: string[];
             portrait_type: string[];
-            /** visjs JSON format (network visualisation) */
-            public: string[]; /** visjs JSON format (network visualisation) */
+            public: string[];
             punk: string[];
             purse: string[];
             quantity: string[];

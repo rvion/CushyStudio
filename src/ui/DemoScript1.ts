@@ -7,9 +7,7 @@ const TOPIC = await C.askString('what is your subject about? (e.g. "cat")', 'cat
 
 const positive = C.CLIPTextEncode({ text: 'masterpiece '+ TOPIC, clip: ckpt })
 const negative = C.CLIPTextEncode({ text: 'bad hands', clip: ckpt })
-const sampler = C.KSampler({ seed: ${
-    Math.round(Math.random() * 1000) /*8566257*/
-}, steps: 20, cfg: 8, sampler_name: 'euler', scheduler: 'normal', denoise: 1, model: ckpt, positive, negative, latent_image: latent })
+const sampler = C.KSampler({ seed: C.randomSeed(), steps: 20, cfg: 8, sampler_name: 'euler', scheduler: 'normal', denoise: 1, model: ckpt, positive, negative, latent_image: latent })
 const vae = C.VAEDecode({ samples: sampler, vae: ckpt })
 const image = C.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
 
