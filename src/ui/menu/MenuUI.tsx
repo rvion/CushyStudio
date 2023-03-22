@@ -19,7 +19,6 @@ import { AssetTreeUI } from './AssetTreeUI'
 import { ScriptStep_prompt } from '../../core/ScriptStep_prompt'
 import { useSt } from '../stContext'
 import { ExecutionStepIconUI } from './ExecutionStepIconUI'
-import { CivitaiUI } from './CIvitaiUI'
 
 const iconStyleProps: I.FluentIconsProps = {
     primaryFill: 'red',
@@ -191,26 +190,7 @@ export const MenuUI = observer(function MenuUI_() {
                 </Tree>
             </TreeItem>
 
-            {/* GUI */}
-            <TreeItem /*actions={<Actions />}*/>
-                <TreeItemLayout
-                    // aside={<RenderAside />}
-                    iconBefore={<I.EmojiSparkle24Regular />}
-                >
-                    GUI
-                </TreeItemLayout>
-                <Tree>
-                    <TreeItem /*actions={<Actions />}*/>
-                        <TreeItemLayout
-                        // aside={<RenderAside />}
-                        >
-                            Monaco
-                        </TreeItemLayout>
-                    </TreeItem>
-                </Tree>
-            </TreeItem>
             <AssetTreeUI />
-            <CivitaiUI />
         </Tree>
     )
 })

@@ -1,5 +1,5 @@
 import ReactDOM from 'react-dom/client'
-import { AppUI } from './AppUI'
+import { AppUI } from './layout/AppUI'
 
 import 'rc-dock/dist/rc-dock-dark.css'
 import 'react-toastify/dist/ReactToastify.css'

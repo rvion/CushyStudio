@@ -42,7 +42,13 @@ body {
 .py { padding-top: .6rem; padding-bottom: .6rem; }
 .darker { filter: brightness(.9); }
 .pointer { cursor: pointer; }
-
+/* Wrapper ------------------------------------- */
+html, body, #root {height: 100%;}
+#root {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 /* CORE ---------------------------------------- */
 button:hover { filter: brightness(1.2); }
 button:active { filter: brightness(.8); }

@@ -1,4 +1,4 @@
-import { Button, Card, Image, Input } from '@fluentui/react-components'
+import { Button, Card, Image, Input, Text } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Civitai } from '../../civitai/civitaiAPI'
@@ -6,7 +6,8 @@ import { Civitai } from '../../civitai/civitaiAPI'
 export const CivitaiUI = observer(function CivitaiUI_() {
     const c = useMemo(() => new Civitai(), [])
     return (
-        <div>
+        <Card>
+            <Text size={500}>Civitai</Text>
             <Input value={c.query} onChange={(e) => (c.query = e.target.value)}></Input>
             <Button
                 onClick={async () => {
@@ -42,7 +43,7 @@ export const CivitaiUI = observer(function CivitaiUI_() {
                     })}
                 </div>
             )}
-        </div>
+        </Card>
     )
 })
 

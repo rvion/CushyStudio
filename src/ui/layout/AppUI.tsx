@@ -1,15 +1,16 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
-import { CushyLayoutUI } from './CushyLayoutUI'
-import { stContext } from './stContext'
-import { ComfyClient } from '../core/ComfyClient'
-import { ToastContainer } from 'react-toastify'
-import { ensureMonacoReady } from './Monaco'
 import { FluentProvider, webDarkTheme } from '@fluentui/react-components'
-import { GithubCorner } from './GithubCorner'
 import { invoke } from '@tauri-apps/api'
-import { testCors } from './cors'
+import { ToastContainer } from 'react-toastify'
+import { ComfyClient } from '../../core/ComfyClient'
+import { testCors } from '../cors'
+import { GithubCorner } from '../GithubCorner'
+import { ensureMonacoReady } from '../Monaco'
+import { stContext } from '../stContext'
+import { CushyLayoutUI } from './CushyLayoutUI'
+import { AppBarUI } from './AppBarUI'
 
 invoke('greet', { name: 'World' })
     // `invoke` returns a Promise
@@ -32,11 +33,14 @@ export const AppUI = observer(function AppUI_() {
 
     // if (backend.client)
     return (
-        <FluentProvider theme={webDarkTheme}>
+        <FluentProvider theme={webDarkTheme} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <stContext.Provider value={client}>
                 <GithubCorner />
                 <ToastContainer />
-                <CushyLayoutUI />
+                <AppBarUI />
+                <div className='relative grow'>
+                    <CushyLayoutUI />
+                </div>
             </stContext.Provider>
         </FluentProvider>
     )
