@@ -12,6 +12,7 @@ import { ComfyClient } from './ComfyClient'
 import { comfyColors } from './ComfyColors'
 import { ComfyNode } from './ComfyNode'
 import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
+import { wildcards } from '../embeds/wildcards'
 
 export type RunMode = 'fake' | 'real'
 
@@ -22,6 +23,8 @@ export class ComfyGraph {
     get nodesArray() { return Array.from(this.nodes.values()) } // prettier-ignore
     nodes = new Map<string, ComfyNode<any>>()
     isRunning = false
+
+    wildcards = wildcards
 
     /** return the coresponding comfy prompt  */
     get json(): ComfyPromptJSON {

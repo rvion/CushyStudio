@@ -8,7 +8,7 @@ export const CivitaiUI = observer(function CivitaiUI_() {
     return (
         <Card>
             <Text size={500}>Civitai</Text>
-            <Input value={c.query} onChange={(e) => (c.query = e.target.value)}></Input>
+            <Input placeholder='rechercher' value={c.query} onChange={(e) => (c.query = e.target.value)}></Input>
             <Button
                 onClick={async () => {
                     const res = await c.search({ query: c.query, page: '1' })
