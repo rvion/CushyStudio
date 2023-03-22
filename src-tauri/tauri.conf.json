@@ -13,6 +13,11 @@
     "tauri": {
         "allowlist": {
             "all": true,
+            "dialog": {
+                "all": true,
+                "open": true,
+                "save": true
+            },
             "fs": {
                 "all": true,
                 "copyFile": true,
