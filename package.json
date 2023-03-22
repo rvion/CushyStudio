@@ -69,7 +69,7 @@
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-toastify": "^9.1.1",
-        "tauri-plugin-websocket-api": "github:tauri-apps/tauri-plugin-websocket",
+        "scheduler": "^0.20.0",
         "ts-node": "^10.9.1",
         "ws": "^8.13.0"
     },
@@ -82,7 +82,6 @@
         "@types/ws": "^8.5.4",
         "@vitejs/plugin-react": "^3.1.0",
         "typescript": "^5.0.2",
-        "vite": "^4.2.1",
-        "vite-plugin-singlefile": "^0.13.3"
+        "vite": "^4.2.1"
     }
 }
