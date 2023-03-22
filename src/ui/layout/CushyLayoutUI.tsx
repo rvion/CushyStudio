@@ -1,31 +1,33 @@
+import { Image } from '@fluentui/react-components'
+import { makeObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import DockLayout, { LayoutData, PanelData } from 'rc-dock'
 import { useMemo } from 'react'
 import { TutorialUI } from '../../core/TutorialUI'
 import { ArtifactsUI } from '../ArtifactsUI'
-import { IdeInfosUI } from '../IdeInfosUI'
-import { ExecutionUI } from '../ExecutionUI'
 import { EditorPaneUI } from '../EditorPaneUI'
+import { ExecutionUI } from '../ExecutionUI'
+import { IdeInfosUI } from '../IdeInfosUI'
+import { PGalleryUI } from '../pConnect/pGallery'
 import { CushyLayoutContext } from './CushyLayoutCtx'
-import { Image } from '@fluentui/react-components'
-import { AppBarUI } from './AppBarUI'
-// import { VisUI } from './VisUI'
 
 export class CushyLayout {
     layout = defaultLayout()
 
+    gallerySize = 100
     dockLayout: DockLayout | null = null
     getRef = (r: DockLayout | null) => (this.dockLayout = r)
 
     constructor() {
-        this.spawnPopups()
+        // this.spawnPopups()
+        makeObservable(this, { gallerySize: observable })
     }
 
-    spawnPopups = () => {
-        // setTimeout(() => {
-        //     this.addPopup()
-        // }, 5_000)
-    }
+    // spawnPopups = () => {
+    //     // setTimeout(() => {
+    //     //     this.addPopup()
+    //     // }, 5_000)
+    // }
 
     addImagePopup = (url: string) => {
         if (this.dockLayout == null) return
@@ -150,20 +152,36 @@ const defaultLayout = (): LayoutData => ({
                 ],
             },
             {
-                // mode: 'vertical',
+                mode: 'vertical',
                 size: 99999,
-                tabs: [
+                children: [
                     {
-                        id: 'Editor1',
-                        title: 'Project Code',
-                        content: <EditorPaneUI />,
+                        tabs: [
+                            {
+                                id: 'Editor1',
+                                title: 'Project Code',
+                                content: <EditorPaneUI />,
+                            },
+                            // {
+                            //     minHeight: 280,
+                            //     id: 'Graph',
+                            //     title: 'Graph',
+                            //     content: <VisUI />,
+                            // },
+                        ],
                     },
-                    // {
-                    //     minHeight: 280,
-                    //     id: 'Graph',
-                    //     title: 'Graph',
-                    //     content: <VisUI />,
-                    // },
+                    {
+                        // mode: 'vertical',
+                        tabs: [
+                            {
+                                minWidth: 280,
+                                minHeight: 280,
+                                id: 'artifacts',
+                                title: 'Images',
+                                content: <PGalleryUI />,
+                            },
+                        ],
+                    },
                 ],
             },
             // {
@@ -174,9 +192,10 @@ const defaultLayout = (): LayoutData => ({
             //             minHeight: 280,
             //             id: 'artifacts',
             //             title: 'Images',
-            //             content: <ArtifactsUI />,
+            //             content: <PGalleryUI />,
             //         },
-
+            //     ],
+            // },
             //         // {
             //         //     minWidth: 280,
             //         //     id: 'assets',
