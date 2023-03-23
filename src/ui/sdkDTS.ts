@@ -1,4 +1,5 @@
 export const c__:string = `
+
 declare module "core/ComfyNodeUID" {
     export type ComfyNodeUID = string;
 }
@@ -31,12 +32,18 @@ declare module "core/ComfyAPI" {
     };
     export type WsMsgExecuted = {
         type: 'executed';
-        data: {
-            node: ComfyNodeUID;
-            output: {
-                images: string[];
-            };
+        data: WsMsgExecutedData;
+    };
+    export type WsMsgExecutedData = {
+        node: ComfyNodeUID;
+        output: {
+            images: ComfyImageInfo[];
         };
+    };
+    export type ComfyImageInfo = {
+        filename: string;
+        subfolder: string;
+        type: string;
     };
     export type NodeProgress = {
         value: number;
@@ -47,6 +54,9 @@ declare module "core/ComfyAPI" {
             queue_remaining: number;
         };
         sid: string;
+    };
+    export type ComfyUploadImageResult = {
+        name: string;
     };
 }
 declare module "ui/VisUI" {
@@ -120,6 +130,25 @@ declare module "core/ScriptStep_Iface" {
         finished: Promise<Result>;
     }
 }
+declare module "core/CushyImage" {
+    import type { ComfyImageInfo } from "core/ComfyAPI";
+    import type { ComfyClient } from "core/CushyClient";
+    import type { Maybe } from "core/ComfyUtils";
+    /** Cushy wrapper around ComfyImageInfo */
+    export class CushyImage {
+        client: ComfyClient;
+        data: ComfyImageInfo;
+        /** unique image id */
+        uid: string;
+        /** path within the input folder */
+        inputPath?: Maybe<string>;
+        /** this is such a bad workaround but 🤷‍♂️ */
+        makeAvailableAsInput: () => Promise<string>;
+        constructor(client: ComfyClient, data: ComfyImageInfo);
+        /** url to acces the image */
+        get url(): string;
+    }
+}
 declare module "core/ScriptStep_prompt" {
     import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from "core/ComfyAPI";
     import type { ScriptExecution } from "core/ScriptExecution";
@@ -127,14 +156,19 @@ declare module "core/ScriptStep_prompt" {
     import type { ComfyNode } from "core/ComfyNode";
     import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
     import { ComfyGraph } from "core/ComfyGraph";
+    import { CushyImage } from "core/CushyImage";
     export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         execution: ScriptExecution;
         prompt: ComfyPromptJSON;
-        uid: string;
         static promptID: number;
+        /** unique step id */
+        uid: string;
+        /** human-readable step name */
         name: string;
-        /** ready to be forked */
+        /** deepcopy of run graph at creation time; ready to be forked */
         _graph: ComfyGraph;
+        /** short-hand getter to access parent client */
+        get client(): import("core/CushyClient").ComfyClient;
         constructor(execution: ScriptExecution, prompt: ComfyPromptJSON);
         _resolve: (value: this) => void;
         _rejects: (reason: any) => void;
@@ -147,7 +181,8 @@ declare module "core/ScriptStep_prompt" {
         /** update pointer to the currently executing node */
         onExecuting: (msg: WsMsgExecuting) => void;
         /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
-        outputs: WsMsgExecuted[];
+        private outputs;
+        images: CushyImage[];
         /** udpate execution list */
         onExecuted: (msg: WsMsgExecuted) => void;
         /** finish this step */
@@ -203,16 +238,17 @@ declare module "core/ScriptExecution" {
     import { ComfyGraph } from "core/ComfyGraph";
     import { WsMsgExecuted } from "core/ComfyAPI";
     import { ScriptStep } from "core/ScriptStep";
+    import { CushyImage } from "core/CushyImage";
     /** script runtime context */
     export class ScriptExecution {
         project: ComfyProject;
         opts?: {
             mock?: boolean | undefined;
         } | undefined;
+        uid: string;
         /** the main graph that will be updated along the script execution */
         graph: ComfyGraph;
-        uid: string;
-        allOutputs: WsMsgExecuted['data']['output'][];
+        gallery: CushyImage[];
         constructor(project: ComfyProject, opts?: {
             mock?: boolean | undefined;
         } | undefined);
@@ -229,28 +265,55 @@ declare module "core/ScriptExecution" {
 }
 declare module "ui/DemoScript1" {
     export const DemoScript1: string;
+    export const DemoScript2: string;
 }
-declare module "core/AutoSaver" {
-    import type { Tagged } from "core/ComfyUtils";
-    export type LocalStorageKey = Tagged<string, 'localstorage'>;
-    export class AutoSaver<Data = any> {
-        /** localstorage key */
-        key: LocalStorageKey;
-        /** localstorage key */
-        getCurrent: () => Data;
-        constructor(
-        /** localstorage key */
-        key: LocalStorageKey, 
-        /** localstorage key */
-        getCurrent: () => Data);
-        discard: () => void;
-        private _disposer;
-        start: () => void;
-        stop: () => void;
-        load: () => Data | null;
-        private save;
-    }
-    export const load: (key: LocalStorageKey) => any;
+declare module "core/TutorialUI" {
+    export const TutorialUI: import("react").FunctionComponent<object>;
+}
+declare module "ui/stContext" {
+    import { ComfyClient } from "core/CushyClient";
+    export const stContext: any
+    export const useSt: () => ComfyClient;
+    export const useProject: () => import("core/ComfyProject").ComfyProject;
+}
+declare module "ui/ArtifactsUI" {
+    export const ArtifactsUI: import("react").FunctionComponent<object>;
+}
+declare module "ui/TypescriptOptions" {
+    import type * as T from 'monaco-editor/esm/vs/editor/editor.api';
+    export type TypescriptOptions = any
+    export type ITextModel = any
+    export type IStandaloneCodeEditor = any
+    export type Monaco = typeof T;
+}
+declare module "ui/ComfyCodeEditorUI" {
+    export const ComfyCodeEditorUI: import("react").FunctionComponent<{
+        path?: string | undefined;
+    }>;
+}
+declare module "ui/ToolbarUI" {
+    import { ToolbarProps } from '@fluentui/react-components';
+    export const ToolbarUI: import("react").FunctionComponent<Partial<ToolbarProps>>;
+}
+declare module "ui/EditorPaneUI" {
+    export const EditorPaneUI: import("react").FunctionComponent<object>;
+}
+declare module "ui/Execution_askBooleanUI" {
+    import { ScriptStep_askBoolean } from "core/ScriptStep_ask";
+    export const Execution_askBooleanUI: import("react").FunctionComponent<{
+        step: ScriptStep_askBoolean;
+    }>;
+}
+declare module "ui/Execution_askStringUI" {
+    import { ScriptStep_askString } from "core/ScriptStep_ask";
+    export const Execution_askStringUI: import("react").FunctionComponent<{
+        step: ScriptStep_askString;
+    }>;
+}
+declare module "core/ComfyColors" {
+    export const comfyColors: {
+        [category: string]: string;
+    };
 }
 declare module "core/CodeBuffer" {
     /** this class is used to buffer text and then write it to a file */
@@ -320,12 +383,188 @@ declare module "core/ComfySchema" {
         codegen(): string;
     }
 }
-declare module "ui/TypescriptOptions" {
-    import type * as T from 'monaco-editor/esm/vs/editor/editor.api';
-    export type TypescriptOptions = any
-    export type ITextModel = any
-    export type IStandaloneCodeEditor = any
-    export type Monaco = typeof T;
+declare module "ui/layout/LayoutCtx" {
+    import type { CushyLayoutState } from "ui/layout/LayoutState";
+    export const CushyLayoutContext: import("react").Context<CushyLayoutState | null>;
+    export const useLayout: () => CushyLayoutState;
+}
+declare module "ui/NodeRefUI" {
+    import type { ComfyNodeUID } from "core/ComfyNodeUID";
+    export const NodeRefUI: import("react").FunctionComponent<{
+        nodeUID: ComfyNodeUID;
+    }>;
+}
+declare module "ui/NodeListUI" {
+    import { ComfyGraph } from "core/ComfyGraph";
+    import { ComfyNode } from "core/ComfyNode";
+    export const NodeListUI: import("react").FunctionComponent<{
+        graph: ComfyGraph;
+    }>;
+    export const ComfyNodeUI: import("react").FunctionComponent<{
+        node: ComfyNode<any>;
+        showArtifacts?: boolean | undefined;
+    }>;
+}
+declare module "ui/ExecutionUI" {
+    import { ReactNode } from 'react';
+    import { ScriptStep } from "core/ScriptStep";
+    export const ExecutionUI: import("react").FunctionComponent<object>;
+    export const StepWrapperUI: import("react").FunctionComponent<{
+        step: ScriptStep;
+    }>;
+    export const ExecutionWrapperUI: import("react").FunctionComponent<{
+        children: ReactNode;
+    }>;
+}
+declare module "civitai/civitaiAPI" {
+    import type { Maybe } from "core/ComfyUtils";
+    export class Civitai {
+        query: string;
+        results: Maybe<SearchResult>;
+        constructor();
+        search: (p: {
+            limit?: number | string;
+            page?: number | string;
+            query?: string;
+            tag?: string;
+            username?: string;
+        }) => Promise<SearchResult>;
+    }
+    type SearchResult = {
+        items: SearchResultItem[];
+        metadata: SearchResultMetadata;
+    };
+    type SearchResultItem = {
+        id: number;
+        name: string;
+        description: string;
+        type: 'Checkpoint' | 'TextualInversion' | 'Hypernetwork' | 'AestheticGradient' | 'LORA' | 'Controlnet' | 'Poses';
+        nsfw: boolean;
+        tags: string[];
+        creator: {
+            username: string;
+            image: string | null;
+        };
+        modelVersions: {
+            id: number;
+            name: string;
+            description: string;
+            createdAt: Date;
+            downloadUrl: string;
+            trainedWords: string[];
+            files: {
+                sizeKb: number;
+                format: 'pickle' | 'safetensor';
+                pickleScanResult: 'Pending' | 'Success' | 'Danger' | 'Error';
+                virusScanResult: 'Pending' | 'Success' | 'Danger' | 'Error';
+                /** The date in which the file was scanned */
+                scannedAt: Date | null;
+                /** If the file is the primary file for the model version */
+                primary: boolean | undefined;
+            }[];
+            images: {
+                /** The url for the image */
+                url: string;
+                /** Whether or not the image is NSFW (note: if the model is NSFW, treat all images on the model as NSFW) */
+                nsfw: string;
+                /** The original width of the image */
+                width: number;
+                /** The original height of the image */
+                height: number;
+                /** The blurhash of the image */
+                hash: string;
+                /** The generation params of the image */
+                meta: object | null;
+            }[];
+        }[];
+    };
+    type SearchResultMetadata = {
+        totalItems: string;
+        currentPage: string;
+        pageSize: string;
+        totalPages: string;
+        nextPage: string;
+        prevPage: string;
+    };
+}
+declare module "ui/civitai/CIvitaiUI" {
+    export const CivitaiUI: import("react").FunctionComponent<object>;
+}
+declare module "ui/menu/AssetTreeUI" {
+    export const AssetTreeUI: import("react").FunctionComponent<object>;
+}
+declare module "ui/menu/ExecutionStepIconUI" {
+    import { ScriptStep } from "core/ScriptStep";
+    export const ExecutionStepIconUI: (step: ScriptStep) => JSX.Element;
+}
+declare module "ui/menu/MenuUI" {
+    export const HasProblem: JSX.Element;
+    export const IsOK: JSX.Element;
+    export const Actions: () => JSX.Element;
+    export const MenuUI: import("react").FunctionComponent<object>;
+}
+declare module "ui/panels/pConnect" {
+    export const PConnectUI: import("react").FunctionComponent<{}>;
+}
+declare module "ui/DropZoneUI" {
+    export const DropZoneUI: import("react").FunctionComponent<object>;
+}
+declare module "ui/panels/pImport" {
+    export const PImportUI: import("react").FunctionComponent<{}>;
+}
+declare module "ui/panels/pUpload" {
+    export const PUploadUI: import("react").FunctionComponent<{}>;
+}
+declare module "ui/IdeInfosUI" {
+    export const IdeInfosUI: import("react").FunctionComponent<object>;
+}
+declare module "ui/panels/pGallery" {
+    export const PGalleryUI: import("react").FunctionComponent<{}>;
+}
+declare module "ui/panels/pGalleryFocus" {
+    export const PGalleryFocusUI: import("react").FunctionComponent<{}>;
+}
+declare module "ui/layout/LayoutDefault" {
+    import { LayoutData } from 'rc-dock';
+    export const defaultLayout: () => LayoutData;
+}
+declare module "ui/layout/LayoutState" {
+    import type { CushyImage } from "core/CushyImage";
+    import DockLayout from 'rc-dock';
+    import { ComfyClient } from "core/CushyClient";
+    export class CushyLayoutState {
+        client: ComfyClient;
+        layout: import("rc-dock").LayoutData;
+        galleryFocus: CushyImage | null;
+        gallerySize: number;
+        dockLayout: DockLayout | null;
+        getRef: (r: DockLayout | null) => DockLayout | null;
+        constructor(client: ComfyClient);
+        addImagePopup: (url: string) => void;
+        addHelpPopup: () => void;
+    }
+}
+declare module "core/AutoSaver" {
+    import type { Tagged } from "core/ComfyUtils";
+    export type LocalStorageKey = Tagged<string, 'localstorage'>;
+    export class AutoSaver<Data = any> {
+        /** localstorage key */
+        key: LocalStorageKey;
+        /** localstorage key */
+        getCurrent: () => Data;
+        constructor(
+        /** localstorage key */
+        key: LocalStorageKey, 
+        /** localstorage key */
+        getCurrent: () => Data);
+        discard: () => void;
+        private _disposer;
+        start: () => void;
+        stop: () => void;
+        load: () => Data | null;
+        private save;
+    }
+    export const load: (key: LocalStorageKey) => any;
 }
 declare module "ui/Monaco" {
     export let globalMonaco: typeof import("monaco-editor") | null;
@@ -336,7 +575,7 @@ declare module "ui/sdkDTS" {
 }
 declare module "core/ComfyScriptEditor" {
     import type { ITextModel } from "ui/TypescriptOptions";
-    import { ComfyClient } from "core/ComfyClient";
+    import { ComfyClient } from "core/CushyClient";
     export class ComfyScriptEditor {
         client: ComfyClient;
         constructor(client: ComfyClient);
@@ -363,18 +602,19 @@ declare module "core/ComfyScriptEditor" {
 }
 declare module "core/getPngMetadata" {
     /** code copy-pasted from ComfyUI repo */
-    import type { ComfyClient } from "core/ComfyClient";
+    import type { ComfyClient } from "core/CushyClient";
     export type TextChunks = {
         [key: string]: string;
     };
     export function getPngMetadata(client: ComfyClient, file: File): Promise<TextChunks>;
 }
-declare module "core/ComfyClient" {
+declare module "core/CushyClient" {
     import type { ComfySchemaJSON } from "core/ComfySchemaJSON";
     import type { Maybe } from "core/ComfyUtils";
     
+    import { CushyLayoutState } from "ui/layout/LayoutState";
     import { AutoSaver } from "core/AutoSaver";
-    import { ComfyStatus } from "core/ComfyAPI";
+    import { ComfyStatus, ComfyUploadImageResult } from "core/ComfyAPI";
     import { ComfyProject } from "core/ComfyProject";
     import { ComfySchema } from "core/ComfySchema";
     import { ComfyScriptEditor } from "core/ComfyScriptEditor";
@@ -398,6 +638,7 @@ declare module "core/ComfyClient" {
         projects: ComfyProject[];
         editor: ComfyScriptEditor;
         assets: Map<string, boolean>;
+        layout: CushyLayoutState;
         storageServerKey: string;
         getStoredServerKey: () => void;
         getConfig: () => {
@@ -405,6 +646,18 @@ declare module "core/ComfyClient" {
             serverPort: number;
             spec: ComfySchemaJSON;
         };
+        TEST_saveFilesInDocuments: () => Promise<void>;
+        private RANDOM_IMAGE_URL;
+        /** attempt to convert an url to a Blob */
+        private getUrlAsBlob;
+        uploadURL: (url?: string) => Promise<ComfyUploadImageResult>;
+        /** save an image at given url to disk */
+        saveImgToDisk: (url?: string) => Promise<'ok'>;
+        /** upload an image present on disk to ComfyServer */
+        uploadImgFromDisk: () => Promise<ComfyUploadImageResult>;
+        lastUpload: Maybe<string>;
+        /** upload an Uint8Array buffer as png to ComfyServer */
+        uploadUIntArrToComfy: (ui8arr: Uint8Array) => Promise<ComfyUploadImageResult>;
         autosaver: AutoSaver<{
             serverIP: string;
             serverPort: number;
@@ -442,18 +695,25 @@ declare module "core/toposort" {
     export function toposort(nodes: TNode[], edges: TEdge[]): TNode[];
 }
 declare module "core/ComfyImporter" {
-    import { ComfyClient } from "core/ComfyClient";
+    import { ComfyClient } from "core/CushyClient";
     import { ComfyPromptJSON } from "core/ComfyPrompt";
     /** Converts Comfy JSON prompts to ComfyScript code */
+    type RuleInput = {
+        nodeName: string;
+        inputName: string;
+        valueStr: string;
+    };
     export class ComfyImporter {
         client: ComfyClient;
         constructor(client: ComfyClient);
+        UI_ONLY_ATTRIBUTES: string[];
+        RULES: ((p: RuleInput) => void)[];
         convertFlowToCode: (flow: ComfyPromptJSON) => string;
     }
 }
 declare module "core/ComfyProject" {
     import type { RunMode } from "core/ComfyGraph";
-    import { ComfyClient } from "core/ComfyClient";
+    import { ComfyClient } from "core/CushyClient";
     import { ComfyPromptJSON } from "core/ComfyPrompt";
     import { ScriptExecution } from "core/ScriptExecution";
     export class ComfyProject {
@@ -480,11 +740,6 @@ declare module "core/ComfyProject" {
         isRunning: boolean;
         run: (mode?: RunMode) => Promise<boolean>;
     }
-}
-declare module "core/ComfyColors" {
-    export const comfyColors: {
-        [category: string]: string;
-    };
 }
 declare module "embeds/wildcards" {
     export const wildcards: {
@@ -701,9 +956,11 @@ declare module "core/ComfyGraph" {
     import type { ComfyPromptJSON } from "core/ComfyPrompt";
     import type { Maybe } from "core/ComfyUtils";
     import type { ScriptExecution } from "core/ScriptExecution";
-    import { ComfyClient } from "core/ComfyClient";
+    import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
+    import { ComfyClient } from "core/CushyClient";
     import { ComfyNode } from "core/ComfyNode";
     import { ComfySchema } from "core/ComfySchema";
+    import { CushyImage } from "core/CushyImage";
     export type RunMode = 'fake' | 'real';
     export class ComfyGraph {
         project: ComfyProject;
@@ -822,7 +1079,7 @@ declare module "core/ComfyGraph" {
             game: string[];
             gem: string[];
             gen_modifier: string[];
-            gender_ext: string[]; /** wether it should really send the prompt to the backend */
+            gender_ext: string[];
             gender: string[];
             genre: string[];
             hair_color: string[];
@@ -835,25 +1092,20 @@ declare module "core/ComfyGraph" {
             headwear_female: string[];
             headwear_male: string[];
             high_heels: string[];
-            /** visjs JSON format (network visualisation) */
             horror: string[];
             identity: string[];
             interior: string[];
-            /** visjs JSON format (network visualisation) */
             iso_stop: string[];
             landscape: string[];
             legwear: string[];
             lingerie: string[];
-            /** visjs JSON format (network visualisation) */
             lipstick_shade: string[];
             lipstick: string[];
             location: string[];
-            /** visjs JSON format (network visualisation) */
             makeup: string[];
             male_adult: string[];
             male_young: string[];
             monster: string[];
-            /** visjs JSON format (network visualisation) */
             movement: string[];
             national_park: string[];
             nationality: string[];
@@ -862,18 +1114,21 @@ declare module "core/ComfyGraph" {
             noun_beauty: string[];
             noun_fantasy: string[];
             noun_general: string[];
+            /** visjs JSON format (network visualisation) */
             noun_horror: string[];
             noun_landscape: string[];
             noun_romance: string[];
             noun_scifi: string[];
             occupation: string[];
             oil_painting: string[];
+            /** visjs JSON format (network visualisation) */
             outfit_cottagecore: string[];
             outfit_goth: string[];
             outfit_preppy: string[];
             outfit_steampunk: string[];
             panties: string[];
             photo_term: string[];
+            /** visjs JSON format (network visualisation) */
             photoshoot_type: string[];
             planet: string[];
             pop_culture: string[];
@@ -886,6 +1141,7 @@ declare module "core/ComfyGraph" {
             race: string[];
             render_engine: string[];
             render: string[];
+            /** visjs JSON format (network visualisation) */
             robot: string[];
             rpg_Item: string[];
             scenario_fantasy: string[];
@@ -902,9 +1158,11 @@ declare module "core/ComfyGraph" {
             ship: string[];
             site: string[];
             skin_color: string[];
+            /** visjs JSON format (network visualisation) */
             still_life: string[];
             style: string[];
             subject_fantasy: string[];
+            /** visjs JSON format (network visualisation) */
             subject_horror: string[];
             subject_romance: string[];
             subject_scifi: string[];
@@ -929,16 +1187,19 @@ declare module "core/ComfyGraph" {
         /** return the coresponding comfy prompt  */
         get json(): ComfyPromptJSON;
         /** temporary proxy */
+        convertToImageInput: (x: CushyImage) => Promise<ComfyNode<any>>;
         askBoolean: (msg: string, def?: Maybe<boolean>) => Promise<boolean>;
         askString: (msg: string, def?: Maybe<string>) => Promise<string>;
+        print: (...msg: any[]) => void;
         constructor(project: ComfyProject, executionContext: ScriptExecution, json?: ComfyPromptJSON);
         private _nextUID;
         getUID: () => string;
         getNodeOrCrash: (nodeID: ComfyNodeUID) => ComfyNode<any>;
-        get allArtifactsImgs(): string[];
+        /** all images generated by nodes in this graph */
+        get allImages(): CushyImage[];
         /** wether it should really send the prompt to the backend */
         get runningMode(): RunMode;
-        get(): Promise<void>;
+        get(): Promise<ScriptStep_prompt>;
         /** visjs JSON format (network visualisation) */
         get JSON_forVisDataVisualisation(): {
             nodes: VisNodes[];
@@ -947,11 +1208,12 @@ declare module "core/ComfyGraph" {
     }
 }
 declare module "core/ComfyNode" {
-    import type { NodeProgress } from "core/ComfyAPI";
+    import type { NodeProgress, WsMsgExecutedData } from "core/ComfyAPI";
     import type { ComfyGraph } from "core/ComfyGraph";
     import type { ComfyNodeJSON } from "core/ComfyPrompt";
     import { ComfyNodeOutput } from "core/ComfyNodeOutput";
     import { ComfyNodeSchema } from "core/ComfySchema";
+    import { CushyImage } from "core/CushyImage";
     /** ComfyNode
      * - correspond to a signal in the graph
      * - belongs to a script
@@ -959,15 +1221,13 @@ declare module "core/ComfyNode" {
     export class ComfyNode<ComfyNode_input extends object> {
         graph: ComfyGraph;
         uid: string;
-        artifacts: {
-            images: string[];
-        }[];
-        get allArtifactsImgs(): string[];
+        artifacts: WsMsgExecutedData[];
+        images: CushyImage[];
         progress: NodeProgress | null;
         $schema: ComfyNodeSchema;
         status: 'executing' | 'done' | 'error' | 'waiting' | null;
         get isExecuting(): boolean;
-        get statusEmoji(): "" | "❌" | "🔥" | "⏳" | "✅";
+        get statusEmoji(): "" | "🔥" | "✅" | "❌" | "⏳";
         get inputs(): ComfyNode_input;
         json: ComfyNodeJSON;
         /** update a node */
@@ -982,7 +1242,7 @@ declare module "core/ComfyNode" {
         };
         /** return the list of nodes piped into this node */
         _incomingNodes(): string[];
-        get manager(): import("core/ComfyClient").ComfyClient;
+        get manager(): import("core/CushyClient").ComfyClient;
         get(): Promise<void>;
         serializeValue(field: string, value: unknown): unknown;
         private _getExpecteTypeForField;

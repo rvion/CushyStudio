@@ -21,3 +21,6 @@ export type ComfyImageInfo = { filename: string; subfolder: string; type: string
 
 export type NodeProgress = { value: number; max: number }
 export type ComfyStatus = { exec_info: { queue_remaining: number }; sid: string }
+
+// upload
+export type ComfyUploadImageResult = { name: string }

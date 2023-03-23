@@ -5,7 +5,7 @@ import { makeObservable, observable } from 'mobx'
 import DockLayout, { PanelData } from 'rc-dock'
 import { TutorialUI } from '../../core/TutorialUI'
 import { defaultLayout } from './LayoutDefault'
-import { ComfyClient } from '../../core/ComfyClient'
+import { ComfyClient } from '../../core/CushyClient'
 
 export class CushyLayoutState {
     layout = defaultLayout()

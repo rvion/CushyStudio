@@ -1,6 +1,6 @@
 /** code copy-pasted from ComfyUI repo */
 
-import type { ComfyClient } from './ComfyClient'
+import type { ComfyClient } from './CushyClient'
 
 export type TextChunks = {
     [key: string]: string

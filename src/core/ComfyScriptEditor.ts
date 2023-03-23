@@ -3,7 +3,7 @@ import type { IStandaloneCodeEditor, ITextModel } from '../ui/TypescriptOptions'
 import { autorun, makeAutoObservable, observable } from 'mobx'
 import { globalMonaco } from '../ui/Monaco'
 import { c__ } from '../ui/sdkDTS'
-import { ComfyClient } from './ComfyClient'
+import { ComfyClient } from './CushyClient'
 
 export class ComfyScriptEditor {
     constructor(public client: ComfyClient) {

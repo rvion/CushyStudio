@@ -2,7 +2,7 @@ import type { RunMode } from './ComfyGraph'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { ComfyClient } from './ComfyClient'
+import { ComfyClient } from './CushyClient'
 import { ComfyImporter } from './ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ScriptExecution } from './ScriptExecution'

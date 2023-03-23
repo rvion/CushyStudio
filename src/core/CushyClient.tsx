@@ -1,22 +1,24 @@
+import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
 import type { ScriptExecution } from './ScriptExecution'
 import { ScriptStep } from './ScriptStep'
-import { fetch } from '@tauri-apps/api/http'
 
 import * as WS from 'ws'
 
+import * as fs from '@tauri-apps/api/fs'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
 import { DemoScript1 } from '../ui/DemoScript1'
+import { CushyLayoutState } from '../ui/layout/LayoutState'
 import { AutoSaver } from './AutoSaver'
-import { ComfyStatus, WsMsg } from './ComfyAPI'
+import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
+import { CushyImage } from './CushyImage'
 import { getPngMetadata } from './getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
-import { CushyLayoutState } from '../ui/layout/LayoutState'
 
 export type ComfyClientOptions = {
     serverIP: string
@@ -38,6 +40,7 @@ export class ComfyClient {
     project: ComfyProject
     projects: ComfyProject[] = []
     editor: ComfyScriptEditor
+    // uploader = new ImageUploader(this)
     assets = new Map<string, boolean>()
 
     layout = new CushyLayoutState(this)
@@ -50,6 +53,77 @@ export class ComfyClient {
         serverPort: this.serverPort,
         spec: this.schema.spec,
     })
+
+    TEST_saveFilesInDocuments = async () => {
+        const dir = fs.Dir.Document
+        await fs.createDir('CushyStudio', { recursive: true, dir })
+        await fs.createDir('CushyStudio/images', { recursive: true, dir })
+        await fs.createDir('CushyStudio/projects', { recursive: true, dir })
+        await fs.writeTextFile({ contents: '[]', path: `CushyStudio/test.json` }, { dir })
+    }
+
+    private RANDOM_IMAGE_URL = 'http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output'
+
+    /** attempt to convert an url to a Blob */
+    private getUrlAsBlob = async (url: string = this.RANDOM_IMAGE_URL) => {
+        const response = await fetch(url, {
+            headers: { 'Content-Type': 'image/png' },
+            method: 'GET',
+            responseType: ResponseType.Binary,
+        })
+        const numArr: number[] = response.data as any
+        const binArr = new Uint8Array(numArr)
+        return binArr
+        // return new Blob([binArr], { type: 'image/png' })
+    }
+
+    uploadURL = async (url: string = this.RANDOM_IMAGE_URL): Promise<ComfyUploadImageResult> => {
+        const blob = await this.getUrlAsBlob(url)
+        return this.uploadUIntArrToComfy(blob)
+    }
+
+    /** save an image at given url to disk */
+    saveImgToDisk = async (
+        url: string = 'http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output',
+    ): Promise<'ok'> => {
+        console.log('done')
+        const response = await fetch(url, {
+            headers: { 'Content-Type': 'image/png' },
+            method: 'GET',
+            responseType: ResponseType.Binary,
+        })
+        const numArr: number[] = response.data as any
+        const binArr = new Uint16Array(numArr)
+        await fs.writeBinaryFile('CushyStudio/images/test.png', binArr, { dir: fs.Dir.Document })
+        return 'ok'
+    }
+
+    /** upload an image present on disk to ComfyServer */
+    uploadImgFromDisk = async (): Promise<ComfyUploadImageResult> => {
+        const ui8arr = await fs.readBinaryFile('CushyStudio/images/test.png', { dir: fs.Dir.Document })
+        return this.uploadUIntArrToComfy(ui8arr)
+    }
+
+    lastUpload: Maybe<string> = null
+    /** upload an Uint8Array buffer as png to ComfyServer */
+    uploadUIntArrToComfy = async (ui8arr: Uint8Array): Promise<ComfyUploadImageResult> => {
+        const uploadURL = this.serverHostHTTP + '/upload/image'
+        const resp = await fetch(uploadURL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'multipart/form-data' },
+            body: Body.form({
+                image: {
+                    file: ui8arr,
+                    mime: 'image/png',
+                    fileName: 'upload.png',
+                },
+            }),
+        })
+        const result = resp.data as ComfyUploadImageResult
+        console.log({ 'resp.data': result })
+        this.lastUpload = new CushyImage(this, { filename: result.name, subfolder: '', type: 'output' }).url
+        return result
+    }
 
     autosaver = new AutoSaver('client', this.getConfig)
 

@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { ComfyClient } from '../core/ComfyClient'
+import { ComfyClient } from '../core/CushyClient'
 
 export const stContext = createContext<ComfyClient | null>(null)
 

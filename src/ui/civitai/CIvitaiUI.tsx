@@ -2,9 +2,11 @@ import { Button, Card, Image, Input, Text } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Civitai } from '../../civitai/civitaiAPI'
+import { useSt } from '../stContext'
 
 export const CivitaiUI = observer(function CivitaiUI_() {
     const c = useMemo(() => new Civitai(), [])
+    const x = useSt()
     return (
         <Card>
             <Text size={500}>Civitai</Text>

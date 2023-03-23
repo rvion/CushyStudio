@@ -4,11 +4,12 @@ import type { ComfyProject } from './ComfyProject'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from './ComfyUtils'
 import type { ScriptExecution } from './ScriptExecution'
+import type { ScriptStep_prompt } from './ScriptStep_prompt'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { computed, makeObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { ComfyClient } from './ComfyClient'
+import { ComfyClient } from './CushyClient'
 import { comfyColors } from './ComfyColors'
 import { ComfyNode } from './ComfyNode'
 import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
@@ -38,8 +39,16 @@ export class ComfyGraph {
     }
 
     /** temporary proxy */
+    convertToImageInput = async (x: CushyImage): Promise<ComfyNode<any>> => {
+        const name = await x.makeAvailableAsInput()
+        console.log('[convertToImageInput]', { name })
+        // @ts-ignore
+        return this.LoadImage({ image: name })
+    }
+
     askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => this.executionContext.askBoolean(msg, def)
     askString = (msg: string, def?: Maybe<string>): Promise<string> => this.executionContext.askString(msg, def)
+    print = (...msg: any[]) => console.log('[🔥]', ...msg)
 
     constructor(
         //
@@ -88,9 +97,11 @@ export class ComfyGraph {
     }
 
     // COMMIT --------------------------------------------
-    async get() {
+    async get(): Promise<ScriptStep_prompt> {
         const step = this.executionContext.sendPromp()
         await step.finished
+        console.log(`🐙`, step.uid, step.images.length, { step }, step.images[0].url)
+        return step
     }
 
     // JSON_forGitGraphVisualisation = (gitgraph: GitgraphUserApi<any>) => {

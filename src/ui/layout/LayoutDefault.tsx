@@ -3,8 +3,8 @@ import { ArtifactsUI } from '../ArtifactsUI'
 import { EditorPaneUI } from '../EditorPaneUI'
 import { ExecutionUI } from '../ExecutionUI'
 import { IdeInfosUI } from '../IdeInfosUI'
-import { PGalleryUI } from '../pConnect/pGallery'
-import { PGalleryFocusUI } from '../pConnect/pGalleryFocus'
+import { PGalleryUI } from '../panels/pGallery'
+import { PGalleryFocusUI } from '../panels/pGalleryFocus'
 
 export const defaultLayout = (): LayoutData => ({
     floatbox: {

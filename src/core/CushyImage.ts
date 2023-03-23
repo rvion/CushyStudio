@@ -1,5 +1,6 @@
 import type { ComfyImageInfo } from './ComfyAPI'
-import type { ComfyClient } from './ComfyClient'
+import type { ComfyClient } from './CushyClient'
+import type { Maybe } from './ComfyUtils'
 
 import { nanoid } from 'nanoid'
 
@@ -7,6 +8,17 @@ import { nanoid } from 'nanoid'
 export class CushyImage {
     /** unique image id */
     uid = nanoid()
+
+    /** path within the input folder */
+    inputPath?: Maybe<string> = null
+
+    /** this is such a bad workaround but 🤷‍♂️ */
+    makeAvailableAsInput = async (): Promise<string> => {
+        const res = await this.client.uploadURL(this.url)
+        console.log(`[makeAvailableAsInput]`, res)
+        this.inputPath = res.name
+        return res.name
+    }
 
     constructor(
         //

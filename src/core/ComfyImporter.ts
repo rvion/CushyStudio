@@ -1,14 +1,32 @@
-// import flow from '../compiler/entry.in.json' assert { type: 'json' }
 import { CodeBuffer } from './CodeBuffer'
-import { ComfyClient } from './ComfyClient'
+import { ComfyClient } from './CushyClient'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfyNodeSchema } from './ComfySchema'
 import { jsEscapeStr } from './ComfyUtils'
 import { TEdge, toposort } from './toposort'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
+type RuleInput = { nodeName: string; inputName: string; valueStr: string }
+
 export class ComfyImporter {
     constructor(public client: ComfyClient) {}
+    UI_ONLY_ATTRIBUTES = [
+        //
+        'Random seed after every gen',
+    ]
+    RULES: ((p: RuleInput) => void)[] = [
+        (p) => {
+            if (
+                //
+                p.nodeName === 'KSampler' &&
+                p.inputName === 'sampler_name' &&
+                p.valueStr.startsWith('sample_')
+            ) {
+                p.valueStr = p.valueStr.replace('sample_', '')
+            }
+        },
+    ]
+
     convertFlowToCode = (flow: ComfyPromptJSON): string => {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
@@ -54,12 +72,24 @@ export class ComfyImporter {
             pi(`const ${varName} = C.${classType}({`)
             for (const [name, value] of Object.entries(node.inputs) ?? []) {
                 const isValidJSIdentifier = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(name)
+                if (this.UI_ONLY_ATTRIBUTES.includes(name)) continue
+
+                const valueStr = Array.isArray(value) //
+                    ? availableSignals.get(value.join('-'))
+                    : value
+
+                // apply rules
+                let draft: RuleInput = { inputName: name, nodeName: classType, valueStr }
+                for (const rule of this.RULES) rule(draft)
+
+                // escape name if needed
                 const name2 = isValidJSIdentifier ? name : `'${name}'`
+
                 if (Array.isArray(value)) {
-                    const signal = availableSignals.get(value.join('-'))
-                    pi(`${name2}: ${signal}, `)
+                    // const signal = availableSignals.get(value.join('-'))
+                    pi(`${name2}: ${draft.valueStr}, `)
                 } else {
-                    pi(`${name2}: ${jsEscapeStr(value)}, `)
+                    pi(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
                 }
             }
             p(`}, '${nodeID}')`)

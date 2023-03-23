@@ -80,21 +80,29 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     }
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
-    outputs: WsMsgExecuted[] = []
+    private outputs: WsMsgExecuted[] = []
+    images: CushyImage[] = []
 
     /** udpate execution list */
     onExecuted = (msg: WsMsgExecuted) => {
-        this.outputs.push(msg)
         const node = this._graph.getNodeOrCrash(msg.data.node)
         const images = msg.data.output.images.map((i) => new CushyImage(this.client, i))
+
+        console.log(`🟢 `, images.length, `CushyImages`)
+        // accumulate in self
+        this.outputs.push(msg)
+        this.images.push(...images)
+        console.log(`🟢 `, this.uid, 'has', this.images.length, `CushyImages`)
+
+        // accumulate in node
         node.artifacts.push(msg.data)
-        // focus on first image
-        if (this.client.layout.galleryFocus == null && images.length > 0) this.client.layout.galleryFocus = images[0]
-        // link image to node
         node.images.push(...images)
-        // link image to execution gallery
+
+        // accumulate in run
         this.execution.gallery.push(...images)
-        console.log('🟢', this._graph.uid, node.uid, node.artifacts)
+
+        if (this.client.layout.galleryFocus == null && images.length > 0) this.client.layout.galleryFocus = images[0]
+        console.log(`🟢 graph(${this._graph.uid}) => node(${node.uid}) => (${node.artifacts.length} images)`)
     }
 
     /** finish this step */
