@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { FluentProvider, webDarkTheme } from '@fluentui/react-components'
-import { invoke } from '@tauri-apps/api'
+// import { invoke } from '@tauri-apps/api'
 import { ToastContainer } from 'react-toastify'
 import { ComfyClient } from '../../core/ComfyClient'
 import { testCors } from '../cors'
@@ -12,9 +12,9 @@ import { stContext } from '../stContext'
 import { CushyLayoutUI } from './LayoutUI'
 import { AppBarUI } from './AppBarUI'
 
-invoke('greet', { name: 'World' })
-    // `invoke` returns a Promise
-    .then((response) => console.log('🟢', response))
+// invoke('greet', { name: 'World' })
+//     // `invoke` returns a Promise
+//     .then((response) => console.log('🟢', response))
 
 console.log(testCors())
 
