@@ -266,6 +266,7 @@ declare module "core/ScriptExecution" {
 declare module "ui/DemoScript1" {
     export const DemoScript1: string;
     export const DemoScript2: string;
+    export const DemoScript3: string;
 }
 declare module "core/TutorialUI" {
     export const TutorialUI: import("react").FunctionComponent<object>;
@@ -1034,7 +1035,7 @@ declare module "core/ComfyGraph" {
             camera: string[];
             cat: string[];
             celeb: string[];
-            civilization: string[];
+            civilization: string[]; /** temporary proxy */
             class: string[];
             clothing_female: string[];
             clothing_male: string[];
@@ -1123,30 +1124,29 @@ declare module "core/ComfyGraph" {
             outfit_cottagecore: string[];
             outfit_goth: string[];
             outfit_preppy: string[];
-            /** visjs JSON format (network visualisation) */
             outfit_steampunk: string[];
             panties: string[];
             photo_term: string[];
-            /** visjs JSON format (network visualisation) */
             photoshoot_type: string[];
             planet: string[];
             pop_culture: string[];
-            /** visjs JSON format (network visualisation) */
             pop_location: string[];
             portrait_type: string[];
-            public: string[];
-            punk: string[];
             /** visjs JSON format (network visualisation) */
+            public: string[];
+            /** visjs JSON format (network visualisation) */
+            punk: string[];
             purse: string[];
             quantity: string[];
+            /** visjs JSON format (network visualisation) */
             race: string[];
             render_engine: string[];
             render: string[];
             robot: string[];
             rpg_Item: string[];
-            /** visjs JSON format (network visualisation) */
             scenario_fantasy: string[];
             scenario_romance: string[];
+            /** visjs JSON format (network visualisation) */
             scenario_scifi: string[];
             scenario: string[];
             scenario2: string[];
@@ -1155,8 +1155,8 @@ declare module "core/ComfyGraph" {
             setting: string[];
             sex_act: string[];
             sex_position: string[];
-            /** visjs JSON format (network visualisation) */
             sex_toy: string[];
+            /** visjs JSON format (network visualisation) */
             ship: string[];
             site: string[];
             skin_color: string[];
@@ -1170,6 +1170,7 @@ declare module "core/ComfyGraph" {
             subject: string[];
             suit_female: string[];
             suit_male: string[];
+            /** visjs JSON format (network visualisation) */
             superhero: string[];
             supermodel: string[];
             swimwear: string[];
@@ -1180,6 +1181,7 @@ declare module "core/ComfyGraph" {
             tribe: string[];
             trippy: string[];
             underwater: string[];
+            /** visjs JSON format (network visualisation) */
             water: string[];
             watercolor: string[];
             wave: string[];
