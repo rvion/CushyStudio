@@ -1,3 +1,8 @@
+2023-03-23
+
+-   update Cushy to be compatible with latest Comfy (fix images)
+-   improve core models
+
 2023-03-22
 
 -   POC gallery pane showing all images of all steps of all runs of all projects
