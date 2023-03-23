@@ -6,7 +6,7 @@ import { comfyColors } from '../core/ComfyColors'
 import { ComfyGraph } from '../core/ComfyGraph'
 import { ComfyNode } from '../core/ComfyNode'
 import { ComfyNodeSchema } from '../core/ComfySchema'
-import { useLayout } from './layout/CushyLayoutCtx'
+import { useLayout } from './layout/LayoutCtx'
 import { NodeRefUI } from './NodeRefUI'
 
 export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }) {
@@ -31,12 +31,12 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
                 </div>
             </div>
             <div className='row wrap'>
-                {graph.allArtifactsImgs.map((url) => (
+                {graph.allImages.map((img) => (
                     <Image
-                        onClick={() => layout.addImagePopup(url)}
+                        onClick={() => layout.addImagePopup(img.url)}
                         alt='prompt output'
-                        src={url}
-                        key={url}
+                        src={img.url}
+                        key={img.uid}
                         height={100}
                         width={100}
                     />
@@ -101,8 +101,12 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
             )}
             {p.showArtifacts ? (
                 <div className='row wrap'>
-                    {curr.allArtifactsImgs.map((url) => (
-                        <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
+                    {curr.images.map((img) => (
+                        <img //
+                            key={img.uid}
+                            style={{ width: '5rem', height: '5rem' }}
+                            src={img.url}
+                        />
                     ))}
                     {/* {curr?.allArtifactsImgs.map((url) => (
                     <div key={url}>

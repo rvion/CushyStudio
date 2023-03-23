@@ -1,12 +1,13 @@
-import type { NodeProgress } from './ComfyAPI'
+import type { NodeProgress, WsMsgExecutedData } from './ComfyAPI'
 import type { ComfyGraph } from './ComfyGraph'
 import type { ComfyNodeJSON } from './ComfyPrompt'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { ComfyNodeOutput } from './ComfyNodeOutput'
-import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
 import { ComfyNodeUID } from './ComfyNodeUID'
+import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
 import { exhaust } from './ComfyUtils'
+import { CushyImage } from './CushyImage'
 
 configure({ enforceActions: 'never' })
 
@@ -15,16 +16,12 @@ configure({ enforceActions: 'never' })
  * - belongs to a script
  */
 export class ComfyNode<ComfyNode_input extends object> {
-    artifacts: { images: string[] }[] = []
-    get allArtifactsImgs(): string[] {
-        return this.artifacts //
-            .flatMap((a) => a.images)
-            .map((i) => `${this.manager.serverHostHTTP}/view/${i}`)
-    }
-
+    artifacts: WsMsgExecutedData[] = []
+    images: CushyImage[] = []
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema
     status: 'executing' | 'done' | 'error' | 'waiting' | null = null
+
     get isExecuting() { return this.status === 'executing' } // prettier-ignore
     get statusEmoji() {
         const s = this.status

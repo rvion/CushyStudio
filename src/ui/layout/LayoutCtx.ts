@@ -1,8 +1,8 @@
-import type { CushyLayout } from './CushyLayoutUI'
+import type { CushyLayoutState } from './LayoutState'
 
 import { createContext, useContext } from 'react'
 
-export const CushyLayoutContext = createContext<CushyLayout | null>(null)
+export const CushyLayoutContext = createContext<CushyLayoutState | null>(null)
 
 export const useLayout = () => {
     const st = useContext(CushyLayoutContext)

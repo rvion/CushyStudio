@@ -1,4 +1,6 @@
 import { observer } from 'mobx-react-lite'
+import { ComfyImageInfo } from '../core/ComfyAPI'
+import { CushyImage } from '../core/CushyImage'
 import { useSt } from './stContext'
 
 export const ArtifactsUI = observer(function ArtifactsUI_() {
@@ -10,23 +12,13 @@ export const ArtifactsUI = observer(function ArtifactsUI_() {
                 return (
                     <div key={run.uid}>
                         <h3>Run {ix + 1} </h3>
-                        {run.allOutputs.map((o, ix) => {
+                        {run.gallery.map((img) => {
                             return (
-                                <div key={ix}>
-                                    {/* <h3>Prompt {ix + 1}</h3> */}
-                                    <div className='row wrap'>
-                                        {/* <NodeRefUI nodeUID={o.data.node} /> */}
-                                        {o.images.map((url) => (
-                                            <div key={url}>
-                                                <img
-                                                    style={{ width: '5rem', height: '5rem' }}
-                                                    key={url}
-                                                    src={`${st.serverHostHTTP}/view/${url}`}
-                                                />
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
+                                <img //
+                                    style={{ width: '5rem', height: '5rem' }}
+                                    key={img.uid}
+                                    src={img.url}
+                                />
                             )
                         })}
                     </div>

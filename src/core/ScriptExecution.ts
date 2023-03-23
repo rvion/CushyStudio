@@ -10,13 +10,16 @@ import { ScriptStep } from './ScriptStep'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { fetch, Body } from '@tauri-apps/api/http'
+import { CushyImage } from './CushyImage'
 
 /** script runtime context */
 export class ScriptExecution {
+    uid = nanoid()
+
     /** the main graph that will be updated along the script execution */
     graph: ComfyGraph
-    uid = nanoid()
-    allOutputs: WsMsgExecuted['data']['output'][] = []
+
+    gallery: CushyImage[] = []
 
     constructor(
         //

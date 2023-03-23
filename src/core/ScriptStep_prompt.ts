@@ -9,14 +9,22 @@ import { toast } from 'react-toastify'
 import { ComfyGraph } from './ComfyGraph'
 import { deepCopyNaive } from './ComfyUtils'
 import { nanoid } from 'nanoid'
+import { CushyImage } from './CushyImage'
 
 export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
-    uid = nanoid()
     static promptID = 1
+
+    /** unique step id */
+    uid = nanoid()
+
+    /** human-readable step name */
     name = 'prompt-' + ScriptStep_prompt.promptID++
 
-    /** ready to be forked */
+    /** deepcopy of run graph at creation time; ready to be forked */
     _graph: ComfyGraph
+
+    /** short-hand getter to access parent client */
+    get client(){ return this.execution.project.client } // prettier-ignore
 
     constructor(
         //
@@ -77,14 +85,14 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     /** udpate execution list */
     onExecuted = (msg: WsMsgExecuted) => {
         this.outputs.push(msg)
-        // this.currentExecutingNode = null
         const node = this._graph.getNodeOrCrash(msg.data.node)
-        // const node = this.getNodeOrCrash(msg.data.node)
-        // this.currentStep++
-        node.artifacts.push(msg.data.output)
-        this.execution.allOutputs.push(msg.data.output)
+        const images = msg.data.output.images.map((i) => new CushyImage(this.client, i))
+        node.artifacts.push(msg.data)
+        // link image to node
+        node.images.push(...images)
+        // link image to execution gallery
+        this.execution.gallery.push(...images)
         console.log('🟢', this._graph.uid, node.uid, node.artifacts)
-        // this._finish()
     }
 
     /** finish this step */

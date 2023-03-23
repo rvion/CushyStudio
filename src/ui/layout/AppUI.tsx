@@ -9,7 +9,7 @@ import { testCors } from '../cors'
 import { GithubCorner } from '../GithubCorner'
 import { ensureMonacoReady } from '../Monaco'
 import { stContext } from '../stContext'
-import { CushyLayoutUI } from './CushyLayoutUI'
+import { CushyLayoutUI } from './LayoutUI'
 import { AppBarUI } from './AppBarUI'
 
 invoke('greet', { name: 'World' })
