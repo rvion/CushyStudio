@@ -1114,17 +1114,16 @@ declare module "core/ComfyGraph" {
             noun_beauty: string[];
             noun_fantasy: string[];
             noun_general: string[];
-            /** visjs JSON format (network visualisation) */
             noun_horror: string[];
             noun_landscape: string[];
             noun_romance: string[];
             noun_scifi: string[];
             occupation: string[];
             oil_painting: string[];
-            /** visjs JSON format (network visualisation) */
             outfit_cottagecore: string[];
             outfit_goth: string[];
             outfit_preppy: string[];
+            /** visjs JSON format (network visualisation) */
             outfit_steampunk: string[];
             panties: string[];
             photo_term: string[];
@@ -1132,18 +1131,20 @@ declare module "core/ComfyGraph" {
             photoshoot_type: string[];
             planet: string[];
             pop_culture: string[];
+            /** visjs JSON format (network visualisation) */
             pop_location: string[];
             portrait_type: string[];
             public: string[];
             punk: string[];
+            /** visjs JSON format (network visualisation) */
             purse: string[];
             quantity: string[];
             race: string[];
             render_engine: string[];
             render: string[];
-            /** visjs JSON format (network visualisation) */
             robot: string[];
             rpg_Item: string[];
+            /** visjs JSON format (network visualisation) */
             scenario_fantasy: string[];
             scenario_romance: string[];
             scenario_scifi: string[];
@@ -1154,11 +1155,11 @@ declare module "core/ComfyGraph" {
             setting: string[];
             sex_act: string[];
             sex_position: string[];
+            /** visjs JSON format (network visualisation) */
             sex_toy: string[];
             ship: string[];
             site: string[];
             skin_color: string[];
-            /** visjs JSON format (network visualisation) */
             still_life: string[];
             style: string[];
             subject_fantasy: string[];
@@ -1187,7 +1188,7 @@ declare module "core/ComfyGraph" {
         /** return the coresponding comfy prompt  */
         get json(): ComfyPromptJSON;
         /** temporary proxy */
-        convertToImageInput: (x: CushyImage) => Promise<ComfyNode<any>>;
+        convertToImageInput: (x: CushyImage) => Promise<string>;
         askBoolean: (msg: string, def?: Maybe<boolean>) => Promise<boolean>;
         askString: (msg: string, def?: Maybe<string>) => Promise<string>;
         print: (...msg: any[]) => void;

@@ -1,3 +1,4 @@
+export const x = 1
 // import { fetch } from '@tauri-apps/api/http'
 
 // export const testCors = async () => {

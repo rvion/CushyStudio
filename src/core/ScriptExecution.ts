@@ -53,6 +53,9 @@ export class ScriptExecution {
     outputs: WsMsgExecuted[] = []
 
     sendPromp = (): ScriptStep_prompt => {
+        // console.log('XX1')
+        // console.log('🔴', toJS(this.graph.json))
+        // console.log('XX2')
         const currentJSON = deepCopyNaive(this.graph.json)
         console.log('[🪜] checkpoint', currentJSON)
         const step = new ScriptStep_prompt(this, currentJSON)

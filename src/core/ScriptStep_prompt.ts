@@ -101,7 +101,12 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         // accumulate in run
         this.execution.gallery.push(...images)
 
-        if (this.client.layout.galleryFocus == null && images.length > 0) this.client.layout.galleryFocus = images[0]
+        if (
+            // this.client.layout.galleryFocus == null &&
+            images.length > 0
+        ) {
+            this.client.layout.galleryFocus = images[0]
+        }
         console.log(`🟢 graph(${this._graph.uid}) => node(${node.uid}) => (${node.artifacts.length} images)`)
     }
 

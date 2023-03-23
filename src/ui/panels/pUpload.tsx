@@ -21,7 +21,7 @@ export const PUploadUI = observer(function PUploadUI_(p: {}) {
             >
                 ❌ TEST UPLOAD ❌
             </button>
-            {x.lastUpload && <Image src={x.lastUpload} width={100} height={100} />}
+            {/* {x.lastUpload && <Image src={x.lastUpload} width={100} height={100} />} */}
         </Card>
     )
 })

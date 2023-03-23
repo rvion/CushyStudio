@@ -34,16 +34,25 @@ export class ComfyGraph {
     /** return the coresponding comfy prompt  */
     get json(): ComfyPromptJSON {
         const json: ComfyPromptJSON = {}
-        for (const node of this.nodesArray) json[node.uid] = node.json
+        for (const node of this.nodesArray) {
+            json[node.uid] = node.json
+            // if (node.$schema.name === 'VAEEncode') {
+            //     console.log('🔥', node.$schema.name)
+            //     console.log(node.inputs.pixels)
+            //     console.log(node.inputs.pixels?.$schema?.name)
+            //     console.log(JSON.stringify(node.json))
+            // }
+        }
         return json
     }
 
     /** temporary proxy */
-    convertToImageInput = async (x: CushyImage): Promise<ComfyNode<any>> => {
+    convertToImageInput = async (x: CushyImage): Promise<string> => {
         const name = await x.makeAvailableAsInput()
         console.log('[convertToImageInput]', { name })
         // @ts-ignore
-        return this.LoadImage({ image: name })
+        return name
+        // return this.LoadImage({ image: name })
     }
 
     askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => this.executionContext.askBoolean(msg, def)
@@ -98,9 +107,12 @@ export class ComfyGraph {
 
     // COMMIT --------------------------------------------
     async get(): Promise<ScriptStep_prompt> {
+        // console.log('A')
         const step = this.executionContext.sendPromp()
+        // console.log('B')
         await step.finished
-        console.log(`🐙`, step.uid, step.images.length, { step }, step.images[0].url)
+        // console.log('C')
+        // console.log(`🐙`, step.uid, step.images.length, { step }, step.images[0].url)
         return step
     }
 
