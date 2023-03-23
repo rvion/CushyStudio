@@ -33,7 +33,8 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
             <div className='row wrap'>
                 {graph.allImages.map((img) => (
                     <Image
-                        onClick={() => layout.addImagePopup(img.url)}
+                        // onClick={() => layout.addImagePopup(img.url)}
+                        onClick={() => (layout.galleryFocus = img)}
                         alt='prompt output'
                         src={img.url}
                         key={img.uid}

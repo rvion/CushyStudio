@@ -88,6 +88,8 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         const node = this._graph.getNodeOrCrash(msg.data.node)
         const images = msg.data.output.images.map((i) => new CushyImage(this.client, i))
         node.artifacts.push(msg.data)
+        // focus on first image
+        if (this.client.layout.galleryFocus == null && images.length > 0) this.client.layout.galleryFocus = images[0]
         // link image to node
         node.images.push(...images)
         // link image to execution gallery

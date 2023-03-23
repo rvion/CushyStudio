@@ -26,6 +26,7 @@ export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
                 {images.map((i) => (
                     <Image
                         //
+                        onClick={() => (layout.galleryFocus = i)}
                         key={i.uid}
                         src={i.url}
                         width={layout.gallerySize}

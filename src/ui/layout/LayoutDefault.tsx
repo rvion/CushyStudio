@@ -4,6 +4,7 @@ import { EditorPaneUI } from '../EditorPaneUI'
 import { ExecutionUI } from '../ExecutionUI'
 import { IdeInfosUI } from '../IdeInfosUI'
 import { PGalleryUI } from '../pConnect/pGallery'
+import { PGalleryFocusUI } from '../pConnect/pGalleryFocus'
 
 export const defaultLayout = (): LayoutData => ({
     floatbox: {
@@ -87,14 +88,31 @@ export const defaultLayout = (): LayoutData => ({
                         ],
                     },
                     {
-                        // mode: 'vertical',
-                        tabs: [
+                        mode: 'horizontal',
+                        children: [
                             {
-                                // minWidth: 280,
-                                // minHeight: 280,
-                                id: 'artifacts',
-                                title: 'Images',
-                                content: <PGalleryUI />,
+                                size: 3,
+                                tabs: [
+                                    {
+                                        minWidth: 230,
+                                        // minHeight: 280,
+                                        id: 'artifacts',
+                                        title: 'Images',
+                                        content: <PGalleryUI />,
+                                    },
+                                ],
+                            },
+                            {
+                                size: 7,
+                                tabs: [
+                                    {
+                                        minWidth: 100,
+                                        minHeight: 100,
+                                        id: 'artifacts',
+                                        title: 'Images',
+                                        content: <PGalleryFocusUI />,
+                                    },
+                                ],
                             },
                         ],
                     },

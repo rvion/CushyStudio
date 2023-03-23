@@ -1,19 +1,26 @@
+import type { CushyImage } from '../../core/CushyImage'
+
 import { Image } from '@fluentui/react-components'
 import { makeObservable, observable } from 'mobx'
 import DockLayout, { PanelData } from 'rc-dock'
 import { TutorialUI } from '../../core/TutorialUI'
 import { defaultLayout } from './LayoutDefault'
+import { ComfyClient } from '../../core/ComfyClient'
 
 export class CushyLayoutState {
     layout = defaultLayout()
 
+    galleryFocus: CushyImage | null = null
     gallerySize = 100
     dockLayout: DockLayout | null = null
     getRef = (r: DockLayout | null) => (this.dockLayout = r)
 
-    constructor() {
+    constructor(public client: ComfyClient) {
         // this.spawnPopups()
-        makeObservable(this, { gallerySize: observable })
+        makeObservable(this, {
+            galleryFocus: observable,
+            gallerySize: observable,
+        })
     }
 
     // spawnPopups = () => {

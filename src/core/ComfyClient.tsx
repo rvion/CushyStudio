@@ -16,6 +16,7 @@ import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { getPngMetadata } from './getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
+import { CushyLayoutState } from '../ui/layout/LayoutState'
 
 export type ComfyClientOptions = {
     serverIP: string
@@ -37,8 +38,9 @@ export class ComfyClient {
     project: ComfyProject
     projects: ComfyProject[] = []
     editor: ComfyScriptEditor
-
     assets = new Map<string, boolean>()
+
+    layout = new CushyLayoutState(this)
 
     storageServerKey = 'comfy-server'
     getStoredServerKey = () => {}

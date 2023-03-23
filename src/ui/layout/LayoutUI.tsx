@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react-lite'
 import DockLayout from 'rc-dock'
-import { useMemo } from 'react'
+import { useSt } from '../stContext'
 import { CushyLayoutContext } from './LayoutCtx'
-import { CushyLayoutState } from './LayoutState'
 
 export const CushyLayoutUI = observer(function AppLayoutUI_() {
-    const layout = useMemo(() => new CushyLayoutState(), [])
+    const client = useSt()
+    const layout = client.layout
     return (
-        <CushyLayoutContext.Provider value={layout}>
+        <CushyLayoutContext.Provider value={client.layout}>
             <DockLayout
                 groups={{ custom: {} }}
                 ref={layout.getRef}
