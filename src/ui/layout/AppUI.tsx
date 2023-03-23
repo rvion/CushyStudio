@@ -4,8 +4,8 @@ import { useMemo } from 'react'
 import { FluentProvider, webDarkTheme } from '@fluentui/react-components'
 // import { invoke } from '@tauri-apps/api'
 import { ToastContainer } from 'react-toastify'
-import { ComfyClient } from '../../core/ComfyClient'
-import { testCors } from '../cors'
+import { ComfyClient } from '../../core/CushyClient'
+// import { testCors } from '../cors'
 import { GithubCorner } from '../GithubCorner'
 import { ensureMonacoReady } from '../Monaco'
 import { stContext } from '../stContext'
@@ -16,7 +16,7 @@ import { AppBarUI } from './AppBarUI'
 //     // `invoke` returns a Promise
 //     .then((response) => console.log('🟢', response))
 
-console.log(testCors())
+// console.log(testCors())
 
 export const AppUI = observer(function AppUI_() {
     const monaco = ensureMonacoReady()
