@@ -1,5 +1,6 @@
 2023-03-23
 
+-   new Gallery mode with large focus, docked by default
 -   update Cushy to be compatible with latest Comfy (fix images)
 -   improve core models
 
