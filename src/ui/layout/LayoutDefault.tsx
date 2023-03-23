@@ -15,6 +15,7 @@ export const defaultLayout = (): LayoutData => ({
         children: [
             {
                 mode: 'vertical',
+                size: 3,
                 minWidth: 300,
                 children: [
                     {
@@ -33,20 +34,19 @@ export const defaultLayout = (): LayoutData => ({
 
             {
                 mode: 'vertical',
-                size: 9999,
+                size: 6,
                 children: [
                     {
                         // mode: 'vertical',
-                        size: 99999,
                         tabs: [
                             {
-                                minWidth: 400,
+                                // minWidth: 10,
                                 id: 'node-list',
                                 title: 'Control Pane',
                                 content: <ExecutionUI />,
                             },
                             {
-                                minWidth: 400,
+                                // minWidth: 10,
                                 minHeight: 280,
                                 id: 'artifacts',
                                 title: 'Images',
@@ -69,7 +69,7 @@ export const defaultLayout = (): LayoutData => ({
             },
             {
                 mode: 'vertical',
-                size: 99999,
+                size: 10,
                 children: [
                     {
                         tabs: [
@@ -90,8 +90,8 @@ export const defaultLayout = (): LayoutData => ({
                         // mode: 'vertical',
                         tabs: [
                             {
-                                minWidth: 280,
-                                minHeight: 280,
+                                // minWidth: 280,
+                                // minHeight: 280,
                                 id: 'artifacts',
                                 title: 'Images',
                                 content: <PGalleryUI />,
