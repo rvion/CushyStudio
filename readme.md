@@ -15,9 +15,9 @@
 
 <!-- https://discord.gg/GfAN6hF2ad -->
 
-<!-- **🔴 EARLY ACCESS - MASTER BRANCH NOT WORKING 🔴** -->
+## **Full-featured** generative Art studio.
 
-## `CushyStudio` is a **Full-featured** generative Art studio.
+**🔴 EARLY ACCESS - ALPHA QUALITY 🔴**
 
 Build and automate your art or game asset production.
 
@@ -43,15 +43,15 @@ Deploy interractive generative art pipelines with human curation, validation and
 
 <!-- ![](docs/images/2023-03-14_06-47-30.png) -->
 
-![](website/static/img/screenshots/2023-03-18-23-13-27.png)
+![](website/static/img/screenshots/2023-03-24-09-29-45.png)
 
-## Features
+<!-- ## Features
 
 -
 
 ### Type-safe everywhere
 
-![](website/static/img/screenshots/2023-03-18-23-13-53.png)
+![](website/static/img/screenshots/2023-03-18-23-13-53.png) -->
 
 ---
 
@@ -80,6 +80,8 @@ It's as easy as :
 `CushyStudio` welcomes contributors. We invite your participation through issues and pull requests! You can peruse the contributing guidelines.
 
 See [#Developpment](#developpment) for how to install and get up and running
+
+---
 
 ## Architecture
 
