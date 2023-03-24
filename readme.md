@@ -2,19 +2,14 @@
 
 # CushyStudio
 
+[![Windows Support](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
+[![Ubuntu Support](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
+[![Arch Linux Support](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
+[![Windows Support](https://img.shields.io/badge/MACOS-adb8c5?style=for-the-badge&logo=macos&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
+
 <!-- [![Downloads][downloads-badge]][releases] -->
 
 <!-- https://shields.io/ -->
-
-![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio)
-
-![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=flat&logo=reddit)
-![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=flat&logo=twitter)
-
-[![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
-
-[![CD](https://github.com/rvion/CushyStudio/actions/workflows/electron-publication.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/electron-publication.yml)
 
 <!-- ![Discord](https://img.shields.io/discord/1087008112969531513) -->
 
@@ -22,7 +17,7 @@
 
 <!-- **🔴 EARLY ACCESS - MASTER BRANCH NOT WORKING 🔴** -->
 
-### `CushyStudio` is a **Full-featured** generative Art studio.
+## `CushyStudio` is a **Full-featured** generative Art studio.
 
 Build and automate your art or game asset production.
 
@@ -32,6 +27,15 @@ Deploy interractive generative art pipelines with human curation, validation and
 [Installation](#installation) •
 [Configuration](#configuration) •
 [Integrations](#third-party-integrations)
+
+[![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio)
+![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total)
+
+![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=flat&logo=reddit)
+![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=flat&logo=twitter)
+
+[![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
 
 </div>
 
@@ -76,6 +80,12 @@ It's as easy as :
 `CushyStudio` welcomes contributors. We invite your participation through issues and pull requests! You can peruse the contributing guidelines.
 
 See [#Developpment](#developpment) for how to install and get up and running
+
+## Architecture
+
+`CushyStudio` is a cross-platform application built using the [Tauri](https://tauri.studio) framework. Tauri is based on the OS specific webview and Rust to work. Read about tauri [here](https://tauri.studio/en/docs/about/intro)
+
+`CushyStudio` is a polygot application. `CushyStudio` relies on Rust api for file operations and TS, SCSS for the webview. Rust code are under `src-tauri` directory whereas the webview code are under `src` directory. The API that connects webview with the Rust code is under `src/Api` directory.
 
 <!-- This project has quite a backlog of suggestions! If you're new to the project, maybe you'd like to open a pull request to address one of them. -->
 
