@@ -28,7 +28,8 @@ jobs:
 
             - name: Rust Cache
               uses: Swatinem/rust-cache@v2
-              working-directory: src-tauri
+              with:
+                  workspaces: ./src-tauri
 
             - name: install dependencies (ubuntu only)
               if: matrix.platform == 'ubuntu-20.04'
