@@ -49,6 +49,11 @@ Deploy interractive generative art pipelines with human curation, validation and
 -   [ ] button to open devtools
 -   [ ] switch releases to allow for devtools
 
+## Known Bugs
+
+-   custom nodes may crash due to spaces in their name
+    -   [ ] should be fixed soon
+
 ## Getting started
 
 <!-- ![](docs/images/2023-03-14_06-47-30.png) -->
