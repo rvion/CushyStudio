@@ -9,12 +9,16 @@ specifiers:
   '@react-spring/web': ^9.7.1
   '@tauri-apps/api': ^1.2.0
   '@tauri-apps/cli': ^1.2.3
+  '@types/cytoscape': ^3.19.9
+  '@types/cytoscape-klay': ^3.1.0
   '@types/node': ^18.15.3
   '@types/prettier': ^2.7.2
   '@types/react': ^18.0.28
   '@types/react-dom': ^18.0.11
   '@types/ws': ^8.5.4
   '@vitejs/plugin-react': ^3.1.0
+  cytoscape: ^3.23.0
+  cytoscape-klay: ^3.1.4
   esbuild: ^0.17.12
   mobx: ^6.8.0
   mobx-react-lite: ^3.4.3
@@ -39,6 +43,8 @@ dependencies:
   '@monaco-editor/react': 4.4.6_waewrrayshn643ztij6zbniufy
   '@react-spring/web': 9.7.1_biqbaboplfbrettd7655fr4n2y
   '@tauri-apps/api': 1.2.0
+  cytoscape: 3.23.0
+  cytoscape-klay: 3.1.4_cytoscape@3.23.0
   esbuild: 0.17.12
   mobx: 6.8.0
   mobx-react-lite: 3.4.3_woojb62cqeyk443mbl7msrwu2e
@@ -55,6 +61,8 @@ dependencies:
 
 devDependencies:
   '@tauri-apps/cli': 1.2.3
+  '@types/cytoscape': 3.19.9
+  '@types/cytoscape-klay': 3.1.0
   '@types/node': 18.15.5
   '@types/prettier': 2.7.2
   '@types/react': 18.0.28
@@ -1842,6 +1850,16 @@ packages:
     resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
     dev: false
 
+  /@types/cytoscape-klay/3.1.0:
+    resolution: {integrity: sha512-jdHwHrvBlR0eDhZF9ggG+i7Qjx0/b0yZPZG6QfnRBc4SJwIA9BzsCxlHqHqFv1oh/CO8jJL5AkbvLUS9H0TLPQ==}
+    dependencies:
+      '@types/cytoscape': 3.19.9
+    dev: true
+
+  /@types/cytoscape/3.19.9:
+    resolution: {integrity: sha512-oqCx0ZGiBO0UESbjgq052vjDAy2X53lZpMrWqiweMpvVwKw/2IiYDdzPFK6+f4tMfdv9YKEM9raO5bAZc3UYBg==}
+    dev: true
+
   /@types/node/18.15.5:
     resolution: {integrity: sha512-Ark2WDjjZO7GmvsyFFf81MXuGTA/d6oP38anyxWOL6EREyBKAxKoFHwBhaZxCfLRLpO8JgVXwqOwSwa7jRcjew==}
 
@@ -1969,6 +1987,23 @@ packages:
   /csstype/3.1.1:
     resolution: {integrity: sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==}
 
+  /cytoscape-klay/3.1.4_cytoscape@3.23.0:
+    resolution: {integrity: sha512-VwPj0VR25GPfy6qXVQRi/MYlZM/zkdvRhHlgqbM//lSvstgM6fhp3ik/uM8Wr8nlhskfqz/M1fIDmR6UckbS2A==}
+    peerDependencies:
+      cytoscape: ^3.2.0
+    dependencies:
+      cytoscape: 3.23.0
+      klayjs: 0.4.1
+    dev: false
+
+  /cytoscape/3.23.0:
+    resolution: {integrity: sha512-gRZqJj/1kiAVPkrVFvz/GccxsXhF3Qwpptl32gKKypO4IlqnKBjTOu+HbXtEggSGzC5KCaHp3/F7GgENrtsFkA==}
+    engines: {node: '>=0.10'}
+    dependencies:
+      heap: 0.2.7
+      lodash: 4.17.21
+    dev: false
+
   /debug/4.3.4:
     resolution: {integrity: sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==}
     engines: {node: '>=6.0'}
@@ -2067,6 +2102,10 @@ packages:
       function-bind: 1.1.1
     dev: true
 
+  /heap/0.2.7:
+    resolution: {integrity: sha512-2bsegYkkHO+h/9MGbn6KWcE45cHZgPANo5LXF7EvWdT0yT2EguSVO1nDgU5c8+ZOPwp2vMNa7YFsJhVcDR9Sdg==}
+    dev: false
+
   /is-core-module/2.11.0:
     resolution: {integrity: sha512-RRjxlvLDkD1YJwDbroBHMb+cukurkDWNyHx7D3oNB5x9rb5ogcksMC5wHCadcXoo67gVr/+3GFySh3134zi6rw==}
     dependencies:
@@ -2090,6 +2129,10 @@ packages:
 
   /keyborg/2.0.0:
     resolution: {integrity: sha512-RWY8nWrzRkwTQLaKyDtbTu5SOb5L4B20UzAsBHlQDFZqVY/+Mid0bQ7MVTC8vbOTrWY2xkkzj8gZF9Ua7re4xA==}
+    dev: false
+
+  /klayjs/0.4.1:
+    resolution: {integrity: sha512-WUNxuO7O79TEkxCj6OIaK5TJBkaWaR/IKNTakgV9PwDn+mrr63MLHed34AcE2yTaDntgO6l0zGFIzhcoTeroTA==}
     dev: false
 
   /lodash/4.17.21:

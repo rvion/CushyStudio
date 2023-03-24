@@ -16,7 +16,7 @@ export const NodeRefUI = observer(function NodeRefUI_(p: { nodeUID: ComfyNodeUID
     if (graph == null) return <>no execution yet</>
 
     // 3. ensure node exists
-    const node = graph.nodes.get(p.nodeUID)
+    const node = graph.nodesIndex.get(p.nodeUID)
     if (node == null) return <>❌ error</>
 
     const category = node?.$schema.category

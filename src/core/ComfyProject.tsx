@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid'
 import { ComfyClient } from './CushyClient'
 import { ComfyImporter } from './ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
-import { ScriptExecution } from './ScriptExecution'
+import { CSRun } from './CSRun'
 
 export class ComfyProject {
     static __demoProjectIx = 1
@@ -17,10 +17,12 @@ export class ComfyProject {
     name: string = 'Demo Project ' + ComfyProject.__demoProjectIx++
 
     /** list of all project runs */
-    runs: ScriptExecution[] = []
+    runs: CSRun[] = []
 
     /** last project run */
-    currentRun: ScriptExecution | null = null
+    get currentRun(): CSRun | null {
+        return this.runs[0] ?? null
+    }
 
     private constructor(public client: ComfyClient) {
         makeAutoObservable(this)
@@ -71,9 +73,8 @@ export class ComfyProject {
         }
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
-        const execution = new ScriptExecution(this, opts)
-        this.currentRun = execution
-        this.runs.push(execution)
+        const execution = new CSRun(this, opts)
+        this.runs.unshift(execution)
 
         // try {
         const finalCode = this.code.replace(`export {}`, '')

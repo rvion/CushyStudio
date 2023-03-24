@@ -8,6 +8,7 @@ import { ComfyNodeUID } from './ComfyNodeUID'
 import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
 import { exhaust } from './ComfyUtils'
 import { CushyImage } from './CushyImage'
+import { comfyColors } from './ComfyColors'
 
 configure({ enforceActions: 'never' })
 
@@ -41,7 +42,28 @@ export class ComfyNode<ComfyNode_input extends object> {
 
     /** update a node */
     set(p: Partial<ComfyNode_input>) {
-        for (const [key, value] of Object.entries(p)) this.json.inputs[key] = this.serializeValue(key, value)
+        // const changes = {
+        //     added: [] as { sourceUID: string; targetUID: string; input: string }[],
+        //     removed: [] as string[],
+        // }
+        const cyto = this.graph.cyto
+        for (const [key, value] of Object.entries(p)) {
+            const next = this.serializeValue(key, value)
+            const prev = this.json.inputs[key]
+            if (next === prev) continue
+            if (Array.isArray(next) && Array.isArray(prev)) {
+                cyto?.removeEdge(`${prev[0]}-${key}->${this.uid}`)
+                cyto?.addEdge({ sourceUID: next[0], targetUID: this.uid, input: key })
+            }
+            // edge.from}-${edge.inputName}->${node.uid
+            this.json.inputs[key] = next
+        }
+        // 🔴 wrong resonsibility
+        // console.log('CHANGES', changes)
+    }
+
+    get color(): string {
+        return comfyColors[this.$schema.category]
     }
 
     $outputs: ComfyNodeOutput<any>[] = []
@@ -55,10 +77,11 @@ export class ComfyNode<ComfyNode_input extends object> {
         this.$schema = graph.schema.nodesByName[xxx.class_type]
         let ix = 0
         this.json = this._convertPromptExtToPrompt(xxx)
-        this.graph.nodes.set(this.uid.toString(), this)
+        this.graph.registerNode(this)
         makeAutoObservable(this)
-        const extensions: { [key: string]: any } = {}
 
+        // dynamically add properties for every outputs
+        const extensions: { [key: string]: any } = {}
         for (const x of this.$schema.outputs) {
             const output = new ComfyNodeOutput(this, ix++, x.name)
             extensions[x.name] = output
@@ -89,6 +112,16 @@ export class ComfyNode<ComfyNode_input extends object> {
             }
         }
         return incomingNodes
+    }
+    _incomingEdges() {
+        const incomingEdges: { from: ComfyNodeUID; inputName: string }[] = []
+        for (const [inputName, val] of Object.entries(this.inputs)) {
+            if (val instanceof Array) {
+                const [from, _slotIx] = val
+                incomingEdges.push({ from, inputName })
+            }
+        }
+        return incomingEdges
     }
 
     get manager() { return this.graph.client } // prettier-ignore

@@ -57,6 +57,8 @@
         "@monaco-editor/react": "^4.4.6",
         "@react-spring/web": "^9.7.1",
         "@tauri-apps/api": "^1.2.0",
+        "cytoscape": "^3.23.0",
+        "cytoscape-klay": "^3.1.4",
         "esbuild": "^0.17.12",
         "mobx": "^6.8.0",
         "mobx-react-lite": "^3.4.3",
@@ -73,6 +75,8 @@
     },
     "devDependencies": {
         "@tauri-apps/cli": "^1.2.3",
+        "@types/cytoscape": "^3.19.9",
+        "@types/cytoscape-klay": "^3.1.0",
         "@types/node": "^18.15.3",
         "@types/prettier": "^2.7.2",
         "@types/react": "^18.0.28",

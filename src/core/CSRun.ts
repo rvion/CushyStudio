@@ -11,13 +11,15 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { fetch, Body } from '@tauri-apps/api/http'
 import { CushyImage } from './CushyImage'
+import { Cyto } from '../ui/graph/cyto'
 
 /** script runtime context */
-export class ScriptExecution {
+export class CSRun {
     uid = nanoid()
 
     /** the main graph that will be updated along the script execution */
     graph: ComfyGraph
+    cyto: Cyto
 
     gallery: CushyImage[] = []
 
@@ -27,6 +29,7 @@ export class ScriptExecution {
         public opts?: { mock?: boolean },
     ) {
         this.graph = new ComfyGraph(this.project, this)
+        this.cyto = new Cyto(this.graph)
         makeAutoObservable(this)
     }
 

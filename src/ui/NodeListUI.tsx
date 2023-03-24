@@ -4,7 +4,7 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 import { comfyColors } from '../core/ComfyColors'
 import { ComfyGraph } from '../core/ComfyGraph'
-import { ComfyNode } from '../core/ComfyNode'
+import { ComfyNode } from '../core/CSNode'
 import { ComfyNodeSchema } from '../core/ComfySchema'
 import { useLayout } from './layout/LayoutCtx'
 import { NodeRefUI } from './NodeRefUI'
@@ -13,7 +13,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
     const graph = p.graph
     if (graph == null) return <>no execution yet</>
     const uiSt = useLocalObservable(() => ({ seeAll: false }))
-    const nodes = uiSt.seeAll ? graph.nodesArray : graph.nodesArray.filter((f) => f.isExecuting)
+    const nodes = uiSt.seeAll ? graph.nodes : graph.nodes.filter((f) => f.isExecuting)
     const layout = useLayout()
     return (
         <div className='col gap'>
@@ -25,7 +25,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
                 </div>
                 <div className='row gap'>
                     <Button onClick={() => (uiSt.seeAll = !uiSt.seeAll)} size='small' className='self-start'>
-                        {uiSt.seeAll ? 'hide' : `+ ${graph.nodesArray.length} nodes`}
+                        {uiSt.seeAll ? 'hide' : `+ ${graph.nodes.length} nodes`}
                     </Button>
                     <Button size='small' icon={<I.ArrowDownload16Filled />} />
                 </div>
@@ -48,17 +48,21 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
     )
 })
 
-export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<any>; showArtifacts?: boolean }) {
+export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
+    //
+    node: ComfyNode<any>
+    showArtifacts?: boolean
+    folded?: boolean
+}) {
     const node = p.node
     const uid = node.uid
     const graph: ComfyGraph | undefined = node.graph
     if (graph == null) return <>no execution yet</>
 
-    const curr: ComfyNode<any> = graph.nodes.get(uid)!
+    const curr: ComfyNode<any> = graph.nodesIndex.get(uid)!
     const name = curr.$schema.name
     const schema: ComfyNodeSchema = curr.$schema
-    const color = comfyColors[schema.category]
-    const [folded, setFolded] = useState(false)
+    const [folded, setFolded] = useState(p.folded ?? false)
     return (
         <div key={uid} className='node'>
             {node.progress || node.status === 'done' ? (
@@ -78,7 +82,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: { node: ComfyNode<a
             <div
                 onClick={() => setFolded(!folded)}
                 className='row gap darker pointer'
-                style={{ backgroundColor: color, padding: '0.2rem' }}
+                style={{ backgroundColor: node.color, padding: '0.2rem' }}
             >
                 <NodeRefUI nodeUID={uid} />
                 <div>{name}</div>

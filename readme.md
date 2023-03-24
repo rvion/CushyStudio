@@ -39,6 +39,15 @@ Deploy interractive generative art pipelines with human curation, validation and
 
 </div>
 
+## Short-term Roadmap
+
+-   [ ] make websocker client resilient to network errors
+-   [ ] save projects on disk / via metadata
+-   [ ] improve comfy import
+-   [ ] add folder of examples
+-   [ ] button to open devtools
+-   [ ] switch releases to allow for devtools
+
 ## Getting started
 
 <!-- ![](docs/images/2023-03-14_06-47-30.png) -->

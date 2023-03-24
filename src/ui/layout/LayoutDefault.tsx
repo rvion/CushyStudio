@@ -24,7 +24,7 @@ export const defaultLayout = (): LayoutData => ({
                             {
                                 minWidth: 300,
                                 minHeight: 300,
-                                id: 'ide',
+                                id: 'IdeInfosUI',
                                 title: 'CushyStudio',
                                 content: <IdeInfosUI />,
                             },
@@ -42,14 +42,14 @@ export const defaultLayout = (): LayoutData => ({
                         tabs: [
                             {
                                 // minWidth: 10,
-                                id: 'node-list',
+                                id: 'ExecutionUI',
                                 title: 'Control Pane',
                                 content: <ExecutionUI />,
                             },
                             {
                                 // minWidth: 10,
                                 minHeight: 280,
-                                id: 'artifacts',
+                                id: 'ArtifactsUI',
                                 title: 'Images',
                                 content: <ArtifactsUI />,
                             },

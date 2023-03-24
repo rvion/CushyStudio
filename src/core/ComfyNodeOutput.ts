@@ -1,4 +1,4 @@
-import { ComfyNode } from './ComfyNode'
+import { ComfyNode } from './CSNode'
 
 export class ComfyNodeOutput<T, Ix extends number = number> {
     constructor(

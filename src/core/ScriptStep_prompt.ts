@@ -1,7 +1,7 @@
 import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from './ComfyAPI'
-import type { ScriptExecution } from './ScriptExecution'
+import type { CSRun } from './CSRun'
 import type { ComfyPromptJSON } from './ComfyPrompt'
-import type { ComfyNode } from './ComfyNode'
+import type { ComfyNode } from './CSNode'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
 
 import { makeAutoObservable } from 'mobx'
@@ -28,7 +28,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
 
     constructor(
         //
-        public execution: ScriptExecution,
+        public execution: CSRun,
         public prompt: ComfyPromptJSON,
     ) {
         this._graph = new ComfyGraph(

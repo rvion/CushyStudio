@@ -111,7 +111,7 @@ export const MenuUI = observer(function MenuUI_() {
                                                     </TreeItemLayout>
                                                     {step instanceof ScriptStep_prompt ? (
                                                         <Tree>
-                                                            {run.graph.nodesArray.map((node, ix) => (
+                                                            {run.graph.nodes.map((node, ix) => (
                                                                 <TreeItem key={ix} actions={<Actions />}>
                                                                     <TreeItemLayout
                                                                         //

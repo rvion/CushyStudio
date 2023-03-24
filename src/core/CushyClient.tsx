@@ -1,7 +1,7 @@
 import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
-import type { ScriptExecution } from './ScriptExecution'
+import type { CSRun } from './CSRun'
 import { ScriptStep } from './ScriptStep'
 
 import * as WS from 'ws'
@@ -11,7 +11,7 @@ import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
 import { DemoScript1 } from '../ui/DemoScript1'
 import { CushyLayoutState } from '../ui/layout/LayoutState'
-import { AutoSaver } from './AutoSaver'
+import { AutoSaver } from '../utils/AutoSaver'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfyProject } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
@@ -271,7 +271,7 @@ export class ComfyClient {
 
             // ensure current project is running
             const project: ComfyProject = this.project
-            const currentRun: ScriptExecution | null = project.currentRun
+            const currentRun: CSRun | null = project.currentRun
             if (currentRun == null) return console.log(`❌ received ${msg.type} but currentRun is null`)
 
             // ensure current step is a prompt

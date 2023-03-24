@@ -18,7 +18,7 @@ const _vaeEncode = C.VAEEncode({pixels: nextBase, vae: ckpt.VAE, })
 sampler.set({ latent_image: _vaeEncode })
 
 
-for (const item of ['cat','dog','frog','woman']) {
+for (const item of ['cat',/*'dog','frog','woman'*/]) {
     // @ts-ignore
     positive.inputs.text =  \`masterpiece, (\${item}:1.3), on table\`
     r1 = await C.get()

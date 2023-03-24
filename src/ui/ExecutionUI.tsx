@@ -1,8 +1,9 @@
-import { Card } from '@fluentui/react-components'
+import { Button, Card } from '@fluentui/react-components'
 import { useSpring, animated } from '@react-spring/web'
 import { observer } from 'mobx-react-lite'
-import { Fragment, ReactNode } from 'react'
+import { Fragment, ReactNode, useEffect, useRef } from 'react'
 import { exhaust } from '../core/ComfyUtils'
+import { CSRun } from '../core/CSRun'
 import { ScriptStep } from '../core/ScriptStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../core/ScriptStep_ask'
 import { ScriptStep_Init } from '../core/ScriptStep_Init'
@@ -15,24 +16,41 @@ import { useSt } from './stContext'
 export const ExecutionUI = observer(function ExecutionUI_() {
     const st = useSt()
     const project = st.project
-    const run = project.currentRun
+    const run: CSRun | null = project.currentRun
+
+    const ref = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        const elem = ref.current
+        if (elem == null) return
+        if (run == null) return console.log('❌ run is null')
+        if (!(elem instanceof HTMLElement)) return console.log('❌ elem is not an HTMLElement')
+        console.log('🔥 mounting cyto', elem)
+
+        run.cyto.mount(elem)
+    }, [run, ref.current])
+
     if (run == null)
         return (
-            <div
-                style={{
-                    // alignItems: 'center',
-                    justifyContent: 'center',
-                    // background: 'red',
-                    height: '100%',
-                    display: 'flex',
-                    overflow: 'auto',
-                }}
-            >
+            <div style={{ justifyContent: 'center', height: '100%', display: 'flex', overflow: 'auto' }}>
                 <h3>No execution yet, hit run in the Code Toolbar </h3>
             </div>
         )
     return (
         <div className='col gap' style={{ overflow: 'auto' }}>
+            <div>Run {run.uid}</div>
+            <div>
+                Layout
+                <Button onClick={() => run.cyto.animate()}>layout</Button>
+                <div
+                    ref={ref}
+                    style={{
+                        backgroundColor: '#fafafa',
+                        width: '300px',
+                        height: '300px',
+                    }}
+                    id='dynamicgraph'
+                ></div>
+            </div>
             {run.steps.map((step) => (
                 <StepWrapperUI key={step.uid} step={step} />
             ))}
@@ -48,7 +66,7 @@ export const StepWrapperUI = observer(function StepWrapperUI_(p: { step: ScriptS
 
     return (
         <animated.div style={props}>
-            <Card>{renderStep(p.step)}</Card>
+            <div className='row'>{renderStep(p.step)}</div>
         </animated.div>
     )
 })

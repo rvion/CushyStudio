@@ -1,6 +1,6 @@
 import type { ComfyNodeOutput } from './ComfyNodeOutput'
 import type { ComfyNodeUID } from './ComfyNodeUID'
-import type { ComfyNode } from './ComfyNode'
+import type { ComfyNode } from './CSNode'
 import type { ComfyNodeSchemaJSON } from './ComfySchemaJSON'
 import type { ComfyGraph } from './ComfyGraph'
 
