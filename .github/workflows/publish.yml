@@ -7,6 +7,7 @@ on:
 
 jobs:
     publish-tauri:
+        if: startsWith(github.event.head_commit.message, 'release v')
         permissions:
             contents: write
         strategy:
@@ -66,8 +67,8 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-                  releaseName: 'CushyStudio nightly v__VERSION__'
+                  tagName: '${{ github.event.head_commit.message }}' # the action automatically replaces \_\_VERSION\_\_ with the app version
+                  releaseName: 'CushyStudio ${{ github.event.head_commit.message }}'
                   releaseBody: 'See the assets to download this version and install.'
                   releaseDraft: false
                   prerelease: false

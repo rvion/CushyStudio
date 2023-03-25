@@ -1,6 +1,6 @@
 [package]
 name = "CushyStudio"
-version = "0.0.39"
+version = "0.1.0"
 description = "Full-featured AI generative Art studio."
 authors = ["rvion"]
 license = "unlicensed"
