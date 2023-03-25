@@ -10,9 +10,15 @@ import { CSRun } from './CSRun'
 /** Script */
 export class CSScript {
     static __demoProjectIx = 1
+    runCounter = 0
 
     /** unique project id */
     id: string = nanoid()
+
+    /** folder where CushyStudio will save script informations */
+    get folder() {
+        return [this.client.workspaceDir, this.name].join('/')
+    }
 
     /** project name */
     name: string = 'Demo Project ' + CSScript.__demoProjectIx++

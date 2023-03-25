@@ -1,6 +1,6 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 import type { ComfyNodeUID } from './ComfyNodeUID'
-import type { CSScript } from './ComfyProject'
+import type { CSScript } from './CSScript'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from './ComfyUtils'
 import type { CSRun } from './CSRun'

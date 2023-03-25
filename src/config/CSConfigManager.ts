@@ -65,10 +65,6 @@ export class CSConfigManager {
         Object.assign(this.config, configChanges)
         return await this.save()
     }
-    // set workspace(newWorkspace: string) {
-    // get workspace(){
-    //     return this.workspace
-    // }
 
     mkDefaultConfig = async () => {
         const userFolder = await path.homeDir()

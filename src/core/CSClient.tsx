@@ -13,7 +13,7 @@ import { DemoScript1 } from '../ui/DemoScript1'
 import { CushyLayoutState } from '../ui/layout/LayoutState'
 import { AutoSaver } from '../utils/AutoSaver'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
-import { CSScript } from './ComfyProject'
+import { CSScript } from './CSScript'
 import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { CushyImage } from './CushyImage'
@@ -47,6 +47,9 @@ export class CSClient {
     config = new CSConfigManager()
     assets = new Map<string, boolean>()
     layout = new CushyLayoutState(this)
+
+    /** workspace directory */
+    get workspaceDir() { return this.config.config.workspace } // prettier-ignore
 
     storageServerKey = 'comfy-server'
     getStoredServerKey = () => {}

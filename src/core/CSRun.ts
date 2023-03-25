@@ -1,4 +1,4 @@
-import type { CSScript } from './ComfyProject'
+import type { CSScript } from './CSScript'
 
 import { ScriptStep_prompt } from './ScriptStep_prompt'
 import { deepCopyNaive, Maybe } from './ComfyUtils'
@@ -17,6 +17,8 @@ import { Cyto } from '../ui/graph/cyto'
 export class CSRun {
     uid = nanoid()
 
+    name: string
+
     /** the main graph that will be updated along the script execution */
     graph: ComfyGraph
 
@@ -26,12 +28,23 @@ export class CSRun {
     /** list of all images produed over the whole script execution */
     gallery: CushyImage[] = []
 
+    /** folder where CushyStudio will save run informations */
+    get folder() {
+        return [this.script.folder, this.name].join('/')
+    }
+
+    save() {
+        // TODO
+        // 🔴
+    }
+
     constructor(
         //
-        public project: CSScript,
+        public script: CSScript,
         public opts?: { mock?: boolean },
     ) {
-        this.graph = new ComfyGraph(this.project, this)
+        this.name = 'Run ' + this.script.runCounter++
+        this.graph = new ComfyGraph(this.script, this)
         this.cyto = new Cyto(this.graph)
         makeAutoObservable(this)
     }
@@ -75,7 +88,7 @@ export class CSRun {
 
         // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
-            client_id: this.project.client.sid,
+            client_id: this.script.client.sid,
             extra_data: { extra_pnginfo: { it: 'works' } },
             prompt: currentJSON,
         }
@@ -83,7 +96,7 @@ export class CSRun {
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
-        void fetch(`${this.project.client.serverHostHTTP}/prompt`, {
+        void fetch(`${this.script.client.serverHostHTTP}/prompt`, {
             method: 'POST',
             body: Body.json(out),
         })
