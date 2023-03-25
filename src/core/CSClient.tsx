@@ -42,7 +42,6 @@ export class CSClient {
     script: CSScript
     scripts: CSScript[] = []
     editor: ComfyScriptEditor
-    // uploader = new ImageUploader(this)
     config = new CSConfigManager()
     assets = new Map<string, boolean>()
     layout = new CushyLayoutState(this)
@@ -134,13 +133,10 @@ export class CSClient {
         const prev = this.autosaver.load()
         if (prev) Object.assign(opts, prev)
         this.autosaver.start()
-        // this.serverIP = opts.serverIP
-        // this.serverPort = opts.serverPort
         this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema(opts.spec)
-        this.script = CSScript.INIT(this)
+        this.script = new CSScript(this)
         this.scripts.push(this.script)
-        // this.projects.push(ComfyProject.INIT(this))
         this.dts = this.schema.codegenDTS()
         this.startWSClientSafe()
         makeAutoObservable(this)

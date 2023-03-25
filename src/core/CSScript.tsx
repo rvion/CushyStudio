@@ -43,7 +43,7 @@ export class CSScript {
         return this.runs[0] ?? null
     }
 
-    private constructor(public client: CSClient) {
+    constructor(public client: CSClient) {
         makeAutoObservable(this)
     }
 
@@ -51,15 +51,9 @@ export class CSScript {
     get schema() { return this.client.schema } // prettier-ignore
 
     code: string = ''
-    // script: ComfyScript = new ComfyScript(this)
 
     udpateCode = async (code: string) => {
         this.code = code
-    }
-
-    static INIT = (client: CSClient) => {
-        const project = new CSScript(client)
-        return project
     }
 
     static FROM_JSON = (client: CSClient, json: ComfyPromptJSON) => {
