@@ -11,7 +11,7 @@ export type CSConfigJSON = {
 }
 
 /** load / save global CushyStudio Config files */
-export class CSConfig {
+export class CSWorkspace {
     constructor() {
         makeAutoObservable(this)
         void this.init()

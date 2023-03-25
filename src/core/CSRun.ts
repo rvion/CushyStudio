@@ -14,11 +14,12 @@ import { nanoid } from 'nanoid'
 import { fetch, Body } from '@tauri-apps/api/http'
 import { CSImage } from './CSImage'
 import { Cyto } from '../ui/graph/cyto'
+import { getYYYYMMDD_HHMM_SS } from '../utils/timestamps'
 
 /** script exeuction instance */
 export class CSRun {
-    /** creation timestamp */
-    createdAt = Date.now()
+    /** creation "timestamp" in YYYYMMDDHHMMSS format */
+    createdAt = getYYYYMMDD_HHMM_SS()
 
     /** unique run id */
     uid = nanoid()

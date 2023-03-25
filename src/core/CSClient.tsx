@@ -10,10 +10,9 @@ import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { CSConfig } from '../config/CSConfig'
+import { CSWorkspace } from '../config/CSConfig'
 import { DemoScript1 } from '../ui/DemoScript1'
 import { CushyLayoutState } from '../ui/layout/LayoutState'
-import { AutoSaver } from '../utils/AutoSaver'
 import { readableStringify } from '../utils/stringifyReadable'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfySchema } from './ComfySchema'
@@ -48,20 +47,18 @@ export class CSClient {
     /** workspace directory */
     get workspaceDir() { return this.config.config.workspace } // prettier-ignore
 
-    storageServerKey = 'comfy-server'
-    getStoredServerKey = () => {}
-
-    getConfig = () => ({
-        spec: this.schema.spec,
-    })
-
-    TEST_saveFilesInDocuments = async () => {
-        const dir = fs.Dir.Document
-        await fs.createDir('CushyStudio', { recursive: true, dir })
-        await fs.createDir('CushyStudio/images', { recursive: true, dir })
-        await fs.createDir('CushyStudio/projects', { recursive: true, dir })
-        await fs.writeTextFile({ contents: '[]', path: `CushyStudio/test.json` }, { dir })
-    }
+    // storageServerKey = 'comfy-server'
+    // getStoredServerKey = () => {}
+    // getConfig = () => ({
+    //     spec: this.schema.spec,
+    // })
+    // TEST_saveFilesInDocuments = async () => {
+    //     const dir = fs.Dir.Document
+    //     await fs.createDir('CushyStudio', { recursive: true, dir })
+    //     await fs.createDir('CushyStudio/images', { recursive: true, dir })
+    //     await fs.createDir('CushyStudio/projects', { recursive: true, dir })
+    //     await fs.writeTextFile({ contents: '[]', path: `CushyStudio/test.json` }, { dir })
+    // }
 
     private RANDOM_IMAGE_URL = 'http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output'
 
@@ -81,6 +78,19 @@ export class CSClient {
     uploadURL = async (url: string = this.RANDOM_IMAGE_URL): Promise<ComfyUploadImageResult> => {
         const blob = await this.getUrlAsBlob(url)
         return this.uploadUIntArrToComfy(blob)
+    }
+
+    loadProjects = async () => {
+        const items = await fs.readDir(this.workspaceDir)
+        for (const item of items) {
+            if (item.children) {
+                const script = item.children.find((f) => f.name === 'script.cushy')
+                this
+            }
+        }
+
+        // const files = fs.readDir(projectsDir)
+        console.log({ files })
     }
 
     /** save an image at given url to disk */
@@ -127,7 +137,7 @@ export class CSClient {
     }
 
     // autosaver = new AutoSaver('client', this.getConfig)
-    constructor(public config: CSConfig) {
+    constructor(public config: CSWorkspace) {
         // const prev = this.autosaver.load()
         // if (prev) Object.assign(opts, prev)
         // this.autosaver.start()

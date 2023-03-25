@@ -37,16 +37,15 @@ export const ExecutionUI = observer(function ExecutionUI_() {
         )
     return (
         <div className='col gap' style={{ overflow: 'auto' }}>
-            <div>Run {run.uid}</div>
-            <div>
-                Layout
-                <Button onClick={() => run.cyto.animate()}>layout</Button>
+            <h3>{run.name}</h3>
+            <div className='row'>
+                <Button onClick={() => run.cyto.animate()}>fix layout</Button>
                 <div
                     ref={ref}
                     style={{
                         backgroundColor: '#fafafa',
                         width: '300px',
-                        height: '300px',
+                        height: '100px',
                     }}
                     id='dynamicgraph'
                 ></div>

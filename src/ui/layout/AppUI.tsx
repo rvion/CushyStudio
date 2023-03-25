@@ -8,7 +8,7 @@ import { GithubCorner } from '../GithubCorner'
 import { stContext } from '../stContext'
 import { AppBarUI } from './AppBarUI'
 import { CushyLayoutUI } from './LayoutUI'
-import { CSConfig } from '../../config/CSConfig'
+import { CSWorkspace } from '../../config/CSConfig'
 import { WelcomeScreenUI } from '../WelcomeScreenUI'
 
 // invoke('greet', { name: 'World' })
@@ -18,7 +18,7 @@ import { WelcomeScreenUI } from '../WelcomeScreenUI'
 // console.log(testCors())
 
 export const AppUI = observer(function AppUI_() {
-    const config = useMemo(() => new CSConfig(), [])
+    const config = useMemo(() => new CSWorkspace(), [])
     const client = useMemo(() => {
         if (!config.ready) return null
         return new CSClient(config)

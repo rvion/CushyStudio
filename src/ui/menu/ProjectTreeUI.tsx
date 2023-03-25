@@ -13,6 +13,7 @@ export const ProjectTreeUI = observer(function MenuUI_() {
     const client = useSt()
     return (
         <Tree
+            size='small'
             aria-label='Tree'
             defaultOpenItems={[
                 //
