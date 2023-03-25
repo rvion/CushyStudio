@@ -40,6 +40,13 @@ Deploy interractive generative art pipelines with human curation, validation and
 
 </div>
 
+## Custom nodes support ✅
+
+Custom nodes are supported.
+If they don't work, that's a bug report to fill.
+
+known bugs: - https://civitai.com/models/19625/comfyui-custom-nodes
+
 ## Short-term Roadmap
 
 -   [ ] make websocker client resilient to network errors

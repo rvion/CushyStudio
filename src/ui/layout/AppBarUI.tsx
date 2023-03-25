@@ -4,13 +4,14 @@ import { observer } from 'mobx-react-lite'
 import * as I from '@fluentui/react-icons'
 import * as dialog from '@tauri-apps/api/dialog'
 import * as fs from '@tauri-apps/api/fs'
-import { getPngMetadata } from '../../core/getPngMetadata'
 import { useSt } from '../stContext'
+import { ToolbarUI } from '../ToolbarUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const client = useSt()
     return (
         <Toolbar>
+            <ToolbarUI />
             {/* <ToolbarButton aria-label='Increase Font Size' appearance='primary' icon={<FontIncrease24Regular />} /> */}
             <ToolbarButton icon={<I.New24Filled />}>New</ToolbarButton>
             <ToolbarButton icon={<I.Save24Filled />}>Save</ToolbarButton>

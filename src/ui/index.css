@@ -161,7 +161,7 @@ input {
 
 .dock-tabpane {
     box-sizing: border-box;
-    padding: 10px;
+    /* padding: 10px; */
 }
 
 .TreeValue:hover{

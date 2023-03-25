@@ -36,10 +36,10 @@ export const ensureMonacoReady = () => {
     const [monaco, setMonaco] = useState(null as Monaco | null)
     useEffect(() => {
         // loader.init().then(/* ... */)
-        console.log('[🔵] setup Monaco...')
+        // console.log('[🔵] setup Monaco...')
         loader.init().then((monaco) => {
             // console.log('here is the monaco instance:', monaco)
-            console.log(`[🔵] monaco ready`)
+            console.log(`[👁] monaco ready`)
             setupMonaco(monaco)
             globalMonaco = monaco
             setMonaco(monaco)
@@ -50,7 +50,7 @@ export const ensureMonacoReady = () => {
 
 const setupMonaco = (monaco: Monaco) => {
     if (globalMonaco === monaco) return
-    console.log('[👁] setup typescript...')
+    // console.log('[👁] setup typescript...')
     globalMonaco = monaco
     const compilerOptions: TypescriptOptions = {
         strict: true,

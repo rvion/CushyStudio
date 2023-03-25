@@ -2,7 +2,7 @@ import { LayoutData } from 'rc-dock'
 import { ArtifactsUI } from '../ArtifactsUI'
 import { EditorPaneUI } from '../EditorPaneUI'
 import { ExecutionUI } from '../ExecutionUI'
-import { IdeInfosUI } from '../IdeInfosUI'
+import { CSMenuUI } from '../menu/CSMenuUI'
 import { PGalleryUI } from '../panels/pGallery'
 import { PGalleryFocusUI } from '../panels/pGalleryFocus'
 
@@ -26,7 +26,7 @@ export const defaultLayout = (): LayoutData => ({
                                 minHeight: 300,
                                 id: 'IdeInfosUI',
                                 title: 'CushyStudio',
-                                content: <IdeInfosUI />,
+                                content: <CSMenuUI />,
                             },
                         ],
                     },

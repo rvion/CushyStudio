@@ -20,28 +20,7 @@ import { ScriptStep_prompt } from '../../core/ScriptStep_prompt'
 import { useSt } from '../stContext'
 import { ExecutionStepIconUI } from './ExecutionStepIconUI'
 
-const iconStyleProps: I.FluentIconsProps = {
-    primaryFill: 'red',
-}
-
-export const HasProblem = <I.Important16Regular primaryFill='red' />
-export const IsOK = <I.CheckmarkCircle16Regular primaryFill='green' />
-
-const RenderAside = () => (
-    <>
-        <I.Important16Regular {...iconStyleProps} />
-        {/* <CounterBadge count={1} color='danger' size='small' /> */}
-    </>
-)
-
-export const Actions = () => (
-    <>
-        <Button appearance='subtle' icon={<I.Edit20Regular />} />
-        <Button appearance='subtle' icon={<I.MoreHorizontal20Regular />} />
-    </>
-)
-
-export const MenuUI = observer(function MenuUI_() {
+export const ProjectTreeUI = observer(function MenuUI_() {
     const client = useSt()
     return (
         <Tree
@@ -194,3 +173,21 @@ export const MenuUI = observer(function MenuUI_() {
         </Tree>
     )
 })
+
+export const HasProblem = <I.Important16Regular primaryFill='red' />
+export const IsOK = <I.CheckmarkCircle16Regular primaryFill='green' />
+
+const RenderAside = () => (
+    <>
+        <I.Important16Regular {...iconStyleProps} />
+        {/* <CounterBadge count={1} color='danger' size='small' /> */}
+    </>
+)
+
+export const Actions = () => (
+    <>
+        <Button appearance='subtle' icon={<I.Edit20Regular />} />
+        <Button appearance='subtle' icon={<I.MoreHorizontal20Regular />} />
+    </>
+)
+const iconStyleProps: I.FluentIconsProps = { primaryFill: 'red' }

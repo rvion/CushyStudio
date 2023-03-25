@@ -19,12 +19,15 @@ import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { CushyImage } from './CushyImage'
 import { getPngMetadata } from './getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
+import { CSConfigManager } from '../config/CSConfigManager'
 
 export type ComfyClientOptions = {
     serverIP: string
     serverPort: number
     spec: ComfySchemaJSON
 }
+
+export type CSCriticalError = { title: string; help: string }
 
 /**
  * global State
@@ -41,8 +44,8 @@ export class ComfyClient {
     projects: ComfyProject[] = []
     editor: ComfyScriptEditor
     // uploader = new ImageUploader(this)
+    config = new CSConfigManager()
     assets = new Map<string, boolean>()
-
     layout = new CushyLayoutState(this)
 
     storageServerKey = 'comfy-server'
@@ -145,7 +148,7 @@ export class ComfyClient {
             await this.fetchObjectsSchema()
             this.editor.openCODE()
             // this.project.run()
-        }, 500)
+        }, 1500)
     }
 
     get serverHostHTTP() {
@@ -164,10 +167,7 @@ export class ComfyClient {
         return x
     }
 
-    CRITICAL_ERROR: Maybe<{
-        title: string
-        help: string
-    }> = null
+    CRITICAL_ERROR: Maybe<CSCriticalError> = null
 
     /** retri e the comfy spec from the schema*/
     fetchObjectsSchema = async (): Promise<ComfySchemaJSON> => {

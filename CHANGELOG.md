@@ -1,3 +1,12 @@
+2023-03-25
+
+-   faster startup
+-   initial config folder / config file / configurable workspace definition
+
+2023-03-24
+
+-   new graph visualization
+
 2023-03-23
 
 -   new Gallery mode with large focus, docked by default

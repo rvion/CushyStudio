@@ -11,6 +11,9 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                 <div className='grow'></div>
                 <div>{client.wsStatusEmoji}</div>
             </div>
+            <div>
+                <Text size={300}>{client.config.config.workspace}</Text>
+            </div>
             <Label>
                 Host
                 <Input type='text' value={client.serverIP} onChange={(e) => (client.serverIP = e.target.value)} />
