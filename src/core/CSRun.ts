@@ -38,7 +38,7 @@ export class CSRun {
 
     /** folder where CushyStudio will save run informations */
     get folderPath() {
-        return this.script.folder + path.sep + this.createdAt + '_' + this.name
+        return this.script.folderPath + path.sep + this.createdAt + '_' + this.name
     }
 
     /** save current script */
@@ -104,7 +104,7 @@ export class CSRun {
 
         // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
-            client_id: this.script.client.sid,
+            client_id: this.script.workspace.sid,
             extra_data: { extra_pnginfo: { it: 'works' } },
             prompt: currentJSON,
         }
@@ -112,7 +112,7 @@ export class CSRun {
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
-        void fetch(`${this.script.client.serverHostHTTP}/prompt`, {
+        void fetch(`${this.script.workspace.serverHostHTTP}/prompt`, {
             method: 'POST',
             body: Body.json(out),
         })

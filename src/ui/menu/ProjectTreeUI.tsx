@@ -15,12 +15,12 @@ export const ProjectTreeUI = observer(function MenuUI_() {
         <Tree
             size='small'
             aria-label='Tree'
-            defaultOpenItems={[
-                //
-                'projects',
-                client.script.id,
-                client.script.currentRun?.uid ?? 'currentRun',
-            ]}
+            // defaultOpenItems={[
+            //     //
+            //     'projects',
+            //     client.script.id,
+            //     client.script.currentRun?.uid ?? 'currentRun',
+            // ]}
             ref={(e) => {
                 if (e) e.focus()
             }}
@@ -76,7 +76,7 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                         onClick={() => client.editor.openCODE()}
                         // aside={<RenderAside />}
                     >
-                        {project.name}
+                        {project.folderName}
                     </TreeItemLayout>
                     <Tree>
                         {project.runs.map((run, ix) => (

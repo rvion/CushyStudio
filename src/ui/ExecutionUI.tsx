@@ -2,7 +2,7 @@ import { Button, Card } from '@fluentui/react-components'
 import { animated, useSpring } from '@react-spring/web'
 import { observer } from 'mobx-react-lite'
 import { Fragment, ReactNode, useEffect, useRef } from 'react'
-import { exhaust } from '../core/ComfyUtils'
+import { exhaust, Maybe } from '../core/ComfyUtils'
 import { CSRun } from '../core/CSRun'
 import { ScriptStep } from '../core/ScriptStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../core/ScriptStep_ask'
@@ -16,7 +16,7 @@ import { useSt } from './WorkspaceContext'
 export const ExecutionUI = observer(function ExecutionUI_() {
     const st = useSt()
     const project = st.script
-    const run: CSRun | null = project.currentRun
+    const run: Maybe<CSRun> = project?.currentRun
 
     const ref = useRef<HTMLDivElement>(null)
     useEffect(() => {

@@ -17,23 +17,22 @@ export class CSScript {
     id: string = nanoid()
 
     /** folder where CushyStudio will save script informations */
-    get folder(): string {
-        return this.client.folder + path.sep + this.name
+    get folderPath(): string {
+        return this.workspace.folder + path.sep + this.folderName
     }
 
     save = async () => {
         const code = this.code
         // ensure folder exists
-        await fs.createDir(this.folder, { recursive: true })
+        await fs.createDir(this.folderPath, { recursive: true })
         // safe script as script.cushy
-        const filePath = this.folder + path.sep + 'script.cushy'
+        const filePath = this.folderPath + path.sep + 'script.cushy'
         await fs.writeFile({ path: filePath, contents: code })
         // return success
         console.log('[📁] saved', filePath)
     }
 
     /** project name */
-    name: string = 'Demo Project ' + CSScript.__demoProjectIx++
 
     /** list of all project runs */
     runs: CSRun[] = []
@@ -43,12 +42,16 @@ export class CSScript {
         return this.runs[0] ?? null
     }
 
-    constructor(public client: Workspace) {
+    constructor(
+        //
+        public workspace: Workspace,
+        public folderName: string,
+    ) {
         makeAutoObservable(this)
     }
 
     /** convenient getter to retrive current client shcema */
-    get schema() { return this.client.schema } // prettier-ignore
+    get schema() { return this.workspace.schema } // prettier-ignore
 
     code: string = ''
 
@@ -57,7 +60,8 @@ export class CSScript {
     }
 
     static FROM_JSON = (client: Workspace, json: ComfyPromptJSON) => {
-        const project = new CSScript(client)
+        const folderName = nanoid()
+        const project = new CSScript(client, folderName)
         const code = new ComfyImporter(client).convertFlowToCode(json)
         project.code = code
         return project

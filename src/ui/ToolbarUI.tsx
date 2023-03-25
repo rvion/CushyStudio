@@ -19,15 +19,17 @@ export const ToolbarUI = observer(function ToolbarUI_(props: Partial<ToolbarProp
     return (
         <Toolbar aria-label='Default' {...props}>
             <ToolbarButton
+                disabled={project == null}
                 aria-label='Increase Font Size'
                 appearance='primary'
                 icon={<I.Play24Filled />}
-                onClick={() => project.RUN('real')}
+                onClick={() => project?.RUN('real')}
             />
             <ToolbarButton
+                disabled={project == null}
                 aria-label='Decrease Font Size'
                 icon={<I.DesktopToolboxRegular />}
-                onClick={() => project.RUN('fake')}
+                onClick={() => project?.RUN('fake')}
             />
             <ToolbarButton aria-label='Reset Font Size' icon={<I.TextFont24Regular />} />
             <ToolbarButton

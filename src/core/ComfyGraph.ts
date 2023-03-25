@@ -21,7 +21,7 @@ export type RunMode = 'fake' | 'real'
 
 export class ComfyGraph {
     uid = nanoid()
-    get client(): Workspace { return this.project.client } // prettier-ignore
+    get client(): Workspace { return this.project.workspace } // prettier-ignore
     get schema() { return this.client.schema } // prettier-ignore
 
     cyto?: Cyto

@@ -39,7 +39,7 @@ export class Workspace {
     schema: ComfySchema
     dts: string = ''
     focus: MainPanelFocus = null
-    script: CSScript
+    script: Maybe<CSScript> = null
     scripts: CSScript[] = []
     editor: ComfyScriptEditor
     assets = new Map<string, boolean>()
@@ -57,7 +57,7 @@ export class Workspace {
     private constructor(public folder: string) {
         this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema({})
-        this.script = new CSScript(this)
+        // this.script = new CSScript(this)
         this._schema = new PersistedJSON<ComfySchemaJSON>({
             folder: Promise.resolve(this.folder),
             name: 'schema.json',
@@ -119,10 +119,12 @@ export class Workspace {
     loadProjects = async () => {
         const items = await fs.readDir(this.folder)
         for (const item of items) {
-            if (item.children) {
-                const script = item.children.find((f) => f.name === 'script.cushy')
-                // this
-            }
+            if (!item.children) continue
+            const script = item.children.find((f) => f.name === 'script.cushy')
+            if (script == null) continue
+            const folderName = item.name
+            if (folderName == null) continue
+            this.scripts.push(new CSScript(this, folderName))
         }
 
         // const files = fs.readDir(projectsDir)
@@ -222,10 +224,15 @@ export class Workspace {
         // 4. update monaco
         this.editor.updateSDKDTS()
         this.editor.updateLibDTS()
-        this.editor.updateCODE(DemoScript1)
-        this.script.udpateCode(DemoScript1)
+        // this.editor.updateCODE(DemoScript1)
+        // this.script.udpateCode(DemoScript1)
         // console.log('🟢 schema:', this.schema.nodes)
         return schema$
+    }
+    openScript = () => {
+        // 🔴
+        this.editor.updateCODE(DemoScript1)
+        this.script?.udpateCode(DemoScript1)
     }
     static Init = () => {}
 
@@ -293,7 +300,8 @@ export class Workspace {
             }
 
             // ensure current project is running
-            const project: CSScript = this.script
+            const project: Maybe<CSScript> = this.script
+            if (project == null) return console.log('❌ received ${msg.type} but project is null')
             const currentRun: CSRun | null = project.currentRun
             if (currentRun == null) return console.log(`❌ received ${msg.type} but currentRun is null`)
 

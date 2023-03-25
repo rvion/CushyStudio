@@ -54,7 +54,7 @@ export class CSImage {
         public prompt: ScriptStep_prompt,
         public data: ComfyImageInfo,
     ) {
-        this.client = prompt.run.script.client
+        this.client = prompt.run.script.workspace
         this.save()
     }
 

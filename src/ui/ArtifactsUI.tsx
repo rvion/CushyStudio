@@ -1,14 +1,15 @@
 import { observer } from 'mobx-react-lite'
-import { ComfyImageInfo } from '../core/ComfyAPI'
-import { CSImage } from '../core/CSImage'
 import { useSt } from './WorkspaceContext'
 
 export const ArtifactsUI = observer(function ArtifactsUI_() {
     const st = useSt()
+    const script = st.script
+    if (script == null) return <>no script openeed</>
+
     return (
         <div>
-            <h3>Project {st.script.name}</h3>
-            {st.script.runs.map((run, ix) => {
+            <h3>Project {script.folderName}</h3>
+            {script.runs.map((run, ix) => {
                 return (
                     <div key={run.uid}>
                         <h3>Run {ix + 1} </h3>

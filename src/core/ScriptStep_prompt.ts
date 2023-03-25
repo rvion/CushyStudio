@@ -24,7 +24,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     _graph: ComfyGraph
 
     /** short-hand getter to access parent client */
-    get client(){ return this.run.script.client } // prettier-ignore
+    get client(){ return this.run.script.workspace } // prettier-ignore
 
     constructor(
         //

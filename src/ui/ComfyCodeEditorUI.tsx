@@ -8,6 +8,8 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
     // 🔴 fix this later
     // if (client.schema.nodes.length === 0) return <WelcomeScreenUI />
     // useEffect
+    const script = client.script
+    if (script == null) return <div>no script opened</div>
     return (
         <MonacoEditor //
             height='100vh'
@@ -17,7 +19,7 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
             onChange={(value) => {
                 // console.log('🔴 onChange', value, ev)
                 if (value == null) return
-                client.script.udpateCode(value) // 🔴
+                script.udpateCode(value) // 🔴
             }}
             // beforeMount={(monaco: Monaco) => client.editor.setupMonaco(monaco)}
             onMount={(editor: IStandaloneCodeEditor, _monaco: Monaco) => {
