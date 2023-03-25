@@ -48,7 +48,7 @@ export class Workspace {
         const workspace = new Workspace(folder)
         await workspace._schema.finished
         await workspace._config.finished
-        workspace.init()
+        void workspace.init()
         return workspace
     }
     private constructor(public folder: string) {
@@ -71,16 +71,13 @@ export class Workspace {
         })
     }
 
-    init() {
+    async init() {
         // this.scripts.push(this.script)
         this.dts = this.schema.codegenDTS()
         this.startWSClientSafe()
         makeAutoObservable(this)
-        setTimeout(async () => {
-            await this.fetchObjectsSchema()
-            this.editor.openCODE()
-            // this.project.run()
-        }, 1500)
+        await this.fetchObjectsSchema()
+        this.editor.openCODE()
     }
 
     // storageServerKey = 'comfy-server'
