@@ -7,7 +7,7 @@ on:
 
 jobs:
     publish-tauri:
-        if: startsWith(github.event.head_commit.message, 'release v')
+        if: startsWith(github.event.head_commit.message, 'v0.0.')
         permissions:
             contents: write
         strategy:
