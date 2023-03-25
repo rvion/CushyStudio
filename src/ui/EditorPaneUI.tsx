@@ -4,6 +4,21 @@ import { ToolbarUI } from './ToolbarUI'
 import { useSt } from './WorkspaceContext'
 import { ensureMonacoReady } from './Monaco'
 import { CSCriticalError } from '../core/Workspace'
+import { PConnectUI } from './panels/pConnect'
+
+export const MainPanelUI = observer(function MainPanelUI_(p: {}) {
+    const client = useSt()
+
+    if (client.focus == null) return <div>👋</div>
+    if (client.focus == 'config')
+        return (
+            <div>
+                <PConnectUI />
+            </div>
+        )
+    if (client.focus == 'ide') return <EditorPaneUI />
+    return <>ERROR</>
+})
 
 export const EditorPaneUI = observer(function EditorPaneUI_() {
     const client = useSt()

@@ -26,6 +26,11 @@ export const ProjectTreeUI = observer(function MenuUI_() {
             }}
         >
             <TreeItem>
+                <TreeItemLayout onClick={() => (client.focus = 'config')} iconBefore={<I.Options24Filled />}>
+                    Config
+                </TreeItemLayout>
+            </TreeItem>
+            <TreeItem>
                 <TreeItemLayout onClick={client.editor.openSDK} iconBefore={<I.BrainCircuit24Filled />}>
                     API Cushy
                 </TreeItemLayout>

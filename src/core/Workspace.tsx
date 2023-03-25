@@ -27,6 +27,8 @@ export type WorkspaceConfigJSON = {
 
 export type CSCriticalError = { title: string; help: string }
 
+type MainPanelFocus = 'ide' | 'config' | null
+
 /**
  * global State
  *  - manages connection to the backend
@@ -36,6 +38,7 @@ export type CSCriticalError = { title: string; help: string }
 export class Workspace {
     schema: ComfySchema
     dts: string = ''
+    focus: MainPanelFocus = null
     script: CSScript
     scripts: CSScript[] = []
     editor: ComfyScriptEditor

@@ -1,7 +1,7 @@
 import { LayoutData } from 'rc-dock'
 import { ArtifactsUI } from '../ArtifactsUI'
 import { CivitaiUI } from '../civitai/CIvitaiUI'
-import { EditorPaneUI } from '../EditorPaneUI'
+import { EditorPaneUI, MainPanelUI } from '../EditorPaneUI'
 import { ExecutionUI } from '../ExecutionUI'
 import { CSMenuUI } from '../menu/CSMenuUI'
 import { PaintUI } from '../paint/PaintUI'
@@ -45,7 +45,7 @@ export const defaultLayout = (): LayoutData => ({
                             {
                                 id: 'Editor1',
                                 title: 'Project Code',
-                                content: <EditorPaneUI />,
+                                content: <MainPanelUI />,
                             },
                             {
                                 minHeight: 280,

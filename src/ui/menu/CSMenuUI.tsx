@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { PConnectUI } from '../panels/pConnect'
-import { PImportUI } from '../panels/pImport'
+import { DropZoneUI } from '../DropZoneUI'
 import { ProjectTreeUI } from './ProjectTreeUI'
 
 export const CSMenuUI = observer(function IdeInfosUI_() {
@@ -8,8 +7,7 @@ export const CSMenuUI = observer(function IdeInfosUI_() {
         <div className='col gap h100'>
             <ProjectTreeUI />
             <div className='grow'></div>
-            <PImportUI />
-            <PConnectUI />
+            <DropZoneUI />
         </div>
     )
 })
