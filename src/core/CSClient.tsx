@@ -10,7 +10,7 @@ import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { CSConfigManager } from '../config/CSConfigManager'
+import { CSConfig } from '../config/CSConfig'
 import { DemoScript1 } from '../ui/DemoScript1'
 import { CushyLayoutState } from '../ui/layout/LayoutState'
 import { AutoSaver } from '../utils/AutoSaver'
@@ -42,7 +42,6 @@ export class CSClient {
     script: CSScript
     scripts: CSScript[] = []
     editor: ComfyScriptEditor
-    config = new CSConfigManager()
     assets = new Map<string, boolean>()
     layout = new CushyLayoutState(this)
 
@@ -127,15 +126,15 @@ export class CSClient {
         return result
     }
 
-    autosaver = new AutoSaver('client', this.getConfig)
-
-    constructor(opts: ComfyClientOptions) {
-        const prev = this.autosaver.load()
-        if (prev) Object.assign(opts, prev)
-        this.autosaver.start()
+    // autosaver = new AutoSaver('client', this.getConfig)
+    constructor(public config: CSConfig) {
+        // const prev = this.autosaver.load()
+        // if (prev) Object.assign(opts, prev)
+        // this.autosaver.start()
         this.editor = new ComfyScriptEditor(this)
-        this.schema = new ComfySchema(opts.spec)
+        this.schema = new ComfySchema({})
         this.script = new CSScript(this)
+
         this.scripts.push(this.script)
         this.dts = this.schema.codegenDTS()
         this.startWSClientSafe()
@@ -169,7 +168,7 @@ export class CSClient {
         let schema$: ComfySchemaJSON
         try {
             const res = await fetch(url, { method: 'GET', timeout: { secs: 3, nanos: 0 } })
-            console.log(res.data)
+            console.log('[🤖]', res.data)
             schema$ = res.data as any
             // clearTimeout(timeoutID)
             // schema$ = await res.json()
@@ -229,6 +228,7 @@ export class CSClient {
     sid: string = 'temporary'
     status: ComfyStatus | null = null
     ws: Maybe</*WS.WebSocket |*/ WebSocket> = null
+
     startWSClientSafe = () => {
         try {
             this.startWSClient()

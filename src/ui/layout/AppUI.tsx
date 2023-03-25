@@ -8,6 +8,8 @@ import { GithubCorner } from '../GithubCorner'
 import { stContext } from '../stContext'
 import { AppBarUI } from './AppBarUI'
 import { CushyLayoutUI } from './LayoutUI'
+import { CSConfig } from '../../config/CSConfig'
+import { WelcomeScreenUI } from '../WelcomeScreenUI'
 
 // invoke('greet', { name: 'World' })
 //     // `invoke` returns a Promise
@@ -16,8 +18,14 @@ import { CushyLayoutUI } from './LayoutUI'
 // console.log(testCors())
 
 export const AppUI = observer(function AppUI_() {
-    const client = useMemo(() => new CSClient({ serverIP: 'localhost', serverPort: 8188, spec: {} }), [])
-    if (!client.config.ready) return <div>loading config</div>
+    const config = useMemo(() => new CSConfig(), [])
+    const client = useMemo(() => {
+        if (!config.ready) return null
+        return new CSClient(config)
+    }, [config.ready])
+
+    if (client == null) return <WelcomeScreenUI />
+
     return (
         <FluentProvider theme={webDarkTheme} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
             <stContext.Provider value={client}>

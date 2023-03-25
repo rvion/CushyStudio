@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useSt } from './stContext'
 
 export const WelcomeScreenUI = observer(function WelcomeScreenUI_() {
-    const client = useSt()
+    // const client = useSt()
     return (
         <div className='welcome-screen'>
             <div className='welcome-popup col gap items-center'>
@@ -27,9 +27,9 @@ export const WelcomeScreenUI = observer(function WelcomeScreenUI_() {
                         }}
                     />
                 </div> */}
-                <button className='primary large self-stretch' onClick={() => client.fetchObjectsSchema()}>
+                {/* <button className='primary large self-stretch' onClick={() => client.fetchObjectsSchema()}>
                     Connect
-                </button>
+                </button> */}
                 {/* <button className='primary large self-stretch' onClick={() => client.connect()}>
                     Connect Test
                 </button> */}
