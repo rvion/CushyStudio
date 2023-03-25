@@ -11,12 +11,6 @@ import { CushyLayoutUI } from './LayoutUI'
 import { CSWorkspace } from '../../config/CSConfig'
 import { WelcomeScreenUI } from '../WelcomeScreenUI'
 
-// invoke('greet', { name: 'World' })
-//     // `invoke` returns a Promise
-//     .then((response) => console.log('🟢', response))
-
-// console.log(testCors())
-
 export const AppUI = observer(function AppUI_() {
     const config = useMemo(() => new CSWorkspace(), [])
     const client = useMemo(() => {
@@ -39,3 +33,8 @@ export const AppUI = observer(function AppUI_() {
         </FluentProvider>
     )
 })
+
+// invoke('greet', { name: 'World' })
+//     // `invoke` returns a Promise
+//     .then((response) => console.log('🟢', response))
+// console.log(testCors())

@@ -20,71 +20,22 @@ export const defaultLayout = (): LayoutData => ({
             {
                 mode: 'vertical',
                 size: 3,
-                minWidth: 300,
+                minWidth: 250,
                 children: [
                     {
                         tabs: [
                             {
-                                minWidth: 300,
+                                minWidth: 250,
                                 minHeight: 300,
                                 id: 'CSMenuUI',
                                 title: 'CushyStudio',
                                 content: <CSMenuUI />,
-                            },
-                            {
-                                minWidth: 300,
-                                minHeight: 300,
-                                id: 'CivitaiUI',
-                                title: 'Civitai',
-                                content: <CivitaiUI />,
-                            },
-                            {
-                                minWidth: 300,
-                                minHeight: 300,
-                                id: 'TestingArea',
-                                title: 'Testing',
-                                content: <PUploadUI />,
                             },
                         ],
                     },
                 ],
             },
 
-            {
-                mode: 'vertical',
-                size: 6,
-                children: [
-                    {
-                        // mode: 'vertical',
-                        tabs: [
-                            {
-                                // minWidth: 10,
-                                id: 'ExecutionUI',
-                                title: 'Control Pane',
-                                content: <ExecutionUI />,
-                            },
-                            {
-                                // minWidth: 10,
-                                minHeight: 280,
-                                id: 'ArtifactsUI',
-                                title: 'Images',
-                                content: <ArtifactsUI />,
-                            },
-                        ],
-                    },
-                    // {
-                    //     // mode: 'vertical',
-                    //     tabs: [
-                    //         // {
-                    //         //     minHeight: 280,
-                    //         //     id: 'Graph',
-                    //         //     title: 'Graph',
-                    //         //     content: <VisUI />,
-                    //         // },
-                    //     ],
-                    // },
-                ],
-            },
             {
                 mode: 'vertical',
                 size: 10,
@@ -107,6 +58,44 @@ export const defaultLayout = (): LayoutData => ({
                             //     id: 'Graph',
                             //     title: 'Graph',
                             //     content: <VisUI />,
+                            // },
+                        ],
+                    },
+                ],
+            },
+            {
+                mode: 'vertical',
+                size: 6,
+                children: [
+                    {
+                        // mode: 'vertical',
+                        tabs: [
+                            {
+                                // minWidth: 10,
+                                id: 'ExecutionUI',
+                                title: 'Control Pane',
+                                content: <ExecutionUI />,
+                            },
+                            {
+                                minWidth: 300,
+                                minHeight: 300,
+                                id: 'CivitaiUI',
+                                title: 'Civitai',
+                                content: <CivitaiUI />,
+                            },
+                            {
+                                minWidth: 300,
+                                minHeight: 300,
+                                id: 'TestingArea',
+                                title: 'Testing',
+                                content: <PUploadUI />,
+                            },
+                            // {
+                            //     // minWidth: 10,
+                            //     minHeight: 280,
+                            //     id: 'ArtifactsUI',
+                            //     title: 'Images',
+                            //     content: <ArtifactsUI />,
                             // },
                         ],
                     },
@@ -139,6 +128,17 @@ export const defaultLayout = (): LayoutData => ({
                             },
                         ],
                     },
+                    // {
+                    //     // mode: 'vertical',
+                    //     tabs: [
+                    //         // {
+                    //         //     minHeight: 280,
+                    //         //     id: 'Graph',
+                    //         //     title: 'Graph',
+                    //         //     content: <VisUI />,
+                    //         // },
+                    //     ],
+                    // },
                 ],
             },
             // {

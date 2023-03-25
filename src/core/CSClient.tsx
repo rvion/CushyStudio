@@ -85,12 +85,12 @@ export class CSClient {
         for (const item of items) {
             if (item.children) {
                 const script = item.children.find((f) => f.name === 'script.cushy')
-                this
+                // this
             }
         }
 
         // const files = fs.readDir(projectsDir)
-        console.log({ files })
+        // console.log({ files })
     }
 
     /** save an image at given url to disk */

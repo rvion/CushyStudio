@@ -1,3 +1,6 @@
+import * as dialog from '@tauri-apps/api/dialog'
+import * as fs from '@tauri-apps/api/fs'
+import { Button } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { useSt } from './stContext'
 
@@ -7,6 +10,22 @@ export const WelcomeScreenUI = observer(function WelcomeScreenUI_() {
         <div className='welcome-screen'>
             <div className='welcome-popup col gap items-center'>
                 <h1>CushyStudio</h1>
+                <Button
+                    onClick={async () => {
+                        const filePath = await dialog.open({
+                            title: 'Open',
+                            directory: true,
+                            // defaultPath: `~`,
+                            filters: [
+                                //
+                                { name: 'Civitai Project', extensions: ['cushy'] },
+                                { name: 'image', extensions: ['png'] },
+                            ],
+                        })
+                    }}
+                >
+                    Please open a workspace
+                </Button>
                 {/* <div className='row items-baseline gap'>
                     <div style={{ width: '3rem', textAlign: 'right' }}>IP:</div>
                     <input

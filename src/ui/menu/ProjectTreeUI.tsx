@@ -25,90 +25,99 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                 if (e) e.focus()
             }}
         >
-            {/* PROJECTS */}
-            <TreeItem id='projects'>
+            <TreeItem>
+                <TreeItemLayout onClick={client.editor.openSDK} iconBefore={<I.BrainCircuit24Filled />}>
+                    API Cushy
+                </TreeItemLayout>
+            </TreeItem>
+            <AssetTreeUI>
+                {/* <TreeItem> */}
+                <TreeItemLayout onClick={client.editor.openLib} iconBefore={<I.BrainCircuit24Regular />}>
+                    API Comfy
+                </TreeItemLayout>
+                {/* </TreeItem> */}
+            </AssetTreeUI>
+            {/* <TreeItem id='projects'>
                 <TreeItemLayout iconBefore={<I.DocumentBulletListMultiple24Regular />}>Scripts</TreeItemLayout>
-                <Tree>
-                    {client.scripts.map((project) => (
-                        <TreeItem
-                            // PROJECT
-                            id={project.id}
-                            key={project.id}
-                            actions={
-                                <>
-                                    <Button onClick={() => project.RUN('real')} appearance='subtle' icon={<I.Play24Filled />} />
-                                    <Menu>
-                                        <MenuTrigger disableButtonEnhancement>
-                                            <Button appearance='subtle' icon={<I.MoreHorizontal20Regular />} />
-                                        </MenuTrigger>
+                <Tree> */}
+            {client.scripts.map((project) => (
+                <TreeItem
+                    // PROJECT
+                    id={project.id}
+                    key={project.id}
+                    actions={
+                        <>
+                            <Button onClick={() => project.RUN('real')} appearance='subtle' icon={<I.Play24Filled />} />
+                            <Menu>
+                                <MenuTrigger disableButtonEnhancement>
+                                    <Button appearance='subtle' icon={<I.MoreHorizontal20Regular />} />
+                                </MenuTrigger>
 
-                                        <MenuPopover>
-                                            <MenuList>
-                                                <MenuItem>New </MenuItem>
-                                                <MenuItem>New Window</MenuItem>
-                                                <MenuItem disabled>Open File</MenuItem>
-                                                <MenuItem>Open Folder</MenuItem>
-                                            </MenuList>
-                                        </MenuPopover>
-                                    </Menu>
-                                </>
-                            }
-                        >
-                            <TreeItemLayout
-                                //
-                                iconBefore={<I.DocumentBulletList24Filled />}
-                                onClick={() => client.editor.openCODE()}
-                                // aside={<RenderAside />}
-                            >
-                                {project.name}
-                            </TreeItemLayout>
-                            <Tree>
-                                {project.runs.map((run, ix) => (
-                                    <TreeItem id={run.uid} key={run.uid} actions={<Actions />}>
-                                        <TreeItemLayout
-                                            //
-                                            iconBefore={<I.PlayCircle24Regular />}
-                                            // aside={<RenderAside />}
-                                        >
-                                            Run {ix + 1}
-                                        </TreeItemLayout>
-                                        <Tree>
-                                            {run.steps.map((step, ix) => (
-                                                <TreeItem key={ix} actions={<Actions />}>
-                                                    <TreeItemLayout iconBefore={ExecutionStepIconUI(step)}>
-                                                        {step.name}
-                                                    </TreeItemLayout>
-                                                    {step instanceof ScriptStep_prompt ? (
-                                                        <Tree>
-                                                            {run.graph.nodes.map((node, ix) => (
-                                                                <TreeItem key={ix} actions={<Actions />}>
-                                                                    <TreeItemLayout
-                                                                        //
-                                                                        iconBefore={<I.Cube16Regular />}
-                                                                        aside={<RenderAside />}
-                                                                    >
-                                                                        {ix + 1}. {node.$schema.name}
-                                                                    </TreeItemLayout>
-                                                                </TreeItem>
-                                                            ))}
-                                                        </Tree>
-                                                    ) : null}
-                                                </TreeItem>
-                                            ))}
-                                        </Tree>
-                                    </TreeItem>
-                                ))}
-                            </Tree>
-                        </TreeItem>
-                    ))}
-                    {/* <TreeItem>
+                                <MenuPopover>
+                                    <MenuList>
+                                        <MenuItem>New </MenuItem>
+                                        <MenuItem>New Window</MenuItem>
+                                        <MenuItem disabled>Open File</MenuItem>
+                                        <MenuItem>Open Folder</MenuItem>
+                                    </MenuList>
+                                </MenuPopover>
+                            </Menu>
+                        </>
+                    }
+                >
+                    <TreeItemLayout
+                        //
+                        iconBefore={<I.DocumentBulletList24Filled />}
+                        onClick={() => client.editor.openCODE()}
+                        // aside={<RenderAside />}
+                    >
+                        {project.name}
+                    </TreeItemLayout>
+                    <Tree>
+                        {project.runs.map((run, ix) => (
+                            <TreeItem id={run.uid} key={run.uid} actions={<Actions />}>
+                                <TreeItemLayout
+                                    //
+                                    iconBefore={<I.PlayCircle24Regular />}
+                                    // aside={<RenderAside />}
+                                >
+                                    Run {ix + 1}
+                                </TreeItemLayout>
+                                <Tree>
+                                    {run.steps.map((step, ix) => (
+                                        <TreeItem key={ix} actions={<Actions />}>
+                                            <TreeItemLayout iconBefore={ExecutionStepIconUI(step)}>{step.name}</TreeItemLayout>
+                                            {step instanceof ScriptStep_prompt ? (
+                                                <Tree>
+                                                    {run.graph.nodes.map((node, ix) => (
+                                                        <TreeItem key={ix} actions={<Actions />}>
+                                                            <TreeItemLayout
+                                                                //
+                                                                iconBefore={<I.Cube16Regular />}
+                                                                aside={<RenderAside />}
+                                                            >
+                                                                {ix + 1}. {node.$schema.name}
+                                                            </TreeItemLayout>
+                                                        </TreeItem>
+                                                    ))}
+                                                </Tree>
+                                            ) : null}
+                                        </TreeItem>
+                                    ))}
+                                </Tree>
+                            </TreeItem>
+                        ))}
+                    </Tree>
+                </TreeItem>
+            ))}
+            {/* <TreeItem>
                         <TreeItemLayout aside={<RenderAside />}>level 2, item 2</TreeItemLayout>
                     </TreeItem>
                     <TreeItem actions={<Actions />}>
                         <TreeItemLayout aside={<RenderAside />}>level 2, item 3</TreeItemLayout>
                     </TreeItem> */}
-                </Tree>
-            </TreeItem>
+            {/* </Tree> */}
+            {/* // </TreeItem> */}
 
             {/* SERVER */}
             {/* <TreeItem actions={<Actions />}>
@@ -139,18 +148,6 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                     </TreeItem>
                 </Tree>
             </TreeItem> */}
-            <TreeItem>
-                <TreeItemLayout onClick={client.editor.openSDK} iconBefore={<I.BrainCircuit24Filled />}>
-                    API Cushy
-                </TreeItemLayout>
-            </TreeItem>
-            <AssetTreeUI>
-                {/* <TreeItem> */}
-                <TreeItemLayout onClick={client.editor.openLib} iconBefore={<I.BrainCircuit24Regular />}>
-                    API Comfy
-                </TreeItemLayout>
-                {/* </TreeItem> */}
-            </AssetTreeUI>
         </Tree>
     )
 })
