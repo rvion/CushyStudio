@@ -1,5 +1,5 @@
 [package]
-name = "CushyStudio"
+name = "cushy-studio"
 version = "0.1.0"
 description = "Full-featured AI generative Art studio."
 authors = ["rvion"]
