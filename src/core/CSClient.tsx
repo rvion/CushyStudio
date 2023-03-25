@@ -4,24 +4,23 @@ import type { Maybe } from './ComfyUtils'
 import type { CSRun } from './CSRun'
 import { ScriptStep } from './ScriptStep'
 
-import * as WS from 'ws'
+// import * as WS from 'ws'
 
 import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
+import { CSConfigManager } from '../config/CSConfigManager'
 import { DemoScript1 } from '../ui/DemoScript1'
 import { CushyLayoutState } from '../ui/layout/LayoutState'
 import { AutoSaver } from '../utils/AutoSaver'
+import { readableStringify } from '../utils/stringifyReadable'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
-import { CSScript } from './CSScript'
 import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
-import { CSImage } from './CSImage'
+import { CSScript } from './CSScript'
 import { getPngMetadata } from './getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
-import { CSConfigManager } from '../config/CSConfigManager'
-import { readableStringify } from '../utils/stringifyReadable'
 
 export type ComfyClientOptions = {
     serverIP: string
@@ -38,8 +37,6 @@ export type CSCriticalError = { title: string; help: string }
  *  - dispatches messages to the right projects
  */
 export class CSClient {
-    serverIP: string
-    serverPort: number
     schema: ComfySchema
     dts: string
     script: CSScript
@@ -57,8 +54,6 @@ export class CSClient {
     getStoredServerKey = () => {}
 
     getConfig = () => ({
-        serverIP: this.serverIP,
-        serverPort: this.serverPort,
         spec: this.schema.spec,
     })
 
@@ -139,8 +134,8 @@ export class CSClient {
         const prev = this.autosaver.load()
         if (prev) Object.assign(opts, prev)
         this.autosaver.start()
-        this.serverIP = opts.serverIP
-        this.serverPort = opts.serverPort
+        // this.serverIP = opts.serverIP
+        // this.serverPort = opts.serverPort
         this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema(opts.spec)
         this.script = CSScript.INIT(this)
@@ -156,14 +151,8 @@ export class CSClient {
         }, 1500)
     }
 
-    get serverHostHTTP() {
-        const protocol = window.location.protocol === 'https:' ? 'https' : 'http'
-        return `${protocol}://${this.serverIP}:${this.serverPort}`
-    }
-    get serverHostWs() {
-        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'
-        return `${protocol}://${this.serverIP}:${this.serverPort}`
-    }
+    get serverHostHTTP() { return this.config.config.comfyHTTPURL } // prettier-ignore
+    get serverHostWs() { return this.config.config.comfyWSURL } // prettier-ignore
 
     fetchPrompHistory = async () => {
         const res = await fetch(`${this.serverHostHTTP}/history`, { method: 'GET' })
@@ -243,7 +232,7 @@ export class CSClient {
 
     sid: string = 'temporary'
     status: ComfyStatus | null = null
-    ws: Maybe<WS.WebSocket | WebSocket> = null
+    ws: Maybe</*WS.WebSocket |*/ WebSocket> = null
     startWSClientSafe = () => {
         try {
             this.startWSClient()
@@ -261,16 +250,16 @@ export class CSClient {
             if (this.ws?.readyState === WebSocket.OPEN) this.ws.close()
             this.wsStatus = 'off'
         }
-        const ws =
-            typeof window !== 'undefined' //
-                ? new WebSocket(`${this.serverHostWs}/ws`)
-                : new WS.WebSocket(`${this.serverHostWs}/ws`)
+        const ws = new WebSocket(this.serverHostWs)
+        // typeof window !== 'undefined' //
+        //     ? new WebSocket(this.serverHostWs)
+        //     : new WS.WebSocket(this.serverHostWs)
         ws.binaryType = 'arraybuffer'
         ws.onopen = () => {
             console.log('[👢] connected')
             this.wsStatus = 'on'
         }
-        ws.onmessage = (e: WS.MessageEvent) => {
+        ws.onmessage = (e: MessageEvent /* WS.MessageEvent*/) => {
             const msg: WsMsg = JSON.parse(e.data as any)
             console.log(`[🐰] %c${msg.type} %c${JSON.stringify(msg.data)}`, 'color:#90bdff', 'color:gray')
             if (msg.type === 'status') {
