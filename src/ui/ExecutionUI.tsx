@@ -15,7 +15,7 @@ import { useSt } from './stContext'
 
 export const ExecutionUI = observer(function ExecutionUI_() {
     const st = useSt()
-    const project = st.project
+    const project = st.script
     const run: CSRun | null = project.currentRun
 
     const ref = useRef<HTMLDivElement>(null)

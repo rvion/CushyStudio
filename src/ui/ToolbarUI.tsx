@@ -15,7 +15,7 @@ import { useSt } from './stContext'
 
 export const ToolbarUI = observer(function ToolbarUI_(props: Partial<ToolbarProps>) {
     const client = useSt()
-    const project = client.project
+    const project = client.script
     return (
         <Toolbar aria-label='Default' {...props}>
             <ToolbarButton

@@ -1,4 +1,4 @@
-import type { ComfyProject } from './ComfyProject'
+import type { CSScript } from './ComfyProject'
 
 import { ScriptStep_prompt } from './ScriptStep_prompt'
 import { deepCopyNaive, Maybe } from './ComfyUtils'
@@ -28,7 +28,7 @@ export class CSRun {
 
     constructor(
         //
-        public project: ComfyProject,
+        public project: CSScript,
         public opts?: { mock?: boolean },
     ) {
         this.graph = new ComfyGraph(this.project, this)

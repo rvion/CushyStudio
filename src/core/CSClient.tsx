@@ -13,7 +13,7 @@ import { DemoScript1 } from '../ui/DemoScript1'
 import { CushyLayoutState } from '../ui/layout/LayoutState'
 import { AutoSaver } from '../utils/AutoSaver'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
-import { ComfyProject } from './ComfyProject'
+import { CSScript } from './ComfyProject'
 import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { CushyImage } from './CushyImage'
@@ -35,13 +35,13 @@ export type CSCriticalError = { title: string; help: string }
  *  - manages list of known / open projects
  *  - dispatches messages to the right projects
  */
-export class ComfyClient {
+export class CSClient {
     serverIP: string
     serverPort: number
     schema: ComfySchema
     dts: string
-    project: ComfyProject
-    projects: ComfyProject[] = []
+    script: CSScript
+    scripts: CSScript[] = []
     editor: ComfyScriptEditor
     // uploader = new ImageUploader(this)
     config = new CSConfigManager()
@@ -138,8 +138,8 @@ export class ComfyClient {
         this.serverPort = opts.serverPort
         this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema(opts.spec)
-        this.project = ComfyProject.INIT(this)
-        this.projects.push(this.project)
+        this.script = CSScript.INIT(this)
+        this.scripts.push(this.script)
         // this.projects.push(ComfyProject.INIT(this))
         this.dts = this.schema.codegenDTS()
         this.startWSClientSafe()
@@ -201,7 +201,7 @@ export class ComfyClient {
         this.editor.updateSDKDTS()
         this.editor.updateLibDTS()
         this.editor.updateCODE(DemoScript1)
-        this.project.udpateCode(DemoScript1)
+        this.script.udpateCode(DemoScript1)
         // console.log('🟢 schema:', this.schema.nodes)
         return schema$
     }
@@ -270,7 +270,7 @@ export class ComfyClient {
             }
 
             // ensure current project is running
-            const project: ComfyProject = this.project
+            const project: CSScript = this.script
             const currentRun: CSRun | null = project.currentRun
             if (currentRun == null) return console.log(`❌ received ${msg.type} but currentRun is null`)
 
@@ -301,11 +301,11 @@ export class ComfyClient {
             if (pngInfo && pngInfo.prompt) {
                 const data = JSON.parse(pngInfo.prompt)
                 console.log(data)
-                const project = ComfyProject.FROM_JSON(this, data)
-                this.projects.push(project)
-                this.project = project
+                const project = CSScript.FROM_JSON(this, data)
+                this.scripts.push(project)
+                this.script = project
                 this.editor.updateCODE(project.code)
-                this.project.udpateCode(project.code)
+                this.script.udpateCode(project.code)
             }
         }
         // else if (file.type === 'application/json' || file.name.endsWith('.json')) {

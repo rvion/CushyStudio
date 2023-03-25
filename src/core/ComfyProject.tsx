@@ -2,19 +2,20 @@ import type { RunMode } from './ComfyGraph'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { ComfyClient } from './CushyClient'
+import { CSClient } from './CSClient'
 import { ComfyImporter } from './ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { CSRun } from './CSRun'
 
-export class ComfyProject {
+/** Script */
+export class CSScript {
     static __demoProjectIx = 1
 
     /** unique project id */
     id: string = nanoid()
 
     /** project name */
-    name: string = 'Demo Project ' + ComfyProject.__demoProjectIx++
+    name: string = 'Demo Project ' + CSScript.__demoProjectIx++
 
     /** list of all project runs */
     runs: CSRun[] = []
@@ -24,7 +25,7 @@ export class ComfyProject {
         return this.runs[0] ?? null
     }
 
-    private constructor(public client: ComfyClient) {
+    private constructor(public client: CSClient) {
         makeAutoObservable(this)
     }
 
@@ -38,13 +39,13 @@ export class ComfyProject {
         this.code = code
     }
 
-    static INIT = (client: ComfyClient) => {
-        const project = new ComfyProject(client)
+    static INIT = (client: CSClient) => {
+        const project = new CSScript(client)
         return project
     }
 
-    static FROM_JSON = (client: ComfyClient, json: ComfyPromptJSON) => {
-        const project = new ComfyProject(client)
+    static FROM_JSON = (client: CSClient, json: ComfyPromptJSON) => {
+        const project = new CSScript(client)
         const code = new ComfyImporter(client).convertFlowToCode(json)
         project.code = code
         return project

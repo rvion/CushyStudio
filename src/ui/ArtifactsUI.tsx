@@ -7,8 +7,8 @@ export const ArtifactsUI = observer(function ArtifactsUI_() {
     const st = useSt()
     return (
         <div>
-            <h3>Project {st.project.name}</h3>
-            {st.project.runs.map((run, ix) => {
+            <h3>Project {st.script.name}</h3>
+            {st.script.runs.map((run, ix) => {
                 return (
                     <div key={run.uid}>
                         <h3>Run {ix + 1} </h3>

@@ -8,7 +8,7 @@ import { comfyColors } from '../core/ComfyColors'
 export const NodeRefUI = observer(function NodeRefUI_(p: { nodeUID: ComfyNodeUID }) {
     const st = useSt()
     // 1. ensure project exists
-    const project = st.project
+    const project = st.script
     if (project == null) return null
 
     // 2. ensure graph exists

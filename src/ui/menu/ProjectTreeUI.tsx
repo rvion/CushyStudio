@@ -28,8 +28,8 @@ export const ProjectTreeUI = observer(function MenuUI_() {
             defaultOpenItems={[
                 //
                 'projects',
-                client.project.id,
-                client.project.currentRun?.uid ?? 'currentRun',
+                client.script.id,
+                client.script.currentRun?.uid ?? 'currentRun',
             ]}
             ref={(e) => {
                 if (e) e.focus()
@@ -39,7 +39,7 @@ export const ProjectTreeUI = observer(function MenuUI_() {
             <TreeItem id='projects'>
                 <TreeItemLayout iconBefore={<I.DocumentBulletListMultiple24Regular />}>Projects</TreeItemLayout>
                 <Tree>
-                    {client.projects.map((project) => (
+                    {client.scripts.map((project) => (
                         <TreeItem
                             // PROJECT
                             id={project.id}

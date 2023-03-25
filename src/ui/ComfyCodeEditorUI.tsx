@@ -17,7 +17,7 @@ export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?
             onChange={(value) => {
                 // console.log('🔴 onChange', value, ev)
                 if (value == null) return
-                client.project.udpateCode(value) // 🔴
+                client.script.udpateCode(value) // 🔴
             }}
             // beforeMount={(monaco: Monaco) => client.editor.setupMonaco(monaco)}
             onMount={(editor: IStandaloneCodeEditor, _monaco: Monaco) => {

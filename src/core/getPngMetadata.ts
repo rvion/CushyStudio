@@ -1,12 +1,12 @@
 /** code copy-pasted from ComfyUI repo */
 
-import type { ComfyClient } from './CushyClient'
+import type { CSClient } from './CSClient'
 
 export type TextChunks = {
     [key: string]: string
 }
 
-export function getPngMetadata(client: ComfyClient, file: File): Promise<TextChunks> {
+export function getPngMetadata(client: CSClient, file: File): Promise<TextChunks> {
     return new Promise<TextChunks>((resolve, reject) => {
         const reader = new FileReader()
         reader.onload = (event) => {

@@ -3,7 +3,7 @@ import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
 import { ToolbarUI } from './ToolbarUI'
 import { useSt } from './stContext'
 import { ensureMonacoReady } from './Monaco'
-import { CSCriticalError } from '../core/CushyClient'
+import { CSCriticalError } from '../core/CSClient'
 
 export const EditorPaneUI = observer(function EditorPaneUI_() {
     const client = useSt()

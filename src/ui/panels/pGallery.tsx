@@ -7,7 +7,7 @@ import { useSt } from '../stContext'
 export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
     const client = useSt()
     const layout = useLayout()
-    const images: CushyImage[] = client.projects.flatMap((p) => p.runs).flatMap((r) => r.gallery)
+    const images: CushyImage[] = client.scripts.flatMap((p) => p.runs).flatMap((r) => r.gallery)
 
     return (
         <div>

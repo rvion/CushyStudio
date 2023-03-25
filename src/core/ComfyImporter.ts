@@ -1,5 +1,5 @@
 import { CodeBuffer } from './CodeBuffer'
-import { ComfyClient } from './CushyClient'
+import { CSClient } from './CSClient'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfyNodeSchema } from './ComfySchema'
 import { jsEscapeStr } from './ComfyUtils'
@@ -9,7 +9,7 @@ import { TEdge, toposort } from './toposort'
 type RuleInput = { nodeName: string; inputName: string; valueStr: string }
 
 export class ComfyImporter {
-    constructor(public client: ComfyClient) {}
+    constructor(public client: CSClient) {}
     UI_ONLY_ATTRIBUTES = [
         //
         'Random seed after every gen',

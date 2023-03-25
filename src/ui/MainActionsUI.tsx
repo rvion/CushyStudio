@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 
 export const MainActionsUI = observer(function MainActionsUI_() {
     const client = useSt()
-    const project = client.project
+    const project = client.script
     const run = project.currentRun
     return (
         <div className='col gap grow'>

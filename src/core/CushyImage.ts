@@ -1,5 +1,5 @@
 import type { ComfyImageInfo } from './ComfyAPI'
-import type { ComfyClient } from './CushyClient'
+import type { CSClient } from './CSClient'
 import type { Maybe } from './ComfyUtils'
 
 import { nanoid } from 'nanoid'
@@ -22,7 +22,7 @@ export class CushyImage {
 
     constructor(
         //
-        public client: ComfyClient,
+        public client: CSClient,
         public data: ComfyImageInfo,
     ) {}
 

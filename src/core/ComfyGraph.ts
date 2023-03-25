@@ -1,6 +1,6 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 import type { ComfyNodeUID } from './ComfyNodeUID'
-import type { ComfyProject } from './ComfyProject'
+import type { CSScript } from './ComfyProject'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from './ComfyUtils'
 import type { CSRun } from './CSRun'
@@ -9,7 +9,7 @@ import type { ScriptStep_prompt } from './ScriptStep_prompt'
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { computed, makeObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { ComfyClient } from './CushyClient'
+import { CSClient } from './CSClient'
 import { comfyColors } from './ComfyColors'
 import { ComfyNode } from './CSNode'
 import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
@@ -21,7 +21,7 @@ export type RunMode = 'fake' | 'real'
 
 export class ComfyGraph {
     uid = nanoid()
-    get client(): ComfyClient { return this.project.client } // prettier-ignore
+    get client(): CSClient { return this.project.client } // prettier-ignore
     get schema() { return this.client.schema } // prettier-ignore
 
     cyto?: Cyto
@@ -71,7 +71,7 @@ export class ComfyGraph {
 
     constructor(
         //
-        public project: ComfyProject,
+        public project: CSScript,
         public run: CSRun,
         json: ComfyPromptJSON = {},
     ) {

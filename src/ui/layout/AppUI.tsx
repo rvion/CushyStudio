@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 
 import { FluentProvider, webDarkTheme } from '@fluentui/react-components'
 import { ToastContainer } from 'react-toastify'
-import { ComfyClient } from '../../core/CushyClient'
+import { CSClient } from '../../core/CSClient'
 import { GithubCorner } from '../GithubCorner'
 import { stContext } from '../stContext'
 import { AppBarUI } from './AppBarUI'
@@ -16,7 +16,7 @@ import { CushyLayoutUI } from './LayoutUI'
 // console.log(testCors())
 
 export const AppUI = observer(function AppUI_() {
-    const client = useMemo(() => new ComfyClient({ serverIP: 'localhost', serverPort: 8188, spec: {} }), [])
+    const client = useMemo(() => new CSClient({ serverIP: 'localhost', serverPort: 8188, spec: {} }), [])
     if (!client.config.ready) return <div>loading config</div>
     return (
         <FluentProvider theme={webDarkTheme} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
