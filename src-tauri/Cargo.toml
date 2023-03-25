@@ -1,11 +1,11 @@
 [package]
-name = "app"
+name = "CushyStudio"
 version = "0.0.39"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
-repository = ""
-default-run = "app"
+description = "Full-featured AI generative Art studio."
+authors = ["rvion"]
+license = "unlicensed"
+repository = "https://github.com/rvion/CushyStudio"
+default-run = "CushyStudio"
 edition = "2021"
 rust-version = "1.59"
 
