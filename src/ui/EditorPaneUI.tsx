@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
 import { ToolbarUI } from './ToolbarUI'
-import { useSt } from './stContext'
+import { useSt } from './WorkspaceContext'
 import { ensureMonacoReady } from './Monaco'
-import { CSCriticalError } from '../core/CSClient'
+import { CSCriticalError } from '../core/Workspace'
 
 export const EditorPaneUI = observer(function EditorPaneUI_() {
     const client = useSt()

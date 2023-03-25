@@ -1,4 +1,4 @@
-import { useSt } from './stContext'
+import { useSt } from './WorkspaceContext'
 import { observer } from 'mobx-react-lite'
 
 export const MainActionsUI = observer(function MainActionsUI_() {

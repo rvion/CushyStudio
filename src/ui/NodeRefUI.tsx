@@ -1,7 +1,7 @@
 import type { ComfyNodeUID } from '../core/ComfyNodeUID'
 import type { ComfyGraph } from '../core/ComfyGraph'
 
-import { useSt } from './stContext'
+import { useSt } from './WorkspaceContext'
 import { observer } from 'mobx-react-lite'
 import { comfyColors } from '../core/ComfyColors'
 

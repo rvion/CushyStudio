@@ -5,7 +5,7 @@ import { makeObservable, observable } from 'mobx'
 import DockLayout, { PanelData } from 'rc-dock'
 import { TutorialUI } from '../../core/TutorialUI'
 import { defaultLayout } from './LayoutDefault'
-import { CSClient } from '../../core/CSClient'
+import { Workspace } from '../../core/Workspace'
 
 export class CushyLayoutState {
     layout = defaultLayout()
@@ -15,7 +15,7 @@ export class CushyLayoutState {
     dockLayout: DockLayout | null = null
     getRef = (r: DockLayout | null) => (this.dockLayout = r)
 
-    constructor(public client: CSClient) {
+    constructor(public client: Workspace) {
         // this.spawnPopups()
         makeObservable(this, {
             galleryFocus: observable,

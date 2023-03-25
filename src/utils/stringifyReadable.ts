@@ -1,12 +1,12 @@
-export function readableStringify(obj: { [key: string]: any }, maxLevel = 3, level = 0) {
+export function readableStringify(obj: any, maxLevel = 3, level = 0) {
     if (level > maxLevel) return JSON.stringify(obj)
+    if (typeof obj !== 'object' || obj === null) return JSON.stringify(obj)
     const indent = '  '.repeat(level)
     let result = '{\n'
-
     const keys = Object.keys(obj)
     for (let i = 0; i < keys.length; i++) {
         const key = keys[i]
-        const value = obj[key]
+        const value = (obj as any)[key]
         const valueType = typeof value
 
         if (valueType === 'object' && value !== null) {

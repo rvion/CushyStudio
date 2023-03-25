@@ -9,7 +9,7 @@ import type { ScriptStep_prompt } from './ScriptStep_prompt'
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { computed, makeObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { CSClient } from './CSClient'
+import { Workspace } from './Workspace'
 import { comfyColors } from './ComfyColors'
 import { ComfyNode } from './CSNode'
 import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
@@ -21,7 +21,7 @@ export type RunMode = 'fake' | 'real'
 
 export class ComfyGraph {
     uid = nanoid()
-    get client(): CSClient { return this.project.client } // prettier-ignore
+    get client(): Workspace { return this.project.client } // prettier-ignore
     get schema() { return this.client.schema } // prettier-ignore
 
     cyto?: Cyto

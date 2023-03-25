@@ -2,7 +2,7 @@ import { Button, Card, Image, Input, Text } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Civitai } from '../../civitai/civitaiAPI'
-import { useSt } from '../stContext'
+import { useSt } from '../WorkspaceContext'
 
 export const CivitaiUI = observer(function CivitaiUI_() {
     const c = useMemo(() => new Civitai(), [])

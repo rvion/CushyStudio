@@ -11,7 +11,7 @@ import {
 } from '@fluentui/react-components'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { useSt } from './stContext'
+import { useSt } from './WorkspaceContext'
 
 export const ToolbarUI = observer(function ToolbarUI_(props: Partial<ToolbarProps>) {
     const client = useSt()

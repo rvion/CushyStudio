@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ComfyImageInfo } from '../core/ComfyAPI'
 import { CSImage } from '../core/CSImage'
-import { useSt } from './stContext'
+import { useSt } from './WorkspaceContext'
 
 export const ArtifactsUI = observer(function ArtifactsUI_() {
     const st = useSt()

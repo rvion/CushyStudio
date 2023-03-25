@@ -11,7 +11,7 @@ import { ScriptStep_prompt } from '../core/ScriptStep_prompt'
 import { Execution_askBooleanUI } from './Execution_askBooleanUI'
 import { Execution_askStringUI } from './Execution_askStringUI'
 import { NodeListUI } from './NodeListUI'
-import { useSt } from './stContext'
+import { useSt } from './WorkspaceContext'
 
 export const ExecutionUI = observer(function ExecutionUI_() {
     const st = useSt()

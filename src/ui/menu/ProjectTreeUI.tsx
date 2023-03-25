@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { AssetTreeUI } from './AssetTreeUI'
 
 import { ScriptStep_prompt } from '../../core/ScriptStep_prompt'
-import { useSt } from '../stContext'
+import { useSt } from '../WorkspaceContext'
 import { ExecutionStepIconUI } from './ExecutionStepIconUI'
 
 export const ProjectTreeUI = observer(function MenuUI_() {

@@ -3,10 +3,10 @@ import type { IStandaloneCodeEditor, ITextModel } from '../ui/TypescriptOptions'
 import { autorun, makeAutoObservable, observable } from 'mobx'
 import { globalMonaco } from '../ui/Monaco'
 import { c__ } from '../ui/sdkDTS'
-import { CSClient } from './CSClient'
+import { Workspace } from './Workspace'
 
 export class ComfyScriptEditor {
-    constructor(public client: CSClient) {
+    constructor(public client: Workspace) {
         makeAutoObservable(this)
         autorun(() => {
             if (this.editorRef.current && this.curr) {

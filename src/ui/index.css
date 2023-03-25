@@ -49,22 +49,6 @@ html, body, #root {height: 100%;}
     display: flex;
     flex-direction: column;
 }
-/* CORE ---------------------------------------- */
-button:hover { filter: brightness(1.2); }
-button:active { filter: brightness(.8); }
-button.success { background: #2e8b57; }
-button {
-    border: none;
-    background: rgb(69, 69, 69);
-    color: #fff;
-    padding: .5rem;
-    border-radius: .1rem;
-    cursor: pointer;
-    /* outline: none; */
-}
-button.large { padding: 1rem; }
-button.active { background: rgb(66, 136, 240); }
-button.primary { background: rgb(28, 90, 197); }
 
 /* WELCOME SCREEN ---------------------------------------- */
 .welcome-popup  {

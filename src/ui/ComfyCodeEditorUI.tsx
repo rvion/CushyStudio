@@ -1,6 +1,6 @@
 import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
-import { useSt } from './stContext'
+import { useSt } from './WorkspaceContext'
 import { IStandaloneCodeEditor } from './TypescriptOptions'
 
 export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?: string }) {

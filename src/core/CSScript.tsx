@@ -3,7 +3,7 @@ import * as path from '@tauri-apps/api/path'
 import * as fs from '@tauri-apps/api/fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { CSClient } from './CSClient'
+import { Workspace } from './Workspace'
 import { ComfyImporter } from './ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { CSRun } from './CSRun'
@@ -18,7 +18,7 @@ export class CSScript {
 
     /** folder where CushyStudio will save script informations */
     get folder(): string {
-        return this.client.workspaceDir + path.sep + this.name
+        return this.client.folder + path.sep + this.name
     }
 
     save = async () => {
@@ -43,7 +43,7 @@ export class CSScript {
         return this.runs[0] ?? null
     }
 
-    constructor(public client: CSClient) {
+    constructor(public client: Workspace) {
         makeAutoObservable(this)
     }
 
@@ -56,7 +56,7 @@ export class CSScript {
         this.code = code
     }
 
-    static FROM_JSON = (client: CSClient, json: ComfyPromptJSON) => {
+    static FROM_JSON = (client: Workspace, json: ComfyPromptJSON) => {
         const project = new CSScript(client)
         const code = new ComfyImporter(client).convertFlowToCode(json)
         project.code = code

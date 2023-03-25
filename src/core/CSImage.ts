@@ -1,5 +1,5 @@
 import type { ComfyImageInfo } from './ComfyAPI'
-import type { CSClient } from './CSClient'
+import type { Workspace } from './Workspace'
 import type { Maybe } from './ComfyUtils'
 import type { ScriptStep_prompt } from './ScriptStep_prompt'
 
@@ -48,7 +48,7 @@ export class CSImage {
         return res.name
     }
 
-    client: CSClient
+    client: Workspace
     constructor(
         //
         public prompt: ScriptStep_prompt,

@@ -2,7 +2,7 @@ import { Image, Label, Slider } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { CSImage } from '../../core/CSImage'
 import { useLayout } from '../layout/LayoutCtx'
-import { useSt } from '../stContext'
+import { useSt } from '../WorkspaceContext'
 
 export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
     const client = useSt()

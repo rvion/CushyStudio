@@ -1,16 +1,13 @@
-import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
 import type { CSRun } from './CSRun'
-import { ScriptStep } from './ScriptStep'
+import type { ScriptStep } from './ScriptStep'
 
-// import * as WS from 'ws'
-
+import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { CSWorkspace } from '../config/CSConfig'
 import { DemoScript1 } from '../ui/DemoScript1'
 import { CushyLayoutState } from '../ui/layout/LayoutState'
 import { readableStringify } from '../utils/stringifyReadable'
@@ -20,11 +17,12 @@ import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { CSScript } from './CSScript'
 import { getPngMetadata } from './getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
+import { PersistedJSON } from '../config/PersistedJSON'
 
-export type ComfyClientOptions = {
-    serverIP: string
-    serverPort: number
-    spec: ComfySchemaJSON
+export type WorkspaceConfigJSON = {
+    version: 2
+    comfyWSURL: string
+    comfyHTTPURL: string
 }
 
 export type CSCriticalError = { title: string; help: string }
@@ -35,17 +33,49 @@ export type CSCriticalError = { title: string; help: string }
  *  - manages list of known / open projects
  *  - dispatches messages to the right projects
  */
-export class CSClient {
+export class Workspace {
     schema: ComfySchema
-    dts: string
+    dts: string = ''
     script: CSScript
     scripts: CSScript[] = []
     editor: ComfyScriptEditor
     assets = new Map<string, boolean>()
     layout = new CushyLayoutState(this)
+    _config: PersistedJSON<WorkspaceConfigJSON>
+    _schema: PersistedJSON<ComfySchemaJSON>
 
-    /** workspace directory */
-    get workspaceDir() { return this.config.config.workspace } // prettier-ignore
+    // static open=(folder:string) => {
+
+    // }
+    constructor(public folder: string) {
+        this.editor = new ComfyScriptEditor(this)
+        this.schema = new ComfySchema({})
+        this.script = new CSScript(this)
+        this._schema = new PersistedJSON<ComfySchemaJSON>({
+            folder: Promise.resolve(this.folder),
+            name: 'schema.json',
+            init: () => ({}),
+        })
+        this._config = new PersistedJSON<WorkspaceConfigJSON>({
+            folder: Promise.resolve(this.folder),
+            name: 'workspace.json',
+            init: () => ({
+                version: 2,
+                comfyWSURL: 'ws://127.0.0.1:8188/ws',
+                comfyHTTPURL: 'http://127.0.0.1:8188',
+            }),
+        })
+
+        // this.scripts.push(this.script)
+        this.dts = this.schema.codegenDTS()
+        this.startWSClientSafe()
+        makeAutoObservable(this)
+        setTimeout(async () => {
+            await this.fetchObjectsSchema()
+            this.editor.openCODE()
+            // this.project.run()
+        }, 1500)
+    }
 
     // storageServerKey = 'comfy-server'
     // getStoredServerKey = () => {}
@@ -81,7 +111,7 @@ export class CSClient {
     }
 
     loadProjects = async () => {
-        const items = await fs.readDir(this.workspaceDir)
+        const items = await fs.readDir(this.folder)
         for (const item of items) {
             if (item.children) {
                 const script = item.children.find((f) => f.name === 'script.cushy')
@@ -137,27 +167,9 @@ export class CSClient {
     }
 
     // autosaver = new AutoSaver('client', this.getConfig)
-    constructor(public config: CSWorkspace) {
-        // const prev = this.autosaver.load()
-        // if (prev) Object.assign(opts, prev)
-        // this.autosaver.start()
-        this.editor = new ComfyScriptEditor(this)
-        this.schema = new ComfySchema({})
-        this.script = new CSScript(this)
 
-        this.scripts.push(this.script)
-        this.dts = this.schema.codegenDTS()
-        this.startWSClientSafe()
-        makeAutoObservable(this)
-        setTimeout(async () => {
-            await this.fetchObjectsSchema()
-            this.editor.openCODE()
-            // this.project.run()
-        }, 1500)
-    }
-
-    get serverHostHTTP() { return this.config.config.comfyHTTPURL } // prettier-ignore
-    get serverHostWs() { return this.config.config.comfyWSURL } // prettier-ignore
+    get serverHostHTTP() { return this._config.value.comfyHTTPURL } // prettier-ignore
+    get serverHostWs() { return this._config.value.comfyWSURL } // prettier-ignore
 
     fetchPrompHistory = async () => {
         const res = await fetch(`${this.serverHostHTTP}/history`, { method: 'GET' })
@@ -195,11 +207,11 @@ export class CSClient {
         // 2. update schmea
         this.schema.update(schema$)
         // save schema to disk
-        const schemaPath = this.workspaceDir + path.sep + 'comfy-nodes.json'
+        const schemaPath = this.folder + path.sep + 'comfy-nodes.json'
         await fs.writeTextFile(schemaPath, readableStringify(schema$))
         // 3. update dts
         this.dts = this.schema.codegenDTS()
-        const dtsPath = this.workspaceDir + path.sep + 'comfy-api.md'
+        const dtsPath = this.folder + path.sep + 'comfy-api.md'
         await fs.writeTextFile(dtsPath, `# Comfy-API\n\n\`\`\`ts\n${this.dts}\n\`\`\``)
         // 4. update monaco
         this.editor.updateSDKDTS()
