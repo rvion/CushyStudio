@@ -49,13 +49,27 @@ export class CSConfigManager {
         // 3. report as ready
         this.ready = true
         this.config = config
+        await this.saveBackup()
+        // write a config backup in your workspace
+
         return config
     }
 
     /** save config file on disk */
     save = async (): Promise<true> => {
+        // 1. save primary
+        console.log('[🛋] saving config to ', this.configFilePath)
         const configFileContent = JSON.stringify(this.config, null, 4)
         await fs.writeTextFile(this.configFilePath, configFileContent)
+
+        await this.saveBackup()
+        return true
+    }
+
+    saveBackup = async () => {
+        const backupConfigFilePath = this.config.workspace + path.sep + 'CushyStudio.backup.json'
+        console.log('[🛋] saving config backup to ', backupConfigFilePath)
+        await fs.writeTextFile(backupConfigFilePath, JSON.stringify(this.config, null, 4))
         return true
     }
 
