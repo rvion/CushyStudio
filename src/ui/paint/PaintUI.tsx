@@ -4,6 +4,7 @@ import { nanoid } from 'nanoid'
 import Painterro from 'painterro'
 import { useMemo } from 'react'
 
+// https://github.com/devforth/painterro
 export const PaintUI = observer(
     function PaintUI_(p: {}) {
         const uid = useMemo(() => nanoid(), [])

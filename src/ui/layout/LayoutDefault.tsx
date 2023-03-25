@@ -4,6 +4,7 @@ import { CivitaiUI } from '../civitai/CIvitaiUI'
 import { EditorPaneUI } from '../EditorPaneUI'
 import { ExecutionUI } from '../ExecutionUI'
 import { CSMenuUI } from '../menu/CSMenuUI'
+import { PaintUI } from '../paint/PaintUI'
 import { PGalleryUI } from '../panels/pGallery'
 import { PGalleryFocusUI } from '../panels/pGalleryFocus'
 import { PUploadUI } from '../panels/pUpload'
@@ -94,6 +95,12 @@ export const defaultLayout = (): LayoutData => ({
                                 id: 'Editor1',
                                 title: 'Project Code',
                                 content: <EditorPaneUI />,
+                            },
+                            {
+                                minHeight: 280,
+                                id: 'PaintUI',
+                                title: 'Paint',
+                                content: <PaintUI />,
                             },
                             // {
                             //     minHeight: 280,
