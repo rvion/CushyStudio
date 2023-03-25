@@ -1,4 +1,4 @@
-import { Button, Menu, MenuTrigger, Toolbar, ToolbarButton } from '@fluentui/react-components'
+import { Badge, Button, Menu, MenuTrigger, Toolbar, ToolbarButton } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 
 import * as I from '@fluentui/react-icons'
@@ -11,6 +11,9 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const client = useSt()
     return (
         <Toolbar>
+            <Badge appearance='filled' color='warning'>
+                ALPHA
+            </Badge>
             <ToolbarUI />
             {/* <ToolbarButton aria-label='Increase Font Size' appearance='primary' icon={<FontIncrease24Regular />} /> */}
             <ToolbarButton icon={<I.New24Filled />}>New</ToolbarButton>
