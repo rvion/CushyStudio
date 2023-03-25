@@ -66,8 +66,8 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  tagName: app-${{ github.ref_name }} # the action automatically replaces \_\_VERSION\_\_ with the app version
-                  releaseName: 'CushyStudio ${{ github.ref_name }}'
+                  tagName: nightly-${{ github.event.repository.updated_at}} # the action automatically replaces \_\_VERSION\_\_ with the app version
+                  releaseName: 'CushyStudio nightly-${{ github.event.repository.updated_at}}'
                   releaseBody: 'See the assets to download this version and install.'
                   releaseDraft: false
                   prerelease: false
