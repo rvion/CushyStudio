@@ -1,18 +1,8 @@
-import {
-    Accordion,
-    AccordionHeader,
-    AccordionItem,
-    AccordionPanel,
-    Button,
-    Card,
-    Input,
-    Label,
-    Text,
-} from '@fluentui/react-components'
-import { observer } from 'mobx-react-lite'
-import * as I from '@fluentui/react-icons'
-import { useSt } from '../WorkspaceContext'
+import { Accordion, AccordionHeader, AccordionItem, AccordionPanel, Button, Card, Input } from '@fluentui/react-components'
 import { Field } from '@fluentui/react-components/unstable'
+import * as I from '@fluentui/react-icons'
+import { observer } from 'mobx-react-lite'
+import { useSt } from '../WorkspaceContext'
 
 export const PConnectUI = observer(function PConnectUI_(p: {}) {
     const client = useSt()
