@@ -1,5 +1,6 @@
 import type { RunMode } from './ComfyGraph'
-
+import * as path from '@tauri-apps/api/path'
+import * as fs from '@tauri-apps/api/fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { CSClient } from './CSClient'
@@ -16,8 +17,19 @@ export class CSScript {
     id: string = nanoid()
 
     /** folder where CushyStudio will save script informations */
-    get folder() {
-        return [this.client.workspaceDir, this.name].join('/')
+    get folder(): string {
+        return this.client.workspaceDir + path.sep + this.name
+    }
+
+    save = async () => {
+        const code = this.code
+        // ensure folder exists
+        await fs.createDir(this.folder, { recursive: true })
+        // safe script as script.cushy
+        const filePath = this.folder + path.sep + 'script.cushy'
+        await fs.writeFile({ path: filePath, contents: code })
+        // return success
+        console.log('[📁] saved', filePath)
     }
 
     /** project name */

@@ -16,7 +16,7 @@ import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { CSScript } from './CSScript'
 import { ComfySchema } from './ComfySchema'
 import { ComfyScriptEditor } from './ComfyScriptEditor'
-import { CushyImage } from './CushyImage'
+import { CSImage } from './CSImage'
 import { getPngMetadata } from './getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
 import { CSConfigManager } from '../config/CSConfigManager'
@@ -110,7 +110,7 @@ export class CSClient {
         return this.uploadUIntArrToComfy(ui8arr)
     }
 
-    lastUpload: Maybe<string> = null
+    // lastUpload: Maybe<string> = null
     /** upload an Uint8Array buffer as png to ComfyServer */
     uploadUIntArrToComfy = async (ui8arr: Uint8Array): Promise<ComfyUploadImageResult> => {
         const uploadURL = this.serverHostHTTP + '/upload/image'
@@ -127,7 +127,7 @@ export class CSClient {
         })
         const result = resp.data as ComfyUploadImageResult
         console.log({ 'resp.data': result })
-        this.lastUpload = new CushyImage(this, { filename: result.name, subfolder: '', type: 'output' }).url
+        // this.lastUpload = new CushyImage(this, { filename: result.name, subfolder: '', type: 'output' }).url
         return result
     }
 

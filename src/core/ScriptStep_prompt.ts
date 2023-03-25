@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import { ComfyGraph } from './ComfyGraph'
 import { deepCopyNaive } from './ComfyUtils'
 import { nanoid } from 'nanoid'
-import { CushyImage } from './CushyImage'
+import { CSImage } from './CSImage'
 
 export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     static promptID = 1
@@ -24,17 +24,17 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     _graph: ComfyGraph
 
     /** short-hand getter to access parent client */
-    get client(){ return this.execution.script.client } // prettier-ignore
+    get client(){ return this.run.script.client } // prettier-ignore
 
     constructor(
         //
-        public execution: CSRun,
+        public run: CSRun,
         public prompt: ComfyPromptJSON,
     ) {
         this._graph = new ComfyGraph(
             //
-            this.execution.script,
-            this.execution,
+            this.run.script,
+            this.run,
             deepCopyNaive(prompt),
         )
         makeAutoObservable(this)
@@ -81,12 +81,12 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
     private outputs: WsMsgExecuted[] = []
-    images: CushyImage[] = []
+    images: CSImage[] = []
 
     /** udpate execution list */
     onExecuted = (msg: WsMsgExecuted) => {
         const node = this._graph.getNodeOrCrash(msg.data.node)
-        const images = msg.data.output.images.map((i) => new CushyImage(this.client, i))
+        const images = msg.data.output.images.map((i) => new CSImage(this, i))
 
         console.log(`🟢 `, images.length, `CushyImages`)
         // accumulate in self
@@ -99,7 +99,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         node.images.push(...images)
 
         // accumulate in run
-        this.execution.gallery.push(...images)
+        this.run.gallery.push(...images)
 
         if (
             // this.client.layout.galleryFocus == null &&

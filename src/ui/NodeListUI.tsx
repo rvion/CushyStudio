@@ -36,7 +36,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }
                         // onClick={() => layout.addImagePopup(img.url)}
                         onClick={() => (layout.galleryFocus = img)}
                         alt='prompt output'
-                        src={img.url}
+                        src={img.comfyURL}
                         key={img.uid}
                         height={100}
                         width={100}
@@ -110,7 +110,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                         <img //
                             key={img.uid}
                             style={{ width: '5rem', height: '5rem' }}
-                            src={img.url}
+                            src={img.comfyURL}
                         />
                     ))}
                     {/* {curr?.allArtifactsImgs.map((url) => (

@@ -13,7 +13,7 @@ export const PGalleryFocusUI = observer(function PGalleryFocusUI_(p: {}) {
                 fit='contain'
                 height={'100%'}
                 alt='prompt output'
-                src={i.url}
+                src={i.comfyURL}
                 key={i.uid}
             />
             ,

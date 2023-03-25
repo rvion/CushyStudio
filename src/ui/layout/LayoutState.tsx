@@ -1,4 +1,4 @@
-import type { CushyImage } from '../../core/CushyImage'
+import type { CSImage } from '../../core/CSImage'
 
 import { Image } from '@fluentui/react-components'
 import { makeObservable, observable } from 'mobx'
@@ -10,7 +10,7 @@ import { CSClient } from '../../core/CSClient'
 export class CushyLayoutState {
     layout = defaultLayout()
 
-    galleryFocus: CushyImage | null = null
+    galleryFocus: CSImage | null = null
     gallerySize = 100
     dockLayout: DockLayout | null = null
     getRef = (r: DockLayout | null) => (this.dockLayout = r)

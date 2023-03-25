@@ -1,5 +1,7 @@
 import type { CSScript } from './CSScript'
 
+import * as path from '@tauri-apps/api/path'
+import * as fs from '@tauri-apps/api/fs'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
 import { deepCopyNaive, Maybe } from './ComfyUtils'
 import { ComfyGraph } from './ComfyGraph'
@@ -10,13 +12,15 @@ import { ScriptStep } from './ScriptStep'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { fetch, Body } from '@tauri-apps/api/http'
-import { CushyImage } from './CushyImage'
+import { CSImage } from './CSImage'
 import { Cyto } from '../ui/graph/cyto'
 
 /** script exeuction instance */
 export class CSRun {
+    /** unique run id */
     uid = nanoid()
 
+    /** human readable folder name */
     name: string
 
     /** the main graph that will be updated along the script execution */
@@ -26,17 +30,23 @@ export class CSRun {
     cyto: Cyto
 
     /** list of all images produed over the whole script execution */
-    gallery: CushyImage[] = []
+    gallery: CSImage[] = []
 
     /** folder where CushyStudio will save run informations */
     get folder() {
-        return [this.script.folder, this.name].join('/')
+        return this.script.folder + path.sep + this.name
     }
 
-    save() {
-        // TODO
-        // 🔴
-    }
+    // save = async () => {
+    //     const code = this.code
+    //     // ensure folder exists
+    //     await fs.createDir(this.folder, { recursive: true })
+    //     // safe script as script.cushy
+    //     const filePath = this.folder + path.sep + 'script.cushy'
+    //     await fs.writeFile({ path: filePath, contents: code })
+    //     // return success
+    //     console.log('[📁] saved', filePath)
+    // }
 
     constructor(
         //

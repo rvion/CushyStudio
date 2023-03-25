@@ -1,13 +1,13 @@
 import { Image, Label, Slider } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
-import { CushyImage } from '../../core/CushyImage'
+import { CSImage } from '../../core/CSImage'
 import { useLayout } from '../layout/LayoutCtx'
 import { useSt } from '../stContext'
 
 export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
     const client = useSt()
     const layout = useLayout()
-    const images: CushyImage[] = client.scripts.flatMap((p) => p.runs).flatMap((r) => r.gallery)
+    const images: CSImage[] = client.scripts.flatMap((p) => p.runs).flatMap((r) => r.gallery)
 
     return (
         <div>
@@ -28,7 +28,7 @@ export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
                         //
                         onClick={() => (layout.galleryFocus = i)}
                         key={i.uid}
-                        src={i.url}
+                        src={i.comfyURL}
                         width={layout.gallerySize}
                         height={layout.gallerySize}
                     />

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ComfyImageInfo } from '../core/ComfyAPI'
-import { CushyImage } from '../core/CushyImage'
+import { CSImage } from '../core/CSImage'
 import { useSt } from './stContext'
 
 export const ArtifactsUI = observer(function ArtifactsUI_() {
@@ -17,7 +17,7 @@ export const ArtifactsUI = observer(function ArtifactsUI_() {
                                 <img //
                                     style={{ width: '5rem', height: '5rem' }}
                                     key={img.uid}
-                                    src={img.url}
+                                    src={img.comfyURL}
                                 />
                             )
                         })}
