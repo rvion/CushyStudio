@@ -14,7 +14,7 @@
         "dev": "  pnpm tauri:dev",
         "build": "pnpm tauri:build",
         "[RELEASE]": "--------------------------------------------",
-        "bump": "bump patch README.md src-tauri/Cargo.toml src-tauri/tauri.conf.json -c",
+        "bump": "bump patch src-tauri/Cargo.toml src-tauri/tauri.conf.json -c",
         "logo": "./scripts/derive-assets.sh",
         "[binary]": "---------------------------------------------",
         "tauri:dev": "  pnpm tauri dev",
