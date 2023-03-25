@@ -52,12 +52,18 @@ export class CSConfigManager {
         return config
     }
 
+    /** save config file on disk */
+    save = async (): Promise<true> => {
+        const configFileContent = JSON.stringify(this.config, null, 4)
+        await fs.writeTextFile(this.configFilePath, configFileContent)
+        return true
+    }
+
+    /** update config then save it */
     updateConfig = async (configChanges: Partial<CSConfig>): Promise<true> => {
         if (!this.ready) throw new Error('❌ config not ready')
         Object.assign(this.config, configChanges)
-        const configFileContent = JSON.stringify({ ...this.config, ...configChanges }, null, 4)
-        await fs.writeTextFile(this.configFilePath, configFileContent)
-        return true
+        return await this.save()
     }
     // set workspace(newWorkspace: string) {
     // get workspace(){

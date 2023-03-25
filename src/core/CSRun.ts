@@ -13,14 +13,17 @@ import { fetch, Body } from '@tauri-apps/api/http'
 import { CushyImage } from './CushyImage'
 import { Cyto } from '../ui/graph/cyto'
 
-/** script runtime context */
+/** script exeuction instance */
 export class CSRun {
     uid = nanoid()
 
     /** the main graph that will be updated along the script execution */
     graph: ComfyGraph
+
+    /** graph engine instance for smooth and clever auto-layout algorithms */
     cyto: Cyto
 
+    /** list of all images produed over the whole script execution */
     gallery: CushyImage[] = []
 
     constructor(
