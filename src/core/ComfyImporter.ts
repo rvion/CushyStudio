@@ -27,6 +27,10 @@ export class ComfyImporter {
         },
     ]
 
+    knownAliaes: { [key: string]: string } = {
+        LatentUpscaleBy: 'Latent Upscale by Factor (WAS)',
+    }
+
     convertFlowToCode = (flow: ComfyPromptJSON): string => {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
@@ -62,7 +66,13 @@ export class ComfyImporter {
             const classType = node.class_type
             const varName = `${classType}_${nodeID}`
             generatedName.set(nodeID, varName)
-            const schema: ComfyNodeSchema = this.client.schema.nodesByName[classType]
+            const schema: ComfyNodeSchema =
+                this.client.schema.nodesByName[classType] ?? //
+                this.client.schema.nodesByName[this.knownAliaes[classType]]
+            if (schema == null) {
+                console.log(`🔴 known`, Object.keys(this.client.schema.nodesByName))
+                throw new Error(`schema not found for ${classType}`)
+            }
             let outoutIx = 0
             for (const o of schema.outputs ?? []) {
                 availableSignals.set(`${nodeID}-${outoutIx++}`, `${varName}.${o.name}`)
