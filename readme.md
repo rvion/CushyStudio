@@ -49,6 +49,14 @@ known bugs: - https://civitai.com/models/19625/comfyui-custom-nodes
 
 ## Short-term Roadmap
 
+WIP:
+
+-   [ ] better onboarding UI to help people have a working setup
+-   [ ] properly fix/finish workspace.openScript
+-   [ ] finish loading projects
+
+then
+
 -   [ ] make websocker client resilient to network errors
 -   [ ] save projects on disk / via metadata
 -   [ ] improve comfy import
