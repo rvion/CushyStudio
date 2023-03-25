@@ -8,7 +8,7 @@
     },
     "package": {
         "productName": "cushy-studio",
-        "version": "0.0.38"
+        "version": "0.0.39"
     },
     "tauri": {
         "allowlist": {
