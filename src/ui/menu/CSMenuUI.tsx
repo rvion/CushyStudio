@@ -8,12 +8,10 @@ import { PUploadUI } from '../panels/pUpload'
 export const CSMenuUI = observer(function IdeInfosUI_() {
     return (
         <div className='col gap h100'>
+            <PImportUI />
             <ProjectTreeUI />
             <div className='grow'></div>
-            <PUploadUI />
-            <CivitaiUI />
             <PConnectUI />
-            <PImportUI />
         </div>
     )
 })

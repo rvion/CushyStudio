@@ -24,6 +24,7 @@ specifiers:
   mobx-react-lite: ^3.4.3
   monaco-editor: ^0.36.1
   nanoid: ^4.0.1
+  painterro: ^1.2.78
   prettier: ^2.8.5
   rc-dock: ^3.2.17
   react: ^18.2.0
@@ -50,6 +51,7 @@ dependencies:
   mobx-react-lite: 3.4.3_woojb62cqeyk443mbl7msrwu2e
   monaco-editor: 0.36.1
   nanoid: 4.0.1
+  painterro: 1.2.78
   prettier: 2.8.6
   rc-dock: 3.2.17_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -1980,6 +1982,11 @@ packages:
     resolution: {integrity: sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==}
     dev: true
 
+  /core-js/3.29.1:
+    resolution: {integrity: sha512-+jwgnhg6cQxKYIIjGtAHq2nwUOolo9eoFZ4sHfUH09BLXBgxnH4gA0zEd+t+BO2cNB8idaBtZFcFTRjQJRJmAw==}
+    requiresBuild: true
+    dev: false
+
   /create-require/1.1.1:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     dev: false
@@ -2023,6 +2030,10 @@ packages:
 
   /dom-align/1.12.4:
     resolution: {integrity: sha512-R8LUSEay/68zE5c8/3BDxiTEvgb4xZTF0RKmAHfiEVN3klfIpXfi2/QCoiWPccVQ0J/ZGdz9OjzL4uJEP/MRAw==}
+    dev: false
+
+  /dom-to-image/2.6.0:
+    resolution: {integrity: sha512-Dt0QdaHmLpjURjU7Tnu3AgYSF2LuOmksSGsUcE6ItvJoCWTBEmiMXcqBdNSAm9+QbbwD7JMoVsuuKX6ZVQv1qA==}
     dev: false
 
   /electron-to-chromium/1.4.334:
@@ -2212,6 +2223,13 @@ packages:
   /object-assign/4.1.1:
     resolution: {integrity: sha512-rJgTQnkUnH1sFw8yT6VSU3zD3sWmu6sZhIseY8VX+GRu3P6F7Fu+JNDoXfklElbLJSnc3FUQHVe4cU5hj+BcUg==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /painterro/1.2.78:
+    resolution: {integrity: sha512-50c5V+OP2YImMzEe5RjkSAYyAuZ3WWZODaq7UmY0wWjJ294fCvadkge0InWbg3kme2HBtdO1mEzqoRaV8ppe9A==}
+    dependencies:
+      core-js: 3.29.1
+      dom-to-image: 2.6.0
     dev: false
 
   /path-parse/1.0.7:

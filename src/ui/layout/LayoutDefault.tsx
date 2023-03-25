@@ -1,10 +1,12 @@
 import { LayoutData } from 'rc-dock'
 import { ArtifactsUI } from '../ArtifactsUI'
+import { CivitaiUI } from '../civitai/CIvitaiUI'
 import { EditorPaneUI } from '../EditorPaneUI'
 import { ExecutionUI } from '../ExecutionUI'
 import { CSMenuUI } from '../menu/CSMenuUI'
 import { PGalleryUI } from '../panels/pGallery'
 import { PGalleryFocusUI } from '../panels/pGalleryFocus'
+import { PUploadUI } from '../panels/pUpload'
 
 export const defaultLayout = (): LayoutData => ({
     floatbox: {
@@ -24,9 +26,23 @@ export const defaultLayout = (): LayoutData => ({
                             {
                                 minWidth: 300,
                                 minHeight: 300,
-                                id: 'IdeInfosUI',
+                                id: 'CSMenuUI',
                                 title: 'CushyStudio',
                                 content: <CSMenuUI />,
+                            },
+                            {
+                                minWidth: 300,
+                                minHeight: 300,
+                                id: 'CivitaiUI',
+                                title: 'Civitai',
+                                content: <CivitaiUI />,
+                            },
+                            {
+                                minWidth: 300,
+                                minHeight: 300,
+                                id: 'TestingArea',
+                                title: 'Testing',
+                                content: <PUploadUI />,
                             },
                         ],
                     },
