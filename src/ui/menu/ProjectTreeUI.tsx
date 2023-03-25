@@ -1,15 +1,4 @@
-import {
-    Button,
-    Input,
-    Menu,
-    MenuItem,
-    MenuList,
-    MenuPopover,
-    MenuTrigger,
-    Popover,
-    PopoverSurface,
-    PopoverTrigger,
-} from '@fluentui/react-components'
+import { Button, Menu, MenuItem, MenuList, MenuPopover, MenuTrigger } from '@fluentui/react-components'
 import { Tree, TreeItem, TreeItemLayout } from '@fluentui/react-components/unstable'
 
 import * as I from '@fluentui/react-icons'
@@ -37,7 +26,7 @@ export const ProjectTreeUI = observer(function MenuUI_() {
         >
             {/* PROJECTS */}
             <TreeItem id='projects'>
-                <TreeItemLayout iconBefore={<I.DocumentBulletListMultiple24Regular />}>Projects</TreeItemLayout>
+                <TreeItemLayout iconBefore={<I.DocumentBulletListMultiple24Regular />}>Scripts</TreeItemLayout>
                 <Tree>
                     {client.scripts.map((project) => (
                         <TreeItem
@@ -121,23 +110,16 @@ export const ProjectTreeUI = observer(function MenuUI_() {
             </TreeItem>
 
             {/* SERVER */}
-            <TreeItem actions={<Actions />}>
+            {/* <TreeItem actions={<Actions />}>
                 <TreeItemLayout iconBefore={<I.Server24Filled />} aside={client.wsStatus === 'on' ? IsOK : HasProblem}>
                     Server
                 </TreeItemLayout>
                 <Tree>
-                    {/* {client.projects.map((p) => (
-                        <TreeItem key={p.id} actions={<Actions />}>
-                            <TreeItemLayout aside={<RenderAside />}>{p.name}</TreeItemLayout>
-                        </TreeItem>
-                    ))} */}
                     <TreeItem
                         actions={
-                            //
                             <Popover positioning={'above-start'}>
                                 <PopoverTrigger>
                                     <Button appearance='subtle' icon={<I.Edit20Regular />} />
-                                    {/* <Button>trigger</Button> */}
                                 </PopoverTrigger>
                                 <PopoverSurface>
                                     <Input
@@ -147,8 +129,6 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                                     ></Input>
                                 </PopoverSurface>
                             </Popover>
-
-                            // <Actions />
                         }
                     >
                         <TreeItemLayout iconBefore={<I.Server24Filled />}>IP: {client.serverIP}</TreeItemLayout>
@@ -156,20 +136,20 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                     <TreeItem>
                         <TreeItemLayout iconBefore={<I.Server24Filled />}>Port: {client.serverPort}</TreeItemLayout>
                     </TreeItem>
-                    <TreeItem>
-                        <TreeItemLayout onClick={client.editor.openLib} iconBefore={<I.Library24Filled />}>
-                            Lib.d.ts
-                        </TreeItemLayout>
-                    </TreeItem>
-                    <TreeItem>
-                        <TreeItemLayout onClick={client.editor.openSDK} iconBefore={<I.Server24Filled />}>
-                            SDK.d.ts
-                        </TreeItemLayout>
-                    </TreeItem>
                 </Tree>
+            </TreeItem> */}
+            <TreeItem>
+                <TreeItemLayout onClick={client.editor.openSDK} iconBefore={<I.BrainCircuit24Filled />}>
+                    API Cushy
+                </TreeItemLayout>
             </TreeItem>
-
-            <AssetTreeUI />
+            <AssetTreeUI>
+                {/* <TreeItem> */}
+                <TreeItemLayout onClick={client.editor.openLib} iconBefore={<I.BrainCircuit24Regular />}>
+                    API Comfy
+                </TreeItemLayout>
+                {/* </TreeItem> */}
+            </AssetTreeUI>
         </Tree>
     )
 })

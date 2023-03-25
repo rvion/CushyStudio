@@ -72,8 +72,8 @@ export class CSConfigManager {
         const config: CSConfig = {
             version: 1,
             workspace: defaultWorkspace,
-            comfyWSURL: 'ws://localhost:8188',
-            comfyHTTPURL: 'http://localhost:8188',
+            comfyWSURL: 'ws://127.0.0.1:8188/ws',
+            comfyHTTPURL: 'http://127.0.0.1:8188',
         }
         return config
     }

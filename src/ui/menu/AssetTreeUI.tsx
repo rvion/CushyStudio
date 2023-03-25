@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite'
 import { useSt } from '../stContext'
 import { Actions, HasProblem, IsOK } from './ProjectTreeUI'
 
-export const AssetTreeUI = observer(function AssetTreeUI_() {
+export const AssetTreeUI = observer(function AssetTreeUI_(p: { children: React.ReactNode }) {
     const client = useSt()
 
     const onKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
@@ -27,9 +27,13 @@ export const AssetTreeUI = observer(function AssetTreeUI_() {
 
     return (
         <TreeItem actions={<Actions />}>
-            <TreeItemLayout iconBefore={<I.Server24Filled />} aside={client.wsStatus === 'on' ? IsOK : HasProblem}>
-                Assets
-            </TreeItemLayout>
+            {p.children ? (
+                p.children
+            ) : (
+                <TreeItemLayout iconBefore={<I.Server24Filled />} aside={client.wsStatus === 'on' ? IsOK : HasProblem}>
+                    Assets
+                </TreeItemLayout>
+            )}
             {/* <Multiselect /> */}
             <Tree
                 size='small'

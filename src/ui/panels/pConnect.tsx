@@ -1,4 +1,14 @@
-import { Button, Card, Input, Label, Text } from '@fluentui/react-components'
+import {
+    Accordion,
+    AccordionHeader,
+    AccordionItem,
+    AccordionPanel,
+    Button,
+    Card,
+    Input,
+    Label,
+    Text,
+} from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import * as I from '@fluentui/react-icons'
 import { useSt } from '../stContext'
@@ -8,24 +18,45 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
     const client = useSt()
     return (
         <>
-            <Card>
-                <div className='row'>
-                    <Text size={500}>Server</Text>
-                    <div className='grow'></div>
-                    <div>{client.wsStatusEmoji}</div>
-                </div>
-                <Field label='Workspace Folder'>
-                    <Input
-                        id='config-workspace'
-                        value={client.config.config.workspace}
-                        onChange={(ev) => (client.config.config.workspace = ev.target.value)}
-                    />
-                </Field>
-                <Button onClick={() => client.config.save()} icon={<I.Save24Filled />}>
-                    Save
-                </Button>
-            </Card>
-            <Card>
+            <Accordion collapsible>
+                <AccordionItem value='1'>
+                    <AccordionHeader>
+                        <div>Server </div>
+                        <div className='grow'></div>
+                        <div>{client.wsStatusEmoji}</div>
+                    </AccordionHeader>
+
+                    <AccordionPanel>
+                        <Card>
+                            <Field label='Workspace Folder'>
+                                <Input
+                                    contentBefore={'📁'}
+                                    value={client.config.config.workspace}
+                                    onChange={(ev) => (client.config.config.workspace = ev.target.value)}
+                                />
+                            </Field>
+                            <Field label='http(s) URL to access Comfy'>
+                                <Input
+                                    contentBefore={'🫖'}
+                                    value={client.config.config.comfyHTTPURL}
+                                    onChange={(ev) => (client.config.config.comfyHTTPURL = ev.target.value)}
+                                />
+                            </Field>
+                            <Field label='ws(s) ENDPOINT to access Comfy'>
+                                <Input
+                                    contentBefore={'🧦'}
+                                    value={client.config.config.comfyWSURL}
+                                    onChange={(ev) => (client.config.config.comfyWSURL = ev.target.value)}
+                                />
+                            </Field>
+                            <Button appearance='primary' onClick={() => client.config.save()} icon={<I.Save24Filled />}>
+                                Save
+                            </Button>
+                        </Card>
+                    </AccordionPanel>
+                </AccordionItem>
+            </Accordion>
+            {/* <Card>
                 <Label>
                     Host
                     <Input type='text' value={client.serverIP} onChange={(e) => (client.serverIP = e.target.value)} />
@@ -41,7 +72,7 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                 <Button appearance='primary' onClick={() => setTimeout(() => window.location.reload(), 1000)}>
                     connect
                 </Button>
-            </Card>
+            </Card> */}
         </>
     )
 })
