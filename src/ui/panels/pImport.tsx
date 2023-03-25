@@ -6,9 +6,9 @@ import { useSt } from '../stContext'
 export const PImportUI = observer(function PImportUI_(p: {}) {
     const client = useSt()
     return (
-        <Card>
-            <Text size={500}>Import project</Text>
-            <DropZoneUI />
-        </Card>
+        // <Card>
+        // <Text size={500}>Import project</Text>
+        <DropZoneUI />
+        // </Card>
     )
 })
