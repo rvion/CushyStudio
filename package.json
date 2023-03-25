@@ -15,6 +15,7 @@
         "build": "pnpm tauri:build",
         "[RELEASE]": "--------------------------------------------",
         "bump": "bump patch -c -t -p",
+        "logo": "./scripts/derive-assets.sh",
         "[binary]": "---------------------------------------------",
         "tauri:dev": "  pnpm tauri dev",
         "tauri:build": "pnpm tauri build",
