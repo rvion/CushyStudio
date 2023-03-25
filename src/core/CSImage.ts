@@ -19,7 +19,7 @@ export class CSImage {
 
     saved = false
 
-    get folder(){ return this.prompt.run.folder } // prettier-ignore
+    get folder(){ return this.prompt.run.folderPath } // prettier-ignore
     get fileName() { return this.prompt.uid + '_' + this.uid + '.png' } // prettier-ignore
     get filePath () { return this.folder + path.sep + this.fileName } // prettier-ignore
 

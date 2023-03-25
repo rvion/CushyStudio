@@ -46,7 +46,7 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                             key={project.id}
                             actions={
                                 <>
-                                    <Button onClick={() => project.run('real')} appearance='subtle' icon={<I.Play24Filled />} />
+                                    <Button onClick={() => project.RUN('real')} appearance='subtle' icon={<I.Play24Filled />} />
                                     <Menu>
                                         <MenuTrigger disableButtonEnhancement>
                                             <Button appearance='subtle' icon={<I.MoreHorizontal20Regular />} />

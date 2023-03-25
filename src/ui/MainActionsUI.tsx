@@ -8,10 +8,10 @@ export const MainActionsUI = observer(function MainActionsUI_() {
     return (
         <div className='col gap grow'>
             {/* <div>Step: {st.project.currentStep}</div> */}
-            <button className='success' onClick={() => project.run()}>
+            <button className='success' onClick={() => project.RUN()}>
                 Eval
             </button>
-            <button className='success' onClick={() => project.run('real')}>
+            <button className='success' onClick={() => project.RUN('real')}>
                 RUN
             </button>
             {run ? (

@@ -17,6 +17,9 @@ import { Cyto } from '../ui/graph/cyto'
 
 /** script exeuction instance */
 export class CSRun {
+    /** creation timestamp */
+    createdAt = Date.now()
+
     /** unique run id */
     uid = nanoid()
 
@@ -33,20 +36,22 @@ export class CSRun {
     gallery: CSImage[] = []
 
     /** folder where CushyStudio will save run informations */
-    get folder() {
-        return this.script.folder + path.sep + this.name
+    get folderPath() {
+        return this.script.folder + path.sep + this.createdAt + '_' + this.name
     }
 
-    // save = async () => {
-    //     const code = this.code
-    //     // ensure folder exists
-    //     await fs.createDir(this.folder, { recursive: true })
-    //     // safe script as script.cushy
-    //     const filePath = this.folder + path.sep + 'script.cushy'
-    //     await fs.writeFile({ path: filePath, contents: code })
-    //     // return success
-    //     console.log('[📁] saved', filePath)
-    // }
+    /** save current script */
+    save = async () => {
+        const contents = this.script.code
+        // ensure folder exists
+        await fs.createDir(this.folderPath, { recursive: true })
+        // safe script as script.cushy
+        const backupCodePath = 'script.' + Date.now() + '.cushy'
+        const filePath = this.folderPath + path.sep + backupCodePath
+        await fs.writeFile({ path: filePath, contents })
+        // return success
+        console.log('[📁] script backup saved', filePath)
+    }
 
     constructor(
         //

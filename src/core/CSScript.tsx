@@ -84,7 +84,7 @@ export class CSScript {
     isRunning = false
 
     // runningMode: RunMode = 'fake'
-    run = async (mode: RunMode = 'fake'): Promise<boolean> => {
+    RUN = async (mode: RunMode = 'fake'): Promise<boolean> => {
         // ensure we have some code to run
         if (this.code == null) {
             console.log('❌', 'no code to run')
@@ -93,6 +93,8 @@ export class CSScript {
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
         const execution = new CSRun(this, opts)
+        await execution.save()
+        // write the code to a file
         this.runs.unshift(execution)
 
         // try {
