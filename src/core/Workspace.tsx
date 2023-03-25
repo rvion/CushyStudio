@@ -44,10 +44,14 @@ export class Workspace {
     _config: PersistedJSON<WorkspaceConfigJSON>
     _schema: PersistedJSON<ComfySchemaJSON>
 
-    // static open=(folder:string) => {
-
-    // }
-    constructor(public folder: string) {
+    static OPEN = async (folder: string): Promise<Workspace> => {
+        const workspace = new Workspace(folder)
+        await workspace._schema.finished
+        await workspace._config.finished
+        workspace.init()
+        return workspace
+    }
+    private constructor(public folder: string) {
         this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema({})
         this.script = new CSScript(this)
@@ -65,7 +69,9 @@ export class Workspace {
                 comfyHTTPURL: 'http://127.0.0.1:8188',
             }),
         })
+    }
 
+    init() {
         // this.scripts.push(this.script)
         this.dts = this.schema.codegenDTS()
         this.startWSClientSafe()

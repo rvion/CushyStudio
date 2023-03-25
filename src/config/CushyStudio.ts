@@ -20,12 +20,9 @@ export class CushyStudio {
     workspace: Maybe<Workspace> = null
 
     openWorkspace = async (folder: string): Promise<Workspace> => {
-        const workspace = new Workspace(folder)
-        await workspace._schema.finished
-        await workspace._config.finished
-        this.workspace = workspace
+        this.workspace = await Workspace.OPEN(folder)
         this.userConfig.updateConfig({ recentProjects: [folder] })
-        return workspace
+        return this.workspace
     }
 
     userConfig = new PersistedJSON<UserConfigJSON>({
