@@ -5,7 +5,7 @@ description = "Full-featured AI generative Art studio."
 authors = ["rvion"]
 license = "unlicensed"
 repository = "https://github.com/rvion/CushyStudio"
-default-run = "CushyStudio"
+default-run = "cushy-studio"
 edition = "2021"
 rust-version = "1.59"
 
