@@ -8,13 +8,13 @@
         "email": "vion.remi@gmail.com"
     },
     "license": "unlicensed",
-    "version": "0.0.39",
+    "version": "0.0.40",
     "type": "module",
     "scripts": {
         "dev": "  pnpm tauri:dev",
         "build": "pnpm tauri:build",
         "[RELEASE]": "--------------------------------------------",
-        "bump": "bump patch -c -t -p",
+        "bump": "bump patch --commit vX.X.X --tag vX.X.X",
         "logo": "./scripts/derive-assets.sh",
         "[binary]": "---------------------------------------------",
         "tauri:dev": "  pnpm tauri dev",
