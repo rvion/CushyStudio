@@ -72,8 +72,7 @@
         "react-dom": "^18.2.0",
         "react-toastify": "^9.1.1",
         "scheduler": "^0.20.0",
-        "ts-node": "^10.9.1",
-        "ws": "^8.13.0"
+        "ts-node": "^10.9.1"
     },
     "devDependencies": {
         "@tauri-apps/cli": "^1.2.3",
@@ -83,7 +82,6 @@
         "@types/prettier": "^2.7.2",
         "@types/react": "^18.0.28",
         "@types/react-dom": "^18.0.11",
-        "@types/ws": "^8.5.4",
         "@vitejs/plugin-react": "^3.1.0",
         "typescript": "^5.0.2",
         "vite": "^4.2.1"

@@ -15,7 +15,6 @@ specifiers:
   '@types/prettier': ^2.7.2
   '@types/react': ^18.0.28
   '@types/react-dom': ^18.0.11
-  '@types/ws': ^8.5.4
   '@vitejs/plugin-react': ^3.1.0
   cytoscape: ^3.23.0
   cytoscape-klay: ^3.1.4
@@ -34,7 +33,6 @@ specifiers:
   ts-node: ^10.9.1
   typescript: ^5.0.2
   vite: ^4.2.1
-  ws: ^8.13.0
 
 dependencies:
   '@fluentui/react-components': 9.18.2_bhmoc3qiouiq55gsvyrpfppexu
@@ -59,7 +57,6 @@ dependencies:
   react-toastify: 9.1.1_biqbaboplfbrettd7655fr4n2y
   scheduler: 0.20.2
   ts-node: 10.9.1_zlbzrxdj56n2qhafx752nt3nlm
-  ws: 8.13.0
 
 devDependencies:
   '@tauri-apps/cli': 1.2.3
@@ -69,7 +66,6 @@ devDependencies:
   '@types/prettier': 2.7.2
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
-  '@types/ws': 8.5.4
   '@vitejs/plugin-react': 3.1.0_vite@4.2.1
   typescript: 5.0.2
   vite: 4.2.1_@types+node@18.15.5
@@ -1887,12 +1883,6 @@ packages:
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
 
-  /@types/ws/8.5.4:
-    resolution: {integrity: sha512-zdQDHKUgcX/zBc4GrwsE/7dVdAD8JR4EuiAXiiUhhfyIJXXb2+PrGshFyeXWQPMmmZ2XxgaqclgpIC7eTXc1mg==}
-    dependencies:
-      '@types/node': 18.15.5
-    dev: true
-
   /@vitejs/plugin-react/3.1.0_vite@4.2.1:
     resolution: {integrity: sha512-AfgcRL8ZBhAlc3BFdigClmTUMISmmzHn7sB2h9U1odvc5U/MjWXsAaz18b/WoppUTDBzxOJwo2VdClfUcItu9g==}
     engines: {node: ^14.18.0 || >=16.0.0}
@@ -2684,19 +2674,6 @@ packages:
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
-
-  /ws/8.13.0:
-    resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: '>=5.0.2'
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
-    dev: false
 
   /yallist/3.1.1:
     resolution: {integrity: sha512-a4UGQaWPH59mOXUYnAG2ewncQS4i4F43Tv3JoAM+s2VDAmS9NsK8GpDMLrCHPksFT7h3K6TOoUNn2pb7RoXx4g==}
