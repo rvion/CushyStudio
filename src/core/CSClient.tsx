@@ -7,6 +7,7 @@ import { ScriptStep } from './ScriptStep'
 import * as WS from 'ws'
 
 import * as fs from '@tauri-apps/api/fs'
+import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
 import { DemoScript1 } from '../ui/DemoScript1'
@@ -20,6 +21,7 @@ import { CSImage } from './CSImage'
 import { getPngMetadata } from './getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
 import { CSConfigManager } from '../config/CSConfigManager'
+import { readableStringify } from '../utils/stringifyReadable'
 
 export type ComfyClientOptions = {
     serverIP: string
@@ -198,8 +200,13 @@ export class CSClient {
         // console.log('🔴', res)
         // 2. update schmea
         this.schema.update(schema$)
+        // save schema to disk
+        const schemaPath = this.workspaceDir + path.sep + 'comfy-nodes.json'
+        await fs.writeTextFile(schemaPath, readableStringify(schema$))
         // 3. update dts
         this.dts = this.schema.codegenDTS()
+        const dtsPath = this.workspaceDir + path.sep + 'comfy-api.md'
+        await fs.writeTextFile(dtsPath, `# Comfy-API\n\n\`\`\`ts\n${this.dts}\n\`\`\``)
         // 4. update monaco
         this.editor.updateSDKDTS()
         this.editor.updateLibDTS()
