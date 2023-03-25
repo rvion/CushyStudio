@@ -1,6 +1,7 @@
 2023-03-25
 
--   faster startup
+-   initial backward compatibility layer for nodes (native and custom) if they change names
+-   faster startup (don't wait for monaco to be ready)
 -   initial config folder / config file / configurable workspace definition
 
 2023-03-24
