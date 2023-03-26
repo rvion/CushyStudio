@@ -1,16 +1,14 @@
-import type { IStandaloneCodeEditor } from './TypescriptOptions'
 import type { TypescriptBuffer } from './code/TypescriptBuffer'
+import type { IStandaloneCodeEditor } from './TypescriptOptions'
 
+import { Spinner } from '@fluentui/react-components'
 import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
-import { useWorkspace } from './WorkspaceContext'
-import { Spinner } from '@fluentui/react-components'
 
 export const TypescriptEditorUI = observer(function ComfyCodeEditorUI_(p: {
     //
     buffer: TypescriptBuffer
 }) {
-    const client = useWorkspace()
     const buff = p.buffer
     const textModel = buff.textModel
     if (textModel == null) return <Spinner />

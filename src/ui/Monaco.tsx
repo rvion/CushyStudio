@@ -30,34 +30,27 @@ loader.config({
     paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs' },
 })
 
-export let globalMonaco = null as Monaco | null
+let _setGlobalMonaco: (monaco: Monaco) => void
+export const globalMonaco = new Promise<Monaco>((resove, _rejects) => {
+    _setGlobalMonaco = resove
+})
 
 export const ensureMonacoReady = () => {
-    const [monaco, setMonaco] = useState(null as Monaco | null)
-    useEffect(() => {
-        // loader.init().then(/* ... */)
-        // console.log('[🔵] setup Monaco...')
-        loader.init().then((monaco) => {
-            // console.log('here is the monaco instance:', monaco)
-            console.log(`[👁] monaco ready`)
-            setupMonaco(monaco)
-            globalMonaco = monaco
-            setMonaco(monaco)
-        })
-    }, [])
-    return monaco
+    loader.init().then((monaco) => {
+        console.log(`[👁] monaco ready`)
+        const compilerOptions: TypescriptOptions = {
+            strict: true,
+            module: monaco.languages.typescript.ModuleKind.ESNext,
+            target: monaco.languages.typescript.ScriptTarget.ESNext,
+            moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
+        }
+        monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
+        console.log(`[👁] typescript ready (${monaco.languages.typescript.typescriptVersion})`)
+        _setGlobalMonaco(monaco)
+    })
 }
 
-const setupMonaco = (monaco: Monaco) => {
-    if (globalMonaco === monaco) return
-    // console.log('[👁] setup typescript...')
-    globalMonaco = monaco
-    const compilerOptions: TypescriptOptions = {
-        strict: true,
-        module: monaco.languages.typescript.ModuleKind.ESNext,
-        target: monaco.languages.typescript.ScriptTarget.ESNext,
-        moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
-    }
-    monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
-    console.log(`[👁] typescript ready (${monaco.languages.typescript.typescriptVersion})`)
-}
+// const setupMonaco = (monaco: Monaco) => {
+//     // console.log('[👁] setup typescript...')
+//     globalMonaco = monaco
+// }

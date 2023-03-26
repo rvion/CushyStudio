@@ -26,14 +26,13 @@ export class CushyLayoutState {
     }
 
     openEditorTab = (buff: TypescriptBuffer) => {
+        console.log('[🟢 x] openEditorTab', buff.name)
         // 1. ensure no tab exist for this file buffer
-        if (this.dockLayout == null) return
+        if (this.dockLayout == null) return console.log(`❌ this.dockLayout is null`)
+
         const uid = buff.name
         const prev = this.dockLayout.find(uid)
-        if (prev != null) {
-            console.log('🟢 found existing tab')
-            return
-        }
+        if (prev != null) return console.log('[🟢 x] found existing tab')
 
         // 2. get dock where this tab should be added
         const group = this.dockLayout.getGroup('CENTRAL')
@@ -50,7 +49,7 @@ export class CushyLayoutState {
         }
 
         // 4. focus it
-        this.dockLayout.dockMove(newTab, 'CENTRAL', 'active')
+        this.dockLayout.dockMove(newTab, 'CENTRAL', 'float')
     }
 
     addImagePopup = (url: string) => {

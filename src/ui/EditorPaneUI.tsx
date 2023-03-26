@@ -25,9 +25,9 @@ export const MainPanelUI = observer(function MainPanelUI_(p: {}) {
     return <>ERROR</>
 })
 
+ensureMonacoReady()
 export const EditorPaneUI = observer(function EditorPaneUI_() {
     const client = useWorkspace()
-    const monaco = ensureMonacoReady()
     if (client.CRITICAL_ERROR) return <ErrorScreenUI err={client.CRITICAL_ERROR} />
     return null // 🔴
     // if (monaco == null) return <div>loading monaco</div>

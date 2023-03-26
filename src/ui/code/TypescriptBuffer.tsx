@@ -11,14 +11,14 @@ export class TypescriptBuffer {
         public name: string,
         public path: string,
     ) {
-        this.ensureModel
+        this.ensureModel('')
         makeObservable(this, { textModel: observable.ref })
     }
 
     textModel: Maybe<ITextModel> = null
 
-    ensureModel = (content: string) => {
-        const monaco = globalMonaco
+    ensureModel = async (content: string) => {
+        const monaco = await globalMonaco
         if (!monaco) throw new Error('🔴 monaco is null')
 
         const uri = monaco.Uri.parse(this.monacoPath)
