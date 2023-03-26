@@ -63,6 +63,17 @@ export const ToolbarUI = observer(function ToolbarUI_(props: Partial<ToolbarProp
             <ToolbarButton icon={<I.ClosedCaption24Filled />} onClick={cushy.closeWorkspace}>
                 Close workspace
             </ToolbarButton>
+            <ToolbarButton
+                aria-label='Increase Font Size'
+                icon={<I.PhoneUpdate24Regular />}
+                onClick={async () => {
+                    // may not correctly work
+                    const { relaunch } = await import('@tauri-apps/api/process')
+                    await relaunch()
+                }}
+            >
+                Restart
+            </ToolbarButton>
         </Toolbar>
     )
 })
