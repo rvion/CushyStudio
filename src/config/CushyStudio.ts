@@ -1,6 +1,5 @@
-import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
-import { makeAutoObservable, runInAction } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { Maybe } from '../core/ComfyUtils'
 import { Workspace } from '../core/Workspace'
 import { PersistedJSON } from './PersistedJSON'

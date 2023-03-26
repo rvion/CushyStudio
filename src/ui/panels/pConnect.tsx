@@ -8,11 +8,11 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
     const client = useWorkspace()
     return (
         <Card>
-            <div className='row'>
+            <h3 className='row'>
                 <div>Server </div>
                 <div className='grow'></div>
                 <div>{client.wsStatusEmoji}</div>
-            </div>
+            </h3>
             {/* <Field label='Workspace Folder'>
                                 <Input
                                     contentBefore={'📁'}
