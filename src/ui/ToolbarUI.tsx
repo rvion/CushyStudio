@@ -11,10 +11,12 @@ import {
 } from '@fluentui/react-components'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { useSt } from './WorkspaceContext'
+import { useCS } from '../config/CushyStudioContext'
+import { useWorkspace } from './WorkspaceContext'
 
 export const ToolbarUI = observer(function ToolbarUI_(props: Partial<ToolbarProps>) {
-    const client = useSt()
+    const cushy = useCS()
+    const client = useWorkspace()
     const project = client.script
     return (
         <Toolbar aria-label='Default' {...props}>
@@ -58,6 +60,9 @@ export const ToolbarUI = observer(function ToolbarUI_(props: Partial<ToolbarProp
                     </MenuList>
                 </MenuPopover>
             </Menu>
+            <ToolbarButton icon={<I.ClosedCaption24Filled />} onClick={cushy.closeWorkspace}>
+                Close workspace
+            </ToolbarButton>
         </Toolbar>
     )
 })

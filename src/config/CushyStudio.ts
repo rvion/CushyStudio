@@ -25,6 +25,10 @@ export class CushyStudio {
         return this.workspace
     }
 
+    closeWorkspace = async (): Promise<void> => {
+        this.workspace = null
+    }
+
     userConfig = new PersistedJSON<UserConfigJSON>({
         name: 'userConfig.json',
         init: (): UserConfigJSON => ({ version: 1, theme: 'dark', recentProjects: [] }),
