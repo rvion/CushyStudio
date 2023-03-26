@@ -48,12 +48,12 @@ export const defaultLayout = (): LayoutData => ({
                                 title: 'Main layout',
                                 content: <MainPanelUI />,
                             },
-                            {
-                                minHeight: 280,
-                                id: 'PaintUI',
-                                title: 'Paint',
-                                content: <PaintUI />,
-                            },
+                            // {
+                            //     minHeight: 280,
+                            //     id: 'PaintUI',
+                            //     title: 'Paint',
+                            //     content: <PaintUI />,
+                            // },
                             // {
                             //     minHeight: 280,
                             //     id: 'Graph',

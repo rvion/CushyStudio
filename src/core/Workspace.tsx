@@ -215,13 +215,13 @@ export class Workspace {
         // console.log('🔴', res)
         // 2. update schmea
         this.schema.update(schema$)
-        this.CushySDKBuff.udpateCode(c__)
+        this.CushySDKBuff.udpateCodeProgrammatically(c__)
         // save schema to disk
         const schemaPath = this.folder + path.sep + 'comfy-nodes.json'
         await fs.writeTextFile(schemaPath, readableStringify(schema$))
         // 3. update dts
         this.dts = this.schema.codegenDTS()
-        this.ComfySDKBuff.udpateCode(this.dts)
+        this.ComfySDKBuff.udpateCodeProgrammatically(this.dts)
         // const dtsPath = this.folder + path.sep + 'comfy-api.md'
         // await fs.writeTextFile(dtsPath, `# Comfy-API\n\n\`\`\`ts\n${this.dts}\n\`\`\``)
         // 4. update monaco

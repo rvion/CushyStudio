@@ -11,24 +11,24 @@ export class TypescriptBuffer {
         public name: string,
         public path: string,
     ) {
-        this.ensureModel('')
+        this.ensureModel()
         makeObservable(this, { textModel: observable.ref })
     }
 
     textModel: Maybe<ITextModel> = null
 
-    ensureModel = async (content: string) => {
+    ensureModel = async () => {
         const monaco = await globalMonaco
         if (!monaco) throw new Error('🔴 monaco is null')
 
         const uri = monaco.Uri.parse(this.monacoPath)
         let model = monaco.editor.getModel(uri)
         if (model) {
-            console.log(`[🔵] updating ${this.monacoPath}`)
-            model.setValue(content)
+            console.log(`[📝] updating ${this.monacoPath}`)
+            model.setValue(this.code)
         } else {
-            console.log(`[🔵] creating ${this.monacoPath}`)
-            model = monaco.editor.createModel(content, 'typescript', uri)
+            console.log(`[📝] creating ${this.monacoPath}`)
+            model = monaco.editor.createModel(this.code, 'typescript', uri)
         }
         this.textModel = model
     }
@@ -48,8 +48,16 @@ export class TypescriptBuffer {
     //     return monaco.editor.getModel(libURI)
     // }
 
-    udpateCode = (value: Maybe<string>) => {
+    udpateCodeProgrammatically = (value: Maybe<string>) => {
         if (value == null) return
+        console.log(`[📝] updating ${this.monacoPath} with ${value.length} chars`)
+        if (this.textModel) this.textModel.setValue(value)
+        this.code = value
+    }
+    udpateCodeFromEditor = (value: Maybe<string>) => {
+        if (value == null) return
+        console.log(`[📝] updating ${this.monacoPath} with ${value.length} chars`)
+        if (this.textModel) this.textModel.setValue(value)
         this.code = value
     }
 }
