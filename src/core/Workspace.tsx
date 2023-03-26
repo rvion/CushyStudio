@@ -85,6 +85,7 @@ export class Workspace {
                 comfyHTTPURL: 'http://127.0.0.1:8188',
             }),
         })
+        makeAutoObservable(this)
     }
 
     async init() {
