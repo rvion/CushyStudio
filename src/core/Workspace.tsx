@@ -42,7 +42,6 @@ export class Workspace {
     focus: MainPanelFocus = null
     script: Maybe<CSScript> = null
     scripts: CSScript[] = []
-    // editor: ComfyScriptEditor
     assets = new Map<string, boolean>()
     layout = new CushyLayoutState(this)
     _config: PersistedJSON<WorkspaceConfigJSON>
@@ -63,8 +62,8 @@ export class Workspace {
     private constructor(public folder: string) {
         // this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema({})
-        this.CushySDKBuff = new TypescriptBuffer(this, 'sdk', this.folder + path.sep + 'sdk.d.ts') //`file:///core/sdk.d.ts`)
-        this.ComfySDKBuff = new TypescriptBuffer(this, 'lib', this.folder + path.sep + 'lib.d.ts') //`file:///core/global.d.ts`)
+        this.CushySDKBuff = new TypescriptBuffer(this, 'sdk', this.folder + path.sep + 'cushy.d.ts') //`file:///core/sdk.d.ts`)
+        this.ComfySDKBuff = new TypescriptBuffer(this, 'lib', this.folder + path.sep + 'comfy.d.ts') //`file:///core/global.d.ts`)
         // this.script = new CSScript(this)
         this._schema = new PersistedJSON<ComfySchemaJSON>({
             folder: Promise.resolve(this.folder),
@@ -121,10 +120,10 @@ export class Workspace {
                 console.log(`[🔍] - ${item.name} is not a folder`)
                 continue
             }
-            const script = item.children.find((f) => f.name === 'script.cushy')
+            const script = item.children.find((f) => f.name === 'script.ts')
             if (script == null) {
                 console.log(
-                    `[🔍] - ${item.name} has no script.cushy file ${item.children.length} ${item.children.map((f) => f.name)}`,
+                    `[🔍] - ${item.name} has no script.ts file ${item.children.length} ${item.children.map((f) => f.name)}`,
                 )
                 continue
             }

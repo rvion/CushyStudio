@@ -1,6 +1,9 @@
 import type { ITextModel } from '../TypescriptOptions'
 import type { Maybe } from '../../core/ComfyUtils'
 import type { Workspace } from '../../core/Workspace'
+
+import * as fs from '@tauri-apps/api/fs'
+import * as path from '@tauri-apps/api/path'
 import { globalMonaco } from '../Monaco'
 import { makeObservable, observable } from 'mobx'
 
@@ -53,11 +56,18 @@ export class TypescriptBuffer {
         console.log(`[📝] updating ${this.monacoPath} with ${value.length} chars`)
         if (this.textModel) this.textModel.setValue(value)
         this.code = value
+        void this.saveOnDisk()
     }
+
     udpateCodeFromEditor = (value: Maybe<string>) => {
         if (value == null) return
         console.log(`[📝] updating ${this.monacoPath} with ${value.length} chars`)
-        if (this.textModel) this.textModel.setValue(value)
+        // if (this.textModel) this.textModel.setValue(value)
         this.code = value
+        void this.saveOnDisk()
+    }
+    saveOnDisk = async () => {
+        console.log('[📁] saving', this.path)
+        await fs.writeFile({ path: this.path, contents: this.code })
     }
 }

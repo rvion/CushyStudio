@@ -26,8 +26,8 @@ export class CSScript {
         const code = this.code
         // ensure folder exists
         await fs.createDir(this.folderPath, { recursive: true })
-        // safe script as script.cushy
-        const filePath = this.folderPath + path.sep + 'script.cushy'
+        // safe script as script.ts
+        const filePath = this.folderPath + path.sep + 'script.ts'
         await fs.writeFile({ path: filePath, contents: code })
         // return success
         console.log('[📁] saved', filePath)
@@ -56,7 +56,7 @@ export class CSScript {
             //
             this.workspace,
             this.folderName,
-            this.folderPath + path.sep + 'script.cushy',
+            this.folderPath + path.sep + 'script.ts',
         )
         makeAutoObservable(this)
     }

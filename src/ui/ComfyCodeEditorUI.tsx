@@ -15,7 +15,7 @@ export const TypescriptEditorUI = observer(function ComfyCodeEditorUI_(p: {
     return (
         <MonacoEditor
             height='100vh'
-            path={p.buffer.path}
+            path={p.buffer.monacoPath}
             keepCurrentModel
             theme='vs-dark'
             onChange={(e) => buff.udpateCodeFromEditor(e)}

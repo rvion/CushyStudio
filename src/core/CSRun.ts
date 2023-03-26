@@ -46,8 +46,8 @@ export class CSRun {
         const contents = this.script.code
         // ensure folder exists
         await fs.createDir(this.folderPath, { recursive: true })
-        // safe script as script.cushy
-        const backupCodePath = 'script.' + Date.now() + '.cushy'
+        // safe script as script.ts
+        const backupCodePath = 'script.' + Date.now() + '.ts'
         const filePath = this.folderPath + path.sep + backupCodePath
         await fs.writeFile({ path: filePath, contents })
         // return success

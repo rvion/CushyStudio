@@ -27,7 +27,6 @@ export class CSImage {
         if (this.saved) return
         // ensure folder exists
         await fs.createDir(this.folder, { recursive: true })
-        // safe script as script.cushy
         const response = await fetch(this.comfyURL, {
             headers: { 'Content-Type': 'image/png' },
             method: 'GET',
