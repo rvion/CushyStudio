@@ -3,22 +3,29 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Civitai } from './CivitaiAPI'
 import { useWorkspace } from '../ui/WorkspaceContext'
-
+import * as I from '@fluentui/react-icons'
 export const CivitaiUI = observer(function CivitaiUI_() {
     const c = useMemo(() => new Civitai(), [])
     const x = useWorkspace()
     return (
         <Card>
-            <Text size={500}>Civitai</Text>
-            <Input placeholder='rechercher' value={c.query} onChange={(e) => (c.query = e.target.value)}></Input>
-            <Button
-                onClick={async () => {
-                    const res = await c.search({ query: c.query, page: '1' })
-                    console.log(res)
-                }}
-            >
-                OK
-            </Button>
+            <Text size={300}>Civitai</Text>
+
+            <div className='row gap'>
+                <Input
+                    contentBefore={<I.Search24Filled />}
+                    placeholder='rechercher'
+                    value={c.query}
+                    onChange={(e) => (c.query = e.target.value)}
+                ></Input>
+                <Button
+                    icon={<I.Search24Filled />}
+                    onClick={async () => {
+                        const res = await c.search({ query: c.query, page: '1' })
+                        console.log(res)
+                    }}
+                ></Button>
+            </div>
             {c.results && (
                 <div
                     style={{

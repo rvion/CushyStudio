@@ -4,6 +4,7 @@ import { ComfyGraph } from '../../core/ComfyGraph'
 import { ComfyNode } from '../../core/CSNode'
 
 cytoscape.use(klay)
+
 export class Cyto {
     cy: cytoscape.Core = cytoscape({})
 
@@ -14,9 +15,6 @@ export class Cyto {
         })
         this.setStyle()
         this.graph.cyto = this
-        // this.addFakeData()
-        // this.graph.onNodeAdded = this.addNode
-        // this.graph.onNodeChanged = this.changeNode
     }
 
     at: number = 0
@@ -33,13 +31,15 @@ export class Cyto {
             },
         })
     }
+
     removeEdge = (id: string) => {
         console.log('🚀 REMOVE EDGE', id)
         var j = this.cy.getElementById(id)
         console.log('🚀 dbg', j)
         this.cy.remove(j)
     }
-    addNode = (node: ComfyNode<any>) => {
+
+    trackNode = (node: ComfyNode<any>) => {
         // this.cy.stop()
         this.at++
         console.log('🚀 ADD NODE', node.uid, node.$schema.category)
@@ -94,51 +94,20 @@ export class Cyto {
             },
         ])
     }
+
     mounted: boolean = false
     mount = (element: HTMLElement) => {
         if (this.mounted) {
             this.animate()
-            return console.log('ALREADY MOUNTED')
+            return console.log('[፨] cyto already mounted')
         }
+
         this.mounted = true
-        console.log('MOUNT')
+        console.log('[፨] MOUNT')
         this.cy.mount(element)
         this.cy.ready(() => {
-            console.log('[CYTO] READY')
+            console.log('[CYTO] cyto ready')
             this.animate()
         })
-
-        // cy.layout({
-        //     name: 'grid',
-        //     fit: true,
-        //     animate: true,
-        // }).start()
-
-        // setInterval(() => {
-        //     const idx = nanoid()
-
-        //     cy.add([
-        //         {
-        //             data: { id: idx },
-        //             position: { x: Math.random() * 1000, y: Math.random() * 1000 },
-        //         },
-        //         { data: { id: nanoid(), source: 'a', target: idx } },
-        //     ])
-
-        //     // layout.start()
-        //     // all.push(idx)
-        //     // cy.fit(undefined, 10)
-        //     // cy.animate({
-        //     //     duration: 1000,
-        //     //     easing: 'ease-in-out',
-        //     // })
-        // }, 1000)
-
-        // cy.animate({
-        //     // fit: { eles: 'all' },
-        //     // fit: ,
-        //     duration: 1000,
-        //     easing: 'ease-in-out',
-        // })
     }
 }

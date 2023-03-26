@@ -25,10 +25,10 @@ export class ComfyGraph {
     get schema() { return this.client.schema } // prettier-ignore
 
     cyto?: Cyto
-    // onNodeAdded: Maybe<(node: ComfyNode<any>) => void>
+
     registerNode = (node: ComfyNode<any>) => {
         this.nodesIndex.set(node.uid, node)
-        this.cyto?.addNode(node)
+        this.cyto?.trackNode(node)
         // this.graph.run.cyto.addNode(this)
     }
     get nodes() { return Array.from(this.nodesIndex.values()) } // prettier-ignore

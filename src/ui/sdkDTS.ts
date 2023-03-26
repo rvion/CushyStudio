@@ -158,14 +158,14 @@ declare module "core/CSImage" {
 }
 declare module "core/ScriptStep_prompt" {
     import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from "core/ComfyAPI";
-    import type { CSRun } from "core/CSRun";
+    import type { Run } from "core/Run";
     import type { ComfyPromptJSON } from "core/ComfyPrompt";
     import type { ComfyNode } from "core/CSNode";
     import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
     import { ComfyGraph } from "core/ComfyGraph";
     import { CSImage } from "core/CSImage";
     export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
-        run: CSRun;
+        run: Run;
         prompt: ComfyPromptJSON;
         static promptID: number;
         /** unique step id */
@@ -176,7 +176,7 @@ declare module "core/ScriptStep_prompt" {
         _graph: ComfyGraph;
         /** short-hand getter to access parent client */
         get client(): import("core/Workspace").Workspace;
-        constructor(run: CSRun, prompt: ComfyPromptJSON);
+        constructor(run: Run, prompt: ComfyPromptJSON);
         _resolve: (value: this) => void;
         _rejects: (reason: any) => void;
         finished: Promise<this>;
@@ -263,8 +263,8 @@ declare module "ui/graph/cyto" {
 declare module "utils/timestamps" {
     export const getYYYYMMDD_HHMM_SS: () => string;
 }
-declare module "core/CSRun" {
-    import type { CSScript } from "core/CSScript";
+declare module "core/Run" {
+    import type { Project } from "core/Project";
     import { ScriptStep_prompt } from "core/ScriptStep_prompt";
     import { Maybe } from "core/ComfyUtils";
     import { ComfyGraph } from "core/ComfyGraph";
@@ -273,8 +273,8 @@ declare module "core/CSRun" {
     import { CSImage } from "core/CSImage";
     import { Cyto } from "ui/graph/cyto";
     /** script exeuction instance */
-    export class CSRun {
-        script: CSScript;
+    export class Run {
+        script: Project;
         opts?: {
             mock?: boolean | undefined;
         } | undefined;
@@ -294,7 +294,7 @@ declare module "core/CSRun" {
         get folderPath(): string;
         /** save current script */
         save: () => Promise<void>;
-        constructor(script: CSScript, opts?: {
+        constructor(script: Project, opts?: {
             mock?: boolean | undefined;
         } | undefined);
         steps: ScriptStep[];
@@ -320,6 +320,7 @@ declare module "config/PersistedJSON" {
         name: string;
         init: () => T;
         maxLevel?: number;
+        onReady?: (data: T) => void;
     };
     export class PersistedJSON<T extends object> {
         private opts;
@@ -339,7 +340,7 @@ declare module "config/PersistedJSON" {
         /** save the file */
         save: () => Promise<true>;
         /** update config then save it */
-        updateConfig: (configChanges: Partial<T>) => Promise<true>;
+        assign: (configChanges: Partial<T>) => Promise<true>;
         init: (p: PersistedJSONInfo<T>) => Promise<T>;
     }
 }
@@ -362,20 +363,76 @@ declare module "ui/code/TypescriptBuffer" {
         workspace: Workspace;
         name: string;
         path: string;
-        virtual: boolean;
-        constructor(workspace: Workspace, name: string, path: string, virtual: boolean);
+        constructor(workspace: Workspace, opts: {
+            name: string;
+            path: string;
+            def: Maybe<string>;
+        });
+        /** the monaco textmodel that should remains alive for typeschecking to work */
         textModel: Maybe<ITextModel>;
-        ensureModel: () => Promise<void>;
-        get writable(): boolean;
+        /** set to true,
+         *  - either when file is initially loaded from disk
+         *  - or when file content is set programmatically for the first time
+         * */
+        ready: boolean;
+        /** initialize the buffer
+         *  - load the file from disk if it exists
+         *  - or create a new file with the default content if default content provided
+         *  - or do nothing if file does not exist and no default content provided
+         */
+        init: (def: Maybe<string>) => Promise<void>;
+        ensureTextModel: () => Promise<void>;
         code: string;
         get monacoPath(): string;
-        udpateCodeProgrammatically: (value: Maybe<string>) => void;
+        /** initialize a buffer that may or may not exist on disk */
+        initProgrammatically: (value: Maybe<string>) => Promise<boolean>;
         udpateCodeFromEditor: (value: Maybe<string>) => void;
         saveOnDisk: () => Promise<void>;
     }
 }
 declare module "help/TutorialUI" {
     export const TutorialUI: import("react").FunctionComponent<object>;
+}
+declare module "config/CushyStudio" {
+    import { Maybe } from "core/ComfyUtils";
+    import { Workspace } from "core/Workspace";
+    import { PersistedJSON } from "config/PersistedJSON";
+    export type UserConfigJSON = {
+        version: 1;
+        theme?: 'dark' | 'light';
+        recentProjects?: string[];
+    };
+    export class CushyStudio {
+        constructor();
+        /** currently opened workspace */
+        workspace: Maybe<Workspace>;
+        openWorkspace: (folderPath: string) => Promise<Workspace>;
+        closeWorkspace: () => Promise<void>;
+        userConfig: PersistedJSON<UserConfigJSON>;
+        /** true when user config is ready */
+        get ready(): boolean;
+    }
+}
+declare module "config/CushyStudioContext" {
+    import { CushyStudio } from "config/CushyStudio";
+    export const CSContext: import("react").Context<CushyStudio | null>;
+    export const useCS: () => CushyStudio;
+}
+declare module "ui/WorkspaceContext" {
+    import { Workspace } from "core/Workspace";
+    export const workspaceContext: import("react").Context<Workspace | null>;
+    export const useWorkspace: () => Workspace;
+    export const useProject: () => import("core/ComfyUtils").Maybe<import("core/Project").Project>;
+}
+declare module "ui/menu/NewProjectModalUI" {
+    export const NewProjectModalUI: import("react").FunctionComponent<{
+        children: React.ReactElement;
+    }>;
+}
+declare module "ui/ToolbarUI" {
+    import { ToolbarProps } from '@fluentui/react-components';
+    export const WorkspaceToolbarUI: import("react").FunctionComponent<Partial<ToolbarProps>>;
+    export const ProjectToolbarUI: import("react").FunctionComponent<Partial<ToolbarProps>>;
 }
 declare module "ui/code/ComfyCodeEditorUI" {
     import type { TypescriptBuffer } from "ui/code/TypescriptBuffer";
@@ -454,42 +511,17 @@ declare module "civitai/CivitaiAPI" {
         prevPage: string;
     };
 }
-declare module "ui/WorkspaceContext" {
-    import { Workspace } from "core/Workspace";
-    export const workspaceContext: import("react").Context<Workspace | null>;
-    export const useWorkspace: () => Workspace;
-    export const useProject: () => import("core/ComfyUtils").Maybe<import("core/CSScript").CSScript>;
-}
 declare module "civitai/CIvitaiUI" {
     export const CivitaiUI: import("react").FunctionComponent<object>;
 }
+declare module "ui/ErrorScreenUI" {
+    import { CSCriticalError } from "core/Workspace";
+    export const ErrorScreenUI: import("react").FunctionComponent<{
+        err: CSCriticalError;
+    }>;
+}
 declare module "ui/panels/pConnect" {
     export const PConnectUI: import("react").FunctionComponent<{}>;
-}
-declare module "config/CushyStudio" {
-    import { Maybe } from "core/ComfyUtils";
-    import { Workspace } from "core/Workspace";
-    import { PersistedJSON } from "config/PersistedJSON";
-    export type UserConfigJSON = {
-        version: 1;
-        theme?: 'dark' | 'light';
-        recentProjects?: string[];
-    };
-    export class CushyStudio {
-        constructor();
-        /** currently opened workspace */
-        workspace: Maybe<Workspace>;
-        openWorkspace: (folder: string) => Promise<Workspace>;
-        closeWorkspace: () => Promise<void>;
-        userConfig: PersistedJSON<UserConfigJSON>;
-        /** true when user config is ready */
-        get ready(): boolean;
-    }
-}
-declare module "config/CushyStudioContext" {
-    import { CushyStudio } from "config/CushyStudio";
-    export const CSContext: import("react").Context<CushyStudio | null>;
-    export const useCS: () => CushyStudio;
 }
 declare module "ui/WelcomeScreenUI" {
     export const WelcomeScreenUI: import("react").FunctionComponent<{
@@ -497,13 +529,8 @@ declare module "ui/WelcomeScreenUI" {
     }>;
     export const OpenWorkspaceUI: import("react").FunctionComponent<{}>;
 }
-declare module "ui/EditorPaneUI" {
-    import { CSCriticalError } from "core/Workspace";
+declare module "ui/MainPaneUI" {
     export const MainPanelUI: import("react").FunctionComponent<{}>;
-    export const EditorPaneUI: import("react").FunctionComponent<object>;
-    export const ErrorScreenUI: import("react").FunctionComponent<{
-        err: CSCriticalError;
-    }>;
 }
 declare module "ui/Execution_askBooleanUI" {
     import { ScriptStep_askBoolean } from "core/ScriptStep_ask";
@@ -648,8 +675,8 @@ declare module "ui/menu/ProjectTreeUI" {
     export const IsOK: JSX.Element;
     export const Actions: () => JSX.Element;
 }
-declare module "ui/menu/CSMenuUI" {
-    export const CSMenuUI: import("react").FunctionComponent<object>;
+declare module "ui/menu/MenuUI" {
+    export const MenuUI: import("react").FunctionComponent<object>;
 }
 declare module "ui/paint/PaintUI" {
     export const PaintUI: import("react").FunctionComponent<{}>;
@@ -671,7 +698,6 @@ declare module "ui/layout/LayoutState" {
     import type { CSImage } from "core/CSImage";
     import DockLayout from 'rc-dock';
     import { Workspace } from "core/Workspace";
-    import { TypescriptBuffer } from "ui/code/TypescriptBuffer";
     export class CushyLayoutState {
         client: Workspace;
         layout: import("rc-dock").LayoutData;
@@ -680,7 +706,6 @@ declare module "ui/layout/LayoutState" {
         dockLayout: DockLayout | null;
         getRef: (r: DockLayout | null) => DockLayout | null;
         constructor(client: Workspace);
-        openEditorTab: (buff: TypescriptBuffer) => void;
         addImagePopup: (url: string) => void;
         /** WIP */
         addHelpPopup: () => void;
@@ -705,7 +730,7 @@ declare module "core/Workspace" {
     import { CushyLayoutState } from "ui/layout/LayoutState";
     import { ComfyStatus, ComfyUploadImageResult } from "core/ComfyAPI";
     import { ComfySchema } from "core/ComfySchema";
-    import { CSScript } from "core/CSScript";
+    import { Project } from "core/Project";
     export type WorkspaceConfigJSON = {
         version: 2;
         comfyWSURL: string;
@@ -715,7 +740,6 @@ declare module "core/Workspace" {
         title: string;
         help: string;
     };
-    type MainPanelFocus = 'ide' | 'config' | null;
     /**
      * global State
      *  - manages connection to the backend
@@ -725,10 +749,9 @@ declare module "core/Workspace" {
     export class Workspace {
         folder: string;
         schema: ComfySchema;
-        dts: string;
-        focus: MainPanelFocus;
-        script: Maybe<CSScript>;
-        scripts: CSScript[];
+        focusedFile: Maybe<TypescriptBuffer>;
+        focusedProject: Maybe<Project>;
+        projects: Project[];
         assets: Map<string, boolean>;
         layout: CushyLayoutState;
         _config: PersistedJSON<WorkspaceConfigJSON>;
@@ -744,6 +767,7 @@ declare module "core/Workspace" {
         /** attempt to convert an url to a Blob */
         private getUrlAsBlob;
         uploadURL: (url?: string) => Promise<ComfyUploadImageResult>;
+        createProject: (folderName: string, script?: string) => void;
         /** load all project found in workspace */
         loadProjects: () => Promise<void>;
         /** save an image at given url to disk */
@@ -763,7 +787,6 @@ declare module "core/Workspace" {
         wsStatus: 'on' | 'off';
         get wsStatusEmoji(): "🟢" | "🔴" | "❓";
         get schemaStatusEmoji(): "🟢" | "🔴";
-        get dtsStatusEmoji(): "🟢" | "🔴";
         sid: string;
         status: ComfyStatus | null;
         ws: Maybe</*WS.WebSocket |*/ WebSocket>;
@@ -799,14 +822,14 @@ declare module "core/ComfyImporter" {
         convertFlowToCode: (flow: ComfyPromptJSON) => string;
     }
 }
-declare module "core/CSScript" {
+declare module "core/Project" {
     import type { RunMode } from "core/ComfyGraph";
     import { Workspace } from "core/Workspace";
     import { ComfyPromptJSON } from "core/ComfyPrompt";
-    import { CSRun } from "core/CSRun";
+    import { Run } from "core/Run";
     import { TypescriptBuffer } from "ui/code/TypescriptBuffer";
     /** Script */
-    export class CSScript {
+    export class Project {
         workspace: Workspace;
         folderName: string;
         static __demoProjectIx: number;
@@ -816,19 +839,20 @@ declare module "core/CSScript" {
         /** folder where CushyStudio will save script informations */
         get folderPath(): string;
         save: () => Promise<void>;
-        openInEditor: () => void;
+        duplicate: () => Promise<void>;
+        focus: () => void;
         /** project name */
         /** list of all project runs */
-        runs: CSRun[];
+        runs: Run[];
         /** last project run */
-        get currentRun(): CSRun | null;
+        get currentRun(): Run | null;
         scriptBuffer: TypescriptBuffer;
-        constructor(workspace: Workspace, folderName: string);
+        constructor(workspace: Workspace, folderName: string, initialCode?: string);
         /** convenient getter to retrive current client shcema */
         get schema(): import("core/ComfySchema").ComfySchema;
         get code(): string;
         udpateCode: (code: string) => Promise<string>;
-        static FROM_JSON: (client: Workspace, json: ComfyPromptJSON) => CSScript;
+        static FROM_JSON: (client: Workspace, json: ComfyPromptJSON) => Project;
         /** converts a ComfyPromptJSON into it's canonical normal-form script */
         static LoadFromComfyPromptJSON: (_json: ComfyPromptJSON) => never;
         /** * project running is not the same as graph running; TODO: explain */
@@ -1048,10 +1072,10 @@ declare module "embeds/wildcards" {
 declare module "core/ComfyGraph" {
     import type { VisEdges, VisNodes } from "ui/VisUI";
     import type { ComfyNodeUID } from "core/ComfyNodeUID";
-    import type { CSScript } from "core/CSScript";
+    import type { Project } from "core/Project";
     import type { ComfyPromptJSON } from "core/ComfyPrompt";
     import type { Maybe } from "core/ComfyUtils";
-    import type { CSRun } from "core/CSRun";
+    import type { Run } from "core/Run";
     import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
     import { Workspace } from "core/Workspace";
     import { ComfyNode } from "core/CSNode";
@@ -1060,8 +1084,8 @@ declare module "core/ComfyGraph" {
     import { Cyto } from "ui/graph/cyto";
     export type RunMode = 'fake' | 'real';
     export class ComfyGraph {
-        project: CSScript;
-        run: CSRun;
+        project: Project;
+        run: Run;
         uid: string;
         get client(): Workspace;
         get schema(): ComfySchema;
@@ -1079,7 +1103,7 @@ declare module "core/ComfyGraph" {
         askBoolean: (msg: string, def?: Maybe<boolean>) => Promise<boolean>;
         askString: (msg: string, def?: Maybe<string>) => Promise<string>;
         print: (...msg: any[]) => void;
-        constructor(project: CSScript, run: CSRun, json?: ComfyPromptJSON);
+        constructor(project: Project, run: Run, json?: ComfyPromptJSON);
         private _nextUID;
         getUID: () => string;
         getNodeOrCrash: (nodeID: ComfyNodeUID) => ComfyNode<any>;
