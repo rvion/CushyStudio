@@ -1,6 +1,6 @@
 import { LayoutData } from 'rc-dock'
 import { CivitaiUI } from '../../civitai/CIvitaiUI'
-import { MainPanelUI } from '../EditorPaneUI'
+import { MainPanelUI } from '../MainPaneUI'
 import { ExecutionUI } from '../ExecutionUI'
 import { MenuUI } from '../menu/MenuUI'
 import { PaintUI } from '../paint/PaintUI'

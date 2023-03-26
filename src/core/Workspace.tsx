@@ -93,7 +93,6 @@ export class Workspace {
         this.dts = this.schema.codegenDTS()
         this.startWSClientSafe()
         await this.loadProjects()
-        makeAutoObservable(this)
         await this.fetchObjectsSchema()
         // this.editor.openCODE()
     }
@@ -116,6 +115,12 @@ export class Workspace {
     uploadURL = async (url: string = this.RANDOM_IMAGE_URL): Promise<ComfyUploadImageResult> => {
         const blob = await this.getUrlAsBlob(url)
         return this.uploadUIntArrToComfy(blob)
+    }
+
+    createProject = (folderName: string) => {
+        const script = new CSScript(this, folderName)
+        this.scripts.push(script)
+        this.script = script
     }
 
     /** load all project found in workspace */

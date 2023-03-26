@@ -174,3 +174,9 @@ input {
 #node-list{
     overflow: auto;
 }
+
+.highlighted {
+    background-color: #060101;
+    color: rgb(157, 157, 157);
+    padding: .3rem;
+}

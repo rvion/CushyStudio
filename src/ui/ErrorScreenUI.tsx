@@ -1,23 +1,5 @@
 import { observer } from 'mobx-react-lite'
 import { CSCriticalError } from '../core/Workspace'
-import { TypescriptEditorUI } from './code/ComfyCodeEditorUI'
-import { ensureMonacoReady } from './Monaco'
-import { PConnectUI } from './panels/pConnect'
-import { WelcomeScreenUI } from './WelcomeScreenUI'
-import { useWorkspace } from './WorkspaceContext'
-
-export const MainPanelUI = observer(function MainPanelUI_(p: {}) {
-    const client = useWorkspace()
-
-    if (client.focus == null)
-        return (
-            <WelcomeScreenUI>
-                <PConnectUI />
-                {client.CRITICAL_ERROR && <ErrorScreenUI err={client.CRITICAL_ERROR} />}
-            </WelcomeScreenUI>
-        )
-    return <TypescriptEditorUI buffer={client.focus} />
-})
 
 // export const EditorPaneUI = observer(function EditorPaneUI_() {
 //     const client = useWorkspace()
