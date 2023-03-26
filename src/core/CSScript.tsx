@@ -34,7 +34,8 @@ export class CSScript {
     }
 
     openInEditor = () => {
-        this.workspace.layout.openEditorTab(this.scriptBuffer)
+        this.workspace.focus = this.scriptBuffer
+        // this.workspace.layout.openEditorTab(this.scriptBuffer)
     }
     /** project name */
 
@@ -52,13 +53,11 @@ export class CSScript {
         public workspace: Workspace,
         public folderName: string,
     ) {
-        this.scriptBuffer = new TypescriptBuffer(
-            //
-            this.workspace,
-            this.folderName,
-            this.folderPath + path.sep + 'script.ts',
-            false,
-        )
+        this.scriptBuffer = new TypescriptBuffer(this.workspace, {
+            name: this.folderName,
+            path: this.folderPath + path.sep + 'script.ts',
+            def: '',
+        })
         makeAutoObservable(this)
     }
 

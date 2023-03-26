@@ -28,8 +28,6 @@ export type WorkspaceConfigJSON = {
 
 export type CSCriticalError = { title: string; help: string }
 
-type MainPanelFocus = 'ide' | 'config' | null
-
 /**
  * global State
  *  - manages connection to the backend
@@ -39,7 +37,7 @@ type MainPanelFocus = 'ide' | 'config' | null
 export class Workspace {
     schema: ComfySchema
     dts: string = ''
-    focus: MainPanelFocus = null
+    focus: Maybe<TypescriptBuffer> = null
     script: Maybe<CSScript> = null
     scripts: CSScript[] = []
     assets = new Map<string, boolean>()
@@ -49,8 +47,16 @@ export class Workspace {
 
     CushySDKBuff: TypescriptBuffer
     ComfySDKBuff: TypescriptBuffer
-    openComfySDK = () => this.layout.openEditorTab(this.ComfySDKBuff)
-    openCushySDK = () => this.layout.openEditorTab(this.CushySDKBuff)
+
+    openComfySDK = () => {
+        this.focus = this.ComfySDKBuff
+        // this.layout.openEditorTab(this.ComfySDKBuff)
+    }
+
+    openCushySDK = () => {
+        this.focus = this.CushySDKBuff
+        // this.layout.openEditorTab(this.CushySDKBuff)
+    }
 
     static OPEN = async (folder: string): Promise<Workspace> => {
         const workspace = new Workspace(folder)
@@ -62,8 +68,8 @@ export class Workspace {
     private constructor(public folder: string) {
         // this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema({})
-        this.CushySDKBuff = new TypescriptBuffer(this, 'sdk', this.folder + path.sep + 'cushy.d.ts', true) //`file:///core/sdk.d.ts`)
-        this.ComfySDKBuff = new TypescriptBuffer(this, 'lib', this.folder + path.sep + 'comfy.d.ts', true) //`file:///core/global.d.ts`)
+        this.CushySDKBuff = new TypescriptBuffer(this, { name: 'sdk', path: this.folder + path.sep + 'cushy.d.ts', def: null }) //`file:///core/sdk.d.ts`)
+        this.ComfySDKBuff = new TypescriptBuffer(this, { name: 'lib', path: this.folder + path.sep + 'comfy.d.ts', def: null }) //`file:///core/global.d.ts`)
         // this.script = new CSScript(this)
         this._schema = new PersistedJSON<ComfySchemaJSON>({
             folder: Promise.resolve(this.folder),
@@ -214,13 +220,13 @@ export class Workspace {
         // console.log('🔴', res)
         // 2. update schmea
         this.schema.update(schema$)
-        this.CushySDKBuff.udpateCodeProgrammatically(c__)
+        this.CushySDKBuff.initProgrammatically(c__)
         // save schema to disk
         const schemaPath = this.folder + path.sep + 'comfy-nodes.json'
         await fs.writeTextFile(schemaPath, readableStringify(schema$))
         // 3. update dts
         this.dts = this.schema.codegenDTS()
-        this.ComfySDKBuff.udpateCodeProgrammatically(this.dts)
+        this.ComfySDKBuff.initProgrammatically(this.dts)
         // const dtsPath = this.folder + path.sep + 'comfy-api.md'
         // await fs.writeTextFile(dtsPath, `# Comfy-API\n\n\`\`\`ts\n${this.dts}\n\`\`\``)
         // 4. update monaco
@@ -340,7 +346,8 @@ export class Workspace {
                 const project = CSScript.FROM_JSON(this, data)
                 this.scripts.push(project)
                 this.script = project
-                this.layout.openEditorTab(project.scriptBuffer)
+                this.focus = project.scriptBuffer
+                // this.layout.openEditorTab(project.scriptBuffer)
                 // this.editor.updateCODE(project.code)
                 // this.script.udpateCode(project.code)
             }

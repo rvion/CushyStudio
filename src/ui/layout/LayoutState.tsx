@@ -6,8 +6,9 @@ import DockLayout, { PanelData, TabData } from 'rc-dock'
 import { Workspace } from '../../core/Workspace'
 import { TutorialUI } from '../../help/TutorialUI'
 import { TypescriptBuffer } from '../code/TypescriptBuffer'
-import { TypescriptEditorUI } from '../ComfyCodeEditorUI'
+import { TypescriptEditorUI } from '../code/ComfyCodeEditorUI'
 import { defaultLayout } from './LayoutDefault'
+import { nanoid } from 'nanoid'
 
 export class CushyLayoutState {
     layout = defaultLayout()
@@ -25,32 +26,44 @@ export class CushyLayoutState {
         })
     }
 
-    openEditorTab = (buff: TypescriptBuffer) => {
-        console.log('[🟢 x] openEditorTab', buff.name)
-        // 1. ensure no tab exist for this file buffer
-        if (this.dockLayout == null) return console.log(`❌ this.dockLayout is null`)
+    // openEditorTab = (buff: TypescriptBuffer) => {
+    //     console.log('[🟢 x] openEditorTab', buff.name)
+    //     // 1. ensure no tab exist for this file buffer
+    //     if (this.dockLayout == null) return console.log(`❌ this.dockLayout is null`)
+    //     const uid = buff.monacoPath
+    //     // const uid = buff.name
+    //     const prev = this.dockLayout.find(uid)
+    //     if (prev != null) {
+    //         console.log('[🟢 x] found existing tab')
+    //         // attempting to focus it
+    //         this.dockLayout.updateTab(prev.id!, prev as any)
 
-        const uid = buff.name
-        const prev = this.dockLayout.find(uid)
-        if (prev != null) return console.log('[🟢 x] found existing tab')
+    //         return
+    //     }
 
-        // 2. get dock where this tab should be added
-        const group = this.dockLayout.getGroup('CENTRAL')
-        if (group == null) return console.log('❌ no central group')
+    //     // 2. get dock where this tab should be added
+    //     const group = this.dockLayout.getGroup('CENTRAL')
+    //     if (group == null) return console.log('❌ no central group')
 
-        // 3. build the tab
-        const newTab: TabData = {
-            closable: true,
-            minWidth: 180,
-            minHeight: 200,
-            id: uid, //'ide-' + uid,
-            title: buff.name,
-            content: <TypescriptEditorUI buffer={buff} />,
-        }
+    //     // 3. build the tab
+    //     const newTab: TabData = {
+    //         id: uid, //'ide-' + uid,
+    //         content: <TypescriptEditorUI buffer={buff} />,
+    //         title: buff.name,
+    //         closable: true,
+    //         // @ts-ignore
+    //         // destroyInactiveTabPane: true,
+    //         minWidth: 180,
+    //         // group: 'CENTRAL',
+    //         minHeight: 200,
+    //     }
 
-        // 4. focus it
-        this.dockLayout.dockMove(newTab, 'CENTRAL', 'float')
-    }
+    //     // 4. focus it
+    //     console.log('A')
+    //     this.dockLayout.dockMove(newTab, 'Editor1', 'middle')
+    //     const x = console.log(this.dockLayout.find(uid))
+    //     console.log('B', x)
+    // }
 
     addImagePopup = (url: string) => {
         if (this.dockLayout == null) return

@@ -36,10 +36,12 @@ export const defaultLayout = (): LayoutData => ({
             },
 
             {
-                id: 'CENTRAL',
-                group: 'CENTRAL',
+                // id: 'supersupersuper',
+                // group: 'CENTRAL',
                 mode: 'vertical',
                 size: 10,
+                // @ts-ignore
+                destroyInactiveTabPane: true,
                 children: [
                     {
                         tabs: [
