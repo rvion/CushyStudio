@@ -41,8 +41,9 @@ export class Project {
         )
     }
 
-    openInEditor = () => {
+    focus = () => {
         this.workspace.focusedFile = this.scriptBuffer
+        this.workspace.focusedProject = this
         // this.workspace.layout.openEditorTab(this.scriptBuffer)
     }
     /** project name */

@@ -34,12 +34,14 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                     onChange={(ev) => (client._config.value.comfyWSURL = ev.target.value)}
                 />
             </Field>
-            <Button appearance='primary' onClick={() => client._config.save()} icon={<I.Save24Filled />}>
-                Save
-            </Button>
-            <Button appearance='primary' onClick={() => client._config.save()} icon={<I.Save24Filled />}>
-                Apply and reload
-            </Button>
+            <div className='row gap'>
+                <Button onClick={() => client._config.save()} icon={<I.Save24Filled />}>
+                    Save
+                </Button>
+                <Button appearance='primary' onClick={() => client._config.save()} icon={<I.Save24Filled />}>
+                    Apply and reload
+                </Button>
+            </div>
         </Card>
     )
 })

@@ -68,10 +68,19 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                 >
                     <TreeItemLayout
                         iconBefore={<I.DocumentBulletList24Filled />}
-                        onClick={() => project.openInEditor()}
+                        onClick={() => project.focus()}
                         // aside={<RenderAside />}
                     >
-                        <span style={{ color: workspace.focusedProject === project ? 'blue' : undefined }}>
+                        <span
+                            style={
+                                workspace.focusedProject === project
+                                    ? {
+                                          backgroundColor: 'rgb(72, 34, 92)',
+                                          boxShadow: '0 0 2px 2px rgb(72, 34, 92)',
+                                      }
+                                    : undefined
+                            }
+                        >
                             {project.folderName}
                         </span>
                     </TreeItemLayout>

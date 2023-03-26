@@ -12,7 +12,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
     return (
         <Toolbar>
             <Badge appearance='filled' color='warning'>
-                ALPHA
+                (REALLY) ALPHA
             </Badge>
             <WorkspaceToolbarUI />
             {/* <ToolbarButton aria-label='Increase Font Size' appearance='primary' icon={<FontIncrease24Regular />} /> */}
