@@ -17,7 +17,7 @@ import { Cyto } from '../ui/graph/cyto'
 import { getYYYYMMDD_HHMM_SS } from '../utils/timestamps'
 
 /** script exeuction instance */
-export class CSRun {
+export class Run {
     /** creation "timestamp" in YYYYMMDDHHMMSS format */
     createdAt = getYYYYMMDD_HHMM_SS()
 

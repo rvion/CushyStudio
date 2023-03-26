@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid'
 import { Workspace } from './Workspace'
 import { ComfyImporter } from './ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
-import { CSRun } from './CSRun'
+import { Run } from './Run'
 import { TypescriptBuffer } from '../ui/code/TypescriptBuffer'
 
 /** Script */
@@ -49,10 +49,10 @@ export class Project {
     /** project name */
 
     /** list of all project runs */
-    runs: CSRun[] = []
+    runs: Run[] = []
 
     /** last project run */
-    get currentRun(): CSRun | null {
+    get currentRun(): Run | null {
         return this.runs[0] ?? null
     }
 
@@ -109,7 +109,7 @@ export class Project {
         }
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
-        const execution = new CSRun(this, opts)
+        const execution = new Run(this, opts)
         await execution.save()
         // write the code to a file
         this.runs.unshift(execution)

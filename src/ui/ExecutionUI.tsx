@@ -3,7 +3,7 @@ import { animated, useSpring } from '@react-spring/web'
 import { observer } from 'mobx-react-lite'
 import { Fragment, ReactNode, useEffect, useRef } from 'react'
 import { exhaust, Maybe } from '../core/ComfyUtils'
-import { CSRun } from '../core/CSRun'
+import { Run } from '../core/Run'
 import { ScriptStep } from '../core/ScriptStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../core/ScriptStep_ask'
 import { ScriptStep_Init } from '../core/ScriptStep_Init'
@@ -16,7 +16,7 @@ import { useWorkspace } from './WorkspaceContext'
 export const ExecutionUI = observer(function ExecutionUI_() {
     const st = useWorkspace()
     const project = st.focusedProject
-    const run: Maybe<CSRun> = project?.currentRun
+    const run: Maybe<Run> = project?.currentRun
 
     const ref = useRef<HTMLDivElement>(null)
     useEffect(() => {

@@ -1,6 +1,6 @@
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
-import type { CSRun } from './CSRun'
+import type { Run } from './Run'
 import type { ScriptStep } from './ScriptStep'
 
 import * as fs from '@tauri-apps/api/fs'
@@ -320,7 +320,7 @@ export class Workspace {
             const project: Maybe<Project> = this.focusedProject
             if (project == null) return console.log(`❌ received ${msg.type} but project is null`)
 
-            const currentRun: CSRun | null = project.currentRun
+            const currentRun: Run | null = project.currentRun
             if (currentRun == null) return console.log(`❌ received ${msg.type} but currentRun is null`)
 
             // ensure current step is a prompt

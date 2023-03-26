@@ -3,7 +3,7 @@ import type { ComfyNodeUID } from './ComfyNodeUID'
 import type { Project } from './Project'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from './ComfyUtils'
-import type { CSRun } from './CSRun'
+import type { Run } from './Run'
 import type { ScriptStep_prompt } from './ScriptStep_prompt'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
@@ -72,7 +72,7 @@ export class ComfyGraph {
     constructor(
         //
         public project: Project,
-        public run: CSRun,
+        public run: Run,
         json: ComfyPromptJSON = {},
     ) {
         // console.log('COMFY GRAPH')
