@@ -7,7 +7,8 @@ const CANVAS_HEIGHT = 480
 // Get the canvas element from the HTML document
 const canvas = document.getElementById('canvas')
 
-import samplePose1 from './sample1.json'
+import samplePose1 from './json_inputs/32/010.json'
+import samplePose2 from './sample1.json'
 
 export const OpenPoseViewerUI = observer(function OpenPoseViewerUI_(p: {}) {
     return (

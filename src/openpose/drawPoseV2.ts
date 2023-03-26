@@ -78,7 +78,7 @@ export class OpenPoseDrawer {
     renderPoses(
         //
         ctx: CanvasRenderingContext2D,
-        poses: any[],
+        poses: OpenPoseData['people'][],
         renderScale: number,
         animationAlpha: number,
     ) {
