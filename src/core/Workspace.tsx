@@ -78,23 +78,11 @@ export class Workspace {
         // this.scripts.push(this.script)
         this.dts = this.schema.codegenDTS()
         this.startWSClientSafe()
+        await this.loadProjects()
         makeAutoObservable(this)
         await this.fetchObjectsSchema()
         this.editor.openCODE()
     }
-
-    // storageServerKey = 'comfy-server'
-    // getStoredServerKey = () => {}
-    // getConfig = () => ({
-    //     spec: this.schema.spec,
-    // })
-    // TEST_saveFilesInDocuments = async () => {
-    //     const dir = fs.Dir.Document
-    //     await fs.createDir('CushyStudio', { recursive: true, dir })
-    //     await fs.createDir('CushyStudio/images', { recursive: true, dir })
-    //     await fs.createDir('CushyStudio/projects', { recursive: true, dir })
-    //     await fs.writeTextFile({ contents: '[]', path: `CushyStudio/test.json` }, { dir })
-    // }
 
     private RANDOM_IMAGE_URL = 'http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output'
 
@@ -117,13 +105,26 @@ export class Workspace {
     }
 
     loadProjects = async () => {
-        const items = await fs.readDir(this.folder)
+        console.log(`[🔍] loading projects...`)
+        const items = await fs.readDir(this.folder, { recursive: true })
         for (const item of items) {
-            if (!item.children) continue
+            if (!item.children) {
+                console.log(`[🔍] - ${item.name} is not a folder`)
+                continue
+            }
             const script = item.children.find((f) => f.name === 'script.cushy')
-            if (script == null) continue
+            if (script == null) {
+                console.log(
+                    `[🔍] - ${item.name} has no script.cushy file ${item.children.length} ${item.children.map((f) => f.name)}`,
+                )
+                continue
+            }
             const folderName = item.name
-            if (folderName == null) continue
+            if (folderName == null) {
+                console.log(`[🔍] - ${item.name} has an invalid name (e.g. ends with a dot)`)
+                continue
+            }
+            console.log(`[🔍] found project ${folderName}!`)
             this.scripts.push(new CSScript(this, folderName))
         }
 

@@ -1,4 +1,4 @@
-import { Button, Link } from '@fluentui/react-components'
+import { Button } from '@fluentui/react-components'
 import * as dialog from '@tauri-apps/api/dialog'
 import { observer } from 'mobx-react-lite'
 import { useCS } from '../config/CushyStudioContext'
@@ -6,10 +6,7 @@ import { useCS } from '../config/CushyStudioContext'
 export const WelcomeScreenUI = observer(function WelcomeScreenUI_(p: { children: React.ReactNode }) {
     return (
         <div className='welcome-screen'>
-            <div className='welcome-popup col gap items-center'>
-                <h1>CushyStudio</h1>
-                {p.children}
-            </div>
+            <div className='welcome-popup col gap items-center'>{p.children}</div>
         </div>
     )
 })
@@ -18,6 +15,7 @@ export const OpenWorkspaceUI = observer(function OpenWorkspaceUI_(p: {}) {
     const cs = useCS()
     return (
         <div className='col gap'>
+            <h1>CushyStudio</h1>
             <Button
                 size='large'
                 appearance='primary'
