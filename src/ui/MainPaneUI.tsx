@@ -8,12 +8,12 @@ import { useWorkspace } from './WorkspaceContext'
 export const MainPanelUI = observer(function MainPanelUI_(p: {}) {
     const client = useWorkspace()
 
-    if (client.focus == null)
+    if (client.focusedFile == null)
         return (
             <WelcomeScreenUI>
                 <PConnectUI />
                 {client.CRITICAL_ERROR && <ErrorScreenUI err={client.CRITICAL_ERROR} />}
             </WelcomeScreenUI>
         )
-    return <TypescriptEditorUI buffer={client.focus} />
+    return <TypescriptEditorUI buffer={client.focusedFile} />
 })

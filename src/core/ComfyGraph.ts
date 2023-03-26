@@ -1,6 +1,6 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 import type { ComfyNodeUID } from './ComfyNodeUID'
-import type { CSScript } from './CSScript'
+import type { Project } from './Project'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from './ComfyUtils'
 import type { CSRun } from './CSRun'
@@ -71,7 +71,7 @@ export class ComfyGraph {
 
     constructor(
         //
-        public project: CSScript,
+        public project: Project,
         public run: CSRun,
         json: ComfyPromptJSON = {},
     ) {

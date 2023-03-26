@@ -3,7 +3,7 @@ import { useWorkspace } from './WorkspaceContext'
 
 export const ArtifactsUI = observer(function ArtifactsUI_() {
     const st = useWorkspace()
-    const script = st.script
+    const script = st.focusedProject
     if (script == null) return <>no script openeed</>
 
     return (

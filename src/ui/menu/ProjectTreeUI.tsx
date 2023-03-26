@@ -15,18 +15,12 @@ export const ProjectTreeUI = observer(function MenuUI_() {
         <Tree
             size='small'
             aria-label='Tree'
-            // defaultOpenItems={[
-            //     //
-            //     'projects',
-            //     client.script.id,
-            //     client.script.currentRun?.uid ?? 'currentRun',
-            // ]}
             ref={(e) => {
                 if (e) e.focus()
             }}
         >
             <TreeItem>
-                <TreeItemLayout onClick={() => (workspace.focus = null)} iconBefore={<I.Options24Filled />}>
+                <TreeItemLayout onClick={() => (workspace.focusedFile = null)} iconBefore={<I.Options24Filled />}>
                     Config
                 </TreeItemLayout>
             </TreeItem>
@@ -45,7 +39,7 @@ export const ProjectTreeUI = observer(function MenuUI_() {
             {/* <TreeItem id='projects'>
                 <TreeItemLayout iconBefore={<I.DocumentBulletListMultiple24Regular />}>Scripts</TreeItemLayout>
                 <Tree> */}
-            {workspace.scripts.map((project) => (
+            {workspace.projects.map((project) => (
                 <TreeItem
                     // PROJECT
                     id={project.id}
@@ -60,10 +54,12 @@ export const ProjectTreeUI = observer(function MenuUI_() {
 
                                 <MenuPopover>
                                     <MenuList>
-                                        <MenuItem>New </MenuItem>
-                                        <MenuItem>New Window</MenuItem>
-                                        <MenuItem disabled>Open File</MenuItem>
-                                        <MenuItem>Open Folder</MenuItem>
+                                        <MenuItem icon={<I.BranchFork24Filled />} onClick={() => project.duplicate()}>
+                                            Duplicate
+                                        </MenuItem>
+                                        <MenuItem icon={<I.Play24Filled />} onClick={() => project.RUN()}>
+                                            Run
+                                        </MenuItem>
                                     </MenuList>
                                 </MenuPopover>
                             </Menu>
@@ -75,7 +71,9 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                         onClick={() => project.openInEditor()}
                         // aside={<RenderAside />}
                     >
-                        {project.folderName}
+                        <span style={{ color: workspace.focusedProject === project ? 'blue' : undefined }}>
+                            {project.folderName}
+                        </span>
                     </TreeItemLayout>
                     <Tree>
                         {project.runs.map((run, ix) => (

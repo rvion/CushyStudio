@@ -47,7 +47,7 @@ export const defaultLayout = (): LayoutData => ({
                         tabs: [
                             {
                                 id: 'Editor1',
-                                title: 'Main layout',
+                                title: 'Main',
                                 content: <MainPanelUI />,
                             },
                             // {
@@ -68,7 +68,7 @@ export const defaultLayout = (): LayoutData => ({
             },
             {
                 mode: 'vertical',
-                size: 6,
+                size: 3,
                 children: [
                     {
                         // mode: 'vertical',
@@ -80,19 +80,19 @@ export const defaultLayout = (): LayoutData => ({
                                 content: <ExecutionUI />,
                             },
                             {
-                                minWidth: 300,
-                                minHeight: 300,
+                                minWidth: 200,
+                                minHeight: 200,
                                 id: 'CivitaiUI',
                                 title: 'Civitai',
                                 content: <CivitaiUI />,
                             },
-                            {
-                                minWidth: 300,
-                                minHeight: 300,
-                                id: 'TestingArea',
-                                title: 'Testing',
-                                content: <PUploadUI />,
-                            },
+                            // {
+                            //     minWidth: 200,
+                            //     minHeight: 200,
+                            //     id: 'TestingArea',
+                            //     title: 'Testing',
+                            //     content: <PUploadUI />,
+                            // },
                             // {
                             //     // minWidth: 10,
                             //     minHeight: 280,

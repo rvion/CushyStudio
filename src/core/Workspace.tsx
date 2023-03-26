@@ -14,8 +14,7 @@ import { CushyLayoutState } from '../ui/layout/LayoutState'
 import { readableStringify } from '../utils/stringifyReadable'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfySchema } from './ComfySchema'
-// import { ComfyScriptEditor } from './ComfyScriptEditor'
-import { CSScript } from './CSScript'
+import { Project } from './Project'
 import { getPngMetadata } from '../png/getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
 import { c__ } from '../ui/sdkDTS'
@@ -36,10 +35,11 @@ export type CSCriticalError = { title: string; help: string }
  */
 export class Workspace {
     schema: ComfySchema
-    dts: string = ''
-    focus: Maybe<TypescriptBuffer> = null
-    script: Maybe<CSScript> = null
-    scripts: CSScript[] = []
+
+    focusedFile: Maybe<TypescriptBuffer> = null
+    focusedProject: Maybe<Project> = null
+
+    projects: Project[] = []
     assets = new Map<string, boolean>()
     layout = new CushyLayoutState(this)
     _config: PersistedJSON<WorkspaceConfigJSON>
@@ -49,12 +49,12 @@ export class Workspace {
     ComfySDKBuff: TypescriptBuffer
 
     openComfySDK = () => {
-        this.focus = this.ComfySDKBuff
+        this.focusedFile = this.ComfySDKBuff
         // this.layout.openEditorTab(this.ComfySDKBuff)
     }
 
     openCushySDK = () => {
-        this.focus = this.CushySDKBuff
+        this.focusedFile = this.CushySDKBuff
         // this.layout.openEditorTab(this.CushySDKBuff)
     }
 
@@ -90,7 +90,7 @@ export class Workspace {
 
     async init() {
         // this.scripts.push(this.script)
-        this.dts = this.schema.codegenDTS()
+        // const dts = this.schema.codegenDTS()
         this.startWSClientSafe()
         await this.loadProjects()
         await this.fetchObjectsSchema()
@@ -117,10 +117,10 @@ export class Workspace {
         return this.uploadUIntArrToComfy(blob)
     }
 
-    createProject = (folderName: string) => {
-        const script = new CSScript(this, folderName)
-        this.scripts.push(script)
-        this.script = script
+    createProject = (folderName: string, script?: string) => {
+        const project = new Project(this, folderName, script)
+        this.projects.push(project)
+        this.focusedProject = project
     }
 
     /** load all project found in workspace */
@@ -145,7 +145,7 @@ export class Workspace {
                 continue
             }
             console.log(`[🔍] found project ${folderName}!`)
-            this.scripts.push(new CSScript(this, folderName))
+            this.projects.push(new Project(this, folderName))
         }
     }
 
@@ -231,8 +231,8 @@ export class Workspace {
         const schemaPath = this.folder + path.sep + 'comfy-nodes.json'
         await fs.writeTextFile(schemaPath, readableStringify(schema$))
         // 3. update dts
-        this.dts = this.schema.codegenDTS()
-        this.ComfySDKBuff.initProgrammatically(this.dts)
+        const dts = this.schema.codegenDTS()
+        this.ComfySDKBuff.initProgrammatically(dts)
         // const dtsPath = this.folder + path.sep + 'comfy-api.md'
         // await fs.writeTextFile(dtsPath, `# Comfy-API\n\n\`\`\`ts\n${this.dts}\n\`\`\``)
         // 4. update monaco
@@ -272,10 +272,10 @@ export class Workspace {
         return '🔴'
     }
 
-    get dtsStatusEmoji() {
-        if (this.dts.length > 10_000) return '🟢'
-        return '🔴'
-    }
+    // get dtsStatusEmoji() {
+    //     if (this.dts.length > 10_000) return '🟢'
+    //     return '🔴'
+    // }
 
     sid: string = 'temporary'
     status: ComfyStatus | null = null
@@ -317,8 +317,9 @@ export class Workspace {
             }
 
             // ensure current project is running
-            const project: Maybe<CSScript> = this.script
-            if (project == null) return console.log('❌ received ${msg.type} but project is null')
+            const project: Maybe<Project> = this.focusedProject
+            if (project == null) return console.log(`❌ received ${msg.type} but project is null`)
+
             const currentRun: CSRun | null = project.currentRun
             if (currentRun == null) return console.log(`❌ received ${msg.type} but currentRun is null`)
 
@@ -349,10 +350,10 @@ export class Workspace {
             if (pngInfo && pngInfo.prompt) {
                 const data = JSON.parse(pngInfo.prompt)
                 console.log(data)
-                const project = CSScript.FROM_JSON(this, data)
-                this.scripts.push(project)
-                this.script = project
-                this.focus = project.scriptBuffer
+                const project = Project.FROM_JSON(this, data)
+                this.projects.push(project)
+                this.focusedProject = project
+                this.focusedFile = project.scriptBuffer
                 // this.layout.openEditorTab(project.scriptBuffer)
                 // this.editor.updateCODE(project.code)
                 // this.script.udpateCode(project.code)

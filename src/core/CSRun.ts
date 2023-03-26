@@ -1,4 +1,4 @@
-import type { CSScript } from './CSScript'
+import type { Project } from './Project'
 
 import * as path from '@tauri-apps/api/path'
 import * as fs from '@tauri-apps/api/fs'
@@ -56,7 +56,7 @@ export class CSRun {
 
     constructor(
         //
-        public script: CSScript,
+        public script: Project,
         public opts?: { mock?: boolean },
     ) {
         this.name = 'Run ' + this.script.runCounter++

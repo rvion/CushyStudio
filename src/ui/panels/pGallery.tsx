@@ -7,7 +7,7 @@ import { useWorkspace } from '../WorkspaceContext'
 export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
     const client = useWorkspace()
     const layout = useLayout()
-    const images: CSImage[] = client.scripts.flatMap((p) => p.runs).flatMap((r) => r.gallery)
+    const images: CSImage[] = client.projects.flatMap((p) => p.runs).flatMap((r) => r.gallery)
 
     return (
         <div>

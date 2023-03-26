@@ -15,7 +15,7 @@ import { useWorkspace } from './WorkspaceContext'
 
 export const ExecutionUI = observer(function ExecutionUI_() {
     const st = useWorkspace()
-    const project = st.script
+    const project = st.focusedProject
     const run: Maybe<CSRun> = project?.currentRun
 
     const ref = useRef<HTMLDivElement>(null)

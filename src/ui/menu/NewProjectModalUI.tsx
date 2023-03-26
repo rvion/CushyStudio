@@ -37,14 +37,15 @@ class ProjectCreationWizard {
     pathAvailable: Maybe<boolean> = null
 }
 
-export const NewProjectModalUI = observer(function NewProjectModalUI_(p: {}) {
+export const NewProjectModalUI = observer(function NewProjectModalUI_(p: { children: React.ReactElement }) {
     const workspace = useWorkspace()
     const wizard = useMemo(() => new ProjectCreationWizard(workspace), [])
 
     return (
         <Dialog>
             <DialogTrigger disableButtonEnhancement>
-                <Button icon={<I.Add24Regular />}>Create project</Button>
+                {p.children}
+                {/* <Button icon={<I.Add24Regular />}>Create project</Button> */}
             </DialogTrigger>
             <DialogSurface>
                 <DialogBody>

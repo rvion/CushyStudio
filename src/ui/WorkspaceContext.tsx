@@ -12,5 +12,5 @@ export const useWorkspace = () => {
 export const useProject = () => {
     const st = useContext(workspaceContext)
     if (st == null) throw new Error('no st in context')
-    return st.script
+    return st.focusedProject
 }

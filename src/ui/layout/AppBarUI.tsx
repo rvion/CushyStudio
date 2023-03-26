@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite'
 import * as I from '@fluentui/react-icons'
 import * as dialog from '@tauri-apps/api/dialog'
 import * as fs from '@tauri-apps/api/fs'
+import { WorkspaceToolbarUI } from '../ToolbarUI'
 import { useWorkspace } from '../WorkspaceContext'
-import { ToolbarUI } from '../ToolbarUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const client = useWorkspace()
@@ -14,11 +14,10 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <Badge appearance='filled' color='warning'>
                 ALPHA
             </Badge>
-            <ToolbarUI />
+            <WorkspaceToolbarUI />
             {/* <ToolbarButton aria-label='Increase Font Size' appearance='primary' icon={<FontIncrease24Regular />} /> */}
-            <ToolbarButton icon={<I.New24Filled />}>New</ToolbarButton>
-            <ToolbarButton icon={<I.Save24Filled />}>Save</ToolbarButton>
             <ToolbarButton
+                icon={<I.ArrowImport24Regular />}
                 onClick={async () => {
                     console.log('[📁] opening dialog')
                     const filePath = await dialog.open({
@@ -41,7 +40,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                     // layout.addHelpPopup()
                 }}
             >
-                Open
+                Import
             </ToolbarButton>
             {/* <ToolbarButton aria-label='Decrease Font Size' icon={<FontDecrease24Regular />} /> */}
             <Menu>

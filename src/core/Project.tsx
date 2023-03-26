@@ -10,7 +10,7 @@ import { CSRun } from './CSRun'
 import { TypescriptBuffer } from '../ui/code/TypescriptBuffer'
 
 /** Script */
-export class CSScript {
+export class Project {
     static __demoProjectIx = 1
     runCounter = 0
 
@@ -33,8 +33,16 @@ export class CSScript {
         console.log('[📁] saved', filePath)
     }
 
+    duplicate = async () => {
+        this.workspace.createProject(
+            //
+            this.folderName + '_copy_' + Date.now(),
+            this.code,
+        )
+    }
+
     openInEditor = () => {
-        this.workspace.focus = this.scriptBuffer
+        this.workspace.focusedFile = this.scriptBuffer
         // this.workspace.layout.openEditorTab(this.scriptBuffer)
     }
     /** project name */
@@ -52,6 +60,7 @@ export class CSScript {
         //
         public workspace: Workspace,
         public folderName: string,
+        initialCode = '',
     ) {
         this.scriptBuffer = new TypescriptBuffer(this.workspace, {
             name: this.folderName,
@@ -69,7 +78,7 @@ export class CSScript {
 
     static FROM_JSON = (client: Workspace, json: ComfyPromptJSON) => {
         const folderName = nanoid()
-        const script = new CSScript(client, folderName)
+        const script = new Project(client, folderName)
         const code = new ComfyImporter(client).convertFlowToCode(json)
         script.udpateCode(code)
         return script
@@ -91,6 +100,7 @@ export class CSScript {
 
     // runningMode: RunMode = 'fake'
     RUN = async (mode: RunMode = 'fake'): Promise<boolean> => {
+        this.workspace.focusedProject = this
         // ensure we have some code to run
         if (this.code == null) {
             console.log('❌', 'no code to run')
