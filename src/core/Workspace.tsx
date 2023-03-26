@@ -166,8 +166,8 @@ export class Workspace {
     }
 
     /** upload an image present on disk to ComfyServer */
-    uploadImgFromDisk = async (): Promise<ComfyUploadImageResult> => {
-        const ui8arr = await fs.readBinaryFile('CushyStudio/images/test.png', { dir: fs.Dir.Document })
+    uploadImgFromDisk = async (path: string): Promise<ComfyUploadImageResult> => {
+        const ui8arr = await fs.readBinaryFile(path)
         return this.uploadUIntArrToComfy(ui8arr)
     }
 

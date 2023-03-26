@@ -253,7 +253,7 @@ declare module "ui/graph/cyto" {
             input: string;
         }) => void;
         removeEdge: (id: string) => void;
-        addNode: (node: ComfyNode<any>) => void;
+        trackNode: (node: ComfyNode<any>) => void;
         animate: () => void;
         setStyle: () => void;
         mounted: boolean;
@@ -356,9 +356,9 @@ declare module "ui/Monaco" {
     export const ensureMonacoReady: () => void;
 }
 declare module "ui/code/TypescriptBuffer" {
-    import type { ITextModel } from "ui/TypescriptOptions";
     import type { Maybe } from "core/ComfyUtils";
     import type { Workspace } from "core/Workspace";
+    import type { ITextModel } from "ui/TypescriptOptions";
     export class TypescriptBuffer {
         workspace: Workspace;
         name: string;
@@ -383,6 +383,7 @@ declare module "ui/code/TypescriptBuffer" {
         init: (def: Maybe<string>) => Promise<void>;
         ensureTextModel: () => Promise<void>;
         code: string;
+        /** internal path as needed for monaco engine */
         get monacoPath(): string;
         /** initialize a buffer that may or may not exist on disk */
         initProgrammatically: (value: Maybe<string>) => Promise<boolean>;
@@ -657,6 +658,61 @@ declare module "ui/ExecutionUI" {
         children: ReactNode;
     }>;
 }
+declare module "openpose/OpenPoseData" {
+    export type OpenPoseData = {
+        version: number;
+        people: OpenPosePerson[];
+    };
+    export type OpenPosePerson = {
+        pose_keypoints_2d: number[];
+        face_keypoints_2d: number[];
+        hand_left_keypoints_2d: number[];
+        hand_right_keypoints_2d: number[];
+        pose_keypoints_3d: number[];
+        face_keypoints_3d: number[];
+        hand_left_keypoints_3d: number[];
+        hand_right_keypoints_3d: number[];
+    };
+    export class OpenPosePersonExt {
+        readonly person: OpenPosePerson;
+        constructor(person: OpenPosePerson);
+    }
+}
+declare module "openpose/drawPoseV2" {
+    import { OpenPoseData } from "openpose/OpenPoseData";
+    export function drawOpenPoseBones(openposeData: OpenPoseData, ctx: CanvasRenderingContext2D): void;
+}
+declare module "openpose/OpenPoseAnimV0" {
+    import { Workspace } from "core/Workspace";
+    export class OpenPoseAnimV0 {
+        workspace: Workspace;
+        constructor(workspace: Workspace);
+        poses: {
+            version: number;
+            people: {
+                person_id: number[];
+                pose_keypoints_2d: number[];
+                face_keypoints_2d: never[];
+                hand_left_keypoints_2d: number[];
+                hand_right_keypoints_2d: number[];
+                pose_keypoints_3d: never[];
+                face_keypoints_3d: never[];
+                hand_left_keypoints_3d: never[];
+                hand_right_keypoints_3d: never[];
+            }[];
+        }[];
+        ctx: CanvasRenderingContext2D | null;
+        private intervalId;
+        ix: number;
+        drawAllToPngAndSaveLocally: () => Promise<void>;
+        start: () => void;
+        stop: () => void;
+        draw: () => Promise<void>;
+    }
+}
+declare module "openpose/OpenPoseUI" {
+    export const OpenPoseViewerUI: import("react").FunctionComponent<{}>;
+}
 declare module "ui/DropZoneUI" {
     export const DropZoneUI: import("react").FunctionComponent<object>;
 }
@@ -773,7 +829,7 @@ declare module "core/Workspace" {
         /** save an image at given url to disk */
         saveImgToDisk: (url?: string) => Promise<'ok'>;
         /** upload an image present on disk to ComfyServer */
-        uploadImgFromDisk: () => Promise<ComfyUploadImageResult>;
+        uploadImgFromDisk: (path: string) => Promise<ComfyUploadImageResult>;
         /** upload an Uint8Array buffer as png to ComfyServer */
         uploadUIntArrToComfy: (ui8arr: Uint8Array) => Promise<ComfyUploadImageResult>;
         get serverHostHTTP(): string;
@@ -1090,6 +1146,7 @@ declare module "core/ComfyGraph" {
         get client(): Workspace;
         get schema(): ComfySchema;
         cyto?: Cyto;
+        uploadImgFromDisk: (path: string) => Promise<import("core/ComfyAPI").ComfyUploadImageResult>;
         registerNode: (node: ComfyNode<any>) => void;
         get nodes(): ComfyNode<any>[];
         nodesIndex: Map<string, ComfyNode<any>>;
