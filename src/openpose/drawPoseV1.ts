@@ -38,7 +38,7 @@ export function drawOpenPoseBones(
     const JOINT_COLOR = 'blue'
 
     // Define the thickness of the bones
-    const BONE_THICKNESS = 4
+    const BONE_THICKNESS = 8
 
     // Get the list of body part indices that form the bones
     const boneIndices = [
@@ -68,6 +68,8 @@ export function drawOpenPoseBones(
         [11, 24],
     ]
 
+    const animationAlpha = 0.8
+
     // Loop through each person in the JSON data
     for (const person of openposeData.people) {
         // Get the list of body part coordinates for the person
@@ -78,28 +80,36 @@ export function drawOpenPoseBones(
         for (const bone of boneIndices) {
             j++
             const [start, end] = bone
-            const startX = keypoints[start * 3]
-            const startY = keypoints[start * 3 + 1]
-            const endX = keypoints[end * 3]
-            const endY = keypoints[end * 3 + 1]
+            const x1 = keypoints[start * 3]
+            const y1 = keypoints[start * 3 + 1]
+            const score1 = keypoints[start * 3 + 2]
 
-            ctx.strokeStyle = convertHexToRGBA(boneColors[j], 0.5)
+            const x2 = keypoints[end * 3]
+            const y2 = keypoints[end * 3 + 1]
+            const score2 = keypoints[end * 3 + 2]
+
+            if (score1 == 0 || score2 == 0) {
+                continue
+            }
+
+            ctx.strokeStyle = convertHexToRGBA(boneColors[j], animationAlpha)
             ctx.lineWidth = BONE_THICKNESS
 
             // Draw the bone
             ctx.beginPath()
-            ctx.moveTo(startX, startY)
-            ctx.lineTo(endX, endY)
-            // ctx.strokeStyle = BONE_COLOR
+            ctx.moveTo(x1, y1)
+            ctx.lineTo(x2, y2)
             ctx.stroke()
 
+            const JOINT_COLOR = convertHexToRGBA(boneColors[j], animationAlpha)
             // Draw the joints at the start and end of the bone
             ctx.beginPath()
-            ctx.arc(startX, startY, BONE_THICKNESS / 2, 0, 2 * Math.PI)
+            ctx.arc(x1, y1, BONE_THICKNESS / 2, 0, 2 * Math.PI)
             ctx.fillStyle = JOINT_COLOR
             ctx.fill()
+
             ctx.beginPath()
-            ctx.arc(endX, endY, BONE_THICKNESS / 2, 0, 2 * Math.PI)
+            ctx.arc(x2, y2, BONE_THICKNESS / 2, 0, 2 * Math.PI)
             ctx.fillStyle = JOINT_COLOR
             ctx.fill()
         }

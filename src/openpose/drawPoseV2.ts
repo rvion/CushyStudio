@@ -1,7 +1,5 @@
 // taken from here https://github.com/mobiledgex/edge-cloud-sampleapps/blob/c9cf67c7c502406465d647d013f0d98cad2d4c44/ComputerVisionServer/moedx/static/js/poseRenderer.js
 
-import { OpenPoseData, OpenPosePerson } from './OpenPoseData'
-
 export class OpenPoseDrawer {
     /**
      * The bonePairs array is a 2D list of the body parts that should be connected together.
@@ -78,7 +76,7 @@ export class OpenPoseDrawer {
     renderPoses(
         //
         ctx: CanvasRenderingContext2D,
-        poses: OpenPoseData['people'][],
+        poses: any[],
         renderScale: number,
         animationAlpha: number,
     ) {
@@ -108,11 +106,14 @@ export class OpenPoseDrawer {
 
                 ctx.strokeStyle = this.convertHexToRGBA(this.boneColors[j], animationAlpha)
                 ctx.lineWidth = this.lineWidth
+
+                // Draw the bone
                 ctx.beginPath()
                 ctx.moveTo(x1, y1)
                 ctx.lineTo(x2, y2)
                 ctx.stroke()
 
+                // Draw the joints at the start and end of the bone
                 ctx.fillStyle = this.convertHexToRGBA(this.boneColors[j], animationAlpha)
                 ctx.moveTo(x1, y1)
                 ctx.arc(x1, y1, this.jointCircleRadius, 0, 2 * Math.PI)
