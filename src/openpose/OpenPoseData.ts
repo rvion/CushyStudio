@@ -13,3 +13,9 @@ export type OpenPosePerson = {
     hand_left_keypoints_3d: number[]
     hand_right_keypoints_3d: number[]
 }
+
+export class OpenPosePersonExt {
+    constructor(public readonly person: OpenPosePerson) {
+        // makeAutoObservable(this)
+    }
+}

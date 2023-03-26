@@ -1,0 +1,8 @@
+clips/*
+json_inputs/27
+json_inputs/32/*
+json_inputs/95
+
+!json_inputs/32/010.json
+!json_inputs/32/020.json
+!json_inputs/32/030.json

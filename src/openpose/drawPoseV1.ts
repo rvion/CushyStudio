@@ -1,5 +1,33 @@
 import { OpenPoseData } from './OpenPoseData'
 
+const boneColors = [
+    '#ff0055',
+    '#ff0000',
+    '#ff5500',
+    '#ffaa00',
+    '#ffff00',
+    '#aaff00',
+    '#55ff00',
+    '#00ff00',
+    '#ff0000',
+    '#00ff55',
+    '#00ffaa',
+    '#00ffff',
+    '#00aaff',
+    '#0055ff',
+    '#0000ff',
+    '#ff00aa',
+    '#aa00ff',
+    '#ff00ff',
+    '#5500ff',
+    '#0000ff',
+    '#0000ff',
+    '#0000ff',
+    '#00ffff',
+    '#00ffff',
+    '#00ffff',
+]
+
 export function drawOpenPoseBones(
     //
     openposeData: OpenPoseData,
@@ -46,19 +74,23 @@ export function drawOpenPoseBones(
         const keypoints = person.pose_keypoints_2d
 
         // Loop through each bone and draw it on the canvas
+        let j = -1
         for (const bone of boneIndices) {
+            j++
             const [start, end] = bone
             const startX = keypoints[start * 3]
             const startY = keypoints[start * 3 + 1]
             const endX = keypoints[end * 3]
             const endY = keypoints[end * 3 + 1]
 
+            ctx.strokeStyle = convertHexToRGBA(boneColors[j], 0.5)
+            ctx.lineWidth = BONE_THICKNESS
+
             // Draw the bone
             ctx.beginPath()
             ctx.moveTo(startX, startY)
             ctx.lineTo(endX, endY)
-            ctx.strokeStyle = BONE_COLOR
-            ctx.lineWidth = BONE_THICKNESS
+            // ctx.strokeStyle = BONE_COLOR
             ctx.stroke()
 
             // Draw the joints at the start and end of the bone
@@ -72,4 +104,13 @@ export function drawOpenPoseBones(
             ctx.fill()
         }
     }
+}
+
+const convertHexToRGBA = (hex: string, alpha: number) => {
+    const tempHex = hex.replace('#', '')
+    const r = parseInt(tempHex.substring(0, 2), 16)
+    const g = parseInt(tempHex.substring(2, 4), 16)
+    const b = parseInt(tempHex.substring(4, 6), 16)
+
+    return `rgba(${r},${g},${b},${alpha})`
 }
