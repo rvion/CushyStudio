@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from './WorkspaceContext'
+import { useWorkspace } from './WorkspaceContext'
 
 export const ArtifactsUI = observer(function ArtifactsUI_() {
-    const st = useSt()
+    const st = useWorkspace()
     const script = st.script
     if (script == null) return <>no script openeed</>
 

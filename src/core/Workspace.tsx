@@ -229,6 +229,7 @@ export class Workspace {
         // console.log('🟢 schema:', this.schema.nodes)
         return schema$
     }
+
     openScript = () => {
         // 🔴
         this.editor.updateCODE(DemoScript1)

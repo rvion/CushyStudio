@@ -4,11 +4,11 @@ import { observer } from 'mobx-react-lite'
 import * as I from '@fluentui/react-icons'
 import * as dialog from '@tauri-apps/api/dialog'
 import * as fs from '@tauri-apps/api/fs'
-import { useSt } from '../WorkspaceContext'
+import { useWorkspace } from '../WorkspaceContext'
 import { ToolbarUI } from '../ToolbarUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
-    const client = useSt()
+    const client = useWorkspace()
     return (
         <Toolbar>
             <Badge appearance='filled' color='warning'>

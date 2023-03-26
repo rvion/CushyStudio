@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import DockLayout from 'rc-dock'
-import { useSt } from '../WorkspaceContext'
+import { useWorkspace } from '../WorkspaceContext'
 import { CushyLayoutContext } from './LayoutCtx'
 
 export const CushyLayoutUI = observer(function AppLayoutUI_() {
-    const client = useSt()
+    const client = useWorkspace()
     const layout = client.layout
     return (
         <CushyLayoutContext.Provider value={client.layout}>

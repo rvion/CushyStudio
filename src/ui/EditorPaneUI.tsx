@@ -1,27 +1,33 @@
 import { observer } from 'mobx-react-lite'
 import { ComfyCodeEditorUI } from './ComfyCodeEditorUI'
 import { ToolbarUI } from './ToolbarUI'
-import { useSt } from './WorkspaceContext'
+import { useWorkspace } from './WorkspaceContext'
 import { ensureMonacoReady } from './Monaco'
 import { CSCriticalError } from '../core/Workspace'
 import { PConnectUI } from './panels/pConnect'
+import { WelcomeScreenUI } from './WelcomeScreenUI'
 
 export const MainPanelUI = observer(function MainPanelUI_(p: {}) {
-    const client = useSt()
+    const client = useWorkspace()
 
-    if (client.focus == null) return <div>👋</div>
+    if (client.focus == null)
+        return (
+            <WelcomeScreenUI>
+                <PConnectUI />
+            </WelcomeScreenUI>
+        )
     if (client.focus == 'config')
         return (
-            <div>
+            <WelcomeScreenUI>
                 <PConnectUI />
-            </div>
+            </WelcomeScreenUI>
         )
     if (client.focus == 'ide') return <EditorPaneUI />
     return <>ERROR</>
 })
 
 export const EditorPaneUI = observer(function EditorPaneUI_() {
-    const client = useSt()
+    const client = useWorkspace()
     const monaco = ensureMonacoReady()
     if (client.CRITICAL_ERROR) return <ErrorScreenUI err={client.CRITICAL_ERROR} />
     if (monaco == null) return <div>loading monaco</div>

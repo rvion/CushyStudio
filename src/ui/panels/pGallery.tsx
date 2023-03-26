@@ -2,10 +2,10 @@ import { Image, Label, Slider } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { CSImage } from '../../core/CSImage'
 import { useLayout } from '../layout/LayoutCtx'
-import { useSt } from '../WorkspaceContext'
+import { useWorkspace } from '../WorkspaceContext'
 
 export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
-    const client = useSt()
+    const client = useWorkspace()
     const layout = useLayout()
     const images: CSImage[] = client.scripts.flatMap((p) => p.runs).flatMap((r) => r.gallery)
 

@@ -2,10 +2,10 @@ import { Accordion, AccordionHeader, AccordionItem, AccordionPanel, Button, Card
 import { Field } from '@fluentui/react-components/unstable'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../WorkspaceContext'
+import { useWorkspace } from '../WorkspaceContext'
 
 export const PConnectUI = observer(function PConnectUI_(p: {}) {
-    const client = useSt()
+    const client = useWorkspace()
     return (
         <Card>
             <div className='row'>

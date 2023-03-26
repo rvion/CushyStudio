@@ -1,12 +1,12 @@
 import type { ComfyNodeUID } from '../core/ComfyNodeUID'
 import type { ComfyGraph } from '../core/ComfyGraph'
 
-import { useSt } from './WorkspaceContext'
+import { useWorkspace } from './WorkspaceContext'
 import { observer } from 'mobx-react-lite'
 import { comfyColors } from '../core/ComfyColors'
 
 export const NodeRefUI = observer(function NodeRefUI_(p: { nodeUID: ComfyNodeUID }) {
-    const st = useSt()
+    const st = useWorkspace()
     // 1. ensure project exists
     const project = st.script
     if (project == null) return null

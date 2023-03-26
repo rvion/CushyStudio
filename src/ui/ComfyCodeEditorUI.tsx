@@ -1,10 +1,10 @@
 import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
-import { useSt } from './WorkspaceContext'
+import { useWorkspace } from './WorkspaceContext'
 import { IStandaloneCodeEditor } from './TypescriptOptions'
 
 export const ComfyCodeEditorUI = observer(function ComfyCodeEditorUI_(p: { path?: string }) {
-    const client = useSt()
+    const client = useWorkspace()
     // 🔴 fix this later
     // if (client.schema.nodes.length === 0) return <WelcomeScreenUI />
     // useEffect

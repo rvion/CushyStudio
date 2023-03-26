@@ -1,7 +1,6 @@
 import { LayoutData } from 'rc-dock'
-import { ArtifactsUI } from '../ArtifactsUI'
 import { CivitaiUI } from '../civitai/CIvitaiUI'
-import { EditorPaneUI, MainPanelUI } from '../EditorPaneUI'
+import { MainPanelUI } from '../EditorPaneUI'
 import { ExecutionUI } from '../ExecutionUI'
 import { CSMenuUI } from '../menu/CSMenuUI'
 import { PaintUI } from '../paint/PaintUI'
@@ -37,6 +36,7 @@ export const defaultLayout = (): LayoutData => ({
             },
 
             {
+                group: 'CENTRAL',
                 mode: 'vertical',
                 size: 10,
                 children: [
@@ -44,7 +44,7 @@ export const defaultLayout = (): LayoutData => ({
                         tabs: [
                             {
                                 id: 'Editor1',
-                                title: 'Project Code',
+                                title: 'Main layout',
                                 content: <MainPanelUI />,
                             },
                             {

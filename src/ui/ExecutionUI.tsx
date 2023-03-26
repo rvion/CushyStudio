@@ -11,10 +11,10 @@ import { ScriptStep_prompt } from '../core/ScriptStep_prompt'
 import { Execution_askBooleanUI } from './Execution_askBooleanUI'
 import { Execution_askStringUI } from './Execution_askStringUI'
 import { NodeListUI } from './NodeListUI'
-import { useSt } from './WorkspaceContext'
+import { useWorkspace } from './WorkspaceContext'
 
 export const ExecutionUI = observer(function ExecutionUI_() {
-    const st = useSt()
+    const st = useWorkspace()
     const project = st.script
     const run: Maybe<CSRun> = project?.currentRun
 

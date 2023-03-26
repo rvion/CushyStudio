@@ -1,9 +1,9 @@
 import { Card, Image } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../WorkspaceContext'
+import { useWorkspace } from '../WorkspaceContext'
 
 export const PUploadUI = observer(function PUploadUI_(p: {}) {
-    const x = useSt()
+    const x = useWorkspace()
     return (
         <Card>
             <button

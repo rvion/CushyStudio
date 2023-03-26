@@ -1,11 +1,11 @@
 import { Tree, TreeItem, TreeItemLayout } from '@fluentui/react-components/unstable'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../WorkspaceContext'
+import { useWorkspace } from '../WorkspaceContext'
 import { Actions, HasProblem, IsOK } from './ProjectTreeUI'
 
 export const AssetTreeUI = observer(function AssetTreeUI_(p: { children: React.ReactNode }) {
-    const client = useSt()
+    const client = useWorkspace()
 
     const onKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
         console.log(ev.key)

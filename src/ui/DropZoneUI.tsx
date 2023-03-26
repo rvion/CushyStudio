@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from './WorkspaceContext'
+import { useWorkspace } from './WorkspaceContext'
 
 export const DropZoneUI = observer(function DropZoneUI_() {
-    const client = useSt()
+    const client = useWorkspace()
     return (
         <div
             className='drop-zone'
