@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { DropZoneUI } from '../DropZoneUI'
 import { ProjectTreeUI } from './ProjectTreeUI'
 
-export const CSMenuUI = observer(function IdeInfosUI_() {
+export const MenuUI = observer(function IdeInfosUI_() {
     return (
         <div className='col gap h100'>
             <ProjectTreeUI />

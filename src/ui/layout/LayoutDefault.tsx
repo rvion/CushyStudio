@@ -2,7 +2,7 @@ import { LayoutData } from 'rc-dock'
 import { CivitaiUI } from '../../civitai/CIvitaiUI'
 import { MainPanelUI } from '../EditorPaneUI'
 import { ExecutionUI } from '../ExecutionUI'
-import { CSMenuUI } from '../menu/CSMenuUI'
+import { MenuUI } from '../menu/MenuUI'
 import { PaintUI } from '../paint/PaintUI'
 import { PGalleryUI } from '../panels/pGallery'
 import { PGalleryFocusUI } from '../panels/pGalleryFocus'
@@ -28,7 +28,7 @@ export const defaultLayout = (): LayoutData => ({
                                 minHeight: 300,
                                 id: 'CSMenuUI',
                                 title: 'CushyStudio',
-                                content: <CSMenuUI />,
+                                content: <MenuUI />,
                             },
                         ],
                     },
