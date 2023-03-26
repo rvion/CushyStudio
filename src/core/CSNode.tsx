@@ -74,7 +74,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         xxx: ComfyNodeJSON,
     ) {
         // console.log('CONSTRUCTING', xxx.class_type, uid)
-        this.$schema = graph.schema.nodesByName[xxx.class_type]
+        this.$schema = graph.schema.nodesByNameInComfy[xxx.class_type]
         let ix = 0
         this.json = this._convertPromptExtToPrompt(xxx)
         this.graph.registerNode(this)
@@ -99,7 +99,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         for (const [name, value] of inputsExt) {
             inputs[name] = this.serializeValue(name, value)
         }
-        return { class_type: this.$schema.name, inputs }
+        return { class_type: this.$schema.nameInComfy, inputs }
     }
 
     /** return the list of nodes piped into this node */

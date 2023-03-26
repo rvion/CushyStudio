@@ -67,10 +67,10 @@ export class ComfyImporter {
             const varName = `${classType}_${nodeID}`
             generatedName.set(nodeID, varName)
             const schema: ComfyNodeSchema =
-                this.client.schema.nodesByName[classType] ?? //
-                this.client.schema.nodesByName[this.knownAliaes[classType]]
+                this.client.schema.nodesByNameInComfy[classType] ?? //
+                this.client.schema.nodesByNameInComfy[this.knownAliaes[classType]]
             if (schema == null) {
-                console.log(`🔴 known`, Object.keys(this.client.schema.nodesByName))
+                console.log(`🔴 known`, Object.keys(this.client.schema.nodesByNameInComfy))
                 throw new Error(`schema not found for ${classType}`)
             }
             let outoutIx = 0

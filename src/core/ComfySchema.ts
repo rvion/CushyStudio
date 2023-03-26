@@ -10,13 +10,32 @@ export type NodeOutputExt = { type: string; name: string; isPrimitive: boolean }
 
 export class ComfySchema {
     knownTypes = new Set<string>()
-    knownEnums = new Map<EnumHash, { name: EnumName; values: string[] }>()
+
+    knownEnums = new Map<
+        EnumHash,
+        {
+            enumNameInComfy: string
+            enumNameInCushy: EnumName
+            values: string[]
+        }
+    >()
     nodes: ComfyNodeSchema[] = []
-    nodesByName: { [key: string]: ComfyNodeSchema } = {}
+    nodesByNameInComfy: { [key: string]: ComfyNodeSchema } = {}
+    nodesByNameInCushy: { [key: string]: ComfyNodeSchema } = {}
 
     constructor(public spec: ComfySchemaJSON) {
         this.update(spec)
         makeAutoObservable(this)
+    }
+
+    normalizeJSIdentifier = (name: string) => {
+        return name
+            .replace(/[^a-zA-Z0-9_]/g, ' ')
+            .split(' ')
+            .map((i) => i.trim())
+            .filter((i) => i.length > 0)
+            .map((i) => i[0].toUpperCase() + i.slice(1))
+            .join('')
     }
 
     update(spec: ComfySchemaJSON) {
@@ -25,16 +44,27 @@ export class ComfySchema {
         this.knownTypes.clear()
         this.knownEnums.clear()
         this.nodes.splice(0, this.nodes.length)
-        this.nodesByName = {}
+        this.nodesByNameInComfy = {}
+        this.nodesByNameInCushy = {}
 
         // compile spec
         const entries = Object.entries(spec)
-        for (const [nodeTypeName, nodeTypeDef] of entries) {
+        for (const [nodeNameInComfy, nodeTypeDef] of entries) {
+            const nodeNameInCushy = this.normalizeJSIdentifier(nodeNameInComfy)
             const requiredInputs = Object.entries(nodeTypeDef.input.required)
             const inputs: NodeInputExt[] = []
             const outputs: NodeOutputExt[] = []
-            const node = new ComfyNodeSchema(nodeTypeName, nodeTypeDef.category, inputs, outputs)
-            this.nodesByName[nodeTypeName] = node
+            const node = new ComfyNodeSchema(
+                //
+                nodeNameInComfy,
+                nodeNameInCushy,
+                // nodeTypeName,
+                nodeTypeDef.category,
+                inputs,
+                outputs,
+            )
+            this.nodesByNameInComfy[nodeNameInComfy] = node
+            this.nodesByNameInCushy[nodeNameInCushy] = node
             this.nodes.push(node)
             const outputNamer: { [key: string]: number } = {}
             for (const opt of nodeTypeDef.output) {
@@ -43,16 +73,19 @@ export class ComfySchema {
                 outputs.push({ type: opt, name, isPrimitive: false })
                 outputNamer[opt]++
             }
+
             for (const ipt of requiredInputs) {
                 const inputName = ipt[0]
                 const typeDef = ipt[1]
                 const typeStuff = typeDef[0]
                 const typeOpts = typeDef[1]
-                let typeName: string | undefined
+
+                /** name of the type in cushy */
+                let inputTypeNameInCushy: string | undefined
 
                 if (typeof typeStuff === 'string') {
-                    typeName = typeStuff
-                    this.knownTypes.add(typeName)
+                    inputTypeNameInCushy = this.normalizeJSIdentifier(typeStuff)
+                    this.knownTypes.add(inputTypeNameInCushy)
                 } else if (Array.isArray(typeStuff) && typeStuff.every((x) => typeof x === 'string')) {
                     const enumValues: string[] = []
                     for (const enumValue of typeStuff) {
@@ -60,21 +93,25 @@ export class ComfySchema {
                     }
                     const hash = enumValues.sort().join('|')
                     const similarEnum = this.knownEnums.get(hash)
-                    if (similarEnum != null) typeName = similarEnum.name
+                    if (similarEnum != null) inputTypeNameInCushy = similarEnum.enumNameInCushy
                     else {
-                        typeName = `enum_${nodeTypeName}_${inputName}`
-                        this.knownEnums.set(hash, { name: typeName, values: enumValues })
+                        inputTypeNameInCushy = `Enum_${nodeNameInCushy}_${inputName}`
+                        this.knownEnums.set(hash, {
+                            enumNameInCushy: this.normalizeJSIdentifier(inputTypeNameInCushy),
+                            enumNameInComfy: inputName,
+                            values: enumValues,
+                        })
                     }
                 } else {
                     throw new Error('object type not supported')
                 }
 
-                if (typeName) {
+                if (inputTypeNameInCushy) {
                     node.inputs.push({
                         name: inputName,
-                        type: typeName,
+                        type: inputTypeNameInCushy,
                         opts: typeOpts,
-                        isPrimitive: ComfyPrimitives.includes(typeName),
+                        isPrimitive: ComfyPrimitives.includes(inputTypeNameInCushy),
                     })
                 } else {
                     console.log({ ipt, typeDef, typeStuff })
@@ -88,9 +125,10 @@ export class ComfySchema {
         const b = new CodeBuffer()
         const p = b.w
         const prefix = useLocalPath ? '.' : 'core'
+        p(`/// <reference types="./cushy" />\n`)
         p(`import type { ComfyNodeOutput } from '${prefix}/ComfyNodeOutput'`)
         p(`import type { ComfyNodeUID } from '${prefix}/ComfyNodeUID'`)
-        p(`import type { ComfyNode } from '${prefix}/ComfyNode'`)
+        p(`import type { ComfyNode } from '${prefix}/CSNode'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}/ComfySchemaJSON'`)
         p(`import type { ComfyGraph } from '${prefix}/ComfyGraph'`)
         p(`\n// TYPES -------------------------------`)
@@ -105,8 +143,8 @@ export class ComfySchema {
 
         p(`\n// ENUMS -------------------------------`)
         for (const e of this.knownEnums.values()) {
-            if (e.values.length > 0) p(`export type ${e.name} = ${e.values.map((v) => `'${v}'`).join(' | ')}`)
-            else p(`export type ${e.name} = never`)
+            if (e.values.length > 0) p(`export type ${e.enumNameInCushy} = ${e.values.map((v) => `'${v}'`).join(' | ')}`)
+            else p(`export type ${e.enumNameInCushy} = never`)
         }
 
         p(`\n// INTERFACES --------------------------`)
@@ -114,7 +152,9 @@ export class ComfySchema {
             p(`export interface HasSingle_${t} { _${t}: ${t} } // prettier-ignore`)
         }
         for (const t of this.knownEnums.values()) {
-            p(`export interface HasSingle_${t.name} { _${t.name}: ${t.name} } // prettier-ignore`)
+            p(
+                `export interface HasSingle_${t.enumNameInCushy} { _${t.enumNameInCushy}: ${t.enumNameInCushy} } // prettier-ignore`,
+            )
         }
 
         p(`\n// NODES -------------------------------`)
@@ -127,7 +167,7 @@ export class ComfySchema {
         // p(`export type NodeType = keyof typeof nodes`)
 
         p(`export type Schemas = {`)
-        for (const n of this.nodes) p(`    ${n.name}: ComfyNodeSchemaJSON,`)
+        for (const n of this.nodes) p(`    ${n.nameInCushy}: ComfyNodeSchemaJSON,`)
         p(`}`)
         p(`export type ComfyNodeType = keyof Schemas`)
 
@@ -136,7 +176,7 @@ export class ComfySchema {
 
         // prettier-ignore
         for (const n of this.nodes) {
-            p(`    ${n.name}(args: ${n.name}_input, uid?: ComfyNodeUID): ${n.name}`)
+            p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeUID): ${n.nameInCushy}`)
         }
         // p(`\n// misc \n`)
         // prettier-ignore
@@ -159,7 +199,8 @@ export class ComfySchema {
 export class ComfyNodeSchema {
     constructor(
         //
-        public name: string,
+        public nameInComfy: string,
+        public nameInCushy: string,
         public category: string,
         public inputs: NodeInputExt[],
         public outputs: NodeOutputExt[],
@@ -175,11 +216,11 @@ export class ComfyNodeSchema {
         let x: { [key: string]: number } = {}
         for (const i of this.outputs) x[i.type] = (x[i.type] ?? 0) + 1
         const ifaces = this.outputs.filter((i) => x[i.type] === 1).map((i) => `HasSingle_${i.type}`)
-        ifaces.push(`ComfyNode<${this.name}_input>`)
+        ifaces.push(`ComfyNode<${this.nameInCushy}_input>`)
         // inputs
         // p(`\n// ${this.name} -------------------------------`)
-        b.bar(this.name)
-        p(`export interface ${this.name} extends ${ifaces.join(', ')} {`)
+        b.bar(this.nameInCushy)
+        p(`export interface ${this.nameInCushy} extends ${ifaces.join(', ')} {`)
         // p(`    $schema: ${this.name}_schema`)
         this.outputs.forEach((i, ix) => {
             p(`    ${i.name}: ComfyNodeOutput<'${i.type}', ${ix}>,`)
@@ -198,7 +239,7 @@ export class ComfyNodeSchema {
         // p(`    category: ${JSON.stringify(this.category)},`)
         // p(`}`)
 
-        p(`export type ${this.name}_input = {`)
+        p(`export type ${this.nameInCushy}_input = {`)
         for (const i of this.inputs) {
             const type = ComfyPrimitiveMapping[i.type] ? i.type : `${i.type} | HasSingle_${i.type}`
             p(`    ${i.name}: ${type}`)

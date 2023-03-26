@@ -13,6 +13,7 @@ export class TypescriptBuffer {
         public workspace: Workspace,
         public name: string,
         public path: string,
+        public virtual: boolean,
     ) {
         this.ensureModel()
         makeObservable(this, { textModel: observable.ref })
@@ -36,8 +37,7 @@ export class TypescriptBuffer {
         this.textModel = model
     }
 
-    writable?: boolean = true
-    virtual: boolean = false
+    get writable(): boolean { return this.virtual ? false : true } // prettier-ignore
     code: string = ''
 
     get monacoPath(): string {
@@ -60,7 +60,8 @@ export class TypescriptBuffer {
     }
 
     udpateCodeFromEditor = (value: Maybe<string>) => {
-        if (value == null) return
+        if (value == null) return console.log('❌ value is null; aborting')
+        if (this.virtual) return console.log('❌ virtual file, cannot be modified manually')
         console.log(`[📝] updating ${this.monacoPath} with ${value.length} chars`)
         // if (this.textModel) this.textModel.setValue(value)
         this.code = value

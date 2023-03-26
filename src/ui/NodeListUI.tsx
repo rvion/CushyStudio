@@ -60,7 +60,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
     if (graph == null) return <>no execution yet</>
 
     const curr: ComfyNode<any> = graph.nodesIndex.get(uid)!
-    const name = curr.$schema.name
+    const name = curr.$schema.nameInComfy
     const schema: ComfyNodeSchema = curr.$schema
     const [folded, setFolded] = useState(p.folded ?? false)
     return (

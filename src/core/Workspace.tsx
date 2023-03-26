@@ -16,7 +16,7 @@ import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfySchema } from './ComfySchema'
 // import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { CSScript } from './CSScript'
-import { getPngMetadata } from './getPngMetadata'
+import { getPngMetadata } from '../png/getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
 import { c__ } from '../ui/sdkDTS'
 
@@ -62,8 +62,8 @@ export class Workspace {
     private constructor(public folder: string) {
         // this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema({})
-        this.CushySDKBuff = new TypescriptBuffer(this, 'sdk', this.folder + path.sep + 'cushy.d.ts') //`file:///core/sdk.d.ts`)
-        this.ComfySDKBuff = new TypescriptBuffer(this, 'lib', this.folder + path.sep + 'comfy.d.ts') //`file:///core/global.d.ts`)
+        this.CushySDKBuff = new TypescriptBuffer(this, 'sdk', this.folder + path.sep + 'cushy.d.ts', true) //`file:///core/sdk.d.ts`)
+        this.ComfySDKBuff = new TypescriptBuffer(this, 'lib', this.folder + path.sep + 'comfy.d.ts', true) //`file:///core/global.d.ts`)
         // this.script = new CSScript(this)
         this._schema = new PersistedJSON<ComfySchemaJSON>({
             folder: Promise.resolve(this.folder),

@@ -100,7 +100,7 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                                                                 iconBefore={<I.Cube16Regular />}
                                                                 aside={<RenderAside />}
                                                             >
-                                                                {ix + 1}. {node.$schema.name}
+                                                                {ix + 1}. {node.$schema.nameInComfy}
                                                             </TreeItemLayout>
                                                         </TreeItem>
                                                     ))}

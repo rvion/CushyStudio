@@ -362,11 +362,11 @@ declare module "ui/code/TypescriptBuffer" {
         workspace: Workspace;
         name: string;
         path: string;
-        constructor(workspace: Workspace, name: string, path: string);
+        virtual: boolean;
+        constructor(workspace: Workspace, name: string, path: string, virtual: boolean);
         textModel: Maybe<ITextModel>;
         ensureModel: () => Promise<void>;
-        writable?: boolean;
-        virtual: boolean;
+        get writable(): boolean;
         code: string;
         get monacoPath(): string;
         udpateCodeProgrammatically: (value: Maybe<string>) => void;
@@ -377,7 +377,7 @@ declare module "ui/code/TypescriptBuffer" {
 declare module "help/TutorialUI" {
     export const TutorialUI: import("react").FunctionComponent<object>;
 }
-declare module "ui/ComfyCodeEditorUI" {
+declare module "ui/code/ComfyCodeEditorUI" {
     import type { TypescriptBuffer } from "ui/code/TypescriptBuffer";
     export const TypescriptEditorUI: import("react").FunctionComponent<{
         buffer: TypescriptBuffer;
@@ -569,24 +569,30 @@ declare module "core/ComfySchema" {
         spec: ComfySchemaJSON;
         knownTypes: Set<string>;
         knownEnums: Map<string, {
-            name: EnumName;
+            enumNameInComfy: string;
+            enumNameInCushy: EnumName;
             values: string[];
         }>;
         nodes: ComfyNodeSchema[];
-        nodesByName: {
+        nodesByNameInComfy: {
+            [key: string]: ComfyNodeSchema;
+        };
+        nodesByNameInCushy: {
             [key: string]: ComfyNodeSchema;
         };
         constructor(spec: ComfySchemaJSON);
+        normalizeJSIdentifier: (name: string) => string;
         update(spec: ComfySchemaJSON): void;
         codegenDTS: (useLocalPath?: boolean) => string;
         private toTSType;
     }
     export class ComfyNodeSchema {
-        name: string;
+        nameInComfy: string;
+        nameInCushy: string;
         category: string;
         inputs: NodeInputExt[];
         outputs: NodeOutputExt[];
-        constructor(name: string, category: string, inputs: NodeInputExt[], outputs: NodeOutputExt[]);
+        constructor(nameInComfy: string, nameInCushy: string, category: string, inputs: NodeInputExt[], outputs: NodeOutputExt[]);
         codegen(): string;
     }
 }
@@ -680,7 +686,7 @@ declare module "ui/layout/LayoutState" {
         addHelpPopup: () => void;
     }
 }
-declare module "core/getPngMetadata" {
+declare module "png/getPngMetadata" {
     /** code copy-pasted from ComfyUI repo */
     import type { Workspace } from "core/Workspace";
     export type TextChunks = {

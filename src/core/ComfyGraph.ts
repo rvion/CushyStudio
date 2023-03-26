@@ -87,10 +87,10 @@ export class ComfyGraph {
         const schema = project.schema
         for (const node of schema.nodes) {
             // console.log(`node: ${node.name}`)
-            Object.defineProperty(this, node.name, {
+            Object.defineProperty(this, node.nameInComfy, {
                 value: (inputs: any) =>
                     new ComfyNode(this, this.getUID(), {
-                        class_type: node.name as any,
+                        class_type: node.nameInComfy as any,
                         inputs,
                     }),
             })
@@ -159,7 +159,7 @@ export class ComfyGraph {
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }
         for (const [uid, node] of Object.entries(json)) {
-            const schema: ComfyNodeSchema = schemas.nodesByName[node.class_type]
+            const schema: ComfyNodeSchema = schemas.nodesByNameInComfy[node.class_type]
             const color = comfyColors[schema.category]
             nodes.push({ id: uid, label: node.class_type, color, font: { color: 'white' }, shape: 'box' })
             for (const [name, val] of Object.entries(node.inputs)) {

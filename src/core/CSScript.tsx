@@ -57,6 +57,7 @@ export class CSScript {
             this.workspace,
             this.folderName,
             this.folderPath + path.sep + 'script.ts',
+            false,
         )
         makeAutoObservable(this)
     }

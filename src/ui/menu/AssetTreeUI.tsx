@@ -47,7 +47,7 @@ export const AssetTreeUI = observer(function AssetTreeUI_(p: { children: React.R
                 }}
             >
                 {[...client.schema.knownEnums.values()].map((foo) => {
-                    const name = foo.name
+                    const name = foo.enumNameInComfy
                     const key = `${name}`.replace('enum_', '')
                     const opened = client.assets.get(key) ?? true
                     return (

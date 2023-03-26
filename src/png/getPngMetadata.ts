@@ -1,6 +1,6 @@
 /** code copy-pasted from ComfyUI repo */
 
-import type { Workspace } from './Workspace'
+import type { Workspace } from '../core/Workspace'
 
 export type TextChunks = {
     [key: string]: string

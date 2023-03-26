@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { CSCriticalError } from '../core/Workspace'
-import { TypescriptEditorUI } from './ComfyCodeEditorUI'
+import { TypescriptEditorUI } from './code/ComfyCodeEditorUI'
 import { ensureMonacoReady } from './Monaco'
 import { PConnectUI } from './panels/pConnect'
 import { WelcomeScreenUI } from './WelcomeScreenUI'
