@@ -55,7 +55,7 @@ export class PersistedJSON<T extends object> {
     }
 
     /** update config then save it */
-    updateConfig = async (configChanges: Partial<T>): Promise<true> => {
+    assign = async (configChanges: Partial<T>): Promise<true> => {
         Object.assign(this.value, configChanges)
         return await this.save()
     }

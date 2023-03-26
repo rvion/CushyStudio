@@ -2,7 +2,7 @@ import { Button } from '@fluentui/react-components'
 import * as dialog from '@tauri-apps/api/dialog'
 import { observer } from 'mobx-react-lite'
 import { useCS } from '../config/CushyStudioContext'
-
+import * as I from '@fluentui/react-icons'
 export const WelcomeScreenUI = observer(function WelcomeScreenUI_(p: { children: React.ReactNode }) {
     return (
         <div className='welcome-screen'>
@@ -16,7 +16,21 @@ export const OpenWorkspaceUI = observer(function OpenWorkspaceUI_(p: {}) {
     return (
         <div className='col gap'>
             <h1>CushyStudio</h1>
+
+            <div>
+                <h3>Recent workspaces:</h3>
+                <div className='col gap1'>
+                    {cs.userConfig.value.recentProjects?.map((rp) => (
+                        <div key={rp}>
+                            <Button icon={<I.Open24Regular />} onClick={() => cs.openWorkspace(rp)}>
+                                {rp}
+                            </Button>
+                        </div>
+                    ))}
+                </div>
+            </div>
             <Button
+                icon={<I.Add24Filled />}
                 size='large'
                 appearance='primary'
                 onClick={async () => {
@@ -35,24 +49,8 @@ export const OpenWorkspaceUI = observer(function OpenWorkspaceUI_(p: {}) {
                     cs.openWorkspace(workspaceFolder)
                 }}
             >
-                open a workspace
+                Add new workspace
             </Button>
-
-            <div>
-                <h3>recent workspaces:</h3>
-                <div>
-                    {cs.userConfig.value.recentProjects?.map((rp) => (
-                        <Button
-                            key={rp}
-                            onClick={() => {
-                                cs.openWorkspace(rp)
-                            }}
-                        >
-                            {rp}
-                        </Button>
-                    ))}
-                </div>
-            </div>
         </div>
     )
 })

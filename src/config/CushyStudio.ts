@@ -18,9 +18,14 @@ export class CushyStudio {
     /** currently opened workspace */
     workspace: Maybe<Workspace> = null
 
-    openWorkspace = async (folder: string): Promise<Workspace> => {
-        this.workspace = await Workspace.OPEN(folder)
-        this.userConfig.updateConfig({ recentProjects: [folder] })
+    openWorkspace = async (folderPath: string): Promise<Workspace> => {
+        this.workspace = await Workspace.OPEN(folderPath)
+        const prevRecentProjects: string[] = this.userConfig.value.recentProjects ?? []
+
+        let nextRecentProjects: string[] = [folderPath, ...prevRecentProjects.filter((p) => p !== folderPath)]
+        if (nextRecentProjects.length > 10) nextRecentProjects = nextRecentProjects.slice(0, 10)
+
+        this.userConfig.assign({ recentProjects: nextRecentProjects })
         return this.workspace
     }
 
