@@ -3,21 +3,22 @@ import type { Maybe } from './ComfyUtils'
 import type { CSRun } from './CSRun'
 import type { ScriptStep } from './ScriptStep'
 
-import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
+import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { DemoScript1 } from '../ui/DemoScript1'
+import { PersistedJSON } from '../config/PersistedJSON'
+import { TypescriptBuffer } from '../ui/code/TypescriptBuffer'
 import { CushyLayoutState } from '../ui/layout/LayoutState'
 import { readableStringify } from '../utils/stringifyReadable'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfySchema } from './ComfySchema'
-import { ComfyScriptEditor } from './ComfyScriptEditor'
+// import { ComfyScriptEditor } from './ComfyScriptEditor'
 import { CSScript } from './CSScript'
 import { getPngMetadata } from './getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
-import { PersistedJSON } from '../config/PersistedJSON'
+import { c__ } from '../ui/sdkDTS'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -41,11 +42,16 @@ export class Workspace {
     focus: MainPanelFocus = null
     script: Maybe<CSScript> = null
     scripts: CSScript[] = []
-    editor: ComfyScriptEditor
+    // editor: ComfyScriptEditor
     assets = new Map<string, boolean>()
     layout = new CushyLayoutState(this)
     _config: PersistedJSON<WorkspaceConfigJSON>
     _schema: PersistedJSON<ComfySchemaJSON>
+
+    CushySDKBuff: TypescriptBuffer
+    ComfySDKBuff: TypescriptBuffer
+    openComfySDK = () => this.layout.openEditorTab(this.ComfySDKBuff)
+    openCushySDK = () => this.layout.openEditorTab(this.CushySDKBuff)
 
     static OPEN = async (folder: string): Promise<Workspace> => {
         const workspace = new Workspace(folder)
@@ -55,8 +61,10 @@ export class Workspace {
         return workspace
     }
     private constructor(public folder: string) {
-        this.editor = new ComfyScriptEditor(this)
+        // this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema({})
+        this.CushySDKBuff = new TypescriptBuffer(this, 'sdk', this.folder + path.sep + 'sdk.d.ts') //`file:///core/sdk.d.ts`)
+        this.ComfySDKBuff = new TypescriptBuffer(this, 'lib', this.folder + path.sep + 'lib.d.ts') //`file:///core/global.d.ts`)
         // this.script = new CSScript(this)
         this._schema = new PersistedJSON<ComfySchemaJSON>({
             folder: Promise.resolve(this.folder),
@@ -81,7 +89,7 @@ export class Workspace {
         await this.loadProjects()
         makeAutoObservable(this)
         await this.fetchObjectsSchema()
-        this.editor.openCODE()
+        // this.editor.openCODE()
     }
 
     private RANDOM_IMAGE_URL = 'http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output'
@@ -104,6 +112,7 @@ export class Workspace {
         return this.uploadUIntArrToComfy(blob)
     }
 
+    /** load all project found in workspace */
     loadProjects = async () => {
         console.log(`[🔍] loading projects...`)
         const items = await fs.readDir(this.folder, { recursive: true })
@@ -127,9 +136,6 @@ export class Workspace {
             console.log(`[🔍] found project ${folderName}!`)
             this.scripts.push(new CSScript(this, folderName))
         }
-
-        // const files = fs.readDir(projectsDir)
-        // console.log({ files })
     }
 
     /** save an image at given url to disk */
@@ -175,8 +181,6 @@ export class Workspace {
         return result
     }
 
-    // autosaver = new AutoSaver('client', this.getConfig)
-
     get serverHostHTTP() { return this._config.value.comfyHTTPURL } // prettier-ignore
     get serverHostWs() { return this._config.value.comfyWSURL } // prettier-ignore
 
@@ -192,8 +196,6 @@ export class Workspace {
     /** retri e the comfy spec from the schema*/
     fetchObjectsSchema = async (): Promise<ComfySchemaJSON> => {
         // 1. fetch schema$
-        // const timeoutController = new AbortController()
-        // const timeoutID = setTimeout(() => timeoutController.abort(), 2000)
         const url = `${this.serverHostHTTP}/object_info`
 
         let schema$: ComfySchemaJSON
@@ -201,8 +203,6 @@ export class Workspace {
             const res = await fetch(url, { method: 'GET', timeout: { secs: 3, nanos: 0 } })
             console.log('[🤖]', res.data)
             schema$ = res.data as any
-            // clearTimeout(timeoutID)
-            // schema$ = await res.json()
         } catch (error) {
             console.log('🔴', error)
             this.CRITICAL_ERROR = {
@@ -215,27 +215,31 @@ export class Workspace {
         // console.log('🔴', res)
         // 2. update schmea
         this.schema.update(schema$)
+        this.CushySDKBuff.udpateCode(c__)
         // save schema to disk
         const schemaPath = this.folder + path.sep + 'comfy-nodes.json'
         await fs.writeTextFile(schemaPath, readableStringify(schema$))
         // 3. update dts
         this.dts = this.schema.codegenDTS()
-        const dtsPath = this.folder + path.sep + 'comfy-api.md'
-        await fs.writeTextFile(dtsPath, `# Comfy-API\n\n\`\`\`ts\n${this.dts}\n\`\`\``)
+        this.ComfySDKBuff.udpateCode(this.dts)
+        // const dtsPath = this.folder + path.sep + 'comfy-api.md'
+        // await fs.writeTextFile(dtsPath, `# Comfy-API\n\n\`\`\`ts\n${this.dts}\n\`\`\``)
         // 4. update monaco
-        this.editor.updateSDKDTS()
-        this.editor.updateLibDTS()
+        // this.editor.updateSDKDTS() // 🔴
+        // this.editor.updateLibDTS() // 🔴
         // this.editor.updateCODE(DemoScript1)
         // this.script.udpateCode(DemoScript1)
         // console.log('🟢 schema:', this.schema.nodes)
         return schema$
+        this.openComfySDK()
+        this.openCushySDK()
     }
 
-    openScript = () => {
-        // 🔴
-        this.editor.updateCODE(DemoScript1)
-        this.script?.udpateCode(DemoScript1)
-    }
+    // openScript = () => {
+    //     // 🔴
+    //     this.editor.updateCODE(DemoScript1)
+    //     this.script?.udpateCode(DemoScript1)
+    // }
     static Init = () => {}
 
     // TODO: finish this
@@ -337,8 +341,9 @@ export class Workspace {
                 const project = CSScript.FROM_JSON(this, data)
                 this.scripts.push(project)
                 this.script = project
-                this.editor.updateCODE(project.code)
-                this.script.udpateCode(project.code)
+                this.layout.openEditorTab(project.scriptBuffer)
+                // this.editor.updateCODE(project.code)
+                // this.script.udpateCode(project.code)
             }
         }
         // else if (file.type === 'application/json' || file.name.endsWith('.json')) {

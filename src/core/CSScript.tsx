@@ -7,6 +7,7 @@ import { Workspace } from './Workspace'
 import { ComfyImporter } from './ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { CSRun } from './CSRun'
+import { TypescriptBuffer } from '../ui/code/TypescriptBuffer'
 
 /** Script */
 export class CSScript {
@@ -32,6 +33,9 @@ export class CSScript {
         console.log('[📁] saved', filePath)
     }
 
+    openInEditor = () => {
+        this.workspace.layout.openEditorTab(this.scriptBuffer)
+    }
     /** project name */
 
     /** list of all project runs */
@@ -42,29 +46,33 @@ export class CSScript {
         return this.runs[0] ?? null
     }
 
+    scriptBuffer: TypescriptBuffer
     constructor(
         //
         public workspace: Workspace,
         public folderName: string,
     ) {
+        this.scriptBuffer = new TypescriptBuffer(
+            //
+            this.workspace,
+            this.folderName,
+            this.folderPath + path.sep + 'script.cushy',
+        )
         makeAutoObservable(this)
     }
 
     /** convenient getter to retrive current client shcema */
     get schema() { return this.workspace.schema } // prettier-ignore
 
-    code: string = ''
-
-    udpateCode = async (code: string) => {
-        this.code = code
-    }
+    get code() { return this.scriptBuffer.code } // prettier-ignore
+    udpateCode = async (code: string) => (this.scriptBuffer.code = code)
 
     static FROM_JSON = (client: Workspace, json: ComfyPromptJSON) => {
         const folderName = nanoid()
-        const project = new CSScript(client, folderName)
+        const script = new CSScript(client, folderName)
         const code = new ComfyImporter(client).convertFlowToCode(json)
-        project.code = code
-        return project
+        script.udpateCode(code)
+        return script
     }
 
     /** converts a ComfyPromptJSON into it's canonical normal-form script */

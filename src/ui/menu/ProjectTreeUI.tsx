@@ -10,7 +10,7 @@ import { useWorkspace } from '../WorkspaceContext'
 import { ExecutionStepIconUI } from './ExecutionStepIconUI'
 
 export const ProjectTreeUI = observer(function MenuUI_() {
-    const client = useWorkspace()
+    const workspace = useWorkspace()
     return (
         <Tree
             size='small'
@@ -26,18 +26,18 @@ export const ProjectTreeUI = observer(function MenuUI_() {
             }}
         >
             <TreeItem>
-                <TreeItemLayout onClick={() => (client.focus = 'config')} iconBefore={<I.Options24Filled />}>
+                <TreeItemLayout onClick={() => (workspace.focus = 'config')} iconBefore={<I.Options24Filled />}>
                     Config
                 </TreeItemLayout>
             </TreeItem>
             <TreeItem>
-                <TreeItemLayout onClick={client.editor.openSDK} iconBefore={<I.BrainCircuit24Filled />}>
+                <TreeItemLayout onClick={workspace.openCushySDK} iconBefore={<I.BrainCircuit24Filled />}>
                     API Cushy
                 </TreeItemLayout>
             </TreeItem>
             <AssetTreeUI>
                 {/* <TreeItem> */}
-                <TreeItemLayout onClick={client.editor.openLib} iconBefore={<I.BrainCircuit24Regular />}>
+                <TreeItemLayout onClick={workspace.openComfySDK} iconBefore={<I.BrainCircuit24Regular />}>
                     API Comfy
                 </TreeItemLayout>
                 {/* </TreeItem> */}
@@ -45,7 +45,7 @@ export const ProjectTreeUI = observer(function MenuUI_() {
             {/* <TreeItem id='projects'>
                 <TreeItemLayout iconBefore={<I.DocumentBulletListMultiple24Regular />}>Scripts</TreeItemLayout>
                 <Tree> */}
-            {client.scripts.map((project) => (
+            {workspace.scripts.map((project) => (
                 <TreeItem
                     // PROJECT
                     id={project.id}
@@ -71,9 +71,8 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                     }
                 >
                     <TreeItemLayout
-                        //
                         iconBefore={<I.DocumentBulletList24Filled />}
-                        onClick={() => client.editor.openCODE()}
+                        onClick={() => project.openInEditor()}
                         // aside={<RenderAside />}
                     >
                         {project.folderName}

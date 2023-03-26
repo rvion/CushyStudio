@@ -33,16 +33,17 @@ export const ToolbarUI = observer(function ToolbarUI_(props: Partial<ToolbarProp
                 icon={<I.DesktopToolboxRegular />}
                 onClick={() => project?.RUN('fake')}
             />
-            <ToolbarButton aria-label='Reset Font Size' icon={<I.TextFont24Regular />} />
+            {/* <ToolbarButton aria-label='Reset Font Size' icon={<I.TextFont24Regular />} /> */}
             <ToolbarButton
                 onClick={() => {
                     //
-                    const editor = client.editor.editorRef.current
-                    if (editor == null) return console.log('❌ editor is null')
-                    const otps = editor.getRawOptions().wordWrap
-                    editor.updateOptions({ wordWrap: otps === 'off' ? 'on' : 'off' })
+                    throw new Error('not implemented')
+                    // const editor = client.editor.editorRef.current
+                    // if (editor == null) return console.log('❌ editor is null')
+                    // const otps = editor.getRawOptions().wordWrap
+                    // editor.updateOptions({ wordWrap: otps === 'off' ? 'on' : 'off' })
                 }}
-                aria-label='Reset Font Size'
+                aria-label='Toogle word wrap'
                 icon={<I.TextWrap24Filled />}
             />
             <ToolbarDivider />

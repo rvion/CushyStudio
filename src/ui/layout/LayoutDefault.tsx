@@ -1,5 +1,5 @@
 import { LayoutData } from 'rc-dock'
-import { CivitaiUI } from '../civitai/CIvitaiUI'
+import { CivitaiUI } from '../../civitai/CIvitaiUI'
 import { MainPanelUI } from '../EditorPaneUI'
 import { ExecutionUI } from '../ExecutionUI'
 import { CSMenuUI } from '../menu/CSMenuUI'
@@ -36,6 +36,7 @@ export const defaultLayout = (): LayoutData => ({
             },
 
             {
+                id: 'CENTRAL',
                 group: 'CENTRAL',
                 mode: 'vertical',
                 size: 10,
