@@ -308,15 +308,82 @@ declare module "core/CSRun" {
         ctx: {};
     }
 }
-declare module "ui/DemoScript1" {
-    export const DemoScript1: string;
-    export const DemoScript2: string;
-    export const DemoScript3: string;
+declare module "utils/bang" {
+    export const bang: <T>(x: T | null) => T;
 }
-declare module "core/TutorialUI" {
+declare module "utils/stringifyReadable" {
+    export function readableStringify(obj: any, maxLevel?: number, level?: number): string;
+}
+declare module "config/PersistedJSON" {
+    export type PersistedJSONInfo<T> = {
+        folder: Promise<string>;
+        name: string;
+        init: () => T;
+        maxLevel?: number;
+    };
+    export class PersistedJSON<T extends object> {
+        private opts;
+        private ready_yes;
+        private ready_no;
+        finished: Promise<boolean>;
+        constructor(opts: PersistedJSONInfo<T>);
+        /** true when config loaded */
+        ready: boolean;
+        setReady(): void;
+        private _folder;
+        get folder(): string;
+        private _path;
+        get path(): string;
+        private _value;
+        get value(): T;
+        /** save the file */
+        save: () => Promise<true>;
+        /** update config then save it */
+        updateConfig: (configChanges: Partial<T>) => Promise<true>;
+        init: (p: PersistedJSONInfo<T>) => Promise<T>;
+    }
+}
+declare module "ui/TypescriptOptions" {
+    import type * as T from 'monaco-editor/esm/vs/editor/editor.api';
+    export type TypescriptOptions = any
+    export type ITextModel = any
+    export type IStandaloneCodeEditor = any
+    export type Monaco = typeof T;
+}
+declare module "ui/Monaco" {
+    export const globalMonaco: Promise<typeof import("monaco-editor")>;
+    export const ensureMonacoReady: () => void;
+}
+declare module "ui/code/TypescriptBuffer" {
+    import type { ITextModel } from "ui/TypescriptOptions";
+    import type { Maybe } from "core/ComfyUtils";
+    import type { Workspace } from "core/Workspace";
+    export class TypescriptBuffer {
+        workspace: Workspace;
+        name: string;
+        path: string;
+        constructor(workspace: Workspace, name: string, path: string);
+        textModel: Maybe<ITextModel>;
+        ensureModel: () => Promise<void>;
+        writable?: boolean;
+        virtual: boolean;
+        code: string;
+        get monacoPath(): string;
+        udpateCodeProgrammatically: (value: Maybe<string>) => void;
+        udpateCodeFromEditor: (value: Maybe<string>) => void;
+        saveOnDisk: () => Promise<void>;
+    }
+}
+declare module "help/TutorialUI" {
     export const TutorialUI: import("react").FunctionComponent<object>;
 }
-declare module "civitai/civitaiAPI" {
+declare module "ui/ComfyCodeEditorUI" {
+    import type { TypescriptBuffer } from "ui/code/TypescriptBuffer";
+    export const TypescriptEditorUI: import("react").FunctionComponent<{
+        buffer: TypescriptBuffer;
+    }>;
+}
+declare module "civitai/CivitaiAPI" {
     import type { Maybe } from "core/ComfyUtils";
     export class Civitai {
         query: string;
@@ -393,55 +460,11 @@ declare module "ui/WorkspaceContext" {
     export const useWorkspace: () => Workspace;
     export const useProject: () => import("core/ComfyUtils").Maybe<import("core/CSScript").CSScript>;
 }
-declare module "ui/civitai/CIvitaiUI" {
+declare module "civitai/CIvitaiUI" {
     export const CivitaiUI: import("react").FunctionComponent<object>;
 }
-declare module "ui/TypescriptOptions" {
-    import type * as T from 'monaco-editor/esm/vs/editor/editor.api';
-    export type TypescriptOptions = any
-    export type ITextModel = any
-    export type IStandaloneCodeEditor = any
-    export type Monaco = typeof T;
-}
-declare module "ui/ComfyCodeEditorUI" {
-    export const ComfyCodeEditorUI: import("react").FunctionComponent<{
-        path?: string | undefined;
-    }>;
-}
-declare module "utils/bang" {
-    export const bang: <T>(x: T | null) => T;
-}
-declare module "utils/stringifyReadable" {
-    export function readableStringify(obj: any, maxLevel?: number, level?: number): string;
-}
-declare module "config/PersistedJSON" {
-    export type PersistedJSONInfo<T> = {
-        folder: Promise<string>;
-        name: string;
-        init: () => T;
-        maxLevel?: number;
-    };
-    export class PersistedJSON<T extends object> {
-        private opts;
-        private ready_yes;
-        private ready_no;
-        finished: Promise<boolean>;
-        constructor(opts: PersistedJSONInfo<T>);
-        /** true when config loaded */
-        ready: boolean;
-        setReady(): void;
-        private _folder;
-        get folder(): string;
-        private _path;
-        get path(): string;
-        private _value;
-        get value(): T;
-        /** save the file */
-        save: () => Promise<true>;
-        /** update config then save it */
-        updateConfig: (configChanges: Partial<T>) => Promise<true>;
-        init: (p: PersistedJSONInfo<T>) => Promise<T>;
-    }
+declare module "ui/panels/pConnect" {
+    export const PConnectUI: import("react").FunctionComponent<{}>;
 }
 declare module "config/CushyStudio" {
     import { Maybe } from "core/ComfyUtils";
@@ -467,17 +490,6 @@ declare module "config/CushyStudioContext" {
     import { CushyStudio } from "config/CushyStudio";
     export const CSContext: import("react").Context<CushyStudio | null>;
     export const useCS: () => CushyStudio;
-}
-declare module "ui/ToolbarUI" {
-    import { ToolbarProps } from '@fluentui/react-components';
-    export const ToolbarUI: import("react").FunctionComponent<Partial<ToolbarProps>>;
-}
-declare module "ui/Monaco" {
-    export let globalMonaco: typeof import("monaco-editor") | null;
-    export const ensureMonacoReady: () => typeof import("monaco-editor") | null;
-}
-declare module "ui/panels/pConnect" {
-    export const PConnectUI: import("react").FunctionComponent<{}>;
 }
 declare module "ui/WelcomeScreenUI" {
     export const WelcomeScreenUI: import("react").FunctionComponent<{
@@ -653,6 +665,7 @@ declare module "ui/layout/LayoutState" {
     import type { CSImage } from "core/CSImage";
     import DockLayout from 'rc-dock';
     import { Workspace } from "core/Workspace";
+    import { TypescriptBuffer } from "ui/code/TypescriptBuffer";
     export class CushyLayoutState {
         client: Workspace;
         layout: import("rc-dock").LayoutData;
@@ -661,38 +674,10 @@ declare module "ui/layout/LayoutState" {
         dockLayout: DockLayout | null;
         getRef: (r: DockLayout | null) => DockLayout | null;
         constructor(client: Workspace);
+        openEditorTab: (buff: TypescriptBuffer) => void;
         addImagePopup: (url: string) => void;
+        /** WIP */
         addHelpPopup: () => void;
-    }
-}
-declare module "ui/sdkDTS" {
-    export const c__: string;
-}
-declare module "core/ComfyScriptEditor" {
-    import type { ITextModel } from "ui/TypescriptOptions";
-    import { Workspace } from "core/Workspace";
-    export class ComfyScriptEditor {
-        client: Workspace;
-        constructor(client: Workspace);
-        editorRef: {
-            current: any
-        };
-        private sdk_path;
-        private lib_path;
-        private CODE_path;
-        updateSDKDTS: () => void;
-        updateLibDTS: () => void;
-        updateCODE: (code: string) => void;
-        updateFile: (path: string, content: string) => void;
-        openLib: () => void;
-        openSDK: () => void;
-        openCODE: () => void;
-        curr: ITextModel | null;
-        openPathInEditor: (path: string) => void;
-        hasLib: () => boolean | null;
-        hasSDK: () => boolean | null;
-        hasCODE: () => boolean | null;
-        hasModel: (path: string) => boolean | null;
     }
 }
 declare module "core/getPngMetadata" {
@@ -703,15 +688,18 @@ declare module "core/getPngMetadata" {
     };
     export function getPngMetadata(client: Workspace, file: File): Promise<TextChunks>;
 }
+declare module "ui/sdkDTS" {
+    export const c__: string;
+}
 declare module "core/Workspace" {
     import type { ComfySchemaJSON } from "core/ComfySchemaJSON";
     import type { Maybe } from "core/ComfyUtils";
+    import { PersistedJSON } from "config/PersistedJSON";
+    import { TypescriptBuffer } from "ui/code/TypescriptBuffer";
     import { CushyLayoutState } from "ui/layout/LayoutState";
     import { ComfyStatus, ComfyUploadImageResult } from "core/ComfyAPI";
     import { ComfySchema } from "core/ComfySchema";
-    import { ComfyScriptEditor } from "core/ComfyScriptEditor";
     import { CSScript } from "core/CSScript";
-    import { PersistedJSON } from "config/PersistedJSON";
     export type WorkspaceConfigJSON = {
         version: 2;
         comfyWSURL: string;
@@ -735,11 +723,14 @@ declare module "core/Workspace" {
         focus: MainPanelFocus;
         script: Maybe<CSScript>;
         scripts: CSScript[];
-        editor: ComfyScriptEditor;
         assets: Map<string, boolean>;
         layout: CushyLayoutState;
         _config: PersistedJSON<WorkspaceConfigJSON>;
         _schema: PersistedJSON<ComfySchemaJSON>;
+        CushySDKBuff: TypescriptBuffer;
+        ComfySDKBuff: TypescriptBuffer;
+        openComfySDK: () => void;
+        openCushySDK: () => void;
         static OPEN: (folder: string) => Promise<Workspace>;
         private constructor();
         init(): Promise<void>;
@@ -747,6 +738,7 @@ declare module "core/Workspace" {
         /** attempt to convert an url to a Blob */
         private getUrlAsBlob;
         uploadURL: (url?: string) => Promise<ComfyUploadImageResult>;
+        /** load all project found in workspace */
         loadProjects: () => Promise<void>;
         /** save an image at given url to disk */
         saveImgToDisk: (url?: string) => Promise<'ok'>;
@@ -760,7 +752,6 @@ declare module "core/Workspace" {
         CRITICAL_ERROR: Maybe<CSCriticalError>;
         /** retri e the comfy spec from the schema*/
         fetchObjectsSchema: () => Promise<ComfySchemaJSON>;
-        openScript: () => void;
         static Init: () => void;
         get wsStatusTxt(): "not initialized" | "connected" | "disconnected" | "connecting";
         wsStatus: 'on' | 'off';
@@ -807,6 +798,7 @@ declare module "core/CSScript" {
     import { Workspace } from "core/Workspace";
     import { ComfyPromptJSON } from "core/ComfyPrompt";
     import { CSRun } from "core/CSRun";
+    import { TypescriptBuffer } from "ui/code/TypescriptBuffer";
     /** Script */
     export class CSScript {
         workspace: Workspace;
@@ -818,16 +810,18 @@ declare module "core/CSScript" {
         /** folder where CushyStudio will save script informations */
         get folderPath(): string;
         save: () => Promise<void>;
+        openInEditor: () => void;
         /** project name */
         /** list of all project runs */
         runs: CSRun[];
         /** last project run */
         get currentRun(): CSRun | null;
+        scriptBuffer: TypescriptBuffer;
         constructor(workspace: Workspace, folderName: string);
         /** convenient getter to retrive current client shcema */
         get schema(): import("core/ComfySchema").ComfySchema;
-        code: string;
-        udpateCode: (code: string) => Promise<void>;
+        get code(): string;
+        udpateCode: (code: string) => Promise<string>;
         static FROM_JSON: (client: Workspace, json: ComfyPromptJSON) => CSScript;
         /** converts a ComfyPromptJSON into it's canonical normal-form script */
         static LoadFromComfyPromptJSON: (_json: ComfyPromptJSON) => never;
@@ -837,7 +831,7 @@ declare module "core/CSScript" {
     }
 }
 declare module "embeds/wildcards" {
-    export const wildcards: {
+    export type Wildcards = {
         "3d_term": string[];
         "actors": string[];
         "actress": string[];
@@ -1043,6 +1037,7 @@ declare module "embeds/wildcards" {
         "wave": string[];
         "wh_site": string[];
     };
+    export const wildcards: Wildcards;
 }
 declare module "core/ComfyGraph" {
     import type { VisEdges, VisNodes } from "ui/VisUI";
@@ -1070,220 +1065,7 @@ declare module "core/ComfyGraph" {
         nodesIndex: Map<string, ComfyNode<any>>;
         isRunning: boolean;
         randomSeed(): number;
-        wildcards: {
-            "3d_term": string[];
-            actors: string[];
-            actress: string[];
-            adj_architecture: string[];
-            adj_beauty: string[];
-            adj_general: string[];
-            adj_horror: string[];
-            alien: string[];
-            angel: string[];
-            animal: string[];
-            artist_anime: string[];
-            "artist_black-white": string[];
-            artist_botanical: string[];
-            artist_c: string[];
-            artist_cartoon: string[];
-            artist_csv: string[];
-            artist_dig1: string[];
-            artist_dig2: string[];
-            artist_dig3: string[];
-            artist_fantasy: string[];
-            artist_fareast: string[];
-            artist_fineart: string[];
-            artist_horror: string[];
-            artist_n: string[];
-            artist_nudity: string[];
-            artist_scifi: string[];
-            artist_scribbles: string[];
-            artist_special: string[];
-            artist_surreal: string[];
-            artist_ukioe: string[];
-            artist_weird: string[];
-            artist: string[];
-            artist_concept: string[];
-            artist_director: string[];
-            artist_photographer: string[];
-            aspect_ratio: string[];
-            background_color: string[];
-            background: string[];
-            bangs: string[];
-            bdsm_type: string[];
-            bdsm: string[];
-            belt: string[];
-            biome: string[];
-            bird: string[];
-            blonde: string[];
-            body_fit: string[];
-            body_heavy: string[];
-            body_light: string[];
-            body_poor: string[];
-            body_short: string[];
-            body_tall: string[];
-            bodyshape: string[];
-            bodyshape2: string[];
-            bra: string[];
-            braids: string[];
-            breastsize: string[];
-            building: string[];
-            camera_manu: string[];
-            camera: string[];
-            cat: string[];
-            celeb: string[];
-            civilization: string[];
-            class: string[];
-            clothing_female: string[];
-            clothing_male: string[];
-            clothing: string[];
-            color: string[];
-            corset: string[];
-            cosmic_galaxy: string[];
-            cosmic_nebula: string[];
-            cosmic_star: string[]; /** temporary proxy */
-            cosmic_term: string[];
-            costume_female: string[];
-            costume_male: string[];
-            cumplay: string[];
-            decade: string[];
-            deity: string[];
-            detail: string[];
-            dinosaur: string[];
-            dog: string[];
-            dress: string[];
-            earrings: string[];
-            emoji_combo: string[];
-            emoji: string[];
-            expression: string[];
-            eyecolor: string[];
-            eyeliner: string[];
-            f_stop: string[];
-            fantasy_creature: string[];
-            fantasy_setting: string[];
-            fantasy: string[];
-            female_adult: string[];
-            female_young: string[];
-            fetish_type: string[];
-            fetish: string[];
-            film_genre: string[];
-            fish: string[];
-            flower: string[];
-            focal_length: string[];
-            food: string[];
-            forest_type: string[];
-            fruit: string[];
-            furniture: string[];
-            game: string[];
-            gem: string[];
-            gen_modifier: string[];
-            gender_ext: string[];
-            gender: string[];
-            genre: string[];
-            hair_color: string[];
-            "hair_female-short": string[];
-            hair_female: string[];
-            hair_male: string[];
-            hairaccessory: string[];
-            hairlength: string[];
-            hd: string[];
-            headwear_female: string[];
-            headwear_male: string[];
-            high_heels: string[];
-            horror: string[];
-            identity: string[];
-            interior: string[];
-            iso_stop: string[];
-            landscape: string[];
-            legwear: string[];
-            lingerie: string[];
-            lipstick_shade: string[];
-            lipstick: string[];
-            location: string[];
-            makeup: string[];
-            male_adult: string[];
-            male_young: string[];
-            monster: string[];
-            movement: string[];
-            national_park: string[];
-            nationality: string[];
-            neckwear: string[];
-            neg_weight: string[]; /** all images generated by nodes in this graph */
-            noun_beauty: string[];
-            noun_fantasy: string[];
-            noun_general: string[];
-            noun_horror: string[];
-            noun_landscape: string[];
-            noun_romance: string[];
-            noun_scifi: string[];
-            occupation: string[];
-            oil_painting: string[];
-            outfit_cottagecore: string[];
-            outfit_goth: string[];
-            outfit_preppy: string[];
-            outfit_steampunk: string[];
-            panties: string[];
-            photo_term: string[];
-            photoshoot_type: string[];
-            planet: string[];
-            pop_culture: string[];
-            pop_location: string[];
-            portrait_type: string[];
-            public: string[];
-            punk: string[];
-            purse: string[];
-            quantity: string[];
-            race: string[];
-            /** visjs JSON format (network visualisation) */
-            render_engine: string[];
-            render: string[];
-            robot: string[];
-            /** visjs JSON format (network visualisation) */
-            rpg_Item: string[];
-            scenario_fantasy: string[];
-            scenario_romance: string[];
-            scenario_scifi: string[];
-            scenario: string[];
-            /** visjs JSON format (network visualisation) */
-            scenario2: string[];
-            scifi: string[];
-            sculpture: string[];
-            setting: string[];
-            sex_act: string[];
-            /** visjs JSON format (network visualisation) */
-            sex_position: string[];
-            /** visjs JSON format (network visualisation) */
-            sex_toy: string[];
-            ship: string[];
-            site: string[];
-            skin_color: string[];
-            still_life: string[];
-            style: string[];
-            subject_fantasy: string[];
-            subject_horror: string[];
-            subject_romance: string[];
-            subject_scifi: string[];
-            subject: string[];
-            suit_female: string[];
-            suit_male: string[];
-            superhero: string[];
-            /** visjs JSON format (network visualisation) */
-            supermodel: string[];
-            swimwear: string[];
-            /** visjs JSON format (network visualisation) */
-            technique: string[];
-            time: string[];
-            train: string[];
-            tree: string[];
-            tribe: string[];
-            /** visjs JSON format (network visualisation) */
-            trippy: string[];
-            underwater: string[];
-            water: string[];
-            watercolor: string[];
-            wave: string[];
-            wh_site: string[];
-        };
+        wildcards: import("embeds/wildcards").Wildcards;
         /** return the coresponding comfy prompt  */
         get json(): ComfyPromptJSON;
         /** temporary proxy */
