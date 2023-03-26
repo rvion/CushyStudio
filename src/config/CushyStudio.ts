@@ -32,6 +32,14 @@ export class CushyStudio {
         name: 'userConfig.json',
         init: (): UserConfigJSON => ({ version: 1, theme: 'dark', recentProjects: [] }),
         folder: path.appConfigDir(),
+        onReady: (data) => {
+            console.log('[CUSHY] user config loaded:', data)
+            console.log('[CUSHY] recent projects:', data.recentProjects)
+            if (data.recentProjects?.[0] === '/Users/loco/dev/CushyStudio/workspace') {
+                console.log('[CUSHY] [DEV] opening last recent project:', data.recentProjects[0])
+                this.openWorkspace(data.recentProjects[0])
+            }
+        },
     })
 
     /** true when user config is ready */

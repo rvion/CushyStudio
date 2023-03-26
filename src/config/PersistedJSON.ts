@@ -10,6 +10,7 @@ export type PersistedJSONInfo<T> = {
     name: string
     init: () => T
     maxLevel?: number
+    onReady?: (data: T) => void
 }
 
 export class PersistedJSON<T extends object> {
@@ -29,6 +30,7 @@ export class PersistedJSON<T extends object> {
     ready: boolean = false
     setReady() {
         this.ready = true
+        this.opts.onReady?.(this.value)
         this.ready_yes(true)
     }
     private _folder!: string
