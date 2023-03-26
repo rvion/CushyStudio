@@ -1,11 +1,10 @@
-import type { ITextModel } from '../TypescriptOptions'
 import type { Maybe } from '../../core/ComfyUtils'
 import type { Workspace } from '../../core/Workspace'
-
-import * as fs from '@tauri-apps/api/fs'
+import type { ITextModel } from '../TypescriptOptions'
 import * as path from '@tauri-apps/api/path'
-import { globalMonaco } from '../Monaco'
+import * as fs from '@tauri-apps/api/fs'
 import { makeObservable, observable } from 'mobx'
+import { globalMonaco } from '../Monaco'
 
 export class TypescriptBuffer {
     public name: string
@@ -74,6 +73,7 @@ export class TypescriptBuffer {
 
     code: string = ''
 
+    /** internal path as needed for monaco engine */
     get monacoPath(): string {
         return `file://${this.path}`
     }
@@ -105,6 +105,9 @@ export class TypescriptBuffer {
 
     saveOnDisk = async () => {
         console.log('[📁] saving', this.path)
+        const folder = await path.dirname(this.path)
+        const folderExists = await fs.exists(folder)
+        if (!folderExists) await fs.createDir(folder, { recursive: true })
         await fs.writeFile({ path: this.path, contents: this.code })
     }
 }
