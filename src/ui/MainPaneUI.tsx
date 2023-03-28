@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite'
 import { TypescriptEditorUI } from './code/ComfyCodeEditorUI'
 import { ErrorScreenUI } from './ErrorScreenUI'
 import { PConnectUI } from './panels/pConnect'
-import { WelcomeScreenUI } from './WelcomeScreenUI'
 import { useWorkspace } from './WorkspaceContext'
 
 export const MainPanelUI = observer(function MainPanelUI_(p: {}) {
@@ -10,10 +9,10 @@ export const MainPanelUI = observer(function MainPanelUI_(p: {}) {
 
     if (client.focusedFile == null)
         return (
-            <WelcomeScreenUI>
+            <div className='rainbowbg col gap p' style={{ height: '100%' }}>
                 <PConnectUI />
                 {client.CRITICAL_ERROR && <ErrorScreenUI err={client.CRITICAL_ERROR} />}
-            </WelcomeScreenUI>
+            </div>
         )
     return <TypescriptEditorUI buffer={client.focusedFile} />
 })

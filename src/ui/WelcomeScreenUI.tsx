@@ -3,9 +3,10 @@ import * as dialog from '@tauri-apps/api/dialog'
 import { observer } from 'mobx-react-lite'
 import { useCS } from '../config/CushyStudioContext'
 import * as I from '@fluentui/react-icons'
+
 export const WelcomeScreenUI = observer(function WelcomeScreenUI_(p: { children: React.ReactNode }) {
     return (
-        <div className='welcome-screen'>
+        <div className='welcome-screen rainbowbg'>
             <div className='welcome-popup col gap items-center'>{p.children}</div>
         </div>
     )

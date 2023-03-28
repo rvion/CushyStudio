@@ -32,7 +32,7 @@ export const ExecutionUI = observer(function ExecutionUI_() {
     if (run == null)
         return (
             <div style={{ justifyContent: 'center', height: '100%', display: 'flex', overflow: 'auto' }}>
-                <h3>No execution yet, hit run in the Code Toolbar </h3>
+                <div className='light'>No execution yet </div>
             </div>
         )
     return (

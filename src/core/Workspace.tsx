@@ -18,6 +18,8 @@ import { Project } from './Project'
 import { getPngMetadata } from '../png/getPngMetadata'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
 import { c__ } from '../ui/sdkDTS'
+import { ResilientWebSocketClient } from '../ui/ResilientWebsocket'
+import { logger } from '../logger/Logger'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -88,13 +90,50 @@ export class Workspace {
         makeAutoObservable(this)
     }
 
+    /** will be created only after we've loaded cnfig file
+     * so we don't attempt to connect to some default server */
+    ws!: ResilientWebSocketClient
+
     async init() {
         // this.scripts.push(this.script)
         // const dts = this.schema.codegenDTS()
-        this.startWSClientSafe()
+        this.ws = new ResilientWebSocketClient({ url: () => this.serverHostWs, onMessage: this.onMessage })
         await this.loadProjects()
         await this.fetchObjectsSchema()
         // this.editor.openCODE()
+    }
+
+    sid = 'temp'
+
+    onMessage = (e: MessageEvent /* WS.MessageEvent*/) => {
+        const msg: WsMsg = JSON.parse(e.data as any)
+        logger.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+        if (msg.type === 'status') {
+            if (msg.data.sid) this.sid = msg.data.sid
+            this.status = msg.data.status
+            return
+        }
+
+        // ensure current project is running
+        const project: Maybe<Project> = this.focusedProject
+        if (project == null) return console.log(`❌ received ${msg.type} but project is null`)
+
+        const currentRun: Run | null = project.currentRun
+        if (currentRun == null) return console.log(`❌ received ${msg.type} but currentRun is null`)
+
+        // ensure current step is a prompt
+        const promptStep: ScriptStep = currentRun.step
+        if (!(promptStep instanceof ScriptStep_prompt))
+            return console.log(`❌ received ${msg.type} but currentStep is not prompt`)
+
+        // defer accumulation to ScriptStep_prompt
+        if (msg.type === 'progress') return promptStep.onProgress(msg)
+        if (msg.type === 'executing') return promptStep.onExecuting(msg)
+        if (msg.type === 'executed') return promptStep.onExecuted(msg)
+
+        // unknown message payload ?
+        console.log('❌', 'Unknown message:', msg)
+        throw new Error('Unknown message type: ' + msg)
     }
 
     private RANDOM_IMAGE_URL = 'http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output'
@@ -242,8 +281,8 @@ export class Workspace {
         // this.script.udpateCode(DemoScript1)
         // console.log('🟢 schema:', this.schema.nodes)
         return schema$
-        this.openComfySDK()
-        this.openCushySDK()
+        // this.openComfySDK()
+        // this.openCushySDK()
     }
 
     // openScript = () => {
@@ -254,91 +293,13 @@ export class Workspace {
     static Init = () => {}
 
     // TODO: finish this
-    get wsStatusTxt() {
-        if (this.ws == null) return 'not initialized'
-        if (this.ws?.readyState === WebSocket.OPEN) return 'connected'
-        if (this.ws?.readyState === WebSocket.CLOSED) return 'disconnected'
-        return 'connecting'
-    }
-    wsStatus: 'on' | 'off' = 'off'
-    get wsStatusEmoji() {
-        if (this.wsStatus === 'on') return '🟢'
-        if (this.wsStatus === 'off') return '🔴'
-        return '❓'
-    }
 
     get schemaStatusEmoji() {
         if (this.schema.nodes.length > 10) return '🟢'
         return '🔴'
     }
 
-    // get dtsStatusEmoji() {
-    //     if (this.dts.length > 10_000) return '🟢'
-    //     return '🔴'
-    // }
-
-    sid: string = 'temporary'
     status: ComfyStatus | null = null
-    ws: Maybe</*WS.WebSocket |*/ WebSocket> = null
-
-    startWSClientSafe = () => {
-        try {
-            this.startWSClient()
-        } catch (error) {
-            console.log(error)
-            console.log('🔴 failed to start websocket client')
-            this.CRITICAL_ERROR = {
-                title: 'Failed to start websocket client.',
-                help: 'Possibly a CORS issue, check your navigator logs.',
-            }
-        }
-    }
-    startWSClient = () => {
-        if (this.ws) {
-            if (this.ws?.readyState === WebSocket.OPEN) this.ws.close()
-            this.wsStatus = 'off'
-        }
-        const ws = new WebSocket(this.serverHostWs)
-        // typeof window !== 'undefined' //
-        //     ? new WebSocket(this.serverHostWs)
-        //     : new WS.WebSocket(this.serverHostWs)
-        ws.binaryType = 'arraybuffer'
-        ws.onopen = () => {
-            console.log('[👢] connected')
-            this.wsStatus = 'on'
-        }
-        ws.onmessage = (e: MessageEvent /* WS.MessageEvent*/) => {
-            const msg: WsMsg = JSON.parse(e.data as any)
-            console.log(`[🐰] %c${msg.type} %c${JSON.stringify(msg.data)}`, 'color:#90bdff', 'color:gray')
-            if (msg.type === 'status') {
-                if (msg.data.sid) this.sid = msg.data.sid
-                this.status = msg.data.status
-                return
-            }
-
-            // ensure current project is running
-            const project: Maybe<Project> = this.focusedProject
-            if (project == null) return console.log(`❌ received ${msg.type} but project is null`)
-
-            const currentRun: Run | null = project.currentRun
-            if (currentRun == null) return console.log(`❌ received ${msg.type} but currentRun is null`)
-
-            // ensure current step is a prompt
-            const promptStep: ScriptStep = currentRun.step
-            if (!(promptStep instanceof ScriptStep_prompt))
-                return console.log(`❌ received ${msg.type} but currentStep is not prompt`)
-
-            // defer accumulation to ScriptStep_prompt
-            if (msg.type === 'progress') return promptStep.onProgress(msg)
-            if (msg.type === 'executing') return promptStep.onExecuting(msg)
-            if (msg.type === 'executed') return promptStep.onExecuted(msg)
-
-            // unknown message payload ?
-            console.log('❌', 'Unknown message:', msg)
-            throw new Error('Unknown message type: ' + msg)
-        }
-        this.ws = ws
-    }
 
     notify = (msg: string) => void toast(msg)
 

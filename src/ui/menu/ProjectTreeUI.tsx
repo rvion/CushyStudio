@@ -20,8 +20,14 @@ export const ProjectTreeUI = observer(function MenuUI_() {
             }}
         >
             <TreeItem>
-                <TreeItemLayout onClick={() => (workspace.focusedFile = null)} iconBefore={<I.Options24Filled />}>
-                    Config
+                <TreeItemLayout
+                    iconAfter={
+                        workspace.ws.isOpen ? <I.CheckmarkCircle24Filled color='green' /> : <I.ErrorCircle24Regular color='red' />
+                    }
+                    onClick={() => (workspace.focusedFile = null)}
+                    iconBefore={<I.Options24Filled />}
+                >
+                    Connection
                 </TreeItemLayout>
             </TreeItem>
             <TreeItem>

@@ -38,10 +38,14 @@ body {
 .content-center {justify-content: center; }
 .self-stretch { align-self: stretch; }
 .self-start { align-self: flex-start; }
+.p { padding: .6rem; }
 .px { padding-left: .6rem; padding-right: .6rem; }
 .py { padding-top: .6rem; padding-bottom: .6rem; }
 .darker { filter: brightness(.9); }
 .pointer { cursor: pointer; }
+.light {color: gray;}
+.mono {font-family: monospace;}
+
 /* Wrapper ------------------------------------- */
 html, body, #root {height: 100%;}
 #root {
@@ -65,9 +69,14 @@ html, body, #root {height: 100%;}
     backdrop-filter: blur(6.3px);
     border: 1px solid rgba(255, 255, 255, 0.29);
 }
+
+.rainbowbg {
+    background: linear-gradient( 45deg, #464689, #541a54 );
+}
+
 .welcome-screen input {padding: .5rem;}
 .welcome-screen {
-    background: linear-gradient( 45deg, #464689, #541a54 );
+    /* background: linear-gradient( 45deg, #464689, #541a54 ); */
     height: 100vh;
     display: flex;
     flex-direction: column;

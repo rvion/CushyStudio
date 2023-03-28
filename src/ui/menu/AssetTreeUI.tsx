@@ -30,7 +30,7 @@ export const AssetTreeUI = observer(function AssetTreeUI_(p: { children: React.R
             {p.children ? (
                 p.children
             ) : (
-                <TreeItemLayout iconBefore={<I.Server24Filled />} aside={client.wsStatus === 'on' ? IsOK : HasProblem}>
+                <TreeItemLayout iconBefore={<I.Server24Filled />} aside={client.ws.isOpen ? IsOK : HasProblem}>
                     Assets
                 </TreeItemLayout>
             )}
