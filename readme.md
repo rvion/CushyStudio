@@ -125,3 +125,27 @@ See [#Developpment](#developpment) for how to install and get up and running
 
 -   [ ] `store` node for persistng node output across flow evaluation
 -   [ ] `promptID` that can be sent to the server to be included in every `'status'` , `'progress'` , `'executing'` & `'executed'` update payloads -->
+
+## About - Goals with CushyStudio, License, and Sustainability
+
+Here are my goals with CushyStudio :
+
+-   Make a cool project that I love to play with.
+-   Have fun with the Community (& grow a community ?).
+-   Share a fun journey with collaborators.
+-   No paywall, no restricted features, no crippling the project for the sake of making money.
+-   Ensure the project remains free and open source.
+-   Make some money in a non agressive way from those who can, to keep working and supporting CushyStudio.
+-   I don't want people to be afraid of using CushyStudio because of some license problem.
+-   I also don't want people reselling CushyStudio.
+-   and I don't want to work for free.
+
+=> I'll go with a **GPL** License + **Contributor License Agreement (CLA)**.
+
+While it's free and open-source for all, I'll be able to:
+
+-   Solicit donations, (though a Patreon or github support)
+-   Sell support, either by contract or by incident.
+-   Sell development services, where people pay to add features to CushyStudio.
+-   Sell a non-GPL version of the code to companies that want to embed CushyStudio in their products.
+-   ~~WON'T DO: sell a premium version with extra feature.~~
