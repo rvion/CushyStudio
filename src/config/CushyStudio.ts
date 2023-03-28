@@ -1,4 +1,5 @@
 import * as path from '@tauri-apps/api/path'
+import * as os from '@tauri-apps/api/os'
 import { makeAutoObservable } from 'mobx'
 import { Maybe } from '../core/ComfyUtils'
 import { Workspace } from '../core/Workspace'
@@ -15,11 +16,21 @@ export class CushyStudio {
         makeAutoObservable(this)
     }
 
+    fetchBasicEnvInfos: Promise<void> = Promise.all([
+        //
+        os.platform(),
+    ]).then(([os]) => {
+        this.os = os
+    })
+
+    os: Maybe<os.Platform> = null
+
     /** currently opened workspace */
     workspace: Maybe<Workspace> = null
 
     openWorkspace = async (folderPath: string): Promise<Workspace> => {
-        this.workspace = await Workspace.OPEN(folderPath)
+        this.workspace = await Workspace.OPEN(this, folderPath)
+        await this.fetchBasicEnvInfos
         const prevRecentProjects: string[] = this.userConfig.value.recentProjects ?? []
 
         let nextRecentProjects: string[] = [folderPath, ...prevRecentProjects.filter((p) => p !== folderPath)]

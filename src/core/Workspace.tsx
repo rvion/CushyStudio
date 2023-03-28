@@ -2,6 +2,7 @@ import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
 import type { Run } from './Run'
 import type { ScriptStep } from './ScriptStep'
+import type { CushyStudio } from '../config/CushyStudio'
 
 import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
@@ -60,14 +61,18 @@ export class Workspace {
         // this.layout.openEditorTab(this.CushySDKBuff)
     }
 
-    static OPEN = async (folder: string): Promise<Workspace> => {
-        const workspace = new Workspace(folder)
+    static OPEN = async (cushy: CushyStudio, folder: string): Promise<Workspace> => {
+        const workspace = new Workspace(cushy, folder)
         await workspace._schema.finished
         await workspace._config.finished
         void workspace.init()
         return workspace
     }
-    private constructor(public folder: string) {
+    private constructor(
+        //
+        public cushy: CushyStudio,
+        public folder: string,
+    ) {
         // this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema({})
         this.CushySDKBuff = new TypescriptBuffer(this, { name: 'sdk', path: this.folder + path.sep + 'cushy.d.ts', def: null }) //`file:///core/sdk.d.ts`)

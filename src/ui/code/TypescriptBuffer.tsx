@@ -75,6 +75,7 @@ export class TypescriptBuffer {
 
     /** internal path as needed for monaco engine */
     get monacoPath(): string {
+        if (this.workspace.cushy.os === 'win32') return `file:///${this.path}`
         return `file://${this.path}`
     }
 
