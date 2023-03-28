@@ -6,7 +6,7 @@ import DockLayout, { PanelData, TabData } from 'rc-dock'
 import { Workspace } from '../../core/Workspace'
 import { TutorialUI } from '../../help/TutorialUI'
 import { TypescriptBuffer } from '../code/TypescriptBuffer'
-import { TypescriptEditorUI } from '../code/ComfyCodeEditorUI'
+import { TypescriptEditorUI } from '../code/TypescriptEditorUI'
 import { defaultLayout } from './LayoutDefault'
 import { nanoid } from 'nanoid'
 

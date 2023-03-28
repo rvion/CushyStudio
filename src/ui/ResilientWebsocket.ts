@@ -49,7 +49,6 @@ export class ResilientWebSocketClient {
             logger.debug('🧦', 'Previous WebSocket discarded')
             prevWS.close()
         }
-
         const ws = new WebSocket(this.url)
         ws.binaryType = 'arraybuffer'
 

@@ -2,14 +2,13 @@ import { Button, Card, Input } from '@fluentui/react-components'
 import { Alert, Field } from '@fluentui/react-components/unstable'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { LoggerUI } from '../../logger/LoggerUI'
 import { useWorkspace } from '../WorkspaceContext'
 
 export const PConnectUI = observer(function PConnectUI_(p: {}) {
     const client = useWorkspace()
     return (
         <div className='row gap items-start'>
-            <Card className='grow'>
+            <Card>
                 <h3 className='row'>
                     <div>Server </div>
                     <div className='grow'></div>
@@ -47,7 +46,7 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                     </Alert>
                 )}
             </Card>
-            <LoggerUI className='grow' />
+            {/* <LoggerUI className='grow' /> */}
         </div>
     )
 })
