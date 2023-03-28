@@ -1,5 +1,6 @@
 import { LayoutData } from 'rc-dock'
 import { CivitaiUI } from '../../civitai/CivitaiBrowserUI'
+import { LoggerUI } from '../../logger/LoggerUI'
 import { ExecutionUI } from '../ExecutionUI'
 import { MainPanelUI } from '../MainPaneUI'
 import { MenuUI } from '../menu/MenuUI'
@@ -60,6 +61,15 @@ export const defaultLayout = (): LayoutData => ({
                             //     title: 'Graph',
                             //     content: <VisUI />,
                             // },
+                        ],
+                    },
+                    {
+                        tabs: [
+                            {
+                                id: 'logs',
+                                title: 'Logs',
+                                content: <LoggerUI />,
+                            },
                         ],
                     },
                 ],
