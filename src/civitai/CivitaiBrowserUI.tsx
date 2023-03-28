@@ -4,6 +4,7 @@ import { useMemo } from 'react'
 import { Civitai } from './CivitaiAPI'
 import { useWorkspace } from '../ui/WorkspaceContext'
 import * as I from '@fluentui/react-icons'
+
 export const CivitaiUI = observer(function CivitaiUI_() {
     const c = useMemo(() => new Civitai(), [])
     const x = useWorkspace()
