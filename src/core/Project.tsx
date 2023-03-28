@@ -66,7 +66,7 @@ export class Project {
         this.scriptBuffer = new TypescriptBuffer(this.workspace, {
             name: this.folderName,
             path: this.folderPath + path.sep + 'script.ts',
-            def: '',
+            def: initialCode,
         })
         makeAutoObservable(this)
     }
@@ -75,14 +75,16 @@ export class Project {
     get schema() { return this.workspace.schema } // prettier-ignore
 
     get code() { return this.scriptBuffer.code } // prettier-ignore
-    udpateCode = async (code: string) => (this.scriptBuffer.code = code)
+
+    udpateCode = async (code: string) => this.scriptBuffer.initProgrammatically(code)
 
     static FROM_JSON = (client: Workspace, json: ComfyPromptJSON) => {
         const folderName = nanoid()
-        const script = new Project(client, folderName)
         const code = new ComfyImporter(client).convertFlowToCode(json)
-        script.udpateCode(code)
-        return script
+        const project = new Project(client, folderName, code)
+        // console.log('🔴', code)
+        // script.udpateCode(code)
+        return project
     }
 
     /** converts a ComfyPromptJSON into it's canonical normal-form script */
