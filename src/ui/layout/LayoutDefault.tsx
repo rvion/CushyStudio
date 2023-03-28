@@ -1,6 +1,7 @@
 import { LayoutData } from 'rc-dock'
 import { CivitaiUI } from '../../civitai/CivitaiBrowserUI'
 import { LoggerUI } from '../../logger/LoggerUI'
+import { OpenPoseViewerUI } from '../../openpose/OpenPoseUI'
 import { ExecutionUI } from '../ExecutionUI'
 import { MainPanelUI } from '../MainPaneUI'
 import { MenuUI } from '../menu/MenuUI'
@@ -48,6 +49,11 @@ export const defaultLayout = (): LayoutData => ({
                                 id: 'Editor1',
                                 title: 'Main',
                                 content: <MainPanelUI />,
+                            },
+                            {
+                                id: 'OpenPosePlayground',
+                                title: 'OpenPose',
+                                content: <OpenPoseViewerUI />,
                             },
                             // {
                             //     minHeight: 280,
