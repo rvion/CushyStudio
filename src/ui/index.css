@@ -179,9 +179,9 @@ input {
     background-color: #9a7070;
 }
 
-
+.dock-tabpane,
 #node-list{
-    overflow: auto;
+    overflow-y: auto !important;
 }
 
 .highlighted {
