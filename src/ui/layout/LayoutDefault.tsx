@@ -44,6 +44,7 @@ export const defaultLayout = (): LayoutData => ({
                 destroyInactiveTabPane: true,
                 children: [
                     {
+                        size: 10,
                         tabs: [
                             {
                                 id: 'Editor1',
@@ -70,6 +71,7 @@ export const defaultLayout = (): LayoutData => ({
                         ],
                     },
                     {
+                        size: 3,
                         tabs: [
                             {
                                 id: 'logs',
