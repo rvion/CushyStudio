@@ -22,7 +22,7 @@ export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
                 <div>{layout.gallerySize}px</div>
             </div>
             <div className='row wrap gap'>
-                {images.length === 0 ? <>No image yet; start generating !</> : null}
+                {/* {images.length === 0 ? <>No image yet; start generating !</> : null} */}
                 {images.map((i) => (
                     <Image
                         //
