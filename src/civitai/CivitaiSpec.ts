@@ -1,6 +1,6 @@
 import type { Maybe } from '../core/ComfyUtils'
 
-import { Body, fetch } from '@tauri-apps/api/http'
+import { fetch } from '@tauri-apps/api/http'
 import { makeAutoObservable } from 'mobx'
 
 // civitai wrapper

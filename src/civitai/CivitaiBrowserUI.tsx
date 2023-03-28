@@ -1,7 +1,7 @@
 import { Button, Card, Image, Input, Text } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { Civitai } from './CivitaiAPI'
+import { Civitai } from './CivitaiSpec'
 import { useWorkspace } from '../ui/WorkspaceContext'
 import * as I from '@fluentui/react-icons'
 
