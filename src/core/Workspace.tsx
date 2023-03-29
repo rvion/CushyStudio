@@ -21,6 +21,7 @@ import { ScriptStep_prompt } from './ScriptStep_prompt'
 import { c__ } from '../ui/sdkDTS'
 import { ResilientWebSocketClient } from '../ui/ResilientWebsocket'
 import { logger } from '../logger/Logger'
+import { defaultScript } from './defaultProjectCode'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -166,7 +167,7 @@ export class Workspace {
         return this.uploadUIntArrToComfy(blob)
     }
 
-    createProject = (folderName: string, script?: string) => {
+    createProject = (folderName: string, script: string = defaultScript) => {
         const project = new Project(this, folderName, script)
         this.projects.push(project)
         this.focusedProject = project

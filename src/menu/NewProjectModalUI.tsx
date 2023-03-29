@@ -60,9 +60,6 @@ export const NewProjectModalUI = observer(function NewProjectModalUI_(p: { child
                     </DialogContent>
                     <DialogActions>
                         <DialogTrigger disableButtonEnhancement>
-                            <Button appearance='secondary'>Cancel</Button>
-                        </DialogTrigger>
-                        <DialogTrigger disableButtonEnhancement>
                             <Button
                                 onClick={() => {
                                     workspace.createProject(wizard.name)
@@ -71,6 +68,9 @@ export const NewProjectModalUI = observer(function NewProjectModalUI_(p: { child
                             >
                                 Create
                             </Button>
+                        </DialogTrigger>
+                        <DialogTrigger disableButtonEnhancement>
+                            <Button appearance='secondary'>Cancel</Button>
                         </DialogTrigger>
                     </DialogActions>
                 </DialogBody>

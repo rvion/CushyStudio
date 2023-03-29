@@ -23,6 +23,7 @@ workspace/*
 !workspace/workspace.json
 !workspace/demo-1
 !workspace/demo-2
+!workspace/demo-3
 
 workspace/**/*.png
 workspace/**/*.cushy

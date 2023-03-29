@@ -22,22 +22,22 @@ export class Project {
         return this.workspace.folder + path.sep + this.folderName
     }
 
-    save = async () => {
-        const code = this.code
-        // ensure folder exists
-        await fs.createDir(this.folderPath, { recursive: true })
-        // safe script as script.ts
-        const filePath = this.folderPath + path.sep + 'script.ts'
-        await fs.writeFile({ path: filePath, contents: code })
-        // return success
-        console.log('[📁] saved', filePath)
-    }
+    // save = async () => {
+    //     const code = this.code
+    //     // ensure folder exists
+    //     await fs.createDir(this.folderPath, { recursive: true })
+    //     // safe script as script.ts
+    //     // const filePath = this.folderPath + path.sep + 'script.ts'
+    //     // await fs.writeFile({ path: filePath, contents: code })
+    //     // return success
+    //     console.log('[📁] saved', filePath)
+    // }
 
     duplicate = async () => {
         this.workspace.createProject(
             //
             this.folderName + '_copy_' + Date.now(),
-            this.code,
+            this.scriptBuffer.codeTS,
         )
     }
 
@@ -75,8 +75,6 @@ export class Project {
     /** convenient getter to retrive current client shcema */
     get schema() { return this.workspace.schema } // prettier-ignore
 
-    get code() { return this.scriptBuffer.codeTS } // prettier-ignore
-
     static FROM_JSON = (client: Workspace, json: ComfyPromptJSON) => {
         const folderName = nanoid()
         const code = new ComfyImporter(client).convertFlowToCode(json)
@@ -104,7 +102,8 @@ export class Project {
     RUN = async (mode: RunMode = 'fake'): Promise<boolean> => {
         this.workspace.focusedProject = this
         // ensure we have some code to run
-        if (this.code == null) {
+        const codeJS = this.scriptBuffer.codeJS
+        if (codeJS == null) {
             console.log('❌', 'no code to run')
             return false
         }
@@ -116,14 +115,14 @@ export class Project {
         this.runs.unshift(execution)
 
         // try {
-        const finalCode = this.code.replace(`export {}`, '')
-        const ProjectScriptFn = new Function('C', `return (async() => { ${finalCode} })()`)
+        const ProjectScriptFn = new Function('WORKFLOW', codeJS)
         const graph = execution.graph
 
         // graph.runningMode = mode
         // this.MAIN = graph
 
-        await ProjectScriptFn(graph)
+        const WORKFLOW = (fn: any) => fn(graph)
+        await ProjectScriptFn(WORKFLOW)
         console.log('[✅] RUN SUCCESS')
         // this.isRunning = false
         return true
