@@ -24,6 +24,8 @@ workspace/*
 !workspace/demo-1
 !workspace/demo-2
 !workspace/demo-3
+!workspace/cushy.d.ts
+!workspace/comfy.d.ts
 
 workspace/**/*.png
 workspace/**/*.cushy
