@@ -9,48 +9,61 @@
 
 <!-- Introduction -->
 
-`CushyStudio` is a **Graphical Software** for creatives and developpers, to create art, game assets, or any other kind of 2d visual production (_generative art_). It aims to offers power-user tools via a scripting layer, along modern tools to gather human-feedback and help with interractive curation and guidance along generation processes. `CushyStudio` uses the [ComfyUI]() project as bakend to execute your pipelines.
+`CushyStudio` is a **Graphical Software** for creatives and developpers, to create art, game assets,
+or any other kind of 2d visual production (_generative art_). It aims to offers power-user tools via
+a scripting layer, along modern tools to gather human-feedback and help with interractive curation
+and guidance along generation processes. `CushyStudio` uses the [ComfyUI]() project as bakend to
+execute your pipelines.
 
 <!--
-Build and automate your art or game asset production.
-Deploy interractive generative art pipelines with human curation, validation and guidance. -->
-
-## Table of Contents 📌
-
-[Getting started](#getting-started) •
-[Installation](#installation) •
-[Configuration](#configuration) •
-[Integrations](#third-party-integrations)
+    Build and automate your art or game asset production.
+    Deploy interractive generative art pipelines with human curation, validation and guidance.
+-->
 
 </div>
 
 ## Project status
 
-|             |                                                                                                                                                                                                                                                                                                                                                |
-| ----------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `Stability` | ![test](https://img.shields.io/badge/Stability-ALPHA-red?style=flat)                                                                                                                                                                                                                                                                           |
-|     `Build` | [![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio?style=flat)                                                                         |
-|    `Growth` | ![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total?style=flat) [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Frvion%2FCushyStudio&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com) |
-| `Community` | [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)                                                                                                                                                                                                                                                         |
+| ![test](https://img.shields.io/badge/Stability-ALPHA-red?style=flat) | 👋 help welcome !                                                                                                                                                                                                                                                                                                                              |
+| -------------------------------------------------------------------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|                                                              `Build` | [![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio?style=flat)                                                                         |
+|                                                             `Growth` | ![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total?style=flat) [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Frvion%2FCushyStudio&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com) |
+|                                                          `Community` | [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)                                                                                                                                                                                                                                                         |
 
 <!-- ![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=flat&logo=reddit) ![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=flat&logo=twitter) -->
 
+## Table of Contents 📌
+
+-   [Features](#features) •
+-   [Getting started](#getting-started) •
+-   [Installation](#installation) •
+-   [Configuration](#configuration) •
+-   [Integrations](#third-party-integrations)
+
+-   [Developpment](#developpment)
+-   [Contributing](#contributing)
+-   [Architecture](#architecture)
+
 ## Features
 
-[🟢 = acceptable, 🟡 = partial, ☣️ = not ready]
+<!-- [🟢 = acceptable, 🟡 = partial, ☣️ = not ready] -->
 
 -   🟡 workspace and project management
 -   🟡 Simple to install
-    -   🟢 small footprint, self contained binary
+    -   🟢 small footprint
     -   ☢️ self-updating binary for simple
 -   ☢️ integrated `OpenPose` library to `puppet`, `animate`, `interpolate` frames of stickmans
     -   🟡 generate bone images from openpose definitions
     -
+-   Dynamic Evaluation
 -   🟡 Deep ComfyUI Integration
     -   🟢 Custom nodes support
     -
 -   ⏳ Civitai Integration
     -   🟡 search
+-   ☢️ Parrallel Execution
+    -   ☢️ multiple Comfy Server support
+    -   ☢️ multiple Comfy Server support
 
 ## Short-term Roadmap
 
@@ -69,8 +82,6 @@ then
 -   [ ] button to open devtools
 -   [ ] switch releases to allow for devtools
 
-## Getting started
-
 ## Screenshots
 
 ![](website/static/img/screenshots/2023-03-24-09-29-45.png)
@@ -83,10 +94,20 @@ then
 
 ## Installation
 
+You can either install by cloning the source and following the [developpment](#developpment) instructions, or by downloading the latest release.
+
 1.  [install CushyStudio](http://github.com/rvion/CushyStudio/releases)
 1.  [install ComfyUI](https://github.com/comfyanonymous/ComfyUI)
     -   [Download Models](scripts/download-models.sh)
     -   start Comfy `python main.py --listen 0.0.0.0`
+
+---
+
+## Getting started
+
+This readme section will contain a minimalist tutorial so you can check everything works as expected.
+
+TODO
 
 ---
 
