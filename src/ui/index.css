@@ -179,11 +179,32 @@ input {
     background-color: #9a7070;
 }
 
+/* RC-DOCK --------------------------------------------- */
+/* makes tabs smaller to gain some space on small screens */
+.dock-extra-content,
+.dock-tab,
+.dock-nav-more{ height: unset; }
+/* remove some padding on tab names */
+.dock-tab > div { padding: .3rem !important; }
+/* ensure all panes are scollable */
 .dock-tabpane,
-#node-list{
-    overflow-y: auto !important;
+#node-list{ overflow-y: auto !important; }
+/* remove all animations */
+.dock-nav-animated ,
+.dock-tab,
+.dock-content-animated,
+.dock-top > div > .dock-nav .dock-ink-bar-animated,
+.dock-tab-close-btn,
+.dock-nav-list,
+.dock-dropdown-menu-item,
+.dock-layout > .dock-drop-indicator,
+.dock-panel-max-btn,
+.dock-panel-min-btn,
+.dock-layout > :not(.dock-fbox) .dock-panel.dock-style-headless .dock-bar {
+    transition: none;
 }
 
+/* ---------------------------------------------------- */
 .highlighted {
     background-color: #060101;
     color: rgb(157, 157, 157);
