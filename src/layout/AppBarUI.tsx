@@ -4,8 +4,8 @@ import { observer } from 'mobx-react-lite'
 import * as I from '@fluentui/react-icons'
 import * as dialog from '@tauri-apps/api/dialog'
 import * as fs from '@tauri-apps/api/fs'
-import { WorkspaceToolbarUI } from '../ToolbarUI'
-import { useWorkspace } from '../WorkspaceContext'
+import { WorkspaceToolbarUI } from '../ui/ToolbarUI'
+import { useWorkspace } from '../ui/WorkspaceContext'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const client = useWorkspace()

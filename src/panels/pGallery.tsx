@@ -1,8 +1,8 @@
 import { Image, Label, Slider } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
-import { CSImage } from '../../core/CSImage'
+import { CSImage } from '../core/CSImage'
 import { useLayout } from '../layout/LayoutCtx'
-import { useWorkspace } from '../WorkspaceContext'
+import { useWorkspace } from '../ui/WorkspaceContext'
 
 export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
     const client = useWorkspace()

@@ -10,8 +10,8 @@ import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
 import { PersistedJSON } from '../config/PersistedJSON'
-import { TypescriptBuffer } from '../ui/code/TypescriptBuffer'
-import { CushyLayoutState } from '../ui/layout/LayoutState'
+import { TypescriptBuffer } from '../code/TypescriptBuffer'
+import { CushyLayoutState } from '../layout/LayoutState'
 import { readableStringify } from '../utils/stringifyReadable'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfySchema } from './ComfySchema'
@@ -261,8 +261,8 @@ export class Workspace {
         } catch (error) {
             console.log('🔴', error)
             this.CRITICAL_ERROR = {
-                title: 'Failed to fetch ObjectInfos from backend.',
-                help: 'Possibly a CORS issue, check your navigator logs.',
+                title: 'Failed to fetch ObjectInfos from Comfy.',
+                help: '',
             }
             schema$ = {}
         }

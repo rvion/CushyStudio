@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
-import { TypescriptEditorUI } from './code/TypescriptEditorUI'
+import { TypescriptEditorUI } from '../code/TypescriptEditorUI'
 import { ErrorScreenUI } from './ErrorScreenUI'
-import { PConnectUI } from './panels/pConnect'
+import { PConnectUI } from '../panels/pConnect'
 import { useWorkspace } from './WorkspaceContext'
 
 export const MainPanelUI = observer(function MainPanelUI_(p: {}) {

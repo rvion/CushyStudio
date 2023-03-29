@@ -1,11 +1,11 @@
 import type { TypescriptBuffer } from './TypescriptBuffer'
-import type { IStandaloneCodeEditor } from '../TypescriptOptions'
+import type { IStandaloneCodeEditor } from '../ui/TypescriptOptions'
 
 import { Spinner } from '@fluentui/react-components'
 import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
-import { ensureMonacoReady } from '../Monaco'
-import { ProjectToolbarUI } from '../ToolbarUI'
+import { ensureMonacoReady } from '../ui/Monaco'
+import { ProjectToolbarUI } from '../ui/ToolbarUI'
 
 ensureMonacoReady()
 

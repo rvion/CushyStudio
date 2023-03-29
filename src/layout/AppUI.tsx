@@ -3,13 +3,13 @@ import { useMemo } from 'react'
 
 import { FluentProvider, Spinner, webDarkTheme } from '@fluentui/react-components'
 import { ToastContainer } from 'react-toastify'
-import { CushyStudio } from '../../config/CushyStudio'
-import { GithubCorner } from '../GithubCorner'
-import { workspaceContext } from '../WorkspaceContext'
-import { OpenWorkspaceUI, WelcomeScreenUI } from '../WelcomeScreenUI'
+import { CushyStudio } from '../config/CushyStudio'
+import { GithubCorner } from '../ui/GithubCorner'
+import { workspaceContext } from '../ui/WorkspaceContext'
+import { OpenWorkspaceUI, WelcomeScreenUI } from '../ui/WelcomeScreenUI'
 import { AppBarUI } from './AppBarUI'
 import { CushyLayoutUI } from './LayoutUI'
-import { CSContext } from '../../config/CushyStudioContext'
+import { CSContext } from '../config/CushyStudioContext'
 
 export const AppUI = observer(function AppUI_() {
     const cs = useMemo(() => new CushyStudio(), [])

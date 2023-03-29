@@ -5,8 +5,8 @@ import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
 import { AssetTreeUI } from './AssetTreeUI'
 
-import { ScriptStep_prompt } from '../../core/ScriptStep_prompt'
-import { useWorkspace } from '../WorkspaceContext'
+import { ScriptStep_prompt } from '../core/ScriptStep_prompt'
+import { useWorkspace } from '../ui/WorkspaceContext'
 import { ExecutionStepIconUI } from './ExecutionStepIconUI'
 
 export const ProjectTreeUI = observer(function MenuUI_() {

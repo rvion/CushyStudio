@@ -15,7 +15,7 @@ import { ComfyNode } from './CSNode'
 import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
 import { wildcards } from '../embeds/wildcards'
 import { CSImage } from './CSImage'
-import { Cyto } from '../ui/graph/cyto'
+import { Cyto } from '../graph/cyto'
 
 export type RunMode = 'fake' | 'real'
 

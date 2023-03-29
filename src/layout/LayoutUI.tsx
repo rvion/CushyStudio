@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import DockLayout from 'rc-dock'
-import { useWorkspace } from '../WorkspaceContext'
+import { useWorkspace } from '../ui/WorkspaceContext'
 import { CushyLayoutContext } from './LayoutCtx'
 
 export const CushyLayoutUI = observer(function AppLayoutUI_() {

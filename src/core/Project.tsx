@@ -7,7 +7,7 @@ import { Workspace } from './Workspace'
 import { ComfyImporter } from './ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { Run } from './Run'
-import { TypescriptBuffer } from '../ui/code/TypescriptBuffer'
+import { TypescriptBuffer } from '../code/TypescriptBuffer'
 
 /** Script */
 export class Project {

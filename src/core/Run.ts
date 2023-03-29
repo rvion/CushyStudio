@@ -13,7 +13,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { fetch, Body } from '@tauri-apps/api/http'
 import { CSImage } from './CSImage'
-import { Cyto } from '../ui/graph/cyto'
+import { Cyto } from '../graph/cyto'
 import { getYYYYMMDD_HHMM_SS } from '../utils/timestamps'
 
 /** script exeuction instance */

@@ -6,7 +6,7 @@ import { comfyColors } from '../core/ComfyColors'
 import { ComfyGraph } from '../core/ComfyGraph'
 import { ComfyNode } from '../core/CSNode'
 import { ComfyNodeSchema } from '../core/ComfySchema'
-import { useLayout } from './layout/LayoutCtx'
+import { useLayout } from '../layout/LayoutCtx'
 import { NodeRefUI } from './NodeRefUI'
 
 export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }) {

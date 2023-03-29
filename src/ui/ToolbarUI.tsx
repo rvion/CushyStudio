@@ -12,7 +12,7 @@ import {
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
 import { useCS } from '../config/CushyStudioContext'
-import { NewProjectModalUI } from './menu/NewProjectModalUI'
+import { NewProjectModalUI } from '../menu/NewProjectModalUI'
 import { useWorkspace } from './WorkspaceContext'
 
 export const WorkspaceToolbarUI = observer(function WorkspaceToolbarUI_(props: Partial<ToolbarProps>) {

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { DropZoneUI } from '../DropZoneUI'
+import { DropZoneUI } from '../ui/DropZoneUI'
 import { ProjectTreeUI } from './ProjectTreeUI'
 
 export const MenuUI = observer(function IdeInfosUI_() {

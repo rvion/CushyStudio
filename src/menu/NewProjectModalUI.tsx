@@ -16,9 +16,9 @@ import * as I from '@fluentui/react-icons'
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import type { Maybe } from '../../core/ComfyUtils'
-import type { Workspace } from '../../core/Workspace'
-import { useWorkspace } from '../WorkspaceContext'
+import type { Maybe } from '../core/ComfyUtils'
+import type { Workspace } from '../core/Workspace'
+import { useWorkspace } from '../ui/WorkspaceContext'
 
 class ProjectCreationWizard {
     name = 'New project'

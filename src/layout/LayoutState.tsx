@@ -1,10 +1,10 @@
-import type { CSImage } from '../../core/CSImage'
+import type { CSImage } from '../core/CSImage'
 
 import { Image } from '@fluentui/react-components'
 import { makeObservable, observable } from 'mobx'
 import DockLayout, { PanelData, TabData } from 'rc-dock'
-import { Workspace } from '../../core/Workspace'
-import { TutorialUI } from '../../help/TutorialUI'
+import { Workspace } from '../core/Workspace'
+import { TutorialUI } from '../help/TutorialUI'
 import { TypescriptBuffer } from '../code/TypescriptBuffer'
 import { TypescriptEditorUI } from '../code/TypescriptEditorUI'
 import { defaultLayout } from './LayoutDefault'

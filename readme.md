@@ -51,7 +51,8 @@ _Project is still early, but here is an overview of the plan_
 
 -   🔶 **workspace and project management**
 -   🔶 **Import** existing projects
-    -   🟢 import from `ComfyUI`
+    -   🟢 import from `ComfyUI images`
+    -   🔶 import from `ComfyUI json`
     -   🔶 import from `Automatic1111`
     -   🔴 package assets with projects
 -   🔶 **Installer**

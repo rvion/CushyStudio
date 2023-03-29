@@ -1,10 +1,10 @@
-import type { Maybe } from '../../core/ComfyUtils'
-import type { Workspace } from '../../core/Workspace'
-import type { ITextModel } from '../TypescriptOptions'
+import type { Maybe } from '../core/ComfyUtils'
+import type { Workspace } from '../core/Workspace'
+import type { ITextModel } from '../ui/TypescriptOptions'
 import * as path from '@tauri-apps/api/path'
 import * as fs from '@tauri-apps/api/fs'
 import { makeObservable, observable } from 'mobx'
-import { globalMonaco } from '../Monaco'
+import { globalMonaco } from '../ui/Monaco'
 
 export class TypescriptBuffer {
     public name: string

@@ -1,12 +1,12 @@
 import { LayoutData } from 'rc-dock'
-import { CivitaiUI } from '../../civitai/CivitaiBrowserUI'
-import { LoggerUI } from '../../logger/LoggerUI'
-import { OpenPoseViewerUI } from '../../openpose/OpenPoseUI'
-import { ExecutionUI } from '../ExecutionUI'
-import { MainPanelUI } from '../MainPaneUI'
+import { CivitaiUI } from '../civitai/CivitaiBrowserUI'
+import { LoggerUI } from '../logger/LoggerUI'
+import { OpenPoseViewerUI } from '../openpose/OpenPoseUI'
+import { MainPanelUI } from '../ui/MainPaneUI'
 import { MenuUI } from '../menu/MenuUI'
 import { PGalleryUI } from '../panels/pGallery'
 import { PGalleryFocusUI } from '../panels/pGalleryFocus'
+import { ExecutionUI } from '../ui/ExecutionUI'
 
 export const defaultLayout = (): LayoutData => ({
     floatbox: {

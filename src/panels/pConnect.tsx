@@ -2,7 +2,7 @@ import { Button, Card, Input } from '@fluentui/react-components'
 import { Alert, Field } from '@fluentui/react-components/unstable'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { useWorkspace } from '../WorkspaceContext'
+import { useWorkspace } from '../ui/WorkspaceContext'
 
 export const PConnectUI = observer(function PConnectUI_(p: {}) {
     const client = useWorkspace()
