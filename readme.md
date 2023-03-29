@@ -1,51 +1,56 @@
 <div align="center">
 
-# 🛋 CushyStudio
+# 🛋 CushyStudio - _Generative Art studio_
 
 [![Windows Support](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
+[![MacOS Support](https://img.shields.io/badge/MACOS-adb8c5?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
 [![Ubuntu Support](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
 [![Arch Linux Support](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
-[![Windows Support](https://img.shields.io/badge/MACOS-adb8c5?style=for-the-badge&logo=macos&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
 
-<!-- [![Downloads][downloads-badge]][releases] -->
+<!-- Introduction -->
 
-<!-- https://shields.io/ -->
+`CushyStudio` is a **Graphical Software** for creatives and developpers, to create art, game assets, or any other kind of 2d visual production (_generative art_). It aims to offers power-user tools via a scripting layer, along modern tools to gather human-feedback and help with interractive curation and guidance along generation processes. `CushyStudio` uses the [ComfyUI]() project as bakend to execute your pipelines.
 
-<!-- ![Discord](https://img.shields.io/discord/1087008112969531513) -->
-
-<!-- https://discord.gg/GfAN6hF2ad -->
-
-## **Full-featured** generative Art studio.
-
-**🔴 EARLY ACCESS - ALPHA QUALITY 🔴**
-
+<!--
 Build and automate your art or game asset production.
+Deploy interractive generative art pipelines with human curation, validation and guidance. -->
 
-Deploy interractive generative art pipelines with human curation, validation and guidance.
+## Table of Contents 📌
 
 [Getting started](#getting-started) •
 [Installation](#installation) •
 [Configuration](#configuration) •
 [Integrations](#third-party-integrations)
 
-[![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio)
-![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total)
-
-![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=flat&logo=reddit)
-![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=flat&logo=twitter)
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Frvion%2FCushyStudio&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
-
-[![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
-
 </div>
 
-## Custom nodes support ✅
+## Project status
 
-Custom nodes are supported.
-If they don't work, that's a bug report to fill.
+|             |                                                                                                                                                                                                                                                                                                                                                |
+| ----------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Stability` | ![test](https://img.shields.io/badge/Stability-ALPHA-red?style=flat)                                                                                                                                                                                                                                                                           |
+|     `Build` | [![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio?style=flat)                                                                         |
+|    `Growth` | ![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total?style=flat) [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Frvion%2FCushyStudio&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com) |
+| `Community` | [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)                                                                                                                                                                                                                                                         |
 
-known bugs: - https://civitai.com/models/19625/comfyui-custom-nodes
+<!-- ![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=flat&logo=reddit) ![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=flat&logo=twitter) -->
+
+## Features
+
+[🟢 = acceptable, 🟡 = partial, ☣️ = not ready]
+
+-   🟡 workspace and project management
+-   🟡 Simple to install
+    -   🟢 small footprint, self contained binary
+    -   ☢️ self-updating binary for simple
+-   ☢️ integrated `OpenPose` library to `puppet`, `animate`, `interpolate` frames of stickmans
+    -   🟡 generate bone images from openpose definitions
+    -
+-   🟡 Deep ComfyUI Integration
+    -   🟢 Custom nodes support
+    -
+-   ⏳ Civitai Integration
+    -   🟡 search
 
 ## Short-term Roadmap
 
@@ -64,20 +69,11 @@ then
 -   [ ] button to open devtools
 -   [ ] switch releases to allow for devtools
 
-## Known Bugs
-
--   custom nodes may crash due to spaces in their name
-    -   [ ] should be fixed soon
-
 ## Getting started
 
-<!-- ![](docs/images/2023-03-14_06-47-30.png) -->
+## Screenshots
 
 ![](website/static/img/screenshots/2023-03-24-09-29-45.png)
-
-<!-- ## Features
-
--
 
 ### Type-safe everywhere
 
