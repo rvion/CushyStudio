@@ -24,23 +24,23 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                 <Field label='http(s) URL to access Comfy'>
                     <Input
                         contentBefore={'🫖'}
-                        value={client._config.value.comfyHTTPURL}
-                        onChange={(ev) => (client._config.value.comfyHTTPURL = ev.target.value)}
+                        value={client.workspaceConfigFile.value.comfyHTTPURL}
+                        onChange={(ev) => client.workspaceConfigFile.update({ comfyHTTPURL: ev.target.value })}
                     />
                 </Field>
                 <Field label='ws(s) ENDPOINT to access Comfy'>
                     <Input
                         contentBefore={'🧦'}
-                        value={client._config.value.comfyWSURL}
-                        onChange={(ev) => (client._config.value.comfyWSURL = ev.target.value)}
+                        value={client.workspaceConfigFile.value.comfyWSURL}
+                        onChange={(ev) => client.workspaceConfigFile.update({ comfyWSURL: ev.target.value })}
                     />
                 </Field>
-                <div className='row gap'>
-                    <Button appearance='primary' onClick={() => client._config.save()} icon={<I.Save24Filled />}>
+                {/* <div className='row gap'>
+                    <Button appearance='primary' onClick={() => client.config.save()} icon={<I.Save24Filled />}>
                         Save
                     </Button>
-                </div>
-                {client._config.value.comfyWSURL.endsWith('/ws') ? null : (
+                </div> */}
+                {client.workspaceConfigFile.value.comfyWSURL.endsWith('/ws') ? null : (
                     <Alert appearance='inverted' icon={<I.Warning24Filled color='red' />}>
                         did you forget `/ws` at the end of the websocket url ?
                     </Alert>

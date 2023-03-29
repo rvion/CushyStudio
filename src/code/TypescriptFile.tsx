@@ -6,7 +6,7 @@ import * as fs from '@tauri-apps/api/fs'
 import { makeObservable, observable } from 'mobx'
 import { globalMonaco } from '../ui/Monaco'
 
-export class TypescriptBuffer {
+export class TypescriptFile {
     public name: string
     public path: string
     constructor(
@@ -87,7 +87,7 @@ export class TypescriptBuffer {
     // }
 
     /** initialize a buffer that may or may not exist on disk */
-    initProgrammatically = async (value: Maybe<string>): Promise<boolean> => {
+    updateFromCodegen = async (value: Maybe<string>): Promise<boolean> => {
         if (value == null) return false
         console.log(`[📝] updating ${this.monacoPath} with ${value.length} chars`)
         this.code = value
@@ -96,7 +96,7 @@ export class TypescriptBuffer {
         return true
     }
 
-    udpateCodeFromEditor = (value: Maybe<string>) => {
+    udpateFromEditor = (value: Maybe<string>) => {
         if (value == null) return console.log('❌ value is null; aborting')
         console.log(`[📝] updating ${this.monacoPath} with ${value.length} chars`)
         // if (this.textModel) this.textModel.setValue(value)

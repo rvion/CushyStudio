@@ -3,7 +3,7 @@ import * as os from '@tauri-apps/api/os'
 import { makeAutoObservable } from 'mobx'
 import { Maybe } from '../core/ComfyUtils'
 import { Workspace } from '../core/Workspace'
-import { PersistedJSON } from './PersistedJSON'
+import { JsonFile } from './JsonFile'
 
 export type UserConfigJSON = {
     version: 1
@@ -36,7 +36,7 @@ export class CushyStudio {
         let nextRecentProjects: string[] = [folderPath, ...prevRecentProjects.filter((p) => p !== folderPath)]
         if (nextRecentProjects.length > 10) nextRecentProjects = nextRecentProjects.slice(0, 10)
 
-        this.userConfig.assign({ recentProjects: nextRecentProjects })
+        this.userConfig.update({ recentProjects: nextRecentProjects })
         return this.workspace
     }
 
@@ -44,8 +44,8 @@ export class CushyStudio {
         this.workspace = null
     }
 
-    userConfig = new PersistedJSON<UserConfigJSON>({
-        name: 'userConfig.json',
+    userConfig = new JsonFile<UserConfigJSON>({
+        name: 'cushy-studio.json',
         init: (): UserConfigJSON => ({ version: 1, theme: 'dark', recentProjects: [] }),
         folder: path.appConfigDir(),
         onReady: (data) => {

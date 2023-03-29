@@ -1,4 +1,4 @@
-import type { TypescriptBuffer } from './TypescriptBuffer'
+import type { TypescriptFile } from './TypescriptFile'
 import type { IStandaloneCodeEditor } from '../ui/TypescriptOptions'
 
 import { Spinner } from '@fluentui/react-components'
@@ -8,7 +8,7 @@ import { ProjectToolbarUI } from '../ui/ToolbarUI'
 
 export const TypescriptEditorUI = observer(function TypescriptEditorUI_(p: {
     //
-    buffer: TypescriptBuffer
+    buffer: TypescriptFile
 }) {
     const buff = p.buffer
     const textModel = buff.textModel
@@ -24,7 +24,7 @@ export const TypescriptEditorUI = observer(function TypescriptEditorUI_(p: {
                     keepCurrentModel
                     options={{ automaticLayout: true }}
                     theme='vs-dark'
-                    onChange={(e) => buff.udpateCodeFromEditor(e)}
+                    onChange={(e) => buff.udpateFromEditor(e)}
                     onMount={(editor: IStandaloneCodeEditor, _monaco: Monaco) => {
                         editor.updateOptions({ wordWrap: 'off' })
                         editor.setModel(textModel)

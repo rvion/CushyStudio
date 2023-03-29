@@ -9,8 +9,8 @@ import * as path from '@tauri-apps/api/path'
 import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { PersistedJSON } from '../config/PersistedJSON'
-import { TypescriptBuffer } from '../code/TypescriptBuffer'
+import { JsonFile } from '../config/JsonFile'
+import { TypescriptFile } from '../code/TypescriptFile'
 import { CushyLayoutState } from '../layout/LayoutState'
 import { readableStringify } from '../utils/stringifyReadable'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
@@ -26,6 +26,7 @@ export type WorkspaceConfigJSON = {
     version: 2
     comfyWSURL: string
     comfyHTTPURL: string
+    lastProjectFolder?: string
 }
 
 export type CSCriticalError = { title: string; help: string }
@@ -39,32 +40,33 @@ export type CSCriticalError = { title: string; help: string }
 export class Workspace {
     schema: ComfySchema
 
-    focusedFile: Maybe<TypescriptBuffer> = null
+    focusedFile: Maybe<TypescriptFile> = null
     focusedProject: Maybe<Project> = null
 
     projects: Project[] = []
     assets = new Map<string, boolean>()
     layout = new CushyLayoutState(this)
-    _config: PersistedJSON<WorkspaceConfigJSON>
-    _schema: PersistedJSON<ComfySchemaJSON>
 
-    CushySDKBuff: TypescriptBuffer
-    ComfySDKBuff: TypescriptBuffer
+    // main files
+    workspaceConfigFile: JsonFile<WorkspaceConfigJSON>
+    objectInfoFile: JsonFile<ComfySchemaJSON>
+    cushySDKFile: TypescriptFile
+    comfySDKFile: TypescriptFile
 
     openComfySDK = () => {
-        this.focusedFile = this.ComfySDKBuff
+        this.focusedFile = this.comfySDKFile
         // this.layout.openEditorTab(this.ComfySDKBuff)
     }
 
     openCushySDK = () => {
-        this.focusedFile = this.CushySDKBuff
+        this.focusedFile = this.cushySDKFile
         // this.layout.openEditorTab(this.CushySDKBuff)
     }
 
     static OPEN = async (cushy: CushyStudio, folder: string): Promise<Workspace> => {
         const workspace = new Workspace(cushy, folder)
-        await workspace._schema.finished
-        await workspace._config.finished
+        await workspace.objectInfoFile.finished
+        await workspace.workspaceConfigFile.finished
         void workspace.init()
         return workspace
     }
@@ -75,15 +77,16 @@ export class Workspace {
     ) {
         // this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema({})
-        this.CushySDKBuff = new TypescriptBuffer(this, { name: 'sdk', path: this.folder + path.sep + 'cushy.d.ts', def: null }) //`file:///core/sdk.d.ts`)
-        this.ComfySDKBuff = new TypescriptBuffer(this, { name: 'lib', path: this.folder + path.sep + 'comfy.d.ts', def: null }) //`file:///core/global.d.ts`)
+        this.cushySDKFile = new TypescriptFile(this, { name: 'sdk', path: this.folder + path.sep + 'cushy.d.ts', def: c__ }) //`file:///core/sdk.d.ts`)
+        this.comfySDKFile = new TypescriptFile(this, { name: 'lib', path: this.folder + path.sep + 'comfy.d.ts', def: null }) //`file:///core/global.d.ts`)
         // this.script = new CSScript(this)
-        this._schema = new PersistedJSON<ComfySchemaJSON>({
+        this.objectInfoFile = new JsonFile<ComfySchemaJSON>({
             folder: Promise.resolve(this.folder),
-            name: 'schema.json',
+            name: 'object_info.json',
             init: () => ({}),
+            maxLevel: 3,
         })
-        this._config = new PersistedJSON<WorkspaceConfigJSON>({
+        this.workspaceConfigFile = new JsonFile<WorkspaceConfigJSON>({
             folder: Promise.resolve(this.folder),
             name: 'workspace.json',
             init: () => ({
@@ -100,11 +103,12 @@ export class Workspace {
     ws!: ResilientWebSocketClient
 
     async init() {
-        // this.scripts.push(this.script)
-        // const dts = this.schema.codegenDTS()
-        this.ws = new ResilientWebSocketClient({ url: () => this.serverHostWs, onMessage: this.onMessage })
+        this.ws = new ResilientWebSocketClient({
+            url: () => this.workspaceConfigFile.value.comfyWSURL,
+            onMessage: this.onMessage,
+        })
         await this.loadProjects()
-        await this.fetchObjectsSchema()
+        await this.updateComfy_object_info()
         // this.editor.openCODE()
     }
 
@@ -236,8 +240,7 @@ export class Workspace {
         return result
     }
 
-    get serverHostHTTP() { return this._config.value.comfyHTTPURL } // prettier-ignore
-    get serverHostWs() { return this._config.value.comfyWSURL } // prettier-ignore
+    get serverHostHTTP() { return this.workspaceConfigFile.value.comfyHTTPURL } // prettier-ignore
 
     fetchPrompHistory = async () => {
         const res = await fetch(`${this.serverHostHTTP}/history`, { method: 'GET' })
@@ -249,7 +252,7 @@ export class Workspace {
     CRITICAL_ERROR: Maybe<CSCriticalError> = null
 
     /** retri e the comfy spec from the schema*/
-    fetchObjectsSchema = async (): Promise<ComfySchemaJSON> => {
+    updateComfy_object_info = async (): Promise<ComfySchemaJSON> => {
         // 1. fetch schema$
         const url = `${this.serverHostHTTP}/object_info`
 
@@ -260,44 +263,16 @@ export class Workspace {
             schema$ = res.data as any
         } catch (error) {
             console.log('🔴', error)
-            this.CRITICAL_ERROR = {
-                title: 'Failed to fetch ObjectInfos from Comfy.',
-                help: '',
-            }
+            logger.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
             schema$ = {}
         }
-
-        // console.log('🔴', res)
-        // 2. update schmea
+        this.objectInfoFile.update(schema$)
         this.schema.update(schema$)
-        this.CushySDKBuff.initProgrammatically(c__)
-        // save schema to disk
-        const schemaPath = this.folder + path.sep + 'comfy-nodes.json'
-        await fs.writeTextFile(schemaPath, readableStringify(schema$))
-        // 3. update dts
-        const dts = this.schema.codegenDTS()
-        this.ComfySDKBuff.initProgrammatically(dts)
-        // const dtsPath = this.folder + path.sep + 'comfy-api.md'
-        // await fs.writeTextFile(dtsPath, `# Comfy-API\n\n\`\`\`ts\n${this.dts}\n\`\`\``)
-        // 4. update monaco
-        // this.editor.updateSDKDTS() // 🔴
-        // this.editor.updateLibDTS() // 🔴
-        // this.editor.updateCODE(DemoScript1)
-        // this.script.udpateCode(DemoScript1)
-        // console.log('🟢 schema:', this.schema.nodes)
+        const comfySdkCode = this.schema.codegenDTS()
+        this.comfySDKFile.updateFromCodegen(comfySdkCode)
+
         return schema$
-        // this.openComfySDK()
-        // this.openCushySDK()
     }
-
-    // openScript = () => {
-    //     // 🔴
-    //     this.editor.updateCODE(DemoScript1)
-    //     this.script?.udpateCode(DemoScript1)
-    // }
-    static Init = () => {}
-
-    // TODO: finish this
 
     get schemaStatusEmoji() {
         if (this.schema.nodes.length > 10) return '🟢'

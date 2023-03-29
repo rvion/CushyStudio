@@ -6,7 +6,7 @@ import { nanoid } from 'nanoid'
 import { Workspace } from './Workspace'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { Run } from './Run'
-import { TypescriptBuffer } from '../code/TypescriptBuffer'
+import { TypescriptFile } from '../code/TypescriptFile'
 import { ComfyImporter } from '../importers/ComfyImporter'
 
 /** Script */
@@ -44,6 +44,7 @@ export class Project {
     focus = () => {
         this.workspace.focusedFile = this.scriptBuffer
         this.workspace.focusedProject = this
+        this.workspace.workspaceConfigFile
         // this.workspace.layout.openEditorTab(this.scriptBuffer)
     }
     /** project name */
@@ -56,14 +57,14 @@ export class Project {
         return this.runs[0] ?? null
     }
 
-    scriptBuffer: TypescriptBuffer
+    scriptBuffer: TypescriptFile
     constructor(
         //
         public workspace: Workspace,
         public folderName: string,
         initialCode = '',
     ) {
-        this.scriptBuffer = new TypescriptBuffer(this.workspace, {
+        this.scriptBuffer = new TypescriptFile(this.workspace, {
             name: this.folderName,
             path: this.folderPath + path.sep + 'script.ts',
             def: initialCode,
@@ -75,8 +76,6 @@ export class Project {
     get schema() { return this.workspace.schema } // prettier-ignore
 
     get code() { return this.scriptBuffer.code } // prettier-ignore
-
-    udpateCode = async (code: string) => this.scriptBuffer.initProgrammatically(code)
 
     static FROM_JSON = (client: Workspace, json: ComfyPromptJSON) => {
         const folderName = nanoid()

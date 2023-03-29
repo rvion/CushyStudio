@@ -7,7 +7,18 @@ export enum LogLevel {
     ERROR = 3,
 }
 
-type Category = '🧦' | '🐰' | '🌠' | '👁️'
+type Category =
+    /** Comfy websocket */
+    | '🧦'
+    /** */
+    | '🐰'
+    | '🌠'
+    /** monaco / typescript */
+    | '👁️'
+    /** Comfy HTTP */
+    | '🦊'
+    /** config files */
+    | '🛋'
 
 interface LogMessage {
     level: LogLevel

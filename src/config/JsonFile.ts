@@ -1,6 +1,7 @@
 import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
+import { logger } from '../logger/Logger'
 import { bang } from '../utils/bang'
 import { readableStringify } from '../utils/stringifyReadable'
 
@@ -13,7 +14,7 @@ export type PersistedJSONInfo<T> = {
     onReady?: (data: T) => void
 }
 
-export class PersistedJSON<T extends object> {
+export class JsonFile<T extends object> {
     private ready_yes!: (v: boolean) => void
     private ready_no!: (err: Error) => void
     finished = new Promise<boolean>((yes, no) => {
@@ -44,7 +45,7 @@ export class PersistedJSON<T extends object> {
 
     /** save the file */
     save = async (): Promise<true> => {
-        console.log(`[🛋] ${this.opts.name} saving default`, this._path)
+        logger.info('🌠', `saving [${this.opts.name}] to ${this._path}`)
         const maxLevel = this.opts.maxLevel
         const content =
             maxLevel == null //
@@ -55,7 +56,7 @@ export class PersistedJSON<T extends object> {
     }
 
     /** update config then save it */
-    assign = async (configChanges: Partial<T>): Promise<true> => {
+    update = async (configChanges: Partial<T>): Promise<true> => {
         Object.assign(this.value, configChanges)
         return await this.save()
     }
@@ -65,20 +66,21 @@ export class PersistedJSON<T extends object> {
         this._folder = await p.folder
         const folderExists = await fs.exists(this._folder)
         if (!folderExists) {
-            console.log(`[🛋] ${p.name} folder not found, creating folder `, this._folder)
+            logger.info('🛋', `${p.name} creating missing folder [${this._folder}]`)
             await fs.createDir(this._folder, { recursive: true })
         }
 
         // 2. ensure file exists
-        this._path = await path.join(this._folder, 'cushy-studio.json')
+        this._path = await path.join(this._folder, this.opts.name)
         const configFileExists = await fs.exists(this._path)
+        console.log('AA', this.opts.name)
         if (!configFileExists) {
-            console.log(`[🛋] ${p.name} not found, creating default`)
+            logger.info('🛋', `${p.name} not found, creating default`)
             this._value = await p.init()
             this.setReady()
             await this.save()
         } else {
-            console.log(`[🛋] ${p.name} found at `, this._path)
+            logger.info('🛋', `${p.name} found at ${this._path}`)
             const configStr = await fs.readTextFile(this._path)
             this._value = JSON.parse(configStr)
             this.setReady()
