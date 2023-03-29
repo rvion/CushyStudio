@@ -34,12 +34,11 @@ execute your pipelines.
 
 ## Table of Contents 📌
 
--   [Features](#features) •
--   [Getting started](#getting-started) •
--   [Installation](#installation) •
--   [Configuration](#configuration) •
+-   [Features](#features)
+-   [Getting started](#getting-started)
+-   [Installation](#installation)
+-   [Configuration](#configuration)
 -   [Integrations](#third-party-integrations)
-
 -   [Developpment](#developpment)
 -   [Contributing](#contributing)
 -   [Architecture](#architecture)
