@@ -47,18 +47,18 @@ execute your pipelines.
 
 _Project is still early, but here is an overview of the plan_
 
-<!-- [🟢 = acceptable, 🟡 = partial, ☣️ = not ready] -->
+<!-- [🟢 = acceptable, 🔶 = partial, ☣️ = not ready] -->
 
--   🟡 **workspace and project management**
--   🟡 **Import** existing projects
+-   🔶 **workspace and project management**
+-   🔶 **Import** existing projects
     -   🟢 import from `ComfyUI`
     -   🔶 import from `Automatic1111`
     -   🔴 package assets with projects
--   🟡 **Installer**
+-   🔶 **Installer**
     -   🟢 small footprint
     -   🔶 self-updating binary for simple
 -   🔶 integrated `OpenPose` library to `puppet`, `animate`, `interpolate` frames of stickmans
-    -   🟡 generate bone images from openpose definitions
+    -   🔶 generate bone images from openpose definitions
     -
 -   🔶 Interractive Evaluation
     -   🟢 `askString` question
@@ -66,11 +66,11 @@ _Project is still early, but here is an overview of the plan_
     -   🔶 `choose best picture` question
     -   🔶 `choose next branch` question
     -   🔴 .... a lot more to be done
--   🟡 Deep ComfyUI Integration
+-   🔶 Deep ComfyUI Integration
     -   🟢 Custom nodes support
     -   🟢 Custom nodes support
 -   ⏳ Civitai Integration
-    -   🟡 search
+    -   🔶 search
 -   🔶 Parrallel Execution
     -   🔶 multiple Comfy Server support
     -   🔶 multiple Comfy Server support
