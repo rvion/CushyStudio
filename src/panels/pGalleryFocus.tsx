@@ -7,11 +7,11 @@ export const PGalleryFocusUI = observer(function PGalleryFocusUI_(p: {}) {
     const i = layout.galleryFocus
     if (i == null) return <div>No Gallery Focus</div>
     return (
-        <div>
+        <div style={{ height: '100%' }}>
             <Image
                 //
                 fit='contain'
-                height={'100%'}
+                // height={'100%'}
                 alt='prompt output'
                 src={i.comfyURL}
                 key={i.uid}
