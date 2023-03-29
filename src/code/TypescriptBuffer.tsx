@@ -56,7 +56,7 @@ export class TypescriptBuffer {
     }
 
     ensureTextModel = async () => {
-        const monaco = await globalMonaco
+        const monaco = await globalMonaco.promise
         if (!monaco) throw new Error('🔴 monaco is null')
 
         const uri = monaco.Uri.parse(this.monacoPath)

@@ -4,10 +4,7 @@ import type { IStandaloneCodeEditor } from '../ui/TypescriptOptions'
 import { Spinner } from '@fluentui/react-components'
 import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
-import { ensureMonacoReady } from '../ui/Monaco'
 import { ProjectToolbarUI } from '../ui/ToolbarUI'
-
-ensureMonacoReady()
 
 export const TypescriptEditorUI = observer(function TypescriptEditorUI_(p: {
     //

@@ -4,10 +4,10 @@ import * as fs from '@tauri-apps/api/fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Workspace } from './Workspace'
-import { ComfyImporter } from '../importers/ComfyImporter'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { Run } from './Run'
 import { TypescriptBuffer } from '../code/TypescriptBuffer'
+import { ComfyImporter } from '../importers/ComfyImporter'
 
 /** Script */
 export class Project {
