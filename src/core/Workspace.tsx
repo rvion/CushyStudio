@@ -70,6 +70,7 @@ export class Workspace {
         void workspace.init()
         return workspace
     }
+
     private constructor(
         //
         public cushy: CushyStudio,
@@ -77,8 +78,8 @@ export class Workspace {
     ) {
         // this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema({})
-        this.cushySDKFile = new TypescriptFile(this, { name: 'sdk', path: this.folder + path.sep + 'cushy.d.ts', def: c__ }) //`file:///core/sdk.d.ts`)
-        this.comfySDKFile = new TypescriptFile(this, { name: 'lib', path: this.folder + path.sep + 'comfy.d.ts', def: null }) //`file:///core/global.d.ts`)
+        this.cushySDKFile = new TypescriptFile(this, { title: 'sdk', path: this.folder + path.sep + 'cushy.d.ts', def: c__ }) //`file:///core/sdk.d.ts`)
+        this.comfySDKFile = new TypescriptFile(this, { title: 'lib', path: this.folder + path.sep + 'comfy.d.ts', def: null }) //`file:///core/global.d.ts`)
         // this.script = new CSScript(this)
         this.objectInfoFile = new JsonFile<ComfySchemaJSON>({
             folder: Promise.resolve(this.folder),

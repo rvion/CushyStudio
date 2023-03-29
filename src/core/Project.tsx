@@ -65,7 +65,7 @@ export class Project {
         initialCode = '',
     ) {
         this.scriptBuffer = new TypescriptFile(this.workspace, {
-            name: this.folderName,
+            title: this.folderName,
             path: this.folderPath + path.sep + 'script.ts',
             def: initialCode,
         })
@@ -75,7 +75,7 @@ export class Project {
     /** convenient getter to retrive current client shcema */
     get schema() { return this.workspace.schema } // prettier-ignore
 
-    get code() { return this.scriptBuffer.code } // prettier-ignore
+    get code() { return this.scriptBuffer.codeTS } // prettier-ignore
 
     static FROM_JSON = (client: Workspace, json: ComfyPromptJSON) => {
         const folderName = nanoid()

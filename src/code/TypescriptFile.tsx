@@ -7,23 +7,29 @@ import { makeObservable, observable } from 'mobx'
 import { globalMonaco } from '../ui/Monaco'
 
 export class TypescriptFile {
-    public name: string
-    public path: string
+    public title: string
+
+    public pathTS: string
+    public pathJS: string
+
     constructor(
         //
         public workspace: Workspace,
         opts: {
-            name: string
+            title: string
             path: string
             def: Maybe<string>
         },
     ) {
+        if (!opts.path.endsWith('.ts')) throw new Error('❌ INVARIANT VIOLATION')
+
+        this.title = opts.title
+        this.pathTS = opts.path
+        this.pathJS = opts.path.replace(/\.ts$/, '.js')
         makeObservable(this, {
             ready: observable,
             textModel: observable.ref,
         })
-        this.name = opts.name
-        this.path = opts.path
         void this.init(opts.def)
     }
 
@@ -42,41 +48,43 @@ export class TypescriptFile {
      *  - or do nothing if file does not exist and no default content provided
      */
     init = async (def: Maybe<string>) => {
-        console.log('[📁] loading', this.path)
-        const exists = await fs.exists(this.path)
+        console.log('[📁] loading', this.pathTS)
+        const exists = await fs.exists(this.pathTS)
         if (exists) {
-            const content = await fs.readTextFile(this.path)
+            const content = await fs.readTextFile(this.pathTS)
             this.ready = true
-            this.code = content
+            this.codeTS = content
         } else if (def != null) {
             this.ready = true
-            this.code = def
+            this.codeTS = def
         }
-        await this.ensureTextModel()
+        const model = await this.ensureTextModel()
+        this.codeJS = await globalMonaco.convertToJS(model)
+        await this.saveOnDisk()
     }
 
     ensureTextModel = async () => {
         const monaco = await globalMonaco.promise
-        if (!monaco) throw new Error('🔴 monaco is null')
-
         const uri = monaco.Uri.parse(this.monacoPath)
         let model = monaco.editor.getModel(uri)
         if (model) {
             console.log(`[📝] updating ${this.monacoPath}`)
-            model.setValue(this.code)
+            model.setValue(this.codeTS)
         } else {
             console.log(`[📝] creating ${this.monacoPath}`)
-            model = monaco.editor.createModel(this.code, 'typescript', uri)
+            model = monaco.editor.createModel(this.codeTS, 'typescript', uri)
         }
         this.textModel = model
+        return model
     }
 
-    code: string = ''
+    codeTS: string = ''
+    codeJS: string = ''
 
     /** internal path as needed for monaco engine */
     get monacoPath(): string {
-        if (this.workspace.cushy.os === 'win32') return `file:///${this.path}`
-        return `file://${this.path}`
+        if (this.workspace.cushy.os === 'win32') return `file:///${this.pathTS}`
+        return `file://${this.pathTS}`
     }
 
     // openPathInEditor = (): ITextModel | null => {
@@ -90,25 +98,33 @@ export class TypescriptFile {
     updateFromCodegen = async (value: Maybe<string>): Promise<boolean> => {
         if (value == null) return false
         console.log(`[📝] updating ${this.monacoPath} with ${value.length} chars`)
-        this.code = value
+        this.codeTS = value
         await this.ensureTextModel()
         await this.saveOnDisk()
         return true
     }
 
-    udpateFromEditor = (value: Maybe<string>) => {
+    udpateFromEditor = async (value: Maybe<string>) => {
         if (value == null) return console.log('❌ value is null; aborting')
         console.log(`[📝] updating ${this.monacoPath} with ${value.length} chars`)
         // if (this.textModel) this.textModel.setValue(value)
-        this.code = value
-        void this.saveOnDisk()
+        this.codeTS = value
+        this.codeJS = await globalMonaco.convertToJS(this.textModel!)
+        await this.saveOnDisk()
     }
 
     saveOnDisk = async () => {
-        console.log('[📁] saving', this.path)
-        const folder = await path.dirname(this.path)
+        console.log('[📁] saving', this.pathTS)
+        // ensure folder exists
+        const folder = await path.dirname(this.pathTS)
         const folderExists = await fs.exists(folder)
         if (!folderExists) await fs.createDir(folder, { recursive: true })
-        await fs.writeFile({ path: this.path, contents: this.code })
+
+        // check if content same
+        const prev = await fs.readTextFile(this.pathTS)
+        if (prev != this.codeTS) {
+            await fs.writeFile({ path: this.pathTS, contents: this.codeTS })
+            await fs.writeFile({ path: this.pathJS, contents: this.codeJS })
+        }
     }
 }

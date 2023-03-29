@@ -19,6 +19,8 @@ dist
 out
 
 workspace/*
+!workspace/object_info.json
+!workspace/workspace.json
 !workspace/demo-1
 !workspace/demo-2
 
