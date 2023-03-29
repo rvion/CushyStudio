@@ -44,26 +44,39 @@ execute your pipelines.
 -   [Contributing](#contributing)
 -   [Architecture](#architecture)
 
-## Features
+## Features-Set
+
+_Project is still early, but here is an overview of the plan_
 
 <!-- [🟢 = acceptable, 🟡 = partial, ☣️ = not ready] -->
 
--   🟡 workspace and project management
--   🟡 Simple to install
+-   🟡 **workspace and project management**
+-   🟡 **Import** existing projects
+    -   🟢 import from `ComfyUI`
+    -   🔶 import from `Automatic1111`
+    -   🔴 package assets with projects
+-   🟡 **Installer**
     -   🟢 small footprint
-    -   ☢️ self-updating binary for simple
--   ☢️ integrated `OpenPose` library to `puppet`, `animate`, `interpolate` frames of stickmans
+    -   🔶 self-updating binary for simple
+-   🔶 integrated `OpenPose` library to `puppet`, `animate`, `interpolate` frames of stickmans
     -   🟡 generate bone images from openpose definitions
     -
--   Dynamic Evaluation
+-   🔶 Interractive Evaluation
+    -   🟢 `askString` question
+    -   🟢 `askBoolean` question
+    -   🔶 `choose best picture` question
+    -   🔶 `choose next branch` question
+    -   🔴 .... a lot more to be done
 -   🟡 Deep ComfyUI Integration
     -   🟢 Custom nodes support
-    -
+    -   🟢 Custom nodes support
 -   ⏳ Civitai Integration
     -   🟡 search
--   ☢️ Parrallel Execution
-    -   ☢️ multiple Comfy Server support
-    -   ☢️ multiple Comfy Server support
+-   🔶 Parrallel Execution
+    -   🔶 multiple Comfy Server support
+    -   🔶 multiple Comfy Server support
+-   🟢 Work with cloud GPU offers
+    -   🟢 yes, examples soon.
 
 ## Short-term Roadmap
 
