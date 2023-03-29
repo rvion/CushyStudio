@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
 import { Monaco, TypescriptOptions } from './TypescriptOptions'
 
 import { loader } from '@monaco-editor/react'
+import { logger } from '../logger/Logger'
 
 // import * as monaco from 'monaco-editor'
 
@@ -37,7 +37,7 @@ export const globalMonaco = new Promise<Monaco>((resove, _rejects) => {
 
 export const ensureMonacoReady = () => {
     loader.init().then((monaco) => {
-        console.log(`[👁] monaco ready`)
+        logger.info(`👁️`, `monaco ready`)
         const compilerOptions: TypescriptOptions = {
             strict: true,
             module: monaco.languages.typescript.ModuleKind.ESNext,
@@ -45,7 +45,7 @@ export const ensureMonacoReady = () => {
             moduleResolution: monaco.languages.typescript.ModuleResolutionKind.NodeJs,
         }
         monaco.languages.typescript.typescriptDefaults.setCompilerOptions(compilerOptions)
-        console.log(`[👁] typescript ready (${monaco.languages.typescript.typescriptVersion})`)
+        logger.info(`👁️`, `typescript ready (${monaco.languages.typescript.typescriptVersion})`)
         _setGlobalMonaco(monaco)
     })
 }

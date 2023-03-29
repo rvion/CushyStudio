@@ -7,7 +7,7 @@ export enum LogLevel {
     ERROR = 3,
 }
 
-type Category = '🧦' | '🐰' | '🌠'
+type Category = '🧦' | '🐰' | '🌠' | '👁️'
 
 interface LogMessage {
     level: LogLevel
