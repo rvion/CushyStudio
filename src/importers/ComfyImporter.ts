@@ -1,9 +1,9 @@
-import { CodeBuffer } from './CodeBuffer'
-import { Workspace } from './Workspace'
-import { ComfyPromptJSON } from './ComfyPrompt'
-import { ComfyNodeSchema } from './ComfySchema'
-import { jsEscapeStr } from './ComfyUtils'
-import { TEdge, toposort } from './toposort'
+import { CodeBuffer } from '../core/CodeBuffer'
+import { Workspace } from '../core/Workspace'
+import { ComfyPromptJSON } from '../core/ComfyPrompt'
+import { ComfyNodeSchema } from '../core/ComfySchema'
+import { jsEscapeStr } from '../core/ComfyUtils'
+import { TEdge, toposort } from '../core/toposort'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = { nodeName: string; inputName: string; valueStr: string }

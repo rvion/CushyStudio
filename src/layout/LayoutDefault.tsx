@@ -18,7 +18,7 @@ export const defaultLayout = (): LayoutData => ({
         children: [
             {
                 mode: 'vertical',
-                size: 3,
+                size: 1,
                 minWidth: 250,
                 children: [
                     {
@@ -125,23 +125,18 @@ export const defaultLayout = (): LayoutData => ({
                                 size: 3,
                                 tabs: [
                                     {
-                                        minWidth: 230,
-                                        // minHeight: 280,
-                                        id: 'artifacts',
-                                        title: 'Images',
-                                        content: <PGalleryUI />,
-                                    },
-                                ],
-                            },
-                            {
-                                size: 7,
-                                tabs: [
-                                    {
                                         minWidth: 100,
                                         minHeight: 100,
-                                        id: 'artifacts',
-                                        title: 'Images',
+                                        id: 'PGalleryFocusUI',
+                                        title: 'Last',
                                         content: <PGalleryFocusUI />,
+                                    },
+                                    {
+                                        minWidth: 230,
+                                        // minHeight: 280,
+                                        id: 'PGalleryUI',
+                                        title: 'thumbnails',
+                                        content: <PGalleryUI />,
                                     },
                                 ],
                             },
