@@ -311,6 +311,22 @@ export type ImageInvert_input = {
 }
 
 // |=============================================================================|
+// | ImagePadForOutpaint                                                         |
+// |=============================================================================|
+export interface ImagePadForOutpaint extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImagePadForOutpaint_input> {
+    IMAGE: ComfyNodeOutput<'IMAGE', 0>,
+    MASK: ComfyNodeOutput<'MASK', 1>,
+}
+export type ImagePadForOutpaint_input = {
+    image: IMAGE | HasSingle_IMAGE
+    left: INT
+    top: INT
+    right: INT
+    bottom: INT
+    feathering: INT
+}
+
+// |=============================================================================|
 // | ConditioningCombine                                                         |
 // |=============================================================================|
 export interface ConditioningCombine extends HasSingle_CONDITIONING, ComfyNode<ConditioningCombine_input> {
@@ -1149,6 +1165,7 @@ export type Schemas = {
     LoadImageMask: ComfyNodeSchemaJSON,
     ImageScale: ComfyNodeSchemaJSON,
     ImageInvert: ComfyNodeSchemaJSON,
+    ImagePadForOutpaint: ComfyNodeSchemaJSON,
     ConditioningCombine: ComfyNodeSchemaJSON,
     ConditioningSetArea: ComfyNodeSchemaJSON,
     KSamplerAdvanced: ComfyNodeSchemaJSON,
@@ -1237,6 +1254,7 @@ export interface ComfySetup {
     LoadImageMask(args: LoadImageMask_input, uid?: ComfyNodeUID): LoadImageMask
     ImageScale(args: ImageScale_input, uid?: ComfyNodeUID): ImageScale
     ImageInvert(args: ImageInvert_input, uid?: ComfyNodeUID): ImageInvert
+    ImagePadForOutpaint(args: ImagePadForOutpaint_input, uid?: ComfyNodeUID): ImagePadForOutpaint
     ConditioningCombine(args: ConditioningCombine_input, uid?: ComfyNodeUID): ConditioningCombine
     ConditioningSetArea(args: ConditioningSetArea_input, uid?: ComfyNodeUID): ConditioningSetArea
     KSamplerAdvanced(args: KSamplerAdvanced_input, uid?: ComfyNodeUID): KSamplerAdvanced
