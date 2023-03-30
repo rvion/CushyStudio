@@ -51,7 +51,7 @@ export class CushyStudio {
         onReady: (data) => {
             console.log('[CUSHY] user config loaded:', data)
             console.log('[CUSHY] recent projects:', data.recentProjects)
-            if (data.recentProjects?.[0] === '/Users/loco/dev/CushyStudio/workspace') {
+            if (data.recentProjects?.[0] === '/Users/loco/dev/CushyStudio/src/examples') {
                 console.log('[CUSHY] [DEV] opening last recent project:', data.recentProjects[0])
                 this.openWorkspace(data.recentProjects[0])
             }

@@ -1,6 +1,5 @@
 import type { RunMode } from './ComfyGraph'
 import * as path from '@tauri-apps/api/path'
-import * as fs from '@tauri-apps/api/fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Workspace } from './Workspace'
@@ -8,6 +7,7 @@ import { ComfyPromptJSON } from './ComfyPrompt'
 import { Run } from './Run'
 import { TypescriptFile } from '../code/TypescriptFile'
 import { ComfyImporter } from '../importers/ComfyImporter'
+import { logger } from '../logger/Logger'
 
 /** Script */
 export class Project {
@@ -18,9 +18,6 @@ export class Project {
     id: string = nanoid()
 
     /** folder where CushyStudio will save script informations */
-    get folderPath(): string {
-        return this.workspace.folder + path.sep + this.folderName
-    }
 
     // save = async () => {
     //     const code = this.code
@@ -58,16 +55,29 @@ export class Project {
     }
 
     scriptBuffer: TypescriptFile
+    folderName: string
+    folderPath: string
     constructor(
         //
         public workspace: Workspace,
-        public folderName: string,
+        public filePath: string,
+        public fileName: string,
         initialCode = '',
     ) {
+        this.folderName = fileName.replace(/\.ts$/, '')
+        this.folderPath = this.workspace.folder + path.sep + 'aaa' + path.sep + this.folderName
+        console.log('🔴', {
+            filePath: this.filePath,
+            fileName: this.fileName,
+            folderName: this.folderName,
+            folderPath: this.folderPath,
+        })
         this.scriptBuffer = new TypescriptFile(this.workspace, {
             title: this.folderName,
-            path: this.folderPath + path.sep + 'script.ts',
-            def: initialCode,
+            diskPathTS: this.filePath,
+            diskPathJS: this.folderPath + path.sep + 'script.js',
+            virtualPathTS: `file:///${this.fileName}`,
+            defaultCodeWhenNoFile: initialCode,
         })
         makeAutoObservable(this)
     }
@@ -122,10 +132,16 @@ export class Project {
         // this.MAIN = graph
 
         const WORKFLOW = (fn: any) => fn(graph)
-        await ProjectScriptFn(WORKFLOW)
-        console.log('[✅] RUN SUCCESS')
-        // this.isRunning = false
-        return true
+        try {
+            await ProjectScriptFn(WORKFLOW)
+            console.log('[✅] RUN SUCCESS')
+            // this.isRunning = false
+            return true
+        } catch (error) {
+            console.log(error)
+            logger.error('🌠', 'RUN FAILURE')
+            return false
+        }
         // } catch (error) {
         //     console.log('❌', error)
         //     // this.isRunning = false

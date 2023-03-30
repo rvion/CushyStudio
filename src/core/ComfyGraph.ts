@@ -13,9 +13,10 @@ import { Workspace } from './Workspace'
 import { comfyColors } from './ComfyColors'
 import { ComfyNode } from './CSNode'
 import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
-import { wildcards } from '../embeds/wildcards'
+import { wildcards } from '../wildcards/wildcards'
 import { CSImage } from './CSImage'
 import { Cyto } from '../graph/cyto'
+import { logger } from '../logger/Logger'
 
 export type RunMode = 'fake' | 'real'
 
@@ -39,8 +40,11 @@ export class ComfyGraph {
     nodesIndex = new Map<string, ComfyNode<any>>()
     isRunning = false
 
+    /** pick a random seed */
     randomSeed() {
-        return Math.floor(Math.random() * 99999999)
+        const seed = Math.floor(Math.random() * 99999999)
+        this.print('🔥 random seed: ' + seed)
+        return seed
     }
 
     wildcards = wildcards
@@ -60,8 +64,13 @@ export class ComfyGraph {
         return json
     }
 
+    convertToImageInput = (x: CSImage): string => {
+        return `../outputs/${x.data.filename}`
+        // return this.LoadImage({ image: name })
+    }
+
     /** temporary proxy */
-    convertToImageInput = async (x: CSImage): Promise<string> => {
+    convertToImageInputOLD1 = async (x: CSImage): Promise<string> => {
         const name = await x.makeAvailableAsInput()
         console.log('[convertToImageInput]', { name })
         // @ts-ignore
@@ -69,9 +78,10 @@ export class ComfyGraph {
         // return this.LoadImage({ image: name })
     }
 
+    // INTERRACTIONS
     askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => this.run.askBoolean(msg, def)
     askString = (msg: string, def?: Maybe<string>): Promise<string> => this.run.askString(msg, def)
-    print = (...msg: any[]) => console.log('[🔥]', ...msg)
+    print = (msg: string) => logger.info('🔥', msg)
 
     constructor(
         //
@@ -91,7 +101,7 @@ export class ComfyGraph {
         const schema = project.schema
         for (const node of schema.nodes) {
             // console.log(`node: ${node.name}`)
-            Object.defineProperty(this, node.nameInComfy, {
+            Object.defineProperty(this, node.nameInCushy, {
                 value: (inputs: any) =>
                     new ComfyNode(this, this.getUID(), {
                         class_type: node.nameInComfy as any,

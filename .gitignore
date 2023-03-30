@@ -18,15 +18,4 @@ website/static/0.0.3-2023-03-19-index.html
 dist
 out
 
-workspace/*
-!workspace/object_info.json
-!workspace/workspace.json
-!workspace/demo-*
-!workspace/demo-*
-!workspace/demo-*
-!workspace/cushy.d.ts
-!workspace/comfy.d.ts
-
-workspace/**/*.png
-workspace/**/*.cushy
-workspace/*/*/*.ts
+src/examples/aaa

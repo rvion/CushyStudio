@@ -1,27 +1,26 @@
+import type { CushyStudio } from '../config/CushyStudio'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
 import type { Run } from './Run'
 import type { ScriptStep } from './ScriptStep'
-import type { CushyStudio } from '../config/CushyStudio'
 
 import * as fs from '@tauri-apps/api/fs'
-import * as path from '@tauri-apps/api/path'
 import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
+import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { JsonFile } from '../config/JsonFile'
 import { TypescriptFile } from '../code/TypescriptFile'
+import { JsonFile } from '../config/JsonFile'
 import { CushyLayoutState } from '../layout/LayoutState'
-import { readableStringify } from '../utils/stringifyReadable'
+import { logger } from '../logger/Logger'
+import { getPngMetadata } from '../png/getPngMetadata'
+import { ResilientWebSocketClient } from '../ui/ResilientWebsocket'
+import { c__ } from '../ui/sdkDTS'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfySchema } from './ComfySchema'
-import { Project } from './Project'
-import { getPngMetadata } from '../png/getPngMetadata'
-import { ScriptStep_prompt } from './ScriptStep_prompt'
-import { c__ } from '../ui/sdkDTS'
-import { ResilientWebSocketClient } from '../ui/ResilientWebsocket'
-import { logger } from '../logger/Logger'
 import { defaultScript } from './defaultProjectCode'
+import { Project } from './Project'
+import { ScriptStep_prompt } from './ScriptStep_prompt'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -54,6 +53,16 @@ export class Workspace {
     cushySDKFile: TypescriptFile
     comfySDKFile: TypescriptFile
 
+    // canUseSimpleMode() {
+    //     const conf = this.workspaceConfigFile.value
+    //     if (
+    //         conf.comfyHTTPURL.startsWith('http://') && //
+    //         conf.comfyHTTPURL.startsWith('http://') && //
+    //         conf.comfyWSURL.startsWith('ws://')
+    //     )
+    //         return true
+    // }
+
     openComfySDK = () => {
         this.focusedFile = this.comfySDKFile
         // this.layout.openEditorTab(this.ComfySDKBuff)
@@ -77,11 +86,20 @@ export class Workspace {
         public cushy: CushyStudio,
         public folder: string,
     ) {
-        // this.editor = new ComfyScriptEditor(this)
         this.schema = new ComfySchema({})
-        this.cushySDKFile = new TypescriptFile(this, { title: 'sdk', path: this.folder + path.sep + 'cushy.d.ts', def: c__ }) //`file:///core/sdk.d.ts`)
-        this.comfySDKFile = new TypescriptFile(this, { title: 'lib', path: this.folder + path.sep + 'comfy.d.ts', def: null }) //`file:///core/global.d.ts`)
-        // this.script = new CSScript(this)
+        console.log('🟢')
+        this.cushySDKFile = new TypescriptFile(this, {
+            title: 'Cushy SDK',
+            diskPathTS: this.folder + path.sep + 'cushy.d.ts.backup',
+            virtualPathTS: `file://${this.folder}/cushy.d.ts`,
+            codeOverwrite: c__,
+        })
+        this.comfySDKFile = new TypescriptFile(this, {
+            title: 'Comfy SDK',
+            diskPathTS: this.folder + path.sep + 'comfy.d.ts.backup',
+            virtualPathTS: `file://${this.folder}/comfy.d.ts`,
+            defaultCodeWhenNoFile: null,
+        })
         this.objectInfoFile = new JsonFile<ComfySchemaJSON>({
             folder: Promise.resolve(this.folder),
             name: 'object_info.json',
@@ -176,27 +194,33 @@ export class Workspace {
     /** load all project found in workspace */
     loadProjects = async () => {
         console.log(`[🔍] loading projects...`)
-        const items = await fs.readDir(this.folder, { recursive: true })
+        const items = await fs.readDir(this.folder) // { recursive: true }
         for (const item of items) {
-            if (!item.children) {
-                console.log(`[🔍] - ${item.name} is not a folder`)
-                continue
-            }
-            const script = item.children.find((f) => f.name === 'script.ts')
-            if (script == null) {
-                console.log(
-                    `[🔍] - ${item.name} has no script.ts file ${item.children.length} ${item.children.map((f) => f.name)}`,
-                )
-                continue
-            }
-            const folderName = item.name
-            if (folderName == null) {
-                console.log(`[🔍] - ${item.name} has an invalid name (e.g. ends with a dot)`)
-                continue
-            }
-            console.log(`[🔍] found project ${folderName}!`)
-            this.projects.push(new Project(this, folderName))
+            if (item.children) continue // skip folders
+            if (item.name == null) continue // skip invalid files
+            if (!item.name.endsWith('.ts')) continue // skip non ts files
+            const content = await fs.readTextFile(this.folder + path.sep + item.name)
+            this.projects.push(new Project(this, item.path, item.name, content))
         }
+        //     if (!item.children) {
+        //         console.log(`[🔍] - ${item.name} is not a folder`)
+        //         continue
+        //     }
+        //     const script = item.children.find((f) => f.name === 'script.ts')
+        //     if (script == null) {
+        //         console.log(
+        //             `[🔍] - ${item.name} has no script.ts file ${item.children.length} ${item.children.map((f) => f.name)}`,
+        //         )
+        //         continue
+        //     }
+        //     const folderName = item.name
+        //     if (folderName == null) {
+        //         console.log(`[🔍] - ${item.name} has an invalid name (e.g. ends with a dot)`)
+        //         continue
+        //     }
+        //     console.log(`[🔍] found project ${folderName}!`)
+        //     this.projects.push(new Project(this, folderName))
+        // }
     }
 
     /** save an image at given url to disk */

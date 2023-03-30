@@ -68,6 +68,116 @@ declare module "ui/VisUI" {
     export type VisEdges = any;
     export type VisOptions = any;
 }
+declare module "core/ComfyUtils" {
+    export const exhaust: (x: never) => never;
+    export const sleep: (ms: number) => Promise<unknown>;
+    export function jsEscapeStr(x: any): any;
+    /** usefull to catch most *units* type errors */
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
+    };
+    /** same as Tagged, but even scriter */
+    export type Branded<O, Brand> = O & {
+        __brand: Brand;
+    };
+    export type Maybe<T> = T | null | undefined;
+    export const deepCopyNaive: <T>(x: T) => T;
+}
+declare module "logger/Logger" {
+    export enum LogLevel {
+        DEBUG = 0,
+        INFO = 1,
+        WARN = 2,
+        ERROR = 3
+    }
+    type Category = 
+    /** Comfy websocket */
+    '🧦'
+    /** */
+     | '🐰' | '🌠'
+    /** monaco / typescript */
+     | '👁️'
+    /** Comfy HTTP */
+     | '🦊'
+    /** config files */
+     | '🛋';
+    interface LogMessage {
+        level: LogLevel;
+        category: Category;
+        message: string;
+        timestamp: Date;
+    }
+    export class Logger {
+        level: LogLevel;
+        history: LogMessage[];
+        constructor(level?: LogLevel);
+        private addToLogHistory;
+        debug(category: Category, message: string): void;
+        info(category: Category, message: string): void;
+        warn(category: Category, message: string): void;
+        error(category: Category, message: string): void;
+    }
+    export const logger: Logger;
+}
+declare module "utils/bang" {
+    export const bang: <T>(x: T | null) => T;
+}
+declare module "utils/stringifyReadable" {
+    export function readableStringify(obj: any, maxLevel?: number, level?: number): string;
+}
+declare module "config/JsonFile" {
+    export type PersistedJSONInfo<T> = {
+        folder: Promise<string>;
+        name: string;
+        init: () => T;
+        maxLevel?: number;
+        onReady?: (data: T) => void;
+    };
+    export class JsonFile<T extends object> {
+        private opts;
+        private ready_yes;
+        private ready_no;
+        finished: Promise<boolean>;
+        constructor(opts: PersistedJSONInfo<T>);
+        /** true when config loaded */
+        ready: boolean;
+        setReady(): void;
+        private _folder;
+        get folder(): string;
+        private _path;
+        get path(): string;
+        private _value;
+        get value(): T;
+        /** save the file */
+        save: () => Promise<true>;
+        /** update config then save it */
+        update: (configChanges: Partial<T>) => Promise<true>;
+        init: (p: PersistedJSONInfo<T>) => Promise<T>;
+    }
+}
+declare module "config/CushyStudio" {
+    import * as os from '@tauri-apps/api/os';
+    import { Maybe } from "core/ComfyUtils";
+    import { Workspace } from "core/Workspace";
+    import { JsonFile } from "config/JsonFile";
+    export type UserConfigJSON = {
+        version: 1;
+        theme?: 'dark' | 'light';
+        recentProjects?: string[];
+    };
+    export class CushyStudio {
+        constructor();
+        fetchBasicEnvInfos: Promise<void>;
+        os: Maybe<os.Platform>;
+        /** currently opened workspace */
+        workspace: Maybe<Workspace>;
+        openWorkspace: (folderPath: string) => Promise<Workspace>;
+        closeWorkspace: () => Promise<void>;
+        userConfig: JsonFile<UserConfigJSON>;
+        /** true when user config is ready */
+        get ready(): boolean;
+    }
+}
 declare module "core/ComfySchemaJSON" {
     /** type of the file sent by the backend at /object_info */
     export type ComfySchemaJSON = {
@@ -93,21 +203,6 @@ declare module "core/ComfySchemaJSON" {
     export type ComfyInputOpts = {
         [key: string]: any;
     };
-}
-declare module "core/ComfyUtils" {
-    export const exhaust: (x: never) => never;
-    export const sleep: (ms: number) => Promise<unknown>;
-    export function jsEscapeStr(x: any): any;
-    /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tag> = O & {
-        __tag?: Tag;
-    };
-    /** same as Tagged, but even scriter */
-    export type Branded<O, Brand> = O & {
-        __brand: Brand;
-    };
-    export type Maybe<T> = T | null | undefined;
-    export const deepCopyNaive: <T>(x: T) => T;
 }
 declare module "core/ComfyPrompt" {
     export type ComfyPromptJSON = {
@@ -262,6 +357,7 @@ declare module "graph/cyto" {
     }
 }
 declare module "utils/timestamps" {
+    export const getYYYYMMDDHHMMSS: () => string;
     export const getYYYYMMDD_HHMM_SS: () => string;
 }
 declare module "core/Run" {
@@ -307,101 +403,6 @@ declare module "core/Run" {
         outputs: WsMsgExecuted[];
         sendPromp: () => ScriptStep_prompt;
         ctx: {};
-    }
-}
-declare module "logger/Logger" {
-    export enum LogLevel {
-        DEBUG = 0,
-        INFO = 1,
-        WARN = 2,
-        ERROR = 3
-    }
-    type Category = 
-    /** Comfy websocket */
-    '🧦'
-    /** */
-     | '🐰' | '🌠'
-    /** monaco / typescript */
-     | '👁️'
-    /** Comfy HTTP */
-     | '🦊'
-    /** config files */
-     | '🛋';
-    interface LogMessage {
-        level: LogLevel;
-        category: Category;
-        message: string;
-        timestamp: Date;
-    }
-    export class Logger {
-        level: LogLevel;
-        history: LogMessage[];
-        constructor(level?: LogLevel);
-        private addToLogHistory;
-        debug(category: Category, message: string): void;
-        info(category: Category, message: string): void;
-        warn(category: Category, message: string): void;
-        error(category: Category, message: string): void;
-    }
-    export const logger: Logger;
-}
-declare module "utils/bang" {
-    export const bang: <T>(x: T | null) => T;
-}
-declare module "utils/stringifyReadable" {
-    export function readableStringify(obj: any, maxLevel?: number, level?: number): string;
-}
-declare module "config/JsonFile" {
-    export type PersistedJSONInfo<T> = {
-        folder: Promise<string>;
-        name: string;
-        init: () => T;
-        maxLevel?: number;
-        onReady?: (data: T) => void;
-    };
-    export class JsonFile<T extends object> {
-        private opts;
-        private ready_yes;
-        private ready_no;
-        finished: Promise<boolean>;
-        constructor(opts: PersistedJSONInfo<T>);
-        /** true when config loaded */
-        ready: boolean;
-        setReady(): void;
-        private _folder;
-        get folder(): string;
-        private _path;
-        get path(): string;
-        private _value;
-        get value(): T;
-        /** save the file */
-        save: () => Promise<true>;
-        /** update config then save it */
-        update: (configChanges: Partial<T>) => Promise<true>;
-        init: (p: PersistedJSONInfo<T>) => Promise<T>;
-    }
-}
-declare module "config/CushyStudio" {
-    import * as os from '@tauri-apps/api/os';
-    import { Maybe } from "core/ComfyUtils";
-    import { Workspace } from "core/Workspace";
-    import { JsonFile } from "config/JsonFile";
-    export type UserConfigJSON = {
-        version: 1;
-        theme?: 'dark' | 'light';
-        recentProjects?: string[];
-    };
-    export class CushyStudio {
-        constructor();
-        fetchBasicEnvInfos: Promise<void>;
-        os: Maybe<os.Platform>;
-        /** currently opened workspace */
-        workspace: Maybe<Workspace>;
-        openWorkspace: (folderPath: string) => Promise<Workspace>;
-        closeWorkspace: () => Promise<void>;
-        userConfig: JsonFile<UserConfigJSON>;
-        /** true when user config is ready */
-        get ready(): boolean;
     }
 }
 declare module "ui/TypescriptOptions" {
@@ -645,10 +646,6 @@ declare module "menu/AssetTreeUI" {
         children: React.ReactNode;
     }>;
 }
-declare module "menu/ExecutionStepIconUI" {
-    import { ScriptStep } from "core/ScriptStep";
-    export const ExecutionStepIconUI: (step: ScriptStep) => JSX.Element;
-}
 declare module "menu/ProjectTreeUI" {
     export const ProjectTreeUI: import("react").FunctionComponent<object>;
     export const HasProblem: JSX.Element;
@@ -789,6 +786,13 @@ declare module "ui/ExecutionUI" {
         children: ReactNode;
     }>;
 }
+declare module "menu/ExecutionStepIconUI" {
+    import { ScriptStep } from "core/ScriptStep";
+    export const ExecutionStepIconUI: (step: ScriptStep) => JSX.Element;
+}
+declare module "menu/FocusedProjectTreeUI" {
+    export const FocusedProjectTreeUI: import("react").FunctionComponent<{}>;
+}
 declare module "layout/LayoutDefault" {
     import { LayoutData } from 'rc-dock';
     export const defaultLayout: () => LayoutData;
@@ -817,9 +821,6 @@ declare module "png/getPngMetadata" {
         [key: string]: string;
     };
     export function getPngMetadata(client: Workspace, file: File): Promise<TextChunks>;
-}
-declare module "ui/sdkDTS" {
-    export const c__: string;
 }
 declare module "ui/ResilientWebsocket" {
     import type { Maybe } from "core/ComfyUtils";
@@ -853,17 +854,23 @@ declare module "ui/ResilientWebsocket" {
         message: MessageEvent;
     }
 }
+declare module "ui/sdkDTS" {
+    export const c__: string;
+}
+declare module "core/defaultProjectCode" {
+    export const defaultScript = "WORKFLOW(async (x) => {\n    // generate an empty table\n    const ckpt = x.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })\n    const latent = x.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })\n    const positive = x.CLIPTextEncode({ text: 'masterpiece, chair', clip: ckpt })\n    const negative = x.CLIPTextEncode({ text: '', clip: ckpt })\n    const sampler = x.KSampler({ seed: 2123, steps: 20, cfg: 10, sampler_name: 'euler', scheduler: 'normal', denoise: 0.8, model: ckpt, positive, negative, latent_image: latent })\n    const vae = x.VAEDecode({ samples: sampler, vae: ckpt })\n\n    x.SaveImage({ filename_prefix: 'ComfyUI', images: vae })\n    await x.get()\n})";
+}
 declare module "core/Workspace" {
+    import type { CushyStudio } from "config/CushyStudio";
     import type { ComfySchemaJSON } from "core/ComfySchemaJSON";
     import type { Maybe } from "core/ComfyUtils";
-    import type { CushyStudio } from "config/CushyStudio";
-    import { JsonFile } from "config/JsonFile";
     import { TypescriptFile } from "code/TypescriptFile";
+    import { JsonFile } from "config/JsonFile";
     import { CushyLayoutState } from "layout/LayoutState";
+    import { ResilientWebSocketClient } from "ui/ResilientWebsocket";
     import { ComfyStatus, ComfyUploadImageResult } from "core/ComfyAPI";
     import { ComfySchema } from "core/ComfySchema";
     import { Project } from "core/Project";
-    import { ResilientWebSocketClient } from "ui/ResilientWebsocket";
     export type WorkspaceConfigJSON = {
         version: 2;
         comfyWSURL: string;
@@ -969,7 +976,6 @@ declare module "core/Project" {
         id: string;
         /** folder where CushyStudio will save script informations */
         get folderPath(): string;
-        save: () => Promise<void>;
         duplicate: () => Promise<void>;
         focus: () => void;
         /** project name */
@@ -981,7 +987,6 @@ declare module "core/Project" {
         constructor(workspace: Workspace, folderName: string, initialCode?: string);
         /** convenient getter to retrive current client shcema */
         get schema(): import("core/ComfySchema").ComfySchema;
-        get code(): string;
         static FROM_JSON: (client: Workspace, json: ComfyPromptJSON) => Project;
         /** converts a ComfyPromptJSON into it's canonical normal-form script */
         static LoadFromComfyPromptJSON: (_json: ComfyPromptJSON) => never;
@@ -1229,8 +1234,9 @@ declare module "core/ComfyGraph" {
         wildcards: import("embeds/wildcards").Wildcards;
         /** return the coresponding comfy prompt  */
         get json(): ComfyPromptJSON;
+        convertToImageInput: (x: CSImage) => string;
         /** temporary proxy */
-        convertToImageInput: (x: CSImage) => Promise<string>;
+        convertToImageInputOLD1: (x: CSImage) => Promise<string>;
         askBoolean: (msg: string, def?: Maybe<boolean>) => Promise<boolean>;
         askString: (msg: string, def?: Maybe<string>) => Promise<string>;
         print: (...msg: any[]) => void;

@@ -20,7 +20,7 @@ export const TypescriptEditorUI = observer(function TypescriptEditorUI_(p: {
                 <MonacoEditor
                     // width='100vw'
                     // height='100%'
-                    path={p.buffer.monacoPath}
+                    path={p.buffer.conf.virtualPathTS}
                     keepCurrentModel
                     options={{ automaticLayout: true }}
                     theme='vs-dark'

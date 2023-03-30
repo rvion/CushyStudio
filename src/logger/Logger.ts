@@ -19,6 +19,8 @@ type Category =
     | '🦊'
     /** config files */
     | '🛋'
+    /** execution emoji */
+    | '🔥'
 
 interface LogMessage {
     level: LogLevel

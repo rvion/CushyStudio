@@ -1,4 +1,4 @@
-import { Button, Card, Input } from '@fluentui/react-components'
+import { Card, Input } from '@fluentui/react-components'
 import { Alert, Field } from '@fluentui/react-components/unstable'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
@@ -14,6 +14,7 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                     <div className='grow'></div>
                     <div>{client.ws.emoji}</div>
                 </h3>
+                {/* <Switch value={} /> */}
                 {/* <Field label='Workspace Folder'>
                                 <Input
                                 contentBefore={'📁'}

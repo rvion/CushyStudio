@@ -73,7 +73,6 @@ export class JsonFile<T extends object> {
         // 2. ensure file exists
         this._path = await path.join(this._folder, this.opts.name)
         const configFileExists = await fs.exists(this._path)
-        console.log('AA', this.opts.name)
         if (!configFileExists) {
             logger.info('🛋', `${p.name} not found, creating default`)
             this._value = await p.init()

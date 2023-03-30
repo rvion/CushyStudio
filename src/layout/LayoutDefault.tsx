@@ -7,6 +7,7 @@ import { MenuUI } from '../menu/MenuUI'
 import { PGalleryUI } from '../panels/pGallery'
 import { PGalleryFocusUI } from '../panels/pGalleryFocus'
 import { ExecutionUI } from '../ui/ExecutionUI'
+import { FocusedProjectTreeUI } from '../menu/FocusedProjectTreeUI'
 
 export const defaultLayout = (): LayoutData => ({
     floatbox: {
@@ -29,6 +30,17 @@ export const defaultLayout = (): LayoutData => ({
                                 id: 'CSMenuUI',
                                 title: 'CushyStudio',
                                 content: <MenuUI />,
+                            },
+                        ],
+                    },
+                    {
+                        tabs: [
+                            {
+                                minWidth: 250,
+                                minHeight: 300,
+                                id: 'CSMenuUI',
+                                title: 'CushyStudio',
+                                content: <FocusedProjectTreeUI />,
                             },
                         ],
                     },

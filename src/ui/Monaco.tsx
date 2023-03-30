@@ -69,7 +69,10 @@ export class LocoMonaco {
         const result = await worker.getEmitOutput(model.uri.toString())
         const jsCode = result.outputFiles[0]?.text
         if (jsCode == null) return 'ERROR'
-        return jsCode.replace('"use strict";', '')
+        return jsCode //
+            .replace('"use strict";', '')
+            .replace('export default WORKFLOW', 'WORKFLOW')
+            .trim()
     }
 }
 
