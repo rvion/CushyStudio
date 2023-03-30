@@ -14,12 +14,12 @@ import { nanoid } from 'nanoid'
 import { fetch, Body } from '@tauri-apps/api/http'
 import { CSImage } from './CSImage'
 import { Cyto } from '../graph/cyto'
-import { getYYYYMMDD_HHMM_SS } from '../utils/timestamps'
+import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 
 /** script exeuction instance */
 export class Run {
     /** creation "timestamp" in YYYYMMDDHHMMSS format */
-    createdAt = getYYYYMMDD_HHMM_SS()
+    createdAt = getYYYYMMDDHHMMSS()
 
     /** unique run id */
     uid = nanoid()
@@ -38,16 +38,16 @@ export class Run {
 
     /** folder where CushyStudio will save run informations */
     get folderPath() {
-        return this.script.folderPath + path.sep + this.createdAt + '_' + this.name
+        return this.script.folderPath + path.sep + this.name
     }
 
     /** save current script */
     save = async () => {
-        const contents = this.script.code
+        const contents = this.script.scriptBuffer.codeJS
         // ensure folder exists
         await fs.createDir(this.folderPath, { recursive: true })
         // safe script as script.ts
-        const backupCodePath = 'script.' + Date.now() + '.ts'
+        const backupCodePath = 'script.' + getYYYYMMDDHHMMSS() + '.js'
         const filePath = this.folderPath + path.sep + backupCodePath
         await fs.writeFile({ path: filePath, contents })
         // return success
@@ -59,7 +59,7 @@ export class Run {
         public script: Project,
         public opts?: { mock?: boolean },
     ) {
-        this.name = 'Run ' + this.script.runCounter++
+        this.name = `Run ${this.createdAt}` // 'Run ' + this.script.runCounter++
         this.graph = new ComfyGraph(this.script, this)
         this.cyto = new Cyto(this.graph)
         makeAutoObservable(this)

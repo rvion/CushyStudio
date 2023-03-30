@@ -1,3 +1,15 @@
+export const getYYYYMMDDHHMMSS = (): string => {
+    const date = new Date()
+    return (
+        date.getFullYear() +
+        pad2(date.getMonth() + 1) +
+        pad2(date.getDate()) +
+        pad2(date.getHours()) +
+        pad2(date.getMinutes()) +
+        pad2(date.getSeconds())
+    )
+}
+
 export const getYYYYMMDD_HHMM_SS = (): string => {
     const date = new Date()
     return (
