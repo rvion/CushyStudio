@@ -45,9 +45,10 @@ export const WorkspaceToolbarUI = observer(function WorkspaceToolbarUI_(props: P
                     aria-label='Increase Font Size'
                     icon={<I.PhoneUpdate24Regular />}
                     onClick={async () => {
+                        window.location.reload()
                         // may not correctly work
-                        const { relaunch } = await import('@tauri-apps/api/process')
-                        await relaunch()
+                        // const { relaunch } = await import('@tauri-apps/api/process')
+                        // await relaunch()
                     }}
                 >
                     Restart
