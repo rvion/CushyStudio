@@ -21,9 +21,9 @@ out
 workspace/*
 !workspace/object_info.json
 !workspace/workspace.json
-!workspace/demo-1
-!workspace/demo-2
-!workspace/demo-3
+!workspace/demo-*
+!workspace/demo-*
+!workspace/demo-*
 !workspace/cushy.d.ts
 !workspace/comfy.d.ts
 
