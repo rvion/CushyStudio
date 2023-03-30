@@ -17,6 +17,9 @@
     "output": {
       "0": "LATENT"
   },
+    "output_name": {
+      "0": "LATENT"
+  },
     "name": "KSampler",
     "description": "",
     "category": "sampling"
@@ -29,6 +32,11 @@
     }
   },
     "output": {
+      "0": "MODEL",
+      "1": "CLIP",
+      "2": "VAE"
+  },
+    "output_name": {
       "0": "MODEL",
       "1": "CLIP",
       "2": "VAE"
@@ -48,6 +56,11 @@
       "1": "CLIP",
       "2": "VAE"
   },
+    "output_name": {
+      "0": "MODEL",
+      "1": "CLIP",
+      "2": "VAE"
+  },
     "name": "CheckpointLoaderSimple",
     "description": "",
     "category": "loaders"
@@ -60,6 +73,9 @@
     }
   },
     "output": {
+      "0": "CONDITIONING"
+  },
+    "output_name": {
       "0": "CONDITIONING"
   },
     "name": "CLIPTextEncode",
@@ -76,6 +92,9 @@
     "output": {
       "0": "CLIP"
   },
+    "output_name": {
+      "0": "CLIP"
+  },
     "name": "CLIPSetLastLayer",
     "description": "",
     "category": "conditioning"
@@ -90,6 +109,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "VAEDecode",
     "description": "",
     "category": "latent"
@@ -102,6 +124,9 @@
     }
   },
     "output": {
+      "0": "LATENT"
+  },
+    "output_name": {
       "0": "LATENT"
   },
     "name": "VAEEncode",
@@ -119,6 +144,9 @@
     "output": {
       "0": "LATENT"
   },
+    "output_name": {
+      "0": "LATENT"
+  },
     "name": "VAEEncodeForInpaint",
     "description": "",
     "category": "latent/inpaint"
@@ -130,6 +158,9 @@
     }
   },
     "output": {
+      "0": "VAE"
+  },
+    "output_name": {
       "0": "VAE"
   },
     "name": "VAELoader",
@@ -145,6 +176,9 @@
     }
   },
     "output": {
+      "0": "LATENT"
+  },
+    "output_name": {
       "0": "LATENT"
   },
     "name": "EmptyLatentImage",
@@ -164,6 +198,9 @@
     "output": {
       "0": "LATENT"
   },
+    "output_name": {
+      "0": "LATENT"
+  },
     "name": "LatentUpscale",
     "description": "",
     "category": "latent"
@@ -181,6 +218,8 @@
   },
     "output": {
   },
+    "output_name": {
+  },
     "name": "SaveImage",
     "description": "",
     "category": "image"
@@ -197,6 +236,8 @@
   },
     "output": {
   },
+    "output_name": {
+  },
     "name": "PreviewImage",
     "description": "",
     "category": "image"
@@ -208,6 +249,10 @@
     }
   },
     "output": {
+      "0": "IMAGE",
+      "1": "MASK"
+  },
+    "output_name": {
       "0": "IMAGE",
       "1": "MASK"
   },
@@ -223,6 +268,9 @@
     }
   },
     "output": {
+      "0": "MASK"
+  },
+    "output_name": {
       "0": "MASK"
   },
     "name": "LoadImageMask",
@@ -242,6 +290,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "ImageScale",
     "description": "",
     "category": "image/upscaling"
@@ -253,6 +304,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "ImageInvert",
@@ -267,6 +321,9 @@
     }
   },
     "output": {
+      "0": "CONDITIONING"
+  },
+    "output_name": {
       "0": "CONDITIONING"
   },
     "name": "ConditioningCombine",
@@ -285,6 +342,9 @@
     }
   },
     "output": {
+      "0": "CONDITIONING"
+  },
+    "output_name": {
       "0": "CONDITIONING"
   },
     "name": "ConditioningSetArea",
@@ -312,6 +372,9 @@
     "output": {
       "0": "LATENT"
   },
+    "output_name": {
+      "0": "LATENT"
+  },
     "name": "KSamplerAdvanced",
     "description": "",
     "category": "sampling"
@@ -324,6 +387,9 @@
     }
   },
     "output": {
+      "0": "LATENT"
+  },
+    "output_name": {
       "0": "LATENT"
   },
     "name": "SetLatentNoiseMask",
@@ -343,6 +409,9 @@
     "output": {
       "0": "LATENT"
   },
+    "output_name": {
+      "0": "LATENT"
+  },
     "name": "LatentComposite",
     "description": "",
     "category": "latent"
@@ -357,6 +426,9 @@
     "output": {
       "0": "LATENT"
   },
+    "output_name": {
+      "0": "LATENT"
+  },
     "name": "LatentRotate",
     "description": "",
     "category": "latent/transform"
@@ -369,6 +441,9 @@
     }
   },
     "output": {
+      "0": "LATENT"
+  },
+    "output_name": {
       "0": "LATENT"
   },
     "name": "LatentFlip",
@@ -388,6 +463,9 @@
     "output": {
       "0": "LATENT"
   },
+    "output_name": {
+      "0": "LATENT"
+  },
     "name": "LatentCrop",
     "description": "",
     "category": "latent/transform"
@@ -398,11 +476,15 @@
         "model": ["MODEL"],
         "clip": ["CLIP"],
         "lora_name": [["theovercomer8sContrastFix_sd15.safetensors","theovercomer8sContrastFix_sd21768.safetensors"]],
-        "strength_model": ["FLOAT",{"default":1,"min":0,"max":10,"step":0.01}],
-        "strength_clip": ["FLOAT",{"default":1,"min":0,"max":10,"step":0.01}]
+        "strength_model": ["FLOAT",{"default":1,"min":-10,"max":10,"step":0.01}],
+        "strength_clip": ["FLOAT",{"default":1,"min":-10,"max":10,"step":0.01}]
     }
   },
     "output": {
+      "0": "MODEL",
+      "1": "CLIP"
+  },
+    "output_name": {
       "0": "MODEL",
       "1": "CLIP"
   },
@@ -419,6 +501,9 @@
     "output": {
       "0": "CLIP"
   },
+    "output_name": {
+      "0": "CLIP"
+  },
     "name": "CLIPLoader",
     "description": "",
     "category": "loaders"
@@ -431,6 +516,9 @@
     }
   },
     "output": {
+      "0": "CLIP_VISION_OUTPUT"
+  },
+    "output_name": {
       "0": "CLIP_VISION_OUTPUT"
   },
     "name": "CLIPVisionEncode",
@@ -446,6 +534,9 @@
     }
   },
     "output": {
+      "0": "CONDITIONING"
+  },
+    "output_name": {
       "0": "CONDITIONING"
   },
     "name": "StyleModelApply",
@@ -464,6 +555,9 @@
     "output": {
       "0": "CONDITIONING"
   },
+    "output_name": {
+      "0": "CONDITIONING"
+  },
     "name": "ControlNetApply",
     "description": "",
     "category": "conditioning"
@@ -475,6 +569,9 @@
     }
   },
     "output": {
+      "0": "CONTROL_NET"
+  },
+    "output_name": {
       "0": "CONTROL_NET"
   },
     "name": "ControlNetLoader",
@@ -491,6 +588,9 @@
     "output": {
       "0": "CONTROL_NET"
   },
+    "output_name": {
+      "0": "CONTROL_NET"
+  },
     "name": "DiffControlNetLoader",
     "description": "",
     "category": "loaders"
@@ -504,6 +604,9 @@
     "output": {
       "0": "STYLE_MODEL"
   },
+    "output_name": {
+      "0": "STYLE_MODEL"
+  },
     "name": "StyleModelLoader",
     "description": "",
     "category": "loaders"
@@ -515,6 +618,9 @@
     }
   },
     "output": {
+      "0": "CLIP_VISION"
+  },
+    "output_name": {
       "0": "CLIP_VISION"
   },
     "name": "CLIPVisionLoader",
@@ -531,6 +637,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "VAEDecodeTiled",
     "description": "",
     "category": "_for_testing"
@@ -543,6 +652,9 @@
     }
   },
     "output": {
+      "0": "LATENT"
+  },
+    "output_name": {
       "0": "LATENT"
   },
     "name": "VAEEncodeTiled",
@@ -565,6 +677,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image Filter Adjustments",
     "description": "",
     "category": "WAS Suite/Image"
@@ -577,6 +692,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Style Filter",
@@ -594,6 +712,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image Blending Mode",
     "description": "",
     "category": "WAS Suite/Image"
@@ -607,6 +728,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Blend",
@@ -623,6 +747,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Blend by Mask",
@@ -645,6 +772,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image Remove Color",
     "description": "",
     "category": "WAS Suite/Image"
@@ -657,6 +787,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Threshold",
@@ -676,6 +809,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image Chromatic Aberration",
     "description": "",
     "category": "WAS Suite/Image"
@@ -689,6 +825,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Bloom Filter",
@@ -708,6 +847,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image Blank",
     "description": "",
     "category": "WAS Suite/Image"
@@ -725,6 +867,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image Film Grain",
     "description": "",
     "category": "WAS Suite/Image"
@@ -737,6 +882,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Flip",
@@ -755,6 +903,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image Rotate",
     "description": "",
     "category": "WAS Suite/Image"
@@ -768,6 +919,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Nova Filter",
@@ -786,6 +940,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image Canny Filter",
     "description": "",
     "category": "WAS Suite/Image"
@@ -798,6 +955,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Edge Detection Filter",
@@ -817,6 +977,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image fDOF Filter",
     "description": "",
     "category": "WAS Suite/Image"
@@ -831,6 +994,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Median Filter",
@@ -853,6 +1019,8 @@
   },
     "output": {
   },
+    "output_name": {
+  },
     "name": "Image Save",
     "description": "",
     "category": "WAS Suite/IO"
@@ -864,6 +1032,10 @@
     }
   },
     "output": {
+      "0": "IMAGE",
+      "1": "MASK"
+  },
+    "output_name": {
       "0": "IMAGE",
       "1": "MASK"
   },
@@ -883,6 +1055,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image Levels Adjustment",
     "description": "",
     "category": "WAS Suite/Image"
@@ -898,6 +1073,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image High Pass Filter",
     "description": "",
     "category": "WAS Suite/Image"
@@ -910,6 +1088,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Tensor Batch to Image",
@@ -929,6 +1110,9 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "Image Select Color",
     "description": "",
     "category": "WAS Suite/Image"
@@ -941,6 +1125,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Select Channel",
@@ -956,6 +1143,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "Image Mix RGB Channels",
@@ -974,6 +1164,9 @@
     "output": {
       "0": "LATENT"
   },
+    "output_name": {
+      "0": "LATENT"
+  },
     "name": "Latent Upscale by Factor (WAS)",
     "description": "",
     "category": "WAS Suite/Latent"
@@ -986,6 +1179,9 @@
     }
   },
     "output": {
+      "0": "LATENT"
+  },
+    "output_name": {
       "0": "LATENT"
   },
     "name": "Latent Noise Injection",
@@ -1002,6 +1198,9 @@
     "output": {
       "0": "MASK"
   },
+    "output_name": {
+      "0": "MASK"
+  },
     "name": "Image to Latent Mask",
     "description": "",
     "category": "WAS Suite/Latent"
@@ -1016,6 +1215,9 @@
     }
   },
     "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
       "0": "IMAGE"
   },
     "name": "MiDaS Depth Approximation",
@@ -1043,6 +1245,10 @@
       "0": "IMAGE",
       "1": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE",
+      "1": "IMAGE"
+  },
     "name": "MiDaS Mask Image",
     "description": "",
     "category": "WAS Suite/Image"
@@ -1057,6 +1263,9 @@
     }
   },
     "output": {
+      "0": "CONDITIONING"
+  },
+    "output_name": {
       "0": "CONDITIONING"
   },
     "name": "CLIPTextEncode (NSP)",
@@ -1081,6 +1290,9 @@
     "output": {
       "0": "LATENT"
   },
+    "output_name": {
+      "0": "LATENT"
+  },
     "name": "KSampler (WAS)",
     "description": "",
     "category": "WAS Suite/Sampling"
@@ -1092,6 +1304,9 @@
     }
   },
     "output": {
+      "0": "SEED"
+  },
+    "output_name": {
       "0": "SEED"
   },
     "name": "Seed",
@@ -1107,6 +1322,9 @@
     "output": {
       "0": "ASCII"
   },
+    "output_name": {
+      "0": "ASCII"
+  },
     "name": "Text Multiline",
     "description": "",
     "category": "WAS Suite/Text"
@@ -1118,6 +1336,9 @@
     }
   },
     "output": {
+      "0": "ASCII"
+  },
+    "output_name": {
       "0": "ASCII"
   },
     "name": "Text String",
@@ -1134,6 +1355,9 @@
     "output": {
       "0": "ASCII"
   },
+    "output_name": {
+      "0": "ASCII"
+  },
     "name": "Text Random Line",
     "description": "",
     "category": "WAS Suite/Text"
@@ -1146,6 +1370,9 @@
     }
   },
     "output": {
+      "0": "CONDITIONING"
+  },
+    "output_name": {
       "0": "CONDITIONING"
   },
     "name": "Text to Conditioning",
@@ -1163,6 +1390,9 @@
     "output": {
       "0": "ASCII"
   },
+    "output_name": {
+      "0": "ASCII"
+  },
     "name": "Text Concatenate",
     "description": "",
     "category": "WAS Suite/Text"
@@ -1176,6 +1406,9 @@
     }
   },
     "output": {
+      "0": "ASCII"
+  },
+    "output_name": {
       "0": "ASCII"
   },
     "name": "Text Find and Replace",
@@ -1193,6 +1426,9 @@
     "output": {
       "0": "ASCII"
   },
+    "output_name": {
+      "0": "ASCII"
+  },
     "name": "Text Find and Replace Input",
     "description": "",
     "category": "WAS Suite/Text"
@@ -1206,6 +1442,9 @@
     }
   },
     "output": {
+      "0": "ASCII"
+  },
+    "output_name": {
       "0": "ASCII"
   },
     "name": "Text Parse Noodle Soup Prompts",
@@ -1222,6 +1461,8 @@
   },
     "output": {
   },
+    "output_name": {
+  },
     "name": "Save Text File",
     "description": "",
     "category": "WAS Suite/IO"
@@ -1233,6 +1474,9 @@
     }
   },
     "output": {
+      "0": "ASCII"
+  },
+    "output_name": {
       "0": "ASCII"
   },
     "name": "Load Text File",
@@ -1249,6 +1493,9 @@
     "output": {
       "0": "ASCII"
   },
+    "output_name": {
+      "0": "ASCII"
+  },
     "name": "Text to Console",
     "description": "",
     "category": "WAS Suite/Text"
@@ -1260,6 +1507,9 @@
     }
   },
     "output": {
+      "0": "UPSCALE_MODEL"
+  },
+    "output_name": {
       "0": "UPSCALE_MODEL"
   },
     "name": "UpscaleModelLoader",
@@ -1276,8 +1526,34 @@
     "output": {
       "0": "IMAGE"
   },
+    "output_name": {
+      "0": "IMAGE"
+  },
     "name": "ImageUpscaleWithModel",
     "description": "",
     "category": "image/upscaling"
+},
+  "ImagePadForOutpaint": {
+    "input": {
+      "required": {
+        "image": ["IMAGE"],
+        "left": ["INT",{"default":0,"min":0,"max":8192,"step":64}],
+        "top": ["INT",{"default":0,"min":0,"max":8192,"step":64}],
+        "right": ["INT",{"default":0,"min":0,"max":8192,"step":64}],
+        "bottom": ["INT",{"default":0,"min":0,"max":8192,"step":64}],
+        "feathering": ["INT",{"default":40,"min":0,"max":8192,"step":1}]
+    }
+  },
+    "output": {
+      "0": "IMAGE",
+      "1": "MASK"
+  },
+    "output_name": {
+      "0": "IMAGE",
+      "1": "MASK"
+  },
+    "name": "ImagePadForOutpaint",
+    "description": "",
+    "category": "image"
 }
 }
