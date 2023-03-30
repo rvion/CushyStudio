@@ -69,7 +69,7 @@ export class ResilientWebSocketClient {
 
         ws.onclose = (event: CloseEvent) => {
             if (ws !== this.currentWS) return
-            logger.error('🧦', `WebSocket closed (readon=${JSON.stringify(event.reason)}, code=${event.code})`)
+            logger.error('🧦', `WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
             this.isOpen = false
             logger.info('🧦', '⏱️ reconnecting in 2 seconds...')
             this.reconnectTimeout = setTimeout(() => this.connect(), 2000) // Attempt to reconnect after 5 seconds
