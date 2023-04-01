@@ -31,7 +31,13 @@ class ProjectCreationWizard {
         this.checkNameAvailability()
     }
     get pathCandidate(): string {
-        return this.workspace.absoluteWorkspaceFolderPath + path.sep + this.name
+        return this.name.endsWith('.ts') //
+            ? this.name
+            : this.name + '.ts'
+    }
+
+    get workspaceRelativePath() {
+        return this.workspace.resolveToRelativePath(this.pathCandidate)
     }
     checkNameAvailability = () => {}
     pathAvailable: Maybe<boolean> = null
@@ -55,19 +61,14 @@ export const NewProjectModalUI = observer(function NewProjectModalUI_(p: { child
                             <Field label='name'>
                                 <Input autoFocus value={wizard.name} onChange={(ev) => (wizard.name = ev.target.value)} />
                             </Field>
-                            Project will be created in <span className='highlighted'>{wizard.pathCandidate}</span>
+                            Project will be created in <span className='highlighted'>{wizard.workspaceRelativePath}</span>
                         </div>
                     </DialogContent>
                     <DialogActions>
                         <DialogTrigger disableButtonEnhancement>
                             <Button
                                 onClick={() => {
-                                    const workspaceRelativePath = workspace.resolveToRelativePath(wizard.name)
-                                    console.log(
-                                        '🚀 ~ file: NewProjectModalUI.tsx:66 ~ NewProjectModalUI ~ workspaceRelativePath:',
-                                        workspaceRelativePath,
-                                    )
-                                    workspace.createProjectAndFocustIt(workspaceRelativePath)
+                                    workspace.createProjectAndFocustIt(wizard.workspaceRelativePath)
                                 }}
                                 appearance='primary'
                             >
