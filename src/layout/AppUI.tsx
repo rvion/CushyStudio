@@ -44,8 +44,3 @@ export const AppUI = observer(function AppUI_() {
         </CSContext.Provider>
     )
 })
-
-// invoke('greet', { name: 'World' })
-//     // `invoke` returns a Promise
-//     .then((response) => console.log('🟢', response))
-// console.log(testCors())
