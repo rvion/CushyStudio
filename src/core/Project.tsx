@@ -9,7 +9,8 @@ import { Run } from './Run'
 import { TypescriptFile } from '../code/TypescriptFile'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { logger } from '../logger/Logger'
-import { pathe } from '../utils/pathUtils'
+import { pathe, WorkspaceRelativePath } from '../utils/pathUtils'
+import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 
 /** Script */
 export class Project {
@@ -19,34 +20,21 @@ export class Project {
     /** unique project id */
     id: string = nanoid()
 
-    /** folder where CushyStudio will save script informations */
-
-    // save = async () => {
-    //     const code = this.code
-    //     // ensure folder exists
-    //     await fs.createDir(this.folderPath, { recursive: true })
-    //     // safe script as script.ts
-    //     // const filePath = this.folderPath + path.sep + 'script.ts'
-    //     // await fs.writeFile({ path: filePath, contents: code })
-    //     // return success
-    //     console.log('[📁] saved', filePath)
-    // }
-
+    /** create a copy of a given project */
     duplicate = async () => {
-        this.workspace.createProjectAndFocustIt(
-            //
-            this.folderName + '_copy_' + Date.now(),
-            this.scriptBuffer.codeTS,
-        )
+        const nextPath_ = this.workspaceRelativeFilePath.replace(/\.ts$/, `_${getYYYYMMDDHHMMSS()}_copy.ts`)
+        const nextPath = this.workspace.resolveToRelativePath(nextPath_)
+        console.log({ nextPath_, nextPath })
+        this.workspace.createProjectAndFocustIt(nextPath, this.scriptBuffer.codeTS)
     }
 
+    /** focus project and open script in main panel */
     focus = () => {
         this.workspace.focusedFile = this.scriptBuffer
         this.workspace.focusedProject = this
         this.workspace.workspaceConfigFile
         // this.workspace.layout.openEditorTab(this.scriptBuffer)
     }
-    /** project name */
 
     /** list of all project runs */
     runs: Run[] = []
@@ -57,25 +45,19 @@ export class Project {
     }
 
     scriptBuffer: TypescriptFile
-    folderName: string
-    cacheFolder: string
-    workspaceRelativeFilePath: string
+    name: string
+    workspaceRelativeCacheFolderPath: string
+
     constructor(
         //
         public workspace: Workspace,
-        rawPath: string,
+        public workspaceRelativeFilePath: WorkspaceRelativePath,
         initialCode: Maybe<string>,
     ) {
-        const isAbsolute = pathe.isAbsolute(rawPath)
-        const relativePath = isAbsolute //
-            ? pathe.relative(workspace.folder, rawPath)
-            : rawPath
-
-        this.workspaceRelativeFilePath = relativePath
-
         // const fileName = basename(workspaceRelativeFilePath)
-        this.folderName = fileName.replace(/\.ts$/, '')
-        this.cacheFolder = this.workspace.folder + path.sep + 'aaa' + path.sep + this.folderName
+        const parsed = pathe.parse(workspaceRelativeFilePath)
+        this.name = parsed.name
+        this.workspaceRelativeCacheFolderPath = this.workspace.folder + path.sep + 'aaa' + path.sep + this.name
         // console.log('🔴', {
         //     filePath: this.workspaceRelativeFilePath,
         //     fileName: this.fileName,
@@ -83,10 +65,10 @@ export class Project {
         //     folderPath: this.cacheFolder,
         // })
         this.scriptBuffer = new TypescriptFile(this.workspace, {
-            title: this.folderName,
+            title: this.name,
             diskPathTS: this.workspaceRelativeFilePath,
-            diskPathJS: this.cacheFolder + path.sep + 'script.js',
-            virtualPathTS: `file:///${this.fileName}`,
+            diskPathJS: this.workspaceRelativeCacheFolderPath + path.sep + 'script.js',
+            virtualPathTS: `file:///${this.workspaceRelativeFilePath}`,
             defaultCodeWhenNoFile: initialCode,
         })
         makeAutoObservable(this)
@@ -95,10 +77,11 @@ export class Project {
     /** convenient getter to retrive current client shcema */
     get schema() { return this.workspace.schema } // prettier-ignore
 
-    static FROM_JSON = (client: Workspace, json: ComfyPromptJSON) => {
-        const folderName = nanoid()
-        const code = new ComfyImporter(client).convertFlowToCode(json)
-        const project = new Project(client, folderName, code)
+    static FROM_JSON = (workspace: Workspace, json: ComfyPromptJSON) => {
+        const randomName = nanoid()
+        const code = new ComfyImporter(workspace).convertFlowToCode(json)
+        const relPath = workspace.resolveToRelativePath(`${randomName}.ts`)
+        const project = new Project(workspace, relPath, code)
         // console.log('🔴', code)
         // script.udpateCode(code)
         return project
@@ -159,4 +142,17 @@ export class Project {
         //     return false
         // }
     }
+
+    /** folder where CushyStudio will save script informations */
+
+    // save = async () => {
+    //     const code = this.code
+    //     // ensure folder exists
+    //     await fs.createDir(this.folderPath, { recursive: true })
+    //     // safe script as script.ts
+    //     // const filePath = this.folderPath + path.sep + 'script.ts'
+    //     // await fs.writeFile({ path: filePath, contents: code })
+    //     // return success
+    //     console.log('[📁] saved', filePath)
+    // }
 }

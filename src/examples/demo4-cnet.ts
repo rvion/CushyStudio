@@ -11,18 +11,7 @@ export default WORKFLOW(async (C) => {
     const img = C.LoadImage({ image: upload.name })
     const control_net_apply = C.ControlNetApply({ conditioning: positive, control_net, image: img, strength: 1 }) // 🔴
     const negative = C.CLIPTextEncode({ text: 'bad hands', clip: ckpt })
-    const sampler = C.KSampler({
-        seed: 200,
-        steps: 20,
-        cfg: 10,
-        sampler_name: 'euler',
-        scheduler: 'normal',
-        denoise: 0.8,
-        model: ckpt,
-        positive: control_net_apply,
-        negative,
-        latent_image: latent,
-    })
+    const sampler = C.KSampler({ seed: 200, steps: 20, cfg: 10, sampler_name: 'euler', scheduler: 'normal', denoise: 0.8, model: ckpt, positive: control_net_apply, negative, latent_image: latent })
     const vae = C.VAEDecode({ samples: sampler, vae: ckpt })
     const image = C.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
     let r1 = await C.get()

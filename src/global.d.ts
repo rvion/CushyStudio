@@ -6,12 +6,12 @@ declare module 'x/y' {
 
 declare const zzz: import('x/y').Z
 
-
 import type { ComfyNodeOutput } from './core/ComfyNodeOutput'
 import type { ComfyNodeUID } from './core/ComfyNodeUID'
 import type { ComfyNode } from './core/CSNode'
 import type { ComfyNodeSchemaJSON } from './core/ComfySchemaJSON'
 import type { ComfyGraph } from './core/ComfyGraph'
+import type { Workflow } from './core/Workflow'
 
 // TYPES -------------------------------
 export type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>

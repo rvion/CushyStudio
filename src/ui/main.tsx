@@ -1,8 +1,25 @@
 import ReactDOM from 'react-dom/client'
-import { AppUI } from '../layout/AppUI'
 
+// dock css
 import 'rc-dock/dist/rc-dock-dark.css'
+// 🔴 todo remove this now that we have fluentui 9
 import 'react-toastify/dist/ReactToastify.css'
 import './index.css'
 
-ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(<AppUI />)
+// single import allowed before loading demos
+import { Workflow } from '../core/Workflow'
+
+// 1. monkey patch WORKFLOW so we can properly import demos without crahsing
+// due to missing virtual WORKFLOW function
+// @ts-ignore
+window.WORKFLOW = (...args: ConstructorParameters<typeof Workflow>) => {
+    return new Workflow(...args)
+}
+
+const { AppUI } = await import('../layout/AppUI')
+
+// APP ENTRYPOINT
+ReactDOM.createRoot(
+    //
+    document.getElementById('root') as HTMLElement,
+).render(<AppUI />)

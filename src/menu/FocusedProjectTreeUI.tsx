@@ -11,7 +11,7 @@ export const FocusedProjectTreeUI = observer(function FocusedProjectTreeUI_(p: {
     if (!project) return null
     return (
         <div>
-            🟢 {project.folderName}
+            🟢 {project.name}
             <Tree>
                 {project.runs.map((run, ix) => (
                     <TreeItem id={run.uid} key={run.uid} actions={<Actions />}>

@@ -19,7 +19,7 @@ type TypescriptFileOpts = {
 export class TypescriptFile {
     constructor(public workspace: Workspace, public conf: TypescriptFileOpts) {
         console.log({ opts: conf })
-        if (!conf.virtualPathTS.endsWith('.ts')) throw new Error('❌ INVARIANT VIOLATION')
+        if (!conf.virtualPathTS.endsWith('.ts')) throw new Error('❌ INVARIANT VIOLATION: typescript file does not end with .ts')
         makeObservable(this, { textModel: observable.ref })
         void this.init()
     }

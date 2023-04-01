@@ -11,6 +11,7 @@ import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
 import { TypescriptFile } from '../code/TypescriptFile'
 import { JsonFile } from '../config/JsonFile'
+import { Demo } from '../help/Demo'
 import { CushyLayoutState } from '../layout/LayoutState'
 import { logger } from '../logger/Logger'
 import { getPngMetadata } from '../png/getPngMetadata'
@@ -21,6 +22,7 @@ import { ComfySchema } from './ComfySchema'
 import { defaultScript } from './defaultProjectCode'
 import { Project } from './Project'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
+import { AbsolutePath, pathe, WorkspaceRelativePath } from '../utils/pathUtils'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -42,6 +44,20 @@ export class Workspace {
 
     focusedFile: Maybe<TypescriptFile> = null
     focusedProject: Maybe<Project> = null
+
+    private loadDemos = async (): Promise<Demo[]> => {
+        console.log('🦊', { WORKFLOW: WORKFLOW.toString() })
+        return [
+            // lazy load
+            new Demo(this, 'demo1-basic', await import('../examples/demo1-basic').then((m) => m.default)),
+            new Demo(this, 'demo2-test', await import('../examples/demo2-test').then((m) => m.default)),
+        ]
+    }
+
+    demos: Demo[] = (() => {
+        this.loadDemos().then((demos) => (this.demos = demos))
+        return []
+    })()
 
     projects: Project[] = []
     assets = new Map<string, boolean>()
@@ -73,8 +89,8 @@ export class Workspace {
         // this.layout.openEditorTab(this.CushySDKBuff)
     }
 
-    static OPEN = async (cushy: CushyStudio, folder: string): Promise<Workspace> => {
-        const workspace = new Workspace(cushy, folder)
+    static OPEN = async (cushy: CushyStudio, absoluteFolderPath: AbsolutePath): Promise<Workspace> => {
+        const workspace = new Workspace(cushy, absoluteFolderPath)
         await workspace.objectInfoFile.finished
         await workspace.workspaceConfigFile.finished
         void workspace.init()
@@ -84,7 +100,7 @@ export class Workspace {
     private constructor(
         //
         public cushy: CushyStudio,
-        public folder: string,
+        public folder: AbsolutePath,
     ) {
         this.schema = new ComfySchema({})
         console.log('🟢')
@@ -185,22 +201,56 @@ export class Workspace {
         return this.uploadUIntArrToComfy(blob)
     }
 
-    createProject = (folderName: string, script: string = defaultScript) => {
-        const project = new Project(this, folderName, script)
+    createProjectAndFocustIt = (
+        //
+        workspaceRelativeFilePath: WorkspaceRelativePath,
+        script: string = defaultScript,
+    ) => {
+        const project = new Project(this, workspaceRelativeFilePath, script)
         this.projects.push(project)
-        this.focusedProject = project
+        project.focus()
+    }
+
+    /** resolve any path to a relative workspace path
+     * CRASH if path is outside of workspace folder or invalid */
+    resolveToRelativePath = (rawPath: string): WorkspaceRelativePath => {
+        const isAbsolute = pathe.isAbsolute(rawPath)
+        // console.log('🚀 ~ file: Workspace.tsx:218 ~ Workspace ~ isAbsolute:', isAbsolute)
+        const parsed = pathe.parse(rawPath)
+        const relativePath = isAbsolute //
+            ? pathe.relative(this.folder, rawPath)
+            : pathe.relative(this.folder, pathe.resolve(this.folder, rawPath))
+
+        // ENFORCE WORKSPACE ISOLATION
+        if (relativePath.startsWith('..')) {
+            console.log(
+                JSON.stringify(
+                    {
+                        parsed,
+                        rawPath,
+                        workspaceFolder: this.folder,
+                        relativePath,
+                    },
+                    null,
+                    3,
+                ),
+            )
+            throw new Error("🔴BB invalid path; can't create path outside of workspace folder")
+        }
+        return relativePath as WorkspaceRelativePath
     }
 
     /** load all project found in workspace */
     loadProjects = async () => {
         console.log(`[🔍] loading projects...`)
-        const items = await fs.readDir(this.folder) // { recursive: true }
+        const items = await fs.readDir(this.folder, { recursive: true })
         for (const item of items) {
             if (item.children) continue // skip folders
             if (item.name == null) continue // skip invalid files
             if (!item.name.endsWith('.ts')) continue // skip non ts files
             const content = await fs.readTextFile(this.folder + path.sep + item.name)
-            this.projects.push(new Project(this, item.path, item.name, content))
+            const relPath = this.resolveToRelativePath(item.path)
+            this.projects.push(new Project(this, relPath, content))
         }
         //     if (!item.children) {
         //         console.log(`[🔍] - ${item.name} is not a folder`)

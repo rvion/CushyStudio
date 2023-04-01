@@ -131,6 +131,7 @@ export class ComfySchema {
         p(`import type { ComfyNode } from '${prefix}/CSNode'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}/ComfySchemaJSON'`)
         p(`import type { ComfyGraph } from '${prefix}/ComfyGraph'`)
+        p(`import type { Workflow } from './${prefix}/Workflow'`)
         p(`\n// TYPES -------------------------------`)
         const types = [...this.knownTypes.values()] //
             .map((comfyType) => ({ comfyType, tsType: this.toTSType(comfyType) }))

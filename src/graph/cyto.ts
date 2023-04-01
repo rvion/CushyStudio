@@ -42,12 +42,12 @@ export class Cyto {
     trackNode = (node: ComfyNode<any>) => {
         // this.cy.stop()
         this.at++
-        console.log('🚀 ADD NODE', node.uid, node.$schema.category)
+        // console.log('🚀 ADD NODE', node.uid, node.$schema.category)
         if (this.cy == null) throw new Error('no cy')
         this.cy.add({ data: { node, id: node.uid, position: { x: 10 * this.at, y: 10 * this.at } } }).addClass('foo')
         for (const edge of node._incomingEdges()) {
             const ctyoEdgeID = `${edge.from}-${edge.inputName}->${node.uid}`
-            console.log('🚀--', ctyoEdgeID)
+            // console.log('🚀--', ctyoEdgeID)
             this.cy.add({
                 // style: { 'background-color': 'red' },
                 data: {

@@ -38,7 +38,7 @@ export class Run {
 
     /** folder where CushyStudio will save run informations */
     get folderPath() {
-        return this.script.folderPath + path.sep + this.name
+        return this.script.workspaceRelativeCacheFolderPath + path.sep + this.name
     }
 
     /** save current script */

@@ -50,6 +50,9 @@ _Project is still early, but here is an overview of the plan_
 <!-- [🟢 = acceptable, 🔶 = partial, ☣️ = not ready] -->
 
 -   🔶 **workspace and project management**
+-   🔴 **manage ComfyUI installation**
+    -   🔴 download and install custom nodes
+    -   🔴 download and install various models
 -   🔶 **Import** existing projects
     -   🟢 import from `ComfyUI images`
     -   🔶 import from `ComfyUI json`
@@ -68,7 +71,6 @@ _Project is still early, but here is an overview of the plan_
     -   🔶 `choose next branch` question
     -   🔴 .... a lot more to be done
 -   🔶 Deep ComfyUI Integration
-    -   🟢 Custom nodes support
     -   🟢 Custom nodes support
 -   ⏳ Civitai Integration
     -   🔶 search
