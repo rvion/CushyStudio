@@ -12,6 +12,7 @@ export type UserConfigJSON = {
     version: 1
     theme?: 'dark' | 'light'
     recentProjects?: AbsolutePath[]
+    reOpenLastProject?: boolean
 }
 
 export class CushyStudio {
@@ -75,10 +76,10 @@ export class CushyStudio {
             console.log('[CUSHY] user config loaded:', data)
             console.log('[CUSHY] recent projects:', data.recentProjects)
             const lastProject = data.recentProjects?.[0]
-            if (lastProject === '/Users/loco/dev/CushyStudio/src/examples') {
-                console.log('[CUSHY] [DEV] opening last recent project:', lastProject)
+            if (lastProject && this.userConfig.value.reOpenLastProject)
+                // if (lastProject === '/Users/loco/dev/CushyStudio/src/examples') {
+                // console.log('[CUSHY] [DEV] opening last recent project:', lastProject)
                 this.openWorkspace(lastProject)
-            }
         },
     })
 

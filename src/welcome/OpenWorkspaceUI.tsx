@@ -20,7 +20,14 @@ export const OpenWorkspaceUI = observer(function OpenWorkspaceUI_(p: {}) {
                     </div>
                 ))}
             </div>
-            <Switch label={'Re-open last workspace on startup'} checked={false} />
+            <Switch
+                //
+                label={'Re-open last workspace on startup'}
+                checked={cs.userConfig.value.reOpenLastProject ?? false}
+                onChange={(_, val) => {
+                    cs.userConfig.update({ reOpenLastProject: val.checked })
+                }}
+            />
             <Button icon={<I.Add24Filled />} size='large' appearance='primary' onClick={cs.openWorkspaceDialog}>
                 Add new workspace
             </Button>
