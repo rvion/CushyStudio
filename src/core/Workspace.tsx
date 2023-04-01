@@ -154,7 +154,6 @@ export class Workspace {
 
     onMessage = (e: MessageEvent /* WS.MessageEvent*/) => {
         const msg: WsMsg = JSON.parse(e.data as any)
-        logger.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
         if (msg.type === 'status') {
             if (msg.data.sid) this.sid = msg.data.sid
             this.status = msg.data.status
@@ -174,9 +173,19 @@ export class Workspace {
             return console.log(`❌ received ${msg.type} but currentStep is not prompt`)
 
         // defer accumulation to ScriptStep_prompt
-        if (msg.type === 'progress') return promptStep.onProgress(msg)
-        if (msg.type === 'executing') return promptStep.onExecuting(msg)
-        if (msg.type === 'executed') return promptStep.onExecuted(msg)
+        if (msg.type === 'progress') {
+            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            return promptStep.onProgress(msg)
+        }
+        if (msg.type === 'executing') {
+            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            return promptStep.onExecuting(msg)
+        }
+
+        if (msg.type === 'executed') {
+            logger.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            return promptStep.onExecuted(msg)
+        }
 
         // unknown message payload ?
         console.log('❌', 'Unknown message:', msg)

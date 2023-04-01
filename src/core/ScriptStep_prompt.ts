@@ -64,7 +64,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     /** update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {
         if (msg.data.node == null) {
-            console.log(`executing "null" node => prompt is done`)
+            // console.log(`executing "null" node => prompt is done`)
             // 2023-03-18 rvion: if I understand correctly, null here means there is no work to do.
             // 2023-03-21 rvion: actually, it probably means the prompt is done
             if (this.currentExecutingNode == null) this.notifyEmptyPrompt()
