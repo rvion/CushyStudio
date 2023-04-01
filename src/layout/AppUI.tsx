@@ -1,4 +1,4 @@
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { FluentProvider, Spinner, webDarkTheme } from '@fluentui/react-components'
@@ -11,6 +11,7 @@ import { OpenWorkspaceUI } from '../welcome/OpenWorkspaceUI'
 import { AppBarUI } from './AppBarUI'
 import { CushyLayoutUI } from './LayoutUI'
 import { CSContext } from '../config/CushyStudioContext'
+import { TroubleShootinInstructionsUI } from './TroubleShootinInstructionsUI'
 
 export const AppUI = observer(function AppUI_() {
     const cs = useMemo(() => new CushyStudio(), [])
@@ -20,6 +21,7 @@ export const AppUI = observer(function AppUI_() {
             <FluentProvider theme={webDarkTheme} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <WelcomeScreenUI>
                     <Spinner />
+                    <TroubleShootinInstructionsUI />
                 </WelcomeScreenUI>
             </FluentProvider>
         )
