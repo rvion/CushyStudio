@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { TypescriptEditorUI } from '../code/TypescriptEditorUI'
+import { TypescriptEditorUI } from '../tsEngine/TypescriptEditorUI'
 import { ErrorScreenUI } from './ErrorScreenUI'
 import { PConnectUI } from '../panels/pConnect'
 import { useWorkspace } from './WorkspaceContext'

@@ -3,7 +3,7 @@ import type { ITextModel } from '../ui/TypescriptOptions'
 
 import { makeObservable, observable } from 'mobx'
 import { RootFolder } from '../config/RootFolder'
-import { globalMonaco } from '../ui/Monaco'
+import { globalMonaco } from './Monaco'
 import { MonacoPath, RelativePath } from '../utils/pathUtils'
 
 export type TypescriptFileConf = {

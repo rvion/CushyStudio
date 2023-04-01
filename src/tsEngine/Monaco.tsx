@@ -1,4 +1,4 @@
-import { ITextModel, Monaco, TypescriptOptions } from './TypescriptOptions'
+import { ITextModel, Monaco, TypescriptOptions } from '../ui/TypescriptOptions'
 
 import { loader } from '@monaco-editor/react'
 import { logger } from '../logger/Logger'
