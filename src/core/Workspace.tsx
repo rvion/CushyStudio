@@ -228,7 +228,7 @@ export class Workspace {
     writeTextFile = async (workspaceRelativePath: WorkspaceRelativePath, contents: string) => {
         // 1. resolve absolute path
         const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
-        console.log('>>> 🔴x', absoluteFilePath)
+        // console.log('>>> 🔴x', absoluteFilePath)
         // 2. create folder if missing
         const folder = await path.dirname(absoluteFilePath)
         const folderExists = await fs.exists(folder)
@@ -244,7 +244,7 @@ export class Workspace {
     writeBinaryFile = async (workspaceRelativePath: WorkspaceRelativePath, contents: fs.BinaryFileContents) => {
         // 1. resolve absolute path
         const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
-        console.log('>>> 🔴y', absoluteFilePath)
+        // console.log('>>> 🔴y', absoluteFilePath)
         // 2. create folder if missing
         const folder = await path.dirname(absoluteFilePath)
         const folderExists = await fs.exists(folder)
