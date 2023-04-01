@@ -109,9 +109,9 @@ export class TypescriptFile {
     syncWithDiskFile = async () => {
         const diskPathTS: WorkspaceRelativePath = this.conf.workspaceRelativeTSFilePath
         console.log(this.conf.workspaceRelativeTSFilePath)
-        await this.workspace.syncTextFileContent(diskPathTS, this.codeTS)
+        await this.workspace.writeTextFile(diskPathTS, this.codeTS)
         const diskPathJS = this.conf.workspaceRelativeJSFilePath
-        if (diskPathJS) await this.workspace.syncTextFileContent(diskPathJS, this.codeJS)
+        if (diskPathJS) await this.workspace.writeTextFile(diskPathJS, this.codeJS)
     }
 }
 

@@ -46,7 +46,7 @@ export class Run {
         const contents = this.project.scriptBuffer.codeJS
         const backupCodePath = 'script.' + getYYYYMMDDHHMMSS() + '.js'
         const filePath = asRelativePath(this.workspaceRelativeCacheFolderPath + path.sep + backupCodePath)
-        await this.project.workspace.syncTextFileContent(filePath, contents)
+        await this.project.workspace.writeTextFile(filePath, contents)
         console.log('[📁] script backup saved', filePath)
     }
 

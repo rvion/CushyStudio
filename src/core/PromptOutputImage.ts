@@ -57,7 +57,7 @@ export class PromptOutputImage {
         })
         const numArr: number[] = response.data as any
         const binArr = new Uint16Array(numArr)
-        await this.workspace.syncBinaryFileContent(this.filePath, binArr)
+        await this.workspace.writeBinaryFile(this.filePath, binArr)
         this.saved = true
     }
 

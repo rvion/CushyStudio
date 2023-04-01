@@ -279,7 +279,7 @@ declare module "core/ScriptStep_prompt" {
     import type { ComfyNode } from "core/CSNode";
     import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
     import { ComfyGraph } from "core/ComfyGraph";
-    import { CSImage } from "core/CSImage";
+    import { PromptOutputImage } from "core/PromptOutputImage";
     export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         run: Run;
         prompt: ComfyPromptJSON;
@@ -305,23 +305,33 @@ declare module "core/ScriptStep_prompt" {
         onExecuting: (msg: WsMsgExecuting) => void;
         /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
         private outputs;
-        images: CSImage[];
+        images: PromptOutputImage[];
         /** udpate execution list */
         onExecuted: (msg: WsMsgExecuted) => void;
         /** finish this step */
         private _finish;
     }
 }
-declare module "core/CSImage" {
+declare module "core/PromptOutputImage" {
     import type { ComfyImageInfo } from "core/ComfyAPI";
-    import type { Workspace } from "core/Workspace";
     import type { Maybe } from "core/ComfyUtils";
     import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
+    import type { Workspace } from "core/Workspace";
     import { WorkspaceRelativePath } from "utils/pathUtils";
     /** Cushy wrapper around ComfyImageInfo */
-    export class CSImage {
+    export class PromptOutputImage {
+        /** the prompt this file has been generated from */
         prompt: ScriptStep_prompt;
+        /** image info as returned by Comfy */
         data: ComfyImageInfo;
+        workspace: Workspace;
+        constructor(
+        /** the prompt this file has been generated from */
+        prompt: ScriptStep_prompt, 
+        /** image info as returned by Comfy */
+        data: ComfyImageInfo);
+        /** url to acces the image */
+        get comfyURL(): string;
         /** unique image id */
         uid: string;
         /** path within the input folder */
@@ -331,14 +341,9 @@ declare module "core/CSImage" {
         get folder(): WorkspaceRelativePath;
         get fileName(): string;
         get filePath(): WorkspaceRelativePath;
-        get workspace(): Workspace;
         saveOnDisk: () => Promise<void>;
         /** this is such a bad workaround but 🤷‍♂️ */
         makeAvailableAsInput: () => Promise<string>;
-        client: Workspace;
-        constructor(prompt: ScriptStep_prompt, data: ComfyImageInfo);
-        /** url to acces the image */
-        get comfyURL(): string;
     }
 }
 declare module "core/ScriptStep_Init" {
@@ -390,7 +395,7 @@ declare module "core/Run" {
     import { WsMsgExecuted } from "core/ComfyAPI";
     import { ComfyGraph } from "core/ComfyGraph";
     import { Maybe } from "core/ComfyUtils";
-    import { CSImage } from "core/CSImage";
+    import { PromptOutputImage } from "core/PromptOutputImage";
     import { ScriptStep } from "core/ScriptStep";
     import { ScriptStep_prompt } from "core/ScriptStep_prompt";
     /** script exeuction instance */
@@ -410,7 +415,7 @@ declare module "core/Run" {
         /** graph engine instance for smooth and clever auto-layout algorithms */
         cyto: Cyto;
         /** list of all images produed over the whole script execution */
-        gallery: CSImage[];
+        gallery: PromptOutputImage[];
         /** folder where CushyStudio will save run informations */
         get workspaceRelativeCacheFolderPath(): WorkspaceRelativePath;
         /** save current script */
@@ -845,13 +850,13 @@ declare module "layout/LayoutDefault" {
     export const defaultLayout: () => LayoutData;
 }
 declare module "layout/LayoutState" {
-    import type { CSImage } from "core/CSImage";
+    import type { PromptOutputImage } from "core/PromptOutputImage";
     import DockLayout from 'rc-dock';
     import { Workspace } from "core/Workspace";
     export class CushyLayoutState {
         client: Workspace;
         layout: import("rc-dock").LayoutData;
-        galleryFocus: CSImage | null;
+        galleryFocus: PromptOutputImage | null;
         gallerySize: number;
         dockLayout: DockLayout | null;
         getRef: (r: DockLayout | null) => DockLayout | null;
@@ -978,9 +983,9 @@ declare module "core/Workspace" {
         uploadURL: (url?: string) => Promise<ComfyUploadImageResult>;
         createProjectAndFocustIt: (workspaceRelativeFilePath: WorkspaceRelativePath, script?: string) => void;
         /** 📝 should be single function able to save text files in a workspace */
-        syncTextFileContent: (workspaceRelativePath: WorkspaceRelativePath, contents: string) => Promise<void>;
+        writeTextFile: (workspaceRelativePath: WorkspaceRelativePath, contents: string) => Promise<void>;
         /** 📝 should be single function able to save binary files in a workspace */
-        syncBinaryFileContent: (workspaceRelativePath: WorkspaceRelativePath, contents: fs.BinaryFileContents) => Promise<void>;
+        writeBinaryFile: (workspaceRelativePath: WorkspaceRelativePath, contents: fs.BinaryFileContents) => Promise<void>;
         /** resolve any path to a relative workspace path
          * CRASH if path is outside of workspace folder or invalid */
         resolveToRelativePath: (rawPath: string) => WorkspaceRelativePath;
@@ -1287,7 +1292,7 @@ declare module "core/ComfyGraph" {
     import { Workspace } from "core/Workspace";
     import { ComfyNode } from "core/CSNode";
     import { ComfySchema } from "core/ComfySchema";
-    import { CSImage } from "core/CSImage";
+    import { PromptOutputImage } from "core/PromptOutputImage";
     import { Cyto } from "graph/cyto";
     export type RunMode = 'fake' | 'real';
     export class ComfyGraph {
@@ -1307,9 +1312,9 @@ declare module "core/ComfyGraph" {
         wildcards: import("wildcards/wildcards").Wildcards;
         /** return the coresponding comfy prompt  */
         get json(): ComfyPromptJSON;
-        convertToImageInput: (x: CSImage) => string;
+        convertToImageInput: (x: PromptOutputImage) => string;
         /** temporary proxy */
-        convertToImageInputOLD1: (x: CSImage) => Promise<string>;
+        convertToImageInputOLD1: (x: PromptOutputImage) => Promise<string>;
         askBoolean: (msg: string, def?: Maybe<boolean>) => Promise<boolean>;
         askString: (msg: string, def?: Maybe<string>) => Promise<string>;
         print: (msg: string) => void;
@@ -1318,7 +1323,7 @@ declare module "core/ComfyGraph" {
         getUID: () => string;
         getNodeOrCrash: (nodeID: ComfyNodeUID) => ComfyNode<any>;
         /** all images generated by nodes in this graph */
-        get allImages(): CSImage[];
+        get allImages(): PromptOutputImage[];
         /** wether it should really send the prompt to the backend */
         get runningMode(): RunMode;
         get(): Promise<ScriptStep_prompt>;
@@ -1336,7 +1341,7 @@ declare module "core/CSNode" {
     import { ComfyNodeOutput } from "core/ComfyNodeOutput";
     import { ComfyNodeUID } from "core/ComfyNodeUID";
     import { ComfyNodeSchema } from "core/ComfySchema";
-    import { CSImage } from "core/CSImage";
+    import { PromptOutputImage } from "core/PromptOutputImage";
     /** ComfyNode
      * - correspond to a signal in the graph
      * - belongs to a script
@@ -1345,7 +1350,7 @@ declare module "core/CSNode" {
         graph: ComfyGraph;
         uid: string;
         artifacts: WsMsgExecutedData[];
-        images: CSImage[];
+        images: PromptOutputImage[];
         progress: NodeProgress | null;
         $schema: ComfyNodeSchema;
         status: 'executing' | 'done' | 'error' | 'waiting' | null;

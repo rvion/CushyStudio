@@ -217,7 +217,7 @@ export class Workspace {
     }
 
     /** 📝 should be single function able to save text files in a workspace */
-    syncTextFileContent = async (workspaceRelativePath: WorkspaceRelativePath, contents: string) => {
+    writeTextFile = async (workspaceRelativePath: WorkspaceRelativePath, contents: string) => {
         // 1. resolve absolute path
         const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
         console.log('>>> 🔴x', absoluteFilePath)
@@ -233,7 +233,7 @@ export class Workspace {
     }
 
     /** 📝 should be single function able to save binary files in a workspace */
-    syncBinaryFileContent = async (workspaceRelativePath: WorkspaceRelativePath, contents: fs.BinaryFileContents) => {
+    writeBinaryFile = async (workspaceRelativePath: WorkspaceRelativePath, contents: fs.BinaryFileContents) => {
         // 1. resolve absolute path
         const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
         console.log('>>> 🔴y', absoluteFilePath)
