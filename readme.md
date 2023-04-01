@@ -63,7 +63,9 @@ _Project is still early, but here is an overview of the plan_
     -   🔶 self-updating binary for simple
 -   🔶 integrated `OpenPose` library to `puppet`, `animate`, `interpolate` frames of stickmans
     -   🔶 generate bone images from openpose definitions
-    -
+-   🔴 image building API
+    -   🔴 paint with words
+    -   🔴 prefab library
 -   🔶 Interractive Evaluation
     -   🟢 `askString` question
     -   🟢 `askBoolean` question
