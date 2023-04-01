@@ -43,9 +43,9 @@ export class JsonFile<T extends object> {
     private init = async (): Promise<T> => {
         const conf: PersistedJSONInfo<T> = this.conf
         const existingContent = await this.rootFolder.readTextFile(conf.relativePath)
-        console.log('🚀 ~ file: JsonFile.ts:46 ~ JsonFile<T ~ init= ~ existingContent:', existingContent)
+        // console.log('🚀 ~ file: JsonFile.ts:46 ~ JsonFile<T ~ init= ~ existingContent:', existingContent)
         this._value = existingContent ? JSON.parse(existingContent) : conf.init()
-        console.log('🚀 ~ file: JsonFile.ts:48 ~ JsonFile<T ~ init= ~ this._value:', this._value)
+        // console.log('🚀 ~ file: JsonFile.ts:48 ~ JsonFile<T ~ init= ~ this._value:', this._value)
         this.setReady()
         await this.save()
         return this._value
