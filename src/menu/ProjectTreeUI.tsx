@@ -13,7 +13,7 @@ export const ProjectTreeUI = observer(function MenuUI_() {
         <Tree
             size='small'
             aria-label='Tree'
-            defaultOpenItems={['projects']}
+            defaultOpenItems={['projects', 'demos']}
             ref={(e) => {
                 if (e) e.focus()
             }}
@@ -41,12 +41,28 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                 </TreeItemLayout>
                 {/* </TreeItem> */}
             </AssetTreeUI>
+            <TreeItem id='demos'>
+                <TreeItemLayout iconBefore={<I.BuildingBank24Regular />}>Démos</TreeItemLayout>
+                <Tree>
+                    {workspace.demos.map((demo, ix) => (
+                        <TreeItem
+                            // PROJECT
+                            id={demo.name}
+                            key={demo.name}
+                        >
+                            <TreeItemLayout iconBefore={<I.DesignIdeas24Filled />} onClick={() => demo.createProjectCopy()}>
+                                <span>{demo.name}</span>
+                            </TreeItemLayout>
+                        </TreeItem>
+                    ))}
+                </Tree>
+            </TreeItem>
             <TreeItem id='projects'>
                 <TreeItemLayout iconBefore={<I.DocumentBulletListMultiple24Regular />}>Scripts</TreeItemLayout>
                 <Tree>
                     {workspace.projects
                         .slice()
-                        .sort((a, b) => a.folderName.localeCompare(b.folderName))
+                        .sort((a, b) => a.name.localeCompare(b.name))
                         .map((project) => (
                             <TreeItem
                                 // PROJECT
@@ -93,7 +109,7 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                                                 : undefined
                                         }
                                     >
-                                        {project.folderName}
+                                        {project.name}
                                     </span>
                                 </TreeItemLayout>
                             </TreeItem>

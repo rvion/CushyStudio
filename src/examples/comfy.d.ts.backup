@@ -1324,5 +1324,5 @@ export interface ComfySetup {
     ImageUpscaleWithModel(args: ImageUpscaleWithModel_input, uid?: ComfyNodeUID): ImageUpscaleWithModel
 }
 declare global {
-    export const WORKFLOW: (builder: (graph: ComfySetup & ComfyGraph) => void) => void
+    export const WORKFLOW: (builder: (graph: ComfySetup & ComfyGraph) => void) => Workflow
 }

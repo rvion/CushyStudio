@@ -22,7 +22,7 @@ import { ComfySchema } from './ComfySchema'
 import { defaultScript } from './defaultProjectCode'
 import { Project } from './Project'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
-import { AbsolutePath, pathe, WorkspaceRelativePath } from '../utils/pathUtils'
+import { AbsolutePath, asMonacoPath, asRelativePath, pathe, WorkspaceRelativePath } from '../utils/pathUtils'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -97,33 +97,38 @@ export class Workspace {
         return workspace
     }
 
+    /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
+    get relativeCacheFolderPath(): WorkspaceRelativePath {
+        return asRelativePath('cache')
+    }
+
     private constructor(
         //
         public cushy: CushyStudio,
-        public folder: AbsolutePath,
+        public absoluteWorkspaceFolderPath: AbsolutePath,
     ) {
         this.schema = new ComfySchema({})
         console.log('🟢')
         this.cushySDKFile = new TypescriptFile(this, {
             title: 'Cushy SDK',
-            diskPathTS: this.folder + path.sep + 'cushy.d.ts.backup',
-            virtualPathTS: `file://${this.folder}/cushy.d.ts`,
+            workspaceRelativeTSFilePath: asRelativePath('cushy.d.ts.backup'),
+            virtualPathTS: asMonacoPath(`file:///cushy.d.ts`),
             codeOverwrite: c__,
         })
         this.comfySDKFile = new TypescriptFile(this, {
             title: 'Comfy SDK',
-            diskPathTS: this.folder + path.sep + 'comfy.d.ts.backup',
-            virtualPathTS: `file://${this.folder}/comfy.d.ts`,
+            workspaceRelativeTSFilePath: asRelativePath('comfy.d.ts.backup'),
+            virtualPathTS: asMonacoPath(`file:///comfy.d.ts`),
             defaultCodeWhenNoFile: null,
         })
         this.objectInfoFile = new JsonFile<ComfySchemaJSON>({
-            folder: Promise.resolve(this.folder),
+            folder: Promise.resolve(this.absoluteWorkspaceFolderPath),
             name: 'object_info.json',
             init: () => ({}),
             maxLevel: 3,
         })
         this.workspaceConfigFile = new JsonFile<WorkspaceConfigJSON>({
-            folder: Promise.resolve(this.folder),
+            folder: Promise.resolve(this.absoluteWorkspaceFolderPath),
             name: 'workspace.json',
             init: () => ({
                 version: 2,
@@ -211,6 +216,17 @@ export class Workspace {
         project.focus()
     }
 
+    syncFileContent = async (workspaceRelativePath: WorkspaceRelativePath, contents: string) => {
+        const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
+        console.log('>>> 🔴', absoluteFilePath)
+        const folder = await path.dirname(absoluteFilePath)
+        const folderExists = await fs.exists(folder)
+        if (!folderExists) await fs.createDir(folder, { recursive: true })
+        const prevExists = await fs.exists(absoluteFilePath)
+        const prev = prevExists ? await fs.readTextFile(absoluteFilePath) : null
+        if (prev != contents) await fs.writeFile({ path: absoluteFilePath, contents })
+    }
+
     /** resolve any path to a relative workspace path
      * CRASH if path is outside of workspace folder or invalid */
     resolveToRelativePath = (rawPath: string): WorkspaceRelativePath => {
@@ -218,8 +234,8 @@ export class Workspace {
         // console.log('🚀 ~ file: Workspace.tsx:218 ~ Workspace ~ isAbsolute:', isAbsolute)
         const parsed = pathe.parse(rawPath)
         const relativePath = isAbsolute //
-            ? pathe.relative(this.folder, rawPath)
-            : pathe.relative(this.folder, pathe.resolve(this.folder, rawPath))
+            ? pathe.relative(this.absoluteWorkspaceFolderPath, rawPath)
+            : pathe.relative(this.absoluteWorkspaceFolderPath, pathe.resolve(this.absoluteWorkspaceFolderPath, rawPath))
 
         // ENFORCE WORKSPACE ISOLATION
         if (relativePath.startsWith('..')) {
@@ -228,7 +244,7 @@ export class Workspace {
                     {
                         parsed,
                         rawPath,
-                        workspaceFolder: this.folder,
+                        workspaceFolder: this.absoluteWorkspaceFolderPath,
                         relativePath,
                     },
                     null,
@@ -243,12 +259,12 @@ export class Workspace {
     /** load all project found in workspace */
     loadProjects = async () => {
         console.log(`[🔍] loading projects...`)
-        const items = await fs.readDir(this.folder, { recursive: true })
+        const items = await fs.readDir(this.absoluteWorkspaceFolderPath, { recursive: true })
         for (const item of items) {
             if (item.children) continue // skip folders
             if (item.name == null) continue // skip invalid files
             if (!item.name.endsWith('.ts')) continue // skip non ts files
-            const content = await fs.readTextFile(this.folder + path.sep + item.name)
+            const content = await fs.readTextFile(this.absoluteWorkspaceFolderPath + path.sep + item.name)
             const relPath = this.resolveToRelativePath(item.path)
             this.projects.push(new Project(this, relPath, content))
         }

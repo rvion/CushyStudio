@@ -31,7 +31,7 @@ class ProjectCreationWizard {
         this.checkNameAvailability()
     }
     get pathCandidate(): string {
-        return this.workspace.folder + path.sep + this.name
+        return this.workspace.absoluteWorkspaceFolderPath + path.sep + this.name
     }
     checkNameAvailability = () => {}
     pathAvailable: Maybe<boolean> = null
@@ -62,7 +62,12 @@ export const NewProjectModalUI = observer(function NewProjectModalUI_(p: { child
                         <DialogTrigger disableButtonEnhancement>
                             <Button
                                 onClick={() => {
-                                    workspace.createProject(wizard.name)
+                                    const workspaceRelativePath = workspace.resolveToRelativePath(wizard.name)
+                                    console.log(
+                                        '🚀 ~ file: NewProjectModalUI.tsx:66 ~ NewProjectModalUI ~ workspaceRelativePath:',
+                                        workspaceRelativePath,
+                                    )
+                                    workspace.createProjectAndFocustIt(workspaceRelativePath)
                                 }}
                                 appearance='primary'
                             >

@@ -1,18 +1,29 @@
 import type { Maybe } from '../core/ComfyUtils'
 import type { Workspace } from '../core/Workspace'
 import type { ITextModel } from '../ui/TypescriptOptions'
+
 import * as fs from '@tauri-apps/api/fs'
 import { makeObservable, observable } from 'mobx'
 import { globalMonaco } from '../ui/Monaco'
-import { syncFile } from './syncFile'
+import { MonacoPath, WorkspaceRelativePath } from '../utils/pathUtils'
 
 type TypescriptFileOpts = {
-    /** human readable */
+    /** human readable title */
     title: string
-    diskPathTS: string
-    diskPathJS?: Maybe<string>
-    virtualPathTS: string
+
+    /** the relative path to the typescript file this should be kept in sync with */
+    workspaceRelativeTSFilePath: WorkspaceRelativePath
+
+    /** the relative path to the javascript file this should be transpiled to */
+    workspaceRelativeJSFilePath?: Maybe<WorkspaceRelativePath>
+
+    /** the language server internal file path */
+    virtualPathTS: MonacoPath
+
+    /** what we should initialize this file to if there is no file on disk */
     defaultCodeWhenNoFile?: Maybe<string>
+
+    /** what we should overwrite the file to in any case */
     codeOverwrite?: Maybe<string>
 }
 
@@ -42,11 +53,11 @@ export class TypescriptFile {
     init = async () => {
         const opts = this.conf
         // 1. get code value
-        console.log('[📁] loading', opts.diskPathTS)
+        console.log('[📁] loading', opts.workspaceRelativeTSFilePath)
         this.codeTS = opts.codeOverwrite
             ? opts.codeOverwrite
-            : (await fs.exists(opts.diskPathTS))
-            ? await fs.readTextFile(opts.diskPathTS)
+            : (await fs.exists(opts.workspaceRelativeTSFilePath))
+            ? await fs.readTextFile(opts.workspaceRelativeTSFilePath)
             : opts.defaultCodeWhenNoFile != null
             ? opts.defaultCodeWhenNoFile
             : ''
@@ -64,7 +75,7 @@ export class TypescriptFile {
         }
 
         // 3. transpile if needed
-        if (opts.diskPathJS) {
+        if (opts.workspaceRelativeJSFilePath) {
             this.codeJS = await globalMonaco.convertToJS(model)
         }
         this.textModel = model
@@ -96,11 +107,11 @@ export class TypescriptFile {
     }
 
     syncWithDiskFile = async () => {
-        // console.log('[📁] saving', this.diskPathTS)
-        // ensure folder exists
-        const diskPathTS = this.conf.diskPathTS
-        await syncFile(diskPathTS, this.codeTS)
-        if (this.conf.diskPathJS) await syncFile(diskPathTS, this.codeTS)
+        const diskPathTS: WorkspaceRelativePath = this.conf.workspaceRelativeTSFilePath
+        console.log(this.conf.workspaceRelativeTSFilePath)
+        await this.workspace.syncFileContent(diskPathTS, this.codeTS)
+        const diskPathJS = this.conf.workspaceRelativeJSFilePath
+        if (diskPathJS) await this.workspace.syncFileContent(diskPathJS, this.codeJS)
     }
 }
 

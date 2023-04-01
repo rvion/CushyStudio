@@ -9,7 +9,7 @@ import { Run } from './Run'
 import { TypescriptFile } from '../code/TypescriptFile'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { logger } from '../logger/Logger'
-import { pathe, WorkspaceRelativePath } from '../utils/pathUtils'
+import { asMonacoPath, asRelativePath, pathe, WorkspaceRelativePath } from '../utils/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 
 /** Script */
@@ -46,7 +46,7 @@ export class Project {
 
     scriptBuffer: TypescriptFile
     name: string
-    workspaceRelativeCacheFolderPath: string
+    workspaceRelativeProjectCacheFolder: string
 
     constructor(
         //
@@ -57,7 +57,8 @@ export class Project {
         // const fileName = basename(workspaceRelativeFilePath)
         const parsed = pathe.parse(workspaceRelativeFilePath)
         this.name = parsed.name
-        this.workspaceRelativeCacheFolderPath = this.workspace.folder + path.sep + 'aaa' + path.sep + this.name
+        this.workspaceRelativeProjectCacheFolder =
+            this.workspace.relativeCacheFolderPath + path.sep + this.workspaceRelativeFilePath
         // console.log('🔴', {
         //     filePath: this.workspaceRelativeFilePath,
         //     fileName: this.fileName,
@@ -66,9 +67,9 @@ export class Project {
         // })
         this.scriptBuffer = new TypescriptFile(this.workspace, {
             title: this.name,
-            diskPathTS: this.workspaceRelativeFilePath,
-            diskPathJS: this.workspaceRelativeCacheFolderPath + path.sep + 'script.js',
-            virtualPathTS: `file:///${this.workspaceRelativeFilePath}`,
+            workspaceRelativeTSFilePath: this.workspaceRelativeFilePath,
+            workspaceRelativeJSFilePath: asRelativePath(this.workspaceRelativeProjectCacheFolder + path.sep + 'script.js'),
+            virtualPathTS: asMonacoPath(`file:///${this.workspaceRelativeFilePath}`),
             defaultCodeWhenNoFile: initialCode,
         })
         makeAutoObservable(this)

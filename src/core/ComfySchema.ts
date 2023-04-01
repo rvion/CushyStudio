@@ -187,7 +187,7 @@ export class ComfySchema {
         p(`}`)
         p(`declare global {`)
         // p(`    export const C: ComfySetup & ComfyGraph`)
-        p(`    export const WORKFLOW: (builder: (graph: ComfySetup & ComfyGraph) => void) => void`)
+        p(`    export const WORKFLOW: (builder: (graph: ComfySetup & ComfyGraph) => void) => Workflow`)
         p(`}`)
 
         // p(`declare const WORKFLOW: (builder: (graph: ComfyGraph) => void) => void`)
