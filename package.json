@@ -8,7 +8,7 @@
         "email": "vion.remi@gmail.com"
     },
     "license": "unlicensed",
-    "version": "0.0.58",
+    "version": "0.0.59",
     "type": "module",
     "scripts": {
         "dev": "  pnpm tauri:dev",
