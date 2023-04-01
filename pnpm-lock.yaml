@@ -24,6 +24,7 @@ specifiers:
   monaco-editor: ^0.36.1
   nanoid: ^4.0.1
   painterro: ^1.2.78
+  pathe: ^1.1.0
   prettier: ^2.8.5
   rc-dock: ^3.2.17
   react: ^18.2.0
@@ -50,6 +51,7 @@ dependencies:
   monaco-editor: 0.36.1
   nanoid: 4.0.1
   painterro: 1.2.78
+  pathe: 1.1.0
   prettier: 2.8.6
   rc-dock: 3.2.17_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -2225,6 +2227,10 @@ packages:
   /path-parse/1.0.7:
     resolution: {integrity: sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==}
     dev: true
+
+  /pathe/1.1.0:
+    resolution: {integrity: sha512-ODbEPR0KKHqECXW1GoxdDb+AZvULmXjVPy4rt+pGo2+TnjJTIPJQSVS6N63n8T2Ip+syHhbn52OewKicV0373w==}
+    dev: false
 
   /picocolors/1.0.0:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}

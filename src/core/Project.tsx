@@ -1,3 +1,4 @@
+import type { Maybe } from './ComfyUtils'
 import type { RunMode } from './ComfyGraph'
 import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
@@ -8,6 +9,7 @@ import { Run } from './Run'
 import { TypescriptFile } from '../code/TypescriptFile'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { logger } from '../logger/Logger'
+import { pathe } from '../utils/pathUtils'
 
 /** Script */
 export class Project {
@@ -31,7 +33,7 @@ export class Project {
     // }
 
     duplicate = async () => {
-        this.workspace.createProject(
+        this.workspace.createProjectAndFocustIt(
             //
             this.folderName + '_copy_' + Date.now(),
             this.scriptBuffer.codeTS,
@@ -56,26 +58,34 @@ export class Project {
 
     scriptBuffer: TypescriptFile
     folderName: string
-    folderPath: string
+    cacheFolder: string
+    workspaceRelativeFilePath: string
     constructor(
         //
         public workspace: Workspace,
-        public filePath: string,
-        public fileName: string,
-        initialCode = '',
+        rawPath: string,
+        initialCode: Maybe<string>,
     ) {
+        const isAbsolute = pathe.isAbsolute(rawPath)
+        const relativePath = isAbsolute //
+            ? pathe.relative(workspace.folder, rawPath)
+            : rawPath
+
+        this.workspaceRelativeFilePath = relativePath
+
+        // const fileName = basename(workspaceRelativeFilePath)
         this.folderName = fileName.replace(/\.ts$/, '')
-        this.folderPath = this.workspace.folder + path.sep + 'aaa' + path.sep + this.folderName
-        console.log('🔴', {
-            filePath: this.filePath,
-            fileName: this.fileName,
-            folderName: this.folderName,
-            folderPath: this.folderPath,
-        })
+        this.cacheFolder = this.workspace.folder + path.sep + 'aaa' + path.sep + this.folderName
+        // console.log('🔴', {
+        //     filePath: this.workspaceRelativeFilePath,
+        //     fileName: this.fileName,
+        //     folderName: this.folderName,
+        //     folderPath: this.cacheFolder,
+        // })
         this.scriptBuffer = new TypescriptFile(this.workspace, {
             title: this.folderName,
-            diskPathTS: this.filePath,
-            diskPathJS: this.folderPath + path.sep + 'script.js',
+            diskPathTS: this.workspaceRelativeFilePath,
+            diskPathJS: this.cacheFolder + path.sep + 'script.js',
             virtualPathTS: `file:///${this.fileName}`,
             defaultCodeWhenNoFile: initialCode,
         })
@@ -132,6 +142,7 @@ export class Project {
         // this.MAIN = graph
 
         const WORKFLOW = (fn: any) => fn(graph)
+
         try {
             await ProjectScriptFn(WORKFLOW)
             console.log('[✅] RUN SUCCESS')

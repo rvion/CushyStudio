@@ -66,6 +66,7 @@
         "monaco-editor": "^0.36.1",
         "nanoid": "^4.0.1",
         "painterro": "^1.2.78",
+        "pathe": "^1.1.0",
         "prettier": "^2.8.5",
         "rc-dock": "^3.2.17",
         "react": "^18.2.0",
