@@ -1,20 +1,20 @@
 import type { Project } from './Project'
 
+import { Body, fetch } from '@tauri-apps/api/http'
 import * as path from '@tauri-apps/api/path'
-import * as fs from '@tauri-apps/api/fs'
-import { ScriptStep_prompt } from './ScriptStep_prompt'
-import { deepCopyNaive, Maybe } from './ComfyUtils'
-import { ComfyGraph } from './ComfyGraph'
-import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
-import { ScriptStep_Init } from './ScriptStep_Init'
-import { ScriptStep_askBoolean, ScriptStep_askString } from './ScriptStep_ask'
-import { ScriptStep } from './ScriptStep'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { fetch, Body } from '@tauri-apps/api/http'
-import { CSImage } from './CSImage'
 import { Cyto } from '../graph/cyto'
+import { asRelativePath, WorkspaceRelativePath } from '../utils/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
+import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
+import { ComfyGraph } from './ComfyGraph'
+import { deepCopyNaive, Maybe } from './ComfyUtils'
+import { CSImage } from './CSImage'
+import { ScriptStep } from './ScriptStep'
+import { ScriptStep_askBoolean, ScriptStep_askString } from './ScriptStep_ask'
+import { ScriptStep_Init } from './ScriptStep_Init'
+import { ScriptStep_prompt } from './ScriptStep_prompt'
 
 /** script exeuction instance */
 export class Run {
@@ -37,30 +37,26 @@ export class Run {
     gallery: CSImage[] = []
 
     /** folder where CushyStudio will save run informations */
-    get folderPath() {
-        return this.script.workspaceRelativeProjectCacheFolder + path.sep + this.name
+    get workspaceRelativeCacheFolderPath(): WorkspaceRelativePath {
+        return asRelativePath(this.project.workspaceRelativeCacheFolder + path.sep + this.name)
     }
 
     /** save current script */
     save = async () => {
-        const contents = this.script.scriptBuffer.codeJS
-        // ensure folder exists
-        await fs.createDir(this.folderPath, { recursive: true })
-        // safe script as script.ts
+        const contents = this.project.scriptBuffer.codeJS
         const backupCodePath = 'script.' + getYYYYMMDDHHMMSS() + '.js'
-        const filePath = this.folderPath + path.sep + backupCodePath
-        await fs.writeFile({ path: filePath, contents })
-        // return success
+        const filePath = asRelativePath(this.workspaceRelativeCacheFolderPath + path.sep + backupCodePath)
+        await this.project.workspace.syncTextFileContent(filePath, contents)
         console.log('[📁] script backup saved', filePath)
     }
 
     constructor(
         //
-        public script: Project,
+        public project: Project,
         public opts?: { mock?: boolean },
     ) {
         this.name = `Run ${this.createdAt}` // 'Run ' + this.script.runCounter++
-        this.graph = new ComfyGraph(this.script, this)
+        this.graph = new ComfyGraph(this.project, this)
         this.cyto = new Cyto(this.graph)
         makeAutoObservable(this)
     }
@@ -104,7 +100,7 @@ export class Run {
 
         // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
-            client_id: this.script.workspace.sid,
+            client_id: this.project.workspace.sid,
             extra_data: { extra_pnginfo: { it: 'works' } },
             prompt: currentJSON,
         }
@@ -112,7 +108,7 @@ export class Run {
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
-        void fetch(`${this.script.workspace.serverHostHTTP}/prompt`, {
+        void fetch(`${this.project.workspace.serverHostHTTP}/prompt`, {
             method: 'POST',
             body: Body.json(out),
         })

@@ -46,7 +46,7 @@ export class Project {
 
     scriptBuffer: TypescriptFile
     name: string
-    workspaceRelativeProjectCacheFolder: string
+    workspaceRelativeCacheFolder: string
 
     constructor(
         //
@@ -57,8 +57,7 @@ export class Project {
         // const fileName = basename(workspaceRelativeFilePath)
         const parsed = pathe.parse(workspaceRelativeFilePath)
         this.name = parsed.name
-        this.workspaceRelativeProjectCacheFolder =
-            this.workspace.relativeCacheFolderPath + path.sep + this.workspaceRelativeFilePath
+        this.workspaceRelativeCacheFolder = this.workspace.relativeCacheFolderPath + path.sep + this.workspaceRelativeFilePath
         // console.log('🔴', {
         //     filePath: this.workspaceRelativeFilePath,
         //     fileName: this.fileName,
@@ -68,7 +67,7 @@ export class Project {
         this.scriptBuffer = new TypescriptFile(this.workspace, {
             title: this.name,
             workspaceRelativeTSFilePath: this.workspaceRelativeFilePath,
-            workspaceRelativeJSFilePath: asRelativePath(this.workspaceRelativeProjectCacheFolder + path.sep + 'script.js'),
+            workspaceRelativeJSFilePath: asRelativePath(this.workspaceRelativeCacheFolder + path.sep + 'script.js'),
             virtualPathTS: asMonacoPath(`file:///${this.workspaceRelativeFilePath}`),
             defaultCodeWhenNoFile: initialCode,
         })

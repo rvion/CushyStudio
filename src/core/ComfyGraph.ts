@@ -28,7 +28,7 @@ export class ComfyGraph {
     cyto?: Cyto
 
     uploadImgFromDisk = async (path: string) => {
-        return this.run.script.workspace.uploadImgFromDisk(path)
+        return this.run.project.workspace.uploadImgFromDisk(path)
     }
 
     registerNode = (node: ComfyNode<any>) => {

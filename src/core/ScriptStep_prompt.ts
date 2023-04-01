@@ -12,7 +12,7 @@ import { nanoid } from 'nanoid'
 import { CSImage } from './CSImage'
 
 export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
-    static promptID = 1
+    private static promptID = 1
 
     /** unique step id */
     uid = nanoid()
@@ -24,7 +24,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     _graph: ComfyGraph
 
     /** short-hand getter to access parent client */
-    get client(){ return this.run.script.workspace } // prettier-ignore
+    get client(){ return this.run.project.workspace } // prettier-ignore
 
     constructor(
         //
@@ -33,7 +33,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     ) {
         this._graph = new ComfyGraph(
             //
-            this.run.script,
+            this.run.project,
             this.run,
             deepCopyNaive(prompt),
         )

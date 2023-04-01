@@ -8,6 +8,7 @@ import * as path from '@tauri-apps/api/path'
 import * as fs from '@tauri-apps/api/fs'
 import { nanoid } from 'nanoid'
 import { ResponseType } from '@tauri-apps/api/http'
+import { asRelativePath, WorkspaceRelativePath } from '../utils/pathUtils'
 
 /** Cushy wrapper around ComfyImageInfo */
 export class CSImage {
@@ -17,16 +18,27 @@ export class CSImage {
     /** path within the input folder */
     inputPath?: Maybe<string> = null
 
+    /** true if file exists on disk; false otherwise */
     saved = false
 
-    get folder(){ return this.prompt.run.folderPath } // prettier-ignore
-    get fileName() { return this.prompt.uid + '_' + this.uid + '.png' } // prettier-ignore
-    get filePath () { return this.folder + path.sep + this.fileName } // prettier-ignore
+    get folder(): WorkspaceRelativePath {
+        return this.prompt.run.workspaceRelativeCacheFolderPath
+    }
 
-    save = async () => {
+    get fileName(): string {
+        return this.prompt.uid + '_' + this.uid + '.png'
+    }
+
+    get filePath(): WorkspaceRelativePath {
+        return asRelativePath(this.folder + path.sep + this.fileName)
+    }
+
+    get workspace() {
+        return this.prompt.run.project.workspace
+    }
+
+    saveOnDisk = async () => {
         if (this.saved) return
-        // ensure folder exists
-        await fs.createDir(this.folder, { recursive: true })
         const response = await fetch(this.comfyURL, {
             headers: { 'Content-Type': 'image/png' },
             method: 'GET',
@@ -34,8 +46,7 @@ export class CSImage {
         })
         const numArr: number[] = response.data as any
         const binArr = new Uint16Array(numArr)
-        await fs.writeBinaryFile(this.filePath, binArr)
-        console.log('[📁] saved', this.filePath)
+        await this.workspace.syncBinaryFileContent(this.filePath, binArr)
         this.saved = true
     }
 
@@ -53,8 +64,8 @@ export class CSImage {
         public prompt: ScriptStep_prompt,
         public data: ComfyImageInfo,
     ) {
-        this.client = prompt.run.script.workspace
-        this.save()
+        this.client = prompt.run.project.workspace
+        this.saveOnDisk()
     }
 
     /** url to acces the image */

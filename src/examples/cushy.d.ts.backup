@@ -83,6 +83,19 @@ declare module "core/ComfyUtils" {
     export type Maybe<T> = T | null | undefined;
     export const deepCopyNaive: <T>(x: T) => T;
 }
+declare module "utils/pathUtils" {
+    import type { Branded } from "core/ComfyUtils";
+    export * as pathe from 'pathe';
+    export type WorkspaceRelativePath = Branded<string, 'WorkspaceRelativePath'>;
+    export type AbsolutePath = Branded<string, 'Absolute'>;
+    export type MonacoPath = Branded<string, 'Monaco'>;
+    /** brand a path as an absolute path after basic checks */
+    export const asAbsolutePath: (path: string) => AbsolutePath;
+    /** brand a path as a workspace relative pathpath after basic checks */
+    export const asRelativePath: (path: string) => WorkspaceRelativePath;
+    /** brand a path as a monaco URI path after basic checks */
+    export const asMonacoPath: (path: string) => MonacoPath;
+}
 declare module "logger/Logger" {
     export enum LogLevel {
         DEBUG = 0,
@@ -100,7 +113,9 @@ declare module "logger/Logger" {
     /** Comfy HTTP */
      | '🦊'
     /** config files */
-     | '🛋';
+     | '🛋'
+    /** execution emoji */
+     | '🔥';
     interface LogMessage {
         level: LogLevel;
         category: Category;
@@ -156,26 +171,31 @@ declare module "config/JsonFile" {
     }
 }
 declare module "config/CushyStudio" {
+    import type { Maybe } from "core/ComfyUtils";
+    import { AbsolutePath } from "utils/pathUtils";
     import * as os from '@tauri-apps/api/os';
-    import { Maybe } from "core/ComfyUtils";
     import { Workspace } from "core/Workspace";
     import { JsonFile } from "config/JsonFile";
     export type UserConfigJSON = {
         version: 1;
         theme?: 'dark' | 'light';
-        recentProjects?: string[];
+        recentProjects?: AbsolutePath[];
     };
     export class CushyStudio {
         constructor();
-        fetchBasicEnvInfos: Promise<void>;
+        /** sync cache to know current OS */
         os: Maybe<os.Platform>;
         /** currently opened workspace */
         workspace: Maybe<Workspace>;
-        openWorkspace: (folderPath: string) => Promise<Workspace>;
+        /** prompt user to open a workspace */
+        openWorkspaceDialog: () => Promise<void>;
+        openWorkspace: (absoluteFolderPath: AbsolutePath) => Promise<Workspace>;
         closeWorkspace: () => Promise<void>;
         userConfig: JsonFile<UserConfigJSON>;
         /** true when user config is ready */
         get ready(): boolean;
+        /** TODO: add more stuff to cache at startup */
+        fetchBasicEnvInfos: Promise<void>;
     }
 }
 declare module "core/ComfySchemaJSON" {
@@ -428,38 +448,61 @@ declare module "code/TypescriptFile" {
     import type { Maybe } from "core/ComfyUtils";
     import type { Workspace } from "core/Workspace";
     import type { ITextModel } from "ui/TypescriptOptions";
+    import { MonacoPath, WorkspaceRelativePath } from "utils/pathUtils";
+    type TypescriptFileOpts = {
+        /** human readable title */
+        title: string;
+        /** the relative path to the typescript file this should be kept in sync with */
+        workspaceRelativeTSFilePath: WorkspaceRelativePath;
+        /** the relative path to the javascript file this should be transpiled to */
+        workspaceRelativeJSFilePath?: Maybe<WorkspaceRelativePath>;
+        /** the language server internal file path */
+        virtualPathTS: MonacoPath;
+        /** what we should initialize this file to if there is no file on disk */
+        defaultCodeWhenNoFile?: Maybe<string>;
+        /** what we should overwrite the file to in any case */
+        codeOverwrite?: Maybe<string>;
+    };
     export class TypescriptFile {
         workspace: Workspace;
-        title: string;
-        pathTS: string;
-        pathJS: string;
-        constructor(workspace: Workspace, opts: {
-            title: string;
-            path: string;
-            def: Maybe<string>;
-        });
+        conf: TypescriptFileOpts;
+        constructor(workspace: Workspace, conf: TypescriptFileOpts);
         /** the monaco textmodel that should remains alive for typeschecking to work */
         textModel: Maybe<ITextModel>;
-        /** set to true,
-         *  - either when file is initially loaded from disk
-         *  - or when file content is set programmatically for the first time
-         * */
-        ready: boolean;
+        codeTS: string;
+        codeJS: string;
+        private resolvetextModelPromise;
+        textModelPromise: Promise<import("monaco-editor").editor.ITextModel>;
         /** initialize the buffer
          *  - load the file from disk if it exists
          *  - or create a new file with the default content if default content provided
          *  - or do nothing if file does not exist and no default content provided
          */
-        init: (def: Maybe<string>) => Promise<void>;
-        ensureTextModel: () => Promise<import("monaco-editor").editor.ITextModel>;
-        codeTS: string;
-        codeJS: string;
-        /** internal path as needed for monaco engine */
-        get monacoPath(): string;
+        init: () => Promise<void>;
         /** initialize a buffer that may or may not exist on disk */
         updateFromCodegen: (value: Maybe<string>) => Promise<boolean>;
         udpateFromEditor: (value: Maybe<string>) => Promise<void>;
-        saveOnDisk: () => Promise<void>;
+        syncWithDiskFile: () => Promise<void>;
+    }
+}
+declare module "core/Workflow" {
+    import type { ComfySetup } from '../global';
+    import type { ComfyGraph } from "core/ComfyGraph";
+    export type WorkflowBuilder = (graph: ComfySetup & ComfyGraph) => void;
+    export class Workflow {
+        builder: WorkflowBuilder;
+        constructor(builder: WorkflowBuilder);
+    }
+}
+declare module "help/Demo" {
+    import type { Workflow } from "core/Workflow";
+    import type { Workspace } from "core/Workspace";
+    export class Demo {
+        workspace: Workspace;
+        name: string;
+        workflow: Workflow;
+        constructor(workspace: Workspace, name: string, workflow: Workflow);
+        createProjectCopy(): void;
     }
 }
 declare module "help/TutorialUI" {
@@ -871,17 +914,27 @@ declare module "core/defaultProjectCode" {
     await x.get()
 })";
 }
+declare module "examples/demo1-basic" {
+    const _default: import("core/Workflow").Workflow;
+    export default _default;
+}
+declare module "examples/demo2-test" {
+    const _default_1: import("core/Workflow").Workflow;
+    export default _default_1;
+}
 declare module "core/Workspace" {
     import type { CushyStudio } from "config/CushyStudio";
     import type { ComfySchemaJSON } from "core/ComfySchemaJSON";
     import type { Maybe } from "core/ComfyUtils";
     import { TypescriptFile } from "code/TypescriptFile";
     import { JsonFile } from "config/JsonFile";
+    import { Demo } from "help/Demo";
     import { CushyLayoutState } from "layout/LayoutState";
     import { ResilientWebSocketClient } from "ui/ResilientWebsocket";
     import { ComfyStatus, ComfyUploadImageResult } from "core/ComfyAPI";
     import { ComfySchema } from "core/ComfySchema";
     import { Project } from "core/Project";
+    import { AbsolutePath, WorkspaceRelativePath } from "utils/pathUtils";
     export type WorkspaceConfigJSON = {
         version: 2;
         comfyWSURL: string;
@@ -900,10 +953,12 @@ declare module "core/Workspace" {
      */
     export class Workspace {
         cushy: CushyStudio;
-        folder: string;
+        absoluteWorkspaceFolderPath: AbsolutePath;
         schema: ComfySchema;
         focusedFile: Maybe<TypescriptFile>;
         focusedProject: Maybe<Project>;
+        private loadDemos;
+        demos: Demo[];
         projects: Project[];
         assets: Map<string, boolean>;
         layout: CushyLayoutState;
@@ -913,7 +968,9 @@ declare module "core/Workspace" {
         comfySDKFile: TypescriptFile;
         openComfySDK: () => void;
         openCushySDK: () => void;
-        static OPEN: (cushy: CushyStudio, folder: string) => Promise<Workspace>;
+        static OPEN: (cushy: CushyStudio, absoluteFolderPath: AbsolutePath) => Promise<Workspace>;
+        /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
+        get relativeCacheFolderPath(): WorkspaceRelativePath;
         private constructor();
         /** will be created only after we've loaded cnfig file
          * so we don't attempt to connect to some default server */
@@ -925,7 +982,11 @@ declare module "core/Workspace" {
         /** attempt to convert an url to a Blob */
         private getUrlAsBlob;
         uploadURL: (url?: string) => Promise<ComfyUploadImageResult>;
-        createProject: (folderName: string, script?: string) => void;
+        createProjectAndFocustIt: (workspaceRelativeFilePath: WorkspaceRelativePath, script?: string) => void;
+        syncFileContent: (workspaceRelativePath: WorkspaceRelativePath, contents: string) => Promise<void>;
+        /** resolve any path to a relative workspace path
+         * CRASH if path is outside of workspace folder or invalid */
+        resolveToRelativePath: (rawPath: string) => WorkspaceRelativePath;
         /** load all project found in workspace */
         loadProjects: () => Promise<void>;
         /** save an image at given url to disk */
@@ -972,33 +1033,36 @@ declare module "importers/ComfyImporter" {
     }
 }
 declare module "core/Project" {
+    import type { Maybe } from "core/ComfyUtils";
     import type { RunMode } from "core/ComfyGraph";
     import { Workspace } from "core/Workspace";
     import { ComfyPromptJSON } from "core/ComfyPrompt";
     import { Run } from "core/Run";
     import { TypescriptFile } from "code/TypescriptFile";
+    import { WorkspaceRelativePath } from "utils/pathUtils";
     /** Script */
     export class Project {
         workspace: Workspace;
-        folderName: string;
+        workspaceRelativeFilePath: WorkspaceRelativePath;
         static __demoProjectIx: number;
         runCounter: number;
         /** unique project id */
         id: string;
-        /** folder where CushyStudio will save script informations */
-        get folderPath(): string;
+        /** create a copy of a given project */
         duplicate: () => Promise<void>;
+        /** focus project and open script in main panel */
         focus: () => void;
-        /** project name */
         /** list of all project runs */
         runs: Run[];
         /** last project run */
         get currentRun(): Run | null;
         scriptBuffer: TypescriptFile;
-        constructor(workspace: Workspace, folderName: string, initialCode?: string);
+        name: string;
+        workspaceRelativeProjectCacheFolder: string;
+        constructor(workspace: Workspace, workspaceRelativeFilePath: WorkspaceRelativePath, initialCode: Maybe<string>);
         /** convenient getter to retrive current client shcema */
         get schema(): import("core/ComfySchema").ComfySchema;
-        static FROM_JSON: (client: Workspace, json: ComfyPromptJSON) => Project;
+        static FROM_JSON: (workspace: Workspace, json: ComfyPromptJSON) => Project;
         /** converts a ComfyPromptJSON into it's canonical normal-form script */
         static LoadFromComfyPromptJSON: (_json: ComfyPromptJSON) => never;
         /** * project running is not the same as graph running; TODO: explain */
@@ -1006,7 +1070,7 @@ declare module "core/Project" {
         RUN: (mode?: RunMode) => Promise<boolean>;
     }
 }
-declare module "embeds/wildcards" {
+declare module "wildcards/wildcards" {
     export type Wildcards = {
         "3d_term": string[];
         "actors": string[];
@@ -1241,8 +1305,9 @@ declare module "core/ComfyGraph" {
         get nodes(): ComfyNode<any>[];
         nodesIndex: Map<string, ComfyNode<any>>;
         isRunning: boolean;
+        /** pick a random seed */
         randomSeed(): number;
-        wildcards: import("embeds/wildcards").Wildcards;
+        wildcards: import("wildcards/wildcards").Wildcards;
         /** return the coresponding comfy prompt  */
         get json(): ComfyPromptJSON;
         convertToImageInput: (x: CSImage) => string;
@@ -1250,7 +1315,7 @@ declare module "core/ComfyGraph" {
         convertToImageInputOLD1: (x: CSImage) => Promise<string>;
         askBoolean: (msg: string, def?: Maybe<boolean>) => Promise<boolean>;
         askString: (msg: string, def?: Maybe<string>) => Promise<string>;
-        print: (...msg: any[]) => void;
+        print: (msg: string) => void;
         constructor(project: Project, run: Run, json?: ComfyPromptJSON);
         private _nextUID;
         getUID: () => string;
@@ -1288,7 +1353,7 @@ declare module "core/CSNode" {
         $schema: ComfyNodeSchema;
         status: 'executing' | 'done' | 'error' | 'waiting' | null;
         get isExecuting(): boolean;
-        get statusEmoji(): "" | "✅" | "🔥" | "❌" | "⏳";
+        get statusEmoji(): "🔥" | "" | "✅" | "❌" | "⏳";
         get inputs(): ComfyNode_input;
         json: ComfyNodeJSON;
         /** update a node */

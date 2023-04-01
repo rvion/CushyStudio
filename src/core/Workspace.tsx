@@ -216,15 +216,36 @@ export class Workspace {
         project.focus()
     }
 
-    syncFileContent = async (workspaceRelativePath: WorkspaceRelativePath, contents: string) => {
+    /** 📝 should be single function able to save text files in a workspace */
+    syncTextFileContent = async (workspaceRelativePath: WorkspaceRelativePath, contents: string) => {
+        // 1. resolve absolute path
         const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
-        console.log('>>> 🔴', absoluteFilePath)
+        console.log('>>> 🔴x', absoluteFilePath)
+        // 2. create folder if missing
         const folder = await path.dirname(absoluteFilePath)
         const folderExists = await fs.exists(folder)
         if (!folderExists) await fs.createDir(folder, { recursive: true })
+        // 3. check previous file content
         const prevExists = await fs.exists(absoluteFilePath)
         const prev = prevExists ? await fs.readTextFile(absoluteFilePath) : null
-        if (prev != contents) await fs.writeFile({ path: absoluteFilePath, contents })
+        // 4. save if necessary
+        if (prev != contents) await fs.writeTextFile({ path: absoluteFilePath, contents })
+    }
+
+    /** 📝 should be single function able to save binary files in a workspace */
+    syncBinaryFileContent = async (workspaceRelativePath: WorkspaceRelativePath, contents: fs.BinaryFileContents) => {
+        // 1. resolve absolute path
+        const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
+        console.log('>>> 🔴y', absoluteFilePath)
+        // 2. create folder if missing
+        const folder = await path.dirname(absoluteFilePath)
+        const folderExists = await fs.exists(folder)
+        if (!folderExists) await fs.createDir(folder, { recursive: true })
+        // 3. update file (NO check to see if previous file similar)
+        await fs.writeBinaryFile({ path: absoluteFilePath, contents })
+        // const prevExists = await fs.exists(absoluteFilePath)
+        // const prev = prevExists ? await fs.readTextFile(absoluteFilePath) : null
+        // if (prev != contents) await fs.writeBinaryFile({ path: absoluteFilePath, contents })
     }
 
     /** resolve any path to a relative workspace path
