@@ -216,7 +216,15 @@ export class Workspace {
         project.focus()
     }
 
-    /** 📝 should be single function able to save text files in a workspace */
+    /** 📝 should be the SINGLE function able to save text files in a workspace */
+    readTextFile = async (workspaceRelativePath: WorkspaceRelativePath): Promise<Maybe<string>> => {
+        const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
+        const exists = await fs.exists(absoluteFilePath)
+        if (exists) return await fs.readTextFile(absoluteFilePath)
+        return null
+    }
+
+    /** 📝 should be the SINGLE function able to save text files in a workspace */
     writeTextFile = async (workspaceRelativePath: WorkspaceRelativePath, contents: string) => {
         // 1. resolve absolute path
         const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
@@ -232,7 +240,7 @@ export class Workspace {
         if (prev != contents) await fs.writeTextFile({ path: absoluteFilePath, contents })
     }
 
-    /** 📝 should be single function able to save binary files in a workspace */
+    /** 📝 should be the SINGLE function able to save binary files in a workspace */
     writeBinaryFile = async (workspaceRelativePath: WorkspaceRelativePath, contents: fs.BinaryFileContents) => {
         // 1. resolve absolute path
         const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)

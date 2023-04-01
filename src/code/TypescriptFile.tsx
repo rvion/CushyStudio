@@ -2,7 +2,6 @@ import type { Maybe } from '../core/ComfyUtils'
 import type { Workspace } from '../core/Workspace'
 import type { ITextModel } from '../ui/TypescriptOptions'
 
-import * as fs from '@tauri-apps/api/fs'
 import { makeObservable, observable } from 'mobx'
 import { globalMonaco } from '../ui/Monaco'
 import { MonacoPath, WorkspaceRelativePath } from '../utils/pathUtils'
@@ -54,13 +53,12 @@ export class TypescriptFile {
         const opts = this.conf
         // 1. get code value
         console.log('[📁] loading', opts.workspaceRelativeTSFilePath)
+
         this.codeTS = opts.codeOverwrite
             ? opts.codeOverwrite
-            : (await fs.exists(opts.workspaceRelativeTSFilePath))
-            ? await fs.readTextFile(opts.workspaceRelativeTSFilePath)
-            : opts.defaultCodeWhenNoFile != null
-            ? opts.defaultCodeWhenNoFile
-            : ''
+            : (await this.workspace.readTextFile(opts.workspaceRelativeTSFilePath)) ?? //
+              opts.defaultCodeWhenNoFile ??
+              ''
 
         // 2. ensure model is created
         const monaco = await globalMonaco.promise
