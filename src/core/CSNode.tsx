@@ -7,7 +7,7 @@ import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { ComfyNodeUID } from './ComfyNodeUID'
 import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
 import { exhaust } from './ComfyUtils'
-import { CSImage } from './CSImage'
+import { PromptOutputImage } from './PromptOutputImage'
 import { comfyColors } from './ComfyColors'
 
 configure({ enforceActions: 'never' })
@@ -18,7 +18,7 @@ configure({ enforceActions: 'never' })
  */
 export class ComfyNode<ComfyNode_input extends object> {
     artifacts: WsMsgExecutedData[] = []
-    images: CSImage[] = []
+    images: PromptOutputImage[] = []
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema
     status: 'executing' | 'done' | 'error' | 'waiting' | null = null

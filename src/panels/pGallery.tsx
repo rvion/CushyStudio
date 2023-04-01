@@ -1,13 +1,13 @@
 import { Image, Label, Slider } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
-import { CSImage } from '../core/CSImage'
+import { PromptOutputImage } from '../core/PromptOutputImage'
 import { useLayout } from '../layout/LayoutCtx'
 import { useWorkspace } from '../ui/WorkspaceContext'
 
 export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
     const client = useWorkspace()
     const layout = useLayout()
-    const images: CSImage[] = client.projects.flatMap((p) => p.runs).flatMap((r) => r.gallery)
+    const images: PromptOutputImage[] = client.projects.flatMap((p) => p.runs).flatMap((r) => r.gallery)
 
     return (
         <div>

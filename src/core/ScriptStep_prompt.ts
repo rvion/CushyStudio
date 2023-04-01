@@ -9,7 +9,7 @@ import { toast } from 'react-toastify'
 import { ComfyGraph } from './ComfyGraph'
 import { deepCopyNaive } from './ComfyUtils'
 import { nanoid } from 'nanoid'
-import { CSImage } from './CSImage'
+import { PromptOutputImage } from './PromptOutputImage'
 
 export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     private static promptID = 1
@@ -81,12 +81,12 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
     private outputs: WsMsgExecuted[] = []
-    images: CSImage[] = []
+    images: PromptOutputImage[] = []
 
     /** udpate execution list */
     onExecuted = (msg: WsMsgExecuted) => {
         const node = this._graph.getNodeOrCrash(msg.data.node)
-        const images = msg.data.output.images.map((i) => new CSImage(this, i))
+        const images = msg.data.output.images.map((i) => new PromptOutputImage(this, i))
 
         console.log(`🟢 `, images.length, `CushyImages`)
         // accumulate in self

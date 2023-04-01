@@ -1,4 +1,4 @@
-import type { CSImage } from '../core/CSImage'
+import type { PromptOutputImage } from '../core/PromptOutputImage'
 
 import { Image } from '@fluentui/react-components'
 import { makeObservable, observable } from 'mobx'
@@ -13,7 +13,7 @@ import { nanoid } from 'nanoid'
 export class CushyLayoutState {
     layout = defaultLayout()
 
-    galleryFocus: CSImage | null = null
+    galleryFocus: PromptOutputImage | null = null
     gallerySize = 100
     dockLayout: DockLayout | null = null
     getRef = (r: DockLayout | null) => (this.dockLayout = r)

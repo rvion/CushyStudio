@@ -1,17 +1,32 @@
 import type { ComfyImageInfo } from './ComfyAPI'
-import type { Workspace } from './Workspace'
 import type { Maybe } from './ComfyUtils'
 import type { ScriptStep_prompt } from './ScriptStep_prompt'
+import type { Workspace } from './Workspace'
 
-import { fetch } from '@tauri-apps/api/http'
+import { fetch, ResponseType } from '@tauri-apps/api/http'
 import * as path from '@tauri-apps/api/path'
-import * as fs from '@tauri-apps/api/fs'
 import { nanoid } from 'nanoid'
-import { ResponseType } from '@tauri-apps/api/http'
 import { asRelativePath, WorkspaceRelativePath } from '../utils/pathUtils'
 
 /** Cushy wrapper around ComfyImageInfo */
-export class CSImage {
+export class PromptOutputImage {
+    workspace: Workspace
+
+    constructor(
+        /** the prompt this file has been generated from */
+        public prompt: ScriptStep_prompt,
+        /** image info as returned by Comfy */
+        public data: ComfyImageInfo,
+    ) {
+        this.workspace = prompt.run.project.workspace
+        this.saveOnDisk()
+    }
+
+    /** url to acces the image */
+    get comfyURL() {
+        return this.workspace.serverHostHTTP + '/view?' + new URLSearchParams(this.data).toString()
+    }
+
     /** unique image id */
     uid = nanoid()
 
@@ -33,10 +48,6 @@ export class CSImage {
         return asRelativePath(this.folder + path.sep + this.fileName)
     }
 
-    get workspace() {
-        return this.prompt.run.project.workspace
-    }
-
     saveOnDisk = async () => {
         if (this.saved) return
         const response = await fetch(this.comfyURL, {
@@ -52,24 +63,9 @@ export class CSImage {
 
     /** this is such a bad workaround but 🤷‍♂️ */
     makeAvailableAsInput = async (): Promise<string> => {
-        const res = await this.client.uploadURL(this.comfyURL)
+        const res = await this.workspace.uploadURL(this.comfyURL)
         console.log(`[makeAvailableAsInput]`, res)
         this.inputPath = res.name
         return res.name
-    }
-
-    client: Workspace
-    constructor(
-        //
-        public prompt: ScriptStep_prompt,
-        public data: ComfyImageInfo,
-    ) {
-        this.client = prompt.run.project.workspace
-        this.saveOnDisk()
-    }
-
-    /** url to acces the image */
-    get comfyURL() {
-        return this.client.serverHostHTTP + '/view?' + new URLSearchParams(this.data).toString()
     }
 }

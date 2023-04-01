@@ -10,7 +10,7 @@ import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
 import { ComfyGraph } from './ComfyGraph'
 import { deepCopyNaive, Maybe } from './ComfyUtils'
-import { CSImage } from './CSImage'
+import { PromptOutputImage } from './PromptOutputImage'
 import { ScriptStep } from './ScriptStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from './ScriptStep_ask'
 import { ScriptStep_Init } from './ScriptStep_Init'
@@ -34,7 +34,7 @@ export class Run {
     cyto: Cyto
 
     /** list of all images produed over the whole script execution */
-    gallery: CSImage[] = []
+    gallery: PromptOutputImage[] = []
 
     /** folder where CushyStudio will save run informations */
     get workspaceRelativeCacheFolderPath(): WorkspaceRelativePath {
