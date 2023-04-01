@@ -1,13 +1,14 @@
 import { LayoutData } from 'rc-dock'
 import { CivitaiUI } from '../civitai/CivitaiBrowserUI'
 import { LoggerUI } from '../logger/LoggerUI'
-import { OpenPoseViewerUI } from '../openpose/OpenPoseUI'
-import { MainPanelUI } from '../ui/MainPaneUI'
+import { NodeBrowserUI } from '../menu/AssetTreeUI'
+import { FocusedProjectTreeUI } from '../menu/FocusedProjectTreeUI'
 import { MenuUI } from '../menu/MenuUI'
+import { OpenPoseViewerUI } from '../openpose/OpenPoseUI'
 import { PGalleryUI } from '../panels/pGallery'
 import { PGalleryFocusUI } from '../panels/pGalleryFocus'
 import { ExecutionUI } from '../ui/ExecutionUI'
-import { FocusedProjectTreeUI } from '../menu/FocusedProjectTreeUI'
+import { MainPanelUI } from '../ui/MainPaneUI'
 
 export const defaultLayout = (): LayoutData => ({
     floatbox: {
@@ -103,16 +104,23 @@ export const defaultLayout = (): LayoutData => ({
                         tabs: [
                             {
                                 // minWidth: 10,
-                                id: 'ExecutionUI',
-                                title: 'Control Pane',
                                 content: <ExecutionUI />,
+                                title: 'Control Pane',
+                                id: 'ExecutionUI',
                             },
                             {
-                                minWidth: 200,
-                                minHeight: 200,
-                                id: 'CivitaiUI',
-                                title: 'Civitai',
                                 content: <CivitaiUI />,
+                                title: 'Civitai',
+                                id: 'CivitaiUI',
+                                minHeight: 200,
+                                minWidth: 200,
+                            },
+                            {
+                                content: <NodeBrowserUI />,
+                                title: 'Node Browser',
+                                id: 'NodeBrowserUI',
+                                minHeight: 200,
+                                minWidth: 200,
                             },
                             // {
                             //     minWidth: 200,

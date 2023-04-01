@@ -3,7 +3,6 @@ import { Tree, TreeItem, TreeItemLayout } from '@fluentui/react-components/unsta
 
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { AssetTreeUI } from './AssetTreeUI'
 
 import { useWorkspace } from '../ui/WorkspaceContext'
 
@@ -34,13 +33,11 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                     API Cushy
                 </TreeItemLayout>
             </TreeItem>
-            <AssetTreeUI>
-                {/* <TreeItem> */}
+            <TreeItem>
                 <TreeItemLayout onClick={workspace.openComfySDK} iconBefore={<I.BrainCircuit24Regular />}>
                     API Comfy
                 </TreeItemLayout>
-                {/* </TreeItem> */}
-            </AssetTreeUI>
+            </TreeItem>
             <TreeItem id='demos'>
                 <TreeItemLayout iconBefore={<I.BuildingBank24Regular />}>Démos</TreeItemLayout>
                 <Tree>

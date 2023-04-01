@@ -1,10 +1,29 @@
+import { Input } from '@fluentui/react-components'
 import { Tree, TreeItem, TreeItemLayout } from '@fluentui/react-components/unstable'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
 import { useWorkspace } from '../ui/WorkspaceContext'
-import { Actions, HasProblem, IsOK } from './ProjectTreeUI'
 
-export const AssetTreeUI = observer(function AssetTreeUI_(p: { children: React.ReactNode }) {
+export const NodeBrowserUI = observer(function NodeBrowserUI_(p: {}) {
+    const workspace = useWorkspace()
+    return (
+        <div>
+            <Input contentBefore={<I.Search24Regular />} />
+            <Tree
+                size='small'
+                aria-label='Tree'
+                defaultOpenItems={['projects', 'demos']}
+                ref={(e) => {
+                    if (e) e.focus()
+                }}
+            >
+                <AssetTreeUI></AssetTreeUI>
+            </Tree>
+        </div>
+    )
+})
+
+const AssetTreeUI = observer(function AssetTreeUI_() {
     const client = useWorkspace()
 
     const onKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
@@ -26,24 +45,13 @@ export const AssetTreeUI = observer(function AssetTreeUI_(p: { children: React.R
     }
 
     return (
-        <TreeItem actions={<Actions />}>
-            {p.children ? (
-                p.children
-            ) : (
-                <TreeItemLayout iconBefore={<I.Server24Filled />} aside={client.ws.isOpen ? IsOK : HasProblem}>
-                    Assets
-                </TreeItemLayout>
-            )}
-            {/* <Multiselect /> */}
+        <div>
             <Tree
                 size='small'
                 onChange={() => console.log('change')}
                 onClick={() => console.log('click')}
-                // onKeyDown={onKeyDown}
                 onOpenChange={(a, b) => {
                     console.log(a, b.type, b)
-                    // if (b.type==='')
-                    // console.log('OKOK')
                 }}
             >
                 {[...client.schema.knownEnums.values()].map((foo) => {
@@ -79,6 +87,6 @@ export const AssetTreeUI = observer(function AssetTreeUI_(p: { children: React.R
                     <TreeItemLayout iconBefore={<I.Server24Filled />}>Port: {client.serverPort}</TreeItemLayout>
                 </TreeItem> */}
             </Tree>
-        </TreeItem>
+        </div>
     )
 })
