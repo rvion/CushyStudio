@@ -224,6 +224,32 @@ declare module "core/ComfySchemaJSON" {
         [key: string]: any;
     };
 }
+declare module "graph/cyto" {
+    import cytoscape from 'cytoscape';
+    import { ComfyGraph } from "core/ComfyGraph";
+    import { ComfyNode } from "core/CSNode";
+    export class Cyto {
+        graph: ComfyGraph;
+        cy: cytoscape.Core;
+        constructor(graph: ComfyGraph);
+        at: number;
+        addEdge: (edge: {
+            sourceUID: string;
+            targetUID: string;
+            input: string;
+        }) => void;
+        removeEdge: (id: string) => void;
+        trackNode: (node: ComfyNode<any>) => void;
+        animate: () => void;
+        setStyle: () => void;
+        mounted: boolean;
+        mount: (element: HTMLElement) => void;
+    }
+}
+declare module "utils/timestamps" {
+    export const getYYYYMMDDHHMMSS: () => string;
+    export const getYYYYMMDD_HHMM_SS: () => string;
+}
 declare module "core/ComfyPrompt" {
     export type ComfyPromptJSON = {
         [key: string]: ComfyNodeJSON;
@@ -246,32 +272,6 @@ declare module "core/ScriptStep_Iface" {
         finished: Promise<Result>;
     }
 }
-declare module "core/CSImage" {
-    import type { ComfyImageInfo } from "core/ComfyAPI";
-    import type { Workspace } from "core/Workspace";
-    import type { Maybe } from "core/ComfyUtils";
-    import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
-    /** Cushy wrapper around ComfyImageInfo */
-    export class CSImage {
-        prompt: ScriptStep_prompt;
-        data: ComfyImageInfo;
-        /** unique image id */
-        uid: string;
-        /** path within the input folder */
-        inputPath?: Maybe<string>;
-        saved: boolean;
-        get folder(): string;
-        get fileName(): string;
-        get filePath(): string;
-        save: () => Promise<void>;
-        /** this is such a bad workaround but 🤷‍♂️ */
-        makeAvailableAsInput: () => Promise<string>;
-        client: Workspace;
-        constructor(prompt: ScriptStep_prompt, data: ComfyImageInfo);
-        /** url to acces the image */
-        get comfyURL(): string;
-    }
-}
 declare module "core/ScriptStep_prompt" {
     import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from "core/ComfyAPI";
     import type { Run } from "core/Run";
@@ -283,7 +283,7 @@ declare module "core/ScriptStep_prompt" {
     export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         run: Run;
         prompt: ComfyPromptJSON;
-        static promptID: number;
+        private static promptID;
         /** unique step id */
         uid: string;
         /** human-readable step name */
@@ -310,6 +310,35 @@ declare module "core/ScriptStep_prompt" {
         onExecuted: (msg: WsMsgExecuted) => void;
         /** finish this step */
         private _finish;
+    }
+}
+declare module "core/CSImage" {
+    import type { ComfyImageInfo } from "core/ComfyAPI";
+    import type { Workspace } from "core/Workspace";
+    import type { Maybe } from "core/ComfyUtils";
+    import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
+    import { WorkspaceRelativePath } from "utils/pathUtils";
+    /** Cushy wrapper around ComfyImageInfo */
+    export class CSImage {
+        prompt: ScriptStep_prompt;
+        data: ComfyImageInfo;
+        /** unique image id */
+        uid: string;
+        /** path within the input folder */
+        inputPath?: Maybe<string>;
+        /** true if file exists on disk; false otherwise */
+        saved: boolean;
+        get folder(): WorkspaceRelativePath;
+        get fileName(): string;
+        get filePath(): WorkspaceRelativePath;
+        get workspace(): Workspace;
+        saveOnDisk: () => Promise<void>;
+        /** this is such a bad workaround but 🤷‍♂️ */
+        makeAvailableAsInput: () => Promise<string>;
+        client: Workspace;
+        constructor(prompt: ScriptStep_prompt, data: ComfyImageInfo);
+        /** url to acces the image */
+        get comfyURL(): string;
     }
 }
 declare module "core/ScriptStep_Init" {
@@ -354,44 +383,19 @@ declare module "core/ScriptStep" {
     import type { ScriptStep_askBoolean, ScriptStep_askString } from "core/ScriptStep_ask";
     export type ScriptStep = ScriptStep_Init | ScriptStep_prompt | ScriptStep_askBoolean | ScriptStep_askString;
 }
-declare module "graph/cyto" {
-    import cytoscape from 'cytoscape';
-    import { ComfyGraph } from "core/ComfyGraph";
-    import { ComfyNode } from "core/CSNode";
-    export class Cyto {
-        graph: ComfyGraph;
-        cy: cytoscape.Core;
-        constructor(graph: ComfyGraph);
-        at: number;
-        addEdge: (edge: {
-            sourceUID: string;
-            targetUID: string;
-            input: string;
-        }) => void;
-        removeEdge: (id: string) => void;
-        trackNode: (node: ComfyNode<any>) => void;
-        animate: () => void;
-        setStyle: () => void;
-        mounted: boolean;
-        mount: (element: HTMLElement) => void;
-    }
-}
-declare module "utils/timestamps" {
-    export const getYYYYMMDDHHMMSS: () => string;
-    export const getYYYYMMDD_HHMM_SS: () => string;
-}
 declare module "core/Run" {
     import type { Project } from "core/Project";
-    import { ScriptStep_prompt } from "core/ScriptStep_prompt";
-    import { Maybe } from "core/ComfyUtils";
-    import { ComfyGraph } from "core/ComfyGraph";
-    import { WsMsgExecuted } from "core/ComfyAPI";
-    import { ScriptStep } from "core/ScriptStep";
-    import { CSImage } from "core/CSImage";
     import { Cyto } from "graph/cyto";
+    import { WorkspaceRelativePath } from "utils/pathUtils";
+    import { WsMsgExecuted } from "core/ComfyAPI";
+    import { ComfyGraph } from "core/ComfyGraph";
+    import { Maybe } from "core/ComfyUtils";
+    import { CSImage } from "core/CSImage";
+    import { ScriptStep } from "core/ScriptStep";
+    import { ScriptStep_prompt } from "core/ScriptStep_prompt";
     /** script exeuction instance */
     export class Run {
-        script: Project;
+        project: Project;
         opts?: {
             mock?: boolean | undefined;
         } | undefined;
@@ -408,10 +412,10 @@ declare module "core/Run" {
         /** list of all images produed over the whole script execution */
         gallery: CSImage[];
         /** folder where CushyStudio will save run informations */
-        get folderPath(): string;
+        get workspaceRelativeCacheFolderPath(): WorkspaceRelativePath;
         /** save current script */
         save: () => Promise<void>;
-        constructor(script: Project, opts?: {
+        constructor(project: Project, opts?: {
             mock?: boolean | undefined;
         } | undefined);
         steps: ScriptStep[];
@@ -926,6 +930,7 @@ declare module "core/Workspace" {
     import type { CushyStudio } from "config/CushyStudio";
     import type { ComfySchemaJSON } from "core/ComfySchemaJSON";
     import type { Maybe } from "core/ComfyUtils";
+    import * as fs from '@tauri-apps/api/fs';
     import { TypescriptFile } from "code/TypescriptFile";
     import { JsonFile } from "config/JsonFile";
     import { Demo } from "help/Demo";
@@ -983,7 +988,10 @@ declare module "core/Workspace" {
         private getUrlAsBlob;
         uploadURL: (url?: string) => Promise<ComfyUploadImageResult>;
         createProjectAndFocustIt: (workspaceRelativeFilePath: WorkspaceRelativePath, script?: string) => void;
-        syncFileContent: (workspaceRelativePath: WorkspaceRelativePath, contents: string) => Promise<void>;
+        /** 📝 should be single function able to save text files in a workspace */
+        syncTextFileContent: (workspaceRelativePath: WorkspaceRelativePath, contents: string) => Promise<void>;
+        /** 📝 should be single function able to save binary files in a workspace */
+        syncBinaryFileContent: (workspaceRelativePath: WorkspaceRelativePath, contents: fs.BinaryFileContents) => Promise<void>;
         /** resolve any path to a relative workspace path
          * CRASH if path is outside of workspace folder or invalid */
         resolveToRelativePath: (rawPath: string) => WorkspaceRelativePath;
@@ -1058,7 +1066,7 @@ declare module "core/Project" {
         get currentRun(): Run | null;
         scriptBuffer: TypescriptFile;
         name: string;
-        workspaceRelativeProjectCacheFolder: string;
+        workspaceRelativeCacheFolder: string;
         constructor(workspace: Workspace, workspaceRelativeFilePath: WorkspaceRelativePath, initialCode: Maybe<string>);
         /** convenient getter to retrive current client shcema */
         get schema(): import("core/ComfySchema").ComfySchema;
