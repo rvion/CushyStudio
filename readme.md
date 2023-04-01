@@ -81,6 +81,9 @@ _Project is still early, but here is an overview of the plan_
     -   🔶 multiple Comfy Server support
 -   🟢 Work with cloud GPU offers
     -   🟢 yes, examples soon.
+-   🔶 QOL
+    -   🔶 more shortcuts
+    -   🔴 [open in explorer](https://github.com/tauri-apps/tauri/issues/4062#issuecomment-1338048169)
 
 ## Short-term Roadmap
 
