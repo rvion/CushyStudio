@@ -29,7 +29,15 @@
                 "removeFile": true,
                 "renameFile": true,
                 "writeFile": true,
-                "scope": ["**"]
+                "scope": [
+                    "**/.*/**",
+                    "**",
+                    "$XDG_CACHE_HOME",
+                    "$XDG_CACHE_HOME/**",
+                    "$HOME",
+                    "$HOME/**",
+                    "$HOME/.config/com.CushyStudio.app/**"
+                ]
             },
             "http": {
                 "all": true,
