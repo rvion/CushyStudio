@@ -1555,5 +1555,22 @@
     "name": "ImagePadForOutpaint",
     "description": "",
     "category": "image"
+},
+  "TomePatchModel": {
+    "input": {
+      "required": {
+        "model": ["MODEL"],
+        "ratio": ["FLOAT",{"default":0.3,"min":0,"max":1,"step":0.01}]
+    }
+  },
+    "output": {
+      "0": "MODEL"
+  },
+    "output_name": {
+      "0": "MODEL"
+  },
+    "name": "TomePatchModel",
+    "description": "",
+    "category": "_for_testing"
 }
 }

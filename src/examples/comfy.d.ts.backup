@@ -561,6 +561,17 @@ export type VAEEncodeTiled_input = {
 }
 
 // |=============================================================================|
+// | TomePatchModel                                                              |
+// |=============================================================================|
+export interface TomePatchModel extends HasSingle_MODEL, ComfyNode<TomePatchModel_input> {
+    MODEL: ComfyNodeOutput<'MODEL', 0>,
+}
+export type TomePatchModel_input = {
+    model: MODEL | HasSingle_MODEL
+    ratio: FLOAT
+}
+
+// |=============================================================================|
 // | ImageFilterAdjustments                                                      |
 // |=============================================================================|
 export interface ImageFilterAdjustments extends HasSingle_IMAGE, ComfyNode<ImageFilterAdjustments_input> {
@@ -1186,6 +1197,7 @@ export type Schemas = {
     CLIPVisionLoader: ComfyNodeSchemaJSON,
     VAEDecodeTiled: ComfyNodeSchemaJSON,
     VAEEncodeTiled: ComfyNodeSchemaJSON,
+    TomePatchModel: ComfyNodeSchemaJSON,
     ImageFilterAdjustments: ComfyNodeSchemaJSON,
     ImageStyleFilter: ComfyNodeSchemaJSON,
     ImageBlendingMode: ComfyNodeSchemaJSON,
@@ -1275,6 +1287,7 @@ export interface ComfySetup {
     CLIPVisionLoader(args: CLIPVisionLoader_input, uid?: ComfyNodeUID): CLIPVisionLoader
     VAEDecodeTiled(args: VAEDecodeTiled_input, uid?: ComfyNodeUID): VAEDecodeTiled
     VAEEncodeTiled(args: VAEEncodeTiled_input, uid?: ComfyNodeUID): VAEEncodeTiled
+    TomePatchModel(args: TomePatchModel_input, uid?: ComfyNodeUID): TomePatchModel
     ImageFilterAdjustments(args: ImageFilterAdjustments_input, uid?: ComfyNodeUID): ImageFilterAdjustments
     ImageStyleFilter(args: ImageStyleFilter_input, uid?: ComfyNodeUID): ImageStyleFilter
     ImageBlendingMode(args: ImageBlendingMode_input, uid?: ComfyNodeUID): ImageBlendingMode
