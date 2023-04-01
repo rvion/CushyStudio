@@ -69,10 +69,10 @@ export class TypescriptFile {
         const uri = monaco.Uri.parse(opts.virtualPathTS)
         let model = monaco.editor.getModel(uri)
         if (model) {
-            console.log(`[📝] updating monaco model for ${opts.title}`)
+            // console.log(`[📝] updating monaco model for ${opts.title}`)
             model.setValue(this.codeTS)
         } else {
-            console.log(`[📝] creating monaco model for  ${opts.title}`)
+            // console.log(`[📝] creating monaco model for ${opts.title}`)
             model = monaco.editor.createModel(this.codeTS, 'typescript', uri)
         }
 
@@ -93,7 +93,7 @@ export class TypescriptFile {
         textModel.setValue(value)
         this.codeTS = value
         this.codeJS = await globalMonaco.convertToJS(textModel)
-        console.log(`[📝] updating ${this.conf.virtualPathTS} with ${value.length} chars`)
+        // console.log(`[📝] updating ${this.conf.virtualPathTS} with ${value.length} chars`)
         // await this.ensureTextModel()
         await this.syncWithDiskFile()
         return true
@@ -101,7 +101,7 @@ export class TypescriptFile {
 
     udpateFromEditor = async (value: Maybe<string>) => {
         if (value == null) return console.log('❌ value is null; aborting')
-        console.log(`[📝] updating ${this.conf.virtualPathTS} with ${value.length} chars`)
+        // console.log(`[📝] updating ${this.conf.virtualPathTS} with ${value.length} chars`)
         if (this.textModel == null) throw new Error('❌ INVARIANT VIOLATION: textModel is null')
         this.codeTS = value
         this.codeJS = await globalMonaco.convertToJS(this.textModel!)
@@ -110,7 +110,6 @@ export class TypescriptFile {
 
     syncWithDiskFile = async () => {
         const diskPathTS: RelativePath = this.conf.relativeTSFilePath
-        console.log(this.conf.relativeTSFilePath)
         await this.rootFolder.writeTextFile(diskPathTS, this.codeTS)
         const diskPathJS = this.conf.relativeJSFilePath
         if (diskPathJS) await this.rootFolder.writeTextFile(diskPathJS, this.codeJS)
