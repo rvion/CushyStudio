@@ -3,7 +3,7 @@ import type { Branded } from '../core/ComfyUtils'
 export * as pathe from 'pathe'
 import * as pathe from 'pathe'
 
-export type WorkspaceRelativePath = Branded<string, 'WorkspaceRelativePath'>
+export type RelativePath = Branded<string, 'WorkspaceRelativePath'>
 export type AbsolutePath = Branded<string, 'Absolute'>
 export type MonacoPath = Branded<string, 'Monaco'>
 
@@ -15,10 +15,10 @@ export const asAbsolutePath = (path: string): AbsolutePath => {
 }
 
 /** brand a path as a workspace relative pathpath after basic checks */
-export const asRelativePath = (path: string): WorkspaceRelativePath => {
+export const asRelativePath = (path: string): RelativePath => {
     const isAbsolute = pathe.isAbsolute(path)
     if (isAbsolute) throw new Error(`path is absolute: ${path}`)
-    return path as WorkspaceRelativePath
+    return path as RelativePath
 }
 
 /** brand a path as a monaco URI path after basic checks */

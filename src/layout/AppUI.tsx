@@ -1,22 +1,31 @@
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useMemo } from 'react'
 
 import { FluentProvider, Spinner, webDarkTheme } from '@fluentui/react-components'
 import { ToastContainer } from 'react-toastify'
 import { CushyStudio } from '../config/CushyStudio'
+import { CSContext } from '../config/CushyStudioContext'
+import { Maybe } from '../core/ComfyUtils'
 import { GithubCorner } from '../ui/GithubCorner'
 import { workspaceContext } from '../ui/WorkspaceContext'
-import { WelcomeScreenUI } from '../welcome/WelcomeScreenUI'
 import { OpenWorkspaceUI } from '../welcome/OpenWorkspaceUI'
+import { WelcomeScreenUI } from '../welcome/WelcomeScreenUI'
 import { AppBarUI } from './AppBarUI'
 import { CushyLayoutUI } from './LayoutUI'
-import { CSContext } from '../config/CushyStudioContext'
 import { TroubleShootinInstructionsUI } from './TroubleShootinInstructionsUI'
 
 export const AppUI = observer(function AppUI_() {
-    const cs = useMemo(() => new CushyStudio(), [])
+    const csWrapper = useLocalObservable(() => ({
+        cs: null as Maybe<CushyStudio>,
+    }))
+    useMemo(async () => {
+        csWrapper.cs = await CushyStudio.CREATE()
+    }, [])
 
-    if (!cs.ready)
+    const cs = csWrapper.cs
+
+    // 1. if app is not ready, show a loading screen
+    if (!cs?.ready) {
         return (
             <FluentProvider theme={webDarkTheme} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                 <WelcomeScreenUI>
@@ -25,14 +34,17 @@ export const AppUI = observer(function AppUI_() {
                 </WelcomeScreenUI>
             </FluentProvider>
         )
+    }
     return (
         <CSContext.Provider value={cs}>
             <FluentProvider theme={webDarkTheme} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                {/* 2. if no workspace is opened, show the open-workspace UI */}
                 {cs.workspace == null ? (
                     <WelcomeScreenUI>
                         <OpenWorkspaceUI />
                     </WelcomeScreenUI>
                 ) : (
+                    // 3. otherwise, show the IDE
                     <workspaceContext.Provider value={cs.workspace}>
                         <GithubCorner />
                         <ToastContainer />

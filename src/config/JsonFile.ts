@@ -1,16 +1,25 @@
-import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
+import { Workspace } from '../core/Workspace'
 import { logger } from '../logger/Logger'
 import { bang } from '../utils/bang'
+import { RelativePath } from '../utils/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
+import { RootFolder } from './RootFolder'
 
 export type PersistedJSONInfo<T> = {
-    //
-    folder: Promise<string>
-    name: string
+    /** human readable title */
+    title: string
+
+    relativePath: RelativePath
+
+    /** lazy but synchronous initialization function for default value */
     init: () => T
+
+    /** prettier will indent json up to this level of nesting */
     maxLevel?: number
+
+    /** callback called when file API is ready to be used */
     onReady?: (data: T) => void
 }
 
@@ -22,36 +31,47 @@ export class JsonFile<T extends object> {
         this.ready_no = no
     })
 
-    constructor(private opts: PersistedJSONInfo<T>) {
+    constructor(
+        //
+        public rootFolder: RootFolder,
+        public conf: PersistedJSONInfo<T>,
+    ) {
         makeAutoObservable(this)
-        void this.init(opts)
+        void this.init()
+    }
+
+    private init = async (): Promise<T> => {
+        const conf: PersistedJSONInfo<T> = this.conf
+        const existingContent = await this.rootFolder.readTextFile(conf.relativePath)
+        console.log('🚀 ~ file: JsonFile.ts:46 ~ JsonFile<T ~ init= ~ existingContent:', existingContent)
+        this._value = existingContent ? JSON.parse(existingContent) : conf.init()
+        console.log('🚀 ~ file: JsonFile.ts:48 ~ JsonFile<T ~ init= ~ this._value:', this._value)
+        this.setReady()
+        await this.save()
+        return this._value
     }
 
     /** true when config loaded */
     ready: boolean = false
     setReady() {
         this.ready = true
-        this.opts.onReady?.(this.value)
+        this.conf.onReady?.(this.value)
         this.ready_yes(true)
     }
     private _folder!: string
     get folder() { return bang(this._folder); } // prettier-ignore
-
-    private _path!: string
-    get path() { return bang(this._path); } // prettier-ignore
 
     private _value!: T
     get value() { return bang(this._value); } // prettier-ignore
 
     /** save the file */
     save = async (): Promise<true> => {
-        logger.info('🌠', `saving [${this.opts.name}] to ${this._path}`)
-        const maxLevel = this.opts.maxLevel
+        const maxLevel = this.conf.maxLevel
         const content =
             maxLevel == null //
                 ? JSON.stringify(this.value, null, 4)
                 : readableStringify(this.value, maxLevel)
-        await fs.writeTextFile(this._path, content)
+        await this.rootFolder.writeTextFile(this.conf.relativePath, content)
         return true
     }
 
@@ -59,37 +79,5 @@ export class JsonFile<T extends object> {
     update = async (configChanges: Partial<T>): Promise<true> => {
         Object.assign(this.value, configChanges)
         return await this.save()
-    }
-
-    init = async (p: PersistedJSONInfo<T>): Promise<T> => {
-        // 1. ensure config folder exists
-        this._folder = await p.folder
-        const folderExists = await fs.exists(this._folder)
-        if (!folderExists) {
-            logger.info('🛋', `${p.name} creating missing folder [${this._folder}]`)
-            await fs.createDir(this._folder, { recursive: true })
-        }
-
-        // 2. ensure file exists
-        this._path = await path.join(this._folder, this.opts.name)
-        const configFileExists = await fs.exists(this._path)
-        if (!configFileExists) {
-            logger.info('🛋', `${p.name} not found, creating default`)
-            this._value = await p.init()
-            this.setReady()
-            await this.save()
-        } else {
-            logger.info('🛋', `${p.name} found at ${this._path}`)
-            const configStr = await fs.readTextFile(this._path)
-            this._value = JSON.parse(configStr)
-            this.setReady()
-        }
-        // 3. report as ready
-        // runInAction(() => {
-        //     this.ready = true
-        //     this._value = value
-        // })
-        // write a config backup in your workspace
-        return this._value
     }
 }

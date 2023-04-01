@@ -5,7 +5,7 @@ import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Cyto } from '../graph/cyto'
-import { asRelativePath, WorkspaceRelativePath } from '../utils/pathUtils'
+import { asRelativePath, RelativePath } from '../utils/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
 import { ComfyGraph } from './ComfyGraph'
@@ -37,7 +37,7 @@ export class Run {
     gallery: PromptOutputImage[] = []
 
     /** folder where CushyStudio will save run informations */
-    get workspaceRelativeCacheFolderPath(): WorkspaceRelativePath {
+    get workspaceRelativeCacheFolderPath(): RelativePath {
         return asRelativePath(this.project.workspaceRelativeCacheFolder + path.sep + this.name)
     }
 
@@ -46,7 +46,7 @@ export class Run {
         const contents = this.project.scriptBuffer.codeJS
         const backupCodePath = 'script.' + getYYYYMMDDHHMMSS() + '.js'
         const filePath = asRelativePath(this.workspaceRelativeCacheFolderPath + path.sep + backupCodePath)
-        await this.project.workspace.writeTextFile(filePath, contents)
+        await this.project.workspace.rootFolder.writeTextFile(filePath, contents)
         console.log('[📁] script backup saved', filePath)
     }
 

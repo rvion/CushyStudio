@@ -6,7 +6,7 @@ import type { Workspace } from './Workspace'
 import { fetch, ResponseType } from '@tauri-apps/api/http'
 import * as path from '@tauri-apps/api/path'
 import { nanoid } from 'nanoid'
-import { asRelativePath, WorkspaceRelativePath } from '../utils/pathUtils'
+import { asRelativePath, RelativePath } from '../utils/pathUtils'
 
 /** Cushy wrapper around ComfyImageInfo */
 export class PromptOutputImage {
@@ -36,7 +36,7 @@ export class PromptOutputImage {
     /** true if file exists on disk; false otherwise */
     saved = false
 
-    get folder(): WorkspaceRelativePath {
+    get folder(): RelativePath {
         return this.prompt.run.workspaceRelativeCacheFolderPath
     }
 
@@ -44,7 +44,7 @@ export class PromptOutputImage {
         return this.prompt.uid + '_' + this.uid + '.png'
     }
 
-    get filePath(): WorkspaceRelativePath {
+    get filePath(): RelativePath {
         return asRelativePath(this.folder + path.sep + this.fileName)
     }
 
@@ -57,7 +57,7 @@ export class PromptOutputImage {
         })
         const numArr: number[] = response.data as any
         const binArr = new Uint16Array(numArr)
-        await this.workspace.writeBinaryFile(this.filePath, binArr)
+        await this.workspace.rootFolder.writeBinaryFile(this.filePath, binArr)
         this.saved = true
     }
 

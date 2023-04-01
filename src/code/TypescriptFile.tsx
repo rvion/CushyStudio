@@ -1,20 +1,20 @@
 import type { Maybe } from '../core/ComfyUtils'
-import type { Workspace } from '../core/Workspace'
 import type { ITextModel } from '../ui/TypescriptOptions'
 
 import { makeObservable, observable } from 'mobx'
+import { RootFolder } from '../config/RootFolder'
 import { globalMonaco } from '../ui/Monaco'
-import { MonacoPath, WorkspaceRelativePath } from '../utils/pathUtils'
+import { MonacoPath, RelativePath } from '../utils/pathUtils'
 
-type TypescriptFileOpts = {
+export type TypescriptFileConf = {
     /** human readable title */
     title: string
 
     /** the relative path to the typescript file this should be kept in sync with */
-    workspaceRelativeTSFilePath: WorkspaceRelativePath
+    relativeTSFilePath: RelativePath
 
     /** the relative path to the javascript file this should be transpiled to */
-    workspaceRelativeJSFilePath?: Maybe<WorkspaceRelativePath>
+    relativeJSFilePath?: Maybe<RelativePath>
 
     /** the language server internal file path */
     virtualPathTS: MonacoPath
@@ -27,10 +27,19 @@ type TypescriptFileOpts = {
 }
 
 export class TypescriptFile {
-    constructor(public workspace: Workspace, public conf: TypescriptFileOpts) {
-        console.log({ opts: conf })
-        if (!conf.virtualPathTS.endsWith('.ts')) throw new Error('❌ INVARIANT VIOLATION: typescript file does not end with .ts')
+    constructor(
+        //
+        public rootFolder: RootFolder,
+        public conf: TypescriptFileConf,
+    ) {
+        // console.log({ opts: conf })
+        // 1. ensure file properly ends with .ts
+        if (!conf.virtualPathTS.endsWith('.ts')) {
+            throw new Error('❌ INVARIANT VIOLATION: typescript file does not end with .ts')
+        }
+
         makeObservable(this, { textModel: observable.ref })
+
         void this.init()
     }
 
@@ -44,19 +53,14 @@ export class TypescriptFile {
         this.resolvetextModelPromise = resolve
     })
 
-    /** initialize the buffer
-     *  - load the file from disk if it exists
-     *  - or create a new file with the default content if default content provided
-     *  - or do nothing if file does not exist and no default content provided
-     */
-    init = async () => {
+    private init = async () => {
         const opts = this.conf
         // 1. get code value
-        console.log('[📁] loading', opts.workspaceRelativeTSFilePath)
+        console.log('[📁] loading', opts.relativeTSFilePath)
 
         this.codeTS = opts.codeOverwrite
             ? opts.codeOverwrite
-            : (await this.workspace.readTextFile(opts.workspaceRelativeTSFilePath)) ?? //
+            : (await this.rootFolder.readTextFile(opts.relativeTSFilePath)) ?? //
               opts.defaultCodeWhenNoFile ??
               ''
 
@@ -73,7 +77,7 @@ export class TypescriptFile {
         }
 
         // 3. transpile if needed
-        if (opts.workspaceRelativeJSFilePath) {
+        if (opts.relativeJSFilePath) {
             this.codeJS = await globalMonaco.convertToJS(model)
         }
         this.textModel = model
@@ -105,11 +109,11 @@ export class TypescriptFile {
     }
 
     syncWithDiskFile = async () => {
-        const diskPathTS: WorkspaceRelativePath = this.conf.workspaceRelativeTSFilePath
-        console.log(this.conf.workspaceRelativeTSFilePath)
-        await this.workspace.writeTextFile(diskPathTS, this.codeTS)
-        const diskPathJS = this.conf.workspaceRelativeJSFilePath
-        if (diskPathJS) await this.workspace.writeTextFile(diskPathJS, this.codeJS)
+        const diskPathTS: RelativePath = this.conf.relativeTSFilePath
+        console.log(this.conf.relativeTSFilePath)
+        await this.rootFolder.writeTextFile(diskPathTS, this.codeTS)
+        const diskPathJS = this.conf.relativeJSFilePath
+        if (diskPathJS) await this.rootFolder.writeTextFile(diskPathJS, this.codeJS)
     }
 }
 

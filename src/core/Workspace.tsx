@@ -3,10 +3,12 @@ import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
 import type { Run } from './Run'
 import type { ScriptStep } from './ScriptStep'
+import { RootFolder } from '../config/RootFolder'
 
-import * as fs from '@tauri-apps/api/fs'
 import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
+import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
+
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
 import { TypescriptFile } from '../code/TypescriptFile'
@@ -22,7 +24,7 @@ import { ComfySchema } from './ComfySchema'
 import { defaultScript } from './defaultProjectCode'
 import { Project } from './Project'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
-import { AbsolutePath, asMonacoPath, asRelativePath, pathe, WorkspaceRelativePath } from '../utils/pathUtils'
+import { AbsolutePath, asMonacoPath, asRelativePath, pathe, RelativePath } from '../utils/pathUtils'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -41,7 +43,6 @@ export type CSCriticalError = { title: string; help: string }
  */
 export class Workspace {
     schema: ComfySchema
-
     focusedFile: Maybe<TypescriptFile> = null
     focusedProject: Maybe<Project> = null
 
@@ -69,16 +70,6 @@ export class Workspace {
     cushySDKFile: TypescriptFile
     comfySDKFile: TypescriptFile
 
-    // canUseSimpleMode() {
-    //     const conf = this.workspaceConfigFile.value
-    //     if (
-    //         conf.comfyHTTPURL.startsWith('http://') && //
-    //         conf.comfyHTTPURL.startsWith('http://') && //
-    //         conf.comfyWSURL.startsWith('ws://')
-    //     )
-    //         return true
-    // }
-
     openComfySDK = () => {
         this.focusedFile = this.comfySDKFile
         // this.layout.openEditorTab(this.ComfySDKBuff)
@@ -98,38 +89,44 @@ export class Workspace {
     }
 
     /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
-    get relativeCacheFolderPath(): WorkspaceRelativePath {
+    get relativeCacheFolderPath(): RelativePath {
         return asRelativePath('cache')
     }
 
+    rootFolder: RootFolder
     private constructor(
         //
         public cushy: CushyStudio,
         public absoluteWorkspaceFolderPath: AbsolutePath,
     ) {
         this.schema = new ComfySchema({})
-        console.log('🟢')
-        this.cushySDKFile = new TypescriptFile(this, {
+        this.rootFolder = new RootFolder(absoluteWorkspaceFolderPath)
+        this.cushySDKFile = new TypescriptFile(this.rootFolder, {
             title: 'Cushy SDK',
-            workspaceRelativeTSFilePath: asRelativePath('cushy.d.ts.backup'),
+            relativeTSFilePath: asRelativePath('cushy.d.ts.backup'),
             virtualPathTS: asMonacoPath(`file:///cushy.d.ts`),
             codeOverwrite: c__,
         })
-        this.comfySDKFile = new TypescriptFile(this, {
+
+        this.comfySDKFile = new TypescriptFile(this.rootFolder, {
             title: 'Comfy SDK',
-            workspaceRelativeTSFilePath: asRelativePath('comfy.d.ts.backup'),
+            relativeTSFilePath: asRelativePath('comfy.d.ts.backup'),
             virtualPathTS: asMonacoPath(`file:///comfy.d.ts`),
             defaultCodeWhenNoFile: null,
         })
-        this.objectInfoFile = new JsonFile<ComfySchemaJSON>({
-            folder: Promise.resolve(this.absoluteWorkspaceFolderPath),
-            name: 'object_info.json',
+
+        this.objectInfoFile = new JsonFile<ComfySchemaJSON>(this.rootFolder, {
+            // folder: Promise.resolve(this.absoluteWorkspaceFolderPath),
+            title: 'object_info.json',
+            relativePath: asRelativePath('object_info.json'),
             init: () => ({}),
             maxLevel: 3,
         })
-        this.workspaceConfigFile = new JsonFile<WorkspaceConfigJSON>({
-            folder: Promise.resolve(this.absoluteWorkspaceFolderPath),
-            name: 'workspace.json',
+
+        this.workspaceConfigFile = new JsonFile<WorkspaceConfigJSON>(this.rootFolder, {
+            // folder: Promise.resolve(this.absoluteWorkspaceFolderPath),
+            title: 'workspace.json',
+            relativePath: asRelativePath('workspace.json'),
             init: () => ({
                 version: 2,
                 comfyWSURL: 'ws://127.0.0.1:8188/ws',
@@ -208,7 +205,7 @@ export class Workspace {
 
     createProjectAndFocustIt = (
         //
-        workspaceRelativeFilePath: WorkspaceRelativePath,
+        workspaceRelativeFilePath: RelativePath,
         script: string = defaultScript,
     ) => {
         const project = new Project(this, workspaceRelativeFilePath, script)
@@ -216,49 +213,45 @@ export class Workspace {
         project.focus()
     }
 
-    /** 📝 should be the SINGLE function able to save text files in a workspace */
-    readTextFile = async (workspaceRelativePath: WorkspaceRelativePath): Promise<Maybe<string>> => {
-        const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
-        const exists = await fs.exists(absoluteFilePath)
-        if (exists) return await fs.readTextFile(absoluteFilePath)
-        return null
-    }
+    // /** 📝 should be the SINGLE function able to save text files in a workspace */
+    // readTextFile = async (workspaceRelativePath: RelativePath): Promise<Maybe<string>> => {
+    //     const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
+    //     const exists = await fs.exists(absoluteFilePath)
+    //     if (exists) return await fs.readTextFile(absoluteFilePath)
+    //     return null
+    // }
 
-    /** 📝 should be the SINGLE function able to save text files in a workspace */
-    writeTextFile = async (workspaceRelativePath: WorkspaceRelativePath, contents: string) => {
-        // 1. resolve absolute path
-        const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
-        // console.log('>>> 🔴x', absoluteFilePath)
-        // 2. create folder if missing
-        const folder = await path.dirname(absoluteFilePath)
-        const folderExists = await fs.exists(folder)
-        if (!folderExists) await fs.createDir(folder, { recursive: true })
-        // 3. check previous file content
-        const prevExists = await fs.exists(absoluteFilePath)
-        const prev = prevExists ? await fs.readTextFile(absoluteFilePath) : null
-        // 4. save if necessary
-        if (prev != contents) await fs.writeTextFile({ path: absoluteFilePath, contents })
-    }
+    // /** 📝 should be the SINGLE function able to save text files in a workspace */
+    // writeTextFile = async (workspaceRelativePath: RelativePath, contents: string): Promise<void> => {
+    //     // 1. resolve absolute path
+    //     const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
+    //     // 2. create folder if missing
+    //     const folder = await path.dirname(absoluteFilePath)
+    //     const folderExists = await fs.exists(folder)
+    //     if (!folderExists) await fs.createDir(folder, { recursive: true })
+    //     // 3. check previous file content
+    //     const prevExists = await fs.exists(absoluteFilePath)
+    //     const prev = prevExists ? await fs.readTextFile(absoluteFilePath) : null
+    //     // 4. save if necessary
+    //     if (prev != contents) await fs.writeTextFile({ path: absoluteFilePath, contents })
+    // }
 
-    /** 📝 should be the SINGLE function able to save binary files in a workspace */
-    writeBinaryFile = async (workspaceRelativePath: WorkspaceRelativePath, contents: fs.BinaryFileContents) => {
-        // 1. resolve absolute path
-        const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
-        // console.log('>>> 🔴y', absoluteFilePath)
-        // 2. create folder if missing
-        const folder = await path.dirname(absoluteFilePath)
-        const folderExists = await fs.exists(folder)
-        if (!folderExists) await fs.createDir(folder, { recursive: true })
-        // 3. update file (NO check to see if previous file similar)
-        await fs.writeBinaryFile({ path: absoluteFilePath, contents })
-        // const prevExists = await fs.exists(absoluteFilePath)
-        // const prev = prevExists ? await fs.readTextFile(absoluteFilePath) : null
-        // if (prev != contents) await fs.writeBinaryFile({ path: absoluteFilePath, contents })
-    }
+    // /** 📝 should be the SINGLE function able to save binary files in a workspace */
+    // writeBinaryFile = async (workspaceRelativePath: RelativePath, contents: fs.BinaryFileContents) => {
+    //     // 1. resolve absolute path
+    //     const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
+    //     // console.log('>>> 🔴y', absoluteFilePath)
+    //     // 2. create folder if missing
+    //     const folder = await path.dirname(absoluteFilePath)
+    //     const folderExists = await fs.exists(folder)
+    //     if (!folderExists) await fs.createDir(folder, { recursive: true })
+    //     // 3. update file (NO check to see if previous file similar)
+    //     await fs.writeBinaryFile({ path: absoluteFilePath, contents })
+    // }
 
     /** resolve any path to a relative workspace path
      * CRASH if path is outside of workspace folder or invalid */
-    resolveToRelativePath = (rawPath: string): WorkspaceRelativePath => {
+    resolveToRelativePath = (rawPath: string): RelativePath => {
         const isAbsolute = pathe.isAbsolute(rawPath)
         // console.log('🚀 ~ file: Workspace.tsx:218 ~ Workspace ~ isAbsolute:', isAbsolute)
         const parsed = pathe.parse(rawPath)
@@ -282,7 +275,7 @@ export class Workspace {
             )
             throw new Error("🔴BB invalid path; can't create path outside of workspace folder")
         }
-        return relativePath as WorkspaceRelativePath
+        return relativePath as RelativePath
     }
 
     /** load all project found in workspace */

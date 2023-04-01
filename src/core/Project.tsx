@@ -9,7 +9,7 @@ import { Run } from './Run'
 import { TypescriptFile } from '../code/TypescriptFile'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { logger } from '../logger/Logger'
-import { asMonacoPath, asRelativePath, pathe, WorkspaceRelativePath } from '../utils/pathUtils'
+import { asMonacoPath, asRelativePath, pathe, RelativePath } from '../utils/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 
 /** Script */
@@ -51,7 +51,7 @@ export class Project {
     constructor(
         //
         public workspace: Workspace,
-        public workspaceRelativeFilePath: WorkspaceRelativePath,
+        public workspaceRelativeFilePath: RelativePath,
         initialCode: Maybe<string>,
     ) {
         // const fileName = basename(workspaceRelativeFilePath)
@@ -64,10 +64,10 @@ export class Project {
         //     folderName: this.folderName,
         //     folderPath: this.cacheFolder,
         // })
-        this.scriptBuffer = new TypescriptFile(this.workspace, {
+        this.scriptBuffer = new TypescriptFile(this.workspace.rootFolder, {
             title: this.name,
-            workspaceRelativeTSFilePath: this.workspaceRelativeFilePath,
-            workspaceRelativeJSFilePath: asRelativePath(this.workspaceRelativeCacheFolder + path.sep + 'script.js'),
+            relativeTSFilePath: this.workspaceRelativeFilePath,
+            relativeJSFilePath: asRelativePath(this.workspaceRelativeCacheFolder + path.sep + 'script.js'),
             virtualPathTS: asMonacoPath(`file:///${this.workspaceRelativeFilePath}`),
             defaultCodeWhenNoFile: initialCode,
         })
