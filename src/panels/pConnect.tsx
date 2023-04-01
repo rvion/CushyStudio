@@ -1,4 +1,4 @@
-import { Card, Input } from '@fluentui/react-components'
+import { Card, Input, Title3 } from '@fluentui/react-components'
 import { Alert, Field } from '@fluentui/react-components/unstable'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
@@ -7,10 +7,10 @@ import { useWorkspace } from '../ui/WorkspaceContext'
 export const PConnectUI = observer(function PConnectUI_(p: {}) {
     const client = useWorkspace()
     return (
-        <div className='row gap items-start'>
+        <div>
             <Card>
                 <h3 className='row'>
-                    <div>Server </div>
+                    <Title3>Connection Infos </Title3>
                     <div className='grow'></div>
                     <div>{client.ws.emoji}</div>
                 </h3>
@@ -22,14 +22,22 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                                 onChange={(ev) => (client._config.config.workspace = ev.target.value)}
                                 />
                             </Field> */}
-                <Field label='http(s) URL to access Comfy'>
+                <Field label='Workspace folder'>
+                    <Input
+                        disabled
+                        contentBefore={'📁'}
+                        value={client.absoluteWorkspaceFolderPath}
+                        onChange={(ev) => client.workspaceConfigFile.update({ comfyHTTPURL: ev.target.value })}
+                    />
+                </Field>
+                <Field label='Comfy HTTP(s) server'>
                     <Input
                         contentBefore={'🫖'}
                         value={client.workspaceConfigFile.value.comfyHTTPURL}
                         onChange={(ev) => client.workspaceConfigFile.update({ comfyHTTPURL: ev.target.value })}
                     />
                 </Field>
-                <Field label='ws(s) ENDPOINT to access Comfy'>
+                <Field label='Comfy websocket endpoint'>
                     <Input
                         contentBefore={'🧦'}
                         value={client.workspaceConfigFile.value.comfyWSURL}
