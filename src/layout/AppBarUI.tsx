@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite'
 import * as I from '@fluentui/react-icons'
 import * as dialog from '@tauri-apps/api/dialog'
 import * as fs from '@tauri-apps/api/fs'
+import { ImportCandidate } from '../importers/ImportCandidate'
 import { WorkspaceToolbarUI } from '../ui/ToolbarUI'
 import { useWorkspace } from '../ui/WorkspaceContext'
 
@@ -20,20 +21,28 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 icon={<I.ArrowImport24Regular />}
                 onClick={async () => {
                     console.log('[📁] opening dialog')
-                    const filePath = await dialog.open({
+                    const RAW = await dialog.open({
                         title: 'Open',
-                        defaultPath: `~`,
-                        filters: [
-                            //
-                            { name: 'Civitai Project', extensions: ['cushy'] },
-                            { name: 'image', extensions: ['png'] },
-                        ],
+                        defaultPath: `$HOME`,
+                        multiple: true,
+                        // 2023-04-02: rvion: let's not filter for now
+                        // filters: [
+                        //     //
+                        //     { name: 'Civitai Project', extensions: ['cushy'] },
+                        //     { name: 'image', extensions: ['png'] },
+                        // ],
                     })
-                    if (typeof filePath !== 'string') return console.log('❌ not a string:', filePath)
-                    console.log('[📁] reading content of', filePath)
-                    const content = await fs.readBinaryFile(filePath)
-                    const file = new File([content], filePath, { type: 'image/png' })
-                    client.handleFile(file)
+
+                    if (RAW == null) return console.log('❌ no file selected')
+
+                    const filePaths = Array.isArray(RAW) ? RAW : [RAW]
+                    for (const filePath of filePaths) {
+                        if (typeof filePath !== 'string') return console.log('❌ not a string:', filePath)
+                        console.log('[📁] reading content of', filePath)
+                        const content = await fs.readBinaryFile(filePath)
+                        const file = new File([content], filePath, { type: 'image/png' })
+                        client.importQueue.push(new ImportCandidate(client, file))
+                    }
 
                     // const metadata = await getPngMetadata(client, file)
                     // console.log('[📁] content', metadata)

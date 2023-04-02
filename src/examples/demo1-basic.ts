@@ -1,5 +1,6 @@
 export default WORKFLOW(async (n) => {
-    console.log('test console.log')
+    
+    
     const ckpt = n.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const latent = n.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
     const positive = n.CLIPTextEncode({ text: 'masterpiece, (chair:1.3)', clip: ckpt })

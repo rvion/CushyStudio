@@ -11,12 +11,12 @@ import {
 } from '@fluentui/react-components'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { useCS } from '../config/CushyStudioContext'
+import { useCushyStudio } from '../config/CushyStudioContext'
 import { NewProjectModalUI } from '../menu/NewProjectModalUI'
 import { useWorkspace } from './WorkspaceContext'
 
 export const WorkspaceToolbarUI = observer(function WorkspaceToolbarUI_(props: Partial<ToolbarProps>) {
-    const cushy = useCS()
+    const cushy = useCushyStudio()
     const client = useWorkspace()
     const project = client.focusedProject
 
@@ -58,7 +58,7 @@ export const WorkspaceToolbarUI = observer(function WorkspaceToolbarUI_(props: P
     )
 })
 export const ProjectToolbarUI = observer(function ToolbarUI_(props: Partial<ToolbarProps>) {
-    const cushy = useCS()
+    const cushy = useCushyStudio()
     const client = useWorkspace()
     const project = client.focusedProject
     return (

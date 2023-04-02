@@ -1,25 +1,23 @@
-/** code copy-pasted from ComfyUI repo */
-
-import type { Workspace } from '../core/Workspace'
+import { toast } from 'react-toastify'
 
 export type TextChunks = {
     [key: string]: string
 }
 
-export function getPngMetadata(client: Workspace, file: File): Promise<TextChunks> {
+export function getPngMetadata(file: File): Promise<TextChunks> {
     return new Promise<TextChunks>((resolve, reject) => {
         const reader = new FileReader()
         reader.onload = (event) => {
             // A. ensure we properly loaded the file
             const res = event.target?.result
             if (res == null) {
-                client.notify('ERROR: no reader.onload have no result')
+                toast('ERROR: no reader.onload have no result')
                 return reject('file load error')
             }
 
             // B. ensure we don't have a string
             if (typeof res === 'string') {
-                client.notify('ERROR: received a string instead of an array buffer')
+                toast('ERROR: received a string instead of an array buffer')
                 return reject('file load error')
             }
 
@@ -29,7 +27,7 @@ export function getPngMetadata(client: Workspace, file: File): Promise<TextChunk
 
             // Check that the PNG signature is present
             if (dataView.getUint32(0) !== 0x89504e47) {
-                client.notify('Not a valid PNG file')
+                toast('Not a valid PNG file')
                 return reject('Not a valid PNG file')
             }
 

@@ -3,8 +3,9 @@ import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
 import type { Run } from './Run'
 import type { ScriptStep } from './ScriptStep'
-import { RootFolder } from '../config/RootFolder'
+import type { ImportCandidate } from '../importers/ImportCandidate'
 
+import { RootFolder } from '../config/RootFolder'
 import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
@@ -16,7 +17,7 @@ import { JsonFile } from '../config/JsonFile'
 import { Demo } from '../help/Demo'
 import { CushyLayoutState } from '../layout/LayoutState'
 import { logger } from '../logger/Logger'
-import { getPngMetadata } from '../png/getPngMetadata'
+import { getPngMetadata } from '../importers/getPngMetadata'
 import { ResilientWebSocketClient } from '../ws/ResilientWebsocket'
 import { c__ } from '../ui/sdkDTS'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
@@ -25,6 +26,7 @@ import { defaultScript } from './defaultProjectCode'
 import { Project } from './Project'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
 import { AbsolutePath, asMonacoPath, asRelativePath, pathe, RelativePath } from '../utils/pathUtils'
+import { ComfyPromptJSON } from './ComfyPrompt'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -69,6 +71,12 @@ export class Workspace {
     objectInfoFile: JsonFile<ComfySchemaJSON>
     cushySDKFile: TypescriptFile
     comfySDKFile: TypescriptFile
+
+    // import management
+    importQueue: ImportCandidate[] = []
+    removeCandidate = (candidate: ImportCandidate) => {
+        this.importQueue = this.importQueue.filter((c) => c === candidate)
+    }
 
     openComfySDK = () => {
         this.focusedFile = this.comfySDKFile
@@ -406,30 +414,10 @@ export class Workspace {
 
     notify = (msg: string) => void toast(msg)
 
-    /** Loads workflow data from the specified file */
-    async handleFile(file: File) {
-        if (file.type === 'image/png') {
-            const pngInfo = await getPngMetadata(this, file)
-            console.log(pngInfo)
-            if (pngInfo && pngInfo.prompt) {
-                const data = JSON.parse(pngInfo.prompt)
-                console.log(data)
-                const project = Project.FROM_JSON(this, data)
-                this.projects.push(project)
-                this.focusedProject = project
-                this.focusedFile = project.scriptBuffer
-                // this.layout.openEditorTab(project.scriptBuffer)
-                // this.editor.updateCODE(project.code)
-                // this.script.udpateCode(project.code)
-            }
-        }
-        // else if (file.type === 'application/json' || file.name.endsWith('.json')) {
-        //     const reader = new FileReader()
-        //     reader.onload = () => {
-        //         this.loadGraphData(JSON.parse(reader.result))
-        //     }
-        //     reader.readAsText(file)
-        // } else {
-        // }
+    addProjectFromComfyWorkflowJSON = async (comfyPromptJSON: ComfyPromptJSON) => {
+        const project = Project.FROM_JSON(this, comfyPromptJSON)
+        this.projects.push(project)
+        this.focusedProject = project
+        this.focusedFile = project.scriptBuffer
     }
 }

@@ -1,6 +1,7 @@
 import type { Maybe } from '../core/ComfyUtils'
 import { AbsolutePath, asAbsolutePath, asRelativePath } from '../utils/pathUtils'
 
+import { listen } from '@tauri-apps/api/event'
 import * as dialog from '@tauri-apps/api/dialog'
 import * as os from '@tauri-apps/api/os'
 import * as path from '@tauri-apps/api/path'
@@ -9,6 +10,10 @@ import { makeAutoObservable } from 'mobx'
 import { Workspace } from '../core/Workspace'
 import { JsonFile } from './JsonFile'
 import { RootFolder } from './RootFolder'
+import { toast } from 'react-toastify'
+import { TauriDropEvent } from '../importers/tauriDropEvent'
+import { readBinaryFile } from '@tauri-apps/api/fs'
+import { ImportCandidate } from '../importers/ImportCandidate'
 
 export type UserConfigJSON = {
     version: 1
@@ -31,6 +36,7 @@ export class CushyStudio {
 
     rootFolder: RootFolder
     userConfig: JsonFile<UserConfigJSON>
+
     private constructor(
         /** sync cached value so we don't have to do RPC with rust to find out */
         public os: os.Platform,
@@ -53,7 +59,49 @@ export class CushyStudio {
             },
         })
 
+        this.startListeningForFileDrop()
         makeAutoObservable(this)
+    }
+
+    isDraggigFile = false
+
+    /** start listening for file drop events */
+    startListeningForFileDrop = () => {
+        // let pendingDrop = 0
+        listen('tauri://file-drop-hover', () => {
+            this.isDraggigFile = true
+        })
+        listen('tauri://file-drop-cancelled', () => {
+            this.isDraggigFile = false
+        })
+
+        listen('tauri://file-drop', async (event_) => {
+            // 2023-04-02 rvion:
+            // | why does the doc examples include a sleep(100 ms) ?
+            // | should I do the same => probably not needed 🤔
+            // await new Promise((resolve) => setTimeout(resolve, 100))
+            // pendingDrop++
+            const event: TauriDropEvent = event_ as any
+            // ensure a workspace is opened
+            if (this.workspace == null) {
+                toast('no workspace open; open a workspace first before importing a file', {
+                    type: 'error',
+                    position: 'bottom-right',
+                })
+                return
+            }
+
+            for (const filePath of event.payload) {
+                const uint8Arr = await readBinaryFile(filePath)
+                const file = new File([uint8Arr], filePath)
+                this.workspace.importQueue.push(new ImportCandidate(this.workspace, file))
+            }
+            this.isDraggigFile = false
+            console.log(event)
+            // if (this.shadowRoot.querySelector('form:hover')) {
+            //     console.log(event)
+            // }
+        })
     }
 
     /** currently opened workspace */

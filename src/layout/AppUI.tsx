@@ -13,6 +13,7 @@ import { WelcomeScreenUI } from '../welcome/WelcomeScreenUI'
 import { AppBarUI } from './AppBarUI'
 import { CushyLayoutUI } from './LayoutUI'
 import { TroubleShootinInstructionsUI } from './TroubleShootinInstructionsUI'
+import { ImportWindowUI } from '../importers/ImportWindow'
 
 export const AppUI = observer(function AppUI_() {
     const csWrapper = useLocalObservable(() => ({
@@ -48,6 +49,7 @@ export const AppUI = observer(function AppUI_() {
                     <workspaceContext.Provider value={cs.workspace}>
                         <GithubCorner />
                         <ToastContainer />
+                        <ImportWindowUI />
                         <AppBarUI />
                         <div className='relative grow'>
                             <CushyLayoutUI />

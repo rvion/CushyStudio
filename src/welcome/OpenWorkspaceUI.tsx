@@ -1,10 +1,10 @@
 import { Button, Divider, Switch, Title1, Title3 } from '@fluentui/react-components'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { useCS } from '../config/CushyStudioContext'
+import { useCushyStudio } from '../config/CushyStudioContext'
 
 export const OpenWorkspaceUI = observer(function OpenWorkspaceUI_(p: {}) {
-    const cs = useCS()
+    const cs = useCushyStudio()
     return (
         <div className='col gap'>
             <Title1 align='center'>🛋️ CushyStudio</Title1>
