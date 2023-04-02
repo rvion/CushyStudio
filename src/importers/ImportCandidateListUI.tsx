@@ -1,4 +1,4 @@
-import { Button, Card, CardFooter, CardHeader, Image } from '@fluentui/react-components'
+import { Button, Caption1, Card, CardFooter, CardHeader, Image, Input } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { useWorkspace } from '../ui/WorkspaceContext'
 import { ImportCandidate } from './ImportCandidate'
@@ -8,7 +8,7 @@ export const ImportCandidateListUI = observer(function ImportCandidateListUI_(p:
     return (
         <div className='col gap'>
             {workspace.importQueue.map((candidate) => (
-                <ImportCandidateUI candidate={candidate} key={candidate.name} />
+                <ImportCandidateUI candidate={candidate} key={candidate.path} />
             ))}
         </div>
     )
@@ -18,14 +18,14 @@ export const ImportCandidateUI = observer(function ImportCandidateUI_(p: { candi
     const workspace = useWorkspace()
     const candidate = p.candidate
     const file = candidate.file
-    // const isPng = file.name.endsWith('.png')
-    // const { value } = usePromise<TextChunks>(isPng ? getPngMetadata(file) : null)
-    // const meta = isPng ? getPngMetadata(file) : null
     return (
         <Card key={file.name} appearance='filled-alternative'>
-            <CardHeader image={previewPath(candidate)} header='imported file' description={file.name} />
-            {/* <Title3>{f.name}</Title3> */}
-            {/* <CardPreview>{value ? <div>{Object.keys(value).join(', ')}</div> : null}</CardPreview> */}
+            <CardHeader
+                //
+                image={previewPath(candidate)}
+                header={<Input value={candidate.title} onChange={(ev) => (candidate.title = ev.target.value)} />}
+                description={<Caption1>{file.name}</Caption1>}
+            />
             <CardFooter>
                 <div className='row wrap gap1'>
                     <Button //

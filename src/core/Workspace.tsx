@@ -414,8 +414,8 @@ export class Workspace {
 
     notify = (msg: string) => void toast(msg)
 
-    addProjectFromComfyWorkflowJSON = async (comfyPromptJSON: ComfyPromptJSON) => {
-        const project = Project.FROM_JSON(this, comfyPromptJSON)
+    addProjectFromComfyWorkflowJSON = async (title: string, comfyPromptJSON: ComfyPromptJSON) => {
+        const project = Project.FROM_JSON(this, title, comfyPromptJSON)
         this.projects.push(project)
         this.focusedProject = project
         this.focusedFile = project.scriptBuffer

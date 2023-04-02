@@ -1,6 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import type { Maybe } from '../core/ComfyUtils'
 import { Workspace } from '../core/Workspace'
+import { pathe } from '../utils/pathUtils'
 import { getPngMetadata, TextChunks } from './getPngMetadata'
 
 /** wrapper around files dropped into comfy
@@ -10,7 +11,8 @@ import { getPngMetadata, TextChunks } from './getPngMetadata'
  * - track / follow import progress, and accumulate errors in observable props
  */
 export class ImportCandidate {
-    name: string
+    title: string
+    path: string
     size: number
     type: string
     isPng: boolean
@@ -24,17 +26,18 @@ export class ImportCandidate {
         public workspace: Workspace,
         public file: File,
     ) {
-        this.name = file.name
+        this.title = pathe.basename(file.name)
+        this.path = file.name
         this.size = file.size
         this.type = file.type
-        const nameLower = this.name.toLowerCase()
+        const nameLower = this.path.toLowerCase()
         this.isPng = nameLower.endsWith('.png')
         this.isImg = nameLower.endsWith('.png') || nameLower.endsWith('.jpg')
 
         this.canBeImportedAsWorspaceAsset = this.isPng
         if (this.isPng) {
             void getPngMetadata(file).then((textChunks) => {
-                console.log('💎', this.name, textChunks)
+                console.log('💎', this.path, textChunks)
                 console.log('💎', 'prompt' in textChunks)
                 this.pngMetadata = textChunks
                 this.canBeImportedAsComfyUIJSON = 'prompt' in textChunks
