@@ -15,6 +15,7 @@ export const ImportCandidateListUI = observer(function ImportCandidateListUI_(p:
 })
 
 export const ImportCandidateUI = observer(function ImportCandidateUI_(p: { candidate: ImportCandidate }) {
+    const workspace = useWorkspace()
     const candidate = p.candidate
     const file = candidate.file
     // const isPng = file.name.endsWith('.png')
@@ -29,7 +30,7 @@ export const ImportCandidateUI = observer(function ImportCandidateUI_(p: { candi
                 <div className='row wrap gap1'>
                     <Button //
                         appearance='outline'
-                        onClick={() => alert('not implemented')}
+                        onClick={() => candidate.importAsAsset()}
                         disabled={!candidate.canBeImportedAsWorspaceAsset}
                     >
                         Import as Asset
@@ -56,7 +57,9 @@ export const ImportCandidateUI = observer(function ImportCandidateUI_(p: { candi
                         Import as Cushy Script
                     </Button>
                     <Button //
-                        onClick={() => alert('not implemented')}
+                        onClick={() => {
+                            workspace.removeCandidate(candidate)
+                        }}
                         disabled={candidate.canBeImportedAsComfyUIJSON}
                     >
                         Cancel

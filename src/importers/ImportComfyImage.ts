@@ -79,7 +79,7 @@ export class ComfyImporter {
             }
 
             if (node == null) throw new Error('node not found')
-            pi(`const ${varName} = C.${classType}({`)
+            pi(`    const ${varName} = C.${classType}({`)
             for (const [name, value] of Object.entries(node.inputs) ?? []) {
                 const isValidJSIdentifier = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(name)
                 if (this.UI_ONLY_ATTRIBUTES.includes(name)) continue
@@ -105,7 +105,8 @@ export class ComfyImporter {
             p(`}, '${nodeID}')`)
         }
 
-        p('await C.get()')
+        p('    await C.get()')
+        p('})')
         // b.writeTS('./src/compiler/entry.ts')
         return b.content
     }

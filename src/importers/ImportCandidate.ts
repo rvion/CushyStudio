@@ -50,6 +50,13 @@ export class ImportCandidate {
         if (pngInfos.prompt == null) return console.log('❌ no png metadata "prompt"')
         const json = JSON.parse(pngInfos.prompt)
         console.log(json)
-        const project = this.workspace.addProjectFromComfyWorkflowJSON(json)
+        this.workspace.addProjectFromComfyWorkflowJSON(json)
+        this.workspace.removeCandidate(this)
+    }
+
+    // 🔴 TODO: implements
+    importAsAsset = () => {
+        console.log('not really implemented yet')
+        this.workspace.removeCandidate(this)
     }
 }
