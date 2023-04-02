@@ -77,10 +77,11 @@ export class Project {
     /** convenient getter to retrive current client shcema */
     get schema() { return this.workspace.schema } // prettier-ignore
 
-    static FROM_JSON = (workspace: Workspace, json: ComfyPromptJSON) => {
-        const randomName = nanoid()
+    static FROM_JSON = (workspace: Workspace, name: string, json: ComfyPromptJSON) => {
+        // const randomName = nanoid()
         const code = new ComfyImporter(workspace).convertFlowToCode(json)
-        const relPath = workspace.resolveToRelativePath(`${randomName}.ts`)
+        const fileName = name.endsWith('.ts') ? name : `${name}.ts`
+        const relPath = workspace.resolveToRelativePath(fileName)
         const project = new Project(workspace, relPath, code)
         // console.log('🔴', code)
         // script.udpateCode(code)

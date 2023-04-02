@@ -1,32 +1,31 @@
 import type { CushyStudio } from '../config/CushyStudio'
+import type { ImportCandidate } from '../importers/ImportCandidate'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
 import type { Run } from './Run'
 import type { ScriptStep } from './ScriptStep'
-import type { ImportCandidate } from '../importers/ImportCandidate'
 
-import { RootFolder } from '../config/RootFolder'
-import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import * as fs from '@tauri-apps/api/fs'
+import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import * as path from '@tauri-apps/api/path'
+import { RootFolder } from '../config/RootFolder'
 
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { TypescriptFile } from '../tsEngine/TypescriptFile'
 import { JsonFile } from '../config/JsonFile'
 import { Demo } from '../help/Demo'
 import { CushyLayoutState } from '../layout/LayoutState'
 import { logger } from '../logger/Logger'
-import { getPngMetadata } from '../importers/getPngMetadata'
-import { ResilientWebSocketClient } from '../ws/ResilientWebsocket'
+import { TypescriptFile } from '../tsEngine/TypescriptFile'
 import { c__ } from '../ui/sdkDTS'
+import { AbsolutePath, asMonacoPath, asRelativePath, pathe, RelativePath } from '../utils/pathUtils'
+import { ResilientWebSocketClient } from '../ws/ResilientWebsocket'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
+import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfySchema } from './ComfySchema'
 import { defaultScript } from './defaultProjectCode'
 import { Project } from './Project'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
-import { AbsolutePath, asMonacoPath, asRelativePath, pathe, RelativePath } from '../utils/pathUtils'
-import { ComfyPromptJSON } from './ComfyPrompt'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -75,7 +74,8 @@ export class Workspace {
     // import management
     importQueue: ImportCandidate[] = []
     removeCandidate = (candidate: ImportCandidate) => {
-        this.importQueue = this.importQueue.filter((c) => c === candidate)
+        const index = this.importQueue.indexOf(candidate)
+        this.importQueue.splice(index, 1)
     }
 
     openComfySDK = () => {

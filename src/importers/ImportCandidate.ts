@@ -26,7 +26,10 @@ export class ImportCandidate {
         public workspace: Workspace,
         public file: File,
     ) {
-        this.title = pathe.basename(file.name)
+        const baseName = pathe.basename(file.name)
+        // title is baseName without suffix
+        this.title = baseName.replace(/\.[^/.]+$/, '')
+
         this.path = file.name
         this.size = file.size
         this.type = file.type
@@ -53,7 +56,7 @@ export class ImportCandidate {
         if (pngInfos.prompt == null) return console.log('❌ no png metadata "prompt"')
         const json = JSON.parse(pngInfos.prompt)
         console.log(json)
-        this.workspace.addProjectFromComfyWorkflowJSON(json)
+        this.workspace.addProjectFromComfyWorkflowJSON(this.title, json)
         this.workspace.removeCandidate(this)
     }
 
