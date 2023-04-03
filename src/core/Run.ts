@@ -8,7 +8,7 @@ import { Cyto } from '../graph/cyto'
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
-import { ComfyGraph } from './ComfyGraph'
+import { Graph } from './Graph'
 import { deepCopyNaive, Maybe } from './ComfyUtils'
 import { PromptOutputImage } from './PromptOutputImage'
 import { ScriptStep } from './ScriptStep'
@@ -28,7 +28,7 @@ export class Run {
     name: string
 
     /** the main graph that will be updated along the script execution */
-    graph: ComfyGraph
+    graph: Graph
 
     /** graph engine instance for smooth and clever auto-layout algorithms */
     cyto: Cyto
@@ -56,7 +56,7 @@ export class Run {
         public opts?: { mock?: boolean },
     ) {
         this.name = `Run ${this.createdAt}` // 'Run ' + this.script.runCounter++
-        this.graph = new ComfyGraph(this.project, this)
+        this.graph = new Graph(this.project, this)
         this.cyto = new Cyto(this.graph)
         makeAutoObservable(this)
     }

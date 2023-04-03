@@ -1,5 +1,5 @@
 import { readdirSync, readFileSync, writeFileSync } from 'fs'
-import { CodeBuffer } from '../core/CodeBuffer'
+import { CodeBuffer } from '../utils/CodeBuffer'
 
 const files = readdirSync('tmp/wildcards')
 const names = files.map((y) => y.replace('.ts', '').replace('-', '_').replace(`.txt`, ''))

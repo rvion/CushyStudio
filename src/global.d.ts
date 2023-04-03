@@ -10,7 +10,7 @@ import type { ComfyNodeOutput } from './core/ComfyNodeOutput'
 import type { ComfyNodeUID } from './core/ComfyNodeUID'
 import type { ComfyNode } from './core/CSNode'
 import type { ComfyNodeSchemaJSON } from './core/ComfySchemaJSON'
-import type { ComfyGraph } from './core/ComfyGraph'
+import type { Graph } from './core/Graph'
 import type { Workflow } from './core/Workflow'
 
 // TYPES -------------------------------
@@ -1849,7 +1849,7 @@ export interface ComfySetup {
     ImageUpscaleWithModel(args: ImageUpscaleWithModel_input, uid?: ComfyNodeUID): ImageUpscaleWithModel
 }
 declare global {
-    export const WORKFLOW: (builder: (graph: ComfySetup & ComfyGraph) => void) => Workflow
+    export const WORKFLOW: (builder: (graph: ComfySetup & Graph) => void) => Workflow
 }
 
 // export const WORKFLOW: (builder: (graph: ComfySetup & ComfyGraph) => void) => void

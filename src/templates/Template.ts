@@ -1,7 +1,7 @@
 import type { Workspace } from '../core/Workspace'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 
-export class Demo {
+export class Template {
     constructor(public name: string, public code: string) {}
 
     createProjectCopy(workspace: Workspace) {

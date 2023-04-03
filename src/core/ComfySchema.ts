@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { CodeBuffer } from './CodeBuffer'
+import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from './ComfyPrimitives'
 import { ComfySchemaJSON } from './ComfySchemaJSON'
 

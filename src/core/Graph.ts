@@ -20,7 +20,7 @@ import { logger } from '../logger/Logger'
 
 export type RunMode = 'fake' | 'real'
 
-export class ComfyGraph {
+export class Graph {
     uid = nanoid()
     get client(): Workspace { return this.project.workspace } // prettier-ignore
     get schema() { return this.client.schema } // prettier-ignore

@@ -1,5 +1,5 @@
 import type { NodeProgress, WsMsgExecutedData } from './ComfyAPI'
-import type { ComfyGraph } from './ComfyGraph'
+import type { Graph } from './Graph'
 import type { ComfyNodeJSON } from './ComfyPrompt'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
@@ -69,7 +69,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     $outputs: ComfyNodeOutput<any>[] = []
     constructor(
         //
-        public graph: ComfyGraph,
+        public graph: Graph,
         public uid: string = graph.getUID(),
         xxx: ComfyNodeJSON,
     ) {

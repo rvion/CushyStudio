@@ -1,6 +1,6 @@
 import cytoscape from 'cytoscape'
 import klay from 'cytoscape-klay'
-import { ComfyGraph } from '../core/ComfyGraph'
+import { Graph } from '../core/Graph'
 import { ComfyNode } from '../core/CSNode'
 
 cytoscape.use(klay)
@@ -8,7 +8,7 @@ cytoscape.use(klay)
 export class Cyto {
     cy: cytoscape.Core = cytoscape({})
 
-    constructor(public graph: ComfyGraph) {
+    constructor(public graph: Graph) {
         this.cy = cytoscape({
             styleEnabled: true,
             headless: true,

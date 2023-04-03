@@ -1,8 +1,8 @@
-import { Demo } from './Demo'
+import { Template } from './Template'
 
-export const demoLibrary: Demo[] = [
+export const demoLibrary: Template[] = [
     // lazy load
-    new Demo(
+    new Template(
         'demo1-basic',
         `export default WORKFLOW(async (comfy) => {
     const ckpt = comfy.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
@@ -17,7 +17,7 @@ export const demoLibrary: Demo[] = [
 })
 `,
     ),
-    new Demo(
+    new Template(
         'demo2-test',
         `export default WORKFLOW(async (n) => {
     // generate an empty table

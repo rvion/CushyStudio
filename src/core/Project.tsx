@@ -1,5 +1,5 @@
 import type { Maybe } from './ComfyUtils'
-import type { RunMode } from './ComfyGraph'
+import type { RunMode } from './Graph'
 import * as path from '@tauri-apps/api/path'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'

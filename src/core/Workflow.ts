@@ -4,9 +4,9 @@
 // 🔶 safely without any dependencies
 
 import type { ComfySetup } from '../global'
-import type { ComfyGraph } from './ComfyGraph'
+import type { Graph } from './Graph'
 
-export type WorkflowBuilder = (graph: ComfySetup & ComfyGraph) => void
+export type WorkflowBuilder = (graph: ComfySetup & Graph) => void
 
 export class Workflow {
     constructor(public builder: WorkflowBuilder) {}

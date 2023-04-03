@@ -3,13 +3,13 @@ import * as I from '@fluentui/react-icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
 import { comfyColors } from '../core/ComfyColors'
-import { ComfyGraph } from '../core/ComfyGraph'
+import { Graph } from '../core/Graph'
 import { ComfyNode } from '../core/CSNode'
 import { ComfyNodeSchema } from '../core/ComfySchema'
 import { useLayout } from '../layout/LayoutCtx'
 import { NodeRefUI } from './NodeRefUI'
 
-export const NodeListUI = observer(function NodeListUI_(p: { graph: ComfyGraph }) {
+export const NodeListUI = observer(function NodeListUI_(p: { graph: Graph }) {
     const graph = p.graph
     if (graph == null) return <>no execution yet</>
     const uiSt = useLocalObservable(() => ({ seeAll: false }))
@@ -56,7 +56,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
 }) {
     const node = p.node
     const uid = node.uid
-    const graph: ComfyGraph | undefined = node.graph
+    const graph: Graph | undefined = node.graph
     if (graph == null) return <>no execution yet</>
 
     const curr: ComfyNode<any> = graph.nodesIndex.get(uid)!

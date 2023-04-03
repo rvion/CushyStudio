@@ -6,7 +6,7 @@ import type { ScriptStep_Iface } from './ScriptStep_Iface'
 
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { ComfyGraph } from './ComfyGraph'
+import { Graph } from './Graph'
 import { deepCopyNaive } from './ComfyUtils'
 import { nanoid } from 'nanoid'
 import { PromptOutputImage } from './PromptOutputImage'
@@ -21,7 +21,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     name = 'prompt-' + ScriptStep_prompt.promptID++
 
     /** deepcopy of run graph at creation time; ready to be forked */
-    _graph: ComfyGraph
+    _graph: Graph
 
     /** short-hand getter to access parent client */
     get client(){ return this.run.project.workspace } // prettier-ignore
@@ -31,7 +31,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         public run: Run,
         public prompt: ComfyPromptJSON,
     ) {
-        this._graph = new ComfyGraph(
+        this._graph = new Graph(
             //
             this.run.project,
             this.run,

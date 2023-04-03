@@ -1,5 +1,5 @@
 import type { ComfyNodeUID } from '../core/ComfyNodeUID'
-import type { ComfyGraph } from '../core/ComfyGraph'
+import type { Graph } from '../core/Graph'
 
 import { useWorkspace } from './WorkspaceContext'
 import { observer } from 'mobx-react-lite'
@@ -12,7 +12,7 @@ export const NodeRefUI = observer(function NodeRefUI_(p: { nodeUID: ComfyNodeUID
     if (project == null) return null
 
     // 2. ensure graph exists
-    const graph: ComfyGraph | undefined = project.currentRun?.graph
+    const graph: Graph | undefined = project.currentRun?.graph
     if (graph == null) return <>no execution yet</>
 
     // 3. ensure node exists

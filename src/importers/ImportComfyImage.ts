@@ -1,4 +1,4 @@
-import { CodeBuffer } from '../core/CodeBuffer'
+import { CodeBuffer } from '../utils/CodeBuffer'
 import { Workspace } from '../core/Workspace'
 import { ComfyPromptJSON } from '../core/ComfyPrompt'
 import { ComfyNodeSchema } from '../core/ComfySchema'
