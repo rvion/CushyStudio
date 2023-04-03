@@ -1,5 +1,5 @@
 import type { Maybe } from '../core/ComfyUtils'
-import { AbsolutePath, asAbsolutePath, asRelativePath } from '../utils/pathUtils'
+import { AbsolutePath, RelativePath, asAbsolutePath, asRelativePath, pathe } from '../utils/pathUtils'
 
 import { listen } from '@tauri-apps/api/event'
 import * as dialog from '@tauri-apps/api/dialog'
@@ -37,6 +37,13 @@ export class CushyStudio {
     rootFolder: RootFolder
     userConfig: JsonFile<UserConfigJSON>
 
+    readonly relativePathToGlobalConfig: RelativePath = asRelativePath('cushy-studio.json')
+
+    get globalConfigAbsPath(): AbsolutePath {
+        const final = pathe.join(this.rootFolder.absPath, this.relativePathToGlobalConfig)
+        return asAbsolutePath(final)
+    }
+
     private constructor(
         /** sync cached value so we don't have to do RPC with rust to find out */
         public os: os.Platform,
@@ -46,7 +53,7 @@ export class CushyStudio {
         this.rootFolder = new RootFolder(this.configDir)
         this.userConfig = new JsonFile<UserConfigJSON>(this.rootFolder, {
             title: 'Global Config',
-            relativePath: asRelativePath('cushy-studio.json'),
+            relativePath: this.relativePathToGlobalConfig,
             init: (): UserConfigJSON => ({ version: 1, theme: 'dark', recentProjects: [] }),
             onReady: (data) => {
                 console.log('[CUSHY] user config loaded:', data)

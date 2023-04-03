@@ -5,7 +5,8 @@ import { observer } from 'mobx-react-lite'
 import { useWorkspace } from '../ui/WorkspaceContext'
 
 export const PConnectUI = observer(function PConnectUI_(p: {}) {
-    const client = useWorkspace()
+    const workspace = useWorkspace()
+    const cushy = workspace.cushy
     return (
         <div className='col gap'>
             <Card>
@@ -14,8 +15,8 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                     <Input
                         disabled
                         contentBefore={'📁'}
-                        value={client.absoluteWorkspaceFolderPath}
-                        onChange={(ev) => client.workspaceConfigFile.update({ comfyHTTPURL: ev.target.value })}
+                        value={workspace.absoluteWorkspaceFolderPath}
+                        onChange={(ev) => workspace.workspaceConfigFile.update({ comfyHTTPURL: ev.target.value })}
                     />
                 </Field>
             </Card>
@@ -23,7 +24,7 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                 <h3 className='row'>
                     <Title3>Connection </Title3>
                     <div className='grow'></div>
-                    <div>{client.ws.emoji}</div>
+                    <div>{workspace.ws.emoji}</div>
                 </h3>
                 {/* <Switch value={} /> */}
                 {/* <Field label='Workspace Folder'>
@@ -36,15 +37,15 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                 <Field label='Comfy HTTP(s) server'>
                     <Input
                         contentBefore={'🫖'}
-                        value={client.workspaceConfigFile.value.comfyHTTPURL}
-                        onChange={(ev) => client.workspaceConfigFile.update({ comfyHTTPURL: ev.target.value })}
+                        value={workspace.workspaceConfigFile.value.comfyHTTPURL}
+                        onChange={(ev) => workspace.workspaceConfigFile.update({ comfyHTTPURL: ev.target.value })}
                     />
                 </Field>
                 <Field label='Comfy websocket endpoint'>
                     <Input
                         contentBefore={'🧦'}
-                        value={client.workspaceConfigFile.value.comfyWSURL}
-                        onChange={(ev) => client.workspaceConfigFile.update({ comfyWSURL: ev.target.value })}
+                        value={workspace.workspaceConfigFile.value.comfyWSURL}
+                        onChange={(ev) => workspace.workspaceConfigFile.update({ comfyWSURL: ev.target.value })}
                     />
                 </Field>
                 {/* <div className='row gap'>
@@ -52,7 +53,7 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                         Save
                     </Button>
                 </div> */}
-                {client.workspaceConfigFile.value.comfyWSURL.endsWith('/ws') ? null : (
+                {workspace.workspaceConfigFile.value.comfyWSURL.endsWith('/ws') ? null : (
                     <Alert appearance='inverted' icon={<I.Warning24Filled color='red' />}>
                         did you forget `/ws` at the end of the websocket url ?
                     </Alert>
@@ -61,7 +62,15 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
             {/* <LoggerUI className='grow' /> */}
             <Card>
                 <Title3>Global Config</Title3>
-                <pre>{JSON.stringify(client.cushy.userConfig.value, null, 3)}</pre>
+                <div>
+                    <Label>global config folder: </Label>
+                    <code className='highlighted'>"{cushy.rootFolder.absPath}"</code>
+                </div>
+                <div>
+                    <Label>global config file:</Label>
+                    <code className='highlighted'>"{cushy.globalConfigAbsPath}"</code>
+                </div>
+                <pre>{JSON.stringify(workspace.cushy.userConfig.value, null, 3)}</pre>
             </Card>
         </div>
     )

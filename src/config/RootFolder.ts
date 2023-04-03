@@ -11,11 +11,11 @@ import { toast } from 'react-toastify'
  *  - handle path normalisation
  * */
 export class RootFolder {
-    constructor(public rootFolderPath: AbsolutePath) {}
+    constructor(public absPath: AbsolutePath) {}
 
     /** 📝 should be the SINGLE function able to save text files */
     readTextFile = async (relativePath: RelativePath): Promise<Maybe<string>> => {
-        const absoluteFilePath = await path.join(this.rootFolderPath, relativePath)
+        const absoluteFilePath = await path.join(this.absPath, relativePath)
         const exists = await fs.exists(absoluteFilePath)
         if (exists) return await fs.readTextFile(absoluteFilePath)
         return null
@@ -24,7 +24,7 @@ export class RootFolder {
     /** 📝 should be the SINGLE function able to save text files */
     writeTextFile = async (relativePath: RelativePath, contents: string): Promise<void> => {
         // 1. resolve absolute path
-        const absoluteFilePath = await path.join(this.rootFolderPath, relativePath)
+        const absoluteFilePath = await path.join(this.absPath, relativePath)
         // 2. create folder if missing
         const folder = await path.dirname(absoluteFilePath)
         const folderExists = await fs.exists(folder)
@@ -45,7 +45,7 @@ export class RootFolder {
     /** 📝 should be the SINGLE function able to save binary files */
     writeBinaryFile = async (relativePath: RelativePath, contents: fs.BinaryFileContents) => {
         // 1. resolve absolute path
-        const absoluteFilePath = await path.join(this.rootFolderPath, relativePath)
+        const absoluteFilePath = await path.join(this.absPath, relativePath)
         // console.log('>>> 🔴y', absoluteFilePath)
         // 2. create folder if missing
         const folder = await path.dirname(absoluteFilePath)
