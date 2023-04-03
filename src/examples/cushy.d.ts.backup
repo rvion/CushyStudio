@@ -83,16 +83,16 @@ declare module "core/ComfyUtils" {
     export type Maybe<T> = T | null | undefined;
     export const deepCopyNaive: <T>(x: T) => T;
 }
-declare module "utils/pathUtils" {
+declare module "fs/pathUtils" {
     import type { Branded } from "core/ComfyUtils";
     export * as pathe from 'pathe';
-    export type WorkspaceRelativePath = Branded<string, 'WorkspaceRelativePath'>;
+    export type RelativePath = Branded<string, 'WorkspaceRelativePath'>;
     export type AbsolutePath = Branded<string, 'Absolute'>;
     export type MonacoPath = Branded<string, 'Monaco'>;
     /** brand a path as an absolute path after basic checks */
     export const asAbsolutePath: (path: string) => AbsolutePath;
     /** brand a path as a workspace relative pathpath after basic checks */
-    export const asRelativePath: (path: string) => WorkspaceRelativePath;
+    export const asRelativePath: (path: string) => RelativePath;
     /** brand a path as a monaco URI path after basic checks */
     export const asMonacoPath: (path: string) => MonacoPath;
 }
@@ -115,7 +115,9 @@ declare module "logger/Logger" {
     /** config files */
      | '🛋'
     /** execution emoji */
-     | '🔥';
+     | '🔥'
+    /** fs operation */
+     | '💿';
     interface LogMessage {
         level: LogLevel;
         category: Category;
@@ -140,62 +142,151 @@ declare module "utils/bang" {
 declare module "utils/stringifyReadable" {
     export function readableStringify(obj: any, maxLevel?: number, level?: number): string;
 }
-declare module "config/JsonFile" {
+declare module "fs/FileActionResult" {
+    export type FileActionResult = 'created' | 'updated' | 'same';
+}
+declare module "fs/RootFolder" {
+    import type { Maybe } from "core/ComfyUtils";
+    import type { AbsolutePath, RelativePath } from "fs/pathUtils";
+    import type { FileActionResult } from "fs/FileActionResult";
+    import * as fs from '@tauri-apps/api/fs';
+    /** filesystem abstraction
+     *  - restrict operations to a local folder
+     *  - extra type safety via branded types
+     *  - handle path normalisation
+     * */
+    export class RootFolder {
+        absPath: AbsolutePath;
+        constructor(absPath: AbsolutePath);
+        /** 📝 should be the SINGLE function able to save text files */
+        readTextFile: (relativePath: RelativePath) => Promise<Maybe<string>>;
+        /** 📝 should be the SINGLE function able to save text files */
+        writeTextFile: (relativePath: RelativePath, contents: string) => Promise<FileActionResult>;
+        /** 📝 should be the SINGLE function able to save binary files */
+        writeBinaryFile: (relativePath: RelativePath, contents: fs.BinaryFileContents) => Promise<void>;
+        private notify;
+    }
+}
+declare module "monaco/JsonFile" {
+    import { RelativePath } from "fs/pathUtils";
+    import { RootFolder } from "fs/RootFolder";
     export type PersistedJSONInfo<T> = {
-        folder: Promise<string>;
-        name: string;
+        /** human readable title */
+        title: string;
+        relativePath: RelativePath;
+        /** lazy but synchronous initialization function for default value */
         init: () => T;
+        /** prettier will indent json up to this level of nesting */
         maxLevel?: number;
+        /** callback called when file API is ready to be used */
         onReady?: (data: T) => void;
     };
     export class JsonFile<T extends object> {
-        private opts;
+        rootFolder: RootFolder;
+        conf: PersistedJSONInfo<T>;
         private ready_yes;
         private ready_no;
         finished: Promise<boolean>;
-        constructor(opts: PersistedJSONInfo<T>);
+        constructor(rootFolder: RootFolder, conf: PersistedJSONInfo<T>);
+        private init;
         /** true when config loaded */
         ready: boolean;
         setReady(): void;
         private _folder;
         get folder(): string;
-        private _path;
-        get path(): string;
         private _value;
         get value(): T;
         /** save the file */
         save: () => Promise<true>;
         /** update config then save it */
         update: (configChanges: Partial<T>) => Promise<true>;
-        init: (p: PersistedJSONInfo<T>) => Promise<T>;
     }
 }
-declare module "config/CushyStudio" {
+declare module "importers/tauriDropEvent" {
+    import { AbsolutePath } from "fs/pathUtils";
+    export type TauriDropEvent = {
+        event: 'tauri://file-drop';
+        windowLabel: 'main';
+        payload: AbsolutePath[];
+        id: number;
+    };
+}
+declare module "importers/getPngMetadata" {
+    export type TextChunks = {
+        [key: string]: string;
+    };
+    export function getPngMetadata(file: File): Promise<TextChunks>;
+}
+declare module "importers/ImportCandidate" {
     import type { Maybe } from "core/ComfyUtils";
-    import { AbsolutePath } from "utils/pathUtils";
+    import { Workspace } from "core/Workspace";
+    import { TextChunks } from "importers/getPngMetadata";
+    /** wrapper around files dropped into comfy
+     * responsibilities:
+     * - possible import strategies detections
+     * - centralize import-related logic
+     * - track / follow import progress, and accumulate errors in observable props
+     */
+    export class ImportCandidate {
+        workspace: Workspace;
+        file: File;
+        title: string;
+        path: string;
+        size: number;
+        type: string;
+        isPng: boolean;
+        isImg: boolean;
+        pngMetadata: Maybe<TextChunks>;
+        canBeImportedAsWorspaceAsset: boolean;
+        canBeImportedAsCushyScript: boolean;
+        canBeImportedAsComfyUIJSON: boolean;
+        constructor(workspace: Workspace, file: File);
+        importAsScript: () => void;
+        importAsAsset: () => void;
+    }
+}
+declare module "cushy/CushyGlobalRef" {
+    import type { Cushy } from "cushy/Cushy";
+    export const CushyGlobalRef: {
+        value: Cushy | null;
+    };
+}
+declare module "cushy/Cushy" {
+    import type { Maybe } from "core/ComfyUtils";
+    import { AbsolutePath, RelativePath } from "fs/pathUtils";
     import * as os from '@tauri-apps/api/os';
     import { Workspace } from "core/Workspace";
-    import { JsonFile } from "config/JsonFile";
+    import { JsonFile } from "monaco/JsonFile";
+    import { RootFolder } from "fs/RootFolder";
     export type UserConfigJSON = {
         version: 1;
         theme?: 'dark' | 'light';
         recentProjects?: AbsolutePath[];
+        reOpenLastProject?: boolean;
     };
-    export class CushyStudio {
-        constructor();
-        /** sync cache to know current OS */
-        os: Maybe<os.Platform>;
+    /** global Singleton state for the application */
+    export class Cushy {
+        /** sync cached value so we don't have to do RPC with rust to find out */
+        os: os.Platform;
+        /** sync cached value so we don't have to do RPC with rust to find out */
+        configDir: AbsolutePath;
+        static CREATE: () => Promise<Cushy>;
+        rootFolder: RootFolder;
+        userConfig: JsonFile<UserConfigJSON>;
+        readonly relativePathToGlobalConfig: RelativePath;
+        get globalConfigAbsPath(): AbsolutePath;
+        private constructor();
+        isDraggigFile: boolean;
+        /** start listening for file drop events */
+        startListeningForFileDrop: () => void;
         /** currently opened workspace */
         workspace: Maybe<Workspace>;
+        closeWorkspace: () => Promise<void>;
         /** prompt user to open a workspace */
         openWorkspaceDialog: () => Promise<void>;
         openWorkspace: (absoluteFolderPath: AbsolutePath) => Promise<Workspace>;
-        closeWorkspace: () => Promise<void>;
-        userConfig: JsonFile<UserConfigJSON>;
         /** true when user config is ready */
         get ready(): boolean;
-        /** TODO: add more stuff to cache at startup */
-        fetchBasicEnvInfos: Promise<void>;
     }
 }
 declare module "core/ComfySchemaJSON" {
@@ -317,7 +408,7 @@ declare module "core/PromptOutputImage" {
     import type { Maybe } from "core/ComfyUtils";
     import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
     import type { Workspace } from "core/Workspace";
-    import { WorkspaceRelativePath } from "utils/pathUtils";
+    import { RelativePath } from "fs/pathUtils";
     /** Cushy wrapper around ComfyImageInfo */
     export class PromptOutputImage {
         /** the prompt this file has been generated from */
@@ -338,9 +429,9 @@ declare module "core/PromptOutputImage" {
         inputPath?: Maybe<string>;
         /** true if file exists on disk; false otherwise */
         saved: boolean;
-        get folder(): WorkspaceRelativePath;
+        get folder(): RelativePath;
         get fileName(): string;
-        get filePath(): WorkspaceRelativePath;
+        get filePath(): RelativePath;
         saveOnDisk: () => Promise<void>;
         /** this is such a bad workaround but 🤷‍♂️ */
         makeAvailableAsInput: () => Promise<string>;
@@ -391,7 +482,7 @@ declare module "core/ScriptStep" {
 declare module "core/Run" {
     import type { Project } from "core/Project";
     import { Cyto } from "graph/cyto";
-    import { WorkspaceRelativePath } from "utils/pathUtils";
+    import { RelativePath } from "fs/pathUtils";
     import { WsMsgExecuted } from "core/ComfyAPI";
     import { ComfyGraph } from "core/ComfyGraph";
     import { Maybe } from "core/ComfyUtils";
@@ -417,7 +508,7 @@ declare module "core/Run" {
         /** list of all images produed over the whole script execution */
         gallery: PromptOutputImage[];
         /** folder where CushyStudio will save run informations */
-        get workspaceRelativeCacheFolderPath(): WorkspaceRelativePath;
+        get workspaceRelativeCacheFolderPath(): RelativePath;
         /** save current script */
         save: () => Promise<void>;
         constructor(project: Project, opts?: {
@@ -434,6 +525,18 @@ declare module "core/Run" {
         ctx: {};
     }
 }
+declare module "help/Demo" {
+    import type { Workspace } from "core/Workspace";
+    export class Demo {
+        name: string;
+        code: string;
+        constructor(name: string, code: string);
+        createProjectCopy(workspace: Workspace): void;
+    }
+}
+declare module "help/TutorialUI" {
+    export const TutorialUI: import("react").FunctionComponent<object>;
+}
 declare module "ui/TypescriptOptions" {
     import type * as T from 'monaco-editor/esm/vs/editor/editor.api';
     export type TypescriptOptions = any
@@ -441,7 +544,7 @@ declare module "ui/TypescriptOptions" {
     export type IStandaloneCodeEditor = any
     export type Monaco = typeof T;
 }
-declare module "ui/Monaco" {
+declare module "monaco/Monaco" {
     import { ITextModel } from "ui/TypescriptOptions";
     const monaco: any
     export class LocoMonaco {
@@ -453,74 +556,50 @@ declare module "ui/Monaco" {
     }
     export const globalMonaco: LocoMonaco;
 }
-declare module "code/TypescriptFile" {
+declare module "monaco/TypescriptFile" {
     import type { Maybe } from "core/ComfyUtils";
-    import type { Workspace } from "core/Workspace";
     import type { ITextModel } from "ui/TypescriptOptions";
-    import { MonacoPath, WorkspaceRelativePath } from "utils/pathUtils";
-    type TypescriptFileOpts = {
+    import { RootFolder } from "fs/RootFolder";
+    import { MonacoPath, RelativePath } from "fs/pathUtils";
+    export type TypescriptFileConf = {
         /** human readable title */
         title: string;
         /** the relative path to the typescript file this should be kept in sync with */
-        workspaceRelativeTSFilePath: WorkspaceRelativePath;
+        relativeTSFilePath: RelativePath;
         /** the relative path to the javascript file this should be transpiled to */
-        workspaceRelativeJSFilePath?: Maybe<WorkspaceRelativePath>;
+        relativeJSFilePath?: Maybe<RelativePath>;
         /** the language server internal file path */
         virtualPathTS: MonacoPath;
         /** what we should initialize this file to if there is no file on disk */
         defaultCodeWhenNoFile?: Maybe<string>;
-        /** what we should overwrite the file to in any case */
+        /** what we should overwrite the file to in any case
+         * if set, will trigger a filesystem sync on creation
+         */
         codeOverwrite?: Maybe<string>;
+        /** if true, file won't be able to be saved */
+        isReadonly?: boolean;
     };
     export class TypescriptFile {
-        workspace: Workspace;
-        conf: TypescriptFileOpts;
-        constructor(workspace: Workspace, conf: TypescriptFileOpts);
+        rootFolder: RootFolder;
+        conf: TypescriptFileConf;
+        constructor(rootFolder: RootFolder, conf: TypescriptFileConf);
         /** the monaco textmodel that should remains alive for typeschecking to work */
         textModel: Maybe<ITextModel>;
         codeTS: string;
         codeJS: string;
         private resolvetextModelPromise;
         textModelPromise: Promise<import("monaco-editor").editor.ITextModel>;
-        /** initialize the buffer
-         *  - load the file from disk if it exists
-         *  - or create a new file with the default content if default content provided
-         *  - or do nothing if file does not exist and no default content provided
-         */
-        init: () => Promise<void>;
+        private init;
         /** initialize a buffer that may or may not exist on disk */
         updateFromCodegen: (value: Maybe<string>) => Promise<boolean>;
         udpateFromEditor: (value: Maybe<string>) => Promise<void>;
         syncWithDiskFile: () => Promise<void>;
     }
 }
-declare module "core/Workflow" {
-    import type { ComfySetup } from '../global';
-    import type { ComfyGraph } from "core/ComfyGraph";
-    export type WorkflowBuilder = (graph: ComfySetup & ComfyGraph) => void;
-    export class Workflow {
-        builder: WorkflowBuilder;
-        constructor(builder: WorkflowBuilder);
-    }
-}
-declare module "help/Demo" {
-    import type { Workflow } from "core/Workflow";
-    import type { Workspace } from "core/Workspace";
-    export class Demo {
-        workspace: Workspace;
-        name: string;
-        workflow: Workflow;
-        constructor(workspace: Workspace, name: string, workflow: Workflow);
-        createProjectCopy(): void;
-    }
-}
-declare module "help/TutorialUI" {
-    export const TutorialUI: import("react").FunctionComponent<object>;
-}
-declare module "config/CushyStudioContext" {
-    import { CushyStudio } from "config/CushyStudio";
-    export const CSContext: import("react").Context<CushyStudio | null>;
-    export const useCS: () => CushyStudio;
+declare module "cushy/CushyContext" {
+    import { Cushy } from "cushy/Cushy";
+    export const CSContext: import("react").Context<Cushy | null>;
+    export const useCushyStudio: () => Cushy;
 }
 declare module "ui/WorkspaceContext" {
     import { Workspace } from "core/Workspace";
@@ -538,8 +617,8 @@ declare module "ui/ToolbarUI" {
     export const WorkspaceToolbarUI: import("react").FunctionComponent<Partial<ToolbarProps>>;
     export const ProjectToolbarUI: import("react").FunctionComponent<Partial<ToolbarProps>>;
 }
-declare module "code/TypescriptEditorUI" {
-    import type { TypescriptFile } from "code/TypescriptFile";
+declare module "monaco/MonacoUI" {
+    import type { TypescriptFile } from "monaco/TypescriptFile";
     export const TypescriptEditorUI: import("react").FunctionComponent<{
         buffer: TypescriptFile;
     }>;
@@ -623,6 +702,25 @@ declare module "logger/LoggerUI" {
         className?: string | undefined;
     }>;
 }
+declare module "menu/AssetTreeUI" {
+    export const NodeBrowserUI: import("react").FunctionComponent<{}>;
+}
+declare module "menu/ExecutionStepIconUI" {
+    import { ScriptStep } from "core/ScriptStep";
+    export const ExecutionStepIconUI: (step: ScriptStep) => JSX.Element;
+}
+declare module "menu/ProjectTreeUI" {
+    export const ProjectTreeUI: import("react").FunctionComponent<object>;
+    export const HasProblem: JSX.Element;
+    export const IsOK: JSX.Element;
+    export const Actions: () => JSX.Element;
+}
+declare module "menu/FocusedProjectTreeUI" {
+    export const FocusedProjectTreeUI: import("react").FunctionComponent<{}>;
+}
+declare module "menu/MenuUI" {
+    export const MenuUI: import("react").FunctionComponent<object>;
+}
 declare module "openpose/OpenPoseData" {
     export type OpenPoseData = {
         version: number;
@@ -677,35 +775,6 @@ declare module "openpose/OpenPoseAnimV0" {
 }
 declare module "openpose/OpenPoseUI" {
     export const OpenPoseViewerUI: import("react").FunctionComponent<{}>;
-}
-declare module "ui/ErrorScreenUI" {
-    import { CSCriticalError } from "core/Workspace";
-    export const ErrorScreenUI: import("react").FunctionComponent<{
-        err: CSCriticalError;
-    }>;
-}
-declare module "panels/pConnect" {
-    export const PConnectUI: import("react").FunctionComponent<{}>;
-}
-declare module "ui/MainPaneUI" {
-    export const MainPanelUI: import("react").FunctionComponent<{}>;
-}
-declare module "ui/DropZoneUI" {
-    export const DropZoneUI: import("react").FunctionComponent<object>;
-}
-declare module "menu/AssetTreeUI" {
-    export const AssetTreeUI: import("react").FunctionComponent<{
-        children: React.ReactNode;
-    }>;
-}
-declare module "menu/ProjectTreeUI" {
-    export const ProjectTreeUI: import("react").FunctionComponent<object>;
-    export const HasProblem: JSX.Element;
-    export const IsOK: JSX.Element;
-    export const Actions: () => JSX.Element;
-}
-declare module "menu/MenuUI" {
-    export const MenuUI: import("react").FunctionComponent<object>;
 }
 declare module "layout/LayoutCtx" {
     import type { CushyLayoutState } from "layout/LayoutState";
@@ -838,12 +907,17 @@ declare module "ui/ExecutionUI" {
         children: ReactNode;
     }>;
 }
-declare module "menu/ExecutionStepIconUI" {
-    import { ScriptStep } from "core/ScriptStep";
-    export const ExecutionStepIconUI: (step: ScriptStep) => JSX.Element;
+declare module "ui/ErrorScreenUI" {
+    import { CSCriticalError } from "core/Workspace";
+    export const ErrorScreenUI: import("react").FunctionComponent<{
+        err: CSCriticalError;
+    }>;
 }
-declare module "menu/FocusedProjectTreeUI" {
-    export const FocusedProjectTreeUI: import("react").FunctionComponent<{}>;
+declare module "panels/pConnect" {
+    export const PConnectUI: import("react").FunctionComponent<{}>;
+}
+declare module "ui/MainPaneUI" {
+    export const MainPanelUI: import("react").FunctionComponent<{}>;
 }
 declare module "layout/LayoutDefault" {
     import { LayoutData } from 'rc-dock';
@@ -866,15 +940,10 @@ declare module "layout/LayoutState" {
         addHelpPopup: () => void;
     }
 }
-declare module "png/getPngMetadata" {
-    /** code copy-pasted from ComfyUI repo */
-    import type { Workspace } from "core/Workspace";
-    export type TextChunks = {
-        [key: string]: string;
-    };
-    export function getPngMetadata(client: Workspace, file: File): Promise<TextChunks>;
+declare module "ui/sdkDTS" {
+    export const c__: string;
 }
-declare module "ui/ResilientWebsocket" {
+declare module "ws/ResilientWebsocket" {
     import type { Maybe } from "core/ComfyUtils";
     type Message = string | ArrayBuffer | SharedArrayBuffer | Blob | ArrayBufferView;
     export class ResilientWebSocketClient {
@@ -906,9 +975,6 @@ declare module "ui/ResilientWebsocket" {
         message: MessageEvent;
     }
 }
-declare module "ui/sdkDTS" {
-    export const c__: string;
-}
 declare module "core/defaultProjectCode" {
     export const defaultScript = "WORKFLOW(async (x) => {
     // generate an empty table
@@ -923,28 +989,26 @@ declare module "core/defaultProjectCode" {
     await x.get()
 })";
 }
-declare module "examples/demo1-basic" {
-    const _default: import("core/Workflow").Workflow;
-    export default _default;
-}
-declare module "examples/demo2-test" {
-    const _default_1: import("core/Workflow").Workflow;
-    export default _default_1;
+declare module "help/Library" {
+    import { Demo } from "help/Demo";
+    export const demoLibrary: Demo[];
 }
 declare module "core/Workspace" {
-    import type { CushyStudio } from "config/CushyStudio";
+    import type { Cushy } from "cushy/Cushy";
+    import type { ImportCandidate } from "importers/ImportCandidate";
     import type { ComfySchemaJSON } from "core/ComfySchemaJSON";
     import type { Maybe } from "core/ComfyUtils";
-    import * as fs from '@tauri-apps/api/fs';
-    import { TypescriptFile } from "code/TypescriptFile";
-    import { JsonFile } from "config/JsonFile";
+    import { RootFolder } from "fs/RootFolder";
+    import { JsonFile } from "monaco/JsonFile";
     import { Demo } from "help/Demo";
     import { CushyLayoutState } from "layout/LayoutState";
-    import { ResilientWebSocketClient } from "ui/ResilientWebsocket";
+    import { TypescriptFile } from "monaco/TypescriptFile";
+    import { AbsolutePath, RelativePath } from "fs/pathUtils";
+    import { ResilientWebSocketClient } from "ws/ResilientWebsocket";
     import { ComfyStatus, ComfyUploadImageResult } from "core/ComfyAPI";
+    import { ComfyPromptJSON } from "core/ComfyPrompt";
     import { ComfySchema } from "core/ComfySchema";
     import { Project } from "core/Project";
-    import { AbsolutePath, WorkspaceRelativePath } from "utils/pathUtils";
     export type WorkspaceConfigJSON = {
         version: 2;
         comfyWSURL: string;
@@ -962,12 +1026,11 @@ declare module "core/Workspace" {
      *  - dispatches messages to the right projects
      */
     export class Workspace {
-        cushy: CushyStudio;
+        cushy: Cushy;
         absoluteWorkspaceFolderPath: AbsolutePath;
         schema: ComfySchema;
         focusedFile: Maybe<TypescriptFile>;
         focusedProject: Maybe<Project>;
-        private loadDemos;
         demos: Demo[];
         projects: Project[];
         assets: Map<string, boolean>;
@@ -976,11 +1039,14 @@ declare module "core/Workspace" {
         objectInfoFile: JsonFile<ComfySchemaJSON>;
         cushySDKFile: TypescriptFile;
         comfySDKFile: TypescriptFile;
+        importQueue: ImportCandidate[];
+        removeCandidate: (candidate: ImportCandidate) => void;
         openComfySDK: () => void;
         openCushySDK: () => void;
-        static OPEN: (cushy: CushyStudio, absoluteFolderPath: AbsolutePath) => Promise<Workspace>;
+        static OPEN: (cushy: Cushy, absoluteFolderPath: AbsolutePath) => Promise<Workspace>;
         /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
-        get relativeCacheFolderPath(): WorkspaceRelativePath;
+        get relativeCacheFolderPath(): RelativePath;
+        rootFolder: RootFolder;
         private constructor();
         /** will be created only after we've loaded cnfig file
          * so we don't attempt to connect to some default server */
@@ -992,14 +1058,10 @@ declare module "core/Workspace" {
         /** attempt to convert an url to a Blob */
         private getUrlAsBlob;
         uploadURL: (url?: string) => Promise<ComfyUploadImageResult>;
-        createProjectAndFocustIt: (workspaceRelativeFilePath: WorkspaceRelativePath, script?: string) => void;
-        /** 📝 should be single function able to save text files in a workspace */
-        writeTextFile: (workspaceRelativePath: WorkspaceRelativePath, contents: string) => Promise<void>;
-        /** 📝 should be single function able to save binary files in a workspace */
-        writeBinaryFile: (workspaceRelativePath: WorkspaceRelativePath, contents: fs.BinaryFileContents) => Promise<void>;
+        createProjectAndFocustIt: (workspaceRelativeFilePath: RelativePath, script?: string) => void;
         /** resolve any path to a relative workspace path
          * CRASH if path is outside of workspace folder or invalid */
-        resolveToRelativePath: (rawPath: string) => WorkspaceRelativePath;
+        resolveToRelativePath: (rawPath: string) => RelativePath;
         /** load all project found in workspace */
         loadProjects: () => Promise<void>;
         /** save an image at given url to disk */
@@ -1016,8 +1078,7 @@ declare module "core/Workspace" {
         get schemaStatusEmoji(): "🟢" | "🔴";
         status: ComfyStatus | null;
         notify: (msg: string) => undefined;
-        /** Loads workflow data from the specified file */
-        handleFile(file: File): Promise<void>;
+        addProjectFromComfyWorkflowJSON: (title: string, comfyPromptJSON: ComfyPromptJSON) => Promise<void>;
     }
 }
 declare module "core/toposort" {
@@ -1025,7 +1086,7 @@ declare module "core/toposort" {
     export type TEdge = [TNode, TNode];
     export function toposort(nodes: TNode[], edges: TEdge[]): TNode[];
 }
-declare module "importers/ComfyImporter" {
+declare module "importers/ImportComfyImage" {
     import { Workspace } from "core/Workspace";
     import { ComfyPromptJSON } from "core/ComfyPrompt";
     /** Converts Comfy JSON prompts to ComfyScript code */
@@ -1051,12 +1112,12 @@ declare module "core/Project" {
     import { Workspace } from "core/Workspace";
     import { ComfyPromptJSON } from "core/ComfyPrompt";
     import { Run } from "core/Run";
-    import { TypescriptFile } from "code/TypescriptFile";
-    import { WorkspaceRelativePath } from "utils/pathUtils";
+    import { TypescriptFile } from "monaco/TypescriptFile";
+    import { RelativePath } from "fs/pathUtils";
     /** Script */
     export class Project {
         workspace: Workspace;
-        workspaceRelativeFilePath: WorkspaceRelativePath;
+        workspaceRelativeFilePath: RelativePath;
         static __demoProjectIx: number;
         runCounter: number;
         /** unique project id */
@@ -1072,10 +1133,10 @@ declare module "core/Project" {
         scriptBuffer: TypescriptFile;
         name: string;
         workspaceRelativeCacheFolder: string;
-        constructor(workspace: Workspace, workspaceRelativeFilePath: WorkspaceRelativePath, initialCode: Maybe<string>);
+        constructor(workspace: Workspace, workspaceRelativeFilePath: RelativePath, initialCode: Maybe<string>);
         /** convenient getter to retrive current client shcema */
         get schema(): import("core/ComfySchema").ComfySchema;
-        static FROM_JSON: (workspace: Workspace, json: ComfyPromptJSON) => Project;
+        static FROM_JSON: (workspace: Workspace, name: string, json: ComfyPromptJSON) => Project;
         /** converts a ComfyPromptJSON into it's canonical normal-form script */
         static LoadFromComfyPromptJSON: (_json: ComfyPromptJSON) => never;
         /** * project running is not the same as graph running; TODO: explain */
