@@ -1,6 +1,6 @@
 export default WORKFLOW(async (n) => {
     // generate an empty table
-    const fun = (x: string) => `masterpiece, womain looking at painting of a ${x}, museum`
+    const fun = (x: string) => `masterpiece, ${x} painting on a wall`
 
     const ckpt = n.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const latent = n.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
