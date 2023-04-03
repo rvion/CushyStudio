@@ -1,6 +1,6 @@
 import type { ComfyImageInfo } from './ComfyAPI'
 import type { Maybe } from './ComfyUtils'
-import type { ScriptStep_prompt } from './ScriptStep_prompt'
+import type { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import type { Workspace } from './Workspace'
 
 import { fetch, ResponseType } from '@tauri-apps/api/http'

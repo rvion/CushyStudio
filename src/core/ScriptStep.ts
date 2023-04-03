@@ -1,7 +1,6 @@
-// import type { ScriptStep_Output } from './ScriptStep_Output'
-import type { ScriptStep_prompt } from './ScriptStep_prompt'
-import type { ScriptStep_Init } from './ScriptStep_Init'
-import type { ScriptStep_askBoolean, ScriptStep_askString } from './ScriptStep_ask'
+import type { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
+import type { ScriptStep_Init } from '../controls/ScriptStep_Init'
+import type { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
 
 // prettier-ignore
 export type ScriptStep =

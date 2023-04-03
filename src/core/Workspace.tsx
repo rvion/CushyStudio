@@ -25,7 +25,7 @@ import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfySchema } from './ComfySchema'
 import { defaultScript } from '../templates/defaultProjectCode'
 import { Project } from './Project'
-import { ScriptStep_prompt } from './ScriptStep_prompt'
+import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import { demoLibrary } from '../templates/Library'
 
 export type WorkspaceConfigJSON = {

@@ -1,9 +1,9 @@
 import { Tree, TreeItem, TreeItemLayout } from '@fluentui/react-components/unstable'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { ScriptStep_prompt } from '../core/ScriptStep_prompt'
+import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import { useWorkspace } from '../ui/WorkspaceContext'
-import { ExecutionStepIconUI } from './ExecutionStepIconUI'
+import { ControlIconUI } from './ControlIconUI'
 import { Actions } from './ProjectTreeUI'
 
 export const FocusedProjectTreeUI = observer(function FocusedProjectTreeUI_(p: {}) {
@@ -19,7 +19,7 @@ export const FocusedProjectTreeUI = observer(function FocusedProjectTreeUI_(p: {
                         <Tree>
                             {run.steps.map((step, ix) => (
                                 <TreeItem key={ix} actions={<Actions />}>
-                                    <TreeItemLayout iconBefore={ExecutionStepIconUI(step)}>{step.name}</TreeItemLayout>
+                                    <TreeItemLayout iconBefore={ControlIconUI(step)}>{step.name}</TreeItemLayout>
                                     {step instanceof ScriptStep_prompt ? (
                                         <Tree>
                                             {run.graph.nodes.map((node, ix) => (

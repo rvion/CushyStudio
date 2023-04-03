@@ -1,5 +1,5 @@
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
-import type { Maybe } from './ComfyUtils'
+import type { Maybe } from '../core/ComfyUtils'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'

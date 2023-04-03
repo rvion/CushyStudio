@@ -1,15 +1,15 @@
-import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from './ComfyAPI'
-import type { Run } from './Run'
-import type { ComfyPromptJSON } from './ComfyPrompt'
-import type { ComfyNode } from './CSNode'
+import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from '../core/ComfyAPI'
+import type { ComfyPromptJSON } from '../core//ComfyPrompt'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
+import type { ComfyNode } from '../core//CSNode'
+import type { Run } from '../core//Run'
 
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { Graph } from './Graph'
-import { deepCopyNaive } from './ComfyUtils'
+import { Graph } from '../core//Graph'
+import { deepCopyNaive } from '../core//ComfyUtils'
 import { nanoid } from 'nanoid'
-import { PromptOutputImage } from './PromptOutputImage'
+import { PromptOutputImage } from '../core//PromptOutputImage'
 
 export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     private static promptID = 1

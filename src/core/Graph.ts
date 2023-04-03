@@ -1,10 +1,10 @@
+import type { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 import type { ComfyNodeUID } from './ComfyNodeUID'
 import type { Project } from './Project'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from './ComfyUtils'
 import type { Run } from './Run'
-import type { ScriptStep_prompt } from './ScriptStep_prompt'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { computed, makeObservable } from 'mobx'

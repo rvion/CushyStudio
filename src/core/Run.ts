@@ -12,9 +12,9 @@ import { Graph } from './Graph'
 import { deepCopyNaive, Maybe } from './ComfyUtils'
 import { PromptOutputImage } from './PromptOutputImage'
 import { ScriptStep } from './ScriptStep'
-import { ScriptStep_askBoolean, ScriptStep_askString } from './ScriptStep_ask'
-import { ScriptStep_Init } from './ScriptStep_Init'
-import { ScriptStep_prompt } from './ScriptStep_prompt'
+import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
+import { ScriptStep_Init } from '../controls/ScriptStep_Init'
+import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 
 /** script exeuction instance */
 export class Run {

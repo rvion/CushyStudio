@@ -2,7 +2,7 @@ import { Button, CardFooter, CardHeader, Input } from '@fluentui/react-component
 import * as I from '@fluentui/react-icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Fragment } from 'react'
-import { ScriptStep_askString } from '../core/ScriptStep_ask'
+import { ScriptStep_askString } from '../controls/ScriptStep_ask'
 
 export const Execution_askStringUI = observer(function Execution_askUI_(p: { step: ScriptStep_askString }) {
     const uiSt = useLocalObservable(() => ({ value: p.step.def ?? '' }))

@@ -2,7 +2,7 @@ import { Button, CardFooter, CardHeader } from '@fluentui/react-components'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
-import { ScriptStep_askBoolean } from '../core/ScriptStep_ask'
+import { ScriptStep_askBoolean } from '../controls/ScriptStep_ask'
 
 export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { step: ScriptStep_askBoolean }) {
     return (

@@ -28,7 +28,7 @@
     "input": {
       "required": {
         "config_name": [["anything_v3.yaml","v1-inference.yaml","v1-inference_clip_skip_2.yaml","v1-inference_clip_skip_2_fp16.yaml","v1-inference_fp16.yaml","v1-inpainting-inference.yaml","v2-inference-v.yaml","v2-inference-v_fp32.yaml","v2-inference.yaml","v2-inference_fp32.yaml","v2-inpainting-inference.yaml"]],
-        "ckpt_name": [["AOM3A1_orangemixs.safetensors","AOM3A3_orangemixs.safetensors","AbyssOrangeMix2_hard.safetensors","anything-v3-fp16-pruned.safetensors","v1-5-pruned-emaonly.ckpt","v2-1_512-ema-pruned.safetensors","v2-1_768-ema-pruned.safetensors","wd-1-5-beta2-fp16.safetensors"]]
+        "ckpt_name": [["AOM3A1_orangemixs.safetensors","AOM3A3_orangemixs.safetensors","AbyssOrangeMix2_hard.safetensors","anything-v3-fp16-pruned.safetensors","deliberate_v2.safetensors","v1-5-pruned-emaonly.ckpt","v2-1_512-ema-pruned.safetensors","v2-1_768-ema-pruned.safetensors","wd-1-5-beta2-fp16.safetensors"]]
     }
   },
     "output": {
@@ -48,7 +48,7 @@
   "CheckpointLoaderSimple": {
     "input": {
       "required": {
-        "ckpt_name": [["AOM3A1_orangemixs.safetensors","AOM3A3_orangemixs.safetensors","AbyssOrangeMix2_hard.safetensors","anything-v3-fp16-pruned.safetensors","v1-5-pruned-emaonly.ckpt","v2-1_512-ema-pruned.safetensors","v2-1_768-ema-pruned.safetensors","wd-1-5-beta2-fp16.safetensors"]]
+        "ckpt_name": [["AOM3A1_orangemixs.safetensors","AOM3A3_orangemixs.safetensors","AbyssOrangeMix2_hard.safetensors","anything-v3-fp16-pruned.safetensors","deliberate_v2.safetensors","v1-5-pruned-emaonly.ckpt","v2-1_512-ema-pruned.safetensors","v2-1_768-ema-pruned.safetensors","wd-1-5-beta2-fp16.safetensors"]]
     }
   },
     "output": {
