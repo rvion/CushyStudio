@@ -29,6 +29,17 @@ export class LocoMonaco {
             },
         }
 
+        // add save command
+        monaco.editor.addCommand({
+            id: 'cushy.save',
+            run: () => console.log(`[👁] save`),
+        })
+        // add save keybinding
+        monaco.editor.addKeybindingRule({
+            keybinding: monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS,
+            command: 'cushy.save',
+        })
+
         loader.config({
             // load monaco from the cdn
             monaco,
