@@ -1,5 +1,6 @@
 import type { Maybe } from '../core/ComfyUtils'
 import type { AbsolutePath, RelativePath } from './pathUtils'
+import type { FileActionResult } from './FileActionResult'
 
 import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'
@@ -22,7 +23,7 @@ export class RootFolder {
     }
 
     /** 📝 should be the SINGLE function able to save text files */
-    writeTextFile = async (relativePath: RelativePath, contents: string): Promise<void> => {
+    writeTextFile = async (relativePath: RelativePath, contents: string): Promise<FileActionResult> => {
         // 1. resolve absolute path
         const absoluteFilePath = await path.join(this.absPath, relativePath)
         // 2. create folder if missing
@@ -38,8 +39,10 @@ export class RootFolder {
         // 4. save if necessary
         if (prev != contents) {
             await fs.writeTextFile({ path: absoluteFilePath, contents })
-            this.notify(`updated file ${relativePath}`)
+            return prevExists ? 'updated' : 'created'
+            // this.notify(`updated file ${relativePath}`)
         }
+        return 'same'
     }
 
     /** 📝 should be the SINGLE function able to save binary files */
@@ -56,7 +59,7 @@ export class RootFolder {
         }
         // 3. update file (NO check to see if previous file similar)
         await fs.writeBinaryFile({ path: absoluteFilePath, contents })
-        this.notify(`wrote file ${relativePath}`)
+        // this.notify(`wrote file ${relativePath}`)
     }
 
     private notify = (msg: string) => {

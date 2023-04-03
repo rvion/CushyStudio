@@ -21,6 +21,8 @@ type Category =
     | '🛋'
     /** execution emoji */
     | '🔥'
+    /** fs operation */
+    | '💿'
 
 interface LogMessage {
     level: LogLevel

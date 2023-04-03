@@ -26,6 +26,7 @@ import { ComfySchema } from './ComfySchema'
 import { defaultScript } from './defaultProjectCode'
 import { Project } from './Project'
 import { ScriptStep_prompt } from './ScriptStep_prompt'
+import { demoLibrary } from '../help/Library'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -47,19 +48,18 @@ export class Workspace {
     focusedFile: Maybe<TypescriptFile> = null
     focusedProject: Maybe<Project> = null
 
-    private loadDemos = async (): Promise<Demo[]> => {
-        console.log('🦊', { WORKFLOW: WORKFLOW.toString() })
-        return [
-            // lazy load
-            new Demo(this, 'demo1-basic', await import('../examples/demo1-basic').then((m) => m.default)),
-            new Demo(this, 'demo2-test', await import('../examples/demo2-test').then((m) => m.default)),
-        ]
-    }
+    // private loadDemos = async (): Promise<Demo[]> => {
+    //     console.log('🦊', { WORKFLOW: WORKFLOW.toString() })
+    //     return [
+    //         // lazy load
+    //         new Demo(this, 'demo1-basic', `
 
-    demos: Demo[] = (() => {
-        this.loadDemos().then((demos) => (this.demos = demos))
-        return []
-    })()
+    //         `),
+    //         new Demo(this, 'demo2-test', await import('../examples/demo2-test').then((m) => m.default)),
+    //     ]
+    // }
+
+    demos: Demo[] = demoLibrary
 
     projects: Project[] = []
     assets = new Map<string, boolean>()

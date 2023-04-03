@@ -5,6 +5,8 @@ import { makeObservable, observable } from 'mobx'
 import { RootFolder } from '../fs/RootFolder'
 import { globalMonaco } from './Monaco'
 import { MonacoPath, RelativePath } from '../fs/pathUtils'
+import { toast } from 'react-toastify'
+import { logger } from '../logger/Logger'
 
 export type TypescriptFileConf = {
     /** human readable title */
@@ -116,7 +118,8 @@ export class TypescriptFile {
 
     syncWithDiskFile = async () => {
         const diskPathTS: RelativePath = this.conf.relativeTSFilePath
-        await this.rootFolder.writeTextFile(diskPathTS, this.codeTS)
+        const status = await this.rootFolder.writeTextFile(diskPathTS, this.codeTS)
+        if (status !== 'same') logger.info('💿', `${status} ${diskPathTS}`)
         const diskPathJS = this.conf.relativeJSFilePath
         if (diskPathJS) await this.rootFolder.writeTextFile(diskPathJS, this.codeJS)
     }

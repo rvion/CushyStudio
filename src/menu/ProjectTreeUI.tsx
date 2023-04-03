@@ -47,7 +47,10 @@ export const ProjectTreeUI = observer(function MenuUI_() {
                             id={demo.name}
                             key={demo.name}
                         >
-                            <TreeItemLayout iconBefore={<I.DesignIdeas24Filled />} onClick={() => demo.createProjectCopy()}>
+                            <TreeItemLayout
+                                iconBefore={<I.DesignIdeas24Filled />}
+                                onClick={() => demo.createProjectCopy(workspace)}
+                            >
                                 <span>{demo.name}</span>
                             </TreeItemLayout>
                         </TreeItem>
