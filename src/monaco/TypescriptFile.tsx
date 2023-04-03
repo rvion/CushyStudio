@@ -5,7 +5,6 @@ import { makeObservable, observable } from 'mobx'
 import { RootFolder } from '../fs/RootFolder'
 import { globalMonaco } from './Monaco'
 import { MonacoPath, RelativePath } from '../fs/pathUtils'
-import { toast } from 'react-toastify'
 import { logger } from '../logger/Logger'
 
 export type TypescriptFileConf = {

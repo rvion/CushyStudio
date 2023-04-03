@@ -19,5 +19,5 @@ export default WORKFLOW(async (comfy) => {
 
     comfy.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
     await comfy.get()
-    // super 
+    // super
 })
