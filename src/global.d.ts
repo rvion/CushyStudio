@@ -1,10 +1,4 @@
-declare module 'x/y' {
-    export class Z {
-        a: 1
-    }
-}
-
-declare const zzz: import('x/y').Z
+/// <reference types="./cushy" />
 
 import type { ComfyNodeOutput } from './core/ComfyNodeOutput'
 import type { ComfyNodeUID } from './core/ComfyNodeUID'
@@ -66,6 +60,7 @@ export type Enum_CheckpointLoader_ckpt_name =
     | 'AOM3A3_orangemixs.safetensors'
     | 'AbyssOrangeMix2_hard.safetensors'
     | 'anything-v3-fp16-pruned.safetensors'
+    | 'deliberate_v2.safetensors'
     | 'v1-5-pruned-emaonly.ckpt'
     | 'v2-1_512-ema-pruned.safetensors'
     | 'v2-1_768-ema-pruned.safetensors'
@@ -77,437 +72,10 @@ export type Enum_LoadImage_image =
     | '2023-03-19_22-20-04.png'
     | 'ComfyUI_00498_.png'
     | 'ComfyUI_01790_.png'
-    | 'Screenshot 2022-01-27 at 18.08.02.png'
-    | 'Screenshot 2022-02-22 at 10.25.32.png'
     | 'decihub-logo-126.png'
     | 'esrgan_example (1).png'
     | 'esrgan_example.png'
     | 'example.png'
-    | 'image-2023-03-23.png'
-    | 'image.jpg'
-    | 'img2img (1) (1).png'
-    | 'img2img (1).png'
-    | 'maxresdefault.jpeg'
-    | 'project123image-2023-03-23 (1).png'
-    | 'project123image-2023-03-23.png'
-    | 'upload (1).png'
-    | 'upload (10).png'
-    | 'upload (100).png'
-    | 'upload (101).png'
-    | 'upload (102).png'
-    | 'upload (103).png'
-    | 'upload (104).png'
-    | 'upload (105).png'
-    | 'upload (106).png'
-    | 'upload (107).png'
-    | 'upload (108).png'
-    | 'upload (109).png'
-    | 'upload (11).png'
-    | 'upload (110).png'
-    | 'upload (111).png'
-    | 'upload (112).png'
-    | 'upload (113).png'
-    | 'upload (114).png'
-    | 'upload (115).png'
-    | 'upload (116).png'
-    | 'upload (117).png'
-    | 'upload (118).png'
-    | 'upload (119).png'
-    | 'upload (12).png'
-    | 'upload (120).png'
-    | 'upload (121).png'
-    | 'upload (122).png'
-    | 'upload (123).png'
-    | 'upload (124).png'
-    | 'upload (125).png'
-    | 'upload (126).png'
-    | 'upload (127).png'
-    | 'upload (128).png'
-    | 'upload (129).png'
-    | 'upload (13).png'
-    | 'upload (130).png'
-    | 'upload (131).png'
-    | 'upload (132).png'
-    | 'upload (133).png'
-    | 'upload (134).png'
-    | 'upload (135).png'
-    | 'upload (136).png'
-    | 'upload (137).png'
-    | 'upload (138).png'
-    | 'upload (139).png'
-    | 'upload (14).png'
-    | 'upload (140).png'
-    | 'upload (141).png'
-    | 'upload (142).png'
-    | 'upload (143).png'
-    | 'upload (144).png'
-    | 'upload (145).png'
-    | 'upload (146).png'
-    | 'upload (147).png'
-    | 'upload (148).png'
-    | 'upload (149).png'
-    | 'upload (15).png'
-    | 'upload (150).png'
-    | 'upload (151).png'
-    | 'upload (152).png'
-    | 'upload (153).png'
-    | 'upload (154).png'
-    | 'upload (155).png'
-    | 'upload (156).png'
-    | 'upload (157).png'
-    | 'upload (158).png'
-    | 'upload (159).png'
-    | 'upload (16).png'
-    | 'upload (160).png'
-    | 'upload (161).png'
-    | 'upload (162).png'
-    | 'upload (163).png'
-    | 'upload (164).png'
-    | 'upload (165).png'
-    | 'upload (166).png'
-    | 'upload (167).png'
-    | 'upload (168).png'
-    | 'upload (169).png'
-    | 'upload (17).png'
-    | 'upload (170).png'
-    | 'upload (171).png'
-    | 'upload (172).png'
-    | 'upload (173).png'
-    | 'upload (174).png'
-    | 'upload (175).png'
-    | 'upload (176).png'
-    | 'upload (177).png'
-    | 'upload (178).png'
-    | 'upload (179).png'
-    | 'upload (18).png'
-    | 'upload (180).png'
-    | 'upload (181).png'
-    | 'upload (182).png'
-    | 'upload (183).png'
-    | 'upload (184).png'
-    | 'upload (185).png'
-    | 'upload (186).png'
-    | 'upload (187).png'
-    | 'upload (188).png'
-    | 'upload (189).png'
-    | 'upload (19).png'
-    | 'upload (190).png'
-    | 'upload (191).png'
-    | 'upload (192).png'
-    | 'upload (193).png'
-    | 'upload (194).png'
-    | 'upload (195).png'
-    | 'upload (196).png'
-    | 'upload (197).png'
-    | 'upload (198).png'
-    | 'upload (199).png'
-    | 'upload (2).png'
-    | 'upload (20).png'
-    | 'upload (200).png'
-    | 'upload (201).png'
-    | 'upload (202).png'
-    | 'upload (203).png'
-    | 'upload (204).png'
-    | 'upload (205).png'
-    | 'upload (206).png'
-    | 'upload (207).png'
-    | 'upload (208).png'
-    | 'upload (209).png'
-    | 'upload (21).png'
-    | 'upload (210).png'
-    | 'upload (211).png'
-    | 'upload (212).png'
-    | 'upload (213).png'
-    | 'upload (214).png'
-    | 'upload (215).png'
-    | 'upload (216).png'
-    | 'upload (217).png'
-    | 'upload (218).png'
-    | 'upload (219).png'
-    | 'upload (22).png'
-    | 'upload (220).png'
-    | 'upload (221).png'
-    | 'upload (222).png'
-    | 'upload (223).png'
-    | 'upload (224).png'
-    | 'upload (225).png'
-    | 'upload (226).png'
-    | 'upload (227).png'
-    | 'upload (228).png'
-    | 'upload (229).png'
-    | 'upload (23).png'
-    | 'upload (230).png'
-    | 'upload (231).png'
-    | 'upload (232).png'
-    | 'upload (233).png'
-    | 'upload (234).png'
-    | 'upload (235).png'
-    | 'upload (236).png'
-    | 'upload (237).png'
-    | 'upload (238).png'
-    | 'upload (239).png'
-    | 'upload (24).png'
-    | 'upload (240).png'
-    | 'upload (241).png'
-    | 'upload (242).png'
-    | 'upload (243).png'
-    | 'upload (244).png'
-    | 'upload (245).png'
-    | 'upload (246).png'
-    | 'upload (247).png'
-    | 'upload (248).png'
-    | 'upload (249).png'
-    | 'upload (25).png'
-    | 'upload (250).png'
-    | 'upload (251).png'
-    | 'upload (252).png'
-    | 'upload (253).png'
-    | 'upload (254).png'
-    | 'upload (255).png'
-    | 'upload (256).png'
-    | 'upload (257).png'
-    | 'upload (258).png'
-    | 'upload (259).png'
-    | 'upload (26).png'
-    | 'upload (260).png'
-    | 'upload (261).png'
-    | 'upload (262).png'
-    | 'upload (263).png'
-    | 'upload (264).png'
-    | 'upload (265).png'
-    | 'upload (266).png'
-    | 'upload (267).png'
-    | 'upload (268).png'
-    | 'upload (269).png'
-    | 'upload (27).png'
-    | 'upload (270).png'
-    | 'upload (271).png'
-    | 'upload (272).png'
-    | 'upload (273).png'
-    | 'upload (274).png'
-    | 'upload (275).png'
-    | 'upload (276).png'
-    | 'upload (277).png'
-    | 'upload (278).png'
-    | 'upload (279).png'
-    | 'upload (28).png'
-    | 'upload (280).png'
-    | 'upload (281).png'
-    | 'upload (282).png'
-    | 'upload (283).png'
-    | 'upload (284).png'
-    | 'upload (285).png'
-    | 'upload (286).png'
-    | 'upload (287).png'
-    | 'upload (288).png'
-    | 'upload (289).png'
-    | 'upload (29).png'
-    | 'upload (290).png'
-    | 'upload (291).png'
-    | 'upload (292).png'
-    | 'upload (293).png'
-    | 'upload (294).png'
-    | 'upload (295).png'
-    | 'upload (296).png'
-    | 'upload (297).png'
-    | 'upload (298).png'
-    | 'upload (299).png'
-    | 'upload (3).png'
-    | 'upload (30).png'
-    | 'upload (300).png'
-    | 'upload (301).png'
-    | 'upload (302).png'
-    | 'upload (303).png'
-    | 'upload (304).png'
-    | 'upload (305).png'
-    | 'upload (306).png'
-    | 'upload (307).png'
-    | 'upload (308).png'
-    | 'upload (309).png'
-    | 'upload (31).png'
-    | 'upload (310).png'
-    | 'upload (311).png'
-    | 'upload (312).png'
-    | 'upload (313).png'
-    | 'upload (314).png'
-    | 'upload (315).png'
-    | 'upload (316).png'
-    | 'upload (317).png'
-    | 'upload (318).png'
-    | 'upload (319).png'
-    | 'upload (32).png'
-    | 'upload (320).png'
-    | 'upload (321).png'
-    | 'upload (322).png'
-    | 'upload (323).png'
-    | 'upload (324).png'
-    | 'upload (325).png'
-    | 'upload (326).png'
-    | 'upload (327).png'
-    | 'upload (328).png'
-    | 'upload (329).png'
-    | 'upload (33).png'
-    | 'upload (330).png'
-    | 'upload (331).png'
-    | 'upload (332).png'
-    | 'upload (333).png'
-    | 'upload (334).png'
-    | 'upload (335).png'
-    | 'upload (336).png'
-    | 'upload (337).png'
-    | 'upload (338).png'
-    | 'upload (339).png'
-    | 'upload (34).png'
-    | 'upload (340).png'
-    | 'upload (341).png'
-    | 'upload (342).png'
-    | 'upload (343).png'
-    | 'upload (344).png'
-    | 'upload (345).png'
-    | 'upload (346).png'
-    | 'upload (347).png'
-    | 'upload (348).png'
-    | 'upload (349).png'
-    | 'upload (35).png'
-    | 'upload (350).png'
-    | 'upload (351).png'
-    | 'upload (352).png'
-    | 'upload (353).png'
-    | 'upload (354).png'
-    | 'upload (355).png'
-    | 'upload (356).png'
-    | 'upload (357).png'
-    | 'upload (358).png'
-    | 'upload (359).png'
-    | 'upload (36).png'
-    | 'upload (360).png'
-    | 'upload (361).png'
-    | 'upload (362).png'
-    | 'upload (363).png'
-    | 'upload (364).png'
-    | 'upload (365).png'
-    | 'upload (366).png'
-    | 'upload (367).png'
-    | 'upload (368).png'
-    | 'upload (369).png'
-    | 'upload (37).png'
-    | 'upload (370).png'
-    | 'upload (371).png'
-    | 'upload (372).png'
-    | 'upload (373).png'
-    | 'upload (374).png'
-    | 'upload (375).png'
-    | 'upload (376).png'
-    | 'upload (377).png'
-    | 'upload (378).png'
-    | 'upload (379).png'
-    | 'upload (38).png'
-    | 'upload (380).png'
-    | 'upload (381).png'
-    | 'upload (382).png'
-    | 'upload (383).png'
-    | 'upload (384).png'
-    | 'upload (385).png'
-    | 'upload (386).png'
-    | 'upload (387).png'
-    | 'upload (388).png'
-    | 'upload (389).png'
-    | 'upload (39).png'
-    | 'upload (390).png'
-    | 'upload (391).png'
-    | 'upload (392).png'
-    | 'upload (393).png'
-    | 'upload (394).png'
-    | 'upload (395).png'
-    | 'upload (396).png'
-    | 'upload (397).png'
-    | 'upload (398).png'
-    | 'upload (399).png'
-    | 'upload (4).png'
-    | 'upload (40).png'
-    | 'upload (400).png'
-    | 'upload (401).png'
-    | 'upload (402).png'
-    | 'upload (403).png'
-    | 'upload (404).png'
-    | 'upload (405).png'
-    | 'upload (406).png'
-    | 'upload (407).png'
-    | 'upload (408).png'
-    | 'upload (409).png'
-    | 'upload (41).png'
-    | 'upload (410).png'
-    | 'upload (411).png'
-    | 'upload (412).png'
-    | 'upload (413).png'
-    | 'upload (414).png'
-    | 'upload (415).png'
-    | 'upload (416).png'
-    | 'upload (417).png'
-    | 'upload (418).png'
-    | 'upload (42).png'
-    | 'upload (43).png'
-    | 'upload (44).png'
-    | 'upload (45).png'
-    | 'upload (46).png'
-    | 'upload (47).png'
-    | 'upload (48).png'
-    | 'upload (49).png'
-    | 'upload (5).png'
-    | 'upload (50).png'
-    | 'upload (51).png'
-    | 'upload (52).png'
-    | 'upload (53).png'
-    | 'upload (54).png'
-    | 'upload (55).png'
-    | 'upload (56).png'
-    | 'upload (57).png'
-    | 'upload (58).png'
-    | 'upload (59).png'
-    | 'upload (6).png'
-    | 'upload (60).png'
-    | 'upload (61).png'
-    | 'upload (62).png'
-    | 'upload (63).png'
-    | 'upload (64).png'
-    | 'upload (65).png'
-    | 'upload (66).png'
-    | 'upload (67).png'
-    | 'upload (68).png'
-    | 'upload (69).png'
-    | 'upload (7).png'
-    | 'upload (70).png'
-    | 'upload (71).png'
-    | 'upload (72).png'
-    | 'upload (73).png'
-    | 'upload (74).png'
-    | 'upload (75).png'
-    | 'upload (76).png'
-    | 'upload (77).png'
-    | 'upload (78).png'
-    | 'upload (79).png'
-    | 'upload (8).png'
-    | 'upload (80).png'
-    | 'upload (81).png'
-    | 'upload (82).png'
-    | 'upload (83).png'
-    | 'upload (84).png'
-    | 'upload (85).png'
-    | 'upload (86).png'
-    | 'upload (87).png'
-    | 'upload (88).png'
-    | 'upload (89).png'
-    | 'upload (9).png'
-    | 'upload (90).png'
-    | 'upload (91).png'
-    | 'upload (92).png'
-    | 'upload (93).png'
-    | 'upload (94).png'
-    | 'upload (95).png'
-    | 'upload (96).png'
-    | 'upload (97).png'
-    | 'upload (98).png'
-    | 'upload (99).png'
     | 'upload.png'
 export type Enum_LoadImageMask_channel = 'alpha' | 'blue' | 'green' | 'red'
 export type Enum_KSamplerAdvanced_add_noise = 'disable' | 'enable'
@@ -530,7 +98,7 @@ export type Enum_ControlNetLoader_control_net_name =
     | 't2iadapter_sketch_sd14v1.pth'
 export type Enum_StyleModelLoader_style_model_name = 't2iadapter_style_sd14v1.pth'
 export type Enum_CLIPVisionLoader_clip_name = 'clip_vit14.bin'
-export type Enum_ImageStyleFilter_style =
+export type Enum_WASImageStyleFilter_style =
     | '1977'
     | 'aden'
     | 'brannan'
@@ -557,7 +125,7 @@ export type Enum_ImageStyleFilter_style =
     | 'walden'
     | 'willow'
     | 'xpro2'
-export type Enum_ImageBlendingMode_mode =
+export type Enum_WASImageBlendingMode_mode =
     | 'add'
     | 'color'
     | 'color_burn'
@@ -572,17 +140,17 @@ export type Enum_ImageBlendingMode_mode =
     | 'overlay'
     | 'screen'
     | 'soft_light'
-export type Enum_ImageFlip_mode = 'horizontal' | 'vertical'
-export type Enum_ImageRotate_mode = 'internal' | 'transpose'
-export type Enum_ImageRotate_sampler = 'bicubic' | 'bilinear' | 'nearest'
-export type Enum_ImageCannyFilter_enable_threshold = 'false' | 'true'
-export type Enum_ImageEdgeDetectionFilter_mode = 'laplacian' | 'normal'
-export type Enum_ImageFDOFFilter_mode = 'box' | 'gaussian' | 'mock'
-export type Enum_ImageSave_extension = 'gif' | 'jpeg' | 'png' | 'tiff'
-export type Enum_ImageSelectChannel_channel = 'blue' | 'green' | 'red'
-export type Enum_LatentUpscaleByFactorWAS_mode = 'bicubic' | 'bilinear'
-export type Enum_MiDaSDepthApproximation_midas_model = 'DPT_Hybrid' | 'DPT_Large' | 'DPT_Small'
-export type Enum_MiDaSMaskImage_remove = 'background' | 'foregroud'
+export type Enum_WASImageFlip_mode = 'horizontal' | 'vertical'
+export type Enum_WASImageRotate_mode = 'internal' | 'transpose'
+export type Enum_WASImageRotate_sampler = 'bicubic' | 'bilinear' | 'nearest'
+export type Enum_WASImageCannyFilter_enable_threshold = 'false' | 'true'
+export type Enum_WASImageEdgeDetectionFilter_mode = 'laplacian' | 'normal'
+export type Enum_WASImageFDOFFilter_mode = 'box' | 'gaussian' | 'mock'
+export type Enum_WASImageSave_extension = 'gif' | 'jpeg' | 'png' | 'tiff'
+export type Enum_WASImageSelectChannel_channel = 'blue' | 'green' | 'red'
+export type Enum_WASLatentUpscaleByFactorWAS_mode = 'bicubic' | 'bilinear'
+export type Enum_WASMiDaSDepthApproximation_midas_model = 'DPT_Hybrid' | 'DPT_Large' | 'DPT_Small'
+export type Enum_WASMiDaSMaskImage_remove = 'background' | 'foregroud'
 export type Enum_UpscaleModelLoader_model_name = 'RealESRGAN_x2.pth' | 'RealESRGAN_x4.pth'
 
 // INTERFACES --------------------------
@@ -620,19 +188,19 @@ export interface HasSingle_Enum_CLIPLoader_clip_name { _Enum_CLIPLoader_clip_nam
 export interface HasSingle_Enum_ControlNetLoader_control_net_name { _Enum_ControlNetLoader_control_net_name: Enum_ControlNetLoader_control_net_name } // prettier-ignore
 export interface HasSingle_Enum_StyleModelLoader_style_model_name { _Enum_StyleModelLoader_style_model_name: Enum_StyleModelLoader_style_model_name } // prettier-ignore
 export interface HasSingle_Enum_CLIPVisionLoader_clip_name { _Enum_CLIPVisionLoader_clip_name: Enum_CLIPVisionLoader_clip_name } // prettier-ignore
-export interface HasSingle_Enum_ImageStyleFilter_style { _Enum_ImageStyleFilter_style: Enum_ImageStyleFilter_style } // prettier-ignore
-export interface HasSingle_Enum_ImageBlendingMode_mode { _Enum_ImageBlendingMode_mode: Enum_ImageBlendingMode_mode } // prettier-ignore
-export interface HasSingle_Enum_ImageFlip_mode { _Enum_ImageFlip_mode: Enum_ImageFlip_mode } // prettier-ignore
-export interface HasSingle_Enum_ImageRotate_mode { _Enum_ImageRotate_mode: Enum_ImageRotate_mode } // prettier-ignore
-export interface HasSingle_Enum_ImageRotate_sampler { _Enum_ImageRotate_sampler: Enum_ImageRotate_sampler } // prettier-ignore
-export interface HasSingle_Enum_ImageCannyFilter_enable_threshold { _Enum_ImageCannyFilter_enable_threshold: Enum_ImageCannyFilter_enable_threshold } // prettier-ignore
-export interface HasSingle_Enum_ImageEdgeDetectionFilter_mode { _Enum_ImageEdgeDetectionFilter_mode: Enum_ImageEdgeDetectionFilter_mode } // prettier-ignore
-export interface HasSingle_Enum_ImageFDOFFilter_mode { _Enum_ImageFDOFFilter_mode: Enum_ImageFDOFFilter_mode } // prettier-ignore
-export interface HasSingle_Enum_ImageSave_extension { _Enum_ImageSave_extension: Enum_ImageSave_extension } // prettier-ignore
-export interface HasSingle_Enum_ImageSelectChannel_channel { _Enum_ImageSelectChannel_channel: Enum_ImageSelectChannel_channel } // prettier-ignore
-export interface HasSingle_Enum_LatentUpscaleByFactorWAS_mode { _Enum_LatentUpscaleByFactorWAS_mode: Enum_LatentUpscaleByFactorWAS_mode } // prettier-ignore
-export interface HasSingle_Enum_MiDaSDepthApproximation_midas_model { _Enum_MiDaSDepthApproximation_midas_model: Enum_MiDaSDepthApproximation_midas_model } // prettier-ignore
-export interface HasSingle_Enum_MiDaSMaskImage_remove { _Enum_MiDaSMaskImage_remove: Enum_MiDaSMaskImage_remove } // prettier-ignore
+export interface HasSingle_Enum_WASImageStyleFilter_style { _Enum_WASImageStyleFilter_style: Enum_WASImageStyleFilter_style } // prettier-ignore
+export interface HasSingle_Enum_WASImageBlendingMode_mode { _Enum_WASImageBlendingMode_mode: Enum_WASImageBlendingMode_mode } // prettier-ignore
+export interface HasSingle_Enum_WASImageFlip_mode { _Enum_WASImageFlip_mode: Enum_WASImageFlip_mode } // prettier-ignore
+export interface HasSingle_Enum_WASImageRotate_mode { _Enum_WASImageRotate_mode: Enum_WASImageRotate_mode } // prettier-ignore
+export interface HasSingle_Enum_WASImageRotate_sampler { _Enum_WASImageRotate_sampler: Enum_WASImageRotate_sampler } // prettier-ignore
+export interface HasSingle_Enum_WASImageCannyFilter_enable_threshold { _Enum_WASImageCannyFilter_enable_threshold: Enum_WASImageCannyFilter_enable_threshold } // prettier-ignore
+export interface HasSingle_Enum_WASImageEdgeDetectionFilter_mode { _Enum_WASImageEdgeDetectionFilter_mode: Enum_WASImageEdgeDetectionFilter_mode } // prettier-ignore
+export interface HasSingle_Enum_WASImageFDOFFilter_mode { _Enum_WASImageFDOFFilter_mode: Enum_WASImageFDOFFilter_mode } // prettier-ignore
+export interface HasSingle_Enum_WASImageSave_extension { _Enum_WASImageSave_extension: Enum_WASImageSave_extension } // prettier-ignore
+export interface HasSingle_Enum_WASImageSelectChannel_channel { _Enum_WASImageSelectChannel_channel: Enum_WASImageSelectChannel_channel } // prettier-ignore
+export interface HasSingle_Enum_WASLatentUpscaleByFactorWAS_mode { _Enum_WASLatentUpscaleByFactorWAS_mode: Enum_WASLatentUpscaleByFactorWAS_mode } // prettier-ignore
+export interface HasSingle_Enum_WASMiDaSDepthApproximation_midas_model { _Enum_WASMiDaSDepthApproximation_midas_model: Enum_WASMiDaSDepthApproximation_midas_model } // prettier-ignore
+export interface HasSingle_Enum_WASMiDaSMaskImage_remove { _Enum_WASMiDaSMaskImage_remove: Enum_WASMiDaSMaskImage_remove } // prettier-ignore
 export interface HasSingle_Enum_UpscaleModelLoader_model_name { _Enum_UpscaleModelLoader_model_name: Enum_UpscaleModelLoader_model_name } // prettier-ignore
 
 // NODES -------------------------------
@@ -1089,12 +657,23 @@ export type VAEEncodeTiled_input = {
 }
 
 // |=============================================================================|
-// | ImageFilterAdjustments                                                      |
+// | TomePatchModel                                                              |
 // |=============================================================================|
-export interface ImageFilterAdjustments extends HasSingle_IMAGE, ComfyNode<ImageFilterAdjustments_input> {
+export interface TomePatchModel extends HasSingle_MODEL, ComfyNode<TomePatchModel_input> {
+    MODEL: ComfyNodeOutput<'MODEL', 0>
+}
+export type TomePatchModel_input = {
+    model: MODEL | HasSingle_MODEL
+    ratio: FLOAT
+}
+
+// |=============================================================================|
+// | WASImageFilterAdjustments                                                   |
+// |=============================================================================|
+export interface WASImageFilterAdjustments extends HasSingle_IMAGE, ComfyNode<WASImageFilterAdjustments_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageFilterAdjustments_input = {
+export type WASImageFilterAdjustments_input = {
     image: IMAGE | HasSingle_IMAGE
     brightness: FLOAT
     contrast: FLOAT
@@ -1106,47 +685,47 @@ export type ImageFilterAdjustments_input = {
 }
 
 // |=============================================================================|
-// | ImageStyleFilter                                                            |
+// | WASImageStyleFilter                                                         |
 // |=============================================================================|
-export interface ImageStyleFilter extends HasSingle_IMAGE, ComfyNode<ImageStyleFilter_input> {
+export interface WASImageStyleFilter extends HasSingle_IMAGE, ComfyNode<WASImageStyleFilter_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageStyleFilter_input = {
+export type WASImageStyleFilter_input = {
     image: IMAGE | HasSingle_IMAGE
-    style: Enum_ImageStyleFilter_style | HasSingle_Enum_ImageStyleFilter_style
+    style: Enum_WASImageStyleFilter_style | HasSingle_Enum_WASImageStyleFilter_style
 }
 
 // |=============================================================================|
-// | ImageBlendingMode                                                           |
+// | WASImageBlendingMode                                                        |
 // |=============================================================================|
-export interface ImageBlendingMode extends HasSingle_IMAGE, ComfyNode<ImageBlendingMode_input> {
+export interface WASImageBlendingMode extends HasSingle_IMAGE, ComfyNode<WASImageBlendingMode_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageBlendingMode_input = {
+export type WASImageBlendingMode_input = {
     image_a: IMAGE | HasSingle_IMAGE
     image_b: IMAGE | HasSingle_IMAGE
-    mode: Enum_ImageBlendingMode_mode | HasSingle_Enum_ImageBlendingMode_mode
+    mode: Enum_WASImageBlendingMode_mode | HasSingle_Enum_WASImageBlendingMode_mode
 }
 
 // |=============================================================================|
-// | ImageBlend                                                                  |
+// | WASImageBlend                                                               |
 // |=============================================================================|
-export interface ImageBlend extends HasSingle_IMAGE, ComfyNode<ImageBlend_input> {
+export interface WASImageBlend extends HasSingle_IMAGE, ComfyNode<WASImageBlend_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageBlend_input = {
+export type WASImageBlend_input = {
     image_a: IMAGE | HasSingle_IMAGE
     image_b: IMAGE | HasSingle_IMAGE
     blend_percentage: FLOAT
 }
 
 // |=============================================================================|
-// | ImageBlendByMask                                                            |
+// | WASImageBlendByMask                                                         |
 // |=============================================================================|
-export interface ImageBlendByMask extends HasSingle_IMAGE, ComfyNode<ImageBlendByMask_input> {
+export interface WASImageBlendByMask extends HasSingle_IMAGE, ComfyNode<WASImageBlendByMask_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageBlendByMask_input = {
+export type WASImageBlendByMask_input = {
     image_a: IMAGE | HasSingle_IMAGE
     image_b: IMAGE | HasSingle_IMAGE
     mask: IMAGE | HasSingle_IMAGE
@@ -1154,12 +733,12 @@ export type ImageBlendByMask_input = {
 }
 
 // |=============================================================================|
-// | ImageRemoveColor                                                            |
+// | WASImageRemoveColor                                                         |
 // |=============================================================================|
-export interface ImageRemoveColor extends HasSingle_IMAGE, ComfyNode<ImageRemoveColor_input> {
+export interface WASImageRemoveColor extends HasSingle_IMAGE, ComfyNode<WASImageRemoveColor_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageRemoveColor_input = {
+export type WASImageRemoveColor_input = {
     image: IMAGE | HasSingle_IMAGE
     target_red: INT
     target_green: INT
@@ -1171,23 +750,23 @@ export type ImageRemoveColor_input = {
 }
 
 // |=============================================================================|
-// | ImageThreshold                                                              |
+// | WASImageThreshold                                                           |
 // |=============================================================================|
-export interface ImageThreshold extends HasSingle_IMAGE, ComfyNode<ImageThreshold_input> {
+export interface WASImageThreshold extends HasSingle_IMAGE, ComfyNode<WASImageThreshold_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageThreshold_input = {
+export type WASImageThreshold_input = {
     image: IMAGE | HasSingle_IMAGE
     threshold: FLOAT
 }
 
 // |=============================================================================|
-// | ImageChromaticAberration                                                    |
+// | WASImageChromaticAberration                                                 |
 // |=============================================================================|
-export interface ImageChromaticAberration extends HasSingle_IMAGE, ComfyNode<ImageChromaticAberration_input> {
+export interface WASImageChromaticAberration extends HasSingle_IMAGE, ComfyNode<WASImageChromaticAberration_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageChromaticAberration_input = {
+export type WASImageChromaticAberration_input = {
     image: IMAGE | HasSingle_IMAGE
     red_offset: INT
     green_offset: INT
@@ -1196,24 +775,24 @@ export type ImageChromaticAberration_input = {
 }
 
 // |=============================================================================|
-// | ImageBloomFilter                                                            |
+// | WASImageBloomFilter                                                         |
 // |=============================================================================|
-export interface ImageBloomFilter extends HasSingle_IMAGE, ComfyNode<ImageBloomFilter_input> {
+export interface WASImageBloomFilter extends HasSingle_IMAGE, ComfyNode<WASImageBloomFilter_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageBloomFilter_input = {
+export type WASImageBloomFilter_input = {
     image: IMAGE | HasSingle_IMAGE
     radius: FLOAT
     intensity: FLOAT
 }
 
 // |=============================================================================|
-// | ImageBlank                                                                  |
+// | WASImageBlank                                                               |
 // |=============================================================================|
-export interface ImageBlank extends HasSingle_IMAGE, ComfyNode<ImageBlank_input> {
+export interface WASImageBlank extends HasSingle_IMAGE, ComfyNode<WASImageBlank_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageBlank_input = {
+export type WASImageBlank_input = {
     width: INT
     height: INT
     red: INT
@@ -1222,12 +801,12 @@ export type ImageBlank_input = {
 }
 
 // |=============================================================================|
-// | ImageFilmGrain                                                              |
+// | WASImageFilmGrain                                                           |
 // |=============================================================================|
-export interface ImageFilmGrain extends HasSingle_IMAGE, ComfyNode<ImageFilmGrain_input> {
+export interface WASImageFilmGrain extends HasSingle_IMAGE, ComfyNode<WASImageFilmGrain_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageFilmGrain_input = {
+export type WASImageFilmGrain_input = {
     image: IMAGE | HasSingle_IMAGE
     density: FLOAT
     intensity: FLOAT
@@ -1236,86 +815,86 @@ export type ImageFilmGrain_input = {
 }
 
 // |=============================================================================|
-// | ImageFlip                                                                   |
+// | WASImageFlip                                                                |
 // |=============================================================================|
-export interface ImageFlip extends HasSingle_IMAGE, ComfyNode<ImageFlip_input> {
+export interface WASImageFlip extends HasSingle_IMAGE, ComfyNode<WASImageFlip_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageFlip_input = {
+export type WASImageFlip_input = {
     image: IMAGE | HasSingle_IMAGE
-    mode: Enum_ImageFlip_mode | HasSingle_Enum_ImageFlip_mode
+    mode: Enum_WASImageFlip_mode | HasSingle_Enum_WASImageFlip_mode
 }
 
 // |=============================================================================|
-// | ImageRotate                                                                 |
+// | WASImageRotate                                                              |
 // |=============================================================================|
-export interface ImageRotate extends HasSingle_IMAGE, ComfyNode<ImageRotate_input> {
+export interface WASImageRotate extends HasSingle_IMAGE, ComfyNode<WASImageRotate_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageRotate_input = {
+export type WASImageRotate_input = {
     image: IMAGE | HasSingle_IMAGE
-    mode: Enum_ImageRotate_mode | HasSingle_Enum_ImageRotate_mode
+    mode: Enum_WASImageRotate_mode | HasSingle_Enum_WASImageRotate_mode
     rotation: INT
-    sampler: Enum_ImageRotate_sampler | HasSingle_Enum_ImageRotate_sampler
+    sampler: Enum_WASImageRotate_sampler | HasSingle_Enum_WASImageRotate_sampler
 }
 
 // |=============================================================================|
-// | ImageNovaFilter                                                             |
+// | WASImageNovaFilter                                                          |
 // |=============================================================================|
-export interface ImageNovaFilter extends HasSingle_IMAGE, ComfyNode<ImageNovaFilter_input> {
+export interface WASImageNovaFilter extends HasSingle_IMAGE, ComfyNode<WASImageNovaFilter_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageNovaFilter_input = {
+export type WASImageNovaFilter_input = {
     image: IMAGE | HasSingle_IMAGE
     amplitude: FLOAT
     frequency: FLOAT
 }
 
 // |=============================================================================|
-// | ImageCannyFilter                                                            |
+// | WASImageCannyFilter                                                         |
 // |=============================================================================|
-export interface ImageCannyFilter extends HasSingle_IMAGE, ComfyNode<ImageCannyFilter_input> {
+export interface WASImageCannyFilter extends HasSingle_IMAGE, ComfyNode<WASImageCannyFilter_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageCannyFilter_input = {
+export type WASImageCannyFilter_input = {
     image: IMAGE | HasSingle_IMAGE
-    enable_threshold: Enum_ImageCannyFilter_enable_threshold | HasSingle_Enum_ImageCannyFilter_enable_threshold
+    enable_threshold: Enum_WASImageCannyFilter_enable_threshold | HasSingle_Enum_WASImageCannyFilter_enable_threshold
     threshold_low: FLOAT
     threshold_high: FLOAT
 }
 
 // |=============================================================================|
-// | ImageEdgeDetectionFilter                                                    |
+// | WASImageEdgeDetectionFilter                                                 |
 // |=============================================================================|
-export interface ImageEdgeDetectionFilter extends HasSingle_IMAGE, ComfyNode<ImageEdgeDetectionFilter_input> {
+export interface WASImageEdgeDetectionFilter extends HasSingle_IMAGE, ComfyNode<WASImageEdgeDetectionFilter_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageEdgeDetectionFilter_input = {
+export type WASImageEdgeDetectionFilter_input = {
     image: IMAGE | HasSingle_IMAGE
-    mode: Enum_ImageEdgeDetectionFilter_mode | HasSingle_Enum_ImageEdgeDetectionFilter_mode
+    mode: Enum_WASImageEdgeDetectionFilter_mode | HasSingle_Enum_WASImageEdgeDetectionFilter_mode
 }
 
 // |=============================================================================|
-// | ImageFDOFFilter                                                             |
+// | WASImageFDOFFilter                                                          |
 // |=============================================================================|
-export interface ImageFDOFFilter extends HasSingle_IMAGE, ComfyNode<ImageFDOFFilter_input> {
+export interface WASImageFDOFFilter extends HasSingle_IMAGE, ComfyNode<WASImageFDOFFilter_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageFDOFFilter_input = {
+export type WASImageFDOFFilter_input = {
     image: IMAGE | HasSingle_IMAGE
     depth: IMAGE | HasSingle_IMAGE
-    mode: Enum_ImageFDOFFilter_mode | HasSingle_Enum_ImageFDOFFilter_mode
+    mode: Enum_WASImageFDOFFilter_mode | HasSingle_Enum_WASImageFDOFFilter_mode
     radius: INT
     samples: INT
 }
 
 // |=============================================================================|
-// | ImageMedianFilter                                                           |
+// | WASImageMedianFilter                                                        |
 // |=============================================================================|
-export interface ImageMedianFilter extends HasSingle_IMAGE, ComfyNode<ImageMedianFilter_input> {
+export interface WASImageMedianFilter extends HasSingle_IMAGE, ComfyNode<WASImageMedianFilter_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageMedianFilter_input = {
+export type WASImageMedianFilter_input = {
     image: IMAGE | HasSingle_IMAGE
     diameter: INT
     sigma_color: FLOAT
@@ -1323,35 +902,35 @@ export type ImageMedianFilter_input = {
 }
 
 // |=============================================================================|
-// | ImageSave                                                                   |
+// | WASImageSave                                                                |
 // |=============================================================================|
-export interface ImageSave extends ComfyNode<ImageSave_input> {}
-export type ImageSave_input = {
+export interface WASImageSave extends ComfyNode<WASImageSave_input> {}
+export type WASImageSave_input = {
     images: IMAGE | HasSingle_IMAGE
     output_path: STRING
     filename_prefix: STRING
-    extension: Enum_ImageSave_extension | HasSingle_Enum_ImageSave_extension
+    extension: Enum_WASImageSave_extension | HasSingle_Enum_WASImageSave_extension
     quality: INT
 }
 
 // |=============================================================================|
-// | ImageLoad                                                                   |
+// | WASImageLoad                                                                |
 // |=============================================================================|
-export interface ImageLoad extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImageLoad_input> {
+export interface WASImageLoad extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<WASImageLoad_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
     MASK: ComfyNodeOutput<'MASK', 1>
 }
-export type ImageLoad_input = {
+export type WASImageLoad_input = {
     image_path: STRING
 }
 
 // |=============================================================================|
-// | ImageLevelsAdjustment                                                       |
+// | WASImageLevelsAdjustment                                                    |
 // |=============================================================================|
-export interface ImageLevelsAdjustment extends HasSingle_IMAGE, ComfyNode<ImageLevelsAdjustment_input> {
+export interface WASImageLevelsAdjustment extends HasSingle_IMAGE, ComfyNode<WASImageLevelsAdjustment_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageLevelsAdjustment_input = {
+export type WASImageLevelsAdjustment_input = {
     image: IMAGE | HasSingle_IMAGE
     black_level: FLOAT
     mid_level: FLOAT
@@ -1359,35 +938,35 @@ export type ImageLevelsAdjustment_input = {
 }
 
 // |=============================================================================|
-// | ImageHighPassFilter                                                         |
+// | WASImageHighPassFilter                                                      |
 // |=============================================================================|
-export interface ImageHighPassFilter extends HasSingle_IMAGE, ComfyNode<ImageHighPassFilter_input> {
+export interface WASImageHighPassFilter extends HasSingle_IMAGE, ComfyNode<WASImageHighPassFilter_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageHighPassFilter_input = {
+export type WASImageHighPassFilter_input = {
     image: IMAGE | HasSingle_IMAGE
     radius: INT
     strength: FLOAT
 }
 
 // |=============================================================================|
-// | TensorBatchToImage                                                          |
+// | WASTensorBatchToImage                                                       |
 // |=============================================================================|
-export interface TensorBatchToImage extends HasSingle_IMAGE, ComfyNode<TensorBatchToImage_input> {
+export interface WASTensorBatchToImage extends HasSingle_IMAGE, ComfyNode<WASTensorBatchToImage_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type TensorBatchToImage_input = {
+export type WASTensorBatchToImage_input = {
     images_batch: IMAGE | HasSingle_IMAGE
     batch_image_number: INT
 }
 
 // |=============================================================================|
-// | ImageSelectColor                                                            |
+// | WASImageSelectColor                                                         |
 // |=============================================================================|
-export interface ImageSelectColor extends HasSingle_IMAGE, ComfyNode<ImageSelectColor_input> {
+export interface WASImageSelectColor extends HasSingle_IMAGE, ComfyNode<WASImageSelectColor_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageSelectColor_input = {
+export type WASImageSelectColor_input = {
     image: IMAGE | HasSingle_IMAGE
     red: INT
     green: INT
@@ -1396,89 +975,89 @@ export type ImageSelectColor_input = {
 }
 
 // |=============================================================================|
-// | ImageSelectChannel                                                          |
+// | WASImageSelectChannel                                                       |
 // |=============================================================================|
-export interface ImageSelectChannel extends HasSingle_IMAGE, ComfyNode<ImageSelectChannel_input> {
+export interface WASImageSelectChannel extends HasSingle_IMAGE, ComfyNode<WASImageSelectChannel_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageSelectChannel_input = {
+export type WASImageSelectChannel_input = {
     image: IMAGE | HasSingle_IMAGE
-    channel: Enum_ImageSelectChannel_channel | HasSingle_Enum_ImageSelectChannel_channel
+    channel: Enum_WASImageSelectChannel_channel | HasSingle_Enum_WASImageSelectChannel_channel
 }
 
 // |=============================================================================|
-// | ImageMixRGBChannels                                                         |
+// | WASImageMixRGBChannels                                                      |
 // |=============================================================================|
-export interface ImageMixRGBChannels extends HasSingle_IMAGE, ComfyNode<ImageMixRGBChannels_input> {
+export interface WASImageMixRGBChannels extends HasSingle_IMAGE, ComfyNode<WASImageMixRGBChannels_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type ImageMixRGBChannels_input = {
+export type WASImageMixRGBChannels_input = {
     red_channel: IMAGE | HasSingle_IMAGE
     green_channel: IMAGE | HasSingle_IMAGE
     blue_channel: IMAGE | HasSingle_IMAGE
 }
 
 // |=============================================================================|
-// | LatentUpscaleByFactorWAS                                                    |
+// | WASLatentUpscaleByFactorWAS                                                 |
 // |=============================================================================|
-export interface LatentUpscaleByFactorWAS extends HasSingle_LATENT, ComfyNode<LatentUpscaleByFactorWAS_input> {
+export interface WASLatentUpscaleByFactorWAS extends HasSingle_LATENT, ComfyNode<WASLatentUpscaleByFactorWAS_input> {
     LATENT: ComfyNodeOutput<'LATENT', 0>
 }
-export type LatentUpscaleByFactorWAS_input = {
+export type WASLatentUpscaleByFactorWAS_input = {
     samples: LATENT | HasSingle_LATENT
-    mode: Enum_LatentUpscaleByFactorWAS_mode | HasSingle_Enum_LatentUpscaleByFactorWAS_mode
+    mode: Enum_WASLatentUpscaleByFactorWAS_mode | HasSingle_Enum_WASLatentUpscaleByFactorWAS_mode
     factor: FLOAT
-    align: Enum_ImageCannyFilter_enable_threshold | HasSingle_Enum_ImageCannyFilter_enable_threshold
+    align: Enum_WASImageCannyFilter_enable_threshold | HasSingle_Enum_WASImageCannyFilter_enable_threshold
 }
 
 // |=============================================================================|
-// | LatentNoiseInjection                                                        |
+// | WASLatentNoiseInjection                                                     |
 // |=============================================================================|
-export interface LatentNoiseInjection extends HasSingle_LATENT, ComfyNode<LatentNoiseInjection_input> {
+export interface WASLatentNoiseInjection extends HasSingle_LATENT, ComfyNode<WASLatentNoiseInjection_input> {
     LATENT: ComfyNodeOutput<'LATENT', 0>
 }
-export type LatentNoiseInjection_input = {
+export type WASLatentNoiseInjection_input = {
     samples: LATENT | HasSingle_LATENT
     noise_std: FLOAT
 }
 
 // |=============================================================================|
-// | ImageToLatentMask                                                           |
+// | WASImageToLatentMask                                                        |
 // |=============================================================================|
-export interface ImageToLatentMask extends HasSingle_MASK, ComfyNode<ImageToLatentMask_input> {
+export interface WASImageToLatentMask extends HasSingle_MASK, ComfyNode<WASImageToLatentMask_input> {
     MASK: ComfyNodeOutput<'MASK', 0>
 }
-export type ImageToLatentMask_input = {
+export type WASImageToLatentMask_input = {
     image: IMAGE | HasSingle_IMAGE
     channel: Enum_LoadImageMask_channel | HasSingle_Enum_LoadImageMask_channel
 }
 
 // |=============================================================================|
-// | MiDaSDepthApproximation                                                     |
+// | WASMiDaSDepthApproximation                                                  |
 // |=============================================================================|
-export interface MiDaSDepthApproximation extends HasSingle_IMAGE, ComfyNode<MiDaSDepthApproximation_input> {
+export interface WASMiDaSDepthApproximation extends HasSingle_IMAGE, ComfyNode<WASMiDaSDepthApproximation_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
 }
-export type MiDaSDepthApproximation_input = {
+export type WASMiDaSDepthApproximation_input = {
     image: IMAGE | HasSingle_IMAGE
-    use_cpu: Enum_ImageCannyFilter_enable_threshold | HasSingle_Enum_ImageCannyFilter_enable_threshold
-    midas_model: Enum_MiDaSDepthApproximation_midas_model | HasSingle_Enum_MiDaSDepthApproximation_midas_model
-    invert_depth: Enum_ImageCannyFilter_enable_threshold | HasSingle_Enum_ImageCannyFilter_enable_threshold
+    use_cpu: Enum_WASImageCannyFilter_enable_threshold | HasSingle_Enum_WASImageCannyFilter_enable_threshold
+    midas_model: Enum_WASMiDaSDepthApproximation_midas_model | HasSingle_Enum_WASMiDaSDepthApproximation_midas_model
+    invert_depth: Enum_WASImageCannyFilter_enable_threshold | HasSingle_Enum_WASImageCannyFilter_enable_threshold
 }
 
 // |=============================================================================|
-// | MiDaSMaskImage                                                              |
+// | WASMiDaSMaskImage                                                           |
 // |=============================================================================|
-export interface MiDaSMaskImage extends ComfyNode<MiDaSMaskImage_input> {
+export interface WASMiDaSMaskImage extends ComfyNode<WASMiDaSMaskImage_input> {
     IMAGE: ComfyNodeOutput<'IMAGE', 0>
     IMAGE_1: ComfyNodeOutput<'IMAGE', 1>
 }
-export type MiDaSMaskImage_input = {
+export type WASMiDaSMaskImage_input = {
     image: IMAGE | HasSingle_IMAGE
-    use_cpu: Enum_ImageCannyFilter_enable_threshold | HasSingle_Enum_ImageCannyFilter_enable_threshold
-    midas_model: Enum_MiDaSDepthApproximation_midas_model | HasSingle_Enum_MiDaSDepthApproximation_midas_model
-    remove: Enum_MiDaSMaskImage_remove | HasSingle_Enum_MiDaSMaskImage_remove
-    threshold: Enum_ImageCannyFilter_enable_threshold | HasSingle_Enum_ImageCannyFilter_enable_threshold
+    use_cpu: Enum_WASImageCannyFilter_enable_threshold | HasSingle_Enum_WASImageCannyFilter_enable_threshold
+    midas_model: Enum_WASMiDaSDepthApproximation_midas_model | HasSingle_Enum_WASMiDaSDepthApproximation_midas_model
+    remove: Enum_WASMiDaSMaskImage_remove | HasSingle_Enum_WASMiDaSMaskImage_remove
+    threshold: Enum_WASImageCannyFilter_enable_threshold | HasSingle_Enum_WASImageCannyFilter_enable_threshold
     threshold_low: FLOAT
     threshold_mid: FLOAT
     threshold_high: FLOAT
@@ -1489,12 +1068,12 @@ export type MiDaSMaskImage_input = {
 }
 
 // |=============================================================================|
-// | CLIPTextEncodeNSP                                                           |
+// | WASCLIPTextEncodeNSP                                                        |
 // |=============================================================================|
-export interface CLIPTextEncodeNSP extends HasSingle_CONDITIONING, ComfyNode<CLIPTextEncodeNSP_input> {
+export interface WASCLIPTextEncodeNSP extends HasSingle_CONDITIONING, ComfyNode<WASCLIPTextEncodeNSP_input> {
     CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
 }
-export type CLIPTextEncodeNSP_input = {
+export type WASCLIPTextEncodeNSP_input = {
     noodle_key: STRING
     seed: INT
     text: STRING
@@ -1502,12 +1081,12 @@ export type CLIPTextEncodeNSP_input = {
 }
 
 // |=============================================================================|
-// | KSamplerWAS                                                                 |
+// | WASKSamplerWAS                                                              |
 // |=============================================================================|
-export interface KSamplerWAS extends HasSingle_LATENT, ComfyNode<KSamplerWAS_input> {
+export interface WASKSamplerWAS extends HasSingle_LATENT, ComfyNode<WASKSamplerWAS_input> {
     LATENT: ComfyNodeOutput<'LATENT', 0>
 }
-export type KSamplerWAS_input = {
+export type WASKSamplerWAS_input = {
     model: MODEL | HasSingle_MODEL
     seed: SEED | HasSingle_SEED
     steps: INT
@@ -1521,132 +1100,132 @@ export type KSamplerWAS_input = {
 }
 
 // |=============================================================================|
-// | Seed                                                                        |
+// | WASSeed                                                                     |
 // |=============================================================================|
-export interface Seed extends HasSingle_SEED, ComfyNode<Seed_input> {
+export interface WASSeed extends HasSingle_SEED, ComfyNode<WASSeed_input> {
     SEED: ComfyNodeOutput<'SEED', 0>
 }
-export type Seed_input = {
+export type WASSeed_input = {
     seed: INT
 }
 
 // |=============================================================================|
-// | TextMultiline                                                               |
+// | WASTextMultiline                                                            |
 // |=============================================================================|
-export interface TextMultiline extends HasSingle_ASCII, ComfyNode<TextMultiline_input> {
+export interface WASTextMultiline extends HasSingle_ASCII, ComfyNode<WASTextMultiline_input> {
     ASCII: ComfyNodeOutput<'ASCII', 0>
 }
-export type TextMultiline_input = {
+export type WASTextMultiline_input = {
     text: STRING
 }
 
 // |=============================================================================|
-// | TextString                                                                  |
+// | WASTextString                                                               |
 // |=============================================================================|
-export interface TextString extends HasSingle_ASCII, ComfyNode<TextString_input> {
+export interface WASTextString extends HasSingle_ASCII, ComfyNode<WASTextString_input> {
     ASCII: ComfyNodeOutput<'ASCII', 0>
 }
-export type TextString_input = {
+export type WASTextString_input = {
     text: STRING
 }
 
 // |=============================================================================|
-// | TextRandomLine                                                              |
+// | WASTextRandomLine                                                           |
 // |=============================================================================|
-export interface TextRandomLine extends HasSingle_ASCII, ComfyNode<TextRandomLine_input> {
+export interface WASTextRandomLine extends HasSingle_ASCII, ComfyNode<WASTextRandomLine_input> {
     ASCII: ComfyNodeOutput<'ASCII', 0>
 }
-export type TextRandomLine_input = {
+export type WASTextRandomLine_input = {
     text: ASCII | HasSingle_ASCII
     seed: INT
 }
 
 // |=============================================================================|
-// | TextToConditioning                                                          |
+// | WASTextToConditioning                                                       |
 // |=============================================================================|
-export interface TextToConditioning extends HasSingle_CONDITIONING, ComfyNode<TextToConditioning_input> {
+export interface WASTextToConditioning extends HasSingle_CONDITIONING, ComfyNode<WASTextToConditioning_input> {
     CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
 }
-export type TextToConditioning_input = {
+export type WASTextToConditioning_input = {
     clip: CLIP | HasSingle_CLIP
     text: ASCII | HasSingle_ASCII
 }
 
 // |=============================================================================|
-// | TextConcatenate                                                             |
+// | WASTextConcatenate                                                          |
 // |=============================================================================|
-export interface TextConcatenate extends HasSingle_ASCII, ComfyNode<TextConcatenate_input> {
+export interface WASTextConcatenate extends HasSingle_ASCII, ComfyNode<WASTextConcatenate_input> {
     ASCII: ComfyNodeOutput<'ASCII', 0>
 }
-export type TextConcatenate_input = {
+export type WASTextConcatenate_input = {
     text_a: ASCII | HasSingle_ASCII
     text_b: ASCII | HasSingle_ASCII
-    linebreak_addition: Enum_ImageCannyFilter_enable_threshold | HasSingle_Enum_ImageCannyFilter_enable_threshold
+    linebreak_addition: Enum_WASImageCannyFilter_enable_threshold | HasSingle_Enum_WASImageCannyFilter_enable_threshold
 }
 
 // |=============================================================================|
-// | TextFindAndReplace                                                          |
+// | WASTextFindAndReplace                                                       |
 // |=============================================================================|
-export interface TextFindAndReplace extends HasSingle_ASCII, ComfyNode<TextFindAndReplace_input> {
+export interface WASTextFindAndReplace extends HasSingle_ASCII, ComfyNode<WASTextFindAndReplace_input> {
     ASCII: ComfyNodeOutput<'ASCII', 0>
 }
-export type TextFindAndReplace_input = {
+export type WASTextFindAndReplace_input = {
     text: ASCII | HasSingle_ASCII
     find: STRING
     replace: STRING
 }
 
 // |=============================================================================|
-// | TextFindAndReplaceInput                                                     |
+// | WASTextFindAndReplaceInput                                                  |
 // |=============================================================================|
-export interface TextFindAndReplaceInput extends HasSingle_ASCII, ComfyNode<TextFindAndReplaceInput_input> {
+export interface WASTextFindAndReplaceInput extends HasSingle_ASCII, ComfyNode<WASTextFindAndReplaceInput_input> {
     ASCII: ComfyNodeOutput<'ASCII', 0>
 }
-export type TextFindAndReplaceInput_input = {
+export type WASTextFindAndReplaceInput_input = {
     text: ASCII | HasSingle_ASCII
     find: ASCII | HasSingle_ASCII
     replace: ASCII | HasSingle_ASCII
 }
 
 // |=============================================================================|
-// | TextParseNoodleSoupPrompts                                                  |
+// | WASTextParseNoodleSoupPrompts                                               |
 // |=============================================================================|
-export interface TextParseNoodleSoupPrompts extends HasSingle_ASCII, ComfyNode<TextParseNoodleSoupPrompts_input> {
+export interface WASTextParseNoodleSoupPrompts extends HasSingle_ASCII, ComfyNode<WASTextParseNoodleSoupPrompts_input> {
     ASCII: ComfyNodeOutput<'ASCII', 0>
 }
-export type TextParseNoodleSoupPrompts_input = {
+export type WASTextParseNoodleSoupPrompts_input = {
     noodle_key: STRING
     seed: INT
     text: ASCII | HasSingle_ASCII
 }
 
 // |=============================================================================|
-// | SaveTextFile                                                                |
+// | WASSaveTextFile                                                             |
 // |=============================================================================|
-export interface SaveTextFile extends ComfyNode<SaveTextFile_input> {}
-export type SaveTextFile_input = {
+export interface WASSaveTextFile extends ComfyNode<WASSaveTextFile_input> {}
+export type WASSaveTextFile_input = {
     text: ASCII | HasSingle_ASCII
     path: STRING
     filename: STRING
 }
 
 // |=============================================================================|
-// | LoadTextFile                                                                |
+// | WASLoadTextFile                                                             |
 // |=============================================================================|
-export interface LoadTextFile extends HasSingle_ASCII, ComfyNode<LoadTextFile_input> {
+export interface WASLoadTextFile extends HasSingle_ASCII, ComfyNode<WASLoadTextFile_input> {
     ASCII: ComfyNodeOutput<'ASCII', 0>
 }
-export type LoadTextFile_input = {
+export type WASLoadTextFile_input = {
     file_path: STRING
 }
 
 // |=============================================================================|
-// | TextToConsole                                                               |
+// | WASTextToConsole                                                            |
 // |=============================================================================|
-export interface TextToConsole extends HasSingle_ASCII, ComfyNode<TextToConsole_input> {
+export interface WASTextToConsole extends HasSingle_ASCII, ComfyNode<WASTextToConsole_input> {
     ASCII: ComfyNodeOutput<'ASCII', 0>
 }
-export type TextToConsole_input = {
+export type WASTextToConsole_input = {
     text: ASCII | HasSingle_ASCII
     label: STRING
 }
@@ -1711,51 +1290,52 @@ export type Schemas = {
     CLIPVisionLoader: ComfyNodeSchemaJSON
     VAEDecodeTiled: ComfyNodeSchemaJSON
     VAEEncodeTiled: ComfyNodeSchemaJSON
-    ImageFilterAdjustments: ComfyNodeSchemaJSON
-    ImageStyleFilter: ComfyNodeSchemaJSON
-    ImageBlendingMode: ComfyNodeSchemaJSON
-    ImageBlend: ComfyNodeSchemaJSON
-    ImageBlendByMask: ComfyNodeSchemaJSON
-    ImageRemoveColor: ComfyNodeSchemaJSON
-    ImageThreshold: ComfyNodeSchemaJSON
-    ImageChromaticAberration: ComfyNodeSchemaJSON
-    ImageBloomFilter: ComfyNodeSchemaJSON
-    ImageBlank: ComfyNodeSchemaJSON
-    ImageFilmGrain: ComfyNodeSchemaJSON
-    ImageFlip: ComfyNodeSchemaJSON
-    ImageRotate: ComfyNodeSchemaJSON
-    ImageNovaFilter: ComfyNodeSchemaJSON
-    ImageCannyFilter: ComfyNodeSchemaJSON
-    ImageEdgeDetectionFilter: ComfyNodeSchemaJSON
-    ImageFDOFFilter: ComfyNodeSchemaJSON
-    ImageMedianFilter: ComfyNodeSchemaJSON
-    ImageSave: ComfyNodeSchemaJSON
-    ImageLoad: ComfyNodeSchemaJSON
-    ImageLevelsAdjustment: ComfyNodeSchemaJSON
-    ImageHighPassFilter: ComfyNodeSchemaJSON
-    TensorBatchToImage: ComfyNodeSchemaJSON
-    ImageSelectColor: ComfyNodeSchemaJSON
-    ImageSelectChannel: ComfyNodeSchemaJSON
-    ImageMixRGBChannels: ComfyNodeSchemaJSON
-    LatentUpscaleByFactorWAS: ComfyNodeSchemaJSON
-    LatentNoiseInjection: ComfyNodeSchemaJSON
-    ImageToLatentMask: ComfyNodeSchemaJSON
-    MiDaSDepthApproximation: ComfyNodeSchemaJSON
-    MiDaSMaskImage: ComfyNodeSchemaJSON
-    CLIPTextEncodeNSP: ComfyNodeSchemaJSON
-    KSamplerWAS: ComfyNodeSchemaJSON
-    Seed: ComfyNodeSchemaJSON
-    TextMultiline: ComfyNodeSchemaJSON
-    TextString: ComfyNodeSchemaJSON
-    TextRandomLine: ComfyNodeSchemaJSON
-    TextToConditioning: ComfyNodeSchemaJSON
-    TextConcatenate: ComfyNodeSchemaJSON
-    TextFindAndReplace: ComfyNodeSchemaJSON
-    TextFindAndReplaceInput: ComfyNodeSchemaJSON
-    TextParseNoodleSoupPrompts: ComfyNodeSchemaJSON
-    SaveTextFile: ComfyNodeSchemaJSON
-    LoadTextFile: ComfyNodeSchemaJSON
-    TextToConsole: ComfyNodeSchemaJSON
+    TomePatchModel: ComfyNodeSchemaJSON
+    WASImageFilterAdjustments: ComfyNodeSchemaJSON
+    WASImageStyleFilter: ComfyNodeSchemaJSON
+    WASImageBlendingMode: ComfyNodeSchemaJSON
+    WASImageBlend: ComfyNodeSchemaJSON
+    WASImageBlendByMask: ComfyNodeSchemaJSON
+    WASImageRemoveColor: ComfyNodeSchemaJSON
+    WASImageThreshold: ComfyNodeSchemaJSON
+    WASImageChromaticAberration: ComfyNodeSchemaJSON
+    WASImageBloomFilter: ComfyNodeSchemaJSON
+    WASImageBlank: ComfyNodeSchemaJSON
+    WASImageFilmGrain: ComfyNodeSchemaJSON
+    WASImageFlip: ComfyNodeSchemaJSON
+    WASImageRotate: ComfyNodeSchemaJSON
+    WASImageNovaFilter: ComfyNodeSchemaJSON
+    WASImageCannyFilter: ComfyNodeSchemaJSON
+    WASImageEdgeDetectionFilter: ComfyNodeSchemaJSON
+    WASImageFDOFFilter: ComfyNodeSchemaJSON
+    WASImageMedianFilter: ComfyNodeSchemaJSON
+    WASImageSave: ComfyNodeSchemaJSON
+    WASImageLoad: ComfyNodeSchemaJSON
+    WASImageLevelsAdjustment: ComfyNodeSchemaJSON
+    WASImageHighPassFilter: ComfyNodeSchemaJSON
+    WASTensorBatchToImage: ComfyNodeSchemaJSON
+    WASImageSelectColor: ComfyNodeSchemaJSON
+    WASImageSelectChannel: ComfyNodeSchemaJSON
+    WASImageMixRGBChannels: ComfyNodeSchemaJSON
+    WASLatentUpscaleByFactorWAS: ComfyNodeSchemaJSON
+    WASLatentNoiseInjection: ComfyNodeSchemaJSON
+    WASImageToLatentMask: ComfyNodeSchemaJSON
+    WASMiDaSDepthApproximation: ComfyNodeSchemaJSON
+    WASMiDaSMaskImage: ComfyNodeSchemaJSON
+    WASCLIPTextEncodeNSP: ComfyNodeSchemaJSON
+    WASKSamplerWAS: ComfyNodeSchemaJSON
+    WASSeed: ComfyNodeSchemaJSON
+    WASTextMultiline: ComfyNodeSchemaJSON
+    WASTextString: ComfyNodeSchemaJSON
+    WASTextRandomLine: ComfyNodeSchemaJSON
+    WASTextToConditioning: ComfyNodeSchemaJSON
+    WASTextConcatenate: ComfyNodeSchemaJSON
+    WASTextFindAndReplace: ComfyNodeSchemaJSON
+    WASTextFindAndReplaceInput: ComfyNodeSchemaJSON
+    WASTextParseNoodleSoupPrompts: ComfyNodeSchemaJSON
+    WASSaveTextFile: ComfyNodeSchemaJSON
+    WASLoadTextFile: ComfyNodeSchemaJSON
+    WASTextToConsole: ComfyNodeSchemaJSON
     UpscaleModelLoader: ComfyNodeSchemaJSON
     ImageUpscaleWithModel: ComfyNodeSchemaJSON
 }
@@ -1800,56 +1380,55 @@ export interface ComfySetup {
     CLIPVisionLoader(args: CLIPVisionLoader_input, uid?: ComfyNodeUID): CLIPVisionLoader
     VAEDecodeTiled(args: VAEDecodeTiled_input, uid?: ComfyNodeUID): VAEDecodeTiled
     VAEEncodeTiled(args: VAEEncodeTiled_input, uid?: ComfyNodeUID): VAEEncodeTiled
-    ImageFilterAdjustments(args: ImageFilterAdjustments_input, uid?: ComfyNodeUID): ImageFilterAdjustments
-    ImageStyleFilter(args: ImageStyleFilter_input, uid?: ComfyNodeUID): ImageStyleFilter
-    ImageBlendingMode(args: ImageBlendingMode_input, uid?: ComfyNodeUID): ImageBlendingMode
-    ImageBlend(args: ImageBlend_input, uid?: ComfyNodeUID): ImageBlend
-    ImageBlendByMask(args: ImageBlendByMask_input, uid?: ComfyNodeUID): ImageBlendByMask
-    ImageRemoveColor(args: ImageRemoveColor_input, uid?: ComfyNodeUID): ImageRemoveColor
-    ImageThreshold(args: ImageThreshold_input, uid?: ComfyNodeUID): ImageThreshold
-    ImageChromaticAberration(args: ImageChromaticAberration_input, uid?: ComfyNodeUID): ImageChromaticAberration
-    ImageBloomFilter(args: ImageBloomFilter_input, uid?: ComfyNodeUID): ImageBloomFilter
-    ImageBlank(args: ImageBlank_input, uid?: ComfyNodeUID): ImageBlank
-    ImageFilmGrain(args: ImageFilmGrain_input, uid?: ComfyNodeUID): ImageFilmGrain
-    ImageFlip(args: ImageFlip_input, uid?: ComfyNodeUID): ImageFlip
-    ImageRotate(args: ImageRotate_input, uid?: ComfyNodeUID): ImageRotate
-    ImageNovaFilter(args: ImageNovaFilter_input, uid?: ComfyNodeUID): ImageNovaFilter
-    ImageCannyFilter(args: ImageCannyFilter_input, uid?: ComfyNodeUID): ImageCannyFilter
-    ImageEdgeDetectionFilter(args: ImageEdgeDetectionFilter_input, uid?: ComfyNodeUID): ImageEdgeDetectionFilter
-    ImageFDOFFilter(args: ImageFDOFFilter_input, uid?: ComfyNodeUID): ImageFDOFFilter
-    ImageMedianFilter(args: ImageMedianFilter_input, uid?: ComfyNodeUID): ImageMedianFilter
-    ImageSave(args: ImageSave_input, uid?: ComfyNodeUID): ImageSave
-    ImageLoad(args: ImageLoad_input, uid?: ComfyNodeUID): ImageLoad
-    ImageLevelsAdjustment(args: ImageLevelsAdjustment_input, uid?: ComfyNodeUID): ImageLevelsAdjustment
-    ImageHighPassFilter(args: ImageHighPassFilter_input, uid?: ComfyNodeUID): ImageHighPassFilter
-    TensorBatchToImage(args: TensorBatchToImage_input, uid?: ComfyNodeUID): TensorBatchToImage
-    ImageSelectColor(args: ImageSelectColor_input, uid?: ComfyNodeUID): ImageSelectColor
-    ImageSelectChannel(args: ImageSelectChannel_input, uid?: ComfyNodeUID): ImageSelectChannel
-    ImageMixRGBChannels(args: ImageMixRGBChannels_input, uid?: ComfyNodeUID): ImageMixRGBChannels
-    LatentUpscaleByFactorWAS(args: LatentUpscaleByFactorWAS_input, uid?: ComfyNodeUID): LatentUpscaleByFactorWAS
-    LatentNoiseInjection(args: LatentNoiseInjection_input, uid?: ComfyNodeUID): LatentNoiseInjection
-    ImageToLatentMask(args: ImageToLatentMask_input, uid?: ComfyNodeUID): ImageToLatentMask
-    MiDaSDepthApproximation(args: MiDaSDepthApproximation_input, uid?: ComfyNodeUID): MiDaSDepthApproximation
-    MiDaSMaskImage(args: MiDaSMaskImage_input, uid?: ComfyNodeUID): MiDaSMaskImage
-    CLIPTextEncodeNSP(args: CLIPTextEncodeNSP_input, uid?: ComfyNodeUID): CLIPTextEncodeNSP
-    KSamplerWAS(args: KSamplerWAS_input, uid?: ComfyNodeUID): KSamplerWAS
-    Seed(args: Seed_input, uid?: ComfyNodeUID): Seed
-    TextMultiline(args: TextMultiline_input, uid?: ComfyNodeUID): TextMultiline
-    TextString(args: TextString_input, uid?: ComfyNodeUID): TextString
-    TextRandomLine(args: TextRandomLine_input, uid?: ComfyNodeUID): TextRandomLine
-    TextToConditioning(args: TextToConditioning_input, uid?: ComfyNodeUID): TextToConditioning
-    TextConcatenate(args: TextConcatenate_input, uid?: ComfyNodeUID): TextConcatenate
-    TextFindAndReplace(args: TextFindAndReplace_input, uid?: ComfyNodeUID): TextFindAndReplace
-    TextFindAndReplaceInput(args: TextFindAndReplaceInput_input, uid?: ComfyNodeUID): TextFindAndReplaceInput
-    TextParseNoodleSoupPrompts(args: TextParseNoodleSoupPrompts_input, uid?: ComfyNodeUID): TextParseNoodleSoupPrompts
-    SaveTextFile(args: SaveTextFile_input, uid?: ComfyNodeUID): SaveTextFile
-    LoadTextFile(args: LoadTextFile_input, uid?: ComfyNodeUID): LoadTextFile
-    TextToConsole(args: TextToConsole_input, uid?: ComfyNodeUID): TextToConsole
+    TomePatchModel(args: TomePatchModel_input, uid?: ComfyNodeUID): TomePatchModel
+    WASImageFilterAdjustments(args: WASImageFilterAdjustments_input, uid?: ComfyNodeUID): WASImageFilterAdjustments
+    WASImageStyleFilter(args: WASImageStyleFilter_input, uid?: ComfyNodeUID): WASImageStyleFilter
+    WASImageBlendingMode(args: WASImageBlendingMode_input, uid?: ComfyNodeUID): WASImageBlendingMode
+    WASImageBlend(args: WASImageBlend_input, uid?: ComfyNodeUID): WASImageBlend
+    WASImageBlendByMask(args: WASImageBlendByMask_input, uid?: ComfyNodeUID): WASImageBlendByMask
+    WASImageRemoveColor(args: WASImageRemoveColor_input, uid?: ComfyNodeUID): WASImageRemoveColor
+    WASImageThreshold(args: WASImageThreshold_input, uid?: ComfyNodeUID): WASImageThreshold
+    WASImageChromaticAberration(args: WASImageChromaticAberration_input, uid?: ComfyNodeUID): WASImageChromaticAberration
+    WASImageBloomFilter(args: WASImageBloomFilter_input, uid?: ComfyNodeUID): WASImageBloomFilter
+    WASImageBlank(args: WASImageBlank_input, uid?: ComfyNodeUID): WASImageBlank
+    WASImageFilmGrain(args: WASImageFilmGrain_input, uid?: ComfyNodeUID): WASImageFilmGrain
+    WASImageFlip(args: WASImageFlip_input, uid?: ComfyNodeUID): WASImageFlip
+    WASImageRotate(args: WASImageRotate_input, uid?: ComfyNodeUID): WASImageRotate
+    WASImageNovaFilter(args: WASImageNovaFilter_input, uid?: ComfyNodeUID): WASImageNovaFilter
+    WASImageCannyFilter(args: WASImageCannyFilter_input, uid?: ComfyNodeUID): WASImageCannyFilter
+    WASImageEdgeDetectionFilter(args: WASImageEdgeDetectionFilter_input, uid?: ComfyNodeUID): WASImageEdgeDetectionFilter
+    WASImageFDOFFilter(args: WASImageFDOFFilter_input, uid?: ComfyNodeUID): WASImageFDOFFilter
+    WASImageMedianFilter(args: WASImageMedianFilter_input, uid?: ComfyNodeUID): WASImageMedianFilter
+    WASImageSave(args: WASImageSave_input, uid?: ComfyNodeUID): WASImageSave
+    WASImageLoad(args: WASImageLoad_input, uid?: ComfyNodeUID): WASImageLoad
+    WASImageLevelsAdjustment(args: WASImageLevelsAdjustment_input, uid?: ComfyNodeUID): WASImageLevelsAdjustment
+    WASImageHighPassFilter(args: WASImageHighPassFilter_input, uid?: ComfyNodeUID): WASImageHighPassFilter
+    WASTensorBatchToImage(args: WASTensorBatchToImage_input, uid?: ComfyNodeUID): WASTensorBatchToImage
+    WASImageSelectColor(args: WASImageSelectColor_input, uid?: ComfyNodeUID): WASImageSelectColor
+    WASImageSelectChannel(args: WASImageSelectChannel_input, uid?: ComfyNodeUID): WASImageSelectChannel
+    WASImageMixRGBChannels(args: WASImageMixRGBChannels_input, uid?: ComfyNodeUID): WASImageMixRGBChannels
+    WASLatentUpscaleByFactorWAS(args: WASLatentUpscaleByFactorWAS_input, uid?: ComfyNodeUID): WASLatentUpscaleByFactorWAS
+    WASLatentNoiseInjection(args: WASLatentNoiseInjection_input, uid?: ComfyNodeUID): WASLatentNoiseInjection
+    WASImageToLatentMask(args: WASImageToLatentMask_input, uid?: ComfyNodeUID): WASImageToLatentMask
+    WASMiDaSDepthApproximation(args: WASMiDaSDepthApproximation_input, uid?: ComfyNodeUID): WASMiDaSDepthApproximation
+    WASMiDaSMaskImage(args: WASMiDaSMaskImage_input, uid?: ComfyNodeUID): WASMiDaSMaskImage
+    WASCLIPTextEncodeNSP(args: WASCLIPTextEncodeNSP_input, uid?: ComfyNodeUID): WASCLIPTextEncodeNSP
+    WASKSamplerWAS(args: WASKSamplerWAS_input, uid?: ComfyNodeUID): WASKSamplerWAS
+    WASSeed(args: WASSeed_input, uid?: ComfyNodeUID): WASSeed
+    WASTextMultiline(args: WASTextMultiline_input, uid?: ComfyNodeUID): WASTextMultiline
+    WASTextString(args: WASTextString_input, uid?: ComfyNodeUID): WASTextString
+    WASTextRandomLine(args: WASTextRandomLine_input, uid?: ComfyNodeUID): WASTextRandomLine
+    WASTextToConditioning(args: WASTextToConditioning_input, uid?: ComfyNodeUID): WASTextToConditioning
+    WASTextConcatenate(args: WASTextConcatenate_input, uid?: ComfyNodeUID): WASTextConcatenate
+    WASTextFindAndReplace(args: WASTextFindAndReplace_input, uid?: ComfyNodeUID): WASTextFindAndReplace
+    WASTextFindAndReplaceInput(args: WASTextFindAndReplaceInput_input, uid?: ComfyNodeUID): WASTextFindAndReplaceInput
+    WASTextParseNoodleSoupPrompts(args: WASTextParseNoodleSoupPrompts_input, uid?: ComfyNodeUID): WASTextParseNoodleSoupPrompts
+    WASSaveTextFile(args: WASSaveTextFile_input, uid?: ComfyNodeUID): WASSaveTextFile
+    WASLoadTextFile(args: WASLoadTextFile_input, uid?: ComfyNodeUID): WASLoadTextFile
+    WASTextToConsole(args: WASTextToConsole_input, uid?: ComfyNodeUID): WASTextToConsole
     UpscaleModelLoader(args: UpscaleModelLoader_input, uid?: ComfyNodeUID): UpscaleModelLoader
     ImageUpscaleWithModel(args: ImageUpscaleWithModel_input, uid?: ComfyNodeUID): ImageUpscaleWithModel
 }
 declare global {
     export const WORKFLOW: (builder: (graph: ComfySetup & Graph) => void) => Workflow
 }
-
-// export const WORKFLOW: (builder: (graph: ComfySetup & ComfyGraph) => void) => void

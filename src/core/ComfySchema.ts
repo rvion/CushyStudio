@@ -50,7 +50,13 @@ export class ComfySchema {
         // compile spec
         const entries = Object.entries(spec)
         for (const [nodeNameInComfy, nodeTypeDef] of entries) {
-            const nodeNameInCushy = this.normalizeJSIdentifier(nodeNameInComfy)
+            // apply prefix
+            const normalizedNodeNameInCushy = this.normalizeJSIdentifier(nodeNameInComfy)
+            const nodeNameInCushy = nodeTypeDef.category.startsWith('WAS Suite/')
+                ? `WAS${normalizedNodeNameInCushy}`
+                : normalizedNodeNameInCushy
+            // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
+
             const requiredInputs = Object.entries(nodeTypeDef.input.required)
             const inputs: NodeInputExt[] = []
             const outputs: NodeOutputExt[] = []
@@ -130,7 +136,7 @@ export class ComfySchema {
         p(`import type { ComfyNodeUID } from '${prefix}/ComfyNodeUID'`)
         p(`import type { ComfyNode } from '${prefix}/CSNode'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}/ComfySchemaJSON'`)
-        p(`import type { ComfyGraph } from '${prefix}/ComfyGraph'`)
+        p(`import type { Graph } from '${prefix}/Graph'`)
         p(`import type { Workflow } from './${prefix}/Workflow'`)
         p(`\n// TYPES -------------------------------`)
         const types = [...this.knownTypes.values()] //

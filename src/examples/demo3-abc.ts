@@ -22,7 +22,7 @@ export default WORKFLOW(async (x) => {
 
     // 🔴 ERROR V
     const image_path = r1.images[0].data.filename
-    x.ImageLoad({ image_path })
+    x.WASImageLoad({ image_path })
 
     // use that table to put objects on top of it
     const _ipt = x.convertToImageInput(r1.images[0])

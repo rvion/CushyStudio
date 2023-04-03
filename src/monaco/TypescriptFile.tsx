@@ -118,7 +118,8 @@ export class TypescriptFile {
     syncWithDiskFile = async () => {
         const diskPathTS: RelativePath = this.conf.relativeTSFilePath
         const status = await this.rootFolder.writeTextFile(diskPathTS, this.codeTS)
-        if (status !== 'same') logger.info('💿', `${status} ${diskPathTS}`)
+        // if (status !== 'same')
+        logger.info('💿', `${status} ${diskPathTS}`)
         const diskPathJS = this.conf.relativeJSFilePath
         if (diskPathJS) await this.rootFolder.writeTextFile(diskPathJS, this.codeJS)
     }
