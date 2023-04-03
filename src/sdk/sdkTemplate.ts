@@ -1,6 +1,6 @@
-export const sdkTemplate: string = `/// <reference types="cytoscape" />
-
+export const sdkTemplate: string = `
 /// <reference types="node" />
+/// <reference types="cytoscape" />
 declare module "core/ComfyNodeUID" {
     export type ComfyNodeUID = string;
 }
@@ -60,13 +60,27 @@ declare module "core/ComfyAPI" {
         name: string;
     };
 }
-declare module "ui/VisUI" {
-    type Node = any;
-    type Edge = any;
-    type Options = any;
-    export type VisNodes = any;
-    export type VisEdges = any;
-    export type VisOptions = any;
+declare module "core/ComfyPrompt" {
+    export type ComfyPromptJSON = {
+        [key: string]: ComfyNodeJSON;
+    };
+    export type ComfyNodeJSON = {
+        inputs: {
+            [key: string]: any;
+        };
+        class_type: string;
+    };
+}
+declare module "controls/ScriptStep_Iface" {
+    /** every ExecutionStep class must implements this interface  */
+    export interface ScriptStep_Iface<Result> {
+        /** uid */
+        uid: string;
+        /** name of the step */
+        name: string;
+        /** promise to await if you need to wait until the step is finished */
+        finished: Promise<Result>;
+    }
 }
 declare module "core/ComfyUtils" {
     export const exhaust: (x: never) => never;
@@ -137,6 +151,7 @@ declare module "logger/Logger" {
     export const logger: Logger;
 }
 declare module "utils/bang" {
+    /** assertNotNull */
     export const bang: <T>(x: T | null) => T;
 }
 declare module "utils/stringifyReadable" {
@@ -315,98 +330,65 @@ declare module "core/ComfySchemaJSON" {
         [key: string]: any;
     };
 }
-declare module "graph/cyto" {
-    import cytoscape from 'cytoscape';
-    import { ComfyGraph } from "core/ComfyGraph";
-    import { ComfyNode } from "core/CSNode";
-    export class Cyto {
-        graph: ComfyGraph;
-        cy: cytoscape.Core;
-        constructor(graph: ComfyGraph);
-        at: number;
-        addEdge: (edge: {
-            sourceUID: string;
-            targetUID: string;
-            input: string;
-        }) => void;
-        removeEdge: (id: string) => void;
-        trackNode: (node: ComfyNode<any>) => void;
-        animate: () => void;
-        setStyle: () => void;
-        mounted: boolean;
-        mount: (element: HTMLElement) => void;
+declare module "controls/ScriptStep_Init" {
+    import type { ScriptStep_Iface } from "controls/ScriptStep_Iface";
+    export class ScriptStep_Init implements ScriptStep_Iface<true> {
+        uid: string;
+        name: string;
+        finished: Promise<true>;
     }
+}
+declare module "controls/ScriptStep_ask" {
+    import type { ScriptStep_Iface } from "controls/ScriptStep_Iface";
+    import type { Maybe } from "core/ComfyUtils";
+    export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
+        msg: string;
+        def?: Maybe<boolean>;
+        uid: string;
+        name: string;
+        constructor(msg: string, def?: Maybe<boolean>);
+        locked: boolean;
+        value: Maybe<boolean>;
+        private _resolve;
+        finished: Promise<boolean>;
+        answer: (value: boolean) => void;
+    }
+    export class ScriptStep_askString implements ScriptStep_Iface<string> {
+        msg: string;
+        def?: Maybe<string>;
+        uid: string;
+        name: string;
+        constructor(msg: string, def?: Maybe<string>);
+        locked: boolean;
+        value: Maybe<string>;
+        private _resolve;
+        finished: Promise<string>;
+        answer: (value: string) => void;
+    }
+}
+declare module "core/ScriptStep" {
+    import type { ScriptStep_prompt } from "controls/ScriptStep_prompt";
+    import type { ScriptStep_Init } from "controls/ScriptStep_Init";
+    import type { ScriptStep_askBoolean, ScriptStep_askString } from "controls/ScriptStep_ask";
+    export type ScriptStep = ScriptStep_Init | ScriptStep_prompt | ScriptStep_askBoolean | ScriptStep_askString;
 }
 declare module "utils/timestamps" {
     export const getYYYYMMDDHHMMSS: () => string;
     export const getYYYYMMDD_HHMM_SS: () => string;
 }
-declare module "core/ComfyPrompt" {
-    export type ComfyPromptJSON = {
-        [key: string]: ComfyNodeJSON;
-    };
-    export type ComfyNodeJSON = {
-        inputs: {
-            [key: string]: any;
-        };
-        class_type: string;
-    };
-}
-declare module "core/ScriptStep_Iface" {
-    /** every ExecutionStep class must implements this interface  */
-    export interface ScriptStep_Iface<Result> {
-        /** uid */
-        uid: string;
-        /** name of the step */
+declare module "templates/Template" {
+    import type { Workspace } from "core/Workspace";
+    export class Template {
         name: string;
-        /** promise to await if you need to wait until the step is finished */
-        finished: Promise<Result>;
-    }
-}
-declare module "core/ScriptStep_prompt" {
-    import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from "core/ComfyAPI";
-    import type { Run } from "core/Run";
-    import type { ComfyPromptJSON } from "core/ComfyPrompt";
-    import type { ComfyNode } from "core/CSNode";
-    import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
-    import { ComfyGraph } from "core/ComfyGraph";
-    import { PromptOutputImage } from "core/PromptOutputImage";
-    export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
-        run: Run;
-        prompt: ComfyPromptJSON;
-        private static promptID;
-        /** unique step id */
-        uid: string;
-        /** human-readable step name */
-        name: string;
-        /** deepcopy of run graph at creation time; ready to be forked */
-        _graph: ComfyGraph;
-        /** short-hand getter to access parent client */
-        get client(): import("core/Workspace").Workspace;
-        constructor(run: Run, prompt: ComfyPromptJSON);
-        _resolve: (value: this) => void;
-        _rejects: (reason: any) => void;
-        finished: Promise<this>;
-        /** pointer to the currently executing node */
-        currentExecutingNode: ComfyNode<any> | null;
-        /** update the progress value of the currently focused onde */
-        onProgress: (msg: WsMsgProgress) => void;
-        notifyEmptyPrompt: () => undefined;
-        /** update pointer to the currently executing node */
-        onExecuting: (msg: WsMsgExecuting) => void;
-        /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
-        private outputs;
-        images: PromptOutputImage[];
-        /** udpate execution list */
-        onExecuted: (msg: WsMsgExecuted) => void;
-        /** finish this step */
-        private _finish;
+        code: string;
+        constructor(name: string, code: string);
+        createProjectCopy(workspace: Workspace): void;
     }
 }
 declare module "core/PromptOutputImage" {
     import type { ComfyImageInfo } from "core/ComfyAPI";
     import type { Maybe } from "core/ComfyUtils";
-    import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
+    import type { ScriptStep_prompt } from "controls/ScriptStep_prompt";
     import type { Workspace } from "core/Workspace";
     import { RelativePath } from "fs/pathUtils";
     /** Cushy wrapper around ComfyImageInfo */
@@ -435,103 +417,6 @@ declare module "core/PromptOutputImage" {
         saveOnDisk: () => Promise<void>;
         /** this is such a bad workaround but 🤷‍♂️ */
         makeAvailableAsInput: () => Promise<string>;
-    }
-}
-declare module "core/ScriptStep_Init" {
-    import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
-    export class ScriptStep_Init implements ScriptStep_Iface<true> {
-        uid: string;
-        name: string;
-        finished: Promise<true>;
-    }
-}
-declare module "core/ScriptStep_ask" {
-    import type { ScriptStep_Iface } from "core/ScriptStep_Iface";
-    import type { Maybe } from "core/ComfyUtils";
-    export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
-        msg: string;
-        def?: Maybe<boolean>;
-        uid: string;
-        name: string;
-        constructor(msg: string, def?: Maybe<boolean>);
-        locked: boolean;
-        value: Maybe<boolean>;
-        private _resolve;
-        finished: Promise<boolean>;
-        answer: (value: boolean) => void;
-    }
-    export class ScriptStep_askString implements ScriptStep_Iface<string> {
-        msg: string;
-        def?: Maybe<string>;
-        uid: string;
-        name: string;
-        constructor(msg: string, def?: Maybe<string>);
-        locked: boolean;
-        value: Maybe<string>;
-        private _resolve;
-        finished: Promise<string>;
-        answer: (value: string) => void;
-    }
-}
-declare module "core/ScriptStep" {
-    import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
-    import type { ScriptStep_Init } from "core/ScriptStep_Init";
-    import type { ScriptStep_askBoolean, ScriptStep_askString } from "core/ScriptStep_ask";
-    export type ScriptStep = ScriptStep_Init | ScriptStep_prompt | ScriptStep_askBoolean | ScriptStep_askString;
-}
-declare module "core/Run" {
-    import type { Project } from "core/Project";
-    import { Cyto } from "graph/cyto";
-    import { RelativePath } from "fs/pathUtils";
-    import { WsMsgExecuted } from "core/ComfyAPI";
-    import { ComfyGraph } from "core/ComfyGraph";
-    import { Maybe } from "core/ComfyUtils";
-    import { PromptOutputImage } from "core/PromptOutputImage";
-    import { ScriptStep } from "core/ScriptStep";
-    import { ScriptStep_prompt } from "core/ScriptStep_prompt";
-    /** script exeuction instance */
-    export class Run {
-        project: Project;
-        opts?: {
-            mock?: boolean | undefined;
-        } | undefined;
-        /** creation "timestamp" in YYYYMMDDHHMMSS format */
-        createdAt: string;
-        /** unique run id */
-        uid: string;
-        /** human readable folder name */
-        name: string;
-        /** the main graph that will be updated along the script execution */
-        graph: ComfyGraph;
-        /** graph engine instance for smooth and clever auto-layout algorithms */
-        cyto: Cyto;
-        /** list of all images produed over the whole script execution */
-        gallery: PromptOutputImage[];
-        /** folder where CushyStudio will save run informations */
-        get workspaceRelativeCacheFolderPath(): RelativePath;
-        /** save current script */
-        save: () => Promise<void>;
-        constructor(project: Project, opts?: {
-            mock?: boolean | undefined;
-        } | undefined);
-        steps: ScriptStep[];
-        /** current step */
-        get step(): ScriptStep;
-        askBoolean: (msg: string, def?: Maybe<boolean>) => Promise<boolean>;
-        askString: (msg: string, def?: Maybe<string>) => Promise<string>;
-        /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
-        outputs: WsMsgExecuted[];
-        sendPromp: () => ScriptStep_prompt;
-        ctx: {};
-    }
-}
-declare module "help/Demo" {
-    import type { Workspace } from "core/Workspace";
-    export class Demo {
-        name: string;
-        code: string;
-        constructor(name: string, code: string);
-        createProjectCopy(workspace: Workspace): void;
     }
 }
 declare module "help/TutorialUI" {
@@ -705,9 +590,9 @@ declare module "logger/LoggerUI" {
 declare module "menu/AssetTreeUI" {
     export const NodeBrowserUI: import("react").FunctionComponent<{}>;
 }
-declare module "menu/ExecutionStepIconUI" {
+declare module "menu/ControlIconUI" {
     import { ScriptStep } from "core/ScriptStep";
-    export const ExecutionStepIconUI: (step: ScriptStep) => JSX.Element;
+    export const ControlIconUI: (step: ScriptStep) => JSX.Element;
 }
 declare module "menu/ProjectTreeUI" {
     export const ProjectTreeUI: import("react").FunctionComponent<object>;
@@ -788,13 +673,13 @@ declare module "panels/pGalleryFocus" {
     export const PGalleryFocusUI: import("react").FunctionComponent<{}>;
 }
 declare module "ui/Execution_askBooleanUI" {
-    import { ScriptStep_askBoolean } from "core/ScriptStep_ask";
+    import { ScriptStep_askBoolean } from "controls/ScriptStep_ask";
     export const Execution_askBooleanUI: import("react").FunctionComponent<{
         step: ScriptStep_askBoolean;
     }>;
 }
 declare module "ui/Execution_askStringUI" {
-    import { ScriptStep_askString } from "core/ScriptStep_ask";
+    import { ScriptStep_askString } from "controls/ScriptStep_ask";
     export const Execution_askStringUI: import("react").FunctionComponent<{
         step: ScriptStep_askString;
     }>;
@@ -804,7 +689,7 @@ declare module "core/ComfyColors" {
         [category: string]: string;
     };
 }
-declare module "core/CodeBuffer" {
+declare module "utils/CodeBuffer" {
     /** this class is used to buffer text and then write it to a file */
     export class CodeBuffer {
         private _indent;
@@ -885,10 +770,10 @@ declare module "ui/NodeRefUI" {
     }>;
 }
 declare module "ui/NodeListUI" {
-    import { ComfyGraph } from "core/ComfyGraph";
+    import { Graph } from "core/Graph";
     import { ComfyNode } from "core/CSNode";
     export const NodeListUI: import("react").FunctionComponent<{
-        graph: ComfyGraph;
+        graph: Graph;
     }>;
     export const ComfyNodeUI: import("react").FunctionComponent<{
         node: ComfyNode<any>;
@@ -975,12 +860,12 @@ declare module "ws/ResilientWebsocket" {
         message: MessageEvent;
     }
 }
-declare module "core/defaultProjectCode" {
+declare module "templates/defaultProjectCode" {
     export const defaultScript = "WORKFLOW(async (x) => {\n    // generate an empty table\n    const ckpt = x.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })\n    const latent = x.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })\n    const positive = x.CLIPTextEncode({ text: 'masterpiece, chair', clip: ckpt })\n    const negative = x.CLIPTextEncode({ text: '', clip: ckpt })\n    const sampler = x.KSampler({ seed: 2123, steps: 20, cfg: 10, sampler_name: 'euler', scheduler: 'normal', denoise: 0.8, model: ckpt, positive, negative, latent_image: latent })\n    const vae = x.VAEDecode({ samples: sampler, vae: ckpt })\n\n    x.SaveImage({ filename_prefix: 'ComfyUI', images: vae })\n    await x.get()\n})";
 }
-declare module "help/Library" {
-    import { Demo } from "help/Demo";
-    export const demoLibrary: Demo[];
+declare module "templates/Library" {
+    import { Template } from "templates/Template";
+    export const demoLibrary: Template[];
 }
 declare module "core/Workspace" {
     import type { Cushy } from "cushy/Cushy";
@@ -989,7 +874,7 @@ declare module "core/Workspace" {
     import type { Maybe } from "core/ComfyUtils";
     import { RootFolder } from "fs/RootFolder";
     import { JsonFile } from "monaco/JsonFile";
-    import { Demo } from "help/Demo";
+    import { Template } from "templates/Template";
     import { CushyLayoutState } from "layout/LayoutState";
     import { TypescriptFile } from "monaco/TypescriptFile";
     import { AbsolutePath, RelativePath } from "fs/pathUtils";
@@ -1020,7 +905,7 @@ declare module "core/Workspace" {
         schema: ComfySchema;
         focusedFile: Maybe<TypescriptFile>;
         focusedProject: Maybe<Project>;
-        demos: Demo[];
+        demos: Template[];
         projects: Project[];
         assets: Map<string, boolean>;
         layout: CushyLayoutState;
@@ -1097,7 +982,7 @@ declare module "importers/ImportComfyImage" {
 }
 declare module "core/Project" {
     import type { Maybe } from "core/ComfyUtils";
-    import type { RunMode } from "core/ComfyGraph";
+    import type { RunMode } from "core/Graph";
     import { Workspace } from "core/Workspace";
     import { ComfyPromptJSON } from "core/ComfyPrompt";
     import { Run } from "core/Run";
@@ -1132,6 +1017,122 @@ declare module "core/Project" {
         isRunning: boolean;
         RUN: (mode?: RunMode) => Promise<boolean>;
     }
+}
+declare module "graph/cyto" {
+    import cytoscape from 'cytoscape';
+    import { Graph } from "core/Graph";
+    import { ComfyNode } from "core/CSNode";
+    export class Cyto {
+        graph: Graph;
+        cy: cytoscape.Core;
+        constructor(graph: Graph);
+        at: number;
+        addEdge: (edge: {
+            sourceUID: string;
+            targetUID: string;
+            input: string;
+        }) => void;
+        removeEdge: (id: string) => void;
+        trackNode: (node: ComfyNode<any>) => void;
+        animate: () => void;
+        setStyle: () => void;
+        mounted: boolean;
+        mount: (element: HTMLElement) => void;
+    }
+}
+declare module "core/Run" {
+    import type { Project } from "core/Project";
+    import { Cyto } from "graph/cyto";
+    import { RelativePath } from "fs/pathUtils";
+    import { WsMsgExecuted } from "core/ComfyAPI";
+    import { Graph } from "core/Graph";
+    import { Maybe } from "core/ComfyUtils";
+    import { PromptOutputImage } from "core/PromptOutputImage";
+    import { ScriptStep } from "core/ScriptStep";
+    import { ScriptStep_prompt } from "controls/ScriptStep_prompt";
+    /** script exeuction instance */
+    export class Run {
+        project: Project;
+        opts?: {
+            mock?: boolean | undefined;
+        } | undefined;
+        /** creation "timestamp" in YYYYMMDDHHMMSS format */
+        createdAt: string;
+        /** unique run id */
+        uid: string;
+        /** human readable folder name */
+        name: string;
+        /** the main graph that will be updated along the script execution */
+        graph: Graph;
+        /** graph engine instance for smooth and clever auto-layout algorithms */
+        cyto: Cyto;
+        /** list of all images produed over the whole script execution */
+        gallery: PromptOutputImage[];
+        /** folder where CushyStudio will save run informations */
+        get workspaceRelativeCacheFolderPath(): RelativePath;
+        /** save current script */
+        save: () => Promise<void>;
+        constructor(project: Project, opts?: {
+            mock?: boolean | undefined;
+        } | undefined);
+        steps: ScriptStep[];
+        /** current step */
+        get step(): ScriptStep;
+        askBoolean: (msg: string, def?: Maybe<boolean>) => Promise<boolean>;
+        askString: (msg: string, def?: Maybe<string>) => Promise<string>;
+        /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
+        outputs: WsMsgExecuted[];
+        sendPromp: () => ScriptStep_prompt;
+        ctx: {};
+    }
+}
+declare module "controls/ScriptStep_prompt" {
+    import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from "core/ComfyAPI";
+    import type { ComfyPromptJSON } from "core/ComfyPrompt";
+    import type { ScriptStep_Iface } from "controls/ScriptStep_Iface";
+    import type { ComfyNode } from "core/CSNode";
+    import type { Run } from "core/Run";
+    import { Graph } from "core/Graph";
+    import { PromptOutputImage } from "core/PromptOutputImage";
+    export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
+        run: Run;
+        prompt: ComfyPromptJSON;
+        private static promptID;
+        /** unique step id */
+        uid: string;
+        /** human-readable step name */
+        name: string;
+        /** deepcopy of run graph at creation time; ready to be forked */
+        _graph: Graph;
+        /** short-hand getter to access parent client */
+        get client(): import("core/Workspace").Workspace;
+        constructor(run: Run, prompt: ComfyPromptJSON);
+        _resolve: (value: this) => void;
+        _rejects: (reason: any) => void;
+        finished: Promise<this>;
+        /** pointer to the currently executing node */
+        currentExecutingNode: ComfyNode<any> | null;
+        /** update the progress value of the currently focused onde */
+        onProgress: (msg: WsMsgProgress) => void;
+        notifyEmptyPrompt: () => undefined;
+        /** update pointer to the currently executing node */
+        onExecuting: (msg: WsMsgExecuting) => void;
+        /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
+        private outputs;
+        images: PromptOutputImage[];
+        /** udpate execution list */
+        onExecuted: (msg: WsMsgExecuted) => void;
+        /** finish this step */
+        private _finish;
+    }
+}
+declare module "ui/VisUI" {
+    type Node = any;
+    type Edge = any;
+    type Options = any;
+    export type VisNodes = any;
+    export type VisEdges = any;
+    export type VisOptions = any;
 }
 declare module "wildcards/wildcards" {
     export type Wildcards = {
@@ -1342,21 +1343,21 @@ declare module "wildcards/wildcards" {
     };
     export const wildcards: Wildcards;
 }
-declare module "core/ComfyGraph" {
+declare module "core/Graph" {
+    import type { ScriptStep_prompt } from "controls/ScriptStep_prompt";
     import type { VisEdges, VisNodes } from "ui/VisUI";
     import type { ComfyNodeUID } from "core/ComfyNodeUID";
     import type { Project } from "core/Project";
     import type { ComfyPromptJSON } from "core/ComfyPrompt";
     import type { Maybe } from "core/ComfyUtils";
     import type { Run } from "core/Run";
-    import type { ScriptStep_prompt } from "core/ScriptStep_prompt";
     import { Workspace } from "core/Workspace";
     import { ComfyNode } from "core/CSNode";
     import { ComfySchema } from "core/ComfySchema";
     import { PromptOutputImage } from "core/PromptOutputImage";
     import { Cyto } from "graph/cyto";
     export type RunMode = 'fake' | 'real';
-    export class ComfyGraph {
+    export class Graph {
         project: Project;
         run: Run;
         uid: string;
@@ -1397,7 +1398,7 @@ declare module "core/ComfyGraph" {
 }
 declare module "core/CSNode" {
     import type { NodeProgress, WsMsgExecutedData } from "core/ComfyAPI";
-    import type { ComfyGraph } from "core/ComfyGraph";
+    import type { Graph } from "core/Graph";
     import type { ComfyNodeJSON } from "core/ComfyPrompt";
     import { ComfyNodeOutput } from "core/ComfyNodeOutput";
     import { ComfyNodeUID } from "core/ComfyNodeUID";
@@ -1408,7 +1409,7 @@ declare module "core/CSNode" {
      * - belongs to a script
      */
     export class ComfyNode<ComfyNode_input extends object> {
-        graph: ComfyGraph;
+        graph: Graph;
         uid: string;
         artifacts: WsMsgExecutedData[];
         images: PromptOutputImage[];
@@ -1423,7 +1424,7 @@ declare module "core/CSNode" {
         set(p: Partial<ComfyNode_input>): void;
         get color(): string;
         $outputs: ComfyNodeOutput<any>[];
-        constructor(graph: ComfyGraph, uid: string, xxx: ComfyNodeJSON);
+        constructor(graph: Graph, uid: string, xxx: ComfyNodeJSON);
         _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): {
             class_type: string;
             inputs: {

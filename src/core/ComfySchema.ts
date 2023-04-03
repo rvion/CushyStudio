@@ -192,12 +192,10 @@ export class ComfySchema {
         // }
         p(`}`)
         p(`declare global {`)
-        // p(`    export const C: ComfySetup & ComfyGraph`)
-        p(`    export const WORKFLOW: (builder: (graph: ComfySetup & ComfyGraph) => void) => Workflow`)
+        p(`    export const WORKFLOW: (builder: (graph: ComfySetup & Graph) => void) => Workflow`)
         p(`}`)
 
         // p(`declare const WORKFLOW: (builder: (graph: ComfyGraph) => void) => void`)
-        // p('declare const C: ComfySetup & ComfyGraph')
         // b.writeTS('./src/core/Comfy.ts')
         return b.content
     }
