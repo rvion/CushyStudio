@@ -48,7 +48,7 @@
         "sample": "yarn js src/compiler/entry.fetch.ts",
         "test": "yarn js src/compiler/test.ts",
         "test2": "yarn js src/compiler/test2.ts",
-        "decl": "yarn js src/sdk/gensdkdts.ts"
+        "decl": "yarn js src/sdk/sdkGenerator.ts"
     },
     "dependencies": {
         "@fluentui/react-components": "^9.18.2",

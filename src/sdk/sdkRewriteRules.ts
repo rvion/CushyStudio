@@ -1,21 +1,5 @@
-import { execSync } from 'child_process'
-import { readFileSync, writeFileSync } from 'fs'
-
-// export {}
-// const { execSync } = await import('child_process')
-// const { readFileSync, writeFileSync } = await import('fs')
-
-execSync(`tsc -p tsconfig.decl.json`, { stdio: 'inherit' })
-const originalDefPath = 'dts/Comfy.d.ts'
-const originalDefContent = readFileSync(originalDefPath, 'utf8')
-// console.log(originalDefContent)
-
-const outPath = 'src/ui/sdkDTS.ts'
-let out: string = originalDefContent
-out = out.replace('/// <reference types="react" />', '')
-
-// 🔴 this will be quite annoying to maintain 😅
-for (const [from, to] of [
+// 2023-04-03: this may turns out be quite annoying to maintain 😅
+export const sdkRewriteRules = [
     [`import * as T from 'monaco-editor/esm/vs/editor/editor.api';`, ''],
     [`export type TypescriptOptions = T.languages.typescript.CompilerOptions;`, `export type TypescriptOptions = any`],
     [`export type ITextModel = ReturnType<typeof T.editor.createModel>;`, `export type ITextModel = any`],
@@ -27,6 +11,7 @@ for (const [from, to] of [
         `export type Monaco = typeof import('/Users/loco/dev/intuition/node_modules/monaco-editor/esm/vs/editor/editor.api');`,
         `export type Monaco = any;`,
     ],
+
     // declare module "ui/VisUI" {
     [`import type { Edge, Node, Options } from 'vis-network/declarations/network/Network';`, ''],
     [`export const VisUI: import("react").FunctionComponent<{}>;`, 'export const VisUI:any'],
@@ -34,20 +19,18 @@ for (const [from, to] of [
     [`export type VisEdges = Edge;`, 'export type VisEdges = any;'],
     [`export type VisOptions = Options;`, 'export type VisOptions = any;'],
     [`export const stContext: import("react").Context<ComfyClient | null>;`, `export const stContext: any`],
+
     // declare module "core/ComfyScriptEditor" {
     [`import type { Monaco } from '@monaco-editor/react';`, ''],
     [`current: import("monaco-editor").editor.IStandaloneCodeEditor | null;`, `current: any`],
     [`current: typeof import("monaco-editor") | null;`, `current: any`],
     [`setupMonaco(monaco: Monaco): void;`, `setupMonaco(monaco: any): void;`],
+
     // ws stuff
     [`import * as WS from 'ws';`, ''],
     [`/// <reference types="ws" />`, ''],
     [`WS.WebSocket | WebSocket`, 'WebSocket'],
+
     // monaco
     [`import * as monaco from 'monaco-editor';`, 'const monaco: any'],
-]) {
-    out = out.replace(from, to)
-}
-out = `export const c__:string = \`${out}\``
-
-writeFileSync(outPath, out, 'utf8')
+]

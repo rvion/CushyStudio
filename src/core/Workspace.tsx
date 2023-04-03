@@ -17,7 +17,7 @@ import { Demo } from '../help/Demo'
 import { CushyLayoutState } from '../layout/LayoutState'
 import { logger } from '../logger/Logger'
 import { TypescriptFile } from '../monaco/TypescriptFile'
-import { c__ } from '../ui/sdkDTS'
+import { sdkTemplate } from '../sdk/sdkTemplate'
 import { AbsolutePath, asMonacoPath, asRelativePath, pathe, RelativePath } from '../fs/pathUtils'
 import { ResilientWebSocketClient } from '../ws/ResilientWebsocket'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
@@ -113,7 +113,7 @@ export class Workspace {
             title: 'Cushy SDK',
             relativeTSFilePath: asRelativePath('cushy.d.ts.backup'),
             virtualPathTS: asMonacoPath(`file:///cushy.d.ts`),
-            codeOverwrite: c__,
+            codeOverwrite: sdkTemplate,
         })
 
         this.comfySDKFile = new TypescriptFile(this.rootFolder, {

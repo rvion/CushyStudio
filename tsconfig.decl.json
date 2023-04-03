@@ -18,7 +18,7 @@
         "outFile": "dts/Comfy.d.ts",
         "jsx": "react-jsx"
     },
-    "include": ["src/core/_dts.ts"]
+    "include": ["src/sdk/sdkEntrypoint.ts"]
     // "exclude": ["tsconfig.node.json"]
     // "references": [{ "path": "./tsconfig.node.json" }]
 }
