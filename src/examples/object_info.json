@@ -245,7 +245,7 @@
   "LoadImage": {
     "input": {
       "required": {
-        "image": [["2023-03-19_22-20-04.png","ComfyUI_00498_.png","ComfyUI_01790_.png","decihub-logo-126.png","esrgan_example (1).png","esrgan_example.png","example.png","upload.png"]]
+        "image": [["2023-03-19_22-20-04.png","ComfyUI_00498_.png","ComfyUI_01790_.png","decihub-logo-126.png","esrgan_example (1).png","esrgan_example.png","example.png","upload (1).png","upload (2).png","upload (3).png","upload (4).png","upload (5).png","upload (6).png","upload (7).png","upload.png"]]
     }
   },
     "output": {
@@ -263,7 +263,7 @@
   "LoadImageMask": {
     "input": {
       "required": {
-        "image": [["2023-03-19_22-20-04.png","ComfyUI_00498_.png","ComfyUI_01790_.png","decihub-logo-126.png","esrgan_example (1).png","esrgan_example.png","example.png","upload.png"]],
+        "image": [["2023-03-19_22-20-04.png","ComfyUI_00498_.png","ComfyUI_01790_.png","decihub-logo-126.png","esrgan_example (1).png","esrgan_example.png","example.png","upload (1).png","upload (2).png","upload (3).png","upload (4).png","upload (5).png","upload (6).png","upload (7).png","upload.png"]],
         "channel": [["alpha","red","green","blue"]]
     }
   },
