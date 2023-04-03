@@ -1,7 +1,7 @@
 import { createContext, useContext } from 'react'
-import { CushyStudio } from './CushyStudio'
+import { Cushy } from './Cushy'
 
-export const CSContext = createContext<CushyStudio | null>(null)
+export const CSContext = createContext<Cushy | null>(null)
 
 export const useCushyStudio = () => {
     const st = useContext(CSContext)

@@ -11,7 +11,7 @@ import {
 } from '@fluentui/react-components'
 import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { useCushyStudio } from '../config/CushyStudioContext'
+import { useCushyStudio } from '../cushy/CushyContext'
 import { NewProjectModalUI } from '../menu/NewProjectModalUI'
 import { useWorkspace } from './WorkspaceContext'
 

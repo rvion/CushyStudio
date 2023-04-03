@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 
 import { FluentProvider, Spinner, webDarkTheme } from '@fluentui/react-components'
 import { ToastContainer } from 'react-toastify'
-import { CushyStudio } from '../config/CushyStudio'
-import { CSContext } from '../config/CushyStudioContext'
+import { Cushy } from '../cushy/Cushy'
+import { CSContext } from '../cushy/CushyContext'
 import { Maybe } from '../core/ComfyUtils'
 import { GithubCorner } from '../ui/GithubCorner'
 import { workspaceContext } from '../ui/WorkspaceContext'
@@ -17,10 +17,10 @@ import { ImportWindowUI } from '../importers/ImportWindow'
 
 export const AppUI = observer(function AppUI_() {
     const csWrapper = useLocalObservable(() => ({
-        cs: null as Maybe<CushyStudio>,
+        cs: null as Maybe<Cushy>,
     }))
     useMemo(async () => {
-        csWrapper.cs = await CushyStudio.CREATE()
+        csWrapper.cs = await Cushy.CREATE()
     }, [])
 
     const cs = csWrapper.cs

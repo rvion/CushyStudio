@@ -2,9 +2,9 @@ import type { Maybe } from '../core/ComfyUtils'
 import type { ITextModel } from '../ui/TypescriptOptions'
 
 import { makeObservable, observable } from 'mobx'
-import { RootFolder } from '../config/RootFolder'
+import { RootFolder } from '../fs/RootFolder'
 import { globalMonaco } from './Monaco'
-import { MonacoPath, RelativePath } from '../utils/pathUtils'
+import { MonacoPath, RelativePath } from '../fs/pathUtils'
 
 export type TypescriptFileConf = {
     /** human readable title */
@@ -24,6 +24,9 @@ export type TypescriptFileConf = {
 
     /** what we should overwrite the file to in any case */
     codeOverwrite?: Maybe<string>
+
+    /** if true, file won't be able to be saved */
+    isReadonly?: boolean
 }
 
 export class TypescriptFile {
@@ -103,6 +106,7 @@ export class TypescriptFile {
         if (value == null) return console.log('❌ value is null; aborting')
         // console.log(`[📝] updating ${this.conf.virtualPathTS} with ${value.length} chars`)
         if (this.textModel == null) throw new Error('❌ INVARIANT VIOLATION: textModel is null')
+
         this.codeTS = value
         this.codeJS = await globalMonaco.convertToJS(this.textModel!)
         await this.syncWithDiskFile()

@@ -3,9 +3,9 @@ import { makeAutoObservable } from 'mobx'
 import { Workspace } from '../core/Workspace'
 import { logger } from '../logger/Logger'
 import { bang } from '../utils/bang'
-import { RelativePath } from '../utils/pathUtils'
+import { RelativePath } from '../fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
-import { RootFolder } from './RootFolder'
+import { RootFolder } from '../fs/RootFolder'
 
 export type PersistedJSONInfo<T> = {
     /** human readable title */

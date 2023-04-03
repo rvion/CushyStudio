@@ -15,6 +15,7 @@ import editorWorker from 'monaco-editor/esm/vs/editor/editor.worker?worker'
 import tsWorker from 'monaco-editor/esm/vs/language/typescript/ts.worker?worker'
 
 import { makeAutoObservable } from 'mobx'
+import { CushyGlobalRef } from '../cushy/CushyGlobalRef'
 
 export class LocoMonaco {
     constructor() {
@@ -32,7 +33,13 @@ export class LocoMonaco {
         // add save command
         monaco.editor.addCommand({
             id: 'cushy.save',
-            run: () => console.log(`[👁] save`),
+            run: (args: any) => {
+                console.log(`[👁] save`, CushyGlobalRef.value?.workspace?.focusedFile?.conf.relativeTSFilePath)
+                // const model = monaco.editor.getEditors()?.[0]?.getModel()
+                // if (model == null) return console.log(`[👁] no model`)
+                // const model.
+                // console.log(`[👁] save`, args.get())
+            },
         })
         // add save keybinding
         monaco.editor.addKeybindingRule({

@@ -1,5 +1,5 @@
 import type { Maybe } from '../core/ComfyUtils'
-import type { AbsolutePath, RelativePath } from '../utils/pathUtils'
+import type { AbsolutePath, RelativePath } from './pathUtils'
 
 import * as fs from '@tauri-apps/api/fs'
 import * as path from '@tauri-apps/api/path'

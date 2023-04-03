@@ -1,4 +1,4 @@
-import type { CushyStudio } from '../config/CushyStudio'
+import type { Cushy } from '../cushy/Cushy'
 import type { ImportCandidate } from '../importers/ImportCandidate'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
@@ -8,17 +8,17 @@ import type { ScriptStep } from './ScriptStep'
 import * as fs from '@tauri-apps/api/fs'
 import { Body, fetch, ResponseType } from '@tauri-apps/api/http'
 import * as path from '@tauri-apps/api/path'
-import { RootFolder } from '../config/RootFolder'
+import { RootFolder } from '../fs/RootFolder'
 
 import { makeAutoObservable } from 'mobx'
 import { toast } from 'react-toastify'
-import { JsonFile } from '../config/JsonFile'
+import { JsonFile } from '../monaco/JsonFile'
 import { Demo } from '../help/Demo'
 import { CushyLayoutState } from '../layout/LayoutState'
 import { logger } from '../logger/Logger'
-import { TypescriptFile } from '../tsEngine/TypescriptFile'
+import { TypescriptFile } from '../monaco/TypescriptFile'
 import { c__ } from '../ui/sdkDTS'
-import { AbsolutePath, asMonacoPath, asRelativePath, pathe, RelativePath } from '../utils/pathUtils'
+import { AbsolutePath, asMonacoPath, asRelativePath, pathe, RelativePath } from '../fs/pathUtils'
 import { ResilientWebSocketClient } from '../ws/ResilientWebsocket'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfyPromptJSON } from './ComfyPrompt'
@@ -88,7 +88,7 @@ export class Workspace {
         // this.layout.openEditorTab(this.CushySDKBuff)
     }
 
-    static OPEN = async (cushy: CushyStudio, absoluteFolderPath: AbsolutePath): Promise<Workspace> => {
+    static OPEN = async (cushy: Cushy, absoluteFolderPath: AbsolutePath): Promise<Workspace> => {
         const workspace = new Workspace(cushy, absoluteFolderPath)
         await workspace.objectInfoFile.finished
         await workspace.workspaceConfigFile.finished
@@ -104,7 +104,7 @@ export class Workspace {
     rootFolder: RootFolder
     private constructor(
         //
-        public cushy: CushyStudio,
+        public cushy: Cushy,
         public absoluteWorkspaceFolderPath: AbsolutePath,
     ) {
         this.schema = new ComfySchema({})

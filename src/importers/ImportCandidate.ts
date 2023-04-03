@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import type { Maybe } from '../core/ComfyUtils'
 import { Workspace } from '../core/Workspace'
-import { pathe } from '../utils/pathUtils'
+import { pathe } from '../fs/pathUtils'
 import { getPngMetadata, TextChunks } from './getPngMetadata'
 
 /** wrapper around files dropped into comfy

@@ -6,7 +6,7 @@ import type { Workspace } from './Workspace'
 import { fetch, ResponseType } from '@tauri-apps/api/http'
 import * as path from '@tauri-apps/api/path'
 import { nanoid } from 'nanoid'
-import { asRelativePath, RelativePath } from '../utils/pathUtils'
+import { asRelativePath, RelativePath } from '../fs/pathUtils'
 
 /** Cushy wrapper around ComfyImageInfo */
 export class PromptOutputImage {

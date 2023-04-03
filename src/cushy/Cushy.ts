@@ -1,5 +1,5 @@
 import type { Maybe } from '../core/ComfyUtils'
-import { AbsolutePath, RelativePath, asAbsolutePath, asRelativePath, pathe } from '../utils/pathUtils'
+import { AbsolutePath, RelativePath, asAbsolutePath, asRelativePath, pathe } from '../fs/pathUtils'
 
 import { listen } from '@tauri-apps/api/event'
 import * as dialog from '@tauri-apps/api/dialog'
@@ -8,12 +8,13 @@ import * as path from '@tauri-apps/api/path'
 
 import { makeAutoObservable } from 'mobx'
 import { Workspace } from '../core/Workspace'
-import { JsonFile } from './JsonFile'
-import { RootFolder } from './RootFolder'
+import { JsonFile } from '../monaco/JsonFile'
+import { RootFolder } from '../fs/RootFolder'
 import { toast } from 'react-toastify'
 import { TauriDropEvent } from '../importers/tauriDropEvent'
 import { readBinaryFile } from '@tauri-apps/api/fs'
 import { ImportCandidate } from '../importers/ImportCandidate'
+import { CushyGlobalRef } from './CushyGlobalRef'
 
 export type UserConfigJSON = {
     version: 1
@@ -23,11 +24,11 @@ export type UserConfigJSON = {
 }
 
 /** global Singleton state for the application */
-export class CushyStudio {
+export class Cushy {
     static CREATE = async () => {
         const currentOS: os.Platform = await os.platform()
         const configDir: AbsolutePath = asAbsolutePath(await path.appConfigDir())
-        return new CushyStudio(
+        return new Cushy(
             //
             currentOS,
             configDir,
@@ -51,6 +52,7 @@ export class CushyStudio {
         public configDir: AbsolutePath,
     ) {
         this.rootFolder = new RootFolder(this.configDir)
+        CushyGlobalRef.value = this
         this.userConfig = new JsonFile<UserConfigJSON>(this.rootFolder, {
             title: 'Global Config',
             relativePath: this.relativePathToGlobalConfig,

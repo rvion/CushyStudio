@@ -6,10 +6,10 @@ import { nanoid } from 'nanoid'
 import { Workspace } from './Workspace'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { Run } from './Run'
-import { TypescriptFile } from '../tsEngine/TypescriptFile'
+import { TypescriptFile } from '../monaco/TypescriptFile'
 import { ComfyImporter } from '../importers/ImportComfyImage'
 import { logger } from '../logger/Logger'
-import { asMonacoPath, asRelativePath, pathe, RelativePath } from '../utils/pathUtils'
+import { asMonacoPath, asRelativePath, pathe, RelativePath } from '../fs/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 
 /** Script */
