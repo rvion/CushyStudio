@@ -401,6 +401,7 @@ export class Workspace {
         this.schema.update(schema$)
         const comfySdkCode = this.schema.codegenDTS()
         this.comfySDKFile.updateFromCodegen(comfySdkCode)
+        this.comfySDKFile.syncWithDiskFile()
 
         return schema$
     }

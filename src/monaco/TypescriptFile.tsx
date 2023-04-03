@@ -22,7 +22,9 @@ export type TypescriptFileConf = {
     /** what we should initialize this file to if there is no file on disk */
     defaultCodeWhenNoFile?: Maybe<string>
 
-    /** what we should overwrite the file to in any case */
+    /** what we should overwrite the file to in any case
+     * if set, will trigger a filesystem sync on creation
+     */
     codeOverwrite?: Maybe<string>
 
     /** if true, file won't be able to be saved */
@@ -86,7 +88,7 @@ export class TypescriptFile {
         this.textModel = model
         // model.onDidChangeContent(()) ❓
         this.resolvetextModelPromise(model)
-        await this.syncWithDiskFile()
+        if (opts.codeOverwrite) await this.syncWithDiskFile()
     }
 
     /** initialize a buffer that may or may not exist on disk */
@@ -98,7 +100,7 @@ export class TypescriptFile {
         this.codeJS = await globalMonaco.convertToJS(textModel)
         // console.log(`[📝] updating ${this.conf.virtualPathTS} with ${value.length} chars`)
         // await this.ensureTextModel()
-        await this.syncWithDiskFile()
+        // await this.syncWithDiskFile()
         return true
     }
 
@@ -109,7 +111,7 @@ export class TypescriptFile {
 
         this.codeTS = value
         this.codeJS = await globalMonaco.convertToJS(this.textModel!)
-        await this.syncWithDiskFile()
+        // await this.syncWithDiskFile()
     }
 
     syncWithDiskFile = async () => {

@@ -34,7 +34,12 @@ export class LocoMonaco {
         monaco.editor.addCommand({
             id: 'cushy.save',
             run: (args: any) => {
-                console.log(`[👁] save`, CushyGlobalRef.value?.workspace?.focusedFile?.conf.relativeTSFilePath)
+                const focusedTSFile = CushyGlobalRef.value?.workspace?.focusedFile
+                if (focusedTSFile == null) return console.log(`[💿 SAVE] ❌ no focused file`)
+                const path = focusedTSFile?.conf.relativeTSFilePath
+                if (path == null) return console.log(`[💿 SAVE] ❌ ts file has no local path`)
+                focusedTSFile.syncWithDiskFile()
+
                 // const model = monaco.editor.getEditors()?.[0]?.getModel()
                 // if (model == null) return console.log(`[👁] no model`)
                 // const model.
