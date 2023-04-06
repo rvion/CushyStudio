@@ -1,9 +1,8 @@
-export const sdkTemplate: string = `/// <reference types="cytoscape" />
+export const sdkTemplate: string = `
 
-/// <reference types="vscode" />
 
-/// <reference types="node" />
-/// <reference types="node" />
+
+
 declare module "core/ComfyNodeUID" {
     export type ComfyNodeUID = string;
 }
@@ -241,21 +240,6 @@ declare module "core/ScriptStep" {
     import type { ScriptStep_askBoolean, ScriptStep_askString } from "controls/ScriptStep_ask";
     export type ScriptStep = ScriptStep_Init | ScriptStep_prompt | ScriptStep_askBoolean | ScriptStep_askString;
 }
-declare module "help/TutorialUI" {
-    export const TutorialUI: import("react").FunctionComponent<object>;
-}
-declare module "ui/Image" {
-    import type { Maybe } from "core/ComfyUtils";
-    export const Image: (p: {
-        onClick?: () => void;
-        height?: number | string;
-        width?: number | string;
-        fit?: 'cover' | 'contain';
-        src?: Maybe<string>;
-        alt?: string;
-        className?: string;
-    }) => JSX.Element;
-}
 declare module "layout/LayoutState" {
     import type { PromptOutputImage } from "core/PromptOutputImage";
     import { Workspace } from "core/Workspace";
@@ -321,7 +305,7 @@ declare module "sdk/sdkTemplate" {
     export const sdkTemplate: string;
 }
 declare module "templates/defaultProjectCode" {
-    export const defaultScript = "WORKFLOW(async (x) => {\n    // generate an empty table\n    const ckpt = x.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })\n    const latent = x.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })\n    const positive = x.CLIPTextEncode({ text: 'masterpiece, chair', clip: ckpt })\n    const negative = x.CLIPTextEncode({ text: '', clip: ckpt })\n    const sampler = x.KSampler({ seed: 2123, steps: 20, cfg: 10, sampler_name: 'euler', scheduler: 'normal', denoise: 0.8, model: ckpt, positive, negative, latent_image: latent })\n    const vae = x.VAEDecode({ samples: sampler, vae: ckpt })\n\n    x.SaveImage({ filename_prefix: 'ComfyUI', images: vae })\n    await x.get()\n})";
+    export const defaultScript: string;
 }
 declare module "ws/ResilientWebsocket" {
     import type { Maybe } from "core/ComfyUtils";
@@ -999,10 +983,20 @@ declare module "core/ComfyNodeOutput" {
         constructor(node: ComfyNode<any>, slotIx: Ix, type: T);
     }
 }
+declare module "core/Workflow" {
+    import type { ComfySetup } from '../global';
+    import type { Graph } from "core/Graph";
+    export type WorkflowBuilder = (graph: ComfySetup & Graph) => void;
+    export class Workflow {
+        builder: WorkflowBuilder;
+        constructor(builder: WorkflowBuilder);
+    }
+}
 declare module "sdk/sdkEntrypoint" {
     export type { ComfyNodeOutput } from "core/ComfyNodeOutput";
     export type { ComfyNodeUID } from "core/ComfyNodeUID";
     export type { ComfyNode } from "core/CSNode";
+    export type { Workflow } from "core/Workflow";
     export type { ComfyNodeSchemaJSON } from "core/ComfySchemaJSON";
 }
 `

@@ -1,4 +1,4 @@
-export const defaultScript = `WORKFLOW(async (x) => {
+export const defaultScript: string = `WORKFLOW(async (x) => {
     // generate an empty table
     const ckpt = x.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const latent = x.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })

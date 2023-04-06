@@ -29,6 +29,11 @@ export const sdkRewriteRules = [
     // ws stuff
     [`import * as WS from 'ws';`, ''],
     [`/// <reference types="ws" />`, ''],
+    [`/// <reference types="vscode" />`, ''],
+    [`/// <reference types="node" />`, ''],
+    [`/// <reference types="node" />`, ''],
+    [`/// <reference types="cytoscape" />`, ''],
+
     [`WS.WebSocket | WebSocket`, 'WebSocket'],
 
     // monaco
