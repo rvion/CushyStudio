@@ -1,7 +1,7 @@
+import fetch from 'node-fetch'
 import type { Project } from './Project'
 
-import { Body, fetch } from '@tauri-apps/api/http'
-import * as path from '@tauri-apps/api/path'
+import * as path from 'path'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Cyto } from '../graph/cyto'
@@ -110,9 +110,8 @@ export class Run {
         // otherwise, we might get stuck
         void fetch(`${this.project.workspace.serverHostHTTP}/prompt`, {
             method: 'POST',
-            body: Body.json(out),
+            body: JSON.stringify(out),
         })
-
         // await sleep(1000)
         return step
     }

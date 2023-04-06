@@ -7,9 +7,9 @@
     },
     "plugins": ["@typescript-eslint"],
     "rules": {
-        "@typescript-eslint/naming-convention": "warn",
+        "@typescript-eslint/naming-convention": "off",
         "@typescript-eslint/semi": "off",
-        "curly": "warn",
+        "curly": "off",
         "eqeqeq": "warn",
         "no-throw-literal": "warn",
         "semi": "off"

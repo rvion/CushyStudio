@@ -1,6 +1,6 @@
 import type { Maybe } from '../core/ComfyUtils'
 
-import { fetch } from '@tauri-apps/api/http'
+import fetch from 'node-fetch'
 import { makeAutoObservable } from 'mobx'
 
 // civitai wrapper
@@ -27,6 +27,7 @@ export class Civitai {
             query: p,
             // body: Body.json(p),
         })
+        // 🔴 ?
 
         const x: SearchResult = res.data as any
         // console.log('[CIVITAI] found:', res.data)

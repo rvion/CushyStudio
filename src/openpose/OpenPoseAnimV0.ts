@@ -1,6 +1,5 @@
-import * as fs from '@tauri-apps/api/fs'
-import * as path from '@tauri-apps/api/path'
-
+import * as fs from 'fs'
+import * as path from 'path'
 import { Workspace } from '../core/Workspace'
 
 import { drawOpenPoseBones } from './drawPoseV2'
@@ -37,9 +36,9 @@ export class OpenPoseAnimV0 {
 
     drawAllToPngAndSaveLocally = async () => {
         let i = -1
-        const targetFolderPath = this.workspace.absoluteWorkspaceFolderPath + path.sep + 'images'
+        const targetFolderPath = this.workspace.wspUri + path.sep + 'images'
         // ensure target folder exists
-        await fs.createDir(targetFolderPath, { recursive: true })
+        fs.mkdirSync(targetFolderPath, { recursive: true })
 
         for (const pose of this.poses) {
             i++
@@ -60,10 +59,13 @@ export class OpenPoseAnimV0 {
 
             const res = await fetch(b64url)
             const blob2 = await res.blob()
-            const binArr = await blob2.arrayBuffer()
+            // const binArr = await blob2.arrayBuffer()
 
             const fPath = targetFolderPath + path.sep + `test-${i}.png`
-            await fs.writeBinaryFile(fPath, binArr, { dir: fs.Dir.Document })
+            // save blob to disk
+            // 'Blob' is not assignable to parameter of type 'string | ArrayBufferView'
+            // fs.writeFileSync(fPath, blob2)
+            // 🔴
 
             console.log('✅', fPath)
         }

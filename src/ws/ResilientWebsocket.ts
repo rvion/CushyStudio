@@ -2,8 +2,17 @@ import type { Maybe } from '../core/ComfyUtils'
 
 import { makeAutoObservable, reaction } from 'mobx'
 import { logger } from '../logger/Logger'
+import { WebSocket, CloseEvent, Event, MessageEvent, EventListenerOptions } from 'ws'
 
-type Message = string | ArrayBuffer | SharedArrayBuffer | Blob | ArrayBufferView
+type Message = string | Buffer
+// | DataView
+// | number
+// | ArrayBufferView
+// | Uint8Array
+// | ArrayBuffer
+// | SharedArrayBuffer
+// | ReadonlyArray<any>
+// | ReadonlyArray<number>
 
 export class ResilientWebSocketClient {
     private url: string
@@ -100,22 +109,22 @@ export class ResilientWebSocketClient {
 
     public addEventListener<K extends keyof WebSocketEventMap>(
         type: K,
-        listener: (this: WebSocket, ev: WebSocketEventMap[K]) => any,
-        options?: boolean | AddEventListenerOptions,
+        listener: (ev: WebSocketEventMap[K]) => any,
+        options?: EventListenerOptions,
     ): void {
-        this.currentWS?.addEventListener(type, listener, options)
+        this.currentWS?.addEventListener(type as any, listener as any, options)
     }
 
     public removeEventListener<K extends keyof WebSocketEventMap>(
         type: K,
-        listener: (this: WebSocket, ev: WebSocketEventMap[K]) => any,
+        listener: (ev: WebSocketEventMap[K]) => any,
         options?: boolean | EventListenerOptions,
     ): void {
-        this.currentWS?.removeEventListener(type, listener, options)
+        this.currentWS?.removeEventListener(type as any, listener as any)
     }
 }
 
-interface WebSocketEventMap {
+type WebSocketEventMap = {
     open: Event
     close: CloseEvent
     error: Event

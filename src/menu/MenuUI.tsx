@@ -13,7 +13,7 @@ export const MenuUI = observer(function IdeInfosUI_() {
     return (
         <div className='col gap h100'>
             <ProjectTreeUI />
-            <Tree
+            {/* <Tree
                 virtualized
                 data={wsp.rootFolder.files}
                 showIndentLine
@@ -33,7 +33,7 @@ export const MenuUI = observer(function IdeInfosUI_() {
                         </>
                     )
                 }}
-            />
+            /> */}
             <div className='grow'></div>
         </div>
     )

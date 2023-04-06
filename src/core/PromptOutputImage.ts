@@ -3,8 +3,8 @@ import type { Maybe } from './ComfyUtils'
 import type { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import type { Workspace } from './Workspace'
 
-import { fetch, ResponseType } from '@tauri-apps/api/http'
-import * as path from '@tauri-apps/api/path'
+import fetch from 'node-fetch'
+import * as path from 'path'
 import { nanoid } from 'nanoid'
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
 
@@ -53,10 +53,10 @@ export class PromptOutputImage {
         const response = await fetch(this.comfyURL, {
             headers: { 'Content-Type': 'image/png' },
             method: 'GET',
-            responseType: ResponseType.Binary,
+            // responseType: ResponseType.Binary,
         })
-        const numArr: number[] = response.data as any
-        const binArr = new Uint16Array(numArr)
+        const binArr = await response.arrayBuffer()
+        // const binArr = new Uint16Array(numArr)
         await this.workspace.rootFolder.writeBinaryFile(this.filePath, binArr)
         this.saved = true
     }

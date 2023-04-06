@@ -18,7 +18,7 @@ export const PConnectUI = observer(function PConnectUI_(p: {}) {
                         <Form.Control
                             disabled
                             name='workspace'
-                            value={workspace.absoluteWorkspaceFolderPath}
+                            value={workspace.wspUri}
                             onChange={(ev) => workspace.workspaceConfigFile.update({ comfyHTTPURL: ev.target.value })}
                         />
                         {/* <Form.HelpText>Required</Form.HelpText> */}

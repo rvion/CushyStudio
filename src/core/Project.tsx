@@ -1,6 +1,6 @@
 import type { Maybe } from './ComfyUtils'
 import type { RunMode } from './Graph'
-import * as path from '@tauri-apps/api/path'
+import * as path from 'path'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Workspace } from './Workspace'
@@ -20,21 +20,21 @@ export class Project {
     /** unique project id */
     id: string = nanoid()
 
-    /** create a copy of a given project */
-    duplicate = async () => {
-        const nextPath_ = this.workspaceRelativeFilePath.replace(/\.ts$/, `_${getYYYYMMDDHHMMSS()}_copy.ts`)
-        const nextPath = this.workspace.resolveToRelativePath(nextPath_)
-        console.log({ nextPath_, nextPath })
-        this.workspace.createProjectAndFocustIt(nextPath, this.scriptBuffer.codeTS)
-    }
+    // /** create a copy of a given project */
+    // duplicate = async () => {
+    //     const nextPath_ = this.workspaceRelativeFilePath.replace(/\.ts$/, `_${getYYYYMMDDHHMMSS()}_copy.ts`)
+    //     const nextPath = this.workspace.resolveToRelativePath(nextPath_)
+    //     console.log({ nextPath_, nextPath })
+    //     this.workspace.createProjectAndFocustIt(nextPath, this.scriptBuffer.codeTS)
+    // }
 
-    /** focus project and open script in main panel */
-    focus = () => {
-        this.workspace.focusedFile = this.scriptBuffer
-        this.workspace.focusedProject = this
-        this.workspace.workspaceConfigFile
-        // this.workspace.layout.openEditorTab(this.scriptBuffer)
-    }
+    // /** focus project and open script in main panel */
+    // focus = () => {
+    //     this.workspace.focusedFile = this.scriptBuffer
+    //     this.workspace.focusedProject = this
+    //     this.workspace.workspaceConfigFile
+    //     // this.workspace.layout.openEditorTab(this.scriptBuffer)
+    // }
 
     /** list of all project runs */
     runs: Run[] = []

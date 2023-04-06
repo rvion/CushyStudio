@@ -1,5 +1,4 @@
 import { Button, Panel } from 'rsuite'
-import { animated, useSpring } from '@react-spring/web'
 import { observer } from 'mobx-react-lite'
 import { Fragment, ReactNode, useEffect, useRef } from 'react'
 import { exhaust, Maybe } from '../core/ComfyUtils'
@@ -15,59 +14,56 @@ import { useWorkspace } from './WorkspaceContext'
 
 export const ExecutionUI = observer(function ExecutionUI_() {
     const st = useWorkspace()
-    const project = st.focusedProject
-    const run: Maybe<Run> = project?.currentRun
+    return <>OK</>
+    // const project = st.focusedProject
+    // const run: Maybe<Run> = project?.currentRun
 
-    const ref = useRef<HTMLDivElement>(null)
-    useEffect(() => {
-        const elem = ref.current
-        if (elem == null) return
-        if (run == null) return console.log('❌ run is null')
-        if (!(elem instanceof HTMLElement)) return console.log('❌ elem is not an HTMLElement')
-        console.log('🔥 mounting cyto', elem)
+    // const ref = useRef<HTMLDivElement>(null)
+    // useEffect(() => {
+    //     const elem = ref.current
+    //     if (elem == null) return
+    //     if (run == null) return console.log('❌ run is null')
+    //     if (!(elem instanceof HTMLElement)) return console.log('❌ elem is not an HTMLElement')
+    //     console.log('🔥 mounting cyto', elem)
 
-        run.cyto.mount(elem)
-    }, [run, ref.current])
+    //     run.cyto.mount(elem)
+    // }, [run, ref.current])
 
-    if (run == null)
-        return (
-            <div style={{ justifyContent: 'center', height: '100%', display: 'flex', overflow: 'auto' }}>
-                <div className='light'>No execution yet </div>
-            </div>
-        )
-    return (
-        <div className='col gap' style={{ overflow: 'auto' }}>
-            <h3>{run.name}</h3>
-            <div className='row'>
-                <Button onClick={() => run.cyto.animate()}>fix layout</Button>
-                <div
-                    ref={ref}
-                    style={{
-                        backgroundColor: '#fafafa',
-                        width: '300px',
-                        height: '100px',
-                    }}
-                    id='dynamicgraph'
-                ></div>
-            </div>
-            {run.steps.map((step) => (
-                <StepWrapperUI key={step.uid} step={step} />
-            ))}
-        </div>
-    )
+    // if (run == null)
+    //     return (
+    //         <div style={{ justifyContent: 'center', height: '100%', display: 'flex', overflow: 'auto' }}>
+    //             <div className='light'>No execution yet </div>
+    //         </div>
+    //     )
+    // return (
+    //     <div className='col gap' style={{ overflow: 'auto' }}>
+    //         <h3>{run.name}</h3>
+    //         <div className='row'>
+    //             <Button onClick={() => run.cyto.animate()}>fix layout</Button>
+    //             <div
+    //                 ref={ref}
+    //                 style={{
+    //                     backgroundColor: '#fafafa',
+    //                     width: '300px',
+    //                     height: '100px',
+    //                 }}
+    //                 id='dynamicgraph'
+    //             ></div>
+    //         </div>
+    //         {run.steps.map((step) => (
+    //             <StepWrapperUI key={step.uid} step={step} />
+    //         ))}
+    //     </div>
+    // )
 })
 
 export const StepWrapperUI = observer(function StepWrapperUI_(p: { step: ScriptStep }) {
-    const props = useSpring({
-        from: { opacity: 0, transform: 'translate3d(0,-20px,0)' },
-        to: { opacity: 1, transform: `translate3d(0,0px,0)` },
-    })
+    // const props = useSpring({
+    //     from: { opacity: 0, transform: 'translate3d(0,-20px,0)' },
+    //     to: { opacity: 1, transform: `translate3d(0,0px,0)` },
+    // })
 
-    return (
-        <animated.div style={props}>
-            <div className='row'>{renderStep(p.step)}</div>
-        </animated.div>
-    )
+    return <div className='row'>{renderStep(p.step)}</div>
 })
 
 const renderStep = (step: ScriptStep) => {

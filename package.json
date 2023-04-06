@@ -1,5 +1,6 @@
 {
     "name": "cushystudio",
+    "publisher": "rvion",
     "description": "🎨 Generative Art Web-IDE and embeddable typescript SDK - based on ComfyUI",
     "private": true,
     "engines": {
@@ -8,13 +9,77 @@
     "categories": [
         "Other"
     ],
-    "activationEvents": [],
+    "activationEvents": [
+        "onLanguage:typescript"
+    ],
     "main": "./out/main.js",
     "contributes": {
+        "customEditors": [
+            {
+                "viewType": "cushystudio.run",
+                "displayName": "",
+                "selector": [
+                    {
+                        "filenamePattern": "*.cushy.ts"
+                    }
+                ]
+            }
+        ],
+        "configuration": {
+            "title": "CushyStudio",
+            "properties": {
+                "cushystudio.useCodeSnippetsOnMethodSuggest": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Complete functions with their parameter signature."
+                },
+                "cushystudio.tsdk": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": null,
+                    "description": "Specifies the folder path containing the tsserver and lib*.d.ts files to use."
+                }
+            }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "cushy-studio",
+                    "title": "Cushy Studio",
+                    "icon": "resources/CushyLogo.png"
+                }
+            ]
+        },
+        "views": {
+            "cushy-studio": [
+                {
+                    "id": "cushyrun",
+                    "name": "Cushy Runs"
+                },
+                {
+                    "id": "cushygraphs",
+                    "name": "CushyGraph"
+                }
+            ]
+        },
         "commands": [
             {
                 "command": "cushystudio.helloWorld",
                 "title": "Hello World"
+            },
+            {
+                "command": "cushystudio.connect",
+                "title": "Connect to ComfyUI"
+            },
+            {
+                "command": "cushystudio.start",
+                "title": "Hello World"
+            },
+            {
+                "command": "cushystudio.openjs",
+                "title": "Open JS"
             }
         ]
     },
@@ -62,6 +127,7 @@
     },
     "dependencies": {
         "@rsuite/icons": "^1.0.2",
+        "@types/ws": "^8.5.4",
         "cytoscape": "^3.23.0",
         "cytoscape-klay": "^3.1.4",
         "esbuild": "^0.17.12",
@@ -69,6 +135,7 @@
         "mobx-react-lite": "^3.4.3",
         "monaco-editor": "^0.36.1",
         "nanoid": "^4.0.1",
+        "node-fetch": "^3.3.1",
         "painterro": "^1.2.78",
         "pathe": "^1.1.0",
         "prettier": "^2.8.5",
@@ -78,18 +145,18 @@
         "react-toastify": "^9.1.1",
         "rsuite": "^5.30.0",
         "scheduler": "^0.20.0",
-        "ts-node": "^10.9.1"
+        "ts-node": "^10.9.1",
+        "ws": "^8.13.0"
     },
     "devDependencies": {
-        "@tauri-apps/cli": "^1.2.3",
-        "@types/cytoscape-klay": "^3.1.0",
         "@types/cytoscape": "^3.19.9",
+        "@types/cytoscape-klay": "^3.1.0",
         "@types/glob": "^8.1.0",
         "@types/mocha": "^10.0.1",
         "@types/node": "16.x",
         "@types/prettier": "^2.7.2",
-        "@types/react-dom": "^18.0.11",
         "@types/react": "^18.0.28",
+        "@types/react-dom": "^18.0.11",
         "@types/vscode": "^1.77.0",
         "@typescript-eslint/eslint-plugin": "^5.56.0",
         "@typescript-eslint/parser": "^5.56.0",

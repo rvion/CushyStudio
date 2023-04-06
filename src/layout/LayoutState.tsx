@@ -5,11 +5,10 @@ import DockLayout, { PanelData } from 'rc-dock'
 import { Workspace } from '../core/Workspace'
 import { TutorialUI } from '../help/TutorialUI'
 import { Image } from '../ui/Image'
-import { defaultLayout } from './LayoutDefault'
+// import { defaultLayout } from './LayoutDefault'
 
 export class CushyLayoutState {
-    layout = defaultLayout()
-
+    // layout = defaultLayout()
     galleryFocus: PromptOutputImage | null = null
     gallerySize = 100
     dockLayout: DockLayout | null = null
