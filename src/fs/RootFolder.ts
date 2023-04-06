@@ -1,3 +1,4 @@
+import * as vscode from 'vscode'
 import type { Maybe } from '../core/ComfyUtils'
 import type { AbsolutePath, RelativePath } from './pathUtils'
 import type { FileActionResult } from './FileActionResult'
@@ -5,7 +6,7 @@ import type { ItemDataType } from 'rsuite/esm/@types/common'
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { toast } from 'react-toastify'
+// import { toast } from 'react-toastify'
 import { makeAutoObservable, observable } from 'mobx'
 import { nanoid } from 'nanoid'
 
@@ -116,7 +117,7 @@ export class RootFolder {
         // this.notify(`wrote file ${relativePath}`)
     }
 
-    private notify = (msg: string) => {
-        toast(msg, { type: 'info', position: 'bottom-right' })
-    }
+    // private notify = (msg: string) => {
+    //     toast(msg, { type: 'info', position: 'bottom-right' })
+    // }
 }

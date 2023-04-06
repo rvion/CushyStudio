@@ -258,18 +258,12 @@ declare module "ui/Image" {
 }
 declare module "layout/LayoutState" {
     import type { PromptOutputImage } from "core/PromptOutputImage";
-    import DockLayout from 'rc-dock';
     import { Workspace } from "core/Workspace";
     export class CushyLayoutState {
         client: Workspace;
         galleryFocus: PromptOutputImage | null;
         gallerySize: number;
-        dockLayout: DockLayout | null;
-        getRef: (r: DockLayout | null) => DockLayout | null;
         constructor(client: Workspace);
-        addImagePopup: (url: string) => void;
-        /** WIP */
-        addHelpPopup: () => void;
     }
 }
 declare module "logger/Logger" {
@@ -663,7 +657,7 @@ declare module "controls/ScriptStep_prompt" {
         currentExecutingNode: ComfyNode<any> | null;
         /** update the progress value of the currently focused onde */
         onProgress: (msg: WsMsgProgress) => void;
-        notifyEmptyPrompt: () => undefined;
+        notifyEmptyPrompt: () => Thenable<string | undefined>;
         /** update pointer to the currently executing node */
         onExecuting: (msg: WsMsgExecuting) => void;
         /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */

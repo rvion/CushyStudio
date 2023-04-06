@@ -1,4 +1,6 @@
-import { toast } from 'react-toastify'
+import * as vscode from 'vscode'
+// import { toast } from 'react-toastify'
+const showErrorMessage = vscode.window.showErrorMessage
 
 export type TextChunks = {
     [key: string]: string
@@ -11,13 +13,13 @@ export function getPngMetadata(file: File): Promise<TextChunks> {
             // A. ensure we properly loaded the file
             const res = event.target?.result
             if (res == null) {
-                toast('ERROR: no reader.onload have no result')
+                showErrorMessage('no reader.onload have no result')
                 return reject('file load error')
             }
 
             // B. ensure we don't have a string
             if (typeof res === 'string') {
-                toast('ERROR: received a string instead of an array buffer')
+                showErrorMessage('received a string instead of an array buffer')
                 return reject('file load error')
             }
 
@@ -27,7 +29,7 @@ export function getPngMetadata(file: File): Promise<TextChunks> {
 
             // Check that the PNG signature is present
             if (dataView.getUint32(0) !== 0x89504e47) {
-                toast('Not a valid PNG file')
+                showErrorMessage('Not a valid PNG file')
                 return reject('Not a valid PNG file')
             }
 

@@ -1,3 +1,4 @@
+import * as vscode from 'vscode'
 import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from '../core/ComfyAPI'
 import type { ComfyPromptJSON } from '../core//ComfyPrompt'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
@@ -5,7 +6,6 @@ import type { ComfyNode } from '../core//CSNode'
 import type { Run } from '../core//Run'
 
 import { makeAutoObservable } from 'mobx'
-import { toast } from 'react-toastify'
 import { Graph } from '../core//Graph'
 import { deepCopyNaive } from '../core//ComfyUtils'
 import { nanoid } from 'nanoid'
@@ -59,7 +59,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         }
     }
 
-    notifyEmptyPrompt = () => void toast('No work to do', { type: 'warning' })
+    notifyEmptyPrompt = () => vscode.window.showWarningMessage('No work to do')
 
     /** update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {
