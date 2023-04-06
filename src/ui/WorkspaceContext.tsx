@@ -8,9 +8,3 @@ export const useWorkspace = () => {
     if (st == null) throw new Error('no st in context')
     return st
 }
-
-export const useProject = () => {
-    const st = useContext(workspaceContext)
-    if (st == null) throw new Error('no st in context')
-    return st.focusedProject
-}

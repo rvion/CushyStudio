@@ -24,7 +24,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     _graph: Graph
 
     /** short-hand getter to access parent client */
-    get client(){ return this.run.project.workspace } // prettier-ignore
+    get workspace(){ return this.run.workspace } // prettier-ignore
 
     constructor(
         //
@@ -33,7 +33,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
     ) {
         this._graph = new Graph(
             //
-            this.run.project,
+            this.run.workspace,
             this.run,
             deepCopyNaive(prompt),
         )
@@ -105,7 +105,7 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
             // this.client.layout.galleryFocus == null &&
             images.length > 0
         ) {
-            this.client.layout.galleryFocus = images[0]
+            this.workspace.layout.galleryFocus = images[0]
         }
         console.log(`🟢 graph(${this._graph.uid}) => node(${node.uid}) => (${node.artifacts.length} images)`)
     }

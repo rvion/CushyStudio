@@ -1,7 +1,6 @@
 import type { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 import type { ComfyNodeUID } from './ComfyNodeUID'
-import type { Project } from './Project'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from './ComfyUtils'
 import type { Run } from './Run'
@@ -9,26 +8,25 @@ import type { Run } from './Run'
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { computed, makeObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { Workspace } from './Workspace'
-import { comfyColors } from './ComfyColors'
-import { ComfyNode } from './CSNode'
-import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
-import { wildcards } from '../wildcards/wildcards'
-import { PromptOutputImage } from './PromptOutputImage'
 import { Cyto } from '../graph/cyto'
 import { logger } from '../logger/Logger'
+import { wildcards } from '../wildcards/wildcards'
+import { ComfyNode } from './CSNode'
+import { comfyColors } from './ComfyColors'
+import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
+import { PromptOutputImage } from './PromptOutputImage'
+import { Workspace } from './Workspace'
 
 export type RunMode = 'fake' | 'real'
 
 export class Graph {
     uid = nanoid()
-    get client(): Workspace { return this.project.workspace } // prettier-ignore
-    get schema() { return this.client.schema } // prettier-ignore
+    get schema() { return this.workspace.schema } // prettier-ignore
 
     cyto?: Cyto
 
     uploadImgFromDisk = async (path: string) => {
-        return this.run.project.workspace.uploadImgFromDisk(path)
+        return this.workspace.uploadImgFromDisk(path)
     }
 
     registerNode = (node: ComfyNode<any>) => {
@@ -85,7 +83,7 @@ export class Graph {
 
     constructor(
         //
-        public project: Project,
+        public workspace: Workspace,
         public run: Run,
         json: ComfyPromptJSON = {},
     ) {
@@ -98,7 +96,7 @@ export class Graph {
         // TODO: rewrite with a single defineProperties call
         // with propery object being defined on the client
         // to remove all this extra work
-        const schema = project.schema
+        const schema = workspace.schema
         for (const node of schema.nodes) {
             // console.log(`node: ${node.name}`)
             Object.defineProperty(this, node.nameInCushy, {

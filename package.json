@@ -3,6 +3,7 @@
     "publisher": "rvion",
     "description": "🎨 Generative Art Web-IDE and embeddable typescript SDK - based on ComfyUI",
     "private": true,
+    "type": "module",
     "engines": {
         "vscode": "^1.77.0"
     },
@@ -54,6 +55,10 @@
         },
         "views": {
             "cushy-studio": [
+                {
+                    "id": "cushystudio-servers",
+                    "name": "Servers"
+                },
                 {
                     "id": "cushyrun",
                     "name": "Cushy Runs"

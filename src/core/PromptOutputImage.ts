@@ -18,7 +18,7 @@ export class PromptOutputImage {
         /** image info as returned by Comfy */
         public data: ComfyImageInfo,
     ) {
-        this.workspace = prompt.run.project.workspace
+        this.workspace = prompt.workspace
         this.saveOnDisk()
     }
 
@@ -55,9 +55,11 @@ export class PromptOutputImage {
             method: 'GET',
             // responseType: ResponseType.Binary,
         })
-        const binArr = await response.arrayBuffer()
+        const binArr = await response.buffer()
         // const binArr = new Uint16Array(numArr)
-        await this.workspace.rootFolder.writeBinaryFile(this.filePath, binArr)
+
+        // 🔴
+        this.workspace.writeBinaryFile(this.filePath, binArr)
         this.saved = true
     }
 

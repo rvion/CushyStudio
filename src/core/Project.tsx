@@ -1,159 +1,99 @@
-import type { Maybe } from './ComfyUtils'
-import type { RunMode } from './Graph'
-import * as path from 'path'
-import { makeAutoObservable } from 'mobx'
-import { nanoid } from 'nanoid'
-import { Workspace } from './Workspace'
-import { ComfyPromptJSON } from './ComfyPrompt'
-import { Run } from './Run'
-import { TypescriptFile } from '../monaco/TypescriptFile'
-import { ComfyImporter } from '../importers/ImportComfyImage'
-import { logger } from '../logger/Logger'
-import { asMonacoPath, asRelativePath, pathe, RelativePath } from '../fs/pathUtils'
-import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
+// import { makeAutoObservable } from 'mobx'
+// import * as path from 'path'
+// import * as vscode from 'vscode'
+// import { ComfyImporter } from '../importers/ImportComfyImage'
+// import { ComfyPromptJSON } from './ComfyPrompt'
+// import { Run } from './Run'
+// import { Workspace } from './Workspace'
 
-/** Script */
-export class Project {
-    static __demoProjectIx = 1
-    runCounter = 0
+// /** Script */
+// export class Project {
+//     static __demoProjectIx = 1
+//     runCounter = 0
 
-    /** unique project id */
-    id: string = nanoid()
+//     /** list of all project runs */
+//     runs: Run[] = []
 
-    // /** create a copy of a given project */
-    // duplicate = async () => {
-    //     const nextPath_ = this.workspaceRelativeFilePath.replace(/\.ts$/, `_${getYYYYMMDDHHMMSS()}_copy.ts`)
-    //     const nextPath = this.workspace.resolveToRelativePath(nextPath_)
-    //     console.log({ nextPath_, nextPath })
-    //     this.workspace.createProjectAndFocustIt(nextPath, this.scriptBuffer.codeTS)
-    // }
+//     /** last project run */
+//     get currentRun(): Run | null {
+//         return this.runs[0] ?? null
+//     }
 
-    // /** focus project and open script in main panel */
-    // focus = () => {
-    //     this.workspace.focusedFile = this.scriptBuffer
-    //     this.workspace.focusedProject = this
-    //     this.workspace.workspaceConfigFile
-    //     // this.workspace.layout.openEditorTab(this.scriptBuffer)
-    // }
+//     // scriptBuffer: TypescriptFile
+//     name: string
+//     workspaceRelativeCacheFolder: vscode.Uri
 
-    /** list of all project runs */
-    runs: Run[] = []
+//     constructor(public workspace: Workspace, public uri: vscode.Uri) {
+//         this.name = path.basename(uri.path)
+//         this.workspaceRelativeCacheFolder = this.workspace.resolve(path.join('.cache', this.uri.path))
+//         makeAutoObservable(this)
+//     }
 
-    /** last project run */
-    get currentRun(): Run | null {
-        return this.runs[0] ?? null
-    }
+//     /** convenient getter to retrive current client shcema */
+//     get schema() { return this.workspace.schema } // prettier-ignore
 
-    scriptBuffer: TypescriptFile
-    name: string
-    workspaceRelativeCacheFolder: string
+//     static FROM_JSON = (workspace: Workspace, name: string, json: ComfyPromptJSON) => {
+//         const code = new ComfyImporter(workspace).convertFlowToCode(json)
+//         const fileName = name.endsWith('.ts') ? name : `${name}.ts`
+//         const uri = workspace.resolve(fileName)
+//         workspace.writeTextFile(uri, code, true)
+//         const project = new Project(workspace, uri)
+//         return project
+//     }
 
-    constructor(
-        //
-        public workspace: Workspace,
-        public workspaceRelativeFilePath: RelativePath,
-        initialCode: Maybe<string>,
-    ) {
-        // const fileName = basename(workspaceRelativeFilePath)
-        const parsed = pathe.parse(workspaceRelativeFilePath)
-        this.name = parsed.name
-        this.workspaceRelativeCacheFolder = this.workspace.relativeCacheFolderPath + path.sep + this.workspaceRelativeFilePath
-        // console.log('🔴', {
-        //     filePath: this.workspaceRelativeFilePath,
-        //     fileName: this.fileName,
-        //     folderName: this.folderName,
-        //     folderPath: this.cacheFolder,
-        // })
-        this.scriptBuffer = new TypescriptFile(this.workspace.rootFolder, {
-            title: this.name,
-            relativeTSFilePath: this.workspaceRelativeFilePath,
-            relativeJSFilePath: asRelativePath(this.workspaceRelativeCacheFolder + path.sep + 'script.js'),
-            virtualPathTS: asMonacoPath(`file:///${this.workspaceRelativeFilePath}`),
-            defaultCodeWhenNoFile: initialCode,
-        })
-        makeAutoObservable(this)
-    }
+//     /** converts a ComfyPromptJSON into it's canonical normal-form script */
+//     static LoadFromComfyPromptJSON = (_json: ComfyPromptJSON) => {
+//         throw new Error('🔴 not implemented yet')
+//     }
 
-    /** convenient getter to retrive current client shcema */
-    get schema() { return this.workspace.schema } // prettier-ignore
+//     // graphs: ComfyGraph[] = []
 
-    static FROM_JSON = (workspace: Workspace, name: string, json: ComfyPromptJSON) => {
-        // const randomName = nanoid()
-        const code = new ComfyImporter(workspace).convertFlowToCode(json)
-        const fileName = name.endsWith('.ts') ? name : `${name}.ts`
-        const relPath = workspace.resolveToRelativePath(fileName)
-        const project = new Project(workspace, relPath, code)
-        // console.log('🔴', code)
-        // script.udpateCode(code)
-        return project
-    }
+//     // 🔴 not the right abstraction anymore
+//     // get currentGraph() { return this.graphs[this.focus] ?? this.MAIN } // prettier-ignore
+//     // get currentOutputs() { return this.currentGraph.outputs } // prettier-ignore
 
-    /** converts a ComfyPromptJSON into it's canonical normal-form script */
-    static LoadFromComfyPromptJSON = (_json: ComfyPromptJSON) => {
-        throw new Error('🔴 not implemented yet')
-    }
+//     /** * project running is not the same as graph running; TODO: explain */
+//     isRunning = false
 
-    // graphs: ComfyGraph[] = []
+//     // runningMode: RunMode = 'fake'
+//     // RUN = async (mode: RunMode = 'fake'): Promise<boolean> => {
+//     //     this.workspace.focusedProject = this
+//     //     // ensure we have some code to run
 
-    // 🔴 not the right abstraction anymore
-    // get currentGraph() { return this.graphs[this.focus] ?? this.MAIN } // prettier-ignore
-    // get currentOutputs() { return this.currentGraph.outputs } // prettier-ignore
+//     //     // this.scriptBuffer.codeJS
+//     //     // get the content of the current editor
+//     //     const codeTS = vscode.window.activeTextEditor?.document.getText() ?? ''
 
-    /** * project running is not the same as graph running; TODO: explain */
-    isRunning = false
+//     //     const codeJS = await transpileCode()
+//     //     if (codeJS == null) {
+//     //         console.log('❌', 'no code to run')
+//     //         return false
+//     //     }
+//     //     // check if we're in "MOCK" mode
+//     //     const opts = mode === 'fake' ? { mock: true } : undefined
+//     //     const execution = new Run(this, opts)
+//     //     await execution.save()
+//     //     // write the code to a file
+//     //     this.runs.unshift(execution)
 
-    // runningMode: RunMode = 'fake'
-    RUN = async (mode: RunMode = 'fake'): Promise<boolean> => {
-        this.workspace.focusedProject = this
-        // ensure we have some code to run
-        const codeJS = this.scriptBuffer.codeJS
-        if (codeJS == null) {
-            console.log('❌', 'no code to run')
-            return false
-        }
-        // check if we're in "MOCK" mode
-        const opts = mode === 'fake' ? { mock: true } : undefined
-        const execution = new Run(this, opts)
-        await execution.save()
-        // write the code to a file
-        this.runs.unshift(execution)
+//     //     // try {
+//     //     const ProjectScriptFn = new Function('WORKFLOW', codeJS)
+//     //     const graph = execution.graph
 
-        // try {
-        const ProjectScriptFn = new Function('WORKFLOW', codeJS)
-        const graph = execution.graph
+//     //     // graph.runningMode = mode
+//     //     // this.MAIN = graph
 
-        // graph.runningMode = mode
-        // this.MAIN = graph
+//     //     const WORKFLOW = (fn: any) => fn(graph)
 
-        const WORKFLOW = (fn: any) => fn(graph)
-
-        try {
-            await ProjectScriptFn(WORKFLOW)
-            console.log('[✅] RUN SUCCESS')
-            // this.isRunning = false
-            return true
-        } catch (error) {
-            console.log(error)
-            logger.error('🌠', 'RUN FAILURE')
-            return false
-        }
-        // } catch (error) {
-        //     console.log('❌', error)
-        //     // this.isRunning = false
-        //     return false
-        // }
-    }
-
-    /** folder where CushyStudio will save script informations */
-
-    // save = async () => {
-    //     const code = this.code
-    //     // ensure folder exists
-    //     await fs.createDir(this.folderPath, { recursive: true })
-    //     // safe script as script.ts
-    //     // const filePath = this.folderPath + path.sep + 'script.ts'
-    //     // await fs.writeFile({ path: filePath, contents: code })
-    //     // return success
-    //     console.log('[📁] saved', filePath)
-    // }
-}
+//     //     try {
+//     //         await ProjectScriptFn(WORKFLOW)
+//     //         console.log('[✅] RUN SUCCESS')
+//     //         // this.isRunning = false
+//     //         return true
+//     //     } catch (error) {
+//     //         console.log(error)
+//     //         logger.error('🌠', 'RUN FAILURE')
+//     //         return false
+//     //     }
+//     // }
+// }

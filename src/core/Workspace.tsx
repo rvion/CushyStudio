@@ -1,36 +1,34 @@
+import fetch from 'node-fetch'
 import { posix } from 'path'
 import * as vscode from 'vscode'
-import type { Cushy } from '../cushy/Cushy'
+import * as WS from 'ws'
 import type { ImportCandidate } from '../importers/ImportCandidate'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
-import type { Run } from './Run'
+import { Run } from './Run'
 import type { ScriptStep } from './ScriptStep'
 
-import * as fs from 'fs'
-import fetch from 'node-fetch'
-import * as path from 'path'
-import { RootFolder } from '../fs/RootFolder'
-
 import { makeAutoObservable } from 'mobx'
-import { toast } from 'react-toastify'
 // import { JsonFile } from '../monaco/JsonFile'
-import { Template } from '../templates/Template'
 import { CushyLayoutState } from '../layout/LayoutState'
 import { logger } from '../logger/Logger'
+import { Template } from '../templates/Template'
 // import { TypescriptFile } from '../monaco/TypescriptFile'
+import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { sdkTemplate } from '../sdk/sdkTemplate'
-import { AbsolutePath, asMonacoPath, asRelativePath, pathe, RelativePath } from '../fs/pathUtils'
+import { defaultScript } from '../templates/defaultProjectCode'
 import { ResilientWebSocketClient } from '../ws/ResilientWebsocket'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfySchema } from './ComfySchema'
-import { defaultScript } from '../templates/defaultProjectCode'
-import { Project } from './Project'
+// import { Project } from './Project'
 import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import { demoLibrary } from '../templates/Library'
-import { ProjectCreationWizard } from '../menu/ProjectCreationWizard'
+// import { ProjectCreationWizard } from '../menu/ProjectCreationWizard'
+import { ComfyImporter } from '../importers/ImportComfyImage'
 import { readableStringify } from '../utils/stringifyReadable'
+import { RunMode } from './Graph'
+import { transpileCode } from './transpiler'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -49,19 +47,10 @@ export type CSCriticalError = { title: string; help: string }
  */
 export class Workspace {
     schema: ComfySchema
-
     demos: Template[] = demoLibrary
-    wizard = new ProjectCreationWizard(this)
-
-    projects: Project[] = []
+    // projects: Project[] = []
     assets = new Map<string, boolean>()
     layout = new CushyLayoutState(this)
-
-    // main files
-    // workspaceConfigFile: JsonFile<WorkspaceConfigJSON>
-    // objectInfoFile: JsonFile<ComfySchemaJSON>
-    // cushySDKFile: TypescriptFile
-    // comfySDKFile: TypescriptFile
 
     // import management
     importQueue: ImportCandidate[] = []
@@ -75,54 +64,82 @@ export class Workspace {
         return asRelativePath('cache')
     }
 
+    runs: Run[] = []
+
+    RUN = async (mode: RunMode = 'fake'): Promise<boolean> => {
+        // this.focusedProject = this
+        // ensure we have some code to run
+        // this.scriptBuffer.codeJS
+        // get the content of the current editor
+
+        const activeTextEditor = vscode.window.activeTextEditor
+        if (activeTextEditor == null) {
+            console.log('❌', 'no active editor')
+            return false
+        }
+        const activeDocument = activeTextEditor.document
+        const activeURI = activeDocument.uri
+        console.log({ activeURI })
+        const codeTS = activeDocument.getText() ?? ''
+        console.log({ codeTS })
+        const codeJS = await transpileCode(codeTS)
+        console.log({ codeJS })
+        if (codeJS == null) {
+            console.log('❌', 'no code to run')
+            return false
+        }
+        // check if we're in "MOCK" mode
+        const opts = mode === 'fake' ? { mock: true } : undefined
+        const execution = new Run(this, activeURI, opts)
+        await execution.save()
+        // write the code to a file
+        this.runs.unshift(execution)
+
+        // try {
+        const ProjectScriptFn = new Function('WORKFLOW', codeJS)
+        const graph = execution.graph
+
+        // graph.runningMode = mode
+        // this.MAIN = graph
+
+        const WORKFLOW = (fn: any) => fn(graph)
+
+        try {
+            await ProjectScriptFn(WORKFLOW)
+            console.log('[✅] RUN SUCCESS')
+            // this.isRunning = false
+            return true
+        } catch (error) {
+            console.log(error)
+            logger.error('🌠', 'RUN FAILURE')
+            return false
+        }
+    }
+
     comfyJSONUri: vscode.Uri
     comfyTSUri: vscode.Uri
     cushyTSUri: vscode.Uri
 
-    constructor(
-        //
-        // public cushy: Cushy,
-        public wspUri: vscode.Uri,
-    ) {
+    writeBinaryFile(relPath: RelativePath, content: Buffer, open = false) {
+        const uri = this.resolve(relPath)
+        vscode.workspace.fs.writeFile(uri, content)
+        if (open) vscode.workspace.openTextDocument(uri)
+    }
+
+    writeTextFile(uri: vscode.Uri, content: string, open = false) {
+        const buff = Buffer.from(content)
+        vscode.workspace.fs.writeFile(uri, buff)
+        if (open) vscode.workspace.openTextDocument(uri)
+    }
+
+    constructor(public wspUri: vscode.Uri) {
         this.schema = new ComfySchema({})
-        void this.init()
         this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.json') })
         this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.d.ts') })
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'cushy.d.ts') })
-        // const foo = vscode.workspace.
-        // this.rootFolder = new RootFolder(absoluteWorkspaceFolderPath)
-        // this.cushySDKFile = new TypescriptFile(this.rootFolder, {
-        //     title: 'Cushy SDK',
-        //     relativeTSFilePath: asRelativePath('cushy.d.ts'),
-        //     virtualPathTS: asMonacoPath(`file:///cushy.d.ts`),
-        //     codeOverwrite: sdkTemplate,
-        // })
 
-        // this.comfySDKFile = new TypescriptFile(this.rootFolder, {
-        //     title: 'Comfy SDK',
-        //     relativeTSFilePath: asRelativePath('comfy.d.ts'),
-        //     virtualPathTS: asMonacoPath(`file:///comfy.d.ts`),
-        //     defaultCodeWhenNoFile: null,
-        // })
-
-        // this.objectInfoFile = new JsonFile<ComfySchemaJSON>(this.rootFolder, {
-        //     // folder: Promise.resolve(this.absoluteWorkspaceFolderPath),
-        //     title: 'object_info.json',
-        //     relativePath: asRelativePath('object_info.json'),
-        //     init: () => ({}),
-        //     maxLevel: 3,
-        // })
-
-        // this.workspaceConfigFile = new JsonFile<WorkspaceConfigJSON>(this.rootFolder, {
-        //     // folder: Promise.resolve(this.absoluteWorkspaceFolderPath),
-        //     title: 'workspace.json',
-        //     relativePath: asRelativePath('workspace.json'),
-        //     init: () => ({
-        //         version: 2,
-        //         comfyWSURL: 'ws://127.0.0.1:8188/ws',
-        //         comfyHTTPURL: 'http://127.0.0.1:8188',
-        //     }),
-        // })
+        this.writeTextFile(this.cushyTSUri, sdkTemplate)
+        void this.init()
         makeAutoObservable(this)
     }
 
@@ -146,7 +163,9 @@ export class Workspace {
 
     sid = 'temp'
 
-    onMessage = (e: MessageEvent /* WS.MessageEvent*/) => {
+    activeRun: Maybe<Run> = null
+
+    onMessage = (e: WS.MessageEvent) => {
         const msg: WsMsg = JSON.parse(e.data as any)
         if (msg.type === 'status') {
             if (msg.data.sid) this.sid = msg.data.sid
@@ -154,11 +173,15 @@ export class Workspace {
             return
         }
 
-        // ensure current project is running
-        const project: Maybe<Project> = this.focusedProject
-        if (project == null) return console.log(`❌ received ${msg.type} but project is null`)
+        // console.log(e.data)
+        // // 🔴
+        // return
 
-        const currentRun: Run | null = project.currentRun
+        // ensure current project is running
+        // const project: Maybe<Project> = this.focusedProject
+        // if (project == null) return console.log(`❌ received ${msg.type} but project is null`)
+
+        const currentRun: Maybe<Run> = this.activeRun
         if (currentRun == null) return console.log(`❌ received ${msg.type} but currentRun is null`)
 
         // ensure current step is a prompt
@@ -206,113 +229,20 @@ export class Workspace {
         return this.uploadUIntArrToComfy(blob)
     }
 
-    // createProjectAndFocustIt = (
-    //     //
-    //     workspaceRelativeFilePath: RelativePath,
-    //     script: string = defaultScript,
-    // ) => {
-    //     const project = new Project(this, workspaceRelativeFilePath, script)
-    //     this.projects.push(project)
-    //     project.focus()
-    // }
-
-    // /** 📝 should be the SINGLE function able to save text files in a workspace */
-    // readTextFile = async (workspaceRelativePath: RelativePath): Promise<Maybe<string>> => {
-    //     const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
-    //     const exists = await fs.exists(absoluteFilePath)
-    //     if (exists) return await fs.readTextFile(absoluteFilePath)
-    //     return null
-    // }
-
-    // /** 📝 should be the SINGLE function able to save text files in a workspace */
-    // writeTextFile = async (workspaceRelativePath: RelativePath, contents: string): Promise<void> => {
-    //     // 1. resolve absolute path
-    //     const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
-    //     // 2. create folder if missing
-    //     const folder = await path.dirname(absoluteFilePath)
-    //     const folderExists = await fs.exists(folder)
-    //     if (!folderExists) await fs.createDir(folder, { recursive: true })
-    //     // 3. check previous file content
-    //     const prevExists = await fs.exists(absoluteFilePath)
-    //     const prev = prevExists ? await fs.readTextFile(absoluteFilePath) : null
-    //     // 4. save if necessary
-    //     if (prev != contents) await fs.writeTextFile({ path: absoluteFilePath, contents })
-    // }
-
-    // /** 📝 should be the SINGLE function able to save binary files in a workspace */
-    // writeBinaryFile = async (workspaceRelativePath: RelativePath, contents: fs.BinaryFileContents) => {
-    //     // 1. resolve absolute path
-    //     const absoluteFilePath = await path.join(this.absoluteWorkspaceFolderPath, workspaceRelativePath)
-    //     // console.log('>>> 🔴y', absoluteFilePath)
-    //     // 2. create folder if missing
-    //     const folder = await path.dirname(absoluteFilePath)
-    //     const folderExists = await fs.exists(folder)
-    //     if (!folderExists) await fs.createDir(folder, { recursive: true })
-    //     // 3. update file (NO check to see if previous file similar)
-    //     await fs.writeBinaryFile({ path: absoluteFilePath, contents })
-    // }
-
-    /** resolve any path to a relative workspace path
-     * CRASH if path is outside of workspace folder or invalid */
-    resolveToRelativePath = (rawPath: string): RelativePath => {
-        const isAbsolute = pathe.isAbsolute(rawPath)
-        // console.log('🚀 ~ file: Workspace.tsx:218 ~ Workspace ~ isAbsolute:', isAbsolute)
-        const parsed = pathe.parse(rawPath)
-        const relativePath = isAbsolute //
-            ? pathe.relative(this.wspUri, rawPath)
-            : pathe.relative(this.wspUri, pathe.resolve(this.wspUri, rawPath))
-
-        // ENFORCE WORKSPACE ISOLATION
-        if (relativePath.startsWith('..')) {
-            console.log(
-                JSON.stringify(
-                    {
-                        parsed,
-                        rawPath,
-                        workspaceFolder: this.wspUri,
-                        relativePath,
-                    },
-                    null,
-                    3,
-                ),
-            )
-            throw new Error("🔴BB invalid path; can't create path outside of workspace folder")
-        }
-        return relativePath as RelativePath
+    createProjectAndFocustIt = (
+        //
+        workspaceRelativeFilePath: vscode.Uri,
+        scriptContent: string = defaultScript,
+    ) => {
+        this.writeTextFile(workspaceRelativeFilePath, scriptContent, true)
+        // const project = new Project(this, workspaceRelativeFilePath, scriptContent)
+        // this.projects.push(project)
+        // project.focus()
     }
 
-    /** load all project found in workspace */
-    // loadProjects = async () => {
-    //     console.log(`[🔍] loading projects...`)
-    //     const items = fs.readdirSync(this.absoluteWorkspaceFolderPath)
-    //     for (const item of items) {
-    //         if (item.children) continue // skip folders
-    //         if (item.name == null) continue // skip invalid files
-    //         if (!item.name.endsWith('.ts')) continue // skip non ts files
-    //         const content = await fs.readTextFile(this.absoluteWorkspaceFolderPath + path.sep + item.name)
-    //         const relPath = this.resolveToRelativePath(item.path)
-    //         this.projects.push(new Project(this, relPath, content))
-    //     }
-    //     //     if (!item.children) {
-    //     //         console.log(`[🔍] - ${item.name} is not a folder`)
-    //     //         continue
-    //     //     }
-    //     //     const script = item.children.find((f) => f.name === 'script.ts')
-    //     //     if (script == null) {
-    //     //         console.log(
-    //     //             `[🔍] - ${item.name} has no script.ts file ${item.children.length} ${item.children.map((f) => f.name)}`,
-    //     //         )
-    //     //         continue
-    //     //     }
-    //     //     const folderName = item.name
-    //     //     if (folderName == null) {
-    //     //         console.log(`[🔍] - ${item.name} has an invalid name (e.g. ends with a dot)`)
-    //     //         continue
-    //     //     }
-    //     //     console.log(`[🔍] found project ${folderName}!`)
-    //     //     this.projects.push(new Project(this, folderName))
-    //     // }
-    // }
+    resolve = (relativePath: RelativePath): vscode.Uri => {
+        return this.wspUri.with({ path: posix.join(this.wspUri.path, relativePath) })
+    }
 
     /** save an image at given url to disk */
     saveImgToDisk = async (
@@ -363,7 +293,7 @@ export class Workspace {
     }
 
     get serverHostHTTP() {
-        const def = vscode.workspace.getConfiguration('cushystudio').get('serverHostHTTP', 'http://192.168.1.19:8188/')
+        const def = vscode.workspace.getConfiguration('cushystudio').get('serverHostHTTP', 'http://192.168.1.19:8188')
         return def
     }
 
@@ -380,22 +310,24 @@ export class Workspace {
     updateComfy_object_info = async (): Promise<ComfySchemaJSON> => {
         // 1. fetch schema$
         const url = `${this.serverHostHTTP}/object_info`
+        logger.info('🌠', `contacting ${url}`)
         vscode.window.showInformationMessage(url)
-        console.log(url)
+        // console.log(url)
 
         let schema$: ComfySchemaJSON
         try {
             // const cancel =
             const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
-            const data = res.json()
-            console.log('[🤖]', data)
+            const data = await res.json()
+            logger.info('🌠', `data: ${JSON.stringify(data)}`)
             schema$ = data as any
         } catch (error) {
-            console.log('🔴', error)
             vscode.window.showErrorMessage('FAILED TO FETCH OBJECT INFOS FROM COMFY')
+            console.error('🐰', error)
             logger.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
             schema$ = {}
         }
+        vscode.window.showInformationMessage('🟢 yay')
 
         const comfyStr = readableStringify(schema$, 3)
         const comfyJSONBuffer = Buffer.from(comfyStr, 'utf8')
@@ -404,7 +336,7 @@ export class Workspace {
         this.schema.update(schema$)
         const cushyStr = this.schema.codegenDTS()
         const cushyBuff = Buffer.from(cushyStr, 'utf8')
-        vscode.workspace.fs.writeFile(this.cushyTSUri, cushyBuff)
+        vscode.workspace.fs.writeFile(this.comfyTSUri, cushyBuff)
 
         // this.objectInfoFile.update(schema$)
         // this.comfySDKFile.updateFromCodegen(comfySdkCode)
@@ -420,12 +352,12 @@ export class Workspace {
 
     status: ComfyStatus | null = null
 
-    notify = (msg: string) => void toast(msg)
+    notify = (msg: string) => vscode.window.showInformationMessage(msg)
 
-    // addProjectFromComfyWorkflowJSON = async (title: string, comfyPromptJSON: ComfyPromptJSON) => {
-    //     const project = Project.FROM_JSON(this, title, comfyPromptJSON)
-    //     this.projects.push(project)
-    //     this.focusedProject = project
-    //     this.focusedFile = project.scriptBuffer
-    // }
+    addProjectFromComfyWorkflowJSON = async (title: string, comfyPromptJSON: ComfyPromptJSON) => {
+        const code = new ComfyImporter(this).convertFlowToCode(comfyPromptJSON)
+        const fileName = title.endsWith('.ts') ? title : `${title}.ts`
+        const uri = this.resolve(asRelativePath(fileName))
+        this.writeTextFile(uri, code, true)
+    }
 }

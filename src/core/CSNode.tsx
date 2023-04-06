@@ -124,7 +124,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         return incomingEdges
     }
 
-    get manager() { return this.graph.client } // prettier-ignore
+    get manager() { return this.graph.workspace } // prettier-ignore
 
     async get() {
         await this.graph.get()

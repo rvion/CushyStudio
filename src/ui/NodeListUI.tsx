@@ -5,7 +5,6 @@ import { Button, IconButton } from 'rsuite'
 import { ComfyNode } from '../core/CSNode'
 import { ComfyNodeSchema } from '../core/ComfySchema'
 import { Graph } from '../core/Graph'
-import { useLayout } from '../layout/LayoutCtx'
 import { Image } from './Image'
 import { NodeRefUI } from './NodeRefUI'
 
@@ -14,7 +13,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: Graph }) {
     if (graph == null) return <>no execution yet</>
     const uiSt = useLocalObservable(() => ({ seeAll: false }))
     const nodes = uiSt.seeAll ? graph.nodes : graph.nodes.filter((f) => f.isExecuting)
-    const layout = useLayout()
+    const layout = graph.workspace.layout
     return (
         <div className='col gap'>
             <div className='row space-between'>

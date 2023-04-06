@@ -8,11 +8,9 @@ import { comfyColors } from '../core/ComfyColors'
 export const NodeRefUI = observer(function NodeRefUI_(p: { nodeUID: ComfyNodeUID }) {
     const st = useWorkspace()
     // 1. ensure project exists
-    const project = st.focusedProject
-    if (project == null) return null
 
     // 2. ensure graph exists
-    const graph: Graph | undefined = project.currentRun?.graph
+    const graph: Graph | undefined = st.activeRun?.graph
     if (graph == null) return <>no execution yet</>
 
     // 3. ensure node exists

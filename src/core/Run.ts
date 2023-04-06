@@ -1,5 +1,6 @@
+import * as vscode from 'vscode'
 import fetch from 'node-fetch'
-import type { Project } from './Project'
+// import type { Project } from './Project'
 
 import * as path from 'path'
 import { makeAutoObservable } from 'mobx'
@@ -15,6 +16,7 @@ import { ScriptStep } from './ScriptStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
+import { Workspace } from './Workspace'
 
 /** script exeuction instance */
 export class Run {
@@ -38,25 +40,31 @@ export class Run {
 
     /** folder where CushyStudio will save run informations */
     get workspaceRelativeCacheFolderPath(): RelativePath {
-        return asRelativePath(this.project.workspaceRelativeCacheFolder + path.sep + this.name)
+        return asRelativePath(this.workspace.relativeCacheFolderPath + path.sep + this.name)
     }
 
     /** save current script */
     save = async () => {
-        const contents = this.project.scriptBuffer.codeJS
-        const backupCodePath = 'script.' + getYYYYMMDDHHMMSS() + '.js'
-        const filePath = asRelativePath(this.workspaceRelativeCacheFolderPath + path.sep + backupCodePath)
-        await this.project.workspace.rootFolder.writeTextFile(filePath, contents)
-        console.log('[📁] script backup saved', filePath)
+        // const contents = this.project.scriptBuffer.codeJS
+        // const backupCodePath = 'script.' + getYYYYMMDDHHMMSS() + '.js'
+        // const filePath = asRelativePath(this.workspaceRelativeCacheFolderPath + path.sep + backupCodePath)
+        // await this.project.workspace.rootFolder.writeTextFile(filePath, contents)
+        // console.log('[📁] script backup saved', filePath)
+        console.log('❌ not implmeented')
     }
+
+    folder: vscode.Uri
 
     constructor(
         //
-        public project: Project,
+        public workspace: Workspace,
+        public uri: vscode.Uri,
         public opts?: { mock?: boolean },
     ) {
+        const relPath = asRelativePath(path.join('.cache', this.uri.path))
+        this.folder = this.workspace.resolve(relPath)
         this.name = `Run ${this.createdAt}` // 'Run ' + this.script.runCounter++
-        this.graph = new Graph(this.project, this)
+        this.graph = new Graph(this.workspace, this)
         this.cyto = new Cyto(this.graph)
         makeAutoObservable(this)
     }
@@ -100,7 +108,7 @@ export class Run {
 
         // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
-            client_id: this.project.workspace.sid,
+            client_id: this.workspace.sid,
             extra_data: { extra_pnginfo: { it: 'works' } },
             prompt: currentJSON,
         }
@@ -108,7 +116,7 @@ export class Run {
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
-        void fetch(`${this.project.workspace.serverHostHTTP}/prompt`, {
+        void fetch(`${this.workspace.serverHostHTTP}/prompt`, {
             method: 'POST',
             body: JSON.stringify(out),
         })
