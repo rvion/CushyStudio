@@ -1,26 +1,45 @@
 {
-   // https://go.microsoft.com/fwlink/?linkid=830387
-   "version": "0.2.0",
-   "configurations": [
-      {
-         "type": "node",
+    // https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Extension",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": ["--extensionDevelopmentPath=${workspaceFolder}"],
+            "outFiles": ["${workspaceFolder}/out/**/*.js"],
+            "preLaunchTask": "${defaultBuildTask}"
+        },
+        {
+            "name": "Extension Tests",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceFolder}",
+                "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+            ],
+            "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
+            "preLaunchTask": "${defaultBuildTask}"
+        },
+        {
+            "type": "node",
 
-         "request": "launch",
-         "runtimeArgs": [
-            //
-            "--loader",
-            "ts-node/esm",
-            "--experimental-specifier-resolution=node",
-            "--experimental-modules"
-         ],
-         "name": "tsnode",
-         "skipFiles": ["<node_internals>/**"],
-         "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v19.0.0/bin/node",
-         // "program": "${workspaceFolder}/src/codegen/codegen.ts",
-         "program": "${relativeFile}",
-         //  ${file}
-         "outFiles": ["${workspaceFolder}/**/*.js"],
-         "console": "integratedTerminal"
-      }
-   ]
+            "request": "launch",
+            "runtimeArgs": [
+                //
+                "--loader",
+                "ts-node/esm",
+                "--experimental-specifier-resolution=node",
+                "--experimental-modules"
+            ],
+            "name": "tsnode",
+            "skipFiles": ["<node_internals>/**"],
+            "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v19.0.0/bin/node",
+            // "program": "${workspaceFolder}/src/codegen/codegen.ts",
+            "program": "${relativeFile}",
+            //  ${file}
+            "outFiles": ["${workspaceFolder}/**/*.js"],
+            "console": "integratedTerminal"
+        }
+    ]
 }
