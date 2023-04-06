@@ -1,7 +1,7 @@
 import type { TypescriptFile } from './TypescriptFile'
 import type { IStandaloneCodeEditor } from '../ui/TypescriptOptions'
 
-import { Spinner } from '@fluentui/react-components'
+import { Loader } from 'rsuite'
 import MonacoEditor, { Monaco } from '@monaco-editor/react'
 import { observer } from 'mobx-react-lite'
 import { ProjectToolbarUI } from '../ui/ToolbarUI'
@@ -12,7 +12,7 @@ export const TypescriptEditorUI = observer(function TypescriptEditorUI_(p: {
 }) {
     const buff = p.buffer
     const textModel = buff.textModel
-    if (textModel == null) return <Spinner />
+    if (textModel == null) return <Loader />
     return (
         <div className='col' style={{ height: '100%' }}>
             <ProjectToolbarUI />

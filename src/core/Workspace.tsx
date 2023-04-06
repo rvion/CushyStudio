@@ -27,6 +27,7 @@ import { defaultScript } from '../templates/defaultProjectCode'
 import { Project } from './Project'
 import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import { demoLibrary } from '../templates/Library'
+import { ProjectCreationWizard } from '../menu/ProjectCreationWizard'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -60,6 +61,7 @@ export class Workspace {
     // }
 
     demos: Template[] = demoLibrary
+    wizard = new ProjectCreationWizard(this)
 
     projects: Project[] = []
     assets = new Map<string, boolean>()
@@ -111,14 +113,14 @@ export class Workspace {
         this.rootFolder = new RootFolder(absoluteWorkspaceFolderPath)
         this.cushySDKFile = new TypescriptFile(this.rootFolder, {
             title: 'Cushy SDK',
-            relativeTSFilePath: asRelativePath('cushy.d.ts.backup'),
+            relativeTSFilePath: asRelativePath('cushy.d.ts'),
             virtualPathTS: asMonacoPath(`file:///cushy.d.ts`),
             codeOverwrite: sdkTemplate,
         })
 
         this.comfySDKFile = new TypescriptFile(this.rootFolder, {
             title: 'Comfy SDK',
-            relativeTSFilePath: asRelativePath('comfy.d.ts.backup'),
+            relativeTSFilePath: asRelativePath('comfy.d.ts'),
             virtualPathTS: asMonacoPath(`file:///comfy.d.ts`),
             defaultCodeWhenNoFile: null,
         })

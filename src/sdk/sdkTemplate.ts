@@ -117,7 +117,7 @@ declare module "logger/Logger" {
         WARN = 2,
         ERROR = 3
     }
-    type Category = 
+    type Category =
     /** Comfy websocket */
     '🧦'
     /** */
@@ -321,7 +321,7 @@ declare module "core/ComfySchemaJSON" {
         category: string;
     };
     export type ComfyInputSpec = [ComfyInputType] | [ComfyInputType, ComfyInputOpts];
-    export type ComfyInputType = 
+    export type ComfyInputType =
     /** node name or primitive */
     string
     /** enum */
@@ -400,7 +400,7 @@ declare module "core/PromptOutputImage" {
         workspace: Workspace;
         constructor(
         /** the prompt this file has been generated from */
-        prompt: ScriptStep_prompt, 
+        prompt: ScriptStep_prompt,
         /** image info as returned by Comfy */
         data: ComfyImageInfo);
         /** url to acces the image */
@@ -498,7 +498,7 @@ declare module "menu/NewProjectModalUI" {
     }>;
 }
 declare module "ui/ToolbarUI" {
-    import { ToolbarProps } from '@fluentui/react-components';
+    import { ToolbarProps } from 'rsuite';
     export const WorkspaceToolbarUI: import("react").FunctionComponent<Partial<ToolbarProps>>;
     export const ProjectToolbarUI: import("react").FunctionComponent<Partial<ToolbarProps>>;
 }

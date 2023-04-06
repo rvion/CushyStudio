@@ -1,11 +1,11 @@
-import { Card, Image } from '@fluentui/react-components'
+import { Panel } from 'rsuite'
 import { observer } from 'mobx-react-lite'
 import { useWorkspace } from '../ui/WorkspaceContext'
 
 export const PUploadUI = observer(function PUploadUI_(p: {}) {
     const x = useWorkspace()
     return (
-        <Card>
+        <Panel>
             <button
                 onClick={async () => {
                     // console.log('a')
@@ -22,6 +22,6 @@ export const PUploadUI = observer(function PUploadUI_(p: {}) {
                 ❌ TEST UPLOAD ❌
             </button>
             {/* {x.lastUpload && <Image src={x.lastUpload} width={100} height={100} />} */}
-        </Card>
+        </Panel>
     )
 })

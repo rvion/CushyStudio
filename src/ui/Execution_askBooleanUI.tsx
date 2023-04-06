@@ -1,25 +1,25 @@
-import { Button, CardFooter, CardHeader } from '@fluentui/react-components'
-import * as I from '@fluentui/react-icons'
+import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
+import { IconButton } from 'rsuite'
 import { ScriptStep_askBoolean } from '../controls/ScriptStep_ask'
 
 export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { step: ScriptStep_askBoolean }) {
     return (
         <Fragment>
-            <CardHeader description={p.step.msg}></CardHeader>
+            <div>{p.step.msg}</div>
             {p.step.locked ? (
-                <CardFooter>{p.step.value ? 'YES' : 'NO'}</CardFooter>
+                <div>{p.step.value ? 'YES' : 'NO'}</div>
             ) : (
-                <CardFooter>
+                <div>
                     <div className='grow' />
-                    <Button onClick={() => p.step.answer(true)} appearance='primary' icon={<I.CalendarMonthRegular />}>
+                    <IconButton onClick={() => p.step.answer(true)} appearance='primary' icon={<I.Calendar />}>
                         Yes
-                    </Button>
-                    <Button onClick={() => p.step.answer(false)} appearance='primary' icon={<I.CalendarMonthRegular />}>
+                    </IconButton>
+                    <IconButton onClick={() => p.step.answer(false)} appearance='primary' icon={<I.Calendar />}>
                         No
-                    </Button>
-                </CardFooter>
+                    </IconButton>
+                </div>
             )}
         </Fragment>
     )

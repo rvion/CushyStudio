@@ -85,7 +85,8 @@
                 "height": 600,
                 "resizable": true,
                 "title": "CushyStudio",
-                "width": 800
+                "width": 800,
+                "fileDropEnabled": false
             }
         ]
     }

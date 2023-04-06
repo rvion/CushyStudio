@@ -1,11 +1,12 @@
+import type { Maybe } from '../core/ComfyUtils'
+
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useMemo } from 'react'
-
-import { FluentProvider, Spinner, webDarkTheme } from '@fluentui/react-components'
 import { ToastContainer } from 'react-toastify'
+import { CustomProvider, Loader } from 'rsuite'
 import { Cushy } from '../cushy/Cushy'
 import { CSContext } from '../cushy/CushyContext'
-import { Maybe } from '../core/ComfyUtils'
+import { ImportWindowUI } from '../importers/ImportWindow'
 import { GithubCorner } from '../ui/GithubCorner'
 import { workspaceContext } from '../ui/WorkspaceContext'
 import { OpenWorkspaceUI } from '../welcome/OpenWorkspaceUI'
@@ -13,7 +14,6 @@ import { WelcomeScreenUI } from '../welcome/WelcomeScreenUI'
 import { AppBarUI } from './AppBarUI'
 import { CushyLayoutUI } from './LayoutUI'
 import { TroubleShootinInstructionsUI } from './TroubleShootinInstructionsUI'
-import { ImportWindowUI } from '../importers/ImportWindow'
 
 export const AppUI = observer(function AppUI_() {
     const csWrapper = useLocalObservable(() => ({
@@ -25,20 +25,29 @@ export const AppUI = observer(function AppUI_() {
 
     const cs = csWrapper.cs
 
+    // <FluentProvider theme={webDarkTheme} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    // </FluentProvider>
     // 1. if app is not ready, show a loading screen
     if (!cs?.ready) {
         return (
-            <FluentProvider theme={webDarkTheme} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <CustomProvider
+            //
+            // theme='dark'
+            >
                 <WelcomeScreenUI>
-                    <Spinner />
+                    <Loader />
                     <TroubleShootinInstructionsUI />
                 </WelcomeScreenUI>
-            </FluentProvider>
+            </CustomProvider>
         )
     }
     return (
         <CSContext.Provider value={cs}>
-            <FluentProvider theme={webDarkTheme} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+            <CustomProvider
+                //
+                theme={cs?.userConfig?.value?.theme ?? 'dark'}
+            >
+                {/* <FluentProvider theme={webDarkTheme} style={{ display: 'flex', flexDirection: 'column', height: '100%' }}> */}
                 {/* 2. if no workspace is opened, show the open-workspace UI */}
                 {cs.workspace == null ? (
                     <WelcomeScreenUI>
@@ -56,7 +65,8 @@ export const AppUI = observer(function AppUI_() {
                         </div>
                     </workspaceContext.Provider>
                 )}
-            </FluentProvider>
+            </CustomProvider>
+            {/* </FluentProvider> */}
         </CSContext.Provider>
     )
 })

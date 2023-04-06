@@ -1,6 +1,6 @@
-import { Image } from '@fluentui/react-components'
 import { observer } from 'mobx-react-lite'
 import { useLayout } from '../layout/LayoutCtx'
+import { Image } from '../ui/Image'
 
 export const PGalleryFocusUI = observer(function PGalleryFocusUI_(p: {}) {
     const layout = useLayout()

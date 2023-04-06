@@ -1,28 +1,29 @@
-import * as I from '@fluentui/react-icons'
+import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
+
 const CANVAS_WIDTH = 640
 const CANVAS_HEIGHT = 480
 
 // Get the canvas element from the HTML document
 const canvas = document.getElementById('canvas')
 
-import { Button } from '@fluentui/react-components'
-import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
 import { useMemo } from 'react'
+import { IconButton } from 'rsuite'
 import { useWorkspace } from '../ui/WorkspaceContext'
+import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
 
 export const OpenPoseViewerUI = observer(function OpenPoseViewerUI_(p: {}) {
     const workspace = useWorkspace()
-    const TEST = useMemo(() => new OpenPoseAnimV0(workspace), [])
+    const OPAnim = useMemo(() => new OpenPoseAnimV0(workspace), [])
 
     return (
         <div>
             <div>
-                <Button onClick={() => TEST.start()} icon={<I.Play24Regular />} />
-                <Button onClick={() => TEST.stop()} icon={<I.Pause24Regular />} />
-                <Button onClick={() => TEST.drawAllToPngAndSaveLocally()} icon={<I.DataTrending24Regular />}>
+                <IconButton onClick={() => OPAnim.start()} icon={<I.PlayOutline />} />
+                <IconButton onClick={() => OPAnim.stop()} icon={<I.PauseOutline />} />
+                <IconButton onClick={() => OPAnim.drawAllToPngAndSaveLocally()} icon={<I.Scatter />}>
                     Draw all to png and save locally
-                </Button>
+                </IconButton>
             </div>
             <canvas
                 id='test'
@@ -33,7 +34,7 @@ export const OpenPoseViewerUI = observer(function OpenPoseViewerUI_(p: {}) {
                     // Set the canvas dimensions
                     canvas.width = CANVAS_WIDTH
                     canvas.height = CANVAS_HEIGHT
-                    TEST.ctx = ctx
+                    OPAnim.ctx = ctx
 
                     // drawOpenPoseBones(samplePose1, ctx)
                     // opd.renderPoses(ctx, [samplePose1.people[0].face_keypoints_2d], CANVAS_WIDTH, CANVAS_HEIGHT)

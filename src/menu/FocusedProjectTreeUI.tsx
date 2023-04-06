@@ -1,10 +1,5 @@
-import { Tree, TreeItem, TreeItemLayout } from '@fluentui/react-components/unstable'
-import * as I from '@fluentui/react-icons'
 import { observer } from 'mobx-react-lite'
-import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import { useWorkspace } from '../ui/WorkspaceContext'
-import { ControlIconUI } from './ControlIconUI'
-import { Actions } from './ProjectTreeUI'
 
 export const FocusedProjectTreeUI = observer(function FocusedProjectTreeUI_(p: {}) {
     const project = useWorkspace().focusedProject
@@ -12,7 +7,7 @@ export const FocusedProjectTreeUI = observer(function FocusedProjectTreeUI_(p: {
     return (
         <div>
             🟢 {project.name}
-            <Tree>
+            {/* <Tree>
                 {project.runs.map((run, ix) => (
                     <TreeItem id={run.uid} key={run.uid} actions={<Actions />}>
                         <TreeItemLayout iconBefore={<I.PlayCircle24Regular />}>Run {ix + 1}</TreeItemLayout>
@@ -36,7 +31,7 @@ export const FocusedProjectTreeUI = observer(function FocusedProjectTreeUI_(p: {
                         </Tree>
                     </TreeItem>
                 ))}
-            </Tree>
+            </Tree> */}
         </div>
     )
 })

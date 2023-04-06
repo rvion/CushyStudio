@@ -18,7 +18,7 @@ import { CushyGlobalRef } from './CushyGlobalRef'
 
 export type UserConfigJSON = {
     version: 1
-    theme?: 'dark' | 'light'
+    theme?: 'dark' | 'light' | 'high-contrast'
     recentProjects?: AbsolutePath[]
     reOpenLastProject?: boolean
 }

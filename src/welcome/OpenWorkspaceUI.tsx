@@ -1,36 +1,38 @@
-import { Button, Divider, Switch, Title1, Title3 } from '@fluentui/react-components'
-import * as I from '@fluentui/react-icons'
+import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
+import { IconButton, Panel, Toggle } from 'rsuite'
 import { useCushyStudio } from '../cushy/CushyContext'
+import { Title1, Title3 } from '../ui/Text'
 
 export const OpenWorkspaceUI = observer(function OpenWorkspaceUI_(p: {}) {
     const cs = useCushyStudio()
     return (
         <div className='col gap'>
-            <Title1 align='center'>🛋️ CushyStudio</Title1>
-
-            <Divider appearance='strong' />
-            <Title3>Recent workspaces:</Title3>
+            <Title1>🛋️ CushyStudio</Title1>
+            <Title3>Recent workspaces</Title3>
             <div className='col gap1'>
                 {cs.userConfig.value.recentProjects?.map((rp) => (
                     <div key={rp}>
-                        <Button appearance='secondary' icon={<I.Open24Regular />} onClick={() => cs.openWorkspace(rp)}>
+                        <IconButton icon={<I.Grid />} onClick={() => cs.openWorkspace(rp)}>
                             {rp}
-                        </Button>
+                        </IconButton>
                     </div>
                 ))}
             </div>
-            <Switch
-                //
-                label={'Re-open last workspace on startup'}
-                checked={cs.userConfig.value.reOpenLastProject ?? false}
-                onChange={(_, val) => {
-                    cs.userConfig.update({ reOpenLastProject: val.checked })
-                }}
-            />
-            <Button icon={<I.Add24Filled />} size='large' appearance='primary' onClick={cs.openWorkspaceDialog}>
+            <IconButton icon={<I.Plus />} appearance='primary' onClick={cs.openWorkspaceDialog}>
                 Add new workspace
-            </Button>
+            </IconButton>
+            <div>
+                <Toggle
+                    //
+                    size='lg'
+                    checked={cs.userConfig.value.reOpenLastProject ?? false}
+                    onChange={(next) => {
+                        cs.userConfig.update({ reOpenLastProject: next })
+                    }}
+                />
+                <label>Re-open last workspace on startup</label>
+            </div>
         </div>
     )
 })

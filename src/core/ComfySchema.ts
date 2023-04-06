@@ -1,7 +1,9 @@
+import type { ComfySchemaJSON } from './ComfySchemaJSON'
+import type { ItemDataType } from 'rsuite/esm/@types/common'
+
 import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from './ComfyPrimitives'
-import { ComfySchemaJSON } from './ComfySchemaJSON'
 
 export type EnumHash = string
 export type EnumName = string
@@ -10,7 +12,6 @@ export type NodeOutputExt = { type: string; name: string; isPrimitive: boolean }
 
 export class ComfySchema {
     knownTypes = new Set<string>()
-
     knownEnums = new Map<
         EnumHash,
         {
@@ -22,6 +23,8 @@ export class ComfySchema {
     nodes: ComfyNodeSchema[] = []
     nodesByNameInComfy: { [key: string]: ComfyNodeSchema } = {}
     nodesByNameInCushy: { [key: string]: ComfyNodeSchema } = {}
+
+    components: ItemDataType[] = []
 
     constructor(public spec: ComfySchemaJSON) {
         this.update(spec)
@@ -126,7 +129,21 @@ export class ComfySchema {
                 }
             }
         }
+        this.updateComponents()
     }
+
+    updateComponents() {
+        this.components = []
+        this.knownEnums.forEach((enumDef) => {
+            this.components.push({
+                name: enumDef.enumNameInCushy,
+                type: 'enum',
+                // values: enumDef.values,
+                children: enumDef.values.map((v) => ({ name: v, type: 'enum-value' })),
+            })
+        })
+    }
+
     codegenDTS = (useLocalPath = false): string => {
         const b = new CodeBuffer()
         const p = b.w

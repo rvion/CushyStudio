@@ -6,6 +6,9 @@ import 'rc-dock/dist/rc-dock-dark.css'
 // 🔴 todo remove this now that we have fluentui 9
 import 'react-toastify/dist/ReactToastify.css'
 
+// import 'rsuite/dist/rsuite.css' // or 'rsuite/dist/rsuite.min.css'
+import 'rsuite/styles/index.less'
+
 // mixed back of overrides
 import './index.css'
 

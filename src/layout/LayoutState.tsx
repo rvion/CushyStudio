@@ -1,14 +1,11 @@
 import type { PromptOutputImage } from '../core/PromptOutputImage'
 
-import { Image } from '@fluentui/react-components'
 import { makeObservable, observable } from 'mobx'
-import DockLayout, { PanelData, TabData } from 'rc-dock'
+import DockLayout, { PanelData } from 'rc-dock'
 import { Workspace } from '../core/Workspace'
 import { TutorialUI } from '../help/TutorialUI'
-import { TypescriptFile } from '../monaco/TypescriptFile'
-import { TypescriptEditorUI } from '../monaco/MonacoUI'
+import { Image } from '../ui/Image'
 import { defaultLayout } from './LayoutDefault'
-import { nanoid } from 'nanoid'
 
 export class CushyLayoutState {
     layout = defaultLayout()

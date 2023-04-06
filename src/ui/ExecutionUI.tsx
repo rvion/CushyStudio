@@ -1,4 +1,4 @@
-import { Button, Card } from '@fluentui/react-components'
+import { Button, Panel } from 'rsuite'
 import { animated, useSpring } from '@react-spring/web'
 import { observer } from 'mobx-react-lite'
 import { Fragment, ReactNode, useEffect, useRef } from 'react'
@@ -87,5 +87,5 @@ const renderStep = (step: ScriptStep) => {
 }
 
 export const ExecutionWrapperUI = observer(function ExecutionWrapperUI_(p: { children: ReactNode }) {
-    return <Card>{p.children}</Card>
+    return <Panel>{p.children}</Panel>
 })

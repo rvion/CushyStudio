@@ -43,7 +43,7 @@
   },
     "name": "CheckpointLoader",
     "description": "",
-    "category": "loaders"
+    "category": "advanced/loaders"
 },
   "CheckpointLoaderSimple": {
     "input": {
@@ -245,7 +245,7 @@
   "LoadImage": {
     "input": {
       "required": {
-        "image": [["2023-03-19_22-20-04.png","ComfyUI_00498_.png","ComfyUI_01790_.png","decihub-logo-126.png","esrgan_example (1).png","esrgan_example.png","example.png","upload (1).png","upload (2).png","upload (3).png","upload (4).png","upload (5).png","upload (6).png","upload (7).png","upload.png"]]
+        "image": [["2023-03-19_22-20-04.png","ComfyUI_00498_.png","ComfyUI_01790_.png","decihub-logo-126.png","esrgan_example (1).png","esrgan_example.png","example.png","upload (1).png","upload (10).png","upload (2).png","upload (3).png","upload (4).png","upload (5).png","upload (6).png","upload (7).png","upload (8).png","upload (9).png","upload.png"]]
     }
   },
     "output": {
@@ -263,7 +263,7 @@
   "LoadImageMask": {
     "input": {
       "required": {
-        "image": [["2023-03-19_22-20-04.png","ComfyUI_00498_.png","ComfyUI_01790_.png","decihub-logo-126.png","esrgan_example (1).png","esrgan_example.png","example.png","upload (1).png","upload (2).png","upload (3).png","upload (4).png","upload (5).png","upload (6).png","upload (7).png","upload.png"]],
+        "image": [["2023-03-19_22-20-04.png","ComfyUI_00498_.png","ComfyUI_01790_.png","decihub-logo-126.png","esrgan_example (1).png","esrgan_example.png","example.png","upload (1).png","upload (10).png","upload (2).png","upload (3).png","upload (4).png","upload (5).png","upload (6).png","upload (7).png","upload (8).png","upload (9).png","upload.png"]],
         "channel": [["alpha","red","green","blue"]]
     }
   },
@@ -523,7 +523,7 @@
   },
     "name": "CLIPVisionEncode",
     "description": "",
-    "category": "conditioning/style_model"
+    "category": "conditioning"
 },
   "StyleModelApply": {
     "input": {
@@ -1572,5 +1572,119 @@
     "name": "TomePatchModel",
     "description": "",
     "category": "_for_testing"
+},
+  "unCLIPConditioning": {
+    "input": {
+      "required": {
+        "conditioning": ["CONDITIONING"],
+        "clip_vision_output": ["CLIP_VISION_OUTPUT"],
+        "strength": ["FLOAT",{"default":1,"min":-10,"max":10,"step":0.01}],
+        "noise_augmentation": ["FLOAT",{"default":0,"min":0,"max":1,"step":0.01}]
+    }
+  },
+    "output": {
+      "0": "CONDITIONING"
+  },
+    "output_name": {
+      "0": "CONDITIONING"
+  },
+    "name": "unCLIPConditioning",
+    "description": "",
+    "category": "conditioning"
+},
+  "unCLIPCheckpointLoader": {
+    "input": {
+      "required": {
+        "ckpt_name": [["AOM3A1_orangemixs.safetensors","AOM3A3_orangemixs.safetensors","AbyssOrangeMix2_hard.safetensors","anything-v3-fp16-pruned.safetensors","deliberate_v2.safetensors","v1-5-pruned-emaonly.ckpt","v2-1_512-ema-pruned.safetensors","v2-1_768-ema-pruned.safetensors","wd-1-5-beta2-fp16.safetensors"]]
+    }
+  },
+    "output": {
+      "0": "MODEL",
+      "1": "CLIP",
+      "2": "VAE",
+      "3": "CLIP_VISION"
+  },
+    "output_name": {
+      "0": "MODEL",
+      "1": "CLIP",
+      "2": "VAE",
+      "3": "CLIP_VISION"
+  },
+    "name": "unCLIPCheckpointLoader",
+    "description": "",
+    "category": "loaders"
+},
+  "ImageBlend": {
+    "input": {
+      "required": {
+        "image1": ["IMAGE"],
+        "image2": ["IMAGE"],
+        "blend_factor": ["FLOAT",{"default":0.5,"min":0,"max":1,"step":0.01}],
+        "blend_mode": [["normal","multiply","screen","overlay","soft_light"]]
+    }
+  },
+    "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
+      "0": "IMAGE"
+  },
+    "name": "ImageBlend",
+    "description": "",
+    "category": "image/postprocessing"
+},
+  "ImageBlur": {
+    "input": {
+      "required": {
+        "image": ["IMAGE"],
+        "blur_radius": ["INT",{"default":1,"min":1,"max":31,"step":1}],
+        "sigma": ["FLOAT",{"default":1,"min":0.1,"max":10,"step":0.1}]
+    }
+  },
+    "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
+      "0": "IMAGE"
+  },
+    "name": "ImageBlur",
+    "description": "",
+    "category": "image/postprocessing"
+},
+  "ImageQuantize": {
+    "input": {
+      "required": {
+        "image": ["IMAGE"],
+        "colors": ["INT",{"default":256,"min":1,"max":256,"step":1}],
+        "dither": [["none","floyd-steinberg"]]
+    }
+  },
+    "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
+      "0": "IMAGE"
+  },
+    "name": "ImageQuantize",
+    "description": "",
+    "category": "image/postprocessing"
+},
+  "ImageSharpen": {
+    "input": {
+      "required": {
+        "image": ["IMAGE"],
+        "sharpen_radius": ["INT",{"default":1,"min":1,"max":31,"step":1}],
+        "alpha": ["FLOAT",{"default":1,"min":0.1,"max":5,"step":0.1}]
+    }
+  },
+    "output": {
+      "0": "IMAGE"
+  },
+    "output_name": {
+      "0": "IMAGE"
+  },
+    "name": "ImageSharpen",
+    "description": "",
+    "category": "image/postprocessing"
 }
 }

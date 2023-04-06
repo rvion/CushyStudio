@@ -88,11 +88,11 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         const node = this._graph.getNodeOrCrash(msg.data.node)
         const images = msg.data.output.images.map((i) => new PromptOutputImage(this, i))
 
-        console.log(`🟢 `, images.length, `CushyImages`)
+        // console.log(`🟢 `, images.length, `CushyImages`)
         // accumulate in self
         this.outputs.push(msg)
         this.images.push(...images)
-        console.log(`🟢 `, this.uid, 'has', this.images.length, `CushyImages`)
+        // console.log(`🟢 `, this.uid, 'has', this.images.length, `CushyImages`)
 
         // accumulate in node
         node.artifacts.push(msg.data)
