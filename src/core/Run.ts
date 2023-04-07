@@ -17,6 +17,7 @@ import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptS
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import { Workspace } from './Workspace'
+import { logger } from '../logger/Logger'
 
 /** script exeuction instance */
 export class Run {
@@ -91,17 +92,18 @@ export class Run {
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
     outputs: WsMsgExecuted[] = []
 
-    sendPromp = (): ScriptStep_prompt => {
+    sendPromp = async (): Promise<ScriptStep_prompt> => {
         // console.log('XX1')
         // console.log('🔴', toJS(this.graph.json))
         // console.log('XX2')
         const currentJSON = deepCopyNaive(this.graph.json)
-        console.log('[🪜] checkpoint', currentJSON)
+        logger.info('🐰', 'checkpoint:' + JSON.stringify(currentJSON))
         const step = new ScriptStep_prompt(this, currentJSON)
         this.steps.unshift(step)
 
         // if we're note really running prompts, just resolve the step and continue
         if (this.opts?.mock) {
+            logger.info('🐰', 'MOCK => aborting')
             step._resolve!(step)
             return step
         }
@@ -116,10 +118,14 @@ export class Run {
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
-        void fetch(`${this.workspace.serverHostHTTP}/prompt`, {
+        const promptEndpoint = `${this.workspace.serverHostHTTP}/prompt`
+        logger.info('🌠', 'sending prompt to ' + promptEndpoint)
+        const res = await fetch(promptEndpoint, {
             method: 'POST',
             body: JSON.stringify(out),
         })
+
+        console.log('🔴', res.status, res.statusText)
         // await sleep(1000)
         return step
     }

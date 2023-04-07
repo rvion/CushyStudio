@@ -6,7 +6,7 @@
 import type { ComfySetup } from '../global'
 import type { Graph } from './Graph'
 
-export type WorkflowBuilder = (graph: ComfySetup & Graph) => void
+export type WorkflowBuilder = (graph: any) => void
 
 export class Workflow {
     constructor(public builder: WorkflowBuilder) {}

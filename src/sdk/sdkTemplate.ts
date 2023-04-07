@@ -984,9 +984,7 @@ declare module "core/ComfyNodeOutput" {
     }
 }
 declare module "core/Workflow" {
-    import type { ComfySetup } from '../global';
-    import type { Graph } from "core/Graph";
-    export type WorkflowBuilder = (graph: ComfySetup & Graph) => void;
+    export type WorkflowBuilder = (graph: any) => void;
     export class Workflow {
         builder: WorkflowBuilder;
         constructor(builder: WorkflowBuilder);

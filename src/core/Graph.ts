@@ -129,8 +129,8 @@ export class Graph {
 
     // COMMIT --------------------------------------------
     async get(): Promise<ScriptStep_prompt> {
-        // console.log('A')
-        const step = this.run.sendPromp()
+        logger.info('🔥', 'prompt requested')
+        const step = await this.run.sendPromp()
         // this.run.cyto.animate()
         // console.log('B')
         await step.finished

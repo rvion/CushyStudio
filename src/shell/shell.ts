@@ -1,26 +1,7 @@
-import { posix } from 'path'
 import * as vscode from 'vscode'
 
-export const cmd_openJS = async function () {
-    if (!vscode.window.activeTextEditor || posix.extname(vscode.window.activeTextEditor.document.uri.path) !== '.ts') {
-        return vscode.window.showInformationMessage('Open a TypeScript file first')
-    }
-
-    const tsUri = vscode.window.activeTextEditor.document.uri
-    const jsPath = posix.join(tsUri.path, '..', posix.basename(tsUri.path, '.ts') + '.js')
-    const jsUri = tsUri.with({ path: jsPath })
-
-    try {
-        await vscode.workspace.fs.stat(jsUri)
-        vscode.window.showTextDocument(jsUri, { viewColumn: vscode.ViewColumn.Beside })
-    } catch {
-        vscode.window.showInformationMessage(`${jsUri.toString(true)} file does *not* exist`)
-    }
-}
-
-export const cmd_helloworld = () => {
-    vscode.window.showInformationMessage('Hello World from CushyStudio 789asdf!')
-}
+// https://code.visualstudio.com/api/extension-guides/webview
+// https://github.com/microsoft/vscode-extension-samples/tree/98346fc4fa81067e253df9b32922cc02e8b24274/webview-sample
 
 export const cmd_xxxx = (context: vscode.ExtensionContext) => {
     const panel = vscode.window.createWebviewPanel('catCoding', 'Cat Coding', vscode.ViewColumn.Two, {

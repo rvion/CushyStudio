@@ -2,7 +2,6 @@
     "name": "cushystudio",
     "publisher": "rvion",
     "description": "🎨 Generative Art Web-IDE and embeddable typescript SDK - based on ComfyUI",
-    "type": "module",
     "private": true,
     "engines": {
         "vscode": "^1.77.0"
@@ -11,7 +10,7 @@
         "Other"
     ],
     "activationEvents": [
-        "onLanguage:typescript"
+        "workspaceContains:*.cushy.ts"
     ],
     "main": "./out/main.js",
     "contributes": {
@@ -21,7 +20,7 @@
                 "displayName": "",
                 "selector": [
                     {
-                        "filenamePattern": "*.cushy.ts"
+                        "filenamePattern": "*.cushy.OLD"
                     }
                 ]
             }
@@ -75,6 +74,10 @@
                 "title": "Hello World"
             },
             {
+                "command": "cushystudio.runcurrentscript",
+                "title": "run current script"
+            },
+            {
                 "command": "cushystudio.connect",
                 "title": "Connect to ComfyUI"
             },
@@ -96,7 +99,7 @@
     "license": "unlicensed",
     "version": "0.0.64",
     "scripts": {
-        "vscode:prepublish": "pnpm run esbuild-base -- --minify",
+        "vscode:prepublish": "pnpm run esbuild-base --minify",
         "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
         "esbuild": "pnpm run esbuild-base -- --sourcemap",
         "esbuild-watch": "pnpm run esbuild-base --sourcemap --watch",

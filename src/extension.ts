@@ -1,7 +1,11 @@
 import * as vscode from 'vscode'
 import { Workspace } from './core/Workspace'
 import { logger } from './logger/Logger'
-import { cmd_helloworld, cmd_openJS, cmd_xxxx } from './shell/shell'
+import { cmd_xxxx } from './shell/shell'
+import { cmd_openJS } from './shell/cmd_openJS'
+import { cmd_helloworld } from './shell/cmd_helloworld'
+import { cmd_runcurrentscript } from './shell/cmd_runcurrentscript'
+import { WATCH_WORKFLOWS } from './shell/itest/extension'
 
 // https://github.com/microsoft/vscode-extension-samples/blob/main/fsconsumer-sample/src/extension.ts
 
@@ -14,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     // create logger pannel
     const outputChan = vscode.window.createOutputChannel('CushyStudio')
-
+    WATCH_WORKFLOWS(context)
     outputChan.appendLine(`🟢 "cushystudio" is now active!`)
     outputChan.show(true)
     logger.chanel = outputChan
@@ -33,7 +37,7 @@ export function activate(context: vscode.ExtensionContext) {
         context.subscriptions.push(disposable)
     }
 
-    registerDisposableCommand('cushystudio.helloWorld', cmd_helloworld)
+    registerDisposableCommand('cushystudio.helloWorld', cmd_helloworld.bind(null, context))
 
     // let socket: WebSocket | null = null
     // const INIT = () => {
@@ -59,6 +63,7 @@ export function activate(context: vscode.ExtensionContext) {
     registerDisposableCommand('cushystudio.openjs', cmd_openJS)
     registerDisposableCommand('cushystudio.connect', () => {})
     registerDisposableCommand('cushystudio.start', cmd_xxxx)
+    registerDisposableCommand('cushystudio.runcurrentscript', cmd_runcurrentscript.bind(null, context, workspace))
 
     // add settings to package.json
 

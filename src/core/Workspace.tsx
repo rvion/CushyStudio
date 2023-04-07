@@ -9,11 +9,9 @@ import { Run } from './Run'
 import type { ScriptStep } from './ScriptStep'
 
 import { makeAutoObservable } from 'mobx'
-// import { JsonFile } from '../monaco/JsonFile'
 import { CushyLayoutState } from '../layout/LayoutState'
 import { logger } from '../logger/Logger'
 import { Template } from '../templates/Template'
-// import { TypescriptFile } from '../monaco/TypescriptFile'
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { sdkTemplate } from '../sdk/sdkTemplate'
 import { defaultScript } from '../templates/defaultProjectCode'
@@ -21,10 +19,8 @@ import { ResilientWebSocketClient } from '../ws/ResilientWebsocket'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfySchema } from './ComfySchema'
-// import { Project } from './Project'
 import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import { demoLibrary } from '../templates/Library'
-// import { ProjectCreationWizard } from '../menu/ProjectCreationWizard'
 import { ComfyImporter } from '../importers/ImportComfyImage'
 import { readableStringify } from '../utils/stringifyReadable'
 import { RunMode } from './Graph'
@@ -66,7 +62,8 @@ export class Workspace {
 
     runs: Run[] = []
 
-    RUN = async (mode: RunMode = 'fake'): Promise<boolean> => {
+    RUN = async (mode: RunMode = 'real'): Promise<boolean> => {
+        logger.info('🔥', '❓ HELLO super12')
         // this.focusedProject = this
         // ensure we have some code to run
         // this.scriptBuffer.codeJS
@@ -74,18 +71,19 @@ export class Workspace {
 
         const activeTextEditor = vscode.window.activeTextEditor
         if (activeTextEditor == null) {
-            console.log('❌', 'no active editor')
+            logger.info('🔥', '❌ no active editor')
             return false
         }
         const activeDocument = activeTextEditor.document
         const activeURI = activeDocument.uri
-        console.log({ activeURI })
+        logger.info('🔥', activeURI.toString())
         const codeTS = activeDocument.getText() ?? ''
-        console.log({ codeTS })
+        logger.info('🔥', codeTS.slice(0, 1000) + '...')
         const codeJS = await transpileCode(codeTS)
-        console.log({ codeJS })
+        // logger.info('🔥', codeJS.slice(0, 1000) + '...')
+        logger.info('🔥', codeJS + '...')
         if (codeJS == null) {
-            console.log('❌', 'no code to run')
+            logger.info('🔥', '❌ no code to run')
             return false
         }
         // check if we're in "MOCK" mode
@@ -111,6 +109,8 @@ export class Workspace {
             return true
         } catch (error) {
             console.log(error)
+            logger.error('🌠', (error as any as Error).name)
+            logger.error('🌠', (error as any as Error).message)
             logger.error('🌠', 'RUN FAILURE')
             return false
         }
