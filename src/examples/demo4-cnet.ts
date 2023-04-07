@@ -1,4 +1,4 @@
-export default WORKFLOW(async (C) => {
+WORKFLOW('demo4-cnet', async (C) => {
     // generate an empty table
     const ckpt = C.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const latent = C.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })

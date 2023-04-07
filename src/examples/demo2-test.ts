@@ -1,4 +1,4 @@
-export default WORKFLOW(async (n) => {
+WORKFLOW('demo2-test', async (n) => {
     // generate an empty table
     const fun = (x: string) => `masterpiece, ${x} painting on a wall`
 

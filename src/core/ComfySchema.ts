@@ -209,7 +209,7 @@ export class ComfySchema {
         // }
         p(`}`)
         p(`declare global {`)
-        p(`    export const WORKFLOW: (builder: (graph: ComfySetup & Graph) => void) => Workflow`)
+        p(`    export const WORKFLOW: (title: string, builder: (graph: ComfySetup & Graph) => void) => Workflow`)
         p(`}`)
 
         // p(`declare const WORKFLOW: (builder: (graph: ComfyGraph) => void) => void`)

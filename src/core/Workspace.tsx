@@ -355,7 +355,7 @@ export class Workspace {
     notify = (msg: string) => vscode.window.showInformationMessage(msg)
 
     addProjectFromComfyWorkflowJSON = async (title: string, comfyPromptJSON: ComfyPromptJSON) => {
-        const code = new ComfyImporter(this).convertFlowToCode(comfyPromptJSON)
+        const code = new ComfyImporter(this).convertFlowToCode(title, comfyPromptJSON)
         const fileName = title.endsWith('.ts') ? title : `${title}.ts`
         const uri = this.resolve(asRelativePath(fileName))
         this.writeTextFile(uri, code, true)

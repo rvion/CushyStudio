@@ -31,7 +31,7 @@ export class ComfyImporter {
         LatentUpscaleBy: 'Latent Upscale by Factor (WAS)',
     }
 
-    convertFlowToCode = (flow: ComfyPromptJSON): string => {
+    convertFlowToCode = (title: string, flow: ComfyPromptJSON): string => {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
         const edges: TEdge[] = []
@@ -52,7 +52,7 @@ export class ComfyImporter {
         const b = new CodeBuffer()
         const p = b.w
         const pi = b.append
-        p(`export default WORKFLOW(async (C) => {\n`)
+        p(`export default WORKFLOW('${title}', async (C) => {\n`)
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 

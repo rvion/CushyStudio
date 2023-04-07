@@ -1,4 +1,4 @@
-export default WORKFLOW(async (C) => {
+WORKFLOW('democnet', async (C) => {
     const ckpt = C.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const vae = C.VAELoader({ vae_name: 'orangemix.vae.pt' })
 

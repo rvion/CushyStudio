@@ -26,13 +26,17 @@ export class CushyFile {
         }
     }
 
-    async updateFromDisk(controller: vscode.TestController, item: vscode.TestItem) {
+    async updateFromDisk(
+        //
+        testController: vscode.TestController,
+        testItem: vscode.TestItem,
+    ) {
         try {
-            const content = await this.getContentFromFilesystem(item.uri!)
-            item.error = undefined
-            this.updateFromContents(controller, content, item)
+            const content = await this.getContentFromFilesystem(testItem.uri!)
+            testItem.error = undefined
+            this.updateFromContents(testController, content, testItem)
         } catch (e) {
-            item.error = (e as Error).stack
+            testItem.error = (e as Error).stack
         }
     }
 

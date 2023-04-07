@@ -7,15 +7,6 @@ export async function WATCH_WORKFLOWS(context: vscode.ExtensionContext) {
     context.subscriptions.push(ctrl)
 
     const fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>()
-    // const runHandler = (request: vscode.TestRunRequest2, cancellation: vscode.CancellationToken) => {
-    //     // if (!request.continuous)
-    //     return startTestRun(request)
-
-    //     // const l = fileChangedEmitter.event((uri) =>
-    //     //     startTestRun(new vscode.TestRunRequest2([getOrCreateFile(ctrl, uri).file], undefined, request.profile, true)),
-    //     // )
-    //     // cancellation.onCancellationRequested(() => l.dispose())
-    // }
 
     const startTestRun = (request: vscode.TestRunRequest) => {
         const queue: { test: vscode.TestItem; data: CushyFlow }[] = []
@@ -38,22 +29,6 @@ export async function WATCH_WORKFLOWS(context: vscode.ExtensionContext) {
 
                     await discoverTests(gatherTestItems(test.children))
                 }
-
-                // if (test.uri && !coveredLines.has(test.uri.toString())) {
-                //     try {
-                //         const lines = (await getContentFromFilesystem(test.uri)).split('\n')
-                //         coveredLines.set(
-                //             test.uri.toString(),
-                //             lines.map((lineText, lineNo) =>
-                //                 lineText.trim().length
-                //                     ? new vscode.StatementCoverage(0, new vscode.Position(lineNo, 0))
-                //                     : undefined,
-                //             ),
-                //         )
-                //     } catch {
-                //         // ignored
-                //     }
-                // }
             }
         }
 
@@ -101,9 +76,9 @@ export async function WATCH_WORKFLOWS(context: vscode.ExtensionContext) {
     ctrl.refreshHandler = async () => {
         await Promise.all(getWorkspaceTestPatterns().map(({ pattern }) => findInitialFiles(ctrl, pattern)))
     }
+    ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, startTestRun, true, undefined, true)
 
-    ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, runHandler, true, undefined, true)
-
+    // provided by the extension that the editor may call to requestchildren of a test item
     ctrl.resolveHandler = async (item) => {
         if (!item) {
             context.subscriptions.push(...startWatchingWorkspace(ctrl, fileChangedEmitter))
@@ -115,7 +90,7 @@ export async function WATCH_WORKFLOWS(context: vscode.ExtensionContext) {
 
     function updateNodeForDocument(e: vscode.TextDocument) {
         if (e.uri.scheme !== 'file') return
-        if (!e.uri.path.endsWith('.ts')) return
+        if (!e.uri.path.endsWith('.cushy.ts')) return
         const { file, data } = getOrCreateFile(ctrl, e.uri)
         data.updateFromContents(ctrl, e.getText(), file)
     }
@@ -130,7 +105,7 @@ export async function WATCH_WORKFLOWS(context: vscode.ExtensionContext) {
     )
 }
 
-function getOrCreateFile(controller: vscode.TestController, uri: vscode.Uri) {
+function getOrCreateFile(controller: vscode.TestController, uri: vscode.Uri): { file: vscode.TestItem; data: CushyFile } {
     const existing = controller.items.get(uri.toString())
     if (existing) return { file: existing, data: testData.get(existing) as CushyFile }
 

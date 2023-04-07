@@ -1,4 +1,4 @@
-export default WORKFLOW(async (comfy) => {
+WORKFLOW('demo1-basic', async (comfy) => {
     const ckpt = comfy.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const latent = comfy.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
     const positive = comfy.CLIPTextEncode({ text: 'masterpiece, (chair:1.3)', clip: ckpt })

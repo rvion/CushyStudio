@@ -3,7 +3,7 @@ import ts from 'typescript'
 console.log(ts.version)
 
 const code = `
-export default WORKFLOW(async (comfy) => {
+export default WORKFLOW('sample', async (comfy) => {
     const ckpt = comfy.CheckpointLoaderSimple({
       ckpt_name: "AOM3A1_orangemixs.safetensors",
     });
