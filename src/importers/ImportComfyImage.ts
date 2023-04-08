@@ -52,7 +52,7 @@ export class ComfyImporter {
         const b = new CodeBuffer()
         const p = b.w
         const pi = b.append
-        p(`export default WORKFLOW('${title}', async (C) => {\n`)
+        p(`WORKFLOW('${title}', async (C) => {\n`)
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 

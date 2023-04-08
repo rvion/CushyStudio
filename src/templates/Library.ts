@@ -4,7 +4,7 @@ export const demoLibrary: Template[] = [
     // lazy load
     new Template(
         'demo1-basic',
-        `export default WORKFLOW('a',async (comfy) => {
+        `WORKFLOW('a',async (comfy) => {
     const ckpt = comfy.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const latent = comfy.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
     const positive = comfy.CLIPTextEncode({ text: 'masterpiece, (chair:1.3)', clip: ckpt })
@@ -19,7 +19,7 @@ export const demoLibrary: Template[] = [
     ),
     new Template(
         'demo2-test',
-        `export default WORKFLOW('b', async (n) => {
+        `WORKFLOW('b', async (n) => {
     // generate an empty table
     const fun = (x: string) => \`masterpiece, womain looking at painting of a \${x}, museum\`
 
@@ -48,7 +48,7 @@ export const demoLibrary: Template[] = [
 
     new Template(
         'demo3-cnet-pose',
-        `export default WORKFLOW('c',async (C) => {
+        `WORKFLOW('c',async (C) => {
     const ckpt = C.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const vae = C.VAELoader({ vae_name: 'orangemix.vae.pt' })
 

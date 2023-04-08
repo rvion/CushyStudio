@@ -110,7 +110,7 @@ export class Run {
 
         // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
-            client_id: this.workspace.sid,
+            client_id: this.workspace.comfySessionId,
             extra_data: { extra_pnginfo: { it: 'works' } },
             prompt: currentJSON,
         }

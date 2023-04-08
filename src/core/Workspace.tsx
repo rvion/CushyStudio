@@ -25,6 +25,8 @@ import { ComfyImporter } from '../importers/ImportComfyImage'
 import { readableStringify } from '../utils/stringifyReadable'
 import { RunMode } from './Graph'
 import { transpileCode } from './transpiler'
+import { CushyFile, vsTestItemOriginDict } from '../shell/itest/CushyFile'
+import { CushyRunProcessor } from '../shell/itest/extension'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -43,10 +45,24 @@ export type CSCriticalError = { title: string; help: string }
  */
 export class Workspace {
     schema: ComfySchema
+
+    /** template /snippet library one can */
     demos: Template[] = demoLibrary
+
+    comfySessionId = 'temp'
+
+    activeRun: Maybe<Run> = null
+
     // projects: Project[] = []
+
     assets = new Map<string, boolean>()
+
     layout = new CushyLayoutState(this)
+
+    // 🔴 add to subscriptions
+    vsTestController: vscode.TestController
+
+    fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>()
 
     // import management
     importQueue: ImportCandidate[] = []
@@ -132,23 +148,98 @@ export class Workspace {
         if (open) vscode.workspace.openTextDocument(uri)
     }
 
-    constructor(public wspUri: vscode.Uri) {
+    updateNodeForDocument(e: vscode.TextDocument) {
+        if (e.uri.scheme !== 'file') return
+        if (!e.uri.path.endsWith('.cushy.ts')) return
+        const { vsTestItem, cushyFile } = this.getOrCreateFile(this.vsTestController, e.uri)
+        cushyFile.updateFromContents(this.vsTestController, e.getText(), vsTestItem)
+    }
+
+    /** wrapper around vscode.tests.createTestController so logic is self-contained  */
+    initVSTestController(): vscode.TestController {
+        const ctrl = vscode.tests.createTestController('mathTestController', 'Markdown Math')
+        this.vsTestController = ctrl
+        this.context.subscriptions.push(ctrl)
+        ctrl.refreshHandler = async () => {
+            const testPatterns = this.getWorkspaceTestPatterns()
+            const promises = testPatterns.map(({ pattern }) => this.findInitialFiles(ctrl, pattern))
+            await Promise.all(promises)
+        }
+        const startTestRun = async (request: vscode.TestRunRequest) => {
+            const run = new CushyRunProcessor(request, this)
+            return
+        }
+        ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, startTestRun, true, undefined, true)
+
+        // provided by the extension that the editor may call to requestchildren of a test item
+        ctrl.resolveHandler = async (item: vscode.TestItem | undefined) => {
+            if (!item) {
+                this.context.subscriptions.push(...this.startWatchingWorkspace(ctrl, this.fileChangedEmitter))
+                return
+            }
+            const data = vsTestItemOriginDict.get(item)
+            if (data instanceof CushyFile) await data.updateFromDisk(ctrl, item)
+        }
+        return ctrl
+    }
+
+    initOutputChannel = () => {
+        const outputChan = vscode.window.createOutputChannel('CushyStudio')
+        outputChan.appendLine(`🟢 "cushystudio" is now active!`)
+        outputChan.show(true)
+        logger.chanel = outputChan
+    }
+
+    constructor(
+        //
+        public context: vscode.ExtensionContext,
+        public wspUri: vscode.Uri,
+    ) {
         this.schema = new ComfySchema({})
+        this.initOutputChannel()
         this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.json') })
         this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.d.ts') })
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'cushy.d.ts') })
-
         this.writeTextFile(this.cushyTSUri, sdkTemplate)
-        void this.init()
+        this.vsTestController = this.initVSTestController()
+        this.autoDiscoverEveryWorkflow()
+        void this.updateComfy_object_info()
+        this.ws = this.initWebsocket()
         makeAutoObservable(this)
+
+        // vscode.tests.createTestController('mathTestController', 'Markdown Math')
+        // this.ctrl.refreshHandler = async () => {
+        //     await Promise.all(getWorkspaceTestPatterns().map(({ pattern }) => findInitialFiles(ctrl, pattern)))
+        // }
+        // this.ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, startTestRun, true, undefined, true)
+
+        // // provided by the extension that the editor may call to requestchildren of a test item
+        // this.ctrl.resolveHandler = async (item) => {
+        //     if (!item) {
+        //         context.subscriptions.push(...startWatchingWorkspace(ctrl, fileChangedEmitter))
+        //         return
+        //     }
+        //     const data = testData.get(item)
+        //     if (data instanceof CushyFile) await data.updateFromDisk(ctrl, item)
+        // }
+    }
+
+    autoDiscoverEveryWorkflow = () => {
+        // pre-populate the tree with any open documents
+        for (const document of vscode.workspace.textDocuments) this.updateNodeForDocument(document)
+
+        // auto-update the tree when documents are opened or changed
+        const _1 = vscode.workspace.onDidOpenTextDocument(this.updateNodeForDocument)
+        const _2 = vscode.workspace.onDidChangeTextDocument((e) => this.updateNodeForDocument(e.document))
+        this.context.subscriptions.push(_1, _2)
     }
 
     /** will be created only after we've loaded cnfig file
      * so we don't attempt to connect to some default server */
-    ws!: ResilientWebSocketClient
+    ws: ResilientWebSocketClient
 
-    async init() {
-        this.ws = new ResilientWebSocketClient({
+    initWebsocket = () =>
+        new ResilientWebSocketClient({
             url: () => {
                 const socketPort = vscode.workspace.getConfiguration('languageServerExample').get('port', 8188)
                 const url = `ws://192.168.1.19:${socketPort}/ws`
@@ -156,19 +247,11 @@ export class Workspace {
             },
             onMessage: this.onMessage,
         })
-        // await this.loadProjects()
-        await this.updateComfy_object_info()
-        // this.editor.openCODE()
-    }
-
-    sid = 'temp'
-
-    activeRun: Maybe<Run> = null
 
     onMessage = (e: WS.MessageEvent) => {
         const msg: WsMsg = JSON.parse(e.data as any)
         if (msg.type === 'status') {
-            if (msg.data.sid) this.sid = msg.data.sid
+            if (msg.data.sid) this.comfySessionId = msg.data.sid
             this.status = msg.data.status
             return
         }
@@ -359,5 +442,69 @@ export class Workspace {
         const fileName = title.endsWith('.ts') ? title : `${title}.ts`
         const uri = this.resolve(asRelativePath(fileName))
         this.writeTextFile(uri, code, true)
+    }
+
+    // --------------------------------------------------
+    // --------------------------------------------------
+    // --------------------------------------------------
+    getOrCreateFile(
+        //
+        vsTestController: vscode.TestController,
+        uri: vscode.Uri,
+    ): { vsTestItem: vscode.TestItem; cushyFile: CushyFile } {
+        const existing = vsTestController.items.get(uri.toString())
+        if (existing) {
+            const cushyFile = vsTestItemOriginDict.get(existing)
+            return { vsTestItem: existing, cushyFile: cushyFile as CushyFile } // 🔴
+        }
+
+        const vsTestItem = vsTestController.createTestItem(
+            uri.toString(), // id
+            uri.path.split('/').pop()!, // label
+            uri, // uri
+        )
+        vsTestController.items.add(vsTestItem)
+
+        const cushyFile = new CushyFile()
+        vsTestItemOriginDict.set(vsTestItem, cushyFile)
+
+        vsTestItem.canResolveChildren = true
+        return { vsTestItem: vsTestItem, cushyFile: cushyFile }
+    }
+
+    startWatchingWorkspace(controller: vscode.TestController, fileChangedEmitter: vscode.EventEmitter<vscode.Uri>) {
+        return this.getWorkspaceTestPatterns().map(({ workspaceFolder, pattern }) => {
+            const watcher = vscode.workspace.createFileSystemWatcher(pattern)
+            watcher.onDidCreate((uri) => {
+                this.getOrCreateFile(controller, uri)
+                fileChangedEmitter.fire(uri)
+            })
+            watcher.onDidChange(async (uri) => {
+                const { vsTestItem: file, cushyFile: data } = this.getOrCreateFile(controller, uri)
+                if (data.didResolve) {
+                    await data.updateFromDisk(controller, file)
+                }
+                fileChangedEmitter.fire(uri)
+            })
+            watcher.onDidDelete((uri) => controller.items.delete(uri.toString()))
+
+            this.findInitialFiles(controller, pattern)
+
+            return watcher
+        })
+    }
+
+    getWorkspaceTestPatterns() {
+        if (!vscode.workspace.workspaceFolders) return []
+        return vscode.workspace.workspaceFolders.map((workspaceFolder) => ({
+            workspaceFolder,
+            pattern: new vscode.RelativePattern(workspaceFolder, '**/*.cushy.ts'),
+        }))
+    }
+
+    async findInitialFiles(controller: vscode.TestController, pattern: vscode.GlobPattern) {
+        for (const file of await vscode.workspace.findFiles(pattern)) {
+            this.getOrCreateFile(controller, file)
+        }
     }
 }

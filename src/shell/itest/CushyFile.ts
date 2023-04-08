@@ -7,13 +7,18 @@ import { logger } from '../../logger/Logger'
 
 const textDecoder = new TextDecoder('utf-8')
 
-export type MarkdownTestData = CushyFile | /*TestHeading |*/ CushyFlow
+export type MarkdownTestData = CushyFile | /* TestHeading |*/ CushyFlow
 
-export const testData = new WeakMap<vscode.TestItem, MarkdownTestData>()
+export const vsTestItemOriginDict = new WeakMap<vscode.TestItem, MarkdownTestData>()
 
 let generationCounter = 0
 
 export class CushyFile {
+    constructor() {
+        //
+    }
+
+    /** true once the file content has been read */
     public didResolve = false
 
     private getContentFromFilesystem = async (uri: vscode.Uri) => {
@@ -55,7 +60,8 @@ export class CushyFile {
         this.didResolve = true
 
         logger.info('🌠', 'updating from contents')
-        // ❓
+
+        // honestly a bit hard to read but hey 🤷‍♂️
         const ascend = (depth: number) => {
             while (ancestors.length > depth) {
                 const finished = ancestors.pop()!
@@ -71,7 +77,7 @@ export class CushyFile {
                 const id = `${item.uri}/${workflowName}`
 
                 const tcase = controller.createTestItem(id, workflowName, item.uri)
-                testData.set(tcase, data)
+                vsTestItemOriginDict.set(tcase, data)
                 tcase.range = range
                 parent.children.push(tcase)
             },

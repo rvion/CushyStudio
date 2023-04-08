@@ -3,7 +3,7 @@ import ts from 'typescript'
 console.log(ts.version)
 
 const code = `
-export default WORKFLOW('sample', async (comfy) => {
+WORKFLOW('sample', async (comfy) => {
     const ckpt = comfy.CheckpointLoaderSimple({
       ckpt_name: "AOM3A1_orangemixs.safetensors",
     });
@@ -36,7 +36,8 @@ export default WORKFLOW('sample', async (comfy) => {
   });
   `
 
-let result = ts.transpileModule(code.replace('export default ', ''), {
+// let result = ts.transpileModule(code.replace('export default ', ''), {
+let result = ts.transpileModule(code, {
     compilerOptions: {
         module: ts.ModuleKind.CommonJS,
         target: ts.ScriptTarget.ESNext,
