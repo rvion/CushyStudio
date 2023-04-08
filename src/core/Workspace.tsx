@@ -240,13 +240,14 @@ export class Workspace {
         new ResilientWebSocketClient({
             url: () => {
                 const socketPort = vscode.workspace.getConfiguration('languageServerExample').get('port', 8188)
-                const url = `ws://192.168.1.19:${socketPort}/ws`
+                const url = `ws://192.168.1.20:${socketPort}/ws`
                 return url
             },
             onMessage: this.onMessage,
         })
 
     onMessage = (e: WS.MessageEvent) => {
+        logger.info('🧦', `🔴 ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid

@@ -5,6 +5,7 @@ import { CushyFlow } from './CushyFlow'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
 import { toArray } from './toArray'
 import { logger } from '../../logger/Logger'
+import { cmd_sampleWebview } from '../shell'
 
 export class CushyRunProcessor {
     queue: {
@@ -58,6 +59,7 @@ export class CushyRunProcessor {
 
     runTestQueue = async () => {
         logger.info('🌠', `queue has ${this.queue} item(s)`)
+        cmd_sampleWebview(this.workspace.context)
         for (const { vsTestItem, cushyFlow } of this.queue) {
             this.run.appendOutput(`Running ${vsTestItem.id}\r\n`)
             if (this.run.token.isCancellationRequested) {

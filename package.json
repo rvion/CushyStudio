@@ -82,7 +82,7 @@
                 "title": "Connect to ComfyUI"
             },
             {
-                "command": "cushystudio.start",
+                "command": "cushystudio.samplewebview",
                 "title": "Hello World"
             },
             {
