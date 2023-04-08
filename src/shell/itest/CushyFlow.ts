@@ -4,6 +4,7 @@ import type { RunMode } from '../../core/Graph'
 import * as vscode from 'vscode'
 import { logger } from '../../logger/Logger'
 import { transpileCode } from '../../core/transpiler'
+import { Run } from '../../core/Run'
 
 /** a thin wrapper around a workflow somewhere in a CushyFile */
 export class CushyFlow {
@@ -23,21 +24,21 @@ export class CushyFlow {
     ): Promise<boolean> => {
         const start = Date.now()
 
-        logger.info('🔥', '❓ HELLO super12')
+        logger.info('🔥', '❓ running some flow')
         // this.focusedProject = this
         // ensure we have some code to run
         // this.scriptBuffer.codeJS
         // get the content of the current editor
 
-        const activeTextEditor = vscode.window.activeTextEditor
-        if (activeTextEditor == null) {
-            logger.info('🔥', '❌ no active editor')
-            return false
-        }
-        const activeDocument = activeTextEditor.document
-        const activeURI = activeDocument.uri
-        logger.info('🔥', activeURI.toString())
-        const codeTS = activeDocument.getText() ?? ''
+        // const activeTextEditor = vscode.window.activeTextEditor
+        // if (activeTextEditor == null) {
+        //     logger.info('🔥', '❌ no active editor')
+        //     return false
+        // }
+        // const activeDocument = activeTextEditor.document
+        // const activeURI = activeDocument.uri
+        // logger.info('🔥', activeURI.toString())
+        const codeTS = this.file.CONTENT
         logger.info('🔥', codeTS.slice(0, 1000) + '...')
         const codeJS = await transpileCode(codeTS)
         // logger.info('🔥', codeJS.slice(0, 1000) + '...')
@@ -48,10 +49,10 @@ export class CushyFlow {
         }
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
-        const execution = new Run(this, activeURI, opts)
+        const execution = new Run(this.file.workspace, this.file.uri, opts)
         await execution.save()
         // write the code to a file
-        this.runs.unshift(execution)
+        // this.runs.unshift(execution)
 
         // try {
         const ProjectScriptFn = new Function('WORKFLOW', codeJS)
@@ -60,7 +61,10 @@ export class CushyFlow {
         // graph.runningMode = mode
         // this.MAIN = graph
 
-        const WORKFLOW = (fn: any) => fn(graph)
+        const WORKFLOW = (name: string, fn: any) => {
+            logger.info('🌠', `running WORKFLOW ${name}`)
+            fn(graph)
+        }
 
         try {
             await ProjectScriptFn(WORKFLOW)

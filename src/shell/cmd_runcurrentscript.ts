@@ -9,6 +9,6 @@ export const cmd_runcurrentscript = async (
 ) => {
     logger.info('🌠', '🟢 running current script1')
     logger.info('🌠', '🟢 running current script2')
-    await workspace.RUN()
+    await workspace.RUN_CURRENT_FILE()
     logger.info('🌠', '🟢 done')
 }

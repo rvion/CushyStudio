@@ -4,9 +4,14 @@ import * as vscode from 'vscode'
 import { CushyFlow } from './CushyFlow'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
 import { toArray } from './toArray'
+import { logger } from '../../logger/Logger'
 
 export class CushyRunProcessor {
-    queue: { test: vscode.TestItem; data: CushyFlow }[] = []
+    queue: {
+        vsTestItem: vscode.TestItem
+        cushyFlow: CushyFlow
+    }[] = []
+
     run: vscode.TestRun
 
     constructor(
@@ -22,11 +27,13 @@ export class CushyRunProcessor {
 
     START = async () => {
         // 2. get all possible workflow we want to run
+        logger.info('🌠', 'starting run ')
         const testCandidates: readonly vscode.TestItem[] =
             this.request.include ?? //
             toArray(this.workspace.vsTestController.items)
 
         // 3. expand tests to the final list of WORKFLOW to run
+        logger.info('🌠', 'discovering tests... ')
         await this.discoverTests(testCandidates)
 
         // 4. run the workflows
@@ -34,35 +41,33 @@ export class CushyRunProcessor {
     }
 
     discoverTests = async (tests: Iterable<vscode.TestItem>) => {
-        for (const test of tests) {
-            if (this.request.exclude?.includes(test)) continue
+        for (const vsTestItem of tests) {
+            if (this.request.exclude?.includes(vsTestItem)) continue
 
-            const data = vsTestItemOriginDict.get(test)
-            if (data instanceof CushyFlow) {
-                this.run.enqueued(test)
-                this.queue.push({ test, data })
+            const x = vsTestItemOriginDict.get(vsTestItem)
+
+            if (x instanceof CushyFlow) {
+                this.run.enqueued(vsTestItem)
+                this.queue.push({ vsTestItem, cushyFlow: x })
             } else {
-                if (data instanceof CushyFile && !data.didResolve) {
-                    await data.updateFromDisk(this.workspace.vsTestController, test)
-                }
-
-                await this.discoverTests(toArray(test.children))
+                if (x instanceof CushyFile && !x.didResolve) await x.updateFromDisk()
+                await this.discoverTests(toArray(vsTestItem.children))
             }
         }
     }
 
     runTestQueue = async () => {
-        for (const { test, data } of this.queue) {
-            this.run.appendOutput(`Running ${test.id}\r\n`)
-
+        logger.info('🌠', `queue has ${this.queue} item(s)`)
+        for (const { vsTestItem, cushyFlow } of this.queue) {
+            this.run.appendOutput(`Running ${vsTestItem.id}\r\n`)
             if (this.run.token.isCancellationRequested) {
-                this.run.skipped(test)
+                this.run.skipped(vsTestItem)
             } else {
-                this.run.started(test)
-                await data.run(test, this.run, 'real')
+                this.run.started(vsTestItem)
+                await cushyFlow.run(vsTestItem, this.run, 'real')
             }
 
-            this.run.appendOutput(`Completed ${test.id}\r\n`)
+            this.run.appendOutput(`Completed ${vsTestItem.id}\r\n`)
         }
 
         this.run.end()

@@ -78,7 +78,7 @@ export class Workspace {
 
     runs: Run[] = []
 
-    RUN = async (mode: RunMode = 'real'): Promise<boolean> => {
+    RUN_CURRENT_FILE = async (mode: RunMode = 'real'): Promise<boolean> => {
         logger.info('🔥', '❓ HELLO super12')
         // this.focusedProject = this
         // ensure we have some code to run
@@ -151,8 +151,8 @@ export class Workspace {
     updateNodeForDocument(e: vscode.TextDocument) {
         if (e.uri.scheme !== 'file') return
         if (!e.uri.path.endsWith('.cushy.ts')) return
-        const { vsTestItem, cushyFile } = this.getOrCreateFile(this.vsTestController, e.uri)
-        cushyFile.updateFromContents(this.vsTestController, e.getText(), vsTestItem)
+        const cushyFile = this.getOrCreateFile(this.vsTestController, e.uri)
+        cushyFile.updateFromContents(e.getText())
     }
 
     /** wrapper around vscode.tests.createTestController so logic is self-contained  */
@@ -165,10 +165,8 @@ export class Workspace {
             const promises = testPatterns.map(({ pattern }) => this.findInitialFiles(ctrl, pattern))
             await Promise.all(promises)
         }
-        const startTestRun = async (request: vscode.TestRunRequest) => {
-            const run = new CushyRunProcessor(request, this)
-            return
-        }
+        const startTestRun = async (request: vscode.TestRunRequest) => void new CushyRunProcessor(request, this)
+        // ctrl.createRunProfile('Debug Tests', vscode.TestRunProfileKind.Debug, startTestRun, true, undefined, true)
         ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, startTestRun, true, undefined, true)
 
         // provided by the extension that the editor may call to requestchildren of a test item
@@ -177,8 +175,8 @@ export class Workspace {
                 this.context.subscriptions.push(...this.startWatchingWorkspace(ctrl, this.fileChangedEmitter))
                 return
             }
-            const data = vsTestItemOriginDict.get(item)
-            if (data instanceof CushyFile) await data.updateFromDisk(ctrl, item)
+            const cushyFile = vsTestItemOriginDict.get(item)
+            if (cushyFile instanceof CushyFile) await cushyFile.updateFromDisk()
         }
         return ctrl
     }
@@ -376,7 +374,7 @@ export class Workspace {
     }
 
     get serverHostHTTP() {
-        const def = vscode.workspace.getConfiguration('cushystudio').get('serverHostHTTP', 'http://192.168.1.19:8188')
+        const def = vscode.workspace.getConfiguration('cushystudio').get('serverHostHTTP', 'http://192.168.1.20:8188')
         return def
     }
 
@@ -417,9 +415,12 @@ export class Workspace {
         vscode.workspace.fs.writeFile(this.comfyJSONUri, comfyJSONBuffer)
 
         this.schema.update(schema$)
+        logger.info('🌠', 'schema updated')
         const cushyStr = this.schema.codegenDTS()
+        logger.info('🌠', 'schema code updated !')
         const cushyBuff = Buffer.from(cushyStr, 'utf8')
         vscode.workspace.fs.writeFile(this.comfyTSUri, cushyBuff)
+        logger.info('🌠', 'schema code saved !')
 
         // this.objectInfoFile.update(schema$)
         // this.comfySDKFile.updateFromCodegen(comfySdkCode)
@@ -451,28 +452,32 @@ export class Workspace {
         //
         vsTestController: vscode.TestController,
         uri: vscode.Uri,
-    ): { vsTestItem: vscode.TestItem; cushyFile: CushyFile } {
+    ): CushyFile {
+        // { vsTestItem: vscode.TestItem; cushyFile: CushyFile } {
         const existing = vsTestController.items.get(uri.toString())
         if (existing) {
-            const cushyFile = vsTestItemOriginDict.get(existing)
-            return { vsTestItem: existing, cushyFile: cushyFile as CushyFile } // 🔴
+            const cushyFile = vsTestItemOriginDict.get(existing) as CushyFile
+            if (!(cushyFile instanceof CushyFile)) throw new Error('🔴not a cushyfile')
+            return cushyFile
         }
 
-        const vsTestItem = vsTestController.createTestItem(
-            uri.toString(), // id
-            uri.path.split('/').pop()!, // label
-            uri, // uri
-        )
-        vsTestController.items.add(vsTestItem)
-
-        const cushyFile = new CushyFile()
-        vsTestItemOriginDict.set(vsTestItem, cushyFile)
-
-        vsTestItem.canResolveChildren = true
-        return { vsTestItem: vsTestItem, cushyFile: cushyFile }
+        return new CushyFile(this, uri)
+        // const vsTestItem = vsTestController.createTestItem(
+        //     uri.toString(), // id
+        //     uri.path.split('/').pop()!, // label
+        //     uri, // uri
+        // )
+        // vsTestController.items.add(vsTestItem)
+        // vsTestItemOriginDict.set(vsTestItem, cushyFile)
+        // vsTestItem.canResolveChildren = true
+        // return { vsTestItem: vsTestItem, cushyFile: cushyFile }
     }
 
-    startWatchingWorkspace(controller: vscode.TestController, fileChangedEmitter: vscode.EventEmitter<vscode.Uri>) {
+    startWatchingWorkspace(
+        //
+        controller: vscode.TestController,
+        fileChangedEmitter: vscode.EventEmitter<vscode.Uri>,
+    ) {
         return this.getWorkspaceTestPatterns().map(({ workspaceFolder, pattern }) => {
             const watcher = vscode.workspace.createFileSystemWatcher(pattern)
             watcher.onDidCreate((uri) => {
@@ -480,10 +485,8 @@ export class Workspace {
                 fileChangedEmitter.fire(uri)
             })
             watcher.onDidChange(async (uri) => {
-                const { vsTestItem: file, cushyFile: data } = this.getOrCreateFile(controller, uri)
-                if (data.didResolve) {
-                    await data.updateFromDisk(controller, file)
-                }
+                const cushyFile = this.getOrCreateFile(controller, uri)
+                if (cushyFile.didResolve) await cushyFile.updateFromDisk()
                 fileChangedEmitter.fire(uri)
             })
             watcher.onDidDelete((uri) => controller.items.delete(uri.toString()))

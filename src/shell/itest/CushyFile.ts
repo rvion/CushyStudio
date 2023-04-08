@@ -3,6 +3,7 @@ import * as vscode from 'vscode'
 import { CushyFlow } from './CushyFlow'
 import { extractWorkflows } from './parser'
 import { logger } from '../../logger/Logger'
+import { Workspace } from '../../core/Workspace'
 // import { parseMarkdown } from './parser'
 
 const textDecoder = new TextDecoder('utf-8')
@@ -14,12 +15,37 @@ export const vsTestItemOriginDict = new WeakMap<vscode.TestItem, MarkdownTestDat
 let generationCounter = 0
 
 export class CushyFile {
-    constructor() {
+    vsTestItem: vscode.TestItem
+
+    constructor(
         //
+        public workspace: Workspace,
+        public uri: vscode.Uri,
+    ) {
+        const vsTestController = workspace.vsTestController
+
+        this.vsTestItem = vsTestController.createTestItem(
+            uri.toString(), // id
+            uri.path.split('/').pop()!, // label
+            uri, // uri
+        )
+        this.vsTestItem.canResolveChildren = true
+        vsTestController.items.add(this.vsTestItem)
+        vsTestItemOriginDict.set(this.vsTestItem, this)
     }
 
     /** true once the file content has been read */
     public didResolve = false
+
+    async updateFromDisk() {
+        try {
+            const content = await this.getContentFromFilesystem(this.vsTestItem.uri!) // probably could be `this.uri`
+            this.vsTestItem.error = undefined
+            this.updateFromContents(content)
+        } catch (e) {
+            this.vsTestItem.error = (e as Error).stack
+        }
+    }
 
     private getContentFromFilesystem = async (uri: vscode.Uri) => {
         try {
@@ -31,31 +57,16 @@ export class CushyFile {
         }
     }
 
-    async updateFromDisk(
-        //
-        testController: vscode.TestController,
-        testItem: vscode.TestItem,
-    ) {
-        try {
-            const content = await this.getContentFromFilesystem(testItem.uri!)
-            testItem.error = undefined
-            this.updateFromContents(testController, content, testItem)
-        } catch (e) {
-            testItem.error = (e as Error).stack
-        }
-    }
-
+    CONTENT = ''
     /**
      * Parses the tests from the input text, and updates the tests contained
      * by this file to be those from the text,
      */
-    public updateFromContents(
-        //
-        controller: vscode.TestController,
-        content: string,
-        item: vscode.TestItem,
-    ) {
-        const ancestors = [{ item, children: [] as vscode.TestItem[] }]
+    public updateFromContents(content: string) {
+        this.CONTENT = content
+        const controller: vscode.TestController = this.workspace.vsTestController
+        const vsTestItem: vscode.TestItem = this.vsTestItem
+        const ancestors = [{ item: vsTestItem, children: [] as vscode.TestItem[] }]
         const thisGeneration = generationCounter++
         this.didResolve = true
 
@@ -73,11 +84,10 @@ export class CushyFile {
         extractWorkflows(content, {
             onTest: (range: vscode.Range, workflowName: string) => {
                 const parent = ancestors[ancestors.length - 1]
-                const data = new CushyFlow(this, range, workflowName, thisGeneration)
-                const id = `${item.uri}/${workflowName}`
-
-                const tcase = controller.createTestItem(id, workflowName, item.uri)
-                vsTestItemOriginDict.set(tcase, data)
+                const id = `${vsTestItem.uri}/${workflowName}`
+                const tcase = controller.createTestItem(id, workflowName, vsTestItem.uri)
+                const cushyFlow = new CushyFlow(this, range, workflowName, thisGeneration)
+                vsTestItemOriginDict.set(tcase, cushyFlow)
                 tcase.range = range
                 parent.children.push(tcase)
             },

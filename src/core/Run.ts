@@ -5,7 +5,7 @@ import fetch from 'node-fetch'
 import * as path from 'path'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { Cyto } from '../graph/cyto'
+// import { Cyto } from '../graph/cyto' 🔴🔴
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
@@ -34,7 +34,7 @@ export class Run {
     graph: Graph
 
     /** graph engine instance for smooth and clever auto-layout algorithms */
-    cyto: Cyto
+    // cyto: Cyto 🔴🔴
 
     /** list of all images produed over the whole script execution */
     gallery: PromptOutputImage[] = []
@@ -66,7 +66,7 @@ export class Run {
         this.folder = this.workspace.resolve(relPath)
         this.name = `Run ${this.createdAt}` // 'Run ' + this.script.runCounter++
         this.graph = new Graph(this.workspace, this)
-        this.cyto = new Cyto(this.graph)
+        // this.cyto = new Cyto(this.graph) // 🔴🔴
         makeAutoObservable(this)
     }
 
