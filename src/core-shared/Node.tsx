@@ -3,12 +3,12 @@ import type { Graph } from './Graph'
 import type { ComfyNodeJSON } from '../core/ComfyPrompt'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
-import { ComfyNodeOutput } from '../core/ComfyNodeOutput'
+import { Slot } from './Slot'
 import { ComfyNodeUID } from '../core-types/NodeUID'
 import { ComfyNodeSchema, NodeInputExt } from './Schema'
 import { exhaust } from '../core/ComfyUtils'
-import { GeneratedImage } from '../core/PromptOutputImage'
-import { comfyColors } from './ComfyColors'
+import { GeneratedImage } from '../core-back/GeneratedImage'
+import { comfyColors } from './Colors'
 
 configure({ enforceActions: 'never' })
 
@@ -66,7 +66,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         return comfyColors[this.$schema.category]
     }
 
-    $outputs: ComfyNodeOutput<any>[] = []
+    $outputs: Slot<any>[] = []
     constructor(
         //
         public graph: Graph,
@@ -83,7 +83,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         // dynamically add properties for every outputs
         const extensions: { [key: string]: any } = {}
         for (const x of this.$schema.outputs) {
-            const output = new ComfyNodeOutput(this, ix++, x.name)
+            const output = new Slot(this, ix++, x.name)
             extensions[x.name] = output
             this.$outputs.push(output)
             // console.log(`  - .${x.name} as ComfyNodeOutput(${ix})`)
@@ -131,7 +131,7 @@ export class ComfyNode<ComfyNode_input extends object> {
 
     serializeValue(field: string, value: unknown): unknown {
         if (value == null) throw new Error('🔴 null ??')
-        if (value instanceof ComfyNodeOutput) return [value.node.uid, value.slotIx]
+        if (value instanceof Slot) return [value.node.uid, value.slotIx]
         if (value instanceof ComfyNode) {
             // console.log('🔴 Value is COmfyNodeç')
             const expectedType = this._getExpecteTypeForField(field)
@@ -149,11 +149,11 @@ export class ComfyNode<ComfyNode_input extends object> {
         return input.type
     }
 
-    private _getOutputForType(type: string): ComfyNodeOutput<any> {
+    private _getOutputForType(type: string): Slot<any> {
         const i: NodeInputExt = this.$schema.outputs.find((i: NodeInputExt) => i.type === type)!
         const val = (this as any)[i.name]
         // console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
-        if (val instanceof ComfyNodeOutput) return val
+        if (val instanceof Slot) return val
         throw new Error(`Expected ${i.name} to be a NodeOutput`)
     }
 }

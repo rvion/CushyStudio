@@ -9,7 +9,7 @@ import { makeAutoObservable } from 'mobx'
 import { Graph } from '../core-shared/Graph'
 import { deepCopyNaive } from '../core//ComfyUtils'
 import { nanoid } from 'nanoid'
-import { GeneratedImage } from '../core//PromptOutputImage'
+import { GeneratedImage } from '../core-back/GeneratedImage'
 
 export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
     private static promptID = 1

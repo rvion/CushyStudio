@@ -1,6 +1,6 @@
 /// <reference types="./cushy" />
 
-import type { ComfyNodeOutput } from './core/ComfyNodeOutput'
+import type { Slot } from './core-shared/Slot'
 import type { ComfyNodeUID } from './core-types/NodeUID'
 import type { ComfyNode } from './core-shared/Node'
 import type { ComfyNodeSchemaJSON } from './core-types/ComfySchemaJSON'
@@ -9,20 +9,20 @@ import type { Workflow } from './core-shared/Workflow'
 import { FlowExecution } from './core-back/FlowExecution'
 
 // TYPES -------------------------------
-export type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
-export type UPSCALE_MODEL = ComfyNodeOutput<'UPSCALE_MODEL'>
-export type CONDITIONING = ComfyNodeOutput<'CONDITIONING'>
-export type CLIP_VISION = ComfyNodeOutput<'CLIP_VISION'>
-export type STYLE_MODEL = ComfyNodeOutput<'STYLE_MODEL'>
-export type CONTROL_NET = ComfyNodeOutput<'CONTROL_NET'>
-export type LATENT = ComfyNodeOutput<'LATENT'>
-export type MODEL = ComfyNodeOutput<'MODEL'>
-export type IMAGE = ComfyNodeOutput<'IMAGE'>
-export type ASCII = ComfyNodeOutput<'ASCII'>
-export type CLIP = ComfyNodeOutput<'CLIP'>
-export type MASK = ComfyNodeOutput<'MASK'>
-export type SEED = ComfyNodeOutput<'SEED'>
-export type VAE = ComfyNodeOutput<'VAE'>
+export type CLIP_VISION_OUTPUT = Slot<'CLIP_VISION_OUTPUT'>
+export type UPSCALE_MODEL = Slot<'UPSCALE_MODEL'>
+export type CONDITIONING = Slot<'CONDITIONING'>
+export type CLIP_VISION = Slot<'CLIP_VISION'>
+export type STYLE_MODEL = Slot<'STYLE_MODEL'>
+export type CONTROL_NET = Slot<'CONTROL_NET'>
+export type LATENT = Slot<'LATENT'>
+export type MODEL = Slot<'MODEL'>
+export type IMAGE = Slot<'IMAGE'>
+export type ASCII = Slot<'ASCII'>
+export type CLIP = Slot<'CLIP'>
+export type MASK = Slot<'MASK'>
+export type SEED = Slot<'SEED'>
+export type VAE = Slot<'VAE'>
 export type INT = number
 export type FLOAT = number
 export type STRING = string
@@ -209,7 +209,7 @@ export interface HasSingle_Enum_UpscaleModelLoader_model_name { _Enum_UpscaleMod
 // | KSampler                                                                    |
 // |=============================================================================|
 export interface KSampler extends HasSingle_LATENT, ComfyNode<KSampler_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type KSampler_input = {
     model: MODEL | HasSingle_MODEL
@@ -228,9 +228,9 @@ export type KSampler_input = {
 // | CheckpointLoader                                                            |
 // |=============================================================================|
 export interface CheckpointLoader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, ComfyNode<CheckpointLoader_input> {
-    MODEL: ComfyNodeOutput<'MODEL', 0>
-    CLIP: ComfyNodeOutput<'CLIP', 1>
-    VAE: ComfyNodeOutput<'VAE', 2>
+    MODEL: Slot<'MODEL', 0>
+    CLIP: Slot<'CLIP', 1>
+    VAE: Slot<'VAE', 2>
 }
 export type CheckpointLoader_input = {
     config_name: Enum_CheckpointLoader_config_name | HasSingle_Enum_CheckpointLoader_config_name
@@ -245,9 +245,9 @@ export interface CheckpointLoaderSimple
         HasSingle_CLIP,
         HasSingle_VAE,
         ComfyNode<CheckpointLoaderSimple_input> {
-    MODEL: ComfyNodeOutput<'MODEL', 0>
-    CLIP: ComfyNodeOutput<'CLIP', 1>
-    VAE: ComfyNodeOutput<'VAE', 2>
+    MODEL: Slot<'MODEL', 0>
+    CLIP: Slot<'CLIP', 1>
+    VAE: Slot<'VAE', 2>
 }
 export type CheckpointLoaderSimple_input = {
     ckpt_name: Enum_CheckpointLoader_ckpt_name | HasSingle_Enum_CheckpointLoader_ckpt_name
@@ -257,7 +257,7 @@ export type CheckpointLoaderSimple_input = {
 // | CLIPTextEncode                                                              |
 // |=============================================================================|
 export interface CLIPTextEncode extends HasSingle_CONDITIONING, ComfyNode<CLIPTextEncode_input> {
-    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
+    CONDITIONING: Slot<'CONDITIONING', 0>
 }
 export type CLIPTextEncode_input = {
     text: STRING
@@ -268,7 +268,7 @@ export type CLIPTextEncode_input = {
 // | CLIPSetLastLayer                                                            |
 // |=============================================================================|
 export interface CLIPSetLastLayer extends HasSingle_CLIP, ComfyNode<CLIPSetLastLayer_input> {
-    CLIP: ComfyNodeOutput<'CLIP', 0>
+    CLIP: Slot<'CLIP', 0>
 }
 export type CLIPSetLastLayer_input = {
     clip: CLIP | HasSingle_CLIP
@@ -279,7 +279,7 @@ export type CLIPSetLastLayer_input = {
 // | VAEDecode                                                                   |
 // |=============================================================================|
 export interface VAEDecode extends HasSingle_IMAGE, ComfyNode<VAEDecode_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type VAEDecode_input = {
     samples: LATENT | HasSingle_LATENT
@@ -290,7 +290,7 @@ export type VAEDecode_input = {
 // | VAEEncode                                                                   |
 // |=============================================================================|
 export interface VAEEncode extends HasSingle_LATENT, ComfyNode<VAEEncode_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type VAEEncode_input = {
     pixels: IMAGE | HasSingle_IMAGE
@@ -301,7 +301,7 @@ export type VAEEncode_input = {
 // | VAEEncodeForInpaint                                                         |
 // |=============================================================================|
 export interface VAEEncodeForInpaint extends HasSingle_LATENT, ComfyNode<VAEEncodeForInpaint_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type VAEEncodeForInpaint_input = {
     pixels: IMAGE | HasSingle_IMAGE
@@ -313,7 +313,7 @@ export type VAEEncodeForInpaint_input = {
 // | VAELoader                                                                   |
 // |=============================================================================|
 export interface VAELoader extends HasSingle_VAE, ComfyNode<VAELoader_input> {
-    VAE: ComfyNodeOutput<'VAE', 0>
+    VAE: Slot<'VAE', 0>
 }
 export type VAELoader_input = {
     vae_name: Enum_VAELoader_vae_name | HasSingle_Enum_VAELoader_vae_name
@@ -323,7 +323,7 @@ export type VAELoader_input = {
 // | EmptyLatentImage                                                            |
 // |=============================================================================|
 export interface EmptyLatentImage extends HasSingle_LATENT, ComfyNode<EmptyLatentImage_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type EmptyLatentImage_input = {
     width: INT
@@ -335,7 +335,7 @@ export type EmptyLatentImage_input = {
 // | LatentUpscale                                                               |
 // |=============================================================================|
 export interface LatentUpscale extends HasSingle_LATENT, ComfyNode<LatentUpscale_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type LatentUpscale_input = {
     samples: LATENT | HasSingle_LATENT
@@ -366,8 +366,8 @@ export type PreviewImage_input = {
 // | LoadImage                                                                   |
 // |=============================================================================|
 export interface LoadImage extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<LoadImage_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
-    MASK: ComfyNodeOutput<'MASK', 1>
+    IMAGE: Slot<'IMAGE', 0>
+    MASK: Slot<'MASK', 1>
 }
 export type LoadImage_input = {
     image: Enum_LoadImage_image | HasSingle_Enum_LoadImage_image
@@ -377,7 +377,7 @@ export type LoadImage_input = {
 // | LoadImageMask                                                               |
 // |=============================================================================|
 export interface LoadImageMask extends HasSingle_MASK, ComfyNode<LoadImageMask_input> {
-    MASK: ComfyNodeOutput<'MASK', 0>
+    MASK: Slot<'MASK', 0>
 }
 export type LoadImageMask_input = {
     image: Enum_LoadImage_image | HasSingle_Enum_LoadImage_image
@@ -388,7 +388,7 @@ export type LoadImageMask_input = {
 // | ImageScale                                                                  |
 // |=============================================================================|
 export interface ImageScale extends HasSingle_IMAGE, ComfyNode<ImageScale_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type ImageScale_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -402,7 +402,7 @@ export type ImageScale_input = {
 // | ImageInvert                                                                 |
 // |=============================================================================|
 export interface ImageInvert extends HasSingle_IMAGE, ComfyNode<ImageInvert_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type ImageInvert_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -412,8 +412,8 @@ export type ImageInvert_input = {
 // | ImagePadForOutpaint                                                         |
 // |=============================================================================|
 export interface ImagePadForOutpaint extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImagePadForOutpaint_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
-    MASK: ComfyNodeOutput<'MASK', 1>
+    IMAGE: Slot<'IMAGE', 0>
+    MASK: Slot<'MASK', 1>
 }
 export type ImagePadForOutpaint_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -428,7 +428,7 @@ export type ImagePadForOutpaint_input = {
 // | ConditioningCombine                                                         |
 // |=============================================================================|
 export interface ConditioningCombine extends HasSingle_CONDITIONING, ComfyNode<ConditioningCombine_input> {
-    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
+    CONDITIONING: Slot<'CONDITIONING', 0>
 }
 export type ConditioningCombine_input = {
     conditioning_1: CONDITIONING | HasSingle_CONDITIONING
@@ -439,7 +439,7 @@ export type ConditioningCombine_input = {
 // | ConditioningSetArea                                                         |
 // |=============================================================================|
 export interface ConditioningSetArea extends HasSingle_CONDITIONING, ComfyNode<ConditioningSetArea_input> {
-    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
+    CONDITIONING: Slot<'CONDITIONING', 0>
 }
 export type ConditioningSetArea_input = {
     conditioning: CONDITIONING | HasSingle_CONDITIONING
@@ -454,7 +454,7 @@ export type ConditioningSetArea_input = {
 // | KSamplerAdvanced                                                            |
 // |=============================================================================|
 export interface KSamplerAdvanced extends HasSingle_LATENT, ComfyNode<KSamplerAdvanced_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type KSamplerAdvanced_input = {
     model: MODEL | HasSingle_MODEL
@@ -476,7 +476,7 @@ export type KSamplerAdvanced_input = {
 // | SetLatentNoiseMask                                                          |
 // |=============================================================================|
 export interface SetLatentNoiseMask extends HasSingle_LATENT, ComfyNode<SetLatentNoiseMask_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type SetLatentNoiseMask_input = {
     samples: LATENT | HasSingle_LATENT
@@ -487,7 +487,7 @@ export type SetLatentNoiseMask_input = {
 // | LatentComposite                                                             |
 // |=============================================================================|
 export interface LatentComposite extends HasSingle_LATENT, ComfyNode<LatentComposite_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type LatentComposite_input = {
     samples_to: LATENT | HasSingle_LATENT
@@ -501,7 +501,7 @@ export type LatentComposite_input = {
 // | LatentRotate                                                                |
 // |=============================================================================|
 export interface LatentRotate extends HasSingle_LATENT, ComfyNode<LatentRotate_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type LatentRotate_input = {
     samples: LATENT | HasSingle_LATENT
@@ -512,7 +512,7 @@ export type LatentRotate_input = {
 // | LatentFlip                                                                  |
 // |=============================================================================|
 export interface LatentFlip extends HasSingle_LATENT, ComfyNode<LatentFlip_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type LatentFlip_input = {
     samples: LATENT | HasSingle_LATENT
@@ -523,7 +523,7 @@ export type LatentFlip_input = {
 // | LatentCrop                                                                  |
 // |=============================================================================|
 export interface LatentCrop extends HasSingle_LATENT, ComfyNode<LatentCrop_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type LatentCrop_input = {
     samples: LATENT | HasSingle_LATENT
@@ -537,8 +537,8 @@ export type LatentCrop_input = {
 // | LoraLoader                                                                  |
 // |=============================================================================|
 export interface LoraLoader extends HasSingle_MODEL, HasSingle_CLIP, ComfyNode<LoraLoader_input> {
-    MODEL: ComfyNodeOutput<'MODEL', 0>
-    CLIP: ComfyNodeOutput<'CLIP', 1>
+    MODEL: Slot<'MODEL', 0>
+    CLIP: Slot<'CLIP', 1>
 }
 export type LoraLoader_input = {
     model: MODEL | HasSingle_MODEL
@@ -552,7 +552,7 @@ export type LoraLoader_input = {
 // | CLIPLoader                                                                  |
 // |=============================================================================|
 export interface CLIPLoader extends HasSingle_CLIP, ComfyNode<CLIPLoader_input> {
-    CLIP: ComfyNodeOutput<'CLIP', 0>
+    CLIP: Slot<'CLIP', 0>
 }
 export type CLIPLoader_input = {
     clip_name: Enum_CLIPLoader_clip_name | HasSingle_Enum_CLIPLoader_clip_name
@@ -562,7 +562,7 @@ export type CLIPLoader_input = {
 // | CLIPVisionEncode                                                            |
 // |=============================================================================|
 export interface CLIPVisionEncode extends HasSingle_CLIP_VISION_OUTPUT, ComfyNode<CLIPVisionEncode_input> {
-    CLIP_VISION_OUTPUT: ComfyNodeOutput<'CLIP_VISION_OUTPUT', 0>
+    CLIP_VISION_OUTPUT: Slot<'CLIP_VISION_OUTPUT', 0>
 }
 export type CLIPVisionEncode_input = {
     clip_vision: CLIP_VISION | HasSingle_CLIP_VISION
@@ -573,7 +573,7 @@ export type CLIPVisionEncode_input = {
 // | StyleModelApply                                                             |
 // |=============================================================================|
 export interface StyleModelApply extends HasSingle_CONDITIONING, ComfyNode<StyleModelApply_input> {
-    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
+    CONDITIONING: Slot<'CONDITIONING', 0>
 }
 export type StyleModelApply_input = {
     conditioning: CONDITIONING | HasSingle_CONDITIONING
@@ -585,7 +585,7 @@ export type StyleModelApply_input = {
 // | ControlNetApply                                                             |
 // |=============================================================================|
 export interface ControlNetApply extends HasSingle_CONDITIONING, ComfyNode<ControlNetApply_input> {
-    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
+    CONDITIONING: Slot<'CONDITIONING', 0>
 }
 export type ControlNetApply_input = {
     conditioning: CONDITIONING | HasSingle_CONDITIONING
@@ -598,7 +598,7 @@ export type ControlNetApply_input = {
 // | ControlNetLoader                                                            |
 // |=============================================================================|
 export interface ControlNetLoader extends HasSingle_CONTROL_NET, ComfyNode<ControlNetLoader_input> {
-    CONTROL_NET: ComfyNodeOutput<'CONTROL_NET', 0>
+    CONTROL_NET: Slot<'CONTROL_NET', 0>
 }
 export type ControlNetLoader_input = {
     control_net_name: Enum_ControlNetLoader_control_net_name | HasSingle_Enum_ControlNetLoader_control_net_name
@@ -608,7 +608,7 @@ export type ControlNetLoader_input = {
 // | DiffControlNetLoader                                                        |
 // |=============================================================================|
 export interface DiffControlNetLoader extends HasSingle_CONTROL_NET, ComfyNode<DiffControlNetLoader_input> {
-    CONTROL_NET: ComfyNodeOutput<'CONTROL_NET', 0>
+    CONTROL_NET: Slot<'CONTROL_NET', 0>
 }
 export type DiffControlNetLoader_input = {
     model: MODEL | HasSingle_MODEL
@@ -619,7 +619,7 @@ export type DiffControlNetLoader_input = {
 // | StyleModelLoader                                                            |
 // |=============================================================================|
 export interface StyleModelLoader extends HasSingle_STYLE_MODEL, ComfyNode<StyleModelLoader_input> {
-    STYLE_MODEL: ComfyNodeOutput<'STYLE_MODEL', 0>
+    STYLE_MODEL: Slot<'STYLE_MODEL', 0>
 }
 export type StyleModelLoader_input = {
     style_model_name: Enum_StyleModelLoader_style_model_name | HasSingle_Enum_StyleModelLoader_style_model_name
@@ -629,7 +629,7 @@ export type StyleModelLoader_input = {
 // | CLIPVisionLoader                                                            |
 // |=============================================================================|
 export interface CLIPVisionLoader extends HasSingle_CLIP_VISION, ComfyNode<CLIPVisionLoader_input> {
-    CLIP_VISION: ComfyNodeOutput<'CLIP_VISION', 0>
+    CLIP_VISION: Slot<'CLIP_VISION', 0>
 }
 export type CLIPVisionLoader_input = {
     clip_name: Enum_CLIPVisionLoader_clip_name | HasSingle_Enum_CLIPVisionLoader_clip_name
@@ -639,7 +639,7 @@ export type CLIPVisionLoader_input = {
 // | VAEDecodeTiled                                                              |
 // |=============================================================================|
 export interface VAEDecodeTiled extends HasSingle_IMAGE, ComfyNode<VAEDecodeTiled_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type VAEDecodeTiled_input = {
     samples: LATENT | HasSingle_LATENT
@@ -650,7 +650,7 @@ export type VAEDecodeTiled_input = {
 // | VAEEncodeTiled                                                              |
 // |=============================================================================|
 export interface VAEEncodeTiled extends HasSingle_LATENT, ComfyNode<VAEEncodeTiled_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type VAEEncodeTiled_input = {
     pixels: IMAGE | HasSingle_IMAGE
@@ -661,7 +661,7 @@ export type VAEEncodeTiled_input = {
 // | TomePatchModel                                                              |
 // |=============================================================================|
 export interface TomePatchModel extends HasSingle_MODEL, ComfyNode<TomePatchModel_input> {
-    MODEL: ComfyNodeOutput<'MODEL', 0>
+    MODEL: Slot<'MODEL', 0>
 }
 export type TomePatchModel_input = {
     model: MODEL | HasSingle_MODEL
@@ -672,7 +672,7 @@ export type TomePatchModel_input = {
 // | WASImageFilterAdjustments                                                   |
 // |=============================================================================|
 export interface WASImageFilterAdjustments extends HasSingle_IMAGE, ComfyNode<WASImageFilterAdjustments_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageFilterAdjustments_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -689,7 +689,7 @@ export type WASImageFilterAdjustments_input = {
 // | WASImageStyleFilter                                                         |
 // |=============================================================================|
 export interface WASImageStyleFilter extends HasSingle_IMAGE, ComfyNode<WASImageStyleFilter_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageStyleFilter_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -700,7 +700,7 @@ export type WASImageStyleFilter_input = {
 // | WASImageBlendingMode                                                        |
 // |=============================================================================|
 export interface WASImageBlendingMode extends HasSingle_IMAGE, ComfyNode<WASImageBlendingMode_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageBlendingMode_input = {
     image_a: IMAGE | HasSingle_IMAGE
@@ -712,7 +712,7 @@ export type WASImageBlendingMode_input = {
 // | WASImageBlend                                                               |
 // |=============================================================================|
 export interface WASImageBlend extends HasSingle_IMAGE, ComfyNode<WASImageBlend_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageBlend_input = {
     image_a: IMAGE | HasSingle_IMAGE
@@ -724,7 +724,7 @@ export type WASImageBlend_input = {
 // | WASImageBlendByMask                                                         |
 // |=============================================================================|
 export interface WASImageBlendByMask extends HasSingle_IMAGE, ComfyNode<WASImageBlendByMask_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageBlendByMask_input = {
     image_a: IMAGE | HasSingle_IMAGE
@@ -737,7 +737,7 @@ export type WASImageBlendByMask_input = {
 // | WASImageRemoveColor                                                         |
 // |=============================================================================|
 export interface WASImageRemoveColor extends HasSingle_IMAGE, ComfyNode<WASImageRemoveColor_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageRemoveColor_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -754,7 +754,7 @@ export type WASImageRemoveColor_input = {
 // | WASImageThreshold                                                           |
 // |=============================================================================|
 export interface WASImageThreshold extends HasSingle_IMAGE, ComfyNode<WASImageThreshold_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageThreshold_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -765,7 +765,7 @@ export type WASImageThreshold_input = {
 // | WASImageChromaticAberration                                                 |
 // |=============================================================================|
 export interface WASImageChromaticAberration extends HasSingle_IMAGE, ComfyNode<WASImageChromaticAberration_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageChromaticAberration_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -779,7 +779,7 @@ export type WASImageChromaticAberration_input = {
 // | WASImageBloomFilter                                                         |
 // |=============================================================================|
 export interface WASImageBloomFilter extends HasSingle_IMAGE, ComfyNode<WASImageBloomFilter_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageBloomFilter_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -791,7 +791,7 @@ export type WASImageBloomFilter_input = {
 // | WASImageBlank                                                               |
 // |=============================================================================|
 export interface WASImageBlank extends HasSingle_IMAGE, ComfyNode<WASImageBlank_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageBlank_input = {
     width: INT
@@ -805,7 +805,7 @@ export type WASImageBlank_input = {
 // | WASImageFilmGrain                                                           |
 // |=============================================================================|
 export interface WASImageFilmGrain extends HasSingle_IMAGE, ComfyNode<WASImageFilmGrain_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageFilmGrain_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -819,7 +819,7 @@ export type WASImageFilmGrain_input = {
 // | WASImageFlip                                                                |
 // |=============================================================================|
 export interface WASImageFlip extends HasSingle_IMAGE, ComfyNode<WASImageFlip_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageFlip_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -830,7 +830,7 @@ export type WASImageFlip_input = {
 // | WASImageRotate                                                              |
 // |=============================================================================|
 export interface WASImageRotate extends HasSingle_IMAGE, ComfyNode<WASImageRotate_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageRotate_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -843,7 +843,7 @@ export type WASImageRotate_input = {
 // | WASImageNovaFilter                                                          |
 // |=============================================================================|
 export interface WASImageNovaFilter extends HasSingle_IMAGE, ComfyNode<WASImageNovaFilter_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageNovaFilter_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -855,7 +855,7 @@ export type WASImageNovaFilter_input = {
 // | WASImageCannyFilter                                                         |
 // |=============================================================================|
 export interface WASImageCannyFilter extends HasSingle_IMAGE, ComfyNode<WASImageCannyFilter_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageCannyFilter_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -868,7 +868,7 @@ export type WASImageCannyFilter_input = {
 // | WASImageEdgeDetectionFilter                                                 |
 // |=============================================================================|
 export interface WASImageEdgeDetectionFilter extends HasSingle_IMAGE, ComfyNode<WASImageEdgeDetectionFilter_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageEdgeDetectionFilter_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -879,7 +879,7 @@ export type WASImageEdgeDetectionFilter_input = {
 // | WASImageFDOFFilter                                                          |
 // |=============================================================================|
 export interface WASImageFDOFFilter extends HasSingle_IMAGE, ComfyNode<WASImageFDOFFilter_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageFDOFFilter_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -893,7 +893,7 @@ export type WASImageFDOFFilter_input = {
 // | WASImageMedianFilter                                                        |
 // |=============================================================================|
 export interface WASImageMedianFilter extends HasSingle_IMAGE, ComfyNode<WASImageMedianFilter_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageMedianFilter_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -918,8 +918,8 @@ export type WASImageSave_input = {
 // | WASImageLoad                                                                |
 // |=============================================================================|
 export interface WASImageLoad extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<WASImageLoad_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
-    MASK: ComfyNodeOutput<'MASK', 1>
+    IMAGE: Slot<'IMAGE', 0>
+    MASK: Slot<'MASK', 1>
 }
 export type WASImageLoad_input = {
     image_path: STRING
@@ -929,7 +929,7 @@ export type WASImageLoad_input = {
 // | WASImageLevelsAdjustment                                                    |
 // |=============================================================================|
 export interface WASImageLevelsAdjustment extends HasSingle_IMAGE, ComfyNode<WASImageLevelsAdjustment_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageLevelsAdjustment_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -942,7 +942,7 @@ export type WASImageLevelsAdjustment_input = {
 // | WASImageHighPassFilter                                                      |
 // |=============================================================================|
 export interface WASImageHighPassFilter extends HasSingle_IMAGE, ComfyNode<WASImageHighPassFilter_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageHighPassFilter_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -954,7 +954,7 @@ export type WASImageHighPassFilter_input = {
 // | WASTensorBatchToImage                                                       |
 // |=============================================================================|
 export interface WASTensorBatchToImage extends HasSingle_IMAGE, ComfyNode<WASTensorBatchToImage_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASTensorBatchToImage_input = {
     images_batch: IMAGE | HasSingle_IMAGE
@@ -965,7 +965,7 @@ export type WASTensorBatchToImage_input = {
 // | WASImageSelectColor                                                         |
 // |=============================================================================|
 export interface WASImageSelectColor extends HasSingle_IMAGE, ComfyNode<WASImageSelectColor_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageSelectColor_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -979,7 +979,7 @@ export type WASImageSelectColor_input = {
 // | WASImageSelectChannel                                                       |
 // |=============================================================================|
 export interface WASImageSelectChannel extends HasSingle_IMAGE, ComfyNode<WASImageSelectChannel_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageSelectChannel_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -990,7 +990,7 @@ export type WASImageSelectChannel_input = {
 // | WASImageMixRGBChannels                                                      |
 // |=============================================================================|
 export interface WASImageMixRGBChannels extends HasSingle_IMAGE, ComfyNode<WASImageMixRGBChannels_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASImageMixRGBChannels_input = {
     red_channel: IMAGE | HasSingle_IMAGE
@@ -1002,7 +1002,7 @@ export type WASImageMixRGBChannels_input = {
 // | WASLatentUpscaleByFactorWAS                                                 |
 // |=============================================================================|
 export interface WASLatentUpscaleByFactorWAS extends HasSingle_LATENT, ComfyNode<WASLatentUpscaleByFactorWAS_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type WASLatentUpscaleByFactorWAS_input = {
     samples: LATENT | HasSingle_LATENT
@@ -1015,7 +1015,7 @@ export type WASLatentUpscaleByFactorWAS_input = {
 // | WASLatentNoiseInjection                                                     |
 // |=============================================================================|
 export interface WASLatentNoiseInjection extends HasSingle_LATENT, ComfyNode<WASLatentNoiseInjection_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type WASLatentNoiseInjection_input = {
     samples: LATENT | HasSingle_LATENT
@@ -1026,7 +1026,7 @@ export type WASLatentNoiseInjection_input = {
 // | WASImageToLatentMask                                                        |
 // |=============================================================================|
 export interface WASImageToLatentMask extends HasSingle_MASK, ComfyNode<WASImageToLatentMask_input> {
-    MASK: ComfyNodeOutput<'MASK', 0>
+    MASK: Slot<'MASK', 0>
 }
 export type WASImageToLatentMask_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -1037,7 +1037,7 @@ export type WASImageToLatentMask_input = {
 // | WASMiDaSDepthApproximation                                                  |
 // |=============================================================================|
 export interface WASMiDaSDepthApproximation extends HasSingle_IMAGE, ComfyNode<WASMiDaSDepthApproximation_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type WASMiDaSDepthApproximation_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -1050,8 +1050,8 @@ export type WASMiDaSDepthApproximation_input = {
 // | WASMiDaSMaskImage                                                           |
 // |=============================================================================|
 export interface WASMiDaSMaskImage extends ComfyNode<WASMiDaSMaskImage_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
-    IMAGE_1: ComfyNodeOutput<'IMAGE', 1>
+    IMAGE: Slot<'IMAGE', 0>
+    IMAGE_1: Slot<'IMAGE', 1>
 }
 export type WASMiDaSMaskImage_input = {
     image: IMAGE | HasSingle_IMAGE
@@ -1072,7 +1072,7 @@ export type WASMiDaSMaskImage_input = {
 // | WASCLIPTextEncodeNSP                                                        |
 // |=============================================================================|
 export interface WASCLIPTextEncodeNSP extends HasSingle_CONDITIONING, ComfyNode<WASCLIPTextEncodeNSP_input> {
-    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
+    CONDITIONING: Slot<'CONDITIONING', 0>
 }
 export type WASCLIPTextEncodeNSP_input = {
     noodle_key: STRING
@@ -1085,7 +1085,7 @@ export type WASCLIPTextEncodeNSP_input = {
 // | WASKSamplerWAS                                                              |
 // |=============================================================================|
 export interface WASKSamplerWAS extends HasSingle_LATENT, ComfyNode<WASKSamplerWAS_input> {
-    LATENT: ComfyNodeOutput<'LATENT', 0>
+    LATENT: Slot<'LATENT', 0>
 }
 export type WASKSamplerWAS_input = {
     model: MODEL | HasSingle_MODEL
@@ -1104,7 +1104,7 @@ export type WASKSamplerWAS_input = {
 // | WASSeed                                                                     |
 // |=============================================================================|
 export interface WASSeed extends HasSingle_SEED, ComfyNode<WASSeed_input> {
-    SEED: ComfyNodeOutput<'SEED', 0>
+    SEED: Slot<'SEED', 0>
 }
 export type WASSeed_input = {
     seed: INT
@@ -1114,7 +1114,7 @@ export type WASSeed_input = {
 // | WASTextMultiline                                                            |
 // |=============================================================================|
 export interface WASTextMultiline extends HasSingle_ASCII, ComfyNode<WASTextMultiline_input> {
-    ASCII: ComfyNodeOutput<'ASCII', 0>
+    ASCII: Slot<'ASCII', 0>
 }
 export type WASTextMultiline_input = {
     text: STRING
@@ -1124,7 +1124,7 @@ export type WASTextMultiline_input = {
 // | WASTextString                                                               |
 // |=============================================================================|
 export interface WASTextString extends HasSingle_ASCII, ComfyNode<WASTextString_input> {
-    ASCII: ComfyNodeOutput<'ASCII', 0>
+    ASCII: Slot<'ASCII', 0>
 }
 export type WASTextString_input = {
     text: STRING
@@ -1134,7 +1134,7 @@ export type WASTextString_input = {
 // | WASTextRandomLine                                                           |
 // |=============================================================================|
 export interface WASTextRandomLine extends HasSingle_ASCII, ComfyNode<WASTextRandomLine_input> {
-    ASCII: ComfyNodeOutput<'ASCII', 0>
+    ASCII: Slot<'ASCII', 0>
 }
 export type WASTextRandomLine_input = {
     text: ASCII | HasSingle_ASCII
@@ -1145,7 +1145,7 @@ export type WASTextRandomLine_input = {
 // | WASTextToConditioning                                                       |
 // |=============================================================================|
 export interface WASTextToConditioning extends HasSingle_CONDITIONING, ComfyNode<WASTextToConditioning_input> {
-    CONDITIONING: ComfyNodeOutput<'CONDITIONING', 0>
+    CONDITIONING: Slot<'CONDITIONING', 0>
 }
 export type WASTextToConditioning_input = {
     clip: CLIP | HasSingle_CLIP
@@ -1156,7 +1156,7 @@ export type WASTextToConditioning_input = {
 // | WASTextConcatenate                                                          |
 // |=============================================================================|
 export interface WASTextConcatenate extends HasSingle_ASCII, ComfyNode<WASTextConcatenate_input> {
-    ASCII: ComfyNodeOutput<'ASCII', 0>
+    ASCII: Slot<'ASCII', 0>
 }
 export type WASTextConcatenate_input = {
     text_a: ASCII | HasSingle_ASCII
@@ -1168,7 +1168,7 @@ export type WASTextConcatenate_input = {
 // | WASTextFindAndReplace                                                       |
 // |=============================================================================|
 export interface WASTextFindAndReplace extends HasSingle_ASCII, ComfyNode<WASTextFindAndReplace_input> {
-    ASCII: ComfyNodeOutput<'ASCII', 0>
+    ASCII: Slot<'ASCII', 0>
 }
 export type WASTextFindAndReplace_input = {
     text: ASCII | HasSingle_ASCII
@@ -1180,7 +1180,7 @@ export type WASTextFindAndReplace_input = {
 // | WASTextFindAndReplaceInput                                                  |
 // |=============================================================================|
 export interface WASTextFindAndReplaceInput extends HasSingle_ASCII, ComfyNode<WASTextFindAndReplaceInput_input> {
-    ASCII: ComfyNodeOutput<'ASCII', 0>
+    ASCII: Slot<'ASCII', 0>
 }
 export type WASTextFindAndReplaceInput_input = {
     text: ASCII | HasSingle_ASCII
@@ -1192,7 +1192,7 @@ export type WASTextFindAndReplaceInput_input = {
 // | WASTextParseNoodleSoupPrompts                                               |
 // |=============================================================================|
 export interface WASTextParseNoodleSoupPrompts extends HasSingle_ASCII, ComfyNode<WASTextParseNoodleSoupPrompts_input> {
-    ASCII: ComfyNodeOutput<'ASCII', 0>
+    ASCII: Slot<'ASCII', 0>
 }
 export type WASTextParseNoodleSoupPrompts_input = {
     noodle_key: STRING
@@ -1214,7 +1214,7 @@ export type WASSaveTextFile_input = {
 // | WASLoadTextFile                                                             |
 // |=============================================================================|
 export interface WASLoadTextFile extends HasSingle_ASCII, ComfyNode<WASLoadTextFile_input> {
-    ASCII: ComfyNodeOutput<'ASCII', 0>
+    ASCII: Slot<'ASCII', 0>
 }
 export type WASLoadTextFile_input = {
     file_path: STRING
@@ -1224,7 +1224,7 @@ export type WASLoadTextFile_input = {
 // | WASTextToConsole                                                            |
 // |=============================================================================|
 export interface WASTextToConsole extends HasSingle_ASCII, ComfyNode<WASTextToConsole_input> {
-    ASCII: ComfyNodeOutput<'ASCII', 0>
+    ASCII: Slot<'ASCII', 0>
 }
 export type WASTextToConsole_input = {
     text: ASCII | HasSingle_ASCII
@@ -1235,7 +1235,7 @@ export type WASTextToConsole_input = {
 // | UpscaleModelLoader                                                          |
 // |=============================================================================|
 export interface UpscaleModelLoader extends HasSingle_UPSCALE_MODEL, ComfyNode<UpscaleModelLoader_input> {
-    UPSCALE_MODEL: ComfyNodeOutput<'UPSCALE_MODEL', 0>
+    UPSCALE_MODEL: Slot<'UPSCALE_MODEL', 0>
 }
 export type UpscaleModelLoader_input = {
     model_name: Enum_UpscaleModelLoader_model_name | HasSingle_Enum_UpscaleModelLoader_model_name
@@ -1245,7 +1245,7 @@ export type UpscaleModelLoader_input = {
 // | ImageUpscaleWithModel                                                       |
 // |=============================================================================|
 export interface ImageUpscaleWithModel extends HasSingle_IMAGE, ComfyNode<ImageUpscaleWithModel_input> {
-    IMAGE: ComfyNodeOutput<'IMAGE', 0>
+    IMAGE: Slot<'IMAGE', 0>
 }
 export type ImageUpscaleWithModel_input = {
     upscale_model: UPSCALE_MODEL | HasSingle_UPSCALE_MODEL

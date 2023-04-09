@@ -3,7 +3,7 @@ import type { Graph } from '../core-shared/Graph'
 
 import { useWorkspace } from './WorkspaceContext'
 import { observer } from 'mobx-react-lite'
-import { comfyColors } from '../core-shared/ComfyColors'
+import { comfyColors } from '../core-shared/Colors'
 
 export const NodeRefUI = observer(function NodeRefUI_(p: { nodeUID: ComfyNodeUID }) {
     const st = useWorkspace()

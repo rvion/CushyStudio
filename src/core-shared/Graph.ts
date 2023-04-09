@@ -8,9 +8,9 @@ import { computed, makeObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Cyto } from '../graph/cyto'
 import { ComfyNode } from './Node'
-import { comfyColors } from './ComfyColors'
+import { comfyColors } from './Colors'
 import { ComfyNodeSchema, Schema } from './Schema'
-import { GeneratedImage } from '../core/PromptOutputImage'
+import { GeneratedImage } from '../core-back/GeneratedImage'
 
 export type RunMode = 'fake' | 'real'
 

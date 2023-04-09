@@ -28,7 +28,7 @@ import { transpileCode } from '../core/transpiler'
 import { CushyFile, vsTestItemOriginDict } from '../shell/itest/CushyFile'
 import { CushyRunProcessor } from '../shell/itest/CushyRunProcessor'
 import { ProxyToWebview } from '../panels/ProxyToWebview'
-import { GeneratedImage } from '../core/PromptOutputImage'
+import { GeneratedImage } from './GeneratedImage'
 
 export type WorkspaceConfigJSON = {
     version: 2

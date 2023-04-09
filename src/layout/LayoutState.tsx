@@ -1,4 +1,4 @@
-import type { GeneratedImage } from '../core/PromptOutputImage'
+import type { GeneratedImage } from '../core-back/GeneratedImage'
 
 import { makeObservable, observable } from 'mobx'
 // import DockLayout, { PanelData } from 'rc-dock'

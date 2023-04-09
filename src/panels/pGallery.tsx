@@ -1,6 +1,6 @@
 import { Slider } from 'rsuite'
 import { observer } from 'mobx-react-lite'
-import { GeneratedImage } from '../core/PromptOutputImage'
+import { GeneratedImage } from '../core-back/GeneratedImage'
 import { useWorkspace } from '../ui/WorkspaceContext'
 import { Image } from '../ui/Image'
 
