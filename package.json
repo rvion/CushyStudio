@@ -10,7 +10,7 @@
         "Other"
     ],
     "activationEvents": [
-        "workspaceContains:*.cushy.ts"
+        "workspaceContains:**/*.cushy.ts"
     ],
     "main": "./out/main.js",
     "contributes": {
@@ -126,7 +126,6 @@
         "site:typecheck": "tsc",
         "[DEV]": " 🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉",
         "js": "node --loader ts-node/esm --experimental-specifier-resolution=node --experimental-modules",
-        "web": "open -n -a \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --args --user-data-dir=\"/tmp/chrome_dev_test\" --disable-web-security",
         "[CORE]": "👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁",
         "sync": "yarn js src/core/ComfySpec.fetch.ts",
         "lib": "yarn js src/core/Comfy.gen.ts",

@@ -1,4 +1,7 @@
-// from: https://github.com/microsoft/vscode-webview-ui-toolkit-samples/blob/main/frameworks/hello-world-react-vite/webview-ui/src/utilities/vscode.ts
+// inspirations:
+// https://github.com/microsoft/vscode-webview-ui-toolkit-samples/blob/main/frameworks/hello-world-react-vite/webview-ui/src/utilities/vscode.ts
+// https://codebycorey.com/blog/building-a-vscode-extension-part-four
+import { makeAutoObservable, makeObservable, observable } from 'mobx'
 import type { WebviewApi } from 'vscode-webview'
 
 /**
@@ -13,28 +16,35 @@ import type { WebviewApi } from 'vscode-webview'
 class VSCodeAPIWrapper {
     private readonly vsCodeApi: WebviewApi<unknown> | undefined
 
+    received: string[] = []
+
     constructor() {
         // Check if the acquireVsCodeApi function exists in the current development
         // context (i.e. VS Code development window or web browser)
         if (typeof acquireVsCodeApi === 'function') {
             this.vsCodeApi = acquireVsCodeApi()
         }
+        makeObservable(this, { received: observable })
+        window.addEventListener('message', this.onMessageFromExtension)
     }
 
-    /**
-     * Post a message (i.e. send arbitrary data) to the owner of the webview.
-     *
-     * @remarks When running webview code inside a web browser, postMessage will instead
-     * log the given message to the console.
-     *
-     * @param message Abitrary data (must be JSON serializable) to send to the extension context.
+    onMessageFromExtension = (message: MessageEvent<any>) => {
+        console.log('CAUGHT THE MESSAGE', { message })
+        const xxx = JSON.stringify(message.data).slice(0, 100)
+        console.log(xxx)
+        // alert('CAUGHT THE MESSAGE')
+        this.received.push(xxx)
+    }
+
+    /** Post a message (i.e. send arbitrary data) to the owner of the webview (the extension).
+     * @remarks When running webview code inside a web browser, postMessage will instead log the given message to the console.
      */
-    public postMessage(message: unknown) {
-        if (this.vsCodeApi) {
-            this.vsCodeApi.postMessage(message)
-        } else {
-            console.log(message)
-        }
+    public postMessage(
+        /** Abitrary data (must be JSON serializable) to send to the extension context. */
+        message: unknown,
+    ) {
+        if (this.vsCodeApi) this.vsCodeApi.postMessage(message)
+        else console.log(message)
     }
 
     /**

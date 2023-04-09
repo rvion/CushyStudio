@@ -1,4 +1,3 @@
-import { VSCodeButton } from '@vscode/webview-ui-toolkit/react'
 import ReactDOM from 'react-dom/client'
 
 // dock css
@@ -13,6 +12,7 @@ import ReactDOM from 'react-dom/client'
 // mixed back of overrides
 import './webview.css'
 import { vscode } from './vscodeClientWrapper'
+import { FooUI } from './FooUI'
 
 // single import allowed before loading demos
 // import { Workflow } from '../core/Workflow'
@@ -32,7 +32,7 @@ import { vscode } from './vscodeClientWrapper'
 
 // void start()
 
-function handleHowdyClick() {
+export function handleHowdyClick() {
     vscode.postMessage({
         command: 'hello',
         text: 'Hey there partner! 🤠',
@@ -41,11 +41,4 @@ function handleHowdyClick() {
 ReactDOM.createRoot(
     //
     document.getElementById('root') as HTMLElement,
-).render(
-    <div>
-        Hello world my dude
-        <div>
-            <VSCodeButton onClick={handleHowdyClick}>Howdy!</VSCodeButton>
-        </div>
-    </div>,
-)
+).render(<FooUI />)

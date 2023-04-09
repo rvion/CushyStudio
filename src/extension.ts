@@ -35,13 +35,7 @@ export function activate(context: vscode.ExtensionContext) {
     registerDisposableCommand('cushystudio.connect', () => {})
     registerDisposableCommand('cushystudio.samplewebview', cmd_sampleWebview.bind(null, context))
     registerDisposableCommand('cushystudio.runcurrentscript', cmd_runcurrentscript.bind(null, context, workspace))
-
-    const showHelloWorldCommand = vscode.commands.registerCommand('cushystudio.openwebview', () => {
-        HelloWorldPanel.render(context.extensionUri)
-    })
-
-    // Add command to the extension context
-    context.subscriptions.push(showHelloWorldCommand)
+    registerDisposableCommand('cushystudio.openwebview', () => workspace.ensureWebviewPanelIsOpened())
 
     // add settings to package.json
     // insert a treeview in the cushyrun view

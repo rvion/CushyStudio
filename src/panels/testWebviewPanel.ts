@@ -1,6 +1,7 @@
 import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from 'vscode'
 import { getUri } from '../fs/getUri'
 import { getNonce } from '../fs/getNonce'
+import { logger } from '../logger/Logger'
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -14,9 +15,20 @@ import { getNonce } from '../fs/getNonce'
  */
 export class HelloWorldPanel {
     public static currentPanel: HelloWorldPanel | undefined
-    private readonly _panel: WebviewPanel
+    readonly _panel: WebviewPanel
     private _disposables: Disposable[] = []
 
+    static send(message: unknown) {
+        const curr = HelloWorldPanel.currentPanel
+        if (curr == null) {
+            logger.error('🔥', 'no webview panel to send message to')
+            return
+        }
+        const msg = JSON.stringify(message).slice(0, 10)
+        logger.info('🔥', 'sending message to webview panel: ' + msg)
+
+        curr._panel.webview.postMessage(msg)
+    }
     /** The HelloWorldPanel class private constructor (called only from the render method). */
     private constructor(
         /** A reference to the webview panel */
@@ -58,6 +70,7 @@ export class HelloWorldPanel {
                 ViewColumn.One,
                 // Extra panel configurations
                 {
+                    enableCommandUris: true,
                     // Enable JavaScript in the webview
                     enableScripts: true,
                     // Restrict the webview to only load resources from the `out` and `webview-ui/build` directories

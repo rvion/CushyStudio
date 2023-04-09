@@ -27,6 +27,7 @@ import { RunMode } from './Graph'
 import { transpileCode } from './transpiler'
 import { CushyFile, vsTestItemOriginDict } from '../shell/itest/CushyFile'
 import { CushyRunProcessor } from '../shell/itest/extension'
+import { HelloWorldPanel } from '../panels/testWebviewPanel'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -246,6 +247,10 @@ export class Workspace {
             onMessage: this.onMessage,
         })
 
+    ensureWebviewPanelIsOpened = () => {
+        HelloWorldPanel.render(this.context.extensionUri)
+    }
+
     onMessage = (e: WS.MessageEvent) => {
         logger.info('🧦', `🔴 ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
@@ -263,8 +268,13 @@ export class Workspace {
         // const project: Maybe<Project> = this.focusedProject
         // if (project == null) return console.log(`❌ received ${msg.type} but project is null`)
 
+        HelloWorldPanel.send(JSON.stringify(msg.data))
+
         const currentRun: Maybe<Run> = this.activeRun
-        if (currentRun == null) return console.log(`❌ received ${msg.type} but currentRun is null`)
+        if (currentRun == null) {
+            logger.error('🐰', `❌ received ${msg.type} but currentRun is null`)
+            return console.log(`❌ received ${msg.type} but currentRun is null`)
+        }
 
         // ensure current step is a prompt
         const promptStep: ScriptStep = currentRun.step
