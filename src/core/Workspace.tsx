@@ -26,8 +26,8 @@ import { readableStringify } from '../utils/stringifyReadable'
 import { RunMode } from './Graph'
 import { transpileCode } from './transpiler'
 import { CushyFile, vsTestItemOriginDict } from '../shell/itest/CushyFile'
-import { CushyRunProcessor } from '../shell/itest/extension'
-import { HelloWorldPanel } from '../panels/testWebviewPanel'
+import { CushyRunProcessor } from '../shell/itest/CushyRunProcessor'
+import { ProxyToWebview } from '../panels/testWebviewPanel'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -248,7 +248,7 @@ export class Workspace {
         })
 
     ensureWebviewPanelIsOpened = () => {
-        HelloWorldPanel.render(this.context.extensionUri)
+        ProxyToWebview.render(this.context.extensionUri)
     }
 
     onMessage = (e: WS.MessageEvent) => {
@@ -268,7 +268,7 @@ export class Workspace {
         // const project: Maybe<Project> = this.focusedProject
         // if (project == null) return console.log(`❌ received ${msg.type} but project is null`)
 
-        HelloWorldPanel.send(JSON.stringify(msg.data))
+        ProxyToWebview.send_RAW(JSON.stringify(msg.data))
 
         const currentRun: Maybe<Run> = this.activeRun
         if (currentRun == null) {

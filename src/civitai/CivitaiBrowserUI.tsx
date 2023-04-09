@@ -1,33 +1,34 @@
-import { Button, Panel, Input } from 'rsuite'
+import { VSCodeButton, VSCodePanelView, VSCodeTextField } from '@vscode/webview-ui-toolkit/react'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { Civitai } from './CivitaiSpec'
-import { useWorkspace } from '../ui/WorkspaceContext'
 import { Image } from '../ui/Image'
 import { Text } from '../ui/Text'
+import { useWorkspace } from '../ui/WorkspaceContext'
+import { Civitai } from './CivitaiSpec'
 // import * as I from '@rsuite/icons'
 
 export const CivitaiUI = observer(function CivitaiUI_() {
     const c = useMemo(() => new Civitai(), [])
     const x = useWorkspace()
     return (
-        <Panel>
+        <VSCodePanelView>
             <Text size={300}>Civitai</Text>
 
             <div className='row gap'>
-                <Input
+                <VSCodeTextField
                     // contentBefore={<I.Search24Filled />}
                     placeholder='rechercher'
                     value={c.query}
-                    onChange={(next) => (c.query = next)}
-                ></Input>
-                <Button
+                    onChange={(ev) => (c.query = (ev.target as any).value)}
+                    // onChange={(ev: React.ChangeEventHandler<HTMLInputElement>) => (c.query = ev.target.value)}
+                ></VSCodeTextField>
+                <VSCodeButton
                     // icon={<I.Search24Filled />}
                     onClick={async () => {
                         const res = await c.search({ query: c.query, page: '1' })
                         console.log(res)
                     }}
-                ></Button>
+                ></VSCodeButton>
             </div>
             {c.results && (
                 <div
@@ -42,7 +43,7 @@ export const CivitaiUI = observer(function CivitaiUI_() {
                         const v0Imgs = v0.images
                         const img0 = v0Imgs[0]
                         return (
-                            <Panel>
+                            <VSCodePanelView>
                                 {/* <CardHeader>{i.name}</CardHeader> */}
                                 <div>{i.name}</div>
                                 {/* <div>{i.id}</div> */}
@@ -50,12 +51,12 @@ export const CivitaiUI = observer(function CivitaiUI_() {
                                 {/* <CardPreview> */}
                                 <Image key={img0.url} height={100} width={100} src={img0.url} />
                                 {/* </CardPreview> */}
-                            </Panel>
+                            </VSCodePanelView>
                         )
                     })}
                 </div>
             )}
-        </Panel>
+        </VSCodePanelView>
     )
 })
 

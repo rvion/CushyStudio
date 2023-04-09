@@ -2,6 +2,7 @@ import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from 'vsco
 import { getUri } from '../fs/getUri'
 import { getNonce } from '../fs/getNonce'
 import { logger } from '../logger/Logger'
+import { MessageFromExtensionToWebview } from './MessageFromExtensionToWebview'
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -13,22 +14,26 @@ import { logger } from '../logger/Logger'
  * - Setting the HTML (and by proxy CSS/JavaScript) content of the webview panel
  * - Setting message listeners so data can be passed between the webview and extension
  */
-export class HelloWorldPanel {
-    public static currentPanel: HelloWorldPanel | undefined
+export class ProxyToWebview {
+    public static currentPanel: ProxyToWebview | undefined
     readonly _panel: WebviewPanel
     private _disposables: Disposable[] = []
 
-    static send(message: unknown) {
-        const curr = HelloWorldPanel.currentPanel
+    static send(message: MessageFromExtensionToWebview) {
+        ProxyToWebview.send_RAW(message)
+    }
+    static send_RAW(message: unknown) {
+        const curr = ProxyToWebview.currentPanel
         if (curr == null) {
             logger.error('🔥', 'no webview panel to send message to')
             return
         }
-        const msg = JSON.stringify(message).slice(0, 10)
+        const msg = JSON.stringify(message) // .slice(0, 10)
         logger.info('🔥', 'sending message to webview panel: ' + msg)
 
         curr._panel.webview.postMessage(msg)
     }
+
     /** The HelloWorldPanel class private constructor (called only from the render method). */
     private constructor(
         /** A reference to the webview panel */
@@ -56,9 +61,9 @@ export class HelloWorldPanel {
      * @param extensionUri The URI of the directory containing the extension.
      */
     public static render(extensionUri: Uri) {
-        if (HelloWorldPanel.currentPanel) {
+        if (ProxyToWebview.currentPanel) {
             // If the webview panel already exists reveal it
-            HelloWorldPanel.currentPanel._panel.reveal(ViewColumn.Two)
+            ProxyToWebview.currentPanel._panel.reveal(ViewColumn.Two)
         } else {
             // If a webview panel does not already exist create and show a new one
             const panel = window.createWebviewPanel(
@@ -70,6 +75,7 @@ export class HelloWorldPanel {
                 ViewColumn.One,
                 // Extra panel configurations
                 {
+                    retainContextWhenHidden: true,
                     enableCommandUris: true,
                     // Enable JavaScript in the webview
                     enableScripts: true,
@@ -82,7 +88,7 @@ export class HelloWorldPanel {
                 },
             )
 
-            HelloWorldPanel.currentPanel = new HelloWorldPanel(panel, extensionUri)
+            ProxyToWebview.currentPanel = new ProxyToWebview(panel, extensionUri)
         }
     }
 
@@ -90,7 +96,7 @@ export class HelloWorldPanel {
      * Cleans up and disposes of webview resources when the webview panel is closed.
      */
     public dispose() {
-        HelloWorldPanel.currentPanel = undefined
+        ProxyToWebview.currentPanel = undefined
 
         // Dispose of the current webview panel
         this._panel.dispose()

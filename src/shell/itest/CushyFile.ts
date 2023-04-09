@@ -1,7 +1,7 @@
 import { TextDecoder } from 'util'
 import * as vscode from 'vscode'
 import { CushyFlow } from './CushyFlow'
-import { extractWorkflows } from './parser'
+import { extractWorkflows } from './extractWorkflows'
 import { logger } from '../../logger/Logger'
 import { Workspace } from '../../core/Workspace'
 // import { parseMarkdown } from './parser'

@@ -18,6 +18,7 @@ import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import { Workspace } from './Workspace'
 import { logger } from '../logger/Logger'
+import { ProxyToWebview } from '../panels/testWebviewPanel'
 
 /** script exeuction instance */
 export class Run {
@@ -79,12 +80,14 @@ export class Run {
 
     askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => {
         const ask = new ScriptStep_askBoolean(msg, def)
+        ProxyToWebview.send({ type: 'ask-boolean', message: msg, default: def })
         this.steps.unshift(ask)
         return ask.finished
     }
 
     askString = (msg: string, def?: Maybe<string>): Promise<string> => {
         const ask = new ScriptStep_askString(msg, def)
+        ProxyToWebview.send({ type: 'ask-string', message: msg, default: def })
         this.steps.unshift(ask)
         return ask.finished
     }

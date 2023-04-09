@@ -3,7 +3,7 @@ import * as vscode from 'vscode'
 // https://code.visualstudio.com/api/extension-guides/webview
 // https://github.com/microsoft/vscode-extension-samples/tree/98346fc4fa81067e253df9b32922cc02e8b24274/webview-sample
 
-export const cmd_sampleWebview = (context: vscode.ExtensionContext) => {
+export const cmd_openCatCodingWebview = (context: vscode.ExtensionContext) => {
     const panel = vscode.window.createWebviewPanel('catCoding', 'Cat Coding', vscode.ViewColumn.Two, {
         // Only allow the webview to access resources in our extension's media directory
         localResourceRoots: [

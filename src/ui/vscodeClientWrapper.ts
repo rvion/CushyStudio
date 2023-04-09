@@ -13,7 +13,7 @@ import type { WebviewApi } from 'vscode-webview'
  * dev server by using native web browser features that mock the functionality
  * enabled by acquireVsCodeApi.
  */
-class VSCodeAPIWrapper {
+class WebviewClientState {
     private readonly vsCodeApi: WebviewApi<unknown> | undefined
 
     received: string[] = []
@@ -86,4 +86,4 @@ class VSCodeAPIWrapper {
 }
 
 // Exports class singleton to prevent multiple invocations of acquireVsCodeApi.
-export const vscode = new VSCodeAPIWrapper()
+export const vscode = new WebviewClientState()
