@@ -1,5 +1,5 @@
 import type { WebviewApi } from 'vscode-webview'
-import type { ComfyStatus } from '../core/ComfyAPI'
+import type { ComfyStatus } from '../core-shared/ComfyWsPayloads'
 
 // inspirations:
 // https://github.com/microsoft/vscode-webview-ui-toolkit-samples/blob/main/frameworks/hello-world-react-vite/webview-ui/src/utilities/vscode.ts

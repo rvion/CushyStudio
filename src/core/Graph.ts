@@ -1,7 +1,7 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 import type { ComfyNodeUID } from './ComfyNodeUID'
 import type { ComfyPromptJSON } from './ComfyPrompt'
-import type { WsMsgExecuting, WsMsgProgress } from './ComfyAPI'
+import type { WsMsgExecuting, WsMsgProgress } from '../core-shared/ComfyWsPayloads'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { computed, makeObservable } from 'mobx'

@@ -1,4 +1,4 @@
-import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from '../core/ComfyAPI'
+import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from '../core-shared/ComfyWsPayloads'
 import type { ComfyPromptJSON } from '../core/ComfyPrompt'
 import type { ComfySchemaJSON } from '../core/ComfySchemaJSON'
 import type { Maybe } from '../core/ComfyUtils'

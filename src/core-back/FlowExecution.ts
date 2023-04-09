@@ -8,15 +8,15 @@ import { nanoid } from 'nanoid'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
-import { ApiPromptInput, WsMsgExecuted } from './ComfyAPI'
-import { Graph } from './Graph'
-import { deepCopyNaive, Maybe } from './ComfyUtils'
-import { GeneratedImage } from './PromptOutputImage'
-import { ScriptStep } from './ScriptStep'
+import { ApiPromptInput, WsMsgExecuted } from '../core-shared/ComfyWsPayloads'
+import { Graph } from '../core/Graph'
+import { deepCopyNaive, Maybe } from '../core/ComfyUtils'
+import { GeneratedImage } from '../core/PromptOutputImage'
+import { ScriptStep } from '../core/ScriptStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
-import { Workspace } from './Workspace'
+import { Workspace } from '../core/Workspace'
 import { loggerExt } from '../logger/LoggerExtension'
 import { ProxyToWebview } from '../panels/ProxyToWebview'
 import { wildcards } from '../wildcards/wildcards'
@@ -39,7 +39,7 @@ export class FlowExecution {
     // cyto: Cyto 🔴🔴
 
     /** list of all images produed over the whole script execution */
-    gallery: GeneratedImage[] = []
+    generatedImages: GeneratedImage[] = []
 
     /** folder where CushyStudio will save run informations */
     get workspaceRelativeCacheFolderPath(): RelativePath {

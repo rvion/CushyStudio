@@ -6,7 +6,7 @@ import type { ComfyNode } from './core/CSNode'
 import type { ComfyNodeSchemaJSON } from './core/ComfySchemaJSON'
 import type { Graph } from './core/Graph'
 import type { Workflow } from './core/Workflow'
-import { FlowExecution } from './core/Run'
+import { FlowExecution } from './core-back/FlowExecution'
 
 // TYPES -------------------------------
 export type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>

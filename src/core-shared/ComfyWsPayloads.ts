@@ -1,4 +1,4 @@
-import type { ComfyNodeUID } from './ComfyNodeUID'
+import type { ComfyNodeUID } from '../core/ComfyNodeUID'
 
 // REQUEST PAYLOADS ------------------------------------------------
 export type ApiPromptInput = {

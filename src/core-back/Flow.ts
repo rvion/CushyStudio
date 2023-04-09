@@ -4,9 +4,12 @@ import type { RunMode } from '../core/Graph'
 import * as vscode from 'vscode'
 import { loggerExt } from '../logger/LoggerExtension'
 import { transpileCode } from '../core/transpiler'
-import { FlowExecution } from '../core/Run'
+import { FlowExecution } from './FlowExecution'
 
-/** a thin wrapper around a workflow somewhere in a CushyFile */
+/**
+ * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
+ * flow = the `WORFLOW(...)` part of a file
+ * */
 export class Flow {
     constructor(
         //

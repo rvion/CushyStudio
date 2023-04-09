@@ -1,4 +1,4 @@
-import type { NodeProgress, WsMsgExecutedData } from './ComfyAPI'
+import type { NodeProgress, WsMsgExecutedData } from '../core-shared/ComfyWsPayloads'
 import type { Graph } from './Graph'
 import type { ComfyNodeJSON } from './ComfyPrompt'
 

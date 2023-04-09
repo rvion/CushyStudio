@@ -1,9 +1,9 @@
 import * as vscode from 'vscode'
-import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from '../core/ComfyAPI'
+import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from '../core-shared/ComfyWsPayloads'
 import type { ComfyPromptJSON } from '../core//ComfyPrompt'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
 import type { ComfyNode } from '../core//CSNode'
-import type { FlowExecution } from '../core//Run'
+import type { FlowExecution } from '../core-back/FlowExecution'
 
 import { makeAutoObservable } from 'mobx'
 import { Graph } from '../core//Graph'
@@ -99,7 +99,7 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
         node.images.push(...images)
 
         // accumulate in run
-        this.run.gallery.push(...images)
+        this.run.generatedImages.push(...images)
 
         // if (images.length > 0) {
         //     this.workspace.layout.galleryFocus = images[0]
