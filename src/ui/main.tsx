@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom/client'
 
 // mixed back of overrides
 import './webview.css'
-import { vscode } from '../core-front/WebviewClientState'
+import { vscode } from '../core-front/FrontState'
 import { FooUI } from './FooUI'
 
 // single import allowed before loading demos

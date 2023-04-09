@@ -1,12 +1,12 @@
-import type { Workspace } from '../../core-back/Workspace'
+import type { Workspace } from './Workspace'
 
 import * as vscode from 'vscode'
-import { loggerExt } from '../../logger/LoggerExtension'
+import { loggerExt } from '../logger/LoggerBack'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
-import { Flow } from '../../core-back/Flow'
-import { toArray } from './toArray'
+import { Flow } from './Flow'
+import { toArray } from '../shell/itest/toArray'
 
-export class CushyRunProcessor {
+export class FlowExecutionManager {
     queue: {
         vsTestItem: vscode.TestItem
         cushyFlow: Flow

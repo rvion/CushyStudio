@@ -1,9 +1,9 @@
 import { TextDecoder } from 'util'
 import * as vscode from 'vscode'
-import { Flow } from '../../core-back/Flow'
-import { extractWorkflows } from './extractWorkflows'
-import { loggerExt } from '../../logger/LoggerExtension'
-import { Workspace } from '../../core-back/Workspace'
+import { Flow } from './Flow'
+import { extractWorkflows } from '../shell/itest/extractWorkflows'
+import { loggerExt } from '../logger/LoggerBack'
+import { Workspace } from './Workspace'
 // import { parseMarkdown } from './parser'
 
 const textDecoder = new TextDecoder('utf-8')

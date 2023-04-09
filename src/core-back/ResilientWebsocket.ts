@@ -1,7 +1,7 @@
 import type { Maybe } from '../utils/ComfyUtils'
 
 import { makeAutoObservable, reaction } from 'mobx'
-import { loggerExt } from '../logger/LoggerExtension'
+import { loggerExt } from '../logger/LoggerBack'
 import { WebSocket, CloseEvent, Event, MessageEvent, EventListenerOptions } from 'ws'
 
 type Message = string | Buffer

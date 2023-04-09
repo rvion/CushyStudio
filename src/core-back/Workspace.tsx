@@ -10,7 +10,7 @@ import type { FlowExecutionStep } from '../core-types/FlowExecutionStep'
 
 import { makeAutoObservable } from 'mobx'
 import { CushyLayoutState } from '../layout/LayoutState'
-import { loggerExt } from '../logger/LoggerExtension'
+import { loggerExt } from '../logger/LoggerBack'
 import { Template } from '../templates/Template'
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { sdkTemplate } from '../sdk/sdkTemplate'
@@ -25,8 +25,8 @@ import { ComfyImporter } from '../importers/ImportComfyImage'
 import { readableStringify } from '../utils/stringifyReadable'
 import { RunMode } from '../core-shared/Graph'
 import { transpileCode } from './transpiler'
-import { CushyFile, vsTestItemOriginDict } from '../shell/itest/CushyFile'
-import { CushyRunProcessor } from '../shell/itest/CushyRunProcessor'
+import { CushyFile, vsTestItemOriginDict } from './CushyFile'
+import { FlowExecutionManager } from './FlowExecutionManager'
 import { ProxyToWebview } from '../panels/ProxyToWebview'
 import { GeneratedImage } from './GeneratedImage'
 
@@ -167,7 +167,7 @@ export class Workspace {
             const promises = testPatterns.map(({ pattern }) => this.findInitialFiles(ctrl, pattern))
             await Promise.all(promises)
         }
-        const startTestRun = async (request: vscode.TestRunRequest) => void new CushyRunProcessor(request, this)
+        const startTestRun = async (request: vscode.TestRunRequest) => void new FlowExecutionManager(request, this)
         // ctrl.createRunProfile('Debug Tests', vscode.TestRunProfileKind.Debug, startTestRun, true, undefined, true)
         ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, startTestRun, true, undefined, true)
 

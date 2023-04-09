@@ -1,8 +1,8 @@
-import type { CushyFile } from '../shell/itest/CushyFile'
+import type { CushyFile } from './CushyFile'
 import type { RunMode } from '../core-shared/Graph'
 
 import * as vscode from 'vscode'
-import { loggerExt } from '../logger/LoggerExtension'
+import { loggerExt } from '../logger/LoggerBack'
 import { transpileCode } from './transpiler'
 import { FlowExecution } from './FlowExecution'
 

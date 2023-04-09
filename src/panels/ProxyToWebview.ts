@@ -1,7 +1,7 @@
 import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from 'vscode'
 import { getUri } from '../fs/getUri'
 import { getNonce } from '../fs/getNonce'
-import { loggerExt } from '../logger/LoggerExtension'
+import { loggerExt } from '../logger/LoggerBack'
 import { MessageFromExtensionToWebview } from './MessageFromExtensionToWebview'
 
 /**

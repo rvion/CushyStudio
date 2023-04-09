@@ -8,7 +8,7 @@ import { makeObservable, observable } from 'mobx'
 import { Schema } from '../core-shared/Schema'
 import { Maybe, exhaust } from '../utils/ComfyUtils'
 import { Graph } from '../core-shared/Graph'
-import { loggerWeb } from '../logger/LoggerWebview'
+import { loggerWeb } from '../logger/LoggerFront'
 import { MessageFromExtensionToWebview } from '../panels/MessageFromExtensionToWebview'
 
 /**
@@ -20,7 +20,7 @@ import { MessageFromExtensionToWebview } from '../panels/MessageFromExtensionToW
  * dev server by using native web browser features that mock the functionality
  * enabled by acquireVsCodeApi.
  */
-class WebviewClientState {
+class FrontState {
     private readonly vsCodeApi: WebviewApi<unknown> | undefined
 
     received: string[] = []
@@ -148,4 +148,4 @@ class WebviewClientState {
 // no hot reload in webview, so global is not so big of a deal
 
 // Exports class singleton to prevent multiple invocations of acquireVsCodeApi.
-export const vscode = new WebviewClientState()
+export const vscode = new FrontState()

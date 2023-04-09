@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { loggerExt } from './LoggerExtension'
+import { loggerExt } from './LoggerBack'
 import { LogLevel } from './LogTypes'
 
 export const LoggerUI = observer(function LoggerUI_(p: { className?: string }) {

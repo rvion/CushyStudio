@@ -17,7 +17,7 @@ import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptS
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { Workspace } from './Workspace'
-import { loggerExt } from '../logger/LoggerExtension'
+import { loggerExt } from '../logger/LoggerBack'
 import { ProxyToWebview } from '../panels/ProxyToWebview'
 import { wildcards } from '../wildcards/wildcards'
 
