@@ -18,7 +18,7 @@ import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { Workspace } from './Workspace'
 import { loggerExt } from '../logger/LoggerBack'
-import { ProxyToWebview } from '../panels/ProxyToWebview'
+import { FrontManager } from './FrontManager'
 import { wildcards } from '../wildcards/wildcards'
 
 /** script exeuction instance */
@@ -62,7 +62,7 @@ export class FlowExecution {
     /** ask user to input a boolean (true/false) */
     askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => {
         const ask = new ScriptStep_askBoolean(msg, def)
-        ProxyToWebview.send({ type: 'ask-boolean', message: msg, default: def })
+        FrontManager.send({ type: 'ask-boolean', message: msg, default: def })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -70,7 +70,7 @@ export class FlowExecution {
     /** ask the user to input a string */
     askString = (msg: string, def?: Maybe<string>): Promise<string> => {
         const ask = new ScriptStep_askString(msg, def)
-        ProxyToWebview.send({ type: 'ask-string', message: msg, default: def })
+        FrontManager.send({ type: 'ask-string', message: msg, default: def })
         this.steps.unshift(ask)
         return ask.finished
     }

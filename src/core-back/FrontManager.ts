@@ -2,7 +2,7 @@ import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from 'vsco
 import { getUri } from '../fs/getUri'
 import { getNonce } from '../fs/getNonce'
 import { loggerExt } from '../logger/LoggerBack'
-import { MessageFromExtensionToWebview } from './MessageFromExtensionToWebview'
+import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -14,16 +14,16 @@ import { MessageFromExtensionToWebview } from './MessageFromExtensionToWebview'
  * - Setting the HTML (and by proxy CSS/JavaScript) content of the webview panel
  * - Setting message listeners so data can be passed between the webview and extension
  */
-export class ProxyToWebview {
-    public static currentPanel: ProxyToWebview | undefined
+export class FrontManager {
+    public static currentPanel: FrontManager | undefined
     private _disposables: Disposable[] = []
 
     static send(message: MessageFromExtensionToWebview) {
-        ProxyToWebview.send_RAW(message)
+        FrontManager.send_RAW(message)
     }
 
     private static send_RAW(message: unknown) {
-        const curr = ProxyToWebview.currentPanel
+        const curr = FrontManager.currentPanel
         if (curr == null) {
             loggerExt.error('🔥', 'no webview panel to send message to')
             return
@@ -66,9 +66,9 @@ export class ProxyToWebview {
      * @param extensionUri The URI of the directory containing the extension.
      */
     public static render(extensionUri: Uri) {
-        if (ProxyToWebview.currentPanel) {
+        if (FrontManager.currentPanel) {
             // If the webview panel already exists reveal it
-            ProxyToWebview.currentPanel.panel.reveal(ViewColumn.Two)
+            FrontManager.currentPanel.panel.reveal(ViewColumn.Two)
         } else {
             // If a webview panel does not already exist create and show a new one
             const panel = window.createWebviewPanel(
@@ -93,7 +93,7 @@ export class ProxyToWebview {
                 },
             )
 
-            ProxyToWebview.currentPanel = new ProxyToWebview(panel, extensionUri)
+            FrontManager.currentPanel = new FrontManager(panel, extensionUri)
         }
     }
 
@@ -101,7 +101,7 @@ export class ProxyToWebview {
      * Cleans up and disposes of webview resources when the webview panel is closed.
      */
     public dispose() {
-        ProxyToWebview.currentPanel = undefined
+        FrontManager.currentPanel = undefined
 
         // Dispose of the current webview panel
         this.panel.dispose()
@@ -149,8 +149,8 @@ export class ProxyToWebview {
     `
     }
 
-    static with = <A>(fn: (current: ProxyToWebview) => A): A => {
-        const curr = ProxyToWebview.currentPanel
+    static with = <A>(fn: (current: FrontManager) => A): A => {
+        const curr = FrontManager.currentPanel
         if (curr == null) throw new Error('no current panel')
         return fn(curr)
     }

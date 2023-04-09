@@ -27,7 +27,7 @@ import { RunMode } from '../core-shared/Graph'
 import { transpileCode } from './transpiler'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
 import { FlowExecutionManager } from './FlowExecutionManager'
-import { ProxyToWebview } from '../panels/ProxyToWebview'
+import { FrontManager } from './FrontManager'
 import { GeneratedImage } from './GeneratedImage'
 
 export type WorkspaceConfigJSON = {
@@ -250,7 +250,7 @@ export class Workspace {
 
     /** ensure webview is opened */
     ensureWebviewPanelIsOpened = () => {
-        ProxyToWebview.render(this.context.extensionUri)
+        FrontManager.render(this.context.extensionUri)
     }
 
     onMessage = (e: WS.MessageEvent) => {
@@ -261,7 +261,7 @@ export class Workspace {
         // if (sent)
 
         // Proxy any websocket message directly to the webview
-        ProxyToWebview.send(msg)
+        FrontManager.send(msg)
 
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid
@@ -292,12 +292,12 @@ export class Workspace {
         if (msg.type === 'executed') {
             loggerExt.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             const images = promptStep.onExecuted(msg)
-            const uris = ProxyToWebview.with((curr) => {
+            const uris = FrontManager.with((curr) => {
                 return images.map((img: GeneratedImage) => {
                     return curr.webview.asWebviewUri(img.uri).toString()
                 })
             })
-            ProxyToWebview.send({ type: 'images', uris })
+            FrontManager.send({ type: 'images', uris })
             return images
         }
 

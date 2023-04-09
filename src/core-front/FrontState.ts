@@ -9,7 +9,7 @@ import { Schema } from '../core-shared/Schema'
 import { Maybe, exhaust } from '../utils/ComfyUtils'
 import { Graph } from '../core-shared/Graph'
 import { loggerWeb } from '../logger/LoggerFront'
-import { MessageFromExtensionToWebview } from '../panels/MessageFromExtensionToWebview'
+import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
 
 /**
  * A utility wrapper around the acquireVsCodeApi() function, which enables

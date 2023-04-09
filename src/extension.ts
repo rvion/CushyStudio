@@ -5,7 +5,7 @@ import { cmd_openJS } from './shell/cmd_openJS'
 import { cmd_runcurrentscript } from './shell/cmd_runcurrentscript'
 import { cmd_openCatCodingWebview } from './shell/shell'
 import { FooProvider } from './shell/FooProvider'
-import { ProxyToWebview } from './panels/ProxyToWebview'
+import { FrontManager } from './core-back/FrontManager'
 
 // https://github.com/microsoft/vscode-extension-samples/blob/main/fsconsumer-sample/src/extension.ts
 // This method is called when your extension is activated
@@ -50,24 +50,3 @@ export function activate(context: vscode.ExtensionContext) {
 
 // This method is called when your extension is deactivated
 export function deactivate() {}
-
-// let socket: WebSocket | null = null
-// const INIT = () => {
-//     const socketPort = vscode.workspace.getConfiguration('languageServerExample').get('port', 8188)
-//     const url = `ws://192.168.1.19:${socketPort}/ws`
-//     // vscode.workspace.workspaceFile
-//     console.log('INIT', url)
-//     const socket = new ResilientWebSocketClient(
-//         {
-//             url: () => url,
-//             onMessage: (ev) => {
-//                 console.log(ev)
-//                 vscode.window.showInformationMessage(JSON.stringify(ev.data))
-//                 return
-//             },
-//         },
-//         // (ev) => {
-//         // },
-//     )
-// }
-// INIT()

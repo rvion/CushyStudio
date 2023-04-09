@@ -1,6 +1,6 @@
-import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from '../core-types/ComfyWsPayloads'
-import type { ComfyPromptJSON } from '../core-types/ComfyPrompt'
-import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
+import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsPayloads'
+import type { ComfyPromptJSON } from './ComfyPrompt'
+import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from '../utils/ComfyUtils'
 
 // prettier-ignore
