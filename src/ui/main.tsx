@@ -1,35 +1,51 @@
-// import ReactDOM from 'react-dom/client'
+import { VSCodeButton } from '@vscode/webview-ui-toolkit/react'
+import ReactDOM from 'react-dom/client'
 
-// // dock css
+// dock css
 // import 'rc-dock/dist/rc-dock-dark.css'
 
-// // 🔴 todo remove this now that we have fluentui 9
+// 🔴 todo remove this now that we have fluentui 9
 // import 'react-toastify/dist/ReactToastify.css'
 
-// // import 'rsuite/dist/rsuite.css' // or 'rsuite/dist/rsuite.min.css'
+// import 'rsuite/dist/rsuite.css' // or 'rsuite/dist/rsuite.min.css'
 // import 'rsuite/styles/index.less'
 
-// // mixed back of overrides
-// import './index.css'
+// mixed back of overrides
+import './webview.css'
+import { vscode } from './vscodeClientWrapper'
 
-// // single import allowed before loading demos
+// single import allowed before loading demos
 // import { Workflow } from '../core/Workflow'
 
 // const start = async () => {
 //     // 1. monkey patch WORKFLOW so we can properly import demos without crahsing
 //     // due to missing virtual WORKFLOW function
 //     // @ts-ignore
-//     window.WORKFLOW = (...args: ConstructorParameters<typeof Workflow>) => {
-//         return new Workflow(...args)
-//     }
+//     // window.WORKFLOW = (...args: ConstructorParameters<typeof Workflow>) => {
+//     //     return new Workflow(...args)
+//     // }
 
-//     const { AppUI } = await import('../layout/AppUI')
+//     // const { AppUI } = await import('../layout/AppUI')
 
 //     // APP ENTRYPOINT
-//     ReactDOM.createRoot(
-//         //
-//         document.getElementById('root') as HTMLElement,
-//     ).render(<AppUI />)
 // }
 
 // void start()
+
+function handleHowdyClick() {
+    vscode.postMessage({
+        command: 'hello',
+        text: 'Hey there partner! 🤠',
+    })
+}
+ReactDOM.createRoot(
+    //
+    document.getElementById('root') as HTMLElement,
+).render(
+    <div>
+        Hello world my dude
+        <div>
+            <VSCodeButton onClick={handleHowdyClick}>Howdy!</VSCodeButton>
+        </div>
+    </div>,
+)

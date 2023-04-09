@@ -5,6 +5,7 @@ import { cmd_openJS } from './shell/cmd_openJS'
 import { cmd_runcurrentscript } from './shell/cmd_runcurrentscript'
 import { cmd_sampleWebview } from './shell/shell'
 import { FooProvider } from './shell/FooProvider'
+import { HelloWorldPanel } from './panels/testWebviewPanel'
 
 // https://github.com/microsoft/vscode-extension-samples/blob/main/fsconsumer-sample/src/extension.ts
 // This method is called when your extension is activated
@@ -34,6 +35,13 @@ export function activate(context: vscode.ExtensionContext) {
     registerDisposableCommand('cushystudio.connect', () => {})
     registerDisposableCommand('cushystudio.samplewebview', cmd_sampleWebview.bind(null, context))
     registerDisposableCommand('cushystudio.runcurrentscript', cmd_runcurrentscript.bind(null, context, workspace))
+
+    const showHelloWorldCommand = vscode.commands.registerCommand('cushystudio.openwebview', () => {
+        HelloWorldPanel.render(context.extensionUri)
+    })
+
+    // Add command to the extension context
+    context.subscriptions.push(showHelloWorldCommand)
 
     // add settings to package.json
     // insert a treeview in the cushyrun view

@@ -5,7 +5,6 @@ import * as pathe from 'pathe'
 
 export type RelativePath = Branded<string, 'WorkspaceRelativePath'>
 export type AbsolutePath = Branded<string, 'Absolute'>
-export type MonacoPath = Branded<string, 'Monaco'>
 
 /** brand a path as an absolute path after basic checks */
 export const asAbsolutePath = (path: string): AbsolutePath => {
@@ -19,11 +18,4 @@ export const asRelativePath = (path: string): RelativePath => {
     const isAbsolute = pathe.isAbsolute(path)
     if (isAbsolute) throw new Error(`path is absolute: ${path}`)
     return path as RelativePath
-}
-
-/** brand a path as a monaco URI path after basic checks */
-export const asMonacoPath = (path: string): MonacoPath => {
-    if (path.startsWith('file:////')) throw new Error(`❌ URI path component should not start with //`)
-    if (path.startsWith('file:///')) return path as MonacoPath
-    throw new Error(`❌ monaco path should start with file:///`)
 }
