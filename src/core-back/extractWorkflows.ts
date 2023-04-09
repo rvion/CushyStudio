@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
-import { loggerExt } from '../../logger/LoggerBack'
-import { bang } from '../../utils/bang'
+import { loggerExt } from '../logger/LoggerBack'
+import { bang } from '../utils/bang'
 
 const WorkflowRe = /^^WORKFLOW\(['"](.*)['"]/
 

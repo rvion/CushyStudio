@@ -1,7 +1,7 @@
 import { TextDecoder } from 'util'
 import * as vscode from 'vscode'
 import { Flow } from './Flow'
-import { extractWorkflows } from '../shell/itest/extractWorkflows'
+import { extractWorkflows } from './extractWorkflows'
 import { loggerExt } from '../logger/LoggerBack'
 import { Workspace } from './Workspace'
 // import { parseMarkdown } from './parser'
