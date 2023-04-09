@@ -96,7 +96,7 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
 
         // accumulate in node
         node.artifacts.push(msg.data)
-        node.images.push(...images)
+        // node.images.push(...images)
 
         // accumulate in run
         this.run.generatedImages.push(...images)

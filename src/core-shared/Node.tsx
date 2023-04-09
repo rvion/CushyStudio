@@ -7,7 +7,7 @@ import { Slot } from './Slot'
 import { ComfyNodeUID } from '../core-types/NodeUID'
 import { ComfyNodeSchema, NodeInputExt } from './Schema'
 import { exhaust } from '../utils/ComfyUtils'
-import { GeneratedImage } from '../core-back/GeneratedImage'
+// import { GeneratedImage } from '../core-back/GeneratedImage'
 import { comfyColors } from './Colors'
 
 configure({ enforceActions: 'never' })
@@ -18,7 +18,7 @@ configure({ enforceActions: 'never' })
  */
 export class ComfyNode<ComfyNode_input extends object> {
     artifacts: WsMsgExecutedData[] = []
-    images: GeneratedImage[] = []
+    // images: GeneratedImage[] = []
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema
     status: 'executing' | 'done' | 'error' | 'waiting' | null = null

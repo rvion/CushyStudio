@@ -13,6 +13,11 @@ import { asRelativePath, RelativePath } from '../fs/pathUtils'
 export class GeneratedImage {
     workspace: Workspace
 
+    convertToImageInput = (): string => {
+        return `../outputs/${this.data.filename}`
+        // return this.LoadImage({ image: name })
+    }
+
     constructor(
         /** the prompt this file has been generated from */
         public prompt: PromptExecution,

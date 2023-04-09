@@ -134,7 +134,8 @@
         "old:sample": "yarn js src/compiler/entry.fetch.ts",
         "old:test": "yarn js src/compiler/test.ts",
         "old:test2": "yarn js src/compiler/test2.ts",
-        "decl": "yarn js src/sdk/sdkGenerator.ts"
+        "decl": "yarn js src/sdk/sdkGenerator.ts",
+        "decl:list": "tsc -p tsconfig.decl.json --listFiles --noEmit | grep /Users/loco/dev/CushyStudio/src"
     },
     "dependencies": {
         "@rsuite/icons": "^1.0.2",

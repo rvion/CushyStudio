@@ -30,7 +30,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: Graph }) {
                 </div>
             </div>
             <div className='row wrap'>
-                {graph.allImages.map((img) => (
+                {/* {graph.allImages.map((img) => (
                     <Image
                         // onClick={() => layout.addImagePopup(img.url)}
                         // onClick={() => (layout.galleryFocus = img)}
@@ -41,7 +41,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: Graph }) {
                         width={100}
                     />
                     // <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
-                ))}
+                ))} */}
             </div>
         </div>
     )
@@ -105,13 +105,13 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
             )}
             {p.showArtifacts ? (
                 <div className='row wrap'>
-                    {curr.images.map((img) => (
+                    {/* {curr.images.map((img) => (
                         <img //
                             key={img.uid}
                             style={{ width: '5rem', height: '5rem' }}
                             src={img.comfyURL}
                         />
-                    ))}
+                    ))} */}
                     {/* {curr?.allArtifactsImgs.map((url) => (
                     <div key={url}>
                         <img style={{ width: '5rem', height: '5rem' }} key={url} src={url} />

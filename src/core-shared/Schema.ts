@@ -1,5 +1,5 @@
 import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
-import type { ItemDataType } from 'rsuite/esm/@types/common'
+// import type { ItemDataType } from 'rsuite/esm/@types/common'
 
 import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
@@ -24,7 +24,7 @@ export class Schema {
     nodesByNameInComfy: { [key: string]: ComfyNodeSchema } = {}
     nodesByNameInCushy: { [key: string]: ComfyNodeSchema } = {}
 
-    components: ItemDataType[] = []
+    // components: ItemDataType[] = []
 
     constructor(public spec: ComfySchemaJSON) {
         this.update(spec)
@@ -129,20 +129,20 @@ export class Schema {
                 }
             }
         }
-        this.updateComponents()
+        // this.updateComponents()
     }
 
-    updateComponents() {
-        this.components = []
-        this.knownEnums.forEach((enumDef) => {
-            this.components.push({
-                name: enumDef.enumNameInCushy,
-                type: 'enum',
-                // values: enumDef.values,
-                children: enumDef.values.map((v) => ({ name: v, type: 'enum-value' })),
-            })
-        })
-    }
+    // updateComponents() {
+    //     this.components = []
+    //     this.knownEnums.forEach((enumDef) => {
+    //         this.components.push({
+    //             name: enumDef.enumNameInCushy,
+    //             type: 'enum',
+    //             // values: enumDef.values,
+    //             children: enumDef.values.map((v) => ({ name: v, type: 'enum-value' })),
+    //         })
+    //     })
+    // }
 
     codegenDTS = (useLocalPath = false): string => {
         const b = new CodeBuffer()
@@ -208,8 +208,21 @@ export class Schema {
         //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
         // }
         p(`}`)
+
+        // p(`declare global {`)
+        // p(`    export const WORKFLOW: (title: string, builder: (graph: ComfySetup & Graph) => void) => Workflow`)
+        // p(`}`)
+
         p(`declare global {`)
-        p(`    export const WORKFLOW: (title: string, builder: (graph: ComfySetup & Graph) => void) => Workflow`)
+        p(`    export const WORKFLOW: (`)
+        p(`        //`)
+        p(`        title: string,`)
+        p(`        builder: (`)
+        p(`            //`)
+        p(`            graph: ComfySetup & Graph,`)
+        p(`            flow: FlowExecution,`)
+        p(`        ) => void,`)
+        p(`    ) => Workflow`)
         p(`}`)
 
         // p(`declare const WORKFLOW: (builder: (graph: ComfyGraph) => void) => void`)

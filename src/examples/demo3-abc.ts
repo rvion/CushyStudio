@@ -25,7 +25,7 @@ WORKFLOW('demo3-abc', async (graph, flow) => {
     graph.WASImageLoad({ image_path })
 
     // use that table to put objects on top of it
-    const _ipt = graph.convertToImageInput(r1.images[0])
+    const _ipt = r1.images[0].convertToImageInput()
     // @ts-ignore
     const nextBase = graph.LoadImage({ image: _ipt })
     const _vaeEncode = graph.VAEEncode({ pixels: nextBase, vae: ckpt.VAE })
