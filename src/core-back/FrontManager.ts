@@ -38,7 +38,7 @@ export class FrontManager {
     /**
      * singleton class;
      * do not use constructor directly;
-     * instanciate via static `render` method
+     * instanciate via static 'render' method
      */
     private constructor(
         /** A reference to the webview panel */

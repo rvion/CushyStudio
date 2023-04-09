@@ -8,7 +8,7 @@ import { FlowExecution } from './FlowExecution'
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
- * flow = the `WORFLOW(...)` part of a file
+ * flow = the 'WORFLOW(...)' part of a file
  * */
 export class Flow {
     constructor(
