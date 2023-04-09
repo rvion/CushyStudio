@@ -1,4 +1,4 @@
-import type { ComfyImageInfo } from '../core-shared/ComfyWsPayloads'
+import type { ComfyImageInfo } from '../core-types/ComfyWsPayloads'
 import type { Maybe } from './ComfyUtils'
 import type { PromptExecution } from '../controls/ScriptStep_prompt'
 import type { Workspace } from '../core-back/Workspace'

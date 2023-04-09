@@ -3,10 +3,10 @@ import { posix } from 'path'
 import * as vscode from 'vscode'
 import * as WS from 'ws'
 import type { ImportCandidate } from '../importers/ImportCandidate'
-import type { ComfySchemaJSON } from '../core/ComfySchemaJSON'
+import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
 import type { Maybe } from '../core/ComfyUtils'
 import { FlowExecution } from './FlowExecution'
-import type { ScriptStep } from '../core/ScriptStep'
+import type { FlowExecutionStep } from '../core-types/FlowExecutionStep'
 
 import { makeAutoObservable } from 'mobx'
 import { CushyLayoutState } from '../layout/LayoutState'
@@ -16,9 +16,9 @@ import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { sdkTemplate } from '../sdk/sdkTemplate'
 import { defaultScript } from '../templates/defaultProjectCode'
 import { ResilientWebSocketClient } from '../ws/ResilientWebsocket'
-import { ComfyStatus, ComfyUploadImageResult, WsMsg } from '../core-shared/ComfyWsPayloads'
+import { ComfyStatus, ComfyUploadImageResult, WsMsg } from '../core-types/ComfyWsPayloads'
 import { ComfyPromptJSON } from '../core/ComfyPrompt'
-import { ComfySchema } from '../core/ComfySchema'
+import { Schema } from '../core-shared/Schema'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { demoLibrary } from '../templates/Library'
 import { ComfyImporter } from '../importers/ImportComfyImage'
@@ -46,7 +46,7 @@ export type CSCriticalError = { title: string; help: string }
  *  - dispatches messages to the right projects
  */
 export class Workspace {
-    schema: ComfySchema
+    schema: Schema
 
     /** template /snippet library one can */
     demos: Template[] = demoLibrary
@@ -195,7 +195,7 @@ export class Workspace {
         public context: vscode.ExtensionContext,
         public wspUri: vscode.Uri,
     ) {
-        this.schema = new ComfySchema({})
+        this.schema = new Schema({})
         this.initOutputChannel()
         this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.json') })
         this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.d.ts') })
@@ -276,7 +276,7 @@ export class Workspace {
         }
 
         // ensure current step is a prompt
-        const promptStep: ScriptStep = currentRun.step
+        const promptStep: FlowExecutionStep = currentRun.step
         if (!(promptStep instanceof PromptExecution)) return console.log(`❌ received ${msg.type} but currentStep is not prompt`)
 
         // defer accumulation to ScriptStep_prompt

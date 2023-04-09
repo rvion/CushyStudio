@@ -1,14 +1,14 @@
-import type { NodeProgress, WsMsgExecutedData } from './ComfyWsPayloads'
+import type { NodeProgress, WsMsgExecutedData } from '../core-types/ComfyWsPayloads'
 import type { Graph } from './Graph'
 import type { ComfyNodeJSON } from '../core/ComfyPrompt'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { ComfyNodeOutput } from '../core/ComfyNodeOutput'
-import { ComfyNodeUID } from '../core/ComfyNodeUID'
-import { ComfyNodeSchema, NodeInputExt } from '../core/ComfySchema'
+import { ComfyNodeUID } from '../core-types/NodeUID'
+import { ComfyNodeSchema, NodeInputExt } from './Schema'
 import { exhaust } from '../core/ComfyUtils'
 import { GeneratedImage } from '../core/PromptOutputImage'
-import { comfyColors } from '../core/ComfyColors'
+import { comfyColors } from './ComfyColors'
 
 configure({ enforceActions: 'never' })
 

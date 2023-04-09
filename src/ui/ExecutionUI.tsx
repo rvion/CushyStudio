@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { Fragment, ReactNode, useEffect, useRef } from 'react'
 import { exhaust, Maybe } from '../core/ComfyUtils'
 import { FlowExecution } from '../core-back/FlowExecution'
-import { ScriptStep } from '../core/ScriptStep'
+import { FlowExecutionStep } from '../core-types/FlowExecutionStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
@@ -57,7 +57,7 @@ export const ExecutionUI = observer(function ExecutionUI_() {
     // )
 })
 
-export const StepWrapperUI = observer(function StepWrapperUI_(p: { step: ScriptStep }) {
+export const StepWrapperUI = observer(function StepWrapperUI_(p: { step: FlowExecutionStep }) {
     // const props = useSpring({
     //     from: { opacity: 0, transform: 'translate3d(0,-20px,0)' },
     //     to: { opacity: 1, transform: `translate3d(0,0px,0)` },
@@ -66,7 +66,7 @@ export const StepWrapperUI = observer(function StepWrapperUI_(p: { step: ScriptS
     return <div className='row'>{renderStep(p.step)}</div>
 })
 
-const renderStep = (step: ScriptStep) => {
+const renderStep = (step: FlowExecutionStep) => {
     if (step instanceof ScriptStep_Init) return <Fragment key={step.uid}>Init</Fragment>
     // if (step instanceof ScriptStep_Output) return <Fragment key={step.uid}>Output</Fragment>
     if (step instanceof PromptExecution)

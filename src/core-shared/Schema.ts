@@ -1,16 +1,16 @@
-import type { ComfySchemaJSON } from './ComfySchemaJSON'
+import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
 import type { ItemDataType } from 'rsuite/esm/@types/common'
 
 import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
-import { ComfyPrimitiveMapping, ComfyPrimitives } from './ComfyPrimitives'
+import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/ComfyPrimitives'
 
 export type EnumHash = string
 export type EnumName = string
 export type NodeInputExt = { name: string; type: string; opts?: any; isPrimitive: boolean }
 export type NodeOutputExt = { type: string; name: string; isPrimitive: boolean }
 
-export class ComfySchema {
+export class Schema {
     knownTypes = new Set<string>()
     knownEnums = new Map<
         EnumHash,

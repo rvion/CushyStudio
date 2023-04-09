@@ -3,8 +3,8 @@
 // 🔶 ritght at the start, so cushy scripts using it can be imported
 // 🔶 safely without any dependencies
 
-import type { ComfySetup } from '../global'
-import type { Graph } from '../core-shared/Graph'
+// import type { ComfySetup } from '../global'
+// import type { Graph } from '../core-shared/Graph'
 
 export type WorkflowBuilder = (graph: any) => void
 

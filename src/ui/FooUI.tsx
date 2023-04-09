@@ -1,5 +1,5 @@
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react'
-import { vscode } from './WebviewClientState'
+import { vscode } from '../core-front/WebviewClientState'
 import { observer } from 'mobx-react-lite'
 import { handleHowdyClick } from './main'
 

@@ -1,11 +1,11 @@
 import type { WebviewApi } from 'vscode-webview'
-import type { ComfyStatus } from '../core-shared/ComfyWsPayloads'
+import type { ComfyStatus } from '../core-types/ComfyWsPayloads'
 
 // inspirations:
 // https://github.com/microsoft/vscode-webview-ui-toolkit-samples/blob/main/frameworks/hello-world-react-vite/webview-ui/src/utilities/vscode.ts
 // https://codebycorey.com/blog/building-a-vscode-extension-part-four
 import { makeObservable, observable } from 'mobx'
-import { ComfySchema } from '../core/ComfySchema'
+import { Schema } from '../core-shared/Schema'
 import { Maybe, exhaust } from '../core/ComfyUtils'
 import { Graph } from '../core-shared/Graph'
 import { loggerWeb } from '../logger/LoggerWebview'
@@ -32,7 +32,7 @@ class WebviewClientState {
     }
 
     graph: Maybe<Graph> = null
-    schema: Maybe<ComfySchema> = null
+    schema: Maybe<Schema> = null
     images: string[] = []
     sid: Maybe<string> = null
     status: Maybe<ComfyStatus> = null
@@ -51,7 +51,7 @@ class WebviewClientState {
         if (msg.type === 'ask-boolean') return
         if (msg.type === 'ask-string') return
         if (msg.type === 'schema') {
-            this.schema = new ComfySchema(msg.schema)
+            this.schema = new Schema(msg.schema)
             return
         }
 

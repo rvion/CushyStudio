@@ -1,15 +1,15 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
-import type { ComfyNodeUID } from '../core/ComfyNodeUID'
+import type { ComfyNodeUID } from '../core-types/NodeUID'
 import type { ComfyPromptJSON } from '../core/ComfyPrompt'
-import type { WsMsgExecuting, WsMsgProgress } from './ComfyWsPayloads'
+import type { WsMsgExecuting, WsMsgProgress } from '../core-types/ComfyWsPayloads'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { computed, makeObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Cyto } from '../graph/cyto'
 import { ComfyNode } from './Node'
-import { comfyColors } from '../core/ComfyColors'
-import { ComfyNodeSchema, ComfySchema } from '../core/ComfySchema'
+import { comfyColors } from './ComfyColors'
+import { ComfyNodeSchema, Schema } from './Schema'
 import { GeneratedImage } from '../core/PromptOutputImage'
 
 export type RunMode = 'fake' | 'real'
@@ -110,7 +110,7 @@ export class Graph {
 
     constructor(
         //
-        public schema: ComfySchema,
+        public schema: Schema,
         json: ComfyPromptJSON = {},
     ) {
         // console.log('COMFY GRAPH')
@@ -182,7 +182,7 @@ export class Graph {
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
         const json: ComfyPromptJSON = this.json
-        const schemas: ComfySchema = this.schema
+        const schemas: Schema = this.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from '../core-shared/ComfyWsPayloads'
+import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from '../core-types/ComfyWsPayloads'
 import type { ComfyPromptJSON } from '../core//ComfyPrompt'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
 import type { ComfyNode } from '../core-shared/Node'

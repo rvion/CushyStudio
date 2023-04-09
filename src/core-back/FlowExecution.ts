@@ -8,11 +8,11 @@ import { nanoid } from 'nanoid'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
-import { ApiPromptInput, WsMsgExecuted } from '../core-shared/ComfyWsPayloads'
+import { ApiPromptInput, WsMsgExecuted } from '../core-types/ComfyWsPayloads'
 import { Graph } from '../core-shared/Graph'
 import { deepCopyNaive, Maybe } from '../core/ComfyUtils'
 import { GeneratedImage } from '../core/PromptOutputImage'
-import { ScriptStep } from '../core/ScriptStep'
+import { FlowExecutionStep } from '../core-types/FlowExecutionStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
@@ -156,10 +156,10 @@ export class FlowExecution {
         makeAutoObservable(this)
     }
 
-    steps: ScriptStep[] = [new ScriptStep_Init()]
+    steps: FlowExecutionStep[] = [new ScriptStep_Init()]
 
     /** current step */
-    get step(): ScriptStep {
+    get step(): FlowExecutionStep {
         return this.steps[0]
     }
 

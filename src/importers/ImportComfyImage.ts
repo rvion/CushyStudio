@@ -1,7 +1,7 @@
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { Workspace } from '../core-back/Workspace'
 import { ComfyPromptJSON } from '../core/ComfyPrompt'
-import { ComfyNodeSchema } from '../core/ComfySchema'
+import { ComfyNodeSchema } from '../core-shared/Schema'
 import { jsEscapeStr } from '../core/ComfyUtils'
 import { TEdge, toposort } from '../core/toposort'
 
