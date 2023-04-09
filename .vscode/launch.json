@@ -16,7 +16,9 @@
             "request": "launch",
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}",
-                "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
+                "--extensionTestsPath=${workspaceFolder}/out/test/suite/index",
+                // https://stackoverflow.com/questions/71572862/how-do-i-disable-all-extraneous-extensions-in-the-vs-code-extension-development
+                "--disable-extensions"
             ],
             "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
             "preLaunchTask": "${defaultBuildTask}"
