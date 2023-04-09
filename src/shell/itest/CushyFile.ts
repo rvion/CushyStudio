@@ -3,7 +3,7 @@ import * as vscode from 'vscode'
 import { Flow } from '../../core-back/Flow'
 import { extractWorkflows } from './extractWorkflows'
 import { loggerExt } from '../../logger/LoggerExtension'
-import { Workspace } from '../../core/Workspace'
+import { Workspace } from '../../core-back/Workspace'
 // import { parseMarkdown } from './parser'
 
 const textDecoder = new TextDecoder('utf-8')

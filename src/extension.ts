@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import { Workspace } from './core/Workspace'
+import { Workspace } from './core-back/Workspace'
 import { cmd_helloworld } from './shell/cmd_helloworld'
 import { cmd_openJS } from './shell/cmd_openJS'
 import { cmd_runcurrentscript } from './shell/cmd_runcurrentscript'

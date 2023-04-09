@@ -1,5 +1,5 @@
 import { CodeBuffer } from '../utils/CodeBuffer'
-import { Workspace } from '../core/Workspace'
+import { Workspace } from '../core-back/Workspace'
 import { ComfyPromptJSON } from '../core/ComfyPrompt'
 import { ComfyNodeSchema } from '../core/ComfySchema'
 import { jsEscapeStr } from '../core/ComfyUtils'

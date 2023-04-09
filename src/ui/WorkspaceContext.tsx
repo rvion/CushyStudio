@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { Workspace } from '../core/Workspace'
+import { Workspace } from '../core-back/Workspace'
 
 export const workspaceContext = createContext<Workspace | null>(null)
 

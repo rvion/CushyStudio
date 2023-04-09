@@ -1,4 +1,4 @@
-import type { Workspace } from '../../core/Workspace'
+import type { Workspace } from '../../core-back/Workspace'
 
 import * as vscode from 'vscode'
 import { loggerExt } from '../../logger/LoggerExtension'

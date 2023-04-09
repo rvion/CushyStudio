@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { Workspace } from '../core/Workspace'
+import { Workspace } from '../core-back/Workspace'
 
 import { drawOpenPoseBones } from './drawPoseV2'
 import samplePose1 from './json_inputs/32/001.json'

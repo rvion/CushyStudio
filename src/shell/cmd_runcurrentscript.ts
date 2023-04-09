@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import type { Workspace } from '../core/Workspace'
+import type { Workspace } from '../core-back/Workspace'
 import { loggerExt } from '../logger/LoggerExtension'
 
 export const cmd_runcurrentscript = async (

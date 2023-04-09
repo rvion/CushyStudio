@@ -1,7 +1,7 @@
 import type { ComfyImageInfo } from '../core-shared/ComfyWsPayloads'
 import type { Maybe } from './ComfyUtils'
 import type { PromptExecution } from '../controls/ScriptStep_prompt'
-import type { Workspace } from './Workspace'
+import type { Workspace } from '../core-back/Workspace'
 
 import fetch from 'node-fetch'
 import * as path from 'path'
