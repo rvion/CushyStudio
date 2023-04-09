@@ -7,7 +7,7 @@ import type { ComfyStatus } from '../core-shared/ComfyWsPayloads'
 import { makeObservable, observable } from 'mobx'
 import { ComfySchema } from '../core/ComfySchema'
 import { Maybe, exhaust } from '../core/ComfyUtils'
-import { Graph } from '../core/Graph'
+import { Graph } from '../core-shared/Graph'
 import { loggerWeb } from '../logger/LoggerWebview'
 import { MessageFromExtensionToWebview } from '../panels/MessageFromExtensionToWebview'
 

@@ -1,5 +1,5 @@
 import type { ComfyNodeUID } from '../core/ComfyNodeUID'
-import type { Graph } from '../core/Graph'
+import type { Graph } from '../core-shared/Graph'
 
 import { useWorkspace } from './WorkspaceContext'
 import { observer } from 'mobx-react-lite'

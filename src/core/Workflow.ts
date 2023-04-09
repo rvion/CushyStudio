@@ -4,7 +4,7 @@
 // 🔶 safely without any dependencies
 
 import type { ComfySetup } from '../global'
-import type { Graph } from './Graph'
+import type { Graph } from '../core-shared/Graph'
 
 export type WorkflowBuilder = (graph: any) => void
 

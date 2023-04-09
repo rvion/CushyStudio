@@ -2,9 +2,9 @@
 
 import type { ComfyNodeOutput } from './core/ComfyNodeOutput'
 import type { ComfyNodeUID } from './core/ComfyNodeUID'
-import type { ComfyNode } from './core/CSNode'
+import type { ComfyNode } from './core-shared/Node'
 import type { ComfyNodeSchemaJSON } from './core/ComfySchemaJSON'
-import type { Graph } from './core/Graph'
+import type { Graph } from './core-shared/Graph'
 import type { Workflow } from './core/Workflow'
 import { FlowExecution } from './core-back/FlowExecution'
 

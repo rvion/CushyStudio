@@ -1,5 +1,5 @@
 import type { CushyFile } from '../shell/itest/CushyFile'
-import type { RunMode } from '../core/Graph'
+import type { RunMode } from '../core-shared/Graph'
 
 import * as vscode from 'vscode'
 import { loggerExt } from '../logger/LoggerExtension'

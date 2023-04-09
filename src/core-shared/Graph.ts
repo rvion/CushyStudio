@@ -1,16 +1,16 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
-import type { ComfyNodeUID } from './ComfyNodeUID'
-import type { ComfyPromptJSON } from './ComfyPrompt'
-import type { WsMsgExecuting, WsMsgProgress } from '../core-shared/ComfyWsPayloads'
+import type { ComfyNodeUID } from '../core/ComfyNodeUID'
+import type { ComfyPromptJSON } from '../core/ComfyPrompt'
+import type { WsMsgExecuting, WsMsgProgress } from './ComfyWsPayloads'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { computed, makeObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Cyto } from '../graph/cyto'
-import { ComfyNode } from './CSNode'
-import { comfyColors } from './ComfyColors'
-import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
-import { GeneratedImage } from './PromptOutputImage'
+import { ComfyNode } from './Node'
+import { comfyColors } from '../core/ComfyColors'
+import { ComfyNodeSchema, ComfySchema } from '../core/ComfySchema'
+import { GeneratedImage } from '../core/PromptOutputImage'
 
 export type RunMode = 'fake' | 'real'
 
