@@ -1,13 +1,13 @@
-import type { CushyFile } from './CushyFile'
-import type { RunMode } from '../../core/Graph'
+import type { CushyFile } from '../shell/itest/CushyFile'
+import type { RunMode } from '../core/Graph'
 
 import * as vscode from 'vscode'
-import { logger } from '../../logger/Logger'
-import { transpileCode } from '../../core/transpiler'
-import { Run } from '../../core/Run'
+import { loggerExt } from '../logger/LoggerExtension'
+import { transpileCode } from '../core/transpiler'
+import { FlowExecution } from '../core/Run'
 
 /** a thin wrapper around a workflow somewhere in a CushyFile */
-export class CushyFlow {
+export class Flow {
     constructor(
         //
         public file: CushyFile,
@@ -24,7 +24,7 @@ export class CushyFlow {
     ): Promise<boolean> => {
         const start = Date.now()
 
-        logger.info('🔥', '❓ running some flow')
+        loggerExt.info('🔥', '❓ running some flow')
         // this.focusedProject = this
         // ensure we have some code to run
         // this.scriptBuffer.codeJS
@@ -39,18 +39,18 @@ export class CushyFlow {
         // const activeURI = activeDocument.uri
         // logger.info('🔥', activeURI.toString())
         const codeTS = this.file.CONTENT
-        logger.info('🔥', codeTS.slice(0, 1000) + '...')
+        loggerExt.info('🔥', codeTS.slice(0, 1000) + '...')
         const codeJS = await transpileCode(codeTS)
         // logger.info('🔥', codeJS.slice(0, 1000) + '...')
-        logger.info('🔥', codeJS + '...')
+        loggerExt.info('🔥', codeJS + '...')
         if (codeJS == null) {
-            logger.info('🔥', '❌ no code to run')
+            loggerExt.info('🔥', '❌ no code to run')
             return false
         }
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
-        const execution = new Run(this.file.workspace, this.file.uri, opts)
-        await execution.save()
+        const execution = new FlowExecution(this.file.workspace, this.file.uri, opts)
+        // await execution.save()
         // write the code to a file
         // this.runs.unshift(execution)
 
@@ -62,7 +62,7 @@ export class CushyFlow {
         // this.MAIN = graph
 
         const WORKFLOW = (name: string, fn: any) => {
-            logger.info('🌠', `running WORKFLOW ${name}`)
+            loggerExt.info('🌠', `running WORKFLOW ${name}`)
             fn(graph)
         }
 
@@ -75,9 +75,9 @@ export class CushyFlow {
             return true
         } catch (error) {
             console.log(error)
-            logger.error('🌠', (error as any as Error).name)
-            logger.error('🌠', (error as any as Error).message)
-            logger.error('🌠', 'RUN FAILURE')
+            loggerExt.error('🌠', (error as any as Error).name)
+            loggerExt.error('🌠', (error as any as Error).message)
+            loggerExt.error('🌠', 'RUN FAILURE')
             const message = new vscode.TestMessage(
                 new vscode.MarkdownString().appendMarkdown(`### Expected ${item.label}`),
                 // .appendCodeblock(String(this.expected), 'text'),

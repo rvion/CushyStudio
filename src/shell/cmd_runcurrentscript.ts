@@ -1,14 +1,14 @@
 import * as vscode from 'vscode'
 import type { Workspace } from '../core/Workspace'
-import { logger } from '../logger/Logger'
+import { loggerExt } from '../logger/LoggerExtension'
 
 export const cmd_runcurrentscript = async (
     //
     _context: vscode.ExtensionContext,
     workspace: Workspace,
 ) => {
-    logger.info('🌠', '🟢 running current script1')
-    logger.info('🌠', '🟢 running current script2')
+    loggerExt.info('🌠', '🟢 running current script1')
+    loggerExt.info('🌠', '🟢 running current script2')
     await workspace.RUN_CURRENT_FILE()
-    logger.info('🌠', '🟢 done')
+    loggerExt.info('🌠', '🟢 done')
 }

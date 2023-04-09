@@ -5,12 +5,12 @@ import * as WS from 'ws'
 import type { ImportCandidate } from '../importers/ImportCandidate'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { Maybe } from './ComfyUtils'
-import { Run } from './Run'
+import { FlowExecution } from './Run'
 import type { ScriptStep } from './ScriptStep'
 
 import { makeAutoObservable } from 'mobx'
 import { CushyLayoutState } from '../layout/LayoutState'
-import { logger } from '../logger/Logger'
+import { loggerExt } from '../logger/LoggerExtension'
 import { Template } from '../templates/Template'
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { sdkTemplate } from '../sdk/sdkTemplate'
@@ -19,7 +19,7 @@ import { ResilientWebSocketClient } from '../ws/ResilientWebsocket'
 import { ComfyStatus, ComfyUploadImageResult, WsMsg } from './ComfyAPI'
 import { ComfyPromptJSON } from './ComfyPrompt'
 import { ComfySchema } from './ComfySchema'
-import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
+import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { demoLibrary } from '../templates/Library'
 import { ComfyImporter } from '../importers/ImportComfyImage'
 import { readableStringify } from '../utils/stringifyReadable'
@@ -27,7 +27,8 @@ import { RunMode } from './Graph'
 import { transpileCode } from './transpiler'
 import { CushyFile, vsTestItemOriginDict } from '../shell/itest/CushyFile'
 import { CushyRunProcessor } from '../shell/itest/CushyRunProcessor'
-import { ProxyToWebview } from '../panels/testWebviewPanel'
+import { ProxyToWebview } from '../panels/ProxyToWebview'
+import { GeneratedImage } from './PromptOutputImage'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -52,7 +53,7 @@ export class Workspace {
 
     comfySessionId = 'temp'
 
-    activeRun: Maybe<Run> = null
+    activeRun: Maybe<FlowExecution> = null
 
     // projects: Project[] = []
 
@@ -77,10 +78,10 @@ export class Workspace {
         return asRelativePath('cache')
     }
 
-    runs: Run[] = []
+    runs: FlowExecution[] = []
 
     RUN_CURRENT_FILE = async (mode: RunMode = 'real'): Promise<boolean> => {
-        logger.info('🔥', '❓ HELLO super12')
+        loggerExt.info('🔥', '❓ HELLO super12')
         // this.focusedProject = this
         // ensure we have some code to run
         // this.scriptBuffer.codeJS
@@ -88,25 +89,25 @@ export class Workspace {
 
         const activeTextEditor = vscode.window.activeTextEditor
         if (activeTextEditor == null) {
-            logger.info('🔥', '❌ no active editor')
+            loggerExt.info('🔥', '❌ no active editor')
             return false
         }
         const activeDocument = activeTextEditor.document
         const activeURI = activeDocument.uri
-        logger.info('🔥', activeURI.toString())
+        loggerExt.info('🔥', activeURI.toString())
         const codeTS = activeDocument.getText() ?? ''
-        logger.info('🔥', codeTS.slice(0, 1000) + '...')
+        loggerExt.info('🔥', codeTS.slice(0, 1000) + '...')
         const codeJS = await transpileCode(codeTS)
         // logger.info('🔥', codeJS.slice(0, 1000) + '...')
-        logger.info('🔥', codeJS + '...')
+        loggerExt.info('🔥', codeJS + '...')
         if (codeJS == null) {
-            logger.info('🔥', '❌ no code to run')
+            loggerExt.info('🔥', '❌ no code to run')
             return false
         }
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
-        const execution = new Run(this, activeURI, opts)
-        await execution.save()
+        const execution = new FlowExecution(this, activeURI, opts)
+        // await execution.save()
         // write the code to a file
         this.runs.unshift(execution)
 
@@ -126,9 +127,9 @@ export class Workspace {
             return true
         } catch (error) {
             console.log(error)
-            logger.error('🌠', (error as any as Error).name)
-            logger.error('🌠', (error as any as Error).message)
-            logger.error('🌠', 'RUN FAILURE')
+            loggerExt.error('🌠', (error as any as Error).name)
+            loggerExt.error('🌠', (error as any as Error).message)
+            loggerExt.error('🌠', 'RUN FAILURE')
             return false
         }
     }
@@ -186,7 +187,7 @@ export class Workspace {
         const outputChan = vscode.window.createOutputChannel('CushyStudio')
         outputChan.appendLine(`🟢 "cushystudio" is now active!`)
         outputChan.show(true)
-        logger.chanel = outputChan
+        loggerExt.chanel = outputChan
     }
 
     constructor(
@@ -247,53 +248,57 @@ export class Workspace {
             onMessage: this.onMessage,
         })
 
+    /** ensure webview is opened */
     ensureWebviewPanelIsOpened = () => {
         ProxyToWebview.render(this.context.extensionUri)
     }
 
     onMessage = (e: WS.MessageEvent) => {
-        logger.info('🧦', `🔴 ${e.data}`)
+        loggerExt.info('🧦', `🔴 ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
+
+        // how / wen should we send the schema and prompt ?
+        // if (sent)
+
+        // Proxy any websocket message directly to the webview
+        ProxyToWebview.send(msg)
+
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid
             this.status = msg.data.status
             return
         }
 
-        // console.log(e.data)
-        // // 🔴
-        // return
-
-        // ensure current project is running
-        // const project: Maybe<Project> = this.focusedProject
-        // if (project == null) return console.log(`❌ received ${msg.type} but project is null`)
-
-        ProxyToWebview.send_RAW(JSON.stringify(msg.data))
-
-        const currentRun: Maybe<Run> = this.activeRun
+        const currentRun: Maybe<FlowExecution> = this.activeRun
         if (currentRun == null) {
-            logger.error('🐰', `❌ received ${msg.type} but currentRun is null`)
+            loggerExt.error('🐰', `❌ received ${msg.type} but currentRun is null`)
             return console.log(`❌ received ${msg.type} but currentRun is null`)
         }
 
         // ensure current step is a prompt
         const promptStep: ScriptStep = currentRun.step
-        if (!(promptStep instanceof ScriptStep_prompt))
-            return console.log(`❌ received ${msg.type} but currentStep is not prompt`)
+        if (!(promptStep instanceof PromptExecution)) return console.log(`❌ received ${msg.type} but currentStep is not prompt`)
 
         // defer accumulation to ScriptStep_prompt
         if (msg.type === 'progress') {
-            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
-            return promptStep.onProgress(msg)
+            loggerExt.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            return promptStep._graph.onProgress(msg)
         }
         if (msg.type === 'executing') {
-            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            loggerExt.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             return promptStep.onExecuting(msg)
         }
 
         if (msg.type === 'executed') {
-            logger.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
-            return promptStep.onExecuted(msg)
+            loggerExt.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            const images = promptStep.onExecuted(msg)
+            const uris = ProxyToWebview.with((curr) => {
+                return images.map((img: GeneratedImage) => {
+                    return curr.webview.asWebviewUri(img.uri).toString()
+                })
+            })
+            ProxyToWebview.send({ type: 'images', uris })
+            return images
         }
 
         // unknown message payload ?
@@ -402,7 +407,7 @@ export class Workspace {
     updateComfy_object_info = async (): Promise<ComfySchemaJSON> => {
         // 1. fetch schema$
         const url = `${this.serverHostHTTP}/object_info`
-        logger.info('🌠', `contacting ${url}`)
+        loggerExt.info('🌠', `contacting ${url}`)
         vscode.window.showInformationMessage(url)
         // console.log(url)
 
@@ -411,12 +416,12 @@ export class Workspace {
             // const cancel =
             const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
             const data = await res.json()
-            logger.info('🌠', `data: ${JSON.stringify(data)}`)
+            loggerExt.info('🌠', `data: ${JSON.stringify(data)}`)
             schema$ = data as any
         } catch (error) {
             vscode.window.showErrorMessage('FAILED TO FETCH OBJECT INFOS FROM COMFY')
             console.error('🐰', error)
-            logger.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
+            loggerExt.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
             schema$ = {}
         }
         vscode.window.showInformationMessage('🟢 yay')
@@ -426,12 +431,12 @@ export class Workspace {
         vscode.workspace.fs.writeFile(this.comfyJSONUri, comfyJSONBuffer)
 
         this.schema.update(schema$)
-        logger.info('🌠', 'schema updated')
+        loggerExt.info('🌠', 'schema updated')
         const cushyStr = this.schema.codegenDTS()
-        logger.info('🌠', 'schema code updated !')
+        loggerExt.info('🌠', 'schema code updated !')
         const cushyBuff = Buffer.from(cushyStr, 'utf8')
         vscode.workspace.fs.writeFile(this.comfyTSUri, cushyBuff)
-        logger.info('🌠', 'schema code saved !')
+        loggerExt.info('🌠', 'schema code saved !')
 
         // this.objectInfoFile.update(schema$)
         // this.comfySDKFile.updateFromCodegen(comfySdkCode)

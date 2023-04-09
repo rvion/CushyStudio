@@ -6,6 +6,7 @@ import type { ComfyNode } from './core/CSNode'
 import type { ComfyNodeSchemaJSON } from './core/ComfySchemaJSON'
 import type { Graph } from './core/Graph'
 import type { Workflow } from './core/Workflow'
+import { FlowExecution } from './core/Run'
 
 // TYPES -------------------------------
 export type CLIP_VISION_OUTPUT = ComfyNodeOutput<'CLIP_VISION_OUTPUT'>
@@ -1430,5 +1431,13 @@ export interface ComfySetup {
     ImageUpscaleWithModel(args: ImageUpscaleWithModel_input, uid?: ComfyNodeUID): ImageUpscaleWithModel
 }
 declare global {
-    export const WORKFLOW: (title: string, builder: (graph: ComfySetup & Graph) => void) => Workflow
+    export const WORKFLOW: (
+        //
+        title: string,
+        builder: (
+            //
+            graph: ComfySetup & Graph,
+            flow: FlowExecution,
+        ) => void,
+    ) => Workflow
 }

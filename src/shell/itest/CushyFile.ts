@@ -1,14 +1,14 @@
 import { TextDecoder } from 'util'
 import * as vscode from 'vscode'
-import { CushyFlow } from './CushyFlow'
+import { Flow } from '../../core-back/Flow'
 import { extractWorkflows } from './extractWorkflows'
-import { logger } from '../../logger/Logger'
+import { loggerExt } from '../../logger/LoggerExtension'
 import { Workspace } from '../../core/Workspace'
 // import { parseMarkdown } from './parser'
 
 const textDecoder = new TextDecoder('utf-8')
 
-export type MarkdownTestData = CushyFile | /* TestHeading |*/ CushyFlow
+export type MarkdownTestData = CushyFile | /* TestHeading |*/ Flow
 
 export const vsTestItemOriginDict = new WeakMap<vscode.TestItem, MarkdownTestData>()
 
@@ -70,7 +70,7 @@ export class CushyFile {
         const thisGeneration = generationCounter++
         this.didResolve = true
 
-        logger.info('🌠', 'updating from contents')
+        loggerExt.info('🌠', 'updating from contents')
 
         // honestly a bit hard to read but hey 🤷‍♂️
         const ascend = (depth: number) => {
@@ -86,7 +86,7 @@ export class CushyFile {
                 const parent = ancestors[ancestors.length - 1]
                 const id = `${vsTestItem.uri}/${workflowName}`
                 const tcase = controller.createTestItem(id, workflowName, vsTestItem.uri)
-                const cushyFlow = new CushyFlow(this, range, workflowName, thisGeneration)
+                const cushyFlow = new Flow(this, range, workflowName, thisGeneration)
                 vsTestItemOriginDict.set(tcase, cushyFlow)
                 tcase.range = range
                 parent.children.push(tcase)

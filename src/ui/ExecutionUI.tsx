@@ -2,11 +2,11 @@ import { Button, Panel } from 'rsuite'
 import { observer } from 'mobx-react-lite'
 import { Fragment, ReactNode, useEffect, useRef } from 'react'
 import { exhaust, Maybe } from '../core/ComfyUtils'
-import { Run } from '../core/Run'
+import { FlowExecution } from '../core/Run'
 import { ScriptStep } from '../core/ScriptStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
-import { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
+import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { Execution_askBooleanUI } from './Execution_askBooleanUI'
 import { Execution_askStringUI } from './Execution_askStringUI'
 import { NodeListUI } from './NodeListUI'
@@ -69,7 +69,7 @@ export const StepWrapperUI = observer(function StepWrapperUI_(p: { step: ScriptS
 const renderStep = (step: ScriptStep) => {
     if (step instanceof ScriptStep_Init) return <Fragment key={step.uid}>Init</Fragment>
     // if (step instanceof ScriptStep_Output) return <Fragment key={step.uid}>Output</Fragment>
-    if (step instanceof ScriptStep_prompt)
+    if (step instanceof PromptExecution)
         return (
             <Fragment key={step.uid}>
                 {/* <CardHeader description={'Prompt'}></CardHeader> */}

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import { logger } from '../../logger/Logger'
+import { loggerExt } from '../../logger/LoggerExtension'
 import { bang } from '../../utils/bang'
 
 const WorkflowRe = /^^WORKFLOW\(['"](.*)['"]/
@@ -19,7 +19,7 @@ export const extractWorkflows = (
 
         const isWorkflow = WorkflowRe.exec(line)
         // logger.info('🌠', `>> isWorkflow?.[0]: ${isWorkflow?.[0]}`)
-        if (isWorkflow) logger.info('🌠', `>> isWorkflow?.[1]: ${isWorkflow?.[1]}`)
+        if (isWorkflow) loggerExt.info('🌠', `>> isWorkflow?.[1]: ${isWorkflow?.[1]}`)
         if (isWorkflow) {
             const name = bang(isWorkflow[1])
             // const [, a, operator, b, expected] = test;

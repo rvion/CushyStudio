@@ -13,7 +13,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: Graph }) {
     if (graph == null) return <>no execution yet</>
     const uiSt = useLocalObservable(() => ({ seeAll: false }))
     const nodes = uiSt.seeAll ? graph.nodes : graph.nodes.filter((f) => f.isExecuting)
-    const layout = graph.workspace.layout
+    // const layout = graph.workspace.layout 🔴
     return (
         <div className='col gap'>
             <div className='row space-between'>
@@ -33,7 +33,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: Graph }) {
                 {graph.allImages.map((img) => (
                     <Image
                         // onClick={() => layout.addImagePopup(img.url)}
-                        onClick={() => (layout.galleryFocus = img)}
+                        // onClick={() => (layout.galleryFocus = img)}
                         alt='prompt output'
                         src={img.comfyURL}
                         key={img.uid}

@@ -3,22 +3,22 @@ import type { WsMsgProgress, WsMsgExecuting, WsMsgExecuted } from '../core/Comfy
 import type { ComfyPromptJSON } from '../core//ComfyPrompt'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
 import type { ComfyNode } from '../core//CSNode'
-import type { Run } from '../core//Run'
+import type { FlowExecution } from '../core//Run'
 
 import { makeAutoObservable } from 'mobx'
 import { Graph } from '../core//Graph'
 import { deepCopyNaive } from '../core//ComfyUtils'
 import { nanoid } from 'nanoid'
-import { PromptOutputImage } from '../core//PromptOutputImage'
+import { GeneratedImage } from '../core//PromptOutputImage'
 
-export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
+export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
     private static promptID = 1
 
     /** unique step id */
     uid = nanoid()
 
     /** human-readable step name */
-    name = 'prompt-' + ScriptStep_prompt.promptID++
+    name = 'prompt-' + PromptExecution.promptID++
 
     /** deepcopy of run graph at creation time; ready to be forked */
     _graph: Graph
@@ -28,13 +28,13 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
 
     constructor(
         //
-        public run: Run,
+        public run: FlowExecution,
         public prompt: ComfyPromptJSON,
     ) {
         this._graph = new Graph(
             //
-            this.run.workspace,
-            this.run,
+            this.run.workspace.schema,
+            // this.run,
             deepCopyNaive(prompt),
         )
         makeAutoObservable(this)
@@ -63,16 +63,17 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
 
     /** update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {
-        if (msg.data.node == null) {
-            // console.log(`executing "null" node => prompt is done`)
-            // 2023-03-18 rvion: if I understand correctly, null here means there is no work to do.
-            // 2023-03-21 rvion: actually, it probably means the prompt is done
-            if (this.currentExecutingNode == null) this.notifyEmptyPrompt()
-            else this.currentExecutingNode.status = 'done'
-            this.currentExecutingNode = null
-            this._finish()
-            return
-        }
+        this._graph.onExecuting(msg)
+        if (msg.data.node == null) this._finish()
+        // {
+        //    console.log(`executing "null" node => prompt is done`)
+        //    2023-03-18 rvion: if I understand correctly, null here means there is no work to do.
+        //    2023-03-21 rvion: actually, it probably means the prompt is done
+        //    if (this.currentExecutingNode == null) this.notifyEmptyPrompt() 🔴 add back ?
+        //    else this.currentExecutingNode.status = 'done'
+        //    return
+        // }
+
         const node = this._graph.getNodeOrCrash(msg.data.node)
         if (this.currentExecutingNode) this.currentExecutingNode.status = 'done'
         this.currentExecutingNode = node
@@ -81,14 +82,13 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
     private outputs: WsMsgExecuted[] = []
-    images: PromptOutputImage[] = []
+    images: GeneratedImage[] = []
 
     /** udpate execution list */
-    onExecuted = (msg: WsMsgExecuted) => {
+    onExecuted = (msg: WsMsgExecuted): GeneratedImage[] => {
         const node = this._graph.getNodeOrCrash(msg.data.node)
-        const images = msg.data.output.images.map((i) => new PromptOutputImage(this, i))
+        const images = msg.data.output.images.map((i) => new GeneratedImage(this, i))
 
-        // console.log(`🟢 `, images.length, `CushyImages`)
         // accumulate in self
         this.outputs.push(msg)
         this.images.push(...images)
@@ -101,13 +101,11 @@ export class ScriptStep_prompt implements ScriptStep_Iface<ScriptStep_prompt> {
         // accumulate in run
         this.run.gallery.push(...images)
 
-        if (
-            // this.client.layout.galleryFocus == null &&
-            images.length > 0
-        ) {
-            this.workspace.layout.galleryFocus = images[0]
-        }
+        // if (images.length > 0) {
+        //     this.workspace.layout.galleryFocus = images[0]
+        // }
         console.log(`🟢 graph(${this._graph.uid}) => node(${node.uid}) => (${node.artifacts.length} images)`)
+        return images
     }
 
     /** finish this step */

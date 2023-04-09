@@ -1,7 +1,7 @@
 import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from 'vscode'
 import { getUri } from '../fs/getUri'
 import { getNonce } from '../fs/getNonce'
-import { logger } from '../logger/Logger'
+import { loggerExt } from '../logger/LoggerExtension'
 import { MessageFromExtensionToWebview } from './MessageFromExtensionToWebview'
 
 /**
@@ -16,42 +16,47 @@ import { MessageFromExtensionToWebview } from './MessageFromExtensionToWebview'
  */
 export class ProxyToWebview {
     public static currentPanel: ProxyToWebview | undefined
-    readonly _panel: WebviewPanel
     private _disposables: Disposable[] = []
 
     static send(message: MessageFromExtensionToWebview) {
         ProxyToWebview.send_RAW(message)
     }
-    static send_RAW(message: unknown) {
+
+    private static send_RAW(message: unknown) {
         const curr = ProxyToWebview.currentPanel
         if (curr == null) {
-            logger.error('🔥', 'no webview panel to send message to')
+            loggerExt.error('🔥', 'no webview panel to send message to')
             return
         }
         const msg = JSON.stringify(message) // .slice(0, 10)
-        logger.info('🔥', 'sending message to webview panel: ' + msg)
+        loggerExt.info('🔥', 'sending message to webview panel: ' + msg)
 
-        curr._panel.webview.postMessage(msg)
+        curr.panel.webview.postMessage(msg)
     }
 
-    /** The HelloWorldPanel class private constructor (called only from the render method). */
+    webview: Webview
+    /**
+     * singleton class;
+     * do not use constructor directly;
+     * instanciate via static `render` method
+     */
     private constructor(
         /** A reference to the webview panel */
-        panel: WebviewPanel,
-        /** The URI of the directory containing the extension */
-        extensionUri: Uri,
-    ) {
-        this._panel = panel
+        private panel: WebviewPanel,
 
+        /** The URI of the directory containing the extension */
+        private extensionUri: Uri,
+    ) {
+        this.webview = panel.webview
         // Set an event listener to listen for when the panel is disposed (i.e. when the user closes
         // the panel or when the panel is closed programmatically)
-        this._panel.onDidDispose(() => this.dispose(), null, this._disposables)
+        this.panel.onDidDispose(() => this.dispose(), null, this._disposables)
 
         // Set the HTML content for the webview panel
-        this._panel.webview.html = this._getWebviewContent(this._panel.webview, extensionUri)
+        this.webview.html = this._getWebviewContent()
 
         // Set an event listener to listen for messages passed from the webview context
-        this._setWebviewMessageListener(this._panel.webview)
+        this._setWebviewMessageListener(this.panel.webview)
     }
 
     /**
@@ -63,7 +68,7 @@ export class ProxyToWebview {
     public static render(extensionUri: Uri) {
         if (ProxyToWebview.currentPanel) {
             // If the webview panel already exists reveal it
-            ProxyToWebview.currentPanel._panel.reveal(ViewColumn.Two)
+            ProxyToWebview.currentPanel.panel.reveal(ViewColumn.Two)
         } else {
             // If a webview panel does not already exist create and show a new one
             const panel = window.createWebviewPanel(
@@ -99,7 +104,7 @@ export class ProxyToWebview {
         ProxyToWebview.currentPanel = undefined
 
         // Dispose of the current webview panel
-        this._panel.dispose()
+        this.panel.dispose()
 
         // Dispose of all disposables (i.e. commands) for the current webview panel
         while (this._disposables.length) {
@@ -121,10 +126,10 @@ export class ProxyToWebview {
      * @returns A template string literal containing the HTML that should be
      * rendered within the webview panel
      */
-    private _getWebviewContent(webview: Webview, extensionUri: Uri) {
+    private _getWebviewContent() {
         // The  JS and CSS files from our build output
-        const stylesUri = getUri(webview, extensionUri, ['webview', 'assets', 'index.css'])
-        const scriptUri = getUri(webview, extensionUri, ['webview', 'assets', 'index.js'])
+        const stylesUri = this.getExtensionLocalUri(['webview', 'assets', 'index.css'])
+        const scriptUri = this.getExtensionLocalUri(['webview', 'assets', 'index.js'])
         const nonce = getNonce()
         return /*html*/ `
       <!DOCTYPE html>
@@ -132,7 +137,7 @@ export class ProxyToWebview {
         <head>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}';">
+          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this.webview.cspSource}; script-src 'nonce-${nonce}';">
           <link rel="stylesheet" type="text/css" href="${stylesUri}">
           <title>Cushy Studio</title>
         </head>
@@ -143,6 +148,14 @@ export class ProxyToWebview {
       </html>
     `
     }
+
+    static with = <A>(fn: (current: ProxyToWebview) => A): A => {
+        const curr = ProxyToWebview.currentPanel
+        if (curr == null) throw new Error('no current panel')
+        return fn(curr)
+    }
+
+    getExtensionLocalUri = (pathList: string[]): Uri => getUri(this.webview, this.extensionUri, pathList)
 
     /**
      * Sets up an event listener to listen for messages passed from the webview context and

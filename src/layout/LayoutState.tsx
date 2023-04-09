@@ -1,4 +1,4 @@
-import type { PromptOutputImage } from '../core/PromptOutputImage'
+import type { GeneratedImage } from '../core/PromptOutputImage'
 
 import { makeObservable, observable } from 'mobx'
 // import DockLayout, { PanelData } from 'rc-dock'
@@ -7,7 +7,7 @@ import { Workspace } from '../core/Workspace'
 
 export class CushyLayoutState {
     // layout = defaultLayout()
-    galleryFocus: PromptOutputImage | null = null
+    galleryFocus: GeneratedImage | null = null
     gallerySize = 100
     // dockLayout: DockLayout | null = null
     // getRef = (r: DockLayout | null) => (this.dockLayout = r)

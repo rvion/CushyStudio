@@ -1,15 +1,15 @@
 import type { Workspace } from '../../core/Workspace'
 
 import * as vscode from 'vscode'
-import { logger } from '../../logger/Logger'
+import { loggerExt } from '../../logger/LoggerExtension'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
-import { CushyFlow } from './CushyFlow'
+import { Flow } from '../../core-back/Flow'
 import { toArray } from './toArray'
 
 export class CushyRunProcessor {
     queue: {
         vsTestItem: vscode.TestItem
-        cushyFlow: CushyFlow
+        cushyFlow: Flow
     }[] = []
 
     run: vscode.TestRun
@@ -27,13 +27,13 @@ export class CushyRunProcessor {
 
     START = async () => {
         // 2. get all possible workflow we want to run
-        logger.info('🌠', 'starting run ')
+        loggerExt.info('🌠', 'starting run ')
         const testCandidates: readonly vscode.TestItem[] =
             this.request.include ?? //
             toArray(this.workspace.vsTestController.items)
 
         // 3. expand tests to the final list of WORKFLOW to run
-        logger.info('🌠', 'discovering tests... ')
+        loggerExt.info('🌠', 'discovering tests... ')
         await this.discoverTests(testCandidates)
 
         // 4. run the workflows
@@ -46,7 +46,7 @@ export class CushyRunProcessor {
 
             const x = vsTestItemOriginDict.get(vsTestItem)
 
-            if (x instanceof CushyFlow) {
+            if (x instanceof Flow) {
                 this.run.enqueued(vsTestItem)
                 this.queue.push({ vsTestItem, cushyFlow: x })
             } else {
@@ -57,8 +57,8 @@ export class CushyRunProcessor {
     }
 
     runTestQueue = async () => {
-        logger.info('🌠', `queue has ${this.queue} item(s)`)
-        logger.info('🌠', `opening webview`)
+        loggerExt.info('🌠', `queue has ${this.queue} item(s)`)
+        loggerExt.info('🌠', `opening webview`)
         this.workspace.ensureWebviewPanelIsOpened()
         // cmd_openCatCodingWebview(this.workspace.context)
         for (const { vsTestItem, cushyFlow } of this.queue) {

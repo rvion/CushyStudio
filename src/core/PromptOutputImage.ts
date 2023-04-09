@@ -1,6 +1,6 @@
 import type { ComfyImageInfo } from './ComfyAPI'
 import type { Maybe } from './ComfyUtils'
-import type { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
+import type { PromptExecution } from '../controls/ScriptStep_prompt'
 import type { Workspace } from './Workspace'
 
 import fetch from 'node-fetch'
@@ -9,12 +9,12 @@ import { nanoid } from 'nanoid'
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
 
 /** Cushy wrapper around ComfyImageInfo */
-export class PromptOutputImage {
+export class GeneratedImage {
     workspace: Workspace
 
     constructor(
         /** the prompt this file has been generated from */
-        public prompt: ScriptStep_prompt,
+        public prompt: PromptExecution,
         /** image info as returned by Comfy */
         public data: ComfyImageInfo,
     ) {
@@ -48,6 +48,7 @@ export class PromptOutputImage {
         return asRelativePath(this.folder + path.sep + this.fileName)
     }
 
+    /** @internal */
     saveOnDisk = async () => {
         if (this.saved) return
         const response = await fetch(this.comfyURL, {
@@ -64,7 +65,7 @@ export class PromptOutputImage {
     }
 
     /** this is such a bad workaround but 🤷‍♂️ */
-    makeAvailableAsInput = async (): Promise<string> => {
+    uploadAsNamedInput = async (): Promise<string> => {
         const res = await this.workspace.uploadURL(this.comfyURL)
         console.log(`[makeAvailableAsInput]`, res)
         this.inputPath = res.name

@@ -1,11 +1,11 @@
-WORKFLOW('demo5', async (x) => {
+WORKFLOW('demo5', async (graph, flow) => {
     console.log('test console.log')
-    const ckpt = x.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
-    const latent = x.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
-    const positive = x.CLIPTextEncode({ text: 'masterpiece, (chair:1.3)', clip: ckpt })
-    const negative = x.CLIPTextEncode({ text: '', clip: ckpt })
-    const sampler = x.KSampler({
-        seed: x.randomSeed(),
+    const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
+    const latent = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
+    const positive = graph.CLIPTextEncode({ text: 'masterpiece, (chair:1.3)', clip: ckpt })
+    const negative = graph.CLIPTextEncode({ text: '', clip: ckpt })
+    const sampler = graph.KSampler({
+        seed: flow.randomSeed(),
         steps: 20,
         cfg: 10,
         sampler_name: 'euler',
@@ -16,8 +16,8 @@ WORKFLOW('demo5', async (x) => {
         negative,
         latent_image: latent,
     })
-    const vae = x.VAEDecode({ samples: sampler, vae: ckpt })
+    const vae = graph.VAEDecode({ samples: sampler, vae: ckpt })
 
-    x.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
-    await x.get()
+    graph.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
+    await flow.PROMPT()
 })

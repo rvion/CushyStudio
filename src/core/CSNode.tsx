@@ -7,7 +7,7 @@ import { ComfyNodeOutput } from './ComfyNodeOutput'
 import { ComfyNodeUID } from './ComfyNodeUID'
 import { ComfyNodeSchema, NodeInputExt } from './ComfySchema'
 import { exhaust } from './ComfyUtils'
-import { PromptOutputImage } from './PromptOutputImage'
+import { GeneratedImage } from './PromptOutputImage'
 import { comfyColors } from './ComfyColors'
 
 configure({ enforceActions: 'never' })
@@ -18,7 +18,7 @@ configure({ enforceActions: 'never' })
  */
 export class ComfyNode<ComfyNode_input extends object> {
     artifacts: WsMsgExecutedData[] = []
-    images: PromptOutputImage[] = []
+    images: GeneratedImage[] = []
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema
     status: 'executing' | 'done' | 'error' | 'waiting' | null = null
@@ -124,11 +124,10 @@ export class ComfyNode<ComfyNode_input extends object> {
         return incomingEdges
     }
 
-    get manager() { return this.graph.workspace } // prettier-ignore
-
-    async get() {
-        await this.graph.get()
-    }
+    // get manager() { return this.graph.workspace } // prettier-ignore
+    // async get() {
+    //     await this.graph.get()
+    // }
 
     serializeValue(field: string, value: unknown): unknown {
         if (value == null) throw new Error('🔴 null ??')

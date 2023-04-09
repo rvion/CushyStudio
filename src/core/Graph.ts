@@ -1,33 +1,30 @@
-import type { ScriptStep_prompt } from '../controls/ScriptStep_prompt'
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 import type { ComfyNodeUID } from './ComfyNodeUID'
 import type { ComfyPromptJSON } from './ComfyPrompt'
-import type { Maybe } from './ComfyUtils'
-import type { Run } from './Run'
+import type { WsMsgExecuting, WsMsgProgress } from './ComfyAPI'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { computed, makeObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { Cyto } from '../graph/cyto'
-import { logger } from '../logger/Logger'
-import { wildcards } from '../wildcards/wildcards'
 import { ComfyNode } from './CSNode'
 import { comfyColors } from './ComfyColors'
 import { ComfyNodeSchema, ComfySchema } from './ComfySchema'
-import { PromptOutputImage } from './PromptOutputImage'
-import { Workspace } from './Workspace'
+import { GeneratedImage } from './PromptOutputImage'
 
 export type RunMode = 'fake' | 'real'
 
+/**
+ * graph abstraction
+ * - holds the nodes
+ * - holds the cyto graph
+ * - can be instanciated in both extension and webview
+ *   - so no link to workspace or run
+ */
+
 export class Graph {
     uid = nanoid()
-    get schema() { return this.workspace.schema } // prettier-ignore
-
     cyto?: Cyto
-
-    uploadImgFromDisk = async (path: string) => {
-        return this.workspace.uploadImgFromDisk(path)
-    }
 
     registerNode = (node: ComfyNode<any>) => {
         this.nodesIndex.set(node.uid, node)
@@ -37,15 +34,6 @@ export class Graph {
     get nodes() { return Array.from(this.nodesIndex.values()) } // prettier-ignore
     nodesIndex = new Map<string, ComfyNode<any>>()
     isRunning = false
-
-    /** pick a random seed */
-    randomSeed() {
-        const seed = Math.floor(Math.random() * 99999999)
-        this.print('🔥 random seed: ' + seed)
-        return seed
-    }
-
-    wildcards = wildcards
 
     /** return the coresponding comfy prompt  */
     get json(): ComfyPromptJSON {
@@ -62,29 +50,67 @@ export class Graph {
         return json
     }
 
-    convertToImageInput = (x: PromptOutputImage): string => {
+    // 🔴 => move this elsewhere
+    convertToImageInput = (x: GeneratedImage): string => {
         return `../outputs/${x.data.filename}`
         // return this.LoadImage({ image: name })
     }
 
     /** temporary proxy */
-    convertToImageInputOLD1 = async (x: PromptOutputImage): Promise<string> => {
-        const name = await x.makeAvailableAsInput()
-        console.log('[convertToImageInput]', { name })
-        // @ts-ignore
-        return name
-        // return this.LoadImage({ image: name })
+    // convertToImageInputOLD1 = async (x: PromptOutputImage): Promise<string> => {
+    //     const name = await x.makeAvailableAsInput()
+    //     console.log('[convertToImageInput]', { name })
+    //     // @ts-ignore
+    //     return name
+    //     // return this.LoadImage({ image: name })
+    // }
+
+    /** @internal pointer to the currently executing node */
+    currentExecutingNode: ComfyNode<any> | null = null
+
+    /** @internal update the progress value of the currently focused onde */
+    onProgress = (msg: WsMsgProgress) => {
+        if (this.currentExecutingNode) {
+            this.currentExecutingNode.progress = msg.data
+            return
+        }
+        console.log('❌ no current executing node', msg)
     }
 
-    // INTERRACTIONS
-    askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => this.run.askBoolean(msg, def)
-    askString = (msg: string, def?: Maybe<string>): Promise<string> => this.run.askString(msg, def)
-    print = (msg: string) => logger.info('🔥', msg)
+    /** @internal update pointer to the currently executing node */
+    onExecuting = (msg: WsMsgExecuting) => {
+        // 1. mark currentExecutingNode as done
+        if (this.currentExecutingNode) this.currentExecutingNode.status = 'done'
+        // 2. then two cases:
+        // 2.A. no node => the prompt is done
+        if (msg.data.node == null) {
+            this.currentExecutingNode = null
+            return
+        }
+        // 2.B. a node => node evaluation is starting
+        const node = this.getNodeOrCrash(msg.data.node)
+        this.currentExecutingNode = node
+        node.status = 'executing'
+    }
+
+    // onExecuted = (msg: WsMsgExecuted) => {
+    //     const node = this.getNodeOrCrash(msg.data.node)
+    //     const images = msg.data.output.images.map((i) => new PromptOutputImage(this, i))
+
+    //     // console.log(`🟢 `, images.length, `CushyImages`)
+    //     // accumulate in self
+    //     this.outputs.push(msg)
+    //     this.images.push(...images)
+    //     // console.log(`🟢 `, this.uid, 'has', this.images.length, `CushyImages`)
+
+    //     // accumulate in node
+    //     node.artifacts.push(msg.data)
+    //     node.images.push(...images)
+    // }
 
     constructor(
         //
-        public workspace: Workspace,
-        public run: Run,
+        public schema: ComfySchema,
         json: ComfyPromptJSON = {},
     ) {
         // console.log('COMFY GRAPH')
@@ -96,7 +122,7 @@ export class Graph {
         // TODO: rewrite with a single defineProperties call
         // with propery object being defined on the client
         // to remove all this extra work
-        const schema = workspace.schema
+        // const schema = workspace.schema
         for (const node of schema.nodes) {
             // console.log(`node: ${node.name}`)
             Object.defineProperty(this, node.nameInCushy, {
@@ -118,26 +144,16 @@ export class Graph {
     }
 
     /** all images generated by nodes in this graph */
-    get allImages(): PromptOutputImage[] {
+    get allImages(): GeneratedImage[] {
         return this.nodes.flatMap((a) => a.images)
     }
 
     /** wether it should really send the prompt to the backend */
-    get runningMode(): RunMode {
-        return this.run.opts?.mock ? 'fake' : 'real'
-    }
+    // get runningMode(): RunMode {
+    //     return this.run.opts?.mock ? 'fake' : 'real'
+    // }
 
     // COMMIT --------------------------------------------
-    async get(): Promise<ScriptStep_prompt> {
-        logger.info('🔥', 'prompt requested')
-        const step = await this.run.sendPromp()
-        // this.run.cyto.animate()
-        // console.log('B')
-        await step.finished
-        // console.log('C')
-        // console.log(`🐙`, step.uid, step.images.length, { step }, step.images[0].url)
-        return step
-    }
 
     // JSON_forGitGraphVisualisation = (gitgraph: GitgraphUserApi<any>) => {
     //     // extract graph

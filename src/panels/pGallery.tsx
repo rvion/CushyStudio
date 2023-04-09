@@ -1,13 +1,13 @@
 import { Slider } from 'rsuite'
 import { observer } from 'mobx-react-lite'
-import { PromptOutputImage } from '../core/PromptOutputImage'
+import { GeneratedImage } from '../core/PromptOutputImage'
 import { useWorkspace } from '../ui/WorkspaceContext'
 import { Image } from '../ui/Image'
 
 export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
     const client = useWorkspace()
     const layout = client.layout
-    const images: PromptOutputImage[] = client.runs.flatMap((r) => r.gallery)
+    const images: GeneratedImage[] = client.runs.flatMap((r) => r.gallery)
 
     return (
         <div>
