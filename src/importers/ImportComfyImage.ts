@@ -3,7 +3,7 @@ import { Workspace } from '../core-back/Workspace'
 import { ComfyPromptJSON } from '../core-types/ComfyPrompt'
 import { ComfyNodeSchema } from '../core-shared/Schema'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
-import { TEdge, toposort } from '../core/toposort'
+import { TEdge, toposort } from '../utils/toposort'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = { nodeName: string; inputName: string; valueStr: string }

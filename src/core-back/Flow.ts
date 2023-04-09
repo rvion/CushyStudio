@@ -3,7 +3,7 @@ import type { RunMode } from '../core-shared/Graph'
 
 import * as vscode from 'vscode'
 import { loggerExt } from '../logger/LoggerExtension'
-import { transpileCode } from '../core/transpiler'
+import { transpileCode } from './transpiler'
 import { FlowExecution } from './FlowExecution'
 
 /**

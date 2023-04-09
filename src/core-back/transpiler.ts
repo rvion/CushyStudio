@@ -1,4 +1,5 @@
-import * as vscode from 'vscode'
+// this module could be shared, but I don't want the browser build to include typescript
+// import * as vscode from 'vscode'
 
 // https://github.com/Microsoft/vscode/issues/34344
 // https://github.com/Microsoft/TypeScript/wiki/Writing-a-Language-Service-Plugin
