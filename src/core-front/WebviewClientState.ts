@@ -6,7 +6,7 @@ import type { ComfyStatus } from '../core-types/ComfyWsPayloads'
 // https://codebycorey.com/blog/building-a-vscode-extension-part-four
 import { makeObservable, observable } from 'mobx'
 import { Schema } from '../core-shared/Schema'
-import { Maybe, exhaust } from '../core/ComfyUtils'
+import { Maybe, exhaust } from '../utils/ComfyUtils'
 import { Graph } from '../core-shared/Graph'
 import { loggerWeb } from '../logger/LoggerWebview'
 import { MessageFromExtensionToWebview } from '../panels/MessageFromExtensionToWebview'

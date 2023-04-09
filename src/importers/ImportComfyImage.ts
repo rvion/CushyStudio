@@ -1,8 +1,8 @@
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { Workspace } from '../core-back/Workspace'
-import { ComfyPromptJSON } from '../core/ComfyPrompt'
+import { ComfyPromptJSON } from '../core-types/ComfyPrompt'
 import { ComfyNodeSchema } from '../core-shared/Schema'
-import { jsEscapeStr } from '../core/ComfyUtils'
+import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { TEdge, toposort } from '../core/toposort'
 
 /** Converts Comfy JSON prompts to ComfyScript code */

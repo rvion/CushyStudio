@@ -1,5 +1,5 @@
 import type { IReactionDisposer } from 'mobx'
-import type { Tagged } from '../core/ComfyUtils'
+import type { Tagged } from './ComfyUtils'
 
 import { reaction } from 'mobx'
 

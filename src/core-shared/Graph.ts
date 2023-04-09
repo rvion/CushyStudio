@@ -1,6 +1,6 @@
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 import type { ComfyNodeUID } from '../core-types/NodeUID'
-import type { ComfyPromptJSON } from '../core/ComfyPrompt'
+import type { ComfyPromptJSON } from '../core-types/ComfyPrompt'
 import type { WsMsgExecuting, WsMsgProgress } from '../core-types/ComfyWsPayloads'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'

@@ -1,7 +1,7 @@
 import { Button, Panel } from 'rsuite'
 import { observer } from 'mobx-react-lite'
 import { Fragment, ReactNode, useEffect, useRef } from 'react'
-import { exhaust, Maybe } from '../core/ComfyUtils'
+import { exhaust, Maybe } from '../utils/ComfyUtils'
 import { FlowExecution } from '../core-back/FlowExecution'
 import { FlowExecutionStep } from '../core-types/FlowExecutionStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'

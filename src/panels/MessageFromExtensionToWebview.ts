@@ -1,7 +1,7 @@
 import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from '../core-types/ComfyWsPayloads'
-import type { ComfyPromptJSON } from '../core/ComfyPrompt'
+import type { ComfyPromptJSON } from '../core-types/ComfyPrompt'
 import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
-import type { Maybe } from '../core/ComfyUtils'
+import type { Maybe } from '../utils/ComfyUtils'
 
 // prettier-ignore
 export type MessageFromExtensionToWebview =

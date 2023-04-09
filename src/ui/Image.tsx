@@ -1,4 +1,4 @@
-import type { Maybe } from '../core/ComfyUtils'
+import type { Maybe } from '../utils/ComfyUtils'
 
 export const Image = (p: {
     //

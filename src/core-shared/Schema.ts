@@ -3,7 +3,7 @@ import type { ItemDataType } from 'rsuite/esm/@types/common'
 
 import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
-import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/ComfyPrimitives'
+import { ComfyPrimitiveMapping, ComfyPrimitives } from './Primitives'
 
 export type EnumHash = string
 export type EnumName = string
