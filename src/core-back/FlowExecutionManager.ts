@@ -4,7 +4,7 @@ import * as vscode from 'vscode'
 import { loggerExt } from '../logger/LoggerBack'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
 import { Flow } from './Flow'
-import { toArray } from '../shell/itest/toArray'
+import { toArray } from '../utils/toArray'
 
 export class FlowExecutionManager {
     queue: {

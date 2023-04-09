@@ -1,3 +1,4 @@
+import * as vscode from 'vscode'
 import type { ComfyImageInfo } from '../core-types/ComfyWsPayloads'
 import type { Maybe } from '../utils/ComfyUtils'
 import type { PromptExecution } from '../controls/ScriptStep_prompt'
@@ -19,7 +20,7 @@ export class GeneratedImage {
         public data: ComfyImageInfo,
     ) {
         this.workspace = prompt.workspace
-        this.saveOnDisk()
+        this.downloadImageAndSaveToDisk()
     }
 
     /** url to acces the image */
@@ -36,20 +37,28 @@ export class GeneratedImage {
     /** true if file exists on disk; false otherwise */
     saved = false
 
-    get folder(): RelativePath {
+    /** @internal folder in which the image should be saved */
+    private get folder(): RelativePath {
         return this.prompt.run.workspaceRelativeCacheFolderPath
     }
 
-    get fileName(): string {
+    /** @internal */
+    private get fileName(): string {
         return this.prompt.uid + '_' + this.uid + '.png'
     }
 
+    /** @internal */
     get filePath(): RelativePath {
         return asRelativePath(this.folder + path.sep + this.fileName)
     }
 
     /** @internal */
-    saveOnDisk = async () => {
+    get uri(): vscode.Uri {
+        return this.workspace.resolve(this.filePath)
+    }
+
+    /** @internal */
+    downloadImageAndSaveToDisk = async () => {
         if (this.saved) return
         const response = await fetch(this.comfyURL, {
             headers: { 'Content-Type': 'image/png' },
