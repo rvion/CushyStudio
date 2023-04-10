@@ -8,7 +8,6 @@ export const extractWorkflows = (
     text: string,
     events: {
         onTest(range: vscode.Range, workflowName: string): void
-        // , a: number, operator: string, b: number, expected: number
         // onHeading(range: vscode.Range, name: string, depth: number): void
     },
 ) => {
@@ -18,9 +17,8 @@ export const extractWorkflows = (
         const line = lines[lineNo]
 
         const isWorkflow = WorkflowRe.exec(line)
-        // logger.info('🌠', `>> isWorkflow?.[0]: ${isWorkflow?.[0]}`)
-        if (isWorkflow) loggerExt.info('🌠', `>> isWorkflow?.[1]: ${isWorkflow?.[1]}`)
         if (isWorkflow) {
+            loggerExt.info('🌠', `found workflow "${isWorkflow?.[1]}"`)
             const name = bang(isWorkflow[1])
             // const [, a, operator, b, expected] = test;
             const range = new vscode.Range(

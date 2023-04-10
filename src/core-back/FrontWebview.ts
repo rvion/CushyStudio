@@ -68,7 +68,7 @@ export class FrontWebview {
         }
 
         const msg = JSON.stringify(message) // .slice(0, 10)
-        loggerExt.info('🔥', `sending ${message.type} to webview`)
+        // loggerExt.info('🔥', `sending ${message.type} to webview`)
         loggerExt.debug('🔥', `sending ` + msg)
 
         curr.panel.webview.postMessage(msg)
