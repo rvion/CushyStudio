@@ -1,4 +1,4 @@
-import type { Maybe } from '../utils/ComfyUtils'
+import type { Maybe } from '../utils/types'
 
 import { LogCategory, LogLevel, LogMessage } from './LogTypes'
 import { makeAutoObservable } from 'mobx'

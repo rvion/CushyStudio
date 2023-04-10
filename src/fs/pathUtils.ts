@@ -1,4 +1,4 @@
-import type { Branded } from '../utils/ComfyUtils'
+import type { Branded } from '../utils/types'
 
 export * as pathe from 'pathe'
 import * as pathe from 'pathe'

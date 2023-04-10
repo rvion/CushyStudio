@@ -1,4 +1,4 @@
-import type { Maybe } from '../utils/ComfyUtils'
+import type { Maybe } from '../utils/types'
 
 import fetch from 'node-fetch'
 import { makeAutoObservable } from 'mobx'

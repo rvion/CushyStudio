@@ -2,12 +2,4 @@ export const exhaust = (x: never) => x
 
 export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
-/** usefull to catch most *units* type errors */
-export type Tagged<O, Tag> = O & { __tag?: Tag }
-
-/** same as Tagged, but even scriter */
-export type Branded<O, Brand> = O & { __brand: Brand }
-
-export type Maybe<T> = T | null | undefined
-
 export const deepCopyNaive = <T>(x: T): T => JSON.parse(JSON.stringify(x))

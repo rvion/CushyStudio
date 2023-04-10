@@ -10,7 +10,8 @@ import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../core-types/ComfyWsPayloads'
 import { Graph } from '../core-shared/Graph'
-import { deepCopyNaive, Maybe, sleep } from '../utils/ComfyUtils'
+import { deepCopyNaive, sleep } from '../utils/ComfyUtils'
+import { Maybe } from '../utils/types'
 import { GeneratedImage } from './GeneratedImage'
 import { FlowExecutionStep } from '../core-types/FlowExecutionStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
@@ -20,6 +21,7 @@ import { Workspace } from './Workspace'
 import { loggerExt } from '../logger/LoggerBack'
 import { FrontWebview } from './FrontWebview'
 import { wildcards } from '../wildcards/wildcards'
+import { getPayloadID } from '../core-shared/PayloadID'
 
 /** script exeuction instance */
 export class FlowExecution {
@@ -46,23 +48,13 @@ export class FlowExecution {
         return asRelativePath(this.workspace.relativeCacheFolderPath + path.sep + this.name)
     }
 
-    /** save current script */
-    // save = async () => {
-    //     // const contents = this.project.scriptBuffer.codeJS
-    //     // const backupCodePath = 'script.' + getYYYYMMDDHHMMSS() + '.js'
-    //     // const filePath = asRelativePath(this.workspaceRelativeCacheFolderPath + path.sep + backupCodePath)
-    //     // await this.project.workspace.rootFolder.writeTextFile(filePath, contents)
-    //     // console.log('[📁] script backup saved', filePath)
-    //     console.log('❌ not implmeented')
-    // }
-
     folder: vscode.Uri
 
     // High level API--------------------
     /** ask user to input a boolean (true/false) */
     askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => {
         const ask = new ScriptStep_askBoolean(msg, def)
-        FrontWebview.sendMessage({ type: 'ask-boolean', message: msg, default: def })
+        FrontWebview.sendMessage({ type: 'ask-boolean', message: msg, default: def, uid: getPayloadID() })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -70,7 +62,7 @@ export class FlowExecution {
     /** ask the user to input a string */
     askString = (msg: string, def?: Maybe<string>): Promise<string> => {
         const ask = new ScriptStep_askString(msg, def)
-        FrontWebview.sendMessage({ type: 'ask-string', message: msg, default: def })
+        FrontWebview.sendMessage({ type: 'ask-string', message: msg, default: def, uid: getPayloadID() })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -109,8 +101,8 @@ export class FlowExecution {
         // console.log('XX2')
         // await sleep(2000)
         const currentJSON = deepCopyNaive(this.graph.json)
-        FrontWebview.sendMessage({ type: 'schema', schema: this.workspace.schema.spec })
-        FrontWebview.sendMessage({ type: 'prompt', graph: currentJSON })
+        FrontWebview.sendMessage({ type: 'schema', schema: this.workspace.schema.spec, uid: getPayloadID() })
+        FrontWebview.sendMessage({ type: 'prompt', graph: currentJSON, uid: getPayloadID() })
 
         loggerExt.info('🐰', 'checkpoint:' + JSON.stringify(currentJSON))
         const step = new PromptExecution(this, currentJSON)

@@ -1,11 +1,10 @@
-import type { Workspace } from './Workspace'
-import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from 'vscode'
 import * as vscode from 'vscode'
-import { getUri } from '../fs/getUri'
-import { getNonce } from '../fs/getNonce'
-import { loggerExt } from '../logger/LoggerBack'
 import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
+import { getNonce } from '../fs/getNonce'
+import { getUri } from '../fs/getUri'
+import { loggerExt } from '../logger/LoggerBack'
 import { exhaust } from '../utils/ComfyUtils'
+import type { Workspace } from './Workspace'
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -24,14 +23,14 @@ export class FrontWebview {
         workspace: Workspace,
         // extensionUri: Uri /** directory containing the extension */,
     ) {
-        if (FrontWebview.current) return FrontWebview.current.panel.reveal(ViewColumn.Two)
+        if (FrontWebview.current) return FrontWebview.current.panel.reveal(vscode.ViewColumn.Two)
 
         // If a webview panel does not already exist create and show a new one
         const extensionUri = workspace.context.extensionUri
-        const panel = window.createWebviewPanel(
+        const panel = vscode.window.createWebviewPanel(
             'showHelloWorld', // Panel view type
-            'Hello World', // Panel title
-            ViewColumn.Two, // The editor column the panel should be displayed in
+            'CushyStudio', // Panel title
+            vscode.ViewColumn.Two, // The editor column the panel should be displayed in
             {
                 retainContextWhenHidden: true,
                 enableCommandUris: true,
@@ -75,15 +74,15 @@ export class FrontWebview {
         curr.panel.webview.postMessage(msg)
     }
     // ------------------------------------------------------------------------------------------------------------
-    private _disposables: Disposable[] = []
-    webview: Webview
+    private _disposables: vscode.Disposable[] = []
+    webview: vscode.Webview
 
     private constructor(
         private workspace: Workspace,
         /** A reference to the webview panel */
-        private panel: WebviewPanel,
+        private panel: vscode.WebviewPanel,
         /** The URI of the directory containing the extension */
-        private extensionUri: Uri,
+        private extensionUri: vscode.Uri,
     ) {
         this.webview = panel.webview
         // Set an event listener to listen for when the panel is disposed (i.e. when the user closes
@@ -167,14 +166,14 @@ export class FrontWebview {
         return fn(curr)
     }
 
-    getExtensionLocalUri = (pathList: string[]): Uri => getUri(this.webview, this.extensionUri, pathList)
+    getExtensionLocalUri = (pathList: string[]): vscode.Uri => getUri(this.webview, this.extensionUri, pathList)
 
     onMessageFromWebview = (msg: MessageFromWebviewToExtension) => {
         // const command = smg.command
         // const text = smg.text
 
         if (msg.type === 'say-hello') {
-            window.showInformationMessage(msg.message)
+            vscode.window.showInformationMessage(msg.message)
             return
         }
 

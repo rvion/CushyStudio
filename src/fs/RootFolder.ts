@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import type { Maybe } from '../utils/ComfyUtils'
+import type { Maybe } from '../utils/types'
 import type { AbsolutePath, RelativePath } from './pathUtils'
 import type { FileActionResult } from './FileActionResult'
 import type { ItemDataType } from 'rsuite/esm/@types/common'

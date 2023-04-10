@@ -1,5 +1,5 @@
 import type { ComfyUploadImageResult } from '../core-types/ComfyWsPayloads'
-import type { Maybe } from '../utils/ComfyUtils'
+import type { Maybe } from '../utils/types'
 import type { Wildcards } from '../wildcards/wildcards'
 
 // export type { FlowExecution } from '../core-back/FlowExecution'

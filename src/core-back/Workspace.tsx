@@ -4,7 +4,8 @@ import * as vscode from 'vscode'
 import * as WS from 'ws'
 import type { ImportCandidate } from '../importers/ImportCandidate'
 import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
-import { Maybe, sleep } from '../utils/ComfyUtils'
+import { sleep } from '../utils/ComfyUtils'
+import { Maybe } from '../utils/types'
 import { FlowExecution } from './FlowExecution'
 import type { FlowExecutionStep } from '../core-types/FlowExecutionStep'
 
@@ -29,6 +30,7 @@ import { CushyFile, vsTestItemOriginDict } from './CushyFile'
 import { FlowExecutionManager } from './FlowExecutionManager'
 import { FrontWebview } from './FrontWebview'
 import { GeneratedImage } from './GeneratedImage'
+import { getPayloadID } from '../core-shared/PayloadID'
 
 export type WorkspaceConfigJSON = {
     version: 2
@@ -265,30 +267,26 @@ export class Workspace {
             })
         })
         loggerExt.info('💿', 'all images saved: sending to front: ' + uris.join(', '))
-        FrontWebview.sendMessage({ type: 'images', uris: uris })
+        FrontWebview.sendMessage({ type: 'images', uris: uris, uid: getPayloadID() })
     }
 
     forwardImagesToFrontV2 = (images: GeneratedImage[]) => {
         const uris = images.map((i) => i.comfyURL)
-        FrontWebview.sendMessage({ type: 'images', uris })
+        FrontWebview.sendMessage({ type: 'images', uris, uid: getPayloadID() })
     }
 
     onMessage = (e: WS.MessageEvent) => {
-        loggerExt.info('🧦', `🔴 ${e.data}`)
+        loggerExt.info('🧦', `received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
-        // how / wen should we send the schema and prompt ?
-        // if (sent)
-
-        // Proxy any websocket message directly to the webview
-        loggerExt.info('🐰', `> received ${msg.type}`)
-        FrontWebview.sendMessage(msg)
+        FrontWebview.sendMessage({ ...msg, uid: getPayloadID() })
 
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid
             this.status = msg.data.status
             return
         }
+
         const currentRun: Maybe<FlowExecution> = this.activeRun
         if (currentRun == null) {
             loggerExt.error('🐰', `❌ received ${msg.type} but currentRun is null`)

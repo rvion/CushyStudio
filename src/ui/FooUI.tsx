@@ -1,28 +1,40 @@
-import { VSCodeButton } from '@vscode/webview-ui-toolkit/react'
+// import { VSCodeButton } from '@vscode/webview-ui-toolkit/react'
 import { vscode } from '../core-front/FrontState'
 import { observer } from 'mobx-react-lite'
+import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
 
 export const FooUI = observer(function FooUI_() {
     return (
-        <div>
-            <div>🟢 Hello world 🔴 </div>
+        <div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
             <div>{vscode.images.length} images</div>
-            {vscode.images.map((i) => (
+            {/* {vscode.images.map((i) => (
                 <div key={i}>
                     image:
                     <img src={i} />
                 </div>
-            ))}
+            ))} */}
             <div>
                 received:
                 <ul>
                     {vscode.received.map((i) => (
-                        <li key={i}>{i}</li>
+                        <li key={i.uid}>
+                            {renderMessageFromExtensionAsEmoji(i)}
+                            {i.type}
+                            {i.type === 'images' && i.uris.length && (
+                                <div>
+                                    {i.uris.map((i) => (
+                                        <div key={i}>
+                                            <img src={i} />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </li>
                     ))}
                 </ul>
             </div>
             <div>
-                <VSCodeButton onClick={handleHowdyClick}>Howdy!</VSCodeButton>
+                <button onClick={handleHowdyClick}>Howdy!</button>
             </div>
         </div>
     )

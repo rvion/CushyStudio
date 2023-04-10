@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 import type { ComfyImageInfo } from '../core-types/ComfyWsPayloads'
-import type { Maybe } from '../utils/ComfyUtils'
+import type { Maybe } from '../utils/types'
 import type { PromptExecution } from '../controls/ScriptStep_prompt'
 import type { Workspace } from './Workspace'
 

@@ -6,7 +6,8 @@ import type { ComfyStatus } from '../core-types/ComfyWsPayloads'
 // https://codebycorey.com/blog/building-a-vscode-extension-part-four
 import { makeObservable, observable } from 'mobx'
 import { Schema } from '../core-shared/Schema'
-import { Maybe, exhaust } from '../utils/ComfyUtils'
+import { exhaust } from '../utils/ComfyUtils'
+import { Maybe } from '../utils/types'
 import { Graph } from '../core-shared/Graph'
 import { loggerWeb } from '../logger/LoggerFront'
 import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
@@ -23,7 +24,7 @@ import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '..
 class FrontState {
     private readonly vsCodeApi: WebviewApi<unknown> | undefined
 
-    received: string[] = []
+    received: MessageFromExtensionToWebview[] = []
 
     constructor() {
         if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
@@ -55,7 +56,7 @@ class FrontState {
 
         console.log('💬', msg.type) //, { message })
 
-        this.received.push(JSON.stringify(msg))
+        this.received.push(msg)
 
         // 2. process the info
         if (msg.type === 'ask-boolean') return

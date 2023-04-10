@@ -1,4 +1,4 @@
-import type { Maybe } from '../utils/ComfyUtils'
+import type { Maybe } from '../utils/types'
 
 import { makeAutoObservable, reaction } from 'mobx'
 import { loggerExt } from '../logger/LoggerBack'
