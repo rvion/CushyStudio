@@ -70,7 +70,7 @@ export class CushyFile {
         const thisGeneration = generationCounter++
         this.didResolve = true
 
-        loggerExt.info('🌠', 'updating from contents')
+        loggerExt.info('🌠', `updating [${this.uri.path}] contents`)
 
         // honestly a bit hard to read but hey 🤷‍♂️
         const ascend = (depth: number) => {
@@ -80,7 +80,6 @@ export class CushyFile {
             }
         }
 
-        // const workflows = vscode
         extractWorkflows(content, {
             onTest: (range: vscode.Range, workflowName: string) => {
                 const parent = ancestors[ancestors.length - 1]

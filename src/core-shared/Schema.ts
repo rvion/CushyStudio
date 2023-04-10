@@ -4,6 +4,7 @@ import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
 import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from './Primitives'
+import { sdkTemplate } from '../sdk/sdkTemplate'
 
 export type EnumHash = string
 export type EnumName = string
@@ -148,13 +149,51 @@ export class Schema {
         const b = new CodeBuffer()
         const p = b.w
         const prefix = useLocalPath ? '.' : 'core'
-        p(`/// <reference types="./cushy" />\n`)
-        p(`import type { ComfyNodeOutput } from '${prefix}/ComfyNodeOutput'`)
-        p(`import type { ComfyNodeUID } from '${prefix}/ComfyNodeUID'`)
-        p(`import type { ComfyNode } from '${prefix}/CSNode'`)
-        p(`import type { ComfyNodeSchemaJSON } from '${prefix}/ComfySchemaJSON'`)
-        p(`import type { Graph } from '${prefix}/Graph'`)
-        p(`import type { Workflow } from '${prefix}/Workflow'`)
+        // p(`/// <reference types="./cushy" />\n`)
+
+        // p(`import type { ComfyNodeOutput } from '${prefix}/ComfyNodeOutput'`)
+        // p(`import type { ComfyNodeUID } from '${prefix}/ComfyNodeUID'`)
+        // p(`import type { ComfyNode } from '${prefix}/CSNode'`)
+        // p(`import type { ComfyNodeSchemaJSON } from '${prefix}/ComfySchemaJSON'`)
+        // p(`import type { Graph } from '${prefix}/Graph'`)
+        // p(`import type { Workflow } from '${prefix}/Workflow'`)
+
+        p(sdkTemplate)
+
+        p(`declare module "foo" {`)
+        p(`    import type { ComfyNode } from 'core-shared/Node'`)
+        p(`    import type { Slot } from 'core-shared/Slot'`)
+        p(`    import type { Graph } from 'core-shared/Graph'`)
+        p(`    import type { Workflow } from 'core-shared/Workflow'`)
+        p(`    import type { ComfyNodeSchemaJSON } from 'core-types/ComfySchemaJSON'`)
+        p(`    import type { ComfyNodeUID } from 'core-types/NodeUID'`)
+        p(`    import type { IFlowExecution } from "sdk/IFlowExecution"`)
+        p(``)
+        p(`    export const WORKFLOW: (`)
+        p(`        //`)
+        p(`        title: string,`)
+        p(`        builder: (`)
+        p(`            //`)
+        p(`            graph: ComfySetup & Graph,`)
+        p(`            flow: IFlowExecution,`)
+        p(`        ) => void,`)
+        p(`    ) => Workflow`)
+        // p(`}`) 🔴
+
+        p(`\n// Entrypoint --------------------------`)
+        p(`export interface ComfySetup {`)
+
+        // prettier-ignore
+        for (const n of this.nodes) {
+            p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeUID): ${n.nameInCushy}`)
+        }
+        // p(`\n// misc \n`)
+        // prettier-ignore
+        // for (const n of this.nodes) {
+        //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
+        // }
+        p(`}`)
+
         p(`\n// TYPES -------------------------------`)
         const types = [...this.knownTypes.values()] //
             .map((comfyType) => ({ comfyType, tsType: this.toTSType(comfyType) }))
@@ -195,42 +234,29 @@ export class Schema {
         p(`}`)
         p(`export type ComfyNodeType = keyof Schemas`)
 
-        p(`\n// Entrypoint --------------------------`)
-        p(`export interface ComfySetup {`)
+        p(`}`) // 🔴
 
-        // prettier-ignore
-        for (const n of this.nodes) {
-            p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeUID): ${n.nameInCushy}`)
-        }
-        // p(`\n// misc \n`)
-        // prettier-ignore
+        // p(`\n// Entrypoint --------------------------`)
+        // p(`export interface ComfySetup {`)
+
+        // // prettier-ignore
         // for (const n of this.nodes) {
-        //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
+        //     p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeUID): ${n.nameInCushy}`)
         // }
-        p(`}`)
-
-        // p(`declare global {`)
-        // p(`    export const WORKFLOW: (title: string, builder: (graph: ComfySetup & Graph) => void) => Workflow`)
+        // // p(`\n// misc \n`)
+        // // prettier-ignore
+        // // for (const n of this.nodes) {
+        // //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
+        // // }
         // p(`}`)
-
-        p(`declare global {`)
-        p(`    export const WORKFLOW: (`)
-        p(`        //`)
-        p(`        title: string,`)
-        p(`        builder: (`)
-        p(`            //`)
-        p(`            graph: ComfySetup & Graph,`)
-        p(`            flow: FlowExecution,`)
-        p(`        ) => void,`)
-        p(`    ) => Workflow`)
-        p(`}`)
 
         // p(`declare const WORKFLOW: (builder: (graph: ComfyGraph) => void) => void`)
         // b.writeTS('./src/core/Comfy.ts')
+        p(`declare const WORKFLOW: typeof import("foo").WORKFLOW`)
         return b.content
     }
 
-    private toTSType = (t: string) => ComfyPrimitiveMapping[t] ?? `ComfyNodeOutput<'${t}'>`
+    private toTSType = (t: string) => ComfyPrimitiveMapping[t] ?? `Slot<'${t}'>`
 }
 
 export class ComfyNodeSchema {
@@ -260,7 +286,7 @@ export class ComfyNodeSchema {
         p(`export interface ${this.nameInCushy} extends ${ifaces.join(', ')} {`)
         // p(`    $schema: ${this.name}_schema`)
         this.outputs.forEach((i, ix) => {
-            p(`    ${i.name}: ComfyNodeOutput<'${i.type}', ${ix}>,`)
+            p(`    ${i.name}: Slot<'${i.type}', ${ix}>,`)
         })
         // INTERFACE
         // if (x[i.type] === 1) p(`    get _${i.type}() { return this.${i.name} } // prettier-ignore`)

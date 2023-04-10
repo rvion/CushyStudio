@@ -6,6 +6,7 @@ import { CushyFile, vsTestItemOriginDict } from './CushyFile'
 import { Flow } from './Flow'
 import { toArray } from '../utils/toArray'
 
+// TODO: rename test runner ?
 export class FlowExecutionManager {
     queue: {
         vsTestItem: vscode.TestItem

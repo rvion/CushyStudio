@@ -8,9 +8,9 @@ import { nanoid } from 'nanoid'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
-import { ApiPromptInput, WsMsgExecuted } from '../core-types/ComfyWsPayloads'
+import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../core-types/ComfyWsPayloads'
 import { Graph } from '../core-shared/Graph'
-import { deepCopyNaive, Maybe } from '../utils/ComfyUtils'
+import { deepCopyNaive, Maybe, sleep } from '../utils/ComfyUtils'
 import { GeneratedImage } from './GeneratedImage'
 import { FlowExecutionStep } from '../core-types/FlowExecutionStep'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
@@ -18,7 +18,7 @@ import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { Workspace } from './Workspace'
 import { loggerExt } from '../logger/LoggerBack'
-import { FrontManager } from './FrontManager'
+import { FrontWebview } from './FrontWebview'
 import { wildcards } from '../wildcards/wildcards'
 
 /** script exeuction instance */
@@ -62,7 +62,7 @@ export class FlowExecution {
     /** ask user to input a boolean (true/false) */
     askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => {
         const ask = new ScriptStep_askBoolean(msg, def)
-        FrontManager.send({ type: 'ask-boolean', message: msg, default: def })
+        FrontWebview.sendMessage({ type: 'ask-boolean', message: msg, default: def })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -70,7 +70,7 @@ export class FlowExecution {
     /** ask the user to input a string */
     askString = (msg: string, def?: Maybe<string>): Promise<string> => {
         const ask = new ScriptStep_askString(msg, def)
-        FrontManager.send({ type: 'ask-string', message: msg, default: def })
+        FrontWebview.sendMessage({ type: 'ask-string', message: msg, default: def })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -89,7 +89,7 @@ export class FlowExecution {
     print = (msg: string) => loggerExt.info('🔥', msg)
 
     /** upload a file from disk to the ComfyUI backend */
-    uploadImgFromDisk = async (path: string) => {
+    uploadImgFromDisk = async (path: string): Promise<ComfyUploadImageResult> => {
         return this.workspace.uploadImgFromDisk(path)
     }
 
@@ -108,7 +108,11 @@ export class FlowExecution {
         // console.log('XX1')
         // console.log('🔴', toJS(this.graph.json))
         // console.log('XX2')
+        await sleep(2000)
         const currentJSON = deepCopyNaive(this.graph.json)
+        FrontWebview.sendMessage({ type: 'schema', schema: this.workspace.schema.spec })
+        FrontWebview.sendMessage({ type: 'prompt', graph: currentJSON })
+
         loggerExt.info('🐰', 'checkpoint:' + JSON.stringify(currentJSON))
         const step = new PromptExecution(this, currentJSON)
         this.steps.unshift(step)

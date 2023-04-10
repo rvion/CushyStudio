@@ -27,7 +27,7 @@ import { RunMode } from '../core-shared/Graph'
 import { transpileCode } from './transpiler'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
 import { FlowExecutionManager } from './FlowExecutionManager'
-import { FrontManager } from './FrontManager'
+import { FrontWebview } from './FrontWebview'
 import { GeneratedImage } from './GeneratedImage'
 
 export type WorkspaceConfigJSON = {
@@ -118,7 +118,7 @@ export class Workspace {
         // graph.runningMode = mode
         // this.MAIN = graph
 
-        const WORKFLOW = (fn: any) => fn(graph)
+        const WORKFLOW = (fn: any) => fn(graph, execution)
 
         try {
             await ProjectScriptFn(WORKFLOW)
@@ -135,7 +135,7 @@ export class Workspace {
     }
 
     comfyJSONUri: vscode.Uri
-    comfyTSUri: vscode.Uri
+    // comfyTSUri: vscode.Uri
     cushyTSUri: vscode.Uri
 
     writeBinaryFile(relPath: RelativePath, content: Buffer, open = false) {
@@ -198,9 +198,9 @@ export class Workspace {
         this.schema = new Schema({})
         this.initOutputChannel()
         this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.json') })
-        this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.d.ts') })
+        // this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.d.ts') })
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'cushy.d.ts') })
-        this.writeTextFile(this.cushyTSUri, sdkTemplate)
+        // this.writeTextFile(this.cushyTSUri, sdkTemplate)
         this.vsTestController = this.initVSTestController()
         this.autoDiscoverEveryWorkflow()
         void this.updateComfy_object_info()
@@ -250,7 +250,7 @@ export class Workspace {
 
     /** ensure webview is opened */
     ensureWebviewPanelIsOpened = () => {
-        FrontManager.render(this.context.extensionUri)
+        FrontWebview.createOrReveal(this.context.extensionUri)
     }
 
     onMessage = (e: WS.MessageEvent) => {
@@ -261,7 +261,7 @@ export class Workspace {
         // if (sent)
 
         // Proxy any websocket message directly to the webview
-        FrontManager.send(msg)
+        FrontWebview.sendMessage(msg)
 
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid
@@ -284,6 +284,7 @@ export class Workspace {
             loggerExt.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             return promptStep._graph.onProgress(msg)
         }
+
         if (msg.type === 'executing') {
             loggerExt.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             return promptStep.onExecuting(msg)
@@ -292,12 +293,13 @@ export class Workspace {
         if (msg.type === 'executed') {
             loggerExt.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             const images = promptStep.onExecuted(msg)
-            const uris = FrontManager.with((curr) => {
+            const uris = FrontWebview.with((curr) => {
                 return images.map((img: GeneratedImage) => {
                     return curr.webview.asWebviewUri(img.uri).toString()
                 })
             })
-            FrontManager.send({ type: 'images', uris })
+            console.log('📸', 'uris', uris)
+            FrontWebview.sendMessage({ type: 'images', uris })
             return images
         }
 
@@ -415,8 +417,9 @@ export class Workspace {
         try {
             // const cancel =
             const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
-            const data = await res.json()
-            loggerExt.info('🌠', `data: ${JSON.stringify(data)}`)
+            const data = (await res.json()) as { [key: string]: any }
+            const keys = Object.keys(data)
+            loggerExt.info('🌠', `found ${keys.length} nodes (${JSON.stringify(keys)})`)
             schema$ = data as any
         } catch (error) {
             vscode.window.showErrorMessage('FAILED TO FETCH OBJECT INFOS FROM COMFY')
@@ -435,7 +438,7 @@ export class Workspace {
         const cushyStr = this.schema.codegenDTS()
         loggerExt.info('🌠', 'schema code updated !')
         const cushyBuff = Buffer.from(cushyStr, 'utf8')
-        vscode.workspace.fs.writeFile(this.comfyTSUri, cushyBuff)
+        vscode.workspace.fs.writeFile(this.cushyTSUri, cushyBuff)
         loggerExt.info('🌠', 'schema code saved !')
 
         // this.objectInfoFile.update(schema$)

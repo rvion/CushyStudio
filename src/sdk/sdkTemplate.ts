@@ -1,4 +1,22 @@
 export const sdkTemplate: string = `
+declare module "core-shared/Workflow" {
+    export type WorkflowBuilder = (graph: any) => void;
+    export class Workflow {
+        builder: WorkflowBuilder;
+        constructor(builder: WorkflowBuilder);
+    }
+}
+declare module "core-types/ComfyPrompt" {
+    export type ComfyPromptJSON = {
+        [key: string]: ComfyNodeJSON;
+    };
+    export type ComfyNodeJSON = {
+        inputs: {
+            [key: string]: any;
+        };
+        class_type: string;
+    };
+}
 declare module "core-types/NodeUID" {
     export type ComfyNodeUID = string;
 }
@@ -58,6 +76,126 @@ declare module "core-types/ComfyWsPayloads" {
         name: string;
     };
 }
+declare module "ui/VisUI" {
+    type Node = any;
+    type Edge = any;
+    type Options = any;
+    export type VisNodes = any;
+    export type VisEdges = any;
+    export type VisOptions = any;
+}
+declare module "core-shared/Slot" {
+    import type { ComfyNode } from "core-shared/Node";
+    export class Slot<T, Ix extends number = number> {
+        node: ComfyNode<any>;
+        slotIx: Ix;
+        type: T;
+        constructor(node: ComfyNode<any>, slotIx: Ix, type: T);
+    }
+}
+declare module "core-types/ComfySchemaJSON" {
+    /** type of the file sent by the backend at /object_info */
+    export type ComfySchemaJSON = {
+        [nodeTypeName: string]: ComfyNodeSchemaJSON;
+    };
+    export type ComfyNodeSchemaJSON = {
+        input: {
+            required: {
+                [inputName: string]: ComfyInputSpec;
+            };
+        };
+        output: string[];
+        name: string;
+        description: string;
+        category: string;
+    };
+    export type ComfyInputSpec = [ComfyInputType] | [ComfyInputType, ComfyInputOpts];
+    export type ComfyInputType = 
+    /** node name or primitive */
+    string
+    /** enum */
+     | string[];
+    export type ComfyInputOpts = {
+        [key: string]: any;
+    };
+}
+declare module "utils/CodeBuffer" {
+    /** this class is used to buffer text and then write it to a file */
+    export class CodeBuffer {
+        private _indent;
+        constructor(_indent?: number, lines?: string[]);
+        tab: string;
+        content: string;
+        append: (str: string) => string;
+        writeLine: (txt: string) => this;
+        w: (txt: string, opts?: {
+            if: boolean;
+        }) => void;
+        newLine: () => string;
+        line: (...txts: string[]) => this;
+        indent: () => number;
+        deindent: () => number;
+        indented: (fn: () => void) => void;
+        bar: (text: string) => void;
+    }
+    export const repeatStr: (x: number, str: string) => string;
+    export const renderBar: (text: string, prefix?: string) => string;
+}
+declare module "core-shared/Primitives" {
+    export const ComfyPrimitiveMapping: {
+        [key: string]: string;
+    };
+    export const ComfyPrimitives: string[];
+}
+declare module "sdk/sdkTemplate" {
+    export const sdkTemplate: string;
+}
+declare module "core-shared/Schema" {
+    import type { ComfySchemaJSON } from "core-types/ComfySchemaJSON";
+    export type EnumHash = string;
+    export type EnumName = string;
+    export type NodeInputExt = {
+        name: string;
+        type: string;
+        opts?: any;
+        isPrimitive: boolean;
+    };
+    export type NodeOutputExt = {
+        type: string;
+        name: string;
+        isPrimitive: boolean;
+    };
+    export class Schema {
+        spec: ComfySchemaJSON;
+        knownTypes: Set<string>;
+        knownEnums: Map<string, {
+            enumNameInComfy: string;
+            enumNameInCushy: EnumName;
+            values: string[];
+        }>;
+        nodes: ComfyNodeSchema[];
+        nodesByNameInComfy: {
+            [key: string]: ComfyNodeSchema;
+        };
+        nodesByNameInCushy: {
+            [key: string]: ComfyNodeSchema;
+        };
+        constructor(spec: ComfySchemaJSON);
+        normalizeJSIdentifier: (name: string) => string;
+        update(spec: ComfySchemaJSON): void;
+        codegenDTS: (useLocalPath?: boolean) => string;
+        private toTSType;
+    }
+    export class ComfyNodeSchema {
+        nameInComfy: string;
+        nameInCushy: string;
+        category: string;
+        inputs: NodeInputExt[];
+        outputs: NodeOutputExt[];
+        constructor(nameInComfy: string, nameInCushy: string, category: string, inputs: NodeInputExt[], outputs: NodeOutputExt[]);
+        codegen(): string;
+    }
+}
 declare module "utils/ComfyUtils" {
     export const exhaust: (x: never) => never;
     export const sleep: (ms: number) => Promise<unknown>;
@@ -71,6 +209,123 @@ declare module "utils/ComfyUtils" {
     };
     export type Maybe<T> = T | null | undefined;
     export const deepCopyNaive: <T>(x: T) => T;
+}
+declare module "core-shared/Colors" {
+    export const comfyColors: {
+        [category: string]: string;
+    };
+}
+declare module "core-shared/Node" {
+    import type { NodeProgress, WsMsgExecutedData } from "core-types/ComfyWsPayloads";
+    import type { Graph } from "core-shared/Graph";
+    import type { ComfyNodeJSON } from "core-types/ComfyPrompt";
+    import { Slot } from "core-shared/Slot";
+    import { ComfyNodeUID } from "core-types/NodeUID";
+    import { ComfyNodeSchema } from "core-shared/Schema";
+    /** ComfyNode
+     * - correspond to a signal in the graph
+     * - belongs to a script
+     */
+    export class ComfyNode<ComfyNode_input extends object> {
+        graph: Graph;
+        uid: string;
+        artifacts: WsMsgExecutedData[];
+        progress: NodeProgress | null;
+        $schema: ComfyNodeSchema;
+        status: 'executing' | 'done' | 'error' | 'waiting' | null;
+        get isExecuting(): boolean;
+        get statusEmoji(): "" | "🔥" | "✅" | "❌" | "⏳";
+        get inputs(): ComfyNode_input;
+        json: ComfyNodeJSON;
+        /** update a node */
+        set(p: Partial<ComfyNode_input>): void;
+        get color(): string;
+        $outputs: Slot<any>[];
+        constructor(graph: Graph, uid: string, xxx: ComfyNodeJSON);
+        _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): {
+            class_type: string;
+            inputs: {
+                [inputName: string]: any;
+            };
+        };
+        /** return the list of nodes piped into this node */
+        _incomingNodes(): string[];
+        _incomingEdges(): {
+            from: ComfyNodeUID;
+            inputName: string;
+        }[];
+        serializeValue(field: string, value: unknown): unknown;
+        private _getExpecteTypeForField;
+        private _getOutputForType;
+    }
+}
+declare module "graph/cyto" {
+    
+    import { Graph } from "core-shared/Graph";
+    import { ComfyNode } from "core-shared/Node";
+    export class Cyto {
+        graph: Graph;
+        cy: any;
+        constructor(graph: Graph);
+        at: number;
+        addEdge: (edge: {
+            sourceUID: string;
+            targetUID: string;
+            input: string;
+        }) => void;
+        removeEdge: (id: string) => void;
+        trackNode: (node: ComfyNode<any>) => void;
+        animate: () => void;
+        setStyle: () => void;
+        mounted: boolean;
+        mount: (element: HTMLElement) => void;
+    }
+}
+declare module "core-shared/Graph" {
+    import type { ComfyPromptJSON } from "core-types/ComfyPrompt";
+    import type { WsMsgExecuting, WsMsgProgress } from "core-types/ComfyWsPayloads";
+    import type { ComfyNodeUID } from "core-types/NodeUID";
+    import type { VisEdges, VisNodes } from "ui/VisUI";
+    import { Cyto } from "graph/cyto";
+    import { ComfyNode } from "core-shared/Node";
+    import { Schema } from "core-shared/Schema";
+    export type RunMode = 'fake' | 'real';
+    /**
+     * graph abstraction
+     * - holds the nodes
+     * - holds the cyto graph
+     * - can be instanciated in both extension and webview
+     *   - so no link to workspace or run
+     */
+    export class Graph {
+        schema: Schema;
+        uid: string;
+        cyto?: Cyto;
+        registerNode: (node: ComfyNode<any>) => void;
+        get nodes(): ComfyNode<any>[];
+        nodesIndex: Map<string, ComfyNode<any>>;
+        isRunning: boolean;
+        /** return the coresponding comfy prompt  */
+        get json(): ComfyPromptJSON;
+        /** temporary proxy */
+        /** @internal pointer to the currently executing node */
+        currentExecutingNode: ComfyNode<any> | null;
+        /** @internal update the progress value of the currently focused onde */
+        onProgress: (msg: WsMsgProgress) => void;
+        /** @internal update pointer to the currently executing node */
+        onExecuting: (msg: WsMsgExecuting) => void;
+        constructor(schema: Schema, json?: ComfyPromptJSON);
+        private _nextUID;
+        getUID: () => string;
+        getNodeOrCrash: (nodeID: ComfyNodeUID) => ComfyNode<any>;
+        /** all images generated by nodes in this graph */
+        /** wether it should really send the prompt to the backend */
+        /** visjs JSON format (network visualisation) */
+        get JSON_forVisDataVisualisation(): {
+            nodes: VisNodes[];
+            edges: VisEdges[];
+        };
+    }
 }
 declare module "wildcards/wildcards" {
     export type Wildcards = {
@@ -281,264 +536,10 @@ declare module "wildcards/wildcards" {
     };
     export const wildcards: Wildcards;
 }
-declare module "core-shared/Workflow" {
-    export type WorkflowBuilder = (graph: any) => void;
-    export class Workflow {
-        builder: WorkflowBuilder;
-        constructor(builder: WorkflowBuilder);
-    }
-}
-declare module "core-types/ComfyPrompt" {
-    export type ComfyPromptJSON = {
-        [key: string]: ComfyNodeJSON;
-    };
-    export type ComfyNodeJSON = {
-        inputs: {
-            [key: string]: any;
-        };
-        class_type: string;
-    };
-}
-declare module "ui/VisUI" {
-    type Node = any;
-    type Edge = any;
-    type Options = any;
-    export type VisNodes = any;
-    export type VisEdges = any;
-    export type VisOptions = any;
-}
-declare module "core-shared/Slot" {
-    import type { ComfyNode } from "core-shared/Node";
-    export class Slot<T, Ix extends number = number> {
-        node: ComfyNode<any>;
-        slotIx: Ix;
-        type: T;
-        constructor(node: ComfyNode<any>, slotIx: Ix, type: T);
-    }
-}
-declare module "core-types/ComfySchemaJSON" {
-    /** type of the file sent by the backend at /object_info */
-    export type ComfySchemaJSON = {
-        [nodeTypeName: string]: ComfyNodeSchemaJSON;
-    };
-    export type ComfyNodeSchemaJSON = {
-        input: {
-            required: {
-                [inputName: string]: ComfyInputSpec;
-            };
-        };
-        output: string[];
-        name: string;
-        description: string;
-        category: string;
-    };
-    export type ComfyInputSpec = [ComfyInputType] | [ComfyInputType, ComfyInputOpts];
-    export type ComfyInputType = 
-    /** node name or primitive */
-    string
-    /** enum */
-     | string[];
-    export type ComfyInputOpts = {
-        [key: string]: any;
-    };
-}
-declare module "utils/CodeBuffer" {
-    /** this class is used to buffer text and then write it to a file */
-    export class CodeBuffer {
-        private _indent;
-        constructor(_indent?: number, lines?: string[]);
-        tab: string;
-        content: string;
-        append: (str: string) => string;
-        writeLine: (txt: string) => this;
-        w: (txt: string, opts?: {
-            if: boolean;
-        }) => void;
-        newLine: () => string;
-        line: (...txts: string[]) => this;
-        indent: () => number;
-        deindent: () => number;
-        indented: (fn: () => void) => void;
-        bar: (text: string) => void;
-    }
-    export const repeatStr: (x: number, str: string) => string;
-    export const renderBar: (text: string, prefix?: string) => string;
-}
-declare module "core-shared/Primitives" {
-    export const ComfyPrimitiveMapping: {
-        [key: string]: string;
-    };
-    export const ComfyPrimitives: string[];
-}
-declare module "core-shared/Schema" {
-    import type { ComfySchemaJSON } from "core-types/ComfySchemaJSON";
-    export type EnumHash = string;
-    export type EnumName = string;
-    export type NodeInputExt = {
-        name: string;
-        type: string;
-        opts?: any;
-        isPrimitive: boolean;
-    };
-    export type NodeOutputExt = {
-        type: string;
-        name: string;
-        isPrimitive: boolean;
-    };
-    export class Schema {
-        spec: ComfySchemaJSON;
-        knownTypes: Set<string>;
-        knownEnums: Map<string, {
-            enumNameInComfy: string;
-            enumNameInCushy: EnumName;
-            values: string[];
-        }>;
-        nodes: ComfyNodeSchema[];
-        nodesByNameInComfy: {
-            [key: string]: ComfyNodeSchema;
-        };
-        nodesByNameInCushy: {
-            [key: string]: ComfyNodeSchema;
-        };
-        constructor(spec: ComfySchemaJSON);
-        normalizeJSIdentifier: (name: string) => string;
-        update(spec: ComfySchemaJSON): void;
-        codegenDTS: (useLocalPath?: boolean) => string;
-        private toTSType;
-    }
-    export class ComfyNodeSchema {
-        nameInComfy: string;
-        nameInCushy: string;
-        category: string;
-        inputs: NodeInputExt[];
-        outputs: NodeOutputExt[];
-        constructor(nameInComfy: string, nameInCushy: string, category: string, inputs: NodeInputExt[], outputs: NodeOutputExt[]);
-        codegen(): string;
-    }
-}
-declare module "core-shared/Colors" {
-    export const comfyColors: {
-        [category: string]: string;
-    };
-}
-declare module "core-shared/Node" {
-    import type { NodeProgress, WsMsgExecutedData } from "core-types/ComfyWsPayloads";
-    import type { Graph } from "core-shared/Graph";
-    import type { ComfyNodeJSON } from "core-types/ComfyPrompt";
-    import { Slot } from "core-shared/Slot";
-    import { ComfyNodeUID } from "core-types/NodeUID";
-    import { ComfyNodeSchema } from "core-shared/Schema";
-    /** ComfyNode
-     * - correspond to a signal in the graph
-     * - belongs to a script
-     */
-    export class ComfyNode<ComfyNode_input extends object> {
-        graph: Graph;
-        uid: string;
-        artifacts: WsMsgExecutedData[];
-        progress: NodeProgress | null;
-        $schema: ComfyNodeSchema;
-        status: 'executing' | 'done' | 'error' | 'waiting' | null;
-        get isExecuting(): boolean;
-        get statusEmoji(): "" | "🔥" | "⏳" | "✅" | "❌";
-        get inputs(): ComfyNode_input;
-        json: ComfyNodeJSON;
-        /** update a node */
-        set(p: Partial<ComfyNode_input>): void;
-        get color(): string;
-        $outputs: Slot<any>[];
-        constructor(graph: Graph, uid: string, xxx: ComfyNodeJSON);
-        _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): {
-            class_type: string;
-            inputs: {
-                [inputName: string]: any;
-            };
-        };
-        /** return the list of nodes piped into this node */
-        _incomingNodes(): string[];
-        _incomingEdges(): {
-            from: ComfyNodeUID;
-            inputName: string;
-        }[];
-        serializeValue(field: string, value: unknown): unknown;
-        private _getExpecteTypeForField;
-        private _getOutputForType;
-    }
-}
-declare module "graph/cyto" {
-    import cytoscape from 'cytoscape';
-    import { Graph } from "core-shared/Graph";
-    import { ComfyNode } from "core-shared/Node";
-    export class Cyto {
-        graph: Graph;
-        cy: cytoscape.Core;
-        constructor(graph: Graph);
-        at: number;
-        addEdge: (edge: {
-            sourceUID: string;
-            targetUID: string;
-            input: string;
-        }) => void;
-        removeEdge: (id: string) => void;
-        trackNode: (node: ComfyNode<any>) => void;
-        animate: () => void;
-        setStyle: () => void;
-        mounted: boolean;
-        mount: (element: HTMLElement) => void;
-    }
-}
-declare module "core-shared/Graph" {
-    import type { ComfyPromptJSON } from "core-types/ComfyPrompt";
-    import type { WsMsgExecuting, WsMsgProgress } from "core-types/ComfyWsPayloads";
-    import type { ComfyNodeUID } from "core-types/NodeUID";
-    import type { VisEdges, VisNodes } from "ui/VisUI";
-    import { Cyto } from "graph/cyto";
-    import { ComfyNode } from "core-shared/Node";
-    import { Schema } from "core-shared/Schema";
-    export type RunMode = 'fake' | 'real';
-    /**
-     * graph abstraction
-     * - holds the nodes
-     * - holds the cyto graph
-     * - can be instanciated in both extension and webview
-     *   - so no link to workspace or run
-     */
-    export class Graph {
-        schema: Schema;
-        uid: string;
-        cyto?: Cyto;
-        registerNode: (node: ComfyNode<any>) => void;
-        get nodes(): ComfyNode<any>[];
-        nodesIndex: Map<string, ComfyNode<any>>;
-        isRunning: boolean;
-        /** return the coresponding comfy prompt  */
-        get json(): ComfyPromptJSON;
-        /** temporary proxy */
-        /** @internal pointer to the currently executing node */
-        currentExecutingNode: ComfyNode<any> | null;
-        /** @internal update the progress value of the currently focused onde */
-        onProgress: (msg: WsMsgProgress) => void;
-        /** @internal update pointer to the currently executing node */
-        onExecuting: (msg: WsMsgExecuting) => void;
-        constructor(schema: Schema, json?: ComfyPromptJSON);
-        private _nextUID;
-        getUID: () => string;
-        getNodeOrCrash: (nodeID: ComfyNodeUID) => ComfyNode<any>;
-        /** all images generated by nodes in this graph */
-        /** wether it should really send the prompt to the backend */
-        /** visjs JSON format (network visualisation) */
-        get JSON_forVisDataVisualisation(): {
-            nodes: VisNodes[];
-            edges: VisEdges[];
-        };
-    }
-}
-declare module "sdk/sdkEntrypoint" {
+declare module "sdk/IFlowExecution" {
     import type { ComfyUploadImageResult } from "core-types/ComfyWsPayloads";
     import type { Maybe } from "utils/ComfyUtils";
     import type { Wildcards } from "wildcards/wildcards";
-    export type { Workflow } from "core-shared/Workflow";
-    export type { Graph } from "core-shared/Graph";
     export interface IFlowExecution {
         randomSeed(): number;
         print(msg: string): void;
@@ -548,5 +549,10 @@ declare module "sdk/sdkEntrypoint" {
         PROMPT(): Promise<void>;
         wildcards: Wildcards;
     }
+}
+declare module "sdk/sdkEntrypoint" {
+    export type { Workflow } from "core-shared/Workflow";
+    export type { Graph } from "core-shared/Graph";
+    export type { IFlowExecution } from "sdk/IFlowExecution";
 }
 `

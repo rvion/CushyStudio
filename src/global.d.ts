@@ -1430,6 +1430,7 @@ export interface ComfySetup {
     UpscaleModelLoader(args: UpscaleModelLoader_input, uid?: ComfyNodeUID): UpscaleModelLoader
     ImageUpscaleWithModel(args: ImageUpscaleWithModel_input, uid?: ComfyNodeUID): ImageUpscaleWithModel
 }
+
 declare global {
     export const WORKFLOW: (
         //

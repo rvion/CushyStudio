@@ -5,7 +5,7 @@ import { cmd_openJS } from './shell/cmd_openJS'
 import { cmd_runcurrentscript } from './shell/cmd_runcurrentscript'
 import { cmd_openCatCodingWebview } from './shell/shell'
 import { FooProvider } from './shell/FooProvider'
-import { FrontManager } from './core-back/FrontManager'
+import { FrontWebview } from './core-back/FrontWebview'
 
 // https://github.com/microsoft/vscode-extension-samples/blob/main/fsconsumer-sample/src/extension.ts
 // This method is called when your extension is activated

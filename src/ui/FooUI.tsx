@@ -1,12 +1,18 @@
 import { VSCodeButton } from '@vscode/webview-ui-toolkit/react'
 import { vscode } from '../core-front/FrontState'
 import { observer } from 'mobx-react-lite'
-import { handleHowdyClick } from './main'
 
 export const FooUI = observer(function FooUI_() {
     return (
         <div>
             <div>🟢 Hello world 🔴 </div>
+            <div>{vscode.images.length} images</div>
+            {vscode.images.map((i) => (
+                <div key={i}>
+                    image:
+                    <img src={i} />
+                </div>
+            ))}
             <div>
                 received:
                 <ul>
@@ -21,3 +27,7 @@ export const FooUI = observer(function FooUI_() {
         </div>
     )
 })
+
+export function handleHowdyClick() {
+    vscode.postMessage({ type: 'say-hello', message: 'Hey there partner! 🤠' })
+}

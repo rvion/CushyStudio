@@ -9,7 +9,7 @@ import { Schema } from '../core-shared/Schema'
 import { Maybe, exhaust } from '../utils/ComfyUtils'
 import { Graph } from '../core-shared/Graph'
 import { loggerWeb } from '../logger/LoggerFront'
-import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
+import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
 
 /**
  * A utility wrapper around the acquireVsCodeApi() function, which enables
@@ -27,7 +27,11 @@ class FrontState {
 
     constructor() {
         if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
-        makeObservable(this, { received: observable })
+        makeObservable(this, {
+            received: observable,
+            images: observable,
+            status: observable,
+        })
         window.addEventListener('message', this.onMessageFromExtension)
     }
 
@@ -39,13 +43,18 @@ class FrontState {
 
     /** this is for the UI only; process should be very thin / small */
     onMessageFromExtension = (message: MessageEvent<MessageFromExtensionToWebview>) => {
-        console.log('RECEIVED THE MESSAGE', { message })
         // const xxx = JSON.stringify(message.data).slice(0, 100)
         // console.log(xxx)
         // alert('CAUGHT THE MESSAGE')
         // 1. enqueue the message
-        const msg: MessageFromExtensionToWebview = message.data
-        this.received.push(JSON.stringify(message.data))
+        const msg: MessageFromExtensionToWebview =
+            typeof message.data === 'string' //
+                ? JSON.parse(message.data)
+                : message.data
+
+        console.log('💬', msg.type) //, { message })
+
+        this.received.push(JSON.stringify(msg))
 
         // 2. process the info
         if (msg.type === 'ask-boolean') return
@@ -66,6 +75,12 @@ class FrontState {
             this.graph = new Graph(this.schema, msg.graph)
             return
         }
+
+        if (msg.type === 'images') {
+            this.images.push(...msg.uris)
+            return
+        }
+
         const graph = this.graph
         if (graph == null) throw new Error('missing graph')
 
@@ -88,21 +103,13 @@ class FrontState {
             return
         }
 
-        if (msg.type === 'images') {
-            this.images.push(...msg.uris)
-            return
-        }
-
         exhaust(msg)
     }
 
     /** Post a message (i.e. send arbitrary data) to the owner of the webview (the extension).
      * @remarks When running webview code inside a web browser, postMessage will instead log the given message to the console.
      */
-    public postMessage(
-        /** Abitrary data (must be JSON serializable) to send to the extension context. */
-        message: unknown,
-    ) {
+    public postMessage(message: MessageFromWebviewToExtension) {
         if (this.vsCodeApi) this.vsCodeApi.postMessage(message)
         else console.log(message)
     }

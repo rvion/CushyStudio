@@ -11,7 +11,6 @@ import ReactDOM from 'react-dom/client'
 
 // mixed back of overrides
 import './webview.css'
-import { vscode } from '../core-front/FrontState'
 import { FooUI } from './FooUI'
 
 // single import allowed before loading demos
@@ -32,12 +31,6 @@ import { FooUI } from './FooUI'
 
 // void start()
 
-export function handleHowdyClick() {
-    vscode.postMessage({
-        command: 'hello',
-        text: 'Hey there partner! 🤠',
-    })
-}
 ReactDOM.createRoot(
     //
     document.getElementById('root') as HTMLElement,

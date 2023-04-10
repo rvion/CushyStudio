@@ -38,4 +38,8 @@ export const sdkRewriteRules = [
 
     // monaco
     [`import * as monaco from 'monaco-editor';`, 'const monaco: any'],
+
+    // cytoscape
+    [`import cytoscape from 'cytoscape';`, ''],
+    [`cytoscape.Core`, 'any'],
 ]

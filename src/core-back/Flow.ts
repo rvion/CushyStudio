@@ -5,6 +5,7 @@ import * as vscode from 'vscode'
 import { loggerExt } from '../logger/LoggerBack'
 import { transpileCode } from './transpiler'
 import { FlowExecution } from './FlowExecution'
+import { FrontWebview } from './FrontWebview'
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
@@ -26,6 +27,8 @@ export class Flow {
         mode: RunMode = 'real',
     ): Promise<boolean> => {
         const start = Date.now()
+
+        // FrontManager.send({ type: 'schema', schema: this.file.workspace.schema.spec })
 
         loggerExt.info('🔥', '❓ running some flow')
         // this.focusedProject = this
@@ -53,6 +56,8 @@ export class Flow {
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
         const execution = new FlowExecution(this.file.workspace, this.file.uri, opts)
+        console.log('SETTIGN ACTIVE RUN')
+        this.file.workspace.activeRun = execution
         // await execution.save()
         // write the code to a file
         // this.runs.unshift(execution)
@@ -66,7 +71,7 @@ export class Flow {
 
         const WORKFLOW = (name: string, fn: any) => {
             loggerExt.info('🌠', `running WORKFLOW ${name}`)
-            fn(graph)
+            fn(graph, execution)
         }
 
         try {

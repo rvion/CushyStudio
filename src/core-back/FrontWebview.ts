@@ -1,8 +1,10 @@
 import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from 'vscode'
+import * as vscode from 'vscode'
 import { getUri } from '../fs/getUri'
 import { getNonce } from '../fs/getNonce'
 import { loggerExt } from '../logger/LoggerBack'
-import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
+import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
+import { exhaust } from '../utils/ComfyUtils'
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -14,18 +16,39 @@ import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensio
  * - Setting the HTML (and by proxy CSS/JavaScript) content of the webview panel
  * - Setting message listeners so data can be passed between the webview and extension
  */
-export class FrontManager {
-    public static currentPanel: FrontManager | undefined
-    private _disposables: Disposable[] = []
+export class FrontWebview {
+    // ------------------------------------------------------------------------------------------------------------
+    public static current: FrontWebview | undefined
+    public static createOrReveal(extensionUri: Uri /** directory containing the extension */) {
+        if (FrontWebview.current) return FrontWebview.current.panel.reveal(ViewColumn.Two)
 
-    static send(message: MessageFromExtensionToWebview) {
-        FrontManager.send_RAW(message)
+        // If a webview panel does not already exist create and show a new one
+        const panel = window.createWebviewPanel(
+            'showHelloWorld', // Panel view type
+            'Hello World', // Panel title
+            ViewColumn.Two, // The editor column the panel should be displayed in
+            {
+                retainContextWhenHidden: true,
+                enableCommandUris: true,
+                enableScripts: true, // Enable JavaScript in the webview
+                // Restrict the webview to only load resources from the `out` and `webview-ui/build` directories
+                localResourceRoots: [
+                    //
+                    Uri.joinPath(extensionUri, 'out'),
+                    Uri.joinPath(extensionUri, 'webview'),
+                ],
+            },
+        )
+
+        FrontWebview.current = new FrontWebview(panel, extensionUri)
     }
 
-    private static send_RAW(message: unknown) {
-        const curr = FrontManager.currentPanel
+    static sendMessage(message: MessageFromExtensionToWebview) {
+        const curr = FrontWebview.current
         if (curr == null) {
-            loggerExt.error('🔥', 'no webview panel to send message to')
+            const errMsg = `no webview panel to send message a ${message.type}`
+            loggerExt.error('🔥', errMsg)
+            vscode.window.showErrorMessage(errMsg)
             return
         }
         const msg = JSON.stringify(message) // .slice(0, 10)
@@ -33,17 +56,13 @@ export class FrontManager {
 
         curr.panel.webview.postMessage(msg)
     }
-
+    // ------------------------------------------------------------------------------------------------------------
+    private _disposables: Disposable[] = []
     webview: Webview
-    /**
-     * singleton class;
-     * do not use constructor directly;
-     * instanciate via static 'render' method
-     */
+
     private constructor(
         /** A reference to the webview panel */
         private panel: WebviewPanel,
-
         /** The URI of the directory containing the extension */
         private extensionUri: Uri,
     ) {
@@ -51,60 +70,22 @@ export class FrontManager {
         // Set an event listener to listen for when the panel is disposed (i.e. when the user closes
         // the panel or when the panel is closed programmatically)
         this.panel.onDidDispose(() => this.dispose(), null, this._disposables)
-
         // Set the HTML content for the webview panel
         this.webview.html = this._getWebviewContent()
-
         // Set an event listener to listen for messages passed from the webview context
-        this._setWebviewMessageListener(this.panel.webview)
+        panel.webview.onDidReceiveMessage(this.onMessageFromWebview, undefined, this._disposables)
     }
 
-    /**
-     * Renders the current webview panel if it exists otherwise a new webview panel
-     * will be created and displayed.
-     *
-     * @param extensionUri The URI of the directory containing the extension.
-     */
-    public static render(extensionUri: Uri) {
-        if (FrontManager.currentPanel) {
-            // If the webview panel already exists reveal it
-            FrontManager.currentPanel.panel.reveal(ViewColumn.Two)
-        } else {
-            // If a webview panel does not already exist create and show a new one
-            const panel = window.createWebviewPanel(
-                // Panel view type
-                'showHelloWorld',
-                // Panel title
-                'Hello World',
-                // The editor column the panel should be displayed in
-                ViewColumn.One,
-                // Extra panel configurations
-                {
-                    retainContextWhenHidden: true,
-                    enableCommandUris: true,
-                    // Enable JavaScript in the webview
-                    enableScripts: true,
-                    // Restrict the webview to only load resources from the `out` and `webview-ui/build` directories
-                    localResourceRoots: [
-                        //
-                        Uri.joinPath(extensionUri, 'out'),
-                        Uri.joinPath(extensionUri, 'webview'),
-                    ],
-                },
-            )
+    /** wether or not the webview is up and running and react is mounted */
+    ready = false
 
-            FrontManager.currentPanel = new FrontManager(panel, extensionUri)
-        }
-    }
-
-    /**
-     * Cleans up and disposes of webview resources when the webview panel is closed.
-     */
+    /** Cleans up and disposes of webview resources when the webview panel is closed. */
     public dispose() {
-        FrontManager.currentPanel = undefined
+        FrontWebview.current = undefined
 
         // Dispose of the current webview panel
         this.panel.dispose()
+        this.ready = false
 
         // Dispose of all disposables (i.e. commands) for the current webview panel
         while (this._disposables.length) {
@@ -149,38 +130,37 @@ export class FrontManager {
     `
     }
 
-    static with = <A>(fn: (current: FrontManager) => A): A => {
-        const curr = FrontManager.currentPanel
+    static with = <A>(fn: (current: FrontWebview) => A): A => {
+        const curr = FrontWebview.current
         if (curr == null) throw new Error('no current panel')
         return fn(curr)
     }
 
     getExtensionLocalUri = (pathList: string[]): Uri => getUri(this.webview, this.extensionUri, pathList)
 
-    /**
-     * Sets up an event listener to listen for messages passed from the webview context and
-     * executes code based on the message that is recieved.
-     *
-     * @param webview A reference to the extension webview
-     * @param context A reference to the extension context
-     */
-    private _setWebviewMessageListener(webview: Webview) {
-        webview.onDidReceiveMessage(
-            (message: any) => {
-                const command = message.command
-                const text = message.text
+    onMessageFromWebview = (msg: MessageFromWebviewToExtension) => {
+        // const command = smg.command
+        // const text = smg.text
 
-                switch (command) {
-                    case 'hello':
-                        // Code that should run in response to the hello message command
-                        window.showInformationMessage(text)
-                        return
-                    // Add more switch case statements here as more webview message commands
-                    // are created within the webview context (i.e. inside media/main.js)
-                }
-            },
-            undefined,
-            this._disposables,
-        )
+        if (msg.type === 'say-hello') {
+            window.showInformationMessage(msg.message)
+            return
+        }
+
+        if (msg.type === 'answer-boolean') {
+            // window.showInformationMessage(msg.message)
+            return
+        }
+        if (msg.type === 'answer-string') {
+            // window.showInformationMessage(msg.message)
+            return
+        }
+        if (msg.type === 'say-ready') {
+            // window.showInformationMessage(msg.message)
+            this.ready = true
+            return
+        }
+
+        exhaust(msg)
     }
 }
