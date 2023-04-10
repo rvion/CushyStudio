@@ -11,6 +11,7 @@ export type MessageFromExtensionToWebview_ =
     // user interractions
     | { type: 'ask-string'; message: string; default?: Maybe<string> }
     | { type: 'ask-boolean'; message: string; default?: Maybe<boolean> }
+    | { type: 'print'; message: string }
 
     // schema & prompt (needs to be sent so webview can draw the graph)
     | { type: 'schema'; schema: ComfySchemaJSON }
@@ -35,6 +36,7 @@ export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWeb
     if (msg.type === 'executing') return '📈'
     if (msg.type === 'executed') return '📉'
     if (msg.type === 'images') return '🖼️'
+    if (msg.type === 'print') return '💬'
     exhaust(msg)
     return '❓'
 }

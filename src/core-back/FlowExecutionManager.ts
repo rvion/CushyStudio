@@ -58,11 +58,12 @@ export class FlowExecutionManager {
     }
 
     runTestQueue = async () => {
-        loggerExt.info('🌠', `queue has ${this.queue} item(s)`)
+        loggerExt.info('🌠', `queue has ${this.queue.length} item(s)`)
         loggerExt.info('🌠', `opening webview`)
         this.workspace.ensureWebviewPanelIsOpened()
         // cmd_openCatCodingWebview(this.workspace.context)
         for (const { vsTestItem, cushyFlow } of this.queue) {
+            loggerExt.info('🌠', `🔴 STARTING RUN ${cushyFlow.flowName}`)
             this.run.appendOutput(`Running ${vsTestItem.id}\r\n`)
             if (this.run.token.isCancellationRequested) {
                 this.run.skipped(vsTestItem)
@@ -70,6 +71,7 @@ export class FlowExecutionManager {
                 this.run.started(vsTestItem)
                 await cushyFlow.run(vsTestItem, this.run, 'real')
             }
+            loggerExt.info('🌠', `🔴 RUN ${cushyFlow.flowName} IS DONE`)
 
             this.run.appendOutput(`Completed ${vsTestItem.id}\r\n`)
         }

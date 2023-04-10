@@ -2,36 +2,48 @@
 import { vscode } from '../core-front/FrontState'
 import { observer } from 'mobx-react-lite'
 import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
+import { Fragment } from 'react'
 
 export const FooUI = observer(function FooUI_() {
     return (
-        <div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
-            <div>{vscode.images.length} images</div>
+        <div>
+            {/* <div>{vscode.images.length} images</div> */}
             {/* {vscode.images.map((i) => (
                 <div key={i}>
                     image:
                     <img src={i} />
                 </div>
             ))} */}
-            <div>
-                received:
-                <ul>
-                    {vscode.received.map((i) => (
-                        <li key={i.uid}>
-                            {renderMessageFromExtensionAsEmoji(i)}
-                            {i.type}
-                            {i.type === 'images' && i.uris.length && (
-                                <div>
-                                    {i.uris.map((i) => (
-                                        <div key={i}>
-                                            <img src={i} />
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </li>
-                    ))}
-                </ul>
+            <div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
+                {vscode.received.map((msg) => (
+                    <Fragment key={msg.uid}>
+                        <div style={{ display: 'flex' }}>
+                            <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
+                            <div style={{ width: '5rem' }}>{msg.type}</div>
+                            <div
+                                style={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    width: '600px',
+                                    color: 'gray',
+                                    textOverflow: 'ellipsis',
+                                }}
+                            >
+                                {/*  */}
+                                {JSON.stringify(msg)}
+                            </div>
+                        </div>
+                        {msg.type === 'images' && msg.uris.length && (
+                            <div>
+                                {msg.uris.map((imgUri) => (
+                                    <div key={imgUri}>
+                                        <img src={imgUri} />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </Fragment>
+                ))}
             </div>
             <div>
                 <button onClick={handleHowdyClick}>Howdy!</button>

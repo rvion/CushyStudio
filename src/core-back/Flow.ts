@@ -1,11 +1,10 @@
+import type { Graph, RunMode } from '../core-shared/Graph'
 import type { CushyFile } from './CushyFile'
-import type { RunMode } from '../core-shared/Graph'
 
 import * as vscode from 'vscode'
 import { loggerExt } from '../logger/LoggerBack'
-import { transpileCode } from './transpiler'
 import { FlowExecution } from './FlowExecution'
-import { FrontWebview } from './FrontWebview'
+import { transpileCode } from './transpiler'
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
@@ -47,8 +46,8 @@ export class Flow {
         const codeTS = this.file.CONTENT
         // loggerExt.info('🔥', codeTS.slice(0, 1000) + '...')
         const codeJS = await transpileCode(codeTS)
-        // logger.info('🔥', codeJS.slice(0, 1000) + '...')
-        loggerExt.info('🔥', codeJS + '...')
+        loggerExt.info('🔥', codeJS)
+        // loggerExt.debug('🔥', codeJS + '...')
         if (codeJS == null) {
             loggerExt.info('🔥', '❌ no code to run')
             return false
@@ -69,13 +68,18 @@ export class Flow {
         // graph.runningMode = mode
         // this.MAIN = graph
 
-        const WORKFLOW = (name: string, fn: any) => {
-            loggerExt.info('🌠', `running WORKFLOW ${name}`)
-            fn(graph, execution)
+        type WorkflowFn = (graph: Graph, execution: FlowExecution) => Promise<any>
+        const workflows: { name: string; fn: WorkflowFn }[] = []
+        const WORKFLOW = (name: string, fn: (graph: Graph, execution: FlowExecution) => Promise<any>): void => {
+            loggerExt.info('🌠', `found WORKFLOW ${name}`)
+            workflows.push({ name, fn })
         }
 
         try {
             await ProjectScriptFn(WORKFLOW)
+            const good = workflows.find((i) => i.name === this.flowName)
+            if (good == null) throw new Error('no workflow found')
+            await good.fn(graph, execution)
             console.log('[✅] RUN SUCCESS')
             // this.isRunning = false
             const duration = Date.now() - start

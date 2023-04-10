@@ -78,7 +78,10 @@ export class FlowExecution {
     }
 
     /** display something in the console */
-    print = (msg: string) => loggerExt.info('🔥', msg)
+    print = (message: string) => {
+        loggerExt.info('🔥', message)
+        FrontWebview.sendMessage({ type: 'print', message, uid: getPayloadID() })
+    }
 
     /** upload a file from disk to the ComfyUI backend */
     uploadImgFromDisk = async (path: string): Promise<ComfyUploadImageResult> => {

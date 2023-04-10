@@ -105,6 +105,12 @@ class FrontState {
             return
         }
 
+        if (msg.type === 'print') {
+            // loggerWeb.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            // return graph.onExecuted(msg)
+            return
+        }
+
         exhaust(msg)
     }
 
