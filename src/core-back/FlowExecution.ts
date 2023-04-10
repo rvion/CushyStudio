@@ -107,7 +107,7 @@ export class FlowExecution {
     private sendPromp = async (): Promise<PromptExecution> => {
         // console.log('XX1')
         // console.log('XX2')
-        await sleep(2000)
+        // await sleep(2000)
         const currentJSON = deepCopyNaive(this.graph.json)
         FrontWebview.sendMessage({ type: 'schema', schema: this.workspace.schema.spec })
         FrontWebview.sendMessage({ type: 'prompt', graph: currentJSON })
