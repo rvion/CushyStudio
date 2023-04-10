@@ -48,23 +48,26 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
     })
 
     /** pointer to the currently executing node */
-    currentExecutingNode: ComfyNode<any> | null = null
+    // currentExecutingNode: ComfyNode<any> | null = null
 
     /** update the progress value of the currently focused onde */
-    onProgress = (msg: WsMsgProgress) => {
-        if (this.currentExecutingNode) {
-            this.currentExecutingNode.progress = msg.data
-        } else {
-            console.log('❌ no current executing node', msg)
-        }
-    }
+    // onProgress = (msg: WsMsgProgress) => {
+    //     if (this.currentExecutingNode) {
+    //         this.currentExecutingNode.progress = msg.data
+    //     } else {
+    //         console.log('❌ no current executing node', msg)
+    //     }
+    // }
 
     notifyEmptyPrompt = () => vscode.window.showWarningMessage('No work to do')
 
     /** update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {
         this._graph.onExecuting(msg)
-        if (msg.data.node == null) this._finish()
+        if (msg.data.node == null) {
+            this._finish()
+            return
+        }
         // {
         //    console.log(`executing "null" node => prompt is done`)
         //    2023-03-18 rvion: if I understand correctly, null here means there is no work to do.
@@ -74,10 +77,10 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
         //    return
         // }
 
-        const node = this._graph.getNodeOrCrash(msg.data.node)
-        if (this.currentExecutingNode) this.currentExecutingNode.status = 'done'
-        this.currentExecutingNode = node
-        node.status = 'executing'
+        // 🔴 const node = this._graph.getNodeOrCrash(msg.data.node)
+        // 🔴 if (this.currentExecutingNode) this.currentExecutingNode.status = 'done'
+        // 🔴 this.currentExecutingNode = node
+        // 🔴 node.status = 'executing'
     }
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */

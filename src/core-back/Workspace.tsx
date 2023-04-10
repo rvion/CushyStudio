@@ -4,7 +4,7 @@ import * as vscode from 'vscode'
 import * as WS from 'ws'
 import type { ImportCandidate } from '../importers/ImportCandidate'
 import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
-import type { Maybe } from '../utils/ComfyUtils'
+import { Maybe, sleep } from '../utils/ComfyUtils'
 import { FlowExecution } from './FlowExecution'
 import type { FlowExecutionStep } from '../core-types/FlowExecutionStep'
 
@@ -76,6 +76,9 @@ export class Workspace {
     /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
     get relativeCacheFolderPath(): RelativePath {
         return asRelativePath('cache')
+    }
+    get cacheFolderURI(): vscode.Uri {
+        return this.resolve(this.relativeCacheFolderPath)
     }
 
     runs: FlowExecution[] = []
@@ -250,7 +253,24 @@ export class Workspace {
 
     /** ensure webview is opened */
     ensureWebviewPanelIsOpened = () => {
-        FrontWebview.createOrReveal(this.context.extensionUri)
+        FrontWebview.createOrReveal(this)
+    }
+
+    forwardImagesToFrontV1 = async (images: GeneratedImage[]) => {
+        await Promise.all(images.map((i) => i.savedPromise))
+        await sleep(200)
+        const uris = FrontWebview.with((curr) => {
+            return images.map((img: GeneratedImage) => {
+                return curr.webview.asWebviewUri(img.uri).toString()
+            })
+        })
+        loggerExt.info('💿', 'all images saved: sending to front: ' + uris.join(', '))
+        FrontWebview.sendMessage({ type: 'images', uris: uris })
+    }
+
+    forwardImagesToFrontV2 = (images: GeneratedImage[]) => {
+        const uris = images.map((i) => i.comfyURL)
+        FrontWebview.sendMessage({ type: 'images', uris })
     }
 
     onMessage = (e: WS.MessageEvent) => {
@@ -261,6 +281,7 @@ export class Workspace {
         // if (sent)
 
         // Proxy any websocket message directly to the webview
+        loggerExt.info('🐰', `> received ${msg.type}`)
         FrontWebview.sendMessage(msg)
 
         if (msg.type === 'status') {
@@ -268,11 +289,11 @@ export class Workspace {
             this.status = msg.data.status
             return
         }
-
         const currentRun: Maybe<FlowExecution> = this.activeRun
         if (currentRun == null) {
             loggerExt.error('🐰', `❌ received ${msg.type} but currentRun is null`)
-            return console.log(`❌ received ${msg.type} but currentRun is null`)
+            return
+            // return console.log(`❌ received ${msg.type} but currentRun is null`)
         }
 
         // ensure current step is a prompt
@@ -293,14 +314,17 @@ export class Workspace {
         if (msg.type === 'executed') {
             loggerExt.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             const images = promptStep.onExecuted(msg)
-            const uris = FrontWebview.with((curr) => {
-                return images.map((img: GeneratedImage) => {
-                    return curr.webview.asWebviewUri(img.uri).toString()
-                })
-            })
-            console.log('📸', 'uris', uris)
-            FrontWebview.sendMessage({ type: 'images', uris })
-            return images
+            this.forwardImagesToFrontV2(images)
+            return
+            // await Promise.all(images.map(i => i.savedPromise))
+            // const uris = FrontWebview.with((curr) => {
+            //     return images.map((img: GeneratedImage) => {
+            //         return curr.webview.asWebviewUri(img.uri).toString()
+            //     })
+            // })
+            // console.log('📸', 'uris', uris)
+            // FrontWebview.sendMessage({ type: 'images', uris })
+            // return images
         }
 
         // unknown message payload ?

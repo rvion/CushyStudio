@@ -106,7 +106,6 @@ export class FlowExecution {
 
     private sendPromp = async (): Promise<PromptExecution> => {
         // console.log('XX1')
-        // console.log('🔴', toJS(this.graph.json))
         // console.log('XX2')
         await sleep(2000)
         const currentJSON = deepCopyNaive(this.graph.json)
@@ -141,7 +140,7 @@ export class FlowExecution {
             body: JSON.stringify(out),
         })
 
-        console.log('🔴', res.status, res.statusText)
+        console.log('prompt status', res.status, res.statusText)
         // await sleep(1000)
         return step
     }

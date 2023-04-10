@@ -29,5 +29,5 @@ export const FooUI = observer(function FooUI_() {
 })
 
 export function handleHowdyClick() {
-    vscode.postMessage({ type: 'say-hello', message: 'Hey there partner! 🤠' })
+    vscode.sendMessage({ type: 'say-hello', message: 'Hey there partner! 🤠' })
 }

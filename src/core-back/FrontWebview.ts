@@ -1,3 +1,4 @@
+import type { Workspace } from './Workspace'
 import { Disposable, Webview, WebviewPanel, window, Uri, ViewColumn } from 'vscode'
 import * as vscode from 'vscode'
 import { getUri } from '../fs/getUri'
@@ -18,11 +19,15 @@ import { exhaust } from '../utils/ComfyUtils'
  */
 export class FrontWebview {
     // ------------------------------------------------------------------------------------------------------------
-    public static current: FrontWebview | undefined
-    public static createOrReveal(extensionUri: Uri /** directory containing the extension */) {
+    static current: FrontWebview | undefined
+    static createOrReveal(
+        workspace: Workspace,
+        // extensionUri: Uri /** directory containing the extension */,
+    ) {
         if (FrontWebview.current) return FrontWebview.current.panel.reveal(ViewColumn.Two)
 
         // If a webview panel does not already exist create and show a new one
+        const extensionUri = workspace.context.extensionUri
         const panel = window.createWebviewPanel(
             'showHelloWorld', // Panel view type
             'Hello World', // Panel title
@@ -32,27 +37,40 @@ export class FrontWebview {
                 enableCommandUris: true,
                 enableScripts: true, // Enable JavaScript in the webview
                 // Restrict the webview to only load resources from the `out` and `webview-ui/build` directories
-                localResourceRoots: [
-                    //
-                    Uri.joinPath(extensionUri, 'out'),
-                    Uri.joinPath(extensionUri, 'webview'),
-                ],
+                // localResourceRoots: [
+                //     //
+                //     Uri.joinPath(extensionUri, 'out'),
+                //     Uri.joinPath(extensionUri, 'webview'),
+                //     workspace.cacheFolderURI,
+                // ],
             },
         )
 
-        FrontWebview.current = new FrontWebview(panel, extensionUri)
+        FrontWebview.current = new FrontWebview(workspace, panel, extensionUri)
+    }
+
+    static queue: MessageFromExtensionToWebview[] = []
+    flushQueue = () => {
+        const queue = FrontWebview.queue
+        loggerExt.info('🔥', `flushing queue of ${queue.length} messages`)
+        queue.forEach((msg) => FrontWebview.sendMessage(msg))
+        queue.length = 0
     }
 
     static sendMessage(message: MessageFromExtensionToWebview) {
         const curr = FrontWebview.current
-        if (curr == null) {
-            const errMsg = `no webview panel to send message a ${message.type}`
-            loggerExt.error('🔥', errMsg)
-            vscode.window.showErrorMessage(errMsg)
+        if (curr == null || !curr.ready) {
+            loggerExt.info('🔥', `queueing [${message.type}]`)
+            FrontWebview.queue.push(message)
+            // const errMsg = `no webview panel to send message a ${message.type}`
+            // loggerExt.error('🔥', errMsg)
+            // vscode.window.showErrorMessage(errMsg)
             return
         }
+
         const msg = JSON.stringify(message) // .slice(0, 10)
-        loggerExt.info('🔥', 'sending message to webview panel: ' + msg)
+        loggerExt.info('🔥', `sending ${message.type} to webview`)
+        loggerExt.debug('🔥', `sending ` + msg)
 
         curr.panel.webview.postMessage(msg)
     }
@@ -61,6 +79,7 @@ export class FrontWebview {
     webview: Webview
 
     private constructor(
+        private workspace: Workspace,
         /** A reference to the webview panel */
         private panel: WebviewPanel,
         /** The URI of the directory containing the extension */
@@ -112,13 +131,13 @@ export class FrontWebview {
         const stylesUri = this.getExtensionLocalUri(['webview', 'assets', 'index.css'])
         const scriptUri = this.getExtensionLocalUri(['webview', 'assets', 'index.js'])
         const nonce = getNonce()
+
         return /*html*/ `
       <!DOCTYPE html>
       <html lang="en">
         <head>
           <meta charset="UTF-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this.webview.cspSource}; script-src 'nonce-${nonce}';">
           <link rel="stylesheet" type="text/css" href="${stylesUri}">
           <title>Cushy Studio</title>
         </head>
@@ -128,6 +147,18 @@ export class FrontWebview {
         </body>
       </html>
     `
+        // const TESTIMG = this.webview.asWebviewUri(
+        //     Uri.parse(`/Users/loco/csdemo/cache/Run 20230410005255/6CqVfw8ad2qZ4zLOXfEBx_Qv1OGsDs4qFKhPmEYqwkF.png`),
+        // )
+        // const context = this.workspace.context
+        // const onDiskPath = vscode.Uri.joinPath(context.extensionUri, 'resources', 'CushyLogo.png')
+        // const catGifSrc = this.webview.asWebviewUri(onDiskPath)
+        // const TESTIMG2 = this.webview.asWebviewUri(
+        //     Uri.parse(`/Users/loco/csdemo/cache/Run 20230410005255/6CqVfw8ad2qZ4zLOXfEBx_Qv1OGsDs4qFKhPmEYqwkF.png`),
+        // )
+        // <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this.webview.cspSource}; script-src 'nonce-${nonce}';">
+        // <img src="${TESTIMG}"/>
+        // <img src="${catGifSrc}" width="300" />
     }
 
     static with = <A>(fn: (current: FrontWebview) => A): A => {
@@ -158,6 +189,7 @@ export class FrontWebview {
         if (msg.type === 'say-ready') {
             // window.showInformationMessage(msg.message)
             this.ready = true
+            this.flushQueue()
             return
         }
 

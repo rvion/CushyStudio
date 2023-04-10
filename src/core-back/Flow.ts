@@ -22,8 +22,8 @@ export class Flow {
 
     run = async (
         //
-        item: vscode.TestItem,
-        options: vscode.TestRun,
+        vsTestItem: vscode.TestItem,
+        vsTestRun: vscode.TestRun,
         mode: RunMode = 'real',
     ): Promise<boolean> => {
         const start = Date.now()
@@ -45,7 +45,7 @@ export class Flow {
         // const activeURI = activeDocument.uri
         // logger.info('🔥', activeURI.toString())
         const codeTS = this.file.CONTENT
-        loggerExt.info('🔥', codeTS.slice(0, 1000) + '...')
+        // loggerExt.info('🔥', codeTS.slice(0, 1000) + '...')
         const codeJS = await transpileCode(codeTS)
         // logger.info('🔥', codeJS.slice(0, 1000) + '...')
         loggerExt.info('🔥', codeJS + '...')
@@ -79,7 +79,7 @@ export class Flow {
             console.log('[✅] RUN SUCCESS')
             // this.isRunning = false
             const duration = Date.now() - start
-            options.passed(item, duration)
+            vsTestRun.passed(vsTestItem, duration)
             return true
         } catch (error) {
             console.log(error)
@@ -87,12 +87,12 @@ export class Flow {
             loggerExt.error('🌠', (error as any as Error).message)
             loggerExt.error('🌠', 'RUN FAILURE')
             const message = new vscode.TestMessage(
-                new vscode.MarkdownString().appendMarkdown(`### Expected ${item.label}`),
+                new vscode.MarkdownString().appendMarkdown(`### Expected ${vsTestItem.label}`),
                 // .appendCodeblock(String(this.expected), 'text'),
             )
-            message.location = new vscode.Location(item.uri!, item.range!)
+            message.location = new vscode.Location(vsTestItem.uri!, vsTestItem.range!)
             const duration = Date.now() - start
-            options.failed(item, message, duration)
+            vsTestRun.failed(vsTestItem, message, duration)
             return false
         }
     }

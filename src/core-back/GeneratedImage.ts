@@ -8,6 +8,7 @@ import fetch from 'node-fetch'
 import * as path from 'path'
 import { nanoid } from 'nanoid'
 import { asRelativePath, RelativePath } from '../fs/pathUtils'
+import { loggerExt } from '../logger/LoggerBack'
 
 /** Cushy wrapper around ComfyImageInfo */
 export class GeneratedImage {
@@ -25,7 +26,7 @@ export class GeneratedImage {
         public data: ComfyImageInfo,
     ) {
         this.workspace = prompt.workspace
-        this.downloadImageAndSaveToDisk()
+        this.savedPromise = this.downloadImageAndSaveToDisk()
     }
 
     /** url to acces the image */
@@ -41,6 +42,7 @@ export class GeneratedImage {
 
     /** true if file exists on disk; false otherwise */
     saved = false
+    savedPromise: Promise<true>
 
     /** @internal folder in which the image should be saved */
     private get folder(): RelativePath {
@@ -62,9 +64,18 @@ export class GeneratedImage {
         return this.workspace.resolve(this.filePath)
     }
 
+    // downloadImageAndSaveToDisk = () => {
+    //     return new Promise((resolve, rejects) => {
+    //         this._downloadImageAndSaveToDisk() //
+    //             .then(resolve)
+    //             .catch(rejects)
+    //     })
+    // }
+
     /** @internal */
-    downloadImageAndSaveToDisk = async () => {
-        if (this.saved) return
+    downloadImageAndSaveToDisk = async (): Promise<true> => {
+        if (this.saved) return true
+
         const response = await fetch(this.comfyURL, {
             headers: { 'Content-Type': 'image/png' },
             method: 'GET',
@@ -73,9 +84,10 @@ export class GeneratedImage {
         const binArr = await response.buffer()
         // const binArr = new Uint16Array(numArr)
 
-        // 🔴
         this.workspace.writeBinaryFile(this.filePath, binArr)
+        loggerExt.info('🌠', '🖼️ image saved')
         this.saved = true
+        return true
     }
 
     /** this is such a bad workaround but 🤷‍♂️ */

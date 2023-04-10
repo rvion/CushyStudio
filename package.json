@@ -71,27 +71,27 @@
         "commands": [
             {
                 "command": "cushystudio.openwebview",
-                "title": "Hello World (React + Vite): Show"
+                "title": "cushystudio.openwebview | Hello World (React + Vite): Show"
             },
             {
                 "command": "cushystudio.helloWorld",
-                "title": "Hello World"
+                "title": "cushystudio.helloWorld | Hello world"
             },
             {
                 "command": "cushystudio.runcurrentscript",
-                "title": "run current script"
+                "title": "cushystudio.runcurrentscript | Run current script"
             },
             {
                 "command": "cushystudio.connect",
-                "title": "Connect to ComfyUI"
+                "title": "cushystudio.connect | Connect"
             },
             {
                 "command": "cushystudio.samplewebview",
-                "title": "Hello World"
+                "title": "cushystudio.samplewebview | Open sample webview "
             },
             {
                 "command": "cushystudio.openjs",
-                "title": "Open JS"
+                "title": "cushystudio.openjs | Open JS"
             }
         ]
     },

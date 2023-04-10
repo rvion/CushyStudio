@@ -66,6 +66,7 @@ export class ResilientWebSocketClient {
 
         if (this.options.onMessage) {
             ws.onmessage = (event: MessageEvent) => {
+                console.log(event)
                 this.options.onMessage(event)
             }
         }

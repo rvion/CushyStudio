@@ -3,7 +3,7 @@ import { Workspace } from './core-back/Workspace'
 import { cmd_helloworld } from './shell/cmd_helloworld'
 import { cmd_openJS } from './shell/cmd_openJS'
 import { cmd_runcurrentscript } from './shell/cmd_runcurrentscript'
-import { cmd_openCatCodingWebview } from './shell/shell'
+import { cmd_openCatCodingWebview } from './shell/cmd_openCatCodingWebview'
 import { FooProvider } from './shell/FooProvider'
 import { FrontWebview } from './core-back/FrontWebview'
 
