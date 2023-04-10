@@ -32,21 +32,21 @@ export class Logger {
     public info(category: LogCategory, message: string): void {
         if (this.level > LogLevel.INFO) return
         this.addToLogHistory(LogLevel.INFO, category, message)
-        this.chanel?.appendLine(`[INFO] ${message}`)
+        this.chanel?.appendLine(`${category} ℹ️ ${message}`)
         console.info(`[INFO] ${message}`)
     }
 
     public warn(category: LogCategory, message: string): void {
         if (this.level > LogLevel.WARN) return
         this.addToLogHistory(LogLevel.WARN, category, message)
-        this.chanel?.appendLine(`[WARNING] ${message}`)
+        this.chanel?.appendLine(`${category} 🔶 ${message}`)
         console.warn(`[WARNING] ${message}`)
     }
 
     public error(category: LogCategory, message: string): void {
         if (this.level > LogLevel.ERROR) return
         this.addToLogHistory(LogLevel.ERROR, category, message)
-        this.chanel?.appendLine(`[ERROR] ${message}`)
+        this.chanel?.appendLine(`${category} ❌ ${message}`)
         console.error(`[ERROR] ${message}`)
     }
 }
