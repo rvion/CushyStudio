@@ -37,6 +37,7 @@ export class Graph {
     get json(): ComfyPromptJSON {
         const json: ComfyPromptJSON = {}
         for (const node of this.nodes) {
+            if (node.disabled) continue
             json[node.uid] = node.json
             // if (node.$schema.name === 'VAEEncode') {
             //     console.log('🔥', node.$schema.name)

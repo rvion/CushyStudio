@@ -199,15 +199,6 @@ declare module "core-shared/Schema" {
 declare module "utils/ComfyUtils" {
     export const exhaust: (x: never) => never;
     export const sleep: (ms: number) => Promise<unknown>;
-    /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tag> = O & {
-        __tag?: Tag;
-    };
-    /** same as Tagged, but even scriter */
-    export type Branded<O, Brand> = O & {
-        __brand: Brand;
-    };
-    export type Maybe<T> = T | null | undefined;
     export const deepCopyNaive: <T>(x: T) => T;
 }
 declare module "core-shared/Colors" {
@@ -235,6 +226,8 @@ declare module "core-shared/Node" {
         status: 'executing' | 'done' | 'error' | 'waiting' | null;
         get isExecuting(): boolean;
         get statusEmoji(): "" | "🔥" | "✅" | "❌" | "⏳";
+        disabled: boolean;
+        disable(): void;
         get inputs(): ComfyNode_input;
         json: ComfyNodeJSON;
         /** update a node */
@@ -326,6 +319,25 @@ declare module "core-shared/Graph" {
             edges: VisEdges[];
         };
     }
+}
+declare module "core-back/LATER" {
+    export type LATER<T> = any;
+}
+declare module "utils/types" {
+    /** usefull to catch most *units* type errors */
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
+    };
+    /** same as Tagged, but even scriter */
+    export type Branded<O, Brand> = O & {
+        __brand: Brand;
+    };
+    export type Maybe<T> = T | null | undefined;
+}
+declare module "fs/BrandedPaths" {
+    import type { Branded } from "utils/types";
+    export type RelativePath = Branded<string, 'WorkspaceRelativePath'>;
+    export type AbsolutePath = Branded<string, 'Absolute'>;
 }
 declare module "wildcards/wildcards" {
     export type Wildcards = {
@@ -537,17 +549,31 @@ declare module "wildcards/wildcards" {
     export const wildcards: Wildcards;
 }
 declare module "sdk/IFlowExecution" {
+    import type * as foo from 'foo'
     import type { ComfyUploadImageResult } from "core-types/ComfyWsPayloads";
-    import type { Maybe } from "utils/ComfyUtils";
+    import type { AbsolutePath, RelativePath } from "fs/BrandedPaths";
+    import type { Maybe } from "utils/types";
     import type { Wildcards } from "wildcards/wildcards";
     export interface IFlowExecution {
         randomSeed(): number;
         print(msg: string): void;
-        uploadImgFromDisk(path: string): Promise<ComfyUploadImageResult>;
+        resolveRelative(path: string): RelativePath;
+        resolveAbsolute(path: string): AbsolutePath;
+        uploadWorkspaceFile(path: string): Promise<ComfyUploadImageResult>;
+        uploadWorkspaceFileAndLoad(path: RelativePath): Promise<foo.LoadImage>;
+        uploadAnyFile(path: string): Promise<ComfyUploadImageResult>;
+        uploadURL(url: string): Promise<ComfyUploadImageResult>;
         askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>;
         askString(msg: string, def?: Maybe<string>): Promise<string>;
-        PROMPT(): Promise<void>;
+        PROMPT(): Promise<IPromptExecution>;
         wildcards: Wildcards;
+        generatedImages: IGeneratedImage[];
+    }
+    export interface IPromptExecution {
+        images: IGeneratedImage[];
+    }
+    export interface IGeneratedImage {
+        get relativePath(): string;
     }
 }
 declare module "sdk/sdkEntrypoint" {

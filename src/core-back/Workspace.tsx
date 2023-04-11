@@ -13,7 +13,8 @@ import { makeAutoObservable } from 'mobx'
 import { CushyLayoutState } from '../layout/LayoutState'
 import { loggerExt } from '../logger/LoggerBack'
 import { Template } from '../templates/Template'
-import { asRelativePath, RelativePath } from '../fs/pathUtils'
+import { asRelativePath } from '../fs/pathUtils'
+import { RelativePath } from '../fs/BrandedPaths'
 import { sdkTemplate } from '../sdk/sdkTemplate'
 import { defaultScript } from '../templates/defaultProjectCode'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
@@ -31,7 +32,8 @@ import { FlowExecutionManager } from './FlowExecutionManager'
 import { FrontWebview } from './FrontWebview'
 import { GeneratedImage } from './GeneratedImage'
 import { getPayloadID } from '../core-shared/PayloadID'
-
+import FormData from 'form-data'
+import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 export type WorkspaceConfigJSON = {
     version: 2
     comfyWSURL: string
@@ -330,24 +332,20 @@ export class Workspace {
         throw new Error('Unknown message type: ' + msg)
     }
 
-    private RANDOM_IMAGE_URL = 'http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output'
-
     /** attempt to convert an url to a Blob */
-    private getUrlAsBlob = async (url: string = this.RANDOM_IMAGE_URL) => {
+    getUrlAsBlob = async (url: string = RANDOM_IMAGE_URL) => {
         const response = await fetch(url, {
             headers: { 'Content-Type': 'image/png' },
             method: 'GET',
             // responseType: ResponseType.Binary,
         })
         const blob = await response.blob()
+        // console.log('📦', 'typeof blob', typeof blob)
+        // console.log('📦', 'blob.constructor.name', blob.constructor.name)
+        // console.log('📦', 'blob', blob)
         // const binArr = new Uint8Array(numArr)
         return blob
         // return new Blob([binArr], { type: 'image/png' })
-    }
-
-    uploadURL = async (url: string = this.RANDOM_IMAGE_URL): Promise<ComfyUploadImageResult> => {
-        const blob = await this.getUrlAsBlob(url)
-        return this.uploadUIntArrToComfy(blob)
     }
 
     createProjectAndFocustIt = (
@@ -380,37 +378,6 @@ export class Workspace {
         // const binArr = new Uint16Array(numArr)
         // await fs.writeBinaryFile('CushyStudio/images/test.png', binArr, { dir: fs.Dir.Document })
         // return 'ok'
-    }
-
-    /** upload an image present on disk to ComfyServer */
-    uploadImgFromDisk = async (path: string): Promise<ComfyUploadImageResult> => {
-        return Promise.reject('🔴 BROKEN')
-        // const ui8arr = await fs.readBinaryFile(path)
-        // return this.uploadUIntArrToComfy(ui8arr)
-    }
-
-    // lastUpload: Maybe<string> = null
-    /** upload an Uint8Array buffer as png to ComfyServer */
-    uploadUIntArrToComfy = async (ui8arr: Blob): Promise<ComfyUploadImageResult> => {
-        const uploadURL = this.serverHostHTTP + '/upload/image'
-        const form = new FormData()
-        form.append('image', ui8arr, 'upload.png')
-        const resp = await fetch(uploadURL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'multipart/form-data' },
-            body: form,
-            // body: Body.form({
-            //     image: {
-            //         file: ui8arr,
-            //         mime: 'image/png',
-            //         fileName: 'upload.png',
-            //     },
-            // }),
-        })
-        const result: ComfyUploadImageResult = (await resp.json()) as any
-        console.log({ 'resp.data': result })
-        // this.lastUpload = new CushyImage(this, { filename: result.name, subfolder: '', type: 'output' }).url
-        return result
     }
 
     get serverHostHTTP() {

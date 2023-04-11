@@ -1,4 +1,4 @@
-import { AbsolutePath } from '../fs/pathUtils'
+import { AbsolutePath } from '../fs/BrandedPaths'
 
 export type TauriDropEvent = {
     event: 'tauri://file-drop'

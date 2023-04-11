@@ -6,7 +6,7 @@ WORKFLOW('demo4-cnet', async (graph, flow) => {
     // setup initial image
     const positive = graph.CLIPTextEncode({ text: 'masterpiece, 1girl, walking, alone, white_background', clip: ckpt })
     const control_net = graph.ControlNetLoader({ control_net_name: 'control_openpose-fp16.safetensors' })
-    const upload = await flow.uploadImgFromDisk(`/Users/loco/dev/CushyStudio/workspace/images/test-0.png`)
+    const upload = await flow.uploadWorkspaceFile(flow.resolveRelative(`images/test-0.png`))
     // @ts-ignore
     const img = graph.LoadImage({ image: upload.name })
     const control_net_apply = graph.ControlNetApply({ conditioning: positive, control_net, image: img, strength: 1 })
@@ -34,7 +34,7 @@ WORKFLOW('demo4-cnet', async (graph, flow) => {
         sampler.set({ latent_image: _vaeEncode })
 
         // use connect frame as input
-        const nextGuideUpload = await flow.uploadImgFromDisk(`/Users/loco/dev/CushyStudio/workspace/images/test-${i}.png`)
+        const nextGuideUpload = await flow.uploadWorkspaceFile(flow.resolveRelative(`/images/test-${i}.png`))
         // @ts-ignore
         const nextGuide = graph.LoadImage({ image: nextGuideUpload.name })
         control_net_apply.set({ image: nextGuide })

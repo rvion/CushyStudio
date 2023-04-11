@@ -7,7 +7,8 @@ import type { Workspace } from './Workspace'
 import fetch from 'node-fetch'
 import * as path from 'path'
 import { nanoid } from 'nanoid'
-import { asRelativePath, RelativePath } from '../fs/pathUtils'
+import { asRelativePath } from '../fs/pathUtils'
+import { RelativePath } from '../fs/BrandedPaths'
 import { loggerExt } from '../logger/LoggerBack'
 
 /** Cushy wrapper around ComfyImageInfo */
@@ -16,6 +17,11 @@ export class GeneratedImage {
 
     convertToImageInput = (): string => {
         return `../outputs/${this.data.filename}`
+        // return this.LoadImage({ image: name })
+    }
+
+    get relativePath(): string {
+        return `./outputs/${this.data.filename}`
         // return this.LoadImage({ image: name })
     }
 
@@ -92,7 +98,7 @@ export class GeneratedImage {
 
     /** this is such a bad workaround but 🤷‍♂️ */
     uploadAsNamedInput = async (): Promise<string> => {
-        const res = await this.workspace.uploadURL(this.comfyURL)
+        const res = await this.prompt.run.uploadURL(this.comfyURL)
         console.log(`[makeAvailableAsInput]`, res)
         this.inputPath = res.name
         return res.name

@@ -91,7 +91,8 @@ export class Flow {
             loggerExt.error('🌠', (error as any as Error).message)
             loggerExt.error('🌠', 'RUN FAILURE')
             const message = new vscode.TestMessage(
-                new vscode.MarkdownString().appendMarkdown(`### Expected ${vsTestItem.label}`),
+                new vscode.MarkdownString().appendMarkdown(`### FAILURE: ${vsTestItem.label}`),
+
                 // .appendCodeblock(String(this.expected), 'text'),
             )
             message.location = new vscode.Location(vsTestItem.uri!, vsTestItem.range!)

@@ -42,4 +42,8 @@ export const sdkRewriteRules = [
     // cytoscape
     [`import cytoscape from 'cytoscape';`, ''],
     [`cytoscape.Core`, 'any'],
+
+    // later
+    ['import { LATER } from "core-back/LATER";', `import type * as foo from 'foo'`],
+    [`LATER<'LoadImage'>`, 'foo.LoadImage'],
 ]

@@ -1,12 +1,14 @@
 import * as vscode from 'vscode'
 import fetch from 'node-fetch'
+import FormData from 'form-data'
 // import type { Project } from './Project'
 
 import * as path from 'path'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 // import { Cyto } from '../graph/cyto' 🔴🔴
-import { asRelativePath, RelativePath } from '../fs/pathUtils'
+import { asAbsolutePath, asRelativePath } from '../fs/pathUtils'
+import { AbsolutePath, RelativePath } from '../fs/BrandedPaths'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../core-types/ComfyWsPayloads'
 import { Graph } from '../core-shared/Graph'
@@ -22,9 +24,12 @@ import { loggerExt } from '../logger/LoggerBack'
 import { FrontWebview } from './FrontWebview'
 import { wildcards } from '../wildcards/wildcards'
 import { getPayloadID } from '../core-shared/PayloadID'
+import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
+import { IFlowExecution } from '../sdk/IFlowExecution'
+import { LATER } from './LATER'
 
 /** script exeuction instance */
-export class FlowExecution {
+export class FlowExecution implements IFlowExecution {
     /** creation "timestamp" in YYYYMMDDHHMMSS format */
     createdAt = getYYYYMMDDHHMMSS()
 
@@ -84,8 +89,48 @@ export class FlowExecution {
     }
 
     /** upload a file from disk to the ComfyUI backend */
-    uploadImgFromDisk = async (path: string): Promise<ComfyUploadImageResult> => {
-        return this.workspace.uploadImgFromDisk(path)
+    // uploadImgFromDisk = async (path: string): Promise<ComfyUploadImageResult> => {
+    //     return this.workspace.uploadImgFromDisk(asRelativePath(path))
+    // }
+
+    resolveRelative = (path: string): RelativePath => asRelativePath(path)
+
+    resolveAbsolute = (path: string): AbsolutePath => asAbsolutePath(path)
+
+    /** upload an image present on disk to ComfyServer */
+    uploadAnyFile = async (path: AbsolutePath): Promise<ComfyUploadImageResult> => {
+        const uri = vscode.Uri.parse(path)
+        const ui8arr: Uint8Array = await vscode.workspace.fs.readFile(uri)
+        return this.uploadUIntArrToComfy(ui8arr)
+    }
+
+    /** upload an image present on disk to ComfyServer */
+    uploadWorkspaceFile = async (path: RelativePath): Promise<ComfyUploadImageResult> => {
+        const uri = this.workspace.resolve(path)
+        const ui8arr: Uint8Array = await vscode.workspace.fs.readFile(uri)
+        return await this.uploadUIntArrToComfy(ui8arr)
+    }
+
+    uploadWorkspaceFileAndLoad = async (path: RelativePath): Promise<LATER<'LoadImage'>> => {
+        const upload = await this.uploadWorkspaceFile(path)
+        const img = (this.graph as any).LoadImage({ image: upload.name })
+        return img
+    }
+
+    uploadURL = async (url: string = RANDOM_IMAGE_URL): Promise<ComfyUploadImageResult> => {
+        const blob = await this.workspace.getUrlAsBlob(url)
+        return this.uploadUIntArrToComfy(blob)
+    }
+
+    private uploadUIntArrToComfy = async (blob: Blob | Uint8Array): Promise<ComfyUploadImageResult> => {
+        const uploadURL = this.workspace.serverHostHTTP + '/upload/image'
+        const form = new FormData()
+        form.append('image', blob, 'upload.png')
+        const resp = await fetch(uploadURL, { method: 'POST', headers: form.getHeaders(), body: form })
+        const result: ComfyUploadImageResult = (await resp.json()) as any
+        console.log({ 'resp.data': result })
+        // this.lastUpload = new CushyImage(this, { filename: result.name, subfolder: '', type: 'output' }).url
+        return result
     }
 
     // --------------------

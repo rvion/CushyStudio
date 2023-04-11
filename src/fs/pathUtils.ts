@@ -1,10 +1,7 @@
-import type { Branded } from '../utils/types'
+import type { AbsolutePath, RelativePath } from './BrandedPaths'
 
 export * as pathe from 'pathe'
 import * as pathe from 'pathe'
-
-export type RelativePath = Branded<string, 'WorkspaceRelativePath'>
-export type AbsolutePath = Branded<string, 'Absolute'>
 
 /** brand a path as an absolute path after basic checks */
 export const asAbsolutePath = (path: string): AbsolutePath => {

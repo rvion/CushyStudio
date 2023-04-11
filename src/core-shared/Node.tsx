@@ -34,6 +34,11 @@ export class ComfyNode<ComfyNode_input extends object> {
         return exhaust(s)
     }
 
+    disabled: boolean = false
+    disable() {
+        this.disabled = true
+    }
+
     get inputs(): ComfyNode_input {
         return this.json.inputs as any
     }
@@ -130,7 +135,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     // }
 
     serializeValue(field: string, value: unknown): unknown {
-        if (value == null) throw new Error('🔴 null ??')
+        if (value == null) throw new Error(`[serializeValue] field "${field}" value is null`)
         if (value instanceof Slot) return [value.node.uid, value.slotIx]
         if (value instanceof ComfyNode) {
             // console.log('🔴 Value is COmfyNodeç')

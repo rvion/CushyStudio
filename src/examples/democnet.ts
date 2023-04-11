@@ -3,7 +3,7 @@ WORKFLOW('democnet', async (graph, flow) => {
     const vae = graph.VAELoader({ vae_name: 'orangemix.vae.pt' })
 
     // this is not needed if you work with a local ComfyUI: just use WASImageLoad instead
-    const refPoseImgUpload = await flow.uploadImgFromDisk('/Users/loco/Desktop/pose_present.png') // <- change this path 🔴
+    const refPoseImgUpload = await flow.uploadAnyFile(flow.resolveAbsolute('/Users/loco/Desktop/pose_present.png')) // <- change this path 🔴
     const refPoseImg = graph.LoadImage({ image: refPoseImgUpload.name as any })
 
     const sample = graph.KSampler({
