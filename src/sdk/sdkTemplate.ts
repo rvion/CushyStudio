@@ -565,6 +565,7 @@ declare module "sdk/IFlowExecution" {
         uploadURL(url: string): Promise<ComfyUploadImageResult>;
         askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>;
         askString(msg: string, def?: Maybe<string>): Promise<string>;
+        sleep(ms: number): Promise<void>;
         PROMPT(): Promise<IPromptExecution>;
         wildcards: Wildcards;
         generatedImages: IGeneratedImage[];

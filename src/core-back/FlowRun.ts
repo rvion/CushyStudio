@@ -55,6 +55,8 @@ export class FlowRun implements IFlowExecution {
 
     folder: vscode.Uri
 
+    sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
     // High level API--------------------
     /** ask user to input a boolean (true/false) */
     askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => {

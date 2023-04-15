@@ -21,6 +21,8 @@ export interface IFlowExecution {
     askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>
     askString(msg: string, def?: Maybe<string>): Promise<string>
 
+    sleep(ms: number): Promise<void>
+
     // prompts
     PROMPT(): Promise<IPromptExecution>
     wildcards: Wildcards
