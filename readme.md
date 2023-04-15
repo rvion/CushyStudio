@@ -37,20 +37,26 @@ and guidance along generation processes. It is cross-platform and open-source.
 
 ---
 
-## Installation
+## Install
 
-Later, `CushyStudio` will be published on the vscode marketplace, you need to clone this repository
+1. [install ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 
-1.  [install ComfyUI](https://github.com/comfyanonymous/ComfyUI)
-    -   [Download Models](scripts/download-models.sh)
-    -   start Comfy `python main.py --listen 0.0.0.0`
-2.  clone this repository
-    -   `git clone github.com/rvion/CushyStudio`
-    -   `npm install`
-3.  start a `vscode in development mode` with this extension (hit `f5` in vscode):
-    -   `code --extensionDevelopmentPath=/path/to/CushyStudio --user-data-dir=/tmp/vscode`
-4.  watch-build the extension part `npm run ext-watch`
-5.  watch-build the webview part `npm run `
+    - [Download Models](scripts/download-models.sh)
+    - start Comfy `python main.py --listen 0.0.0.0`
+
+2. install [vscode](https://code.visualstudio.com/) and [`node`](https://nodejs.org/en)
+
+3. install `CushyStudio` (later: will be in the vscode marketplace)
+
+    ```sh
+    git clone github.com/rvion/CushyStudio
+    cd CushyStudio
+    npm install
+
+    npm run vscode:dev # start a `vscode in development mode`
+    npm run back:dev   # build and watch the extension node part
+    npm run front:dev  # build and watch the extension webview part
+    ```
 
 ---
 
@@ -61,17 +67,6 @@ This readme section will contain a minimalist tutorial so you can check everythi
 1. create any file with name ending with `.cushy.ts`
 2. CushyStudio will start automatically
 3. ensure ComyUI server is connectly connected
-
----
-
-## Developpment
-
-It's as easy as :
-
-1.  install [vscode](https://code.visualstudio.com/) and [`node`](https://nodejs.org/en)
-2.  clone this repo `git clone github.com/rvion/CushyStudio` && `cd CushyStudio`
-3.  install dependencies `npm install`
-4.  start the dev server `npm dev`
 
 ---
 
