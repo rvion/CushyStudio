@@ -2,15 +2,6 @@
 
 # 🛋 CushyStudio - _Generative Art studio_
 
-<!--
-[![Windows Support](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
-[![MacOS Support](https://img.shields.io/badge/MACOS-adb8c5?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
-[![Ubuntu Support](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
-[![Arch Linux Support](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
--->
-
-<!-- Introduction -->
-
 `CushyStudio` is an AI-powered Generative-Art studio for creatives and developpers,
 enabling new ways to produce art, assets, or animations.
 It offers scripting tools and dynamic interfaces for live human-feedback, curation
@@ -20,8 +11,9 @@ and guidance along generation processes. It is cross-platform and open-source.
 
 `CushyStudio` is a cross-platform application distributed as a vscode extension.
 
-[![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio?style=flat)
-![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total?style=flat) [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Frvion%2FCushyStudio&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+[![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio?style=flat)
+![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total?style=flat)
 
 [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
 
@@ -55,6 +47,10 @@ Later, `CushyStudio` will be published on the vscode marketplace, you need to cl
 2.  clone this repository
     -   `git clone github.com/rvion/CushyStudio`
     -   `npm install`
+3.  start a `vscode in development mode` with this extension (hit `f5` in vscode):
+    -   `code --extensionDevelopmentPath=/path/to/CushyStudio --user-data-dir=/tmp/vscode`
+4.  watch-build the extension part `npm run ext-watch`
+5.  watch-build the webview part `npm run `
 
 ---
 
@@ -160,5 +156,8 @@ _Project is still early, but here is an overview of the plan_
 
 ## Architecture
 
-`CushyStudio` is a distributed as a **vscode extension**,
-it's a `node` application that runs as a set of `vscode` subprocess and embedded webviews.
+-   `CushyStudio` is a distributed as a **vscode extension**.
+-   It's a `node` application that runs as a set of `vscode` subprocess and embedded webviews.
+-   before being a vscode extension, it used to be
+    -   a standalone webpage made to be embbeed
+    -   then a regular webapp with a deno server used to be a standalone electron app.

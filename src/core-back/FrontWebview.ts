@@ -146,18 +146,6 @@ export class FrontWebview {
         </body>
       </html>
     `
-        // const TESTIMG = this.webview.asWebviewUri(
-        //     Uri.parse(`/Users/loco/csdemo/cache/Run 20230410005255/6CqVfw8ad2qZ4zLOXfEBx_Qv1OGsDs4qFKhPmEYqwkF.png`),
-        // )
-        // const context = this.workspace.context
-        // const onDiskPath = vscode.Uri.joinPath(context.extensionUri, 'resources', 'CushyLogo.png')
-        // const catGifSrc = this.webview.asWebviewUri(onDiskPath)
-        // const TESTIMG2 = this.webview.asWebviewUri(
-        //     Uri.parse(`/Users/loco/csdemo/cache/Run 20230410005255/6CqVfw8ad2qZ4zLOXfEBx_Qv1OGsDs4qFKhPmEYqwkF.png`),
-        // )
-        // <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${this.webview.cspSource}; script-src 'nonce-${nonce}';">
-        // <img src="${TESTIMG}"/>
-        // <img src="${catGifSrc}" width="300" />
     }
 
     static with = <A>(fn: (current: FrontWebview) => A): A => {
