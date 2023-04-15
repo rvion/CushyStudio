@@ -58,6 +58,15 @@ and guidance along generation processes. It is cross-platform and open-source.
     npm run front:dev  # build and watch the extension webview part
     ```
 
+4. configure your server properly in your vscode settings (`.vscode/settings.json`)
+
+```json
+{
+    "cushystudio.serverHostHTTP": "http://192.168.1.20:8188", // include the protocol, no trailing slash /
+    "cushystudio.serverWSEndoint": "ws://192.168.1.20:8188/ws" // ws endpoint path mandatory (here: /ws)
+}
+```
+
 ---
 
 ## Getting started
