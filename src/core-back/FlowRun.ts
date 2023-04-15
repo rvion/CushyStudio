@@ -29,7 +29,7 @@ import { IFlowExecution } from '../sdk/IFlowExecution'
 import { LATER } from './LATER'
 
 /** script exeuction instance */
-export class FlowExecution implements IFlowExecution {
+export class FlowRun implements IFlowExecution {
     /** creation "timestamp" in YYYYMMDDHHMMSS format */
     createdAt = getYYYYMMDDHHMMSS()
 

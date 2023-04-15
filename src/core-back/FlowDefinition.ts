@@ -3,14 +3,14 @@ import type { CushyFile } from './CushyFile'
 
 import * as vscode from 'vscode'
 import { loggerExt } from '../logger/LoggerBack'
-import { FlowExecution } from './FlowExecution'
+import { FlowRun } from './FlowRun'
 import { transpileCode } from './transpiler'
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
  * flow = the 'WORFLOW(...)' part of a file
  * */
-export class Flow {
+export class FlowDefinition {
     constructor(
         //
         public file: CushyFile,
@@ -54,7 +54,7 @@ export class Flow {
         }
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
-        const execution = new FlowExecution(this.file.workspace, this.file.uri, opts)
+        const execution = new FlowRun(this.file.workspace, this.file.uri, opts)
         console.log('SETTIGN ACTIVE RUN')
         this.file.workspace.activeRun = execution
         // await execution.save()
@@ -68,9 +68,9 @@ export class Flow {
         // graph.runningMode = mode
         // this.MAIN = graph
 
-        type WorkflowFn = (graph: Graph, execution: FlowExecution) => Promise<any>
+        type WorkflowFn = (graph: Graph, execution: FlowRun) => Promise<any>
         const workflows: { name: string; fn: WorkflowFn }[] = []
-        const WORKFLOW = (name: string, fn: (graph: Graph, execution: FlowExecution) => Promise<any>): void => {
+        const WORKFLOW = (name: string, fn: (graph: Graph, execution: FlowRun) => Promise<any>): void => {
             loggerExt.info('🌠', `found WORKFLOW ${name}`)
             workflows.push({ name, fn })
         }

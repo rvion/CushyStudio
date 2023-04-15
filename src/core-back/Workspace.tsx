@@ -8,7 +8,7 @@ import * as vscode from 'vscode'
 import * as WS from 'ws'
 import { sleep } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
-import { FlowExecution } from './FlowExecution'
+import { FlowRun } from './FlowRun'
 
 import { makeAutoObservable } from 'mobx'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
@@ -27,7 +27,7 @@ import { Template } from '../templates/Template'
 import { defaultScript } from '../templates/defaultProjectCode'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
-import { FlowExecutionManager } from './FlowExecutionManager'
+import { FlowRunner } from './FlowRunner'
 import { FrontWebview } from './FrontWebview'
 import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
@@ -56,7 +56,7 @@ export class Workspace {
     /** template /snippet library one can */
     demos: Template[] = demoLibrary
     comfySessionId = 'temp'
-    activeRun: Maybe<FlowExecution> = null
+    activeRun: Maybe<FlowRun> = null
     layout = new CushyLayoutState(this)
 
     // 🔴 add to subscriptions
@@ -78,7 +78,7 @@ export class Workspace {
         return this.resolve(this.relativeCacheFolderPath)
     }
 
-    runs: FlowExecution[] = []
+    runs: FlowRun[] = []
 
     RUN_CURRENT_FILE = async (mode: RunMode = 'real'): Promise<boolean> => {
         loggerExt.info('🔥', '❓ HELLO super12')
@@ -106,7 +106,7 @@ export class Workspace {
         }
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
-        const execution = new FlowExecution(this, activeURI, opts)
+        const execution = new FlowRun(this, activeURI, opts)
         // await execution.save()
         // write the code to a file
         this.runs.unshift(execution)
@@ -167,7 +167,7 @@ export class Workspace {
             const promises = testPatterns.map(({ pattern }) => this.findInitialFiles(ctrl, pattern))
             await Promise.all(promises)
         }
-        const startTestRun = async (request: vscode.TestRunRequest) => void new FlowExecutionManager(request, this)
+        const startTestRun = async (request: vscode.TestRunRequest) => void new FlowRunner(this, request)
         // ctrl.createRunProfile('Debug Tests', vscode.TestRunProfileKind.Debug, startTestRun, true, undefined, true)
         ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, startTestRun, true, undefined, true)
 
@@ -283,7 +283,7 @@ export class Workspace {
             return
         }
 
-        const currentRun: Maybe<FlowExecution> = this.activeRun
+        const currentRun: Maybe<FlowRun> = this.activeRun
         if (currentRun == null) {
             loggerExt.error('🐰', `❌ received ${msg.type} but currentRun is null`)
             return

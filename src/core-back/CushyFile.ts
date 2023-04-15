@@ -1,6 +1,6 @@
 import { TextDecoder } from 'util'
 import * as vscode from 'vscode'
-import { Flow } from './Flow'
+import { FlowDefinition } from './FlowDefinition'
 import { extractWorkflows } from './extractWorkflows'
 import { loggerExt } from '../logger/LoggerBack'
 import { Workspace } from './Workspace'
@@ -8,7 +8,7 @@ import { Workspace } from './Workspace'
 
 const textDecoder = new TextDecoder('utf-8')
 
-export type MarkdownTestData = CushyFile | /* TestHeading |*/ Flow
+export type MarkdownTestData = CushyFile | /* TestHeading |*/ FlowDefinition
 
 export const vsTestItemOriginDict = new WeakMap<vscode.TestItem, MarkdownTestData>()
 
@@ -85,7 +85,7 @@ export class CushyFile {
                 const parent = ancestors[ancestors.length - 1]
                 const id = `${vsTestItem.uri}/${workflowName}`
                 const tcase = controller.createTestItem(id, workflowName, vsTestItem.uri)
-                const cushyFlow = new Flow(this, range, workflowName, thisGeneration)
+                const cushyFlow = new FlowDefinition(this, range, workflowName, thisGeneration)
                 vsTestItemOriginDict.set(tcase, cushyFlow)
                 tcase.range = range
                 parent.children.push(tcase)

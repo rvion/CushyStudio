@@ -3,26 +3,21 @@ import type { Workspace } from './Workspace'
 import * as vscode from 'vscode'
 import { loggerExt } from '../logger/LoggerBack'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
-import { Flow } from './Flow'
+import { FlowDefinition } from './FlowDefinition'
 import { toArray } from '../utils/toArray'
 
 // TODO: rename test runner ?
-export class FlowExecutionManager {
+export class FlowRunner {
     queue: {
         vsTestItem: vscode.TestItem
-        cushyFlow: Flow
+        cushyFlow: FlowDefinition
     }[] = []
 
     run: vscode.TestRun
 
-    constructor(
-        //
-        public request: vscode.TestRunRequest,
-        public workspace: Workspace,
-    ) {
+    constructor(public workspace: Workspace, public request: vscode.TestRunRequest) {
         // 1. create a vscode.TestRun
         this.run = workspace.vsTestController.createTestRun(request)
-
         this.START()
     }
 
@@ -47,7 +42,7 @@ export class FlowExecutionManager {
 
             const x = vsTestItemOriginDict.get(vsTestItem)
 
-            if (x instanceof Flow) {
+            if (x instanceof FlowDefinition) {
                 this.run.enqueued(vsTestItem)
                 this.queue.push({ vsTestItem, cushyFlow: x })
             } else {

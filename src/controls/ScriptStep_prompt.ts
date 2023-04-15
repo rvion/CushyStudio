@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import type { FlowExecution } from '../core-back/FlowExecution'
+import type { FlowRun } from '../core-back/FlowRun'
 import type { ComfyPromptJSON } from '../core-types/ComfyPrompt'
 import type { WsMsgExecuted, WsMsgExecuting } from '../core-types/ComfyWsPayloads'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
@@ -27,7 +27,7 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
 
     constructor(
         //
-        public run: FlowExecution,
+        public run: FlowRun,
         public prompt: ComfyPromptJSON,
     ) {
         this._graph = new Graph(

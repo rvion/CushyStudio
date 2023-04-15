@@ -6,7 +6,7 @@ import type { ComfyNode } from './core-shared/Node'
 import type { ComfyNodeSchemaJSON } from './core-types/ComfySchemaJSON'
 import type { Graph } from './core-shared/Graph'
 import type { Workflow } from './core-shared/Workflow'
-import { FlowExecution } from './core-back/FlowExecution'
+import { FlowRun } from './core-back/FlowRun'
 
 // TYPES -------------------------------
 export type CLIP_VISION_OUTPUT = Slot<'CLIP_VISION_OUTPUT'>
@@ -1438,7 +1438,7 @@ declare global {
         builder: (
             //
             graph: ComfySetup & Graph,
-            flow: FlowExecution,
+            flow: FlowRun,
         ) => void,
     ) => Workflow
 }
