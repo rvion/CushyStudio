@@ -1,12 +1,11 @@
-import { Button, Image } from '@fluentui/react-components'
-import * as I from '@fluentui/react-icons'
+import * as I from '@rsuite/icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useState } from 'react'
-import { comfyColors } from '../core/ComfyColors'
-import { Graph } from '../core/Graph'
-import { ComfyNode } from '../core/CSNode'
-import { ComfyNodeSchema } from '../core/ComfySchema'
-import { useLayout } from '../layout/LayoutCtx'
+import { Button, IconButton } from 'rsuite'
+import { ComfyNode } from '../core-shared/Node'
+import { ComfyNodeSchema } from '../core-shared/Schema'
+import { Graph } from '../core-shared/Graph'
+import { Image } from './Image'
 import { NodeRefUI } from './NodeRefUI'
 
 export const NodeListUI = observer(function NodeListUI_(p: { graph: Graph }) {
@@ -14,7 +13,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: Graph }) {
     if (graph == null) return <>no execution yet</>
     const uiSt = useLocalObservable(() => ({ seeAll: false }))
     const nodes = uiSt.seeAll ? graph.nodes : graph.nodes.filter((f) => f.isExecuting)
-    const layout = useLayout()
+    // const layout = graph.workspace.layout 🔴
     return (
         <div className='col gap'>
             <div className='row space-between'>
@@ -24,17 +23,17 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: Graph }) {
                     ))}
                 </div>
                 <div className='row gap'>
-                    <Button onClick={() => (uiSt.seeAll = !uiSt.seeAll)} size='small' className='self-start'>
+                    <Button onClick={() => (uiSt.seeAll = !uiSt.seeAll)} className='self-start'>
                         {uiSt.seeAll ? 'hide' : `+ ${graph.nodes.length} nodes`}
                     </Button>
-                    <Button size='small' icon={<I.ArrowDownload16Filled />} />
+                    <IconButton icon={<I.FileDownload />} />
                 </div>
             </div>
             <div className='row wrap'>
-                {graph.allImages.map((img) => (
+                {/* {graph.allImages.map((img) => (
                     <Image
                         // onClick={() => layout.addImagePopup(img.url)}
-                        onClick={() => (layout.galleryFocus = img)}
+                        // onClick={() => (layout.galleryFocus = img)}
                         alt='prompt output'
                         src={img.comfyURL}
                         key={img.uid}
@@ -42,7 +41,7 @@ export const NodeListUI = observer(function NodeListUI_(p: { graph: Graph }) {
                         width={100}
                     />
                     // <img key={url} style={{ width: '5rem', height: '5rem' }} src={url} />
-                ))}
+                ))} */}
             </div>
         </div>
     )
@@ -88,7 +87,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                 <div>{name}</div>
                 <div className='grow'></div>
                 {node.statusEmoji}
-                {folded ? <I.ChevronDown24Filled /> : <I.ChevronRight24Filled />}
+                {folded ? <I.ArrowDownLine /> : <I.ArrowRightLine />}
             </div>
             {folded && (
                 <div>
@@ -106,13 +105,13 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
             )}
             {p.showArtifacts ? (
                 <div className='row wrap'>
-                    {curr.images.map((img) => (
+                    {/* {curr.images.map((img) => (
                         <img //
                             key={img.uid}
                             style={{ width: '5rem', height: '5rem' }}
                             src={img.comfyURL}
                         />
-                    ))}
+                    ))} */}
                     {/* {curr?.allArtifactsImgs.map((url) => (
                     <div key={url}>
                         <img style={{ width: '5rem', height: '5rem' }} key={url} src={url} />

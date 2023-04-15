@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { logger, LogLevel } from './Logger'
+import { loggerExt } from './LoggerBack'
+import { LogLevel } from './LogTypes'
 
 export const LoggerUI = observer(function LoggerUI_(p: { className?: string }) {
-    const msgs = logger.history.slice().reverse()
+    const msgs = loggerExt.history.slice().reverse()
     return (
         <div className='p'>
             {msgs.map((log, i) => (

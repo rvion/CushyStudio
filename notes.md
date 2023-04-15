@@ -45,3 +45,14 @@ image.png
 the ver very cool thing for the future of demos, is that doing refactor actions (e.g. f2 to rename a symbol) will also rename those symbols into the demo library
 so contributors having meaningful demos commited in the repo will be maintained and kept up-to-date and compatible with CushyStudio releases
 (and ComfyUI release too, since Cushy will remain compatible)
+
+<!--  -->
+
+```sh
+venv
+cd ComfyUI/custom_nodes
+git clone https://github.com/Fannovel16/comfy_controlnet_preprocessors
+cd comfy_controlnet_preprocessors
+python install.py
+# seems to overwrite my pytorch setup 😅
+```

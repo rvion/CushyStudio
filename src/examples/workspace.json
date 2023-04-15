@@ -1,5 +1,5 @@
 {
     "version": 2,
-    "comfyWSURL": "ws://192.168.1.20:8188/ws",
-    "comfyHTTPURL": "http://192.168.1.20:8188"
+    "comfyWSURL": "1:8188/ws",
+    "comfyHTTPURL": "http://192.168.1.19:8188"
 }

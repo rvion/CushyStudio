@@ -1,23 +1,24 @@
-import { Image, Label, Slider } from '@fluentui/react-components'
+import { Slider } from 'rsuite'
 import { observer } from 'mobx-react-lite'
-import { PromptOutputImage } from '../core/PromptOutputImage'
-import { useLayout } from '../layout/LayoutCtx'
+import { GeneratedImage } from '../core-back/GeneratedImage'
 import { useWorkspace } from '../ui/WorkspaceContext'
+import { Image } from '../ui/Image'
 
 export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
     const client = useWorkspace()
-    const layout = useLayout()
-    const images: PromptOutputImage[] = client.projects.flatMap((p) => p.runs).flatMap((r) => r.gallery)
+    const layout = client.layout
+    const images: GeneratedImage[] = client.runs.flatMap((r) => r.generatedImages)
 
     return (
         <div>
             <div className='row'>
-                <Label>Size</Label>
+                <label>Size</label>
                 <Slider
-                    onChange={(e) => (layout.gallerySize = parseInt(e.target.value, 10))}
+                    onChange={(next) => (layout.gallerySize = next)}
                     value={layout.gallerySize}
                     max={1000}
                     min={32}
+                    step={1}
                 />
                 <div>{layout.gallerySize}px</div>
             </div>

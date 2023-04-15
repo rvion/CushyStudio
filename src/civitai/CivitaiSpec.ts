@@ -1,6 +1,6 @@
-import type { Maybe } from '../core/ComfyUtils'
+import type { Maybe } from '../utils/types'
 
-import { fetch } from '@tauri-apps/api/http'
+import fetch from 'node-fetch'
 import { makeAutoObservable } from 'mobx'
 
 // civitai wrapper
@@ -22,13 +22,13 @@ export class Civitai {
         username?: string
     }) => {
         console.log('[CIVITAI] search:', 'https://civitai.com/api/v1/models', p)
-        const res = await fetch('https://civitai.com/api/v1/models', {
+        const res = await fetch('https://civitai.com/api/v1/models?' + new URLSearchParams(p as any), {
             method: 'GET',
-            query: p,
+            // query: p,
             // body: Body.json(p),
         })
-
-        const x: SearchResult = res.data as any
+        // 🔴 ?
+        const x: SearchResult = (await res.json()) as any
         // console.log('[CIVITAI] found:', res.data)
         this.results = x
         return x

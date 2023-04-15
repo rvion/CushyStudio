@@ -12,7 +12,6 @@ Scoop was installed successfully!
 Type 'scoop help' for instructions.
 ```
 
-
 ```
 scoop install deno
 ```
@@ -30,7 +29,6 @@ scoop install nodejs
 scoop install yarn
 ```
 
-
 ```
 install deno extension
 ```
@@ -44,3 +42,9 @@ node 19
 include extra tools
 
 wrong python version
+
+---
+
+pip install opencv-python
+pip install matplotlib
+pip3 install scikit-image

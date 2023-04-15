@@ -1,9 +1,9 @@
 import { CodeBuffer } from '../utils/CodeBuffer'
-import { Workspace } from '../core/Workspace'
-import { ComfyPromptJSON } from '../core/ComfyPrompt'
-import { ComfyNodeSchema } from '../core/ComfySchema'
-import { jsEscapeStr } from '../core/ComfyUtils'
-import { TEdge, toposort } from '../core/toposort'
+import { Workspace } from '../core-back/Workspace'
+import { ComfyPromptJSON } from '../core-types/ComfyPrompt'
+import { ComfyNodeSchema } from '../core-shared/Schema'
+import { jsEscapeStr } from '../utils/jsEscapeStr'
+import { TEdge, toposort } from '../utils/toposort'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = { nodeName: string; inputName: string; valueStr: string }
@@ -31,7 +31,7 @@ export class ComfyImporter {
         LatentUpscaleBy: 'Latent Upscale by Factor (WAS)',
     }
 
-    convertFlowToCode = (flow: ComfyPromptJSON): string => {
+    convertFlowToCode = (title: string, flow: ComfyPromptJSON): string => {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
         const edges: TEdge[] = []
@@ -52,7 +52,7 @@ export class ComfyImporter {
         const b = new CodeBuffer()
         const p = b.w
         const pi = b.append
-        p(`export default WORKFLOW(async (C) => {\n`)
+        p(`WORKFLOW('${title}', async (C) => {\n`)
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 

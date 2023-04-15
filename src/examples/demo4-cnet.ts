@@ -1,17 +1,17 @@
-export default WORKFLOW(async (C) => {
+WORKFLOW('demo4-cnet', async (graph, flow) => {
     // generate an empty table
-    const ckpt = C.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
-    const latent = C.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
+    const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
+    const latent = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
 
     // setup initial image
-    const positive = C.CLIPTextEncode({ text: 'masterpiece, 1girl, walking, alone, white_background', clip: ckpt })
-    const control_net = C.ControlNetLoader({ control_net_name: 'control_openpose-fp16.safetensors' })
-    const upload = await C.uploadImgFromDisk(`/Users/loco/dev/CushyStudio/workspace/images/test-0.png`)
+    const positive = graph.CLIPTextEncode({ text: 'masterpiece, 1girl, walking, alone, white_background', clip: ckpt })
+    const control_net = graph.ControlNetLoader({ control_net_name: 'control_openpose-fp16.safetensors' })
+    const upload = await flow.uploadWorkspaceFile(flow.resolveRelative(`images/test-0.png`))
     // @ts-ignore
-    const img = C.LoadImage({ image: upload.name })
-    const control_net_apply = C.ControlNetApply({ conditioning: positive, control_net, image: img, strength: 1 })
-    const negative = C.CLIPTextEncode({ text: 'bad hands', clip: ckpt })
-    const sampler = C.KSampler({
+    const img = graph.LoadImage({ image: upload.name })
+    const control_net_apply = graph.ControlNetApply({ conditioning: positive, control_net, image: img, strength: 1 })
+    const negative = graph.CLIPTextEncode({ text: 'bad hands', clip: ckpt })
+    const sampler = graph.KSampler({
         seed: 200,
         steps: 20,
         cfg: 10,
@@ -23,22 +23,22 @@ export default WORKFLOW(async (C) => {
         negative,
         latent_image: latent,
     })
-    const vae = C.VAEDecode({ samples: sampler, vae: ckpt })
-    const image = C.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
-    let r1 = await C.get()
+    const vae = graph.VAEDecode({ samples: sampler, vae: ckpt })
+    const image = graph.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
+    let r1 = await flow.PROMPT()
 
     for (const i of [1, 2, 3, 4, 5, 6, 7, 8, 9]) {
         // use previous output as base
-        const nextBase = C.WASImageLoad({ image_path: r1.images[0].data.filename })
-        const _vaeEncode = C.VAEEncode({ pixels: nextBase, vae: ckpt.VAE })
+        const nextBase = graph.WASImageLoad({ image_path: r1.images[0].data.filename })
+        const _vaeEncode = graph.VAEEncode({ pixels: nextBase, vae: ckpt.VAE })
         sampler.set({ latent_image: _vaeEncode })
 
         // use connect frame as input
-        const nextGuideUpload = await C.uploadImgFromDisk(`/Users/loco/dev/CushyStudio/workspace/images/test-${i}.png`)
+        const nextGuideUpload = await flow.uploadWorkspaceFile(flow.resolveRelative(`/images/test-${i}.png`))
         // @ts-ignore
-        const nextGuide = C.LoadImage({ image: nextGuideUpload.name })
+        const nextGuide = graph.LoadImage({ image: nextGuideUpload.name })
         control_net_apply.set({ image: nextGuide })
-        r1 = await C.get()
+        r1 = await flow.PROMPT()
     }
     // for (const item of ['cat',/*'dog','frog','woman'*/]) {
     //     // @ts-ignore

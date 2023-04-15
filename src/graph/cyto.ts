@@ -1,7 +1,7 @@
 import cytoscape from 'cytoscape'
 import klay from 'cytoscape-klay'
-import { Graph } from '../core/Graph'
-import { ComfyNode } from '../core/CSNode'
+import { Graph } from '../core-shared/Graph'
+import { ComfyNode } from '../core-shared/Node'
 
 cytoscape.use(klay)
 

@@ -1,4 +1,4 @@
-import type { Maybe } from '../core/ComfyUtils'
+import type { Maybe } from './types'
 
 import { useState, useEffect } from 'react'
 

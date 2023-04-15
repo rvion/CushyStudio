@@ -17,6 +17,11 @@
         "jsx": "react-jsx"
     },
     "include": ["src"],
-    "exclude": ["tsconfig.node.json"],
+    "exclude": [
+        //
+        "tsconfig.node.json",
+        "src/examples/cushy.d.ts",
+        "src/examples/comfy.d.ts"
+    ],
     "references": [{ "path": "./tsconfig.node.json" }]
 }

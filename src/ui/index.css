@@ -1,8 +1,12 @@
+/* @import 'rsuite/dist/rsuite.min.css'; */
+
 body {
     margin: 0;
     padding: 0;
-    background-color: #383838;
+    /* background-color: #383838; */
     font-family: 'Roboto', sans-serif;
+
+    --rs-text-disabled: rgb(123, 123, 123)!important;
 }
 
 * { box-sizing: border-box;}
@@ -17,6 +21,10 @@ body {
 .g-image { background-color: #541a54}
 
 /* UTILS ---------------------------------------- */
+h1 { font-size: 1.5rem; margin: 0; padding: 0; }
+h2 { font-size: 1.2rem; margin: 0; padding: 0; }
+h3 { font-size: 1rem; margin: 0; padding: 0; }
+
 .h100 { height: 100%; }
 .gap { gap: .7rem }
 .gap1 { gap: .3rem }
@@ -39,6 +47,7 @@ body {
 .self-stretch { align-self: stretch; }
 .self-start { align-self: flex-start; }
 .p { padding: .6rem; }
+.m { margin: .6rem; }
 .px { padding-left: .6rem; padding-right: .6rem; }
 .py { padding-top: .6rem; padding-bottom: .6rem; }
 .darker { filter: brightness(.9); }
@@ -139,18 +148,6 @@ html, body, #root {height: 100%;}
     color: #95a1ac;
     /* font-weight: bold */
 }
-select,
-input {
-    background-color: #292929;
-    color: #fff;
-    border: 1px solid #333333;
-    font-size: 1em;
-    padding: .1rem .3rem;
-};
-
-.dock-tab > div{
-    background-color: red;
-}
 
 .dock-tabpane {
     box-sizing: border-box;
@@ -203,10 +200,33 @@ input {
 .dock-layout > :not(.dock-fbox) .dock-panel.dock-style-headless .dock-bar {
     transition: none;
 }
+/* .dock-top .dock-bar,
+.dock-panel { background: unset; } */
 
 /* ---------------------------------------------------- */
 .highlighted {
     background-color: #060101;
     color: rgb(157, 157, 157);
     padding: .3rem;
+}
+
+.rs-panel {
+    /* margin: .5rem; */
+    /* padding: 1rem; */
+    background-color: #1e1e1e;
+}
+.rs-panel .rs-panel {
+    /* margin: .5rem; */
+    /* padding: 1rem; */
+    background-color: #2d2d2d;
+}
+
+.rs-tree-node { margin: 0; }
+.rs-tree-node-label-content{
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+    /* overflow-x: hidden; */
+    /* line-height: 1em; */
+    text-overflow: ellipsis;
 }

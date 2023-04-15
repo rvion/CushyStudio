@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
-import type { Maybe } from '../core/ComfyUtils'
-import { Workspace } from '../core/Workspace'
+import type { Maybe } from '../utils/types'
+import { Workspace } from '../core-back/Workspace'
 import { pathe } from '../fs/pathUtils'
 import { getPngMetadata, TextChunks } from './getPngMetadata'
 

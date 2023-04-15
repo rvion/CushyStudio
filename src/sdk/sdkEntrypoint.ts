@@ -1,4 +1,6 @@
-export type { ComfyNodeOutput } from '../core/ComfyNodeOutput'
-export type { ComfyNodeUID } from '../core/ComfyNodeUID'
-export type { ComfyNode } from '../core/CSNode'
-export type { ComfyNodeSchemaJSON } from '../core/ComfySchemaJSON'
+// export type { ComfyNodeSchemaJSON } from '../core-types/ComfySchemaJSON'
+// export type { ComfyNodeUID } from '../core-types/NodeUID'
+
+export type { Workflow } from '../core-shared/Workflow'
+export type { Graph } from '../core-shared/Graph'
+export type { IFlowExecution } from './IFlowExecution'

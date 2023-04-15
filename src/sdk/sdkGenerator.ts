@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync } from 'fs'
 import { sdkRewriteRules } from './sdkRewriteRules'
 
 execSync(`tsc -p tsconfig.decl.json`, { stdio: 'inherit' })
-
+// tsc -p tsconfig.decl.json --listFiles --noEmit
 const originalDefPath = 'dts/Comfy.d.ts'
 
 const originalDefContent = readFileSync(originalDefPath, 'utf8')

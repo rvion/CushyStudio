@@ -29,8 +29,21 @@ export const sdkRewriteRules = [
     // ws stuff
     [`import * as WS from 'ws';`, ''],
     [`/// <reference types="ws" />`, ''],
+    [`/// <reference types="vscode" />`, ''],
+    [`/// <reference types="node" />`, ''],
+    [`/// <reference types="node" />`, ''],
+    [`/// <reference types="cytoscape" />`, ''],
+
     [`WS.WebSocket | WebSocket`, 'WebSocket'],
 
     // monaco
     [`import * as monaco from 'monaco-editor';`, 'const monaco: any'],
+
+    // cytoscape
+    [`import cytoscape from 'cytoscape';`, ''],
+    [`cytoscape.Core`, 'any'],
+
+    // later
+    ['import { LATER } from "core-back/LATER";', `import type * as foo from 'foo'`],
+    [`LATER<'LoadImage'>`, 'foo.LoadImage'],
 ]

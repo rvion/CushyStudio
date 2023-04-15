@@ -1,7 +1,104 @@
 {
-    "name": "cushy-studio",
+    "name": "cushystudio",
+    "publisher": "rvion",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/rvion/CushyStudio"
+    },
     "description": "🎨 Generative Art Web-IDE and embeddable typescript SDK - based on ComfyUI",
     "private": true,
+    "engines": {
+        "vscode": "^1.77.0"
+    },
+    "categories": [
+        "Other"
+    ],
+    "activationEvents": [
+        "workspaceContains:**/*.cushy.ts"
+    ],
+    "main": "./out/main.js",
+    "contributes": {
+        "customEditors": [
+            {
+                "viewType": "cushystudio.run",
+                "displayName": "",
+                "selector": [
+                    {
+                        "filenamePattern": "*.cushy.OLD"
+                    }
+                ]
+            }
+        ],
+        "configuration": {
+            "title": "CushyStudio",
+            "properties": {
+                "cushystudio.useCodeSnippetsOnMethodSuggest": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Complete functions with their parameter signature."
+                },
+                "cushystudio.tsdk": {
+                    "type": [
+                        "string",
+                        "null"
+                    ],
+                    "default": null,
+                    "description": "Specifies the folder path containing the tsserver and lib*.d.ts files to use."
+                }
+            }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "cushy-studio",
+                    "title": "Cushy Studio",
+                    "icon": "resources/CushyLogo.png"
+                }
+            ]
+        },
+        "views": {
+            "cushy-studio": [
+                {
+                    "id": "cushystudio-servers",
+                    "name": "Servers"
+                },
+                {
+                    "id": "cushyrun",
+                    "name": "Cushy Runs"
+                },
+                {
+                    "id": "cushygraphs",
+                    "name": "CushyGraph"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "cushystudio.openwebview",
+                "title": "cushystudio.openwebview | Hello World (React + Vite): Show"
+            },
+            {
+                "command": "cushystudio.helloWorld",
+                "title": "cushystudio.helloWorld | Hello world"
+            },
+            {
+                "command": "cushystudio.runcurrentscript",
+                "title": "cushystudio.runcurrentscript | Run current script"
+            },
+            {
+                "command": "cushystudio.connect",
+                "title": "cushystudio.connect | Connect"
+            },
+            {
+                "command": "cushystudio.samplewebview",
+                "title": "cushystudio.samplewebview | Open sample webview "
+            },
+            {
+                "command": "cushystudio.openjs",
+                "title": "cushystudio.openjs | Open JS"
+            }
+        ]
+    },
     "author": {
         "name": "rvion",
         "url": "https://github.com/rvion/CushyStudio",
@@ -9,82 +106,86 @@
     },
     "license": "unlicensed",
     "version": "0.0.64",
-    "type": "module",
     "scripts": {
-        "dev": "  pnpm tauri:dev",
-        "build": "pnpm tauri:build",
-        "[RELEASE]": "--------------------------------------------",
-        "bump": "bump patch --commit=v --tag=v --push",
-        "logo": "./scripts/derive-assets.sh",
-        "[binary]": "---------------------------------------------",
-        "tauri:dev": "  pnpm tauri dev",
-        "tauri:build": "pnpm tauri build --debug",
-        "[UI]": "-------------------------------------------------",
-        "vite:dev": "          vite",
-        "vite:build": "        vite build",
-        "vite:preview": "      vite preview",
-        "check-bundle-size": " npx vite-bundle-visualizer",
-        "[CHECKS]": "-------------------------------------------------",
-        "check": "tsc",
-        "[SITE]": "-------------------------------------------------",
-        "site:docusaurus": "         cd website && ./node_modules/.bin/docusaurus",
-        "site:start": "              cd website && ./node_modules/.bin/docusaurus start",
-        "site:build": "              cd website && ./node_modules/.bin/docusaurus build",
-        "site:swizzle": "            cd website && ./node_modules/.bin/docusaurus swizzle",
-        "site:deploy": "             cd website && ./node_modules/.bin/docusaurus deploy",
-        "site:clear": "              cd website && ./node_modules/.bin/docusaurus clear",
-        "site:serve": "              cd website && ./node_modules/.bin/docusaurus serve",
-        "site:write-translations": " cd website && ./node_modules/.bin/docusaurus write-translations",
-        "site:write-heading-ids": "  cd website && ./node_modules/.bin/docusaurus write-heading-ids",
-        "site:typecheck": "tsc",
-        "[DEV]": " 🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉🐉",
-        "js": "node --loader ts-node/esm --experimental-specifier-resolution=node --experimental-modules",
-        "web": "open -n -a \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" --args --user-data-dir=\"/tmp/chrome_dev_test\" --disable-web-security",
-        "[CORE]": "👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁👁",
-        "sync": "yarn js src/core/ComfySpec.fetch.ts",
-        "lib": "yarn js src/core/Comfy.gen.ts",
-        "[COMPILER]": "🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰🐰",
-        "compile": "yarn js src/compiler/entry.gen.ts",
-        "sample": "yarn js src/compiler/entry.fetch.ts",
-        "test": "yarn js src/compiler/test.ts",
-        "test2": "yarn js src/compiler/test2.ts",
-        "decl": "yarn js src/sdk/sdkGenerator.ts"
+        "SHELL": "",
+            "vscode:dev":        "code --extensionDevelopmentPath=${PWD}",
+        "BACK": "",
+            "back:dev":        "npm run back:build -- --sourcemap --watch",
+            "back:sourcemap":    "npm run back:build -- --sourcemap",
+            "back:metafile":     "npm run back:build -- --minify --metafile=out/meta.json",
+            "back:build":        "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+        "FRONT": "",
+            "web:dev":           "vite",
+            "web:build":         "vite build",
+            "web:watch":         "vite build --watch",
+            "web:preview":       "vite preview",
+            "web:inspect":       "npx vite-bundle-visualizer",
+        "CHECKS": "",
+            "tsc:compile":       "tsc -p ./",
+            "tsc:watch":         "tsc -watch -p ./",
+            "tsc:check":         "tsc",
+        "TESTS": "",
+            "pretest":           "npm run compile && npm run lint",
+            "lint":              "eslint src --ext ts",
+            "test":              "node ./out/test/runTest.js",
+        "RELEASE":               "",
+            "bump":              "bump patch --commit=v --tag=v --push",
+            "vscode:prepublish": "npm run esbuild --minify",
+            "logo":              "./scripts/derive-assets.sh",
+        "DEV":                   "",
+            "js":                "node --loader ts-node/esm --experimental-specifier-resolution=node --experimental-modules",
+        "CORE":                  "",
+            "sync":              "yarn js src/core/ComfySpec.fetch.ts",
+            "lib":               "yarn js src/core/Comfy.gen.ts",
+        "COMPILER":              "",
+            "old:compile":       "yarn js src/compiler/entry.gen.ts",
+            "old:sample":        "yarn js src/compiler/entry.fetch.ts",
+            "old:test":          "yarn js src/compiler/test.ts",
+            "old:test2":         "yarn js src/compiler/test2.ts",
+            "decl":              "yarn js src/sdk/sdkGenerator.ts",
+            "decl:list": "tsc -p tsconfig.decl.json --listFiles --noEmit | grep /Users/loco/dev/CushyStudio/src"
     },
     "dependencies": {
-        "@fluentui/react-components": "^9.18.2",
-        "@fluentui/react-icons": "^2.0.196",
-        "@gitgraph/core": "^1.5.0",
-        "@gitgraph/react": "^1.6.0",
-        "@monaco-editor/react": "^4.4.6",
-        "@react-spring/web": "^9.7.1",
-        "@tauri-apps/api": "^1.2.0",
-        "cytoscape": "^3.23.0",
-        "cytoscape-klay": "^3.1.4",
-        "esbuild": "^0.17.12",
-        "mobx": "^6.8.0",
-        "mobx-react-lite": "^3.4.3",
-        "monaco-editor": "^0.36.1",
-        "nanoid": "^4.0.1",
-        "painterro": "^1.2.78",
-        "pathe": "^1.1.0",
-        "prettier": "^2.8.5",
-        "rc-dock": "^3.2.17",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "react-toastify": "^9.1.1",
-        "scheduler": "^0.20.0",
-        "ts-node": "^10.9.1"
+        "@rsuite/icons": "1.0.2",
+        "@types/vscode-webview": "1.57.1",
+        "@types/ws": "8.5.4",
+        "@vscode/webview-ui-toolkit": "1.2.2",
+        "cytoscape-klay": "3.1.4",
+        "cytoscape": "3.23.0",
+        "esbuild": "0.17.16",
+        "form-data": "4.0.0",
+        "mobx-react-lite": "3.4.3",
+        "mobx": "6.9.0",
+        "nanoid": "4.0.2",
+        "node-fetch": "3.3.1",
+        "painterro": "1.2.78",
+        "pathe": "1.1.0",
+        "prettier": "2.8.7",
+        "react-dom": "18.2.0",
+        "react": "18.2.0",
+        "rsuite": "5.31.1",
+        "ts-node": "10.9.1",
+        "ws": "8.13.0"
     },
     "devDependencies": {
-        "@tauri-apps/cli": "^1.2.3",
-        "@types/cytoscape": "^3.19.9",
-        "@types/cytoscape-klay": "^3.1.0",
-        "@types/node": "^18.15.3",
-        "@types/prettier": "^2.7.2",
-        "@types/react": "^18.0.28",
-        "@types/react-dom": "^18.0.11",
-        "@vitejs/plugin-react": "^3.1.0",
-        "typescript": "^5.0.2",
-        "vite": "^4.2.1"
+        "@types/cytoscape": "3.19.9",
+        "@types/cytoscape-klay": "3.1.0",
+        "@types/glob": "8.1.0",
+        "@types/mocha": "10.0.1",
+        "@types/node": "18.x",
+        "@types/prettier": "2.7.2",
+        "@types/react": "18.0.35",
+        "@types/react-dom": "18.0.11",
+        "@types/vscode": "1.77.0",
+        "@typescript-eslint/eslint-plugin": "5.58.0",
+        "@typescript-eslint/parser": "5.58.0",
+        "@vitejs/plugin-react": "3.1.0",
+        "@vscode/test-electron": "2.3.0",
+        "eslint": "8.38.0",
+        "glob": "10.1.0",
+        "less": "4.1.3",
+        "mocha": "10.2.0",
+        "typescript": "5.0.4",
+        "vite": "4.2.1"
     }
 }

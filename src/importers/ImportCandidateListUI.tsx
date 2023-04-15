@@ -1,7 +1,9 @@
-import { Button, Caption1, Card, CardFooter, CardHeader, Image, Input } from '@fluentui/react-components'
+import { Button, Panel, Input } from 'rsuite'
 import { observer } from 'mobx-react-lite'
 import { useWorkspace } from '../ui/WorkspaceContext'
 import { ImportCandidate } from './ImportCandidate'
+import { Caption1 } from '../ui/Text'
+import { Image } from '../ui/Image'
 
 export const ImportCandidateListUI = observer(function ImportCandidateListUI_(p: {}) {
     const workspace = useWorkspace()
@@ -19,38 +21,34 @@ export const ImportCandidateUI = observer(function ImportCandidateUI_(p: { candi
     const candidate = p.candidate
     const file = candidate.file
     return (
-        <Card key={file.name} appearance='filled-alternative'>
-            <CardHeader
-                //
-                image={previewPath(candidate)}
-                header={<Input value={candidate.title} onChange={(ev) => (candidate.title = ev.target.value)} />}
-                description={<Caption1>{file.name}</Caption1>}
-            />
-            <CardFooter>
+        <Panel header={<Input value={candidate.title} onChange={(next) => (candidate.title = next)} />} key={file.name}>
+            {previewPath(candidate)}
+            <Caption1>{file.name}</Caption1>
+            <div>
                 <div className='row wrap gap1'>
                     <Button //
-                        appearance='outline'
+                        // appearance='outline'
                         onClick={() => candidate.importAsAsset()}
                         disabled={!candidate.canBeImportedAsWorspaceAsset}
                     >
                         Import as Asset
                     </Button>
                     <Button //
-                        appearance='outline'
+                        // appearance='outline'
                         onClick={() => candidate.importAsScript()}
                         disabled={!candidate.canBeImportedAsComfyUIJSON}
                     >
                         Import as Flow and Convert to Cushy Script
                     </Button>
                     <Button //
-                        appearance='outline'
+                        // appearance='outline'
                         onClick={() => alert('not implemented')}
                         disabled={!candidate.canBeImportedAsComfyUIJSON}
                     >
                         Import as basic Flow
                     </Button>
                     <Button //
-                        appearance='outline'
+                        // appearance='outline'
                         onClick={() => alert('not implemented')}
                         disabled={!candidate.canBeImportedAsCushyScript}
                     >
@@ -65,8 +63,8 @@ export const ImportCandidateUI = observer(function ImportCandidateUI_(p: { candi
                         Cancel
                     </Button>
                 </div>
-            </CardFooter>
-        </Card>
+            </div>
+        </Panel>
     )
 })
 
