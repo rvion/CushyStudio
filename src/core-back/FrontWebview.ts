@@ -5,6 +5,8 @@ import { getUri } from '../fs/getUri'
 import { loggerExt } from '../logger/LoggerBack'
 import { exhaust } from '../utils/ComfyUtils'
 import type { Workspace } from './Workspace'
+import { ScriptStep_askString } from '../controls/ScriptStep_ask'
+import { ScriptStep_askBoolean } from '../controls/ScriptStep_ask'
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -166,13 +168,23 @@ export class FrontWebview {
         }
 
         if (msg.type === 'answer-boolean') {
-            // window.showInformationMessage(msg.message)
+            const run = this.workspace.activeRun
+            if (run == null) throw new Error('no active run')
+            const step = run.step
+            if (!(step instanceof ScriptStep_askBoolean)) throw new Error('not a string request step')
+            step.answer(msg.value)
             return
         }
+
         if (msg.type === 'answer-string') {
-            // window.showInformationMessage(msg.message)
+            const run = this.workspace.activeRun
+            if (run == null) throw new Error('no active run')
+            const step = run.step
+            if (!(step instanceof ScriptStep_askString)) throw new Error('not a string request step')
+            step.answer(msg.value)
             return
         }
+
         if (msg.type === 'say-ready') {
             // window.showInformationMessage(msg.message)
             this.ready = true
