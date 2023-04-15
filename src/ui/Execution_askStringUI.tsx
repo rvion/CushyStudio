@@ -1,23 +1,20 @@
-import * as I from '@rsuite/icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Fragment } from 'react'
-import { IconButton, Input } from 'rsuite'
-import { ScriptStep_askString } from '../controls/ScriptStep_ask'
+import { MessageFromExtensionToWebview_askString } from '../core-types/MessageFromExtensionToWebview'
+import { vscode } from '../core-front/FrontState'
 
-export const Execution_askStringUI = observer(function Execution_askUI_(p: { step: ScriptStep_askString }) {
-    const uiSt = useLocalObservable(() => ({ value: p.step.def ?? '' }))
+export const Execution_askStringUI = observer(function Execution_askUI_(p: { step: MessageFromExtensionToWebview_askString }) {
+    const uiSt = useLocalObservable(() => ({
+        value: p.step.default ?? '',
+        locked: false,
+    }))
     return (
         <Fragment>
-            <div>{p.step.msg}</div>
-            <Input disabled={p.step.locked} value={uiSt.value} onChange={(ev) => (uiSt.value = ev)} />
-            {p.step.locked ? null : (
+            <div>{p.step.message}</div>
+            <input disabled={uiSt.locked} value={uiSt.value} onChange={(ev) => (uiSt.value = ev.target.value)} />
+            {uiSt.locked ? null : (
                 // <CardFooter>{p.step.value}</CardFooter>
-                <div>
-                    <div className='grow' />
-                    <IconButton onClick={() => p.step.answer(uiSt.value)} appearance='primary' icon={<I.Calendar />}>
-                        OK
-                    </IconButton>
-                </div>
+                <button onClick={() => vscode.sendMessageToExtension({ type: 'answer-string', value: uiSt.value })}>OK</button>
             )}
         </Fragment>
     )

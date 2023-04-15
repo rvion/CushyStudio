@@ -1,9 +1,7 @@
 import type { GeneratedImage } from '../core-back/GeneratedImage'
 
 import { makeObservable, observable } from 'mobx'
-// import DockLayout, { PanelData } from 'rc-dock'
 import { Workspace } from '../core-back/Workspace'
-// import { defaultLayout } from './LayoutDefault'
 
 export class CushyLayoutState {
     // layout = defaultLayout()

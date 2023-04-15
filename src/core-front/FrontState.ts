@@ -34,7 +34,7 @@ class FrontState {
             status: observable,
         })
         window.addEventListener('message', this.onMessageFromExtension)
-        this.sendMessage({ type: 'say-ready' })
+        this.sendMessageToExtension({ type: 'say-ready' })
     }
 
     graph: Maybe<Graph> = null
@@ -117,7 +117,7 @@ class FrontState {
     /** Post a message (i.e. send arbitrary data) to the owner of the webview (the extension).
      * @remarks When running webview code inside a web browser, postMessage will instead log the given message to the console.
      */
-    public sendMessage(message: MessageFromWebviewToExtension) {
+    public sendMessageToExtension(message: MessageFromWebviewToExtension) {
         if (this.vsCodeApi) this.vsCodeApi.postMessage(message)
         else console.log(message)
     }

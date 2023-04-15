@@ -1,49 +1,33 @@
 {
     "name": "cushystudio",
-    "publisher": "rvion",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/rvion/CushyStudio"
+    "author": {
+        "name": "rvion",
+        "url": "https://github.com/rvion/CushyStudio",
+        "email": "vion.remi@gmail.com"
     },
+    "publisher": "rvion",
+    "repository": { "type": "git", "url": "https://github.com/rvion/CushyStudio" },
     "description": "🎨 Generative Art Web-IDE and embeddable typescript SDK - based on ComfyUI",
     "private": true,
-    "engines": {
-        "vscode": "^1.77.0"
-    },
-    "categories": [
-        "Other"
-    ],
-    "activationEvents": [
-        "workspaceContains:**/*.cushy.ts"
-    ],
+    "license": "unlicensed",
+    "version": "0.0.64",
+    "engines": { "vscode": "^1.77.0" },
+    "categories": [ "Other" ],
+    "activationEvents": [ "workspaceContains:**/*.cushy.ts" ],
     "main": "./out/main.js",
     "contributes": {
-        "customEditors": [
-            {
-                "viewType": "cushystudio.run",
-                "displayName": "",
-                "selector": [
-                    {
-                        "filenamePattern": "*.cushy.OLD"
-                    }
-                ]
-            }
-        ],
         "configuration": {
             "title": "CushyStudio",
             "properties": {
-                "cushystudio.useCodeSnippetsOnMethodSuggest": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Complete functions with their parameter signature."
-                },
-                "cushystudio.tsdk": {
-                    "type": [
-                        "string",
-                        "null"
-                    ],
+                "cushystudio.serverHostHTTP": {
+                    "type": [ "string", "null" ],
                     "default": null,
-                    "description": "Specifies the folder path containing the tsserver and lib*.d.ts files to use."
+                    "description": "http or https server host"
+                },
+                "cushystudio.serverWSEndoint": {
+                    "type": [ "string", "null" ],
+                    "default": null,
+                    "description": "specific ws or wss endpoint to contact "
                 }
             }
         },
@@ -58,18 +42,9 @@
         },
         "views": {
             "cushy-studio": [
-                {
-                    "id": "cushystudio-servers",
-                    "name": "Servers"
-                },
-                {
-                    "id": "cushyrun",
-                    "name": "Cushy Runs"
-                },
-                {
-                    "id": "cushygraphs",
-                    "name": "CushyGraph"
-                }
+                { "id": "cushystudio-servers", "name": "Servers" },
+                { "id": "cushyrun",            "name": "Cushy Runs" },
+                { "id": "cushygraphs",         "name": "CushyGraph" }
             ]
         },
         "commands": [
@@ -99,13 +74,6 @@
             }
         ]
     },
-    "author": {
-        "name": "rvion",
-        "url": "https://github.com/rvion/CushyStudio",
-        "email": "vion.remi@gmail.com"
-    },
-    "license": "unlicensed",
-    "version": "0.0.64",
     "scripts": {
         "SHELL": "",
             "vscode:dev":        "code --extensionDevelopmentPath=${PWD}",
@@ -115,11 +83,11 @@
             "back:metafile":     "npm run back:build -- --minify --metafile=out/meta.json",
             "back:build":        "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
         "FRONT": "",
-            "web:dev":           "vite",
-            "web:build":         "vite build",
-            "web:watch":         "vite build --watch",
-            "web:preview":       "vite preview",
-            "web:inspect":       "npx vite-bundle-visualizer",
+            "front:dev":           "vite build --watch",
+            "front:dev2":          "vite dev",
+            "front:build":         "vite build",
+            "front:preview":       "vite preview",
+            "front:inspect":       "npx vite-bundle-visualizer",
         "CHECKS": "",
             "tsc:compile":       "tsc -p ./",
             "tsc:watch":         "tsc -watch -p ./",

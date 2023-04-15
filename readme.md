@@ -155,4 +155,7 @@ _Project is still early, but here is an overview of the plan_
 -   It's a `node` application that runs as a set of `vscode` subprocess and embedded webviews.
 -   before being a vscode extension, it used to be
     -   a standalone webpage made to be embbeed
-    -   then a regular webapp with a deno server used to be a standalone electron app.
+    -   then a regular web app with a deno server used to be a standalone electron app.
+    -   then an electron app
+    -   then a tauri app
+    -   then a vscode extension

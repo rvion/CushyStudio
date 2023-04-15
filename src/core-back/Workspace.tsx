@@ -1,39 +1,39 @@
+import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
+import type { FlowExecutionStep } from '../core-types/FlowExecutionStep'
+import type { ImportCandidate } from '../importers/ImportCandidate'
+
 import fetch from 'node-fetch'
 import { posix } from 'path'
 import * as vscode from 'vscode'
 import * as WS from 'ws'
-import type { ImportCandidate } from '../importers/ImportCandidate'
-import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
 import { sleep } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
 import { FlowExecution } from './FlowExecution'
-import type { FlowExecutionStep } from '../core-types/FlowExecutionStep'
 
 import { makeAutoObservable } from 'mobx'
+import { PromptExecution } from '../controls/ScriptStep_prompt'
+import { RunMode } from '../core-shared/Graph'
+import { getPayloadID } from '../core-shared/PayloadID'
+import { Schema } from '../core-shared/Schema'
+import { ComfyPromptJSON } from '../core-types/ComfyPrompt'
+import { ComfyStatus, WsMsg } from '../core-types/ComfyWsPayloads'
+import { RelativePath } from '../fs/BrandedPaths'
+import { asRelativePath } from '../fs/pathUtils'
+import { ComfyImporter } from '../importers/ImportComfyImage'
 import { CushyLayoutState } from '../layout/LayoutState'
 import { loggerExt } from '../logger/LoggerBack'
-import { Template } from '../templates/Template'
-import { asRelativePath } from '../fs/pathUtils'
-import { RelativePath } from '../fs/BrandedPaths'
-import { sdkTemplate } from '../sdk/sdkTemplate'
-import { defaultScript } from '../templates/defaultProjectCode'
-import { ResilientWebSocketClient } from './ResilientWebsocket'
-import { ComfyStatus, ComfyUploadImageResult, WsMsg } from '../core-types/ComfyWsPayloads'
-import { ComfyPromptJSON } from '../core-types/ComfyPrompt'
-import { Schema } from '../core-shared/Schema'
-import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { demoLibrary } from '../templates/Library'
-import { ComfyImporter } from '../importers/ImportComfyImage'
+import { Template } from '../templates/Template'
+import { defaultScript } from '../templates/defaultProjectCode'
 import { readableStringify } from '../utils/stringifyReadable'
-import { RunMode } from '../core-shared/Graph'
-import { transpileCode } from './transpiler'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
 import { FlowExecutionManager } from './FlowExecutionManager'
 import { FrontWebview } from './FrontWebview'
 import { GeneratedImage } from './GeneratedImage'
-import { getPayloadID } from '../core-shared/PayloadID'
-import FormData from 'form-data'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
+import { ResilientWebSocketClient } from './ResilientWebsocket'
+import { transpileCode } from './transpiler'
+import { StatusBar } from './statusBar'
 export type WorkspaceConfigJSON = {
     version: 2
     comfyWSURL: string
@@ -51,23 +51,16 @@ export type CSCriticalError = { title: string; help: string }
  */
 export class Workspace {
     schema: Schema
+    statusBar: StatusBar
 
     /** template /snippet library one can */
     demos: Template[] = demoLibrary
-
     comfySessionId = 'temp'
-
     activeRun: Maybe<FlowExecution> = null
-
-    // projects: Project[] = []
-
-    assets = new Map<string, boolean>()
-
     layout = new CushyLayoutState(this)
 
     // 🔴 add to subscriptions
     vsTestController: vscode.TestController
-
     fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>()
 
     // import management
@@ -178,7 +171,7 @@ export class Workspace {
         // ctrl.createRunProfile('Debug Tests', vscode.TestRunProfileKind.Debug, startTestRun, true, undefined, true)
         ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, startTestRun, true, undefined, true)
 
-        // provided by the extension that the editor may call to requestchildren of a test item
+        // provided by the extension that the editor may call to request children of a test item
         ctrl.resolveHandler = async (item: vscode.TestItem | undefined) => {
             if (!item) {
                 this.context.subscriptions.push(...this.startWatchingWorkspace(ctrl, this.fileChangedEmitter))
@@ -209,6 +202,7 @@ export class Workspace {
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'cushy.d.ts') })
         // this.writeTextFile(this.cushyTSUri, sdkTemplate)
         this.vsTestController = this.initVSTestController()
+        this.statusBar = new StatusBar(this)
         this.autoDiscoverEveryWorkflow()
         void this.updateComfy_object_info()
         this.ws = this.initWebsocket()
@@ -380,9 +374,12 @@ export class Workspace {
         // return 'ok'
     }
 
-    get serverHostHTTP() {
-        const def = vscode.workspace.getConfiguration('cushystudio').get('serverHostHTTP', 'http://192.168.1.20:8188')
-        return def
+    get serverHostHTTP(): string {
+        return vscode.workspace.getConfiguration('cushystudio').get('serverHostHTTP', 'http://localhost:8188')
+    }
+
+    get serverWSEndoint(): string {
+        return vscode.workspace.getConfiguration('cushystudio').get('serverWSEndoint', 'ws://localhost:8188/ws')
     }
 
     // fetchPrompHistory = async () => {
@@ -454,13 +451,7 @@ export class Workspace {
     }
 
     // --------------------------------------------------
-    // --------------------------------------------------
-    // --------------------------------------------------
-    getOrCreateFile(
-        //
-        vsTestController: vscode.TestController,
-        uri: vscode.Uri,
-    ): CushyFile {
+    getOrCreateFile(vsTestController: vscode.TestController, uri: vscode.Uri): CushyFile {
         // { vsTestItem: vscode.TestItem; cushyFile: CushyFile } {
         const existing = vsTestController.items.get(uri.toString())
         if (existing) {
@@ -468,17 +459,7 @@ export class Workspace {
             if (!(cushyFile instanceof CushyFile)) throw new Error('🔴not a cushyfile')
             return cushyFile
         }
-
         return new CushyFile(this, uri)
-        // const vsTestItem = vsTestController.createTestItem(
-        //     uri.toString(), // id
-        //     uri.path.split('/').pop()!, // label
-        //     uri, // uri
-        // )
-        // vsTestController.items.add(vsTestItem)
-        // vsTestItemOriginDict.set(vsTestItem, cushyFile)
-        // vsTestItem.canResolveChildren = true
-        // return { vsTestItem: vsTestItem, cushyFile: cushyFile }
     }
 
     startWatchingWorkspace(
@@ -498,9 +479,7 @@ export class Workspace {
                 fileChangedEmitter.fire(uri)
             })
             watcher.onDidDelete((uri) => controller.items.delete(uri.toString()))
-
             this.findInitialFiles(controller, pattern)
-
             return watcher
         })
     }

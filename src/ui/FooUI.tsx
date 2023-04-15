@@ -3,6 +3,7 @@ import { vscode } from '../core-front/FrontState'
 import { observer } from 'mobx-react-lite'
 import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
 import { Fragment } from 'react'
+import { Execution_askStringUI } from './Execution_askStringUI'
 
 export const FooUI = observer(function FooUI_() {
     return (
@@ -33,6 +34,7 @@ export const FooUI = observer(function FooUI_() {
                                 {JSON.stringify(msg)}
                             </div>
                         </div>
+                        {msg.type === 'ask-string' && <Execution_askStringUI step={msg} />}
                         {msg.type === 'images' && msg.uris.length && (
                             <div>
                                 {msg.uris.map((imgUri) => (
@@ -53,5 +55,5 @@ export const FooUI = observer(function FooUI_() {
 })
 
 export function handleHowdyClick() {
-    vscode.sendMessage({ type: 'say-hello', message: 'Hey there partner! 🤠' })
+    vscode.sendMessageToExtension({ type: 'say-hello', message: 'Hey there partner! 🤠' })
 }

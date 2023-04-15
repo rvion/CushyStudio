@@ -9,8 +9,8 @@ import { exhaust } from '../utils/ComfyUtils'
 export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExtensionToWebview_
 export type MessageFromExtensionToWebview_ =
     // user interractions
-    | { type: 'ask-string'; message: string; default?: Maybe<string> }
-    | { type: 'ask-boolean'; message: string; default?: Maybe<boolean> }
+    | MessageFromExtensionToWebview_askString
+    | MessageFromExtensionToWebview_askBoolean
     | { type: 'print'; message: string }
 
     // schema & prompt (needs to be sent so webview can draw the graph)
@@ -25,6 +25,10 @@ export type MessageFromExtensionToWebview_ =
 
     // generated images as transformed uri by vscode extension so they can be displayed in the webview
     | { type: 'images'; uris: string[] }
+export type MessageFromExtensionToWebview_askString = { type: 'ask-string'; message: string; default?: Maybe<string> }
+export type MessageFromExtensionToWebview_askBoolean = { type: 'ask-boolean'; message: string; default?: Maybe<boolean> }
+
+// ------------------------------------------------------------------------------------------------------------
 
 export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWebview) => {
     if (msg.type === 'ask-string') return '🔤'
