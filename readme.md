@@ -2,33 +2,23 @@
 
 # 🛋 CushyStudio - _Generative Art studio_
 
-[![Windows Support](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
+<!-- [![Windows Support](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
 [![MacOS Support](https://img.shields.io/badge/MACOS-adb8c5?style=for-the-badge&logo=apple&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
 [![Ubuntu Support](https://img.shields.io/badge/Ubuntu-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
-[![Arch Linux Support](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://github.com/rvion/CushyStudio/releases)
+[![Arch Linux Support](https://img.shields.io/badge/Arch_Linux-1793D1?style=for-the-badge&logo=arch-linux&logoColor=white)](https://github.com/rvion/CushyStudio/releases) -->
 
 <!-- Introduction -->
 
-`CushyStudio` is a **Graphical Software** for creatives and developpers, to create art, game assets,
-or any other kind of 2d visual production (_generative art_). It aims to offers power-user tools via
-a scripting layer, along modern tools to gather human-feedback and help with interractive curation
+`CushyStudio` is an AI powered Generative-Art studio for creatives and developpers, enabling new ways to produce art, assets, or animation. It offers scripting tools and dynamic interfaces for live human-feedback, curation
 and guidance along generation processes. `CushyStudio` uses the [ComfyUI]() project as bakend to
 execute your pipelines.
 
-<!--
-    Build and automate your art or game asset production.
-    Deploy interractive generative art pipelines with human curation, validation and guidance.
--->
+[![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio?style=flat)
+![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total?style=flat) [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Frvion%2FCushyStudio&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
+
+[![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
 
 </div>
-
-## Project status
-
-| ![test](https://img.shields.io/badge/Stability-ALPHA-red?style=flat) | 👋 help welcome !                                                                                                                                                                                                                                                                                                                              |
-| -------------------------------------------------------------------: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|                                                              `Build` | [![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml) ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio?style=flat)                                                                         |
-|                                                             `Growth` | ![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total?style=flat) [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Frvion%2FCushyStudio&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com) |
-|                                                          `Community` | [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)                                                                                                                                                                                                                                                         |
 
 <!-- ![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=flat&logo=reddit) ![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=flat&logo=twitter) -->
 
@@ -49,41 +39,41 @@ _Project is still early, but here is an overview of the plan_
 
 <!-- [🟢 = acceptable, 🔶 = partial, ☣️ = not ready] -->
 
--   🔶 **workspace and project management**
--   🔴 **manage ComfyUI installation**
-    -   🔴 download and install custom nodes
-    -   🔴 download and install various models
--   🔶 **Import** existing projects
-    -   🟢 import from `ComfyUI images`
-    -   🔶 import from `ComfyUI json`
-    -   🔶 import from `Automatic1111`
-    -   🔴 package assets with projects
--   🔶 **Installer**
-    -   🟢 small footprint
-    -   🔶 self-updating binary for simple
--   🔶 integrated `OpenPose` library to `puppet`, `animate`, `interpolate` frames of stickmans
-    -   🔶 generate bone images from openpose definitions
--   🔴 image building API
-    -   🔴 paint with words
-    -   🔴 prefab library
--   🔶 Interractive Evaluation
-    -   🟢 `askString` question
-    -   🟢 `askBoolean` question
-    -   🔶 `choose best picture` question
-    -   🔶 `choose next branch` question
-    -   🔴 .... a lot more to be done
--   🔶 Deep ComfyUI Integration
-    -   🟢 Custom nodes support
--   ⏳ Civitai Integration
-    -   🔶 search
--   🔶 Parrallel Execution
-    -   🔶 multiple Comfy Server support
-    -   🔶 multiple Comfy Server support
--   🟢 Work with cloud GPU offers
-    -   🟢 yes, examples soon.
--   🔶 QOL
-    -   🔶 more shortcuts
-    -   🔴 [open in explorer](https://github.com/tauri-apps/tauri/issues/4062#issuecomment-1338048169)
+-   ✅ **workspace and project management**
+-   [ ] **manage ComfyUI installation**
+    -   [ ] download and install custom nodes
+    -   [ ] download and install various models
+-   [◐] **Import** existing projects
+    -   ✅ import from `ComfyUI images`
+    -   [◐] import from `ComfyUI json`
+    -   [◐] import from `Automatic1111`
+    -   [ ] package assets with projects
+-   [◐] **Installer**
+    -   ✅ small footprint
+    -   [◐] self-updating binary for simple
+-   [◐] integrated `OpenPose` library to `puppet`, `animate`, `interpolate` frames of stickmans
+    -   [◐] generate bone images from openpose definitions
+-   [ ] image building API
+    -   [ ] paint with words
+    -   [ ] prefab library
+-   [◐] Interractive Evaluation
+    -   ✅ `askString` question
+    -   ✅ `askBoolean` question
+    -   [◐] `choose best picture` question
+    -   [◐] `choose next branch` question
+    -   [ ] .... a lot more to be done
+-   [◐] Deep ComfyUI Integration
+    -   ✅ Custom nodes support
+-   [◐] Civitai Integration
+    -   [◐] search
+-   [◐] Parrallel Execution
+    -   [◐] multiple Comfy Server support
+    -   [◐] multiple Comfy Server support
+-   ✅ Work with cloud GPU offers
+    -   ✅ yes, examples soon.
+-   [◐] QOL
+    -   [◐] more shortcuts
+    -   [ ] [open in explorer](https://github.com/tauri-apps/tauri/issues/4062#issuecomment-1338048169)
 
 ## Short-term Roadmap
 
@@ -99,14 +89,10 @@ then
 -   [ ] save projects on disk / via metadata
 -   [ ] improve comfy import
 -   [ ] add folder of examples
--   [ ] button to open devtools
--   [ ] switch releases to allow for devtools
 
 ## Screenshots
 
 ![](website/static/img/screenshots/2023-03-24-09-29-45.png)
-
-### Type-safe everywhere
 
 ![](website/static/img/screenshots/2023-03-18-23-13-53.png) -->
 
@@ -135,10 +121,10 @@ TODO
 
 It's as easy as :
 
-1.  Install [`rust`](rustup), [`node`]() and [`pnpm`]()
+1.  install [`node`]() and [`npm`]()
 2.  clone this repo `git clone github.com/rvion/CushyStudio`
-3.  install dependencies `pnpm install`
-4.  start the dev server `pnpm dev`
+3.  install dependencies `npm install`
+4.  start the dev server `npm dev`
 
 ---
 

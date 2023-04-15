@@ -2,6 +2,7 @@
     // https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+        // start the extension in a fresh vscode
         {
             "name": "Run Extension",
             "type": "extensionHost",
@@ -10,6 +11,7 @@
             "outFiles": ["${workspaceFolder}/out/**/*.js"],
             "preLaunchTask": "${defaultBuildTask}"
         },
+        // run the extension test suite
         {
             "name": "Extension Tests",
             "type": "extensionHost",
@@ -23,23 +25,15 @@
             "outFiles": ["${workspaceFolder}/out/test/**/*.js"],
             "preLaunchTask": "${defaultBuildTask}"
         },
+        // run current file in node quickly
         {
             "type": "node",
-
             "request": "launch",
-            "runtimeArgs": [
-                //
-                "--loader",
-                "ts-node/esm",
-                "--experimental-specifier-resolution=node",
-                "--experimental-modules"
-            ],
+            "runtimeArgs": ["--loader", "ts-node/esm", "--experimental-specifier-resolution=node", "--experimental-modules"],
             "name": "tsnode",
             "skipFiles": ["<node_internals>/**"],
             "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v19.0.0/bin/node",
-            // "program": "${workspaceFolder}/src/codegen/codegen.ts",
             "program": "${relativeFile}",
-            //  ${file}
             "outFiles": ["${workspaceFolder}/**/*.js"],
             "console": "integratedTerminal"
         }
