@@ -27,6 +27,7 @@ import { getPayloadID } from '../core-shared/PayloadID'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { IFlowExecution } from '../sdk/IFlowExecution'
 import { LATER } from './LATER'
+import { execSync } from 'child_process'
 
 /** script exeuction instance */
 export class FlowRun implements IFlowExecution {
@@ -47,6 +48,8 @@ export class FlowRun implements IFlowExecution {
 
     /** list of all images produed over the whole script execution */
     generatedImages: GeneratedImage[] = []
+    get firstImage() { return this.generatedImages[0] } // prettier-ignore
+    get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
 
     /** folder where CushyStudio will save run informations */
     get workspaceRelativeCacheFolderPath(): RelativePath {
@@ -55,7 +58,7 @@ export class FlowRun implements IFlowExecution {
 
     folder: vscode.Uri
 
-    sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
+    sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
     // High level API--------------------
     /** ask user to input a boolean (true/false) */
@@ -64,6 +67,15 @@ export class FlowRun implements IFlowExecution {
         FrontWebview.sendMessage({ type: 'ask-boolean', message: msg, default: def, uid: getPayloadID() })
         this.steps.unshift(ask)
         return ask.finished
+    }
+
+    exec = (comand: string): string => {
+        // promisify exec to run the command and collect the output
+        this.print('🔥 exec: ' + comand)
+        const cwd = this.workspace.wspUri.fsPath
+        console.log('cwd', cwd)
+        const res = execSync(comand, { encoding: 'utf-8', cwd })
+        return res
     }
 
     /** ask the user to input a string */

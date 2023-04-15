@@ -259,7 +259,7 @@ export class Workspace {
         await sleep(200)
         const uris = FrontWebview.with((curr) => {
             return images.map((img: GeneratedImage) => {
-                return curr.webview.asWebviewUri(img.uri).toString()
+                return curr.webview.asWebviewUri(img.localUri).toString()
             })
         })
         loggerExt.info('💿', 'all images saved: sending to front: ' + uris.join(', '))

@@ -560,21 +560,41 @@ declare module "sdk/IFlowExecution" {
         resolveRelative(path: string): RelativePath;
         resolveAbsolute(path: string): AbsolutePath;
         uploadWorkspaceFile(path: string): Promise<ComfyUploadImageResult>;
-        uploadWorkspaceFileAndLoad(path: RelativePath): Promise<foo.LoadImage>;
+        uploadWorkspaceFileAndLoad(path: string): Promise<foo.LoadImage>;
         uploadAnyFile(path: string): Promise<ComfyUploadImageResult>;
         uploadURL(url: string): Promise<ComfyUploadImageResult>;
         askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>;
         askString(msg: string, def?: Maybe<string>): Promise<string>;
+        exec(cmd: string): string;
         sleep(ms: number): Promise<void>;
         PROMPT(): Promise<IPromptExecution>;
         wildcards: Wildcards;
         generatedImages: IGeneratedImage[];
+        get firstImage(): IGeneratedImage;
+        get lastImage(): IGeneratedImage;
     }
     export interface IPromptExecution {
         images: IGeneratedImage[];
     }
     export interface IGeneratedImage {
-        get relativePath(): string;
+        /** run an imagemagick convert action */
+        imagemagicConvert(partialCmd: string, suffix: string): string;
+        /** file name within the ComfyUI folder */
+        get comfyFilename(): string;
+        /** relative path on the comfy URL */
+        get comfyRelativePath(): string;
+        /** url to acces the image */
+        get comfyURL(): string;
+        /** path within the input folder */
+        comfyInputPath?: Maybe<string>;
+        /** folder in which the image should be saved */
+        get localFolder(): string;
+        /** local workspace file name, without extension */
+        get localFileNameNoExt(): string;
+        /** local workspace file name, WITH extension */
+        get localFileName(): string;
+        /** local workspace relative file path */
+        get localRelativeFilePath(): string;
     }
 }
 declare module "sdk/sdkEntrypoint" {
