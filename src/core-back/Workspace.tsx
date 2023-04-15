@@ -242,9 +242,9 @@ export class Workspace {
     initWebsocket = () =>
         new ResilientWebSocketClient({
             url: () => {
-                const socketPort = vscode.workspace.getConfiguration('languageServerExample').get('port', 8188)
-                const url = `ws://192.168.1.20:${socketPort}/ws`
-                return url
+                return vscode.workspace //
+                    .getConfiguration('cushystudio')
+                    .get('serverWSEndoint', `ws://localhost:8188/ws`)
             },
             onMessage: this.onMessage,
         })
