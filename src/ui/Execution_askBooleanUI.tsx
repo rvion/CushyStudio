@@ -1,24 +1,41 @@
-import * as I from '@rsuite/icons'
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Fragment } from 'react'
-import { IconButton } from 'rsuite'
-import { ScriptStep_askBoolean } from '../controls/ScriptStep_ask'
+import { vscode } from '../core-front/FrontState'
+import { MessageFromExtensionToWebview_askBoolean } from '../core-types/MessageFromExtensionToWebview'
 
-export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { step: ScriptStep_askBoolean }) {
+export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { step: MessageFromExtensionToWebview_askBoolean }) {
+    const uiSt = useLocalObservable(() => ({
+        locked: false,
+        value: null,
+    }))
+
     return (
         <Fragment>
-            <div>{p.step.msg}</div>
-            {p.step.locked ? (
-                <div>{p.step.value ? 'YES' : 'NO'}</div>
+            <div>{p.step.message}</div>
+            {uiSt.value != null ? (
+                <div>{uiSt.value ? 'YES' : 'NO'}</div>
             ) : (
                 <div>
-                    <div className='grow' />
-                    <IconButton onClick={() => p.step.answer(true)} appearance='primary' icon={<I.Calendar />}>
+                    <button
+                        autoFocus={p.step.default === true}
+                        className={p.step.default === true ? 'primary' : undefined}
+                        onClick={() => {
+                            vscode.answerBoolean(true)
+                            uiSt.locked = true
+                        }}
+                    >
                         Yes
-                    </IconButton>
-                    <IconButton onClick={() => p.step.answer(false)} appearance='primary' icon={<I.Calendar />}>
+                    </button>
+                    <button
+                        autoFocus={p.step.default === false}
+                        className={p.step.default === false ? 'primary' : undefined}
+                        onClick={() => {
+                            vscode.answerBoolean(false)
+                            uiSt.locked = true
+                        }}
+                    >
                         No
-                    </IconButton>
+                    </button>
                 </div>
             )}
         </Fragment>

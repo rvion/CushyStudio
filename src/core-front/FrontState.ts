@@ -26,9 +26,9 @@ class FrontState {
 
     received: MessageFromExtensionToWebview[] = []
 
-    answerString = (value: string) => {
-        this.sendMessageToExtension({ type: 'answer-string', value })
-    }
+    answerString = (value: string) => this.sendMessageToExtension({ type: 'answer-string', value })
+    answerBoolean = (value: boolean) => this.sendMessageToExtension({ type: 'answer-boolean', value })
+
     constructor() {
         if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
         makeObservable(this, {
