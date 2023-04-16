@@ -1,10 +1,15 @@
-.vscode/**
-.vscode-test/**
-src/**
-.gitignore
-.yarnrc
-vsc-extension-quickstart.md
-**/tsconfig.json
-**/.eslintrc.json
-**/*.map
-**/*.ts
+# ignore all
+*
+*/**
+**/.DS_Store
+# keep readme and chagelog
+!README.md
+!CHANGELOG.md
+!LICENSE.txt
+# keep extension (back)
+!out/main.js
+# keep extension (front)
+!webview/assets/index.css
+!webview/assets/index.js
+!webview/CushyLogo.png
+# https://github.com/microsoft/vscode-mono-debug/blob/main/.vscodeignore
