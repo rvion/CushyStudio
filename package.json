@@ -31,19 +31,17 @@
             "properties": {
                 "cushystudio.serverHostHTTP": {
                     "type": [
-                        "string",
-                        "null"
+                        "string"
                     ],
-                    "default": null,
-                    "description": "http or https server host"
+                    "default": "http://localhost:8188",
+                    "description": "your ComfyUI http (or https) server host"
                 },
                 "cushystudio.serverWSEndoint": {
                     "type": [
-                        "string",
-                        "null"
+                        "string"
                     ],
-                    "default": null,
-                    "description": "specific ws or wss endpoint to contact "
+                    "default": "ws://localhost:8188/ws",
+                    "description": "your ComfyUI ws (or wss) endpoint"
                 }
             }
         },
@@ -122,8 +120,8 @@
         "test": "node ./out/test/runTest.js",
         "#lint": "eslint src --ext ts",
         "📌 RELEASE": "",
-        "🔶 vscode:prepublish": "npm run back:build -- --minify",
-        "bump": "bump patch --commit=v --tag=v --push",
+        "⏸️ vscode:prepublish": "npm run back:build -- --minify",
+        "⏸️ bump": "bump patch --commit=v --tag=v --push",
         "publish": "vsce publish",
         "package": "vsce package",
         "📌 DEV": "",

@@ -1,0 +1,45 @@
+Usage: vsce publish [options] [version]
+
+Publishes an extension
+
+Options:
+  -p, --pat <token>               Personal Access Token (defaults to VSCE_PAT
+                                  environment variable)
+  -t, --target <targets...>       Target architectures. Valid targets:
+                                  win32-x64, win32-ia32, win32-arm64,
+                                  linux-x64, linux-arm64, linux-armhf,
+                                  darwin-x64, darwin-arm64, alpine-x64,
+                                  alpine-arm64, web
+  -m, --message <commit message>  Commit message used when calling `npm
+                                  version`.
+  --no-git-tag-version            Do not create a version commit and tag when
+                                  calling `npm version`. Valid only when
+                                  [version] is provided.
+  --no-update-package-json        Do not update `package.json`. Valid only when
+                                  [version] is provided.
+  -i, --packagePath <paths...>    Publish the provided VSIX packages.
+  --githubBranch <branch>         The GitHub branch used to infer relative
+                                  links in README.md. Can be overridden by
+                                  --baseContentUrl and --baseImagesUrl.
+  --gitlabBranch <branch>         The GitLab branch used to infer relative
+                                  links in README.md. Can be overridden by
+                                  --baseContentUrl and --baseImagesUrl.
+  --baseContentUrl <url>          Prepend all relative links in README.md with
+                                  this url.
+  --baseImagesUrl <url>           Prepend all relative image links in README.md
+                                  with this url.
+  --yarn                          Use yarn instead of npm (default inferred
+                                  from presence of yarn.lock or .yarnrc)
+  --no-yarn                       Use npm instead of yarn (default inferred
+                                  from lack of yarn.lock or .yarnrc)
+  --noVerify                      
+  --ignoreFile <path>             Indicate alternative .vscodeignore
+  --dependencies                  Enable dependency detection via npm or yarn
+  --no-dependencies               Disable dependency detection via npm or yarn
+  --pre-release                   Mark this package as a pre-release
+  --allow-star-activation         Allow using * in activation events
+  --allow-missing-repository      Allow missing a repository URL in
+                                  package.json
+  --skip-duplicate                Fail silently if version already exists on
+                                  the marketplace
+  -h, --help                      display help for command
