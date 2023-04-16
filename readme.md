@@ -7,7 +7,7 @@ enabling new ways to produce art, assets, or animations.
 It offers scripting tools and dynamic interfaces for live human-feedback, curation
 and guidance along generation processes. It is cross-platform and open-source.
 
-👉 requires a [ComfyUI]() installation to execute your workflows.
+👉 requires a [ComfyUI](https://github.com/comfyanonymous/ComfyUI) setup available.
 
 [![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio?style=flat)
@@ -28,11 +28,20 @@ and guidance along generation processes. It is cross-platform and open-source.
 
 </div>
 
+---
+
+<div align="center">
+
+<video src='./public/2023-04-16_15-48-30.mp4'></video>
+
+[![video](./public/2023-04-16_15-48-30.mp4)](./public/2023-04-16_15-48-30.mp4)
+
+</div>
+
 <!-- ![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=flat&logo=reddit) ![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=flat&logo=twitter) -->
 
-![](website/static/img/screenshots/2023-03-24-09-29-45.png)
-
-![](website/static/img/screenshots/2023-03-18-23-13-53.png)
+<!-- ![](website/static/img/screenshots/2023-03-24-09-29-45.png) -->
+<!-- ![](website/static/img/screenshots/2023-03-18-23-13-53.png) -->
 
 ---
 
@@ -76,6 +85,20 @@ WORKFLOW('demo-1', async (graph, flow) => {
 })
 ```
 
+then move your cursor anywhere in the prompt and use the
+
+| command                  | Keybinding  |     |
+| ------------------------ | ----------- | --- |
+| Test: Run Test at cursor | `cmd+;` `c` |     |
+
+---
+
+## 🐰 Relation With ComfyUI
+
+`ComfyUI` is a powerful and modular stable diffusion backend (and graph GUI).
+`ComfyUI` supports
+`CushyStudio` will connect to your ComfyUI server, and fetch the schema of all available nodes and available
+
 ---
 
 ## 🤝 Contribute
@@ -88,12 +111,17 @@ WORKFLOW('demo-1', async (graph, flow) => {
     cd CushyStudio
     npm install
     ```
-4. start the various pieces
+4. watch/build the extension front and back
     ```sh
-    npm run vscode:dev # start a `vscode in development mode`
     npm run back:dev   # build and watch the extension node part
     npm run front:dev  # build and watch the extension webview part
     ```
+5. open a new vscode in `extension development` mode
+
+    - either with `F5` (recommanded)
+    - or with `npm run vscode:dev`
+
+6. [recommanded] then add a shortcut to trigger a reload quickly
 
 ---
 
