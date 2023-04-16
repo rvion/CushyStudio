@@ -64,6 +64,8 @@ class FrontState {
         // 2. process the info
         if (msg.type === 'ask-boolean') return
         if (msg.type === 'ask-string') return
+        if (msg.type === 'ask-paint') return
+
         if (msg.type === 'schema') {
             this.schema = new Schema(msg.schema)
             return

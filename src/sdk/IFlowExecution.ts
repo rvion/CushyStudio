@@ -20,6 +20,7 @@ export interface IFlowExecution {
     // interractions
     askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>
     askString(msg: string, def?: Maybe<string>): Promise<string>
+    askPaint(msg: string, relPath: string): Promise<string>
     exec(cmd: string): string
     sleep(ms: number): Promise<void>
 

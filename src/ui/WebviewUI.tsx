@@ -4,8 +4,10 @@ import { observer } from 'mobx-react-lite'
 import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
 import { Fragment } from 'react'
 import { Execution_askStringUI } from './Execution_askStringUI'
+import { Execution_askBooleanUI } from './Execution_askBooleanUI'
+import { PaintUI } from '../imageEditor/PaintUI'
 
-export const FooUI = observer(function FooUI_() {
+export const WebviewUI = observer(function WebviewUI_() {
     return (
         <div>
             {/* <div>{vscode.images.length} images</div> */}
@@ -35,6 +37,8 @@ export const FooUI = observer(function FooUI_() {
                             </div>
                         </div>
                         {msg.type === 'ask-string' && <Execution_askStringUI step={msg} />}
+                        {msg.type === 'ask-boolean' && <Execution_askBooleanUI step={msg} />}
+                        {msg.type === 'ask-paint' && <PaintUI step={msg} />}
                         {msg.type === 'images' && msg.uris.length && (
                             <div>
                                 {msg.uris.map((imgUri) => (

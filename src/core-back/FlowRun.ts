@@ -16,7 +16,7 @@ import { deepCopyNaive, sleep } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
 import { GeneratedImage } from './GeneratedImage'
 import { FlowExecutionStep } from '../core-types/FlowExecutionStep'
-import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
+import { ScriptStep_askBoolean, ScriptStep_askPaint, ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { Workspace } from './Workspace'
@@ -69,6 +69,22 @@ export class FlowRun implements IFlowExecution {
         return ask.finished
     }
 
+    /** ask the user to input a string */
+    askString = (msg: string, def?: Maybe<string>): Promise<string> => {
+        const ask = new ScriptStep_askString(msg, def)
+        FrontWebview.sendMessage({ type: 'ask-string', message: msg, default: def, uid: getPayloadID() })
+        this.steps.unshift(ask)
+        return ask.finished
+    }
+
+    /** ask the user to paint over an image */
+    askPaint = (msg: string, relPath: RelativePath): Promise<string> => {
+        const ask = new ScriptStep_askPaint(msg, relPath)
+        FrontWebview.sendMessage({ type: 'ask-paint', message: msg, relPath, uid: getPayloadID() })
+        this.steps.unshift(ask)
+        return ask.finished
+    }
+
     exec = (comand: string): string => {
         // promisify exec to run the command and collect the output
         this.print('🔥 exec: ' + comand)
@@ -76,14 +92,6 @@ export class FlowRun implements IFlowExecution {
         console.log('cwd', cwd)
         const res = execSync(comand, { encoding: 'utf-8', cwd })
         return res
-    }
-
-    /** ask the user to input a string */
-    askString = (msg: string, def?: Maybe<string>): Promise<string> => {
-        const ask = new ScriptStep_askString(msg, def)
-        FrontWebview.sendMessage({ type: 'ask-string', message: msg, default: def, uid: getPayloadID() })
-        this.steps.unshift(ask)
-        return ask.finished
     }
 
     /** built-in wildcards */

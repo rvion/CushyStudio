@@ -186,6 +186,15 @@ export class FrontWebview {
             return
         }
 
+        if (msg.type === 'answer-paint') {
+            const run = this.workspace.activeRun
+            if (run == null) throw new Error('no active run')
+            const step = run.step
+            if (!(step instanceof ScriptStep_askString)) throw new Error('not a string request step')
+            step.answer(msg.value)
+            return
+        }
+
         if (msg.type === 'say-ready') {
             // window.showInformationMessage(msg.message)
             this.ready = true

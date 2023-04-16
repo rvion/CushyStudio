@@ -101,7 +101,7 @@ then move your cursor anywhere in the prompt and use the
 
 ---
 
-## 🤝 Contribute
+## 🤝 Contributing
 
 1. install [vscode](https://code.visualstudio.com/)
 2. install [node](https://nodejs.org/en)
@@ -122,6 +122,23 @@ then move your cursor anywhere in the prompt and use the
     - or with `npm run vscode:dev`
 
 6. [recommanded] then add a shortcut to trigger a reload quickly
+
+### pointers: add a new interraction
+
+-   in `src/core-types/MessageFromExtensionToWebview.ts`:
+
+    -   see `type MessageFromExtensionToWebview`
+    -   see `type MessageFromWebviewToExtension`
+
+-   in `src/core-back/FrontWebview.ts`,
+
+    -   see `onMessageFromWebview` function
+
+-   in `src/core-front/FrontState.ts`
+
+    -   see `onMessageFromExtension` function
+
+-   in `src/ui/WebviewUI.tsx`, to add custom ui for your step
 
 ---
 

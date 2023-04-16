@@ -11,6 +11,7 @@ export type MessageFromExtensionToWebview_ =
     // user interractions
     | MessageFromExtensionToWebview_askString
     | MessageFromExtensionToWebview_askBoolean
+    | MessageFromExtensionToWebview_askPaint
     | { type: 'print'; message: string }
 
     // schema & prompt (needs to be sent so webview can draw the graph)
@@ -27,12 +28,14 @@ export type MessageFromExtensionToWebview_ =
     | { type: 'images'; uris: string[] }
 export type MessageFromExtensionToWebview_askString = { type: 'ask-string'; message: string; default?: Maybe<string> }
 export type MessageFromExtensionToWebview_askBoolean = { type: 'ask-boolean'; message: string; default?: Maybe<boolean> }
+export type MessageFromExtensionToWebview_askPaint = { type: 'ask-paint'; message: string; relPath: string }
 
 // ------------------------------------------------------------------------------------------------------------
 
 export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWebview) => {
     if (msg.type === 'ask-string') return '🔤'
     if (msg.type === 'ask-boolean') return '🔘'
+    if (msg.type === 'ask-paint') return '🎨'
     if (msg.type === 'schema') return '📄'
     if (msg.type === 'prompt') return '📝'
     if (msg.type === 'status') return '📡'
@@ -55,3 +58,4 @@ export type MessageFromWebviewToExtension =
     // user interractions
     | { type: 'answer-string'; value: string }
     | { type: 'answer-boolean'; value: boolean }
+    | { type: 'answer-paint'; value: string /** base64 encoded image */ }

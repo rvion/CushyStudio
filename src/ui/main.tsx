@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom/client'
 
 // mixed back of overrides
 import './webview.css'
-import { FooUI } from './FooUI'
+import { WebviewUI } from './WebviewUI'
 
 // single import allowed before loading demos
 // import { Workflow } from '../core/Workflow'
@@ -34,4 +34,4 @@ import { FooUI } from './FooUI'
 ReactDOM.createRoot(
     //
     document.getElementById('root') as HTMLElement,
-).render(<FooUI />)
+).render(<WebviewUI />)

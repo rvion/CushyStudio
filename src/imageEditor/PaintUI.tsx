@@ -3,9 +3,10 @@ import { nanoid } from 'nanoid'
 // @ts-ignore
 import Painterro from 'painterro'
 import { useMemo } from 'react'
+import { MessageFromExtensionToWebview_askPaint } from '../core-types/MessageFromExtensionToWebview'
 
 // https://github.com/devforth/painterro
-export const PaintUI = observer(function PaintUI_(p: {}) {
+export const PaintUI = observer(function PaintUI_(p: { step: MessageFromExtensionToWebview_askPaint }) {
     const uid = useMemo(() => nanoid(), [])
     return (
         <div
