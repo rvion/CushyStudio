@@ -565,7 +565,7 @@ declare module "sdk/IFlowExecution" {
         uploadURL(url: string): Promise<ComfyUploadImageResult>;
         askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>;
         askString(msg: string, def?: Maybe<string>): Promise<string>;
-        askPaint(msg: string, relPath: string): Promise<string>;
+        askPaint(msg: string, path: string): Promise<string>;
         exec(cmd: string): string;
         sleep(ms: number): Promise<void>;
         PROMPT(): Promise<IPromptExecution>;
@@ -596,6 +596,8 @@ declare module "sdk/IFlowExecution" {
         get localFileName(): string;
         /** local workspace relative file path */
         get localRelativeFilePath(): string;
+        /** uri the webview can access */
+        get webviewURI(): string;
     }
 }
 declare module "sdk/sdkEntrypoint" {

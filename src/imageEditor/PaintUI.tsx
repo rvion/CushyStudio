@@ -35,7 +35,7 @@ export const PaintUI = observer(function PaintUI_(p: { step: MessageFromExtensio
                         //     }
                         //     xhr.send(formData)
                         // },
-                    }).show()
+                    }).show(p.step.uri)
                 }, 1000)
             }}
         >

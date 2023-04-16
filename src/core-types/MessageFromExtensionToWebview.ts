@@ -28,7 +28,7 @@ export type MessageFromExtensionToWebview_ =
     | { type: 'images'; uris: string[] }
 export type MessageFromExtensionToWebview_askString = { type: 'ask-string'; message: string; default?: Maybe<string> }
 export type MessageFromExtensionToWebview_askBoolean = { type: 'ask-boolean'; message: string; default?: Maybe<boolean> }
-export type MessageFromExtensionToWebview_askPaint = { type: 'ask-paint'; message: string; relPath: string }
+export type MessageFromExtensionToWebview_askPaint = { type: 'ask-paint'; message: string; uri: string }
 
 // ------------------------------------------------------------------------------------------------------------
 

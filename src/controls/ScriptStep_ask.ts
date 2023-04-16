@@ -64,8 +64,8 @@ export class ScriptStep_askPaint implements ScriptStep_Iface<string> {
     constructor(
         //
         public msg: string,
-        public image: RelativePath,
-    ) {
+    ) // public image: RelativePath,
+    {
         makeAutoObservable(this)
     }
     locked: boolean = false

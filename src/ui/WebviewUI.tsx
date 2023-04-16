@@ -39,6 +39,7 @@ export const WebviewUI = observer(function WebviewUI_() {
                         {msg.type === 'ask-string' && <Execution_askStringUI step={msg} />}
                         {msg.type === 'ask-boolean' && <Execution_askBooleanUI step={msg} />}
                         {msg.type === 'ask-paint' && <PaintUI step={msg} />}
+                        {msg.type === 'ask-paint' && <div>{msg.uri}</div>}
                         {msg.type === 'images' && msg.uris.length && (
                             <div>
                                 {msg.uris.map((imgUri) => (

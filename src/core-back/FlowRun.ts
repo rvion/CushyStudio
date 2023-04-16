@@ -78,9 +78,9 @@ export class FlowRun implements IFlowExecution {
     }
 
     /** ask the user to paint over an image */
-    askPaint = (msg: string, relPath: RelativePath): Promise<string> => {
-        const ask = new ScriptStep_askPaint(msg, relPath)
-        FrontWebview.sendMessage({ type: 'ask-paint', message: msg, relPath, uid: getPayloadID() })
+    askPaint = (msg: string, uri: RelativePath): Promise<string> => {
+        const ask = new ScriptStep_askPaint(msg)
+        FrontWebview.sendMessage({ type: 'ask-paint', message: msg, uri, uid: getPayloadID() })
         this.steps.unshift(ask)
         return ask.finished
     }

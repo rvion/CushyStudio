@@ -11,6 +11,7 @@ import { asRelativePath } from '../fs/pathUtils'
 import { RelativePath } from '../fs/BrandedPaths'
 import { loggerExt } from '../logger/LoggerBack'
 import { IGeneratedImage } from '../sdk/IFlowExecution'
+import { FrontWebview } from './FrontWebview'
 
 /** Cushy wrapper around ComfyImageInfo */
 export class GeneratedImage implements IGeneratedImage {
@@ -72,6 +73,10 @@ export class GeneratedImage implements IGeneratedImage {
 
     get localUri(): vscode.Uri { return this.workspace.resolve(this.localRelativeFilePath) } // prettier-ignore
 
+    /** uri the webview can access */
+    get webviewURI(): string {
+        return FrontWebview.current?.webview.asWebviewUri(this.localUri).toString() ?? ''
+    }
     // MISC ----------------------------------------------------------------------
     /** true if file exists on disk; false otherwise */
     saved = false

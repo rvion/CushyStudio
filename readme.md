@@ -9,7 +9,6 @@ and guidance along generation processes. It is cross-platform and open-source.
 
 👉 requires a [ComfyUI](https://github.com/comfyanonymous/ComfyUI) setup available.
 
-[![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio?style=flat)
 ![Visual Studio Marketplace Version (including pre-releases)](https://img.shields.io/visual-studio-marketplace/v/rvion.cushystudio?include_prereleases)
 ![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/rvion.cushystudio)

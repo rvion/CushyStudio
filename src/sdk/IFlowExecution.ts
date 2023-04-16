@@ -20,7 +20,7 @@ export interface IFlowExecution {
     // interractions
     askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>
     askString(msg: string, def?: Maybe<string>): Promise<string>
-    askPaint(msg: string, relPath: string): Promise<string>
+    askPaint(msg: string, path: string): Promise<string>
     exec(cmd: string): string
     sleep(ms: number): Promise<void>
 
@@ -59,6 +59,9 @@ export interface IGeneratedImage {
     get localFileName(): string
     /** local workspace relative file path */
     get localRelativeFilePath(): string
+
+    /** uri the webview can access */
+    get webviewURI(): string
 }
 
 const pick = (...x: string[]) => x[Math.floor(Math.random() * x.length)]
