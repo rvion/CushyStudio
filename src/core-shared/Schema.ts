@@ -158,9 +158,11 @@ export class Schema {
         // p(`import type { Graph } from '${prefix}/Graph'`)
         // p(`import type { Workflow } from '${prefix}/Workflow'`)
 
-        p(sdkTemplate)
+        // p(sdkTemplate)
 
-        p(`declare module "foo" {`)
+        p(`/// <reference path="cushy.d.ts" />`)
+        p('')
+        p(`declare module "CUSHY_RUNTIME" {`)
         p(`    import type { ComfyNode } from 'core-shared/Node'`)
         p(`    import type { Slot } from 'core-shared/Slot'`)
         p(`    import type { Graph } from 'core-shared/Graph'`)
@@ -252,7 +254,7 @@ export class Schema {
 
         // p(`declare const WORKFLOW: (builder: (graph: ComfyGraph) => void) => void`)
         // b.writeTS('./src/core/Comfy.ts')
-        p(`declare const WORKFLOW: typeof import("foo").WORKFLOW`)
+        p(`declare const WORKFLOW: typeof import("CUSHY_RUNTIME").WORKFLOW`)
         return b.content
     }
 

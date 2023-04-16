@@ -134,9 +134,9 @@ export class Workspace {
     ) {
         this.schema = new Schema({})
         this.initOutputChannel()
-        this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.json') })
-        this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.d.ts') })
-        this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'cushy.d.ts') })
+        this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'comfy.json') })
+        this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'comfy.d.ts') })
+        this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'cushy.d.ts') })
         this.writeTextFile(this.cushyTSUri, sdkTemplate)
         this.vsTestController = this.initVSTestController()
         this.statusBar = new StatusBar(this)
@@ -336,16 +336,16 @@ export class Workspace {
         }
         vscode.window.showInformationMessage('🟢 yay')
 
-        const comfyStr = readableStringify(schema$, 3)
-        const comfyJSONBuffer = Buffer.from(comfyStr, 'utf8')
+        const comfyJSONStr = readableStringify(schema$, 3)
+        const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
         vscode.workspace.fs.writeFile(this.comfyJSONUri, comfyJSONBuffer)
 
         this.schema.update(schema$)
         loggerExt.info('🌠', 'schema updated')
-        const cushyStr = this.schema.codegenDTS()
+        const comfySchemaTs = this.schema.codegenDTS()
         loggerExt.info('🌠', 'schema code updated !')
-        const cushyBuff = Buffer.from(cushyStr, 'utf8')
-        vscode.workspace.fs.writeFile(this.cushyTSUri, cushyBuff)
+        const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
+        vscode.workspace.fs.writeFile(this.comfyTSUri, comfySchemaBuff)
         loggerExt.info('🌠', 'schema code saved !')
 
         // this.objectInfoFile.update(schema$)
