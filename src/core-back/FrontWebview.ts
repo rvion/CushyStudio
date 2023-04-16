@@ -1,10 +1,11 @@
+import type { Workspace } from './Workspace'
+
 import * as vscode from 'vscode'
 import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
 import { getNonce } from '../fs/getNonce'
 import { getUri } from '../fs/getUri'
 import { loggerExt } from '../logger/LoggerBack'
 import { exhaust } from '../utils/ComfyUtils'
-import type { Workspace } from './Workspace'
 import { ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { ScriptStep_askBoolean } from '../controls/ScriptStep_ask'
 

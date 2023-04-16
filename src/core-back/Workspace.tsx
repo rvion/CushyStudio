@@ -20,7 +20,6 @@ import { ComfyStatus, WsMsg } from '../core-types/ComfyWsPayloads'
 import { RelativePath } from '../fs/BrandedPaths'
 import { asRelativePath } from '../fs/pathUtils'
 import { ComfyImporter } from '../importers/ImportComfyImage'
-import { CushyLayoutState } from '../layout/LayoutState'
 import { loggerExt } from '../logger/LoggerBack'
 import { demoLibrary } from '../templates/Library'
 import { Template } from '../templates/Template'
@@ -51,9 +50,6 @@ export class Workspace {
     demos: Template[] = demoLibrary
     comfySessionId = 'temp'
     activeRun: Maybe<FlowRun> = null
-    layout = new CushyLayoutState(this)
-
-    // 🔴 add to subscriptions
     vsTestController: vscode.TestController
     fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>()
 
