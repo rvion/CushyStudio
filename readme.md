@@ -36,34 +36,31 @@ and guidance along generation processes. It is cross-platform and open-source.
 
 ---
 
-## Install
+## 🗂️ Installation
 
-1. [install ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+1. install [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
     - [Download Models](scripts/download-models.sh)
     - start Comfy `python main.py --listen 0.0.0.0`
 2. install [vscode](https://code.visualstudio.com/)
-3. install `CushyStudio` in the extension menu [(maretplace link)](https://marketplace.visualstudio.com/items?itemName=rvion.cushystudio)
-
-    ```sh
-    git clone https://github.com/rvion/CushyStudio.git
-    cd CushyStudio
-    npm install
-
-    npm run vscode:dev # start a `vscode in development mode`
-    npm run back:dev   # build and watch the extension node part
-    npm run front:dev  # build and watch the extension webview part
-    ```
-
+3. install `CushyStudio` in the extension menu
+    - [(maretplace link)](https://marketplace.visualstudio.com/items?itemName=rvion.cushystudio)
 4. configure your server properly in your vscode settings (`.vscode/settings.json`)
 
-```jsonc
-{
-    "cushystudio.serverHostHTTP": "http://192.168.1.20:8188", // include the protocol, no trailing slash /
-    "cushystudio.serverWSEndoint": "ws://192.168.1.20:8188/ws" // ws endpoint path mandatory (here: /ws)
-}
-```
+    ```jsonc
+    {
+        "cushystudio.serverHostHTTP": "http://192.168.1.20:8188", // include the protocol, no trailing slash /
+        "cushystudio.serverWSEndoint": "ws://192.168.1.20:8188/ws" // ws endpoint path mandatory (here: /ws)
+    }
+    ```
 
-5. create a new file with `.cushy.ts` extension (e.g. `demo-1.cushy.ts`) with this content
+---
+
+## 🎉 Getting Started
+
+1. create a new file ending with `.cushy.ts` (e.g. `demo-1.cushy.ts`)
+2. CushyStudio extension should start automatically
+    - it will create a `.cushy` folder at the root of your workspace
+3. ensure ComyUI server is connectly connected (check the "Cushy" **status bar** at the bottom)
 
 ```ts
 // prettier-ignore
@@ -79,30 +76,28 @@ WORKFLOW('demo-1', async (graph, flow) => {
 })
 ```
 
-## Contribute
+---
 
-1. install [vscode](https://code.visualstudio.com/) and [`node`](https://nodejs.org/en)
+## 🤝 Contribute
+
+1. install [vscode](https://code.visualstudio.com/)
+2. install [node](https://nodejs.org/en)
+3. clone the repo and install dependencies
+    ```sh
+    git clone https://github.com/rvion/CushyStudio.git
+    cd CushyStudio
+    npm install
+    ```
+4. start the various pieces
+    ```sh
+    npm run vscode:dev # start a `vscode in development mode`
+    npm run back:dev   # build and watch the extension node part
+    npm run front:dev  # build and watch the extension webview part
+    ```
 
 ---
 
-## Getting started
-
-This readme section will contain a minimalist tutorial so you can check everything works as expected.
-
-1. create any file with name ending with `.cushy.ts`
-2. CushyStudio will start automatically
-3. ensure ComyUI server is connectly connected
-
----
-
-<!-- This project has quite a backlog of suggestions! If you're new to the project, maybe you'd like to open a pull request to address one of them. -->
-
-<!-- ## Comfy Wishlist
-
--   [ ] `store` node for persistng node output across flow evaluation
--   [ ] `promptID` that can be sent to the server to be included in every `'status'` , `'progress'` , `'executing'` & `'executed'` update payloads -->
-
-## Goals, License, and Sustainability
+## ❤️ Goals, License, and Sustainability
 
 Here are my updated goals with CushyStudio, since the vscode rewrite:
 
@@ -125,7 +120,9 @@ I'll still be able to make some money in a non agressive way from those who can:
 
 This way, I'll be able to keep working and supporting CushyStudio for the years to come. 🚀
 
-## Early Features-Set / Roadmap
+---
+
+## ✅ Early Features-Set / Roadmap
 
 _Project is still early, but here is an overview of the plan_
 
@@ -173,6 +170,8 @@ _Project is still early, but here is an overview of the plan_
     -   [ ] save projects on disk / via metadata
     -   [ ] improve comfy import
     -   [ ] add folder of examples
+
+---
 
 ## Architecture
 
