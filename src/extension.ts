@@ -1,11 +1,9 @@
 import * as vscode from 'vscode'
 import { Workspace } from './core-back/Workspace'
-import { cmd_helloworld } from './shell/cmd_helloworld'
-import { cmd_openJS } from './shell/cmd_openJS'
-import { cmd_runcurrentscript } from './shell/cmd_runcurrentscript'
-import { cmd_openCatCodingWebview } from './shell/cmd_openCatCodingWebview'
 import { FooProvider } from './shell/FooProvider'
-import { FrontWebview } from './core-back/FrontWebview'
+import { cmd_helloworld } from './shell/cmd_helloworld'
+import { cmd_openCatCodingWebview } from './shell/cmd_openCatCodingWebview'
+import { cmd_openJS } from './shell/cmd_openJS'
 
 // https://github.com/microsoft/vscode-extension-samples/blob/main/fsconsumer-sample/src/extension.ts
 // This method is called when your extension is activated
@@ -34,7 +32,6 @@ export function activate(context: vscode.ExtensionContext) {
     registerDisposableCommand('cushystudio.openjs', cmd_openJS)
     registerDisposableCommand('cushystudio.connect', () => {})
     registerDisposableCommand('cushystudio.samplewebview', cmd_openCatCodingWebview.bind(null, context))
-    registerDisposableCommand('cushystudio.runcurrentscript', cmd_runcurrentscript.bind(null, context, workspace))
     registerDisposableCommand('cushystudio.openwebview', () => workspace.ensureWebviewPanelIsOpened())
 
     // add settings to package.json

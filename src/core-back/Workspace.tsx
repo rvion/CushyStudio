@@ -33,6 +33,7 @@ import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { transpileCode } from './transpiler'
 import { StatusBar } from './statusBar'
+import { sdkTemplate } from '../sdk/sdkTemplate'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -64,68 +65,14 @@ export class Workspace {
     get relativeCacheFolderPath(): RelativePath {
         return asRelativePath('.cushy/cache')
     }
+
     get cacheFolderURI(): vscode.Uri {
         return this.resolve(this.relativeCacheFolderPath)
     }
 
     runs: FlowRun[] = []
-
-    RUN_CURRENT_FILE = async (mode: RunMode = 'real'): Promise<boolean> => {
-        loggerExt.info('🔥', '❓ HELLO super12')
-        // this.focusedProject = this
-        // ensure we have some code to run
-        // this.scriptBuffer.codeJS
-        // get the content of the current editor
-
-        const activeTextEditor = vscode.window.activeTextEditor
-        if (activeTextEditor == null) {
-            loggerExt.info('🔥', '❌ no active editor')
-            return false
-        }
-        const activeDocument = activeTextEditor.document
-        const activeURI = activeDocument.uri
-        loggerExt.info('🔥', activeURI.toString())
-        const codeTS = activeDocument.getText() ?? ''
-        loggerExt.info('🔥', codeTS.slice(0, 1000) + '...')
-        const codeJS = await transpileCode(codeTS)
-        // logger.info('🔥', codeJS.slice(0, 1000) + '...')
-        loggerExt.info('🔥', codeJS + '...')
-        if (codeJS == null) {
-            loggerExt.info('🔥', '❌ no code to run')
-            return false
-        }
-        // check if we're in "MOCK" mode
-        const opts = mode === 'fake' ? { mock: true } : undefined
-        const execution = new FlowRun(this, activeURI, opts)
-        // await execution.save()
-        // write the code to a file
-        this.runs.unshift(execution)
-
-        // try {
-        const ProjectScriptFn = new Function('WORKFLOW', codeJS)
-        const graph = execution.graph
-
-        // graph.runningMode = mode
-        // this.MAIN = graph
-
-        const WORKFLOW = (fn: any) => fn(graph, execution)
-
-        try {
-            await ProjectScriptFn(WORKFLOW)
-            console.log('[✅] RUN SUCCESS')
-            // this.isRunning = false
-            return true
-        } catch (error) {
-            console.log(error)
-            loggerExt.error('🌠', (error as any as Error).name)
-            loggerExt.error('🌠', (error as any as Error).message)
-            loggerExt.error('🌠', 'RUN FAILURE')
-            return false
-        }
-    }
-
     comfyJSONUri: vscode.Uri
-    // comfyTSUri: vscode.Uri
+    comfyTSUri: vscode.Uri
     cushyTSUri: vscode.Uri
 
     writeBinaryFile(relPath: RelativePath, content: Buffer, open = false) {
@@ -188,31 +135,15 @@ export class Workspace {
         this.schema = new Schema({})
         this.initOutputChannel()
         this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.json') })
-        // this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.d.ts') })
+        this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'comfy.d.ts') })
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, 'cushy.d.ts') })
-        // this.writeTextFile(this.cushyTSUri, sdkTemplate)
+        this.writeTextFile(this.cushyTSUri, sdkTemplate)
         this.vsTestController = this.initVSTestController()
         this.statusBar = new StatusBar(this)
         this.autoDiscoverEveryWorkflow()
         void this.updateComfy_object_info()
         this.ws = this.initWebsocket()
         makeAutoObservable(this)
-
-        // vscode.tests.createTestController('mathTestController', 'Markdown Math')
-        // this.ctrl.refreshHandler = async () => {
-        //     await Promise.all(getWorkspaceTestPatterns().map(({ pattern }) => findInitialFiles(ctrl, pattern)))
-        // }
-        // this.ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, startTestRun, true, undefined, true)
-
-        // // provided by the extension that the editor may call to requestchildren of a test item
-        // this.ctrl.resolveHandler = async (item) => {
-        //     if (!item) {
-        //         context.subscriptions.push(...startWatchingWorkspace(ctrl, fileChangedEmitter))
-        //         return
-        //     }
-        //     const data = testData.get(item)
-        //     if (data instanceof CushyFile) await data.updateFromDisk(ctrl, item)
-        // }
     }
 
     autoDiscoverEveryWorkflow = () => {

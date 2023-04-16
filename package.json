@@ -80,10 +80,6 @@
                 "title": "cushystudio.helloWorld | Hello world"
             },
             {
-                "command": "cushystudio.runcurrentscript",
-                "title": "cushystudio.runcurrentscript | Run current script"
-            },
-            {
                 "command": "cushystudio.connect",
                 "title": "cushystudio.connect | Connect"
             },
