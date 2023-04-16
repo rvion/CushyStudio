@@ -54,13 +54,6 @@ export class Workspace {
     vsTestController: vscode.TestController
     fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>()
 
-    // import management
-    importQueue: ImportCandidate[] = []
-    removeCandidate = (candidate: ImportCandidate) => {
-        const index = this.importQueue.indexOf(candidate)
-        this.importQueue.splice(index, 1)
-    }
-
     /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
     get relativeCacheFolderPath(): RelativePath {
         return asRelativePath('.cushy/cache')
