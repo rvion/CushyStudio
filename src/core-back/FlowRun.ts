@@ -141,13 +141,14 @@ export class FlowRun implements IFlowExecution {
 
     uploadURL = async (url: string = RANDOM_IMAGE_URL): Promise<ComfyUploadImageResult> => {
         const blob = await this.workspace.getUrlAsBlob(url)
-        return this.uploadUIntArrToComfy(blob)
+        const bytes = new Uint8Array(await blob.arrayBuffer())
+        return this.uploadUIntArrToComfy(bytes)
     }
 
-    private uploadUIntArrToComfy = async (blob: Blob | Uint8Array): Promise<ComfyUploadImageResult> => {
+    private uploadUIntArrToComfy = async (bytes: Uint8Array): Promise<ComfyUploadImageResult> => {
         const uploadURL = this.workspace.serverHostHTTP + '/upload/image'
         const form = new FormData()
-        form.append('image', blob, 'upload.png')
+        form.append('image', Buffer.from(bytes), { filename: 'upload.png' })
         const resp = await fetch(uploadURL, { method: 'POST', headers: form.getHeaders(), body: form })
         const result: ComfyUploadImageResult = (await resp.json()) as any
         console.log({ 'resp.data': result })
