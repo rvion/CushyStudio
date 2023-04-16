@@ -66,7 +66,7 @@ export class Workspace {
 
     /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
     get relativeCacheFolderPath(): RelativePath {
-        return asRelativePath('cache')
+        return asRelativePath('.cushy/cache')
     }
     get cacheFolderURI(): vscode.Uri {
         return this.resolve(this.relativeCacheFolderPath)
