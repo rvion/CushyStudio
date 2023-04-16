@@ -49,7 +49,7 @@ and guidance along generation processes. It is cross-platform and open-source.
 3. install `CushyStudio` (later: will be in the vscode marketplace)
 
     ```sh
-    git clone github.com/rvion/CushyStudio
+    git clone https://github.com/rvion/CushyStudio.git
     cd CushyStudio
     npm install
 
