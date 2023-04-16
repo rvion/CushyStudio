@@ -34,12 +34,6 @@ import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { transpileCode } from './transpiler'
 import { StatusBar } from './statusBar'
-export type WorkspaceConfigJSON = {
-    version: 2
-    comfyWSURL: string
-    comfyHTTPURL: string
-    lastProjectFolder?: string
-}
 
 export type CSCriticalError = { title: string; help: string }
 
