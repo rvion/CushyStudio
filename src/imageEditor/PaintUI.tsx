@@ -1,21 +1,25 @@
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 // @ts-ignore
-import Painterro from 'painterro'
+
+// import * as Painterro from 'painterro'
+
 import { useMemo } from 'react'
 import { MessageFromExtensionToWebview_askPaint } from '../core-types/MessageFromExtensionToWebview'
-
+console.log('oks')
 // https://github.com/devforth/painterro
 export const PaintUI = observer(function PaintUI_(p: { step: MessageFromExtensionToWebview_askPaint }) {
     const uid = useMemo(() => nanoid(), [])
     return (
         <div
-            style={{ position: 'relative', width: '100%', height: '100%' }}
+            style={{ position: 'relative', minWidth: '300px', minHeight: '300px', width: '100%', height: '100%' }}
             ref={(a) => {
+                console.log('🔥 mounting paint', a)
                 if (a == null) return null
                 setTimeout(() => {
                     console.log('🔥 mounting paint', a)
                     // setTimeout(())
+                    // @ts-ignore
                     Painterro({
                         id: uid,
                         // saveHandler: function (image, done) {
@@ -32,7 +36,7 @@ export const PaintUI = observer(function PaintUI_(p: { step: MessageFromExtensio
                         //     xhr.send(formData)
                         // },
                     }).show()
-                }, 100)
+                }, 1000)
             }}
         >
             <div dangerouslySetInnerHTML={{ __html: `<div id="${uid}">🟢</div>` }}></div>

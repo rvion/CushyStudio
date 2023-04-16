@@ -8,8 +8,13 @@ export default defineConfig({
         react(),
         // viteSingleFile(),
     ],
+    // esbuild: {
+    //     // minify: false,
+    //     minifySyntax: false,
+    // },
     build: {
-        outDir: 'dist',
+        minify: false,
+        outDir: 'dist/webview',
         rollupOptions: {
             output: {
                 entryFileNames: `assets/[name].js`,

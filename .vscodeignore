@@ -13,9 +13,9 @@
 !dist/extension.js
 
 # keep extension (front)
-!dist/assets/index.css
-!dist/assets/index.js
-!dist/CushyLogo.png
+!dist/webview/assets/index.css
+!dist/webview/assets/index.js
+!dist/webview/CushyLogo.png
 
 # keep logo
 !public/CushyLogo.png

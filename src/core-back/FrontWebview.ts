@@ -130,8 +130,9 @@ export class FrontWebview {
      */
     private _getWebviewContent() {
         // The  JS and CSS files from our build output
-        const stylesUri = this.getExtensionLocalUri(['dist', 'assets', 'index.css'])
-        const scriptUri = this.getExtensionLocalUri(['dist', 'assets', 'index.js'])
+        const stylesUri = this.getExtensionLocalUri(['dist', 'webview', 'assets', 'index.css'])
+        const scriptUri = this.getExtensionLocalUri(['dist', 'webview', 'assets', 'index.js'])
+        const painterro = this.getExtensionLocalUri(['dist', 'webview', 'painterro-1.2.78.min.js'])
         const nonce = getNonce()
 
         return /*html*/ `
@@ -146,6 +147,7 @@ export class FrontWebview {
         <body>
           <div id="root"></div>
           <script type="module" nonce="${nonce}" src="${scriptUri}"></script>
+          <script               nonce="${nonce}" src="${painterro}"></script>
         </body>
       </html>
     `
