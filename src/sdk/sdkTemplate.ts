@@ -1,4 +1,5 @@
 export const sdkTemplate: string = `
+/// <reference path="nodes.d.ts" />
 declare module "core-shared/Workflow" {
     export type WorkflowBuilder = (graph: any) => void;
     export class Workflow {
@@ -110,7 +111,7 @@ declare module "core-types/ComfySchemaJSON" {
         category: string;
     };
     export type ComfyInputSpec = [ComfyInputType] | [ComfyInputType, ComfyInputOpts];
-    export type ComfyInputType = 
+    export type ComfyInputType =
     /** node name or primitive */
     string
     /** enum */
@@ -253,7 +254,7 @@ declare module "core-shared/Node" {
     }
 }
 declare module "graph/cyto" {
-    
+
     import { Graph } from "core-shared/Graph";
     import { ComfyNode } from "core-shared/Node";
     export class Cyto {
@@ -549,7 +550,7 @@ declare module "wildcards/wildcards" {
     export const wildcards: Wildcards;
 }
 declare module "sdk/IFlowExecution" {
-    import type * as foo from 'foo'
+    import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
     import type { ComfyUploadImageResult } from "core-types/ComfyWsPayloads";
     import type { AbsolutePath, RelativePath } from "fs/BrandedPaths";
     import type { Maybe } from "utils/types";
@@ -560,7 +561,7 @@ declare module "sdk/IFlowExecution" {
         resolveRelative(path: string): RelativePath;
         resolveAbsolute(path: string): AbsolutePath;
         uploadWorkspaceFile(path: string): Promise<ComfyUploadImageResult>;
-        uploadWorkspaceFileAndLoad(path: string): Promise<foo.LoadImage>;
+        uploadWorkspaceFileAndLoad(path: string): Promise<CUSHY_RUNTIME.LoadImage>;
         uploadAnyFile(path: string): Promise<ComfyUploadImageResult>;
         uploadURL(url: string): Promise<ComfyUploadImageResult>;
         askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>;

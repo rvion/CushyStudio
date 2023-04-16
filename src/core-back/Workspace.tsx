@@ -134,8 +134,8 @@ export class Workspace {
     ) {
         this.schema = new Schema({})
         this.initOutputChannel()
-        this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'comfy.json') })
-        this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'comfy.d.ts') })
+        this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'nodes.json') })
+        this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'nodes.d.ts') })
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'cushy.d.ts') })
         this.writeTextFile(this.cushyTSUri, sdkTemplate)
         this.vsTestController = this.initVSTestController()

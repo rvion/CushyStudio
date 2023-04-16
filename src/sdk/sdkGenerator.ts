@@ -15,6 +15,7 @@ out = out.replace('/// <reference types="react" />', '')
 for (const [from, to] of sdkRewriteRules) {
     out = out.replace(from, to)
 }
-out = `export const sdkTemplate: string = \`${out}\``
+const ref = `/// <reference path="nodes.d.ts" />`
+out = `export const sdkTemplate: string = \`${ref}\n\n${out}\``
 
 writeFileSync(outPath, out, 'utf8')
