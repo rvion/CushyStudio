@@ -7,13 +7,12 @@ enabling new ways to produce art, assets, or animations.
 It offers scripting tools and dynamic interfaces for live human-feedback, curation
 and guidance along generation processes. It is cross-platform and open-source.
 
-`CushyStudio` requires a [ComfyUI]() installation to execute your workflows.
-
-`CushyStudio` is a cross-platform application distributed as a vscode extension.
+👉 requires a [ComfyUI]() installation to execute your workflows.
 
 [![publish](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml/badge.svg)](https://github.com/rvion/CushyStudio/actions/workflows/publish.yml)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/rvion/CushyStudio?style=flat)
-![GitHub all releases](https://img.shields.io/github/downloads/rvion/CushyStudio/total?style=flat)
+![Visual Studio Marketplace Version (including pre-releases)](https://img.shields.io/visual-studio-marketplace/v/rvion.cushystudio?include_prereleases)
+![Visual Studio Marketplace Downloads](https://img.shields.io/visual-studio-marketplace/d/rvion.cushystudio)
 
 [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
 
@@ -40,13 +39,10 @@ and guidance along generation processes. It is cross-platform and open-source.
 ## Install
 
 1. [install ComfyUI](https://github.com/comfyanonymous/ComfyUI)
-
     - [Download Models](scripts/download-models.sh)
     - start Comfy `python main.py --listen 0.0.0.0`
-
-2. install [vscode](https://code.visualstudio.com/) and [`node`](https://nodejs.org/en)
-
-3. install `CushyStudio` (later: will be in the vscode marketplace)
+2. install [vscode](https://code.visualstudio.com/)
+3. install `CushyStudio` in the extension menu [(maretplace link)](https://marketplace.visualstudio.com/items?itemName=rvion.cushystudio)
 
     ```sh
     git clone github.com/rvion/CushyStudio
@@ -82,6 +78,10 @@ WORKFLOW('demo-1', async (graph, flow) => {
     await flow.PROMPT()
 })
 ```
+
+## Contribute
+
+1. install [vscode](https://code.visualstudio.com/) and [`node`](https://nodejs.org/en)
 
 ---
 
