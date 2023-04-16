@@ -5,12 +5,11 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
     plugins: [
-        //
         react(),
         // viteSingleFile(),
     ],
     build: {
-        outDir: 'webview',
+        outDir: 'dist',
         rollupOptions: {
             output: {
                 entryFileNames: `assets/[name].js`,

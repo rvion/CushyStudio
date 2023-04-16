@@ -90,23 +90,11 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
     onExecuted = (msg: WsMsgExecuted): GeneratedImage[] => {
         const node = this._graph.getNodeOrCrash(msg.data.node)
         const images = msg.data.output.images.map((i) => new GeneratedImage(this, i))
-
-        // accumulate in self
-        this.outputs.push(msg)
+        this.outputs.push(msg) // accumulate in self
         this.images.push(...images)
-        // console.log(`🟢 `, this.uid, 'has', this.images.length, `CushyImages`)
-
-        // accumulate in node
-        node.artifacts.push(msg.data)
-        // node.images.push(...images)
-
-        // accumulate in run
+        node.artifacts.push(msg.data) // accumulate in node
         this.run.generatedImages.push(...images)
-
-        // if (images.length > 0) {
-        //     this.workspace.layout.galleryFocus = images[0]
-        // }
-        console.log(`🟢 graph(${this._graph.uid}) => node(${node.uid}) => (${node.artifacts.length} images)`)
+        // console.log(`🟢 graph(${this._graph.uid}) => node(${node.uid}) => (${node.artifacts.length} images)`)
         return images
     }
 

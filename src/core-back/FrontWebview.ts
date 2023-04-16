@@ -129,8 +129,8 @@ export class FrontWebview {
      */
     private _getWebviewContent() {
         // The  JS and CSS files from our build output
-        const stylesUri = this.getExtensionLocalUri(['webview', 'assets', 'index.css'])
-        const scriptUri = this.getExtensionLocalUri(['webview', 'assets', 'index.js'])
+        const stylesUri = this.getExtensionLocalUri(['dist', 'assets', 'index.css'])
+        const scriptUri = this.getExtensionLocalUri(['dist', 'assets', 'index.js'])
         const nonce = getNonce()
 
         return /*html*/ `

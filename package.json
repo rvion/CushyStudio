@@ -24,7 +24,7 @@
     "activationEvents": [
         "workspaceContains:**/*.cushy.ts"
     ],
-    "main": "./out/main.js",
+    "main": "./dist/extension.js",
     "contributes": {
         "configuration": {
             "title": "CushyStudio",
@@ -103,8 +103,8 @@
         "📌 BACK": "",
         "back:dev": "npm run back:build -- --sourcemap --watch",
         "back:sourcemap": "npm run back:build -- --sourcemap",
-        "back:metafile": "npm run back:build -- --minify --metafile=out/meta.json",
-        "back:build": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+        "back:metafile": "npm run back:build -- --minify --metafile=dist/meta.json",
+        "back:build": "esbuild ./src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
         "📌 FRONT": "",
         "front:dev": "vite build --watch",
         "front:dev2": "vite dev",
