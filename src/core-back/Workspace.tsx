@@ -1,6 +1,6 @@
 import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
 import type { FlowExecutionStep } from '../core-types/FlowExecutionStep'
-import type { ImportCandidate } from '../importers/ImportCandidate'
+// import { ImportCandidate } from '../importers/ImportCandidate'
 
 import fetch from 'node-fetch'
 import { posix } from 'path'
@@ -12,7 +12,6 @@ import { FlowRun } from './FlowRun'
 
 import { makeAutoObservable } from 'mobx'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
-import { RunMode } from '../core-shared/Graph'
 import { getPayloadID } from '../core-shared/PayloadID'
 import { Schema } from '../core-shared/Schema'
 import { ComfyPromptJSON } from '../core-types/ComfyPrompt'
@@ -20,10 +19,13 @@ import { ComfyStatus, WsMsg } from '../core-types/ComfyWsPayloads'
 import { RelativePath } from '../fs/BrandedPaths'
 import { asRelativePath } from '../fs/pathUtils'
 import { ComfyImporter } from '../importers/ImportComfyImage'
+import { getPngMetadata } from '../importers/getPngMetadata'
 import { loggerExt } from '../logger/LoggerBack'
+import { sdkTemplate } from '../sdk/sdkTemplate'
 import { demoLibrary } from '../templates/Library'
 import { Template } from '../templates/Template'
 import { defaultScript } from '../templates/defaultProjectCode'
+import { bang } from '../utils/bang'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
 import { FlowRunner } from './FlowRunner'
@@ -31,9 +33,7 @@ import { FrontWebview } from './FrontWebview'
 import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
-import { transpileCode } from './transpiler'
 import { StatusBar } from './statusBar'
-import { sdkTemplate } from '../sdk/sdkTemplate'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -173,6 +173,40 @@ export class Workspace {
     /** ensure webview is opened */
     ensureWebviewPanelIsOpened = () => {
         FrontWebview.createOrReveal(this)
+    }
+
+    importCurrentFile = async () => {
+        const tab = vscode.window.tabGroups.activeTabGroup.activeTab
+        if (!((tab?.input as any)?.viewType === 'imagePreview.previewEditor')) {
+            throw new Error('❌ not an image')
+        }
+        const uri: vscode.Uri = bang((tab!.input as any).uri)
+        console.log(tab)
+        if (!uri.fsPath.toLowerCase().endsWith('.png')) {
+            throw new Error('❌ not a png')
+        }
+        const pngData = await vscode.workspace.fs.readFile(uri)
+        const result = getPngMetadata(pngData)
+        if (result.type === 'failure') {
+            throw new Error(`❌ ${result.value}`)
+        }
+        const pngMetadata = result.value
+        const canBeImportedAsComfyUIJSON = 'prompt' in pngMetadata
+        if (!canBeImportedAsComfyUIJSON) {
+            throw new Error(`❌ no 'prompt' json metadata`)
+        }
+
+        const json = JSON.parse(pngMetadata.prompt)
+        // console.log(json)
+        // const baseName = posix.basename(uri.path, '.png')
+        this.addProjectFromComfyWorkflowJSON('test', json)
+
+        // const curr = vscode.window.reveal
+        // if (curr == null) return
+        // const filename = curr.document.fileName
+        // console.log({ filename })
+        // const editor = curr.document.
+        // const ic = new ImportCandidate(this, filename)
     }
 
     forwardImagesToFrontV1 = async (images: GeneratedImage[]) => {

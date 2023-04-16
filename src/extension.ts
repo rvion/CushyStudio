@@ -33,6 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
     registerDisposableCommand('cushystudio.connect', () => {})
     registerDisposableCommand('cushystudio.samplewebview', cmd_openCatCodingWebview.bind(null, context))
     registerDisposableCommand('cushystudio.openwebview', () => workspace.ensureWebviewPanelIsOpened())
+    registerDisposableCommand('cushystudio.import', () => workspace.importCurrentFile())
 
     // add settings to package.json
     // insert a treeview in the cushyrun view

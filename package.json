@@ -73,7 +73,11 @@
         "commands": [
             {
                 "command": "cushystudio.openwebview",
-                "title": "cushystudio.openwebview | Hello World (React + Vite): Show"
+                "title": "cushystudio.openwebview | Open webview"
+            },
+            {
+                "command": "cushystudio.import",
+                "title": "cushystudio.import | import flow"
             },
             {
                 "command": "cushystudio.helloWorld",
