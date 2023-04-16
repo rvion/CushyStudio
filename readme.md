@@ -176,11 +176,20 @@ _Project is still early, but here is an overview of the plan_
 
 ## Architecture
 
--   `CushyStudio` is a distributed as a **vscode extension**.
--   It's a `node` application that runs as a set of `vscode` subprocess and embedded webviews.
--   before being a vscode extension, it used to be
+-   `CushyStudio` is a packaged as a **VSCode extension**.
+
+-   It's unusual, but it makes perfect sense. Before being a vscode extension, it used to be
     -   a standalone webpage made to be embbeed
-    -   then a regular web app with a deno server used to be a standalone electron app.
+    -   then a regular web app with a deno server
     -   then an electron app
     -   then a tauri app
     -   then a vscode extension
+
+VScode simply turned out to be best host I found for a script-based generative-art studio.
+
+-   A: because vscode can be seen as a standalone `web browser distribution` + `nodejs distribution` + `script editor UI` + `typescript distribution` + `productivity toolset`
+    -   the `vscode` extension spwan `nodejs` processes and open `webviews`.
+    -   it has with config saving, it has a great keybinding system, with great set of default shortcuts.
+    -   plugin ditribution is easy, no need to bother with complex binary signing processes, or app-store validation processes.
+    -   A large part of my audience (myself included) already has vscode setup.
+    -   it offers a principled way to create productivity tools.
