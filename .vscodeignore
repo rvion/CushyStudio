@@ -12,4 +12,6 @@
 !webview/assets/index.css
 !webview/assets/index.js
 !webview/CushyLogo.png
+# keep logo
+!public/CushyLogo.png
 # https://github.com/microsoft/vscode-mono-debug/blob/main/.vscodeignore

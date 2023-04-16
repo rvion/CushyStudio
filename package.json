@@ -5,6 +5,7 @@
         "url": "https://github.com/rvion/CushyStudio",
         "email": "vion.remi@gmail.com"
     },
+    "icon": "public/CushyLogo.png",
     "publisher": "rvion",
     "repository": { "type": "git", "url": "https://github.com/rvion/CushyStudio" },
     "description": "🎨 Generative Art Web-IDE and embeddable typescript SDK - based on ComfyUI",
