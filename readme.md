@@ -45,7 +45,7 @@ and guidance along generation processes. It is cross-platform and open-source.
 3. install `CushyStudio` in the extension menu [(maretplace link)](https://marketplace.visualstudio.com/items?itemName=rvion.cushystudio)
 
     ```sh
-    git clone github.com/rvion/CushyStudio
+    git clone https://github.com/rvion/CushyStudio.git
     cd CushyStudio
     npm install
 
