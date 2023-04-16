@@ -48,7 +48,7 @@ and guidance along generation processes. It is cross-platform and open-source.
 ## 🗂️ Installation
 
 1. install [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
-    - [Download Models](scripts/download-models.sh)
+    - [Download Models](scripts/download-models.sh) (🔶 temporary, until CushyStudio can download them for you)
     - start Comfy `python main.py --listen 0.0.0.0`
 2. install [vscode](https://code.visualstudio.com/)
 3. install `CushyStudio` in the extension menu
@@ -74,7 +74,7 @@ and guidance along generation processes. It is cross-platform and open-source.
 ```ts
 // prettier-ignore
 WORKFLOW('demo-1', async (graph, flow) => {
-    const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
+    const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'deliberate_v2.safetensors' })
     const latent = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
     const positive = graph.CLIPTextEncode({ text: 'masterpiece, (chair:1.3)', clip: ckpt })
     const negative = graph.CLIPTextEncode({ text: '', clip: ckpt })
@@ -123,8 +123,10 @@ then move your cursor anywhere in the prompt and use the
 
 6. [recommanded] then add a shortcut to trigger a reload quickly
 
-### pointers: add a new interraction
-
+<details>
+<summary>
+pointers: add a new interraction
+</summary>
 -   in `src/core-types/MessageFromExtensionToWebview.ts`:
 
     -   see `type MessageFromExtensionToWebview`
@@ -139,31 +141,7 @@ then move your cursor anywhere in the prompt and use the
     -   see `onMessageFromExtension` function
 
 -   in `src/ui/WebviewUI.tsx`, to add custom ui for your step
-
----
-
-## ❤️ Goals, License, and Sustainability
-
-Here are my updated goals with CushyStudio, since the vscode rewrite:
-
--   I want to make the best script-based generative-art studio and have fun in the process.
--   I want assets generated with CushyStudio to be free to use in commercial projects witout any restrictions.
--   I want CushyStudio to remain open-source and free to use as a creative tool.
--   This being said I don't want to work so that other can resell or redistribute CushyStudio, or make money off CushyStudio itself directly.
--   if you want to embed or redistribute part of CushyStudio code itself in your project, you'll have to contact me and buy a commercial license from me.
-
-=> I'll proably go with a dual-license, a default **(A?)GPL** with a **Contributor License Agreement (CLA)**. so I can offer a commercial license in case anyone wants to make a
-
-I think this is the best compromise: while it's free and open-source for all,
-I'll still be able to make some money in a non agressive way from those who can:
-
--   Solicit donations, (though a Patreon or github support)
--   Sell support, either by contract or by incident.
--   Sell development services, where people pay to add features to CushyStudio.
--   Sell a non-GPL version of the code to companies that want to embed CushyStudio in their products.
--   ~~WON'T DO: sell a premium version with extra feature.~~
-
-This way, I'll be able to keep working and supporting CushyStudio for the years to come. 🚀
+</details>
 
 ---
 
@@ -218,7 +196,7 @@ _Project is still early, but here is an overview of the plan_
 
 ---
 
-## Architecture
+## 🚧 Architecture
 
 -   `CushyStudio` is a packaged as a **VSCode extension**.
 
@@ -237,3 +215,28 @@ VScode simply turned out to be best host I found for a script-based generative-a
     -   plugin ditribution is easy, no need to bother with complex binary signing processes, or app-store validation processes.
     -   A large part of my audience (myself included) already has vscode setup.
     -   it offers a principled way to create productivity tools.
+
+---
+
+## ❤️ Goals, License, and Sustainability
+
+Here are my updated goals with CushyStudio, since the vscode rewrite:
+
+-   I want to make the best script-based generative-art studio and have fun in the process.
+-   I want assets generated with CushyStudio to be free to use in commercial projects witout any restrictions.
+-   I want CushyStudio to remain open-source and free to use as a creative tool.
+-   This being said I don't want to work so that other can resell or redistribute CushyStudio, or make money off CushyStudio itself directly.
+-   if you want to embed or redistribute part of CushyStudio code itself in your project, you'll have to contact me and buy a commercial license from me.
+
+=> I'll proably go with a dual-license, a default **(A?)GPL** with a **Contributor License Agreement (CLA)**. so I can offer a commercial license in case anyone wants to make a
+
+I think this is the best compromise: while it's free and open-source for all,
+I'll still be able to make some money in a non agressive way from those who can:
+
+-   Solicit donations, (though a Patreon or github support)
+-   Sell support, either by contract or by incident.
+-   Sell development services, where people pay to add features to CushyStudio.
+-   Sell a non-GPL version of the code to companies that want to embed CushyStudio in their products.
+-   ~~WON'T DO: sell a premium version with extra feature.~~
+
+This way, I'll be able to keep working and supporting CushyStudio for the years to come. 🚀
