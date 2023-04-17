@@ -69,8 +69,11 @@ and guidance along generation processes. It is cross-platform and open-source.
 1. start vscode and open a folder or a workspace ( 👉you need a folder open for cushy to work)
 1. create a new file ending with `.cushy.ts` (e.g. `demo-1.cushy.ts`)
 1. you should see CushyStudio activating
+
     - it will create a `.cushy` folder at the root of your workspace, that will contain typescript definitions
-      ![](docs/static/img/screenshots/2023-04-17-21-48-42.png)
+
+        ![](docs/static/img/screenshots/2023-04-17-21-48-42.png)
+
 1. CushyStudio extension should start automatically
     - it will create a `.cushy` folder at the root of your workspace
 1. ensure ComyUI server is connectly connected (check the "Cushy" **status bar** at the bottom)
