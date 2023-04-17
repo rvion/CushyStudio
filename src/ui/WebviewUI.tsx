@@ -36,6 +36,17 @@ export const WebviewUI = observer(function WebviewUI_() {
                                 {JSON.stringify(msg)}
                             </div>
                         </div>
+                        {msg.type === 'show-html' && (
+                            <div
+                                ref={(e) => {
+                                    if (e) {
+                                        ;(window as any).mermaid.run({ querySelector: 'pre.mermaid' })
+                                        // e.innerHTML = msg.content
+                                    }
+                                }}
+                                dangerouslySetInnerHTML={{ __html: msg.content }}
+                            />
+                        )}
                         {msg.type === 'ask-string' && <Execution_askStringUI step={msg} />}
                         {msg.type === 'ask-boolean' && <Execution_askBooleanUI step={msg} />}
                         {msg.type === 'ask-paint' && <PaintUI step={msg} />}

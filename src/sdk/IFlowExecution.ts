@@ -1,17 +1,24 @@
 import type { LATER } from '../core-back/LATER'
 import type { ComfyUploadImageResult } from '../core-types/ComfyWsPayloads'
 import type { AbsolutePath, RelativePath } from '../fs/BrandedPaths'
+import type { HTMLContent, MDContent } from '../utils/markdown'
 import type { Maybe } from '../utils/types'
 import type { Wildcards } from '../wildcards/wildcards'
 
 export interface IFlowExecution {
-    // misc
+    // random value generation
     randomSeed(): number
-    print(msg: string): void
 
-    // uploads
+    // debug
+    print(msg: string): void
+    showHTMLContent(content: string): void
+    showMardownContent(content: string): void
+
+    // path manipulation
     resolveRelative(path: string): RelativePath
     resolveAbsolute(path: string): AbsolutePath
+
+    // file upload
     uploadWorkspaceFile(path: string): Promise<ComfyUploadImageResult>
     uploadWorkspaceFileAndLoad(path: string): Promise<LATER<'LoadImage'>>
     uploadAnyFile(path: string): Promise<ComfyUploadImageResult>
@@ -21,8 +28,18 @@ export interface IFlowExecution {
     askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>
     askString(msg: string, def?: Maybe<string>): Promise<string>
     askPaint(msg: string, path: string): Promise<string>
+
+    // commands
     exec(cmd: string): string
     sleep(ms: number): Promise<void>
+
+    // file features
+    saveTextFile(relativePath: string, content: string): Promise<void>
+
+    // summary
+    writeFlowSummary(): void
+    get flowSummaryMd(): MDContent
+    get flowSummaryHTML(): HTMLContent
 
     // prompts
     PROMPT(): Promise<IPromptExecution>

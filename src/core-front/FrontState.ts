@@ -88,6 +88,8 @@ class FrontState {
             return
         }
 
+        if (msg.type === 'show-html') return console.log('🐰', 'show-html', msg)
+
         const graph = this.graph
         if (graph == null) throw new Error('missing graph')
 

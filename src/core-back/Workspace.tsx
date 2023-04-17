@@ -200,7 +200,7 @@ export class Workspace {
         // make it relative to the workspace
         const relPathStr = vscode.Uri.file(absPath).path.replace(this.wspUri.fsPath, '.')
         const relPath = asRelativePath(relPathStr)
-        const convertedUri = this.addProjectFromComfyWorkflowJSON(relPath, baseName, json)
+        const convertedUri = this.addProjectFromComfyWorkflowJSON(relPath, baseName, json, opts)
         await sleep(1000)
         //  reveal the URI
         vscode.window.showTextDocument(convertedUri)
@@ -407,8 +407,9 @@ export class Workspace {
         relPath: RelativePath,
         title: string,
         comfyPromptJSON: ComfyPromptJSON,
+        opts: { preserveId: boolean },
     ): vscode.Uri => {
-        const code = new ComfyImporter(this).convertFlowToCode(title, comfyPromptJSON)
+        const code = new ComfyImporter(this).convertFlowToCode(title, comfyPromptJSON, opts)
         // const fileName = title.endsWith('.ts') ? title : `${title}.ts`
         const uri = this.resolve(relPath)
         this.writeTextFile(uri, code, true)

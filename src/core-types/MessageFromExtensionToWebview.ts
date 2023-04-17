@@ -26,6 +26,8 @@ export type MessageFromExtensionToWebview_ =
 
     // generated images as transformed uri by vscode extension so they can be displayed in the webview
     | { type: 'images'; uris: string[] }
+    | { type: 'show-html'; content: string }
+
 export type MessageFromExtensionToWebview_askString = { type: 'ask-string'; message: string; default?: Maybe<string> }
 export type MessageFromExtensionToWebview_askBoolean = { type: 'ask-boolean'; message: string; default?: Maybe<boolean> }
 export type MessageFromExtensionToWebview_askPaint = { type: 'ask-paint'; message: string; uri: string }
@@ -44,6 +46,7 @@ export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWeb
     if (msg.type === 'executed') return '📉'
     if (msg.type === 'images') return '🖼️'
     if (msg.type === 'print') return '💬'
+    if (msg.type === 'show-html') return '🥶'
     exhaust(msg)
     return '❓'
 }

@@ -2,7 +2,7 @@ import * as vscode from 'vscode'
 import fetch from 'node-fetch'
 import FormData from 'form-data'
 // import type { Project } from './Project'
-
+import { marked } from 'marked'
 import * as path from 'path'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -28,6 +28,7 @@ import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { IFlowExecution } from '../sdk/IFlowExecution'
 import { LATER } from './LATER'
 import { execSync } from 'child_process'
+import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
 
 /** script exeuction instance */
 export class FlowRun implements IFlowExecution {
@@ -67,6 +68,50 @@ export class FlowRun implements IFlowExecution {
         FrontWebview.sendMessage({ type: 'ask-boolean', message: msg, default: def, uid: getPayloadID() })
         this.steps.unshift(ask)
         return ask.finished
+    }
+
+    saveTextFile = async (path: RelativePath, content: string): Promise<void> => {
+        const uri = this.workspace.resolve(path)
+        await vscode.workspace.fs.writeFile(uri, Buffer.from(content))
+    }
+
+    showHTMLContent = (htmlContent: string) => {
+        FrontWebview.sendMessage({ type: 'show-html', content: htmlContent, uid: getPayloadID() })
+    }
+    showMardownContent = (markdownContent: string) => {
+        const htmlContent = marked.parse(markdownContent)
+        FrontWebview.sendMessage({ type: 'show-html', content: htmlContent, uid: getPayloadID() })
+    }
+
+    get flowSummaryMd(): MDContent {
+        return asMDContent(
+            [
+                `# flow summary`,
+                // ...this.steps.map((s) => s.summary),
+                `| test | table |`,
+                `| --- | --- |`,
+                `| 1 | hello |`,
+                '',
+                `<pre class="mermaid">`,
+                this.graph.toMermaid(),
+                `</pre>`,
+                // `<pre class="mermaid">`,
+                // `    graph LR`,
+                // `    A --- B`,
+                // `    B-->C[fa:fa-ban forbidden]`,
+                // `    B-->D(fa:fa-spinner);`,
+                // `</pre>`,
+            ].join('\n'),
+        )
+    }
+    get flowSummaryHTML(): HTMLContent {
+        // https://mermaid.js.org/config/usage.html
+        return asHTMLContent(marked.parse(this.flowSummaryMd))
+    }
+
+    writeFlowSummary = () => {
+        const relPath = asRelativePath('flow-summary.md')
+        this.saveTextFile(relPath, this.flowSummaryMd)
     }
 
     /** ask the user to input a string */

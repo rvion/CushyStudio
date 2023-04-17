@@ -1,5 +1,6 @@
-export const sdkTemplate: string = `
-/// <reference path="nodes.d.ts" />
+export const sdkTemplate: string = `/// <reference path="nodes.d.ts" />
+
+
 declare module "core-shared/Workflow" {
     export type WorkflowBuilder = (graph: any) => void;
     export class Workflow {
@@ -111,7 +112,7 @@ declare module "core-types/ComfySchemaJSON" {
         category: string;
     };
     export type ComfyInputSpec = [ComfyInputType] | [ComfyInputType, ComfyInputOpts];
-    export type ComfyInputType =
+    export type ComfyInputType = 
     /** node name or primitive */
     string
     /** enum */
@@ -254,7 +255,7 @@ declare module "core-shared/Node" {
     }
 }
 declare module "graph/cyto" {
-
+    
     import { Graph } from "core-shared/Graph";
     import { ComfyNode } from "core-shared/Node";
     export class Cyto {
@@ -339,6 +340,13 @@ declare module "fs/BrandedPaths" {
     import type { Branded } from "utils/types";
     export type RelativePath = Branded<string, 'WorkspaceRelativePath'>;
     export type AbsolutePath = Branded<string, 'Absolute'>;
+}
+declare module "utils/markdown" {
+    import type { Branded } from "utils/types";
+    export type MDContent = Branded<string, 'MDContent'>;
+    export type HTMLContent = Branded<string, 'HTML'>;
+    export const asMDContent: (s: string) => MDContent;
+    export const asHTMLContent: (s: string) => HTMLContent;
 }
 declare module "wildcards/wildcards" {
     export type Wildcards = {
@@ -553,11 +561,14 @@ declare module "sdk/IFlowExecution" {
     import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
     import type { ComfyUploadImageResult } from "core-types/ComfyWsPayloads";
     import type { AbsolutePath, RelativePath } from "fs/BrandedPaths";
+    import type { HTMLContent, MDContent } from "utils/markdown";
     import type { Maybe } from "utils/types";
     import type { Wildcards } from "wildcards/wildcards";
     export interface IFlowExecution {
         randomSeed(): number;
         print(msg: string): void;
+        showHTMLContent(content: string): void;
+        showMardownContent(content: string): void;
         resolveRelative(path: string): RelativePath;
         resolveAbsolute(path: string): AbsolutePath;
         uploadWorkspaceFile(path: string): Promise<ComfyUploadImageResult>;
@@ -569,6 +580,10 @@ declare module "sdk/IFlowExecution" {
         askPaint(msg: string, path: string): Promise<string>;
         exec(cmd: string): string;
         sleep(ms: number): Promise<void>;
+        saveTextFile(relativePath: string, content: string): Promise<void>;
+        writeFlowSummary(): void;
+        get flowSummaryMd(): MDContent;
+        get flowSummaryHTML(): HTMLContent;
         PROMPT(): Promise<IPromptExecution>;
         wildcards: Wildcards;
         generatedImages: IGeneratedImage[];

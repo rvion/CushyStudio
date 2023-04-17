@@ -33,6 +33,29 @@ export class Graph {
     nodesIndex = new Map<string, ComfyNode<any>>()
     isRunning = false
 
+    toMermaid = () => {
+        const out = [
+            //
+            'graph LR',
+            this.nodes
+                .map((n) =>
+                    n
+                        ._incomingEdges()
+                        .map((i) => {
+                            const from = this.nodesIndex.get(i.from)
+
+                            return `${from?.uid ?? i.from}[${from?.$schema.nameInComfy ?? i.from}] --> |${i.inputName}|${n.uid}[${
+                                n.$schema.nameInComfy
+                            }]`
+                        })
+                        .join('\n'),
+                )
+                .join('\n'),
+        ].join('\n')
+        console.log(out)
+        return out
+    }
+
     /** return the coresponding comfy prompt  */
     get json(): ComfyPromptJSON {
         const json: ComfyPromptJSON = {}

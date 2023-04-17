@@ -133,6 +133,8 @@ export class FrontWebview {
         const stylesUri = this.getExtensionLocalUri(['dist', 'webview', 'assets', 'index.css'])
         const scriptUri = this.getExtensionLocalUri(['dist', 'webview', 'assets', 'index.js'])
         const painterro = this.getExtensionLocalUri(['dist', 'webview', 'painterro-1.2.78.min.js'])
+        // const mermaidjs = this.getExtensionLocalUri(['dist', 'webview', 'mermaid.esm.min.mjs'])
+        //   <script type='module' nonce="${nonce}" src="${mermaidjs}"></script>
         const nonce = getNonce()
 
         return /*html*/ `
@@ -148,6 +150,12 @@ export class FrontWebview {
           <div id="root"></div>
           <script type="module" nonce="${nonce}" src="${scriptUri}"></script>
           <script               nonce="${nonce}" src="${painterro}"></script>
+          <!-- inject mermaid -->
+          <script type="module">
+            import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+            mermaid.initialize({ startOnLoad: false });
+            window.mermaid = mermaid
+          </script>
         </body>
       </html>
     `
