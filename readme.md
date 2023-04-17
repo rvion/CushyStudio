@@ -51,7 +51,11 @@ and guidance along generation processes. It is cross-platform and open-source.
     - start Comfy `python main.py --listen 0.0.0.0`
 2. install [vscode](https://code.visualstudio.com/)
 3. install `CushyStudio` in the extension menu
+
     - [(maretplace link)](https://marketplace.visualstudio.com/items?itemName=rvion.cushystudio)
+
+    ![](docs/static/img/screenshots/2023-04-17-21-59-43.png)
+
 4. configure your server properly in your vscode settings (`.vscode/settings.json`)
 
     ```jsonc
@@ -60,6 +64,8 @@ and guidance along generation processes. It is cross-platform and open-source.
         "cushystudio.serverWSEndoint": "ws://192.168.1.20:8188/ws" // ws endpoint path mandatory (here: /ws)
     }
     ```
+
+    (🔶 you may need to restart vscode for now, until I make the config dynamic)
 
 ---
 
