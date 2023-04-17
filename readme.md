@@ -91,6 +91,7 @@ and guidance along generation processes. It is cross-platform and open-source.
 
 // prettier-ignore
 WORKFLOW('demo-1', async (graph, flow) => {
+    //                                                      V replace this string with one you have
     const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'deliberate_v2.safetensors' })
     const latent = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
     const positive = graph.CLIPTextEncode({ text: 'masterpiece, (chair:1.3)', clip: ckpt })
