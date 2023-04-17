@@ -54,7 +54,9 @@ and guidance along generation processes. It is cross-platform and open-source.
 
     - [(maretplace link)](https://marketplace.visualstudio.com/items?itemName=rvion.cushystudio)
 
-    ![](docs/static/img/screenshots/2023-04-17-21-59-43.png)
+    <!-- ![](docs/static/img/screenshots/2023-04-17-21-59-43.png) -->
+
+    ![](docs/static/img/screenshots/2023-04-18-00-27-02.png)
 
 4. configure your server properly in your vscode settings (`.vscode/settings.json`)
 
