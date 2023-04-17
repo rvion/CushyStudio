@@ -33,7 +33,7 @@
         "**/ComfyUI": true,
         "**/venv": true
     },
-    "pasteImage.path": "website/static/img/screenshots/",
+    "pasteImage.path": "docs/static/img/screenshots/",
     // "files.exclude": {
     //     "out": false // set this to true to hide the "out" folder with the compiled JS files
     // },
