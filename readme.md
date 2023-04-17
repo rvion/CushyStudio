@@ -184,9 +184,8 @@ export interface IFlowExecution {
 
 ## 🐰 Relation With ComfyUI
 
-`ComfyUI` is a powerful and modular stable diffusion backend (and graph GUI).
-`ComfyUI` supports
-`CushyStudio` will connect to your ComfyUI server, and fetch the schema of all available nodes and available
+-   `ComfyUI` is a powerful and modular stable diffusion backend (and graph GUI).
+-   `CushyStudio` will connect to your ComfyUI server, fetch the schema of all available nodes, generates a typescript SDK, augment it with extra interractive features, and expose it to your scripts along a self contained runtime.
 
 ---
 
