@@ -83,7 +83,9 @@ and guidance along generation processes. It is cross-platform and open-source.
         ![](docs/static/img/screenshots/2023-04-17-21-48-42.png)
 
 1. CushyStudio extension should start automatically
+
     - it will create a `.cushy` folder at the root of your workspace
+
 1. ensure ComyUI server is connectly connected (check the "Cushy" **status bar** at the bottom)
 
 ```ts
@@ -105,13 +107,80 @@ WORKFLOW('demo-1', async (graph, flow) => {
 })
 ```
 
-then move your cursor anywhere in the prompt and use the
+## 🛟 Intellisense, Validation, Type safety
+
+when everything is correctly configured, you should have autocompletion for most values, and type checks almost everywhere.
+
+![](docs/static/img/screenshots/2023-04-18-00-30-30.png)
+
+---
+
+# 🎹 Keyboard Shortcuts
+
+By default, you can run any workflow by moving anywhere in a script and typing
 
 | command                  | Keybinding  |     |
 | ------------------------ | ----------- | --- |
 | Test: Run Test at cursor | `cmd+;` `c` |     |
 
 ---
+
+## 💎 dynamic features
+
+`CushyStudio` scripts come packed with dynamic features
+to make your flow more interactive and dynamic:
+
+```ts
+WORKFLOW("test", async (graph, flow) => {
+```
+
+```ts
+export interface IFlowExecution {
+    // random value generation
+    randomSeed(): number
+
+    // debug
+    print(msg: string): void
+    showHTMLContent(content: string): void
+    showMardownContent(content: string): void
+
+    // path manipulation
+    resolveRelative(path: string): RelativePath
+    resolveAbsolute(path: string): AbsolutePath
+
+    // file upload
+    uploadWorkspaceFile(path: string): Promise<ComfyUploadImageResult>
+    uploadWorkspaceFileAndLoad(path: string): Promise<LATER<'LoadImage'>>
+    uploadAnyFile(path: string): Promise<ComfyUploadImageResult>
+    uploadURL(url: string): Promise<ComfyUploadImageResult>
+
+    // interractions
+    askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>
+    askString(msg: string, def?: Maybe<string>): Promise<string>
+    askPaint(msg: string, path: string): Promise<string>
+
+    // commands
+    exec(cmd: string): string
+    sleep(ms: number): Promise<void>
+
+    // file features
+    saveTextFile(relativePath: string, content: string): Promise<void>
+
+    // summary
+    writeFlowSummary(): void
+    get flowSummaryMd(): MDContent
+    get flowSummaryHTML(): HTMLContent
+
+    // prompts
+    PROMPT(): Promise<IPromptExecution>
+    wildcards: Wildcards
+
+    // images
+    generatedImages: IGeneratedImage[]
+    get firstImage(): IGeneratedImage
+    get lastImage(): IGeneratedImage
+}
+```
 
 ## 🐰 Relation With ComfyUI
 
