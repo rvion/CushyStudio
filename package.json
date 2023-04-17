@@ -81,7 +81,7 @@
             },
             {
                 "command": "cushystudio.importlegacy",
-                "title": "cushystudio.import | import flow (preserve legacy IDs)"
+                "title": "cushystudio.importlegacy | import flow (preserve legacy IDs)"
             },
             {
                 "command": "cushystudio.helloWorld",
