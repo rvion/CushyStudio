@@ -184,6 +184,7 @@ export class Workspace {
             throw new Error(`❌ ${result.value}`)
         }
         const pngMetadata = result.value
+        console.log({ pngMetadata })
         const canBeImportedAsComfyUIJSON = 'prompt' in pngMetadata
         if (!canBeImportedAsComfyUIJSON) {
             throw new Error(`❌ no 'prompt' json metadata`)
@@ -191,10 +192,20 @@ export class Workspace {
 
         const json = JSON.parse(pngMetadata.prompt)
         // console.log(json)
-        // const baseName = posix.basename(uri.path, '.png')
-        this.addProjectFromComfyWorkflowJSON('test', json)
+        const baseName = posix.basename(uri.path, '.png')
 
-        // const curr = vscode.window.reveal
+        // replace the extension with .cushy.ts
+        const absPath = uri.path.replace(/\.png$/, '.cushy.ts')
+
+        // make it relative to the workspace
+        const relPathStr = vscode.Uri.file(absPath).path.replace(this.wspUri.fsPath, '.')
+        const relPath = asRelativePath(relPathStr)
+        const convertedUri = this.addProjectFromComfyWorkflowJSON(relPath, baseName, json)
+        await sleep(1000)
+        //  reveal the URI
+        vscode.window.showTextDocument(convertedUri)
+
+        // const curr = vscode.window.reveal()
         // if (curr == null) return
         // const filename = curr.document.fileName
         // console.log({ filename })
@@ -391,15 +402,21 @@ export class Workspace {
 
     notify = (msg: string) => vscode.window.showInformationMessage(msg)
 
-    addProjectFromComfyWorkflowJSON = async (title: string, comfyPromptJSON: ComfyPromptJSON) => {
+    addProjectFromComfyWorkflowJSON = (
+        //
+        relPath: RelativePath,
+        title: string,
+        comfyPromptJSON: ComfyPromptJSON,
+    ): vscode.Uri => {
         const code = new ComfyImporter(this).convertFlowToCode(title, comfyPromptJSON)
-        const fileName = title.endsWith('.ts') ? title : `${title}.ts`
-        const uri = this.resolve(asRelativePath(fileName))
+        // const fileName = title.endsWith('.ts') ? title : `${title}.ts`
+        const uri = this.resolve(relPath)
         this.writeTextFile(uri, code, true)
+        return uri
     }
 
     // --------------------------------------------------
-    getOrCreateFile(vsTestController: vscode.TestController, uri: vscode.Uri): CushyFile {
+    getOrCreateFile = (vsTestController: vscode.TestController, uri: vscode.Uri): CushyFile => {
         // { vsTestItem: vscode.TestItem; cushyFile: CushyFile } {
         const existing = vsTestController.items.get(uri.toString())
         if (existing) {
@@ -410,11 +427,11 @@ export class Workspace {
         return new CushyFile(this, uri)
     }
 
-    startWatchingWorkspace(
+    startWatchingWorkspace = (
         //
         controller: vscode.TestController,
         fileChangedEmitter: vscode.EventEmitter<vscode.Uri>,
-    ) {
+    ) => {
         return this.getWorkspaceTestPatterns().map(({ workspaceFolder, pattern }) => {
             const watcher = vscode.workspace.createFileSystemWatcher(pattern)
             watcher.onDidCreate((uri) => {

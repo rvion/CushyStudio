@@ -19,3 +19,7 @@ python install.py
 
 -   get list of embeddings via object_info
 -   send warnings
+
+---
+
+ping m1kep with graph view
