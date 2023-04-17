@@ -23,3 +23,14 @@ python install.py
 ---
 
 ping m1kep with graph view
+
+```mermaid
+flowchart LR
+
+A[Hard] -->|Text| B(Round)
+B --> C{Decision}
+C -->|One| D[Result 1]
+C -->|Two| E[Result 2]
+```
+
+-   todo: make mermaid lazy loaded, only init on first markdown or html file sent
