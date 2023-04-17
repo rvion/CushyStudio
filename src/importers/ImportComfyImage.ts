@@ -31,7 +31,12 @@ export class ComfyImporter {
         LatentUpscaleBy: 'Latent Upscale by Factor (WAS)',
     }
 
-    convertFlowToCode = (title: string, flow: ComfyPromptJSON): string => {
+    convertFlowToCode = (
+        //
+        title: string,
+        flow: ComfyPromptJSON,
+        opts: { preserveId: boolean },
+    ): string => {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
         const edges: TEdge[] = []

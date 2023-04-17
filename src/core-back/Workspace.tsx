@@ -168,7 +168,7 @@ export class Workspace {
         FrontWebview.createOrReveal(this)
     }
 
-    importCurrentFile = async () => {
+    importCurrentFile = async (opts: { preserveId: boolean }) => {
         const tab = vscode.window.tabGroups.activeTabGroup.activeTab
         if (!((tab?.input as any)?.viewType === 'imagePreview.previewEditor')) {
             throw new Error('❌ not an image')

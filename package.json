@@ -80,6 +80,10 @@
                 "title": "cushystudio.import | import flow"
             },
             {
+                "command": "cushystudio.importlegacy",
+                "title": "cushystudio.import | import flow (preserve legacy IDs)"
+            },
+            {
                 "command": "cushystudio.helloWorld",
                 "title": "cushystudio.helloWorld | Hello world"
             },
