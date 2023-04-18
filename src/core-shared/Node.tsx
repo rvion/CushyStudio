@@ -5,7 +5,7 @@ import type { ComfyNodeJSON } from '../core-types/ComfyPrompt'
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { Slot } from './Slot'
 import { ComfyNodeUID } from '../core-types/NodeUID'
-import { ComfyNodeSchema, NodeInputExt } from './Schema'
+import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from './Schema'
 import { exhaust } from '../utils/ComfyUtils'
 // import { GeneratedImage } from '../core-back/GeneratedImage'
 import { comfyColors } from './Colors'
@@ -155,7 +155,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     }
 
     private _getOutputForType(type: string): Slot<any> {
-        const i: NodeInputExt = this.$schema.outputs.find((i: NodeInputExt) => i.type === type)!
+        const i: NodeOutputExt = this.$schema.outputs.find((i: NodeOutputExt) => i.type === type)!
         const val = (this as any)[i.name]
         // console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
         if (val instanceof Slot) return val
