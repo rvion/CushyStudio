@@ -44,8 +44,8 @@ export class Graph {
                         .map((i) => {
                             const from = this.nodesIndex.get(i.from)
 
-                            return `${from?.uid ?? i.from}[${from?.$schema.nameInComfy ?? i.from}] --> |${i.inputName}|${n.uid}[${
-                                n.$schema.nameInComfy
+                            return `${from?.uid ?? i.from}[${from?.$schema.nameInCushy ?? i.from}] --> |${i.inputName}|${n.uid}[${
+                                n.$schema.nameInCushy
                             }]`
                         })
                         .join('\n'),
