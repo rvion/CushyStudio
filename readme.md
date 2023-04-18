@@ -115,13 +115,14 @@ when everything is correctly configured, you should have autocompletion for most
 
 ---
 
-# 🎹 Keyboard Shortcuts
+# 🥷 Keyboard Shortcuts
 
 By default, you can run any workflow by moving anywhere in a script and typing
 
-| command                  | Keybinding  |     |
-| ------------------------ | ----------- | --- |
-| Test: Run Test at cursor | `cmd+;` `c` |     |
+| command                  | Keybinding  | windows      |
+| ------------------------ | ----------- | ------------ |
+| Test: Run Test at cursor | `cmd+;` `c` | `ctrl+;` `c` |
+| toggle word wrap         | `alt+z`     | `alt+z`      |
 
 ---
 
