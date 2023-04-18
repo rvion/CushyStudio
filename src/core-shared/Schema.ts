@@ -329,7 +329,7 @@ export class ComfyNodeSchema {
         p(`export type ${this.nameInCushy}_input = {`)
         for (const i of this.inputs) {
             const type = ComfyPrimitiveMapping[i.type] ? i.type : `${i.type} | HasSingle_${i.type}`
-            p(`    ${i.name}: ${type}`)
+            p(`    ${i.name}${i.required ? '' : '?'}: ${type}`)
         }
         p(`}`)
 
