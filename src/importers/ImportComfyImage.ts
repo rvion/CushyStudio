@@ -12,10 +12,14 @@ type RuleInput = { nodeName: string; inputName: string; valueStr: string }
 
 export class ComfyImporter {
     constructor(public client: Workspace) {}
+
+    // ATTRIBUTE TO IGNORE
     UI_ONLY_ATTRIBUTES = [
         //
         'Random seed after every gen',
     ]
+
+    // ATTRIBUTE THAT HAD AN OTHER NAME BEFORE
     RULES: ((p: RuleInput) => void)[] = [
         (p) => {
             if (
@@ -74,11 +78,12 @@ export class ComfyImporter {
             const varName = `${classType}_${nodeID}`
             generatedName.set(nodeID, varName)
             const schema: ComfyNodeSchema =
-                this.client.schema.nodesByNameInComfy[classType] ?? //
-                this.client.schema.nodesByNameInComfy[this.knownAliaes[classType]]
+                this.client.schema.nodesByNameInCushy[classType] ?? //
+                this.client.schema.nodesByNameInCushy[this.knownAliaes[classType]]
             if (schema == null) {
                 const msg = `schema not found for ${classType}`
                 loggerExt.error('🔥', msg)
+                loggerExt.error('🔥', `known schemas: ${Object.keys(this.client.schema.nodesByNameInCushy).join(', ')}`)
                 throw new Error(msg)
             }
             let outoutIx = 0
