@@ -39,9 +39,7 @@ export class FlowRunner {
     discoverTests = async (tests: Iterable<vscode.TestItem>) => {
         for (const vsTestItem of tests) {
             if (this.request.exclude?.includes(vsTestItem)) continue
-
             const x = vsTestItemOriginDict.get(vsTestItem)
-
             if (x instanceof FlowDefinition) {
                 this.run.enqueued(vsTestItem)
                 this.queue.push({ vsTestItem, cushyFlow: x })
