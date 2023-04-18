@@ -208,6 +208,7 @@ export class FlowRun implements IFlowExecution {
         // await sleep(2000)
         const currentJSON = deepCopyNaive(this.graph.json)
         FrontWebview.sendMessage({ type: 'schema', schema: this.workspace.schema.spec, uid: getPayloadID() })
+        FrontWebview.sendMessage({ type: 'show-html', content: this.flowSummaryHTML, uid: getPayloadID() })
         FrontWebview.sendMessage({ type: 'prompt', graph: currentJSON, uid: getPayloadID() })
 
         loggerExt.info('🐰', 'checkpoint:' + JSON.stringify(currentJSON))
