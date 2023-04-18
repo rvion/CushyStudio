@@ -46,7 +46,7 @@ export class ComfyImporter {
         nodeType: string,
         nameOfInputsItsPluggedInto: string[],
     ): string => {
-        if (nodeType === 'checkpointLoaderSimple') return this.finalizeName('ckpt')
+        if (nodeType === 'CheckpointLoaderSimple') return this.finalizeName('ckpt')
         if (nameOfInputsItsPluggedInto.length === 1) {
             return this.finalizeName(nameOfInputsItsPluggedInto[0])
         }
