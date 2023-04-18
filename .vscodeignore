@@ -5,7 +5,7 @@
 **/.DS_Store
 
 # keep readme and chagelog
-!README.md
+!readme.md
 !CHANGELOG.md
 !LICENSE.txt
 
