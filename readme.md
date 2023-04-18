@@ -271,9 +271,6 @@ _Project is still early, but here is an overview of the plan_
     -   [◐] import from `ComfyUI json`
     -   [◐] import from `Automatic1111`
     -   [ ] package assets with projects
--   [◐] **Installer**
-    -   ✅ small footprint
-    -   [◐] self-updating binary for simple
 -   [◐] integrated `OpenPose` library to `puppet`, `animate`, `interpolate` frames of stickmans
     -   [◐] generate bone images from openpose definitions
 -   [ ] image building API
@@ -285,7 +282,7 @@ _Project is still early, but here is an overview of the plan_
     -   [◐] `choose best picture` question
     -   [◐] `choose next branch` question
     -   [ ] .... a lot more to be done
--   [◐] Deep ComfyUI Integration
+-   [✅] Deep ComfyUI Integration
     -   ✅ Custom nodes support
 -   [◐] Civitai Integration
     -   [◐] search
@@ -294,15 +291,15 @@ _Project is still early, but here is an overview of the plan_
     -   [◐] multiple Comfy Server support
 -   ✅ Work with cloud GPU offers
     -   ✅ yes, examples soon.
--   [◐] QOL
-    -   [◐] more shortcuts
-    -   [ ] [open in explorer](https://github.com/tauri-apps/tauri/issues/4062#issuecomment-1338048169)
+-   [✅] QOL
+    -   [✅] more shortcuts
+    -   [✅] open in explorer
 -   MISC
     -   [ ] better onboarding UI to help people have a working setup
     -   [ ] properly fix/finish workspace.openScript
     -   [ ] finish loading projects
     -   [ ] save projects on disk / via metadata
-    -   [ ] improve comfy import
+    -   [✅] improve comfy import
     -   [ ] add folder of examples
 
 ---
