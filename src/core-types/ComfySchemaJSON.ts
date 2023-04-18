@@ -4,7 +4,10 @@
 export type ComfySchemaJSON = { [nodeTypeName: string]: ComfyNodeSchemaJSON }
 
 export type ComfyNodeSchemaJSON = {
-    input: { required: { [inputName: string]: ComfyInputSpec } }
+    input: {
+        required: { [inputName: string]: ComfyInputSpec }
+        optional: { [inputName: string]: ComfyInputSpec }
+    }
     output: string[]
     name: string
     description: string

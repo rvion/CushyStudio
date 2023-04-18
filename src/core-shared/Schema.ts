@@ -7,7 +7,14 @@ import { ComfyPrimitiveMapping, ComfyPrimitives } from './Primitives'
 
 export type EnumHash = string
 export type EnumName = string
-export type NodeInputExt = { name: string; type: string; opts?: any; isPrimitive: boolean }
+
+export type NodeInputExt = {
+    name: string
+    type: string
+    opts?: any
+    isPrimitive: boolean
+    required: boolean
+}
 export type NodeOutputExt = { type: string; name: string; isPrimitive: boolean }
 
 export class Schema {
@@ -52,15 +59,14 @@ export class Schema {
 
         // compile spec
         const entries = Object.entries(spec)
-        for (const [nodeNameInComfy, nodeTypeDef] of entries) {
+        for (const [nodeNameInComfy, nodeDef] of entries) {
             // apply prefix
             const normalizedNodeNameInCushy = this.normalizeJSIdentifier(nodeNameInComfy)
-            const nodeNameInCushy = nodeTypeDef.category.startsWith('WAS Suite/')
+            const nodeNameInCushy = nodeDef.category.startsWith('WAS Suite/')
                 ? `WAS${normalizedNodeNameInCushy}`
                 : normalizedNodeNameInCushy
             // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
 
-            const requiredInputs = Object.entries(nodeTypeDef.input.required)
             const inputs: NodeInputExt[] = []
             const outputs: NodeOutputExt[] = []
             const node = new ComfyNodeSchema(
@@ -68,10 +74,12 @@ export class Schema {
                 nodeNameInComfy,
                 nodeNameInCushy,
                 // nodeTypeName,
-                nodeTypeDef.category,
+                nodeDef.category,
                 inputs,
                 outputs,
             )
+
+            // INDEX NODE
             this.nodesByNameInComfy[nodeNameInComfy] = node
             this.nodesByNameInCushy[nodeNameInCushy] = node
             this.nodes.push(node)
@@ -83,9 +91,20 @@ export class Schema {
                 outputNamer[opt]++
             }
 
-            for (const ipt of requiredInputs) {
-                const inputName = ipt[0]
-                const typeDef = ipt[1]
+            // INPUTS
+            const requiredInputs = Object.entries(nodeDef.input?.required ?? {}) //
+                .map(([name, spec]) => ({ required: true, name, spec }))
+            const optionalInputs = Object.entries(nodeDef.input?.optional ?? {}) //
+                .map(([name, spec]) => ({ required: false, name, spec }))
+            const allInputs = [
+                //
+                ...requiredInputs,
+                ...optionalInputs,
+            ]
+
+            for (const ipt of allInputs) {
+                const inputName = ipt.name
+                const typeDef = ipt.spec
                 const typeStuff = typeDef[0]
                 const typeOpts = typeDef[1]
 
@@ -117,6 +136,7 @@ export class Schema {
 
                 if (inputTypeNameInCushy) {
                     node.inputs.push({
+                        required: ipt.required,
                         name: inputName,
                         type: inputTypeNameInCushy,
                         opts: typeOpts,
