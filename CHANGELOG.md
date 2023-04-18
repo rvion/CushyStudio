@@ -1,5 +1,7 @@
 2023-04-18
 
+-   improved the flow graph
+-   always show the flow graph on every prompt
 -   support loras in subfolders
 -   add readme to vscode marketplace
 -   fix flow import
