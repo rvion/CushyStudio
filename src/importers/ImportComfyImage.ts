@@ -109,7 +109,8 @@ export class ComfyImporter {
                     pi(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
                 }
             }
-            p(`}, '${nodeID}')`)
+            if (opts.preserveId) p(`}, '${nodeID}')`)
+            else p(`})`)
         }
 
         p('    await flow.PROMPT()')
