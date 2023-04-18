@@ -2,12 +2,19 @@
 import { vscode } from '../core-front/FrontState'
 import { observer } from 'mobx-react-lite'
 import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
-import { Fragment } from 'react'
+import { Fragment, useEffect } from 'react'
 import { Execution_askStringUI } from './Execution_askStringUI'
 import { Execution_askBooleanUI } from './Execution_askBooleanUI'
 import { PaintUI } from '../imageEditor/PaintUI'
 
 export const WebviewUI = observer(function WebviewUI_() {
+    useEffect(() => {
+        const lastMsg = vscode.received[vscode.received.length - 1]
+        if (lastMsg == null) return
+        const el = document.getElementById(lastMsg.uid.toString())
+        if (el) el.scrollIntoView()
+        else console.log('❌no el', lastMsg.uid)
+    }, [vscode.received.length])
     return (
         <div>
             {/* <div>{vscode.images.length} images</div> */}
@@ -17,10 +24,17 @@ export const WebviewUI = observer(function WebviewUI_() {
                     <img src={i} />
                 </div>
             ))} */}
-            <div style={{ display: 'flex', flexDirection: 'column-reverse' }}>
+            <div style={{ position: 'sticky', top: 0 }}>
+                <div style={{ display: 'flex', overflowX: 'scroll', width: '100%', background: 'gray' }}>
+                    {vscode.images.map((i) => (
+                        <img style={{ objectFit: 'contain', width: '92px', height: '92px' }} key={i} src={i} />
+                    ))}
+                </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {vscode.received.map((msg) => (
                     <Fragment key={msg.uid}>
-                        <div style={{ display: 'flex' }}>
+                        <div style={{ display: 'flex' }} id={msg.uid.toString()}>
                             <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
                             <div style={{ width: '5rem' }}>{msg.type}</div>
                             <div
