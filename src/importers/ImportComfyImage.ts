@@ -37,6 +37,45 @@ export class ComfyImporter {
         LatentUpscaleBy: 'Latent Upscale by Factor (WAS)',
     }
 
+    naneDedupeCache: { [key: string]: number } = {}
+
+    /** handles hygenic naming  */
+
+    mkVarNameForNodeType = (
+        //
+        nodeType: string,
+        nameOfInputsItsPluggedInto: string[],
+    ): string => {
+        if (nodeType === 'checkpointLoaderSimple') return this.finalizeName('ckpt')
+        if (nameOfInputsItsPluggedInto.length === 1) {
+            return this.finalizeName(nameOfInputsItsPluggedInto[0])
+        }
+        return this.finalizeName(nodeType)
+    }
+
+    private finalizeName = (rawName: string) => {
+        const final = this.smartTrim(this.smartDownCase(rawName))
+        if (this.naneDedupeCache[final] == null) {
+            this.naneDedupeCache[final] = 1
+            return final
+        } else {
+            return `${final}_${this.naneDedupeCache[final]++}`
+        }
+    }
+
+    private smartDownCase = (x: string) => {
+        const isAllCaps = x === x.toUpperCase()
+        if (isAllCaps) return x.toLowerCase()
+        return x[0].toLowerCase() + x.slice(1)
+    }
+
+    /** trim useless suffixes, like _name */
+    private smartTrim = (x: string) => {
+        if (x !== 'Loader' && x.endsWith('Loader')) return x.slice(0, -6)
+        if (x !== 'Image' && x.endsWith('Image')) return x.slice(0, -5)
+        return x
+    }
+
     convertFlowToCode = (
         //
         title: string,
@@ -75,7 +114,9 @@ export class ComfyImporter {
             // @ts-ignore
             const node = flow[nodeID]
             const classType = normalizeJSIdentifier(node.class_type)
-            const varName = `${classType}_${nodeID}`
+
+            const varName = this.mkVarNameForNodeType(classType, []) //`${classType}_${nodeID}`
+
             generatedName.set(nodeID, varName)
             const schema: ComfyNodeSchema =
                 this.client.schema.nodesByNameInCushy[classType] ?? //

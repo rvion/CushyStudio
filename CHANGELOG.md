@@ -1,3 +1,10 @@
+-   fix flow import
+-   smarter flow import:
+    -   better support for acronyms
+    -   trim suffixes like `Loader`
+    -   cleaner dedupe
+    -   list of defaults for specific nodes
+        -   e.g. checkpointLoaderSimple => `ckpt`
 -   support optional inputs
 -   fix bug occuring with custom nodes when some output types are never used as input anywhere else
 
