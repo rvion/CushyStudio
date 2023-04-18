@@ -4,7 +4,6 @@ import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
 import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from './Primitives'
-import { sdkTemplate } from '../sdk/sdkTemplate'
 
 export type EnumHash = string
 export type EnumName = string
