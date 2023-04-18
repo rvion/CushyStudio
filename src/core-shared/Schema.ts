@@ -4,6 +4,7 @@ import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
 import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from './Primitives'
+import { normalizeJSIdentifier } from './normalizeJSIdentifier'
 
 export type EnumHash = string
 export type EnumName = string
@@ -38,16 +39,6 @@ export class Schema {
         makeAutoObservable(this)
     }
 
-    normalizeJSIdentifier = (name: string) => {
-        return name
-            .replace(/[^a-zA-Z0-9_]/g, ' ')
-            .split(' ')
-            .map((i) => i.trim())
-            .filter((i) => i.length > 0)
-            .map((i) => i[0].toUpperCase() + i.slice(1))
-            .join('')
-    }
-
     update(spec: ComfySchemaJSON) {
         // reset spec
         this.spec = spec
@@ -61,7 +52,7 @@ export class Schema {
         const entries = Object.entries(spec)
         for (const [nodeNameInComfy, nodeDef] of entries) {
             // apply prefix
-            const normalizedNodeNameInCushy = this.normalizeJSIdentifier(nodeNameInComfy)
+            const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy)
             const nodeNameInCushy = nodeDef.category.startsWith('WAS Suite/')
                 ? `WAS${normalizedNodeNameInCushy}`
                 : normalizedNodeNameInCushy
@@ -115,7 +106,7 @@ export class Schema {
                 let inputTypeNameInCushy: string | undefined
 
                 if (typeof typeStuff === 'string') {
-                    inputTypeNameInCushy = this.normalizeJSIdentifier(typeStuff)
+                    inputTypeNameInCushy = normalizeJSIdentifier(typeStuff)
                     this.knownTypes.add(inputTypeNameInCushy)
                 } else if (Array.isArray(typeStuff) && typeStuff.every((x) => typeof x === 'string')) {
                     const enumValues: string[] = []
@@ -128,7 +119,7 @@ export class Schema {
                     else {
                         inputTypeNameInCushy = `Enum_${nodeNameInCushy}_${inputName}`
                         this.knownEnums.set(hash, {
-                            enumNameInCushy: this.normalizeJSIdentifier(inputTypeNameInCushy),
+                            enumNameInCushy: normalizeJSIdentifier(inputTypeNameInCushy),
                             enumNameInComfy: inputName,
                             values: enumValues,
                         })
