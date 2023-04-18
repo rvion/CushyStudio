@@ -189,6 +189,29 @@ export interface IFlowExecution {
 
 ---
 
+## 🐍 Custom node support
+
+`CushyStudio` will automatically generate a typescript SDK for all nodes available on your ComfyUI server. **INCLUDING CUSTOM NODES**.
+
+if your custom node does not work with cushy studio, you should open an issue.
+
+locally, I'll try to setup as many custom nodes as possible to ensure they work:
+
+nodes I've tested:
+
+-   comfy_clipseg https://github.com/diffus3/comfy_clipseg
+-   comfy_controlnet_preprocessors: TODO
+-   ComfyUI_Cutoff: TODO
+-   ComfyUI_Dave_CustomNode: TODO
+-   ComfyUI-nodes-hnmr: TODO
+-   efficiency-nodes-comfyui: TODO
+-   example_node.py.exampl: TODO
+-   JustNetralExtras: TODO
+-   was-node-suite-comfyui: TODO
+-   yk-node-suite-comfyui: TODO
+
+want to add your own custom node to the list? open a PR!
+
 ## 🤝 Contributing
 
 1. install [vscode](https://code.visualstudio.com/)
