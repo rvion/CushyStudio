@@ -34,3 +34,14 @@ C -->|Two| E[Result 2]
 ```
 
 -   todo: make mermaid lazy loaded, only init on first markdown or html file sent
+
+cd ComfyUI
+cd custom_nodes
+git clone https://github.com/Fannovel16/comfy_controlnet_preprocessors
+git clone https://github.com/BlenderNeko/ComfyUI_Cutoff
+git clone https://github.com/Davemane42/ComfyUI_Dave_CustomNode
+git clone https://github.com/hnmr293/ComfyUI-nodes-hnmr
+git clone https://github.com/guoyk93/yk-node-suite-comfyui
+mkdir JustNetralExtras
+cp /Users/loco/Desktop/clipseg.py JustNetralExtras/clipseg.py
+cp /Users/loco/Desktop/DeglazeImage.py JustNetralExtras/DeglazeImage.py

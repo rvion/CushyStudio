@@ -4,6 +4,7 @@ import { ComfyPromptJSON } from '../core-types/ComfyPrompt'
 import { ComfyNodeSchema } from '../core-shared/Schema'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { TEdge, toposort } from '../utils/toposort'
+import { loggerExt } from '../logger/LoggerBack'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = { nodeName: string; inputName: string; valueStr: string }
@@ -75,8 +76,9 @@ export class ComfyImporter {
                 this.client.schema.nodesByNameInComfy[classType] ?? //
                 this.client.schema.nodesByNameInComfy[this.knownAliaes[classType]]
             if (schema == null) {
-                console.log(`🔴 known`, Object.keys(this.client.schema.nodesByNameInComfy))
-                throw new Error(`schema not found for ${classType}`)
+                const msg = `schema not found for ${classType}`
+                loggerExt.error('🔥', msg)
+                throw new Error(msg)
             }
             let outoutIx = 0
             for (const o of schema.outputs ?? []) {

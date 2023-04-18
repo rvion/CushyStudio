@@ -90,14 +90,14 @@ export class FlowDefinition {
             loggerExt.error('🌠', (error as any as Error).name)
             loggerExt.error('🌠', (error as any as Error).message)
             loggerExt.error('🌠', 'RUN FAILURE')
-            const message = new vscode.TestMessage(
-                new vscode.MarkdownString().appendMarkdown(`### FAILURE: ${vsTestItem.label}`),
+            // const message = new vscode.TestMessage(
+            //     new vscode.MarkdownString().appendMarkdown(`### FAILURE: ${vsTestItem.label}`),
 
-                // .appendCodeblock(String(this.expected), 'text'),
-            )
-            message.location = new vscode.Location(vsTestItem.uri!, vsTestItem.range!)
+            //     // .appendCodeblock(String(this.expected), 'text'),
+            // )
+            // message.location = new vscode.Location(vsTestItem.uri!, vsTestItem.range!)
             const duration = Date.now() - start
-            vsTestRun.failed(vsTestItem, message, duration)
+            vsTestRun.failed(vsTestItem, [] /*message*/, duration)
             return false
         }
     }

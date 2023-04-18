@@ -155,6 +155,9 @@ export class Workspace {
 
     initWebsocket = () =>
         new ResilientWebSocketClient({
+            onConnectOrReconnect: () => {
+                this.updateComfy_object_info()
+            },
             url: () => {
                 return vscode.workspace //
                     .getConfiguration('cushystudio')
@@ -366,25 +369,27 @@ export class Workspace {
             const keys = Object.keys(data)
             loggerExt.info('🌠', `found ${keys.length} nodes (${JSON.stringify(keys)})`)
             schema$ = data as any
+            // vscode.window.showInformationMessage('🟢 yay')
+            loggerExt.info('🌠', '🟢 schema fetched !')
+
+            const comfyJSONStr = readableStringify(schema$, 3)
+            const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
+            vscode.workspace.fs.writeFile(this.comfyJSONUri, comfyJSONBuffer)
+
+            this.schema.update(schema$)
+            loggerExt.info('🌠', 'schema updated')
+            const comfySchemaTs = this.schema.codegenDTS()
+            loggerExt.info('🌠', 'schema code updated !')
+            const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
+            vscode.workspace.fs.writeFile(this.comfyTSUri, comfySchemaBuff)
+            loggerExt.info('🌠', 'schema code saved !')
+            vscode.window.showInformationMessage('🟢 node schema saved')
         } catch (error) {
             vscode.window.showErrorMessage('FAILED TO FETCH OBJECT INFOS FROM COMFY')
             console.error('🐰', error)
             loggerExt.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
             schema$ = {}
         }
-        vscode.window.showInformationMessage('🟢 yay')
-
-        const comfyJSONStr = readableStringify(schema$, 3)
-        const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
-        vscode.workspace.fs.writeFile(this.comfyJSONUri, comfyJSONBuffer)
-
-        this.schema.update(schema$)
-        loggerExt.info('🌠', 'schema updated')
-        const comfySchemaTs = this.schema.codegenDTS()
-        loggerExt.info('🌠', 'schema code updated !')
-        const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
-        vscode.workspace.fs.writeFile(this.comfyTSUri, comfySchemaBuff)
-        loggerExt.info('🌠', 'schema code saved !')
 
         // this.objectInfoFile.update(schema$)
         // this.comfySDKFile.updateFromCodegen(comfySdkCode)

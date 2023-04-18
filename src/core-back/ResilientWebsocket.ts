@@ -1,18 +1,10 @@
 import type { Maybe } from '../utils/types'
-
+import * as vscode from 'vscode'
 import { makeAutoObservable, reaction } from 'mobx'
 import { loggerExt } from '../logger/LoggerBack'
 import { WebSocket, CloseEvent, Event, MessageEvent, EventListenerOptions } from 'ws'
 
 type Message = string | Buffer
-// | DataView
-// | number
-// | ArrayBufferView
-// | Uint8Array
-// | ArrayBuffer
-// | SharedArrayBuffer
-// | ReadonlyArray<any>
-// | ReadonlyArray<number>
 
 export class ResilientWebSocketClient {
     private url: string
@@ -23,9 +15,9 @@ export class ResilientWebSocketClient {
 
     constructor(
         public options: {
-            //
             url: () => string /*protocols?: string | string[]*/
             onMessage: (event: MessageEvent) => void
+            onConnectOrReconnect: () => void
         },
     ) {
         this.url = options.url()
@@ -39,12 +31,6 @@ export class ResilientWebSocketClient {
     public updateURL(url: string): void {
         this.url = url
         this.connect()
-    }
-
-    get emoji() {
-        if (this.isOpen) return '🟢'
-        return '🔴'
-        // return '❓'
     }
 
     public connect(): void {
@@ -74,7 +60,9 @@ export class ResilientWebSocketClient {
         ws.onopen = (event: Event) => {
             if (ws !== this.currentWS) return
             loggerExt.info('🧦', '🟢 WebSocket connected')
+            vscode.window.showInformationMessage('🟢 WebSocket connected')
             this.isOpen = true
+            this.options.onConnectOrReconnect()
             this.flushMessageBuffer()
         }
 

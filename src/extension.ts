@@ -4,6 +4,8 @@ import { FooProvider } from './shell/FooProvider'
 import { cmd_helloworld } from './shell/cmd_helloworld'
 import { cmd_openCatCodingWebview } from './shell/cmd_openCatCodingWebview'
 import { cmd_openJS } from './shell/cmd_openJS'
+import { extractErrorMessage } from './utils/extractErrorMessage'
+import { loggerExt } from './logger/LoggerBack'
 
 // https://github.com/microsoft/vscode-extension-samples/blob/main/fsconsumer-sample/src/extension.ts
 // This method is called when your extension is activated
@@ -24,7 +26,16 @@ export function activate(context: vscode.ExtensionContext) {
 
     // helper to quickly define disposable commands
     const registerDisposableCommand = (name: string, fn: any) => {
-        const disposable = vscode.commands.registerCommand(name, fn)
+        const wrappedFn = async () => {
+            try {
+                await fn()
+            } catch (error) {
+                const errMsg = extractErrorMessage(error)
+                loggerExt.error('🌠', errMsg, error)
+                // vscode.window.showErrorMessage(errMsg)
+            }
+        }
+        const disposable = vscode.commands.registerCommand(name, wrappedFn)
         context.subscriptions.push(disposable)
     }
 
@@ -35,6 +46,7 @@ export function activate(context: vscode.ExtensionContext) {
     registerDisposableCommand('cushystudio.openwebview', () => workspace.ensureWebviewPanelIsOpened())
     registerDisposableCommand('cushystudio.import', () => workspace.importCurrentFile({ preserveId: false }))
     registerDisposableCommand('cushystudio.importlegacy', () => workspace.importCurrentFile({ preserveId: true }))
+    registerDisposableCommand('cushystudio.importjson', () => workspace.importCurrentFile({ preserveId: true }))
 
     // add settings to package.json
     // insert a treeview in the cushyrun view

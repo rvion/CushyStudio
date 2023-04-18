@@ -33,10 +33,11 @@ export class Logger {
         console.warn(`[WARNING] ${message}`)
     }
 
-    public error(category: LogCategory, message: string): void {
+    public error(category: LogCategory, message: string, ...items: any[]): void {
         if (this.level > LogLevel.ERROR) return
         this.chanel?.appendLine(`${category} ❌ ${message}`)
         console.error(`[ERROR] ${message}`)
+        vscode.window.showErrorMessage(message, ...items)
     }
 }
 
