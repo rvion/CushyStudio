@@ -112,7 +112,7 @@ export class ComfyImporter {
             p(`}, '${nodeID}')`)
         }
 
-        p('    await C.get()')
+        p('    await flow.PROMPT()')
         p('})')
         // b.writeTS('./src/compiler/entry.ts')
         return b.content
