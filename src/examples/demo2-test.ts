@@ -1,4 +1,4 @@
-WORKFLOW('demo2-test', async (graph, flow) => {
+WORKFLOW('demo2-test', async ({ graph, flow }) => {
     // generate an empty table
     const fun = (x: string) => `masterpiece, ${x} painting on a wall`
 

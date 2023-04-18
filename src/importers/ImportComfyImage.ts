@@ -5,6 +5,7 @@ import { ComfyNodeSchema } from '../core-shared/Schema'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { TEdge, toposort } from '../utils/toposort'
 import { loggerExt } from '../logger/LoggerBack'
+import { normalizeJSIdentifier } from '../core-shared/normalizeJSIdentifier'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = { nodeName: string; inputName: string; valueStr: string }
@@ -58,7 +59,7 @@ export class ComfyImporter {
         const b = new CodeBuffer()
         const p = b.w
         const pi = b.append
-        p(`WORKFLOW('${title}', async (C) => {\n`)
+        p(`WORKFLOW('${title}', async ({graph, flow}) => {\n`)
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 
@@ -69,7 +70,7 @@ export class ComfyImporter {
         for (const nodeID of sortedNodes) {
             // @ts-ignore
             const node = flow[nodeID]
-            const classType = node.class_type
+            const classType = normalizeJSIdentifier(node.class_type)
             const varName = `${classType}_${nodeID}`
             generatedName.set(nodeID, varName)
             const schema: ComfyNodeSchema =
@@ -86,7 +87,7 @@ export class ComfyImporter {
             }
 
             if (node == null) throw new Error('node not found')
-            pi(`    const ${varName} = C.${classType}({`)
+            pi(`    const ${varName} = graph.${classType}({`)
             for (const [name, value] of Object.entries(node.inputs) ?? []) {
                 const isValidJSIdentifier = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(name)
                 if (this.UI_ONLY_ATTRIBUTES.includes(name)) continue

@@ -1,4 +1,4 @@
-WORKFLOW('democnet', async (graph, flow) => {
+WORKFLOW('democnet', async ({ graph, flow }) => {
     const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const vae = graph.VAELoader({ vae_name: 'orangemix.vae.pt' })
 

@@ -1,4 +1,4 @@
-WORKFLOW('demo4-cnet', async (graph, flow) => {
+WORKFLOW('demo4-cnet', async ({ graph, flow }) => {
     // generate an empty table
     const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const latent = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })

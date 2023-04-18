@@ -1,4 +1,4 @@
-WORKFLOW('demo5', async (graph, flow) => {
+WORKFLOW('demo5', async ({ graph, flow }) => {
     console.log('test console.log')
     const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const latent = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })

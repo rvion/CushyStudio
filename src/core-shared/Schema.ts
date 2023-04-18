@@ -187,11 +187,11 @@ export class Schema {
         p(`    export const WORKFLOW: (`)
         p(`        //`)
         p(`        title: string,`)
-        p(`        builder: (`)
+        p(`        builder: (p:{`)
         p(`            //`)
         p(`            graph: ComfySetup & Graph,`)
         p(`            flow: IFlowExecution,`)
-        p(`        ) => void,`)
+        p(`        }) => void,`)
         p(`    ) => Workflow`)
         // p(`}`) 🔴
 

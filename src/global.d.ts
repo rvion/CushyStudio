@@ -1435,10 +1435,10 @@ declare global {
     export const WORKFLOW: (
         //
         title: string,
-        builder: (
+        builder: (p: {
             //
-            graph: ComfySetup & Graph,
-            flow: FlowRun,
-        ) => void,
+            graph: ComfySetup & Graph
+            flow: FlowRun
+        }) => void,
     ) => Workflow
 }
