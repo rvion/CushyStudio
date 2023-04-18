@@ -105,6 +105,9 @@ declare module "core-types/ComfySchemaJSON" {
             required: {
                 [inputName: string]: ComfyInputSpec;
             };
+            optional: {
+                [inputName: string]: ComfyInputSpec;
+            };
         };
         output: string[];
         name: string;
@@ -149,8 +152,8 @@ declare module "core-shared/Primitives" {
     };
     export const ComfyPrimitives: string[];
 }
-declare module "sdk/sdkTemplate" {
-    export const sdkTemplate: string;
+declare module "core-shared/normalizeJSIdentifier" {
+    export const normalizeJSIdentifier: (name: string) => string;
 }
 declare module "core-shared/Schema" {
     import type { ComfySchemaJSON } from "core-types/ComfySchemaJSON";
@@ -161,6 +164,7 @@ declare module "core-shared/Schema" {
         type: string;
         opts?: any;
         isPrimitive: boolean;
+        required: boolean;
     };
     export type NodeOutputExt = {
         type: string;
@@ -183,7 +187,6 @@ declare module "core-shared/Schema" {
             [key: string]: ComfyNodeSchema;
         };
         constructor(spec: ComfySchemaJSON);
-        normalizeJSIdentifier: (name: string) => string;
         update(spec: ComfySchemaJSON): void;
         codegenDTS: (useLocalPath?: boolean) => string;
         private toTSType;
@@ -300,6 +303,7 @@ declare module "core-shared/Graph" {
         get nodes(): ComfyNode<any>[];
         nodesIndex: Map<string, ComfyNode<any>>;
         isRunning: boolean;
+        toMermaid: () => string;
         /** return the coresponding comfy prompt  */
         get json(): ComfyPromptJSON;
         /** temporary proxy */
