@@ -1,3 +1,12 @@
+-   support optional inputs
+-   fix bug occuring with custom nodes when some output types are never used as input anywhere else
+
+---
+
+extension released, release notes will resume
+
+---
+
 2023-03-25
 
 -   persist images locally
