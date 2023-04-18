@@ -68,9 +68,9 @@ export class FlowDefinition {
         // graph.runningMode = mode
         // this.MAIN = graph
 
-        type WorkflowFn = (graph: Graph, execution: FlowRun) => Promise<any>
+        type WorkflowFn = (p: { graph: Graph; flow: FlowRun }) => Promise<any>
         const workflows: { name: string; fn: WorkflowFn }[] = []
-        const WORKFLOW = (name: string, fn: (graph: Graph, execution: FlowRun) => Promise<any>): void => {
+        const WORKFLOW = (name: string, fn: (p: { graph: Graph; flow: FlowRun }) => Promise<any>): void => {
             loggerExt.info('🌠', `found WORKFLOW ${name}`)
             workflows.push({ name, fn })
         }
@@ -79,7 +79,7 @@ export class FlowDefinition {
             await ProjectScriptFn(WORKFLOW)
             const good = workflows.find((i) => i.name === this.flowName)
             if (good == null) throw new Error('no workflow found')
-            await good.fn(graph, execution)
+            await good.fn({ graph, flow: execution })
             console.log('[✅] RUN SUCCESS')
             // this.isRunning = false
             const duration = Date.now() - start
