@@ -417,7 +417,9 @@ export class Workspace {
         const code = new ComfyImporter(this).convertFlowToCode(title, comfyPromptJSON, opts)
         // const fileName = title.endsWith('.ts') ? title : `${title}.ts`
         const uri = this.resolve(relPath)
-        this.writeTextFile(uri, code, true)
+        const relativePathToDTS = posix.relative(posix.dirname(uri.path), this.cushyTSUri.path)
+        const codeFinal = [`/// <reference path="${relativePathToDTS}" />`, code].join('\n\n')
+        this.writeTextFile(uri, codeFinal, true)
         return uri
     }
 
