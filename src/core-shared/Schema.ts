@@ -83,8 +83,11 @@ export class Schema {
             this.nodesByNameInComfy[nodeNameInComfy] = node
             this.nodesByNameInCushy[nodeNameInCushy] = node
             this.nodes.push(node)
+
+            // OUTPUTS
             const outputNamer: { [key: string]: number } = {}
-            for (const opt of nodeTypeDef.output) {
+            for (const opt of nodeDef.output) {
+                this.knownTypes.add(opt) // index
                 const at = (outputNamer[opt] ??= 0)
                 const name = at === 0 ? opt : `${opt}_${at}`
                 outputs.push({ type: opt, name, isPrimitive: false })
