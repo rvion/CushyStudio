@@ -86,21 +86,11 @@ export class FlowRun implements IFlowExecution {
     get flowSummaryMd(): MDContent {
         return asMDContent(
             [
-                `# flow summary`,
-                // ...this.steps.map((s) => s.summary),
-                `| test | table |`,
-                `| --- | --- |`,
-                `| 1 | hello |`,
-                '',
+                //
+                '# Flow summary\n',
                 `<pre class="mermaid">`,
                 this.graph.toMermaid(),
                 `</pre>`,
-                // `<pre class="mermaid">`,
-                // `    graph LR`,
-                // `    A --- B`,
-                // `    B-->C[fa:fa-ban forbidden]`,
-                // `    B-->D(fa:fa-spinner);`,
-                // `</pre>`,
             ].join('\n'),
         )
     }
