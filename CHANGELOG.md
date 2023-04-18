@@ -1,11 +1,17 @@
+2023-04-18
+
+-   support loras in subfolders
+-   add readme to vscode marketplace
 -   fix flow import
+-   support all custom_nodes I found
 -   smarter flow import:
     -   better support for acronyms
     -   trim suffixes like `Loader`
     -   cleaner dedupe
+    -   properly handle windows subfolders
     -   list of defaults for specific nodes
         -   e.g. checkpointLoaderSimple => `ckpt`
--   support optional inputs
+-   support optional inputs (they were not available before)
 -   fix bug occuring with custom nodes when some output types are never used as input anywhere else
 
 ---
