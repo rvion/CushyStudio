@@ -221,8 +221,11 @@ export class Schema {
 
         p(`\n// ENUMS -------------------------------`)
         for (const e of this.knownEnums.values()) {
-            if (e.values.length > 0) p(`export type ${e.enumNameInCushy} = ${e.values.map((v) => `'${v}'`).join(' | ')}`)
-            else p(`export type ${e.enumNameInCushy} = never`)
+            if (e.values.length > 0) {
+                p(`export type ${e.enumNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
+            } else {
+                p(`export type ${e.enumNameInCushy} = never`)
+            }
         }
 
         p(`\n// INTERFACES --------------------------`)
