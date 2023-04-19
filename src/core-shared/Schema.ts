@@ -17,7 +17,7 @@ export type NodeInputExt = {
     required: boolean
 }
 export type NodeOutputExt = { type: string; name: string; isPrimitive: boolean }
-
+export type EnumValue = string | boolean | number
 export class Schema {
     knownTypes = new Set<string>()
     knownEnums = new Map<
@@ -25,7 +25,7 @@ export class Schema {
         {
             enumNameInComfy: string
             enumNameInCushy: EnumName
-            values: string[]
+            values: EnumValue[]
         }
     >()
     nodes: ComfyNodeSchema[] = []
@@ -108,8 +108,17 @@ export class Schema {
                 if (typeof typeStuff === 'string') {
                     inputTypeNameInCushy = normalizeJSIdentifier(typeStuff)
                     this.knownTypes.add(inputTypeNameInCushy)
-                } else if (Array.isArray(typeStuff) && typeStuff.every((x) => typeof x === 'string')) {
-                    const enumValues: string[] = []
+                } else if (
+                    //
+                    Array.isArray(typeStuff) &&
+                    typeStuff.every(
+                        (x) =>
+                            typeof x === 'string' || //
+                            typeof x === 'boolean' ||
+                            typeof x === 'number',
+                    )
+                ) {
+                    const enumValues: EnumValue[] = []
                     for (const enumValue of typeStuff) {
                         enumValues.push(enumValue)
                     }
