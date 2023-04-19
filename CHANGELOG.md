@@ -1,3 +1,9 @@
+2023-04-19
+
+-   1c2eba6 improve error messages
+-   2b8182b support more enum values (string, boolean, number) instead of just string
+-   82c0a88 do not update nodes until after websocket is connected
+
 2023-04-18
 
 -   improved the flow graph
