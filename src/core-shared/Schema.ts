@@ -134,7 +134,12 @@ export class Schema {
                         })
                     }
                 } else {
-                    throw new Error('object type not supported')
+                    const errMsg =
+                        `node (${nodeNameInComfy} ${nodeNameInCushy}) schema for property ${ipt.name} contains an unsupported ` +
+                        typeof typeStuff
+                    console.error('🦊', errMsg)
+                    console.error('🦊', JSON.stringify(typeStuff))
+                    throw new Error(errMsg)
                 }
 
                 if (inputTypeNameInCushy) {
@@ -148,7 +153,7 @@ export class Schema {
                 } else {
                     console.log({ ipt, typeDef, typeStuff })
                     console.log({ typeStuff })
-                    throw new Error('object type not supported')
+                    throw new Error(`object type not supported`)
                 }
             }
         }

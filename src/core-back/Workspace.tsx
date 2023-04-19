@@ -34,6 +34,7 @@ import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { StatusBar } from './statusBar'
+import { extractErrorMessage } from '../utils/extractErrorMessage'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -367,26 +368,27 @@ export class Workspace {
             const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
             const data = (await res.json()) as { [key: string]: any }
             const keys = Object.keys(data)
-            loggerExt.info('🌠', `found ${keys.length} nodes (${JSON.stringify(keys)})`)
+            loggerExt.info('🌠', `found ${keys.length} nodes`) // (${JSON.stringify(keys)})
             schema$ = data as any
             // vscode.window.showInformationMessage('🟢 yay')
-            loggerExt.info('🌠', '🟢 schema fetched !')
+            loggerExt.info('🌠', '[step 1/4] schema fetched !')
 
             const comfyJSONStr = readableStringify(schema$, 3)
             const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
             vscode.workspace.fs.writeFile(this.comfyJSONUri, comfyJSONBuffer)
 
             this.schema.update(schema$)
-            loggerExt.info('🌠', 'schema updated')
+            loggerExt.info('🌠', '[step 2/4] schema updated')
             const comfySchemaTs = this.schema.codegenDTS()
-            loggerExt.info('🌠', 'schema code updated !')
+            loggerExt.info('🌠', '[step 3/4] schema code updated !')
             const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
             vscode.workspace.fs.writeFile(this.comfyTSUri, comfySchemaBuff)
-            loggerExt.info('🌠', 'schema code saved !')
+            loggerExt.info('🌠', '[step 4/4] schema code saved !')
+            loggerExt.info('🌠', '🟢 node schema generated !')
             vscode.window.showInformationMessage('🟢 node schema saved')
         } catch (error) {
-            vscode.window.showErrorMessage('FAILED TO FETCH OBJECT INFOS FROM COMFY')
-            console.error('🐰', error)
+            vscode.window.showErrorMessage('FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
+            loggerExt.error('🐰', extractErrorMessage(error))
             loggerExt.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
             schema$ = {}
         }
