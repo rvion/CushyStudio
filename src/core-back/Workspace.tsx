@@ -134,7 +134,7 @@ export class Workspace {
         this.vsTestController = this.initVSTestController()
         this.statusBar = new StatusBar(this)
         this.autoDiscoverEveryWorkflow()
-        void this.updateComfy_object_info()
+        // void this.updateComfy_object_info()
         this.ws = this.initWebsocket()
         makeAutoObservable(this)
     }
