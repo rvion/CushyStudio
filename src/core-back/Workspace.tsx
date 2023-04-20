@@ -35,6 +35,7 @@ import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { StatusBar } from './statusBar'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
+import { Decorator } from './decorator'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -121,6 +122,7 @@ export class Workspace {
         loggerExt.chanel = outputChan
     }
 
+    decorator = new Decorator(this)
     constructor(
         //
         public context: vscode.ExtensionContext,
