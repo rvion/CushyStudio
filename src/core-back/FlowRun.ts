@@ -29,6 +29,7 @@ import { IFlowExecution } from '../sdk/IFlowExecution'
 import { LATER } from './LATER'
 import { execSync } from 'child_process'
 import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
+import { Printable } from '../core-shared/Printable'
 
 /** script exeuction instance */
 export class FlowRun implements IFlowExecution {
@@ -149,10 +150,19 @@ export class FlowRun implements IFlowExecution {
         return seed
     }
 
+    private extractString = (message: Printable): string => {
+        if (typeof message === 'string') return message
+        if (typeof message === 'number') return message.toString()
+        if (typeof message === 'boolean') return message.toString()
+        if (typeof message === 'object')
+            return `${message.$schema.nameInCushy}_${message.uid}(${JSON.stringify(message.json, null, 2)})`
+        return '❓'
+    }
     /** display something in the console */
-    print = (message: string) => {
-        loggerExt.info('🔥', message)
-        FrontWebview.sendMessage({ type: 'print', message, uid: getPayloadID() })
+    print = (message: Printable) => {
+        let msg = this.extractString(message)
+        loggerExt.info('🔥', msg)
+        FrontWebview.sendMessage({ type: 'print', message: msg, uid: getPayloadID() })
     }
 
     /** upload a file from disk to the ComfyUI backend */
