@@ -71,6 +71,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         return comfyColors[this.$schema.category]
     }
 
+    uidNumber: number
     $outputs: Slot<any>[] = []
     constructor(
         //
@@ -79,6 +80,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         xxx: ComfyNodeJSON,
     ) {
         // console.log('CONSTRUCTING', xxx.class_type, uid)
+        this.uidNumber = parseInt(uid) // 🔴 ugly
         this.$schema = graph.schema.nodesByNameInComfy[xxx.class_type]
         let ix = 0
         this.json = this._convertPromptExtToPrompt(xxx)
