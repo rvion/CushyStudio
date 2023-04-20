@@ -99,6 +99,16 @@ export class FlowRun implements IFlowExecution {
         return asHTMLContent(marked.parse(this.flowSummaryMd))
     }
 
+    /** ensure a model is present, and download it if needed */
+    ensureModel = async (path: string, url: string): Promise<void> => {
+        return
+    }
+
+    /** ensure a custom onde is properly setup, and download/clone it if needed */
+    ensureCustomNodes = async (path: string, url: string): Promise<void> => {
+        return
+    }
+
     writeFlowSummary = () => {
         const relPath = asRelativePath('flow-summary.md')
         this.saveTextFile(relPath, this.flowSummaryMd)

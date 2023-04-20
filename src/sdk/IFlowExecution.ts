@@ -9,6 +9,9 @@ export interface IFlowExecution {
     // random value generation
     randomSeed(): number
 
+    ensureModel(name: string, url: string): Promise<void>
+    ensureCustomNodes(path: string, url: string): Promise<void>
+
     // debug
     print(msg: string): void
     showHTMLContent(content: string): void
