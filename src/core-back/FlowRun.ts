@@ -31,6 +31,7 @@ import { execSync } from 'child_process'
 import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
 import { Printable } from '../core-shared/Printable'
 import { convertFlowToLiteGraphJSON } from '../core-shared/LiteGraph'
+import { xxx } from '../core-shared/AutolayoutV2'
 
 /** script exeuction instance */
 export class FlowRun implements IFlowExecution {
@@ -257,9 +258,15 @@ export class FlowRun implements IFlowExecution {
         this.workspace.writeTextFile(promptJSONURI, JSON.stringify(currentJSON, null, 4))
 
         // save a corresponding workflow file
+        const cytoJSONPath = path.join(this.workspaceRelativeCacheFolderPath, `cyto-${this._promptCounter}.json`)
+        const cytoJSONURI = this.workspace.resolve(asRelativePath(cytoJSONPath))
+        const cytoJSON = await xxx(this.graph)
+        this.workspace.writeTextFile(cytoJSONURI, JSON.stringify(cytoJSON, null, 4))
+
+        // save a corresponding workflow file
         const workflowJSONPath = path.join(this.workspaceRelativeCacheFolderPath, `workflow-${this._promptCounter}.json`)
         const workflowJSONURI = this.workspace.resolve(asRelativePath(workflowJSONPath))
-        const liteGraphJSON = convertFlowToLiteGraphJSON(this.graph)
+        const liteGraphJSON = convertFlowToLiteGraphJSON(this.graph, cytoJSON)
         this.workspace.writeTextFile(workflowJSONURI, JSON.stringify(liteGraphJSON, null, 4))
 
         // 🔶 not waiting here, because output comes back from somewhere else

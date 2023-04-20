@@ -2,10 +2,10 @@ import type { ComfyPromptJSON } from '../core-types/ComfyPrompt'
 import type { WsMsgExecuting, WsMsgProgress } from '../core-types/ComfyWsPayloads'
 import type { ComfyNodeUID } from '../core-types/NodeUID'
 import type { VisEdges, VisNodes } from '../ui/VisUI'
+import type { Cyto } from './AutolayoutV1'
 
 // import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { nanoid } from 'nanoid'
-import { Cyto } from '../graph/cyto'
 import { comfyColors } from './Colors'
 import { ComfyNode } from './Node'
 import { ComfyNodeSchema, Schema } from './Schema'
@@ -135,6 +135,7 @@ export class Graph {
         public schema: Schema,
         json: ComfyPromptJSON = {},
     ) {
+        // this.cyto = new Cyto(this)
         // console.log('COMFY GRAPH')
         // makeObservable(this, { allImages: computed })
         for (const [uid, node] of Object.entries(json)) {

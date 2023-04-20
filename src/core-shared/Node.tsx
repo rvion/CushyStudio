@@ -131,6 +131,12 @@ export class ComfyNode<ComfyNode_input extends object> {
         return incomingEdges
     }
 
+    get width() {
+        return 300
+    }
+    get height() {
+        return Object.keys(this.inputs).length * 20 + 20
+    }
     // get manager() { return this.graph.workspace } // prettier-ignore
     // async get() {
     //     await this.graph.get()

@@ -1,4 +1,5 @@
 import type { Branded } from '../utils/types'
+import { CytoJSON } from './AutolayoutV2'
 import type { Graph } from './Graph'
 import type { ComfyNode } from './Node'
 
@@ -56,7 +57,7 @@ export type LiteGraphNode = {
     widgets_values: any[]
 }
 
-export const convertFlowToLiteGraphJSON = (graph: Graph): LiteGraphJSON => {
+export const convertFlowToLiteGraphJSON = (graph: Graph, cytoJSON?: CytoJSON): LiteGraphJSON => {
     //
 
     const ctx = new LiteGraphCtx(graph)
@@ -64,6 +65,15 @@ export const convertFlowToLiteGraphJSON = (graph: Graph): LiteGraphJSON => {
     const xxx = graph.nodes.map((n) => convertNodeToLiteGraphNode(ctx, n))
     const nodes = xxx.map((n) => n.node)
     for (const n of nodes) {
+        if (cytoJSON) {
+            const pos = cytoJSON.elements.nodes.find((a) => parseInt(a.data.id, 10) === n.id)
+            if (pos) {
+                n.pos[0] = pos.position.x
+                n.pos[1] = pos.position.y
+            } else {
+                console.log('❌ no pos')
+            }
+        }
         for (const o of n.outputs) {
             o.links = ctx.links.filter((l) => l[3] === n.id && l[4] === o.slot_index).map((l) => l[0])
         }
@@ -121,7 +131,7 @@ const convertNodeToLiteGraphNode = (
             inputs,
             outputs,
             pos: [0, 0],
-            size: [200, Object.keys(node.inputs).length * 20 + 20],
+            size: [node.width, node.height],
             widgets_values,
         },
     }

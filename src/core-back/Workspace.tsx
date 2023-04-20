@@ -1,6 +1,5 @@
 import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
 import type { FlowExecutionStep } from '../core-types/FlowExecutionStep'
-// import { ImportCandidate } from '../importers/ImportCandidate'
 
 import fetch from 'node-fetch'
 import { posix } from 'path'
@@ -320,23 +319,6 @@ export class Workspace {
 
     resolve = (relativePath: RelativePath): vscode.Uri => {
         return this.wspUri.with({ path: posix.join(this.wspUri.path, relativePath) })
-    }
-
-    /** save an image at given url to disk */
-    saveImgToDisk = async (
-        url: string = 'http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output',
-    ): Promise<'ok'> => {
-        console.log('🔴 BROKEN')
-        return Promise.reject('🔴 BROKEN')
-        // const response = await fetch(url, {
-        //     headers: { 'Content-Type': 'image/png' },
-        //     method: 'GET',
-        //     responseType: ResponseType.Binary,
-        // })
-        // const numArr: number[] = response.data as any
-        // const binArr = new Uint16Array(numArr)
-        // await fs.writeBinaryFile('CushyStudio/images/test.png', binArr, { dir: fs.Dir.Document })
-        // return 'ok'
     }
 
     get serverHostHTTP(): string {
