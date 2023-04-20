@@ -1,7 +1,7 @@
 import cytoscape from 'cytoscape'
 import klay from 'cytoscape-klay'
-import { Graph } from '../core-shared/Graph'
-import { ComfyNode } from '../core-shared/Node'
+import { Graph } from './Graph'
+import { ComfyNode } from './Node'
 
 cytoscape.use(klay)
 
@@ -13,7 +13,7 @@ export class Cyto {
             styleEnabled: true,
             headless: true,
         })
-        this.setStyle()
+        // this.setStyle()
         this.graph.cyto = this
     }
 
@@ -44,7 +44,15 @@ export class Cyto {
         this.at++
         // console.log('🚀 ADD NODE', node.uid, node.$schema.category)
         if (this.cy == null) throw new Error('no cy')
-        this.cy.add({ data: { node, id: node.uid, position: { x: 10 * this.at, y: 10 * this.at } } }).addClass('foo')
+        this.cy
+            .add({
+                data: {
+                    node,
+                    id: node.uid,
+                    position: { x: 10 * this.at, y: 10 * this.at },
+                },
+            })
+            .addClass('foo')
         for (const edge of node._incomingEdges()) {
             const ctyoEdgeID = `${edge.from}-${edge.inputName}->${node.uid}`
             // console.log('🚀--', ctyoEdgeID)
@@ -71,43 +79,44 @@ export class Cyto {
                 name: 'klay',
             })
             .start()
+        return this.cy.json()
     }
 
-    setStyle = () => {
-        this.cy.style([
-            {
-                selector: 'node',
-                style: {
-                    'background-color': (ele: any) => ele.data('node').color,
-                    label: 'data(id)',
-                },
-            },
-            {
-                selector: 'edge',
-                style: {
-                    width: 3,
-                    'line-color': '#ccc',
-                    'target-arrow-color': '#ccc',
-                    'target-arrow-shape': 'triangle',
-                    'curve-style': 'bezier',
-                },
-            },
-        ])
-    }
+    // setStyle = () => {
+    //     this.cy.style([
+    //         {
+    //             selector: 'node',
+    //             style: {
+    //                 'background-color': (ele: any) => ele.data('node').color,
+    //                 label: 'data(id)',
+    //             },
+    //         },
+    //         {
+    //             selector: 'edge',
+    //             style: {
+    //                 width: 3,
+    //                 'line-color': '#ccc',
+    //                 'target-arrow-color': '#ccc',
+    //                 'target-arrow-shape': 'triangle',
+    //                 'curve-style': 'bezier',
+    //             },
+    //         },
+    //     ])
+    // }
 
-    mounted: boolean = false
-    mount = (element: HTMLElement) => {
-        if (this.mounted) {
-            this.animate()
-            return console.log('[፨] cyto already mounted')
-        }
+    // mounted: boolean = false
+    // mount = (element: HTMLElement) => {
+    //     if (this.mounted) {
+    //         this.animate()
+    //         return console.log('[፨] cyto already mounted')
+    //     }
 
-        this.mounted = true
-        console.log('[፨] MOUNT')
-        this.cy.mount(element)
-        this.cy.ready(() => {
-            console.log('[CYTO] cyto ready')
-            this.animate()
-        })
-    }
+    //     this.mounted = true
+    //     console.log('[፨] MOUNT')
+    //     this.cy.mount(element)
+    //     this.cy.ready(() => {
+    //         console.log('[CYTO] cyto ready')
+    //         this.animate()
+    //     })
+    // }
 }
