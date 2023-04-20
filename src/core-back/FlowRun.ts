@@ -222,6 +222,7 @@ export class FlowRun implements IFlowExecution {
         return step
     }
 
+    private _promptCounter = 0
     private sendPromp = async (): Promise<PromptExecution> => {
         // console.log('XX1')
         // console.log('XX2')
@@ -249,6 +250,10 @@ export class FlowRun implements IFlowExecution {
             prompt: currentJSON,
         }
 
+        // save a copy of the prompt to the cache folder
+        const promptJSONPath = path.join(this.workspaceRelativeCacheFolderPath, `prompt-${++this._promptCounter}.json`)
+        const promptJSONURI = this.workspace.resolve(asRelativePath(promptJSONPath))
+        this.workspace.writeTextFile(promptJSONURI, JSON.stringify(currentJSON, null, 4))
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
