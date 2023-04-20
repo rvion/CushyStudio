@@ -15,6 +15,7 @@ export type NodeInputExt = {
     opts?: any
     isPrimitive: boolean
     required: boolean
+    index: number
 }
 export type NodeOutputExt = { type: string; name: string; isPrimitive: boolean }
 export type EnumValue = string | boolean | number
@@ -149,6 +150,7 @@ export class Schema {
                         type: inputTypeNameInCushy,
                         opts: typeOpts,
                         isPrimitive: ComfyPrimitives.includes(inputTypeNameInCushy),
+                        index: node.inputs.length, // 🔴
                     })
                 } else {
                     console.log({ ipt, typeDef, typeStuff })

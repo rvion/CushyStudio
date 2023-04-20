@@ -30,6 +30,7 @@ import { LATER } from './LATER'
 import { execSync } from 'child_process'
 import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
 import { Printable } from '../core-shared/Printable'
+import { convertFlowToLiteGraphJSON } from '../core-shared/LiteGraph'
 
 /** script exeuction instance */
 export class FlowRun implements IFlowExecution {
@@ -254,6 +255,13 @@ export class FlowRun implements IFlowExecution {
         const promptJSONPath = path.join(this.workspaceRelativeCacheFolderPath, `prompt-${++this._promptCounter}.json`)
         const promptJSONURI = this.workspace.resolve(asRelativePath(promptJSONPath))
         this.workspace.writeTextFile(promptJSONURI, JSON.stringify(currentJSON, null, 4))
+
+        // save a corresponding workflow file
+        const workflowJSONPath = path.join(this.workspaceRelativeCacheFolderPath, `workflow-${this._promptCounter}.json`)
+        const workflowJSONURI = this.workspace.resolve(asRelativePath(workflowJSONPath))
+        const liteGraphJSON = convertFlowToLiteGraphJSON(this.graph)
+        this.workspace.writeTextFile(workflowJSONURI, JSON.stringify(liteGraphJSON, null, 4))
+
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck

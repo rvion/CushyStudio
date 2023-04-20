@@ -1,12 +1,12 @@
+import type { ComfyNodeJSON } from '../core-types/ComfyPrompt'
 import type { NodeProgress, WsMsgExecutedData } from '../core-types/ComfyWsPayloads'
 import type { Graph } from './Graph'
-import type { ComfyNodeJSON } from '../core-types/ComfyPrompt'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
-import { Slot } from './Slot'
 import { ComfyNodeUID } from '../core-types/NodeUID'
-import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from './Schema'
 import { exhaust } from '../utils/ComfyUtils'
+import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from './Schema'
+import { Slot } from './Slot'
 // import { GeneratedImage } from '../core-back/GeneratedImage'
 import { comfyColors } from './Colors'
 
@@ -137,7 +137,8 @@ export class ComfyNode<ComfyNode_input extends object> {
     // }
 
     serializeValue(field: string, value: unknown): unknown {
-        if (value == null) throw new Error(`[serializeValue] field "${field}" value is null`)
+        if (value == null)
+            throw new Error(`[serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}) value is null`)
         if (value instanceof Slot) return [value.node.uid, value.slotIx]
         if (value instanceof ComfyNode) {
             // console.log('🔴 Value is COmfyNodeç')
