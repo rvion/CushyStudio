@@ -31,7 +31,7 @@ import { execSync } from 'child_process'
 import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
 import { Printable } from '../core-shared/Printable'
 import { convertFlowToLiteGraphJSON } from '../core-shared/LiteGraph'
-import { xxx } from '../core-shared/AutolayoutV2'
+import { runAutolayout } from '../core-shared/AutolayoutV2'
 
 /** script exeuction instance */
 export class FlowRun implements IFlowExecution {
@@ -260,7 +260,7 @@ export class FlowRun implements IFlowExecution {
         // save a corresponding workflow file
         const cytoJSONPath = path.join(this.workspaceRelativeCacheFolderPath, `cyto-${this._promptCounter}.json`)
         const cytoJSONURI = this.workspace.resolve(asRelativePath(cytoJSONPath))
-        const cytoJSON = await xxx(this.graph)
+        const cytoJSON = await runAutolayout(this.graph)
         this.workspace.writeTextFile(cytoJSONURI, JSON.stringify(cytoJSON, null, 4))
 
         // save a corresponding workflow file

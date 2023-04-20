@@ -19,7 +19,7 @@ export type CytoJSON = {
     }
 }
 
-export const xxx = async (graph: Graph): Promise<CytoJSON> => {
+export const runAutolayout = async (graph: Graph): Promise<CytoJSON> => {
     // Define the graph elements
 
     const elements: any[] = []
