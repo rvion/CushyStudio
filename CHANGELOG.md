@@ -1,3 +1,10 @@
+2023-04-20
+
+-   export script prommpts as valid ComfyUI workflows
+-   new autolayout system
+-   experimental emoji decorations in the editor
+-   better flow.print api
+
 2023-04-19
 
 -   1c2eba6 improve error messages
