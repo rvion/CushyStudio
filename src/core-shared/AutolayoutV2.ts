@@ -57,10 +57,9 @@ export const runAutolayout = async (graph: Graph): Promise<CytoJSON> => {
     const layout = cy.layout({
         // @ts-ignore
         fit: true,
-        animate: true,
+        // animate: true,
         crossingMinimization: 'INTERACTIVE',
         name: 'klay',
-        // @ts-ignore
         animate: false,
     })
     layout.run()
