@@ -1,4 +1,5 @@
 import type { LATER } from '../core-back/LATER'
+import type { Printable } from '../core-shared/Printable'
 import type { ComfyUploadImageResult } from '../core-types/ComfyWsPayloads'
 import type { AbsolutePath, RelativePath } from '../fs/BrandedPaths'
 import type { HTMLContent, MDContent } from '../utils/markdown'
@@ -13,7 +14,7 @@ export interface IFlowExecution {
     ensureCustomNodes(path: string, url: string): Promise<void>
 
     // debug
-    print(msg: string): void
+    print(msg: Printable): void
     showHTMLContent(content: string): void
     showMardownContent(content: string): void
 

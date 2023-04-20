@@ -86,6 +86,77 @@ declare module "ui/VisUI" {
     export type VisEdges = any;
     export type VisOptions = any;
 }
+declare module "utils/types" {
+    /** usefull to catch most *units* type errors */
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
+    };
+    /** same as Tagged, but even scriter */
+    export type Branded<O, Brand> = O & {
+        __brand: Brand;
+    };
+    export type Maybe<T> = T | null | undefined;
+}
+declare module "core-shared/LiteGraph" {
+    import { Branded } from "utils/types";
+    import { Graph } from "core-shared/Graph";
+    export type LiteGraphJSON = {
+        last_node_id: number;
+        last_link_id: number;
+        nodes: LiteGraphNode[];
+        links: LiteGraphLink[];
+        groups: [];
+        config: {};
+        extra: {};
+        version: 0.4;
+    };
+    export type LiteGraphLink = [
+        linkId: LiteGraphLinkID,
+        fromNodeId: number,
+        fromNodeOutputIx: number,
+        toNodeId: number,
+        toNodeInputIx: number,
+        linkType: string
+    ];
+    export type LiteGraphLinkID = Branded<number, 'LiteGraphLinkID'>;
+    export type LiteGraphSlotIndex = Branded<number, 'LiteGraphSlotIndex'>;
+    export const asLiteGraphSlotIndex: (id: number) => LiteGraphSlotIndex;
+    export type LiteGraphNodeInput = {
+        name: string;
+        type: string;
+        link: LiteGraphLinkID;
+    };
+    export type LiteGraphNodeOutput = {
+        name: string;
+        type: string;
+        links: LiteGraphLinkID[];
+        slot_index: LiteGraphSlotIndex;
+    };
+    export type LiteGraphNode = {
+        id: number;
+        type: string;
+        pos: [number, number];
+        size: {
+            '0': number;
+            '1': number;
+        };
+        flags?: {};
+        order?: number;
+        mode?: number;
+        inputs: LiteGraphNodeInput[];
+        outputs: LiteGraphNodeOutput[];
+        properties?: {};
+        widgets_values: any[];
+    };
+    export const convertFlowToLiteGraphJSON: (graph: Graph) => LiteGraphJSON;
+    export class LiteGraphCtx {
+        graph: Graph;
+        constructor(graph: Graph);
+        nextLinkId: number;
+        links: LiteGraphLink[];
+        allocateLink: (fromNodeId: number, fromNodeOutputIx: number, toNodeId: number, toNodeInputIx: number, linkType: string) => LiteGraphLinkID;
+    }
+}
 declare module "core-shared/Slot" {
     import type { ComfyNode } from "core-shared/Node";
     export class Slot<T, Ix extends number = number> {
@@ -165,19 +236,21 @@ declare module "core-shared/Schema" {
         opts?: any;
         isPrimitive: boolean;
         required: boolean;
+        index: number;
     };
     export type NodeOutputExt = {
         type: string;
         name: string;
         isPrimitive: boolean;
     };
+    export type EnumValue = string | boolean | number;
     export class Schema {
         spec: ComfySchemaJSON;
         knownTypes: Set<string>;
         knownEnums: Map<string, {
             enumNameInComfy: string;
             enumNameInCushy: EnumName;
-            values: string[];
+            values: EnumValue[];
         }>;
         nodes: ComfyNodeSchema[];
         nodesByNameInComfy: {
@@ -215,6 +288,7 @@ declare module "core-shared/Node" {
     import type { NodeProgress, WsMsgExecutedData } from "core-types/ComfyWsPayloads";
     import type { Graph } from "core-shared/Graph";
     import type { ComfyNodeJSON } from "core-types/ComfyPrompt";
+    import { LiteGraphCtx, LiteGraphLink, LiteGraphNode } from "core-shared/LiteGraph";
     import { Slot } from "core-shared/Slot";
     import { ComfyNodeUID } from "core-types/NodeUID";
     import { ComfyNodeSchema } from "core-shared/Schema";
@@ -235,9 +309,15 @@ declare module "core-shared/Node" {
         disable(): void;
         get inputs(): ComfyNode_input;
         json: ComfyNodeJSON;
+        private _isLink;
+        toLiteGraph(ctx: LiteGraphCtx): {
+            node: LiteGraphNode;
+            incomingLinks: LiteGraphLink[];
+        };
         /** update a node */
         set(p: Partial<ComfyNode_input>): void;
         get color(): string;
+        uidNumber: number;
         $outputs: Slot<any>[];
         constructor(graph: Graph, uid: string, xxx: ComfyNodeJSON);
         _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): {
@@ -329,16 +409,9 @@ declare module "core-shared/Graph" {
 declare module "core-back/LATER" {
     export type LATER<T> = any;
 }
-declare module "utils/types" {
-    /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tag> = O & {
-        __tag?: Tag;
-    };
-    /** same as Tagged, but even scriter */
-    export type Branded<O, Brand> = O & {
-        __brand: Brand;
-    };
-    export type Maybe<T> = T | null | undefined;
+declare module "core-shared/Printable" {
+    import { ComfyNode } from "core-shared/Node";
+    export type Printable = string | number | boolean | ComfyNode<any>;
 }
 declare module "fs/BrandedPaths" {
     import type { Branded } from "utils/types";
@@ -563,6 +636,7 @@ declare module "wildcards/wildcards" {
 }
 declare module "sdk/IFlowExecution" {
     import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
+    import type { Printable } from "core-shared/Printable";
     import type { ComfyUploadImageResult } from "core-types/ComfyWsPayloads";
     import type { AbsolutePath, RelativePath } from "fs/BrandedPaths";
     import type { HTMLContent, MDContent } from "utils/markdown";
@@ -570,7 +644,9 @@ declare module "sdk/IFlowExecution" {
     import type { Wildcards } from "wildcards/wildcards";
     export interface IFlowExecution {
         randomSeed(): number;
-        print(msg: string): void;
+        ensureModel(name: string, url: string): Promise<void>;
+        ensureCustomNodes(path: string, url: string): Promise<void>;
+        print(msg: Printable): void;
         showHTMLContent(content: string): void;
         showMardownContent(content: string): void;
         resolveRelative(path: string): RelativePath;
