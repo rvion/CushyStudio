@@ -14,12 +14,14 @@ export async function transpileCode(code: string): Promise<string> {
         compilerOptions: {
             module: ts.ModuleKind.CommonJS,
             target: ts.ScriptTarget.ESNext,
+            // esModuleInterop: true,
+            // moduleResolution: ts.ModuleResolutionKind.Node10,
         },
     })
 
     const out = JSON.stringify(result)
     console.log(Object.keys(result))
-    return result.outputText
+    return 'var exports = {};\n' + result.outputText
 
     // const extension = vscode.extensions.getExtension('vscode.typescript-language-features')
     // if (!extension) throw new Error('TypeScript Language Service not available.')
