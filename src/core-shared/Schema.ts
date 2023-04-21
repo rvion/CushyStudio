@@ -53,7 +53,7 @@ export class Schema {
         // compile spec
         const entries = Object.entries(spec)
         for (const [nodeNameInComfy, nodeDef] of entries) {
-            logger().info(`loading node ${nodeNameInComfy}`)
+            // logger().chanel?.append(`[${nodeNameInComfy}]`)
             // apply prefix
             const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy)
             const nodeNameInCushy = nodeDef.category.startsWith('WAS Suite/')
@@ -80,7 +80,7 @@ export class Schema {
 
             // OUTPUTS
             const outputNamer: { [key: string]: number } = {}
-            logger().info(JSON.stringify(nodeDef.output))
+            // logger().info(JSON.stringify(nodeDef.output))
             for (const opt of nodeDef.output) {
                 this.knownTypes.add(opt) // index
                 const at = (outputNamer[opt] ??= 0)

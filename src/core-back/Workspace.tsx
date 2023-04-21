@@ -159,7 +159,7 @@ export class Workspace {
             const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONUri)
             logger().info('found cached json for nodes...')
             this.schema = new Schema(cachedComfyJSON)
-            logger
+            logger().info('🟢 loaded cached json for nodes')
         } catch (error) {
             logger().error('🌠', extractErrorMessage(error))
             logger().error('🌠', 'failed to load cached nodes')
