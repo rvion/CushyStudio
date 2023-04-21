@@ -35,6 +35,7 @@ import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { StatusBar } from './statusBar'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { Decorator } from './decorator'
+import { existsSync, readFileSync } from 'fs'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -75,6 +76,27 @@ export class Workspace {
         if (open) vscode.workspace.openTextDocument(uri)
     }
 
+    /** read text file, optionally provide a default */
+    readJSON = <T extends any>(uri: vscode.Uri, def: T): T => {
+        const exists = existsSync(uri.fsPath)
+        if (!exists) return def
+        try {
+            const str = readFileSync(uri.fsPath, 'utf8')
+            const json = JSON.parse(str)
+            return json
+        } catch (error) {
+            return def
+        }
+    }
+
+    /** read text file, optionally provide a default */
+    readTextFile = async (uri: vscode.Uri, def: string): Promise<string> => {
+        const exists = existsSync(uri.fsPath)
+        if (!exists) return def
+        const x = await vscode.workspace.fs.readFile(uri)
+        const str = x.toString()
+        return str
+    }
     writeTextFile(uri: vscode.Uri, content: string, open = false) {
         const buff = Buffer.from(content)
         vscode.workspace.fs.writeFile(uri, buff)
@@ -116,7 +138,7 @@ export class Workspace {
 
     initOutputChannel = () => {
         const outputChan = vscode.window.createOutputChannel('CushyStudio')
-        outputChan.appendLine(`🟢 "cushystudio" is now active!`)
+        outputChan.appendLine(`starting cushystudio....`)
         outputChan.show(true)
         loggerExt.chanel = outputChan
     }
@@ -127,11 +149,17 @@ export class Workspace {
         public context: vscode.ExtensionContext,
         public wspUri: vscode.Uri,
     ) {
-        this.schema = new Schema({})
         this.initOutputChannel()
         this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'nodes.json') })
         this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'nodes.d.ts') })
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'cushy.d.ts') })
+        // load previously cached nodes
+        try {
+            const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONUri, {})
+            this.schema = new Schema(cachedComfyJSON)
+        } catch (error) {
+            this.schema = new Schema({})
+        }
         this.writeTextFile(this.cushyTSUri, sdkTemplate)
         this.vsTestController = this.initVSTestController()
         this.statusBar = new StatusBar(this)
