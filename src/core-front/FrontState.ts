@@ -9,8 +9,8 @@ import { Schema } from '../core-shared/Schema'
 import { exhaust } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
 import { Graph } from '../core-shared/Graph'
-import { loggerWeb } from '../logger/LoggerFront'
 import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
+import { logger } from '../logger/logger'
 
 /**
  * A utility wrapper around the acquireVsCodeApi() function, which enables
@@ -95,25 +95,25 @@ class FrontState {
 
         // defer accumulation to ScriptStep_prompt
         if (msg.type === 'progress') {
-            loggerWeb.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             return graph.onProgress(msg)
         }
 
         if (msg.type === 'executing') {
             if (graph == null) throw new Error('missing graph')
             if (msg.data.node == null) this.graph = null // done
-            loggerWeb.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             return graph.onExecuting(msg)
         }
 
         if (msg.type === 'executed') {
-            loggerWeb.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             // return graph.onExecuted(msg)
             return
         }
 
         if (msg.type === 'print') {
-            // loggerWeb.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            // logger.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             // return graph.onExecuted(msg)
             return
         }

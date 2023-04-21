@@ -19,7 +19,6 @@ import { RelativePath } from '../fs/BrandedPaths'
 import { asRelativePath } from '../fs/pathUtils'
 import { ComfyImporter } from '../importers/ImportComfyImage'
 import { getPngMetadata } from '../importers/getPngMetadata'
-import { loggerExt } from '../logger/LoggerBack'
 import { sdkTemplate } from '../sdk/sdkTemplate'
 import { demoLibrary } from '../templates/Library'
 import { Template } from '../templates/Template'
@@ -36,6 +35,7 @@ import { StatusBar } from './statusBar'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { Decorator } from './decorator'
 import { existsSync, readFileSync } from 'fs'
+import { logger } from '../logger/logger'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -140,7 +140,7 @@ export class Workspace {
         const outputChan = vscode.window.createOutputChannel('CushyStudio')
         outputChan.appendLine(`starting cushystudio....`)
         outputChan.show(true)
-        loggerExt.chanel = outputChan
+        logger.chanel = outputChan
     }
 
     decorator = new Decorator(this)
@@ -157,6 +157,7 @@ export class Workspace {
         try {
             const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONUri, {})
             this.schema = new Schema(cachedComfyJSON)
+            logger
         } catch (error) {
             this.schema = new Schema({})
         }
@@ -254,7 +255,7 @@ export class Workspace {
                 return curr.webview.asWebviewUri(img.localUri).toString()
             })
         })
-        loggerExt.info('💿', 'all images saved: sending to front: ' + uris.join(', '))
+        logger.info('💿', 'all images saved: sending to front: ' + uris.join(', '))
         FrontWebview.sendMessage({ type: 'images', uris: uris, uid: getPayloadID() })
     }
 
@@ -264,7 +265,7 @@ export class Workspace {
     }
 
     onMessage = (e: WS.MessageEvent) => {
-        loggerExt.info('🧦', `received ${e.data}`)
+        logger.info('🧦', `received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
         FrontWebview.sendMessage({ ...msg, uid: getPayloadID() })
@@ -277,7 +278,7 @@ export class Workspace {
 
         const currentRun: Maybe<FlowRun> = this.activeRun
         if (currentRun == null) {
-            loggerExt.error('🐰', `❌ received ${msg.type} but currentRun is null`)
+            logger.error('🐰', `❌ received ${msg.type} but currentRun is null`)
             return
             // return console.log(`❌ received ${msg.type} but currentRun is null`)
         }
@@ -288,17 +289,17 @@ export class Workspace {
 
         // defer accumulation to ScriptStep_prompt
         if (msg.type === 'progress') {
-            loggerExt.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             return promptStep._graph.onProgress(msg)
         }
 
         if (msg.type === 'executing') {
-            loggerExt.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             return promptStep.onExecuting(msg)
         }
 
         if (msg.type === 'executed') {
-            loggerExt.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
             const images = promptStep.onExecuted(msg)
             this.forwardImagesToFrontV2(images)
             return
@@ -370,7 +371,7 @@ export class Workspace {
     updateComfy_object_info = async (): Promise<ComfySchemaJSON> => {
         // 1. fetch schema$
         const url = `${this.serverHostHTTP}/object_info`
-        loggerExt.info('🌠', `contacting ${url}`)
+        logger.info('🌠', `contacting ${url}`)
         vscode.window.showInformationMessage(url)
         // console.log(url)
 
@@ -380,28 +381,28 @@ export class Workspace {
             const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
             const data = (await res.json()) as { [key: string]: any }
             const keys = Object.keys(data)
-            loggerExt.info('🌠', `found ${keys.length} nodes`) // (${JSON.stringify(keys)})
+            logger.info('🌠', `found ${keys.length} nodes`) // (${JSON.stringify(keys)})
             schema$ = data as any
             // vscode.window.showInformationMessage('🟢 yay')
-            loggerExt.info('🌠', '[step 1/4] schema fetched !')
+            logger.info('🌠', '[step 1/4] schema fetched !')
 
             const comfyJSONStr = readableStringify(schema$, 3)
             const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
             vscode.workspace.fs.writeFile(this.comfyJSONUri, comfyJSONBuffer)
 
             this.schema.update(schema$)
-            loggerExt.info('🌠', '[step 2/4] schema updated')
+            logger.info('🌠', '[step 2/4] schema updated')
             const comfySchemaTs = this.schema.codegenDTS()
-            loggerExt.info('🌠', '[step 3/4] schema code updated !')
+            logger.info('🌠', '[step 3/4] schema code updated !')
             const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
             vscode.workspace.fs.writeFile(this.comfyTSUri, comfySchemaBuff)
-            loggerExt.info('🌠', '[step 4/4] schema code saved !')
-            loggerExt.info('🌠', '🟢 node schema generated !')
+            logger.info('🌠', '[step 4/4] schema code saved !')
+            logger.info('🌠', '🟢 node schema generated !')
             vscode.window.showInformationMessage('🟢 node schema saved')
         } catch (error) {
             vscode.window.showErrorMessage('FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
-            loggerExt.error('🐰', extractErrorMessage(error))
-            loggerExt.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
+            logger.error('🐰', extractErrorMessage(error))
+            logger.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
             schema$ = {}
         }
 

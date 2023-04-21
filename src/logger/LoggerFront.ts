@@ -1,12 +1,14 @@
 import { makeAutoObservable } from 'mobx'
-import { LogCategory, LogLevel, LogMessage } from './LogTypes'
+import { ILogger, LogCategory, LogLevel, LogMessage } from './LogTypes'
+import { registerLogger } from './logger'
 
-export class Logger {
+export class LoggerFront implements ILogger {
     history: LogMessage[] = []
 
     constructor(public level: LogLevel = LogLevel.INFO) {
         this.level = level
         makeAutoObservable(this)
+        registerLogger(this)
     }
 
     private addToLogHistory(level: LogLevel, category: LogCategory, message: string): void {
@@ -39,4 +41,4 @@ export class Logger {
     }
 }
 
-export const loggerWeb = new Logger()
+new LoggerFront()

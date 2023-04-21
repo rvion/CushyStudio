@@ -4,10 +4,10 @@ import * as vscode from 'vscode'
 import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
 import { getNonce } from '../fs/getNonce'
 import { getUri } from '../fs/getUri'
-import { loggerExt } from '../logger/LoggerBack'
 import { exhaust } from '../utils/ComfyUtils'
 import { ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { ScriptStep_askBoolean } from '../controls/ScriptStep_ask'
+import { logger } from '../logger/logger'
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -54,7 +54,7 @@ export class FrontWebview {
     static queue: MessageFromExtensionToWebview[] = []
     flushQueue = () => {
         const queue = FrontWebview.queue
-        loggerExt.info('🔥', `flushing queue of ${queue.length} messages`)
+        logger.info('🔥', `flushing queue of ${queue.length} messages`)
         queue.forEach((msg) => FrontWebview.sendMessage(msg))
         queue.length = 0
     }
@@ -62,17 +62,17 @@ export class FrontWebview {
     static sendMessage(message: MessageFromExtensionToWebview) {
         const curr = FrontWebview.current
         if (curr == null || !curr.ready) {
-            loggerExt.info('🔥', `queueing [${message.type}]`)
+            logger.info('🔥', `queueing [${message.type}]`)
             FrontWebview.queue.push(message)
             // const errMsg = `no webview panel to send message a ${message.type}`
-            // loggerExt.error('🔥', errMsg)
+            // logger.error('🔥', errMsg)
             // vscode.window.showErrorMessage(errMsg)
             return
         }
 
         const msg = JSON.stringify(message) // .slice(0, 10)
-        // loggerExt.info('🔥', `sending ${message.type} to webview`)
-        loggerExt.debug('🔥', `sending ` + msg)
+        // logger.info('🔥', `sending ${message.type} to webview`)
+        logger.debug('🔥', `sending ` + msg)
 
         curr.panel.webview.postMessage(msg)
     }

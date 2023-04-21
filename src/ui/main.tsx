@@ -12,6 +12,7 @@ import ReactDOM from 'react-dom/client'
 // mixed back of overrides
 import './webview.css'
 import { WebviewUI } from './WebviewUI'
+import '../logger/LoggerFront' // will register itself
 
 // single import allowed before loading demos
 // import { Workflow } from '../core/Workflow'
@@ -28,7 +29,6 @@ import { WebviewUI } from './WebviewUI'
 
 //     // APP ENTRYPOINT
 // }
-
 // void start()
 
 ReactDOM.createRoot(

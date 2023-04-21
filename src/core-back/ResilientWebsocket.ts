@@ -1,8 +1,8 @@
 import type { Maybe } from '../utils/types'
 import * as vscode from 'vscode'
 import { makeAutoObservable, reaction } from 'mobx'
-import { loggerExt } from '../logger/LoggerBack'
 import { WebSocket, CloseEvent, Event, MessageEvent, EventListenerOptions } from 'ws'
+import { logger } from '../logger/logger'
 
 type Message = string | Buffer
 
@@ -42,7 +42,7 @@ export class ResilientWebSocketClient {
 
         this.currentWS = null
         if (prevWS) {
-            loggerExt.debug('🧦', 'Previous WebSocket discarded')
+            logger.debug('🧦', 'Previous WebSocket discarded')
             prevWS.close()
         }
         const ws = new WebSocket(this.url)
@@ -59,7 +59,7 @@ export class ResilientWebSocketClient {
 
         ws.onopen = (event: Event) => {
             if (ws !== this.currentWS) return
-            loggerExt.info('🧦', '🟢 WebSocket connected')
+            logger.info('🧦', '🟢 WebSocket connected')
             vscode.window.showInformationMessage('🟢 WebSocket connected')
             this.isOpen = true
             this.options.onConnectOrReconnect()
@@ -68,15 +68,15 @@ export class ResilientWebSocketClient {
 
         ws.onclose = (event: CloseEvent) => {
             if (ws !== this.currentWS) return
-            loggerExt.error('🧦', `WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
+            logger.error('🧦', `WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
             this.isOpen = false
-            loggerExt.info('🧦', '⏱️ reconnecting in 2 seconds...')
+            logger.info('🧦', '⏱️ reconnecting in 2 seconds...')
             this.reconnectTimeout = setTimeout(() => this.connect(), 2000) // Attempt to reconnect after 5 seconds
         }
 
         ws.onerror = (event: Event) => {
             if (ws !== this.currentWS) return
-            loggerExt.error('🧦', `WebSocket ERROR`)
+            logger.error('🧦', `WebSocket ERROR`)
             console.error('WebSocket error:', event)
         }
     }

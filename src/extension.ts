@@ -5,7 +5,8 @@ import { cmd_helloworld } from './shell/cmd_helloworld'
 import { cmd_openCatCodingWebview } from './shell/cmd_openCatCodingWebview'
 import { cmd_openJS } from './shell/cmd_openJS'
 import { extractErrorMessage } from './utils/extractErrorMessage'
-import { loggerExt } from './logger/LoggerBack'
+import './logger/LoggerBack'
+import { logger } from './logger/logger'
 
 // https://github.com/microsoft/vscode-extension-samples/blob/main/fsconsumer-sample/src/extension.ts
 // This method is called when your extension is activated
@@ -31,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
                 await fn()
             } catch (error) {
                 const errMsg = extractErrorMessage(error)
-                loggerExt.error('🌠', errMsg, error)
+                logger.error('🌠', errMsg, error)
                 // vscode.window.showErrorMessage(errMsg)
             }
         }

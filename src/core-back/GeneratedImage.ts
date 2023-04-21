@@ -9,9 +9,9 @@ import * as path from 'path'
 import { nanoid } from 'nanoid'
 import { asRelativePath } from '../fs/pathUtils'
 import { RelativePath } from '../fs/BrandedPaths'
-import { loggerExt } from '../logger/LoggerBack'
 import { IGeneratedImage } from '../sdk/IFlowExecution'
 import { FrontWebview } from './FrontWebview'
+import { logger } from '../logger/logger'
 
 /** Cushy wrapper around ComfyImageInfo */
 export class GeneratedImage implements IGeneratedImage {
@@ -103,7 +103,7 @@ export class GeneratedImage implements IGeneratedImage {
         // const binArr = new Uint16Array(numArr)
 
         this.workspace.writeBinaryFile(this.localRelativeFilePath, binArr)
-        loggerExt.info('🌠', '🖼️ image saved')
+        logger.info('🌠', '🖼️ image saved')
         this.saved = true
         return true
     }

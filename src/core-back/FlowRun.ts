@@ -20,7 +20,6 @@ import { ScriptStep_askBoolean, ScriptStep_askPaint, ScriptStep_askString } from
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { Workspace } from './Workspace'
-import { loggerExt } from '../logger/LoggerBack'
 import { FrontWebview } from './FrontWebview'
 import { wildcards } from '../wildcards/wildcards'
 import { getPayloadID } from '../core-shared/PayloadID'
@@ -32,6 +31,7 @@ import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/mar
 import { Printable } from '../core-shared/Printable'
 import { convertFlowToLiteGraphJSON } from '../core-shared/LiteGraph'
 import { runAutolayout } from '../core-shared/AutolayoutV2'
+import { logger } from '../logger/logger'
 
 /** script exeuction instance */
 export class FlowRun implements IFlowExecution {
@@ -163,7 +163,7 @@ export class FlowRun implements IFlowExecution {
     /** display something in the console */
     print = (message: Printable) => {
         let msg = this.extractString(message)
-        loggerExt.info('🔥', msg)
+        logger.info('🔥', msg)
         FrontWebview.sendMessage({ type: 'print', message: msg, uid: getPayloadID() })
     }
 
@@ -217,7 +217,7 @@ export class FlowRun implements IFlowExecution {
     // INTERRACTIONS
 
     async PROMPT(): Promise<PromptExecution> {
-        loggerExt.info('🔥', 'prompt requested')
+        logger.info('🔥', 'prompt requested')
         const step = await this.sendPromp()
         // this.run.cyto.animate()
         await step.finished
@@ -234,13 +234,13 @@ export class FlowRun implements IFlowExecution {
         FrontWebview.sendMessage({ type: 'show-html', content: this.flowSummaryHTML, uid: getPayloadID() })
         FrontWebview.sendMessage({ type: 'prompt', graph: currentJSON, uid: getPayloadID() })
 
-        loggerExt.info('🐰', 'checkpoint:' + JSON.stringify(currentJSON))
+        logger.info('🐰', 'checkpoint:' + JSON.stringify(currentJSON))
         const step = new PromptExecution(this, currentJSON)
         this.steps.unshift(step)
 
         // if we're note really running prompts, just resolve the step and continue
         if (this.opts?.mock) {
-            loggerExt.info('🐰', 'MOCK => aborting')
+            logger.info('🐰', 'MOCK => aborting')
             step._resolve!(step)
             return step
         }
@@ -273,7 +273,7 @@ export class FlowRun implements IFlowExecution {
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
         const promptEndpoint = `${this.workspace.serverHostHTTP}/prompt`
-        loggerExt.info('🌠', 'sending prompt to ' + promptEndpoint)
+        logger.info('🌠', 'sending prompt to ' + promptEndpoint)
         const res = await fetch(promptEndpoint, {
             method: 'POST',
             body: JSON.stringify(out),

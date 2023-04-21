@@ -2,8 +2,8 @@ import { TextDecoder } from 'util'
 import * as vscode from 'vscode'
 import { FlowDefinition } from './FlowDefinition'
 import { extractWorkflows } from './extractWorkflows'
-import { loggerExt } from '../logger/LoggerBack'
 import { Workspace } from './Workspace'
+import { logger } from '../logger/logger'
 // import { parseMarkdown } from './parser'
 
 const textDecoder = new TextDecoder('utf-8')
@@ -70,7 +70,7 @@ export class CushyFile {
         const thisGeneration = generationCounter++
         this.didResolve = true
 
-        loggerExt.info('🌠', `updating [${this.uri.path}] contents`)
+        logger.info('🌠', `updating [${this.uri.path}] contents`)
 
         // honestly a bit hard to read but hey 🤷‍♂️
         const ascend = (depth: number) => {
