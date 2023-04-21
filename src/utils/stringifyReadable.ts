@@ -9,7 +9,9 @@ export function readableStringify(obj: any, maxLevel = 3, level = 0) {
         const value = (obj as any)[key]
         const valueType = typeof value
 
-        if (valueType === 'object' && value !== null) {
+        if (Array.isArray(value)) {
+            result += `${indent}  "${key}": ${JSON.stringify(value)}`
+        } else if (valueType === 'object' && value !== null) {
             result += `${indent}  "${key}": ${readableStringify(value, maxLevel, level + 1)}`
         } else {
             const formattedValue = valueType === 'string' ? `"${value}"` : value
