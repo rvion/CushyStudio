@@ -143,7 +143,7 @@ export class Workspace {
         logger().chanel = outputChan
     }
 
-    decorator = new Decorator(this)
+    decorator: Decorator
     constructor(
         //
         public context: vscode.ExtensionContext,
@@ -166,6 +166,7 @@ export class Workspace {
             logger().info('initializing empty schema')
             this.schema = new Schema({})
         }
+        this.decorator = new Decorator(this)
         this.writeTextFile(this.cushyTSUri, sdkTemplate)
         this.vsTestController = this.initVSTestController()
         this.statusBar = new StatusBar(this)
