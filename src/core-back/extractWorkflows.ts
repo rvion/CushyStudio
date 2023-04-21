@@ -18,7 +18,7 @@ export const extractWorkflows = (
 
         const isWorkflow = WorkflowRe.exec(line)
         if (isWorkflow) {
-            logger.info('🌠', `found workflow "${isWorkflow?.[1]}"`)
+            logger().info(`found workflow "${isWorkflow?.[1]}"`)
             const name = bang(isWorkflow[1])
             // const [, a, operator, b, expected] = test;
             const range = new vscode.Range(

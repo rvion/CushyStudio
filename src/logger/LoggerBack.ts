@@ -2,8 +2,10 @@ import type { Maybe } from '../utils/types'
 
 import { makeAutoObservable } from 'mobx'
 import * as vscode from 'vscode'
-import { ILogger, LogCategory, LogLevel } from './LogTypes'
-import { logger, registerLogger } from './logger'
+import { ILogger, LogLevel } from './LogTypes'
+import { registerLogger } from './logger'
+import { Printable } from '../core-shared/Printable'
+import { stringify } from 'querystring'
 
 export class LoggerBack implements ILogger {
     /**
@@ -17,29 +19,37 @@ export class LoggerBack implements ILogger {
         registerLogger(this)
     }
 
-    debug(category: LogCategory, message: string): void {
+    stringify = (message: Printable[]): string => {
+        return message.map((m) => (typeof m === 'string' ? m : JSON.stringify(m))).join(' ')
+    }
+
+    debug(...messages: Printable[]): void {
         if (this.level > LogLevel.DEBUG) return
-        this.chanel?.appendLine(`[DEBUG] ${message}`)
-        console.debug(`[DEBUG] ${message}`)
+        const str = `[DEBUG] ${this.stringify(messages)}`
+        this.chanel?.appendLine(str)
+        console.debug(str)
     }
 
-    info(category: LogCategory, message: string): void {
+    info(...messages: Printable[]): void {
         if (this.level > LogLevel.INFO) return
-        this.chanel?.appendLine(`${category} ℹ️ ${message}`)
-        console.info(`[INFO] ${message}`)
+        const str = `ℹ️ ${this.stringify(messages)}`
+        this.chanel?.appendLine(str)
+        console.info(str)
     }
 
-    warn(category: LogCategory, message: string): void {
+    warn(...messages: Printable[]): void {
         if (this.level > LogLevel.WARN) return
-        this.chanel?.appendLine(`${category} 🔶 ${message}`)
-        console.warn(`[WARNING] ${message}`)
+        const str = `🔶 ${this.stringify(messages)}`
+        this.chanel?.appendLine(str)
+        console.warn(str)
     }
 
-    error(category: LogCategory, message: string, ...items: any[]): void {
+    error(...messages: Printable[]): void {
         if (this.level > LogLevel.ERROR) return
-        this.chanel?.appendLine(`${category} ❌ ${message}`)
-        console.error(`[ERROR] ${message}`)
-        vscode.window.showErrorMessage(message, ...items)
+        const str = `❌ ${this.stringify(messages)}`
+        this.chanel?.appendLine(str)
+        console.error(str)
+        vscode.window.showErrorMessage(str)
     }
 }
 

@@ -1,6 +1,13 @@
 import type { ILogger } from './LogTypes'
 
-export let logger!: ILogger
+export const ref: { value?: ILogger } = {}
+
+export const logger = () => {
+    if (ref.value == null) throw new Error('logger not registered')
+    return ref.value
+}
+
 export const registerLogger = (logger: ILogger) => {
-    logger = logger
+    console.log('registerLogger', logger)
+    ref.value = logger
 }

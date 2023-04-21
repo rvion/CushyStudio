@@ -95,25 +95,25 @@ class FrontState {
 
         // defer accumulation to ScriptStep_prompt
         if (msg.type === 'progress') {
-            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
             return graph.onProgress(msg)
         }
 
         if (msg.type === 'executing') {
             if (graph == null) throw new Error('missing graph')
             if (msg.data.node == null) this.graph = null // done
-            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
             return graph.onExecuting(msg)
         }
 
         if (msg.type === 'executed') {
-            logger.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger().info(`${msg.type} ${JSON.stringify(msg.data)}`)
             // return graph.onExecuted(msg)
             return
         }
 
         if (msg.type === 'print') {
-            // logger.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            // logger().info( `${msg.type} ${JSON.stringify(msg.data)}`)
             // return graph.onExecuted(msg)
             return
         }

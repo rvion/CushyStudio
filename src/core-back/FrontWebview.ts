@@ -54,7 +54,7 @@ export class FrontWebview {
     static queue: MessageFromExtensionToWebview[] = []
     flushQueue = () => {
         const queue = FrontWebview.queue
-        logger.info('🔥', `flushing queue of ${queue.length} messages`)
+        logger().info(`flushing queue of ${queue.length} messages`)
         queue.forEach((msg) => FrontWebview.sendMessage(msg))
         queue.length = 0
     }
@@ -62,17 +62,17 @@ export class FrontWebview {
     static sendMessage(message: MessageFromExtensionToWebview) {
         const curr = FrontWebview.current
         if (curr == null || !curr.ready) {
-            logger.info('🔥', `queueing [${message.type}]`)
+            logger().info(`queueing [${message.type}]`)
             FrontWebview.queue.push(message)
             // const errMsg = `no webview panel to send message a ${message.type}`
-            // logger.error('🔥', errMsg)
+            // logger().error('🔥', errMsg)
             // vscode.window.showErrorMessage(errMsg)
             return
         }
 
         const msg = JSON.stringify(message) // .slice(0, 10)
-        // logger.info('🔥', `sending ${message.type} to webview`)
-        logger.debug('🔥', `sending ` + msg)
+        // logger().info( `sending ${message.type} to webview`)
+        logger().debug(`sending ` + msg)
 
         curr.panel.webview.postMessage(msg)
     }

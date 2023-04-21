@@ -123,8 +123,8 @@ export class ComfyImporter {
                 this.client.schema.nodesByNameInCushy[this.knownAliaes[classType]]
             if (schema == null) {
                 const msg = `schema not found for ${classType}`
-                logger.error('🔥', msg)
-                logger.error('🔥', `known schemas: ${Object.keys(this.client.schema.nodesByNameInCushy).join(', ')}`)
+                logger().error('🔥', msg)
+                logger().error('🔥', `known schemas: ${Object.keys(this.client.schema.nodesByNameInCushy).join(', ')}`)
                 throw new Error(msg)
             }
             let outoutIx = 0

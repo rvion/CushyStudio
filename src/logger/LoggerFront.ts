@@ -1,43 +1,32 @@
 import { makeAutoObservable } from 'mobx'
-import { ILogger, LogCategory, LogLevel, LogMessage } from './LogTypes'
+import { ILogger, LogLevel } from './LogTypes'
 import { registerLogger } from './logger'
 
 export class LoggerFront implements ILogger {
-    history: LogMessage[] = []
-
     constructor(public level: LogLevel = LogLevel.INFO) {
         this.level = level
         makeAutoObservable(this)
         registerLogger(this)
     }
 
-    private addToLogHistory(level: LogLevel, category: LogCategory, message: string): void {
-        if (this.history.length >= 100) this.history.shift()
-        this.history.push({ message, category, level, timestamp: new Date() })
-    }
-
-    public debug(category: LogCategory, message: string): void {
+    debug(...messages: any[]): void {
         if (this.level > LogLevel.DEBUG) return
-        this.addToLogHistory(LogLevel.DEBUG, category, message)
-        console.debug(`[DEBUG] ${message}`)
+        console.debug(`[DEBUG]`, ...messages)
     }
 
-    public info(category: LogCategory, message: string): void {
+    info(...messages: any[]): void {
         if (this.level > LogLevel.INFO) return
-        this.addToLogHistory(LogLevel.INFO, category, message)
-        console.info(`[INFO] ${message}`)
+        console.info(`[INFO]`, ...messages)
     }
 
-    public warn(category: LogCategory, message: string): void {
+    warn(...messages: any[]): void {
         if (this.level > LogLevel.WARN) return
-        this.addToLogHistory(LogLevel.WARN, category, message)
-        console.warn(`[WARNING] ${message}`)
+        console.warn(`[WARNING]`, ...messages)
     }
 
-    public error(category: LogCategory, message: string): void {
+    error(...messages: any[]): void {
         if (this.level > LogLevel.ERROR) return
-        this.addToLogHistory(LogLevel.ERROR, category, message)
-        console.error(`[ERROR] ${message}`)
+        console.error(`[ERROR]`, ...messages)
     }
 }
 

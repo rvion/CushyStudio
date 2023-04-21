@@ -77,16 +77,16 @@ export class Workspace {
     }
 
     /** read text file, optionally provide a default */
-    readJSON = <T extends any>(uri: vscode.Uri, def: T): T => {
+    readJSON = <T extends any>(uri: vscode.Uri, def?: T): T => {
+        console.log(uri.fsPath)
         const exists = existsSync(uri.fsPath)
-        if (!exists) return def
-        try {
-            const str = readFileSync(uri.fsPath, 'utf8')
-            const json = JSON.parse(str)
-            return json
-        } catch (error) {
-            return def
+        if (!exists) {
+            if (def != null) return def
+            throw new Error(`file does not exist ${uri.fsPath}`)
         }
+        const str = readFileSync(uri.fsPath, 'utf8')
+        const json = JSON.parse(str)
+        return json
     }
 
     /** read text file, optionally provide a default */
@@ -140,7 +140,7 @@ export class Workspace {
         const outputChan = vscode.window.createOutputChannel('CushyStudio')
         outputChan.appendLine(`starting cushystudio....`)
         outputChan.show(true)
-        logger.chanel = outputChan
+        logger().chanel = outputChan
     }
 
     decorator = new Decorator(this)
@@ -155,10 +155,15 @@ export class Workspace {
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'cushy.d.ts') })
         // load previously cached nodes
         try {
-            const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONUri, {})
+            logger().info('attemping to load cached nodes...')
+            const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONUri)
+            logger().info('found cached json for nodes...')
             this.schema = new Schema(cachedComfyJSON)
             logger
         } catch (error) {
+            logger().error('🌠', extractErrorMessage(error))
+            logger().error('🌠', 'failed to load cached nodes')
+            logger().info('initializing empty schema')
             this.schema = new Schema({})
         }
         this.writeTextFile(this.cushyTSUri, sdkTemplate)
@@ -255,7 +260,7 @@ export class Workspace {
                 return curr.webview.asWebviewUri(img.localUri).toString()
             })
         })
-        logger.info('💿', 'all images saved: sending to front: ' + uris.join(', '))
+        logger().info('all images saved: sending to front: ' + uris.join(', '))
         FrontWebview.sendMessage({ type: 'images', uris: uris, uid: getPayloadID() })
     }
 
@@ -265,7 +270,7 @@ export class Workspace {
     }
 
     onMessage = (e: WS.MessageEvent) => {
-        logger.info('🧦', `received ${e.data}`)
+        logger().info(`🧦 received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
         FrontWebview.sendMessage({ ...msg, uid: getPayloadID() })
@@ -278,7 +283,7 @@ export class Workspace {
 
         const currentRun: Maybe<FlowRun> = this.activeRun
         if (currentRun == null) {
-            logger.error('🐰', `❌ received ${msg.type} but currentRun is null`)
+            logger().error('🐰', `❌ received ${msg.type} but currentRun is null`)
             return
             // return console.log(`❌ received ${msg.type} but currentRun is null`)
         }
@@ -289,17 +294,17 @@ export class Workspace {
 
         // defer accumulation to ScriptStep_prompt
         if (msg.type === 'progress') {
-            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
             return promptStep._graph.onProgress(msg)
         }
 
         if (msg.type === 'executing') {
-            logger.debug('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
             return promptStep.onExecuting(msg)
         }
 
         if (msg.type === 'executed') {
-            logger.info('🐰', `${msg.type} ${JSON.stringify(msg.data)}`)
+            logger().info(`${msg.type} ${JSON.stringify(msg.data)}`)
             const images = promptStep.onExecuted(msg)
             this.forwardImagesToFrontV2(images)
             return
@@ -371,38 +376,41 @@ export class Workspace {
     updateComfy_object_info = async (): Promise<ComfySchemaJSON> => {
         // 1. fetch schema$
         const url = `${this.serverHostHTTP}/object_info`
-        logger.info('🌠', `contacting ${url}`)
-        vscode.window.showInformationMessage(url)
-        // console.log(url)
-
         let schema$: ComfySchemaJSON
         try {
-            // const cancel =
+            // 1 ------------------------------------
+            logger().info(`[.... step 1/4] fetching schema from ${url} ...`)
             const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
             const data = (await res.json()) as { [key: string]: any }
             const keys = Object.keys(data)
-            logger.info('🌠', `found ${keys.length} nodes`) // (${JSON.stringify(keys)})
+            logger().info(`[.... step 1/4] found ${keys.length} nodes`) // (${JSON.stringify(keys)})
             schema$ = data as any
             // vscode.window.showInformationMessage('🟢 yay')
-            logger.info('🌠', '[step 1/4] schema fetched !')
+            logger().info('[*... step 1/4] schema fetched')
 
+            // 2 ------------------------------------
+            logger().info('[*... step 2/4] updating schema...')
             const comfyJSONStr = readableStringify(schema$, 3)
             const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
             vscode.workspace.fs.writeFile(this.comfyJSONUri, comfyJSONBuffer)
-
             this.schema.update(schema$)
-            logger.info('🌠', '[step 2/4] schema updated')
+            logger().info('[**.. step 2/4] schema updated')
+
+            // 3 ------------------------------------
+            logger().info('[**.. step 3/4] udpatin schema code...')
             const comfySchemaTs = this.schema.codegenDTS()
-            logger.info('🌠', '[step 3/4] schema code updated !')
+            logger().info('[***. step 3/4] schema code updated ')
+
+            // 4 ------------------------------------
+            logger().info('[**** step 4/4] saving schema')
             const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
             vscode.workspace.fs.writeFile(this.comfyTSUri, comfySchemaBuff)
-            logger.info('🌠', '[step 4/4] schema code saved !')
-            logger.info('🌠', '🟢 node schema generated !')
-            vscode.window.showInformationMessage('🟢 node schema saved')
+            logger().info('[**** step 4/4] 🟢 schema updated')
+            vscode.window.showInformationMessage('🟢 schema updated')
         } catch (error) {
             vscode.window.showErrorMessage('FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
-            logger.error('🐰', extractErrorMessage(error))
-            logger.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
+            logger().error('🐰', extractErrorMessage(error))
+            logger().error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
             schema$ = {}
         }
 

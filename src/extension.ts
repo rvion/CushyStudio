@@ -1,3 +1,4 @@
+import './logger/LoggerBack' // inject a global logger
 import * as vscode from 'vscode'
 import { Workspace } from './core-back/Workspace'
 import { FooProvider } from './shell/FooProvider'
@@ -5,7 +6,6 @@ import { cmd_helloworld } from './shell/cmd_helloworld'
 import { cmd_openCatCodingWebview } from './shell/cmd_openCatCodingWebview'
 import { cmd_openJS } from './shell/cmd_openJS'
 import { extractErrorMessage } from './utils/extractErrorMessage'
-import './logger/LoggerBack'
 import { logger } from './logger/logger'
 
 // https://github.com/microsoft/vscode-extension-samples/blob/main/fsconsumer-sample/src/extension.ts
@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
                 await fn()
             } catch (error) {
                 const errMsg = extractErrorMessage(error)
-                logger.error('🌠', errMsg, error)
+                logger().error('🌠', errMsg, error as any)
                 // vscode.window.showErrorMessage(errMsg)
             }
         }

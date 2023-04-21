@@ -23,13 +23,13 @@ export class FlowRunner {
 
     START = async () => {
         // 2. get all possible workflow we want to run
-        logger.info('🌠', 'starting run ')
+        logger().info('starting run ')
         const testCandidates: readonly vscode.TestItem[] =
             this.request.include ?? //
             toArray(this.workspace.vsTestController.items)
 
         // 3. expand tests to the final list of WORKFLOW to run
-        logger.info('🌠', 'discovering tests... ')
+        logger().info('discovering tests... ')
         await this.discoverTests(testCandidates)
 
         // 4. run the workflows
@@ -51,12 +51,12 @@ export class FlowRunner {
     }
 
     runTestQueue = async () => {
-        logger.info('🌠', `queue has ${this.queue.length} item(s)`)
-        logger.info('🌠', `opening webview`)
+        logger().info(`queue has ${this.queue.length} item(s)`)
+        logger().info(`opening webview`)
         this.workspace.ensureWebviewPanelIsOpened()
         // cmd_openCatCodingWebview(this.workspace.context)
         for (const { vsTestItem, cushyFlow } of this.queue) {
-            logger.info('🌠', `🔴 STARTING RUN ${cushyFlow.flowName}`)
+            logger().info(`🔴 STARTING RUN ${cushyFlow.flowName}`)
             this.run.appendOutput(`Running ${vsTestItem.id}\r\n`)
             if (this.run.token.isCancellationRequested) {
                 this.run.skipped(vsTestItem)
@@ -64,7 +64,7 @@ export class FlowRunner {
                 this.run.started(vsTestItem)
                 await cushyFlow.run(vsTestItem, this.run, 'real')
             }
-            logger.info('🌠', `🔴 RUN ${cushyFlow.flowName} IS DONE`)
+            logger().info(`🔴 RUN ${cushyFlow.flowName} IS DONE`)
 
             this.run.appendOutput(`Completed ${vsTestItem.id}\r\n`)
         }

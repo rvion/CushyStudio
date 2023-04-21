@@ -42,7 +42,7 @@ export class ResilientWebSocketClient {
 
         this.currentWS = null
         if (prevWS) {
-            logger.debug('🧦', 'Previous WebSocket discarded')
+            logger().debug('🧦 Previous WebSocket discarded')
             prevWS.close()
         }
         const ws = new WebSocket(this.url)
@@ -59,7 +59,7 @@ export class ResilientWebSocketClient {
 
         ws.onopen = (event: Event) => {
             if (ws !== this.currentWS) return
-            logger.info('🧦', '🟢 WebSocket connected')
+            logger().info('🧦 🟢 WebSocket connected to ' + this.url)
             vscode.window.showInformationMessage('🟢 WebSocket connected')
             this.isOpen = true
             this.options.onConnectOrReconnect()
@@ -68,15 +68,15 @@ export class ResilientWebSocketClient {
 
         ws.onclose = (event: CloseEvent) => {
             if (ws !== this.currentWS) return
-            logger.error('🧦', `WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
+            logger().error(`🧦 WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
             this.isOpen = false
-            logger.info('🧦', '⏱️ reconnecting in 2 seconds...')
+            logger().info('🧦 ⏱️ reconnecting in 2 seconds...')
             this.reconnectTimeout = setTimeout(() => this.connect(), 2000) // Attempt to reconnect after 5 seconds
         }
 
         ws.onerror = (event: Event) => {
             if (ws !== this.currentWS) return
-            logger.error('🧦', `WebSocket ERROR`)
+            logger().error(`🧦 WebSocket ERROR`)
             console.error('WebSocket error:', event)
         }
     }

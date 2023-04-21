@@ -103,7 +103,7 @@ export class GeneratedImage implements IGeneratedImage {
         // const binArr = new Uint16Array(numArr)
 
         this.workspace.writeBinaryFile(this.localRelativeFilePath, binArr)
-        logger.info('🌠', '🖼️ image saved')
+        logger().info('🖼️ image saved')
         this.saved = true
         return true
     }

@@ -70,7 +70,7 @@ export class CushyFile {
         const thisGeneration = generationCounter++
         this.didResolve = true
 
-        logger.info('🌠', `updating [${this.uri.path}] contents`)
+        logger().info( `analyse ${this.uri.path}`)
 
         // honestly a bit hard to read but hey 🤷‍♂️
         const ascend = (depth: number) => {

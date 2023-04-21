@@ -29,7 +29,7 @@ export class FlowDefinition {
 
         // FrontManager.send({ type: 'schema', schema: this.file.workspace.schema.spec })
 
-        logger.info('🔥', '❓ running some flow')
+        logger().info('❓ running some flow')
         // this.focusedProject = this
         // ensure we have some code to run
         // this.scriptBuffer.codeJS
@@ -37,19 +37,19 @@ export class FlowDefinition {
 
         // const activeTextEditor = vscode.window.activeTextEditor
         // if (activeTextEditor == null) {
-        //     logger.info('🔥', '❌ no active editor')
+        //     logger().info( '❌ no active editor')
         //     return false
         // }
         // const activeDocument = activeTextEditor.document
         // const activeURI = activeDocument.uri
-        // logger.info('🔥', activeURI.toString())
+        // logger().info( activeURI.toString())
         const codeTS = this.file.CONTENT
-        // logger.info('🔥', codeTS.slice(0, 1000) + '...')
+        // logger().info( codeTS.slice(0, 1000) + '...')
         const codeJS = await transpileCode(codeTS)
-        logger.info('🔥', codeJS)
-        // logger.debug('🔥', codeJS + '...')
+        logger().info(codeJS)
+        // logger().debug('🔥', codeJS + '...')
         if (codeJS == null) {
-            logger.info('🔥', '❌ no code to run')
+            logger().info('❌ no code to run')
             return false
         }
         // check if we're in "MOCK" mode
@@ -71,7 +71,7 @@ export class FlowDefinition {
         type WorkflowFn = (p: { graph: Graph; flow: FlowRun }) => Promise<any>
         const workflows: { name: string; fn: WorkflowFn }[] = []
         const WORKFLOW = (name: string, fn: (p: { graph: Graph; flow: FlowRun }) => Promise<any>): void => {
-            logger.info('🌠', `found WORKFLOW ${name}`)
+            logger().info(`found WORKFLOW ${name}`)
             workflows.push({ name, fn })
         }
 
@@ -87,9 +87,9 @@ export class FlowDefinition {
             return true
         } catch (error) {
             console.log(error)
-            logger.error('🌠', (error as any as Error).name)
-            logger.error('🌠', (error as any as Error).message)
-            logger.error('🌠', 'RUN FAILURE')
+            logger().error('🌠', (error as any as Error).name)
+            logger().error('🌠', (error as any as Error).message)
+            logger().error('🌠', 'RUN FAILURE')
             // const message = new vscode.TestMessage(
             //     new vscode.MarkdownString().appendMarkdown(`### FAILURE: ${vsTestItem.label}`),
 

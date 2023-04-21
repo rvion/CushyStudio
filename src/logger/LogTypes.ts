@@ -1,17 +1,17 @@
 import type * as vscode from 'vscode'
 import type { Maybe } from '../utils/types'
+import { Printable } from '../core-shared/Printable'
 
 export interface ILogger {
     chanel?: Maybe<vscode.OutputChannel>
-    debug(category: LogCategory, message: string): void
-    info(category: LogCategory, message: string): void
-    warn(category: LogCategory, message: string): void
-    error(category: LogCategory, message: string, ...items: any[]): void
+    debug(...message: Printable[]): void
+    info(...message: Printable[]): void
+    warn(...message: Printable[]): void
+    error(...message: Printable[]): void
 }
 
 export interface LogMessage {
     level: LogLevel
-    category: LogCategory
     message: string
     timestamp: Date
 }
@@ -22,20 +22,3 @@ export enum LogLevel {
     WARN = 2,
     ERROR = 3,
 }
-
-export type LogCategory =
-    /** Comfy websocket */
-    | '🧦'
-    /** */
-    | '🐰'
-    | '🌠'
-    /** monaco / typescript */
-    | '👁️'
-    /** Comfy HTTP */
-    | '🦊'
-    /** config files */
-    | '🛋'
-    /** execution emoji */
-    | '🔥'
-    /** fs operation */
-    | '💿'
