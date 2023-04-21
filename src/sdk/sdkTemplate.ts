@@ -1,6 +1,7 @@
 export const sdkTemplate: string = `/// <reference path="nodes.d.ts" />
 
 
+
 declare module "core-shared/Workflow" {
     export type WorkflowBuilder = (graph: any) => void;
     export class Workflow {
@@ -86,85 +87,10 @@ declare module "ui/VisUI" {
     export type VisEdges = any;
     export type VisOptions = any;
 }
-declare module "utils/types" {
-    /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tag> = O & {
-        __tag?: Tag;
-    };
-    /** same as Tagged, but even scriter */
-    export type Branded<O, Brand> = O & {
-        __brand: Brand;
-    };
-    export type Maybe<T> = T | null | undefined;
-}
-declare module "core-shared/LiteGraph" {
-    import { Branded } from "utils/types";
-    import { Graph } from "core-shared/Graph";
-    export type LiteGraphJSON = {
-        last_node_id: number;
-        last_link_id: number;
-        nodes: LiteGraphNode[];
-        links: LiteGraphLink[];
-        groups: [];
-        config: {};
-        extra: {};
-        version: 0.4;
-    };
-    export type LiteGraphLink = [
-        linkId: LiteGraphLinkID,
-        fromNodeId: number,
-        fromNodeOutputIx: number,
-        toNodeId: number,
-        toNodeInputIx: number,
-        linkType: string
-    ];
-    export type LiteGraphLinkID = Branded<number, 'LiteGraphLinkID'>;
-    export type LiteGraphSlotIndex = Branded<number, 'LiteGraphSlotIndex'>;
-    export const asLiteGraphSlotIndex: (id: number) => LiteGraphSlotIndex;
-    export type LiteGraphNodeInput = {
-        name: string;
-        type: string;
-        link: LiteGraphLinkID;
-    };
-    export type LiteGraphNodeOutput = {
-        name: string;
-        type: string;
-        links: LiteGraphLinkID[];
-        slot_index: LiteGraphSlotIndex;
-    };
-    export type LiteGraphNode = {
-        id: number;
-        type: string;
-        pos: [number, number];
-        size: {
-            '0': number;
-            '1': number;
-        };
-        flags?: {};
-        order?: number;
-        mode?: number;
-        inputs: LiteGraphNodeInput[];
-        outputs: LiteGraphNodeOutput[];
-        properties?: {};
-        widgets_values: any[];
-    };
-    export const convertFlowToLiteGraphJSON: (graph: Graph) => LiteGraphJSON;
-    export class LiteGraphCtx {
-        graph: Graph;
-        constructor(graph: Graph);
-        nextLinkId: number;
-        links: LiteGraphLink[];
-        allocateLink: (fromNodeId: number, fromNodeOutputIx: number, toNodeId: number, toNodeInputIx: number, linkType: string) => LiteGraphLinkID;
-    }
-}
-declare module "core-shared/Slot" {
-    import type { ComfyNode } from "core-shared/Node";
-    export class Slot<T, Ix extends number = number> {
-        node: ComfyNode<any>;
-        slotIx: Ix;
-        type: T;
-        constructor(node: ComfyNode<any>, slotIx: Ix, type: T);
-    }
+declare module "utils/ComfyUtils" {
+    export const exhaust: (x: never) => never;
+    export const sleep: (ms: number) => Promise<unknown>;
+    export const deepCopyNaive: <T>(x: T) => T;
 }
 declare module "core-types/ComfySchemaJSON" {
     /** type of the file sent by the backend at /object_info */
@@ -226,6 +152,52 @@ declare module "core-shared/Primitives" {
 declare module "core-shared/normalizeJSIdentifier" {
     export const normalizeJSIdentifier: (name: string) => string;
 }
+declare module "utils/types" {
+    /** usefull to catch most *units* type errors */
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
+    };
+    /** same as Tagged, but even scriter */
+    export type Branded<O, Brand> = O & {
+        __brand: Brand;
+    };
+    export type Maybe<T> = T | null | undefined;
+}
+declare module "core-shared/Printable" {
+    import { ComfyNode } from "core-shared/Node";
+    export type Printable = string | number | boolean | ComfyNode<any>;
+}
+declare module "logger/LogTypes" {
+    import type * as vscode from 'vscode';
+    import type { Maybe } from "utils/types";
+    import { Printable } from "core-shared/Printable";
+    export interface ILogger {
+        chanel?: Maybe<vscode.OutputChannel>;
+        debug(...message: Printable[]): void;
+        info(...message: Printable[]): void;
+        warn(...message: Printable[]): void;
+        error(...message: Printable[]): void;
+    }
+    export interface LogMessage {
+        level: LogLevel;
+        message: string;
+        timestamp: Date;
+    }
+    export enum LogLevel {
+        DEBUG = 0,
+        INFO = 1,
+        WARN = 2,
+        ERROR = 3
+    }
+}
+declare module "logger/logger" {
+    import type { ILogger } from "logger/LogTypes";
+    export const ref: {
+        value?: ILogger;
+    };
+    export const logger: () => ILogger;
+    export const registerLogger: (logger: ILogger) => void;
+}
 declare module "core-shared/Schema" {
     import type { ComfySchemaJSON } from "core-types/ComfySchemaJSON";
     export type EnumHash = string;
@@ -274,10 +246,14 @@ declare module "core-shared/Schema" {
         codegen(): string;
     }
 }
-declare module "utils/ComfyUtils" {
-    export const exhaust: (x: never) => never;
-    export const sleep: (ms: number) => Promise<unknown>;
-    export const deepCopyNaive: <T>(x: T) => T;
+declare module "core-shared/Slot" {
+    import type { ComfyNode } from "core-shared/Node";
+    export class Slot<T, Ix extends number = number> {
+        node: ComfyNode<any>;
+        slotIx: Ix;
+        type: T;
+        constructor(node: ComfyNode<any>, slotIx: Ix, type: T);
+    }
 }
 declare module "core-shared/Colors" {
     export const comfyColors: {
@@ -285,13 +261,12 @@ declare module "core-shared/Colors" {
     };
 }
 declare module "core-shared/Node" {
+    import type { ComfyNodeJSON } from "core-types/ComfyPrompt";
     import type { NodeProgress, WsMsgExecutedData } from "core-types/ComfyWsPayloads";
     import type { Graph } from "core-shared/Graph";
-    import type { ComfyNodeJSON } from "core-types/ComfyPrompt";
-    import { LiteGraphCtx, LiteGraphLink, LiteGraphNode } from "core-shared/LiteGraph";
-    import { Slot } from "core-shared/Slot";
     import { ComfyNodeUID } from "core-types/NodeUID";
     import { ComfyNodeSchema } from "core-shared/Schema";
+    import { Slot } from "core-shared/Slot";
     /** ComfyNode
      * - correspond to a signal in the graph
      * - belongs to a script
@@ -309,11 +284,6 @@ declare module "core-shared/Node" {
         disable(): void;
         get inputs(): ComfyNode_input;
         json: ComfyNodeJSON;
-        private _isLink;
-        toLiteGraph(ctx: LiteGraphCtx): {
-            node: LiteGraphNode;
-            incomingLinks: LiteGraphLink[];
-        };
         /** update a node */
         set(p: Partial<ComfyNode_input>): void;
         get color(): string;
@@ -332,12 +302,14 @@ declare module "core-shared/Node" {
             from: ComfyNodeUID;
             inputName: string;
         }[];
+        get width(): number;
+        get height(): number;
         serializeValue(field: string, value: unknown): unknown;
         private _getExpecteTypeForField;
         private _getOutputForType;
     }
 }
-declare module "graph/cyto" {
+declare module "core-shared/AutolayoutV1" {
     
     import { Graph } from "core-shared/Graph";
     import { ComfyNode } from "core-shared/Node";
@@ -353,10 +325,7 @@ declare module "graph/cyto" {
         }) => void;
         removeEdge: (id: string) => void;
         trackNode: (node: ComfyNode<any>) => void;
-        animate: () => void;
-        setStyle: () => void;
-        mounted: boolean;
-        mount: (element: HTMLElement) => void;
+        animate: () => object;
     }
 }
 declare module "core-shared/Graph" {
@@ -364,7 +333,7 @@ declare module "core-shared/Graph" {
     import type { WsMsgExecuting, WsMsgProgress } from "core-types/ComfyWsPayloads";
     import type { ComfyNodeUID } from "core-types/NodeUID";
     import type { VisEdges, VisNodes } from "ui/VisUI";
-    import { Cyto } from "graph/cyto";
+    import type { Cyto } from "core-shared/AutolayoutV1";
     import { ComfyNode } from "core-shared/Node";
     import { Schema } from "core-shared/Schema";
     export type RunMode = 'fake' | 'real';
@@ -408,10 +377,6 @@ declare module "core-shared/Graph" {
 }
 declare module "core-back/LATER" {
     export type LATER<T> = any;
-}
-declare module "core-shared/Printable" {
-    import { ComfyNode } from "core-shared/Node";
-    export type Printable = string | number | boolean | ComfyNode<any>;
 }
 declare module "fs/BrandedPaths" {
     import type { Branded } from "utils/types";
