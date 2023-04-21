@@ -4,6 +4,8 @@ import type { Maybe } from '../utils/types'
 import * as vscode from 'vscode'
 import { PossibleNodeInputAssignation, extractAllPossibleNodeInputAssignment } from './decoratorInput'
 import { ComfyNodeSchema } from '../core-shared/Schema'
+import { logger } from '../logger/logger'
+import { extractErrorMessage } from '../utils/extractErrorMessage'
 
 export class Decorator {
     knownEmojis: { [key: string]: string } = {
@@ -42,17 +44,41 @@ export class Decorator {
     })
 
     constructor(public workspace: Workspace) {
-        vscode.workspace.onWillSaveTextDocument(this.onWillSaveDocument)
+        // vscode.workspace.onDidChangeTextDocument(this.decorateVisibleDocument)
+        vscode.workspace.onWillSaveTextDocument(this.decorateAffectedDocument)
+        // vscode.workspace.onDidOpenTextDocument(this.decorateDocument)
+
+        // decorate every .cushy.ts document
+        logger().info(`[.] decorate every .cushy.ts document...`)
+        vscode.window.visibleTextEditors //
+            .filter((e) => e.document.uri.path.endsWith('.cushy.ts'))
+            .forEach(this.decorate)
+        logger().info(`[*] decorate every .cushy.ts document 🟢`)
     }
 
-    onWillSaveDocument = (event: vscode.TextDocumentWillSaveEvent) => {
-        const openEditor = vscode.window.visibleTextEditors.filter((editor) => editor.document.uri === event.document.uri)[0]
-        this.decorate(openEditor)
+    decorateAffectedDocument = (event: vscode.TextDocumentWillSaveEvent | vscode.TextDocumentChangeEvent) => {
+        const affectedEditors = vscode.window.visibleTextEditors
+            .filter((e) => e.document.uri.path.endsWith('.cushy.ts'))
+            .filter((editor) => editor.document.uri === event.document.uri)
+        if (affectedEditors.length === 0) return
+        for (const editor of affectedEditors) this.decorate(editor)
     }
 
+    decorateDocument = (event: vscode.TextDocument) => {
+        this.decorate(vscode.window.visibleTextEditors.filter((editor) => editor.document.uri === event.uri)[0])
+    }
+
+    safely = <T>(f: () => T, def: T): T => {
+        try {
+            return f()
+        } catch (error) {
+            logger().error(extractErrorMessage(error))
+            return def
+        }
+    }
     decorate = (editor: vscode.TextEditor) => {
-        const a = this.decorateA(editor)
-        const b = this.decorateB(editor)
+        const a = this.safely(() => this.decorateA(editor), [])
+        const b = this.safely(() => this.decorateB(editor), [])
         editor.setDecorations(this.decorationType, a.concat(b))
     }
 
