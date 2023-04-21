@@ -1,4 +1,6 @@
 import type { Workspace } from './Workspace'
+import type { Maybe } from '../utils/types'
+
 import * as vscode from 'vscode'
 import { PossibleNodeInputAssignation, extractAllPossibleNodeInputAssignment } from './decoratorInput'
 import { ComfyNodeSchema } from '../core-shared/Schema'
@@ -54,13 +56,13 @@ export class Decorator {
         editor.setDecorations(this.decorationType, a.concat(b))
     }
 
-    private get_emoji_B = (paramName: string, nodeName: string): string => {
+    private get_emoji_B = (paramName: string, nodeName: string): Maybe<string> => {
         const node: ComfyNodeSchema = this.workspace.schema.nodesByNameInCushy[nodeName]
-        if (node == null) return '❓1'
+        if (node == null) return null //  '❓1'
         const param = node.inputs.find((p) => p.name === paramName)
-        if (param == null) return '❓2'
+        if (param == null) return null // '❓2'
         const emoji = this.knownEmojis[param.type]
-        if (emoji == null) return '' // `❓3 ${param.type}`
+        if (emoji == null) return null // '' // `❓3 ${param.type}`
         return emoji
     }
 
@@ -72,6 +74,7 @@ export class Decorator {
         for (const candidate of candidates) {
             const { col, row, nodeName, paramName } = candidate
             const emoji = this.get_emoji_B(paramName, nodeName)
+            if (emoji == null) continue
             const range = new vscode.Range(
                 //
                 new vscode.Position(row, col),
