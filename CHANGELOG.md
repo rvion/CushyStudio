@@ -1,3 +1,9 @@
+2023-04-21
+
+-   fix the cached node.json file format
+-   load with the cached version first until new nodes are updated
+-   clarify logs
+
 2023-04-20
 
 -   export script prommpts as valid ComfyUI workflows
