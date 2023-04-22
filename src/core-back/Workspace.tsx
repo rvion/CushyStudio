@@ -160,9 +160,11 @@ export class Workspace {
             logger().info('found cached json for nodes...')
             this.schema = new Schema(cachedComfyJSON)
             logger().info('🟢 loaded cached json for nodes')
+            vscode.window.showInformationMessage('🛋️ 🟢 schema restored')
         } catch (error) {
             logger().error('🌠', extractErrorMessage(error))
             logger().error('🌠', 'failed to load cached nodes')
+            vscode.window.showInformationMessage('🛋️ 🔴 failed to restore schema')
             logger().info('initializing empty schema')
             this.schema = new Schema({})
         }
@@ -406,7 +408,7 @@ export class Workspace {
             const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
             vscode.workspace.fs.writeFile(this.comfyTSUri, comfySchemaBuff)
             logger().info('[**** step 4/4] 🟢 schema updated')
-            vscode.window.showInformationMessage('🟢 schema updated')
+            vscode.window.showInformationMessage('🛋️ 🟢 schema updated')
         } catch (error) {
             vscode.window.showErrorMessage('FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
             logger().error('🐰', extractErrorMessage(error))
