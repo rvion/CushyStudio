@@ -91,8 +91,11 @@ export class FlowRun implements IFlowExecution {
     createAnimation = async (
         /** image to incldue (defaults to all images generated in the fun) */
         source?: GeneratedImage[],
-        /** fps: defaults to 1 fps */
-        fps = 1,
+        /** frame duration, in ms:
+         * - default is 200 (= 5fps)
+         * - use 16 for ~60 fps
+         * */
+        frameDuration = 200,
     ): Promise<void> => {
         const targetVideoRelPath = path.join(this.workspaceRelativeCacheFolderPath, `video-${FlowRun.VideoCounter++}.mp4`)
         const targetVideoURI = this.workspace.resolve(asRelativePath(targetVideoRelPath))
@@ -112,7 +115,7 @@ export class FlowRun implements IFlowExecution {
         await createMP4FromImages(
             images.map((i) => i.localFileName),
             targetVideoAbsPath,
-            fps,
+            frameDuration,
             cwd,
         )
         const curr = FrontWebview.current

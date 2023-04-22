@@ -618,8 +618,11 @@ declare module "sdk/IFlowExecution" {
         createAnimation(
         /** image to incldue (defaults to all images generated in the fun) */
         source?: IGeneratedImage[], 
-        /** fps: defaults to 1 fps */
-        fps?: number): Promise<void>;
+        /** frame duration, in ms:
+         * - default is 200 (= 5fps)
+         * - use 16 for ~60 fps
+         * */
+        frameDuration?: number): Promise<void>;
         resolveRelative(path: string): RelativePath;
         resolveAbsolute(path: string): AbsolutePath;
         uploadWorkspaceFile(path: string): Promise<ComfyUploadImageResult>;

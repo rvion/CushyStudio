@@ -1,29 +1,17 @@
 import { execSync } from 'child_process'
-// import { promisify } from 'util'
 import { logger } from '../logger/logger'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
-
-// const execAsync = promisify(exec)
 
 export async function createMP4FromImages(
     //
     imageFiles: string[],
     outputVideo: string,
-    frameRate: number = 30,
+    /** The duration each image should be displayed, in milliseconds */
+    frameDuration: number = 200,
     workingDirectory: string,
 ): Promise<void> {
-    // Your list of image paths
-    // const imageFiles: string[] = [
-    //     'path/to/image1.jpg',
-    //     'path/to/image2.jpg',
-    //     // ...
-    // ]
-
-    // The duration each image should be displayed, in milliseconds
-    const durationPerImage = 200 // 2 seconds
-
     // Create the input file arguments for ffmpeg
-    const inputArgs = imageFiles.map((path, index) => `-loop 1 -t ${durationPerImage / 1000} -i "${path}"`).join(' ')
+    const inputArgs = imageFiles.map((path, index) => `-loop 1 -t ${frameDuration / 1000} -i "${path}"`).join(' ')
 
     // Output video file
     // const outputVideo = outputVideo // 'output.mp4'
