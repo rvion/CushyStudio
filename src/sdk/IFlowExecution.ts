@@ -1,4 +1,5 @@
 import type { LATER } from '../core-back/LATER'
+import { FlowParam } from '../core-shared/ParamDef'
 import type { Printable } from '../core-shared/Printable'
 import type { ComfyUploadImageResult } from '../core-types/ComfyWsPayloads'
 import type { AbsolutePath, RelativePath } from '../fs/BrandedPaths'
@@ -7,19 +8,22 @@ import type { Maybe } from '../utils/types'
 import type { Wildcards } from '../wildcards/wildcards'
 
 export interface IFlowExecution {
+    // flow dependencies params
+    addParam(param: FlowParam): void
+
     // random value generation
     randomSeed(): number
     range(start: number, end: number, increment?: number): number[]
 
-    ensureModel(name: string, url: string): Promise<void>
-    ensureCustomNodes(path: string, url: string): Promise<void>
+    ensureModel(p: { name: string; url: string }): Promise<void>
+    ensureCustomNodes(p: { path: string; url: string }): Promise<void>
 
     // debug
     print(msg: Printable): void
     showHTMLContent(content: string): void
     showMardownContent(content: string): void
     createAnimation(
-        /** image to incldue (defaults to all images generated in the fun) */
+        /** image to incldue (defaults to all images generated in the run) */
         source?: IGeneratedImage[],
         /** frame duration, in ms:
          * - default is 200 (= 5fps)

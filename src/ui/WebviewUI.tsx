@@ -1,4 +1,3 @@
-// import { VSCodeButton } from '@vscode/webview-ui-toolkit/react'
 import { vscode } from '../core-front/FrontState'
 import { observer } from 'mobx-react-lite'
 import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
@@ -6,6 +5,7 @@ import { Fragment, useEffect } from 'react'
 import { Execution_askStringUI } from './Execution_askStringUI'
 import { Execution_askBooleanUI } from './Execution_askBooleanUI'
 import { PaintUI } from '../imageEditor/PaintUI'
+import { Nav, Tooltip, Whisper } from 'rsuite'
 
 export const WebviewUI = observer(function WebviewUI_() {
     useEffect(() => {
@@ -16,7 +16,15 @@ export const WebviewUI = observer(function WebviewUI_() {
         else console.log('❌no el', lastMsg.uid)
     }, [vscode.received.length])
     return (
-        <div>
+        <div style={{ position: 'relative' }}>
+            <Nav>
+                <Nav.Item eventKey='home'>Home</Nav.Item>
+                <Nav.Item eventKey='news'>Gallery</Nav.Item>
+                <Nav.Item eventKey='news'>Import</Nav.Item>
+                {/* <Nav.Item eventKey='solutions'>Solutions</Nav.Item>
+                <Nav.Item eventKey='products'>Products</Nav.Item> */}
+                <Nav.Item eventKey='about'>About</Nav.Item>
+            </Nav>
             {/* <div>{vscode.images.length} images</div> */}
             {/* {vscode.images.map((i) => (
                 <div key={i}>
@@ -25,11 +33,7 @@ export const WebviewUI = observer(function WebviewUI_() {
                 </div>
             ))} */}
             <div style={{ position: 'sticky', top: 0 }}>
-                <div style={{ display: 'flex', overflowX: 'scroll', width: '100%', background: 'gray' }}>
-                    {vscode.images.map((i) => (
-                        <img style={{ objectFit: 'contain', width: '92px', height: '92px' }} key={i} src={i} />
-                    ))}
-                </div>
+                <PreviewListUI />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {vscode.received.map((msg) => (
@@ -87,3 +91,23 @@ export const WebviewUI = observer(function WebviewUI_() {
 export function handleHowdyClick() {
     vscode.sendMessageToExtension({ type: 'say-hello', message: 'Hey there partner! 🤠' })
 }
+
+export const PreviewListUI = observer(function PreviewListUI_(p: {}) {
+    return (
+        <div style={{ display: 'flex', overflowX: 'scroll', width: '100%', background: 'gray' }}>
+            {vscode.images.map((i) => (
+                <Whisper
+                    // trigger='click'
+                    placement='bottomStart'
+                    speaker={
+                        <Tooltip>
+                            <img style={{ objectFit: 'contain', maxHeight: 'unset', maxWidth: 'unset' }} key={i} src={i} />
+                        </Tooltip>
+                    }
+                >
+                    <img style={{ objectFit: 'contain', width: '92px', height: '92px' }} key={i} src={i} />
+                </Whisper>
+            ))}
+        </div>
+    )
+})

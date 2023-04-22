@@ -33,6 +33,7 @@ import { convertFlowToLiteGraphJSON } from '../core-shared/LiteGraph'
 import { runAutolayout } from '../core-shared/AutolayoutV2'
 import { logger } from '../logger/logger'
 import { createMP4FromImages } from './ffmpegScripts'
+import type { FlowParam } from '../core-shared/ParamDef'
 
 /** script exeuction instance */
 export class FlowRun implements IFlowExecution {
@@ -50,6 +51,11 @@ export class FlowRun implements IFlowExecution {
 
     /** graph engine instance for smooth and clever auto-layout algorithms */
     // cyto: Cyto 🔴🔴
+
+    private params: FlowParam[] = []
+    addParam = (p: FlowParam) => {
+        this.params.push(p)
+    }
 
     /** list of all images produed over the whole script execution */
     generatedImages: GeneratedImage[] = []
@@ -146,12 +152,12 @@ export class FlowRun implements IFlowExecution {
     }
 
     /** ensure a model is present, and download it if needed */
-    ensureModel = async (path: string, url: string): Promise<void> => {
+    ensureModel = async (p: { name: string; url: string }): Promise<void> => {
         return
     }
 
     /** ensure a custom onde is properly setup, and download/clone it if needed */
-    ensureCustomNodes = async (path: string, url: string): Promise<void> => {
+    ensureCustomNodes = async (p: { path: string; url: string }): Promise<void> => {
         return
     }
 

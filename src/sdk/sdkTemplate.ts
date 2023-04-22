@@ -378,6 +378,17 @@ declare module "core-shared/Graph" {
 declare module "core-back/LATER" {
     export type LATER<T> = any;
 }
+declare module "core-shared/ParamDef" {
+    export type ParamType = 'string' | 'number';
+    export type ParamT<Kind extends string, Type extends any> = {
+        /** used as header */
+        group?: string;
+        name: string;
+        kind: Kind;
+        default: Type | (() => Type);
+    };
+    export type FlowParam = ParamT<'string', string> | ParamT<'number', number> | ParamT<'boolean', boolean> | ParamT<'strings', string[]>;
+}
 declare module "fs/BrandedPaths" {
     import type { Branded } from "utils/types";
     export type RelativePath = Branded<string, 'WorkspaceRelativePath'>;
@@ -601,6 +612,7 @@ declare module "wildcards/wildcards" {
 }
 declare module "sdk/IFlowExecution" {
     import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
+    import { FlowParam } from "core-shared/ParamDef";
     import type { Printable } from "core-shared/Printable";
     import type { ComfyUploadImageResult } from "core-types/ComfyWsPayloads";
     import type { AbsolutePath, RelativePath } from "fs/BrandedPaths";
@@ -608,15 +620,22 @@ declare module "sdk/IFlowExecution" {
     import type { Maybe } from "utils/types";
     import type { Wildcards } from "wildcards/wildcards";
     export interface IFlowExecution {
+        addParam(param: FlowParam): void;
         randomSeed(): number;
         range(start: number, end: number, increment?: number): number[];
-        ensureModel(name: string, url: string): Promise<void>;
-        ensureCustomNodes(path: string, url: string): Promise<void>;
+        ensureModel(p: {
+            name: string;
+            url: string;
+        }): Promise<void>;
+        ensureCustomNodes(p: {
+            path: string;
+            url: string;
+        }): Promise<void>;
         print(msg: Printable): void;
         showHTMLContent(content: string): void;
         showMardownContent(content: string): void;
         createAnimation(
-        /** image to incldue (defaults to all images generated in the fun) */
+        /** image to incldue (defaults to all images generated in the run) */
         source?: IGeneratedImage[], 
         /** frame duration, in ms:
          * - default is 200 (= 5fps)
