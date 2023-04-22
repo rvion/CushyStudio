@@ -15,6 +15,7 @@ import { logger } from '../logger/logger'
 
 /** Cushy wrapper around ComfyImageInfo */
 export class GeneratedImage implements IGeneratedImage {
+    private static imageID = 1
     private workspace: Workspace
 
     convertToImageInput = (): string => {
@@ -22,18 +23,19 @@ export class GeneratedImage implements IGeneratedImage {
         // return this.LoadImage({ image: name })
     }
 
+    uid: string
     constructor(
         /** the prompt this file has been generated from */
         public prompt: PromptExecution,
         /** image info as returned by Comfy */
-        public data: ComfyImageInfo,
+        public data: ComfyImageInfo, // public uid: string,
     ) {
+        this.uid = `${this.prompt.name}_${GeneratedImage.imageID++}`
         this.workspace = prompt.workspace
         this.savedPromise = this.downloadImageAndSaveToDisk()
     }
 
     /** unique image id */
-    uid: string = nanoid()
 
     // high level API ----------------------------------------------------------------------
     /** run an imagemagick convert action */

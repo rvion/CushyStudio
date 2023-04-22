@@ -9,13 +9,13 @@ import { extractErrorMessage } from '../utils/extractErrorMessage'
 
 export class Decorator {
     knownEmojis: { [key: string]: string } = {
-        LATENT: '🔒', // Locked padlock
+        LATENT: '🌠', // Locked padlock
         MODEL: '🧠', // Brain
         INT: '🔢', // Number
-        FLOAT: '💰', // Money bag
+        FLOAT: '🔢', // Money bag
         CONDITIONING: '🧩', // Sun behind cloud
-        CLIP: '📎', // Paperclip
-        VAE: '🌀', // Cyclone
+        CLIP: '📚', // Paperclip
+        VAE: '🌁', // Cyclone
         STRING: '📝', // Memo
         IMAGE: '🖼️', // Framed picture
         MASK: '🎭', // Performing arts mask

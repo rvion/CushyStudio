@@ -9,6 +9,7 @@ import type { Wildcards } from '../wildcards/wildcards'
 export interface IFlowExecution {
     // random value generation
     randomSeed(): number
+    range(start: number, end: number, increment?: number): number[]
 
     ensureModel(name: string, url: string): Promise<void>
     ensureCustomNodes(path: string, url: string): Promise<void>

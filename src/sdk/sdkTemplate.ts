@@ -609,6 +609,7 @@ declare module "sdk/IFlowExecution" {
     import type { Wildcards } from "wildcards/wildcards";
     export interface IFlowExecution {
         randomSeed(): number;
+        range(start: number, end: number, increment?: number): number[];
         ensureModel(name: string, url: string): Promise<void>;
         ensureCustomNodes(path: string, url: string): Promise<void>;
         print(msg: Printable): void;

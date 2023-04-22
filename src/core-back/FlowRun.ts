@@ -176,6 +176,12 @@ export class FlowRun implements IFlowExecution {
 
     resolveAbsolute = (path: string): AbsolutePath => asAbsolutePath(path)
 
+    range = (start: number, end: number, increment: number = 1): number[] => {
+        const res = []
+        for (let i = start; i < end; i += increment) res.push(i)
+        return res
+    }
+
     /** upload an image present on disk to ComfyServer */
     uploadAnyFile = async (path: AbsolutePath): Promise<ComfyUploadImageResult> => {
         const uri = vscode.Uri.parse(path)
