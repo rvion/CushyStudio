@@ -7,7 +7,7 @@ import { ComfyNodeSchema } from '../core-shared/Schema'
 import { logger } from '../logger/logger'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
 
-export class Decorator {
+export class VSCodeEmojiDecorator {
     knownEmojis: { [key: string]: string } = {
         LATENT: '🌠', // Locked padlock
         MODEL: '🧠', // Brain

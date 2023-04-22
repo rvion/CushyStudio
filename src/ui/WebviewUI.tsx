@@ -15,6 +15,7 @@ export const WebviewUI = observer(function WebviewUI_() {
         if (el) el.scrollIntoView()
         else console.log('❌no el', lastMsg.uid)
     }, [vscode.received.length])
+
     return (
         <div style={{ position: 'relative' }}>
             <Nav>

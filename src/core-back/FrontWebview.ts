@@ -1,13 +1,8 @@
 import type { Workspace } from './Workspace'
 
 import * as vscode from 'vscode'
-import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
 import { getNonce } from '../fs/getNonce'
 import { getUri } from '../fs/getUri'
-import { exhaust } from '../utils/ComfyUtils'
-import { ScriptStep_askString } from '../controls/ScriptStep_ask'
-import { ScriptStep_askBoolean } from '../controls/ScriptStep_ask'
-import { logger } from '../logger/logger'
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.
@@ -51,31 +46,6 @@ export class FrontWebview {
         FrontWebview.current = new FrontWebview(workspace, panel, extensionUri)
     }
 
-    static queue: MessageFromExtensionToWebview[] = []
-    flushQueue = () => {
-        const queue = FrontWebview.queue
-        logger().info(`flushing queue of ${queue.length} messages`)
-        queue.forEach((msg) => FrontWebview.sendMessage(msg))
-        queue.length = 0
-    }
-
-    static sendMessage(message: MessageFromExtensionToWebview) {
-        const curr = FrontWebview.current
-        if (curr == null || !curr.ready) {
-            logger().info(`queueing [${message.type}]`)
-            FrontWebview.queue.push(message)
-            // const errMsg = `no webview panel to send message a ${message.type}`
-            // logger().error('🔥', errMsg)
-            // vscode.window.showErrorMessage(errMsg)
-            return
-        }
-
-        const msg = JSON.stringify(message) // .slice(0, 10)
-        // logger().info( `sending ${message.type} to webview`)
-        logger().debug(`sending ` + msg)
-
-        curr.panel.webview.postMessage(msg)
-    }
     // ------------------------------------------------------------------------------------------------------------
     private _disposables: vscode.Disposable[] = []
     webview: vscode.Webview
@@ -93,12 +63,7 @@ export class FrontWebview {
         this.panel.onDidDispose(() => this.dispose(), null, this._disposables)
         // Set the HTML content for the webview panel
         this.webview.html = this._getWebviewContent()
-        // Set an event listener to listen for messages passed from the webview context
-        panel.webview.onDidReceiveMessage(this.onMessageFromWebview, undefined, this._disposables)
     }
-
-    /** wether or not the webview is up and running and react is mounted */
-    ready = false
 
     /** Cleans up and disposes of webview resources when the webview panel is closed. */
     public dispose() {
@@ -106,7 +71,6 @@ export class FrontWebview {
 
         // Dispose of the current webview panel
         this.panel.dispose()
-        this.ready = false
 
         // Dispose of all disposables (i.e. commands) for the current webview panel
         while (this._disposables.length) {
@@ -168,50 +132,4 @@ export class FrontWebview {
     }
 
     getExtensionLocalUri = (pathList: string[]): vscode.Uri => getUri(this.webview, this.extensionUri, pathList)
-
-    onMessageFromWebview = (msg: MessageFromWebviewToExtension) => {
-        // const command = smg.command
-        // const text = smg.text
-
-        if (msg.type === 'say-hello') {
-            vscode.window.showInformationMessage(`🛋️ ${msg.message}`)
-            return
-        }
-
-        if (msg.type === 'answer-boolean') {
-            const run = this.workspace.activeRun
-            if (run == null) throw new Error('no active run')
-            const step = run.step
-            if (!(step instanceof ScriptStep_askBoolean)) throw new Error('not a string request step')
-            step.answer(msg.value)
-            return
-        }
-
-        if (msg.type === 'answer-string') {
-            const run = this.workspace.activeRun
-            if (run == null) throw new Error('no active run')
-            const step = run.step
-            if (!(step instanceof ScriptStep_askString)) throw new Error('not a string request step')
-            step.answer(msg.value)
-            return
-        }
-
-        if (msg.type === 'answer-paint') {
-            const run = this.workspace.activeRun
-            if (run == null) throw new Error('no active run')
-            const step = run.step
-            if (!(step instanceof ScriptStep_askString)) throw new Error('not a string request step')
-            step.answer(msg.value)
-            return
-        }
-
-        if (msg.type === 'say-ready') {
-            // window.showInformationMessage(msg.message)
-            this.ready = true
-            this.flushQueue()
-            return
-        }
-
-        exhaust(msg)
-    }
 }

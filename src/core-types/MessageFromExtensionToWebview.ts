@@ -53,7 +53,7 @@ export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWeb
 
 export type MessageFromWebviewToExtension =
     // report ready
-    | { type: 'say-ready' }
+    | { type: 'say-ready'; frontID: string }
 
     // test messages
     | { type: 'say-hello'; message: string }

@@ -9,6 +9,7 @@ import { sleep } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
 import { FlowRun } from './FlowRun'
 
+import { existsSync, readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { getPayloadID } from '../core-shared/PayloadID'
@@ -19,11 +20,13 @@ import { RelativePath } from '../fs/BrandedPaths'
 import { asRelativePath } from '../fs/pathUtils'
 import { ComfyImporter } from '../importers/ImportComfyImage'
 import { getPngMetadata } from '../importers/getPngMetadata'
+import { logger } from '../logger/logger'
 import { sdkTemplate } from '../sdk/sdkTemplate'
 import { demoLibrary } from '../templates/Library'
 import { Template } from '../templates/Template'
 import { defaultScript } from '../templates/defaultProjectCode'
 import { bang } from '../utils/bang'
+import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyFile, vsTestItemOriginDict } from './CushyFile'
 import { FlowRunner } from './FlowRunner'
@@ -31,11 +34,11 @@ import { FrontWebview } from './FrontWebview'
 import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
+import { VSCodeEmojiDecorator } from './decorator'
+import { CushyServer } from './server'
 import { StatusBar } from './statusBar'
-import { extractErrorMessage } from '../utils/extractErrorMessage'
-import { Decorator } from './decorator'
-import { existsSync, readFileSync } from 'fs'
-import { logger } from '../logger/logger'
+import { CushyClient } from './Client'
+import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -57,13 +60,9 @@ export class Workspace {
     fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>()
 
     /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
-    get relativeCacheFolderPath(): RelativePath {
-        return asRelativePath('.cushy/cache')
-    }
-
-    get cacheFolderURI(): vscode.Uri {
-        return this.resolve(this.relativeCacheFolderPath)
-    }
+    get cacheFolderRelPath(): RelativePath { return asRelativePath('.cushy/cache') } // prettier-ignore
+    get cacheFolderURI(): vscode.Uri { return this.resolve(this.cacheFolderRelPath) } // prettier-ignore
+    get cacheFolderAbsPath(): string { return this.cacheFolderURI.path } // prettier-ignore
 
     runs: FlowRun[] = []
     comfyJSONUri: vscode.Uri
@@ -143,7 +142,18 @@ export class Workspace {
         logger().chanel = outputChan
     }
 
-    decorator: Decorator
+    clients = new Map<string, CushyClient>()
+    registerClient = (id: string, client: CushyClient) => this.clients.set(id, client)
+    sendMessage = (message: MessageFromExtensionToWebview) => {
+        const clients = Array.from(this.clients.values())
+        for (const client of clients) {
+            client.sendMessage(message)
+        }
+    }
+
+    server!: CushyServer
+
+    decorator: VSCodeEmojiDecorator
     constructor(
         //
         public context: vscode.ExtensionContext,
@@ -154,6 +164,11 @@ export class Workspace {
         this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'nodes.d.ts') })
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'cushy.d.ts') })
         // load previously cached nodes
+        try {
+            this.server = new CushyServer(this)
+        } catch (e) {
+            console.log(e)
+        }
         try {
             logger().info('attemping to load cached nodes...')
             const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONUri)
@@ -168,7 +183,8 @@ export class Workspace {
             logger().info('initializing empty schema')
             this.schema = new Schema({})
         }
-        this.decorator = new Decorator(this)
+
+        this.decorator = new VSCodeEmojiDecorator(this)
         this.writeTextFile(this.cushyTSUri, sdkTemplate)
         this.vsTestController = this.initVSTestController()
         this.statusBar = new StatusBar(this)
@@ -264,19 +280,19 @@ export class Workspace {
             })
         })
         logger().info('all images saved: sending to front: ' + uris.join(', '))
-        FrontWebview.sendMessage({ type: 'images', uris: uris, uid: getPayloadID() })
+        this.sendMessage({ type: 'images', uris: uris, uid: getPayloadID() })
     }
 
     forwardImagesToFrontV2 = (images: GeneratedImage[]) => {
         const uris = images.map((i) => i.comfyURL)
-        FrontWebview.sendMessage({ type: 'images', uris, uid: getPayloadID() })
+        this.sendMessage({ type: 'images', uris, uid: getPayloadID() })
     }
 
     onMessage = (e: WS.MessageEvent) => {
         logger().info(`🧦 received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
-        FrontWebview.sendMessage({ ...msg, uid: getPayloadID() })
+        this.sendMessage({ ...msg, uid: getPayloadID() })
 
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid
@@ -318,7 +334,7 @@ export class Workspace {
             //     })
             // })
             // console.log('📸', 'uris', uris)
-            // FrontWebview.sendMessage({ type: 'images', uris })
+            // this.sendMessage({ type: 'images', uris })
             // return images
         }
 

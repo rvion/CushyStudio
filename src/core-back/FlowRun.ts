@@ -64,7 +64,7 @@ export class FlowRun implements IFlowExecution {
 
     /** folder where CushyStudio will save run informations */
     get workspaceRelativeCacheFolderPath(): RelativePath {
-        return asRelativePath(this.workspace.relativeCacheFolderPath + path.sep + this.name)
+        return asRelativePath(this.workspace.cacheFolderRelPath + path.sep + this.name)
     }
 
     folder: vscode.Uri
@@ -75,7 +75,7 @@ export class FlowRun implements IFlowExecution {
     /** ask user to input a boolean (true/false) */
     askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => {
         const ask = new ScriptStep_askBoolean(msg, def)
-        FrontWebview.sendMessage({ type: 'ask-boolean', message: msg, default: def, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'ask-boolean', message: msg, default: def, uid: getPayloadID() })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -86,11 +86,11 @@ export class FlowRun implements IFlowExecution {
     }
 
     showHTMLContent = (htmlContent: string) => {
-        FrontWebview.sendMessage({ type: 'show-html', content: htmlContent, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'show-html', content: htmlContent, uid: getPayloadID() })
     }
     showMardownContent = (markdownContent: string) => {
         const htmlContent = marked.parse(markdownContent)
-        FrontWebview.sendMessage({ type: 'show-html', content: htmlContent, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'show-html', content: htmlContent, uid: getPayloadID() })
     }
 
     static VideoCounter = 1
@@ -128,7 +128,7 @@ export class FlowRun implements IFlowExecution {
         if (curr) {
             const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
             const content = `<video controls autoplay loop><source src="${fromPath}" type="video/mp4"></video>`
-            FrontWebview.sendMessage({ type: 'show-html', content, uid: getPayloadID() })
+            this.workspace.sendMessage({ type: 'show-html', content, uid: getPayloadID() })
         } else {
             logger().error(`no front webview found`)
         }
@@ -169,7 +169,7 @@ export class FlowRun implements IFlowExecution {
     /** ask the user to input a string */
     askString = (msg: string, def?: Maybe<string>): Promise<string> => {
         const ask = new ScriptStep_askString(msg, def)
-        FrontWebview.sendMessage({ type: 'ask-string', message: msg, default: def, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'ask-string', message: msg, default: def, uid: getPayloadID() })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -177,7 +177,7 @@ export class FlowRun implements IFlowExecution {
     /** ask the user to paint over an image */
     askPaint = (msg: string, uri: RelativePath): Promise<string> => {
         const ask = new ScriptStep_askPaint(msg)
-        FrontWebview.sendMessage({ type: 'ask-paint', message: msg, uri, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'ask-paint', message: msg, uri, uid: getPayloadID() })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -213,7 +213,7 @@ export class FlowRun implements IFlowExecution {
     print = (message: Printable) => {
         let msg = this.extractString(message)
         logger().info(msg)
-        FrontWebview.sendMessage({ type: 'print', message: msg, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'print', message: msg, uid: getPayloadID() })
     }
 
     /** upload a file from disk to the ComfyUI backend */
@@ -285,9 +285,9 @@ export class FlowRun implements IFlowExecution {
         // console.log('XX2')
         // await sleep(2000)
         const currentJSON = deepCopyNaive(this.graph.json)
-        FrontWebview.sendMessage({ type: 'schema', schema: this.workspace.schema.spec, uid: getPayloadID() })
-        FrontWebview.sendMessage({ type: 'show-html', content: this.flowSummaryHTML, uid: getPayloadID() })
-        FrontWebview.sendMessage({ type: 'prompt', graph: currentJSON, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'schema', schema: this.workspace.schema.spec, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'show-html', content: this.flowSummaryHTML, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'prompt', graph: currentJSON, uid: getPayloadID() })
 
         logger().info('checkpoint:' + JSON.stringify(currentJSON))
         const step = new PromptExecution(this, currentJSON)

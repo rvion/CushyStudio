@@ -1,4 +1,3 @@
-import type { WebviewApi } from 'vscode-webview'
 import type { ComfyStatus } from '../core-types/ComfyWsPayloads'
 
 // inspirations:
@@ -11,6 +10,9 @@ import { Maybe } from '../utils/types'
 import { Graph } from '../core-shared/Graph'
 import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
 import { logger } from '../logger/logger'
+import { ResilientCushySocket } from './ResilientCushySocket'
+// import { toaster } from 'rsuite'
+import { nanoid } from 'nanoid'
 
 /**
  * A utility wrapper around the acquireVsCodeApi() function, which enables
@@ -22,22 +24,37 @@ import { logger } from '../logger/logger'
  * enabled by acquireVsCodeApi.
  */
 class FrontState {
-    private readonly vsCodeApi: WebviewApi<unknown> | undefined
-
+    uid = nanoid()
+    // private readonly vsCodeApi: WebviewApi<unknown> | undefined
     received: MessageFromExtensionToWebview[] = []
 
     answerString = (value: string) => this.sendMessageToExtension({ type: 'answer-string', value })
     answerBoolean = (value: boolean) => this.sendMessageToExtension({ type: 'answer-boolean', value })
 
+    cushySocket: ResilientCushySocket
     constructor() {
-        if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
+        // if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
+        // console.log('a')
+        this.cushySocket = new ResilientCushySocket({
+            url: () => 'ws://localhost:8288',
+            onConnectOrReconnect: () => {
+                // toaster.push('Connected to CushyStudio')
+            },
+            onMessage: (msg) => {
+                // console.log('received', msg.data)
+                const json = JSON.parse(msg.data)
+                this.onMessageFromExtension(json)
+            },
+        })
+        // console.log('b')
+
         makeObservable(this, {
             received: observable,
             images: observable,
             status: observable,
         })
-        window.addEventListener('message', this.onMessageFromExtension)
-        this.sendMessageToExtension({ type: 'say-ready' })
+        // window.addEventListener('message', this.onMessageFromExtension)
+        this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
     }
 
     graph: Maybe<Graph> = null
@@ -47,15 +64,15 @@ class FrontState {
     status: Maybe<ComfyStatus> = null
 
     /** this is for the UI only; process should be very thin / small */
-    onMessageFromExtension = (message: MessageEvent<MessageFromExtensionToWebview>) => {
+    onMessageFromExtension = (message: MessageFromExtensionToWebview) => {
         // const xxx = JSON.stringify(message.data).slice(0, 100)
         // console.log(xxx)
         // alert('CAUGHT THE MESSAGE')
         // 1. enqueue the message
         const msg: MessageFromExtensionToWebview =
-            typeof message.data === 'string' //
-                ? JSON.parse(message.data)
-                : message.data
+            typeof message === 'string' //
+                ? JSON.parse(message)
+                : message
 
         console.log('💬', msg.type) //, { message })
 
@@ -88,7 +105,10 @@ class FrontState {
             return
         }
 
-        if (msg.type === 'show-html') return console.log('🐰', 'show-html', msg)
+        if (msg.type === 'show-html') {
+            // return console.log('🐰', 'show-html', msg)
+            return
+        }
 
         const graph = this.graph
         if (graph == null) throw new Error('missing graph')
@@ -125,45 +145,8 @@ class FrontState {
      * @remarks When running webview code inside a web browser, postMessage will instead log the given message to the console.
      */
     public sendMessageToExtension(message: MessageFromWebviewToExtension) {
-        if (this.vsCodeApi) this.vsCodeApi.postMessage(message)
-        else console.log(message)
-    }
-
-    /**
-     * Get the persistent state stored for this webview.
-     *
-     * @remarks When running webview source code inside a web browser, getState will retrieve state
-     * from local storage (https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
-     *
-     * @return The current state or `undefined` if no state has been set.
-     */
-    public getState(): unknown | undefined {
-        if (this.vsCodeApi) {
-            return this.vsCodeApi.getState()
-        } else {
-            const state = localStorage.getItem('vscodeState')
-            return state ? JSON.parse(state) : undefined
-        }
-    }
-
-    /**
-     * Set the persistent state stored for this webview.
-     *
-     * @remarks When running webview source code inside a web browser, setState will set the given
-     * state using local storage (https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage).
-     *
-     * @param newState New persisted state. This must be a JSON serializable object. Can be retrieved
-     * using {@link getState}.
-     *
-     * @return The new state.
-     */
-    public setState<T extends unknown | undefined>(newState: T): T {
-        if (this.vsCodeApi) {
-            return this.vsCodeApi.setState(newState)
-        } else {
-            localStorage.setItem('vscodeState', JSON.stringify(newState))
-            return newState
-        }
+        this.cushySocket.send(JSON.stringify(message))
+        // else console.log(message)
     }
 }
 
