@@ -104,7 +104,7 @@
         "📌 DEBUG": "",
         "yolo:build": "esbuild src/core-back/xxxxx.ts --bundle --outfile=yolo/extension.js --format=cjs --platform=node",
         "📌 FRONT": "",
-        "front:dev1": "vite build --watch",
+        "front:watch": "vite build --watch",
         "front:dev": "vite dev",
         "front:build": "vite build",
         "front:preview": "vite preview",
