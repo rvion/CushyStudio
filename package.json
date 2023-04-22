@@ -72,6 +72,14 @@
         },
         "commands": [
             {
+                "command": "cushystudio.helloWorld",
+                "title": "cushystudio.helloWorld | Hello world"
+            },
+            {
+                "command": "cushystudio.updateschema",
+                "title": "cushystudio.updateschema | Connect"
+            },
+            {
                 "command": "cushystudio.openwebview",
                 "title": "cushystudio.openwebview | Open webview"
             },
@@ -80,28 +88,8 @@
                 "title": "cushystudio.import | import flow"
             },
             {
-                "command": "cushystudio.importjson",
-                "title": "cushystudio.importjson | import flow"
-            },
-            {
                 "command": "cushystudio.importlegacy",
                 "title": "cushystudio.importlegacy | import flow (preserve legacy IDs)"
-            },
-            {
-                "command": "cushystudio.helloWorld",
-                "title": "cushystudio.helloWorld | Hello world"
-            },
-            {
-                "command": "cushystudio.connect",
-                "title": "cushystudio.connect | Connect"
-            },
-            {
-                "command": "cushystudio.samplewebview",
-                "title": "cushystudio.samplewebview | Open sample webview "
-            },
-            {
-                "command": "cushystudio.openjs",
-                "title": "cushystudio.openjs | Open JS"
             }
         ]
     },

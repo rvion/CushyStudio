@@ -174,7 +174,7 @@ export class FrontWebview {
         // const text = smg.text
 
         if (msg.type === 'say-hello') {
-            vscode.window.showInformationMessage(msg.message)
+            vscode.window.showInformationMessage(`🛋️ ${msg.message}`)
             return
         }
 

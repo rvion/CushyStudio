@@ -1,8 +1,6 @@
 import * as vscode from 'vscode'
 
 export const cmd_addDecorations = (context: vscode.ExtensionContext) => {
-    vscode.window.showInformationMessage('Hello World from CushyStudio 789asdf!')
-
     // Get path to resource on disk
     const onDiskPath = vscode.Uri.joinPath(context.extensionUri, 'resources', '1432343177.svg')
     // And get the special URI to use with the webview

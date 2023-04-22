@@ -3,8 +3,6 @@ import * as vscode from 'vscode'
 import { Workspace } from './core-back/Workspace'
 import { FooProvider } from './shell/FooProvider'
 import { cmd_helloworld } from './shell/cmd_helloworld'
-import { cmd_openCatCodingWebview } from './shell/cmd_openCatCodingWebview'
-import { cmd_openJS } from './shell/cmd_openJS'
 import { extractErrorMessage } from './utils/extractErrorMessage'
 import { logger } from './logger/logger'
 
@@ -41,13 +39,11 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     registerDisposableCommand('cushystudio.helloWorld', cmd_helloworld.bind(null, context))
-    registerDisposableCommand('cushystudio.openjs', cmd_openJS)
-    registerDisposableCommand('cushystudio.connect', () => {})
-    registerDisposableCommand('cushystudio.samplewebview', cmd_openCatCodingWebview.bind(null, context))
+    registerDisposableCommand('cushystudio.updateschema', () => workspace.updateComfy_object_info())
     registerDisposableCommand('cushystudio.openwebview', () => workspace.ensureWebviewPanelIsOpened())
     registerDisposableCommand('cushystudio.import', () => workspace.importCurrentFile({ preserveId: false }))
     registerDisposableCommand('cushystudio.importlegacy', () => workspace.importCurrentFile({ preserveId: true }))
-    registerDisposableCommand('cushystudio.importjson', () => workspace.importCurrentFile({ preserveId: true }))
+    // registerDisposableCommand('cushystudio.importjson', () => workspace.importCurrentFile({ preserveId: true }))
 
     // add settings to package.json
     // insert a treeview in the cushyrun view

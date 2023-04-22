@@ -386,7 +386,6 @@ export class Workspace {
             const keys = Object.keys(data)
             logger().info(`[.... step 1/4] found ${keys.length} nodes`) // (${JSON.stringify(keys)})
             schema$ = data as any
-            // vscode.window.showInformationMessage('🟢 yay')
             logger().info('[*... step 1/4] schema fetched')
 
             // 2 ------------------------------------
@@ -429,7 +428,7 @@ export class Workspace {
 
     status: ComfyStatus | null = null
 
-    notify = (msg: string) => vscode.window.showInformationMessage(msg)
+    notify = (msg: string) => vscode.window.showInformationMessage(`🛋️ ${msg}`)
 
     addProjectFromComfyWorkflowJSON = (
         //
