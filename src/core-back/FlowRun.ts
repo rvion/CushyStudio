@@ -32,6 +32,7 @@ import { Printable } from '../core-shared/Printable'
 import { convertFlowToLiteGraphJSON } from '../core-shared/LiteGraph'
 import { runAutolayout } from '../core-shared/AutolayoutV2'
 import { logger } from '../logger/logger'
+import { createMP4FromImages } from './ffmpegScripts'
 
 /** script exeuction instance */
 export class FlowRun implements IFlowExecution {
@@ -84,6 +85,45 @@ export class FlowRun implements IFlowExecution {
     showMardownContent = (markdownContent: string) => {
         const htmlContent = marked.parse(markdownContent)
         FrontWebview.sendMessage({ type: 'show-html', content: htmlContent, uid: getPayloadID() })
+    }
+
+    static VideoCounter = 1
+    createAnimation = async (
+        /** image to incldue (defaults to all images generated in the fun) */
+        source?: GeneratedImage[],
+        /** fps: defaults to 1 fps */
+        fps = 1,
+    ): Promise<void> => {
+        const targetVideoRelPath = path.join(this.workspaceRelativeCacheFolderPath, `video-${FlowRun.VideoCounter++}.mp4`)
+        const targetVideoURI = this.workspace.resolve(asRelativePath(targetVideoRelPath))
+        const targetVideoAbsPath = targetVideoURI.path
+        // logger().info(`target video path: ${targetVideoPath}`)
+        // logger().info(`target video uri: ${targetVideoURI}`)
+        const images = source ?? this.generatedImages
+        // this.workspace.writeTextFile(targetVideoURI, JSON.stringify(currentJSON, null, 4))
+        if (images.length === 0) {
+            logger().error(`no images to create animation; did you forget to call prompt() first ?`)
+            return
+        }
+        const cwd = this.workspace.resolve(this.workspaceRelativeCacheFolderPath).path
+        logger().info(`target video path: ${targetVideoAbsPath}`)
+        logger().info(`this.folder.path: ${this.folder.path}`)
+        logger().info(`cwd: ${cwd}`)
+        await createMP4FromImages(
+            images.map((i) => i.localFileName),
+            targetVideoAbsPath,
+            fps,
+            cwd,
+        )
+        const curr = FrontWebview.current
+        if (curr) {
+            const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
+            const content = `<video controls autoplay loop><source src="${fromPath}" type="video/mp4"></video>`
+            FrontWebview.sendMessage({ type: 'show-html', content, uid: getPayloadID() })
+        } else {
+            logger().error(`no front webview found`)
+        }
+        // turns a bunch of images into a gif with ffmpeg
     }
 
     get flowSummaryMd(): MDContent {
@@ -298,7 +338,7 @@ export class FlowRun implements IFlowExecution {
     ) {
         const relPath = asRelativePath(path.join('.cache', this.uri.path))
         this.folder = this.workspace.resolve(relPath)
-        this.name = `Run ${this.createdAt}` // 'Run ' + this.script.runCounter++
+        this.name = `Run-${this.createdAt}` // 'Run ' + this.script.runCounter++
         this.graph = new Graph(this.workspace.schema)
         // this.cyto = new Cyto(this.graph) // 🔴🔴
         makeAutoObservable(this)

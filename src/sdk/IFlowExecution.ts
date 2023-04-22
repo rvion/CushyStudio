@@ -18,6 +18,12 @@ export interface IFlowExecution {
     print(msg: Printable): void
     showHTMLContent(content: string): void
     showMardownContent(content: string): void
+    createAnimation(
+        /** image to incldue (defaults to all images generated in the fun) */
+        source?: IGeneratedImage[],
+        /** fps: defaults to 1 fps */
+        fps?: number,
+    ): Promise<void>
 
     // path manipulation
     resolveRelative(path: string): RelativePath
