@@ -46,7 +46,7 @@ export class FlowDefinition {
         const codeTS = this.file.CONTENT
         // logger().info( codeTS.slice(0, 1000) + '...')
         const codeJS = await transpileCode(codeTS)
-        logger().info(codeJS)
+        logger().info(`\`\`\`ts\n${codeJS}\n\`\`\``)
         // logger().debug('🔥', codeJS + '...')
         if (codeJS == null) {
             logger().info('❌ no code to run')
