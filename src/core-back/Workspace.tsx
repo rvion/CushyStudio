@@ -63,7 +63,8 @@ export class Workspace {
     /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
     get cacheFolderRelPath(): RelativePath { return asRelativePath('.cushy/cache') } // prettier-ignore
     get cacheFolderURI(): vscode.Uri { return this.resolve(this.cacheFolderRelPath) } // prettier-ignore
-    get cacheFolderAbsPath(): string { return this.cacheFolderURI.path } // prettier-ignore
+    // get cacheFolderAbsPath(): string { return this.cacheFolderURI.path } // prettier-ignore
+    // get cacheFolderFsPath(): string { return this.cacheFolderURI.fsPath } // prettier-ignore
 
     runs: FlowRun[] = []
     comfyJSONUri: vscode.Uri
