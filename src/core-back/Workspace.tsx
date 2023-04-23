@@ -69,6 +69,7 @@ export class Workspace {
     comfyJSONUri: vscode.Uri
     comfyTSUri: vscode.Uri
     cushyTSUri: vscode.Uri
+    tsConfigUri: vscode.Uri
 
     writeBinaryFile(relPath: RelativePath, content: Buffer, open = false) {
         const uri = this.resolve(relPath)
@@ -166,6 +167,7 @@ export class Workspace {
         this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'nodes.json') })
         this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'nodes.d.ts') })
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'cushy.d.ts') })
+        this.tsConfigUri = wspUri.with({ path: posix.join(wspUri.path, 'tsconfig.json') })
         // load previously cached nodes
         try {
             this.server = new CushyServer(this)
@@ -180,9 +182,27 @@ export class Workspace {
         this.autoDiscoverEveryWorkflow()
         this.ws = this.initWebsocket()
         this.watchForCOnfigurationChanges()
+        this.createTSConfigIfMissing()
         makeAutoObservable(this)
     }
 
+    createTSConfigIfMissing = () => {
+        // create an empty tsconfig.json if it doesn't exist
+        const tsConfigExists = existsSync(this.tsConfigUri.path)
+        if (!tsConfigExists) {
+            logger().info(`no tsconfig.json found, creating a default one`)
+            const content = {
+                compilerOptions: {
+                    target: 'ESNext',
+                    lib: ['ESNext'],
+                },
+                include: ['.cushy/*.d.ts', '**/*.ts'],
+            }
+            const contentStr = JSON.stringify(content, null, 4)
+            this.writeTextFile(this.tsConfigUri, contentStr)
+        }
+        // const json = this.readJSON(this.tsConfigUri)
+    }
     restoreSchemaFromCache = (): Schema => {
         let schema: Schema
         try {
