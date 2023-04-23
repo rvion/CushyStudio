@@ -223,8 +223,22 @@ export class Workspace {
         })
 
     /** ensure webview is opened */
-    ensureWebviewPanelIsOpened = () => {
-        FrontWebview.createOrReveal(this)
+    ensureWebviewPanelIsOpened = async (): Promise<void> => {
+        if (this.clients.size > 1) return
+        return await this.openWebview()
+    }
+
+    openWebview = async (): Promise<void> => {
+        const choice = await vscode.window.showInformationMessage(
+            'No UI is opened. Open one?',
+            'embeded UI',
+            'web dev UI',
+            'web build UI',
+        )
+        if (choice === 'embeded UI') return FrontWebview.createOrReveal(this)
+        const { shell } = require('electron')
+        if (choice === 'web dev UI') return shell.openExternal('http://127.0.0.1:5173/')
+        if (choice === 'web build UI') return shell.openExternal('http://127.0.0.1:8222/')
     }
 
     importCurrentFile = async (opts: { preserveId: boolean }) => {

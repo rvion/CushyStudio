@@ -53,7 +53,7 @@ export class FlowRunner {
     runTestQueue = async () => {
         logger().info(`queue has ${this.queue.length} item(s)`)
         logger().info(`opening webview`)
-        this.workspace.ensureWebviewPanelIsOpened()
+        await this.workspace.ensureWebviewPanelIsOpened()
         // cmd_openCatCodingWebview(this.workspace.context)
         for (const { vsTestItem, cushyFlow } of this.queue) {
             logger().info(`🔴 STARTING RUN ${cushyFlow.flowName}`)
