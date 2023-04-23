@@ -11,7 +11,7 @@ import { stContext } from '../core-front/stContext'
 const Main = () => {
     const st = useMemo(() => new FrontState(), [FrontState])
     return (
-        <CustomProvider theme='dark'>
+        <CustomProvider>
             <stContext.Provider value={st}>
                 <WebviewUI />
             </stContext.Provider>
