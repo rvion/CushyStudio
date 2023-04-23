@@ -1,9 +1,6 @@
-import type * as vscode from 'vscode'
-import type { Maybe } from '../utils/types'
 import { Printable } from '../core-shared/Printable'
 
 export interface ILogger {
-    chanel?: Maybe<vscode.OutputChannel>
     debug(...message: Printable[]): void
     info(...message: Printable[]): void
     warn(...message: Printable[]): void

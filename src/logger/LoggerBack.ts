@@ -5,7 +5,6 @@ import * as vscode from 'vscode'
 import { ILogger, LogLevel } from './LogTypes'
 import { registerLogger } from './logger'
 import { Printable } from '../core-shared/Printable'
-import { stringify } from 'querystring'
 
 export class LoggerBack implements ILogger {
     /**

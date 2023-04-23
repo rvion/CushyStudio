@@ -1,7 +1,6 @@
 export const sdkTemplate: string = `/// <reference path="nodes.d.ts" />
 
 
-
 declare module "core-shared/Workflow" {
     export type WorkflowBuilder = (graph: any) => void;
     export class Workflow {
@@ -152,27 +151,13 @@ declare module "core-shared/Primitives" {
 declare module "core-shared/normalizeJSIdentifier" {
     export const normalizeJSIdentifier: (name: string) => string;
 }
-declare module "utils/types" {
-    /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tag> = O & {
-        __tag?: Tag;
-    };
-    /** same as Tagged, but even scriter */
-    export type Branded<O, Brand> = O & {
-        __brand: Brand;
-    };
-    export type Maybe<T> = T | null | undefined;
-}
 declare module "core-shared/Printable" {
     import { ComfyNode } from "core-shared/Node";
     export type Printable = string | number | boolean | ComfyNode<any>;
 }
 declare module "logger/LogTypes" {
-    import type * as vscode from 'vscode';
-    import type { Maybe } from "utils/types";
     import { Printable } from "core-shared/Printable";
     export interface ILogger {
-        chanel?: Maybe<vscode.OutputChannel>;
         debug(...message: Printable[]): void;
         info(...message: Printable[]): void;
         warn(...message: Printable[]): void;
@@ -381,13 +366,24 @@ declare module "core-back/LATER" {
 declare module "core-shared/ParamDef" {
     export type ParamType = 'string' | 'number';
     export type ParamT<Kind extends string, Type extends any> = {
+        kind: Kind;
+        name: string;
+        default: Type | (() => Type);
         /** used as header */
         group?: string;
-        name: string;
-        kind: Kind;
-        default: Type | (() => Type);
     };
-    export type FlowParam = ParamT<'string', string> | ParamT<'number', number> | ParamT<'boolean', boolean> | ParamT<'strings', string[]>;
+    export type FlowParam = ParamT<'string', string> | ParamT<'number', number> | ParamT<'boolean', boolean> | ParamT<'strings', string[]> | ParamT<'image', string>;
+}
+declare module "utils/types" {
+    /** usefull to catch most *units* type errors */
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
+    };
+    /** same as Tagged, but even scriter */
+    export type Branded<O, Brand> = O & {
+        __brand: Brand;
+    };
+    export type Maybe<T> = T | null | undefined;
 }
 declare module "fs/BrandedPaths" {
     import type { Branded } from "utils/types";

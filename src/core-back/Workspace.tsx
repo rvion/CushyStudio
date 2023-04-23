@@ -39,6 +39,7 @@ import { CushyServer } from './server'
 import { StatusBar } from './statusBar'
 import { CushyClient } from './Client'
 import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
+import { LoggerBack } from '../logger/LoggerBack'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -139,7 +140,7 @@ export class Workspace {
         const outputChan = vscode.window.createOutputChannel('CushyStudio')
         outputChan.appendLine(`starting cushystudio....`)
         outputChan.show(true)
-        logger().chanel = outputChan
+        ;(logger() as LoggerBack).chanel = outputChan
     }
 
     clients = new Map<string, CushyClient>()
