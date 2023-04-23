@@ -297,7 +297,7 @@ export class Workspace {
         }
 
         if (choice === 'web build UI') {
-            vscode.env.openExternal(vscode.Uri.parse('http://127.0.0.1:8222/'))
+            vscode.env.openExternal(vscode.Uri.parse('http://127.0.0.1:8288/'))
             return
         }
     }
