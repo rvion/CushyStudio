@@ -145,6 +145,8 @@ export class Workspace {
 
     clients = new Map<string, CushyClient>()
     registerClient = (id: string, client: CushyClient) => this.clients.set(id, client)
+    unregisterClient = (id: string) => this.clients.delete(id)
+
     sendMessage = (message: MessageFromExtensionToWebview) => {
         const clients = Array.from(this.clients.values())
         for (const client of clients) {
