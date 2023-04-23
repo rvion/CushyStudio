@@ -187,6 +187,19 @@ export class Workspace {
             this.schema = new Schema({})
         }
 
+        vscode.workspace.onDidChangeConfiguration((e) => {
+            if (e.affectsConfiguration('cushystudio.serverHostHTTP')) {
+                logger().info('cushystudio.serverHostHTTP changed')
+                this.fetchAndUdpateSchema()
+                return
+            }
+            if (e.affectsConfiguration('cushystudio.serverWSEndoint')) {
+                logger().info('cushystudio.serverWSEndoint  changed')
+                this.ws.updateURL(this.getWSUrl())
+                return
+            }
+        })
+
         this.decorator = new VSCodeEmojiDecorator(this)
         this.writeTextFile(this.cushyTSUri, sdkTemplate)
         this.vsTestController = this.initVSTestController()
@@ -211,16 +224,23 @@ export class Workspace {
      * so we don't attempt to connect to some default server */
     ws: ResilientWebSocketClient
 
+    getServerHostHTTP(): string {
+        return vscode.workspace //
+            .getConfiguration('cushystudio')
+            .get('serverHostHTTP', 'http://localhost:8188')
+    }
+
+    getWSUrl = (): string => {
+        return vscode.workspace //
+            .getConfiguration('cushystudio')
+            .get('serverWSEndoint', `ws://localhost:8188/ws`)
+    }
     initWebsocket = () =>
         new ResilientWebSocketClient({
             onConnectOrReconnect: () => {
-                this.updateComfy_object_info()
+                this.fetchAndUdpateSchema()
             },
-            url: () => {
-                return vscode.workspace //
-                    .getConfiguration('cushystudio')
-                    .get('serverWSEndoint', `ws://localhost:8188/ws`)
-            },
+            url: this.getWSUrl,
             onMessage: this.onMessage,
         })
 
@@ -237,10 +257,21 @@ export class Workspace {
             'web dev UI',
             'web build UI',
         )
-        if (choice === 'embeded UI') return FrontWebview.createOrReveal(this)
-        const { shell } = require('electron')
-        if (choice === 'web dev UI') return shell.openExternal('http://127.0.0.1:5173/')
-        if (choice === 'web build UI') return shell.openExternal('http://127.0.0.1:8222/')
+        if (choice === 'embeded UI') {
+            FrontWebview.createOrReveal(this)
+            return
+        }
+        // const { shell } = require('electron')
+        // https://stackoverflow.com/questions/34205481/how-to-open-browser-from-visual-studio-code-api
+        if (choice === 'web dev UI') {
+            vscode.env.openExternal(vscode.Uri.parse('http://127.0.0.1:5173/'))
+            return
+        }
+
+        if (choice === 'web build UI') {
+            vscode.env.openExternal(vscode.Uri.parse('http://127.0.0.1:8222/'))
+            return
+        }
     }
 
     importCurrentFile = async (opts: { preserveId: boolean }) => {
@@ -391,14 +422,6 @@ export class Workspace {
         return this.wspUri.with({ path: posix.join(this.wspUri.path, relativePath) })
     }
 
-    get serverHostHTTP(): string {
-        return vscode.workspace.getConfiguration('cushystudio').get('serverHostHTTP', 'http://localhost:8188')
-    }
-
-    get serverWSEndoint(): string {
-        return vscode.workspace.getConfiguration('cushystudio').get('serverWSEndoint', 'ws://localhost:8188/ws')
-    }
-
     // fetchPrompHistory = async () => {
     //     const res = await fetch(`${this.serverHostHTTP}/history`, { method: 'GET' })
     //     console.log(res.data)
@@ -409,9 +432,9 @@ export class Workspace {
     CRITICAL_ERROR: Maybe<CSCriticalError> = null
 
     /** retri e the comfy spec from the schema*/
-    updateComfy_object_info = async (): Promise<ComfySchemaJSON> => {
+    fetchAndUdpateSchema = async (): Promise<ComfySchemaJSON> => {
         // 1. fetch schema$
-        const url = `${this.serverHostHTTP}/object_info`
+        const url = `${this.getServerHostHTTP()}/object_info`
         let schema$: ComfySchemaJSON
         try {
             // 1 ------------------------------------

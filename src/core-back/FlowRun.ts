@@ -258,7 +258,7 @@ export class FlowRun implements IFlowExecution {
     }
 
     private uploadUIntArrToComfy = async (bytes: Uint8Array): Promise<ComfyUploadImageResult> => {
-        const uploadURL = this.workspace.serverHostHTTP + '/upload/image'
+        const uploadURL = this.workspace.getServerHostHTTP() + '/upload/image'
         const form = new FormData()
         form.append('image', Buffer.from(bytes), { filename: 'upload.png' })
         const resp = await fetch(uploadURL, { method: 'POST', headers: form.getHeaders(), body: form })
@@ -327,7 +327,7 @@ export class FlowRun implements IFlowExecution {
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
-        const promptEndpoint = `${this.workspace.serverHostHTTP}/prompt`
+        const promptEndpoint = `${this.workspace.getServerHostHTTP()}/prompt`
         logger().info('sending prompt to ' + promptEndpoint)
         const res = await fetch(promptEndpoint, {
             method: 'POST',

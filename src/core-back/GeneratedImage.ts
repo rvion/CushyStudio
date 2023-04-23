@@ -55,7 +55,7 @@ export class GeneratedImage implements IGeneratedImage {
     get comfyRelativePath(): string { return `./outputs/${this.data.filename}` } // prettier-ignore
 
     /** url to acces the image */
-    get comfyURL():string { return this.workspace.serverHostHTTP + '/view?' + new URLSearchParams(this.data).toString() } // prettier-ignore
+    get comfyURL():string { return this.workspace.getServerHostHTTP() + '/view?' + new URLSearchParams(this.data).toString() } // prettier-ignore
 
     /** path within the input folder */
     comfyInputPath?: Maybe<string> = null

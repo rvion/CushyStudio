@@ -39,7 +39,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     registerDisposableCommand('cushystudio.helloWorld', cmd_helloworld.bind(null, context))
-    registerDisposableCommand('cushystudio.updateschema', () => workspace.updateComfy_object_info())
+    registerDisposableCommand('cushystudio.updateschema', () => workspace.fetchAndUdpateSchema())
     registerDisposableCommand('cushystudio.openwebview', () => workspace.ensureWebviewPanelIsOpened())
     registerDisposableCommand('cushystudio.import', () => workspace.importCurrentFile({ preserveId: false }))
     registerDisposableCommand('cushystudio.importlegacy', () => workspace.importCurrentFile({ preserveId: true }))
