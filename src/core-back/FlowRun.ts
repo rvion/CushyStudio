@@ -139,7 +139,7 @@ export class FlowRun implements IFlowExecution {
         return asMDContent(
             [
                 //
-                '# Flow summary\n',
+                // '# Flow summary\n',
                 `<pre class="mermaid">`,
                 this.graph.toMermaid(),
                 `</pre>`,
