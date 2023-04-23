@@ -7,7 +7,7 @@ const WorkflowRe = /^^WORKFLOW\(['"](.*)['"]/
 export const extractWorkflows = (
     text: string,
     events: {
-        onTest(range: vscode.Range, workflowName: string): void
+        onWorkflowFound(range: vscode.Range, workflowName: string): void
         // onHeading(range: vscode.Range, name: string, depth: number): void
     },
 ) => {
@@ -26,7 +26,7 @@ export const extractWorkflows = (
                 new vscode.Position(lineNo, 0),
                 new vscode.Position(lineNo, line.length),
             )
-            events.onTest(range, name)
+            events.onWorkflowFound(range, name)
             continue
         }
 

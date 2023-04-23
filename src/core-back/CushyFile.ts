@@ -70,7 +70,7 @@ export class CushyFile {
         const thisGeneration = generationCounter++
         this.didResolve = true
 
-        logger().info( `analyse ${this.uri.path}`)
+        logger().info(`analyse ${this.uri.path}`)
 
         // honestly a bit hard to read but hey 🤷‍♂️
         const ascend = (depth: number) => {
@@ -81,7 +81,7 @@ export class CushyFile {
         }
 
         extractWorkflows(content, {
-            onTest: (range: vscode.Range, workflowName: string) => {
+            onWorkflowFound: (range: vscode.Range, workflowName: string) => {
                 const parent = ancestors[ancestors.length - 1]
                 const id = `${vsTestItem.uri}/${workflowName}`
                 const tcase = controller.createTestItem(id, workflowName, vsTestItem.uri)
