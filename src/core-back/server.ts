@@ -39,7 +39,7 @@ export class CushyServer {
     }
     listen = async () => {
         this.http
-            .listen(this.port, () => {
+            .listen(this.port, '0.0.0.0', () => {
                 logger().info(`🫖 🟢 Server is running at http://localhost:${this.port}`)
             })
             .on('error', (err) => {
