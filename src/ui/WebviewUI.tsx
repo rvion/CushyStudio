@@ -20,15 +20,20 @@ export const WebviewUI = observer(function WebviewUI_() {
 
     return (
         <div style={{ position: 'relative' }}>
-            <div style={{ position: 'sticky', top: 0, background: 'linear-gradient(45deg, #181b47, #494577)' }}>
-                <Nav appearance='tabs'>
+            <div
+                style={{
+                    position: 'sticky',
+                    top: 0,
+                    background: '#ebebeb',
+                    // background: 'linear-gradient(45deg, #181b47, #494577)',
+                }}
+            >
+                <Nav>
                     <Nav.Item eventKey='home'>Home</Nav.Item>
                     <Nav.Item eventKey='news'>Gallery</Nav.Item>
                     <Nav.Item eventKey='news'>Import</Nav.Item>
                     <Nav.Item eventKey='about'>About</Nav.Item>
                 </Nav>
-            </div>
-            <div style={{ position: 'sticky', bottom: '10rem', background: 'linear-gradient(45deg, #181b47, #494577)' }}>
                 <PreviewListUI />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
