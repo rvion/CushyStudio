@@ -21,13 +21,19 @@ export class StatusBar {
 
         autorun(() => {
             const nbClients = this.workspace.clients.size
+            const nbNodes = this.workspace.schema.nodes.length
+            const hasSID = this.workspace.comfySessionId != 'temp'
+            const isConnected = this.workspace.ws.isOpen
             const txt = [
                 //
+
                 `${nbClients > 0 ? '🟢' : '🔴'} ${nbClients} clients`,
+                `${nbNodes > 0 ? '🟢' : '🔴'} ${nbNodes} nodes`,
+                `${hasSID && isConnected ? '🟢' : isConnected ? '🔶' : '🔴'} ws`,
             ].join(' | ')
 
             if (this.workspace) this.myStatusBarItem.backgroundColor = 'green'
-            this.myStatusBarItem.text = txt
+            this.myStatusBarItem.text = `[🛋️ ${txt}]`
             this.myStatusBarItem.show()
         })
     }
