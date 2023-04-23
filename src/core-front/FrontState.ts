@@ -12,12 +12,11 @@ import { nanoid } from 'nanoid'
 
 export class FrontState {
     uid = nanoid()
-    // private readonly vsCodeApi: WebviewApi<unknown> | undefined
     received: MessageFromExtensionToWebview[] = []
 
     answerString = (value: string) => this.sendMessageToExtension({ type: 'answer-string', value })
     answerBoolean = (value: boolean) => this.sendMessageToExtension({ type: 'answer-boolean', value })
-
+    gallerySize: number = 100
     cushySocket: ResilientCushySocket
     constructor() {
         // if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
@@ -37,8 +36,9 @@ export class FrontState {
 
         makeObservable(this, {
             received: observable,
-            images: observable,
+            imageURLs: observable,
             status: observable,
+            gallerySize: observable,
         })
         // window.addEventListener('message', this.onMessageFromExtension)
         this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
@@ -46,7 +46,7 @@ export class FrontState {
 
     graph: Maybe<Graph> = null
     schema: Maybe<Schema> = null
-    images: string[] = []
+    imageURLs: string[] = []
     sid: Maybe<string> = null
     status: Maybe<ComfyStatus> = null
 
@@ -90,7 +90,7 @@ export class FrontState {
         }
 
         if (msg.type === 'images') {
-            this.images.push(...msg.uris)
+            this.imageURLs.push(...msg.uris)
             return
         }
 

@@ -1,3 +1,30 @@
 button.primary {
     background-color: rgb(68, 157, 204);
 }
+html, body, #root {
+    height: 100%;
+}
+
+.scroll { overflow:auto; }
+.inset-0 { top: 0; left: 0; right: 0; bottom: 0; }
+.h100 { height: 100%; }
+.gap { gap: .7rem }
+.gap1 { gap: .3rem }
+.row { display: flex; flex-direction: row; }
+.col { display: flex; flex-direction: column; }
+.grow { flex-grow: 1; }
+.wrap { flex-wrap: wrap; }
+.float-left { float: left; }
+.absolute { position: absolute; }
+.right-0 { right: 0; }
+.right-1 { right: .5rem; }
+.relative { position: relative; }
+.float-right { float: right; }
+.space-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.items-baseline { align-items: baseline; }
+.content-center {justify-content: center; }
+.self-stretch { align-self: stretch; }
+.self-start { align-self: flex-start; }

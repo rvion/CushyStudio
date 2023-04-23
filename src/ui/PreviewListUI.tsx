@@ -6,7 +6,7 @@ export const PreviewListUI = observer(function PreviewListUI_(p: {}) {
     const st = useSt()
     return (
         <div style={{ display: 'flex', overflowX: 'auto', width: '100%', gap: '.1rem' }}>
-            {st.images.map((i, ix) => (
+            {st.imageURLs.map((i, ix) => (
                 <Whisper
                     key={ix}
                     // trigger='click'
