@@ -8,6 +8,5 @@ export const logger = () => {
 }
 
 export const registerLogger = (logger: ILogger) => {
-    console.log('registerLogger', logger)
     ref.value = logger
 }

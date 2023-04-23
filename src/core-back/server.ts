@@ -12,7 +12,7 @@ export class CushyServer {
     port = 8288
 
     constructor(public workspace: Workspace) {
-        logger().info('🐙 creating CushyServer express app...')
+        logger().info('🫖 creating CushyServer express app...')
         const app = express()
         this.app = app
 
@@ -20,27 +20,27 @@ export class CushyServer {
             res.send('Hello World!')
         })
 
-        logger().info('creating CushyServer http server...')
+        logger().info('🫖 creating CushyServer http server...')
         const server = http.createServer(app)
         this.http = server
 
         // add a static file server to serve the static files in the public folder
-        logger().info(`mounting public folder ${workspace.cacheFolderAbsPath}...`)
+        logger().info(`🫖 mounting public folder ${workspace.cacheFolderAbsPath}...`)
         app.use(express.static(workspace.cacheFolderAbsPath))
 
-        logger().info(`creating CushyServer websocket server... ${workspace.cacheFolderAbsPath}...`)
+        logger().info(`🫖 creating CushyServer websocket server... ${workspace.cacheFolderAbsPath}...`)
         console.log(WebSocketServer)
         const wss = new WebSocketServer({ server })
         this.wss = wss
 
         wss.on('connection', (ws) => new CushyClient(this.workspace, ws))
-        logger().info('listening on port 8288...')
+        logger().info('🫖 listening on port 8288...')
         this.listen()
     }
     listen = async () => {
         this.http
             .listen(this.port, () => {
-                logger().info(`Server is running at http://localhost:${this.port}`)
+                logger().info(`🫖 🟢 Server is running at http://localhost:${this.port}`)
             })
             .on('error', (err) => {
                 logger().error('Server error')

@@ -42,7 +42,7 @@ export class ResilientWebSocketClient {
 
         this.currentWS = null
         if (prevWS) {
-            logger().debug('🧦 Previous WebSocket discarded')
+            logger().info('🧦 Previous WebSocket discarded')
             prevWS.close()
         }
         const ws = new WebSocket(this.url)

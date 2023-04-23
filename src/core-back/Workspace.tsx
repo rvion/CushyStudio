@@ -186,17 +186,17 @@ export class Workspace {
     restoreSchemaFromCache = (): Schema => {
         let schema: Schema
         try {
-            logger().info('attemping to load cached nodes...')
+            logger().info('⚡️ attemping to load cached nodes...')
             const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONUri)
-            logger().info('found cached json for nodes...')
+            logger().info('⚡️ found cached json for nodes...')
             schema = new Schema(cachedComfyJSON)
-            logger().info('🟢 loaded cached json for nodes')
+            logger().info('⚡️ 🟢 loaded cached json for nodes')
             vscode.window.showInformationMessage('🛋️ 🟢 schema restored')
         } catch (error) {
-            logger().error('🌠', extractErrorMessage(error))
-            logger().error('🌠', 'failed to load cached nodes')
+            logger().error('⚡️ ' + extractErrorMessage(error))
+            logger().error('⚡️ failed to load cached nodes')
             vscode.window.showInformationMessage('🛋️ 🔴 failed to restore schema')
-            logger().info('initializing empty schema')
+            logger().info('⚡️ initializing empty schema')
             schema = new Schema({})
         }
         return schema
@@ -211,7 +211,7 @@ export class Workspace {
                 return
             }
             if (e.affectsConfiguration('cushystudio.serverWSEndoint')) {
-                logger().info('cushystudio.serverWSEndoint  changed')
+                logger().info('cushystudio.serverWSEndoint changed')
                 this.ws.updateURL(this.getWSUrl())
                 return
             }
@@ -254,7 +254,7 @@ export class Workspace {
 
     /** ensure webview is opened */
     ensureWebviewPanelIsOpened = async (): Promise<void> => {
-        if (this.clients.size > 1) return
+        if (this.clients.size > 0) return
         return await this.openWebview()
     }
 

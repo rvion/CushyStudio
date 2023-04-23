@@ -1,4 +1,5 @@
 import type WebSocket from 'ws'
+import * as vscode from 'vscode'
 import type { Workspace } from './Workspace'
 
 import { nanoid } from 'nanoid'
@@ -16,6 +17,8 @@ export class CushyClient {
     ) {
         logger().info('Client connected')
         ws.on('message', (message: string) => {
+            // logger().info(message)
+            // logger().info(jsonMsg)
             const jsonMsg = JSON.parse(message)
             this.onMessageFromWebview(jsonMsg)
         })
@@ -60,7 +63,7 @@ export class CushyClient {
         // const text = smg.text
 
         if (msg.type === 'say-hello') {
-            // vscode.window.showInformationMessage(`🛋️ ${msg.message}`)
+            vscode.window.showInformationMessage(`🛋️ ${msg.message}`)
             return
         }
 

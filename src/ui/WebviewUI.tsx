@@ -5,7 +5,7 @@ import { Fragment, useEffect } from 'react'
 import { Execution_askStringUI } from './Execution_askStringUI'
 import { Execution_askBooleanUI } from './Execution_askBooleanUI'
 import { PaintUI } from '../imageEditor/PaintUI'
-import { Nav, Tooltip, Whisper } from 'rsuite'
+import { Button, Nav, Panel, Tooltip, Whisper } from 'rsuite'
 
 export const WebviewUI = observer(function WebviewUI_() {
     useEffect(() => {
@@ -22,8 +22,6 @@ export const WebviewUI = observer(function WebviewUI_() {
                 <Nav.Item eventKey='home'>Home</Nav.Item>
                 <Nav.Item eventKey='news'>Gallery</Nav.Item>
                 <Nav.Item eventKey='news'>Import</Nav.Item>
-                {/* <Nav.Item eventKey='solutions'>Solutions</Nav.Item>
-                <Nav.Item eventKey='products'>Products</Nav.Item> */}
                 <Nav.Item eventKey='about'>About</Nav.Item>
             </Nav>
             {/* <div>{vscode.images.length} images</div> */}
@@ -68,6 +66,7 @@ export const WebviewUI = observer(function WebviewUI_() {
                         )}
                         {msg.type === 'ask-string' && <Execution_askStringUI step={msg} />}
                         {msg.type === 'ask-boolean' && <Execution_askBooleanUI step={msg} />}
+                        {msg.type === 'print' && <Panel>{msg.message}</Panel>}
                         {msg.type === 'ask-paint' && <PaintUI step={msg} />}
                         {msg.type === 'ask-paint' && <div>{msg.uri}</div>}
                         {msg.type === 'images' && msg.uris.length && (
@@ -83,7 +82,7 @@ export const WebviewUI = observer(function WebviewUI_() {
                 ))}
             </div>
             <div>
-                <button onClick={handleHowdyClick}>Howdy!</button>
+                <Button onClick={handleHowdyClick}>test!</Button>
             </div>
         </div>
     )
@@ -96,8 +95,9 @@ export function handleHowdyClick() {
 export const PreviewListUI = observer(function PreviewListUI_(p: {}) {
     return (
         <div style={{ display: 'flex', overflowX: 'scroll', width: '100%', background: 'gray' }}>
-            {vscode.images.map((i) => (
+            {vscode.images.map((i, ix) => (
                 <Whisper
+                    key={ix}
                     // trigger='click'
                     placement='bottomStart'
                     speaker={
@@ -106,7 +106,7 @@ export const PreviewListUI = observer(function PreviewListUI_(p: {}) {
                         </Tooltip>
                     }
                 >
-                    <img style={{ objectFit: 'contain', width: '92px', height: '92px' }} key={i} src={i} />
+                    <img style={{ objectFit: 'contain', width: '64px', height: '64px' }} key={i} src={i} />
                 </Whisper>
             ))}
         </div>
