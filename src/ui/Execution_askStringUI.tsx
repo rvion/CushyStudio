@@ -1,9 +1,11 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useCallback } from 'react'
-import { vscode } from '../core-front/FrontState'
 import { MessageFromExtensionToWebview_askString } from '../core-types/MessageFromExtensionToWebview'
+import { useSt } from '../core-front/stContext'
+import { Panel } from 'rsuite'
 
 export const Execution_askStringUI = observer(function Execution_askUI_(p: { step: MessageFromExtensionToWebview_askString }) {
+    const st = useSt()
     const uiSt = useLocalObservable(() => ({
         value: p.step.default ?? '',
         locked: false,
@@ -12,14 +14,14 @@ export const Execution_askStringUI = observer(function Execution_askUI_(p: { ste
         (ev: { preventDefault?: () => void; stopPropagation?: () => void }) => {
             ev.preventDefault?.()
             ev.stopPropagation?.()
-            vscode.answerString(uiSt.value)
+            st.answerString(uiSt.value)
             uiSt.locked = true
         },
         [uiSt],
     )
 
     return (
-        <div>
+        <Panel>
             <div>{p.step.message}</div>
             <input
                 //
@@ -31,8 +33,7 @@ export const Execution_askStringUI = observer(function Execution_askUI_(p: { ste
                 value={uiSt.value}
                 onChange={(ev) => (uiSt.value = ev.target.value)}
             />
-
             {uiSt.locked ? null : <button onClick={submit}>OK</button>}
-        </div>
+        </Panel>
     )
 })

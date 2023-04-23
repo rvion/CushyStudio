@@ -1,8 +1,4 @@
 import type { ComfyStatus } from '../core-types/ComfyWsPayloads'
-
-// inspirations:
-// https://github.com/microsoft/vscode-webview-ui-toolkit-samples/blob/main/frameworks/hello-world-react-vite/webview-ui/src/utilities/vscode.ts
-// https://codebycorey.com/blog/building-a-vscode-extension-part-four
 import { makeObservable, observable } from 'mobx'
 import { Schema } from '../core-shared/Schema'
 import { exhaust } from '../utils/ComfyUtils'
@@ -14,16 +10,7 @@ import { ResilientCushySocket } from './ResilientCushySocket'
 // import { toaster } from 'rsuite'
 import { nanoid } from 'nanoid'
 
-/**
- * A utility wrapper around the acquireVsCodeApi() function, which enables
- * message passing and state management between the webview and extension
- * contexts.
- *
- * This utility also enables webview code to be run in a web browser-based
- * dev server by using native web browser features that mock the functionality
- * enabled by acquireVsCodeApi.
- */
-class FrontState {
+export class FrontState {
     uid = nanoid()
     // private readonly vsCodeApi: WebviewApi<unknown> | undefined
     received: MessageFromExtensionToWebview[] = []
@@ -82,6 +69,8 @@ class FrontState {
         if (msg.type === 'ask-boolean') return
         if (msg.type === 'ask-string') return
         if (msg.type === 'ask-paint') return
+        if (msg.type === 'show-html') return
+        if (msg.type === 'print') return
 
         if (msg.type === 'schema') {
             this.schema = new Schema(msg.schema)
@@ -102,11 +91,6 @@ class FrontState {
 
         if (msg.type === 'images') {
             this.images.push(...msg.uris)
-            return
-        }
-
-        if (msg.type === 'show-html') {
-            // return console.log('🐰', 'show-html', msg)
             return
         }
 
@@ -132,12 +116,6 @@ class FrontState {
             return
         }
 
-        if (msg.type === 'print') {
-            // logger().info( `${msg.type} ${JSON.stringify(msg.data)}`)
-            // return graph.onExecuted(msg)
-            return
-        }
-
         exhaust(msg)
     }
 
@@ -149,8 +127,3 @@ class FrontState {
         // else console.log(message)
     }
 }
-
-// no hot reload in webview, so global is not so big of a deal
-
-// Exports class singleton to prevent multiple invocations of acquireVsCodeApi.
-export const vscode = new FrontState()

@@ -1,41 +1,38 @@
-import { vscode } from '../core-front/FrontState'
 import { observer } from 'mobx-react-lite'
 import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
 import { Fragment, useEffect } from 'react'
 import { Execution_askStringUI } from './Execution_askStringUI'
 import { Execution_askBooleanUI } from './Execution_askBooleanUI'
 import { PaintUI } from '../imageEditor/PaintUI'
-import { Button, Nav, Panel, Tooltip, Whisper } from 'rsuite'
+import { Button, Nav, Panel } from 'rsuite'
+import { PreviewListUI } from './PreviewListUI'
+import { useSt } from '../core-front/stContext'
 
 export const WebviewUI = observer(function WebviewUI_() {
+    const st = useSt()
     useEffect(() => {
-        const lastMsg = vscode.received[vscode.received.length - 1]
+        const lastMsg = st.received[st.received.length - 1]
         if (lastMsg == null) return
         const el = document.getElementById(lastMsg.uid.toString())
         if (el) el.scrollIntoView()
         else console.log('❌no el', lastMsg.uid)
-    }, [vscode.received.length])
+    }, [st.received.length])
 
     return (
         <div style={{ position: 'relative' }}>
-            <Nav>
-                <Nav.Item eventKey='home'>Home</Nav.Item>
-                <Nav.Item eventKey='news'>Gallery</Nav.Item>
-                <Nav.Item eventKey='news'>Import</Nav.Item>
-                <Nav.Item eventKey='about'>About</Nav.Item>
-            </Nav>
-            {/* <div>{vscode.images.length} images</div> */}
-            {/* {vscode.images.map((i) => (
-                <div key={i}>
-                    image:
-                    <img src={i} />
-                </div>
-            ))} */}
-            <div style={{ position: 'sticky', top: 0 }}>
+            <div style={{ position: 'sticky', top: 0, background: 'linear-gradient(45deg, #181b47, #494577)' }}>
+                <Nav appearance='tabs'>
+                    <Nav.Item eventKey='home'>Home</Nav.Item>
+                    <Nav.Item eventKey='news'>Gallery</Nav.Item>
+                    <Nav.Item eventKey='news'>Import</Nav.Item>
+                    <Nav.Item eventKey='about'>About</Nav.Item>
+                </Nav>
+            </div>
+            <div style={{ position: 'sticky', bottom: '10rem', background: 'linear-gradient(45deg, #181b47, #494577)' }}>
                 <PreviewListUI />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {vscode.received.map((msg) => (
+                {st.received.map((msg) => (
                     <Fragment key={msg.uid}>
                         <div style={{ display: 'flex' }} id={msg.uid.toString()}>
                             <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
@@ -82,33 +79,14 @@ export const WebviewUI = observer(function WebviewUI_() {
                 ))}
             </div>
             <div>
-                <Button onClick={handleHowdyClick}>test!</Button>
-            </div>
-        </div>
-    )
-})
-
-export function handleHowdyClick() {
-    vscode.sendMessageToExtension({ type: 'say-hello', message: 'Hey there partner! 🤠' })
-}
-
-export const PreviewListUI = observer(function PreviewListUI_(p: {}) {
-    return (
-        <div style={{ display: 'flex', overflowX: 'scroll', width: '100%', background: 'gray' }}>
-            {vscode.images.map((i, ix) => (
-                <Whisper
-                    key={ix}
-                    // trigger='click'
-                    placement='bottomStart'
-                    speaker={
-                        <Tooltip>
-                            <img style={{ objectFit: 'contain', maxHeight: 'unset', maxWidth: 'unset' }} key={i} src={i} />
-                        </Tooltip>
-                    }
+                <Button
+                    onClick={() => {
+                        st.sendMessageToExtension({ type: 'say-hello', message: 'Hey there partner! 🤠' })
+                    }}
                 >
-                    <img style={{ objectFit: 'contain', width: '64px', height: '64px' }} key={i} src={i} />
-                </Whisper>
-            ))}
+                    test!
+                </Button>
+            </div>
         </div>
     )
 })

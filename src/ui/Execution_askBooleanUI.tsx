@@ -1,9 +1,10 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Fragment } from 'react'
-import { vscode } from '../core-front/FrontState'
 import { MessageFromExtensionToWebview_askBoolean } from '../core-types/MessageFromExtensionToWebview'
+import { useSt } from '../core-front/stContext'
 
 export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { step: MessageFromExtensionToWebview_askBoolean }) {
+    const st = useSt()
     const uiSt = useLocalObservable(() => ({
         locked: false,
         value: null,
@@ -20,7 +21,7 @@ export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { st
                         autoFocus={p.step.default === true}
                         className={p.step.default === true ? 'primary' : undefined}
                         onClick={() => {
-                            vscode.answerBoolean(true)
+                            st.answerBoolean(true)
                             uiSt.locked = true
                         }}
                     >
@@ -30,7 +31,7 @@ export const Execution_askBooleanUI = observer(function Execution_askUI_(p: { st
                         autoFocus={p.step.default === false}
                         className={p.step.default === false ? 'primary' : undefined}
                         onClick={() => {
-                            vscode.answerBoolean(false)
+                            st.answerBoolean(false)
                             uiSt.locked = true
                         }}
                     >
