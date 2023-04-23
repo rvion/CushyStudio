@@ -172,11 +172,24 @@ export class Workspace {
         } catch (e) {
             console.log(e)
         }
+        this.schema = this.restoreSchemaFromCache()
+        this.decorator = new VSCodeEmojiDecorator(this)
+        this.writeTextFile(this.cushyTSUri, sdkTemplate)
+        this.vsTestController = this.initVSTestController()
+        this.statusBar = new StatusBar(this)
+        this.autoDiscoverEveryWorkflow()
+        this.ws = this.initWebsocket()
+        this.watchForCOnfigurationChanges()
+        makeAutoObservable(this)
+    }
+
+    restoreSchemaFromCache = (): Schema => {
+        let schema: Schema
         try {
             logger().info('attemping to load cached nodes...')
             const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONUri)
             logger().info('found cached json for nodes...')
-            this.schema = new Schema(cachedComfyJSON)
+            schema = new Schema(cachedComfyJSON)
             logger().info('🟢 loaded cached json for nodes')
             vscode.window.showInformationMessage('🛋️ 🟢 schema restored')
         } catch (error) {
@@ -184,9 +197,13 @@ export class Workspace {
             logger().error('🌠', 'failed to load cached nodes')
             vscode.window.showInformationMessage('🛋️ 🔴 failed to restore schema')
             logger().info('initializing empty schema')
-            this.schema = new Schema({})
+            schema = new Schema({})
         }
+        return schema
+    }
 
+    watchForCOnfigurationChanges = () => {
+        logger().info('watching for configuration changes...')
         vscode.workspace.onDidChangeConfiguration((e) => {
             if (e.affectsConfiguration('cushystudio.serverHostHTTP')) {
                 logger().info('cushystudio.serverHostHTTP changed')
@@ -199,15 +216,6 @@ export class Workspace {
                 return
             }
         })
-
-        this.decorator = new VSCodeEmojiDecorator(this)
-        this.writeTextFile(this.cushyTSUri, sdkTemplate)
-        this.vsTestController = this.initVSTestController()
-        this.statusBar = new StatusBar(this)
-        this.autoDiscoverEveryWorkflow()
-        // void this.updateComfy_object_info()
-        this.ws = this.initWebsocket()
-        makeAutoObservable(this)
     }
 
     autoDiscoverEveryWorkflow = () => {
