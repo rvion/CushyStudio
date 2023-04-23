@@ -4,6 +4,7 @@ import { WebSocketServer } from 'ws'
 import { logger } from '../logger/logger'
 import { CushyClient } from './Client'
 import { Workspace } from './Workspace'
+import { posix } from 'path'
 
 export class CushyServer {
     http: http.Server
@@ -16,7 +17,19 @@ export class CushyServer {
         const app = express()
         this.app = app
 
-        app.get('/', (req, res) => {
+        const extensionURI = workspace.context.extensionUri
+        const webviewDistURI = extensionURI.with({ path: posix.join(extensionURI.path, 'dist', 'webview') })
+        logger().info(`🫖 mounting webview folder ${webviewDistURI.path}`)
+        app.use(express.static(webviewDistURI.path))
+
+        // app.get('/', (req, res) => res.sendFile(webviewDistURI.path + '/index.html'))
+        // app.get('/index.html', (req, res) => res.sendFile(webviewDistURI.path + '/index.html'))
+        // app.get('/assets/index.css', (req, res) => res.sendFile(webviewDistURI.path + '/assets/index.css'))
+        // app.get('/assets/index.js', (req, res) => res.sendFile(webviewDistURI.path + '/assets/index.js'))
+        // app.get('/CushyLogo.png', (req, res) => res.sendFile(webviewDistURI.path + '/CushyLogo.png'))
+        // app.get('/painterro-1.2.78.min.js', (req, res) => res.sendFile(webviewDistURI.path + '/painterro-1.2.78.min.js'))
+
+        app.get('/test', (req, res) => {
             res.send('Hello World!')
         })
 
@@ -24,7 +37,6 @@ export class CushyServer {
         const server = http.createServer(app)
         this.http = server
 
-        // add a static file server to serve the static files in the public folder
         logger().info(`🫖 mounting public folder ${workspace.cacheFolderAbsPath}...`)
         app.use(express.static(workspace.cacheFolderAbsPath))
 
