@@ -36,7 +36,8 @@ export class Graph {
     toMermaid = () => {
         const out = [
             //
-            'graph TD',
+            // 'graph TD',
+            'graph LR',
             this.nodes
                 .map((n) =>
                     n
