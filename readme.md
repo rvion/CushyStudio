@@ -31,9 +31,8 @@ and guidance along generation processes. It is cross-platform and open-source.
 
 <div align="center">
 
-<video src='./public/2023-04-16_15-48-30.mp4'></video>
-
-[![video](./public/2023-04-16_15-48-30.mp4)](./public/2023-04-16_15-48-30.mp4)
+<!-- https://stackoverflow.com/questions/4279611/how-to-embed-a-video-into-github-readme-md/4279746#4279746 -->
+<!-- [![video](./public/2023-04-16_15-48-30.mp4)](./public/2023-04-16_15-48-30.mp4) -->
 
 </div>
 

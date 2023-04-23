@@ -9,12 +9,10 @@ import { ScrollablePaneUI } from './scrollableArea'
 
 export const WebviewUI = observer(function WebviewUI_() {
     const st = useSt()
-
     const [activeTab, setActiveTab] = useState('home')
 
     return (
         <div className='col grow h100'>
-            {/* // background: 'linear-gradient(45deg, #181b47, #494577)', */}
             {/* HEADER */}
             <div style={{ background: '#ebebeb' }}>
                 <Nav activeKey={activeTab} onSelect={setActiveTab}>
