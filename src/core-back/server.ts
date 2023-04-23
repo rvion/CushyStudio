@@ -33,26 +33,7 @@ export class CushyServer {
         const wss = new WebSocketServer({ server })
         this.wss = wss
 
-        wss.on('connection', (ws) => {
-            const client = new CushyClient(this.workspace, ws)
-            // const clientID = nanoid()
-            // this.workspace.registerClient(clientID, ws)
-            console.log('Client connected')
-
-            ws.on('message', (message: string) => {
-                console.log(`Received message: ${message}`)
-                const jsonMsg = JSON.parse(message)
-                client.onMessageFromWebview(jsonMsg)
-                // ws.send(`You said: ${message}`)
-            })
-
-            ws.on('close', () => {
-                console.log('Client disconnected')
-            })
-            ws.onerror = (err) => {
-                console.log('ws error', err)
-            }
-        })
+        wss.on('connection', (ws) => new CushyClient(this.workspace, ws))
         logger().info('listening on port 8288...')
         this.listen()
     }

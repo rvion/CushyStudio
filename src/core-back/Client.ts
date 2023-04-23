@@ -1,11 +1,11 @@
 import type WebSocket from 'ws'
+import type { Workspace } from './Workspace'
+
 import { nanoid } from 'nanoid'
 import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
 import { logger } from '../logger/logger'
 import { exhaust } from '../utils/ComfyUtils'
-import { FrontWebview } from './FrontWebview'
-import { Workspace } from './Workspace'
 
 export class CushyClient {
     clientID = nanoid()
@@ -14,6 +14,19 @@ export class CushyClient {
         public workspace: Workspace,
         public ws: WebSocket,
     ) {
+        logger().info('Client connected')
+        ws.on('message', (message: string) => {
+            const jsonMsg = JSON.parse(message)
+            this.onMessageFromWebview(jsonMsg)
+        })
+        ws.onerror = (err) => {
+            console.log('ws error', err)
+        }
+        ws.on('close', () => {
+            this.workspace.unregisterClient(this.clientID)
+            console.log('Client disconnected')
+        })
+
         this.workspace.registerClient(this.clientID, this)
     }
 
