@@ -1,3 +1,13 @@
+2023-04-23
+
+-   new status bar that reacts to state changes
+-   dynamic reaction configuration
+
+2023-04-22
+
+-   support webview outside of vscode (e.g. mobile phone)
+-   add back a proper componeny sytem
+
 2023-04-21
 
 -   fix the cached node.json file format
