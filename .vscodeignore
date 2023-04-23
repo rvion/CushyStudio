@@ -13,9 +13,11 @@
 !dist/extension.js
 
 # keep extension (front)
+!dist/webview/index.html
 !dist/webview/assets/index.css
 !dist/webview/assets/index.js
 !dist/webview/CushyLogo.png
+!dist/webview/painterro-1.2.78.min.js
 
 # keep logo
 !public/CushyLogo.png
