@@ -1,23 +1,25 @@
 # ignore all
 # idea from https://github.com/microsoft/vscode-mono-debug/blob/main/.vscodeignore
-*
-*/**
-**/.DS_Store
+
+.DS_Store
 
 # keep readme and chagelog
-!readme.md
-!CHANGELOG.md
-!LICENSE.txt
+.vscode
+*.vsix
+docs
+dts
+node_modules
+# public
+resources
+scripts
+src
+tmp
 
-# keep extension (back)
-!dist/extension.js
+index.html
+tsconfig.decl.json
+tsconfig.json
+tsconfig.node.json
+vite.config.ts
 
-# keep extension (front)
-!dist/webview/index.html
-!dist/webview/assets/index.css
-!dist/webview/assets/index.js
-!dist/webview/CushyLogo.png
-!dist/webview/painterro-1.2.78.min.js
-
-# keep logo
-!public/CushyLogo.png
+dist/extension.js.map
+dist/meta.json
