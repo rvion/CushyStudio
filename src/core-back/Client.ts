@@ -9,7 +9,7 @@ import { logger } from '../logger/logger'
 import { exhaust } from '../utils/ComfyUtils'
 
 export class CushyClient {
-    clientID = nanoid()
+    clientID = nanoid(6)
     constructor(
         //
         public workspace: Workspace,
