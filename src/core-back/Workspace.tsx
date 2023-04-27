@@ -112,6 +112,8 @@ export class Workspace {
         cushyFile.updateFromContents(e.getText())
     }
 
+    xxx!: vscode.TestRunProfile
+    startTestRun = async (request: vscode.TestRunRequest) => void new FlowRunner(this, request)
     /** wrapper around vscode.tests.createTestController so logic is self-contained  */
     initVSTestController(): vscode.TestController {
         const ctrl = vscode.tests.createTestController('mathTestController', 'Markdown Math')
@@ -122,9 +124,8 @@ export class Workspace {
             const promises = testPatterns.map(({ pattern }) => this.findInitialFiles(ctrl, pattern))
             await Promise.all(promises)
         }
-        const startTestRun = async (request: vscode.TestRunRequest) => void new FlowRunner(this, request)
         // ctrl.createRunProfile('Debug Tests', vscode.TestRunProfileKind.Debug, startTestRun, true, undefined, true)
-        ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, startTestRun, true, undefined, true)
+        this.xxx = ctrl.createRunProfile('Run Tests', vscode.TestRunProfileKind.Run, this.startTestRun, true, undefined, true)
 
         // provided by the extension that the editor may call to request children of a test item
         ctrl.resolveHandler = async (item: vscode.TestItem | undefined) => {
@@ -148,9 +149,11 @@ export class Workspace {
     clients = new Map<string, CushyClient>()
     registerClient = (id: string, client: CushyClient) => this.clients.set(id, client)
     unregisterClient = (id: string) => this.clients.delete(id)
-
+    lastMessages = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
     sendMessage = (message: MessageFromExtensionToWebview) => {
         const clients = Array.from(this.clients.values())
+        this.lastMessages.set(message.type, message)
+        console.log(`sending message ${message.type} to ${clients.length} clients`)
         for (const client of clients) {
             client.sendMessage(message)
         }

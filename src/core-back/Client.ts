@@ -15,7 +15,7 @@ export class CushyClient {
         public workspace: Workspace,
         public ws: WebSocket,
     ) {
-        logger().info('Client connected')
+        logger().info(`🐼 Client ${this.clientID} connected`)
         ws.on('message', (message: string) => {
             // logger().info(message)
             // logger().info(jsonMsg)
@@ -39,7 +39,7 @@ export class CushyClient {
     queue: MessageFromExtensionToWebview[] = []
     flushQueue = () => {
         const queue = this.queue
-        logger().info(`flushing queue of ${queue.length} messages`)
+        logger().info(`🐼 Client ${this.clientID} flushing queue of ${queue.length} messages`)
         queue.forEach((msg) => this.ws.send(JSON.stringify(msg)))
         queue.length = 0
     }
@@ -76,6 +76,35 @@ export class CushyClient {
             return
         }
 
+        if (msg.type === 'run-flow') {
+            logger().info(`🐙 run-flow request: ${msg.flowID}`)
+            let validTestIte: vscode.TestItem | undefined
+            const allTests = this.workspace.vsTestController.items.forEach((i) => {
+                i.children.forEach((c) => {
+                    if (c.id === msg.flowID) {
+                        validTestIte = c
+                    }
+                })
+                // console.log(i.id, i.label, { i })
+            })
+            if (validTestIte == null) return logger().info('🔴 test not found')
+            // manually run the test
+            this.workspace.startTestRun({
+                exclude: [],
+                include: [validTestIte],
+                profile: this.workspace.xxx,
+            })
+
+            // this.workspace.vsTestController.createTestRun({
+            //     exclude: [],
+            //     include: [validTestIte],
+            //     profile: this.workspace.xxx,
+            // })
+            // const flow = this.workspace.vsTestController.
+            // logger().info(`🐙 run-flow: ${flow?.id}`)
+            return
+        }
+
         if (msg.type === 'answer-string') {
             const run = this.workspace.activeRun
             if (run == null) throw new Error('no active run')
@@ -96,7 +125,14 @@ export class CushyClient {
 
         if (msg.type === 'say-ready') {
             // window.showInformationMessage(msg.message)
+            logger().info(`🐼 Client ${this.clientID} ready`)
             this.ready = true
+
+            // send the last known workflow list
+            const lastLs = this.workspace.lastMessages.get('ls')
+            if (lastLs) this.sendMessage(lastLs)
+
+            // then flush
             this.flushQueue()
             return
         }

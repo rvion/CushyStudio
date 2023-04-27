@@ -17,6 +17,7 @@ export type MessageFromExtensionToWebview_ =
     // schema & prompt (needs to be sent so webview can draw the graph)
     | { type: 'schema'; schema: ComfySchemaJSON }
     | { type: 'prompt'; graph: ComfyPromptJSON }
+    | { type: 'ls'; workflowNames: { name: string; id: string }[] }
 
     // websocket updates
     | /* type 'status'   */ WsMsgStatus
@@ -43,10 +44,11 @@ export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWeb
     if (msg.type === 'status') return '📡'
     if (msg.type === 'progress') return '📊'
     if (msg.type === 'executing') return '📈'
-    if (msg.type === 'executed') return '📉'
+    if (msg.type === 'executed') return '✅'
     if (msg.type === 'images') return '🖼️'
     if (msg.type === 'print') return '💬'
     if (msg.type === 'show-html') return '🥶'
+    if (msg.type === 'ls') return '📂'
     exhaust(msg)
     return '❓'
 }
@@ -54,6 +56,9 @@ export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWeb
 export type MessageFromWebviewToExtension =
     // report ready
     | { type: 'say-ready'; frontID: string }
+
+    // run
+    | { type: 'run-flow'; flowID: string }
 
     // test messages
     | { type: 'say-hello'; message: string }

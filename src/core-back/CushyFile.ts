@@ -4,6 +4,7 @@ import { FlowDefinition } from './FlowDefinition'
 import { extractWorkflows } from './extractWorkflows'
 import { Workspace } from './Workspace'
 import { logger } from '../logger/logger'
+import { getPayloadID } from '../core-shared/PayloadID'
 // import { parseMarkdown } from './parser'
 
 const textDecoder = new TextDecoder('utf-8')
@@ -80,10 +81,12 @@ export class CushyFile {
             }
         }
 
+        const ids: { name: string; id: string }[] = []
         extractWorkflows(content, {
             onWorkflowFound: (range: vscode.Range, workflowName: string) => {
                 const parent = ancestors[ancestors.length - 1]
                 const id = `${vsTestItem.uri}/${workflowName}`
+                ids.push({ id, name: workflowName })
                 const tcase = controller.createTestItem(id, workflowName, vsTestItem.uri)
                 const cushyFlow = new FlowDefinition(this, range, workflowName, thisGeneration)
                 vsTestItemOriginDict.set(tcase, cushyFlow)
@@ -103,6 +106,8 @@ export class CushyFile {
             //     ancestors.push({ item: thead, children: [] })
             // },
         })
+        // logger().info('🔴' + ids.join(','))
+        this.workspace.sendMessage({ type: 'ls', workflowNames: ids, uid: getPayloadID() })
 
         ascend(0) // finish and assign children for all remaining items
     }

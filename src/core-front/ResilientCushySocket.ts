@@ -5,7 +5,7 @@ import type * as ws from 'ws'
 
 type Message = string | Buffer
 
-export class ResilientCushySocket {
+export class ResilientSocketToExtension {
     private url: string
     // private protocols?: string | string[]
     private currentWS?: Maybe<WebSocket>

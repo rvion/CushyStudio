@@ -1,29 +1,38 @@
 import type { ComfyStatus } from '../core-types/ComfyWsPayloads'
-import { makeObservable, observable } from 'mobx'
-import { Schema } from '../core-shared/Schema'
-import { exhaust } from '../utils/ComfyUtils'
-import { Maybe } from '../utils/types'
+
 import { Graph } from '../core-shared/Graph'
+import { Schema } from '../core-shared/Schema'
+import { makeAutoObservable } from 'mobx'
 import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
 import { logger } from '../logger/logger'
-import { ResilientCushySocket } from './ResilientCushySocket'
+import { exhaust } from '../utils/ComfyUtils'
+import { Maybe } from '../utils/types'
+import { ResilientSocketToExtension } from './ResilientCushySocket'
 // import { toaster } from 'rsuite'
 import { nanoid } from 'nanoid'
+import { KnownWorkflow } from '../core-shared/KnownWorkflow'
 
 export class FrontState {
     uid = nanoid()
     received: MessageFromExtensionToWebview[] = []
 
+    flowDirection: 'down' | 'up' = 'down'
+    activeTab: 'home' | 'news' | 'import' | 'about' = 'home'
+    setActiveTab = (tab: 'home' | 'news' | 'import' | 'about') => {
+        this.activeTab = tab
+    }
+
     answerString = (value: string) => this.sendMessageToExtension({ type: 'answer-string', value })
     answerBoolean = (value: boolean) => this.sendMessageToExtension({ type: 'answer-boolean', value })
     gallerySize: number = 100
-    cushySocket: ResilientCushySocket
+    cushySocket: ResilientSocketToExtension
     constructor() {
         // if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
         // console.log('a')
-        this.cushySocket = new ResilientCushySocket({
+        this.cushySocket = new ResilientSocketToExtension({
             url: () => 'ws://localhost:8288',
             onConnectOrReconnect: () => {
+                this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
                 // toaster.push('Connected to CushyStudio')
             },
             onMessage: (msg) => {
@@ -34,14 +43,9 @@ export class FrontState {
         })
         // console.log('b')
 
-        makeObservable(this, {
-            received: observable,
-            imageURLs: observable,
-            status: observable,
-            gallerySize: observable,
-        })
+        makeAutoObservable(this)
         // window.addEventListener('message', this.onMessageFromExtension)
-        this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
+        // this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
     }
 
     graph: Maybe<Graph> = null
@@ -49,12 +53,10 @@ export class FrontState {
     imageURLs: string[] = []
     sid: Maybe<string> = null
     status: Maybe<ComfyStatus> = null
+    knownWorkflows: KnownWorkflow[] = []
 
     /** this is for the UI only; process should be very thin / small */
     onMessageFromExtension = (message: MessageFromExtensionToWebview) => {
-        // const xxx = JSON.stringify(message.data).slice(0, 100)
-        // console.log(xxx)
-        // alert('CAUGHT THE MESSAGE')
         // 1. enqueue the message
         const msg: MessageFromExtensionToWebview =
             typeof message === 'string' //
@@ -91,6 +93,11 @@ export class FrontState {
 
         if (msg.type === 'images') {
             this.imageURLs.push(...msg.uris)
+            return
+        }
+
+        if (msg.type === 'ls') {
+            this.knownWorkflows = msg.workflowNames
             return
         }
 
