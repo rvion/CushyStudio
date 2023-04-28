@@ -34,7 +34,15 @@ and guidance along generation processes. It is cross-platform and open-source.
 <!-- https://stackoverflow.com/questions/4279611/how-to-embed-a-video-into-github-readme-md/4279746#4279746 -->
 <!-- [![video](./public/2023-04-16_15-48-30.mp4)](./public/2023-04-16_15-48-30.mp4) -->
 
+https://user-images.githubusercontent.com/2150990/235221672-8aa28171-0734-4e57-8f9d-ce8b0889f179.mp4
+
 </div>
+
+
+
+
+
+
 
 <!-- ![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=flat&logo=reddit) ![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=flat&logo=twitter) -->
 
