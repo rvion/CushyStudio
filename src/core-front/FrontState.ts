@@ -16,7 +16,7 @@ export class FrontState {
     uid = nanoid()
     received: MessageFromExtensionToWebview[] = []
 
-    flowDirection: 'down' | 'up' = 'down'
+    flowDirection: 'down' | 'up' = 'up'
     activeTab: 'home' | 'news' | 'import' | 'about' = 'home'
     setActiveTab = (tab: 'home' | 'news' | 'import' | 'about') => {
         this.activeTab = tab
