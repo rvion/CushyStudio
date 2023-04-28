@@ -107,7 +107,7 @@ export class CushyFile {
             // },
         })
         // logger().info('🔴' + ids.join(','))
-        this.workspace.sendMessage({ type: 'ls', workflowNames: ids, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'ls', workflowNames: ids })
 
         ascend(0) // finish and assign children for all remaining items
     }

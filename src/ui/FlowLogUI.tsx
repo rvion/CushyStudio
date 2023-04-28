@@ -1,4 +1,3 @@
-import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Button, Panel } from 'rsuite'
 import { useSt } from '../core-front/stContext'
@@ -6,25 +5,13 @@ import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExte
 import { PaintUI } from '../imageEditor/PaintUI'
 import { Execution_askBooleanUI } from './Execution_askBooleanUI'
 import { Execution_askStringUI } from './Execution_askStringUI'
+import { WorkflowPickerUI } from './WorkflowPickerUI'
 
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
     return (
         <>
-            <div>
-                flows:
-                {st.knownWorkflows.map((i) => (
-                    <Button
-                        onClick={() => {
-                            st.sendMessageToExtension({ type: 'run-flow', flowID: i.id })
-                        }}
-                        startIcon={<I.PlayOutline />}
-                        key={i.id}
-                    >
-                        {i.name}
-                    </Button>
-                ))}
-            </div>
+            {/* <WorkflowPickerUI /> */}
             <div
                 style={{
                     display: 'flex',
@@ -64,16 +51,17 @@ export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
                                 dangerouslySetInnerHTML={{ __html: msg.content }}
                             />
                         )}
+                        {/* {msg.type==='executing' && } */}
                         {msg.type === 'ask-string' && <Execution_askStringUI step={msg} />}
                         {msg.type === 'ask-boolean' && <Execution_askBooleanUI step={msg} />}
                         {msg.type === 'print' && <Panel>{msg.message}</Panel>}
                         {msg.type === 'ask-paint' && <PaintUI step={msg} />}
                         {msg.type === 'ask-paint' && <div>{msg.uri}</div>}
                         {msg.type === 'images' && msg.uris.length && (
-                            <div>
+                            <div style={{ textAlign: 'center' }}>
                                 {msg.uris.map((imgUri) => (
                                     <div key={imgUri}>
-                                        <img src={imgUri} />
+                                        <img style={{ margin: '.1rem 0' }} src={imgUri} />
                                     </div>
                                 ))}
                             </div>

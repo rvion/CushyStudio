@@ -5,6 +5,7 @@ import * as vscode from 'vscode'
 import { FlowRun } from './FlowRun'
 import { transpileCode } from './transpiler'
 import { logger } from '../logger/logger'
+import { nanoid } from 'nanoid'
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
@@ -27,7 +28,8 @@ export class FlowDefinition {
     ): Promise<boolean> => {
         const start = Date.now()
 
-        // FrontManager.send({ type: 'schema', schema: this.file.workspace.schema.spec })
+        const flowID = nanoid(6)
+        this.file.workspace.sendMessage({ type: 'flow-start', flowID })
 
         logger().info('❓ running some flow')
         // this.focusedProject = this
@@ -84,9 +86,11 @@ export class FlowDefinition {
             // this.isRunning = false
             const duration = Date.now() - start
             vsTestRun.passed(vsTestItem, duration)
+            this.file.workspace.sendMessage({ type: 'flow-end', flowID, status: 'success' })
             return true
         } catch (error) {
             console.log(error)
+            this.file.workspace.sendMessage({ type: 'flow-end', flowID, status: 'failure' })
             logger().error('🌠', (error as any as Error).name)
             logger().error('🌠', (error as any as Error).message)
             logger().error('🌠', 'RUN FAILURE')

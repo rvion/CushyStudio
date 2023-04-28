@@ -8,6 +8,10 @@ import { exhaust } from '../utils/ComfyUtils'
 
 export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExtensionToWebview_
 export type MessageFromExtensionToWebview_ =
+    // flow start stop
+    | { type: 'flow-start'; flowID: string }
+    | { type: 'flow-end'; flowID: string; status: 'success' | 'failure' }
+
     // user interractions
     | MessageFromExtensionToWebview_askString
     | MessageFromExtensionToWebview_askBoolean
@@ -36,6 +40,8 @@ export type MessageFromExtensionToWebview_askPaint = { type: 'ask-paint'; messag
 // ------------------------------------------------------------------------------------------------------------
 
 export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWebview) => {
+    if (msg.type === 'flow-start') return '🎬'
+    if (msg.type === 'flow-end') return '🏁'
     if (msg.type === 'ask-string') return '🔤'
     if (msg.type === 'ask-boolean') return '🔘'
     if (msg.type === 'ask-paint') return '🎨'

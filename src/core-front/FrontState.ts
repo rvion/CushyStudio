@@ -54,6 +54,8 @@ export class FrontState {
     sid: Maybe<string> = null
     status: Maybe<ComfyStatus> = null
     knownWorkflows: KnownWorkflow[] = []
+    selectedWorkflowID: Maybe<KnownWorkflow['id']> = null
+    runningFlowId: Maybe<string> = null
 
     /** this is for the UI only; process should be very thin / small */
     onMessageFromExtension = (message: MessageFromExtensionToWebview) => {
@@ -73,6 +75,14 @@ export class FrontState {
         if (msg.type === 'ask-paint') return
         if (msg.type === 'show-html') return
         if (msg.type === 'print') return
+        if (msg.type === 'flow-start') {
+            this.runningFlowId = msg.flowID
+            return
+        }
+        if (msg.type === 'flow-end') {
+            this.runningFlowId = null
+            return
+        }
 
         if (msg.type === 'schema') {
             this.schema = new Schema(msg.schema)

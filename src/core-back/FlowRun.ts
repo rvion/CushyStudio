@@ -75,7 +75,7 @@ export class FlowRun implements IFlowExecution {
     /** ask user to input a boolean (true/false) */
     askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => {
         const ask = new ScriptStep_askBoolean(msg, def)
-        this.workspace.sendMessage({ type: 'ask-boolean', message: msg, default: def, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'ask-boolean', message: msg, default: def })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -86,11 +86,11 @@ export class FlowRun implements IFlowExecution {
     }
 
     showHTMLContent = (htmlContent: string) => {
-        this.workspace.sendMessage({ type: 'show-html', content: htmlContent, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'show-html', content: htmlContent })
     }
     showMardownContent = (markdownContent: string) => {
         const htmlContent = marked.parse(markdownContent)
-        this.workspace.sendMessage({ type: 'show-html', content: htmlContent, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'show-html', content: htmlContent })
     }
 
     static VideoCounter = 1
@@ -128,7 +128,7 @@ export class FlowRun implements IFlowExecution {
         if (curr) {
             const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
             const content = `<video controls autoplay loop><source src="${fromPath}" type="video/mp4"></video>`
-            this.workspace.sendMessage({ type: 'show-html', content, uid: getPayloadID() })
+            this.workspace.sendMessage({ type: 'show-html', content })
         } else {
             logger().error(`no front webview found`)
         }
@@ -169,7 +169,7 @@ export class FlowRun implements IFlowExecution {
     /** ask the user to input a string */
     askString = (msg: string, def?: Maybe<string>): Promise<string> => {
         const ask = new ScriptStep_askString(msg, def)
-        this.workspace.sendMessage({ type: 'ask-string', message: msg, default: def, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'ask-string', message: msg, default: def })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -177,7 +177,7 @@ export class FlowRun implements IFlowExecution {
     /** ask the user to paint over an image */
     askPaint = (msg: string, uri: RelativePath): Promise<string> => {
         const ask = new ScriptStep_askPaint(msg)
-        this.workspace.sendMessage({ type: 'ask-paint', message: msg, uri, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'ask-paint', message: msg, uri })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -213,7 +213,7 @@ export class FlowRun implements IFlowExecution {
     print = (message: Printable) => {
         let msg = this.extractString(message)
         logger().info(msg)
-        this.workspace.sendMessage({ type: 'print', message: msg, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'print', message: msg })
     }
 
     /** upload a file from disk to the ComfyUI backend */
@@ -285,9 +285,9 @@ export class FlowRun implements IFlowExecution {
         // console.log('XX2')
         // await sleep(2000)
         const currentJSON = deepCopyNaive(this.graph.json)
-        this.workspace.sendMessage({ type: 'schema', schema: this.workspace.schema.spec, uid: getPayloadID() })
-        this.workspace.sendMessage({ type: 'show-html', content: this.flowSummaryHTML, uid: getPayloadID() })
-        this.workspace.sendMessage({ type: 'prompt', graph: currentJSON, uid: getPayloadID() })
+        this.workspace.sendMessage({ type: 'schema', schema: this.workspace.schema.spec })
+        this.workspace.sendMessage({ type: 'show-html', content: this.flowSummaryHTML })
+        this.workspace.sendMessage({ type: 'prompt', graph: currentJSON })
 
         logger().info('checkpoint:' + JSON.stringify(currentJSON))
         const step = new PromptExecution(this, currentJSON)

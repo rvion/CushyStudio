@@ -38,8 +38,9 @@ import { VSCodeEmojiDecorator } from './decorator'
 import { CushyServer } from './server'
 import { StatusBar } from './statusBar'
 import { CushyClient } from './Client'
-import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
+import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '../core-types/MessageFromExtensionToWebview'
 import { LoggerBack } from '../logger/LoggerBack'
+import { PayloadID } from '../core-shared/PayloadID'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -150,13 +151,14 @@ export class Workspace {
     registerClient = (id: string, client: CushyClient) => this.clients.set(id, client)
     unregisterClient = (id: string) => this.clients.delete(id)
     lastMessages = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
-    sendMessage = (message: MessageFromExtensionToWebview) => {
+    sendMessage = (message_: MessageFromExtensionToWebview_): PayloadID => {
+        const uid = getPayloadID()
+        const message: MessageFromExtensionToWebview = { ...message_, uid }
         const clients = Array.from(this.clients.values())
         this.lastMessages.set(message.type, message)
         console.log(`sending message ${message.type} to ${clients.length} clients`)
-        for (const client of clients) {
-            client.sendMessage(message)
-        }
+        for (const client of clients) client.sendMessage(message)
+        return uid
     }
 
     server!: CushyServer
@@ -360,19 +362,19 @@ export class Workspace {
             })
         })
         logger().info('all images saved: sending to front: ' + uris.join(', '))
-        this.sendMessage({ type: 'images', uris: uris, uid: getPayloadID() })
+        this.sendMessage({ type: 'images', uris: uris })
     }
 
     forwardImagesToFrontV2 = (images: GeneratedImage[]) => {
         const uris = images.map((i) => i.comfyURL)
-        this.sendMessage({ type: 'images', uris, uid: getPayloadID() })
+        this.sendMessage({ type: 'images', uris })
     }
 
     onMessage = (e: WS.MessageEvent) => {
         logger().info(`🧦 received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
-        this.sendMessage({ ...msg, uid: getPayloadID() })
+        this.sendMessage({ ...msg })
 
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid

@@ -7,6 +7,7 @@ import { PreviewListUI } from './PreviewListUI'
 import { FlowLogUI } from './FlowLogUI'
 import { ScrollablePaneUI } from './scrollableArea'
 import * as I from '@rsuite/icons'
+import { WorkflowPickerUI } from './WorkflowPickerUI'
 export const WebviewUI = observer(function WebviewUI_() {
     const st = useSt()
 
@@ -20,12 +21,13 @@ export const WebviewUI = observer(function WebviewUI_() {
                     <Nav.Item disabled eventKey='import'>
                         Import
                     </Nav.Item>
-                    <Nav.Item disabled eventKey='about'>
+                    <WorkflowPickerUI />
+                    {/* <Nav.Item disabled eventKey='about'>
                         About
                     </Nav.Item>
                     <Nav.Item disabled eventKey='about'>
                         About
-                    </Nav.Item>
+                    </Nav.Item> */}
                     {st.activeTab === 'home' ? (
                         <IconButton
                             icon={st.flowDirection === 'down' ? <I.SortDown /> : <I.SortUp />}
