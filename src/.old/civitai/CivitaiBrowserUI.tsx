@@ -5,7 +5,6 @@ import { Image } from '../../ui/Image'
 import { Text } from '../../ui/Text'
 import { useWorkspace } from '../../ui/WorkspaceContext'
 import { Civitai } from './CivitaiSpec'
-// import * as I from '@rsuite/icons'
 
 export const CivitaiUI = observer(function CivitaiUI_() {
     const c = useMemo(() => new Civitai(), [])

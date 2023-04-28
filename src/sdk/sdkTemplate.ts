@@ -385,7 +385,7 @@ declare module "utils/types" {
     };
     export type Maybe<T> = T | null | undefined;
 }
-declare module "fs/BrandedPaths" {
+declare module "utils/fs/BrandedPaths" {
     import type { Branded } from "utils/types";
     export type RelativePath = Branded<string, 'WorkspaceRelativePath'>;
     export type AbsolutePath = Branded<string, 'Absolute'>;
@@ -611,7 +611,7 @@ declare module "sdk/IFlowExecution" {
     import { FlowParam } from "core-shared/ParamDef";
     import type { Printable } from "core-shared/Printable";
     import type { ComfyUploadImageResult } from "core-types/ComfyWsPayloads";
-    import type { AbsolutePath, RelativePath } from "fs/BrandedPaths";
+    import type { AbsolutePath, RelativePath } from "utils/fs/BrandedPaths";
     import type { HTMLContent, MDContent } from "utils/markdown";
     import type { Maybe } from "utils/types";
     import type { Wildcards } from "wildcards/wildcards";
