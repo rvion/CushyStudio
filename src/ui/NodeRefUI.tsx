@@ -1,20 +1,21 @@
-import type { ComfyNodeUID } from '../core-types/NodeUID'
 import type { Graph } from '../core-shared/Graph'
+import type { ComfyNodeUID } from '../core-types/NodeUID'
+import type { Maybe } from '../utils/types'
 
-import { useWorkspace } from './WorkspaceContext'
 import { observer } from 'mobx-react-lite'
+import { useSt } from '../core-front/stContext'
 import { comfyColors } from '../core-shared/Colors'
 
-export const NodeRefUI = observer(function NodeRefUI_(p: { nodeUID: ComfyNodeUID }) {
-    const st = useWorkspace()
+export const NodeRefUI = observer(function NodeRefUI_(p: { nodeUID: ComfyNodeUID; graph: Graph }) {
+    // const st = useSt()
     // 1. ensure project exists
 
     // 2. ensure graph exists
-    const graph: Graph | undefined = st.activeRun?.graph
-    if (graph == null) return <>no execution yet</>
+    // const graph: Maybe<Graph> = st.graph
+    // if (graph == null) return <>no execution yet</>
 
     // 3. ensure node exists
-    const node = graph.nodesIndex.get(p.nodeUID)
+    const node = p.graph.nodesIndex.get(p.nodeUID)
     if (node == null) return <>❌ error</>
 
     const category = node?.$schema.category

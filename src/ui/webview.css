@@ -28,3 +28,32 @@ html, body, #root {
 .content-center {justify-content: center; }
 .self-stretch { align-self: stretch; }
 .self-start { align-self: flex-start; }
+.darker { filter: brightness(.9); }
+.pointer { cursor: pointer; }
+
+
+/* Property Panel ---------------------------------------- */
+.prop {border-top: 1px solid #afafaf;}
+.propName { width: 6rem; text-align: right; margin-right: 1rem; }
+.propValue { font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
+.nodeRef{
+    border-radius: 100%;
+    line-height:1.3rem;
+    text-align: center;
+    width: 1.3rem;
+    height: 1.3rem;
+    border: 1px solid white
+}
+
+
+/* --------- */
+body {
+
+    --loaders: #d0eaa0;
+    --latent: #b4b4e7;
+    --latent_transform: #a4a4d7;
+    --conditioning: #d29e9e;
+    --conditioning_style_model: #acdaac;
+    --sampling: #ddcdb0;
+    --image: pink;
+}

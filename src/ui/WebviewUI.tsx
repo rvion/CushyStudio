@@ -36,7 +36,6 @@ export const WebviewUI = observer(function WebviewUI_() {
                         />
                     ) : null}
                 </Nav>
-                <PreviewListUI />
             </div>
             {/* BODY */}
             <ScrollablePaneUI>
@@ -47,14 +46,15 @@ export const WebviewUI = observer(function WebviewUI_() {
                 )}
             </ScrollablePaneUI>
             {/* FOOTER */}
-            <div>
-                <Button
+            <div style={{ background: 'black' }}>
+                <PreviewListUI />
+                {/* <Button
                     onClick={() => {
                         st.sendMessageToExtension({ type: 'say-hello', message: 'Hey there partner! 🤠' })
                     }}
                 >
                     test!
-                </Button>
+                </Button> */}
             </div>
         </div>
     )

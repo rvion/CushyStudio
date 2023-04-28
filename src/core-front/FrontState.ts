@@ -57,6 +57,9 @@ export class FrontState {
     selectedWorkflowID: Maybe<KnownWorkflow['id']> = null
     runningFlowId: Maybe<string> = null
 
+    // runs: { flowRunId: string; graph: Graph }[]
+    XXXX = new Map<MessageFromExtensionToWebview['uid'], Graph>()
+
     /** this is for the UI only; process should be very thin / small */
     onMessageFromExtension = (message: MessageFromExtensionToWebview) => {
         // 1. enqueue the message
@@ -122,6 +125,7 @@ export class FrontState {
 
         if (msg.type === 'executing') {
             if (graph == null) throw new Error('missing graph')
+            this.XXXX.set(msg.uid, graph)
             if (msg.data.node == null) this.graph = null // done
             logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
             return graph.onExecuting(msg)
