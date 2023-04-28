@@ -1,8 +1,8 @@
 import type { Workspace } from './Workspace'
 
 import * as vscode from 'vscode'
-import { getNonce } from '../fs/getNonce'
-import { getUri } from '../fs/getUri'
+import { getNonce } from '../utils/fs/getNonce'
+import { getUri } from '../utils/fs/getUri'
 
 /**
  * This class manages the state and behavior of HelloWorld webview panels.

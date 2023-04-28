@@ -1,4 +1,4 @@
-import type { Branded } from '../utils/types'
+import type { Branded } from '../types'
 
 export type RelativePath = Branded<string, 'WorkspaceRelativePath'>
 export type AbsolutePath = Branded<string, 'Absolute'>

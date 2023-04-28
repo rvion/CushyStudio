@@ -3,7 +3,7 @@ import type { Maybe } from '../utils/types'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { RelativePath } from '../fs/BrandedPaths'
+import { RelativePath } from '../utils/fs/BrandedPaths'
 
 export class ScriptStep_askBoolean implements ScriptStep_Iface<boolean> {
     uid = nanoid()
@@ -63,9 +63,8 @@ export class ScriptStep_askPaint implements ScriptStep_Iface<string> {
     name = 'ask-paint'
     constructor(
         //
-        public msg: string,
-    ) // public image: RelativePath,
-    {
+        public msg: string, // public image: RelativePath,
+    ) {
         makeAutoObservable(this)
     }
     locked: boolean = false

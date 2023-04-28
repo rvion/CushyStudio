@@ -1,5 +1,5 @@
 import type { Workspace } from '../core-back/Workspace'
-import { asRelativePath } from '../fs/pathUtils'
+import { asRelativePath } from '../utils/fs/pathUtils'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 
 export class Template {
