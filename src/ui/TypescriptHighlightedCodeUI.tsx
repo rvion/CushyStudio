@@ -1,17 +1,14 @@
 import 'highlight.js/styles/stackoverflow-light.css'
 
-import React from 'react'
-
 import hljs from 'highlight.js/lib/core'
 import typescript from 'highlight.js/lib/languages/typescript'
-// languages
-import xml from 'highlight.js/lib/languages/xml'
+// import xml from 'highlight.js/lib/languages/xml'
 
-import { cls } from './cls'
 import { Panel } from 'rsuite'
+// import { cls } from './cls'
 
 hljs.registerLanguage('typescript', typescript)
-hljs.registerLanguage('xml', xml)
+// hljs.registerLanguage('xml', xml)
 
 export const TypescriptHighlightedCodeUI = (p: { code: string }) => {
     return (
@@ -31,24 +28,24 @@ export const TypescriptHighlightedCodeUI = (p: { code: string }) => {
     )
 }
 
-export const HTMLtHighlightedCodeUI = (p: { code: string; className?: string }) => {
-    return (
-        <code
-            className={cls('language-xml', p.className)}
-            style={{
-                fontFamily: 'monospace',
-                fontSize: '1rem',
-                whiteSpace: 'pre-wrap',
-                display: 'block',
-                padding: '.5rem',
-            }}
-            ref={(e) => {
-                if (e == null) return
-                if (!(e instanceof HTMLElement)) return
-                hljs.highlightElement(e)
-            }}
-        >
-            {p.code}
-        </code>
-    )
-}
+// export const HTMLtHighlightedCodeUI = (p: { code: string; className?: string }) => {
+//     return (
+//         <code
+//             className={cls('language-xml', p.className)}
+//             style={{
+//                 fontFamily: 'monospace',
+//                 fontSize: '1rem',
+//                 whiteSpace: 'pre-wrap',
+//                 display: 'block',
+//                 padding: '.5rem',
+//             }}
+//             ref={(e) => {
+//                 if (e == null) return
+//                 if (!(e instanceof HTMLElement)) return
+//                 hljs.highlightElement(e)
+//             }}
+//         >
+//             {p.code}
+//         </code>
+//     )
+// }
