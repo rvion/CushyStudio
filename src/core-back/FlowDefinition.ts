@@ -83,6 +83,7 @@ export class FlowDefinition {
             const good = workflows.find((i) => i.name === this.flowName)
             if (good == null) throw new Error('no workflow found')
             const presets = new Presets(graph as any, execution)
+            this.file.workspace.sendMessage({ type: 'flow-code', flowID, code: good.fn.toString() })
             await good.fn({ graph: graph as any, flow: execution, presets })
             console.log('[✅] RUN SUCCESS')
             // this.isRunning = false

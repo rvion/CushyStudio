@@ -64,3 +64,8 @@ body {
 .react-transform-wrapper {
     max-width: 100%;
 }
+
+.hljs{
+    color: unset !important;
+    background: unset !important;
+}

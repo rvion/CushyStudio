@@ -8,6 +8,7 @@ import { Execution_askStringUI } from './Execution_askStringUI'
 import { ShowUpdatingNodeUI } from './ShowUpdatingNodeUI'
 import { FlowGeneratedImagesUI } from './FlowGeneratedImagesUI'
 import { MsgShowHTMLUI } from './MsgShowHTMLUI'
+import { HTMLtHighlightedCodeUI, TypescriptHighlightedCodeUI } from './TypescriptHighlightedCodeUI'
 
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
@@ -42,6 +43,7 @@ export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
                                 </div>
                             )}
                             {msg.type === 'show-html' && <MsgShowHTMLUI msg={msg} />}
+                            {msg.type === 'flow-code' && <TypescriptHighlightedCodeUI code={msg.code} />}
                             {msg.type === 'flow-end' && <Divider />}
                             {msg.type === 'executing' && <ShowUpdatingNodeUI msg={msg} />}
                             {msg.type === 'ask-string' && <Execution_askStringUI step={msg} />}

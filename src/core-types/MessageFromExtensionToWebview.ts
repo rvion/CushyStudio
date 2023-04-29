@@ -10,6 +10,7 @@ export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExte
 export type MessageFromExtensionToWebview_ =
     // flow start stop
     | { type: 'flow-start'; flowID: string }
+    | { type: 'flow-code'; flowID: string; code: string }
     | { type: 'flow-end'; flowID: string; status: 'success' | 'failure' }
 
     // user interractions
@@ -41,6 +42,7 @@ export type MessageFromExtensionToWebview_askPaint = { type: 'ask-paint'; messag
 
 export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWebview) => {
     if (msg.type === 'flow-start') return '🎬'
+    if (msg.type === 'flow-code') return '📝'
     if (msg.type === 'flow-end') return '🏁'
     if (msg.type === 'ask-string') return '🔤'
     if (msg.type === 'ask-boolean') return '🔘'

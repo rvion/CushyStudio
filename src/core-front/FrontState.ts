@@ -75,6 +75,7 @@ export class FrontState {
         this.received.push(msg)
 
         // 2. process the info
+        if (msg.type === 'flow-code') return
         if (msg.type === 'ask-boolean') return
         if (msg.type === 'ask-string') return
         if (msg.type === 'ask-paint') return
