@@ -65,6 +65,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
     // const [folded, setFolded] = useState(p.folded ?? false)
     return (
         <Panel
+            style={{ position: 'relative' }}
             bordered
             shaded
             //
@@ -84,43 +85,34 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                     }}
                 ></div>
             ) : null} */}
-            <div
-                // onClick={() => setFolded(!folded)}
-                className='row gap darker pointer'
-                style={{ padding: '0.2rem' }}
-            >
-                {/* <div
-                    style={{
-                        backgroundColor: node.color,
-                        width: '1rem',
-                        height: '1rem',
-                    }}
-                ></div> */}
-                <h4 className='row items-center gap'>
-                    <NodeRefUI nodeUID={uid} graph={graph} />
-                    {name}
-                </h4>
-                {/* <div className='grow'></div> */}
-                {/* {node.statusEmoji} */}
-                {/* {folded ? <I.ArrowDownLine /> : <I.ArrowRightLine />} */}
-            </div>
-            {/* {folded ? null : ( */}
-            <Progress.Line
-                status={node.status === 'done' ? 'success' : 'active'}
-                percent={node.status === 'done' ? 100 : ((node.progress?.value ?? 0) / (node.progress?.max || 1)) * 100}
-                showInfo={false}
-            />
-            <div>
-                {schema.inputs.map((input) => {
-                    let val = node.json.inputs[input.name]
-                    if (Array.isArray(val)) val = <NodeRefUI nodeUID={val[0]} graph={graph} />
-                    return (
-                        <div key={input.name} className='prop row'>
-                            <div className='propName'>{input.name}</div>
-                            <div className='propValue'>{val}</div>
-                        </div>
-                    )
-                })}
+            <div className='row'>
+                <Progress.Line
+                    vertical
+                    strokeWidth={12}
+                    style={{ maxWidth: '2rem' }}
+                    status={node.status === 'done' ? 'success' : 'active'}
+                    percent={node.status === 'done' ? 100 : ((node.progress?.value ?? 0) / (node.progress?.max || 1)) * 100}
+                    // showInfo={false}
+                />
+                {/* {folded ? null : ( */}
+                <div>
+                    <div className='row gap darker pointer' style={{ padding: '0.2rem' }}>
+                        <h4 className='row items-center gap'>
+                            <NodeRefUI nodeUID={uid} graph={graph} />
+                            {name}
+                        </h4>
+                    </div>
+                    {schema.inputs.map((input) => {
+                        let val = node.json.inputs[input.name]
+                        if (Array.isArray(val)) val = <NodeRefUI nodeUID={val[0]} graph={graph} />
+                        return (
+                            <div key={input.name} className='prop row'>
+                                <div className='propName'>{input.name}</div>
+                                <div className='propValue'>{val}</div>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
             {/* )} */}
             {p.showArtifacts ? (

@@ -34,7 +34,7 @@ html, body, #root {
 
 
 /* Property Panel ---------------------------------------- */
-.prop {border-top: 1px solid #afafaf;}
+.prop {border-top: 1px solid #efefef;}
 .propName { width: 6rem; text-align: right; margin-right: 1rem; }
 .propValue { font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 .nodeRef{
@@ -62,7 +62,8 @@ body {
     --yarl__color_backdrop: white;
 
     /* --yarl__navigation_button_padding: .1rem; */
-    --yarl__thumbnails_container_padding: .1rem;
+    /* --yarl__thumbnails_container_padding: .1rem; */
+    /* --yarl__carousel_padding_px: 0; */
 }
 
 .rs-panel {background: white; }
