@@ -8,7 +8,6 @@ export const PGalleryUI = observer(function PGalleryUI_(p: {}) {
 
     return (
         <div>
-            <h1>Hello</h1>
             <div className='row'>
                 <label>Size</label>
                 <div style={{ width: '10rem' }}>
