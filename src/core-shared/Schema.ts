@@ -28,6 +28,7 @@ export class Schema {
             enumNameInComfy: string
             enumNameInCushy: EnumName
             values: EnumValue[]
+            aliases: string[]
         }
     >()
     nodes: ComfyNodeSchema[] = []
@@ -128,13 +129,17 @@ export class Schema {
                     }
                     const hash = enumValues.sort().join('|')
                     const similarEnum = this.knownEnums.get(hash)
-                    if (similarEnum != null) inputTypeNameInCushy = similarEnum.enumNameInCushy
-                    else {
-                        inputTypeNameInCushy = `Enum_${nodeNameInCushy}_${inputName}`
+                    const uniqueEnumName = `Enum_${nodeNameInCushy}_${inputName}`
+                    if (similarEnum != null) {
+                        inputTypeNameInCushy = similarEnum.enumNameInCushy
+                        similarEnum.aliases.push(uniqueEnumName)
+                    } else {
+                        inputTypeNameInCushy = uniqueEnumName
                         this.knownEnums.set(hash, {
                             enumNameInCushy: normalizeJSIdentifier(inputTypeNameInCushy),
                             enumNameInComfy: inputName,
                             values: enumValues,
+                            aliases: [],
                         })
                     }
                 } else {
@@ -242,6 +247,11 @@ export class Schema {
         for (const e of this.knownEnums.values()) {
             if (e.values.length > 0) {
                 p(`export type ${e.enumNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
+                if (e.aliases.length > 0) {
+                    for (const alias of e.aliases) {
+                        p(`export type ${alias} = ${e.enumNameInCushy}`)
+                    }
+                }
             } else {
                 p(`export type ${e.enumNameInCushy} = never`)
             }
