@@ -14,7 +14,11 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "noEmit": true,
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "LATER": ["src/core-back/LATER.ts"]
+        }
     },
     "include": ["src"],
     "exclude": [

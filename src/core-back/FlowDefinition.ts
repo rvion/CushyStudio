@@ -6,6 +6,7 @@ import { FlowRun } from './FlowRun'
 import { transpileCode } from './transpiler'
 import { logger } from '../logger/logger'
 import { nanoid } from 'nanoid'
+import { WorkflowBuilderFn } from '../core-shared/WorkflowFn'
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
@@ -70,9 +71,8 @@ export class FlowDefinition {
         // graph.runningMode = mode
         // this.MAIN = graph
 
-        type WorkflowFn = (p: { graph: Graph; flow: FlowRun }) => Promise<any>
-        const workflows: { name: string; fn: WorkflowFn }[] = []
-        const WORKFLOW = (name: string, fn: (p: { graph: Graph; flow: FlowRun }) => Promise<any>): void => {
+        const workflows: { name: string; fn: WorkflowBuilderFn }[] = []
+        const WORKFLOW = (name: string, fn: WorkflowBuilderFn): void => {
             logger().info(`found WORKFLOW ${name}`)
             workflows.push({ name, fn })
         }

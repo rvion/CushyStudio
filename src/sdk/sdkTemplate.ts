@@ -360,7 +360,7 @@ declare module "core-shared/Graph" {
         };
     }
 }
-declare module "core-back/LATER" {
+declare module "core-back/LATER.foo" {
     export type LATER<T> = any;
 }
 declare module "core-shared/ParamDef" {
@@ -685,9 +685,22 @@ declare module "sdk/IFlowExecution" {
         get webviewURI(): string;
     }
 }
+declare module "core-shared/WorkflowFn" {
+    import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
+    import type { Graph } from "core-shared/Graph";
+    import type { Workflow } from "core-shared/Workflow";
+    import type { Presets } from "core-back/presets";
+    export type WorkflowType = (title: string, builder: WorkflowBuilderFn) => Workflow;
+    export type WorkflowBuilderFn = (p: {
+        graph: CUSHY_RUNTIME.ComfySetup & Graph;
+        flow: import("sdk/IFlowExecution").IFlowExecution;
+        presets: Presets;
+    }) => Promise<any>;
+}
 declare module "sdk/sdkEntrypoint" {
     export type { Workflow } from "core-shared/Workflow";
     export type { Graph } from "core-shared/Graph";
     export type { IFlowExecution } from "sdk/IFlowExecution";
+    export type { WorkflowType } from "core-shared/WorkflowFn";
 }
 `

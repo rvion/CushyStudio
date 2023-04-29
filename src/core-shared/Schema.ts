@@ -197,21 +197,21 @@ export class Schema {
         p(`declare module "CUSHY_RUNTIME" {`)
         p(`    import type { ComfyNode } from 'core-shared/Node'`)
         p(`    import type { Slot } from 'core-shared/Slot'`)
-        p(`    import type { Graph } from 'core-shared/Graph'`)
-        p(`    import type { Workflow } from 'core-shared/Workflow'`)
+        // p(`    import type { Graph } from 'core-shared/Graph'`)
+        // p(`    import type { Workflow } from 'core-shared/Workflow'`)
         p(`    import type { ComfyNodeSchemaJSON } from 'core-types/ComfySchemaJSON'`)
         p(`    import type { ComfyNodeUID } from 'core-types/NodeUID'`)
-        p(`    import type { IFlowExecution } from "sdk/IFlowExecution"`)
+        // p(`    import type { IFlowExecution } from "sdk/IFlowExecution"`)
         p(``)
-        p(`    export const WORKFLOW: (`)
-        p(`        //`)
-        p(`        title: string,`)
-        p(`        builder: (p:{`)
-        p(`            //`)
-        p(`            graph: ComfySetup & Graph,`)
-        p(`            flow: IFlowExecution,`)
-        p(`        }) => void,`)
-        p(`    ) => Workflow`)
+        // p(`    export const WORKFLOW: (`)
+        // p(`        //`)
+        // p(`        title: string,`)
+        // p(`        builder: (p:{`)
+        // p(`            //`)
+        // p(`            graph: ComfySetup & Graph,`)
+        // p(`            flow: IFlowExecution,`)
+        // p(`        }) => void,`)
+        // p(`    ) => Workflow`)
         // p(`}`) 🔴
 
         p(`\n// Entrypoint --------------------------`)
@@ -289,7 +289,7 @@ export class Schema {
 
         // p(`declare const WORKFLOW: (builder: (graph: ComfyGraph) => void) => void`)
         // b.writeTS('./src/core/Comfy.ts')
-        p(`declare const WORKFLOW: typeof import("CUSHY_RUNTIME").WORKFLOW`)
+        p(`declare const WORKFLOW: import("core-shared/WorkflowFn").WorkflowType`)
         return b.content
     }
 

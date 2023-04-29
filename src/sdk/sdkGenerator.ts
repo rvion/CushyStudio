@@ -3,6 +3,7 @@ import { readFileSync, writeFileSync } from 'fs'
 import { sdkRewriteRules } from './sdkRewriteRules'
 
 execSync(`tsc -p tsconfig.decl.json`, { stdio: 'inherit' })
+// execSync(`node src/sdk/tsc-wrapper.cjs`, { stdio: 'inherit' })
 // tsc -p tsconfig.decl.json --listFiles --noEmit
 const originalDefPath = 'dts/Comfy.d.ts'
 
@@ -13,7 +14,7 @@ let out: string = originalDefContent
 out = out.replace('/// <reference types="react" />', '')
 
 for (const [from, to] of sdkRewriteRules) {
-    out = out.replace(from, to)
+    out = out.replaceAll(from, to)
 }
 const ref = `/// <reference path="nodes.d.ts" />`
 out = `export const sdkTemplate: string = \`${ref}\n\n${out}\``

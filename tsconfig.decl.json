@@ -16,7 +16,11 @@
         "declaration": true,
         "emitDeclarationOnly": true,
         "outFile": "dts/Comfy.d.ts",
-        "jsx": "react-jsx"
+        "jsx": "react-jsx",
+        "baseUrl": ".",
+        "paths": {
+            "LATER": ["src/core-back/LATER.foo.ts"]
+        }
     },
     "include": ["src/sdk/sdkEntrypoint.ts"]
     // "exclude": ["tsconfig.node.json"]

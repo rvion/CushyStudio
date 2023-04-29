@@ -44,6 +44,8 @@ export const sdkRewriteRules = [
     [`cytoscape.Core`, 'any'],
 
     // later
-    ['import type { LATER } from "core-back/LATER";', `import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'`],
+    ['import type { LATER } from "core-back/LATER.foo";', `import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'`],
     [`LATER<'LoadImage'>`, 'CUSHY_RUNTIME.LoadImage'],
+    [`LATER<'FlowRun'>`, 'import("sdk/IFlowExecution").IFlowExecution'],
+    [`LATER<'ComfySetup'>`, 'CUSHY_RUNTIME.ComfySetup'],
 ]

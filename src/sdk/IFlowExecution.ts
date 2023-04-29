@@ -1,4 +1,4 @@
-import type { LATER } from '../core-back/LATER'
+import type { LATER } from 'LATER'
 import { FlowParam } from '../core-shared/ParamDef'
 import type { Printable } from '../core-shared/Printable'
 import type { ComfyUploadImageResult } from '../core-types/ComfyWsPayloads'
