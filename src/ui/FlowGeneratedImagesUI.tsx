@@ -17,8 +17,21 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
     if (msg.uris.length === 0) return <>no images</>
     if (st.showImageAs === 'list') {
         return (
-            <Panel shaded style={{ width: '100%' }}>
+            <Panel
+                onScrollCapture={(e: any) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                }}
+                onScroll={(e: any) => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                }}
+                shaded
+                style={{ width: '100%' }}
+            >
+                {/* https://github.com/igordanchenko/yet-another-react-lightbox */}
                 <Lightbox
+                    styles={{ container: { minHeight: '20rem' } }}
                     zoom={{ scrollToZoom: true, maxZoomPixelRatio: 10 }}
                     thumbnails={{ position: 'start', vignette: false, showToggle: true }}
                     plugins={[Inline, Zoom, Thumbnails]}

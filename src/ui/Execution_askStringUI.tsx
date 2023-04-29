@@ -2,7 +2,7 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useCallback } from 'react'
 import { MessageFromExtensionToWebview_askString } from '../core-types/MessageFromExtensionToWebview'
 import { useSt } from '../core-front/stContext'
-import { Panel } from 'rsuite'
+import { Button, Input, Panel } from 'rsuite'
 
 export const Execution_askStringUI = observer(function Execution_askUI_(p: { step: MessageFromExtensionToWebview_askString }) {
     const st = useSt()
@@ -23,7 +23,7 @@ export const Execution_askStringUI = observer(function Execution_askUI_(p: { ste
     return (
         <Panel>
             <div>{p.step.message}</div>
-            <input
+            <Input
                 //
                 autoFocus
                 onKeyDown={(ev) => {
@@ -31,9 +31,13 @@ export const Execution_askStringUI = observer(function Execution_askUI_(p: { ste
                 }}
                 disabled={uiSt.locked}
                 value={uiSt.value}
-                onChange={(ev) => (uiSt.value = ev.target.value)}
+                onChange={(next) => (uiSt.value = next)}
             />
-            {uiSt.locked ? null : <button onClick={submit}>OK</button>}
+            {uiSt.locked ? null : (
+                <Button appearance='primary' onClick={submit}>
+                    OK
+                </Button>
+            )}
         </Panel>
     )
 })

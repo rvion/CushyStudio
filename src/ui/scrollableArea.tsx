@@ -15,7 +15,7 @@ export const ScrollablePaneUI = observer(function ScrollablePaneUI_(p: { childre
     })
     return (
         <>
-            {uiSt.follow ? '🟢' : '🔴'}
+            {/* {uiSt.follow ? '🟢' : '🔴'} */}
             <div
                 ref={ref}
                 onScroll={(e) => {

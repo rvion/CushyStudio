@@ -11,12 +11,15 @@ export const ShowUpdatingNodeUI = observer(function FooBarUI_(p: { msg: MessageF
 
     // get graph
     const graph = st.XXXX.get(p.msg.uid)
-    if (graph == null) return <>No graph</>
+    if (graph == null) return <>❓ No graph</>
 
     // get node
     const nodeID = msg.data.node
     const node = graph.nodesIndex.get(nodeID)
-    if (node == null) return <>no node</>
+    if (node == null) {
+        return null
+        // return <>no node</>
+    }
 
     // show the node
     return <ComfyNodeUI node={node} />

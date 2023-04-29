@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Divider, Panel } from 'rsuite'
+import { Divider, Message, Notification, Panel } from 'rsuite'
 import { useSt } from '../core-front/stContext'
 import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
 import { PaintUI } from '../imageEditor/PaintUI'
@@ -41,7 +41,18 @@ export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
                             )}
                             {msg.type === 'show-html' && <MsgShowHTMLUI msg={msg} />}
                             {msg.type === 'flow-code' && <TypescriptHighlightedCodeUI code={msg.code} />}
-                            {/* {msg.type === 'flow-end' && <Divider />} */}
+                            {msg.type === 'flow-start' && <Divider />}
+                            {msg.type === 'flow-end' && (
+                                <>
+                                    <Panel shaded>
+                                        <Message
+                                            showIcon
+                                            type={msg.status === 'failure' ? 'error' : 'success'}
+                                            header={msg.status}
+                                        />
+                                    </Panel>
+                                </>
+                            )}
                             {msg.type === 'executing' && <ShowUpdatingNodeUI msg={msg} />}
                             {msg.type === 'ask-string' && <Execution_askStringUI step={msg} />}
                             {msg.type === 'ask-boolean' && <Execution_askBooleanUI step={msg} />}

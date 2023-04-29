@@ -14,7 +14,7 @@ import { useSt } from '../core-front/stContext'
 //     if (graph == null) return <>no execution yet</>
 //     const uiSt = useLocalObservable(() => ({ seeAll: false }))
 //     const nodes = uiSt.seeAll ? graph.nodes : graph.nodes.filter((f) => f.isExecuting)
-//     // const layout = graph.workspace.layout 🔴
+//     // const layout = graph.workspace.layout
 //     return (
 //         <div className='col gap'>
 //             <div className='row space-between'>
@@ -89,7 +89,6 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                 <Progress.Line
                     vertical
                     strokeWidth={12}
-                    style={{ maxWidth: '2rem' }}
                     status={node.status === 'done' ? 'success' : 'active'}
                     percent={node.status === 'done' ? 100 : ((node.progress?.value ?? 0) / (node.progress?.max || 1)) * 100}
                     // showInfo={false}
