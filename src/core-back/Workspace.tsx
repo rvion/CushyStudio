@@ -285,27 +285,12 @@ export class Workspace {
     }
 
     openWebview = async (): Promise<void> => {
-        const choice = await vscode.window.showInformationMessage(
-            'No UI is opened. Open one?',
-            'embeded UI',
-            'web dev UI',
-            'web build UI',
-        )
-        if (choice === 'embeded UI') {
-            FrontWebview.createOrReveal(this)
-            return
-        }
+        const choice = await vscode.window.showInformationMessage('No UI is opened. Open one?', 'embeded UI', 'web build UI')
+        if (choice === 'embeded UI') return FrontWebview.createOrReveal(this)
+
         // const { shell } = require('electron')
         // https://stackoverflow.com/questions/34205481/how-to-open-browser-from-visual-studio-code-api
-        if (choice === 'web dev UI') {
-            vscode.env.openExternal(vscode.Uri.parse('http://127.0.0.1:5173/'))
-            return
-        }
-
-        if (choice === 'web build UI') {
-            vscode.env.openExternal(vscode.Uri.parse('http://127.0.0.1:8288/'))
-            return
-        }
+        if (choice === 'web build UI') return void vscode.env.openExternal(vscode.Uri.parse('http://127.0.0.1:8288/'))
     }
 
     importCurrentFile = async (opts: { preserveId: boolean }) => {
