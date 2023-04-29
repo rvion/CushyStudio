@@ -10,22 +10,18 @@ import { FlowGeneratedImagesUI } from './FlowGeneratedImagesUI'
 
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
+    const flexDirection = st.flowDirection === 'down' ? 'column' : 'column-reverse'
     return (
         <>
-            <div
-                style={{
-                    display: 'flex',
-                    padding: '1rem',
-                    flexDirection:
-                        st.flowDirection === 'down' //
-                            ? 'column'
-                            : 'column-reverse',
-                }}
-            >
+            <div style={{ display: 'flex', gap: '.2rem', flexDirection: flexDirection }}>
                 {st.received.map((msg) => {
                     // if (msg.type === 'progress') return null
                     return (
-                        <div key={msg.uid} style={{ borderBottom: '1px solid lightgray' }}>
+                        <div
+                            //
+                            key={msg.uid}
+                            // style={{ borderBottom: '1px solid lightgray' }}
+                        >
                             {st.showAllMessageReceived && (
                                 <div style={{ display: 'flex' }} id={msg.uid.toString()}>
                                     <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>

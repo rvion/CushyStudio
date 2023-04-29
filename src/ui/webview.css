@@ -3,6 +3,7 @@ button.primary {
 }
 html, body, #root {
     height: 100%;
+    background: #f6f6f6;
 }
 
 .scroll { overflow:auto; }
@@ -48,7 +49,6 @@ html, body, #root {
 
 /* --------- */
 body {
-
     --loaders: #d0eaa0;
     --latent: #b4b4e7;
     --latent_transform: #a4a4d7;
@@ -57,3 +57,6 @@ body {
     --sampling: #ddcdb0;
     --image: pink;
 }
+
+.rs-panel {background: white; }
+.rs-panel-body {padding: 10px}

@@ -698,6 +698,22 @@ declare module "core-back/presets" {
             ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
             positive: string;
             negative: string;
+            /** width, defaults to 768 */
+            width?: number;
+            /** heiht, defaults to 512 */
+            height?: number;
+            /** defaults to 1 */
+            batchSize?: number;
+            /** defaults to 30 */
+            steps?: number;
+            /** defaults to 10 */
+            cfg?: number;
+            /** defaults to 'euler_ancestral' */
+            sampler_name?: string;
+            /** defaults to 'karras' */
+            scheduler?: string;
+            /** defaults to 1 */
+            denoise?: string;
         }) => Promise<{
             ckpt: any;
             latent: any;
