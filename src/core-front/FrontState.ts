@@ -8,7 +8,6 @@ import { logger } from '../logger/logger'
 import { exhaust } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
 import { ResilientSocketToExtension } from './ResilientCushySocket'
-// import { toaster } from 'rsuite'
 import { nanoid } from 'nanoid'
 import { KnownWorkflow } from '../core-shared/KnownWorkflow'
 
@@ -17,7 +16,7 @@ export class FrontState {
     received: MessageFromExtensionToWebview[] = []
 
     flowDirection: 'down' | 'up' = 'up'
-    showAllMessageReceived = false
+    showAllMessageReceived: boolean = false
     showImageAs: 'grid' | 'list' | 'carousel' = 'carousel'
     activeTab: 'home' | 'news' | 'import' | 'about' = 'home'
     setActiveTab = (tab: 'home' | 'news' | 'import' | 'about') => {

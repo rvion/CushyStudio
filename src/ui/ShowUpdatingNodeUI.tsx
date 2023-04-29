@@ -15,7 +15,7 @@ export const ShowUpdatingNodeUI = observer(function FooBarUI_(p: { msg: MessageF
 
     // get node
     const nodeID = msg.data.node
-    const node = graph.nodesIndex.get(msg.data.node)
+    const node = graph.nodesIndex.get(nodeID)
     if (node == null) return <>no node</>
 
     // show the node
