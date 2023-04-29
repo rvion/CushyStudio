@@ -695,6 +695,7 @@ declare module "core-back/presets" {
         flow: IFlowExecution;
         constructor(graph: Graph & CUSHY_RUNTIME.ComfySetup, flow: IFlowExecution);
         basicImageGeneration: (p: {
+            ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
             positive: string;
             negative: string;
         }) => Promise<{

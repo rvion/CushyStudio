@@ -47,5 +47,6 @@ export const sdkRewriteRules = [
     ['import type { LATER } from "core-back/LATER.foo";', `import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'`],
     [`LATER<'LoadImage'>`, 'CUSHY_RUNTIME.LoadImage'],
     [`LATER<'FlowRun'>`, 'import("sdk/IFlowExecution").IFlowExecution'],
+    [`LATER<'Enum_CheckpointLoader_ckpt_name'>`, 'CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name'],
     [`LATER<'ComfySetup'>`, 'CUSHY_RUNTIME.ComfySetup'],
 ]
