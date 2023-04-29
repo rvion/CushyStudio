@@ -45,3 +45,15 @@ git clone https://github.com/guoyk93/yk-node-suite-comfyui
 mkdir JustNetralExtras
 cp /Users/loco/Desktop/clipseg.py JustNetralExtras/clipseg.py
 cp /Users/loco/Desktop/DeglazeImage.py JustNetralExtras/DeglazeImage.py
+
+---
+
+from wyrdewyn:
+
+> awww, I can't afford spine
+
+> I think the only free one left is dragonbones. Not sure though, haven't looked in the 2d deformation stuff lately.
+
+> I was last looking at inochi2d https://github.com/Inochi2D/inochi2d
+
+> https://lunafoxgirlvt.itch.io/inochi-creator
