@@ -18,7 +18,8 @@ and guidance along generation processes. It is cross-platform and open-source.
 |
 [Features](#features) |
 [Getting started](#getting-started) |
-[Installation](#installation) |
+[🗂️ Installation](#🗂️-Installation) |
+[🎉 Getting Started](#-Getting-Started) |
 [Configuration](#configuration) |
 [Integrations](#third-party-integrations) |
 [Developpment](#developpment) |
@@ -117,6 +118,20 @@ WORKFLOW('demo-1', async ({ graph, flow }) => {
 ## 💡 Key Concepts
 
 -   **WORKFLOW**: a workflow is a script that define a self-contained mini-application, with persistent config, controls, interractive widgets, etc. If you're a character artist, you can probably automate your wokflow with a few scripts and a few interractive widgets.
+
+-   Workflows gives you access to various `APIs` you can use to build your mini-app
+
+```ts
+WORKFLOW('demo-1', async ({ graph, flow }) => {
+    // ...
+})
+WORKFLOW('demo-1', async ({ preset }) => {
+    // ...
+})
+WORKFLOW('demo-1', async ({ preset, openpose, stage }) => {
+    // ...
+})
+```
 
 ## 🛟 Intellisense, Validation, Type safety
 
@@ -219,18 +234,18 @@ if your custom node does not work with cushy studio, you should open an issue.
 
 locally, I'll try to setup as many custom nodes as possible to ensure they work:
 
-nodes I've tested:
+nodes I've setup locally:
 
 -   comfy_clipseg https://github.com/diffus3/comfy_clipseg
--   comfy_controlnet_preprocessors: TODO
--   ComfyUI_Cutoff: TODO
--   ComfyUI_Dave_CustomNode: TODO
--   ComfyUI-nodes-hnmr: TODO
--   efficiency-nodes-comfyui: TODO
--   example_node.py.exampl: TODO
--   JustNetralExtras: TODO
--   was-node-suite-comfyui: TODO
--   yk-node-suite-comfyui: TODO
+-   comfy_controlnet_preprocessors: https://github.com/Fannovel16/comfy_controlnet_preprocessors
+-   ComfyUI_Cutoff: https://github.com/BlenderNeko/ComfyUI_Cutoff
+-   ComfyUI_Dave_CustomNode:
+-   ComfyUI-nodes-hnmr:
+-   efficiency-nodes-comfyui:
+-   example_node.py.exampl:
+-   JustNetralExtras:
+-   was-node-suite-comfyui: https://github.com/WASasquatch/was-node-suite-comfyui
+-   yk-node-suite-comfyui
 
 want to add your own custom node to the list? open a PR!
 
@@ -328,7 +343,9 @@ _Project is still early, but here is an overview of the plan_
 
 ## 🚧 Architecture
 
--   `CushyStudio` is a packaged as a **VSCode extension**.
+-   `CushyStudio` is a packaged as a **VSCode extension**, but has few dependencies on VSCode itself, and use to be independent from it. VSCode simply turned out to be the best target / shell I found for the project.
+
+I treat VSCode as a cross platform standalone `web browser distribution` + `nodejs distribution` + `typescript distribution` + `Marketplace / distribution canal (through it's extension canal)` + `update system` + `script editor UI` + `powerfull window system with dockable, logs windows` + `keybinding cloud save` + `productivity toolset`.
 
 -   It's unusual, but it makes perfect sense. Before being a vscode extension, it used to be
     -   a standalone webpage made to be embbeed
