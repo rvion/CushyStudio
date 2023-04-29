@@ -156,6 +156,7 @@
         "prettier": "2.8.7",
         "react": "18.2.0",
         "react-dom": "18.2.0",
+        "react-zoom-pan-pinch": "^3.0.7",
         "rsuite": "5.32.0",
         "ts-node": "10.9.1",
         "ws": "8.13.0"

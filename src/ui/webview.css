@@ -60,3 +60,7 @@ body {
 
 .rs-panel {background: white; }
 .rs-panel-body {padding: 10px}
+
+.react-transform-wrapper {
+    max-width: 100%;
+}
