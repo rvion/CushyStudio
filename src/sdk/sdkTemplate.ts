@@ -685,6 +685,28 @@ declare module "sdk/IFlowExecution" {
         get webviewURI(): string;
     }
 }
+declare module "core-back/presets" {
+    import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
+    import type { Graph } from "core-shared/Graph";
+    import type { IFlowExecution } from "sdk/IFlowExecution";
+    /** high level library */
+    export class Presets {
+        graph: Graph & CUSHY_RUNTIME.ComfySetup;
+        flow: IFlowExecution;
+        constructor(graph: Graph & CUSHY_RUNTIME.ComfySetup, flow: IFlowExecution);
+        basicImageGeneration: (p: {
+            positive: string;
+            negative: string;
+        }) => Promise<{
+            ckpt: any;
+            latent: any;
+            positive: any;
+            negative: any;
+            sampler: any;
+            image: any;
+        }>;
+    }
+}
 declare module "core-shared/WorkflowFn" {
     import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
     import type { Graph } from "core-shared/Graph";

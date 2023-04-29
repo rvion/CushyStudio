@@ -7,6 +7,7 @@ import { transpileCode } from './transpiler'
 import { logger } from '../logger/logger'
 import { nanoid } from 'nanoid'
 import { WorkflowBuilderFn } from '../core-shared/WorkflowFn'
+import { Presets } from './presets'
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
@@ -81,7 +82,8 @@ export class FlowDefinition {
             await ProjectScriptFn(WORKFLOW)
             const good = workflows.find((i) => i.name === this.flowName)
             if (good == null) throw new Error('no workflow found')
-            await good.fn({ graph, flow: execution })
+            const presets = new Presets(graph as any, execution)
+            await good.fn({ graph: graph as any, flow: execution, presets })
             console.log('[✅] RUN SUCCESS')
             // this.isRunning = false
             const duration = Date.now() - start
