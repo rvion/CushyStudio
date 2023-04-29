@@ -1,5 +1,5 @@
 // 2023-04-03: this may turns out be quite annoying to maintain 😅
-export const sdkRewriteRules = [
+export const sdkRewriteRules: [string | RegExp, string][] = [
     [`import * as T from 'monaco-editor/esm/vs/editor/editor.api';`, ''],
     [`export type TypescriptOptions = T.languages.typescript.CompilerOptions;`, `export type TypescriptOptions = any`],
     [`export type ITextModel = ReturnType<typeof T.editor.createModel>;`, `export type ITextModel = any`],
@@ -47,6 +47,7 @@ export const sdkRewriteRules = [
     ['import type { LATER } from "core-back/LATER.foo";', `import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'`],
     [`LATER<'LoadImage'>`, 'CUSHY_RUNTIME.LoadImage'],
     [`LATER<'FlowRun'>`, 'import("sdk/IFlowExecution").IFlowExecution'],
-    [`LATER<'Enum_CheckpointLoader_ckpt_name'>`, 'CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name'],
+    // [`LATER<'Enum_CheckpointLoader_ckpt_name'>`, 'CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name'],
     [`LATER<'ComfySetup'>`, 'CUSHY_RUNTIME.ComfySetup'],
+    [/LATER<'(Enum_[a-zA-Z0-9_]+)'>/g, 'CUSHY_RUNTIME.$1'],
 ]

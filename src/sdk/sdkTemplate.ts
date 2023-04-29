@@ -208,6 +208,7 @@ declare module "core-shared/Schema" {
             enumNameInComfy: string;
             enumNameInCushy: EnumName;
             values: EnumValue[];
+            aliases: string[];
         }>;
         nodes: ComfyNodeSchema[];
         nodesByNameInComfy: {
@@ -709,11 +710,11 @@ declare module "core-back/presets" {
             /** defaults to 10 */
             cfg?: number;
             /** defaults to 'euler_ancestral' */
-            sampler_name?: string;
+            sampler_name?: CUSHY_RUNTIME.Enum_KSampler_sampler_name;
             /** defaults to 'karras' */
-            scheduler?: string;
+            scheduler?: CUSHY_RUNTIME.Enum_KSampler_scheduler;
             /** defaults to 1 */
-            denoise?: string;
+            denoise?: number;
         }) => Promise<{
             ckpt: any;
             latent: any;

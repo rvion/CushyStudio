@@ -26,11 +26,11 @@ export class Presets {
         /** defaults to 10 */
         cfg?: number
         /** defaults to 'euler_ancestral' */
-        sampler_name?: string
+        sampler_name?: LATER<'Enum_KSampler_sampler_name'>
         /** defaults to 'karras' */
-        scheduler?: string
+        scheduler?: LATER<'Enum_KSampler_scheduler'>
         /** defaults to 1 */
-        denoise?: string
+        denoise?: number
     }) => {
         const ckpt = this.graph.CheckpointLoaderSimple({ ckpt_name: p.ckptName })
         const latent = this.graph.EmptyLatentImage({
