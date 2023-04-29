@@ -17,7 +17,7 @@ export class FrontState {
 
     flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
-    showImageAs: 'grid' | 'list' | 'carousel' = 'carousel'
+    showImageAs: 'grid' | 'list' | 'carousel' = 'list'
     activeTab: 'home' | 'news' | 'import' | 'about' = 'home'
     setActiveTab = (tab: 'home' | 'news' | 'import' | 'about') => {
         this.activeTab = tab
