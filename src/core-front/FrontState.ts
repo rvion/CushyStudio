@@ -17,6 +17,7 @@ export class FrontState {
     received: MessageFromExtensionToWebview[] = []
 
     flowDirection: 'down' | 'up' = 'up'
+    showAllMessageReceived = false
     activeTab: 'home' | 'news' | 'import' | 'about' = 'home'
     setActiveTab = (tab: 'home' | 'news' | 'import' | 'about') => {
         this.activeTab = tab

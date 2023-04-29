@@ -1,13 +1,12 @@
+import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
-import { Button, IconButton, Nav } from 'rsuite'
+import { IconButton, Nav } from 'rsuite'
 import { useSt } from '../core-front/stContext'
 import { PGalleryUI } from '../panels/pGallery'
-import { PreviewListUI } from './PreviewListUI'
 import { FlowLogUI } from './FlowLogUI'
-import { ScrollablePaneUI } from './scrollableArea'
-import * as I from '@rsuite/icons'
+import { PreviewListUI } from './PreviewListUI'
 import { WorkflowPickerUI } from './WorkflowPickerUI'
+import { ScrollablePaneUI } from './scrollableArea'
 export const WebviewUI = observer(function WebviewUI_() {
     const st = useSt()
 
@@ -35,6 +34,11 @@ export const WebviewUI = observer(function WebviewUI_() {
                             //
                         />
                     ) : null}
+                    <IconButton
+                        icon={st.showAllMessageReceived ? <I.Detail /> : <I.EyeClose />}
+                        onClick={() => (st.showAllMessageReceived = !st.showAllMessageReceived)}
+                        //
+                    />
                 </Nav>
             </div>
             {/* BODY */}

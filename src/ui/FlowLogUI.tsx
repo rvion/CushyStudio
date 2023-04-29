@@ -25,6 +25,7 @@ export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
                     // if (msg.type === 'progress') return null
                     return (
                         <div key={msg.uid} style={{ borderBottom: '1px solid lightgray' }}>
+                            {st.showAllMessageReceived && (
                             <div style={{ display: 'flex' }} id={msg.uid.toString()}>
                                 <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
                                 <div style={{ width: '5rem' }}>{msg.type}</div>
@@ -41,6 +42,7 @@ export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
                                     {JSON.stringify(msg)}
                                 </div>
                             </div>
+                            )}
                             {msg.type === 'show-html' && (
                                 <div
                                     ref={(e) => {
