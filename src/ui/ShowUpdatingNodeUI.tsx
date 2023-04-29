@@ -19,9 +19,5 @@ export const ShowUpdatingNodeUI = observer(function FooBarUI_(p: { msg: MessageF
     if (node == null) return <>no node</>
 
     // show the node
-    return (
-        <div>
-            <ComfyNodeUI node={node} />
-        </div>
-    )
+    return <ComfyNodeUI node={node} />
 })

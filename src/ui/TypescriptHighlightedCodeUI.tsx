@@ -12,7 +12,7 @@ hljs.registerLanguage('typescript', typescript)
 
 export const TypescriptHighlightedCodeUI = (p: { code: string }) => {
     return (
-        <Panel>
+        <Panel shaded>
             <code
                 className='language-typescript'
                 style={{ fontFamily: 'monospace', fontSize: '1rem', whiteSpace: 'pre-wrap' }}

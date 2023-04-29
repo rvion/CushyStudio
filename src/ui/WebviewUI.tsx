@@ -18,9 +18,9 @@ export const WebviewUI = observer(function WebviewUI_() {
                 <Nav activeKey={st.activeTab} onSelect={st.setActiveTab}>
                     <Nav.Item eventKey='home'>Run</Nav.Item>
                     <Nav.Item eventKey='news'>Gallery</Nav.Item>
-                    <Nav.Item disabled eventKey='import'>
+                    {/* <Nav.Item disabled eventKey='import'>
                         Import
-                    </Nav.Item>
+                    </Nav.Item> */}
                     <WorkflowPickerUI />
                     {/* <Nav.Item disabled eventKey='about'>
                         About
@@ -36,7 +36,7 @@ export const WebviewUI = observer(function WebviewUI_() {
                         />
                     ) : null}
                     <IconButton
-                        icon={st.showAllMessageReceived ? <I.Detail /> : <I.EyeClose />}
+                        icon={st.showAllMessageReceived ? <I.InfoOutline /> : <I.EyeClose />}
                         onClick={() => (st.showAllMessageReceived = !st.showAllMessageReceived)}
                         //
                     />

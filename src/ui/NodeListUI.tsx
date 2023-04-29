@@ -70,13 +70,8 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
             //
             key={uid}
             className='node'
-            style={{ margin: 'auto', maxWidth: '30rem', border: '1px solid light' }}
+            // style={{ width: 'fit-content', border: '1px solid lightgray' }}
         >
-            <Progress.Line
-                status={node.status === 'done' ? 'success' : 'active'}
-                percent={node.status === 'done' ? 100 : ((node.progress?.value ?? 0) / (node.progress?.max || 1)) * 100}
-                showInfo={false}
-            />
             {/* {node.progress || node.status === 'done' ? (
                 <div
                     style={{
@@ -94,20 +89,27 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                 className='row gap darker pointer'
                 style={{ padding: '0.2rem' }}
             >
-                <div
+                {/* <div
                     style={{
                         backgroundColor: node.color,
                         width: '1rem',
                         height: '1rem',
                     }}
-                ></div>
-                <NodeRefUI nodeUID={uid} graph={graph} />
-                <div>{name}</div>
-                <div className='grow'></div>
-                {node.statusEmoji}
+                ></div> */}
+                <h4 className='row items-center gap'>
+                    <NodeRefUI nodeUID={uid} graph={graph} />
+                    {name}
+                </h4>
+                {/* <div className='grow'></div> */}
+                {/* {node.statusEmoji} */}
                 {/* {folded ? <I.ArrowDownLine /> : <I.ArrowRightLine />} */}
             </div>
             {/* {folded ? null : ( */}
+            <Progress.Line
+                status={node.status === 'done' ? 'success' : 'active'}
+                percent={node.status === 'done' ? 100 : ((node.progress?.value ?? 0) / (node.progress?.max || 1)) * 100}
+                showInfo={false}
+            />
             <div>
                 {schema.inputs.map((input) => {
                     let val = node.json.inputs[input.name]

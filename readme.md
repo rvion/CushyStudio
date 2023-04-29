@@ -39,6 +39,11 @@ https://user-images.githubusercontent.com/2150990/235221672-8aa28171-0734-4e57-8
 
 </div>
 
+## Introduction
+
+-   CushyStudio allows you to build **self-contained mini-application** called **workflows** .
+    you're a character artist, you can probably automate your wokflow with a few scripts and a few interractive widgets.
+
 <!-- ![Subreddit subscribers](https://img.shields.io/reddit/subreddit-subscribers/CushyStudio?style=flat&logo=reddit) ![Twitter Follow](https://img.shields.io/twitter/follow/CushyStudio?style=flat&logo=twitter) -->
 
 <!-- ![](website/static/img/screenshots/2023-03-24-09-29-45.png) -->

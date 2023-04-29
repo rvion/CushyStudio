@@ -9,7 +9,7 @@ export const MsgShowHTMLUI = observer(function MsgShowHTMLUI_(p: { msg: MessageF
     const msg = p.msg
     if (msg.type !== 'show-html') return <>error</>
     return (
-        <Panel bordered shaded>
+        <Panel shaded>
             <TransformWrapper>
                 <TransformComponent>
                     <div

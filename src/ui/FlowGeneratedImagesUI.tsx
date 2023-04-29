@@ -1,6 +1,6 @@
 import Lightbox from 'yet-another-react-lightbox'
 import { observer } from 'mobx-react-lite'
-import { Carousel } from 'rsuite'
+import { Carousel, Panel } from 'rsuite'
 import Inline from 'yet-another-react-lightbox/plugins/inline'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails'
@@ -17,17 +17,17 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
     if (msg.uris.length === 0) return <>no images</>
     if (st.showImageAs === 'list') {
         return (
-            <div style={{ width: '100%', maxWidth: '900px', aspectRatio: '3 / 2' }}>
+            <Panel shaded style={{ width: '100%' }}>
                 <Lightbox
                     zoom={{ scrollToZoom: true, maxZoomPixelRatio: 10 }}
-                    thumbnails={{ position: 'top' }}
+                    thumbnails={{ position: 'start', vignette: false, showToggle: true }}
                     plugins={[Inline, Zoom, Thumbnails]}
                     open={true}
                     slides={msg.uris.map((imgUri) => ({
                         src: imgUri,
                     }))}
                 />
-            </div>
+            </Panel>
         )
     }
     if (st.showImageAs === 'carousel')

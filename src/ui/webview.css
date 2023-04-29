@@ -56,6 +56,13 @@ body {
     --conditioning_style_model: #acdaac;
     --sampling: #ddcdb0;
     --image: pink;
+    /*  */
+    --yarl__thumbnails_thumbnail_background: white;
+    --yarl__container_background_color: white;
+    --yarl__color_backdrop: white;
+
+    /* --yarl__navigation_button_padding: .1rem; */
+    --yarl__thumbnails_container_padding: .1rem;
 }
 
 .rs-panel {background: white; }
