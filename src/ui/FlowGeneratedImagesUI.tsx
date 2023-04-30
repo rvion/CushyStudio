@@ -1,14 +1,28 @@
-import Lightbox from 'yet-another-react-lightbox'
 import { observer } from 'mobx-react-lite'
-import { Carousel, Panel } from 'rsuite'
+import { Carousel, Panel, Rate } from 'rsuite'
+import Lightbox, { Plugin } from 'yet-another-react-lightbox'
+import Download from 'yet-another-react-lightbox/plugins/download'
+import FullScreen from 'yet-another-react-lightbox/plugins/fullscreen'
 import Inline from 'yet-another-react-lightbox/plugins/inline'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
-import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
 
-import 'yet-another-react-lightbox/styles.css'
+import { addToolbarButton } from 'yet-another-react-lightbox/core'
 import 'yet-another-react-lightbox/plugins/thumbnails.css'
+import 'yet-another-react-lightbox/styles.css'
+
+const RatePlugin: Plugin = ({ augment }) => {
+    augment(({ toolbar, ...restProps }) => ({
+        toolbar: addToolbarButton(
+            //
+            toolbar,
+            'my-button',
+            <Rate vertical max={5} defaultValue={0} />,
+        ),
+        ...restProps,
+    }))
+}
 
 export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p: { msg: MessageFromExtensionToWebview }) {
     const st = useSt()
@@ -31,15 +45,31 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
             >
                 {/* https://github.com/igordanchenko/yet-another-react-lightbox */}
                 <Lightbox
+                    render={{}}
                     styles={{ container: { minHeight: '20rem' } }}
                     zoom={{ scrollToZoom: true, maxZoomPixelRatio: 10 }}
-                    thumbnails={{ position: 'start', vignette: false, showToggle: true }}
-                    plugins={[Inline, Zoom, Thumbnails]}
+                    // thumbnails={{ position: 'start', vignette: false, showToggle: true }}
+                    plugins={[
+                        //
+                        Inline,
+                        Zoom,
+                        Download,
+                        FullScreen,
+                        RatePlugin,
+                        // Thumbnails,
+                    ]}
                     open={true}
                     slides={msg.uris.map((imgUri) => ({
                         src: imgUri,
                     }))}
                 />
+                <div className='row gap-2'>
+                    {msg.uris.map((imgUri) => (
+                        <div className='border' key={imgUri}>
+                            <img style={{ width: '3rem' }} src={imgUri} />
+                        </div>
+                    ))}
+                </div>
             </Panel>
         )
     }
