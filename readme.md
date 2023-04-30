@@ -241,15 +241,16 @@ locally, I'll try to setup as many custom nodes as possible to ensure they work:
 
 nodes I've setup locally:
 
--   comfy_clipseg https://github.com/diffus3/comfy_clipseg
+-   ComfyUI-Impact-Pack https://github.com/ltdrdata/ComfyUI-Impact-Pack
 -   comfy_controlnet_preprocessors: https://github.com/Fannovel16/comfy_controlnet_preprocessors
 -   ComfyUI_Cutoff: https://github.com/BlenderNeko/ComfyUI_Cutoff
+-   was-node-suite-comfyui: https://github.com/WASasquatch/was-node-suite-comfyui
+-   comfy_clipseg https://github.com/diffus3/comfy_clipseg
 -   ComfyUI_Dave_CustomNode:
 -   ComfyUI-nodes-hnmr:
 -   efficiency-nodes-comfyui:
 -   example_node.py.exampl:
 -   JustNetralExtras:
--   was-node-suite-comfyui: https://github.com/WASasquatch/was-node-suite-comfyui
 -   yk-node-suite-comfyui
 
 want to add your own custom node to the list? open a PR!
