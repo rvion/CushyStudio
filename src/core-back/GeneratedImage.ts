@@ -17,6 +17,7 @@ export type GeneratedImageSummary = {
     comfyRelativePath: string
     comfyURL: string
     localRelativeFilePath: string
+    localAbsoluteFilePath: string
 }
 
 /** Cushy wrapper around ComfyImageInfo */
@@ -91,6 +92,7 @@ export class GeneratedImage implements IGeneratedImage {
             uid: this.uid,
             comfyRelativePath: this.comfyRelativePath,
             localRelativeFilePath: this.localRelativeFilePath,
+            localAbsoluteFilePath: this.localUri.fsPath,
             comfyURL: this.comfyURL,
         }
     }

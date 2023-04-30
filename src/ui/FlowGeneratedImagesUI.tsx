@@ -90,9 +90,7 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                         onClick={() => {
                             st.sendMessageToExtension({
                                 type: 'open-external',
-                                // uriString: `file://${selectedImg?.localRelativeFilePath}`,
-                                uriString:
-                                    'file:///Users/loco/csdemo/.cushy/cache/Run-20230430105719/0YRw3SNOVz_Z-dKyHMCvD_prompt-1_1.png',
+                                uriString: `file://${selectedImg.localAbsoluteFilePath}`,
                             })
                         }}
                     >
