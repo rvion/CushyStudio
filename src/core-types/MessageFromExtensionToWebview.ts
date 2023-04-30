@@ -5,6 +5,7 @@ import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from '../utils/types'
 
 import { exhaust } from '../utils/ComfyUtils'
+import { GeneratedImageSummary } from 'src/core-back/GeneratedImage'
 
 export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExtensionToWebview_
 export type MessageFromExtensionToWebview_ =
@@ -31,7 +32,7 @@ export type MessageFromExtensionToWebview_ =
     | /* type 'executed' */ WsMsgExecuted
 
     // generated images as transformed uri by vscode extension so they can be displayed in the webview
-    | { type: 'images'; uris: string[] }
+    | { type: 'images'; images: GeneratedImageSummary[] }
     | { type: 'show-html'; content: string }
 
 export type MessageFromExtensionToWebview_askString = { type: 'ask-string'; message: string; default?: Maybe<string> }

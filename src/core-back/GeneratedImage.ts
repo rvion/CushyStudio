@@ -6,12 +6,18 @@ import type { Workspace } from './Workspace'
 
 import fetch from 'node-fetch'
 import * as path from 'path'
-import { nanoid } from 'nanoid'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { RelativePath } from '../utils/fs/BrandedPaths'
 import { IGeneratedImage } from '../sdk/IFlowExecution'
 import { FrontWebview } from './FrontWebview'
 import { logger } from '../logger/logger'
+
+export type GeneratedImageSummary = {
+    uid: string
+    comfyRelativePath: string
+    comfyURL: string
+    localRelativeFilePath: string
+}
 
 /** Cushy wrapper around ComfyImageInfo */
 export class GeneratedImage implements IGeneratedImage {
@@ -78,6 +84,15 @@ export class GeneratedImage implements IGeneratedImage {
     /** uri the webview can access */
     get webviewURI(): string {
         return FrontWebview.current?.webview.asWebviewUri(this.localUri).toString() ?? ''
+    }
+
+    get summary(): GeneratedImageSummary {
+        return {
+            uid: this.uid,
+            comfyRelativePath: this.comfyRelativePath,
+            localRelativeFilePath: this.localRelativeFilePath,
+            comfyURL: this.comfyURL,
+        }
     }
     // MISC ----------------------------------------------------------------------
     /** true if file exists on disk; false otherwise */

@@ -11,9 +11,7 @@ export const WorkflowPickerUI = observer(function WorkflowPickerUI_() {
                 labelKey='name'
                 valueKey='id'
                 value={st.selectedWorkflowID}
-                onChange={(v) => {
-                    st.selectedWorkflowID = v
-                }}
+                onChange={(v) => (st.selectedWorkflowID = v)}
                 data={st.knownWorkflows}
                 style={{ width: 224 }}
             />

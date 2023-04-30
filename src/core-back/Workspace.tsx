@@ -338,21 +338,24 @@ export class Workspace {
         // const ic = new ImportCandidate(this, filename)
     }
 
-    forwardImagesToFrontV1 = async (images: GeneratedImage[]) => {
-        await Promise.all(images.map((i) => i.savedPromise))
-        await sleep(200)
-        const uris = FrontWebview.with((curr) => {
-            return images.map((img: GeneratedImage) => {
-                return curr.webview.asWebviewUri(img.localUri).toString()
-            })
-        })
-        logger().info('all images saved: sending to front: ' + uris.join(', '))
-        this.sendMessage({ type: 'images', uris: uris })
-    }
+    // forwardImagesToFrontV1 = async (images: GeneratedImage[]) => {
+    //     await Promise.all(images.map((i) => i.savedPromise))
+    //     await sleep(200)
+    //     const uris = FrontWebview.with((curr) => {
+    //         return images.map((img: GeneratedImage) => {
+    //             return curr.webview.asWebviewUri(img.localUri).toString()
+    //         })
+    //     })
+    //     logger().info('all images saved: sending to front: ' + uris.join(', '))
+    //     this.sendMessage({ type: 'images', uris: uris })
+    // }
 
     forwardImagesToFrontV2 = (images: GeneratedImage[]) => {
-        const uris = images.map((i) => i.comfyURL)
-        this.sendMessage({ type: 'images', uris })
+        // const uris = images.map((i) => i.summary)
+        this.sendMessage({
+            type: 'images',
+            images: images.map((i) => i.summary),
+        })
     }
 
     onMessage = (e: WS.MessageEvent) => {

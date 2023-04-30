@@ -107,7 +107,7 @@ export class FrontState {
         }
 
         if (msg.type === 'images') {
-            this.imageURLs.push(...msg.uris)
+            this.imageURLs.push(...msg.images.map((i) => i.comfyURL))
             return
         }
 
