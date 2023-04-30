@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-button.primary {
-    background-color: rgb(68, 157, 204);
-}
 html, body, #root {
     height: 100%;
     background: #f6f6f6;
@@ -76,13 +73,9 @@ body {
 }
 .yarl__root {min-height: 20rem !important;}
 .yarl__slide {padding: 0;}
-
 .rs-panel {background: white; }
 .rs-panel-body {padding: 10px}
-
-.react-transform-wrapper {
-    max-width: 100%;
-}
+.react-transform-wrapper { max-width: 100%; }
 
 .hljs{
     color: unset !important;
