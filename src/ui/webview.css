@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 button.primary {
     background-color: rgb(68, 157, 204);
 }
@@ -71,6 +75,7 @@ body {
     /* --yarl__carousel_padding_px: 0; */
 }
 .yarl__root {min-height: 20rem !important;}
+.yarl__slide {padding: 0;}
 
 .rs-panel {background: white; }
 .rs-panel-body {padding: 10px}
