@@ -66,6 +66,10 @@ export class CushyClient {
             vscode.window.showInformationMessage(`🛋️ ${msg.message}`)
             return
         }
+        if (msg.type === 'open-external') {
+            console.log('open external', msg.uriString, vscode.Uri.parse(msg.uriString))
+            return void vscode.env.openExternal(vscode.Uri.parse(msg.uriString))
+        }
 
         if (msg.type === 'answer-boolean') {
             const run = this.workspace.activeRun

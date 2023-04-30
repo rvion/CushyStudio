@@ -1,5 +1,6 @@
-import { observer } from 'mobx-react-lite'
-import { Carousel, Panel, Rate } from 'rsuite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
+import { Button, IconButton, Panel, Rate } from 'rsuite'
+import * as I from '@rsuite/icons'
 import Lightbox, { Plugin } from 'yet-another-react-lightbox'
 import Download from 'yet-another-react-lightbox/plugins/download'
 import FullScreen from 'yet-another-react-lightbox/plugins/fullscreen'
@@ -27,8 +28,10 @@ const RatePlugin: Plugin = ({ augment }) => {
 export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p: { msg: MessageFromExtensionToWebview }) {
     const st = useSt()
     const msg = p.msg
+    const uiSt = useLocalObservable(() => ({ index: 0 }))
     if (msg.type !== 'images') return <>error</>
     if (msg.images.length === 0) return <>no images</>
+    const selectedImg = msg.images[uiSt.index]
     // if (st.showImageAs === 'list') {
     return (
         <Panel
@@ -45,7 +48,8 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
         >
             {/* https://github.com/igordanchenko/yet-another-react-lightbox */}
             <Lightbox
-                render={{}}
+                index={uiSt.index}
+                on={{ view: ({ index }) => (uiSt.index = index) }}
                 styles={{ container: { minHeight: '20rem' } }}
                 zoom={{ scrollToZoom: true, maxZoomPixelRatio: 10 }}
                 // thumbnails={{ position: 'start', vignette: false, showToggle: true }}
@@ -62,7 +66,40 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                 slides={msg.images.map((img) => ({ src: img.comfyURL }))}
             />
             <div>
-                <pre>{JSON.stringify(msg.images[0], null, 4)}</pre>
+                <div className='prop row'>
+                    <div className='propName'>uid</div>
+                    <div className='propValue'>{selectedImg?.uid}</div>
+                </div>
+                <div className='prop row'>
+                    <div className='propName'>comfy path</div>
+                    <div className='propValue'>{selectedImg?.comfyRelativePath}</div>
+                </div>
+                <div className='prop row'>
+                    <div className='propName'>comfy URL</div>
+                    <div className='propValue'>
+                        <a href='{selectedImg?.comfyURL}'>{selectedImg?.comfyURL}</a>
+                    </div>
+                </div>{' '}
+                <div className='flex row items-center gap-2'>
+                    <div className='propName'>local path</div>
+                    <div className='propValue'>{selectedImg?.localRelativeFilePath}</div>
+                    <Button
+                        size='sm'
+                        appearance='ghost'
+                        startIcon={<I.FolderFill />}
+                        onClick={() => {
+                            st.sendMessageToExtension({
+                                type: 'open-external',
+                                // uriString: `file://${selectedImg?.localRelativeFilePath}`,
+                                uriString:
+                                    'file:///Users/loco/csdemo/.cushy/cache/Run-20230430105719/0YRw3SNOVz_Z-dKyHMCvD_prompt-1_1.png',
+                            })
+                        }}
+                    >
+                        Open
+                    </Button>
+                </div>
+                {/* <pre>{JSON.stringify(msg.images[0], null, 4)}</pre> */}
             </div>
             <div className='row gap-2'>
                 {msg.images.map((img) => (

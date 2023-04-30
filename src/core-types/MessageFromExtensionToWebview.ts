@@ -68,6 +68,7 @@ export type MessageFromWebviewToExtension =
 
     // run
     | { type: 'run-flow'; flowID: string }
+    | { type: 'open-external'; uriString: string }
 
     // test messages
     | { type: 'say-hello'; message: string }
