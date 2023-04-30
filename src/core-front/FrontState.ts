@@ -113,6 +113,10 @@ export class FrontState {
 
         if (msg.type === 'ls') {
             this.knownWorkflows = msg.workflowNames
+
+            if (this.selectedWorkflowID == null && this.knownWorkflows.length > 0)
+                this.selectedWorkflowID = this.knownWorkflows[0].id
+
             return
         }
 
