@@ -2,6 +2,7 @@
     "editor.formatOnSave": true,
     "peacock.color": "#0b4867",
     "editor.indentSize": 4,
+    "css.lint.unknownAtRules": "ignore",
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#106895",
         "activityBar.background": "#106895",
