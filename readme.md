@@ -237,7 +237,8 @@ export interface IFlowExecution {
 
 if your custom node does not work with cushy studio, you should open an issue.
 
-locally, I'll try to setup as many custom nodes as possible to ensure they work:
+I'll try my best to setup your custom nodes locally to ensure they work well with cushy.
+I can possibly also add dedicated support or custom ui widget for your custom nodes, contact me on discord or github.
 
 nodes I've setup locally:
 
