@@ -117,7 +117,11 @@ declare module "core-types/ComfySchemaJSON" {
     /** enum */
      | string[];
     export type ComfyInputOpts = {
-        [key: string]: any;
+        multiline?: boolean;
+        default?: boolean | number | string;
+        min?: number;
+        max?: number;
+        step?: number;
     };
 }
 declare module "utils/CodeBuffer" {
@@ -151,46 +155,28 @@ declare module "core-shared/Primitives" {
 declare module "core-shared/normalizeJSIdentifier" {
     export const normalizeJSIdentifier: (name: string) => string;
 }
-declare module "core-shared/Printable" {
-    import { ComfyNode } from "core-shared/Node";
-    export type Printable = string | number | boolean | ComfyNode<any>;
-}
-declare module "logger/LogTypes" {
-    import { Printable } from "core-shared/Printable";
-    export interface ILogger {
-        debug(...message: Printable[]): void;
-        info(...message: Printable[]): void;
-        warn(...message: Printable[]): void;
-        error(...message: Printable[]): void;
-    }
-    export interface LogMessage {
-        level: LogLevel;
-        message: string;
-        timestamp: Date;
-    }
-    export enum LogLevel {
-        DEBUG = 0,
-        INFO = 1,
-        WARN = 2,
-        ERROR = 3
-    }
-}
-declare module "logger/logger" {
-    import type { ILogger } from "logger/LogTypes";
-    export const ref: {
-        value?: ILogger;
+declare module "utils/types" {
+    /** usefull to catch most *units* type errors */
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
     };
-    export const logger: () => ILogger;
-    export const registerLogger: (logger: ILogger) => void;
+    /** same as Tagged, but even scriter */
+    export type Branded<O, Brand> = O & {
+        __brand: Brand;
+    };
+    export type Maybe<T> = T | null | undefined;
 }
 declare module "core-shared/Schema" {
-    import type { ComfySchemaJSON } from "core-types/ComfySchemaJSON";
+    import type { ComfyInputOpts, ComfySchemaJSON } from "core-types/ComfySchemaJSON";
+    import { Maybe } from "utils/types";
     export type EnumHash = string;
     export type EnumName = string;
+    export type NodeNameInComfy = string;
+    export type NodeNameInCushy = string;
     export type NodeInputExt = {
         name: string;
         type: string;
-        opts?: any;
+        opts?: ComfyInputOpts;
         isPrimitive: boolean;
         required: boolean;
         index: number;
@@ -217,6 +203,9 @@ declare module "core-shared/Schema" {
         nodesByNameInCushy: {
             [key: string]: ComfyNodeSchema;
         };
+        nodesByProduction: {
+            [key: string]: NodeNameInCushy[];
+        };
         constructor(spec: ComfySchemaJSON);
         update(spec: ComfySchemaJSON): void;
         codegenDTS: (useLocalPath?: boolean) => string;
@@ -230,6 +219,7 @@ declare module "core-shared/Schema" {
         outputs: NodeOutputExt[];
         constructor(nameInComfy: string, nameInCushy: string, category: string, inputs: NodeInputExt[], outputs: NodeOutputExt[]);
         codegen(): string;
+        renderOpts(opts?: ComfyInputOpts): Maybe<string>;
     }
 }
 declare module "core-shared/Slot" {
@@ -375,16 +365,9 @@ declare module "core-shared/ParamDef" {
     };
     export type FlowParam = ParamT<'string', string> | ParamT<'number', number> | ParamT<'boolean', boolean> | ParamT<'strings', string[]> | ParamT<'image', string>;
 }
-declare module "utils/types" {
-    /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tag> = O & {
-        __tag?: Tag;
-    };
-    /** same as Tagged, but even scriter */
-    export type Branded<O, Brand> = O & {
-        __brand: Brand;
-    };
-    export type Maybe<T> = T | null | undefined;
+declare module "core-shared/Printable" {
+    import { ComfyNode } from "core-shared/Node";
+    export type Printable = string | number | boolean | ComfyNode<any>;
 }
 declare module "utils/fs/BrandedPaths" {
     import type { Branded } from "utils/types";
