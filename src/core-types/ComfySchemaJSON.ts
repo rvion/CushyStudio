@@ -1,7 +1,9 @@
 // RAW -----------------------------------------------------------------
 /** type of the file sent by the backend at /object_info */
 
-export type ComfySchemaJSON = { [nodeTypeName: string]: ComfyNodeSchemaJSON }
+export type ComfySchemaJSON = {
+    [nodeTypeName: string]: ComfyNodeSchemaJSON
+}
 
 export type ComfyNodeSchemaJSON = {
     input: {
@@ -22,6 +24,32 @@ export type ComfyInputType =
     /** enum */
     | string[]
 
+// export type ComfyInputOpts_String = {
+//     multiline?: boolean
+//     default?: string
+// }
+
+// export type ComfyInputOpts_Number = {
+//     default?: number
+//     min?: number
+//     max?: number
+//     step?: number
+// }
+
+// export type ComfyInputOpts_Boolean = {
+//     default?: boolean
+// }
+
+// // prettier-ignore
+// export type ComfyInputOpts =
+//     | ComfyInputOpts_String
+//     | ComfyInputOpts_Number
+//     | ComfyInputOpts_Boolean
+
 export type ComfyInputOpts = {
-    [key: string]: any
+    multiline?: boolean
+    default?: boolean | number | string
+    min?: number
+    max?: number
+    step?: number
 }

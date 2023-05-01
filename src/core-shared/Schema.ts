@@ -1,10 +1,11 @@
-import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
+import type { ComfyInputOpts, ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
 // import type { ItemDataType } from 'rsuite/esm/@types/common'
 
 import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from './Primitives'
 import { normalizeJSIdentifier } from './normalizeJSIdentifier'
+import { Maybe } from 'src/utils/types'
 
 export type EnumHash = string
 export type EnumName = string
@@ -12,7 +13,7 @@ export type EnumName = string
 export type NodeInputExt = {
     name: string
     type: string
-    opts?: any
+    opts?: ComfyInputOpts
     isPrimitive: boolean
     required: boolean
     index: number
@@ -353,11 +354,24 @@ export class ComfyNodeSchema {
         p(`export type ${this.nameInCushy}_input = {`)
         for (const i of this.inputs) {
             const type = ComfyPrimitiveMapping[i.type] ? i.type : `${i.type} | HasSingle_${i.type}`
-            p(`    ${i.name}${i.required ? '' : '?'}: ${type}`)
+            if (i.opts) p(`    ${this.renderOpts(i.opts)}`)
+            const canBeOmmited = i.opts?.default !== undefined || !i.required
+            p(`    ${i.name}${canBeOmmited ? '?' : ''}: ${type}`)
         }
         p(`}`)
 
         return b.content
+    }
+
+    renderOpts(opts?: ComfyInputOpts): Maybe<string> {
+        if (opts == null) return null
+        let out = '/**'
+        if (opts.default != null) out += ` default=${JSON.stringify(opts.default)}`
+        if (opts.min != null) out += ` min=${JSON.stringify(opts.max)}`
+        if (opts.max != null) out += ` max=${JSON.stringify(opts.max)}`
+        if (opts.step != null) out += ` step=${JSON.stringify(opts.step)}`
+        out += ' */'
+        return out
     }
 }
 
