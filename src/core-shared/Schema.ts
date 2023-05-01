@@ -10,6 +10,9 @@ import { Maybe } from 'src/utils/types'
 export type EnumHash = string
 export type EnumName = string
 
+export type NodeNameInComfy = string
+export type NodeNameInCushy = string
+
 export type NodeInputExt = {
     name: string
     type: string
@@ -34,6 +37,7 @@ export class Schema {
     nodes: ComfyNodeSchema[] = []
     nodesByNameInComfy: { [key: string]: ComfyNodeSchema } = {}
     nodesByNameInCushy: { [key: string]: ComfyNodeSchema } = {}
+    nodesByProduction: { [key: string]: NodeNameInCushy[] } = {}
 
     // components: ItemDataType[] = []
 
@@ -50,6 +54,7 @@ export class Schema {
         this.nodes.splice(0, this.nodes.length)
         this.nodesByNameInComfy = {}
         this.nodesByNameInCushy = {}
+        this.nodesByProduction = {}
 
         // compile spec
         const entries = Object.entries(spec)
@@ -85,7 +90,14 @@ export class Schema {
             const outputNamer: { [key: string]: number } = {}
             // logger().info(JSON.stringify(nodeDef.output))
             for (const opt of nodeDef.output) {
-                this.knownTypes.add(opt) // index
+                // index type
+                this.knownTypes.add(opt)
+
+                // index production
+                let arr = this.nodesByProduction[opt]
+                if (arr == null) this.nodesByProduction[opt] = [nodeNameInCushy]
+                else arr.push(nodeNameInCushy)
+
                 const at = (outputNamer[opt] ??= 0)
                 const name = at === 0 ? opt : `${opt}_${at}`
                 outputs.push({ type: opt, name, isPrimitive: false })
@@ -226,6 +238,7 @@ export class Schema {
 
         // prettier-ignore
         for (const n of this.nodes) {
+            p(`    /* category=${n.category} output=${n.outputs.map(o => o.name).join(', ')} */`)
             p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeUID): ${n.nameInCushy}`)
         }
         // p(`\n// misc \n`)
@@ -234,6 +247,11 @@ export class Schema {
         //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
         // }
         p(`}`)
+
+        p(`\n// Suggestions -------------------------------`)
+        for (const [tp, nns] of Object.entries(this.nodesByProduction)) {
+            p(`export interface CanProduce_${tp} extends Pick<ComfySetup, ${nns.map((i) => `'${i}'`).join(' | ')}> { }`)
+        }
 
         p(`\n// TYPES -------------------------------`)
         const types = [...this.knownTypes.values()] //

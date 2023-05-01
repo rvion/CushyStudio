@@ -9,306 +9,971 @@ import type { WorkflowType } from './core-shared/WorkflowFn'
 
 // Entrypoint --------------------------
 export interface ComfySetup {
+    /* category=sampling output=LATENT */
     KSampler(args: KSampler_input, uid?: ComfyNodeUID): KSampler
+    /* category=loaders output=MODEL, CLIP, VAE */
     CheckpointLoaderSimple(args: CheckpointLoaderSimple_input, uid?: ComfyNodeUID): CheckpointLoaderSimple
+    /* category=conditioning output=CONDITIONING */
     CLIPTextEncode(args: CLIPTextEncode_input, uid?: ComfyNodeUID): CLIPTextEncode
+    /* category=conditioning output=CLIP */
     CLIPSetLastLayer(args: CLIPSetLastLayer_input, uid?: ComfyNodeUID): CLIPSetLastLayer
+    /* category=latent output=IMAGE */
     VAEDecode(args: VAEDecode_input, uid?: ComfyNodeUID): VAEDecode
+    /* category=latent output=LATENT */
     VAEEncode(args: VAEEncode_input, uid?: ComfyNodeUID): VAEEncode
+    /* category=latent_inpaint output=LATENT */
     VAEEncodeForInpaint(args: VAEEncodeForInpaint_input, uid?: ComfyNodeUID): VAEEncodeForInpaint
+    /* category=loaders output=VAE */
     VAELoader(args: VAELoader_input, uid?: ComfyNodeUID): VAELoader
+    /* category=latent output=LATENT */
     EmptyLatentImage(args: EmptyLatentImage_input, uid?: ComfyNodeUID): EmptyLatentImage
+    /* category=latent output=LATENT */
     LatentUpscale(args: LatentUpscale_input, uid?: ComfyNodeUID): LatentUpscale
+    /* category=latent output=LATENT */
     LatentFromBatch(args: LatentFromBatch_input, uid?: ComfyNodeUID): LatentFromBatch
+    /* category=image output= */
     SaveImage(args: SaveImage_input, uid?: ComfyNodeUID): SaveImage
+    /* category=image output= */
     PreviewImage(args: PreviewImage_input, uid?: ComfyNodeUID): PreviewImage
+    /* category=image output=IMAGE, MASK */
     LoadImage(args: LoadImage_input, uid?: ComfyNodeUID): LoadImage
+    /* category=mask output=MASK */
     LoadImageMask(args: LoadImageMask_input, uid?: ComfyNodeUID): LoadImageMask
+    /* category=image_upscaling output=IMAGE */
     ImageScale(args: ImageScale_input, uid?: ComfyNodeUID): ImageScale
+    /* category=image output=IMAGE */
     ImageInvert(args: ImageInvert_input, uid?: ComfyNodeUID): ImageInvert
+    /* category=image output=IMAGE, MASK */
     ImagePadForOutpaint(args: ImagePadForOutpaint_input, uid?: ComfyNodeUID): ImagePadForOutpaint
+    /* category=conditioning output=CONDITIONING */
     ConditioningCombine(args: ConditioningCombine_input, uid?: ComfyNodeUID): ConditioningCombine
+    /* category=conditioning output=CONDITIONING */
     ConditioningSetArea(args: ConditioningSetArea_input, uid?: ComfyNodeUID): ConditioningSetArea
+    /* category=conditioning output=CONDITIONING */
     ConditioningSetMask(args: ConditioningSetMask_input, uid?: ComfyNodeUID): ConditioningSetMask
+    /* category=sampling output=LATENT */
     KSamplerAdvanced(args: KSamplerAdvanced_input, uid?: ComfyNodeUID): KSamplerAdvanced
+    /* category=latent_inpaint output=LATENT */
     SetLatentNoiseMask(args: SetLatentNoiseMask_input, uid?: ComfyNodeUID): SetLatentNoiseMask
+    /* category=latent output=LATENT */
     LatentComposite(args: LatentComposite_input, uid?: ComfyNodeUID): LatentComposite
+    /* category=latent_transform output=LATENT */
     LatentRotate(args: LatentRotate_input, uid?: ComfyNodeUID): LatentRotate
+    /* category=latent_transform output=LATENT */
     LatentFlip(args: LatentFlip_input, uid?: ComfyNodeUID): LatentFlip
+    /* category=latent_transform output=LATENT */
     LatentCrop(args: LatentCrop_input, uid?: ComfyNodeUID): LatentCrop
+    /* category=loaders output=MODEL, CLIP */
     LoraLoader(args: LoraLoader_input, uid?: ComfyNodeUID): LoraLoader
+    /* category=loaders output=CLIP */
     CLIPLoader(args: CLIPLoader_input, uid?: ComfyNodeUID): CLIPLoader
+    /* category=conditioning output=CLIP_VISION_OUTPUT */
     CLIPVisionEncode(args: CLIPVisionEncode_input, uid?: ComfyNodeUID): CLIPVisionEncode
+    /* category=conditioning_style_model output=CONDITIONING */
     StyleModelApply(args: StyleModelApply_input, uid?: ComfyNodeUID): StyleModelApply
+    /* category=conditioning output=CONDITIONING */
     UnCLIPConditioning(args: UnCLIPConditioning_input, uid?: ComfyNodeUID): UnCLIPConditioning
+    /* category=conditioning output=CONDITIONING */
     ControlNetApply(args: ControlNetApply_input, uid?: ComfyNodeUID): ControlNetApply
+    /* category=loaders output=CONTROL_NET */
     ControlNetLoader(args: ControlNetLoader_input, uid?: ComfyNodeUID): ControlNetLoader
+    /* category=loaders output=CONTROL_NET */
     DiffControlNetLoader(args: DiffControlNetLoader_input, uid?: ComfyNodeUID): DiffControlNetLoader
+    /* category=loaders output=STYLE_MODEL */
     StyleModelLoader(args: StyleModelLoader_input, uid?: ComfyNodeUID): StyleModelLoader
+    /* category=loaders output=CLIP_VISION */
     CLIPVisionLoader(args: CLIPVisionLoader_input, uid?: ComfyNodeUID): CLIPVisionLoader
+    /* category=_for_testing output=IMAGE */
     VAEDecodeTiled(args: VAEDecodeTiled_input, uid?: ComfyNodeUID): VAEDecodeTiled
+    /* category=_for_testing output=LATENT */
     VAEEncodeTiled(args: VAEEncodeTiled_input, uid?: ComfyNodeUID): VAEEncodeTiled
+    /* category=_for_testing output=MODEL */
     TomePatchModel(args: TomePatchModel_input, uid?: ComfyNodeUID): TomePatchModel
+    /* category=loaders output=MODEL, CLIP, VAE, CLIP_VISION */
     UnCLIPCheckpointLoader(args: UnCLIPCheckpointLoader_input, uid?: ComfyNodeUID): UnCLIPCheckpointLoader
+    /* category=loaders output=GLIGEN */
     GLIGENLoader(args: GLIGENLoader_input, uid?: ComfyNodeUID): GLIGENLoader
+    /* category=conditioning_gligen output=CONDITIONING */
     GLIGENTextBoxApply(args: GLIGENTextBoxApply_input, uid?: ComfyNodeUID): GLIGENTextBoxApply
+    /* category=advanced_loaders output=MODEL, CLIP, VAE */
     CheckpointLoader(args: CheckpointLoader_input, uid?: ComfyNodeUID): CheckpointLoader
+    /* category=advanced_loaders output=MODEL, CLIP, VAE */
     DiffusersLoader(args: DiffusersLoader_input, uid?: ComfyNodeUID): DiffusersLoader
+    /* category=Image Processing output=IMAGE */
     BrightnessContrast(args: BrightnessContrast_input, uid?: ComfyNodeUID): BrightnessContrast
+    /* category=ImpactPack output=BBOX_MODEL, SEGM_MODEL */
     ImpactMMDetLoader(args: ImpactMMDetLoader_input, uid?: ComfyNodeUID): ImpactMMDetLoader
+    /* category=ImpactPack output=SAM_MODEL */
     ImpactSAMLoader(args: ImpactSAMLoader_input, uid?: ComfyNodeUID): ImpactSAMLoader
+    /* category=ImpactPack output=ONNX_MODEL */
     ImpactONNXLoader(args: ImpactONNXLoader_input, uid?: ComfyNodeUID): ImpactONNXLoader
+    /* category=ImpactPack_Detector output=SEGS */
     ImpactBboxDetectorForEach(args: ImpactBboxDetectorForEach_input, uid?: ComfyNodeUID): ImpactBboxDetectorForEach
+    /* category=ImpactPack_Detector output=SEGS */
     ImpactSegmDetectorForEach(args: ImpactSegmDetectorForEach_input, uid?: ComfyNodeUID): ImpactSegmDetectorForEach
+    /* category=ImpactPack_Detector output=SEGS */
     ImpactONNXDetectorForEach(args: ImpactONNXDetectorForEach_input, uid?: ComfyNodeUID): ImpactONNXDetectorForEach
+    /* category=ImpactPack_Operation output=SEGS */
     ImpactBitwiseAndMaskForEach(args: ImpactBitwiseAndMaskForEach_input, uid?: ComfyNodeUID): ImpactBitwiseAndMaskForEach
+    /* category=ImpactPack_Detailer output=IMAGE */
     ImpactDetailerForEach(args: ImpactDetailerForEach_input, uid?: ComfyNodeUID): ImpactDetailerForEach
+    /* category=ImpactPack_Detailer output=IMAGE, IMAGE_1, IMAGE_2 */
     ImpactDetailerForEachDebug(args: ImpactDetailerForEachDebug_input, uid?: ComfyNodeUID): ImpactDetailerForEachDebug
+    /* category=ImpactPack_Detector output=MASK */
     ImpactBboxDetectorCombined(args: ImpactBboxDetectorCombined_input, uid?: ComfyNodeUID): ImpactBboxDetectorCombined
+    /* category=ImpactPack_Detector output=MASK */
     ImpactSegmDetectorCombined(args: ImpactSegmDetectorCombined_input, uid?: ComfyNodeUID): ImpactSegmDetectorCombined
+    /* category=ImpactPack_Detector output=MASK */
     ImpactSAMDetectorCombined(args: ImpactSAMDetectorCombined_input, uid?: ComfyNodeUID): ImpactSAMDetectorCombined
+    /* category=ImpactPack_Simple output=IMAGE, MASK, DETAILER_PIPE */
     ImpactFaceDetailer(args: ImpactFaceDetailer_input, uid?: ComfyNodeUID): ImpactFaceDetailer
+    /* category=ImpactPack_Simple output=IMAGE, MASK, DETAILER_PIPE */
     ImpactFaceDetailerPipe(args: ImpactFaceDetailerPipe_input, uid?: ComfyNodeUID): ImpactFaceDetailerPipe
+    /* category=ImpactPack_Operation output=MASK */
     ImpactBitwiseAndMask(args: ImpactBitwiseAndMask_input, uid?: ComfyNodeUID): ImpactBitwiseAndMask
+    /* category=ImpactPack_Operation output=MASK */
     ImpactSubtractMask(args: ImpactSubtractMask_input, uid?: ComfyNodeUID): ImpactSubtractMask
+    /* category=ImpactPack_Operation output=SEGS */
     ImpactSegsMask(args: ImpactSegsMask_input, uid?: ComfyNodeUID): ImpactSegsMask
+    /* category=ImpactPack_Operation output=MASK */
     ImpactSegsMaskCombine(args: ImpactSegsMaskCombine_input, uid?: ComfyNodeUID): ImpactSegsMaskCombine
+    /* category=ImpactPack_Util output=SEGS */
     ImpactEmptySegs(args: ImpactEmptySegs_input, uid?: ComfyNodeUID): ImpactEmptySegs
+    /* category=ImpactPack_Operation output=SEGS */
     ImpactMaskToSEGS(args: ImpactMaskToSEGS_input, uid?: ComfyNodeUID): ImpactMaskToSEGS
+    /* category=ImpactPack_Operation output=MASK */
     ImpactToBinaryMask(args: ImpactToBinaryMask_input, uid?: ComfyNodeUID): ImpactToBinaryMask
+    /* category=ImpactPack_Util output=MASK */
     ImpactMaskPainter(args: ImpactMaskPainter_input, uid?: ComfyNodeUID): ImpactMaskPainter
+    /* category=latent output=LATENT */
     RandomLatentImage(args: RandomLatentImage_input, uid?: ComfyNodeUID): RandomLatentImage
+    /* category=latent output=IMAGE */
     VAEDecodeBatched(args: VAEDecodeBatched_input, uid?: ComfyNodeUID): VAEDecodeBatched
+    /* category=latent output=LATENT */
     VAEEncodeBatched(args: VAEEncodeBatched_input, uid?: ComfyNodeUID): VAEEncodeBatched
+    /* category=latent output=IMAGE */
     LatentToImage(args: LatentToImage_input, uid?: ComfyNodeUID): LatentToImage
+    /* category=latent output=IMAGE, STRING */
     LatentToHist(args: LatentToHist_input, uid?: ComfyNodeUID): LatentToHist
+    /* category=sampling output=DICT */
     KSamplerSetting(args: KSamplerSetting_input, uid?: ComfyNodeUID): KSamplerSetting
+    /* category=sampling output=LATENT */
     KSamplerOverrided(args: KSamplerOverrided_input, uid?: ComfyNodeUID): KSamplerOverrided
+    /* category=sampling output=LATENT */
     KSamplerXYZ(args: KSamplerXYZ_input, uid?: ComfyNodeUID): KSamplerXYZ
+    /* category=loaders output=DICT */
     StateDictLoader(args: StateDictLoader_input, uid?: ComfyNodeUID): StateDictLoader
+    /* category=model output=MODEL, CLIP, VAE */
     Dict2Model(args: Dict2Model_input, uid?: ComfyNodeUID): Dict2Model
+    /* category=model output=MODEL */
     ModelIter(args: ModelIter_input, uid?: ComfyNodeUID): ModelIter
+    /* category=model output=CLIP */
     CLIPIter(args: CLIPIter_input, uid?: ComfyNodeUID): CLIPIter
+    /* category=model output=VAE */
     VAEIter(args: VAEIter_input, uid?: ComfyNodeUID): VAEIter
+    /* category=model output=DICT */
     StateDictMerger(args: StateDictMerger_input, uid?: ComfyNodeUID): StateDictMerger
+    /* category=model output=DICT */
     StateDictMergerBlockWeighted(args: StateDictMergerBlockWeighted_input, uid?: ComfyNodeUID): StateDictMergerBlockWeighted
+    /* category=model output=MODEL, CLIP, VAE */
     StateDictMergerBlockWeightedMulti(
         args: StateDictMergerBlockWeightedMulti_input,
         uid?: ComfyNodeUID,
     ): StateDictMergerBlockWeightedMulti
+    /* category=image_postprocessing output=IMAGE */
     ImageBlend2(args: ImageBlend2_input, uid?: ComfyNodeUID): ImageBlend2
+    /* category=image output= */
     GridImage(args: GridImage_input, uid?: ComfyNodeUID): GridImage
+    /* category=utils output= */
     SaveText(args: SaveText_input, uid?: ComfyNodeUID): SaveText
+    /* category=conditioning_cutoff output=CLIPREGION */
     BNK_CutoffBasePrompt(args: BNK_CutoffBasePrompt_input, uid?: ComfyNodeUID): BNK_CutoffBasePrompt
+    /* category=conditioning_cutoff output=CLIPREGION */
     BNK_CutoffSetRegions(args: BNK_CutoffSetRegions_input, uid?: ComfyNodeUID): BNK_CutoffSetRegions
+    /* category=conditioning_cutoff output=CONDITIONING */
     BNK_CutoffRegionsToConditioning(
         args: BNK_CutoffRegionsToConditioning_input,
         uid?: ComfyNodeUID,
     ): BNK_CutoffRegionsToConditioning
+    /* category=conditioning_cutoff output=CONDITIONING */
     BNK_CutoffRegionsToConditioning_ADV(
         args: BNK_CutoffRegionsToConditioning_ADV_input,
         uid?: ComfyNodeUID,
     ): BNK_CutoffRegionsToConditioning_ADV
+    /* category=Davemane42 output=LATENT */
     MultiLatentComposite(args: MultiLatentComposite_input, uid?: ComfyNodeUID): MultiLatentComposite
+    /* category=Davemane42 output=CONDITIONING, INT, INT_1 */
     MultiAreaConditioning(args: MultiAreaConditioning_input, uid?: ComfyNodeUID): MultiAreaConditioning
+    /* category=Davemane42 output=CONDITIONING */
     ConditioningUpscale(args: ConditioningUpscale_input, uid?: ComfyNodeUID): ConditioningUpscale
+    /* category=Davemane42 output=CONDITIONING */
     ConditioningStretch(args: ConditioningStretch_input, uid?: ComfyNodeUID): ConditioningStretch
+    /* category=image output=IMAGE, MASK */
     ClipSeg(args: ClipSeg_input, uid?: ComfyNodeUID): ClipSeg
+    /* category=preprocessors_edge_line output=IMAGE */
     CannyEdgePreprocessor(args: CannyEdgePreprocessor_input, uid?: ComfyNodeUID): CannyEdgePreprocessor
+    /* category=preprocessors_edge_line output=IMAGE */
     MLSDPreprocessor(args: MLSDPreprocessor_input, uid?: ComfyNodeUID): MLSDPreprocessor
+    /* category=preprocessors_edge_line output=IMAGE */
     HEDPreprocessor(args: HEDPreprocessor_input, uid?: ComfyNodeUID): HEDPreprocessor
+    /* category=preprocessors_edge_line output=IMAGE */
     ScribblePreprocessor(args: ScribblePreprocessor_input, uid?: ComfyNodeUID): ScribblePreprocessor
+    /* category=preprocessors_edge_line output=IMAGE */
     FakeScribblePreprocessor(args: FakeScribblePreprocessor_input, uid?: ComfyNodeUID): FakeScribblePreprocessor
+    /* category=preprocessors_edge_line output=IMAGE */
     BinaryPreprocessor(args: BinaryPreprocessor_input, uid?: ComfyNodeUID): BinaryPreprocessor
+    /* category=preprocessors_edge_line output=IMAGE */
     PiDiNetPreprocessor(args: PiDiNetPreprocessor_input, uid?: ComfyNodeUID): PiDiNetPreprocessor
+    /* category=preprocessors_edge_line output=IMAGE */
     LineArtPreprocessor(args: LineArtPreprocessor_input, uid?: ComfyNodeUID): LineArtPreprocessor
+    /* category=preprocessors_edge_line output=IMAGE */
     AnimeLineArtPreprocessor(args: AnimeLineArtPreprocessor_input, uid?: ComfyNodeUID): AnimeLineArtPreprocessor
+    /* category=preprocessors_edge_line output=IMAGE */
     Manga2AnimeLineArtPreprocessor(args: Manga2AnimeLineArtPreprocessor_input, uid?: ComfyNodeUID): Manga2AnimeLineArtPreprocessor
+    /* category=preprocessors_normal_depth_map output=IMAGE */
     MiDaSDepthMapPreprocessor(args: MiDaSDepthMapPreprocessor_input, uid?: ComfyNodeUID): MiDaSDepthMapPreprocessor
+    /* category=preprocessors_normal_depth_map output=IMAGE */
     MiDaSNormalMapPreprocessor(args: MiDaSNormalMapPreprocessor_input, uid?: ComfyNodeUID): MiDaSNormalMapPreprocessor
+    /* category=preprocessors_normal_depth_map output=IMAGE */
     LeReSDepthMapPreprocessor(args: LeReSDepthMapPreprocessor_input, uid?: ComfyNodeUID): LeReSDepthMapPreprocessor
+    /* category=preprocessors_normal_depth_map output=IMAGE */
     ZoeDepthMapPreprocessor(args: ZoeDepthMapPreprocessor_input, uid?: ComfyNodeUID): ZoeDepthMapPreprocessor
+    /* category=preprocessors_normal_depth_map output=IMAGE */
     BAENormalMapPreprocessor(args: BAENormalMapPreprocessor_input, uid?: ComfyNodeUID): BAENormalMapPreprocessor
+    /* category=preprocessors_pose output=IMAGE */
     OpenposePreprocessor(args: OpenposePreprocessor_input, uid?: ComfyNodeUID): OpenposePreprocessor
+    /* category=preprocessors_pose output=IMAGE */
     MediaPipeHandPosePreprocessor(args: MediaPipeHandPosePreprocessor_input, uid?: ComfyNodeUID): MediaPipeHandPosePreprocessor
+    /* category=preprocessors_semseg output=IMAGE */
     SemSegPreprocessor(args: SemSegPreprocessor_input, uid?: ComfyNodeUID): SemSegPreprocessor
+    /* category=preprocessors_semseg output=IMAGE */
     UniFormerSemSegPreprocessor(args: UniFormerSemSegPreprocessor_input, uid?: ComfyNodeUID): UniFormerSemSegPreprocessor
+    /* category=preprocessors_semseg output=IMAGE */
     OneFormerCOCOSemSegPreprocessor(
         args: OneFormerCOCOSemSegPreprocessor_input,
         uid?: ComfyNodeUID,
     ): OneFormerCOCOSemSegPreprocessor
+    /* category=preprocessors_semseg output=IMAGE */
     OneFormerADE20KSemSegPreprocessor(
         args: OneFormerADE20KSemSegPreprocessor_input,
         uid?: ComfyNodeUID,
     ): OneFormerADE20KSemSegPreprocessor
+    /* category=preprocessors_face_mesh output=IMAGE */
     MediaPipeFaceMeshPreprocessor(args: MediaPipeFaceMeshPreprocessor_input, uid?: ComfyNodeUID): MediaPipeFaceMeshPreprocessor
+    /* category=preprocessors_color_style output=IMAGE */
     ColorPreprocessor(args: ColorPreprocessor_input, uid?: ComfyNodeUID): ColorPreprocessor
+    /* category=preprocessors_tile output=IMAGE */
     TilePreprocessor(args: TilePreprocessor_input, uid?: ComfyNodeUID): TilePreprocessor
+    /* category=conditioning_cutoff output=CLIPREGION */
     CLIPRegionsBasePrompt(args: CLIPRegionsBasePrompt_input, uid?: ComfyNodeUID): CLIPRegionsBasePrompt
+    /* category=conditioning_cutoff output=CLIPREGION */
     CLIPSetRegion(args: CLIPSetRegion_input, uid?: ComfyNodeUID): CLIPSetRegion
+    /* category=conditioning_cutoff output=CONDITIONING */
     CLIPRegionsToConditioning(args: CLIPRegionsToConditioning_input, uid?: ComfyNodeUID): CLIPRegionsToConditioning
+    /* category=Efficiency Nodes_Sampling output=MODEL, CONDITIONING, CONDITIONING_1, LATENT, VAE, IMAGE */
     KSamplerEfficient(args: KSamplerEfficient_input, uid?: ComfyNodeUID): KSamplerEfficient
+    /* category=Efficiency Nodes_Loaders output=MODEL, CONDITIONING, CONDITIONING_1, LATENT, VAE, CLIP */
     EfficientLoader(args: EfficientLoader_input, uid?: ComfyNodeUID): EfficientLoader
+    /* category=Efficiency Nodes_Scripts output=SCRIPT */
     XYPlot(args: XYPlot_input, uid?: ComfyNodeUID): XYPlot
+    /* category=Efficiency Nodes_Image output=IMAGE */
     ImageOverlay(args: ImageOverlay_input, uid?: ComfyNodeUID): ImageOverlay
+    /* category=Efficiency Nodes_Math output=INT, FLOAT */
     EvaluateIntegers(args: EvaluateIntegers_input, uid?: ComfyNodeUID): EvaluateIntegers
+    /* category=Efficiency Nodes_Math output=STRING */
     EvaluateStrings(args: EvaluateStrings_input, uid?: ComfyNodeUID): EvaluateStrings
+    /* category=Image Processing output=IMAGE */
     GaussianBlur(args: GaussianBlur_input, uid?: ComfyNodeUID): GaussianBlur
+    /* category=Image Processing output=IMAGE */
     HistogramEqualization(args: HistogramEqualization_input, uid?: ComfyNodeUID): HistogramEqualization
+    /* category=WAS Suite_Image_Transform output=IMAGE */
     WASImageFlip(args: WASImageFlip_input, uid?: ComfyNodeUID): WASImageFlip
+    /* category=O_latent output=LATENT */
     LatentUpscaleMultiply(args: LatentUpscaleMultiply_input, uid?: ComfyNodeUID): LatentUpscaleMultiply
+    /* category=Image Processing output=IMAGE */
     PseudoHDRStyle(args: PseudoHDRStyle_input, uid?: ComfyNodeUID): PseudoHDRStyle
+    /* category=Image Processing output=IMAGE */
     Saturation(args: Saturation_input, uid?: ComfyNodeUID): Saturation
+    /* category=Image Processing output=IMAGE */
     ImageSharpening(args: ImageSharpening_input, uid?: ComfyNodeUID): ImageSharpening
+    /* category=WAS Suite_Loaders_Advanced output=MODEL, CLIP, VAE, STRING */
     WASCheckpointLoader(args: WASCheckpointLoader_input, uid?: ComfyNodeUID): WASCheckpointLoader
+    /* category=WAS Suite_Loaders output=MODEL, CLIP, VAE, STRING */
     WASCheckpointLoaderSimple(args: WASCheckpointLoaderSimple_input, uid?: ComfyNodeUID): WASCheckpointLoaderSimple
+    /* category=WAS Suite_Conditioning output=CONDITIONING */
     WASCLIPTextEncodeNSP(args: WASCLIPTextEncodeNSP_input, uid?: ComfyNodeUID): WASCLIPTextEncodeNSP
+    /* category=WAS Suite_Logic output=CONDITIONING */
     WASConditioningInputSwitch(args: WASConditioningInputSwitch_input, uid?: ComfyNodeUID): WASConditioningInputSwitch
+    /* category=WAS Suite_Number output=NUMBER */
     WASConstantNumber(args: WASConstantNumber_input, uid?: ComfyNodeUID): WASConstantNumber
+    /* category=WAS Suite_Image_Process output=IMAGE */
     WASCreateGridImage(args: WASCreateGridImage_input, uid?: ComfyNodeUID): WASCreateGridImage
+    /* category=WAS Suite_Animation output=IMAGE, IMAGE_1, ASCII, ASCII_1 */
     WASCreateMorphImage(args: WASCreateMorphImage_input, uid?: ComfyNodeUID): WASCreateMorphImage
+    /* category=WAS Suite_Animation output=ASCII, ASCII_1 */
     WASCreateMorphImageFromPath(args: WASCreateMorphImageFromPath_input, uid?: ComfyNodeUID): WASCreateMorphImageFromPath
+    /* category=WAS Suite_Animation output=ASCII, ASCII_1 */
     WASCreateVideoFromPath(args: WASCreateVideoFromPath_input, uid?: ComfyNodeUID): WASCreateVideoFromPath
+    /* category=WAS Suite_Debug output=NUMBER */
     WASDebugNumberToConsole(args: WASDebugNumberToConsole_input, uid?: ComfyNodeUID): WASDebugNumberToConsole
+    /* category=WAS Suite_Debug output=DICT */
     WASDictionaryToConsole(args: WASDictionaryToConsole_input, uid?: ComfyNodeUID): WASDictionaryToConsole
+    /* category=WAS Suite_Loaders_Advanced output=MODEL, CLIP, VAE, STRING */
     WASDiffusersModelLoader(args: WASDiffusersModelLoader_input, uid?: ComfyNodeUID): WASDiffusersModelLoader
+    /* category=WAS Suite_Logic output=LATENT */
     WASLatentInputSwitch(args: WASLatentInputSwitch_input, uid?: ComfyNodeUID): WASLatentInputSwitch
+    /* category=WAS Suite_Logic output=NUMBER */
     WASLogicBoolean(args: WASLogicBoolean_input, uid?: ComfyNodeUID): WASLogicBoolean
+    /* category=WAS Suite_Loaders output=MODEL, CLIP, STRING */
     WASLoraLoader(args: WASLoraLoader_input, uid?: ComfyNodeUID): WASLoraLoader
+    /* category=WAS Suite_Image_Analyze output=IMAGE */
     WASImageAnalyze(args: WASImageAnalyze_input, uid?: ComfyNodeUID): WASImageAnalyze
+    /* category=WAS Suite_Image output=IMAGE */
     WASImageBlank(args: WASImageBlank_input, uid?: ComfyNodeUID): WASImageBlank
+    /* category=WAS Suite_Image output=IMAGE */
     WASImageBlendByMask(args: WASImageBlendByMask_input, uid?: ComfyNodeUID): WASImageBlendByMask
+    /* category=WAS Suite_Image output=IMAGE */
     WASImageBlend(args: WASImageBlend_input, uid?: ComfyNodeUID): WASImageBlend
+    /* category=WAS Suite_Image output=IMAGE */
     WASImageBlendingMode(args: WASImageBlendingMode_input, uid?: ComfyNodeUID): WASImageBlendingMode
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageBloomFilter(args: WASImageBloomFilter_input, uid?: ComfyNodeUID): WASImageBloomFilter
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageCannyFilter(args: WASImageCannyFilter_input, uid?: ComfyNodeUID): WASImageCannyFilter
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageChromaticAberration(args: WASImageChromaticAberration_input, uid?: ComfyNodeUID): WASImageChromaticAberration
+    /* category=WAS Suite_Image_Analyze output=IMAGE */
     WASImageColorPalette(args: WASImageColorPalette_input, uid?: ComfyNodeUID): WASImageColorPalette
+    /* category=WAS Suite_Image_Process output=IMAGE, CROP_DATA */
     WASImageCropFace(args: WASImageCropFace_input, uid?: ComfyNodeUID): WASImageCropFace
+    /* category=WAS Suite_Image_Process output=IMAGE, CROP_DATA */
     WASImageCropLocation(args: WASImageCropLocation_input, uid?: ComfyNodeUID): WASImageCropLocation
+    /* category=WAS Suite_Image_Process output=IMAGE, IMAGE_1 */
     WASImagePasteFace(args: WASImagePasteFace_input, uid?: ComfyNodeUID): WASImagePasteFace
+    /* category=WAS Suite_Image_Process output=IMAGE, IMAGE_1 */
     WASImagePasteCrop(args: WASImagePasteCrop_input, uid?: ComfyNodeUID): WASImagePasteCrop
+    /* category=WAS Suite_Image_Process output=IMAGE, IMAGE_1 */
     WASImagePasteCropByLocation(args: WASImagePasteCropByLocation_input, uid?: ComfyNodeUID): WASImagePasteCropByLocation
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageDraganPhotographyFilter(
         args: WASImageDraganPhotographyFilter_input,
         uid?: ComfyNodeUID,
     ): WASImageDraganPhotographyFilter
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageEdgeDetectionFilter(args: WASImageEdgeDetectionFilter_input, uid?: ComfyNodeUID): WASImageEdgeDetectionFilter
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageFilmGrain(args: WASImageFilmGrain_input, uid?: ComfyNodeUID): WASImageFilmGrain
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageFilterAdjustments(args: WASImageFilterAdjustments_input, uid?: ComfyNodeUID): WASImageFilterAdjustments
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageGradientMap(args: WASImageGradientMap_input, uid?: ComfyNodeUID): WASImageGradientMap
+    /* category=WAS Suite_Image_Generate output=IMAGE */
     WASImageGenerateGradient(args: WASImageGenerateGradient_input, uid?: ComfyNodeUID): WASImageGenerateGradient
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageHighPassFilter(args: WASImageHighPassFilter_input, uid?: ComfyNodeUID): WASImageHighPassFilter
+    /* category=WAS Suite_History output=IMAGE, ASCII */
     WASImageHistoryLoader(args: WASImageHistoryLoader_input, uid?: ComfyNodeUID): WASImageHistoryLoader
+    /* category=WAS Suite_Logic output=IMAGE */
     WASImageInputSwitch(args: WASImageInputSwitch_input, uid?: ComfyNodeUID): WASImageInputSwitch
+    /* category=WAS Suite_Image_Adjustment output=IMAGE */
     WASImageLevelsAdjustment(args: WASImageLevelsAdjustment_input, uid?: ComfyNodeUID): WASImageLevelsAdjustment
+    /* category=WAS Suite_IO output=IMAGE, MASK, ASCII */
     WASImageLoad(args: WASImageLoad_input, uid?: ComfyNodeUID): WASImageLoad
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageMedianFilter(args: WASImageMedianFilter_input, uid?: ComfyNodeUID): WASImageMedianFilter
+    /* category=WAS Suite_Image_Process output=IMAGE */
     WASImageMixRGBChannels(args: WASImageMixRGBChannels_input, uid?: ComfyNodeUID): WASImageMixRGBChannels
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageMonitorEffectsFilter(args: WASImageMonitorEffectsFilter_input, uid?: ComfyNodeUID): WASImageMonitorEffectsFilter
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageNovaFilter(args: WASImageNovaFilter_input, uid?: ComfyNodeUID): WASImageNovaFilter
+    /* category=WAS Suite_Image_Transform output=IMAGE, IMAGE_1 */
     WASImagePadding(args: WASImagePadding_input, uid?: ComfyNodeUID): WASImagePadding
+    /* category=WAS Suite_Image_Generate_Noise output=IMAGE */
     WASImagePerlinNoiseFilter(args: WASImagePerlinNoiseFilter_input, uid?: ComfyNodeUID): WASImagePerlinNoiseFilter
+    /* category=WAS Suite_Image_Process output=IMAGE */
     WASImageRemoveBackgroundAlpha(args: WASImageRemoveBackgroundAlpha_input, uid?: ComfyNodeUID): WASImageRemoveBackgroundAlpha
+    /* category=WAS Suite_Image_Process output=IMAGE */
     WASImageRemoveColor(args: WASImageRemoveColor_input, uid?: ComfyNodeUID): WASImageRemoveColor
+    /* category=WAS Suite_Image_Transform output=IMAGE */
     WASImageResize(args: WASImageResize_input, uid?: ComfyNodeUID): WASImageResize
+    /* category=WAS Suite_Image_Transform output=IMAGE */
     WASImageRotate(args: WASImageRotate_input, uid?: ComfyNodeUID): WASImageRotate
+    /* category=WAS Suite_IO output= */
     WASImageSave(args: WASImageSave_input, uid?: ComfyNodeUID): WASImageSave
+    /* category=WAS Suite_Image_Process output=IMAGE */
     WASImageSeamlessTexture(args: WASImageSeamlessTexture_input, uid?: ComfyNodeUID): WASImageSeamlessTexture
+    /* category=WAS Suite_Image_Process output=IMAGE */
     WASImageSelectChannel(args: WASImageSelectChannel_input, uid?: ComfyNodeUID): WASImageSelectChannel
+    /* category=WAS Suite_Image_Process output=IMAGE */
     WASImageSelectColor(args: WASImageSelectColor_input, uid?: ComfyNodeUID): WASImageSelectColor
+    /* category=WAS Suite_Image_Adjustment output=IMAGE, IMAGE_1, IMAGE_2 */
     WASImageShadowsAndHighlights(args: WASImageShadowsAndHighlights_input, uid?: ComfyNodeUID): WASImageShadowsAndHighlights
+    /* category=WAS Suite_Number_Operations output=NUMBER, NUMBER_1 */
     WASImageSizeToNumber(args: WASImageSizeToNumber_input, uid?: ComfyNodeUID): WASImageSizeToNumber
+    /* category=WAS Suite_Image_Transform output=IMAGE */
     WASImageStitch(args: WASImageStitch_input, uid?: ComfyNodeUID): WASImageStitch
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageStyleFilter(args: WASImageStyleFilter_input, uid?: ComfyNodeUID): WASImageStyleFilter
+    /* category=WAS Suite_Image_Process output=IMAGE */
     WASImageThreshold(args: WASImageThreshold_input, uid?: ComfyNodeUID): WASImageThreshold
+    /* category=WAS Suite_Image_Transform output=IMAGE */
     WASImageTranspose(args: WASImageTranspose_input, uid?: ComfyNodeUID): WASImageTranspose
+    /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageFDOFFilter(args: WASImageFDOFFilter_input, uid?: ComfyNodeUID): WASImageFDOFFilter
+    /* category=WAS Suite_Image_Transform output=MASK */
     WASImageToLatentMask(args: WASImageToLatentMask_input, uid?: ComfyNodeUID): WASImageToLatentMask
+    /* category=WAS Suite_Image_Generate_Noise output=IMAGE */
     WASImageVoronoiNoiseFilter(args: WASImageVoronoiNoiseFilter_input, uid?: ComfyNodeUID): WASImageVoronoiNoiseFilter
+    /* category=WAS Suite_Sampling output=LATENT */
     WASKSamplerWAS(args: WASKSamplerWAS_input, uid?: ComfyNodeUID): WASKSamplerWAS
+    /* category=WAS Suite_Latent_Generate output=LATENT */
     WASLatentNoiseInjection(args: WASLatentNoiseInjection_input, uid?: ComfyNodeUID): WASLatentNoiseInjection
+    /* category=WAS Suite_Number_Operations output=NUMBER, NUMBER_1 */
     WASLatentSizeToNumber(args: WASLatentSizeToNumber_input, uid?: ComfyNodeUID): WASLatentSizeToNumber
+    /* category=WAS Suite_Latent_Transform output=LATENT */
     WASLatentUpscaleByFactorWAS(args: WASLatentUpscaleByFactorWAS_input, uid?: ComfyNodeUID): WASLatentUpscaleByFactorWAS
+    /* category=WAS Suite_IO output=IMAGE, ASCII */
     WASLoadImageBatch(args: WASLoadImageBatch_input, uid?: ComfyNodeUID): WASLoadImageBatch
+    /* category=WAS Suite_IO output=ASCII, DICT */
     WASLoadTextFile(args: WASLoadTextFile_input, uid?: ComfyNodeUID): WASLoadTextFile
+    /* category=WAS Suite_Image_AI output=IMAGE */
     WASMiDaSDepthApproximation(args: WASMiDaSDepthApproximation_input, uid?: ComfyNodeUID): WASMiDaSDepthApproximation
+    /* category=WAS Suite_Image_AI output=IMAGE, IMAGE_1 */
     WASMiDaSMaskImage(args: WASMiDaSMaskImage_input, uid?: ComfyNodeUID): WASMiDaSMaskImage
+    /* category=WAS Suite_Number_Operations output=NUMBER */
     WASNumberOperation(args: WASNumberOperation_input, uid?: ComfyNodeUID): WASNumberOperation
+    /* category=WAS Suite_Number_Operations output=FLOAT */
     WASNumberToFloat(args: WASNumberToFloat_input, uid?: ComfyNodeUID): WASNumberToFloat
+    /* category=WAS Suite_Logic output=NUMBER */
     WASNumberInputSwitch(args: WASNumberInputSwitch_input, uid?: ComfyNodeUID): WASNumberInputSwitch
+    /* category=WAS Suite_Logic output=NUMBER */
     WASNumberInputCondition(args: WASNumberInputCondition_input, uid?: ComfyNodeUID): WASNumberInputCondition
+    /* category=WAS Suite_Number_Functions output=NUMBER */
     WASNumberMultipleOf(args: WASNumberMultipleOf_input, uid?: ComfyNodeUID): WASNumberMultipleOf
+    /* category=WAS Suite_Number output=NUMBER */
     WASNumberPI(args: WASNumberPI_input, uid?: ComfyNodeUID): WASNumberPI
+    /* category=WAS Suite_Number_Operations output=INT */
     WASNumberToInt(args: WASNumberToInt_input, uid?: ComfyNodeUID): WASNumberToInt
+    /* category=WAS Suite_Number_Operations output=SEED */
     WASNumberToSeed(args: WASNumberToSeed_input, uid?: ComfyNodeUID): WASNumberToSeed
+    /* category=WAS Suite_Number_Operations output=STRING */
     WASNumberToString(args: WASNumberToString_input, uid?: ComfyNodeUID): WASNumberToString
+    /* category=WAS Suite_Number_Operations output=ASCII */
     WASNumberToText(args: WASNumberToText_input, uid?: ComfyNodeUID): WASNumberToText
+    /* category=WAS Suite_Text output=ASCII, ASCII_1 */
     WASPromptStylesSelector(args: WASPromptStylesSelector_input, uid?: ComfyNodeUID): WASPromptStylesSelector
+    /* category=WAS Suite_Number output=NUMBER */
     WASRandomNumber(args: WASRandomNumber_input, uid?: ComfyNodeUID): WASRandomNumber
+    /* category=WAS Suite_IO output= */
     WASSaveTextFile(args: WASSaveTextFile_input, uid?: ComfyNodeUID): WASSaveTextFile
+    /* category=WAS Suite_Number output=SEED */
     WASSeed(args: WASSeed_input, uid?: ComfyNodeUID): WASSeed
+    /* category=WAS Suite_Latent_Transform output=IMAGE */
     WASTensorBatchToImage(args: WASTensorBatchToImage_input, uid?: ComfyNodeUID): WASTensorBatchToImage
+    /* category=WAS Suite_Text_AI output=ASCII */
     WASBLIPAnalyzeImage(args: WASBLIPAnalyzeImage_input, uid?: ComfyNodeUID): WASBLIPAnalyzeImage
+    /* category=WAS Suite_Image_AI_SAM output=SAM_MODEL */
     WASSAMModelLoader(args: WASSAMModelLoader_input, uid?: ComfyNodeUID): WASSAMModelLoader
+    /* category=WAS Suite_Image_AI_SAM output=SAM_PARAMETERS */
     WASSAMParameters(args: WASSAMParameters_input, uid?: ComfyNodeUID): WASSAMParameters
+    /* category=WAS Suite_Image_AI_SAM output=SAM_PARAMETERS */
     WASSAMParametersCombine(args: WASSAMParametersCombine_input, uid?: ComfyNodeUID): WASSAMParametersCombine
+    /* category=WAS Suite_Image_AI_SAM output=IMAGE, MASK */
     WASSAMImageMask(args: WASSAMImageMask_input, uid?: ComfyNodeUID): WASSAMImageMask
+    /* category=WAS Suite_Text_Operations output=ASCII */
     WASStringToText(args: WASStringToText_input, uid?: ComfyNodeUID): WASStringToText
+    /* category=WAS Suite_Image_Bound output=IMAGE_BOUNDS */
     WASImageBounds(args: WASImageBounds_input, uid?: ComfyNodeUID): WASImageBounds
+    /* category=WAS Suite_Image_Bound output=IMAGE_BOUNDS */
     WASInsetImageBounds(args: WASInsetImageBounds_input, uid?: ComfyNodeUID): WASInsetImageBounds
+    /* category=WAS Suite_Image_Bound output=IMAGE */
     WASBoundedImageBlend(args: WASBoundedImageBlend_input, uid?: ComfyNodeUID): WASBoundedImageBlend
+    /* category=WAS Suite_Image_Bound output=IMAGE */
     WASBoundedImageBlendWithMask(args: WASBoundedImageBlendWithMask_input, uid?: ComfyNodeUID): WASBoundedImageBlendWithMask
+    /* category=WAS Suite_Image_Bound output=IMAGE */
     WASBoundedImageCrop(args: WASBoundedImageCrop_input, uid?: ComfyNodeUID): WASBoundedImageCrop
+    /* category=WAS Suite_Image_Bound output=IMAGE, IMAGE_BOUNDS */
     WASBoundedImageCropWithMask(args: WASBoundedImageCropWithMask_input, uid?: ComfyNodeUID): WASBoundedImageCropWithMask
+    /* category=WAS Suite_Text output=DICT */
     WASTextDictionaryUpdate(args: WASTextDictionaryUpdate_input, uid?: ComfyNodeUID): WASTextDictionaryUpdate
+    /* category=WAS Suite_Text_Tokens output= */
     WASTextAddTokens(args: WASTextAddTokens_input, uid?: ComfyNodeUID): WASTextAddTokens
+    /* category=WAS Suite_Text_Tokens output= */
     WASTextAddTokenByInput(args: WASTextAddTokenByInput_input, uid?: ComfyNodeUID): WASTextAddTokenByInput
+    /* category=WAS Suite_Text output=ASCII */
     WASTextConcatenate(args: WASTextConcatenate_input, uid?: ComfyNodeUID): WASTextConcatenate
+    /* category=WAS Suite_History output=ASCII, DICT */
     WASTextFileHistoryLoader(args: WASTextFileHistoryLoader_input, uid?: ComfyNodeUID): WASTextFileHistoryLoader
+    /* category=WAS Suite_Text_Search output=ASCII */
     WASTextFindAndReplaceByDictionary(
         args: WASTextFindAndReplaceByDictionary_input,
         uid?: ComfyNodeUID,
     ): WASTextFindAndReplaceByDictionary
+    /* category=WAS Suite_Text_Search output=ASCII */
     WASTextFindAndReplaceInput(args: WASTextFindAndReplaceInput_input, uid?: ComfyNodeUID): WASTextFindAndReplaceInput
+    /* category=WAS Suite_Text_Search output=ASCII */
     WASTextFindAndReplace(args: WASTextFindAndReplace_input, uid?: ComfyNodeUID): WASTextFindAndReplace
+    /* category=WAS Suite_Logic output=ASCII */
     WASTextInputSwitch(args: WASTextInputSwitch_input, uid?: ComfyNodeUID): WASTextInputSwitch
+    /* category=WAS Suite_Text output=ASCII */
     WASTextMultiline(args: WASTextMultiline_input, uid?: ComfyNodeUID): WASTextMultiline
+    /* category=WAS Suite_Text_Parse output=ASCII */
     WASTextParseA1111Embeddings(args: WASTextParseA1111Embeddings_input, uid?: ComfyNodeUID): WASTextParseA1111Embeddings
+    /* category=WAS Suite_Text_Parse output=ASCII */
     WASTextParseNoodleSoupPrompts(args: WASTextParseNoodleSoupPrompts_input, uid?: ComfyNodeUID): WASTextParseNoodleSoupPrompts
+    /* category=WAS Suite_Text_Tokens output=ASCII */
     WASTextParseTokens(args: WASTextParseTokens_input, uid?: ComfyNodeUID): WASTextParseTokens
+    /* category=WAS Suite_Text output=ASCII */
     WASTextRandomLine(args: WASTextRandomLine_input, uid?: ComfyNodeUID): WASTextRandomLine
+    /* category=WAS Suite_Text output=ASCII, ASCII_1, ASCII_2, ASCII_3 */
     WASTextString(args: WASTextString_input, uid?: ComfyNodeUID): WASTextString
+    /* category=WAS Suite_Text_Operations output=CONDITIONING */
     WASTextToConditioning(args: WASTextToConditioning_input, uid?: ComfyNodeUID): WASTextToConditioning
+    /* category=WAS Suite_Debug output=ASCII */
     WASTextToConsole(args: WASTextToConsole_input, uid?: ComfyNodeUID): WASTextToConsole
+    /* category=WAS Suite_Text_Operations output=NUMBER */
     WASTextToNumber(args: WASTextToNumber_input, uid?: ComfyNodeUID): WASTextToNumber
+    /* category=WAS Suite_Text_Operations output=STRING */
     WASTextToString(args: WASTextToString_input, uid?: ComfyNodeUID): WASTextToString
+    /* category=WAS Suite_Number output=NUMBER */
     WASTrueRandomOrgNumberGenerator(
         args: WASTrueRandomOrgNumberGenerator_input,
         uid?: ComfyNodeUID,
     ): WASTrueRandomOrgNumberGenerator
+    /* category=WAS Suite_Loaders output=MODEL, CLIP, VAE, CLIP_VISION, STRING */
     WASUnCLIPCheckpointLoader(args: WASUnCLIPCheckpointLoader_input, uid?: ComfyNodeUID): WASUnCLIPCheckpointLoader
+    /* category=WAS Suite_Loaders output=UPSCALE_MODEL, ASCII */
     WASUpscaleModelLoader(args: WASUpscaleModelLoader_input, uid?: ComfyNodeUID): WASUpscaleModelLoader
+    /* category=WAS Suite_Animation_Writer output=IMAGE, ASCII, ASCII_1 */
     WASWriteToGIF(args: WASWriteToGIF_input, uid?: ComfyNodeUID): WASWriteToGIF
+    /* category=WAS Suite_Animation_Writer output=IMAGE, ASCII, ASCII_1 */
     WASWriteToVideo(args: WASWriteToVideo_input, uid?: ComfyNodeUID): WASWriteToVideo
+    /* category=image output=IMAGE, MASK */
     YKImagePadForOutpaint(args: YKImagePadForOutpaint_input, uid?: ComfyNodeUID): YKImagePadForOutpaint
+    /* category=mask output=IMAGE */
     YKMaskToImage(args: YKMaskToImage_input, uid?: ComfyNodeUID): YKMaskToImage
+    /* category=loaders output=MODEL */
     HypernetworkLoader(args: HypernetworkLoader_input, uid?: ComfyNodeUID): HypernetworkLoader
+    /* category=loaders output=UPSCALE_MODEL */
     UpscaleModelLoader(args: UpscaleModelLoader_input, uid?: ComfyNodeUID): UpscaleModelLoader
+    /* category=image_upscaling output=IMAGE */
     ImageUpscaleWithModel(args: ImageUpscaleWithModel_input, uid?: ComfyNodeUID): ImageUpscaleWithModel
+    /* category=image_postprocessing output=IMAGE */
     ImageBlend(args: ImageBlend_input, uid?: ComfyNodeUID): ImageBlend
+    /* category=image_postprocessing output=IMAGE */
     ImageBlur(args: ImageBlur_input, uid?: ComfyNodeUID): ImageBlur
+    /* category=image_postprocessing output=IMAGE */
     ImageQuantize(args: ImageQuantize_input, uid?: ComfyNodeUID): ImageQuantize
+    /* category=image_postprocessing output=IMAGE */
     ImageSharpen(args: ImageSharpen_input, uid?: ComfyNodeUID): ImageSharpen
+    /* category=latent output=LATENT */
     LatentCompositeMasked(args: LatentCompositeMasked_input, uid?: ComfyNodeUID): LatentCompositeMasked
+    /* category=mask output=IMAGE */
     MaskToImage(args: MaskToImage_input, uid?: ComfyNodeUID): MaskToImage
+    /* category=mask output=MASK */
     ImageToMask(args: ImageToMask_input, uid?: ComfyNodeUID): ImageToMask
+    /* category=mask output=MASK */
     SolidMask(args: SolidMask_input, uid?: ComfyNodeUID): SolidMask
+    /* category=mask output=MASK */
     InvertMask(args: InvertMask_input, uid?: ComfyNodeUID): InvertMask
+    /* category=mask output=MASK */
     CropMask(args: CropMask_input, uid?: ComfyNodeUID): CropMask
+    /* category=mask output=MASK */
     MaskComposite(args: MaskComposite_input, uid?: ComfyNodeUID): MaskComposite
+    /* category=mask output=MASK */
     FeatherMask(args: FeatherMask_input, uid?: ComfyNodeUID): FeatherMask
 }
+
+// Suggestions -------------------------------
+export interface CanProduce_LATENT
+    extends Pick<
+        ComfySetup,
+        | 'KSampler'
+        | 'VAEEncode'
+        | 'VAEEncodeForInpaint'
+        | 'EmptyLatentImage'
+        | 'LatentUpscale'
+        | 'LatentFromBatch'
+        | 'KSamplerAdvanced'
+        | 'SetLatentNoiseMask'
+        | 'LatentComposite'
+        | 'LatentRotate'
+        | 'LatentFlip'
+        | 'LatentCrop'
+        | 'VAEEncodeTiled'
+        | 'RandomLatentImage'
+        | 'VAEEncodeBatched'
+        | 'KSamplerOverrided'
+        | 'KSamplerXYZ'
+        | 'MultiLatentComposite'
+        | 'KSamplerEfficient'
+        | 'EfficientLoader'
+        | 'LatentUpscaleMultiply'
+        | 'WASLatentInputSwitch'
+        | 'WASKSamplerWAS'
+        | 'WASLatentNoiseInjection'
+        | 'WASLatentUpscaleByFactorWAS'
+        | 'LatentCompositeMasked'
+    > {}
+export interface CanProduce_MODEL
+    extends Pick<
+        ComfySetup,
+        | 'CheckpointLoaderSimple'
+        | 'LoraLoader'
+        | 'TomePatchModel'
+        | 'UnCLIPCheckpointLoader'
+        | 'CheckpointLoader'
+        | 'DiffusersLoader'
+        | 'Dict2Model'
+        | 'ModelIter'
+        | 'StateDictMergerBlockWeightedMulti'
+        | 'KSamplerEfficient'
+        | 'EfficientLoader'
+        | 'WASCheckpointLoader'
+        | 'WASCheckpointLoaderSimple'
+        | 'WASDiffusersModelLoader'
+        | 'WASLoraLoader'
+        | 'WASUnCLIPCheckpointLoader'
+        | 'HypernetworkLoader'
+    > {}
+export interface CanProduce_CLIP
+    extends Pick<
+        ComfySetup,
+        | 'CheckpointLoaderSimple'
+        | 'CLIPSetLastLayer'
+        | 'LoraLoader'
+        | 'CLIPLoader'
+        | 'UnCLIPCheckpointLoader'
+        | 'CheckpointLoader'
+        | 'DiffusersLoader'
+        | 'Dict2Model'
+        | 'CLIPIter'
+        | 'StateDictMergerBlockWeightedMulti'
+        | 'EfficientLoader'
+        | 'WASCheckpointLoader'
+        | 'WASCheckpointLoaderSimple'
+        | 'WASDiffusersModelLoader'
+        | 'WASLoraLoader'
+        | 'WASUnCLIPCheckpointLoader'
+    > {}
+export interface CanProduce_VAE
+    extends Pick<
+        ComfySetup,
+        | 'CheckpointLoaderSimple'
+        | 'VAELoader'
+        | 'UnCLIPCheckpointLoader'
+        | 'CheckpointLoader'
+        | 'DiffusersLoader'
+        | 'Dict2Model'
+        | 'VAEIter'
+        | 'StateDictMergerBlockWeightedMulti'
+        | 'KSamplerEfficient'
+        | 'EfficientLoader'
+        | 'WASCheckpointLoader'
+        | 'WASCheckpointLoaderSimple'
+        | 'WASDiffusersModelLoader'
+        | 'WASUnCLIPCheckpointLoader'
+    > {}
+export interface CanProduce_CONDITIONING
+    extends Pick<
+        ComfySetup,
+        | 'CLIPTextEncode'
+        | 'ConditioningCombine'
+        | 'ConditioningSetArea'
+        | 'ConditioningSetMask'
+        | 'StyleModelApply'
+        | 'UnCLIPConditioning'
+        | 'ControlNetApply'
+        | 'GLIGENTextBoxApply'
+        | 'BNK_CutoffRegionsToConditioning'
+        | 'BNK_CutoffRegionsToConditioning_ADV'
+        | 'MultiAreaConditioning'
+        | 'ConditioningUpscale'
+        | 'ConditioningStretch'
+        | 'CLIPRegionsToConditioning'
+        | 'KSamplerEfficient'
+        | 'KSamplerEfficient'
+        | 'EfficientLoader'
+        | 'EfficientLoader'
+        | 'WASCLIPTextEncodeNSP'
+        | 'WASConditioningInputSwitch'
+        | 'WASTextToConditioning'
+    > {}
+export interface CanProduce_IMAGE
+    extends Pick<
+        ComfySetup,
+        | 'VAEDecode'
+        | 'LoadImage'
+        | 'ImageScale'
+        | 'ImageInvert'
+        | 'ImagePadForOutpaint'
+        | 'VAEDecodeTiled'
+        | 'BrightnessContrast'
+        | 'ImpactDetailerForEach'
+        | 'ImpactDetailerForEachDebug'
+        | 'ImpactDetailerForEachDebug'
+        | 'ImpactDetailerForEachDebug'
+        | 'ImpactFaceDetailer'
+        | 'ImpactFaceDetailerPipe'
+        | 'VAEDecodeBatched'
+        | 'LatentToImage'
+        | 'LatentToHist'
+        | 'ImageBlend2'
+        | 'ClipSeg'
+        | 'CannyEdgePreprocessor'
+        | 'MLSDPreprocessor'
+        | 'HEDPreprocessor'
+        | 'ScribblePreprocessor'
+        | 'FakeScribblePreprocessor'
+        | 'BinaryPreprocessor'
+        | 'PiDiNetPreprocessor'
+        | 'LineArtPreprocessor'
+        | 'AnimeLineArtPreprocessor'
+        | 'Manga2AnimeLineArtPreprocessor'
+        | 'MiDaSDepthMapPreprocessor'
+        | 'MiDaSNormalMapPreprocessor'
+        | 'LeReSDepthMapPreprocessor'
+        | 'ZoeDepthMapPreprocessor'
+        | 'BAENormalMapPreprocessor'
+        | 'OpenposePreprocessor'
+        | 'MediaPipeHandPosePreprocessor'
+        | 'SemSegPreprocessor'
+        | 'UniFormerSemSegPreprocessor'
+        | 'OneFormerCOCOSemSegPreprocessor'
+        | 'OneFormerADE20KSemSegPreprocessor'
+        | 'MediaPipeFaceMeshPreprocessor'
+        | 'ColorPreprocessor'
+        | 'TilePreprocessor'
+        | 'KSamplerEfficient'
+        | 'ImageOverlay'
+        | 'GaussianBlur'
+        | 'HistogramEqualization'
+        | 'WASImageFlip'
+        | 'PseudoHDRStyle'
+        | 'Saturation'
+        | 'ImageSharpening'
+        | 'WASCreateGridImage'
+        | 'WASCreateMorphImage'
+        | 'WASCreateMorphImage'
+        | 'WASImageAnalyze'
+        | 'WASImageBlank'
+        | 'WASImageBlendByMask'
+        | 'WASImageBlend'
+        | 'WASImageBlendingMode'
+        | 'WASImageBloomFilter'
+        | 'WASImageCannyFilter'
+        | 'WASImageChromaticAberration'
+        | 'WASImageColorPalette'
+        | 'WASImageCropFace'
+        | 'WASImageCropLocation'
+        | 'WASImagePasteFace'
+        | 'WASImagePasteFace'
+        | 'WASImagePasteCrop'
+        | 'WASImagePasteCrop'
+        | 'WASImagePasteCropByLocation'
+        | 'WASImagePasteCropByLocation'
+        | 'WASImageDraganPhotographyFilter'
+        | 'WASImageEdgeDetectionFilter'
+        | 'WASImageFilmGrain'
+        | 'WASImageFilterAdjustments'
+        | 'WASImageGradientMap'
+        | 'WASImageGenerateGradient'
+        | 'WASImageHighPassFilter'
+        | 'WASImageHistoryLoader'
+        | 'WASImageInputSwitch'
+        | 'WASImageLevelsAdjustment'
+        | 'WASImageLoad'
+        | 'WASImageMedianFilter'
+        | 'WASImageMixRGBChannels'
+        | 'WASImageMonitorEffectsFilter'
+        | 'WASImageNovaFilter'
+        | 'WASImagePadding'
+        | 'WASImagePadding'
+        | 'WASImagePerlinNoiseFilter'
+        | 'WASImageRemoveBackgroundAlpha'
+        | 'WASImageRemoveColor'
+        | 'WASImageResize'
+        | 'WASImageRotate'
+        | 'WASImageSeamlessTexture'
+        | 'WASImageSelectChannel'
+        | 'WASImageSelectColor'
+        | 'WASImageShadowsAndHighlights'
+        | 'WASImageShadowsAndHighlights'
+        | 'WASImageShadowsAndHighlights'
+        | 'WASImageStitch'
+        | 'WASImageStyleFilter'
+        | 'WASImageThreshold'
+        | 'WASImageTranspose'
+        | 'WASImageFDOFFilter'
+        | 'WASImageVoronoiNoiseFilter'
+        | 'WASLoadImageBatch'
+        | 'WASMiDaSDepthApproximation'
+        | 'WASMiDaSMaskImage'
+        | 'WASMiDaSMaskImage'
+        | 'WASTensorBatchToImage'
+        | 'WASSAMImageMask'
+        | 'WASBoundedImageBlend'
+        | 'WASBoundedImageBlendWithMask'
+        | 'WASBoundedImageCrop'
+        | 'WASBoundedImageCropWithMask'
+        | 'WASWriteToGIF'
+        | 'WASWriteToVideo'
+        | 'YKImagePadForOutpaint'
+        | 'YKMaskToImage'
+        | 'ImageUpscaleWithModel'
+        | 'ImageBlend'
+        | 'ImageBlur'
+        | 'ImageQuantize'
+        | 'ImageSharpen'
+        | 'MaskToImage'
+    > {}
+export interface CanProduce_MASK
+    extends Pick<
+        ComfySetup,
+        | 'LoadImage'
+        | 'LoadImageMask'
+        | 'ImagePadForOutpaint'
+        | 'ImpactBboxDetectorCombined'
+        | 'ImpactSegmDetectorCombined'
+        | 'ImpactSAMDetectorCombined'
+        | 'ImpactFaceDetailer'
+        | 'ImpactFaceDetailerPipe'
+        | 'ImpactBitwiseAndMask'
+        | 'ImpactSubtractMask'
+        | 'ImpactSegsMaskCombine'
+        | 'ImpactToBinaryMask'
+        | 'ImpactMaskPainter'
+        | 'ClipSeg'
+        | 'WASImageLoad'
+        | 'WASImageToLatentMask'
+        | 'WASSAMImageMask'
+        | 'YKImagePadForOutpaint'
+        | 'ImageToMask'
+        | 'SolidMask'
+        | 'InvertMask'
+        | 'CropMask'
+        | 'MaskComposite'
+        | 'FeatherMask'
+    > {}
+export interface CanProduce_CLIP_VISION_OUTPUT extends Pick<ComfySetup, 'CLIPVisionEncode'> {}
+export interface CanProduce_CONTROL_NET extends Pick<ComfySetup, 'ControlNetLoader' | 'DiffControlNetLoader'> {}
+export interface CanProduce_STYLE_MODEL extends Pick<ComfySetup, 'StyleModelLoader'> {}
+export interface CanProduce_CLIP_VISION
+    extends Pick<ComfySetup, 'CLIPVisionLoader' | 'UnCLIPCheckpointLoader' | 'WASUnCLIPCheckpointLoader'> {}
+export interface CanProduce_GLIGEN extends Pick<ComfySetup, 'GLIGENLoader'> {}
+export interface CanProduce_BBOX_MODEL extends Pick<ComfySetup, 'ImpactMMDetLoader'> {}
+export interface CanProduce_SEGM_MODEL extends Pick<ComfySetup, 'ImpactMMDetLoader'> {}
+export interface CanProduce_SAM_MODEL extends Pick<ComfySetup, 'ImpactSAMLoader' | 'WASSAMModelLoader'> {}
+export interface CanProduce_ONNX_MODEL extends Pick<ComfySetup, 'ImpactONNXLoader'> {}
+export interface CanProduce_SEGS
+    extends Pick<
+        ComfySetup,
+        | 'ImpactBboxDetectorForEach'
+        | 'ImpactSegmDetectorForEach'
+        | 'ImpactONNXDetectorForEach'
+        | 'ImpactBitwiseAndMaskForEach'
+        | 'ImpactSegsMask'
+        | 'ImpactEmptySegs'
+        | 'ImpactMaskToSEGS'
+    > {}
+export interface CanProduce_DETAILER_PIPE extends Pick<ComfySetup, 'ImpactFaceDetailer' | 'ImpactFaceDetailerPipe'> {}
+export interface CanProduce_STRING
+    extends Pick<
+        ComfySetup,
+        | 'LatentToHist'
+        | 'EvaluateStrings'
+        | 'WASCheckpointLoader'
+        | 'WASCheckpointLoaderSimple'
+        | 'WASDiffusersModelLoader'
+        | 'WASLoraLoader'
+        | 'WASNumberToString'
+        | 'WASTextToString'
+        | 'WASUnCLIPCheckpointLoader'
+    > {}
+export interface CanProduce_DICT
+    extends Pick<
+        ComfySetup,
+        | 'KSamplerSetting'
+        | 'StateDictLoader'
+        | 'StateDictMerger'
+        | 'StateDictMergerBlockWeighted'
+        | 'WASDictionaryToConsole'
+        | 'WASLoadTextFile'
+        | 'WASTextDictionaryUpdate'
+        | 'WASTextFileHistoryLoader'
+    > {}
+export interface CanProduce_CLIPREGION
+    extends Pick<ComfySetup, 'BNK_CutoffBasePrompt' | 'BNK_CutoffSetRegions' | 'CLIPRegionsBasePrompt' | 'CLIPSetRegion'> {}
+export interface CanProduce_INT
+    extends Pick<ComfySetup, 'MultiAreaConditioning' | 'MultiAreaConditioning' | 'EvaluateIntegers' | 'WASNumberToInt'> {}
+export interface CanProduce_SCRIPT extends Pick<ComfySetup, 'XYPlot'> {}
+export interface CanProduce_FLOAT extends Pick<ComfySetup, 'EvaluateIntegers' | 'WASNumberToFloat'> {}
+export interface CanProduce_NUMBER
+    extends Pick<
+        ComfySetup,
+        | 'WASConstantNumber'
+        | 'WASDebugNumberToConsole'
+        | 'WASLogicBoolean'
+        | 'WASImageSizeToNumber'
+        | 'WASImageSizeToNumber'
+        | 'WASLatentSizeToNumber'
+        | 'WASLatentSizeToNumber'
+        | 'WASNumberOperation'
+        | 'WASNumberInputSwitch'
+        | 'WASNumberInputCondition'
+        | 'WASNumberMultipleOf'
+        | 'WASNumberPI'
+        | 'WASRandomNumber'
+        | 'WASTextToNumber'
+        | 'WASTrueRandomOrgNumberGenerator'
+    > {}
+export interface CanProduce_ASCII
+    extends Pick<
+        ComfySetup,
+        | 'WASCreateMorphImage'
+        | 'WASCreateMorphImage'
+        | 'WASCreateMorphImageFromPath'
+        | 'WASCreateMorphImageFromPath'
+        | 'WASCreateVideoFromPath'
+        | 'WASCreateVideoFromPath'
+        | 'WASImageHistoryLoader'
+        | 'WASImageLoad'
+        | 'WASLoadImageBatch'
+        | 'WASLoadTextFile'
+        | 'WASNumberToText'
+        | 'WASPromptStylesSelector'
+        | 'WASPromptStylesSelector'
+        | 'WASBLIPAnalyzeImage'
+        | 'WASStringToText'
+        | 'WASTextConcatenate'
+        | 'WASTextFileHistoryLoader'
+        | 'WASTextFindAndReplaceByDictionary'
+        | 'WASTextFindAndReplaceInput'
+        | 'WASTextFindAndReplace'
+        | 'WASTextInputSwitch'
+        | 'WASTextMultiline'
+        | 'WASTextParseA1111Embeddings'
+        | 'WASTextParseNoodleSoupPrompts'
+        | 'WASTextParseTokens'
+        | 'WASTextRandomLine'
+        | 'WASTextString'
+        | 'WASTextString'
+        | 'WASTextString'
+        | 'WASTextString'
+        | 'WASTextToConsole'
+        | 'WASUpscaleModelLoader'
+        | 'WASWriteToGIF'
+        | 'WASWriteToGIF'
+        | 'WASWriteToVideo'
+        | 'WASWriteToVideo'
+    > {}
+export interface CanProduce_CROP_DATA extends Pick<ComfySetup, 'WASImageCropFace' | 'WASImageCropLocation'> {}
+export interface CanProduce_SEED extends Pick<ComfySetup, 'WASNumberToSeed' | 'WASSeed'> {}
+export interface CanProduce_SAM_PARAMETERS extends Pick<ComfySetup, 'WASSAMParameters' | 'WASSAMParametersCombine'> {}
+export interface CanProduce_IMAGE_BOUNDS
+    extends Pick<ComfySetup, 'WASImageBounds' | 'WASInsetImageBounds' | 'WASBoundedImageCropWithMask'> {}
+export interface CanProduce_UPSCALE_MODEL extends Pick<ComfySetup, 'WASUpscaleModelLoader' | 'UpscaleModelLoader'> {}
 
 // TYPES -------------------------------
 export type CLIP_VISION_OUTPUT = Slot<'CLIP_VISION_OUTPUT'>
@@ -572,6 +1237,7 @@ export type Enum_ImpactSAMDetectorCombined_detection_hint =
     | 'diamond-4'
     | 'horizontal-2'
     | 'mask-area'
+    | 'mask-point-bbox'
     | 'mask-points'
     | 'none'
     | 'rect-4'
@@ -692,6 +1358,34 @@ export type Enum_WASImageHistoryLoader_image =
     | '...\\output\\ComfyUI_03515_.png'
     | '...\\output\\ComfyUI_03518_.png'
     | '...\\output\\ComfyUI_03522_.png'
+    | '...\\output\\ComfyUI_03524_.png'
+    | '...\\output\\ComfyUI_03527_.png'
+    | '...\\output\\ComfyUI_03530_.png'
+    | '...\\output\\ComfyUI_03533_.png'
+    | '...\\output\\ComfyUI_03536_.png'
+    | '...\\output\\ComfyUI_03539_.png'
+    | '...\\output\\ComfyUI_03542_.png'
+    | '...\\output\\ComfyUI_03547_.png'
+    | '...\\output\\ComfyUI_03550_.png'
+    | '...\\output\\ComfyUI_03553_.png'
+    | '...\\output\\ComfyUI_03556_.png'
+    | '...\\output\\ComfyUI_03559_.png'
+    | '...\\output\\ComfyUI_03564_.png'
+    | '...\\output\\ComfyUI_03569_.png'
+    | '...\\output\\ComfyUI_03580_.png'
+    | '...\\output\\ComfyUI_03591_.png'
+    | '...\\output\\ComfyUI_03602_.png'
+    | '...\\output\\ComfyUI_03613_.png'
+    | '...\\output\\ComfyUI_03624_.png'
+    | '...\\output\\ComfyUI_03635_.png'
+    | '...\\output\\ComfyUI_03643_.png'
+    | '...\\output\\ComfyUI_03651_.png'
+    | '...\\output\\ComfyUI_03659_.png'
+    | '...\\output\\ComfyUI_03668_.png'
+    | '...\\output\\ComfyUI_03676_.png'
+    | '...\\output\\ComfyUI_03684_.png'
+    | '...\\output\\ComfyUI_03715_.png'
+    | '...\\output\\ComfyUI_03792_.png'
 export type Enum_WASImageMonitorEffectsFilter_mode = 'Digital Distortion' | 'Signal Distortion' | 'TV Distortion'
 export type Enum_WASImageRemoveBackgroundAlpha_mode = 'background' | 'foreground'
 export type Enum_WASImageResize_mode = 'rescale' | 'resize'
