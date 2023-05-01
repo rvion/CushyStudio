@@ -101,10 +101,9 @@ export class ComfyNode<ComfyNode_input extends object> {
     }
 
     _convertPromptExtToPrompt(promptExt: ComfyNodeJSON) {
-        const inputsExt = Object.entries(promptExt.inputs)
         const inputs: { [inputName: string]: any } = {}
-        for (const [name, value] of inputsExt) {
-            inputs[name] = this.serializeValue(name, value)
+        for (const i of this.$schema.inputs) {
+            inputs[i.name] = this.serializeValue(i.name, promptExt.inputs[i.name])
         }
         return { class_type: this.$schema.nameInComfy, inputs }
     }
@@ -143,8 +142,19 @@ export class ComfyNode<ComfyNode_input extends object> {
     // }
 
     serializeValue(field: string, value: unknown): unknown {
-        if (value == null)
-            throw new Error(`[serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}) value is null`)
+        if (value == null) {
+            const schema = this.$schema.inputs.find((i: NodeInputExt) => i.name === field)
+            if (schema == null) throw new Error(`🔴 no schema for field "${field}" (of node ${this.$schema.nameInCushy})`)
+            if (schema.opts?.default != null) {
+                // console.log('🔴 def1=', field, schema.opts.default)
+                return schema.opts.default
+            }
+            if (!schema.required) {
+                // console.log('🔴 def2=', field, schema.required)
+                return undefined
+            }
+            throw new Error(`🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}) value is null`)
+        }
         if (value instanceof Slot) return [value.node.uid, value.slotIx]
         if (value instanceof ComfyNode) {
             // console.log('🔴 Value is COmfyNodeç')
