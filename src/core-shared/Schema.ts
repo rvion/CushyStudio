@@ -249,6 +249,9 @@ export class Schema {
         p(`}`)
 
         p(`\n// Suggestions -------------------------------`)
+        for (const key in ComfyPrimitiveMapping) {
+            p(`export interface CanProduce_${key} {}`)
+        }
         for (const [tp, nns] of Object.entries(this.nodesByProduction)) {
             p(`export interface CanProduce_${tp} extends Pick<ComfySetup, ${nns.map((i) => `'${i}'`).join(' | ')}> { }`)
         }
@@ -261,6 +264,15 @@ export class Schema {
         for (const t of types) {
             // const tsType = this.toTSType(t)
             p(`export type ${t.comfyType} = ${t.tsType}`)
+        }
+
+        p(`\n// ACCEPTABLE INPUTS -------------------------------`)
+        for (const t of types) {
+            // const tsType = this.toTSType(t)
+            p(
+                `export type _${t.comfyType} = ${t.tsType} | HasSingle_${t.comfyType} | ((x: CanProduce_${t.comfyType}) => ${t.tsType})`,
+            )
+            // ${i.type} | HasSingle_${i.type}
         }
 
         p(`\n// ENUMS -------------------------------`)
@@ -281,11 +293,11 @@ export class Schema {
         for (const t of this.knownTypes.values()) {
             p(`export interface HasSingle_${t} { _${t}: ${t} } // prettier-ignore`)
         }
-        for (const t of this.knownEnums.values()) {
-            p(
-                `export interface HasSingle_${t.enumNameInCushy} { _${t.enumNameInCushy}: ${t.enumNameInCushy} } // prettier-ignore`,
-            )
-        }
+        // for (const t of this.knownEnums.values()) {
+        //     p(
+        //         `export interface HasSingle_${t.enumNameInCushy} { _${t.enumNameInCushy}: ${t.enumNameInCushy} } // prettier-ignore`,
+        //     )
+        // }
 
         p(`\n// NODES -------------------------------`)
         for (const n of this.nodes) p(n.codegen())
@@ -323,7 +335,7 @@ export class Schema {
         return b.content
     }
 
-    private toTSType = (t: string) => ComfyPrimitiveMapping[t] ?? `Slot<'${t}'>`
+    private toTSType = (t: string) => (ComfyPrimitiveMapping[t] ? `${ComfyPrimitiveMapping[t]} | Slot<'${t}'>` : `Slot<'${t}'>`)
 }
 
 export class ComfyNodeSchema {
@@ -371,7 +383,12 @@ export class ComfyNodeSchema {
 
         p(`export type ${this.nameInCushy}_input = {`)
         for (const i of this.inputs) {
-            const type = ComfyPrimitiveMapping[i.type] ? i.type : `${i.type} | HasSingle_${i.type}`
+            const type = ComfyPrimitiveMapping[i.type] //
+                ? i.type
+                : i.type.startsWith('Enum_')
+                ? i.type
+                : `_${i.type}`
+
             if (i.opts) p(`    ${this.renderOpts(i.opts)}`)
             const canBeOmmited = i.opts?.default !== undefined || !i.required
             p(`    ${i.name}${canBeOmmited ? '?' : ''}: ${type}`)
