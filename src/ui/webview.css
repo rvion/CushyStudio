@@ -71,8 +71,8 @@ body {
     /* --yarl__thumbnails_container_padding: .1rem; */
     /* --yarl__carousel_padding_px: 0; */
 }
-.yarl__root {min-height: 20rem !important;}
-.yarl__slide {padding: 0;}
+.yarl__root {min-height: 512px !important;}
+.yarl__slide {padding: 0 !important;}
 .rs-panel {background: white; }
 .rs-panel-body {padding: 10px}
 .react-transform-wrapper { max-width: 100%; }
