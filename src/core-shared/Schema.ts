@@ -383,11 +383,9 @@ export class ComfyNodeSchema {
 
         p(`export type ${this.nameInCushy}_input = {`)
         for (const i of this.inputs) {
-            const type = ComfyPrimitiveMapping[i.type] //
+            const type = /*ComfyPrimitiveMapping[i.type] //
                 ? i.type
-                : i.type.startsWith('Enum_')
-                ? i.type
-                : `_${i.type}`
+                : */ i.type.startsWith('Enum_') ? i.type : `_${i.type}`
 
             if (i.opts) p(`    ${this.renderOpts(i.opts)}`)
             const canBeOmmited = i.opts?.default !== undefined || !i.required

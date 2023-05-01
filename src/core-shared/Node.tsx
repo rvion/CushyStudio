@@ -138,6 +138,7 @@ export class ComfyNode<ComfyNode_input extends object> {
             if (!schema.required) return undefined
             throw new Error(`🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}) value is null`)
         }
+        if (typeof value === 'function') return this.serializeValue(field, value(this.graph))
         if (value instanceof Slot) return [value.node.uid, value.slotIx]
         if (value instanceof ComfyNode) {
             const expectedType = this._getExpecteTypeForField(field)
