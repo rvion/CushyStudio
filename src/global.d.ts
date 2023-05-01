@@ -1026,62 +1026,48 @@ export type _SchedulerName =
     | string
     | Slot<'SchedulerName'>
     | HasSingle_SchedulerName
-    | ((x: CanProduce_SchedulerName) => string | Slot<'SchedulerName'>)
-export type _SamplerName =
-    | string
-    | Slot<'SamplerName'>
-    | HasSingle_SamplerName
-    | ((x: CanProduce_SamplerName) => string | Slot<'SamplerName'>)
-export type _IMAGE_PATH =
-    | string
-    | Slot<'IMAGE_PATH'>
-    | HasSingle_IMAGE_PATH
-    | ((x: CanProduce_IMAGE_PATH) => string | Slot<'IMAGE_PATH'>)
+    | ((x: CanProduce_SchedulerName) => _SchedulerName)
+export type _SamplerName = string | Slot<'SamplerName'> | HasSingle_SamplerName | ((x: CanProduce_SamplerName) => _SamplerName)
+export type _IMAGE_PATH = string | Slot<'IMAGE_PATH'> | HasSingle_IMAGE_PATH | ((x: CanProduce_IMAGE_PATH) => _IMAGE_PATH)
 export type _CLIP_VISION_OUTPUT =
     | Slot<'CLIP_VISION_OUTPUT'>
     | HasSingle_CLIP_VISION_OUTPUT
-    | ((x: CanProduce_CLIP_VISION_OUTPUT) => Slot<'CLIP_VISION_OUTPUT'>)
-export type _Integer = number | Slot<'Integer'> | HasSingle_Integer | ((x: CanProduce_Integer) => number | Slot<'Integer'>)
-export type _STRING = string | Slot<'STRING'> | HasSingle_STRING | ((x: CanProduce_STRING) => string | Slot<'STRING'>)
-export type _FLOAT = number | Slot<'FLOAT'> | HasSingle_FLOAT | ((x: CanProduce_FLOAT) => number | Slot<'FLOAT'>)
-export type _Float = number | Slot<'Float'> | HasSingle_Float | ((x: CanProduce_Float) => number | Slot<'Float'>)
+    | ((x: CanProduce_CLIP_VISION_OUTPUT) => _CLIP_VISION_OUTPUT)
+export type _Integer = number | Slot<'Integer'> | HasSingle_Integer | ((x: CanProduce_Integer) => _Integer)
+export type _STRING = string | Slot<'STRING'> | HasSingle_STRING | ((x: CanProduce_STRING) => _STRING)
+export type _FLOAT = number | Slot<'FLOAT'> | HasSingle_FLOAT | ((x: CanProduce_FLOAT) => _FLOAT)
+export type _Float = number | Slot<'Float'> | HasSingle_Float | ((x: CanProduce_Float) => _Float)
 export type _SAM_PARAMETERS =
     | Slot<'SAM_PARAMETERS'>
     | HasSingle_SAM_PARAMETERS
-    | ((x: CanProduce_SAM_PARAMETERS) => Slot<'SAM_PARAMETERS'>)
-export type _DETAILER_PIPE =
-    | Slot<'DETAILER_PIPE'>
-    | HasSingle_DETAILER_PIPE
-    | ((x: CanProduce_DETAILER_PIPE) => Slot<'DETAILER_PIPE'>)
-export type _UPSCALE_MODEL =
-    | Slot<'UPSCALE_MODEL'>
-    | HasSingle_UPSCALE_MODEL
-    | ((x: CanProduce_UPSCALE_MODEL) => Slot<'UPSCALE_MODEL'>)
-export type _INT = number | Slot<'INT'> | HasSingle_INT | ((x: CanProduce_INT) => number | Slot<'INT'>)
-export type _CONDITIONING = Slot<'CONDITIONING'> | HasSingle_CONDITIONING | ((x: CanProduce_CONDITIONING) => Slot<'CONDITIONING'>)
-export type _IMAGE_BOUNDS = Slot<'IMAGE_BOUNDS'> | HasSingle_IMAGE_BOUNDS | ((x: CanProduce_IMAGE_BOUNDS) => Slot<'IMAGE_BOUNDS'>)
-export type _CLIP_VISION = Slot<'CLIP_VISION'> | HasSingle_CLIP_VISION | ((x: CanProduce_CLIP_VISION) => Slot<'CLIP_VISION'>)
-export type _STYLE_MODEL = Slot<'STYLE_MODEL'> | HasSingle_STYLE_MODEL | ((x: CanProduce_STYLE_MODEL) => Slot<'STYLE_MODEL'>)
-export type _CONTROL_NET = Slot<'CONTROL_NET'> | HasSingle_CONTROL_NET | ((x: CanProduce_CONTROL_NET) => Slot<'CONTROL_NET'>)
-export type _BBOX_MODEL = Slot<'BBOX_MODEL'> | HasSingle_BBOX_MODEL | ((x: CanProduce_BBOX_MODEL) => Slot<'BBOX_MODEL'>)
-export type _SEGM_MODEL = Slot<'SEGM_MODEL'> | HasSingle_SEGM_MODEL | ((x: CanProduce_SEGM_MODEL) => Slot<'SEGM_MODEL'>)
-export type _ONNX_MODEL = Slot<'ONNX_MODEL'> | HasSingle_ONNX_MODEL | ((x: CanProduce_ONNX_MODEL) => Slot<'ONNX_MODEL'>)
-export type _CLIPREGION = Slot<'CLIPREGION'> | HasSingle_CLIPREGION | ((x: CanProduce_CLIPREGION) => Slot<'CLIPREGION'>)
-export type _SAM_MODEL = Slot<'SAM_MODEL'> | HasSingle_SAM_MODEL | ((x: CanProduce_SAM_MODEL) => Slot<'SAM_MODEL'>)
-export type _CROP_DATA = Slot<'CROP_DATA'> | HasSingle_CROP_DATA | ((x: CanProduce_CROP_DATA) => Slot<'CROP_DATA'>)
-export type _LATENT = Slot<'LATENT'> | HasSingle_LATENT | ((x: CanProduce_LATENT) => Slot<'LATENT'>)
-export type _GLIGEN = Slot<'GLIGEN'> | HasSingle_GLIGEN | ((x: CanProduce_GLIGEN) => Slot<'GLIGEN'>)
-export type _SCRIPT = Slot<'SCRIPT'> | HasSingle_SCRIPT | ((x: CanProduce_SCRIPT) => Slot<'SCRIPT'>)
-export type _NUMBER = Slot<'NUMBER'> | HasSingle_NUMBER | ((x: CanProduce_NUMBER) => Slot<'NUMBER'>)
-export type _MODEL = Slot<'MODEL'> | HasSingle_MODEL | ((x: CanProduce_MODEL) => Slot<'MODEL'>)
-export type _IMAGE = Slot<'IMAGE'> | HasSingle_IMAGE | ((x: CanProduce_IMAGE) => Slot<'IMAGE'>)
-export type _ASCII = Slot<'ASCII'> | HasSingle_ASCII | ((x: CanProduce_ASCII) => Slot<'ASCII'>)
-export type _CLIP = Slot<'CLIP'> | HasSingle_CLIP | ((x: CanProduce_CLIP) => Slot<'CLIP'>)
-export type _MASK = Slot<'MASK'> | HasSingle_MASK | ((x: CanProduce_MASK) => Slot<'MASK'>)
-export type _SEGS = Slot<'SEGS'> | HasSingle_SEGS | ((x: CanProduce_SEGS) => Slot<'SEGS'>)
-export type _DICT = Slot<'DICT'> | HasSingle_DICT | ((x: CanProduce_DICT) => Slot<'DICT'>)
-export type _SEED = Slot<'SEED'> | HasSingle_SEED | ((x: CanProduce_SEED) => Slot<'SEED'>)
-export type _VAE = Slot<'VAE'> | HasSingle_VAE | ((x: CanProduce_VAE) => Slot<'VAE'>)
+    | ((x: CanProduce_SAM_PARAMETERS) => _SAM_PARAMETERS)
+export type _DETAILER_PIPE = Slot<'DETAILER_PIPE'> | HasSingle_DETAILER_PIPE | ((x: CanProduce_DETAILER_PIPE) => _DETAILER_PIPE)
+export type _UPSCALE_MODEL = Slot<'UPSCALE_MODEL'> | HasSingle_UPSCALE_MODEL | ((x: CanProduce_UPSCALE_MODEL) => _UPSCALE_MODEL)
+export type _INT = number | Slot<'INT'> | HasSingle_INT | ((x: CanProduce_INT) => _INT)
+export type _CONDITIONING = Slot<'CONDITIONING'> | HasSingle_CONDITIONING | ((x: CanProduce_CONDITIONING) => _CONDITIONING)
+export type _IMAGE_BOUNDS = Slot<'IMAGE_BOUNDS'> | HasSingle_IMAGE_BOUNDS | ((x: CanProduce_IMAGE_BOUNDS) => _IMAGE_BOUNDS)
+export type _CLIP_VISION = Slot<'CLIP_VISION'> | HasSingle_CLIP_VISION | ((x: CanProduce_CLIP_VISION) => _CLIP_VISION)
+export type _STYLE_MODEL = Slot<'STYLE_MODEL'> | HasSingle_STYLE_MODEL | ((x: CanProduce_STYLE_MODEL) => _STYLE_MODEL)
+export type _CONTROL_NET = Slot<'CONTROL_NET'> | HasSingle_CONTROL_NET | ((x: CanProduce_CONTROL_NET) => _CONTROL_NET)
+export type _BBOX_MODEL = Slot<'BBOX_MODEL'> | HasSingle_BBOX_MODEL | ((x: CanProduce_BBOX_MODEL) => _BBOX_MODEL)
+export type _SEGM_MODEL = Slot<'SEGM_MODEL'> | HasSingle_SEGM_MODEL | ((x: CanProduce_SEGM_MODEL) => _SEGM_MODEL)
+export type _ONNX_MODEL = Slot<'ONNX_MODEL'> | HasSingle_ONNX_MODEL | ((x: CanProduce_ONNX_MODEL) => _ONNX_MODEL)
+export type _CLIPREGION = Slot<'CLIPREGION'> | HasSingle_CLIPREGION | ((x: CanProduce_CLIPREGION) => _CLIPREGION)
+export type _SAM_MODEL = Slot<'SAM_MODEL'> | HasSingle_SAM_MODEL | ((x: CanProduce_SAM_MODEL) => _SAM_MODEL)
+export type _CROP_DATA = Slot<'CROP_DATA'> | HasSingle_CROP_DATA | ((x: CanProduce_CROP_DATA) => _CROP_DATA)
+export type _LATENT = Slot<'LATENT'> | HasSingle_LATENT | ((x: CanProduce_LATENT) => _LATENT)
+export type _GLIGEN = Slot<'GLIGEN'> | HasSingle_GLIGEN | ((x: CanProduce_GLIGEN) => _GLIGEN)
+export type _SCRIPT = Slot<'SCRIPT'> | HasSingle_SCRIPT | ((x: CanProduce_SCRIPT) => _SCRIPT)
+export type _NUMBER = Slot<'NUMBER'> | HasSingle_NUMBER | ((x: CanProduce_NUMBER) => _NUMBER)
+export type _MODEL = Slot<'MODEL'> | HasSingle_MODEL | ((x: CanProduce_MODEL) => _MODEL)
+export type _IMAGE = Slot<'IMAGE'> | HasSingle_IMAGE | ((x: CanProduce_IMAGE) => _IMAGE)
+export type _ASCII = Slot<'ASCII'> | HasSingle_ASCII | ((x: CanProduce_ASCII) => _ASCII)
+export type _CLIP = Slot<'CLIP'> | HasSingle_CLIP | ((x: CanProduce_CLIP) => _CLIP)
+export type _MASK = Slot<'MASK'> | HasSingle_MASK | ((x: CanProduce_MASK) => _MASK)
+export type _SEGS = Slot<'SEGS'> | HasSingle_SEGS | ((x: CanProduce_SEGS) => _SEGS)
+export type _DICT = Slot<'DICT'> | HasSingle_DICT | ((x: CanProduce_DICT) => _DICT)
+export type _SEED = Slot<'SEED'> | HasSingle_SEED | ((x: CanProduce_SEED) => _SEED)
+export type _VAE = Slot<'VAE'> | HasSingle_VAE | ((x: CanProduce_VAE) => _VAE)
 
 // ENUMS -------------------------------
 export type Enum_KSampler_sampler_name =

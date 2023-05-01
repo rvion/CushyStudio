@@ -270,7 +270,7 @@ export class Schema {
         for (const t of types) {
             // const tsType = this.toTSType(t)
             p(
-                `export type _${t.comfyType} = ${t.tsType} | HasSingle_${t.comfyType} | ((x: CanProduce_${t.comfyType}) => ${t.tsType})`,
+                `export type _${t.comfyType} = ${t.tsType} | HasSingle_${t.comfyType} | ((x: CanProduce_${t.comfyType}) => _${t.comfyType})`,
             )
             // ${i.type} | HasSingle_${i.type}
         }
