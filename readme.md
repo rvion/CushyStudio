@@ -178,13 +178,29 @@ WORKFLOW("test", async ({graph, flow}) => {
 
 ```ts
 export interface IFlowExecution {
+    // flow dependencies params
+    addParam(param: FlowParam): void
+
     // random value generation
     randomSeed(): number
+    range(start: number, end: number, increment?: number): number[]
+
+    ensureModel(p: { name: string; url: string }): Promise<void>
+    ensureCustomNodes(p: { path: string; url: string }): Promise<void>
 
     // debug
-    print(msg: string): void
+    print(msg: Printable): void
     showHTMLContent(content: string): void
     showMardownContent(content: string): void
+    createAnimation(
+        /** image to incldue (defaults to all images generated in the run) */
+        source?: IGeneratedImage[],
+        /** frame duration, in ms:
+         * - default is 200 (= 5fps)
+         * - use 16 for ~60 fps
+         * */
+        frameDuration?: number,
+    ): Promise<void>
 
     // path manipulation
     resolveRelative(path: string): RelativePath

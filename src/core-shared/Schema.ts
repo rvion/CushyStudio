@@ -5,7 +5,6 @@ import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from './Primitives'
 import { normalizeJSIdentifier } from './normalizeJSIdentifier'
-import { logger } from '../logger/logger'
 
 export type EnumHash = string
 export type EnumName = string
