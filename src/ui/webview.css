@@ -74,7 +74,7 @@ body {
 .yarl__root {min-height: 512px !important;}
 .yarl__slide {padding: 0 !important;}
 .rs-panel {background: white; }
-.rs-panel-body {padding: 10px}
+.rs-panel-body {padding: .4rem !important;}
 .react-transform-wrapper { max-width: 100%; }
 
 .hljs{
