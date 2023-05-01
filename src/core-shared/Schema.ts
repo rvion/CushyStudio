@@ -57,9 +57,11 @@ export class Schema {
             // logger().chanel?.append(`[${nodeNameInComfy}]`)
             // apply prefix
             const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy)
-            const nodeNameInCushy = nodeDef.category.startsWith('WAS Suite/')
-                ? `WAS${normalizedNodeNameInCushy}`
-                : normalizedNodeNameInCushy
+            // prettier-ignore
+            const nodeNameInCushy =
+                nodeDef.category.startsWith('WAS Suite/') ? `WAS${normalizedNodeNameInCushy}` :
+                nodeDef.category.startsWith('ImpactPack') ? `Impact${normalizedNodeNameInCushy}` :
+                normalizedNodeNameInCushy
             // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
 
             const inputs: NodeInputExt[] = []
