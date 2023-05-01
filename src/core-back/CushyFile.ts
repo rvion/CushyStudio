@@ -85,10 +85,10 @@ export class CushyFile {
         extractWorkflows(content, {
             onWorkflowFound: (range: vscode.Range, workflowName: string) => {
                 const parent = ancestors[ancestors.length - 1]
-                const id = `${vsTestItem.uri}/${workflowName}`
-                ids.push({ id, name: workflowName })
-                const tcase = controller.createTestItem(id, workflowName, vsTestItem.uri)
-                const cushyFlow = new FlowDefinition(this, range, workflowName, thisGeneration)
+                const flowID = `${vsTestItem.uri}/${workflowName}`
+                ids.push({ id: flowID, name: workflowName })
+                const tcase = controller.createTestItem(flowID, workflowName, vsTestItem.uri)
+                const cushyFlow = new FlowDefinition(flowID, this, range, workflowName, thisGeneration)
                 vsTestItemOriginDict.set(tcase, cushyFlow)
                 tcase.range = range
                 parent.children.push(tcase)

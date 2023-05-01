@@ -81,7 +81,7 @@ export class FrontState {
         if (msg.type === 'show-html') return
         if (msg.type === 'print') return
         if (msg.type === 'flow-start') {
-            this.runningFlowId = msg.flowID
+            this.runningFlowId = msg.flowRunID
             return
         }
         if (msg.type === 'flow-end') {

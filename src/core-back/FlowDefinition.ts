@@ -16,6 +16,7 @@ import { Presets } from './presets'
 export class FlowDefinition {
     constructor(
         //
+        public flowID: string,
         public file: CushyFile,
         public range: vscode.Range,
         public flowName: string,
@@ -29,9 +30,8 @@ export class FlowDefinition {
         mode: RunMode = 'real',
     ): Promise<boolean> => {
         const start = Date.now()
-
-        const flowID = nanoid(6)
-        this.file.workspace.sendMessage({ type: 'flow-start', flowID })
+        const flowRunID = nanoid(6)
+        this.file.workspace.sendMessage({ type: 'flow-start', flowRunID: flowRunID })
 
         logger().info('❓ running some flow')
         // this.focusedProject = this
@@ -83,17 +83,17 @@ export class FlowDefinition {
             const good = workflows.find((i) => i.name === this.flowName)
             if (good == null) throw new Error('no workflow found')
             const presets = new Presets(graph as any, execution)
-            this.file.workspace.sendMessage({ type: 'flow-code', flowID, code: good.fn.toString() })
+            this.file.workspace.sendMessage({ type: 'flow-code', flowRunID: flowRunID, code: good.fn.toString() })
             await good.fn({ graph: graph as any, flow: execution, presets })
             console.log('[✅] RUN SUCCESS')
             // this.isRunning = false
             const duration = Date.now() - start
             vsTestRun.passed(vsTestItem, duration)
-            this.file.workspace.sendMessage({ type: 'flow-end', flowID, status: 'success' })
+            this.file.workspace.sendMessage({ type: 'flow-end', flowRunID: flowRunID, status: 'success', flowID: this.flowID })
             return true
         } catch (error) {
             console.log(error)
-            this.file.workspace.sendMessage({ type: 'flow-end', flowID, status: 'failure' })
+            this.file.workspace.sendMessage({ type: 'flow-end', flowRunID: flowRunID, status: 'failure', flowID: this.flowID })
             logger().error('🌠', (error as any as Error).name)
             logger().error('🌠', (error as any as Error).message)
             logger().error('🌠', 'RUN FAILURE')

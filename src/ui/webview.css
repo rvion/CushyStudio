@@ -75,9 +75,28 @@ body {
 .yarl__slide {padding: 0 !important;}
 .rs-panel {background: white; }
 .rs-panel-body {padding: .4rem !important;}
+.rs-message-container {padding: .4rem !important;}
 .react-transform-wrapper { max-width: 100%; }
 
 .hljs{
     color: unset !important;
     background: unset !important;
+}
+
+
+/* transition to grow from 0 height to normal height */
+.transition-height {
+    /* transition: height .3s ease-in-out; */
+    animation: slideInFromTop 0.2s ease-out;
+
+    /* height: 0; */
+}
+
+@keyframes slideInFromTop {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
 }

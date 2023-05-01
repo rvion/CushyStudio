@@ -10,9 +10,9 @@ import { GeneratedImageSummary } from 'src/core-back/GeneratedImage'
 export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExtensionToWebview_
 export type MessageFromExtensionToWebview_ =
     // flow start stop
-    | { type: 'flow-start'; flowID: string }
-    | { type: 'flow-code'; flowID: string; code: string }
-    | { type: 'flow-end'; flowID: string; status: 'success' | 'failure' }
+    | { type: 'flow-start'; flowRunID: string }
+    | { type: 'flow-code'; flowRunID: string; code: string }
+    | { type: 'flow-end'; flowRunID: string; status: 'success' | 'failure'; flowID: string }
 
     // user interractions
     | MessageFromExtensionToWebview_askString
