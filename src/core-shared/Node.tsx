@@ -7,7 +7,6 @@ import { ComfyNodeUID } from '../core-types/NodeUID'
 import { exhaust } from '../utils/ComfyUtils'
 import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from './Schema'
 import { Slot } from './Slot'
-// import { GeneratedImage } from '../core-back/GeneratedImage'
 import { comfyColors } from './Colors'
 
 configure({ enforceActions: 'never' })
@@ -47,20 +46,15 @@ export class ComfyNode<ComfyNode_input extends object> {
 
     /** update a node */
     set(p: Partial<ComfyNode_input>) {
-        // const changes = {
-        //     added: [] as { sourceUID: string; targetUID: string; input: string }[],
-        //     removed: [] as string[],
-        // }
         const cyto = this.graph.cyto
         for (const [key, value] of Object.entries(p)) {
             const next = this.serializeValue(key, value)
             const prev = this.json.inputs[key]
             if (next === prev) continue
-            if (Array.isArray(next) && Array.isArray(prev)) {
+            if (cyto && Array.isArray(next) && Array.isArray(prev)) {
                 cyto?.removeEdge(`${prev[0]}-${key}->${this.uid}`)
                 cyto?.addEdge({ sourceUID: next[0], targetUID: this.uid, input: key })
             }
-            // edge.from}-${edge.inputName}->${node.uid
             this.json.inputs[key] = next
         }
         // 🔴 wrong resonsibility
@@ -130,34 +124,22 @@ export class ComfyNode<ComfyNode_input extends object> {
         return incomingEdges
     }
 
-    get width() {
-        return 300
-    }
-    get height() {
-        return Object.keys(this.inputs).length * 20 + 20
-    }
-    // get manager() { return this.graph.workspace } // prettier-ignore
-    // async get() {
-    //     await this.graph.get()
-    // }
+    // dimensions for autolayout algorithm
+    get width() { return 300 } // prettier-ignore
+    get height() { return Object.keys(this.inputs).length * 20 + 20 } // prettier-ignore
 
     serializeValue(field: string, value: unknown): unknown {
         if (value == null) {
             const schema = this.$schema.inputs.find((i: NodeInputExt) => i.name === field)
             if (schema == null) throw new Error(`🔴 no schema for field "${field}" (of node ${this.$schema.nameInCushy})`)
-            if (schema.opts?.default != null) {
-                // console.log('🔴 def1=', field, schema.opts.default)
-                return schema.opts.default
-            }
-            if (!schema.required) {
-                // console.log('🔴 def2=', field, schema.required)
-                return undefined
-            }
+            // console.log('def1=', field, schema.opts.default)
+            if (schema.opts?.default != null) return schema.opts.default
+            // console.log('def2=', field, schema.required)
+            if (!schema.required) return undefined
             throw new Error(`🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}) value is null`)
         }
         if (value instanceof Slot) return [value.node.uid, value.slotIx]
         if (value instanceof ComfyNode) {
-            // console.log('🔴 Value is COmfyNodeç')
             const expectedType = this._getExpecteTypeForField(field)
             const output = value._getOutputForType(expectedType)
             return [value.uid, output.slotIx]
