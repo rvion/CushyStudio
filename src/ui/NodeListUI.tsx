@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Input, Panel, Progress } from 'rsuite'
+import { Form, Input, Panel, Progress } from 'rsuite'
 import { Graph } from '../core-shared/Graph'
 import { ComfyNode } from '../core-shared/Node'
 import { ComfyNodeSchema } from '../core-shared/Schema'
@@ -71,29 +71,29 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                             )
                         })}
                     </div> */}
-                    <div className='flex'>
+                    <div className='flex gap-2 wrap'>
+                        {/* show values */}
+                        <Form layout='horizontal'>
+                            {schema.inputs.map((input) => {
+                                let val = node.json.inputs[input.name]
+                                if (Array.isArray(val)) return null
+                                return (
+                                    <Form.Group key={input.name}>
+                                        <Form.ControlLabel>{input.name}</Form.ControlLabel>
+                                        <Form.Control name={input.name} value={val}></Form.Control>
+                                    </Form.Group>
+                                )
+                            })}
+                        </Form>
                         {/* show refs */}
                         <div>
                             {schema.inputs.map((input) => {
                                 let val = node.json.inputs[input.name]
                                 if (!Array.isArray(val)) return null
                                 return (
-                                    <div key={input.name} className='prop row'>
-                                        <div className='propName'>{input.name}</div>
-                                        <div className='propValue'>{<NodeRefUI nodeUID={val[0]} graph={graph} />}</div>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                        {/* show values */}
-                        <div>
-                            {schema.inputs.map((input) => {
-                                let val = node.json.inputs[input.name]
-                                if (Array.isArray(val)) return null
-                                return (
-                                    <div key={input.name} className='prop row'>
-                                        <div className='propName'>{input.name}</div>
-                                        <Input value={val}></Input>
+                                    <div key={input.name} className='row gap-2'>
+                                        <Form.ControlLabel>{<NodeRefUI nodeUID={val[0]} graph={graph} />}</Form.ControlLabel>
+                                        <Form.ControlLabel>{input.name}</Form.ControlLabel>
                                     </div>
                                 )
                             })}
