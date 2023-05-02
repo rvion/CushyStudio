@@ -66,3 +66,7 @@ wishlist
 -   a way to send errors to the front via websocket so the front can properly show what's going wrong
 -   a new prompt ID value in all WS payloads scoped to a prompt
 -   some progress in @data it auto-installer, so I can just use this api to ensure all the demo workflows (a.k.a scripts, a.k.a. mini SD apps) in the demo library i'm building are self-contained and install missing deps on their own
+
+---
+
+list of embeddings: http://127.0.0.1:8188/embeddings
