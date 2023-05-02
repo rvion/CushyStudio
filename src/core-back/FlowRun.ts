@@ -197,7 +197,7 @@ export class FlowRun implements IFlowExecution {
     /** pick a random seed */
     randomSeed() {
         const seed = Math.floor(Math.random() * 99999999)
-        this.print('🔥 random seed: ' + seed)
+        this.print('🔥 seed: ' + seed)
         return seed
     }
 

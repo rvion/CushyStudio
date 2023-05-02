@@ -4,7 +4,7 @@
 
 html, body, #root {
     height: 100%;
-    background: #f6f6f6;
+    background: #202020;
 }
 
 .scroll { overflow:auto; }
@@ -35,8 +35,9 @@ html, body, #root {
 
 
 /* Property Panel ---------------------------------------- */
-.prop {border-top: 1px solid #efefef;}
-.propName { width: 6rem; text-align: right; margin-right: 1rem; }
+.prop {border-top: 1px solid #3d3d3d; line-height: 1rem}
+.prop:nth-child(1) { border:none;}
+.propName { width: 6rem; text-align: right; margin-right: 1rem;; }
 .propValue { font-weight: normal; text-overflow: ellipsis; overflow: hidden; white-space: nowrap; }
 .nodeRef{
     border-radius: 100%;
@@ -44,7 +45,7 @@ html, body, #root {
     text-align: center;
     width: 1.3rem;
     height: 1.3rem;
-    border: 1px solid white
+    /* border: 1px solid white */
 }
 
 
@@ -63,9 +64,9 @@ body {
     --yarl__thumbnails_thumbnail_gap: 0;
     --yarl__thumbnails_thumbnail_width: 80px;
     --yarl__thumbnails_thumbnail_height: 80px;
-    --yarl__thumbnails_thumbnail_background: white;
-    --yarl__container_background_color: white;
-    --yarl__color_backdrop: white;
+    /* --yarl__thumbnails_thumbnail_background: white; */
+    /* --yarl__container_background_color: white; */
+    /* --yarl__color_backdrop: white; */
 
     /* --yarl__navigation_button_padding: .1rem; */
     /* --yarl__thumbnails_container_padding: .1rem; */
@@ -73,11 +74,13 @@ body {
 }
 .yarl__root {min-height: 512px !important;}
 .yarl__slide {padding: 0 !important;}
-.rs-panel {background: white; }
+.rs-panel {background: black; }
 .rs-panel-body {padding: .4rem !important;}
 .rs-message-container {padding: .4rem !important;}
 .react-transform-wrapper { max-width: 100%; }
-
+.rs-panel-header { padding: .4rem .7rem !important;}
+.rs-panel-title {font-size: 1.2rem;}
+.rs-rate-character { margin-right: .1rem !important; }
 .hljs{
     color: unset !important;
     background: unset !important;
@@ -87,16 +90,16 @@ body {
 /* transition to grow from 0 height to normal height */
 .transition-height {
     /* transition: height .3s ease-in-out; */
-    animation: slideInFromTop 0.2s ease-out;
+    animation: slideInFromTop 1s ease-out;
 
     /* height: 0; */
 }
 
 @keyframes slideInFromTop {
     0% {
-        transform: translateX(-100%);
+        opacity: 0
     }
     100% {
-        transform: translateY(0);
+        opacity: 1
     }
 }

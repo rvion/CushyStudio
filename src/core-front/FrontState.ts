@@ -17,6 +17,15 @@ export class FrontState {
 
     flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
+
+    get itemsToShow() {
+        const max = 100
+        const len = this.received.length
+        const start = this.showAllMessageReceived ? 0 : Math.max(0, len - max)
+        const items = this.received.slice(start)
+        return this.flowDirection === 'up' ? items.reverse() : items
+    }
+
     showImageAs: 'grid' | 'list' | 'carousel' = 'list'
     activeTab: 'home' | 'news' | 'import' | 'about' = 'home'
     setActiveTab = (tab: 'home' | 'news' | 'import' | 'about') => {

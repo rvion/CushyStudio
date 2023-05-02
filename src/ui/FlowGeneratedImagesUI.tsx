@@ -1,10 +1,11 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { Button, IconButton, Panel, Rate } from 'rsuite'
+import { Button, IconButton, Panel, Popover, Rate, Slider, Whisper } from 'rsuite'
 import * as I from '@rsuite/icons'
 import Lightbox, { Plugin } from 'yet-another-react-lightbox'
 import Download from 'yet-another-react-lightbox/plugins/download'
 import FullScreen from 'yet-another-react-lightbox/plugins/fullscreen'
-import Inline from 'yet-another-react-lightbox/plugins/inline'
+// import Inline from 'yet-another-react-lightbox/plugins/inline'
+import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
@@ -28,43 +29,36 @@ const RatePlugin: Plugin = ({ augment }) => {
 export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p: { msg: MessageFromExtensionToWebview }) {
     const st = useSt()
     const msg = p.msg
-    const uiSt = useLocalObservable(() => ({ index: 0 }))
+    const uiSt = useLocalObservable(() => ({
+        index: 0,
+        opened: false,
+        openGallery(ix: number) {
+            this.opened = true
+            this.index = ix
+        },
+        closeGallery(){ this.opened = false }, // prettier-ignore
+    }))
     if (msg.type !== 'images') return <>error</>
     if (msg.images.length === 0) return <>no images</>
     const selectedImg = msg.images[uiSt.index]
     // if (st.showImageAs === 'list') {
     return (
-        <Panel
-            onScrollCapture={(e: any) => {
-                e.stopPropagation()
-                e.preventDefault()
-            }}
-            onScroll={(e: any) => {
-                e.stopPropagation()
-                e.preventDefault()
-            }}
-            shaded
-            style={{ width: '100%' }}
-        >
+        <Panel shaded style={{ width: '100%' }}>
             {/* https://github.com/igordanchenko/yet-another-react-lightbox */}
-            <Lightbox
-                index={uiSt.index}
-                on={{ view: ({ index }) => (uiSt.index = index) }}
-                styles={{ container: { minHeight: '20rem' } }}
-                zoom={{ scrollToZoom: true, maxZoomPixelRatio: 10 }}
-                // thumbnails={{ position: 'start', vignette: false, showToggle: true }}
-                plugins={[
-                    //
-                    Inline,
-                    Zoom,
-                    Download,
-                    FullScreen,
-                    RatePlugin,
-                    // Thumbnails,
-                ]}
-                open={true}
-                slides={msg.images.map((img) => ({ src: img.comfyURL }))}
-            />
+            {uiSt.opened ? (
+                <Lightbox
+                    index={uiSt.index}
+                    on={{
+                        view: ({ index }) => (uiSt.index = index),
+                        exited: uiSt.closeGallery,
+                    }}
+                    styles={{ container: { minHeight: '20rem' } }}
+                    zoom={{ scrollToZoom: true, maxZoomPixelRatio: 10 }}
+                    plugins={[Zoom, Download, FullScreen, RatePlugin, Thumbnails]}
+                    open={true}
+                    slides={msg.images.map((img) => ({ src: img.comfyURL }))}
+                />
+            ) : null}
             <div>
                 <div className='prop row'>
                     <div className='propName'>uid</div>
@@ -79,7 +73,13 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                     <div className='propValue'>
                         <a href='{selectedImg?.comfyURL}'>{selectedImg?.comfyURL}</a>
                     </div>
-                </div>{' '}
+                </div>
+                <div className='prop row'>
+                    <div className='propName'>rate</div>
+                    <div className='propValue'>
+                        <Rate size='xs' vertical max={5} defaultValue={0} />,
+                    </div>
+                </div>
                 <div className='flex row items-center gap-2'>
                     <div className='propName'>local path</div>
                     <div className='propValue'>{selectedImg?.localRelativeFilePath}</div>
@@ -99,11 +99,37 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                 </div>
                 {/* <pre>{JSON.stringify(msg.images[0], null, 4)}</pre> */}
             </div>
+            <Panel></Panel>
             <div className='row gap-2'>
-                {msg.images.map((img) => (
-                    <div className='border' key={img.uid}>
-                        <img style={{ width: '3rem' }} src={img.comfyURL} />
-                    </div>
+                <Slider
+                    vertical
+                    style={{ height: '10rem' }}
+                    className='relative px-3'
+                    onChange={(next) => (st.gallerySize = next)}
+                    value={st.gallerySize}
+                    max={1000}
+                    min={32}
+                    step={1}
+                />
+                {msg.images.map((img, ix) => (
+                    // <div className='border' key={img.uid}>
+                    // {/* <Whisper
+                    //     placement='auto'
+                    //     speaker={
+                    //         <Popover>
+                    //             <img src={img.comfyURL} />
+                    //         </Popover>
+                    //     }
+                    // > */}
+                    <img
+                        style={{ height: st.gallerySize }}
+                        src={img.comfyURL}
+                        onClick={() => {
+                            uiSt.openGallery(ix)
+                        }}
+                    />
+                    //     {/* </Whisper> */}
+                    // {/* </div> */}
                 ))}
             </div>
         </Panel>

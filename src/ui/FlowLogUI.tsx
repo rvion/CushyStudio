@@ -14,52 +14,54 @@ import { ShowFlowEndUI } from './ShowFlowEndUI'
 
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
-    const flexDirection = st.flowDirection === 'down' ? 'column' : 'column-reverse'
     return (
-        <>
-            <div style={{ display: 'flex', gap: '.5rem', flexDirection: flexDirection, padding: '1rem' }}>
-                {st.received.map((msg) => {
-                    // if (msg.type === 'progress') return null
-                    const details = renderMsgUI(msg)
-                    return (
-                        <Fragment key={msg.uid}>
-                            {st.showAllMessageReceived && (
-                                <div style={{ display: 'flex' }} id={msg.uid.toString()}>
-                                    <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
-                                    <div style={{ width: '5rem' }}>{msg.type}</div>
-                                    <div
-                                        style={{
-                                            whiteSpace: 'nowrap',
-                                            overflow: 'hidden',
-                                            width: '600px',
-                                            color: 'gray',
-                                            textOverflow: 'ellipsis',
-                                        }}
-                                    >
-                                        {/*  */}
-                                        {JSON.stringify(msg)}
-                                    </div>
+        <div className='flex flex-col gap-2 p-4'>
+            {st.itemsToShow.map((msg) => {
+                const details = renderMsgUI(msg)
+                return (
+                    <Fragment key={msg.uid}>
+                        {st.showAllMessageReceived && (
+                            <div className='w-full flex' id={msg.uid.toString()}>
+                                <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
+                                <div style={{ width: '5rem' }}>{msg.type}</div>
+                                <div
+                                    style={{
+                                        whiteSpace: 'nowrap',
+                                        overflow: 'hidden',
+                                        width: '600px',
+                                        color: 'gray',
+                                        textOverflow: 'ellipsis',
+                                    }}
+                                >
+                                    {/*  */}
+                                    {JSON.stringify(msg)}
                                 </div>
-                            )}
-                            {details ? <div className='transition-height'>{details}</div> : null}
-                        </Fragment>
-                    )
-                })}
-            </div>
-        </>
+                            </div>
+                        )}
+                        {details}
+                        {/* {details ? <div className='transition-height'>{details}</div> : null} */}
+                    </Fragment>
+                )
+            })}
+        </div>
     )
 })
 
 export const renderMsgUI = (msg: MessageFromExtensionToWebview) => {
-    if (msg.type === 'show-html') return <MsgShowHTMLUI msg={msg} />
-    if (msg.type === 'flow-code') return <TypescriptHighlightedCodeUI code={msg.code} />
-    if (msg.type === 'flow-start') return <Divider />
-    if (msg.type === 'flow-end') return <ShowFlowEndUI msg={msg} />
-    if (msg.type === 'executing') return <ShowUpdatingNodeUI msg={msg} />
-    if (msg.type === 'ask-string') return <Execution_askStringUI step={msg} />
-    if (msg.type === 'ask-boolean') return <Execution_askBooleanUI step={msg} />
-    if (msg.type === 'print') return <Panel shaded>{msg.message}</Panel>
-    if (msg.type === 'ask-paint') return <PaintUI step={msg} />
-    if (msg.type === 'images') return <FlowGeneratedImagesUI msg={msg} />
+    if (msg.type === 'show-html') return <MsgShowHTMLUI key={msg.uid} msg={msg} />
+    if (msg.type === 'flow-code') return <TypescriptHighlightedCodeUI key={msg.uid} code={msg.code} />
+    if (msg.type === 'flow-start') return <Divider key={msg.uid} />
+    if (msg.type === 'flow-end') return <ShowFlowEndUI key={msg.uid} msg={msg} />
+    if (msg.type === 'executing') return <ShowUpdatingNodeUI key={msg.uid} msg={msg} />
+    if (msg.type === 'ask-string') return <Execution_askStringUI key={msg.uid} step={msg} />
+    if (msg.type === 'ask-boolean') return <Execution_askBooleanUI key={msg.uid} step={msg} />
+    if (msg.type === 'print')
+        return (
+            <Panel key={msg.uid} shaded>
+                {msg.message}
+            </Panel>
+        )
+    if (msg.type === 'ask-paint') return <PaintUI key={msg.uid} step={msg} />
+    if (msg.type === 'images') return <FlowGeneratedImagesUI key={msg.uid} msg={msg} />
     return null
 }

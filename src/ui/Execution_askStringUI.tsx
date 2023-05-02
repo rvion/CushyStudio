@@ -21,10 +21,9 @@ export const Execution_askStringUI = observer(function Execution_askUI_(p: { ste
     )
 
     return (
-        <Panel>
-            <div>{p.step.message}</div>
+        <Panel shaded>
+            <div className='text-xl font-bold'>{p.step.message}</div>
             <Input
-                //
                 autoFocus
                 onKeyDown={(ev) => {
                     if (ev.key === 'Enter') submit(ev)
