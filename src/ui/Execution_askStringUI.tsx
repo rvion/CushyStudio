@@ -21,14 +21,14 @@ export const Execution_askStringUI = observer(function Execution_askUI_(p: { ste
     )
 
     return (
-        <Panel shaded>
-            <div className='text-xl font-bold'>{p.step.message}</div>
+        <Panel shaded header={<>💬 {p.step.message}</>} collapsible defaultExpanded>
+            {/* <div className='text-xl font-bold'>{p.step.message}</div> */}
             <Input
                 autoFocus
                 onKeyDown={(ev) => {
                     if (ev.key === 'Enter') submit(ev)
                 }}
-                disabled={uiSt.locked}
+                // disabled={uiSt.locked}
                 value={uiSt.value}
                 onChange={(next) => (uiSt.value = next)}
             />

@@ -15,7 +15,7 @@ import { ShowFlowEndUI } from './ShowFlowEndUI'
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
     return (
-        <div className='flex flex-col gap-2 p-4'>
+        <div className='flex flex-col gap-1 p-2'>
             {st.itemsToShow.map((msg) => {
                 const details = renderMsgUI(msg)
                 return (
@@ -50,7 +50,7 @@ export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
 export const renderMsgUI = (msg: MessageFromExtensionToWebview) => {
     if (msg.type === 'show-html') return <MsgShowHTMLUI key={msg.uid} msg={msg} />
     if (msg.type === 'flow-code') return <TypescriptHighlightedCodeUI key={msg.uid} code={msg.code} />
-    if (msg.type === 'flow-start') return <Divider key={msg.uid} />
+    if (msg.type === 'flow-start') return null // <Divider key={msg.uid} />
     if (msg.type === 'flow-end') return <ShowFlowEndUI key={msg.uid} msg={msg} />
     if (msg.type === 'executing') return <ShowUpdatingNodeUI key={msg.uid} msg={msg} />
     if (msg.type === 'ask-string') return <Execution_askStringUI key={msg.uid} step={msg} />

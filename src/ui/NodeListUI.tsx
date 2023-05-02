@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Panel, Progress } from 'rsuite'
+import { Input, Panel, Progress } from 'rsuite'
 import { Graph } from '../core-shared/Graph'
 import { ComfyNode } from '../core-shared/Node'
 import { ComfyNodeSchema } from '../core-shared/Schema'
@@ -20,6 +20,14 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
     const schema: ComfyNodeSchema = curr.$schema
     return (
         <Panel
+            header={
+                <h4 className='row items-center gap'>
+                    <NodeRefUI nodeUID={uid} graph={graph} />
+                    {name}
+                </h4>
+            }
+            collapsible
+            defaultExpanded
             style={{ position: 'relative' }}
             bordered
             shaded
@@ -42,7 +50,6 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
             <div className='row'>
                 <Progress.Line
                     vertical
-                    className='p-0 m-0'
                     showInfo={false}
                     strokeWidth={4}
                     status={node.status === 'done' ? 'success' : 'active'}
@@ -51,22 +58,47 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                 />
                 {/* {folded ? null : ( */}
                 <div>
-                    <div className='row gap darker pointer' style={{ padding: '0.2rem' }}>
-                        <h4 className='row items-center gap'>
-                            <NodeRefUI nodeUID={uid} graph={graph} />
-                            {name}
-                        </h4>
+                    {/* show all */}
+                    {/* <div>
+                        {schema.inputs.map((input) => {
+                            let val = node.json.inputs[input.name]
+                            if (Array.isArray(val)) val = <NodeRefUI nodeUID={val[0]} graph={graph} />
+                            return (
+                                <div key={input.name} className='prop row'>
+                                    <div className='propName'>{input.name}</div>
+                                    <div className='propValue'>{val}</div>
+                                </div>
+                            )
+                        })}
+                    </div> */}
+                    <div className='flex'>
+                        {/* show refs */}
+                        <div>
+                            {schema.inputs.map((input) => {
+                                let val = node.json.inputs[input.name]
+                                if (!Array.isArray(val)) return null
+                                return (
+                                    <div key={input.name} className='prop row'>
+                                        <div className='propName'>{input.name}</div>
+                                        <div className='propValue'>{<NodeRefUI nodeUID={val[0]} graph={graph} />}</div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                        {/* show values */}
+                        <div>
+                            {schema.inputs.map((input) => {
+                                let val = node.json.inputs[input.name]
+                                if (Array.isArray(val)) return null
+                                return (
+                                    <div key={input.name} className='prop row'>
+                                        <div className='propName'>{input.name}</div>
+                                        <Input value={val}></Input>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
-                    {schema.inputs.map((input) => {
-                        let val = node.json.inputs[input.name]
-                        if (Array.isArray(val)) val = <NodeRefUI nodeUID={val[0]} graph={graph} />
-                        return (
-                            <div key={input.name} className='prop row'>
-                                <div className='propName'>{input.name}</div>
-                                <div className='propValue'>{val}</div>
-                            </div>
-                        )
-                    })}
                 </div>
             </div>
             {/* )} */}

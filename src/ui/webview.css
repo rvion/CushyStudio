@@ -74,17 +74,16 @@ body {
 }
 .yarl__root {min-height: 512px !important;}
 .yarl__slide {padding: 0 !important;}
-.rs-panel {background: black; }
+.rs-panel {background: #453c3c; }
 .rs-panel-body {padding: .4rem !important;}
 .rs-message-container {padding: .4rem !important;}
 .react-transform-wrapper { max-width: 100%; }
 .rs-panel-header { padding: .4rem .7rem !important;}
 .rs-panel-title {font-size: 1.2rem;}
 .rs-rate-character { margin-right: .1rem !important; }
-.hljs{
-    color: unset !important;
-    background: unset !important;
-}
+.rs-progress-line {padding: 0 !important}
+
+.hljs { display: block; }
 
 
 /* transition to grow from 0 height to normal height */
