@@ -263,6 +263,8 @@ nodes I've setup locally:
 -   ComfyUI_Cutoff: https://github.com/BlenderNeko/ComfyUI_Cutoff
 -   was-node-suite-comfyui: https://github.com/WASasquatch/was-node-suite-comfyui
 -   comfy_clipseg https://github.com/diffus3/comfy_clipseg
+-   WIP tiled sampling for ComfyUI https://github.com/BlenderNeko/ComfyUI_TiledKSampler
+-   ComfyUI Noise https://github.com/BlenderNeko/ComfyUI_Noise
 -   ComfyUI_Dave_CustomNode:
 -   ComfyUI-nodes-hnmr:
 -   efficiency-nodes-comfyui:

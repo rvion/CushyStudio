@@ -13,6 +13,10 @@ export class CushyServer {
     wss: WebSocketServer
     port = 8288
 
+    get baseURL() {
+        return `http://localhost:${this.port}`
+    }
+
     constructor(public workspace: Workspace) {
         logger().info('🫖 creating CushyServer express app...')
         const app = express()
@@ -25,6 +29,7 @@ export class CushyServer {
             res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
             next()
         })
+
         const extensionURI = workspace.context.extensionUri
         const webviewDistURI = extensionURI.with({ path: posix.join(extensionURI.path, 'dist', 'webview') })
         logger().info(`🫖 mounting webview folder ${webviewDistURI.fsPath}`)
@@ -45,7 +50,7 @@ export class CushyServer {
         const server = http.createServer(app)
         this.http = server
 
-        const cacheFolderPath = workspace.cacheFolderURI.fsPath
+        const cacheFolderPath = workspace.cacheFolderRootURI.fsPath
         logger().info(`🫖 mounting public folder ${cacheFolderPath}...`)
         app.use(express.static(cacheFolderPath))
 

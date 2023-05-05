@@ -77,6 +77,9 @@ export interface IGeneratedImage {
     /** run an imagemagick convert action */
     imagemagicConvert(partialCmd: string, suffix: string): string
 
+    /** local url path */
+    get localExtensionURL(): string
+
     /** file name within the ComfyUI folder */
     get comfyFilename(): string
     /** relative path on the comfy URL */

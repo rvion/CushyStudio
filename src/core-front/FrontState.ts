@@ -33,6 +33,7 @@ export class FrontState {
     }
 
     answerString = (value: string) => this.sendMessageToExtension({ type: 'answer-string', value })
+    answerPaint = (base64Img: string) => this.sendMessageToExtension({ type: 'answer-paint', value: base64Img })
     answerBoolean = (value: boolean) => this.sendMessageToExtension({ type: 'answer-boolean', value })
     gallerySize: number = 100
     cushySocket: ResilientSocketToExtension

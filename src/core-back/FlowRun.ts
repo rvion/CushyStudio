@@ -1,39 +1,38 @@
 import type { LATER } from 'LATER'
-import * as vscode from 'vscode'
-import fetch from 'node-fetch'
 import FormData from 'form-data'
+import fetch from 'node-fetch'
+import * as vscode from 'vscode'
 // import type { Project } from './Project'
 import { marked } from 'marked'
-import * as path from 'path'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
-import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
-import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
-import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../core-types/ComfyWsPayloads'
-import { Graph } from '../core-shared/Graph'
-import { deepCopyNaive, sleep } from '../utils/ComfyUtils'
-import { Maybe } from '../utils/types'
-import { GeneratedImage } from './GeneratedImage'
-import { FlowExecutionStep } from '../core-types/FlowExecutionStep'
-import { ScriptStep_askBoolean, ScriptStep_askPaint, ScriptStep_askString } from '../controls/ScriptStep_ask'
-import { ScriptStep_Init } from '../controls/ScriptStep_Init'
-import { PromptExecution } from '../controls/ScriptStep_prompt'
-import { Workspace } from './Workspace'
-import { FrontWebview } from './FrontWebview'
-import { wildcards } from '../wildcards/wildcards'
-import { getPayloadID } from '../core-shared/PayloadID'
-import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
-import { IFlowExecution } from '../sdk/IFlowExecution'
 import { execSync } from 'child_process'
-import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
-import { Printable } from '../core-shared/Printable'
-import { convertFlowToLiteGraphJSON } from '../core-shared/LiteGraph'
+import { ScriptStep_Init } from '../controls/ScriptStep_Init'
+import { ScriptStep_askBoolean, ScriptStep_askPaint, ScriptStep_askString } from '../controls/ScriptStep_ask'
+import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { runAutolayout } from '../core-shared/AutolayoutV2'
-import { logger } from '../logger/logger'
-import { createMP4FromImages } from './ffmpegScripts'
+import { Graph } from '../core-shared/Graph'
+import { convertFlowToLiteGraphJSON } from '../core-shared/LiteGraph'
 import type { FlowParam } from '../core-shared/ParamDef'
+import { Printable } from '../core-shared/Printable'
+import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../core-types/ComfyWsPayloads'
+import { FlowExecutionStep } from '../core-types/FlowExecutionStep'
+import { logger } from '../logger/logger'
+import { IFlowExecution } from '../sdk/IFlowExecution'
+import { deepCopyNaive } from '../utils/ComfyUtils'
+import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
+import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
+import { Maybe } from '../utils/types'
+import { wildcards } from '../wildcards/wildcards'
+import { FrontWebview } from './FrontWebview'
+import { GeneratedImage } from './GeneratedImage'
+import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
+import { Workspace } from './Workspace'
+import { createMP4FromImages } from './ffmpegScripts'
 
 /** script exeuction instance */
 export class FlowRun implements IFlowExecution {
@@ -64,7 +63,7 @@ export class FlowRun implements IFlowExecution {
 
     /** folder where CushyStudio will save run informations */
     get workspaceRelativeCacheFolderPath(): RelativePath {
-        return asRelativePath(this.workspace.cacheFolderRelPath + path.sep + this.name)
+        return asRelativePath(this.workspace.cacheFolderRootRelPath + path.sep + this.name)
     }
 
     folder: vscode.Uri
@@ -281,9 +280,6 @@ export class FlowRun implements IFlowExecution {
 
     private _promptCounter = 0
     private sendPromp = async (): Promise<PromptExecution> => {
-        // console.log('XX1')
-        // console.log('XX2')
-        // await sleep(2000)
         const currentJSON = deepCopyNaive(this.graph.json)
         this.workspace.sendMessage({ type: 'schema', schema: this.workspace.schema.spec })
         this.workspace.sendMessage({ type: 'show-html', content: this.flowSummaryHTML })
