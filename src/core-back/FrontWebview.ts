@@ -117,7 +117,7 @@ export class FrontWebview {
           <!-- inject mermaid -->
           <script type="module">
             import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-            mermaid.initialize({ startOnLoad: false });
+            mermaid.initialize({ startOnLoad: false, theme: 'dark' });
             window.mermaid = mermaid
           </script>
         </body>

@@ -22,7 +22,7 @@ export const MsgShowHTMLUI = observer(function MsgShowHTMLUI_(p: { msg: MessageF
                     console.log(msg.content)
                     // const items = e.querySelector('pre.mermaid')
                     // ;(window as any).mermaid.run({ node: items })
-                    ;(window as any).mermaid.run({ querySelector: 'pre.mermaid' })
+                    ;(window as any).mermaid.run({ querySelector: 'pre.mermaid', theme: 'dark' })
 
                     setTimeout(() => {
                         // 🔴 this is just bad code, only works for mermaid / with single svg
