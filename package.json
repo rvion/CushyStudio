@@ -142,6 +142,7 @@
         "@types/vscode-webview": "1.57.1",
         "@types/ws": "8.5.4",
         "@vscode/webview-ui-toolkit": "1.2.2",
+        "cors": "^2.8.5",
         "cytoscape": "3.24.0",
         "cytoscape-klay": "3.1.4",
         "esbuild": "0.17.17",
@@ -164,6 +165,7 @@
         "yet-another-react-lightbox": "^3.5.3"
     },
     "devDependencies": {
+        "@types/cors": "^2.8.13",
         "@types/cytoscape": "3.19.9",
         "@types/cytoscape-klay": "3.1.0",
         "@types/glob": "8.1.0",

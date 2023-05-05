@@ -5,6 +5,7 @@ import { logger } from '../logger/logger'
 import { CushyClient } from './Client'
 import { Workspace } from './Workspace'
 import { posix } from 'path'
+import cors from 'cors'
 
 export class CushyServer {
     http: http.Server
@@ -15,8 +16,15 @@ export class CushyServer {
     constructor(public workspace: Workspace) {
         logger().info('🫖 creating CushyServer express app...')
         const app = express()
+        app.use(cors({ origin: '*' }))
         this.app = app
 
+        // set access-Control-Allow-Origin "*"
+        app.use((req, res, next) => {
+            res.header('Access-Control-Allow-Origin', '*')
+            res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+            next()
+        })
         const extensionURI = workspace.context.extensionUri
         const webviewDistURI = extensionURI.with({ path: posix.join(extensionURI.path, 'dist', 'webview') })
         logger().info(`🫖 mounting webview folder ${webviewDistURI.fsPath}`)
