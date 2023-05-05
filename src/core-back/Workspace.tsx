@@ -107,7 +107,7 @@ export class Workspace {
         if (open) vscode.workspace.openTextDocument(uri)
     }
 
-    updateNodeForDocument(e: vscode.TextDocument) {
+    updateNodeForDocument = (e: vscode.TextDocument) => {
         if (e.uri.scheme !== 'file') return
         if (!e.uri.path.endsWith('.cushy.ts')) return
         const cushyFile = this.getOrCreateFile(this.vsTestController, e.uri)
