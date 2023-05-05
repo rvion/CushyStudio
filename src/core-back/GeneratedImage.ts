@@ -82,6 +82,12 @@ export class GeneratedImage implements IGeneratedImage {
 
     get localUri(): vscode.Uri { return this.workspace.resolve(this.localRelativeFilePath) } // prettier-ignore
 
+    // .cushy/cache/Run-20230501220410/FaxYjyW1-fLr8ovwECJzZ_prompt-4_21.png
+    // http://127.0.0.1:8288/Run-20230501220410/FaxYjyW1-fLr8ovwECJzZ_prompt-4_19.png
+    get localExtensionURL(): string {
+        return this.workspace.server.baseURL + this.localRelativeFilePath.replace(this.workspace.cacheFolderRootRelPath, '')
+    }
+
     /** uri the webview can access */
     get webviewURI(): string {
         return FrontWebview.current?.webview.asWebviewUri(this.localUri).toString() ?? ''
