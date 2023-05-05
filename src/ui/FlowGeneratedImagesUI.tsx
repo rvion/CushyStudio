@@ -100,7 +100,7 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                 {/* <pre>{JSON.stringify(msg.images[0], null, 4)}</pre> */}
             </div>
             <Panel></Panel>
-            <div className='row gap-2'>
+            <div className='row gap-2 flex-wrap'>
                 <Slider
                     vertical
                     style={{ height: '10rem' }}
