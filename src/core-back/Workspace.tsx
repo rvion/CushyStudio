@@ -41,6 +41,7 @@ import { CushyClient } from './Client'
 import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '../core-types/MessageFromExtensionToWebview'
 import { LoggerBack } from '../logger/LoggerBack'
 import { PayloadID } from '../core-shared/PayloadID'
+import { convertLiteGraphToPrompt } from 'src/core-shared/litegraphToPrompt'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -62,8 +63,8 @@ export class Workspace {
     fileChangedEmitter = new vscode.EventEmitter<vscode.Uri>()
 
     /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
-    get cacheFolderRelPath(): RelativePath { return asRelativePath('.cushy/cache') } // prettier-ignore
-    get cacheFolderURI(): vscode.Uri { return this.resolve(this.cacheFolderRelPath) } // prettier-ignore
+    get cacheFolderRootRelPath(): RelativePath { return asRelativePath('.cushy/cache') } // prettier-ignore
+    get cacheFolderRootURI(): vscode.Uri { return this.resolve(this.cacheFolderRootRelPath) } // prettier-ignore
     // get cacheFolderAbsPath(): string { return this.cacheFolderURI.path } // prettier-ignore
     // get cacheFolderFsPath(): string { return this.cacheFolderURI.fsPath } // prettier-ignore
 
@@ -295,14 +296,49 @@ export class Workspace {
 
     importCurrentFile = async (opts: { preserveId: boolean }) => {
         const tab = vscode.window.tabGroups.activeTabGroup.activeTab
-        if (!((tab?.input as any)?.viewType === 'imagePreview.previewEditor')) {
-            throw new Error('❌ not an image')
-        }
-        const uri: vscode.Uri = bang((tab!.input as any).uri)
+        // logger().info(JSON.stringify(tab))
         console.log(tab)
-        if (!uri.fsPath.toLowerCase().endsWith('.png')) {
-            throw new Error('❌ not a png')
+        const uri: vscode.Uri = bang((tab!.input as any).uri)
+
+        // case 1. image
+        if ((tab?.input as any)?.viewType === 'imagePreview.previewEditor') {
+            const isPNG = uri.fsPath.toLowerCase().endsWith('.png')
+            if (!isPNG) throw new Error('❌ current image is not a png')
+            return this.importCurrentFileAsComfyUIPNG(uri, opts)
         }
+
+        // case 2. json
+        const isJSON = uri.fsPath.toLowerCase().endsWith('.json')
+        if (isJSON) return this.importCurrentFileAsComfyJSON(uri, opts)
+        console.log('not a json')
+
+        throw new Error('❌ unknown file type')
+    }
+
+    importCurrentFileAsComfyJSON = async (uri: vscode.Uri, opts: { preserveId: boolean }) => {
+        const buff = await vscode.workspace.fs.readFile(uri)
+        const txt = buff.toString()
+        console.log(txt)
+        const json = JSON.parse(txt)
+
+        const baseName = posix.basename(uri.path, '.json')
+        // replace the extension with .cushy.ts
+        // const absPath = uri.path.replace(/\.json$/, '.cushy.ts')
+        const absPath = uri.path + '.cushy.ts'
+
+        // make it relative to the workspace
+        const relPathStr = vscode.Uri.file(absPath).path.replace(this.wspUri.fsPath, '.')
+        const relPath = asRelativePath(relPathStr)
+        const convertedUri =
+            'last_node_id' in json
+                ? this.addProjectFromComfyWorkflowJSON(relPath, baseName, convertLiteGraphToPrompt(this.schema, json), opts)
+                : this.addProjectFromComfyWorkflowJSON(relPath, baseName, json, opts)
+        await sleep(1000)
+        //  reveal the URI
+        vscode.window.showTextDocument(convertedUri)
+    }
+
+    importCurrentFileAsComfyUIPNG = async (uri: vscode.Uri, opts: { preserveId: boolean }) => {
         const pngData = await vscode.workspace.fs.readFile(uri)
         const result = getPngMetadata(pngData)
         if (result.type === 'failure') {
@@ -517,12 +553,18 @@ export class Workspace {
         comfyPromptJSON: ComfyPromptJSON,
         opts: { preserveId: boolean },
     ): vscode.Uri => {
-        const code = new ComfyImporter(this).convertFlowToCode(title, comfyPromptJSON, opts)
+        let code: string
+        try {
+            code = new ComfyImporter(this).convertFlowToCode(title, comfyPromptJSON, opts)
+        } catch (error) {
+            console.log('🔴', error)
+            throw error
+        }
         // const fileName = title.endsWith('.ts') ? title : `${title}.ts`
         const uri = this.resolve(relPath)
-        const relativePathToDTS = posix.relative(posix.dirname(uri.path), this.cushyTSUri.path)
-        const codeFinal = [`/// <reference path="${relativePathToDTS}" />`, code].join('\n\n')
-        this.writeTextFile(uri, codeFinal, true)
+        // const relativePathToDTS = posix.relative(posix.dirname(uri.path), this.cushyTSUri.path)
+        // const codeFinal = [`/// <reference path="${relativePathToDTS}" />`, code].join('\n\n')
+        this.writeTextFile(uri, code, true)
         return uri
     }
 

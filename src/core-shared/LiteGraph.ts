@@ -15,12 +15,12 @@ export type LiteGraphJSON = {
 }
 
 export type LiteGraphLink = [
-    linkId: LiteGraphLinkID, //     9, // linkId
-    fromNodeId: number, //     8, // fromNodeId
-    fromNodeOutputIx: number, //     0, // fromNodeOutputIx
-    toNodeId: number, //     9, // toNodeId
-    toNodeInputIx: number, //     0, // toNodeInputIx
-    linkType: string, //     "IMAGE" // type
+    linkId: LiteGraphLinkID, //  9, // linkId
+    fromNodeId: number, //       8, // fromNodeId
+    fromNodeOutputIx: number, // 0, // fromNodeOutputIx
+    toNodeId: number, //         9, // toNodeId
+    toNodeInputIx: number, //    0, // toNodeInputIx
+    linkType: string, //         "IMAGE" // type
 ]
 
 export type LiteGraphLinkID = Branded<number, 'LiteGraphLinkID'>
@@ -49,10 +49,15 @@ export type LiteGraphNode = {
     size: { '0': number; '1': number }
     flags?: {}
     order?: number
+    /**
+     * 1 = ?????
+     * 2 = muted
+     * */
     mode?: number
-    inputs: LiteGraphNodeInput[]
+    inputs?: LiteGraphNodeInput[]
     outputs: LiteGraphNodeOutput[]
 
+    isVirtualNode?: boolean // frontend only
     properties?: {}
     widgets_values: any[]
 }
