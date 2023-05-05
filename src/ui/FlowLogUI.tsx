@@ -57,7 +57,7 @@ export const renderMsgUI = (msg: MessageFromExtensionToWebview) => {
     if (msg.type === 'ask-boolean') return <Execution_askBooleanUI key={msg.uid} step={msg} />
     if (msg.type === 'print')
         return (
-            <Panel key={msg.uid} shaded>
+            <Panel collapsible defaultExpanded key={msg.uid} shaded>
                 {msg.message}
             </Panel>
         )
