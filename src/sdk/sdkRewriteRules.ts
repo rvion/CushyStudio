@@ -49,5 +49,6 @@ export const sdkRewriteRules: [string | RegExp, string][] = [
     [`LATER<'FlowRun'>`, 'import("sdk/IFlowExecution").IFlowExecution'],
     // [`LATER<'Enum_CheckpointLoader_ckpt_name'>`, 'CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name'],
     [`LATER<'ComfySetup'>`, 'CUSHY_RUNTIME.ComfySetup'],
+    [`LATER<'Embeddings'>`, 'CUSHY_RUNTIME.Embeddings'],
     [/LATER<'(Enum_[a-zA-Z0-9_]+)'>/g, 'CUSHY_RUNTIME.$1'],
 ]
