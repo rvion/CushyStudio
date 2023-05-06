@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Tooltip, Whisper } from 'rsuite'
+import { Popover, Tooltip, Whisper } from 'rsuite'
 import { useSt } from '../core-front/stContext'
 
 export const PreviewListUI = observer(function PreviewListUI_(p: {}) {
@@ -9,12 +9,11 @@ export const PreviewListUI = observer(function PreviewListUI_(p: {}) {
             {st.imageURLs.map((i, ix) => (
                 <Whisper
                     key={ix}
-                    // trigger='click'
-                    placement='bottomStart'
+                    placement='autoVerticalStart'
                     speaker={
-                        <Tooltip>
+                        <Popover>
                             <img style={{ objectFit: 'contain', maxHeight: 'unset', maxWidth: 'unset' }} key={i} src={i} />
-                        </Tooltip>
+                        </Popover>
                     }
                 >
                     <img style={{ objectFit: 'contain', width: '32px', height: '32px' }} key={i} src={i} />

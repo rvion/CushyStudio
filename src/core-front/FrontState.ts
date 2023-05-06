@@ -15,10 +15,11 @@ export class FrontState {
     uid = nanoid()
     received: MessageFromExtensionToWebview[] = []
 
-    flowDirection: 'down' | 'up' = 'up'
+    flowDirection: 'down' | 'up' = 'down'
     showAllMessageReceived: boolean = false
 
     get itemsToShow() {
+        // return this.received
         const max = 100
         const len = this.received.length
         const start = this.showAllMessageReceived ? 0 : Math.max(0, len - max)

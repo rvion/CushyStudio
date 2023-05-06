@@ -20,6 +20,11 @@ export type GeneratedImageSummary = {
     localAbsoluteFilePath: string
 }
 
+enum ImageStatus {
+    Known = 1,
+    Downloading = 2,
+    Saved = 3,
+}
 /** Cushy wrapper around ComfyImageInfo */
 export class GeneratedImage implements IGeneratedImage {
     private static imageID = 1
@@ -39,7 +44,7 @@ export class GeneratedImage implements IGeneratedImage {
     ) {
         this.uid = `${this.prompt.name}_${GeneratedImage.imageID++}`
         this.workspace = prompt.workspace
-        this.savedPromise = this.downloadImageAndSaveToDisk()
+        this.ready = this.downloadImageAndSaveToDisk()
     }
 
     /** unique image id */
@@ -104,21 +109,13 @@ export class GeneratedImage implements IGeneratedImage {
     }
     // MISC ----------------------------------------------------------------------
     /** true if file exists on disk; false otherwise */
-    saved = false
-    savedPromise: Promise<true>
-
-    // downloadImageAndSaveToDisk = () => {
-    //     return new Promise((resolve, rejects) => {
-    //         this._downloadImageAndSaveToDisk() //
-    //             .then(resolve)
-    //             .catch(rejects)
-    //     })
-    // }
+    status: ImageStatus = ImageStatus.Known
+    ready: Promise<true>
 
     /** @internal */
-    downloadImageAndSaveToDisk = async (): Promise<true> => {
-        if (this.saved) return true
-
+    private downloadImageAndSaveToDisk = async (): Promise<true> => {
+        if (this.status !== ImageStatus.Known) throw new Error(`image status is ${this.status}`)
+        this.status = ImageStatus.Downloading
         const response = await fetch(this.comfyURL, {
             headers: { 'Content-Type': 'image/png' },
             method: 'GET',
@@ -129,7 +126,7 @@ export class GeneratedImage implements IGeneratedImage {
 
         this.workspace.writeBinaryFile(this.localRelativeFilePath, binArr)
         logger().info('🖼️ image saved')
-        this.saved = true
+        this.status = ImageStatus.Saved
         return true
     }
 

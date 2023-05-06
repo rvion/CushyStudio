@@ -4,7 +4,7 @@ import { WebSocketServer } from 'ws'
 import { logger } from '../logger/logger'
 import { CushyClient } from './Client'
 import { Workspace } from './Workspace'
-import { posix } from 'path'
+import { posix, relative } from 'path'
 import cors from 'cors'
 
 export class CushyServer {
@@ -17,6 +17,10 @@ export class CushyServer {
         return `http://localhost:${this.port}`
     }
 
+    absPathToURL(absPath: string) {
+        const relPath = relative(this.workspace.cacheFolderRootURI.fsPath, absPath)
+        return `${this.baseURL}/${relPath}`
+    }
     constructor(public workspace: Workspace) {
         logger().info('🫖 creating CushyServer express app...')
         const app = express()
@@ -60,7 +64,7 @@ export class CushyServer {
         this.wss = wss
 
         wss.on('connection', (ws) => new CushyClient(this.workspace, ws))
-        logger().info('🫖 listening on port 8288...')
+        logger().info('🫖 🟢 listening on port 8288...')
         this.listen()
     }
     listen = async () => {

@@ -1,10 +1,9 @@
-import { observer, useLocalObservable } from 'mobx-react-lite'
-import { Button, IconButton, Panel, Popover, Rate, Slider, Whisper } from 'rsuite'
 import * as I from '@rsuite/icons'
+import { observer, useLocalObservable } from 'mobx-react-lite'
+import { Button, IconButton, Panel, Rate, Slider } from 'rsuite'
 import Lightbox, { Plugin } from 'yet-another-react-lightbox'
 import Download from 'yet-another-react-lightbox/plugins/download'
 import FullScreen from 'yet-another-react-lightbox/plugins/fullscreen'
-// import Inline from 'yet-another-react-lightbox/plugins/inline'
 import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import { useSt } from '../core-front/stContext'
@@ -43,7 +42,16 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
     const selectedImg = msg.images[uiSt.index]
     // if (st.showImageAs === 'list') {
     return (
-        <Panel shaded style={{ width: '100%' }}>
+        <Panel
+            collapsible
+            defaultExpanded
+            shaded
+            header={
+                <div>
+                    <I.Image /> Images
+                </div>
+            }
+        >
             {/* https://github.com/igordanchenko/yet-another-react-lightbox */}
             {uiSt.opened ? (
                 <Lightbox
@@ -74,28 +82,10 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                         <a href='{selectedImg?.comfyURL}'>{selectedImg?.comfyURL}</a>
                     </div>
                 </div>
-                <div className='prop row'>
-                    <div className='propName'>rate</div>
-                    <div className='propValue'>
-                        <Rate size='xs' vertical max={5} defaultValue={0} />,
-                    </div>
-                </div>
+
                 <div className='flex row items-center gap-2'>
                     <div className='propName'>local path</div>
                     <div className='propValue'>{selectedImg?.localRelativeFilePath}</div>
-                    <Button
-                        size='sm'
-                        appearance='ghost'
-                        startIcon={<I.FolderFill />}
-                        onClick={() => {
-                            st.sendMessageToExtension({
-                                type: 'open-external',
-                                uriString: `file://${selectedImg.localAbsoluteFilePath}`,
-                            })
-                        }}
-                    >
-                        Open
-                    </Button>
                 </div>
                 {/* <pre>{JSON.stringify(msg.images[0], null, 4)}</pre> */}
             </div>
@@ -121,13 +111,25 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                     //         </Popover>
                     //     }
                     // > */}
-                    <img
-                        style={{ height: st.gallerySize }}
-                        src={img.comfyURL}
-                        onClick={() => {
-                            uiSt.openGallery(ix)
-                        }}
-                    />
+                    <div className='flex flex-col'>
+                        <div>
+                            <IconButton
+                                size='xs'
+                                startIcon={<I.FolderFill />}
+                                onClick={() => {
+                                    st.sendMessageToExtension({
+                                        type: 'open-external',
+                                        uriString: `file://${selectedImg.localAbsoluteFilePath}`,
+                                    })
+                                }}
+                            >
+                                {/* Open */}
+                            </IconButton>
+                        </div>
+                        <img style={{ height: st.gallerySize }} src={img.comfyURL} onClick={() => uiSt.openGallery(ix)} />
+
+                        <Rate size='xs' vertical max={5} defaultValue={0} />
+                    </div>
                     //     {/* </Whisper> */}
                     // {/* </div> */}
                 ))}

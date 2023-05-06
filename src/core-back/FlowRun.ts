@@ -113,24 +113,25 @@ export class FlowRun implements IFlowExecution {
             logger().error(`no images to create animation; did you forget to call prompt() first ?`)
             return
         }
+        logger().info(`🎥 awaiting all files to be ready locally...`)
+        await Promise.all(images.map((i) => i.ready))
+        logger().info(`🎥 all files are ready locally`)
         const cwd = this.workspace.resolve(this.workspaceRelativeCacheFolderPath).path
-        logger().info(`target video path: ${targetVideoAbsPath}`)
-        logger().info(`this.folder.path: ${this.folder.path}`)
-        logger().info(`cwd: ${cwd}`)
+        logger().info(`🎥 target video path: ${targetVideoAbsPath}`)
+        logger().info(`🎥 this.folder.path: ${this.folder.path}`)
+        logger().info(`🎥 cwd: ${cwd}`)
+
         await createMP4FromImages(
             images.map((i) => i.localFileName),
             targetVideoAbsPath,
             frameDuration,
             cwd,
         )
-        const curr = FrontWebview.current
-        if (curr) {
-            const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
-            const content = `<video controls autoplay loop><source src="${fromPath}" type="video/mp4"></video>`
-            this.workspace.sendMessage({ type: 'show-html', content })
-        } else {
-            logger().error(`no front webview found`)
-        }
+        // const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
+        const videoURL = this.workspace.server.absPathToURL(targetVideoAbsPath)
+        logger().info(`🎥 video url: ${videoURL}`)
+        const content = `<video controls autoplay loop><source src="${videoURL}" type="video/mp4"></video>`
+        this.workspace.sendMessage({ type: 'show-html', content })
         // turns a bunch of images into a gif with ffmpeg
     }
 

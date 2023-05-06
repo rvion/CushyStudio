@@ -13,11 +13,11 @@ export function activate(context: vscode.ExtensionContext) {
     // report current status
     if (!vscode.workspace.workspaceFolders) {
         const infoMsg = 'CushyStudio will not start because no folder nor workspace opened'
-        return vscode.window.showInformationMessage(infoMsg)
-    } else {
-        console.log('🟢 "cushystudio" is now active! further logs will be displayed in the "CushyStudio" output pannel.')
+        console.log(infoMsg)
+        return
     }
 
+    console.log('🟢 "cushystudio" is now active! further logs will be displayed in the "CushyStudio" output pannel.')
     const folderUri = vscode.workspace.workspaceFolders[0].uri
     const workspace = new Workspace(context, folderUri)
     // get the global typescript language server

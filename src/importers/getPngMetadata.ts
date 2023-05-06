@@ -1,6 +1,6 @@
 import * as vscode from 'vscode'
 import { resultFailure, Result, resultSuccess } from '../utils/Either'
-// import { toast } from 'react-toastify'
+
 const showErrorMessage = vscode.window.showErrorMessage
 
 export type TextChunks = {

@@ -1,10 +1,9 @@
-import 'highlight.js/styles/stackoverflow-dark.css'
-
+import * as I from '@rsuite/icons'
 import hljs from 'highlight.js/lib/core'
 import typescript from 'highlight.js/lib/languages/typescript'
-import { Panel } from 'rsuite'
-import { useLocalObservable } from 'mobx-react-lite'
+import 'highlight.js/styles/stackoverflow-dark.css'
 import { useLayoutEffect, useRef } from 'react'
+import { Panel } from 'rsuite'
 
 hljs.registerLanguage('typescript', typescript)
 
@@ -16,7 +15,15 @@ export const TypescriptHighlightedCodeUI = (p: { code: string }) => {
         hljs.highlightElement(e)
     }, [ref])
     return (
-        <Panel shaded header='Code'>
+        <Panel
+            collapsible
+            shaded
+            header={
+                <div>
+                    <I.Code /> Code
+                </div>
+            }
+        >
             <code className='language-typescript text-xs' style={{ whiteSpace: 'pre-wrap' }} ref={ref}>
                 {p.code}
             </code>

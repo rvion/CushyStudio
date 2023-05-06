@@ -48,7 +48,7 @@ export class LoggerBack implements ILogger {
         const str = `❌ ${this.stringify(messages)}`
         this.chanel?.appendLine(str)
         console.error(str)
-        vscode.window.showErrorMessage(str)
+        // vscode.window.showErrorMessage(str)
     }
 }
 

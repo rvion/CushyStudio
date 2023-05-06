@@ -19,7 +19,7 @@ export const ShowFlowEndUI = observer(function ShowFlowEndUI_(p: { msg: MessageF
                             color='green'
                             startIcon={<I.PlayOutline />}
                             appearance='primary'
-                            autoFocus
+                            // autoFocus
                             onClick={() => {
                                 st.sendMessageToExtension({ type: 'run-flow', flowID: msg.flowID })
                             }}
