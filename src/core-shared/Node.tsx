@@ -71,13 +71,13 @@ export class ComfyNode<ComfyNode_input extends object> {
         //
         public graph: Graph,
         public uid: string = graph.getUID(),
-        xxx: ComfyNodeJSON,
+        jsonExt: ComfyNodeJSON,
     ) {
         // console.log('CONSTRUCTING', xxx.class_type, uid)
         this.uidNumber = parseInt(uid) // 🔴 ugly
-        this.$schema = graph.schema.nodesByNameInComfy[xxx.class_type]
+        this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]
         let ix = 0
-        this.json = this._convertPromptExtToPrompt(xxx)
+        this.json = this._convertPromptExtToPrompt(jsonExt)
         this.graph.registerNode(this)
         makeAutoObservable(this)
 
@@ -89,6 +89,10 @@ export class ComfyNode<ComfyNode_input extends object> {
             this.$outputs.push(output)
             // console.log(`  - .${x.name} as ComfyNodeOutput(${ix})`)
         }
+        for (const x of this.$schema.singleOuputs) {
+            extensions[`_${x.type}`] = extensions[x.name]
+        }
+
         extendObservable(this, extensions)
         // console.log(Object.keys(Object.getOwnPropertyDescriptors(this)).join(','))
         // makeObservable(this, { artifacts: observable })
