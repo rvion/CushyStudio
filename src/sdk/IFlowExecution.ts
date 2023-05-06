@@ -54,6 +54,8 @@ export interface IFlowExecution {
     // file features
     saveTextFile(relativePath: string, content: string): Promise<void>
 
+    embedding(t: LATER<'Embeddings'>): string
+
     // summary
     writeFlowSummary(): void
     get flowSummaryMd(): MDContent

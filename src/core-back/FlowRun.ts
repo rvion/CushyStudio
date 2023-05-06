@@ -166,6 +166,8 @@ export class FlowRun implements IFlowExecution {
         this.saveTextFile(relPath, this.flowSummaryMd)
     }
 
+    embedding = (t: LATER<'Embeddings'>) => `embedding:${t}`
+
     /** ask the user to input a string */
     askString = (msg: string, def?: Maybe<string>): Promise<string> => {
         const ask = new ScriptStep_askString(msg, def)

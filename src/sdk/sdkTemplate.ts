@@ -124,6 +124,17 @@ declare module "core-types/ComfySchemaJSON" {
         step?: number;
     };
 }
+declare module "utils/types" {
+    /** usefull to catch most *units* type errors */
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
+    };
+    /** same as Tagged, but even scriter */
+    export type Branded<O, Brand> = O & {
+        __brand: Brand;
+    };
+    export type Maybe<T> = T | null | undefined;
+}
 declare module "utils/CodeBuffer" {
     /** this class is used to buffer text and then write it to a file */
     export class CodeBuffer {
@@ -155,24 +166,14 @@ declare module "core-shared/Primitives" {
 declare module "core-shared/normalizeJSIdentifier" {
     export const normalizeJSIdentifier: (name: string) => string;
 }
-declare module "utils/types" {
-    /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tag> = O & {
-        __tag?: Tag;
-    };
-    /** same as Tagged, but even scriter */
-    export type Branded<O, Brand> = O & {
-        __brand: Brand;
-    };
-    export type Maybe<T> = T | null | undefined;
-}
 declare module "core-shared/Schema" {
     import type { ComfyInputOpts, ComfySchemaJSON } from "core-types/ComfySchemaJSON";
-    import { Maybe } from "utils/types";
+    import type { Branded, Maybe } from "utils/types";
     export type EnumHash = string;
     export type EnumName = string;
     export type NodeNameInComfy = string;
     export type NodeNameInCushy = string;
+    export type EmbeddingName = Branded<string, 'Embedding'>;
     export type NodeInputExt = {
         name: string;
         type: string;
@@ -189,6 +190,7 @@ declare module "core-shared/Schema" {
     export type EnumValue = string | boolean | number;
     export class Schema {
         spec: ComfySchemaJSON;
+        embeddings: EmbeddingName[];
         knownTypes: Set<string>;
         knownEnums: Map<string, {
             enumNameInComfy: string;
@@ -206,8 +208,8 @@ declare module "core-shared/Schema" {
         nodesByProduction: {
             [key: string]: NodeNameInCushy[];
         };
-        constructor(spec: ComfySchemaJSON);
-        update(spec: ComfySchemaJSON): void;
+        constructor(spec: ComfySchemaJSON, embeddings: EmbeddingName[]);
+        update(spec: ComfySchemaJSON, embeddings: EmbeddingName[]): void;
         codegenDTS: (useLocalPath?: boolean) => string;
         private toTSType;
     }
@@ -221,6 +223,7 @@ declare module "core-shared/Schema" {
         codegen(): string;
         renderOpts(opts?: ComfyInputOpts): Maybe<string>;
     }
+    export const wrapQuote: (s: string) => string;
 }
 declare module "core-shared/Slot" {
     import type { ComfyNode } from "core-shared/Node";
@@ -634,6 +637,7 @@ declare module "sdk/IFlowExecution" {
         exec(cmd: string): string;
         sleep(ms: number): Promise<void>;
         saveTextFile(relativePath: string, content: string): Promise<void>;
+        embedding(t: LATER<'Embeddings'>): string;
         writeFlowSummary(): void;
         get flowSummaryMd(): MDContent;
         get flowSummaryHTML(): HTMLContent;
