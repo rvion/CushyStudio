@@ -348,6 +348,9 @@ export class Schema {
 }
 
 export class ComfyNodeSchema {
+    /** list of types the node has a single output of */
+    singleOuputs: NodeOutputExt[] = []
+
     constructor(
         //
         public nameInComfy: string,
@@ -366,7 +369,8 @@ export class ComfyNodeSchema {
         // single type interfaces
         let x: { [key: string]: number } = {}
         for (const i of this.outputs) x[i.type] = (x[i.type] ?? 0) + 1
-        const ifaces = this.outputs.filter((i) => x[i.type] === 1).map((i) => `HasSingle_${i.type}`)
+        this.singleOuputs = this.outputs.filter((i) => x[i.type] === 1)
+        const ifaces = this.singleOuputs.map((i) => `HasSingle_${i.type}`)
         ifaces.push(`ComfyNode<${this.nameInCushy}_input>`)
         // inputs
         // p(`\n// ${this.name} -------------------------------`)
