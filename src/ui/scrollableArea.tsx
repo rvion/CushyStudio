@@ -39,7 +39,7 @@ export const ScrollablePaneUI = observer(function ScrollablePaneUI_(p: { childre
     // const target = useRef(null)
     return (
         <>
-            {uiSt.follow ? '🟢' : '🔴'}
+            {/* {uiSt.follow ? '🟢' : '🔴'} */}
             <div className='relative scroll grow' ref={ref} onScrollCapture={onScroll}>
                 <div className='absolute inset-0 col'>
                     {/*  */}
