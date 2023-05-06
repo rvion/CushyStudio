@@ -14,7 +14,7 @@ export const WebviewUI = observer(function WebviewUI_() {
         <div className='col grow h100'>
             <div>
                 <Nav appearance='subtle' activeKey={st.activeTab} onSelect={st.setActiveTab}>
-                    <Nav.Item eventKey='home'>🛋️ CushyStudio</Nav.Item>
+                    <Nav.Item eventKey='home'>🛋️</Nav.Item>
                     <WorkflowPickerUI />
                     <IconButton
                         icon={st.flowDirection === 'down' ? <I.SortDown /> : <I.SortUp />}
