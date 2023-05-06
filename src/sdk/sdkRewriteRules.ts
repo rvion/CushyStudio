@@ -51,4 +51,5 @@ export const sdkRewriteRules: [string | RegExp, string][] = [
     [`LATER<'ComfySetup'>`, 'CUSHY_RUNTIME.ComfySetup'],
     [`LATER<'Embeddings'>`, 'CUSHY_RUNTIME.Embeddings'],
     [/LATER<'(Enum_[a-zA-Z0-9_]+)'>/g, 'CUSHY_RUNTIME.$1'],
+    [/LATER<'([a-zA-Z0-9_]+)'>/g, 'CUSHY_RUNTIME.$1'],
 ]
