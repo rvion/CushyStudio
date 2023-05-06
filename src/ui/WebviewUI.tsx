@@ -24,6 +24,7 @@ export const WebviewUI = observer(function WebviewUI_() {
                         icon={st.showAllMessageReceived ? <I.InfoOutline /> : <I.EyeClose />}
                         onClick={() => (st.showAllMessageReceived = !st.showAllMessageReceived)}
                     />
+                    <IconButton icon={<I.Reload />} onClick={() => window.location.reload()} />
                 </Nav>
             </div>
             <PreviewListUI />
