@@ -5,7 +5,6 @@ import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from './Primitives'
 import { normalizeJSIdentifier } from './normalizeJSIdentifier'
-import { Maybe } from 'src/utils/types'
 
 export type EnumHash = string
 export type EnumName = string
@@ -72,6 +71,7 @@ export class Schema {
             const nodeNameInCushy =
                 nodeDef.category.startsWith('WAS Suite/') ? `WAS${normalizedNodeNameInCushy}` :
                 nodeDef.category.startsWith('ImpactPack') ? `Impact${normalizedNodeNameInCushy}` :
+                nodeDef.category.startsWith('Masquerade Nodes') ? `Masquerade${normalizedNodeNameInCushy}` :
                 normalizedNodeNameInCushy
             // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
 
@@ -370,7 +370,8 @@ export class ComfyNodeSchema {
         ifaces.push(`ComfyNode<${this.nameInCushy}_input>`)
         // inputs
         // p(`\n// ${this.name} -------------------------------`)
-        b.bar(this.nameInCushy)
+        const msgIfDifferent = this.nameInComfy !== this.nameInCushy ? ` ("${this.nameInComfy}" in ComfyUI)` : ''
+        b.bar(`${this.nameInCushy}${msgIfDifferent} [${this.category}]`)
         p(`export interface ${this.nameInCushy} extends ${ifaces.join(', ')} {`)
         // p(`    $schema: ${this.name}_schema`)
         this.outputs.forEach((i, ix) => {
