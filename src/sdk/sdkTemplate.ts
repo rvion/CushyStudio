@@ -684,6 +684,23 @@ declare module "core-back/presets" {
         graph: Graph & CUSHY_RUNTIME.ComfySetup;
         flow: IFlowExecution;
         constructor(graph: Graph & CUSHY_RUNTIME.ComfySetup, flow: IFlowExecution);
+        base: (p: {
+            ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
+            stop_at_clip_layer?: number;
+            vae?: CUSHY_RUNTIME.Enum_VAELoader_vae_name;
+            loras?: {
+                name: CUSHY_RUNTIME.Enum_LoraLoader_lora_name;
+                /** defaults to 1 */
+                strength_clip?: number;
+                /** defaults to 1 */
+                strength_model?: number;
+            }[];
+        }) => {
+            ckpt: CUSHY_RUNTIME.CheckpointLoaderSimple;
+            clip: CUSHY_RUNTIME.CLIP;
+            model: CUSHY_RUNTIME.MODEL;
+            vae: CUSHY_RUNTIME.VAE;
+        };
         basicImageGeneration: (p: {
             ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
             loras?: {

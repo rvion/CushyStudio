@@ -10,6 +10,63 @@ export class Presets {
         public flow: IFlowExecution,
     ) {}
 
+    base = (p: {
+        ckptName: LATER<'Enum_CheckpointLoader_ckpt_name'>
+        stop_at_clip_layer?: number
+        vae?: LATER<'Enum_VAELoader_vae_name'>
+        loras?: {
+            name: LATER<'Enum_LoraLoader_lora_name'>
+            /** defaults to 1 */
+            strength_clip?: number
+            /** defaults to 1 */
+            strength_model?: number
+        }[]
+    }): {
+        ckpt: LATER<'CheckpointLoaderSimple'>
+        clip: LATER<'CLIP'>
+        model: LATER<'MODEL'>
+        vae: LATER<'VAE'>
+    } => {
+        if (this.graph.CheckpointLoaderSimple == null) throw new Error('🔴 ❌ INVASLID')
+        const ckpt = this.graph.CheckpointLoaderSimple({ ckpt_name: p.ckptName })
+
+        let clipAndModel: LATER<'HasSingle_CLIP'> & LATER<'HasSingle_MODEL'> = ckpt
+
+        for (const lora of p.loras ?? []) {
+            clipAndModel = this.graph.LoraLoader({
+                model: clipAndModel,
+                clip: clipAndModel,
+                lora_name: lora.name,
+                strength_clip: lora.strength_clip ?? 1.0,
+                strength_model: lora.strength_model ?? 1.0,
+            })
+        }
+        let clip = clipAndModel._CLIP
+        let model = clipAndModel._MODEL
+        if (p.stop_at_clip_layer) {
+            clip = this.graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: p.stop_at_clip_layer }).CLIP
+        }
+
+        let vae: LATER<'VAE'> = ckpt._VAE
+        if (p.vae) vae = this.graph.VAELoader({ vae_name: p.vae }).VAE
+        // console.log({ ckpt, clip, model, vae })
+        console.log(
+            //
+            '🔴nnn',
+            typeof this.graph.VAELoader,
+            typeof vae,
+            typeof clip,
+            typeof ckpt._VAE,
+            typeof ckpt,
+        )
+        return {
+            ckpt,
+            clip: clip,
+            model,
+            vae,
+        }
+    }
+
     basicImageGeneration = async (p: {
         //
         ckptName: LATER<'Enum_CheckpointLoader_ckpt_name'>
@@ -40,11 +97,6 @@ export class Presets {
         denoise?: number
     }) => {
         const ckpt = this.graph.CheckpointLoaderSimple({ ckpt_name: p.ckptName })
-        const latent = this.graph.EmptyLatentImage({
-            width: p.width ?? 768,
-            height: p.height ?? 512,
-            batch_size: p.batchSize ?? 1,
-        })
 
         let clipAndModel: LATER<'HasSingle_CLIP'> & LATER<'HasSingle_MODEL'> = ckpt
 
@@ -57,7 +109,13 @@ export class Presets {
                 strength_model: lora.strength_model ?? 1.0,
             })
         }
+
         // const vae = this.graph.VAELoader({ vae_name: "vae-ft-mse-840000-ema-pruned.safetensors" })
+        const latent = this.graph.EmptyLatentImage({
+            width: p.width ?? 768,
+            height: p.height ?? 512,
+            batch_size: p.batchSize ?? 1,
+        })
         const positive = this.graph.CLIPTextEncode({ text: p.positive, clip: clipAndModel })
         const negative = this.graph.CLIPTextEncode({ text: p.negative, clip: clipAndModel })
         const sampler = this.graph.KSampler({
