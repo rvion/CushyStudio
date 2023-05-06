@@ -643,7 +643,14 @@ export interface ComfySetup {
 }
 
 // Embeddings -------------------------------
-export type Embeddings = 'easynegative' | 'bad-artist-anime' | 'bad-artist' | 'bad_prompt_version2' | 'ng_deepnegative_v1_75t'
+export type Embeddings =
+    | 'easynegative'
+    | 'bad-artist-anime'
+    | 'bad-artist'
+    | 'bad_prompt_version2'
+    | 'badquality'
+    | 'charturnerv2'
+    | 'ng_deepnegative_v1_75t'
 
 // Suggestions -------------------------------
 export interface CanProduce_FLOAT {}
@@ -1220,6 +1227,8 @@ export type Enum_CheckpointLoaderSimple_ckpt_name =
     | 'ghostmix_v12.safetensors'
     | 'lyriel_v15.safetensors'
     | 'realisticVisionV20_v20.safetensors'
+    | 'revAnimated_v121.safetensors'
+    | 'revAnimated_v121Inp-inpainting.safetensors'
     | 'revAnimated_v122.safetensors'
     | 'v1-5-pruned-emaonly.ckpt'
     | 'v2-1_512-ema-pruned.safetensors'
@@ -4160,11 +4169,11 @@ export interface WASCacheNode extends ComfyNode<WASCacheNode_input> {
     ASCII_2: Slot<'ASCII', 2>
 }
 export type WASCacheNode_input = {
-    /** default="14255790_cache" */
+    /** default="35751216_cache" */
     latent_suffix?: _STRING
-    /** default="98956358_cache" */
+    /** default="69622130_cache" */
     image_suffix?: _STRING
-    /** default="10897540_cache" */
+    /** default="66220110_cache" */
     conditioning_suffix?: _STRING
     latent?: _LATENT
     image?: _IMAGE
