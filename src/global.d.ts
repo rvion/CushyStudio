@@ -585,6 +585,9 @@ export interface ComfySetup {
     FeatherMask(args: FeatherMask_input, uid?: ComfyNodeUID): FeatherMask
 }
 
+// Embeddings -------------------------------
+export type Embeddings = 'easynegative' | 'bad-artist-anime' | 'bad-artist' | 'bad_prompt_version2' | 'ng_deepnegative_v1_75t'
+
 // Suggestions -------------------------------
 export interface CanProduce_FLOAT {}
 export interface CanProduce_Float {}

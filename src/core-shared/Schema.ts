@@ -1,5 +1,5 @@
 import type { ComfyInputOpts, ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
-// import type { ItemDataType } from 'rsuite/esm/@types/common'
+import type { Branded, Maybe } from 'src/utils/types'
 
 import { makeAutoObservable } from 'mobx'
 import { CodeBuffer } from '../utils/CodeBuffer'
@@ -12,6 +12,7 @@ export type EnumName = string
 
 export type NodeNameInComfy = string
 export type NodeNameInCushy = string
+export type EmbeddingName = Branded<string, 'Embedding'>
 
 export type NodeInputExt = {
     name: string
@@ -41,14 +42,19 @@ export class Schema {
 
     // components: ItemDataType[] = []
 
-    constructor(public spec: ComfySchemaJSON) {
-        this.update(spec)
+    constructor(
+        //
+        public spec: ComfySchemaJSON,
+        public embeddings: EmbeddingName[],
+    ) {
+        this.update(spec, embeddings)
         makeAutoObservable(this)
     }
 
-    update(spec: ComfySchemaJSON) {
+    update(spec: ComfySchemaJSON, embeddings: EmbeddingName[]) {
         // reset spec
         this.spec = spec
+        this.embeddings = embeddings
         this.knownTypes.clear()
         this.knownEnums.clear()
         this.nodes.splice(0, this.nodes.length)
@@ -248,6 +254,9 @@ export class Schema {
         // }
         p(`}`)
 
+        p(`\n// Embeddings -------------------------------`)
+        p(`export type Embeddings = ${this.embeddings.map((e) => wrapQuote(e)).join(' | ')}`)
+
         p(`\n// Suggestions -------------------------------`)
         for (const key in ComfyPrimitiveMapping) {
             p(`export interface CanProduce_${key} {}`)
@@ -411,3 +420,8 @@ export class ComfyNodeSchema {
 // console.log(`test`)
 // const main = new ComfyTypingsGenerator(spec2 as any)
 // main.codegen()
+
+export const wrapQuote = (s: string) => {
+    if (s.includes("'")) return `"${s}"`
+    return `'${s}'`
+}

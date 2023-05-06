@@ -101,7 +101,7 @@ export class FrontState {
         }
 
         if (msg.type === 'schema') {
-            this.schema = new Schema(msg.schema)
+            this.schema = new Schema(msg.schema, msg.embeddings)
             return
         }
 

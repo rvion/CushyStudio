@@ -1,5 +1,6 @@
 import type { ComfySchemaJSON } from '../core-types/ComfySchemaJSON'
 import type { FlowExecutionStep } from '../core-types/FlowExecutionStep'
+import type { EmbeddingName } from '../core-shared/Schema'
 
 import fetch from 'node-fetch'
 import { posix } from 'path'
@@ -70,6 +71,7 @@ export class Workspace {
 
     runs: FlowRun[] = []
     comfyJSONUri: vscode.Uri
+    embeddingsUri: vscode.Uri
     comfyTSUri: vscode.Uri
     cushyTSUri: vscode.Uri
     tsConfigUri: vscode.Uri
@@ -172,6 +174,7 @@ export class Workspace {
     ) {
         this.initOutputChannel()
         this.comfyJSONUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'nodes.json') })
+        this.embeddingsUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'embeddings.json') })
         this.comfyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'nodes.d.ts') })
         this.cushyTSUri = wspUri.with({ path: posix.join(wspUri.path, '.cushy', 'cushy.d.ts') })
         this.tsConfigUri = wspUri.with({ path: posix.join(wspUri.path, 'tsconfig.json') })
@@ -210,21 +213,22 @@ export class Workspace {
         }
         // const json = this.readJSON(this.tsConfigUri)
     }
+
     restoreSchemaFromCache = (): Schema => {
         let schema: Schema
         try {
             logger().info('⚡️ attemping to load cached nodes...')
             const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONUri)
+            const cachedEmbeddingsJSON = this.readJSON<EmbeddingName[]>(this.embeddingsUri)
             logger().info('⚡️ found cached json for nodes...')
-            schema = new Schema(cachedComfyJSON)
-            logger().info('⚡️ 🟢 loaded cached json for nodes')
+            schema = new Schema(cachedComfyJSON, cachedEmbeddingsJSON)
+            logger().info('⚡️ 🟢 object_info and embeddings restored from cache')
             logger().info('⚡️ 🟢 schema restored')
         } catch (error) {
             logger().error('⚡️ ' + extractErrorMessage(error))
-            logger().error('⚡️ failed to load cached nodes')
-            logger().error('🛋️ 🔴 failed to restore schema')
+            logger().error('⚡️ 🔴 failed to restore object_info and/or embeddings from cache')
             logger().info('⚡️ initializing empty schema')
-            schema = new Schema({})
+            schema = new Schema({}, [])
         }
         return schema
     }
@@ -492,24 +496,37 @@ export class Workspace {
     /** retri e the comfy spec from the schema*/
     fetchAndUdpateSchema = async (): Promise<ComfySchemaJSON> => {
         // 1. fetch schema$
-        const url = `${this.getServerHostHTTP()}/object_info`
         let schema$: ComfySchemaJSON
         try {
             // 1 ------------------------------------
-            logger().info(`[.... step 1/4] fetching schema from ${url} ...`)
-            const res = await fetch(url, { method: 'GET', headers: { 'Content-Type': 'application/json' } })
-            const data = (await res.json()) as { [key: string]: any }
-            const keys = Object.keys(data)
-            logger().info(`[.... step 1/4] found ${keys.length} nodes`) // (${JSON.stringify(keys)})
-            schema$ = data as any
+            const object_info_url = `${this.getServerHostHTTP()}/object_info`
+            logger().info(`[.... step 1/4] fetching schema from ${object_info_url} ...`)
+            const headers: HeadersInit = { 'Content-Type': 'application/json' }
+            const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
+            const object_info_json = (await object_info_res.json()) as { [key: string]: any }
+            const knownNodeNames = Object.keys(object_info_json)
+            logger().info(`[.... step 1/4] found ${knownNodeNames.length} nodes`) // (${JSON.stringify(keys)})
+            schema$ = object_info_json as any
             logger().info('[*... step 1/4] schema fetched')
 
+            // 1 ------------------------------------
+            const embeddings_url = `${this.getServerHostHTTP()}/embeddings`
+            logger().info(`[.... step 1/4] fetching embeddings from ${embeddings_url} ...`)
+            const embeddings_res = await fetch(embeddings_url, { method: 'GET', headers })
+            const embeddings_json = (await embeddings_res.json()) as EmbeddingName[]
+            vscode.workspace.fs.writeFile(this.embeddingsUri, Buffer.from(JSON.stringify(embeddings_json)))
+            // const keys2 = Object.keys(data2)
+            // logger().info(`[.... step 1/4] found ${keys2.length} nodes`) // (${JSON.stringify(keys)})
+            // schema$ = data as any
+            logger().info(JSON.stringify(embeddings_json))
+            logger().info('[*... step x/4] embeddings fetched')
+
             // 2 ------------------------------------
-            logger().info('[*... step 2/4] updating schema...')
+            http: logger().info('[*... step 2/4] updating schema...')
             const comfyJSONStr = readableStringify(schema$, 3)
             const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
             vscode.workspace.fs.writeFile(this.comfyJSONUri, comfyJSONBuffer)
-            this.schema.update(schema$)
+            this.schema.update(schema$, embeddings_json)
             logger().info('[**.. step 2/4] schema updated')
 
             // 3 ------------------------------------

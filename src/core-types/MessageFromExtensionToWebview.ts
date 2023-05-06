@@ -3,9 +3,10 @@ import type { PayloadID } from '../core-shared/PayloadID'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from '../utils/types'
+import type { EmbeddingName } from 'src/core-shared/Schema'
+import type { GeneratedImageSummary } from 'src/core-back/GeneratedImage'
 
 import { exhaust } from '../utils/ComfyUtils'
-import { GeneratedImageSummary } from 'src/core-back/GeneratedImage'
 
 export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExtensionToWebview_
 export type MessageFromExtensionToWebview_ =
@@ -21,7 +22,7 @@ export type MessageFromExtensionToWebview_ =
     | { type: 'print'; message: string }
 
     // schema & prompt (needs to be sent so webview can draw the graph)
-    | { type: 'schema'; schema: ComfySchemaJSON }
+    | { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
     | { type: 'prompt'; graph: ComfyPromptJSON }
     | { type: 'ls'; workflowNames: { name: string; id: string }[] }
 
