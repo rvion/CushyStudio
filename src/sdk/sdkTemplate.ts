@@ -219,6 +219,8 @@ declare module "core-shared/Schema" {
         category: string;
         inputs: NodeInputExt[];
         outputs: NodeOutputExt[];
+        /** list of types the node has a single output of */
+        singleOuputs: NodeOutputExt[];
         constructor(nameInComfy: string, nameInCushy: string, category: string, inputs: NodeInputExt[], outputs: NodeOutputExt[]);
         codegen(): string;
         renderOpts(opts?: ComfyInputOpts): Maybe<string>;
@@ -268,7 +270,7 @@ declare module "core-shared/Node" {
         get color(): string;
         uidNumber: number;
         $outputs: Slot<any>[];
-        constructor(graph: Graph, uid: string, xxx: ComfyNodeJSON);
+        constructor(graph: Graph, uid: string, jsonExt: ComfyNodeJSON);
         _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): {
             class_type: string;
             inputs: {
@@ -637,7 +639,7 @@ declare module "sdk/IFlowExecution" {
         exec(cmd: string): string;
         sleep(ms: number): Promise<void>;
         saveTextFile(relativePath: string, content: string): Promise<void>;
-        embedding(t: LATER<'Embeddings'>): string;
+        embedding(t: CUSHY_RUNTIME.Embeddings): string;
         writeFlowSummary(): void;
         get flowSummaryMd(): MDContent;
         get flowSummaryHTML(): HTMLContent;
