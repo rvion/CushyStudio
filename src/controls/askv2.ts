@@ -22,8 +22,10 @@ export type Requestable =
     | 'samMaskPoints'
     | 'manualMask'
     | 'paint'
+    /** forms */
     | { type: 'items'; items: { [key: string]: Requestable } }
-    | { type: 'choices'; choices: string[] }
+    | { type: 'choiceStrict'; choices: string[] }
+    | { type: 'choiceOpen'; choices: string[] }
     | BUG
 
 // prettier-ignore
@@ -43,48 +45,47 @@ export type Answer<Req> =
     Req extends 'loras' ? SimplifiedLoraDef[] :
     /** array */
     Req extends readonly [infer X, ...infer Rest] ? [Answer<X>, ...Answer<Rest>[]] :
+    /** painting */
+    Req extends 'samMaskPoints' ? Maybe<boolean> :
+    Req extends 'manualMask' ? SimplifiedLoraDef :
+    Req extends 'paint' ? SimplifiedLoraDef[] :
+    /** forms */
     Req extends {type: 'items', items: { [key: string]: any }} ? { [key in keyof Req['items']]: Answer<Req['items'][key]> } :
-    Req extends {type: 'choices', choices: infer T} ? (T extends readonly any[] ? T[number] : T) :
+    Req extends {type: 'choiceStrict', choices: infer T} ? (T extends readonly any[] ? T[number] : T) :
+    Req extends {type: 'choiceOpen', choices: string[]} ? string :
     never
 
 class QBuilder {
     group = <const T>(label: string, items: T): { type: 'items'; items: T } => ({ type: 'items', items })
-    choiceStrict = <const T>(label: string, choices: T): { type: 'choices'; choices: T } => {
-        return { type: 'choices', choices }
+
+    choiceStrict = <const T>(label: string, choices: T): { type: 'choiceStrict'; choices: T } => {
+        return { type: 'choiceStrict', choices }
     }
-    choiceOpen = <const T>(label: string, choices: T[]): 'str' => {
-        return 'str'
+    choiceOpen = (label: string, choices: string[]): { type: 'choiceOpen'; choices: string[] } => {
+        return { type: 'choiceOpen', choices }
     }
 }
 
-const ask = <const Req extends Requestable>(
+const ask = <const Req extends { [key: string]: Requestable }>(
     //
     req: (q: QBuilder) => Req,
     layout?: any,
-): Answer<Req> => {
+): { [key in keyof Req]: Answer<Req[key]> } => {
     const q = new QBuilder()
     const r = req(q)
     return 0 as any
 }
 
-const r1 = ask((q) => 'int')
-const r2 = ask((q) => 'int?')
-
-const r3 = ask((ui) =>
-    ui.group('basic infos', {
-        foo: 'int',
-        number: 'int?',
-        loras: 'loras',
-        col1: ui.choiceStrict('pick a primary color', ['red', 'blue', 'green']),
-        col2: ui.choiceOpen('choose a color', ['red', 'blue', 'green']),
-        qux: [
-            'int',
-            //
-            // { a: 'int' },
-            // { b: 'bool', c: ['int', 'int', 'int'] },
-        ],
-    }),
-)
+const r1 = ask((q) => ({ width: 'int' }))
+const r2 = ask((q) => ({ 'wanna clip skip?': 'int?' }))
+const r3 = ask((ui) => ({
+    foo: 'int',
+    number: 'int?',
+    loras: 'loras',
+    col1: ui.choiceStrict('pick a primary color', ['red', 'blue', 'green']),
+    col2: ui.choiceOpen('choose a color', ['red', 'blue', 'green']),
+    qux: ['int', 'int', 'int'],
+}))
 
 type K = (typeof r3)['col1'][number]
 const y: Maybe<number> = r3.number
