@@ -1,85 +1,119 @@
+/**
+ * This module implements is the early-days core of
+ * the cushy form-framework
+ * 🔶 design is a bit unusual because of the very specific needs of the project
+ * TODO: write them down to explain choices
+ */
+
+import type { Base64Image } from 'src/core-shared/b64img'
 import type { SimplifiedLoraDef } from 'src/presets/presets'
 import type { Maybe } from 'src/utils/types'
+import { BUG } from './BUG'
 
-class BUG {}
+export type Requestable = { label?: string } & Requestable_
 
-export type Requestable =
+export type Requestable_ =
     /** str */
-    | 'str'
-    | 'str?'
+    | { type: 'str' }
+    | { type: 'str?' }
     /** nums */
-    | 'int'
-    | 'int?'
+    | { type: 'int' }
+    | { type: 'int?' }
     /** bools */
-    | 'bool'
-    | 'bool?'
-    /** embedding/lora */
-    | 'embeddings'
-    | 'lora'
-    | 'loras'
+    | { type: 'bool' }
+    | { type: 'bool?' }
+    /** embedding */
+    | { type: 'embeddings' }
+    /** loras */
+    | { type: 'lora' }
+    | { type: 'loras' }
+    /** painting */
+    | { type: 'samMaskPoints' }
+    | { type: 'manualMask' }
+    | { type: 'paint' }
+    /** group */
+    | { type: 'items'; items: { [key: string]: Requestable } }
+    /** select one */
+    | { type: 'selectOne'; choices: string[] } //
+    | { type: 'selectOneOrCustom'; choices: string[] }
+    /** select many */
+    | { type: 'selectMany'; choices: string[] }
+    | { type: 'selectManyOrCustom'; choices: string[] }
     /** array */
     | Requestable[]
-    /** painting */
-    | 'samMaskPoints'
-    | 'manualMask'
-    | 'paint'
-    /** forms */
-    | { label?: string; type: 'items'; items: { [key: string]: Requestable } }
-    // choices (type will be renamed before)
-    | { label?: string; type: 'selectOne'; choices: string[] } //
-    | { label?: string; type: 'selectOneOrCustom'; choices: string[] }
-    | { label?: string; type: 'selectMany'; choices: string[] }
-    | { label?: string; type: 'selectManyOrCustom'; choices: string[] }
+    /** ?? */
     | BUG
 
 // prettier-ignore
 export type InfoAnswer<Req> =
     /** str */
-    Req extends 'str' ? string :
-    Req extends 'str?' ? Maybe<string> :
+    Req extends {type: 'str' }  ? string :
+    Req extends {type: 'str?' } ? Maybe<string> :
     /** nums */
-    Req extends 'int' ? number :
-    Req extends 'int?' ? Maybe<number> :
+    Req extends {type: 'int' }  ? number :
+    Req extends {type: 'int?' } ? Maybe<number> :
     /** bools */
-    Req extends 'bool' ? boolean :
-    Req extends 'bool?' ? Maybe<boolean> :
-    /** embedding/lora */
-    Req extends 'embeddings' ? Maybe<boolean> :
-    Req extends 'lora' ? SimplifiedLoraDef :
-    Req extends 'loras' ? SimplifiedLoraDef[] :
-    /** array */
-    Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] :
+    Req extends {type: 'bool' }  ? boolean :
+    Req extends {type: 'bool?' } ? Maybe<boolean> :
+    /** embedding */
+    Req extends {type: 'embeddings' } ? Maybe<boolean> :
+    /** loras */
+    Req extends {type: 'lora' }  ? SimplifiedLoraDef :
+    Req extends {type: 'loras' } ? SimplifiedLoraDef[] :
     /** painting */
-    Req extends 'samMaskPoints' ? Maybe<boolean> :
-    Req extends 'manualMask' ? SimplifiedLoraDef :
-    Req extends 'paint' ? SimplifiedLoraDef[] :
-    /** forms */
+    Req extends {type: 'samMaskPoints' } ? Maybe<boolean> :
+    Req extends {type: 'manualMask' } ? SimplifiedLoraDef :
+    Req extends {type: 'paint', uri: string} ? Base64Image :
+    /** group */
     Req extends {type: 'items', items: { [key: string]: any }} ? { [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> } :
+    /** select one */
     Req extends {type: 'selectOne', choices: infer T} ? (T extends readonly any[] ? T[number] : T) :
     Req extends {type: 'selectOneOrCustom', choices: string[]} ? string :
+    /** select many */
     Req extends {type: 'selectMany', choices: infer T} ? (T extends readonly any[] ? T[number][] : T) :
     Req extends {type: 'selectManyOrCustom', choices: string[]} ? string[] :
+    /** array */
+    Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] :
     never
 
 export class InfoRequestBuilder {
+    /** str */
+    str = (label?: string) => ({ type: 'str' as const, label })
+    strOpt = (label?: string) => ({ type: 'str?' as const, label })
+    /** nums */
+    int = (label?: string) => ({ type: 'int' as const, label })
+    intOpt = (label?: string) => ({ type: 'int?' as const, label })
+    /** bools */
+    bool = (label?: string) => ({ type: 'bool' as const, label })
+    boolOpt = (label?: string) => ({ type: 'bool?' as const, label })
+    /** embedding */
+    embeddings = (label?: string) => ({ type: 'embeddings' as const, label })
+    /** loras */
+    lora = (label?: string) => ({ type: 'lora' as const, label })
+    loras = (label?: string) => ({ type: 'loras' as const, label })
+    /** painting */
+    samMaskPoints = (label: string) => ({ type: 'samMaskPoints' as const, label })
+    manualMask = (label: string) => ({ type: 'manualMask' as const, label })
+    paint = (label: string) => ({ type: 'paint' as const, label })
+    /** group */
     group = <const T>(label: string, items: T): { type: 'items'; items: T } => ({ type: 'items', items })
-
-    selectOne = <const T>(label: string, choices: T): { type: 'selectOne'; choices: T } => {
-        return { type: 'selectOne', choices }
-    }
-    selectOneOrCustom = (label: string, choices: string[]): { type: 'selectOneOrCustom'; choices: string[] } => {
-        return { type: 'selectOneOrCustom', choices }
-    }
-
-    selectMany = <const T>(label: string, choices: T): { type: 'selectMany'; choices: T } => {
-        return { type: 'selectMany', choices }
-    }
-    selectManyOrCustom = (label: string, choices: string[]): { type: 'selectManyOrCustom'; choices: string[] } => {
-        return { type: 'selectManyOrCustom', choices }
-    }
+    /** select one */
+    selectOne = <const T>(label: string, choices: T): { type: 'selectOne'; choices: T } => ({ type: 'selectOne', choices })
+    selectOneOrCustom = (label: string, choices: string[]): { type: 'selectOneOrCustom'; choices: string[] } => ({
+        type: 'selectOneOrCustom',
+        choices,
+    })
+    /** select many */
+    selectMany = <const T>(label: string, choices: T): { type: 'selectMany'; choices: T } => ({ type: 'selectMany', choices })
+    selectManyOrCustom = (label: string, choices: string[]): { type: 'selectManyOrCustom'; choices: string[] } => ({
+        type: 'selectManyOrCustom',
+        choices,
+    })
 }
 
 export type InfoRequestFn = typeof fakeInfoRequestFn
+
+// ----------------------------------------------------------
 export const fakeInfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
     //
     req: (q: InfoRequestBuilder) => Req,

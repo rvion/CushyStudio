@@ -33,9 +33,9 @@ export class FrontState {
         this.activeTab = tab
     }
 
-    answerString = (value: string) => this.sendMessageToExtension({ type: 'answer-string', value })
-    answerPaint = (base64Img: string) => this.sendMessageToExtension({ type: 'answer-paint', value: base64Img })
-    answerBoolean = (value: boolean) => this.sendMessageToExtension({ type: 'answer-boolean', value })
+    // this is the new way
+    sendRequestedIfo = (value: any) => this.sendMessageToExtension({ type: 'answer', value })
+
     gallerySize: number = 100
     cushySocket: ResilientSocketToExtension
     constructor() {
@@ -87,9 +87,6 @@ export class FrontState {
         // 2. process the info
         if (msg.type === 'flow-code') return
         if (msg.type === 'ask') return
-        if (msg.type === 'ask-boolean') return
-        if (msg.type === 'ask-string') return
-        if (msg.type === 'ask-paint') return
         if (msg.type === 'show-html') return
         if (msg.type === 'print') return
         if (msg.type === 'flow-start') {

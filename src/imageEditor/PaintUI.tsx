@@ -1,5 +1,3 @@
-import type { MessageFromExtensionToWebview_askPaint } from '../core-types/MessageFromExtensionToWebview'
-
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo, useRef } from 'react'
@@ -7,7 +5,7 @@ import { useSt } from '../core-front/stContext'
 import { Panel } from 'rsuite'
 
 // https://github.com/devforth/painterro
-export const PaintUI = observer(function PaintUI_(p: { step: MessageFromExtensionToWebview_askPaint }) {
+export const PaintUI = observer(function PaintUI_(p: { uri: string }) {
     const st = useSt()
     const uiSt = useLocalObservable(() => ({ img: '', locked: false }))
 
@@ -16,7 +14,7 @@ export const PaintUI = observer(function PaintUI_(p: { step: MessageFromExtensio
             // window.getElemnt
             const image = document.createElement('img')
             image.crossOrigin = 'Anonymous'
-            image.src = p.step.uri
+            image.src = p.uri
             image.onload = function () {
                 const iframe = document.getElementById('miniPaint') as any
                 var Layers = iframe.contentWindow.Layers

@@ -413,6 +413,10 @@ declare module "core-shared/Graph" {
 declare module "core-back/LATER.foo" {
     export type LATER<T> = any;
 }
+declare module "core-shared/b64img" {
+    import type { Branded } from "utils/types";
+    export type Base64Image = Branded<string, 'Base64Image'>;
+}
 declare module "core-shared/WorkflowFn" {
     import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
     import type { Presets } from "presets/presets";
@@ -498,62 +502,127 @@ declare module "presets/presets" {
         }>;
     }
 }
+declare module "controls/BUG" {
+    export class BUG {
+    }
+}
 declare module "controls/askv2" {
+    /**
+     * This module implements is the early-days core of
+     * the cushy form-framework
+     * 🔶 design is a bit unusual because of the very specific needs of the project
+     * TODO: write them down to explain choices
+     */
+    import type { Base64Image } from "core-shared/b64img";
     import type { SimplifiedLoraDef } from "presets/presets";
     import type { Maybe } from "utils/types";
-    class BUG {
-    }
-    export type Requestable = 
-    /** str */
-    'str' | 'str?'
-    /** nums */
-     | 'int' | 'int?'
-    /** bools */
-     | 'bool' | 'bool?'
-    /** embedding/lora */
-     | 'embeddings' | 'lora' | 'loras'
-    /** array */
-     | Requestable[]
-    /** painting */
-     | 'samMaskPoints' | 'manualMask' | 'paint'
-    /** forms */
-     | {
+    import { BUG } from "controls/BUG";
+    export type Requestable = {
         label?: string;
+    } & Requestable_;
+    export type Requestable_ = 
+    /** str */
+    {
+        type: 'str';
+    } | {
+        type: 'str?';
+    }
+    /** nums */
+     | {
+        type: 'int';
+    } | {
+        type: 'int?';
+    }
+    /** bools */
+     | {
+        type: 'bool';
+    } | {
+        type: 'bool?';
+    }
+    /** embedding */
+     | {
+        type: 'embeddings';
+    }
+    /** loras */
+     | {
+        type: 'lora';
+    } | {
+        type: 'loras';
+    }
+    /** painting */
+     | {
+        type: 'samMaskPoints';
+    } | {
+        type: 'manualMask';
+    } | {
+        type: 'paint';
+    }
+    /** group */
+     | {
         type: 'items';
         items: {
             [key: string]: Requestable;
         };
-    } | {
-        label?: string;
+    }
+    /** select one */
+     | {
         type: 'selectOne';
         choices: string[];
     } | {
-        label?: string;
         type: 'selectOneOrCustom';
         choices: string[];
-    } | {
-        label?: string;
+    }
+    /** select many */
+     | {
         type: 'selectMany';
         choices: string[];
     } | {
-        label?: string;
         type: 'selectManyOrCustom';
         choices: string[];
-    } | BUG;
+    }
+    /** array */
+     | Requestable[]
+    /** ?? */
+     | BUG;
     export type InfoAnswer<Req> = 
     /** str */
-    Req extends 'str' ? string : Req extends 'str?' ? Maybe<string> : 
+    Req extends {
+        type: 'str';
+    } ? string : Req extends {
+        type: 'str?';
+    } ? Maybe<string> : 
     /** nums */
-    Req extends 'int' ? number : Req extends 'int?' ? Maybe<number> : 
+    Req extends {
+        type: 'int';
+    } ? number : Req extends {
+        type: 'int?';
+    } ? Maybe<number> : 
     /** bools */
-    Req extends 'bool' ? boolean : Req extends 'bool?' ? Maybe<boolean> : 
-    /** embedding/lora */
-    Req extends 'embeddings' ? Maybe<boolean> : Req extends 'lora' ? SimplifiedLoraDef : Req extends 'loras' ? SimplifiedLoraDef[] : 
-    /** array */
-    Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] : 
+    Req extends {
+        type: 'bool';
+    } ? boolean : Req extends {
+        type: 'bool?';
+    } ? Maybe<boolean> : 
+    /** embedding */
+    Req extends {
+        type: 'embeddings';
+    } ? Maybe<boolean> : 
+    /** loras */
+    Req extends {
+        type: 'lora';
+    } ? SimplifiedLoraDef : Req extends {
+        type: 'loras';
+    } ? SimplifiedLoraDef[] : 
     /** painting */
-    Req extends 'samMaskPoints' ? Maybe<boolean> : Req extends 'manualMask' ? SimplifiedLoraDef : Req extends 'paint' ? SimplifiedLoraDef[] : 
-    /** forms */
+    Req extends {
+        type: 'samMaskPoints';
+    } ? Maybe<boolean> : Req extends {
+        type: 'manualMask';
+    } ? SimplifiedLoraDef : Req extends {
+        type: 'paint';
+        uri: string;
+    } ? Base64Image : 
+    /** group */
     Req extends {
         type: 'items';
         items: {
@@ -561,24 +630,86 @@ declare module "controls/askv2" {
         };
     } ? {
         [key in keyof Req['items']]: InfoAnswer<Req['items'][key]>;
-    } : Req extends {
+    } : 
+    /** select one */
+    Req extends {
         type: 'selectOne';
         choices: infer T;
     } ? (T extends readonly any[] ? T[number] : T) : Req extends {
         type: 'selectOneOrCustom';
         choices: string[];
-    } ? string : Req extends {
+    } ? string : 
+    /** select many */
+    Req extends {
         type: 'selectMany';
         choices: infer T;
     } ? (T extends readonly any[] ? T[number][] : T) : Req extends {
         type: 'selectManyOrCustom';
         choices: string[];
-    } ? string[] : never;
+    } ? string[] : 
+    /** array */
+    Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] : never;
     export class InfoRequestBuilder {
+        /** str */
+        str: (label?: string) => {
+            type: "str";
+            label: string | undefined;
+        };
+        strOpt: (label?: string) => {
+            type: "str?";
+            label: string | undefined;
+        };
+        /** nums */
+        int: (label?: string) => {
+            type: "int";
+            label: string | undefined;
+        };
+        intOpt: (label?: string) => {
+            type: "int?";
+            label: string | undefined;
+        };
+        /** bools */
+        bool: (label?: string) => {
+            type: "bool";
+            label: string | undefined;
+        };
+        boolOpt: (label?: string) => {
+            type: "bool?";
+            label: string | undefined;
+        };
+        /** embedding */
+        embeddings: (label?: string) => {
+            type: "embeddings";
+            label: string | undefined;
+        };
+        /** loras */
+        lora: (label?: string) => {
+            type: "lora";
+            label: string | undefined;
+        };
+        loras: (label?: string) => {
+            type: "loras";
+            label: string | undefined;
+        };
+        /** painting */
+        samMaskPoints: (label: string) => {
+            type: "samMaskPoints";
+            label: string;
+        };
+        manualMask: (label: string) => {
+            type: "manualMask";
+            label: string;
+        };
+        paint: (label: string) => {
+            type: "paint";
+            label: string;
+        };
+        /** group */
         group: <const T>(label: string, items: T) => {
             type: 'items';
             items: T;
         };
+        /** select one */
         selectOne: <const T>(label: string, choices: T) => {
             type: 'selectOne';
             choices: T;
@@ -587,6 +718,7 @@ declare module "controls/askv2" {
             type: 'selectOneOrCustom';
             choices: string[];
         };
+        /** select many */
         selectMany: <const T>(label: string, choices: T) => {
             type: 'selectMany';
             choices: T;
@@ -872,9 +1004,6 @@ declare module "sdk/IFlowExecution" {
         uploadWorkspaceFileAndLoad(path: string): Promise<CUSHY_RUNTIME.LoadImage>;
         uploadAnyFile(path: string): Promise<ComfyUploadImageResult>;
         uploadURL(url: string): Promise<ComfyUploadImageResult>;
-        askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>;
-        askString(msg: string, def?: Maybe<string>): Promise<string>;
-        askPaint(msg: string, path: string): Promise<string>;
         ask: InfoRequestFn;
         exec(cmd: string): string;
         sleep(ms: number): Promise<void>;

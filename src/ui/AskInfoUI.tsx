@@ -3,10 +3,12 @@ import type { FrontState } from 'src/core-front/FrontState'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useCallback } from 'react'
-import { Input, MultiCascader, Panel, Toggle } from 'rsuite'
+import { Button, Input, MultiCascader, Panel, Toggle } from 'rsuite'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExtensionToWebview'
 import { ItemDataType } from 'rsuite/esm/@types/common'
+import { PaintUI } from 'src/imageEditor/PaintUI'
+import { BUG } from 'src/controls/BUG'
 
 export const Execution_askUI = observer(function Execution_askUI_(p: { step: MessageFromExtensionToWebview_ask }) {
     const st = useSt()
@@ -18,7 +20,8 @@ export const Execution_askUI = observer(function Execution_askUI_(p: { step: Mes
         (ev: { preventDefault?: () => void; stopPropagation?: () => void }) => {
             ev.preventDefault?.()
             ev.stopPropagation?.()
-            st.answerString(uiSt.value)
+            // 🔴
+            // st.answerString(uiSt.value)
             uiSt.locked = true
         },
         [uiSt],
@@ -32,6 +35,11 @@ export const Execution_askUI = observer(function Execution_askUI_(p: { step: Mes
                     {k} {formUI(st, v)}
                 </div>
             ))}
+            {uiSt.locked ? null : (
+                <Button appearance='primary' onClick={submit}>
+                    OK
+                </Button>
+            )}
             {/* <div className='text-xl font-bold'>{p.step.message}</div> */}
             {/* <Input
                 autoFocus
@@ -41,22 +49,36 @@ export const Execution_askUI = observer(function Execution_askUI_(p: { step: Mes
                 // disabled={uiSt.locked}
                 value={uiSt.value}
                 onChange={(next) => (uiSt.value = next)}
-            />
-            {uiSt.locked ? null : (
-                <Button appearance='primary' onClick={submit}>
-                    OK
-                </Button>
-            )} */}
+            /> */}
         </Panel>
     )
 })
 
 const formUI = (st: FrontState, p: Requestable) => {
-    if (p === 'bool') return <Toggle />
-    if (p === 'bool?') return <Toggle />
-    if (p === 'int') return <Input type='number' value={3} />
-    if (p === 'int?') return <Input type='number' value={4} />
-    if (p === 'loras') {
+    // array recursion
+    if (Array.isArray(p))
+        return (
+            <div>
+                Array
+                {p.map((x) => formUI(st, x))}
+            </div>
+        )
+
+    // TODO: explain
+    if (p instanceof BUG) return <div>❌ BUG</div>
+
+    if (p.type === 'bool') return <Toggle />
+    if (p.type === 'bool?') return <Toggle />
+    if (p.type === 'int') return <Input type='number' value={3} />
+    if (p.type === 'int?') return <Input type='number' value={4} />
+    if (p.type === 'str') return <Input type='text' value={'5'} />
+    if (p.type === 'str?') return <Input type='text' value={'6'} />
+    if (p.type === 'paint') return <PaintUI uri={'foo bar 🔴'} />
+    if (p.type === 'samMaskPoints') return <div>🌶️</div>
+    if (p.type === 'manualMask') return <div>🌶️</div>
+    // <PaintUI uri={'foo bar 🔴'} />
+
+    if (p.type === 'loras') {
         const schema = st.schema
         if (schema == null) return <div>❌ no schema</div>
 
@@ -91,5 +113,5 @@ const formUI = (st: FrontState, p: Requestable) => {
             </div>
         )
     }
-    return <div>{JSON.stringify(p)} not supported</div>
+    return <div>{JSON.stringify(p)} not supported ok</div>
 }

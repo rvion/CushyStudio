@@ -1,16 +1,17 @@
 import type { LATER } from 'LATER'
+
 import FormData from 'form-data'
-import fetch from 'node-fetch'
-import * as vscode from 'vscode'
 import { marked } from 'marked'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+import fetch from 'node-fetch'
 import * as path from 'path'
+import * as vscode from 'vscode'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
-import { InfoAnswer, InfoRequestFn, InfoRequestBuilder, Requestable } from 'src/controls/askv2'
+import { InfoAnswer, InfoRequestBuilder, InfoRequestFn, Requestable } from 'src/controls/askv2'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
-import { ScriptStep_ask, ScriptStep_askBoolean, ScriptStep_askPaint, ScriptStep_askString } from '../controls/ScriptStep_ask'
+import { ScriptStep_ask } from '../controls/ScriptStep_ask'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { runAutolayout } from '../core-shared/AutolayoutV2'
 import { Graph } from '../core-shared/Graph'
@@ -26,7 +27,6 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
-import { Maybe } from '../utils/types'
 import { wildcards } from '../wildcards/wildcards'
 import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
@@ -70,13 +70,6 @@ export class FlowRun implements IFlowExecution {
     sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
     // High level API--------------------
-    /** ask user to input a boolean (true/false) */
-    askBoolean = (msg: string, def?: Maybe<boolean>): Promise<boolean> => {
-        const ask = new ScriptStep_askBoolean(msg, def)
-        this.workspace.sendMessage({ type: 'ask-boolean', message: msg, default: def })
-        this.steps.unshift(ask)
-        return ask.finished
-    }
 
     saveTextFile = async (path: RelativePath, content: string): Promise<void> => {
         const uri = this.workspace.resolve(path)
@@ -167,22 +160,6 @@ export class FlowRun implements IFlowExecution {
     }
 
     embedding = (t: LATER<'Embeddings'>) => `embedding:${t}`
-
-    /** ask the user to input a string */
-    askString = (msg: string, def?: Maybe<string>): Promise<string> => {
-        const ask = new ScriptStep_askString(msg, def)
-        this.workspace.sendMessage({ type: 'ask-string', message: msg, default: def })
-        this.steps.unshift(ask)
-        return ask.finished
-    }
-
-    /** ask the user to paint over an image */
-    askPaint = (msg: string, uri: RelativePath): Promise<string> => {
-        const ask = new ScriptStep_askPaint(msg)
-        this.workspace.sendMessage({ type: 'ask-paint', message: msg, uri })
-        this.steps.unshift(ask)
-        return ask.finished
-    }
 
     /** ask the user a few informations */
     ask: InfoRequestFn = async <const Req extends { [key: string]: Requestable }>(

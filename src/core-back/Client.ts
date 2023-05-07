@@ -1,12 +1,12 @@
-import type WebSocket from 'ws'
 import * as vscode from 'vscode'
+import type WebSocket from 'ws'
 import type { Workspace } from './Workspace'
 
 import { nanoid } from 'nanoid'
-import { ScriptStep_askBoolean, ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
 import { logger } from '../logger/logger'
 import { exhaust } from '../utils/ComfyUtils'
+import { ScriptStep_ask } from 'src/controls/ScriptStep_ask'
 
 export class CushyClient {
     clientID = nanoid(6)
@@ -71,11 +71,11 @@ export class CushyClient {
             return void vscode.env.openExternal(vscode.Uri.parse(msg.uriString))
         }
 
-        if (msg.type === 'answer-boolean') {
+        if (msg.type === 'answer') {
             const run = this.workspace.activeRun
             if (run == null) throw new Error('no active run')
             const step = run.step
-            if (!(step instanceof ScriptStep_askBoolean)) throw new Error('not a string request step')
+            if (!(step instanceof ScriptStep_ask)) throw new Error('not a string request step')
             step.answer(msg.value)
             return
         }
@@ -106,24 +106,6 @@ export class CushyClient {
             // })
             // const flow = this.workspace.vsTestController.
             // logger().info(`🐙 run-flow: ${flow?.id}`)
-            return
-        }
-
-        if (msg.type === 'answer-string') {
-            const run = this.workspace.activeRun
-            if (run == null) throw new Error('no active run')
-            const step = run.step
-            if (!(step instanceof ScriptStep_askString)) throw new Error('not a string request step')
-            step.answer(msg.value)
-            return
-        }
-
-        if (msg.type === 'answer-paint') {
-            const run = this.workspace.activeRun
-            if (run == null) throw new Error('no active run')
-            const step = run.step
-            if (!(step instanceof ScriptStep_askString)) throw new Error('not a string request step')
-            step.answer(msg.value)
             return
         }
 

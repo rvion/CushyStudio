@@ -3,15 +3,12 @@ import { Fragment } from 'react'
 import { Panel } from 'rsuite'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview, renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
-import { PaintUI } from '../imageEditor/PaintUI'
-import { Execution_askBooleanUI } from './Execution_askBooleanUI'
-import { Execution_askStringUI } from './Execution_askStringUI'
+import { Execution_askUI } from './AskInfoUI'
 import { FlowGeneratedImagesUI } from './FlowGeneratedImagesUI'
 import { MsgShowHTMLUI } from './MsgShowHTMLUI'
 import { ShowFlowEndUI } from './ShowFlowEndUI'
 import { ShowUpdatingNodeUI } from './ShowUpdatingNodeUI'
 import { TypescriptHighlightedCodeUI } from './TypescriptHighlightedCodeUI'
-import { Execution_askUI } from './AskInfoUI'
 
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
@@ -61,16 +58,13 @@ export const renderMsgUI = (msg: MessageFromExtensionToWebview) => {
     if (msg.type === 'flow-code') return <TypescriptHighlightedCodeUI key={msg.uid} code={msg.code} />
     if (msg.type === 'flow-start') return null // <Divider key={msg.uid} />
     if (msg.type === 'executing') return <ShowUpdatingNodeUI key={msg.uid} msg={msg} />
-    if (msg.type === 'ask-string') return <Execution_askStringUI key={msg.uid} step={msg} />
     if (msg.type === 'ask') return <Execution_askUI key={msg.uid} step={msg} />
-    if (msg.type === 'ask-boolean') return <Execution_askBooleanUI key={msg.uid} step={msg} />
     if (msg.type === 'print')
         return (
             <Panel collapsible defaultExpanded key={msg.uid} shaded>
                 {msg.message}
             </Panel>
         )
-    if (msg.type === 'ask-paint') return <PaintUI key={msg.uid} step={msg} />
     if (msg.type === 'images') return <FlowGeneratedImagesUI key={msg.uid} msg={msg} />
     if (msg.type === 'flow-end') return <ShowFlowEndUI key={msg.uid} msg={msg} />
     return null
