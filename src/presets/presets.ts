@@ -1,6 +1,5 @@
 import type { LATER } from 'LATER'
-import type { Graph } from '../core-shared/Graph'
-import type { IFlowExecution } from 'src/sdk/IFlowExecution'
+import type { WorkflowBuilder } from 'src/core-shared/WorkflowFn'
 
 export type SimplifiedLoraDef = {
     name: LATER<'Enum_LoraLoader_lora_name'>
@@ -14,28 +13,47 @@ export type SimplifiedLoraDef = {
 export class Presets {
     constructor(
         //
-        public graph: Graph & LATER<'ComfySetup'>,
-        public flow: IFlowExecution,
+        public ctx: WorkflowBuilder,
     ) {}
 
-    base = (p: {
+    prompt = (pos: string, neg: string) => {
+        const { graph, flow, AUTO } = this.ctx
+        return graph.KSampler({
+            seed: flow.randomSeed(),
+            latent_image: graph.EmptyLatentImage({}),
+            model: AUTO,
+            positive: graph.CLIPTextEncode({ clip: AUTO, text: 'hello' }),
+            negative: graph.CLIPTextEncode({ clip: AUTO, text: 'world' }),
+            sampler_name: 'ddim',
+            scheduler: 'karras',
+        })
+    }
+
+    loadModel = (p: {
         ckptName: LATER<'Enum_CheckpointLoader_ckpt_name'>
         stop_at_clip_layer?: number
         vae?: LATER<'Enum_VAELoader_vae_name'>
         loras?: SimplifiedLoraDef[]
+        /**
+         * default to false
+         * suggested values: (thanks @kdc_th)
+         * - 0.3 if you have a good gpu. it barely affects the quality while still giving you a speed increase
+         * - 0.5-0.6 is still serviceable
+         */
+        tomeRatio: number | false
     }): {
         ckpt: LATER<'CheckpointLoaderSimple'>
         clip: LATER<'CLIP'>
         model: LATER<'MODEL'>
         vae: LATER<'VAE'>
     } => {
-        if (this.graph.CheckpointLoaderSimple == null) throw new Error('🔴 ❌ INVASLID')
-        const ckpt = this.graph.CheckpointLoaderSimple({ ckpt_name: p.ckptName })
+        const { graph } = this.ctx
 
+        // model and loras
+        const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.ckptName })
         let clipAndModel: LATER<'HasSingle_CLIP'> & LATER<'HasSingle_MODEL'> = ckpt
-
         for (const lora of p.loras ?? []) {
-            clipAndModel = this.graph.LoraLoader({
+            clipAndModel = graph.LoraLoader({
                 model: clipAndModel,
                 clip: clipAndModel,
                 lora_name: lora.name,
@@ -46,27 +64,19 @@ export class Presets {
         let clip = clipAndModel._CLIP
         let model = clipAndModel._MODEL
         if (p.stop_at_clip_layer) {
-            clip = this.graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: p.stop_at_clip_layer }).CLIP
+            clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: p.stop_at_clip_layer }).CLIP
         }
 
+        // vae
         let vae: LATER<'VAE'> = ckpt._VAE
-        if (p.vae) vae = this.graph.VAELoader({ vae_name: p.vae }).VAE
-        // console.log({ ckpt, clip, model, vae })
-        console.log(
-            //
-            '🔴nnn',
-            typeof this.graph.VAELoader,
-            typeof vae,
-            typeof clip,
-            typeof ckpt._VAE,
-            typeof ckpt,
-        )
-        return {
-            ckpt,
-            clip: clip,
-            model,
-            vae,
+        if (p.vae) vae = graph.VAELoader({ vae_name: p.vae }).VAE
+
+        // patch
+        if (p.tomeRatio != null && p.tomeRatio !== false) {
+            const tome = graph.TomePatchModel({ model, ratio: p.tomeRatio })
+            model = tome.MODEL
         }
+        return { ckpt, clip, model, vae }
     }
 
     basicImageGeneration = async (p: {
@@ -92,12 +102,13 @@ export class Presets {
         /** defaults to 1 */
         denoise?: number
     }) => {
-        const ckpt = this.graph.CheckpointLoaderSimple({ ckpt_name: p.ckptName })
+        const { graph, flow } = this.ctx
+        const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.ckptName })
 
         let clipAndModel: LATER<'HasSingle_CLIP'> & LATER<'HasSingle_MODEL'> = ckpt
 
         for (const lora of p.loras ?? []) {
-            clipAndModel = this.graph.LoraLoader({
+            clipAndModel = graph.LoraLoader({
                 model: clipAndModel,
                 clip: clipAndModel,
                 lora_name: lora.name,
@@ -106,16 +117,16 @@ export class Presets {
             })
         }
 
-        // const vae = this.graph.VAELoader({ vae_name: "vae-ft-mse-840000-ema-pruned.safetensors" })
-        const latent = this.graph.EmptyLatentImage({
+        // const vae = graph.VAELoader({ vae_name: "vae-ft-mse-840000-ema-pruned.safetensors" })
+        const latent = graph.EmptyLatentImage({
             width: p.width ?? 768,
             height: p.height ?? 512,
             batch_size: p.batchSize ?? 1,
         })
-        const positive = this.graph.CLIPTextEncode({ text: p.positive, clip: clipAndModel })
-        const negative = this.graph.CLIPTextEncode({ text: p.negative, clip: clipAndModel })
-        const sampler = this.graph.KSampler({
-            seed: this.flow.randomSeed(),
+        const positive = graph.CLIPTextEncode({ text: p.positive, clip: clipAndModel })
+        const negative = graph.CLIPTextEncode({ text: p.negative, clip: clipAndModel })
+        const sampler = graph.KSampler({
+            seed: flow.randomSeed(),
             steps: p.steps ?? 30,
             cfg: p.cfg ?? 10,
             sampler_name: p.sampler_name ?? 'euler_ancestral',
@@ -126,9 +137,9 @@ export class Presets {
             negative,
             latent_image: latent,
         })
-        const image = this.graph.VAEDecode({ samples: sampler, vae: ckpt })
-        this.graph.SaveImage({ filename_prefix: 'ComfyUI', images: image })
-        await this.flow.PROMPT()
+        const image = graph.VAEDecode({ samples: sampler, vae: ckpt })
+        graph.SaveImage({ filename_prefix: 'ComfyUI', images: image })
+        await flow.PROMPT()
         return { ckpt, latent, positive, negative, sampler, image }
     }
 }
