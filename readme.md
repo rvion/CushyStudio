@@ -296,10 +296,10 @@ want to add your own custom node to the list? open a PR!
     ```
 5. open a new vscode in `extension development` mode
 
-    - either with `F5` (recommanded)
-    - or with `npm run vscode:dev`
+    - with `F5` (recommanded) from the vscode extension source
+        - or with `npm run vscode:dev` (may not properly reload)
 
-6. [recommanded] then add a shortcut to trigger a reload quickly
+6. open the WebUI at [http://localhost:5173/](http://localhost:5173/)
 
 <details>
 <summary>
