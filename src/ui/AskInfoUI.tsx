@@ -74,9 +74,8 @@ const formUI = (st: FrontState, p: Requestable) => {
     if (p.type === 'str') return <Input type='text' value={'5'} />
     if (p.type === 'str?') return <Input type='text' value={'6'} />
     if (p.type === 'paint') return <PaintUI uri={'foo bar 🔴'} />
-    if (p.type === 'samMaskPoints') return <div>🌶️</div>
-    if (p.type === 'manualMask') return <div>🌶️</div>
-    // <PaintUI uri={'foo bar 🔴'} />
+    if (p.type === 'samMaskPoints') return <div>🌶️ {p.url}</div>
+    if (p.type === 'manualMask') return <div>🌶️ {p.url}</div>
 
     if (p.type === 'loras') {
         const schema = st.schema
