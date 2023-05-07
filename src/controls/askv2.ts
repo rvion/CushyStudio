@@ -26,7 +26,12 @@ export type Requestable =
     /** forms */
     | { label?: string; type: 'items'; items: { [key: string]: Requestable } }
     | { label?: string; type: 'choiceStrict'; choices: string[] }
+    //
     | { label?: string; type: 'choiceOpen'; choices: string[] }
+    | { label?: string; type: 'multichoiceStrict'; choices: string[] }
+    | { label?: string; type: 'multichoiceOpen'; choices: string[] }
+    //
+    | { label?: string; type: 'multichoiceOpen'; choices: string[] }
     | BUG
 
 // prettier-ignore

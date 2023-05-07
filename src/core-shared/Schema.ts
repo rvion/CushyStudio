@@ -22,10 +22,23 @@ export type NodeInputExt = {
     index: number
 }
 export type NodeOutputExt = { type: string; name: string; isPrimitive: boolean }
+
 export type EnumValue = string | boolean | number
+
 export class Schema {
+    getLoraHierarchy = (): string[] => {
+        const loras = this.getLoras()
+        return []
+    }
+
+    getLoras = (): string[] => {
+        const candidates = this.knownEnumsByName.get('Enum_LoraLoader_lora_name') ?? []
+        return candidates as string[]
+    }
+
     knownTypes = new Set<string>()
-    knownEnums = new Map<
+    knownEnumsByName = new Map<EnumName, EnumValue[]>()
+    knownEnumsByHash = new Map<
         EnumHash,
         {
             enumNameInComfy: string
@@ -55,7 +68,8 @@ export class Schema {
         this.spec = spec
         this.embeddings = embeddings
         this.knownTypes.clear()
-        this.knownEnums.clear()
+        this.knownEnumsByHash.clear()
+        this.knownEnumsByName.clear()
         this.nodes.splice(0, this.nodes.length)
         this.nodesByNameInComfy = {}
         this.nodesByNameInCushy = {}
@@ -148,14 +162,15 @@ export class Schema {
                         enumValues.push(enumValue)
                     }
                     const hash = enumValues.sort().join('|')
-                    const similarEnum = this.knownEnums.get(hash)
+                    const similarEnum = this.knownEnumsByHash.get(hash)
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${inputName}`
+                    this.knownEnumsByName.set(uniqueEnumName, enumValues)
                     if (similarEnum != null) {
                         inputTypeNameInCushy = similarEnum.enumNameInCushy
                         similarEnum.aliases.push(uniqueEnumName)
                     } else {
                         inputTypeNameInCushy = uniqueEnumName
-                        this.knownEnums.set(hash, {
+                        this.knownEnumsByHash.set(hash, {
                             enumNameInCushy: normalizeJSIdentifier(inputTypeNameInCushy),
                             enumNameInComfy: inputName,
                             values: enumValues,
@@ -285,7 +300,7 @@ export class Schema {
         }
 
         p(`\n// ENUMS -------------------------------`)
-        for (const e of this.knownEnums.values()) {
+        for (const e of this.knownEnumsByHash.values()) {
             if (e.values.length > 0) {
                 p(`export type ${e.enumNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
                 if (e.aliases.length > 0) {

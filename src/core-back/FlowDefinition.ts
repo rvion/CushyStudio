@@ -32,7 +32,10 @@ export class FlowDefinition {
     ): Promise<boolean> => {
         const start = Date.now()
         const flowRunID = nanoid(6)
-        this.file.workspace.sendMessage({ type: 'flow-start', flowRunID: flowRunID })
+        const workspace = this.file.workspace
+        workspace.sendMessage({ type: 'flow-start', flowRunID: flowRunID })
+        const schema = workspace.schema
+        workspace.sendMessage({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
 
         logger().info('❓ running some flow')
         // this.focusedProject = this
