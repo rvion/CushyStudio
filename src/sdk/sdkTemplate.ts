@@ -2,10 +2,7 @@ export const sdkTemplate: string = `/// <reference path="nodes.d.ts" />
 
 
 declare module "core-shared/Workflow" {
-    export type WorkflowBuilder = (graph: any) => void;
     export class Workflow {
-        builder: WorkflowBuilder;
-        constructor(builder: WorkflowBuilder);
     }
 }
 declare module "core-types/ComfyPrompt" {
@@ -86,6 +83,17 @@ declare module "ui/VisUI" {
     export type VisEdges = any;
     export type VisOptions = any;
 }
+declare module "utils/types" {
+    /** usefull to catch most *units* type errors */
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
+    };
+    /** same as Tagged, but even scriter */
+    export type Branded<O, Brand> = O & {
+        __brand: Brand;
+    };
+    export type Maybe<T> = T | null | undefined;
+}
 declare module "utils/ComfyUtils" {
     export const exhaust: (x: never) => never;
     export const sleep: (ms: number) => Promise<unknown>;
@@ -123,17 +131,6 @@ declare module "core-types/ComfySchemaJSON" {
         max?: number;
         step?: number;
     };
-}
-declare module "utils/types" {
-    /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tag> = O & {
-        __tag?: Tag;
-    };
-    /** same as Tagged, but even scriter */
-    export type Branded<O, Brand> = O & {
-        __brand: Brand;
-    };
-    export type Maybe<T> = T | null | undefined;
 }
 declare module "utils/CodeBuffer" {
     /** this class is used to buffer text and then write it to a file */
@@ -241,6 +238,54 @@ declare module "core-shared/Colors" {
         [category: string]: string;
     };
 }
+declare module "core-shared/autoValue" {
+    import type { Branded } from "utils/types";
+    /**
+     * a fake value that is detected at serialization
+     * time to try to magically inject stuff
+     * */
+    export type AUTO = Branded<{
+        ___AUTO___: true;
+    }, 'AUTO'>;
+    /**
+     * you can use this as a placeholder anywhere in your graph
+     * Cushy will try to find some node slot recently created that can be used to fill the gap
+     */
+    export const auto: <T>() => T;
+    export const auto_: AUTO;
+}
+declare module "core-shared/Printable" {
+    import { ComfyNode } from "core-shared/Node";
+    export type Printable = string | number | boolean | ComfyNode<any>;
+}
+declare module "logger/LogTypes" {
+    import { Printable } from "core-shared/Printable";
+    export interface ILogger {
+        debug(...message: Printable[]): void;
+        info(...message: Printable[]): void;
+        warn(...message: Printable[]): void;
+        error(...message: Printable[]): void;
+    }
+    export interface LogMessage {
+        level: LogLevel;
+        message: string;
+        timestamp: Date;
+    }
+    export enum LogLevel {
+        DEBUG = 0,
+        INFO = 1,
+        WARN = 2,
+        ERROR = 3
+    }
+}
+declare module "logger/logger" {
+    import type { ILogger } from "logger/LogTypes";
+    export const ref: {
+        value?: ILogger;
+    };
+    export const logger: () => ILogger;
+    export const registerLogger: (logger: ILogger) => void;
+}
 declare module "core-shared/Node" {
     import type { ComfyNodeJSON } from "core-types/ComfyPrompt";
     import type { NodeProgress, WsMsgExecutedData } from "core-types/ComfyWsPayloads";
@@ -287,7 +332,8 @@ declare module "core-shared/Node" {
         get height(): number;
         serializeValue(field: string, value: unknown): unknown;
         private _getExpecteTypeForField;
-        private _getOutputForType;
+        private _getOutputForTypeOrCrash;
+        private _getOutputForTypeOrNull;
     }
 }
 declare module "core-shared/AutolayoutV1" {
@@ -327,15 +373,20 @@ declare module "core-shared/Graph" {
      */
     export class Graph {
         schema: Schema;
+        /** graph uid */
         uid: string;
+        /** cytoscape instance to live update graph */
         cyto?: Cyto;
+        /** @internal every node constructor must call this */
         registerNode: (node: ComfyNode<any>) => void;
-        get nodes(): ComfyNode<any>[];
+        /** nodes, in creation order */
+        nodes: ComfyNode<any>[];
+        /** nodes, indexed by nodeID */
         nodesIndex: Map<string, ComfyNode<any>>;
-        isRunning: boolean;
+        /** convert to mermaid DSL expression for nice graph rendering */
         toMermaid: () => string;
         /** return the coresponding comfy prompt  */
-        get json(): ComfyPromptJSON;
+        get jsonForPrompt(): ComfyPromptJSON;
         /** temporary proxy */
         /** @internal pointer to the currently executing node */
         currentExecutingNode: ComfyNode<any> | null;
@@ -369,10 +420,6 @@ declare module "core-shared/ParamDef" {
         group?: string;
     };
     export type FlowParam = ParamT<'string', string> | ParamT<'number', number> | ParamT<'boolean', boolean> | ParamT<'strings', string[]> | ParamT<'image', string>;
-}
-declare module "core-shared/Printable" {
-    import { ComfyNode } from "core-shared/Node";
-    export type Printable = string | number | boolean | ComfyNode<any>;
 }
 declare module "utils/fs/BrandedPaths" {
     import type { Branded } from "utils/types";
@@ -677,26 +724,33 @@ declare module "sdk/IFlowExecution" {
         get webviewURI(): string;
     }
 }
-declare module "core-back/presets" {
+declare module "presets/presets" {
     import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
-    import type { Graph } from "core-shared/Graph";
-    import type { IFlowExecution } from "sdk/IFlowExecution";
+    import type { WorkflowBuilder } from "core-shared/WorkflowFn";
+    export type SimplifiedLoraDef = {
+        name: CUSHY_RUNTIME.Enum_LoraLoader_lora_name;
+        /** defaults to 1 */
+        strength_clip?: number;
+        /** defaults to 1 */
+        strength_model?: number;
+    };
     /** high level library */
     export class Presets {
-        graph: Graph & CUSHY_RUNTIME.ComfySetup;
-        flow: IFlowExecution;
-        constructor(graph: Graph & CUSHY_RUNTIME.ComfySetup, flow: IFlowExecution);
-        base: (p: {
+        ctx: WorkflowBuilder;
+        constructor(ctx: WorkflowBuilder);
+        prompt: (pos: string, neg: string) => any;
+        loadModel: (p: {
             ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
             stop_at_clip_layer?: number;
             vae?: CUSHY_RUNTIME.Enum_VAELoader_vae_name;
-            loras?: {
-                name: CUSHY_RUNTIME.Enum_LoraLoader_lora_name;
-                /** defaults to 1 */
-                strength_clip?: number;
-                /** defaults to 1 */
-                strength_model?: number;
-            }[];
+            loras?: SimplifiedLoraDef[];
+            /**
+             * default to false
+             * suggested values: (thanks @kdc_th)
+             * - 0.3 if you have a good gpu. it barely affects the quality while still giving you a speed increase
+             * - 0.5-0.6 is still serviceable
+             */
+            tomeRatio: number | false;
         }) => {
             ckpt: CUSHY_RUNTIME.CheckpointLoaderSimple;
             clip: CUSHY_RUNTIME.CLIP;
@@ -705,13 +759,7 @@ declare module "core-back/presets" {
         };
         basicImageGeneration: (p: {
             ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
-            loras?: {
-                name: CUSHY_RUNTIME.Enum_LoraLoader_lora_name;
-                /** defaults to 1 */
-                strength_clip?: number;
-                /** defaults to 1 */
-                strength_model?: number;
-            }[];
+            loras?: SimplifiedLoraDef[];
             positive: string;
             negative: string;
             /** width, defaults to 768 */
@@ -742,20 +790,24 @@ declare module "core-back/presets" {
 }
 declare module "core-shared/WorkflowFn" {
     import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
+    import type { Presets } from "presets/presets";
     import type { Graph } from "core-shared/Graph";
     import type { Workflow } from "core-shared/Workflow";
-    import type { Presets } from "core-back/presets";
     export type WorkflowType = (title: string, builder: WorkflowBuilderFn) => Workflow;
-    export type WorkflowBuilderFn = (p: {
+    export type WorkflowBuilder = {
         graph: CUSHY_RUNTIME.ComfySetup & Graph;
         flow: import("sdk/IFlowExecution").IFlowExecution;
         presets: Presets;
-    }) => Promise<any>;
+        AUTO: <T>() => T;
+        stage: 'TODO';
+        openpose: 'TODO';
+    };
+    export type WorkflowBuilderFn = (p: WorkflowBuilder) => Promise<any>;
 }
 declare module "sdk/sdkEntrypoint" {
     export type { Workflow } from "core-shared/Workflow";
     export type { Graph } from "core-shared/Graph";
     export type { IFlowExecution } from "sdk/IFlowExecution";
-    export type { WorkflowType } from "core-shared/WorkflowFn";
+    export type { WorkflowBuilder, WorkflowBuilderFn } from "core-shared/WorkflowFn";
 }
 `
