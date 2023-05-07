@@ -152,8 +152,9 @@ VScode is packed with keyboard shortcuts.
 
 By default, you can run any workflow by moving anywhere in a script and typing
 
-| command                  | Keybinding    | windows        |
+| command                  | macos         | windows        |
 | ------------------------ | ------------- | -------------- |
+| trigger autocompletion   | `ctrl+space`  | `ctrl+shift+e` |
 | focus file tree          | `cmd+shift+e` | `ctrl+shift+e` |
 | focus left pane          | `cmd+1`       | `ctrl+1`       |
 | focus right pane         | `cmd+2`       | `ctrl+2`       |
