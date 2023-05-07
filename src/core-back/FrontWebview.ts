@@ -113,7 +113,7 @@ export class FrontWebview {
             </head>
             <body>
                 <div id="content">
-                    <iframe width="100%" height="100%" frameborder="0" src="http://localhost:5173/"></iframe>
+                    <iframe width="100%" height="100%" frameborder="0" src="http://localhost:8288/"></iframe>
                 </div>
             </body>
         </html>
