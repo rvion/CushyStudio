@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, toJS } from 'mobx'
 
 export type AskPath = (string | number)[]
 
@@ -29,7 +29,7 @@ export class AskState {
     }
 
     setAtPath = (path: AskPath, value: any) => {
-        console.log(path, value, this.value)
+        console.log(path, value, toJS(this.value))
         let current = this.value
         for (let i = 0; i < path.length - 1; i++) {
             const key = path[i]
