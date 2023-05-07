@@ -525,19 +525,19 @@ declare module "controls/askv2" {
         };
     } | {
         label?: string;
-        type: 'choiceStrict';
+        type: 'selectOne';
         choices: string[];
     } | {
         label?: string;
-        type: 'choiceOpen';
+        type: 'selectOneOrCustom';
         choices: string[];
     } | {
         label?: string;
-        type: 'multichoiceStrict';
+        type: 'selectMany';
         choices: string[];
     } | {
         label?: string;
-        type: 'multichoiceOpen';
+        type: 'selectManyOrCustom';
         choices: string[];
     } | BUG;
     export type InfoAnswer<Req> = 
@@ -562,23 +562,37 @@ declare module "controls/askv2" {
     } ? {
         [key in keyof Req['items']]: InfoAnswer<Req['items'][key]>;
     } : Req extends {
-        type: 'choiceStrict';
+        type: 'selectOne';
         choices: infer T;
     } ? (T extends readonly any[] ? T[number] : T) : Req extends {
-        type: 'choiceOpen';
+        type: 'selectOneOrCustom';
         choices: string[];
-    } ? string : never;
+    } ? string : Req extends {
+        type: 'selectMany';
+        choices: infer T;
+    } ? (T extends readonly any[] ? T[number][] : T) : Req extends {
+        type: 'selectManyOrCustom';
+        choices: string[];
+    } ? string[] : never;
     export class InfoRequestBuilder {
         group: <const T>(label: string, items: T) => {
             type: 'items';
             items: T;
         };
-        choiceStrict: <const T>(label: string, choices: T) => {
-            type: 'choiceStrict';
+        selectOne: <const T>(label: string, choices: T) => {
+            type: 'selectOne';
             choices: T;
         };
-        choiceOpen: (label: string, choices: string[]) => {
-            type: 'choiceOpen';
+        selectOneOrCustom: (label: string, choices: string[]) => {
+            type: 'selectOneOrCustom';
+            choices: string[];
+        };
+        selectMany: <const T>(label: string, choices: T) => {
+            type: 'selectMany';
+            choices: T;
+        };
+        selectManyOrCustom: (label: string, choices: string[]) => {
+            type: 'selectManyOrCustom';
             choices: string[];
         };
     }

@@ -8,8 +8,10 @@ const r3 = await fakeInfoRequestFn((ui) => ({
     foo: 'int',
     number: 'int?',
     loras: 'loras',
-    col1: ui.choiceStrict('pick a primary color', ['red', 'blue', 'green']),
-    col2: ui.choiceOpen('choose a color', ['red', 'blue', 'green']),
+    col1: ui.selectOne('pick a primary color', ['red', 'blue', 'green']),
+    col2: ui.selectOneOrCustom('choose a color', ['red', 'blue', 'green']),
+    col3: ui.selectMany('choose many', ['red', 'blue', 'green']),
+    col4: ui.selectManyOrCustom('choose many or custom colors', ['red', 'blue', 'green']),
     qux: ['int', 'int', 'int'],
 }))
 

@@ -26,10 +26,10 @@ export type Requestable =
     /** forms */
     | { label?: string; type: 'items'; items: { [key: string]: Requestable } }
     // choices (type will be renamed before)
-    | { label?: string; type: 'choiceStrict'; choices: string[] } //
-    | { label?: string; type: 'choiceOpen'; choices: string[] }
-    | { label?: string; type: 'multichoiceStrict'; choices: string[] }
-    | { label?: string; type: 'multichoiceOpen'; choices: string[] }
+    | { label?: string; type: 'selectOne'; choices: string[] } //
+    | { label?: string; type: 'selectOneOrCustom'; choices: string[] }
+    | { label?: string; type: 'selectMany'; choices: string[] }
+    | { label?: string; type: 'selectManyOrCustom'; choices: string[] }
     | BUG
 
 // prettier-ignore
@@ -55,18 +55,27 @@ export type InfoAnswer<Req> =
     Req extends 'paint' ? SimplifiedLoraDef[] :
     /** forms */
     Req extends {type: 'items', items: { [key: string]: any }} ? { [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> } :
-    Req extends {type: 'choiceStrict', choices: infer T} ? (T extends readonly any[] ? T[number] : T) :
-    Req extends {type: 'choiceOpen', choices: string[]} ? string :
+    Req extends {type: 'selectOne', choices: infer T} ? (T extends readonly any[] ? T[number] : T) :
+    Req extends {type: 'selectOneOrCustom', choices: string[]} ? string :
+    Req extends {type: 'selectMany', choices: infer T} ? (T extends readonly any[] ? T[number][] : T) :
+    Req extends {type: 'selectManyOrCustom', choices: string[]} ? string[] :
     never
 
 export class InfoRequestBuilder {
     group = <const T>(label: string, items: T): { type: 'items'; items: T } => ({ type: 'items', items })
 
-    choiceStrict = <const T>(label: string, choices: T): { type: 'choiceStrict'; choices: T } => {
-        return { type: 'choiceStrict', choices }
+    selectOne = <const T>(label: string, choices: T): { type: 'selectOne'; choices: T } => {
+        return { type: 'selectOne', choices }
     }
-    choiceOpen = (label: string, choices: string[]): { type: 'choiceOpen'; choices: string[] } => {
-        return { type: 'choiceOpen', choices }
+    selectOneOrCustom = (label: string, choices: string[]): { type: 'selectOneOrCustom'; choices: string[] } => {
+        return { type: 'selectOneOrCustom', choices }
+    }
+
+    selectMany = <const T>(label: string, choices: T): { type: 'selectMany'; choices: T } => {
+        return { type: 'selectMany', choices }
+    }
+    selectManyOrCustom = (label: string, choices: string[]): { type: 'selectManyOrCustom'; choices: string[] } => {
+        return { type: 'selectManyOrCustom', choices }
     }
 }
 
