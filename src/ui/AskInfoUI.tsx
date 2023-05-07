@@ -4,7 +4,7 @@ import type { Requestable } from 'src/controls/askv2'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
-import { Button, Input, MultiCascader, Panel, Toggle } from 'rsuite'
+import { Button, Input, Message, MultiCascader, Notification, Panel, Toggle } from 'rsuite'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExtensionToWebview'
 import { ItemDataType } from 'rsuite/esm/@types/common'
@@ -45,10 +45,27 @@ export const AskInfoUI = observer(function AskInfoUI_(p: { step: MessageFromExte
                         OK
                     </Button>
                 )}
-                {/* debug -------------------------------*/}
-                <pre>{JSON.stringify(p.step, null, 4)}</pre>
+                <div className='flex flex-col items-start'>
+                    <DebugUI title='request'>
+                        the request made by the wofkflow is
+                        <pre>{JSON.stringify(p.step)}</pre>
+                    </DebugUI>
+                    <DebugUI title={'draft answer'}>
+                        the value about to be sent back to the workflow is
+                        <pre>{JSON.stringify(askState.value)}</pre>
+                    </DebugUI>
+                </div>
             </Panel>
+            {/* debug -------------------------------*/}
         </askContext.Provider>
+    )
+})
+
+export const DebugUI = observer(function DebugUI_(p: { title: string; children: React.ReactNode }) {
+    return (
+        <Notification header={p.title} type='warning'>
+            {p.children}
+        </Notification>
     )
 })
 
@@ -105,8 +122,17 @@ const WidgetUI = observer(function WidgetUI_(p: {
 })
 
 // ----------------------------------------------------------------------
-export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { get: () => boolean; set: (v: boolean) => void }) {
-    return <Toggle checked={p.get()} onChange={(checked) => p.set(checked)} />
+export const WidgetBoolUI = observer(function WidgetBoolUI_(p: {
+    //
+    get: () => boolean
+    set: (v: boolean) => void
+}) {
+    return (
+        <Toggle //
+            checked={p.get()}
+            onChange={(checked) => p.set(checked)}
+        />
+    )
 })
 
 // ----------------------------------------------------------------------

@@ -13,15 +13,7 @@ import { TypescriptHighlightedCodeUI } from './TypescriptHighlightedCodeUI'
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
     return (
-        <div
-            className='flex flex-col gap-1 p-2'
-            style={
-                {
-                    // scrollSnapAlign: 'end',
-                    // flexDirection: 'column-reverse',
-                }
-            }
-        >
+        <div className='flex flex-col gap-4 p-4'>
             {st.itemsToShow.map((msg) => {
                 const details = renderMsgUI(msg)
                 return (
