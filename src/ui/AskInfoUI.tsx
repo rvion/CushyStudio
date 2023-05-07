@@ -4,7 +4,7 @@ import type { Requestable } from 'src/controls/askv2'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
-import { Button, Input, Message, MultiCascader, Notification, Panel, Toggle } from 'rsuite'
+import { Button, Input, InputNumber, Message, MultiCascader, Notification, Panel, Toggle } from 'rsuite'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExtensionToWebview'
 import { ItemDataType } from 'rsuite/esm/@types/common'
@@ -102,8 +102,8 @@ const WidgetUI = observer(function WidgetUI_(p: {
 
     if (req.type === 'bool') return <WidgetBoolUI get={get} set={set} />
     if (req.type === 'bool?') return <WidgetBoolUI get={get} set={set} />
-    if (req.type === 'int') return <Input type='number' value={3} />
-    if (req.type === 'int?') return <Input type='number' value={4} />
+    if (req.type === 'int') return <WidgetIntUI get={get} set={set} />
+    if (req.type === 'int?') return <WidgetIntUI get={get} set={set} />
     if (req.type === 'str') return <Input type='text' value={'5'} />
     if (req.type === 'str?') return <Input type='text' value={'6'} />
     if (req.type === 'paint') return <PaintUI uri={'foo bar 🔴'} />
@@ -131,6 +131,21 @@ export const WidgetBoolUI = observer(function WidgetBoolUI_(p: {
         <Toggle //
             checked={p.get()}
             onChange={(checked) => p.set(checked)}
+        />
+    )
+})
+export const WidgetIntUI = observer(function WidgetBoolUI_(p: {
+    //
+    get: () => number
+    set: (v: number) => void
+}) {
+    return (
+        <InputNumber //
+            value={p.get()}
+            onChange={(next) => {
+                if (typeof next != 'number') return
+                p.set(next)
+            }}
         />
     )
 })
