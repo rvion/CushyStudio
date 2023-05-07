@@ -9,11 +9,19 @@ import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExte
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { PaintUI } from '../imageEditor/PaintUI'
 import { BUG } from '../controls/BUG'
+import { exhaust } from 'src/utils/ComfyUtils'
 
+/** this is the root interraction widget
+ * if a workflow need user-supplied infos, it will send an 'ask' request with a list
+ * of things it needs to know.
+ * this widget will then dispatch the individual requests to the appropriate sub-widgets
+ * collect the responses and submit them to the back once completed and valid.
+ */
 export const Execution_askUI = observer(function Execution_askUI_(p: { step: MessageFromExtensionToWebview_ask }) {
     const st = useSt()
     const uiSt = useLocalObservable(() => ({
-        value: 0 as any, // 🔴
+        // this value is the root response object the form will progressively fill
+        value: {} as any,
         locked: false,
     }))
     const submit = useCallback(
@@ -21,7 +29,7 @@ export const Execution_askUI = observer(function Execution_askUI_(p: { step: Mes
             ev.preventDefault?.()
             ev.stopPropagation?.()
             // 🔴
-            // st.answerString(uiSt.value)
+            st.answerInfo(uiSt.value)
             uiSt.locked = true
         },
         [uiSt],

@@ -34,7 +34,7 @@ export class FrontState {
     }
 
     // this is the new way
-    sendRequestedIfo = (value: any) => this.sendMessageToExtension({ type: 'answer', value })
+    answerInfo = (value: any) => this.sendMessageToExtension({ type: 'answer', value })
 
     gallerySize: number = 100
     cushySocket: ResilientSocketToExtension
