@@ -61,8 +61,8 @@ export type InfoAnswer<Req> =
     Req extends {type: 'lora' }  ? SimplifiedLoraDef :
     Req extends {type: 'loras' } ? SimplifiedLoraDef[] :
     /** painting */
-    Req extends {type: 'samMaskPoints' } ? Maybe<boolean> :
-    Req extends {type: 'manualMask' } ? SimplifiedLoraDef :
+    Req extends {type: 'samMaskPoints' } ? {x:number, y:number}[] :
+    Req extends {type: 'manualMask' } ? Base64Image :
     Req extends {type: 'paint'} ? Base64Image :
     /** group */
     Req extends {type: 'items', items: { [key: string]: any }} ? { [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> } :

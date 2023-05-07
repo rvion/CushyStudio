@@ -619,9 +619,12 @@ declare module "controls/askv2" {
     /** painting */
     Req extends {
         type: 'samMaskPoints';
-    } ? Maybe<boolean> : Req extends {
+    } ? {
+        x: number;
+        y: number;
+    }[] : Req extends {
         type: 'manualMask';
-    } ? SimplifiedLoraDef : Req extends {
+    } ? Base64Image : Req extends {
         type: 'paint';
     } ? Base64Image : 
     /** group */
