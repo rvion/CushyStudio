@@ -369,6 +369,8 @@ export interface ComfySetup {
     WASCreateMorphImageFromPath(args: WASCreateMorphImageFromPath_input, uid?: ComfyNodeUID): WASCreateMorphImageFromPath
     /* category=WAS Suite_Animation output=ASCII, ASCII_1 */
     WASCreateVideoFromPath(args: WASCreateVideoFromPath_input, uid?: ComfyNodeUID): WASCreateVideoFromPath
+    /* category=WAS Suite_Image_Masking output=IMAGE */
+    WASConvertMaskToImage(args: WASConvertMaskToImage_input, uid?: ComfyNodeUID): WASConvertMaskToImage
     /* category=WAS Suite_Debug output=NUMBER */
     WASDebugNumberToConsole(args: WASDebugNumberToConsole_input, uid?: ComfyNodeUID): WASDebugNumberToConsole
     /* category=WAS Suite_Debug output=DICT */
@@ -478,7 +480,7 @@ export interface ComfySetup {
     WASImageTranspose(args: WASImageTranspose_input, uid?: ComfyNodeUID): WASImageTranspose
     /* category=WAS Suite_Image_Filter output=IMAGE */
     WASImageFDOFFilter(args: WASImageFDOFFilter_input, uid?: ComfyNodeUID): WASImageFDOFFilter
-    /* category=WAS Suite_Image_Transform output=MASK */
+    /* category=WAS Suite_Image_Masking output=MASK */
     WASImageToLatentMask(args: WASImageToLatentMask_input, uid?: ComfyNodeUID): WASImageToLatentMask
     /* category=WAS Suite_Image_Generate_Noise output=IMAGE */
     WASImageVoronoiNoiseFilter(args: WASImageVoronoiNoiseFilter_input, uid?: ComfyNodeUID): WASImageVoronoiNoiseFilter
@@ -494,6 +496,22 @@ export interface ComfySetup {
     WASLoadImageBatch(args: WASLoadImageBatch_input, uid?: ComfyNodeUID): WASLoadImageBatch
     /* category=WAS Suite_IO output=ASCII, DICT */
     WASLoadTextFile(args: WASLoadTextFile_input, uid?: ComfyNodeUID): WASLoadTextFile
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskDominantRegion(args: WASMaskDominantRegion_input, uid?: ComfyNodeUID): WASMaskDominantRegion
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskMinorityRegion(args: WASMaskMinorityRegion_input, uid?: ComfyNodeUID): WASMaskMinorityRegion
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskArbitraryRegion(args: WASMaskArbitraryRegion_input, uid?: ComfyNodeUID): WASMaskArbitraryRegion
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskSmoothBoundaries(args: WASMaskSmoothBoundaries_input, uid?: ComfyNodeUID): WASMaskSmoothBoundaries
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskErodeBoundaries(args: WASMaskErodeBoundaries_input, uid?: ComfyNodeUID): WASMaskErodeBoundaries
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskDilateBoundaries(args: WASMaskDilateBoundaries_input, uid?: ComfyNodeUID): WASMaskDilateBoundaries
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskFillHoles(args: WASMaskFillHoles_input, uid?: ComfyNodeUID): WASMaskFillHoles
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMasksCombine(args: WASMasksCombine_input, uid?: ComfyNodeUID): WASMasksCombine
     /* category=WAS Suite_Image_AI output=IMAGE */
     WASMiDaSDepthApproximation(args: WASMiDaSDepthApproximation_input, uid?: ComfyNodeUID): WASMiDaSDepthApproximation
     /* category=WAS Suite_Image_AI output=IMAGE, IMAGE_1 */
@@ -558,6 +576,8 @@ export interface ComfySetup {
     WASTextAddTokens(args: WASTextAddTokens_input, uid?: ComfyNodeUID): WASTextAddTokens
     /* category=WAS Suite_Text_Tokens output= */
     WASTextAddTokenByInput(args: WASTextAddTokenByInput_input, uid?: ComfyNodeUID): WASTextAddTokenByInput
+    /* category=WAS Suite_Text_Search output=ASCII, ASCII_1, NUMBER, NUMBER_1, ASCII_2 */
+    WASTextCompare(args: WASTextCompare_input, uid?: ComfyNodeUID): WASTextCompare
     /* category=WAS Suite_Text output=ASCII */
     WASTextConcatenate(args: WASTextConcatenate_input, uid?: ComfyNodeUID): WASTextConcatenate
     /* category=WAS Suite_History output=ASCII, DICT */
@@ -856,6 +876,7 @@ export interface CanProduce_IMAGE
         | 'WASCreateGridImage'
         | 'WASCreateMorphImage'
         | 'WASCreateMorphImage'
+        | 'WASConvertMaskToImage'
         | 'WASLoadCache'
         | 'WASImageAnalyze'
         | 'WASImageBlank'
@@ -949,6 +970,14 @@ export interface CanProduce_MASK
         | 'MasqueradeImageToMask'
         | 'WASImageLoad'
         | 'WASImageToLatentMask'
+        | 'WASMaskDominantRegion'
+        | 'WASMaskMinorityRegion'
+        | 'WASMaskArbitraryRegion'
+        | 'WASMaskSmoothBoundaries'
+        | 'WASMaskErodeBoundaries'
+        | 'WASMaskDilateBoundaries'
+        | 'WASMaskFillHoles'
+        | 'WASMasksCombine'
         | 'WASSAMImageMask'
         | 'YKImagePadForOutpaint'
         | 'ImageToMask'
@@ -1041,6 +1070,9 @@ export interface CanProduce_ASCII
         | 'WASPromptStylesSelector'
         | 'WASBLIPAnalyzeImage'
         | 'WASStringToText'
+        | 'WASTextCompare'
+        | 'WASTextCompare'
+        | 'WASTextCompare'
         | 'WASTextConcatenate'
         | 'WASTextFileHistoryLoader'
         | 'WASTextFindAndReplaceByDictionary'
@@ -1079,6 +1111,8 @@ export interface CanProduce_NUMBER
         | 'WASNumberMultipleOf'
         | 'WASNumberPI'
         | 'WASRandomNumber'
+        | 'WASTextCompare'
+        | 'WASTextCompare'
         | 'WASTextToNumber'
         | 'WASTrueRandomOrgNumberGenerator'
     > {}
@@ -1226,10 +1260,13 @@ export type Enum_CheckpointLoaderSimple_ckpt_name =
     | 'deliberate_v2.safetensors'
     | 'ghostmix_v12.safetensors'
     | 'lyriel_v15.safetensors'
+    | 'mistoonAnime_v10.safetensors'
+    | 'mistoonAnime_v10Inpainting.safetensors'
     | 'realisticVisionV20_v20.safetensors'
     | 'revAnimated_v121.safetensors'
     | 'revAnimated_v121Inp-inpainting.safetensors'
     | 'revAnimated_v122.safetensors'
+    | 'toonyou_beta1.safetensors'
     | 'v1-5-pruned-emaonly.ckpt'
     | 'v2-1_512-ema-pruned.safetensors'
     | 'v2-1_768-ema-pruned.safetensors'
@@ -1360,6 +1397,7 @@ export type Enum_LoraLoader_lora_name =
     | 'ConstructionyardAIV3.safetensors'
     | 'LowRa.safetensors'
     | 'StonepunkAI-000011.safetensors'
+    | 'ToonYou_Style.safetensors'
     | 'baroqueAI.safetensors'
     | 'charTurnBetaLora.safetensors'
     | 'pixel_f2.safetensors'
@@ -1474,6 +1512,7 @@ export type Enum_EfficientLoader_lora_name =
     | 'LowRa.safetensors'
     | 'None'
     | 'StonepunkAI-000011.safetensors'
+    | 'ToonYou_Style.safetensors'
     | 'baroqueAI.safetensors'
     | 'charTurnBetaLora.safetensors'
     | 'pixel_f2.safetensors'
@@ -1522,6 +1561,7 @@ export type Enum_MasqueradeChangeChannelCount_kind = 'RGB' | 'RGBA' | 'mask'
 export type Enum_MasqueradeCreateRectMask_mode = 'percent' | 'pixels'
 export type Enum_MasqueradeCreateRectMask_origin = 'bottomleft' | 'bottomright' | 'topleft' | 'topright'
 export type Enum_WASCLIPTextEncodeNSP_mode = 'Noodle Soup Prompts' | 'Wildcards'
+export type Enum_WASTextParseNoodleSoupPrompts_mode = Enum_WASCLIPTextEncodeNSP_mode
 export type Enum_WASConstantNumber_number_type = 'bool' | 'float' | 'integer'
 export type Enum_WASRandomNumber_number_type = Enum_WASConstantNumber_number_type
 export type Enum_WASCreateGridImage_include_subfolders = 'false' | 'true'
@@ -1675,6 +1715,7 @@ export type Enum_WASNumberInputCondition_comparison =
 export type Enum_WASPromptStylesSelector_style = 'None'
 export type Enum_WASBLIPAnalyzeImage_mode = 'caption' | 'interrogate'
 export type Enum_WASSAMModelLoader_model_size = 'ViT-B (636M)' | 'ViT-H (91M)' | 'ViT-L (308M)'
+export type Enum_WASTextCompare_mode = 'difference' | 'similarity'
 export type Enum_WASTextFileHistoryLoader_file = 'No History'
 export type Enum_WASUpscaleModelLoader_model_name =
     | '2x_Waifaux-NL3-SuperLite_latest_G.pth'
@@ -4169,11 +4210,11 @@ export interface WASCacheNode extends ComfyNode<WASCacheNode_input> {
     ASCII_2: Slot<'ASCII', 2>
 }
 export type WASCacheNode_input = {
-    /** default="35751216_cache" */
-    latent_suffix?: _STRING
     /** default="69622130_cache" */
-    image_suffix?: _STRING
+    latent_suffix?: _STRING
     /** default="66220110_cache" */
+    image_suffix?: _STRING
+    /** default="55349338_cache" */
     conditioning_suffix?: _STRING
     latent?: _LATENT
     image?: _IMAGE
@@ -4365,6 +4406,16 @@ export type WASCreateVideoFromPath_input = {
     /** default="comfy_video" */
     filename?: _STRING
     codec: Enum_WASCreateVideoFromPath_codec
+}
+
+// |=============================================================================|
+// | WASConvertMaskToImage ("Convert Mask to Image" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASConvertMaskToImage extends HasSingle_IMAGE, ComfyNode<WASConvertMaskToImage_input> {
+    IMAGE: Slot<'IMAGE', 0>
+}
+export type WASConvertMaskToImage_input = {
+    mask: _MASK
 }
 
 // |=============================================================================|
@@ -5209,7 +5260,7 @@ export type WASImageFDOFFilter_input = {
 }
 
 // |=============================================================================|
-// | WASImageToLatentMask ("Image to Latent Mask" in ComfyUI) [WAS Suite_Image_Transform]   |
+// | WASImageToLatentMask ("Image to Latent Mask" in ComfyUI) [WAS Suite_Image_Masking]   |
 // |=============================================================================|
 export interface WASImageToLatentMask extends HasSingle_MASK, ComfyNode<WASImageToLatentMask_input> {
     MASK: Slot<'MASK', 0>
@@ -5328,6 +5379,105 @@ export type WASLoadTextFile_input = {
     file_path?: _STRING
     /** default="[filename]" */
     dictionary_name?: _STRING
+}
+
+// |=============================================================================|
+// | WASMaskDominantRegion ("Mask Dominant Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskDominantRegion extends HasSingle_MASK, ComfyNode<WASMaskDominantRegion_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskDominantRegion_input = {
+    mask: _MASK
+    /** default=128 min=255 max=255 step=1 */
+    threshold?: _INT
+}
+
+// |=============================================================================|
+// | WASMaskMinorityRegion ("Mask Minority Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskMinorityRegion extends HasSingle_MASK, ComfyNode<WASMaskMinorityRegion_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskMinorityRegion_input = {
+    mask: _MASK
+    /** default=128 min=255 max=255 step=1 */
+    threshold?: _INT
+}
+
+// |=============================================================================|
+// | WASMaskArbitraryRegion ("Mask Arbitrary Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskArbitraryRegion extends HasSingle_MASK, ComfyNode<WASMaskArbitraryRegion_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskArbitraryRegion_input = {
+    mask: _MASK
+    /** default=256 min=4096 max=4096 step=1 */
+    size?: _INT
+    /** default=128 min=255 max=255 step=1 */
+    threshold?: _INT
+}
+
+// |=============================================================================|
+// | WASMaskSmoothBoundaries ("Mask Smooth Boundaries" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskSmoothBoundaries extends HasSingle_MASK, ComfyNode<WASMaskSmoothBoundaries_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskSmoothBoundaries_input = {
+    mask: _MASK
+    /** default=5 min=128 max=128 step=0.1 */
+    sigma?: _FLOAT
+}
+
+// |=============================================================================|
+// | WASMaskErodeBoundaries ("Mask Erode Boundaries" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskErodeBoundaries extends HasSingle_MASK, ComfyNode<WASMaskErodeBoundaries_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskErodeBoundaries_input = {
+    mask: _MASK
+    /** default=5 min=64 max=64 step=1 */
+    iterations?: _INT
+}
+
+// |=============================================================================|
+// | WASMaskDilateBoundaries ("Mask Dilate Boundaries" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskDilateBoundaries extends HasSingle_MASK, ComfyNode<WASMaskDilateBoundaries_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskDilateBoundaries_input = {
+    mask: _MASK
+    /** default=5 min=64 max=64 step=1 */
+    iterations?: _INT
+}
+
+// |=============================================================================|
+// | WASMaskFillHoles ("Mask Fill Holes" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskFillHoles extends HasSingle_MASK, ComfyNode<WASMaskFillHoles_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskFillHoles_input = {
+    mask: _MASK
+}
+
+// |=============================================================================|
+// | WASMasksCombine ("Masks Combine" in ComfyUI) [WAS Suite_Image_Masking]      |
+// |=============================================================================|
+export interface WASMasksCombine extends HasSingle_MASK, ComfyNode<WASMasksCombine_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMasksCombine_input = {
+    mask_a: _MASK
+    mask_b: _MASK
+    mask_c?: _MASK
+    mask_d?: _MASK
+    mask_e?: _MASK
+    mask_f?: _MASK
 }
 
 // |=============================================================================|
@@ -5738,6 +5888,24 @@ export type WASTextAddTokenByInput_input = {
 }
 
 // |=============================================================================|
+// | WASTextCompare ("Text Compare" in ComfyUI) [WAS Suite_Text_Search]          |
+// |=============================================================================|
+export interface WASTextCompare extends ComfyNode<WASTextCompare_input> {
+    ASCII: Slot<'ASCII', 0>
+    ASCII_1: Slot<'ASCII', 1>
+    NUMBER: Slot<'NUMBER', 2>
+    NUMBER_1: Slot<'NUMBER', 3>
+    ASCII_2: Slot<'ASCII', 4>
+}
+export type WASTextCompare_input = {
+    text_a: _ASCII
+    text_b: _ASCII
+    mode: Enum_WASTextCompare_mode
+    /** default=0 min=1 max=1 step=0.01 */
+    tolerance?: _FLOAT
+}
+
+// |=============================================================================|
 // | WASTextConcatenate ("Text Concatenate" in ComfyUI) [WAS Suite_Text]         |
 // |=============================================================================|
 export interface WASTextConcatenate extends HasSingle_ASCII, ComfyNode<WASTextConcatenate_input> {
@@ -5845,6 +6013,7 @@ export interface WASTextParseNoodleSoupPrompts extends HasSingle_ASCII, ComfyNod
     ASCII: Slot<'ASCII', 0>
 }
 export type WASTextParseNoodleSoupPrompts_input = {
+    mode: Enum_WASCLIPTextEncodeNSP_mode
     /** default="__" */
     noodle_key?: _STRING
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -6441,6 +6610,7 @@ export type Schemas = {
     WASCreateMorphImage: ComfyNodeSchemaJSON
     WASCreateMorphImageFromPath: ComfyNodeSchemaJSON
     WASCreateVideoFromPath: ComfyNodeSchemaJSON
+    WASConvertMaskToImage: ComfyNodeSchemaJSON
     WASDebugNumberToConsole: ComfyNodeSchemaJSON
     WASDictionaryToConsole: ComfyNodeSchemaJSON
     WASDiffusersModelLoader: ComfyNodeSchemaJSON
@@ -6502,6 +6672,14 @@ export type Schemas = {
     WASLatentUpscaleByFactorWAS: ComfyNodeSchemaJSON
     WASLoadImageBatch: ComfyNodeSchemaJSON
     WASLoadTextFile: ComfyNodeSchemaJSON
+    WASMaskDominantRegion: ComfyNodeSchemaJSON
+    WASMaskMinorityRegion: ComfyNodeSchemaJSON
+    WASMaskArbitraryRegion: ComfyNodeSchemaJSON
+    WASMaskSmoothBoundaries: ComfyNodeSchemaJSON
+    WASMaskErodeBoundaries: ComfyNodeSchemaJSON
+    WASMaskDilateBoundaries: ComfyNodeSchemaJSON
+    WASMaskFillHoles: ComfyNodeSchemaJSON
+    WASMasksCombine: ComfyNodeSchemaJSON
     WASMiDaSDepthApproximation: ComfyNodeSchemaJSON
     WASMiDaSMaskImage: ComfyNodeSchemaJSON
     WASNumberOperation: ComfyNodeSchemaJSON
@@ -6534,6 +6712,7 @@ export type Schemas = {
     WASTextDictionaryUpdate: ComfyNodeSchemaJSON
     WASTextAddTokens: ComfyNodeSchemaJSON
     WASTextAddTokenByInput: ComfyNodeSchemaJSON
+    WASTextCompare: ComfyNodeSchemaJSON
     WASTextConcatenate: ComfyNodeSchemaJSON
     WASTextFileHistoryLoader: ComfyNodeSchemaJSON
     WASTextFindAndReplaceByDictionary: ComfyNodeSchemaJSON
