@@ -1,15 +1,15 @@
+import type { Requestable } from 'src/controls/askv2'
 import { askContext, useAsk } from './AskInfoCtx'
 import { AskPath, AskState } from './AskState'
-import type { Requestable } from 'src/controls/askv2'
 
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
-import { Button, Input, InputNumber, Message, MultiCascader, Notification, Panel, Toggle } from 'rsuite'
+import { Button, Input, InputNumber, MultiCascader, Notification, Panel, Toggle } from 'rsuite'
+import { ItemDataType } from 'rsuite/esm/@types/common'
+import { BUG } from '../controls/BUG'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExtensionToWebview'
-import { ItemDataType } from 'rsuite/esm/@types/common'
 import { PaintUI } from '../imageEditor/PaintUI'
-import { BUG } from '../controls/BUG'
 import { exhaust } from '../utils/ComfyUtils'
 
 /** this is the root interraction widget
