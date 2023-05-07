@@ -299,7 +299,7 @@ want to add your own custom node to the list? open a PR!
 
     - with `F5` (recommanded) from the vscode extension source
         - or with `npm run vscode:dev` (may not properly reload)
-          ![](docs/static/img/screenshots/2023-05-07-19-43-19.png | height=200)
+          ![](docs/static/img/screenshots/2023-05-07-19-43-19.png)
 
 6. open the WebUI at [http://localhost:5173/](http://localhost:5173/)
 
