@@ -283,7 +283,7 @@ export class FlowRun implements IFlowExecution {
 
     private _promptCounter = 0
     private sendPromp = async (): Promise<PromptExecution> => {
-        const currentJSON = deepCopyNaive(this.graph.json)
+        const currentJSON = deepCopyNaive(this.graph.jsonForPrompt)
         const schema = this.workspace.schema
         this.workspace.sendMessage({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
         this.workspace.sendMessage({ type: 'show-html', content: this.flowSummaryHTML })

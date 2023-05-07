@@ -1,6 +1,7 @@
 import type { ComfyNodeJSON } from '../core-types/ComfyPrompt'
 import type { NodeProgress, WsMsgExecutedData } from '../core-types/ComfyWsPayloads'
 import type { Graph } from './Graph'
+import type { Maybe } from 'src/utils/types'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { ComfyNodeUID } from '../core-types/NodeUID'
@@ -8,6 +9,8 @@ import { exhaust } from '../utils/ComfyUtils'
 import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from './Schema'
 import { Slot } from './Slot'
 import { comfyColors } from './Colors'
+import { auto_ } from './autoValue'
+import { logger } from '../logger/logger'
 
 configure({ enforceActions: 'never' })
 
@@ -143,10 +146,19 @@ export class ComfyNode<ComfyNode_input extends object> {
             throw new Error(`🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}) value is null`)
         }
         if (typeof value === 'function') return this.serializeValue(field, value(this.graph))
+        if (value === auto_) {
+            const expectedType = this._getExpecteTypeForField(field)
+            logger().info(`🔍 looking for type ${expectedType} for field ${field}`)
+            for (const node of this.graph.nodes.slice().reverse()) {
+                const output = node._getOutputForTypeOrNull(expectedType)
+                if (output != null) return [node.uid, output.slotIx]
+            }
+            throw new Error(`🔴 [AUTO failed] field "${field}" (of node ${this.$schema.nameInCushy}) value is null`)
+        }
         if (value instanceof Slot) return [value.node.uid, value.slotIx]
         if (value instanceof ComfyNode) {
             const expectedType = this._getExpecteTypeForField(field)
-            const output = value._getOutputForType(expectedType)
+            const output = value._getOutputForTypeOrCrash(expectedType)
             return [value.uid, output.slotIx]
         }
         return value
@@ -160,10 +172,18 @@ export class ComfyNode<ComfyNode_input extends object> {
         return input.type
     }
 
-    private _getOutputForType(type: string): Slot<any> {
+    private _getOutputForTypeOrCrash(type: string): Slot<any> {
         const i: NodeOutputExt = this.$schema.outputs.find((i: NodeOutputExt) => i.type === type)!
         const val = (this as any)[i.name]
         // console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
+        if (val instanceof Slot) return val
+        throw new Error(`Expected ${i.name} to be a NodeOutput`)
+    }
+    private _getOutputForTypeOrNull(type: string): Slot<any> | null {
+        const i: Maybe<NodeOutputExt> = this.$schema.outputs.find((i: NodeOutputExt) => i.type === type)
+        if (i == null) return null
+        const val = (this as any)[i.name]
+        if (val == null) return null
         if (val instanceof Slot) return val
         throw new Error(`Expected ${i.name} to be a NodeOutput`)
     }

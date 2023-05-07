@@ -1,7 +1,7 @@
 import type { LATER } from 'LATER'
+import type { Presets } from 'src/presets/presets'
 import type { Graph } from './Graph'
 import type { Workflow } from './Workflow'
-import type { Presets } from 'src/presets/presets'
 
 export type WorkflowType = (
     //
@@ -9,9 +9,14 @@ export type WorkflowType = (
     builder: WorkflowBuilderFn,
 ) => Workflow
 
-export type WorkflowBuilderFn = (p: {
+export type WorkflowBuilder = {
     //
     graph: LATER<'ComfySetup'> & Graph
     flow: LATER<'FlowRun'>
     presets: Presets
-}) => Promise<any>
+    AUTO: <T>() => T
+    stage: 'TODO'
+    openpose: 'TODO'
+}
+
+export type WorkflowBuilderFn = (p: WorkflowBuilder) => Promise<any>

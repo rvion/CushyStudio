@@ -6,8 +6,9 @@ import { FlowRun } from './FlowRun'
 import { transpileCode } from './transpiler'
 import { logger } from '../logger/logger'
 import { nanoid } from 'nanoid'
-import { WorkflowBuilderFn } from '../core-shared/WorkflowFn'
+import { WorkflowBuilder, WorkflowBuilderFn } from '../core-shared/WorkflowFn'
 import { Presets } from '../presets/presets'
+import { auto } from 'src/core-shared/autoValue'
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
@@ -68,10 +69,6 @@ export class FlowDefinition {
         // try {
         const ProjectScriptFn = new Function('WORKFLOW', codeJS)
         const graph = execution.graph
-
-        // graph.runningMode = mode
-        // this.MAIN = graph
-
         const workflows: { name: string; fn: WorkflowBuilderFn }[] = []
         const WORKFLOW = (name: string, fn: WorkflowBuilderFn): void => {
             logger().info(`found WORKFLOW ${name}`)
@@ -82,9 +79,18 @@ export class FlowDefinition {
             await ProjectScriptFn(WORKFLOW)
             const good = workflows.find((i) => i.name === this.flowName)
             if (good == null) throw new Error('no workflow found')
-            const presets = new Presets(graph as any, execution)
+            const ctx: WorkflowBuilder = {
+                graph: graph as any, // 🔶 wrong type
+                flow: execution,
+                AUTO: auto,
+                presets: 0 as any,
+                openpose: 'TODO', // 🔶 not done
+                stage: 'TODO', // 🔶 not done
+            }
+            const presets = new Presets(ctx)
+            ctx.presets = presets
             this.file.workspace.sendMessage({ type: 'flow-code', flowRunID: flowRunID, code: good.fn.toString() })
-            await good.fn({ graph: graph as any, flow: execution, presets })
+            await good.fn(ctx)
             console.log('[✅] RUN SUCCESS')
             // this.isRunning = false
             const duration = Date.now() - start

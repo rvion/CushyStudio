@@ -6,8 +6,8 @@
 // import type { ComfySetup } from '../global'
 // import type { Graph } from '../core-shared/Graph'
 
-export type WorkflowBuilder = (graph: any) => void
+// export type WorkflowBuilder = (graph: any) => void
 
 export class Workflow {
-    constructor(public builder: WorkflowBuilder) {}
+    //     constructor(public builder: WorkflowBuilder) {}
 }

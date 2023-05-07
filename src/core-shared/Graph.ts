@@ -4,7 +4,6 @@ import type { ComfyNodeUID } from '../core-types/NodeUID'
 import type { VisEdges, VisNodes } from '../ui/VisUI'
 import type { Cyto } from './AutolayoutV1'
 
-// import { BranchUserApi, GitgraphUserApi } from '@gitgraph/core'
 import { nanoid } from 'nanoid'
 import { comfyColors } from './Colors'
 import { ComfyNode } from './Node'
@@ -21,18 +20,27 @@ export type RunMode = 'fake' | 'real'
  */
 
 export class Graph {
+    /** graph uid */
     uid = nanoid()
+
+    /** cytoscape instance to live update graph */
     cyto?: Cyto
 
+    /** @internal every node constructor must call this */
     registerNode = (node: ComfyNode<any>) => {
         this.nodesIndex.set(node.uid, node)
+        this.nodes.push(node)
         this.cyto?.trackNode(node)
         // this.graph.run.cyto.addNode(this)
     }
-    get nodes() { return Array.from(this.nodesIndex.values()) } // prettier-ignore
-    nodesIndex = new Map<string, ComfyNode<any>>()
-    isRunning = false
 
+    /** nodes, in creation order */
+    nodes: ComfyNode<any>[] = []
+
+    /** nodes, indexed by nodeID */
+    nodesIndex = new Map<string, ComfyNode<any>>()
+
+    /** convert to mermaid DSL expression for nice graph rendering */
     toMermaid = () => {
         const out = [
             //
@@ -58,7 +66,7 @@ export class Graph {
     }
 
     /** return the coresponding comfy prompt  */
-    get json(): ComfyPromptJSON {
+    get jsonForPrompt(): ComfyPromptJSON {
         const json: ComfyPromptJSON = {}
         for (const node of this.nodes) {
             if (node.disabled) continue
@@ -205,7 +213,7 @@ export class Graph {
 
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
-        const json: ComfyPromptJSON = this.json
+        const json: ComfyPromptJSON = this.jsonForPrompt
         const schemas: Schema = this.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
