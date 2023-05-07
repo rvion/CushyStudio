@@ -1,3 +1,9 @@
+/**
+ * this module must not import anything from src/core-back
+ * the LATER type is used to reference types that may or may not be available on users machines, depending
+ * on the node suite they have setup
+ */
+
 import type { LATER } from 'LATER'
 import type { WorkflowBuilder } from 'src/core-shared/WorkflowFn'
 

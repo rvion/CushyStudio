@@ -188,8 +188,11 @@ declare module "core-shared/Schema" {
     export class Schema {
         spec: ComfySchemaJSON;
         embeddings: EmbeddingName[];
+        getLoraHierarchy: () => string[];
+        getLoras: () => string[];
         knownTypes: Set<string>;
-        knownEnums: Map<string, {
+        knownEnumsByName: Map<string, EnumValue[]>;
+        knownEnumsByHash: Map<string, {
             enumNameInComfy: string;
             enumNameInCushy: EnumName;
             values: EnumValue[];
@@ -427,6 +430,11 @@ declare module "core-shared/WorkflowFn" {
     export type WorkflowBuilderFn = (p: WorkflowBuilder) => Promise<any>;
 }
 declare module "presets/presets" {
+    /**
+     * this module must not import anything from src/core-back
+     * the LATER type is used to reference types that may or may not be available on users machines, depending
+     * on the node suite they have setup
+     */
     import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
     import type { WorkflowBuilder } from "core-shared/WorkflowFn";
     export type SimplifiedLoraDef = {
@@ -522,6 +530,14 @@ declare module "controls/askv2" {
     } | {
         label?: string;
         type: 'choiceOpen';
+        choices: string[];
+    } | {
+        label?: string;
+        type: 'multichoiceStrict';
+        choices: string[];
+    } | {
+        label?: string;
+        type: 'multichoiceOpen';
         choices: string[];
     } | BUG;
     export type InfoAnswer<Req> = 
