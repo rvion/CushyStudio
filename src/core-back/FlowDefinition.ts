@@ -7,7 +7,7 @@ import { transpileCode } from './transpiler'
 import { logger } from '../logger/logger'
 import { nanoid } from 'nanoid'
 import { WorkflowBuilderFn } from '../core-shared/WorkflowFn'
-import { Presets } from './presets'
+import { Presets } from '../presets/presets'
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file

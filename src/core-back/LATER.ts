@@ -7,6 +7,7 @@ export type LATER<T>
     = T extends 'ComfySetup' ? T.ComfySetup
     : T extends 'LoadImage' ? T.LoadImage
     : T extends 'Embeddings' ? T.Embeddings
+    : T extends 'Enum_LoraLoader_lora_name' ? T.Enum_LoraLoader_lora_name
     : T extends 'Enum_CheckpointLoader_ckpt_name' ? T.Enum_CheckpointLoader_ckpt_name
     : T extends 'Enum_VAELoader_vae_name' ? T.Enum_VAELoader_vae_name
     : T extends 'HasSingle_CLIP' ?  T.HasSingle_CLIP

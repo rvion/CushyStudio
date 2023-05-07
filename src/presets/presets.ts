@@ -2,6 +2,14 @@ import type { LATER } from 'LATER'
 import type { Graph } from '../core-shared/Graph'
 import type { IFlowExecution } from 'src/sdk/IFlowExecution'
 
+export type SimplifiedLoraDef = {
+    name: LATER<'Enum_LoraLoader_lora_name'>
+    /** defaults to 1 */
+    strength_clip?: number
+    /** defaults to 1 */
+    strength_model?: number
+}
+
 /** high level library */
 export class Presets {
     constructor(
@@ -14,13 +22,7 @@ export class Presets {
         ckptName: LATER<'Enum_CheckpointLoader_ckpt_name'>
         stop_at_clip_layer?: number
         vae?: LATER<'Enum_VAELoader_vae_name'>
-        loras?: {
-            name: LATER<'Enum_LoraLoader_lora_name'>
-            /** defaults to 1 */
-            strength_clip?: number
-            /** defaults to 1 */
-            strength_model?: number
-        }[]
+        loras?: SimplifiedLoraDef[]
     }): {
         ckpt: LATER<'CheckpointLoaderSimple'>
         clip: LATER<'CLIP'>
@@ -70,13 +72,7 @@ export class Presets {
     basicImageGeneration = async (p: {
         //
         ckptName: LATER<'Enum_CheckpointLoader_ckpt_name'>
-        loras?: {
-            name: LATER<'Enum_LoraLoader_lora_name'>
-            /** defaults to 1 */
-            strength_clip?: number
-            /** defaults to 1 */
-            strength_model?: number
-        }[]
+        loras?: SimplifiedLoraDef[]
         positive: string
         negative: string
         /** width, defaults to 768 */

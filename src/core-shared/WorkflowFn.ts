@@ -1,7 +1,7 @@
 import type { LATER } from 'LATER'
 import type { Graph } from './Graph'
 import type { Workflow } from './Workflow'
-import type { Presets } from 'src/core-back/presets'
+import type { Presets } from 'src/presets/presets'
 
 export type WorkflowType = (
     //
