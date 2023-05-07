@@ -552,10 +552,13 @@ declare module "controls/askv2" {
     /** painting */
      | {
         type: 'samMaskPoints';
+        url: string;
     } | {
         type: 'manualMask';
+        url: string;
     } | {
         type: 'paint';
+        url: string;
     }
     /** group */
      | {
@@ -620,7 +623,6 @@ declare module "controls/askv2" {
         type: 'manualMask';
     } ? SimplifiedLoraDef : Req extends {
         type: 'paint';
-        uri: string;
     } ? Base64Image : 
     /** group */
     Req extends {
@@ -692,17 +694,20 @@ declare module "controls/askv2" {
             label: string | undefined;
         };
         /** painting */
-        samMaskPoints: (label: string) => {
+        samMaskPoints: (label: string, url: string) => {
             type: "samMaskPoints";
             label: string;
+            url: string;
         };
-        manualMask: (label: string) => {
+        manualMask: (label: string, url: string) => {
             type: "manualMask";
             label: string;
+            url: string;
         };
-        paint: (label: string) => {
+        paint: (label: string, url: string) => {
             type: "paint";
             label: string;
+            url: string;
         };
         /** group */
         group: <const T>(label: string, items: T) => {

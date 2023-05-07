@@ -28,9 +28,9 @@ export type Requestable_ =
     | { type: 'lora' }
     | { type: 'loras' }
     /** painting */
-    | { type: 'samMaskPoints' }
-    | { type: 'manualMask' }
-    | { type: 'paint' }
+    | { type: 'samMaskPoints'; url: string }
+    | { type: 'manualMask'; url: string }
+    | { type: 'paint'; url: string }
     /** group */
     | { type: 'items'; items: { [key: string]: Requestable } }
     /** select one */
@@ -63,7 +63,7 @@ export type InfoAnswer<Req> =
     /** painting */
     Req extends {type: 'samMaskPoints' } ? Maybe<boolean> :
     Req extends {type: 'manualMask' } ? SimplifiedLoraDef :
-    Req extends {type: 'paint', uri: string} ? Base64Image :
+    Req extends {type: 'paint'} ? Base64Image :
     /** group */
     Req extends {type: 'items', items: { [key: string]: any }} ? { [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> } :
     /** select one */
@@ -92,9 +92,9 @@ export class InfoRequestBuilder {
     lora = (label?: string) => ({ type: 'lora' as const, label })
     loras = (label?: string) => ({ type: 'loras' as const, label })
     /** painting */
-    samMaskPoints = (label: string) => ({ type: 'samMaskPoints' as const, label })
-    manualMask = (label: string) => ({ type: 'manualMask' as const, label })
-    paint = (label: string) => ({ type: 'paint' as const, label })
+    samMaskPoints = (label: string, url: string) => ({ type: 'samMaskPoints' as const, label, url })
+    manualMask = (label: string, url: string) => ({ type: 'manualMask' as const, label, url })
+    paint = (label: string, url: string) => ({ type: 'paint' as const, label, url })
     /** group */
     group = <const T>(label: string, items: T): { type: 'items'; items: T } => ({ type: 'items', items })
     /** select one */
