@@ -3,7 +3,7 @@ import { Fragment } from 'react'
 import { Panel } from 'rsuite'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview, renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
-import { Execution_askUI } from './AskInfoUI'
+import { AskInfoUI } from './AskInfoUI'
 import { FlowGeneratedImagesUI } from './FlowGeneratedImagesUI'
 import { MsgShowHTMLUI } from './MsgShowHTMLUI'
 import { ShowFlowEndUI } from './ShowFlowEndUI'
@@ -58,7 +58,7 @@ export const renderMsgUI = (msg: MessageFromExtensionToWebview) => {
     if (msg.type === 'flow-code') return <TypescriptHighlightedCodeUI key={msg.uid} code={msg.code} />
     if (msg.type === 'flow-start') return null // <Divider key={msg.uid} />
     if (msg.type === 'executing') return <ShowUpdatingNodeUI key={msg.uid} msg={msg} />
-    if (msg.type === 'ask') return <Execution_askUI key={msg.uid} step={msg} />
+    if (msg.type === 'ask') return <AskInfoUI key={msg.uid} step={msg} />
     if (msg.type === 'print')
         return (
             <Panel collapsible defaultExpanded key={msg.uid} shaded>

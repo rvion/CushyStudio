@@ -16,7 +16,7 @@ import { exhaust } from '../utils/ComfyUtils'
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const Execution_askUI = observer(function Execution_askUI_(p: { step: MessageFromExtensionToWebview_ask }) {
+export const AskInfoUI = observer(function AskInfoUI_(p: { step: MessageFromExtensionToWebview_ask }) {
     const st = useSt()
     const askState = useMemo(() => new AskState(), [])
 
