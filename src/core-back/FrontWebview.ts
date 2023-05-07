@@ -96,7 +96,6 @@ export class FrontWebview {
         // The  JS and CSS files from our build output
         const stylesUri = this.getExtensionLocalUri(['dist', 'webview', 'assets', 'index.css'])
         const scriptUri = this.getExtensionLocalUri(['dist', 'webview', 'assets', 'index.js'])
-        const painterro = this.getExtensionLocalUri(['dist', 'webview', 'painterro-1.2.78.min.js'])
         // const mermaidjs = this.getExtensionLocalUri(['dist', 'webview', 'mermaid.esm.min.mjs'])
         //   <script type='module' nonce="${nonce}" src="${mermaidjs}"></script>
         const nonce = getNonce()
