@@ -7,8 +7,8 @@ import { Button, Input, MultiCascader, Panel, Toggle } from 'rsuite'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExtensionToWebview'
 import { ItemDataType } from 'rsuite/esm/@types/common'
-import { PaintUI } from 'src/imageEditor/PaintUI'
-import { BUG } from 'src/controls/BUG'
+import { PaintUI } from '../imageEditor/PaintUI'
+import { BUG } from '../controls/BUG'
 
 export const Execution_askUI = observer(function Execution_askUI_(p: { step: MessageFromExtensionToWebview_ask }) {
     const st = useSt()
