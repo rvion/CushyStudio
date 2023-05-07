@@ -11,7 +11,7 @@ import { MsgShowHTMLUI } from './MsgShowHTMLUI'
 import { ShowFlowEndUI } from './ShowFlowEndUI'
 import { ShowUpdatingNodeUI } from './ShowUpdatingNodeUI'
 import { TypescriptHighlightedCodeUI } from './TypescriptHighlightedCodeUI'
-import { Execution_askUI } from './Execution_ask'
+import { Execution_askUI } from './AskInfoUI'
 
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
