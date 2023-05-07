@@ -76,7 +76,13 @@ const formUI = (st: FrontState, p: Requestable) => {
     if (p.type === 'paint') return <PaintUI uri={'foo bar 🔴'} />
     if (p.type === 'samMaskPoints') return <div>🌶️ {p.url}</div>
     if (p.type === 'manualMask') return <div>🌶️ {p.url}</div>
-
+    if (p.type === 'embeddings') return <>TODO</>
+    if (p.type === 'items') return <>TODO</>
+    if (p.type === 'lora') return <>TODO</>
+    if (p.type === 'selectMany') return <>TODO</>
+    if (p.type === 'selectManyOrCustom') return <>TODO</>
+    if (p.type === 'selectOne') return <>TODO</>
+    if (p.type === 'selectOneOrCustom') return <>TODO</>
     if (p.type === 'loras') {
         const schema = st.schema
         if (schema == null) return <div>❌ no schema</div>
@@ -112,5 +118,7 @@ const formUI = (st: FrontState, p: Requestable) => {
             </div>
         )
     }
+
+    exhaust(p)
     return <div>{JSON.stringify(p)} not supported ok</div>
 }
