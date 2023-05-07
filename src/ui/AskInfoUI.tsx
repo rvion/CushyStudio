@@ -1,7 +1,9 @@
+import { askContext, useAsk } from './AskInfoCtx'
+import { AskPath, AskState } from './AskState'
 import type { Requestable } from 'src/controls/askv2'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { Button, Input, MultiCascader, Panel, Toggle } from 'rsuite'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExtensionToWebview'
@@ -16,61 +18,73 @@ import { exhaust } from '../utils/ComfyUtils'
  */
 export const Execution_askUI = observer(function Execution_askUI_(p: { step: MessageFromExtensionToWebview_ask }) {
     const st = useSt()
-    const uiSt = useLocalObservable(() => ({
-        value: {} as any, // this value is the root response object the form will progressively fill
-        locked: false, // this should be set to true once the component can no longer be interracted with
-    }))
+    const askState = useMemo(() => new AskState(), [])
 
     const submit = useCallback(
         (ev: { preventDefault?: () => void; stopPropagation?: () => void }) => {
             ev.preventDefault?.()
             ev.stopPropagation?.()
-            st.answerInfo(uiSt.value)
-            uiSt.locked = true
+            st.answerInfo(askState.value)
+            askState.locked = true
         },
-        [uiSt],
+        [askState],
     )
 
     return (
-        <Panel shaded header={<>💬 ASK</>} collapsible defaultExpanded>
-            {/* widgets ------------------------------- */}
-            {Object.entries(p.step.request).map(([k, v]) => (
-                <div className='row items-baseline' key={k}>
-                    {k} <WidgetUI req={v} />
-                </div>
-            ))}
-            {/* submit ------------------------------- */}
-            {uiSt.locked ? null : (
-                <Button appearance='primary' onClick={submit}>
-                    OK
-                </Button>
-            )}
-            {/* debug -------------------------------*/}
-            <pre>{JSON.stringify(p.step, null, 4)}</pre>
-        </Panel>
+        <askContext.Provider value={askState}>
+            <Panel shaded header={<>💬 ASK</>} collapsible defaultExpanded>
+                {/* widgets ------------------------------- */}
+                {Object.entries(p.step.request).map(([k, v]) => (
+                    <div className='row items-baseline' key={k}>
+                        {k} <WidgetUI path={[k]} req={v} />
+                    </div>
+                ))}
+                {/* submit ------------------------------- */}
+                {askState.locked ? null : (
+                    <Button appearance='primary' onClick={submit}>
+                        OK
+                    </Button>
+                )}
+                {/* debug -------------------------------*/}
+                <pre>{JSON.stringify(p.step, null, 4)}</pre>
+            </Panel>
+        </askContext.Provider>
     )
 })
 
 /** this widget will then dispatch the individual requests to the appropriate sub-widgets
  * collect the responses and submit them to the back once completed and valid.
  */
-const WidgetUI = observer(function WidgetUI_(p: { req: Requestable }) {
+const WidgetUI = observer(function WidgetUI_(p: {
+    //
+    path: AskPath
+    req: Requestable
+}) {
+    const askState = useAsk()
     const req = p.req
+
+    // forget next line, it's just to make the compiler happy somewhere else
+    if (req instanceof BUG) return <div>❌ BUG</div>
 
     // array recursion
     if (Array.isArray(req))
         return (
             <div>
-                {req.map((x, ix) => (
-                    <WidgetUI req={x} key={ix} />
+                {req.map((item, ix) => (
+                    <WidgetUI path={[...p.path, ix]} req={item} key={ix} />
                 ))}
             </div>
         )
 
-    // forget next line, it's just to make the compiler happy somewhere else
-    if (req instanceof BUG) return <div>❌ BUG</div>
-    if (req.type === 'bool') return <Toggle />
-    if (req.type === 'bool?') return <Toggle />
+    // group recursion
+    if (req.type === 'items') return <>TODO</>
+
+    // primitives
+    const get = () => askState.getAtPath(p.path)
+    const set = (next: any) => askState.setAtPath(p.path, next)
+
+    if (req.type === 'bool') return <WidgetBoolUI get={get} set={set} />
+    if (req.type === 'bool?') return <WidgetBoolUI get={get} set={set} />
     if (req.type === 'int') return <Input type='number' value={3} />
     if (req.type === 'int?') return <Input type='number' value={4} />
     if (req.type === 'str') return <Input type='text' value={'5'} />
@@ -79,7 +93,6 @@ const WidgetUI = observer(function WidgetUI_(p: { req: Requestable }) {
     if (req.type === 'samMaskPoints') return <div>🌶️ {req.url}</div>
     if (req.type === 'manualMask') return <div>🌶️ {req.url}</div>
     if (req.type === 'embeddings') return <>TODO</>
-    if (req.type === 'items') return <>TODO</>
     if (req.type === 'lora') return <>TODO</>
     if (req.type === 'selectMany') return <>TODO</>
     if (req.type === 'selectManyOrCustom') return <>TODO</>
@@ -89,6 +102,11 @@ const WidgetUI = observer(function WidgetUI_(p: { req: Requestable }) {
 
     exhaust(req)
     return <div>{JSON.stringify(req)} not supported ok</div>
+})
+
+// ----------------------------------------------------------------------
+export const WidgetBoolUI = observer(function WidgetBoolUI_(p: { get: () => boolean; set: (v: boolean) => void }) {
+    return <Toggle checked={p.get()} onChange={(checked) => p.set(checked)} />
 })
 
 // ----------------------------------------------------------------------
