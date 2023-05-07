@@ -278,6 +278,11 @@ want to add your own custom node to the list? open a PR!
 
 1. install [vscode](https://code.visualstudio.com/)
 2. install [node](https://nodejs.org/en)
+    - I use `v19.9.0`
+    - I recommand using [nvm (node version manager)](https://github.com/nvm-sh/nvm) to install it
+        - install nvm: https://github.com/nvm-sh/nvm#install--update-script
+        - install node: `nvm install v19.9.0`
+        - then `nvm use v19.9.0 --default`
 3. clone the repo and install dependencies
     ```sh
     git clone https://github.com/rvion/CushyStudio.git
