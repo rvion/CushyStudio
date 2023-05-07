@@ -410,6 +410,167 @@ declare module "core-shared/Graph" {
 declare module "core-back/LATER.foo" {
     export type LATER<T> = any;
 }
+declare module "core-shared/WorkflowFn" {
+    import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
+    import type { Presets } from "presets/presets";
+    import type { Graph } from "core-shared/Graph";
+    import type { Workflow } from "core-shared/Workflow";
+    export type WorkflowType = (title: string, builder: WorkflowBuilderFn) => Workflow;
+    export type WorkflowBuilder = {
+        graph: CUSHY_RUNTIME.ComfySetup & Graph;
+        flow: import("sdk/IFlowExecution").IFlowExecution;
+        presets: Presets;
+        AUTO: <T>() => T;
+        stage: 'TODO';
+        openpose: 'TODO';
+    };
+    export type WorkflowBuilderFn = (p: WorkflowBuilder) => Promise<any>;
+}
+declare module "presets/presets" {
+    import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
+    import type { WorkflowBuilder } from "core-shared/WorkflowFn";
+    export type SimplifiedLoraDef = {
+        name: CUSHY_RUNTIME.Enum_LoraLoader_lora_name;
+        /** defaults to 1 */
+        strength_clip?: number;
+        /** defaults to 1 */
+        strength_model?: number;
+    };
+    /** high level library */
+    export class Presets {
+        ctx: WorkflowBuilder;
+        constructor(ctx: WorkflowBuilder);
+        prompt: (pos: string, neg: string) => any;
+        loadModel: (p: {
+            ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
+            stop_at_clip_layer?: number;
+            vae?: CUSHY_RUNTIME.Enum_VAELoader_vae_name;
+            loras?: SimplifiedLoraDef[];
+            /**
+             * default to false
+             * suggested values: (thanks @kdc_th)
+             * - 0.3 if you have a good gpu. it barely affects the quality while still giving you a speed increase
+             * - 0.5-0.6 is still serviceable
+             */
+            tomeRatio: number | false;
+        }) => {
+            ckpt: CUSHY_RUNTIME.CheckpointLoaderSimple;
+            clip: CUSHY_RUNTIME.CLIP;
+            model: CUSHY_RUNTIME.MODEL;
+            vae: CUSHY_RUNTIME.VAE;
+        };
+        basicImageGeneration: (p: {
+            ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
+            loras?: SimplifiedLoraDef[];
+            positive: string;
+            negative: string;
+            /** width, defaults to 768 */
+            width?: number;
+            /** heiht, defaults to 512 */
+            height?: number;
+            /** defaults to 1 */
+            batchSize?: number;
+            /** defaults to 30 */
+            steps?: number;
+            /** defaults to 10 */
+            cfg?: number;
+            /** defaults to 'euler_ancestral' */
+            sampler_name?: CUSHY_RUNTIME.Enum_KSampler_sampler_name;
+            /** defaults to 'karras' */
+            scheduler?: CUSHY_RUNTIME.Enum_KSampler_scheduler;
+            /** defaults to 1 */
+            denoise?: number;
+        }) => Promise<{
+            ckpt: any;
+            latent: any;
+            positive: any;
+            negative: any;
+            sampler: any;
+            image: any;
+        }>;
+    }
+}
+declare module "controls/askv2" {
+    import type { SimplifiedLoraDef } from "presets/presets";
+    import type { Maybe } from "utils/types";
+    class BUG {
+    }
+    export type Requestable = 
+    /** str */
+    'str' | 'str?'
+    /** nums */
+     | 'int' | 'int?'
+    /** bools */
+     | 'bool' | 'bool?'
+    /** embedding/lora */
+     | 'embeddings' | 'lora' | 'loras'
+    /** array */
+     | Requestable[]
+    /** painting */
+     | 'samMaskPoints' | 'manualMask' | 'paint'
+    /** forms */
+     | {
+        label?: string;
+        type: 'items';
+        items: {
+            [key: string]: Requestable;
+        };
+    } | {
+        label?: string;
+        type: 'choiceStrict';
+        choices: string[];
+    } | {
+        label?: string;
+        type: 'choiceOpen';
+        choices: string[];
+    } | BUG;
+    export type InfoAnswer<Req> = 
+    /** str */
+    Req extends 'str' ? string : Req extends 'str?' ? Maybe<string> : 
+    /** nums */
+    Req extends 'int' ? number : Req extends 'int?' ? Maybe<number> : 
+    /** bools */
+    Req extends 'bool' ? boolean : Req extends 'bool?' ? Maybe<boolean> : 
+    /** embedding/lora */
+    Req extends 'embeddings' ? Maybe<boolean> : Req extends 'lora' ? SimplifiedLoraDef : Req extends 'loras' ? SimplifiedLoraDef[] : 
+    /** array */
+    Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] : 
+    /** painting */
+    Req extends 'samMaskPoints' ? Maybe<boolean> : Req extends 'manualMask' ? SimplifiedLoraDef : Req extends 'paint' ? SimplifiedLoraDef[] : 
+    /** forms */
+    Req extends {
+        type: 'items';
+        items: {
+            [key: string]: any;
+        };
+    } ? {
+        [key in keyof Req['items']]: InfoAnswer<Req['items'][key]>;
+    } : Req extends {
+        type: 'choiceStrict';
+        choices: infer T;
+    } ? (T extends readonly any[] ? T[number] : T) : Req extends {
+        type: 'choiceOpen';
+        choices: string[];
+    } ? string : never;
+    export class InfoRequestBuilder {
+        group: <const T>(label: string, items: T) => {
+            type: 'items';
+            items: T;
+        };
+        choiceStrict: <const T>(label: string, choices: T) => {
+            type: 'choiceStrict';
+            choices: T;
+        };
+        choiceOpen: (label: string, choices: string[]) => {
+            type: 'choiceOpen';
+            choices: string[];
+        };
+    }
+    export type InfoRequestFn = typeof fakeInfoRequestFn;
+    export const fakeInfoRequestFn: <const Req extends {
+        [key: string]: Requestable;
+    }>(req: (q: InfoRequestBuilder) => Req, layout?: 0) => Promise<{ [key in keyof Req]: InfoAnswer<Req[key]>; }>;
+}
 declare module "core-shared/ParamDef" {
     export type ParamType = 'string' | 'number';
     export type ParamT<Kind extends string, Type extends any> = {
@@ -644,7 +805,8 @@ declare module "wildcards/wildcards" {
 }
 declare module "sdk/IFlowExecution" {
     import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
-    import { FlowParam } from "core-shared/ParamDef";
+    import type { InfoRequestFn } from "controls/askv2";
+    import type { FlowParam } from "core-shared/ParamDef";
     import type { Printable } from "core-shared/Printable";
     import type { ComfyUploadImageResult } from "core-types/ComfyWsPayloads";
     import type { AbsolutePath, RelativePath } from "utils/fs/BrandedPaths";
@@ -665,7 +827,7 @@ declare module "sdk/IFlowExecution" {
         }): Promise<void>;
         print(msg: Printable): void;
         showHTMLContent(content: string): void;
-        showMardownContent(content: string): void;
+        showMarkdownContent(content: string): void;
         createAnimation(
         /** image to incldue (defaults to all images generated in the run) */
         source?: IGeneratedImage[], 
@@ -683,6 +845,7 @@ declare module "sdk/IFlowExecution" {
         askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>;
         askString(msg: string, def?: Maybe<string>): Promise<string>;
         askPaint(msg: string, path: string): Promise<string>;
+        ask: InfoRequestFn;
         exec(cmd: string): string;
         sleep(ms: number): Promise<void>;
         saveTextFile(relativePath: string, content: string): Promise<void>;
@@ -723,86 +886,6 @@ declare module "sdk/IFlowExecution" {
         /** uri the webview can access */
         get webviewURI(): string;
     }
-}
-declare module "presets/presets" {
-    import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
-    import type { WorkflowBuilder } from "core-shared/WorkflowFn";
-    export type SimplifiedLoraDef = {
-        name: CUSHY_RUNTIME.Enum_LoraLoader_lora_name;
-        /** defaults to 1 */
-        strength_clip?: number;
-        /** defaults to 1 */
-        strength_model?: number;
-    };
-    /** high level library */
-    export class Presets {
-        ctx: WorkflowBuilder;
-        constructor(ctx: WorkflowBuilder);
-        prompt: (pos: string, neg: string) => any;
-        loadModel: (p: {
-            ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
-            stop_at_clip_layer?: number;
-            vae?: CUSHY_RUNTIME.Enum_VAELoader_vae_name;
-            loras?: SimplifiedLoraDef[];
-            /**
-             * default to false
-             * suggested values: (thanks @kdc_th)
-             * - 0.3 if you have a good gpu. it barely affects the quality while still giving you a speed increase
-             * - 0.5-0.6 is still serviceable
-             */
-            tomeRatio: number | false;
-        }) => {
-            ckpt: CUSHY_RUNTIME.CheckpointLoaderSimple;
-            clip: CUSHY_RUNTIME.CLIP;
-            model: CUSHY_RUNTIME.MODEL;
-            vae: CUSHY_RUNTIME.VAE;
-        };
-        basicImageGeneration: (p: {
-            ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
-            loras?: SimplifiedLoraDef[];
-            positive: string;
-            negative: string;
-            /** width, defaults to 768 */
-            width?: number;
-            /** heiht, defaults to 512 */
-            height?: number;
-            /** defaults to 1 */
-            batchSize?: number;
-            /** defaults to 30 */
-            steps?: number;
-            /** defaults to 10 */
-            cfg?: number;
-            /** defaults to 'euler_ancestral' */
-            sampler_name?: CUSHY_RUNTIME.Enum_KSampler_sampler_name;
-            /** defaults to 'karras' */
-            scheduler?: CUSHY_RUNTIME.Enum_KSampler_scheduler;
-            /** defaults to 1 */
-            denoise?: number;
-        }) => Promise<{
-            ckpt: any;
-            latent: any;
-            positive: any;
-            negative: any;
-            sampler: any;
-            image: any;
-        }>;
-    }
-}
-declare module "core-shared/WorkflowFn" {
-    import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
-    import type { Presets } from "presets/presets";
-    import type { Graph } from "core-shared/Graph";
-    import type { Workflow } from "core-shared/Workflow";
-    export type WorkflowType = (title: string, builder: WorkflowBuilderFn) => Workflow;
-    export type WorkflowBuilder = {
-        graph: CUSHY_RUNTIME.ComfySetup & Graph;
-        flow: import("sdk/IFlowExecution").IFlowExecution;
-        presets: Presets;
-        AUTO: <T>() => T;
-        stage: 'TODO';
-        openpose: 'TODO';
-    };
-    export type WorkflowBuilderFn = (p: WorkflowBuilder) => Promise<any>;
 }
 declare module "sdk/sdkEntrypoint" {
     export type { Workflow } from "core-shared/Workflow";

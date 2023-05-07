@@ -1,5 +1,6 @@
 import type { LATER } from 'LATER'
-import { FlowParam } from '../core-shared/ParamDef'
+import type { InfoRequestFn } from 'src/controls/askv2'
+import type { FlowParam } from '../core-shared/ParamDef'
 import type { Printable } from '../core-shared/Printable'
 import type { ComfyUploadImageResult } from '../core-types/ComfyWsPayloads'
 import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
@@ -21,7 +22,7 @@ export interface IFlowExecution {
     // debug
     print(msg: Printable): void
     showHTMLContent(content: string): void
-    showMardownContent(content: string): void
+    showMarkdownContent(content: string): void
     createAnimation(
         /** image to incldue (defaults to all images generated in the run) */
         source?: IGeneratedImage[],
@@ -46,6 +47,7 @@ export interface IFlowExecution {
     askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>
     askString(msg: string, def?: Maybe<string>): Promise<string>
     askPaint(msg: string, path: string): Promise<string>
+    ask: InfoRequestFn
 
     // commands
     exec(cmd: string): string

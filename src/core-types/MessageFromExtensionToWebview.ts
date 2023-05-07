@@ -7,6 +7,7 @@ import type { EmbeddingName } from 'src/core-shared/Schema'
 import type { GeneratedImageSummary } from 'src/core-back/GeneratedImage'
 
 import { exhaust } from '../utils/ComfyUtils'
+import { Requestable } from 'src/controls/askv2'
 
 export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExtensionToWebview_
 export type MessageFromExtensionToWebview_ =
@@ -19,6 +20,7 @@ export type MessageFromExtensionToWebview_ =
     | MessageFromExtensionToWebview_askString
     | MessageFromExtensionToWebview_askBoolean
     | MessageFromExtensionToWebview_askPaint
+    | MessageFromExtensionToWebview_ask
     | { type: 'print'; message: string }
 
     // schema & prompt (needs to be sent so webview can draw the graph)
@@ -39,6 +41,7 @@ export type MessageFromExtensionToWebview_ =
 export type MessageFromExtensionToWebview_askString = { type: 'ask-string'; message: string; default?: Maybe<string> }
 export type MessageFromExtensionToWebview_askBoolean = { type: 'ask-boolean'; message: string; default?: Maybe<boolean> }
 export type MessageFromExtensionToWebview_askPaint = { type: 'ask-paint'; message: string; uri: string }
+export type MessageFromExtensionToWebview_ask = { type: 'ask'; request: { [key: string]: Requestable } }
 
 // ------------------------------------------------------------------------------------------------------------
 
@@ -58,6 +61,7 @@ export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWeb
     if (msg.type === 'images') return '🖼️'
     if (msg.type === 'print') return '💬'
     if (msg.type === 'show-html') return '🥶'
+    if (msg.type === 'ask') return '👋'
     if (msg.type === 'ls') return '📂'
     exhaust(msg)
     return '❓'

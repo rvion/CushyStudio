@@ -11,6 +11,7 @@ import { MsgShowHTMLUI } from './MsgShowHTMLUI'
 import { ShowFlowEndUI } from './ShowFlowEndUI'
 import { ShowUpdatingNodeUI } from './ShowUpdatingNodeUI'
 import { TypescriptHighlightedCodeUI } from './TypescriptHighlightedCodeUI'
+import { Execution_askUI } from './Execution_ask'
 
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
@@ -61,6 +62,7 @@ export const renderMsgUI = (msg: MessageFromExtensionToWebview) => {
     if (msg.type === 'flow-start') return null // <Divider key={msg.uid} />
     if (msg.type === 'executing') return <ShowUpdatingNodeUI key={msg.uid} msg={msg} />
     if (msg.type === 'ask-string') return <Execution_askStringUI key={msg.uid} step={msg} />
+    if (msg.type === 'ask') return <Execution_askUI key={msg.uid} step={msg} />
     if (msg.type === 'ask-boolean') return <Execution_askBooleanUI key={msg.uid} step={msg} />
     if (msg.type === 'print')
         return (

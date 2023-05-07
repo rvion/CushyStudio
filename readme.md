@@ -191,7 +191,7 @@ export interface IFlowExecution {
     // debug
     print(msg: Printable): void
     showHTMLContent(content: string): void
-    showMardownContent(content: string): void
+    showMarkdownContent(content: string): void
     createAnimation(
         /** image to incldue (defaults to all images generated in the run) */
         source?: IGeneratedImage[],

@@ -2,15 +2,15 @@ import type { LATER } from 'LATER'
 import FormData from 'form-data'
 import fetch from 'node-fetch'
 import * as vscode from 'vscode'
-// import type { Project } from './Project'
 import { marked } from 'marked'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
+import { InfoAnswer, InfoRequestFn, InfoRequestBuilder, Requestable } from 'src/controls/askv2'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
-import { ScriptStep_askBoolean, ScriptStep_askPaint, ScriptStep_askString } from '../controls/ScriptStep_ask'
+import { ScriptStep_ask, ScriptStep_askBoolean, ScriptStep_askPaint, ScriptStep_askString } from '../controls/ScriptStep_ask'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { runAutolayout } from '../core-shared/AutolayoutV2'
 import { Graph } from '../core-shared/Graph'
@@ -28,7 +28,6 @@ import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/mar
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { Maybe } from '../utils/types'
 import { wildcards } from '../wildcards/wildcards'
-import { FrontWebview } from './FrontWebview'
 import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { Workspace } from './Workspace'
@@ -87,7 +86,8 @@ export class FlowRun implements IFlowExecution {
     showHTMLContent = (htmlContent: string) => {
         this.workspace.sendMessage({ type: 'show-html', content: htmlContent })
     }
-    showMardownContent = (markdownContent: string) => {
+
+    showMarkdownContent = (markdownContent: string) => {
         const htmlContent = marked.parse(markdownContent)
         this.workspace.sendMessage({ type: 'show-html', content: htmlContent })
     }
@@ -180,6 +180,20 @@ export class FlowRun implements IFlowExecution {
     askPaint = (msg: string, uri: RelativePath): Promise<string> => {
         const ask = new ScriptStep_askPaint(msg)
         this.workspace.sendMessage({ type: 'ask-paint', message: msg, uri })
+        this.steps.unshift(ask)
+        return ask.finished
+    }
+
+    /** ask the user a few informations */
+    ask: InfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
+        //
+        requestFn: (q: InfoRequestBuilder) => Req,
+        layout?: 0,
+    ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
+        const reqBuilder = new InfoRequestBuilder()
+        const request = requestFn(reqBuilder)
+        const ask = new ScriptStep_ask(request)
+        this.workspace.sendMessage({ type: 'ask', request })
         this.steps.unshift(ask)
         return ask.finished
     }

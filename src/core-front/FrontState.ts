@@ -86,6 +86,7 @@ export class FrontState {
 
         // 2. process the info
         if (msg.type === 'flow-code') return
+        if (msg.type === 'ask') return
         if (msg.type === 'ask-boolean') return
         if (msg.type === 'ask-string') return
         if (msg.type === 'ask-paint') return
