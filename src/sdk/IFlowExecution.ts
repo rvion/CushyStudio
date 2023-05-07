@@ -44,9 +44,6 @@ export interface IFlowExecution {
     uploadURL(url: string): Promise<ComfyUploadImageResult>
 
     // interractions
-    askBoolean(msg: string, def?: Maybe<boolean>): Promise<boolean>
-    askString(msg: string, def?: Maybe<string>): Promise<string>
-    askPaint(msg: string, path: string): Promise<string>
     ask: InfoRequestFn
 
     // commands
