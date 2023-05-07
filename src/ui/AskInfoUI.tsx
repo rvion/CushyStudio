@@ -144,7 +144,7 @@ export const LoraWidgetUI = observer(function LoraWidgetUI_(p: {}) {
     const nestedLoras: ItemDataType<any>[] = []
     const insertAt = (path: string) => {
         const segments = path.split(/\\/)
-        console.log(segments)
+        // 🔶 console.log(segments)
         let parent = nestedLoras
         for (let i = 0; i < segments.length - 1; i++) {
             const segment = segments[i]
@@ -160,7 +160,7 @@ export const LoraWidgetUI = observer(function LoraWidgetUI_(p: {}) {
     }
     for (const l of loras) {
         insertAt(l)
-        console.log(l, nestedLoras)
+        // 🔶 console.log(l, nestedLoras)
     }
 
     return (
