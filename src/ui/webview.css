@@ -75,8 +75,8 @@ body {
 .yarl__root {min-height: 512px !important;}
 .yarl__slide {padding: 0 !important;}
 .rs-panel {background: #373737; }
-.rs-panel-body {padding: .8rem !important;}
-.rs-panel-header { padding: .8rem .3rem !important;}
+.rs-panel-body {padding: .5rem !important;}
+.rs-panel-header { padding: .5rem .3rem !important;}
 .rs-panel-title {font-size: 1.2rem;}
 .rs-message-container {padding: .4rem !important;}
 .react-transform-wrapper { max-width: 100%; }
