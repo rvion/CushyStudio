@@ -20,7 +20,7 @@ export class FrontState {
 
     get itemsToShow() {
         // return this.received
-        const max = 100
+        const max = 200
         const len = this.received.length
         const start = this.showAllMessageReceived ? 0 : Math.max(0, len - max)
         const items = this.received.slice(start)
