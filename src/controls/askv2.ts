@@ -7,7 +7,7 @@
 
 import type { Base64Image } from 'src/core-shared/b64img'
 import type { SimplifiedLoraDef } from 'src/presets/presets'
-import type { Maybe } from 'src/utils/types'
+import type { Maybe, Tagged } from 'src/utils/types'
 import { BUG } from './BUG'
 
 export type Requestable = { label?: string } & Requestable_
@@ -44,6 +44,9 @@ export type Requestable_ =
     /** ?? */
     | BUG
 
+export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>
+export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>
+
 // prettier-ignore
 export type InfoAnswer<Req> =
     /** str */
@@ -61,7 +64,9 @@ export type InfoAnswer<Req> =
     Req extends {type: 'lora' }  ? SimplifiedLoraDef :
     Req extends {type: 'loras' } ? SimplifiedLoraDef[] :
     /** painting */
-    Req extends {type: 'samMaskPoints' } ? {x:number, y:number}[] :
+
+    // {"samMaskPoints":{"points":"[89.39583587646484, 394.6302185058594], [141.39583587646484, 227.63021850585938]","labels":"[1, 1]"}}
+    Req extends {type: 'samMaskPoints' } ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
     Req extends {type: 'manualMask' } ? Base64Image :
     Req extends {type: 'paint'} ? Base64Image :
     /** group */
