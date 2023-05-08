@@ -41,12 +41,14 @@ export class Presets {
         vae?: LATER<'Enum_VAELoader_vae_name'>
         loras?: SimplifiedLoraDef[]
         /**
+         * makes the model faster at the cost of quality.
+         * I was told it can speed up generation by up to 1.5x
          * default to false
          * suggested values: (thanks @kdc_th)
          * - 0.3 if you have a good gpu. it barely affects the quality while still giving you a speed increase
          * - 0.5-0.6 is still serviceable
          */
-        tomeRatio: number | false
+        tomeRatio?: number | false
     }): {
         ckpt: LATER<'CheckpointLoaderSimple'>
         clip: LATER<'CLIP'>
