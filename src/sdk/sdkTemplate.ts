@@ -459,12 +459,14 @@ declare module "presets/presets" {
             vae?: CUSHY_RUNTIME.Enum_VAELoader_vae_name;
             loras?: SimplifiedLoraDef[];
             /**
+             * makes the model faster at the cost of quality.
+             * I was told it can speed up generation by up to 1.5x
              * default to false
              * suggested values: (thanks @kdc_th)
              * - 0.3 if you have a good gpu. it barely affects the quality while still giving you a speed increase
              * - 0.5-0.6 is still serviceable
              */
-            tomeRatio: number | false;
+            tomeRatio?: number | false;
         }) => {
             ckpt: CUSHY_RUNTIME.CheckpointLoaderSimple;
             clip: CUSHY_RUNTIME.CLIP;
@@ -515,7 +517,7 @@ declare module "controls/askv2" {
      */
     import type { Base64Image } from "core-shared/b64img";
     import type { SimplifiedLoraDef } from "presets/presets";
-    import type { Maybe } from "utils/types";
+    import type { Maybe, Tagged } from "utils/types";
     import { BUG } from "controls/BUG";
     export type Requestable = {
         label?: string;
@@ -587,6 +589,8 @@ declare module "controls/askv2" {
      | Requestable[]
     /** ?? */
      | BUG;
+    export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>;
+    export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>;
     export type InfoAnswer<Req> = 
     /** str */
     Req extends {
@@ -620,9 +624,9 @@ declare module "controls/askv2" {
     Req extends {
         type: 'samMaskPoints';
     } ? {
-        x: number;
-        y: number;
-    }[] : Req extends {
+        points: SamPointPosStr;
+        labels: SamPointLabelsStr;
+    } : Req extends {
         type: 'manualMask';
     } ? Base64Image : Req extends {
         type: 'paint';
