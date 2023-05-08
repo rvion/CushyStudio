@@ -29,7 +29,7 @@ export class FrontState {
         return ordered
     }
     // group sequential items with similar types together
-    get groupItemsToShow() {
+    get groupItemsToShow(): MessageFromExtensionToWebview[][] {
         const ordered = this.itemsToShow
         const grouped: MessageFromExtensionToWebview[][] = []
         let currentGroup: MessageFromExtensionToWebview[] = []
@@ -37,6 +37,7 @@ export class FrontState {
         for (const item of ordered) {
             let itemType = item.type
             if (itemType === 'executing') itemType = 'progress'
+            if (itemType === 'executed') itemType = 'progress'
             if (itemType !== currentType) {
                 if (currentGroup.length) grouped.push(currentGroup)
                 currentGroup = []

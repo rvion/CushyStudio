@@ -4,7 +4,7 @@ import { AskPath, AskState } from './AskState'
 
 import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
-import { Button, Input, InputNumber, MultiCascader, Notification, Panel, Toggle } from 'rsuite'
+import { Button, Input, InputNumber, MultiCascader, Notification, Panel, Toggle, Tooltip, Whisper } from 'rsuite'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { BUG } from '../controls/BUG'
 import { useSt } from '../core-front/stContext'
@@ -49,11 +49,11 @@ export const AskInfoUI = observer(function AskInfoUI_(p: { step: MessageFromExte
                 <div className='flex flex-col items-start'>
                     <DebugUI title='request'>
                         the request made by the wofkflow is
-                        <pre>{JSON.stringify(p.step)}</pre>
+                        <pre>{JSON.stringify(p.step, null, 4)}</pre>
                     </DebugUI>
                     <DebugUI title={'draft answer'}>
                         the value about to be sent back to the workflow is
-                        <pre>{JSON.stringify(askState.value)}</pre>
+                        <pre>{JSON.stringify(askState.value, null, 4)}</pre>
                     </DebugUI>
                 </div>
             </Panel>
@@ -64,9 +64,9 @@ export const AskInfoUI = observer(function AskInfoUI_(p: { step: MessageFromExte
 
 export const DebugUI = observer(function DebugUI_(p: { title: string; children: React.ReactNode }) {
     return (
-        <Notification header={p.title} type='warning'>
-            {p.children}
-        </Notification>
+        <Whisper speaker={<Tooltip>{p.children}</Tooltip>}>
+            <Button>{p.title}</Button>
+        </Whisper>
     )
 })
 
