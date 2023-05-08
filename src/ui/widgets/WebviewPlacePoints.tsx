@@ -20,6 +20,7 @@ const imageStore = new ImageStore()
 
 const WebviewPlacePoints = observer(
     (props: { url: string; get: () => boolean; set: (v: { points: string; labels: string }) => void }) => {
+        const maxCanvasSize = 512;
         const { url, get, set } = props
 
         console.log(url)
@@ -57,7 +58,8 @@ const WebviewPlacePoints = observer(
                 const ctx = canvas.getContext('2d')
                 if (ctx) {
                     ctx.clearRect(0, 0, canvas.width, canvas.height)
-                    ctx.drawImage(imageStore.image, 0, 0, canvas.width, canvas.height)
+                    ctx.drawImage(imageStore.image, 0, 0, canvas.width, canvas.height);
+
 
                     ctx.fillStyle = 'red'
                     positivePoints.forEach((point) => {
@@ -104,18 +106,20 @@ const WebviewPlacePoints = observer(
         }, [negativePoints, drawPoints])
 
         const handleImageLoad = useCallback(() => {
-            const img = new Image()
-            img.src = url
+            const img = new Image();
+            img.src = url;
             img.onload = () => {
-                const canvas = canvasRef.current
+                const canvas = canvasRef.current;
                 if (canvas) {
-                    canvas.width = img.width
-                    canvas.height = img.height
-                    imageStore.setImage(img)
-                    setIsImageLoaded(true)
+                    const scale = Math.min(maxCanvasSize / img.width, maxCanvasSize / img.height);
+                    canvas.width = img.width * scale;
+                    canvas.height = img.height * scale;
+                    imageStore.setImage(img);
+                    setIsImageLoaded(true);
                 }
-            }
-        }, [url])
+            };
+        }, [url]);
+        
 
         useEffect(() => {
             handleImageLoad()
