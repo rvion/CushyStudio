@@ -4,7 +4,7 @@ import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from '../utils/types'
 import type { EmbeddingName } from 'src/core-shared/Schema'
-import type { GeneratedImageSummary } from 'src/core-back/GeneratedImage'
+import type { GeneratedImageSummary } from 'src/core-shared/GeneratedImageSummary'
 
 import { exhaust } from '../utils/ComfyUtils'
 import { Requestable } from 'src/controls/askv2'
