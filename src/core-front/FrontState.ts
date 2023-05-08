@@ -25,7 +25,27 @@ export class FrontState {
         const len = this.received.length
         const start = this.showAllMessageReceived ? 0 : Math.max(0, len - max)
         const items = this.received.slice(start)
-        return this.flowDirection === 'up' ? items.reverse() : items
+        const ordered = this.flowDirection === 'up' ? items.reverse() : items
+        return ordered
+    }
+    // group sequential items with similar types together
+    get groupItemsToShow() {
+        const ordered = this.itemsToShow
+        const grouped: MessageFromExtensionToWebview[][] = []
+        let currentGroup: MessageFromExtensionToWebview[] = []
+        let currentType: string | null = null
+        for (const item of ordered) {
+            let itemType = item.type
+            if (itemType === 'executing') itemType = 'progress'
+            if (itemType !== currentType) {
+                if (currentGroup.length) grouped.push(currentGroup)
+                currentGroup = []
+                currentType = itemType
+            }
+            currentGroup.push(item)
+        }
+        if (currentGroup.length) grouped.push(currentGroup)
+        return grouped
     }
 
     showImageAs: 'grid' | 'list' | 'carousel' = 'list'
