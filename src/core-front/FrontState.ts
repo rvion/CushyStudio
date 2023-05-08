@@ -15,6 +15,7 @@ export class FrontState {
     uid = nanoid()
     received: MessageFromExtensionToWebview[] = []
 
+    expandNodes: boolean = false
     flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
 
