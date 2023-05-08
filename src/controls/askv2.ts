@@ -50,33 +50,34 @@ export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>
 // prettier-ignore
 export type InfoAnswer<Req> =
     /** str */
-    Req extends {type: 'str' }  ? string :
-    Req extends {type: 'str?' } ? Maybe<string> :
+    Req extends { type: 'str' } ? string :
+    Req extends { type: 'str?' } ? Maybe<string> :
     /** nums */
-    Req extends {type: 'int' }  ? number :
-    Req extends {type: 'int?' } ? Maybe<number> :
+    Req extends { type: 'int' } ? number :
+    Req extends { type: 'int?' } ? Maybe<number> :
     /** bools */
-    Req extends {type: 'bool' }  ? boolean :
-    Req extends {type: 'bool?' } ? Maybe<boolean> :
+    Req extends { type: 'bool' } ? boolean :
+    Req extends { type: 'bool?' } ? Maybe<boolean> :
     /** embedding */
-    Req extends {type: 'embeddings' } ? Maybe<boolean> :
+    Req extends { type: 'embeddings' } ? Maybe<boolean> :
     /** loras */
-    Req extends {type: 'lora' }  ? SimplifiedLoraDef :
-    Req extends {type: 'loras' } ? SimplifiedLoraDef[] :
+    Req extends { type: 'lora' } ? SimplifiedLoraDef :
+    Req extends { type: 'loras' } ? SimplifiedLoraDef[] :
     /** painting */
 
     // {"samMaskPoints":{"points":"[89.39583587646484, 394.6302185058594], [141.39583587646484, 227.63021850585938]","labels":"[1, 1]"}}
     Req extends {type: 'samMaskPoints' } ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
     Req extends {type: 'manualMask' } ? Base64Image :
     Req extends {type: 'paint'} ? Base64Image :
+
     /** group */
-    Req extends {type: 'items', items: { [key: string]: any }} ? { [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> } :
+    Req extends { type: 'items', items: { [key: string]: any } } ? { [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> } :
     /** select one */
-    Req extends {type: 'selectOne', choices: infer T} ? (T extends readonly any[] ? T[number] : T) :
-    Req extends {type: 'selectOneOrCustom', choices: string[]} ? string :
+    Req extends { type: 'selectOne', choices: infer T } ? (T extends readonly any[] ? T[number] : T) :
+    Req extends { type: 'selectOneOrCustom', choices: string[] } ? string :
     /** select many */
-    Req extends {type: 'selectMany', choices: infer T} ? (T extends readonly any[] ? T[number][] : T) :
-    Req extends {type: 'selectManyOrCustom', choices: string[]} ? string[] :
+    Req extends { type: 'selectMany', choices: infer T } ? (T extends readonly any[] ? T[number][] : T) :
+    Req extends { type: 'selectManyOrCustom', choices: string[] } ? string[] :
     /** array */
     Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] :
     never

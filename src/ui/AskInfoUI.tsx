@@ -11,7 +11,7 @@ import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExtensionToWebview'
 import { PaintUI } from '../imageEditor/PaintUI'
 import { exhaust } from '../utils/ComfyUtils'
-import WebviewPlacePoints from './widgets/WidgetImagePoints'
+import WebviewPlacePoints from './WebviewPlacePoints'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
