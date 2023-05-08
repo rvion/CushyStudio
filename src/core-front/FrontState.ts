@@ -36,7 +36,7 @@ export class FrontState {
     // this is the new way
     answerInfo = (value: any) => this.sendMessageToExtension({ type: 'answer', value })
 
-    gallerySize: number = 512
+    gallerySize: number = 256
     cushySocket: ResilientSocketToExtension
     constructor() {
         // if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
