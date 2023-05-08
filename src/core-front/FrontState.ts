@@ -15,16 +15,38 @@ export class FrontState {
     uid = nanoid()
     received: MessageFromExtensionToWebview[] = []
 
-    flowDirection: 'down' | 'up' = 'down'
+    expandNodes: boolean = false
+    flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
 
     get itemsToShow() {
         // return this.received
-        const max = 100
+        const max = 200
         const len = this.received.length
         const start = this.showAllMessageReceived ? 0 : Math.max(0, len - max)
         const items = this.received.slice(start)
-        return this.flowDirection === 'up' ? items.reverse() : items
+        const ordered = this.flowDirection === 'up' ? items.reverse() : items
+        return ordered
+    }
+    // group sequential items with similar types together
+    get groupItemsToShow(): MessageFromExtensionToWebview[][] {
+        const ordered = this.itemsToShow
+        const grouped: MessageFromExtensionToWebview[][] = []
+        let currentGroup: MessageFromExtensionToWebview[] = []
+        let currentType: string | null = null
+        for (const item of ordered) {
+            let itemType = item.type
+            if (itemType === 'executing') itemType = 'progress'
+            if (itemType === 'executed') itemType = 'progress'
+            if (itemType !== currentType) {
+                if (currentGroup.length) grouped.push(currentGroup)
+                currentGroup = []
+                currentType = itemType
+            }
+            currentGroup.push(item)
+        }
+        if (currentGroup.length) grouped.push(currentGroup)
+        return grouped
     }
 
     showImageAs: 'grid' | 'list' | 'carousel' = 'list'
@@ -36,7 +58,7 @@ export class FrontState {
     // this is the new way
     answerInfo = (value: any) => this.sendMessageToExtension({ type: 'answer', value })
 
-    gallerySize: number = 100
+    gallerySize: number = 256
     cushySocket: ResilientSocketToExtension
     constructor() {
         // if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()

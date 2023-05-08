@@ -76,13 +76,13 @@ export class FlowRun implements IFlowExecution {
         await vscode.workspace.fs.writeFile(uri, Buffer.from(content))
     }
 
-    showHTMLContent = (htmlContent: string) => {
-        this.workspace.sendMessage({ type: 'show-html', content: htmlContent })
+    showHTMLContent = (p: { htmlContent: string; title: string }) => {
+        this.workspace.sendMessage({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
-    showMarkdownContent = (markdownContent: string) => {
-        const htmlContent = marked.parse(markdownContent)
-        this.workspace.sendMessage({ type: 'show-html', content: htmlContent })
+    showMarkdownContent = (p: { title: string; markdownContent: string }) => {
+        const htmlContent = marked.parse(p.markdownContent)
+        this.workspace.sendMessage({ type: 'show-html', content: htmlContent, title: p.title })
     }
 
     static VideoCounter = 1
@@ -124,7 +124,7 @@ export class FlowRun implements IFlowExecution {
         const videoURL = this.workspace.server.absPathToURL(targetVideoAbsPath)
         logger().info(`🎥 video url: ${videoURL}`)
         const content = `<video controls autoplay loop><source src="${videoURL}" type="video/mp4"></video>`
-        this.workspace.sendMessage({ type: 'show-html', content })
+        this.workspace.sendMessage({ type: 'show-html', content, title: 'generated video' })
         // turns a bunch of images into a gif with ffmpeg
     }
 
@@ -276,7 +276,11 @@ export class FlowRun implements IFlowExecution {
     private sendPromp = async (): Promise<PromptExecution> => {
         const currentJSON = deepCopyNaive(this.graph.jsonForPrompt)
         const schema = this.workspace.schema
-        this.workspace.sendMessage({ type: 'show-html', content: this.flowSummaryHTML })
+        this.workspace.sendMessage({
+            type: 'show-html',
+            content: this.flowSummaryHTML,
+            title: 'flow-summary',
+        })
         this.workspace.sendMessage({ type: 'prompt', graph: currentJSON })
 
         logger().info('checkpoint:' + JSON.stringify(currentJSON))

@@ -11,14 +11,7 @@ import { RelativePath } from '../utils/fs/BrandedPaths'
 import { IGeneratedImage } from '../sdk/IFlowExecution'
 import { FrontWebview } from './FrontWebview'
 import { logger } from '../logger/logger'
-
-export type GeneratedImageSummary = {
-    uid: string
-    comfyRelativePath: string
-    comfyURL: string
-    localRelativeFilePath: string
-    localAbsoluteFilePath: string
-}
+import { GeneratedImageSummary } from '../core-shared/GeneratedImageSummary'
 
 enum ImageStatus {
     Known = 1,

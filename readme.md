@@ -278,6 +278,7 @@ want to add your own custom node to the list? open a PR!
 ## 🤝 Contributing
 
 1. install [vscode](https://code.visualstudio.com/)
+    - install `prettier` extension
 2. install [node](https://nodejs.org/en)
     - I use `v19.9.0`
     - I recommand using [nvm (node version manager)](https://github.com/nvm-sh/nvm) to install it

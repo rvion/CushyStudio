@@ -270,7 +270,13 @@ export class Schema {
         p(`}`)
 
         p(`\n// Embeddings -------------------------------`)
-        p(`export type Embeddings = ${this.embeddings.map((e) => wrapQuote(e)).join(' | ')}`)
+        p(
+            `export type Embeddings = ${
+                this.embeddings.length == 0 //
+                    ? '""' // fixes the problem when someone has no embedding
+                    : this.embeddings.map((e) => wrapQuote(e)).join(' | ')
+            }`,
+        )
 
         p(`\n// Suggestions -------------------------------`)
         for (const key in ComfyPrimitiveMapping) {

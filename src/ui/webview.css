@@ -74,10 +74,16 @@ body {
 }
 .yarl__root {min-height: 512px !important;}
 .yarl__slide {padding: 0 !important;}
-.rs-panel {background: #373737; }
-.rs-panel-body {padding: .8rem !important;}
-.rs-panel-header { padding: .8rem .3rem !important;}
+/*  */
+.rs-panel {background: #373737; flex-shrink: 0;}
+.rs-panel-body {padding: .5rem !important;}
+.rs-panel-header { padding-top: .5rem !important;  padding-bottom: .5rem !important;}
 .rs-panel-title {font-size: 1.2rem;}
+.rs-panel-collapsible>.rs-panel-header>.rs-icon {
+    right: 5px !important;
+    top: 1rem !important;
+}
+/*  */
 .rs-message-container {padding: .4rem !important;}
 .react-transform-wrapper { max-width: 100%; }
 .rs-rate-character { margin-right: .1rem !important; }
