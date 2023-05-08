@@ -4,17 +4,65 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "type": "npm",
-            "script": "tsc:watch",
-            "problemMatcher": "$tsc-watch",
+            "label": "starts everything",
+            "dependsOn": [
+                //
+                "🫖  Back",
+                "🖼  Front",
+                "👁  TSC"
+                // "💎  LIB",
+                // "🐉  API"
+            ],
+            "group": { "kind": "build", "isDefault": true },
+            "runOptions": { "runOn": "folderOpen", "instanceLimit": 1 }
+        },
+        {
+            "label": "🖼  Front",
+            "detail": "start FRONTEND dev-server",
+            "type": "process",
+            "command": "npm",
+            "args": ["run", "front:dev"],
             "isBackground": true,
-            "presentation": {
-                "reveal": "never"
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
+            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
+            "group": "build",
+            "runOptions": { "instanceLimit": 1 }
+        },
+        {
+            "label": "🫖  Back",
+            "detail": "start BACKEND dev-server",
+            "type": "process",
+            "command": "npm",
+            "args": ["run", "back:dev"],
+            "isBackground": true,
+            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
+            "group": "build",
+            "runOptions": { "instanceLimit": 1 }
+        },
+        {
+            "label": "👁  TSC",
+            "detail": "Get all typescript errors in problems pane",
+            "type": "process",
+            "options": { "env": { "NODE_OPTIONS": "--max-old-space-size=8192" } },
+            "command": "./node_modules/.bin/tsc",
+            "args": ["--watch", "--noEmit"],
+            "isBackground": true,
+            "problemMatcher": "$tsc-watch",
+            "presentation": { "reveal": "never" /* "group": "transpiling" */ },
+            "group": "build",
+            "runOptions": { "instanceLimit": 1 }
         }
+        // {
+        //     "type": "npm",
+        //     "script": "tsc:watch",
+        //     "problemMatcher": "$tsc-watch",
+        //     "isBackground": true,
+        //     "presentation": {
+        //         "reveal": "never"
+        //     },
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     }
+        // }
     ]
 }
