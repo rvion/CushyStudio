@@ -15,7 +15,7 @@ export class FrontState {
     uid = nanoid()
     received: MessageFromExtensionToWebview[] = []
 
-    flowDirection: 'down' | 'up' = 'down'
+    flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
 
     get itemsToShow() {
