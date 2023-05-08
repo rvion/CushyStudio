@@ -94,6 +94,10 @@
         ]
     },
     "scripts": {
+        "📌 CONTRIBUTORS": "",
+        "git:update-master": "git merge origin/master ",
+        "git:add-all": "git add . && git commit -m 'update' && git push",
+        "git:push": "git push",
         "📌 SHELL": "",
         "vscode:dev": "cross-env-shell code --extensionDevelopmentPath=${PWD}",
         "📌 BACK": "",
