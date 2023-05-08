@@ -1000,8 +1000,14 @@ declare module "sdk/IFlowExecution" {
             url: string;
         }): Promise<void>;
         print(msg: Printable): void;
-        showHTMLContent(content: string): void;
-        showMarkdownContent(content: string): void;
+        showHTMLContent(p: {
+            htmlContent: string;
+            title: string;
+        }): void;
+        showMarkdownContent(p: {
+            markdownContent: string;
+            title: string;
+        }): void;
         createAnimation(
         /** image to incldue (defaults to all images generated in the run) */
         source?: IGeneratedImage[], 
