@@ -53,7 +53,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                     </h4>
                 }
                 collapsible
-                defaultExpanded
+                // defaultExpanded
                 style={{ position: 'relative' }}
                 bordered
                 shaded
