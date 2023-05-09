@@ -7,6 +7,7 @@ import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import type { HTMLContent, MDContent } from '../utils/markdown'
 import type { Maybe } from '../utils/types'
 import type { Wildcards } from '../wildcards/wildcards'
+import { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
 
 export interface IFlowExecution {
     // flow dependencies params
@@ -75,6 +76,8 @@ export interface IPromptExecution {
 }
 
 export interface IGeneratedImage {
+    get summary(): ImageInfos
+
     /** run an imagemagick convert action */
     imagemagicConvert(partialCmd: string, suffix: string): string
 

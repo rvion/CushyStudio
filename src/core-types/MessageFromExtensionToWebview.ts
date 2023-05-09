@@ -4,7 +4,7 @@ import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { Maybe } from '../utils/types'
 import type { EmbeddingName } from 'src/core-shared/Schema'
-import type { GeneratedImageSummary } from 'src/core-shared/GeneratedImageSummary'
+import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
 
 import { exhaust } from '../utils/ComfyUtils'
 import { Requestable } from 'src/controls/askv2'
@@ -52,7 +52,7 @@ export type MessageFromExtensionToWebview_ =
     | WsMsgExecuted /* type 'executed' */
 
     // generated images as transformed uri by vscode extension so they can be displayed in the webview
-    | { type: 'images'; images: GeneratedImageSummary[] }
+    | { type: 'images'; images: ImageInfos[] }
     | { type: 'show-html'; content: string; title: string }
 
 export type MessageFromExtensionToWebview_ask = { type: 'ask'; request: { [key: string]: Requestable } }

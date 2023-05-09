@@ -509,6 +509,15 @@ declare module "controls/BUG" {
     export class BUG {
     }
 }
+declare module "core-shared/GeneratedImageSummary" {
+    export interface ImageInfos {
+        uid: string;
+        comfyRelativePath: string;
+        comfyURL: string;
+        localRelativeFilePath: string;
+        localAbsoluteFilePath: string;
+    }
+}
 declare module "controls/askv2" {
     /**
      * This module implements is the early-days core of
@@ -520,6 +529,8 @@ declare module "controls/askv2" {
     import type { SimplifiedLoraDef } from "presets/presets";
     import type { Maybe, Tagged } from "utils/types";
     import { BUG } from "controls/BUG";
+    import { ImageInfos } from "core-shared/GeneratedImageSummary";
+    import { IGeneratedImage } from "sdk/IFlowExecution";
     export type Requestable = {
         label?: string;
     } & Requestable_;
@@ -555,13 +566,13 @@ declare module "controls/askv2" {
     /** painting */
      | {
         type: 'samMaskPoints';
-        url: string;
+        imageInfo: ImageInfos;
     } | {
         type: 'selectImage';
-        urls: string[];
+        imageInfos: ImageInfos[];
     } | {
         type: 'manualMask';
-        url: string;
+        imageInfo: ImageInfos;
     } | {
         type: 'paint';
         url: string;
@@ -705,20 +716,15 @@ declare module "controls/askv2" {
             label: string | undefined;
         };
         /** painting */
-        samMaskPoints: (label: string, url: string) => {
-            type: "samMaskPoints";
-            label: string;
-            url: string;
+        private _toImageInfos;
+        samMaskPoints: (label: string, img: IGeneratedImage | ImageInfos) => Requestable & {
+            type: 'samMaskPoints';
         };
-        selectImage: (label: string, urls: string[]) => {
-            type: "selectImage";
-            label: string;
-            urls: string[];
+        selectImage: (label: string, imgs: (IGeneratedImage | ImageInfos)[]) => Requestable & {
+            type: 'selectImage';
         };
-        manualMask: (label: string, url: string) => {
-            type: "manualMask";
-            label: string;
-            url: string;
+        manualMask: (label: string, img: IGeneratedImage | ImageInfos) => Requestable & {
+            type: 'manualMask';
         };
         paint: (label: string, url: string) => {
             type: "paint";
@@ -996,6 +1002,7 @@ declare module "sdk/IFlowExecution" {
     import type { HTMLContent, MDContent } from "utils/markdown";
     import type { Maybe } from "utils/types";
     import type { Wildcards } from "wildcards/wildcards";
+    import { ImageInfos } from "core-shared/GeneratedImageSummary";
     export interface IFlowExecution {
         addParam(param: FlowParam): void;
         randomSeed(): number;
@@ -1049,6 +1056,7 @@ declare module "sdk/IFlowExecution" {
         images: IGeneratedImage[];
     }
     export interface IGeneratedImage {
+        get summary(): ImageInfos;
         /** run an imagemagick convert action */
         imagemagicConvert(partialCmd: string, suffix: string): string;
         /** local url path */

@@ -9,6 +9,8 @@ import type { Base64Image } from 'src/core-shared/b64img'
 import type { SimplifiedLoraDef } from 'src/presets/presets'
 import type { Maybe, Tagged } from 'src/utils/types'
 import { BUG } from './BUG'
+import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
+import type { IGeneratedImage } from 'src/sdk/IFlowExecution'
 
 export type Requestable = { label?: string } & Requestable_
 
@@ -28,9 +30,9 @@ export type Requestable_ =
     | { type: 'lora' }
     | { type: 'loras' }
     /** painting */
-    | { type: 'samMaskPoints'; url: string }
-    | { type: 'selectImage'; urls: string[] }
-    | { type: 'manualMask'; url: string }
+    | { type: 'samMaskPoints'; imageInfo: ImageInfos }
+    | { type: 'selectImage'; imageInfos: ImageInfos[] }
+    | { type: 'manualMask'; imageInfo: ImageInfos }
     | { type: 'paint'; url: string }
     /** group */
     | { type: 'items'; items: { [key: string]: Requestable } }
@@ -83,6 +85,9 @@ export type InfoAnswer<Req> =
     Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] :
     never
 
+type ImageInBackend = IGeneratedImage | ImageInfos
+const toImageInfos = (img: ImageInBackend) => ('summary' in img ? img.summary : img)
+
 export class InfoRequestBuilder {
     /** str */
     str = (label?: string) => ({ type: 'str' as const, label })
@@ -98,10 +103,25 @@ export class InfoRequestBuilder {
     /** loras */
     lora = (label?: string) => ({ type: 'lora' as const, label })
     loras = (label?: string) => ({ type: 'loras' as const, label })
+
     /** painting */
-    samMaskPoints = (label: string, url: string) => ({ type: 'samMaskPoints' as const, label, url })
-    selectImage = (label: string, urls: string[]) => ({ type: 'selectImage' as const, label, urls })
-    manualMask = (label: string, url: string) => ({ type: 'manualMask' as const, label, url })
+    private _toImageInfos = () => {}
+    samMaskPoints = (label: string, img: IGeneratedImage | ImageInfos): Requestable & { type: 'samMaskPoints' } => ({
+        type: 'samMaskPoints' as const,
+        imageInfo: toImageInfos(img),
+    })
+    selectImage = (label: string, imgs: (IGeneratedImage | ImageInfos)[]): Requestable & { type: 'selectImage' } => ({
+        type: 'selectImage' as const,
+        imageInfos: imgs.map(toImageInfos),
+        label,
+        // urls: imgs,
+    })
+    manualMask = (label: string, img: IGeneratedImage | ImageInfos): Requestable & { type: 'manualMask' } => ({
+        type: 'manualMask' as const,
+        label,
+        imageInfo: toImageInfos(img),
+    })
+
     paint = (label: string, url: string) => ({ type: 'paint' as const, label, url })
     /** group */
     group = <const T>(label: string, items: T): { type: 'items'; items: T } => ({ type: 'items', items })

@@ -11,7 +11,7 @@ import { RelativePath } from '../utils/fs/BrandedPaths'
 import { IGeneratedImage } from '../sdk/IFlowExecution'
 import { FrontWebview } from './FrontWebview'
 import { logger } from '../logger/logger'
-import { GeneratedImageSummary } from '../core-shared/GeneratedImageSummary'
+import { ImageInfos } from '../core-shared/GeneratedImageSummary'
 
 enum ImageStatus {
     Known = 1,
@@ -91,7 +91,7 @@ export class GeneratedImage implements IGeneratedImage {
         return FrontWebview.current?.webview.asWebviewUri(this.localUri).toString() ?? ''
     }
 
-    get summary(): GeneratedImageSummary {
+    get summary(): ImageInfos {
         return {
             uid: this.uid,
             comfyRelativePath: this.comfyRelativePath,
