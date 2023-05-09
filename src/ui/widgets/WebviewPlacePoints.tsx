@@ -53,30 +53,32 @@ const WebviewPlacePoints = observer(
         }, [positivePoints, negativePoints, formatPointsAndLabels])
 
         const drawPoints = useCallback(() => {
-            const canvas = canvasRef.current
+            const canvas = canvasRef.current;
             if (canvas && imageStore.image && isImageLoaded) {
-                const ctx = canvas.getContext('2d')
-                if (ctx) {
-                    ctx.clearRect(0, 0, canvas.width, canvas.height)
-                    ctx.drawImage(imageStore.image, 0, 0, canvas.width, canvas.height);
-
-
-                    ctx.fillStyle = 'red'
-                    positivePoints.forEach((point) => {
-                        ctx.beginPath()
-                        ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI)
-                        ctx.fill()
-                    })
-
-                    ctx.fillStyle = 'blue'
-                    negativePoints.forEach((point) => {
-                        ctx.beginPath()
-                        ctx.arc(point.x, point.y, 5, 0, 2 * Math.PI)
-                        ctx.fill()
-                    })
-                }
+              const ctx = canvas.getContext('2d');
+              if (ctx) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(imageStore.image, 0, 0, canvas.width, canvas.height);
+          
+                const scaleFactor = canvas.width / imageStore.image.width;
+          
+                ctx.fillStyle = 'red';
+                positivePoints.forEach((point) => {
+                  ctx.beginPath();
+                  ctx.arc(point.x * scaleFactor, point.y * scaleFactor, 5, 0, 2 * Math.PI);
+                  ctx.fill();
+                });
+          
+                ctx.fillStyle = 'blue';
+                negativePoints.forEach((point) => {
+                  ctx.beginPath();
+                  ctx.arc(point.x * scaleFactor, point.y * scaleFactor, 5, 0, 2 * Math.PI);
+                  ctx.fill();
+                });
+              }
             }
-        }, [positivePoints, negativePoints, isImageLoaded])
+          }, [positivePoints, negativePoints, isImageLoaded]);
+          
 
         const handleClick = useCallback(
             (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -84,9 +86,15 @@ const WebviewPlacePoints = observer(
                 const canvas = canvasRef.current
                 if (canvas && imageStore.image && isImageLoaded) {
                     const rect = canvas.getBoundingClientRect()
-                    const x = e.clientX - rect.left
-                    const y = e.clientY - rect.top
-                    const point = { x, y }
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    const scaleFactor = imageStore.image.width / canvas.width;
+
+                    const scaledX = x * scaleFactor;
+                    const scaledY = y * scaleFactor;
+                    const point = { x: scaledX, y: scaledY };
+
 
                     if (e.button === 0) {
                         setPositivePoints((prevPoints) => [...prevPoints, point])

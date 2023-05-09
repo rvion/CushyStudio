@@ -12,7 +12,7 @@ import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExte
 import { PaintUI } from '../imageEditor/PaintUI'
 import { exhaust } from '../utils/ComfyUtils'
 import WebviewPlacePoints from './widgets/WebviewPlacePoints'
-import { ImageSelection } from './widgets/ImageSelection'
+import ImageSelection from './widgets/ImageSelection'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
