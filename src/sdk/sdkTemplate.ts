@@ -505,10 +505,6 @@ declare module "presets/presets" {
         }>;
     }
 }
-declare module "controls/BUG" {
-    export class BUG {
-    }
-}
 declare module "core-shared/GeneratedImageSummary" {
     export interface ImageInfos {
         uid: string;
@@ -516,6 +512,10 @@ declare module "core-shared/GeneratedImageSummary" {
         comfyURL: string;
         localRelativeFilePath: string;
         localAbsoluteFilePath: string;
+    }
+}
+declare module "controls/BUG" {
+    export class BUG {
     }
 }
 declare module "controls/askv2" {
@@ -528,9 +528,9 @@ declare module "controls/askv2" {
     import type { Base64Image } from "core-shared/b64img";
     import type { SimplifiedLoraDef } from "presets/presets";
     import type { Maybe, Tagged } from "utils/types";
-    import { BUG } from "controls/BUG";
     import type { ImageInfos } from "core-shared/GeneratedImageSummary";
     import type { IGeneratedImage } from "sdk/IFlowExecution";
+    import { BUG } from "controls/BUG";
     export type Requestable = {
         label?: string;
     } & Requestable_;
@@ -642,6 +642,8 @@ declare module "controls/askv2" {
         points: SamPointPosStr;
         labels: SamPointLabelsStr;
     } : Req extends {
+        type: 'selectImage';
+    } ? ImageInfos : Req extends {
         type: 'manualMask';
     } ? Base64Image : Req extends {
         type: 'paint';
@@ -717,14 +719,19 @@ declare module "controls/askv2" {
         };
         /** painting */
         private _toImageInfos;
-        samMaskPoints: (label: string, img: IGeneratedImage | ImageInfos) => Requestable & {
-            type: 'samMaskPoints';
+        samMaskPoints: (label: string, img: IGeneratedImage | ImageInfos) => {
+            type: "samMaskPoints";
+            imageInfo: ImageInfos;
         };
-        selectImage: (label: string, imgs: (IGeneratedImage | ImageInfos)[]) => Requestable & {
-            type: 'selectImage';
+        selectImage: (label: string, imgs: (IGeneratedImage | ImageInfos)[]) => {
+            type: "selectImage";
+            imageInfos: ImageInfos[];
+            label: string;
         };
-        manualMask: (label: string, img: IGeneratedImage | ImageInfos) => Requestable & {
-            type: 'manualMask';
+        manualMask: (label: string, img: IGeneratedImage | ImageInfos) => {
+            type: "manualMask";
+            label: string;
+            imageInfo: ImageInfos;
         };
         paint: (label: string, url: string) => {
             type: "paint";
@@ -1056,7 +1063,9 @@ declare module "sdk/IFlowExecution" {
         images: IGeneratedImage[];
     }
     export interface IGeneratedImage {
-        get summary(): ImageInfos;
+        toJSON: () => ImageInfos;
+        /** uuid */
+        uid: string;
         /** run an imagemagick convert action */
         imagemagicConvert(partialCmd: string, suffix: string): string;
         /** local url path */
@@ -1077,6 +1086,8 @@ declare module "sdk/IFlowExecution" {
         get localFileName(): string;
         /** local workspace relative file path */
         get localRelativeFilePath(): string;
+        /** absolute path on the machine with vscode */
+        get localAbsoluteFilePath(): string;
         /** uri the webview can access */
         get webviewURI(): string;
     }

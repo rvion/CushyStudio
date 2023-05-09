@@ -7,9 +7,9 @@ import { fakeInfoRequestFn } from './askv2'
 const r = await fakeInfoRequestFn((ui) => ({
     foo: ui.int(),
     // paint stuff
-    // samMaskPoints: ui.samMaskPoints('samMaskPoints', 'https://placekitten.com/512/512'),
-    // manualMask: ui.manualMask('manualMask', 'https://placekitten.com/512/512'),
-    // paint: ui.paint('paint', 'https://placekitten.com/512/512'),
+    samMaskPoints: ui.samMaskPoints('samMaskPoints', 0 as any),
+    manualMask: ui.manualMask('manualMask', 0 as any),
+    paint: ui.paint('paint', 0 as any),
     //
     number: ui.intOpt(),
     loras: ui.loras(),

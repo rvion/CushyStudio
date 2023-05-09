@@ -154,6 +154,7 @@ export class Workspace {
     registerClient = (id: string, client: CushyClient) => this.clients.set(id, client)
     unregisterClient = (id: string) => this.clients.delete(id)
     lastMessages = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
+
     sendMessage = (message_: MessageFromExtensionToWebview_): PayloadID => {
         const uid = getPayloadID()
         const message: MessageFromExtensionToWebview = { ...message_, uid }
@@ -394,7 +395,7 @@ export class Workspace {
         // const uris = images.map((i) => i.summary)
         this.sendMessage({
             type: 'images',
-            images: images.map((i) => i.summary),
+            images: images.map((i) => i.toJSON()),
         })
     }
 

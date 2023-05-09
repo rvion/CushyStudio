@@ -19,7 +19,7 @@ enum ImageStatus {
     Saved = 3,
 }
 /** Cushy wrapper around ComfyImageInfo */
-export class GeneratedImage implements IGeneratedImage {
+export class GeneratedImage implements IGeneratedImage, ImageInfos {
     private static imageID = 1
     private workspace: Workspace
 
@@ -90,13 +90,17 @@ export class GeneratedImage implements IGeneratedImage {
     get webviewURI(): string {
         return FrontWebview.current?.webview.asWebviewUri(this.localUri).toString() ?? ''
     }
+    /** absolute path on the machine with vscode */
+    get localAbsoluteFilePath() {
+        return this.localUri.fsPath
+    }
 
-    get summary(): ImageInfos {
+    toJSON = (): ImageInfos => {
         return {
             uid: this.uid,
             comfyRelativePath: this.comfyRelativePath,
             localRelativeFilePath: this.localRelativeFilePath,
-            localAbsoluteFilePath: this.localUri.fsPath,
+            localAbsoluteFilePath: this.localAbsoluteFilePath,
             comfyURL: this.comfyURL,
         }
     }

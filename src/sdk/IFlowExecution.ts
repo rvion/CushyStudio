@@ -76,7 +76,10 @@ export interface IPromptExecution {
 }
 
 export interface IGeneratedImage {
-    get summary(): ImageInfos
+    toJSON: () => ImageInfos
+
+    /** uuid */
+    uid: string
 
     /** run an imagemagick convert action */
     imagemagicConvert(partialCmd: string, suffix: string): string
@@ -101,6 +104,8 @@ export interface IGeneratedImage {
     get localFileName(): string
     /** local workspace relative file path */
     get localRelativeFilePath(): string
+    /** absolute path on the machine with vscode */
+    get localAbsoluteFilePath(): string
 
     /** uri the webview can access */
     get webviewURI(): string

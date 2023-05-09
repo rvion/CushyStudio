@@ -71,6 +71,7 @@ export type InfoAnswer<Req> =
 
     // {"samMaskPoints":{"points":"[89.39583587646484, 394.6302185058594], [141.39583587646484, 227.63021850585938]","labels":"[1, 1]"}}
     Req extends {type: 'samMaskPoints' } ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
+    Req extends {type: 'selectImage' } ? ImageInfos :
     Req extends {type: 'manualMask' } ? Base64Image :
     Req extends {type: 'paint'} ? Base64Image :
 
@@ -87,7 +88,7 @@ export type InfoAnswer<Req> =
     never
 
 type ImageInBackend = IGeneratedImage | ImageInfos
-const toImageInfos = (img: ImageInBackend) => ('summary' in img ? img.summary : img)
+const toImageInfos = (img: ImageInBackend) => ('toJSON' in img ? img.toJSON() : img)
 
 export class InfoRequestBuilder {
     /** str */
@@ -107,17 +108,16 @@ export class InfoRequestBuilder {
 
     /** painting */
     private _toImageInfos = () => {}
-    samMaskPoints = (label: string, img: IGeneratedImage | ImageInfos): Requestable & { type: 'samMaskPoints' } => ({
+    samMaskPoints = (label: string, img: IGeneratedImage | ImageInfos) => ({
         type: 'samMaskPoints' as const,
         imageInfo: toImageInfos(img),
     })
-    selectImage = (label: string, imgs: (IGeneratedImage | ImageInfos)[]): Requestable & { type: 'selectImage' } => ({
+    selectImage = (label: string, imgs: (IGeneratedImage | ImageInfos)[]) => ({
         type: 'selectImage' as const,
         imageInfos: imgs.map(toImageInfos),
         label,
-        // urls: imgs,
     })
-    manualMask = (label: string, img: IGeneratedImage | ImageInfos): Requestable & { type: 'manualMask' } => ({
+    manualMask = (label: string, img: IGeneratedImage | ImageInfos) => ({
         type: 'manualMask' as const,
         label,
         imageInfo: toImageInfos(img),
