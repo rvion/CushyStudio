@@ -11,7 +11,6 @@ export const ImageSelection = (p: { infos: ImageInfos[]; get: () => string; set:
         <div className='flex gap-2'>
             {infos.map((info) => {
                 const url = info.comfyURL
-                const isChecked = checkedURL === url
                 return (
                     <RadioGroup value={checkedURL} name='radioList'>
                         <div key={url} onClick={() => set(url)} className='hover:bg-gray-500'>

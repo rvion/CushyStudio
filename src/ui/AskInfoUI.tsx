@@ -11,7 +11,7 @@ import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExtensionToWebview'
 import { PaintUI } from '../imageEditor/PaintUI'
 import { exhaust } from '../utils/ComfyUtils'
-import WebviewPlacePoints from './widgets/WebviewPlacePoints'
+import { WebviewPlacePoints } from './widgets/WebviewPlacePoints'
 import { ImageSelection } from './widgets/ImageSelection'
 
 /** this is the root interraction widget
