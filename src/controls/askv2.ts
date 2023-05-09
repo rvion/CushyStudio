@@ -8,9 +8,10 @@
 import type { Base64Image } from 'src/core-shared/b64img'
 import type { SimplifiedLoraDef } from 'src/presets/presets'
 import type { Maybe, Tagged } from 'src/utils/types'
-import { BUG } from './BUG'
 import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
 import type { IGeneratedImage } from 'src/sdk/IFlowExecution'
+
+import { BUG } from './BUG'
 
 export type Requestable = { label?: string } & Requestable_
 

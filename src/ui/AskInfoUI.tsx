@@ -4,7 +4,7 @@ import { AskPath, AskState } from './AskState'
 
 import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
-import { Button, Input, InputNumber, MultiCascader, Notification, Panel, Toggle, Tooltip, Whisper } from 'rsuite'
+import { Button, Input, InputNumber, MultiCascader, Panel, Toggle, Tooltip, Whisper } from 'rsuite'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { BUG } from '../controls/BUG'
 import { useSt } from '../core-front/stContext'
@@ -12,7 +12,7 @@ import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExte
 import { PaintUI } from '../imageEditor/PaintUI'
 import { exhaust } from '../utils/ComfyUtils'
 import WebviewPlacePoints from './widgets/WebviewPlacePoints'
-import ImageSelection from './widgets/ImageSelection'
+import { ImageSelection } from './widgets/ImageSelection'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
@@ -34,20 +34,25 @@ export const AskInfoUI = observer(function AskInfoUI_(p: { step: MessageFromExte
 
     return (
         <askContext.Provider value={askState}>
-            <Panel shaded header={<>💬 ASK</>} collapsible defaultExpanded>
+            <Panel className='gap-2' shaded header={<>💬 Input</>} collapsible defaultExpanded>
                 {/* widgets ------------------------------- */}
-                {Object.entries(p.step.request).map(([k, v]) => (
-                    <div className='row items-baseline' key={k}>
-                        {k} <WidgetUI path={[k]} req={v} />
+                {Object.entries(p.step.request).map(([k, v], ix) => (
+                    <div
+                        style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
+                        className='row items-start gap-2 p-2'
+                        key={k}
+                    >
+                        <div>{k}</div>
+                        <WidgetUI path={[k]} req={v} />
                     </div>
                 ))}
                 {/* submit ------------------------------- */}
                 {askState.locked ? null : (
-                    <Button appearance='primary' onClick={submit}>
+                    <Button className='w-full' color='green' appearance='primary' onClick={submit}>
                         OK
                     </Button>
                 )}
-                <div className='flex flex-col items-start'>
+                <div className='flex items-end'>
                     <DebugUI title='request'>
                         the request made by the wofkflow is
                         <pre>{JSON.stringify(p.step, null, 4)}</pre>
@@ -66,7 +71,9 @@ export const AskInfoUI = observer(function AskInfoUI_(p: { step: MessageFromExte
 export const DebugUI = observer(function DebugUI_(p: { title: string; children: React.ReactNode }) {
     return (
         <Whisper speaker={<Tooltip>{p.children}</Tooltip>}>
-            <Button>{p.title}</Button>
+            <Button size='sm' appearance='link'>
+                {p.title}
+            </Button>
         </Whisper>
     )
 })
@@ -109,9 +116,9 @@ const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'str') return <Input type='text' value={'5'} />
     if (req.type === 'str?') return <Input type='text' value={'6'} />
     if (req.type === 'paint') return <PaintUI uri={'foo bar 🔴'} />
-    if (req.type === 'samMaskPoints') return <WebviewPlacePoints url={req.url} get={get} set={set} />
-    if (req.type === 'selectImage') return <ImageSelection urls={req.urls} get={get} set={set} />
-    if (req.type === 'manualMask') return <WebviewPlacePoints url={req.url} get={get} set={set} />
+    if (req.type === 'samMaskPoints') return <WebviewPlacePoints url={req.imageInfo.comfyURL} get={get} set={set} />
+    if (req.type === 'selectImage') return <ImageSelection infos={req.imageInfos} get={get} set={set} />
+    if (req.type === 'manualMask') return <WebviewPlacePoints url={req.imageInfo.comfyURL} get={get} set={set} />
     if (req.type === 'embeddings') return <>TODO</>
     if (req.type === 'lora') return <>TODO</>
     if (req.type === 'selectMany') return <>TODO</>

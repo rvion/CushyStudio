@@ -529,8 +529,8 @@ declare module "controls/askv2" {
     import type { SimplifiedLoraDef } from "presets/presets";
     import type { Maybe, Tagged } from "utils/types";
     import { BUG } from "controls/BUG";
-    import { ImageInfos } from "core-shared/GeneratedImageSummary";
-    import { IGeneratedImage } from "sdk/IFlowExecution";
+    import type { ImageInfos } from "core-shared/GeneratedImageSummary";
+    import type { IGeneratedImage } from "sdk/IFlowExecution";
     export type Requestable = {
         label?: string;
     } & Requestable_;
