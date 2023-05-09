@@ -1,9 +1,14 @@
+import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Radio, RadioGroup } from 'rsuite'
 import { LightBoxState, LightBoxUI } from '../LightBox'
 import type { ImageInfos } from '../../core-shared/GeneratedImageSummary'
 
-export const ImageSelection = (p: { infos: ImageInfos[]; get: () => string; set: (value: string) => void }) => {
+export const ImageSelection = observer(function ImageSelection_(p: {
+    infos: ImageInfos[]
+    get: () => ImageInfos | null
+    set: (value: ImageInfos) => void
+}) {
     const { infos, get, set } = p
     const lbs = useMemo(() => new LightBoxState(infos), [infos])
     const checkedURL = get()
@@ -12,8 +17,8 @@ export const ImageSelection = (p: { infos: ImageInfos[]; get: () => string; set:
             {infos.map((info) => {
                 const url = info.comfyURL
                 return (
-                    <RadioGroup value={checkedURL} name='radioList'>
-                        <div key={url} onClick={() => set(url)} className='hover:bg-gray-500'>
+                    <RadioGroup value={checkedURL?.comfyURL} name='radioList'>
+                        <div key={url} onClick={() => set(info)} className='hover:bg-gray-500'>
                             <img
                                 onClick={() => (lbs.opened = true)}
                                 style={{
@@ -25,7 +30,7 @@ export const ImageSelection = (p: { infos: ImageInfos[]; get: () => string; set:
                                 src={url}
                                 alt=''
                             />
-                            <Radio value={url} onChange={() => set(url)} />
+                            <Radio value={url} onChange={() => set(info)} />
                         </div>
                     </RadioGroup>
                 )
@@ -33,4 +38,4 @@ export const ImageSelection = (p: { infos: ImageInfos[]; get: () => string; set:
             <LightBoxUI lbs={lbs} />
         </div>
     )
-}
+})
