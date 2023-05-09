@@ -34,6 +34,13 @@ export class Graph {
         // this.graph.run.cyto.addNode(this)
     }
 
+    reset = () => {
+        this.nodes = [];
+        this.nodesIndex.clear();
+        this._nextUID = 0;
+        this.currentExecutingNode = null;
+    }
+
     /** nodes, in creation order */
     nodes: ComfyNode<any>[] = []
 

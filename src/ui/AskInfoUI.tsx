@@ -12,6 +12,7 @@ import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExte
 import { PaintUI } from '../imageEditor/PaintUI'
 import { exhaust } from '../utils/ComfyUtils'
 import WebviewPlacePoints from './widgets/WebviewPlacePoints'
+import ImageSelection from './widgets/ImageSelection'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
@@ -109,6 +110,7 @@ const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'str?') return <Input type='text' value={'6'} />
     if (req.type === 'paint') return <PaintUI uri={'foo bar 🔴'} />
     if (req.type === 'samMaskPoints') return <WebviewPlacePoints url={req.url} get={get} set={set} />
+    if (req.type === 'selectImage') return <ImageSelection urls={req.urls} get={get} set={set} />
     if (req.type === 'manualMask') return <WebviewPlacePoints url={req.url} get={get} set={set} />
     if (req.type === 'embeddings') return <>TODO</>
     if (req.type === 'lora') return <>TODO</>

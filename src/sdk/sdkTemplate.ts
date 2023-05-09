@@ -382,6 +382,7 @@ declare module "core-shared/Graph" {
         cyto?: Cyto;
         /** @internal every node constructor must call this */
         registerNode: (node: ComfyNode<any>) => void;
+        reset: () => void;
         /** nodes, in creation order */
         nodes: ComfyNode<any>[];
         /** nodes, indexed by nodeID */
@@ -556,6 +557,9 @@ declare module "controls/askv2" {
         type: 'samMaskPoints';
         url: string;
     } | {
+        type: 'selectImage';
+        urls: string[];
+    } | {
         type: 'manualMask';
         url: string;
     } | {
@@ -705,6 +709,11 @@ declare module "controls/askv2" {
             type: "samMaskPoints";
             label: string;
             url: string;
+        };
+        selectImage: (label: string, urls: string[]) => {
+            type: "selectImage";
+            label: string;
+            urls: string[];
         };
         manualMask: (label: string, url: string) => {
             type: "manualMask";

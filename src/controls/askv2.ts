@@ -29,6 +29,7 @@ export type Requestable_ =
     | { type: 'loras' }
     /** painting */
     | { type: 'samMaskPoints'; url: string }
+    | { type: 'selectImage'; urls: string[] }
     | { type: 'manualMask'; url: string }
     | { type: 'paint'; url: string }
     /** group */
@@ -99,6 +100,7 @@ export class InfoRequestBuilder {
     loras = (label?: string) => ({ type: 'loras' as const, label })
     /** painting */
     samMaskPoints = (label: string, url: string) => ({ type: 'samMaskPoints' as const, label, url })
+    selectImage = (label: string, urls: string[]) => ({ type: 'selectImage' as const, label, urls })
     manualMask = (label: string, url: string) => ({ type: 'manualMask' as const, label, url })
     paint = (label: string, url: string) => ({ type: 'paint' as const, label, url })
     /** group */
