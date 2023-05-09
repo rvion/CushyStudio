@@ -9,8 +9,9 @@
                 //
                 "🫖  Back",
                 "🖼  Front",
-                "👁  TSC"
-                // "💎  LIB",
+                "👁  TSC",
+                "🔍  Schema",
+                "🌶️  VSCode"
                 // "🐉  API"
             ],
             "group": { "kind": "build", "isDefault": true },
@@ -22,6 +23,28 @@
             "type": "process",
             "command": "npm",
             "args": ["run", "front:dev"],
+            "isBackground": true,
+            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
+            "group": "build",
+            "runOptions": { "instanceLimit": 1 }
+        },
+        {
+            "label": "🔍  Schema",
+            "detail": "compile and embed type-definitions for extension to be self-sufficient",
+            "type": "process",
+            "command": "npm",
+            "args": ["run", "decl"],
+            "isBackground": true,
+            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
+            "group": "build",
+            "runOptions": { "instanceLimit": 1 }
+        },
+        {
+            "label": "🌶️  VSCode",
+            "detail": "start the vscode debug process",
+            "type": "process",
+            "command": "npm",
+            "args": ["run", "vscode:dev"],
             "isBackground": true,
             "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
             "group": "build",
