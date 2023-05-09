@@ -1,33 +1,14 @@
-import type { GeneratedImageSummary } from '../core-shared/GeneratedImageSummary'
+import type { ImageInfos } from '../core-shared/GeneratedImageSummary'
 
 import * as I from '@rsuite/icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Button, IconButton, Panel, Popover, Rate, Slider, Whisper } from 'rsuite'
-import Lightbox, { Plugin } from 'yet-another-react-lightbox'
-import Download from 'yet-another-react-lightbox/plugins/download'
-import FullScreen from 'yet-another-react-lightbox/plugins/fullscreen'
-import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails'
-import Zoom from 'yet-another-react-lightbox/plugins/zoom'
 import { useSt } from '../core-front/stContext'
 import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
+import { useMemo } from 'react'
+import { LightBoxState, LightBoxUI } from './LightBox'
 
-import { addToolbarButton } from 'yet-another-react-lightbox/core'
-import 'yet-another-react-lightbox/plugins/thumbnails.css'
-import 'yet-another-react-lightbox/styles.css'
-
-const RatePlugin: Plugin = ({ augment }) => {
-    augment(({ toolbar, ...restProps }) => ({
-        toolbar: addToolbarButton(
-            //
-            toolbar,
-            'my-button',
-            <Rate vertical max={5} defaultValue={0} />,
-        ),
-        ...restProps,
-    }))
-}
-
-export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedImage: GeneratedImageSummary }) {
+export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedImage: ImageInfos }) {
     const selectedImg = p.selectedImage
     return (
         <div>
@@ -59,19 +40,12 @@ export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedIma
 export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p: { msg: MessageFromExtensionToWebview }) {
     const st = useSt()
     const msg = p.msg
-    const uiSt = useLocalObservable(() => ({
-        index: 0,
-        opened: false,
-        openGallery(ix: number) {
-            this.opened = true
-            this.index = ix
-        },
-        closeGallery(){ this.opened = false }, // prettier-ignore
-    }))
+
+    // 🔴
     if (msg.type !== 'images') return <>error</>
     if (msg.images.length === 0) return <>no images</>
-    // const selectedImg: GeneratedImageSummary = msg.images[uiSt.index]
-    // if (st.showImageAs === 'list') {
+    const uiSt = useMemo(() => new LightBoxState(msg.images), [msg.images])
+
     return (
         <Panel
             collapsible
@@ -84,21 +58,7 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
             }
         >
             {/* https://github.com/igordanchenko/yet-another-react-lightbox */}
-            {uiSt.opened ? (
-                <Lightbox
-                    index={uiSt.index}
-                    on={{
-                        view: ({ index }) => (uiSt.index = index),
-                        exited: uiSt.closeGallery,
-                    }}
-                    styles={{ container: { minHeight: '20rem' } }}
-                    zoom={{ scrollToZoom: true, maxZoomPixelRatio: 10 }}
-                    plugins={[Zoom, Download, FullScreen, RatePlugin, Thumbnails]}
-                    open={true}
-                    slides={msg.images.map((img) => ({ src: img.comfyURL }))}
-                />
-            ) : null}
-
+            <LightBoxUI lbs={uiSt} />
             <Slider
                 className='relative px-3'
                 onChange={(next) => (st.gallerySize = next)}
