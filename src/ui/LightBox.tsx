@@ -1,4 +1,4 @@
-import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
+import type { ImageInfos } from '../core-shared/GeneratedImageSummary'
 import Lightbox, { Plugin } from 'yet-another-react-lightbox'
 
 import { addToolbarButton } from 'yet-another-react-lightbox/core'
