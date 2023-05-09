@@ -12,6 +12,7 @@ import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
 import type { IGeneratedImage } from 'src/sdk/IFlowExecution'
 
 import { BUG } from './BUG'
+import { logger } from 'src/logger/logger'
 
 export type Requestable = { label?: string } & Requestable_
 
@@ -88,7 +89,13 @@ export type InfoAnswer<Req> =
     never
 
 type ImageInBackend = IGeneratedImage | ImageInfos
-const toImageInfos = (img: ImageInBackend) => ('toJSON' in img ? img.toJSON() : img)
+const toImageInfos = (img: ImageInBackend) => {
+    try {
+        return (img as any).toJSON ? (img as any).toJSON() : img
+    } catch (error) {
+        logger().info('🔴 🔴' + JSON.stringify(img))
+    }
+}
 
 export class InfoRequestBuilder {
     /** str */

@@ -721,17 +721,17 @@ declare module "controls/askv2" {
         private _toImageInfos;
         samMaskPoints: (label: string, img: IGeneratedImage | ImageInfos) => {
             type: "samMaskPoints";
-            imageInfo: ImageInfos;
+            imageInfo: any;
         };
         selectImage: (label: string, imgs: (IGeneratedImage | ImageInfos)[]) => {
             type: "selectImage";
-            imageInfos: ImageInfos[];
+            imageInfos: any[];
             label: string;
         };
         manualMask: (label: string, img: IGeneratedImage | ImageInfos) => {
             type: "manualMask";
             label: string;
-            imageInfo: ImageInfos;
+            imageInfo: any;
         };
         paint: (label: string, url: string) => {
             type: "paint";
