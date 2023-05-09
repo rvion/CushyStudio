@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button } from 'rsuite'
+import { Button, Modal } from 'rsuite'
 import styles from './ImageSelection.module.css'
 
 type ImageSelectionProps = {
