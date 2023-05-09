@@ -103,42 +103,80 @@ export interface ComfySetup {
     DiffusersLoader(args: DiffusersLoader_input, uid?: ComfyNodeUID): DiffusersLoader
     /* category=Image Processing output=IMAGE */
     BrightnessContrast(args: BrightnessContrast_input, uid?: ComfyNodeUID): BrightnessContrast
-    /* category=ImpactPack output=BBOX_MODEL, SEGM_MODEL */
-    ImpactMMDetLoader(args: ImpactMMDetLoader_input, uid?: ComfyNodeUID): ImpactMMDetLoader
     /* category=ImpactPack output=SAM_MODEL */
     ImpactSAMLoader(args: ImpactSAMLoader_input, uid?: ComfyNodeUID): ImpactSAMLoader
-    /* category=ImpactPack output=ONNX_MODEL */
-    ImpactONNXLoader(args: ImpactONNXLoader_input, uid?: ComfyNodeUID): ImpactONNXLoader
-    /* category=ImpactPack_Detector output=SEGS */
-    ImpactBboxDetectorForEach(args: ImpactBboxDetectorForEach_input, uid?: ComfyNodeUID): ImpactBboxDetectorForEach
-    /* category=ImpactPack_Detector output=SEGS */
-    ImpactSegmDetectorForEach(args: ImpactSegmDetectorForEach_input, uid?: ComfyNodeUID): ImpactSegmDetectorForEach
-    /* category=ImpactPack_Detector output=SEGS */
-    ImpactONNXDetectorForEach(args: ImpactONNXDetectorForEach_input, uid?: ComfyNodeUID): ImpactONNXDetectorForEach
+    /* category=ImpactPack output=BBOX_DETECTOR, SEGM_DETECTOR */
+    ImpactMMDetDetectorProvider(args: ImpactMMDetDetectorProvider_input, uid?: ComfyNodeUID): ImpactMMDetDetectorProvider
+    /* category=ImpactPack_Util output=BBOX_DETECTOR */
+    ImpactCLIPSegDetectorProvider(args: ImpactCLIPSegDetectorProvider_input, uid?: ComfyNodeUID): ImpactCLIPSegDetectorProvider
+    /* category=ImpactPack output=ONNX_DETECTOR */
+    ImpactONNXDetectorProvider(args: ImpactONNXDetectorProvider_input, uid?: ComfyNodeUID): ImpactONNXDetectorProvider
     /* category=ImpactPack_Operation output=SEGS */
     ImpactBitwiseAndMaskForEach(args: ImpactBitwiseAndMaskForEach_input, uid?: ComfyNodeUID): ImpactBitwiseAndMaskForEach
+    /* category=ImpactPack_Operation output=SEGS */
+    ImpactSubtractMaskForEach(args: ImpactSubtractMaskForEach_input, uid?: ComfyNodeUID): ImpactSubtractMaskForEach
     /* category=ImpactPack_Detailer output=IMAGE */
     ImpactDetailerForEach(args: ImpactDetailerForEach_input, uid?: ComfyNodeUID): ImpactDetailerForEach
     /* category=ImpactPack_Detailer output=IMAGE, IMAGE_1, IMAGE_2 */
     ImpactDetailerForEachDebug(args: ImpactDetailerForEachDebug_input, uid?: ComfyNodeUID): ImpactDetailerForEachDebug
-    /* category=ImpactPack_Detector output=MASK */
-    ImpactBboxDetectorCombined(args: ImpactBboxDetectorCombined_input, uid?: ComfyNodeUID): ImpactBboxDetectorCombined
-    /* category=ImpactPack_Detector output=MASK */
-    ImpactSegmDetectorCombined(args: ImpactSegmDetectorCombined_input, uid?: ComfyNodeUID): ImpactSegmDetectorCombined
+    /* category=ImpactPack_Detailer output=IMAGE */
+    ImpactDetailerForEachPipe(args: ImpactDetailerForEachPipe_input, uid?: ComfyNodeUID): ImpactDetailerForEachPipe
+    /* category=ImpactPack_Detailer output=IMAGE, IMAGE_1, IMAGE_2 */
+    ImpactDetailerForEachDebugPipe(args: ImpactDetailerForEachDebugPipe_input, uid?: ComfyNodeUID): ImpactDetailerForEachDebugPipe
     /* category=ImpactPack_Detector output=MASK */
     ImpactSAMDetectorCombined(args: ImpactSAMDetectorCombined_input, uid?: ComfyNodeUID): ImpactSAMDetectorCombined
-    /* category=ImpactPack_Simple output=IMAGE, MASK, DETAILER_PIPE */
+    /* category=ImpactPack_Simple output=IMAGE, IMAGE_1, MASK, DETAILER_PIPE */
     ImpactFaceDetailer(args: ImpactFaceDetailer_input, uid?: ComfyNodeUID): ImpactFaceDetailer
-    /* category=ImpactPack_Simple output=IMAGE, MASK, DETAILER_PIPE */
+    /* category=ImpactPack_Simple output=IMAGE, IMAGE_1, MASK, DETAILER_PIPE */
     ImpactFaceDetailerPipe(args: ImpactFaceDetailerPipe_input, uid?: ComfyNodeUID): ImpactFaceDetailerPipe
+    /* category=ImpactPack_Pipe output=DETAILER_PIPE */
+    ImpactToDetailerPipe(args: ImpactToDetailerPipe_input, uid?: ComfyNodeUID): ImpactToDetailerPipe
+    /* category=ImpactPack_Pipe output=MODEL, VAE, CONDITIONING, CONDITIONING_1, BBOX_DETECTOR, SAM_MODEL */
+    ImpactFromDetailerPipe(args: ImpactFromDetailerPipe_input, uid?: ComfyNodeUID): ImpactFromDetailerPipe
+    /* category=ImpactPack_Pipe output=BASIC_PIPE */
+    ImpactToBasicPipe(args: ImpactToBasicPipe_input, uid?: ComfyNodeUID): ImpactToBasicPipe
+    /* category=ImpactPack_Pipe output=MODEL, CLIP, VAE, CONDITIONING, CONDITIONING_1 */
+    ImpactFromBasicPipe(args: ImpactFromBasicPipe_input, uid?: ComfyNodeUID): ImpactFromBasicPipe
+    /* category=ImpactPack_Pipe output=DETAILER_PIPE */
+    ImpactBasicPipeToDetailerPipe(args: ImpactBasicPipeToDetailerPipe_input, uid?: ComfyNodeUID): ImpactBasicPipeToDetailerPipe
+    /* category=ImpactPack_Pipe output=BASIC_PIPE */
+    ImpactDetailerPipeToBasicPipe(args: ImpactDetailerPipeToBasicPipe_input, uid?: ComfyNodeUID): ImpactDetailerPipeToBasicPipe
+    /* category=ImpactPack_Pipe output=BASIC_PIPE */
+    ImpactEditBasicPipe(args: ImpactEditBasicPipe_input, uid?: ComfyNodeUID): ImpactEditBasicPipe
+    /* category=ImpactPack_Pipe output=BASIC_PIPE */
+    ImpactEditDetailerPipe(args: ImpactEditDetailerPipe_input, uid?: ComfyNodeUID): ImpactEditDetailerPipe
+    /* category=ImpactPack_Upscale output=LATENT */
+    ImpactLatentPixelScale(args: ImpactLatentPixelScale_input, uid?: ComfyNodeUID): ImpactLatentPixelScale
+    /* category=ImpactPack_Upscale output=UPSCALER */
+    ImpactPixelKSampleUpscalerProvider(
+        args: ImpactPixelKSampleUpscalerProvider_input,
+        uid?: ComfyNodeUID,
+    ): ImpactPixelKSampleUpscalerProvider
+    /* category=ImpactPack_Upscale output=UPSCALER */
+    ImpactPixelKSampleUpscalerProviderPipe(
+        args: ImpactPixelKSampleUpscalerProviderPipe_input,
+        uid?: ComfyNodeUID,
+    ): ImpactPixelKSampleUpscalerProviderPipe
+    /* category=ImpactPack_Upscale output=LATENT */
+    ImpactIterativeLatentUpscale(args: ImpactIterativeLatentUpscale_input, uid?: ComfyNodeUID): ImpactIterativeLatentUpscale
+    /* category=ImpactPack_Upscale output=IMAGE */
+    ImpactIterativeImageUpscale(args: ImpactIterativeImageUpscale_input, uid?: ComfyNodeUID): ImpactIterativeImageUpscale
+    /* category=ImpactPack_Upscale output=UPSCALER */
+    ImpactPixelTiledKSampleUpscalerProvider(
+        args: ImpactPixelTiledKSampleUpscalerProvider_input,
+        uid?: ComfyNodeUID,
+    ): ImpactPixelTiledKSampleUpscalerProvider
+    /* category=ImpactPack_Upscale output=UPSCALER */
+    ImpactPixelTiledKSampleUpscalerProviderPipe(
+        args: ImpactPixelTiledKSampleUpscalerProviderPipe_input,
+        uid?: ComfyNodeUID,
+    ): ImpactPixelTiledKSampleUpscalerProviderPipe
     /* category=ImpactPack_Operation output=MASK */
     ImpactBitwiseAndMask(args: ImpactBitwiseAndMask_input, uid?: ComfyNodeUID): ImpactBitwiseAndMask
     /* category=ImpactPack_Operation output=MASK */
     ImpactSubtractMask(args: ImpactSubtractMask_input, uid?: ComfyNodeUID): ImpactSubtractMask
     /* category=ImpactPack_Operation output=SEGS */
     ImpactSegsMask(args: ImpactSegsMask_input, uid?: ComfyNodeUID): ImpactSegsMask
-    /* category=ImpactPack_Operation output=MASK */
-    ImpactSegsMaskCombine(args: ImpactSegsMaskCombine_input, uid?: ComfyNodeUID): ImpactSegsMaskCombine
     /* category=ImpactPack_Util output=SEGS */
     ImpactEmptySegs(args: ImpactEmptySegs_input, uid?: ComfyNodeUID): ImpactEmptySegs
     /* category=ImpactPack_Operation output=SEGS */
@@ -147,6 +185,26 @@ export interface ComfySetup {
     ImpactToBinaryMask(args: ImpactToBinaryMask_input, uid?: ComfyNodeUID): ImpactToBinaryMask
     /* category=ImpactPack_Util output=MASK */
     ImpactMaskPainter(args: ImpactMaskPainter_input, uid?: ComfyNodeUID): ImpactMaskPainter
+    /* category=ImpactPack_Detector output=SEGS */
+    ImpactBboxDetectorSEGS(args: ImpactBboxDetectorSEGS_input, uid?: ComfyNodeUID): ImpactBboxDetectorSEGS
+    /* category=ImpactPack_Detector output=SEGS */
+    ImpactSegmDetectorSEGS(args: ImpactSegmDetectorSEGS_input, uid?: ComfyNodeUID): ImpactSegmDetectorSEGS
+    /* category=ImpactPack_Detector output=SEGS */
+    ImpactONNXDetectorSEGS(args: ImpactONNXDetectorSEGS_input, uid?: ComfyNodeUID): ImpactONNXDetectorSEGS
+    /* category=ImpactPack_Legacy output=MASK */
+    ImpactBboxDetectorCombined(args: ImpactBboxDetectorCombined_input, uid?: ComfyNodeUID): ImpactBboxDetectorCombined
+    /* category=ImpactPack_Legacy output=MASK */
+    ImpactSegmDetectorCombined(args: ImpactSegmDetectorCombined_input, uid?: ComfyNodeUID): ImpactSegmDetectorCombined
+    /* category=ImpactPack_Operation output=MASK */
+    ImpactSegsToCombinedMask(args: ImpactSegsToCombinedMask_input, uid?: ComfyNodeUID): ImpactSegsToCombinedMask
+    /* category=ImpactPack_Legacy output=BBOX_MODEL, SEGM_MODEL */
+    ImpactMMDetLoader(args: ImpactMMDetLoader_input, uid?: ComfyNodeUID): ImpactMMDetLoader
+    /* category=ImpactPack_Legacy output=MASK */
+    ImpactSegsMaskCombine(args: ImpactSegsMaskCombine_input, uid?: ComfyNodeUID): ImpactSegsMaskCombine
+    /* category=ImpactPack_Legacy output=SEGS */
+    ImpactBboxDetectorForEach(args: ImpactBboxDetectorForEach_input, uid?: ComfyNodeUID): ImpactBboxDetectorForEach
+    /* category=ImpactPack_Legacy output=SEGS */
+    ImpactSegmDetectorForEach(args: ImpactSegmDetectorForEach_input, uid?: ComfyNodeUID): ImpactSegmDetectorForEach
     /* category=latent output=LATENT */
     RandomLatentImage(args: RandomLatentImage_input, uid?: ComfyNodeUID): RandomLatentImage
     /* category=latent output=IMAGE */
@@ -182,6 +240,8 @@ export interface ComfySetup {
         args: StateDictMergerBlockWeightedMulti_input,
         uid?: ComfyNodeUID,
     ): StateDictMergerBlockWeightedMulti
+    /* category=model output= */
+    SaveStateDict(args: SaveStateDict_input, uid?: ComfyNodeUID): SaveStateDict
     /* category=image_postprocessing output=IMAGE */
     ImageBlend2(args: ImageBlend2_input, uid?: ComfyNodeUID): ImageBlend2
     /* category=image output= */
@@ -369,6 +429,8 @@ export interface ComfySetup {
     WASCreateMorphImageFromPath(args: WASCreateMorphImageFromPath_input, uid?: ComfyNodeUID): WASCreateMorphImageFromPath
     /* category=WAS Suite_Animation output=ASCII, ASCII_1 */
     WASCreateVideoFromPath(args: WASCreateVideoFromPath_input, uid?: ComfyNodeUID): WASCreateVideoFromPath
+    /* category=WAS Suite_Image_Masking output=MASK, IMAGE */
+    WASCLIPSegMasking(args: WASCLIPSegMasking_input, uid?: ComfyNodeUID): WASCLIPSegMasking
     /* category=WAS Suite_Image_Masking output=IMAGE */
     WASConvertMaskToImage(args: WASConvertMaskToImage_input, uid?: ComfyNodeUID): WASConvertMaskToImage
     /* category=WAS Suite_Debug output=NUMBER */
@@ -497,21 +559,29 @@ export interface ComfySetup {
     /* category=WAS Suite_IO output=ASCII, DICT */
     WASLoadTextFile(args: WASLoadTextFile_input, uid?: ComfyNodeUID): WASLoadTextFile
     /* category=WAS Suite_Image_Masking output=MASK */
-    WASMaskDominantRegion(args: WASMaskDominantRegion_input, uid?: ComfyNodeUID): WASMaskDominantRegion
-    /* category=WAS Suite_Image_Masking output=MASK */
-    WASMaskMinorityRegion(args: WASMaskMinorityRegion_input, uid?: ComfyNodeUID): WASMaskMinorityRegion
-    /* category=WAS Suite_Image_Masking output=MASK */
     WASMaskArbitraryRegion(args: WASMaskArbitraryRegion_input, uid?: ComfyNodeUID): WASMaskArbitraryRegion
     /* category=WAS Suite_Image_Masking output=MASK */
-    WASMaskSmoothBoundaries(args: WASMaskSmoothBoundaries_input, uid?: ComfyNodeUID): WASMaskSmoothBoundaries
+    WASMaskCeilingRegion(args: WASMaskCeilingRegion_input, uid?: ComfyNodeUID): WASMaskCeilingRegion
     /* category=WAS Suite_Image_Masking output=MASK */
-    WASMaskErodeBoundaries(args: WASMaskErodeBoundaries_input, uid?: ComfyNodeUID): WASMaskErodeBoundaries
+    WASMaskDilateRegion(args: WASMaskDilateRegion_input, uid?: ComfyNodeUID): WASMaskDilateRegion
     /* category=WAS Suite_Image_Masking output=MASK */
-    WASMaskDilateBoundaries(args: WASMaskDilateBoundaries_input, uid?: ComfyNodeUID): WASMaskDilateBoundaries
+    WASMaskDominantRegion(args: WASMaskDominantRegion_input, uid?: ComfyNodeUID): WASMaskDominantRegion
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskErodeRegion(args: WASMaskErodeRegion_input, uid?: ComfyNodeUID): WASMaskErodeRegion
     /* category=WAS Suite_Image_Masking output=MASK */
     WASMaskFillHoles(args: WASMaskFillHoles_input, uid?: ComfyNodeUID): WASMaskFillHoles
     /* category=WAS Suite_Image_Masking output=MASK */
-    WASMasksCombine(args: WASMasksCombine_input, uid?: ComfyNodeUID): WASMasksCombine
+    WASMaskFloorRegion(args: WASMaskFloorRegion_input, uid?: ComfyNodeUID): WASMaskFloorRegion
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskGaussianRegion(args: WASMaskGaussianRegion_input, uid?: ComfyNodeUID): WASMaskGaussianRegion
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskMinorityRegion(args: WASMaskMinorityRegion_input, uid?: ComfyNodeUID): WASMaskMinorityRegion
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskSmoothRegion(args: WASMaskSmoothRegion_input, uid?: ComfyNodeUID): WASMaskSmoothRegion
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMaskThresholdRegion(args: WASMaskThresholdRegion_input, uid?: ComfyNodeUID): WASMaskThresholdRegion
+    /* category=WAS Suite_Image_Masking output=MASK */
+    WASMasksCombineRegions(args: WASMasksCombineRegions_input, uid?: ComfyNodeUID): WASMasksCombineRegions
     /* category=WAS Suite_Image_AI output=IMAGE */
     WASMiDaSDepthApproximation(args: WASMiDaSDepthApproximation_input, uid?: ComfyNodeUID): WASMiDaSDepthApproximation
     /* category=WAS Suite_Image_AI output=IMAGE, IMAGE_1 */
@@ -697,6 +767,8 @@ export interface CanProduce_LATENT
         | 'LatentFlip'
         | 'LatentCrop'
         | 'VAEEncodeTiled'
+        | 'ImpactLatentPixelScale'
+        | 'ImpactIterativeLatentUpscale'
         | 'RandomLatentImage'
         | 'VAEEncodeBatched'
         | 'KSamplerOverrided'
@@ -727,6 +799,8 @@ export interface CanProduce_MODEL
         | 'UnCLIPCheckpointLoader'
         | 'CheckpointLoader'
         | 'DiffusersLoader'
+        | 'ImpactFromDetailerPipe'
+        | 'ImpactFromBasicPipe'
         | 'Dict2Model'
         | 'ModelIter'
         | 'StateDictMergerBlockWeightedMulti'
@@ -749,6 +823,7 @@ export interface CanProduce_CLIP
         | 'UnCLIPCheckpointLoader'
         | 'CheckpointLoader'
         | 'DiffusersLoader'
+        | 'ImpactFromBasicPipe'
         | 'Dict2Model'
         | 'CLIPIter'
         | 'StateDictMergerBlockWeightedMulti'
@@ -767,6 +842,8 @@ export interface CanProduce_VAE
         | 'UnCLIPCheckpointLoader'
         | 'CheckpointLoader'
         | 'DiffusersLoader'
+        | 'ImpactFromDetailerPipe'
+        | 'ImpactFromBasicPipe'
         | 'Dict2Model'
         | 'VAEIter'
         | 'StateDictMergerBlockWeightedMulti'
@@ -789,6 +866,10 @@ export interface CanProduce_CONDITIONING
         | 'UnCLIPConditioning'
         | 'ControlNetApply'
         | 'GLIGENTextBoxApply'
+        | 'ImpactFromDetailerPipe'
+        | 'ImpactFromDetailerPipe'
+        | 'ImpactFromBasicPipe'
+        | 'ImpactFromBasicPipe'
         | 'BNK_CutoffRegionsToConditioning'
         | 'BNK_CutoffRegionsToConditioning_ADV'
         | 'MultiAreaConditioning'
@@ -818,8 +899,15 @@ export interface CanProduce_IMAGE
         | 'ImpactDetailerForEachDebug'
         | 'ImpactDetailerForEachDebug'
         | 'ImpactDetailerForEachDebug'
+        | 'ImpactDetailerForEachPipe'
+        | 'ImpactDetailerForEachDebugPipe'
+        | 'ImpactDetailerForEachDebugPipe'
+        | 'ImpactDetailerForEachDebugPipe'
+        | 'ImpactFaceDetailer'
         | 'ImpactFaceDetailer'
         | 'ImpactFaceDetailerPipe'
+        | 'ImpactFaceDetailerPipe'
+        | 'ImpactIterativeImageUpscale'
         | 'VAEDecodeBatched'
         | 'LatentToImage'
         | 'LatentToHist'
@@ -876,6 +964,7 @@ export interface CanProduce_IMAGE
         | 'WASCreateGridImage'
         | 'WASCreateMorphImage'
         | 'WASCreateMorphImage'
+        | 'WASCLIPSegMasking'
         | 'WASConvertMaskToImage'
         | 'WASLoadCache'
         | 'WASImageAnalyze'
@@ -956,28 +1045,34 @@ export interface CanProduce_MASK
         | 'LoadImage'
         | 'LoadImageMask'
         | 'ImagePadForOutpaint'
-        | 'ImpactBboxDetectorCombined'
-        | 'ImpactSegmDetectorCombined'
         | 'ImpactSAMDetectorCombined'
         | 'ImpactFaceDetailer'
         | 'ImpactFaceDetailerPipe'
         | 'ImpactBitwiseAndMask'
         | 'ImpactSubtractMask'
-        | 'ImpactSegsMaskCombine'
         | 'ImpactToBinaryMask'
         | 'ImpactMaskPainter'
+        | 'ImpactBboxDetectorCombined'
+        | 'ImpactSegmDetectorCombined'
+        | 'ImpactSegsToCombinedMask'
+        | 'ImpactSegsMaskCombine'
         | 'ClipSeg'
         | 'MasqueradeImageToMask'
+        | 'WASCLIPSegMasking'
         | 'WASImageLoad'
         | 'WASImageToLatentMask'
-        | 'WASMaskDominantRegion'
-        | 'WASMaskMinorityRegion'
         | 'WASMaskArbitraryRegion'
-        | 'WASMaskSmoothBoundaries'
-        | 'WASMaskErodeBoundaries'
-        | 'WASMaskDilateBoundaries'
+        | 'WASMaskCeilingRegion'
+        | 'WASMaskDilateRegion'
+        | 'WASMaskDominantRegion'
+        | 'WASMaskErodeRegion'
         | 'WASMaskFillHoles'
-        | 'WASMasksCombine'
+        | 'WASMaskFloorRegion'
+        | 'WASMaskGaussianRegion'
+        | 'WASMaskMinorityRegion'
+        | 'WASMaskSmoothRegion'
+        | 'WASMaskThresholdRegion'
+        | 'WASMasksCombineRegions'
         | 'WASSAMImageMask'
         | 'YKImagePadForOutpaint'
         | 'ImageToMask'
@@ -993,22 +1088,46 @@ export interface CanProduce_STYLE_MODEL extends Pick<ComfySetup, 'StyleModelLoad
 export interface CanProduce_CLIP_VISION
     extends Pick<ComfySetup, 'CLIPVisionLoader' | 'UnCLIPCheckpointLoader' | 'WASUnCLIPCheckpointLoader'> {}
 export interface CanProduce_GLIGEN extends Pick<ComfySetup, 'GLIGENLoader'> {}
-export interface CanProduce_BBOX_MODEL extends Pick<ComfySetup, 'ImpactMMDetLoader'> {}
-export interface CanProduce_SEGM_MODEL extends Pick<ComfySetup, 'ImpactMMDetLoader'> {}
-export interface CanProduce_SAM_MODEL extends Pick<ComfySetup, 'ImpactSAMLoader' | 'WASSAMModelLoader'> {}
-export interface CanProduce_ONNX_MODEL extends Pick<ComfySetup, 'ImpactONNXLoader'> {}
+export interface CanProduce_SAM_MODEL
+    extends Pick<ComfySetup, 'ImpactSAMLoader' | 'ImpactFromDetailerPipe' | 'WASSAMModelLoader'> {}
+export interface CanProduce_BBOX_DETECTOR
+    extends Pick<ComfySetup, 'ImpactMMDetDetectorProvider' | 'ImpactCLIPSegDetectorProvider' | 'ImpactFromDetailerPipe'> {}
+export interface CanProduce_SEGM_DETECTOR extends Pick<ComfySetup, 'ImpactMMDetDetectorProvider'> {}
+export interface CanProduce_ONNX_DETECTOR extends Pick<ComfySetup, 'ImpactONNXDetectorProvider'> {}
 export interface CanProduce_SEGS
     extends Pick<
         ComfySetup,
-        | 'ImpactBboxDetectorForEach'
-        | 'ImpactSegmDetectorForEach'
-        | 'ImpactONNXDetectorForEach'
         | 'ImpactBitwiseAndMaskForEach'
+        | 'ImpactSubtractMaskForEach'
         | 'ImpactSegsMask'
         | 'ImpactEmptySegs'
         | 'ImpactMaskToSEGS'
+        | 'ImpactBboxDetectorSEGS'
+        | 'ImpactSegmDetectorSEGS'
+        | 'ImpactONNXDetectorSEGS'
+        | 'ImpactBboxDetectorForEach'
+        | 'ImpactSegmDetectorForEach'
     > {}
-export interface CanProduce_DETAILER_PIPE extends Pick<ComfySetup, 'ImpactFaceDetailer' | 'ImpactFaceDetailerPipe'> {}
+export interface CanProduce_DETAILER_PIPE
+    extends Pick<
+        ComfySetup,
+        'ImpactFaceDetailer' | 'ImpactFaceDetailerPipe' | 'ImpactToDetailerPipe' | 'ImpactBasicPipeToDetailerPipe'
+    > {}
+export interface CanProduce_BASIC_PIPE
+    extends Pick<
+        ComfySetup,
+        'ImpactToBasicPipe' | 'ImpactDetailerPipeToBasicPipe' | 'ImpactEditBasicPipe' | 'ImpactEditDetailerPipe'
+    > {}
+export interface CanProduce_UPSCALER
+    extends Pick<
+        ComfySetup,
+        | 'ImpactPixelKSampleUpscalerProvider'
+        | 'ImpactPixelKSampleUpscalerProviderPipe'
+        | 'ImpactPixelTiledKSampleUpscalerProvider'
+        | 'ImpactPixelTiledKSampleUpscalerProviderPipe'
+    > {}
+export interface CanProduce_BBOX_MODEL extends Pick<ComfySetup, 'ImpactMMDetLoader'> {}
+export interface CanProduce_SEGM_MODEL extends Pick<ComfySetup, 'ImpactMMDetLoader'> {}
 export interface CanProduce_STRING
     extends Pick<
         ComfySetup,
@@ -1133,6 +1252,9 @@ export type STRING = string | Slot<'STRING'>
 export type FLOAT = number | Slot<'FLOAT'>
 export type Float = number | Slot<'Float'>
 export type SAM_PARAMETERS = Slot<'SAM_PARAMETERS'>
+export type BBOX_DETECTOR = Slot<'BBOX_DETECTOR'>
+export type SEGM_DETECTOR = Slot<'SEGM_DETECTOR'>
+export type ONNX_DETECTOR = Slot<'ONNX_DETECTOR'>
 export type DETAILER_PIPE = Slot<'DETAILER_PIPE'>
 export type UPSCALE_MODEL = Slot<'UPSCALE_MODEL'>
 export type INT = number | Slot<'INT'>
@@ -1142,12 +1264,13 @@ export type IMAGE_BOUNDS = Slot<'IMAGE_BOUNDS'>
 export type CLIP_VISION = Slot<'CLIP_VISION'>
 export type STYLE_MODEL = Slot<'STYLE_MODEL'>
 export type CONTROL_NET = Slot<'CONTROL_NET'>
+export type BASIC_PIPE = Slot<'BASIC_PIPE'>
 export type BBOX_MODEL = Slot<'BBOX_MODEL'>
 export type SEGM_MODEL = Slot<'SEGM_MODEL'>
-export type ONNX_MODEL = Slot<'ONNX_MODEL'>
 export type CLIPREGION = Slot<'CLIPREGION'>
 export type SAM_MODEL = Slot<'SAM_MODEL'>
 export type CROP_DATA = Slot<'CROP_DATA'>
+export type UPSCALER = Slot<'UPSCALER'>
 export type LATENT = Slot<'LATENT'>
 export type GLIGEN = Slot<'GLIGEN'>
 export type SCRIPT = Slot<'SCRIPT'>
@@ -1182,6 +1305,9 @@ export type _SAM_PARAMETERS =
     | Slot<'SAM_PARAMETERS'>
     | HasSingle_SAM_PARAMETERS
     | ((x: CanProduce_SAM_PARAMETERS) => _SAM_PARAMETERS)
+export type _BBOX_DETECTOR = Slot<'BBOX_DETECTOR'> | HasSingle_BBOX_DETECTOR | ((x: CanProduce_BBOX_DETECTOR) => _BBOX_DETECTOR)
+export type _SEGM_DETECTOR = Slot<'SEGM_DETECTOR'> | HasSingle_SEGM_DETECTOR | ((x: CanProduce_SEGM_DETECTOR) => _SEGM_DETECTOR)
+export type _ONNX_DETECTOR = Slot<'ONNX_DETECTOR'> | HasSingle_ONNX_DETECTOR | ((x: CanProduce_ONNX_DETECTOR) => _ONNX_DETECTOR)
 export type _DETAILER_PIPE = Slot<'DETAILER_PIPE'> | HasSingle_DETAILER_PIPE | ((x: CanProduce_DETAILER_PIPE) => _DETAILER_PIPE)
 export type _UPSCALE_MODEL = Slot<'UPSCALE_MODEL'> | HasSingle_UPSCALE_MODEL | ((x: CanProduce_UPSCALE_MODEL) => _UPSCALE_MODEL)
 export type _INT = number | Slot<'INT'> | HasSingle_INT | ((x: CanProduce_INT) => _INT)
@@ -1191,12 +1317,13 @@ export type _IMAGE_BOUNDS = Slot<'IMAGE_BOUNDS'> | HasSingle_IMAGE_BOUNDS | ((x:
 export type _CLIP_VISION = Slot<'CLIP_VISION'> | HasSingle_CLIP_VISION | ((x: CanProduce_CLIP_VISION) => _CLIP_VISION)
 export type _STYLE_MODEL = Slot<'STYLE_MODEL'> | HasSingle_STYLE_MODEL | ((x: CanProduce_STYLE_MODEL) => _STYLE_MODEL)
 export type _CONTROL_NET = Slot<'CONTROL_NET'> | HasSingle_CONTROL_NET | ((x: CanProduce_CONTROL_NET) => _CONTROL_NET)
+export type _BASIC_PIPE = Slot<'BASIC_PIPE'> | HasSingle_BASIC_PIPE | ((x: CanProduce_BASIC_PIPE) => _BASIC_PIPE)
 export type _BBOX_MODEL = Slot<'BBOX_MODEL'> | HasSingle_BBOX_MODEL | ((x: CanProduce_BBOX_MODEL) => _BBOX_MODEL)
 export type _SEGM_MODEL = Slot<'SEGM_MODEL'> | HasSingle_SEGM_MODEL | ((x: CanProduce_SEGM_MODEL) => _SEGM_MODEL)
-export type _ONNX_MODEL = Slot<'ONNX_MODEL'> | HasSingle_ONNX_MODEL | ((x: CanProduce_ONNX_MODEL) => _ONNX_MODEL)
 export type _CLIPREGION = Slot<'CLIPREGION'> | HasSingle_CLIPREGION | ((x: CanProduce_CLIPREGION) => _CLIPREGION)
 export type _SAM_MODEL = Slot<'SAM_MODEL'> | HasSingle_SAM_MODEL | ((x: CanProduce_SAM_MODEL) => _SAM_MODEL)
 export type _CROP_DATA = Slot<'CROP_DATA'> | HasSingle_CROP_DATA | ((x: CanProduce_CROP_DATA) => _CROP_DATA)
+export type _UPSCALER = Slot<'UPSCALER'> | HasSingle_UPSCALER | ((x: CanProduce_UPSCALER) => _UPSCALER)
 export type _LATENT = Slot<'LATENT'> | HasSingle_LATENT | ((x: CanProduce_LATENT) => _LATENT)
 export type _GLIGEN = Slot<'GLIGEN'> | HasSingle_GLIGEN | ((x: CanProduce_GLIGEN) => _GLIGEN)
 export type _SCRIPT = Slot<'SCRIPT'> | HasSingle_SCRIPT | ((x: CanProduce_SCRIPT) => _SCRIPT)
@@ -1230,8 +1357,14 @@ export type Enum_KSampler_sampler_name =
 export type Enum_KSamplerAdvanced_sampler_name = Enum_KSampler_sampler_name
 export type Enum_ImpactDetailerForEach_sampler_name = Enum_KSampler_sampler_name
 export type Enum_ImpactDetailerForEachDebug_sampler_name = Enum_KSampler_sampler_name
+export type Enum_ImpactDetailerForEachPipe_sampler_name = Enum_KSampler_sampler_name
+export type Enum_ImpactDetailerForEachDebugPipe_sampler_name = Enum_KSampler_sampler_name
 export type Enum_ImpactFaceDetailer_sampler_name = Enum_KSampler_sampler_name
 export type Enum_ImpactFaceDetailerPipe_sampler_name = Enum_KSampler_sampler_name
+export type Enum_ImpactPixelKSampleUpscalerProvider_sampler_name = Enum_KSampler_sampler_name
+export type Enum_ImpactPixelKSampleUpscalerProviderPipe_sampler_name = Enum_KSampler_sampler_name
+export type Enum_ImpactPixelTiledKSampleUpscalerProvider_sampler_name = Enum_KSampler_sampler_name
+export type Enum_ImpactPixelTiledKSampleUpscalerProviderPipe_sampler_name = Enum_KSampler_sampler_name
 export type Enum_KSamplerSetting_sampler_name = Enum_KSampler_sampler_name
 export type Enum_BNK_GetSigma_sampler_name = Enum_KSampler_sampler_name
 export type Enum_BNK_Unsampler_sampler_name = Enum_KSampler_sampler_name
@@ -1242,8 +1375,14 @@ export type Enum_KSampler_scheduler = 'ddim_uniform' | 'karras' | 'normal' | 'si
 export type Enum_KSamplerAdvanced_scheduler = Enum_KSampler_scheduler
 export type Enum_ImpactDetailerForEach_scheduler = Enum_KSampler_scheduler
 export type Enum_ImpactDetailerForEachDebug_scheduler = Enum_KSampler_scheduler
+export type Enum_ImpactDetailerForEachPipe_scheduler = Enum_KSampler_scheduler
+export type Enum_ImpactDetailerForEachDebugPipe_scheduler = Enum_KSampler_scheduler
 export type Enum_ImpactFaceDetailer_scheduler = Enum_KSampler_scheduler
 export type Enum_ImpactFaceDetailerPipe_scheduler = Enum_KSampler_scheduler
+export type Enum_ImpactPixelKSampleUpscalerProvider_scheduler = Enum_KSampler_scheduler
+export type Enum_ImpactPixelKSampleUpscalerProviderPipe_scheduler = Enum_KSampler_scheduler
+export type Enum_ImpactPixelTiledKSampleUpscalerProvider_scheduler = Enum_KSampler_scheduler
+export type Enum_ImpactPixelTiledKSampleUpscalerProviderPipe_scheduler = Enum_KSampler_scheduler
 export type Enum_KSamplerSetting_scheduler = Enum_KSampler_scheduler
 export type Enum_BNK_GetSigma_scheduler = Enum_KSampler_scheduler
 export type Enum_BNK_Unsampler_scheduler = Enum_KSampler_scheduler
@@ -1285,6 +1424,11 @@ export type Enum_VAELoader_vae_name =
     | 'vae-ft-mse-840000-ema-pruned.safetensors'
 export type Enum_LatentUpscale_upscale_method = 'area' | 'bilinear' | 'nearest-exact'
 export type Enum_ImageScale_upscale_method = Enum_LatentUpscale_upscale_method
+export type Enum_ImpactLatentPixelScale_scale_method = Enum_LatentUpscale_upscale_method
+export type Enum_ImpactPixelKSampleUpscalerProvider_scale_method = Enum_LatentUpscale_upscale_method
+export type Enum_ImpactPixelKSampleUpscalerProviderPipe_scale_method = Enum_LatentUpscale_upscale_method
+export type Enum_ImpactPixelTiledKSampleUpscalerProvider_scale_method = Enum_LatentUpscale_upscale_method
+export type Enum_ImpactPixelTiledKSampleUpscalerProviderPipe_scale_method = Enum_LatentUpscale_upscale_method
 export type Enum_ImageOverlay_resize_method = Enum_LatentUpscale_upscale_method
 export type Enum_LatentUpscaleMultiply_upscale_method = Enum_LatentUpscale_upscale_method
 export type Enum_LatentUpscale_crop = 'center' | 'disabled'
@@ -1300,6 +1444,7 @@ export type Enum_LoadImage_image =
     | 'esrgan_example (1).png'
     | 'esrgan_example.png'
     | 'example.png'
+    | 'kkl_tpose_uniform.png'
     | 'upload (1).png'
     | 'upload (10).png'
     | 'upload (11).png'
@@ -1394,17 +1539,21 @@ export type Enum_MediaPipeHandPosePreprocessor_detect_hands = Enum_KSamplerAdvan
 export type Enum_LatentRotate_rotation = '180 degrees' | '270 degrees' | '90 degrees' | 'none'
 export type Enum_LatentFlip_flip_method = 'x-axis: vertically' | 'y-axis: horizontally'
 export type Enum_LoraLoader_lora_name =
-    | 'ConstructionyardAIV3.safetensors'
-    | 'LowRa.safetensors'
-    | 'StonepunkAI-000011.safetensors'
-    | 'ToonYou_Style.safetensors'
-    | 'baroqueAI.safetensors'
-    | 'charTurnBetaLora.safetensors'
-    | 'pixel_f2.safetensors'
+    | 'animemix_16.safetensors'
+    | 'animemix_v3_offset.safetensors'
+    | 'chars\\dark_magician_girl.safetensors'
+    | 'chars\\yorha_noDOT_2_type_b.safetensors'
+    | 'colors\\LowRa.safetensors'
+    | 'colors\\theovercomer8sContrastFix_sd15.safetensors'
+    | 'colors\\theovercomer8sContrastFix_sd21768.safetensors'
+    | 'styles\\ConstructionyardAIV3.safetensors'
+    | 'styles\\StonepunkAI-000011.safetensors'
+    | 'styles\\ToonYou_Style.safetensors'
+    | 'styles\\baroqueAI.safetensors'
+    | 'styles\\pixel_f2.safetensors'
     | 'test\\Moxin_10.safetensors'
     | 'test\\animeLineartMangaLike_v30MangaLike.safetensors'
-    | 'theovercomer8sContrastFix_sd15.safetensors'
-    | 'theovercomer8sContrastFix_sd21768.safetensors'
+    | 'utils\\charTurnBetaLora.safetensors'
 export type Enum_WASLoraLoader_lora_name = Enum_LoraLoader_lora_name
 export type Enum_CLIPLoader_clip_name = never
 export type Enum_ControlNetLoader_control_net_name =
@@ -1438,20 +1587,28 @@ export type Enum_Dict2Model_config_name = Enum_CheckpointLoader_config_name
 export type Enum_StateDictMergerBlockWeightedMulti_config_name = Enum_CheckpointLoader_config_name
 export type Enum_WASCheckpointLoader_config_name = Enum_CheckpointLoader_config_name
 export type Enum_BrightnessContrast_mode = 'brightness' | 'contrast'
-export type Enum_ImpactMMDetLoader_model_name = 'bbox/mmdet_anime-face_yolov3.pth'
 export type Enum_ImpactSAMLoader_model_name = 'sam_vit_b_01ec64.pth' | 'sam_vit_h_4b8939.pth'
+export type Enum_ImpactMMDetDetectorProvider_model_name = 'bbox/mmdet_anime-face_yolov3.pth'
+export type Enum_ImpactMMDetLoader_model_name = Enum_ImpactMMDetDetectorProvider_model_name
 export type Enum_ImpactDetailerForEach_guide_size_for = 'bbox' | 'crop_region'
 export type Enum_ImpactDetailerForEachDebug_guide_size_for = Enum_ImpactDetailerForEach_guide_size_for
+export type Enum_ImpactDetailerForEachPipe_guide_size_for = Enum_ImpactDetailerForEach_guide_size_for
+export type Enum_ImpactDetailerForEachDebugPipe_guide_size_for = Enum_ImpactDetailerForEach_guide_size_for
 export type Enum_ImpactFaceDetailer_guide_size_for = Enum_ImpactDetailerForEach_guide_size_for
 export type Enum_ImpactFaceDetailerPipe_guide_size_for = Enum_ImpactDetailerForEach_guide_size_for
 export type Enum_ImpactDetailerForEach_noise_mask = 'disabled' | 'enabled'
 export type Enum_ImpactDetailerForEach_force_inpaint = Enum_ImpactDetailerForEach_noise_mask
 export type Enum_ImpactDetailerForEachDebug_noise_mask = Enum_ImpactDetailerForEach_noise_mask
 export type Enum_ImpactDetailerForEachDebug_force_inpaint = Enum_ImpactDetailerForEach_noise_mask
+export type Enum_ImpactDetailerForEachPipe_noise_mask = Enum_ImpactDetailerForEach_noise_mask
+export type Enum_ImpactDetailerForEachPipe_force_inpaint = Enum_ImpactDetailerForEach_noise_mask
+export type Enum_ImpactDetailerForEachDebugPipe_noise_mask = Enum_ImpactDetailerForEach_noise_mask
+export type Enum_ImpactDetailerForEachDebugPipe_force_inpaint = Enum_ImpactDetailerForEach_noise_mask
 export type Enum_ImpactFaceDetailer_noise_mask = Enum_ImpactDetailerForEach_noise_mask
 export type Enum_ImpactFaceDetailer_force_inpaint = Enum_ImpactDetailerForEach_noise_mask
 export type Enum_ImpactFaceDetailerPipe_noise_mask = Enum_ImpactDetailerForEach_noise_mask
 export type Enum_ImpactFaceDetailerPipe_force_inpaint = Enum_ImpactDetailerForEach_noise_mask
+export type Enum_ImpactMaskToSEGS_bbox_fill = Enum_ImpactDetailerForEach_noise_mask
 export type Enum_ImpactSAMDetectorCombined_detection_hint =
     | 'center-1'
     | 'diamond-4'
@@ -1471,6 +1628,7 @@ export type Enum_ImpactMaskToSEGS_combined = 'False' | 'True'
 export type Enum_StateDictMerger_half = Enum_ImpactMaskToSEGS_combined
 export type Enum_StateDictMergerBlockWeighted_half = Enum_ImpactMaskToSEGS_combined
 export type Enum_StateDictMergerBlockWeightedMulti_half = Enum_ImpactMaskToSEGS_combined
+export type Enum_SaveStateDict_overwrite = Enum_ImpactMaskToSEGS_combined
 export type Enum_XYPlot_XY_flip = Enum_ImpactMaskToSEGS_combined
 export type Enum_EvaluateIntegers_print_to_console = Enum_ImpactMaskToSEGS_combined
 export type Enum_EvaluateStrings_print_to_console = Enum_ImpactMaskToSEGS_combined
@@ -1508,18 +1666,22 @@ export type Enum_EfficientLoader_vae_name =
     | 'orangemix.vae.pt'
     | 'vae-ft-mse-840000-ema-pruned.safetensors'
 export type Enum_EfficientLoader_lora_name =
-    | 'ConstructionyardAIV3.safetensors'
-    | 'LowRa.safetensors'
     | 'None'
-    | 'StonepunkAI-000011.safetensors'
-    | 'ToonYou_Style.safetensors'
-    | 'baroqueAI.safetensors'
-    | 'charTurnBetaLora.safetensors'
-    | 'pixel_f2.safetensors'
+    | 'animemix_16.safetensors'
+    | 'animemix_v3_offset.safetensors'
+    | 'chars\\dark_magician_girl.safetensors'
+    | 'chars\\yorha_noDOT_2_type_b.safetensors'
+    | 'colors\\LowRa.safetensors'
+    | 'colors\\theovercomer8sContrastFix_sd15.safetensors'
+    | 'colors\\theovercomer8sContrastFix_sd21768.safetensors'
+    | 'styles\\ConstructionyardAIV3.safetensors'
+    | 'styles\\StonepunkAI-000011.safetensors'
+    | 'styles\\ToonYou_Style.safetensors'
+    | 'styles\\baroqueAI.safetensors'
+    | 'styles\\pixel_f2.safetensors'
     | 'test\\Moxin_10.safetensors'
     | 'test\\animeLineartMangaLike_v30MangaLike.safetensors'
-    | 'theovercomer8sContrastFix_sd15.safetensors'
-    | 'theovercomer8sContrastFix_sd21768.safetensors'
+    | 'utils\\charTurnBetaLora.safetensors'
 export type Enum_XYPlot_X_type =
     | 'CFG Scale'
     | 'Denoise'
@@ -1742,13 +1904,18 @@ export interface HasSingle_CLIP_VISION { _CLIP_VISION: CLIP_VISION } // prettier
 export interface HasSingle_STYLE_MODEL { _STYLE_MODEL: STYLE_MODEL } // prettier-ignore
 export interface HasSingle_CONTROL_NET { _CONTROL_NET: CONTROL_NET } // prettier-ignore
 export interface HasSingle_GLIGEN { _GLIGEN: GLIGEN } // prettier-ignore
+export interface HasSingle_SAM_MODEL { _SAM_MODEL: SAM_MODEL } // prettier-ignore
+export interface HasSingle_BBOX_DETECTOR { _BBOX_DETECTOR: BBOX_DETECTOR } // prettier-ignore
+export interface HasSingle_SEGM_DETECTOR { _SEGM_DETECTOR: SEGM_DETECTOR } // prettier-ignore
+export interface HasSingle_ONNX_DETECTOR { _ONNX_DETECTOR: ONNX_DETECTOR } // prettier-ignore
+export interface HasSingle_SEGS { _SEGS: SEGS } // prettier-ignore
+export interface HasSingle_BASIC_PIPE { _BASIC_PIPE: BASIC_PIPE } // prettier-ignore
+export interface HasSingle_DETAILER_PIPE { _DETAILER_PIPE: DETAILER_PIPE } // prettier-ignore
+export interface HasSingle_UPSCALE_MODEL { _UPSCALE_MODEL: UPSCALE_MODEL } // prettier-ignore
+export interface HasSingle_UPSCALER { _UPSCALER: UPSCALER } // prettier-ignore
+export interface HasSingle_IMAGE_PATH { _IMAGE_PATH: IMAGE_PATH } // prettier-ignore
 export interface HasSingle_BBOX_MODEL { _BBOX_MODEL: BBOX_MODEL } // prettier-ignore
 export interface HasSingle_SEGM_MODEL { _SEGM_MODEL: SEGM_MODEL } // prettier-ignore
-export interface HasSingle_SAM_MODEL { _SAM_MODEL: SAM_MODEL } // prettier-ignore
-export interface HasSingle_ONNX_MODEL { _ONNX_MODEL: ONNX_MODEL } // prettier-ignore
-export interface HasSingle_SEGS { _SEGS: SEGS } // prettier-ignore
-export interface HasSingle_DETAILER_PIPE { _DETAILER_PIPE: DETAILER_PIPE } // prettier-ignore
-export interface HasSingle_IMAGE_PATH { _IMAGE_PATH: IMAGE_PATH } // prettier-ignore
 export interface HasSingle_DICT { _DICT: DICT } // prettier-ignore
 export interface HasSingle_Integer { _Integer: Integer } // prettier-ignore
 export interface HasSingle_Float { _Float: Float } // prettier-ignore
@@ -1763,7 +1930,6 @@ export interface HasSingle_CROP_DATA { _CROP_DATA: CROP_DATA } // prettier-ignor
 export interface HasSingle_SEED { _SEED: SEED } // prettier-ignore
 export interface HasSingle_SAM_PARAMETERS { _SAM_PARAMETERS: SAM_PARAMETERS } // prettier-ignore
 export interface HasSingle_IMAGE_BOUNDS { _IMAGE_BOUNDS: IMAGE_BOUNDS } // prettier-ignore
-export interface HasSingle_UPSCALE_MODEL { _UPSCALE_MODEL: UPSCALE_MODEL } // prettier-ignore
 
 // NODES -------------------------------
 // |=============================================================================|
@@ -2401,17 +2567,6 @@ export type BrightnessContrast_input = {
 }
 
 // |=============================================================================|
-// | ImpactMMDetLoader ("MMDetLoader" in ComfyUI) [ImpactPack]                   |
-// |=============================================================================|
-export interface ImpactMMDetLoader extends HasSingle_BBOX_MODEL, HasSingle_SEGM_MODEL, ComfyNode<ImpactMMDetLoader_input> {
-    BBOX_MODEL: Slot<'BBOX_MODEL', 0>
-    SEGM_MODEL: Slot<'SEGM_MODEL', 1>
-}
-export type ImpactMMDetLoader_input = {
-    model_name: Enum_ImpactMMDetLoader_model_name
-}
-
-// |=============================================================================|
 // | ImpactSAMLoader ("SAMLoader" in ComfyUI) [ImpactPack]                       |
 // |=============================================================================|
 export interface ImpactSAMLoader extends HasSingle_SAM_MODEL, ComfyNode<ImpactSAMLoader_input> {
@@ -2422,62 +2577,44 @@ export type ImpactSAMLoader_input = {
 }
 
 // |=============================================================================|
-// | ImpactONNXLoader ("ONNXLoader" in ComfyUI) [ImpactPack]                     |
+// | ImpactMMDetDetectorProvider ("MMDetDetectorProvider" in ComfyUI) [ImpactPack]   |
 // |=============================================================================|
-export interface ImpactONNXLoader extends HasSingle_ONNX_MODEL, ComfyNode<ImpactONNXLoader_input> {
-    ONNX_MODEL: Slot<'ONNX_MODEL', 0>
+export interface ImpactMMDetDetectorProvider
+    extends HasSingle_BBOX_DETECTOR,
+        HasSingle_SEGM_DETECTOR,
+        ComfyNode<ImpactMMDetDetectorProvider_input> {
+    BBOX_DETECTOR: Slot<'BBOX_DETECTOR', 0>
+    SEGM_DETECTOR: Slot<'SEGM_DETECTOR', 1>
 }
-export type ImpactONNXLoader_input = {
+export type ImpactMMDetDetectorProvider_input = {
+    model_name: Enum_ImpactMMDetDetectorProvider_model_name
+}
+
+// |=============================================================================|
+// | ImpactCLIPSegDetectorProvider ("CLIPSegDetectorProvider" in ComfyUI) [ImpactPack_Util]   |
+// |=============================================================================|
+export interface ImpactCLIPSegDetectorProvider extends HasSingle_BBOX_DETECTOR, ComfyNode<ImpactCLIPSegDetectorProvider_input> {
+    BBOX_DETECTOR: Slot<'BBOX_DETECTOR', 0>
+}
+export type ImpactCLIPSegDetectorProvider_input = {
+    /** */
+    text: _STRING
+    /** default=7 min=15 max=15 step=0.1 */
+    blur?: _FLOAT
+    /** default=0.4 min=1 max=1 step=0.05 */
+    threshold?: _FLOAT
+    /** default=4 min=10 max=10 step=1 */
+    dilation_factor?: _INT
+}
+
+// |=============================================================================|
+// | ImpactONNXDetectorProvider ("ONNXDetectorProvider" in ComfyUI) [ImpactPack]   |
+// |=============================================================================|
+export interface ImpactONNXDetectorProvider extends HasSingle_ONNX_DETECTOR, ComfyNode<ImpactONNXDetectorProvider_input> {
+    ONNX_DETECTOR: Slot<'ONNX_DETECTOR', 0>
+}
+export type ImpactONNXDetectorProvider_input = {
     model_name: Enum_CLIPLoader_clip_name
-}
-
-// |=============================================================================|
-// | ImpactBboxDetectorForEach ("BboxDetectorForEach" in ComfyUI) [ImpactPack_Detector]   |
-// |=============================================================================|
-export interface ImpactBboxDetectorForEach extends HasSingle_SEGS, ComfyNode<ImpactBboxDetectorForEach_input> {
-    SEGS: Slot<'SEGS', 0>
-}
-export type ImpactBboxDetectorForEach_input = {
-    bbox_model: _BBOX_MODEL
-    image: _IMAGE
-    /** default=0.5 min=1 max=1 step=0.01 */
-    threshold?: _FLOAT
-    /** default=10 min=255 max=255 step=1 */
-    dilation?: _INT
-    /** default=3 min=10 max=10 step=0.1 */
-    crop_factor?: _FLOAT
-}
-
-// |=============================================================================|
-// | ImpactSegmDetectorForEach ("SegmDetectorForEach" in ComfyUI) [ImpactPack_Detector]   |
-// |=============================================================================|
-export interface ImpactSegmDetectorForEach extends HasSingle_SEGS, ComfyNode<ImpactSegmDetectorForEach_input> {
-    SEGS: Slot<'SEGS', 0>
-}
-export type ImpactSegmDetectorForEach_input = {
-    segm_model: _SEGM_MODEL
-    image: _IMAGE
-    /** default=0.5 min=1 max=1 step=0.01 */
-    threshold?: _FLOAT
-    /** default=10 min=255 max=255 step=1 */
-    dilation?: _INT
-    /** default=3 min=10 max=10 step=0.1 */
-    crop_factor?: _FLOAT
-}
-
-// |=============================================================================|
-// | ImpactONNXDetectorForEach ("ONNXDetectorForEach" in ComfyUI) [ImpactPack_Detector]   |
-// |=============================================================================|
-export interface ImpactONNXDetectorForEach extends HasSingle_SEGS, ComfyNode<ImpactONNXDetectorForEach_input> {
-    SEGS: Slot<'SEGS', 0>
-}
-export type ImpactONNXDetectorForEach_input = {
-    onnx_model: _ONNX_MODEL
-    image: _IMAGE
-    /** default=0.8 min=1 max=1 step=0.01 */
-    threshold?: _FLOAT
-    /** default=1 min=10 max=10 step=0.1 */
-    crop_factor?: _FLOAT
 }
 
 // |=============================================================================|
@@ -2487,6 +2624,17 @@ export interface ImpactBitwiseAndMaskForEach extends HasSingle_SEGS, ComfyNode<I
     SEGS: Slot<'SEGS', 0>
 }
 export type ImpactBitwiseAndMaskForEach_input = {
+    base_segs: _SEGS
+    mask_segs: _SEGS
+}
+
+// |=============================================================================|
+// | ImpactSubtractMaskForEach ("SubtractMaskForEach" in ComfyUI) [ImpactPack_Operation]   |
+// |=============================================================================|
+export interface ImpactSubtractMaskForEach extends HasSingle_SEGS, ComfyNode<ImpactSubtractMaskForEach_input> {
+    SEGS: Slot<'SEGS', 0>
+}
+export type ImpactSubtractMaskForEach_input = {
     base_segs: _SEGS
     mask_segs: _SEGS
 }
@@ -2502,7 +2650,7 @@ export type ImpactDetailerForEach_input = {
     segs: _SEGS
     model: _MODEL
     vae: _VAE
-    /** default=256 min=8192 max=8192 step=64 */
+    /** default=256 min=8192 max=8192 step=8 */
     guide_size?: _FLOAT
     guide_size_for: Enum_ImpactDetailerForEach_guide_size_for
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -2536,7 +2684,7 @@ export type ImpactDetailerForEachDebug_input = {
     segs: _SEGS
     model: _MODEL
     vae: _VAE
-    /** default=256 min=8192 max=8192 step=64 */
+    /** default=256 min=8192 max=8192 step=8 */
     guide_size?: _FLOAT
     guide_size_for: Enum_ImpactDetailerForEach_guide_size_for
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -2558,33 +2706,63 @@ export type ImpactDetailerForEachDebug_input = {
 }
 
 // |=============================================================================|
-// | ImpactBboxDetectorCombined ("BboxDetectorCombined" in ComfyUI) [ImpactPack_Detector]   |
+// | ImpactDetailerForEachPipe ("DetailerForEachPipe" in ComfyUI) [ImpactPack_Detailer]   |
 // |=============================================================================|
-export interface ImpactBboxDetectorCombined extends HasSingle_MASK, ComfyNode<ImpactBboxDetectorCombined_input> {
-    MASK: Slot<'MASK', 0>
+export interface ImpactDetailerForEachPipe extends HasSingle_IMAGE, ComfyNode<ImpactDetailerForEachPipe_input> {
+    IMAGE: Slot<'IMAGE', 0>
 }
-export type ImpactBboxDetectorCombined_input = {
-    bbox_model: _BBOX_MODEL
+export type ImpactDetailerForEachPipe_input = {
     image: _IMAGE
+    segs: _SEGS
+    /** default=256 min=8192 max=8192 step=8 */
+    guide_size?: _FLOAT
+    guide_size_for: Enum_ImpactDetailerForEach_guide_size_for
+    /** default=0 min=18446744073709552000 max=18446744073709552000 */
+    seed?: _INT
+    /** default=20 min=10000 max=10000 */
+    steps?: _INT
+    /** default=8 min=100 max=100 */
+    cfg?: _FLOAT
+    sampler_name: Enum_KSampler_sampler_name
+    scheduler: Enum_KSampler_scheduler
     /** default=0.5 min=1 max=1 step=0.01 */
-    threshold?: _FLOAT
-    /** default=4 min=255 max=255 step=1 */
-    dilation?: _INT
+    denoise?: _FLOAT
+    /** default=5 min=100 max=100 step=1 */
+    feather?: _INT
+    noise_mask: Enum_ImpactDetailerForEach_noise_mask
+    force_inpaint: Enum_ImpactDetailerForEach_noise_mask
+    basic_pipe: _BASIC_PIPE
 }
 
 // |=============================================================================|
-// | ImpactSegmDetectorCombined ("SegmDetectorCombined" in ComfyUI) [ImpactPack_Detector]   |
+// | ImpactDetailerForEachDebugPipe ("DetailerForEachDebugPipe" in ComfyUI) [ImpactPack_Detailer]   |
 // |=============================================================================|
-export interface ImpactSegmDetectorCombined extends HasSingle_MASK, ComfyNode<ImpactSegmDetectorCombined_input> {
-    MASK: Slot<'MASK', 0>
+export interface ImpactDetailerForEachDebugPipe extends ComfyNode<ImpactDetailerForEachDebugPipe_input> {
+    IMAGE: Slot<'IMAGE', 0>
+    IMAGE_1: Slot<'IMAGE', 1>
+    IMAGE_2: Slot<'IMAGE', 2>
 }
-export type ImpactSegmDetectorCombined_input = {
-    segm_model: _SEGM_MODEL
+export type ImpactDetailerForEachDebugPipe_input = {
     image: _IMAGE
+    segs: _SEGS
+    /** default=256 min=8192 max=8192 step=8 */
+    guide_size?: _FLOAT
+    guide_size_for: Enum_ImpactDetailerForEach_guide_size_for
+    /** default=0 min=18446744073709552000 max=18446744073709552000 */
+    seed?: _INT
+    /** default=20 min=10000 max=10000 */
+    steps?: _INT
+    /** default=8 min=100 max=100 */
+    cfg?: _FLOAT
+    sampler_name: Enum_KSampler_sampler_name
+    scheduler: Enum_KSampler_scheduler
     /** default=0.5 min=1 max=1 step=0.01 */
-    threshold?: _FLOAT
-    /** default=0 min=255 max=255 step=1 */
-    dilation?: _INT
+    denoise?: _FLOAT
+    /** default=5 min=100 max=100 step=1 */
+    feather?: _INT
+    noise_mask: Enum_ImpactDetailerForEach_noise_mask
+    force_inpaint: Enum_ImpactDetailerForEach_noise_mask
+    basic_pipe: _BASIC_PIPE
 }
 
 // |=============================================================================|
@@ -2612,20 +2790,17 @@ export type ImpactSAMDetectorCombined_input = {
 // |=============================================================================|
 // | ImpactFaceDetailer ("FaceDetailer" in ComfyUI) [ImpactPack_Simple]          |
 // |=============================================================================|
-export interface ImpactFaceDetailer
-    extends HasSingle_IMAGE,
-        HasSingle_MASK,
-        HasSingle_DETAILER_PIPE,
-        ComfyNode<ImpactFaceDetailer_input> {
+export interface ImpactFaceDetailer extends HasSingle_MASK, HasSingle_DETAILER_PIPE, ComfyNode<ImpactFaceDetailer_input> {
     IMAGE: Slot<'IMAGE', 0>
-    MASK: Slot<'MASK', 1>
-    DETAILER_PIPE: Slot<'DETAILER_PIPE', 2>
+    IMAGE_1: Slot<'IMAGE', 1>
+    MASK: Slot<'MASK', 2>
+    DETAILER_PIPE: Slot<'DETAILER_PIPE', 3>
 }
 export type ImpactFaceDetailer_input = {
     image: _IMAGE
     model: _MODEL
     vae: _VAE
-    /** default=256 min=8192 max=8192 step=64 */
+    /** default=256 min=8192 max=8192 step=8 */
     guide_size?: _FLOAT
     guide_size_for: Enum_ImpactDetailerForEach_guide_size_for
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -2660,26 +2835,23 @@ export type ImpactFaceDetailer_input = {
     /** default=0.7 min=1 max=1 step=0.01 */
     sam_mask_hint_threshold?: _FLOAT
     sam_mask_hint_use_negative: Enum_ImpactSAMDetectorCombined_mask_hint_use_negative
-    bbox_model: _BBOX_MODEL
+    bbox_detector: _BBOX_DETECTOR
     sam_model_opt?: _SAM_MODEL
 }
 
 // |=============================================================================|
 // | ImpactFaceDetailerPipe ("FaceDetailerPipe" in ComfyUI) [ImpactPack_Simple]   |
 // |=============================================================================|
-export interface ImpactFaceDetailerPipe
-    extends HasSingle_IMAGE,
-        HasSingle_MASK,
-        HasSingle_DETAILER_PIPE,
-        ComfyNode<ImpactFaceDetailerPipe_input> {
+export interface ImpactFaceDetailerPipe extends HasSingle_MASK, HasSingle_DETAILER_PIPE, ComfyNode<ImpactFaceDetailerPipe_input> {
     IMAGE: Slot<'IMAGE', 0>
-    MASK: Slot<'MASK', 1>
-    DETAILER_PIPE: Slot<'DETAILER_PIPE', 2>
+    IMAGE_1: Slot<'IMAGE', 1>
+    MASK: Slot<'MASK', 2>
+    DETAILER_PIPE: Slot<'DETAILER_PIPE', 3>
 }
 export type ImpactFaceDetailerPipe_input = {
     image: _IMAGE
     detailer_pipe: _DETAILER_PIPE
-    /** default=256 min=8192 max=8192 step=64 */
+    /** default=256 min=8192 max=8192 step=8 */
     guide_size?: _FLOAT
     guide_size_for: Enum_ImpactDetailerForEach_guide_size_for
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -2712,6 +2884,291 @@ export type ImpactFaceDetailerPipe_input = {
     /** default=0.7 min=1 max=1 step=0.01 */
     sam_mask_hint_threshold?: _FLOAT
     sam_mask_hint_use_negative: Enum_ImpactSAMDetectorCombined_mask_hint_use_negative
+}
+
+// |=============================================================================|
+// | ImpactToDetailerPipe ("ToDetailerPipe" in ComfyUI) [ImpactPack_Pipe]        |
+// |=============================================================================|
+export interface ImpactToDetailerPipe extends HasSingle_DETAILER_PIPE, ComfyNode<ImpactToDetailerPipe_input> {
+    DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
+}
+export type ImpactToDetailerPipe_input = {
+    model: _MODEL
+    vae: _VAE
+    positive: _CONDITIONING
+    negative: _CONDITIONING
+    bbox_detector: _BBOX_DETECTOR
+    sam_model_opt?: _SAM_MODEL
+}
+
+// |=============================================================================|
+// | ImpactFromDetailerPipe ("FromDetailerPipe" in ComfyUI) [ImpactPack_Pipe]    |
+// |=============================================================================|
+export interface ImpactFromDetailerPipe
+    extends HasSingle_MODEL,
+        HasSingle_VAE,
+        HasSingle_BBOX_DETECTOR,
+        HasSingle_SAM_MODEL,
+        ComfyNode<ImpactFromDetailerPipe_input> {
+    MODEL: Slot<'MODEL', 0>
+    VAE: Slot<'VAE', 1>
+    CONDITIONING: Slot<'CONDITIONING', 2>
+    CONDITIONING_1: Slot<'CONDITIONING', 3>
+    BBOX_DETECTOR: Slot<'BBOX_DETECTOR', 4>
+    SAM_MODEL: Slot<'SAM_MODEL', 5>
+}
+export type ImpactFromDetailerPipe_input = {
+    detailer_pipe: _DETAILER_PIPE
+}
+
+// |=============================================================================|
+// | ImpactToBasicPipe ("ToBasicPipe" in ComfyUI) [ImpactPack_Pipe]              |
+// |=============================================================================|
+export interface ImpactToBasicPipe extends HasSingle_BASIC_PIPE, ComfyNode<ImpactToBasicPipe_input> {
+    BASIC_PIPE: Slot<'BASIC_PIPE', 0>
+}
+export type ImpactToBasicPipe_input = {
+    model: _MODEL
+    clip: _CLIP
+    vae: _VAE
+    positive: _CONDITIONING
+    negative: _CONDITIONING
+}
+
+// |=============================================================================|
+// | ImpactFromBasicPipe ("FromBasicPipe" in ComfyUI) [ImpactPack_Pipe]          |
+// |=============================================================================|
+export interface ImpactFromBasicPipe
+    extends HasSingle_MODEL,
+        HasSingle_CLIP,
+        HasSingle_VAE,
+        ComfyNode<ImpactFromBasicPipe_input> {
+    MODEL: Slot<'MODEL', 0>
+    CLIP: Slot<'CLIP', 1>
+    VAE: Slot<'VAE', 2>
+    CONDITIONING: Slot<'CONDITIONING', 3>
+    CONDITIONING_1: Slot<'CONDITIONING', 4>
+}
+export type ImpactFromBasicPipe_input = {
+    basic_pipe: _BASIC_PIPE
+}
+
+// |=============================================================================|
+// | ImpactBasicPipeToDetailerPipe ("BasicPipeToDetailerPipe" in ComfyUI) [ImpactPack_Pipe]   |
+// |=============================================================================|
+export interface ImpactBasicPipeToDetailerPipe extends HasSingle_DETAILER_PIPE, ComfyNode<ImpactBasicPipeToDetailerPipe_input> {
+    DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
+}
+export type ImpactBasicPipeToDetailerPipe_input = {
+    basic_pipe: _BASIC_PIPE
+    bbox_detector: _BBOX_DETECTOR
+    sam_model_opt?: _SAM_MODEL
+}
+
+// |=============================================================================|
+// | ImpactDetailerPipeToBasicPipe ("DetailerPipeToBasicPipe" in ComfyUI) [ImpactPack_Pipe]   |
+// |=============================================================================|
+export interface ImpactDetailerPipeToBasicPipe extends HasSingle_BASIC_PIPE, ComfyNode<ImpactDetailerPipeToBasicPipe_input> {
+    BASIC_PIPE: Slot<'BASIC_PIPE', 0>
+}
+export type ImpactDetailerPipeToBasicPipe_input = {
+    detailer_pipe: _DETAILER_PIPE
+    clip: _CLIP
+}
+
+// |=============================================================================|
+// | ImpactEditBasicPipe ("EditBasicPipe" in ComfyUI) [ImpactPack_Pipe]          |
+// |=============================================================================|
+export interface ImpactEditBasicPipe extends HasSingle_BASIC_PIPE, ComfyNode<ImpactEditBasicPipe_input> {
+    BASIC_PIPE: Slot<'BASIC_PIPE', 0>
+}
+export type ImpactEditBasicPipe_input = {
+    basic_pipe: _BASIC_PIPE
+    model?: _MODEL
+    clip?: _CLIP
+    vae?: _VAE
+    positive?: _CONDITIONING
+    negative?: _CONDITIONING
+}
+
+// |=============================================================================|
+// | ImpactEditDetailerPipe ("EditDetailerPipe" in ComfyUI) [ImpactPack_Pipe]    |
+// |=============================================================================|
+export interface ImpactEditDetailerPipe extends HasSingle_BASIC_PIPE, ComfyNode<ImpactEditDetailerPipe_input> {
+    BASIC_PIPE: Slot<'BASIC_PIPE', 0>
+}
+export type ImpactEditDetailerPipe_input = {
+    detailer_pipe: _DETAILER_PIPE
+    model?: _MODEL
+    vae?: _VAE
+    positive?: _CONDITIONING
+    negative?: _CONDITIONING
+    bbox_detector?: _BBOX_DETECTOR
+    sam_model?: _SAM_MODEL
+}
+
+// |=============================================================================|
+// | ImpactLatentPixelScale ("LatentPixelScale" in ComfyUI) [ImpactPack_Upscale]   |
+// |=============================================================================|
+export interface ImpactLatentPixelScale extends HasSingle_LATENT, ComfyNode<ImpactLatentPixelScale_input> {
+    LATENT: Slot<'LATENT', 0>
+}
+export type ImpactLatentPixelScale_input = {
+    samples: _LATENT
+    scale_method: Enum_LatentUpscale_upscale_method
+    /** default=1.5 min=10000 max=10000 step=0.1 */
+    scale_factor?: _FLOAT
+    vae: _VAE
+    upscale_model_opt?: _UPSCALE_MODEL
+}
+
+// |=============================================================================|
+// | ImpactPixelKSampleUpscalerProvider ("PixelKSampleUpscalerProvider" in ComfyUI) [ImpactPack_Upscale]   |
+// |=============================================================================|
+export interface ImpactPixelKSampleUpscalerProvider
+    extends HasSingle_UPSCALER,
+        ComfyNode<ImpactPixelKSampleUpscalerProvider_input> {
+    UPSCALER: Slot<'UPSCALER', 0>
+}
+export type ImpactPixelKSampleUpscalerProvider_input = {
+    scale_method: Enum_LatentUpscale_upscale_method
+    model: _MODEL
+    vae: _VAE
+    /** default=0 min=18446744073709552000 max=18446744073709552000 */
+    seed?: _INT
+    /** default=20 min=10000 max=10000 */
+    steps?: _INT
+    /** default=8 min=100 max=100 */
+    cfg?: _FLOAT
+    sampler_name: Enum_KSampler_sampler_name
+    scheduler: Enum_KSampler_scheduler
+    positive: _CONDITIONING
+    negative: _CONDITIONING
+    /** default=1 min=1 max=1 step=0.01 */
+    denoise?: _FLOAT
+    upscale_model_opt?: _UPSCALE_MODEL
+}
+
+// |=============================================================================|
+// | ImpactPixelKSampleUpscalerProviderPipe ("PixelKSampleUpscalerProviderPipe" in ComfyUI) [ImpactPack_Upscale]   |
+// |=============================================================================|
+export interface ImpactPixelKSampleUpscalerProviderPipe
+    extends HasSingle_UPSCALER,
+        ComfyNode<ImpactPixelKSampleUpscalerProviderPipe_input> {
+    UPSCALER: Slot<'UPSCALER', 0>
+}
+export type ImpactPixelKSampleUpscalerProviderPipe_input = {
+    scale_method: Enum_LatentUpscale_upscale_method
+    /** default=0 min=18446744073709552000 max=18446744073709552000 */
+    seed?: _INT
+    /** default=20 min=10000 max=10000 */
+    steps?: _INT
+    /** default=8 min=100 max=100 */
+    cfg?: _FLOAT
+    sampler_name: Enum_KSampler_sampler_name
+    scheduler: Enum_KSampler_scheduler
+    /** default=1 min=1 max=1 step=0.01 */
+    denoise?: _FLOAT
+    basic_pipe: _BASIC_PIPE
+    upscale_model_opt?: _UPSCALE_MODEL
+}
+
+// |=============================================================================|
+// | ImpactIterativeLatentUpscale ("IterativeLatentUpscale" in ComfyUI) [ImpactPack_Upscale]   |
+// |=============================================================================|
+export interface ImpactIterativeLatentUpscale extends HasSingle_LATENT, ComfyNode<ImpactIterativeLatentUpscale_input> {
+    LATENT: Slot<'LATENT', 0>
+}
+export type ImpactIterativeLatentUpscale_input = {
+    samples: _LATENT
+    /** default=1.5 min=10000 max=10000 step=0.1 */
+    upscale_factor?: _FLOAT
+    /** default=3 min=10000 max=10000 step=1 */
+    steps?: _INT
+    /** default="" */
+    temp_prefix?: _STRING
+    upscaler: _UPSCALER
+}
+
+// |=============================================================================|
+// | ImpactIterativeImageUpscale ("IterativeImageUpscale" in ComfyUI) [ImpactPack_Upscale]   |
+// |=============================================================================|
+export interface ImpactIterativeImageUpscale extends HasSingle_IMAGE, ComfyNode<ImpactIterativeImageUpscale_input> {
+    IMAGE: Slot<'IMAGE', 0>
+}
+export type ImpactIterativeImageUpscale_input = {
+    pixels: _IMAGE
+    /** default=1.5 min=10000 max=10000 step=0.1 */
+    upscale_factor?: _FLOAT
+    /** default=3 min=10000 max=10000 step=1 */
+    steps?: _INT
+    /** default="" */
+    temp_prefix?: _STRING
+    upscaler: _UPSCALER
+    vae: _VAE
+}
+
+// |=============================================================================|
+// | ImpactPixelTiledKSampleUpscalerProvider ("PixelTiledKSampleUpscalerProvider" in ComfyUI) [ImpactPack_Upscale]   |
+// |=============================================================================|
+export interface ImpactPixelTiledKSampleUpscalerProvider
+    extends HasSingle_UPSCALER,
+        ComfyNode<ImpactPixelTiledKSampleUpscalerProvider_input> {
+    UPSCALER: Slot<'UPSCALER', 0>
+}
+export type ImpactPixelTiledKSampleUpscalerProvider_input = {
+    scale_method: Enum_LatentUpscale_upscale_method
+    model: _MODEL
+    vae: _VAE
+    /** default=0 min=18446744073709552000 max=18446744073709552000 */
+    seed?: _INT
+    /** default=20 min=10000 max=10000 */
+    steps?: _INT
+    /** default=8 min=100 max=100 */
+    cfg?: _FLOAT
+    sampler_name: Enum_KSampler_sampler_name
+    scheduler: Enum_KSampler_scheduler
+    positive: _CONDITIONING
+    negative: _CONDITIONING
+    /** default=1 min=1 max=1 step=0.01 */
+    denoise?: _FLOAT
+    /** default=512 min=8192 max=8192 step=64 */
+    tile_width?: _INT
+    /** default=512 min=8192 max=8192 step=64 */
+    tile_height?: _INT
+    /** default=1 min=64 max=64 step=1 */
+    concurrent_tiles?: _INT
+    upscale_model_opt?: _UPSCALE_MODEL
+}
+
+// |=============================================================================|
+// | ImpactPixelTiledKSampleUpscalerProviderPipe ("PixelTiledKSampleUpscalerProviderPipe" in ComfyUI) [ImpactPack_Upscale]   |
+// |=============================================================================|
+export interface ImpactPixelTiledKSampleUpscalerProviderPipe
+    extends HasSingle_UPSCALER,
+        ComfyNode<ImpactPixelTiledKSampleUpscalerProviderPipe_input> {
+    UPSCALER: Slot<'UPSCALER', 0>
+}
+export type ImpactPixelTiledKSampleUpscalerProviderPipe_input = {
+    scale_method: Enum_LatentUpscale_upscale_method
+    /** default=0 min=18446744073709552000 max=18446744073709552000 */
+    seed?: _INT
+    /** default=20 min=10000 max=10000 */
+    steps?: _INT
+    /** default=8 min=100 max=100 */
+    cfg?: _FLOAT
+    sampler_name: Enum_KSampler_sampler_name
+    scheduler: Enum_KSampler_scheduler
+    /** default=1 min=1 max=1 step=0.01 */
+    denoise?: _FLOAT
+    /** default=512 min=8192 max=8192 step=64 */
+    tile_width?: _INT
+    /** default=512 min=8192 max=8192 step=64 */
+    tile_height?: _INT
+    /** default=1 min=64 max=64 step=1 */
+    concurrent_tiles?: _INT
+    basic_pipe: _BASIC_PIPE
+    upscale_model_opt?: _UPSCALE_MODEL
 }
 
 // |=============================================================================|
@@ -2748,17 +3205,6 @@ export type ImpactSegsMask_input = {
 }
 
 // |=============================================================================|
-// | ImpactSegsMaskCombine ("SegsMaskCombine" in ComfyUI) [ImpactPack_Operation]   |
-// |=============================================================================|
-export interface ImpactSegsMaskCombine extends HasSingle_MASK, ComfyNode<ImpactSegsMaskCombine_input> {
-    MASK: Slot<'MASK', 0>
-}
-export type ImpactSegsMaskCombine_input = {
-    segs: _SEGS
-    image: _IMAGE
-}
-
-// |=============================================================================|
 // | ImpactEmptySegs ("EmptySegs" in ComfyUI) [ImpactPack_Util]                  |
 // |=============================================================================|
 export interface ImpactEmptySegs extends HasSingle_SEGS, ComfyNode<ImpactEmptySegs_input> {
@@ -2777,6 +3223,7 @@ export type ImpactMaskToSEGS_input = {
     combined: Enum_ImpactMaskToSEGS_combined
     /** default=3 min=10 max=10 step=0.1 */
     crop_factor?: _FLOAT
+    bbox_fill: Enum_ImpactDetailerForEach_noise_mask
 }
 
 // |=============================================================================|
@@ -2798,6 +3245,153 @@ export interface ImpactMaskPainter extends HasSingle_MASK, ComfyNode<ImpactMaskP
 export type ImpactMaskPainter_input = {
     images: _IMAGE
     mask_image?: _IMAGE_PATH
+}
+
+// |=============================================================================|
+// | ImpactBboxDetectorSEGS ("BboxDetectorSEGS" in ComfyUI) [ImpactPack_Detector]   |
+// |=============================================================================|
+export interface ImpactBboxDetectorSEGS extends HasSingle_SEGS, ComfyNode<ImpactBboxDetectorSEGS_input> {
+    SEGS: Slot<'SEGS', 0>
+}
+export type ImpactBboxDetectorSEGS_input = {
+    bbox_detector: _BBOX_DETECTOR
+    image: _IMAGE
+    /** default=0.5 min=1 max=1 step=0.01 */
+    threshold?: _FLOAT
+    /** default=10 min=255 max=255 step=1 */
+    dilation?: _INT
+    /** default=3 min=10 max=10 step=0.1 */
+    crop_factor?: _FLOAT
+}
+
+// |=============================================================================|
+// | ImpactSegmDetectorSEGS ("SegmDetectorSEGS" in ComfyUI) [ImpactPack_Detector]   |
+// |=============================================================================|
+export interface ImpactSegmDetectorSEGS extends HasSingle_SEGS, ComfyNode<ImpactSegmDetectorSEGS_input> {
+    SEGS: Slot<'SEGS', 0>
+}
+export type ImpactSegmDetectorSEGS_input = {
+    segm_detector: _SEGM_DETECTOR
+    image: _IMAGE
+    /** default=0.5 min=1 max=1 step=0.01 */
+    threshold?: _FLOAT
+    /** default=10 min=255 max=255 step=1 */
+    dilation?: _INT
+    /** default=3 min=10 max=10 step=0.1 */
+    crop_factor?: _FLOAT
+}
+
+// |=============================================================================|
+// | ImpactONNXDetectorSEGS ("ONNXDetectorSEGS" in ComfyUI) [ImpactPack_Detector]   |
+// |=============================================================================|
+export interface ImpactONNXDetectorSEGS extends HasSingle_SEGS, ComfyNode<ImpactONNXDetectorSEGS_input> {
+    SEGS: Slot<'SEGS', 0>
+}
+export type ImpactONNXDetectorSEGS_input = {
+    onnx_detector: _ONNX_DETECTOR
+    image: _IMAGE
+    /** default=0.8 min=1 max=1 step=0.01 */
+    threshold?: _FLOAT
+    /** default=10 min=255 max=255 step=1 */
+    dilation?: _INT
+    /** default=1 min=10 max=10 step=0.1 */
+    crop_factor?: _FLOAT
+}
+
+// |=============================================================================|
+// | ImpactBboxDetectorCombined ("BboxDetectorCombined" in ComfyUI) [ImpactPack_Legacy]   |
+// |=============================================================================|
+export interface ImpactBboxDetectorCombined extends HasSingle_MASK, ComfyNode<ImpactBboxDetectorCombined_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type ImpactBboxDetectorCombined_input = {
+    bbox_model: _BBOX_MODEL
+    image: _IMAGE
+    /** default=0.5 min=1 max=1 step=0.01 */
+    threshold?: _FLOAT
+    /** default=4 min=255 max=255 step=1 */
+    dilation?: _INT
+}
+
+// |=============================================================================|
+// | ImpactSegmDetectorCombined ("SegmDetectorCombined" in ComfyUI) [ImpactPack_Legacy]   |
+// |=============================================================================|
+export interface ImpactSegmDetectorCombined extends HasSingle_MASK, ComfyNode<ImpactSegmDetectorCombined_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type ImpactSegmDetectorCombined_input = {
+    segm_model: _SEGM_MODEL
+    image: _IMAGE
+    /** default=0.5 min=1 max=1 step=0.01 */
+    threshold?: _FLOAT
+    /** default=0 min=255 max=255 step=1 */
+    dilation?: _INT
+}
+
+// |=============================================================================|
+// | ImpactSegsToCombinedMask ("SegsToCombinedMask" in ComfyUI) [ImpactPack_Operation]   |
+// |=============================================================================|
+export interface ImpactSegsToCombinedMask extends HasSingle_MASK, ComfyNode<ImpactSegsToCombinedMask_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type ImpactSegsToCombinedMask_input = {
+    segs: _SEGS
+}
+
+// |=============================================================================|
+// | ImpactMMDetLoader ("MMDetLoader" in ComfyUI) [ImpactPack_Legacy]            |
+// |=============================================================================|
+export interface ImpactMMDetLoader extends HasSingle_BBOX_MODEL, HasSingle_SEGM_MODEL, ComfyNode<ImpactMMDetLoader_input> {
+    BBOX_MODEL: Slot<'BBOX_MODEL', 0>
+    SEGM_MODEL: Slot<'SEGM_MODEL', 1>
+}
+export type ImpactMMDetLoader_input = {
+    model_name: Enum_ImpactMMDetDetectorProvider_model_name
+}
+
+// |=============================================================================|
+// | ImpactSegsMaskCombine ("SegsMaskCombine" in ComfyUI) [ImpactPack_Legacy]    |
+// |=============================================================================|
+export interface ImpactSegsMaskCombine extends HasSingle_MASK, ComfyNode<ImpactSegsMaskCombine_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type ImpactSegsMaskCombine_input = {
+    segs: _SEGS
+    image: _IMAGE
+}
+
+// |=============================================================================|
+// | ImpactBboxDetectorForEach ("BboxDetectorForEach" in ComfyUI) [ImpactPack_Legacy]   |
+// |=============================================================================|
+export interface ImpactBboxDetectorForEach extends HasSingle_SEGS, ComfyNode<ImpactBboxDetectorForEach_input> {
+    SEGS: Slot<'SEGS', 0>
+}
+export type ImpactBboxDetectorForEach_input = {
+    bbox_model: _BBOX_MODEL
+    image: _IMAGE
+    /** default=0.5 min=1 max=1 step=0.01 */
+    threshold?: _FLOAT
+    /** default=10 min=255 max=255 step=1 */
+    dilation?: _INT
+    /** default=3 min=10 max=10 step=0.1 */
+    crop_factor?: _FLOAT
+}
+
+// |=============================================================================|
+// | ImpactSegmDetectorForEach ("SegmDetectorForEach" in ComfyUI) [ImpactPack_Legacy]   |
+// |=============================================================================|
+export interface ImpactSegmDetectorForEach extends HasSingle_SEGS, ComfyNode<ImpactSegmDetectorForEach_input> {
+    SEGS: Slot<'SEGS', 0>
+}
+export type ImpactSegmDetectorForEach_input = {
+    segm_model: _SEGM_MODEL
+    image: _IMAGE
+    /** default=0.5 min=1 max=1 step=0.01 */
+    threshold?: _FLOAT
+    /** default=10 min=255 max=255 step=1 */
+    dilation?: _INT
+    /** default=3 min=10 max=10 step=0.1 */
+    crop_factor?: _FLOAT
 }
 
 // |=============================================================================|
@@ -3055,6 +3649,17 @@ export type StateDictMergerBlockWeightedMulti_input = {
     /** default="" */
     alphas?: _STRING
     config_name: Enum_CheckpointLoader_config_name
+}
+
+// |=============================================================================|
+// | SaveStateDict [model]                                                       |
+// |=============================================================================|
+export interface SaveStateDict extends ComfyNode<SaveStateDict_input> {}
+export type SaveStateDict_input = {
+    weights: _DICT
+    /** default="merged_model.safetensors" */
+    filename?: _STRING
+    overwrite: Enum_ImpactMaskToSEGS_combined
 }
 
 // |=============================================================================|
@@ -4409,6 +5014,19 @@ export type WASCreateVideoFromPath_input = {
 }
 
 // |=============================================================================|
+// | WASCLIPSegMasking ("CLIPSeg Masking" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASCLIPSegMasking extends HasSingle_MASK, HasSingle_IMAGE, ComfyNode<WASCLIPSegMasking_input> {
+    MASK: Slot<'MASK', 0>
+    IMAGE: Slot<'IMAGE', 1>
+}
+export type WASCLIPSegMasking_input = {
+    image: _IMAGE
+    /** default="" */
+    text?: _STRING
+}
+
+// |=============================================================================|
 // | WASConvertMaskToImage ("Convert Mask to Image" in ComfyUI) [WAS Suite_Image_Masking]   |
 // |=============================================================================|
 export interface WASConvertMaskToImage extends HasSingle_IMAGE, ComfyNode<WASConvertMaskToImage_input> {
@@ -5382,30 +6000,6 @@ export type WASLoadTextFile_input = {
 }
 
 // |=============================================================================|
-// | WASMaskDominantRegion ("Mask Dominant Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-// |=============================================================================|
-export interface WASMaskDominantRegion extends HasSingle_MASK, ComfyNode<WASMaskDominantRegion_input> {
-    MASK: Slot<'MASK', 0>
-}
-export type WASMaskDominantRegion_input = {
-    mask: _MASK
-    /** default=128 min=255 max=255 step=1 */
-    threshold?: _INT
-}
-
-// |=============================================================================|
-// | WASMaskMinorityRegion ("Mask Minority Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-// |=============================================================================|
-export interface WASMaskMinorityRegion extends HasSingle_MASK, ComfyNode<WASMaskMinorityRegion_input> {
-    MASK: Slot<'MASK', 0>
-}
-export type WASMaskMinorityRegion_input = {
-    mask: _MASK
-    /** default=128 min=255 max=255 step=1 */
-    threshold?: _INT
-}
-
-// |=============================================================================|
 // | WASMaskArbitraryRegion ("Mask Arbitrary Region" in ComfyUI) [WAS Suite_Image_Masking]   |
 // |=============================================================================|
 export interface WASMaskArbitraryRegion extends HasSingle_MASK, ComfyNode<WASMaskArbitraryRegion_input> {
@@ -5420,36 +6014,46 @@ export type WASMaskArbitraryRegion_input = {
 }
 
 // |=============================================================================|
-// | WASMaskSmoothBoundaries ("Mask Smooth Boundaries" in ComfyUI) [WAS Suite_Image_Masking]   |
+// | WASMaskCeilingRegion ("Mask Ceiling Region" in ComfyUI) [WAS Suite_Image_Masking]   |
 // |=============================================================================|
-export interface WASMaskSmoothBoundaries extends HasSingle_MASK, ComfyNode<WASMaskSmoothBoundaries_input> {
+export interface WASMaskCeilingRegion extends HasSingle_MASK, ComfyNode<WASMaskCeilingRegion_input> {
     MASK: Slot<'MASK', 0>
 }
-export type WASMaskSmoothBoundaries_input = {
+export type WASMaskCeilingRegion_input = {
     mask: _MASK
-    /** default=5 min=128 max=128 step=0.1 */
-    sigma?: _FLOAT
 }
 
 // |=============================================================================|
-// | WASMaskErodeBoundaries ("Mask Erode Boundaries" in ComfyUI) [WAS Suite_Image_Masking]   |
+// | WASMaskDilateRegion ("Mask Dilate Region" in ComfyUI) [WAS Suite_Image_Masking]   |
 // |=============================================================================|
-export interface WASMaskErodeBoundaries extends HasSingle_MASK, ComfyNode<WASMaskErodeBoundaries_input> {
+export interface WASMaskDilateRegion extends HasSingle_MASK, ComfyNode<WASMaskDilateRegion_input> {
     MASK: Slot<'MASK', 0>
 }
-export type WASMaskErodeBoundaries_input = {
+export type WASMaskDilateRegion_input = {
     mask: _MASK
     /** default=5 min=64 max=64 step=1 */
     iterations?: _INT
 }
 
 // |=============================================================================|
-// | WASMaskDilateBoundaries ("Mask Dilate Boundaries" in ComfyUI) [WAS Suite_Image_Masking]   |
+// | WASMaskDominantRegion ("Mask Dominant Region" in ComfyUI) [WAS Suite_Image_Masking]   |
 // |=============================================================================|
-export interface WASMaskDilateBoundaries extends HasSingle_MASK, ComfyNode<WASMaskDilateBoundaries_input> {
+export interface WASMaskDominantRegion extends HasSingle_MASK, ComfyNode<WASMaskDominantRegion_input> {
     MASK: Slot<'MASK', 0>
 }
-export type WASMaskDilateBoundaries_input = {
+export type WASMaskDominantRegion_input = {
+    mask: _MASK
+    /** default=128 min=255 max=255 step=1 */
+    threshold?: _INT
+}
+
+// |=============================================================================|
+// | WASMaskErodeRegion ("Mask Erode Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskErodeRegion extends HasSingle_MASK, ComfyNode<WASMaskErodeRegion_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskErodeRegion_input = {
     mask: _MASK
     /** default=5 min=64 max=64 step=1 */
     iterations?: _INT
@@ -5466,12 +6070,72 @@ export type WASMaskFillHoles_input = {
 }
 
 // |=============================================================================|
-// | WASMasksCombine ("Masks Combine" in ComfyUI) [WAS Suite_Image_Masking]      |
+// | WASMaskFloorRegion ("Mask Floor Region" in ComfyUI) [WAS Suite_Image_Masking]   |
 // |=============================================================================|
-export interface WASMasksCombine extends HasSingle_MASK, ComfyNode<WASMasksCombine_input> {
+export interface WASMaskFloorRegion extends HasSingle_MASK, ComfyNode<WASMaskFloorRegion_input> {
     MASK: Slot<'MASK', 0>
 }
-export type WASMasksCombine_input = {
+export type WASMaskFloorRegion_input = {
+    mask: _MASK
+}
+
+// |=============================================================================|
+// | WASMaskGaussianRegion ("Mask Gaussian Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskGaussianRegion extends HasSingle_MASK, ComfyNode<WASMaskGaussianRegion_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskGaussianRegion_input = {
+    mask: _MASK
+    /** default=5 min=1024 max=1024 step=0.1 */
+    radius?: _FLOAT
+}
+
+// |=============================================================================|
+// | WASMaskMinorityRegion ("Mask Minority Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskMinorityRegion extends HasSingle_MASK, ComfyNode<WASMaskMinorityRegion_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskMinorityRegion_input = {
+    mask: _MASK
+    /** default=128 min=255 max=255 step=1 */
+    threshold?: _INT
+}
+
+// |=============================================================================|
+// | WASMaskSmoothRegion ("Mask Smooth Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskSmoothRegion extends HasSingle_MASK, ComfyNode<WASMaskSmoothRegion_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskSmoothRegion_input = {
+    mask: _MASK
+    /** default=5 min=128 max=128 step=0.1 */
+    sigma?: _FLOAT
+}
+
+// |=============================================================================|
+// | WASMaskThresholdRegion ("Mask Threshold Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMaskThresholdRegion extends HasSingle_MASK, ComfyNode<WASMaskThresholdRegion_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMaskThresholdRegion_input = {
+    mask: _MASK
+    /** default=75 min=255 max=255 step=1 */
+    black_threshold?: _INT
+    /** default=175 min=255 max=255 step=1 */
+    white_threshold?: _INT
+}
+
+// |=============================================================================|
+// | WASMasksCombineRegions ("Masks Combine Regions" in ComfyUI) [WAS Suite_Image_Masking]   |
+// |=============================================================================|
+export interface WASMasksCombineRegions extends HasSingle_MASK, ComfyNode<WASMasksCombineRegions_input> {
+    MASK: Slot<'MASK', 0>
+}
+export type WASMasksCombineRegions_input = {
     mask_a: _MASK
     mask_b: _MASK
     mask_c?: _MASK
@@ -6486,28 +7150,51 @@ export type Schemas = {
     CheckpointLoader: ComfyNodeSchemaJSON
     DiffusersLoader: ComfyNodeSchemaJSON
     BrightnessContrast: ComfyNodeSchemaJSON
-    ImpactMMDetLoader: ComfyNodeSchemaJSON
     ImpactSAMLoader: ComfyNodeSchemaJSON
-    ImpactONNXLoader: ComfyNodeSchemaJSON
-    ImpactBboxDetectorForEach: ComfyNodeSchemaJSON
-    ImpactSegmDetectorForEach: ComfyNodeSchemaJSON
-    ImpactONNXDetectorForEach: ComfyNodeSchemaJSON
+    ImpactMMDetDetectorProvider: ComfyNodeSchemaJSON
+    ImpactCLIPSegDetectorProvider: ComfyNodeSchemaJSON
+    ImpactONNXDetectorProvider: ComfyNodeSchemaJSON
     ImpactBitwiseAndMaskForEach: ComfyNodeSchemaJSON
+    ImpactSubtractMaskForEach: ComfyNodeSchemaJSON
     ImpactDetailerForEach: ComfyNodeSchemaJSON
     ImpactDetailerForEachDebug: ComfyNodeSchemaJSON
-    ImpactBboxDetectorCombined: ComfyNodeSchemaJSON
-    ImpactSegmDetectorCombined: ComfyNodeSchemaJSON
+    ImpactDetailerForEachPipe: ComfyNodeSchemaJSON
+    ImpactDetailerForEachDebugPipe: ComfyNodeSchemaJSON
     ImpactSAMDetectorCombined: ComfyNodeSchemaJSON
     ImpactFaceDetailer: ComfyNodeSchemaJSON
     ImpactFaceDetailerPipe: ComfyNodeSchemaJSON
+    ImpactToDetailerPipe: ComfyNodeSchemaJSON
+    ImpactFromDetailerPipe: ComfyNodeSchemaJSON
+    ImpactToBasicPipe: ComfyNodeSchemaJSON
+    ImpactFromBasicPipe: ComfyNodeSchemaJSON
+    ImpactBasicPipeToDetailerPipe: ComfyNodeSchemaJSON
+    ImpactDetailerPipeToBasicPipe: ComfyNodeSchemaJSON
+    ImpactEditBasicPipe: ComfyNodeSchemaJSON
+    ImpactEditDetailerPipe: ComfyNodeSchemaJSON
+    ImpactLatentPixelScale: ComfyNodeSchemaJSON
+    ImpactPixelKSampleUpscalerProvider: ComfyNodeSchemaJSON
+    ImpactPixelKSampleUpscalerProviderPipe: ComfyNodeSchemaJSON
+    ImpactIterativeLatentUpscale: ComfyNodeSchemaJSON
+    ImpactIterativeImageUpscale: ComfyNodeSchemaJSON
+    ImpactPixelTiledKSampleUpscalerProvider: ComfyNodeSchemaJSON
+    ImpactPixelTiledKSampleUpscalerProviderPipe: ComfyNodeSchemaJSON
     ImpactBitwiseAndMask: ComfyNodeSchemaJSON
     ImpactSubtractMask: ComfyNodeSchemaJSON
     ImpactSegsMask: ComfyNodeSchemaJSON
-    ImpactSegsMaskCombine: ComfyNodeSchemaJSON
     ImpactEmptySegs: ComfyNodeSchemaJSON
     ImpactMaskToSEGS: ComfyNodeSchemaJSON
     ImpactToBinaryMask: ComfyNodeSchemaJSON
     ImpactMaskPainter: ComfyNodeSchemaJSON
+    ImpactBboxDetectorSEGS: ComfyNodeSchemaJSON
+    ImpactSegmDetectorSEGS: ComfyNodeSchemaJSON
+    ImpactONNXDetectorSEGS: ComfyNodeSchemaJSON
+    ImpactBboxDetectorCombined: ComfyNodeSchemaJSON
+    ImpactSegmDetectorCombined: ComfyNodeSchemaJSON
+    ImpactSegsToCombinedMask: ComfyNodeSchemaJSON
+    ImpactMMDetLoader: ComfyNodeSchemaJSON
+    ImpactSegsMaskCombine: ComfyNodeSchemaJSON
+    ImpactBboxDetectorForEach: ComfyNodeSchemaJSON
+    ImpactSegmDetectorForEach: ComfyNodeSchemaJSON
     RandomLatentImage: ComfyNodeSchemaJSON
     VAEDecodeBatched: ComfyNodeSchemaJSON
     VAEEncodeBatched: ComfyNodeSchemaJSON
@@ -6524,6 +7211,7 @@ export type Schemas = {
     StateDictMerger: ComfyNodeSchemaJSON
     StateDictMergerBlockWeighted: ComfyNodeSchemaJSON
     StateDictMergerBlockWeightedMulti: ComfyNodeSchemaJSON
+    SaveStateDict: ComfyNodeSchemaJSON
     ImageBlend2: ComfyNodeSchemaJSON
     GridImage: ComfyNodeSchemaJSON
     SaveText: ComfyNodeSchemaJSON
@@ -6610,6 +7298,7 @@ export type Schemas = {
     WASCreateMorphImage: ComfyNodeSchemaJSON
     WASCreateMorphImageFromPath: ComfyNodeSchemaJSON
     WASCreateVideoFromPath: ComfyNodeSchemaJSON
+    WASCLIPSegMasking: ComfyNodeSchemaJSON
     WASConvertMaskToImage: ComfyNodeSchemaJSON
     WASDebugNumberToConsole: ComfyNodeSchemaJSON
     WASDictionaryToConsole: ComfyNodeSchemaJSON
@@ -6672,14 +7361,18 @@ export type Schemas = {
     WASLatentUpscaleByFactorWAS: ComfyNodeSchemaJSON
     WASLoadImageBatch: ComfyNodeSchemaJSON
     WASLoadTextFile: ComfyNodeSchemaJSON
-    WASMaskDominantRegion: ComfyNodeSchemaJSON
-    WASMaskMinorityRegion: ComfyNodeSchemaJSON
     WASMaskArbitraryRegion: ComfyNodeSchemaJSON
-    WASMaskSmoothBoundaries: ComfyNodeSchemaJSON
-    WASMaskErodeBoundaries: ComfyNodeSchemaJSON
-    WASMaskDilateBoundaries: ComfyNodeSchemaJSON
+    WASMaskCeilingRegion: ComfyNodeSchemaJSON
+    WASMaskDilateRegion: ComfyNodeSchemaJSON
+    WASMaskDominantRegion: ComfyNodeSchemaJSON
+    WASMaskErodeRegion: ComfyNodeSchemaJSON
     WASMaskFillHoles: ComfyNodeSchemaJSON
-    WASMasksCombine: ComfyNodeSchemaJSON
+    WASMaskFloorRegion: ComfyNodeSchemaJSON
+    WASMaskGaussianRegion: ComfyNodeSchemaJSON
+    WASMaskMinorityRegion: ComfyNodeSchemaJSON
+    WASMaskSmoothRegion: ComfyNodeSchemaJSON
+    WASMaskThresholdRegion: ComfyNodeSchemaJSON
+    WASMasksCombineRegions: ComfyNodeSchemaJSON
     WASMiDaSDepthApproximation: ComfyNodeSchemaJSON
     WASMiDaSMaskImage: ComfyNodeSchemaJSON
     WASNumberOperation: ComfyNodeSchemaJSON
