@@ -30,7 +30,7 @@ export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedIma
 
                 <div className='flex row items-center gap-2'>
                     <div className='propName'>local path</div>
-                    <div className='propValue'>{selectedImg?.localRelativeFilePath}</div>
+                    <div className='propValue'>{selectedImg?.localAbsolutePath}</div>
                 </div>
                 {/* <pre>{JSON.stringify(msg.images[0], null, 4)}</pre> */}
             </div>

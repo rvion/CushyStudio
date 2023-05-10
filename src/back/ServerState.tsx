@@ -1,11 +1,11 @@
 import type { EmbeddingName } from '../core/Schema'
 import type { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import type { FlowExecutionStep } from '../types/FlowExecutionStep'
+import type { Maybe } from '../utils/types'
 
 import fetch from 'node-fetch'
 import { join, relative } from 'path'
 import * as WS from 'ws'
-import { Maybe } from '../utils/types'
 import { FlowRun } from './FlowRun'
 
 import { existsSync, readFileSync, writeFileSync } from 'fs'
@@ -14,9 +14,7 @@ import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { PayloadID, getPayloadID } from '../core/PayloadID'
 import { Schema } from '../core/Schema'
 import { VSCodeEmojiDecorator } from '../extension/decorator'
-import { ComfyImporter } from '../importers/ImportComfyImage'
 import { logger } from '../logger/logger'
-import { ComfyPromptJSON } from '../types/ComfyPrompt'
 import { ComfyStatus, WsMsg } from '../types/ComfyWsPayloads'
 import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '../types/MessageFromExtensionToWebview'
 import { sdkTemplate } from '../typings/sdkTemplate'
@@ -31,6 +29,8 @@ import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
+import { TypeScriptFilesMap } from './DirWatcher'
+import { ConfigFileWatcher } from './ConfigWatcher'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -42,16 +42,15 @@ export class ServerState {
 
     activeRun: Maybe<FlowRun> = null
 
-    get cacheFolderPath(): AbsolutePath {
-        return this.resolve(asRelativePath('.cushy/cache'))
-    }
-
     runs: FlowRun[] = []
-    comfyJSONUri: AbsolutePath
-    embeddingsUri: AbsolutePath
-    comfyTSUri: AbsolutePath
-    cushyTSUri: AbsolutePath
-    tsConfigUri: AbsolutePath
+
+    cacheFolderPath: AbsolutePath
+    vscodeSettings: AbsolutePath
+    comfyJSONPath: AbsolutePath
+    embeddingsPath: AbsolutePath
+    comfyTSPath: AbsolutePath
+    cushyTSPath: AbsolutePath
+    tsConfigPath: AbsolutePath
 
     /** write a binary file to given absPath */
     writeBinaryFile(absPath: AbsolutePath, content: Buffer) {
@@ -106,29 +105,35 @@ export class ServerState {
     }
 
     server!: CushyServer
-
     decorator: VSCodeEmojiDecorator
+    configWatcher = new ConfigFileWatcher()
+
     constructor(public rootPath: AbsolutePath) {
-        this.comfyJSONUri = this.resolve(asRelativePath('.cushy/nodes.json'))
-        this.embeddingsUri = this.resolve(asRelativePath('.cushy/embeddings.json'))
-        this.comfyTSUri = this.resolve(asRelativePath('.cushy/nodes.d.ts'))
-        this.cushyTSUri = this.resolve(asRelativePath('.cushy/cushy.d.ts'))
-        this.tsConfigUri = this.resolve(asRelativePath('tsconfig.json'))
+        this.cacheFolderPath = this.resolve(asRelativePath('.cushy/cache'))
+        this.vscodeSettings = this.resolve(asRelativePath('.vscode/settings.json'))
+        this.comfyJSONPath = this.resolve(asRelativePath('.cushy/nodes.json'))
+        this.embeddingsPath = this.resolve(asRelativePath('.cushy/embeddings.json'))
+        this.comfyTSPath = this.resolve(asRelativePath('.cushy/nodes.d.ts'))
+        this.cushyTSPath = this.resolve(asRelativePath('.cushy/cushy.d.ts'))
+        this.tsConfigPath = this.resolve(asRelativePath('tsconfig.json'))
         this.server = new CushyServer(this)
         this.schema = this.restoreSchemaFromCache()
         this.decorator = new VSCodeEmojiDecorator(this)
-        this.writeTextFile(this.cushyTSUri, sdkTemplate)
+        this.writeTextFile(this.cushyTSPath, sdkTemplate)
 
         this.autoDiscoverEveryWorkflow()
         this.ws = this.initWebsocket()
-        this.watchForCOnfigurationChanges()
+        // this.watchForCOnfigurationChanges()
         this.createTSConfigIfMissing()
         makeAutoObservable(this)
+        this.configWatcher.startWatching('./.vscode/settings.json')
+        const settingsWatcher = new ConfigFileWatcher()
+        settingsWatcher.startWatching(this.vscodeSettings)
     }
 
     createTSConfigIfMissing = () => {
         // create an empty tsconfig.json if it doesn't exist
-        const tsConfigExists = existsSync(this.tsConfigUri.path)
+        const tsConfigExists = existsSync(this.tsConfigPath)
         if (!tsConfigExists) {
             logger().info(`no tsconfig.json found, creating a default one`)
             const content = {
@@ -139,7 +144,7 @@ export class ServerState {
                 include: ['.cushy/*.d.ts', '**/*.ts'],
             }
             const contentStr = JSON.stringify(content, null, 4)
-            this.writeTextFile(this.tsConfigUri, contentStr)
+            this.writeTextFile(this.tsConfigPath, contentStr)
         }
         // const json = this.readJSON(this.tsConfigUri)
     }
@@ -148,8 +153,8 @@ export class ServerState {
         let schema: Schema
         try {
             logger().info('⚡️ attemping to load cached nodes...')
-            const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONUri)
-            const cachedEmbeddingsJSON = this.readJSON<EmbeddingName[]>(this.embeddingsUri)
+            const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONPath)
+            const cachedEmbeddingsJSON = this.readJSON<EmbeddingName[]>(this.embeddingsPath)
             logger().info('⚡️ found cached json for nodes...')
             schema = new Schema(cachedComfyJSON, cachedEmbeddingsJSON)
             logger().info('⚡️ 🟢 object_info and embeddings restored from cache')
@@ -163,30 +168,33 @@ export class ServerState {
         return schema
     }
 
-    watchForCOnfigurationChanges = () => {
-        logger().info('watching for configuration changes...')
-        vscode.workspace.onDidChangeConfiguration((e) => {
-            if (e.affectsConfiguration('cushystudio.serverHostHTTP')) {
-                logger().info('cushystudio.serverHostHTTP changed')
-                this.fetchAndUdpateSchema()
-                return
-            }
-            if (e.affectsConfiguration('cushystudio.serverWSEndoint')) {
-                logger().info('cushystudio.serverWSEndoint changed')
-                this.ws.updateURL(this.getWSUrl())
-                return
-            }
-        })
-    }
+    // 🔴 watchForCOnfigurationChanges = () => {
+    // 🔴     logger().info('watching for configuration changes...')
+    // 🔴     vscode.workspace.onDidChangeConfiguration((e) => {
+    // 🔴         if (e.affectsConfiguration('cushystudio.serverHostHTTP')) {
+    // 🔴             logger().info('cushystudio.serverHostHTTP changed')
+    // 🔴             this.fetchAndUdpateSchema()
+    // 🔴             return
+    // 🔴         }
+    // 🔴         if (e.affectsConfiguration('cushystudio.serverWSEndoint')) {
+    // 🔴             logger().info('cushystudio.serverWSEndoint changed')
+    // 🔴             this.ws.updateURL(this.getWSUrl())
+    // 🔴             return
+    // 🔴         }
+    // 🔴     })
+    // 🔴 }
 
+    tsFilesMap = new TypeScriptFilesMap()
     autoDiscoverEveryWorkflow = () => {
-        // pre-populate the tree with any open documents
-        for (const document of vscode.workspace.textDocuments) this.updateNodeForDocument(document)
+        this.tsFilesMap.startWatching(this.rootPath)
 
-        // auto-update the tree when documents are opened or changed
-        const _1 = vscode.workspace.onDidOpenTextDocument(this.updateNodeForDocument)
-        const _2 = vscode.workspace.onDidChangeTextDocument((e) => this.updateNodeForDocument(e.document))
-        this.context.subscriptions.push(_1, _2)
+        // // pre-populate the tree with any open documents
+        // for (const document of vscode.workspace.textDocuments) this.updateNodeForDocument(document)
+
+        // // auto-update the tree when documents are opened or changed
+        // const _1 = vscode.workspace.onDidOpenTextDocument(this.updateNodeForDocument)
+        // const _2 = vscode.workspace.onDidChangeTextDocument((e) => this.updateNodeForDocument(e.document))
+        // this.context.subscriptions.push(_1, _2)
     }
 
     /** will be created only after we've loaded cnfig file
@@ -194,16 +202,14 @@ export class ServerState {
     ws: ResilientWebSocketClient
 
     getServerHostHTTP(): string {
-        return vscode.workspace //
-            .getConfiguration('cushystudio')
-            .get('serverHostHTTP', 'http://localhost:8188')
+        return (
+            this.configWatcher.jsonContent['cushystudio.serverHostHTTP'] ?? 'http://localhost:8188' //
+        )
+    }
+    getWSUrl = (): string => {
+        return this.configWatcher.jsonContent['cushystudio.serverWSEndoint'] ?? `ws://localhost:8188/ws`
     }
 
-    getWSUrl = (): string => {
-        return vscode.workspace //
-            .getConfiguration('cushystudio')
-            .get('serverWSEndoint', `ws://localhost:8188/ws`)
-    }
     initWebsocket = () =>
         new ResilientWebSocketClient({
             onClose: () => {
@@ -217,11 +223,11 @@ export class ServerState {
             onMessage: this.onMessage,
         })
 
-    /** ensure webview is opened */
-    ensureWebviewPanelIsOpened = async (): Promise<void> => {
-        if (this.clients.size > 0) return
-        return await this.openWebview()
-    }
+    // /** ensure webview is opened */
+    // ensureWebviewPanelIsOpened = async (): Promise<void> => {
+    //     if (this.clients.size > 0) return
+    //     return await this.openWebview()
+    // }
 
     forwardImagesToFrontV2 = (images: GeneratedImage[]) => {
         this.broadCastToAllClients({ type: 'images', images: images.map((i) => i.toJSON()) })
@@ -335,7 +341,7 @@ export class ServerState {
             logger().info(`[.... step 1/4] fetching embeddings from ${embeddings_url} ...`)
             const embeddings_res = await fetch(embeddings_url, { method: 'GET', headers })
             const embeddings_json = (await embeddings_res.json()) as EmbeddingName[]
-            writeFileSync(this.embeddingsUri, JSON.stringify(embeddings_json), 'utf-8')
+            writeFileSync(this.embeddingsPath, JSON.stringify(embeddings_json), 'utf-8')
             // const keys2 = Object.keys(data2)
             // logger().info(`[.... step 1/4] found ${keys2.length} nodes`) // (${JSON.stringify(keys)})
             // schema$ = data as any
@@ -346,7 +352,7 @@ export class ServerState {
             http: logger().info('[*... step 2/4] updating schema...')
             const comfyJSONStr = readableStringify(schema$, 3)
             const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
-            vscode.workspace.fs.writeFile(this.comfyJSONUri, comfyJSONBuffer)
+            writeFileSync(this.comfyJSONPath, comfyJSONBuffer, 'utf-8')
             this.schema.update(schema$, embeddings_json)
             logger().info('[**.. step 2/4] schema updated')
 
@@ -358,10 +364,10 @@ export class ServerState {
             // 4 ------------------------------------
             logger().info('[**** step 4/4] saving schema')
             const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
-            vscode.workspace.fs.writeFile(this.comfyTSUri, comfySchemaBuff)
+            writeFileSync(this.comfyTSPath, comfySchemaBuff, 'utf-8')
             logger().info('[**** step 4/4] 🟢 schema updated')
         } catch (error) {
-            vscode.window.showErrorMessage('FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
+            console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
             logger().error('🐰', extractErrorMessage(error))
             logger().error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
             schema$ = {}

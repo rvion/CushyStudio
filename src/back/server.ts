@@ -77,6 +77,7 @@ export class CushyServer {
         logger().info('🫖 🟢 listening on port 8288...')
         this.listen()
     }
+
     listen = async () => {
         this.http
             .listen(this.port, '0.0.0.0', () => {

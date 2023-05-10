@@ -50,6 +50,6 @@ export class CushyFile {
             continue
         }
         const flows = this.workflows.map((i) => ({ name: i.flowName, id: i.flowID }))
-        this.workspace.broadCastToAllClients({ type: 'ls', workflowNames: flows })
+        this.workspace.broadCastToAllClients({ type: 'ls', knownFlows: flows })
     }
 }
