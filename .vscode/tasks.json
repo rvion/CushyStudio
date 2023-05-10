@@ -9,9 +9,9 @@
                 //
                 "🫖  Back",
                 "🖼  Front",
-                "👁  TSC",
-                "🔍  Schema",
-                "🌶️  VSCode"
+                "👁  TSC"
+                // "🔍  Schema",
+                // "🌶️  VSCode"
                 // "🐉  API"
             ],
             "group": { "kind": "build", "isDefault": true },
