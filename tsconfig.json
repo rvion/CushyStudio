@@ -24,6 +24,8 @@
     "exclude": [
         //
         "tsconfig.node.json",
+        "src/extension.ts",
+        "src/extension/",
         "src/examples/cushy.d.ts",
         "src/examples/comfy.d.ts"
     ],
