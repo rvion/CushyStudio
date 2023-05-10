@@ -1,4 +1,4 @@
-import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
+import type { ImageInfos } from 'src/core/GeneratedImageSummary'
 import { BUG } from './BUG'
 
 export type Requestable =

@@ -1,7 +1,7 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { IconButton, SelectPicker } from 'rsuite'
-import { useSt } from '../core-front/stContext'
+import { useSt } from '../front/stContext'
 
 export const WorkflowPickerUI = observer(function WorkflowPickerUI_() {
     const st = useSt()

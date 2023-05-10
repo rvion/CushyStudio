@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Radio, RadioGroup } from 'rsuite'
 import { LightBoxState, LightBoxUI } from '../LightBox'
-import type { ImageInfos } from '../../core-shared/GeneratedImageSummary'
+import type { ImageInfos } from '../../core/GeneratedImageSummary'
 
 export const ImageSelection = observer(function ImageSelection_(p: {
     infos: ImageInfos[]
@@ -10,7 +10,7 @@ export const ImageSelection = observer(function ImageSelection_(p: {
     set: (value: ImageInfos) => void
 }) {
     const { infos, get, set } = p
-    const lbs = useMemo(() => new LightBoxState(infos), [infos])
+    const lbs = useMemo(() => new LightBoxState(() => infos), [infos])
     const checkedURL = get()
     return (
         <div className='flex gap-2'>

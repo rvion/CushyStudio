@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { CSCriticalError } from '../core-back/Workspace'
+import { CSCriticalError } from '../back/ServerState'
 
 // export const EditorPaneUI = observer(function EditorPaneUI_() {
 //     const client = useWorkspace()

@@ -1,8 +1,8 @@
-import type { Graph } from '../core-shared/Graph'
-import type { ComfyNodeUID } from '../core-types/NodeUID'
+import type { Graph } from '../core/Graph'
+import type { ComfyNodeUID } from '../types/NodeUID'
 
 import { observer } from 'mobx-react-lite'
-import { comfyColors } from '../core-shared/Colors'
+import { comfyColors } from '../core/Colors'
 
 export const NodeRefUI = observer(function NodeRefUI_(p: { size?: number; nodeUID: ComfyNodeUID; graph: Graph }) {
     const node = p.graph.nodesIndex.get(p.nodeUID)

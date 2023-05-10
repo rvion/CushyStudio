@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx'
 import * as vscode from 'vscode'
 import { ILogger, LogLevel } from './LogTypes'
 import { registerLogger } from './logger'
-import { Printable } from '../core-shared/Printable'
+import { Printable } from '../core/Printable'
 
 export class LoggerBack implements ILogger {
     /**

@@ -4,8 +4,8 @@
  * on the node suite they have setup
  */
 
-import type { LATER } from 'LATER'
-import type { WorkflowBuilder } from 'src/core-shared/WorkflowFn'
+import type { LATER } from 'src/back/LATER'
+import type { WorkflowBuilder } from 'src/core/WorkflowFn'
 
 export type SimplifiedLoraDef = {
     name: LATER<'Enum_LoraLoader_lora_name'>

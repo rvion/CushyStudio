@@ -1,13 +1,13 @@
 import * as vscode from 'vscode'
-import type { FlowRun } from '../core-back/FlowRun'
-import type { ComfyPromptJSON } from '../core-types/ComfyPrompt'
-import type { WsMsgExecuted, WsMsgExecuting } from '../core-types/ComfyWsPayloads'
+import type { FlowRun } from '../back/FlowRun'
+import type { ComfyPromptJSON } from '../types/ComfyPrompt'
+import type { WsMsgExecuted, WsMsgExecuting } from '../types/ComfyWsPayloads'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { GeneratedImage } from '../core-back/GeneratedImage'
-import { Graph } from '../core-shared/Graph'
+import { GeneratedImage } from '../back/GeneratedImage'
+import { Graph } from '../core/Graph'
 import { deepCopyNaive } from '../utils/ComfyUtils'
 
 export class PromptExecution implements ScriptStep_Iface<PromptExecution> {

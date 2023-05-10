@@ -1,4 +1,4 @@
-import type { ImageInfos } from '../core-shared/GeneratedImageSummary'
+import type { ImageInfos } from '../core/GeneratedImageSummary'
 import Lightbox, { Plugin } from 'yet-another-react-lightbox'
 
 import { addToolbarButton } from 'yet-another-react-lightbox/core'
@@ -6,6 +6,7 @@ import Download from 'yet-another-react-lightbox/plugins/download'
 import FullScreen from 'yet-another-react-lightbox/plugins/fullscreen'
 import Thumbnails from 'yet-another-react-lightbox/plugins/thumbnails'
 import Zoom from 'yet-another-react-lightbox/plugins/zoom'
+import Inline from 'yet-another-react-lightbox/plugins/inline'
 import 'yet-another-react-lightbox/plugins/thumbnails.css'
 import 'yet-another-react-lightbox/styles.css'
 
@@ -26,11 +27,17 @@ const CustomPlugin: Plugin = ({ augment }) => {
 }
 
 export class LightBoxState {
-    constructor(public imgs: ImageInfos[]) {
+    constructor(
+        //
+        public getImgs: () => ImageInfos[],
+        public opened: boolean = false,
+    ) {
         makeAutoObservable(this)
     }
+    get imgs() {
+        return this.getImgs()
+    }
     index = 0
-    opened = false
     openGallery = (ix: number) => {
         this.opened = true
         this.index = ix
@@ -40,26 +47,30 @@ export class LightBoxState {
     }
 }
 
-export const LightBoxUI = observer(function LightBoxUI_(p: { lbs: LightBoxState }) {
+export const LightBoxUI = observer(function LightBoxUI_(p: { lbs: LightBoxState; inline?: boolean }) {
     const lbs = p.lbs
     if (!lbs.opened) return null
+    // {/* https://github.com/igordanchenko/yet-another-react-lightbox */}
     return (
-        <div>
-            {/* https://github.com/igordanchenko/yet-another-react-lightbox */}
-            {lbs.opened ? (
-                <Lightbox
-                    index={lbs.index}
-                    on={{
-                        view: ({ index }) => (lbs.index = index),
-                        exited: lbs.closeGallery,
-                    }}
-                    styles={{ container: { minHeight: '20rem' } }}
-                    zoom={{ scrollToZoom: true, maxZoomPixelRatio: 10 }}
-                    plugins={[Zoom, Download, FullScreen, CustomPlugin, Thumbnails]}
-                    slides={lbs.imgs.map((img) => ({ src: img.comfyURL }))}
-                    open={true}
-                />
-            ) : null}
-        </div>
+        <Lightbox
+            index={lbs.index}
+            on={{
+                view: ({ index }) => (lbs.index = index),
+                exited: lbs.closeGallery,
+            }}
+            styles={{ container: { minHeight: '20rem' } }}
+            zoom={{ scrollToZoom: true, maxZoomPixelRatio: 10 }}
+            plugins={[
+                //
+                Zoom,
+                Download,
+                FullScreen,
+                CustomPlugin,
+                Thumbnails,
+                ...(p.inline ? [Inline] : []),
+            ]}
+            slides={lbs.imgs.map((img) => ({ src: img.comfyURL }))}
+            open={true}
+        />
     )
 })

@@ -1,11 +1,11 @@
-import type { Slot } from './core-shared/Slot'
-import type { ComfyNodeUID } from './core-types/NodeUID'
-import type { ComfyNode } from './core-shared/Node'
-import type { ComfyNodeSchemaJSON } from './core-types/ComfySchemaJSON'
-import type { Graph } from './core-shared/Graph'
-import type { Workflow } from './core-shared/Workflow'
-import type { FlowRun } from './core-back/FlowRun'
-import type { WorkflowType } from './core-shared/WorkflowFn'
+import type { Slot } from './core/Slot'
+import type { ComfyNodeUID } from './types/NodeUID'
+import type { ComfyNode } from './core/Node'
+import type { ComfyNodeSchemaJSON } from './types/ComfySchemaJSON'
+import type { Graph } from './core/Graph'
+import type { Workflow } from './core/Workflow'
+import type { FlowRun } from './back/FlowRun'
+import type { WorkflowType } from './core/WorkflowFn'
 
 // Entrypoint --------------------------
 export interface ComfySetup {

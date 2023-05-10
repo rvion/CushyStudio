@@ -1,7 +1,13 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { CSSProperties, ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-export const ScrollablePaneUI = observer(function ScrollablePaneUI_(p: { children: ReactNode; items: any[] }) {
+export const ScrollablePaneUI = observer(function ScrollablePaneUI_(p: {
+    //
+    style?: CSSProperties
+    className?: string
+    children: ReactNode
+    items: any[]
+}) {
     // const uiVar = useMemo(() => ({ prevScrollTop: 0 }), [])
     // const uiSt = useLocalObservable(() => ({ follow: true }))
     const ref = useRef<HTMLDivElement>(null)
@@ -42,7 +48,8 @@ export const ScrollablePaneUI = observer(function ScrollablePaneUI_(p: { childre
             {/* {uiSt.follow ? '🟢' : '🔴'} */}
             <div
                 // onScrollCapture={onScroll}
-                className='relative scroll grow'
+                style={p.style}
+                className={'relative overflow-auto ' + p.className}
                 ref={ref}
             >
                 <div className='absolute inset-0 col'>

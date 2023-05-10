@@ -1,8 +1,8 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Button, Message, Panel } from 'rsuite'
-import { useSt } from '../core-front/stContext'
-import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
+import { useSt } from '../front/stContext'
+import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
 
 export const ShowFlowEndUI = observer(function ShowFlowEndUI_(p: { msg: MessageFromExtensionToWebview & { type: 'flow-end' } }) {
     const msg = p.msg

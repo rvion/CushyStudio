@@ -1,10 +1,10 @@
-import type { ImageInfos } from '../core-shared/GeneratedImageSummary'
+import type { ImageInfos } from '../core/GeneratedImageSummary'
 
 import * as I from '@rsuite/icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Button, IconButton, Panel, Popover, Rate, Slider, Whisper } from 'rsuite'
-import { useSt } from '../core-front/stContext'
-import { MessageFromExtensionToWebview } from '../core-types/MessageFromExtensionToWebview'
+import { useSt } from '../front/stContext'
+import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
 import { useMemo } from 'react'
 import { LightBoxState, LightBoxUI } from './LightBox'
 
@@ -44,7 +44,7 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
     // 🔴
     if (msg.type !== 'images') return <>error</>
     if (msg.images.length === 0) return <>no images</>
-    const uiSt = useMemo(() => new LightBoxState(msg.images), [msg.images])
+    const uiSt = useMemo(() => new LightBoxState(() => msg.images), [msg.images])
 
     return (
         <Panel

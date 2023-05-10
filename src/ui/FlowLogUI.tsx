@@ -1,14 +1,14 @@
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
-import { Panel } from 'rsuite'
-import { useSt } from '../core-front/stContext'
-import { MessageFromExtensionToWebview, renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
+import { useSt } from '../front/stContext'
+import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
 import { AskInfoUI } from './AskInfoUI'
 import { FlowGeneratedImagesUI } from './FlowGeneratedImagesUI'
 import { MsgShowHTMLUI } from './MsgShowHTMLUI'
 import { ShowFlowEndUI } from './ShowFlowEndUI'
 import { ShowUpdatingNodeUI } from './ShowUpdatingNodeUI'
 import { TypescriptHighlightedCodeUI } from './TypescriptHighlightedCodeUI'
+import { Panel } from 'rsuite'
 
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
@@ -48,10 +48,13 @@ export const renderMsgUI = (msg: MessageFromExtensionToWebview) => {
     if (msg.type === 'print')
         return (
             <Panel collapsible defaultExpanded key={msg.uid} shaded>
-                {msg.message}
+                <div>
+                    💬
+                    {msg.message}
+                </div>
             </Panel>
         )
-    if (msg.type === 'images') return <FlowGeneratedImagesUI key={msg.uid} msg={msg} />
+    // if (msg.type === 'images') return <FlowGeneratedImagesUI key={msg.uid} msg={msg} />
     if (msg.type === 'flow-end') return <ShowFlowEndUI key={msg.uid} msg={msg} />
     return null
 }

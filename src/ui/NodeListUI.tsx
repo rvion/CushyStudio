@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { Form, Panel, Progress } from 'rsuite'
-import { Graph } from '../core-shared/Graph'
-import { ComfyNode } from '../core-shared/Node'
-import { ComfyNodeSchema } from '../core-shared/Schema'
+import { Graph } from '../core/Graph'
+import { ComfyNode } from '../core/Node'
+import { ComfyNodeSchema } from '../core/Schema'
 import { NodeRefUI } from './NodeRefUI'
-import { useSt } from '../core-front/stContext'
+import { useSt } from '../front/stContext'
 
 export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
     //

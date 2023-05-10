@@ -17,7 +17,7 @@
         "jsx": "react-jsx",
         "baseUrl": ".",
         "paths": {
-            "LATER": ["src/core-back/LATER.ts"]
+            "LATER": ["src/back/LATER.ts"]
         }
     },
     "include": ["src"],

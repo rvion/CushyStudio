@@ -1,12 +1,12 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { IconButton, Nav } from 'rsuite'
-import { useSt } from '../core-front/stContext'
+import { useSt } from '../front/stContext'
 import { FlowLogUI } from './FlowLogUI'
-import { PreviewListUI } from './PreviewListUI'
+import { ProjectGalleryUI } from './PreviewListUI'
 import { WorkflowPickerUI } from './WorkflowPickerUI'
 import { ScrollablePaneUI } from './scrollableArea'
-import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
+import { renderMessageFromExtensionAsEmoji } from '../types/MessageFromExtensionToWebview'
 
 export const WebviewUI = observer(function WebviewUI_() {
     const st = useSt()
@@ -31,12 +31,17 @@ export const WebviewUI = observer(function WebviewUI_() {
                     />
                 </Nav>
             </div>
-            <PreviewListUI />
 
             {/* BODY */}
-            <ScrollablePaneUI items={st.received}>
-                <FlowLogUI />
-            </ScrollablePaneUI>
+            <div className='flex flex-row flex-grow '>
+                <ScrollablePaneUI style={{ width: '30rem' }} items={st.received} className='shrink-0'>
+                    <FlowLogUI />
+                </ScrollablePaneUI>
+                <div className='flex-grow basis-1 flex flex-col'>
+                    <ProjectGalleryUI />
+                </div>
+                {/* <div className='flex-grow'>bar</div> */}
+            </div>
             {st.showAllMessageReceived ? (
                 <div style={{ height: '10rem', resize: 'horizontal', overflow: 'auto' }}>
                     {st.itemsToShow.map((msg, ix) => (

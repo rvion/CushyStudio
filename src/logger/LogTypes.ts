@@ -1,4 +1,4 @@
-import { Printable } from '../core-shared/Printable'
+import { Printable } from '../core/Printable'
 
 export interface ILogger {
     debug(...message: Printable[]): void

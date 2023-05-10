@@ -7,8 +7,8 @@ import { useCallback, useMemo } from 'react'
 import { Button, Input, InputNumber, MultiCascader, Panel, Toggle, Tooltip, Whisper } from 'rsuite'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { BUG } from '../controls/BUG'
-import { useSt } from '../core-front/stContext'
-import { MessageFromExtensionToWebview_ask } from '../core-types/MessageFromExtensionToWebview'
+import { useSt } from '../front/stContext'
+import { FromExtension_ask } from '../types/MessageFromExtensionToWebview'
 import { PaintUI } from './widgets/PaintUI'
 import { exhaust } from '../utils/ComfyUtils'
 import { WebviewPlacePoints } from './widgets/WebviewPlacePoints'
@@ -18,7 +18,7 @@ import { ImageSelection } from './widgets/ImageSelection'
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const AskInfoUI = observer(function AskInfoUI_(p: { step: MessageFromExtensionToWebview_ask }) {
+export const AskInfoUI = observer(function AskInfoUI_(p: { step: FromExtension_ask }) {
     const st = useSt()
     const askState = useMemo(() => new AskState(), [])
 

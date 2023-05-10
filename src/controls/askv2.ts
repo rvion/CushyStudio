@@ -5,15 +5,15 @@
  * TODO: write them down to explain choices
  */
 
-import type { Base64Image } from 'src/core-shared/b64img'
+import type { Base64Image } from 'src/core/b64img'
 import type { SimplifiedLoraDef } from 'src/presets/presets'
 import type { Maybe, Tagged } from 'src/utils/types'
-import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
-import type { IGeneratedImage } from 'src/sdk/IFlowExecution'
+import type { ImageInfos } from 'src/core/GeneratedImageSummary'
 import type { Requestable } from './Requestable'
 
 import { logger } from 'src/logger/logger'
 import type * as R from './Requestable'
+import { GeneratedImage } from 'src/back/GeneratedImage'
 
 export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>
 export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>
@@ -52,7 +52,7 @@ export type InfoAnswer<Req> =
     Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] :
     never
 
-type ImageInBackend = IGeneratedImage | ImageInfos
+type ImageInBackend = GeneratedImage | ImageInfos
 const toImageInfos = (img: ImageInBackend) => {
     try {
         return (img as any).toJSON ? (img as any).toJSON() : img
@@ -79,16 +79,16 @@ export class InfoRequestBuilder {
 
     /** painting */
     private _toImageInfos = () => {}
-    samMaskPoints = (label: string, img: IGeneratedImage | ImageInfos) => ({
+    samMaskPoints = (label: string, img: GeneratedImage | ImageInfos) => ({
         type: 'samMaskPoints' as const,
         imageInfo: toImageInfos(img),
     })
-    selectImage = (label: string, imgs: (IGeneratedImage | ImageInfos)[]) => ({
+    selectImage = (label: string, imgs: (GeneratedImage | ImageInfos)[]) => ({
         type: 'selectImage' as const,
         imageInfos: imgs.map(toImageInfos),
         label,
     })
-    manualMask = (label: string, img: IGeneratedImage | ImageInfos) => ({
+    manualMask = (label: string, img: GeneratedImage | ImageInfos) => ({
         type: 'manualMask' as const,
         label,
         imageInfo: toImageInfos(img),

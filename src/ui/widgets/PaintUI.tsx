@@ -1,7 +1,7 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo, useRef } from 'react'
-import { useSt } from '../../core-front/stContext'
+import { useSt } from '../../front/stContext'
 import { Panel } from 'rsuite'
 
 // https://github.com/devforth/painterro

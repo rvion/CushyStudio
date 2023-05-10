@@ -6,8 +6,8 @@ import 'rsuite/dist/rsuite.min.css'
 import { WebviewUI } from './WebviewUI'
 import { CustomProvider } from 'rsuite'
 import { useMemo } from 'react'
-import { FrontState } from '../core-front/FrontState'
-import { stContext } from '../core-front/stContext'
+import { FrontState } from '../front/FrontState'
+import { stContext } from '../front/stContext'
 const Main = () => {
     const st = useMemo(() => new FrontState(), [FrontState])
     return (
