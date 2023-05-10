@@ -123,9 +123,7 @@ export class ServerState {
         // this.watchForCOnfigurationChanges()
         this.createTSConfigIfMissing()
         makeAutoObservable(this)
-        this.configWatcher.startWatching('./.vscode/settings.json')
-        const settingsWatcher = new ConfigFileWatcher()
-        settingsWatcher.startWatching(this.vscodeSettings)
+        this.configWatcher.startWatching('.vscode/settings.json')
     }
 
     createTSConfigIfMissing = () => {
@@ -181,9 +179,10 @@ export class ServerState {
     // 🔴     })
     // 🔴 }
 
-    tsFilesMap = new TypeScriptFilesMap()
+    tsFilesMap = new TypeScriptFilesMap(this)
     autoDiscoverEveryWorkflow = () => {
         this.tsFilesMap.startWatching(join(this.rootPath, 'src/examples/'))
+        this.tsFilesMap.startWatching(join(process.cwd(), 'src/examples/'))
 
         // // pre-populate the tree with any open documents
         // for (const document of vscode.workspace.textDocuments) this.updateNodeForDocument(document)

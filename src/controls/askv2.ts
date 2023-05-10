@@ -11,7 +11,7 @@ import type { Maybe, Tagged } from 'src/utils/types'
 import type { ImageInfos } from 'src/core/GeneratedImageSummary'
 import type { Requestable } from './Requestable'
 
-import { logger } from 'src/logger/logger'
+import { logger } from '../logger/logger'
 import type * as R from './Requestable'
 import { GeneratedImage } from 'src/back/GeneratedImage'
 

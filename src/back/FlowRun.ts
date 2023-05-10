@@ -1,4 +1,4 @@
-import type { LATER } from 'src/back/LATER'
+import type { LATER } from '../back/LATER'
 
 import FormData from 'form-data'
 import { marked } from 'marked'
@@ -8,8 +8,8 @@ import fetch from 'node-fetch'
 import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
-import { InfoAnswer, InfoRequestBuilder, InfoRequestFn } from 'src/controls/askv2'
-import { Requestable } from 'src/controls/Requestable'
+import { InfoAnswer, InfoRequestBuilder, InfoRequestFn } from '../controls/askv2'
+import { Requestable } from '../controls/Requestable'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
 import { PromptExecution } from '../controls/ScriptStep_prompt'

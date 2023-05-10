@@ -1,4 +1,6 @@
-WORKFLOW('demo12-basic', async ({ graph, flow }) => {
+console.log('coucou')
+
+WORKFLOW('demo1-basic', async ({ graph, flow }) => {
     const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const latent = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
     const positive = graph.CLIPTextEncode({ text: 'masterpiece, (chair:1.3)', clip: ckpt })
@@ -6,7 +8,7 @@ WORKFLOW('demo12-basic', async ({ graph, flow }) => {
     const sampler = graph.KSampler({
         seed: flow.randomSeed(),
         steps: 20,
-        cfg: 10,
+        cfg: 14,
         sampler_name: 'euler',
         scheduler: 'normal',
         denoise: 0.8,

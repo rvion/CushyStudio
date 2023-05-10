@@ -2,13 +2,13 @@ import type { RunMode } from '../core/Graph'
 import type { CodeRange, CushyFile } from './CushyFile'
 
 import { nanoid } from 'nanoid'
-import { auto } from 'src/core/autoValue'
+import { auto } from '../core/autoValue'
 import { logger } from '../logger/logger'
 import { Presets } from '../presets/presets'
 import { WorkflowBuilder, WorkflowBuilderFn } from '../core/WorkflowFn'
 import { FlowRun } from './FlowRun'
 import { transpileCode } from './transpiler'
-import { Branded } from 'src/utils/types'
+import { Branded } from '../utils/types'
 
 export type FlowDefinitionID = Branded<string, 'FlowDefinitionID'>
 export const asFlowDefinitionID = (s: string): FlowDefinitionID => s as any

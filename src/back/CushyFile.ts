@@ -4,10 +4,8 @@ import { FlowDefinition } from './FlowDefinition'
 import { ServerState } from './ServerState'
 import { logger } from '../logger/logger'
 import { readFileSync } from 'fs'
-import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
-import { bang } from 'src/utils/bang'
-
-const textDecoder = new TextDecoder('utf-8')
+import { AbsolutePath } from '../utils/fs/BrandedPaths'
+import { bang } from '../utils/bang'
 
 export type MarkdownTestData = CushyFile | /* TestHeading |*/ FlowDefinition
 
@@ -47,6 +45,7 @@ export class CushyFile {
             const range: CodeRange = { fromLine: lineNo, fromChar: 0, toLine: lineNo, toChar: line.length }
             const flow = new FlowDefinition(this, range, name)
             this.workflows.push(flow)
+            this.workspace.knownFlows.set(flow.flowID, flow)
             continue
         }
         const flows = this.workflows.map((i) => ({ name: i.flowName, id: i.flowID }))

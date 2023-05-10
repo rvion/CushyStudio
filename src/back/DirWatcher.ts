@@ -1,10 +1,16 @@
 import chokidar from 'chokidar'
-import fs from 'fs'
+import { ServerState } from './ServerState'
+import { CushyFile } from './CushyFile'
+import { asAbsolutePath } from '../utils/fs/pathUtils'
 
 export class TypeScriptFilesMap {
-    filesMap: Map<string, string>
+    filesMap: Map<string, CushyFile>
 
-    constructor(public extensions: string = '.cushy.ts') {
+    constructor(
+        //
+        public serverState: ServerState,
+        public extensions: string = '.cushy.ts',
+    ) {
         this.filesMap = new Map()
     }
 
@@ -22,21 +28,25 @@ export class TypeScriptFilesMap {
     }
 
     private handleNewFile(filePath: string) {
-        if (filePath.endsWith(this.extensions)) {
-            fs.readFile(filePath, 'utf8', (err, data) => {
-                if (err) throw err
-                this.filesMap.set(filePath, data)
-            })
-        }
+        if (!filePath.endsWith(this.extensions)) return
+        const absPath = asAbsolutePath(filePath)
+        this.serverState.knownFiles.set(absPath, new CushyFile(this.serverState, absPath))
+
+        // fs.readFile(filePath, 'utf8', (err, data) => {
+        //     if (err) throw err
+        //     this.filesMap.set(filePath, data)
+        // })
     }
 
     private handleFileChange(filePath: string) {
-        if (filePath.endsWith(this.extensions)) {
-            fs.readFile(filePath, 'utf8', (err, data) => {
-                if (err) throw err
-                this.filesMap.set(filePath, data)
-            })
-        }
+        console.log(`${filePath} changed`)
+        const absPath = asAbsolutePath(filePath)
+        if (!filePath.endsWith(this.extensions)) return
+        this.serverState.knownFiles.set(absPath, new CushyFile(this.serverState, absPath))
+        // fs.readFile(filePath, 'utf8', (err, data) => {
+        //     if (err) throw err
+        //     this.filesMap.set(filePath, data)
+        // })
     }
 
     private handleFileRemoval(filePath: string) {
