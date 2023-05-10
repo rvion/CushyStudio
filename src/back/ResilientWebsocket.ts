@@ -53,7 +53,7 @@ export class ResilientWebSocketClient {
 
         if (this.options.onMessage) {
             ws.onmessage = (event: MessageEvent) => {
-                console.log(event)
+                // console.log(event)
                 this.options.onMessage(event)
             }
         }
@@ -61,7 +61,7 @@ export class ResilientWebSocketClient {
         ws.onopen = (event: Event) => {
             if (ws !== this.currentWS) return
             logger().info('🧦 🟢 WebSocket connected to ' + this.url)
-            vscode.window.showInformationMessage('🛋️ 🟢 WebSocket connected')
+            console.log('🛋️ 🟢 WebSocket connected')
             this.isOpen = true
             this.options.onConnectOrReconnect()
             this.flushMessageBuffer()

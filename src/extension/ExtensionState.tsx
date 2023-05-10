@@ -32,6 +32,7 @@ import { PayloadID } from '../core/PayloadID'
 import { convertLiteGraphToPrompt } from 'src/core/litegraphToPrompt'
 import { StatusBar } from './statusBar'
 import { ServerState } from 'src/back/ServerState'
+import { VSCodeEmojiDecorator } from './decorator'
 
 /**
  * global State
@@ -49,6 +50,7 @@ export class ExtensionState {
     ) {
         this.statusBar = new StatusBar(this)
         this.vsTestController = this.initVSTestController()
+        this.decorator = new VSCodeEmojiDecorator(this.serverState)
     }
     vsTestController: vscode.TestController
     statusBar: StatusBar
@@ -62,6 +64,8 @@ export class ExtensionState {
         const cushyFile = this.getOrCreateFile(this.vsTestController, e.uri)
         cushyFile.updateFromContents(e.getText())
     }
+
+    decorator: VSCodeEmojiDecorator
 
     importCurrentFile = async (opts: { preserveId: boolean }) => {
         const tab = vscode.window.tabGroups.activeTabGroup.activeTab

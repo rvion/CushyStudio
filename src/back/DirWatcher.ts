@@ -9,6 +9,7 @@ export class TypeScriptFilesMap {
     }
 
     startWatching(dir: string) {
+        console.log(`👀 Watching ${dir} for ${this.extensions} files`)
         const watcher = chokidar.watch(dir, {
             ignored: /(^|[\/\\])\../, // ignore dotfiles
             persistent: true,

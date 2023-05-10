@@ -1,4 +1,3 @@
-import * as vscode from 'vscode'
 import type WebSocket from 'ws'
 import type { ServerState } from './ServerState'
 
@@ -6,7 +5,8 @@ import { nanoid } from 'nanoid'
 import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../types/MessageFromExtensionToWebview'
 import { logger } from '../logger/logger'
 import { exhaust } from '../utils/ComfyUtils'
-import { ScriptStep_ask } from 'src/controls/ScriptStep_ask'
+import { ScriptStep_ask } from '../controls/ScriptStep_ask'
+import open from 'open'
 
 export class CushyClient {
     clientID = nanoid(6)
@@ -68,12 +68,12 @@ export class CushyClient {
         // const text = smg.text
 
         if (msg.type === 'say-hello') {
-            vscode.window.showInformationMessage(`🛋️ ${msg.message}`)
+            console.log(`🛋️ ${msg.message}`)
             return
         }
         if (msg.type === 'open-external') {
-            console.log('open external', msg.uriString, vscode.Uri.parse(msg.uriString))
-            return void vscode.env.openExternal(vscode.Uri.parse(msg.uriString))
+            console.log('open external', msg.uriString, msg.uriString)
+            return void open(msg.uriString)
         }
 
         if (msg.type === 'answer') {

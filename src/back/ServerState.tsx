@@ -13,7 +13,6 @@ import { makeAutoObservable } from 'mobx'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { PayloadID, getPayloadID } from '../core/PayloadID'
 import { Schema } from '../core/Schema'
-import { VSCodeEmojiDecorator } from '../extension/decorator'
 import { logger } from '../logger/logger'
 import { ComfyStatus, WsMsg } from '../types/ComfyWsPayloads'
 import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '../types/MessageFromExtensionToWebview'
@@ -23,14 +22,14 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyClient } from './Client'
+import { ConfigFileWatcher } from './ConfigWatcher'
 import { CushyFile } from './CushyFile'
+import { TypeScriptFilesMap } from './DirWatcher'
 import { FlowDefinition, FlowDefinitionID } from './FlowDefinition'
 import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
-import { TypeScriptFilesMap } from './DirWatcher'
-import { ConfigFileWatcher } from './ConfigWatcher'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -105,7 +104,6 @@ export class ServerState {
     }
 
     server!: CushyServer
-    decorator: VSCodeEmojiDecorator
     configWatcher = new ConfigFileWatcher()
 
     constructor(public rootPath: AbsolutePath) {
@@ -118,7 +116,6 @@ export class ServerState {
         this.tsConfigPath = this.resolve(asRelativePath('tsconfig.json'))
         this.server = new CushyServer(this)
         this.schema = this.restoreSchemaFromCache()
-        this.decorator = new VSCodeEmojiDecorator(this)
         this.writeTextFile(this.cushyTSPath, sdkTemplate)
 
         this.autoDiscoverEveryWorkflow()
@@ -186,7 +183,7 @@ export class ServerState {
 
     tsFilesMap = new TypeScriptFilesMap()
     autoDiscoverEveryWorkflow = () => {
-        this.tsFilesMap.startWatching(this.rootPath)
+        this.tsFilesMap.startWatching(join(this.rootPath, 'src/examples/'))
 
         // // pre-populate the tree with any open documents
         // for (const document of vscode.workspace.textDocuments) this.updateNodeForDocument(document)
@@ -203,11 +200,19 @@ export class ServerState {
 
     getServerHostHTTP(): string {
         return (
-            this.configWatcher.jsonContent['cushystudio.serverHostHTTP'] ?? 'http://localhost:8188' //
+            this.configWatcher.jsonContent['cushystudio.serverHostHTTP'] ??
+            //
+            'http://192.168.1.19:8188'
+            // 'http://localhost:8188' //
         )
     }
     getWSUrl = (): string => {
-        return this.configWatcher.jsonContent['cushystudio.serverWSEndoint'] ?? `ws://localhost:8188/ws`
+        return (
+            this.configWatcher.jsonContent['cushystudio.serverWSEndoint'] ??
+            //
+            `ws://192.168.1.19:8188/ws`
+            // `ws://localhost:8188/ws`
+        )
     }
 
     initWebsocket = () =>

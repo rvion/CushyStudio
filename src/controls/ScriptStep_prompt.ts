@@ -1,4 +1,3 @@
-import * as vscode from 'vscode'
 import type { FlowRun } from '../back/FlowRun'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { WsMsgExecuted, WsMsgExecuting } from '../types/ComfyWsPayloads'
@@ -60,7 +59,7 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
     //     }
     // }
 
-    notifyEmptyPrompt = () => vscode.window.showWarningMessage('No work to do')
+    notifyEmptyPrompt = () => console.log('🔶 No work to do')
 
     /** update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {
