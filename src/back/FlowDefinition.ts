@@ -1,5 +1,5 @@
 import type { RunMode } from '../core/Graph'
-import type { CushyFile } from './CushyFile'
+import type { CodeRange, CushyFile } from './CushyFile'
 
 import { nanoid } from 'nanoid'
 import { auto } from 'src/core/autoValue'
@@ -8,26 +8,31 @@ import { Presets } from '../presets/presets'
 import { WorkflowBuilder, WorkflowBuilderFn } from '../core/WorkflowFn'
 import { FlowRun } from './FlowRun'
 import { transpileCode } from './transpiler'
+import { Branded } from 'src/utils/types'
+
+export type FlowDefinitionID = Branded<string, 'FlowDefinitionID'>
+export const asFlowDefinitionID = (s: string): FlowDefinitionID => s as any
+
+export type FlowRunID = Branded<string, 'FlowRunID'>
+export const asFlowRunID = (s: string): FlowRunID => s as any
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
  * flow = the 'WORFLOW(...)' part of a file
  * */
 export class FlowDefinition {
+    flowID: FlowDefinitionID
+
     constructor(
         //
-        public flowID: string,
         public file: CushyFile,
+        public range: CodeRange,
         public flowName: string,
-        public generation: number,
-    ) {}
+    ) {
+        this.flowID = asFlowDefinitionID(`${file.absPath}#${flowName}`)
+    }
 
-    run = async (
-        //
-        // vsTestItem: vscode.TestItem,
-        // vsTestRun: vscode.TestRun,
-        mode: RunMode = 'real',
-    ): Promise<boolean> => {
+    run = async (mode: RunMode = 'real'): Promise<boolean> => {
         const start = Date.now()
         const flowRunID = nanoid(6)
         const workspace = this.file.workspace
@@ -36,21 +41,8 @@ export class FlowDefinition {
         workspace.broadCastToAllClients({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
 
         logger().info('❓ running some flow')
-        // this.focusedProject = this
-        // ensure we have some code to run
-        // this.scriptBuffer.codeJS
-        // get the content of the current editor
 
-        // const activeTextEditor = vscode.window.activeTextEditor
-        // if (activeTextEditor == null) {
-        //     logger().info( '❌ no active editor')
-        //     return false
-        // }
-        // const activeDocument = activeTextEditor.document
-        // const activeURI = activeDocument.uri
-        // logger().info( activeURI.toString())
         const codeTS = this.file.CONTENT
-        // logger().info( codeTS.slice(0, 1000) + '...')
         const codeJS = await transpileCode(codeTS)
         logger().info(`\`\`\`ts\n${codeJS}\n\`\`\``)
         // logger().debug('🔥', codeJS + '...')

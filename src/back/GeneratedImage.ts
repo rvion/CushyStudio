@@ -63,8 +63,6 @@ export class GeneratedImage implements ImageInfos {
     comfyInputPath?: Maybe<string> = null
 
     // CUSHY RELATIVE ----------------------------------------------------------------------
-    /** folder in which the image should be saved */
-    get localFolder(): RelativePath { return this.prompt.run.workspaceRelativeCacheFolderPath } // prettier-ignore
 
     /** local workspace file name, without extension */
     get localFileNameNoExt(): string { return this.prompt.uid + '_' + this.uid } // prettier-ignore

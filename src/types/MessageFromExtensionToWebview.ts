@@ -4,16 +4,17 @@ import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { EmbeddingName } from 'src/core/Schema'
 import type { ImageInfos } from 'src/core/GeneratedImageSummary'
+import type { Requestable } from 'src/controls/Requestable'
+import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
+import type { FlowDefinitionID, FlowRunID } from 'src/back/FlowDefinition'
 
 import { exhaust } from '../utils/ComfyUtils'
-import { Requestable } from 'src/controls/Requestable'
-import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 
 // =============================================================================================
 // | Webview => Extension                                                                      |
 // =============================================================================================
 export type FromWebview_SayReady = { type: 'say-ready'; frontID: string }
-export type FromWebview_runFlow = { type: 'run-flow'; flowID: string; img?: AbsolutePath }
+export type FromWebview_runFlow = { type: 'run-flow'; flowID: FlowDefinitionID; img?: AbsolutePath }
 export type FromWebview_openExternal = { type: 'open-external'; uriString: string }
 export type FromWebview_sayHello = { type: 'say-hello'; message: string }
 export type FromWebview_Answer = { type: 'answer'; value: any }
@@ -30,9 +31,14 @@ export type MessageFromWebviewToExtension =
 export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExtensionToWebview_
 
 export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boolean }
-export type FromExtension_FlowStart = { type: 'flow-start'; flowRunID: string }
-export type FromExtension_FlowCode = { type: 'flow-code'; flowRunID: string; code: string }
-export type FromExtension_FlowEnd = { type: 'flow-end'; flowRunID: string; status: 'success' | 'failure'; flowID: string }
+export type FromExtension_FlowStart = { type: 'flow-start'; flowRunID: FlowRunID }
+export type FromExtension_FlowCode = { type: 'flow-code'; flowRunID: FlowRunID; code: string }
+export type FromExtension_FlowEnd = {
+    type: 'flow-end'
+    flowRunID: FlowRunID
+    status: 'success' | 'failure'
+    flowID: FlowDefinitionID
+}
 export type FromExtension_Print = { type: 'print'; message: string }
 export type FromExtension_Schema = { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
 export type FromExtension_Prompt = { type: 'prompt'; graph: ComfyPromptJSON }

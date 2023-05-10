@@ -1,9 +1,11 @@
 import { TextDecoder } from 'util'
 import * as vscode from 'vscode'
 import { FlowDefinition } from './FlowDefinition'
-import { extractWorkflows } from '../extension/extractWorkflows'
 import { ServerState } from './ServerState'
 import { logger } from '../logger/logger'
+import { readFileSync } from 'fs'
+import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
+import { bang } from 'src/utils/bang'
 
 const textDecoder = new TextDecoder('utf-8')
 
@@ -11,75 +13,43 @@ export type MarkdownTestData = CushyFile | /* TestHeading |*/ FlowDefinition
 
 export const vsTestItemOriginDict = new WeakMap<vscode.TestItem, MarkdownTestData>()
 
-let generationCounter = 0
+export type CodeRange = {
+    fromLine: number
+    fromChar: number
+    toLine: number
+    toChar: number
+}
 
 export class CushyFile {
+    CONTENT = ''
+    workflows: FlowDefinition[] = []
     constructor(
         //
         public workspace: ServerState,
-        public absPath: vscode.Uri,
-    ) {}
-
-    /** true once the file content has been read */
-    public didResolve = false
-
-    async updateFromDisk() {
-        try {
-            const content = this.workspace.readTextFile(this.absPath)
-            this.vsTestItem.error = undefined
-            this.updateFromContents(content)
-        } catch (e) {
-            this.vsTestItem.error = (e as Error).stack
-        }
+        public absPath: AbsolutePath,
+    ) {
+        this.CONTENT = readFileSync(absPath, 'utf-8')
+        this.extractWorkflows()
     }
 
-    private getContentFromFilesystem = async (uri: vscode.Uri) => {
-        try {
-            const rawContent = await vscode.workspace.fs.readFile(uri)
-            return textDecoder.decode(rawContent)
-        } catch (e) {
-            console.warn(`Error providing tests for ${uri.fsPath}`, e)
-            return ''
+    WorkflowRe = /^^WORKFLOW\(['"](.*)['"]/
+
+    extractWorkflows = () => {
+        const lines = this.CONTENT.split('\n')
+
+        this.workflows = []
+        for (let lineNo = 0; lineNo < lines.length; lineNo++) {
+            const line = lines[lineNo]
+            const isWorkflow = this.WorkflowRe.exec(line)
+            if (!isWorkflow) continue
+            logger().info(`found workflow "${isWorkflow?.[1]}"`)
+            const name = bang(isWorkflow[1])
+            const range: CodeRange = { fromLine: lineNo, fromChar: 0, toLine: lineNo, toChar: line.length }
+            const flow = new FlowDefinition(this, range, name)
+            this.workflows.push(flow)
+            continue
         }
-    }
-
-    CONTENT = ''
-    /**
-     * Parses the tests from the input text, and updates the tests contained
-     * by this file to be those from the text,
-     */
-    public updateFromContents(content: string) {
-        extractWorkflows(content, {
-            onWorkflowFound: (range: vscode.Range, workflowName: string) => {
-                const parent = ancestors[ancestors.length - 1]
-                const flowID = `${vsTestItem.uri}/${workflowName}`
-                ids.push({ id: flowID, name: workflowName })
-                const tcase = controller.createTestItem(flowID, workflowName, vsTestItem.uri)
-                const cushyFlow = new FlowDefinition(flowID, this, range, workflowName, thisGeneration)
-                // vsTestItemOriginDict.set(tcase, cushyFlow)
-                // tcase.range = range
-                // parent.children.push(tcase)
-            },
-
-            // onHeading: (range, name, depth) => {
-            //     ascend(depth)
-            //     const parent = ancestors[ancestors.length - 1]
-            //     const id = `${item.uri}/${name}`
-
-            //     const thead = controller.createTestItem(id, name, item.uri)
-            //     thead.range = range
-            //     testData.set(thead, new TestHeading(thisGeneration))
-            //     parent.children.push(thead)
-            //     ancestors.push({ item: thead, children: [] })
-            // },
-        })
-        // logger().info('🔴' + ids.join(','))
-        this.workspace.broadCastToAllClients({ type: 'ls', workflowNames: ids })
-
-        ascend(0) // finish and assign children for all remaining items
+        const flows = this.workflows.map((i) => ({ name: i.flowName, id: i.flowID }))
+        this.workspace.broadCastToAllClients({ type: 'ls', workflowNames: flows })
     }
 }
-
-// export class TestHeading {
-//     constructor(public generation: number) {}
-// }

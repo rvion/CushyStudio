@@ -23,7 +23,11 @@ export class CushyServer {
         return `${this.baseURL}/${relPath}`
     }
 
-    constructor(public serverState: ServerState) {
+    constructor(
+        //
+        public serverState: ServerState,
+        public frontPublicDir?: AbsolutePath,
+    ) {
         logger().info('🫖 creating CushyServer express app...')
         const app = express()
         app.use(cors({ origin: '*' }))
@@ -36,10 +40,14 @@ export class CushyServer {
             next()
         })
 
-        const extensionURI = serverState.context.extensionUri
-        const webviewDistURI = extensionURI.with({ path: posix.join(extensionURI.path, 'dist', 'webview') })
-        logger().info(`🫖 mounting webview folder ${webviewDistURI.fsPath}`)
-        app.use(express.static(webviewDistURI.fsPath))
+        // 🔴 | const extensionURI = serverState.context.extensionUri
+        // 🔴 | const webviewDistURI = extensionURI.with({ path: posix.join(extensionURI.path, 'dist', 'webview') })
+        // 🔴 | logger().info(`🫖 mounting webview folder ${webviewDistURI.fsPath}`)
+        // 🔴 | app.use(express.static(webviewDistURI.fsPath))
+        if (frontPublicDir) {
+            logger().info(`🫖 mounting webview folder ${frontPublicDir}`)
+            app.use(express.static(frontPublicDir))
+        }
 
         // app.get('/', (req, res) => res.sendFile(webviewDistURI.path + '/index.html'))
         // app.get('/index.html', (req, res) => res.sendFile(webviewDistURI.path + '/index.html'))
@@ -56,7 +64,7 @@ export class CushyServer {
         const server = http.createServer(app)
         this.http = server
 
-        const cacheFolderPath = serverState.cacheFolderPath.fsPath
+        const cacheFolderPath = serverState.cacheFolderPath
         logger().info(`🫖 mounting public folder ${cacheFolderPath}...`)
         app.use(express.static(cacheFolderPath))
 

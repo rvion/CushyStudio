@@ -1,43 +1,36 @@
+import type { EmbeddingName } from '../core/Schema'
 import type { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import type { FlowExecutionStep } from '../types/FlowExecutionStep'
-import type { EmbeddingName } from '../core/Schema'
 
 import fetch from 'node-fetch'
-import { join, posix } from 'path'
+import { join } from 'path'
 import * as WS from 'ws'
-import { sleep } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
 import { FlowRun } from './FlowRun'
 
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
-import { getPayloadID } from '../core/PayloadID'
+import { PayloadID, getPayloadID } from '../core/PayloadID'
 import { Schema } from '../core/Schema'
+import { VSCodeEmojiDecorator } from '../extension/decorator'
+import { ComfyImporter } from '../importers/ImportComfyImage'
+import { logger } from '../logger/logger'
 import { ComfyPromptJSON } from '../types/ComfyPrompt'
 import { ComfyStatus, WsMsg } from '../types/ComfyWsPayloads'
+import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '../types/MessageFromExtensionToWebview'
+import { sdkTemplate } from '../typings/sdkTemplate'
+import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { ComfyImporter } from '../importers/ImportComfyImage'
-import { getPngMetadata } from '../importers/getPngMetadata'
-import { logger } from '../logger/logger'
-import { sdkTemplate } from '../typings/sdkTemplate'
-import { bang } from '../utils/bang'
-import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { readableStringify } from '../utils/stringifyReadable'
-import { CushyFile, vsTestItemOriginDict } from './CushyFile'
-import { FlowRunner } from './FlowRunner'
-import { FrontWebview } from './FrontWebview'
+import { CushyClient } from './Client'
+import { CushyFile } from './CushyFile'
+import { FlowDefinition, FlowDefinitionID } from './FlowDefinition'
 import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
-import { VSCodeEmojiDecorator } from '../extension/decorator'
 import { CushyServer } from './server'
-import { CushyClient } from './Client'
-import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '../types/MessageFromExtensionToWebview'
-import { LoggerBack } from '../logger/LoggerBack'
-import { PayloadID } from '../core/PayloadID'
-import { convertLiteGraphToPrompt } from 'src/core/litegraphToPrompt'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -91,7 +84,9 @@ export class ServerState {
         writeFileSync(absPath, content, 'utf-8')
     }
 
-    startTestRun = async (request: vscode.TestRunRequest) => void new FlowRunner(this, request)
+    knownFlows = new Map<FlowDefinitionID, FlowDefinition>()
+    knownFiles = new Map<AbsolutePath, CushyFile>()
+
     /** wrapper around vscode.tests.createTestController so logic is self-contained  */
 
     clients = new Map<string, CushyClient>()

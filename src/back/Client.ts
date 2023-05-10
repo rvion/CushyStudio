@@ -13,7 +13,7 @@ export class CushyClient {
 
     constructor(
         //
-        public workspace: ServerState,
+        public serverState: ServerState,
         public ws: WebSocket,
     ) {
         logger().info(`🐼 Client ${this.clientID} connected`)
@@ -24,18 +24,18 @@ export class CushyClient {
             this.onMessageFromWebview(jsonMsg)
         })
         ws.on('open', () => {
-            const lastStatus = this.workspace.lastMessagesPerType.get('cushy_status')
+            const lastStatus = this.serverState.lastMessagesPerType.get('cushy_status')
             if (lastStatus) this.sendMessage(lastStatus)
         })
         ws.onerror = (err) => {
             console.log('ws error', err)
         }
         ws.on('close', () => {
-            this.workspace.unregisterClient(this.clientID)
+            this.serverState.unregisterClient(this.clientID)
             console.log('Client disconnected')
         })
 
-        this.workspace.registerClient(this.clientID, this)
+        this.serverState.registerClient(this.clientID, this)
     }
 
     /** wether or not the webview is up and running and react is mounted */
@@ -77,7 +77,7 @@ export class CushyClient {
         }
 
         if (msg.type === 'answer') {
-            const run = this.workspace.activeRun
+            const run = this.serverState.activeRun
             if (run == null) throw new Error('no active run')
             const step = run.step
             if (!(step instanceof ScriptStep_ask)) throw new Error('not a string request step')
@@ -87,31 +87,9 @@ export class CushyClient {
 
         if (msg.type === 'run-flow') {
             logger().info(`🐙 run-flow request: ${msg.flowID}`)
-            let validTestIte: vscode.TestItem | undefined
-            const allTests = this.workspace.vsTestController.items.forEach((i) => {
-                i.children.forEach((c) => {
-                    if (c.id === msg.flowID) {
-                        validTestIte = c
-                    }
-                })
-                // console.log(i.id, i.label, { i })
-            })
-            if (validTestIte == null) return logger().info('🔴 test not found')
-            // manually run the test
-            this.workspace.startTestRun({
-                exclude: [],
-                include: [validTestIte],
-                profile: this.workspace.xxx,
-            })
-
-            // this.workspace.vsTestController.createTestRun({
-            //     exclude: [],
-            //     include: [validTestIte],
-            //     profile: this.workspace.xxx,
-            // })
-            // const flow = this.workspace.vsTestController.
-            // logger().info(`🐙 run-flow: ${flow?.id}`)
-            return
+            const flow = this.serverState.knownFlows.get(msg.flowID)
+            if (flow == null) return logger().info('🔴 test not found')
+            return flow.run()
         }
 
         if (msg.type === 'say-ready') {
@@ -120,7 +98,7 @@ export class CushyClient {
             this.ready = true
 
             // send the last known workflow list
-            const lastLs = this.workspace.lastMessagesPerType.get('ls')
+            const lastLs = this.serverState.lastMessagesPerType.get('ls')
             if (lastLs) this.sendMessage(lastLs)
 
             // then flush
