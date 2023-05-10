@@ -10,6 +10,7 @@ import { ScriptStep_ask } from 'src/controls/ScriptStep_ask'
 
 export class CushyClient {
     clientID = nanoid(6)
+
     constructor(
         //
         public workspace: Workspace,
@@ -21,6 +22,10 @@ export class CushyClient {
             // logger().info(jsonMsg)
             const jsonMsg = JSON.parse(message)
             this.onMessageFromWebview(jsonMsg)
+        })
+        ws.on('open', () => {
+            const lastStatus = this.workspace.lastMessagesPerType.get('cushy_status')
+            if (lastStatus) this.sendMessage(lastStatus)
         })
         ws.onerror = (err) => {
             console.log('ws error', err)
@@ -115,7 +120,7 @@ export class CushyClient {
             this.ready = true
 
             // send the last known workflow list
-            const lastLs = this.workspace.lastMessages.get('ls')
+            const lastLs = this.workspace.lastMessagesPerType.get('ls')
             if (lastLs) this.sendMessage(lastLs)
 
             // then flush

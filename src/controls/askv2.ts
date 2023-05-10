@@ -13,6 +13,7 @@ import type { IGeneratedImage } from 'src/sdk/IFlowExecution'
 import type { Requestable } from './Requestable'
 
 import { logger } from 'src/logger/logger'
+import type * as R from './Requestable'
 
 export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>
 export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>
@@ -20,26 +21,24 @@ export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>
 // prettier-ignore
 export type InfoAnswer<Req> =
     /** str */
-    Req extends { type: 'str' } ? string :
-    Req extends { type: 'str?' } ? Maybe<string> :
+    Req extends R.Requestable_str ? string :
+    Req extends R.Requestable_strOpt ? Maybe<string> :
     /** nums */
-    Req extends { type: 'int' } ? number :
-    Req extends { type: 'int?' } ? Maybe<number> :
+    Req extends R.Requestable_int ? number :
+    Req extends R.Requestable_intOpt ? Maybe<number> :
     /** bools */
-    Req extends { type: 'bool' } ? boolean :
-    Req extends { type: 'bool?' } ? Maybe<boolean> :
+    Req extends R.Requestable_bool ? boolean :
+    Req extends R.Requestable_boolOpt ? Maybe<boolean> :
     /** embedding */
-    Req extends { type: 'embeddings' } ? Maybe<boolean> :
+    Req extends R.Requestable_embeddings ? Maybe<boolean> :
     /** loras */
-    Req extends { type: 'lora' } ? SimplifiedLoraDef :
-    Req extends { type: 'loras' } ? SimplifiedLoraDef[] :
+    Req extends R.Requestable_lora ? SimplifiedLoraDef :
+    Req extends R.Requestable_loras ? SimplifiedLoraDef[] :
     /** painting */
-
-    // {"samMaskPoints":{"points":"[89.39583587646484, 394.6302185058594], [141.39583587646484, 227.63021850585938]","labels":"[1, 1]"}}
-    Req extends {type: 'samMaskPoints' } ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
-    Req extends {type: 'selectImage' } ? ImageInfos :
-    Req extends {type: 'manualMask' } ? Base64Image :
-    Req extends {type: 'paint'} ? Base64Image :
+    Req extends R.Requestable_samMaskPoints ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
+    Req extends R.Requestable_selectImage ? ImageInfos :
+    Req extends R.Requestable_manualMask ? Base64Image :
+    Req extends R.Requestable_paint ? Base64Image :
 
     /** group */
     Req extends { type: 'items', items: { [key: string]: any } } ? { [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> } :
@@ -64,7 +63,7 @@ const toImageInfos = (img: ImageInBackend) => {
 
 export class InfoRequestBuilder {
     /** str */
-    str = (label?: string) => ({ type: 'str' as const, label })
+    str = (label?: string): R.Requestable_str => ({ type: 'str' as const, label })
     strOpt = (label?: string) => ({ type: 'str?' as const, label })
     /** nums */
     int = (label?: string) => ({ type: 'int' as const, label })

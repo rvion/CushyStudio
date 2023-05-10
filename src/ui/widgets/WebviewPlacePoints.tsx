@@ -23,7 +23,10 @@ export const WebviewPlacePoints = observer(function WebviewPlacePoints_(p: {
 })
 
 class ImageAnnotations {
-    constructor(public imageUrl: string) {
+    constructor(
+        //
+        public imageUrl: string,
+    ) {
         makeAutoObservable(this)
         this.image = new Image()
         this.image.onload = () => {

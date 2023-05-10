@@ -382,6 +382,7 @@ declare module "core-shared/Graph" {
         cyto?: Cyto;
         /** @internal every node constructor must call this */
         registerNode: (node: ComfyNode<any>) => void;
+        /** reset all nodes */
         reset: () => void;
         /** nodes, in creation order */
         nodes: ComfyNode<any>[];
@@ -518,6 +519,116 @@ declare module "controls/BUG" {
     export class BUG {
     }
 }
+declare module "controls/Requestable" {
+    import type { ImageInfos } from "core-shared/GeneratedImageSummary";
+    import { BUG } from "controls/BUG";
+    export type Requestable = 
+    /** str */
+    Requestable_str | Requestable_strOpt
+    /** nums */
+     | Requestable_int | Requestable_intOpt
+    /** bools */
+     | Requestable_bool | Requestable_boolOpt
+    /** embedding */
+     | Requestable_embeddings
+    /** loras */
+     | Requestable_lora | Requestable_loras
+    /** painting */
+     | Requestable_samMaskPoints | Requestable_selectImage | Requestable_manualMask | Requestable_paint
+    /** group */
+     | Requestable_items
+    /** select one */
+     | Requestable_selectOne | Requestable_selectOneOrCustom
+    /** select many */
+     | Requestable_selectMany | Requestable_selectManyOrCustom
+    /** array */
+     | Requestable[]
+    /** ?? */
+     | BUG;
+    export type Requestable_str = {
+        type: 'str';
+        label?: string;
+    };
+    export type Requestable_strOpt = {
+        type: 'str?';
+        label?: string;
+    };
+    export type Requestable_int = {
+        type: 'int';
+        label?: string;
+    };
+    export type Requestable_intOpt = {
+        type: 'int?';
+        label?: string;
+    };
+    export type Requestable_bool = {
+        type: 'bool';
+        label?: string;
+    };
+    export type Requestable_boolOpt = {
+        type: 'bool?';
+        label?: string;
+    };
+    export type Requestable_embeddings = {
+        type: 'embeddings';
+        label?: string;
+    };
+    export type Requestable_lora = {
+        type: 'lora';
+        label?: string;
+    };
+    export type Requestable_loras = {
+        type: 'loras';
+        label?: string;
+    };
+    export type Requestable_samMaskPoints = {
+        type: 'samMaskPoints';
+        label?: string;
+        imageInfo: ImageInfos;
+    };
+    export type Requestable_selectImage = {
+        type: 'selectImage';
+        label?: string;
+        imageInfos: ImageInfos[];
+    };
+    export type Requestable_manualMask = {
+        type: 'manualMask';
+        label?: string;
+        imageInfo: ImageInfos;
+    };
+    export type Requestable_paint = {
+        type: 'paint';
+        label?: string;
+        url: string;
+    };
+    export type Requestable_items = {
+        type: 'items';
+        label?: string;
+        items: {
+            [key: string]: Requestable;
+        };
+    };
+    export type Requestable_selectOne = {
+        type: 'selectOne';
+        label?: string;
+        choices: string[];
+    };
+    export type Requestable_selectOneOrCustom = {
+        type: 'selectOneOrCustom';
+        label?: string;
+        choices: string[];
+    };
+    export type Requestable_selectMany = {
+        type: 'selectMany';
+        label?: string;
+        choices: string[];
+    };
+    export type Requestable_selectManyOrCustom = {
+        type: 'selectManyOrCustom';
+        label?: string;
+        choices: string[];
+    };
+}
 declare module "controls/askv2" {
     /**
      * This module implements is the early-days core of
@@ -530,124 +641,26 @@ declare module "controls/askv2" {
     import type { Maybe, Tagged } from "utils/types";
     import type { ImageInfos } from "core-shared/GeneratedImageSummary";
     import type { IGeneratedImage } from "sdk/IFlowExecution";
-    import { BUG } from "controls/BUG";
-    export type Requestable = {
-        label?: string;
-    } & Requestable_;
-    export type Requestable_ = 
-    /** str */
-    {
-        type: 'str';
-    } | {
-        type: 'str?';
-    }
-    /** nums */
-     | {
-        type: 'int';
-    } | {
-        type: 'int?';
-    }
-    /** bools */
-     | {
-        type: 'bool';
-    } | {
-        type: 'bool?';
-    }
-    /** embedding */
-     | {
-        type: 'embeddings';
-    }
-    /** loras */
-     | {
-        type: 'lora';
-    } | {
-        type: 'loras';
-    }
-    /** painting */
-     | {
-        type: 'samMaskPoints';
-        imageInfo: ImageInfos;
-    } | {
-        type: 'selectImage';
-        imageInfos: ImageInfos[];
-    } | {
-        type: 'manualMask';
-        imageInfo: ImageInfos;
-    } | {
-        type: 'paint';
-        url: string;
-    }
-    /** group */
-     | {
-        type: 'items';
-        items: {
-            [key: string]: Requestable;
-        };
-    }
-    /** select one */
-     | {
-        type: 'selectOne';
-        choices: string[];
-    } | {
-        type: 'selectOneOrCustom';
-        choices: string[];
-    }
-    /** select many */
-     | {
-        type: 'selectMany';
-        choices: string[];
-    } | {
-        type: 'selectManyOrCustom';
-        choices: string[];
-    }
-    /** array */
-     | Requestable[]
-    /** ?? */
-     | BUG;
+    import type { Requestable } from "controls/Requestable";
+    import type * as R from "controls/Requestable";
     export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>;
     export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>;
     export type InfoAnswer<Req> = 
     /** str */
-    Req extends {
-        type: 'str';
-    } ? string : Req extends {
-        type: 'str?';
-    } ? Maybe<string> : 
+    Req extends R.Requestable_str ? string : Req extends R.Requestable_strOpt ? Maybe<string> : 
     /** nums */
-    Req extends {
-        type: 'int';
-    } ? number : Req extends {
-        type: 'int?';
-    } ? Maybe<number> : 
+    Req extends R.Requestable_int ? number : Req extends R.Requestable_intOpt ? Maybe<number> : 
     /** bools */
-    Req extends {
-        type: 'bool';
-    } ? boolean : Req extends {
-        type: 'bool?';
-    } ? Maybe<boolean> : 
+    Req extends R.Requestable_bool ? boolean : Req extends R.Requestable_boolOpt ? Maybe<boolean> : 
     /** embedding */
-    Req extends {
-        type: 'embeddings';
-    } ? Maybe<boolean> : 
+    Req extends R.Requestable_embeddings ? Maybe<boolean> : 
     /** loras */
-    Req extends {
-        type: 'lora';
-    } ? SimplifiedLoraDef : Req extends {
-        type: 'loras';
-    } ? SimplifiedLoraDef[] : 
+    Req extends R.Requestable_lora ? SimplifiedLoraDef : Req extends R.Requestable_loras ? SimplifiedLoraDef[] : 
     /** painting */
-    Req extends {
-        type: 'samMaskPoints';
-    } ? {
+    Req extends R.Requestable_samMaskPoints ? {
         points: SamPointPosStr;
         labels: SamPointLabelsStr;
-    } : Req extends {
-        type: 'selectImage';
-    } ? ImageInfos : Req extends {
-        type: 'manualMask';
-    } ? Base64Image : Req extends {
-        type: 'paint';
-    } ? Base64Image : 
+    } : Req extends R.Requestable_selectImage ? ImageInfos : Req extends R.Requestable_manualMask ? Base64Image : Req extends R.Requestable_paint ? Base64Image : 
     /** group */
     Req extends {
         type: 'items';
@@ -677,10 +690,7 @@ declare module "controls/askv2" {
     Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] : never;
     export class InfoRequestBuilder {
         /** str */
-        str: (label?: string) => {
-            type: "str";
-            label: string | undefined;
-        };
+        str: (label?: string) => R.Requestable_str;
         strOpt: (label?: string) => {
             type: "str?";
             label: string | undefined;

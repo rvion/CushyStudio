@@ -6,6 +6,7 @@ import { FlowLogUI } from './FlowLogUI'
 import { PreviewListUI } from './PreviewListUI'
 import { WorkflowPickerUI } from './WorkflowPickerUI'
 import { ScrollablePaneUI } from './scrollableArea'
+import { renderMessageFromExtensionAsEmoji } from '../core-types/MessageFromExtensionToWebview'
 
 export const WebviewUI = observer(function WebviewUI_() {
     const st = useSt()
@@ -25,6 +26,9 @@ export const WebviewUI = observer(function WebviewUI_() {
                         onClick={() => (st.showAllMessageReceived = !st.showAllMessageReceived)}
                     />
                     <IconButton icon={<I.Reload />} onClick={() => window.location.reload()} />
+                    <IconButton
+                        icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />}
+                    />
                 </Nav>
             </div>
             <PreviewListUI />
@@ -33,6 +37,28 @@ export const WebviewUI = observer(function WebviewUI_() {
             <ScrollablePaneUI items={st.received}>
                 <FlowLogUI />
             </ScrollablePaneUI>
+            {st.showAllMessageReceived ? (
+                <div style={{ height: '10rem', resize: 'horizontal', overflow: 'auto' }}>
+                    {st.itemsToShow.map((msg, ix) => (
+                        <div key={msg.uid} className='w-full flex' id={msg.uid.toString()}>
+                            <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
+                            <div style={{ width: '5rem' }}>{msg.type}</div>
+                            <div
+                                style={{
+                                    whiteSpace: 'nowrap',
+                                    overflow: 'hidden',
+                                    width: '600px',
+                                    color: 'gray',
+                                    textOverflow: 'ellipsis',
+                                }}
+                            >
+                                {/*  */}
+                                {JSON.stringify(msg)}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            ) : null}
         </div>
     )
 })

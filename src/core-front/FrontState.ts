@@ -3,7 +3,11 @@ import type { ComfyStatus } from '../core-types/ComfyWsPayloads'
 import { Graph } from '../core-shared/Graph'
 import { Schema } from '../core-shared/Schema'
 import { makeAutoObservable } from 'mobx'
-import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from '../core-types/MessageFromExtensionToWebview'
+import {
+    FromExtension_CushyStatus,
+    MessageFromExtensionToWebview,
+    MessageFromWebviewToExtension,
+} from '../core-types/MessageFromExtensionToWebview'
 import { logger } from '../logger/logger'
 import { exhaust } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
@@ -17,7 +21,7 @@ export class FrontState {
 
     expandNodes: boolean = false
     flowDirection: 'down' | 'up' = 'up'
-    showAllMessageReceived: boolean = false
+    showAllMessageReceived: boolean = true
 
     get itemsToShow() {
         // return this.received
@@ -49,7 +53,6 @@ export class FrontState {
         return grouped
     }
 
-    showImageAs: 'grid' | 'list' | 'carousel' = 'list'
     activeTab: 'home' | 'news' | 'import' | 'about' = 'home'
     setActiveTab = (tab: 'home' | 'news' | 'import' | 'about') => {
         this.activeTab = tab
@@ -86,7 +89,8 @@ export class FrontState {
     schema: Maybe<Schema> = null
     imageURLs: string[] = []
     sid: Maybe<string> = null
-    status: Maybe<ComfyStatus> = null
+    comfyStatus: Maybe<ComfyStatus> = null
+    cushyStatus: Maybe<FromExtension_CushyStatus> = null
     knownWorkflows: KnownWorkflow[] = []
     selectedWorkflowID: Maybe<KnownWorkflow['id']> = null
     runningFlowId: Maybe<string> = null
@@ -127,7 +131,7 @@ export class FrontState {
 
         if (msg.type === 'status') {
             if (msg.data.sid) this.sid = msg.data.sid
-            this.status = msg.data.status
+            this.comfyStatus = msg.data.status
             return
         }
 
@@ -148,6 +152,11 @@ export class FrontState {
             if (this.selectedWorkflowID == null && this.knownWorkflows.length > 0)
                 this.selectedWorkflowID = this.knownWorkflows[0].id
 
+            return
+        }
+
+        if (msg.type === 'cushy_status') {
+            this.cushyStatus = msg
             return
         }
 

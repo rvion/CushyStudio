@@ -4,8 +4,6 @@ import { FlowDefinition } from './FlowDefinition'
 import { extractWorkflows } from './extractWorkflows'
 import { Workspace } from './Workspace'
 import { logger } from '../logger/logger'
-import { getPayloadID } from '../core-shared/PayloadID'
-// import { parseMarkdown } from './parser'
 
 const textDecoder = new TextDecoder('utf-8')
 
@@ -107,7 +105,7 @@ export class CushyFile {
             // },
         })
         // logger().info('🔴' + ids.join(','))
-        this.workspace.sendMessage({ type: 'ls', workflowNames: ids })
+        this.workspace.broadCastToAllClients({ type: 'ls', workflowNames: ids })
 
         ascend(0) // finish and assign children for all remaining items
     }

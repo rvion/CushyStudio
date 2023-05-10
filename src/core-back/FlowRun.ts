@@ -78,12 +78,12 @@ export class FlowRun implements IFlowExecution {
     }
 
     showHTMLContent = (p: { htmlContent: string; title: string }) => {
-        this.workspace.sendMessage({ type: 'show-html', content: p.htmlContent, title: p.title })
+        this.workspace.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
     showMarkdownContent = (p: { title: string; markdownContent: string }) => {
         const htmlContent = marked.parse(p.markdownContent)
-        this.workspace.sendMessage({ type: 'show-html', content: htmlContent, title: p.title })
+        this.workspace.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
     }
 
     static VideoCounter = 1
@@ -125,7 +125,7 @@ export class FlowRun implements IFlowExecution {
         const videoURL = this.workspace.server.absPathToURL(targetVideoAbsPath)
         logger().info(`🎥 video url: ${videoURL}`)
         const content = `<video controls autoplay loop><source src="${videoURL}" type="video/mp4"></video>`
-        this.workspace.sendMessage({ type: 'show-html', content, title: 'generated video' })
+        this.workspace.broadCastToAllClients({ type: 'show-html', content, title: 'generated video' })
         // turns a bunch of images into a gif with ffmpeg
     }
 
@@ -171,7 +171,7 @@ export class FlowRun implements IFlowExecution {
         const reqBuilder = new InfoRequestBuilder()
         const request = requestFn(reqBuilder)
         const ask = new ScriptStep_ask(request)
-        this.workspace.sendMessage({ type: 'ask', request })
+        this.workspace.broadCastToAllClients({ type: 'ask', request })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -207,7 +207,7 @@ export class FlowRun implements IFlowExecution {
     print = (message: Printable) => {
         let msg = this.extractString(message)
         logger().info(msg)
-        this.workspace.sendMessage({ type: 'print', message: msg })
+        this.workspace.broadCastToAllClients({ type: 'print', message: msg })
     }
 
     /** upload a file from disk to the ComfyUI backend */
@@ -277,12 +277,12 @@ export class FlowRun implements IFlowExecution {
     private sendPromp = async (): Promise<PromptExecution> => {
         const currentJSON = deepCopyNaive(this.graph.jsonForPrompt)
         const schema = this.workspace.schema
-        this.workspace.sendMessage({
+        this.workspace.broadCastToAllClients({
             type: 'show-html',
             content: this.flowSummaryHTML,
             title: 'flow-summary',
         })
-        this.workspace.sendMessage({ type: 'prompt', graph: currentJSON })
+        this.workspace.broadCastToAllClients({ type: 'prompt', graph: currentJSON })
 
         logger().info('checkpoint:' + JSON.stringify(currentJSON))
         const step = new PromptExecution(this, currentJSON)

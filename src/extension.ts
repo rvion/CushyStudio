@@ -1,8 +1,6 @@
 import './logger/LoggerBack' // inject a global logger
 import * as vscode from 'vscode'
 import { Workspace } from './core-back/Workspace'
-import { FooProvider } from './shell/FooProvider'
-import { cmd_helloworld } from './shell/cmd_helloworld'
 import { extractErrorMessage } from './utils/extractErrorMessage'
 import { logger } from './logger/logger'
 
@@ -38,7 +36,6 @@ export function activate(context: vscode.ExtensionContext) {
         context.subscriptions.push(disposable)
     }
 
-    registerDisposableCommand('cushystudio.helloWorld', cmd_helloworld.bind(null, context))
     registerDisposableCommand('cushystudio.updateschema', () => workspace.fetchAndUdpateSchema())
     registerDisposableCommand('cushystudio.openwebview', () => workspace.openWebview())
     registerDisposableCommand('cushystudio.import', () => workspace.importCurrentFile({ preserveId: false }))
@@ -48,7 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
     // add settings to package.json
     // insert a treeview in the cushyrun view
     // const treeDataProvider = new TreeDataProvider()
-    vscode.window.registerTreeDataProvider('cushyrun', new FooProvider())
+    // vscode.window.registerTreeDataProvider('cushyrun', new FooProvider())
     // registerTreeDataProvider
     // const treeView = vscode.window.createTreeView('cushyrun', {
     //     treeDataProvider,

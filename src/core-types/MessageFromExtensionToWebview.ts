@@ -2,7 +2,6 @@ import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from '
 import type { PayloadID } from '../core-shared/PayloadID'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { ComfyPromptJSON } from './ComfyPrompt'
-import type { Maybe } from '../utils/types'
 import type { EmbeddingName } from 'src/core-shared/Schema'
 import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
 
@@ -12,58 +11,64 @@ import { Requestable } from 'src/controls/Requestable'
 // =============================================================================================
 // | Webview => Extension                                                                      |
 // =============================================================================================
+export type FromWebview_SayReady = { type: 'say-ready'; frontID: string }
+export type FromWebview_runFlow = { type: 'run-flow'; flowID: string }
+export type FromWebview_openExternal = { type: 'open-external'; uriString: string }
+export type FromWebview_sayHello = { type: 'say-hello'; message: string }
+export type FromWebview_Answer = { type: 'answer'; value: any }
 export type MessageFromWebviewToExtension =
-    // report ready
-    | { type: 'say-ready'; frontID: string }
-
-    // run
-    | { type: 'run-flow'; flowID: string }
-    | { type: 'open-external'; uriString: string }
-
-    // test messages
-    | { type: 'say-hello'; message: string }
-
-    // user interractions
-    | { type: 'answer'; value: any }
+    | FromWebview_SayReady // report ready
+    | FromWebview_runFlow // run
+    | FromWebview_openExternal
+    | FromWebview_sayHello // test messages
+    | FromWebview_Answer // user interractions
 
 // =============================================================================================
 // | Extension => Webview                                                                      |
 // =============================================================================================
 export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExtensionToWebview_
-export type MessageFromExtensionToWebview_ =
-    // flow start stop
-    | { type: 'flow-start'; flowRunID: string }
-    | { type: 'flow-code'; flowRunID: string; code: string }
-    | { type: 'flow-end'; flowRunID: string; status: 'success' | 'failure'; flowID: string }
 
+export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boolean }
+export type FromExtension_FlowStart = { type: 'flow-start'; flowRunID: string }
+export type FromExtension_FlowCode = { type: 'flow-code'; flowRunID: string; code: string }
+export type FromExtension_FlowEnd = { type: 'flow-end'; flowRunID: string; status: 'success' | 'failure'; flowID: string }
+export type FromExtension_Print = { type: 'print'; message: string }
+export type FromExtension_Schema = { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
+export type FromExtension_Prompt = { type: 'prompt'; graph: ComfyPromptJSON }
+export type FromExtension_Ls = { type: 'ls'; workflowNames: { name: string; id: string }[] }
+export type FromExtension_Images = { type: 'images'; images: ImageInfos[] }
+export type FromExtension_ShowHtml = { type: 'show-html'; content: string; title: string }
+
+export type MessageFromExtensionToWebview_ =
+    /** wether or not cushy server is connected to at least on ComfyUI server */
+    | FromExtension_CushyStatus
+    // flow start stop
+    | FromExtension_FlowStart
+    | FromExtension_FlowCode
+    | FromExtension_FlowEnd
     // user interractions
     | MessageFromExtensionToWebview_ask
-    | { type: 'print'; message: string }
-
+    | FromExtension_Print
     // schema & prompt (needs to be sent so webview can draw the graph)
-    | { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
-    | { type: 'prompt'; graph: ComfyPromptJSON }
-    | { type: 'ls'; workflowNames: { name: string; id: string }[] }
-
+    | FromExtension_Schema
+    | FromExtension_Prompt
+    | FromExtension_Ls
     // websocket updates
     | WsMsgStatus /* type 'status'   */
     | WsMsgProgress /* type 'progress' */
     | WsMsgExecuting /* type 'executing'*/
     | WsMsgExecuted /* type 'executed' */
-
     // generated images as transformed uri by vscode extension so they can be displayed in the webview
-    | { type: 'images'; images: ImageInfos[] }
-    | { type: 'show-html'; content: string; title: string }
+    | FromExtension_Images
+    | FromExtension_ShowHtml
 
 export type MessageFromExtensionToWebview_ask = { type: 'ask'; request: { [key: string]: Requestable } }
 
 export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWebview) => {
+    if (msg.type === 'cushy_status') return 'ℹ️'
     if (msg.type === 'flow-start') return '🎬'
     if (msg.type === 'flow-code') return '📝'
     if (msg.type === 'flow-end') return '🏁'
-    // if (msg.type === 'ask-string') return '🔤'
-    // if (msg.type === 'ask-boolean') return '🔘'
-    // if (msg.type === 'ask-paint') return '🎨'
     if (msg.type === 'schema') return '📄'
     if (msg.type === 'prompt') return '📝'
     if (msg.type === 'status') return '📡'

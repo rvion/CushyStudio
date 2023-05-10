@@ -18,6 +18,7 @@ export class ResilientWebSocketClient {
             url: () => string /*protocols?: string | string[]*/
             onMessage: (event: MessageEvent) => void
             onConnectOrReconnect: () => void
+            onClose: () => void
         },
     ) {
         this.url = options.url()

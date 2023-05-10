@@ -153,13 +153,14 @@ export class Workspace {
     clients = new Map<string, CushyClient>()
     registerClient = (id: string, client: CushyClient) => this.clients.set(id, client)
     unregisterClient = (id: string) => this.clients.delete(id)
-    lastMessages = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
 
-    sendMessage = (message_: MessageFromExtensionToWebview_): PayloadID => {
+    lastMessagesPerType = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
+
+    broadCastToAllClients = (message_: MessageFromExtensionToWebview_): PayloadID => {
         const uid = getPayloadID()
         const message: MessageFromExtensionToWebview = { ...message_, uid }
         const clients = Array.from(this.clients.values())
-        this.lastMessages.set(message.type, message)
+        this.lastMessagesPerType.set(message.type, message)
         console.log(`sending message ${message.type} to ${clients.length} clients`)
         for (const client of clients) client.sendMessage(message)
         return uid
@@ -277,7 +278,11 @@ export class Workspace {
     }
     initWebsocket = () =>
         new ResilientWebSocketClient({
+            onClose: () => {
+                this.broadCastToAllClients({ type: 'cushy_status', connected: false })
+            },
             onConnectOrReconnect: () => {
+                this.broadCastToAllClients({ type: 'cushy_status', connected: true })
                 this.fetchAndUdpateSchema()
             },
             url: this.getWSUrl,
@@ -393,7 +398,7 @@ export class Workspace {
 
     forwardImagesToFrontV2 = (images: GeneratedImage[]) => {
         // const uris = images.map((i) => i.summary)
-        this.sendMessage({
+        this.broadCastToAllClients({
             type: 'images',
             images: images.map((i) => i.toJSON()),
         })
@@ -403,7 +408,7 @@ export class Workspace {
         logger().info(`🧦 received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
-        this.sendMessage({ ...msg })
+        this.broadCastToAllClients({ ...msg })
 
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid
