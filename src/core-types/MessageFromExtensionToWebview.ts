@@ -7,7 +7,7 @@ import type { EmbeddingName } from 'src/core-shared/Schema'
 import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
 
 import { exhaust } from '../utils/ComfyUtils'
-import { Requestable } from 'src/controls/askv2'
+import { Requestable } from 'src/controls/Requestable'
 
 // =============================================================================================
 // | Webview => Extension                                                                      |

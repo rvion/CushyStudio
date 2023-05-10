@@ -10,44 +10,9 @@ import type { SimplifiedLoraDef } from 'src/presets/presets'
 import type { Maybe, Tagged } from 'src/utils/types'
 import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
 import type { IGeneratedImage } from 'src/sdk/IFlowExecution'
+import type { Requestable } from './Requestable'
 
-import { BUG } from './BUG'
 import { logger } from 'src/logger/logger'
-
-export type Requestable = { label?: string } & Requestable_
-
-export type Requestable_ =
-    /** str */
-    | { type: 'str' }
-    | { type: 'str?' }
-    /** nums */
-    | { type: 'int' }
-    | { type: 'int?' }
-    /** bools */
-    | { type: 'bool' }
-    | { type: 'bool?' }
-    /** embedding */
-    | { type: 'embeddings' }
-    /** loras */
-    | { type: 'lora' }
-    | { type: 'loras' }
-    /** painting */
-    | { type: 'samMaskPoints'; imageInfo: ImageInfos }
-    | { type: 'selectImage'; imageInfos: ImageInfos[] }
-    | { type: 'manualMask'; imageInfo: ImageInfos }
-    | { type: 'paint'; url: string }
-    /** group */
-    | { type: 'items'; items: { [key: string]: Requestable } }
-    /** select one */
-    | { type: 'selectOne'; choices: string[] } //
-    | { type: 'selectOneOrCustom'; choices: string[] }
-    /** select many */
-    | { type: 'selectMany'; choices: string[] }
-    | { type: 'selectManyOrCustom'; choices: string[] }
-    /** array */
-    | Requestable[]
-    /** ?? */
-    | BUG
 
 export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>
 export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>

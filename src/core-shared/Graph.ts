@@ -34,11 +34,12 @@ export class Graph {
         // this.graph.run.cyto.addNode(this)
     }
 
+    /** reset all nodes */
     reset = () => {
-        this.nodes = [];
-        this.nodesIndex.clear();
-        this._nextUID = 0;
-        this.currentExecutingNode = null;
+        this.nodes = []
+        this.nodesIndex.clear()
+        this.currentExecutingNode = null
+        // this._nextUID = 0;
     }
 
     /** nodes, in creation order */
@@ -78,12 +79,6 @@ export class Graph {
         for (const node of this.nodes) {
             if (node.disabled) continue
             json[node.uid] = node.json
-            // if (node.$schema.name === 'VAEEncode') {
-            //     console.log('🔥', node.$schema.name)
-            //     console.log(node.inputs.pixels)
-            //     console.log(node.inputs.pixels?.$schema?.name)
-            //     console.log(JSON.stringify(node.json))
-            // }
         }
         return json
     }

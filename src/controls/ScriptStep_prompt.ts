@@ -67,19 +67,6 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
             this._finish()
             return
         }
-        // {
-        //    console.log(`executing "null" node => prompt is done`)
-        //    2023-03-18 rvion: if I understand correctly, null here means there is no work to do.
-        //    2023-03-21 rvion: actually, it probably means the prompt is done
-        //    if (this.currentExecutingNode == null) this.notifyEmptyPrompt() 🔴 add back ?
-        //    else this.currentExecutingNode.status = 'done'
-        //    return
-        // }
-
-        // 🔴 const node = this._graph.getNodeOrCrash(msg.data.node)
-        // 🔴 if (this.currentExecutingNode) this.currentExecutingNode.status = 'done'
-        // 🔴 this.currentExecutingNode = node
-        // 🔴 node.status = 'executing'
     }
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */

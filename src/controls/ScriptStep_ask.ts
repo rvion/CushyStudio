@@ -1,6 +1,7 @@
 import type { Maybe } from '../utils/types'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
-import type { InfoAnswer, Requestable } from './askv2'
+import type { InfoAnswer } from './askv2'
+import type { Requestable } from './Requestable'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
