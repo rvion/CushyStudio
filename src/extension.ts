@@ -40,11 +40,10 @@ export function activate(context: vscode.ExtensionContext) {
         context.subscriptions.push(disposable)
     }
 
-    registerDisposableCommand('cushystudio.updateschema', () => workspace.fetchAndUdpateSchema())
-    registerDisposableCommand('cushystudio.openwebview', () => workspace.openWebview())
-    registerDisposableCommand('cushystudio.import', () => workspace.importCurrentFile({ preserveId: false }))
-    registerDisposableCommand('cushystudio.importlegacy', () => workspace.importCurrentFile({ preserveId: true }))
-    // registerDisposableCommand('cushystudio.importjson', () => workspace.importCurrentFile({ preserveId: true }))
+    registerDisposableCommand('cushystudio.updateschema', () => serverstate.fetchAndUdpateSchema())
+    registerDisposableCommand('cushystudio.openwebview', () => extensionState.openWebview())
+    registerDisposableCommand('cushystudio.import', () => extensionState.importCurrentFile({ preserveId: false }))
+    registerDisposableCommand('cushystudio.importlegacy', () => extensionState.importCurrentFile({ preserveId: true }))
 
     // add settings to package.json
     // insert a treeview in the cushyrun view

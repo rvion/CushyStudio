@@ -36,7 +36,7 @@ export class OpenPoseAnimV0 {
 
     drawAllToPngAndSaveLocally = async () => {
         let i = -1
-        const targetFolderPath = this.workspace.wspUri + path.sep + 'images'
+        const targetFolderPath = this.workspace.rootPath + path.sep + 'images'
         // ensure target folder exists
         fs.mkdirSync(targetFolderPath, { recursive: true })
 

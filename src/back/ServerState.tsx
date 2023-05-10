@@ -3,7 +3,7 @@ import type { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import type { FlowExecutionStep } from '../types/FlowExecutionStep'
 
 import fetch from 'node-fetch'
-import { join } from 'path'
+import { join, relative } from 'path'
 import * as WS from 'ws'
 import { Maybe } from '../utils/types'
 import { FlowRun } from './FlowRun'
@@ -22,7 +22,7 @@ import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '.
 import { sdkTemplate } from '../typings/sdkTemplate'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
-import { asRelativePath } from '../utils/fs/pathUtils'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyClient } from './Client'
 import { CushyFile } from './CushyFile'
@@ -108,7 +108,7 @@ export class ServerState {
     server!: CushyServer
 
     decorator: VSCodeEmojiDecorator
-    constructor(public wspUri: AbsolutePath) {
+    constructor(public rootPath: AbsolutePath) {
         this.comfyJSONUri = this.resolve(asRelativePath('.cushy/nodes.json'))
         this.embeddingsUri = this.resolve(asRelativePath('.cushy/embeddings.json'))
         this.comfyTSUri = this.resolve(asRelativePath('.cushy/nodes.d.ts'))
@@ -298,8 +298,11 @@ export class ServerState {
         // return new Blob([binArr], { type: 'image/png' })
     }
 
+    relative = (absolutePath: AbsolutePath): RelativePath => {
+        return asRelativePath(relative(this.rootPath, absolutePath))
+    }
     resolve = (relativePath: RelativePath): AbsolutePath => {
-        return join(this.wspUri, relativePath)
+        return asAbsolutePath(join(this.rootPath, relativePath))
     }
 
     // fetchPrompHistory = async () => {
@@ -332,7 +335,7 @@ export class ServerState {
             logger().info(`[.... step 1/4] fetching embeddings from ${embeddings_url} ...`)
             const embeddings_res = await fetch(embeddings_url, { method: 'GET', headers })
             const embeddings_json = (await embeddings_res.json()) as EmbeddingName[]
-            vscode.workspace.fs.writeFile(this.embeddingsUri, Buffer.from(JSON.stringify(embeddings_json)))
+            writeFileSync(this.embeddingsUri, JSON.stringify(embeddings_json), 'utf-8')
             // const keys2 = Object.keys(data2)
             // logger().info(`[.... step 1/4] found ${keys2.length} nodes`) // (${JSON.stringify(keys)})
             // schema$ = data as any
@@ -377,44 +380,4 @@ export class ServerState {
     }
 
     status: ComfyStatus | null = null
-
-    notify = (msg: string) => vscode.window.showInformationMessage(`🛋️ ${msg}`)
-
-    addProjectFromComfyWorkflowJSON = (
-        //
-        relPath: RelativePath,
-        title: string,
-        comfyPromptJSON: ComfyPromptJSON,
-        opts: { preserveId: boolean },
-    ): vscode.Uri => {
-        let code: string
-        try {
-            code = new ComfyImporter(this).convertFlowToCode(title, comfyPromptJSON, opts)
-        } catch (error) {
-            console.log('🔴', error)
-            throw error
-        }
-        // const fileName = title.endsWith('.ts') ? title : `${title}.ts`
-        const uri = this.resolve(relPath)
-        // const relativePathToDTS = posix.relative(posix.dirname(uri.path), this.cushyTSUri.path)
-        // const codeFinal = [`/// <reference path="${relativePathToDTS}" />`, code].join('\n\n')
-        this.writeTextFile(uri, code, true)
-        return uri
-    }
-
-    // --------------------------------------------------
-
-    getWorkspaceTestPatterns() {
-        if (!vscode.workspace.workspaceFolders) return []
-        return vscode.workspace.workspaceFolders.map((workspaceFolder) => ({
-            workspaceFolder,
-            pattern: new vscode.RelativePattern(workspaceFolder, '**/*.cushy.ts'),
-        }))
-    }
-
-    async findInitialFiles(controller: vscode.TestController, pattern: vscode.GlobPattern) {
-        for (const file of await vscode.workspace.findFiles(pattern)) {
-            this.getOrCreateFile(controller, file)
-        }
-    }
 }

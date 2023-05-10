@@ -1,4 +1,4 @@
-import type { ServerState } from './ServerState'
+import type { ServerState } from '../back/ServerState'
 
 import * as vscode from 'vscode'
 import { getNonce } from '../utils/fs/getNonce'

@@ -23,7 +23,9 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
     _graph: Graph
 
     /** short-hand getter to access parent client */
-    get workspace(){ return this.run.workspace } // prettier-ignore
+    get workspace() {
+        return this.run.workspace
+    }
 
     constructor(
         //

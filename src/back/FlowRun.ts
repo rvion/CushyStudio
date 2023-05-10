@@ -31,6 +31,7 @@ import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ServerState } from './ServerState'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
+import { readFileSync, writeFileSync } from 'fs'
 
 /** script exeuction instance */
 export class FlowRun {
@@ -60,7 +61,7 @@ export class FlowRun {
     get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
 
     /** folder where CushyStudio will save run informations */
-    get workspaceRelativeCacheFolderPath(): AbsolutePath {
+    get outputAbsPath(): AbsolutePath {
         return asAbsolutePath(path.join(this.workspace.cacheFolderPath, this.name))
     }
 
@@ -71,8 +72,8 @@ export class FlowRun {
     // High level API--------------------
 
     saveTextFile = async (path: RelativePath, content: string): Promise<void> => {
-        const uri = this.workspace.resolve(path)
-        await vscode.workspace.fs.writeFile(uri, Buffer.from(content))
+        const absPath = this.workspace.resolve(path)
+        writeFileSync(absPath, content, 'utf-8')
     }
 
     showHTMLContent = (p: { htmlContent: string; title: string }) => {
@@ -94,9 +95,7 @@ export class FlowRun {
          * */
         frameDuration = 200,
     ): Promise<void> => {
-        const targetVideoRelPath = path.join(this.workspaceRelativeCacheFolderPath, `video-${FlowRun.VideoCounter++}.mp4`)
-        const targetVideoURI = this.workspace.resolve(asRelativePath(targetVideoRelPath))
-        const targetVideoAbsPath = targetVideoURI.path
+        const targetVideoAbsPath = asAbsolutePath(path.join(this.outputAbsPath, `video-${FlowRun.VideoCounter++}.mp4`))
         // logger().info(`target video path: ${targetVideoPath}`)
         // logger().info(`target video uri: ${targetVideoURI}`)
         const images = source ?? this.generatedImages
@@ -108,9 +107,9 @@ export class FlowRun {
         logger().info(`🎥 awaiting all files to be ready locally...`)
         await Promise.all(images.map((i) => i.ready))
         logger().info(`🎥 all files are ready locally`)
-        const cwd = this.workspace.resolve(this.workspaceRelativeCacheFolderPath).path
+        const cwd = this.outputAbsPath
         logger().info(`🎥 target video path: ${targetVideoAbsPath}`)
-        logger().info(`🎥 this.folder.path: ${this.folder.path}`)
+        logger().info(`🎥 this.folder.path: ${this.folder}`)
         logger().info(`🎥 cwd: ${cwd}`)
 
         await createMP4FromImages(
@@ -177,7 +176,7 @@ export class FlowRun {
     exec = (comand: string): string => {
         // promisify exec to run the command and collect the output
         this.print('🔥 exec: ' + comand)
-        const cwd = this.workspace.wspUri.fsPath
+        const cwd = this.workspace.rootPath
         console.log('cwd', cwd)
         const res = execSync(comand, { encoding: 'utf-8', cwd })
         return res
@@ -225,15 +224,14 @@ export class FlowRun {
 
     /** upload an image present on disk to ComfyServer */
     uploadAnyFile = async (path: AbsolutePath): Promise<ComfyUploadImageResult> => {
-        const uri = vscode.Uri.parse(path)
-        const ui8arr: Uint8Array = await vscode.workspace.fs.readFile(uri)
-        return this.uploadUIntArrToComfy(ui8arr)
+        const ui8arr: Uint8Array = readFileSync(path)
+        return await this.uploadUIntArrToComfy(ui8arr)
     }
 
     /** upload an image present on disk to ComfyServer */
     uploadWorkspaceFile = async (path: RelativePath): Promise<ComfyUploadImageResult> => {
-        const uri = this.workspace.resolve(path)
-        const ui8arr: Uint8Array = await vscode.workspace.fs.readFile(uri)
+        const absPath = this.workspace.resolve(path)
+        const ui8arr: Uint8Array = readFileSync(absPath)
         return await this.uploadUIntArrToComfy(ui8arr)
     }
 
@@ -301,18 +299,18 @@ export class FlowRun {
         }
 
         // save a copy of the prompt to the cache folder
-        const promptJSONPath = path.join(this.workspaceRelativeCacheFolderPath, `prompt-${++this._promptCounter}.json`)
+        const promptJSONPath = path.join(this.outputAbsPath, `prompt-${++this._promptCounter}.json`)
         const promptJSONURI = this.workspace.resolve(asRelativePath(promptJSONPath))
         this.workspace.writeTextFile(promptJSONURI, JSON.stringify(currentJSON, null, 4))
 
         // save a corresponding workflow file
-        const cytoJSONPath = path.join(this.workspaceRelativeCacheFolderPath, `cyto-${this._promptCounter}.json`)
+        const cytoJSONPath = path.join(this.outputAbsPath, `cyto-${this._promptCounter}.json`)
         const cytoJSONURI = this.workspace.resolve(asRelativePath(cytoJSONPath))
         const cytoJSON = await runAutolayout(this.graph)
         this.workspace.writeTextFile(cytoJSONURI, JSON.stringify(cytoJSON, null, 4))
 
         // save a corresponding workflow file
-        const workflowJSONPath = path.join(this.workspaceRelativeCacheFolderPath, `workflow-${this._promptCounter}.json`)
+        const workflowJSONPath = path.join(this.outputAbsPath, `workflow-${this._promptCounter}.json`)
         const workflowJSONURI = this.workspace.resolve(asRelativePath(workflowJSONPath))
         const liteGraphJSON = convertFlowToLiteGraphJSON(this.graph, cytoJSON)
         this.workspace.writeTextFile(workflowJSONURI, JSON.stringify(liteGraphJSON, null, 4))
@@ -335,10 +333,10 @@ export class FlowRun {
     constructor(
         //
         public workspace: ServerState,
-        public absPath: AbsolutePath,
+        public fileAbsPath: AbsolutePath,
         public opts?: { mock?: boolean },
     ) {
-        const relPath = asRelativePath(path.join('.cache', this.absPath))
+        const relPath = asRelativePath(path.join('.cache', this.fileAbsPath))
         this.folder = this.workspace.resolve(relPath)
         this.name = `Run-${this.createdAt}` // 'Run ' + this.script.runCounter++
         this.graph = new Graph(this.workspace.schema)

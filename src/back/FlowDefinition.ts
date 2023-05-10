@@ -34,7 +34,7 @@ export class FlowDefinition {
 
     run = async (mode: RunMode = 'real'): Promise<boolean> => {
         const start = Date.now()
-        const flowRunID = nanoid(6)
+        const flowRunID = asFlowRunID(nanoid(6))
         const workspace = this.file.workspace
         workspace.broadCastToAllClients({ type: 'flow-start', flowRunID: flowRunID })
         const schema = workspace.schema
@@ -85,14 +85,12 @@ export class FlowDefinition {
             this.file.workspace.broadCastToAllClients({ type: 'flow-code', flowRunID: flowRunID, code: good.fn.toString() })
             await good.fn(ctx)
             console.log('[✅] RUN SUCCESS')
-            // this.isRunning = false
             const duration = Date.now() - start
-            vsTestRun.passed(vsTestItem, duration)
             this.file.workspace.broadCastToAllClients({
                 type: 'flow-end',
                 flowRunID: flowRunID,
-                status: 'success',
                 flowID: this.flowID,
+                status: 'success',
             })
             return true
         } catch (error) {
@@ -113,7 +111,7 @@ export class FlowDefinition {
             // )
             // message.location = new vscode.Location(vsTestItem.uri!, vsTestItem.range!)
             const duration = Date.now() - start
-            vsTestRun.failed(vsTestItem, [] /*message*/, duration)
+            // vsTestRun.failed(vsTestItem, [] /*message*/, duration)
             return false
         }
     }

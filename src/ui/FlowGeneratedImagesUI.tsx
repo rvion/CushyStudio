@@ -85,7 +85,7 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                                     onClick={() => {
                                         st.sendMessageToExtension({
                                             type: 'open-external',
-                                            uriString: `file://${img.localAbsoluteFilePath}`,
+                                            uriString: `file://${img.localAbsolutePath}`,
                                         })
                                     }}
                                 >

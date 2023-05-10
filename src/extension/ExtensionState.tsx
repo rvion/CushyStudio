@@ -117,6 +117,30 @@ export class ExtensionState {
         if (choice === 'web build UI') return void vscode.env.openExternal(vscode.Uri.parse('http://127.0.0.1:8288/'))
     }
 
+    notify = (msg: string) => vscode.window.showInformationMessage(`🛋️ ${msg}`)
+
+    addProjectFromComfyWorkflowJSON = (
+        //
+        relPath: RelativePath,
+        title: string,
+        comfyPromptJSON: ComfyPromptJSON,
+        opts: { preserveId: boolean },
+    ): vscode.Uri => {
+        let code: string
+        try {
+            code = new ComfyImporter(this).convertFlowToCode(title, comfyPromptJSON, opts)
+        } catch (error) {
+            console.log('🔴', error)
+            throw error
+        }
+        // const fileName = title.endsWith('.ts') ? title : `${title}.ts`
+        const uri = this.resolve(relPath)
+        // const relativePathToDTS = posix.relative(posix.dirname(uri.path), this.cushyTSUri.path)
+        // const codeFinal = [`/// <reference path="${relativePathToDTS}" />`, code].join('\n\n')
+        this.writeTextFile(uri, code, true)
+        return uri
+    }
+
     startWatchingWorkspace = (
         //
         controller: vscode.TestController,
