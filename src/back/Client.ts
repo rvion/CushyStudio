@@ -45,6 +45,8 @@ export class CushyClient {
     flushQueue = () => {
         const queue = this.queue
         logger().info(`🐼 Client ${this.clientID} flushing queue of ${queue.length} messages`)
+        console.log('coucou')
+        this.sendMessage({ type: 'sync-history', history: this.serverState.history.data, uid: -1 })
         queue.forEach((msg) => this.ws.send(JSON.stringify(msg)))
         queue.length = 0
     }

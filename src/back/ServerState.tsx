@@ -30,6 +30,7 @@ import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
+import { WorkspaceHistory } from './history'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -99,20 +100,40 @@ export class ServerState {
 
     lastMessagesPerType = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
 
+    persistMessageInHistoryIfNecessary = (message: MessageFromExtensionToWebview) => {
+        if (message.type === 'flow-start') this.history.recordEvent(message)
+        if (message.type === 'images') this.history.recordEvent(message)
+        if (message.type === 'print') this.history.recordEvent(message)
+        if (message.type === 'prompt') this.history.recordEvent(message)
+        return
+    }
+
     broadCastToAllClients = (message_: MessageFromExtensionToWebview_): PayloadID => {
         const uid = getPayloadID()
         const message: MessageFromExtensionToWebview = { ...message_, uid }
         const clients = Array.from(this.clients.values())
         this.lastMessagesPerType.set(message.type, message)
+        this.persistMessageInHistoryIfNecessary(message)
         console.log(`sending message ${message.type} to ${clients.length} clients`)
         for (const client of clients) client.sendMessage(message)
         return uid
     }
 
+    relative = (absolutePath: AbsolutePath): RelativePath => {
+        return asRelativePath(relative(this.rootPath, absolutePath))
+    }
+
+    resolve = (relativePath: RelativePath): AbsolutePath => {
+        console.log(this.rootPath)
+        return asAbsolutePath(join(this.rootPath, relativePath))
+    }
+
     server!: CushyServer
     configWatcher = new ConfigFileWatcher()
+    history: WorkspaceHistory
 
     constructor(public rootPath: AbsolutePath) {
+        this.history = new WorkspaceHistory(this)
         this.cacheFolderPath = this.resolve(asRelativePath('.cushy/cache'))
         this.vscodeSettings = this.resolve(asRelativePath('.vscode/settings.json'))
         this.comfyJSONPath = this.resolve(asRelativePath('.cushy/nodes.json'))
@@ -316,13 +337,6 @@ export class ServerState {
         // const binArr = new Uint8Array(numArr)
         return blob
         // return new Blob([binArr], { type: 'image/png' })
-    }
-
-    relative = (absolutePath: AbsolutePath): RelativePath => {
-        return asRelativePath(relative(this.rootPath, absolutePath))
-    }
-    resolve = (relativePath: RelativePath): AbsolutePath => {
-        return asAbsolutePath(join(this.rootPath, relativePath))
     }
 
     // fetchPrompHistory = async () => {

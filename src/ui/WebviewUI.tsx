@@ -2,13 +2,12 @@ import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { IconButton, Nav } from 'rsuite'
 import { useSt } from '../front/stContext'
-import { FlowLogUI } from './flow/FlowLogUI'
-import { ProjectGalleryUI } from './galleries/Gallery3UI.tsx'
-import { WorkflowPickerUI } from './WorkflowPickerUI'
-import { ScrollablePaneUI } from './scrollableArea'
 import { renderMessageFromExtensionAsEmoji } from '../types/MessageFromExtensionToWebview'
-import { Gallery2UI } from './galleries/Gallery2UI'
+import { WorkflowPickerUI } from './WorkflowPickerUI'
 import { FooUI } from './actions/x'
+import { FlowLogUI } from './flow/FlowLogUI'
+import { Gallery2UI } from './galleries/Gallery2UI'
+import { ScrollablePaneUI } from './scrollableArea'
 
 export const WebviewUI = observer(function WebviewUI_() {
     const st = useSt()
@@ -33,6 +32,7 @@ export const WebviewUI = observer(function WebviewUI_() {
                     />
                 </Nav>
             </div>
+
             <Gallery2UI />
 
             {/* BODY */}

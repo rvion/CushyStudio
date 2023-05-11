@@ -97,7 +97,7 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                                     Open
                                 </Button>
                                 <Button>script 1</Button>
-                                <Button>script 2</Button>
+                                <Button onClick={() => (st.currentAction = { type: 'paint', img })}>Paint</Button>
                                 <Button>script 3</Button>
                             </div>
                         </div>

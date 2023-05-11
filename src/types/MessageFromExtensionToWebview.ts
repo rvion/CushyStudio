@@ -7,6 +7,7 @@ import type { ImageInfos } from 'src/core/GeneratedImageSummary'
 import type { Requestable } from 'src/controls/Requestable'
 import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import type { FlowDefinitionID, FlowRunID } from 'src/back/FlowDefinition'
+import type { WorkspaceHistoryJSON } from 'src/core/WorkspaceHistoryJSON'
 
 import { exhaust } from '../utils/ComfyUtils'
 
@@ -46,10 +47,12 @@ export type FromExtension_Ls = { type: 'ls'; knownFlows: { name: string; id: Flo
 export type FromExtension_Images = { type: 'images'; images: ImageInfos[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; content: string; title: string }
 export type FromExtension_ask = { type: 'ask'; request: { [key: string]: Requestable } }
+export type FromExtension_SyncHistory = { type: 'sync-history'; history: WorkspaceHistoryJSON }
 
 export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */
     | FromExtension_CushyStatus
+    | FromExtension_SyncHistory
     // flow start stop
     | FromExtension_FlowStart
     | FromExtension_FlowCode
@@ -88,6 +91,7 @@ export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWeb
     if (msg.type === 'show-html') return '🥶'
     if (msg.type === 'ask') return '👋'
     if (msg.type === 'ls') return '📂'
+    if (msg.type === 'sync-history') return '⏱️'
     exhaust(msg)
     return '❓'
 }

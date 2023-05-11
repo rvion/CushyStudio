@@ -1,23 +1,24 @@
 import type { ComfyStatus } from '../types/ComfyWsApi'
 
-import { Graph } from '../core/Graph'
-import { Schema } from '../core/Schema'
 import { makeAutoObservable } from 'mobx'
+import { nanoid } from 'nanoid'
+import { ImageInfos } from '../core/GeneratedImageSummary'
+import { WorkspaceHistoryJSON, newWorkspaceHistory } from '../core/WorkspaceHistoryJSON'
+import { Graph } from '../core/Graph'
+import { KnownWorkflow } from '../core/KnownWorkflow'
+import { Schema } from '../core/Schema'
+import { logger } from '../logger/logger'
 import {
     FromExtension_CushyStatus,
     FromExtension_ask,
     MessageFromExtensionToWebview,
     MessageFromWebviewToExtension,
 } from '../types/MessageFromExtensionToWebview'
-import { logger } from '../logger/logger'
+import { renderMsgUI } from '../ui/flow/flowRenderer1'
 import { exhaust } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
 import { ResilientSocketToExtension } from './ResilientCushySocket'
-import { nanoid } from 'nanoid'
-import { KnownWorkflow } from '../core/KnownWorkflow'
-import { ImageInfos } from 'src/core/GeneratedImageSummary'
-import { bang } from '../utils/bang'
-import { renderMsgUI } from '../ui/flow/flowRenderer1'
+import { UIAction } from './UIAction'
 
 export type MsgGroup = {
     groupType: string
@@ -34,11 +35,16 @@ const newMsgGroup = (groupType: string, wrap?: boolean): MsgGroup => ({
 
 export class FrontState {
     uid = nanoid()
-    received: MessageFromExtensionToWebview[] = []
+
+    get received(): MessageFromExtensionToWebview[] {
+        return this.history.msgs.map((x) => x.msg)
+    }
 
     expandNodes: boolean = false
     flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = true
+
+    currentAction: UIAction | null = null
 
     get itemsToShow() {
         // return this.received
@@ -121,6 +127,8 @@ export class FrontState {
 
     pendingAsk: FromExtension_ask[] = []
 
+    history: WorkspaceHistoryJSON = newWorkspaceHistory()
+
     /** this is for the UI only; process should be very thin / small */
     onMessageFromExtension = (message: MessageFromExtensionToWebview) => {
         // 1. enqueue the message
@@ -129,9 +137,15 @@ export class FrontState {
                 ? JSON.parse(message)
                 : message
 
+        // this message must not be logged
+        if (msg.type === 'sync-history') {
+            this.history = msg.history
+            return
+        }
+
         console.log('💬', msg.type) //, { message })
 
-        this.received.push(msg)
+        this.history.msgs.push({ at: Date.now(), msg })
 
         // 2. process the info
         if (msg.type === 'flow-code') return
