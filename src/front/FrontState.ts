@@ -46,7 +46,6 @@ export class FrontState {
     expandNodes: boolean = false
     flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
-
     currentAction: UIAction | null = null
 
     get itemsToShow() {
@@ -119,6 +118,9 @@ export class FrontState {
     schema: Maybe<Schema> = null
     images: ImageInfos[] = []
     imagesById: Map<ImageUID, ImageInfos> = new Map()
+    get imageReversed() {
+        return this.images.slice().reverse()
+    }
 
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null

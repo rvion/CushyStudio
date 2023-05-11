@@ -61,7 +61,7 @@ WORKFLOW('vn3', async ({ graph, flow, presets }) => {
         const sampler = graph.KSampler({
             seed,
             steps: 20,
-            cfg: 9,
+            cfg: 5,
             sampler_name: 'ddim',
             scheduler: 'karras',
             denoise: 1,

@@ -6,6 +6,7 @@ import { GalleryImageUI } from './GalleryImageUI'
 
 export const Gallery2UI = observer(function Gallery2UI_(p: {}) {
     const st = useSt()
+
     return (
         <>
             <div className='flex flex-col overflow-x-auto'>
@@ -17,7 +18,7 @@ export const Gallery2UI = observer(function Gallery2UI_(p: {}) {
             <div style={{ display: 'flex', overflowX: 'auto' }}>
                 {/* request to focus next  */}
                 <Button>next</Button>
-                {st.images.map((img, ix) => (
+                {st.imageReversed.map((img, ix) => (
                     <GalleryImageUI key={ix} img={img} />
                 ))}
             </div>

@@ -26,7 +26,7 @@ export const GalleryImageUI = observer(function ImageUI_(p: { img: ImageInfos })
                 onMouseLeave={() => {
                     if (st.hovered === img) st.hovered = null
                 }}
-                style={{ objectFit: 'contain', width: '64px', height: '64px', opacity }}
+                style={{ objectFit: 'contain', width: '64px', height: '64px', opacity, padding: '0.1rem' }}
                 onClick={() => (st.lightBox.opened = true)}
                 src={img.comfyURL ?? img.localURL}
             />

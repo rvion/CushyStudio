@@ -91,7 +91,7 @@ export class GeneratedImage implements ImageInfos {
     // CUSHY RELATIVE ----------------------------------------------------------------------
     /** local workspace file name, without extension */
     get localFileNameNoExt(): string {
-        return this.prompt.uid + '_' + this.uid
+        return /*this.prompt.uid + '_' +*/ this.uid
     }
 
     /** local workspace file name, WITH extension */
