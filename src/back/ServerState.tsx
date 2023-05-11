@@ -136,8 +136,12 @@ export class ServerState {
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
-        /** true in prod, false when running from this local subfolder */
-        public genStub: boolean,
+        public opts: {
+            /** true in prod, false when running from this local subfolder */
+            genStub: boolean
+            /** true in prod, false when running from this local subfolder  */
+            genTsConfig: boolean
+        },
     ) {
         this.db = new CushyDB(this)
         this.cacheFolderPath = this.resolve(asRelativePath('.cushy/cache'))
@@ -149,12 +153,12 @@ export class ServerState {
         this.tsConfigPath = this.resolve(asRelativePath('tsconfig.json'))
         this.server = new CushyServer(this)
         this.schema = this.restoreSchemaFromCache()
-        this.writeTextFile(this.cushyTSPath, genStub ? `${sdkTemplate}\n${sdkStubDeps}` : sdkTemplate)
+        this.writeTextFile(this.cushyTSPath, opts.genStub ? `${sdkTemplate}\n${sdkStubDeps}` : sdkTemplate)
 
         this.autoDiscoverEveryWorkflow()
         this.ws = this.initWebsocket()
         // this.watchForCOnfigurationChanges()
-        this.createTSConfigIfMissing()
+        if (opts.genTsConfig) this.createTSConfigIfMissing()
         makeAutoObservable(this)
         this.configWatcher.startWatching(this.resolve(asRelativePath('cushyconfig.json')))
     }

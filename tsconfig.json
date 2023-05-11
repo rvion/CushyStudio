@@ -20,7 +20,7 @@
             "LATER": ["src/back/LATER.ts"]
         }
     },
-    "include": ["src"],
+    "include": ["src", "flows"],
     "exclude": [
         //
         "tsconfig.node.json",

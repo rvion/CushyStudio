@@ -1,4 +1,4 @@
-import type * as T from 'src/global'
+import type * as T from '../src/global'
 
 //
 WORKFLOW('vn3', async ({ graph, flow, presets }) => {

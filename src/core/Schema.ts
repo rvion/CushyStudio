@@ -225,10 +225,10 @@ export class Schema {
         p(`/// <reference path="cushy.d.ts" />`)
         p('')
         p(`declare module "CUSHY_RUNTIME" {`)
-        p(`    import type { ComfyNode } from 'core-shared/Node'`)
-        p(`    import type { Slot } from 'core-shared/Slot'`)
-        p(`    import type { ComfyNodeSchemaJSON } from 'core-types/ComfySchemaJSON'`)
-        p(`    import type { ComfyNodeUID } from 'core-types/NodeUID'`)
+        p(`    import type { ComfyNode } from 'core/Node'`)
+        p(`    import type { Slot } from 'core/Slot'`)
+        p(`    import type { ComfyNodeSchemaJSON } from 'types/ComfySchemaJSON'`)
+        p(`    import type { ComfyNodeUID } from 'types/NodeUID'`)
         p(``)
 
         p(`\n// Entrypoint --------------------------`)
@@ -332,7 +332,7 @@ export class Schema {
 
         // p(`declare const WORKFLOW: (builder: (graph: ComfyGraph) => void) => void`)
         // b.writeTS('./src/core/Comfy.ts')
-        p(`declare const WORKFLOW: import("core-shared/WorkflowFn").WorkflowType`)
+        p(`declare const WORKFLOW: import("core/WorkflowFn").WorkflowType`)
         return b.content
     }
 
