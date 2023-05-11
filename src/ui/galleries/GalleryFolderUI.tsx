@@ -12,6 +12,7 @@ export const GalleryFolderUI = observer(function FolderUI_(p: {
     //
     folderUID: FolderUID
     folderMetadata: CushyFolderMetadata
+    direction: 'horizontal' | 'vertical'
 }) {
     const st = useSt()
     const [collectedProps, drop] = useDrop(() => ({
@@ -25,10 +26,14 @@ export const GalleryFolderUI = observer(function FolderUI_(p: {
     const images = p.folderMetadata.imageUIDs?.map((i) => st.imagesById.get(i)) ?? []
     console.log(images, [...st.imagesById.keys()])
     return (
-        <div className='flex [height:3rem] bg-gradient-to-b from-gray-800 to to-blue-700 overflow-hidden' ref={drop}>
+        <div
+            style={{ flexDirection: p.direction === 'horizontal' ? 'row' : 'column' }}
+            className='flex overflow-hidden'
+            ref={drop}
+        >
             <Input
                 //
-                style={{ width: '100px' }}
+                style={{ width: '50px' }}
                 value={p.folderMetadata.name ?? p.folderUID.slice(0, 5)}
                 onChange={(v) => (p.folderMetadata.name = v)}
             />

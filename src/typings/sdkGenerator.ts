@@ -10,7 +10,7 @@ const originalDefPath = 'dts/Comfy.d.ts'
 
 const originalDefContent = readFileSync(originalDefPath, 'utf8')
 
-const outPath = 'src/sdk/sdkTemplate.ts'
+const outPath = 'src/typings/sdkTemplate.ts'
 let out: string = originalDefContent
 out = out.replace('/// <reference types="react" />', '')
 
@@ -18,6 +18,6 @@ for (const [from, to] of sdkRewriteRules) {
     out = out.replaceAll(from, to)
 }
 const ref = `/// <reference path="nodes.d.ts" />`
-out = `export const sdkTemplate: string = \`${ref}\n${sdkStubDeps}\n${out}\``
+out = `export const sdkTemplate: string = \`${ref}\n\n${out}\``
 
 writeFileSync(outPath, out, 'utf8')

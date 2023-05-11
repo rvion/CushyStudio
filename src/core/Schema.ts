@@ -221,38 +221,15 @@ export class Schema {
         const b = new CodeBuffer()
         const p = b.w
         const prefix = useLocalPath ? '.' : 'core'
-        // p(`/// <reference types="./cushy" />\n`)
-
-        // p(`import type { ComfyNodeOutput } from '${prefix}/ComfyNodeOutput'`)
-        // p(`import type { ComfyNodeUID } from '${prefix}/ComfyNodeUID'`)
-        // p(`import type { ComfyNode } from '${prefix}/CSNode'`)
-        // p(`import type { ComfyNodeSchemaJSON } from '${prefix}/ComfySchemaJSON'`)
-        // p(`import type { Graph } from '${prefix}/Graph'`)
-        // p(`import type { Workflow } from '${prefix}/Workflow'`)
-
-        // p(sdkTemplate)
 
         p(`/// <reference path="cushy.d.ts" />`)
         p('')
         p(`declare module "CUSHY_RUNTIME" {`)
         p(`    import type { ComfyNode } from 'core-shared/Node'`)
         p(`    import type { Slot } from 'core-shared/Slot'`)
-        // p(`    import type { Graph } from 'core-shared/Graph'`)
-        // p(`    import type { Workflow } from 'core-shared/Workflow'`)
         p(`    import type { ComfyNodeSchemaJSON } from 'core-types/ComfySchemaJSON'`)
         p(`    import type { ComfyNodeUID } from 'core-types/NodeUID'`)
-        // p(`    import type { IFlowExecution } from "sdk/IFlowExecution"`)
         p(``)
-        // p(`    export const WORKFLOW: (`)
-        // p(`        //`)
-        // p(`        title: string,`)
-        // p(`        builder: (p:{`)
-        // p(`            //`)
-        // p(`            graph: ComfySetup & Graph,`)
-        // p(`            flow: IFlowExecution,`)
-        // p(`        }) => void,`)
-        // p(`    ) => Workflow`)
-        // p(`}`) 🔴
 
         p(`\n// Entrypoint --------------------------`)
         p(`export interface ComfySetup {`)
@@ -262,11 +239,6 @@ export class Schema {
             p(`    /* category=${n.category} output=${n.outputs.map(o => o.name).join(', ')} */`)
             p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeUID): ${n.nameInCushy}`)
         }
-        // p(`\n// misc \n`)
-        // prettier-ignore
-        // for (const n of this.nodes) {
-        //     p(`    ${n.category}_${n.name} = (args: ${n.name}_input, uid?: rt.NodeUID) => new ${n.name}(this, uid, args)`)
-        // }
         p(`}`)
 
         p(`\n// Embeddings -------------------------------`)

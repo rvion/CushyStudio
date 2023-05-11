@@ -1,76 +1,5 @@
 export const sdkTemplate: string = `/// <reference path="nodes.d.ts" />
 
-// ====================================================================================
-// ====================================================================================
-declare type STUB = never
-
-declare interface Thenable<T> {
-    then<TResult>(onfulfilled?: (value: T) => TResult | Thenable<TResult>, onrejected?: (reason: any) => TResult | Thenable<TResult>): Thenable<TResult>
-    then<TResult>(onfulfilled?: (value: T) => TResult | Thenable<TResult>, onrejected?: (reason: any) => void): Thenable<TResult>
-}
-declare type File = STUB
-declare type Blob = STUB
-declare namespace NodeJS {
-    export type Timeout = STUB
-}
-declare type Buffer = never
-declare module "typescript" {
-    export default STUB
-}
-declare namespace ts {
-    export type CallExpression = STUB
-}
-declare module "path" {}
-declare module "pathe" {}
-declare namespace express {
-    export type Application = STUB
-}
-declare module "express" {
-    export default STUB
-}
-// http --------------------------
-declare module "http" {
-    export default STUB
-}
-declare namespace http {
-    export type Server = STUB
-}
-// ws --------------------------
-declare module "ws" {
-    export default STUB
-    export type WebSocketServer = STUB
-    export type CloseEvent = STUB
-    export type Event = STUB
-    export type MessageEvent = STUB
-    export type EventListenerOptions = STUB
-}
-declare module "vscode" {
-    export type TestRunProfile = STUB
-    export type ExtensionContext = STUB
-    export type OutputChannel = STUB
-    export type Range = STUB
-    export type TestItem = STUB
-    export type TestRun = STUB
-    export type TestRunRequest = STUB
-    export type Uri = STUB
-    export type Webview = STUB
-    export type TextEditorDecorationType = STUB
-    export type TextEditor = STUB
-    export type TextDocumentWillSaveEvent = STUB
-    export type TextDocumentChangeEvent = STUB
-    export type TextDocument = STUB
-    export type DecorationOptions = STUB
-    export type StatusBarItem = STUB
-    export type TestController = STUB
-    export type WorkspaceFolder = STUB
-    export type RelativePattern = STUB
-    export type EventEmitter<T> = STUB
-    export type FileSystemWatcher = STUB
-    export type GlobPattern = STUB
-}
-// ====================================================================================
-// ====================================================================================
-
 
 
 
@@ -78,25 +7,7 @@ declare module "vscode" {
 
 
 /// <reference types="express" />
-declare module "core-back/LATER.foo" {
-    export type LATER<T> = any;
-}
-declare module "utils/types" {
-    /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tag> = O & {
-        __tag?: Tag;
-    };
-    /** same as Tagged, but even scriter */
-    export type Branded<O, Brand> = O & {
-        __brand: Brand;
-    };
-    export type Maybe<T> = T | null | undefined;
-}
-declare module "core-shared/b64img" {
-    import type { Branded } from "utils/types";
-    export type Base64Image = Branded<string, 'Base64Image'>;
-}
-declare module "core-types/ComfyPrompt" {
+declare module "types/ComfyPrompt" {
     export type ComfyPromptJSON = {
         [key: string]: ComfyNodeJSON;
     };
@@ -107,11 +18,11 @@ declare module "core-types/ComfyPrompt" {
         class_type: string;
     };
 }
-declare module "core-types/NodeUID" {
+declare module "types/NodeUID" {
     export type ComfyNodeUID = string;
 }
-declare module "core-types/ComfyWsPayloads" {
-    import type { ComfyNodeUID } from "core-types/NodeUID";
+declare module "types/ComfyWsApi" {
+    import type { ComfyNodeUID } from "types/NodeUID";
     export type ApiPromptInput = {
         client_id: string;
         extra_data: {
@@ -119,7 +30,7 @@ declare module "core-types/ComfyWsPayloads" {
         };
         prompt: any;
     };
-    export type WsMsg = WsMsgStatus | WsMsgProgress | WsMsgExecuting | WsMsgExecuted;
+    export type WsMsg = WsMsgStatus | WsMsgProgress | WsMsgExecuting | WsMsgExecuted | WsMsgCached;
     export type WsMsgStatus = {
         type: 'status';
         data: {
@@ -136,6 +47,10 @@ declare module "core-types/ComfyWsPayloads" {
         data: {
             node: ComfyNodeUID;
         };
+    };
+    export type WsMsgCached = {
+        type: 'execution_cached';
+        data: ComfyNodeUID[];
     };
     export type WsMsgExecuted = {
         type: 'executed';
@@ -174,12 +89,31 @@ declare module "ui/VisUI" {
     export type VisEdges = any;
     export type VisOptions = any;
 }
-declare module "utils/ComfyUtils" {
-    export const exhaust: (x: never) => never;
-    export const sleep: (ms: number) => Promise<unknown>;
-    export const deepCopyNaive: <T>(x: T) => T;
+declare module "core/AutolayoutV1" {
+    
+    import { Graph } from "core/Graph";
+    import { ComfyNode } from "core/Node";
+    export class Cyto {
+        graph: Graph;
+        cy: any;
+        constructor(graph: Graph);
+        at: number;
+        addEdge: (edge: {
+            sourceUID: string;
+            targetUID: string;
+            input: string;
+        }) => void;
+        removeEdge: (id: string) => void;
+        trackNode: (node: ComfyNode<any>) => void;
+        animate: () => object;
+    }
 }
-declare module "core-types/ComfySchemaJSON" {
+declare module "core/Colors" {
+    export const comfyColors: {
+        [category: string]: string;
+    };
+}
+declare module "types/ComfySchemaJSON" {
     /** type of the file sent by the backend at /object_info */
     export type ComfySchemaJSON = {
         [nodeTypeName: string]: ComfyNodeSchemaJSON;
@@ -199,7 +133,7 @@ declare module "core-types/ComfySchemaJSON" {
         category: string;
     };
     export type ComfyInputSpec = [ComfyInputType] | [ComfyInputType, ComfyInputOpts];
-    export type ComfyInputType =
+    export type ComfyInputType = 
     /** node name or primitive */
     string
     /** enum */
@@ -211,6 +145,17 @@ declare module "core-types/ComfySchemaJSON" {
         max?: number;
         step?: number;
     };
+}
+declare module "utils/types" {
+    /** usefull to catch most *units* type errors */
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
+    };
+    /** same as Tagged, but even scriter */
+    export type Branded<O, Brand> = O & {
+        __brand: Brand;
+    };
+    export type Maybe<T> = T | null | undefined;
 }
 declare module "utils/CodeBuffer" {
     /** this class is used to buffer text and then write it to a file */
@@ -234,17 +179,17 @@ declare module "utils/CodeBuffer" {
     export const repeatStr: (x: number, str: string) => string;
     export const renderBar: (text: string, prefix?: string) => string;
 }
-declare module "core-shared/Primitives" {
+declare module "core/Primitives" {
     export const ComfyPrimitiveMapping: {
         [key: string]: string;
     };
     export const ComfyPrimitives: string[];
 }
-declare module "core-shared/normalizeJSIdentifier" {
+declare module "core/normalizeJSIdentifier" {
     export const normalizeJSIdentifier: (name: string) => string;
 }
-declare module "core-shared/Schema" {
-    import type { ComfyInputOpts, ComfySchemaJSON } from "core-types/ComfySchemaJSON";
+declare module "core/Schema" {
+    import type { ComfyInputOpts, ComfySchemaJSON } from "types/ComfySchemaJSON";
     import type { Branded, Maybe } from "utils/types";
     export type EnumHash = string;
     export type EnumName = string;
@@ -307,145 +252,14 @@ declare module "core-shared/Schema" {
     }
     export const wrapQuote: (s: string) => string;
 }
-declare module "core-shared/Slot" {
-    import type { ComfyNode } from "core-shared/Node";
-    export class Slot<T, Ix extends number = number> {
-        node: ComfyNode<any>;
-        slotIx: Ix;
-        type: T;
-        constructor(node: ComfyNode<any>, slotIx: Ix, type: T);
-    }
-}
-declare module "core-shared/Colors" {
-    export const comfyColors: {
-        [category: string]: string;
-    };
-}
-declare module "core-shared/autoValue" {
-    import type { Branded } from "utils/types";
-    /**
-     * a fake value that is detected at serialization
-     * time to try to magically inject stuff
-     * */
-    export type AUTO = Branded<{
-        ___AUTO___: true;
-    }, 'AUTO'>;
-    /**
-     * you can use this as a placeholder anywhere in your graph
-     * Cushy will try to find some node slot recently created that can be used to fill the gap
-     */
-    export const auto: <T>() => T;
-    export const auto_: AUTO;
-}
-declare module "core-shared/Printable" {
-    import { ComfyNode } from "core-shared/Node";
-    export type Printable = string | number | boolean | ComfyNode<any>;
-}
-declare module "logger/LogTypes" {
-    import { Printable } from "core-shared/Printable";
-    export interface ILogger {
-        debug(...message: Printable[]): void;
-        info(...message: Printable[]): void;
-        warn(...message: Printable[]): void;
-        error(...message: Printable[]): void;
-    }
-    export interface LogMessage {
-        level: LogLevel;
-        message: string;
-        timestamp: Date;
-    }
-    export enum LogLevel {
-        DEBUG = 0,
-        INFO = 1,
-        WARN = 2,
-        ERROR = 3
-    }
-}
-declare module "logger/logger" {
-    import type { ILogger } from "logger/LogTypes";
-    export const ref: {
-        value?: ILogger;
-    };
-    export const logger: () => ILogger;
-    export const registerLogger: (logger: ILogger) => void;
-}
-declare module "core-shared/Node" {
-    import type { ComfyNodeJSON } from "core-types/ComfyPrompt";
-    import type { NodeProgress, WsMsgExecutedData } from "core-types/ComfyWsPayloads";
-    import type { Graph } from "core-shared/Graph";
-    import { ComfyNodeUID } from "core-types/NodeUID";
-    import { ComfyNodeSchema } from "core-shared/Schema";
-    import { Slot } from "core-shared/Slot";
-    /** ComfyNode
-     * - correspond to a signal in the graph
-     * - belongs to a script
-     */
-    export class ComfyNode<ComfyNode_input extends object> {
-        graph: Graph;
-        uid: string;
-        artifacts: WsMsgExecutedData[];
-        progress: NodeProgress | null;
-        $schema: ComfyNodeSchema;
-        status: 'executing' | 'done' | 'error' | 'waiting' | null;
-        get isExecuting(): boolean;
-        get statusEmoji(): "" | "🔥" | "✅" | "❌" | "⏳";
-        disabled: boolean;
-        disable(): void;
-        get inputs(): ComfyNode_input;
-        json: ComfyNodeJSON;
-        /** update a node */
-        set(p: Partial<ComfyNode_input>): void;
-        get color(): string;
-        uidNumber: number;
-        $outputs: Slot<any>[];
-        constructor(graph: Graph, uid: string, jsonExt: ComfyNodeJSON);
-        _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): {
-            class_type: string;
-            inputs: {
-                [inputName: string]: any;
-            };
-        };
-        /** return the list of nodes piped into this node */
-        _incomingNodes(): string[];
-        _incomingEdges(): {
-            from: ComfyNodeUID;
-            inputName: string;
-        }[];
-        get width(): number;
-        get height(): number;
-        serializeValue(field: string, value: unknown): unknown;
-        private _getExpecteTypeForField;
-        private _getOutputForTypeOrCrash;
-        private _getOutputForTypeOrNull;
-    }
-}
-declare module "core-shared/AutolayoutV1" {
-
-    import { Graph } from "core-shared/Graph";
-    import { ComfyNode } from "core-shared/Node";
-    export class Cyto {
-        graph: Graph;
-        cy: any;
-        constructor(graph: Graph);
-        at: number;
-        addEdge: (edge: {
-            sourceUID: string;
-            targetUID: string;
-            input: string;
-        }) => void;
-        removeEdge: (id: string) => void;
-        trackNode: (node: ComfyNode<any>) => void;
-        animate: () => object;
-    }
-}
-declare module "core-shared/Graph" {
-    import type { ComfyPromptJSON } from "core-types/ComfyPrompt";
-    import type { WsMsgExecuting, WsMsgProgress } from "core-types/ComfyWsPayloads";
-    import type { ComfyNodeUID } from "core-types/NodeUID";
+declare module "core/Graph" {
+    import type { ComfyPromptJSON } from "types/ComfyPrompt";
+    import type { WsMsgExecuting, WsMsgProgress } from "types/ComfyWsApi";
+    import type { ComfyNodeUID } from "types/NodeUID";
     import type { VisEdges, VisNodes } from "ui/VisUI";
-    import type { Cyto } from "core-shared/AutolayoutV1";
-    import { ComfyNode } from "core-shared/Node";
-    import { Schema } from "core-shared/Schema";
+    import type { Cyto } from "core/AutolayoutV1";
+    import { ComfyNode } from "core/Node";
+    import { Schema } from "core/Schema";
     export type RunMode = 'fake' | 'real';
     /**
      * graph abstraction
@@ -492,26 +306,121 @@ declare module "core-shared/Graph" {
         };
     }
 }
-declare module "core-shared/Workflow" {
-    export class Workflow {
+declare module "utils/ComfyUtils" {
+    export const exhaust: (x: never) => never;
+    export const sleep: (ms: number) => Promise<unknown>;
+    export const deepCopyNaive: <T>(x: T) => T;
+}
+declare module "core/autoValue" {
+    import type { Branded } from "utils/types";
+    /**
+     * a fake value that is detected at serialization
+     * time to try to magically inject stuff
+     * */
+    export type AUTO = Branded<{
+        ___AUTO___: true;
+    }, 'AUTO'>;
+    /**
+     * you can use this as a placeholder anywhere in your graph
+     * Cushy will try to find some node slot recently created that can be used to fill the gap
+     */
+    export const auto: <T>() => T;
+    export const auto_: AUTO;
+}
+declare module "core/Printable" {
+    import { ComfyNode } from "core/Node";
+    export type Printable = string | number | boolean | ComfyNode<any>;
+}
+declare module "logger/LogTypes" {
+    import { Printable } from "core/Printable";
+    export interface ILogger {
+        debug(...message: Printable[]): void;
+        info(...message: Printable[]): void;
+        warn(...message: Printable[]): void;
+        error(...message: Printable[]): void;
+    }
+    export interface LogMessage {
+        level: LogLevel;
+        message: string;
+        timestamp: Date;
+    }
+    export enum LogLevel {
+        DEBUG = 0,
+        INFO = 1,
+        WARN = 2,
+        ERROR = 3
     }
 }
-declare module "core-shared/WorkflowFn" {
-    import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
-    import type { Presets } from "presets/presets";
-    import type { Graph } from "core-shared/Graph";
-    import type { Workflow } from "core-shared/Workflow";
-    import type { FlowRun } from "core-back/FlowRun";
-    export type WorkflowType = (title: string, builder: WorkflowBuilderFn) => Workflow;
-    export type WorkflowBuilder = {
-        graph: CUSHY_RUNTIME.ComfySetup & Graph;
-        flow: FlowRun;
-        presets: Presets;
-        AUTO: <T>() => T;
-        stage: 'TODO';
-        openpose: 'TODO';
+declare module "logger/logger" {
+    import type { ILogger } from "logger/LogTypes";
+    export const ref: {
+        value?: ILogger;
     };
-    export type WorkflowBuilderFn = (p: WorkflowBuilder) => Promise<any>;
+    export const logger: () => ILogger;
+    export const registerLogger: (logger: ILogger) => void;
+}
+declare module "core/Node" {
+    import type { ComfyNodeJSON } from "types/ComfyPrompt";
+    import type { NodeProgress, WsMsgExecutedData } from "types/ComfyWsApi";
+    import type { Graph } from "core/Graph";
+    import { ComfyNodeUID } from "types/NodeUID";
+    import { ComfyNodeSchema } from "core/Schema";
+    import { Slot } from "core/Slot";
+    /** ComfyNode
+     * - correspond to a signal in the graph
+     * - belongs to a script
+     */
+    export class ComfyNode<ComfyNode_input extends object> {
+        graph: Graph;
+        uid: string;
+        artifacts: WsMsgExecutedData[];
+        progress: NodeProgress | null;
+        $schema: ComfyNodeSchema;
+        status: 'executing' | 'done' | 'error' | 'waiting' | null;
+        get isExecuting(): boolean;
+        get statusEmoji(): "" | "🔥" | "✅" | "❌" | "⏳";
+        disabled: boolean;
+        disable(): void;
+        get inputs(): ComfyNode_input;
+        json: ComfyNodeJSON;
+        /** update a node */
+        set(p: Partial<ComfyNode_input>): void;
+        get color(): string;
+        uidNumber: number;
+        $outputs: Slot<any>[];
+        constructor(graph: Graph, uid: string, jsonExt: ComfyNodeJSON);
+        _convertPromptExtToPrompt(promptExt: ComfyNodeJSON): {
+            class_type: string;
+            inputs: {
+                [inputName: string]: any;
+            };
+        };
+        /** return the list of nodes piped into this node */
+        _incomingNodes(): string[];
+        _incomingEdges(): {
+            from: ComfyNodeUID;
+            inputName: string;
+        }[];
+        get width(): number;
+        get height(): number;
+        serializeValue(field: string, value: unknown): unknown;
+        private _getExpecteTypeForField;
+        private _getOutputForTypeOrCrash;
+        private _getOutputForTypeOrNull;
+    }
+}
+declare module "core/Slot" {
+    import type { ComfyNode } from "core/Node";
+    export class Slot<T, Ix extends number = number> {
+        node: ComfyNode<any>;
+        slotIx: Ix;
+        type: T;
+        constructor(node: ComfyNode<any>, slotIx: Ix, type: T);
+    }
+}
+declare module "core/Workflow" {
+    export class Workflow {
+    }
 }
 declare module "presets/presets" {
     /**
@@ -519,8 +428,8 @@ declare module "presets/presets" {
      * the LATER type is used to reference types that may or may not be available on users machines, depending
      * on the node suite they have setup
      */
-    import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
-    import type { WorkflowBuilder } from "core-shared/WorkflowFn";
+    import type { LATER } from "back/LATER";
+    import type { WorkflowBuilder } from "core/WorkflowFn";
     export type SimplifiedLoraDef = {
         name: CUSHY_RUNTIME.Enum_LoraLoader_lora_name;
         /** defaults to 1 */
@@ -532,7 +441,7 @@ declare module "presets/presets" {
     export class Presets {
         ctx: WorkflowBuilder;
         constructor(ctx: WorkflowBuilder);
-        prompt: (pos: string, neg: string) => any;
+        prompt: (pos: string, neg: string) => import("global").KSampler;
         loadModel: (p: {
             ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
             stop_at_clip_layer?: number;
@@ -575,32 +484,60 @@ declare module "presets/presets" {
             /** defaults to 1 */
             denoise?: number;
         }) => Promise<{
-            ckpt: any;
-            latent: any;
-            positive: any;
-            negative: any;
-            sampler: any;
-            image: any;
+            ckpt: import("global").CheckpointLoaderSimple;
+            latent: import("global").EmptyLatentImage;
+            positive: import("global").CLIPTextEncode;
+            negative: import("global").CLIPTextEncode;
+            sampler: import("global").KSampler;
+            image: import("global").VAEDecode;
         }>;
     }
 }
-declare module "core-shared/GeneratedImageSummary" {
+declare module "core/WorkflowFn" {
+    import type { LATER } from "back/LATER";
+    import type { Presets } from "presets/presets";
+    import type { Graph } from "core/Graph";
+    import type { Workflow } from "core/Workflow";
+    import type { FlowRun } from "back/FlowRun";
+    export type WorkflowType = (title: string, builder: WorkflowBuilderFn) => Workflow;
+    export type WorkflowBuilder = {
+        graph: CUSHY_RUNTIME.ComfySetup & Graph;
+        flow: FlowRun;
+        presets: Presets;
+        AUTO: <T>() => T;
+        stage: 'TODO';
+        openpose: 'TODO';
+    };
+    export type WorkflowBuilderFn = (p: WorkflowBuilder) => Promise<any>;
+}
+declare module "back/LATER" {
+    import type * as T from '../global';
+    export type LATER<T> = T extends 'ComfySetup' ? T.ComfySetup : T extends 'LoadImage' ? T.LoadImage : T extends 'Embeddings' ? T.Embeddings : T extends 'Enum_LoraLoader_lora_name' ? T.Enum_LoraLoader_lora_name : T extends 'Enum_CheckpointLoader_ckpt_name' ? T.Enum_CheckpointLoader_ckpt_name : T extends 'Enum_VAELoader_vae_name' ? T.Enum_VAELoader_vae_name : T extends 'HasSingle_CLIP' ? T.HasSingle_CLIP : T extends 'HasSingle_MODEL' ? T.HasSingle_MODEL : T extends 'CLIP' ? T.CLIP : T extends 'MODEL' ? T.MODEL : T extends 'VAE' ? T.VAE : T extends 'CheckpointLoaderSimple' ? T.CheckpointLoaderSimple : any;
+}
+declare module "core/b64img" {
+    import type { Branded } from "utils/types";
+    export type Base64Image = Branded<string, 'Base64Image'>;
+}
+declare module "core/GeneratedImageSummary" {
+    import { Tagged } from "utils/types";
+    export type ImageUID = Tagged<string, 'ImageUID'>;
     export interface ImageInfos {
-        uid: string;
-        comfyRelativePath: string;
-        comfyURL: string;
-        localRelativeFilePath: string;
-        localAbsoluteFilePath: string;
+        uid: ImageUID;
+        comfyRelativePath?: string;
+        comfyURL?: string;
+        localAbsolutePath?: string;
+        localURL?: string;
     }
+    export type FolderUID = Tagged<string, 'FolderUID'>;
 }
 declare module "controls/BUG" {
     export class BUG {
     }
 }
 declare module "controls/Requestable" {
-    import type { ImageInfos } from "core-shared/GeneratedImageSummary";
+    import type { ImageInfos } from "core/GeneratedImageSummary";
     import { BUG } from "controls/BUG";
-    export type Requestable =
+    export type Requestable = 
     /** str */
     Requestable_str | Requestable_strOpt
     /** nums */
@@ -719,12 +656,12 @@ declare module "controls/ScriptStep_Iface" {
     }
 }
 declare module "controls/ScriptStep_prompt" {
-    import type { FlowRun } from "core-back/FlowRun";
-    import type { ComfyPromptJSON } from "core-types/ComfyPrompt";
-    import type { WsMsgExecuted, WsMsgExecuting } from "core-types/ComfyWsPayloads";
+    import type { FlowRun } from "back/FlowRun";
+    import type { ComfyPromptJSON } from "types/ComfyPrompt";
+    import type { WsMsgExecuted, WsMsgExecuting } from "types/ComfyWsApi";
     import type { ScriptStep_Iface } from "controls/ScriptStep_Iface";
-    import { GeneratedImage } from "core-back/GeneratedImage";
-    import { Graph } from "core-shared/Graph";
+    import { GeneratedImage } from "back/GeneratedImage";
+    import { Graph } from "core/Graph";
     export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
         run: FlowRun;
         prompt: ComfyPromptJSON;
@@ -736,14 +673,14 @@ declare module "controls/ScriptStep_prompt" {
         /** deepcopy of run graph at creation time; ready to be forked */
         _graph: Graph;
         /** short-hand getter to access parent client */
-        get workspace(): import("core-back/Workspace").Workspace;
+        get workspace(): import("back/ServerState").ServerState;
         constructor(run: FlowRun, prompt: ComfyPromptJSON);
         _resolve: (value: this) => void;
         _rejects: (reason: any) => void;
         finished: Promise<this>;
         /** pointer to the currently executing node */
         /** update the progress value of the currently focused onde */
-        notifyEmptyPrompt: () => Thenable<string | undefined>;
+        notifyEmptyPrompt: () => void;
         /** update pointer to the currently executing node */
         onExecuting: (msg: WsMsgExecuting) => void;
         /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
@@ -788,13 +725,13 @@ declare module "controls/ScriptStep_ask" {
         answer: (value: { [key in keyof Req]: InfoAnswer<Req[key]>; }) => void;
     }
 }
-declare module "core-types/FlowExecutionStep" {
+declare module "types/FlowExecutionStep" {
     import type { ScriptStep_Init } from "controls/ScriptStep_Init";
     import type { ScriptStep_ask } from "controls/ScriptStep_ask";
     import type { PromptExecution } from "controls/ScriptStep_prompt";
     export type FlowExecutionStep = ScriptStep_Init | PromptExecution | ScriptStep_ask<any>;
 }
-declare module "core-shared/PayloadID" {
+declare module "core/PayloadID" {
     export type PayloadID = number;
     export const getPayloadID: () => PayloadID;
 }
@@ -802,6 +739,203 @@ declare module "utils/fs/BrandedPaths" {
     import type { Branded } from "utils/types";
     export type RelativePath = Branded<string, 'WorkspaceRelativePath'>;
     export type AbsolutePath = Branded<string, 'Absolute'>;
+}
+declare module "utils/bang" {
+    /** assertNotNull */
+    export const bang: <T>(x: T | null) => T;
+}
+declare module "back/CushyFile" {
+    import * as vscode from 'vscode';
+    import { AbsolutePath } from "utils/fs/BrandedPaths";
+    import { FlowDefinition } from "back/FlowDefinition";
+    import { ServerState } from "back/ServerState";
+    export type MarkdownTestData = CushyFile | /* TestHeading |*/ FlowDefinition;
+    export const vsTestItemOriginDict: WeakMap<vscode.TestItem, MarkdownTestData>;
+    export type CodeRange = {
+        fromLine: number;
+        fromChar: number;
+        toLine: number;
+        toChar: number;
+    };
+    export class CushyFile {
+        workspace: ServerState;
+        absPath: AbsolutePath;
+        CONTENT: string;
+        workflows: FlowDefinition[];
+        constructor(workspace: ServerState, absPath: AbsolutePath);
+        WorkflowRe: RegExp;
+        extractWorkflows: () => void;
+    }
+}
+declare module "back/transpiler" {
+    export function transpileCode(code: string): Promise<string>;
+}
+declare module "back/FlowDefinition" {
+    import type { RunMode } from "core/Graph";
+    import type { CodeRange, CushyFile } from "back/CushyFile";
+    import { Branded } from "utils/types";
+    export type FlowDefinitionID = Branded<string, 'FlowDefinitionID'>;
+    export const asFlowDefinitionID: (s: string) => FlowDefinitionID;
+    export type FlowRunID = Branded<string, 'FlowRunID'>;
+    export const asFlowRunID: (s: string) => FlowRunID;
+    /**
+     * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
+     * flow = the 'WORFLOW(...)' part of a file
+     * */
+    export class FlowDefinition {
+        file: CushyFile;
+        range: CodeRange;
+        flowName: string;
+        flowID: FlowDefinitionID;
+        constructor(file: CushyFile, range: CodeRange, flowName: string);
+        run: (mode?: RunMode) => Promise<boolean>;
+    }
+}
+declare module "core/WorkspaceHistoryJSON" {
+    import type { MessageFromExtensionToWebview } from "types/MessageFromExtensionToWebview";
+    import type { FolderUID, ImageUID } from "core/GeneratedImageSummary";
+    export type FileMetadata = {
+        [key: string]: any;
+    };
+    export type CushyFolderMetadata = {
+        name?: string;
+        imageUIDs?: ImageUID[];
+    };
+    export type CushyFileMetadata = {
+        star?: number;
+        folder?: FolderUID;
+    };
+    export type CushyDBData = {
+        /** default: 100 */
+        config: {
+            previewSize?: number;
+        };
+        files: {
+            [fileUID: ImageUID]: CushyFileMetadata;
+        };
+        folders: {
+            [folderUId: FolderUID]: CushyFolderMetadata;
+        };
+        msgs: {
+            at: number;
+            msg: MessageFromExtensionToWebview;
+        }[];
+    };
+    export const newWorkspaceHistory: () => CushyDBData;
+}
+declare module "types/MessageFromExtensionToWebview" {
+    import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from "types/ComfyWsApi";
+    import type { PayloadID } from "core/PayloadID";
+    import type { ComfySchemaJSON } from "types/ComfySchemaJSON";
+    import type { ComfyPromptJSON } from "types/ComfyPrompt";
+    import type { EmbeddingName } from "core/Schema";
+    import type { ImageInfos, ImageUID } from "core/GeneratedImageSummary";
+    import type { Requestable } from "controls/Requestable";
+    import type { AbsolutePath } from "utils/fs/BrandedPaths";
+    import type { FlowDefinitionID, FlowRunID } from "back/FlowDefinition";
+    import type { CushyDBData } from "core/WorkspaceHistoryJSON";
+    export type FromWebview_SayReady = {
+        type: 'say-ready';
+        frontID: string;
+    };
+    export type FromWebview_runFlow = {
+        type: 'run-flow';
+        flowID: FlowDefinitionID;
+        img?: AbsolutePath;
+    };
+    export type FromWebview_openExternal = {
+        type: 'open-external';
+        uriString: string;
+    };
+    export type FromWebview_sayHello = {
+        type: 'say-hello';
+        message: string;
+    };
+    export type FromWebview_Answer = {
+        type: 'answer';
+        value: any;
+    };
+    export type FromWebview_Image = {
+        type: 'image';
+        base64: string;
+        imageID: ImageUID;
+    };
+    export type FromWebview_reset = {
+        type: 'reset';
+    };
+    export type MessageFromWebviewToExtension = FromWebview_SayReady | FromWebview_runFlow | FromWebview_openExternal | FromWebview_sayHello | FromWebview_Answer | FromWebview_Image | FromWebview_reset;
+    export type MessageFromExtensionToWebview = {
+        uid: PayloadID;
+    } & MessageFromExtensionToWebview_;
+    export type FromExtension_CushyStatus = {
+        type: 'cushy_status';
+        connected: boolean;
+    };
+    export type FromExtension_FlowStart = {
+        type: 'flow-start';
+        flowRunID: FlowRunID;
+    };
+    export type FromExtension_FlowCode = {
+        type: 'flow-code';
+        flowRunID: FlowRunID;
+        code: string;
+    };
+    export type FromExtension_FlowEnd = {
+        type: 'flow-end';
+        flowRunID: FlowRunID;
+        status: 'success' | 'failure';
+        flowID: FlowDefinitionID;
+    };
+    export type FromExtension_Print = {
+        type: 'print';
+        message: string;
+    };
+    export type FromExtension_Schema = {
+        type: 'schema';
+        schema: ComfySchemaJSON;
+        embeddings: EmbeddingName[];
+    };
+    export type FromExtension_Prompt = {
+        type: 'prompt';
+        graph: ComfyPromptJSON;
+    };
+    export type FromExtension_Ls = {
+        type: 'ls';
+        knownFlows: {
+            name: string;
+            id: FlowDefinitionID;
+        }[];
+    };
+    export type FromExtension_Images = {
+        type: 'images';
+        images: ImageInfos[];
+    };
+    export type FromExtension_ShowHtml = {
+        type: 'show-html';
+        content: string;
+        title: string;
+    };
+    export type FromExtension_ask = {
+        type: 'ask';
+        request: {
+            [key: string]: Requestable;
+        };
+    };
+    export type FromExtension_SyncHistory = {
+        type: 'sync-history';
+        history: CushyDBData;
+    };
+    export type MessageFromExtensionToWebview_ = 
+    /** wether or not cushy server is connected to at least on ComfyUI server */
+    FromExtension_CushyStatus | FromExtension_SyncHistory | FromExtension_FlowStart | FromExtension_FlowCode | FromExtension_FlowEnd | FromExtension_ask | FromExtension_Print | FromExtension_Schema | FromExtension_Prompt | FromExtension_Ls | WsMsgStatus | WsMsgProgress | WsMsgExecuting | WsMsgCached | WsMsgExecuted | FromExtension_Images | FromExtension_ShowHtml;
+    export const renderMessageFromExtensionAsEmoji: (msg: MessageFromExtensionToWebview) => "✅" | "ℹ️" | "🎬" | "📝" | "🏁" | "📄" | "📡" | "📊" | "📈" | "💾" | "🖼️" | "💬" | "🥶" | "👋" | "📂" | "⏱️" | "❓";
+}
+declare module "typings/sdkTemplate" {
+    export const sdkTemplate: string;
+}
+declare module "utils/extractErrorMessage" {
+    /** Extracts an error message from an exception stuff. */
+    export const extractErrorMessage: (error: any) => string;
 }
 declare module "utils/fs/pathUtils" {
     import type { AbsolutePath, RelativePath } from "utils/fs/BrandedPaths";
@@ -811,243 +945,56 @@ declare module "utils/fs/pathUtils" {
     /** brand a path as a workspace relative pathpath after basic checks */
     export const asRelativePath: (path: string) => RelativePath;
 }
-declare module "utils/jsEscapeStr" {
-    export function jsEscapeStr(x: any): any;
-}
-declare module "utils/toposort" {
-    export type TNode = string;
-    export type TEdge = [TNode, TNode];
-    export function toposort(nodes: TNode[], edges: TEdge[]): TNode[];
-}
-declare module "importers/ImportComfyImage" {
-    import { Workspace } from "core-back/Workspace";
-    import { ComfyPromptJSON } from "core-types/ComfyPrompt";
-    /** Converts Comfy JSON prompts to ComfyScript code */
-    type RuleInput = {
-        nodeName: string;
-        inputName: string;
-        valueStr: string;
-    };
-    export class ComfyImporter {
-        client: Workspace;
-        constructor(client: Workspace);
-        UI_ONLY_ATTRIBUTES: string[];
-        RULES: ((p: RuleInput) => void)[];
-        knownAliaes: {
-            [key: string]: string;
-        };
-        naneDedupeCache: {
-            [key: string]: number;
-        };
-        /** handles hygenic naming  */
-        mkVarNameForNodeType: (nodeType: string, nameOfInputsItsPluggedInto: string[]) => string;
-        private finalizeName;
-        private smartDownCase;
-        /** trim useless suffixes, like _name */
-        private smartTrim;
-        convertFlowToCode: (title: string, flow: ComfyPromptJSON, opts: {
-            preserveId: boolean;
-        }) => string;
-    }
-}
-declare module "utils/Either" {
-    export type Result<L, R> = {
-        type: 'failure';
-        value: L;
-    } | {
-        type: 'success';
-        value: R;
-    };
-    export const resultSuccess: <T>(value: T) => Result<never, T>;
-    export const resultFailure: <T>(value: T) => Result<T, never>;
-}
-declare module "importers/getPngMetadata" {
-    import { Result } from "utils/Either";
-    export type TextChunks = {
-        [key: string]: string;
-    };
-    export function getPngMetadataFromFile(file: File): Promise<TextChunks>;
-    export const getPngMetadata: (pngData: Uint8Array) => Result<string, TextChunks>;
-}
-declare module "sdk/sdkTemplate" {
-    export const sdkTemplate: string;
-}
-declare module "utils/timestamps" {
-    export const getYYYYMMDDHHMMSS: () => string;
-    export const getYYYYMMDD_HHMM_SS: () => string;
-}
-declare module "templates/Template" {
-    import type { Workspace } from "core-back/Workspace";
-    export class Template {
-        name: string;
-        code: string;
-        constructor(name: string, code: string);
-        createProjectCopy(workspace: Workspace): void;
-    }
-}
-declare module "templates/Library" {
-    import { Template } from "templates/Template";
-    export const demoLibrary: Template[];
-}
-declare module "templates/defaultProjectCode" {
-    export const defaultScript: string;
-}
-declare module "utils/bang" {
-    /** assertNotNull */
-    export const bang: <T>(x: T | null) => T;
-}
-declare module "utils/extractErrorMessage" {
-    /** Extracts an error message from an exception stuff. */
-    export const extractErrorMessage: (error: any) => string;
-}
 declare module "utils/stringifyReadable" {
     export function readableStringify(obj: any, maxLevel?: number, level?: number): string;
 }
-declare module "core-back/transpiler" {
-    export function transpileCode(code: string): Promise<string>;
-}
-declare module "core-back/FlowDefinition" {
-    import type { RunMode } from "core-shared/Graph";
-    import type { CushyFile } from "core-back/CushyFile";
-    import * as vscode from 'vscode';
-    /**
-     * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
-     * flow = the 'WORFLOW(...)' part of a file
-     * */
-    export class FlowDefinition {
-        flowID: string;
-        file: CushyFile;
-        range: vscode.Range;
-        flowName: string;
-        generation: number;
-        constructor(flowID: string, file: CushyFile, range: vscode.Range, flowName: string, generation: number);
-        run: (vsTestItem: vscode.TestItem, vsTestRun: vscode.TestRun, mode?: RunMode) => Promise<boolean>;
+declare module "back/Client" {
+    import type WebSocket from 'ws';
+    import type { ServerState } from "back/ServerState";
+    import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from "types/MessageFromExtensionToWebview";
+    export class CushyClient {
+        serverState: ServerState;
+        ws: WebSocket;
+        clientID: string;
+        constructor(serverState: ServerState, ws: WebSocket);
+        /** wether or not the webview is up and running and react is mounted */
+        ready: boolean;
+        queue: MessageFromExtensionToWebview[];
+        flushQueue: () => void;
+        sendMessage(message: MessageFromExtensionToWebview): void;
+        onMessageFromWebview: (msg: MessageFromWebviewToExtension) => void | Promise<boolean>;
     }
 }
-declare module "core-back/extractWorkflows" {
-    import * as vscode from 'vscode';
-    export const extractWorkflows: (text: string, events: {
-        onWorkflowFound(range: vscode.Range, workflowName: string): void;
-    }) => void;
-}
-declare module "core-back/CushyFile" {
-    import * as vscode from 'vscode';
-    import { FlowDefinition } from "core-back/FlowDefinition";
-    import { Workspace } from "core-back/Workspace";
-    export type MarkdownTestData = CushyFile | /* TestHeading |*/ FlowDefinition;
-    export const vsTestItemOriginDict: WeakMap<vscode.TestItem, MarkdownTestData>;
-    export class CushyFile {
-        workspace: Workspace;
-        uri: vscode.Uri;
-        vsTestItem: vscode.TestItem;
-        constructor(workspace: Workspace, uri: vscode.Uri);
-        /** true once the file content has been read */
-        didResolve: boolean;
-        updateFromDisk(): Promise<void>;
-        private getContentFromFilesystem;
-        CONTENT: string;
-        /**
-         * Parses the tests from the input text, and updates the tests contained
-         * by this file to be those from the text,
-         */
-        updateFromContents(content: string): void;
+declare module "back/ConfigWatcher" {
+    export class ConfigFileWatcher {
+        jsonContent: {
+            'cushystudio.serverHostHTTP'?: string;
+            'cushystudio.serverWSEndoint'?: string;
+        };
+        constructor();
+        startWatching(filePath: string): void;
+        private handleFileChange;
+        private handleFileRemoval;
     }
 }
-declare module "utils/toArray" {
-    export const toArray: <T>(iterable: {
-        forEach: (fn: (arg: T) => any) => any;
-    }) => T[];
-}
-declare module "core-back/FlowRunner" {
-    import type { Workspace } from "core-back/Workspace";
-    import * as vscode from 'vscode';
-    import { FlowDefinition } from "core-back/FlowDefinition";
-    export class FlowRunner {
-        workspace: Workspace;
-        request: vscode.TestRunRequest;
-        queue: {
-            vsTestItem: vscode.TestItem;
-            cushyFlow: FlowDefinition;
-        }[];
-        run: vscode.TestRun;
-        constructor(workspace: Workspace, request: vscode.TestRunRequest);
-        START: () => Promise<void>;
-        discoverTests: (tests: Iterable<vscode.TestItem>) => Promise<void>;
-        runTestQueue: () => Promise<void>;
+declare module "back/DirWatcher" {
+    import { ServerState } from "back/ServerState";
+    import { CushyFile } from "back/CushyFile";
+    export class TypeScriptFilesMap {
+        serverState: ServerState;
+        extensions: string;
+        filesMap: Map<string, CushyFile>;
+        constructor(serverState: ServerState, extensions?: string);
+        startWatching(dir: string): void;
+        private handleNewFile;
+        private handleFileChange;
+        private handleFileRemoval;
     }
 }
-declare module "utils/fs/getNonce" {
-    /**
-     * A helper function that returns a unique alphanumeric identifier called a nonce.
-     *
-     * @remarks This function is primarily used to help enforce content security
-     * policies for resources/scripts being executed in a webview context.
-     *
-     * @returns A nonce
-     */
-    export function getNonce(): string;
-}
-declare module "utils/fs/getUri" {
-    import { Uri, Webview } from 'vscode';
-    /**
-     * A helper function which will get the webview URI of a given file or resource.
-     *
-     * @remarks This URI can be used within a webview's HTML as a link to the
-     * given file/resource.
-     *
-     * @param webview A reference to the extension webview
-     * @param extensionUri The URI of the directory containing the extension
-     * @param pathList An array of strings representing the path to a file/resource
-     * @returns A URI pointing to the file/resource
-     */
-    export function getUri(webview: Webview, extensionUri: Uri, pathList: string[]): Uri;
-}
-declare module "core-back/FrontWebview" {
-    import type { Workspace } from "core-back/Workspace";
-    import * as vscode from 'vscode';
-    /**
-     * This class manages the state and behavior of HelloWorld webview panels.
-     *
-     * It contains all the data and methods for:
-     *
-     * - Creating and rendering HelloWorld webview panels
-     * - Properly cleaning up and disposing of webview resources when the panel is closed
-     * - Setting the HTML (and by proxy CSS/JavaScript) content of the webview panel
-     * - Setting message listeners so data can be passed between the webview and extension
-     */
-    export class FrontWebview {
-        private workspace;
-        /** A reference to the webview panel */
-        private panel;
-        /** The URI of the directory containing the extension */
-        private extensionUri;
-        static current: FrontWebview | undefined;
-        static createOrReveal(workspace: Workspace): void;
-        private _disposables;
-        webview: vscode.Webview;
-        private constructor();
-        /** Cleans up and disposes of webview resources when the webview panel is closed. */
-        dispose(): void;
-        /**
-         * Defines and returns the HTML that should be rendered within the webview panel.
-         *
-         * @remarks This is also the place where references to the React webview build files
-         * are created and inserted into the webview HTML.
-         *
-         * @param webview A reference to the extension webview
-         * @param extensionUri The URI of the directory containing the extension
-         * @returns A template string literal containing the HTML that should be
-         * rendered within the webview panel
-         */
-        private _getWebviewContent;
-        static with: <A>(fn: (current: FrontWebview) => A) => A;
-        getExtensionLocalUri: (pathList: string[]) => vscode.Uri;
-    }
-}
-declare module "core-back/RANDOM_IMAGE_URL" {
+declare module "back/RANDOM_IMAGE_URL" {
     export const RANDOM_IMAGE_URL = "http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output";
 }
-declare module "core-back/ResilientWebsocket" {
+declare module "back/ResilientWebsocket" {
     import type { Maybe } from "utils/types";
     import { CloseEvent, Event, MessageEvent, EventListenerOptions } from 'ws';
     type Message = string | Buffer;
@@ -1083,355 +1030,102 @@ declare module "core-back/ResilientWebsocket" {
         message: MessageEvent;
     };
 }
-declare module "core-back/decoratorInput" {
-    import ts from 'typescript';
-    export type PossibleNodeInputAssignation = {
-        col: number;
-        row: number;
-        nodeName: string;
-        paramName: string;
-    };
-    export function extractInfoFromFunctionCall(node: ts.CallExpression): PossibleNodeInputAssignation[];
-    export const extractAllPossibleNodeInputAssignment: (sourceCode: string) => PossibleNodeInputAssignation[];
-}
-declare module "core-back/decorator" {
-    import type { Workspace } from "core-back/Workspace";
-    import * as vscode from 'vscode';
-    export class VSCodeEmojiDecorator {
-        workspace: Workspace;
-        knownEmojis: {
-            [key: string]: string;
-        };
-        decorationType: vscode.TextEditorDecorationType;
-        constructor(workspace: Workspace);
-        decorateAffectedDocument: (event: vscode.TextDocumentWillSaveEvent | vscode.TextDocumentChangeEvent) => void;
-        decorateDocument: (event: vscode.TextDocument) => void;
-        safely: <T>(f: () => T, def: T) => T;
-        decorate: (editor: vscode.TextEditor) => void;
-        private get_emoji_B;
-        decorateB: (editor: vscode.TextEditor) => vscode.DecorationOptions[];
-        decorateA: (editor: vscode.TextEditor) => vscode.DecorationOptions[];
-    }
-}
-declare module "core-types/MessageFromExtensionToWebview" {
-    import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from "core-types/ComfyWsPayloads";
-    import type { PayloadID } from "core-shared/PayloadID";
-    import type { ComfySchemaJSON } from "core-types/ComfySchemaJSON";
-    import type { ComfyPromptJSON } from "core-types/ComfyPrompt";
-    import type { EmbeddingName } from "core-shared/Schema";
-    import type { ImageInfos } from "core-shared/GeneratedImageSummary";
-    import { Requestable } from "controls/Requestable";
-    export type FromWebview_SayReady = {
-        type: 'say-ready';
-        frontID: string;
-    };
-    export type FromWebview_runFlow = {
-        type: 'run-flow';
-        flowID: string;
-    };
-    export type FromWebview_openExternal = {
-        type: 'open-external';
-        uriString: string;
-    };
-    export type FromWebview_sayHello = {
-        type: 'say-hello';
-        message: string;
-    };
-    export type FromWebview_Answer = {
-        type: 'answer';
-        value: any;
-    };
-    export type MessageFromWebviewToExtension = FromWebview_SayReady | FromWebview_runFlow | FromWebview_openExternal | FromWebview_sayHello | FromWebview_Answer;
-    export type MessageFromExtensionToWebview = {
-        uid: PayloadID;
-    } & MessageFromExtensionToWebview_;
-    export type FromExtension_CushyStatus = {
-        type: 'cushy_status';
-        connected: boolean;
-    };
-    export type FromExtension_FlowStart = {
-        type: 'flow-start';
-        flowRunID: string;
-    };
-    export type FromExtension_FlowCode = {
-        type: 'flow-code';
-        flowRunID: string;
-        code: string;
-    };
-    export type FromExtension_FlowEnd = {
-        type: 'flow-end';
-        flowRunID: string;
-        status: 'success' | 'failure';
-        flowID: string;
-    };
-    export type FromExtension_Print = {
-        type: 'print';
-        message: string;
-    };
-    export type FromExtension_Schema = {
-        type: 'schema';
-        schema: ComfySchemaJSON;
-        embeddings: EmbeddingName[];
-    };
-    export type FromExtension_Prompt = {
-        type: 'prompt';
-        graph: ComfyPromptJSON;
-    };
-    export type FromExtension_Ls = {
-        type: 'ls';
-        workflowNames: {
-            name: string;
-            id: string;
-        }[];
-    };
-    export type FromExtension_Images = {
-        type: 'images';
-        images: ImageInfos[];
-    };
-    export type FromExtension_ShowHtml = {
-        type: 'show-html';
-        content: string;
-        title: string;
-    };
-    export type FromExtension_ask = {
-        type: 'ask';
-        request: {
-            [key: string]: Requestable;
-        };
-    };
-    export type MessageFromExtensionToWebview_ =
-    /** wether or not cushy server is connected to at least on ComfyUI server */
-    FromExtension_CushyStatus | FromExtension_FlowStart | FromExtension_FlowCode | FromExtension_FlowEnd | FromExtension_ask | FromExtension_Print | FromExtension_Schema | FromExtension_Prompt | FromExtension_Ls | WsMsgStatus | WsMsgProgress | WsMsgExecuting | WsMsgExecuted | FromExtension_Images | FromExtension_ShowHtml;
-    export const renderMessageFromExtensionAsEmoji: (msg: MessageFromExtensionToWebview) => "✅" | "📝" | "🖼️" | "❓" | "ℹ️" | "🎬" | "🏁" | "📄" | "📡" | "📊" | "📈" | "💬" | "🥶" | "👋" | "📂";
-}
-declare module "core-back/Client" {
-    import type WebSocket from 'ws';
-    import type { Workspace } from "core-back/Workspace";
-    import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from "core-types/MessageFromExtensionToWebview";
-    export class CushyClient {
-        workspace: Workspace;
-        ws: WebSocket;
-        clientID: string;
-        constructor(workspace: Workspace, ws: WebSocket);
-        /** wether or not the webview is up and running and react is mounted */
-        ready: boolean;
-        queue: MessageFromExtensionToWebview[];
-        flushQueue: () => void;
-        sendMessage(message: MessageFromExtensionToWebview): void;
-        onMessageFromWebview: (msg: MessageFromWebviewToExtension) => void;
-    }
-}
-declare module "core-back/server" {
+declare module "back/server" {
     import express from 'express';
     import http from 'http';
     import { WebSocketServer } from 'ws';
-    import { Workspace } from "core-back/Workspace";
+    import { ServerState } from "back/ServerState";
+    import { AbsolutePath } from "utils/fs/BrandedPaths";
     export class CushyServer {
-        workspace: Workspace;
+        serverState: ServerState;
+        frontPublicDir?: AbsolutePath | undefined;
         http: http.Server;
         app: express.Application;
         wss: WebSocketServer;
         port: number;
         get baseURL(): string;
-        absPathToURL(absPath: string): string;
-        constructor(workspace: Workspace);
+        absPathToURL(absPath: AbsolutePath): string;
+        constructor(serverState: ServerState, frontPublicDir?: AbsolutePath | undefined);
         listen: () => Promise<void>;
     }
 }
-declare module "core-back/statusBar" {
-    import type { Workspace } from "core-back/Workspace";
-    import * as vscode from 'vscode';
-    export class StatusBar {
-        workspace: Workspace;
-        myStatusBarItem: vscode.StatusBarItem;
-        constructor(workspace: Workspace);
+declare module "back/CushyDB" {
+    import { CushyDBData } from "core/WorkspaceHistoryJSON";
+    import { MessageFromExtensionToWebview } from "types/MessageFromExtensionToWebview";
+    import { ServerState } from "back/ServerState";
+    export class CushyDB {
+        serverState: ServerState;
+        data: CushyDBData;
+        private path;
+        constructor(serverState: ServerState);
+        reset: () => void;
+        recordEvent: (msg: MessageFromExtensionToWebview) => void;
+        private saveTimeout;
+        private scheduleSave;
     }
 }
-declare module "logger/LoggerBack" {
+declare module "back/ServerState" {
+    import type { ComfySchemaJSON } from "types/ComfySchemaJSON";
     import type { Maybe } from "utils/types";
-    import * as vscode from 'vscode';
-    import { ILogger, LogLevel } from "logger/LogTypes";
-    import { Printable } from "core-shared/Printable";
-    export class LoggerBack implements ILogger {
-        level: LogLevel;
-        /**
-         *  - available in the extension process
-         *  - not available in the webview process
-         */
-        chanel?: Maybe<vscode.OutputChannel>;
-        constructor(level?: LogLevel);
-        stringify: (message: Printable[]) => string;
-        debug(...messages: Printable[]): void;
-        info(...messages: Printable[]): void;
-        warn(...messages: Printable[]): void;
-        error(...messages: Printable[]): void;
-    }
-}
-declare module "core-shared/AutolayoutV2" {
-    import type { Graph } from "core-shared/Graph";
-    /** partial type of cytoscape json output
-     * include the subset needed to get positions post layout
-     */
-    export type CytoJSON = {
-        elements: {
-            nodes: {
-                data: {
-                    id: string;
-                };
-                position: {
-                    x: number;
-                    y: number;
-                };
-            }[];
-        };
-    };
-    export const runAutolayout: (graph: Graph) => Promise<CytoJSON>;
-}
-declare module "core-shared/LiteGraph" {
-    import type { Branded } from "utils/types";
-    import { CytoJSON } from "core-shared/AutolayoutV2";
-    import type { Graph } from "core-shared/Graph";
-    export type LiteGraphJSON = {
-        last_node_id: number;
-        last_link_id: number;
-        nodes: LiteGraphNode[];
-        links: LiteGraphLink[];
-        groups: [];
-        config: {};
-        extra: {};
-        version: 0.4;
-    };
-    export type LiteGraphLink = [
-        linkId: LiteGraphLinkID,
-        fromNodeId: number,
-        fromNodeOutputIx: number,
-        toNodeId: number,
-        toNodeInputIx: number,
-        linkType: string
-    ];
-    export type LiteGraphLinkID = Branded<number, 'LiteGraphLinkID'>;
-    export type LiteGraphSlotIndex = Branded<number, 'LiteGraphSlotIndex'>;
-    export const asLiteGraphSlotIndex: (id: number) => LiteGraphSlotIndex;
-    export type LiteGraphNodeInput = {
-        name: string;
-        type: string;
-        link: LiteGraphLinkID;
-    };
-    export type LiteGraphNodeOutput = {
-        name: string;
-        type: string;
-        links: LiteGraphLinkID[];
-        slot_index: LiteGraphSlotIndex;
-    };
-    export type LiteGraphNode = {
-        id: number;
-        type: string;
-        pos: [number, number];
-        size: {
-            '0': number;
-            '1': number;
-        };
-        flags?: {};
-        order?: number;
-        /**
-         * 1 = ?????
-         * 2 = muted
-         * */
-        mode?: number;
-        inputs?: LiteGraphNodeInput[];
-        outputs: LiteGraphNodeOutput[];
-        isVirtualNode?: boolean;
-        properties?: {};
-        widgets_values: any[];
-    };
-    export const convertFlowToLiteGraphJSON: (graph: Graph, cytoJSON?: CytoJSON) => LiteGraphJSON;
-    export class LiteGraphCtx {
-        graph: Graph;
-        constructor(graph: Graph);
-        nextLinkId: number;
-        links: LiteGraphLink[];
-        allocateLink: (fromNodeId: number, fromNodeOutputIx: number, toNodeId: number, toNodeInputIx: number, linkType: string) => LiteGraphLinkID;
-    }
-}
-declare module "core-shared/litegraphToPrompt" {
-    import type { ComfyPromptJSON } from "core-types/ComfyPrompt";
-    import type { LiteGraphJSON } from "core-shared/LiteGraph";
-    import type { Schema } from "core-shared/Schema";
-    export const convertLiteGraphToPrompt: (schema: Schema, workflow: LiteGraphJSON) => ComfyPromptJSON;
-}
-declare module "core-back/Workspace" {
-    import type { ComfySchemaJSON } from "core-types/ComfySchemaJSON";
-    import * as vscode from 'vscode';
-
-    import { Maybe } from "utils/types";
-    import { FlowRun } from "core-back/FlowRun";
-    import { Schema } from "core-shared/Schema";
-    import { ComfyPromptJSON } from "core-types/ComfyPrompt";
-    import { ComfyStatus } from "core-types/ComfyWsPayloads";
-    import { RelativePath } from "utils/fs/BrandedPaths";
-    import { Template } from "templates/Template";
-    import { CushyFile } from "core-back/CushyFile";
-    import { GeneratedImage } from "core-back/GeneratedImage";
-    import { ResilientWebSocketClient } from "core-back/ResilientWebsocket";
-    import { VSCodeEmojiDecorator } from "core-back/decorator";
-    import { CushyServer } from "core-back/server";
-    import { StatusBar } from "core-back/statusBar";
-    import { CushyClient } from "core-back/Client";
-    import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from "core-types/MessageFromExtensionToWebview";
-    import { PayloadID } from "core-shared/PayloadID";
+    
+    import { FlowRun } from "back/FlowRun";
+    import { PayloadID } from "core/PayloadID";
+    import { Schema } from "core/Schema";
+    import { ComfyStatus } from "types/ComfyWsApi";
+    import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from "types/MessageFromExtensionToWebview";
+    import { AbsolutePath, RelativePath } from "utils/fs/BrandedPaths";
+    import { CushyClient } from "back/Client";
+    import { ConfigFileWatcher } from "back/ConfigWatcher";
+    import { CushyFile } from "back/CushyFile";
+    import { TypeScriptFilesMap } from "back/DirWatcher";
+    import { FlowDefinition, FlowDefinitionID } from "back/FlowDefinition";
+    import { GeneratedImage } from "back/GeneratedImage";
+    import { ResilientWebSocketClient } from "back/ResilientWebsocket";
+    import { CushyServer } from "back/server";
+    import { CushyDB } from "back/CushyDB";
     export type CSCriticalError = {
         title: string;
         help: string;
     };
-    /**
-     * global State
-     *  - manages connection to the backend
-     *  - manages list of known / open projects
-     *  - dispatches messages to the right projects
-     */
-    export class Workspace {
-        context: vscode.ExtensionContext;
-        wspUri: vscode.Uri;
+    export class ServerState {
+        rootPath: AbsolutePath;
         schema: Schema;
-        statusBar: StatusBar;
-        /** template /snippet library one can */
-        demos: Template[];
+        /** send by ComfyUI server */
         comfySessionId: string;
         activeRun: Maybe<FlowRun>;
-        vsTestController: vscode.TestController;
-        fileChangedEmitter: vscode.EventEmitter<vscode.Uri>;
-        /** relative workspace folder where CushyStudio should store every artifacts and runtime files */
-        get cacheFolderRootRelPath(): RelativePath;
-        get cacheFolderRootURI(): vscode.Uri;
         runs: FlowRun[];
-        comfyJSONUri: vscode.Uri;
-        embeddingsUri: vscode.Uri;
-        comfyTSUri: vscode.Uri;
-        cushyTSUri: vscode.Uri;
-        tsConfigUri: vscode.Uri;
-        writeBinaryFile(relPath: RelativePath, content: Buffer, open?: boolean): void;
+        cacheFolderPath: AbsolutePath;
+        vscodeSettings: AbsolutePath;
+        comfyJSONPath: AbsolutePath;
+        embeddingsPath: AbsolutePath;
+        comfyTSPath: AbsolutePath;
+        cushyTSPath: AbsolutePath;
+        tsConfigPath: AbsolutePath;
+        /** write a binary file to given absPath */
+        writeBinaryFile(absPath: AbsolutePath, content: Buffer): void;
         /** read text file, optionally provide a default */
-        readJSON: <T extends unknown>(uri: vscode.Uri, def?: T | undefined) => T;
+        readJSON: <T extends unknown>(absPath: AbsolutePath, def?: T | undefined) => T;
         /** read text file, optionally provide a default */
-        readTextFile: (uri: vscode.Uri, def: string) => Promise<string>;
-        writeTextFile(uri: vscode.Uri, content: string, open?: boolean): void;
-        updateNodeForDocument: (e: vscode.TextDocument) => void;
-        xxx: vscode.TestRunProfile;
-        startTestRun: (request: vscode.TestRunRequest) => Promise<undefined>;
+        readTextFile: (absPath: AbsolutePath, def: string) => string;
+        writeTextFile(absPath: AbsolutePath, content: string, open?: boolean): void;
+        knownFlows: Map<FlowDefinitionID, FlowDefinition>;
+        knownFiles: Map<AbsolutePath, CushyFile>;
         /** wrapper around vscode.tests.createTestController so logic is self-contained  */
-        initVSTestController(): vscode.TestController;
-        initOutputChannel: () => void;
         clients: Map<string, CushyClient>;
         registerClient: (id: string, client: CushyClient) => Map<string, CushyClient>;
         unregisterClient: (id: string) => boolean;
-        lastMessagesPerType: Map<"status" | "progress" | "executing" | "executed" | "cushy_status" | "flow-start" | "flow-code" | "flow-end" | "ask" | "print" | "schema" | "prompt" | "ls" | "images" | "show-html", MessageFromExtensionToWebview>;
+        lastMessagesPerType: Map<"status" | "progress" | "executing" | "execution_cached" | "executed" | "cushy_status" | "sync-history" | "flow-start" | "flow-code" | "flow-end" | "ask" | "print" | "schema" | "prompt" | "ls" | "images" | "show-html", MessageFromExtensionToWebview>;
+        persistMessageInHistoryIfNecessary: (message: MessageFromExtensionToWebview) => void;
         broadCastToAllClients: (message_: MessageFromExtensionToWebview_) => PayloadID;
+        relative: (absolutePath: AbsolutePath) => RelativePath;
+        resolve: (relativePath: RelativePath) => AbsolutePath;
         server: CushyServer;
-        decorator: VSCodeEmojiDecorator;
-        constructor(context: vscode.ExtensionContext, wspUri: vscode.Uri);
+        configWatcher: ConfigFileWatcher;
+        db: CushyDB;
+        constructor(rootPath: AbsolutePath);
         createTSConfigIfMissing: () => void;
         restoreSchemaFromCache: () => Schema;
-        watchForCOnfigurationChanges: () => void;
+        tsFilesMap: TypeScriptFilesMap;
         autoDiscoverEveryWorkflow: () => void;
         /** will be created only after we've loaded cnfig file
          * so we don't attempt to connect to some default server */
@@ -1439,49 +1133,23 @@ declare module "core-back/Workspace" {
         getServerHostHTTP(): string;
         getWSUrl: () => string;
         initWebsocket: () => ResilientWebSocketClient;
-        /** ensure webview is opened */
-        ensureWebviewPanelIsOpened: () => Promise<void>;
-        openWebview: () => Promise<void>;
-        importCurrentFile: (opts: {
-            preserveId: boolean;
-        }) => Promise<void>;
-        importCurrentFileAsComfyJSON: (uri: vscode.Uri, opts: {
-            preserveId: boolean;
-        }) => Promise<void>;
-        importCurrentFileAsComfyUIPNG: (uri: vscode.Uri, opts: {
-            preserveId: boolean;
-        }) => Promise<void>;
         forwardImagesToFrontV2: (images: GeneratedImage[]) => void;
         onMessage: (e: WS.MessageEvent) => void;
         /** attempt to convert an url to a Blob */
         getUrlAsBlob: (url?: string) => Promise<Blob>;
-        createProjectAndFocustIt: (workspaceRelativeFilePath: vscode.Uri, scriptContent?: string) => void;
-        resolve: (relativePath: RelativePath) => vscode.Uri;
         CRITICAL_ERROR: Maybe<CSCriticalError>;
         /** retri e the comfy spec from the schema*/
         fetchAndUdpateSchema: () => Promise<ComfySchemaJSON>;
         get schemaStatusEmoji(): "🟢" | "🔴";
         status: ComfyStatus | null;
-        notify: (msg: string) => Thenable<string | undefined>;
-        addProjectFromComfyWorkflowJSON: (relPath: RelativePath, title: string, comfyPromptJSON: ComfyPromptJSON, opts: {
-            preserveId: boolean;
-        }) => vscode.Uri;
-        getOrCreateFile: (vsTestController: vscode.TestController, uri: vscode.Uri) => CushyFile;
-        startWatchingWorkspace: (controller: vscode.TestController, fileChangedEmitter: vscode.EventEmitter<vscode.Uri>) => vscode.FileSystemWatcher[];
-        getWorkspaceTestPatterns(): {
-            workspaceFolder: vscode.WorkspaceFolder;
-            pattern: vscode.RelativePattern;
-        }[];
-        findInitialFiles(controller: vscode.TestController, pattern: vscode.GlobPattern): Promise<void>;
     }
 }
-declare module "core-back/GeneratedImage" {
-    import * as vscode from 'vscode';
-    import type { ComfyImageInfo } from "core-types/ComfyWsPayloads";
-    import type { Maybe } from "utils/types";
+declare module "back/GeneratedImage" {
     import type { PromptExecution } from "controls/ScriptStep_prompt";
-    import { RelativePath } from "utils/fs/BrandedPaths";
-    import { ImageInfos } from "core-shared/GeneratedImageSummary";
+    import type { ComfyImageInfo } from "types/ComfyWsApi";
+    import type { Maybe } from "utils/types";
+    import { ImageInfos, ImageUID } from "core/GeneratedImageSummary";
+    import { AbsolutePath } from "utils/fs/BrandedPaths";
     enum ImageStatus {
         Known = 1,
         Downloading = 2,
@@ -1495,14 +1163,15 @@ declare module "core-back/GeneratedImage" {
         data: ComfyImageInfo;
         private static imageID;
         private workspace;
+        /** 🔴 do not use */
         convertToImageInput: () => string;
-        uid: string;
+        /** unique image id */
+        uid: ImageUID;
         constructor(
         /** the prompt this file has been generated from */
-        prompt: PromptExecution,
+        prompt: PromptExecution, 
         /** image info as returned by Comfy */
         data: ComfyImageInfo);
-        /** unique image id */
         /** run an imagemagick convert action */
         imagemagicConvert: (partialCmd: string, suffix: string) => string;
         /** file name within the ComfyUI folder */
@@ -1511,30 +1180,27 @@ declare module "core-back/GeneratedImage" {
         get comfyRelativePath(): string;
         /** url to acces the image */
         get comfyURL(): string;
+        /** short md5 hash of the image content
+         * used to know if a ComfyUI server already has the image
+         */
+        get hash(): string;
         /** path within the input folder */
         comfyInputPath?: Maybe<string>;
-        /** folder in which the image should be saved */
-        get localFolder(): RelativePath;
+        /** 🔴 */
+        uploadAsNamedInput: () => Promise<string>;
         /** local workspace file name, without extension */
         get localFileNameNoExt(): string;
         /** local workspace file name, WITH extension */
         get localFileName(): string;
-        /** local workspace relative file path */
-        get localRelativeFilePath(): RelativePath;
-        get localUri(): vscode.Uri;
-        get localExtensionURL(): string;
-        /** uri the webview can access */
-        get webviewURI(): string;
         /** absolute path on the machine with vscode */
-        get localAbsoluteFilePath(): string;
+        get localAbsolutePath(): AbsolutePath;
+        get localURL(): string;
         toJSON: () => ImageInfos;
         /** true if file exists on disk; false otherwise */
         status: ImageStatus;
         ready: Promise<true>;
         /** @internal */
         private downloadImageAndSaveToDisk;
-        /** this is such a bad workaround but 🤷‍♂️ */
-        uploadAsNamedInput: () => Promise<string>;
     }
 }
 declare module "controls/askv2" {
@@ -1544,31 +1210,31 @@ declare module "controls/askv2" {
      * 🔶 design is a bit unusual because of the very specific needs of the project
      * TODO: write them down to explain choices
      */
-    import type { Base64Image } from "core-shared/b64img";
+    import type { Base64Image } from "core/b64img";
     import type { SimplifiedLoraDef } from "presets/presets";
     import type { Maybe, Tagged } from "utils/types";
-    import type { ImageInfos } from "core-shared/GeneratedImageSummary";
+    import type { ImageInfos } from "core/GeneratedImageSummary";
     import type { Requestable } from "controls/Requestable";
     import type * as R from "controls/Requestable";
-    import { GeneratedImage } from "core-back/GeneratedImage";
+    import { GeneratedImage } from "back/GeneratedImage";
     export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>;
     export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>;
-    export type InfoAnswer<Req> =
+    export type InfoAnswer<Req> = 
     /** str */
-    Req extends R.Requestable_str ? string : Req extends R.Requestable_strOpt ? Maybe<string> :
+    Req extends R.Requestable_str ? string : Req extends R.Requestable_strOpt ? Maybe<string> : 
     /** nums */
-    Req extends R.Requestable_int ? number : Req extends R.Requestable_intOpt ? Maybe<number> :
+    Req extends R.Requestable_int ? number : Req extends R.Requestable_intOpt ? Maybe<number> : 
     /** bools */
-    Req extends R.Requestable_bool ? boolean : Req extends R.Requestable_boolOpt ? Maybe<boolean> :
+    Req extends R.Requestable_bool ? boolean : Req extends R.Requestable_boolOpt ? Maybe<boolean> : 
     /** embedding */
-    Req extends R.Requestable_embeddings ? Maybe<boolean> :
+    Req extends R.Requestable_embeddings ? Maybe<boolean> : 
     /** loras */
-    Req extends R.Requestable_lora ? SimplifiedLoraDef : Req extends R.Requestable_loras ? SimplifiedLoraDef[] :
+    Req extends R.Requestable_lora ? SimplifiedLoraDef : Req extends R.Requestable_loras ? SimplifiedLoraDef[] : 
     /** painting */
     Req extends R.Requestable_samMaskPoints ? {
         points: SamPointPosStr;
         labels: SamPointLabelsStr;
-    } : Req extends R.Requestable_selectImage ? ImageInfos : Req extends R.Requestable_manualMask ? Base64Image : Req extends R.Requestable_paint ? Base64Image :
+    } : Req extends R.Requestable_selectImage ? ImageInfos : Req extends R.Requestable_manualMask ? Base64Image : Req extends R.Requestable_paint ? Base64Image : 
     /** group */
     Req extends {
         type: 'items';
@@ -1577,7 +1243,7 @@ declare module "controls/askv2" {
         };
     } ? {
         [key in keyof Req['items']]: InfoAnswer<Req['items'][key]>;
-    } :
+    } : 
     /** select one */
     Req extends {
         type: 'selectOne';
@@ -1585,7 +1251,7 @@ declare module "controls/askv2" {
     } ? (T extends readonly any[] ? T[number] : T) : Req extends {
         type: 'selectOneOrCustom';
         choices: string[];
-    } ? string :
+    } ? string : 
     /** select many */
     Req extends {
         type: 'selectMany';
@@ -1593,7 +1259,7 @@ declare module "controls/askv2" {
     } ? (T extends readonly any[] ? T[number][] : T) : Req extends {
         type: 'selectManyOrCustom';
         choices: string[];
-    } ? string[] :
+    } ? string[] : 
     /** array */
     Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] : never;
     export class InfoRequestBuilder {
@@ -1685,7 +1351,93 @@ declare module "controls/askv2" {
         [key: string]: Requestable;
     }>(req: (q: InfoRequestBuilder) => Req, layout?: 0) => Promise<{ [key in keyof Req]: InfoAnswer<Req[key]>; }>;
 }
-declare module "core-shared/ParamDef" {
+declare module "core/AutolayoutV2" {
+    import type { Graph } from "core/Graph";
+    /** partial type of cytoscape json output
+     * include the subset needed to get positions post layout
+     */
+    export type CytoJSON = {
+        elements: {
+            nodes: {
+                data: {
+                    id: string;
+                };
+                position: {
+                    x: number;
+                    y: number;
+                };
+            }[];
+        };
+    };
+    export const runAutolayout: (graph: Graph) => Promise<CytoJSON>;
+}
+declare module "core/LiteGraph" {
+    import type { Branded } from "utils/types";
+    import { CytoJSON } from "core/AutolayoutV2";
+    import type { Graph } from "core/Graph";
+    export type LiteGraphJSON = {
+        last_node_id: number;
+        last_link_id: number;
+        nodes: LiteGraphNode[];
+        links: LiteGraphLink[];
+        groups: [];
+        config: {};
+        extra: {};
+        version: 0.4;
+    };
+    export type LiteGraphLink = [
+        linkId: LiteGraphLinkID,
+        fromNodeId: number,
+        fromNodeOutputIx: number,
+        toNodeId: number,
+        toNodeInputIx: number,
+        linkType: string
+    ];
+    export type LiteGraphLinkID = Branded<number, 'LiteGraphLinkID'>;
+    export type LiteGraphSlotIndex = Branded<number, 'LiteGraphSlotIndex'>;
+    export const asLiteGraphSlotIndex: (id: number) => LiteGraphSlotIndex;
+    export type LiteGraphNodeInput = {
+        name: string;
+        type: string;
+        link: LiteGraphLinkID;
+    };
+    export type LiteGraphNodeOutput = {
+        name: string;
+        type: string;
+        links: LiteGraphLinkID[];
+        slot_index: LiteGraphSlotIndex;
+    };
+    export type LiteGraphNode = {
+        id: number;
+        type: string;
+        pos: [number, number];
+        size: {
+            '0': number;
+            '1': number;
+        };
+        flags?: {};
+        order?: number;
+        /**
+         * 1 = ?????
+         * 2 = muted
+         * */
+        mode?: number;
+        inputs?: LiteGraphNodeInput[];
+        outputs: LiteGraphNodeOutput[];
+        isVirtualNode?: boolean;
+        properties?: {};
+        widgets_values: any[];
+    };
+    export const convertFlowToLiteGraphJSON: (graph: Graph, cytoJSON?: CytoJSON) => LiteGraphJSON;
+    export class LiteGraphCtx {
+        graph: Graph;
+        constructor(graph: Graph);
+        nextLinkId: number;
+        links: LiteGraphLink[];
+        allocateLink: (fromNodeId: number, fromNodeOutputIx: number, toNodeId: number, toNodeInputIx: number, linkType: string) => LiteGraphLinkID;
+    }
+}
+declare module "core/ParamDef" {
     export type ParamType = 'string' | 'number';
     export type ParamT<Kind extends string, Type extends any> = {
         kind: Kind;
@@ -1702,6 +1454,10 @@ declare module "utils/markdown" {
     export type HTMLContent = Branded<string, 'HTML'>;
     export const asMDContent: (s: string) => MDContent;
     export const asHTMLContent: (s: string) => HTMLContent;
+}
+declare module "utils/timestamps" {
+    export const getYYYYMMDDHHMMSS: () => string;
+    export const getYYYYMMDD_HHMM_SS: () => string;
 }
 declare module "wildcards/wildcards" {
     export type Wildcards = {
@@ -1912,30 +1668,29 @@ declare module "wildcards/wildcards" {
     };
     export const wildcards: Wildcards;
 }
-declare module "core-back/ffmpegScripts" {
-    export function createMP4FromImages(imageFiles: string[], outputVideo: string,
+declare module "ffmpeg/ffmpegScripts" {
+    export function createMP4FromImages(imageFiles: string[], outputVideo: string, 
     /** The duration each image should be displayed, in milliseconds */
     frameDuration: number | undefined, workingDirectory: string): Promise<void>;
 }
-declare module "core-back/FlowRun" {
-    import type * as CUSHY_RUNTIME from 'CUSHY_RUNTIME'
+declare module "back/FlowRun" {
+    import type { LATER } from "back/LATER";
     import * as path from 'path';
-    import * as vscode from 'vscode';
     import { InfoRequestFn } from "controls/askv2";
     import { PromptExecution } from "controls/ScriptStep_prompt";
-    import { Graph } from "core-shared/Graph";
-    import type { FlowParam } from "core-shared/ParamDef";
-    import { Printable } from "core-shared/Printable";
-    import { ComfyUploadImageResult, WsMsgExecuted } from "core-types/ComfyWsPayloads";
-    import { FlowExecutionStep } from "core-types/FlowExecutionStep";
+    import { Graph } from "core/Graph";
+    import type { FlowParam } from "core/ParamDef";
+    import { Printable } from "core/Printable";
+    import { ComfyUploadImageResult, WsMsgExecuted } from "types/ComfyWsApi";
+    import { FlowExecutionStep } from "types/FlowExecutionStep";
     import { AbsolutePath, RelativePath } from "utils/fs/BrandedPaths";
     import { HTMLContent, MDContent } from "utils/markdown";
-    import { GeneratedImage } from "core-back/GeneratedImage";
-    import { Workspace } from "core-back/Workspace";
+    import { GeneratedImage } from "back/GeneratedImage";
+    import { ServerState } from "back/ServerState";
     /** script exeuction instance */
     export class FlowRun {
-        workspace: Workspace;
-        uri: vscode.Uri;
+        workspace: ServerState;
+        fileAbsPath: AbsolutePath;
         opts?: {
             mock?: boolean | undefined;
         } | undefined;
@@ -1955,8 +1710,8 @@ declare module "core-back/FlowRun" {
         get firstImage(): GeneratedImage;
         get lastImage(): GeneratedImage;
         /** folder where CushyStudio will save run informations */
-        get workspaceRelativeCacheFolderPath(): RelativePath;
-        folder: vscode.Uri;
+        get outputAbsPath(): AbsolutePath;
+        folder: AbsolutePath;
         sleep: (ms: number) => Promise<void>;
         saveTextFile: (path: RelativePath, content: string) => Promise<void>;
         showHTMLContent: (p: {
@@ -2007,7 +1762,7 @@ declare module "core-back/FlowRun" {
         PROMPT(): Promise<PromptExecution>;
         private _promptCounter;
         private sendPromp;
-        constructor(workspace: Workspace, uri: vscode.Uri, opts?: {
+        constructor(workspace: ServerState, fileAbsPath: AbsolutePath, opts?: {
             mock?: boolean | undefined;
         } | undefined);
         steps: FlowExecutionStep[];
@@ -2017,10 +1772,10 @@ declare module "core-back/FlowRun" {
         outputs: WsMsgExecuted[];
     }
 }
-declare module "sdk/sdkEntrypoint" {
-    export type { FlowRun } from "core-back/FlowRun";
-    export type { Workflow } from "core-shared/Workflow";
-    export type { Graph } from "core-shared/Graph";
-    export type { WorkflowBuilder, WorkflowBuilderFn } from "core-shared/WorkflowFn";
+declare module "typings/sdkEntrypoint" {
+    export type { FlowRun } from "back/FlowRun";
+    export type { Workflow } from "core/Workflow";
+    export type { Graph } from "core/Graph";
+    export type { WorkflowBuilder, WorkflowBuilderFn } from "core/WorkflowFn";
 }
 `

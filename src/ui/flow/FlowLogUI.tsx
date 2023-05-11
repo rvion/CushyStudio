@@ -3,11 +3,13 @@ import { Fragment } from 'react'
 import { useSt } from '../../front/stContext'
 import { FlowGeneratedImagesUI } from '../FlowGeneratedImagesUI'
 import { renderMsgUI } from './flowRenderer1'
+import { WorkflowPickerUI } from '../WorkflowPickerUI'
 
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {
     const st = useSt()
     return (
         <div className='flex flex-col gap-2 p-2'>
+            <WorkflowPickerUI />
             {st.groupItemsToShow.map((group, groupIx) => {
                 // if (group.le)
                 return (

@@ -6,7 +6,7 @@ import { renderMessageFromExtensionAsEmoji } from '../types/MessageFromExtension
 import { WorkflowPickerUI } from './WorkflowPickerUI'
 import { FooUI } from './actions/x'
 import { FlowLogUI } from './flow/FlowLogUI'
-import { Gallery2UI } from './galleries/Gallery2UI'
+import { Gallery2HUI, Gallery2UI } from './galleries/Gallery2UI'
 import { ScrollablePaneUI } from './scrollableArea'
 import { GalleryHoveredPreviewUI } from './galleries/GalleryHoveredPreviewUI'
 import { PaintUI } from './widgets/PaintUI'
@@ -20,7 +20,6 @@ export const WebviewUI = observer(function WebviewUI_() {
             <div>
                 <Nav appearance='subtle' activeKey={st.activeTab} onSelect={st.setActiveTab}>
                     <Nav.Item eventKey='home'>🛋️</Nav.Item>
-                    <WorkflowPickerUI />
                     <IconButton
                         icon={st.flowDirection === 'down' ? <I.SortDown /> : <I.SortUp />}
                         onClick={() => (st.flowDirection = st.flowDirection === 'down' ? 'up' : 'down')}
@@ -42,26 +41,27 @@ export const WebviewUI = observer(function WebviewUI_() {
                 </Nav>
             </div>
 
-            <Gallery2UI />
-
-            {/* BODY */}
-            {/* {st.currentAction === 'home' ? <FooUI /> : null} */}
-            {/* <ProjectGalleryUI /> */}
-            {/* <div className='flex-grow basis-1 flex flex-col'>
-                    <FooUI />
-                </div> */}
-            {/* <div className='flex-grow'>bar</div> */}
-            {/* <div className='flex flex-row flex-grow '> */}
-            <ScrollablePaneUI style={{ width: '100%' }} items={st.received} className='shrink-0 flex-grow'>
-                <GalleryHoveredPreviewUI />
-                {action == null ? ( //
-                    <FlowLogUI />
-                ) : action.type === 'paint' ? (
-                    <PaintUI uri={action.img.localURL ?? action.img.comfyURL ?? '🔴'} />
-                ) : (
-                    <FlowLogUI />
-                )}
-            </ScrollablePaneUI>
+            <div className='flex flex-grow'>
+                <Gallery2HUI />
+                {/* BODY */}
+                {/* {st.currentAction === 'home' ? <FooUI /> : null} */}
+                {/* <ProjectGalleryUI /> */}
+                {/* <div className='flex-grow basis-1 flex flex-col'>
+                        <FooUI />
+                    </div> */}
+                {/* <div className='flex-grow'>bar</div> */}
+                {/* <div className='flex flex-row flex-grow '> */}
+                <ScrollablePaneUI items={st.received} className='shrink-0 flex-grow'>
+                    <GalleryHoveredPreviewUI />
+                    {action == null ? ( //
+                        <FlowLogUI />
+                    ) : action.type === 'paint' ? (
+                        <PaintUI uri={action.img.localURL ?? action.img.comfyURL ?? '🔴'} />
+                    ) : (
+                        <FlowLogUI />
+                    )}
+                </ScrollablePaneUI>
+            </div>
             {/* </div> */}
             {st.showAllMessageReceived ? (
                 <div className='shadow-xl' style={{ height: '10rem', resize: 'horizontal', overflow: 'auto' }}>

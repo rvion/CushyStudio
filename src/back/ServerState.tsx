@@ -31,6 +31,7 @@ import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
 import { CushyDB } from './CushyDB'
+import { sdkStubDeps } from '../typings/sdkStubDeps'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -132,7 +133,12 @@ export class ServerState {
     configWatcher = new ConfigFileWatcher()
     db: CushyDB
 
-    constructor(public rootPath: AbsolutePath) {
+    constructor(
+        /** path of the workspace */
+        public rootPath: AbsolutePath,
+        /** true in prod, false when running from this local subfolder */
+        public genStub: boolean,
+    ) {
         this.db = new CushyDB(this)
         this.cacheFolderPath = this.resolve(asRelativePath('.cushy/cache'))
         this.vscodeSettings = this.resolve(asRelativePath('.vscode/settings.json'))
@@ -143,7 +149,7 @@ export class ServerState {
         this.tsConfigPath = this.resolve(asRelativePath('tsconfig.json'))
         this.server = new CushyServer(this)
         this.schema = this.restoreSchemaFromCache()
-        this.writeTextFile(this.cushyTSPath, sdkTemplate)
+        this.writeTextFile(this.cushyTSPath, genStub ? `${sdkTemplate}\n${sdkStubDeps}` : sdkTemplate)
 
         this.autoDiscoverEveryWorkflow()
         this.ws = this.initWebsocket()
