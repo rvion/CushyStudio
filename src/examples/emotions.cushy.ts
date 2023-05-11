@@ -89,7 +89,7 @@ WORKFLOW('vn3', async ({ graph, flow, presets }) => {
         vae: B___.vae,
         grow_mask_by: 20,
     })
-    const replacements_2 = ['happy', 'sad', 'pain', 'disgusted', 'cry']
+    const replacements_2 = ['happy', 'sad', 'surprised']
     for (const e of replacements_2) {
         const sampler = graph.KSampler({
             seed,
