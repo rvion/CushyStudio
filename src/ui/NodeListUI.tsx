@@ -27,7 +27,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
             onClick={() => (st.expandNodes = !st.expandNodes)}
             expanded={st.expandNodes}
             header={
-                <h4 className='row items-center gap'>
+                <div className='row items-center gap'>
                     <NodeRefUI nodeUID={uid} graph={graph} />
                     <Progress.Line
                         style={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}
@@ -37,7 +37,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                         percent={percent}
                     />
                     {name}
-                </h4>
+                </div>
             }
             style={{ position: 'relative' }}
             bordered

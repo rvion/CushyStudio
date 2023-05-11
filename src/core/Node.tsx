@@ -1,5 +1,5 @@
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
-import type { NodeProgress, WsMsgExecutedData } from '../types/ComfyWsPayloads'
+import type { NodeProgress, WsMsgExecutedData } from '../types/ComfyWsApi'
 import type { Graph } from './Graph'
 import type { Maybe } from 'src/utils/types'
 

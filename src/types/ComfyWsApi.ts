@@ -8,11 +8,12 @@ export type ApiPromptInput = {
 }
 
 // LIVE UPDATES -----------------------------------------------------
-export type WsMsg = WsMsgStatus | WsMsgProgress | WsMsgExecuting | WsMsgExecuted
+export type WsMsg = WsMsgStatus | WsMsgProgress | WsMsgExecuting | WsMsgExecuted | WsMsgCached
 
 export type WsMsgStatus = { type: 'status'; data: { sid?: string; status: ComfyStatus } }
 export type WsMsgProgress = { type: 'progress'; data: NodeProgress }
 export type WsMsgExecuting = { type: 'executing'; data: { node: ComfyNodeUID } }
+export type WsMsgCached = { type: 'execution_cached'; data: ComfyNodeUID[] }
 export type WsMsgExecuted = { type: 'executed'; data: WsMsgExecutedData }
 
 // helper types

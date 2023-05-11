@@ -1,5 +1,5 @@
 import type { PromptExecution } from '../controls/ScriptStep_prompt'
-import type { ComfyImageInfo } from '../types/ComfyWsPayloads'
+import type { ComfyImageInfo } from '../types/ComfyWsApi'
 import type { Maybe } from '../utils/types'
 import type { ServerState } from './ServerState'
 
@@ -104,7 +104,7 @@ export class GeneratedImage implements ImageInfos {
     }
 
     // .cushy/cache/Run-20230501220410/FaxYjyW1-fLr8ovwECJzZ_prompt-4_21.png
-    // http://127.0.0.1:8288/Run-20230501220410/FaxYjyW1-fLr8ovwECJzZ_prompt-4_19.png
+    // http://127.0.0.1:8388/Run-20230501220410/FaxYjyW1-fLr8ovwECJzZ_prompt-4_19.png
     get localURL(): string {
         return this.workspace.server.baseURL + this.localAbsolutePath.replace(this.workspace.cacheFolderPath, '')
     }

@@ -18,7 +18,7 @@ import { Graph } from '../core/Graph'
 import { convertFlowToLiteGraphJSON } from '../core/LiteGraph'
 import type { FlowParam } from '../core/ParamDef'
 import { Printable } from '../core/Printable'
-import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../types/ComfyWsPayloads'
+import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../types/ComfyWsApi'
 import { FlowExecutionStep } from '../types/FlowExecutionStep'
 import { logger } from '../logger/logger'
 import { deepCopyNaive } from '../utils/ComfyUtils'
@@ -299,21 +299,18 @@ export class FlowRun {
         }
 
         // save a copy of the prompt to the cache folder
-        const promptJSONPath = path.join(this.outputAbsPath, `prompt-${++this._promptCounter}.json`)
-        const promptJSONURI = this.workspace.resolve(asRelativePath(promptJSONPath))
-        this.workspace.writeTextFile(promptJSONURI, JSON.stringify(currentJSON, null, 4))
+        const promptJSONPath = asAbsolutePath(path.join(this.outputAbsPath, `prompt-${++this._promptCounter}.json`))
+        this.workspace.writeTextFile(promptJSONPath, JSON.stringify(currentJSON, null, 4))
 
         // save a corresponding workflow file
-        const cytoJSONPath = path.join(this.outputAbsPath, `cyto-${this._promptCounter}.json`)
-        const cytoJSONURI = this.workspace.resolve(asRelativePath(cytoJSONPath))
+        const cytoJSONPath = asAbsolutePath(path.join(this.outputAbsPath, `cyto-${this._promptCounter}.json`))
         const cytoJSON = await runAutolayout(this.graph)
-        this.workspace.writeTextFile(cytoJSONURI, JSON.stringify(cytoJSON, null, 4))
+        this.workspace.writeTextFile(cytoJSONPath, JSON.stringify(cytoJSON, null, 4))
 
         // save a corresponding workflow file
-        const workflowJSONPath = path.join(this.outputAbsPath, `workflow-${this._promptCounter}.json`)
-        const workflowJSONURI = this.workspace.resolve(asRelativePath(workflowJSONPath))
+        const workflowJSONPath = asAbsolutePath(path.join(this.outputAbsPath, `workflow-${this._promptCounter}.json`))
         const liteGraphJSON = convertFlowToLiteGraphJSON(this.graph, cytoJSON)
-        this.workspace.writeTextFile(workflowJSONURI, JSON.stringify(liteGraphJSON, null, 4))
+        this.workspace.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
 
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early

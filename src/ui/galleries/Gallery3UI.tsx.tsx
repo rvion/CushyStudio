@@ -1,8 +1,8 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Maybe } from 'src/utils/types'
-import { useSt } from '../front/stContext'
+import { useSt } from '../../front/stContext'
 import { useMemo } from 'react'
-import { LightBoxState, LightBoxUI } from './LightBox'
+import { LightBoxState, LightBoxUI } from '../LightBox'
 import { Button, Nav } from 'rsuite'
 import * as I from '@rsuite/icons'
 
@@ -58,22 +58,6 @@ export const ProjectGalleryUI = observer(function PreviewListUI_(p: {}) {
                     </>
                 )} */}
             </div>
-            <div className='flex gap-2 items-baseline'>
-                Actions:
-                {/* {st.pendingAsk} */}
-                <Button>script 1</Button>
-                <Button>script 2</Button>
-                <Button>script 3</Button>
-            </div>
-            <Nav activeKey={'view'} onSelect={st.setActiveTab}>
-                <Nav.Item eventKey='view' icon={<I.ViewsAuthorize />}>
-                    Home
-                </Nav.Item>
-                <Nav.Item eventKey='paint'>Paint</Nav.Item>
-                <Nav.Item eventKey='layer'>Layer</Nav.Item>
-                <Nav.Item eventKey='SAM'>SAM</Nav.Item>
-                {/* <Nav.Item eventKey='about'>About</Nav.Item> */}
-            </Nav>
             <LightBoxUI lbs={lbs} inline />
         </>
     )

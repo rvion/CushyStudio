@@ -12,7 +12,7 @@ export class CushyServer {
     http: http.Server
     app: express.Application
     wss: WebSocketServer
-    port = 8288
+    port = 8388
 
     get baseURL() {
         return `http://localhost:${this.port}`
@@ -74,7 +74,7 @@ export class CushyServer {
         this.wss = wss
 
         wss.on('connection', (ws) => new CushyClient(this.serverState, ws))
-        logger().info('🫖 🟢 listening on port 8288...')
+        logger().info('🫖 🟢 listening on port 8388...')
         this.listen()
     }
 

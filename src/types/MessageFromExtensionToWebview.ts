@@ -1,4 +1,4 @@
-import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsPayloads'
+import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
 import type { PayloadID } from '../core/PayloadID'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { ComfyPromptJSON } from './ComfyPrompt'
@@ -62,9 +62,10 @@ export type MessageFromExtensionToWebview_ =
     | FromExtension_Prompt
     | FromExtension_Ls
     // websocket updates
-    | WsMsgStatus /* type 'status'   */
+    | WsMsgStatus /* type 'status' */
     | WsMsgProgress /* type 'progress' */
     | WsMsgExecuting /* type 'executing'*/
+    | WsMsgCached /* cached node running */
     | WsMsgExecuted /* type 'executed' */
     // generated images as transformed uri by vscode extension so they can be displayed in the webview
     | FromExtension_Images
@@ -80,6 +81,7 @@ export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWeb
     if (msg.type === 'status') return '📡'
     if (msg.type === 'progress') return '📊'
     if (msg.type === 'executing') return '📈'
+    if (msg.type === 'execution_cached') return '💾'
     if (msg.type === 'executed') return '✅'
     if (msg.type === 'images') return '🖼️'
     if (msg.type === 'print') return '💬'

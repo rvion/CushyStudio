@@ -15,7 +15,7 @@ import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { getPayloadID } from '../core/PayloadID'
 import { Schema } from '../core/Schema'
 import { ComfyPromptJSON } from '../types/ComfyPrompt'
-import { ComfyStatus, WsMsg } from '../types/ComfyWsPayloads'
+import { ComfyStatus, WsMsg } from '../types/ComfyWsApi'
 import { RelativePath } from '../utils/fs/BrandedPaths'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { ComfyImporter } from '../importers/ImportComfyImage'
@@ -118,7 +118,7 @@ export class ExtensionState {
 
         // const { shell } = require('electron')
         // https://stackoverflow.com/questions/34205481/how-to-open-browser-from-visual-studio-code-api
-        if (choice === 'web build UI') return void vscode.env.openExternal(vscode.Uri.parse('http://127.0.0.1:8288/'))
+        if (choice === 'web build UI') return void vscode.env.openExternal(vscode.Uri.parse('http://127.0.0.1:8388/'))
     }
 
     notify = (msg: string) => vscode.window.showInformationMessage(`🛋️ ${msg}`)

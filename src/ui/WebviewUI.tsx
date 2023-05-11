@@ -2,11 +2,13 @@ import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { IconButton, Nav } from 'rsuite'
 import { useSt } from '../front/stContext'
-import { FlowLogUI } from './FlowLogUI'
-import { ProjectGalleryUI } from './PreviewListUI'
+import { FlowLogUI } from './flow/FlowLogUI'
+import { ProjectGalleryUI } from './galleries/Gallery3UI.tsx'
 import { WorkflowPickerUI } from './WorkflowPickerUI'
 import { ScrollablePaneUI } from './scrollableArea'
 import { renderMessageFromExtensionAsEmoji } from '../types/MessageFromExtensionToWebview'
+import { Gallery2UI } from './galleries/Gallery2UI'
+import { FooUI } from './actions/x'
 
 export const WebviewUI = observer(function WebviewUI_() {
     const st = useSt()
@@ -31,6 +33,7 @@ export const WebviewUI = observer(function WebviewUI_() {
                     />
                 </Nav>
             </div>
+            <Gallery2UI />
 
             {/* BODY */}
             <div className='flex flex-row flex-grow '>
@@ -38,25 +41,20 @@ export const WebviewUI = observer(function WebviewUI_() {
                     <FlowLogUI />
                 </ScrollablePaneUI>
                 <div className='flex-grow basis-1 flex flex-col'>
-                    <ProjectGalleryUI />
+                    {/* <ProjectGalleryUI /> */}
+                    <FooUI />
                 </div>
                 {/* <div className='flex-grow'>bar</div> */}
             </div>
             {st.showAllMessageReceived ? (
-                <div style={{ height: '10rem', resize: 'horizontal', overflow: 'auto' }}>
+                <div className='shadow-xl' style={{ height: '10rem', resize: 'horizontal', overflow: 'auto' }}>
                     {st.itemsToShow.map((msg, ix) => (
-                        <div key={msg.uid} className='w-full flex' id={msg.uid.toString()}>
+                        <div key={msg.uid} className='w-full flex gap-2' id={msg.uid.toString()}>
                             <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
-                            <div style={{ width: '5rem' }}>{msg.type}</div>
-                            <div
-                                style={{
-                                    whiteSpace: 'nowrap',
-                                    overflow: 'hidden',
-                                    width: '600px',
-                                    color: 'gray',
-                                    textOverflow: 'ellipsis',
-                                }}
-                            >
+                            <div className='shrink-0' style={{ width: '5rem' }}>
+                                {msg.type}
+                            </div>
+                            <div style={{ color: 'gray', textOverflow: 'ellipsis' }}>
                                 {/*  */}
                                 {JSON.stringify(msg)}
                             </div>

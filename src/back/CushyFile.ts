@@ -1,11 +1,10 @@
-import { TextDecoder } from 'util'
+import { readFileSync } from 'fs'
 import * as vscode from 'vscode'
+import { logger } from '../logger/logger'
+import { bang } from '../utils/bang'
+import { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { FlowDefinition } from './FlowDefinition'
 import { ServerState } from './ServerState'
-import { logger } from '../logger/logger'
-import { readFileSync } from 'fs'
-import { AbsolutePath } from '../utils/fs/BrandedPaths'
-import { bang } from '../utils/bang'
 
 export type MarkdownTestData = CushyFile | /* TestHeading |*/ FlowDefinition
 

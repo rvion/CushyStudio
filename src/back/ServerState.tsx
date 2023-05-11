@@ -8,13 +8,13 @@ import { join, relative } from 'path'
 import * as WS from 'ws'
 import { FlowRun } from './FlowRun'
 
-import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
 import { PayloadID, getPayloadID } from '../core/PayloadID'
 import { Schema } from '../core/Schema'
 import { logger } from '../logger/logger'
-import { ComfyStatus, WsMsg } from '../types/ComfyWsPayloads'
+import { ComfyStatus, WsMsg } from '../types/ComfyWsApi'
 import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '../types/MessageFromExtensionToWebview'
 import { sdkTemplate } from '../typings/sdkTemplate'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
@@ -53,6 +53,9 @@ export class ServerState {
 
     /** write a binary file to given absPath */
     writeBinaryFile(absPath: AbsolutePath, content: Buffer) {
+        // ensure folder exists
+        const folder = join(absPath, '..')
+        mkdirSync(folder, { recursive: true })
         writeFileSync(absPath, content)
     }
 
@@ -79,6 +82,9 @@ export class ServerState {
     }
 
     writeTextFile(absPath: AbsolutePath, content: string, open = false) {
+        // ensure folder exists
+        const folder = join(absPath, '..')
+        mkdirSync(folder, { recursive: true })
         writeFileSync(absPath, content, 'utf-8')
     }
 
@@ -123,7 +129,7 @@ export class ServerState {
         // this.watchForCOnfigurationChanges()
         this.createTSConfigIfMissing()
         makeAutoObservable(this)
-        this.configWatcher.startWatching('.vscode/settings.json')
+        this.configWatcher.startWatching(this.resolve(asRelativePath('cushyconfig.json')))
     }
 
     createTSConfigIfMissing = () => {
@@ -181,8 +187,8 @@ export class ServerState {
 
     tsFilesMap = new TypeScriptFilesMap(this)
     autoDiscoverEveryWorkflow = () => {
-        this.tsFilesMap.startWatching(join(this.rootPath, 'src/examples/'))
-        this.tsFilesMap.startWatching(join(process.cwd(), 'src/examples/'))
+        this.tsFilesMap.startWatching(join(this.rootPath))
+        // this.tsFilesMap.startWatching(join(process.cwd(), 'src/examples/'))
 
         // // pre-populate the tree with any open documents
         // for (const document of vscode.workspace.textDocuments) this.updateNodeForDocument(document)
@@ -270,7 +276,11 @@ export class ServerState {
             logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
             return promptStep.onExecuting(msg)
         }
-
+        if (msg.type === 'execution_cached') {
+            logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
+            // return promptStep.onExecutionCached(msg)
+            return
+        }
         if (msg.type === 'executed') {
             logger().info(`${msg.type} ${JSON.stringify(msg.data)}`)
             const images = promptStep.onExecuted(msg)

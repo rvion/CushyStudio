@@ -1,4 +1,4 @@
-import type { ComfyStatus } from '../types/ComfyWsPayloads'
+import type { ComfyStatus } from '../types/ComfyWsApi'
 
 import { Graph } from '../core/Graph'
 import { Schema } from '../core/Schema'
@@ -16,6 +16,21 @@ import { ResilientSocketToExtension } from './ResilientCushySocket'
 import { nanoid } from 'nanoid'
 import { KnownWorkflow } from '../core/KnownWorkflow'
 import { ImageInfos } from 'src/core/GeneratedImageSummary'
+import { bang } from '../utils/bang'
+import { renderMsgUI } from '../ui/flow/flowRenderer1'
+
+export type MsgGroup = {
+    groupType: string
+    messages: MessageFromExtensionToWebview[]
+    uis: JSX.Element[]
+    wrap: boolean
+}
+const newMsgGroup = (groupType: string, wrap?: boolean): MsgGroup => ({
+    groupType,
+    messages: [],
+    uis: [],
+    wrap: wrap ?? false,
+})
 
 export class FrontState {
     uid = nanoid()
@@ -34,24 +49,28 @@ export class FrontState {
         const ordered = this.flowDirection === 'up' ? items.reverse() : items
         return ordered
     }
+
     // group sequential items with similar types together
-    get groupItemsToShow(): MessageFromExtensionToWebview[][] {
+    get groupItemsToShow(): MsgGroup[] {
         const ordered = this.itemsToShow
-        const grouped: MessageFromExtensionToWebview[][] = []
-        let currentGroup: MessageFromExtensionToWebview[] = []
+
+        const grouped: MsgGroup[] = []
+        let currentGroup: MsgGroup | null = null
         let currentType: string | null = null
         for (const item of ordered) {
-            let itemType = item.type
-            if (itemType === 'executing') itemType = 'progress'
-            if (itemType === 'executed') itemType = 'progress'
-            if (itemType !== currentType) {
-                if (currentGroup.length) grouped.push(currentGroup)
-                currentGroup = []
-                currentType = itemType
+            let x = renderMsgUI(item)
+            if (x == null) continue
+            let groupType = x.group ?? item.type
+            // if (currentGroup == null) currentGroup = newMsgGroup(groupType, x.wrap)
+            if (groupType !== currentType) {
+                if (currentGroup?.messages.length) grouped.push(currentGroup)
+                currentGroup = newMsgGroup(groupType, x.wrap)
+                currentType = groupType
             }
-            currentGroup.push(item)
+            currentGroup!.messages.push(item)
+            currentGroup!.uis.push(x.ui)
         }
-        if (currentGroup.length) grouped.push(currentGroup)
+        if (currentGroup?.messages.length) grouped.push(currentGroup)
         return grouped
     }
 
@@ -69,7 +88,7 @@ export class FrontState {
         // if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
         // console.log('a')
         this.cushySocket = new ResilientSocketToExtension({
-            url: () => 'ws://localhost:8288',
+            url: () => 'ws://localhost:8388',
             onConnectOrReconnect: () => {
                 this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
                 // toaster.push('Connected to CushyStudio')
@@ -139,6 +158,10 @@ export class FrontState {
         if (msg.type === 'status') {
             if (msg.data.sid) this.sid = msg.data.sid
             this.comfyStatus = msg.data.status
+            return
+        }
+        if (msg.type === 'execution_cached') {
+            // 🔴
             return
         }
 

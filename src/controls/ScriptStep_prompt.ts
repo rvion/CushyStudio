@@ -1,6 +1,6 @@
 import type { FlowRun } from '../back/FlowRun'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
-import type { WsMsgExecuted, WsMsgExecuting } from '../types/ComfyWsPayloads'
+import type { WsMsgExecuted, WsMsgExecuting } from '../types/ComfyWsApi'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
 
 import { makeAutoObservable } from 'mobx'

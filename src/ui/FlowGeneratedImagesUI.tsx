@@ -48,25 +48,28 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
 
     return (
         <Panel
-            collapsible
-            defaultExpanded
+            // collapsible
+            // defaultExpanded
             shaded
             header={
-                <div>
+                <div className='flex items-end'>
                     <I.Image /> Images
+                    <div>
+                        <Slider
+                            className='relative px-3'
+                            onChange={(next) => (st.gallerySize = next)}
+                            value={st.gallerySize}
+                            style={{ width: '200px' }}
+                            max={1000}
+                            min={32}
+                            step={1}
+                        />
+                    </div>
                 </div>
             }
         >
             {/* https://github.com/igordanchenko/yet-another-react-lightbox */}
             <LightBoxUI lbs={uiSt} />
-            <Slider
-                className='relative px-3'
-                onChange={(next) => (st.gallerySize = next)}
-                value={st.gallerySize}
-                max={1000}
-                min={32}
-                step={1}
-            />
             <div className='row gap-2 flex-wrap'>
                 {msg.images.map((img, ix) => (
                     <Whisper
@@ -77,8 +80,10 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                             </Popover>
                         }
                     >
-                        <div className='flex flex-col'>
-                            <div>
+                        <div className='flex'>
+                            <img style={{ height: st.gallerySize }} src={img.comfyURL} onClick={() => uiSt.openGallery(ix)} />
+                            <div className='flex flex-col'>
+                                <Rate size='xs' vertical max={5} defaultValue={0} />
                                 <Button
                                     size='xs'
                                     startIcon={<I.FolderFill />}
@@ -91,10 +96,10 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                                 >
                                     Open
                                 </Button>
+                                <Button>script 1</Button>
+                                <Button>script 2</Button>
+                                <Button>script 3</Button>
                             </div>
-                            <img style={{ height: st.gallerySize }} src={img.comfyURL} onClick={() => uiSt.openGallery(ix)} />
-
-                            <Rate size='xs' vertical max={5} defaultValue={0} />
                         </div>
                     </Whisper>
                     //     {/* </Whisper> */}
