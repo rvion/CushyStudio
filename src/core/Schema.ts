@@ -233,7 +233,6 @@ export class Schema {
 
         p(`\n// Entrypoint --------------------------`)
         p(`export interface ComfySetup {`)
-
         // prettier-ignore
         for (const n of this.nodes) {
             p(`    /* category=${n.category} output=${n.outputs.map(o => o.name).join(', ')} */`)
