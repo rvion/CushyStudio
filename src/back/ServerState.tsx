@@ -215,7 +215,6 @@ export class ServerState {
     tsFilesMap = new TypeScriptFilesMap(this)
     autoDiscoverEveryWorkflow = () => {
         this.tsFilesMap.startWatching(join(this.rootPath))
-        // this.tsFilesMap.startWatching(join(process.cwd(), 'src/examples/'))
 
         // // pre-populate the tree with any open documents
         // for (const document of vscode.workspace.textDocuments) this.updateNodeForDocument(document)

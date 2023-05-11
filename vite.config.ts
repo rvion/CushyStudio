@@ -10,7 +10,7 @@ export default defineConfig({
     ],
     server: {
         watch: {
-            ignored: ['**/src/examples/**/*'],
+            ignored: ['flows/**/*'],
         },
     },
     // esbuild: {
