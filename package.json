@@ -51,7 +51,7 @@
                 {
                     "id": "cushy-studio",
                     "title": "Cushy Studio",
-                    "icon": "resources/CushyLogo.png"
+                    "icon": "public/CushyLogo.png"
                 }
             ]
         },
