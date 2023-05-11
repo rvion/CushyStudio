@@ -1,12 +1,12 @@
 import { makeAutoObservable } from 'mobx'
-import { WorkspaceHistoryJSON, newWorkspaceHistory } from '../core/WorkspaceHistoryJSON'
+import { CushyDBData, newWorkspaceHistory } from '../core/WorkspaceHistoryJSON'
 import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
 import { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { ServerState } from './ServerState'
 
-export class WorkspaceHistory {
-    data: WorkspaceHistoryJSON
+export class CushyDB {
+    data: CushyDBData
     private path: AbsolutePath
     constructor(
         //
@@ -18,10 +18,22 @@ export class WorkspaceHistory {
         makeAutoObservable(this)
     }
 
-    tagFile = (file: AbsolutePath, tag: string) => {
-        const prevMeta = (this.data.fileMetadata[file] = {})
+    reset = () => {
+        this.data = newWorkspaceHistory()
         this.scheduleSave()
     }
+
+    // updateConfig = (values: Partial<CushyDBData>) => {
+    //     Object.assign(this.data.config, values)
+    //     this.scheduleSave()
+    // }
+
+    // tagFile = (file: FileInf, values: { [key: string]: any }) => {
+    //     const prevMeta = this.data.files[file]
+    //     if (prevMeta) Object.assign(prevMeta, values)
+    //     else this.data.fileMetadata[file] = values
+    //     this.scheduleSave()
+    // }
 
     recordEvent = (msg: MessageFromExtensionToWebview) => {
         console.log('🔴 recording', msg)

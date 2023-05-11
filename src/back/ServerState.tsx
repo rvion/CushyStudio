@@ -30,7 +30,7 @@ import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
-import { WorkspaceHistory } from './history'
+import { CushyDB } from './CushyDB'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -101,10 +101,10 @@ export class ServerState {
     lastMessagesPerType = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
 
     persistMessageInHistoryIfNecessary = (message: MessageFromExtensionToWebview) => {
-        if (message.type === 'flow-start') this.history.recordEvent(message)
-        if (message.type === 'images') this.history.recordEvent(message)
-        if (message.type === 'print') this.history.recordEvent(message)
-        if (message.type === 'prompt') this.history.recordEvent(message)
+        if (message.type === 'flow-start') this.db.recordEvent(message)
+        if (message.type === 'images') this.db.recordEvent(message)
+        if (message.type === 'print') this.db.recordEvent(message)
+        if (message.type === 'prompt') this.db.recordEvent(message)
         return
     }
 
@@ -130,10 +130,10 @@ export class ServerState {
 
     server!: CushyServer
     configWatcher = new ConfigFileWatcher()
-    history: WorkspaceHistory
+    db: CushyDB
 
     constructor(public rootPath: AbsolutePath) {
-        this.history = new WorkspaceHistory(this)
+        this.db = new CushyDB(this)
         this.cacheFolderPath = this.resolve(asRelativePath('.cushy/cache'))
         this.vscodeSettings = this.resolve(asRelativePath('.vscode/settings.json'))
         this.comfyJSONPath = this.resolve(asRelativePath('.cushy/nodes.json'))

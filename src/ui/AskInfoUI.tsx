@@ -116,9 +116,9 @@ const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'str') return <Input type='text' value={'5'} />
     if (req.type === 'str?') return <Input type='text' value={'6'} />
     if (req.type === 'paint') return <PaintUI uri={'foo bar 🔴'} />
-    if (req.type === 'samMaskPoints') return <WebviewPlacePoints url={req.imageInfo.comfyURL} get={get} set={set} />
+    if (req.type === 'samMaskPoints') return <WebviewPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'selectImage') return <ImageSelection infos={req.imageInfos} get={get} set={set} />
-    if (req.type === 'manualMask') return <WebviewPlacePoints url={req.imageInfo.comfyURL} get={get} set={set} />
+    if (req.type === 'manualMask') return <WebviewPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'embeddings') return <>TODO</>
     if (req.type === 'lora') return <>TODO</>
     if (req.type === 'selectMany') return <>TODO</>

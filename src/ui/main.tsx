@@ -8,12 +8,17 @@ import { CustomProvider } from 'rsuite'
 import { useMemo } from 'react'
 import { FrontState } from '../front/FrontState'
 import { stContext } from '../front/stContext'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { DndProvider } from 'react-dnd'
+
 const Main = () => {
     const st = useMemo(() => new FrontState(), [FrontState])
     return (
         <CustomProvider theme='dark'>
             <stContext.Provider value={st}>
-                <WebviewUI />
+                <DndProvider backend={HTML5Backend}>
+                    <WebviewUI />
+                </DndProvider>
             </stContext.Provider>
         </CustomProvider>
     )

@@ -81,7 +81,11 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                         }
                     >
                         <div className='flex'>
-                            <img style={{ height: st.gallerySize }} src={img.comfyURL} onClick={() => uiSt.openGallery(ix)} />
+                            <img
+                                style={{ height: st.gallerySize }}
+                                src={img.comfyURL ?? img.localURL}
+                                onClick={() => uiSt.openGallery(ix)}
+                            />
                             <div className='flex flex-col'>
                                 <Rate size='xs' vertical max={5} defaultValue={0} />
                                 <Button

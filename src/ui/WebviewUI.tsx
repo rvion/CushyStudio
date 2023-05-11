@@ -8,10 +8,13 @@ import { FooUI } from './actions/x'
 import { FlowLogUI } from './flow/FlowLogUI'
 import { Gallery2UI } from './galleries/Gallery2UI'
 import { ScrollablePaneUI } from './scrollableArea'
+import { GalleryHoveredPreviewUI } from './galleries/GalleryHoveredPreviewUI'
+import { PaintUI } from './widgets/PaintUI'
 
 export const WebviewUI = observer(function WebviewUI_() {
     const st = useSt()
 
+    const action = st.currentAction
     return (
         <div className='col grow h100'>
             <div>
@@ -30,22 +33,36 @@ export const WebviewUI = observer(function WebviewUI_() {
                     <IconButton
                         icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />}
                     />
+                    <IconButton
+                        onClick={() => {
+                            st.db.reset()
+                        }}
+                        icon={<I.Trash color='orange' />}
+                    />
                 </Nav>
             </div>
 
             <Gallery2UI />
 
             {/* BODY */}
-            <div className='flex flex-row flex-grow '>
-                <ScrollablePaneUI style={{ width: '30rem' }} items={st.received} className='shrink-0'>
-                    <FlowLogUI />
-                </ScrollablePaneUI>
-                <div className='flex-grow basis-1 flex flex-col'>
-                    {/* <ProjectGalleryUI /> */}
+            {/* {st.currentAction === 'home' ? <FooUI /> : null} */}
+            {/* <ProjectGalleryUI /> */}
+            {/* <div className='flex-grow basis-1 flex flex-col'>
                     <FooUI />
-                </div>
-                {/* <div className='flex-grow'>bar</div> */}
-            </div>
+                </div> */}
+            {/* <div className='flex-grow'>bar</div> */}
+            {/* <div className='flex flex-row flex-grow '> */}
+            <ScrollablePaneUI style={{ width: '100%' }} items={st.received} className='shrink-0 flex-grow'>
+                <GalleryHoveredPreviewUI />
+                {action == null ? ( //
+                    <FlowLogUI />
+                ) : action.type === 'paint' ? (
+                    <PaintUI uri={action.img.localURL ?? action.img.comfyURL ?? '🔴'} />
+                ) : (
+                    <FlowLogUI />
+                )}
+            </ScrollablePaneUI>
+            {/* </div> */}
             {st.showAllMessageReceived ? (
                 <div className='shadow-xl' style={{ height: '10rem', resize: 'horizontal', overflow: 'auto' }}>
                     {st.itemsToShow.map((msg, ix) => (

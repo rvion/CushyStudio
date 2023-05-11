@@ -69,7 +69,7 @@ export const LightBoxUI = observer(function LightBoxUI_(p: { lbs: LightBoxState;
                 Thumbnails,
                 ...(p.inline ? [Inline] : []),
             ]}
-            slides={lbs.imgs.map((img) => ({ src: img.comfyURL }))}
+            slides={lbs.imgs.map((img) => ({ src: img.comfyURL ?? img.localURL ?? '🔴' }))}
             open={true}
         />
     )

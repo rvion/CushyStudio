@@ -7,6 +7,7 @@ import { logger } from '../logger/logger'
 import { exhaust } from '../utils/ComfyUtils'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
 import open from 'open'
+import { asRelativePath } from '../utils/fs/pathUtils'
 
 export class CushyClient {
     clientID = nanoid(6)
@@ -46,7 +47,7 @@ export class CushyClient {
         const queue = this.queue
         logger().info(`🐼 Client ${this.clientID} flushing queue of ${queue.length} messages`)
         console.log('coucou')
-        this.sendMessage({ type: 'sync-history', history: this.serverState.history.data, uid: -1 })
+        this.sendMessage({ type: 'sync-history', history: this.serverState.db.data, uid: -1 })
         queue.forEach((msg) => this.ws.send(JSON.stringify(msg)))
         queue.length = 0
     }
@@ -73,6 +74,39 @@ export class CushyClient {
             console.log(`🛋️ ${msg.message}`)
             return
         }
+
+        if (msg.type === 'image') {
+            // save base64 image
+            // console.log('🔴', msg.base64.slice(0, 100))
+            const payload = msg.base64.split(';base64,').pop()!
+            const img = Buffer.from(payload, 'base64')
+            const imageID = msg.imageID
+            // abs path
+            const relPath = asRelativePath(`.cushy/cache/output/${imageID}.png`)
+            const absPath = this.serverState.resolve(relPath)
+            console.log(`🟢 saved image at`, absPath)
+            // save
+            this.serverState.writeBinaryFile(absPath, img)
+            // url
+            const baseURL = this.serverState.server.baseURL
+            const cacheFolderPath = this.serverState.cacheFolderPath
+            const localURL = baseURL + absPath.replace(cacheFolderPath, '')
+            this.serverState.broadCastToAllClients({
+                type: 'images',
+                images: [
+                    {
+                        //
+                        uid: msg.imageID,
+                        // comfyRelativePath:'',
+                        // comfyURL:'',
+                        localAbsolutePath: absPath,
+                        localURL,
+                    },
+                ],
+            })
+            return
+        }
+
         if (msg.type === 'open-external') {
             console.log('open external', msg.uriString, msg.uriString)
             return void open(msg.uriString)
@@ -92,6 +126,11 @@ export class CushyClient {
             const flow = this.serverState.knownFlows.get(msg.flowID)
             if (flow == null) return logger().info('🔴 test not found')
             return flow.run()
+        }
+
+        if (msg.type === 'reset') {
+            this.serverState.db.reset()
+            return
         }
 
         if (msg.type === 'say-ready') {

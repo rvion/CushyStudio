@@ -3,31 +3,35 @@ import type { PayloadID } from '../core/PayloadID'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { EmbeddingName } from 'src/core/Schema'
-import type { ImageInfos } from 'src/core/GeneratedImageSummary'
+import type { ImageInfos, ImageUID } from 'src/core/GeneratedImageSummary'
 import type { Requestable } from 'src/controls/Requestable'
 import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import type { FlowDefinitionID, FlowRunID } from 'src/back/FlowDefinition'
-import type { WorkspaceHistoryJSON } from 'src/core/WorkspaceHistoryJSON'
+import type { CushyDBData } from 'src/core/WorkspaceHistoryJSON'
 
 import { exhaust } from '../utils/ComfyUtils'
 
 // =============================================================================================
-// | Webview => Extension                                                                      |
+// | FRONT => BACK                                                                             |
 // =============================================================================================
 export type FromWebview_SayReady = { type: 'say-ready'; frontID: string }
 export type FromWebview_runFlow = { type: 'run-flow'; flowID: FlowDefinitionID; img?: AbsolutePath }
 export type FromWebview_openExternal = { type: 'open-external'; uriString: string }
 export type FromWebview_sayHello = { type: 'say-hello'; message: string }
 export type FromWebview_Answer = { type: 'answer'; value: any }
+export type FromWebview_Image = { type: 'image'; base64: string; imageID: ImageUID }
+export type FromWebview_reset = { type: 'reset' }
 export type MessageFromWebviewToExtension =
     | FromWebview_SayReady // report ready
     | FromWebview_runFlow // run
     | FromWebview_openExternal
     | FromWebview_sayHello // test messages
     | FromWebview_Answer // user interractions
+    | FromWebview_Image
+    | FromWebview_reset
 
 // =============================================================================================
-// | Extension => Webview                                                                      |
+// | BACK => FRONT                                                                             |
 // =============================================================================================
 export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExtensionToWebview_
 
@@ -47,7 +51,7 @@ export type FromExtension_Ls = { type: 'ls'; knownFlows: { name: string; id: Flo
 export type FromExtension_Images = { type: 'images'; images: ImageInfos[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; content: string; title: string }
 export type FromExtension_ask = { type: 'ask'; request: { [key: string]: Requestable } }
-export type FromExtension_SyncHistory = { type: 'sync-history'; history: WorkspaceHistoryJSON }
+export type FromExtension_SyncHistory = { type: 'sync-history'; history: CushyDBData }
 
 export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */

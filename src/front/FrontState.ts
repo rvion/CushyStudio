@@ -2,8 +2,7 @@ import type { ComfyStatus } from '../types/ComfyWsApi'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { ImageInfos } from '../core/GeneratedImageSummary'
-import { WorkspaceHistoryJSON, newWorkspaceHistory } from '../core/WorkspaceHistoryJSON'
+import { ImageInfos, ImageUID } from '../core/GeneratedImageSummary'
 import { Graph } from '../core/Graph'
 import { KnownWorkflow } from '../core/KnownWorkflow'
 import { Schema } from '../core/Schema'
@@ -14,9 +13,11 @@ import {
     MessageFromExtensionToWebview,
     MessageFromWebviewToExtension,
 } from '../types/MessageFromExtensionToWebview'
+import { LightBoxState } from '../ui/LightBox'
 import { renderMsgUI } from '../ui/flow/flowRenderer1'
 import { exhaust } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
+import { CushyDB } from './FrontDB'
 import { ResilientSocketToExtension } from './ResilientCushySocket'
 import { UIAction } from './UIAction'
 
@@ -35,14 +36,16 @@ const newMsgGroup = (groupType: string, wrap?: boolean): MsgGroup => ({
 
 export class FrontState {
     uid = nanoid()
+    hovered: Maybe<ImageInfos> = null
+    lightBox = new LightBoxState(() => this.images, true)
 
     get received(): MessageFromExtensionToWebview[] {
-        return this.history.msgs.map((x) => x.msg)
+        return this.db.data.msgs.map((x) => x.msg)
     }
 
     expandNodes: boolean = false
     flowDirection: 'down' | 'up' = 'up'
-    showAllMessageReceived: boolean = true
+    showAllMessageReceived: boolean = false
 
     currentAction: UIAction | null = null
 
@@ -115,6 +118,8 @@ export class FrontState {
     graph: Maybe<Graph> = null
     schema: Maybe<Schema> = null
     images: ImageInfos[] = []
+    imagesById: Map<ImageUID, ImageInfos> = new Map()
+
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
@@ -127,7 +132,12 @@ export class FrontState {
 
     pendingAsk: FromExtension_ask[] = []
 
-    history: WorkspaceHistoryJSON = newWorkspaceHistory()
+    db: CushyDB = new CushyDB(this)
+
+    private recordImages = (imgs: ImageInfos[]) => {
+        this.images.push(...imgs)
+        for (const img of imgs) this.imagesById.set(img.uid, img)
+    }
 
     /** this is for the UI only; process should be very thin / small */
     onMessageFromExtension = (message: MessageFromExtensionToWebview) => {
@@ -139,13 +149,19 @@ export class FrontState {
 
         // this message must not be logged
         if (msg.type === 'sync-history') {
-            this.history = msg.history
+            this.db.data = msg.history
+            for (const msg of this.db.data.msgs) {
+                if (!(msg.msg.type === 'images')) continue
+                this.recordImages(msg.msg.images)
+            }
+            // this.db.createFolder()
+            // this.db.createFolder()
             return
         }
 
         console.log('💬', msg.type) //, { message })
 
-        this.history.msgs.push({ at: Date.now(), msg })
+        this.db.data.msgs.push({ at: Date.now(), msg })
 
         // 2. process the info
         if (msg.type === 'flow-code') return
@@ -174,10 +190,7 @@ export class FrontState {
             this.comfyStatus = msg.data.status
             return
         }
-        if (msg.type === 'execution_cached') {
-            // 🔴
-            return
-        }
+        if (msg.type === 'execution_cached') return // 🔴
 
         if (msg.type === 'prompt') {
             if (this.schema == null) throw new Error('missing schema')
@@ -185,10 +198,7 @@ export class FrontState {
             return
         }
 
-        if (msg.type === 'images') {
-            this.images.push(...msg.images)
-            return
-        }
+        if (msg.type === 'images') return this.recordImages(msg.images)
 
         if (msg.type === 'ls') {
             this.knownWorkflows = msg.knownFlows

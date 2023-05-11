@@ -5,10 +5,11 @@ import type { ServerState } from './ServerState'
 
 import fetch from 'node-fetch'
 import * as path from 'path'
-import { ImageInfos } from '../core/GeneratedImageSummary'
+import { ImageInfos, ImageUID } from '../core/GeneratedImageSummary'
 import { logger } from '../logger/logger'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { nanoid } from 'nanoid'
 
 enum ImageStatus {
     Known = 1,
@@ -27,7 +28,7 @@ export class GeneratedImage implements ImageInfos {
     }
 
     /** unique image id */
-    uid: string
+    uid: ImageUID
 
     constructor(
         /** the prompt this file has been generated from */
@@ -35,7 +36,7 @@ export class GeneratedImage implements ImageInfos {
         /** image info as returned by Comfy */
         public data: ComfyImageInfo, // public uid: string,
     ) {
-        this.uid = `${this.prompt.name}_${GeneratedImage.imageID++}`
+        this.uid = nanoid() // `${this.prompt.name}_${GeneratedImage.imageID++}`
         this.workspace = prompt.workspace
         this.ready = this.downloadImageAndSaveToDisk()
     }
