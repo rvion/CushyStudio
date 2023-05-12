@@ -6,7 +6,7 @@ WORKFLOW('demo2-test', async ({ graph, flow }) => {
     const latent = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
     const positive = graph.CLIPTextEncode({ text: fun('white rectangle'), clip: ckpt })
     const negative = graph.CLIPTextEncode({ text: 'bad hands', clip: ckpt })
-    const sampler = graph.KSampler({
+    const sampler: KSampler = graph.KSampler({
         seed: flow.randomSeed(),
         steps: 20,
         cfg: 10,

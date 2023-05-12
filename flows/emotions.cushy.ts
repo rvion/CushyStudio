@@ -1,8 +1,6 @@
-import type * as T from '../src/global'
-
 //
 WORKFLOW('vn3', async ({ graph, flow, presets }) => {
-    const vae: T.Enum_VAELoader_vae_name = 'kl-f8-anime2.ckpt'
+    const vae: Enum_VAELoader_vae_name = 'kl-f8-anime2.ckpt'
     const A___ = presets.loadModel({ vae, ckptName: 'mistoonAnime_v10.safetensors', tomeRatio: false }) // stop_at_clip_layer: -2
     const B___ = presets.loadModel({ vae, ckptName: 'mistoonAnime_v10Inpainting.safetensors', tomeRatio: false }) // stop_at_clip_layer: -2
 
@@ -108,3 +106,47 @@ WORKFLOW('vn3', async ({ graph, flow, presets }) => {
     await flow.PROMPT()
     await flow.createAnimation(undefined, 1000)
 })
+
+// WORKFLOW('generate-emotions', async ({ graph, flow, presets }) => {
+//     require({
+//         image: { type: 'IMAGE', priority: ['lastCreated']}
+//         vae: { type: 'VAE', priority: ['lastCreated'] }
+//         model: { type: 'IMAGE', priority: [{taggedWith: 'inpainting'}, 'lastCreated'] }
+//     })
+//     const image = SLOT({type: 'ASK'})
+//     const vae = SLOT('VAE') // <-- ??
+
+//     // EMOTION VARIATION ----------------------------------------------------------------------
+//     const faceMask = graph.MasqueradeMaskByText({
+//         image: image,
+//         prompt: `face`,
+//         negative_prompt: `hair`,
+//         normalize: 'no',
+//         precision: 0.3,
+//     })
+//     graph.PreviewImage({ images: faceMask.IMAGE })
+//     graph.PreviewImage({ images: faceMask.IMAGE_1 })
+//     const maskedLatent2 = graph.VAEEncodeForInpaint({
+//         mask: (m) => m.MasqueradeImageToMask({ image: faceMask.IMAGE, method: 'intensity' }),
+//         pixels: image,
+//         vae: B___.vae,
+//         grow_mask_by: 20,
+//     })
+//     const replacements_2 = ['happy', 'sad', 'surprised']
+//     for (const e of replacements_2) {
+//         const sampler = graph.KSampler({
+//             seed,
+//             steps: 30,
+//             cfg: 9,
+//             sampler_name: 'ddim',
+//             scheduler: 'karras',
+//             denoise: 0.6,
+//             model: B___.model,
+//             positive: graph.CLIPTextEncode({ text: base.replace(EMOTION, `(${e}:1.1)`), clip: B___.clip }),
+//             negative,
+//             latent_image: maskedLatent2,
+//         })
+//         graph.PreviewImage({ images: graph.VAEDecode({ samples: sampler, vae: B___.vae }) })
+//     }
+//     await flow.PROMPT()
+// })
