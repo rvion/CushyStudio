@@ -32,7 +32,7 @@ import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
 import { CushyDB } from './CushyDB'
 import { sdkStubDeps } from '../typings/sdkStubDeps'
-import { CodePrettier } from 'src/utils/CodeFormatter'
+import { CodePrettier } from '../utils/CodeFormatter'
 
 export type CSCriticalError = { title: string; help: string }
 
