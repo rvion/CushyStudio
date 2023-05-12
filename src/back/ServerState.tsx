@@ -49,7 +49,7 @@ export class ServerState {
     vscodeSettings: AbsolutePath
     comfyJSONPath: AbsolutePath
     embeddingsPath: AbsolutePath
-    comfyTSPath: AbsolutePath
+    nodesTSPath: AbsolutePath
     cushyTSPath: AbsolutePath
     tsConfigPath: AbsolutePath
 
@@ -137,10 +137,16 @@ export class ServerState {
         /** path of the workspace */
         public rootPath: AbsolutePath,
         public opts: {
-            /** true in prod, false when running from this local subfolder */
-            genStub: boolean
-            /** true in prod, false when running from this local subfolder  */
+            /**
+             * if set, no stub will be generated
+             * if unset, will generate self-contained stubs
+             * */
+            cushySrcPathPrefix?: string
+            /**
+             * true in prod, false when running from this local subfolder
+             * */
             genTsConfig: boolean
+            /** true in prod, false when running from this local subfolder */
         },
     ) {
         this.db = new CushyDB(this)
@@ -148,12 +154,14 @@ export class ServerState {
         this.vscodeSettings = this.resolve(asRelativePath('.vscode/settings.json'))
         this.comfyJSONPath = this.resolve(asRelativePath('.cushy/nodes.json'))
         this.embeddingsPath = this.resolve(asRelativePath('.cushy/embeddings.json'))
-        this.comfyTSPath = this.resolve(asRelativePath('.cushy/nodes.d.ts'))
+        this.nodesTSPath = this.resolve(asRelativePath('global.d.ts'))
         this.cushyTSPath = this.resolve(asRelativePath('.cushy/cushy.d.ts'))
         this.tsConfigPath = this.resolve(asRelativePath('tsconfig.json'))
         this.server = new CushyServer(this)
         this.schema = this.restoreSchemaFromCache()
-        this.writeTextFile(this.cushyTSPath, opts.genStub ? `${sdkTemplate}\n${sdkStubDeps}` : sdkTemplate)
+        if (opts.cushySrcPathPrefix == null) {
+            this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
+        }
 
         this.autoDiscoverEveryWorkflow()
         this.ws = this.initWebsocket()
@@ -395,13 +403,13 @@ export class ServerState {
 
             // 3 ------------------------------------
             logger().info('[**.. step 3/4] udpatin schema code...')
-            const comfySchemaTs = this.schema.codegenDTS()
+            const comfySchemaTs = this.schema.codegenDTS({ cushySrcPathPrefix: this.opts.cushySrcPathPrefix })
             logger().info('[***. step 3/4] schema code updated ')
 
             // 4 ------------------------------------
             logger().info('[**** step 4/4] saving schema')
             const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
-            writeFileSync(this.comfyTSPath, comfySchemaBuff, 'utf-8')
+            writeFileSync(this.nodesTSPath, comfySchemaBuff, 'utf-8')
             logger().info('[**** step 4/4] 🟢 schema updated')
         } catch (error) {
             console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))

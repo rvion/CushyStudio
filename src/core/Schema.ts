@@ -217,20 +217,24 @@ export class Schema {
     //     })
     // }
 
-    codegenDTS = (useLocalPath = false): string => {
+    codegenDTS = (opts: { cushySrcPathPrefix?: string }): string => {
+        const prefix = opts.cushySrcPathPrefix ?? ''
         const b = new CodeBuffer()
         const p = b.w
-        const prefix = useLocalPath ? '.' : 'core'
 
-        p(`/// <reference path="cushy.d.ts" />`)
+        if (opts.cushySrcPathPrefix == null) {
+            p(`/// <reference path="cushy.d.ts" />`)
+        }
         p('')
-        p(`declare module "CUSHY_RUNTIME" {`)
-        p(`    import type { ComfyNode } from 'core/Node'`)
-        p(`    import type { Slot } from 'core/Slot'`)
-        p(`    import type { ComfyNodeSchemaJSON } from 'types/ComfySchemaJSON'`)
-        p(`    import type { ComfyNodeUID } from 'types/NodeUID'`)
-        p(``)
+        p(`import type { ComfyNode } from '${prefix}core/Node'`)
+        p(`import type { Slot } from '${prefix}core/Slot'`)
+        p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
+        p(`import type { ComfyNodeUID } from '${prefix}types/NodeUID'`)
+        p(`import type { WorkflowType } from '${prefix}core/WorkflowFn'`)
 
+        p(`declare global {`)
+        p(`const WORKFLOW: WorkflowType`)
+        p(``)
         p(`\n// Entrypoint --------------------------`)
         p(`export interface ComfySetup {`)
         // prettier-ignore
@@ -332,7 +336,7 @@ export class Schema {
 
         // p(`declare const WORKFLOW: (builder: (graph: ComfyGraph) => void) => void`)
         // b.writeTS('./src/core/Comfy.ts')
-        p(`declare const WORKFLOW: import("core/WorkflowFn").WorkflowType`)
+        // p(`declare const WORKFLOW: import("core/WorkflowFn").WorkflowType`)
         return b.content
     }
 

@@ -4,7 +4,7 @@ WORKFLOW('demo2-test', async ({ graph, flow }) => {
 
     const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
     const latent = graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
-    const positive = graph.CLIPTextEncode({ text: fun('white rectangle'), clip: ckpt })
+    const positive: CLIPTextEncode = graph.CLIPTextEncode({ text: fun('white rectangle'), clip: ckpt })
     const negative = graph.CLIPTextEncode({ text: 'bad hands', clip: ckpt })
     const sampler: KSampler = graph.KSampler({
         seed: flow.randomSeed(),

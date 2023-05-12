@@ -23,7 +23,8 @@
     "include": [
         //
         "src",
-        "flows"
+        "flows",
+        "flows/global.d.ts"
     ],
     "exclude": [
         //
