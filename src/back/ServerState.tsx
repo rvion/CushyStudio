@@ -410,8 +410,9 @@ export class ServerState {
 
             // 4 ------------------------------------
             logger().info('[**** step 4/4] saving schema')
-            const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
-            writeFileSync(this.nodesTSPath, comfySchemaBuff, 'utf-8')
+            // const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
+            const comfySchemaTsFormatted = await this.codePrettier.prettify(comfySchemaTs)
+            writeFileSync(this.nodesTSPath, comfySchemaTsFormatted, 'utf-8')
             logger().info('[**** step 4/4] 🟢 schema updated')
         } catch (error) {
             console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
