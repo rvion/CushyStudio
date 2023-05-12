@@ -24,3 +24,5 @@ flows/aaa
 webview
 
 *.vsix
+
+flows/private
