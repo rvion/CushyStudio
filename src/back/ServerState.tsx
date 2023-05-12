@@ -32,6 +32,7 @@ import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
 import { CushyDB } from './CushyDB'
 import { sdkStubDeps } from '../typings/sdkStubDeps'
+import { CodePrettier } from 'src/utils/CodeFormatter'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -129,8 +130,9 @@ export class ServerState {
         return asAbsolutePath(join(this.rootPath, relativePath))
     }
 
-    server!: CushyServer
     configWatcher = new ConfigFileWatcher()
+    codePrettier: CodePrettier
+    server!: CushyServer
     db: CushyDB
 
     constructor(
@@ -150,6 +152,7 @@ export class ServerState {
         },
     ) {
         this.db = new CushyDB(this)
+        this.codePrettier = new CodePrettier(this)
         this.cacheFolderPath = this.resolve(asRelativePath('.cushy/cache'))
         this.vscodeSettings = this.resolve(asRelativePath('.vscode/settings.json'))
         this.comfyJSONPath = this.resolve(asRelativePath('.cushy/nodes.json'))
@@ -159,14 +162,13 @@ export class ServerState {
         this.tsConfigPath = this.resolve(asRelativePath('tsconfig.json'))
         this.server = new CushyServer(this)
         this.schema = this.restoreSchemaFromCache()
-        if (opts.cushySrcPathPrefix == null) {
-            this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
-        }
 
-        this.autoDiscoverEveryWorkflow()
-        this.ws = this.initWebsocket()
-        // this.watchForCOnfigurationChanges()
+        // gen files for standalone mode
         if (opts.genTsConfig) this.createTSConfigIfMissing()
+        if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
+
+        this.ws = this.initWebsocket()
+        this.autoDiscoverEveryWorkflow()
         makeAutoObservable(this)
         this.configWatcher.startWatching(this.resolve(asRelativePath('cushyconfig.json')))
     }
