@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { IconButton, Nav } from 'rsuite'
 import { useSt } from '../front/stContext'
 import { renderMessageFromExtensionAsEmoji } from '../types/MessageFromExtensionToWebview'
-import { WorkflowPickerUI } from './WorkflowPickerUI'
+import { ActionPickerUI } from './WorkflowPickerUI'
 import { FooUI } from './actions/x'
 import { FlowLogUI } from './flow/FlowLogUI'
 import { Gallery2HUI, Gallery2UI } from './galleries/Gallery2UI'
@@ -32,12 +32,7 @@ export const WebviewUI = observer(function WebviewUI_() {
                     <IconButton
                         icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />}
                     />
-                    <IconButton
-                        onClick={() => {
-                            st.db.reset()
-                        }}
-                        icon={<I.Trash color='orange' />}
-                    />
+                    <IconButton onClick={() => st.db.reset()} icon={<I.Trash color='orange' />} />
                 </Nav>
             </div>
 

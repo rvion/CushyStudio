@@ -10,8 +10,8 @@ import { FlowRun } from './FlowRun'
 import { transpileCode } from './transpiler'
 import { Branded } from '../utils/types'
 
-export type FlowDefinitionID = Branded<string, 'FlowDefinitionID'>
-export const asFlowDefinitionID = (s: string): FlowDefinitionID => s as any
+export type ActionDefinitionID = Branded<string, 'FlowDefinitionID'>
+export const asFlowDefinitionID = (s: string): ActionDefinitionID => s as any
 
 export type FlowRunID = Branded<string, 'FlowRunID'>
 export const asFlowRunID = (s: string): FlowRunID => s as any
@@ -20,8 +20,8 @@ export const asFlowRunID = (s: string): FlowRunID => s as any
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
  * flow = the 'WORFLOW(...)' part of a file
  * */
-export class FlowDefinition {
-    flowID: FlowDefinitionID
+export class ActionDefinition {
+    flowID: ActionDefinitionID
 
     constructor(
         //
@@ -53,7 +53,7 @@ export class FlowDefinition {
         // check if we're in "MOCK" mode
         const opts = mode === 'fake' ? { mock: true } : undefined
         const execution = new FlowRun(this.file.workspace, this.file.absPath, opts)
-        console.log('SETTIGN ACTIVE RUN')
+        console.log('SETTING ACTIVE RUN')
         this.file.workspace.activeRun = execution
         // await execution.save()
         // write the code to a file

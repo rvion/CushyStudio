@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { ImageInfos, ImageUID } from '../core/GeneratedImageSummary'
 import { Graph } from '../core/Graph'
-import { KnownWorkflow } from '../core/KnownWorkflow'
+import { ActionRef } from '../core/KnownWorkflow'
 import { Schema } from '../core/Schema'
 import { logger } from '../logger/logger'
 import {
@@ -20,6 +20,7 @@ import { Maybe } from '../utils/types'
 import { CushyDB } from './FrontDB'
 import { ResilientSocketToExtension } from './ResilientCushySocket'
 import { UIAction } from './UIAction'
+import { ActionDefinitionID } from 'src/back/FlowDefinition'
 
 export type MsgGroup = {
     groupType: string
@@ -125,8 +126,11 @@ export class FrontState {
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
-    knownWorkflows: KnownWorkflow[] = []
-    selectedWorkflowID: Maybe<KnownWorkflow['id']> = null
+    knownActions = new Map<ActionDefinitionID, ActionRef>()
+    get ActionOptionForSelectInput() {
+        return Array.from(this.knownActions.values()).map((x) => ({ value: x.id, label: x.name }))
+    }
+    selectedWorkflowID: Maybe<ActionRef['id']> = null
     runningFlowId: Maybe<string> = null
 
     // runs: { flowRunId: string; graph: Graph }[]
@@ -203,11 +207,10 @@ export class FrontState {
         if (msg.type === 'images') return this.recordImages(msg.images)
 
         if (msg.type === 'ls') {
-            this.knownWorkflows = msg.knownFlows
-
-            if (this.selectedWorkflowID == null && this.knownWorkflows.length > 0)
-                this.selectedWorkflowID = this.knownWorkflows[0].id
-
+            console.log(msg)
+            let firstKnownActionID = msg.actions[0]?.id
+            for (const a of msg.actions) this.knownActions.set(a.id, a)
+            if (this.selectedWorkflowID == null && firstKnownActionID) this.selectedWorkflowID = firstKnownActionID
             return
         }
 

@@ -1,5 +1,7 @@
-export type PayloadID = number
+import { nanoid } from 'nanoid'
 
-let nextPayloadID: PayloadID = 1
+export type PayloadID = string
 
-export const getPayloadID = (): PayloadID => nextPayloadID++
+// let nextPayloadID: PayloadID = 1
+
+export const getPayloadID = (): PayloadID => nanoid()

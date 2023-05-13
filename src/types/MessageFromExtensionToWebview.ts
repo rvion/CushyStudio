@@ -6,8 +6,9 @@ import type { EmbeddingName } from 'src/core/Schema'
 import type { ImageInfos, ImageUID } from 'src/core/GeneratedImageSummary'
 import type { Requestable } from 'src/controls/Requestable'
 import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
-import type { FlowDefinitionID, FlowRunID } from 'src/back/FlowDefinition'
+import type { ActionDefinitionID, FlowRunID } from 'src/back/FlowDefinition'
 import type { CushyDBData } from 'src/core/WorkspaceHistoryJSON'
+import type { ActionRef } from 'src/core/KnownWorkflow'
 
 import { exhaust } from '../utils/ComfyUtils'
 
@@ -15,7 +16,7 @@ import { exhaust } from '../utils/ComfyUtils'
 // | FRONT => BACK                                                                             |
 // =============================================================================================
 export type FromWebview_SayReady = { type: 'say-ready'; frontID: string }
-export type FromWebview_runFlow = { type: 'run-flow'; flowID: FlowDefinitionID; img?: AbsolutePath }
+export type FromWebview_runFlow = { type: 'run-flow'; flowID: ActionDefinitionID; img?: AbsolutePath }
 export type FromWebview_openExternal = { type: 'open-external'; uriString: string }
 export type FromWebview_sayHello = { type: 'say-hello'; message: string }
 export type FromWebview_Answer = { type: 'answer'; value: any }
@@ -42,12 +43,12 @@ export type FromExtension_FlowEnd = {
     type: 'flow-end'
     flowRunID: FlowRunID
     status: 'success' | 'failure'
-    flowID: FlowDefinitionID
+    flowID: ActionDefinitionID
 }
 export type FromExtension_Print = { type: 'print'; message: string }
 export type FromExtension_Schema = { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
 export type FromExtension_Prompt = { type: 'prompt'; graph: ComfyPromptJSON }
-export type FromExtension_Ls = { type: 'ls'; knownFlows: { name: string; id: FlowDefinitionID }[] }
+export type FromExtension_Ls = { type: 'ls'; actions: ActionRef[] }
 export type FromExtension_Images = { type: 'images'; images: ImageInfos[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; content: string; title: string }
 export type FromExtension_ask = { type: 'ask'; request: { [key: string]: Requestable } }

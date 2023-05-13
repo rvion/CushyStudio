@@ -27,6 +27,7 @@ export class CushyClient {
         ws.on('open', () => {
             const lastStatus = this.serverState.lastMessagesPerType.get('cushy_status')
             if (lastStatus) this.sendMessage(lastStatus)
+            // this.sendMessage(this.serverState.allActionsRefs)
         })
         ws.onerror = (err) => {
             console.log('ws error', err)
@@ -47,7 +48,8 @@ export class CushyClient {
         const queue = this.queue
         logger().info(`🐼 Client ${this.clientID} flushing queue of ${queue.length} messages`)
         console.log('coucou')
-        this.sendMessage({ type: 'sync-history', history: this.serverState.db.data, uid: -1 })
+        this.sendMessage({ type: 'sync-history', history: this.serverState.db.data, uid: nanoid() })
+        this.sendMessage(this.serverState.allActionsRefs())
         queue.forEach((msg) => this.ws.send(JSON.stringify(msg)))
         queue.length = 0
     }

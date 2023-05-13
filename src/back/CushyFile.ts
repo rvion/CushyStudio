@@ -3,10 +3,10 @@ import * as vscode from 'vscode'
 import { logger } from '../logger/logger'
 import { bang } from '../utils/bang'
 import { AbsolutePath } from '../utils/fs/BrandedPaths'
-import { FlowDefinition } from './FlowDefinition'
+import { ActionDefinition } from './FlowDefinition'
 import { ServerState } from './ServerState'
 
-export type MarkdownTestData = CushyFile | /* TestHeading |*/ FlowDefinition
+export type MarkdownTestData = CushyFile | /* TestHeading |*/ ActionDefinition
 
 export const vsTestItemOriginDict = new WeakMap<vscode.TestItem, MarkdownTestData>()
 
@@ -19,7 +19,7 @@ export type CodeRange = {
 
 export class CushyFile {
     CONTENT = ''
-    workflows: FlowDefinition[] = []
+    workflows: ActionDefinition[] = []
     constructor(
         //
         public workspace: ServerState,
@@ -29,7 +29,7 @@ export class CushyFile {
         this.extractWorkflows()
     }
 
-    WorkflowRe = /^^WORKFLOW\(['"](.*)['"]/
+    WorkflowRe = /^^action\(['"](.*)['"]/
 
     extractWorkflows = () => {
         const lines = this.CONTENT.split('\n')
@@ -42,12 +42,14 @@ export class CushyFile {
             logger().info(`found workflow "${isWorkflow?.[1]}"`)
             const name = bang(isWorkflow[1])
             const range: CodeRange = { fromLine: lineNo, fromChar: 0, toLine: lineNo, toChar: line.length }
-            const flow = new FlowDefinition(this, range, name)
+            const flow = new ActionDefinition(this, range, name)
             this.workflows.push(flow)
             this.workspace.knownFlows.set(flow.flowID, flow)
             continue
         }
         const flows = this.workflows.map((i) => ({ name: i.flowName, id: i.flowID }))
-        this.workspace.broadCastToAllClients({ type: 'ls', knownFlows: flows })
+        // console.log(flows)
+        this.workspace.broadCastToAllClients({ type: 'ls', actions: flows })
+        // this.workspace.updateActionListDebounced()
     }
 }

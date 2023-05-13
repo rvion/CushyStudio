@@ -16,23 +16,23 @@ import { Schema } from '../core/Schema'
 import { logger } from '../logger/logger'
 import { ComfyStatus, WsMsg } from '../types/ComfyWsApi'
 import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '../types/MessageFromExtensionToWebview'
+import { sdkStubDeps } from '../typings/sdkStubDeps'
 import { sdkTemplate } from '../typings/sdkTemplate'
+import { CodePrettier } from '../utils/CodeFormatter'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyClient } from './Client'
 import { ConfigFileWatcher } from './ConfigWatcher'
+import { CushyDB } from './CushyDB'
 import { CushyFile } from './CushyFile'
 import { TypeScriptFilesMap } from './DirWatcher'
-import { FlowDefinition, FlowDefinitionID } from './FlowDefinition'
+import { ActionDefinition, ActionDefinitionID } from './FlowDefinition'
 import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
-import { CushyDB } from './CushyDB'
-import { sdkStubDeps } from '../typings/sdkStubDeps'
-import { CodePrettier } from '../utils/CodeFormatter'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -53,6 +53,20 @@ export class ServerState {
     nodesTSPath: AbsolutePath
     cushyTSPath: AbsolutePath
     tsConfigPath: AbsolutePath
+
+    /** notify front of all new actions */
+    allActionsRefs = (): MessageFromExtensionToWebview & { type: 'ls' } => {
+        const actionDefs: ActionDefinition[] = Array.from(this.knownFlows.values())
+        const actionRefs = actionDefs.map((x) => ({ name: x.flowName, id: x.flowID }))
+        return { type: 'ls', actions: actionRefs, uid: getPayloadID() }
+    }
+
+    broadcastNewActionList = () => {
+        const refs = this.allActionsRefs()
+        console.log(`🔴 ${refs}`)
+        this.broadCastToAllClients(refs)
+    }
+    // updateActionListDebounced = debounce(this.updateActionList, 1000, 2000)
 
     /** write a binary file to given absPath */
     writeBinaryFile(absPath: AbsolutePath, content: Buffer) {
@@ -96,7 +110,7 @@ export class ServerState {
         writeFileSync(absPath, content, 'utf-8')
     }
 
-    knownFlows = new Map<FlowDefinitionID, FlowDefinition>()
+    knownFlows = new Map<ActionDefinitionID, ActionDefinition>()
     knownFiles = new Map<AbsolutePath, CushyFile>()
 
     /** wrapper around vscode.tests.createTestController so logic is self-contained  */

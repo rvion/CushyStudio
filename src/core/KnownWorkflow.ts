@@ -1,3 +1,3 @@
-import { FromExtension_Ls } from 'src/types/MessageFromExtensionToWebview'
+import type { ActionDefinitionID } from 'src/back/FlowDefinition'
 
-export type KnownWorkflow = FromExtension_Ls['knownFlows'][number]
+export type ActionRef = { name: string; id: ActionDefinitionID }
