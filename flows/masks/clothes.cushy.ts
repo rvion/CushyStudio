@@ -1,8 +1,13 @@
 action('A. load model', {
     help: 'extract a mak for the given clothes', // <- action help text
-    run: (flow) => {
+    requirement: (kk) => ({
+        ckptName: kk.Enum_CheckpointLoaderSimple_ckpt_name({
+            findOrCreate: () => 'AOM3A1_orangemixs.safetensors',
+        }),
+    }),
+    run: (flow, deps) => {
         flow.presets.loadModel({
-            ckptName: 'AOM3A1_orangemixs.safetensors',
+            ckptName: deps.ckptName(),
         })
     },
 })

@@ -38,6 +38,7 @@ import { NodeBuilder } from './NodeBuilder'
 import { ActionDefinition, asActionRunID } from './ActionDefinition'
 import { auto } from '../core/autoValue'
 import { Presets } from '../presets/presets'
+import { RequirementBuilder } from './ReqBuilder'
 
 /** script exeuction instance */
 export class Workflow {
@@ -101,7 +102,12 @@ export class Workflow {
             if (match == null) throw new Error('no action found')
             const action = match.action
             broadcast({ type: 'action-code', flowRunID: executionID, code: match.action.toString() })
+
+            const reqBuilder = new RequirementBuilder(this)
+            const deps = action.requirement?.(reqBuilder)
+            console.log({ deps })
             const resolveDeps = {} //🔴
+
             await action.run(this, resolveDeps)
             console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
