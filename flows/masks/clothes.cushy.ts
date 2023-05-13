@@ -9,6 +9,10 @@ action('A. load model', {
 
 action('A. prompt', {
     help: 'extract a mak for the given clothes', // <- action help text
+    requirement: (kk) => ({
+        positive: kk.STRING({ findOrCreate: () => 'hello' }),
+        negative: kk.STRING({ findOrCreate: () => 'world' }),
+    }),
     run: async (flow) => {
         flow.nodes.PreviewImage({
             images: flow.nodes.VAEDecode({
