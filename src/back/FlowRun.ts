@@ -1,4 +1,6 @@
 import type { LATER } from '../back/LATER'
+import type { FlowID } from '../front/FrontFlow'
+import type { Action } from '../core/Requirement'
 
 import FormData from 'form-data'
 import { marked } from 'marked'
@@ -33,20 +35,86 @@ import { ServerState } from './ServerState'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
 import { readFileSync, writeFileSync } from 'fs'
 import { NodeBuilder } from './NodeBuilder'
+import { ActionDefinition, asActionRunID } from './ActionDefinition'
+import { auto } from '../core/autoValue'
+import { Presets } from '../presets/presets'
 
 /** script exeuction instance */
 export class FlowRun {
+    constructor(
+        //
+        public workspace: ServerState, // public fileAbsPath: AbsolutePath, // public opts?: { mock?: boolean },
+        /** unique run id, gener */
+        public uid: FlowID,
+    ) {
+        // const relPath = asRelativePath(path.join('.cache', this.fileAbsPath))
+        this.folder = this.workspace.outputFolderPath // output.resolve(relPath)
+        this.nodes = new NodeBuilder(this)
+        this.name = `Run-${this.createdAt}` // 'Run ' + this.script.runCounter++
+        this.graph = new Graph(this.workspace.schema)
+        // this.cyto = new Cyto(this.graph) // 🔴🔴
+        makeAutoObservable(this)
+    }
+
     /** creation "timestamp" in YYYYMMDDHHMMSS format */
     createdAt = getYYYYMMDDHHMMSS()
 
-    /** unique run id */
-    uid = nanoid()
+    // temp
+    presets = new Presets(this)
 
     /** human readable folder name */
     name: string
 
     /** list all actions ; codegen during dev-time */
     actions: any
+
+    AUTO = auto
+
+    runAction = async (actionDef: ActionDefinition) => {
+        const start = Date.now()
+        const schema = this.workspace.schema
+        const broadcast = this.workspace.broadCastToAllClients
+        const flowID = this.uid
+        const actionID = actionDef.uid
+        const executionID = asActionRunID(nanoid(6))
+        broadcast({ type: 'action-start', flowRunID: executionID })
+        broadcast({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
+
+        const codeJS = await actionDef.getCodeJS()
+        if (codeJS == null) return false
+
+        // check if we're in "MOCK" mode
+        console.log('SETTING ACTIVE RUN')
+        this.workspace.activeRun = this // 🔴
+
+        const ProjectScriptFn = new Function('action', codeJS)
+        const actionsPool: { name: string; action: Action<any> }[] = []
+        const actionFn = (name: string, fn: Action<any>): void => {
+            logger().info(`found WORKFLOW ${name}`)
+            actionsPool.push({ name, action: fn })
+        }
+
+        try {
+            await ProjectScriptFn(actionFn)
+            const match = actionsPool.find((i) => i.name === actionDef.name)
+            if (match == null) throw new Error('no action found')
+            const action = match.action
+            broadcast({ type: 'action-code', flowRunID: executionID, code: match.action.toString() })
+            const resolveDeps = {} //🔴
+            await action.run(this, resolveDeps)
+            console.log('[✅] RUN SUCCESS')
+            const duration = Date.now() - start
+            broadcast({ type: 'action-end', flowID, actionID, executionID, status: 'success' })
+            return true
+        } catch (error) {
+            console.log(error)
+            broadcast({ type: 'action-end', flowID, actionID, executionID, status: 'failure' })
+            logger().error('🌠', (error as any as Error).name)
+            logger().error('🌠', (error as any as Error).message)
+            logger().error('🌠', 'RUN FAILURE')
+            return false
+        }
+    }
 
     /** x:string */
     find = (foo: string) => {
@@ -84,7 +152,7 @@ export class FlowRun {
     // High level API--------------------
 
     saveTextFile = async (path: RelativePath, content: string): Promise<void> => {
-        const absPath = this.workspace.resolve(path)
+        const absPath = this.workspace.resolve(this.folder, path)
         writeFileSync(absPath, content, 'utf-8')
     }
 
@@ -242,7 +310,7 @@ export class FlowRun {
 
     /** upload an image present on disk to ComfyServer */
     uploadWorkspaceFile = async (path: RelativePath): Promise<ComfyUploadImageResult> => {
-        const absPath = this.workspace.resolve(path)
+        const absPath = this.workspace.resolveFromRoot(path)
         const ui8arr: Uint8Array = readFileSync(absPath)
         return await this.uploadUIntArrToComfy(ui8arr)
     }
@@ -297,11 +365,11 @@ export class FlowRun {
         this.steps.unshift(step)
 
         // if we're note really running prompts, just resolve the step and continue
-        if (this.opts?.mock) {
-            logger().info('MOCK => aborting')
-            step._resolve!(step)
-            return step
-        }
+        // if (this.opts?.mock) {
+        //     logger().info('MOCK => aborting')
+        //     step._resolve!(step)
+        //     return step
+        // }
 
         // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
@@ -337,21 +405,6 @@ export class FlowRun {
         console.log('prompt status', res.status, res.statusText)
         // await sleep(1000)
         return step
-    }
-
-    constructor(
-        //
-        public workspace: ServerState,
-        public fileAbsPath: AbsolutePath,
-        public opts?: { mock?: boolean },
-    ) {
-        const relPath = asRelativePath(path.join('.cache', this.fileAbsPath))
-        this.folder = this.workspace.resolve(relPath)
-        this.nodes = new NodeBuilder(this)
-        this.name = `Run-${this.createdAt}` // 'Run ' + this.script.runCounter++
-        this.graph = new Graph(this.workspace.schema)
-        // this.cyto = new Cyto(this.graph) // 🔴🔴
-        makeAutoObservable(this)
     }
 
     steps: FlowExecutionStep[] = [new ScriptStep_Init()]

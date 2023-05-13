@@ -15,7 +15,7 @@ export class CodePrettier {
     }
 
     constructor(public serverState: ServerState) {
-        const possibleConfigPath = serverState.resolve(asRelativePath('.prettierrc'))
+        const possibleConfigPath = serverState.resolveFromRoot(asRelativePath('.prettierrc'))
         const exists = existsSync(possibleConfigPath)
         if (exists) {
             this.config = JSON.parse(readFileSync(possibleConfigPath, 'utf-8'))

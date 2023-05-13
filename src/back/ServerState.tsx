@@ -28,11 +28,12 @@ import { ConfigFileWatcher } from './ConfigWatcher'
 import { CushyDB } from './CushyDB'
 import { CushyFile } from './CushyFile'
 import { TypeScriptFilesMap } from './DirWatcher'
-import { ActionDefinition, ActionDefinitionID } from './FlowDefinition'
+import { ActionDefinition, ActionDefinitionID } from './ActionDefinition'
 import { GeneratedImage } from './GeneratedImage'
 import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
+import { FlowID } from 'src/front/FrontFlow'
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -53,11 +54,12 @@ export class ServerState {
     nodesTSPath: AbsolutePath
     cushyTSPath: AbsolutePath
     tsConfigPath: AbsolutePath
+    outputFolderPath: AbsolutePath
 
     /** notify front of all new actions */
     allActionsRefs = (): MessageFromExtensionToWebview & { type: 'ls' } => {
-        const actionDefs: ActionDefinition[] = Array.from(this.knownFlows.values())
-        const actionRefs = actionDefs.map((x) => ({ name: x.flowName, id: x.flowID }))
+        const actionDefs: ActionDefinition[] = Array.from(this.knownActions.values())
+        const actionRefs = actionDefs.map((x) => ({ name: x.name, id: x.uid }))
         return { type: 'ls', actions: actionRefs, uid: getPayloadID() }
     }
 
@@ -110,7 +112,15 @@ export class ServerState {
         writeFileSync(absPath, content, 'utf-8')
     }
 
-    knownFlows = new Map<ActionDefinitionID, ActionDefinition>()
+    flows = new Map<FlowID, FlowRun>()
+    getOrCreateFlow = (flowID: FlowID): FlowRun => {
+        const prev = this.flows.get(flowID)
+        if (prev != null) return prev
+        const flow = new FlowRun(this, flowID)
+        return flow
+    }
+
+    knownActions = new Map<ActionDefinitionID, ActionDefinition>()
     knownFiles = new Map<AbsolutePath, CushyFile>()
 
     /** wrapper around vscode.tests.createTestController so logic is self-contained  */
@@ -144,10 +154,8 @@ export class ServerState {
         return asRelativePath(relative(this.rootPath, absolutePath))
     }
 
-    resolve = (relativePath: RelativePath): AbsolutePath => {
-        console.log(this.rootPath)
-        return asAbsolutePath(join(this.rootPath, relativePath))
-    }
+    resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
+    resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
 
     configWatcher = new ConfigFileWatcher()
     codePrettier: CodePrettier
@@ -172,13 +180,15 @@ export class ServerState {
     ) {
         this.db = new CushyDB(this)
         this.codePrettier = new CodePrettier(this)
-        this.cacheFolderPath = this.resolve(asRelativePath('.cushy/cache'))
-        this.vscodeSettings = this.resolve(asRelativePath('.vscode/settings.json'))
-        this.comfyJSONPath = this.resolve(asRelativePath('.cushy/nodes.json'))
-        this.embeddingsPath = this.resolve(asRelativePath('.cushy/embeddings.json'))
-        this.nodesTSPath = this.resolve(asRelativePath('global.d.ts'))
-        this.cushyTSPath = this.resolve(asRelativePath('.cushy/cushy.d.ts'))
-        this.tsConfigPath = this.resolve(asRelativePath('tsconfig.json'))
+        this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('.cushy/cache'))
+        this.vscodeSettings = this.resolve(this.rootPath, asRelativePath('.vscode/settings.json'))
+        this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('.cushy/nodes.json'))
+        this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('.cushy/embeddings.json'))
+        this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('global.d.ts'))
+        this.cushyTSPath = this.resolve(this.rootPath, asRelativePath('.cushy/cushy.d.ts'))
+        this.tsConfigPath = this.resolve(this.rootPath, asRelativePath('tsconfig.json'))
+        this.outputFolderPath = this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
+
         this.server = new CushyServer(this)
         this.schema = this.restoreSchemaFromCache()
 
@@ -189,7 +199,7 @@ export class ServerState {
         this.ws = this.initWebsocket()
         this.autoDiscoverEveryWorkflow()
         makeAutoObservable(this)
-        this.configWatcher.startWatching(this.resolve(asRelativePath('cushyconfig.json')))
+        this.configWatcher.startWatching(this.resolveFromRoot(asRelativePath('cushyconfig.json')))
     }
 
     createTSConfigIfMissing = () => {

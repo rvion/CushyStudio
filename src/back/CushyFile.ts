@@ -3,7 +3,7 @@ import * as vscode from 'vscode'
 import { logger } from '../logger/logger'
 import { bang } from '../utils/bang'
 import { AbsolutePath } from '../utils/fs/BrandedPaths'
-import { ActionDefinition } from './FlowDefinition'
+import { ActionDefinition } from './ActionDefinition'
 import { ServerState } from './ServerState'
 
 export type MarkdownTestData = CushyFile | /* TestHeading |*/ ActionDefinition
@@ -44,11 +44,11 @@ export class CushyFile {
             const range: CodeRange = { fromLine: lineNo, fromChar: 0, toLine: lineNo, toChar: line.length }
             const flow = new ActionDefinition(this, range, name)
             this.workflows.push(flow)
-            this.workspace.knownFlows.set(flow.flowID, flow)
+            this.workspace.knownActions.set(flow.uid, flow)
             continue
         }
-        const flows = this.workflows.map((i) => ({ name: i.flowName, id: i.flowID }))
-        // console.log(flows)
+        const flows = this.workflows.map((i) => ({ name: i.name, id: i.uid }))
+        console.log(flows.map((i) => i.name))
         this.workspace.broadCastToAllClients({ type: 'ls', actions: flows })
         // this.workspace.updateActionListDebounced()
     }

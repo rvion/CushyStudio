@@ -1,4 +1,4 @@
-import { ActionDefinitionID } from 'src/back/FlowDefinition'
+import { ActionDefinitionID } from 'src/back/ActionDefinition'
 import { ImageInfos } from 'src/core/GeneratedImageSummary'
 
 export type UIAction =

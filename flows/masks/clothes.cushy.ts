@@ -1,5 +1,4 @@
-export const x = action('mask-clothes', {
-    //                   ^^ action name
+action('mask-clothes', {
     help: 'extract a mak for the given clothes', // <- action help text
     // vv action require an image and an input text with tag 'clothes'
     requirement: (kk) => ({
@@ -19,14 +18,14 @@ export const x = action('mask-clothes', {
     },
 })
 
-export const y = action('auto-mask-face', {
+action('auto-mask-face', {
     help: 'extract a mak for the face', // <- action help text
     requirement: (kk) => ({
         image: kk.IMAGE({}),
     }),
-    run: (flow, reqs) => {
+    run: (flow, deps) => {
         const clothesMask = flow.nodes.MasqueradeMaskByText({
-            image: reqs.image,
+            image: deps.image,
             prompt: 'face',
             negative_prompt: 'face, arms, hands, legs, feet, background',
             normalize: 'no',

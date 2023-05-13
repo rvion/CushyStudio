@@ -8,6 +8,7 @@ import { exhaust } from '../utils/ComfyUtils'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
 import open from 'open'
 import { asRelativePath } from '../utils/fs/pathUtils'
+import { ActionDefinition } from './ActionDefinition'
 
 export class CushyClient {
     clientID = nanoid(6)
@@ -79,8 +80,11 @@ export class CushyClient {
             const img = Buffer.from(payload, 'base64')
             const imageID = msg.imageID
             // abs path
-            const relPath = asRelativePath(`.cushy/cache/output/${imageID}.png`)
-            const absPath = this.serverState.resolve(relPath)
+            const absPath = this.serverState.resolve(
+                //
+                this.serverState.outputFolderPath,
+                asRelativePath(`${imageID}.png`),
+            )
             console.log(`🟢 saved image at`, absPath)
             // save
             this.serverState.writeBinaryFile(absPath, img)
@@ -120,9 +124,10 @@ export class CushyClient {
 
         if (msg.type === 'run-action') {
             logger().info(`🐙 run-flow request: ${msg.actionID}`)
-            const flow = this.serverState.knownFlows.get(msg.actionID)
-            if (flow == null) return logger().info('🔴 test not found')
-            return flow.run()
+            const action: ActionDefinition | undefined = this.serverState.knownActions.get(msg.actionID)
+            if (action == null) return logger().info('no action found for id:' + msg.actionID)
+            const flow = this.serverState.getOrCreateFlow(msg.flowID)
+            return flow.runAction(action)
         }
 
         if (msg.type === 'reset') {

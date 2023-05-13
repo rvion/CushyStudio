@@ -4,8 +4,9 @@
  * on the node suite they have setup
  */
 
+import { FlowRun } from 'src/back/FlowRun'
 import type { LATER } from 'src/back/LATER'
-import type { WorkflowBuilder } from 'src/core/WorkflowFn'
+// import type { WorkflowBuilder } from 'src/core/WorkflowFn'
 
 export type SimplifiedLoraDef = {
     name: LATER<'Enum_LoraLoader_lora_name'>
@@ -17,19 +18,19 @@ export type SimplifiedLoraDef = {
 
 /** high level library */
 export class Presets {
-    constructor(
-        //
-        public ctx: WorkflowBuilder,
-    ) {}
+    constructor(public flow: FlowRun) {}
 
     prompt = (pos: string, neg: string) => {
-        const { graph, flow, AUTO } = this.ctx
+        // const { graph, flow, AUTO } = this.ctx
+        const graph = this.flow.nodes
+        const flow = this.flow
+
         return graph.KSampler({
             seed: flow.randomSeed(),
             latent_image: graph.EmptyLatentImage({}),
-            model: AUTO,
-            positive: graph.CLIPTextEncode({ clip: AUTO, text: 'hello' }),
-            negative: graph.CLIPTextEncode({ clip: AUTO, text: 'world' }),
+            model: flow.AUTO,
+            positive: graph.CLIPTextEncode({ clip: flow.AUTO, text: 'hello' }),
+            negative: graph.CLIPTextEncode({ clip: flow.AUTO, text: 'world' }),
             sampler_name: 'ddim',
             scheduler: 'karras',
         })
@@ -55,7 +56,8 @@ export class Presets {
         model: LATER<'MODEL'>
         vae: LATER<'VAE'>
     } => {
-        const { graph } = this.ctx
+        const graph = this.flow.nodes
+        const flow = this.flow
 
         // model and loras
         const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.ckptName })
@@ -110,7 +112,8 @@ export class Presets {
         /** defaults to 1 */
         denoise?: number
     }) => {
-        const { graph, flow } = this.ctx
+        const graph = this.flow.nodes
+        const flow = this.flow
         const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.ckptName })
 
         let clipAndModel: LATER<'HasSingle_CLIP'> & LATER<'HasSingle_MODEL'> = ckpt

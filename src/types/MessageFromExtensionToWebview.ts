@@ -1,15 +1,14 @@
-import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
-import type { PayloadID } from '../core/PayloadID'
-import type { ComfySchemaJSON } from './ComfySchemaJSON'
-import type { ComfyPromptJSON } from './ComfyPrompt'
-import type { EmbeddingName } from 'src/core/Schema'
-import type { ImageInfos, ImageUID } from 'src/core/GeneratedImageSummary'
+import type { ActionDefinitionID, ActionRunID } from 'src/back/ActionDefinition'
 import type { Requestable } from 'src/controls/Requestable'
-import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
-import type { ActionDefinitionID, ActionRunID } from 'src/back/FlowDefinition'
-import type { CushyDBData } from 'src/core/WorkspaceHistoryJSON'
+import type { ImageInfos, ImageUID } from 'src/core/GeneratedImageSummary'
 import type { ActionRef } from 'src/core/KnownWorkflow'
+import type { EmbeddingName } from 'src/core/Schema'
+import type { CushyDBData } from 'src/core/WorkspaceHistoryJSON'
 import type { FlowID } from 'src/front/FrontFlow'
+import type { PayloadID } from '../core/PayloadID'
+import type { ComfyPromptJSON } from './ComfyPrompt'
+import type { ComfySchemaJSON } from './ComfySchemaJSON'
+import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
 
 import { exhaust } from '../utils/ComfyUtils'
 
@@ -48,9 +47,10 @@ export type FromExtension_ActionStart = { type: 'action-start'; flowRunID: Actio
 export type FromExtension_ActionCode = { type: 'action-code'; flowRunID: ActionRunID; code: string }
 export type FromExtension_ActionEnd = {
     type: 'action-end'
-    flowRunID: ActionRunID
     status: 'success' | 'failure'
-    flowID: ActionDefinitionID
+    flowID: FlowID
+    actionID: ActionDefinitionID
+    executionID: ActionRunID
 }
 
 export type FromExtension_Print = { type: 'print'; message: string }

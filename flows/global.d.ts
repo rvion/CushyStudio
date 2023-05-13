@@ -2124,6 +2124,7 @@ declare global {
         | 'upload (118).png'
         | 'upload (119).png'
         | 'upload (12).png'
+        | 'upload (120).png'
         | 'upload (13).png'
         | 'upload (14).png'
         | 'upload (15).png'
@@ -2471,7 +2472,7 @@ declare global {
         | 'lbpcascade_animeface.xml'
     export type Enum_WASImageEdgeDetectionFilter_mode = 'laplacian' | 'normal'
     export type Enum_WASImageHistoryLoader_image =
-        | '...\\ComfyUI_07077_.png'
+        | '...\\ComfyUI_07114_.png'
         | '...\\output\\ComfyUI_03515_.png'
         | '...\\output\\ComfyUI_03518_.png'
         | '...\\output\\ComfyUI_03522_.png'
@@ -5525,11 +5526,11 @@ declare global {
         ASCII_2: Slot<'ASCII', 2>
     }
     export type WASCacheNode_input = {
-        /** default="4583182_cache" */
+        /** default="54991371_cache" */
         latent_suffix?: _STRING
-        /** default="17702552_cache" */
+        /** default="95197976_cache" */
         image_suffix?: _STRING
-        /** default="86228244_cache" */
+        /** default="77164847_cache" */
         conditioning_suffix?: _STRING
         latent?: _LATENT
         image?: _IMAGE

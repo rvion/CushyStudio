@@ -27,7 +27,7 @@ export const ShowFlowEndUI = observer(function ShowFlowEndUI_(p: {
                                 st.sendMessageToExtension({
                                     type: 'run-action',
                                     flowID: flow.id,
-                                    actionID: msg.flowID,
+                                    actionID: msg.actionID,
                                 })
                             }}
                         >

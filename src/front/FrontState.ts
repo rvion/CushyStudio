@@ -20,7 +20,7 @@ import { Maybe } from '../utils/types'
 import { CushyDB } from './FrontDB'
 import { ResilientSocketToExtension } from './ResilientCushySocket'
 import { UIAction } from './UIAction'
-import { ActionDefinitionID } from 'src/back/FlowDefinition'
+import { ActionDefinitionID } from 'src/back/ActionDefinition'
 import { FrontFlow } from './FrontFlow'
 
 export type MsgGroup = {

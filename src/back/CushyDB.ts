@@ -12,7 +12,7 @@ export class CushyDB {
         //
         public serverState: ServerState,
     ) {
-        this.path = this.serverState.resolve(asRelativePath('.cushy/history.json'))
+        this.path = this.serverState.resolve(serverState.rootPath, asRelativePath('.cushy/history.json'))
         const prev = this.serverState.readJSON(this.path, newWorkspaceHistory())
         this.data = prev
         makeAutoObservable(this)
