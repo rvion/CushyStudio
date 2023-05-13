@@ -28,7 +28,7 @@ export const GalleryImageUI = observer(function ImageUI_(p: { img: ImageInfos })
                 }}
                 style={{ objectFit: 'contain', width: '64px', height: '64px', opacity, padding: '0.1rem' }}
                 onClick={() => (st.lightBox.opened = true)}
-                src={img.comfyURL ?? img.localURL}
+                src={img.localURL ?? img.comfyURL}
             />
         </>
     )
