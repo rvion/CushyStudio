@@ -119,8 +119,8 @@ export class CushyClient {
         }
 
         if (msg.type === 'run-action') {
-            logger().info(`🐙 run-flow request: ${msg.flowID}`)
-            const flow = this.serverState.knownFlows.get(msg.flowID)
+            logger().info(`🐙 run-flow request: ${msg.actionID}`)
+            const flow = this.serverState.knownFlows.get(msg.actionID)
             if (flow == null) return logger().info('🔴 test not found')
             return flow.run()
         }

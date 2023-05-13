@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../../front/FrontStateCtx'
 import { flowContext, useFlow } from '../../front/FrontFlowCtx'
-import { ActionPickerUI } from '../ActionPickerUI'
+import { ActionPickerUI } from '../flow/ActionPickerUI'
 import { Button, Panel } from 'rsuite'
 
 export const WorkspaceUI = observer(function WorkspaceUI_(p: {}) {

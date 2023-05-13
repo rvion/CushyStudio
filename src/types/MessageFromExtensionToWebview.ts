@@ -9,6 +9,7 @@ import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import type { ActionDefinitionID, ActionRunID } from 'src/back/FlowDefinition'
 import type { CushyDBData } from 'src/core/WorkspaceHistoryJSON'
 import type { ActionRef } from 'src/core/KnownWorkflow'
+import type { FlowID } from 'src/front/FrontFlow'
 
 import { exhaust } from '../utils/ComfyUtils'
 
@@ -18,7 +19,7 @@ import { exhaust } from '../utils/ComfyUtils'
 // sent when the webpage is loaded
 export type FromWebview_SayReady = { type: 'say-ready'; frontID: string }
 // request to run a flow
-export type FromWebview_runAction = { type: 'run-action'; flowID: ActionDefinitionID; img?: AbsolutePath }
+export type FromWebview_runAction = { type: 'run-action'; flowID: FlowID; actionID: ActionDefinitionID }
 // request to open an external URL
 export type FromWebview_openExternal = { type: 'open-external'; uriString: string }
 // answer a data request in the middle of a flow

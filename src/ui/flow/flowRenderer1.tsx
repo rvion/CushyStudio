@@ -2,7 +2,7 @@ import { MessageFromExtensionToWebview } from '../../types/MessageFromExtensionT
 import { AskInfoUI } from '../AskInfoUI'
 import { FlowGeneratedImagesUI } from '../FlowGeneratedImagesUI'
 import { MsgShowHTMLUI } from '../MsgShowHTMLUI'
-import { ShowFlowEndUI } from '../ShowFlowEndUI'
+import { ShowFlowEndUI } from './ShowFlowEndUI'
 import { ShowUpdatingNodeUI } from '../ShowUpdatingNodeUI'
 import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
 import { Panel } from 'rsuite'

@@ -1,13 +1,15 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Button, Message, Panel } from 'rsuite'
-import { useSt } from '../front/FrontStateCtx'
-import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
+import { useSt } from '../../front/FrontStateCtx'
+import { MessageFromExtensionToWebview } from '../../types/MessageFromExtensionToWebview'
+import { useFlow } from '../../front/FrontFlowCtx'
 
 export const ShowFlowEndUI = observer(function ShowFlowEndUI_(p: {
     msg: MessageFromExtensionToWebview & { type: 'action-end' }
 }) {
     const msg = p.msg
+    const flow = useFlow()
     const st = useSt()
     return (
         <Panel shaded>
@@ -22,7 +24,11 @@ export const ShowFlowEndUI = observer(function ShowFlowEndUI_(p: {
                             // appearance='primary'
                             size='sm'
                             onClick={() => {
-                                st.sendMessageToExtension({ type: 'run-action', flowID: msg.flowID })
+                                st.sendMessageToExtension({
+                                    type: 'run-action',
+                                    flowID: flow.id,
+                                    actionID: msg.flowID,
+                                })
                             }}
                         >
                             Run Again
