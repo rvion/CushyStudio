@@ -157,16 +157,17 @@ export class Graph {
         // with propery object being defined on the client
         // to remove all this extra work
         // const schema = workspace.schema
-        for (const node of schema.nodes) {
-            // console.log(`node: ${node.name}`)
-            Object.defineProperty(this, node.nameInCushy, {
-                value: (inputs: any) =>
-                    new ComfyNode(this, this.getUID(), {
-                        class_type: node.nameInComfy as any,
-                        inputs,
-                    }),
-            })
-        }
+        // // 🔴 remove this from here
+        // for (const node of schema.nodes) {
+        //     // console.log(`node: ${node.name}`)
+        //     Object.defineProperty(this, node.nameInCushy, {
+        //         value: (inputs: any) =>
+        //             new ComfyNode(this, nanoid(), {
+        //                 class_type: node.nameInComfy as any,
+        //                 inputs,
+        //             }),
+        //     })
+        // }
     }
 
     private _nextUID = 1

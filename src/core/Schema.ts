@@ -244,6 +244,13 @@ export class Schema {
         }
         p(`}`)
 
+        p(`\n// Requirable --------------------------`)
+        p(`export interface Requirable {`)
+        for (const n of this.knownTypes) p(`    ${n}: ${n},`)
+        for (const n of this.knownEnumsByName) p(`    ${n[0]}: ${n[0]},`)
+        for (const n of this.nodes) p(`    ${n.nameInCushy}: ${n.nameInCushy},`)
+        p(`}`)
+
         p(`\n// Embeddings -------------------------------`)
         p(
             `export type Embeddings = ${

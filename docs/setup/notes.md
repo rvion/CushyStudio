@@ -1,3 +1,13 @@
+-   flow: namespace (contains the rest)
+-                       single var send to flow
+-   flow contains primitive dictionary + node dictionary + various output, list of prev prompts, etc
+-   every action run in a flow
+-   you can run an action in an empty flow
+-   drag and dropping an image in the flow will create a new flow with a single image node
+-   drag and dropping from a folder auto-add the tag
+
+---
+
 ```sh
 venv
 cd ComfyUI/custom_nodes

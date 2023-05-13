@@ -32,6 +32,7 @@ import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ServerState } from './ServerState'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
 import { readFileSync, writeFileSync } from 'fs'
+import { NodeBuilder } from './NodeBuilder'
 
 /** script exeuction instance */
 export class FlowRun {
@@ -43,6 +44,14 @@ export class FlowRun {
 
     /** human readable folder name */
     name: string
+
+    /** x:string */
+    find = (foo: string) => {
+        // 🔴
+    }
+
+    /** toolkit to build new graph nodes */
+    nodes: NodeBuilder
 
     /** the main graph that will be updated along the script execution */
     graph: Graph
@@ -335,6 +344,7 @@ export class FlowRun {
     ) {
         const relPath = asRelativePath(path.join('.cache', this.fileAbsPath))
         this.folder = this.workspace.resolve(relPath)
+        this.nodes = new NodeBuilder(this)
         this.name = `Run-${this.createdAt}` // 'Run ' + this.script.runCounter++
         this.graph = new Graph(this.workspace.schema)
         // this.cyto = new Cyto(this.graph) // 🔴🔴

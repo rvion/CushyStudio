@@ -84,7 +84,12 @@ export class ServerState {
         return str
     }
 
-    writeTextFile(absPath: AbsolutePath, content: string, open = false) {
+    writeTextFile(
+        //
+        absPath: AbsolutePath,
+        content: string,
+        open = false,
+    ) {
         // ensure folder exists
         const folder = join(absPath, '..')
         mkdirSync(folder, { recursive: true })
