@@ -18,3 +18,20 @@ export const x = action('mask-clothes', {
         flow.nodes.PreviewImage({ images: clothesMask.IMAGE })
     },
 })
+
+export const y = action('auto-mask-face', {
+    help: 'extract a mak for the face', // <- action help text
+    requirement: (kk) => ({
+        image: kk.IMAGE({}),
+    }),
+    run: (flow, reqs) => {
+        const clothesMask = flow.nodes.MasqueradeMaskByText({
+            image: reqs.image,
+            prompt: 'face',
+            negative_prompt: 'face, arms, hands, legs, feet, background',
+            normalize: 'no',
+            precision: 0.3,
+        })
+        flow.nodes.PreviewImage({ images: clothesMask.IMAGE })
+    },
+})

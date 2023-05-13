@@ -25,25 +25,3 @@ export const Gallery2UI = observer(function Gallery2UI_(p: {}) {
         </>
     )
 })
-
-export const VerticalGalleryUI = observer(function VerticalGalleryUI_(p: {}) {
-    const st = useSt()
-
-    return (
-        <div className='flex bg-gray-950'>
-            <div className='flex flex-col' style={{ overflowX: 'auto' }}>
-                {/* request to focus next  */}
-                {/* <Button>next</Button> */}
-                {/* <div>stream</div> */}
-                {st.imageReversed.map((img, ix) => (
-                    <GalleryImageUI key={ix} img={img} />
-                ))}
-            </div>
-            {/* <div className='flex flex-col overflow-x-auto'> */}
-            {Object.entries(st.db.data.folders).map(([k, v]) => {
-                return <GalleryFolderUI direction='vertical' key={k} folderMetadata={v} folderUID={k} />
-            })}
-            {/* </div> */}
-        </div>
-    )
-})
