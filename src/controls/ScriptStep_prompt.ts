@@ -1,4 +1,4 @@
-import type { Workflow } from '../back/FlowRun'
+import type { Workflow } from '../back/Workflow'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { WsMsgExecuted, WsMsgExecuting } from '../types/ComfyWsApi'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'

@@ -6,7 +6,7 @@ import type { Maybe } from '../utils/types'
 import fetch from 'node-fetch'
 import { join, relative } from 'path'
 import * as WS from 'ws'
-import { Workflow } from './FlowRun'
+import { Workflow } from './Workflow'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'

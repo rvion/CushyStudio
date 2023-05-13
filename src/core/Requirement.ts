@@ -1,5 +1,5 @@
 import { LATER } from 'LATER'
-import type { Workflow } from 'src/back/FlowRun'
+import type { Workflow } from 'src/back/Workflow'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.

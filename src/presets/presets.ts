@@ -4,7 +4,7 @@
  * on the node suite they have setup
  */
 
-import { Workflow } from 'src/back/FlowRun'
+import { Workflow } from 'src/back/Workflow'
 import type { LATER } from 'LATER'
 // import type { WorkflowBuilder } from 'src/core/WorkflowFn'
 

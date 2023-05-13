@@ -1,4 +1,4 @@
-import type { Workflow } from './FlowRun'
+import type { Workflow } from './Workflow'
 import type { LATER } from 'LATER'
 
 import { ComfyNode } from '../core/Node'
