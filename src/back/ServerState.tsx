@@ -116,6 +116,7 @@ export class ServerState {
     getOrCreateFlow = (flowID: FlowID): FlowRun => {
         const prev = this.flows.get(flowID)
         if (prev != null) return prev
+        console.log(`Creating new flow (id=${flowID})`)
         const flow = new FlowRun(this, flowID)
         this.flows.set(flowID, flow)
         return flow
