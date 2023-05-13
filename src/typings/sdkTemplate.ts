@@ -238,6 +238,10 @@ declare module "core/Schema" {
         };
         constructor(spec: ComfySchemaJSON, embeddings: EmbeddingName[]);
         update(spec: ComfySchemaJSON, embeddings: EmbeddingName[]): void;
+        get requirables(): {
+            name: string;
+            kind: 'enum' | 'node' | 'prim';
+        }[];
         codegenDTS: (opts: {
             cushySrcPathPrefix?: string;
         }) => string;
@@ -461,7 +465,7 @@ declare module "presets/presets" {
      * the LATER type is used to reference types that may or may not be available on users machines, depending
      * on the node suite they have setup
      */
-    import { Workflow } from "back/FlowRun";
+    import { Workflow } from "back/Workflow";
     import type { LATER } from "back/LATER.foo";
     export type SimplifiedLoraDef = {
         name: CUSHY_RUNTIME.Enum_LoraLoader_lora_name;
@@ -653,7 +657,7 @@ declare module "controls/Requestable" {
     };
 }
 declare module "controls/ScriptStep_prompt" {
-    import type { Workflow } from "back/FlowRun";
+    import type { Workflow } from "back/Workflow";
     import type { ComfyPromptJSON } from "types/ComfyPrompt";
     import type { WsMsgExecuted, WsMsgExecuting } from "types/ComfyWsApi";
     import type { ScriptStep_Iface } from "controls/ScriptStep_Iface";
@@ -1114,7 +1118,7 @@ declare module "back/ServerState" {
     import type { ComfySchemaJSON } from "types/ComfySchemaJSON";
     import type { Maybe } from "utils/types";
     
-    import { Workflow } from "back/FlowRun";
+    import { Workflow } from "back/Workflow";
     import { PayloadID } from "core/PayloadID";
     import { Schema } from "core/Schema";
     import { ComfyStatus } from "types/ComfyWsApi";
@@ -1394,7 +1398,7 @@ declare module "front/FrontFlow" {
 }
 declare module "core/Requirement" {
     import { LATER } from "back/LATER.foo";
-    import type { Workflow } from "back/FlowRun";
+    import type { Workflow } from "back/Workflow";
     /** quick function to help build actions in a type-safe way */
     export const action: <const T extends Requirements>(name: string, t: Omit<Action<T>, "name">) => Action<T>;
     export type ActionType = <const T extends Requirements>(name: string, t: Omit<Action<T>, 'name'>) => Action<T>;
@@ -1757,7 +1761,7 @@ declare module "ffmpeg/ffmpegScripts" {
     frameDuration: number | undefined, workingDirectory: string): Promise<void>;
 }
 declare module "back/NodeBuilder" {
-    import type { Workflow } from "back/FlowRun";
+    import type { Workflow } from "back/Workflow";
     import type { LATER } from "back/LATER.foo";
     export interface NodeBuilder extends CUSHY_RUNTIME.ComfySetup {
     }
@@ -1766,7 +1770,16 @@ declare module "back/NodeBuilder" {
         constructor(flow: Workflow);
     }
 }
-declare module "back/FlowRun" {
+declare module "back/ReqBuilder" {
+    import type { ReqBuilder } from "core/Requirement";
+    import type { Workflow } from "back/Workflow";
+    export interface RequirementBuilder extends ReqBuilder {
+    }
+    export class RequirementBuilder {
+        constructor(workflow: Workflow);
+    }
+}
+declare module "back/Workflow" {
     import type { LATER } from "back/LATER.foo";
     import type { FlowID } from "front/FrontFlow";
     import * as path from 'path';
@@ -1875,7 +1888,7 @@ declare module "back/FlowRun" {
     }
 }
 declare module "typings/sdkEntrypoint" {
-    export type { Workflow as FlowRun } from "back/FlowRun";
+    export type { Workflow as FlowRun } from "back/Workflow";
     export type { Graph } from "core/Graph";
     export type { ActionType } from "core/Requirement";
 }

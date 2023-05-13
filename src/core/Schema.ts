@@ -216,6 +216,13 @@ export class Schema {
     //         })
     //     })
     // }
+    get requirables(): { name: string; kind: 'enum' | 'node' | 'prim' }[] {
+        const out: { name: string; kind: 'enum' | 'node' | 'prim' }[] = []
+        for (const n of this.knownTypes) out.push({ name: n, kind: 'prim' })
+        for (const n of this.knownEnumsByName) out.push({ name: n[0], kind: 'enum' })
+        for (const n of this.nodes) out.push({ name: n.nameInCushy, kind: 'node' })
+        return out
+    }
 
     codegenDTS = (opts: { cushySrcPathPrefix?: string }): string => {
         const prefix = opts.cushySrcPathPrefix ?? ''
@@ -247,9 +254,8 @@ export class Schema {
 
         p(`\n// Requirable --------------------------`)
         p(`export interface Requirable {`)
-        for (const n of this.knownTypes) p(`    ${n}: ${n},`)
-        for (const n of this.knownEnumsByName) p(`    ${n[0]}: ${n[0]},`)
-        for (const n of this.nodes) p(`    ${n.nameInCushy}: ${n.nameInCushy},`)
+        const requirables = this.requirables
+        for (const n of requirables) p(`    ${n.name}: ${n.name},`)
         p(`}`)
 
         p(`\n// Embeddings -------------------------------`)
