@@ -4,12 +4,12 @@ import type { FlowRun } from 'src/back/FlowRun'
 // 1. the main abstraction of cushy are actions.
 /** quick function to help build actions in a type-safe way */
 
-export const action = <const T extends Requirements>(t: Action<T>): Action<T> => t
-export type ActionType = <const T extends Requirements>(t: Action<T>) => Action<T>
+export const action = <const T extends Requirements>(name: string, t: Omit<Action<T>, 'name'>): Action<T> => ({ name, ...t })
+export type ActionType = <const T extends Requirements>(name: string, t: Omit<Action<T>, 'name'>) => Action<T>
 
 export type Action<Reqs extends Requirements> = {
     /** action name; default to unnamed_action_<nanoid()> */
-    name?: string
+    name: string
     /** help text to show user */
     help?: string
     requirement?: (builder: ReqBuilder) => Reqs
@@ -49,27 +49,3 @@ export type ReqBuilder = {
 export type Resolved<Reqs extends { [name: string]: Requirement }> = {
     [K in keyof Reqs]: Reqs[K] extends Requirement<infer T> ? () => T : never
 }
-
-// EXAMPLE ============================================================
-
-export const x = action({
-    name: 'mask-clothes', // <- action name
-    help: 'extract a mak for the given clothes', // <- action help text
-    requirement: (kk) => ({
-        // <- action require an image and an input text with tag 'clothes'
-        image: kk.IMAGE({}),
-        clothes: kk.STRING({ tag: 'clothes' }),
-    }),
-    run: (flow, reqs) => {
-        //
-        const image = reqs.image
-        const clothesMask = flow.nodes.MasqueradeMaskByText({
-            image: image,
-            prompt: reqs.clothes,
-            negative_prompt: 'face, arms, hands, legs, feet, background',
-            normalize: 'no',
-            precision: 0.3,
-        })
-        flow.nodes.PreviewImage({ images: clothesMask.IMAGE })
-    },
-})

@@ -45,6 +45,9 @@ export class FlowRun {
     /** human readable folder name */
     name: string
 
+    /** list all actions ; codegen during dev-time */
+    actions: any
+
     /** x:string */
     find = (foo: string) => {
         // 🔴

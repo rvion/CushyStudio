@@ -1,5 +1,4 @@
-action({
-    name: 'demo2-test',
+action('demo2-test', {
     run: async ($) => {
         // generate an empty table
         const fun = (x: string) => `masterpiece, ${x} painting on a wall`

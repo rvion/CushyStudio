@@ -1,5 +1,4 @@
-action({
-    name: 'demo3-abc',
+action('demo3-abc', {
     run: async ($) => {
         // generate an empty table
         const ckpt = $.nodes.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })

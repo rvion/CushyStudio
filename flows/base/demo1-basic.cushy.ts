@@ -1,5 +1,4 @@
-action({
-    name: 'demo12-basic3',
+action('demo12-basic3', {
     run: async (X) => {
         const ckpt = X.nodes.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
         const latent = X.nodes.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
