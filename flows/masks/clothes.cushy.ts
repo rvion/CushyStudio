@@ -9,7 +9,7 @@ action('A. load model', {
 
 action('A. prompt', {
     help: 'extract a mak for the given clothes', // <- action help text
-    run: (flow) => {
+    run: async (flow) => {
         flow.nodes.PreviewImage({
             images: flow.nodes.VAEDecode({
                 samples: flow.nodes.KSampler({
@@ -24,6 +24,7 @@ action('A. prompt', {
                 vae: flow.AUTO,
             }),
         })
+        await flow.PROMPT()
     },
 })
 

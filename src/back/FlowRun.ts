@@ -72,6 +72,7 @@ export class FlowRun {
 
     runAction = async (actionDef: ActionDefinition) => {
         const start = Date.now()
+        console.log(`🔴 before: size=${this.graph.nodes.length}`)
         const schema = this.workspace.schema
         const broadcast = this.workspace.broadCastToAllClients
         const flowID = this.uid
@@ -84,8 +85,8 @@ export class FlowRun {
         if (codeJS == null) return false
 
         // check if we're in "MOCK" mode
-        console.log('SETTING ACTIVE RUN')
-        this.workspace.activeRun = this // 🔴
+        console.log(`activeFlow = ${this.uid}`)
+        this.workspace.activeFlow = this // 🔴
 
         const ProjectScriptFn = new Function('action', codeJS)
         const actionsPool: { name: string; action: Action<any> }[] = []
@@ -102,6 +103,7 @@ export class FlowRun {
             broadcast({ type: 'action-code', flowRunID: executionID, code: match.action.toString() })
             const resolveDeps = {} //🔴
             await action.run(this, resolveDeps)
+            console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
             broadcast({ type: 'action-end', flowID, actionID, executionID, status: 'success' })

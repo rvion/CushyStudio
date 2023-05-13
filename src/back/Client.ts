@@ -114,7 +114,7 @@ export class CushyClient {
         }
 
         if (msg.type === 'answer') {
-            const run = this.serverState.activeRun
+            const run = this.serverState.activeFlow
             if (run == null) throw new Error('no active run')
             const step = run.step
             if (!(step instanceof ScriptStep_ask)) throw new Error('not a string request step')

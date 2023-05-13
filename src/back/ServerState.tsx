@@ -43,7 +43,7 @@ export class ServerState {
     /** send by ComfyUI server */
     comfySessionId = 'temp'
 
-    activeRun: Maybe<FlowRun> = null
+    activeFlow: Maybe<FlowRun> = null
 
     runs: FlowRun[] = []
 
@@ -117,6 +117,7 @@ export class ServerState {
         const prev = this.flows.get(flowID)
         if (prev != null) return prev
         const flow = new FlowRun(this, flowID)
+        this.flows.set(flowID, flow)
         return flow
     }
 
@@ -324,7 +325,7 @@ export class ServerState {
             return
         }
 
-        const currentRun: Maybe<FlowRun> = this.activeRun
+        const currentRun: Maybe<FlowRun> = this.activeFlow
         if (currentRun == null) {
             logger().error('🐰', `❌ received ${msg.type} but currentRun is null`)
             return
