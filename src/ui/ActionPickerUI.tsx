@@ -8,7 +8,7 @@ export const ActionPickerUI = observer(function WorkflowPickerUI_() {
     return (
         <div>
             <div>
-                ({st.ActionOptionForSelectInput.length} actions)
+                {/* ({st.ActionOptionForSelectInput.length} actions) */}
                 <SelectPicker
                     // labelKey='name'
                     // valueKey='id'
