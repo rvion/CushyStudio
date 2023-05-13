@@ -1,4 +1,4 @@
-import type { FlowRun } from './FlowRun'
+import type { Workflow } from './FlowRun'
 import type { LATER } from 'LATER'
 
 import { ComfyNode } from '../core/Node'
@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 export interface NodeBuilder extends LATER<'ComfySetup'> {}
 
 export class NodeBuilder {
-    constructor(public flow: FlowRun) {
+    constructor(public flow: Workflow) {
         const schema = flow.workspace.schema
         // inject properties:
         // TODO: rewrite with a single defineProperties call

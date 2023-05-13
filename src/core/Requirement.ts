@@ -1,4 +1,5 @@
-import type { FlowRun } from 'src/back/FlowRun'
+import { LATER } from 'LATER'
+import type { Workflow } from 'src/back/FlowRun'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
@@ -14,7 +15,7 @@ export type Action<Reqs extends Requirements> = {
     help?: string
     requirement?: (builder: ReqBuilder) => Reqs
     /** the code to run */
-    run: (f: FlowRun, r: Resolved<Reqs>) => void | Promise<void>
+    run: (f: Workflow, r: Resolved<Reqs>) => void | Promise<void>
     /** next actions to suggest user */
     next?: string[]
 }
@@ -31,7 +32,7 @@ export type Requirement<T = any> = {
     type: string
 
     tag?: string | string[]
-    findOrCreate?: (flow: FlowRun) => T
+    findOrCreate?: (flow: Workflow) => T
 
     /** if specified, Cushy will check if missing requirements can be created to
      * know if it shoul suggest this flow or not
@@ -39,9 +40,12 @@ export type Requirement<T = any> = {
     syncCheckIfCreationIsPossible?: () => boolean
     creationLogic?: () => T
 }
+
+type Requirable_ = LATER<'Requirable'>
+
 // helper to build requirements in a type-safe way
 export type ReqBuilder = {
-    [k in keyof Requirable]: (req?: Omit<Requirement<Requirable[k]>, 'type'>) => Requirement<Requirable[k]>
+    [k in keyof Requirable_]: (req?: Omit<Requirement<Requirable_[k]>, 'type'>) => Requirement<Requirable_[k]>
 }
 
 // REQUIRABLE ============================================================

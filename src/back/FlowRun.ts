@@ -1,4 +1,4 @@
-import type { LATER } from '../back/LATER'
+import type { LATER } from 'LATER'
 import type { FlowID } from '../front/FrontFlow'
 import type { Action } from '../core/Requirement'
 
@@ -40,7 +40,7 @@ import { auto } from '../core/autoValue'
 import { Presets } from '../presets/presets'
 
 /** script exeuction instance */
-export class FlowRun {
+export class Workflow {
     constructor(
         //
         public workspace: ServerState, // public fileAbsPath: AbsolutePath, // public opts?: { mock?: boolean },
@@ -177,7 +177,7 @@ export class FlowRun {
          * */
         frameDuration = 200,
     ): Promise<void> => {
-        const targetVideoAbsPath = asAbsolutePath(path.join(this.outputAbsPath, `video-${FlowRun.VideoCounter++}.mp4`))
+        const targetVideoAbsPath = asAbsolutePath(path.join(this.outputAbsPath, `video-${Workflow.VideoCounter++}.mp4`))
         // logger().info(`target video path: ${targetVideoPath}`)
         // logger().info(`target video uri: ${targetVideoURI}`)
         const images = source ?? this.generatedImages

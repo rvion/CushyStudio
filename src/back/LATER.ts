@@ -2,6 +2,7 @@
 export type LATER<T>
     // should be generated
     = T extends 'ComfySetup' ? ComfySetup
+    : T extends 'Requirable' ? Requirable
     : T extends 'LoadImage' ? LoadImage
     : T extends 'Embeddings' ? Embeddings
     : T extends 'Enum_LoraLoader_lora_name' ? Enum_LoraLoader_lora_name

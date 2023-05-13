@@ -6,7 +6,7 @@ import type { Maybe } from '../utils/types'
 import fetch from 'node-fetch'
 import { join, relative } from 'path'
 import * as WS from 'ws'
-import { FlowRun } from './FlowRun'
+import { Workflow } from './FlowRun'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -43,9 +43,9 @@ export class ServerState {
     /** send by ComfyUI server */
     comfySessionId = 'temp'
 
-    activeFlow: Maybe<FlowRun> = null
+    activeFlow: Maybe<Workflow> = null
 
-    runs: FlowRun[] = []
+    runs: Workflow[] = []
 
     cacheFolderPath: AbsolutePath
     vscodeSettings: AbsolutePath
@@ -112,12 +112,12 @@ export class ServerState {
         writeFileSync(absPath, content, 'utf-8')
     }
 
-    flows = new Map<FlowID, FlowRun>()
-    getOrCreateFlow = (flowID: FlowID): FlowRun => {
+    flows = new Map<FlowID, Workflow>()
+    getOrCreateFlow = (flowID: FlowID): Workflow => {
         const prev = this.flows.get(flowID)
         if (prev != null) return prev
         console.log(`Creating new flow (id=${flowID})`)
-        const flow = new FlowRun(this, flowID)
+        const flow = new Workflow(this, flowID)
         this.flows.set(flowID, flow)
         return flow
     }
@@ -326,7 +326,7 @@ export class ServerState {
             return
         }
 
-        const currentRun: Maybe<FlowRun> = this.activeFlow
+        const currentRun: Maybe<Workflow> = this.activeFlow
         if (currentRun == null) {
             logger().error('🐰', `❌ received ${msg.type} but currentRun is null`)
             return

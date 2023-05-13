@@ -5,8 +5,22 @@ export const sdkTemplate: string = `/// <reference path="nodes.d.ts" />
 
 
 
-
 /// <reference types="express" />
+
+declare module "back/LATER.foo" {
+    export type LATER<T> = any;
+}
+declare module "utils/types" {
+    /** usefull to catch most *units* type errors */
+    export type Tagged<O, Tag> = O & {
+        __tag?: Tag;
+    };
+    /** same as Tagged, but even scriter */
+    export type Branded<O, Brand> = O & {
+        __brand: Brand;
+    };
+    export type Maybe<T> = T | null | undefined;
+}
 declare module "types/ComfyPrompt" {
     export type ComfyPromptJSON = {
         [key: string]: ComfyNodeJSON;
@@ -90,7 +104,7 @@ declare module "ui/VisUI" {
     export type VisOptions = any;
 }
 declare module "core/AutolayoutV1" {
-
+    
     import { Graph } from "core/Graph";
     import { ComfyNode } from "core/Node";
     export class Cyto {
@@ -133,7 +147,7 @@ declare module "types/ComfySchemaJSON" {
         category: string;
     };
     export type ComfyInputSpec = [ComfyInputType] | [ComfyInputType, ComfyInputOpts];
-    export type ComfyInputType =
+    export type ComfyInputType = 
     /** node name or primitive */
     string
     /** enum */
@@ -145,17 +159,6 @@ declare module "types/ComfySchemaJSON" {
         max?: number;
         step?: number;
     };
-}
-declare module "utils/types" {
-    /** usefull to catch most *units* type errors */
-    export type Tagged<O, Tag> = O & {
-        __tag?: Tag;
-    };
-    /** same as Tagged, but even scriter */
-    export type Branded<O, Brand> = O & {
-        __brand: Brand;
-    };
-    export type Maybe<T> = T | null | undefined;
 }
 declare module "utils/CodeBuffer" {
     /** this class is used to buffer text and then write it to a file */
@@ -235,7 +238,9 @@ declare module "core/Schema" {
         };
         constructor(spec: ComfySchemaJSON, embeddings: EmbeddingName[]);
         update(spec: ComfySchemaJSON, embeddings: EmbeddingName[]): void;
-        codegenDTS: (useLocalPath?: boolean) => string;
+        codegenDTS: (opts: {
+            cushySrcPathPrefix?: string;
+        }) => string;
         private toTSType;
     }
     export class ComfyNodeSchema {
@@ -311,6 +316,15 @@ declare module "utils/ComfyUtils" {
     export const sleep: (ms: number) => Promise<unknown>;
     export const deepCopyNaive: <T>(x: T) => T;
 }
+declare module "core/Slot" {
+    import type { ComfyNode } from "core/Node";
+    export class Slot<T, Ix extends number = number> {
+        node: ComfyNode<any>;
+        slotIx: Ix;
+        type: T;
+        constructor(node: ComfyNode<any>, slotIx: Ix, type: T);
+    }
+}
 declare module "core/autoValue" {
     import type { Branded } from "utils/types";
     /**
@@ -326,38 +340,6 @@ declare module "core/autoValue" {
      */
     export const auto: <T>() => T;
     export const auto_: AUTO;
-}
-declare module "core/Printable" {
-    import { ComfyNode } from "core/Node";
-    export type Printable = string | number | boolean | ComfyNode<any>;
-}
-declare module "logger/LogTypes" {
-    import { Printable } from "core/Printable";
-    export interface ILogger {
-        debug(...message: Printable[]): void;
-        info(...message: Printable[]): void;
-        warn(...message: Printable[]): void;
-        error(...message: Printable[]): void;
-    }
-    export interface LogMessage {
-        level: LogLevel;
-        message: string;
-        timestamp: Date;
-    }
-    export enum LogLevel {
-        DEBUG = 0,
-        INFO = 1,
-        WARN = 2,
-        ERROR = 3
-    }
-}
-declare module "logger/logger" {
-    import type { ILogger } from "logger/LogTypes";
-    export const ref: {
-        value?: ILogger;
-    };
-    export const logger: () => ILogger;
-    export const registerLogger: (logger: ILogger) => void;
 }
 declare module "core/Node" {
     import type { ComfyNodeJSON } from "types/ComfyPrompt";
@@ -409,18 +391,69 @@ declare module "core/Node" {
         private _getOutputForTypeOrNull;
     }
 }
-declare module "core/Slot" {
-    import type { ComfyNode } from "core/Node";
-    export class Slot<T, Ix extends number = number> {
-        node: ComfyNode<any>;
-        slotIx: Ix;
-        type: T;
-        constructor(node: ComfyNode<any>, slotIx: Ix, type: T);
+declare module "core/Printable" {
+    import { ComfyNode } from "core/Node";
+    export type Printable = string | number | boolean | ComfyNode<any>;
+}
+declare module "logger/LogTypes" {
+    import { Printable } from "core/Printable";
+    export interface ILogger {
+        debug(...message: Printable[]): void;
+        info(...message: Printable[]): void;
+        warn(...message: Printable[]): void;
+        error(...message: Printable[]): void;
+    }
+    export interface LogMessage {
+        level: LogLevel;
+        message: string;
+        timestamp: Date;
+    }
+    export enum LogLevel {
+        DEBUG = 0,
+        INFO = 1,
+        WARN = 2,
+        ERROR = 3
     }
 }
-declare module "core/Workflow" {
-    export class Workflow {
+declare module "logger/logger" {
+    import type { ILogger } from "logger/LogTypes";
+    export const ref: {
+        value?: ILogger;
+    };
+    export const logger: () => ILogger;
+    export const registerLogger: (logger: ILogger) => void;
+}
+declare module "utils/bang" {
+    /** assertNotNull */
+    export const bang: <T>(x: T | null) => T;
+}
+declare module "utils/fs/BrandedPaths" {
+    import type { Branded } from "utils/types";
+    export type RelativePath = Branded<string, 'WorkspaceRelativePath'>;
+    export type AbsolutePath = Branded<string, 'Absolute'>;
+}
+declare module "controls/ScriptStep_Iface" {
+    /** every ExecutionStep class must implements this interface  */
+    export interface ScriptStep_Iface<Result> {
+        /** uid */
+        uid: string;
+        /** name of the step */
+        name: string;
+        /** promise to await if you need to wait until the step is finished */
+        finished: Promise<Result>;
     }
+}
+declare module "controls/ScriptStep_Init" {
+    import type { ScriptStep_Iface } from "controls/ScriptStep_Iface";
+    export class ScriptStep_Init implements ScriptStep_Iface<true> {
+        uid: string;
+        name: string;
+        finished: Promise<true>;
+    }
+}
+declare module "core/b64img" {
+    import type { Branded } from "utils/types";
+    export type Base64Image = Branded<string, 'Base64Image'>;
 }
 declare module "presets/presets" {
     /**
@@ -428,8 +461,8 @@ declare module "presets/presets" {
      * the LATER type is used to reference types that may or may not be available on users machines, depending
      * on the node suite they have setup
      */
-    import type { LATER } from "back/LATER";
-    import type { WorkflowBuilder } from "core/WorkflowFn";
+    import { Workflow } from "back/FlowRun";
+    import type { LATER } from "back/LATER.foo";
     export type SimplifiedLoraDef = {
         name: CUSHY_RUNTIME.Enum_LoraLoader_lora_name;
         /** defaults to 1 */
@@ -439,9 +472,9 @@ declare module "presets/presets" {
     };
     /** high level library */
     export class Presets {
-        ctx: WorkflowBuilder;
-        constructor(ctx: WorkflowBuilder);
-        prompt: (pos: string, neg: string) => import("global").KSampler;
+        flow: Workflow;
+        constructor(flow: Workflow);
+        prompt: (pos: string, neg: string) => any;
         loadModel: (p: {
             ckptName: CUSHY_RUNTIME.Enum_CheckpointLoader_ckpt_name;
             stop_at_clip_layer?: number;
@@ -484,39 +517,14 @@ declare module "presets/presets" {
             /** defaults to 1 */
             denoise?: number;
         }) => Promise<{
-            ckpt: import("global").CheckpointLoaderSimple;
-            latent: import("global").EmptyLatentImage;
-            positive: import("global").CLIPTextEncode;
-            negative: import("global").CLIPTextEncode;
-            sampler: import("global").KSampler;
-            image: import("global").VAEDecode;
+            ckpt: any;
+            latent: any;
+            positive: any;
+            negative: any;
+            sampler: any;
+            image: any;
         }>;
     }
-}
-declare module "core/WorkflowFn" {
-    import type { LATER } from "back/LATER";
-    import type { Presets } from "presets/presets";
-    import type { Graph } from "core/Graph";
-    import type { Workflow } from "core/Workflow";
-    import type { FlowRun } from "back/FlowRun";
-    export type WorkflowType = (title: string, builder: WorkflowBuilderFn) => Workflow;
-    export type WorkflowBuilder = {
-        graph: CUSHY_RUNTIME.ComfySetup & Graph;
-        flow: FlowRun;
-        presets: Presets;
-        AUTO: <T>() => T;
-        stage: 'TODO';
-        openpose: 'TODO';
-    };
-    export type WorkflowBuilderFn = (p: WorkflowBuilder) => Promise<any>;
-}
-declare module "back/LATER" {
-    import type * as T from '../global';
-    export type LATER<T> = T extends 'ComfySetup' ? T.ComfySetup : T extends 'LoadImage' ? T.LoadImage : T extends 'Embeddings' ? T.Embeddings : T extends 'Enum_LoraLoader_lora_name' ? T.Enum_LoraLoader_lora_name : T extends 'Enum_CheckpointLoader_ckpt_name' ? T.Enum_CheckpointLoader_ckpt_name : T extends 'Enum_VAELoader_vae_name' ? T.Enum_VAELoader_vae_name : T extends 'HasSingle_CLIP' ? T.HasSingle_CLIP : T extends 'HasSingle_MODEL' ? T.HasSingle_MODEL : T extends 'CLIP' ? T.CLIP : T extends 'MODEL' ? T.MODEL : T extends 'VAE' ? T.VAE : T extends 'CheckpointLoaderSimple' ? T.CheckpointLoaderSimple : any;
-}
-declare module "core/b64img" {
-    import type { Branded } from "utils/types";
-    export type Base64Image = Branded<string, 'Base64Image'>;
 }
 declare module "core/GeneratedImageSummary" {
     import { Tagged } from "utils/types";
@@ -537,7 +545,7 @@ declare module "controls/BUG" {
 declare module "controls/Requestable" {
     import type { ImageInfos } from "core/GeneratedImageSummary";
     import { BUG } from "controls/BUG";
-    export type Requestable =
+    export type Requestable = 
     /** str */
     Requestable_str | Requestable_strOpt
     /** nums */
@@ -644,26 +652,15 @@ declare module "controls/Requestable" {
         choices: string[];
     };
 }
-declare module "controls/ScriptStep_Iface" {
-    /** every ExecutionStep class must implements this interface  */
-    export interface ScriptStep_Iface<Result> {
-        /** uid */
-        uid: string;
-        /** name of the step */
-        name: string;
-        /** promise to await if you need to wait until the step is finished */
-        finished: Promise<Result>;
-    }
-}
 declare module "controls/ScriptStep_prompt" {
-    import type { FlowRun } from "back/FlowRun";
+    import type { Workflow } from "back/FlowRun";
     import type { ComfyPromptJSON } from "types/ComfyPrompt";
     import type { WsMsgExecuted, WsMsgExecuting } from "types/ComfyWsApi";
     import type { ScriptStep_Iface } from "controls/ScriptStep_Iface";
     import { GeneratedImage } from "back/GeneratedImage";
     import { Graph } from "core/Graph";
     export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
-        run: FlowRun;
+        run: Workflow;
         prompt: ComfyPromptJSON;
         private static promptID;
         /** unique step id */
@@ -674,7 +671,7 @@ declare module "controls/ScriptStep_prompt" {
         _graph: Graph;
         /** short-hand getter to access parent client */
         get workspace(): import("back/ServerState").ServerState;
-        constructor(run: FlowRun, prompt: ComfyPromptJSON);
+        constructor(run: Workflow, prompt: ComfyPromptJSON);
         _resolve: (value: this) => void;
         _rejects: (reason: any) => void;
         finished: Promise<this>;
@@ -692,251 +689,6 @@ declare module "controls/ScriptStep_prompt" {
         private _finish;
     }
 }
-declare module "controls/ScriptStep_Init" {
-    import type { ScriptStep_Iface } from "controls/ScriptStep_Iface";
-    export class ScriptStep_Init implements ScriptStep_Iface<true> {
-        uid: string;
-        name: string;
-        finished: Promise<true>;
-    }
-}
-declare module "controls/ScriptStep_ask" {
-    import type { Maybe } from "utils/types";
-    import type { ScriptStep_Iface } from "controls/ScriptStep_Iface";
-    import type { InfoAnswer } from "controls/askv2";
-    import type { Requestable } from "controls/Requestable";
-    export class ScriptStep_ask<const Req extends {
-        [key: string]: Requestable;
-    }> implements ScriptStep_Iface<{
-        [key in keyof Req]: InfoAnswer<Req[key]>;
-    }> {
-        req: Req;
-        uid: string;
-        name: string;
-        constructor(req: Req);
-        locked: boolean;
-        value: Maybe<{
-            [key in keyof Req]: InfoAnswer<Req[key]>;
-        }>;
-        private _resolve;
-        finished: Promise<{
-            [key in keyof Req]: InfoAnswer<Req[key]>;
-        }>;
-        answer: (value: { [key in keyof Req]: InfoAnswer<Req[key]>; }) => void;
-    }
-}
-declare module "types/FlowExecutionStep" {
-    import type { ScriptStep_Init } from "controls/ScriptStep_Init";
-    import type { ScriptStep_ask } from "controls/ScriptStep_ask";
-    import type { PromptExecution } from "controls/ScriptStep_prompt";
-    export type FlowExecutionStep = ScriptStep_Init | PromptExecution | ScriptStep_ask<any>;
-}
-declare module "core/PayloadID" {
-    export type PayloadID = number;
-    export const getPayloadID: () => PayloadID;
-}
-declare module "utils/fs/BrandedPaths" {
-    import type { Branded } from "utils/types";
-    export type RelativePath = Branded<string, 'WorkspaceRelativePath'>;
-    export type AbsolutePath = Branded<string, 'Absolute'>;
-}
-declare module "utils/bang" {
-    /** assertNotNull */
-    export const bang: <T>(x: T | null) => T;
-}
-declare module "back/CushyFile" {
-    import * as vscode from 'vscode';
-    import { AbsolutePath } from "utils/fs/BrandedPaths";
-    import { FlowDefinition } from "back/FlowDefinition";
-    import { ServerState } from "back/ServerState";
-    export type MarkdownTestData = CushyFile | /* TestHeading |*/ FlowDefinition;
-    export const vsTestItemOriginDict: WeakMap<vscode.TestItem, MarkdownTestData>;
-    export type CodeRange = {
-        fromLine: number;
-        fromChar: number;
-        toLine: number;
-        toChar: number;
-    };
-    export class CushyFile {
-        workspace: ServerState;
-        absPath: AbsolutePath;
-        CONTENT: string;
-        workflows: FlowDefinition[];
-        constructor(workspace: ServerState, absPath: AbsolutePath);
-        WorkflowRe: RegExp;
-        extractWorkflows: () => void;
-    }
-}
-declare module "back/transpiler" {
-    export function transpileCode(code: string): Promise<string>;
-}
-declare module "back/FlowDefinition" {
-    import type { RunMode } from "core/Graph";
-    import type { CodeRange, CushyFile } from "back/CushyFile";
-    import { Branded } from "utils/types";
-    export type FlowDefinitionID = Branded<string, 'FlowDefinitionID'>;
-    export const asFlowDefinitionID: (s: string) => FlowDefinitionID;
-    export type FlowRunID = Branded<string, 'FlowRunID'>;
-    export const asFlowRunID: (s: string) => FlowRunID;
-    /**
-     * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
-     * flow = the 'WORFLOW(...)' part of a file
-     * */
-    export class FlowDefinition {
-        file: CushyFile;
-        range: CodeRange;
-        flowName: string;
-        flowID: FlowDefinitionID;
-        constructor(file: CushyFile, range: CodeRange, flowName: string);
-        run: (mode?: RunMode) => Promise<boolean>;
-    }
-}
-declare module "core/WorkspaceHistoryJSON" {
-    import type { MessageFromExtensionToWebview } from "types/MessageFromExtensionToWebview";
-    import type { FolderUID, ImageUID } from "core/GeneratedImageSummary";
-    export type FileMetadata = {
-        [key: string]: any;
-    };
-    export type CushyFolderMetadata = {
-        name?: string;
-        imageUIDs?: ImageUID[];
-    };
-    export type CushyFileMetadata = {
-        star?: number;
-        folder?: FolderUID;
-    };
-    export type CushyDBData = {
-        /** default: 100 */
-        config: {
-            previewSize?: number;
-        };
-        files: {
-            [fileUID: ImageUID]: CushyFileMetadata;
-        };
-        folders: {
-            [folderUId: FolderUID]: CushyFolderMetadata;
-        };
-        msgs: {
-            at: number;
-            msg: MessageFromExtensionToWebview;
-        }[];
-    };
-    export const newWorkspaceHistory: () => CushyDBData;
-}
-declare module "types/MessageFromExtensionToWebview" {
-    import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from "types/ComfyWsApi";
-    import type { PayloadID } from "core/PayloadID";
-    import type { ComfySchemaJSON } from "types/ComfySchemaJSON";
-    import type { ComfyPromptJSON } from "types/ComfyPrompt";
-    import type { EmbeddingName } from "core/Schema";
-    import type { ImageInfos, ImageUID } from "core/GeneratedImageSummary";
-    import type { Requestable } from "controls/Requestable";
-    import type { AbsolutePath } from "utils/fs/BrandedPaths";
-    import type { FlowDefinitionID, FlowRunID } from "back/FlowDefinition";
-    import type { CushyDBData } from "core/WorkspaceHistoryJSON";
-    export type FromWebview_SayReady = {
-        type: 'say-ready';
-        frontID: string;
-    };
-    export type FromWebview_runFlow = {
-        type: 'run-action';
-        flowID: FlowDefinitionID;
-        img?: AbsolutePath;
-    };
-    export type FromWebview_openExternal = {
-        type: 'open-external';
-        uriString: string;
-    };
-    export type FromWebview_sayHello = {
-        type: 'say-hello';
-        message: string;
-    };
-    export type FromWebview_Answer = {
-        type: 'answer';
-        value: any;
-    };
-    export type FromWebview_Image = {
-        type: 'image';
-        base64: string;
-        imageID: ImageUID;
-    };
-    export type FromWebview_reset = {
-        type: 'reset';
-    };
-    export type MessageFromWebviewToExtension = FromWebview_SayReady | FromWebview_runFlow | FromWebview_openExternal | FromWebview_sayHello | FromWebview_Answer | FromWebview_Image | FromWebview_reset;
-    export type MessageFromExtensionToWebview = {
-        uid: PayloadID;
-    } & MessageFromExtensionToWebview_;
-    export type FromExtension_CushyStatus = {
-        type: 'cushy_status';
-        connected: boolean;
-    };
-    export type FromExtension_FlowStart = {
-        type: 'action-start';
-        flowRunID: FlowRunID;
-    };
-    export type FromExtension_FlowCode = {
-        type: 'action-code';
-        flowRunID: FlowRunID;
-        code: string;
-    };
-    export type FromExtension_FlowEnd = {
-        type: 'action-end';
-        flowRunID: FlowRunID;
-        status: 'success' | 'failure';
-        flowID: FlowDefinitionID;
-    };
-    export type FromExtension_Print = {
-        type: 'print';
-        message: string;
-    };
-    export type FromExtension_Schema = {
-        type: 'schema';
-        schema: ComfySchemaJSON;
-        embeddings: EmbeddingName[];
-    };
-    export type FromExtension_Prompt = {
-        type: 'prompt';
-        graph: ComfyPromptJSON;
-    };
-    export type FromExtension_Ls = {
-        type: 'ls';
-        knownFlows: {
-            name: string;
-            id: FlowDefinitionID;
-        }[];
-    };
-    export type FromExtension_Images = {
-        type: 'images';
-        images: ImageInfos[];
-    };
-    export type FromExtension_ShowHtml = {
-        type: 'show-html';
-        content: string;
-        title: string;
-    };
-    export type FromExtension_ask = {
-        type: 'ask';
-        request: {
-            [key: string]: Requestable;
-        };
-    };
-    export type FromExtension_SyncHistory = {
-        type: 'sync-history';
-        history: CushyDBData;
-    };
-    export type MessageFromExtensionToWebview_ =
-    /** wether or not cushy server is connected to at least on ComfyUI server */
-    FromExtension_CushyStatus | FromExtension_SyncHistory | FromExtension_FlowStart | FromExtension_FlowCode | FromExtension_FlowEnd | FromExtension_ask | FromExtension_Print | FromExtension_Schema | FromExtension_Prompt | FromExtension_Ls | WsMsgStatus | WsMsgProgress | WsMsgExecuting | WsMsgCached | WsMsgExecuted | FromExtension_Images | FromExtension_ShowHtml;
-    export const renderMessageFromExtensionAsEmoji: (msg: MessageFromExtensionToWebview) => "✅" | "ℹ️" | "🎬" | "📝" | "🏁" | "📄" | "📡" | "📊" | "📈" | "💾" | "🖼️" | "💬" | "🥶" | "👋" | "📂" | "⏱️" | "❓";
-}
-declare module "typings/sdkTemplate" {
-    export const sdkTemplate: string;
-}
-declare module "utils/extractErrorMessage" {
-    /** Extracts an error message from an exception stuff. */
-    export const extractErrorMessage: (error: any) => string;
-}
 declare module "utils/fs/pathUtils" {
     import type { AbsolutePath, RelativePath } from "utils/fs/BrandedPaths";
     export * as pathe from 'pathe';
@@ -944,205 +696,6 @@ declare module "utils/fs/pathUtils" {
     export const asAbsolutePath: (path: string) => AbsolutePath;
     /** brand a path as a workspace relative pathpath after basic checks */
     export const asRelativePath: (path: string) => RelativePath;
-}
-declare module "utils/stringifyReadable" {
-    export function readableStringify(obj: any, maxLevel?: number, level?: number): string;
-}
-declare module "back/Client" {
-    import type WebSocket from 'ws';
-    import type { ServerState } from "back/ServerState";
-    import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from "types/MessageFromExtensionToWebview";
-    export class CushyClient {
-        serverState: ServerState;
-        ws: WebSocket;
-        clientID: string;
-        constructor(serverState: ServerState, ws: WebSocket);
-        /** wether or not the webview is up and running and react is mounted */
-        ready: boolean;
-        queue: MessageFromExtensionToWebview[];
-        flushQueue: () => void;
-        sendMessage(message: MessageFromExtensionToWebview): void;
-        onMessageFromWebview: (msg: MessageFromWebviewToExtension) => void | Promise<boolean>;
-    }
-}
-declare module "back/ConfigWatcher" {
-    export class ConfigFileWatcher {
-        jsonContent: {
-            'cushystudio.serverHostHTTP'?: string;
-            'cushystudio.serverWSEndoint'?: string;
-        };
-        constructor();
-        startWatching(filePath: string): void;
-        private handleFileChange;
-        private handleFileRemoval;
-    }
-}
-declare module "back/DirWatcher" {
-    import { ServerState } from "back/ServerState";
-    import { CushyFile } from "back/CushyFile";
-    export class TypeScriptFilesMap {
-        serverState: ServerState;
-        extensions: string;
-        filesMap: Map<string, CushyFile>;
-        constructor(serverState: ServerState, extensions?: string);
-        startWatching(dir: string): void;
-        private handleNewFile;
-        private handleFileChange;
-        private handleFileRemoval;
-    }
-}
-declare module "back/RANDOM_IMAGE_URL" {
-    export const RANDOM_IMAGE_URL = "http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output";
-}
-declare module "back/ResilientWebsocket" {
-    import type { Maybe } from "utils/types";
-    import { CloseEvent, Event, MessageEvent, EventListenerOptions } from 'ws';
-    type Message = string | Buffer;
-    export class ResilientWebSocketClient {
-        options: {
-            url: () => string;
-            onMessage: (event: MessageEvent) => void;
-            onConnectOrReconnect: () => void;
-            onClose: () => void;
-        };
-        private url;
-        private currentWS?;
-        private messageBuffer;
-        isOpen: boolean;
-        constructor(options: {
-            url: () => string;
-            onMessage: (event: MessageEvent) => void;
-            onConnectOrReconnect: () => void;
-            onClose: () => void;
-        });
-        reconnectTimeout?: Maybe<NodeJS.Timeout>;
-        updateURL(url: string): void;
-        connect(): void;
-        send(message: Message): void;
-        private flushMessageBuffer;
-        addEventListener<K extends keyof WebSocketEventMap>(type: K, listener: (ev: WebSocketEventMap[K]) => any, options?: EventListenerOptions): void;
-        removeEventListener<K extends keyof WebSocketEventMap>(type: K, listener: (ev: WebSocketEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-    }
-    type WebSocketEventMap = {
-        open: Event;
-        close: CloseEvent;
-        error: Event;
-        message: MessageEvent;
-    };
-}
-declare module "back/server" {
-    import express from 'express';
-    import http from 'http';
-    import { WebSocketServer } from 'ws';
-    import { ServerState } from "back/ServerState";
-    import { AbsolutePath } from "utils/fs/BrandedPaths";
-    export class CushyServer {
-        serverState: ServerState;
-        frontPublicDir?: AbsolutePath | undefined;
-        http: http.Server;
-        app: express.Application;
-        wss: WebSocketServer;
-        port: number;
-        get baseURL(): string;
-        absPathToURL(absPath: AbsolutePath): string;
-        constructor(serverState: ServerState, frontPublicDir?: AbsolutePath | undefined);
-        listen: () => Promise<void>;
-    }
-}
-declare module "back/CushyDB" {
-    import { CushyDBData } from "core/WorkspaceHistoryJSON";
-    import { MessageFromExtensionToWebview } from "types/MessageFromExtensionToWebview";
-    import { ServerState } from "back/ServerState";
-    export class CushyDB {
-        serverState: ServerState;
-        data: CushyDBData;
-        private path;
-        constructor(serverState: ServerState);
-        reset: () => void;
-        recordEvent: (msg: MessageFromExtensionToWebview) => void;
-        private saveTimeout;
-        private scheduleSave;
-    }
-}
-declare module "back/ServerState" {
-    import type { ComfySchemaJSON } from "types/ComfySchemaJSON";
-    import type { Maybe } from "utils/types";
-
-    import { FlowRun } from "back/FlowRun";
-    import { PayloadID } from "core/PayloadID";
-    import { Schema } from "core/Schema";
-    import { ComfyStatus } from "types/ComfyWsApi";
-    import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from "types/MessageFromExtensionToWebview";
-    import { AbsolutePath, RelativePath } from "utils/fs/BrandedPaths";
-    import { CushyClient } from "back/Client";
-    import { ConfigFileWatcher } from "back/ConfigWatcher";
-    import { CushyFile } from "back/CushyFile";
-    import { TypeScriptFilesMap } from "back/DirWatcher";
-    import { FlowDefinition, FlowDefinitionID } from "back/FlowDefinition";
-    import { GeneratedImage } from "back/GeneratedImage";
-    import { ResilientWebSocketClient } from "back/ResilientWebsocket";
-    import { CushyServer } from "back/server";
-    import { CushyDB } from "back/CushyDB";
-    export type CSCriticalError = {
-        title: string;
-        help: string;
-    };
-    export class ServerState {
-        rootPath: AbsolutePath;
-        schema: Schema;
-        /** send by ComfyUI server */
-        comfySessionId: string;
-        activeRun: Maybe<FlowRun>;
-        runs: FlowRun[];
-        cacheFolderPath: AbsolutePath;
-        vscodeSettings: AbsolutePath;
-        comfyJSONPath: AbsolutePath;
-        embeddingsPath: AbsolutePath;
-        comfyTSPath: AbsolutePath;
-        cushyTSPath: AbsolutePath;
-        tsConfigPath: AbsolutePath;
-        /** write a binary file to given absPath */
-        writeBinaryFile(absPath: AbsolutePath, content: Buffer): void;
-        /** read text file, optionally provide a default */
-        readJSON: <T extends unknown>(absPath: AbsolutePath, def?: T | undefined) => T;
-        /** read text file, optionally provide a default */
-        readTextFile: (absPath: AbsolutePath, def: string) => string;
-        writeTextFile(absPath: AbsolutePath, content: string, open?: boolean): void;
-        knownFlows: Map<FlowDefinitionID, FlowDefinition>;
-        knownFiles: Map<AbsolutePath, CushyFile>;
-        /** wrapper around vscode.tests.createTestController so logic is self-contained  */
-        clients: Map<string, CushyClient>;
-        registerClient: (id: string, client: CushyClient) => Map<string, CushyClient>;
-        unregisterClient: (id: string) => boolean;
-        lastMessagesPerType: Map<"status" | "progress" | "executing" | "execution_cached" | "executed" | "cushy_status" | "sync-history" | "flow-start" | "flow-code" | "flow-end" | "ask" | "print" | "schema" | "prompt" | "ls" | "images" | "show-html", MessageFromExtensionToWebview>;
-        persistMessageInHistoryIfNecessary: (message: MessageFromExtensionToWebview) => void;
-        broadCastToAllClients: (message_: MessageFromExtensionToWebview_) => PayloadID;
-        relative: (absolutePath: AbsolutePath) => RelativePath;
-        resolve: (relativePath: RelativePath) => AbsolutePath;
-        server: CushyServer;
-        configWatcher: ConfigFileWatcher;
-        db: CushyDB;
-        constructor(rootPath: AbsolutePath);
-        createTSConfigIfMissing: () => void;
-        restoreSchemaFromCache: () => Schema;
-        tsFilesMap: TypeScriptFilesMap;
-        autoDiscoverEveryWorkflow: () => void;
-        /** will be created only after we've loaded cnfig file
-         * so we don't attempt to connect to some default server */
-        ws: ResilientWebSocketClient;
-        getServerHostHTTP(): string;
-        getWSUrl: () => string;
-        initWebsocket: () => ResilientWebSocketClient;
-        forwardImagesToFrontV2: (images: GeneratedImage[]) => void;
-        onMessage: (e: WS.MessageEvent) => void;
-        /** attempt to convert an url to a Blob */
-        getUrlAsBlob: (url?: string) => Promise<Blob>;
-        CRITICAL_ERROR: Maybe<CSCriticalError>;
-        /** retri e the comfy spec from the schema*/
-        fetchAndUdpateSchema: () => Promise<ComfySchemaJSON>;
-        get schemaStatusEmoji(): "🟢" | "🔴";
-        status: ComfyStatus | null;
-    }
 }
 declare module "back/GeneratedImage" {
     import type { PromptExecution } from "controls/ScriptStep_prompt";
@@ -1169,7 +722,7 @@ declare module "back/GeneratedImage" {
         uid: ImageUID;
         constructor(
         /** the prompt this file has been generated from */
-        prompt: PromptExecution,
+        prompt: PromptExecution, 
         /** image info as returned by Comfy */
         data: ComfyImageInfo);
         /** run an imagemagick convert action */
@@ -1219,22 +772,22 @@ declare module "controls/askv2" {
     import { GeneratedImage } from "back/GeneratedImage";
     export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>;
     export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>;
-    export type InfoAnswer<Req> =
+    export type InfoAnswer<Req> = 
     /** str */
-    Req extends R.Requestable_str ? string : Req extends R.Requestable_strOpt ? Maybe<string> :
+    Req extends R.Requestable_str ? string : Req extends R.Requestable_strOpt ? Maybe<string> : 
     /** nums */
-    Req extends R.Requestable_int ? number : Req extends R.Requestable_intOpt ? Maybe<number> :
+    Req extends R.Requestable_int ? number : Req extends R.Requestable_intOpt ? Maybe<number> : 
     /** bools */
-    Req extends R.Requestable_bool ? boolean : Req extends R.Requestable_boolOpt ? Maybe<boolean> :
+    Req extends R.Requestable_bool ? boolean : Req extends R.Requestable_boolOpt ? Maybe<boolean> : 
     /** embedding */
-    Req extends R.Requestable_embeddings ? Maybe<boolean> :
+    Req extends R.Requestable_embeddings ? Maybe<boolean> : 
     /** loras */
-    Req extends R.Requestable_lora ? SimplifiedLoraDef : Req extends R.Requestable_loras ? SimplifiedLoraDef[] :
+    Req extends R.Requestable_lora ? SimplifiedLoraDef : Req extends R.Requestable_loras ? SimplifiedLoraDef[] : 
     /** painting */
     Req extends R.Requestable_samMaskPoints ? {
         points: SamPointPosStr;
         labels: SamPointLabelsStr;
-    } : Req extends R.Requestable_selectImage ? ImageInfos : Req extends R.Requestable_manualMask ? Base64Image : Req extends R.Requestable_paint ? Base64Image :
+    } : Req extends R.Requestable_selectImage ? ImageInfos : Req extends R.Requestable_manualMask ? Base64Image : Req extends R.Requestable_paint ? Base64Image : 
     /** group */
     Req extends {
         type: 'items';
@@ -1243,7 +796,7 @@ declare module "controls/askv2" {
         };
     } ? {
         [key in keyof Req['items']]: InfoAnswer<Req['items'][key]>;
-    } :
+    } : 
     /** select one */
     Req extends {
         type: 'selectOne';
@@ -1251,7 +804,7 @@ declare module "controls/askv2" {
     } ? (T extends readonly any[] ? T[number] : T) : Req extends {
         type: 'selectOneOrCustom';
         choices: string[];
-    } ? string :
+    } ? string : 
     /** select many */
     Req extends {
         type: 'selectMany';
@@ -1259,7 +812,7 @@ declare module "controls/askv2" {
     } ? (T extends readonly any[] ? T[number][] : T) : Req extends {
         type: 'selectManyOrCustom';
         choices: string[];
-    } ? string[] :
+    } ? string[] : 
     /** array */
     Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] : never;
     export class InfoRequestBuilder {
@@ -1350,6 +903,536 @@ declare module "controls/askv2" {
     export const fakeInfoRequestFn: <const Req extends {
         [key: string]: Requestable;
     }>(req: (q: InfoRequestBuilder) => Req, layout?: 0) => Promise<{ [key in keyof Req]: InfoAnswer<Req[key]>; }>;
+}
+declare module "controls/ScriptStep_ask" {
+    import type { Maybe } from "utils/types";
+    import type { ScriptStep_Iface } from "controls/ScriptStep_Iface";
+    import type { InfoAnswer } from "controls/askv2";
+    import type { Requestable } from "controls/Requestable";
+    export class ScriptStep_ask<const Req extends {
+        [key: string]: Requestable;
+    }> implements ScriptStep_Iface<{
+        [key in keyof Req]: InfoAnswer<Req[key]>;
+    }> {
+        req: Req;
+        uid: string;
+        name: string;
+        constructor(req: Req);
+        locked: boolean;
+        value: Maybe<{
+            [key in keyof Req]: InfoAnswer<Req[key]>;
+        }>;
+        private _resolve;
+        finished: Promise<{
+            [key in keyof Req]: InfoAnswer<Req[key]>;
+        }>;
+        answer: (value: { [key in keyof Req]: InfoAnswer<Req[key]>; }) => void;
+    }
+}
+declare module "types/FlowExecutionStep" {
+    import type { ScriptStep_Init } from "controls/ScriptStep_Init";
+    import type { ScriptStep_ask } from "controls/ScriptStep_ask";
+    import type { PromptExecution } from "controls/ScriptStep_prompt";
+    export type FlowExecutionStep = ScriptStep_Init | PromptExecution | ScriptStep_ask<any>;
+}
+declare module "core/PayloadID" {
+    export type PayloadID = string;
+    export const getPayloadID: () => PayloadID;
+}
+declare module "typings/sdkStubDeps" {
+    export const sdkStubDeps = "\n// ====================================================================================\n// ====================================================================================\ndeclare type STUB = never\n\ndeclare interface Thenable<T> {\n    then<TResult>(onfulfilled?: (value: T) => TResult | Thenable<TResult>, onrejected?: (reason: any) => TResult | Thenable<TResult>): Thenable<TResult>\n    then<TResult>(onfulfilled?: (value: T) => TResult | Thenable<TResult>, onrejected?: (reason: any) => void): Thenable<TResult>\n}\ndeclare type File = STUB\ndeclare type Blob = STUB\ndeclare namespace NodeJS {\n    export type Timeout = STUB\n}\ndeclare type Buffer = never\ndeclare module \"typescript\" {\n    export default STUB\n}\ndeclare namespace ts {\n    export type CallExpression = STUB\n}\ndeclare module \"path\" {}\ndeclare module \"pathe\" {}\ndeclare namespace express {\n    export type Application = STUB\n}\ndeclare module \"express\" {\n    export default STUB\n}\n// http --------------------------\ndeclare module \"http\" {\n    export default STUB\n}\ndeclare namespace http {\n    export type Server = STUB\n}\n// ws --------------------------\ndeclare module \"ws\" {\n    export default STUB\n    export type WebSocketServer = STUB\n    export type CloseEvent = STUB\n    export type Event = STUB\n    export type MessageEvent = STUB\n    export type EventListenerOptions = STUB\n}\ndeclare module \"vscode\" {\n    export type TestRunProfile = STUB\n    export type ExtensionContext = STUB\n    export type OutputChannel = STUB\n    export type Range = STUB\n    export type TestItem = STUB\n    export type TestRun = STUB\n    export type TestRunRequest = STUB\n    export type Uri = STUB\n    export type Webview = STUB\n    export type TextEditorDecorationType = STUB\n    export type TextEditor = STUB\n    export type TextDocumentWillSaveEvent = STUB\n    export type TextDocumentChangeEvent = STUB\n    export type TextDocument = STUB\n    export type DecorationOptions = STUB\n    export type StatusBarItem = STUB\n    export type TestController = STUB\n    export type WorkspaceFolder = STUB\n    export type RelativePattern = STUB\n    export type EventEmitter<T> = STUB\n    export type FileSystemWatcher = STUB\n    export type GlobPattern = STUB\n}\n// ====================================================================================\n// ====================================================================================\n";
+}
+declare module "typings/sdkTemplate" {
+    export const sdkTemplate: string;
+}
+declare module "utils/CodeFormatter" {
+    import type { ServerState } from "back/ServerState";
+    import type { Options } from 'prettier';
+    export class CodePrettier {
+        serverState: ServerState;
+        config: Options;
+        constructor(serverState: ServerState);
+        prettify: (source: string, parser?: string) => Promise<string>;
+    }
+}
+declare module "utils/extractErrorMessage" {
+    /** Extracts an error message from an exception stuff. */
+    export const extractErrorMessage: (error: any) => string;
+}
+declare module "utils/stringifyReadable" {
+    export function readableStringify(obj: any, maxLevel?: number, level?: number): string;
+}
+declare module "back/Client" {
+    import type WebSocket from 'ws';
+    import type { ServerState } from "back/ServerState";
+    import { MessageFromExtensionToWebview, MessageFromWebviewToExtension } from "types/MessageFromExtensionToWebview";
+    export class CushyClient {
+        serverState: ServerState;
+        ws: WebSocket;
+        clientID: string;
+        constructor(serverState: ServerState, ws: WebSocket);
+        /** wether or not the webview is up and running and react is mounted */
+        ready: boolean;
+        queue: MessageFromExtensionToWebview[];
+        flushQueue: () => void;
+        sendMessage(message: MessageFromExtensionToWebview): void;
+        onMessageFromWebview: (msg: MessageFromWebviewToExtension) => void | Promise<boolean>;
+    }
+}
+declare module "back/ConfigWatcher" {
+    export class ConfigFileWatcher {
+        jsonContent: {
+            'cushystudio.serverHostHTTP'?: string;
+            'cushystudio.serverWSEndoint'?: string;
+        };
+        constructor();
+        startWatching(filePath: string): void;
+        private handleFileChange;
+        private handleFileRemoval;
+    }
+}
+declare module "core/WorkspaceHistoryJSON" {
+    import type { MessageFromExtensionToWebview } from "types/MessageFromExtensionToWebview";
+    import type { FolderUID, ImageUID } from "core/GeneratedImageSummary";
+    export type FileMetadata = {
+        [key: string]: any;
+    };
+    export type CushyFolderMetadata = {
+        name?: string;
+        imageUIDs?: ImageUID[];
+    };
+    export type CushyFileMetadata = {
+        star?: number;
+        folder?: FolderUID;
+    };
+    export type CushyDBData = {
+        /** default: 100 */
+        config: {
+            previewSize?: number;
+        };
+        files: {
+            [fileUID: ImageUID]: CushyFileMetadata;
+        };
+        folders: {
+            [folderUId: FolderUID]: CushyFolderMetadata;
+        };
+        msgs: {
+            at: number;
+            msg: MessageFromExtensionToWebview;
+        }[];
+    };
+    export const newWorkspaceHistory: () => CushyDBData;
+}
+declare module "back/CushyDB" {
+    import { CushyDBData } from "core/WorkspaceHistoryJSON";
+    import { MessageFromExtensionToWebview } from "types/MessageFromExtensionToWebview";
+    import { ServerState } from "back/ServerState";
+    export class CushyDB {
+        serverState: ServerState;
+        data: CushyDBData;
+        private path;
+        constructor(serverState: ServerState);
+        reset: () => void;
+        recordEvent: (msg: MessageFromExtensionToWebview) => void;
+        private saveTimeout;
+        private scheduleSave;
+    }
+}
+declare module "back/DirWatcher" {
+    import { ServerState } from "back/ServerState";
+    import { CushyFile } from "back/CushyFile";
+    export class TypeScriptFilesMap {
+        serverState: ServerState;
+        extensions: string;
+        filesMap: Map<string, CushyFile>;
+        constructor(serverState: ServerState, extensions?: string);
+        startWatching(dir: string): void;
+        private handleNewFile;
+        private handleFileChange;
+        private handleFileRemoval;
+    }
+}
+declare module "back/RANDOM_IMAGE_URL" {
+    export const RANDOM_IMAGE_URL = "http://192.168.1.20:8188/view?filename=ComfyUI_01619_.png&subfolder=&type=output";
+}
+declare module "back/ResilientWebsocket" {
+    import type { Maybe } from "utils/types";
+    import { CloseEvent, Event, MessageEvent, EventListenerOptions } from 'ws';
+    type Message = string | Buffer;
+    export class ResilientWebSocketClient {
+        options: {
+            url: () => string;
+            onMessage: (event: MessageEvent) => void;
+            onConnectOrReconnect: () => void;
+            onClose: () => void;
+        };
+        private url;
+        private currentWS?;
+        private messageBuffer;
+        isOpen: boolean;
+        constructor(options: {
+            url: () => string;
+            onMessage: (event: MessageEvent) => void;
+            onConnectOrReconnect: () => void;
+            onClose: () => void;
+        });
+        reconnectTimeout?: Maybe<NodeJS.Timeout>;
+        updateURL(url: string): void;
+        connect(): void;
+        send(message: Message): void;
+        private flushMessageBuffer;
+        addEventListener<K extends keyof WebSocketEventMap>(type: K, listener: (ev: WebSocketEventMap[K]) => any, options?: EventListenerOptions): void;
+        removeEventListener<K extends keyof WebSocketEventMap>(type: K, listener: (ev: WebSocketEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+    }
+    type WebSocketEventMap = {
+        open: Event;
+        close: CloseEvent;
+        error: Event;
+        message: MessageEvent;
+    };
+}
+declare module "back/server" {
+    import express from 'express';
+    import http from 'http';
+    import { WebSocketServer } from 'ws';
+    import { ServerState } from "back/ServerState";
+    import { AbsolutePath } from "utils/fs/BrandedPaths";
+    export class CushyServer {
+        serverState: ServerState;
+        frontPublicDir?: AbsolutePath | undefined;
+        http: http.Server;
+        app: express.Application;
+        wss: WebSocketServer;
+        port: number;
+        get baseURL(): string;
+        absPathToURL(absPath: AbsolutePath): string;
+        constructor(serverState: ServerState, frontPublicDir?: AbsolutePath | undefined);
+        listen: () => Promise<void>;
+    }
+}
+declare module "back/ServerState" {
+    import type { ComfySchemaJSON } from "types/ComfySchemaJSON";
+    import type { Maybe } from "utils/types";
+    
+    import { Workflow } from "back/FlowRun";
+    import { PayloadID } from "core/PayloadID";
+    import { Schema } from "core/Schema";
+    import { ComfyStatus } from "types/ComfyWsApi";
+    import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from "types/MessageFromExtensionToWebview";
+    import { CodePrettier } from "utils/CodeFormatter";
+    import { AbsolutePath, RelativePath } from "utils/fs/BrandedPaths";
+    import { CushyClient } from "back/Client";
+    import { ConfigFileWatcher } from "back/ConfigWatcher";
+    import { CushyDB } from "back/CushyDB";
+    import { CushyFile } from "back/CushyFile";
+    import { TypeScriptFilesMap } from "back/DirWatcher";
+    import { ActionDefinition, ActionDefinitionID } from "back/ActionDefinition";
+    import { GeneratedImage } from "back/GeneratedImage";
+    import { ResilientWebSocketClient } from "back/ResilientWebsocket";
+    import { CushyServer } from "back/server";
+    import { FlowID } from "front/FrontFlow";
+    export type CSCriticalError = {
+        title: string;
+        help: string;
+    };
+    export class ServerState {
+        /** path of the workspace */
+        rootPath: AbsolutePath;
+        opts: {
+            /**
+             * if set, no stub will be generated
+             * if unset, will generate self-contained stubs
+             * */
+            cushySrcPathPrefix?: string;
+            /**
+             * true in prod, false when running from this local subfolder
+             * */
+            genTsConfig: boolean;
+        };
+        schema: Schema;
+        /** send by ComfyUI server */
+        comfySessionId: string;
+        activeFlow: Maybe<Workflow>;
+        runs: Workflow[];
+        cacheFolderPath: AbsolutePath;
+        vscodeSettings: AbsolutePath;
+        comfyJSONPath: AbsolutePath;
+        embeddingsPath: AbsolutePath;
+        nodesTSPath: AbsolutePath;
+        cushyTSPath: AbsolutePath;
+        tsConfigPath: AbsolutePath;
+        outputFolderPath: AbsolutePath;
+        /** notify front of all new actions */
+        allActionsRefs: () => MessageFromExtensionToWebview & {
+            type: 'ls';
+        };
+        broadcastNewActionList: () => void;
+        /** write a binary file to given absPath */
+        writeBinaryFile(absPath: AbsolutePath, content: Buffer): void;
+        /** read text file, optionally provide a default */
+        readJSON: <T extends unknown>(absPath: AbsolutePath, def?: T | undefined) => T;
+        /** read text file, optionally provide a default */
+        readTextFile: (absPath: AbsolutePath, def: string) => string;
+        writeTextFile(absPath: AbsolutePath, content: string, open?: boolean): void;
+        flows: Map<FlowID, Workflow>;
+        getOrCreateFlow: (flowID: FlowID) => Workflow;
+        knownActions: Map<ActionDefinitionID, ActionDefinition>;
+        knownFiles: Map<AbsolutePath, CushyFile>;
+        /** wrapper around vscode.tests.createTestController so logic is self-contained  */
+        clients: Map<string, CushyClient>;
+        registerClient: (id: string, client: CushyClient) => Map<string, CushyClient>;
+        unregisterClient: (id: string) => boolean;
+        lastMessagesPerType: Map<"status" | "progress" | "executing" | "execution_cached" | "executed" | "cushy_status" | "sync-history" | "action-start" | "action-code" | "action-end" | "ask" | "print" | "schema" | "prompt" | "ls" | "images" | "show-html", MessageFromExtensionToWebview>;
+        persistMessageInHistoryIfNecessary: (message: MessageFromExtensionToWebview) => void;
+        broadCastToAllClients: (message_: MessageFromExtensionToWebview_) => PayloadID;
+        relative: (absolutePath: AbsolutePath) => RelativePath;
+        resolveFromRoot: (relativePath: RelativePath) => AbsolutePath;
+        resolve: (from: AbsolutePath, relativePath: RelativePath) => AbsolutePath;
+        configWatcher: ConfigFileWatcher;
+        codePrettier: CodePrettier;
+        server: CushyServer;
+        db: CushyDB;
+        constructor(
+        /** path of the workspace */
+        rootPath: AbsolutePath, opts: {
+            /**
+             * if set, no stub will be generated
+             * if unset, will generate self-contained stubs
+             * */
+            cushySrcPathPrefix?: string;
+            /**
+             * true in prod, false when running from this local subfolder
+             * */
+            genTsConfig: boolean;
+        });
+        createTSConfigIfMissing: () => void;
+        restoreSchemaFromCache: () => Schema;
+        tsFilesMap: TypeScriptFilesMap;
+        autoDiscoverEveryWorkflow: () => void;
+        /** will be created only after we've loaded cnfig file
+         * so we don't attempt to connect to some default server */
+        ws: ResilientWebSocketClient;
+        getServerHostHTTP(): string;
+        getWSUrl: () => string;
+        initWebsocket: () => ResilientWebSocketClient;
+        forwardImagesToFrontV2: (images: GeneratedImage[]) => void;
+        onMessage: (e: WS.MessageEvent) => void;
+        /** attempt to convert an url to a Blob */
+        getUrlAsBlob: (url?: string) => Promise<Blob>;
+        CRITICAL_ERROR: Maybe<CSCriticalError>;
+        /** retri e the comfy spec from the schema*/
+        fetchAndUdpateSchema: () => Promise<ComfySchemaJSON>;
+        get schemaStatusEmoji(): "🟢" | "🔴";
+        status: ComfyStatus | null;
+    }
+}
+declare module "back/CushyFile" {
+    import * as vscode from 'vscode';
+    import { AbsolutePath } from "utils/fs/BrandedPaths";
+    import { ActionDefinition } from "back/ActionDefinition";
+    import { ServerState } from "back/ServerState";
+    export type MarkdownTestData = CushyFile | /* TestHeading |*/ ActionDefinition;
+    export const vsTestItemOriginDict: WeakMap<vscode.TestItem, MarkdownTestData>;
+    export type CodeRange = {
+        fromLine: number;
+        fromChar: number;
+        toLine: number;
+        toChar: number;
+    };
+    export class CushyFile {
+        workspace: ServerState;
+        absPath: AbsolutePath;
+        CONTENT: string;
+        workflows: ActionDefinition[];
+        constructor(workspace: ServerState, absPath: AbsolutePath);
+        WorkflowRe: RegExp;
+        extractWorkflows: () => void;
+    }
+}
+declare module "back/transpiler" {
+    export function transpileCode(code: string): Promise<string>;
+}
+declare module "back/ActionDefinition" {
+    import type { CodeRange, CushyFile } from "back/CushyFile";
+    import type { Branded } from "utils/types";
+    export type ActionDefinitionID = Branded<string, 'FlowDefinitionID'>;
+    export const asFlowDefinitionID: (s: string) => ActionDefinitionID;
+    export type ActionRunID = Branded<string, 'ActionRunID'>;
+    export const asActionRunID: (s: string) => ActionRunID;
+    /**
+     * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
+     * flow = the 'WORFLOW(...)' part of a file
+     * */
+    export class ActionDefinition {
+        file: CushyFile;
+        range: CodeRange;
+        name: string;
+        uid: ActionDefinitionID;
+        constructor(file: CushyFile, range: CodeRange, name: string);
+        getCodeJS: () => Promise<string>;
+    }
+}
+declare module "core/KnownWorkflow" {
+    import type { ActionDefinitionID } from "back/ActionDefinition";
+    export type ActionRef = {
+        name: string;
+        id: ActionDefinitionID;
+    };
+}
+declare module "types/MessageFromExtensionToWebview" {
+    import type { ActionDefinitionID, ActionRunID } from "back/ActionDefinition";
+    import type { Requestable } from "controls/Requestable";
+    import type { ImageInfos, ImageUID } from "core/GeneratedImageSummary";
+    import type { ActionRef } from "core/KnownWorkflow";
+    import type { EmbeddingName } from "core/Schema";
+    import type { CushyDBData } from "core/WorkspaceHistoryJSON";
+    import type { FlowID } from "front/FrontFlow";
+    import type { PayloadID } from "core/PayloadID";
+    import type { ComfyPromptJSON } from "types/ComfyPrompt";
+    import type { ComfySchemaJSON } from "types/ComfySchemaJSON";
+    import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from "types/ComfyWsApi";
+    export type FromWebview_SayReady = {
+        type: 'say-ready';
+        frontID: string;
+    };
+    export type FromWebview_runAction = {
+        type: 'run-action';
+        flowID: FlowID;
+        actionID: ActionDefinitionID;
+    };
+    export type FromWebview_openExternal = {
+        type: 'open-external';
+        uriString: string;
+    };
+    export type FromWebview_Answer = {
+        type: 'answer';
+        value: any;
+    };
+    export type FromWebview_Image = {
+        type: 'image';
+        base64: string;
+        imageID: ImageUID;
+    };
+    export type FromWebview_reset = {
+        type: 'reset';
+    };
+    export type MessageFromWebviewToExtension = FromWebview_SayReady | FromWebview_runAction | FromWebview_openExternal | FromWebview_Answer | FromWebview_Image | FromWebview_reset;
+    export type MessageFromExtensionToWebview = {
+        uid: PayloadID;
+    } & MessageFromExtensionToWebview_;
+    export type FromExtension_CushyStatus = {
+        type: 'cushy_status';
+        connected: boolean;
+    };
+    export type FromExtension_ActionStart = {
+        type: 'action-start';
+        flowRunID: ActionRunID;
+    };
+    export type FromExtension_ActionCode = {
+        type: 'action-code';
+        flowRunID: ActionRunID;
+        code: string;
+    };
+    export type FromExtension_ActionEnd = {
+        type: 'action-end';
+        status: 'success' | 'failure';
+        flowID: FlowID;
+        actionID: ActionDefinitionID;
+        executionID: ActionRunID;
+    };
+    export type FromExtension_Print = {
+        type: 'print';
+        message: string;
+    };
+    export type FromExtension_Schema = {
+        type: 'schema';
+        schema: ComfySchemaJSON;
+        embeddings: EmbeddingName[];
+    };
+    export type FromExtension_Prompt = {
+        type: 'prompt';
+        graph: ComfyPromptJSON;
+    };
+    export type FromExtension_Ls = {
+        type: 'ls';
+        actions: ActionRef[];
+    };
+    export type FromExtension_Images = {
+        type: 'images';
+        images: ImageInfos[];
+    };
+    export type FromExtension_ShowHtml = {
+        type: 'show-html';
+        content: string;
+        title: string;
+    };
+    export type FromExtension_ask = {
+        type: 'ask';
+        request: {
+            [key: string]: Requestable;
+        };
+    };
+    export type FromExtension_SyncHistory = {
+        type: 'sync-history';
+        history: CushyDBData;
+    };
+    export type MessageFromExtensionToWebview_ = 
+    /** wether or not cushy server is connected to at least on ComfyUI server */
+    FromExtension_CushyStatus | FromExtension_SyncHistory | FromExtension_ActionStart | FromExtension_ActionCode | FromExtension_ActionEnd | FromExtension_ask | FromExtension_Print | FromExtension_Schema | FromExtension_Prompt | FromExtension_Ls | WsMsgStatus | WsMsgProgress | WsMsgExecuting | WsMsgCached | WsMsgExecuted | FromExtension_Images | FromExtension_ShowHtml;
+    export const renderMessageFromExtensionAsEmoji: (msg: MessageFromExtensionToWebview) => "✅" | "ℹ️" | "🎬" | "📝" | "🏁" | "📄" | "📡" | "📊" | "📈" | "💾" | "🖼️" | "💬" | "🥶" | "👋" | "📂" | "⏱️" | "❓";
+}
+declare module "front/FrontFlow" {
+    import type { Branded } from "utils/types";
+    import { FromExtension_Print } from "types/MessageFromExtensionToWebview";
+    export type FlowID = Branded<string, 'FlowID'>;
+    export const asFlowID: (s: string) => FlowID;
+    export class FrontFlow {
+        id: FlowID;
+        constructor(id?: FlowID);
+        history: FromExtension_Print[];
+    }
+}
+declare module "core/Requirement" {
+    import { LATER } from "back/LATER.foo";
+    import type { Workflow } from "back/FlowRun";
+    /** quick function to help build actions in a type-safe way */
+    export const action: <const T extends Requirements>(name: string, t: Omit<Action<T>, "name">) => Action<T>;
+    export type ActionType = <const T extends Requirements>(name: string, t: Omit<Action<T>, 'name'>) => Action<T>;
+    export type Action<Reqs extends Requirements> = {
+        /** action name; default to unnamed_action_<nanoid()> */
+        name: string;
+        /** help text to show user */
+        help?: string;
+        requirement?: (builder: ReqBuilder) => Reqs;
+        /** the code to run */
+        run: (f: Workflow, r: Resolved<Reqs>) => void | Promise<void>;
+        /** next actions to suggest user */
+        next?: string[];
+    };
+    /** a set of requirements your action expect to be runnable */
+    export type Requirements = {
+        [name: string]: Requirement;
+    };
+    /** a single requirement */
+    export type Requirement<T = any> = {
+        type: string;
+        tag?: string | string[];
+        findOrCreate?: (flow: Workflow) => T;
+        /** if specified, Cushy will check if missing requirements can be created to
+         * know if it shoul suggest this flow or not
+         */
+        syncCheckIfCreationIsPossible?: () => boolean;
+        creationLogic?: () => T;
+    };
+    type Requirable_ = CUSHY_RUNTIME.Requirable;
+    export type ReqBuilder = {
+        [k in keyof Requirable_]: (req?: Omit<Requirement<Requirable_[k]>, 'type'>) => Requirement<Requirable_[k]>;
+    };
+    export type Resolved<Reqs extends {
+        [name: string]: Requirement;
+    }> = {
+        [K in keyof Reqs]: Reqs[K] extends Requirement<infer T> ? () => T : never;
+    };
 }
 declare module "core/AutolayoutV2" {
     import type { Graph } from "core/Graph";
@@ -1669,12 +1752,23 @@ declare module "wildcards/wildcards" {
     export const wildcards: Wildcards;
 }
 declare module "ffmpeg/ffmpegScripts" {
-    export function createMP4FromImages(imageFiles: string[], outputVideo: string,
+    export function createMP4FromImages(imageFiles: string[], outputVideo: string, 
     /** The duration each image should be displayed, in milliseconds */
     frameDuration: number | undefined, workingDirectory: string): Promise<void>;
 }
+declare module "back/NodeBuilder" {
+    import type { Workflow } from "back/FlowRun";
+    import type { LATER } from "back/LATER.foo";
+    export interface NodeBuilder extends CUSHY_RUNTIME.ComfySetup {
+    }
+    export class NodeBuilder {
+        flow: Workflow;
+        constructor(flow: Workflow);
+    }
+}
 declare module "back/FlowRun" {
-    import type { LATER } from "back/LATER";
+    import type { LATER } from "back/LATER.foo";
+    import type { FlowID } from "front/FrontFlow";
     import * as path from 'path';
     import { InfoRequestFn } from "controls/askv2";
     import { PromptExecution } from "controls/ScriptStep_prompt";
@@ -1687,19 +1781,30 @@ declare module "back/FlowRun" {
     import { HTMLContent, MDContent } from "utils/markdown";
     import { GeneratedImage } from "back/GeneratedImage";
     import { ServerState } from "back/ServerState";
+    import { NodeBuilder } from "back/NodeBuilder";
+    import { ActionDefinition } from "back/ActionDefinition";
+    import { Presets } from "presets/presets";
     /** script exeuction instance */
-    export class FlowRun {
+    export class Workflow {
         workspace: ServerState;
-        fileAbsPath: AbsolutePath;
-        opts?: {
-            mock?: boolean | undefined;
-        } | undefined;
+        /** unique run id, gener */
+        uid: FlowID;
+        constructor(workspace: ServerState, // public fileAbsPath: AbsolutePath, // public opts?: { mock?: boolean },
+        /** unique run id, gener */
+        uid: FlowID);
         /** creation "timestamp" in YYYYMMDDHHMMSS format */
         createdAt: string;
-        /** unique run id */
-        uid: string;
+        presets: Presets;
         /** human readable folder name */
         name: string;
+        /** list all actions ; codegen during dev-time */
+        actions: any;
+        AUTO: <T>() => T;
+        runAction: (actionDef: ActionDefinition) => Promise<boolean>;
+        /** x:string */
+        find: (foo: string) => void;
+        /** toolkit to build new graph nodes */
+        nodes: NodeBuilder;
         /** the main graph that will be updated along the script execution */
         graph: Graph;
         /** graph engine instance for smooth and clever auto-layout algorithms */
@@ -1762,9 +1867,6 @@ declare module "back/FlowRun" {
         PROMPT(): Promise<PromptExecution>;
         private _promptCounter;
         private sendPromp;
-        constructor(workspace: ServerState, fileAbsPath: AbsolutePath, opts?: {
-            mock?: boolean | undefined;
-        } | undefined);
         steps: FlowExecutionStep[];
         /** current step */
         get step(): FlowExecutionStep;
@@ -1773,9 +1875,8 @@ declare module "back/FlowRun" {
     }
 }
 declare module "typings/sdkEntrypoint" {
-    export type { FlowRun } from "back/FlowRun";
-    export type { Workflow } from "core/Workflow";
+    export type { Workflow as FlowRun } from "back/FlowRun";
     export type { Graph } from "core/Graph";
-    export type { WorkflowBuilder, WorkflowBuilderFn } from "core/WorkflowFn";
+    export type { ActionType } from "core/Requirement";
 }
 `

@@ -4,8 +4,8 @@
  * on the node suite they have setup
  */
 
-import { FlowRun } from 'src/back/FlowRun'
-import type { LATER } from 'src/back/LATER'
+import { Workflow } from 'src/back/FlowRun'
+import type { LATER } from 'LATER'
 // import type { WorkflowBuilder } from 'src/core/WorkflowFn'
 
 export type SimplifiedLoraDef = {
@@ -18,7 +18,7 @@ export type SimplifiedLoraDef = {
 
 /** high level library */
 export class Presets {
-    constructor(public flow: FlowRun) {}
+    constructor(public flow: Workflow) {}
 
     prompt = (pos: string, neg: string) => {
         // const { graph, flow, AUTO } = this.ctx

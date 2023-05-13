@@ -5526,11 +5526,11 @@ declare global {
         ASCII_2: Slot<'ASCII', 2>
     }
     export type WASCacheNode_input = {
-        /** default="54243658_cache" */
+        /** default="6677087_cache" */
         latent_suffix?: _STRING
-        /** default="85240293_cache" */
+        /** default="6457731_cache" */
         image_suffix?: _STRING
-        /** default="11917996_cache" */
+        /** default="28613382_cache" */
         conditioning_suffix?: _STRING
         latent?: _LATENT
         image?: _IMAGE

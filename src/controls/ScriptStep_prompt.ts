@@ -1,4 +1,4 @@
-import type { FlowRun } from '../back/FlowRun'
+import type { Workflow } from '../back/FlowRun'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { WsMsgExecuted, WsMsgExecuting } from '../types/ComfyWsApi'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
@@ -28,7 +28,7 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
 
     constructor(
         //
-        public run: FlowRun,
+        public run: Workflow,
         public prompt: ComfyPromptJSON,
     ) {
         this._graph = new Graph(
