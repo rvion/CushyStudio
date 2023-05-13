@@ -1,7 +1,7 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Button, IconButton, SelectPicker } from 'rsuite'
-import { useSt } from '../front/stContext'
+import { useSt } from '../front/FrontStateCtx'
 
 export const ActionPickerUI = observer(function WorkflowPickerUI_() {
     const st = useSt()
@@ -25,7 +25,7 @@ export const ActionPickerUI = observer(function WorkflowPickerUI_() {
                     icon={<I.PlayOutline />}
                     onClick={() => {
                         if (st.selectedWorkflowID == null) return
-                        st.sendMessageToExtension({ type: 'run-flow', flowID: st.selectedWorkflowID })
+                        st.sendMessageToExtension({ type: 'run-action', flowID: st.selectedWorkflowID })
                     }}
                 />
             </div>
@@ -37,7 +37,7 @@ export const ActionPickerUI = observer(function WorkflowPickerUI_() {
                             appearance='ghost'
                             onClick={() => {
                                 st.selectedWorkflowID = a.value
-                                st.sendMessageToExtension({ type: 'run-flow', flowID: st.selectedWorkflowID })
+                                st.sendMessageToExtension({ type: 'run-action', flowID: st.selectedWorkflowID })
                             }}
                         >
                             <div>{a.label}</div>

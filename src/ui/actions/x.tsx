@@ -1,7 +1,7 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Button, Nav } from 'rsuite'
-import { useSt } from '../../front/stContext'
+import { useSt } from '../../front/FrontStateCtx'
 
 export const FooUI = observer(function FooUI_(p: {}) {
     const st = useSt()

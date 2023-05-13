@@ -1,7 +1,7 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Button, Message, Panel } from 'rsuite'
-import { useSt } from '../front/stContext'
+import { useSt } from '../front/FrontStateCtx'
 import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
 
 export const ShowFlowEndUI = observer(function ShowFlowEndUI_(p: {
@@ -22,7 +22,7 @@ export const ShowFlowEndUI = observer(function ShowFlowEndUI_(p: {
                             // appearance='primary'
                             size='sm'
                             onClick={() => {
-                                st.sendMessageToExtension({ type: 'run-flow', flowID: msg.flowID })
+                                st.sendMessageToExtension({ type: 'run-action', flowID: msg.flowID })
                             }}
                         >
                             Run Again

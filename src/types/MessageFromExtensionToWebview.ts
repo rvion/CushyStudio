@@ -18,7 +18,7 @@ import { exhaust } from '../utils/ComfyUtils'
 // sent when the webpage is loaded
 export type FromWebview_SayReady = { type: 'say-ready'; frontID: string }
 // request to run a flow
-export type FromWebview_runFlow = { type: 'run-flow'; flowID: ActionDefinitionID; img?: AbsolutePath }
+export type FromWebview_runAction = { type: 'run-action'; flowID: ActionDefinitionID; img?: AbsolutePath }
 // request to open an external URL
 export type FromWebview_openExternal = { type: 'open-external'; uriString: string }
 // answer a data request in the middle of a flow
@@ -30,7 +30,7 @@ export type FromWebview_reset = { type: 'reset' }
 
 export type MessageFromWebviewToExtension =
     | FromWebview_SayReady // report ready
-    | FromWebview_runFlow // run
+    | FromWebview_runAction // run
     | FromWebview_openExternal
     | FromWebview_Answer // user interractions
     | FromWebview_Image

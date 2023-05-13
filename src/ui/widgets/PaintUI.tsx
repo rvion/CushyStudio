@@ -1,7 +1,7 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo, useRef } from 'react'
-import { useSt } from '../../front/stContext'
+import { useSt } from '../../front/FrontStateCtx'
 import { Button, Panel } from 'rsuite'
 import { FrontState } from 'src/front/FrontState'
 

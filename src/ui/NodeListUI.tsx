@@ -4,7 +4,7 @@ import { Graph } from '../core/Graph'
 import { ComfyNode } from '../core/Node'
 import { ComfyNodeSchema } from '../core/Schema'
 import { NodeRefUI } from './NodeRefUI'
-import { useSt } from '../front/stContext'
+import { useSt } from '../front/FrontStateCtx'
 
 export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
     //

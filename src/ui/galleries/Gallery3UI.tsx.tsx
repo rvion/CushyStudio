@@ -1,6 +1,6 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Maybe } from 'src/utils/types'
-import { useSt } from '../../front/stContext'
+import { useSt } from '../../front/FrontStateCtx'
 import { useMemo } from 'react'
 import { LightBoxState, LightBoxUI } from '../LightBox'
 import { Button, Nav } from 'rsuite'

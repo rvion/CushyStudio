@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../front/stContext'
+import { useSt } from '../front/FrontStateCtx'
 import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
 import { ComfyNodeUI } from './NodeListUI'
 

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ImageInfos } from 'src/core/GeneratedImageSummary'
-import { useSt } from '../../front/stContext'
+import { useSt } from '../../front/FrontStateCtx'
 import { ItemTypes } from './ItemTypes'
 import { useDrag } from 'react-dnd'
 

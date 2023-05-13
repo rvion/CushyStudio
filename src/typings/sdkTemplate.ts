@@ -839,7 +839,7 @@ declare module "types/MessageFromExtensionToWebview" {
         frontID: string;
     };
     export type FromWebview_runFlow = {
-        type: 'run-flow';
+        type: 'run-action';
         flowID: FlowDefinitionID;
         img?: AbsolutePath;
     };

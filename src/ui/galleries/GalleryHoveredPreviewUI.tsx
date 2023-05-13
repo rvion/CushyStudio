@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../../front/stContext'
+import { useSt } from '../../front/FrontStateCtx'
 
 export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
     const st = useSt()

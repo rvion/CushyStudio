@@ -7,7 +7,7 @@ import { WebviewUI } from './WebviewUI'
 import { CustomProvider } from 'rsuite'
 import { useMemo } from 'react'
 import { FrontState } from '../front/FrontState'
-import { stContext } from '../front/stContext'
+import { stContext } from '../front/FrontStateCtx'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'
 

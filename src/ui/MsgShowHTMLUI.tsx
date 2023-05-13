@@ -1,5 +1,5 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { useSt } from '../front/stContext'
+import { useSt } from '../front/FrontStateCtx'
 import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
 import { Panel } from 'rsuite'
 import { useLayoutEffect, useRef } from 'react'

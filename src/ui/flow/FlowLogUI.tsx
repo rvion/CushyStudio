@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../../front/stContext'
+import { useSt } from '../../front/FrontStateCtx'
 import { ActionPickerUI } from '../ActionPickerUI'
 
 export const FlowLogUI = observer(function FlowLogUI_(p: {}) {

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Button } from 'rsuite'
-import { useSt } from '../../front/stContext'
+import { useSt } from '../../front/FrontStateCtx'
 import { GalleryFolderUI } from './GalleryFolderUI'
 import { GalleryImageUI } from './GalleryImageUI'
 
@@ -26,7 +26,7 @@ export const Gallery2UI = observer(function Gallery2UI_(p: {}) {
     )
 })
 
-export const Gallery2HUI = observer(function Gallery2UI_(p: {}) {
+export const VerticalGalleryUI = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
 
     return (
