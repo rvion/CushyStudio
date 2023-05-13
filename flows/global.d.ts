@@ -2,9 +2,9 @@ import type { ComfyNode } from '../src/core/Node'
 import type { Slot } from '../src/core/Slot'
 import type { ComfyNodeSchemaJSON } from '../src/types/ComfySchemaJSON'
 import type { ComfyNodeUID } from '../src/types/NodeUID'
-import type { WorkflowType } from '../src/core/WorkflowFn'
+import type { ActionType } from '../src/core/Requirement'
 declare global {
-    const WORKFLOW: WorkflowType
+    const action: ActionType
 
     // Entrypoint --------------------------
     export interface ComfySetup {
@@ -5525,11 +5525,11 @@ declare global {
         ASCII_2: Slot<'ASCII', 2>
     }
     export type WASCacheNode_input = {
-        /** default="72479479_cache" */
+        /** default="98956358_cache" */
         latent_suffix?: _STRING
-        /** default="95646616_cache" */
+        /** default="10897540_cache" */
         image_suffix?: _STRING
-        /** default="81785927_cache" */
+        /** default="92802768_cache" */
         conditioning_suffix?: _STRING
         latent?: _LATENT
         image?: _IMAGE

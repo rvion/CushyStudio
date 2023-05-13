@@ -5,13 +5,14 @@ import type { FlowRun } from 'src/back/FlowRun'
 /** quick function to help build actions in a type-safe way */
 
 export const action = <const T extends Requirements>(t: Action<T>): Action<T> => t
+export type ActionType = <const T extends Requirements>(t: Action<T>) => Action<T>
 
 export type Action<Reqs extends Requirements> = {
-    /** action name */
-    name: string
+    /** action name; default to unnamed_action_<nanoid()> */
+    name?: string
     /** help text to show user */
     help?: string
-    requirement: (builder: ReqBuilder) => Reqs
+    requirement?: (builder: ReqBuilder) => Reqs
     /** the code to run */
     run: (f: FlowRun, r: Resolved<Reqs>) => void | Promise<void>
     /** next actions to suggest user */
