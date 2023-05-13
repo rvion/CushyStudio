@@ -122,7 +122,7 @@ export class ServerState {
     lastMessagesPerType = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
 
     persistMessageInHistoryIfNecessary = (message: MessageFromExtensionToWebview) => {
-        if (message.type === 'flow-start') this.db.recordEvent(message)
+        if (message.type === 'action-start') this.db.recordEvent(message)
         if (message.type === 'images') this.db.recordEvent(message)
         if (message.type === 'print') this.db.recordEvent(message)
         if (message.type === 'prompt') this.db.recordEvent(message)

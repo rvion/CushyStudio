@@ -72,11 +72,6 @@ export class CushyClient {
         // const command = smg.command
         // const text = smg.text
 
-        if (msg.type === 'say-hello') {
-            console.log(`🛋️ ${msg.message}`)
-            return
-        }
-
         if (msg.type === 'image') {
             // save base64 image
             // console.log('🔴', msg.base64.slice(0, 100))

@@ -90,7 +90,7 @@ declare module "ui/VisUI" {
     export type VisOptions = any;
 }
 declare module "core/AutolayoutV1" {
-    
+
     import { Graph } from "core/Graph";
     import { ComfyNode } from "core/Node";
     export class Cyto {
@@ -133,7 +133,7 @@ declare module "types/ComfySchemaJSON" {
         category: string;
     };
     export type ComfyInputSpec = [ComfyInputType] | [ComfyInputType, ComfyInputOpts];
-    export type ComfyInputType = 
+    export type ComfyInputType =
     /** node name or primitive */
     string
     /** enum */
@@ -537,7 +537,7 @@ declare module "controls/BUG" {
 declare module "controls/Requestable" {
     import type { ImageInfos } from "core/GeneratedImageSummary";
     import { BUG } from "controls/BUG";
-    export type Requestable = 
+    export type Requestable =
     /** str */
     Requestable_str | Requestable_strOpt
     /** nums */
@@ -872,16 +872,16 @@ declare module "types/MessageFromExtensionToWebview" {
         connected: boolean;
     };
     export type FromExtension_FlowStart = {
-        type: 'flow-start';
+        type: 'action-start';
         flowRunID: FlowRunID;
     };
     export type FromExtension_FlowCode = {
-        type: 'flow-code';
+        type: 'action-code';
         flowRunID: FlowRunID;
         code: string;
     };
     export type FromExtension_FlowEnd = {
-        type: 'flow-end';
+        type: 'action-end';
         flowRunID: FlowRunID;
         status: 'success' | 'failure';
         flowID: FlowDefinitionID;
@@ -925,7 +925,7 @@ declare module "types/MessageFromExtensionToWebview" {
         type: 'sync-history';
         history: CushyDBData;
     };
-    export type MessageFromExtensionToWebview_ = 
+    export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */
     FromExtension_CushyStatus | FromExtension_SyncHistory | FromExtension_FlowStart | FromExtension_FlowCode | FromExtension_FlowEnd | FromExtension_ask | FromExtension_Print | FromExtension_Schema | FromExtension_Prompt | FromExtension_Ls | WsMsgStatus | WsMsgProgress | WsMsgExecuting | WsMsgCached | WsMsgExecuted | FromExtension_Images | FromExtension_ShowHtml;
     export const renderMessageFromExtensionAsEmoji: (msg: MessageFromExtensionToWebview) => "✅" | "ℹ️" | "🎬" | "📝" | "🏁" | "📄" | "📡" | "📊" | "📈" | "💾" | "🖼️" | "💬" | "🥶" | "👋" | "📂" | "⏱️" | "❓";
@@ -1067,7 +1067,7 @@ declare module "back/CushyDB" {
 declare module "back/ServerState" {
     import type { ComfySchemaJSON } from "types/ComfySchemaJSON";
     import type { Maybe } from "utils/types";
-    
+
     import { FlowRun } from "back/FlowRun";
     import { PayloadID } from "core/PayloadID";
     import { Schema } from "core/Schema";
@@ -1169,7 +1169,7 @@ declare module "back/GeneratedImage" {
         uid: ImageUID;
         constructor(
         /** the prompt this file has been generated from */
-        prompt: PromptExecution, 
+        prompt: PromptExecution,
         /** image info as returned by Comfy */
         data: ComfyImageInfo);
         /** run an imagemagick convert action */
@@ -1219,22 +1219,22 @@ declare module "controls/askv2" {
     import { GeneratedImage } from "back/GeneratedImage";
     export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>;
     export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>;
-    export type InfoAnswer<Req> = 
+    export type InfoAnswer<Req> =
     /** str */
-    Req extends R.Requestable_str ? string : Req extends R.Requestable_strOpt ? Maybe<string> : 
+    Req extends R.Requestable_str ? string : Req extends R.Requestable_strOpt ? Maybe<string> :
     /** nums */
-    Req extends R.Requestable_int ? number : Req extends R.Requestable_intOpt ? Maybe<number> : 
+    Req extends R.Requestable_int ? number : Req extends R.Requestable_intOpt ? Maybe<number> :
     /** bools */
-    Req extends R.Requestable_bool ? boolean : Req extends R.Requestable_boolOpt ? Maybe<boolean> : 
+    Req extends R.Requestable_bool ? boolean : Req extends R.Requestable_boolOpt ? Maybe<boolean> :
     /** embedding */
-    Req extends R.Requestable_embeddings ? Maybe<boolean> : 
+    Req extends R.Requestable_embeddings ? Maybe<boolean> :
     /** loras */
-    Req extends R.Requestable_lora ? SimplifiedLoraDef : Req extends R.Requestable_loras ? SimplifiedLoraDef[] : 
+    Req extends R.Requestable_lora ? SimplifiedLoraDef : Req extends R.Requestable_loras ? SimplifiedLoraDef[] :
     /** painting */
     Req extends R.Requestable_samMaskPoints ? {
         points: SamPointPosStr;
         labels: SamPointLabelsStr;
-    } : Req extends R.Requestable_selectImage ? ImageInfos : Req extends R.Requestable_manualMask ? Base64Image : Req extends R.Requestable_paint ? Base64Image : 
+    } : Req extends R.Requestable_selectImage ? ImageInfos : Req extends R.Requestable_manualMask ? Base64Image : Req extends R.Requestable_paint ? Base64Image :
     /** group */
     Req extends {
         type: 'items';
@@ -1243,7 +1243,7 @@ declare module "controls/askv2" {
         };
     } ? {
         [key in keyof Req['items']]: InfoAnswer<Req['items'][key]>;
-    } : 
+    } :
     /** select one */
     Req extends {
         type: 'selectOne';
@@ -1251,7 +1251,7 @@ declare module "controls/askv2" {
     } ? (T extends readonly any[] ? T[number] : T) : Req extends {
         type: 'selectOneOrCustom';
         choices: string[];
-    } ? string : 
+    } ? string :
     /** select many */
     Req extends {
         type: 'selectMany';
@@ -1259,7 +1259,7 @@ declare module "controls/askv2" {
     } ? (T extends readonly any[] ? T[number][] : T) : Req extends {
         type: 'selectManyOrCustom';
         choices: string[];
-    } ? string[] : 
+    } ? string[] :
     /** array */
     Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] : never;
     export class InfoRequestBuilder {
@@ -1669,7 +1669,7 @@ declare module "wildcards/wildcards" {
     export const wildcards: Wildcards;
 }
 declare module "ffmpeg/ffmpegScripts" {
-    export function createMP4FromImages(imageFiles: string[], outputVideo: string, 
+    export function createMP4FromImages(imageFiles: string[], outputVideo: string,
     /** The duration each image should be displayed, in milliseconds */
     frameDuration: number | undefined, workingDirectory: string): Promise<void>;
 }

@@ -15,18 +15,23 @@ import { exhaust } from '../utils/ComfyUtils'
 // =============================================================================================
 // | FRONT => BACK                                                                             |
 // =============================================================================================
+// sent when the webpage is loaded
 export type FromWebview_SayReady = { type: 'say-ready'; frontID: string }
+// request to run a flow
 export type FromWebview_runFlow = { type: 'run-flow'; flowID: ActionDefinitionID; img?: AbsolutePath }
+// request to open an external URL
 export type FromWebview_openExternal = { type: 'open-external'; uriString: string }
-export type FromWebview_sayHello = { type: 'say-hello'; message: string }
+// answer a data request in the middle of a flow
 export type FromWebview_Answer = { type: 'answer'; value: any }
+// upload an image
 export type FromWebview_Image = { type: 'image'; base64: string; imageID: ImageUID }
+// reset the workspace
 export type FromWebview_reset = { type: 'reset' }
+
 export type MessageFromWebviewToExtension =
     | FromWebview_SayReady // report ready
     | FromWebview_runFlow // run
     | FromWebview_openExternal
-    | FromWebview_sayHello // test messages
     | FromWebview_Answer // user interractions
     | FromWebview_Image
     | FromWebview_reset
@@ -37,14 +42,16 @@ export type MessageFromWebviewToExtension =
 export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExtensionToWebview_
 
 export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boolean }
-export type FromExtension_FlowStart = { type: 'flow-start'; flowRunID: FlowRunID }
-export type FromExtension_FlowCode = { type: 'flow-code'; flowRunID: FlowRunID; code: string }
-export type FromExtension_FlowEnd = {
-    type: 'flow-end'
+
+export type FromExtension_ActionStart = { type: 'action-start'; flowRunID: FlowRunID }
+export type FromExtension_ActionCode = { type: 'action-code'; flowRunID: FlowRunID; code: string }
+export type FromExtension_ActionEnd = {
+    type: 'action-end'
     flowRunID: FlowRunID
     status: 'success' | 'failure'
     flowID: ActionDefinitionID
 }
+
 export type FromExtension_Print = { type: 'print'; message: string }
 export type FromExtension_Schema = { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
 export type FromExtension_Prompt = { type: 'prompt'; graph: ComfyPromptJSON }
@@ -59,9 +66,9 @@ export type MessageFromExtensionToWebview_ =
     | FromExtension_CushyStatus
     | FromExtension_SyncHistory
     // flow start stop
-    | FromExtension_FlowStart
-    | FromExtension_FlowCode
-    | FromExtension_FlowEnd
+    | FromExtension_ActionStart
+    | FromExtension_ActionCode
+    | FromExtension_ActionEnd
     // user interractions
     | FromExtension_ask
     | FromExtension_Print
@@ -81,9 +88,9 @@ export type MessageFromExtensionToWebview_ =
 
 export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWebview) => {
     if (msg.type === 'cushy_status') return 'ℹ️'
-    if (msg.type === 'flow-start') return '🎬'
-    if (msg.type === 'flow-code') return '📝'
-    if (msg.type === 'flow-end') return '🏁'
+    if (msg.type === 'action-start') return '🎬'
+    if (msg.type === 'action-code') return '📝'
+    if (msg.type === 'action-end') return '🏁'
     if (msg.type === 'schema') return '📄'
     if (msg.type === 'prompt') return '📝'
     if (msg.type === 'status') return '📡'

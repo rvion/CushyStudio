@@ -36,7 +36,7 @@ export class ActionDefinition {
         const start = Date.now()
         const flowRunID = asFlowRunID(nanoid(6))
         const workspace = this.file.workspace
-        workspace.broadCastToAllClients({ type: 'flow-start', flowRunID: flowRunID })
+        workspace.broadCastToAllClients({ type: 'action-start', flowRunID: flowRunID })
         const schema = workspace.schema
         workspace.broadCastToAllClients({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
 
@@ -82,12 +82,12 @@ export class ActionDefinition {
             }
             const presets = new Presets(ctx)
             ctx.presets = presets
-            this.file.workspace.broadCastToAllClients({ type: 'flow-code', flowRunID: flowRunID, code: good.fn.toString() })
+            this.file.workspace.broadCastToAllClients({ type: 'action-code', flowRunID: flowRunID, code: good.fn.toString() })
             await good.fn(ctx)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
             this.file.workspace.broadCastToAllClients({
-                type: 'flow-end',
+                type: 'action-end',
                 flowRunID: flowRunID,
                 flowID: this.flowID,
                 status: 'success',
@@ -96,7 +96,7 @@ export class ActionDefinition {
         } catch (error) {
             console.log(error)
             this.file.workspace.broadCastToAllClients({
-                type: 'flow-end',
+                type: 'action-end',
                 flowRunID: flowRunID,
                 status: 'failure',
                 flowID: this.flowID,

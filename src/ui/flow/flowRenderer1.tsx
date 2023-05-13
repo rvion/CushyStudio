@@ -16,7 +16,7 @@ export const renderMsgUI = (
     wrap?: boolean
 } | null => {
     if (msg.type === 'show-html') return { ui: <MsgShowHTMLUI key={msg.uid} msg={msg} /> }
-    if (msg.type === 'flow-code') return { ui: <TypescriptHighlightedCodeUI key={msg.uid} code={msg.code} /> }
+    if (msg.type === 'action-code') return { ui: <TypescriptHighlightedCodeUI key={msg.uid} code={msg.code} /> }
     if (msg.type === 'executing') return { ui: <ShowUpdatingNodeUI key={msg.uid} msg={msg} />, wrap: true }
     if (msg.type === 'ask') return { ui: <AskInfoUI key={msg.uid} step={msg} /> }
     if (msg.type === 'print')
@@ -31,6 +31,6 @@ export const renderMsgUI = (
             ),
         }
     if (msg.type === 'images') return { ui: <FlowGeneratedImagesUI key={msg.uid} msg={msg} />, wrap: true }
-    if (msg.type === 'flow-end') return { ui: <ShowFlowEndUI key={msg.uid} msg={msg} /> }
+    if (msg.type === 'action-end') return { ui: <ShowFlowEndUI key={msg.uid} msg={msg} /> }
     return null
 }

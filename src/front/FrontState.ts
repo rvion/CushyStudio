@@ -21,6 +21,7 @@ import { CushyDB } from './FrontDB'
 import { ResilientSocketToExtension } from './ResilientCushySocket'
 import { UIAction } from './UIAction'
 import { ActionDefinitionID } from 'src/back/FlowDefinition'
+import { FrontFlow } from './FrontFlow'
 
 export type MsgGroup = {
     groupType: string
@@ -28,6 +29,7 @@ export type MsgGroup = {
     uis: JSX.Element[]
     wrap: boolean
 }
+
 const newMsgGroup = (groupType: string, wrap?: boolean): MsgGroup => ({
     groupType,
     messages: [],
@@ -44,6 +46,7 @@ export class FrontState {
         return this.db.data.msgs.map((x) => x.msg)
     }
 
+    flows = new Map<string, FrontFlow>()
     expandNodes: boolean = false
     flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
@@ -131,7 +134,7 @@ export class FrontState {
         return Array.from(this.knownActions.values()).map((x) => ({ value: x.id, label: x.name }))
     }
     selectedWorkflowID: Maybe<ActionRef['id']> = null
-    runningFlowId: Maybe<string> = null
+    runningFlow: Maybe<FrontFlow> = null
 
     // runs: { flowRunId: string; graph: Graph }[]
     XXXX = new Map<MessageFromExtensionToWebview['uid'], Graph>()
@@ -170,19 +173,27 @@ export class FrontState {
         this.db.data.msgs.push({ at: Date.now(), msg })
 
         // 2. process the info
-        if (msg.type === 'flow-code') return
+        if (msg.type === 'action-code') return
         if (msg.type === 'ask') {
             this.pendingAsk.push(msg)
             return
         }
-        if (msg.type === 'show-html') return
-        if (msg.type === 'print') return
-        if (msg.type === 'flow-start') {
-            this.runningFlowId = msg.flowRunID
+        if (msg.type === 'show-html') {
             return
         }
-        if (msg.type === 'flow-end') {
-            this.runningFlowId = null
+
+        if (msg.type === 'print') {
+            this.runningFlow?.history.push(msg)
+            return
+        }
+        if (msg.type === 'action-start') {
+            const newFlow = new FrontFlow(msg.flowRunID)
+            this.flows.set(msg.flowRunID, newFlow)
+            this.runningFlow = newFlow
+            return
+        }
+        if (msg.type === 'action-end') {
+            this.runningFlow = null
             return
         }
 

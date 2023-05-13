@@ -4,7 +4,9 @@ import { Button, Message, Panel } from 'rsuite'
 import { useSt } from '../front/stContext'
 import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
 
-export const ShowFlowEndUI = observer(function ShowFlowEndUI_(p: { msg: MessageFromExtensionToWebview & { type: 'flow-end' } }) {
+export const ShowFlowEndUI = observer(function ShowFlowEndUI_(p: {
+    msg: MessageFromExtensionToWebview & { type: 'action-end' }
+}) {
     const msg = p.msg
     const st = useSt()
     return (
