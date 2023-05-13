@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { IconButton, Nav } from 'rsuite'
 import { useSt } from '../front/FrontStateCtx'
 import { renderMessageFromExtensionAsEmoji } from '../types/MessageFromExtensionToWebview'
-import { FlowLogUI } from './flow/FlowLogUI'
+import { WorkspaceUI } from './workspace/FlowLogUI'
 import { VerticalGalleryUI } from './galleries/Gallery2UI'
 import { GalleryHoveredPreviewUI } from './galleries/GalleryHoveredPreviewUI'
 import { ScrollablePaneUI } from './scrollableArea'
@@ -48,11 +48,11 @@ export const WebviewUI = observer(function WebviewUI_() {
                 <ScrollablePaneUI items={st.received} className='shrink-0 flex-grow'>
                     <GalleryHoveredPreviewUI />
                     {action == null ? ( //
-                        <FlowLogUI />
+                        <WorkspaceUI />
                     ) : action.type === 'paint' ? (
                         <PaintUI uri={action.img.localURL ?? action.img.comfyURL ?? '🔴'} />
                     ) : (
-                        <FlowLogUI />
+                        <WorkspaceUI />
                     )}
                 </ScrollablePaneUI>
             </div>

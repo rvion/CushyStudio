@@ -46,7 +46,16 @@ export class FrontState {
         return this.db.data.msgs.map((x) => x.msg)
     }
 
+    // --------------------------
     flows = new Map<string, FrontFlow>()
+    startFlow = (): FrontFlow => {
+        const flow = new FrontFlow()
+        this.flows.set(flow.id, flow)
+        return flow
+    }
+    get flowArray() { return Array.from(this.flows.values()) } // prettier-ignore
+    // --------------------------
+
     expandNodes: boolean = false
     flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
@@ -187,9 +196,10 @@ export class FrontState {
             return
         }
         if (msg.type === 'action-start') {
-            const newFlow = new FrontFlow(msg.flowRunID)
-            this.flows.set(msg.flowRunID, newFlow)
-            this.runningFlow = newFlow
+            // 🔴
+            // const newFlow = new FrontFlow(msg.flowRunID)
+            // this.flows.set(msg.flowRunID, newFlow)
+            // this.runningFlow = newFlow
             return
         }
         if (msg.type === 'action-end') {

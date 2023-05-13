@@ -13,8 +13,8 @@ import { Branded } from '../utils/types'
 export type ActionDefinitionID = Branded<string, 'FlowDefinitionID'>
 export const asFlowDefinitionID = (s: string): ActionDefinitionID => s as any
 
-export type FlowRunID = Branded<string, 'FlowRunID'>
-export const asFlowRunID = (s: string): FlowRunID => s as any
+export type ActionRunID = Branded<string, 'ActionRunID'>
+export const asActionRunID = (s: string): ActionRunID => s as any
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
@@ -34,9 +34,9 @@ export class ActionDefinition {
 
     run = async (mode: RunMode = 'real'): Promise<boolean> => {
         const start = Date.now()
-        const flowRunID = asFlowRunID(nanoid(6))
+        const actionRunID = asActionRunID(nanoid(6))
         const workspace = this.file.workspace
-        workspace.broadCastToAllClients({ type: 'action-start', flowRunID: flowRunID })
+        workspace.broadCastToAllClients({ type: 'action-start', flowRunID: actionRunID })
         const schema = workspace.schema
         workspace.broadCastToAllClients({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
 
@@ -82,13 +82,13 @@ export class ActionDefinition {
             }
             const presets = new Presets(ctx)
             ctx.presets = presets
-            this.file.workspace.broadCastToAllClients({ type: 'action-code', flowRunID: flowRunID, code: good.fn.toString() })
+            this.file.workspace.broadCastToAllClients({ type: 'action-code', flowRunID: actionRunID, code: good.fn.toString() })
             await good.fn(ctx)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
             this.file.workspace.broadCastToAllClients({
                 type: 'action-end',
-                flowRunID: flowRunID,
+                flowRunID: actionRunID,
                 flowID: this.flowID,
                 status: 'success',
             })
@@ -97,7 +97,7 @@ export class ActionDefinition {
             console.log(error)
             this.file.workspace.broadCastToAllClients({
                 type: 'action-end',
-                flowRunID: flowRunID,
+                flowRunID: actionRunID,
                 status: 'failure',
                 flowID: this.flowID,
             })

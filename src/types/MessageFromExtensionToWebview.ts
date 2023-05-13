@@ -6,7 +6,7 @@ import type { EmbeddingName } from 'src/core/Schema'
 import type { ImageInfos, ImageUID } from 'src/core/GeneratedImageSummary'
 import type { Requestable } from 'src/controls/Requestable'
 import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
-import type { ActionDefinitionID, FlowRunID } from 'src/back/FlowDefinition'
+import type { ActionDefinitionID, ActionRunID } from 'src/back/FlowDefinition'
 import type { CushyDBData } from 'src/core/WorkspaceHistoryJSON'
 import type { ActionRef } from 'src/core/KnownWorkflow'
 
@@ -43,11 +43,11 @@ export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExte
 
 export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boolean }
 
-export type FromExtension_ActionStart = { type: 'action-start'; flowRunID: FlowRunID }
-export type FromExtension_ActionCode = { type: 'action-code'; flowRunID: FlowRunID; code: string }
+export type FromExtension_ActionStart = { type: 'action-start'; flowRunID: ActionRunID }
+export type FromExtension_ActionCode = { type: 'action-code'; flowRunID: ActionRunID; code: string }
 export type FromExtension_ActionEnd = {
     type: 'action-end'
-    flowRunID: FlowRunID
+    flowRunID: ActionRunID
     status: 'success' | 'failure'
     flowID: ActionDefinitionID
 }
