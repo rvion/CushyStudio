@@ -1,4 +1,33 @@
-action('mask-clothes', {
+action('A. load model', {
+    help: 'extract a mak for the given clothes', // <- action help text
+    run: (flow) => {
+        flow.presets.loadModel({
+            ckptName: 'AOM3A1_orangemixs.safetensors',
+        })
+    },
+})
+
+action('A. prompt', {
+    help: 'extract a mak for the given clothes', // <- action help text
+    run: (flow) => {
+        flow.nodes.PreviewImage({
+            images: flow.nodes.VAEDecode({
+                samples: flow.nodes.KSampler({
+                    seed: flow.randomSeed(),
+                    latent_image: flow.nodes.EmptyLatentImage({}),
+                    model: flow.AUTO,
+                    positive: flow.nodes.CLIPTextEncode({ clip: flow.AUTO, text: 'hello' }),
+                    negative: flow.nodes.CLIPTextEncode({ clip: flow.AUTO, text: 'world' }),
+                    sampler_name: 'ddim',
+                    scheduler: 'karras',
+                }),
+                vae: flow.AUTO,
+            }),
+        })
+    },
+})
+
+action('A. mask-clothes', {
     help: 'extract a mak for the given clothes', // <- action help text
     // vv action require an image and an input text with tag 'clothes'
     requirement: (kk) => ({
@@ -18,7 +47,7 @@ action('mask-clothes', {
     },
 })
 
-action('auto-mask-face', {
+action('B. auto-mask-face', {
     help: 'extract a mak for the face', // <- action help text
     requirement: (kk) => ({
         image: kk.IMAGE({}),

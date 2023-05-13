@@ -90,7 +90,7 @@ export class FlowRun {
         const ProjectScriptFn = new Function('action', codeJS)
         const actionsPool: { name: string; action: Action<any> }[] = []
         const actionFn = (name: string, fn: Action<any>): void => {
-            logger().info(`found WORKFLOW ${name}`)
+            logger().info(`    - action ${name}`)
             actionsPool.push({ name, action: fn })
         }
 

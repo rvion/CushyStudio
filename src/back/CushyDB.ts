@@ -36,7 +36,7 @@ export class CushyDB {
     // }
 
     recordEvent = (msg: MessageFromExtensionToWebview) => {
-        console.log('🔴 recording', msg)
+        console.log('🔴 recording', JSON.stringify(msg))
         this.data.msgs.push({ at: Date.now(), msg })
         this.scheduleSave()
     }
