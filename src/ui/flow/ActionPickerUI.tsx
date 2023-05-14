@@ -8,7 +8,7 @@ import { Button, IconButton, Panel, SelectPicker } from 'rsuite'
 import { useSt } from '../../front/FrontStateCtx'
 import { useFlow } from '../../front/FrontFlowCtx'
 import { ActionRef } from 'src/core/KnownWorkflow'
-import { AskInfoUI } from '../AskInfoUI'
+import { FormUI } from '../AskInfoUI'
 
 export const ActionPickerUI = observer(function ActionPickerUI_() {
     const st = useSt()
@@ -23,7 +23,7 @@ export const ActionPickerUI = observer(function ActionPickerUI_() {
             {act && (
                 <Panel>
                     <h4>{uiSt.currentAction?.name}</h4>
-                    <AskInfoUI
+                    <FormUI
                         submit={(data) => {
                             st.sendMessageToExtension({
                                 type: 'run-action',
@@ -35,7 +35,7 @@ export const ActionPickerUI = observer(function ActionPickerUI_() {
                         step={{
                             type: 'ask',
                             flowID: flow.id,
-                            request: act.form,
+                            form: act.form,
                         }}
                     />
                 </Panel>

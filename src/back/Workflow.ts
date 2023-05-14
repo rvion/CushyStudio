@@ -266,7 +266,7 @@ export class Workflow {
         const reqBuilder = new FormBuilder()
         const request = requestFn(reqBuilder)
         const ask = new ScriptStep_ask(request)
-        this.workspace.broadCastToAllClients({ type: 'ask', flowID: this.uid, request })
+        this.workspace.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request })
         this.steps.unshift(ask)
         return ask.finished
     }

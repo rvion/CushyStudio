@@ -9,7 +9,7 @@ import type { PayloadID } from '../core/PayloadID'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
-import type { ActionFormResult } from 'src/core/Requirement'
+import type { ActionForm, ActionFormResult } from 'src/core/Requirement'
 import type { Maybe } from 'src/utils/types'
 
 import { exhaust } from '../utils/ComfyUtils'
@@ -85,7 +85,7 @@ export type FromExtension_Print = { type: 'print'; flowID: FlowID; message: stri
 export type FromExtension_Prompt = { type: 'prompt'; flowID: FlowID; graph: ComfyPromptJSON }
 export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageInfos[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
-export type FromExtension_ask = { type: 'ask'; flowID: FlowID; request: { [key: string]: Requestable } }
+export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: ActionForm }
 
 export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */

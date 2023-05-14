@@ -1,10 +1,11 @@
 import { makeAutoObservable, toJS } from 'mobx'
+import { nanoid } from 'nanoid'
 
-export type AskPath = (string | number)[]
+export type FormPath = (string | number)[]
 
 /** this is the Form state that centralize values for every
  * ask request */
-export class AskState {
+export class FormState {
     /** this value is the root response object
      * the form will progressively fill */
     value: any = {}
@@ -13,11 +14,16 @@ export class AskState {
      * can no longer be interracted with */
     locked: boolean = false
 
+    /** this is the ID of the current task
+     * will be re-used as executionID for
+     */
+    formID = nanoid()
+
     constructor() {
         makeAutoObservable(this)
     }
 
-    getAtPath(path: AskPath): any {
+    getAtPath(path: FormPath): any {
         let current = this.value
         for (const key of path) {
             if (!current.hasOwnProperty(key)) {
@@ -28,7 +34,7 @@ export class AskState {
         return current
     }
 
-    setAtPath = (path: AskPath, value: any) => {
+    setAtPath = (path: FormPath, value: any) => {
         console.log(path, value, toJS(this.value))
         let current = this.value
         for (let i = 0; i < path.length - 1; i++) {

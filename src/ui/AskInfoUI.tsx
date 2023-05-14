@@ -2,7 +2,7 @@ import type { Requestable } from 'src/controls/Requestable'
 import type { EnumValue } from '../core/Schema'
 
 import { askContext, useAsk } from './AskInfoCtx'
-import { AskPath, AskState } from './AskState'
+import { FormPath, FormState } from './AskState'
 
 import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
@@ -22,13 +22,14 @@ import { ShowFlowEndUI } from './flow/ShowFlowEndUI'
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const AskInfoUI = observer(function AskInfoUI_(p: {
+export const FormUI = observer(function AskInfoUI_(p: {
     //
     step: FromExtension_ask
     submit: (value: any) => void
+    locked?: boolean
 }) {
     const st = useSt()
-    const askState = useMemo(() => new AskState(), [])
+    const askState = useMemo(() => new FormState(), [])
 
     const submit = useCallback(
         (ev: { preventDefault?: () => void; stopPropagation?: () => void }) => {
@@ -47,7 +48,7 @@ export const AskInfoUI = observer(function AskInfoUI_(p: {
                 {/* widgets ------------------------------- */}
                 <div className='flex'>
                     <div>
-                        {Object.entries(p.step.request).map(([k, v], ix) => (
+                        {Object.entries(p.step.form).map(([k, v], ix) => (
                             <div
                                 // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
                                 className='row items-start gap-2'
@@ -94,7 +95,7 @@ export const DebugUI = observer(function DebugUI_(p: { title: string; children: 
  */
 const WidgetUI = observer(function WidgetUI_(p: {
     //
-    path: AskPath
+    path: FormPath
     req: Requestable
 }) {
     const askState = useAsk()
