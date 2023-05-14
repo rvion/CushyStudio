@@ -1,16 +1,15 @@
 import type { ActionDefinitionID, ExecutionID } from 'src/back/ActionDefinition'
-import type { Requestable } from 'src/controls/Requestable'
 import type { ImageInfos, ImageUID } from 'src/core/GeneratedImageSummary'
 import type { ActionRef } from 'src/core/KnownWorkflow'
+import type { FormDefinitino, FormResult } from 'src/core/Requirement'
 import type { EmbeddingName } from 'src/core/Schema'
 import type { CushyDBData } from 'src/core/WorkspaceHistoryJSON'
 import type { FlowID } from 'src/front/FrontFlow'
+import type { Maybe } from 'src/utils/types'
 import type { PayloadID } from '../core/PayloadID'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
-import type { ActionForm, ActionFormResult } from 'src/core/Requirement'
-import type { Maybe } from 'src/utils/types'
 
 import { exhaust } from '../utils/ComfyUtils'
 
@@ -24,7 +23,7 @@ export type FromWebview_runAction = {
     type: 'run-action'
     flowID: FlowID
     actionID: ActionDefinitionID
-    data: ActionFormResult<any>
+    data: FormResult<any>
 }
 // request to open an external URL
 export type FromWebview_openExternal = { type: 'open-external'; uriString: string }
@@ -64,7 +63,7 @@ export type FromExtension_ActionStart = {
     flowID: FlowID
     actionID: ActionDefinitionID
     executionID: ExecutionID
-    data: ActionFormResult<any>
+    data: FormResult<any>
 }
 export type FromExtension_ActionCode = {
     type: 'action-code'
@@ -85,7 +84,7 @@ export type FromExtension_Print = { type: 'print'; flowID: FlowID; message: stri
 export type FromExtension_Prompt = { type: 'prompt'; flowID: FlowID; graph: ComfyPromptJSON }
 export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageInfos[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
-export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: ActionForm }
+export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: FormDefinitino }
 
 export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */

@@ -1,8 +1,8 @@
 import type { Requestable } from 'src/controls/Requestable'
 import type { EnumValue } from '../core/Schema'
 
-import { askContext, useAsk } from './AskInfoCtx'
-import { FormPath, FormState } from './AskState'
+import { formContext, useForm } from './FormCtx'
+import { FormPath, FormState } from './FormState'
 
 import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
@@ -43,7 +43,7 @@ export const FormUI = observer(function AskInfoUI_(p: {
     )
 
     return (
-        <askContext.Provider value={askState}>
+        <formContext.Provider value={askState}>
             <Panel shaded>
                 {/* widgets ------------------------------- */}
                 <div className='flex'>
@@ -78,7 +78,7 @@ export const FormUI = observer(function AskInfoUI_(p: {
                 </div>
             </Panel>
             {/* debug -------------------------------*/}
-        </askContext.Provider>
+        </formContext.Provider>
     )
 })
 
@@ -98,7 +98,7 @@ const WidgetUI = observer(function WidgetUI_(p: {
     path: FormPath
     req: Requestable
 }) {
-    const askState = useAsk()
+    const askState = useForm()
     const req = p.req
 
     // forget next line, it's just to make the compiler happy somewhere else

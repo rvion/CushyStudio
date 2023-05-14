@@ -1,6 +1,6 @@
 import type { ActionDefinitionID } from 'src/back/ActionDefinition'
 import type { Maybe } from 'src/utils/types'
-import type { ActionFormResult } from 'src/core/Requirement'
+import type { FormResult } from 'src/core/Requirement'
 
 import * as I from '@rsuite/icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
@@ -8,14 +8,14 @@ import { Button, IconButton, Panel, SelectPicker } from 'rsuite'
 import { useSt } from '../../front/FrontStateCtx'
 import { useFlow } from '../../front/FrontFlowCtx'
 import { ActionRef } from 'src/core/KnownWorkflow'
-import { FormUI } from '../AskInfoUI'
+import { FormUI } from '../FormUI'
 
 export const ActionPickerUI = observer(function ActionPickerUI_() {
     const st = useSt()
     const flow = useFlow()
     const uiSt = useLocalObservable(() => ({
         currentAction: null as Maybe<ActionRef>,
-        currentActionDraft: null as Maybe<ActionFormResult<any>>,
+        currentActionDraft: null as Maybe<FormResult<any>>,
     }))
     const act = uiSt.currentAction
     return (

@@ -7,23 +7,23 @@ import type { FormBuilder, InfoAnswer } from 'src/controls/askv2'
 // 1. the main abstraction of cushy are actions.
 /** quick function to help build actions in a type-safe way */
 
-export const action = <const T extends ActionForm>(name: string, t: Omit<Action<T>, 'name'>): Action<T> => ({ name, ...t })
-export type ActionType = <const T extends ActionForm>(name: string, t: Omit<Action<T>, 'name'>) => Action<T>
+export const action = <const T extends FormDefinitino>(name: string, t: Omit<Action<T>, 'name'>): Action<T> => ({ name, ...t })
+export type ActionType = <const T extends FormDefinitino>(name: string, t: Omit<Action<T>, 'name'>) => Action<T>
 
-export type ActionForm = { [key: string]: Requestable }
-export type ActionFormResult<Req extends ActionForm> = { [key in keyof Req]: InfoAnswer<Req[key]> }
+export type FormDefinitino = { [key: string]: Requestable }
+export type FormResult<Req extends FormDefinitino> = { [key in keyof Req]: InfoAnswer<Req[key]> }
 
-export type Action<Reqs extends ActionForm> = {
+export type Action<FormDef extends FormDefinitino> = {
     /** action name; default to unnamed_action_<nanoid()> */
     name: string
     /** help text to show user */
     help?: string
     /** the list of dependencies user can specify */
-    ui?: (form: FormBuilder /*, flow: Workflow*/) => Reqs
+    ui?: (form: FormBuilder /*, flow: Workflow*/) => FormDef
     /** extra list of dependencies */
     // requirement?: (builder: ReqBuilder) => Reqs
     /** the code to run */
-    run: (f: Workflow, r: ActionFormResult<Reqs>) => void | Promise<void>
+    run: (f: Workflow, r: FormResult<FormDef>) => void | Promise<void>
     /** next actions to suggest user */
     next?: string[]
 }

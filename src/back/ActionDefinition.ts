@@ -3,7 +3,7 @@ import type { CushyFile } from './CushyFile'
 import type { ActionRef } from '../core/KnownWorkflow'
 
 import { FormBuilder } from '../controls/askv2'
-import { Action, ActionForm } from '../core/Requirement'
+import { Action, FormDefinitino } from '../core/Requirement'
 
 export type ActionDefinitionID = Branded<string, 'FlowDefinitionID'>
 export const asFlowDefinitionID = (s: string): ActionDefinitionID => s as any
@@ -20,7 +20,7 @@ export class ActionDefinition {
 
     uid: ActionDefinitionID
     ref: ActionRef
-    form: Maybe<ActionForm> = null
+    form: Maybe<FormDefinitino> = null
 
     constructor(
         public file: CushyFile,

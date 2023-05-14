@@ -1,8 +1,8 @@
 import type { ActionDefinitionID } from 'src/back/ActionDefinition'
-import type { ActionForm } from './Requirement'
+import type { FormDefinitino } from './Requirement'
 
 export type ActionRef = {
     name: string
     id: ActionDefinitionID
-    form: ActionForm
+    form: FormDefinitino
 }

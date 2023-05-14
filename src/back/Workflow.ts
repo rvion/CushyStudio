@@ -1,6 +1,6 @@
 import type { LATER } from 'LATER'
 import type { FlowID } from '../front/FrontFlow'
-import type { Action, ActionForm, ActionFormResult } from '../core/Requirement'
+import type { Action, FormDefinitino, FormResult } from '../core/Requirement'
 
 import FormData from 'form-data'
 import { marked } from 'marked'
@@ -74,7 +74,7 @@ export class Workflow {
     runAction = async (
         //
         actionDef: ActionDefinition,
-        formResult: ActionFormResult<any>,
+        formResult: FormResult<any>,
     ) => {
         const start = Date.now()
         console.log(`🔴 before: size=${this.graph.nodes.length}`)

@@ -1,7 +1,7 @@
 import type { FrontState } from 'src/front/FrontState'
 
 import { MessageFromExtensionToWebview } from '../../types/MessageFromExtensionToWebview'
-import { FormUI } from '../AskInfoUI'
+import { FormUI } from '../FormUI'
 import { FlowGeneratedImagesUI } from '../FlowGeneratedImagesUI'
 import { MsgShowHTMLUI } from '../MsgShowHTMLUI'
 import { ShowFlowEndUI } from './ShowFlowEndUI'
