@@ -9,7 +9,7 @@ export const VerticalGalleryUI = observer(function VerticalGalleryUI_(p: {}) {
     return (
         <div className='flex bg-gray-950'>
             <div className='flex flex-col' style={{ overflowX: 'auto' }}>
-                <div style={{ width: '50px' }}>All</div>
+                {/* <div style={{ width: '50px' }}>All</div> */}
                 {/* request to focus next  */}
                 {/* <Button>next</Button> */}
                 {/* <div>stream</div> */}

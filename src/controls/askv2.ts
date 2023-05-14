@@ -37,7 +37,7 @@ export type InfoAnswer<Req> =
     Req extends R.Requestable_loras ? SimplifiedLoraDef[] :
     /** painting */
     Req extends R.Requestable_samMaskPoints ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
-    Req extends R.Requestable_selectImage ? ImageInfos :
+    Req extends R.Requestable_selectImage ? _IMAGE :
     Req extends R.Requestable_manualMask ? Base64Image :
     Req extends R.Requestable_paint ? Base64Image :
 
@@ -68,8 +68,8 @@ export class FormBuilder {
     strOpt = (p: Omit<R.Requestable_strOpt, 'type'>): R.Requestable_strOpt => ({ type: 'str?', ...p })
 
     /** nums */
-    int = (label?: string) => ({ type: 'int' as const, label })
-    intOpt = (label?: string) => ({ type: 'int?' as const, label })
+    int = (p?: Omit<R.Requestable_int, 'type'>) => ({ type: 'int', ...p })
+    intOpt = (p?: Omit<R.Requestable_intOpt, 'type'>) => ({ type: 'int?', ...p })
 
     /** bools */
     bool = (label?: string) => ({ type: 'bool' as const, label })

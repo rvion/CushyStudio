@@ -1,7 +1,7 @@
 import type { LATER } from 'LATER'
 import type { Workflow } from 'src/back/Workflow'
 import type { Requestable } from 'src/controls/Requestable'
-import type { FormBuilder, InfoAnswer, InfoRequestFn } from 'src/controls/askv2'
+import type { FormBuilder, InfoAnswer } from 'src/controls/askv2'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
@@ -19,7 +19,7 @@ export type Action<Reqs extends ActionForm> = {
     /** help text to show user */
     help?: string
     /** the list of dependencies user can specify */
-    ui?: (form: FormBuilder, flow: Workflow) => Reqs
+    ui?: (form: FormBuilder /*, flow: Workflow*/) => Reqs
     /** extra list of dependencies */
     // requirement?: (builder: ReqBuilder) => Reqs
     /** the code to run */

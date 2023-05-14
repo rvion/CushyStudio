@@ -44,7 +44,7 @@ action('A. mask-clothes', {
     // }),
     ui: (form) => ({
         match: form.str({ default: 'dress' }),
-        image: form.image({}),
+        image: form.selectImage('test', []),
     }),
     run: (flow, reqs) => {
         const image = reqs.image

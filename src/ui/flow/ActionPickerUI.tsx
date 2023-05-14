@@ -1,58 +1,99 @@
+import type { ActionDefinitionID } from 'src/back/ActionDefinition'
+import type { Maybe } from 'src/utils/types'
+import type { ActionFormResult } from 'src/core/Requirement'
+
 import * as I from '@rsuite/icons'
-import { observer } from 'mobx-react-lite'
-import { Button, IconButton, SelectPicker } from 'rsuite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
+import { Button, IconButton, Panel, SelectPicker } from 'rsuite'
 import { useSt } from '../../front/FrontStateCtx'
 import { useFlow } from '../../front/FrontFlowCtx'
+import { ActionRef } from 'src/core/KnownWorkflow'
+import { AskInfoUI } from '../AskInfoUI'
 
 export const ActionPickerUI = observer(function ActionPickerUI_() {
     const st = useSt()
     const flow = useFlow()
+    const uiSt = useLocalObservable(() => ({
+        currentAction: null as Maybe<ActionRef>,
+        currentActionDraft: null as Maybe<ActionFormResult<any>>,
+    }))
+    const act = uiSt.currentAction
     return (
         <div>
+            {act && (
+                <Panel>
+                    <h4>{uiSt.currentAction?.name}</h4>
+                    <AskInfoUI
+                        submit={(data) => {
+                            st.sendMessageToExtension({
+                                type: 'run-action',
+                                flowID: flow.id,
+                                actionID: act.id,
+                                data: data,
+                            })
+                        }}
+                        step={{
+                            type: 'ask',
+                            flowID: flow.id,
+                            request: act.form,
+                        }}
+                    />
+                </Panel>
+            )}
             <div>
                 {/* ({st.ActionOptionForSelectInput.length} actions) */}
-                <SelectPicker
-                    // labelKey='name'
-                    // valueKey='id'
-                    value={st.selectedWorkflowID}
-                    onChange={(v) => (st.selectedWorkflowID = v)}
+                {/* <SelectPicker
+                    value={uiSt.currentAction.id}
+                    labelKey='name'
+                    valueKey='id'
+                    // onChange={(v) => (uiSt.currentAction =)}
                     data={st.ActionOptionForSelectInput}
                     style={{ width: 224 }}
-                />
+                /> */}
                 <IconButton
                     //
                     appearance='primary'
                     color='green'
-                    disabled={st.selectedWorkflowID == null}
+                    disabled={uiSt.currentAction == null}
                     icon={<I.PlayOutline />}
                     onClick={() => {
-                        if (st.selectedWorkflowID == null) return
-                        st.sendMessageToExtension({
-                            type: 'run-action',
-                            flowID: flow.id,
-                            actionID: st.selectedWorkflowID,
-                        })
+                        if (uiSt.currentAction == null) return
+                        // st.sendMessageToExtension({
+                        //     type: 'run-action',
+                        //     flowID: flow.id,
+                        //     actionID: uiSt.currentAction.id,
+                        //     data: {}, // 🔴
+                        // })
                     }}
                 />
             </div>
             <div className='flex flex-wrap gap-2'>
-                {st.ActionOptionForSelectInput.map((a) => {
+                {/* ({uiSt.currentActionID}) */}
+                {st.ActionOptionForSelectInput.map((actionRef) => {
                     return (
                         <Button
                             startIcon={<I.PlayOutline />}
-                            key={a.value}
+                            key={actionRef.id}
                             size='sm'
-                            appearance='ghost'
+                            appearance={uiSt.currentAction?.id === actionRef.id ? 'primary' : 'ghost'}
+                            color={uiSt.currentAction?.id === actionRef.id ? 'green' : undefined}
                             onClick={() => {
-                                st.selectedWorkflowID = a.value
-                                st.sendMessageToExtension({
-                                    type: 'run-action',
-                                    flowID: flow.id,
-                                    actionID: st.selectedWorkflowID,
-                                })
+                                if (uiSt.currentAction?.id != actionRef.id) {
+                                    uiSt.currentAction = actionRef
+                                    return
+                                }
+                                // st.sendMessageToExtension({
+                                //     type: 'run-action',
+                                //     flowID: flow.id,
+                                //     actionID: actionRef.id,
+                                //     data: {}, // 🔴
+                                // })
                             }}
                         >
-                            <div>{a.label}</div>
+                            <div>
+                                {actionRef.name}
+                                {/* ({actionRef.id}) */}
+                            </div>
                         </Button>
                     )
                 })}

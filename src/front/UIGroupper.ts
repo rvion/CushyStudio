@@ -32,7 +32,7 @@ export class MessageGroupper {
         let currentGroup: MsgGroup | null = null
         let currentType: string | null = null
         for (const item of ordered) {
-            let x = renderMsgUI(item)
+            let x = renderMsgUI(this.frontState, item)
             if (x == null) continue
             let groupType = x.group ?? item.type
             // if (currentGroup == null) currentGroup = newMsgGroup(groupType, x.wrap)

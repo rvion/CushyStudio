@@ -22,7 +22,11 @@ import { ShowFlowEndUI } from './flow/ShowFlowEndUI'
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const AskInfoUI = observer(function AskInfoUI_(p: { step: FromExtension_ask }) {
+export const AskInfoUI = observer(function AskInfoUI_(p: {
+    //
+    step: FromExtension_ask
+    submit: (value: any) => void
+}) {
     const st = useSt()
     const askState = useMemo(() => new AskState(), [])
 
@@ -30,7 +34,8 @@ export const AskInfoUI = observer(function AskInfoUI_(p: { step: FromExtension_a
         (ev: { preventDefault?: () => void; stopPropagation?: () => void }) => {
             ev.preventDefault?.()
             ev.stopPropagation?.()
-            st.answerInfo(askState.value)
+            // st.answerInfo(askState.value)
+            p.submit(askState.value)
             askState.locked = true
         },
         [askState],
@@ -123,7 +128,7 @@ const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'str?') return <WidgetStrUI get={get} set={set} nullable />
     if (req.type === 'paint') return <PaintUI uri={'foo bar 🔴'} />
     if (req.type === 'samMaskPoints') return <WebviewPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
-    if (req.type === 'selectImage') return <ImageSelection infos={req.imageInfos} get={get} set={set} />
+    if (req.type === 'selectImage') return <ImageSelection /*infos={req.imageInfos}*/ get={get} set={set} />
     if (req.type === 'manualMask') return <WebviewPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'embeddings') return <>TODO</>
     if (req.type === 'selectMany') return <>TODO</>
@@ -158,7 +163,11 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
     set: (v: EnumValue) => void
 }) {
     const flow = useFlow()
-    const options = useMemo(() => flow.workspace.schema!.getEnumOptionsForSelectPicker(p.enumName), [])
+    const schema = flow.workspace.schema
+    const options = useMemo(() => {
+        if (schema == null) return []
+        return schema!.getEnumOptionsForSelectPicker(p.enumName)
+    }, [schema])
     return (
         <SelectPicker //
             data={options}

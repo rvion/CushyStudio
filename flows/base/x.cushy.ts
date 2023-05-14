@@ -1,4 +1,4 @@
-console.log('coucou')
+// console.log('coucou')
 
 action('demo1-basic', {
     run: async ($) => {

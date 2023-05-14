@@ -5,16 +5,16 @@ import { LightBoxState, LightBoxUI } from '../LightBox'
 import type { ImageInfos } from '../../core/GeneratedImageSummary'
 
 export const ImageSelection = observer(function ImageSelection_(p: {
-    infos: ImageInfos[]
+    // infos: ImageInfos[]
     get: () => ImageInfos | null
     set: (value: ImageInfos) => void
 }) {
-    const { infos, get, set } = p
-    const lbs = useMemo(() => new LightBoxState(() => infos), [infos])
+    const { get, set } = p
+    // const lbs = useMemo(() => new LightBoxState(() => infos), [infos])
     const checkedURL = get()
     return (
         <div className='flex gap-2'>
-            {infos.map((info) => {
+            {/* {infos.map((info) => {
                 const url = info.comfyURL
                 return (
                     <RadioGroup value={checkedURL?.comfyURL} name='radioList'>
@@ -34,8 +34,9 @@ export const ImageSelection = observer(function ImageSelection_(p: {
                         </div>
                     </RadioGroup>
                 )
-            })}
-            <LightBoxUI lbs={lbs} />
+            })} */}
+            {/* <LightBoxUI lbs={lbs} /> */}
+            image selection
         </div>
     )
 })

@@ -1,3 +1,5 @@
+import type { FrontState } from 'src/front/FrontState'
+
 import { MessageFromExtensionToWebview } from '../../types/MessageFromExtensionToWebview'
 import { AskInfoUI } from '../AskInfoUI'
 import { FlowGeneratedImagesUI } from '../FlowGeneratedImagesUI'
@@ -8,6 +10,7 @@ import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
 import { Panel } from 'rsuite'
 
 export const renderMsgUI = (
+    st: FrontState,
     msg: MessageFromExtensionToWebview,
 ): {
     //
@@ -18,7 +21,10 @@ export const renderMsgUI = (
     if (msg.type === 'show-html') return { ui: <MsgShowHTMLUI key={msg.uid} msg={msg} /> }
     if (msg.type === 'action-code') return { ui: <TypescriptHighlightedCodeUI key={msg.uid} code={msg.code} /> }
     if (msg.type === 'executing') return { ui: <ShowUpdatingNodeUI key={msg.uid} msg={msg} />, wrap: true }
-    if (msg.type === 'ask') return { ui: <AskInfoUI key={msg.uid} step={msg} /> }
+    if (msg.type === 'ask')
+        return {
+            ui: <AskInfoUI submit={(value) => st.answerInfo(value)} key={msg.uid} step={msg} />,
+        }
     if (msg.type === 'print')
         return {
             ui: (

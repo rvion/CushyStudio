@@ -59,15 +59,16 @@ export class ServerState {
     /** notify front of all new actions */
     allActionsRefs = (): MessageFromExtensionToWebview & { type: 'ls' } => {
         const actionDefs: ActionDefinition[] = Array.from(this.knownActions.values())
-        const actionRefs = actionDefs.map((x) => ({ name: x.name, id: x.uid }))
+        const actionRefs = actionDefs.map((a) => a.ref)
         return { type: 'ls', actions: actionRefs, uid: getPayloadID() }
     }
 
-    broadcastNewActionList = () => {
-        const refs = this.allActionsRefs()
-        console.log(`🔴 ${refs}`)
-        this.broadCastToAllClients(refs)
-    }
+    // broadcastNewActionList = () => {
+    //     const refs = this.allActionsRefs()
+    //     console.log(`🔴 ${refs}`)
+    //     this.broadCastToAllClients(refs)
+    // }
+
     // updateActionListDebounced = debounce(this.updateActionList, 1000, 2000)
 
     /** write a binary file to given absPath */

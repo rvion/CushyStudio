@@ -1,6 +1,6 @@
 import type { LATER } from 'LATER'
 import type { FlowID } from '../front/FrontFlow'
-import type { Action, ActionForm } from '../core/Requirement'
+import type { Action, ActionForm, ActionFormResult } from '../core/Requirement'
 
 import FormData from 'form-data'
 import { marked } from 'marked'
@@ -71,7 +71,11 @@ export class Workflow {
 
     AUTO = auto
 
-    runAction = async (actionDef: ActionDefinition) => {
+    runAction = async (
+        //
+        actionDef: ActionDefinition,
+        formResult: ActionFormResult<any>,
+    ) => {
         const start = Date.now()
         console.log(`🔴 before: size=${this.graph.nodes.length}`)
         const schema = this.workspace.schema
@@ -79,42 +83,42 @@ export class Workflow {
         const flowID = this.uid
         const actionID = actionDef.uid
         const executionID = asExecutionID(nanoid(6))
-        broadcast({ type: 'action-start', flowID, actionID, executionID })
+        broadcast({ type: 'action-start', flowID, actionID, executionID, data: formResult })
         broadcast({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
 
-        const codeJS = await actionDef.getCodeJS()
-        if (codeJS == null) return false
+        // const codeJS = await actionDef.getCodeJS()
+        // if (codeJS == null) return false
 
         // check if we're in "MOCK" mode
         console.log(`activeFlow = ${this.uid}`)
         this.workspace.activeFlow = this // 🔴🔴
 
-        const ProjectScriptFn = new Function('action', codeJS)
-        const actionsPool: { name: string; action: Action<any> }[] = []
-        const actionFn = (name: string, fn: Action<any>): void => {
-            logger().info(`    - action ${name}`)
-            actionsPool.push({ name, action: fn })
-        }
+        // const ProjectScriptFn = new Function('action', codeJS)
+        // const actionsPool: { name: string; action: Action<any> }[] = []
+        // const actionFn = (name: string, fn: Action<any>): void => {
+        //     logger().info(`    - action ${name}`)
+        //     actionsPool.push({ name, action: fn })
+        // }
 
         try {
-            await ProjectScriptFn(actionFn)
-            const match = actionsPool.find((i) => i.name === actionDef.name)
-            if (match == null) throw new Error('no action found')
-            const action = match.action
+            // await ProjectScriptFn(actionFn)
+            // const match = actionsPool.find((i) => i.name === actionDef.name)
+            // if (match == null) throw new Error('no action found')
+            const action = actionDef.action
             // broadcast({ type: 'action-code', flowRunID: executionID, code: match.action.toString() })
 
-            const reqBuilder = new RequirementBuilder(this)
-            const formBuilder = new FormBuilder()
-            const form: ActionForm | null = action.ui?.(formBuilder, this)
-            let res = null
-            if (form) {
-                console.log({ form })
-                res = await this.ask(() => form)
-            }
-            console.log({ res })
-            const resolveDeps = res // {} //🔴
+            // const reqBuilder = new RequirementBuilder(this)
+            // const formBuilder = new FormBuilder()
+            // const form: ActionForm | null = action.ui?.(formBuilder, this)
+            // let res = null
+            // if (form) {
+            //     console.log({ form })
+            //     res = await this.ask(() => form)
+            // }
+            // console.log({ res })
+            // const resolveDeps = res // {} //🔴
 
-            await action.run(this, resolveDeps ?? {})
+            await action.run(this, formResult)
             console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start

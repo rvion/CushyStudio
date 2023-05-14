@@ -94,9 +94,10 @@ export class FrontState {
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
     knownActions = new Map<ActionDefinitionID, ActionRef>()
     get ActionOptionForSelectInput() {
-        return Array.from(this.knownActions.values()).map((x) => ({ value: x.id, label: x.name }))
+        return Array.from(this.knownActions.values()) // .map((x) => ({ value: x.id, label: x.name }))
     }
-    selectedWorkflowID: Maybe<ActionRef['id']> = null
+
+    // selectedActionID: Maybe<ActionRef['id']> = null
 
     // runs: { flowRunId: string; graph: Graph }[]
     XXXX = new Map<MessageFromExtensionToWebview['uid'], Graph>()
@@ -200,7 +201,7 @@ export class FrontState {
             console.log(msg)
             let firstKnownActionID = msg.actions[0]?.id
             for (const a of msg.actions) this.knownActions.set(a.id, a)
-            if (this.selectedWorkflowID == null && firstKnownActionID) this.selectedWorkflowID = firstKnownActionID
+            // if (this.selectedActionID == null && firstKnownActionID) this.selectedActionID = firstKnownActionID
             return
         }
 

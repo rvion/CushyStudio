@@ -28,7 +28,6 @@ export class CushyClient {
         ws.on('open', () => {
             const lastStatus = this.serverState.lastMessagesPerType.get('cushy_status')
             if (lastStatus) this.sendMessage(lastStatus)
-            // this.sendMessage(this.serverState.allActionsRefs)
         })
         ws.onerror = (err) => {
             console.log('ws error', err)
@@ -48,7 +47,7 @@ export class CushyClient {
     flushQueue = () => {
         const queue = this.queue
         logger().info(`🐼 Client ${this.clientID} flushing queue of ${queue.length} messages`)
-        console.log('coucou')
+        // console.log('coucou')
         this.sendMessage({ type: 'sync-history', history: this.serverState.db.data, uid: nanoid() })
         this.sendMessage(this.serverState.allActionsRefs())
         queue.forEach((msg) => this.ws.send(JSON.stringify(msg)))
@@ -125,9 +124,12 @@ export class CushyClient {
         if (msg.type === 'run-action') {
             logger().info(`🐙 run-flow request: ${msg.actionID}`)
             const action: ActionDefinition | undefined = this.serverState.knownActions.get(msg.actionID)
-            if (action == null) return logger().info('no action found for id:' + msg.actionID)
+            if (action == null) {
+                console.log(...this.serverState.knownActions.keys())
+                return logger().info('no action found for id:' + msg.actionID)
+            }
             const flow = this.serverState.getOrCreateFlow(msg.flowID)
-            return flow.runAction(action)
+            return flow.runAction(action, msg.data)
         }
 
         if (msg.type === 'reset') {
@@ -143,6 +145,15 @@ export class CushyClient {
             // send the last known workflow list
             const lastLs = this.serverState.lastMessagesPerType.get('ls')
             if (lastLs) this.sendMessage(lastLs)
+
+            // send the last schema too
+            const schema = this.serverState.schema
+            this.sendMessage({
+                type: 'schema',
+                schema: schema.spec,
+                embeddings: schema.embeddings,
+                uid: nanoid(),
+            })
 
             // then flush
             this.flushQueue()

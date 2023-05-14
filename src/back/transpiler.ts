@@ -17,7 +17,7 @@ export async function transpileCode(code: string): Promise<string> {
     })
 
     const out = JSON.stringify(result)
-    console.log(Object.keys(result))
+    // console.log(Object.keys(result))
     return 'var exports = {};\n' + result.outputText
 }
 

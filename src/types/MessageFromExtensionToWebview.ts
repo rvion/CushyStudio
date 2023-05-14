@@ -9,6 +9,7 @@ import type { PayloadID } from '../core/PayloadID'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
+import type { ActionFormResult } from 'src/core/Requirement'
 import type { Maybe } from 'src/utils/types'
 
 import { exhaust } from '../utils/ComfyUtils'
@@ -19,7 +20,12 @@ import { exhaust } from '../utils/ComfyUtils'
 // sent when the webpage is loaded
 export type FromWebview_SayReady = { type: 'say-ready'; frontID: string }
 // request to run a flow
-export type FromWebview_runAction = { type: 'run-action'; flowID: FlowID; actionID: ActionDefinitionID }
+export type FromWebview_runAction = {
+    type: 'run-action'
+    flowID: FlowID
+    actionID: ActionDefinitionID
+    data: ActionFormResult<any>
+}
 // request to open an external URL
 export type FromWebview_openExternal = { type: 'open-external'; uriString: string }
 // answer a data request in the middle of a flow
@@ -28,6 +34,8 @@ export type FromWebview_Answer = { type: 'answer'; value: any }
 export type FromWebview_Image = { type: 'image'; base64: string; imageID: ImageUID }
 // reset the workspace
 export type FromWebview_reset = { type: 'reset' }
+// re-build the action form and check if action is valid in current flow context
+// export type FomrWebview_ProbeAction = { type: 'probe-action'; flowID: FlowID; actionID: ActionDefinitionID }
 
 export type MessageFromWebviewToExtension =
     | FromWebview_SayReady // report ready
@@ -36,6 +44,7 @@ export type MessageFromWebviewToExtension =
     | FromWebview_Answer // user interractions
     | FromWebview_Image
     | FromWebview_reset
+// | FomrWebview_ProbeAction
 
 // =============================================================================================
 // | BACK => FRONT                                                                             |
@@ -55,6 +64,7 @@ export type FromExtension_ActionStart = {
     flowID: FlowID
     actionID: ActionDefinitionID
     executionID: ExecutionID
+    data: ActionFormResult<any>
 }
 export type FromExtension_ActionCode = {
     type: 'action-code'
