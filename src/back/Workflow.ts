@@ -79,7 +79,7 @@ export class Workflow {
         const flowID = this.uid
         const actionID = actionDef.uid
         const executionID = asActionRunID(nanoid(6))
-        broadcast({ type: 'action-start', flowRunID: executionID })
+        broadcast({ type: 'action-start', flowID, actionID, executionID })
         broadcast({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
 
         const codeJS = await actionDef.getCodeJS()
@@ -262,7 +262,7 @@ export class Workflow {
         const reqBuilder = new FormBuilder()
         const request = requestFn(reqBuilder)
         const ask = new ScriptStep_ask(request)
-        this.workspace.broadCastToAllClients({ type: 'ask', request })
+        this.workspace.broadCastToAllClients({ type: 'ask', flowID: this.uid, request })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -298,7 +298,7 @@ export class Workflow {
     print = (message: Printable) => {
         let msg = this.extractString(message)
         logger().info(msg)
-        this.workspace.broadCastToAllClients({ type: 'print', message: msg })
+        this.workspace.broadCastToAllClients({ type: 'print', message: msg, flowID: this.uid })
     }
 
     /** upload a file from disk to the ComfyUI backend */
@@ -372,7 +372,7 @@ export class Workflow {
             content: this.flowSummaryHTML,
             title: 'flow-summary',
         })
-        this.workspace.broadCastToAllClients({ type: 'prompt', graph: currentJSON })
+        this.workspace.broadCastToAllClients({ type: 'prompt', graph: currentJSON, flowID: this.uid })
 
         logger().info('checkpoint:' + JSON.stringify(currentJSON))
         const step = new PromptExecution(this, currentJSON)

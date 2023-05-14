@@ -1,18 +1,26 @@
 import type { Branded } from '../utils/types'
-import { FromExtension_Print } from '../types/MessageFromExtensionToWebview'
+import type { FrontState } from './FrontState'
+
 import { nanoid } from 'nanoid'
-import { FrontState } from './FrontState'
+import { FromExtension_ask, MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
+import { MessageGroupper } from './UIGroupper'
+import { makeAutoObservable } from 'mobx'
 
 export type FlowID = Branded<string, 'FlowID'>
 
 export const asFlowID = (s: string): FlowID => s as any
 
 export class FrontFlow {
+    groupper: MessageGroupper
+    pendingAsk: FromExtension_ask[] = []
+    history: MessageFromExtensionToWebview[] = []
+
     constructor(
         //
         public workspace: FrontState,
         public id: FlowID = asFlowID(nanoid()),
-    ) {}
-
-    history: FromExtension_Print[] = []
+    ) {
+        this.groupper = new MessageGroupper(this.workspace, () => this.history)
+        makeAutoObservable(this)
+    }
 }

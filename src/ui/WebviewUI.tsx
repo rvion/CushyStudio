@@ -12,7 +12,7 @@ import { PaintUI } from './widgets/PaintUI'
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
     return (
-        <Nav appearance='subtle' activeKey={st.activeTab} onSelect={st.setActiveTab}>
+        <Nav appearance='subtle'>
             <Nav.Item eventKey='home'>🛋️</Nav.Item>
             <IconButton
                 icon={st.flowDirection === 'down' ? <I.SortDown /> : <I.SortUp />}
@@ -66,7 +66,7 @@ export const DebugMessagesUI = observer(function DebugMessagesUI_(p: {}) {
     const st = useSt()
     return (
         <div className='shadow-xl' style={{ height: '10rem', resize: 'horizontal', overflow: 'auto' }}>
-            {st.itemsToShow.map((msg, ix) => (
+            {st.msgGroupper.itemsToShow.map((msg, ix) => (
                 <div key={msg.uid} className='w-full flex gap-2' id={msg.uid.toString()}>
                     <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
                     <div className='shrink-0' style={{ width: '5rem' }}>

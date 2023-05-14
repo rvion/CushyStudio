@@ -8,7 +8,7 @@ export const WorkspaceUI = observer(function WorkspaceUI_(p: {}) {
     const st = useSt()
     return (
         <div className='flex flex-col gap-4 p-4'>
-            <Button appearance='primary' className='self-start' onClick={st.startFlow}>
+            <Button appearance='primary' className='self-start' onClick={() => st.startFlow()}>
                 Start Flow
             </Button>
             {st.flowArray.map((flow) => {
@@ -28,7 +28,7 @@ export const FlowUI = observer(function FlowUI_(p: {}) {
     return (
         <Panel className='flex flex-col gap-2 p-2'>
             <ActionPickerUI />
-            {st.groupItemsToShow.map((group, groupIx) => {
+            {flow.groupper.msgGroups.map((group, groupIx) => {
                 // if (group.le)
                 return (
                     <div key={groupIx} className='relative [width:100%]' style={{ overflowX: 'auto' }}>

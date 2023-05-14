@@ -43,24 +43,37 @@ export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExte
 
 export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boolean }
 
-export type FromExtension_ActionStart = { type: 'action-start'; flowRunID: ActionRunID }
-export type FromExtension_ActionCode = { type: 'action-code'; flowRunID: ActionRunID; code: string }
-export type FromExtension_ActionEnd = {
-    type: 'action-end'
-    status: 'success' | 'failure'
+// actions payloads
+export type FromExtension_ActionStart = {
+    type: 'action-start'
     flowID: FlowID
     actionID: ActionDefinitionID
     executionID: ActionRunID
 }
+export type FromExtension_ActionCode = {
+    type: 'action-code'
+    flowID: FlowID
+    actionID: ActionDefinitionID
+    executionID: ActionRunID
+    code: string
+}
+export type FromExtension_ActionEnd = {
+    type: 'action-end'
+    flowID: FlowID
+    actionID: ActionDefinitionID
+    executionID: ActionRunID
+    status: 'success' | 'failure'
+}
 
-export type FromExtension_Print = { type: 'print'; message: string }
 export type FromExtension_Schema = { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
-export type FromExtension_Prompt = { type: 'prompt'; graph: ComfyPromptJSON }
-export type FromExtension_Ls = { type: 'ls'; actions: ActionRef[] }
-export type FromExtension_Images = { type: 'images'; images: ImageInfos[] }
-export type FromExtension_ShowHtml = { type: 'show-html'; content: string; title: string }
-export type FromExtension_ask = { type: 'ask'; request: { [key: string]: Requestable } }
 export type FromExtension_SyncHistory = { type: 'sync-history'; history: CushyDBData }
+export type FromExtension_Ls = { type: 'ls'; actions: ActionRef[] }
+
+export type FromExtension_Print = { type: 'print'; flowID: FlowID; message: string }
+export type FromExtension_Prompt = { type: 'prompt'; flowID: FlowID; graph: ComfyPromptJSON }
+export type FromExtension_Images = { type: 'images'; flowID?: FlowID; images: ImageInfos[] }
+export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
+export type FromExtension_ask = { type: 'ask'; flowID: FlowID; request: { [key: string]: Requestable } }
 
 export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */

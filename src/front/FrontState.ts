@@ -21,7 +21,8 @@ import { CushyDB } from './FrontDB'
 import { ResilientSocketToExtension } from './ResilientCushySocket'
 import { UIAction } from './UIAction'
 import { ActionDefinitionID } from 'src/back/ActionDefinition'
-import { FrontFlow } from './FrontFlow'
+import { FlowID, FrontFlow } from './FrontFlow'
+import { MessageGroupper } from './UIGroupper'
 
 export type MsgGroup = {
     groupType: string
@@ -29,13 +30,6 @@ export type MsgGroup = {
     uis: JSX.Element[]
     wrap: boolean
 }
-
-const newMsgGroup = (groupType: string, wrap?: boolean): MsgGroup => ({
-    groupType,
-    messages: [],
-    uis: [],
-    wrap: wrap ?? false,
-})
 
 export class FrontState {
     uid = nanoid()
@@ -48,8 +42,8 @@ export class FrontState {
 
     // --------------------------
     flows = new Map<string, FrontFlow>()
-    startFlow = (): FrontFlow => {
-        const flow = new FrontFlow(this)
+    startFlow = (flowID?: FlowID): FrontFlow => {
+        const flow = new FrontFlow(this, flowID)
         this.flows.set(flow.id, flow)
         return flow
     }
@@ -60,45 +54,7 @@ export class FrontState {
     flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
     currentAction: UIAction | null = null
-
-    get itemsToShow() {
-        // return this.received
-        const max = 200
-        const len = this.received.length
-        const start = this.showAllMessageReceived ? 0 : Math.max(0, len - max)
-        const items = this.received.slice(start)
-        const ordered = this.flowDirection === 'up' ? items.reverse() : items
-        return ordered
-    }
-
-    // group sequential items with similar types together
-    get groupItemsToShow(): MsgGroup[] {
-        const ordered = this.itemsToShow
-
-        const grouped: MsgGroup[] = []
-        let currentGroup: MsgGroup | null = null
-        let currentType: string | null = null
-        for (const item of ordered) {
-            let x = renderMsgUI(item)
-            if (x == null) continue
-            let groupType = x.group ?? item.type
-            // if (currentGroup == null) currentGroup = newMsgGroup(groupType, x.wrap)
-            if (groupType !== currentType) {
-                if (currentGroup?.messages.length) grouped.push(currentGroup)
-                currentGroup = newMsgGroup(groupType, x.wrap)
-                currentType = groupType
-            }
-            currentGroup!.messages.push(item)
-            currentGroup!.uis.push(x.ui)
-        }
-        if (currentGroup?.messages.length) grouped.push(currentGroup)
-        return grouped
-    }
-
-    activeTab: 'view' | 'segment' | 'import' | 'paint' = 'view'
-    setActiveTab = (tab: 'view' | 'segment' | 'import' | 'paint') => {
-        this.activeTab = tab
-    }
+    msgGroupper = new MessageGroupper(this, () => this.received)
 
     // this is the new way
     answerInfo = (value: any) => this.sendMessageToExtension({ type: 'answer', value })
@@ -143,18 +99,21 @@ export class FrontState {
         return Array.from(this.knownActions.values()).map((x) => ({ value: x.id, label: x.name }))
     }
     selectedWorkflowID: Maybe<ActionRef['id']> = null
-    runningFlow: Maybe<FrontFlow> = null
 
     // runs: { flowRunId: string; graph: Graph }[]
     XXXX = new Map<MessageFromExtensionToWebview['uid'], Graph>()
-
-    pendingAsk: FromExtension_ask[] = []
 
     db: CushyDB = new CushyDB(this)
 
     private recordImages = (imgs: ImageInfos[]) => {
         this.images.push(...imgs)
         for (const img of imgs) this.imagesById.set(img.uid, img)
+    }
+
+    getOrCreateFlow = (flowID: FlowID): FrontFlow => {
+        let flow = this.flows.get(flowID)
+        if (flow == null) flow = this.startFlow(flowID)
+        return flow
     }
 
     /** this is for the UI only; process should be very thin / small */
@@ -184,7 +143,9 @@ export class FrontState {
         // 2. process the info
         if (msg.type === 'action-code') return
         if (msg.type === 'ask') {
-            this.pendingAsk.push(msg)
+            const flow = this.getOrCreateFlow(msg.flowID)
+            flow.history.push(msg)
+            flow.pendingAsk.push(msg)
             return
         }
         if (msg.type === 'show-html') {
@@ -192,18 +153,18 @@ export class FrontState {
         }
 
         if (msg.type === 'print') {
-            this.runningFlow?.history.push(msg)
+            const flow = this.getOrCreateFlow(msg.flowID)
+            flow.history.push(msg)
             return
         }
         if (msg.type === 'action-start') {
-            // 🔴
-            // const newFlow = new FrontFlow(msg.flowRunID)
-            // this.flows.set(msg.flowRunID, newFlow)
-            // this.runningFlow = newFlow
+            const flow = this.getOrCreateFlow(msg.flowID)
+            flow.history.push(msg)
             return
         }
         if (msg.type === 'action-end') {
-            this.runningFlow = null
+            const flow = this.getOrCreateFlow(msg.flowID)
+            flow.history.push(msg)
             return
         }
 

@@ -37,20 +37,14 @@ export const AskInfoUI = observer(function AskInfoUI_(p: { step: FromExtension_a
 
     return (
         <askContext.Provider value={askState}>
-            <Panel
-                shaded
-                // className='gap-2'
-                // header={<>💬 Input</>}
-                // collapsible
-                // defaultExpanded
-            >
+            <Panel shaded>
                 {/* widgets ------------------------------- */}
                 <div className='flex'>
                     <div>
                         {Object.entries(p.step.request).map(([k, v], ix) => (
                             <div
-                                style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
-                                className='row items-start gap-2 p-2'
+                                // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
+                                className='row items-start gap-2'
                                 key={k}
                             >
                                 <div>{k}</div>
