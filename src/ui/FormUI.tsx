@@ -8,16 +8,14 @@ import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
 import { Button, Input, InputNumber, MultiCascader, Panel, SelectPicker, Toggle, Tooltip, Whisper } from 'rsuite'
 import { ItemDataType } from 'rsuite/esm/@types/common'
-import { BUG } from '../controls/BUG'
-import { useSt } from '../front/FrontStateCtx'
-import { FromExtension_ask } from '../types/MessageFromExtensionToWebview'
-import { PaintUI } from './widgets/PaintUI'
-import { exhaust } from '../utils/ComfyUtils'
-import { WebviewPlacePoints } from './widgets/WebviewPlacePoints'
-import { ImageSelection } from './widgets/ImageSelection'
-import { useFlow } from '../front/FrontFlowCtx'
-import { ShowFlowEndUI } from './flow/ShowFlowEndUI'
 import { FormDefinition } from 'src/core/Requirement'
+import { BUG } from '../controls/BUG'
+import { useFlow } from '../front/FrontFlowCtx'
+import { useSt } from '../front/FrontStateCtx'
+import { exhaust } from '../utils/ComfyUtils'
+import { ImageSelection } from './widgets/ImageSelection'
+import { PaintUI } from './widgets/PaintUI'
+import { WebviewPlacePoints } from './widgets/WebviewPlacePoints'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
@@ -25,12 +23,13 @@ import { FormDefinition } from 'src/core/Requirement'
  */
 export const FormUI = observer(function AskInfoUI_(p: {
     //
+    formDef: FormDefinition
     formState?: FormState
-    formDef?: FormDefinition
     submit: (value: any) => void
 }) {
     const st = useSt()
-    const form = p.formState ?? useMemo(() => new FormState(st, p.formDef!), [p.formDef!])
+    const formDef = p.formDef
+    const form = p.formState ?? useMemo(() => new FormState(st), [st])
     const submit = useCallback(
         (ev: { preventDefault?: () => void; stopPropagation?: () => void }) => {
             ev.preventDefault?.()
@@ -48,7 +47,7 @@ export const FormUI = observer(function AskInfoUI_(p: {
                 {/* widgets ------------------------------- */}
                 <div className='flex'>
                     <div>
-                        {Object.entries(form.formDef).map(([k, v], ix) => (
+                        {Object.entries(formDef).map(([k, v], ix) => (
                             <div
                                 // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
                                 className='row items-start gap-2'

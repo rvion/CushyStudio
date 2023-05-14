@@ -54,6 +54,7 @@ export class Graph {
             //
             // 'graph TD',
             'graph LR',
+            this.nodes.map((n) => `${n.uid}[${n.$schema.nameInCushy}]`).join('\n'),
             this.nodes
                 .map((n) =>
                     n

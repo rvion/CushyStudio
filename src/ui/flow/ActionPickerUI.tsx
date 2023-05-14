@@ -8,17 +8,11 @@ import { FormUI } from '../FormUI'
 
 export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront: ActionFront }) {
     const st = useSt()
-    const actionFront = p.actionFront
-    const formState = actionFront.formState
+    const XX = p.actionFront
     return (
         <div>
             {p.actionFront.formState == null ? '🟢null' : '1'}
-            {formState && (
-                <Panel>
-                    <h4>{actionFront.currentActionRef?.name}</h4>
-                    <FormUI submit={() => actionFront.start()} formState={formState} />
-                </Panel>
-            )}
+
             <div className='flex flex-wrap gap-2'>
                 {/* ({uiSt.currentActionID}) */}
                 {st.ActionOptionForSelectInput.map((actionRef) => {
@@ -27,11 +21,11 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
                             startIcon={<I.PlayOutline />}
                             key={actionRef.id}
                             size='sm'
-                            appearance={actionFront.currentActionRef?.id === actionRef.id ? 'primary' : 'ghost'}
-                            color={actionFront.currentActionRef?.id === actionRef.id ? 'green' : undefined}
+                            appearance={XX.currentActionRef?.id === actionRef.id ? 'primary' : 'ghost'}
+                            color={XX.currentActionRef?.id === actionRef.id ? 'green' : undefined}
                             onClick={() => {
-                                if (actionFront.currentActionRef?.id != actionRef.id) {
-                                    actionFront.focusAction(actionRef)
+                                if (XX.currentActionRef?.id != actionRef.id) {
+                                    XX.focusAction(actionRef)
                                     return
                                 }
                                 // st.sendMessageToExtension({
@@ -50,6 +44,10 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
                     )
                 })}
             </div>
+            {XX.currentActionRef && (
+                <FormUI formDef={XX.currentActionRef.form} submit={() => XX.start()} formState={XX.formState} />
+            )}
+
             <div>
                 {/* ({st.ActionOptionForSelectInput.length} actions) */}
                 {/* <SelectPicker
@@ -64,10 +62,10 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
                     //
                     appearance='primary'
                     color='green'
-                    disabled={actionFront.currentActionRef == null}
+                    disabled={XX.currentActionRef == null}
                     icon={<I.PlayOutline />}
                     onClick={() => {
-                        if (actionFront.currentActionRef == null) return
+                        if (XX.currentActionRef == null) return
                         // st.sendMessageToExtension({
                         //     type: 'run-action',
                         //     flowID: flow.id,

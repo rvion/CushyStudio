@@ -76,6 +76,7 @@ export class Workflow {
         actionDef: ActionDefinition,
         formResult: FormResult<any>,
     ) => {
+        const numPromptBefore = this._promptCounter
         const start = Date.now()
         console.log(`🔴 before: size=${this.graph.nodes.length}`)
         const schema = this.workspace.schema
@@ -123,6 +124,9 @@ export class Workflow {
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
             broadcast({ type: 'action-end', flowID, actionID, executionID, status: 'success' })
+            if (numPromptBefore === this._promptCounter) {
+                this.broadcastSchemaMermaid()
+            }
             return true
         } catch (error) {
             console.log(error)
@@ -369,15 +373,19 @@ export class Workflow {
 
     private _promptCounter = 0
 
-    private sendPromp = async (): Promise<PromptExecution> => {
-        const currentJSON = deepCopyNaive(this.graph.jsonForPrompt)
-        const schema = this.workspace.schema
+    private broadcastSchemaMermaid = () => {
+        // console.log(this.flowSummaryHTML)
         this.workspace.broadCastToAllClients({
             type: 'show-html',
             flowID: this.uid,
             content: this.flowSummaryHTML,
             title: 'flow-summary',
         })
+    }
+    private sendPromp = async (): Promise<PromptExecution> => {
+        const currentJSON = deepCopyNaive(this.graph.jsonForPrompt)
+        // const schema = this.workspace.schema
+        this.broadcastSchemaMermaid()
         this.workspace.broadCastToAllClients({ type: 'prompt', graph: currentJSON, flowID: this.uid })
 
         logger().info('checkpoint:' + JSON.stringify(currentJSON))

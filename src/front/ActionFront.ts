@@ -14,10 +14,11 @@ import { FormState } from '../ui/FormState'
  * to completion
  * */
 export class ActionFront {
-    started: boolean = false
+    locked: boolean = false
+
     done: boolean = false
     currentActionRef: Maybe<ActionRef> = null
-    formState: Maybe<FormState> = null
+    formState: FormState
 
     constructor(
         //
@@ -25,27 +26,42 @@ export class ActionFront {
         public actionID: Maybe<ActionDefinitionID> = null,
         public executionID: ExecutionID = asExecutionID(nanoid()),
     ) {
+        this.formState = new FormState(this.flow.st)
+        this.flow.actions.set(this.executionID, this)
         makeAutoObservable(this)
     }
 
     focusAction = (action: ActionRef) => {
+        if (this.locked) throw new Error(`can't focus on action ${action.id} because action ${this.actionID} has already started`)
         if (this.currentActionRef?.id === action.id) return console.log(`already focused on action ${action.id}`)
         this.actionID = action.id
         this.currentActionRef = action
-        this.formState = new FormState(this.flow.st, action.form)
+        // this.formState = new FormState(this.flow.st, action.form)
     }
 
     start = () => {
         if (this.actionID == null) return console.log(`can't start action without actionID`)
         const formValue = this.formState?.value
         if (formValue == null) return console.log(`can't start action ${this.actionID} without form value`)
-        this.started = true
+        this.locked = true
+
+        // fake action start because we don't want to wait
+        this.flow.history.push({
+            type: 'action-start',
+            flowID: this.flow.id,
+            actionID: this.actionID,
+            executionID: this.executionID,
+            data: formValue,
+            uid: nanoid(),
+        })
+
+        // request action start
         this.flow.st.sendMessageToExtension({
             type: 'run-action',
             flowID: this.flow.id,
             actionID: this.actionID,
             executionID: this.executionID,
-            data: this.formState?.value,
+            data: formValue,
         })
         this.flow.draft = new ActionFront(this.flow)
         // this.flow.history.push({})

@@ -21,11 +21,7 @@ export class FormState {
      */
     formID = nanoid()
 
-    constructor(
-        //
-        public st: FrontState,
-        public formDef: FormDefinition,
-    ) {
+    constructor(public st: FrontState) {
         makeAutoObservable(this)
     }
 

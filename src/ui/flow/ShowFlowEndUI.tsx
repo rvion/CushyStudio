@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { Message, Panel } from 'rsuite'
 import { MessageFromExtensionToWebview } from '../../types/MessageFromExtensionToWebview'
 
-export const ShowFlowEndUI = observer(function ShowFlowEndUI_(p: {
+export const ShowActionEndUI = observer(function ShowActionEndUI_(p: {
     msg: MessageFromExtensionToWebview & { type: 'action-end' }
 }) {
     const msg = p.msg
