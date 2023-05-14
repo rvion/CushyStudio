@@ -25,7 +25,7 @@ export const MsgShowHTMLUI = observer(function MsgShowHTMLUI_(p: { msg: MessageF
 
     return (
         <div className='float-right abso'>
-            <Panel collapsible defaultExpanded shaded header='🕸️ Content'>
+            <Panel collapsible defaultExpanded shaded header='Graph'>
                 {/* <TransformWrapper> */}
                 {/* <TransformComponent> */}
                 <div

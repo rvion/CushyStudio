@@ -29,7 +29,14 @@ export const FlowUI = observer(function FlowUI_(p: {}) {
             <div className='flex flex-col gap-2 p-2'>
                 {flow.groupper.msgGroups.map((group, groupIx) => {
                     return (
-                        <div key={groupIx} className='relative [width:100%]' style={{ overflowX: 'auto' }}>
+                        <div
+                            //
+                            key={groupIx}
+                            className={`relative [width:100%] group-of-${group.groupType}`}
+                            style={{
+                                overflowX: 'auto',
+                            }}
+                        >
                             <div style={{ flexWrap: group.wrap ? 'wrap' : undefined }} className='flex row gap-2'>
                                 {group.uis}
                             </div>

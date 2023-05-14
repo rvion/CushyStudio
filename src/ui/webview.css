@@ -78,11 +78,11 @@ body {
 .rs-panel {background: #373737; flex-shrink: 0;}
 .rs-panel .rs-panel {background: #464646; flex-shrink: 0;}
 .rs-panel-body {padding: .5rem !important;}
-.rs-panel-header { padding-top: .1rem !important;  padding-bottom: .1rem !important; font-size: 1rem !important;}
+.rs-panel-header { padding-top: .2rem !important;  padding-bottom: .2rem !important; font-size: 1rem !important;}
 /* .rs-panel-title {font-size: 1.2rem;} */
 .rs-panel-collapsible>.rs-panel-header>.rs-icon {
     right: 5px !important;
-    top: 1rem !important;
+    top: .5rem !important;
 }
 /*  */
 .rs-message-container {padding: .4rem !important;}
@@ -112,3 +112,7 @@ body {
         opacity: 1
     }
 }
+
+
+
+.group-of-show-html > div {justify-content: end;}

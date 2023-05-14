@@ -5,7 +5,7 @@ import { formContext, useForm } from './FormCtx'
 import { FormPath, FormState } from './FormState'
 
 import { observer } from 'mobx-react-lite'
-import { useCallback, useMemo } from 'react'
+import { ReactNode, useCallback, useMemo } from 'react'
 import { Button, Input, InputNumber, MultiCascader, Panel, SelectPicker, Toggle, Tooltip, Whisper } from 'rsuite'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { FormDefinition } from 'src/core/Requirement'
@@ -23,7 +23,8 @@ import { WebviewPlacePoints } from './widgets/WebviewPlacePoints'
  */
 export const FormUI = observer(function AskInfoUI_(p: {
     //
-    title?: string
+    className?: string
+    title?: ReactNode
     formDef: FormDefinition
     formState?: FormState
     submit: (value: any) => void
@@ -44,7 +45,7 @@ export const FormUI = observer(function AskInfoUI_(p: {
 
     return (
         <formContext.Provider value={form}>
-            <Panel header={p.title} shaded>
+            <Panel header={p.title} shaded className={p.className}>
                 {/* widgets ------------------------------- */}
                 <div className='flex gap-2'>
                     <div>

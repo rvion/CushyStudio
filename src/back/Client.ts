@@ -129,7 +129,7 @@ export class CushyClient {
                 return logger().info('no action found for id:' + msg.actionID)
             }
             const flow = this.serverState.getOrCreateFlow(msg.flowID)
-            return flow.runAction(action, msg.data)
+            return flow.runAction(action, msg.data, msg.executionID)
         }
 
         if (msg.type === 'reset') {

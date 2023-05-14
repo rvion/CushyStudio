@@ -38,7 +38,8 @@ export class FrontFlow {
 
     actionStarted = (msg: FromExtension_ActionStart) => {
         const actionFront = this.getOrCreateAction(msg.actionID, msg.executionID)
-        this.actions.set(msg.executionID, actionFront)
+        // 🔴
+        // this.actions.set(msg.executionID, actionFront)
     }
 
     constructor(

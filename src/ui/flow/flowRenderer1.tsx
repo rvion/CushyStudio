@@ -4,7 +4,7 @@ import { MessageFromExtensionToWebview } from '../../types/MessageFromExtensionT
 import { FormUI } from '../FormUI'
 import { FlowGeneratedImagesUI } from '../FlowGeneratedImagesUI'
 import { MsgShowHTMLUI } from '../MsgShowHTMLUI'
-import { ShowActionEndUI } from './ShowFlowEndUI'
+import { ShowActionEndUI } from './ShowActionEndUI'
 import { ShowUpdatingNodeUI } from '../ShowUpdatingNodeUI'
 import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
 import { Panel } from 'rsuite'
@@ -61,6 +61,6 @@ export const renderMsgUI = (
                 // />
             ),
         }
-    if (msg.type === 'action-end') return { ui: <ShowActionEndUI key={msg.uid} msg={msg} /> }
+    // if (msg.type === 'action-end') return { ui: <ShowActionEndUI key={msg.uid} msg={msg} /> }
     return null
 }

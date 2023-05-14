@@ -35,7 +35,7 @@ import { ServerState } from './ServerState'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
 import { readFileSync, writeFileSync } from 'fs'
 import { NodeBuilder } from './NodeBuilder'
-import { ActionDefinition, asExecutionID } from './ActionDefinition'
+import { ActionDefinition, ExecutionID, asExecutionID } from './ActionDefinition'
 import { auto } from '../core/autoValue'
 import { Presets } from '../presets/presets'
 import { RequirementBuilder } from './ReqBuilder'
@@ -75,6 +75,7 @@ export class Workflow {
         //
         actionDef: ActionDefinition,
         formResult: FormResult<any>,
+        executionID: ExecutionID,
     ) => {
         const numPromptBefore = this._promptCounter
         const start = Date.now()
@@ -83,7 +84,7 @@ export class Workflow {
         const broadcast = this.workspace.broadCastToAllClients
         const flowID = this.uid
         const actionID = actionDef.uid
-        const executionID = asExecutionID(nanoid(6))
+        // const executionID = asExecutionID(nanoid(6))
         broadcast({ type: 'action-start', flowID, actionID, executionID, data: formResult })
         broadcast({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
 

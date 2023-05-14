@@ -2,23 +2,39 @@ import { MessageFromExtensionToWebview } from '../../types/MessageFromExtensionT
 import { FormUI } from '../FormUI'
 import { observer } from 'mobx-react-lite'
 import { useFlow } from '../../front/FrontFlowCtx'
+import { Loader } from 'rsuite'
 
 export const ShowActionStartUI = observer(function ShowActionStartUI_(p: {
     msg: MessageFromExtensionToWebview & { type: 'action-start' }
 }) {
     const flow = useFlow()
     const executionID = p.msg.executionID
-    const actionFront = flow.actions.get(executionID)
-    if (actionFront == null) return <div>actionFront==null</div>
+    const x = flow.actions.get(executionID)
+    if (x == null) return <div>actionFront==null</div>
     return (
         <div>
+            {/* <div>({x.done})</div> */}
+            {/* <div>({x.done === 'success' ? 'a🟢' : 'a🔴'})</div> */}
+            {/* {x.executionID} */}
             {/* {JSON.stringify(actionFront.currentActionRef)} */}
-            {actionFront.currentActionRef && (
+            {x.currentActionRef && (
                 <FormUI
+                    title={
+                        <>
+                            {x.done === false ? <Loader /> : null} {x.currentActionRef.name}
+                        </>
+                    }
+                    className={
+                        x.done === false //
+                            ? 'border-2 border-yellow-500'
+                            : x.done === 'success'
+                            ? 'border-2 border-green-500'
+                            : 'border-2 border-red-500'
+                    }
                     //
                     submit={() => {}}
-                    formDef={actionFront.currentActionRef.form}
-                    formState={actionFront.formState}
+                    formDef={x.currentActionRef.form}
+                    formState={x.formState}
                 />
             )}
         </div>

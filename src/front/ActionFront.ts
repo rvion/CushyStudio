@@ -1,6 +1,7 @@
-import type { ActionRef } from 'src/core/KnownWorkflow'
-import type { Maybe } from 'src/utils/types'
+import type { ActionRef } from '../core/KnownWorkflow'
+import type { Maybe } from '../utils/types'
 import type { FrontFlow } from './FrontFlow'
+import type { ActionEndStatus } from '../types/MessageFromExtensionToWebview'
 import { ActionDefinitionID, ExecutionID, asExecutionID } from '../back/ActionDefinition'
 
 import { makeAutoObservable } from 'mobx'
@@ -16,7 +17,7 @@ import { FormState } from '../ui/FormState'
 export class ActionFront {
     locked: boolean = false
 
-    done: boolean = false
+    done: ActionEndStatus | false = false
     currentActionRef: Maybe<ActionRef> = null
     formState: FormState
 

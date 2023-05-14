@@ -11,7 +11,7 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
     const XX = p.actionFront
     return (
         <div>
-            {p.actionFront.formState == null ? '🟢null' : '1'}
+            {/* {p.actionFront.formState == null ? '🟢null' : '1'} */}
 
             <div className='flex flex-wrap gap-2'>
                 {/* ({uiSt.currentActionID}) */}

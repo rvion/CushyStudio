@@ -74,12 +74,13 @@ export type FromExtension_ActionCode = {
     executionID: ExecutionID
     code: string
 }
+export type ActionEndStatus = 'success' | 'failure'
 export type FromExtension_ActionEnd = {
     type: 'action-end'
     flowID: FlowID
     actionID: ActionDefinitionID
     executionID: ExecutionID
-    status: 'success' | 'failure'
+    status: ActionEndStatus
 }
 
 export type FromExtension_Print = { type: 'print'; flowID: FlowID; message: string }

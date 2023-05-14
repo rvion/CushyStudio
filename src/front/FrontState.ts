@@ -162,16 +162,18 @@ export class FrontState {
         }
         if (msg.type === 'action-start') {
             const flow = this.getOrCreateFlow(msg.flowID)
+            if (flow.actions.has(msg.executionID)) return console.log(`🔴 error: action already exists`)
             flow.actionStarted(msg)
             flow.history.push(msg)
             return
         }
+
         if (msg.type === 'action-end') {
             const flow = this.getOrCreateFlow(msg.flowID)
             flow.history.push(msg)
             const action = flow.actions.get(msg.executionID)
             if (action == null) return console.log(`🔴 error: no action found`)
-            action.done = true
+            action.done = msg.status
             return
         }
 
