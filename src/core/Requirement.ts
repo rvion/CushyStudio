@@ -7,13 +7,13 @@ import type { FormBuilder, InfoAnswer } from 'src/controls/askv2'
 // 1. the main abstraction of cushy are actions.
 /** quick function to help build actions in a type-safe way */
 
-export const action = <const T extends FormDefinitino>(name: string, t: Omit<Action<T>, 'name'>): Action<T> => ({ name, ...t })
-export type ActionType = <const T extends FormDefinitino>(name: string, t: Omit<Action<T>, 'name'>) => Action<T>
+export const action = <const F extends FormDefinition>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
+export type ActionType = <const F extends FormDefinition>(name: string, t: Omit<Action<F>, 'name'>) => Action<F>
 
-export type FormDefinitino = { [key: string]: Requestable }
-export type FormResult<Req extends FormDefinitino> = { [key in keyof Req]: InfoAnswer<Req[key]> }
+export type FormDefinition = { [key: string]: Requestable }
+export type FormResult<Req extends FormDefinition> = { [key in keyof Req]: InfoAnswer<Req[key]> }
 
-export type Action<FormDef extends FormDefinitino> = {
+export type Action<FormDef extends FormDefinition> = {
     /** action name; default to unnamed_action_<nanoid()> */
     name: string
     /** help text to show user */

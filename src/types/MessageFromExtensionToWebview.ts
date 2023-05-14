@@ -1,7 +1,7 @@
 import type { ActionDefinitionID, ExecutionID } from 'src/back/ActionDefinition'
 import type { ImageInfos, ImageUID } from 'src/core/GeneratedImageSummary'
 import type { ActionRef } from 'src/core/KnownWorkflow'
-import type { FormDefinitino, FormResult } from 'src/core/Requirement'
+import type { FormDefinition, FormResult } from 'src/core/Requirement'
 import type { EmbeddingName } from 'src/core/Schema'
 import type { CushyDBData } from 'src/core/WorkspaceHistoryJSON'
 import type { FlowID } from 'src/front/FrontFlow'
@@ -23,6 +23,8 @@ export type FromWebview_runAction = {
     type: 'run-action'
     flowID: FlowID
     actionID: ActionDefinitionID
+    /** the execution ID to use (defined client-side, see ActionFront) */
+    executionID: ExecutionID
     data: FormResult<any>
 }
 // request to open an external URL
@@ -84,7 +86,7 @@ export type FromExtension_Print = { type: 'print'; flowID: FlowID; message: stri
 export type FromExtension_Prompt = { type: 'prompt'; flowID: FlowID; graph: ComfyPromptJSON }
 export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageInfos[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
-export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: FormDefinitino }
+export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: FormDefinition }
 
 export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */

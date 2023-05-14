@@ -148,6 +148,10 @@ export class FrontState {
             return
         }
         if (msg.type === 'show-html') {
+            if (msg.flowID) {
+                const flow = this.getOrCreateFlow(msg.flowID)
+                flow.history.push(msg)
+            }
             return
         }
 

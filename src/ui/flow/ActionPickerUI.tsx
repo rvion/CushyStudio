@@ -1,72 +1,24 @@
-import type { ActionDefinitionID } from 'src/back/ActionDefinition'
-import type { Maybe } from 'src/utils/types'
-import type { FormResult } from 'src/core/Requirement'
+import type { ActionFront } from '../../front/ActionFront'
 
 import * as I from '@rsuite/icons'
-import { observer, useLocalObservable } from 'mobx-react-lite'
-import { Button, IconButton, Panel, SelectPicker } from 'rsuite'
+import { observer } from 'mobx-react-lite'
+import { Button, IconButton, Panel } from 'rsuite'
 import { useSt } from '../../front/FrontStateCtx'
-import { useFlow } from '../../front/FrontFlowCtx'
-import { ActionRef } from 'src/core/KnownWorkflow'
 import { FormUI } from '../FormUI'
 
-export const ActionPickerUI = observer(function ActionPickerUI_() {
+export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront: ActionFront }) {
     const st = useSt()
-    const flow = useFlow()
-    const uiSt = useLocalObservable(() => ({
-        currentAction: null as Maybe<ActionRef>,
-        currentActionDraft: null as Maybe<FormResult<any>>,
-    }))
-    const act = uiSt.currentAction
+    const actionFront = p.actionFront
+    const formState = actionFront.formState
     return (
         <div>
-            {act && (
+            {p.actionFront.formState == null ? '🟢null' : '1'}
+            {formState && (
                 <Panel>
-                    <h4>{uiSt.currentAction?.name}</h4>
-                    <FormUI
-                        submit={(data) => {
-                            st.sendMessageToExtension({
-                                type: 'run-action',
-                                flowID: flow.id,
-                                actionID: act.id,
-                                data: data,
-                            })
-                        }}
-                        step={{
-                            type: 'ask',
-                            flowID: flow.id,
-                            form: act.form,
-                        }}
-                    />
+                    <h4>{actionFront.currentActionRef?.name}</h4>
+                    <FormUI submit={() => actionFront.start()} formState={formState} />
                 </Panel>
             )}
-            <div>
-                {/* ({st.ActionOptionForSelectInput.length} actions) */}
-                {/* <SelectPicker
-                    value={uiSt.currentAction.id}
-                    labelKey='name'
-                    valueKey='id'
-                    // onChange={(v) => (uiSt.currentAction =)}
-                    data={st.ActionOptionForSelectInput}
-                    style={{ width: 224 }}
-                /> */}
-                <IconButton
-                    //
-                    appearance='primary'
-                    color='green'
-                    disabled={uiSt.currentAction == null}
-                    icon={<I.PlayOutline />}
-                    onClick={() => {
-                        if (uiSt.currentAction == null) return
-                        // st.sendMessageToExtension({
-                        //     type: 'run-action',
-                        //     flowID: flow.id,
-                        //     actionID: uiSt.currentAction.id,
-                        //     data: {}, // 🔴
-                        // })
-                    }}
-                />
-            </div>
             <div className='flex flex-wrap gap-2'>
                 {/* ({uiSt.currentActionID}) */}
                 {st.ActionOptionForSelectInput.map((actionRef) => {
@@ -75,11 +27,11 @@ export const ActionPickerUI = observer(function ActionPickerUI_() {
                             startIcon={<I.PlayOutline />}
                             key={actionRef.id}
                             size='sm'
-                            appearance={uiSt.currentAction?.id === actionRef.id ? 'primary' : 'ghost'}
-                            color={uiSt.currentAction?.id === actionRef.id ? 'green' : undefined}
+                            appearance={actionFront.currentActionRef?.id === actionRef.id ? 'primary' : 'ghost'}
+                            color={actionFront.currentActionRef?.id === actionRef.id ? 'green' : undefined}
                             onClick={() => {
-                                if (uiSt.currentAction?.id != actionRef.id) {
-                                    uiSt.currentAction = actionRef
+                                if (actionFront.currentActionRef?.id != actionRef.id) {
+                                    actionFront.focusAction(actionRef)
                                     return
                                 }
                                 // st.sendMessageToExtension({
@@ -97,6 +49,33 @@ export const ActionPickerUI = observer(function ActionPickerUI_() {
                         </Button>
                     )
                 })}
+            </div>
+            <div>
+                {/* ({st.ActionOptionForSelectInput.length} actions) */}
+                {/* <SelectPicker
+                    value={uiSt.currentAction.id}
+                    labelKey='name'
+                    valueKey='id'
+                    // onChange={(v) => (uiSt.currentAction =)}
+                    data={st.ActionOptionForSelectInput}
+                    style={{ width: 224 }}
+                /> */}
+                <IconButton
+                    //
+                    appearance='primary'
+                    color='green'
+                    disabled={actionFront.currentActionRef == null}
+                    icon={<I.PlayOutline />}
+                    onClick={() => {
+                        if (actionFront.currentActionRef == null) return
+                        // st.sendMessageToExtension({
+                        //     type: 'run-action',
+                        //     flowID: flow.id,
+                        //     actionID: uiSt.currentAction.id,
+                        //     data: {}, // 🔴
+                        // })
+                    }}
+                />
             </div>
         </div>
     )

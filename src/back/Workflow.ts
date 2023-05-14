@@ -1,6 +1,6 @@
 import type { LATER } from 'LATER'
 import type { FlowID } from '../front/FrontFlow'
-import type { Action, FormDefinitino, FormResult } from '../core/Requirement'
+import type { Action, FormDefinition, FormResult } from '../core/Requirement'
 
 import FormData from 'form-data'
 import { marked } from 'marked'
@@ -368,11 +368,13 @@ export class Workflow {
     }
 
     private _promptCounter = 0
+
     private sendPromp = async (): Promise<PromptExecution> => {
         const currentJSON = deepCopyNaive(this.graph.jsonForPrompt)
         const schema = this.workspace.schema
         this.workspace.broadCastToAllClients({
             type: 'show-html',
+            flowID: this.uid,
             content: this.flowSummaryHTML,
             title: 'flow-summary',
         })

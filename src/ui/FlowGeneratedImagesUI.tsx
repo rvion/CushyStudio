@@ -83,7 +83,7 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                         <div className='flex'>
                             <img
                                 style={{ height: st.gallerySize }}
-                                src={img.localURL ?? img.comfyURL}
+                                src={img.comfyURL ?? img.localURL}
                                 onClick={() => uiSt.openGallery(ix)}
                             />
                             <div className='flex flex-col'>

@@ -6,6 +6,7 @@ import type { Branded } from '../utils/types'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { MessageGroupper } from './UIGroupper'
+import { ActionFront } from './ActionFront'
 
 export type FlowID = Branded<string, 'FlowID'>
 
@@ -15,28 +16,37 @@ export class FrontFlow {
     groupper: MessageGroupper
     history: MessageFromExtensionToWebview[] = []
     actions = new Map<ExecutionID, ActionFront>()
+    draft = new ActionFront(this)
+
+    /**
+     * if the front hear about some action it doesn't know
+     * it probably means the action has been started by an other front
+     * or in a previous session
+     */
+    getOrCreateAction = (
+        //
+        actionID: ActionDefinitionID,
+        executionID: ExecutionID,
+    ) => {
+        let action = this.actions.get(executionID)
+        if (!action) {
+            action = new ActionFront(this, actionID, executionID)
+            this.actions.set(executionID, action)
+        }
+        return action
+    }
 
     actionStarted = (msg: FromExtension_ActionStart) => {
-        const actionFront = new ActionFront(this, msg.actionID, msg.executionID)
+        const actionFront = this.getOrCreateAction(msg.actionID, msg.executionID)
         this.actions.set(msg.executionID, actionFront)
     }
 
     constructor(
         //
-        public workspace: FrontState,
+        public st: FrontState,
         public id: FlowID = asFlowID(nanoid()),
     ) {
-        this.groupper = new MessageGroupper(this.workspace, () => this.history)
+        this.groupper = new MessageGroupper(this.st, () => this.history)
         makeAutoObservable(this)
     }
-}
-
-export class ActionFront {
-    done: boolean = false
-    constructor(
-        //
-        public flow: FrontFlow,
-        public actionID: ActionDefinitionID,
-        public executionID: ExecutionID,
-    ) {}
 }

@@ -17,6 +17,7 @@ import { WebviewPlacePoints } from './widgets/WebviewPlacePoints'
 import { ImageSelection } from './widgets/ImageSelection'
 import { useFlow } from '../front/FrontFlowCtx'
 import { ShowFlowEndUI } from './flow/ShowFlowEndUI'
+import { FormDefinition } from 'src/core/Requirement'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
@@ -24,31 +25,30 @@ import { ShowFlowEndUI } from './flow/ShowFlowEndUI'
  */
 export const FormUI = observer(function AskInfoUI_(p: {
     //
-    step: FromExtension_ask
+    formState?: FormState
+    formDef?: FormDefinition
     submit: (value: any) => void
-    locked?: boolean
 }) {
     const st = useSt()
-    const askState = useMemo(() => new FormState(), [])
-
+    const form = p.formState ?? useMemo(() => new FormState(st, p.formDef!), [p.formDef!])
     const submit = useCallback(
         (ev: { preventDefault?: () => void; stopPropagation?: () => void }) => {
             ev.preventDefault?.()
             ev.stopPropagation?.()
             // st.answerInfo(askState.value)
-            p.submit(askState.value)
-            askState.locked = true
+            p.submit(form.value)
+            form.locked = true
         },
-        [askState],
+        [form],
     )
 
     return (
-        <formContext.Provider value={askState}>
+        <formContext.Provider value={form}>
             <Panel shaded>
                 {/* widgets ------------------------------- */}
                 <div className='flex'>
                     <div>
-                        {Object.entries(p.step.form).map(([k, v], ix) => (
+                        {Object.entries(form.formDef).map(([k, v], ix) => (
                             <div
                                 // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
                                 className='row items-start gap-2'
@@ -59,7 +59,7 @@ export const FormUI = observer(function AskInfoUI_(p: {
                             </div>
                         ))}
                         {/* submit ------------------------------- */}
-                        {askState.locked ? null : ( // <ShowFlowEndUI msg={{}} />
+                        {form.locked ? null : ( // <ShowFlowEndUI msg={{}} />
                             <Button className='w-full' color='green' appearance='primary' onClick={submit}>
                                 OK
                             </Button>
@@ -67,12 +67,12 @@ export const FormUI = observer(function AskInfoUI_(p: {
                     </div>
                     <div className='flex flex-col items-end'>
                         <DebugUI title='⬇'>
-                            the request made by the wofkflow is
-                            <pre>{JSON.stringify(p.step, null, 4)}</pre>
+                            the form definition is
+                            {/* <pre>{JSON.stringify(p.formState?.formDef, null, 4)}</pre> */}
                         </DebugUI>
                         <DebugUI title={'⬆'}>
                             the value about to be sent back to the workflow is
-                            <pre>{JSON.stringify(askState.value, null, 4)}</pre>
+                            {/* <pre>{JSON.stringify(form.value, null, 4)}</pre> */}
                         </DebugUI>
                     </div>
                 </div>
@@ -140,7 +140,8 @@ const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'loras') return <LoraWidgetUI />
 
     exhaust(req)
-    return <div>{JSON.stringify(req)} not supported ok</div>
+    console.log(`🔴`, (req as any).type)
+    return <div>{JSON.stringify(req)} not supported </div>
 })
 
 export const WidgetStrUI = observer(function WidgetStrUI_(p: {
@@ -164,7 +165,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
     set: (v: EnumValue) => void
 }) {
     const flow = useFlow()
-    const schema = flow.workspace.schema
+    const schema = flow.st.schema
     const options = useMemo(() => {
         if (schema == null) return []
         return schema!.getEnumOptionsForSelectPicker(p.enumName)

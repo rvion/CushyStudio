@@ -1,5 +1,7 @@
 import { makeAutoObservable, toJS } from 'mobx'
 import { nanoid } from 'nanoid'
+import { FormDefinition } from 'src/core/Requirement'
+import { FrontState } from 'src/front/FrontState'
 
 export type FormPath = (string | number)[]
 
@@ -19,9 +21,16 @@ export class FormState {
      */
     formID = nanoid()
 
-    constructor() {
+    constructor(
+        //
+        public st: FrontState,
+        public formDef: FormDefinition,
+    ) {
         makeAutoObservable(this)
     }
+
+    // submitAsInfoAnswer = () => {
+    // }
 
     getAtPath(path: FormPath): any {
         let current = this.value
