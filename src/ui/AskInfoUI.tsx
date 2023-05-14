@@ -16,6 +16,7 @@ import { exhaust } from '../utils/ComfyUtils'
 import { WebviewPlacePoints } from './widgets/WebviewPlacePoints'
 import { ImageSelection } from './widgets/ImageSelection'
 import { useFlow } from '../front/FrontFlowCtx'
+import { ShowFlowEndUI } from './flow/ShowFlowEndUI'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
@@ -52,7 +53,7 @@ export const AskInfoUI = observer(function AskInfoUI_(p: { step: FromExtension_a
                             </div>
                         ))}
                         {/* submit ------------------------------- */}
-                        {askState.locked ? null : (
+                        {askState.locked ? null : ( // <ShowFlowEndUI msg={{}} />
                             <Button className='w-full' color='green' appearance='primary' onClick={submit}>
                                 OK
                             </Button>

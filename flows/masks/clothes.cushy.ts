@@ -42,11 +42,15 @@ action('A. mask-clothes', {
     //     image: kk.IMAGE({}),
     //     clothes: kk.STRING({ tag: 'clothes' }),
     // }),
+    ui: (form) => ({
+        match: form.str({ default: 'dress' }),
+        image: form.image({}),
+    }),
     run: (flow, reqs) => {
         const image = reqs.image
         const clothesMask = flow.nodes.MasqueradeMaskByText({
             image: image,
-            prompt: reqs.clothes,
+            prompt: reqs.match,
             negative_prompt: 'face, arms, hands, legs, feet, background',
             normalize: 'no',
             precision: 0.3,

@@ -2,6 +2,7 @@ import type { ComfyStatus } from '../types/ComfyWsApi'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+import { ActionDefinitionID } from 'src/back/ActionDefinition'
 import { ImageInfos, ImageUID } from '../core/GeneratedImageSummary'
 import { Graph } from '../core/Graph'
 import { ActionRef } from '../core/KnownWorkflow'
@@ -9,19 +10,16 @@ import { Schema } from '../core/Schema'
 import { logger } from '../logger/logger'
 import {
     FromExtension_CushyStatus,
-    FromExtension_ask,
     MessageFromExtensionToWebview,
     MessageFromWebviewToExtension,
 } from '../types/MessageFromExtensionToWebview'
 import { LightBoxState } from '../ui/LightBox'
-import { renderMsgUI } from '../ui/flow/flowRenderer1'
 import { exhaust } from '../utils/ComfyUtils'
 import { Maybe } from '../utils/types'
 import { CushyDB } from './FrontDB'
+import { FlowID, FrontFlow } from './FrontFlow'
 import { ResilientSocketToExtension } from './ResilientCushySocket'
 import { UIAction } from './UIAction'
-import { ActionDefinitionID } from 'src/back/ActionDefinition'
-import { FlowID, FrontFlow } from './FrontFlow'
 import { MessageGroupper } from './UIGroupper'
 
 export type MsgGroup = {
@@ -145,7 +143,7 @@ export class FrontState {
         if (msg.type === 'ask') {
             const flow = this.getOrCreateFlow(msg.flowID)
             flow.history.push(msg)
-            flow.pendingAsk.push(msg)
+            // flow.pendingAsk.push(msg)
             return
         }
         if (msg.type === 'show-html') {
@@ -159,12 +157,16 @@ export class FrontState {
         }
         if (msg.type === 'action-start') {
             const flow = this.getOrCreateFlow(msg.flowID)
+            flow.actionStarted(msg)
             flow.history.push(msg)
             return
         }
         if (msg.type === 'action-end') {
             const flow = this.getOrCreateFlow(msg.flowID)
             flow.history.push(msg)
+            const action = flow.actions.get(msg.executionID)
+            if (action == null) return console.log(`🔴 error: no action found`)
+            action.done = true
             return
         }
 
@@ -186,7 +188,13 @@ export class FrontState {
             return
         }
 
-        if (msg.type === 'images') return this.recordImages(msg.images)
+        if (msg.type === 'images') {
+            if (msg.flowID) {
+                const flow = this.getOrCreateFlow(msg.flowID)
+                flow.history.push(msg)
+            }
+            return this.recordImages(msg.images)
+        }
 
         if (msg.type === 'ls') {
             console.log(msg)

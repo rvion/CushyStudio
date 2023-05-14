@@ -311,7 +311,12 @@ export class ServerState {
     // }
 
     forwardImagesToFrontV2 = (images: GeneratedImage[]) => {
-        this.broadCastToAllClients({ type: 'images', images: images.map((i) => i.toJSON()) })
+        const flow = this.activeFlow // 🔴
+        this.broadCastToAllClients({
+            type: 'images',
+            images: images.map((i) => i.toJSON()),
+            flowID: flow?.uid,
+        })
     }
 
     onMessage = (e: WS.MessageEvent) => {

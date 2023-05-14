@@ -35,7 +35,7 @@ import { ServerState } from './ServerState'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
 import { readFileSync, writeFileSync } from 'fs'
 import { NodeBuilder } from './NodeBuilder'
-import { ActionDefinition, asActionRunID } from './ActionDefinition'
+import { ActionDefinition, asExecutionID } from './ActionDefinition'
 import { auto } from '../core/autoValue'
 import { Presets } from '../presets/presets'
 import { RequirementBuilder } from './ReqBuilder'
@@ -78,7 +78,7 @@ export class Workflow {
         const broadcast = this.workspace.broadCastToAllClients
         const flowID = this.uid
         const actionID = actionDef.uid
-        const executionID = asActionRunID(nanoid(6))
+        const executionID = asExecutionID(nanoid(6))
         broadcast({ type: 'action-start', flowID, actionID, executionID })
         broadcast({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
 
@@ -87,7 +87,7 @@ export class Workflow {
 
         // check if we're in "MOCK" mode
         console.log(`activeFlow = ${this.uid}`)
-        this.workspace.activeFlow = this // 🔴
+        this.workspace.activeFlow = this // 🔴🔴
 
         const ProjectScriptFn = new Function('action', codeJS)
         const actionsPool: { name: string; action: Action<any> }[] = []

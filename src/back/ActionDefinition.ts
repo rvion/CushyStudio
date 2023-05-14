@@ -7,8 +7,8 @@ import { logger } from '../logger/logger'
 export type ActionDefinitionID = Branded<string, 'FlowDefinitionID'>
 export const asFlowDefinitionID = (s: string): ActionDefinitionID => s as any
 
-export type ActionRunID = Branded<string, 'ActionRunID'>
-export const asActionRunID = (s: string): ActionRunID => s as any
+export type ExecutionID = Branded<string, 'ExecutionID'>
+export const asExecutionID = (s: string): ExecutionID => s as any
 
 /**
  * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file

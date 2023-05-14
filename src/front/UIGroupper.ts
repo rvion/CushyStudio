@@ -20,8 +20,8 @@ export class MessageGroupper {
         const len = this.received.length
         const start = this.frontState.showAllMessageReceived ? 0 : Math.max(0, len - max)
         const items = this.received.slice(start)
-        const ordered = this.frontState.flowDirection === 'up' ? items.reverse() : items
-        return ordered
+        // const ordered = this.frontState.flowDirection === 'up' ? items.reverse() : items
+        return items
     }
 
     // group sequential items with similar types together

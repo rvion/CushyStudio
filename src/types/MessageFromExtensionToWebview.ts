@@ -1,4 +1,4 @@
-import type { ActionDefinitionID, ActionRunID } from 'src/back/ActionDefinition'
+import type { ActionDefinitionID, ExecutionID } from 'src/back/ActionDefinition'
 import type { Requestable } from 'src/controls/Requestable'
 import type { ImageInfos, ImageUID } from 'src/core/GeneratedImageSummary'
 import type { ActionRef } from 'src/core/KnownWorkflow'
@@ -9,6 +9,7 @@ import type { PayloadID } from '../core/PayloadID'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
+import type { Maybe } from 'src/utils/types'
 
 import { exhaust } from '../utils/ComfyUtils'
 
@@ -43,35 +44,36 @@ export type MessageFromExtensionToWebview = { uid: PayloadID } & MessageFromExte
 
 export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boolean }
 
-// actions payloads
+// non flow-related ------------------------------------------------------
+export type FromExtension_Schema = { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
+export type FromExtension_SyncHistory = { type: 'sync-history'; history: CushyDBData }
+export type FromExtension_Ls = { type: 'ls'; actions: ActionRef[] }
+
+// actions payloads ------------------------------------------------------
 export type FromExtension_ActionStart = {
     type: 'action-start'
     flowID: FlowID
     actionID: ActionDefinitionID
-    executionID: ActionRunID
+    executionID: ExecutionID
 }
 export type FromExtension_ActionCode = {
     type: 'action-code'
     flowID: FlowID
     actionID: ActionDefinitionID
-    executionID: ActionRunID
+    executionID: ExecutionID
     code: string
 }
 export type FromExtension_ActionEnd = {
     type: 'action-end'
     flowID: FlowID
     actionID: ActionDefinitionID
-    executionID: ActionRunID
+    executionID: ExecutionID
     status: 'success' | 'failure'
 }
 
-export type FromExtension_Schema = { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
-export type FromExtension_SyncHistory = { type: 'sync-history'; history: CushyDBData }
-export type FromExtension_Ls = { type: 'ls'; actions: ActionRef[] }
-
 export type FromExtension_Print = { type: 'print'; flowID: FlowID; message: string }
 export type FromExtension_Prompt = { type: 'prompt'; flowID: FlowID; graph: ComfyPromptJSON }
-export type FromExtension_Images = { type: 'images'; flowID?: FlowID; images: ImageInfos[] }
+export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageInfos[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
 export type FromExtension_ask = { type: 'ask'; flowID: FlowID; request: { [key: string]: Requestable } }
 

@@ -31,6 +31,7 @@ export const renderMsgUI = (
             ),
         }
     if (msg.type === 'images') return { ui: <FlowGeneratedImagesUI key={msg.uid} msg={msg} />, wrap: true }
+    if (msg.type === 'action-start') return { ui: <>OKOK</> }
     if (msg.type === 'action-end') return { ui: <ShowFlowEndUI key={msg.uid} msg={msg} /> }
     return null
 }

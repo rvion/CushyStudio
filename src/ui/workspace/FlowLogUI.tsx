@@ -27,7 +27,6 @@ export const FlowUI = observer(function FlowUI_(p: {}) {
     const flow = useFlow()
     return (
         <Panel className='flex flex-col gap-2 p-2'>
-            <ActionPickerUI />
             {flow.groupper.msgGroups.map((group, groupIx) => {
                 // if (group.le)
                 return (
@@ -41,6 +40,7 @@ export const FlowUI = observer(function FlowUI_(p: {}) {
                     </div>
                 )
             })}
+            <ActionPickerUI />
         </Panel>
     )
 })

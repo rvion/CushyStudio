@@ -36,8 +36,8 @@ export type Requestable =
     /** ?? */
     | BUG
 
-export type Requestable_str = { type: 'str'; label?: string }
-export type Requestable_strOpt = { type: 'str?'; label?: string }
+export type Requestable_str = { type: 'str'; label?: string; default?: string }
+export type Requestable_strOpt = { type: 'str?'; label?: string; default?: string }
 export type Requestable_int = { type: 'int'; label?: string }
 export type Requestable_intOpt = { type: 'int?'; label?: string }
 export type Requestable_bool = { type: 'bool'; label?: string }
@@ -46,7 +46,7 @@ export type Requestable_embeddings = { type: 'embeddings'; label?: string }
 export type Requestable_enum<T extends keyof LATER<'Requirable'>> = { type: 'enum'; enumName: T; label?: string }
 export type Requestable_loras = { type: 'loras'; label?: string }
 export type Requestable_samMaskPoints = { type: 'samMaskPoints'; label?: string; imageInfo: ImageInfos }
-export type Requestable_selectImage = { type: 'selectImage'; label?: string; imageInfos: ImageInfos[] }
+export type Requestable_selectImage = { type: 'selectImage'; label?: string; imageInfos?: ImageInfos[] }
 export type Requestable_manualMask = { type: 'manualMask'; label?: string; imageInfo: ImageInfos }
 export type Requestable_paint = { type: 'paint'; label?: string; url: string }
 export type Requestable_items = { type: 'items'; label?: string; items: { [key: string]: Requestable } }
