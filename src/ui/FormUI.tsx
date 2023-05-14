@@ -23,6 +23,7 @@ import { WebviewPlacePoints } from './widgets/WebviewPlacePoints'
  */
 export const FormUI = observer(function AskInfoUI_(p: {
     //
+    title?: string
     formDef: FormDefinition
     formState?: FormState
     submit: (value: any) => void
@@ -43,9 +44,9 @@ export const FormUI = observer(function AskInfoUI_(p: {
 
     return (
         <formContext.Provider value={form}>
-            <Panel shaded>
+            <Panel header={p.title} shaded>
                 {/* widgets ------------------------------- */}
-                <div className='flex'>
+                <div className='flex gap-2'>
                     <div>
                         {Object.entries(formDef).map(([k, v], ix) => (
                             <div
@@ -57,23 +58,30 @@ export const FormUI = observer(function AskInfoUI_(p: {
                                 <WidgetUI path={[k]} req={v} />
                             </div>
                         ))}
-                        {/* submit ------------------------------- */}
-                        {form.locked ? null : ( // <ShowFlowEndUI msg={{}} />
-                            <Button className='w-full' color='green' appearance='primary' onClick={submit}>
+                    </div>
+                    {/* submit ------------------------------- */}
+                    {/* <div className='flex-grow'></div> */}
+                    {form.locked ? (
+                        <div>
+                            <Button disabled appearance='subtle' onClick={submit}>
                                 OK
                             </Button>
-                        )}
-                    </div>
-                    <div className='flex flex-col items-end'>
-                        <DebugUI title='⬇'>
-                            the form definition is
-                            {/* <pre>{JSON.stringify(p.formState?.formDef, null, 4)}</pre> */}
-                        </DebugUI>
-                        <DebugUI title={'⬆'}>
-                            the value about to be sent back to the workflow is
-                            {/* <pre>{JSON.stringify(form.value, null, 4)}</pre> */}
-                        </DebugUI>
-                    </div>
+                        </div> // <ShowFlowEndUI msg={{}} />
+                    ) : (
+                        <div>
+                            <Button color='green' appearance='primary' onClick={submit}>
+                                OK
+                            </Button>
+                        </div>
+                    )}
+                    <DebugUI title='⬇'>
+                        the form definition is
+                        {/* <pre>{JSON.stringify(p.formState?.formDef, null, 4)}</pre> */}
+                    </DebugUI>
+                    <DebugUI title={'⬆'}>
+                        the value about to be sent back to the workflow is
+                        {/* <pre>{JSON.stringify(form.value, null, 4)}</pre> */}
+                    </DebugUI>
                 </div>
             </Panel>
             {/* debug -------------------------------*/}

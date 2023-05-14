@@ -45,7 +45,13 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
                 })}
             </div>
             {XX.currentActionRef && (
-                <FormUI formDef={XX.currentActionRef.form} submit={() => XX.start()} formState={XX.formState} />
+                <FormUI
+                    //
+                    title={XX.currentActionRef.name}
+                    formDef={XX.currentActionRef.form}
+                    submit={() => XX.start()}
+                    formState={XX.formState}
+                />
             )}
 
             <div>
