@@ -1,4 +1,5 @@
 import type { ImageInfos } from 'src/core/GeneratedImageSummary'
+import type { LATER } from 'LATER'
 import { BUG } from './BUG'
 
 export type Requestable =
@@ -13,8 +14,9 @@ export type Requestable =
     | Requestable_boolOpt
     /** embedding */
     | Requestable_embeddings
+    /** embedding */
+    | Requestable_enum<any>
     /** loras */
-    | Requestable_lora
     | Requestable_loras
     /** painting */
     | Requestable_samMaskPoints
@@ -41,7 +43,7 @@ export type Requestable_intOpt = { type: 'int?'; label?: string }
 export type Requestable_bool = { type: 'bool'; label?: string }
 export type Requestable_boolOpt = { type: 'bool?'; label?: string }
 export type Requestable_embeddings = { type: 'embeddings'; label?: string }
-export type Requestable_lora = { type: 'lora'; label?: string }
+export type Requestable_enum<T extends keyof LATER<'Requirable'>> = { type: 'enum'; enumName: T; label?: string }
 export type Requestable_loras = { type: 'loras'; label?: string }
 export type Requestable_samMaskPoints = { type: 'samMaskPoints'; label?: string; imageInfo: ImageInfos }
 export type Requestable_selectImage = { type: 'selectImage'; label?: string; imageInfos: ImageInfos[] }

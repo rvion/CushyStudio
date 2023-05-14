@@ -20,7 +20,7 @@ const r = await fakeInfoRequestFn((ui) => ({
     pos3d: [ui.int(), ui.int(), ui.int()],
 }))
 
-type K = (typeof r)['col1'][number]
-const y: Maybe<number> = r.number
-const x: string = r.loras[0].name
-const aa = r.pos3d[2]
+// type K = (typeof r)['col1'][number]
+// const y: Maybe<number> = r.number
+// const x: string = r.loras[0].name
+// const aa = r.pos3d[2]

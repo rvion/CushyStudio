@@ -1,10 +1,12 @@
 import type { Requestable } from 'src/controls/Requestable'
+import type { EnumValue } from '../core/Schema'
+
 import { askContext, useAsk } from './AskInfoCtx'
 import { AskPath, AskState } from './AskState'
 
 import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo } from 'react'
-import { Button, Input, InputNumber, MultiCascader, Panel, Toggle, Tooltip, Whisper } from 'rsuite'
+import { Button, Input, InputNumber, MultiCascader, Panel, SelectPicker, Toggle, Tooltip, Whisper } from 'rsuite'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { BUG } from '../controls/BUG'
 import { useSt } from '../front/FrontStateCtx'
@@ -13,6 +15,7 @@ import { PaintUI } from './widgets/PaintUI'
 import { exhaust } from '../utils/ComfyUtils'
 import { WebviewPlacePoints } from './widgets/WebviewPlacePoints'
 import { ImageSelection } from './widgets/ImageSelection'
+import { useFlow } from '../front/FrontFlowCtx'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
@@ -34,33 +37,43 @@ export const AskInfoUI = observer(function AskInfoUI_(p: { step: FromExtension_a
 
     return (
         <askContext.Provider value={askState}>
-            <Panel className='gap-2' shaded header={<>💬 Input</>} collapsible defaultExpanded>
+            <Panel
+                shaded
+                // className='gap-2'
+                // header={<>💬 Input</>}
+                // collapsible
+                // defaultExpanded
+            >
                 {/* widgets ------------------------------- */}
-                {Object.entries(p.step.request).map(([k, v], ix) => (
-                    <div
-                        style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
-                        className='row items-start gap-2 p-2'
-                        key={k}
-                    >
-                        <div>{k}</div>
-                        <WidgetUI path={[k]} req={v} />
+                <div className='flex'>
+                    <div>
+                        {Object.entries(p.step.request).map(([k, v], ix) => (
+                            <div
+                                style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
+                                className='row items-start gap-2 p-2'
+                                key={k}
+                            >
+                                <div>{k}</div>
+                                <WidgetUI path={[k]} req={v} />
+                            </div>
+                        ))}
+                        {/* submit ------------------------------- */}
+                        {askState.locked ? null : (
+                            <Button className='w-full' color='green' appearance='primary' onClick={submit}>
+                                OK
+                            </Button>
+                        )}
                     </div>
-                ))}
-                {/* submit ------------------------------- */}
-                {askState.locked ? null : (
-                    <Button className='w-full' color='green' appearance='primary' onClick={submit}>
-                        OK
-                    </Button>
-                )}
-                <div className='flex items-end'>
-                    <DebugUI title='request'>
-                        the request made by the wofkflow is
-                        <pre>{JSON.stringify(p.step, null, 4)}</pre>
-                    </DebugUI>
-                    <DebugUI title={'draft answer'}>
-                        the value about to be sent back to the workflow is
-                        <pre>{JSON.stringify(askState.value, null, 4)}</pre>
-                    </DebugUI>
+                    <div className='flex flex-col items-end'>
+                        <DebugUI title='⬇'>
+                            the request made by the wofkflow is
+                            <pre>{JSON.stringify(p.step, null, 4)}</pre>
+                        </DebugUI>
+                        <DebugUI title={'⬆'}>
+                            the value about to be sent back to the workflow is
+                            <pre>{JSON.stringify(askState.value, null, 4)}</pre>
+                        </DebugUI>
+                    </div>
                 </div>
             </Panel>
             {/* debug -------------------------------*/}
@@ -71,9 +84,7 @@ export const AskInfoUI = observer(function AskInfoUI_(p: { step: FromExtension_a
 export const DebugUI = observer(function DebugUI_(p: { title: string; children: React.ReactNode }) {
     return (
         <Whisper speaker={<Tooltip>{p.children}</Tooltip>}>
-            <Button size='sm' appearance='link'>
-                {p.title}
-            </Button>
+            <Button size='xs'>{p.title}</Button>
         </Whisper>
     )
 })
@@ -113,15 +124,15 @@ const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'bool?') return <WidgetBoolUI get={get} set={set} />
     if (req.type === 'int') return <WidgetIntUI get={get} set={set} />
     if (req.type === 'int?') return <WidgetIntUI get={get} set={set} />
-    if (req.type === 'str') return <Input type='text' value={'5'} />
-    if (req.type === 'str?') return <Input type='text' value={'6'} />
+    if (req.type === 'str') return <WidgetStrUI get={get} set={set} />
+    if (req.type === 'str?') return <WidgetStrUI get={get} set={set} nullable />
     if (req.type === 'paint') return <PaintUI uri={'foo bar 🔴'} />
     if (req.type === 'samMaskPoints') return <WebviewPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'selectImage') return <ImageSelection infos={req.imageInfos} get={get} set={set} />
     if (req.type === 'manualMask') return <WebviewPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'embeddings') return <>TODO</>
-    if (req.type === 'lora') return <>TODO</>
     if (req.type === 'selectMany') return <>TODO</>
+    if (req.type === 'enum') return <WidgetEnumUI get={get} set={set} enumName={req.enumName} />
     if (req.type === 'selectManyOrCustom') return <>TODO</>
     if (req.type === 'selectOne') return <>TODO</>
     if (req.type === 'selectOneOrCustom') return <>TODO</>
@@ -131,6 +142,39 @@ const WidgetUI = observer(function WidgetUI_(p: {
     return <div>{JSON.stringify(req)} not supported ok</div>
 })
 
+export const WidgetStrUI = observer(function WidgetStrUI_(p: {
+    //
+    get: () => string
+    set: (v: string) => void
+    nullable?: boolean
+}) {
+    return (
+        <Input //
+            type='text'
+            onChange={(e) => p.set(e)}
+            value={p.get()}
+        />
+    )
+})
+
+export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
+    enumName: string
+    get: () => EnumValue
+    set: (v: EnumValue) => void
+}) {
+    const flow = useFlow()
+    const options = useMemo(() => flow.workspace.schema!.getEnumOptionsForSelectPicker(p.enumName), [])
+    return (
+        <SelectPicker //
+            data={options}
+            value={p.get()}
+            onChange={(e) => {
+                if (e == null) return
+                p.set(e)
+            }}
+        />
+    )
+})
 // ----------------------------------------------------------------------
 export const WidgetBoolUI = observer(function WidgetBoolUI_(p: {
     //

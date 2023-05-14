@@ -36,6 +36,11 @@ export class Schema {
         return candidates as string[]
     }
 
+    getEnumOptionsForSelectPicker = (enumName: string) => {
+        const candidates = this.knownEnumsByName.get(enumName) ?? []
+        return candidates.map((x) => ({ label: x, value: x }))
+    }
+
     knownTypes = new Set<string>()
     knownEnumsByName = new Map<EnumName, EnumValue[]>()
     knownEnumsByHash = new Map<

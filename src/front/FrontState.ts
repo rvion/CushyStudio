@@ -49,7 +49,7 @@ export class FrontState {
     // --------------------------
     flows = new Map<string, FrontFlow>()
     startFlow = (): FrontFlow => {
-        const flow = new FrontFlow()
+        const flow = new FrontFlow(this)
         this.flows.set(flow.id, flow)
         return flow
     }

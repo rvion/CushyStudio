@@ -4,7 +4,7 @@ import { Button, IconButton, SelectPicker } from 'rsuite'
 import { useSt } from '../../front/FrontStateCtx'
 import { useFlow } from '../../front/FrontFlowCtx'
 
-export const ActionPickerUI = observer(function WorkflowPickerUI_() {
+export const ActionPickerUI = observer(function ActionPickerUI_() {
     const st = useSt()
     const flow = useFlow()
     return (
@@ -39,6 +39,8 @@ export const ActionPickerUI = observer(function WorkflowPickerUI_() {
                 {st.ActionOptionForSelectInput.map((a) => {
                     return (
                         <Button
+                            startIcon={<I.PlayOutline />}
+                            key={a.value}
                             size='sm'
                             appearance='ghost'
                             onClick={() => {

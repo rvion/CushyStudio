@@ -1,6 +1,6 @@
 import type { LATER } from 'LATER'
 import type { FlowID } from '../front/FrontFlow'
-import type { Action } from '../core/Requirement'
+import type { Action, ActionForm } from '../core/Requirement'
 
 import FormData from 'form-data'
 import { marked } from 'marked'
@@ -10,7 +10,7 @@ import fetch from 'node-fetch'
 import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
-import { InfoAnswer, InfoRequestBuilder, InfoRequestFn } from '../controls/askv2'
+import { InfoAnswer, FormBuilder, InfoRequestFn } from '../controls/askv2'
 import { Requestable } from '../controls/Requestable'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
@@ -101,14 +101,20 @@ export class Workflow {
             const match = actionsPool.find((i) => i.name === actionDef.name)
             if (match == null) throw new Error('no action found')
             const action = match.action
-            broadcast({ type: 'action-code', flowRunID: executionID, code: match.action.toString() })
+            // broadcast({ type: 'action-code', flowRunID: executionID, code: match.action.toString() })
 
             const reqBuilder = new RequirementBuilder(this)
-            const deps = action.requirement?.(reqBuilder)
-            console.log({ deps })
-            const resolveDeps = {} //🔴
+            const formBuilder = new FormBuilder()
+            const form: ActionForm | null = action.ui?.(formBuilder, this)
+            let res = null
+            if (form) {
+                console.log({ form })
+                res = await this.ask(() => form)
+            }
+            console.log({ res })
+            const resolveDeps = res // {} //🔴
 
-            await action.run(this, resolveDeps)
+            await action.run(this, resolveDeps ?? {})
             console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
@@ -250,10 +256,10 @@ export class Workflow {
     /** ask the user a few informations */
     ask: InfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
         //
-        requestFn: (q: InfoRequestBuilder) => Req,
+        requestFn: (q: FormBuilder) => Req,
         layout?: 0,
     ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
-        const reqBuilder = new InfoRequestBuilder()
+        const reqBuilder = new FormBuilder()
         const request = requestFn(reqBuilder)
         const ask = new ScriptStep_ask(request)
         this.workspace.broadCastToAllClients({ type: 'ask', request })

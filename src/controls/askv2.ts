@@ -14,6 +14,7 @@ import type { Requestable } from './Requestable'
 import { logger } from '../logger/logger'
 import type * as R from './Requestable'
 import { GeneratedImage } from 'src/back/GeneratedImage'
+import { LATER } from 'LATER'
 
 export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>
 export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>
@@ -32,7 +33,7 @@ export type InfoAnswer<Req> =
     /** embedding */
     Req extends R.Requestable_embeddings ? Maybe<boolean> :
     /** loras */
-    Req extends R.Requestable_lora ? SimplifiedLoraDef :
+    Req extends R.Requestable_enum<infer T> ? LATER<'Requirable'>[T] :
     Req extends R.Requestable_loras ? SimplifiedLoraDef[] :
     /** painting */
     Req extends R.Requestable_samMaskPoints ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
@@ -61,18 +62,28 @@ const toImageInfos = (img: ImageInBackend) => {
     }
 }
 
-export class InfoRequestBuilder {
+export class FormBuilder {
     /** str */
-    str = (label?: string): R.Requestable_str => ({ type: 'str' as const, label })
-    strOpt = (label?: string) => ({ type: 'str?' as const, label })
+    str = (p: Omit<R.Requestable_str, 'type'>): R.Requestable_str => ({ type: 'str', ...p })
+    strOpt = (p: Omit<R.Requestable_strOpt, 'type'>): R.Requestable_strOpt => ({ type: 'str?', ...p })
+
     /** nums */
     int = (label?: string) => ({ type: 'int' as const, label })
     intOpt = (label?: string) => ({ type: 'int?' as const, label })
+
     /** bools */
     bool = (label?: string) => ({ type: 'bool' as const, label })
     boolOpt = (label?: string) => ({ type: 'bool?' as const, label })
+
     /** embedding */
     embeddings = (label?: string) => ({ type: 'embeddings' as const, label })
+
+    /** embedding */
+    enum = <const T extends keyof LATER<'Requirable'>>(x: Omit<R.Requestable_enum<T>, 'type'>): R.Requestable_enum<T> => ({
+        type: 'enum',
+        ...x,
+    })
+
     /** loras */
     lora = (label?: string) => ({ type: 'lora' as const, label })
     loras = (label?: string) => ({ type: 'loras' as const, label })
@@ -93,7 +104,6 @@ export class InfoRequestBuilder {
         label,
         imageInfo: toImageInfos(img),
     })
-
     paint = (label: string, url: string) => ({ type: 'paint' as const, label, url })
     /** group */
     group = <const T>(label: string, items: T): { type: 'items'; items: T } => ({ type: 'items', items })
@@ -111,15 +121,16 @@ export class InfoRequestBuilder {
     })
 }
 
+// ----------------
+
 export type InfoRequestFn = typeof fakeInfoRequestFn
 
 // ----------------------------------------------------------
 export const fakeInfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
     //
-    req: (q: InfoRequestBuilder) => Req,
-    layout?: 0,
+    req: (q: FormBuilder) => Req,
 ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
-    const q = new InfoRequestBuilder()
+    const q = new FormBuilder()
     const r = req(q)
     return 0 as any
 }
