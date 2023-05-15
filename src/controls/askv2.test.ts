@@ -12,7 +12,7 @@ const r = await fakeInfoRequestFn((ui) => ({
     paint: ui.paint('paint', 0 as any),
     //
     number: ui.intOpt(),
-    loras: ui.loras(),
+    loras: ui.loras({}),
     col1: ui.selectOne('pick a primary color', ['red', 'blue', 'green']),
     col2: ui.selectOneOrCustom('choose a color', ['red', 'blue', 'green']),
     col3: ui.selectMany('choose many', ['red', 'blue', 'green']),

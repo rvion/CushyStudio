@@ -1,11 +1,17 @@
-action('A. load model', {
+action('LOAD MODEL', {
     help: 'load model with optional clip-skip, loras, etc.', // <- action help text
     ui: (form) => ({
         model: form.enum({ enumName: 'Enum_EfficientLoader_ckpt_name' }),
+        loras: form.loras({}),
+        vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name' }),
+        clipSkip: form.intOpt({}),
     }),
     run: (flow, deps) => {
         flow.presets.loadModel({
             ckptName: deps.model,
+            loras: deps.loras,
+            stop_at_clip_layer: deps.clipSkip,
+            vae: deps.vae,
         })
     },
 })

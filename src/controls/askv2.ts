@@ -72,8 +72,8 @@ export class FormBuilder {
     intOpt = (p?: Omit<R.Requestable_intOpt, 'type'>) => ({ type: 'int?', ...p })
 
     /** bools */
-    bool = (label?: string) => ({ type: 'bool' as const, label })
-    boolOpt = (label?: string) => ({ type: 'bool?' as const, label })
+    bool = (p?: Omit<R.Requestable_bool, 'type'>) => ({ type: 'bool' as const, ...p })
+    boolOpt = (p?: Omit<R.Requestable_boolOpt, 'type'>) => ({ type: 'bool?' as const, ...p })
 
     /** embedding */
     embeddings = (label?: string) => ({ type: 'embeddings' as const, label })
@@ -83,10 +83,16 @@ export class FormBuilder {
         type: 'enum',
         ...x,
     })
+    enumOpt = <const T extends keyof LATER<'Requirable'>>(
+        x: Omit<R.Requestable_enumOpt<T>, 'type'>,
+    ): R.Requestable_enumOpt<T> => ({
+        type: 'enum?',
+        ...x,
+    })
 
     /** loras */
-    lora = (label?: string) => ({ type: 'lora' as const, label })
-    loras = (label?: string) => ({ type: 'loras' as const, label })
+    // lora = (label?: string) => ({ type: 'lora' as const, label })
+    loras = (p: Omit<R.Requestable_loras, 'type'>) => ({ type: 'loras' as const, ...p })
 
     /** painting */
     private _toImageInfos = () => {}

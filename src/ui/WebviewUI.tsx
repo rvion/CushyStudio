@@ -3,11 +3,11 @@ import { observer } from 'mobx-react-lite'
 import { IconButton, Nav } from 'rsuite'
 import { useSt } from '../front/FrontStateCtx'
 import { renderMessageFromExtensionAsEmoji } from '../types/MessageFromExtensionToWebview'
-import { WorkspaceUI } from './workspace/FlowLogUI'
+import { WorkspaceUI } from './workspace/WorkspaceUI'
 import { VerticalGalleryUI } from './galleries/VerticalGalleryUI'
 import { GalleryHoveredPreviewUI } from './galleries/GalleryHoveredPreviewUI'
 import { ScrollablePaneUI } from './scrollableArea'
-import { PaintUI } from './widgets/PaintUI'
+import { WidgetPaintUI } from './widgets/WidgetPaintUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
@@ -50,7 +50,7 @@ export const WebviewUI = observer(function WebviewUI_() {
                     {action == null ? ( //
                         <WorkspaceUI />
                     ) : action.type === 'paint' ? (
-                        <PaintUI uri={action.img.localURL ?? action.img.comfyURL ?? '🔴'} />
+                        <WidgetPaintUI uri={action.img.localURL ?? action.img.comfyURL ?? '🔴'} />
                     ) : (
                         <WorkspaceUI />
                     )}

@@ -4,7 +4,7 @@ import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Button, IconButton, Panel } from 'rsuite'
 import { useSt } from '../../front/FrontStateCtx'
-import { FormUI } from '../FormUI'
+import { FormUI } from '../widgets/FormUI'
 
 export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront: ActionFront }) {
     const st = useSt()

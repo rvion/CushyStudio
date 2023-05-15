@@ -57,7 +57,7 @@ class MinipaintState {
     }
 }
 // https://github.com/devforth/painterro
-export const PaintUI = observer(function PaintUI_(p: { uri: string }) {
+export const WidgetPaintUI = observer(function PaintUI_(p: { uri: string }) {
     const st = useSt()
     const uiSt = useLocalObservable(() => ({ img: '', locked: false }))
     const k = useMemo(() => new MinipaintState(st), [])

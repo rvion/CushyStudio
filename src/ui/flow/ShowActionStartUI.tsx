@@ -1,5 +1,5 @@
 import { MessageFromExtensionToWebview } from '../../types/MessageFromExtensionToWebview'
-import { FormUI } from '../FormUI'
+import { FormUI } from '../widgets/FormUI'
 import { observer } from 'mobx-react-lite'
 import { useFlow } from '../../front/FrontFlowCtx'
 import { Loader } from 'rsuite'

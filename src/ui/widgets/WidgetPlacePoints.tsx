@@ -6,7 +6,7 @@ import { Button } from 'rsuite'
 
 type Pos2d = { x: number; y: number }
 
-export const WebviewPlacePoints = observer(function WebviewPlacePoints_(p: {
+export const WidgetPlacePoints = observer(function WebviewPlacePoints_(p: {
     url: string
     get: () => { points: string; labels: string }
     set: (v: { points: string; labels: string }) => void
