@@ -5,8 +5,7 @@ import { FormPath, FormState } from '../FormState'
 
 import { observer } from 'mobx-react-lite'
 import { ReactNode, useCallback, useMemo } from 'react'
-import { Button, Input, MultiCascader, Panel, Popover, Tooltip, Whisper } from 'rsuite'
-import { ItemDataType } from 'rsuite/esm/@types/common'
+import { Button, Input, Panel, Popover, Tooltip, Whisper } from 'rsuite'
 import { FormDefinition } from 'src/core/Requirement'
 import { BUG } from '../../controls/BUG'
 import { useSt } from '../../front/FrontStateCtx'
@@ -18,6 +17,7 @@ import { WidgetEnumUI } from './WidgetEnumUI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetIntUI } from './WidgetIntUI'
 import { WidgetIntOptUI } from './WidgetIntOptUI'
+import { WidgetLorasUI } from './WidgetLorasUI'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
@@ -79,8 +79,7 @@ export const FormUI = observer(function AskInfoUI_(p: {
                     )}
                     {form.locked ? null : (
                         <pre className='border-2 border-dashed border-orange-200 p-2'>
-                            output=
-                            {JSON.stringify(form.value, null, 4)}
+                            action output = {JSON.stringify(form.value, null, 4)}
                         </pre>
                     )}
                     <div className='flex flex-col'>
@@ -157,7 +156,7 @@ const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'selectManyOrCustom') return <>TODO</>
     if (req.type === 'selectOne') return <>TODO</>
     if (req.type === 'selectOneOrCustom') return <>TODO</>
-    if (req.type === 'loras') return <WidgetLorasUI />
+    if (req.type === 'loras') return <WidgetLorasUI get={get} set={set} />
 
     exhaust(req)
     console.log(`🔴`, (req as any).type)
@@ -176,41 +175,5 @@ export const WidgetStrUI = observer(function WidgetStrUI_(p: {
             onChange={(e) => p.set(e)}
             value={p.get()}
         />
-    )
-})
-
-// ----------------------------------------------------------------------
-export const WidgetLorasUI = observer(function LoraWidgetUI_(p: {}) {
-    const st = useSt()
-    const schema = st.schema
-    if (schema == null) return <div>❌ no schema</div>
-    const loras = schema.getLoras()
-    const nestedLoras: ItemDataType<any>[] = []
-    const insertAt = (path: string) => {
-        const segments = path.split(/\\/)
-        // 🔶 console.log(segments)
-        let parent = nestedLoras
-        for (let i = 0; i < segments.length - 1; i++) {
-            const segment = segments[i]
-            const found = parent.find((x) => x.label === segment)
-            if (found == null) {
-                const newParent = { label: segment, children: [] }
-                parent.push(newParent)
-                parent = newParent.children
-            } else {
-                parent = found.children!
-            }
-        }
-    }
-    for (const l of loras) {
-        insertAt(l)
-        // 🔶 console.log(l, nestedLoras)
-    }
-
-    return (
-        <div>
-            {/* {JSON.stringify(schema.getLoras())} */}
-            <MultiCascader menuWidth={300} block data={nestedLoras} />
-        </div>
     )
 })
