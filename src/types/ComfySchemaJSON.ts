@@ -24,6 +24,14 @@ export type ComfyInputType =
     /** enum */
     | string[]
 
+export type ComfyInputOpts = {
+    multiline?: boolean
+    default?: boolean | number | string
+    min?: number
+    max?: number
+    step?: number
+}
+
 // export type ComfyInputOpts_String = {
 //     multiline?: boolean
 //     default?: string
@@ -45,11 +53,3 @@ export type ComfyInputType =
 //     | ComfyInputOpts_String
 //     | ComfyInputOpts_Number
 //     | ComfyInputOpts_Boolean
-
-export type ComfyInputOpts = {
-    multiline?: boolean
-    default?: boolean | number | string
-    min?: number
-    max?: number
-    step?: number
-}

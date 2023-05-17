@@ -6,49 +6,15 @@
         {
             "label": "starts everything",
             "dependsOn": [
-                //
                 "🫖  Back",
                 "🖼  Front",
-                "👁  TSC"
+                "👁  TSC",
+                "💾  SYNC"
                 // "🔍  Schema",
                 // "🌶️  VSCode"
-                // "🐉  API"
             ],
             "group": { "kind": "build", "isDefault": true },
             "runOptions": { "runOn": "folderOpen", "instanceLimit": 1 }
-        },
-        {
-            "label": "🖼  Front",
-            "detail": "start FRONTEND dev-server",
-            "type": "process",
-            "command": "npm",
-            "args": ["run", "front:dev"],
-            "isBackground": true,
-            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
-            "group": "build",
-            "runOptions": { "instanceLimit": 1 }
-        },
-        {
-            "label": "🔍  Schema",
-            "detail": "compile and embed type-definitions for extension to be self-sufficient",
-            "type": "process",
-            "command": "npm",
-            "args": ["run", "decl"],
-            "isBackground": true,
-            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
-            "group": "build",
-            "runOptions": { "instanceLimit": 1 }
-        },
-        {
-            "label": "🌶️  VSCode",
-            "detail": "start the vscode debug process",
-            "type": "process",
-            "command": "npm",
-            "args": ["run", "vscode:dev"],
-            "isBackground": true,
-            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
-            "group": "build",
-            "runOptions": { "instanceLimit": 1 }
         },
         {
             "label": "🫖  Back",
@@ -56,6 +22,17 @@
             "type": "process",
             "command": "npm",
             "args": ["run", "back:dev"],
+            "isBackground": true,
+            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
+            "group": "build",
+            "runOptions": { "instanceLimit": 1 }
+        },
+        {
+            "label": "🖼  Front",
+            "detail": "start FRONTEND dev-server",
+            "type": "process",
+            "command": "npm",
+            "args": ["run", "front:dev"],
             "isBackground": true,
             "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
             "group": "build",
@@ -73,19 +50,39 @@
             "presentation": { "reveal": "never" /* "group": "transpiling" */ },
             "group": "build",
             "runOptions": { "instanceLimit": 1 }
+        },
+        {
+            "label": "💾  SYNC",
+            "detail": "start FRONTEND dev-server",
+            "type": "process",
+            "command": "npm",
+            "args": ["run", "syncServer"],
+            "isBackground": true,
+            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
+            "group": "build",
+            "runOptions": { "instanceLimit": 1 }
         }
         // {
-        //     "type": "npm",
-        //     "script": "tsc:watch",
-        //     "problemMatcher": "$tsc-watch",
+        //     "label": "🔍  Schema",
+        //     "detail": "compile and embed type-definitions for extension to be self-sufficient",
+        //     "type": "process",
+        //     "command": "npm",
+        //     "args": ["run", "decl"],
         //     "isBackground": true,
-        //     "presentation": {
-        //         "reveal": "never"
-        //     },
-        //     "group": {
-        //         "kind": "build",
-        //         "isDefault": true
-        //     }
-        // }
+        //     "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
+        //     "group": "build",
+        //     "runOptions": { "instanceLimit": 1 }
+        // },
+        // {
+        //     "label": "🌶️  VSCode",
+        //     "detail": "start the vscode debug process",
+        //     "type": "process",
+        //     "command": "npm",
+        //     "args": ["run", "vscode:dev"],
+        //     "isBackground": true,
+        //     "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
+        //     "group": "build",
+        //     "runOptions": { "instanceLimit": 1 }
+        // },
     ]
 }

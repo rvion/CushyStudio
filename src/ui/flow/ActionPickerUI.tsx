@@ -10,10 +10,8 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
     const st = useSt()
     const XX = p.actionFront
     return (
-        <div>
-            {/* {p.actionFront.formState == null ? '🟢null' : '1'} */}
-
-            <div className='flex flex-wrap gap-2'>
+        <div className='flex'>
+            <div className='flex flex-col items-start'>
                 {/* ({uiSt.currentActionID}) */}
                 {st.ActionOptionForSelectInput.map((actionRef) => {
                     return (
@@ -28,12 +26,6 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
                                     XX.focusAction(actionRef)
                                     return
                                 }
-                                // st.sendMessageToExtension({
-                                //     type: 'run-action',
-                                //     flowID: flow.id,
-                                //     actionID: actionRef.id,
-                                //     data: {}, // 🔴
-                                // })
                             }}
                         >
                             <div>

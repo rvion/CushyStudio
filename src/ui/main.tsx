@@ -1,9 +1,10 @@
 import '../logger/LoggerFront' // inject a global logger
 import ReactDOM from 'react-dom/client'
+import '../core/enableMobxBindings'
 
 import './webview.css'
 import 'rsuite/dist/rsuite.min.css'
-import { WebviewUI } from './WebviewUI'
+import { WebviewUI } from './layout/AppUI'
 import { CustomProvider } from 'rsuite'
 import { useMemo } from 'react'
 import { FrontState } from '../front/FrontState'

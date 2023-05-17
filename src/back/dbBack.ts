@@ -4,6 +4,11 @@ import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWe
 import { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { ServerState } from './ServerState'
+import { WebsocketProvider } from 'y-websocket'
+
+// const doc = new Y.Doc()
+
+// const wsProvider = new WebsocketProvider('ws://localhost:1234', 'my-roomname', doc, { WebSocketPolyfill: require('ws') })
 
 export class CushyDB {
     data: CushyDBData

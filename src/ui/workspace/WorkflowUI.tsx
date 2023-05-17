@@ -1,13 +1,15 @@
 import { observer } from 'mobx-react-lite'
+import { Form, Input, Panel } from 'rsuite'
 import { useFlow } from '../../front/FrontFlowCtx'
 import { ActionPickerUI } from '../flow/ActionPickerUI'
-import { Panel } from 'rsuite'
 
 export const WorkflowUI = observer(function WorkflowUI_(p: {}) {
     const flow = useFlow()
     return (
         <Panel>
-            <div className='flex flex-col gap-2 p-2'>
+            <Input placeholder='workflow name' name='title' />
+            <div className='flex gap-2'>
+                <ActionPickerUI actionFront={flow.draft} />
                 {flow.groupper.msgGroups.map((group, groupIx) => {
                     return (
                         <div
@@ -24,7 +26,6 @@ export const WorkflowUI = observer(function WorkflowUI_(p: {}) {
                         </div>
                     )
                 })}
-                <ActionPickerUI actionFront={flow.draft} />
             </div>
         </Panel>
     )

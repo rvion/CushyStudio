@@ -1,12 +1,12 @@
+import cors from 'cors'
 import express from 'express'
 import http from 'http'
+import { relative } from 'path'
+import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { WebSocketServer } from 'ws'
 import { logger } from '../logger/logger'
 import { CushyClient } from './Client'
 import { ServerState } from './ServerState'
-import { posix, relative } from 'path'
-import cors from 'cors'
-import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 
 export class CushyServer {
     http: http.Server
@@ -40,9 +40,6 @@ export class CushyServer {
             next()
         })
 
-        // 🔴 | const extensionURI = serverState.context.extensionUri
-        // 🔴 | const webviewDistURI = extensionURI.with({ path: posix.join(extensionURI.path, 'dist', 'webview') })
-        // 🔴 | logger().info(`🫖 mounting webview folder ${webviewDistURI.fsPath}`)
         // 🔴 | app.use(express.static(webviewDistURI.fsPath))
         if (frontPublicDir) {
             logger().info(`🫖 mounting webview folder ${frontPublicDir}`)

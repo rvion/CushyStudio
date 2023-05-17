@@ -5,6 +5,7 @@ import { join } from 'path'
 
 // const serverstate = new ServerState(asAbsolutePath('/Users/loco/csdemo'))
 const path = asAbsolutePath(join(process.cwd(), 'flows/'))
+
 new ServerState(path, {
     cushySrcPathPrefix: '../src/',
     genTsConfig: false,

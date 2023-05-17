@@ -1,44 +1,40 @@
 import type { LATER } from 'LATER'
+import type { FormResult } from '../core/Requirement'
 import type { FlowID } from '../front/FrontFlow'
-import type { Action, FormDefinition, FormResult } from '../core/Requirement'
 
 import FormData from 'form-data'
 import { marked } from 'marked'
 import { makeAutoObservable } from 'mobx'
-import { nanoid } from 'nanoid'
 import fetch from 'node-fetch'
 import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
-import { InfoAnswer, FormBuilder, InfoRequestFn } from '../controls/askv2'
+import { readFileSync, writeFileSync } from 'fs'
 import { Requestable } from '../controls/Requestable'
 import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
+import { FormBuilder, InfoAnswer, InfoRequestFn } from '../controls/askv2'
 import { runAutolayout } from '../core/AutolayoutV2'
 import { Graph } from '../core/Graph'
 import { convertFlowToLiteGraphJSON } from '../core/LiteGraph'
-import type { FlowParam } from '../core/ParamDef'
 import { Printable } from '../core/Printable'
+import { auto } from '../core/autoValue'
+import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
+import { logger } from '../logger/logger'
+import { Presets } from '../presets/presets'
 import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../types/ComfyWsApi'
 import { FlowExecutionStep } from '../types/FlowExecutionStep'
-import { logger } from '../logger/logger'
 import { deepCopyNaive } from '../utils/ComfyUtils'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { wildcards } from '../wildcards/wildcards'
+import { ActionDefinition, ExecutionID } from './ActionDefinition'
 import { GeneratedImage } from './GeneratedImage'
-import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
-import { ServerState } from './ServerState'
-import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
-import { readFileSync, writeFileSync } from 'fs'
 import { NodeBuilder } from './NodeBuilder'
-import { ActionDefinition, ExecutionID, asExecutionID } from './ActionDefinition'
-import { auto } from '../core/autoValue'
-import { Presets } from '../presets/presets'
-import { RequirementBuilder } from './ReqBuilder'
+import { ServerState } from './ServerState'
 
 /** script exeuction instance */
 export class Workflow {
@@ -152,11 +148,6 @@ export class Workflow {
 
     /** graph engine instance for smooth and clever auto-layout algorithms */
     // cyto: Cyto 🔴🔴
-
-    private params: FlowParam[] = []
-    addParam = (p: FlowParam) => {
-        this.params.push(p)
-    }
 
     /** list of all images produed over the whole script execution */
     generatedImages: GeneratedImage[] = []
@@ -344,7 +335,7 @@ export class Workflow {
         return img
     }
 
-    uploadURL = async (url: string = RANDOM_IMAGE_URL): Promise<ComfyUploadImageResult> => {
+    uploadURL = async (url: string): Promise<ComfyUploadImageResult> => {
         const blob = await this.workspace.getUrlAsBlob(url)
         const bytes = new Uint8Array(await blob.arrayBuffer())
         return this.uploadUIntArrToComfy(bytes)

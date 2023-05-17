@@ -1,33 +1,13 @@
-import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { IconButton, Nav } from 'rsuite'
-import { useSt } from '../front/FrontStateCtx'
-import { renderMessageFromExtensionAsEmoji } from '../types/MessageFromExtensionToWebview'
-import { WorkspaceUI } from './workspace/WorkspaceUI'
-import { VerticalGalleryUI } from './galleries/VerticalGalleryUI'
-import { GalleryHoveredPreviewUI } from './galleries/GalleryHoveredPreviewUI'
-import { ScrollablePaneUI } from './scrollableArea'
-import { WidgetPaintUI } from './widgets/WidgetPaintUI'
+import { useSt } from '../../front/FrontStateCtx'
+import { renderMessageFromExtensionAsEmoji } from '../../types/MessageFromExtensionToWebview'
+import { WorkspaceUI } from '../workspace/WorkspaceUI'
+import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
+import { GalleryHoveredPreviewUI } from '../galleries/GalleryHoveredPreviewUI'
+import { ScrollablePaneUI } from '../scrollableArea'
+import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
+import { AppBarUI } from './AppBarUI'
 
-export const AppBarUI = observer(function AppBarUI_(p: {}) {
-    const st = useSt()
-    return (
-        <Nav appearance='subtle'>
-            <Nav.Item eventKey='home'>🛋️</Nav.Item>
-            <IconButton
-                icon={st.flowDirection === 'down' ? <I.SortDown /> : <I.SortUp />}
-                onClick={() => (st.flowDirection = st.flowDirection === 'down' ? 'up' : 'down')}
-            />
-            <IconButton
-                icon={st.showAllMessageReceived ? <I.InfoOutline /> : <I.EyeClose />}
-                onClick={() => (st.showAllMessageReceived = !st.showAllMessageReceived)}
-            />
-            <IconButton icon={<I.Reload />} onClick={() => window.location.reload()} />
-            <IconButton icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />} />
-            <IconButton onClick={() => st.db.reset()} icon={<I.Trash color='orange' />} />
-        </Nav>
-    )
-})
 export const WebviewUI = observer(function WebviewUI_() {
     const st = useSt()
 

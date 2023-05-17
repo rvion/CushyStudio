@@ -12,8 +12,7 @@ export type ExecutionID = Branded<string, 'ExecutionID'>
 export const asExecutionID = (s: string): ExecutionID => s as any
 
 /**
- * a thin wrapper around a single (work)flow somewhere in a .cushy.ts file
- * flow = the 'WORFLOW(...)' part of a file
+ * a thin wrapper around a single action somewhere in a .cushy.ts file
  * */
 export class ActionDefinition {
     static formBuilder = new FormBuilder()
@@ -45,21 +44,3 @@ export class ActionDefinition {
         return this.ref
     }
 }
-
-// | probe = (flow: Workflow): ActionForm => {
-// |     if (this.action.ui == null) return {}
-// |     return this.action.ui(ActionDefinition.formBuilder, flow)
-// | }
-
-// | get form(): ActionForm {
-// |     const fn = new Function('action', this.getCodeJS())
-
-//  | getCodeJS = async (): Promise<string> => {
-//  |     const codeTS = this.file.CONTENT
-//  |     const codeJS = await transpileCode(codeTS)
-//  |     if (codeJS == null) logger().info('❌ no code to run')
-//  |
-//  |     // logger().info(`\`\`\`ts\n${codeJS}\n\`\`\``)
-//  |     // logger().debug('🔥', codeJS + '...')
-//  |     return codeJS
-//  | }

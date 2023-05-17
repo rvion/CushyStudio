@@ -25,12 +25,11 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyClient } from './Client'
 import { ConfigFileWatcher } from './ConfigWatcher'
-import { CushyDB } from './CushyDB'
+import { CushyDB } from './dbBack'
 import { CushyFile } from './CushyFile'
 import { TypeScriptFilesMap } from './DirWatcher'
 import { ActionDefinition, ActionDefinitionID } from './ActionDefinition'
 import { GeneratedImage } from './GeneratedImage'
-import { RANDOM_IMAGE_URL } from './RANDOM_IMAGE_URL'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
 import { FlowID } from 'src/front/FrontFlow'
@@ -39,14 +38,9 @@ export type CSCriticalError = { title: string; help: string }
 
 export class ServerState {
     schema: Schema
-
-    /** send by ComfyUI server */
-    comfySessionId = 'temp'
-
+    comfySessionId = 'temp' /** send by ComfyUI server */
     activeFlow: Maybe<Workflow> = null
-
     runs: Workflow[] = []
-
     cacheFolderPath: AbsolutePath
     vscodeSettings: AbsolutePath
     comfyJSONPath: AbsolutePath
@@ -380,7 +374,7 @@ export class ServerState {
     }
 
     /** attempt to convert an url to a Blob */
-    getUrlAsBlob = async (url: string = RANDOM_IMAGE_URL) => {
+    getUrlAsBlob = async (url: string) => {
         const response = await fetch(url, {
             headers: { 'Content-Type': 'image/png' },
             method: 'GET',

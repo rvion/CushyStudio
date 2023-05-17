@@ -99,6 +99,8 @@
         "git:update-master": "git merge origin/master",
         "git:add-all": "git add . && git commit -m 'update' && git push",
         "git:push": "git push",
+        "📌 SYNC": "",
+        "syncServer": "HOST=localhost PORT=1234 YPERSISTENCE=./dbDir node ./node_modules/y-websocket/bin/server.js",
         "📌 SHELL": "",
         "vscode:dev": "cross-env-shell code --extensionDevelopmentPath=${PWD}",
         "📌 BACK": "",
@@ -146,6 +148,7 @@
     },
     "dependencies": {
         "@rsuite/icons": "1.0.2",
+        "@syncedstore/core": "^0.5.1",
         "@types/express": "^4.17.17",
         "@types/marked": "4.3.0",
         "@types/vscode-webview": "1.57.1",
@@ -175,7 +178,10 @@
         "react-zoom-pan-pinch": "^3.0.7",
         "rsuite": "5.33.0",
         "ws": "8.13.0",
-        "yet-another-react-lightbox": "3.6.0"
+        "y-leveldb": "^0.1.2",
+        "y-websocket": "^1.5.0",
+        "yet-another-react-lightbox": "3.6.0",
+        "yjs": "^13.6.1"
     },
     "devDependencies": {
         "@swc-node/register": "^1.6.5",
