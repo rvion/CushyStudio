@@ -32,13 +32,13 @@ export class ActionFront {
         makeAutoObservable(this)
     }
 
-    focusAction = (action: ActionRef) => {
-        if (this.locked) throw new Error(`can't focus on action ${action.id} because action ${this.actionID} has already started`)
-        if (this.currentActionRef?.id === action.id) return console.log(`already focused on action ${action.id}`)
-        this.actionID = action.id
-        this.currentActionRef = action
-        // this.formState = new FormState(this.flow.st, action.form)
-    }
+    // focusAction = (action: ActionRef) => {
+    //     if (this.locked) throw new Error(`can't focus on action ${action.id} because action ${this.actionID} has already started`)
+    //     if (this.currentActionRef?.id === action.id) return console.log(`already focused on action ${action.id}`)
+    //     this.actionID = action.id
+    //     this.currentActionRef = action
+    //     // this.formState = new FormState(this.flow.st, action.form)
+    // }
 
     start = () => {
         if (this.actionID == null) return console.log(`can't start action without actionID`)
@@ -57,13 +57,13 @@ export class ActionFront {
         })
 
         // request action start
-        this.flow.st.sendMessageToExtension({
-            type: 'run-action',
-            flowID: this.flow.id,
-            actionID: this.actionID,
-            executionID: this.executionID,
-            data: formValue,
-        })
+        // this.flow.st.sendMessageToExtension({
+        //     type: 'run-action',
+        //     flowID: this.flow.id,
+        //     actionID: this.actionID,
+        //     executionID: this.executionID,
+        //     data: formValue,
+        // })
         this.flow.draft = new ActionFront(this.flow)
         // this.flow.history.push({})
     }

@@ -1,5 +1,4 @@
 import { FrontFlow } from './FrontFlow'
-import type { FrontState } from './FrontState'
 
 import React from 'react'
 

@@ -79,7 +79,7 @@ export class Workflow {
         const schema = this.workspace.schema
         const broadcast = this.workspace.broadCastToAllClients
         const flowID = this.uid
-        const actionID = actionDef.uid
+        const actionID = '🔴 zcxvsad' as any // actionDef.uid
         // const executionID = asExecutionID(nanoid(6))
         broadcast({ type: 'action-start', flowID, actionID, executionID, data: formResult })
         broadcast({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })

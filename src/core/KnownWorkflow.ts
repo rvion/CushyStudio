@@ -1,8 +1,8 @@
-import type { ActionDefinitionID } from 'src/back/ActionDefinition'
 import type { FormDefinition } from './Requirement'
+import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 
 export type ActionRef = {
     name: string
-    id: ActionDefinitionID
+    file: AbsolutePath
     form: FormDefinition
 }

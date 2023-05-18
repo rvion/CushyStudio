@@ -76,11 +76,11 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
 
     /** udpate execution list */
     onExecuted = (msg: WsMsgExecuted): GeneratedImage[] => {
-        const node = this._graph.getNodeOrCrash(msg.data.node)
         const images = msg.data.output.images.map((i) => new GeneratedImage(this, i))
         this.outputs.push(msg) // accumulate in self
         this.images.push(...images)
-        node.artifacts.push(msg.data) // accumulate in node
+        // const node = this._graph.getNodeOrCrash(msg.data.node)
+        // node.artifacts.push(msg.data) // accumulate in node
         this.run.generatedImages.push(...images)
         // console.log(`🟢 graph(${this._graph.uid}) => node(${node.uid}) => (${node.artifacts.length} images)`)
         return images

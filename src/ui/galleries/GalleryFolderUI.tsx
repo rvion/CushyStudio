@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import { FolderUID, ImageInfos } from 'src/core/GeneratedImageSummary'
+import { FolderUID } from 'src/core/GeneratedImageSummary'
+import { ImageT } from 'src/models/Image'
 import { useSt } from '../../front/FrontStateCtx'
 import { ItemTypes } from './ItemTypes'
 import { useDrop } from 'react-dnd'
-import { CushyFolderMetadata } from 'src/core/WorkspaceHistoryJSON'
+import { FolderT } from 'src/models/Folder'
 import { GalleryImageUI } from './GalleryImageUI'
 import { toJS } from 'mobx'
 import { Input } from 'rsuite'
@@ -11,13 +12,13 @@ import { Input } from 'rsuite'
 export const GalleryFolderUI = observer(function FolderUI_(p: {
     //
     folderUID: FolderUID
-    folderMetadata: CushyFolderMetadata
+    folderMetadata: FolderT
     direction: 'horizontal' | 'vertical'
 }) {
     const st = useSt()
     const [collectedProps, drop] = useDrop(() => ({
         accept: ItemTypes.Image,
-        drop(image: { img: ImageInfos }, monitor) {
+        drop(image: { img: ImageT }, monitor) {
             console.log('🟢', toJS(image.img))
             st.db.moveFile(image.img, p.folderUID)
         },
@@ -38,7 +39,7 @@ export const GalleryFolderUI = observer(function FolderUI_(p: {
                 onChange={(v) => (p.folderMetadata.name = v)}
             />
             {/* 🟢{images.length}🟢 */}
-            {images.map((i) => (i ? <GalleryImageUI img={i} key={i.uid} /> : null))}
+            {images.map((i) => (i ? <GalleryImageUI img={i} key={i.id} /> : null))}
         </div>
     )
 })

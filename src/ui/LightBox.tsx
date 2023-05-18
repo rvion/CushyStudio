@@ -1,4 +1,4 @@
-import type { ImageInfos } from '../core/GeneratedImageSummary'
+import type { ImageT } from 'src/models/Image'
 import Lightbox, { Plugin } from 'yet-another-react-lightbox'
 
 import { addToolbarButton } from 'yet-another-react-lightbox/core'
@@ -29,7 +29,7 @@ const CustomPlugin: Plugin = ({ augment }) => {
 export class LightBoxState {
     constructor(
         //
-        public getImgs: () => ImageInfos[],
+        public getImgs: () => ImageT[],
         public opened: boolean = false,
     ) {
         makeAutoObservable(this)

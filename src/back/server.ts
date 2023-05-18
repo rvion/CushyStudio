@@ -5,13 +5,13 @@ import { relative } from 'path'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { WebSocketServer } from 'ws'
 import { logger } from '../logger/logger'
-import { CushyClient } from './Client'
+// import { CushyClient } from './Client'
 import { ServerState } from './ServerState'
 
 export class CushyServer {
     http: http.Server
     app: express.Application
-    wss: WebSocketServer
+    // wss: WebSocketServer
     port = 8388
 
     get baseURL() {
@@ -67,12 +67,12 @@ export class CushyServer {
 
         logger().info(`🫖 creating CushyServer websocket server... ${cacheFolderPath}...`)
         console.log(WebSocketServer)
-        const wss = new WebSocketServer({ server })
-        this.wss = wss
+        // const wss = new WebSocketServer({ server })
+        // this.wss = wss
 
-        wss.on('connection', (ws) => new CushyClient(this.serverState, ws))
-        logger().info('🫖 🟢 listening on port 8388...')
-        this.listen()
+        // wss.on('connection', (ws) => new CushyClient(this.serverState, ws))
+        // logger().info('🫖 🟢 listening on port 8388...')
+        // this.listen()
     }
 
     listen = async () => {

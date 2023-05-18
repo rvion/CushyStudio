@@ -9,3 +9,9 @@ It focuses on interractive workflows when AI generation, dynamic interfaces for 
 and guidance along generation processes. It is cross-platform and open-source.
 
 🔴 please, come back soon 🔴
+
+---
+
+```
+./node_modules/.bin/esbuild src/back/main.ts --bundle --outfile=dist/main2.js --platform=node --sourcemap --watch --loader:.node=file --external:fsev
+```

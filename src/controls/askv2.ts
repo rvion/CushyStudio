@@ -8,7 +8,7 @@
 import type { Base64Image } from 'src/core/b64img'
 import type { SimplifiedLoraDef } from 'src/presets/presets'
 import type { Maybe, Tagged } from 'src/utils/types'
-import type { ImageInfos } from 'src/core/GeneratedImageSummary'
+import type { ImageT } from 'src/models/Image'
 import type { Requestable } from './Requestable'
 
 import { logger } from '../logger/logger'
@@ -53,7 +53,7 @@ export type InfoAnswer<Req> =
     Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] :
     never
 
-type ImageInBackend = GeneratedImage | ImageInfos
+type ImageInBackend = GeneratedImage | ImageT
 const toImageInfos = (img: ImageInBackend) => {
     try {
         return (img as any).toJSON ? (img as any).toJSON() : img
@@ -96,16 +96,16 @@ export class FormBuilder {
 
     /** painting */
     private _toImageInfos = () => {}
-    samMaskPoints = (label: string, img: GeneratedImage | ImageInfos) => ({
+    samMaskPoints = (label: string, img: GeneratedImage | ImageT) => ({
         type: 'samMaskPoints' as const,
         imageInfo: toImageInfos(img),
     })
-    selectImage = (label: string, imgs: (GeneratedImage | ImageInfos)[]) => ({
+    selectImage = (label: string, imgs: (GeneratedImage | ImageT)[]) => ({
         type: 'selectImage' as const,
         imageInfos: imgs.map(toImageInfos),
         label,
     })
-    manualMask = (label: string, img: GeneratedImage | ImageInfos) => ({
+    manualMask = (label: string, img: GeneratedImage | ImageT) => ({
         type: 'manualMask' as const,
         label,
         imageInfo: toImageInfos(img),

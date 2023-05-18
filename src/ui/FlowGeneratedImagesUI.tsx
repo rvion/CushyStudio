@@ -1,4 +1,4 @@
-import type { ImageInfos } from '../core/GeneratedImageSummary'
+import type { ImageT } from 'src/models/Image'
 
 import * as I from '@rsuite/icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
@@ -8,14 +8,14 @@ import { MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWe
 import { useMemo } from 'react'
 import { LightBoxState, LightBoxUI } from './LightBox'
 
-export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedImage: ImageInfos }) {
+export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedImage: ImageT }) {
     const selectedImg = p.selectedImage
     return (
         <div>
             <div>
                 <div className='prop row'>
                     <div className='propName'>uid</div>
-                    <div className='propValue'>{selectedImg?.uid}</div>
+                    <div className='propValue'>{selectedImg?.id}</div>
                 </div>
                 <div className='prop row'>
                     <div className='propName'>comfy path</div>
@@ -91,12 +91,12 @@ export const FlowGeneratedImagesUI = observer(function FlowGeneratedImagesUI_(p:
                                 <Button
                                     size='xs'
                                     startIcon={<I.FolderFill />}
-                                    onClick={() => {
-                                        st.sendMessageToExtension({
-                                            type: 'open-external',
-                                            uriString: `file://${img.localAbsolutePath}`,
-                                        })
-                                    }}
+                                    // onClick={() => {
+                                    //     st.sendMessageToExtension({
+                                    //         type: 'open-external',
+                                    //         uriString: `file://${img.localAbsolutePath}`,
+                                    //     })
+                                    // }}
                                 >
                                     Open
                                 </Button>

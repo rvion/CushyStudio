@@ -28,8 +28,10 @@ declare global {
         EmptyLatentImage(args: EmptyLatentImage_input, uid?: ComfyNodeUID): EmptyLatentImage
         /* category=latent output=LATENT */
         LatentUpscale(args: LatentUpscale_input, uid?: ComfyNodeUID): LatentUpscale
-        /* category=latent output=LATENT */
+        /* category=latent_batch output=LATENT */
         LatentFromBatch(args: LatentFromBatch_input, uid?: ComfyNodeUID): LatentFromBatch
+        /* category=latent_batch output=LATENT */
+        RepeatLatentBatch(args: RepeatLatentBatch_input, uid?: ComfyNodeUID): RepeatLatentBatch
         /* category=image output= */
         SaveImage(args: SaveImage_input, uid?: ComfyNodeUID): SaveImage
         /* category=image output= */
@@ -100,6 +102,42 @@ declare global {
         CheckpointLoader(args: CheckpointLoader_input, uid?: ComfyNodeUID): CheckpointLoader
         /* category=advanced_loaders output=MODEL, CLIP, VAE */
         DiffusersLoader(args: DiffusersLoader_input, uid?: ComfyNodeUID): DiffusersLoader
+        /* category=_for_testing output=LATENT */
+        LoadLatent(args: LoadLatent_input, uid?: ComfyNodeUID): LoadLatent
+        /* category=_for_testing output= */
+        SaveLatent(args: SaveLatent_input, uid?: ComfyNodeUID): SaveLatent
+        /* category=loaders output=MODEL */
+        HypernetworkLoader(args: HypernetworkLoader_input, uid?: ComfyNodeUID): HypernetworkLoader
+        /* category=loaders output=UPSCALE_MODEL */
+        UpscaleModelLoader(args: UpscaleModelLoader_input, uid?: ComfyNodeUID): UpscaleModelLoader
+        /* category=image_upscaling output=IMAGE */
+        ImageUpscaleWithModel(args: ImageUpscaleWithModel_input, uid?: ComfyNodeUID): ImageUpscaleWithModel
+        /* category=image_postprocessing output=IMAGE */
+        ImageBlend(args: ImageBlend_input, uid?: ComfyNodeUID): ImageBlend
+        /* category=image_postprocessing output=IMAGE */
+        ImageBlur(args: ImageBlur_input, uid?: ComfyNodeUID): ImageBlur
+        /* category=image_postprocessing output=IMAGE */
+        ImageQuantize(args: ImageQuantize_input, uid?: ComfyNodeUID): ImageQuantize
+        /* category=image_postprocessing output=IMAGE */
+        ImageSharpen(args: ImageSharpen_input, uid?: ComfyNodeUID): ImageSharpen
+        /* category=latent output=LATENT */
+        LatentCompositeMasked(args: LatentCompositeMasked_input, uid?: ComfyNodeUID): LatentCompositeMasked
+        /* category=mask output=IMAGE */
+        MaskToImage(args: MaskToImage_input, uid?: ComfyNodeUID): MaskToImage
+        /* category=mask output=MASK */
+        ImageToMask(args: ImageToMask_input, uid?: ComfyNodeUID): ImageToMask
+        /* category=mask output=MASK */
+        SolidMask(args: SolidMask_input, uid?: ComfyNodeUID): SolidMask
+        /* category=mask output=MASK */
+        InvertMask(args: InvertMask_input, uid?: ComfyNodeUID): InvertMask
+        /* category=mask output=MASK */
+        CropMask(args: CropMask_input, uid?: ComfyNodeUID): CropMask
+        /* category=mask output=MASK */
+        MaskComposite(args: MaskComposite_input, uid?: ComfyNodeUID): MaskComposite
+        /* category=mask output=MASK */
+        FeatherMask(args: FeatherMask_input, uid?: ComfyNodeUID): FeatherMask
+        /* category=latent_batch output=LATENT */
+        RebatchLatents(args: RebatchLatents_input, uid?: ComfyNodeUID): RebatchLatents
         /* category=Image Processing output=IMAGE */
         BrightnessContrast(args: BrightnessContrast_input, uid?: ComfyNodeUID): BrightnessContrast
         /* category=ImpactPack output=SAM_MODEL */
@@ -726,36 +764,6 @@ declare global {
         YKImagePadForOutpaint(args: YKImagePadForOutpaint_input, uid?: ComfyNodeUID): YKImagePadForOutpaint
         /* category=mask output=IMAGE */
         YKMaskToImage(args: YKMaskToImage_input, uid?: ComfyNodeUID): YKMaskToImage
-        /* category=loaders output=MODEL */
-        HypernetworkLoader(args: HypernetworkLoader_input, uid?: ComfyNodeUID): HypernetworkLoader
-        /* category=loaders output=UPSCALE_MODEL */
-        UpscaleModelLoader(args: UpscaleModelLoader_input, uid?: ComfyNodeUID): UpscaleModelLoader
-        /* category=image_upscaling output=IMAGE */
-        ImageUpscaleWithModel(args: ImageUpscaleWithModel_input, uid?: ComfyNodeUID): ImageUpscaleWithModel
-        /* category=image_postprocessing output=IMAGE */
-        ImageBlend(args: ImageBlend_input, uid?: ComfyNodeUID): ImageBlend
-        /* category=image_postprocessing output=IMAGE */
-        ImageBlur(args: ImageBlur_input, uid?: ComfyNodeUID): ImageBlur
-        /* category=image_postprocessing output=IMAGE */
-        ImageQuantize(args: ImageQuantize_input, uid?: ComfyNodeUID): ImageQuantize
-        /* category=image_postprocessing output=IMAGE */
-        ImageSharpen(args: ImageSharpen_input, uid?: ComfyNodeUID): ImageSharpen
-        /* category=latent output=LATENT */
-        LatentCompositeMasked(args: LatentCompositeMasked_input, uid?: ComfyNodeUID): LatentCompositeMasked
-        /* category=mask output=IMAGE */
-        MaskToImage(args: MaskToImage_input, uid?: ComfyNodeUID): MaskToImage
-        /* category=mask output=MASK */
-        ImageToMask(args: ImageToMask_input, uid?: ComfyNodeUID): ImageToMask
-        /* category=mask output=MASK */
-        SolidMask(args: SolidMask_input, uid?: ComfyNodeUID): SolidMask
-        /* category=mask output=MASK */
-        InvertMask(args: InvertMask_input, uid?: ComfyNodeUID): InvertMask
-        /* category=mask output=MASK */
-        CropMask(args: CropMask_input, uid?: ComfyNodeUID): CropMask
-        /* category=mask output=MASK */
-        MaskComposite(args: MaskComposite_input, uid?: ComfyNodeUID): MaskComposite
-        /* category=mask output=MASK */
-        FeatherMask(args: FeatherMask_input, uid?: ComfyNodeUID): FeatherMask
     }
 
     // Requirable --------------------------
@@ -775,6 +783,7 @@ declare global {
         STYLE_MODEL: STYLE_MODEL
         CONTROL_NET: CONTROL_NET
         GLIGEN: GLIGEN
+        UPSCALE_MODEL: UPSCALE_MODEL
         SAM_MODEL: SAM_MODEL
         BBOX_DETECTOR: BBOX_DETECTOR
         SEGM_DETECTOR: SEGM_DETECTOR
@@ -782,7 +791,6 @@ declare global {
         SEGS: SEGS
         BASIC_PIPE: BASIC_PIPE
         DETAILER_PIPE: DETAILER_PIPE
-        UPSCALE_MODEL: UPSCALE_MODEL
         UPSCALER: UPSCALER
         IMAGE_PATH: IMAGE_PATH
         BBOX_MODEL: BBOX_MODEL
@@ -830,6 +838,13 @@ declare global {
         Enum_CheckpointLoader_config_name: Enum_CheckpointLoader_config_name
         Enum_CheckpointLoader_ckpt_name: Enum_CheckpointLoader_ckpt_name
         Enum_DiffusersLoader_model_path: Enum_DiffusersLoader_model_path
+        Enum_LoadLatent_latent: Enum_LoadLatent_latent
+        Enum_HypernetworkLoader_hypernetwork_name: Enum_HypernetworkLoader_hypernetwork_name
+        Enum_UpscaleModelLoader_model_name: Enum_UpscaleModelLoader_model_name
+        Enum_ImageBlend_blend_mode: Enum_ImageBlend_blend_mode
+        Enum_ImageQuantize_dither: Enum_ImageQuantize_dither
+        Enum_ImageToMask_channel: Enum_ImageToMask_channel
+        Enum_MaskComposite_operation: Enum_MaskComposite_operation
         Enum_BrightnessContrast_mode: Enum_BrightnessContrast_mode
         Enum_ImpactSAMLoader_model_name: Enum_ImpactSAMLoader_model_name
         Enum_ImpactMMDetDetectorProvider_model_name: Enum_ImpactMMDetDetectorProvider_model_name
@@ -1019,12 +1034,6 @@ declare global {
         Enum_WASUnCLIPCheckpointLoader_ckpt_name: Enum_WASUnCLIPCheckpointLoader_ckpt_name
         Enum_WASUpscaleModelLoader_model_name: Enum_WASUpscaleModelLoader_model_name
         Enum_WASWriteToVideo_codec: Enum_WASWriteToVideo_codec
-        Enum_HypernetworkLoader_hypernetwork_name: Enum_HypernetworkLoader_hypernetwork_name
-        Enum_UpscaleModelLoader_model_name: Enum_UpscaleModelLoader_model_name
-        Enum_ImageBlend_blend_mode: Enum_ImageBlend_blend_mode
-        Enum_ImageQuantize_dither: Enum_ImageQuantize_dither
-        Enum_ImageToMask_channel: Enum_ImageToMask_channel
-        Enum_MaskComposite_operation: Enum_MaskComposite_operation
         KSampler: KSampler
         CheckpointLoaderSimple: CheckpointLoaderSimple
         CLIPTextEncode: CLIPTextEncode
@@ -1036,6 +1045,7 @@ declare global {
         EmptyLatentImage: EmptyLatentImage
         LatentUpscale: LatentUpscale
         LatentFromBatch: LatentFromBatch
+        RepeatLatentBatch: RepeatLatentBatch
         SaveImage: SaveImage
         PreviewImage: PreviewImage
         LoadImage: LoadImage
@@ -1071,6 +1081,24 @@ declare global {
         GLIGENTextBoxApply: GLIGENTextBoxApply
         CheckpointLoader: CheckpointLoader
         DiffusersLoader: DiffusersLoader
+        LoadLatent: LoadLatent
+        SaveLatent: SaveLatent
+        HypernetworkLoader: HypernetworkLoader
+        UpscaleModelLoader: UpscaleModelLoader
+        ImageUpscaleWithModel: ImageUpscaleWithModel
+        ImageBlend: ImageBlend
+        ImageBlur: ImageBlur
+        ImageQuantize: ImageQuantize
+        ImageSharpen: ImageSharpen
+        LatentCompositeMasked: LatentCompositeMasked
+        MaskToImage: MaskToImage
+        ImageToMask: ImageToMask
+        SolidMask: SolidMask
+        InvertMask: InvertMask
+        CropMask: CropMask
+        MaskComposite: MaskComposite
+        FeatherMask: FeatherMask
+        RebatchLatents: RebatchLatents
         BrightnessContrast: BrightnessContrast
         ImpactSAMLoader: ImpactSAMLoader
         ImpactMMDetDetectorProvider: ImpactMMDetDetectorProvider
@@ -1351,21 +1379,6 @@ declare global {
         WASWriteToVideo: WASWriteToVideo
         YKImagePadForOutpaint: YKImagePadForOutpaint
         YKMaskToImage: YKMaskToImage
-        HypernetworkLoader: HypernetworkLoader
-        UpscaleModelLoader: UpscaleModelLoader
-        ImageUpscaleWithModel: ImageUpscaleWithModel
-        ImageBlend: ImageBlend
-        ImageBlur: ImageBlur
-        ImageQuantize: ImageQuantize
-        ImageSharpen: ImageSharpen
-        LatentCompositeMasked: LatentCompositeMasked
-        MaskToImage: MaskToImage
-        ImageToMask: ImageToMask
-        SolidMask: SolidMask
-        InvertMask: InvertMask
-        CropMask: CropMask
-        MaskComposite: MaskComposite
-        FeatherMask: FeatherMask
     }
 
     // Embeddings -------------------------------
@@ -1396,6 +1409,7 @@ declare global {
             | 'EmptyLatentImage'
             | 'LatentUpscale'
             | 'LatentFromBatch'
+            | 'RepeatLatentBatch'
             | 'KSamplerAdvanced'
             | 'SetLatentNoiseMask'
             | 'LatentComposite'
@@ -1403,6 +1417,9 @@ declare global {
             | 'LatentFlip'
             | 'LatentCrop'
             | 'VAEEncodeTiled'
+            | 'LoadLatent'
+            | 'LatentCompositeMasked'
+            | 'RebatchLatents'
             | 'ImpactLatentPixelScale'
             | 'ImpactIterativeLatentUpscale'
             | 'RandomLatentImage'
@@ -1424,7 +1441,6 @@ declare global {
             | 'WASKSamplerWAS'
             | 'WASLatentNoiseInjection'
             | 'WASLatentUpscaleByFactorWAS'
-            | 'LatentCompositeMasked'
         > {}
     export interface CanProduce_MODEL
         extends Pick<
@@ -1435,6 +1451,7 @@ declare global {
             | 'UnCLIPCheckpointLoader'
             | 'CheckpointLoader'
             | 'DiffusersLoader'
+            | 'HypernetworkLoader'
             | 'ImpactFromDetailerPipe'
             | 'ImpactFromBasicPipe'
             | 'Dict2Model'
@@ -1447,7 +1464,6 @@ declare global {
             | 'WASDiffusersModelLoader'
             | 'WASLoraLoader'
             | 'WASUnCLIPCheckpointLoader'
-            | 'HypernetworkLoader'
         > {}
     export interface CanProduce_CLIP
         extends Pick<
@@ -1530,6 +1546,12 @@ declare global {
             | 'ImageInvert'
             | 'ImagePadForOutpaint'
             | 'VAEDecodeTiled'
+            | 'ImageUpscaleWithModel'
+            | 'ImageBlend'
+            | 'ImageBlur'
+            | 'ImageQuantize'
+            | 'ImageSharpen'
+            | 'MaskToImage'
             | 'BrightnessContrast'
             | 'ImpactDetailerForEach'
             | 'ImpactDetailerForEachDebug'
@@ -1668,12 +1690,6 @@ declare global {
             | 'WASWriteToVideo'
             | 'YKImagePadForOutpaint'
             | 'YKMaskToImage'
-            | 'ImageUpscaleWithModel'
-            | 'ImageBlend'
-            | 'ImageBlur'
-            | 'ImageQuantize'
-            | 'ImageSharpen'
-            | 'MaskToImage'
         > {}
     export interface CanProduce_MASK
         extends Pick<
@@ -1681,6 +1697,12 @@ declare global {
             | 'LoadImage'
             | 'LoadImageMask'
             | 'ImagePadForOutpaint'
+            | 'ImageToMask'
+            | 'SolidMask'
+            | 'InvertMask'
+            | 'CropMask'
+            | 'MaskComposite'
+            | 'FeatherMask'
             | 'ImpactSAMDetectorCombined'
             | 'ImpactFaceDetailer'
             | 'ImpactFaceDetailerPipe'
@@ -1711,12 +1733,6 @@ declare global {
             | 'WASMasksCombineRegions'
             | 'WASSAMImageMask'
             | 'YKImagePadForOutpaint'
-            | 'ImageToMask'
-            | 'SolidMask'
-            | 'InvertMask'
-            | 'CropMask'
-            | 'MaskComposite'
-            | 'FeatherMask'
         > {}
     export interface CanProduce_CLIP_VISION_OUTPUT extends Pick<ComfySetup, 'CLIPVisionEncode'> {}
     export interface CanProduce_CONTROL_NET extends Pick<ComfySetup, 'ControlNetLoader' | 'DiffControlNetLoader'> {}
@@ -1724,6 +1740,7 @@ declare global {
     export interface CanProduce_CLIP_VISION
         extends Pick<ComfySetup, 'CLIPVisionLoader' | 'UnCLIPCheckpointLoader' | 'WASUnCLIPCheckpointLoader'> {}
     export interface CanProduce_GLIGEN extends Pick<ComfySetup, 'GLIGENLoader'> {}
+    export interface CanProduce_UPSCALE_MODEL extends Pick<ComfySetup, 'UpscaleModelLoader' | 'WASUpscaleModelLoader'> {}
     export interface CanProduce_SAM_MODEL
         extends Pick<ComfySetup, 'ImpactSAMLoader' | 'ImpactFromDetailerPipe' | 'WASSAMModelLoader'> {}
     export interface CanProduce_BBOX_DETECTOR
@@ -1876,7 +1893,6 @@ declare global {
     export interface CanProduce_SAM_PARAMETERS extends Pick<ComfySetup, 'WASSAMParameters' | 'WASSAMParametersCombine'> {}
     export interface CanProduce_IMAGE_BOUNDS
         extends Pick<ComfySetup, 'WASImageBounds' | 'WASInsetImageBounds' | 'WASBoundedImageCropWithMask'> {}
-    export interface CanProduce_UPSCALE_MODEL extends Pick<ComfySetup, 'WASUpscaleModelLoader' | 'UpscaleModelLoader'> {}
 
     // TYPES -------------------------------
     export type SchedulerName = string | Slot<'SchedulerName'>
@@ -1888,11 +1904,11 @@ declare global {
     export type FLOAT = number | Slot<'FLOAT'>
     export type Float = number | Slot<'Float'>
     export type SAM_PARAMETERS = Slot<'SAM_PARAMETERS'>
+    export type UPSCALE_MODEL = Slot<'UPSCALE_MODEL'>
     export type BBOX_DETECTOR = Slot<'BBOX_DETECTOR'>
     export type SEGM_DETECTOR = Slot<'SEGM_DETECTOR'>
     export type ONNX_DETECTOR = Slot<'ONNX_DETECTOR'>
     export type DETAILER_PIPE = Slot<'DETAILER_PIPE'>
-    export type UPSCALE_MODEL = Slot<'UPSCALE_MODEL'>
     export type INT = number | Slot<'INT'>
     export type CONDITIONING = Slot<'CONDITIONING'>
     export type MASK_MAPPING = Slot<'MASK_MAPPING'>
@@ -1945,6 +1961,10 @@ declare global {
         | Slot<'SAM_PARAMETERS'>
         | HasSingle_SAM_PARAMETERS
         | ((x: CanProduce_SAM_PARAMETERS) => _SAM_PARAMETERS)
+    export type _UPSCALE_MODEL =
+        | Slot<'UPSCALE_MODEL'>
+        | HasSingle_UPSCALE_MODEL
+        | ((x: CanProduce_UPSCALE_MODEL) => _UPSCALE_MODEL)
     export type _BBOX_DETECTOR =
         | Slot<'BBOX_DETECTOR'>
         | HasSingle_BBOX_DETECTOR
@@ -1961,10 +1981,6 @@ declare global {
         | Slot<'DETAILER_PIPE'>
         | HasSingle_DETAILER_PIPE
         | ((x: CanProduce_DETAILER_PIPE) => _DETAILER_PIPE)
-    export type _UPSCALE_MODEL =
-        | Slot<'UPSCALE_MODEL'>
-        | HasSingle_UPSCALE_MODEL
-        | ((x: CanProduce_UPSCALE_MODEL) => _UPSCALE_MODEL)
     export type _INT = number | Slot<'INT'> | HasSingle_INT | ((x: CanProduce_INT) => _INT)
     export type _CONDITIONING = Slot<'CONDITIONING'> | HasSingle_CONDITIONING | ((x: CanProduce_CONDITIONING) => _CONDITIONING)
     export type _MASK_MAPPING = Slot<'MASK_MAPPING'> | HasSingle_MASK_MAPPING | ((x: CanProduce_MASK_MAPPING) => _MASK_MAPPING)
@@ -2288,6 +2304,16 @@ declare global {
     export type Enum_Dict2Model_config_name = Enum_CheckpointLoader_config_name
     export type Enum_StateDictMergerBlockWeightedMulti_config_name = Enum_CheckpointLoader_config_name
     export type Enum_WASCheckpointLoader_config_name = Enum_CheckpointLoader_config_name
+    export type Enum_UpscaleModelLoader_model_name =
+        | '2x_Waifaux-NL3-SuperLite_latest_G.pth'
+        | 'RealESRGAN_x2.pth'
+        | 'RealESRGAN_x4.pth'
+    export type Enum_WASUpscaleModelLoader_model_name = Enum_UpscaleModelLoader_model_name
+    export type Enum_ImageBlend_blend_mode = 'multiply' | 'normal' | 'overlay' | 'screen' | 'soft_light'
+    export type Enum_ImageQuantize_dither = 'floyd-steinberg' | 'none'
+    export type Enum_ImageToMask_channel = 'blue' | 'green' | 'red'
+    export type Enum_WASImageSelectChannel_channel = Enum_ImageToMask_channel
+    export type Enum_MaskComposite_operation = 'add' | 'multiply' | 'subtract'
     export type Enum_BrightnessContrast_mode = 'brightness' | 'contrast'
     export type Enum_ImpactSAMLoader_model_name = 'sam_vit_b_01ec64.pth' | 'sam_vit_h_4b8939.pth'
     export type Enum_ImpactMMDetDetectorProvider_model_name = 'bbox/mmdet_anime-face_yolov3.pth'
@@ -2512,8 +2538,6 @@ declare global {
     export type Enum_WASImageRotate_sampler = 'bicubic' | 'bilinear' | 'nearest'
     export type Enum_WASImageSave_extension = 'gif' | 'jpeg' | 'png' | 'tiff'
     export type Enum_WASImageSave_overwrite_mode = 'false' | 'prefix_as_filename'
-    export type Enum_WASImageSelectChannel_channel = 'blue' | 'green' | 'red'
-    export type Enum_ImageToMask_channel = Enum_WASImageSelectChannel_channel
     export type Enum_WASImageStitch_stitch = 'bottom' | 'left' | 'right' | 'top'
     export type Enum_WASImageStyleFilter_style =
         | '1977'
@@ -2581,14 +2605,6 @@ declare global {
     export type Enum_WASSAMModelLoader_model_size = 'ViT-B (636M)' | 'ViT-H (91M)' | 'ViT-L (308M)'
     export type Enum_WASTextCompare_mode = 'difference' | 'similarity'
     export type Enum_WASTextFileHistoryLoader_file = 'No History'
-    export type Enum_WASUpscaleModelLoader_model_name =
-        | '2x_Waifaux-NL3-SuperLite_latest_G.pth'
-        | 'RealESRGAN_x2.pth'
-        | 'RealESRGAN_x4.pth'
-    export type Enum_UpscaleModelLoader_model_name = Enum_WASUpscaleModelLoader_model_name
-    export type Enum_ImageBlend_blend_mode = 'multiply' | 'normal' | 'overlay' | 'screen' | 'soft_light'
-    export type Enum_ImageQuantize_dither = 'floyd-steinberg' | 'none'
-    export type Enum_MaskComposite_operation = 'add' | 'multiply' | 'subtract'
 
     // INTERFACES --------------------------
     export interface HasSingle_LATENT { _LATENT: LATENT } // prettier-ignore
@@ -2606,6 +2622,7 @@ declare global {
     export interface HasSingle_STYLE_MODEL { _STYLE_MODEL: STYLE_MODEL } // prettier-ignore
     export interface HasSingle_CONTROL_NET { _CONTROL_NET: CONTROL_NET } // prettier-ignore
     export interface HasSingle_GLIGEN { _GLIGEN: GLIGEN } // prettier-ignore
+    export interface HasSingle_UPSCALE_MODEL { _UPSCALE_MODEL: UPSCALE_MODEL } // prettier-ignore
     export interface HasSingle_SAM_MODEL { _SAM_MODEL: SAM_MODEL } // prettier-ignore
     export interface HasSingle_BBOX_DETECTOR { _BBOX_DETECTOR: BBOX_DETECTOR } // prettier-ignore
     export interface HasSingle_SEGM_DETECTOR { _SEGM_DETECTOR: SEGM_DETECTOR } // prettier-ignore
@@ -2613,7 +2630,6 @@ declare global {
     export interface HasSingle_SEGS { _SEGS: SEGS } // prettier-ignore
     export interface HasSingle_BASIC_PIPE { _BASIC_PIPE: BASIC_PIPE } // prettier-ignore
     export interface HasSingle_DETAILER_PIPE { _DETAILER_PIPE: DETAILER_PIPE } // prettier-ignore
-    export interface HasSingle_UPSCALE_MODEL { _UPSCALE_MODEL: UPSCALE_MODEL } // prettier-ignore
     export interface HasSingle_UPSCALER { _UPSCALER: UPSCALER } // prettier-ignore
     export interface HasSingle_IMAGE_PATH { _IMAGE_PATH: IMAGE_PATH } // prettier-ignore
     export interface HasSingle_BBOX_MODEL { _BBOX_MODEL: BBOX_MODEL } // prettier-ignore
@@ -2775,7 +2791,7 @@ declare global {
     }
 
     // |=============================================================================|
-    // | LatentFromBatch [latent]                                                    |
+    // | LatentFromBatch [latent_batch]                                              |
     // |=============================================================================|
     export interface LatentFromBatch extends HasSingle_LATENT, ComfyNode<LatentFromBatch_input> {
         LATENT: Slot<'LATENT', 0>
@@ -2784,6 +2800,20 @@ declare global {
         samples: _LATENT
         /** default=0 min=63 max=63 */
         batch_index?: _INT
+        /** default=1 min=64 max=64 */
+        length?: _INT
+    }
+
+    // |=============================================================================|
+    // | RepeatLatentBatch [latent_batch]                                            |
+    // |=============================================================================|
+    export interface RepeatLatentBatch extends HasSingle_LATENT, ComfyNode<RepeatLatentBatch_input> {
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type RepeatLatentBatch_input = {
+        samples: _LATENT
+        /** default=1 min=64 max=64 */
+        amount?: _INT
     }
 
     // |=============================================================================|
@@ -3253,6 +3283,241 @@ declare global {
     }
     export type DiffusersLoader_input = {
         model_path: Enum_CLIPLoader_clip_name
+    }
+
+    // |=============================================================================|
+    // | LoadLatent [_for_testing]                                                   |
+    // |=============================================================================|
+    export interface LoadLatent extends HasSingle_LATENT, ComfyNode<LoadLatent_input> {
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type LoadLatent_input = {
+        latent: Enum_CLIPLoader_clip_name
+    }
+
+    // |=============================================================================|
+    // | SaveLatent [_for_testing]                                                   |
+    // |=============================================================================|
+    export interface SaveLatent extends ComfyNode<SaveLatent_input> {}
+    export type SaveLatent_input = {
+        samples: _LATENT
+        /** default="latents/ComfyUI" */
+        filename_prefix?: _STRING
+    }
+
+    // |=============================================================================|
+    // | HypernetworkLoader [loaders]                                                |
+    // |=============================================================================|
+    export interface HypernetworkLoader extends HasSingle_MODEL, ComfyNode<HypernetworkLoader_input> {
+        MODEL: Slot<'MODEL', 0>
+    }
+    export type HypernetworkLoader_input = {
+        model: _MODEL
+        hypernetwork_name: Enum_CLIPLoader_clip_name
+        /** default=1 min=10 max=10 step=0.01 */
+        strength?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | UpscaleModelLoader [loaders]                                                |
+    // |=============================================================================|
+    export interface UpscaleModelLoader extends HasSingle_UPSCALE_MODEL, ComfyNode<UpscaleModelLoader_input> {
+        UPSCALE_MODEL: Slot<'UPSCALE_MODEL', 0>
+    }
+    export type UpscaleModelLoader_input = {
+        model_name: Enum_UpscaleModelLoader_model_name
+    }
+
+    // |=============================================================================|
+    // | ImageUpscaleWithModel [image_upscaling]                                     |
+    // |=============================================================================|
+    export interface ImageUpscaleWithModel extends HasSingle_IMAGE, ComfyNode<ImageUpscaleWithModel_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageUpscaleWithModel_input = {
+        upscale_model: _UPSCALE_MODEL
+        image: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageBlend [image_postprocessing]                                           |
+    // |=============================================================================|
+    export interface ImageBlend extends HasSingle_IMAGE, ComfyNode<ImageBlend_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageBlend_input = {
+        image1: _IMAGE
+        image2: _IMAGE
+        /** default=0.5 min=1 max=1 step=0.01 */
+        blend_factor?: _FLOAT
+        blend_mode: Enum_ImageBlend_blend_mode
+    }
+
+    // |=============================================================================|
+    // | ImageBlur [image_postprocessing]                                            |
+    // |=============================================================================|
+    export interface ImageBlur extends HasSingle_IMAGE, ComfyNode<ImageBlur_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageBlur_input = {
+        image: _IMAGE
+        /** default=1 min=31 max=31 step=1 */
+        blur_radius?: _INT
+        /** default=1 min=10 max=10 step=0.1 */
+        sigma?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | ImageQuantize [image_postprocessing]                                        |
+    // |=============================================================================|
+    export interface ImageQuantize extends HasSingle_IMAGE, ComfyNode<ImageQuantize_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageQuantize_input = {
+        image: _IMAGE
+        /** default=256 min=256 max=256 step=1 */
+        colors?: _INT
+        dither: Enum_ImageQuantize_dither
+    }
+
+    // |=============================================================================|
+    // | ImageSharpen [image_postprocessing]                                         |
+    // |=============================================================================|
+    export interface ImageSharpen extends HasSingle_IMAGE, ComfyNode<ImageSharpen_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageSharpen_input = {
+        image: _IMAGE
+        /** default=1 min=31 max=31 step=1 */
+        sharpen_radius?: _INT
+        /** default=1 min=5 max=5 step=0.1 */
+        alpha?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | LatentCompositeMasked [latent]                                              |
+    // |=============================================================================|
+    export interface LatentCompositeMasked extends HasSingle_LATENT, ComfyNode<LatentCompositeMasked_input> {
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type LatentCompositeMasked_input = {
+        destination: _LATENT
+        source: _LATENT
+        /** default=0 min=8192 max=8192 step=8 */
+        x?: _INT
+        /** default=0 min=8192 max=8192 step=8 */
+        y?: _INT
+        mask?: _MASK
+    }
+
+    // |=============================================================================|
+    // | MaskToImage [mask]                                                          |
+    // |=============================================================================|
+    export interface MaskToImage extends HasSingle_IMAGE, ComfyNode<MaskToImage_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type MaskToImage_input = {
+        mask: _MASK
+    }
+
+    // |=============================================================================|
+    // | ImageToMask [mask]                                                          |
+    // |=============================================================================|
+    export interface ImageToMask extends HasSingle_MASK, ComfyNode<ImageToMask_input> {
+        MASK: Slot<'MASK', 0>
+    }
+    export type ImageToMask_input = {
+        image: _IMAGE
+        channel: Enum_ImageToMask_channel
+    }
+
+    // |=============================================================================|
+    // | SolidMask [mask]                                                            |
+    // |=============================================================================|
+    export interface SolidMask extends HasSingle_MASK, ComfyNode<SolidMask_input> {
+        MASK: Slot<'MASK', 0>
+    }
+    export type SolidMask_input = {
+        /** default=1 min=1 max=1 step=0.01 */
+        value?: _FLOAT
+        /** default=512 min=8192 max=8192 step=1 */
+        width?: _INT
+        /** default=512 min=8192 max=8192 step=1 */
+        height?: _INT
+    }
+
+    // |=============================================================================|
+    // | InvertMask [mask]                                                           |
+    // |=============================================================================|
+    export interface InvertMask extends HasSingle_MASK, ComfyNode<InvertMask_input> {
+        MASK: Slot<'MASK', 0>
+    }
+    export type InvertMask_input = {
+        mask: _MASK
+    }
+
+    // |=============================================================================|
+    // | CropMask [mask]                                                             |
+    // |=============================================================================|
+    export interface CropMask extends HasSingle_MASK, ComfyNode<CropMask_input> {
+        MASK: Slot<'MASK', 0>
+    }
+    export type CropMask_input = {
+        mask: _MASK
+        /** default=0 min=8192 max=8192 step=1 */
+        x?: _INT
+        /** default=0 min=8192 max=8192 step=1 */
+        y?: _INT
+        /** default=512 min=8192 max=8192 step=1 */
+        width?: _INT
+        /** default=512 min=8192 max=8192 step=1 */
+        height?: _INT
+    }
+
+    // |=============================================================================|
+    // | MaskComposite [mask]                                                        |
+    // |=============================================================================|
+    export interface MaskComposite extends HasSingle_MASK, ComfyNode<MaskComposite_input> {
+        MASK: Slot<'MASK', 0>
+    }
+    export type MaskComposite_input = {
+        destination: _MASK
+        source: _MASK
+        /** default=0 min=8192 max=8192 step=1 */
+        x?: _INT
+        /** default=0 min=8192 max=8192 step=1 */
+        y?: _INT
+        operation: Enum_MaskComposite_operation
+    }
+
+    // |=============================================================================|
+    // | FeatherMask [mask]                                                          |
+    // |=============================================================================|
+    export interface FeatherMask extends HasSingle_MASK, ComfyNode<FeatherMask_input> {
+        MASK: Slot<'MASK', 0>
+    }
+    export type FeatherMask_input = {
+        mask: _MASK
+        /** default=0 min=8192 max=8192 step=1 */
+        left?: _INT
+        /** default=0 min=8192 max=8192 step=1 */
+        top?: _INT
+        /** default=0 min=8192 max=8192 step=1 */
+        right?: _INT
+        /** default=0 min=8192 max=8192 step=1 */
+        bottom?: _INT
+    }
+
+    // |=============================================================================|
+    // | RebatchLatents [latent_batch]                                               |
+    // |=============================================================================|
+    export interface RebatchLatents extends HasSingle_LATENT, ComfyNode<RebatchLatents_input> {
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type RebatchLatents_input = {
+        latents: _LATENT
+        /** default=1 min=64 max=64 */
+        batch_size?: _INT
     }
 
     // |=============================================================================|
@@ -5112,7 +5377,7 @@ declare global {
         XY_flip: Enum_ImpactMaskToSEGS_combined
         /** default=0 min=100 max=100 */
         latent_id?: _INT
-        /** default="____________EXAMPLES____________\n(X/Y_types)     (X/Y_values)\nLatent Batch    n/a\nSeeds++ Batch   3\nSteps           15;20;25\nCFG Scale       5;10;15;20\nSampler(1)      dpmpp_2s_ancestral;euler;ddim\nSampler(2)      dpmpp_2m,karras;heun,normal\nScheduler       normal;simple;karras\nDenoise         .3;.4;.5;.6;.7\nVAE             vae_1; vae_2; vae_3\n\n____________SAMPLERS____________\neuler;\neuler_ancestral;\nheun;\ndpm_2;\ndpm_2_ancestral;\nlms;\ndpm_fast;\ndpm_adaptive;\ndpmpp_2s_ancestral;\ndpmpp_sde;\ndpmpp_2m;\nddim;\nuni_pc;\nuni_pc_bh2\n\n___________SCHEDULERS___________\nkarras;\nnormal;\nsimple;\nddim_uniform\n\n______________VAE_______________\nblessed2.vae.pt;\nkl-f8-anime2.ckpt;\norangemix.vae.pt;\nvae-ft-mse-840000-ema-pruned.safetensors\n\n_____________NOTES______________\n- During a 'Latent Batch', the corresponding X/Y_value is ignored.\n- During a 'Latent Batch', the latent_id is ignored.\n- For a 'Seeds++ Batch', starting seed is defined by the KSampler.\n- Trailing semicolons are ignored in the X/Y_values.\n- Parameter types not set by this node are defined in the KSampler." */
+        /** default="____________EXAMPLES____________\n(X/Y_types)     (X/Y_values)\nLatent Batch    n/a\nSeeds++ Batch   3\nSteps           15;20;25\nCFG Scale       5;10;15;20\nSampler(1)      dpmpp_2s_ancestral;euler;ddim\nSampler(2)      dpmpp_2m,karras;heun,normal\nScheduler       normal;simple;karras\nDenoise         .3;.4;.5;.6;.7\nVAE             vae_1; vae_2; vae_3\n\n____________SAMPLERS____________\neuler;\neuler_ancestral;\nheun;\ndpm_2;\ndpm_2_ancestral;\nlms;\ndpm_fast;\ndpm_adaptive;\ndpmpp_2s_ancestral;\ndpmpp_sde;\ndpmpp_2m;\nddim;\nuni_pc;\nuni_pc_bh2\n\n___________SCHEDULERS___________\nnormal;\nkarras;\nsimple;\nddim_uniform\n\n______________VAE_______________\nblessed2.vae.pt;\nkl-f8-anime2.ckpt;\norangemix.vae.pt;\nvae-ft-mse-840000-ema-pruned.safetensors\n\n_____________NOTES______________\n- During a 'Latent Batch', the corresponding X/Y_value is ignored.\n- During a 'Latent Batch', the latent_id is ignored.\n- For a 'Seeds++ Batch', starting seed is defined by the KSampler.\n- Trailing semicolons are ignored in the X/Y_values.\n- Parameter types not set by this node are defined in the KSampler." */
         help?: _STRING
     }
 
@@ -5526,11 +5791,11 @@ declare global {
         ASCII_2: Slot<'ASCII', 2>
     }
     export type WASCacheNode_input = {
-        /** default="79300210_cache" */
+        /** default="57448161_cache" */
         latent_suffix?: _STRING
-        /** default="30318885_cache" */
+        /** default="6433720_cache" */
         image_suffix?: _STRING
-        /** default="68737922_cache" */
+        /** default="35751216_cache" */
         conditioning_suffix?: _STRING
         latent?: _LATENT
         image?: _IMAGE
@@ -6458,7 +6723,7 @@ declare global {
     }
     export type WASImageSelectChannel_input = {
         image: _IMAGE
-        channel: Enum_WASImageSelectChannel_channel
+        channel: Enum_ImageToMask_channel
     }
 
     // |=============================================================================|
@@ -7533,7 +7798,7 @@ declare global {
         ASCII: Slot<'ASCII', 1>
     }
     export type WASUpscaleModelLoader_input = {
-        model_name: Enum_WASUpscaleModelLoader_model_name
+        model_name: Enum_UpscaleModelLoader_model_name
     }
 
     // |=============================================================================|
@@ -7618,209 +7883,6 @@ declare global {
         mask: _MASK
     }
 
-    // |=============================================================================|
-    // | HypernetworkLoader [loaders]                                                |
-    // |=============================================================================|
-    export interface HypernetworkLoader extends HasSingle_MODEL, ComfyNode<HypernetworkLoader_input> {
-        MODEL: Slot<'MODEL', 0>
-    }
-    export type HypernetworkLoader_input = {
-        model: _MODEL
-        hypernetwork_name: Enum_CLIPLoader_clip_name
-        /** default=1 min=10 max=10 step=0.01 */
-        strength?: _FLOAT
-    }
-
-    // |=============================================================================|
-    // | UpscaleModelLoader [loaders]                                                |
-    // |=============================================================================|
-    export interface UpscaleModelLoader extends HasSingle_UPSCALE_MODEL, ComfyNode<UpscaleModelLoader_input> {
-        UPSCALE_MODEL: Slot<'UPSCALE_MODEL', 0>
-    }
-    export type UpscaleModelLoader_input = {
-        model_name: Enum_WASUpscaleModelLoader_model_name
-    }
-
-    // |=============================================================================|
-    // | ImageUpscaleWithModel [image_upscaling]                                     |
-    // |=============================================================================|
-    export interface ImageUpscaleWithModel extends HasSingle_IMAGE, ComfyNode<ImageUpscaleWithModel_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageUpscaleWithModel_input = {
-        upscale_model: _UPSCALE_MODEL
-        image: _IMAGE
-    }
-
-    // |=============================================================================|
-    // | ImageBlend [image_postprocessing]                                           |
-    // |=============================================================================|
-    export interface ImageBlend extends HasSingle_IMAGE, ComfyNode<ImageBlend_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageBlend_input = {
-        image1: _IMAGE
-        image2: _IMAGE
-        /** default=0.5 min=1 max=1 step=0.01 */
-        blend_factor?: _FLOAT
-        blend_mode: Enum_ImageBlend_blend_mode
-    }
-
-    // |=============================================================================|
-    // | ImageBlur [image_postprocessing]                                            |
-    // |=============================================================================|
-    export interface ImageBlur extends HasSingle_IMAGE, ComfyNode<ImageBlur_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageBlur_input = {
-        image: _IMAGE
-        /** default=1 min=31 max=31 step=1 */
-        blur_radius?: _INT
-        /** default=1 min=10 max=10 step=0.1 */
-        sigma?: _FLOAT
-    }
-
-    // |=============================================================================|
-    // | ImageQuantize [image_postprocessing]                                        |
-    // |=============================================================================|
-    export interface ImageQuantize extends HasSingle_IMAGE, ComfyNode<ImageQuantize_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageQuantize_input = {
-        image: _IMAGE
-        /** default=256 min=256 max=256 step=1 */
-        colors?: _INT
-        dither: Enum_ImageQuantize_dither
-    }
-
-    // |=============================================================================|
-    // | ImageSharpen [image_postprocessing]                                         |
-    // |=============================================================================|
-    export interface ImageSharpen extends HasSingle_IMAGE, ComfyNode<ImageSharpen_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageSharpen_input = {
-        image: _IMAGE
-        /** default=1 min=31 max=31 step=1 */
-        sharpen_radius?: _INT
-        /** default=1 min=5 max=5 step=0.1 */
-        alpha?: _FLOAT
-    }
-
-    // |=============================================================================|
-    // | LatentCompositeMasked [latent]                                              |
-    // |=============================================================================|
-    export interface LatentCompositeMasked extends HasSingle_LATENT, ComfyNode<LatentCompositeMasked_input> {
-        LATENT: Slot<'LATENT', 0>
-    }
-    export type LatentCompositeMasked_input = {
-        destination: _LATENT
-        source: _LATENT
-        /** default=0 min=8192 max=8192 step=8 */
-        x?: _INT
-        /** default=0 min=8192 max=8192 step=8 */
-        y?: _INT
-        mask?: _MASK
-    }
-
-    // |=============================================================================|
-    // | MaskToImage [mask]                                                          |
-    // |=============================================================================|
-    export interface MaskToImage extends HasSingle_IMAGE, ComfyNode<MaskToImage_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type MaskToImage_input = {
-        mask: _MASK
-    }
-
-    // |=============================================================================|
-    // | ImageToMask [mask]                                                          |
-    // |=============================================================================|
-    export interface ImageToMask extends HasSingle_MASK, ComfyNode<ImageToMask_input> {
-        MASK: Slot<'MASK', 0>
-    }
-    export type ImageToMask_input = {
-        image: _IMAGE
-        channel: Enum_WASImageSelectChannel_channel
-    }
-
-    // |=============================================================================|
-    // | SolidMask [mask]                                                            |
-    // |=============================================================================|
-    export interface SolidMask extends HasSingle_MASK, ComfyNode<SolidMask_input> {
-        MASK: Slot<'MASK', 0>
-    }
-    export type SolidMask_input = {
-        /** default=1 min=1 max=1 step=0.01 */
-        value?: _FLOAT
-        /** default=512 min=8192 max=8192 step=1 */
-        width?: _INT
-        /** default=512 min=8192 max=8192 step=1 */
-        height?: _INT
-    }
-
-    // |=============================================================================|
-    // | InvertMask [mask]                                                           |
-    // |=============================================================================|
-    export interface InvertMask extends HasSingle_MASK, ComfyNode<InvertMask_input> {
-        MASK: Slot<'MASK', 0>
-    }
-    export type InvertMask_input = {
-        mask: _MASK
-    }
-
-    // |=============================================================================|
-    // | CropMask [mask]                                                             |
-    // |=============================================================================|
-    export interface CropMask extends HasSingle_MASK, ComfyNode<CropMask_input> {
-        MASK: Slot<'MASK', 0>
-    }
-    export type CropMask_input = {
-        mask: _MASK
-        /** default=0 min=8192 max=8192 step=1 */
-        x?: _INT
-        /** default=0 min=8192 max=8192 step=1 */
-        y?: _INT
-        /** default=512 min=8192 max=8192 step=1 */
-        width?: _INT
-        /** default=512 min=8192 max=8192 step=1 */
-        height?: _INT
-    }
-
-    // |=============================================================================|
-    // | MaskComposite [mask]                                                        |
-    // |=============================================================================|
-    export interface MaskComposite extends HasSingle_MASK, ComfyNode<MaskComposite_input> {
-        MASK: Slot<'MASK', 0>
-    }
-    export type MaskComposite_input = {
-        destination: _MASK
-        source: _MASK
-        /** default=0 min=8192 max=8192 step=1 */
-        x?: _INT
-        /** default=0 min=8192 max=8192 step=1 */
-        y?: _INT
-        operation: Enum_MaskComposite_operation
-    }
-
-    // |=============================================================================|
-    // | FeatherMask [mask]                                                          |
-    // |=============================================================================|
-    export interface FeatherMask extends HasSingle_MASK, ComfyNode<FeatherMask_input> {
-        MASK: Slot<'MASK', 0>
-    }
-    export type FeatherMask_input = {
-        mask: _MASK
-        /** default=0 min=8192 max=8192 step=1 */
-        left?: _INT
-        /** default=0 min=8192 max=8192 step=1 */
-        top?: _INT
-        /** default=0 min=8192 max=8192 step=1 */
-        right?: _INT
-        /** default=0 min=8192 max=8192 step=1 */
-        bottom?: _INT
-    }
-
     // INDEX -------------------------------
     export type Schemas = {
         KSampler: ComfyNodeSchemaJSON
@@ -7834,6 +7896,7 @@ declare global {
         EmptyLatentImage: ComfyNodeSchemaJSON
         LatentUpscale: ComfyNodeSchemaJSON
         LatentFromBatch: ComfyNodeSchemaJSON
+        RepeatLatentBatch: ComfyNodeSchemaJSON
         SaveImage: ComfyNodeSchemaJSON
         PreviewImage: ComfyNodeSchemaJSON
         LoadImage: ComfyNodeSchemaJSON
@@ -7869,6 +7932,24 @@ declare global {
         GLIGENTextBoxApply: ComfyNodeSchemaJSON
         CheckpointLoader: ComfyNodeSchemaJSON
         DiffusersLoader: ComfyNodeSchemaJSON
+        LoadLatent: ComfyNodeSchemaJSON
+        SaveLatent: ComfyNodeSchemaJSON
+        HypernetworkLoader: ComfyNodeSchemaJSON
+        UpscaleModelLoader: ComfyNodeSchemaJSON
+        ImageUpscaleWithModel: ComfyNodeSchemaJSON
+        ImageBlend: ComfyNodeSchemaJSON
+        ImageBlur: ComfyNodeSchemaJSON
+        ImageQuantize: ComfyNodeSchemaJSON
+        ImageSharpen: ComfyNodeSchemaJSON
+        LatentCompositeMasked: ComfyNodeSchemaJSON
+        MaskToImage: ComfyNodeSchemaJSON
+        ImageToMask: ComfyNodeSchemaJSON
+        SolidMask: ComfyNodeSchemaJSON
+        InvertMask: ComfyNodeSchemaJSON
+        CropMask: ComfyNodeSchemaJSON
+        MaskComposite: ComfyNodeSchemaJSON
+        FeatherMask: ComfyNodeSchemaJSON
+        RebatchLatents: ComfyNodeSchemaJSON
         BrightnessContrast: ComfyNodeSchemaJSON
         ImpactSAMLoader: ComfyNodeSchemaJSON
         ImpactMMDetDetectorProvider: ComfyNodeSchemaJSON
@@ -8149,21 +8230,6 @@ declare global {
         WASWriteToVideo: ComfyNodeSchemaJSON
         YKImagePadForOutpaint: ComfyNodeSchemaJSON
         YKMaskToImage: ComfyNodeSchemaJSON
-        HypernetworkLoader: ComfyNodeSchemaJSON
-        UpscaleModelLoader: ComfyNodeSchemaJSON
-        ImageUpscaleWithModel: ComfyNodeSchemaJSON
-        ImageBlend: ComfyNodeSchemaJSON
-        ImageBlur: ComfyNodeSchemaJSON
-        ImageQuantize: ComfyNodeSchemaJSON
-        ImageSharpen: ComfyNodeSchemaJSON
-        LatentCompositeMasked: ComfyNodeSchemaJSON
-        MaskToImage: ComfyNodeSchemaJSON
-        ImageToMask: ComfyNodeSchemaJSON
-        SolidMask: ComfyNodeSchemaJSON
-        InvertMask: ComfyNodeSchemaJSON
-        CropMask: ComfyNodeSchemaJSON
-        MaskComposite: ComfyNodeSchemaJSON
-        FeatherMask: ComfyNodeSchemaJSON
     }
     export type ComfyNodeType = keyof Schemas
 }

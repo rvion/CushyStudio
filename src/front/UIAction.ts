@@ -1,8 +1,8 @@
 import { ActionDefinitionID } from 'src/back/ActionDefinition'
-import { ImageInfos } from 'src/core/GeneratedImageSummary'
+import { ImageT } from '../models/Image'
 
 export type UIAction =
-    | { type: 'paint'; img: ImageInfos }
+    | { type: 'paint'; img: ImageT }
     | { type: 'form'; form: any }
     | { type: 'any'; form: any }
     | { type: 'flow'; flowID: ActionDefinitionID }

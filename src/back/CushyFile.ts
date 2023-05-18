@@ -45,9 +45,10 @@ export class CushyFile {
         for (const a of actionsPool) {
             const actionDef = new ActionDefinition(this, a.name, a.action)
             this.actions.push(actionDef)
-            this.workspace.knownActions.set(actionDef.uid, actionDef)
+            // 🔴
+            // this.workspace.knownActions.set(actionDef.uid, actionDef)
         }
-        this.workspace.broadCastToAllClients({ type: 'ls', actions: this.actions.map((a) => a.ref) })
+        // this.workspace.broadCastToAllClients({ type: 'ls', actions: this.actions.map((a) => a.ref) })
     }
 }
 

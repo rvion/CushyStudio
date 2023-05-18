@@ -1,9 +1,9 @@
 import type { ActionDefinitionID, ExecutionID } from 'src/back/ActionDefinition'
-import type { ImageInfos, ImageUID } from 'src/core/GeneratedImageSummary'
+import type { ImageT, ImageID } from 'src/models/Image'
 import type { ActionRef } from 'src/core/KnownWorkflow'
 import type { FormDefinition, FormResult } from 'src/core/Requirement'
 import type { EmbeddingName } from 'src/core/Schema'
-import type { CushyDBData } from 'src/core/WorkspaceHistoryJSON'
+// import type { CushyDBData } from 'src/core/storeSchema'
 import type { FlowID } from 'src/front/FrontFlow'
 import type { Maybe } from 'src/utils/types'
 import type { PayloadID } from '../core/PayloadID'
@@ -17,7 +17,6 @@ import { exhaust } from '../utils/ComfyUtils'
 // | FRONT => BACK                                                                             |
 // =============================================================================================
 // sent when the webpage is loaded
-export type FromWebview_SayReady = { type: 'say-ready'; frontID: string }
 // request to run a flow
 export type FromWebview_runAction = {
     type: 'run-action'
@@ -32,14 +31,13 @@ export type FromWebview_openExternal = { type: 'open-external'; uriString: strin
 // answer a data request in the middle of a flow
 export type FromWebview_Answer = { type: 'answer'; value: any }
 // upload an image
-export type FromWebview_Image = { type: 'image'; base64: string; imageID: ImageUID }
+export type FromWebview_Image = { type: 'image'; base64: string; imageID: ImageID }
 // reset the workspace
 export type FromWebview_reset = { type: 'reset' }
 // re-build the action form and check if action is valid in current flow context
 // export type FomrWebview_ProbeAction = { type: 'probe-action'; flowID: FlowID; actionID: ActionDefinitionID }
 
 export type MessageFromWebviewToExtension =
-    | FromWebview_SayReady // report ready
     | FromWebview_runAction // run
     | FromWebview_openExternal
     | FromWebview_Answer // user interractions
@@ -56,7 +54,7 @@ export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boole
 
 // non flow-related ------------------------------------------------------
 export type FromExtension_Schema = { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
-export type FromExtension_SyncHistory = { type: 'sync-history'; history: CushyDBData }
+// export type FromExtension_SyncHistory = { type: 'sync-history'; history: CushyDBData }
 export type FromExtension_Ls = { type: 'ls'; actions: ActionRef[] }
 
 // actions payloads ------------------------------------------------------
@@ -85,14 +83,14 @@ export type FromExtension_ActionEnd = {
 
 export type FromExtension_Print = { type: 'print'; flowID: FlowID; message: string }
 export type FromExtension_Prompt = { type: 'prompt'; flowID: FlowID; graph: ComfyPromptJSON }
-export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageInfos[] }
+export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
 export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: FormDefinition }
 
 export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */
     | FromExtension_CushyStatus
-    | FromExtension_SyncHistory
+    // | FromExtension_SyncHistory
     // flow start stop
     | FromExtension_ActionStart
     | FromExtension_ActionCode
@@ -131,7 +129,7 @@ export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWeb
     if (msg.type === 'show-html') return '🥶'
     if (msg.type === 'ask') return '👋'
     if (msg.type === 'ls') return '📂'
-    if (msg.type === 'sync-history') return '⏱️'
+    // if (msg.type === 'sync-history') return '⏱️'
     exhaust(msg)
     return '❓'
 }

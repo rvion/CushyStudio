@@ -2,12 +2,12 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Radio, RadioGroup } from 'rsuite'
 import { LightBoxState, LightBoxUI } from '../LightBox'
-import type { ImageInfos } from '../../core/GeneratedImageSummary'
+import type { ImageT } from 'src/models/Image'
 
 export const ImageSelection = observer(function ImageSelection_(p: {
     // infos: ImageInfos[]
-    get: () => ImageInfos | null
-    set: (value: ImageInfos) => void
+    get: () => ImageT | null
+    set: (value: ImageT) => void
 }) {
     const { get, set } = p
     // const lbs = useMemo(() => new LightBoxState(() => infos), [infos])

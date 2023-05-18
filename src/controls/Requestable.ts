@@ -1,4 +1,4 @@
-import type { ImageInfos } from 'src/core/GeneratedImageSummary'
+import type { ImageT } from 'src/models/Image'
 import type { LATER } from 'LATER'
 import { BUG } from './BUG'
 
@@ -47,9 +47,9 @@ export type Requestable_embeddings = { type: 'embeddings'; label?: string }
 export type Requestable_enum<T extends keyof LATER<'Requirable'>> = { type: 'enum'; enumName: T; label?: string }
 export type Requestable_enumOpt<T extends keyof LATER<'Requirable'>> = { type: 'enum?'; enumName: T; label?: string }
 export type Requestable_loras = { type: 'loras'; label?: string }
-export type Requestable_samMaskPoints = { type: 'samMaskPoints'; label?: string; imageInfo: ImageInfos }
-export type Requestable_selectImage = { type: 'selectImage'; label?: string; imageInfos?: ImageInfos[] }
-export type Requestable_manualMask = { type: 'manualMask'; label?: string; imageInfo: ImageInfos }
+export type Requestable_samMaskPoints = { type: 'samMaskPoints'; label?: string; imageInfo: ImageT }
+export type Requestable_selectImage = { type: 'selectImage'; label?: string; imageInfos?: ImageT[] }
+export type Requestable_manualMask = { type: 'manualMask'; label?: string; imageInfo: ImageT }
 export type Requestable_paint = { type: 'paint'; label?: string; url: string }
 export type Requestable_items = { type: 'items'; label?: string; items: { [key: string]: Requestable } }
 export type Requestable_selectOne = { type: 'selectOne'; label?: string; choices: string[] } //

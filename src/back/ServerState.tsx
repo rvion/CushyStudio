@@ -3,15 +3,15 @@ import type { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import type { FlowExecutionStep } from '../types/FlowExecutionStep'
 import type { Maybe } from '../utils/types'
 
-import fetch from 'node-fetch'
-import { join, relative } from 'path'
-import * as WS from 'ws'
-import { Workflow } from './Workflow'
+import { LiveDB } from '../db/LiveDB'
+import { asAbsolutePath } from '../utils/fs/pathUtils'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
+import fetch from 'node-fetch'
+import { join, relative } from 'path'
+import * as WS from 'ws'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
-import { PayloadID, getPayloadID } from '../core/PayloadID'
 import { Schema } from '../core/Schema'
 import { logger } from '../logger/logger'
 import { ComfyStatus, WsMsg } from '../types/ComfyWsApi'
@@ -21,18 +21,23 @@ import { sdkTemplate } from '../typings/sdkTemplate'
 import { CodePrettier } from '../utils/CodeFormatter'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
-import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
-import { CushyClient } from './Client'
+import { Workflow } from './Workflow'
+// import { CushyClient } from './Client'
+import { FlowID } from 'src/front/FrontFlow'
+import { ActionDefinition, ActionDefinitionID } from './ActionDefinition'
 import { ConfigFileWatcher } from './ConfigWatcher'
-import { CushyDB } from './dbBack'
 import { CushyFile } from './CushyFile'
 import { TypeScriptFilesMap } from './DirWatcher'
-import { ActionDefinition, ActionDefinitionID } from './ActionDefinition'
-import { GeneratedImage } from './GeneratedImage'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
-import { FlowID } from 'src/front/FrontFlow'
+import { createRequire } from 'module'
+import { PayloadID } from 'src/core/PayloadID'
+// import { CushyDBData } from 'src/core/storeSchema'
+
+// const require = createRequire(import.meta.url)
+const WebSocketPolyfill = require('ws')
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -51,11 +56,11 @@ export class ServerState {
     outputFolderPath: AbsolutePath
 
     /** notify front of all new actions */
-    allActionsRefs = (): MessageFromExtensionToWebview & { type: 'ls' } => {
-        const actionDefs: ActionDefinition[] = Array.from(this.knownActions.values())
-        const actionRefs = actionDefs.map((a) => a.ref)
-        return { type: 'ls', actions: actionRefs, uid: getPayloadID() }
-    }
+    // allActionsRefs = (): MessageFromExtensionToWebview & { type: 'ls' } => {
+    //     const actionDefs: ActionDefinition[] = Array.from(this.knownActions.values())
+    //     const actionRefs = actionDefs.map((a) => a.ref)
+    //     return { type: 'ls', actions: actionRefs, uid: getPayloadID() }
+    // }
 
     // broadcastNewActionList = () => {
     //     const refs = this.allActionsRefs()
@@ -122,29 +127,31 @@ export class ServerState {
 
     /** wrapper around vscode.tests.createTestController so logic is self-contained  */
 
-    clients = new Map<string, CushyClient>()
-    registerClient = (id: string, client: CushyClient) => this.clients.set(id, client)
-    unregisterClient = (id: string) => this.clients.delete(id)
+    // clients = new Map<string, CushyClient>()
+    // registerClient = (id: string, client: CushyClient) => this.clients.set(id, client)
+    // unregisterClient = (id: string) => this.clients.delete(id)
 
     lastMessagesPerType = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
 
-    persistMessageInHistoryIfNecessary = (message: MessageFromExtensionToWebview) => {
-        if (message.type === 'action-start') this.db.recordEvent(message)
-        if (message.type === 'images') this.db.recordEvent(message)
-        if (message.type === 'print') this.db.recordEvent(message)
-        if (message.type === 'prompt') this.db.recordEvent(message)
-        return
-    }
+    // persistMessageInHistoryIfNecessary = (message: MessageFromExtensionToWebview) => {
+    //     if (message.type === 'action-start') this.db.recordEvent(message)
+    //     if (message.type === 'images') this.db.recordEvent(message)
+    //     if (message.type === 'print') this.db.recordEvent(message)
+    //     if (message.type === 'prompt') this.db.recordEvent(message)
+    //     return
+    // }
 
     broadCastToAllClients = (message_: MessageFromExtensionToWebview_): PayloadID => {
-        const uid = getPayloadID()
-        const message: MessageFromExtensionToWebview = { ...message_, uid }
-        const clients = Array.from(this.clients.values())
-        this.lastMessagesPerType.set(message.type, message)
-        this.persistMessageInHistoryIfNecessary(message)
-        console.log(`sending message ${message.type} to ${clients.length} clients`)
-        for (const client of clients) client.sendMessage(message)
-        return uid
+        return '🔴 temp'
+        // this.db.config
+        //     const uid = getPayloadID()
+        //     const message: MessageFromExtensionToWebview = { ...message_, uid }
+        //     const clients = Array.from(this.clients.values())
+        //     this.lastMessagesPerType.set(message.type, message)
+        //     this.persistMessageInHistoryIfNecessary(message)
+        //     console.log(`sending message ${message.type} to ${clients.length} clients`)
+        //     for (const client of clients) client.sendMessage(message)
+        //     return uid
     }
 
     relative = (absolutePath: AbsolutePath): RelativePath => {
@@ -157,7 +164,7 @@ export class ServerState {
     configWatcher = new ConfigFileWatcher()
     codePrettier: CodePrettier
     server!: CushyServer
-    db: CushyDB
+    db = new LiveDB({ WebSocketPolyfill: WebSocketPolyfill.WebSocket })
 
     constructor(
         /** path of the workspace */
@@ -175,7 +182,6 @@ export class ServerState {
             /** true in prod, false when running from this local subfolder */
         },
     ) {
-        this.db = new CushyDB(this)
         this.codePrettier = new CodePrettier(this)
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('.cushy/cache'))
         this.vscodeSettings = this.resolve(this.rootPath, asRelativePath('.vscode/settings.json'))
@@ -289,10 +295,14 @@ export class ServerState {
     initWebsocket = () =>
         new ResilientWebSocketClient({
             onClose: () => {
-                this.broadCastToAllClients({ type: 'cushy_status', connected: false })
+                // 🔴
+                // this.db. = 'disconnected'
+                // this.broadCastToAllClients({ type: 'cushy_status', connected: false })
             },
             onConnectOrReconnect: () => {
-                this.broadCastToAllClients({ type: 'cushy_status', connected: true })
+                // 🔴
+                // this.db.store.config = 'connected'
+                // this.broadCastToAllClients({ type: 'cushy_status', connected: true })
                 this.fetchAndUdpateSchema()
             },
             url: this.getWSUrl,
@@ -305,20 +315,21 @@ export class ServerState {
     //     return await this.openWebview()
     // }
 
-    forwardImagesToFrontV2 = (images: GeneratedImage[]) => {
-        const flow = this.activeFlow // 🔴
-        this.broadCastToAllClients({
-            type: 'images',
-            images: images.map((i) => i.toJSON()),
-            flowID: flow?.uid,
-        })
-    }
+    // forwardImagesToFrontV2 = (images: GeneratedImage[]) => {
+    //     const flow = this.activeFlow // 🔴
+    //     this.db.files
+    //     this.broadCastToAllClients({
+    //         type: 'images',
+    //         images: images.map((i) => i.toJSON()),
+    //         flowID: flow?.uid,
+    //     })
+    // }
 
     onMessage = (e: WS.MessageEvent) => {
         logger().info(`🧦 received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
-        this.broadCastToAllClients({ ...msg })
+        // this.broadCastToAllClients({ ...msg })
 
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid
@@ -355,7 +366,6 @@ export class ServerState {
         if (msg.type === 'executed') {
             logger().info(`${msg.type} ${JSON.stringify(msg.data)}`)
             const images = promptStep.onExecuted(msg)
-            this.forwardImagesToFrontV2(images)
             return
             // await Promise.all(images.map(i => i.savedPromise))
             // const uris = FrontWebview.with((curr) => {

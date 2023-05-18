@@ -5,7 +5,7 @@ import type { ServerState } from './ServerState'
 
 import fetch from 'node-fetch'
 import * as path from 'path'
-import { ImageInfos, ImageUID } from '../core/GeneratedImageSummary'
+import { ImageT, ImageID } from 'src/models/Image'
 import { logger } from '../logger/logger'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
@@ -17,7 +17,7 @@ enum ImageStatus {
     Saved = 3,
 }
 /** Cushy wrapper around ComfyImageInfo */
-export class GeneratedImage implements ImageInfos {
+export class GeneratedImage implements ImageT {
     private static imageID = 1
     private workspace: ServerState
 
@@ -28,7 +28,7 @@ export class GeneratedImage implements ImageInfos {
     }
 
     /** unique image id */
-    uid: ImageUID
+    id: ImageID
 
     constructor(
         /** the prompt this file has been generated from */
@@ -36,7 +36,7 @@ export class GeneratedImage implements ImageInfos {
         /** image info as returned by Comfy */
         public data: ComfyImageInfo, // public uid: string,
     ) {
-        this.uid = nanoid() // `${this.prompt.name}_${GeneratedImage.imageID++}`
+        this.id = nanoid() // `${this.prompt.name}_${GeneratedImage.imageID++}`
         this.workspace = prompt.workspace
         this.ready = this.downloadImageAndSaveToDisk()
     }
@@ -91,7 +91,7 @@ export class GeneratedImage implements ImageInfos {
     // CUSHY RELATIVE ----------------------------------------------------------------------
     /** local workspace file name, without extension */
     get localFileNameNoExt(): string {
-        return /*this.prompt.uid + '_' +*/ this.uid
+        return /*this.prompt.uid + '_' +*/ this.id
     }
 
     /** local workspace file name, WITH extension */
@@ -110,9 +110,9 @@ export class GeneratedImage implements ImageInfos {
         return this.workspace.server.baseURL + this.localAbsolutePath.replace(this.workspace.cacheFolderPath, '')
     }
 
-    toJSON = (): ImageInfos => {
+    toJSON = (): ImageT => {
         return {
-            uid: this.uid,
+            id: this.id,
             // comfy
             comfyURL: this.comfyURL,
             comfyRelativePath: this.comfyRelativePath,

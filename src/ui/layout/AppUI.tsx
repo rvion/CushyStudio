@@ -37,27 +37,27 @@ export const WebviewUI = observer(function WebviewUI_() {
                 </ScrollablePaneUI>
             </div>
 
-            {st.showAllMessageReceived ? <DebugMessagesUI /> : null}
+            {/* {st.showAllMessageReceived ? <DebugMessagesUI /> : null} */}
         </div>
     )
 })
 
-export const DebugMessagesUI = observer(function DebugMessagesUI_(p: {}) {
-    const st = useSt()
-    return (
-        <div className='shadow-xl' style={{ height: '10rem', resize: 'horizontal', overflow: 'auto' }}>
-            {st.msgGroupper.itemsToShow.map((msg, ix) => (
-                <div key={msg.uid} className='w-full flex gap-2' id={msg.uid.toString()}>
-                    <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
-                    <div className='shrink-0' style={{ width: '5rem' }}>
-                        {msg.type}
-                    </div>
-                    <div style={{ color: 'gray', textOverflow: 'ellipsis' }}>
-                        {/*  */}
-                        {JSON.stringify(msg)}
-                    </div>
-                </div>
-            ))}
-        </div>
-    )
-})
+// export const DebugMessagesUI = observer(function DebugMessagesUI_(p: {}) {
+//     const st = useSt()
+//     return (
+//         <div className='shadow-xl' style={{ height: '10rem', resize: 'horizontal', overflow: 'auto' }}>
+//             {st.msgGroupper.itemsToShow.map((msg, ix) => (
+//                 <div key={msg.uid} className='w-full flex gap-2' id={msg.uid.toString()}>
+//                     <div style={{ width: '1rem' }}>{renderMessageFromExtensionAsEmoji(msg)}</div>
+//                     <div className='shrink-0' style={{ width: '5rem' }}>
+//                         {msg.type}
+//                     </div>
+//                     <div style={{ color: 'gray', textOverflow: 'ellipsis' }}>
+//                         {/*  */}
+//                         {JSON.stringify(msg)}
+//                     </div>
+//                 </div>
+//             ))}
+//         </div>
+//     )
+// })

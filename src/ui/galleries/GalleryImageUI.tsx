@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import { ImageInfos } from 'src/core/GeneratedImageSummary'
+import { ImageT } from 'src/models/Image'
 import { useSt } from '../../front/FrontStateCtx'
 import { ItemTypes } from './ItemTypes'
 import { useDrag } from 'react-dnd'
 
-export const GalleryImageUI = observer(function ImageUI_(p: { img: ImageInfos }) {
+export const GalleryImageUI = observer(function ImageUI_(p: { img: ImageT }) {
     const img = p.img
     const st = useSt()
     const [{ opacity }, dragRef] = useDrag(

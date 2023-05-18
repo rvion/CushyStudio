@@ -17,8 +17,8 @@ export const asExecutionID = (s: string): ExecutionID => s as any
 export class ActionDefinition {
     static formBuilder = new FormBuilder()
 
-    uid: ActionDefinitionID
-    ref: ActionRef
+    // uid: ActionDefinitionID
+    // ref: ActionRef
     form: Maybe<FormDefinition> = null
 
     constructor(
@@ -27,20 +27,18 @@ export class ActionDefinition {
         public action: Action<any>, // public range: CodeRange,
     ) {
         // unique uid
-        this.uid = asFlowDefinitionID(`${file.absPath}#${name}`)
 
         // cache the form for this action
         if (action.ui) this.form = action.ui(ActionDefinition.formBuilder)
 
         // cache the json representation of this action for quick transmission to front
-        this.ref = {
-            name: this.name,
-            id: this.uid,
-            form: this.form ?? {},
-        }
+        // this.ref = {
+        //     name: this.name,
+        //     form: this.form ?? {},
+        // }
     }
 
-    toJSON() {
-        return this.ref
-    }
+    // toJSON() {
+    //     return this.ref
+    // }
 }
