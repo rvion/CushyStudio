@@ -1,12 +1,12 @@
 import type { ComfyNodeJSON, ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode, LiteGraphNodeInput } from './LiteGraph'
 import type { Maybe } from 'src/utils/types'
-import type { Schema } from './Schema'
+import type { SchemaL } from './Schema'
 import type { ComfyNodeSchema } from './Schema'
 
 export const convertLiteGraphToPrompt = (
     //
-    schema: Schema,
+    schema: SchemaL,
     workflow: LiteGraphJSON,
 ): ComfyPromptJSON => {
     const prompt: ComfyPromptJSON = {}

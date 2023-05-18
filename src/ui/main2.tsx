@@ -18,7 +18,7 @@ const Main = observer(() => {
         <CustomProvider theme='dark'>
             <Button
                 onClick={() => {
-                    st.db.store.images.create({
+                    st.db.images.create({
                         id: `a-${nanoid()}`,
                         star: Math.floor(Math.random() * 3),
                         comfyURL: `https://fakeimg.pl/350x200/?text=${nanoid()}`,

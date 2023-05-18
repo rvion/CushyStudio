@@ -4,6 +4,7 @@ export interface LiveInstance<T extends { id: string }, L> {
     table: LiveTable<T, any>
     data: T
     get id(): T['id']
+    onUpdate?: () => void
     update: (t: Partial<T>) => void
     delete: () => void
     toJSON: () => T

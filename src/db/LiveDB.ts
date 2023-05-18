@@ -2,30 +2,31 @@ import * as mobx from 'mobx'
 import * as Y from 'yjs'
 
 import { nanoid } from 'nanoid'
+import { SchemaL, SchemaT } from '../core/Schema'
 import * as W from 'y-websocket'
-import { LiveTable } from './LiveTable'
 import { FolderL, FolderT } from '../models/Folder'
-import { ImageL, ImageT } from '../models/Image'
 import { Foo } from '../models/Foo'
+import { ImageL, ImageT } from '../models/Image'
+import { LiveTable } from './LiveTable'
 
 // enableMobxBindings(mobx)
 
 export class LiveDB {
+    wsProvider: W.WebsocketProvider
+    obs: any = mobx.observable({})
+    doc: Y.Doc
+    store
+
     // -----------------------------------
     get config() { return this.store.config.getOrCreate('config', () => ({ id: 'config' })) } // prettier-ignore
-    get schema() { return this.store.schema.getOrCreate('schema', () => ({ id: 'schema' })) } // prettier-ignore
-    get files() {return this.store.images} // prettier-ignore
+    get schema() { return this.store.schema.getOrCreate('schema', () => ({ id: 'schema', embeddings:[], spec:{} })) } // prettier-ignore
+    get images() {return this.store.images} // prettier-ignore
     get folders() {return this.store.folders} // prettier-ignore
     get msgs() {return this.store.msgs} // prettier-ignore
     get scopes() {return this.store.scopes} // prettier-ignore
     get actions() {return this.store.actions} // prettier-ignore
     get status() {return this.store.status} // prettier-ignore
     // -----------------------------------
-
-    doc: Y.Doc
-    wsProvider: W.WebsocketProvider
-    store
-    obs: any = mobx.observable({})
 
     constructor(p: { WebSocketPolyfill?: any }) {
         console.log('creating db', nanoid())
@@ -37,7 +38,7 @@ export class LiveDB {
         this.debug()
         this.store = {
             config: new LiveTable<{ id: string }, Foo>(this, 'config', Foo),
-            schema: new LiveTable<{ id: string }, Foo>(this, 'schema', Foo),
+            schema: new LiveTable<SchemaT, SchemaL>(this, 'schema', SchemaL),
             //
             images: new LiveTable<ImageT, ImageL>(this, 'images', ImageL),
             folders: new LiveTable<FolderT, FolderL>(this, 'folders', FolderL),

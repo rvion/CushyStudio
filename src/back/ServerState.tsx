@@ -12,7 +12,7 @@ import fetch from 'node-fetch'
 import { join, relative } from 'path'
 import * as WS from 'ws'
 import { PromptExecution } from '../controls/ScriptStep_prompt'
-import { Schema } from '../core/Schema'
+import { SchemaL } from '../core/Schema'
 import { logger } from '../logger/logger'
 import { ComfyStatus, WsMsg } from '../types/ComfyWsApi'
 import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '../types/MessageFromExtensionToWebview'
@@ -42,7 +42,7 @@ const WebSocketPolyfill = require('ws')
 export type CSCriticalError = { title: string; help: string }
 
 export class ServerState {
-    schema: Schema
+    schema: SchemaL
     comfySessionId = 'temp' /** send by ComfyUI server */
     activeFlow: Maybe<Workflow> = null
     runs: Workflow[] = []
@@ -54,21 +54,8 @@ export class ServerState {
     cushyTSPath: AbsolutePath
     tsConfigPath: AbsolutePath
     outputFolderPath: AbsolutePath
-
-    /** notify front of all new actions */
-    // allActionsRefs = (): MessageFromExtensionToWebview & { type: 'ls' } => {
-    //     const actionDefs: ActionDefinition[] = Array.from(this.knownActions.values())
-    //     const actionRefs = actionDefs.map((a) => a.ref)
-    //     return { type: 'ls', actions: actionRefs, uid: getPayloadID() }
-    // }
-
-    // broadcastNewActionList = () => {
-    //     const refs = this.allActionsRefs()
-    //     console.log(`🔴 ${refs}`)
-    //     this.broadCastToAllClients(refs)
-    // }
-
-    // updateActionListDebounced = debounce(this.updateActionList, 1000, 2000)
+    knownActions = new Map<ActionDefinitionID, ActionDefinition>()
+    knownFiles = new Map<AbsolutePath, CushyFile>()
 
     /** write a binary file to given absPath */
     writeBinaryFile(absPath: AbsolutePath, content: Buffer) {
@@ -121,9 +108,6 @@ export class ServerState {
         this.flows.set(flowID, flow)
         return flow
     }
-
-    knownActions = new Map<ActionDefinitionID, ActionDefinition>()
-    knownFiles = new Map<AbsolutePath, CushyFile>()
 
     /** wrapper around vscode.tests.createTestController so logic is self-contained  */
 
@@ -193,7 +177,8 @@ export class ServerState {
         this.outputFolderPath = this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
 
         this.server = new CushyServer(this)
-        this.schema = this.restoreSchemaFromCache()
+        this.schema = this.db.schema
+        // this.restoreSchemaFromCache()
 
         // gen files for standalone mode
         if (opts.genTsConfig) this.createTSConfigIfMissing()
@@ -223,23 +208,22 @@ export class ServerState {
         // const json = this.readJSON(this.tsConfigUri)
     }
 
-    restoreSchemaFromCache = (): Schema => {
-        let schema: Schema
+    /** should ne be needed anymore, thanks to YJS */
+    private restoreSchemaFromCache = () => {
+        throw new Error('RESTRICTED FOR NOW, COMMENT THIS LINE IF YOU REALLY NEED IT')
         try {
             logger().info('⚡️ attemping to load cached nodes...')
             const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONPath)
             const cachedEmbeddingsJSON = this.readJSON<EmbeddingName[]>(this.embeddingsPath)
             logger().info('⚡️ found cached json for nodes...')
-            schema = new Schema(cachedComfyJSON, cachedEmbeddingsJSON)
+            this.db.schema.update({ spec: cachedComfyJSON, embeddings: cachedEmbeddingsJSON })
             logger().info('⚡️ 🟢 object_info and embeddings restored from cache')
             logger().info('⚡️ 🟢 schema restored')
         } catch (error) {
             logger().error('⚡️ ' + extractErrorMessage(error))
             logger().error('⚡️ 🔴 failed to restore object_info and/or embeddings from cache')
             logger().info('⚡️ initializing empty schema')
-            schema = new Schema({}, [])
         }
-        return schema
     }
 
     // 🔴 watchForCOnfigurationChanges = () => {
@@ -441,7 +425,7 @@ export class ServerState {
             const comfyJSONStr = readableStringify(schema$, 3)
             const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
             writeFileSync(this.comfyJSONPath, comfyJSONBuffer, 'utf-8')
-            this.schema.update(schema$, embeddings_json)
+            this.schema.update({ spec: schema$, embeddings: embeddings_json })
             logger().info('[**.. step 2/4] schema updated')
 
             // 3 ------------------------------------
@@ -476,3 +460,18 @@ export class ServerState {
 
     status: ComfyStatus | null = null
 }
+
+/** notify front of all new actions */
+// allActionsRefs = (): MessageFromExtensionToWebview & { type: 'ls' } => {
+//     const actionDefs: ActionDefinition[] = Array.from(this.knownActions.values())
+//     const actionRefs = actionDefs.map((a) => a.ref)
+//     return { type: 'ls', actions: actionRefs, uid: getPayloadID() }
+// }
+
+// broadcastNewActionList = () => {
+//     const refs = this.allActionsRefs()
+//     console.log(`🔴 ${refs}`)
+//     this.broadCastToAllClients(refs)
+// }
+
+// updateActionListDebounced = debounce(this.updateActionList, 1000, 2000)

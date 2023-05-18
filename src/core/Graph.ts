@@ -7,7 +7,7 @@ import type { Cyto } from './AutolayoutV1'
 import { nanoid } from 'nanoid'
 import { comfyColors } from './Colors'
 import { ComfyNode } from './Node'
-import { ComfyNodeSchema, Schema } from './Schema'
+import { ComfyNodeSchema, SchemaL } from './Schema'
 
 export type RunMode = 'fake' | 'real'
 
@@ -144,7 +144,7 @@ export class Graph {
 
     constructor(
         //
-        public schema: Schema,
+        public schema: SchemaL,
         json: ComfyPromptJSON = {},
     ) {
         // this.cyto = new Cyto(this)
@@ -218,7 +218,7 @@ export class Graph {
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
         const json: ComfyPromptJSON = this.jsonForPrompt
-        const schemas: Schema = this.schema
+        const schemas: SchemaL = this.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }

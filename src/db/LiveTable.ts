@@ -30,9 +30,11 @@ export class LiveTable<
         const BaseInstanceClass = class implements LiveInstance<T, T> {
             table!: LiveTable<T, any>
             data!: T
+            /** this must be fired after creation and update */
+            onUpdate?: (() => void) | undefined
             get id() { return this.data.id } // prettier-ignore
             update(t: Partial<T>) {
-                console.log(`not implemented`)
+                this.table.yjsMap.set(this.data.id, { ...this.data, ...t })
             }
             delete() {
                 this.table.yjsMap.delete(this.data.id)
@@ -43,6 +45,7 @@ export class LiveTable<
             init(table: LiveTable<T, L>, data: T) {
                 this.table = table
                 this.data = data
+                this.onUpdate?.()
                 mobx.makeAutoObservable(this)
             }
         }
@@ -82,6 +85,7 @@ export class LiveTable<
     }
     create = (data: T): L => {
         const id = data.id
+        if (this.yjsMap.has(id)) throw new Error(`ERR: ${this.name}(${id}) already exists`)
         this.yjsMap.set(id, data)
         const instance = this._createInstance(data)
         this.mobxMap.set(id, instance)
@@ -107,6 +111,7 @@ export class LiveTable<
                     const value = ymap.get(key)
                     if (value == null) throw new Error('ERR3: value is null')
                     prev.data = value
+                    prev.onUpdate?.()
                 } else if (change.action === 'delete') {
                     this.mobxMap.delete(key)
                 }

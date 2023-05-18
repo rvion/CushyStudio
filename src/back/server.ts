@@ -3,7 +3,7 @@ import express from 'express'
 import http from 'http'
 import { relative } from 'path'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
-import { WebSocketServer } from 'ws'
+// import { WebSocketServer } from 'ws'
 import { logger } from '../logger/logger'
 // import { CushyClient } from './Client'
 import { ServerState } from './ServerState'
@@ -65,8 +65,8 @@ export class CushyServer {
         logger().info(`🫖 mounting public folder ${cacheFolderPath}...`)
         app.use(express.static(cacheFolderPath))
 
-        logger().info(`🫖 creating CushyServer websocket server... ${cacheFolderPath}...`)
-        console.log(WebSocketServer)
+        // logger().info(`🫖 creating CushyServer websocket server... ${cacheFolderPath}...`)
+        // console.log(WebSocketServer)
         // const wss = new WebSocketServer({ server })
         // this.wss = wss
 

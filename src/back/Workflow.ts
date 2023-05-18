@@ -76,13 +76,13 @@ export class Workflow {
         const numPromptBefore = this._promptCounter
         const start = Date.now()
         console.log(`🔴 before: size=${this.graph.nodes.length}`)
-        const schema = this.workspace.schema
+        // const schema = this.workspace.schema
         const broadcast = this.workspace.broadCastToAllClients
         const flowID = this.uid
         const actionID = '🔴 zcxvsad' as any // actionDef.uid
         // const executionID = asExecutionID(nanoid(6))
-        broadcast({ type: 'action-start', flowID, actionID, executionID, data: formResult })
-        broadcast({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
+        // broadcast({ type: 'action-start', flowID, actionID, executionID, data: formResult })
+        // broadcast({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
 
         // const codeJS = await actionDef.getCodeJS()
         // if (codeJS == null) return false

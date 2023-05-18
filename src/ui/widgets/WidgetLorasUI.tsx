@@ -1,4 +1,4 @@
-import type { Schema } from 'src/core/Schema'
+import type { SchemaL } from 'src/core/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/presets'
 
 import * as I from '@rsuite/icons'
@@ -12,7 +12,7 @@ import { useMemo } from 'react'
 
 class WidgetLorasState {
     loras: string[]
-    constructor(public schema: Schema) {
+    constructor(public schema: SchemaL) {
         this.loras = schema.getLoras()
         for (const lora of this.loras) this.insertLora(lora)
         makeAutoObservable(this)

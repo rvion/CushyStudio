@@ -1,7 +1,7 @@
-import type { ComfyInputOpts, ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import type { Branded, Maybe } from 'src/utils/types'
+import type { ComfyInputOpts, ComfySchemaJSON } from '../types/ComfySchemaJSON'
 
-import { makeAutoObservable } from 'mobx'
+import { LiveInstance } from 'src/db/LiveInstance'
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from './Primitives'
 import { normalizeJSIdentifier } from './normalizeJSIdentifier'
@@ -25,7 +25,14 @@ export type NodeOutputExt = { type: string; name: string; isPrimitive: boolean }
 
 export type EnumValue = string | boolean | number
 
-export class Schema {
+export type SchemaT = {
+    id: 'schema'
+    spec: ComfySchemaJSON
+    embeddings: EmbeddingName[]
+}
+
+export interface SchemaL extends LiveInstance<SchemaT, SchemaL> {}
+export class SchemaL {
     getLoraHierarchy = (): string[] => {
         const loras = this.getLoras()
         return []
@@ -59,19 +66,21 @@ export class Schema {
 
     // components: ItemDataType[] = []
 
-    constructor(
-        //
-        public spec: ComfySchemaJSON,
-        public embeddings: EmbeddingName[],
-    ) {
-        this.update(spec, embeddings)
-        makeAutoObservable(this)
-    }
+    // constructor(
+    //     //
+    //     public db: LiveDB,
+    //     public spec: ComfySchemaJSON,
+    //     public embeddings: EmbeddingName[],
+    // ) {
+    //     this.onUpdate(spec, embeddings)
+    //     makeAutoObservable(this)
+    // }
 
-    update(spec: ComfySchemaJSON, embeddings: EmbeddingName[]) {
+    /** on update is called automatically by live instances */
+    onUpdate() {
         // reset spec
-        this.spec = spec
-        this.embeddings = embeddings
+        // this.spec = this.data.spec
+        // this.embeddings = this.data.embeddings
         this.knownTypes.clear()
         this.knownEnumsByHash.clear()
         this.knownEnumsByName.clear()
@@ -81,7 +90,7 @@ export class Schema {
         this.nodesByProduction = {}
 
         // compile spec
-        const entries = Object.entries(spec)
+        const entries = Object.entries(this.data.spec)
         for (const [nodeNameInComfy, nodeDef] of entries) {
             // logger().chanel?.append(`[${nodeNameInComfy}]`)
             // apply prefix
@@ -266,9 +275,9 @@ export class Schema {
         p(`\n// Embeddings -------------------------------`)
         p(
             `export type Embeddings = ${
-                this.embeddings.length == 0 //
+                this.data.embeddings.length == 0 //
                     ? '""' // fixes the problem when someone has no embedding
-                    : this.embeddings.map((e) => wrapQuote(e)).join(' | ')
+                    : this.data.embeddings.map((e) => wrapQuote(e)).join(' | ')
             }`,
         )
 
@@ -436,10 +445,6 @@ export class ComfyNodeSchema {
         return out
     }
 }
-
-// console.log(`test`)
-// const main = new ComfyTypingsGenerator(spec2 as any)
-// main.codegen()
 
 export const wrapQuote = (s: string) => {
     if (s.includes("'")) return `"${s}"`
