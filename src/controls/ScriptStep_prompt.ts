@@ -1,4 +1,4 @@
-import type { Workflow } from '../back/Workflow'
+import type { Runtime } from '../back/Workflow'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { WsMsgExecuted, WsMsgExecuting } from '../types/ComfyWsApi'
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
@@ -23,17 +23,17 @@ export class PromptExecution implements ScriptStep_Iface<PromptExecution> {
 
     /** short-hand getter to access parent client */
     get workspace() {
-        return this.run.workspace
+        return this.run.st
     }
 
     constructor(
         //
-        public run: Workflow,
+        public run: Runtime,
         public prompt: ComfyPromptJSON,
     ) {
         this._graph = new Graph(
             //
-            this.run.workspace.schema,
+            this.run.st.schema,
             // this.run,
             deepCopyNaive(prompt),
         )

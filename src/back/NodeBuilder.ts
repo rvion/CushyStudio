@@ -1,4 +1,4 @@
-import type { Workflow } from './Workflow'
+import type { Runtime } from './Workflow'
 import type { LATER } from 'LATER'
 
 import { ComfyNode } from '../core/Node'
@@ -7,8 +7,8 @@ import { nanoid } from 'nanoid'
 export interface NodeBuilder extends LATER<'ComfySetup'> {}
 
 export class NodeBuilder {
-    constructor(public flow: Workflow) {
-        const schema = flow.workspace.schema
+    constructor(public flow: Runtime) {
+        const schema = flow.st.schema
         // inject properties:
         // TODO: rewrite with a single defineProperties call
         // with propery object being defined on the client

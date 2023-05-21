@@ -13,9 +13,7 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 <IconButton onClick={() => project.delete()} icon={<I.Trash />} />
                 <Input
                     value={project.data.name}
-                    onChange={(next) => {
-                        project.update({ name: next })
-                    }}
+                    onChange={(next) => project.update({ name: next })}
                     placeholder='Project name'
                     name='title'
                 />
@@ -24,7 +22,12 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 <ActionPickerUI step={project.lastStep} />
                 <div className='flex flex-col gap-2'>
                     {project.steps.map((step) => {
-                        return <StepUI key={step.id} step={step} />
+                        return (
+                            <div className='row'>
+                                <StepUI key={step.id} step={step} />
+                                <div>coucou</div>
+                            </div>
+                        )
                     })}
                     {/* {project.groupper.msgGroups.map((group, groupIx) => {
                     return (

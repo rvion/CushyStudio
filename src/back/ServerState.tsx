@@ -23,8 +23,7 @@ import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
-import { Workflow } from './Workflow'
-// import { CushyClient } from './Client'
+import { Runtime } from './Workflow'
 import { FlowID } from 'src/front/FlowID'
 import { ActionL, ActionID } from '../models/Action'
 import { ConfigFileWatcher } from './ConfigWatcher'
@@ -34,7 +33,6 @@ import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
 import { createRequire } from 'module'
 import { PayloadID } from 'src/core/PayloadID'
-// import { CushyDBData } from 'src/core/storeSchema'
 
 const require = createRequire(import.meta.url)
 const WebSocketPolyfill = require('ws')
@@ -45,8 +43,8 @@ export type CSCriticalError = { title: string; help: string }
 export class ServerState {
     schema: SchemaL
     comfySessionId = 'temp' /** send by ComfyUI server */
-    activeFlow: Maybe<Workflow> = null
-    runs: Workflow[] = []
+    activeFlow: Maybe<Runtime> = null
+    runs: Runtime[] = []
     cacheFolderPath: AbsolutePath
     vscodeSettings: AbsolutePath
     comfyJSONPath: AbsolutePath
@@ -100,12 +98,12 @@ export class ServerState {
         writeFileSync(absPath, content, 'utf-8')
     }
 
-    flows = new Map<FlowID, Workflow>()
-    getOrCreateFlow = (flowID: FlowID): Workflow => {
+    flows = new Map<FlowID, Runtime>()
+    getOrCreateFlow = (flowID: FlowID): Runtime => {
         const prev = this.flows.get(flowID)
         if (prev != null) return prev
         console.log(`Creating new flow (id=${flowID})`)
-        const flow = new Workflow(this, flowID)
+        const flow = new Runtime(this, flowID)
         this.flows.set(flowID, flow)
         return flow
     }
@@ -214,22 +212,22 @@ export class ServerState {
     }
 
     /** should ne be needed anymore, thanks to YJS */
-    private restoreSchemaFromCache = () => {
-        throw new Error('RESTRICTED FOR NOW, COMMENT THIS LINE IF YOU REALLY NEED IT')
-        try {
-            logger().info('⚡️ attemping to load cached nodes...')
-            const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONPath)
-            const cachedEmbeddingsJSON = this.readJSON<EmbeddingName[]>(this.embeddingsPath)
-            logger().info('⚡️ found cached json for nodes...')
-            this.db.schema.update({ spec: cachedComfyJSON, embeddings: cachedEmbeddingsJSON })
-            logger().info('⚡️ 🟢 object_info and embeddings restored from cache')
-            logger().info('⚡️ 🟢 schema restored')
-        } catch (error) {
-            logger().error('⚡️ ' + extractErrorMessage(error))
-            logger().error('⚡️ 🔴 failed to restore object_info and/or embeddings from cache')
-            logger().info('⚡️ initializing empty schema')
-        }
-    }
+    // private restoreSchemaFromCache = () => {
+    //     throw new Error('RESTRICTED FOR NOW, COMMENT THIS LINE IF YOU REALLY NEED IT')
+    //     try {
+    //         logger().info('⚡️ attemping to load cached nodes...')
+    //         const cachedComfyJSON = this.readJSON<ComfySchemaJSON>(this.comfyJSONPath)
+    //         const cachedEmbeddingsJSON = this.readJSON<EmbeddingName[]>(this.embeddingsPath)
+    //         logger().info('⚡️ found cached json for nodes...')
+    //         this.db.schema.update({ spec: cachedComfyJSON, embeddings: cachedEmbeddingsJSON })
+    //         logger().info('⚡️ 🟢 object_info and embeddings restored from cache')
+    //         logger().info('⚡️ 🟢 schema restored')
+    //     } catch (error) {
+    //         logger().error('⚡️ ' + extractErrorMessage(error))
+    //         logger().error('⚡️ 🔴 failed to restore object_info and/or embeddings from cache')
+    //         logger().info('⚡️ initializing empty schema')
+    //     }
+    // }
 
     // 🔴 watchForCOnfigurationChanges = () => {
     // 🔴     logger().info('watching for configuration changes...')
@@ -250,18 +248,12 @@ export class ServerState {
     tsFilesMap = new TypeScriptFilesMap(this)
     autoDiscoverEveryWorkflow = () => {
         this.tsFilesMap.startWatching(join(this.rootPath))
-
-        // // pre-populate the tree with any open documents
-        // for (const document of vscode.workspace.textDocuments) this.updateNodeForDocument(document)
-
-        // // auto-update the tree when documents are opened or changed
-        // const _1 = vscode.workspace.onDidOpenTextDocument(this.updateNodeForDocument)
-        // const _2 = vscode.workspace.onDidChangeTextDocument((e) => this.updateNodeForDocument(e.document))
-        // this.context.subscriptions.push(_1, _2)
     }
 
-    /** will be created only after we've loaded cnfig file
-     * so we don't attempt to connect to some default server */
+    /**
+     * will be created only after we've loaded cnfig file
+     * so we don't attempt to connect to some default server
+     * */
     ws: ResilientWebSocketClient
 
     getServerHostHTTP(): string {
@@ -326,7 +318,7 @@ export class ServerState {
             return
         }
 
-        const currentRun: Maybe<Workflow> = this.activeFlow
+        const currentRun: Maybe<Runtime> = this.activeFlow
         if (currentRun == null) {
             logger().error('🐰', `❌ received ${msg.type} but currentRun is null`)
             return

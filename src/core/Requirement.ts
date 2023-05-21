@@ -1,5 +1,5 @@
 import type { LATER } from 'LATER'
-import type { Workflow } from 'src/back/Workflow'
+import type { Runtime } from 'src/back/Workflow'
 import type { Requestable } from 'src/controls/Requestable'
 import type { FormBuilder, InfoAnswer } from 'src/controls/askv2'
 
@@ -23,7 +23,7 @@ export type Action<FormDef extends FormDefinition> = {
     /** extra list of dependencies */
     // requirement?: (builder: ReqBuilder) => Reqs
     /** the code to run */
-    run: (f: Workflow, r: FormResult<FormDef>) => void | Promise<void>
+    run: (f: Runtime, r: FormResult<FormDef>) => void | Promise<void>
     /** next actions to suggest user */
     next?: string[]
 }
@@ -40,7 +40,7 @@ export type Requirement<T = any> = {
     type: string
 
     tag?: string | string[]
-    findOrCreate?: (flow: Workflow) => T
+    findOrCreate?: (flow: Runtime) => T
 
     /** if specified, Cushy will check if missing requirements can be created to
      * know if it shoul suggest this flow or not

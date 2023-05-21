@@ -6,6 +6,7 @@ import type { ProjectID, ProjectL } from './Project'
 import { toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { bang } from '../utils/bang'
+import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 
 export type FormPath = (string | number)[]
 
@@ -19,6 +20,7 @@ export type StepT = {
     actionID?: Maybe<ActionID>
     /** action input */
     value?: Maybe<any>
+    graph?: Maybe<ComfyPromptJSON>
     // history: AbsolutePath
     // form?: Maybe<FormDefinition>
 }

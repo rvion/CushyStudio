@@ -38,18 +38,17 @@ import { globalActionFnCache } from './CushyFile'
 import { StepID } from 'src/models/Step'
 
 /** script exeuction instance */
-export class Workflow {
+export class Runtime {
     constructor(
-        //
-        public workspace: ServerState, // public fileAbsPath: AbsolutePath, // public opts?: { mock?: boolean },
+        public st: ServerState, // public fileAbsPath: AbsolutePath, // public opts?: { mock?: boolean },
         /** unique run id, gener */
         public uid: FlowID,
     ) {
         // const relPath = asRelativePath(path.join('.cache', this.fileAbsPath))
-        this.folder = this.workspace.outputFolderPath // output.resolve(relPath)
+        this.folder = this.st.outputFolderPath // output.resolve(relPath)
         this.nodes = new NodeBuilder(this)
         this.name = `Run-${this.createdAt}` // 'Run ' + this.script.runCounter++
-        this.graph = new Graph(this.workspace.schema)
+        this.graph = new Graph(this.st.schema)
         // this.cyto = new Cyto(this.graph) // 🔴🔴
         makeAutoObservable(this)
     }
@@ -75,7 +74,7 @@ export class Workflow {
         const start = Date.now()
         console.log(`🔴 before: size=${this.graph.nodes.length}`)
         // const schema = this.workspace.schema
-        const broadcast = this.workspace.broadCastToAllClients
+        const broadcast = this.st.broadCastToAllClients
         const flowID = this.uid
         const actionID = '🔴 zcxvsad' as any // actionDef.uid
         // const executionID = asExecutionID(nanoid(6))
@@ -87,7 +86,7 @@ export class Workflow {
 
         // check if we're in "MOCK" mode
         console.log(`activeFlow = ${this.uid}`)
-        this.workspace.activeFlow = this // 🔴🔴
+        this.st.activeFlow = this // 🔴🔴
 
         // const ProjectScriptFn = new Function('action', codeJS)
         // const actionsPool: { name: string; action: Action<any> }[] = []
@@ -155,7 +154,7 @@ export class Workflow {
 
     /** folder where CushyStudio will save run informations */
     get outputAbsPath(): AbsolutePath {
-        return asAbsolutePath(path.join(this.workspace.cacheFolderPath, this.name))
+        return asAbsolutePath(path.join(this.st.cacheFolderPath, this.name))
     }
 
     folder: AbsolutePath
@@ -165,17 +164,17 @@ export class Workflow {
     // High level API--------------------
 
     saveTextFile = async (path: RelativePath, content: string): Promise<void> => {
-        const absPath = this.workspace.resolve(this.folder, path)
+        const absPath = this.st.resolve(this.folder, path)
         writeFileSync(absPath, content, 'utf-8')
     }
 
     showHTMLContent = (p: { htmlContent: string; title: string }) => {
-        this.workspace.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
+        this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
     showMarkdownContent = (p: { title: string; markdownContent: string }) => {
         const htmlContent = marked.parse(p.markdownContent)
-        this.workspace.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
+        this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
     }
 
     static VideoCounter = 1
@@ -188,7 +187,7 @@ export class Workflow {
          * */
         frameDuration = 200,
     ): Promise<void> => {
-        const targetVideoAbsPath = asAbsolutePath(path.join(this.outputAbsPath, `video-${Workflow.VideoCounter++}.mp4`))
+        const targetVideoAbsPath = asAbsolutePath(path.join(this.outputAbsPath, `video-${Runtime.VideoCounter++}.mp4`))
         // logger().info(`target video path: ${targetVideoPath}`)
         // logger().info(`target video uri: ${targetVideoURI}`)
         const images = source ?? this.generatedImages
@@ -212,10 +211,10 @@ export class Workflow {
             cwd,
         )
         // const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
-        const videoURL = this.workspace.server.absPathToURL(targetVideoAbsPath)
+        const videoURL = this.st.server.absPathToURL(targetVideoAbsPath)
         logger().info(`🎥 video url: ${videoURL}`)
         const content = `<video controls autoplay loop><source src="${videoURL}" type="video/mp4"></video>`
-        this.workspace.broadCastToAllClients({ type: 'show-html', content, title: 'generated video' })
+        this.st.broadCastToAllClients({ type: 'show-html', content, title: 'generated video' })
         // turns a bunch of images into a gif with ffmpeg
     }
 
@@ -261,7 +260,7 @@ export class Workflow {
         const reqBuilder = new FormBuilder()
         const request = requestFn(reqBuilder)
         const ask = new ScriptStep_ask(request)
-        this.workspace.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })
+        this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })
         this.steps.unshift(ask)
         return ask.finished
     }
@@ -269,7 +268,7 @@ export class Workflow {
     exec = (comand: string): string => {
         // promisify exec to run the command and collect the output
         this.print('🔥 exec: ' + comand)
-        const cwd = this.workspace.rootPath
+        const cwd = this.st.rootPath
         console.log('cwd', cwd)
         const res = execSync(comand, { encoding: 'utf-8', cwd })
         return res
@@ -297,7 +296,7 @@ export class Workflow {
     print = (message: Printable) => {
         let msg = this.extractString(message)
         logger().info(msg)
-        this.workspace.broadCastToAllClients({ type: 'print', message: msg, flowID: this.uid })
+        this.st.broadCastToAllClients({ type: 'print', message: msg, flowID: this.uid })
     }
 
     /** upload a file from disk to the ComfyUI backend */
@@ -323,7 +322,7 @@ export class Workflow {
 
     /** upload an image present on disk to ComfyServer */
     uploadWorkspaceFile = async (path: RelativePath): Promise<ComfyUploadImageResult> => {
-        const absPath = this.workspace.resolveFromRoot(path)
+        const absPath = this.st.resolveFromRoot(path)
         const ui8arr: Uint8Array = readFileSync(absPath)
         return await this.uploadUIntArrToComfy(ui8arr)
     }
@@ -335,13 +334,13 @@ export class Workflow {
     }
 
     uploadURL = async (url: string): Promise<ComfyUploadImageResult> => {
-        const blob = await this.workspace.getUrlAsBlob(url)
+        const blob = await this.st.getUrlAsBlob(url)
         const bytes = new Uint8Array(await blob.arrayBuffer())
         return this.uploadUIntArrToComfy(bytes)
     }
 
     private uploadUIntArrToComfy = async (bytes: Uint8Array): Promise<ComfyUploadImageResult> => {
-        const uploadURL = this.workspace.getServerHostHTTP() + '/upload/image'
+        const uploadURL = this.st.getServerHostHTTP() + '/upload/image'
         const form = new FormData()
         form.append('image', Buffer.from(bytes), { filename: 'upload.png' })
         const resp = await fetch(uploadURL, { method: 'POST', headers: form.getHeaders(), body: form })
@@ -366,7 +365,7 @@ export class Workflow {
 
     private broadcastSchemaMermaid = () => {
         // console.log(this.flowSummaryHTML)
-        this.workspace.broadCastToAllClients({
+        this.st.broadCastToAllClients({
             type: 'show-html',
             flowID: this.uid,
             content: this.flowSummaryHTML,
@@ -377,7 +376,7 @@ export class Workflow {
         const currentJSON = deepCopyNaive(this.graph.jsonForPrompt)
         // const schema = this.workspace.schema
         this.broadcastSchemaMermaid()
-        this.workspace.broadCastToAllClients({ type: 'prompt', graph: currentJSON, flowID: this.uid })
+        this.st.broadCastToAllClients({ type: 'prompt', graph: currentJSON, flowID: this.uid })
 
         logger().info('checkpoint:' + JSON.stringify(currentJSON))
         const step = new PromptExecution(this, currentJSON)
@@ -392,29 +391,29 @@ export class Workflow {
 
         // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
-            client_id: this.workspace.comfySessionId,
+            client_id: this.st.comfySessionId,
             extra_data: { extra_pnginfo: { it: 'works' } },
             prompt: currentJSON,
         }
 
         // save a copy of the prompt to the cache folder
         const promptJSONPath = asAbsolutePath(path.join(this.outputAbsPath, `prompt-${++this._promptCounter}.json`))
-        this.workspace.writeTextFile(promptJSONPath, JSON.stringify(currentJSON, null, 4))
+        this.st.writeTextFile(promptJSONPath, JSON.stringify(currentJSON, null, 4))
 
         // save a corresponding workflow file
         const cytoJSONPath = asAbsolutePath(path.join(this.outputAbsPath, `cyto-${this._promptCounter}.json`))
         const cytoJSON = await runAutolayout(this.graph)
-        this.workspace.writeTextFile(cytoJSONPath, JSON.stringify(cytoJSON, null, 4))
+        this.st.writeTextFile(cytoJSONPath, JSON.stringify(cytoJSON, null, 4))
 
         // save a corresponding workflow file
         const workflowJSONPath = asAbsolutePath(path.join(this.outputAbsPath, `workflow-${this._promptCounter}.json`))
         const liteGraphJSON = convertFlowToLiteGraphJSON(this.graph, cytoJSON)
-        this.workspace.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
+        this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
 
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
-        const promptEndpoint = `${this.workspace.getServerHostHTTP()}/prompt`
+        const promptEndpoint = `${this.st.getServerHostHTTP()}/prompt`
         logger().info('sending prompt to ' + promptEndpoint)
         const res = await fetch(promptEndpoint, {
             method: 'POST',
