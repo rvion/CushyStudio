@@ -2,10 +2,10 @@ action('LOAD MODEL', {
     help: 'load model with optional clip-skip, loras, etc.', // <- action help text
     ui: (form) => ({
         model: form.enum({ enumName: 'Enum_EfficientLoader_ckpt_name' }),
-        loras: form.loras({}),
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name' }),
         clipSkip: form.intOpt({}),
         tomeRatio: form.intOpt({}),
+        loras: form.loras({}),
     }),
     run: async (flow, p) => {
         const graph = flow.nodes

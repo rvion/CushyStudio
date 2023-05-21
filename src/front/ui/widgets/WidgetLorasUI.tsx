@@ -3,11 +3,11 @@ import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 
 import * as I from '@rsuite/icons'
 import { makeAutoObservable } from 'mobx'
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
+import { useMemo } from 'react'
 import { IconButton, MultiCascader, Slider } from 'rsuite'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { useSt } from '../../FrontStateCtx'
-import { useMemo } from 'react'
 // ----------------------------------------------------------------------
 
 class WidgetLorasState {
@@ -23,7 +23,7 @@ class WidgetLorasState {
     insertLora = (rawPath: string) => {
         const path = rawPath.replace(/\\/g, '/')
         const segments = path.split('/')
-        console.log('a. segments=', segments)
+        // console.log('a. segments=', segments)
         let folder = this.FOLDER
         for (let i = 0; i < segments.length - 1; i++) {
             const segment = segments[i]
@@ -82,7 +82,7 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: {
                             }
                         }
                     }
-                    console.log({ nextNames })
+                    // console.log({ nextNames })
                     const nextValues: SimplifiedLoraDef[] = nextNames.map(
                         (x): SimplifiedLoraDef => ({
                             name: x as any,
@@ -96,7 +96,7 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: {
             />
             <div>
                 {names?.map((loraName) => (
-                    <div className='flex items-center'>
+                    <div key={loraName} className='flex items-center'>
                         <IconButton
                             icon={<I.Trash />}
                             onClick={() => {

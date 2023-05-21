@@ -35,6 +35,7 @@ export class LiveTable<
             data!: T
 
             /** this must be fired after creation and update */
+            onCreate?: (data: T) => void
             onUpdate?: (prev: Maybe<T>, next: T) => void
             get id() { return this.data.id } // prettier-ignore
             update(t: Partial<T>) {
@@ -50,6 +51,7 @@ export class LiveTable<
                 this.db = table.db
                 this.table = table
                 this.data = data
+                this.onCreate?.(data)
                 this.onUpdate?.(undefined, data)
                 mobx.makeAutoObservable(this)
             }

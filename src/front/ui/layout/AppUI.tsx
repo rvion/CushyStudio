@@ -8,7 +8,7 @@ import { ScrollablePaneUI } from '../scrollableArea'
 import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
 import { AppBarUI } from './AppBarUI'
 
-export const WebviewUI = observer(function WebviewUI_() {
+export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
 
     const action = st.currentAction

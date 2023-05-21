@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../../FrontStateCtx'
 import { projectContext } from '../../ProjectCtx'
-import { WorkflowUI } from './ProjectUI'
+import { ProjectUI } from './ProjectUI'
 
 export const WorkspaceUI = observer(function WorkspaceUI_(p: {}) {
     const st = useSt()
@@ -10,7 +10,7 @@ export const WorkspaceUI = observer(function WorkspaceUI_(p: {}) {
             {st.db.projects.map((prolject) => {
                 return (
                     <projectContext.Provider value={prolject} key={prolject.id}>
-                        <WorkflowUI key={prolject.id} />
+                        <ProjectUI key={prolject.id} />
                     </projectContext.Provider>
                 )
             })}

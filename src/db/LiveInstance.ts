@@ -7,6 +7,7 @@ export interface LiveInstance<T extends { id: string }, L> {
     table: LiveTable<T, any>
     data: T
     get id(): T['id']
+    onCreate?: (data: T) => void
     onUpdate?: (prev: Maybe<T>, next: T) => void
     update: (t: Partial<T>) => void
     delete: () => void

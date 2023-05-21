@@ -24,7 +24,8 @@ export const GalleryFolderUI = observer(function GalleryFolderUI_(p: {
     }))
 
     const images = p.folderL.data.imageUIDs?.map((i) => st.imagesById.get(i)) ?? []
-    console.log(images, [...st.imagesById.keys()])
+    // 🔴
+    // console.log(images, [...st.imagesById.keys()])
     return (
         <div
             style={{ flexDirection: p.direction === 'horizontal' ? 'row' : 'column' }}

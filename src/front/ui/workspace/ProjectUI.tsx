@@ -4,7 +4,8 @@ import { IconButton, Input, Panel } from 'rsuite'
 import { useProject } from '../../ProjectCtx'
 import { ActionPickerUI } from '../flow/ActionPickerUI'
 import { StepUI } from '../widgets/FormUI'
-export const WorkflowUI = observer(function WorkflowUI_(p: {}) {
+
+export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const project = useProject()
     return (
         <Panel>

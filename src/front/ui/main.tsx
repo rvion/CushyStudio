@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client'
 
 import './webview.css'
 import 'rsuite/dist/rsuite.min.css'
-import { WebviewUI } from './layout/AppUI'
+import { CushyUI } from './layout/AppUI'
 import { CustomProvider } from 'rsuite'
 import { useMemo } from 'react'
 import { FrontState } from '../FrontState'
@@ -17,7 +17,7 @@ const Main = () => {
         <CustomProvider theme='dark'>
             <stContext.Provider value={st}>
                 <DndProvider backend={HTML5Backend}>
-                    <WebviewUI />
+                    <CushyUI />
                 </DndProvider>
             </stContext.Provider>
         </CustomProvider>

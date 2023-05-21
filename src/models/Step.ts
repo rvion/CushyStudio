@@ -58,11 +58,16 @@ export class StepL {
 
     /** this value is the root response object
      * the form will progressively fill */
-    draft: any = {}
+    draft: Maybe<any> = null
+
+    onCreate = (data: StepT) => {
+        this.draft = data.value ?? {}
+    }
 
     reset = () => (this.draft = {})
 
     getAtPath(path: FormPath): any {
+        if (this.draft == null) this.draft = {}
         let current = this.draft
         for (const key of path) {
             if (!current.hasOwnProperty(key)) {
@@ -74,6 +79,7 @@ export class StepL {
     }
 
     setAtPath = (path: FormPath, value: any) => {
+        if (this.draft == null) this.draft = {}
         console.log(path, value, toJS(this.draft))
         let current = this.draft
         for (let i = 0; i < path.length - 1; i++) {
