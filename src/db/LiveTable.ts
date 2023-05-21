@@ -60,8 +60,8 @@ export class LiveTable<
     clear = () => {
         return this.yjsMap.clear()
     }
-    map = <X>(fn: (k: string, l: L) => X): X[] => {
-        return Array.from(this.mobxMap.entries()).map(([k, v]) => fn(k, v))
+    map = <X>(fn: (l: L, k: L['data']['id']) => X): X[] => {
+        return Array.from(this.mobxMap.entries()).map(([k, v]) => fn(v, k))
     }
     ids = () => {
         return Array.from(this.mobxMap.keys())

@@ -11,3 +11,6 @@ export type FolderT = {
 
 export interface FolderL extends LiveInstance<FolderT, FolderL> {}
 export class FolderL {}
+
+// const x = 0 as any as FolderL
+// const y: FolderT = x

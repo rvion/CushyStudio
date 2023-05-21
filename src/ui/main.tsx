@@ -1,6 +1,5 @@
 import '../logger/LoggerFront' // inject a global logger
 import ReactDOM from 'react-dom/client'
-import '../core/enableMobxBindings'
 
 import './webview.css'
 import 'rsuite/dist/rsuite.min.css'

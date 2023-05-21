@@ -17,14 +17,6 @@ export const WebviewUI = observer(function WebviewUI_() {
             <AppBarUI />
             <div className='flex flex-grow'>
                 <VerticalGalleryUI />
-                {/* BODY */}
-                {/* {st.currentAction === 'home' ? <FooUI /> : null} */}
-                {/* <ProjectGalleryUI /> */}
-                {/* <div className='flex-grow basis-1 flex flex-col'>
-                        <FooUI />
-                    </div> */}
-                {/* <div className='flex-grow'>bar</div> */}
-                {/* <div className='flex flex-row flex-grow '> */}
                 <ScrollablePaneUI className='shrink-0 flex-grow'>
                     <GalleryHoveredPreviewUI />
                     {action == null ? ( //

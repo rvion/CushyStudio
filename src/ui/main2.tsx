@@ -33,7 +33,7 @@ const Main = observer(() => {
                 add action
             </Button>
             <Button onClick={() => st.db.store.actions.clear()}>clear actions</Button>
-            {st.db.actions.map((k, v) => (
+            {st.db.actions.map((v, k) => (
                 <div key={k}>
                     <Button>{v.data.name}</Button>
                     {JSON.stringify(v)}
@@ -53,7 +53,7 @@ const Main = observer(() => {
             </Button>
             <Button onClick={() => st.db.store.images.clear()}>clear image</Button>
             {/* <pre>{JSON.stringify(st.db.store, null, 4)}</pre> */}
-            {st.db.store.images.map((k, v) => (
+            {st.db.store.images.map((v, k) => (
                 <div key={k}>
                     <Button onClick={() => v.delete()}>X</Button>
                     <Button>({v.test1})</Button>

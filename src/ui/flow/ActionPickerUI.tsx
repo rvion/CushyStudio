@@ -13,14 +13,14 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
         <div className='flex'>
             <div className='flex flex-col items-start'>
                 {/* ({uiSt.currentActionID}) */}
-                {st.ActionOptionForSelectInput.map((actionRef) => {
+                {st.db.actions.map((a) => {
                     return (
                         <Button
                             startIcon={<I.PlayOutline />}
-                            key={actionRef.id}
+                            key={a.id}
                             size='sm'
-                            appearance={XX.currentActionRef?.id === actionRef.id ? 'primary' : 'ghost'}
-                            color={XX.currentActionRef?.id === actionRef.id ? 'green' : undefined}
+                            appearance={XX.currentActionRef?.id === a.id ? 'primary' : 'ghost'}
+                            color={XX.currentActionRef?.id === a.id ? 'green' : undefined}
                             onClick={() => {
                                 console.log('🔴 fixme')
                                 // if (XX.currentActionRef?.id != actionRef.id) {
@@ -30,7 +30,7 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
                             }}
                         >
                             <div>
-                                {actionRef.name}
+                                {a.data.name}
                                 {/* ({actionRef.id}) */}
                             </div>
                         </Button>
