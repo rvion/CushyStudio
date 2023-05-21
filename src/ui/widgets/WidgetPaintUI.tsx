@@ -1,9 +1,9 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import { useLayoutEffect, useMemo, useRef } from 'react'
-import { useSt } from '../../front/FrontStateCtx'
-import { Button, Panel } from 'rsuite'
+import { useLayoutEffect, useMemo } from 'react'
+import { Button } from 'rsuite'
 import { FrontState } from 'src/front/FrontState'
+import { useSt } from '../../front/FrontStateCtx'
 
 const getLayers = (): any => {
     return (document as any).getElementById('miniPaint').contentWindow.Layers
@@ -52,7 +52,8 @@ class MinipaintState {
         // alert('Data length: ' + data.length)
         console.log(`${data.length} bytes`)
         const imageID = nanoid()
-        this.st.sendMessageToExtension({ type: 'image', base64: data, imageID })
+        // 🔴🔴
+        // this.st.sendMessageToExtension({ type: 'image', base64: data, imageID })
         // }
     }
 }

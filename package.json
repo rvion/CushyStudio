@@ -104,7 +104,7 @@
         "📌 SHELL": "",
         "vscode:dev": "cross-env-shell code --extensionDevelopmentPath=${PWD}",
         "📌 BACK": "",
-        "back:dev": "npm run jswatch /Users/loco/dev/CushyStudio/src/back/main2.ts",
+        "back:dev": "npm run jswatch /Users/loco/dev/CushyStudio/src/back/main.ts",
         "back:build": "esbuild src/back/main.ts --bundle --outfile=dist/main2.js --format=esm --platform=node --packages=external",
         "back:build-watch": "npm run back:build -- --sourcemap --metafile=dist/meta.json --watch ",
         "back:sourcemap": "npm run back:build -- --sourcemap",

@@ -1,8 +1,9 @@
 import * as mobx from 'mobx'
+import { bang } from '../utils/bang'
 import { YMap, YMapEvent } from 'yjs/dist/src/internals'
-import { LiveInstance } from './LiveInstance'
 import { LiveDB } from './LiveDB'
 import { MERGE_PROTOTYPES } from './LiveHelpers'
+import { LiveInstance } from './LiveInstance'
 
 export interface LiveEntityClass<T extends { id: string }, L> {
     new (...args: any[]): LiveInstance<T, L> & L // & InitEntity<L>
@@ -62,6 +63,12 @@ export class LiveTable<
     map = <X>(fn: (k: string, l: L) => X): X[] => {
         return Array.from(this.mobxMap.entries()).map(([k, v]) => fn(k, v))
     }
+    ids = () => {
+        return Array.from(this.mobxMap.keys())
+    }
+    values = () => {
+        return Array.from(this.mobxMap.values())
+    }
     mapData = <X>(fn: (k: string, t: T) => X): X[] => {
         return Array.from(this.mobxMap.entries()).map(([k, v]) => fn(k, v.data))
     }
@@ -83,6 +90,24 @@ export class LiveTable<
         instance.init(this, data)
         return instance
     }
+
+    upsert = (data: T): L => {
+        const id = data.id
+        const prev = this.yjsMap.get(id)
+        // this.yjsMap.set(nanoid(), data)
+        if (prev) {
+            console.log('>> 🟢', prev)
+            this.yjsMap.set(id, data)
+            return bang(this.mobxMap.get(id))
+            // return prev
+        } else {
+            console.log('>> 🔴', prev)
+            this.yjsMap.set(id, data)
+            const instance = this._createInstance(data)
+            this.mobxMap.set(id, instance)
+            return instance
+        }
+    }
     create = (data: T): L => {
         const id = data.id
         if (this.yjsMap.has(id)) throw new Error(`ERR: ${this.name}(${id}) already exists`)
@@ -97,6 +122,7 @@ export class LiveTable<
 
     onYjsMapEvent = (ymapEvent: YMapEvent<T>) => {
         const ymap = this.yjsMap
+
         mobx.runInAction(() => {
             ymapEvent.changes.keys.forEach((change, key) => {
                 if (change.action === 'add') {

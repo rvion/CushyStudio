@@ -27,7 +27,10 @@ export const renderMsgUI = (
             ui: (
                 <FormUI
                     //
-                    submit={(value) => st.answerInfo(value)}
+                    submit={(value) => {
+                        // 🔴
+                        msg.result = value
+                    }}
                     key={msg.uid}
                     formDef={msg.form}
                 />

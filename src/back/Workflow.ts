@@ -1,6 +1,6 @@
 import type { LATER } from 'LATER'
 import type { FormResult } from '../core/Requirement'
-import type { FlowID } from '../front/FrontFlow'
+import type { FlowID } from 'src/front/FlowID'
 
 import FormData from 'form-data'
 import { marked } from 'marked'
@@ -22,7 +22,6 @@ import { Printable } from '../core/Printable'
 import { auto } from '../core/autoValue'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
 import { logger } from '../logger/logger'
-import { Presets } from '../presets/presets'
 import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../types/ComfyWsApi'
 import { FlowExecutionStep } from '../types/FlowExecutionStep'
 import { deepCopyNaive } from '../utils/ComfyUtils'
@@ -31,10 +30,11 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { wildcards } from '../wildcards/wildcards'
-import { ActionDefinition, ExecutionID } from './ActionDefinition'
+import { ActionL, ExecutionID } from '../models/Action'
 import { GeneratedImage } from './GeneratedImage'
 import { NodeBuilder } from './NodeBuilder'
 import { ServerState } from './ServerState'
+import { globalActionFnCache } from './CushyFile'
 
 /** script exeuction instance */
 export class Workflow {
@@ -56,9 +56,6 @@ export class Workflow {
     /** creation "timestamp" in YYYYMMDDHHMMSS format */
     createdAt = getYYYYMMDDHHMMSS()
 
-    // temp
-    presets = new Presets(this)
-
     /** human readable folder name */
     name: string
 
@@ -69,7 +66,7 @@ export class Workflow {
 
     runAction = async (
         //
-        actionDef: ActionDefinition,
+        actionL: ActionL,
         formResult: FormResult<any>,
         executionID: ExecutionID,
     ) => {
@@ -102,7 +99,8 @@ export class Workflow {
             // await ProjectScriptFn(actionFn)
             // const match = actionsPool.find((i) => i.name === actionDef.name)
             // if (match == null) throw new Error('no action found')
-            const action = actionDef.action
+            const action = globalActionFnCache.get(actionL) // actionDef.action
+            if (action == null) return console.log(`❌ action not found`)
             // broadcast({ type: 'action-code', flowRunID: executionID, code: match.action.toString() })
 
             // const reqBuilder = new RequirementBuilder(this)
@@ -262,7 +260,7 @@ export class Workflow {
         const reqBuilder = new FormBuilder()
         const request = requestFn(reqBuilder)
         const ask = new ScriptStep_ask(request)
-        this.workspace.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request })
+        this.workspace.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })
         this.steps.unshift(ask)
         return ask.finished
     }

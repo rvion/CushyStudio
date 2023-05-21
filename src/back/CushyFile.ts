@@ -1,15 +1,14 @@
-import type { Action } from 'src/core/Requirement'
+import type { Action, FormDefinition } from 'src/core/Requirement'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
-import { ActionDefinition } from './ActionDefinition'
 import type { ServerState } from './ServerState'
+import type { ActionL } from '../models/Action'
 
 import { readFileSync } from 'fs'
-import * as vscode from 'vscode'
+import { asActionDefinitionID } from '../models/Action'
+import { FormBuilder } from '../controls/askv2'
 import { transpileCode } from './transpiler'
 
-export type MarkdownTestData = CushyFile | /* TestHeading |*/ ActionDefinition
-
-export const vsTestItemOriginDict = new WeakMap<vscode.TestItem, MarkdownTestData>()
+export type MarkdownTestData = CushyFile | /* TestHeading |*/ ActionL
 
 export type CodeRange = {
     fromLine: number
@@ -18,10 +17,17 @@ export type CodeRange = {
     toChar: number
 }
 
+const formBuilder = new FormBuilder()
+
+/** temporary hack so I can keep a shared ActionL class but still have a way to
+ * retrieve the original function that is only available on the backend
+ */
+export const globalActionFnCache = new WeakMap<ActionL, Action<FormDefinition>>()
+
 export class CushyFile {
     CONTENT = ''
 
-    actions: ActionDefinition[] = []
+    actions: ActionL[] = []
     constructor(
         //
         public workspace: ServerState,
@@ -35,7 +41,7 @@ export class CushyFile {
         const codeTS = this.CONTENT
         const codeJS = await transpileCode(codeTS)
 
-        const actionsPool: { name: string; action: Action<any> }[] = []
+        const actionsPool: { name: string; action: Action<FormDefinition> }[] = []
         const registerActionFn = (name: string, action: Action<any>): void => {
             console.info(`    - 🔎 ${name}`)
             actionsPool.push({ name, action })
@@ -43,9 +49,18 @@ export class CushyFile {
         const ProjectScriptFn = new Function('action', codeJS)
         await ProjectScriptFn(registerActionFn)
         for (const a of actionsPool) {
-            const actionDef = new ActionDefinition(this, a.name, a.action)
-            this.actions.push(actionDef)
-            // 🔴
+            // const actionDef = new ActionL(this, a.name, a.action)
+            // this.actions.push(actionDef)
+            // console.log('UPSERTING', a.name)
+            const actionID = asActionDefinitionID(`${this.absPath}#${a.name}`)
+            const actionL = this.workspace.db.actions.upsert({
+                id: actionID,
+                file: this.absPath,
+                name: a.name,
+                form: a.action.ui?.(formBuilder),
+            })
+            globalActionFnCache.set(actionL, a.action)
+            // .ac.upsert(actionDef.uid, actionDef)
             // this.workspace.knownActions.set(actionDef.uid, actionDef)
         }
         // this.workspace.broadCastToAllClients({ type: 'ls', actions: this.actions.map((a) => a.ref) })

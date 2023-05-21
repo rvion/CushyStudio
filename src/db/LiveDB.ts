@@ -3,16 +3,24 @@ import * as Y from 'yjs'
 
 import { nanoid } from 'nanoid'
 import { SchemaL, SchemaT } from '../core/Schema'
-import * as W from 'y-websocket'
+import type * as W2 from 'y-websocket/'
 import { FolderL, FolderT } from '../models/Folder'
 import { Foo } from '../models/Foo'
 import { ImageL, ImageT } from '../models/Image'
 import { LiveTable } from './LiveTable'
+import { ActionL, ActionT } from '../models/Action'
+import { createRequire } from 'module'
 
-// enableMobxBindings(mobx)
+// let W: typeof import('y-websocket')
+// if (globalThis.window) {
+// W = await import('y-websocket')
+// } else {
+//     const requireJS = createRequire(import.meta.url)
+//     W = requireJS('y-websocket')
+// }
 
 export class LiveDB {
-    wsProvider: W.WebsocketProvider
+    wsProvider: W2.WebsocketProvider
     obs: any = mobx.observable({})
     doc: Y.Doc
     store
@@ -28,10 +36,33 @@ export class LiveDB {
     get status() {return this.store.status} // prettier-ignore
     // -----------------------------------
 
-    constructor(p: { WebSocketPolyfill?: any }) {
+    // kinda reset everything
+    reset = () => {
+        // 🔴
+        Y.transact(this.doc, () => {
+            for (const k in this.store) {
+                const store: LiveTable<any, any> = (this.store as any)[k]
+                store.clear()
+            }
+        })
+        // this.store.config.reset()
+        // this.store.schema.reset()
+        // this.store.images.reset()
+        // this.store.folders.reset()
+        // this.store.msgs.reset()
+        // this.store.scopes.reset()
+        // this.store.actions.reset()
+        // this.store.status.reset()
+    }
+
+    constructor(p: {
+        //
+        WebsocketProvider: typeof W2.WebsocketProvider
+        WebSocketPolyfill?: any
+    }) {
         console.log('creating db', nanoid())
         this.doc = new Y.Doc({ autoLoad: true })
-        this.wsProvider = new W.WebsocketProvider('ws://localhost:1234', 'test2', this.doc, {
+        this.wsProvider = new p.WebsocketProvider('ws://localhost:1234', 'test2', this.doc, {
             WebSocketPolyfill: p.WebSocketPolyfill,
             connect: true,
         })
@@ -45,7 +76,7 @@ export class LiveDB {
             //
             msgs: new LiveTable<{ id: string }, Foo>(this, 'msgs', Foo),
             scopes: new LiveTable<{ id: string }, Foo>(this, 'scopes', Foo),
-            actions: new LiveTable<{ id: string }, Foo>(this, 'actions', Foo),
+            actions: new LiveTable<ActionT, ActionL>(this, 'actions', ActionL),
             status: new LiveTable<{ id: string }, Foo>(this, 'status', Foo),
         }
     }

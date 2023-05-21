@@ -8,14 +8,38 @@ import { LiveDB } from '../db/LiveDB'
 import { useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
+import * as W from 'y-websocket'
 
 class State {
-    db = new LiveDB({})
+    db: LiveDB
+    constructor() {
+        this.db = new LiveDB({
+            WebsocketProvider: W.WebsocketProvider,
+        })
+    }
 }
 const Main = observer(() => {
     const st = useMemo(() => new State(), [])
     return (
         <CustomProvider theme='dark'>
+            <h3>Flows</h3>
+            {/* {st.db.flows.map((k, v) => ()} */}
+            <h3>Actions</h3>
+            <Button
+                onClick={() => {
+                    st.db.actions.create({ id: `a-${nanoid()}` as any, name: nanoid(), file: nanoid() as any, form: {} })
+                }}
+            >
+                add action
+            </Button>
+            <Button onClick={() => st.db.store.actions.clear()}>clear actions</Button>
+            {st.db.actions.map((k, v) => (
+                <div key={k}>
+                    <Button>{v.data.name}</Button>
+                    {JSON.stringify(v)}
+                </div>
+            ))}
+            <h3>Images</h3>
             <Button
                 onClick={() => {
                     st.db.images.create({
@@ -25,9 +49,9 @@ const Main = observer(() => {
                     })
                 }}
             >
-                add
+                add image
             </Button>
-            <Button onClick={() => st.db.store.images.clear()}>clean</Button>
+            <Button onClick={() => st.db.store.images.clear()}>clear image</Button>
             {/* <pre>{JSON.stringify(st.db.store, null, 4)}</pre> */}
             {st.db.store.images.map((k, v) => (
                 <div key={k}>

@@ -6,7 +6,7 @@
  */
 
 import type { Base64Image } from 'src/core/b64img'
-import type { SimplifiedLoraDef } from 'src/presets/presets'
+import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { Maybe, Tagged } from 'src/utils/types'
 import type { ImageT } from 'src/models/Image'
 import type { Requestable } from './Requestable'

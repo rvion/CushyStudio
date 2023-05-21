@@ -1,10 +1,9 @@
-import type { ActionDefinitionID, ExecutionID } from 'src/back/ActionDefinition'
+import type { ActionDefinitionID, ActionT, ExecutionID } from 'src/models/Action'
 import type { ImageT, ImageID } from 'src/models/Image'
-import type { ActionRef } from 'src/core/KnownWorkflow'
 import type { FormDefinition, FormResult } from 'src/core/Requirement'
 import type { EmbeddingName } from 'src/core/Schema'
 // import type { CushyDBData } from 'src/core/storeSchema'
-import type { FlowID } from 'src/front/FrontFlow'
+import type { FlowID } from 'src/front/FlowID'
 import type { Maybe } from 'src/utils/types'
 import type { PayloadID } from '../core/PayloadID'
 import type { ComfyPromptJSON } from './ComfyPrompt'
@@ -37,12 +36,12 @@ export type FromWebview_reset = { type: 'reset' }
 // re-build the action form and check if action is valid in current flow context
 // export type FomrWebview_ProbeAction = { type: 'probe-action'; flowID: FlowID; actionID: ActionDefinitionID }
 
-export type MessageFromWebviewToExtension =
-    | FromWebview_runAction // run
-    | FromWebview_openExternal
-    | FromWebview_Answer // user interractions
-    | FromWebview_Image
-    | FromWebview_reset
+// export type MessageFromWebviewToExtension =
+//     | FromWebview_runAction // run
+//     | FromWebview_openExternal
+//     | FromWebview_Answer // user interractions
+//     | FromWebview_Image
+//     | FromWebview_reset
 // | FomrWebview_ProbeAction
 
 // =============================================================================================
@@ -55,7 +54,7 @@ export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boole
 // non flow-related ------------------------------------------------------
 export type FromExtension_Schema = { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
 // export type FromExtension_SyncHistory = { type: 'sync-history'; history: CushyDBData }
-export type FromExtension_Ls = { type: 'ls'; actions: ActionRef[] }
+export type FromExtension_Ls = { type: 'ls'; actions: ActionT[] }
 
 // actions payloads ------------------------------------------------------
 export type FromExtension_ActionStart = {
@@ -85,7 +84,7 @@ export type FromExtension_Print = { type: 'print'; flowID: FlowID; message: stri
 export type FromExtension_Prompt = { type: 'prompt'; flowID: FlowID; graph: ComfyPromptJSON }
 export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
-export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: FormDefinition }
+export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: FormDefinition; result: FormResult<any> }
 
 export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */

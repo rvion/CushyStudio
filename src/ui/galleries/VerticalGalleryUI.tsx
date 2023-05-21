@@ -18,7 +18,7 @@ export const VerticalGalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                 ))}
             </div>
             {/* <div className='flex flex-col overflow-x-auto'> */}
-            {Object.entries(st.db.data.folders).map(([k, v]) => {
+            {Object.entries(st.db.folders).map(([k, v]) => {
                 return (
                     <GalleryFolderUI //
                         direction='vertical'

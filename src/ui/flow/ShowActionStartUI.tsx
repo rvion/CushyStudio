@@ -33,7 +33,7 @@ export const ShowActionStartUI = observer(function ShowActionStartUI_(p: {
                     }
                     //
                     submit={() => {}}
-                    formDef={x.currentActionRef.form}
+                    formDef={x.currentActionRef.form ?? {}}
                     formState={x.formState}
                 />
             )}

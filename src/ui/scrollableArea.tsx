@@ -6,7 +6,7 @@ export const ScrollablePaneUI = observer(function ScrollablePaneUI_(p: {
     style?: CSSProperties
     className?: string
     children: ReactNode
-    items: any[]
+    items?: any[]
 }) {
     // const uiVar = useMemo(() => ({ prevScrollTop: 0 }), [])
     // const uiSt = useLocalObservable(() => ({ follow: true }))

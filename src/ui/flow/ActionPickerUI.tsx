@@ -2,7 +2,7 @@ import type { ActionFront } from '../../front/ActionFront'
 
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton, Panel } from 'rsuite'
+import { Button, IconButton } from 'rsuite'
 import { useSt } from '../../front/FrontStateCtx'
 import { FormUI } from '../widgets/FormUI'
 
@@ -22,10 +22,11 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
                             appearance={XX.currentActionRef?.id === actionRef.id ? 'primary' : 'ghost'}
                             color={XX.currentActionRef?.id === actionRef.id ? 'green' : undefined}
                             onClick={() => {
-                                if (XX.currentActionRef?.id != actionRef.id) {
-                                    XX.focusAction(actionRef)
-                                    return
-                                }
+                                console.log('🔴 fixme')
+                                // if (XX.currentActionRef?.id != actionRef.id) {
+                                //     XX.focusAction(actionRef)
+                                //     return
+                                // }
                             }}
                         >
                             <div>
@@ -38,9 +39,8 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { actionFront
             </div>
             {XX.currentActionRef && (
                 <FormUI
-                    //
                     title={XX.currentActionRef.name}
-                    formDef={XX.currentActionRef.form}
+                    formDef={XX.currentActionRef.form ?? {}}
                     submit={() => XX.start()}
                     formState={XX.formState}
                 />

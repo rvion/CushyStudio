@@ -1,5 +1,5 @@
 import type { SchemaL } from 'src/core/Schema'
-import type { SimplifiedLoraDef } from 'src/presets/presets'
+import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 
 import * as I from '@rsuite/icons'
 import { makeAutoObservable } from 'mobx'

@@ -1,10 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { FolderUID } from 'src/core/GeneratedImageSummary'
 import { ImageT } from 'src/models/Image'
 import { useSt } from '../../front/FrontStateCtx'
 import { ItemTypes } from './ItemTypes'
 import { useDrop } from 'react-dnd'
-import { FolderT } from 'src/models/Folder'
+import { FolderT, FolderUID } from 'src/models/Folder'
 import { GalleryImageUI } from './GalleryImageUI'
 import { toJS } from 'mobx'
 import { Input } from 'rsuite'
@@ -19,8 +18,8 @@ export const GalleryFolderUI = observer(function FolderUI_(p: {
     const [collectedProps, drop] = useDrop(() => ({
         accept: ItemTypes.Image,
         drop(image: { img: ImageT }, monitor) {
-            console.log('🟢', toJS(image.img))
-            st.db.moveFile(image.img, p.folderUID)
+            console.log('🔴 drop?', toJS(image.img))
+            // st.db.moveFile(image.img, p.folderUID)
         },
     }))
 

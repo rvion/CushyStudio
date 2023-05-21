@@ -1,8 +1,7 @@
-import type { ActionRef } from '../core/KnownWorkflow'
 import type { Maybe } from '../utils/types'
 import type { FrontFlow } from './FrontFlow'
 import type { ActionEndStatus } from '../types/MessageFromExtensionToWebview'
-import { ActionDefinitionID, ExecutionID, asExecutionID } from '../back/ActionDefinition'
+import { ActionDefinitionID, ActionT, ExecutionID, asExecutionID } from '../models/Action'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
@@ -18,7 +17,7 @@ export class ActionFront {
     locked: boolean = false
 
     done: ActionEndStatus | false = false
-    currentActionRef: Maybe<ActionRef> = null
+    currentActionRef: Maybe<ActionT> = null
     formState: FormState
 
     constructor(

@@ -1,16 +1,12 @@
 import type { FromExtension_ActionStart, MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
-import type { ActionDefinitionID, ExecutionID } from 'src/back/ActionDefinition'
+import type { ActionDefinitionID, ExecutionID } from '../models/Action'
 import type { FrontState } from './FrontState'
-import type { Branded } from '../utils/types'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { MessageGroupper } from './UIGroupper'
 import { ActionFront } from './ActionFront'
-
-export type FlowID = Branded<string, 'FlowID'>
-
-export const asFlowID = (s: string): FlowID => s as any
+import { FlowID, asFlowID } from './FlowID'
 
 export class FrontFlow {
     groupper: MessageGroupper

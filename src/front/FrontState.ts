@@ -1,6 +1,5 @@
-import type { ActionDefinitionID } from 'src/back/ActionDefinition'
+import type { ActionDefinitionID, ActionT } from 'src/models/Action'
 import type { ImageID, ImageT } from 'src/models/Image'
-import type { ActionRef } from '../core/KnownWorkflow'
 import type { ComfyStatus } from '../types/ComfyWsApi'
 
 import { makeAutoObservable } from 'mobx'
@@ -12,8 +11,11 @@ import { Graph } from '../core/Graph'
 import { FromExtension_CushyStatus, MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
 import { LightBoxState } from '../ui/LightBox'
 import { Maybe } from '../utils/types'
-import { FlowID, FrontFlow } from './FrontFlow'
+import { FrontFlow } from './FrontFlow'
+import { FlowID } from './FlowID'
 import { UIAction } from './UIAction'
+import * as W from 'y-websocket'
+import { SchemaL } from 'src/core/Schema'
 
 export type MsgGroup = {
     groupType: string
@@ -81,12 +83,16 @@ export class FrontState {
     get imageReversed() {
         return this.images.slice().reverse()
     }
-
-    db = new LiveDB({})
+    db = new LiveDB({
+        WebsocketProvider: W.WebsocketProvider,
+    })
+    get schema(): SchemaL {
+        return this.db.schema
+    }
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
-    knownActions = new Map<ActionDefinitionID, ActionRef>()
+    knownActions = new Map<ActionDefinitionID, ActionT>()
     get ActionOptionForSelectInput() {
         return Array.from(this.knownActions.values()) // .map((x) => ({ value: x.id, label: x.name }))
     }

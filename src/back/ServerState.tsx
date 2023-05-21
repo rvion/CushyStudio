@@ -25,8 +25,8 @@ import { asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { Workflow } from './Workflow'
 // import { CushyClient } from './Client'
-import { FlowID } from 'src/front/FrontFlow'
-import { ActionDefinition, ActionDefinitionID } from './ActionDefinition'
+import { FlowID } from 'src/front/FlowID'
+import { ActionL, ActionDefinitionID } from '../models/Action'
 import { ConfigFileWatcher } from './ConfigWatcher'
 import { CushyFile } from './CushyFile'
 import { TypeScriptFilesMap } from './DirWatcher'
@@ -36,8 +36,9 @@ import { createRequire } from 'module'
 import { PayloadID } from 'src/core/PayloadID'
 // import { CushyDBData } from 'src/core/storeSchema'
 
-// const require = createRequire(import.meta.url)
+const require = createRequire(import.meta.url)
 const WebSocketPolyfill = require('ws')
+const W = require('y-websocket')
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -54,7 +55,7 @@ export class ServerState {
     cushyTSPath: AbsolutePath
     tsConfigPath: AbsolutePath
     outputFolderPath: AbsolutePath
-    knownActions = new Map<ActionDefinitionID, ActionDefinition>()
+    knownActions = new Map<ActionDefinitionID, ActionL>()
     knownFiles = new Map<AbsolutePath, CushyFile>()
 
     /** write a binary file to given absPath */
@@ -148,7 +149,10 @@ export class ServerState {
     configWatcher = new ConfigFileWatcher()
     codePrettier: CodePrettier
     server!: CushyServer
-    db = new LiveDB({ WebSocketPolyfill: WebSocketPolyfill.WebSocket })
+    db = new LiveDB({
+        WebsocketProvider: W.WebsocketProvider,
+        WebSocketPolyfill: WebSocketPolyfill.WebSocket,
+    })
 
     constructor(
         /** path of the workspace */
@@ -166,6 +170,7 @@ export class ServerState {
             /** true in prod, false when running from this local subfolder */
         },
     ) {
+        this.db.actions.clear()
         this.codePrettier = new CodePrettier(this)
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('.cushy/cache'))
         this.vscodeSettings = this.resolve(this.rootPath, asRelativePath('.vscode/settings.json'))

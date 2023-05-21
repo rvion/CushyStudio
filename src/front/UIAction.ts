@@ -1,4 +1,4 @@
-import { ActionDefinitionID } from 'src/back/ActionDefinition'
+import { ActionDefinitionID } from 'src/models/Action'
 import { ImageT } from '../models/Image'
 
 export type UIAction =

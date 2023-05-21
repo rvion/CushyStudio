@@ -118,3 +118,12 @@ As Cushy is becoming more of a tool to go from start to finish, a local database
 I'm also trying to come up with a nice way for custom_node creator and users to share their actions.
 Thanks again to all who helped test the current (bad / impractical) version 😄
 ```
+
+---
+
+```sh
+
+./node_modules/.bin/esbuild src/back/main.ts --bundle --outfile=dist/main2.js --platform=node --sourcemap --watch --loader:.node=file --external:fsev
+
+node --watch dist/main2.js
+```
