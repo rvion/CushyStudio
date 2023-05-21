@@ -4,14 +4,11 @@ import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import type { FormDefinition } from '../core/Requirement'
 import type { LiveInstance } from 'src/db/LiveInstance'
 
-export type ActionDefinitionID = Branded<string, 'FlowDefinitionID'>
-export const asActionDefinitionID = (s: string): ActionDefinitionID => s as any
-
-export type ExecutionID = Branded<string, 'ExecutionID'>
-export const asExecutionID = (s: string): ExecutionID => s as any
+export type ActionID = Branded<string, 'FlowDefinitionID'>
+export const asActionID = (s: string): ActionID => s as any
 
 export type ActionT = {
-    id: ActionDefinitionID
+    id: ActionID
     name: string
     file: AbsolutePath
     form?: Maybe<FormDefinition>

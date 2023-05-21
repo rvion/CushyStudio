@@ -1,4 +1,4 @@
-import type { ActionDefinitionID, ActionT, ExecutionID } from 'src/models/Action'
+import type { ActionID, ActionT } from 'src/models/Action'
 import type { ImageT, ImageID } from 'src/models/Image'
 import type { FormDefinition, FormResult } from 'src/core/Requirement'
 import type { EmbeddingName } from 'src/core/Schema'
@@ -11,6 +11,7 @@ import type { ComfySchemaJSON } from './ComfySchemaJSON'
 import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
 
 import { exhaust } from '../utils/ComfyUtils'
+import { StepID } from 'src/models/Step'
 
 // =============================================================================================
 // | FRONT => BACK                                                                             |
@@ -20,9 +21,9 @@ import { exhaust } from '../utils/ComfyUtils'
 export type FromWebview_runAction = {
     type: 'run-action'
     flowID: FlowID
-    actionID: ActionDefinitionID
+    actionID: ActionID
     /** the execution ID to use (defined client-side, see ActionFront) */
-    executionID: ExecutionID
+    stepID: StepID
     data: FormResult<any>
 }
 // request to open an external URL
@@ -60,23 +61,23 @@ export type FromExtension_Ls = { type: 'ls'; actions: ActionT[] }
 export type FromExtension_ActionStart = {
     type: 'action-start'
     flowID: FlowID
-    actionID: ActionDefinitionID
-    executionID: ExecutionID
+    actionID: ActionID
+    executionID: StepID
     data: FormResult<any>
 }
 export type FromExtension_ActionCode = {
     type: 'action-code'
     flowID: FlowID
-    actionID: ActionDefinitionID
-    executionID: ExecutionID
+    actionID: ActionID
+    executionID: StepID
     code: string
 }
 export type ActionEndStatus = 'success' | 'failure'
 export type FromExtension_ActionEnd = {
     type: 'action-end'
     flowID: FlowID
-    actionID: ActionDefinitionID
-    executionID: ExecutionID
+    actionID: ActionID
+    executionID: StepID
     status: ActionEndStatus
 }
 

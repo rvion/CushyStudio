@@ -30,11 +30,12 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
 import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { wildcards } from '../wildcards/wildcards'
-import { ActionL, ExecutionID } from '../models/Action'
+import { ActionL } from '../models/Action'
 import { GeneratedImage } from './GeneratedImage'
 import { NodeBuilder } from './NodeBuilder'
 import { ServerState } from './ServerState'
 import { globalActionFnCache } from './CushyFile'
+import { StepID } from 'src/models/Step'
 
 /** script exeuction instance */
 export class Workflow {
@@ -68,7 +69,7 @@ export class Workflow {
         //
         actionL: ActionL,
         formResult: FormResult<any>,
-        executionID: ExecutionID,
+        stepID: StepID,
     ) => {
         const numPromptBefore = this._promptCounter
         const start = Date.now()
@@ -118,14 +119,14 @@ export class Workflow {
             console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
-            broadcast({ type: 'action-end', flowID, actionID, executionID, status: 'success' })
+            broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'success' })
             if (numPromptBefore === this._promptCounter) {
                 this.broadcastSchemaMermaid()
             }
             return true
         } catch (error) {
             console.log(error)
-            broadcast({ type: 'action-end', flowID, actionID, executionID, status: 'failure' })
+            broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'failure' })
             logger().error('🌠', (error as any as Error).name)
             logger().error('🌠', (error as any as Error).message)
             logger().error('🌠', 'RUN FAILURE')

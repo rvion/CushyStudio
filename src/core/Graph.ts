@@ -1,7 +1,7 @@
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { WsMsgExecuting, WsMsgProgress } from '../types/ComfyWsApi'
 import type { ComfyNodeUID } from '../types/NodeUID'
-import type { VisEdges, VisNodes } from '../ui/VisUI'
+import type { VisEdges, VisNodes } from '../front/ui/VisUI'
 import type { Cyto } from './AutolayoutV1'
 
 import { nanoid } from 'nanoid'

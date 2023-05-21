@@ -1,10 +1,9 @@
 import type { Action, FormDefinition } from 'src/core/Requirement'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 import type { ServerState } from './ServerState'
-import type { ActionL } from '../models/Action'
+import { ActionL, asActionID } from '../models/Action'
 
 import { readFileSync } from 'fs'
-import { asActionDefinitionID } from '../models/Action'
 import { FormBuilder } from '../controls/askv2'
 import { transpileCode } from './transpiler'
 
@@ -52,7 +51,7 @@ export class CushyFile {
             // const actionDef = new ActionL(this, a.name, a.action)
             // this.actions.push(actionDef)
             // console.log('UPSERTING', a.name)
-            const actionID = asActionDefinitionID(`${this.absPath}#${a.name}`)
+            const actionID = asActionID(`${this.absPath}#${a.name}`)
             const actionL = this.workspace.db.actions.upsert({
                 id: actionID,
                 file: this.absPath,

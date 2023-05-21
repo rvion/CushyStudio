@@ -26,7 +26,7 @@ import { readableStringify } from '../utils/stringifyReadable'
 import { Workflow } from './Workflow'
 // import { CushyClient } from './Client'
 import { FlowID } from 'src/front/FlowID'
-import { ActionL, ActionDefinitionID } from '../models/Action'
+import { ActionL, ActionID } from '../models/Action'
 import { ConfigFileWatcher } from './ConfigWatcher'
 import { CushyFile } from './CushyFile'
 import { TypeScriptFilesMap } from './DirWatcher'
@@ -55,7 +55,7 @@ export class ServerState {
     cushyTSPath: AbsolutePath
     tsConfigPath: AbsolutePath
     outputFolderPath: AbsolutePath
-    knownActions = new Map<ActionDefinitionID, ActionL>()
+    knownActions = new Map<ActionID, ActionL>()
     knownFiles = new Map<AbsolutePath, CushyFile>()
 
     /** write a binary file to given absPath */

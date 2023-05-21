@@ -29,8 +29,10 @@ export class LiveTable<
         this.yjsMap.observe(this.onYjsMapEvent)
 
         const BaseInstanceClass = class implements LiveInstance<T, T> {
+            db!: LiveDB
             table!: LiveTable<T, any>
             data!: T
+
             /** this must be fired after creation and update */
             onUpdate?: (() => void) | undefined
             get id() { return this.data.id } // prettier-ignore
@@ -44,6 +46,7 @@ export class LiveTable<
                 return this.data
             }
             init(table: LiveTable<T, L>, data: T) {
+                this.db = table.db
                 this.table = table
                 this.data = data
                 this.onUpdate?.()

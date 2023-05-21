@@ -1,9 +1,9 @@
 import { VSCodeButton, VSCodePanelView, VSCodeTextField } from '@vscode/webview-ui-toolkit/react'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { Image } from '../ui/Image'
-import { Text } from '../ui/Text'
-import { useWorkspace } from '../ui/WorkspaceContext'
+import { Image } from '../front/ui/Image'
+import { Text } from '../front/ui/Text'
+import { useWorkspace } from '../front/ui/WorkspaceContext'
 import { Civitai } from './CivitaiSpec'
 
 export const CivitaiUI = observer(function CivitaiUI_() {

@@ -1,4 +1,4 @@
-import type { ActionDefinitionID, ActionT } from 'src/models/Action'
+import type { ActionID, ActionT } from 'src/models/Action'
 import type { ImageID, ImageT } from 'src/models/Image'
 import type { ComfyStatus } from '../types/ComfyWsApi'
 
@@ -7,13 +7,14 @@ import { nanoid } from 'nanoid'
 import { LiveDB } from '../db/LiveDB'
 import { Graph } from '../core/Graph'
 import { FromExtension_CushyStatus, MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
-import { LightBoxState } from '../ui/LightBox'
+import { LightBoxState } from './ui/LightBox'
 import { Maybe } from '../utils/types'
-import { FrontFlow } from './FrontFlow'
 import { FlowID } from './FlowID'
 import { UIAction } from './UIAction'
 import * as W from 'y-websocket'
 import { SchemaL } from '../core/Schema'
+import { ProjectL, asProjectID } from '../models/Project'
+import { asStepID } from '../models/Step'
 
 export type MsgGroup = {
     groupType: string
@@ -27,18 +28,13 @@ export class FrontState {
     hovered: Maybe<ImageT> = null
     lightBox = new LightBoxState(() => this.images, true)
 
-    // get received(): MessageFromExtensionToWebview[] {
-    //     return this.db.data.msgs.map((x) => x.msg)
-    // }
-
-    // --------------------------
-    flows = new Map<string, FrontFlow>()
-    startFlow = (flowID?: FlowID): FrontFlow => {
-        const flow = new FrontFlow(this, flowID)
-        this.flows.set(flow.id, flow)
-        return flow
+    startProject = (flowID?: FlowID): ProjectL => {
+        const projectID = asProjectID(nanoid())
+        const stepID = asStepID(nanoid())
+        const step = this.db.steps.create({ id: stepID, projectID: projectID })
+        const project = this.db.projects.create({ id: projectID, rootStepID: stepID, name: 'new project' })
+        return project
     }
-    get flowArray() { return Array.from(this.flows.values()) } // prettier-ignore
     // --------------------------
 
     expandNodes: boolean = false
@@ -68,7 +64,7 @@ export class FrontState {
         //     },
         // })
         // console.log('b')
-        this.startFlow()
+        // this.startProject()
         makeAutoObservable(this)
         // window.addEventListener('message', this.onMessageFromExtension)
         // this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
@@ -140,11 +136,11 @@ export class FrontState {
     //     for (const img of imgs) this.imagesById.set(img.uid, img)
     // }
 
-    getOrCreateFlow = (flowID: FlowID): FrontFlow => {
-        let flow = this.flows.get(flowID)
-        if (flow == null) flow = this.startFlow(flowID)
-        return flow
-    }
+    // getOrCreateFlow = (flowID: FlowID): FrontFlow => {
+    //     let flow = this.flows.get(flowID)
+    //     if (flow == null) flow = this.startProject(flowID)
+    //     return flow
+    // }
 
     /** this is for the UI only; process should be very thin / small */
     // onMessageFromExtension = (message: MessageFromExtensionToWebview) => {

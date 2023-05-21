@@ -1,7 +1,7 @@
 import type { FrontState, MsgGroup } from './FrontState'
 import type { MessageFromExtensionToWebview } from 'src/types/MessageFromExtensionToWebview'
 
-import { renderMsgUI } from '../ui/flow/flowRenderer1'
+import { renderMsgUI } from './ui/flow/flowRenderer1'
 
 export class MessageGroupper {
     constructor(
