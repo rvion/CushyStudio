@@ -1,5 +1,5 @@
 import { join } from 'path'
-import { asFlowID } from "../front/FlowID"
+import { asFlowID } from '../front/FlowID'
 import '../logger/LoggerBack'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { ServerState } from './ServerState'
@@ -17,9 +17,8 @@ const server = new ServerState(path, {
 //     console.log('🟢ACTIONS=', JSON.stringify(server.db.actions.values().map(a => a.data.file), null, 4))
 // })
 
-setTimeout(() => {
-    const flow = server.getOrCreateFlow(asFlowID('test'))
-
-    console.log(server.db.actions.ids())
-    // flow.runAction('testAction', { test: 'test' })
-}, 200)
+// setTimeout(() => {
+//     const flow = server.getOrCreateFlow(asFlowID('test'))
+//     console.log(server.db.actions.ids())
+//     // flow.runAction('testAction', { test: 'test' })
+// }, 200)

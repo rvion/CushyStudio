@@ -28,7 +28,7 @@ import { FlowID } from 'src/front/FlowID'
 import { ActionL, ActionID } from '../models/Action'
 import { ConfigFileWatcher } from './ConfigWatcher'
 import { CushyFile } from './CushyFile'
-import { TypeScriptFilesMap } from './DirWatcher'
+import { CushyFileWatcher } from './CushyFileWatcher'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { CushyServer } from './server'
 import { createRequire } from 'module'
@@ -245,7 +245,7 @@ export class ServerState {
     // 🔴     })
     // 🔴 }
 
-    tsFilesMap = new TypeScriptFilesMap(this)
+    tsFilesMap = new CushyFileWatcher(this)
     autoDiscoverEveryWorkflow = () => {
         this.tsFilesMap.startWatching(join(this.rootPath))
     }

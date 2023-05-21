@@ -19,6 +19,13 @@ export class LiveTable<
     mobxMap = new Map<string, L>()
     Ktor: LiveEntityClass<T, L>
 
+    // ABILITY TO REACT TO ANY CHANGE ---------------------
+    private whenFns: ((l: L, k: L['data']['id']) => boolean)[] = []
+
+    /** register a function to execute on any change */
+    when = (fn: (l: L, k: L['data']['id']) => boolean) => this.whenFns.push(fn)
+
+    // CTOR ---------------------
     constructor(
         //
         public db: LiveDB,
@@ -63,24 +70,15 @@ export class LiveTable<
         // Object.defineProperties(this.ctor)
     }
 
-    clear = () => {
-        return this.yjsMap.clear()
-    }
     map = <X>(fn: (l: L, k: L['data']['id']) => X): X[] => {
         return Array.from(this.mobxMap.entries()).map(([k, v]) => fn(v, k))
     }
-    ids = () => {
-        return Array.from(this.mobxMap.keys())
-    }
-    values = () => {
-        return Array.from(this.mobxMap.values())
-    }
-    mapData = <X>(fn: (k: string, t: T) => X): X[] => {
-        return Array.from(this.mobxMap.entries()).map(([k, v]) => fn(k, v.data))
-    }
-    get = (id: string) => {
-        return this.mobxMap.get(id)
-    }
+    clear = () => this.yjsMap.clear()
+    ids = () => Array.from(this.mobxMap.keys())
+    values = () => Array.from(this.mobxMap.values())
+    mapData = <X>(fn: (k: string, t: T) => X): X[] => Array.from(this.mobxMap.entries()).map(([k, v]) => fn(k, v.data))
+    get = (id: string) => this.mobxMap.get(id)
+
     getOrThrow = (id: string) => {
         const val = this.mobxMap.get(id)
         if (val == null) throw new Error(`ERR: ${this.name}(${id}) not found`)

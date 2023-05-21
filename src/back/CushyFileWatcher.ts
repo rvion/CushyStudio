@@ -3,7 +3,7 @@ import { ServerState } from './ServerState'
 import { CushyFile } from './CushyFile'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 
-export class TypeScriptFilesMap {
+export class CushyFileWatcher {
     filesMap: Map<string, CushyFile>
 
     constructor(
