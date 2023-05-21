@@ -4,6 +4,7 @@ import { YMap, YMapEvent } from 'yjs/dist/src/internals'
 import { LiveDB } from './LiveDB'
 import { MERGE_PROTOTYPES } from './LiveHelpers'
 import { LiveInstance } from './LiveInstance'
+import { Maybe } from 'src/utils/types'
 
 export interface LiveEntityClass<T extends { id: string }, L> {
     new (...args: any[]): LiveInstance<T, L> & L // & InitEntity<L>
@@ -34,7 +35,7 @@ export class LiveTable<
             data!: T
 
             /** this must be fired after creation and update */
-            onUpdate?: (() => void) | undefined
+            onUpdate?: (prev: Maybe<T>, next: T) => void
             get id() { return this.data.id } // prettier-ignore
             update(t: Partial<T>) {
                 this.table.yjsMap.set(this.data.id, { ...this.data, ...t })
@@ -49,7 +50,7 @@ export class LiveTable<
                 this.db = table.db
                 this.table = table
                 this.data = data
-                this.onUpdate?.()
+                this.onUpdate?.(undefined, data)
                 mobx.makeAutoObservable(this)
             }
         }
@@ -135,12 +136,13 @@ export class LiveTable<
                     const instance = this._createInstance(data)
                     this.mobxMap.set(key, instance)
                 } else if (change.action === 'update') {
-                    const prev = this.mobxMap.get(key)
-                    if (prev == null) throw new Error('ERR2: prev is null')
+                    const inst = this.mobxMap.get(key)
+                    if (inst == null) throw new Error('ERR2: prev is null')
                     const value = ymap.get(key)
                     if (value == null) throw new Error('ERR3: value is null')
-                    prev.data = value
-                    prev.onUpdate?.()
+                    const prevData = inst.data // 🔴
+                    inst.data = value
+                    inst.onUpdate?.(prevData, value)
                 } else if (change.action === 'delete') {
                     this.mobxMap.delete(key)
                 }

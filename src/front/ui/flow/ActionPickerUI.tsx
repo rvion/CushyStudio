@@ -1,12 +1,10 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton } from 'rsuite'
+import { Button } from 'rsuite'
+import { StepL } from '../../../models/Step'
 import { useSt } from '../../FrontStateCtx'
-import { FormUI } from '../widgets/FormUI'
 import { useProject } from '../../ProjectCtx'
-import { nanoid } from 'nanoid'
-import { StepL, asStepID } from '../../../models/Step'
-import { FormState } from '../FormState'
+import { StepUI } from '../widgets/FormUI'
 
 export const ActionPickerUI = observer(function ActionPickerUI_(p: { step: StepL }) {
     const st = useSt()
@@ -27,38 +25,14 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { step: StepL
                             size='sm'
                             appearance={step.action?.id === a.id ? 'primary' : 'ghost'}
                             color={step.action?.id === a.id ? 'green' : undefined}
-                            onClick={() => {
-                                step.update({ actionID: a.id })
-                                // if (XX.currentActionRef?.id != actionRef.id) {
-                                //     XX.focusAction(actionRef)
-                                //     return
-                                // }
-                            }}
+                            onClick={() => step.update({ actionID: a.id })}
                         >
-                            <div>
-                                {a.data.name}
-                                {/* ({actionRef.id}) */}
-                            </div>
+                            <div>{a.data.name}</div>
                         </Button>
                     )
                 })}
             </div>
-            {action && (
-                <FormUI
-                    title={step.action.data.name}
-                    formDef={step.action.data.form ?? {}}
-                    submit={() => {
-                        st.db.steps.create({
-                            id: asStepID(nanoid()),
-                            projectID: step.data.projectID,
-                            actionID: action.id,
-                        })
-                    }}
-                    // 🔴
-                    formState={new FormState(st)}
-                    // formState={step.data.formState}
-                />
-            )}
+            {/* {action && <FormUI step={step} />} */}
         </div>
         // <div>
         //     {/* ({st.ActionOptionForSelectInput.length} actions) */}

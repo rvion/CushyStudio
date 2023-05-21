@@ -1,10 +1,11 @@
+import type { StepL } from 'src/models/Step'
+
 import React from 'react'
-import { FormState } from './FormState'
 
-export const formContext = React.createContext<FormState | null>(null)
+export const stepContext = React.createContext<StepL | null>(null)
 
-export const useForm = (): FormState => {
-    const st = React.useContext(formContext)
-    if (st == null) throw new Error('stContext not provided')
-    return st
+export const useStep = (): StepL => {
+    const step = React.useContext(stepContext)
+    if (step == null) throw new Error('step not provided')
+    return step
 }

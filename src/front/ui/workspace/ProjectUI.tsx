@@ -1,34 +1,47 @@
+import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Form, IconButton, Input, Panel } from 'rsuite'
+import { IconButton, Input, Panel } from 'rsuite'
 import { useProject } from '../../ProjectCtx'
 import { ActionPickerUI } from '../flow/ActionPickerUI'
-import * as I from '@rsuite/icons'
+import { StepUI } from '../widgets/FormUI'
 export const WorkflowUI = observer(function WorkflowUI_(p: {}) {
     const project = useProject()
     return (
         <Panel>
             <div className='row'>
                 <IconButton onClick={() => project.delete()} icon={<I.Trash />} />
-                <Input placeholder='workflow name' name='title' />
+                <Input
+                    value={project.data.name}
+                    onChange={(next) => {
+                        project.update({ name: next })
+                    }}
+                    placeholder='Project name'
+                    name='title'
+                />
             </div>
-            <div className='flex gap-2'>
-                <ActionPickerUI step={project.rootStep} />
-                {/* {project.groupper.msgGroups.map((group, groupIx) => {
+            <div className='row'>
+                <ActionPickerUI step={project.lastStep} />
+                <div className='flex flex-col gap-2'>
+                    {project.steps.map((step) => {
+                        return <StepUI key={step.id} step={step} />
+                    })}
+                    {/* {project.groupper.msgGroups.map((group, groupIx) => {
                     return (
                         <div
-                            //
-                            key={groupIx}
-                            className={`relative [width:100%] group-of-${group.groupType}`}
-                            style={{
-                                overflowX: 'auto',
-                            }}
+                        //
+                        key={groupIx}
+                        className={`relative [width:100%] group-of-${group.groupType}`}
+                        style={{
+                            overflowX: 'auto',
+                        }}
                         >
-                            <div style={{ flexWrap: group.wrap ? 'wrap' : undefined }} className='flex row gap-2'>
-                                {group.uis}
+                        <div style={{ flexWrap: group.wrap ? 'wrap' : undefined }} className='flex row gap-2'>
+                        {group.uis}
                             </div>
                         </div>
                     )
                 })} */}
+                </div>
             </div>
         </Panel>
     )

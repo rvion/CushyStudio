@@ -1,53 +1,36 @@
 import type { Requestable } from 'src/controls/Requestable'
 
-import { formContext, useForm } from '../FormCtx'
-import { FormPath, FormState } from '../FormState'
+import { stepContext, useStep } from '../FormCtx'
 
 import { observer } from 'mobx-react-lite'
-import { ReactNode, useCallback, useMemo } from 'react'
-import { Button, Input, Panel, Popover, Tooltip, Whisper } from 'rsuite'
-import { FormDefinition } from 'src/core/Requirement'
+import { Button, Input, Panel, Popover, Whisper } from 'rsuite'
+import { FormPath, StepL } from 'src/models/Step'
 import { BUG } from '../../../controls/BUG'
-import { useSt } from '../../FrontStateCtx'
 import { exhaust } from '../../../utils/ComfyUtils'
 import { ImageSelection } from './ImageSelection'
+import { WidgetBoolUI } from './WidgetBoolUI'
+import { WidgetEnumUI } from './WidgetEnumUI'
+import { WidgetIntOptUI } from './WidgetIntOptUI'
+import { WidgetIntUI } from './WidgetIntUI'
+import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetPaintUI } from './WidgetPaintUI'
 import { WidgetPlacePoints } from './WidgetPlacePoints'
-import { WidgetEnumUI } from './WidgetEnumUI'
-import { WidgetBoolUI } from './WidgetBoolUI'
-import { WidgetIntUI } from './WidgetIntUI'
-import { WidgetIntOptUI } from './WidgetIntOptUI'
-import { WidgetLorasUI } from './WidgetLorasUI'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const FormUI = observer(function AskInfoUI_(p: {
-    //
-    className?: string
-    title?: ReactNode
-    formDef: FormDefinition
-    formState?: FormState
-    submit: (value: any) => void
-}) {
-    const st = useSt()
-    const formDef = p.formDef
-    const form = p.formState ?? useMemo(() => new FormState(st), [st])
-    const submit = useCallback(
-        (ev: { preventDefault?: () => void; stopPropagation?: () => void }) => {
-            ev.preventDefault?.()
-            ev.stopPropagation?.()
-            // st.answerInfo(askState.value)
-            p.submit(form.value)
-            form.locked = true
-        },
-        [form],
-    )
+export const StepUI = observer(function StepUI_(p: { step: StepL }) {
+    const step = p.step
+    const action = step.action
+    if (action == null) return <>👉 pick an action</>
+    const formDef = action.data.form ?? {}
+    const title = action.data.name
+    const locked = step.data.value != null
 
     return (
-        <formContext.Provider value={form}>
-            <Panel header={p.title} shaded className={`${p.className} m-2 p-2`}>
+        <stepContext.Provider value={step}>
+            <Panel header={title} shaded className='m-2 p-2'>
                 {/* widgets ------------------------------- */}
                 <div className='flex gap-2'>
                     <div>
@@ -64,38 +47,38 @@ export const FormUI = observer(function AskInfoUI_(p: {
                     </div>
                     {/* submit ------------------------------- */}
                     {/* <div className='flex-grow'></div> */}
-                    {form.locked ? (
+                    {locked ? (
                         <div>
-                            <Button size='lg' disabled appearance='subtle' onClick={submit}>
+                            <Button size='lg' disabled appearance='subtle'>
                                 OK
                             </Button>
                         </div> // <ShowFlowEndUI msg={{}} />
                     ) : (
                         <div>
-                            <Button size='lg' color='green' appearance='primary' onClick={submit}>
+                            <Button size='lg' color='green' appearance='primary' onClick={() => step.submit()}>
                                 OK
                             </Button>
                         </div>
                     )}
-                    {form.locked ? null : (
+                    {locked ? null : (
                         <pre className='border-2 border-dashed border-orange-200 p-2'>
-                            action output = {JSON.stringify(form.value, null, 4)}
+                            action output = {JSON.stringify(step.data.value ?? step.draft, null, 4)}
                         </pre>
                     )}
                     <div className='flex flex-col'>
                         <DebugUI title='⬇'>
                             the form definition is
-                            <pre>{JSON.stringify(p.formDef, null, 4)}</pre>
+                            <pre>{JSON.stringify(formDef, null, 4)}</pre>
                         </DebugUI>
                         <DebugUI title={'⬆'}>
                             the value about to be sent back to the workflow is
-                            <pre>{JSON.stringify(form.value, null, 4)}</pre>
+                            <pre>{JSON.stringify(step.draft, null, 4)}</pre>
                         </DebugUI>
                     </div>
                 </div>
             </Panel>
             {/* debug -------------------------------*/}
-        </formContext.Provider>
+        </stepContext.Provider>
     )
 })
 
@@ -116,7 +99,7 @@ const WidgetUI = observer(function WidgetUI_(p: {
     req: Requestable
     focus?: boolean
 }) {
-    const askState = useForm()
+    const askState = useStep()
     const req = p.req
 
     // forget next line, it's just to make the compiler happy somewhere else

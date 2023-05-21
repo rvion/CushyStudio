@@ -1,3 +1,4 @@
+import { Maybe } from 'src/utils/types'
 import { LiveDB } from './LiveDB'
 import { LiveTable } from './LiveTable'
 
@@ -6,7 +7,7 @@ export interface LiveInstance<T extends { id: string }, L> {
     table: LiveTable<T, any>
     data: T
     get id(): T['id']
-    onUpdate?: () => void
+    onUpdate?: (prev: Maybe<T>, next: T) => void
     update: (t: Partial<T>) => void
     delete: () => void
     toJSON: () => T

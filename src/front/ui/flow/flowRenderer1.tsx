@@ -1,12 +1,6 @@
 import type { FrontState } from 'src/front/FrontState'
 
-import { Panel } from 'rsuite'
 import { MessageFromExtensionToWebview } from '../../../types/MessageFromExtensionToWebview'
-import { FlowGeneratedImagesUI } from '../FlowGeneratedImagesUI'
-import { MsgShowHTMLUI } from '../MsgShowHTMLUI'
-import { ShowUpdatingNodeUI } from '../ShowUpdatingNodeUI'
-import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
-import { FormUI } from '../widgets/FormUI'
 // import { ShowActionStartUI } from './ShowActionStartUI'
 
 export const renderMsgUI = (

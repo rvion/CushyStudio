@@ -1,9 +1,3 @@
-import { MessageFromExtensionToWebview } from '../../../types/MessageFromExtensionToWebview'
-import { FormUI } from '../widgets/FormUI'
-import { observer } from 'mobx-react-lite'
-import { useProject } from '../../ProjectCtx'
-import { Loader } from 'rsuite'
-
 // export const ShowActionStartUI = observer(function ShowActionStartUI_(p: {
 //     msg: MessageFromExtensionToWebview & { type: 'action-start' }
 // }) {
