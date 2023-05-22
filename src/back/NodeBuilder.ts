@@ -1,4 +1,4 @@
-import type { Runtime } from './Workflow'
+import type { Runtime } from './Runtime'
 import type { LATER } from 'LATER'
 
 import { ComfyNode } from '../core/Node'

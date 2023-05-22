@@ -1,17 +1,22 @@
+import type * as W2 from 'y-websocket/'
+
 import * as mobx from 'mobx'
 import * as Y from 'yjs'
 
 import { nanoid } from 'nanoid'
+import { LiveTable } from './LiveTable'
+import { Foo } from '../models/Foo'
+
+// models
 import { ProjectL, ProjectT } from '../models/Project'
 import { StepL, StepT } from '../models/Step'
-import type * as W2 from 'y-websocket/'
 import { SchemaL, SchemaT } from '../models/Schema'
 import { ActionL, ActionT } from '../models/Action'
 import { FolderL, FolderT } from '../models/Folder'
-import { Foo } from '../models/Foo'
 import { ImageL, ImageT } from '../models/Image'
-import { LiveTable } from './LiveTable'
 import { GraphL, GraphT } from '../models/Graph'
+import { PromptL, PromptT } from '../models/Prompt'
+import { ConfigL, ConfigT } from '../models/Config'
 
 export class LiveDB {
     wsProvider: W2.WebsocketProvider
@@ -20,7 +25,7 @@ export class LiveDB {
     store
 
     // -----------------------------------
-    get config() {
+    get config(): ConfigL {
         return this.store.config.getOrCreate('config', () => ({ id: 'config' }))
     }
     get schema(): SchemaL {
@@ -30,6 +35,7 @@ export class LiveDB {
     get folders() {return this.store.folders} // prettier-ignore
     get msgs() {return this.store.msgs} // prettier-ignore
     get actions():LiveTable< ActionT,ActionL> {return this.store.actions} // prettier-ignore
+    get prompts():LiveTable< PromptT,PromptL> {return this.store.prompts} // prettier-ignore
     get projects() {return this.store.projects} // prettier-ignore
     get graphs() {return this.store.graphs} // prettier-ignore
     get steps():LiveTable< StepT,StepL> {return this.store.steps} // prettier-ignore
@@ -59,12 +65,11 @@ export class LiveDB {
         })
         this.debug()
         this.store = {
-            config: new LiveTable<{ id: string }, Foo>(this, 'config', Foo),
+            config: new LiveTable<ConfigT, ConfigL>(this, 'config', ConfigL),
             schema: new LiveTable<SchemaT, SchemaL>(this, 'schema', SchemaL),
             status: new LiveTable<{ id: string }, Foo>(this, 'status', Foo),
             // ???
             msgs: new LiveTable<{ id: string }, Foo>(this, 'msgs', Foo),
-            graphs: new LiveTable<GraphT, GraphL>(this, 'graphs', GraphL),
             // global
             actions: new LiveTable<ActionT, ActionL>(this, 'actions', ActionL),
             folders: new LiveTable<FolderT, FolderL>(this, 'folders', FolderL),
@@ -72,6 +77,8 @@ export class LiveDB {
             // project
             projects: new LiveTable<ProjectT, ProjectL>(this, 'projects', ProjectL),
             steps: new LiveTable<StepT, StepL>(this, 'steps', StepL),
+            prompts: new LiveTable<PromptT, PromptL>(this, 'prompts', PromptL),
+            graphs: new LiveTable<GraphT, GraphL>(this, 'graphs', GraphL),
         }
     }
 

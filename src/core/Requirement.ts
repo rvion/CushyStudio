@@ -1,5 +1,5 @@
 import type { LATER } from 'LATER'
-import type { Runtime } from 'src/back/Workflow'
+import type { Runtime } from 'src/back/Runtime'
 import type { Requestable } from 'src/controls/Requestable'
 import type { FormBuilder, InfoAnswer } from 'src/controls/askv2'
 

@@ -1,4 +1,5 @@
 import type { LATER } from 'LATER'
+import type { Printable } from '../core/Printable'
 
 import FormData from 'form-data'
 import { marked } from 'marked'
@@ -7,14 +8,13 @@ import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import { readFileSync, writeFileSync } from 'fs'
-import { StepL } from 'src/models/Step'
+import { StepL } from '../models/Step'
 import { Requestable } from '../controls/Requestable'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
-import { PromptL } from '../models/Prompt'
+import { PromptL, asPromptID } from '../models/Prompt'
 import { FormBuilder, InfoAnswer, InfoRequestFn } from '../controls/askv2'
 import { runAutolayout } from '../core/AutolayoutV2'
 import { convertFlowToLiteGraphJSON } from '../core/LiteGraph'
-import { Printable } from '../core/Printable'
 import { auto } from '../core/autoValue'
 import { globalActionFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
@@ -25,10 +25,11 @@ import { deepCopyNaive } from '../utils/ComfyUtils'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
-import { GeneratedImage } from './GeneratedImage'
 import { NodeBuilder } from './NodeBuilder'
 import { ServerState } from './ServerState'
-import { GraphL } from 'src/models/Graph'
+import { GraphL, asGraphID } from '../models/Graph'
+import { nanoid } from 'nanoid'
+import { ImageL } from '../models/Image'
 
 /** script exeuction instance */
 export class Runtime {
@@ -75,8 +76,9 @@ export class Runtime {
     }
 
     /** run an imagemagick convert action */
-    imagemagicConvert = (img: GeneratedImage, partialCmd: string, suffix: string): string => {
-        const pathA = img.localAbsolutePath
+    imagemagicConvert = (img: ImageL, partialCmd: string, suffix: string): string => {
+        const pathA = img.data.localAbsolutePath
+        // 🔴 wait
         const pathB = `${pathA}.${suffix}.png`
         const cmd = `convert "${pathA}" ${partialCmd} "${pathB}"`
         this.exec(cmd)
@@ -90,7 +92,7 @@ export class Runtime {
     // cyto: Cyto 🔴🔴
 
     /** list of all images produed over the whole script execution */
-    generatedImages: GeneratedImage[] = []
+    generatedImages: ImageL[] = []
     get firstImage() { return this.generatedImages[0] } // prettier-ignore
     get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
 
@@ -117,7 +119,7 @@ export class Runtime {
     static VideoCounter = 1
     createAnimation = async (
         /** image to incldue (defaults to all images generated in the fun) */
-        source?: GeneratedImage[],
+        source?: ImageL[],
         /** frame duration, in ms:
          * - default is 200 (= 5fps)
          * - use 16 for ~60 fps
@@ -135,7 +137,7 @@ export class Runtime {
             return
         }
         logger().info(`🎥 awaiting all files to be ready locally...`)
-        await Promise.all(images.map((i) => i.ready))
+        await Promise.all(images.map((i) => i.finished))
         logger().info(`🎥 all files are ready locally`)
         const cwd = outputAbsPath
         logger().info(`🎥 target video path: ${targetVideoAbsPath}`)
@@ -143,7 +145,7 @@ export class Runtime {
         logger().info(`🎥 cwd: ${cwd}`)
 
         await createMP4FromImages(
-            images.map((i) => i.localFileName),
+            images.map((i) => i.data.localAbsolutePath!),
             targetVideoAbsPath,
             frameDuration,
             cwd,
@@ -288,6 +290,7 @@ export class Runtime {
     get graph(): GraphL {
         return this.step.graph.itemOrCrash
     }
+
     private sendPromp = async (): Promise<PromptL> => {
         const currentJSON = deepCopyNaive(this.graph.jsonForPrompt)
         this.step.append({ type: 'prompt', graph: currentJSON })
@@ -302,6 +305,11 @@ export class Runtime {
         //     step._resolve!(step)
         //     return step
         // }
+
+        const graphID = asGraphID(nanoid())
+        const graph = this.st.db.graphs.create({ id: graphID, comfyPromptJSON: currentJSON })
+        const stepID = this.step.id
+        const prompt = this.st.db.prompts.create({ id: asPromptID(nanoid()), executed: false, graphID, stepID })
 
         // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
@@ -336,6 +344,7 @@ export class Runtime {
         })
 
         console.log('prompt status', res.status, res.statusText)
+        return prompt
         // await sleep(1000)
         // return step
     }

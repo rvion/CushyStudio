@@ -30,7 +30,7 @@ import { ConfigFileWatcher } from './ConfigWatcher'
 import { CushyFile } from './CushyFile'
 import { CushyFileWatcher } from './CushyFileWatcher'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
-import { Runtime } from './Workflow'
+import { Runtime } from './Runtime'
 import { CushyServer } from './server'
 
 const require = createRequire(import.meta.url)
@@ -42,7 +42,7 @@ export type CSCriticalError = { title: string; help: string }
 export class ServerState {
     schema: SchemaL
     comfySessionId = 'temp' /** send by ComfyUI server */
-    activeFlow: Maybe<Runtime> = null
+    activePrompt: Maybe<PromptL> = null
     runs: Runtime[] = []
     cacheFolderPath: AbsolutePath
     vscodeSettings: AbsolutePath
@@ -315,16 +315,17 @@ export class ServerState {
             return
         }
 
-        const currentRun: Maybe<Runtime> = this.activeFlow
-        if (currentRun == null) {
-            logger().error('🐰', `❌ received ${msg.type} but currentRun is null`)
+        const currPrompt: Maybe<PromptL> = this.activePrompt
+        if (currPrompt == null) {
+            logger().error('🐰', `❌ received ${msg.type} but currPrompt is null`)
             return
             // return console.log(`❌ received ${msg.type} but currentRun is null`)
         }
 
         // ensure current step is a prompt
-        const promptStep /*: FlowExecutionStep*/ = currentRun.step
-        const graph = promptStep.graph.item
+        // const promptStep /*: FlowExecutionStep*/ = currPrompt.step
+        // const prompt = promptStep.graph.item
+        const graph = currPrompt.graph.item
         if (graph == null) return console.log(`❌ received ${msg.type} but graph is not prompt`)
 
         // defer accumulation to ScriptStep_prompt
@@ -335,7 +336,7 @@ export class ServerState {
 
         if (msg.type === 'executing') {
             logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
-            return graph.onExecuting(msg)
+            return currPrompt.onExecuting(msg)
         }
         if (msg.type === 'execution_cached') {
             logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
@@ -344,7 +345,7 @@ export class ServerState {
         }
         if (msg.type === 'executed') {
             logger().info(`${msg.type} ${JSON.stringify(msg.data)}`)
-            const images = graph.onExecuted(msg)
+            const images = currPrompt.onExecuted(msg)
             return
             // await Promise.all(images.map(i => i.savedPromise))
             // const uris = FrontWebview.with((curr) => {

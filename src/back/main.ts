@@ -1,9 +1,12 @@
+import type { ImageL } from '../models/Image'
+import type { StepL } from '../models/Step'
+
+import fetch from 'node-fetch'
 import { join } from 'path'
 import '../logger/LoggerBack'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
+import { Runtime } from './Runtime'
 import { ServerState } from './ServerState'
-import { StepL } from 'src/models/Step'
-import { Runtime } from './Workflow'
 
 // const serverstate = new ServerState(asAbsolutePath('/Users/loco/csdemo'))
 const path = asAbsolutePath(join(process.cwd(), 'flows/'))
@@ -29,6 +32,36 @@ server.db.steps.when(
         console.log(`should run: `, action?.data.name)
     },
 )
+
+// auto-download images
+server.db.images.when(
+    (_) => true,
+    async (img: ImageL) => {
+        const lPath = img.data.localAbsolutePath
+        if (lPath != null) return console.log('image already downloaded')
+        const comfyURL = img.data.comfyURL
+        if (comfyURL == null) return console.log('image has no comfyURL')
+
+        console.log(`should download and update image local path`)
+
+        const response = await fetch(comfyURL, {
+            headers: { 'Content-Type': 'image/png' },
+            method: 'GET',
+            // responseType: ResponseType.Binary,
+        })
+        const binArr = await response.buffer()
+
+        const localFileName: string = img.id + '.png'
+        const localAbsolutePath = asAbsolutePath(join(server.cacheFolderPath, 'outputs', localFileName))
+        server.writeBinaryFile(localAbsolutePath, binArr)
+
+        img.update({
+            localAbsolutePath,
+            localURL: server.server.baseURL + localAbsolutePath.replace(server.cacheFolderPath, ''),
+        })
+    },
+)
+
 // autorun(() => {
 //     // console.log(JSON.stringify(server.db.store.images, null, 4))
 //     // console.log('🟢ACTIONS=', JSON.stringify(server.db.actions.values().map(a => a.data.file), null, 4))

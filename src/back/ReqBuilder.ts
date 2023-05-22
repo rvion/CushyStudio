@@ -1,5 +1,5 @@
 import type { ReqBuilder, Requirement } from '../core/Requirement'
-import type { Runtime } from './Workflow'
+import type { Runtime } from './Runtime'
 
 export interface RequirementBuilder extends ReqBuilder {}
 export class RequirementBuilder {

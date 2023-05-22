@@ -12,7 +12,7 @@ import { marked } from 'marked'
 import { asHTMLContent, asMDContent } from '../utils/markdown'
 import { comfyColors } from '../core/Colors'
 import { ComfyNode } from '../core/Node'
-import { GeneratedImage } from '../back/GeneratedImage'
+import { ImageL } from './Image'
 
 export type RunMode = 'fake' | 'real'
 
@@ -135,19 +135,7 @@ export class GraphL {
     }
 
     private outputs: WsMsgExecuted[] = []
-    images: GeneratedImage[] = []
-
-    /** udpate execution list */
-    onExecuted = (msg: WsMsgExecuted): GeneratedImage[] => {
-        const images = msg.data.output.images.map((i) => new GeneratedImage(this, i))
-        this.outputs.push(msg) // accumulate in self
-        this.images.push(...images)
-        // const node = this._graph.getNodeOrCrash(msg.data.node)
-        // node.artifacts.push(msg.data) // accumulate in node
-        // this.run.generatedImages.push(...images)
-        // console.log(`🟢 graph(${this._graph.uid}) => node(${node.uid}) => (${node.artifacts.length} images)`)
-        return images
-    }
+    images: ImageL[] = []
 
     /** @internal update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {

@@ -8,12 +8,11 @@
 import type { Base64Image } from 'src/core/b64img'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { Maybe, Tagged } from 'src/utils/types'
-import type { ImageT } from 'src/models/Image'
+import type { ImageL, ImageT } from 'src/models/Image'
 import type { Requestable } from './Requestable'
 
 import { logger } from '../logger/logger'
 import type * as R from './Requestable'
-import { GeneratedImage } from 'src/back/GeneratedImage'
 import { LATER } from 'LATER'
 
 export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>
@@ -53,12 +52,13 @@ export type InfoAnswer<Req> =
     Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] :
     never
 
-type ImageInBackend = GeneratedImage | ImageT
-const toImageInfos = (img: ImageInBackend) => {
+type ImageInBackend = ImageL | ImageT
+const toImageInfos = (img: ImageInBackend): ImageT => {
     try {
         return (img as any).toJSON ? (img as any).toJSON() : img
     } catch (error) {
-        logger().info('🔴 🔴' + JSON.stringify(img))
+        logger().info('🔴 UNRECOVERABLE ERROR 🔴' + JSON.stringify(img))
+        throw error
     }
 }
 
@@ -96,16 +96,16 @@ export class FormBuilder {
 
     /** painting */
     private _toImageInfos = () => {}
-    samMaskPoints = (label: string, img: GeneratedImage | ImageT) => ({
+    samMaskPoints = (label: string, img: ImageL | ImageT) => ({
         type: 'samMaskPoints' as const,
         imageInfo: toImageInfos(img),
     })
-    selectImage = (label: string, imgs: (GeneratedImage | ImageT)[]) => ({
+    selectImage = (label: string, imgs: (ImageL | ImageT)[]) => ({
         type: 'selectImage' as const,
         imageInfos: imgs.map(toImageInfos),
         label,
     })
-    manualMask = (label: string, img: GeneratedImage | ImageT) => ({
+    manualMask = (label: string, img: ImageL | ImageT) => ({
         type: 'manualMask' as const,
         label,
         imageInfo: toImageInfos(img),

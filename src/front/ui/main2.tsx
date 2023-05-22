@@ -40,7 +40,7 @@ const Main = observer(() => {
                 </div>
             ))}
             <h3>Images</h3>
-            <Button
+            {/* <Button
                 onClick={() => {
                     st.db.images.create({
                         id: `a-${nanoid()}`,
@@ -50,7 +50,7 @@ const Main = observer(() => {
                 }}
             >
                 add image
-            </Button>
+            </Button> */}
             <Button onClick={() => st.db.store.images.clear()}>clear image</Button>
             {/* <pre>{JSON.stringify(st.db.store, null, 4)}</pre> */}
             {st.db.store.images.map((v, k) => (
