@@ -1,10 +1,10 @@
 import * as mobx from 'mobx'
-import { bang } from '../utils/bang'
+import { Maybe } from 'src/utils/types'
 import { YMap, YMapEvent } from 'yjs/dist/src/internals'
+import { bang } from '../utils/bang'
 import { LiveDB } from './LiveDB'
 import { MERGE_PROTOTYPES } from './LiveHelpers'
 import { LiveInstance } from './LiveInstance'
-import { Maybe } from 'src/utils/types'
 
 export interface LiveEntityClass<T extends { id: string }, L> {
     new (...args: any[]): LiveInstance<T, L> & L // & InitEntity<L>
@@ -20,10 +20,17 @@ export class LiveTable<
     Ktor: LiveEntityClass<T, L>
 
     // ABILITY TO REACT TO ANY CHANGE ---------------------
-    private whenFns: ((l: L, k: L['data']['id']) => boolean)[] = []
+    private triggers: {
+        check: (l: L, k: L['data']['id']) => boolean
+        fn: (l: L, k: L['data']['id']) => void
+    }[] = []
 
     /** register a function to execute on any change */
-    when = (fn: (l: L, k: L['data']['id']) => boolean) => this.whenFns.push(fn)
+    when = (
+        //
+        check: (l: L, k: L['data']['id']) => boolean,
+        fn: (l: L, k: L['data']['id']) => void,
+    ) => this.triggers.push({ check, fn })
 
     // CTOR ---------------------
     constructor(
@@ -100,12 +107,10 @@ export class LiveTable<
         const prev = this.yjsMap.get(id)
         // this.yjsMap.set(nanoid(), data)
         if (prev) {
-            console.log('>> 🟢', prev)
             this.yjsMap.set(id, data)
             return bang(this.mobxMap.get(id))
             // return prev
         } else {
-            console.log('>> 🔴', prev)
             this.yjsMap.set(id, data)
             const instance = this._createInstance(data)
             this.mobxMap.set(id, instance)
@@ -128,13 +133,15 @@ export class LiveTable<
         const ymap = this.yjsMap
 
         mobx.runInAction(() => {
+            const instancesToRunHooks = new Set<L>()
             ymapEvent.changes.keys.forEach((change, key) => {
                 if (change.action === 'add') {
                     // console.log(`Property "${key}" was added. Initial value: "${ymap.get(key)}".`)
                     const data = ymap.get(key)
                     if (data == null) throw new Error('ERR1: value is null')
-                    const instance = this._createInstance(data)
-                    this.mobxMap.set(key, instance)
+                    const inst = this._createInstance(data)
+                    this.mobxMap.set(key, inst)
+                    instancesToRunHooks.add(inst)
                 } else if (change.action === 'update') {
                     const inst = this.mobxMap.get(key)
                     if (inst == null) throw new Error('ERR2: prev is null')
@@ -143,10 +150,20 @@ export class LiveTable<
                     const prevData = inst.data // 🔴
                     inst.data = value
                     inst.onUpdate?.(prevData, value)
+                    instancesToRunHooks.add(inst)
                 } else if (change.action === 'delete') {
                     this.mobxMap.delete(key)
                 }
             })
+            if (this.triggers.length > 0) {
+                for (const inst of instancesToRunHooks) {
+                    for (const trigger of this.triggers) {
+                        if (trigger.check(inst, inst.data.id)) {
+                            trigger.fn(inst, inst.data.id)
+                        }
+                    }
+                }
+            }
         })
     }
 }

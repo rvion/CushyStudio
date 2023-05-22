@@ -23,7 +23,7 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 <div className='flex flex-col gap-2'>
                     {project.steps.map((step) => {
                         return (
-                            <div className='row'>
+                            <div key={step.id} className='row'>
                                 <StepUI key={step.id} step={step} />
                                 <div>coucou</div>
                             </div>

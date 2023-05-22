@@ -3,8 +3,8 @@ import type { ComfyInputOpts, ComfySchemaJSON } from '../types/ComfySchemaJSON'
 
 import { LiveInstance } from 'src/db/LiveInstance'
 import { CodeBuffer } from '../utils/CodeBuffer'
-import { ComfyPrimitiveMapping, ComfyPrimitives } from './Primitives'
-import { normalizeJSIdentifier } from './normalizeJSIdentifier'
+import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
+import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 
 export type EnumHash = string
 export type EnumName = string

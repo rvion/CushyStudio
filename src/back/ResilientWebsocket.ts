@@ -1,8 +1,7 @@
-import type { Maybe } from '../utils/types'
-import * as vscode from 'vscode'
 import { makeAutoObservable, reaction } from 'mobx'
-import { WebSocket, CloseEvent, Event, MessageEvent, EventListenerOptions } from 'ws'
+import { CloseEvent, Event, EventListenerOptions, MessageEvent, WebSocket } from 'ws'
 import { logger } from '../logger/logger'
+import type { Maybe } from '../utils/types'
 
 type Message = string | Buffer
 

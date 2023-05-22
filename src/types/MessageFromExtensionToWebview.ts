@@ -1,7 +1,7 @@
 import type { ActionID, ActionT } from 'src/models/Action'
 import type { ImageT, ImageID } from 'src/models/Image'
 import type { FormDefinition, FormResult } from 'src/core/Requirement'
-import type { EmbeddingName } from 'src/core/Schema'
+import type { EmbeddingName } from 'src/models/Schema'
 // import type { CushyDBData } from 'src/core/storeSchema'
 import type { FlowID } from 'src/front/FlowID'
 import type { Maybe } from 'src/utils/types'
@@ -81,8 +81,8 @@ export type FromExtension_ActionEnd = {
     status: ActionEndStatus
 }
 
-export type FromExtension_Print = { type: 'print'; flowID: FlowID; message: string }
-export type FromExtension_Prompt = { type: 'prompt'; flowID: FlowID; graph: ComfyPromptJSON }
+export type FromExtension_Print = { type: 'print'; message: string }
+export type FromExtension_Prompt = { type: 'prompt'; graph: ComfyPromptJSON }
 export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
 export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: FormDefinition; result: FormResult<any> }

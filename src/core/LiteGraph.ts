@@ -1,6 +1,6 @@
 import type { Branded } from '../utils/types'
 import { CytoJSON } from './AutolayoutV2'
-import type { Graph } from './Graph'
+import type { GraphL } from '../models/Graph'
 import type { ComfyNode } from './Node'
 
 export type LiteGraphJSON = {
@@ -62,7 +62,7 @@ export type LiteGraphNode = {
     widgets_values: any[]
 }
 
-export const convertFlowToLiteGraphJSON = (graph: Graph, cytoJSON?: CytoJSON): LiteGraphJSON => {
+export const convertFlowToLiteGraphJSON = (graph: GraphL, cytoJSON?: CytoJSON): LiteGraphJSON => {
     //
 
     const ctx = new LiteGraphCtx(graph)
@@ -148,7 +148,7 @@ const _isLink = (v: any): v is [string, number] => {
 }
 
 export class LiteGraphCtx {
-    constructor(public graph: Graph) {}
+    constructor(public graph: GraphL) {}
     nextLinkId = 0
     links: LiteGraphLink[] = []
     allocateLink = (

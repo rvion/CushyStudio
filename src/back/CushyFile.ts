@@ -6,14 +6,9 @@ import { ActionL, asActionID } from '../models/Action'
 import { readFileSync } from 'fs'
 import { FormBuilder } from '../controls/askv2'
 import { transpileCode } from './transpiler'
+import { globalActionFnCache } from '../core/globalActionFnCache'
 
 const formBuilder = new FormBuilder()
-
-/**
- * temporary hack so I can keep a shared ActionL class but still have a way to
- * retrieve the original function that is only available on the backend
- */
-export const globalActionFnCache = new WeakMap<ActionL, Action<FormDefinition>>()
 
 export class CushyFile {
     CONTENT = ''

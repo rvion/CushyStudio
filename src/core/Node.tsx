@@ -1,12 +1,12 @@
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress, WsMsgExecutedData } from '../types/ComfyWsApi'
-import type { Graph } from './Graph'
+import type { GraphL } from '../models/Graph'
 import type { Maybe } from 'src/utils/types'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { ComfyNodeUID } from '../types/NodeUID'
 import { exhaust } from '../utils/ComfyUtils'
-import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from './Schema'
+import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
 import { Slot } from './Slot'
 import { comfyColors } from './Colors'
 import { auto_ } from './autoValue'
@@ -72,7 +72,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     $outputs: Slot<any>[] = []
     constructor(
         //
-        public graph: Graph,
+        public graph: GraphL,
         public uid: string = graph.getUID(),
         jsonExt: ComfyNodeJSON,
     ) {

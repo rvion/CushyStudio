@@ -1,4 +1,4 @@
-import type { EnumValue } from '../../../core/Schema'
+import type { EnumValue } from '../../../models/Schema'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { SelectPicker } from 'rsuite'

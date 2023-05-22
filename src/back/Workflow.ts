@@ -1,131 +1,72 @@
 import type { LATER } from 'LATER'
-import type { FormResult } from '../core/Requirement'
-import type { FlowID } from 'src/front/FlowID'
 
 import FormData from 'form-data'
 import { marked } from 'marked'
-import { makeAutoObservable } from 'mobx'
 import fetch from 'node-fetch'
 import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import { readFileSync, writeFileSync } from 'fs'
+import { StepL } from 'src/models/Step'
 import { Requestable } from '../controls/Requestable'
-import { ScriptStep_Init } from '../controls/ScriptStep_Init'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
-import { PromptExecution } from '../controls/ScriptStep_prompt'
+import { PromptL } from '../models/Prompt'
 import { FormBuilder, InfoAnswer, InfoRequestFn } from '../controls/askv2'
 import { runAutolayout } from '../core/AutolayoutV2'
-import { Graph } from '../core/Graph'
 import { convertFlowToLiteGraphJSON } from '../core/LiteGraph'
 import { Printable } from '../core/Printable'
 import { auto } from '../core/autoValue'
+import { globalActionFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
 import { logger } from '../logger/logger'
+import { ActionL } from '../models/Action'
 import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../types/ComfyWsApi'
-import { FlowExecutionStep } from '../types/FlowExecutionStep'
 import { deepCopyNaive } from '../utils/ComfyUtils'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { HTMLContent, MDContent, asHTMLContent, asMDContent } from '../utils/markdown'
-import { getYYYYMMDDHHMMSS } from '../utils/timestamps'
 import { wildcards } from '../wildcards/wildcards'
-import { ActionL } from '../models/Action'
 import { GeneratedImage } from './GeneratedImage'
 import { NodeBuilder } from './NodeBuilder'
 import { ServerState } from './ServerState'
-import { globalActionFnCache } from './CushyFile'
-import { StepID } from 'src/models/Step'
+import { GraphL } from 'src/models/Graph'
 
 /** script exeuction instance */
 export class Runtime {
     constructor(
-        public st: ServerState, // public fileAbsPath: AbsolutePath, // public opts?: { mock?: boolean },
-        /** unique run id, gener */
-        public uid: FlowID,
+        public st: ServerState /** unique run id, gener */, // public fileAbsPath: AbsolutePath, // public opts?: { mock?: boolean }, // public uid: FlowID,
+        public step: StepL,
     ) {
-        // const relPath = asRelativePath(path.join('.cache', this.fileAbsPath))
         this.folder = this.st.outputFolderPath // output.resolve(relPath)
         this.nodes = new NodeBuilder(this)
-        this.name = `Run-${this.createdAt}` // 'Run ' + this.script.runCounter++
-        this.graph = new Graph(this.st.schema)
+        // this.graph = st.db //new GraphL(this.st.schema)
         // this.cyto = new Cyto(this.graph) // 🔴🔴
-        makeAutoObservable(this)
+        // .makeAutoObservable(this)
     }
-
-    /** creation "timestamp" in YYYYMMDDHHMMSS format */
-    createdAt = getYYYYMMDDHHMMSS()
-
-    /** human readable folder name */
-    name: string
 
     /** list all actions ; codegen during dev-time */
     actions: any
-
     AUTO = auto
-
-    runAction = async (
-        //
-        actionL: ActionL,
-        formResult: FormResult<any>,
-        stepID: StepID,
-    ) => {
-        const numPromptBefore = this._promptCounter
+    run = async () => {
+        const actionL: ActionL = this.step.action.itemOrCrash
+        const action = globalActionFnCache.get(actionL)
         const start = Date.now()
+        const formResult = this.step.data.value
         console.log(`🔴 before: size=${this.graph.nodes.length}`)
-        // const schema = this.workspace.schema
-        const broadcast = this.st.broadCastToAllClients
-        const flowID = this.uid
-        const actionID = '🔴 zcxvsad' as any // actionDef.uid
-        // const executionID = asExecutionID(nanoid(6))
-        // broadcast({ type: 'action-start', flowID, actionID, executionID, data: formResult })
-        // broadcast({ type: 'schema', schema: schema.spec, embeddings: schema.embeddings })
-
-        // const codeJS = await actionDef.getCodeJS()
-        // if (codeJS == null) return false
-
-        // check if we're in "MOCK" mode
-        console.log(`activeFlow = ${this.uid}`)
-        this.st.activeFlow = this // 🔴🔴
-
-        // const ProjectScriptFn = new Function('action', codeJS)
-        // const actionsPool: { name: string; action: Action<any> }[] = []
-        // const actionFn = (name: string, fn: Action<any>): void => {
-        //     logger().info(`    - action ${name}`)
-        //     actionsPool.push({ name, action: fn })
-        // }
 
         try {
-            // await ProjectScriptFn(actionFn)
-            // const match = actionsPool.find((i) => i.name === actionDef.name)
-            // if (match == null) throw new Error('no action found')
-            const action = globalActionFnCache.get(actionL) // actionDef.action
             if (action == null) return console.log(`❌ action not found`)
-            // broadcast({ type: 'action-code', flowRunID: executionID, code: match.action.toString() })
-
-            // const reqBuilder = new RequirementBuilder(this)
-            // const formBuilder = new FormBuilder()
-            // const form: ActionForm | null = action.ui?.(formBuilder, this)
-            // let res = null
-            // if (form) {
-            //     console.log({ form })
-            //     res = await this.ask(() => form)
-            // }
-            // console.log({ res })
-            // const resolveDeps = res // {} //🔴
-
             await action.run(this, formResult)
             console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
-            broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'success' })
-            if (numPromptBefore === this._promptCounter) {
-                this.broadcastSchemaMermaid()
-            }
+            // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'success' })
+            // if (numPromptBefore === this._promptCounter) {
+            //     this.broadcastSchemaMermaid()
+            // }
             return true
         } catch (error) {
             console.log(error)
-            broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'failure' })
+            // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'failure' })
             logger().error('🌠', (error as any as Error).name)
             logger().error('🌠', (error as any as Error).message)
             logger().error('🌠', 'RUN FAILURE')
@@ -133,16 +74,17 @@ export class Runtime {
         }
     }
 
-    /** x:string */
-    find = (foo: string) => {
-        // 🔴
+    /** run an imagemagick convert action */
+    imagemagicConvert = (img: GeneratedImage, partialCmd: string, suffix: string): string => {
+        const pathA = img.localAbsolutePath
+        const pathB = `${pathA}.${suffix}.png`
+        const cmd = `convert "${pathA}" ${partialCmd} "${pathB}"`
+        this.exec(cmd)
+        return pathB
     }
 
     /** toolkit to build new graph nodes */
     nodes: NodeBuilder
-
-    /** the main graph that will be updated along the script execution */
-    graph: Graph
 
     /** graph engine instance for smooth and clever auto-layout algorithms */
     // cyto: Cyto 🔴🔴
@@ -151,11 +93,6 @@ export class Runtime {
     generatedImages: GeneratedImage[] = []
     get firstImage() { return this.generatedImages[0] } // prettier-ignore
     get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
-
-    /** folder where CushyStudio will save run informations */
-    get outputAbsPath(): AbsolutePath {
-        return asAbsolutePath(path.join(this.st.cacheFolderPath, this.name))
-    }
 
     folder: AbsolutePath
 
@@ -187,7 +124,8 @@ export class Runtime {
          * */
         frameDuration = 200,
     ): Promise<void> => {
-        const targetVideoAbsPath = asAbsolutePath(path.join(this.outputAbsPath, `video-${Runtime.VideoCounter++}.mp4`))
+        const outputAbsPath = this.st.cacheFolderPath
+        const targetVideoAbsPath = asAbsolutePath(path.join(outputAbsPath, `video-${Runtime.VideoCounter++}.mp4`))
         // logger().info(`target video path: ${targetVideoPath}`)
         // logger().info(`target video uri: ${targetVideoURI}`)
         const images = source ?? this.generatedImages
@@ -199,7 +137,7 @@ export class Runtime {
         logger().info(`🎥 awaiting all files to be ready locally...`)
         await Promise.all(images.map((i) => i.ready))
         logger().info(`🎥 all files are ready locally`)
-        const cwd = this.outputAbsPath
+        const cwd = outputAbsPath
         logger().info(`🎥 target video path: ${targetVideoAbsPath}`)
         logger().info(`🎥 this.folder.path: ${this.folder}`)
         logger().info(`🎥 cwd: ${cwd}`)
@@ -218,22 +156,6 @@ export class Runtime {
         // turns a bunch of images into a gif with ffmpeg
     }
 
-    get flowSummaryMd(): MDContent {
-        return asMDContent(
-            [
-                //
-                // '# Flow summary\n',
-                `<pre class="mermaid">`,
-                this.graph.toMermaid(),
-                `</pre>`,
-            ].join('\n'),
-        )
-    }
-    get flowSummaryHTML(): HTMLContent {
-        // https://mermaid.js.org/config/usage.html
-        return asHTMLContent(marked.parse(this.flowSummaryMd))
-    }
-
     /** ensure a model is present, and download it if needed */
     ensureModel = async (p: { name: string; url: string }): Promise<void> => {
         return
@@ -244,10 +166,10 @@ export class Runtime {
         return
     }
 
-    writeFlowSummary = () => {
-        const relPath = asRelativePath('flow-summary.md')
-        this.saveTextFile(relPath, this.flowSummaryMd)
-    }
+    // writeFlowSummary = () => {
+    //     const relPath = asRelativePath('flow-summary.md')
+    //     this.saveTextFile(relPath, this.flowSummaryMd)
+    // }
 
     embedding = (t: LATER<'Embeddings'>) => `embedding:${t}`
 
@@ -260,8 +182,8 @@ export class Runtime {
         const reqBuilder = new FormBuilder()
         const request = requestFn(reqBuilder)
         const ask = new ScriptStep_ask(request)
-        this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })
-        this.steps.unshift(ask)
+        // this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })
+        // this.steps.unshift(ask)
         return ask.finished
     }
 
@@ -296,7 +218,7 @@ export class Runtime {
     print = (message: Printable) => {
         let msg = this.extractString(message)
         logger().info(msg)
-        this.st.broadCastToAllClients({ type: 'print', message: msg, flowID: this.uid })
+        this.step.append({ type: 'print', message: msg })
     }
 
     /** upload a file from disk to the ComfyUI backend */
@@ -353,7 +275,7 @@ export class Runtime {
     // --------------------
     // INTERRACTIONS
 
-    async PROMPT(): Promise<PromptExecution> {
+    async PROMPT(): Promise<PromptL> {
         logger().info('prompt requested')
         const step = await this.sendPromp()
         // this.run.cyto.animate()
@@ -363,24 +285,16 @@ export class Runtime {
 
     private _promptCounter = 0
 
-    private broadcastSchemaMermaid = () => {
-        // console.log(this.flowSummaryHTML)
-        this.st.broadCastToAllClients({
-            type: 'show-html',
-            flowID: this.uid,
-            content: this.flowSummaryHTML,
-            title: 'flow-summary',
-        })
+    get graph(): GraphL {
+        return this.step.graph.itemOrCrash
     }
-    private sendPromp = async (): Promise<PromptExecution> => {
+    private sendPromp = async (): Promise<PromptL> => {
         const currentJSON = deepCopyNaive(this.graph.jsonForPrompt)
-        // const schema = this.workspace.schema
-        this.broadcastSchemaMermaid()
-        this.st.broadCastToAllClients({ type: 'prompt', graph: currentJSON, flowID: this.uid })
+        this.step.append({ type: 'prompt', graph: currentJSON })
 
         logger().info('checkpoint:' + JSON.stringify(currentJSON))
-        const step = new PromptExecution(this, currentJSON)
-        this.steps.unshift(step)
+        // const step = new PromptExecution(this, currentJSON)
+        // this.steps.unshift(step)
 
         // if we're note really running prompts, just resolve the step and continue
         // if (this.opts?.mock) {
@@ -396,17 +310,18 @@ export class Runtime {
             prompt: currentJSON,
         }
 
+        const outputAbsPath = this.st.cacheFolderPath
         // save a copy of the prompt to the cache folder
-        const promptJSONPath = asAbsolutePath(path.join(this.outputAbsPath, `prompt-${++this._promptCounter}.json`))
+        const promptJSONPath = asAbsolutePath(path.join(outputAbsPath, `prompt-${++this._promptCounter}.json`))
         this.st.writeTextFile(promptJSONPath, JSON.stringify(currentJSON, null, 4))
 
         // save a corresponding workflow file
-        const cytoJSONPath = asAbsolutePath(path.join(this.outputAbsPath, `cyto-${this._promptCounter}.json`))
+        const cytoJSONPath = asAbsolutePath(path.join(outputAbsPath, `cyto-${this._promptCounter}.json`))
         const cytoJSON = await runAutolayout(this.graph)
         this.st.writeTextFile(cytoJSONPath, JSON.stringify(cytoJSON, null, 4))
 
         // save a corresponding workflow file
-        const workflowJSONPath = asAbsolutePath(path.join(this.outputAbsPath, `workflow-${this._promptCounter}.json`))
+        const workflowJSONPath = asAbsolutePath(path.join(outputAbsPath, `workflow-${this._promptCounter}.json`))
         const liteGraphJSON = convertFlowToLiteGraphJSON(this.graph, cytoJSON)
         this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
 
@@ -422,14 +337,7 @@ export class Runtime {
 
         console.log('prompt status', res.status, res.statusText)
         // await sleep(1000)
-        return step
-    }
-
-    steps: FlowExecutionStep[] = [new ScriptStep_Init()]
-
-    /** current step */
-    get step(): FlowExecutionStep {
-        return this.steps[0]
+        // return step
     }
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */

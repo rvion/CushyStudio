@@ -1,4 +1,4 @@
-import type { SchemaL } from 'src/core/Schema'
+import type { SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 
 import * as I from '@rsuite/icons'

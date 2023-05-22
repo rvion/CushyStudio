@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { Form, Panel, Progress } from 'rsuite'
-import { Graph } from '../../core/Graph'
+import { GraphL } from '../../models/Graph'
 import { ComfyNode } from '../../core/Node'
-import { ComfyNodeSchema } from '../../core/Schema'
+import { ComfyNodeSchema } from '../../models/Schema'
 import { NodeRefUI } from './NodeRefUI'
 import { useSt } from '../FrontStateCtx'
 
@@ -14,7 +14,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
     const st = useSt()
     const node = p.node
     const uid = node.uid
-    const graph: Graph | undefined = node.graph
+    const graph: GraphL | undefined = node.graph
     if (graph == null) return <>no execution yet</>
     const curr: ComfyNode<any> = graph.nodesIndex.get(uid)!
     const name = curr.$schema.nameInComfy

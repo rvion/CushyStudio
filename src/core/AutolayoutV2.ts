@@ -1,5 +1,5 @@
 import cytoscape from 'cytoscape'
-import type { Graph } from './Graph'
+import type { GraphL } from '../models/Graph'
 import klay from 'cytoscape-klay'
 
 cytoscape.use(klay)
@@ -19,7 +19,7 @@ export type CytoJSON = {
     }
 }
 
-export const runAutolayout = async (graph: Graph): Promise<CytoJSON> => {
+export const runAutolayout = async (graph: GraphL): Promise<CytoJSON> => {
     // Define the graph elements
 
     const elements: any[] = []

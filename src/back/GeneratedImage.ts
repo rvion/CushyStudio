@@ -1,15 +1,15 @@
-import type { PromptExecution } from '../controls/ScriptStep_prompt'
+import type { PromptL } from '../models/Prompt'
 import type { ComfyImageInfo } from '../types/ComfyWsApi'
 import type { Maybe } from '../utils/types'
 import type { ServerState } from './ServerState'
 
+import { nanoid } from 'nanoid'
 import fetch from 'node-fetch'
 import * as path from 'path'
-import { ImageT, ImageID } from 'src/models/Image'
+import { ImageID, ImageT } from 'src/models/Image'
 import { logger } from '../logger/logger'
-import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
-import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { nanoid } from 'nanoid'
+import { AbsolutePath } from '../utils/fs/BrandedPaths'
+import { asAbsolutePath } from '../utils/fs/pathUtils'
 
 enum ImageStatus {
     Known = 1,
@@ -18,7 +18,6 @@ enum ImageStatus {
 }
 /** Cushy wrapper around ComfyImageInfo */
 export class GeneratedImage implements ImageT {
-    private static imageID = 1
     private workspace: ServerState
 
     /** 🔴 do not use */
@@ -32,7 +31,7 @@ export class GeneratedImage implements ImageT {
 
     constructor(
         /** the prompt this file has been generated from */
-        public prompt: PromptExecution,
+        public prompt: PromptL,
         /** image info as returned by Comfy */
         public data: ComfyImageInfo, // public uid: string,
     ) {
@@ -42,15 +41,6 @@ export class GeneratedImage implements ImageT {
     }
 
     // high level API ----------------------------------------------------------------------
-
-    /** run an imagemagick convert action */
-    imagemagicConvert = (partialCmd: string, suffix: string): string => {
-        const pathA = this.localAbsolutePath
-        const pathB = `${pathA}.${suffix}.png`
-        const cmd = `convert "${pathA}" ${partialCmd} "${pathB}"`
-        this.prompt.run.exec(cmd)
-        return pathB
-    }
 
     // COMFY RELATIVE ----------------------------------------------------------------------
     /** file name within the ComfyUI folder */

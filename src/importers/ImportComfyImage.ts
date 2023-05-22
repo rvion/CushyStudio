@@ -1,7 +1,7 @@
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ServerState } from '../back/ServerState'
 import { ComfyPromptJSON } from '../types/ComfyPrompt'
-import { ComfyNodeSchema } from '../core/Schema'
+import { ComfyNodeSchema } from '../models/Schema'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { TEdge, toposort } from '../utils/toposort'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'

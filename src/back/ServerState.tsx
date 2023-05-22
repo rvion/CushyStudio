@@ -1,4 +1,4 @@
-import type { EmbeddingName } from '../core/Schema'
+import type { EmbeddingName } from '../models/Schema'
 import type { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import type { FlowExecutionStep } from '../types/FlowExecutionStep'
 import type { Maybe } from '../utils/types'
@@ -8,14 +8,17 @@ import { asAbsolutePath } from '../utils/fs/pathUtils'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
+import { createRequire } from 'module'
 import fetch from 'node-fetch'
 import { join, relative } from 'path'
+import { PayloadID } from 'src/core/PayloadID'
 import * as WS from 'ws'
-import { PromptExecution } from '../controls/ScriptStep_prompt'
-import { SchemaL } from '../core/Schema'
+import { PromptL } from '../models/Prompt'
+import { SchemaL } from '../models/Schema'
 import { logger } from '../logger/logger'
+import { ActionID, ActionL } from '../models/Action'
 import { ComfyStatus, WsMsg } from '../types/ComfyWsApi'
-import { MessageFromExtensionToWebview, MessageFromExtensionToWebview_ } from '../types/MessageFromExtensionToWebview'
+import { MessageFromExtensionToWebview_ } from '../types/MessageFromExtensionToWebview'
 import { sdkStubDeps } from '../typings/sdkStubDeps'
 import { sdkTemplate } from '../typings/sdkTemplate'
 import { CodePrettier } from '../utils/CodeFormatter'
@@ -23,16 +26,12 @@ import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
-import { Runtime } from './Workflow'
-import { FlowID } from 'src/front/FlowID'
-import { ActionL, ActionID } from '../models/Action'
 import { ConfigFileWatcher } from './ConfigWatcher'
 import { CushyFile } from './CushyFile'
 import { CushyFileWatcher } from './CushyFileWatcher'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
+import { Runtime } from './Workflow'
 import { CushyServer } from './server'
-import { createRequire } from 'module'
-import { PayloadID } from 'src/core/PayloadID'
 
 const require = createRequire(import.meta.url)
 const WebSocketPolyfill = require('ws')
@@ -98,23 +97,21 @@ export class ServerState {
         writeFileSync(absPath, content, 'utf-8')
     }
 
-    flows = new Map<FlowID, Runtime>()
-    getOrCreateFlow = (flowID: FlowID): Runtime => {
-        const prev = this.flows.get(flowID)
-        if (prev != null) return prev
-        console.log(`Creating new flow (id=${flowID})`)
-        const flow = new Runtime(this, flowID)
-        this.flows.set(flowID, flow)
-        return flow
-    }
-
+    // flows = new Map<FlowID, Runtime>()
+    // getOrCreateFlow = (flowID: FlowID): Runtime => {
+    //     const prev = this.flows.get(flowID)
+    //     if (prev != null) return prev
+    //     console.log(`Creating new flow (id=${flowID})`)
+    //     const flow = new Runtime(this, flowID)
+    //     this.flows.set(flowID, flow)
+    //     return flow
+    // }
     /** wrapper around vscode.tests.createTestController so logic is self-contained  */
-
     // clients = new Map<string, CushyClient>()
     // registerClient = (id: string, client: CushyClient) => this.clients.set(id, client)
     // unregisterClient = (id: string) => this.clients.delete(id)
 
-    lastMessagesPerType = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
+    // lastMessagesPerType = new Map<MessageFromExtensionToWebview['type'], MessageFromExtensionToWebview>()
 
     // persistMessageInHistoryIfNecessary = (message: MessageFromExtensionToWebview) => {
     //     if (message.type === 'action-start') this.db.recordEvent(message)
@@ -326,18 +323,19 @@ export class ServerState {
         }
 
         // ensure current step is a prompt
-        const promptStep: FlowExecutionStep = currentRun.step
-        if (!(promptStep instanceof PromptExecution)) return console.log(`❌ received ${msg.type} but currentStep is not prompt`)
+        const promptStep /*: FlowExecutionStep*/ = currentRun.step
+        const graph = promptStep.graph.item
+        if (graph == null) return console.log(`❌ received ${msg.type} but graph is not prompt`)
 
         // defer accumulation to ScriptStep_prompt
         if (msg.type === 'progress') {
             logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
-            return promptStep._graph.onProgress(msg)
+            return graph.onProgress(msg)
         }
 
         if (msg.type === 'executing') {
             logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
-            return promptStep.onExecuting(msg)
+            return graph.onExecuting(msg)
         }
         if (msg.type === 'execution_cached') {
             logger().debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
@@ -346,7 +344,7 @@ export class ServerState {
         }
         if (msg.type === 'executed') {
             logger().info(`${msg.type} ${JSON.stringify(msg.data)}`)
-            const images = promptStep.onExecuted(msg)
+            const images = graph.onExecuted(msg)
             return
             // await Promise.all(images.map(i => i.savedPromise))
             // const uris = FrontWebview.with((curr) => {

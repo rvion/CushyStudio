@@ -5,14 +5,14 @@ import type { ComfyStatus } from '../types/ComfyWsApi'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { LiveDB } from '../db/LiveDB'
-import { Graph } from '../core/Graph'
+import { GraphL } from '../models/Graph'
 import { FromExtension_CushyStatus, MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
 import { LightBoxState } from './ui/LightBox'
 import { Maybe } from '../utils/types'
 import { FlowID } from './FlowID'
 import { UIAction } from './UIAction'
 import * as W from 'y-websocket'
-import { SchemaL } from '../core/Schema'
+import { SchemaL } from '../models/Schema'
 import { ProjectL, asProjectID } from '../models/Project'
 import { asStepID } from '../models/Step'
 
@@ -70,7 +70,7 @@ export class FrontState {
         // this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
     }
 
-    graph: Maybe<Graph> = null
+    graph: Maybe<GraphL> = null
     // schema: Maybe<Schema> = null
     images: ImageT[] = []
     imagesById: Map<ImageID, ImageT> = new Map()

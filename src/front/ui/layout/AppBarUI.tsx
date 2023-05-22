@@ -23,7 +23,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <IconButton icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />} />
             <IconButton onClick={() => st.db.reset()} icon={<I.Trash color='orange' />} />
             <Button startIcon={<I.AddOutline />} size='sm' className='self-start' onClick={() => st.startProject()}>
-                Start Flow
+                create project
             </Button>
         </Nav>
     )

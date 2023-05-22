@@ -5,12 +5,13 @@ import { nanoid } from 'nanoid'
 import { ProjectL, ProjectT } from '../models/Project'
 import { StepL, StepT } from '../models/Step'
 import type * as W2 from 'y-websocket/'
-import { SchemaL, SchemaT } from '../core/Schema'
+import { SchemaL, SchemaT } from '../models/Schema'
 import { ActionL, ActionT } from '../models/Action'
 import { FolderL, FolderT } from '../models/Folder'
 import { Foo } from '../models/Foo'
 import { ImageL, ImageT } from '../models/Image'
 import { LiveTable } from './LiveTable'
+import { GraphL, GraphT } from '../models/Graph'
 
 export class LiveDB {
     wsProvider: W2.WebsocketProvider
@@ -30,6 +31,7 @@ export class LiveDB {
     get msgs() {return this.store.msgs} // prettier-ignore
     get actions():LiveTable< ActionT,ActionL> {return this.store.actions} // prettier-ignore
     get projects() {return this.store.projects} // prettier-ignore
+    get graphs() {return this.store.graphs} // prettier-ignore
     get steps():LiveTable< StepT,StepL> {return this.store.steps} // prettier-ignore
     get status() {return this.store.status} // prettier-ignore
     // -----------------------------------
@@ -62,6 +64,7 @@ export class LiveDB {
             status: new LiveTable<{ id: string }, Foo>(this, 'status', Foo),
             // ???
             msgs: new LiveTable<{ id: string }, Foo>(this, 'msgs', Foo),
+            graphs: new LiveTable<GraphT, GraphL>(this, 'graphs', GraphL),
             // global
             actions: new LiveTable<ActionT, ActionL>(this, 'actions', ActionL),
             folders: new LiveTable<FolderT, FolderL>(this, 'folders', FolderL),

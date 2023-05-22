@@ -1,13 +1,18 @@
-import type { ComfyPromptJSON } from '../types/ComfyPrompt'
-import type { WsMsgExecuting, WsMsgProgress } from '../types/ComfyWsApi'
-import type { ComfyNodeUID } from '../types/NodeUID'
 import type { VisEdges, VisNodes } from '../front/ui/VisUI'
-import type { Cyto } from './AutolayoutV1'
+import type { ComfyPromptJSON } from '../types/ComfyPrompt'
+import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress } from '../types/ComfyWsApi'
+import type { ComfyNodeUID } from '../types/NodeUID'
+import type { Cyto } from '../core/AutolayoutV1'
 import type { ComfyNodeSchema, SchemaL } from './Schema'
+import type { LiveInstance } from 'src/db/LiveInstance'
+import type { HTMLContent, MDContent } from 'src/utils/markdown'
+import type { Branded, Maybe } from 'src/utils/types'
 
-import { nanoid } from 'nanoid'
-import { comfyColors } from './Colors'
-import { ComfyNode } from './Node'
+import { marked } from 'marked'
+import { asHTMLContent, asMDContent } from '../utils/markdown'
+import { comfyColors } from '../core/Colors'
+import { ComfyNode } from '../core/Node'
+import { GeneratedImage } from '../back/GeneratedImage'
 
 export type RunMode = 'fake' | 'real'
 
@@ -19,9 +24,22 @@ export type RunMode = 'fake' | 'real'
  *   - so no link to workspace or run
  */
 
-export class Graph {
-    /** graph uid */
-    uid = nanoid()
+export type GraphID = Branded<string, 'GraphID'>
+export const asGraphID = (s: string): GraphID => s as any
+
+export type GraphT = {
+    id: GraphID
+    comfyPromptJSON: ComfyPromptJSON
+}
+
+export interface GraphL extends LiveInstance<GraphT, GraphL> {}
+export class GraphL {
+    onUpdate(prev: Maybe<GraphT>, next: GraphT) {
+        this.reset()
+        for (const [uid, node] of Object.entries(next.comfyPromptJSON)) {
+            new ComfyNode(this, uid, node)
+        }
+    }
 
     /** cytoscape instance to live update graph */
     cyto?: Cyto
@@ -40,6 +58,11 @@ export class Graph {
         this.nodesIndex.clear()
         this.currentExecutingNode = null
         // this._nextUID = 0;
+    }
+
+    /** proxy to this.db.schema */
+    get schema() {
+        return this.db.schema
     }
 
     /** nodes, in creation order */
@@ -111,6 +134,21 @@ export class Graph {
         console.log('❌ no current executing node', msg)
     }
 
+    private outputs: WsMsgExecuted[] = []
+    images: GeneratedImage[] = []
+
+    /** udpate execution list */
+    onExecuted = (msg: WsMsgExecuted): GeneratedImage[] => {
+        const images = msg.data.output.images.map((i) => new GeneratedImage(this, i))
+        this.outputs.push(msg) // accumulate in self
+        this.images.push(...images)
+        // const node = this._graph.getNodeOrCrash(msg.data.node)
+        // node.artifacts.push(msg.data) // accumulate in node
+        // this.run.generatedImages.push(...images)
+        // console.log(`🟢 graph(${this._graph.uid}) => node(${node.uid}) => (${node.artifacts.length} images)`)
+        return images
+    }
+
     /** @internal update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {
         // 1. mark currentExecutingNode as done
@@ -142,17 +180,20 @@ export class Graph {
     //     node.images.push(...images)
     // }
 
-    constructor(
-        //
-        public schema: SchemaL,
-        json: ComfyPromptJSON = {},
-    ) {
-        // this.cyto = new Cyto(this)
-        // console.log('COMFY GRAPH')
-        // makeObservable(this, { allImages: computed })
-        for (const [uid, node] of Object.entries(json)) {
-            new ComfyNode(this, uid, node)
-        }
+    get flowSummaryMd(): MDContent {
+        return asMDContent(
+            [
+                //
+                // '# Flow summary\n',
+                `<pre class="mermaid">`,
+                this.toMermaid(),
+                `</pre>`,
+            ].join('\n'),
+        )
+    }
+    get flowSummaryHTML(): HTMLContent {
+        // https://mermaid.js.org/config/usage.html
+        return asHTMLContent(marked.parse(this.flowSummaryMd))
     }
 
     private _nextUID = 1
@@ -166,7 +207,7 @@ export class Graph {
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
         const json: ComfyPromptJSON = this.jsonForPrompt
-        const schemas: SchemaL = this.schema
+        const schemas: SchemaL = this.db.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
         if (json == null) return { nodes: [], edges: [] }

@@ -22,7 +22,7 @@ import { WidgetPlacePoints } from './WidgetPlacePoints'
  */
 export const StepUI = observer(function StepUI_(p: { step: StepL }) {
     const step = p.step
-    const action = step.action
+    const action = step.action.item
     if (action == null) return <>👉 pick an action</>
     const formDef = action.data.form ?? {}
     const title = action.data.name

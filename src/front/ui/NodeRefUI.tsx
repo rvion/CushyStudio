@@ -1,10 +1,10 @@
-import type { Graph } from '../../core/Graph'
+import type { GraphL } from '../../models/Graph'
 import type { ComfyNodeUID } from '../../types/NodeUID'
 
 import { observer } from 'mobx-react-lite'
 import { comfyColors } from '../../core/Colors'
 
-export const NodeRefUI = observer(function NodeRefUI_(p: { size?: number; nodeUID: ComfyNodeUID; graph: Graph }) {
+export const NodeRefUI = observer(function NodeRefUI_(p: { size?: number; nodeUID: ComfyNodeUID; graph: GraphL }) {
     const node = p.graph.nodesIndex.get(p.nodeUID)
     if (node == null) return <>❌ error</>
     const size = p.size ?? 1.5

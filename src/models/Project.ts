@@ -11,8 +11,6 @@ export type ProjectT = {
     id: ProjectID
     name: string
     rootStepID: StepID
-    // history: AbsolutePath
-    // form?: Maybe<FormDefinition>
 }
 
 /** a thin wrapper around a single Project somewhere in a .cushy.ts file */

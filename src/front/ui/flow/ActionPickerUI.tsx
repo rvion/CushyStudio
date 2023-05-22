@@ -10,7 +10,7 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { step: StepL
     const st = useSt()
     const pj = useProject()
     const step = p.step
-    if (step.project !== pj) return <>🔴 wrong project</>
+    if (step.project.item !== pj) return <>🔴 wrong project</>
 
     const action = step.action
     return (
@@ -23,8 +23,8 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { step: StepL
                             startIcon={<I.PlayOutline />}
                             key={a.id}
                             size='sm'
-                            appearance={step.action?.id === a.id ? 'primary' : 'ghost'}
-                            color={step.action?.id === a.id ? 'green' : undefined}
+                            appearance={step.action.item?.id === a.id ? 'primary' : 'ghost'}
+                            color={step.action.item?.id === a.id ? 'green' : undefined}
                             onClick={() => step.update({ actionID: a.id })}
                         >
                             <div>{a.data.name}</div>

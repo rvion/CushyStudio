@@ -1,28 +1,36 @@
+import type { GraphID, GraphL } from 'src/models/Graph'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { Branded, Maybe } from '../utils/types'
 import type { ActionID, ActionL } from './Action'
 import type { ProjectID, ProjectL } from './Project'
+import type { WsMsgExecuted } from 'src/types/ComfyWsApi'
+import type { FromExtension_Print, FromExtension_Prompt } from 'src/types/MessageFromExtensionToWebview'
 
 import { toJS } from 'mobx'
 import { nanoid } from 'nanoid'
-import { bang } from '../utils/bang'
-import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
+import { LiveRef, LiveRefOpt } from '../db/LiveRef'
 
 export type FormPath = (string | number)[]
 
 export type StepID = Branded<string, 'StepID'>
 export const asStepID = (s: string): StepID => s as any
 
+type StepOutput = FromExtension_Print | WsMsgExecuted | FromExtension_Prompt
+
 export type StepT = {
     id: StepID
+    /** project this step belongs to */
     projectID: ProjectID
+    /** parent step, only null for the root step */
     parent?: Maybe<StepID>
+    /** action the step should run on evaluation */
     actionID?: Maybe<ActionID>
-    /** action input */
+    /** action input value */
     value?: Maybe<any>
-    graph?: Maybe<ComfyPromptJSON>
-    // history: AbsolutePath
-    // form?: Maybe<FormDefinition>
+    /** each evaluated step should have a resulting graph */
+    graphID?: GraphID
+    /** outputs of the evaluated step */
+    outputs?: Maybe<StepOutput[]>
 }
 
 /** a thin wrapper around a single Step somewhere in a .cushy.ts file */
@@ -30,19 +38,14 @@ export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
     onUpdate = (prev: Maybe<StepT>, next: StepT) => {
         if (prev == null) return
-        console.log({ prev, next })
         if (prev.actionID !== next.actionID) this.reset()
     }
 
-    get action(): Maybe<ActionL> {
-        if (this.data.actionID == null) return null
-        return bang(this.db.actions.get(this.data.actionID))
-    }
+    action = new LiveRefOpt<ActionL>(this, 'actionID', 'actions')
+    graph = new LiveRefOpt<GraphL>(this, 'graphID', 'graphs')
+    project = new LiveRef<ProjectL>(this, 'projectID', 'projects')
 
-    get project(): ProjectL {
-        return bang(this.db.projects.get(this.data.projectID))
-    }
-
+    /** proxy to this.db.schema */
     get schema() {
         return this.db.schema
     }
@@ -53,10 +56,12 @@ export class StepL {
         this.db.steps.create({
             id: asStepID(nanoid()),
             projectID: this.data.projectID,
-            actionID: this.action!.id,
+            actionID: this.action.id,
             parent: this.id,
         })
     }
+
+    append = (output: StepOutput) => this.update({ outputs: [...(this.data.outputs ?? []), output] })
 
     /** this value is the root response object
      * the form will progressively fill */
