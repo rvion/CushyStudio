@@ -1,10 +1,10 @@
 import { createContext, useContext } from 'react'
-import { ServerState } from '../../back/ServerState'
+import { STATE } from '../FrontState'
 
-export const workspaceContext = createContext<ServerState | null>(null)
+export const stContext = createContext<STATE | null>(null)
 
-export const useWorkspace = () => {
-    const st = useContext(workspaceContext)
+export const useSt = () => {
+    const st = useContext(stContext)
     if (st == null) throw new Error('no st in context')
     return st
 }

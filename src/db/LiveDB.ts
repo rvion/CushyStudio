@@ -1,5 +1,3 @@
-import type * as W2 from 'y-websocket/'
-
 import { Foo } from '../models/Foo'
 import { LiveTable } from './LiveTable'
 

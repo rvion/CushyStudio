@@ -14,7 +14,7 @@ export const CushyUI = observer(function CushyUI_() {
     return (
         <div className='col grow h100'>
             <AppBarUI />
-            <Button
+            {/* <Button
                 onClick={() => {
                     const fs = window.require('fs')
                     const out = fs.readFileSync('/Users/loco/dev/CushyStudio/shell/main.js', 'utf-8')
@@ -22,7 +22,7 @@ export const CushyUI = observer(function CushyUI_() {
                 }}
             >
                 OK
-            </Button>
+            </Button> */}
             <div className='flex flex-grow'>
                 <VerticalGalleryUI />
                 <ScrollablePaneUI className='shrink-0 flex-grow'>

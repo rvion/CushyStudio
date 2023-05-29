@@ -1,52 +1,48 @@
-// import chokidar from 'chokidar'
-import { ServerState } from './ServerState'
-import { CushyFile } from './CushyFile'
+import { readdirSync, statSync } from 'fs'
+import { join } from 'path'
+import { STATE } from 'src/front/FrontState'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
+import { CushyFile } from './CushyFile'
 
 export class CushyFileWatcher {
     filesMap: Map<string, CushyFile>
-
     constructor(
         //
-        public serverState: ServerState,
+        public st: STATE,
         public extensions: string = '.cushy.ts',
     ) {
         this.filesMap = new Map()
     }
 
-    // startWatching(dir: string) {
-    //     console.log(`👀 Watching ${dir} for ${this.extensions} files`)
-    //     const watcher = chokidar.watch(dir, {
-    //         ignored: /(^|[\/\\])\../, // ignore dotfiles
-    //         persistent: true,
-    //     })
-
-    //     watcher
-    //         .on('add', (filePath) => this.handleNewFile(filePath))
-    //         .on('change', (filePath) => this.handleFileChange(filePath))
-    //         .on('unlink', (filePath) => this.handleFileRemoval(filePath))
-    // }
+    walk = (dir: string) => {
+        this.st.db.actions.clear()
+        const files = readdirSync(dir)
+        // console.log(files)
+        for (const file of files) {
+            if (file.startsWith('.')) continue
+            // console.log('>>', file)
+            const filePath = join(dir, file)
+            const stat = statSync(filePath)
+            if (stat.isDirectory()) {
+                this.walk(filePath)
+            } else if (filePath.endsWith(this.extensions)) {
+                this.handleNewFile(filePath)
+            }
+        }
+    }
 
     private handleNewFile(filePath: string) {
         if (!filePath.endsWith(this.extensions)) return
+        console.log('>>> found', filePath)
         const absPath = asAbsolutePath(filePath)
-        this.serverState.knownFiles.set(absPath, new CushyFile(this.serverState, absPath))
-
-        // fs.readFile(filePath, 'utf8', (err, data) => {
-        //     if (err) throw err
-        //     this.filesMap.set(filePath, data)
-        // })
+        this.st.knownFiles.set(absPath, new CushyFile(this.st, absPath))
     }
 
     private handleFileChange(filePath: string) {
-        console.log(`${filePath} changed`)
+        // console.log(`${filePath} changed`)
         const absPath = asAbsolutePath(filePath)
         if (!filePath.endsWith(this.extensions)) return
-        this.serverState.knownFiles.set(absPath, new CushyFile(this.serverState, absPath))
-        // fs.readFile(filePath, 'utf8', (err, data) => {
-        //     if (err) throw err
-        //     this.filesMap.set(filePath, data)
-        // })
+        this.st.knownFiles.set(absPath, new CushyFile(this.st, absPath))
     }
 
     private handleFileRemoval(filePath: string) {

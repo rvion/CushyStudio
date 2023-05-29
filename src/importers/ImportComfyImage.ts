@@ -1,17 +1,17 @@
 import { CodeBuffer } from '../utils/CodeBuffer'
-import { ServerState } from '../back/ServerState'
 import { ComfyPromptJSON } from '../types/ComfyPrompt'
 import { ComfyNodeSchema } from '../models/Schema'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { TEdge, toposort } from '../utils/toposort'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { logger } from '../logger/logger'
+import { STATE } from 'src/front/FrontState'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = { nodeName: string; inputName: string; valueStr: string }
 
 export class ComfyImporter {
-    constructor(public client: ServerState) {}
+    constructor(public client: STATE) {}
 
     // ATTRIBUTE TO IGNORE
     UI_ONLY_ATTRIBUTES = [

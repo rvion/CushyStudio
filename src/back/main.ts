@@ -1,18 +1,17 @@
-import { join } from 'path'
-import '../logger/LoggerBack'
-import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { ServerState } from './ServerState'
+// import { join } from 'path'
+// import '../logger/LoggerBack'
+// import { asAbsolutePath } from '../utils/fs/pathUtils'
 
 // const serverstate = new ServerState(asAbsolutePath('/Users/loco/csdemo'))
 
-export const startServerState = () => {
-    const path = asAbsolutePath(join(process.cwd(), 'flows/'))
-    console.log({ path })
-    return new ServerState(path, {
-        cushySrcPathPrefix: '../src/',
-        genTsConfig: false,
-    })
-}
+// export const startServerState = () => {
+//     const path = asAbsolutePath(join(process.cwd(), 'flows/'))
+//     console.log({ path })
+//     return new ServerState(path, {
+//         cushySrcPathPrefix: '../src/',
+//         genTsConfig: false,
+//     })
+// }
 // server.db.steps.when(
 //     (step: StepL) => {
 //         console.log('a1')

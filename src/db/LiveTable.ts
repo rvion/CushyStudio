@@ -35,7 +35,9 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
             onUpdate?: (prev: Maybe<T>, next: T) => void
             get id() { return this.data.id } // prettier-ignore
             update(t: Partial<T>) {
+                const prev = JSON.parse(JSON.stringify(this.data))
                 Object.assign(this.data, t)
+                this.onUpdate?.(prev, this.data)
             }
             delete() {
                 this.table.delete(this.data.id)

@@ -20,13 +20,14 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            process: './src/syms/process',
-            path: './src/syms/path',
+            buffer: './src/syms/buffer',
             fs: './src/syms/fs',
             os: './src/syms/os',
+            path: './src/syms/path',
+            process: './src/syms/process',
             stream: './src/syms/stream',
-            zlib: './src/syms/zlib',
             util: './src/syms/util',
+            zlib: './src/syms/zlib',
         },
     },
     // esbuild: {

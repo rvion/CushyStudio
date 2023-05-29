@@ -26,16 +26,16 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
-import { ServerState } from './ServerState'
 import { GraphL, asGraphID } from '../models/Graph'
 import { nanoid } from 'nanoid'
 import { ImageL } from '../models/Image'
 import { Maybe } from 'src/utils/types'
+import { STATE } from 'src/front/FrontState'
 
 /** script exeuction instance */
 export class Runtime {
     constructor(
-        public st: ServerState /** unique run id, gener */, // public fileAbsPath: AbsolutePath, // public opts?: { mock?: boolean }, // public uid: FlowID,
+        public st: STATE /** unique run id, gener */, // public fileAbsPath: AbsolutePath, // public opts?: { mock?: boolean }, // public uid: FlowID,
         public step: StepL,
     ) {
         this.folder = this.st.outputFolderPath // output.resolve(relPath)
@@ -110,12 +110,12 @@ export class Runtime {
     }
 
     showHTMLContent = (p: { htmlContent: string; title: string }) => {
-        this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
+        // this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
     showMarkdownContent = (p: { title: string; markdownContent: string }) => {
-        const htmlContent = marked.parse(p.markdownContent)
-        this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
+        // const htmlContent = marked.parse(p.markdownContent)
+        // this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
     }
 
     static VideoCounter = 1
@@ -152,11 +152,12 @@ export class Runtime {
             frameDuration,
             cwd,
         )
+        // 🔴 unfinished
         // const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
-        const videoURL = this.st.server.absPathToURL(targetVideoAbsPath)
-        logger().info(`🎥 video url: ${videoURL}`)
-        const content = `<video controls autoplay loop><source src="${videoURL}" type="video/mp4"></video>`
-        this.st.broadCastToAllClients({ type: 'show-html', content, title: 'generated video' })
+        // const videoURL = this.st.absPathToURL(targetVideoAbsPath)
+        // logger().info(`🎥 video url: ${videoURL}`)
+        // const content = `<video controls autoplay loop><source src="${videoURL}" type="video/mp4"></video>`
+        // this.st.broadCastToAllClients({ type: 'show-html', content, title: 'generated video' })
         // turns a bunch of images into a gif with ffmpeg
     }
 

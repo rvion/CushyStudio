@@ -1,10 +1,10 @@
-import type { ServerState } from 'src/back/ServerState'
 import type { Options } from 'prettier'
 
 import { existsSync, readFileSync } from 'fs'
 import { asRelativePath } from './fs/pathUtils'
 
 import parserTypeScript from 'prettier/parser-typescript'
+import { STATE } from 'src/front/FrontState'
 // import prettier from 'prettier/standalone'
 
 export class CodePrettier {
@@ -17,8 +17,8 @@ export class CodePrettier {
         tabWidth: 4,
     }
 
-    constructor(public serverState: ServerState) {
-        const possibleConfigPath = serverState.resolveFromRoot(asRelativePath('.prettierrc'))
+    constructor(public st: STATE) {
+        const possibleConfigPath = st.resolveFromRoot(asRelativePath('.prettierrc'))
         const exists = existsSync(possibleConfigPath)
         if (exists) {
             this.config = JSON.parse(readFileSync(possibleConfigPath, 'utf-8'))

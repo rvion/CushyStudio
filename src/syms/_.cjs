@@ -1,12 +1,13 @@
 const modulesToCache = [
     //
-    'process',
-    'path',
+    'buffer',
     'fs',
     'os',
+    'path',
+    'process',
     'stream',
-    'zlib',
     'util',
+    'zlib',
 ]
 
 const fs = require('fs')

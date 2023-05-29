@@ -1,12 +1,12 @@
 import type { Action, FormDefinition } from 'src/core/Requirement'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
-import type { ServerState } from './ServerState'
 import { ActionL, asActionID } from '../models/Action'
 
 import { readFileSync } from 'fs'
 import { FormBuilder } from '../controls/askv2'
 import { transpileCode } from './transpiler'
 import { globalActionFnCache } from '../core/globalActionFnCache'
+import { STATE } from 'src/front/FrontState'
 
 const formBuilder = new FormBuilder()
 
@@ -16,7 +16,7 @@ export class CushyFile {
     actions: ActionL[] = []
     constructor(
         //
-        public workspace: ServerState,
+        public st: STATE,
         public absPath: AbsolutePath,
     ) {
         this.CONTENT = readFileSync(absPath, 'utf-8')
@@ -37,7 +37,7 @@ export class CushyFile {
 
         for (const a of actionsPool) {
             const actionID = asActionID(`${this.absPath}#${a.name}`)
-            const actionL = this.workspace.db.actions.upsert({
+            const actionL = this.st.db.actions.upsert({
                 id: actionID,
                 file: this.absPath,
                 name: a.name,

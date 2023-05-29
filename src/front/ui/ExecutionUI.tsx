@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 // import { NodeListUI } from './NodeListUI'
-import { useWorkspace } from './WorkspaceContext'
+import { useSt } from './WorkspaceContext'
 
 export const ExecutionUI = observer(function ExecutionUI_() {
-    const st = useWorkspace()
+    const st = useSt()
     return <>OK</>
     // const project = st.focusedProject
     // const run: Maybe<Run> = project?.currentRun

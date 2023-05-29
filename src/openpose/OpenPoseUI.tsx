@@ -9,11 +9,11 @@ const canvas = document.getElementById('canvas')
 
 import { useMemo } from 'react'
 import { IconButton } from 'rsuite'
-import { useWorkspace } from '../front/ui/WorkspaceContext'
+import { useSt } from '../front/ui/WorkspaceContext'
 import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
 
 export const OpenPoseViewerUI = observer(function OpenPoseViewerUI_(p: {}) {
-    const workspace = useWorkspace()
+    const workspace = useSt()
     const OPAnim = useMemo(() => new OpenPoseAnimV0(workspace), [])
 
     return (

@@ -3,12 +3,12 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Image } from '../front/ui/Image'
 import { Text } from '../front/ui/Text'
-import { useWorkspace } from '../front/ui/WorkspaceContext'
+import { useSt } from '../front/ui/WorkspaceContext'
 import { Civitai } from './CivitaiSpec'
 
 export const CivitaiUI = observer(function CivitaiUI_() {
     const c = useMemo(() => new Civitai(), [])
-    const x = useWorkspace()
+    const x = useSt()
     return (
         <VSCodePanelView>
             <Text size={300}>Civitai</Text>

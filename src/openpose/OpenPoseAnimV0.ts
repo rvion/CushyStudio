@@ -1,6 +1,5 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { ServerState } from '../back/ServerState'
 
 import { drawOpenPoseBones } from './drawPoseV2'
 import samplePose1 from './json_inputs/32/001.json'
@@ -12,9 +11,10 @@ import samplePose6 from './json_inputs/32/006.json'
 import samplePose7 from './json_inputs/32/007.json'
 import samplePose8 from './json_inputs/32/008.json'
 import samplePose9 from './json_inputs/32/009.json'
+import { STATE } from 'src/front/FrontState'
 
 export class OpenPoseAnimV0 {
-    constructor(public workspace: ServerState) {}
+    constructor(public workspace: STATE) {}
     poses = [
         //
         samplePose1,
