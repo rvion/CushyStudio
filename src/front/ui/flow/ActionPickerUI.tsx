@@ -15,7 +15,8 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { step: StepL
     const action = step.action
     return (
         <div className='flex'>
-            <div className='flex flex-col items-start'>
+            <div className='flex flex-col items-start border p-2'>
+                Actions:
                 {/* ({uiSt.currentActionID}) */}
                 {st.db.actions.map((a) => {
                     return (

@@ -2,14 +2,14 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo } from 'react'
 import { Button } from 'rsuite'
-import { FrontState } from '../../FrontState'
+import { STATE } from '../../FrontState'
 import { useSt } from '../../FrontStateCtx'
 
 const getLayers = (): any => {
     return (document as any).getElementById('miniPaint').contentWindow.Layers
 }
 class MinipaintState {
-    constructor(public st: FrontState) {}
+    constructor(public st: STATE) {}
     loadImage(p: { uri: string }) {
         // window.getElemnt
         const image = document.createElement('img')

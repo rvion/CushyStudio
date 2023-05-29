@@ -1,9 +1,9 @@
 import type { LATER } from 'LATER'
 import type { Printable } from '../core/Printable'
 
-import FormData from 'form-data'
+// import FormData from 'form-data'
 import { marked } from 'marked'
-import fetch from 'node-fetch'
+// import fetch from 'node-fetch'
 import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
@@ -30,6 +30,7 @@ import { ServerState } from './ServerState'
 import { GraphL, asGraphID } from '../models/Graph'
 import { nanoid } from 'nanoid'
 import { ImageL } from '../models/Image'
+import { Maybe } from 'src/utils/types'
 
 /** script exeuction instance */
 export class Runtime {
@@ -48,7 +49,8 @@ export class Runtime {
     actions: any
     AUTO = auto
     run = async () => {
-        const actionL: ActionL = this.step.action.itemOrCrash
+        const actionL = this.step.action.item
+        if (actionL == null) return
         const action = globalActionFnCache.get(actionL)
         const start = Date.now()
         const formResult = this.step.data.value
@@ -264,14 +266,19 @@ export class Runtime {
     }
 
     private uploadUIntArrToComfy = async (bytes: Uint8Array): Promise<ComfyUploadImageResult> => {
-        const uploadURL = this.st.getServerHostHTTP() + '/upload/image'
-        const form = new FormData()
-        form.append('image', Buffer.from(bytes), { filename: 'upload.png' })
-        const resp = await fetch(uploadURL, { method: 'POST', headers: form.getHeaders(), body: form })
-        const result: ComfyUploadImageResult = (await resp.json()) as any
-        console.log({ 'resp.data': result })
-        // this.lastUpload = new CushyImage(this, { filename: result.name, subfolder: '', type: 'output' }).url
-        return result
+        throw new Error('not implemented')
+        // const uploadURL = this.st.getServerHostHTTP() + '/upload/image'
+        // const form = new FormData()
+        // form.append('image', Buffer.from(bytes), { filename: 'upload.png' })
+        // const resp = await fetch(uploadURL, {
+        //     method: 'POST',
+        //     headers: form.getHeaders(),
+        //     body: form,
+        // })
+        // const result: ComfyUploadImageResult = (await resp.json()) as any
+        // console.log({ 'resp.data': result })
+        // // this.lastUpload = new CushyImage(this, { filename: result.name, subfolder: '', type: 'output' }).url
+        // return result
     }
 
     // --------------------
@@ -288,13 +295,14 @@ export class Runtime {
     private _promptCounter = 0
 
     get graph(): GraphL {
-        return this.step.graph.itemOrCrash
+        return this.step.graph.item
     }
 
     private sendPromp = async (): Promise<PromptL> => {
-        const currentJSON = deepCopyNaive(this.graph.jsonForPrompt)
+        const liveGraph = this.graph
+        if (liveGraph == null) throw new Error('no graph')
+        const currentJSON = deepCopyNaive(liveGraph.jsonForPrompt)
         this.step.append({ type: 'prompt', graph: currentJSON })
-
         logger().info('checkpoint:' + JSON.stringify(currentJSON))
         // const step = new PromptExecution(this, currentJSON)
         // this.steps.unshift(step)

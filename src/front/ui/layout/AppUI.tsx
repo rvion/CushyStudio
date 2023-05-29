@@ -1,20 +1,28 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../../FrontStateCtx'
-import { renderMessageFromExtensionAsEmoji } from '../../../types/MessageFromExtensionToWebview'
 import { WorkspaceUI } from '../workspace/WorkspaceUI'
 import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
 import { GalleryHoveredPreviewUI } from '../galleries/GalleryHoveredPreviewUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
 import { AppBarUI } from './AppBarUI'
+import { Button } from 'rsuite'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
-
     const action = st.currentAction
     return (
         <div className='col grow h100'>
             <AppBarUI />
+            <Button
+                onClick={() => {
+                    const fs = window.require('fs')
+                    const out = fs.readFileSync('/Users/loco/dev/CushyStudio/shell/main.js', 'utf-8')
+                    console.log(out)
+                }}
+            >
+                OK
+            </Button>
             <div className='flex flex-grow'>
                 <VerticalGalleryUI />
                 <ScrollablePaneUI className='shrink-0 flex-grow'>
@@ -28,7 +36,6 @@ export const CushyUI = observer(function CushyUI_() {
                     )}
                 </ScrollablePaneUI>
             </div>
-
             {/* {st.showAllMessageReceived ? <DebugMessagesUI /> : null} */}
         </div>
     )

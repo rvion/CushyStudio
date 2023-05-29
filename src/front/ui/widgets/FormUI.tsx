@@ -22,6 +22,7 @@ import { WidgetPlacePoints } from './WidgetPlacePoints'
  */
 export const StepUI = observer(function StepUI_(p: { step: StepL }) {
     const step = p.step
+    console.log({ step })
     const action = step.action.item
     if (action == null) return <>👉 pick an action</>
     const formDef = action.data.form ?? {}

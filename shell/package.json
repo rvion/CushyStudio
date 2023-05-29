@@ -1,7 +1,6 @@
 {
-    "name": "cushystudio",
+    "name": "cushystudio-shell",
     "displayName": "[ALPHA] Cushy Studio",
-    "type": "module",
     "author": {
         "name": "rvion",
         "url": "https://github.com/rvion/CushyStudio",
@@ -147,7 +146,6 @@
         "decl:list": "tsc -p tsconfig.decl.json --listFiles --noEmit | grep /Users/loco/dev/CushyStudio/src"
     },
     "dependencies": {
-        "@electron/remote": "^2.0.9",
         "@rsuite/icons": "1.0.2",
         "@syncedstore/core": "^0.5.1",
         "@types/express": "^4.17.17",

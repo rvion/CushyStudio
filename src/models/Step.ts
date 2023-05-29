@@ -28,7 +28,7 @@ export type StepT = {
     /** action input value */
     value?: Maybe<any>
     /** each evaluated step should have a resulting graph */
-    graphID?: GraphID
+    graphID?: Maybe<GraphID>
     /** outputs of the evaluated step */
     outputs?: Maybe<StepOutput[]>
 }
@@ -42,7 +42,7 @@ export class StepL {
     }
 
     action = new LiveRefOpt<ActionL>(this, 'actionID', 'actions')
-    graph = new LiveRefOpt<GraphL>(this, 'graphID', 'graphs')
+    graph = new LiveRef<GraphL>(this, 'graphID', 'graphs')
     project = new LiveRef<ProjectL>(this, 'projectID', 'projects')
 
     /** proxy to this.db.schema */
@@ -53,12 +53,12 @@ export class StepL {
     submit = () => {
         if (this.action == null) return
         this.update({ value: this.draft })
-        this.db.steps.create({
-            id: asStepID(nanoid()),
-            projectID: this.data.projectID,
-            actionID: this.action.id,
-            parent: this.id,
-        })
+        // this.db.steps.create({
+        //     id: asStepID(nanoid()),
+        //     projectID: this.data.projectID,
+        //     actionID: this.action.id,
+        //     parent: this.id,
+        // })
     }
 
     append = (output: StepOutput) => this.update({ outputs: [...(this.data.outputs ?? []), output] })
@@ -84,7 +84,6 @@ export class StepL {
         }
         return current
     }
-
     setAtPath = (path: FormPath, value: any) => {
         if (this.draft == null) this.draft = {}
         console.log(path, value, toJS(this.draft))

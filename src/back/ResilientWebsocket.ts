@@ -1,5 +1,5 @@
 import { makeAutoObservable, reaction } from 'mobx'
-import { CloseEvent, Event, EventListenerOptions, MessageEvent, WebSocket } from 'ws'
+// import { CloseEvent, Event, EventListenerOptions, MessageEvent, WebSocket } from 'ws'
 import { logger } from '../logger/logger'
 import type { Maybe } from '../utils/types'
 

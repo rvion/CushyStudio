@@ -1,4 +1,4 @@
-import chokidar from 'chokidar'
+// import chokidar from 'chokidar'
 import { ServerState } from './ServerState'
 import { CushyFile } from './CushyFile'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
@@ -14,18 +14,18 @@ export class CushyFileWatcher {
         this.filesMap = new Map()
     }
 
-    startWatching(dir: string) {
-        console.log(`👀 Watching ${dir} for ${this.extensions} files`)
-        const watcher = chokidar.watch(dir, {
-            ignored: /(^|[\/\\])\../, // ignore dotfiles
-            persistent: true,
-        })
+    // startWatching(dir: string) {
+    //     console.log(`👀 Watching ${dir} for ${this.extensions} files`)
+    //     const watcher = chokidar.watch(dir, {
+    //         ignored: /(^|[\/\\])\../, // ignore dotfiles
+    //         persistent: true,
+    //     })
 
-        watcher
-            .on('add', (filePath) => this.handleNewFile(filePath))
-            .on('change', (filePath) => this.handleFileChange(filePath))
-            .on('unlink', (filePath) => this.handleFileRemoval(filePath))
-    }
+    //     watcher
+    //         .on('add', (filePath) => this.handleNewFile(filePath))
+    //         .on('change', (filePath) => this.handleFileChange(filePath))
+    //         .on('unlink', (filePath) => this.handleFileRemoval(filePath))
+    // }
 
     private handleNewFile(filePath: string) {
         if (!filePath.endsWith(this.extensions)) return

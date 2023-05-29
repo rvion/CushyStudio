@@ -1,0 +1,23 @@
+const _ = window.require('stream')
+export default _
+export const isDestroyed = _.isDestroyed
+export const isDisturbed = _.isDisturbed
+export const isErrored = _.isErrored
+export const isReadable = _.isReadable
+export const isWritable = _.isWritable
+export const Readable = _.Readable
+export const Writable = _.Writable
+export const Duplex = _.Duplex
+export const Transform = _.Transform
+export const PassThrough = _.PassThrough
+export const pipeline = _.pipeline
+export const addAbortSignal = _.addAbortSignal
+export const finished = _.finished
+export const destroy = _.destroy
+export const compose = _.compose
+export const setDefaultHighWaterMark = _.setDefaultHighWaterMark
+export const getDefaultHighWaterMark = _.getDefaultHighWaterMark
+export const promises = _.promises
+export const Stream = _.Stream
+export const _isUint8Array = _._isUint8Array
+export const _uint8ArrayToBuffer = _._uint8ArrayToBuffer

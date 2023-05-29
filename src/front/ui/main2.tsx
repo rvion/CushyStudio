@@ -1,21 +1,18 @@
-import '../../logger/LoggerFront' // inject a global logger
 import ReactDOM from 'react-dom/client'
+import '../../logger/LoggerFront' // inject a global logger
 
-import './webview.css'
-import 'rsuite/dist/rsuite.min.css'
-import { Button, CustomProvider } from 'rsuite'
-import { LiveDB } from '../../db/LiveDB'
-import { useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import * as W from 'y-websocket'
+import { useMemo } from 'react'
+import { Button, CustomProvider } from 'rsuite'
+import 'rsuite/dist/rsuite.min.css'
+import { LiveDB } from '../../db/LiveDB'
+import './webview.css'
 
 class State {
     db: LiveDB
     constructor() {
-        this.db = new LiveDB({
-            WebsocketProvider: W.WebsocketProvider,
-        })
+        this.db = new LiveDB()
     }
 }
 const Main = observer(() => {

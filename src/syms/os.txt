@@ -1,0 +1,1 @@
+["arch","availableParallelism","cpus","endianness","freemem","getPriority","homedir","hostname","loadavg","networkInterfaces","platform","release","setPriority","tmpdir","totalmem","type","userInfo","uptime","version","machine","constants","EOL","devNull"]

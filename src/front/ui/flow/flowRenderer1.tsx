@@ -1,10 +1,10 @@
-import type { FrontState } from 'src/front/FrontState'
+import type { STATE } from 'src/front/FrontState'
 
 import { MessageFromExtensionToWebview } from '../../../types/MessageFromExtensionToWebview'
 // import { ShowActionStartUI } from './ShowActionStartUI'
 
 export const renderMsgUI = (
-    st: FrontState,
+    st: STATE,
     msg: MessageFromExtensionToWebview,
 ): {
     //

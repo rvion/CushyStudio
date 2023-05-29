@@ -1,27 +1,23 @@
 import type * as W2 from 'y-websocket/'
 
-import * as mobx from 'mobx'
-import * as Y from 'yjs'
-
-import { nanoid } from 'nanoid'
-import { LiveTable } from './LiveTable'
 import { Foo } from '../models/Foo'
+import { LiveTable } from './LiveTable'
 
 // models
-import { ProjectL, ProjectT } from '../models/Project'
-import { StepL, StepT } from '../models/Step'
-import { SchemaL, SchemaT } from '../models/Schema'
 import { ActionL, ActionT } from '../models/Action'
-import { FolderL, FolderT } from '../models/Folder'
-import { ImageL, ImageT } from '../models/Image'
-import { GraphL, GraphT } from '../models/Graph'
-import { PromptL, PromptT } from '../models/Prompt'
 import { ConfigL, ConfigT } from '../models/Config'
+import { FolderL, FolderT } from '../models/Folder'
+import { GraphL, GraphT } from '../models/Graph'
+import { ImageL, ImageT } from '../models/Image'
+import { ProjectL, ProjectT } from '../models/Project'
+import { PromptL, PromptT } from '../models/Prompt'
+import { SchemaL, SchemaT } from '../models/Schema'
+import { StepL, StepT } from '../models/Step'
+import { makeAutoObservable, observable } from 'mobx'
 
 export class LiveDB {
-    wsProvider: W2.WebsocketProvider
-    obs: any = mobx.observable({})
-    doc: Y.Doc
+    // wsProvider: W2.WebsocketProvider
+    obs: any = observable({})
     store
 
     // -----------------------------------
@@ -44,26 +40,13 @@ export class LiveDB {
 
     /* reset the whole DB (🔴?) */
     reset = () => {
-        Y.transact(this.doc, () => {
-            for (const k in this.store) {
-                const store: LiveTable<any, any> = (this.store as any)[k]
-                store.clear()
-            }
-        })
+        for (const k in this.store) {
+            const store: LiveTable<any, any> = (this.store as any)[k]
+            store.clear()
+        }
     }
 
-    constructor(p: {
-        //
-        WebsocketProvider: typeof W2.WebsocketProvider
-        WebSocketPolyfill?: any
-    }) {
-        console.log('creating db', nanoid())
-        this.doc = new Y.Doc({ autoLoad: true })
-        this.wsProvider = new p.WebsocketProvider('ws://localhost:1234', 'test2', this.doc, {
-            WebSocketPolyfill: p.WebSocketPolyfill,
-            connect: true,
-        })
-        this.debug()
+    constructor() {
         this.store = {
             config: new LiveTable<ConfigT, ConfigL>(this, 'config', ConfigL),
             schema: new LiveTable<SchemaT, SchemaL>(this, 'schema', SchemaL),
@@ -80,13 +63,6 @@ export class LiveDB {
             prompts: new LiveTable<PromptT, PromptL>(this, 'prompts', PromptL),
             graphs: new LiveTable<GraphT, GraphL>(this, 'graphs', GraphL),
         }
-    }
-
-    disconnect = () => this.wsProvider.disconnect()
-    connect = () => this.wsProvider.connect()
-    debug = () => {
-        this.wsProvider.on('status', (event: any) => console.log(`🐙`, event.status))
-        this.wsProvider.on('connected', (event: any) => console.log(`🐙`, event.status))
-        this.wsProvider.on('sync', (event: any) => console.log(`🐙 sync:`, event))
+        makeAutoObservable(this)
     }
 }

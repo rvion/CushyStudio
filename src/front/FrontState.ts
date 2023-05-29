@@ -1,20 +1,18 @@
-import type { ActionID, ActionT } from 'src/models/Action'
 import type { ImageID, ImageT } from 'src/models/Image'
 import type { ComfyStatus } from '../types/ComfyWsApi'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
+import { startServerState } from '../back/main'
 import { LiveDB } from '../db/LiveDB'
 import { GraphL } from '../models/Graph'
-import { FromExtension_CushyStatus, MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
-import { LightBoxState } from './ui/LightBox'
-import { Maybe } from '../utils/types'
-import { FlowID } from './FlowID'
-import { UIAction } from './UIAction'
-import * as W from 'y-websocket'
-import { SchemaL } from '../models/Schema'
 import { ProjectL, asProjectID } from '../models/Project'
+import { SchemaL } from '../models/Schema'
 import { asStepID } from '../models/Step'
+import { FromExtension_CushyStatus, MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
+import { Maybe } from '../utils/types'
+import { UIAction } from './UIAction'
+import { LightBoxState } from './ui/LightBox'
 
 export type MsgGroup = {
     groupType: string
@@ -23,12 +21,13 @@ export type MsgGroup = {
     wrap: boolean
 }
 
-export class FrontState {
+export class STATE {
     uid = nanoid()
     hovered: Maybe<ImageT> = null
     lightBox = new LightBoxState(() => this.images, true)
 
-    startProject = (flowID?: FlowID): ProjectL => {
+    serverState = startServerState()
+    startProject = (): ProjectL => {
         const projectID = asProjectID(nanoid())
         const stepID = asStepID(nanoid())
         const step = this.db.steps.create({ id: stepID, projectID: projectID })
@@ -77,9 +76,7 @@ export class FrontState {
     get imageReversed() {
         return this.images.slice().reverse()
     }
-    db = new LiveDB({
-        WebsocketProvider: W.WebsocketProvider,
-    })
+    db = new LiveDB()
     get schema(): SchemaL {
         return this.db.schema
     }

@@ -1,10 +1,10 @@
-import type { FrontState } from './FrontState'
+import type { STATE } from './FrontState'
 
 import React from 'react'
 
-export const stContext = React.createContext<FrontState | null>(null)
+export const stContext = React.createContext<STATE | null>(null)
 
-export const useSt = (): FrontState => {
+export const useSt = (): STATE => {
     const st = React.useContext(stContext)
     if (st == null) throw new Error('stContext not provided')
     return st

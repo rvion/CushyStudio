@@ -1,6 +1,5 @@
 import type { EmbeddingName } from '../models/Schema'
 import type { ComfySchemaJSON } from '../types/ComfySchemaJSON'
-import type { FlowExecutionStep } from '../types/FlowExecutionStep'
 import type { Maybe } from '../utils/types'
 
 import { LiveDB } from '../db/LiveDB'
@@ -8,15 +7,13 @@ import { asAbsolutePath } from '../utils/fs/pathUtils'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import { createRequire } from 'module'
-import fetch from 'node-fetch'
+// import fetch from 'node-fetch'
 import { join, relative } from 'path'
 import { PayloadID } from 'src/core/PayloadID'
-import * as WS from 'ws'
-import { PromptL } from '../models/Prompt'
-import { SchemaL } from '../models/Schema'
 import { logger } from '../logger/logger'
 import { ActionID, ActionL } from '../models/Action'
+import { PromptL } from '../models/Prompt'
+import { SchemaL } from '../models/Schema'
 import { ComfyStatus, WsMsg } from '../types/ComfyWsApi'
 import { MessageFromExtensionToWebview_ } from '../types/MessageFromExtensionToWebview'
 import { sdkStubDeps } from '../typings/sdkStubDeps'
@@ -32,10 +29,6 @@ import { CushyFileWatcher } from './CushyFileWatcher'
 import { ResilientWebSocketClient } from './ResilientWebsocket'
 import { Runtime } from './Runtime'
 import { CushyServer } from './server'
-
-const require = createRequire(import.meta.url)
-const WebSocketPolyfill = require('ws')
-const W = require('y-websocket')
 
 export type CSCriticalError = { title: string; help: string }
 
@@ -144,10 +137,7 @@ export class ServerState {
     configWatcher = new ConfigFileWatcher()
     codePrettier: CodePrettier
     server!: CushyServer
-    db = new LiveDB({
-        WebsocketProvider: W.WebsocketProvider,
-        WebSocketPolyfill: WebSocketPolyfill.WebSocket,
-    })
+    db = new LiveDB()
 
     constructor(
         /** path of the workspace */
@@ -187,7 +177,7 @@ export class ServerState {
         this.ws = this.initWebsocket()
         this.autoDiscoverEveryWorkflow()
         makeAutoObservable(this)
-        this.configWatcher.startWatching(this.resolveFromRoot(asRelativePath('cushyconfig.json')))
+        // this.configWatcher.startWatching(this.resolveFromRoot(asRelativePath('cushyconfig.json')))
     }
 
     createTSConfigIfMissing = () => {
@@ -244,7 +234,7 @@ export class ServerState {
 
     tsFilesMap = new CushyFileWatcher(this)
     autoDiscoverEveryWorkflow = () => {
-        this.tsFilesMap.startWatching(join(this.rootPath))
+        // this.tsFilesMap.startWatching(join(this.rootPath))
     }
 
     /**
@@ -303,7 +293,7 @@ export class ServerState {
     //     })
     // }
 
-    onMessage = (e: WS.MessageEvent) => {
+    onMessage = (e: MessageEvent) => {
         logger().info(`🧦 received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 

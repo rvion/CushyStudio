@@ -1,5 +1,5 @@
 import fs from 'fs'
-import chokidar from 'chokidar'
+// import chokidar from 'chokidar'
 
 export class ConfigFileWatcher {
     jsonContent: {
@@ -9,17 +9,17 @@ export class ConfigFileWatcher {
 
     constructor() {}
 
-    startWatching(filePath: string) {
-        const watcher = chokidar.watch(filePath, {
-            ignored: /(^|[\/\\])\../, // ignore dotfiles
-            persistent: true,
-        })
+    // startWatching(filePath: string) {
+    //     const watcher = chokidar.watch(filePath, {
+    //         ignored: /(^|[\/\\])\../, // ignore dotfiles
+    //         persistent: true,
+    //     })
 
-        watcher
-            .on('add', (filePath) => this.handleFileChange(filePath))
-            .on('change', (filePath) => this.handleFileChange(filePath))
-            .on('unlink', (filePath) => this.handleFileRemoval(filePath))
-    }
+    //     watcher
+    //         .on('add', (filePath) => this.handleFileChange(filePath))
+    //         .on('change', (filePath) => this.handleFileChange(filePath))
+    //         .on('unlink', (filePath) => this.handleFileRemoval(filePath))
+    // }
 
     private handleFileChange(filePath: string) {
         fs.readFile(filePath, 'utf8', (err, data) => {
