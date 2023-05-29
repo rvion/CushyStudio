@@ -53,12 +53,12 @@ export class StepL {
     submit = () => {
         if (this.action == null) return
         this.update({ value: this.draft })
-        // this.db.steps.create({
-        //     id: asStepID(nanoid()),
-        //     projectID: this.data.projectID,
-        //     actionID: this.action.id,
-        //     parent: this.id,
-        // })
+        this.db.steps.create({
+            id: asStepID(nanoid()),
+            projectID: this.data.projectID,
+            actionID: this.action.id,
+            parent: this.id,
+        })
     }
 
     append = (output: StepOutput) => this.update({ outputs: [...(this.data.outputs ?? []), output] })

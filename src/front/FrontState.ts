@@ -18,7 +18,6 @@ import { ActionID, ActionL } from '../models/Action'
 import { PromptL } from '../models/Prompt'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { join } from 'pathe'
-import { ConfigFileWatcher } from '../back/ConfigWatcher'
 import { CodePrettier } from '../utils/CodeFormatter'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'fs'
@@ -101,7 +100,6 @@ export class STATE {
     knownFiles = new Map<AbsolutePath, CushyFile>()
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
     resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
-    configWatcher = new ConfigFileWatcher()
     codePrettier: CodePrettier
 
     startProject = (): ProjectL => {
@@ -211,15 +209,15 @@ export class STATE {
 
     getServerHostHTTP(): string {
         return (
-            this.configWatcher.jsonContent['cushystudio.serverHostHTTP'] ??
-            //
+            // this.configWatcher.jsonContent['cushystudio.serverHostHTTP'] ??
+            //,
             'http://192.168.1.19:8188'
             // 'http://localhost:8188' //
         )
     }
     getWSUrl = (): string => {
         return (
-            this.configWatcher.jsonContent['cushystudio.serverWSEndoint'] ??
+            // this.configWatcher.jsonContent['cushystudio.serverWSEndoint'] ??
             //
             `ws://192.168.1.19:8188/ws`
             // `ws://localhost:8188/ws`
