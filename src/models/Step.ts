@@ -10,6 +10,7 @@ import { toJS } from 'mobx'
 import { nanoid } from 'nanoid'
 import { LiveRef } from '../db/LiveRef'
 import { LiveRefOpt } from '../db/LiveRefOpt'
+import { Runtime } from '../back/Runtime'
 
 export type FormPath = (string | number)[]
 
@@ -54,6 +55,8 @@ export class StepL {
     submit = () => {
         if (this.action == null) return
         this.update({ value: this.draft })
+        const runtime = new Runtime(this)
+        // this.st.run
         this.db.steps.create({
             id: asStepID(nanoid()),
             projectID: this.data.projectID,

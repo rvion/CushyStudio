@@ -1,1 +1,0 @@
-["isDestroyed","isDisturbed","isErrored","isReadable","isWritable","Readable","Writable","Duplex","Transform","PassThrough","pipeline","addAbortSignal","finished","destroy","compose","setDefaultHighWaterMark","getDefaultHighWaterMark","promises","Stream","_isUint8Array","_uint8ArrayToBuffer"]

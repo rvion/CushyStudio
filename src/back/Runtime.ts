@@ -2,16 +2,15 @@ import type { LATER } from 'LATER'
 import type { Printable } from '../core/Printable'
 
 // import FormData from 'form-data'
-import { marked } from 'marked'
 // import fetch from 'node-fetch'
 import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import { readFileSync, writeFileSync } from 'fs'
-import { StepL } from '../models/Step'
+import { nanoid } from 'nanoid'
+import { STATE } from 'src/front/state'
 import { Requestable } from '../controls/Requestable'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
-import { PromptL, asPromptID } from '../models/Prompt'
 import { FormBuilder, InfoAnswer, InfoRequestFn } from '../controls/askv2'
 import { runAutolayout } from '../core/AutolayoutV2'
 import { convertFlowToLiteGraphJSON } from '../core/LiteGraph'
@@ -19,26 +18,24 @@ import { auto } from '../core/autoValue'
 import { globalActionFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
 import { logger } from '../logger/logger'
-import { ActionL } from '../models/Action'
+import { GraphL, asGraphID } from '../models/Graph'
+import { ImageL } from '../models/Image'
+import { PromptL, asPromptID } from '../models/Prompt'
+import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../types/ComfyWsApi'
 import { deepCopyNaive } from '../utils/ComfyUtils'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
-import { GraphL, asGraphID } from '../models/Graph'
-import { nanoid } from 'nanoid'
-import { ImageL } from '../models/Image'
-import { Maybe } from 'src/utils/types'
-import { STATE } from 'src/front/FrontState'
 
 /** script exeuction instance */
 export class Runtime {
-    constructor(
-        public st: STATE /** unique run id, gener */, // public fileAbsPath: AbsolutePath, // public opts?: { mock?: boolean }, // public uid: FlowID,
-        public step: StepL,
-    ) {
-        this.folder = this.st.outputFolderPath // output.resolve(relPath)
+    st: STATE
+
+    constructor(public step: StepL) {
+        this.st = step.st
+        this.folder = step.st.outputFolderPath // output.resolve(relPath)
         this.nodes = new NodeBuilder(this)
         // this.graph = st.db //new GraphL(this.st.schema)
         // this.cyto = new Cyto(this.graph) // 🔴🔴

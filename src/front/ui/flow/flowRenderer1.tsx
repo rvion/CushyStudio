@@ -1,4 +1,4 @@
-import type { STATE } from 'src/front/FrontState'
+import type { STATE } from 'src/front/state'
 
 import { MessageFromExtensionToWebview } from '../../../types/MessageFromExtensionToWebview'
 // import { ShowActionStartUI } from './ShowActionStartUI'

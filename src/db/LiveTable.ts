@@ -5,6 +5,7 @@ import type { TableName } from './LiveStore'
 
 import * as mobx from 'mobx'
 import { MERGE_PROTOTYPES } from './LiveHelpers'
+import { STATE } from 'src/front/state'
 
 export interface LiveEntityClass<T extends { id: string }, L> {
     new (...args: any[]): LiveInstance<T, L> & L
@@ -37,6 +38,9 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
             /** pointer to the liveDB */
             db!: LiveDB
 
+            /** pointer to the global state */
+            st!: STATE
+
             /** parent table */
             table!: LiveTable<T, any>
 
@@ -66,6 +70,7 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
 
             init(table: LiveTable<T, L>, data: T) {
                 this.db = table.db
+                this.st = table.db.st
                 this.table = table
                 this.data = data
                 this.onCreate?.(data)

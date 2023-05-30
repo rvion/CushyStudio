@@ -5,7 +5,7 @@ import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { TEdge, toposort } from '../utils/toposort'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { logger } from '../logger/logger'
-import { STATE } from 'src/front/FrontState'
+import { STATE } from 'src/front/state'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = { nodeName: string; inputName: string; valueStr: string }

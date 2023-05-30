@@ -1,6 +1,6 @@
 import { readdirSync, statSync } from 'fs'
 import { join } from 'path'
-import { STATE } from 'src/front/FrontState'
+import { STATE } from 'src/front/state'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { CushyFile } from './CushyFile'
 

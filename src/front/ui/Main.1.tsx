@@ -1,7 +1,7 @@
 import { CushyUI } from './layout/AppUI'
 import { CustomProvider } from 'rsuite'
 import { useMemo } from 'react'
-import { STATE } from '../FrontState'
+import { STATE } from '../state'
 import { stContext } from '../FrontStateCtx'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { DndProvider } from 'react-dnd'

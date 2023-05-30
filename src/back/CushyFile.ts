@@ -6,7 +6,7 @@ import { readFileSync } from 'fs'
 import { FormBuilder } from '../controls/askv2'
 import { transpileCode } from './transpiler'
 import { globalActionFnCache } from '../core/globalActionFnCache'
-import { STATE } from 'src/front/FrontState'
+import { STATE } from 'src/front/state'
 
 const formBuilder = new FormBuilder()
 

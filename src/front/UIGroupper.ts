@@ -1,4 +1,4 @@
-import type { STATE } from './FrontState'
+import type { STATE } from './state'
 import type { MsgGroup } from './CSCriticalError'
 import type { MessageFromExtensionToWebview } from 'src/types/MessageFromExtensionToWebview'
 

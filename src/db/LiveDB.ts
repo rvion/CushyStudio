@@ -1,4 +1,4 @@
-import type { STATE } from '../front/FrontState'
+import type { STATE } from '../front/state'
 import type { Maybe } from '../utils/types'
 
 import { makeAutoObservable } from 'mobx'

@@ -2,7 +2,7 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo } from 'react'
 import { Button } from 'rsuite'
-import { STATE } from '../../FrontState'
+import { STATE } from '../../state'
 import { useSt } from '../../FrontStateCtx'
 
 const getLayers = (): any => {

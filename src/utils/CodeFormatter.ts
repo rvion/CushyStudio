@@ -4,7 +4,7 @@ import { existsSync, readFileSync } from 'fs'
 import { asRelativePath } from './fs/pathUtils'
 
 import parserTypeScript from 'prettier/parser-typescript'
-import { STATE } from 'src/front/FrontState'
+import { STATE } from 'src/front/state'
 // import prettier from 'prettier/standalone'
 
 export class CodePrettier {

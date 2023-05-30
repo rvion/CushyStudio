@@ -1,4 +1,4 @@
-import type { STATE } from './FrontState'
+import type { STATE } from './state'
 
 import React from 'react'
 

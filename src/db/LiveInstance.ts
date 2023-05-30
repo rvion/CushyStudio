@@ -1,8 +1,10 @@
-import { Maybe } from 'src/utils/types'
-import { LiveDB } from './LiveDB'
-import { LiveTable } from './LiveTable'
+import type { Maybe } from 'src/utils/types'
+import type { LiveDB } from './LiveDB'
+import type { LiveTable } from './LiveTable'
+import type { STATE } from 'src/front/state'
 
 export interface LiveInstance<T extends { id: string }, L> {
+    st: STATE
     db: LiveDB
     table: LiveTable<T, any>
     data: T

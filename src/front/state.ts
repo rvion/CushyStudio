@@ -48,7 +48,7 @@ export class STATE {
     comfySessionId = 'temp' /** send by ComfyUI server */
     activePrompt: Maybe<PromptL> = null
 
-    runs: Runtime[] = []
+    // runs: Runtime[] = []
 
     // paths
     cacheFolderPath: AbsolutePath

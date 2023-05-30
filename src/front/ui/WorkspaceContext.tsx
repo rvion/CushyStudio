@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import { STATE } from '../FrontState'
+import { STATE } from '../state'
 
 export const stContext = createContext<STATE | null>(null)
 
