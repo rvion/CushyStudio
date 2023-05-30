@@ -16,6 +16,10 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
     store: Indexed<T>
     toJSON = (): Indexed<T> => this.store
 
+    get size() {
+        return Object.keys(this.store).length
+    }
+
     constructor(
         //
         public db: LiveDB,
@@ -161,7 +165,7 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
             prev.update(data)
             return prev
         } else {
-            const instance = this._createInstance(data)
+            const instance = this.create(data)
             return instance
         }
     }

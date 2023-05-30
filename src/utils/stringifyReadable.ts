@@ -7,8 +7,10 @@ export function readableStringify(obj: any, maxLevel = 3, level = 0) {
     for (let i = 0; i < keys.length; i++) {
         const key = keys[i]
         const value = (obj as any)[key]
+        if (value === undefined) continue
         const valueType = typeof value
 
+        if (i > 0) result += ','
         if (Array.isArray(value)) {
             result += `${indent}  "${key}": ${JSON.stringify(value)}`
         } else if (valueType === 'object' && value !== null) {
@@ -17,11 +19,6 @@ export function readableStringify(obj: any, maxLevel = 3, level = 0) {
             const formattedValue = valueType === 'string' ? `"${value}"` : value
             result += `${indent}  "${key}": ${formattedValue}`
         }
-
-        if (i < keys.length - 1) {
-            result += ','
-        }
-
         result += '\n'
     }
 
