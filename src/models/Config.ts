@@ -1,11 +1,11 @@
 import type { Tagged } from 'src/utils/types'
 import type { LiveInstance } from '../db/LiveInstance'
 
-export type ConfigID = Tagged<string, 'ConfigID'>
-export const asConfigUID = (s: string): ConfigID => s as any
+// export type ConfigID = Tagged<string, 'ConfigID'>
+// export const asConfigUID = (s: string): ConfigID => s as any
 
 export type ConfigT = {
-    id: ConfigID
+    id: 'main-config'
     serverHostHTTP?: string
     serverWsEndpoint?: string
 }

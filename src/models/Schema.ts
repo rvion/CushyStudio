@@ -26,7 +26,7 @@ export type NodeOutputExt = { type: string; name: string; isPrimitive: boolean }
 export type EnumValue = string | boolean | number
 
 export type SchemaT = {
-    id: 'schema'
+    id: 'main-schema'
     spec: ComfySchemaJSON
     embeddings: EmbeddingName[]
 }

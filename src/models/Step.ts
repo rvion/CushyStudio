@@ -8,7 +8,8 @@ import type { FromExtension_Print, FromExtension_Prompt } from 'src/types/Messag
 
 import { toJS } from 'mobx'
 import { nanoid } from 'nanoid'
-import { LiveRef, LiveRefOpt } from '../db/LiveRef'
+import { LiveRef } from '../db/LiveRef'
+import { LiveRefOpt } from '../db/LiveRefOpt'
 
 export type FormPath = (string | number)[]
 

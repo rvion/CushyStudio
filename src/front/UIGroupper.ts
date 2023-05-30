@@ -1,4 +1,5 @@
-import type { STATE, MsgGroup } from './FrontState'
+import type { STATE } from './FrontState'
+import type { MsgGroup } from './CSCriticalError'
 import type { MessageFromExtensionToWebview } from 'src/types/MessageFromExtensionToWebview'
 
 import { renderMsgUI } from './ui/flow/flowRenderer1'

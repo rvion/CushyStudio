@@ -1,66 +1,103 @@
-import { Foo } from '../models/Foo'
+import type { STATE } from '../front/FrontState'
+import type { Maybe } from '../utils/types'
+
+import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
 
 // models
 import { ActionL, ActionT } from '../models/Action'
 import { ConfigL, ConfigT } from '../models/Config'
 import { FolderL, FolderT } from '../models/Folder'
+import { Foo } from '../models/Foo'
 import { GraphL, GraphT } from '../models/Graph'
 import { ImageL, ImageT } from '../models/Image'
 import { ProjectL, ProjectT } from '../models/Project'
 import { PromptL, PromptT } from '../models/Prompt'
 import { SchemaL, SchemaT } from '../models/Schema'
 import { StepL, StepT } from '../models/Step'
-import { makeAutoObservable, observable } from 'mobx'
+import { asRelativePath } from '../utils/fs/pathUtils'
+import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
+import { exists, existsSync, readFileSync, writeFileSync } from 'fs'
+
+export type Indexed<T> = { [id: string]: T }
+
+export type STORE = {
+    configs?: Indexed<ConfigT>
+    schemas?: Indexed<SchemaT>
+    statuses?: Indexed<{ id: string }>
+    // ???
+    msgs?: Indexed<{ id: string }>
+    // global
+    actions?: Indexed<ActionT>
+    folders?: Indexed<FolderT>
+    images?: Indexed<ImageT>
+    // project
+    projects?: Indexed<ProjectT>
+    steps?: Indexed<StepT>
+    prompts?: Indexed<PromptT>
+    graphs?: Indexed<GraphT>
+}
 
 export class LiveDB {
-    // wsProvider: W2.WebsocketProvider
-    obs: any = observable({})
-    store
+    // live tables are expected to self register in this array
+    // leave this lien at the top of the file
+    _tables: LiveTable<any, any>[] = []
 
-    // -----------------------------------
+    relPath: RelativePath
+    absPath: AbsolutePath
+
+    constructor(public st: STATE) {
+        this.relPath = asRelativePath('./cushy.db')
+        console.log('relpath:', this.relPath)
+        this.absPath = this.st.resolveFromRoot(this.relPath)
+        console.log('abspath:', this.absPath)
+        const exists = existsSync(this.absPath)
+        if (exists) this.STORE = JSON.parse(readFileSync(this.absPath, 'utf8'))
+
+        makeAutoObservable(this)
+    }
+
+    STORE: STORE = {}
+    toJSON = (): STORE => this.STORE
+
+    saveTimeout: Maybe<NodeJS.Timeout> = null
+    save = () => {
+        if (this.saveTimeout == null) return
+
+        this.saveTimeout = setTimeout(() => {
+            const data = this.STORE
+            console.log('saving', data)
+            writeFileSync(this.absPath, JSON.stringify(data))
+            this.saveTimeout = null
+        })
+    }
+
+    // tables ---------------------------------------------------------
+    configs = new LiveTable<ConfigT, ConfigL>(this, 'configs', ConfigL)
+    schemas = new LiveTable<SchemaT, SchemaL>(this, 'schemas', SchemaL)
+    statuses = new LiveTable<{ id: string }, Foo>(this, 'status', Foo)
+    // ???
+    msgs = new LiveTable<{ id: string }, Foo>(this, 'msgs', Foo)
+    // global
+    actions = new LiveTable<ActionT, ActionL>(this, 'actions', ActionL)
+    folders = new LiveTable<FolderT, FolderL>(this, 'folders', FolderL)
+    images = new LiveTable<ImageT, ImageL>(this, 'images', ImageL)
+    // project
+    projects = new LiveTable<ProjectT, ProjectL>(this, 'projects', ProjectL)
+    steps = new LiveTable<StepT, StepL>(this, 'steps', StepL)
+    prompts = new LiveTable<PromptT, PromptL>(this, 'prompts', PromptL)
+    graphs = new LiveTable<GraphT, GraphL>(this, 'graphs', GraphL)
+
+    // misc ---------------------------------------------------------
     get config(): ConfigL {
-        return this.store.config.getOrCreate('config', () => ({ id: 'config' }))
+        return this.configs.getOrCreate('main-config', () => ({ id: 'main-config' }))
     }
     get schema(): SchemaL {
-        return this.store.schema.getOrCreate('schema', () => ({ id: 'schema', embeddings: [], spec: {} }))
+        return this.schemas.getOrCreate('main-schema', () => ({ id: 'main-schema', embeddings: [], spec: {} }))
     }
-    get images() {return this.store.images} // prettier-ignore
-    get folders() {return this.store.folders} // prettier-ignore
-    get msgs() {return this.store.msgs} // prettier-ignore
-    get actions():LiveTable< ActionT,ActionL> {return this.store.actions} // prettier-ignore
-    get prompts():LiveTable< PromptT,PromptL> {return this.store.prompts} // prettier-ignore
-    get projects() {return this.store.projects} // prettier-ignore
-    get graphs() {return this.store.graphs} // prettier-ignore
-    get steps():LiveTable< StepT,StepL> {return this.store.steps} // prettier-ignore
-    get status() {return this.store.status} // prettier-ignore
-    // -----------------------------------
 
     /* reset the whole DB (🔴?) */
     reset = () => {
-        for (const k in this.store) {
-            const store: LiveTable<any, any> = (this.store as any)[k]
-            store.clear()
-        }
-    }
-
-    constructor() {
-        this.store = {
-            config: new LiveTable<ConfigT, ConfigL>(this, 'config', ConfigL),
-            schema: new LiveTable<SchemaT, SchemaL>(this, 'schema', SchemaL),
-            status: new LiveTable<{ id: string }, Foo>(this, 'status', Foo),
-            // ???
-            msgs: new LiveTable<{ id: string }, Foo>(this, 'msgs', Foo),
-            // global
-            actions: new LiveTable<ActionT, ActionL>(this, 'actions', ActionL),
-            folders: new LiveTable<FolderT, FolderL>(this, 'folders', FolderL),
-            images: new LiveTable<ImageT, ImageL>(this, 'images', ImageL),
-            // project
-            projects: new LiveTable<ProjectT, ProjectL>(this, 'projects', ProjectL),
-            steps: new LiveTable<StepT, StepL>(this, 'steps', StepL),
-            prompts: new LiveTable<PromptT, PromptL>(this, 'prompts', PromptL),
-            graphs: new LiveTable<GraphT, GraphL>(this, 'graphs', GraphL),
-        }
-        makeAutoObservable(this)
+        for (const table of this._tables) table.clear()
     }
 }

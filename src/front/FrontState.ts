@@ -1,93 +1,56 @@
+import type { Maybe } from '../utils/types'
+import type { CSCriticalError } from './CSCriticalError'
 import type { ImageID, ImageT } from 'src/models/Image'
 import type { ComfyStatus, WsMsg } from '../types/ComfyWsApi'
 
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
-import { LiveDB } from '../db/LiveDB'
-import { GraphL } from '../models/Graph'
-import { ProjectL, asProjectID } from '../models/Project'
-import { EmbeddingName, SchemaL } from '../models/Schema'
-import { asStepID } from '../models/Step'
-import { FromExtension_CushyStatus, MessageFromExtensionToWebview } from '../types/MessageFromExtensionToWebview'
-import { Maybe } from '../utils/types'
-import { UIAction } from './UIAction'
-import { LightBoxState } from './ui/LightBox'
-import { CushyFile } from '../back/CushyFile'
-import { Runtime } from '../back/Runtime'
-import { ActionID, ActionL } from '../models/Action'
-import { PromptL } from '../models/Prompt'
-import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { join } from 'pathe'
-import { CodePrettier } from '../utils/CodeFormatter'
-import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { mkdirSync, writeFileSync, existsSync, readFileSync } from 'fs'
+import { CushyFile } from '../back/CushyFile'
 import { CushyFileWatcher } from '../back/CushyFileWatcher'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
+import { Runtime } from '../back/Runtime'
+import { LiveDB } from '../db/LiveDB'
+import { ActionID, ActionL } from '../models/Action'
+import { GraphL } from '../models/Graph'
+import { ProjectL, asProjectID } from '../models/Project'
+import { PromptL } from '../models/Prompt'
+import { EmbeddingName, SchemaL } from '../models/Schema'
+import { asStepID } from '../models/Step'
 import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
+import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebview'
 import { sdkStubDeps } from '../typings/sdkStubDeps'
 import { sdkTemplate } from '../typings/sdkTemplate'
+import { CodePrettier } from '../utils/CodeFormatter'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
+import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
-
-export type CSCriticalError = { title: string; help: string }
-export type MsgGroup = {
-    groupType: string
-    messages: MessageFromExtensionToWebview[]
-    uis: JSX.Element[]
-    wrap: boolean
-}
+import { UIAction } from './UIAction'
+import { LightBoxState } from './ui/LightBox'
 
 export class STATE {
+    //file utils that need to be setup first because
+    // other stuff depends on them
+    resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
+    resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
+    codePrettier: CodePrettier
+
+    // front uid to fix hot reload
     uid = nanoid()
+
+    // core data
+    db: LiveDB
+
+    // main state api
     schema: SchemaL
-    hovered: Maybe<ImageT> = null
-    lightBox = new LightBoxState(() => this.images, true)
-
-    /** write a binary file to given absPath */
-    writeBinaryFile(absPath: AbsolutePath, content: Buffer) {
-        // ensure folder exists
-        const folder = join(absPath, '..')
-        mkdirSync(folder, { recursive: true })
-        writeFileSync(absPath, content)
-    }
-
-    /** read text file, optionally provide a default */
-    readJSON = <T extends any>(absPath: AbsolutePath, def?: T): T => {
-        console.log(absPath)
-        const exists = existsSync(absPath)
-        if (!exists) {
-            if (def != null) return def
-            throw new Error(`file does not exist ${absPath}`)
-        }
-        const str = readFileSync(absPath, 'utf8')
-        const json = JSON.parse(str)
-        return json
-    }
-
-    /** read text file, optionally provide a default */
-    readTextFile = (absPath: AbsolutePath, def: string): string => {
-        const exists = existsSync(absPath)
-        if (!exists) return def
-        const x = readFileSync(absPath)
-        const str = x.toString()
-        return str
-    }
-
-    writeTextFile(
-        //
-        absPath: AbsolutePath,
-        content: string,
-        open = false,
-    ) {
-        // ensure folder exists
-        const folder = join(absPath, '..')
-        mkdirSync(folder, { recursive: true })
-        writeFileSync(absPath, content, 'utf-8')
-    }
-
     comfySessionId = 'temp' /** send by ComfyUI server */
     activePrompt: Maybe<PromptL> = null
+
     runs: Runtime[] = []
+
+    // paths
     cacheFolderPath: AbsolutePath
     vscodeSettings: AbsolutePath
     comfyJSONPath: AbsolutePath
@@ -96,11 +59,20 @@ export class STATE {
     cushyTSPath: AbsolutePath
     tsConfigPath: AbsolutePath
     outputFolderPath: AbsolutePath
+
+    // files and actions
     knownActions = new Map<ActionID, ActionL>()
     knownFiles = new Map<AbsolutePath, CushyFile>()
-    resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
-    resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
-    codePrettier: CodePrettier
+
+    // runtime
+    status: ComfyStatus | null = null
+    sid: Maybe<string> = null
+    comfyStatus: Maybe<ComfyStatus> = null
+    cushyStatus: Maybe<FromExtension_CushyStatus> = null
+
+    // ui stuff
+    lightBox = new LightBoxState(() => this.images, true)
+    hovered: Maybe<ImageT> = null
 
     startProject = (): ProjectL => {
         const projectID = asProjectID(nanoid())
@@ -115,16 +87,13 @@ export class STATE {
     flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
     currentAction: UIAction | null = null
-    // msgGroupper = new MessageGroupper(this, () => this.db.msgs)
-
-    // this is the new way
-    // answerInfo = (value: any) => this.sendMessageToExtension({ type: 'answer', value })
 
     gallerySize: number = 256
-    // cushySocket: ResilientSocketToExtension
+
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
+        /** workspace configuration */
         public opts: {
             /**
              * if set, no stub will be generated
@@ -138,6 +107,7 @@ export class STATE {
             /** true in prod, false when running from this local subfolder */
         },
     ) {
+        this.db = new LiveDB(this)
         this.codePrettier = new CodePrettier(this)
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('.cushy/cache'))
         this.vscodeSettings = this.resolve(this.rootPath, asRelativePath('.vscode/settings.json'))
@@ -399,210 +369,241 @@ export class STATE {
         return '🔴'
     }
 
-    status: ComfyStatus | null = null
-
     graph: Maybe<GraphL> = null
-    // schema: Maybe<Schema> = null
     images: ImageT[] = []
     imagesById: Map<ImageID, ImageT> = new Map()
     get imageReversed() {
         return this.images.slice().reverse()
     }
-    db = new LiveDB()
-    // get schema(): SchemaL {
-    //     return this.db.schema
-    // }
-    sid: Maybe<string> = null
-    comfyStatus: Maybe<ComfyStatus> = null
-    cushyStatus: Maybe<FromExtension_CushyStatus> = null
-    // knownActions = new Map<ActionDefinitionID, ActionT>()
-    // get ActionOptionForSelectInput() {
-    //     // return Array.from(this.knownActions.values()) // .map((x) => ({ value: x.id, label: x.name }))
-    // }
-
-    // selectedActionID: Maybe<ActionRef['id']> = null
-
-    // runs: { flowRunId: string; graph: Graph }[]
-    // XXXX = new Map<MessageFromExtensionToWebview['uid'], Graph>()
 
     createFolder = () => {
         this.db.folders.create({ id: nanoid() })
     }
+    // FILESYSTEM UTILS --------------------------------------------------------------------
+    /** write a binary file to given absPath */
+    writeBinaryFile(absPath: AbsolutePath, content: Buffer) {
+        // ensure folder exists
+        const folder = join(absPath, '..')
+        mkdirSync(folder, { recursive: true })
+        writeFileSync(absPath, content)
+    }
 
-    // updateConfig = (values: Partial<CushyDBData>) => {
-    //     Object.assign(this.db.config, values)
-    // }
+    /** read text file, optionally provide a default */
+    readJSON = <T extends any>(absPath: AbsolutePath, def?: T): T => {
+        console.log(absPath)
+        const exists = existsSync(absPath)
+        if (!exists) {
+            if (def != null) return def
+            throw new Error(`file does not exist ${absPath}`)
+        }
+        const str = readFileSync(absPath, 'utf8')
+        const json = JSON.parse(str)
+        return json
+    }
 
-    // moveFile = (ii: ImageT, folderUID: FolderUID) => {
-    //     // 1. index folder in file
-    //     const fileMeta = this.files.getOrThrow()
-    //     if (fileMeta == null) this.db.files[ii.id] = {}
-    //     this.db.files[ii.id]!.folder = folderUID
+    /** read text file, optionally provide a default */
+    readTextFile = (absPath: AbsolutePath, def: string): string => {
+        const exists = existsSync(absPath)
+        if (!exists) return def
+        const x = readFileSync(absPath)
+        const str = x.toString()
+        return str
+    }
 
-    //     // // 2. index file in folder
-    //     // const folderMeta = this.db.folders[folderUID]
-    //     // if (folderMeta == null) this.db.folders[folderUID] = {}
-    //     // if (this.db.folders[folderUID]!.imageUIDs == null) this.db.folders[folderUID]!.imageUIDs = []
-    //     // this.db.folders[folderUID]!.imageUIDs?.push(ii.uid)
-    // }
-    // ---------------------------------------
-
-    // tagFile = (file: string, values: { [key: string]: any }) => {
-    //     const prevMeta = this.db.fileMetadata[file]
-    //     if (prevMeta) Object.assign(prevMeta, values)
-    //     else this.data.fileMetadata[file] = values
-    //     this.scheduleSync()
-    // }
-
-    // recordEvent = (msg: MessageFromExtensionToWebview) => {
-    //     console.log('🔴 recording', msg)
-    //     this.data.msgs.push({ at: Date.now(), msg })
-    //     this.scheduleSync()
-    // }
-
-    // private recordImages = (imgs: ImageInfos[]) => {
-    //     this.images.push(...imgs)
-    //     for (const img of imgs) this.imagesById.set(img.uid, img)
-    // }
-
-    // getOrCreateFlow = (flowID: FlowID): FrontFlow => {
-    //     let flow = this.flows.get(flowID)
-    //     if (flow == null) flow = this.startProject(flowID)
-    //     return flow
-    // }
-
-    /** this is for the UI only; process should be very thin / small */
-    // onMessageFromExtension = (message: MessageFromExtensionToWebview) => {
-    //     // 1. enqueue the message
-    //     const msg: MessageFromExtensionToWebview =
-    //         typeof message === 'string' //
-    //             ? JSON.parse(message)
-    //             : message
-
-    //     // this message must not be logged
-    //     if (msg.type === 'sync-history') {
-    //         this.db.data = msg.history
-    //         for (const msg of this.db.data.msgs) {
-    //             if (!(msg.msg.type === 'images')) continue
-    //             this.recordImages(msg.msg.images)
-    //         }
-    //         // this.db.createFolder()
-    //         // this.db.createFolder()
-    //         return
-    //     }
-
-    //     console.log('💬', msg.type) //, { message })
-
-    //     this.db.data.msgs.push({ at: Date.now(), msg })
-
-    //     // 2. process the info
-    //     if (msg.type === 'action-code') return
-    //     if (msg.type === 'ask') {
-    //         const flow = this.getOrCreateFlow(msg.flowID)
-    //         flow.history.push(msg)
-    //         // flow.pendingAsk.push(msg)
-    //         return
-    //     }
-    //     if (msg.type === 'show-html') {
-    //         if (msg.flowID) {
-    //             const flow = this.getOrCreateFlow(msg.flowID)
-    //             flow.history.push(msg)
-    //         }
-    //         return
-    //     }
-
-    //     if (msg.type === 'print') {
-    //         const flow = this.getOrCreateFlow(msg.flowID)
-    //         flow.history.push(msg)
-    //         return
-    //     }
-    //     if (msg.type === 'action-start') {
-    //         const flow = this.getOrCreateFlow(msg.flowID)
-    //         if (flow.actions.has(msg.executionID)) return console.log(`🔴 error: action already exists`)
-    //         flow.actionStarted(msg)
-    //         flow.history.push(msg)
-    //         return
-    //     }
-
-    //     if (msg.type === 'action-end') {
-    //         const flow = this.getOrCreateFlow(msg.flowID)
-    //         flow.history.push(msg)
-    //         const action = flow.actions.get(msg.executionID)
-    //         if (action == null) return console.log(`🔴 error: no action found`)
-    //         action.done = msg.status
-    //         return
-    //     }
-
-    //     if (msg.type === 'schema') {
-    //         this.schema = new Schema(msg.schema, msg.embeddings)
-    //         return
-    //     }
-
-    //     if (msg.type === 'status') {
-    //         if (msg.data.sid) this.sid = msg.data.sid
-    //         this.comfyStatus = msg.data.status
-    //         return
-    //     }
-    //     if (msg.type === 'execution_cached') return // 🔴
-
-    //     if (msg.type === 'prompt') {
-    //         if (this.schema == null) throw new Error('missing schema')
-    //         this.graph = new Graph(this.schema, msg.graph)
-    //         return
-    //     }
-
-    //     if (msg.type === 'images') {
-    //         if (msg.flowID) {
-    //             const flow = this.getOrCreateFlow(msg.flowID)
-    //             flow.history.push(msg)
-    //         }
-    //         return this.recordImages(msg.images)
-    //     }
-
-    //     if (msg.type === 'ls') {
-    //         console.log(msg)
-    //         let firstKnownActionID = msg.actions[0]?.id
-    //         for (const a of msg.actions) this.knownActions.set(a.id, a)
-    //         // if (this.selectedActionID == null && firstKnownActionID) this.selectedActionID = firstKnownActionID
-    //         return
-    //     }
-
-    //     if (msg.type === 'cushy_status') {
-    //         this.cushyStatus = msg
-    //         return
-    //     }
-
-    //     const graph = this.graph
-    //     if (graph == null) throw new Error('missing graph')
-
-    //     // defer accumulation to ScriptStep_prompt
-    //     if (msg.type === 'progress') {
-    //         console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
-    //         return graph.onProgress(msg)
-    //     }
-
-    //     if (msg.type === 'executing') {
-    //         if (graph == null) throw new Error('missing graph')
-    //         this.XXXX.set(msg.uid, graph)
-    //         if (msg.data.node == null) this.graph = null // done
-    //         console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
-    //         return graph.onExecuting(msg)
-    //     }
-
-    //     if (msg.type === 'executed') {
-    //         console.info(`${msg.type} ${JSON.stringify(msg.data)}`)
-    //         // return graph.onExecuted(msg)
-    //         return
-    //     }
-
-    //     exhaust(msg)
-    // }
-
-    /** Post a message (i.e. send arbitrary data) to the owner of the webview (the extension).
-     * @remarks When running webview code inside a web browser, postMessage will instead log the given message to the console.
-     */
-    // public sendMessageToExtension(message: MessageFromWebviewToExtension) {
-    //     this.cushySocket.send(JSON.stringify(message))
-    //     // else console.log(message)
-    // }
+    writeTextFile(absPath: AbsolutePath, content: string) {
+        // ensure folder exists
+        const folder = join(absPath, '..')
+        mkdirSync(folder, { recursive: true })
+        writeFileSync(absPath, content, 'utf-8')
+    }
 }
+
+// knownActions = new Map<ActionDefinitionID, ActionT>()
+// get ActionOptionForSelectInput() {
+//     // return Array.from(this.knownActions.values()) // .map((x) => ({ value: x.id, label: x.name }))
+// }
+
+// selectedActionID: Maybe<ActionRef['id']> = null
+
+// runs: { flowRunId: string; graph: Graph }[]
+// XXXX = new Map<MessageFromExtensionToWebview['uid'], Graph>()
+
+// updateConfig = (values: Partial<CushyDBData>) => {
+//     Object.assign(this.db.config, values)
+// }
+
+// moveFile = (ii: ImageT, folderUID: FolderUID) => {
+//     // 1. index folder in file
+//     const fileMeta = this.files.getOrThrow()
+//     if (fileMeta == null) this.db.files[ii.id] = {}
+//     this.db.files[ii.id]!.folder = folderUID
+
+//     // // 2. index file in folder
+//     // const folderMeta = this.db.folders[folderUID]
+//     // if (folderMeta == null) this.db.folders[folderUID] = {}
+//     // if (this.db.folders[folderUID]!.imageUIDs == null) this.db.folders[folderUID]!.imageUIDs = []
+//     // this.db.folders[folderUID]!.imageUIDs?.push(ii.uid)
+// }
+// ---------------------------------------
+
+// tagFile = (file: string, values: { [key: string]: any }) => {
+//     const prevMeta = this.db.fileMetadata[file]
+//     if (prevMeta) Object.assign(prevMeta, values)
+//     else this.data.fileMetadata[file] = values
+//     this.scheduleSync()
+// }
+
+// recordEvent = (msg: MessageFromExtensionToWebview) => {
+//     console.log('🔴 recording', msg)
+//     this.data.msgs.push({ at: Date.now(), msg })
+//     this.scheduleSync()
+// }
+
+// private recordImages = (imgs: ImageInfos[]) => {
+//     this.images.push(...imgs)
+//     for (const img of imgs) this.imagesById.set(img.uid, img)
+// }
+
+// getOrCreateFlow = (flowID: FlowID): FrontFlow => {
+//     let flow = this.flows.get(flowID)
+//     if (flow == null) flow = this.startProject(flowID)
+//     return flow
+// }
+
+/** this is for the UI only; process should be very thin / small */
+// onMessageFromExtension = (message: MessageFromExtensionToWebview) => {
+//     // 1. enqueue the message
+//     const msg: MessageFromExtensionToWebview =
+//         typeof message === 'string' //
+//             ? JSON.parse(message)
+//             : message
+
+//     // this message must not be logged
+//     if (msg.type === 'sync-history') {
+//         this.db.data = msg.history
+//         for (const msg of this.db.data.msgs) {
+//             if (!(msg.msg.type === 'images')) continue
+//             this.recordImages(msg.msg.images)
+//         }
+//         // this.db.createFolder()
+//         // this.db.createFolder()
+//         return
+//     }
+
+//     console.log('💬', msg.type) //, { message })
+
+//     this.db.data.msgs.push({ at: Date.now(), msg })
+
+//     // 2. process the info
+//     if (msg.type === 'action-code') return
+//     if (msg.type === 'ask') {
+//         const flow = this.getOrCreateFlow(msg.flowID)
+//         flow.history.push(msg)
+//         // flow.pendingAsk.push(msg)
+//         return
+//     }
+//     if (msg.type === 'show-html') {
+//         if (msg.flowID) {
+//             const flow = this.getOrCreateFlow(msg.flowID)
+//             flow.history.push(msg)
+//         }
+//         return
+//     }
+
+//     if (msg.type === 'print') {
+//         const flow = this.getOrCreateFlow(msg.flowID)
+//         flow.history.push(msg)
+//         return
+//     }
+//     if (msg.type === 'action-start') {
+//         const flow = this.getOrCreateFlow(msg.flowID)
+//         if (flow.actions.has(msg.executionID)) return console.log(`🔴 error: action already exists`)
+//         flow.actionStarted(msg)
+//         flow.history.push(msg)
+//         return
+//     }
+
+//     if (msg.type === 'action-end') {
+//         const flow = this.getOrCreateFlow(msg.flowID)
+//         flow.history.push(msg)
+//         const action = flow.actions.get(msg.executionID)
+//         if (action == null) return console.log(`🔴 error: no action found`)
+//         action.done = msg.status
+//         return
+//     }
+
+//     if (msg.type === 'schema') {
+//         this.schema = new Schema(msg.schema, msg.embeddings)
+//         return
+//     }
+
+//     if (msg.type === 'status') {
+//         if (msg.data.sid) this.sid = msg.data.sid
+//         this.comfyStatus = msg.data.status
+//         return
+//     }
+//     if (msg.type === 'execution_cached') return // 🔴
+
+//     if (msg.type === 'prompt') {
+//         if (this.schema == null) throw new Error('missing schema')
+//         this.graph = new Graph(this.schema, msg.graph)
+//         return
+//     }
+
+//     if (msg.type === 'images') {
+//         if (msg.flowID) {
+//             const flow = this.getOrCreateFlow(msg.flowID)
+//             flow.history.push(msg)
+//         }
+//         return this.recordImages(msg.images)
+//     }
+
+//     if (msg.type === 'ls') {
+//         console.log(msg)
+//         let firstKnownActionID = msg.actions[0]?.id
+//         for (const a of msg.actions) this.knownActions.set(a.id, a)
+//         // if (this.selectedActionID == null && firstKnownActionID) this.selectedActionID = firstKnownActionID
+//         return
+//     }
+
+//     if (msg.type === 'cushy_status') {
+//         this.cushyStatus = msg
+//         return
+//     }
+
+//     const graph = this.graph
+//     if (graph == null) throw new Error('missing graph')
+
+//     // defer accumulation to ScriptStep_prompt
+//     if (msg.type === 'progress') {
+//         console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
+//         return graph.onProgress(msg)
+//     }
+
+//     if (msg.type === 'executing') {
+//         if (graph == null) throw new Error('missing graph')
+//         this.XXXX.set(msg.uid, graph)
+//         if (msg.data.node == null) this.graph = null // done
+//         console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
+//         return graph.onExecuting(msg)
+//     }
+
+//     if (msg.type === 'executed') {
+//         console.info(`${msg.type} ${JSON.stringify(msg.data)}`)
+//         // return graph.onExecuted(msg)
+//         return
+//     }
+
+//     exhaust(msg)
+// }
+
+/** Post a message (i.e. send arbitrary data) to the owner of the webview (the extension).
+ * @remarks When running webview code inside a web browser, postMessage will instead log the given message to the console.
+ */
+
+// public sendMessageToExtension(message: MessageFromWebviewToExtension) {
+//     this.cushySocket.send(JSON.stringify(message))
+//     // else console.log(message)
+// }
+// msgGroupper = new MessageGroupper(this, () => this.db.msgs)
+// answerInfo = (value: any) => this.sendMessageToExtension({ type: 'answer', value })

@@ -1,8 +1,9 @@
+import type { LiveDB } from './LiveDB'
+import type { Maybe } from 'src/utils/types'
+import type { LiveInstance } from './LiveInstance'
+
 import * as mobx from 'mobx'
-import { Maybe } from 'src/utils/types'
-import { LiveDB } from './LiveDB'
 import { MERGE_PROTOTYPES } from './LiveHelpers'
-import { LiveInstance } from './LiveInstance'
 
 export interface LiveEntityClass<T extends { id: string }, L> {
     new (...args: any[]): LiveInstance<T, L> & L
@@ -12,10 +13,11 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
     instances = new Map<string, L>()
     Ktor: LiveEntityClass<T, L>
 
+    /** 🔴 need more */
     delete = (id: string) => {
-        // 🔴 need more
         this.instances.delete(id)
     }
+
     // CTOR ---------------------
     constructor(
         //
@@ -23,28 +25,40 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
         public name: string,
         public InstanceClass: LiveEntityClass<T, L>,
     ) {
+        this.db._tables.push(this)
         mobx.makeObservable(this, { instances: mobx.observable })
 
         const BaseInstanceClass = class implements LiveInstance<T, T> {
+            /** pointer to the liveDB */
             db!: LiveDB
+
+            /** parent table */
             table!: LiveTable<T, any>
+
+            /** instance data */
             data!: T
 
             /** this must be fired after creation and update */
             onCreate?: (data: T) => void
+
             onUpdate?: (prev: Maybe<T>, next: T) => void
+
             get id() { return this.data.id } // prettier-ignore
+
             update(t: Partial<T>) {
                 const prev = JSON.parse(JSON.stringify(this.data))
                 Object.assign(this.data, t)
                 this.onUpdate?.(prev, this.data)
             }
+
             delete() {
                 this.table.delete(this.data.id)
             }
+
             toJSON() {
                 return this.data
             }
+
             init(table: LiveTable<T, L>, data: T) {
                 this.db = table.db
                 this.table = table

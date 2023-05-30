@@ -12,7 +12,7 @@ import { join } from 'path'
 const path = asAbsolutePath(join(process.cwd(), 'flows/'))
 
 export const Main = observer(() => {
-    console.log('rendering MAIN')
+    // console.log('rendering MAIN')
     const st = useMemo(
         () =>
             new STATE(path, {
