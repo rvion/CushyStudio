@@ -11,8 +11,8 @@ export const Gallery2UI = observer(function Gallery2UI_(p: {}) {
         <>
             <div className='flex flex-col overflow-x-auto'>
                 <div>New Folder</div>
-                {st.db.folders.map((v, k) => {
-                    return <GalleryFolderUI direction='horizontal' key={k} folderL={v} folderUID={k} />
+                {st.db.folders.map((v) => {
+                    return <GalleryFolderUI direction='horizontal' key={v.id} folderL={v} folderUID={v.id} />
                 })}
             </div>
             <div style={{ display: 'flex', overflowX: 'auto' }}>

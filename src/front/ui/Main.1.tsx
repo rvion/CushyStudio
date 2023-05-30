@@ -8,17 +8,21 @@ import { DndProvider } from 'react-dnd'
 import { observer } from 'mobx-react-lite'
 import { asAbsolutePath } from '../../utils/fs/pathUtils'
 import { join } from 'path'
+import { runInAction } from 'mobx'
 
 const path = asAbsolutePath(join(process.cwd(), 'flows/'))
 
 export const Main = observer(() => {
-    // console.log('rendering MAIN')
+    console.log('rendering MAIN')
     const st = useMemo(
         () =>
-            new STATE(path, {
-                cushySrcPathPrefix: '../src/',
-                genTsConfig: false,
-            }),
+            runInAction(
+                () =>
+                    new STATE(path, {
+                        cushySrcPathPrefix: '../src/',
+                        genTsConfig: false,
+                    }),
+            ),
         [],
     )
     return (

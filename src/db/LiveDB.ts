@@ -5,6 +5,8 @@ import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
 
 // models
+import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 import { ActionL, ActionT } from '../models/Action'
 import { ConfigL, ConfigT } from '../models/Config'
 import { FolderL, FolderT } from '../models/Folder'
@@ -16,27 +18,10 @@ import { PromptL, PromptT } from '../models/Prompt'
 import { SchemaL, SchemaT } from '../models/Schema'
 import { StepL, StepT } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
-import { exists, existsSync, readFileSync, writeFileSync } from 'fs'
+import { LiveStore } from './LiveStore'
+import { readableStringify } from '../utils/stringifyReadable'
 
 export type Indexed<T> = { [id: string]: T }
-
-export type STORE = {
-    configs?: Indexed<ConfigT>
-    schemas?: Indexed<SchemaT>
-    statuses?: Indexed<{ id: string }>
-    // ???
-    msgs?: Indexed<{ id: string }>
-    // global
-    actions?: Indexed<ActionT>
-    folders?: Indexed<FolderT>
-    images?: Indexed<ImageT>
-    // project
-    projects?: Indexed<ProjectT>
-    steps?: Indexed<StepT>
-    prompts?: Indexed<PromptT>
-    graphs?: Indexed<GraphT>
-}
 
 export class LiveDB {
     // live tables are expected to self register in this array
@@ -46,47 +31,61 @@ export class LiveDB {
     relPath: RelativePath
     absPath: AbsolutePath
 
+    // store ---------------------------------------------------------
+    store: LiveStore = {}
+    toJSON = (): LiveStore => this.store
+
+    // tables ---------------------------------------------------------
+    configs: LiveTable<ConfigT, ConfigL>
+    schemas: LiveTable<SchemaT, SchemaL>
+    statuses: LiveTable<{ id: string }, Foo>
+    msgs: LiveTable<{ id: string }, Foo>
+    actions: LiveTable<ActionT, ActionL>
+    folders: LiveTable<FolderT, FolderL>
+    images: LiveTable<ImageT, ImageL>
+    projects: LiveTable<ProjectT, ProjectL>
+    steps: LiveTable<StepT, StepL>
+    prompts: LiveTable<PromptT, PromptL>
+    graphs: LiveTable<GraphT, GraphL>
+
     constructor(public st: STATE) {
+        // 1. restore store if  it exists
         this.relPath = asRelativePath('./cushy.db')
         console.log('relpath:', this.relPath)
         this.absPath = this.st.resolveFromRoot(this.relPath)
         console.log('abspath:', this.absPath)
         const exists = existsSync(this.absPath)
-        if (exists) this.STORE = JSON.parse(readFileSync(this.absPath, 'utf8'))
+        if (exists) this.store = JSON.parse(readFileSync(this.absPath, 'utf8'))
 
+        // 2. make it observable
         makeAutoObservable(this)
-    }
 
-    STORE: STORE = {}
-    toJSON = (): STORE => this.STORE
+        // 3. create tables (after the store has benn made already observable)
+        this.configs = new LiveTable(this, 'configs', ConfigL)
+        this.schemas = new LiveTable(this, 'schemas', SchemaL)
+        this.statuses = new LiveTable(this, 'statuses', Foo)
+        this.msgs = new LiveTable(this, 'msgs', Foo)
+        this.actions = new LiveTable(this, 'actions', ActionL)
+        this.folders = new LiveTable(this, 'folders', FolderL)
+        this.images = new LiveTable(this, 'images', ImageL)
+        this.projects = new LiveTable(this, 'projects', ProjectL)
+        this.steps = new LiveTable(this, 'steps', StepL)
+        this.prompts = new LiveTable(this, 'prompts', PromptL)
+        this.graphs = new LiveTable(this, 'graphs', GraphL)
+    }
 
     saveTimeout: Maybe<NodeJS.Timeout> = null
-    save = () => {
-        if (this.saveTimeout == null) return
+    markDirty = () => {
+        if (this.saveTimeout != null) return
 
         this.saveTimeout = setTimeout(() => {
-            const data = this.STORE
+            console.log('saving...')
+            const data = this.store
             console.log('saving', data)
-            writeFileSync(this.absPath, JSON.stringify(data))
+            writeFileSync(this.absPath, readableStringify(data, 3))
             this.saveTimeout = null
-        })
+        }, 1000)
     }
-
-    // tables ---------------------------------------------------------
-    configs = new LiveTable<ConfigT, ConfigL>(this, 'configs', ConfigL)
-    schemas = new LiveTable<SchemaT, SchemaL>(this, 'schemas', SchemaL)
-    statuses = new LiveTable<{ id: string }, Foo>(this, 'status', Foo)
-    // ???
-    msgs = new LiveTable<{ id: string }, Foo>(this, 'msgs', Foo)
-    // global
-    actions = new LiveTable<ActionT, ActionL>(this, 'actions', ActionL)
-    folders = new LiveTable<FolderT, FolderL>(this, 'folders', FolderL)
-    images = new LiveTable<ImageT, ImageL>(this, 'images', ImageL)
-    // project
-    projects = new LiveTable<ProjectT, ProjectL>(this, 'projects', ProjectL)
-    steps = new LiveTable<StepT, StepL>(this, 'steps', StepL)
-    prompts = new LiveTable<PromptT, PromptL>(this, 'prompts', PromptL)
-    graphs = new LiveTable<GraphT, GraphL>(this, 'graphs', GraphL)
 
     // misc ---------------------------------------------------------
     get config(): ConfigL {

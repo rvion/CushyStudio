@@ -28,7 +28,7 @@ export const CushyUI = observer(function CushyUI_() {
                 </ScrollablePaneUI>
             </div>
             {/* {st.showAllMessageReceived ? <DebugMessagesUI /> : null} */}
-            <pre>{JSON.stringify(st.db.STORE)}</pre>
+            <pre>{JSON.stringify(st.db.store)}</pre>
         </div>
     )
 })
