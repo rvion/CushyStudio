@@ -71,7 +71,7 @@ export const LightBoxUI = observer(function LightBoxUI_(p: { lbs: LightBoxState;
             ]}
             slides={lbs.imgs.map((img) => ({
                 //
-                src: img.imageURL,
+                src: img.comfyURL,
                 // src: img.data.comfyURL ?? img.data.localURL ?? '🔴',
             }))}
             open={true}

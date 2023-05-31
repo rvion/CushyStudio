@@ -1,7 +1,6 @@
 // import type { PromptL } from '../models/Prompt'
 // import type { ComfyImageInfo } from '../types/ComfyWsApi'
 // import type { Maybe } from '../utils/types'
-// import type { ServerState } from './ServerState'
 
 // import { nanoid } from 'nanoid'
 // import * as path from 'path'

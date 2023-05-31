@@ -95,9 +95,11 @@ export class PromptL {
             const images = this.db.images.create({
                 id: nanoid(),
                 promptID: this.id,
-                comfyURL,
-                comfyRelativePath,
-                folder: img.subfolder,
+                // comfyURL,
+                imageInfos: img,
+                // comfyRelativePath,
+                // folder: img.subfolder,
+                // localAbsolutePath: img.localAbsolutePath,
             })
             this.images.push(images)
         }

@@ -21,7 +21,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                     }}
                 ></div>
                 <img
-                    src={st.hovered.localURL}
+                    src={st.hovered.comfyURL}
                     style={{
                         //
                         // margin: 'auto',

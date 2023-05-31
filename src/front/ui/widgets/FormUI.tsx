@@ -130,9 +130,9 @@ const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'str') return <WidgetStrUI get={get} set={set} />
     if (req.type === 'str?') return <WidgetStrUI get={get} set={set} nullable />
     if (req.type === 'paint') return <WidgetPaintUI uri={'foo bar 🔴'} />
-    if (req.type === 'samMaskPoints') return <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
+    if (req.type === 'samMaskPoints') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'selectImage') return <ImageSelection /*infos={req.imageInfos}*/ get={get} set={set} />
-    if (req.type === 'manualMask') return <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
+    if (req.type === 'manualMask') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'embeddings') return <>TODO</>
     if (req.type === 'selectMany') return <>TODO</>
     if (req.type === 'enum') return <WidgetEnumUI autofocus={p.focus} get={get} set={set} enumName={req.enumName} />

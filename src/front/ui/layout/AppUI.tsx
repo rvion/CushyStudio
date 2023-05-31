@@ -20,9 +20,8 @@ export const CushyUI = observer(function CushyUI_() {
                     <GalleryHoveredPreviewUI />
                     {action == null ? ( //
                         <WorkspaceUI />
-                    ) : action.type === 'paint' ? (
-                        <WidgetPaintUI uri={action.img.localURL ?? action.img.comfyURL ?? '🔴'} />
-                    ) : (
+                    ) : action.type === 'paint' ? null : (
+                        // <WidgetPaintUI uri={action.img.localURL ?? action.img.comfyURL ?? '🔴'} />
                         <WorkspaceUI />
                     )}
                 </ScrollablePaneUI>

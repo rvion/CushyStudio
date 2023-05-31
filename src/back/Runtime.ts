@@ -81,7 +81,7 @@ export class Runtime {
 
     /** run an imagemagick convert action */
     imagemagicConvert = (img: ImageL, partialCmd: string, suffix: string): string => {
-        const pathA = img.data.localAbsolutePath
+        const pathA = img.localAbsolutePath
         // 🔴 wait
         const pathB = `${pathA}.${suffix}.png`
         const cmd = `convert "${pathA}" ${partialCmd} "${pathB}"`
@@ -149,7 +149,7 @@ export class Runtime {
         logger().info(`🎥 cwd: ${cwd}`)
 
         await createMP4FromImages(
-            images.map((i) => i.data.localAbsolutePath!),
+            images.map((i) => i.localAbsolutePath),
             targetVideoAbsPath,
             frameDuration,
             cwd,
