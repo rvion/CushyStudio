@@ -22,19 +22,24 @@ import { GraphL, asGraphID } from '../models/Graph'
 import { ImageL } from '../models/Image'
 import { PromptL, asPromptID } from '../models/Prompt'
 import { StepL } from '../models/Step'
-import { ApiPromptInput, ComfyUploadImageResult, WsMsgExecuted } from '../types/ComfyWsApi'
+import { ApiPromptInput, ComfyUploadImageResult, PromptInfo, WsMsgExecuted } from '../types/ComfyWsApi'
 import { deepCopyNaive } from '../utils/ComfyUtils'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
+import { Branded, Tagged } from 'src/utils/types'
 
 /** script exeuction instance */
 export class Runtime {
     st: STATE
 
+    graph: GraphL
     constructor(public step: StepL) {
         this.st = step.st
+        console.log('🔴A', this.step.graph.item.size, Object.keys(this.step.graph.item.data.comfyPromptJSON).length)
+        this.graph = this.step.graph.item.clone()
+        console.log('🔴B', this.graph.size)
         this.folder = step.st.outputFolderPath // output.resolve(relPath)
         this.nodes = new NodeBuilder(this)
         // this.graph = st.db //new GraphL(this.st.schema)
@@ -292,10 +297,6 @@ export class Runtime {
 
     private _promptCounter = 0
 
-    get graph(): GraphL {
-        return this.step.graph.item
-    }
-
     private sendPromp = async (): Promise<PromptL> => {
         const liveGraph = this.graph
         if (liveGraph == null) throw new Error('no graph')
@@ -312,10 +313,9 @@ export class Runtime {
         //     return step
         // }
 
-        const graphID = asGraphID(nanoid())
-        const graph = this.st.db.graphs.create({ id: graphID, comfyPromptJSON: currentJSON })
+        // const graphID = asGraphID(nanoid())
+        // const graph = this.st.db.graphs.create({ id: graphID, comfyPromptJSON: currentJSON })
         const stepID = this.step.id
-        const prompt = this.st.db.prompts.create({ id: asPromptID(nanoid()), executed: false, graphID, stepID })
 
         // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
@@ -324,20 +324,21 @@ export class Runtime {
             prompt: currentJSON,
         }
 
-        const outputAbsPath = this.st.cacheFolderPath
+        // | const outputAbsPath = this.st.cacheFolderPath
+
         // save a copy of the prompt to the cache folder
-        const promptJSONPath = asAbsolutePath(path.join(outputAbsPath, `prompt-${++this._promptCounter}.json`))
-        this.st.writeTextFile(promptJSONPath, JSON.stringify(currentJSON, null, 4))
+        // | const promptJSONPath = asAbsolutePath(path.join(outputAbsPath, `prompt-${++this._promptCounter}.json`))
+        // | this.st.writeTextFile(promptJSONPath, JSON.stringify(currentJSON, null, 4))
 
         // save a corresponding workflow file
-        const cytoJSONPath = asAbsolutePath(path.join(outputAbsPath, `cyto-${this._promptCounter}.json`))
-        const cytoJSON = await runAutolayout(this.graph)
-        this.st.writeTextFile(cytoJSONPath, JSON.stringify(cytoJSON, null, 4))
+        // | const cytoJSONPath = asAbsolutePath(path.join(outputAbsPath, `cyto-${this._promptCounter}.json`))
+        // | const cytoJSON = await runAutolayout(this.graph)
+        // | this.st.writeTextFile(cytoJSONPath, JSON.stringify(cytoJSON, null, 4))
 
         // save a corresponding workflow file
-        const workflowJSONPath = asAbsolutePath(path.join(outputAbsPath, `workflow-${this._promptCounter}.json`))
-        const liteGraphJSON = convertFlowToLiteGraphJSON(this.graph, cytoJSON)
-        this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
+        // | const workflowJSONPath = asAbsolutePath(path.join(outputAbsPath, `workflow-${this._promptCounter}.json`))
+        // | const liteGraphJSON = convertFlowToLiteGraphJSON(this.graph, cytoJSON)
+        // | this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
 
         // 🔶 not waiting here, because output comes back from somewhere else
         // TODO: but we may want to catch error here to fail early
@@ -348,8 +349,17 @@ export class Runtime {
             method: 'POST',
             body: JSON.stringify(out),
         })
+        const prompmtInfo: PromptInfo = await res.json()
+        console.log('prompt status', res.status, res.statusText, prompmtInfo)
 
-        console.log('prompt status', res.status, res.statusText)
+        const graph = this.st.db.graphs.create({ id: asGraphID(nanoid()), comfyPromptJSON: currentJSON })
+        const prompt = this.st.db.prompts.create({
+            id: prompmtInfo.prompt_id,
+            executed: false,
+            graphID: graph.id,
+            stepID,
+        })
+
         return prompt
         // await sleep(1000)
         // return step

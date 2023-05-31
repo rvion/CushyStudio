@@ -34,30 +34,38 @@ export type GraphT = {
 
 export interface GraphL extends LiveInstance<GraphT, GraphL> {}
 export class GraphL {
-    onUpdate(prev: Maybe<GraphT>, next: GraphT) {
-        this.reset()
+    /** number of node in the graph */
+    get size(): number {
+        return this.nodes.length
+    }
+
+    onUpdate = (prev: Maybe<GraphT>, next: GraphT) => {
+        const prevSize = this.size
+        if (prev != null) {
+            this.nodes = []
+            this.nodesIndex.clear()
+            this.currentExecutingNode = null
+        }
         for (const [uid, node] of Object.entries(next.comfyPromptJSON)) {
             new ComfyNode(this, uid, node)
         }
+        console.log(`📈 graph manually updated ${prevSize} => ${this.size}`)
     }
 
     /** cytoscape instance to live update graph */
     cyto?: Cyto
 
+    get summary1(): string[] {
+        return this.nodes.map((n) => n.$schema.nameInCushy)
+    }
+
     /** @internal every node constructor must call this */
     registerNode = (node: ComfyNode<any>) => {
+        this.data.comfyPromptJSON[node.uid] = node.json
         this.nodesIndex.set(node.uid, node)
         this.nodes.push(node)
         this.cyto?.trackNode(node)
         // this.graph.run.cyto.addNode(this)
-    }
-
-    /** reset all nodes */
-    reset = () => {
-        this.nodes = []
-        this.nodesIndex.clear()
-        this.currentExecutingNode = null
-        // this._nextUID = 0;
     }
 
     /** proxy to this.db.schema */

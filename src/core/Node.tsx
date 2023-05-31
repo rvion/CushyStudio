@@ -1,5 +1,5 @@
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
-import type { NodeProgress, WsMsgExecutedData } from '../types/ComfyWsApi'
+import type { NodeProgress, _WsMsgExecutedData } from '../types/ComfyWsApi'
 import type { GraphL } from '../models/Graph'
 import type { Maybe } from 'src/utils/types'
 
@@ -19,7 +19,7 @@ configure({ enforceActions: 'never' })
  * - belongs to a script
  */
 export class ComfyNode<ComfyNode_input extends object> {
-    artifacts: WsMsgExecutedData[] = []
+    artifacts: _WsMsgExecutedData[] = []
     // images: GeneratedImage[] = []
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema
@@ -76,12 +76,22 @@ export class ComfyNode<ComfyNode_input extends object> {
         public uid: string = graph.getUID(),
         jsonExt: ComfyNodeJSON,
     ) {
+        if (jsonExt == null) throw new Error('invariant violation: jsonExt is null')
+        // this.json = graph.data.comfyPromptJSON[uid]
+        // if (this.json == null) graph.data.comfyPromptJSON = {}
         // console.log('CONSTRUCTING', xxx.class_type, uid)
+
         this.uidNumber = parseInt(uid) // 🔴 ugly
         this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]
         let ix = 0
+
+        // 🔶 1 this declare the json locally,
+        // but Node are not live instances, they're local subinstances to a LiveGraph
         this.json = this._convertPromptExtToPrompt(jsonExt)
+        // 🔶 2 so we need to ensure the json is properly synced with the LiveGraph data
+        // register node ensure this
         this.graph.registerNode(this)
+
         makeAutoObservable(this)
 
         // dynamically add properties for every outputs

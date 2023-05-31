@@ -1,7 +1,7 @@
 // import type { ComfyNodeType } from './Comfy'
 
 export type ComfyPromptJSON = {
-    [key: string]: ComfyNodeJSON
+    [nodeUID: string]: ComfyNodeJSON
 }
 
 export type ComfyNodeJSON = {

@@ -27,6 +27,10 @@ export class ImageL {
         return 'a123'
     }
 
+    get imageURL() {
+        return `file://${this.data.localAbsolutePath}}`
+    }
+
     prompt = new LiveRef<PromptL>(this, 'promptID', 'prompts')
 
     // turns this into some clean abstraction

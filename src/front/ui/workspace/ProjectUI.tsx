@@ -1,6 +1,6 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { IconButton, Input, Panel } from 'rsuite'
+import { Button, IconButton, Input, Panel } from 'rsuite'
 import { useProject } from '../../ProjectCtx'
 import { ActionPickerUI } from '../flow/ActionPickerUI'
 import { StepUI } from '../widgets/FormUI'
@@ -19,13 +19,27 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 />
             </div>
             <div className='row'>
-                <ActionPickerUI step={project.lastStep} />
                 <div className='flex flex-col gap-2'>
                     {project.steps.map((step) => {
                         return (
                             <div key={step.id} className='row'>
+                                <ActionPickerUI step={step} />
+                                <div>
+                                    from (id={step.graph.id.slice(0, 3)}--{step.graph.item.size})
+                                    <ul>
+                                        {step.graph.item.summary1.map((i, ix) => (
+                                            <li key={ix}>{i}</li>
+                                        ))}
+                                    </ul>
+                                </div>
                                 <StepUI key={step.id} step={step} />
-                                <div>coucou</div>
+                                <div>
+                                    <Button onClick={() => step.submit()}>OK</Button>
+                                    <div>
+                                        to (id={step.runtime?.graph.id.slice(0, 3)}--{step.runtime?.graph.size}){' '}
+                                    </div>
+                                </div>
+                                {/* <div>{step.runtime}</div> */}
                             </div>
                         )
                     })}

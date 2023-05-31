@@ -8,7 +8,7 @@ import type { Maybe } from 'src/utils/types'
 import type { PayloadID } from '../core/PayloadID'
 import type { ComfyPromptJSON } from './ComfyPrompt'
 import type { ComfySchemaJSON } from './ComfySchemaJSON'
-import type { WsMsgCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
+import type { WsMsgExecutionCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
 
 import { exhaust } from '../utils/ComfyUtils'
 import { StepID } from 'src/models/Step'
@@ -106,7 +106,7 @@ export type MessageFromExtensionToWebview_ =
     | WsMsgStatus /* type 'status' */
     | WsMsgProgress /* type 'progress' */
     | WsMsgExecuting /* type 'executing'*/
-    | WsMsgCached /* cached node running */
+    | WsMsgExecutionCached /* cached node running */
     | WsMsgExecuted /* type 'executed' */
     // generated images as transformed uri by vscode extension so they can be displayed in the webview
     | FromExtension_Images

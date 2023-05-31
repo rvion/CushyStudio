@@ -1,7 +1,7 @@
 import type { Maybe } from '../utils/types'
 import type { CSCriticalError } from './CSCriticalError'
-import type { ImageID, ImageT } from 'src/models/Image'
-import type { ComfyStatus, WsMsg } from '../types/ComfyWsApi'
+import type { ImageID, ImageL, ImageT } from 'src/models/Image'
+import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -13,7 +13,7 @@ import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { Runtime } from '../back/Runtime'
 import { LiveDB } from '../db/LiveDB'
 import { ActionID, ActionL } from '../models/Action'
-import { GraphL } from '../models/Graph'
+import { GraphL, asGraphID } from '../models/Graph'
 import { ProjectL, asProjectID } from '../models/Project'
 import { PromptL } from '../models/Prompt'
 import { EmbeddingName, SchemaL } from '../models/Schema'
@@ -29,6 +29,7 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { UIAction } from './UIAction'
 import { LightBoxState } from './ui/LightBox'
+import { exhaust } from '../utils/ComfyUtils'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -46,7 +47,7 @@ export class STATE {
     // main state api
     schema: SchemaL
     comfySessionId = 'temp' /** send by ComfyUI server */
-    activePrompt: Maybe<PromptL> = null
+    // activePrompt: Maybe<PromptL> = null
 
     // runs: Runtime[] = []
 
@@ -71,13 +72,14 @@ export class STATE {
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
 
     // ui stuff
-    lightBox = new LightBoxState(() => this.images, true)
-    hovered: Maybe<ImageT> = null
+    lightBox = new LightBoxState(() => this.db.images.values(), true)
+    hovered: Maybe<ImageL> = null
 
     startProject = (): ProjectL => {
         const projectID = asProjectID(nanoid())
+        const initialGraph = this.db.graphs.create({ id: asGraphID(nanoid()), comfyPromptJSON: {} })
         const stepID = asStepID(nanoid())
-        const step = this.db.steps.create({ id: stepID, projectID: projectID })
+        const step = this.db.steps.create({ graphID: initialGraph.id, id: stepID, projectID: projectID })
         const project = this.db.projects.create({ id: projectID, rootStepID: stepID, name: 'new project' })
         return project
     }
@@ -211,6 +213,23 @@ export class STATE {
             onMessage: this.onMessage,
         })
 
+    private _pendingMsgs = new Map<PromptID, WsMsg[]>()
+    private activePromptID: PromptID | null = null
+    temporize = (prompt_id: PromptID, msg: PromptRelated_WsMsg) => {
+        this.activePromptID = prompt_id
+        const prompt = this.db.prompts.get(prompt_id)
+
+        // case 1. no prompt yet => just store the messages
+        if (prompt == null) {
+            const msgs = this._pendingMsgs.get(prompt_id)
+            if (msgs) msgs.push(msg)
+            else this._pendingMsgs.set(prompt_id, [msg])
+            return
+        }
+        // case 2. prompt exists => send the messages
+        prompt.onPromptRelatedMessage(msg)
+    }
+
     onMessage = (e: MessageEvent) => {
         console.info(`🧦 received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
@@ -223,50 +242,27 @@ export class STATE {
             return
         }
 
-        const currPrompt: Maybe<PromptL> = this.activePrompt
-        if (currPrompt == null) {
-            console.error('🐰', `❌ received ${msg.type} but currPrompt is null`)
-            return
-            // return console.log(`❌ received ${msg.type} but currentRun is null`)
-        }
-
-        // ensure current step is a prompt
-        // const promptStep /*: FlowExecutionStep*/ = currPrompt.step
-        // const prompt = promptStep.graph.item
-        const graph = currPrompt.graph.item
-        if (graph == null) return console.log(`❌ received ${msg.type} but graph is not prompt`)
-
         // defer accumulation to ScriptStep_prompt
         if (msg.type === 'progress') {
-            console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
-            return graph.onProgress(msg)
-        }
-
-        if (msg.type === 'executing') {
-            console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
-            return currPrompt.onExecuting(msg)
-        }
-        if (msg.type === 'execution_cached') {
-            console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
-            // return promptStep.onExecutionCached(msg)
+            const activePromptID = this.activePromptID
+            if (activePromptID == null) {
+                console.log(`❌ received a 'progress' msg, but activePromptID is not set`)
+                return
+            }
+            this.temporize(activePromptID, msg)
             return
         }
-        if (msg.type === 'executed') {
-            console.info(`${msg.type} ${JSON.stringify(msg.data)}`)
-            const images = currPrompt.onExecuted(msg)
+        if (
+            msg.type === 'execution_start' ||
+            msg.type === 'execution_cached' ||
+            msg.type === 'executing' ||
+            msg.type === 'executed'
+        ) {
+            this.temporize(msg.data.prompt_id, msg)
             return
-            // await Promise.all(images.map(i => i.savedPromise))
-            // const uris = FrontWebview.with((curr) => {
-            //     return images.map((img: GeneratedImage) => {
-            //         return curr.webview.asWebviewUri(img.uri).toString()
-            //     })
-            // })
-            // console.log('📸', 'uris', uris)
-            // this.sendMessage({ type: 'images', uris })
-            // return images
         }
 
-        // unknown message payload ?
+        exhaust(msg)
         console.log('❌', 'Unknown message:', msg)
         throw new Error('Unknown message type: ' + msg)
     }
@@ -370,10 +366,10 @@ export class STATE {
     }
 
     graph: Maybe<GraphL> = null
-    images: ImageT[] = []
-    imagesById: Map<ImageID, ImageT> = new Map()
-    get imageReversed() {
-        return this.images.slice().reverse()
+    // images: ImageT[] = []
+    // imagesById: Map<ImageID, ImageT> = new Map()
+    get imageReversed(): ImageL[] {
+        return this.db.images.values()
     }
 
     createFolder = () => {

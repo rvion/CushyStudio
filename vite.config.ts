@@ -21,6 +21,7 @@ export default defineConfig({
     resolve: {
         alias: {
             buffer: './src/syms/buffer',
+            child_process: './src/syms/child_process',
             fs: './src/syms/fs',
             os: './src/syms/os',
             path: './src/syms/path',

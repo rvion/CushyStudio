@@ -98,5 +98,6 @@ export class LiveDB {
     /* reset the whole DB (🔴?) */
     reset = () => {
         for (const table of this._tables) table.clear()
+        this.markDirty()
     }
 }

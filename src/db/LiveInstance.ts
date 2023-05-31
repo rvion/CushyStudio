@@ -15,4 +15,5 @@ export interface LiveInstance<T extends { id: string }, L> {
     delete: () => void
     toJSON: () => T
     init(table: LiveTable<T, any>, data: T): void
+    clone(): L
 }

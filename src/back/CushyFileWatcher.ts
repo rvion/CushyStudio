@@ -15,7 +15,8 @@ export class CushyFileWatcher {
     }
 
     walk = (dir: string) => {
-        this.st.db.actions.clear()
+        // 🔴
+        // this.st.db.actions.clear()
         const files = readdirSync(dir)
         // console.log(files)
         for (const file of files) {

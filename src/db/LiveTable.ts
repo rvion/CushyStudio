@@ -3,9 +3,10 @@ import type { Maybe } from 'src/utils/types'
 import type { LiveInstance } from './LiveInstance'
 import type { TableName } from './LiveStore'
 
-import * as mobx from 'mobx'
 import { MERGE_PROTOTYPES } from './LiveHelpers'
 import { STATE } from 'src/front/state'
+import { nanoid } from 'nanoid'
+import { makeAutoObservable, toJS } from 'mobx'
 
 export interface LiveEntityClass<T extends { id: string }, L> {
     new (...args: any[]): LiveInstance<T, L> & L
@@ -60,6 +61,13 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
                 this.onUpdate?.(prev, this.data)
             }
 
+            clone(): T {
+                const cloneData = Object.assign({}, toJS(this.data), { id: nanoid() })
+                // console.log(`🔴 cloneData:`, cloneData)
+                // console.log(`🔴 this.data=`, this.data)
+                return this.table.create(cloneData)
+            }
+
             delete() {
                 this.table.delete(this.data.id)
             }
@@ -69,18 +77,19 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
             }
 
             init(table: LiveTable<T, L>, data: T) {
+                // console.log(`🔴 INIT`, data)
                 this.db = table.db
                 this.st = table.db.st
                 this.table = table
                 this.data = data
                 this.onCreate?.(data)
                 this.onUpdate?.(undefined, data)
-                mobx.makeAutoObservable(this)
+                makeAutoObservable(this)
             }
         }
 
         // make observable
-        mobx.makeAutoObservable(this, { Ktor: false, store: false })
+        makeAutoObservable(this, { Ktor: false, store: false })
 
         MERGE_PROTOTYPES(InstanceClass, BaseInstanceClass)
         this.Ktor = InstanceClass
@@ -93,8 +102,8 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
     }
 
     clear = () => {
-        this.store
         this.instances.clear()
+        for (const k of this.ids()) delete this.store[k]
     }
 
     ids = (): T['id'][] => Object.keys(this.store)

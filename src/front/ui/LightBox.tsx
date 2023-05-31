@@ -1,4 +1,4 @@
-import type { ImageT } from 'src/models/Image'
+import type { ImageL, ImageT } from 'src/models/Image'
 import Lightbox, { Plugin } from 'yet-another-react-lightbox'
 
 import { addToolbarButton } from 'yet-another-react-lightbox/core'
@@ -29,7 +29,7 @@ const CustomPlugin: Plugin = ({ augment }) => {
 export class LightBoxState {
     constructor(
         //
-        public getImgs: () => ImageT[],
+        public getImgs: () => ImageL[],
         public opened: boolean = false,
     ) {
         makeAutoObservable(this)
@@ -69,7 +69,11 @@ export const LightBoxUI = observer(function LightBoxUI_(p: { lbs: LightBoxState;
                 Thumbnails,
                 ...(p.inline ? [Inline] : []),
             ]}
-            slides={lbs.imgs.map((img) => ({ src: img.comfyURL ?? img.localURL ?? '🔴' }))}
+            slides={lbs.imgs.map((img) => ({
+                //
+                src: img.imageURL,
+                // src: img.data.comfyURL ?? img.data.localURL ?? '🔴',
+            }))}
             open={true}
         />
     )

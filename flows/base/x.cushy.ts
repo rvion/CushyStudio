@@ -1,5 +1,3 @@
-// console.log('coucou')
-
 action('demo1-basic', {
     run: async ($) => {
         const ckpt = $.nodes.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })

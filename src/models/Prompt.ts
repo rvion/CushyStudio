@@ -1,5 +1,12 @@
 import type { Branded, Maybe } from '../utils/types'
-import type { WsMsgExecuted, WsMsgExecuting } from '../types/ComfyWsApi'
+import type {
+    PromptRelated_WsMsg,
+    WsMsgExecuted,
+    WsMsgExecuting,
+    WsMsgExecutionCached,
+    WsMsgExecutionStart,
+    WsMsgProgress,
+} from '../types/ComfyWsApi'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepID, StepL } from '../models/Step'
 import type { GraphID, GraphL } from './Graph'
@@ -7,6 +14,7 @@ import type { GraphID, GraphL } from './Graph'
 import { LiveRef } from '../db/LiveRef'
 import { ImageL } from './Image'
 import { nanoid } from 'nanoid'
+import { exhaust } from '../utils/ComfyUtils'
 
 export type PromptID = Branded<string, 'PromptID'>
 export const asPromptID = (s: string): PromptID => s as any
@@ -34,9 +42,36 @@ export class PromptL {
         // if (next)
     }
 
+    onCreate = () => {
+        //
+    }
+
     step = new LiveRef<StepL>(this, 'stepID', 'steps')
     graph = new LiveRef<GraphL>(this, 'graphID', 'graphs')
     get project() { return this.step.item.project } // prettier-ignore
+
+    onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {
+        console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
+        const graph = this.graph.item
+
+        if (msg.type === 'execution_start') return
+        if (msg.type === 'execution_cached') return
+        if (msg.type === 'executing') return this.onExecuting(msg)
+        if (msg.type === 'progress') return graph.onProgress(msg)
+        if (msg.type === 'executed') return this.onExecuted(msg)
+
+        exhaust(msg)
+        // await Promise.all(images.map(i => i.savedPromise))
+        // const uris = FrontWebview.with((curr) => {
+        //     return images.map((img: GeneratedImage) => {
+        //         return curr.webview.asWebviewUri(img.uri).toString()
+        //     })
+        // })
+        // console.log('📸', 'uris', uris)
+        // this.sendMessage({ type: 'images', uris })
+        // return images
+        // }
+    }
 
     /** update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {

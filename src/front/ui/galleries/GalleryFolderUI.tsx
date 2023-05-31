@@ -23,7 +23,9 @@ export const GalleryFolderUI = observer(function GalleryFolderUI_(p: {
         },
     }))
 
-    const images = p.folderL.data.imageUIDs?.map((i) => st.imagesById.get(i)) ?? []
+    return null
+    const images = []
+    // const images = p.folderL.data.imageUIDs?.map((i) => st.imagesById.get(i)) ?? []
     // 🔴
     // console.log(images, [...st.imagesById.keys()])
     return (

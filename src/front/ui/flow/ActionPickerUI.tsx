@@ -4,7 +4,6 @@ import { Button } from 'rsuite'
 import { StepL } from '../../../models/Step'
 import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
-import { StepUI } from '../widgets/FormUI'
 
 export const ActionPickerUI = observer(function ActionPickerUI_(p: { step: StepL }) {
     const st = useSt()
@@ -16,7 +15,6 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { step: StepL
     return (
         <div className='flex'>
             <div className='flex flex-col items-start border p-2'>
-                Actions:
                 {/* ({uiSt.currentActionID}) */}
                 {st.db.actions.map((a) => {
                     return (

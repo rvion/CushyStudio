@@ -29,8 +29,8 @@ export type StepT = {
     actionID?: Maybe<ActionID>
     /** action input value */
     value?: Maybe<any>
-    /** each evaluated step should have a resulting graph */
-    graphID?: Maybe<GraphID>
+    /** starting graph */
+    graphID: GraphID
     /** outputs of the evaluated step */
     outputs?: Maybe<StepOutput[]>
 }
@@ -52,13 +52,19 @@ export class StepL {
         return this.db.schema
     }
 
-    submit = () => {
-        if (this.action == null) return
+    runtime: Maybe<Runtime> = null
+    submit = async () => {
+        if (this.action == null) return console.log('❌ no action yet')
+        // if (this.data.value != null) return console.log('❌ already submitted')
+
         this.update({ value: this.draft })
-        const runtime = new Runtime(this)
+        this.runtime = new Runtime(this)
+        await this.runtime.run()
+        // const finalGraph = this.runtime.graph
         // this.st.run
         this.db.steps.create({
             id: asStepID(nanoid()),
+            graphID: this.runtime.graph.id,
             projectID: this.data.projectID,
             actionID: this.action.id,
             parent: this.id,
@@ -90,7 +96,7 @@ export class StepL {
     }
     setAtPath = (path: FormPath, value: any) => {
         if (this.draft == null) this.draft = {}
-        console.log(path, value, toJS(this.draft))
+        // console.log(path, value, toJS(this.draft))
         let current = this.draft
         for (let i = 0; i < path.length - 1; i++) {
             const key = path[i]
