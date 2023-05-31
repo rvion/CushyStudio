@@ -1,9 +1,8 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton, Input, Panel } from 'rsuite'
+import { IconButton, Input, Panel } from 'rsuite'
 import { useProject } from '../../ProjectCtx'
-import { ActionPickerUI } from '../flow/ActionPickerUI'
-import { StepUI } from '../widgets/FormUI'
+import { StepUI } from './StepUI'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const project = useProject()
@@ -20,29 +19,9 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
             </div>
             <div className='row'>
                 <div className='flex flex-col gap-2'>
-                    {project.steps.map((step) => {
-                        return (
-                            <div key={step.id} className='row'>
-                                <ActionPickerUI step={step} />
-                                <div>
-                                    from (id={step.graph.id.slice(0, 3)}--{step.graph.item.size})
-                                    <ul>
-                                        {step.graph.item.summary1.map((i, ix) => (
-                                            <li key={ix}>{i}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                                <StepUI key={step.id} step={step} />
-                                <div>
-                                    <Button onClick={() => step.submit()}>OK</Button>
-                                    <div>
-                                        to (id={step.runtime?.graph.id.slice(0, 3)}--{step.runtime?.graph.size}){' '}
-                                    </div>
-                                </div>
-                                {/* <div>{step.runtime}</div> */}
-                            </div>
-                        )
-                    })}
+                    {project.steps.map((step) => (
+                        <StepUI step={step} key={step.id} />
+                    ))}
                     {/* {project.groupper.msgGroups.map((group, groupIx) => {
                     return (
                         <div

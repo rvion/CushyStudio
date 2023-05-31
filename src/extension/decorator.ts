@@ -49,11 +49,11 @@ export class VSCodeEmojiDecorator {
         // vscode.workspace.onDidOpenTextDocument(this.decorateDocument)
 
         // decorate every .cushy.ts document
-        logger().info(`[.] decorate every .cushy.ts document...`)
+        console.info(`[.] decorate every .cushy.ts document...`)
         vscode.window.visibleTextEditors //
             .filter((e) => e.document.uri.path.endsWith('.cushy.ts'))
             .forEach(this.decorate)
-        logger().info(`[*] decorate every .cushy.ts document 🟢`)
+        console.info(`[*] decorate every .cushy.ts document 🟢`)
     }
 
     decorateAffectedDocument = (event: vscode.TextDocumentWillSaveEvent | vscode.TextDocumentChangeEvent) => {
@@ -72,7 +72,7 @@ export class VSCodeEmojiDecorator {
         try {
             return f()
         } catch (error) {
-            logger().error(extractErrorMessage(error))
+            console.error(extractErrorMessage(error))
             return def
         }
     }

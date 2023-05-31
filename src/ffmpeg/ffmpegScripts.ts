@@ -1,5 +1,4 @@
 import { execSync } from 'child_process'
-import { logger } from '../logger/logger'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
 
 export async function createMP4FromImages(
@@ -22,18 +21,18 @@ export async function createMP4FromImages(
     // Construct the full ffmpeg command
     const ffmpegCommand = `ffmpeg ${inputArgs} ${encodingArgs} "${outputVideo}"`
 
-    logger().info(`Working directory: ${workingDirectory}`)
-    logger().info(`Creating video with command: ${ffmpegCommand}`)
+    console.info(`Working directory: ${workingDirectory}`)
+    console.info(`Creating video with command: ${ffmpegCommand}`)
 
     try {
         const res = execSync(ffmpegCommand, { cwd: workingDirectory })
         const str = res.toString()
-        // logger().info(`[stdout] ${res.stdout}`)
-        // logger().info(`[stderr] ${res.stderr}`)
-        logger().info(`[out] ${res}`)
-        logger().info(`Video created successfully: ${outputVideo}`)
+        // console.info(`[stdout] ${res.stdout}`)
+        // console.info(`[stderr] ${res.stderr}`)
+        console.info(`[out] ${res}`)
+        console.info(`Video created successfully: ${outputVideo}`)
     } catch (error) {
-        logger().error('Error creating video:', extractErrorMessage(error))
+        console.error('Error creating video:', extractErrorMessage(error))
     }
 
     // Execute the command synchronously
@@ -81,15 +80,15 @@ export async function createMP4FromImages(
     //     '" "',
     // )}") -c:v libx264 -pix_fmt yuv420p -r ${frameRate} output.mp4`
 
-    // logger().info(`Working directory: ${workingDirectory}`)
-    // logger().info(`Creating video with command: ${command}`)
+    // console.info(`Working directory: ${workingDirectory}`)
+    // console.info(`Creating video with command: ${command}`)
 
     // try {
     //     const res = await execAsync(command, { cwd: workingDirectory })
-    //     logger().info(`[stdout] ${res.stdout}`)
-    //     logger().info(`[stderr] ${res.stderr}`)
-    //     logger().info('Video created successfully!')
+    //     console.info(`[stdout] ${res.stdout}`)
+    //     console.info(`[stderr] ${res.stderr}`)
+    //     console.info('Video created successfully!')
     // } catch (error) {
-    //     logger().error('Error creating video:', extractErrorMessage(error))
+    //     console.error('Error creating video:', extractErrorMessage(error))
     // }
 }

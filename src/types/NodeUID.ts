@@ -1,4 +1,6 @@
-export type ComfyNodeUID = string
+import { Tagged } from 'src/utils/types'
+
+export type ComfyNodeID = Tagged<string, 'ComfyNodeID'>
 
 // let nextUID = 1
 

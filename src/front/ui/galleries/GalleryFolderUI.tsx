@@ -6,7 +6,7 @@ import { useDrop } from 'react-dnd'
 import { Button, Input } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 import { GalleryImageUI } from './GalleryImageUI'
-import { ItemTypes } from './ItemTypes'
+import { ItemTypes } from './DnDItemTypes'
 
 export const GalleryFolderUI = observer(function GalleryFolderUI_(p: {
     //

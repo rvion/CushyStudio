@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ImageL, ImageT } from 'src/models/Image'
 import { useSt } from '../../FrontStateCtx'
-import { ItemTypes } from './ItemTypes'
+import { ItemTypes } from './DnDItemTypes'
 import { useDrag } from 'react-dnd'
 
 export const GalleryImageUI = observer(function ImageUI_(p: { img: ImageL }) {

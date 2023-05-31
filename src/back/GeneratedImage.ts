@@ -127,7 +127,7 @@
 //         // const binArr = new Uint16Array(numArr)
 
 //         this.workspace.writeBinaryFile(this.localAbsolutePath, binArr)
-//         logger().info('🖼️ image saved')
+//         console.info('🖼️ image saved')
 //         this.status = ImageStatus.Saved
 //         return true
 //     }

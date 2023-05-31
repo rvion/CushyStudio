@@ -32,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
                 await fn()
             } catch (error) {
                 const errMsg = extractErrorMessage(error)
-                logger().error('🌠', errMsg, error as any)
+                console.error('🌠', errMsg, error as any)
                 // vscode.window.showErrorMessage(errMsg)
             }
         }

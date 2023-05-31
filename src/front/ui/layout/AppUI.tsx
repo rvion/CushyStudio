@@ -1,12 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../../FrontStateCtx'
-import { WorkspaceUI } from '../workspace/WorkspaceUI'
-import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
 import { GalleryHoveredPreviewUI } from '../galleries/GalleryHoveredPreviewUI'
+import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
 import { ScrollablePaneUI } from '../scrollableArea'
-import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
+import { WorkspaceUI } from '../workspace/WorkspaceUI'
 import { AppBarUI } from './AppBarUI'
-import { Button } from 'rsuite'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()

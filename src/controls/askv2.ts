@@ -11,7 +11,6 @@ import type { Maybe, Tagged } from 'src/utils/types'
 import type { ImageL, ImageT } from 'src/models/Image'
 import type { Requestable } from './Requestable'
 
-import { logger } from '../logger/logger'
 import type * as R from './Requestable'
 import { LATER } from 'LATER'
 
@@ -57,7 +56,7 @@ const toImageInfos = (img: ImageInBackend): ImageT => {
     try {
         return (img as any).toJSON ? (img as any).toJSON() : img
     } catch (error) {
-        logger().info('🔴 UNRECOVERABLE ERROR 🔴' + JSON.stringify(img))
+        console.info('🔴 UNRECOVERABLE ERROR 🔴' + JSON.stringify(img))
         throw error
     }
 }

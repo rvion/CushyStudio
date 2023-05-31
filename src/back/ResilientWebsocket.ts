@@ -1,6 +1,5 @@
 import { makeAutoObservable, reaction } from 'mobx'
 // import { CloseEvent, Event, EventListenerOptions, MessageEvent, WebSocket } from 'ws'
-import { logger } from '../logger/logger'
 import type { Maybe } from '../utils/types'
 
 type Message = string | Buffer
@@ -42,7 +41,7 @@ export class ResilientWebSocketClient {
 
         this.currentWS = null
         if (prevWS) {
-            logger().info('🧦 Previous WebSocket discarded')
+            console.info('🧦 Previous WebSocket discarded')
             prevWS.close()
         }
         const ws = new WebSocket(this.url)
@@ -59,7 +58,7 @@ export class ResilientWebSocketClient {
 
         ws.onopen = (event: Event) => {
             if (ws !== this.currentWS) return
-            logger().info('🧦 🟢 WebSocket connected to ' + this.url)
+            console.info('🧦 🟢 WebSocket connected to ' + this.url)
             console.log('🛋️ 🟢 WebSocket connected')
             this.isOpen = true
             this.options.onConnectOrReconnect()
@@ -68,15 +67,15 @@ export class ResilientWebSocketClient {
 
         ws.onclose = (event: CloseEvent) => {
             if (ws !== this.currentWS) return
-            logger().error(`🧦 WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
+            console.error(`🧦 WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
             this.isOpen = false
-            logger().info('🧦 ⏱️ reconnecting in 2 seconds...')
+            console.info('🧦 ⏱️ reconnecting in 2 seconds...')
             this.reconnectTimeout = setTimeout(() => this.connect(), 2000) // Attempt to reconnect after 5 seconds
         }
 
         ws.onerror = (event: Event) => {
             if (ws !== this.currentWS) return
-            logger().error(`🧦 WebSocket ERROR`)
+            console.error(`🧦 WebSocket ERROR`)
             console.error('WebSocket error:', event)
         }
     }

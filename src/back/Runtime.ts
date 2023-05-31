@@ -12,15 +12,12 @@ import { STATE } from 'src/front/state'
 import { Requestable } from '../controls/Requestable'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
 import { FormBuilder, InfoAnswer, InfoRequestFn } from '../controls/askv2'
-import { runAutolayout } from '../core/AutolayoutV2'
-import { convertFlowToLiteGraphJSON } from '../core/LiteGraph'
 import { auto } from '../core/autoValue'
 import { globalActionFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
-import { logger } from '../logger/logger'
 import { GraphL, asGraphID } from '../models/Graph'
 import { ImageL } from '../models/Image'
-import { PromptL, asPromptID } from '../models/Prompt'
+import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo, WsMsgExecuted } from '../types/ComfyWsApi'
 import { deepCopyNaive } from '../utils/ComfyUtils'
@@ -28,7 +25,6 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
-import { Branded, Tagged } from 'src/utils/types'
 
 /** script exeuction instance */
 export class Runtime {
@@ -72,9 +68,9 @@ export class Runtime {
         } catch (error) {
             console.log(error)
             // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'failure' })
-            logger().error('🌠', (error as any as Error).name)
-            logger().error('🌠', (error as any as Error).message)
-            logger().error('🌠', 'RUN FAILURE')
+            console.error('🌠', (error as any as Error).name)
+            console.error('🌠', (error as any as Error).message)
+            console.error('🌠', 'RUN FAILURE')
             return false
         }
     }
@@ -132,21 +128,21 @@ export class Runtime {
     ): Promise<void> => {
         const outputAbsPath = this.st.cacheFolderPath
         const targetVideoAbsPath = asAbsolutePath(path.join(outputAbsPath, `video-${Runtime.VideoCounter++}.mp4`))
-        // logger().info(`target video path: ${targetVideoPath}`)
-        // logger().info(`target video uri: ${targetVideoURI}`)
+        // console.info(`target video path: ${targetVideoPath}`)
+        // console.info(`target video uri: ${targetVideoURI}`)
         const images = source ?? this.generatedImages
         // this.workspace.writeTextFile(targetVideoURI, JSON.stringify(currentJSON, null, 4))
         if (images.length === 0) {
-            logger().error(`no images to create animation; did you forget to call prompt() first ?`)
+            console.error(`no images to create animation; did you forget to call prompt() first ?`)
             return
         }
-        logger().info(`🎥 awaiting all files to be ready locally...`)
+        console.info(`🎥 awaiting all files to be ready locally...`)
         await Promise.all(images.map((i) => i.finished))
-        logger().info(`🎥 all files are ready locally`)
+        console.info(`🎥 all files are ready locally`)
         const cwd = outputAbsPath
-        logger().info(`🎥 target video path: ${targetVideoAbsPath}`)
-        logger().info(`🎥 this.folder.path: ${this.folder}`)
-        logger().info(`🎥 cwd: ${cwd}`)
+        console.info(`🎥 target video path: ${targetVideoAbsPath}`)
+        console.info(`🎥 this.folder.path: ${this.folder}`)
+        console.info(`🎥 cwd: ${cwd}`)
 
         await createMP4FromImages(
             images.map((i) => i.localAbsolutePath),
@@ -157,7 +153,7 @@ export class Runtime {
         // 🔴 unfinished
         // const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
         // const videoURL = this.st.absPathToURL(targetVideoAbsPath)
-        // logger().info(`🎥 video url: ${videoURL}`)
+        // console.info(`🎥 video url: ${videoURL}`)
         // const content = `<video controls autoplay loop><source src="${videoURL}" type="video/mp4"></video>`
         // this.st.broadCastToAllClients({ type: 'show-html', content, title: 'generated video' })
         // turns a bunch of images into a gif with ffmpeg
@@ -224,7 +220,7 @@ export class Runtime {
     /** display something in the console */
     print = (message: Printable) => {
         let msg = this.extractString(message)
-        logger().info(msg)
+        console.info(msg)
         this.step.append({ type: 'print', message: msg })
     }
 
@@ -288,7 +284,7 @@ export class Runtime {
     // INTERRACTIONS
 
     async PROMPT(): Promise<PromptL> {
-        logger().info('prompt requested')
+        console.info('prompt requested')
         const step = await this.sendPromp()
         // this.run.cyto.animate()
         await step.finished
@@ -302,13 +298,13 @@ export class Runtime {
         if (liveGraph == null) throw new Error('no graph')
         const currentJSON = deepCopyNaive(liveGraph.jsonForPrompt)
         this.step.append({ type: 'prompt', graph: currentJSON })
-        logger().info('checkpoint:' + JSON.stringify(currentJSON))
+        console.info('checkpoint:' + JSON.stringify(currentJSON))
         // const step = new PromptExecution(this, currentJSON)
         // this.steps.unshift(step)
 
         // if we're note really running prompts, just resolve the step and continue
         // if (this.opts?.mock) {
-        //     logger().info('MOCK => aborting')
+        //     console.info('MOCK => aborting')
         //     step._resolve!(step)
         //     return step
         // }
@@ -344,7 +340,7 @@ export class Runtime {
         // TODO: but we may want to catch error here to fail early
         // otherwise, we might get stuck
         const promptEndpoint = `${this.st.getServerHostHTTP()}/prompt`
-        logger().info('sending prompt to ' + promptEndpoint)
+        console.info('sending prompt to ' + promptEndpoint)
         const res = await fetch(promptEndpoint, {
             method: 'POST',
             body: JSON.stringify(out),

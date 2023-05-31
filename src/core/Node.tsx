@@ -4,13 +4,12 @@ import type { GraphL } from '../models/Graph'
 import type { Maybe } from 'src/utils/types'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
-import { ComfyNodeUID } from '../types/NodeUID'
+import { ComfyNodeID } from '../types/NodeUID'
 import { exhaust } from '../utils/ComfyUtils'
 import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
 import { Slot } from './Slot'
 import { comfyColors } from './Colors'
 import { auto_ } from './autoValue'
-import { logger } from '../logger/logger'
 
 configure({ enforceActions: 'never' })
 
@@ -121,7 +120,7 @@ export class ComfyNode<ComfyNode_input extends object> {
 
     /** return the list of nodes piped into this node */
     _incomingNodes() {
-        const incomingNodes: ComfyNodeUID[] = []
+        const incomingNodes: ComfyNodeID[] = []
         for (const [_name, val] of Object.entries(this.inputs)) {
             if (val instanceof Array) {
                 const [from, _slotIx] = val
@@ -131,7 +130,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         return incomingNodes
     }
     _incomingEdges() {
-        const incomingEdges: { from: ComfyNodeUID; inputName: string }[] = []
+        const incomingEdges: { from: ComfyNodeID; inputName: string }[] = []
         for (const [inputName, val] of Object.entries(this.inputs)) {
             if (val instanceof Array) {
                 const [from, _slotIx] = val
@@ -158,7 +157,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         if (typeof value === 'function') return this.serializeValue(field, value(this.graph))
         if (value === auto_) {
             const expectedType = this._getExpecteTypeForField(field)
-            logger().info(`🔍 looking for type ${expectedType} for field ${field}`)
+            console.info(`🔍 looking for type ${expectedType} for field ${field}`)
             for (const node of this.graph.nodes.slice().reverse()) {
                 const output = node._getOutputForTypeOrNull(expectedType)
                 if (output != null) return [node.uid, output.slotIx]

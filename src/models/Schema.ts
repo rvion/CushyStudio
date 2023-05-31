@@ -92,7 +92,7 @@ export class SchemaL {
         // compile spec
         const entries = Object.entries(this.data.spec)
         for (const [nodeNameInComfy, nodeDef] of entries) {
-            // logger().chanel?.append(`[${nodeNameInComfy}]`)
+            // console.chanel?.append(`[${nodeNameInComfy}]`)
             // apply prefix
             const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy)
             // prettier-ignore
@@ -122,7 +122,7 @@ export class SchemaL {
 
             // OUTPUTS
             const outputNamer: { [key: string]: number } = {}
-            // logger().info(JSON.stringify(nodeDef.output))
+            // console.info(JSON.stringify(nodeDef.output))
             for (const opt of nodeDef.output) {
                 // index type
                 this.knownTypes.add(opt)

@@ -1,7 +1,7 @@
 import type { VisEdges, VisNodes } from '../front/ui/VisUI'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress } from '../types/ComfyWsApi'
-import type { ComfyNodeUID } from '../types/NodeUID'
+import type { ComfyNodeID } from '../types/NodeUID'
 import type { Cyto } from '../core/AutolayoutV1'
 import type { ComfyNodeSchema, SchemaL } from './Schema'
 import type { LiveInstance } from 'src/db/LiveInstance'
@@ -194,7 +194,7 @@ export class GraphL {
 
     private _nextUID = 1
     getUID = () => (this._nextUID++).toString()
-    getNodeOrCrash = (nodeID: ComfyNodeUID): ComfyNode<any> => {
+    getNodeOrCrash = (nodeID: ComfyNodeID): ComfyNode<any> => {
         const node = this.nodesIndex.get(nodeID)
         if (node == null) throw new Error('Node not found:' + nodeID)
         return node

@@ -70,7 +70,7 @@
 //     importCurrentFile = async (opts: { preserveId: boolean }) => {
 //         const tab = vscode.window.tabGroups.activeTabGroup.activeTab
 
-//         // logger().info(JSON.stringify(tab))
+//         // console.info(JSON.stringify(tab))
 //         console.log(tab)
 //         const uri: vscode.Uri = bang((tab!.input as any).uri)
 
@@ -215,7 +215,7 @@
 
 // // importCurrentFile = async (opts: { preserveId: boolean }) => {
 // //     const tab = vscode.window.tabGroups.activeTabGroup.activeTab
-// //     // logger().info(JSON.stringify(tab))
+// //     // console.info(JSON.stringify(tab))
 // //     console.log(tab)
 // //     const uri: vscode.Uri = bang((tab!.input as any).uri)
 

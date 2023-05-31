@@ -263,7 +263,7 @@ export class STATE {
 
         exhaust(msg)
         console.log('❌', 'Unknown message:', msg)
-        throw new Error('Unknown message type: ' + msg)
+        throw new Error('Unknown message type: ' + JSON.stringify(msg))
     }
 
     /** attempt to convert an url to a Blob */

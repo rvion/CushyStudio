@@ -20,7 +20,7 @@ import { WidgetPlacePoints } from './WidgetPlacePoints'
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const StepUI = observer(function StepUI_(p: { step: StepL }) {
+export const ActionUI = observer(function StepUI_(p: { step: StepL }) {
     const step = p.step
     // console.log({ step })
     const action = step.action.item
@@ -83,7 +83,7 @@ export const StepUI = observer(function StepUI_(p: { step: StepL }) {
     )
 })
 
-export const DebugUI = observer(function DebugUI_(p: { title: string; children: React.ReactNode }) {
+const DebugUI = observer(function DebugUI_(p: { title: string; children: React.ReactNode }) {
     return (
         <Whisper enterable speaker={<Popover>{p.children}</Popover>}>
             <Button size='xs'>{p.title}</Button>
@@ -147,7 +147,7 @@ const WidgetUI = observer(function WidgetUI_(p: {
     return <div>{JSON.stringify(req)} not supported </div>
 })
 
-export const WidgetStrUI = observer(function WidgetStrUI_(p: {
+const WidgetStrUI = observer(function WidgetStrUI_(p: {
     //
     get: () => string
     set: (v: string) => void
