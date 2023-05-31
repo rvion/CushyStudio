@@ -1,6 +1,6 @@
 import type { Maybe, Tagged } from 'src/utils/types'
 import type { LiveInstance } from '../db/LiveInstance'
-import type { FolderL, FolderUID } from './Folder'
+import type { FolderL, FolderID } from './Folder'
 import type { PromptID, PromptL } from './Prompt'
 
 import { existsSync } from 'fs'
@@ -28,7 +28,7 @@ export interface ImageT {
     // localURL?: string
     //
     star?: number
-    folder?: FolderUID
+    folderID?: FolderID
 }
 
 export interface ImageL extends LiveInstance<ImageT, ImageL> {}
@@ -84,14 +84,14 @@ export class ImageL {
         this._rejects = rejects
     })
 
-    onUpdate = (prev: Maybe<ImageT>, next: ImageT) => {
-        console.log('🟢 ImageL.onUpdate', prev, next)
-        // if (next.localAbsolutePath) return this._resolve(this)
-    }
+    // onUpdate = (prev: Maybe<ImageT>, next: ImageT) => {
+    //     console.log('🟢 ImageL.onUpdate', prev, next)
+    //     // if (next.localAbsolutePath) return this._resolve(this)
+    // }
 
     test2 = () => 'b123'
     moveTo(folder: FolderL) {
-        this.update({ folder: folder.id })
+        this.update({ folderID: folder.id })
     }
 }
 

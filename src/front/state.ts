@@ -1,21 +1,20 @@
+import type { ImageL } from 'src/models/Image'
+import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { Maybe } from '../utils/types'
 import type { CSCriticalError } from './CSCriticalError'
-import type { ImageID, ImageL, ImageT } from 'src/models/Image'
-import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
+import { asFolderID } from '../models/Folder'
 import { CushyFile } from '../back/CushyFile'
 import { CushyFileWatcher } from '../back/CushyFileWatcher'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
-import { Runtime } from '../back/Runtime'
 import { LiveDB } from '../db/LiveDB'
 import { ActionID, ActionL } from '../models/Action'
 import { GraphL, asGraphID } from '../models/Graph'
 import { ProjectL, asProjectID } from '../models/Project'
-import { PromptL } from '../models/Prompt'
 import { EmbeddingName, SchemaL } from '../models/Schema'
 import { asStepID } from '../models/Step'
 import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
@@ -23,13 +22,13 @@ import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebvie
 import { sdkStubDeps } from '../typings/sdkStubDeps'
 import { sdkTemplate } from '../typings/sdkTemplate'
 import { CodePrettier } from '../utils/CodeFormatter'
+import { exhaust } from '../utils/ComfyUtils'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { UIAction } from './UIAction'
 import { LightBoxState } from './ui/LightBox'
-import { exhaust } from '../utils/ComfyUtils'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -369,11 +368,11 @@ export class STATE {
     // images: ImageT[] = []
     // imagesById: Map<ImageID, ImageT> = new Map()
     get imageReversed(): ImageL[] {
-        return this.db.images.values()
+        return this.db.images.values().filter((x) => x.data.folderID == null)
     }
 
     createFolder = () => {
-        this.db.folders.create({ id: nanoid() })
+        this.db.folders.create({ id: asFolderID(nanoid()) })
     }
     // FILESYSTEM UTILS --------------------------------------------------------------------
     /** write a binary file to given absPath */

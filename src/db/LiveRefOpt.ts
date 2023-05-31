@@ -1,13 +1,14 @@
 import type { LiveTable } from './LiveTable'
 import type { Maybe } from 'src/utils/types'
 import type { LiveInstance } from './LiveInstance'
+import type { TableName } from './LiveStore'
 
 export class LiveRefOpt<L extends LiveInstance<any, any>> {
     constructor(
         //
         public owner: LiveInstance<any, any>,
         public key: string,
-        public tableName: string,
+        public tableName: TableName,
     ) {}
 
     get id(): Maybe<L['data']['id']> {
@@ -16,7 +17,7 @@ export class LiveRefOpt<L extends LiveInstance<any, any>> {
 
     /** debug string for pretty printing */
     get debugStr() {
-        return `LiveRefOpt: ${this.owner.table.name}->${this.tableName}(${this.id}) not found`
+        return `LiveRefOpt: ${this.owner.table.name}->${this.tableName}(${this.id})`
     }
 
     /** unsafe version of item, that crashes if item not found */

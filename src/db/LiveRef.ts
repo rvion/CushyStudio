@@ -1,12 +1,13 @@
 import type { LiveTable } from './LiveTable'
 import type { LiveInstance } from './LiveInstance'
+import type { TableName } from './LiveStore'
 
 export class LiveRef<L extends LiveInstance<any, any>> {
     constructor(
         //
         public owner: LiveInstance<any, any>,
         public key: string,
-        public tableName: string,
+        public tableName: TableName,
     ) {}
 
     get id(): L['data']['id'] {
@@ -15,7 +16,7 @@ export class LiveRef<L extends LiveInstance<any, any>> {
 
     /** debug string for pretty printing */
     get debugStr() {
-        return `LiveRef: ${this.owner.table.name}->${this.tableName}(${this.id}) not found`
+        return `LiveRef: ${this.owner.table.name}->${this.tableName}(${this.id})`
     }
 
     get item(): L {

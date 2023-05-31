@@ -104,6 +104,6 @@ export class StepL {
             current = current[key]
         }
         current[path[path.length - 1]] = value
-        console.log(this.draft)
+        // console.log(this.draft)
     }
 }

@@ -10,8 +10,9 @@ export const WidgetIntUI = observer(function WidgetBoolUI_(p: {
         <InputNumber //
             value={p.get()}
             onChange={(next) => {
-                if (typeof next != 'number') return
-                p.set(next)
+                let num = typeof next === 'string' ? parseInt(next, 10) : next
+                if (isNaN(num) || typeof num != 'number') return console.log(`${JSON.stringify(next)} is not a number`)
+                p.set(num)
             }}
         />
     )
