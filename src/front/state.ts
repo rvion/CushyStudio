@@ -61,8 +61,10 @@ export class STATE {
     outputFolderPath: AbsolutePath
 
     // files and actions
-    knownActions = new Map<ActionID, ActionL>()
     knownFiles = new Map<AbsolutePath, CushyFile>()
+    get actionsSorted() {
+        return this.db.actions.values.slice().sort((a, b) => a.data.priority - b.data.priority)
+    }
 
     // runtime
     status: ComfyStatus | null = null
@@ -71,7 +73,7 @@ export class STATE {
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
 
     // ui stuff
-    lightBox = new LightBoxState(() => this.db.images.values(), true)
+    lightBox = new LightBoxState(() => this.db.images.values, true)
     hovered: Maybe<ImageL> = null
 
     startProject = (): ProjectL => {
@@ -368,7 +370,7 @@ export class STATE {
     // images: ImageT[] = []
     // imagesById: Map<ImageID, ImageT> = new Map()
     get imageReversed(): ImageL[] {
-        return this.db.images.values().filter((x) => x.data.folderID == null)
+        return this.db.images.values.filter((x) => x.data.folderID == null)
     }
 
     createFolder = () => {

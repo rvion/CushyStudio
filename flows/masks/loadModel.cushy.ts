@@ -1,4 +1,5 @@
-action('LOAD MODEL', {
+action('📘 Load', {
+    priority: 1,
     help: 'load model with optional clip-skip, loras, etc.', // <- action help text
     ui: (form) => ({
         model: form.enum({ enumName: 'Enum_EfficientLoader_ckpt_name' }),

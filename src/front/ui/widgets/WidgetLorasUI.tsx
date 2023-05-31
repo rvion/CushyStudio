@@ -14,7 +14,10 @@ class WidgetLorasState {
     loras: string[]
     constructor(public schema: SchemaL) {
         this.loras = schema.getLoras()
-        for (const lora of this.loras) this.insertLora(lora)
+        for (const lora of this.loras) {
+            if (lora === 'None') continue
+            this.insertLora(lora)
+        }
         makeAutoObservable(this)
     }
 

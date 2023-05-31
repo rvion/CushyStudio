@@ -18,7 +18,7 @@ export class LiveCollection<L extends LiveInstance<any, any>> {
     get items(): L[] {
         const db = this.owner.db
         const taretTable = (db as any)[this.remoteTableName] as LiveTable<any, any>
-        return taretTable.values().filter((l: L) => l.data[this.remoteFieldName] === this.owner.id)
+        return taretTable.values.filter((l: L) => l.data[this.remoteFieldName] === this.owner.id)
     }
 
     map = <T>(fn: (l: L) => T): T[] => this.items.map(fn)

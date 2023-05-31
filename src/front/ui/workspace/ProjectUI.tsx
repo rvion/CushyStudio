@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { IconButton, Input, Panel } from 'rsuite'
 import { useProject } from '../../ProjectCtx'
 import { StepUI } from './StepUI'
+import { EmptyGraphUI } from './GraphUI'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const project = useProject()
@@ -18,7 +19,8 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 />
             </div>
             <div className='row'>
-                <div className='flex flex-col gap-2'>
+                <div className='flex flex-col gap-2 items-start'>
+                    <EmptyGraphUI />
                     {project.steps.map((step) => (
                         <StepUI step={step} key={step.id} />
                     ))}

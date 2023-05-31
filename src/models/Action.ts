@@ -9,6 +9,7 @@ export const asActionID = (s: string): ActionID => s as any
 
 export type ActionT = {
     id: ActionID
+    priority: number
     name: string
     file: AbsolutePath
     form?: Maybe<FormDefinition>

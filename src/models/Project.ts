@@ -20,7 +20,7 @@ export class ProjectL {
         return bang(this.db.steps.get(this.data.rootStepID))
     }
     get steps(): StepL[] {
-        return this.db.steps.values().filter((s) => s.data.projectID === this.id)
+        return this.db.steps.values.filter((s) => s.data.projectID === this.id)
     }
     get lastStep(): StepL {
         return this.steps[this.steps.length - 1]

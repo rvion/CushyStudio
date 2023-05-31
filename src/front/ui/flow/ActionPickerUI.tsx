@@ -1,6 +1,6 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button } from 'rsuite'
+import { Button, ButtonGroup } from 'rsuite'
 import { StepL } from '../../../models/Step'
 import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
@@ -14,9 +14,9 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { step: StepL
     const action = step.action
     return (
         <div className='flex'>
-            <div className='flex flex-col items-start border p-2'>
+            <ButtonGroup className='flex'>
                 {/* ({uiSt.currentActionID}) */}
-                {st.db.actions.map((a) => {
+                {st.actionsSorted.map((a) => {
                     return (
                         <Button
                             startIcon={<I.PlayOutline />}
@@ -30,7 +30,7 @@ export const ActionPickerUI = observer(function ActionPickerUI_(p: { step: StepL
                         </Button>
                     )
                 })}
-            </div>
+            </ButtonGroup>
             {/* {action && <FormUI step={step} />} */}
         </div>
         // <div>

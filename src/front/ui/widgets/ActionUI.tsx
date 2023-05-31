@@ -31,7 +31,7 @@ export const ActionUI = observer(function StepUI_(p: { step: StepL }) {
 
     return (
         <stepContext.Provider value={step}>
-            <Panel header={title} shaded className='m-2 p-2'>
+            <Panel header={title} shaded>
                 {/* widgets ------------------------------- */}
                 <div className='flex gap-2'>
                     <div>
@@ -48,7 +48,7 @@ export const ActionUI = observer(function StepUI_(p: { step: StepL }) {
                     </div>
                     {/* submit ------------------------------- */}
                     {/* <div className='flex-grow'></div> */}
-                    {locked ? (
+                    {/* {locked ? (
                         <div>
                             <Button size='lg' disabled appearance='subtle'>
                                 OK
@@ -60,7 +60,12 @@ export const ActionUI = observer(function StepUI_(p: { step: StepL }) {
                                 OK
                             </Button>
                         </div>
-                    )}
+                    )} */}
+                    <div>
+                        <Button size='lg' color='green' appearance='primary' onClick={() => step.submit()}>
+                            OK
+                        </Button>
+                    </div>
                     {locked ? null : (
                         <pre className='border-2 border-dashed border-orange-200 p-2'>
                             action output = {JSON.stringify(step.data.value ?? step.draft, null, 4)}

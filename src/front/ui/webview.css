@@ -116,3 +116,8 @@ body {
 
 
 .group-of-show-html > div {justify-content: end;}
+
+
+.graph-container {
+    border: 1px solid orange;
+}

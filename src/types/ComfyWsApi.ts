@@ -62,7 +62,7 @@ export type _WsMsgExecutionErrorData = {
     // ]
     current_inputs: any
     //  {
-    //     text: ['fucking pasta']
+    //     text: ['some text']
     //     clip: ['<comfy.sd.CLIP object at 0x000001CFDF5FD450>']
     // }
     current_outputs: any

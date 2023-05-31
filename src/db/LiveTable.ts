@@ -98,16 +98,23 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
     // UTILITIES -----------------------------------------------------------------------
 
     map = <R>(fn: (inst: L, ix: number) => R): R[] => {
-        return this.values().map((v, ix) => fn(v, ix))
+        return this.values.map((v, ix) => fn(v, ix))
     }
 
     clear = () => {
         this.instances.clear()
-        for (const k of this.ids()) delete this.store[k]
+        for (const k of this.ids) delete this.store[k]
     }
 
-    ids = (): T['id'][] => Object.keys(this.store)
-    values = (): L[] => this.ids().map((id) => this.getOrThrow(id))
+    get ids(): T['id'][] {
+        return Object.keys(this.store)
+    }
+
+    get values(): L[] {
+        return this.ids.map((id) => this.getOrThrow(id))
+    }
+
+    // 🔴 meh
     mapData = <R>(fn: (k: T['id'], t: T) => R): R[] => Object.values(this.store).map((data) => fn(data.id, data))
 
     // UTILITIES -----------------------------------------------------------------------

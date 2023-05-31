@@ -18,6 +18,8 @@ export type Action<FormDef extends FormDefinition> = {
     name: string
     /** help text to show user */
     help?: string
+    /** temporary hack so I can work more efficiently (lower first) */
+    priority?: number
     /** the list of dependencies user can specify */
     ui?: (form: FormBuilder /*, flow: Workflow*/) => FormDef
     /** extra list of dependencies */

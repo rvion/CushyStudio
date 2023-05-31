@@ -41,6 +41,7 @@ export class CushyFile {
                 id: actionID,
                 file: this.absPath,
                 name: a.name,
+                priority: a.action.priority ?? 100,
                 form: a.action.ui?.(formBuilder),
             })
             globalActionFnCache.set(actionL, a.action)

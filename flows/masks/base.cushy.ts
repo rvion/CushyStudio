@@ -1,4 +1,5 @@
 action('💬 Prompt', {
+    priority: 2,
     help: 'extract a mak for the given clothes', // <- action help text
     ui: (form) => ({
         positive: form.str({}),
