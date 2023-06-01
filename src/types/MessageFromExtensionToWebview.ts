@@ -1,4 +1,4 @@
-import type { ActionID, ActionT } from 'src/models/Action'
+import type { ToolID, ToolT } from 'src/models/Tool'
 import type { ImageT, ImageID } from 'src/models/Image'
 import type { FormDefinition, FormResult } from 'src/core/Requirement'
 import type { EmbeddingName } from 'src/models/Schema'
@@ -21,7 +21,7 @@ import { StepID } from 'src/models/Step'
 export type FromWebview_runAction = {
     type: 'run-action'
     flowID: FlowID
-    actionID: ActionID
+    actionID: ToolID
     /** the execution ID to use (defined client-side, see ActionFront) */
     stepID: StepID
     data: FormResult<any>
@@ -55,20 +55,20 @@ export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boole
 // non flow-related ------------------------------------------------------
 export type FromExtension_Schema = { type: 'schema'; schema: ComfySchemaJSON; embeddings: EmbeddingName[] }
 // export type FromExtension_SyncHistory = { type: 'sync-history'; history: CushyDBData }
-export type FromExtension_Ls = { type: 'ls'; actions: ActionT[] }
+export type FromExtension_Ls = { type: 'ls'; actions: ToolT[] }
 
 // actions payloads ------------------------------------------------------
 export type FromExtension_ActionStart = {
     type: 'action-start'
     flowID: FlowID
-    actionID: ActionID
+    actionID: ToolID
     executionID: StepID
     data: FormResult<any>
 }
 export type FromExtension_ActionCode = {
     type: 'action-code'
     flowID: FlowID
-    actionID: ActionID
+    actionID: ToolID
     executionID: StepID
     code: string
 }
@@ -76,7 +76,7 @@ export type ActionEndStatus = 'success' | 'failure'
 export type FromExtension_ActionEnd = {
     type: 'action-end'
     flowID: FlowID
-    actionID: ActionID
+    actionID: ToolID
     executionID: StepID
     status: ActionEndStatus
 }

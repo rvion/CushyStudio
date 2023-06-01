@@ -47,7 +47,7 @@ export class ImageL {
         return asAbsolutePath(path.join(this.st.cacheFolderPath, 'outputs', this.data.imageInfos.filename))
     }
 
-    onCreate = () => {
+    onHydrate = () => {
         this.downloadImageAndSaveToDisk()
     }
 
@@ -74,7 +74,7 @@ export class ImageL {
         return true
     }
 
-    prompt = new LiveRef<PromptL>(this, 'promptID', 'prompts')
+    prompt = new LiveRef<this, PromptL>(this, 'promptID', 'prompts')
 
     // turns this into some clean abstraction
     _resolve!: (value: this) => void

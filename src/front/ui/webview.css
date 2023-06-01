@@ -118,6 +118,9 @@ body {
 .group-of-show-html > div {justify-content: end;}
 
 
+.step-container {
+    border: 1px solid purple;
+}
 .graph-container {
     border: 1px solid orange;
 }

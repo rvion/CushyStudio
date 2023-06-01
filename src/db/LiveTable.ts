@@ -48,9 +48,13 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
             /** instance data */
             data!: T
 
-            /** this must be fired after creation and update */
+            /** on original creation */
             onCreate?: (data: T) => void
 
+            /** on hydratation */
+            onHydrate?: (data: T) => void
+
+            /** this must be fired after hydrate and update */
             onUpdate?: (prev: Maybe<T>, next: T) => void
 
             get id() { return this.data.id } // prettier-ignore
@@ -82,7 +86,7 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
                 this.st = table.db.st
                 this.table = table
                 this.data = data
-                this.onCreate?.(data)
+                this.onHydrate?.(data)
                 this.onUpdate?.(undefined, data)
                 makeAutoObservable(this)
             }
@@ -164,6 +168,7 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
         this.store[id] = data
 
         const instance = this._createInstance(this.store[id])
+
         return instance
     }
 

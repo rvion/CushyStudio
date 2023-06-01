@@ -2,8 +2,7 @@ import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { IconButton, Input, Panel } from 'rsuite'
 import { useProject } from '../../ProjectCtx'
-import { StepUI } from './StepUI'
-import { EmptyGraphUI } from './GraphUI'
+import { GraphUI } from './GraphUI'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const project = useProject()
@@ -20,10 +19,11 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
             </div>
             <div className='row'>
                 <div className='flex flex-col gap-2 items-start'>
-                    <EmptyGraphUI />
-                    {project.steps.map((step) => (
+                    {/* <EmptyGraphUI /> */}
+                    <GraphUI graph={project.rootGraph.item} />
+                    {/* {project.steps.map((step) => i(
                         <StepUI step={step} key={step.id} />
-                    ))}
+                    ))} */}
                     {/* {project.groupper.msgGroups.map((group, groupIx) => {
                     return (
                         <div

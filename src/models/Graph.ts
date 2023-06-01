@@ -13,6 +13,10 @@ import { asHTMLContent, asMDContent } from '../utils/markdown'
 import { comfyColors } from '../core/Colors'
 import { ComfyNode } from '../core/Node'
 import { ImageL } from './Image'
+import { LiveCollection } from '../db/LiveCollection'
+import { StepID, StepL } from './Step'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { ActionL } from './Action'
 
 export type RunMode = 'fake' | 'real'
 
@@ -30,6 +34,8 @@ export const asGraphID = (s: string): GraphID => s as any
 export type GraphT = {
     id: GraphID
     comfyPromptJSON: ComfyPromptJSON
+    nextStepID?: Maybe<StepID>
+    frozen?: boolean
 }
 
 export interface GraphL extends LiveInstance<GraphT, GraphL> {}
@@ -38,6 +44,9 @@ export class GraphL {
     get size(): number {
         return this.nodes.length
     }
+
+    onCreate = () => {}
+    nextStep = new LiveRefOpt<this, StepL>(this, 'nextStepID', 'steps')
 
     onUpdate = (prev: Maybe<GraphT>, next: GraphT) => {
         const prevSize = this.size
@@ -58,6 +67,10 @@ export class GraphL {
     get summary1(): string[] {
         return this.nodes.map((n) => n.$schema.nameInCushy)
     }
+
+    actions = new LiveCollection<ActionL>(this, 'inputGraphID', 'actions')
+    childSteps = new LiveCollection<StepL>(this, 'parentGraphID', 'steps')
+    parentSteps = new LiveCollection<StepL>(this, 'outputGraphID', 'steps')
 
     /** @internal every node constructor must call this */
     registerNode = (node: ComfyNode<any>) => {

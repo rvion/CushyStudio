@@ -8,6 +8,9 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
     return (
         <Nav appearance='subtle'>
             <Nav.Item eventKey='home'>🛋️</Nav.Item>
+            <Button startIcon={<I.FolderFill />} onClick={() => st.createFolder()}>
+                Add
+            </Button>
             <Button
                 size='sm'
                 startIcon={st.flowDirection === 'down' ? <I.SortDown /> : <I.SortUp />}

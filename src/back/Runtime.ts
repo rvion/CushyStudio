@@ -13,7 +13,7 @@ import { Requestable } from '../controls/Requestable'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
 import { FormBuilder, InfoAnswer, InfoRequestFn } from '../controls/askv2'
 import { auto } from '../core/autoValue'
-import { globalActionFnCache } from '../core/globalActionFnCache'
+import { globalToolFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
 import { GraphL, asGraphID } from '../models/Graph'
 import { ImageL } from '../models/Image'
@@ -25,17 +25,22 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
+import { ToolL } from 'src/models/Tool'
+import { Status } from './Status'
 
 /** script exeuction instance */
 export class Runtime {
     st: STATE
 
-    graph: GraphL
+    get graph(): GraphL {
+        return this.step.outputGraph.item
+    }
+
     constructor(public step: StepL) {
         this.st = step.st
-        console.log('🔴A', this.step.graph.item.size, Object.keys(this.step.graph.item.data.comfyPromptJSON).length)
-        this.graph = this.step.graph.item.clone()
-        console.log('🔴B', this.graph.size)
+        // console.log('🔴A', this.step.parentGraph.item.size, Object.keys(this.step.parentGraph.item.data.comfyPromptJSON).length)
+        // this.graph = this.step.parentGraph.item.clone()
+        // console.log('🔴B', this.graph.size)
         this.folder = step.st.outputFolderPath // output.resolve(relPath)
         this.nodes = new NodeBuilder(this)
         // this.graph = st.db //new GraphL(this.st.schema)
@@ -46,16 +51,22 @@ export class Runtime {
     /** list all actions ; codegen during dev-time */
     actions: any
     AUTO = auto
-    run = async () => {
-        const actionL = this.step.action.item
-        if (actionL == null) return
-        const action = globalActionFnCache.get(actionL)
+
+    run = async (): Promise<Status> => {
+        // 1. ensure we have a tool
+        const tool: ToolL = this.step.tool.item
+        if (tool == null) return Status.Failure
+
+        const action = globalToolFnCache.get(tool)
         const start = Date.now()
-        const formResult = this.step.data.value
+        const formResult = this.step.actionParams
         console.log(`🔴 before: size=${this.graph.nodes.length}`)
 
         try {
-            if (action == null) return console.log(`❌ action not found`)
+            if (action == null) {
+                console.log(`❌ action not found`)
+                return Status.Failure
+            }
             await action.run(this, formResult)
             console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
@@ -64,14 +75,14 @@ export class Runtime {
             // if (numPromptBefore === this._promptCounter) {
             //     this.broadcastSchemaMermaid()
             // }
-            return true
+            return Status.Success
         } catch (error) {
             console.log(error)
             // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'failure' })
             console.error('🌠', (error as any as Error).name)
             console.error('🌠', (error as any as Error).message)
             console.error('🌠', 'RUN FAILURE')
-            return false
+            return Status.Failure
         }
     }
 

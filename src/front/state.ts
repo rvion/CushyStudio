@@ -1,4 +1,4 @@
-import type { ImageL } from 'src/models/Image'
+import type { ImageL } from '../models/Image'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { Maybe } from '../utils/types'
 import type { CSCriticalError } from './CSCriticalError'
@@ -7,16 +7,15 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
-import { asFolderID } from '../models/Folder'
+import { asActionID } from '../models/Action'
 import { CushyFile } from '../back/CushyFile'
 import { CushyFileWatcher } from '../back/CushyFileWatcher'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { LiveDB } from '../db/LiveDB'
-import { ActionID, ActionL } from '../models/Action'
+import { asFolderID } from '../models/Folder'
 import { GraphL, asGraphID } from '../models/Graph'
 import { ProjectL, asProjectID } from '../models/Project'
 import { EmbeddingName, SchemaL } from '../models/Schema'
-import { asStepID } from '../models/Step'
 import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebview'
 import { sdkStubDeps } from '../typings/sdkStubDeps'
@@ -63,7 +62,7 @@ export class STATE {
     // files and actions
     knownFiles = new Map<AbsolutePath, CushyFile>()
     get actionsSorted() {
-        return this.db.actions.values.slice().sort((a, b) => a.data.priority - b.data.priority)
+        return this.db.tools.values.slice().sort((a, b) => a.data.priority - b.data.priority)
     }
 
     // runtime
@@ -79,9 +78,8 @@ export class STATE {
     startProject = (): ProjectL => {
         const projectID = asProjectID(nanoid())
         const initialGraph = this.db.graphs.create({ id: asGraphID(nanoid()), comfyPromptJSON: {} })
-        const stepID = asStepID(nanoid())
-        const step = this.db.steps.create({ graphID: initialGraph.id, id: stepID, projectID: projectID })
-        const project = this.db.projects.create({ id: projectID, rootStepID: stepID, name: 'new project' })
+        const project = this.db.projects.create({ id: projectID, rootGraphID: initialGraph.id, name: 'new project' })
+        this.db.actions.create({ inputGraphID: initialGraph.id, id: asActionID(nanoid()), params: {} })
         return project
     }
     // --------------------------

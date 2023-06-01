@@ -2,11 +2,15 @@ import type { LiveTable } from './LiveTable'
 import type { LiveInstance } from './LiveInstance'
 import type { TableName } from './LiveStore'
 
-export class LiveRef<L extends LiveInstance<any, any>> {
+export class LiveRef<
+    //
+    Owner extends LiveInstance<any, any>,
+    L extends LiveInstance<any, any>,
+> {
     constructor(
         //
         public owner: LiveInstance<any, any>,
-        public key: string,
+        public key: keyof Owner['data'],
         public tableName: TableName,
     ) {}
 

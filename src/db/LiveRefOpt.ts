@@ -3,11 +3,15 @@ import type { Maybe } from 'src/utils/types'
 import type { LiveInstance } from './LiveInstance'
 import type { TableName } from './LiveStore'
 
-export class LiveRefOpt<L extends LiveInstance<any, any>> {
+export class LiveRefOpt<
+    //
+    Owner extends LiveInstance<any, any>,
+    L extends LiveInstance<any, any>,
+> {
     constructor(
         //
         public owner: LiveInstance<any, any>,
-        public key: string,
+        public key: keyof Owner['data'],
         public tableName: TableName,
     ) {}
 

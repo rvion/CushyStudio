@@ -1,11 +1,11 @@
 import type { Action, FormDefinition } from 'src/core/Requirement'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
-import { ActionL, asActionID } from '../models/Action'
+import { ToolL, asToolID } from '../models/Tool'
 
 import { readFileSync } from 'fs'
 import { FormBuilder } from '../controls/askv2'
 import { transpileCode } from './transpiler'
-import { globalActionFnCache } from '../core/globalActionFnCache'
+import { globalToolFnCache } from '../core/globalActionFnCache'
 import { STATE } from 'src/front/state'
 
 const formBuilder = new FormBuilder()
@@ -13,7 +13,7 @@ const formBuilder = new FormBuilder()
 export class CushyFile {
     CONTENT = ''
 
-    actions: ActionL[] = []
+    actions: ToolL[] = []
     constructor(
         //
         public st: STATE,
@@ -36,15 +36,15 @@ export class CushyFile {
         await ProjectScriptFn(registerActionFn)
 
         for (const a of actionsPool) {
-            const actionID = asActionID(`${this.absPath}#${a.name}`)
-            const actionL = this.st.db.actions.upsert({
+            const actionID = asToolID(`${this.absPath}#${a.name}`)
+            const tool = this.st.db.tools.upsert({
                 id: actionID,
                 file: this.absPath,
                 name: a.name,
                 priority: a.action.priority ?? 100,
                 form: a.action.ui?.(formBuilder),
             })
-            globalActionFnCache.set(actionL, a.action)
+            globalToolFnCache.set(tool, a.action)
         }
     }
 }

@@ -1,6 +1,6 @@
 action('📘 Load', {
     priority: 1,
-    help: 'load model with optional clip-skip, loras, etc.', // <- action help text
+    help: 'load model with optional clip-skip, loras, tome ratio, etc.',
     ui: (form) => ({
         model: form.enum({ enumName: 'Enum_EfficientLoader_ckpt_name' }),
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name' }),
@@ -38,6 +38,5 @@ action('📘 Load', {
             const tome = graph.TomePatchModel({ model, ratio: p.tomeRatio })
             model = tome.MODEL
         }
-        // return { ckpt, clip, model, vae }
     },
 })

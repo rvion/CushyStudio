@@ -1,64 +1,32 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, ButtonGroup } from 'rsuite'
-import { StepL } from '../../../models/Step'
+import { Button } from 'rsuite'
+import { ActionL } from 'src/models/Action'
 import { useSt } from '../../FrontStateCtx'
-import { useProject } from '../../ProjectCtx'
 
-export const ActionPickerUI = observer(function ActionPickerUI_(p: { step: StepL }) {
+export const ActionPickerUI = observer(function ActionPickerUI_(p: { action: ActionL }) {
     const st = useSt()
-    const pj = useProject()
-    const step = p.step
-    if (step.project.item !== pj) return <>🔴 wrong project</>
-
-    const action = step.action
+    const action = p.action
+    const currentToolID = action.tool.id
     return (
-        <div className='flex'>
-            <ButtonGroup className='flex'>
-                {/* ({uiSt.currentActionID}) */}
-                {st.actionsSorted.map((a) => {
-                    return (
-                        <Button
-                            startIcon={<I.PlayOutline />}
-                            key={a.id}
-                            size='sm'
-                            appearance={step.action.item?.id === a.id ? 'primary' : 'ghost'}
-                            color={step.action.item?.id === a.id ? 'green' : undefined}
-                            onClick={() => step.update({ actionID: a.id })}
-                        >
-                            <div>{a.data.name}</div>
-                        </Button>
-                    )
-                })}
-            </ButtonGroup>
-            {/* {action && <FormUI step={step} />} */}
+        <div className='flex flex-col'>
+            {/* <ButtonGroup className='flex flex-col'> */}
+            {/* ({uiSt.currentActionID}) */}
+            {st.actionsSorted.slice(0, 3 /* 🔴 */).map((a) => {
+                return (
+                    <Button
+                        startIcon={<I.PlayOutline />}
+                        key={a.id}
+                        size='sm'
+                        appearance='link'
+                        // appearance={currentToolID === a.id ? 'primary' : 'ghost'}
+                        color={currentToolID === a.id ? 'green' : undefined}
+                        onClick={() => action.update({ toolID: a.id })}
+                    >
+                        <div>{a.data.name}</div>
+                    </Button>
+                )
+            })}
         </div>
-        // <div>
-        //     {/* ({st.ActionOptionForSelectInput.length} actions) */}
-        //     {/* <SelectPicker
-        //         value={uiSt.currentAction.id}
-        //         labelKey='name'
-        //         valueKey='id'
-        //         // onChange={(v) => (uiSt.currentAction =)}
-        //         data={st.ActionOptionForSelectInput}
-        //         style={{ width: 224 }}
-        //     /> */}
-        //     {/* <IconButton
-        //         //
-        //         appearance='primary'
-        //         color='green'
-        //         disabled={step.currentActionRef == null}
-        //         icon={<I.PlayOutline />}
-        //         onClick={() => {
-        //             if (step.currentActionRef == null) return
-        //             // st.sendMessageToExtension({
-        //             //     type: 'run-action',
-        //             //     flowID: flow.id,
-        //             //     actionID: uiSt.currentAction.id,
-        //             //     data: {}, // 🔴
-        //             // })
-        //         }}
-        //     /> */}
-        // </div>
     )
 })

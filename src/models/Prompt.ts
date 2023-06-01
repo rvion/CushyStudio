@@ -42,13 +42,9 @@ export class PromptL {
         // if (next)
     }
 
-    onCreate = () => {
-        //
-    }
-
-    step = new LiveRef<StepL>(this, 'stepID', 'steps')
-    graph = new LiveRef<GraphL>(this, 'graphID', 'graphs')
-    get project() { return this.step.item.project } // prettier-ignore
+    step = new LiveRef<this, StepL>(this, 'stepID', 'steps')
+    graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
+    // get project() { return this.step.item.project } // prettier-ignore
 
     onPromptRelatedMessage = (msg: PromptRelated_WsMsg) => {
         console.debug(`🐰 ${msg.type} ${JSON.stringify(msg.data)}`)
