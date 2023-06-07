@@ -8,27 +8,31 @@ import { ComfyImageInfo } from '../types/ComfyWsApi'
 import { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { LiveRef } from '../db/LiveRef'
+import { join } from 'path'
 
 export type ImageID = Tagged<string, 'ImageUID'>
+
 export interface ImageT {
+    /** image ID */
     id: ImageID
+    /** prompt from which the image is generated from; null if the image is manually uploaded or created via a widget */
+    promptID?: Maybe<PromptID>
+    /** infos returned from ComfyUI; null if the image has another provenence */
+    imageInfos?: ComfyImageInfo
+    /** image ratings */
+    star?: number
+    /** Cushy image folder (drag and drop system) */
+    folderID?: Maybe<FolderID>
+    /** where the file is either located locally / or aimed to be stored */
+    localFolderPath: AbsolutePath
+    /** where the file exists locally */
+    downloaded?: boolean
 
-    promptID: PromptID
-
-    imageInfos: ComfyImageInfo
-    // filename: string // 'ComfyUI_00017_.png'
-    // subfolder: string // ''
-    // type: string // 'temp'
-
-    //
     // comfyRelativePath?: string
     // comfyURL?: string
     //
     // localAbsolutePath?: string
     // localURL?: string
-    //
-    star?: number
-    folderID?: FolderID
 }
 
 export interface ImageL extends LiveInstance<ImageT, ImageL> {}
@@ -37,26 +41,39 @@ export class ImageL {
         return 'a123'
     }
 
-    get comfyURL() {
+    get comfyUrl() {
         return this.st.getServerHostHTTP() + '/view?' + new URLSearchParams(this.data.imageInfos).toString()
-        // return `file://${this.data.localAbsolutePath}}`
+    }
+
+    get url() {
+        if (this.data.downloaded) return `file://${this.localAbsolutePath}`
+        if (this.data.imageInfos == null) return '❌'
+        return this.comfyUrl
     }
 
     /** absolute path on the machine with vscode */
     get localAbsolutePath(): AbsolutePath {
-        return asAbsolutePath(path.join(this.st.cacheFolderPath, 'outputs', this.data.imageInfos.filename))
+        return (
+            this.data.localFolderPath ?? //
+            asAbsolutePath(join(this.st.cacheFolderPath, 'outputs', this.data.imageInfos?.filename ?? 'error'))
+        )
     }
 
-    onHydrate = () => {
+    onCreate = () => {
+        if (this.data.downloaded) return
         this.downloadImageAndSaveToDisk()
     }
 
     private downloadImageAndSaveToDisk = async (): Promise<true> => {
+        // error recovery => should never happend
         const absPath = this.localAbsolutePath
         const exists = existsSync(absPath)
-        if (exists) return true
-        // if (this.status !== ImageStatus.Known) throw new Error(`image status is ${this.status}`)
-        const response = await fetch(this.comfyURL, {
+        if (exists) {
+            if (!this.data.downloaded) this.update({ downloaded: true })
+            return true
+        }
+
+        const response = await fetch(this.url, {
             headers: { 'Content-Type': 'image/png' },
             method: 'GET',
             // responseType: ResponseType.Binary,
@@ -68,7 +85,7 @@ export class ImageL {
         // const folder = join(absPath, '..')
         // mkdirSync(folder, { recursive: true })
         // writeFileSync(absPath, Buffer.from(binArr))
-
+        this.update({ downloaded: true })
         console.info('🖼️ image saved')
         // this.status = ImageStatus.Saved
         return true

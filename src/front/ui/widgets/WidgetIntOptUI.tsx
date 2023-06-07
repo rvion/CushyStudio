@@ -29,6 +29,7 @@ export const WidgetIntOptUI = observer(function WidgetBoolUI_(p: {
             />
             <InputNumber //
                 disabled={uiSt.disabled}
+                size='sm'
                 value={uiSt.lastNumberVal}
                 onChange={(num) => {
                     const next = typeof num === 'number' ? num : parseInt(num, 10)

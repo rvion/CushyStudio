@@ -64,6 +64,8 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: {
         <div>
             {/* {JSON.stringify(schema.getLoras())} */}
             <MultiCascader //
+                size='sm'
+                // appearance='subtle'
                 style={{ maxWidth: '300px' }}
                 value={names}
                 menuWidth={300}

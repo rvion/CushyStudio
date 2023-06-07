@@ -1,10 +1,10 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useSt } from '../FrontStateCtx'
-import { MessageFromExtensionToWebview } from '../../types/MessageFromExtensionToWebview'
 import { Panel } from 'rsuite'
 import { useLayoutEffect, useRef } from 'react'
+import { MessageFromExtensionToWebview_ } from 'src/types/MessageFromExtensionToWebview'
 
-export const MsgShowHTMLUI = observer(function MsgShowHTMLUI_(p: { msg: MessageFromExtensionToWebview }) {
+export const MsgShowHTMLUI = observer(function MsgShowHTMLUI_(p: { msg: MessageFromExtensionToWebview_ }) {
     const st = useSt()
     const msg = p.msg
     if (msg.type !== 'show-html') return <>error</>

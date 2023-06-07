@@ -5,12 +5,12 @@
     "tasks": [
         {
             "label": "starts everything",
-            "dependsOn": ["🖼  Front", "👁  TSC"],
+            "dependsOn": ["🛋️ Cushy", "👁  TSC"],
             "group": { "kind": "build", "isDefault": true },
             "runOptions": { "runOn": "folderOpen", "instanceLimit": 1 }
         },
         {
-            "label": "🖼  Front",
+            "label": "🛋️ Cushy",
             "detail": "start FRONTEND dev-server",
             "type": "process",
             "command": "npm",

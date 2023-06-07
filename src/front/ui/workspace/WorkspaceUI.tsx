@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { useSt } from '../../FrontStateCtx'
 import { projectContext } from '../../ProjectCtx'
 import { ProjectUI } from './ProjectUI'
+import { LightBoxUI } from '../LightBox'
 
 export const WorkspaceUI = observer(function WorkspaceUI_(p: {}) {
     const st = useSt()
@@ -11,6 +12,7 @@ export const WorkspaceUI = observer(function WorkspaceUI_(p: {}) {
                 return (
                     <projectContext.Provider value={prolject} key={prolject.id}>
                         <ProjectUI key={prolject.id} />
+                        <LightBoxUI lbs={st.lightBox} />
                     </projectContext.Provider>
                 )
             })}

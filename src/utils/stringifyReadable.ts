@@ -1,3 +1,4 @@
+const tab = '    '
 export function readableStringify(obj: any, maxLevel = 3, level = 0) {
     if (level > maxLevel) return JSON.stringify(obj)
     if (typeof obj !== 'object' || obj === null) return JSON.stringify(obj)
@@ -16,13 +17,12 @@ export function readableStringify(obj: any, maxLevel = 3, level = 0) {
         } else if (valueType === 'object' && value !== null) {
             result += `${indent}  "${key}": ${readableStringify(value, maxLevel, level + 1)}`
         } else {
-            const formattedValue = valueType === 'string' ? `"${value}"` : value
+            const formattedValue = valueType === 'string' ? JSON.stringify(value) : value
             result += `${indent}  "${key}": ${formattedValue}`
         }
         result += '\n'
     }
-
-    result += `${'  '.repeat(Math.max(0, level - 1))}}`
+    result += `${tab.repeat(Math.max(0, level - 1))}}`
 
     return result
 }

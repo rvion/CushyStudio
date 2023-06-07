@@ -1,5 +1,6 @@
 import type { Requestable } from 'src/controls/Requestable'
-import { useForm } from '../FormCtx'
+
+import { useStep } from '../FormCtx'
 import { observer } from 'mobx-react-lite'
 import { FormPath } from 'src/models/Step'
 import { BUG } from '../../../controls/BUG'
@@ -11,7 +12,8 @@ import { WidgetIntOptUI } from './WidgetIntOptUI'
 import { WidgetIntUI } from './WidgetIntUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetPaintUI } from './WidgetPaintUI'
-import { WidgetStrUI } from './WidgetStrUI'
+// import { WidgetStrUI } from './WidgetStrUI'
+import { EditorUI } from './WidgetLexical'
 
 /** this widget will then dispatch the individual requests to the appropriate sub-widgets
  * collect the responses and submit them to the back once completed and valid.
@@ -22,7 +24,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     req: Requestable
     focus?: boolean
 }) {
-    const askState = useForm()
+    const step = useStep()
     const req = p.req
 
     // forget next line, it's just to make the compiler happy somewhere else
@@ -33,7 +35,12 @@ export const WidgetUI = observer(function WidgetUI_(p: {
         return (
             <div>
                 {req.map((item, ix) => (
-                    <WidgetUI focus={p.focus} path={[...p.path, ix]} req={item} key={ix} />
+                    <WidgetUI //
+                        focus={p.focus}
+                        path={[...p.path, ix]}
+                        req={item}
+                        key={ix}
+                    />
                 ))}
             </div>
         )
@@ -42,16 +49,17 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'items') return <>TODO</>
 
     // primitives
-    const get = () => askState.getAtPath(p.path)
-    const set = (next: any) => askState.setAtPath(p.path, next)
+    const get = () => step.getAtPath(p.path)
+    const set = (next: any) => step.setAtPath(p.path, next)
+    const finalPath = [p.path]
 
     if (req.type === 'bool') return <WidgetBoolUI get={get} set={set} optional={false} />
     if (req.type === 'bool?') return <WidgetBoolUI get={get} set={set} optional={true} />
     if (req.type === 'int') return <WidgetIntUI get={get} set={set} />
     if (req.type === 'int?') return <WidgetIntOptUI get={get} set={set} />
-    if (req.type === 'str') return <WidgetStrUI get={get} set={set} />
-    if (req.type === 'str?') return <WidgetStrUI get={get} set={set} nullable />
-    if (req.type === 'paint') return <WidgetPaintUI uri={'foo bar 🔴'} />
+    if (req.type === 'str') return <EditorUI get={get} set={set} />
+    if (req.type === 'str?') return <EditorUI get={get} set={set} nullable />
+    if (req.type === 'paint') return <>🔴 paint form commented</> //<WidgetPaintUI uri={'foo bar 🔴'} />
     if (req.type === 'samMaskPoints') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'selectImage') return <ImageSelection /*infos={req.imageInfos}*/ get={get} set={set} />
     if (req.type === 'manualMask') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />

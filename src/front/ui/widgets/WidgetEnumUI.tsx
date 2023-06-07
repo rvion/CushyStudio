@@ -25,6 +25,9 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
     }, [schema, p.optional])
     return (
         <SelectPicker //
+            size='sm'
+            cleanable={Boolean(p.optional)}
+            // appearance='subtle'
             // defaultOpen={p.autofocus}
             data={options}
             value={p.get() ?? null}

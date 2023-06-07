@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { Button } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 import { GalleryFolderUI } from './GalleryFolderUI'
-import { GalleryImageUI } from './GalleryImageUI'
+import { ImageUI } from './ImageUI'
 
 export const Gallery2UI = observer(function Gallery2UI_(p: {}) {
     const st = useSt()
@@ -19,7 +19,7 @@ export const Gallery2UI = observer(function Gallery2UI_(p: {}) {
                 {/* request to focus next  */}
                 <Button>next</Button>
                 {st.imageReversed.map((img, ix) => (
-                    <GalleryImageUI key={ix} img={img} />
+                    <ImageUI key={ix} img={img} />
                 ))}
             </div>
         </>

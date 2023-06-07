@@ -3,24 +3,30 @@ import { observer } from 'mobx-react-lite'
 import { IconButton, Input, Panel } from 'rsuite'
 import { useProject } from '../../ProjectCtx'
 import { GraphUI } from './GraphUI'
+import { Fragment } from 'react'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const project = useProject()
     return (
-        <Panel>
-            <div className='row'>
-                <IconButton onClick={() => project.delete()} icon={<I.Trash />} />
+        <Fragment>
+            <div className='flex'>
                 <Input
+                    style={{ width: '300px' }}
+                    width={300}
+                    size='sm'
                     value={project.data.name}
                     onChange={(next) => project.update({ name: next })}
                     placeholder='Project name'
                     name='title'
                 />
+                <div className='flex-grow'></div>
+                <IconButton appearance='subtle' onClick={() => project.delete()} icon={<I.Trash />} />
             </div>
+            {/* <Divider /> */}
             <div className='row'>
-                <div className='flex flex-col gap-2 items-start'>
+                <div className='flex flex-col items-start'>
                     {/* <EmptyGraphUI /> */}
-                    <GraphUI graph={project.rootGraph.item} />
+                    <GraphUI graph={project.rootGraph.item} depth={1} />
                     {/* {project.steps.map((step) => i(
                         <StepUI step={step} key={step.id} />
                     ))} */}
@@ -42,6 +48,6 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 })} */}
                 </div>
             </div>
-        </Panel>
+        </Fragment>
     )
 })

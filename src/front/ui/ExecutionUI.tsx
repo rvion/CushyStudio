@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
+import { useSt } from '../FrontStateCtx'
 // import { NodeListUI } from './NodeListUI'
-import { useSt } from './WorkspaceContext'
 
 export const ExecutionUI = observer(function ExecutionUI_() {
     const st = useSt()

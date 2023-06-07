@@ -18,7 +18,7 @@ configure({ enforceActions: 'never' })
  * - belongs to a script
  */
 export class ComfyNode<ComfyNode_input extends object> {
-    artifacts: _WsMsgExecutedData[] = []
+    // artifacts: _WsMsgExecutedData[] = []
     // images: GeneratedImage[] = []
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema

@@ -6,35 +6,47 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
     if (st.hovered == null) return null
     return (
         <div>
-            <>
-                <div
-                    style={{
-                        pointerEvents: 'none',
-                        zIndex: 999998,
-                        position: 'absolute',
-                        inset: 0,
-                        bottom: 0,
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        background: '#272727aa',
-                    }}
-                ></div>
+            {/* BACKDROP */}
+            <div
+                style={{
+                    pointerEvents: 'none',
+                    zIndex: 999998,
+                    position: 'absolute',
+                    inset: 0,
+                    bottom: 0,
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    background: '#272727aa',
+                }}
+            ></div>
+            {/* OVERLAY CONTAINER */}
+            <div
+                style={{
+                    pointerEvents: 'none',
+                    top: '10rem',
+                    left: '10rem',
+                    position: 'absolute',
+                    zIndex: 999999,
+                    objectFit: 'contain',
+                    maxHeight: '100vh',
+                    background: 'red',
+                    maxWidth: '100vw',
+                }}
+            >
+                {/* METADATA */}
+                <div>{st.hovered.prompt.id}</div>
+
+                {/* IMAGE */}
                 <img
-                    src={st.hovered.comfyURL}
+                    src={st.hovered.url}
                     style={{
-                        //
-                        // margin: 'auto',
-                        top: '1rem',
-                        left: '1rem',
-                        position: 'absolute',
-                        zIndex: 999999,
                         objectFit: 'contain',
                         maxHeight: '100vh',
                         maxWidth: '100vw',
                     }}
                 />
-            </>
+            </div>
         </div>
     )
 })

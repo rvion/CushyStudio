@@ -15,19 +15,19 @@ export const TypescriptHighlightedCodeUI = (p: { code: string }) => {
         hljs.highlightElement(e)
     }, [ref])
     return (
-        <Panel
-            collapsible
-            shaded
-            header={
-                <div>
-                    <I.Code /> Code
-                </div>
-            }
-        >
-            <code className='language-typescript text-xs' style={{ whiteSpace: 'pre-wrap' }} ref={ref}>
-                {p.code}
-            </code>
-        </Panel>
+        // <Panel
+        //     collapsible
+        //     shaded
+        //     header={
+        //         <div>
+        //             <I.Code /> Code
+        //         </div>
+        //     }
+        // >
+        <code className='language-typescript text-xs' style={{ whiteSpace: 'pre-wrap' }} ref={ref}>
+            {p.code}
+        </code>
+        // </Panel>
     )
 }
 

@@ -60,6 +60,16 @@ export const LightBoxUI = observer(function LightBoxUI_(p: { lbs: LightBoxState;
             }}
             styles={{ container: { minHeight: '20rem' } }}
             zoom={{ scrollToZoom: true, maxZoomPixelRatio: 10 }}
+            thumbnails={{
+                width: 48,
+                height: 48,
+                position: 'start',
+                vignette: false,
+                showToggle: true,
+                border: 0,
+                borderRadius: 20,
+                imageFit: 'cover',
+            }}
             plugins={[
                 //
                 Zoom,
@@ -71,7 +81,7 @@ export const LightBoxUI = observer(function LightBoxUI_(p: { lbs: LightBoxState;
             ]}
             slides={lbs.imgs.map((img) => ({
                 //
-                src: img.comfyURL,
+                src: img.url,
                 // src: img.data.comfyURL ?? img.data.localURL ?? '🔴',
             }))}
             open={true}

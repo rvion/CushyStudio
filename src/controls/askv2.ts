@@ -8,14 +8,22 @@
 import type { Base64Image } from 'src/core/b64img'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { Maybe, Tagged } from 'src/utils/types'
-import type { ImageL, ImageT } from 'src/models/Image'
+import type { ImageID, ImageL, ImageT } from 'src/models/Image'
 import type { Requestable } from './Requestable'
 
 import type * as R from './Requestable'
-import { LATER } from 'LATER'
+import type { LATER } from 'LATER'
+import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
+import { ComfyNodeID } from 'src/types/NodeUID'
 
 export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>
 export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>
+
+export type ImageAnswer1 = { type: 'imageID'; imageID: ImageID }
+export type ImageAnswer2 = { type: 'imageSignal'; nodeID: ComfyNodeID; fieldName: string } /** node must be in current graph */
+export type ImageAnswer3 = { type: 'imagePath'; absPath: AbsolutePath }
+export type ImageAnswer4 = { type: 'imageURL'; url: string }
+export type ImageAnswer = ImageAnswer1 | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
 
 // prettier-ignore
 export type InfoAnswer<Req> =
@@ -35,7 +43,7 @@ export type InfoAnswer<Req> =
     Req extends R.Requestable_loras ? SimplifiedLoraDef[] :
     /** painting */
     Req extends R.Requestable_samMaskPoints ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
-    Req extends R.Requestable_selectImage ? _IMAGE :
+    Req extends R.Requestable_selectImage ? ImageAnswer :
     Req extends R.Requestable_manualMask ? Base64Image :
     Req extends R.Requestable_paint ? Base64Image :
 
@@ -71,7 +79,7 @@ export class FormBuilder {
     intOpt = (p?: Omit<R.Requestable_intOpt, 'type'>) => ({ type: 'int?', ...p })
 
     /** bools */
-    bool = (p?: Omit<R.Requestable_bool, 'type'>) => ({ type: 'bool' as const, ...p })
+    bool = (p?: Omit<R.Requestable_bool, 'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })
     boolOpt = (p?: Omit<R.Requestable_boolOpt, 'type'>) => ({ type: 'bool?' as const, ...p })
 
     /** embedding */
@@ -99,7 +107,7 @@ export class FormBuilder {
         type: 'samMaskPoints' as const,
         imageInfo: toImageInfos(img),
     })
-    selectImage = (label: string, imgs: (ImageL | ImageT)[]) => ({
+    selectImage = (label: string, imgs: (ImageL | ImageT)[]): R.Requestable_selectImage => ({
         type: 'selectImage' as const,
         imageInfos: imgs.map(toImageInfos),
         label,

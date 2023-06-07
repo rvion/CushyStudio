@@ -5,6 +5,7 @@ import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { WorkspaceUI } from '../workspace/WorkspaceUI'
 import { AppBarUI } from './AppBarUI'
+import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
@@ -18,18 +19,26 @@ export const CushyUI = observer(function CushyUI_() {
                     <GalleryHoveredPreviewUI />
                     {action == null ? ( //
                         <WorkspaceUI />
-                    ) : action.type === 'paint' ? null : (
-                        // <WidgetPaintUI uri={action.img.localURL ?? action.img.comfyURL ?? '🔴'} />
+                    ) : action.type === 'paint' ? (
+                        <WidgetPaintUI action={action} />
+                    ) : (
+                        // <WorkspaceUI />
                         <WorkspaceUI />
                     )}
                 </ScrollablePaneUI>
             </div>
             {/* {st.showAllMessageReceived ? <DebugMessagesUI /> : null} */}
-            <pre>{JSON.stringify(st.db.store)}</pre>
+            {/* <pre>{JSON.stringify(st.db.store)}</pre> */}
         </div>
     )
 })
-
+export const ScrollableUI = observer(function ScrollableUI_(p: { children: React.ReactNode }) {
+    return (
+        <div className='relative flex-1 '>
+            <div className='inset-0 scrollable'>{p.children}</div>
+        </div>
+    )
+})
 // export const DebugMessagesUI = observer(function DebugMessagesUI_(p: {}) {
 //     const st = useSt()
 //     return (

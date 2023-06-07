@@ -1,20 +1,30 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { Radio, RadioGroup } from 'rsuite'
+import { Button, Radio, RadioGroup } from 'rsuite'
 import { LightBoxState, LightBoxUI } from '../LightBox'
 import type { ImageT } from 'src/models/Image'
+import { useImageDrop } from '../galleries/dnd'
+import { ImageAnswer } from 'src/controls/askv2'
+import { useStep } from '../FormCtx'
 
 export const ImageSelection = observer(function ImageSelection_(p: {
     // infos: ImageInfos[]
-    get: () => ImageT | null
-    set: (value: ImageT) => void
+    get: () => ImageAnswer | null
+    set: (value: ImageAnswer) => void
 }) {
     const { get, set } = p
     // const lbs = useMemo(() => new LightBoxState(() => infos), [infos])
     const checkedURL = get()
+    const [dropStyle, dropRef] = useImageDrop((i) => {
+        set({ type: 'imageID', imageID: i.id })
+    })
+    const step = useStep()
+    const node = step.inputGraph.item.findNodeByType('VAEDecode')
     return (
-        <div className='flex gap-2'>
-            {/* {infos.map((info) => {
+        <>
+            <Button onClick={() => set({ type: 'imageSignal', nodeID: node!.uid, fieldName: 'IMAGE' })}>last</Button>
+            <div ref={dropRef} className='flex gap-2' style={{ width: '3rem', height: '3rem', ...dropStyle }}>
+                {/* {infos.map((info) => {
                 const url = info.comfyURL
                 return (
                     <RadioGroup value={checkedURL?.comfyURL} name='radioList'>
@@ -35,8 +45,9 @@ export const ImageSelection = observer(function ImageSelection_(p: {
                     </RadioGroup>
                 )
             })} */}
-            {/* <LightBoxUI lbs={lbs} /> */}
-            image selection
-        </div>
+                {/* <LightBoxUI lbs={lbs} /> */}
+            </div>
+            <pre>{JSON.stringify(get(), null, 3)}</pre>
+        </>
     )
 })

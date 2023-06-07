@@ -37,11 +37,11 @@ export type Requestable =
     /** ?? */
     | BUG
 
-export type Requestable_str = { type: 'str'; label?: string; default?: string }
-export type Requestable_strOpt = { type: 'str?'; label?: string; default?: string }
+export type Requestable_str = { type: 'str'; label?: string; default?: string; textarea?: boolean }
+export type Requestable_strOpt = { type: 'str?'; label?: string; default?: string; textarea?: boolean }
 export type Requestable_int = { type: 'int'; label?: string; default?: number }
 export type Requestable_intOpt = { type: 'int?'; label?: string; default?: number | null }
-export type Requestable_bool = { type: 'bool'; label?: string }
+export type Requestable_bool = { type: 'bool'; label?: string; default?: boolean }
 export type Requestable_boolOpt = { type: 'bool?'; label?: string }
 export type Requestable_embeddings = { type: 'embeddings'; label?: string }
 export type Requestable_enum<T extends keyof LATER<'Requirable'>> = { type: 'enum'; enumName: T; label?: string }

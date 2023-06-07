@@ -12,7 +12,7 @@ function createWindow() {
             plugins: true,
             nodeIntegration: true,
             nodeIntegrationInWorker: true,
-            nodeIntegrationInSubFrames: true,
+            nodeIntegrationInSubFrames: false,
             contextIsolation: false,
             backgroundThrottling: false,
             webviewTag: true,

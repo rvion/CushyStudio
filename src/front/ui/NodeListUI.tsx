@@ -28,7 +28,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
             expanded={st.expandNodes}
             header={
                 <div className='row items-center gap'>
-                    <NodeRefUI nodeUID={uid} graph={graph} />
+                    <NodeRefUI node={node} />
                     <Progress.Line
                         style={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}
                         showInfo={false}
@@ -82,7 +82,7 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                                 if (!Array.isArray(val)) return null
                                 return (
                                     <div key={input.name} className='row gap-2'>
-                                        <Form.ControlLabel>{<NodeRefUI nodeUID={val[0]} graph={graph} />}</Form.ControlLabel>
+                                        <Form.ControlLabel>{<NodeRefUI node={node} />}</Form.ControlLabel>
                                         <Form.ControlLabel>{input.name}</Form.ControlLabel>
                                     </div>
                                 )

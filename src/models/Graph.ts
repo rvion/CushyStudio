@@ -16,7 +16,8 @@ import { ImageL } from './Image'
 import { LiveCollection } from '../db/LiveCollection'
 import { StepID, StepL } from './Step'
 import { LiveRefOpt } from '../db/LiveRefOpt'
-import { ActionL } from './Action'
+import { Status } from '../back/Status'
+import { deepCopyNaive } from '../utils/ComfyUtils'
 
 export type RunMode = 'fake' | 'real'
 
@@ -32,10 +33,12 @@ export type GraphID = Branded<string, 'GraphID'>
 export const asGraphID = (s: string): GraphID => s as any
 
 export type GraphT = {
+    /** graph ID */
     id: GraphID
+    /** graph json */
     comfyPromptJSON: ComfyPromptJSON
-    nextStepID?: Maybe<StepID>
-    frozen?: boolean
+    /** the current node selected in the tree */
+    focusedStepID?: Maybe<StepID>
 }
 
 export interface GraphL extends LiveInstance<GraphT, GraphL> {}
@@ -46,7 +49,7 @@ export class GraphL {
     }
 
     onCreate = () => {}
-    nextStep = new LiveRefOpt<this, StepL>(this, 'nextStepID', 'steps')
+    focusedStep = new LiveRefOpt<this, StepL>(this, 'focusedStepID', 'steps')
 
     onUpdate = (prev: Maybe<GraphT>, next: GraphT) => {
         const prevSize = this.size
@@ -68,7 +71,7 @@ export class GraphL {
         return this.nodes.map((n) => n.$schema.nameInCushy)
     }
 
-    actions = new LiveCollection<ActionL>(this, 'inputGraphID', 'actions')
+    // actions = new LiveCollection<ActionL>(this, 'inputGraphID', 'actions')
     childSteps = new LiveCollection<StepL>(this, 'parentGraphID', 'steps')
     parentSteps = new LiveCollection<StepL>(this, 'outputGraphID', 'steps')
 
@@ -81,6 +84,21 @@ export class GraphL {
         // this.graph.run.cyto.addNode(this)
     }
 
+    createDraft = (
+        /** the basis step you'd like to base yourself when creating a new branch */
+        basis?: Maybe<StepL>,
+    ): StepL => {
+        const draft = this.db.steps.create({
+            toolID: basis?.data.toolID ?? this.st.toolsSorted[0].id,
+            parentGraphID: this.id,
+            outputGraphID: this.clone({ focusedStepID: null }).id,
+            params: deepCopyNaive(basis?.data.params ?? {}),
+            status: Status.New,
+        })
+        this.update({ focusedStepID: draft.id })
+        return draft
+    }
+
     /** proxy to this.db.schema */
     get schema() {
         return this.db.schema
@@ -88,6 +106,10 @@ export class GraphL {
 
     /** nodes, in creation order */
     nodes: ComfyNode<any>[] = []
+
+    findNodeByType = <T extends ComfyNodeType>(nameInCushy: T): Maybe<Requirable[T]> => {
+        return this.nodes.find((n) => n.$schema.nameInCushy === nameInCushy) as any
+    }
 
     /** nodes, indexed by nodeID */
     nodesIndex = new Map<string, ComfyNode<any>>()
@@ -148,11 +170,8 @@ export class GraphL {
 
     /** @internal update the progress value of the currently focused onde */
     onProgress = (msg: WsMsgProgress) => {
-        if (this.currentExecutingNode) {
-            this.currentExecutingNode.progress = msg.data
-            return
-        }
-        console.log('❌ no current executing node', msg)
+        if (this.currentExecutingNode == null) return console.log('❌ no current executing node', msg)
+        this.currentExecutingNode.progress = msg.data
     }
 
     private outputs: WsMsgExecuted[] = []

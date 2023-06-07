@@ -7,14 +7,12 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
-import { asActionID } from '../models/Action'
 import { CushyFile } from '../back/CushyFile'
 import { CushyFileWatcher } from '../back/CushyFileWatcher'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { LiveDB } from '../db/LiveDB'
 import { asFolderID } from '../models/Folder'
-import { GraphL, asGraphID } from '../models/Graph'
-import { ProjectL, asProjectID } from '../models/Project'
+import { GraphL } from '../models/Graph'
 import { EmbeddingName, SchemaL } from '../models/Schema'
 import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
 import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebview'
@@ -61,7 +59,7 @@ export class STATE {
 
     // files and actions
     knownFiles = new Map<AbsolutePath, CushyFile>()
-    get actionsSorted() {
+    get toolsSorted() {
         return this.db.tools.values.slice().sort((a, b) => a.data.priority - b.data.priority)
     }
 
@@ -72,22 +70,20 @@ export class STATE {
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
 
     // ui stuff
-    lightBox = new LightBoxState(() => this.db.images.values, true)
+    lightBox = new LightBoxState(() => this.db.images.values, false)
     hovered: Maybe<ImageL> = null
 
-    startProject = (): ProjectL => {
-        const projectID = asProjectID(nanoid())
-        const initialGraph = this.db.graphs.create({ id: asGraphID(nanoid()), comfyPromptJSON: {} })
-        const project = this.db.projects.create({ id: projectID, rootGraphID: initialGraph.id, name: 'new project' })
-        this.db.actions.create({ inputGraphID: initialGraph.id, id: asActionID(nanoid()), params: {} })
-        return project
+    startProject = () => {
+        const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
+        this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
+        const startDraft = initialGraph.createDraft()
+        initialGraph.update({ focusedStepID: startDraft.id })
     }
-    // --------------------------
 
     expandNodes: boolean = false
     flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
-    currentAction: UIAction | null = null
+    currentAction: Maybe<UIAction> = null
 
     gallerySize: number = 256
 
@@ -320,7 +316,8 @@ export class STATE {
             console.info('[*... step x/4] embeddings fetched')
 
             // 2 ------------------------------------
-            http: console.info('[*... step 2/4] updating schema...')
+            // http:
+            console.info('[*... step 2/4] updating schema...')
             const comfyJSONStr = readableStringify(schema$, 3)
             const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
             writeFileSync(this.comfyJSONPath, comfyJSONBuffer, 'utf-8')

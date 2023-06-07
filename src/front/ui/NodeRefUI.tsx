@@ -1,12 +1,17 @@
-import type { GraphL } from '../../models/Graph'
-import type { ComfyNodeID } from '../../types/NodeUID'
+import type { ComfyNode } from '../../core/Node'
 
 import { observer } from 'mobx-react-lite'
 import { comfyColors } from '../../core/Colors'
 
-export const NodeRefUI = observer(function NodeRefUI_(p: { size?: number; nodeUID: ComfyNodeID; graph: GraphL }) {
-    const node = p.graph.nodesIndex.get(p.nodeUID)
-    if (node == null) return <>❌ error</>
+export const NodeRefUI = observer(function NodeRefUI_(p: {
+    //
+    label?: string
+    size?: number
+    node: ComfyNode<any>
+}) {
+    // const node = p.graph.nodesIndex.get(p.nodeUID)
+    // if (node == null) return <>❌ error</>
+    const { node } = p
     const size = p.size ?? 1.5
     const category = node?.$schema.category
     const color = comfyColors[category]
@@ -21,7 +26,8 @@ export const NodeRefUI = observer(function NodeRefUI_(p: { size?: number; nodeUI
             }}
             className='nodeRef'
         >
-            {p.nodeUID}
+            {p.label}
+            {/* {node.uid} */}
             {/* .join(', ') */}
         </div>
     )

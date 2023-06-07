@@ -11,7 +11,7 @@ import { nanoid } from 'nanoid'
 import { STATE } from 'src/front/state'
 import { Requestable } from '../controls/Requestable'
 import { ScriptStep_ask } from '../controls/ScriptStep_ask'
-import { FormBuilder, InfoAnswer, InfoRequestFn } from '../controls/askv2'
+import { FormBuilder, ImageAnswer, InfoAnswer, InfoRequestFn } from '../controls/askv2'
 import { auto } from '../core/autoValue'
 import { globalToolFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
@@ -20,13 +20,14 @@ import { ImageL } from '../models/Image'
 import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo, WsMsgExecuted } from '../types/ComfyWsApi'
-import { deepCopyNaive } from '../utils/ComfyUtils'
+import { deepCopyNaive, exhaust } from '../utils/ComfyUtils'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
 import { ToolL } from 'src/models/Tool'
 import { Status } from './Status'
+import { marked } from 'marked'
 
 /** script exeuction instance */
 export class Runtime {
@@ -119,11 +120,13 @@ export class Runtime {
     }
 
     showHTMLContent = (p: { htmlContent: string; title: string }) => {
+        this.step.append({ type: 'show-html', content: p.htmlContent, title: p.title })
         // this.st.broadCastToAllClients({ type: 'show-html', content: p.htmlContent, title: p.title })
     }
 
     showMarkdownContent = (p: { title: string; markdownContent: string }) => {
-        // const htmlContent = marked.parse(p.markdownContent)
+        const htmlContent = marked.parse(p.markdownContent)
+        this.step.append({ type: 'show-html', content: htmlContent, title: p.title })
         // this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
     }
 
@@ -220,14 +223,35 @@ export class Runtime {
         return seed
     }
 
+    loadImageAnswer = (ia: ImageAnswer): _IMAGE => {
+        //
+        // if (this.)
+        if (ia.type === 'imagePath') return this.nodes.WASImageLoad({ image_path: ia.absPath })
+        if (ia.type === 'imageID') {
+            const img = this.st.db.images.getOrThrow(ia.imageID)
+            return this.nodes.WASImageLoad({ image_path: img.localAbsolutePath })
+        }
+        if (ia.type === 'imageSignal') {
+            const node = this.graph.nodesIndex.get(ia.nodeID)
+            if (node == null) throw new Error('node is not in current graph')
+            // 🔴 need runtime checking here
+            const xx = (node as any)[ia.fieldName]
+            console.log({ xx })
+            return xx
+        }
+        if (ia.type === 'imageURL') return this.nodes.WASImageLoad({ image_path: ia.url })
+        return exhaust(ia)
+    }
+
     private extractString = (message: Printable): string => {
         if (typeof message === 'string') return message
         if (typeof message === 'number') return message.toString()
         if (typeof message === 'boolean') return message.toString()
         if (typeof message === 'object')
             return `${message.$schema.nameInCushy}_${message.uid}(${JSON.stringify(message.json, null, 2)})`
-        return '❓'
+        return `❌ (impossible to extract string from ${typeof message} / ${(message as any)?.constructor?.name})`
     }
+
     /** display something in the console */
     print = (message: Printable) => {
         let msg = this.extractString(message)
@@ -308,7 +332,7 @@ export class Runtime {
         const liveGraph = this.graph
         if (liveGraph == null) throw new Error('no graph')
         const currentJSON = deepCopyNaive(liveGraph.jsonForPrompt)
-        this.step.append({ type: 'prompt', graph: currentJSON })
+        // this.step.append({ type: 'prompt', graph: currentJSON })
         console.info('checkpoint:' + JSON.stringify(currentJSON))
         // const step = new PromptExecution(this, currentJSON)
         // this.steps.unshift(step)
@@ -359,13 +383,14 @@ export class Runtime {
         const prompmtInfo: PromptInfo = await res.json()
         console.log('prompt status', res.status, res.statusText, prompmtInfo)
 
-        const graph = this.st.db.graphs.create({ id: asGraphID(nanoid()), comfyPromptJSON: currentJSON })
+        const graph = this.st.db.graphs.create({ comfyPromptJSON: currentJSON })
         const prompt = this.st.db.prompts.create({
             id: prompmtInfo.prompt_id,
             executed: false,
             graphID: graph.id,
             stepID,
         })
+        this.step.append({ type: 'prompt', promptID: prompmtInfo.prompt_id })
 
         return prompt
         // await sleep(1000)

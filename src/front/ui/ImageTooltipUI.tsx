@@ -1,12 +1,6 @@
-import type { ImageL, ImageT } from 'src/models/Image'
+import type { ImageL } from 'src/models/Image'
 
-import * as I from '@rsuite/icons'
-import { observer, useLocalObservable } from 'mobx-react-lite'
-import { Button, IconButton, Panel, Popover, Rate, Slider, Whisper } from 'rsuite'
-import { useSt } from '../FrontStateCtx'
-import { MessageFromExtensionToWebview } from '../../types/MessageFromExtensionToWebview'
-import { useMemo } from 'react'
-import { LightBoxState, LightBoxUI } from './LightBox'
+import { observer } from 'mobx-react-lite'
 
 export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedImage: ImageL }) {
     const selectedImg = p.selectedImage
@@ -24,7 +18,7 @@ export const ImageTooltipUI = observer(function ImageTooltipUI_(p: { selectedIma
                 <div className='prop row'>
                     <div className='propName'>comfy URL</div>
                     <div className='propValue'>
-                        <a href='{selectedImg?.comfyURL}'>{selectedImg?.comfyURL}</a>
+                        <a href='{selectedImg?.comfyURL}'>{selectedImg?.comfyUrl}</a>
                     </div>
                 </div>
 

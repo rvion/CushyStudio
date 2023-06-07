@@ -1,20 +1,15 @@
-import type { Branded, Maybe } from '../utils/types'
-import type {
-    PromptRelated_WsMsg,
-    WsMsgExecuted,
-    WsMsgExecuting,
-    WsMsgExecutionCached,
-    WsMsgExecutionStart,
-    WsMsgProgress,
-} from '../types/ComfyWsApi'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepID, StepL } from '../models/Step'
+import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting } from '../types/ComfyWsApi'
+import type { Branded, Maybe } from '../utils/types'
 import type { GraphID, GraphL } from './Graph'
 
-import { LiveRef } from '../db/LiveRef'
-import { ImageL } from './Image'
 import { nanoid } from 'nanoid'
+import { LiveCollection } from '../db/LiveCollection'
+import { LiveRef } from '../db/LiveRef'
 import { exhaust } from '../utils/ComfyUtils'
+import { ImageL } from './Image'
+import { asRelativePath } from '../utils/fs/pathUtils'
 
 export type PromptID = Branded<string, 'PromptID'>
 export const asPromptID = (s: string): PromptID => s as any
@@ -28,6 +23,8 @@ export type PromptT = {
 
 export interface PromptL extends LiveInstance<PromptT, PromptL> {}
 export class PromptL {
+    images = new LiveCollection<ImageL>(this, 'promptID', 'images')
+
     _resolve!: (value: this) => void
     _rejects!: (reason: any) => void
     finished: Promise<this> = new Promise((resolve, rejects) => {
@@ -93,11 +90,12 @@ export class PromptL {
                 promptID: this.id,
                 // comfyURL,
                 imageInfos: img,
+                localFolderPath: this.st.resolve(this.st.outputFolderPath, asRelativePath('')),
                 // comfyRelativePath,
                 // folder: img.subfolder,
                 // localAbsolutePath: img.localAbsolutePath,
             })
-            this.images.push(images)
+            // this.images.push(images)
         }
         this.outputs.push(msg) // accumulate in self
         // const node = this._graph.getNodeOrCrash(msg.data.node)
@@ -109,7 +107,7 @@ export class PromptL {
 
     /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
     private outputs: WsMsgExecuted[] = []
-    images: ImageL[] = []
+    // images: ImageL[] = []
 
     /** finish this step */
     private _finish = () => {

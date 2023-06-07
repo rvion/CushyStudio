@@ -43,6 +43,8 @@ export class CushyFile {
                 name: a.name,
                 priority: a.action.priority ?? 100,
                 form: a.action.ui?.(formBuilder),
+                codeTS: codeTS,
+                codeJS: codeJS,
             })
             globalToolFnCache.set(tool, a.action)
         }

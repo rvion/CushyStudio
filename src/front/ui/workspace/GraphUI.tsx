@@ -1,69 +1,57 @@
-import type { GraphL } from 'src/models/Graph'
-import type { StepL } from 'src/models/Step'
-
+import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
-import { Panel } from 'rsuite'
+import { Button } from 'rsuite'
+import type { GraphL } from 'src/models/Graph'
+import { StepL } from 'src/models/Step'
+import { Maybe } from 'src/utils/types'
 import { ActionUI } from '../widgets/ActionUI'
-import { StepUI } from './StepUI'
+import { GraphSummaryUI } from './GraphSummaryUI'
+import { StepBtnUI } from './StepUI'
+import { StepOutputUI } from './StepOutputUI'
 
-export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: GraphL }) {
+export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: number }) {
     const graph = p.graph
-    return (
-        <Panel className='graph-container self-start'>
-            {graph.size === 0 && <div>Empty Graph</div>}#{graph.id.slice(0, 3)}({graph.size})
-            <ul>
-                {graph.summary1.map((i, ix) => (
-                    <li key={ix}>- {i}</li>
-                ))}
-            </ul>
-        </Panel>
-    )
-})
-
-export const GraphUI = observer(function GraphUI_(p: { graph: GraphL }) {
-    const graph = p.graph
-    const next = graph.nextStep.item
-
+    const focusedStep: Maybe<StepL> = graph.focusedStep.item
     return (
         <Fragment>
-            {/* <GraphSummaryUI graph={graph} /> */}
-            <div className='flex'>
-                {/* <div>AA={graph.steps.items.length}</div> */}
-                {/* {graph.next.item && 'NEXT'} */}
+            <div className='flex items-baseline wrap'>
+                {/* depth */}
+                {/* <div className='mr-1'>#{p.depth}</div> */}
+
+                {/* existing branches */}
+                {graph.childSteps.map((step) => (
+                    <StepBtnUI key={step.id} step={step} />
+                ))}
+                {/* create branch button */}
+                <Button onClick={() => graph.createDraft(focusedStep).focus()}>
+                    <I.AddOutline />
+                </Button>
+            </div>
+
+            <div className='flex gap-2 items-baseline'>
+                {/* action form */}
                 <div>
-                    {graph.actions.map((action) => (
-                        <ActionUI key={action.id} action={action} />
-                    ))}
+                    {focusedStep ? <ActionUI step={focusedStep} /> : null}
+                    {focusedStep &&
+                        focusedStep.data.outputs?.map((output, ix) => (
+                            <StepOutputUI key={ix} step={focusedStep} output={output} />
+                        ))}
                 </div>
-            </div>
-            <div className='flex'>
-                {graph.childSteps.map((step) => {
-                    return (
-                        <div key={step.id} className='flex'>
-                            <div className='p-1 rounded-lg step-container' onClick={() => graph.update({ nextStepID: step.id })}>
-                                {/* <Step2UI step={step} /> */}
-                                <div>{step.tool.item?.data.name}</div>
-                                {step.id === next?.id && <GraphSummaryUI graph={step.outputGraph.item} />}
 
-                                {/* {step.id} */}
-                            </div>
-                        </div>
-                    )
-                })}
+                {/* input summary */}
+                {focusedStep && <GraphSummaryUI graph={graph} />}
             </div>
 
-            {next && <StepUI step={next} />}
-            {/* focused step */}
+            {/* <Divider /> */}
+            {/* child */}
+            {focusedStep && (
+                <GraphUI //
+                    key={focusedStep.id}
+                    graph={focusedStep.outputGraph.item}
+                    depth={p.depth + 1}
+                />
+            )}
         </Fragment>
     )
 })
-
-// export const Step2UI = observer(function Step2UI_(p: { step: StepL }) {
-//     return (
-//         <div>
-//             <div>{p.step.tool.item?.data.name}</div>
-//             <GraphSummaryUI graph={p.step.outputGraph.item} />
-//         </div>
-//     )
-// })

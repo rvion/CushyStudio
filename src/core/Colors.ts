@@ -5,5 +5,5 @@ export const comfyColors: { [category: string]: string } = {
     conditioning: '#481413', // '#0d430d',
     'conditioning/style_model': '#0d430d',
     sampling: '#634a1b',
-    image: 'pink',
+    image: '#7e3a3a',
 }

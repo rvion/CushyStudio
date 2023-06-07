@@ -13,13 +13,38 @@ export interface LiveEntityClass<T extends { id: string }, L> {
 }
 
 export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
-    Ktor: LiveEntityClass<T, L>
+    private Ktor: LiveEntityClass<T, L>
+    private _store: Indexed<T>
+    toJSON = (): Indexed<T> => this._store
 
-    store: Indexed<T>
-    toJSON = (): Indexed<T> => this.store
+    find = (check: (l: L) => boolean): Maybe<L> => {
+        for (const v of this.values) {
+            if (check(v)) return v
+        }
+        return null
+    }
+    findOrCrash = (check: (l: L) => boolean): L => {
+        for (const v of this.values) {
+            if (check(v)) return v
+        }
+        throw new Error('no entry found')
+    }
 
-    get size() {
-        return Object.keys(this.store).length
+    /** number of entities in the table */
+    get size() { return Object.keys(this._store).length } // prettier-ignore
+
+    /** return first entity from table, or null if table is empty */
+    first = (): Maybe<L> => {
+        const id0 = this.ids[0]
+        if (id0 == null) return null
+        return this.getOrThrow(id0)
+    }
+
+    /** return first entity from table, or crash if table is empty */
+    firstOrCrash = (): L => {
+        const id0 = this.ids[0]
+        if (id0 == null) throw new Error('collection is empty')
+        return this.getOrThrow(id0)
     }
 
     constructor(
@@ -30,7 +55,7 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
     ) {
         // ensure store has a key for this table
         if (!(name in db.store)) db.store[name] = {}
-        this.store = (db.store as any)[name] as Indexed<T>
+        this._store = (db.store as any)[name] as Indexed<T>
 
         // register
         this.db._tables.push(this)
@@ -65,8 +90,8 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
                 this.onUpdate?.(prev, this.data)
             }
 
-            clone(): T {
-                const cloneData = Object.assign({}, toJS(this.data), { id: nanoid() })
+            clone(t?: Partial<T>): T {
+                const cloneData = Object.assign({}, toJS(this.data), { id: nanoid(), ...t })
                 // console.log(`🔴 cloneData:`, cloneData)
                 // console.log(`🔴 this.data=`, this.data)
                 return this.table.create(cloneData)
@@ -93,7 +118,11 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
         }
 
         // make observable
-        makeAutoObservable(this, { Ktor: false, store: false })
+        makeAutoObservable(this, {
+            // @ts-ignore (private properties are untyped in this function)
+            Ktor: false,
+            store: false,
+        })
 
         MERGE_PROTOTYPES(InstanceClass, BaseInstanceClass)
         this.Ktor = InstanceClass
@@ -107,11 +136,11 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
 
     clear = () => {
         this.instances.clear()
-        for (const k of this.ids) delete this.store[k]
+        for (const k of this.ids) delete this._store[k]
     }
 
     get ids(): T['id'][] {
-        return Object.keys(this.store)
+        return Object.keys(this._store)
     }
 
     get values(): L[] {
@@ -119,7 +148,7 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
     }
 
     // 🔴 meh
-    mapData = <R>(fn: (k: T['id'], t: T) => R): R[] => Object.values(this.store).map((data) => fn(data.id, data))
+    mapData = <R>(fn: (k: T['id'], t: T) => R): R[] => Object.values(this._store).map((data) => fn(data.id, data))
 
     // UTILITIES -----------------------------------------------------------------------
 
@@ -151,23 +180,24 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
 
     /** 🔴 unfinished */
     delete = (id: string) => {
-        delete this.store[id]
+        delete this._store[id]
         this.instances.delete(id)
     }
 
     /** only call with brand new data */
-    create = (data: T): L => {
-        const id = data.id
+    create = (data: Omit<T, 'id'> & { id?: Maybe<T['id']> }): L => {
+        const id: T['id'] = data.id ?? nanoid()
+        if (data.id == null) data.id = id
 
         // ensure no instance exists
         if (this.instances.has(id)) throw new Error(`ERR: ${this.name}(${id}) already exists`)
 
         // ensure no data with same id exists
-        if (id in this.store) throw new Error(`ERR: ${this.name}(${id}) already exists in store`)
+        if (id in this._store) throw new Error(`ERR: ${this.name}(${id}) already exists in store`)
 
-        this.store[id] = data
+        this._store[id] = data as T
 
-        const instance = this._createInstance(this.store[id])
+        const instance = this._createInstance(this._store[id])
 
         return instance
     }
