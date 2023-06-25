@@ -14,7 +14,7 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
     return (
         <Button
             id={`button-to-focus-step-${step.id}`}
-            appearance={isFocused ? 'primary' : undefined}
+            appearance={isFocused ? 'primary' : 'subtle'}
             color={isFocused ? 'yellow' : undefined}
             onKeyDown={(e) => {
                 if (e.key === 'Delete' || e.key === 'Backspace') {

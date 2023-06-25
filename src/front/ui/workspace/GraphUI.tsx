@@ -24,7 +24,7 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                 {/* Drafts -------------------------------------------- action form */}
                 <div>
                     <div>
-                        {'-->'}
+                        {/* {'-->'} */}
                         {/* drafts: */}
                         {/* create branch button */}
                         {/* {graph.drafts.items.length} */}
@@ -33,8 +33,8 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                             <Button
                                 active={focusedDraft?.id === draft.id}
                                 onClick={() => graph.update({ focusedDraftID: draft.id })}
-                                size='xs'
                                 appearance='subtle'
+                                size='xs'
                             >
                                 {draft.tool.item.name}
                             </Button>
