@@ -20,6 +20,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
+            'src/*': './src/*.ts',
             buffer: './src/syms/buffer',
             child_process: './src/syms/child_process',
             fs: './src/syms/fs',

@@ -92,7 +92,7 @@ const renderSpeaker = (
             const db = img.st.db
             const pj: ProjectL = db.projects.firstOrCrash()
             const root: GraphL = pj.rootGraph.item
-            const step = root.createDraft()
+            const step = root.createStep()
             const ia: ImageAnswer = { type: 'imageID', imageID: img.id }
             step.update({
                 toolID: db.tools.findOrCrash((t) => t.name.endsWith('start from image')).id,

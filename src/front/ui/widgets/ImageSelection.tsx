@@ -5,7 +5,7 @@ import { LightBoxState, LightBoxUI } from '../LightBox'
 import type { ImageT } from 'src/models/Image'
 import { useImageDrop } from '../galleries/dnd'
 import { ImageAnswer } from 'src/controls/askv2'
-import { useStep } from '../FormCtx'
+import { useDraft } from '../useDraft'
 
 export const ImageSelection = observer(function ImageSelection_(p: {
     // infos: ImageInfos[]
@@ -18,8 +18,8 @@ export const ImageSelection = observer(function ImageSelection_(p: {
     const [dropStyle, dropRef] = useImageDrop((i) => {
         set({ type: 'imageID', imageID: i.id })
     })
-    const step = useStep()
-    const node = step.inputGraph.item.findNodeByType('VAEDecode')
+    const draft = useDraft()
+    const node = draft.graph.item.findNodeByType('VAEDecode')
     return (
         <>
             <Button onClick={() => set({ type: 'imageSignal', nodeID: node!.uid, fieldName: 'IMAGE' })}>last</Button>

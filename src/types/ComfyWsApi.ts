@@ -9,12 +9,26 @@ export type ApiPromptInput = {
 }
 
 // LIVE UPDATES -----------------------------------------------------
-export type WsMsg = WsMsgStatus | WsMsgExecutionStart | WsMsgProgress | WsMsgExecuting | WsMsgExecuted | WsMsgExecutionCached
+export type WsMsg =
+    | WsMsgStatus
+    | WsMsgExecutionStart
+    | WsMsgProgress
+    | WsMsgExecuting
+    | WsMsgExecuted
+    | WsMsgExecutionCached
+    | WsMsgExecutionError
 
 export type WsMsgStatus = { type: 'status'; data: { sid?: string; status: ComfyStatus } }
 
 // prompt-execution related
-export type PromptRelated_WsMsg = WsMsgExecutionStart | WsMsgExecutionCached | WsMsgExecuting | WsMsgProgress | WsMsgExecuted
+export type PromptRelated_WsMsg =
+    | WsMsgExecutionStart
+    | WsMsgExecutionCached
+    | WsMsgExecuting
+    | WsMsgProgress
+    | WsMsgExecuted
+    | WsMsgExecutionError
+
 export type WsMsgExecutionStart = { type: 'execution_start'; data: _WsMsgExecutionStartData }
 export type WsMsgExecutionCached = { type: 'execution_cached'; data: _WsMsgExecutionCachedData }
 export type WsMsgExecuting = { type: 'executing'; data: _WSMsgExecutingData }

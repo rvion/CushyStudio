@@ -18,6 +18,8 @@ import { StepID, StepL } from './Step'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 import { Status } from '../back/Status'
 import { deepCopyNaive } from '../utils/ComfyUtils'
+import { DraftID, DraftL, DraftT } from './Draft'
+import { ToolID } from './Tool'
 
 export type RunMode = 'fake' | 'real'
 
@@ -39,6 +41,7 @@ export type GraphT = {
     comfyPromptJSON: ComfyPromptJSON
     /** the current node selected in the tree */
     focusedStepID?: Maybe<StepID>
+    focusedDraftID?: Maybe<DraftID>
 }
 
 export interface GraphL extends LiveInstance<GraphT, GraphL> {}
@@ -50,6 +53,7 @@ export class GraphL {
 
     onCreate = () => {}
     focusedStep = new LiveRefOpt<this, StepL>(this, 'focusedStepID', 'steps')
+    focusedDraft = new LiveRefOpt<this, DraftL>(this, 'focusedDraftID', 'drafts')
 
     onUpdate = (prev: Maybe<GraphT>, next: GraphT) => {
         const prevSize = this.size
@@ -84,18 +88,38 @@ export class GraphL {
         // this.graph.run.cyto.addNode(this)
     }
 
-    createDraft = (
+    createStep = (
         /** the basis step you'd like to base yourself when creating a new branch */
-        basis?: Maybe<StepL>,
+        basis?: Maybe<{
+            toolID: ToolID
+            params: Maybe<any>
+        }>,
     ): StepL => {
         const draft = this.db.steps.create({
-            toolID: basis?.data.toolID ?? this.st.toolsSorted[0].id,
+            toolID: basis?.toolID ?? this.st.toolsSorted[0].id,
             parentGraphID: this.id,
             outputGraphID: this.clone({ focusedStepID: null }).id,
-            params: deepCopyNaive(basis?.data.params ?? {}),
+            params: deepCopyNaive(basis?.params ?? {}),
             status: Status.New,
         })
         this.update({ focusedStepID: draft.id })
+        return draft
+    }
+
+    /** create a new Draft slot */
+    createDraft = (
+        /** the basis step you'd like to base yourself when creating a new branch */
+        basis?: Maybe<{
+            toolID: ToolID
+            params: Maybe<any>
+        }>,
+    ): DraftL => {
+        const draft = this.db.drafts.create({
+            toolID: basis?.toolID ?? this.st.toolsSorted[0].id,
+            graphID: this.id,
+            params: deepCopyNaive(basis?.params ?? {}),
+        })
+        this.update({ focusedDraftID: draft.id })
         return draft
     }
 

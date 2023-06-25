@@ -1,6 +1,6 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepID, StepL } from '../models/Step'
-import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting } from '../types/ComfyWsApi'
+import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
 import type { Branded, Maybe } from '../utils/types'
 import type { GraphID, GraphL } from './Graph'
 
@@ -10,6 +10,7 @@ import { LiveRef } from '../db/LiveRef'
 import { exhaust } from '../utils/ComfyUtils'
 import { ImageL } from './Image'
 import { asRelativePath } from '../utils/fs/pathUtils'
+import { Status } from '../back/Status'
 
 export type PromptID = Branded<string, 'PromptID'>
 export const asPromptID = (s: string): PromptID => s as any
@@ -52,6 +53,7 @@ export class PromptL {
         if (msg.type === 'executing') return this.onExecuting(msg)
         if (msg.type === 'progress') return graph.onProgress(msg)
         if (msg.type === 'executed') return this.onExecuted(msg)
+        if (msg.type === 'execution_error') return this.onError(msg)
 
         exhaust(msg)
         // await Promise.all(images.map(i => i.savedPromise))
@@ -67,16 +69,21 @@ export class PromptL {
     }
 
     /** update pointer to the currently executing node */
-    onExecuting = (msg: WsMsgExecuting) => {
+    private onExecuting = (msg: WsMsgExecuting) => {
         this.graph.item.onExecuting(msg)
         if (msg.data.node == null) {
+            this.step.item.update({ status: Status.Success })
             this._finish()
             return
         }
     }
+    private onError = (msg: WsMsgExecutionError) => {
+        this.step.item.update({ status: Status.Failure })
+        this._finish()
+    }
 
     /** udpate execution list */
-    onExecuted = (msg: WsMsgExecuted) => {
+    private onExecuted = (msg: WsMsgExecuted) => {
         // const image = this.db.images.create({
         //     id: nanoid(),
         // })

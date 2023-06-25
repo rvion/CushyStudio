@@ -1,6 +1,5 @@
 import type { Requestable } from 'src/controls/Requestable'
 
-import { useStep } from '../FormCtx'
 import { observer } from 'mobx-react-lite'
 import { FormPath } from 'src/models/Step'
 import { BUG } from '../../../controls/BUG'
@@ -14,6 +13,7 @@ import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetPaintUI } from './WidgetPaintUI'
 // import { WidgetStrUI } from './WidgetStrUI'
 import { EditorUI } from './WidgetLexical'
+import { useDraft } from '../useDraft'
 
 /** this widget will then dispatch the individual requests to the appropriate sub-widgets
  * collect the responses and submit them to the back once completed and valid.
@@ -24,7 +24,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     req: Requestable
     focus?: boolean
 }) {
-    const step = useStep()
+    const draft = useDraft()
     const req = p.req
 
     // forget next line, it's just to make the compiler happy somewhere else
@@ -49,8 +49,8 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'items') return <>TODO</>
 
     // primitives
-    const get = () => step.getAtPath(p.path)
-    const set = (next: any) => step.setAtPath(p.path, next)
+    const get = () => draft.getAtPath(p.path)
+    const set = (next: any) => draft.setAtPath(p.path, next)
     const finalPath = [p.path]
 
     if (req.type === 'bool') return <WidgetBoolUI get={get} set={set} optional={false} />

@@ -10,20 +10,17 @@ import {
 import { useEffect } from 'react'
 
 import { InitialConfigType, LexicalComposer } from '@lexical/react/LexicalComposer'
-import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
-import * as TH from '@lexical/react/LexicalTypeaheadMenuPlugin'
+import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
-import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
+import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
+import { TreeView } from '@lexical/react/LexicalTreeView'
 import { observer } from 'mobx-react-lite'
 import EmojiPickerPlugin from './WidgetLexicalEmoji'
 import theme from './WidgetLexicalTheme'
-import { TreeView } from '@lexical/react/LexicalTreeView'
-import { updateEditor } from 'lexical/LexicalUpdates'
-import { nanoid } from 'nanoid'
-import { useStep } from '../FormCtx'
+import { useDraft } from '../useDraft'
 
 // const theme = {
 //     // Theme styling goes here
@@ -60,7 +57,7 @@ function MyCustomAutoFocusPlugin() {
 
 function MyCustomShortcutPlugin() {
     const [editor] = useLexicalComposerContext()
-    const step = useStep()
+    const draft = useDraft()
     useEffect(() => {
         return editor.registerCommand(
             KEY_ENTER_COMMAND,
@@ -70,7 +67,7 @@ function MyCustomShortcutPlugin() {
                 ev?.stopImmediatePropagation()
                 ev?.stopPropagation()
                 ev?.preventDefault()
-                step.start()
+                draft.start()
                 return true
             },
             4,

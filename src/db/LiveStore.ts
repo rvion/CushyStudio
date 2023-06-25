@@ -9,6 +9,7 @@ import type { ProjectT } from '../models/Project'
 import type { PromptT } from '../models/Prompt'
 import type { SchemaT } from '../models/Schema'
 import type { StepT } from '../models/Step'
+import type { DraftT } from 'src/models/Draft'
 
 export type LiveStore = {
     configs?: Indexed<ConfigT>
@@ -25,6 +26,7 @@ export type LiveStore = {
     steps?: Indexed<StepT>
     prompts?: Indexed<PromptT>
     graphs?: Indexed<GraphT>
+    drafts?: Indexed<DraftT>
 }
 
 export type TableName = keyof LiveStore

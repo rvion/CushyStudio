@@ -20,6 +20,7 @@ import { StepL, StepT } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { LiveStore } from './LiveStore'
 import { readableStringify } from '../utils/stringifyReadable'
+import { DraftT, DraftL } from '../models/Draft'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -42,6 +43,7 @@ export class LiveDB {
     folders: LiveTable<FolderT, FolderL>
     images: LiveTable<ImageT, ImageL>
     projects: LiveTable<ProjectT, ProjectL>
+    drafts: LiveTable<DraftT, DraftL>
     steps: LiveTable<StepT, StepL>
     prompts: LiveTable<PromptT, PromptL>
     graphs: LiveTable<GraphT, GraphL>
@@ -72,6 +74,7 @@ export class LiveDB {
         this.projects = new LiveTable(this, 'projects', ProjectL)
         this.steps = new LiveTable(this, 'steps', StepL)
         this.prompts = new LiveTable(this, 'prompts', PromptL)
+        this.drafts = new LiveTable(this, 'drafts', DraftL)
         this.graphs = new LiveTable(this, 'graphs', GraphL)
         // this.msgs = new LiveTable(this, 'msgs', Foo)
     }

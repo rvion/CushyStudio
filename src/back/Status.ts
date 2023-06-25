@@ -22,7 +22,7 @@ export const renderStatus2 = (status: Status) => {
     if (status === Status.New) return '🆕'
     if (status === Status.Scheduled) return '🕒'
     if (status === Status.Running) return '🏃'
-    if (status === Status.Success) return ''
+    if (status === Status.Success) return '✅'
     if (status === Status.Failure) return '❌'
     exhaust(status)
     return '🤷'

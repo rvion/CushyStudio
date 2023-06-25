@@ -5,13 +5,14 @@ action('💬 Prompt', {
         positive: form.str({ textarea: true }),
         negative: form.strOpt({ textarea: true }),
         batchSize: form.int({ default: 1 }),
+        seed: form.intOpt({}),
     }),
     run: async (flow, deps) => {
         // flow.print(`batchSize: deps.batchSize`)
         flow.nodes.SaveImage({
             images: flow.nodes.VAEDecode({
                 samples: flow.nodes.KSampler({
-                    seed: flow.randomSeed(),
+                    seed: deps.seed == null ? flow.randomSeed() : deps.seed,
                     latent_image: flow.nodes.EmptyLatentImage({
                         batch_size: deps.batchSize,
                     }),

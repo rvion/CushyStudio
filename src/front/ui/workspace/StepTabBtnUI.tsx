@@ -1,19 +1,9 @@
 import type { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
-import { GraphUI } from './GraphUI'
 import { Status, renderStatus2 } from '../../../back/Status'
 
-// export const StepUI = observer(function StepUI_(p: { step: StepL; depth: number }) {
-//     const step = p.step
-//     return (
-//         <div>
-//             <GraphUI graph={step.outputGraph.item} depth={p.depth} />
-//         </div>
-//     )
-// })
-
-export const StepBtnUI = observer(function StepBtnUI_(p: { step: StepL }) {
+export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) {
     const step = p.step
     const parentGraph = step.parentGraph.item
     const focusedBranch = parentGraph.focusedStep.item
@@ -43,8 +33,17 @@ export const StepBtnUI = observer(function StepBtnUI_(p: { step: StepL }) {
             }}
         >
             <div>
-                {renderStatus2(step.data.status)} {step.tool.item?.data.name}
+                {renderStatus2(step.data.status)} {step.tool.item?.data.name}({step.outputGraph.item.childSteps.items.length})
             </div>
         </div>
     )
 })
+
+// export const StepUI = observer(function StepUI_(p: { step: StepL; depth: number }) {
+//     const step = p.step
+//     return (
+//         <div>
+//             <GraphUI graph={step.outputGraph.item} depth={p.depth} />
+//         </div>
+//     )
+// })

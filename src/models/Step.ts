@@ -42,20 +42,19 @@ export class StepL {
         // this.data.outputGraphID = out.id
         this.runtime = new Runtime(this)
         this.update({ status: Status.Running })
-        const res = await this.runtime.run()
-        this.update({ status: res })
-        if (res === Status.Success) {
-            // this.parentGraph.item.createDraft(this).focus()
-            this.outputGraph.item.createDraft().focus()
+        const scriptExecutionStatus = await this.runtime.run()
+
+        if (this.prompts.items.every((p: PromptL) => p.data.executed)) {
+            this.update({ status: scriptExecutionStatus })
+            if (scriptExecutionStatus === Status.Success) {
+                // this.parentGraph.item.createDraft(this).focus()
+                this.outputGraph.item.createStep().focus()
+            }
         }
     }
 
     prompts = new LiveCollection<PromptL>(this, 'stepID', 'prompts')
     get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
-
-    getPathInfo = (path: FormPath): string => {
-        return this.id + '/' + path.join('/')
-    }
 
     focus() {
         this.parentGraph.item.update({ focusedStepID: this.id })

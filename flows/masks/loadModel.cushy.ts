@@ -34,9 +34,9 @@ action('📘 Load', {
         if (p.vae) vae = graph.VAELoader({ vae_name: p.vae }).VAE
 
         // patch
-        if (p.tomeRatio != null && p.tomeRatio !== false) {
-            const tome = graph.TomePatchModel({ model, ratio: p.tomeRatio })
-            model = tome.MODEL
-        }
+        // if (p.tomeRatio != null && p.tomeRatio !== false) {
+        //     const tome = graph.TomePatchModel({ model, ratio: p.tomeRatio })
+        //     model = tome.MODEL
+        // }
     },
 })

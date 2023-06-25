@@ -9,7 +9,7 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const project = useProject()
     return (
         <Fragment>
-            <div className='flex'>
+            {/* <div className='flex'>
                 <Input
                     style={{ width: '300px' }}
                     width={300}
@@ -21,7 +21,7 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 />
                 <div className='flex-grow'></div>
                 <IconButton appearance='subtle' onClick={() => project.delete()} icon={<I.Trash />} />
-            </div>
+            </div> */}
             {/* <Divider /> */}
             <div className='row'>
                 <div className='flex flex-col items-start'>

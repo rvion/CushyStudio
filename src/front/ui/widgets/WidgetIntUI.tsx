@@ -1,14 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { InputNumber } from 'rsuite'
-import { useStep } from '../FormCtx'
 
 export const WidgetIntUI = observer(function WidgetBoolUI_(p: {
     //
     get: () => number
     set: (v: number) => void
 }) {
-    const step = useStep()
-
     return (
         <InputNumber //
             size='sm'

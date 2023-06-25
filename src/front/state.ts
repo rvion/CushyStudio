@@ -76,8 +76,14 @@ export class STATE {
     startProject = () => {
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
         this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
-        const startDraft = initialGraph.createDraft()
+        const startDraft = initialGraph.createStep()
         initialGraph.update({ focusedStepID: startDraft.id })
+    }
+
+    startProjectV2 = () => {
+        const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
+        this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
+        const startDraft = initialGraph.createStep()
     }
 
     expandNodes: boolean = false
@@ -138,6 +144,7 @@ export class STATE {
 
         this.tsFilesMap.walk(this.rootPath)
 
+        if (this.db.projects.size === 0) this.startProjectV2()
         this.ws = this.initWebsocket()
         // this.autoDiscoverEveryWorkflow()
         makeAutoObservable(this)
@@ -250,6 +257,7 @@ export class STATE {
         if (
             msg.type === 'execution_start' ||
             msg.type === 'execution_cached' ||
+            msg.type === 'execution_error' ||
             msg.type === 'executing' ||
             msg.type === 'executed'
         ) {
