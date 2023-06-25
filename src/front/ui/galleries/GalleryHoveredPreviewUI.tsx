@@ -30,12 +30,18 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                     zIndex: 999999,
                     objectFit: 'contain',
                     maxHeight: '100vh',
-                    background: 'red',
+                    // background: 'red',
                     maxWidth: '100vw',
                 }}
             >
                 {/* METADATA */}
-                <div>{st.hovered.prompt.id}</div>
+                <div>
+                    {/*  */}
+                    {st.hovered.prompt.id}
+                    <div>downloaded: {st.hovered.data.downloaded ? '✅' : '❌'}</div>
+                    <div>{st.hovered.data.imageInfos?.filename ?? 'error'}</div>
+                    <div>fpath: {st.hovered.localAbsolutePath}</div>
+                </div>
 
                 {/* IMAGE */}
                 <img

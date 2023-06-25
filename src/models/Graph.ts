@@ -20,6 +20,8 @@ import { Status } from '../back/Status'
 import { deepCopyNaive } from '../utils/ComfyUtils'
 import { DraftID, DraftL, DraftT } from './Draft'
 import { ToolID } from './Tool'
+import { NodeBuilder } from '../back/NodeBuilder'
+import { extendObservable } from 'mobx'
 
 export type RunMode = 'fake' | 'real'
 
@@ -51,9 +53,15 @@ export class GraphL {
         return this.nodes.length
     }
 
-    onCreate = () => {}
     focusedStep = new LiveRefOpt<this, StepL>(this, 'focusedStepID', 'steps')
     focusedDraft = new LiveRefOpt<this, DraftL>(this, 'focusedDraftID', 'drafts')
+
+    private _builder: NodeBuilder | null = null
+    get builder(): NodeBuilder {
+        if (this._builder) return this._builder
+        this._builder = new NodeBuilder(this)
+        return this._builder
+    }
 
     onUpdate = (prev: Maybe<GraphT>, next: GraphT) => {
         const prevSize = this.size

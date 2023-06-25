@@ -37,13 +37,17 @@ export class Runtime {
         return this.step.outputGraph.item
     }
 
+    get nodes(): NodeBuilder {
+        return this.graph.builder
+    }
+
     constructor(public step: StepL) {
         this.st = step.st
         // console.log('🔴A', this.step.parentGraph.item.size, Object.keys(this.step.parentGraph.item.data.comfyPromptJSON).length)
         // this.graph = this.step.parentGraph.item.clone()
         // console.log('🔴B', this.graph.size)
         this.folder = step.st.outputFolderPath // output.resolve(relPath)
-        this.nodes = new NodeBuilder(this)
+        // this.nodes = new NodeBuilder(this)
         // this.graph = st.db //new GraphL(this.st.schema)
         // this.cyto = new Cyto(this.graph) // 🔴🔴
         // .makeAutoObservable(this)
@@ -96,9 +100,6 @@ export class Runtime {
         this.exec(cmd)
         return pathB
     }
-
-    /** toolkit to build new graph nodes */
-    nodes: NodeBuilder
 
     /** graph engine instance for smooth and clever auto-layout algorithms */
     // cyto: Cyto 🔴🔴

@@ -154,7 +154,9 @@ export class ComfyNode<ComfyNode_input extends object> {
             if (!schema.required) return undefined
             throw new Error(`🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}) value is null`)
         }
-        if (typeof value === 'function') return this.serializeValue(field, value(this.graph))
+        if (typeof value === 'function') {
+            return this.serializeValue(field, value(this.graph.builder, this.graph))
+        }
         if (value === auto_) {
             const expectedType = this._getExpecteTypeForField(field)
             console.info(`🔍 looking for type ${expectedType} for field ${field}`)

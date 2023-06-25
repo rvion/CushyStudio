@@ -14,6 +14,8 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
     return (
         <Button
             id={`button-to-focus-step-${step.id}`}
+            appearance={isFocused ? 'primary' : undefined}
+            color={isFocused ? 'yellow' : undefined}
             onKeyDown={(e) => {
                 if (e.key === 'Delete' || e.key === 'Backspace') {
                     step.delete()
@@ -45,7 +47,6 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
             }}
             size='xs'
             key={step.id}
-            className='p-1 step-container cursor-pointer'
             style={{
                 fontWeight: isFocused ? 'bold' : undefined,
                 borderTop:
@@ -54,7 +55,6 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
                         : status === Status.Success //
                         ? '2px solid gray'
                         : '2px solid purple',
-                backgroundColor: isFocused ? '#757575' : undefined,
             }}
             onClick={() => {
                 parentGraph.update({ focusedStepID: step.id })
