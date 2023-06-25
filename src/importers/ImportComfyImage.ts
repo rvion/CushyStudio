@@ -1,17 +1,16 @@
 import { CodeBuffer } from '../utils/CodeBuffer'
-import { Workspace } from '../core-back/Workspace'
-import { ComfyPromptJSON } from '../core-types/ComfyPrompt'
-import { ComfyNodeSchema } from '../core-shared/Schema'
+import { ComfyPromptJSON } from '../types/ComfyPrompt'
+import { ComfyNodeSchema } from '../models/Schema'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { TEdge, toposort } from '../utils/toposort'
-import { normalizeJSIdentifier } from '../core-shared/normalizeJSIdentifier'
-import { logger } from '../logger/logger'
+import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
+import { STATE } from 'src/front/state'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = { nodeName: string; inputName: string; valueStr: string }
 
 export class ComfyImporter {
-    constructor(public client: Workspace) {}
+    constructor(public client: STATE) {}
 
     // ATTRIBUTE TO IGNORE
     UI_ONLY_ATTRIBUTES = [
@@ -123,8 +122,8 @@ export class ComfyImporter {
                 this.client.schema.nodesByNameInCushy[this.knownAliaes[classType]]
             if (schema == null) {
                 const msg = `schema not found for ${classType}`
-                logger().error('🔥', msg)
-                logger().error('🔥', `known schemas: ${Object.keys(this.client.schema.nodesByNameInCushy).join(', ')}`)
+                console.error('🔥', msg)
+                console.error('🔥', `known schemas: ${Object.keys(this.client.schema.nodesByNameInCushy).join(', ')}`)
                 throw new Error(msg)
             }
             let outoutIx = 0

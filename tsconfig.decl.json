@@ -19,10 +19,10 @@
         "jsx": "react-jsx",
         "baseUrl": ".",
         "paths": {
-            "LATER": ["src/core-back/LATER.foo.ts"]
+            "LATER": ["src/back/LATER.foo.ts"]
         }
     },
-    "include": ["src/sdk/sdkEntrypoint.ts"]
+    "include": ["src/typings/sdkEntrypoint.ts"]
     // "exclude": ["tsconfig.node.json"]
     // "references": [{ "path": "./tsconfig.node.json" }]
 }

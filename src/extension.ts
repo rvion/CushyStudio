@@ -1,10 +1,10 @@
 import './logger/LoggerBack' // inject a global logger
 import * as vscode from 'vscode'
-import { Workspace } from './core-back/Workspace'
-import { FooProvider } from './shell/FooProvider'
-import { cmd_helloworld } from './shell/cmd_helloworld'
+import { ServerState } from './back/ServerState'
 import { extractErrorMessage } from './utils/extractErrorMessage'
 import { logger } from './logger/logger'
+import { asAbsolutePath } from './utils/fs/pathUtils'
+import { ExtensionState } from './extension/ExtensionState'
 
 // https://github.com/microsoft/vscode-extension-samples/blob/main/fsconsumer-sample/src/extension.ts
 // This method is called when your extension is activated
@@ -19,7 +19,9 @@ export function activate(context: vscode.ExtensionContext) {
 
     console.log('🟢 "cushystudio" is now active! further logs will be displayed in the "CushyStudio" output pannel.')
     const folderUri = vscode.workspace.workspaceFolders[0].uri
-    const workspace = new Workspace(context, folderUri)
+    const folderAbsPath = folderUri.fsPath
+    const serverstate = new ServerState(asAbsolutePath(folderAbsPath))
+    const extensionState = new ExtensionState(context, serverstate, folderUri)
     // get the global typescript language server
     // const tsServer = vscode.server
 
@@ -30,7 +32,7 @@ export function activate(context: vscode.ExtensionContext) {
                 await fn()
             } catch (error) {
                 const errMsg = extractErrorMessage(error)
-                logger().error('🌠', errMsg, error as any)
+                console.error('🌠', errMsg, error as any)
                 // vscode.window.showErrorMessage(errMsg)
             }
         }
@@ -38,17 +40,15 @@ export function activate(context: vscode.ExtensionContext) {
         context.subscriptions.push(disposable)
     }
 
-    registerDisposableCommand('cushystudio.helloWorld', cmd_helloworld.bind(null, context))
-    registerDisposableCommand('cushystudio.updateschema', () => workspace.fetchAndUdpateSchema())
-    registerDisposableCommand('cushystudio.openwebview', () => workspace.openWebview())
-    registerDisposableCommand('cushystudio.import', () => workspace.importCurrentFile({ preserveId: false }))
-    registerDisposableCommand('cushystudio.importlegacy', () => workspace.importCurrentFile({ preserveId: true }))
-    // registerDisposableCommand('cushystudio.importjson', () => workspace.importCurrentFile({ preserveId: true }))
+    registerDisposableCommand('cushystudio.updateschema', () => serverstate.fetchAndUdpateSchema())
+    registerDisposableCommand('cushystudio.openwebview', () => extensionState.openWebview())
+    registerDisposableCommand('cushystudio.import', () => extensionState.importCurrentFile({ preserveId: false }))
+    registerDisposableCommand('cushystudio.importlegacy', () => extensionState.importCurrentFile({ preserveId: true }))
 
     // add settings to package.json
     // insert a treeview in the cushyrun view
     // const treeDataProvider = new TreeDataProvider()
-    vscode.window.registerTreeDataProvider('cushyrun', new FooProvider())
+    // vscode.window.registerTreeDataProvider('cushyrun', new FooProvider())
     // registerTreeDataProvider
     // const treeView = vscode.window.createTreeView('cushyrun', {
     //     treeDataProvider,

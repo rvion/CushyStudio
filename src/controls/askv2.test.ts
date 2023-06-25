@@ -12,7 +12,7 @@ const r = await fakeInfoRequestFn((ui) => ({
     paint: ui.paint('paint', 0 as any),
     //
     number: ui.intOpt(),
-    loras: ui.loras(),
+    loras: ui.loras({}),
     col1: ui.selectOne('pick a primary color', ['red', 'blue', 'green']),
     col2: ui.selectOneOrCustom('choose a color', ['red', 'blue', 'green']),
     col3: ui.selectMany('choose many', ['red', 'blue', 'green']),
@@ -20,7 +20,7 @@ const r = await fakeInfoRequestFn((ui) => ({
     pos3d: [ui.int(), ui.int(), ui.int()],
 }))
 
-type K = (typeof r)['col1'][number]
-const y: Maybe<number> = r.number
-const x: string = r.loras[0].name
-const aa = r.pos3d[2]
+// type K = (typeof r)['col1'][number]
+// const y: Maybe<number> = r.number
+// const x: string = r.loras[0].name
+// const aa = r.pos3d[2]

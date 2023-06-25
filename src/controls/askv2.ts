@@ -5,76 +5,47 @@
  * TODO: write them down to explain choices
  */
 
-import type { Base64Image } from 'src/core-shared/b64img'
-import type { SimplifiedLoraDef } from 'src/presets/presets'
+import type { Base64Image } from 'src/core/b64img'
+import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { Maybe, Tagged } from 'src/utils/types'
-import type { ImageInfos } from 'src/core-shared/GeneratedImageSummary'
-import type { IGeneratedImage } from 'src/sdk/IFlowExecution'
+import type { ImageID, ImageL, ImageT } from 'src/models/Image'
+import type { Requestable } from './Requestable'
 
-import { BUG } from './BUG'
-import { logger } from 'src/logger/logger'
-
-export type Requestable = { label?: string } & Requestable_
-
-export type Requestable_ =
-    /** str */
-    | { type: 'str' }
-    | { type: 'str?' }
-    /** nums */
-    | { type: 'int' }
-    | { type: 'int?' }
-    /** bools */
-    | { type: 'bool' }
-    | { type: 'bool?' }
-    /** embedding */
-    | { type: 'embeddings' }
-    /** loras */
-    | { type: 'lora' }
-    | { type: 'loras' }
-    /** painting */
-    | { type: 'samMaskPoints'; imageInfo: ImageInfos }
-    | { type: 'selectImage'; imageInfos: ImageInfos[] }
-    | { type: 'manualMask'; imageInfo: ImageInfos }
-    | { type: 'paint'; url: string }
-    /** group */
-    | { type: 'items'; items: { [key: string]: Requestable } }
-    /** select one */
-    | { type: 'selectOne'; choices: string[] } //
-    | { type: 'selectOneOrCustom'; choices: string[] }
-    /** select many */
-    | { type: 'selectMany'; choices: string[] }
-    | { type: 'selectManyOrCustom'; choices: string[] }
-    /** array */
-    | Requestable[]
-    /** ?? */
-    | BUG
+import type * as R from './Requestable'
+import type { LATER } from 'LATER'
+import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
+import { ComfyNodeID } from 'src/types/NodeUID'
 
 export type SamPointPosStr = Tagged<string, 'SamPointPosStr'>
 export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>
 
+export type ImageAnswer1 = { type: 'imageID'; imageID: ImageID }
+export type ImageAnswer2 = { type: 'imageSignal'; nodeID: ComfyNodeID; fieldName: string } /** node must be in current graph */
+export type ImageAnswer3 = { type: 'imagePath'; absPath: AbsolutePath }
+export type ImageAnswer4 = { type: 'imageURL'; url: string }
+export type ImageAnswer = ImageAnswer1 | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
+
 // prettier-ignore
 export type InfoAnswer<Req> =
     /** str */
-    Req extends { type: 'str' } ? string :
-    Req extends { type: 'str?' } ? Maybe<string> :
+    Req extends R.Requestable_str ? string :
+    Req extends R.Requestable_strOpt ? Maybe<string> :
     /** nums */
-    Req extends { type: 'int' } ? number :
-    Req extends { type: 'int?' } ? Maybe<number> :
+    Req extends R.Requestable_int ? number :
+    Req extends R.Requestable_intOpt ? Maybe<number> :
     /** bools */
-    Req extends { type: 'bool' } ? boolean :
-    Req extends { type: 'bool?' } ? Maybe<boolean> :
+    Req extends R.Requestable_bool ? boolean :
+    Req extends R.Requestable_boolOpt ? Maybe<boolean> :
     /** embedding */
-    Req extends { type: 'embeddings' } ? Maybe<boolean> :
+    Req extends R.Requestable_embeddings ? Maybe<boolean> :
     /** loras */
-    Req extends { type: 'lora' } ? SimplifiedLoraDef :
-    Req extends { type: 'loras' } ? SimplifiedLoraDef[] :
+    Req extends R.Requestable_enum<infer T> ? LATER<'Requirable'>[T] :
+    Req extends R.Requestable_loras ? SimplifiedLoraDef[] :
     /** painting */
-
-    // {"samMaskPoints":{"points":"[89.39583587646484, 394.6302185058594], [141.39583587646484, 227.63021850585938]","labels":"[1, 1]"}}
-    Req extends {type: 'samMaskPoints' } ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
-    Req extends {type: 'selectImage' } ? ImageInfos :
-    Req extends {type: 'manualMask' } ? Base64Image :
-    Req extends {type: 'paint'} ? Base64Image :
+    Req extends R.Requestable_samMaskPoints ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
+    Req extends R.Requestable_selectImage ? ImageAnswer :
+    Req extends R.Requestable_manualMask ? Base64Image :
+    Req extends R.Requestable_paint ? Base64Image :
 
     /** group */
     Req extends { type: 'items', items: { [key: string]: any } } ? { [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> } :
@@ -88,48 +59,64 @@ export type InfoAnswer<Req> =
     Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] :
     never
 
-type ImageInBackend = IGeneratedImage | ImageInfos
-const toImageInfos = (img: ImageInBackend) => {
+type ImageInBackend = ImageL | ImageT
+const toImageInfos = (img: ImageInBackend): ImageT => {
     try {
         return (img as any).toJSON ? (img as any).toJSON() : img
     } catch (error) {
-        logger().info('🔴 🔴' + JSON.stringify(img))
+        console.info('🔴 UNRECOVERABLE ERROR 🔴' + JSON.stringify(img))
+        throw error
     }
 }
 
-export class InfoRequestBuilder {
+export class FormBuilder {
     /** str */
-    str = (label?: string) => ({ type: 'str' as const, label })
-    strOpt = (label?: string) => ({ type: 'str?' as const, label })
+    str = (p: Omit<R.Requestable_str, 'type'>): R.Requestable_str => ({ type: 'str', ...p })
+    strOpt = (p: Omit<R.Requestable_strOpt, 'type'>): R.Requestable_strOpt => ({ type: 'str?', ...p })
+
     /** nums */
-    int = (label?: string) => ({ type: 'int' as const, label })
-    intOpt = (label?: string) => ({ type: 'int?' as const, label })
+    int = (p?: Omit<R.Requestable_int, 'type'>) => ({ type: 'int', ...p })
+    intOpt = (p?: Omit<R.Requestable_intOpt, 'type'>) => ({ type: 'int?', ...p })
+
     /** bools */
-    bool = (label?: string) => ({ type: 'bool' as const, label })
-    boolOpt = (label?: string) => ({ type: 'bool?' as const, label })
+    bool = (p?: Omit<R.Requestable_bool, 'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })
+    boolOpt = (p?: Omit<R.Requestable_boolOpt, 'type'>) => ({ type: 'bool?' as const, ...p })
+
     /** embedding */
     embeddings = (label?: string) => ({ type: 'embeddings' as const, label })
+
+    /** embedding */
+    enum = <const T extends keyof LATER<'Requirable'>>(x: Omit<R.Requestable_enum<T>, 'type'>): R.Requestable_enum<T> => ({
+        type: 'enum',
+        ...x,
+    })
+    enumOpt = <const T extends keyof LATER<'Requirable'>>(
+        x: Omit<R.Requestable_enumOpt<T>, 'type'>,
+    ): R.Requestable_enumOpt<T> => ({
+        type: 'enum?',
+        ...x,
+    })
+
     /** loras */
-    lora = (label?: string) => ({ type: 'lora' as const, label })
-    loras = (label?: string) => ({ type: 'loras' as const, label })
+    // lora = (label?: string) => ({ type: 'lora' as const, label })
+    loras = (p: Omit<R.Requestable_loras, 'type'>) => ({ type: 'loras' as const, ...p })
 
     /** painting */
     private _toImageInfos = () => {}
-    samMaskPoints = (label: string, img: IGeneratedImage | ImageInfos) => ({
+    samMaskPoints = (label: string, img: ImageL | ImageT) => ({
         type: 'samMaskPoints' as const,
         imageInfo: toImageInfos(img),
     })
-    selectImage = (label: string, imgs: (IGeneratedImage | ImageInfos)[]) => ({
+    selectImage = (label: string, imgs: (ImageL | ImageT)[]): R.Requestable_selectImage => ({
         type: 'selectImage' as const,
         imageInfos: imgs.map(toImageInfos),
         label,
     })
-    manualMask = (label: string, img: IGeneratedImage | ImageInfos) => ({
+    manualMask = (label: string, img: ImageL | ImageT) => ({
         type: 'manualMask' as const,
         label,
         imageInfo: toImageInfos(img),
     })
-
     paint = (label: string, url: string) => ({ type: 'paint' as const, label, url })
     /** group */
     group = <const T>(label: string, items: T): { type: 'items'; items: T } => ({ type: 'items', items })
@@ -147,15 +134,16 @@ export class InfoRequestBuilder {
     })
 }
 
+// ----------------
+
 export type InfoRequestFn = typeof fakeInfoRequestFn
 
 // ----------------------------------------------------------
 export const fakeInfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
     //
-    req: (q: InfoRequestBuilder) => Req,
-    layout?: 0,
+    req: (q: FormBuilder) => Req,
 ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
-    const q = new InfoRequestBuilder()
+    const q = new FormBuilder()
     const r = req(q)
     return 0 as any
 }

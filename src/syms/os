@@ -1,0 +1,25 @@
+const _ = window.require('os')
+export default _
+export const arch = _.arch
+export const availableParallelism = _.availableParallelism
+export const cpus = _.cpus
+export const endianness = _.endianness
+export const freemem = _.freemem
+export const getPriority = _.getPriority
+export const homedir = _.homedir
+export const hostname = _.hostname
+export const loadavg = _.loadavg
+export const networkInterfaces = _.networkInterfaces
+export const platform = _.platform
+export const release = _.release
+export const setPriority = _.setPriority
+export const tmpdir = _.tmpdir
+export const totalmem = _.totalmem
+export const type = _.type
+export const userInfo = _.userInfo
+export const uptime = _.uptime
+export const version = _.version
+export const machine = _.machine
+export const constants = _.constants
+export const EOL = _.EOL
+export const devNull = _.devNull

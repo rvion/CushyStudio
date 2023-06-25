@@ -17,9 +17,17 @@ website/static/0.0.3-2023-03-19-index.html
 # electron
 out
 
-src/examples/cache
-src/examples/aaa
+flows/.cushy
+flows/cache
+flows/aaa
+flows/cushy.db
 
 webview
 
 *.vsix
+
+flows/private
+
+dbDir
+dbDir*
+d001

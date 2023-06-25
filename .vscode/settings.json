@@ -32,7 +32,8 @@
         "**/Thumbs.db": true,
         // so vscode remains fast
         "**/ComfyUI": true,
-        "**/venv": true
+        "**/venv": true,
+        "**/d001": true
     },
     "pasteImage.path": "docs/static/img/screenshots/",
     // "files.exclude": {

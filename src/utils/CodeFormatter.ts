@@ -1,15 +1,41 @@
-import { readFileSync } from 'fs'
-import prettier from 'prettier'
-import path from 'path'
+import type { Options } from 'prettier'
 
-export const getRepoFilePath = (...relPath: string[]) => path.join(process.cwd(), ...relPath)
-const prettierConfigRaw = readFileSync(getRepoFilePath('.prettierrc'), 'utf-8')
-const prettierConfig = JSON.parse(prettierConfigRaw)
+import { existsSync, readFileSync } from 'fs'
+import { asRelativePath } from './fs/pathUtils'
 
-export const prettify = (out: string, parser = 'typescript'): string => {
-    return prettier.format(out, { ...prettierConfig, parser })
+import parserTypeScript from 'prettier/parser-typescript'
+import { STATE } from 'src/front/state'
+// import prettier from 'prettier/standalone'
+
+export class CodePrettier {
+    config: Options = {
+        singleQuote: true,
+        semi: false,
+        trailingComma: 'all',
+        printWidth: 130,
+        jsxSingleQuote: true,
+        tabWidth: 4,
+    }
+
+    constructor(public st: STATE) {
+        const possibleConfigPath = st.resolveFromRoot(asRelativePath('.prettierrc'))
+        const exists = existsSync(possibleConfigPath)
+        if (exists) {
+            this.config = JSON.parse(readFileSync(possibleConfigPath, 'utf-8'))
+        }
+    }
+
+    prettify = async (
+        //
+        source: string,
+        parser = 'typescript',
+    ): Promise<string> => {
+        try {
+            const prettier = await import('prettier')
+            return prettier.format(source, { ...this.config, parser, plugins: [parserTypeScript] })
+        } catch (error) {
+            console.log(`❌ error when formating sourceCode: ${error}`)
+            return source
+        }
+    }
 }
-
-export const x = 0
-
-// "array.prototype.at": "^1.1.1",

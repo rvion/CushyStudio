@@ -1,6 +1,5 @@
 import * as fs from 'fs'
 import * as path from 'path'
-import { Workspace } from '../core-back/Workspace'
 
 import { drawOpenPoseBones } from './drawPoseV2'
 import samplePose1 from './json_inputs/32/001.json'
@@ -12,9 +11,10 @@ import samplePose6 from './json_inputs/32/006.json'
 import samplePose7 from './json_inputs/32/007.json'
 import samplePose8 from './json_inputs/32/008.json'
 import samplePose9 from './json_inputs/32/009.json'
+import { STATE } from 'src/front/state'
 
 export class OpenPoseAnimV0 {
-    constructor(public workspace: Workspace) {}
+    constructor(public workspace: STATE) {}
     poses = [
         //
         samplePose1,
@@ -36,7 +36,7 @@ export class OpenPoseAnimV0 {
 
     drawAllToPngAndSaveLocally = async () => {
         let i = -1
-        const targetFolderPath = this.workspace.wspUri + path.sep + 'images'
+        const targetFolderPath = this.workspace.rootPath + path.sep + 'images'
         // ensure target folder exists
         fs.mkdirSync(targetFolderPath, { recursive: true })
 
