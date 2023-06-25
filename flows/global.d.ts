@@ -493,6 +493,8 @@ declare global {
         ImpactBboxDetectorCombined(args: ImpactBboxDetectorCombined_input, uid?: ComfyNodeUID): ImpactBboxDetectorCombined
         /* category=ImpactPack_Legacy output=MASK */
         ImpactSegmDetectorCombined(args: ImpactSegmDetectorCombined_input, uid?: ComfyNodeUID): ImpactSegmDetectorCombined
+        /* category=image output= */
+        Save_as_webp(args: Save_as_webp_input, uid?: ComfyNodeUID): Save_as_webp
         /* category=conditioning_cutoff output=CLIPREGION */
         BNK_CutoffBasePrompt(args: BNK_CutoffBasePrompt_input, uid?: ComfyNodeUID): BNK_CutoffBasePrompt
         /* category=conditioning_cutoff output=CLIPREGION */
@@ -1313,6 +1315,7 @@ declare global {
         Enum_ImpactSEGSDetailer_force_inpaint: Enum_ImpactSEGSDetailer_force_inpaint
         Enum_ImpactMaskPainter_image: Enum_ImpactMaskPainter_image
         Enum_ImpactMMDetLoader_model_name: Enum_ImpactMMDetLoader_model_name
+        Enum_Save_as_webp_mode: Enum_Save_as_webp_mode
         Enum_BNK_CutoffRegionsToConditioning_ADV_token_normalization: Enum_BNK_CutoffRegionsToConditioning_ADV_token_normalization
         Enum_BNK_CutoffRegionsToConditioning_ADV_weight_interpretation: Enum_BNK_CutoffRegionsToConditioning_ADV_weight_interpretation
         Enum_BNK_NoisyLatentImage_source: Enum_BNK_NoisyLatentImage_source
@@ -1705,6 +1708,7 @@ declare global {
         ImpactSegmDetectorForEach: ImpactSegmDetectorForEach
         ImpactBboxDetectorCombined: ImpactBboxDetectorCombined
         ImpactSegmDetectorCombined: ImpactSegmDetectorCombined
+        Save_as_webp: Save_as_webp
         BNK_CutoffBasePrompt: BNK_CutoffBasePrompt
         BNK_CutoffSetRegions: BNK_CutoffSetRegions
         BNK_CutoffRegionsToConditioning: BNK_CutoffRegionsToConditioning
@@ -3263,6 +3267,7 @@ declare global {
     export type Enum_ImpactPreviewBridge_image = '#placeholder'
     export type Enum_ImpactMaskPainter_image = Enum_ImpactPreviewBridge_image
     export type Enum_ImpactImpactWildcardProcessor_mode = 'Fixed' | 'Populate'
+    export type Enum_Save_as_webp_mode = 'lossless' | 'lossy'
     export type Enum_BNK_CutoffRegionsToConditioning_ADV_token_normalization = 'length' | 'length+mean' | 'mean' | 'none'
     export type Enum_BNK_CutoffRegionsToConditioning_ADV_weight_interpretation = 'A1111' | 'comfy' | 'comfy++' | 'compel'
     export type Enum_BNK_NoisyLatentImage_source = 'CPU' | 'GPU'
@@ -7155,6 +7160,19 @@ declare global {
     }
 
     // |=============================================================================|
+    // | Save_as_webp [image]                                                        |
+    // |=============================================================================|
+    export interface Save_as_webp extends ComfyNode<Save_as_webp_input> {}
+    export type Save_as_webp_input = {
+        images: _IMAGE
+        /** default="ComfyUI" */
+        filename_prefix?: _STRING
+        mode: Enum_Save_as_webp_mode
+        /** default=80 min=100 max=100 step=1 */
+        compression?: _INT
+    }
+
+    // |=============================================================================|
     // | BNK_CutoffBasePrompt [conditioning_cutoff]                                  |
     // |=============================================================================|
     export interface BNK_CutoffBasePrompt extends HasSingle_CLIPREGION, ComfyNode<BNK_CutoffBasePrompt_input> {
@@ -8537,11 +8555,11 @@ declare global {
         ASCII_2: Slot<'ASCII', 2>
     }
     export type WASCacheNode_input = {
-        /** default="7278662_cache" */
+        /** default="69622130_cache" */
         latent_suffix?: _STRING
-        /** default="23236517_cache" */
+        /** default="66220110_cache" */
         image_suffix?: _STRING
-        /** default="60774158_cache" */
+        /** default="55349338_cache" */
         conditioning_suffix?: _STRING
         latent?: _LATENT
         image?: _IMAGE
@@ -11553,6 +11571,7 @@ declare global {
         ImpactSegmDetectorForEach: ComfyNodeSchemaJSON
         ImpactBboxDetectorCombined: ComfyNodeSchemaJSON
         ImpactSegmDetectorCombined: ComfyNodeSchemaJSON
+        Save_as_webp: ComfyNodeSchemaJSON
         BNK_CutoffBasePrompt: ComfyNodeSchemaJSON
         BNK_CutoffSetRegions: ComfyNodeSchemaJSON
         BNK_CutoffRegionsToConditioning: ComfyNodeSchemaJSON
