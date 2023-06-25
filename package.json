@@ -91,6 +91,7 @@
     },
     "scripts": {
         "📌 FRONT": "",
+        "front:shell": "electron shell",
         "front:watch": "vite build --watch",
         "front:dev": "vite dev",
         "front:build": "vite build",
