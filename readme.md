@@ -10,3 +10,9 @@ It focuses on interractive workflows when AI generation, dynamic interfaces for 
 and guidance along generation processes. It is cross-platform and open-source.
 
 </div>
+
+```
+git clone https://github.com/rvion/CushyStudio/issues
+npm install
+# TODO
+```
