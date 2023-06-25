@@ -31,7 +31,9 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
             </div>
         )
     }
+
+    if (msg.type === 'execution_error') return <pre>{JSON.stringify(msg.data, null, 3)}</pre>
     if (msg.type === 'executed') return <div>✅</div>
 
-    return <>ok</>
+    return <div className='border'>❌ unhandled message of type `{msg.type}`</div>
 })

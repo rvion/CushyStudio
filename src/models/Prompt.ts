@@ -72,13 +72,18 @@ export class PromptL {
     private onExecuting = (msg: WsMsgExecuting) => {
         this.graph.item.onExecuting(msg)
         if (msg.data.node == null) {
-            this.step.item.update({ status: Status.Success })
+            if (this.step.item.data.status !== Status.Failure) {
+                console.log('>> MARK SUCCESS')
+                this.step.item.update({ status: Status.Success })
+            }
             this._finish()
             return
         }
     }
     private onError = (msg: WsMsgExecutionError) => {
+        console.log('>> MARK ERROR')
         this.step.item.update({ status: Status.Failure })
+        this.step.item.append(msg)
         this._finish()
     }
 
