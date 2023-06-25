@@ -48,15 +48,15 @@ action('😘 fix faces (clip seg)', {
     // https://comfyanonymous.github.io/ComfyUI_examples/upscale_models/
     run: async (flow, deps) => {
         // flow.print(`batchSize: deps.batchSize`)
-        const x = flow.nodes.ImpactFaceDetailer({
+        const x = flow.nodes.ImpactFaceDetailerPipe({
             bbox_detector: (f) => f.ImpactCLIPSegDetectorProvider({ text: 'face' }),
-            force_inpaint: 'disabled',
-            guide_size_for: 'bbox',
+            force_inpaint: 'enabled',
+            guide_size_for: 'crop_region',
             image: flow.loadImageAnswer(deps.image),
             model: flow.AUTO,
             negative: flow.AUTO,
             positive: flow.AUTO,
-            noise_mask: 'enabled',
+            noise_mask: 'disabled',
             sam_detection_hint: 'center-1',
             sam_mask_hint_use_negative: 'False',
             sampler_name: 'ddim',

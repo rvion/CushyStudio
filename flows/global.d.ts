@@ -716,6 +716,8 @@ declare global {
         ): MasqueradeSeparateMaskComponents
         /* category=Masquerade Nodes output=IMAGE */
         MasqueradeCreateRectMask(args: MasqueradeCreateRectMask_input, uid?: ComfyNodeUID): MasqueradeCreateRectMask
+        /* category=Masquerade Nodes output=IMAGE */
+        MasqueradeMakeImageBatch(args: MasqueradeMakeImageBatch_input, uid?: ComfyNodeUID): MasqueradeMakeImageBatch
         /* category=Image Processing output=IMAGE */
         PseudoHDRStyle(args: PseudoHDRStyle_input, uid?: ComfyNodeUID): PseudoHDRStyle
         /* category=Image Processing output=IMAGE */
@@ -1854,6 +1856,7 @@ declare global {
         MasqueradePruneByMask: MasqueradePruneByMask
         MasqueradeSeparateMaskComponents: MasqueradeSeparateMaskComponents
         MasqueradeCreateRectMask: MasqueradeCreateRectMask
+        MasqueradeMakeImageBatch: MasqueradeMakeImageBatch
         PseudoHDRStyle: PseudoHDRStyle
         Saturation: Saturation
         ImageSharpening: ImageSharpening
@@ -2353,6 +2356,7 @@ declare global {
             | 'MasqueradePruneByMask'
             | 'MasqueradeSeparateMaskComponents'
             | 'MasqueradeCreateRectMask'
+            | 'MasqueradeMakeImageBatch'
             | 'PseudoHDRStyle'
             | 'Saturation'
             | 'ImageSharpening'
@@ -8891,6 +8895,21 @@ declare global {
     }
 
     // |=============================================================================|
+    // | MasqueradeMakeImageBatch ("Make Image Batch" in ComfyUI) [Masquerade Nodes]   |
+    // |=============================================================================|
+    export interface MasqueradeMakeImageBatch extends HasSingle_IMAGE, ComfyNode<MasqueradeMakeImageBatch_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type MasqueradeMakeImageBatch_input = {
+        image1: _IMAGE
+        image2?: _IMAGE
+        image3?: _IMAGE
+        image4?: _IMAGE
+        image5?: _IMAGE
+        image6?: _IMAGE
+    }
+
+    // |=============================================================================|
     // | PseudoHDRStyle ("Pseudo HDR Style" in ComfyUI) [Image Processing]           |
     // |=============================================================================|
     export interface PseudoHDRStyle extends HasSingle_IMAGE, ComfyNode<PseudoHDRStyle_input> {
@@ -8945,11 +8964,11 @@ declare global {
         ASCII_2: Slot<'ASCII', 2>
     }
     export type WASCacheNode_input = {
-        /** default="72479479_cache" */
+        /** default="57448161_cache" */
         latent_suffix?: _STRING
-        /** default="95646616_cache" */
+        /** default="6433720_cache" */
         image_suffix?: _STRING
-        /** default="81785927_cache" */
+        /** default="35751216_cache" */
         conditioning_suffix?: _STRING
         latent?: _LATENT
         image?: _IMAGE
@@ -12059,6 +12078,7 @@ declare global {
         MasqueradePruneByMask: ComfyNodeSchemaJSON
         MasqueradeSeparateMaskComponents: ComfyNodeSchemaJSON
         MasqueradeCreateRectMask: ComfyNodeSchemaJSON
+        MasqueradeMakeImageBatch: ComfyNodeSchemaJSON
         PseudoHDRStyle: ComfyNodeSchemaJSON
         Saturation: ComfyNodeSchemaJSON
         ImageSharpening: ComfyNodeSchemaJSON

@@ -3,7 +3,7 @@ action('B. auto-mask-face', {
     // requirement: (kk) => ({
     //     image: kk.IMAGE({}),
     // }),
-    run: (flow, deps) => {
+    run: async (flow, deps) => {
         const clothesMask = flow.nodes.MasqueradeMaskByText({
             image: deps.image,
             prompt: 'face',
@@ -11,6 +11,8 @@ action('B. auto-mask-face', {
             normalize: 'no',
             precision: 0.3,
         })
-        flow.nodes.PreviewImage({ images: clothesMask.IMAGE })
+        flow.nodes.SaveImage({ images: clothesMask.IMAGE })
+        flow.nodes.SaveImage({ images: clothesMask.IMAGE_1 })
+        await flow.PROMPT()
     },
 })
