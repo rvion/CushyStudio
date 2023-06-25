@@ -49,8 +49,8 @@ export const ActionUI = observer(function StepUI_(p: { draft: DraftL }) {
                         <IconButton
                             size='sm'
                             className='self-start'
-                            color='blue'
-                            appearance='primary'
+                            // color='blue'
+                            // appearance='primary'
                             icon={<I.PageNext />}
                             onClick={() => draft.start()}
                         />

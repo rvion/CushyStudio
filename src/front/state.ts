@@ -76,14 +76,14 @@ export class STATE {
     startProject = () => {
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
         this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
-        const startDraft = initialGraph.createStep()
-        initialGraph.update({ focusedStepID: startDraft.id })
+        const startDraft = initialGraph.createDraft()
+        initialGraph.update({ focusedDraftID: startDraft.id })
     }
 
     startProjectV2 = () => {
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
         this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
-        const startDraft = initialGraph.createStep()
+        const startDraft = initialGraph.createDraft()
     }
 
     expandNodes: boolean = false

@@ -76,6 +76,7 @@ export class GraphL {
     }
 
     // actions = new LiveCollection<ActionL>(this, 'inputGraphID', 'actions')
+    drafts = new LiveCollection<DraftL>(this, 'graphID', 'drafts')
     childSteps = new LiveCollection<StepL>(this, 'parentGraphID', 'steps')
     parentSteps = new LiveCollection<StepL>(this, 'outputGraphID', 'steps')
 
@@ -90,16 +91,19 @@ export class GraphL {
 
     createStep = (
         /** the basis step you'd like to base yourself when creating a new branch */
-        basis?: Maybe<{
+        infos: {
             toolID: ToolID
             params: Maybe<any>
-        }>,
+        },
     ): StepL => {
         const draft = this.db.steps.create({
-            toolID: basis?.toolID ?? this.st.toolsSorted[0].id,
+            toolID: infos.toolID, // basis?.toolID ?? this.st.toolsSorted[0].id,
             parentGraphID: this.id,
-            outputGraphID: this.clone({ focusedStepID: null }).id,
-            params: deepCopyNaive(basis?.params ?? {}),
+            outputGraphID: this.clone({
+                focusedStepID: null,
+                focusedDraftID: null,
+            }).id,
+            params: deepCopyNaive(infos.params ?? {}),
             status: Status.New,
         })
         this.update({ focusedStepID: draft.id })
@@ -119,6 +123,7 @@ export class GraphL {
             graphID: this.id,
             params: deepCopyNaive(basis?.params ?? {}),
         })
+        console.log('🔴', draft.id)
         this.update({ focusedDraftID: draft.id })
         return draft
     }

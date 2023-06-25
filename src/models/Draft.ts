@@ -23,7 +23,12 @@ export interface DraftL extends LiveInstance<DraftT, DraftL> {}
 export class DraftL {
     graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
     tool = new LiveRef<this, ToolL>(this, 'toolID', 'tools')
-    start = (): StepL => this.graph.item.createStep(this.data)
+    start = (): StepL => {
+        // console.log('🟢', JSON.stringify(this.data))
+        const step = this.graph.item.createStep(this.data)
+        step.start()
+        return step
+    }
     focus = () => this.graph.item.update({ focusedDraftID: this.id })
     reset = () => (this.data.params = {})
     getPathInfo = (path: FormPath): string => this.id + '/' + path.join('/')

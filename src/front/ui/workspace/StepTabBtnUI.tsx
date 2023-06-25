@@ -18,10 +18,10 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
                 fontWeight: isFocused ? 'bold' : undefined,
                 borderTop:
                     status === Status.Failure //
-                        ? '3px solid red'
+                        ? '2px solid red'
                         : status === Status.Success //
-                        ? '3px solid #45cb45'
-                        : undefined,
+                        ? '2px solid gray'
+                        : '2px solid purple',
                 backgroundColor: isFocused ? '#757575' : undefined,
             }}
             onClick={() => {
@@ -33,7 +33,8 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
             }}
         >
             <div>
-                {renderStatus2(step.data.status)} {step.tool.item?.data.name}({step.outputGraph.item.childSteps.items.length})
+                {/* {renderStatus2(step.data.status)}  */}
+                {step.tool.item?.data.name}({step.outputGraph.item.childSteps.items.length})
             </div>
         </div>
     )
