@@ -25,7 +25,8 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
                     const ix = parentGraph.childSteps.items.indexOf(step)
                     if (ix === parentGraph.childSteps.items.length - 1) return
                     const next = parentGraph.childSteps.items[ix + 1]
-                    if (next) parentGraph.update({ focusedStepID: next.id })
+
+                    if (next) parentGraph.focusStepAndUpdateDraft(next)
                     window.document.getElementById(`button-to-focus-step-${next.id}`)?.focus()
                     e.preventDefault()
                     e.stopPropagation()
@@ -35,7 +36,7 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
                     const ix = parentGraph.childSteps.items.indexOf(step)
                     if (ix === 0) return
                     const prev = parentGraph.childSteps.items[ix - 1]
-                    if (prev) parentGraph.update({ focusedStepID: prev.id })
+                    if (prev) parentGraph.focusStepAndUpdateDraft(prev)
                     window.document.getElementById(`button-to-focus-step-${prev.id}`)?.focus()
                     e.preventDefault()
                     e.stopPropagation()

@@ -80,6 +80,16 @@ export class GraphL {
     childSteps = new LiveCollection<StepL>(this, 'parentGraphID', 'steps')
     parentSteps = new LiveCollection<StepL>(this, 'outputGraphID', 'steps')
 
+    /** focus step and update selected Draft */
+    focusStepAndUpdateDraft = (step: StepL) => {
+        this.update({ focusedStepID: step.id })
+        if (this.focusedDraft.item == null) return
+        this.focusedDraft.item.update({
+            toolID: step.data.toolID,
+            params: deepCopyNaive(step.data.params),
+        })
+    }
+
     /** @internal every node constructor must call this */
     registerNode = (node: ComfyNode<any>) => {
         this.data.comfyPromptJSON[node.uid] = node.json
