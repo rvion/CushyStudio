@@ -1,6 +1,6 @@
 action('💬 Prompt', {
     priority: 2,
-    help: 'extract a mak for the given clothes',
+    help: 'simple prompting tool',
     ui: (form) => ({
         positive: form.str({ textarea: true }),
         negative: form.strOpt({ textarea: true }),
