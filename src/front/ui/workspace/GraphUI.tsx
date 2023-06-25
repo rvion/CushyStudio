@@ -38,7 +38,7 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                                 {draft.tool.item.name}
                             </Button>
                         ))}
-                        <Whisper speaker={<Tooltip>Create Draft</Tooltip>}>
+                        <Whisper speaker={<Tooltip>Draft Action</Tooltip>}>
                             <Button appearance='subtle' onClick={() => graph.createDraft(focusedDraft?.data).focus()}>
                                 <I.AddOutline />
                             </Button>

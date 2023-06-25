@@ -1,7 +1,8 @@
 import type { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
-import { Status, renderStatus2 } from '../../../back/Status'
+import { Status } from '../../../back/Status'
+import { Button } from 'rsuite'
 
 export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) {
     const step = p.step
@@ -11,7 +12,37 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
     const isFocused = step.id === focusedBranch?.id
     const status = step.data.status
     return (
-        <div
+        <Button
+            id={`button-to-focus-step-${step.id}`}
+            onKeyDown={(e) => {
+                if (e.key === 'Delete' || e.key === 'Backspace') {
+                    step.delete()
+                    e.preventDefault()
+                    e.stopPropagation()
+                    return
+                }
+                if (e.key === 'ArrowRight') {
+                    const ix = parentGraph.childSteps.items.indexOf(step)
+                    if (ix === parentGraph.childSteps.items.length - 1) return
+                    const next = parentGraph.childSteps.items[ix + 1]
+                    if (next) parentGraph.update({ focusedStepID: next.id })
+                    window.document.getElementById(`button-to-focus-step-${next.id}`)?.focus()
+                    e.preventDefault()
+                    e.stopPropagation()
+                    return
+                }
+                if (e.key === 'ArrowLeft') {
+                    const ix = parentGraph.childSteps.items.indexOf(step)
+                    if (ix === 0) return
+                    const prev = parentGraph.childSteps.items[ix - 1]
+                    if (prev) parentGraph.update({ focusedStepID: prev.id })
+                    window.document.getElementById(`button-to-focus-step-${prev.id}`)?.focus()
+                    e.preventDefault()
+                    e.stopPropagation()
+                    return
+                }
+            }}
+            size='xs'
             key={step.id}
             className='p-1 step-container cursor-pointer'
             style={{
@@ -36,7 +67,7 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
                 {/* {renderStatus2(step.data.status)}  */}
                 {step.tool.item?.data.name}({step.outputGraph.item.childSteps.items.length})
             </div>
-        </div>
+        </Button>
     )
 })
 
