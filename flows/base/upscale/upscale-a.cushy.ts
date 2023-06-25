@@ -3,7 +3,7 @@ action('💗 upscale', {
     help: 'upscale image',
     ui: (form) => ({
         image: form.selectImage('image to upsacle', []),
-        amount: form.enum({ enumName: 'Enum_UpscaleModelLoader_model_name' }),
+        model: form.enum({ enumName: 'Enum_UpscaleModelLoader_model_name' }),
         // negative: form.strOpt({ textarea: true }),
         // batchSize: form.int({ default: 1 }),
         // seed: form.intOpt({}),
@@ -15,10 +15,7 @@ action('💗 upscale', {
             images: (t) =>
                 t.ImageUpscaleWithModel({
                     image: flow.AUTO,
-                    upscale_model: (t) =>
-                        t.UpscaleModelLoader({
-                            model_name: 'RealESRGAN_x4.pth',
-                        }),
+                    upscale_model: (t) => t.UpscaleModelLoader({ model_name: deps.model }),
                 }),
         })
         await flow.PROMPT()
