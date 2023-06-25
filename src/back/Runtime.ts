@@ -332,7 +332,7 @@ export class Runtime {
     private sendPromp = async (): Promise<PromptL> => {
         const liveGraph = this.graph
         if (liveGraph == null) throw new Error('no graph')
-        const currentJSON = deepCopyNaive(liveGraph.jsonForPrompt)
+        const currentJSON = deepCopyNaive(liveGraph.json_forPrompt)
         // this.step.append({ type: 'prompt', graph: currentJSON })
         console.info('checkpoint:' + JSON.stringify(currentJSON))
         // const step = new PromptExecution(this, currentJSON)

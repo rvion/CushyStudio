@@ -5,7 +5,7 @@ action('B. auto-mask-face', {
     // }),
     run: async (flow, deps) => {
         const clothesMask = flow.nodes.MasqueradeMaskByText({
-            image: deps.image,
+            image: flow.AUTO,
             prompt: 'face',
             negative_prompt: 'face, arms, hands, legs, feet, background',
             normalize: 'no',
