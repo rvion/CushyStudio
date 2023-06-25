@@ -1,27 +1,30 @@
-import type { VisEdges, VisNodes } from '../front/ui/VisUI'
-import type { ComfyPromptJSON } from '../types/ComfyPrompt'
-import type { WsMsgExecuted, WsMsgExecuting, WsMsgProgress } from '../types/ComfyWsApi'
-import type { ComfyNodeID } from '../types/NodeUID'
-import type { Cyto } from '../core/AutolayoutV1'
-import type { ComfyNodeSchema, SchemaL } from './Schema'
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { HTMLContent, MDContent } from 'src/utils/markdown'
 import type { Branded, Maybe } from 'src/utils/types'
+import type { Cyto } from '../core/AutolayoutV1'
+import type { VisEdges, VisNodes } from '../front/ui/VisUI'
+import type { ComfyPromptJSON } from '../types/ComfyPrompt'
+import type { WsMsgExecuting, WsMsgProgress } from '../types/ComfyWsApi'
+import type { ComfyNodeID } from '../types/NodeUID'
+import type { ComfyNodeSchema, SchemaL } from './Schema'
 
 import { marked } from 'marked'
-import { asHTMLContent, asMDContent } from '../utils/markdown'
-import { comfyColors } from '../core/Colors'
-import { ComfyNode } from '../core/Node'
-import { ImageL } from './Image'
-import { LiveCollection } from '../db/LiveCollection'
-import { StepID, StepL } from './Step'
-import { LiveRefOpt } from '../db/LiveRefOpt'
-import { Status } from '../back/Status'
-import { deepCopyNaive } from '../utils/ComfyUtils'
-import { DraftID, DraftL, DraftT } from './Draft'
-import { ToolID } from './Tool'
+import { join } from 'path'
 import { NodeBuilder } from '../back/NodeBuilder'
-import { extendObservable } from 'mobx'
+import { Status } from '../back/Status'
+import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
+import { comfyColors } from '../core/Colors'
+import { LiteGraphJSON, convertFlowToLiteGraphJSON } from '../core/LiteGraph'
+import { ComfyNode } from '../core/Node'
+import { LiveCollection } from '../db/LiveCollection'
+import { LiveRefOpt } from '../db/LiveRefOpt'
+import { deepCopyNaive } from '../utils/ComfyUtils'
+import { AbsolutePath } from '../utils/fs/BrandedPaths'
+import { asAbsolutePath } from '../utils/fs/pathUtils'
+import { asHTMLContent, asMDContent } from '../utils/markdown'
+import { DraftID, DraftL } from './Draft'
+import { StepID, StepL } from './Step'
+import { ToolID } from './Tool'
 
 export type RunMode = 'fake' | 'real'
 
@@ -162,7 +165,7 @@ export class GraphL {
     nodesIndex = new Map<string, ComfyNode<any>>()
 
     /** convert to mermaid DSL expression for nice graph rendering */
-    toMermaid = () => {
+    toMermaid = (): string => {
         const out = [
             //
             // 'graph TD',
@@ -187,8 +190,20 @@ export class GraphL {
         return out
     }
 
+    json_cyto = async (): Promise<CytoJSON> => {
+        // const cytoJSONPath = asAbsolutePath(path.join(outputAbsPath, `cyto-${this._promptCounter}.json`))
+        const cytoJSON = await runAutolayout(this)
+        return cytoJSON
+    }
+
+    json_workflow = async (): Promise<LiteGraphJSON> => {
+        const cytoJSON = await this.json_cyto()
+        const liteGraphJSON = convertFlowToLiteGraphJSON(this, cytoJSON)
+        return liteGraphJSON
+        // this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
+    }
     /** return the coresponding comfy prompt  */
-    get jsonForPrompt(): ComfyPromptJSON {
+    get json_forPrompt(): ComfyPromptJSON {
         const json: ComfyPromptJSON = {}
         for (const node of this.nodes) {
             if (node.disabled) continue
@@ -221,8 +236,16 @@ export class GraphL {
         this.currentExecutingNode.progress = msg.data
     }
 
-    private outputs: WsMsgExecuted[] = []
-    images: ImageL[] = []
+    getTargetWorkflowFilePath = () => {
+        return asAbsolutePath(join(this.st.cacheFolderPath, 'workflow.json'))
+    }
+
+    get cacheFolder(): AbsolutePath {
+        return this.st.cacheFolderPath
+    }
+
+    // private outputs: WsMsgExecuted[] = []
+    // images: ImageL[] = []
 
     /** @internal update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {
@@ -281,7 +304,7 @@ export class GraphL {
 
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
-        const json: ComfyPromptJSON = this.jsonForPrompt
+        const json: ComfyPromptJSON = this.json_forPrompt
         const schemas: SchemaL = this.db.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []
