@@ -43,9 +43,7 @@ declare global {
         /* category=mask output=MASK */
         LoadImageMask(args: LoadImageMask_input, uid?: ComfyNodeUID): LoadImageMask
         /* category=image_upscaling output=IMAGE */
-        ImageScale(args: ImageScale_input, uid?: ComfyNodeUID): ImageScale
-        /* category=image output=IMAGE */
-        ImageInvert(args: ImageInvert_input, uid?: ComfyNodeUID): ImageInvert
+        ImageScaleBy(args: ImageScaleBy_input, uid?: ComfyNodeUID): ImageScaleBy
         /* category=image output=IMAGE, MASK */
         ImagePadForOutpaint(args: ImagePadForOutpaint_input, uid?: ComfyNodeUID): ImagePadForOutpaint
         /* category=conditioning output=CONDITIONING */
@@ -70,8 +68,10 @@ declare global {
         LatentCrop(args: LatentCrop_input, uid?: ComfyNodeUID): LatentCrop
         /* category=loaders output=MODEL, CLIP */
         LoraLoader(args: LoraLoader_input, uid?: ComfyNodeUID): LoraLoader
-        /* category=loaders output=CLIP */
+        /* category=advanced_loaders output=CLIP */
         CLIPLoader(args: CLIPLoader_input, uid?: ComfyNodeUID): CLIPLoader
+        /* category=advanced_loaders output=CLIP */
+        DualCLIPLoader(args: DualCLIPLoader_input, uid?: ComfyNodeUID): DualCLIPLoader
         /* category=conditioning output=CLIP_VISION_OUTPUT */
         CLIPVisionEncode(args: CLIPVisionEncode_input, uid?: ComfyNodeUID): CLIPVisionEncode
         /* category=conditioning_style_model output=CONDITIONING */
@@ -88,12 +88,10 @@ declare global {
         StyleModelLoader(args: StyleModelLoader_input, uid?: ComfyNodeUID): StyleModelLoader
         /* category=loaders output=CLIP_VISION */
         CLIPVisionLoader(args: CLIPVisionLoader_input, uid?: ComfyNodeUID): CLIPVisionLoader
-        /* category=_for_testing output=IMAGE */
+        /* category=latent output=IMAGE */
         VAEDecodeTiled(args: VAEDecodeTiled_input, uid?: ComfyNodeUID): VAEDecodeTiled
-        /* category=_for_testing output=LATENT */
+        /* category=latent output=LATENT */
         VAEEncodeTiled(args: VAEEncodeTiled_input, uid?: ComfyNodeUID): VAEEncodeTiled
-        /* category=_for_testing output=MODEL */
-        TomePatchModel(args: TomePatchModel_input, uid?: ComfyNodeUID): TomePatchModel
         /* category=loaders output=MODEL, CLIP, VAE, CLIP_VISION */
         UnCLIPCheckpointLoader(args: UnCLIPCheckpointLoader_input, uid?: ComfyNodeUID): UnCLIPCheckpointLoader
         /* category=loaders output=GLIGEN */
@@ -104,24 +102,12 @@ declare global {
         CheckpointLoader(args: CheckpointLoader_input, uid?: ComfyNodeUID): CheckpointLoader
         /* category=advanced_loaders output=MODEL, CLIP, VAE */
         DiffusersLoader(args: DiffusersLoader_input, uid?: ComfyNodeUID): DiffusersLoader
-        /* category=_for_testing output=LATENT */
-        LoadLatent(args: LoadLatent_input, uid?: ComfyNodeUID): LoadLatent
-        /* category=_for_testing output= */
-        SaveLatent(args: SaveLatent_input, uid?: ComfyNodeUID): SaveLatent
         /* category=loaders output=MODEL */
         HypernetworkLoader(args: HypernetworkLoader_input, uid?: ComfyNodeUID): HypernetworkLoader
         /* category=loaders output=UPSCALE_MODEL */
         UpscaleModelLoader(args: UpscaleModelLoader_input, uid?: ComfyNodeUID): UpscaleModelLoader
         /* category=image_upscaling output=IMAGE */
         ImageUpscaleWithModel(args: ImageUpscaleWithModel_input, uid?: ComfyNodeUID): ImageUpscaleWithModel
-        /* category=image_postprocessing output=IMAGE */
-        ImageBlend(args: ImageBlend_input, uid?: ComfyNodeUID): ImageBlend
-        /* category=image_postprocessing output=IMAGE */
-        ImageBlur(args: ImageBlur_input, uid?: ComfyNodeUID): ImageBlur
-        /* category=image_postprocessing output=IMAGE */
-        ImageQuantize(args: ImageQuantize_input, uid?: ComfyNodeUID): ImageQuantize
-        /* category=image_postprocessing output=IMAGE */
-        ImageSharpen(args: ImageSharpen_input, uid?: ComfyNodeUID): ImageSharpen
         /* category=latent output=LATENT */
         LatentCompositeMasked(args: LatentCompositeMasked_input, uid?: ComfyNodeUID): LatentCompositeMasked
         /* category=mask output=IMAGE */
@@ -142,6 +128,191 @@ declare global {
         RebatchLatents(args: RebatchLatents_input, uid?: ComfyNodeUID): RebatchLatents
         /* category=Image Processing output=IMAGE */
         BrightnessContrast(args: BrightnessContrast_input, uid?: ComfyNodeUID): BrightnessContrast
+        /* category=image_alpha output=IMAGE */
+        AlphaChanelAdd(args: AlphaChanelAdd_input, uid?: ComfyNodeUID): AlphaChanelAdd
+        /* category=image_alpha output=IMAGE */
+        AlphaChanelAddByMask(args: AlphaChanelAddByMask_input, uid?: ComfyNodeUID): AlphaChanelAddByMask
+        /* category=image_alpha output=MASK */
+        AlphaChanelAsMask(args: AlphaChanelAsMask_input, uid?: ComfyNodeUID): AlphaChanelAsMask
+        /* category=image_alpha output=IMAGE */
+        AlphaChanelRestore(args: AlphaChanelRestore_input, uid?: ComfyNodeUID): AlphaChanelRestore
+        /* category=image_alpha output=IMAGE */
+        AlphaChanelRemove(args: AlphaChanelRemove_input, uid?: ComfyNodeUID): AlphaChanelRemove
+        /* category=clamp output=CLIP */
+        ClipClamp(args: ClipClamp_input, uid?: ComfyNodeUID): ClipClamp
+        /* category=clamp output=CLIP_VISION */
+        ClipVisionClamp(args: ClipVisionClamp_input, uid?: ComfyNodeUID): ClipVisionClamp
+        /* category=clamp output=CLIP_VISION_OUTPUT */
+        ClipVisionOutputClamp(args: ClipVisionOutputClamp_input, uid?: ComfyNodeUID): ClipVisionOutputClamp
+        /* category=clamp output=CONDITIONING */
+        ConditioningClamp(args: ConditioningClamp_input, uid?: ComfyNodeUID): ConditioningClamp
+        /* category=clamp output=CONTROL_NET */
+        ControlNetClamp(args: ControlNetClamp_input, uid?: ComfyNodeUID): ControlNetClamp
+        /* category=clamp output=GLIGEN */
+        GligenClamp(args: GligenClamp_input, uid?: ComfyNodeUID): GligenClamp
+        /* category=clamp output=IMAGE */
+        ImageClamp(args: ImageClamp_input, uid?: ComfyNodeUID): ImageClamp
+        /* category=clamp output=LATENT */
+        LatentClamp(args: LatentClamp_input, uid?: ComfyNodeUID): LatentClamp
+        /* category=clamp output=MASK */
+        MaskClamp(args: MaskClamp_input, uid?: ComfyNodeUID): MaskClamp
+        /* category=clamp output=MODEL */
+        ModelClamp(args: ModelClamp_input, uid?: ComfyNodeUID): ModelClamp
+        /* category=clamp output=STYLE_MODEL */
+        StyleModelClamp(args: StyleModelClamp_input, uid?: ComfyNodeUID): StyleModelClamp
+        /* category=clamp output=UPSCALE_MODEL */
+        UpscaleModelClamp(args: UpscaleModelClamp_input, uid?: ComfyNodeUID): UpscaleModelClamp
+        /* category=clamp output=VAE */
+        VaeClamp(args: VaeClamp_input, uid?: ComfyNodeUID): VaeClamp
+        /* category=image_composite output=IMAGE */
+        ImageCompositeAbsolute(args: ImageCompositeAbsolute_input, uid?: ComfyNodeUID): ImageCompositeAbsolute
+        /* category=image_composite output=IMAGE */
+        ImageCompositeAbsoluteByContainer(
+            args: ImageCompositeAbsoluteByContainer_input,
+            uid?: ComfyNodeUID,
+        ): ImageCompositeAbsoluteByContainer
+        /* category=image_composite output=IMAGE */
+        ImageCompositeRelative(args: ImageCompositeRelative_input, uid?: ComfyNodeUID): ImageCompositeRelative
+        /* category=image_composite output=IMAGE */
+        ImageCompositeRelativeByContainer(
+            args: ImageCompositeRelativeByContainer_input,
+            uid?: ComfyNodeUID,
+        ): ImageCompositeRelativeByContainer
+        /* category=image_container output=IMAGE */
+        ImageContainer(args: ImageContainer_input, uid?: ComfyNodeUID): ImageContainer
+        /* category=image_container output=IMAGE */
+        ImageContainerInheritanceAdd(args: ImageContainerInheritanceAdd_input, uid?: ComfyNodeUID): ImageContainerInheritanceAdd
+        /* category=image_container output=IMAGE */
+        ImageContainerInheritanceScale(
+            args: ImageContainerInheritanceScale_input,
+            uid?: ComfyNodeUID,
+        ): ImageContainerInheritanceScale
+        /* category=image_container output=IMAGE */
+        ImageContainerInheritanceMax(args: ImageContainerInheritanceMax_input, uid?: ComfyNodeUID): ImageContainerInheritanceMax
+        /* category=image_container output=IMAGE */
+        ImageContainerInheritanceSum(args: ImageContainerInheritanceSum_input, uid?: ComfyNodeUID): ImageContainerInheritanceSum
+        /* category=image_draw output=IMAGE */
+        ImageDrawArc(args: ImageDrawArc_input, uid?: ComfyNodeUID): ImageDrawArc
+        /* category=image_draw output=IMAGE */
+        ImageDrawArcByContainer(args: ImageDrawArcByContainer_input, uid?: ComfyNodeUID): ImageDrawArcByContainer
+        /* category=image_draw output=IMAGE */
+        ImageDrawChord(args: ImageDrawChord_input, uid?: ComfyNodeUID): ImageDrawChord
+        /* category=image_draw output=IMAGE */
+        ImageDrawChordByContainer(args: ImageDrawChordByContainer_input, uid?: ComfyNodeUID): ImageDrawChordByContainer
+        /* category=image_draw output=IMAGE */
+        ImageDrawEllipse(args: ImageDrawEllipse_input, uid?: ComfyNodeUID): ImageDrawEllipse
+        /* category=image_draw output=IMAGE */
+        ImageDrawEllipseByContainer(args: ImageDrawEllipseByContainer_input, uid?: ComfyNodeUID): ImageDrawEllipseByContainer
+        /* category=image_draw output=IMAGE */
+        ImageDrawLine(args: ImageDrawLine_input, uid?: ComfyNodeUID): ImageDrawLine
+        /* category=image_draw output=IMAGE */
+        ImageDrawLineByContainer(args: ImageDrawLineByContainer_input, uid?: ComfyNodeUID): ImageDrawLineByContainer
+        /* category=image_draw output=IMAGE */
+        ImageDrawPieslice(args: ImageDrawPieslice_input, uid?: ComfyNodeUID): ImageDrawPieslice
+        /* category=image_draw output=IMAGE */
+        ImageDrawPiesliceByContainer(args: ImageDrawPiesliceByContainer_input, uid?: ComfyNodeUID): ImageDrawPiesliceByContainer
+        /* category=image_draw output=IMAGE */
+        ImageDrawRectangle(args: ImageDrawRectangle_input, uid?: ComfyNodeUID): ImageDrawRectangle
+        /* category=image_draw output=IMAGE */
+        ImageDrawRectangleByContainer(
+            args: ImageDrawRectangleByContainer_input,
+            uid?: ComfyNodeUID,
+        ): ImageDrawRectangleByContainer
+        /* category=image_draw output=IMAGE */
+        ImageDrawRectangleRounded(args: ImageDrawRectangleRounded_input, uid?: ComfyNodeUID): ImageDrawRectangleRounded
+        /* category=image_draw output=IMAGE */
+        ImageDrawRectangleRoundedByContainer(
+            args: ImageDrawRectangleRoundedByContainer_input,
+            uid?: ComfyNodeUID,
+        ): ImageDrawRectangleRoundedByContainer
+        /* category=image_draw output=IMAGE */
+        ImageDrawPolygon(args: ImageDrawPolygon_input, uid?: ComfyNodeUID): ImageDrawPolygon
+        /* category=image_effects output=IMAGE */
+        ImageEffectsAdjustment(args: ImageEffectsAdjustment_input, uid?: ComfyNodeUID): ImageEffectsAdjustment
+        /* category=image_effects output=IMAGE */
+        ImageEffectsGrayscale(args: ImageEffectsGrayscale_input, uid?: ComfyNodeUID): ImageEffectsGrayscale
+        /* category=image_effects output=IMAGE */
+        ImageEffectsNegative(args: ImageEffectsNegative_input, uid?: ComfyNodeUID): ImageEffectsNegative
+        /* category=image_effects output=IMAGE */
+        ImageEffectsSepia(args: ImageEffectsSepia_input, uid?: ComfyNodeUID): ImageEffectsSepia
+        /* category=image_effects output=IMAGE */
+        ImageEffectsChromaticAberration(
+            args: ImageEffectsChromaticAberration_input,
+            uid?: ComfyNodeUID,
+        ): ImageEffectsChromaticAberration
+        /* category=image_filter output=IMAGE */
+        ImageFilterSmooth(args: ImageFilterSmooth_input, uid?: ComfyNodeUID): ImageFilterSmooth
+        /* category=image_filter output=IMAGE */
+        ImageFilterSmoothMore(args: ImageFilterSmoothMore_input, uid?: ComfyNodeUID): ImageFilterSmoothMore
+        /* category=image_filter output=IMAGE */
+        ImageFilterBlur(args: ImageFilterBlur_input, uid?: ComfyNodeUID): ImageFilterBlur
+        /* category=image_filter output=IMAGE */
+        ImageFilterBoxBlur(args: ImageFilterBoxBlur_input, uid?: ComfyNodeUID): ImageFilterBoxBlur
+        /* category=image_filter output=IMAGE */
+        ImageFilterGaussianBlur(args: ImageFilterGaussianBlur_input, uid?: ComfyNodeUID): ImageFilterGaussianBlur
+        /* category=image_filter output=IMAGE */
+        ImageFilterBilateralBlur(args: ImageFilterBilateralBlur_input, uid?: ComfyNodeUID): ImageFilterBilateralBlur
+        /* category=image_filter output=IMAGE */
+        ImageFilterContour(args: ImageFilterContour_input, uid?: ComfyNodeUID): ImageFilterContour
+        /* category=image_filter output=IMAGE */
+        ImageFilterDetail(args: ImageFilterDetail_input, uid?: ComfyNodeUID): ImageFilterDetail
+        /* category=image_filter output=IMAGE */
+        ImageFilterEdgeEnhance(args: ImageFilterEdgeEnhance_input, uid?: ComfyNodeUID): ImageFilterEdgeEnhance
+        /* category=image_filter output=IMAGE */
+        ImageFilterEdgeEnhanceMore(args: ImageFilterEdgeEnhanceMore_input, uid?: ComfyNodeUID): ImageFilterEdgeEnhanceMore
+        /* category=image_filter output=IMAGE */
+        ImageFilterEmboss(args: ImageFilterEmboss_input, uid?: ComfyNodeUID): ImageFilterEmboss
+        /* category=image_filter output=IMAGE */
+        ImageFilterFindEdges(args: ImageFilterFindEdges_input, uid?: ComfyNodeUID): ImageFilterFindEdges
+        /* category=image_filter output=IMAGE */
+        ImageFilterSharpen(args: ImageFilterSharpen_input, uid?: ComfyNodeUID): ImageFilterSharpen
+        /* category=image_filter output=IMAGE */
+        ImageFilterRank(args: ImageFilterRank_input, uid?: ComfyNodeUID): ImageFilterRank
+        /* category=image_filter output=IMAGE */
+        ImageFilterMedian(args: ImageFilterMedian_input, uid?: ComfyNodeUID): ImageFilterMedian
+        /* category=image_filter output=IMAGE */
+        ImageFilterMin(args: ImageFilterMin_input, uid?: ComfyNodeUID): ImageFilterMin
+        /* category=image_filter output=IMAGE */
+        ImageFilterMax(args: ImageFilterMax_input, uid?: ComfyNodeUID): ImageFilterMax
+        /* category=image_filter output=IMAGE */
+        ImageFilterMode(args: ImageFilterMode_input, uid?: ComfyNodeUID): ImageFilterMode
+        /* category=image_segmentation output=IMAGE */
+        ImageSegmentation(args: ImageSegmentation_input, uid?: ComfyNodeUID): ImageSegmentation
+        /* category=image_segmentation output=IMAGE */
+        ImageSegmentationCustom(args: ImageSegmentationCustom_input, uid?: ComfyNodeUID): ImageSegmentationCustom
+        /* category=image_segmentation output=IMAGE */
+        ImageSegmentationCustomAdvanced(
+            args: ImageSegmentationCustomAdvanced_input,
+            uid?: ComfyNodeUID,
+        ): ImageSegmentationCustomAdvanced
+        /* category=image_draw output=IMAGE */
+        ImageText(args: ImageText_input, uid?: ComfyNodeUID): ImageText
+        /* category=image_draw output=IMAGE */
+        ImageTextOutlined(args: ImageTextOutlined_input, uid?: ComfyNodeUID): ImageTextOutlined
+        /* category=image_transform output=IMAGE */
+        ImageTransformResizeAbsolute(args: ImageTransformResizeAbsolute_input, uid?: ComfyNodeUID): ImageTransformResizeAbsolute
+        /* category=image_transform output=IMAGE */
+        ImageTransformResizeRelative(args: ImageTransformResizeRelative_input, uid?: ComfyNodeUID): ImageTransformResizeRelative
+        /* category=image_transform output=IMAGE */
+        ImageTransformCropAbsolute(args: ImageTransformCropAbsolute_input, uid?: ComfyNodeUID): ImageTransformCropAbsolute
+        /* category=image_transform output=IMAGE */
+        ImageTransformCropRelative(args: ImageTransformCropRelative_input, uid?: ComfyNodeUID): ImageTransformCropRelative
+        /* category=image_transform output=IMAGE */
+        ImageTransformCropCorners(args: ImageTransformCropCorners_input, uid?: ComfyNodeUID): ImageTransformCropCorners
+        /* category=image_transform output=IMAGE */
+        ImageTransformPaddingAbsolute(
+            args: ImageTransformPaddingAbsolute_input,
+            uid?: ComfyNodeUID,
+        ): ImageTransformPaddingAbsolute
+        /* category=image_transform output=IMAGE */
+        ImageTransformPaddingRelative(
+            args: ImageTransformPaddingRelative_input,
+            uid?: ComfyNodeUID,
+        ): ImageTransformPaddingRelative
+        /* category=image_transform output=IMAGE */
+        ImageTransformRotate(args: ImageTransformRotate_input, uid?: ComfyNodeUID): ImageTransformRotate
+        /* category=image_transform output=IMAGE */
+        ImageTransformTranspose(args: ImageTransformTranspose_input, uid?: ComfyNodeUID): ImageTransformTranspose
         /* category=ImpactPack output=SAM_MODEL */
         ImpactSAMLoader(args: ImpactSAMLoader_input, uid?: ComfyNodeUID): ImpactSAMLoader
         /* category=ImpactPack output=BBOX_DETECTOR, SEGM_DETECTOR */
@@ -265,10 +436,16 @@ declare global {
         ImpactSegmDetectorSEGS(args: ImpactSegmDetectorSEGS_input, uid?: ComfyNodeUID): ImpactSegmDetectorSEGS
         /* category=ImpactPack_Detector output=SEGS */
         ImpactONNXDetectorSEGS(args: ImpactONNXDetectorSEGS_input, uid?: ComfyNodeUID): ImpactONNXDetectorSEGS
-        /* category=ImpactPack_Legacy output=MASK */
-        ImpactBboxDetectorCombined(args: ImpactBboxDetectorCombined_input, uid?: ComfyNodeUID): ImpactBboxDetectorCombined
-        /* category=ImpactPack_Legacy output=MASK */
-        ImpactSegmDetectorCombined(args: ImpactSegmDetectorCombined_input, uid?: ComfyNodeUID): ImpactSegmDetectorCombined
+        /* category=ImpactPack_Detector output=MASK */
+        ImpactBboxDetectorCombined_v2(
+            args: ImpactBboxDetectorCombined_v2_input,
+            uid?: ComfyNodeUID,
+        ): ImpactBboxDetectorCombined_v2
+        /* category=ImpactPack_Detector output=MASK */
+        ImpactSegmDetectorCombined_v2(
+            args: ImpactSegmDetectorCombined_v2_input,
+            uid?: ComfyNodeUID,
+        ): ImpactSegmDetectorCombined_v2
         /* category=ImpactPack_Operation output=MASK */
         ImpactSegsToCombinedMask(args: ImpactSegsToCombinedMask_input, uid?: ComfyNodeUID): ImpactSegsToCombinedMask
         /* category=ImpactPack_Sampler output=KSAMPLER */
@@ -279,6 +456,29 @@ declare global {
         ImpactTiledKSamplerProvider(args: ImpactTiledKSamplerProvider_input, uid?: ComfyNodeUID): ImpactTiledKSamplerProvider
         /* category=ImpactPack_Util output=IMAGE, MASK */
         ImpactPreviewBridge(args: ImpactPreviewBridge_input, uid?: ComfyNodeUID): ImpactPreviewBridge
+        /* category=ImpactPack_Util output= */
+        ImpactImageSender(args: ImpactImageSender_input, uid?: ComfyNodeUID): ImpactImageSender
+        /* category=ImpactPack_Util output=IMAGE, MASK */
+        ImpactImageReceiver(args: ImpactImageReceiver_input, uid?: ComfyNodeUID): ImpactImageReceiver
+        /* category=ImpactPack_Util output=IMAGE, MASK */
+        ImpactImageMaskSwitch(args: ImpactImageMaskSwitch_input, uid?: ComfyNodeUID): ImpactImageMaskSwitch
+        /* category=ImpactPack_Util output=LATENT */
+        ImpactLatentSwitch(args: ImpactLatentSwitch_input, uid?: ComfyNodeUID): ImpactLatentSwitch
+        /* category=ImpactPack_Util output=SEGS */
+        ImpactSEGSSwitch(args: ImpactSEGSSwitch_input, uid?: ComfyNodeUID): ImpactSEGSSwitch
+        /* category=ImpactPack_Prompt output=STRING */
+        ImpactImpactWildcardProcessor(
+            args: ImpactImpactWildcardProcessor_input,
+            uid?: ComfyNodeUID,
+        ): ImpactImpactWildcardProcessor
+        /* category=ImpactPack_Debug output= */
+        ImpactImpactLogger(args: ImpactImpactLogger_input, uid?: ComfyNodeUID): ImpactImpactLogger
+        /* category=ImpactPack_Detailer output=SEGS */
+        ImpactSEGSDetailer(args: ImpactSEGSDetailer_input, uid?: ComfyNodeUID): ImpactSEGSDetailer
+        /* category=ImpactPack_Detailer output=IMAGE */
+        ImpactSEGSPaste(args: ImpactSEGSPaste_input, uid?: ComfyNodeUID): ImpactSEGSPaste
+        /* category=ImpactPack_Detailer output= */
+        ImpactSEGSPreview(args: ImpactSEGSPreview_input, uid?: ComfyNodeUID): ImpactSEGSPreview
         /* category=ImpactPack_Legacy output=MASK */
         ImpactMaskPainter(args: ImpactMaskPainter_input, uid?: ComfyNodeUID): ImpactMaskPainter
         /* category=ImpactPack_Legacy output=BBOX_MODEL, SEGM_MODEL */
@@ -289,49 +489,10 @@ declare global {
         ImpactBboxDetectorForEach(args: ImpactBboxDetectorForEach_input, uid?: ComfyNodeUID): ImpactBboxDetectorForEach
         /* category=ImpactPack_Legacy output=SEGS */
         ImpactSegmDetectorForEach(args: ImpactSegmDetectorForEach_input, uid?: ComfyNodeUID): ImpactSegmDetectorForEach
-        /* category=latent output=LATENT */
-        RandomLatentImage(args: RandomLatentImage_input, uid?: ComfyNodeUID): RandomLatentImage
-        /* category=latent output=IMAGE */
-        VAEDecodeBatched(args: VAEDecodeBatched_input, uid?: ComfyNodeUID): VAEDecodeBatched
-        /* category=latent output=LATENT */
-        VAEEncodeBatched(args: VAEEncodeBatched_input, uid?: ComfyNodeUID): VAEEncodeBatched
-        /* category=latent output=IMAGE */
-        LatentToImage(args: LatentToImage_input, uid?: ComfyNodeUID): LatentToImage
-        /* category=latent output=IMAGE, STRING */
-        LatentToHist(args: LatentToHist_input, uid?: ComfyNodeUID): LatentToHist
-        /* category=sampling output=DICT */
-        KSamplerSetting(args: KSamplerSetting_input, uid?: ComfyNodeUID): KSamplerSetting
-        /* category=sampling output=LATENT */
-        KSamplerOverrided(args: KSamplerOverrided_input, uid?: ComfyNodeUID): KSamplerOverrided
-        /* category=sampling output=LATENT */
-        KSamplerXYZ(args: KSamplerXYZ_input, uid?: ComfyNodeUID): KSamplerXYZ
-        /* category=loaders output=DICT */
-        StateDictLoader(args: StateDictLoader_input, uid?: ComfyNodeUID): StateDictLoader
-        /* category=model output=MODEL, CLIP, VAE */
-        Dict2Model(args: Dict2Model_input, uid?: ComfyNodeUID): Dict2Model
-        /* category=model output=MODEL */
-        ModelIter(args: ModelIter_input, uid?: ComfyNodeUID): ModelIter
-        /* category=model output=CLIP */
-        CLIPIter(args: CLIPIter_input, uid?: ComfyNodeUID): CLIPIter
-        /* category=model output=VAE */
-        VAEIter(args: VAEIter_input, uid?: ComfyNodeUID): VAEIter
-        /* category=model output=DICT */
-        StateDictMerger(args: StateDictMerger_input, uid?: ComfyNodeUID): StateDictMerger
-        /* category=model output=DICT */
-        StateDictMergerBlockWeighted(args: StateDictMergerBlockWeighted_input, uid?: ComfyNodeUID): StateDictMergerBlockWeighted
-        /* category=model output=MODEL, CLIP, VAE */
-        StateDictMergerBlockWeightedMulti(
-            args: StateDictMergerBlockWeightedMulti_input,
-            uid?: ComfyNodeUID,
-        ): StateDictMergerBlockWeightedMulti
-        /* category=model output= */
-        SaveStateDict(args: SaveStateDict_input, uid?: ComfyNodeUID): SaveStateDict
-        /* category=image_postprocessing output=IMAGE */
-        ImageBlend2(args: ImageBlend2_input, uid?: ComfyNodeUID): ImageBlend2
-        /* category=image output= */
-        GridImage(args: GridImage_input, uid?: ComfyNodeUID): GridImage
-        /* category=utils output= */
-        SaveText(args: SaveText_input, uid?: ComfyNodeUID): SaveText
+        /* category=ImpactPack_Legacy output=MASK */
+        ImpactBboxDetectorCombined(args: ImpactBboxDetectorCombined_input, uid?: ComfyNodeUID): ImpactBboxDetectorCombined
+        /* category=ImpactPack_Legacy output=MASK */
+        ImpactSegmDetectorCombined(args: ImpactSegmDetectorCombined_input, uid?: ComfyNodeUID): ImpactSegmDetectorCombined
         /* category=conditioning_cutoff output=CLIPREGION */
         BNK_CutoffBasePrompt(args: BNK_CutoffBasePrompt_input, uid?: ComfyNodeUID): BNK_CutoffBasePrompt
         /* category=conditioning_cutoff output=CLIPREGION */
@@ -371,10 +532,6 @@ declare global {
         /* category=image output=IMAGE, MASK */
         ClipSeg(args: ClipSeg_input, uid?: ComfyNodeUID): ClipSeg
         /* category=preprocessors_edge_line output=IMAGE */
-        CannyEdgePreprocessor(args: CannyEdgePreprocessor_input, uid?: ComfyNodeUID): CannyEdgePreprocessor
-        /* category=preprocessors_edge_line output=IMAGE */
-        MLSDPreprocessor(args: MLSDPreprocessor_input, uid?: ComfyNodeUID): MLSDPreprocessor
-        /* category=preprocessors_edge_line output=IMAGE */
         HEDPreprocessor(args: HEDPreprocessor_input, uid?: ComfyNodeUID): HEDPreprocessor
         /* category=preprocessors_edge_line output=IMAGE */
         ScribblePreprocessor(args: ScribblePreprocessor_input, uid?: ComfyNodeUID): ScribblePreprocessor
@@ -394,11 +551,7 @@ declare global {
             uid?: ComfyNodeUID,
         ): Manga2AnimeLineArtPreprocessor
         /* category=preprocessors_normal_depth_map output=IMAGE */
-        MiDaSDepthMapPreprocessor(args: MiDaSDepthMapPreprocessor_input, uid?: ComfyNodeUID): MiDaSDepthMapPreprocessor
-        /* category=preprocessors_normal_depth_map output=IMAGE */
         MiDaSNormalMapPreprocessor(args: MiDaSNormalMapPreprocessor_input, uid?: ComfyNodeUID): MiDaSNormalMapPreprocessor
-        /* category=preprocessors_normal_depth_map output=IMAGE */
-        LeReSDepthMapPreprocessor(args: LeReSDepthMapPreprocessor_input, uid?: ComfyNodeUID): LeReSDepthMapPreprocessor
         /* category=preprocessors_normal_depth_map output=IMAGE */
         ZoeDepthMapPreprocessor(args: ZoeDepthMapPreprocessor_input, uid?: ComfyNodeUID): ZoeDepthMapPreprocessor
         /* category=preprocessors_normal_depth_map output=IMAGE */
@@ -410,10 +563,6 @@ declare global {
             args: MediaPipeHandPosePreprocessor_input,
             uid?: ComfyNodeUID,
         ): MediaPipeHandPosePreprocessor
-        /* category=preprocessors_semseg output=IMAGE */
-        SemSegPreprocessor(args: SemSegPreprocessor_input, uid?: ComfyNodeUID): SemSegPreprocessor
-        /* category=preprocessors_semseg output=IMAGE */
-        UniFormerSemSegPreprocessor(args: UniFormerSemSegPreprocessor_input, uid?: ComfyNodeUID): UniFormerSemSegPreprocessor
         /* category=preprocessors_semseg output=IMAGE */
         OneFormerCOCOSemSegPreprocessor(
             args: OneFormerCOCOSemSegPreprocessor_input,
@@ -433,6 +582,8 @@ declare global {
         ColorPreprocessor(args: ColorPreprocessor_input, uid?: ComfyNodeUID): ColorPreprocessor
         /* category=preprocessors_tile output=IMAGE */
         TilePreprocessor(args: TilePreprocessor_input, uid?: ComfyNodeUID): TilePreprocessor
+        /* category=preprocessors_inpaint output=IMAGE */
+        InpaintPreprocessor(args: InpaintPreprocessor_input, uid?: ComfyNodeUID): InpaintPreprocessor
         /* category=conditioning_cutoff output=CLIPREGION */
         CLIPRegionsBasePrompt(args: CLIPRegionsBasePrompt_input, uid?: ComfyNodeUID): CLIPRegionsBasePrompt
         /* category=conditioning_cutoff output=CLIPREGION */
@@ -441,16 +592,52 @@ declare global {
         CLIPRegionsToConditioning(args: CLIPRegionsToConditioning_input, uid?: ComfyNodeUID): CLIPRegionsToConditioning
         /* category=Efficiency Nodes_Sampling output=MODEL, CONDITIONING, CONDITIONING_1, LATENT, VAE, IMAGE */
         KSamplerEfficient(args: KSamplerEfficient_input, uid?: ComfyNodeUID): KSamplerEfficient
-        /* category=Efficiency Nodes_Loaders output=MODEL, CONDITIONING, CONDITIONING_1, LATENT, VAE, CLIP */
+        /* category=Efficiency Nodes_Loaders output=MODEL, CONDITIONING, CONDITIONING_1, LATENT, VAE, DEPENDENCIES */
         EfficientLoader(args: EfficientLoader_input, uid?: ComfyNodeUID): EfficientLoader
-        /* category=Efficiency Nodes_Scripts output=SCRIPT */
+        /* category=Efficiency Nodes_XY Plot output=SCRIPT */
         XYPlot(args: XYPlot_input, uid?: ComfyNodeUID): XYPlot
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputSeedsBatch(args: XYInputSeedsBatch_input, uid?: ComfyNodeUID): XYInputSeedsBatch
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputSteps(args: XYInputSteps_input, uid?: ComfyNodeUID): XYInputSteps
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputCFGScale(args: XYInputCFGScale_input, uid?: ComfyNodeUID): XYInputCFGScale
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputSampler(args: XYInputSampler_input, uid?: ComfyNodeUID): XYInputSampler
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputScheduler(args: XYInputScheduler_input, uid?: ComfyNodeUID): XYInputScheduler
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputDenoise(args: XYInputDenoise_input, uid?: ComfyNodeUID): XYInputDenoise
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputVAE(args: XYInputVAE_input, uid?: ComfyNodeUID): XYInputVAE
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputPositivePromptSR(args: XYInputPositivePromptSR_input, uid?: ComfyNodeUID): XYInputPositivePromptSR
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputNegativePromptSR(args: XYInputNegativePromptSR_input, uid?: ComfyNodeUID): XYInputNegativePromptSR
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputCheckpoint(args: XYInputCheckpoint_input, uid?: ComfyNodeUID): XYInputCheckpoint
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputClipSkip(args: XYInputClipSkip_input, uid?: ComfyNodeUID): XYInputClipSkip
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputLoRA(args: XYInputLoRA_input, uid?: ComfyNodeUID): XYInputLoRA
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        XYInputLoRAAdvanced(args: XYInputLoRAAdvanced_input, uid?: ComfyNodeUID): XYInputLoRAAdvanced
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY, XY_1 */
+        XYInputManualXYEntry(args: XYInputManualXYEntry_input, uid?: ComfyNodeUID): XYInputManualXYEntry
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output= */
+        ManualXYEntryInfo(args: ManualXYEntryInfo_input, uid?: ComfyNodeUID): ManualXYEntryInfo
+        /* category=Efficiency Nodes_XY Plot_XY Inputs output=XY */
+        JoinXYInputsOfSameType(args: JoinXYInputsOfSameType_input, uid?: ComfyNodeUID): JoinXYInputsOfSameType
         /* category=Efficiency Nodes_Image output=IMAGE */
         ImageOverlay(args: ImageOverlay_input, uid?: ComfyNodeUID): ImageOverlay
-        /* category=Efficiency Nodes_Math output=INT, FLOAT */
+        /* category=Efficiency Nodes_Simple Eval output=INT, FLOAT, STRING */
         EvaluateIntegers(args: EvaluateIntegers_input, uid?: ComfyNodeUID): EvaluateIntegers
-        /* category=Efficiency Nodes_Math output=STRING */
+        /* category=Efficiency Nodes_Simple Eval output=INT, FLOAT, STRING */
+        EvaluateFloats(args: EvaluateFloats_input, uid?: ComfyNodeUID): EvaluateFloats
+        /* category=Efficiency Nodes_Simple Eval output=STRING */
         EvaluateStrings(args: EvaluateStrings_input, uid?: ComfyNodeUID): EvaluateStrings
+        /* category=Efficiency Nodes_Simple Eval output= */
+        SimpleEvalExamples(args: SimpleEvalExamples_input, uid?: ComfyNodeUID): SimpleEvalExamples
         /* category=Image Processing output=IMAGE */
         GaussianBlur(args: GaussianBlur_input, uid?: ComfyNodeUID): GaussianBlur
         /* category=Image Processing output=IMAGE */
@@ -502,14 +689,20 @@ declare global {
         Saturation(args: Saturation_input, uid?: ComfyNodeUID): Saturation
         /* category=Image Processing output=IMAGE */
         ImageSharpening(args: ImageSharpening_input, uid?: ComfyNodeUID): ImageSharpening
+        /* category=WAS Suite_Loaders output=BLIP_MODEL */
+        WASBLIPModelLoader(args: WASBLIPModelLoader_input, uid?: ComfyNodeUID): WASBLIPModelLoader
         /* category=WAS Suite_IO output=ASCII, ASCII_1, ASCII_2 */
         WASCacheNode(args: WASCacheNode_input, uid?: ComfyNodeUID): WASCacheNode
         /* category=WAS Suite_Loaders_Advanced output=MODEL, CLIP, VAE, STRING */
         WASCheckpointLoader(args: WASCheckpointLoader_input, uid?: ComfyNodeUID): WASCheckpointLoader
         /* category=WAS Suite_Loaders output=MODEL, CLIP, VAE, STRING */
         WASCheckpointLoaderSimple(args: WASCheckpointLoaderSimple_input, uid?: ComfyNodeUID): WASCheckpointLoaderSimple
-        /* category=WAS Suite_Conditioning output=CONDITIONING */
+        /* category=WAS Suite_Conditioning output=CONDITIONING, ASCII, ASCII_1 */
         WASCLIPTextEncodeNSP(args: WASCLIPTextEncodeNSP_input, uid?: ComfyNodeUID): WASCLIPTextEncodeNSP
+        /* category=WAS Suite_Logic output=CLIP */
+        WASCLIPInputSwitch(args: WASCLIPInputSwitch_input, uid?: ComfyNodeUID): WASCLIPInputSwitch
+        /* category=WAS Suite_Logic output=CLIP_VISION */
+        WASCLIPVisionInputSwitch(args: WASCLIPVisionInputSwitch_input, uid?: ComfyNodeUID): WASCLIPVisionInputSwitch
         /* category=WAS Suite_Logic output=CONDITIONING */
         WASConditioningInputSwitch(args: WASConditioningInputSwitch_input, uid?: ComfyNodeUID): WASConditioningInputSwitch
         /* category=WAS Suite_Number output=NUMBER */
@@ -524,10 +717,17 @@ declare global {
         WASCreateVideoFromPath(args: WASCreateVideoFromPath_input, uid?: ComfyNodeUID): WASCreateVideoFromPath
         /* category=WAS Suite_Image_Masking output=MASK, IMAGE */
         WASCLIPSegMasking(args: WASCLIPSegMasking_input, uid?: ComfyNodeUID): WASCLIPSegMasking
+        /* category=WAS Suite_Loaders output=CLIPSEG_MODEL */
+        WASCLIPSegModelLoader(args: WASCLIPSegModelLoader_input, uid?: ComfyNodeUID): WASCLIPSegModelLoader
         /* category=WAS Suite_Image_Masking output=IMAGE, MASK, IMAGE_1 */
         WASCLIPSegBatchMasking(args: WASCLIPSegBatchMasking_input, uid?: ComfyNodeUID): WASCLIPSegBatchMasking
         /* category=WAS Suite_Image_Masking output=IMAGE */
         WASConvertMasksToImages(args: WASConvertMasksToImages_input, uid?: ComfyNodeUID): WASConvertMasksToImages
+        /* category=WAS Suite_Logic output=CONTROL_NET */
+        WASControlNetModelInputSwitch(
+            args: WASControlNetModelInputSwitch_input,
+            uid?: ComfyNodeUID,
+        ): WASControlNetModelInputSwitch
         /* category=WAS Suite_Debug output=NUMBER */
         WASDebugNumberToConsole(args: WASDebugNumberToConsole_input, uid?: ComfyNodeUID): WASDebugNumberToConsole
         /* category=WAS Suite_Debug output=DICT */
@@ -539,6 +739,8 @@ declare global {
             args: WASDiffusersHubModelDownLoader_input,
             uid?: ComfyNodeUID,
         ): WASDiffusersHubModelDownLoader
+        /* category=WAS Suite_Debug output= */
+        WASExportAPI(args: WASExportAPI_input, uid?: ComfyNodeUID): WASExportAPI
         /* category=WAS Suite_Logic output=LATENT */
         WASLatentInputSwitch(args: WASLatentInputSwitch_input, uid?: ComfyNodeUID): WASLatentInputSwitch
         /* category=WAS Suite_IO output=LATENT, IMAGE, CONDITIONING */
@@ -547,6 +749,10 @@ declare global {
         WASLogicBoolean(args: WASLogicBoolean_input, uid?: ComfyNodeUID): WASLogicBoolean
         /* category=WAS Suite_Loaders output=MODEL, CLIP, STRING */
         WASLoraLoader(args: WASLoraLoader_input, uid?: ComfyNodeUID): WASLoraLoader
+        /* category=WAS Suite_Image_Filter output=IMAGE, IMAGE_1, IMAGE_2 */
+        WASImageSSAOAmbientOcclusion(args: WASImageSSAOAmbientOcclusion_input, uid?: ComfyNodeUID): WASImageSSAOAmbientOcclusion
+        /* category=WAS Suite_Image_Filter output=IMAGE, IMAGE_1, IMAGE_2, IMAGE_3 */
+        WASImageSSDODirectOcclusion(args: WASImageSSDODirectOcclusion_input, uid?: ComfyNodeUID): WASImageSSDODirectOcclusion
         /* category=WAS Suite_Image_Analyze output=IMAGE */
         WASImageAnalyze(args: WASImageAnalyze_input, uid?: ComfyNodeUID): WASImageAnalyze
         /* category=WAS Suite_Image output=IMAGE */
@@ -622,6 +828,11 @@ declare global {
         WASImagePadding(args: WASImagePadding_input, uid?: ComfyNodeUID): WASImagePadding
         /* category=WAS Suite_Image_Generate_Noise output=IMAGE */
         WASImagePerlinNoise(args: WASImagePerlinNoise_input, uid?: ComfyNodeUID): WASImagePerlinNoise
+        /* category=WAS Suite_Image_AI output=IMAGE */
+        WASImageRembgRemoveBackground(
+            args: WASImageRembgRemoveBackground_input,
+            uid?: ComfyNodeUID,
+        ): WASImageRembgRemoveBackground
         /* category=WAS Suite_Image_Generate_Noise output=IMAGE */
         WASImagePerlinPowerFractal(args: WASImagePerlinPowerFractal_input, uid?: ComfyNodeUID): WASImagePerlinPowerFractal
         /* category=WAS Suite_Image_Process output=IMAGE */
@@ -635,6 +846,8 @@ declare global {
         WASImageResize(args: WASImageResize_input, uid?: ComfyNodeUID): WASImageResize
         /* category=WAS Suite_Image_Transform output=IMAGE */
         WASImageRotate(args: WASImageRotate_input, uid?: ComfyNodeUID): WASImageRotate
+        /* category=WAS Suite_Image_Adjustment output=IMAGE */
+        WASImageRotateHue(args: WASImageRotateHue_input, uid?: ComfyNodeUID): WASImageRotateHue
         /* category=WAS Suite_IO output= */
         WASImageSave(args: WASImageSave_input, uid?: ComfyNodeUID): WASImageSave
         /* category=WAS Suite_Image_Process output=IMAGE */
@@ -669,6 +882,8 @@ declare global {
         WASImageVoronoiNoiseFilter(args: WASImageVoronoiNoiseFilter_input, uid?: ComfyNodeUID): WASImageVoronoiNoiseFilter
         /* category=WAS Suite_Sampling output=LATENT */
         WASKSamplerWAS(args: WASKSamplerWAS_input, uid?: ComfyNodeUID): WASKSamplerWAS
+        /* category=WAS Suite_Sampling output=LATENT */
+        WASKSamplerCycle(args: WASKSamplerCycle_input, uid?: ComfyNodeUID): WASKSamplerCycle
         /* category=WAS Suite_Latent_Generate output=LATENT */
         WASLatentNoiseInjection(args: WASLatentNoiseInjection_input, uid?: ComfyNodeUID): WASLatentNoiseInjection
         /* category=WAS Suite_Number_Operations output=NUMBER, NUMBER_1 */
@@ -691,6 +906,14 @@ declare global {
         WASMaskBatchToMask(args: WASMaskBatchToMask_input, uid?: ComfyNodeUID): WASMaskBatchToMask
         /* category=WAS Suite_Image_Masking output=MASK */
         WASMaskCeilingRegion(args: WASMaskCeilingRegion_input, uid?: ComfyNodeUID): WASMaskCeilingRegion
+        /* category=WAS Suite_Image_Masking output=MASK */
+        WASMaskCropDominantRegion(args: WASMaskCropDominantRegion_input, uid?: ComfyNodeUID): WASMaskCropDominantRegion
+        /* category=WAS Suite_Image_Masking output=MASK */
+        WASMaskCropMinorityRegion(args: WASMaskCropMinorityRegion_input, uid?: ComfyNodeUID): WASMaskCropMinorityRegion
+        /* category=WAS Suite_Image_Masking output=MASK, CROP_DATA, INT, INT_1, INT_2, INT_3, INT_4, INT_5 */
+        WASMaskCropRegion(args: WASMaskCropRegion_input, uid?: ComfyNodeUID): WASMaskCropRegion
+        /* category=WAS Suite_Image_Masking output=MASK, MASK_1 */
+        WASMaskPasteRegion(args: WASMaskPasteRegion_input, uid?: ComfyNodeUID): WASMaskPasteRegion
         /* category=WAS Suite_Image_Masking output=MASK */
         WASMaskDilateRegion(args: WASMaskDilateRegion_input, uid?: ComfyNodeUID): WASMaskDilateRegion
         /* category=WAS Suite_Image_Masking output=MASK */
@@ -715,10 +938,14 @@ declare global {
         WASMasksCombineRegions(args: WASMasksCombineRegions_input, uid?: ComfyNodeUID): WASMasksCombineRegions
         /* category=WAS Suite_Image_Masking output=MASK */
         WASMasksCombineBatch(args: WASMasksCombineBatch_input, uid?: ComfyNodeUID): WASMasksCombineBatch
+        /* category=WAS Suite_Loaders output=MIDAS_MODEL */
+        WASMiDaSModelLoader(args: WASMiDaSModelLoader_input, uid?: ComfyNodeUID): WASMiDaSModelLoader
         /* category=WAS Suite_Image_AI output=IMAGE */
         WASMiDaSDepthApproximation(args: WASMiDaSDepthApproximation_input, uid?: ComfyNodeUID): WASMiDaSDepthApproximation
         /* category=WAS Suite_Image_AI output=IMAGE, IMAGE_1 */
         WASMiDaSMaskImage(args: WASMiDaSMaskImage_input, uid?: ComfyNodeUID): WASMiDaSMaskImage
+        /* category=WAS Suite_Logic output=MODEL */
+        WASModelInputSwitch(args: WASModelInputSwitch_input, uid?: ComfyNodeUID): WASModelInputSwitch
         /* category=WAS Suite_Number_Operations output=NUMBER */
         WASNumberOperation(args: WASNumberOperation_input, uid?: ComfyNodeUID): WASNumberOperation
         /* category=WAS Suite_Number_Operations output=FLOAT */
@@ -759,6 +986,11 @@ declare global {
         WASSAMParametersCombine(args: WASSAMParametersCombine_input, uid?: ComfyNodeUID): WASSAMParametersCombine
         /* category=WAS Suite_Image_Masking output=IMAGE, MASK */
         WASSAMImageMask(args: WASSAMImageMask_input, uid?: ComfyNodeUID): WASSAMImageMask
+        /* category=WAS Suite_Debug output=LATENT */
+        WASSamplesPassthroughStatSystem(
+            args: WASSamplesPassthroughStatSystem_input,
+            uid?: ComfyNodeUID,
+        ): WASSamplesPassthroughStatSystem
         /* category=WAS Suite_Text_Operations output=ASCII */
         WASStringToText(args: WASStringToText_input, uid?: ComfyNodeUID): WASStringToText
         /* category=WAS Suite_Image_Bound output=IMAGE_BOUNDS */
@@ -800,6 +1032,8 @@ declare global {
         WASTextList(args: WASTextList_input, uid?: ComfyNodeUID): WASTextList
         /* category=WAS Suite_Text output=LIST */
         WASTextListConcatenate(args: WASTextListConcatenate_input, uid?: ComfyNodeUID): WASTextListConcatenate
+        /* category=WAS Suite_Text output=ASCII, DICT */
+        WASTextLoadLineFromFile(args: WASTextLoadLineFromFile_input, uid?: ComfyNodeUID): WASTextLoadLineFromFile
         /* category=WAS Suite_Text output=ASCII */
         WASTextMultiline(args: WASTextMultiline_input, uid?: ComfyNodeUID): WASTextMultiline
         /* category=WAS Suite_Text_Parse output=ASCII */
@@ -813,6 +1047,8 @@ declare global {
         WASTextParseTokens(args: WASTextParseTokens_input, uid?: ComfyNodeUID): WASTextParseTokens
         /* category=WAS Suite_Text output=ASCII */
         WASTextRandomLine(args: WASTextRandomLine_input, uid?: ComfyNodeUID): WASTextRandomLine
+        /* category=WAS Suite_Text output=ASCII */
+        WASTextRandomPrompt(args: WASTextRandomPrompt_input, uid?: ComfyNodeUID): WASTextRandomPrompt
         /* category=WAS Suite_Text output=ASCII, ASCII_1, ASCII_2, ASCII_3 */
         WASTextString(args: WASTextString_input, uid?: ComfyNodeUID): WASTextString
         /* category=WAS Suite_Text_Operations output=CONDITIONING */
@@ -832,10 +1068,14 @@ declare global {
         WASUnCLIPCheckpointLoader(args: WASUnCLIPCheckpointLoader_input, uid?: ComfyNodeUID): WASUnCLIPCheckpointLoader
         /* category=WAS Suite_Loaders output=UPSCALE_MODEL, ASCII */
         WASUpscaleModelLoader(args: WASUpscaleModelLoader_input, uid?: ComfyNodeUID): WASUpscaleModelLoader
+        /* category=WAS Suite_Logic output=UPSCALE_MODEL */
+        WASUpscaleModelSwitch(args: WASUpscaleModelSwitch_input, uid?: ComfyNodeUID): WASUpscaleModelSwitch
         /* category=WAS Suite_Animation_Writer output=IMAGE, ASCII, ASCII_1 */
         WASWriteToGIF(args: WASWriteToGIF_input, uid?: ComfyNodeUID): WASWriteToGIF
         /* category=WAS Suite_Animation_Writer output=IMAGE, ASCII, ASCII_1 */
         WASWriteToVideo(args: WASWriteToVideo_input, uid?: ComfyNodeUID): WASWriteToVideo
+        /* category=WAS Suite_Logic output=VAE */
+        WASVAEInputSwitch(args: WASVAEInputSwitch_input, uid?: ComfyNodeUID): WASVAEInputSwitch
         /* category=WAS Suite_Animation output=ASCII, NUMBER */
         WASVideoDumpFrames(args: WASVideoDumpFrames_input, uid?: ComfyNodeUID): WASVideoDumpFrames
         /* category=image output=IMAGE, MASK */
@@ -874,19 +1114,20 @@ declare global {
         KSAMPLER: KSAMPLER
         BBOX_MODEL: BBOX_MODEL
         SEGM_MODEL: SEGM_MODEL
-        DICT: DICT
-        Integer: Integer
-        Float: Float
-        SamplerName: SamplerName
-        SchedulerName: SchedulerName
         CLIPREGION: CLIPREGION
         SCRIPT: SCRIPT
+        DEPENDENCIES: DEPENDENCIES
+        XY: XY
         MASK_MAPPING: MASK_MAPPING
+        BLIP_MODEL: BLIP_MODEL
         ASCII: ASCII
         NUMBER: NUMBER
+        CLIPSEG_MODEL: CLIPSEG_MODEL
+        DICT: DICT
         LIST: LIST
         CROP_DATA: CROP_DATA
         SEED: SEED
+        MIDAS_MODEL: MIDAS_MODEL
         SAM_PARAMETERS: SAM_PARAMETERS
         IMAGE_BOUNDS: IMAGE_BOUNDS
         Enum_KSampler_sampler_name: Enum_KSampler_sampler_name
@@ -899,8 +1140,7 @@ declare global {
         Enum_LoadImage_image: Enum_LoadImage_image
         Enum_LoadImageMask_image: Enum_LoadImageMask_image
         Enum_LoadImageMask_channel: Enum_LoadImageMask_channel
-        Enum_ImageScale_upscale_method: Enum_ImageScale_upscale_method
-        Enum_ImageScale_crop: Enum_ImageScale_crop
+        Enum_ImageScaleBy_upscale_method: Enum_ImageScaleBy_upscale_method
         Enum_ConditioningSetMask_set_cond_area: Enum_ConditioningSetMask_set_cond_area
         Enum_KSamplerAdvanced_add_noise: Enum_KSamplerAdvanced_add_noise
         Enum_KSamplerAdvanced_sampler_name: Enum_KSamplerAdvanced_sampler_name
@@ -910,6 +1150,8 @@ declare global {
         Enum_LatentFlip_flip_method: Enum_LatentFlip_flip_method
         Enum_LoraLoader_lora_name: Enum_LoraLoader_lora_name
         Enum_CLIPLoader_clip_name: Enum_CLIPLoader_clip_name
+        Enum_DualCLIPLoader_clip_name1: Enum_DualCLIPLoader_clip_name1
+        Enum_DualCLIPLoader_clip_name2: Enum_DualCLIPLoader_clip_name2
         Enum_ControlNetLoader_control_net_name: Enum_ControlNetLoader_control_net_name
         Enum_DiffControlNetLoader_control_net_name: Enum_DiffControlNetLoader_control_net_name
         Enum_StyleModelLoader_style_model_name: Enum_StyleModelLoader_style_model_name
@@ -919,14 +1161,76 @@ declare global {
         Enum_CheckpointLoader_config_name: Enum_CheckpointLoader_config_name
         Enum_CheckpointLoader_ckpt_name: Enum_CheckpointLoader_ckpt_name
         Enum_DiffusersLoader_model_path: Enum_DiffusersLoader_model_path
-        Enum_LoadLatent_latent: Enum_LoadLatent_latent
         Enum_HypernetworkLoader_hypernetwork_name: Enum_HypernetworkLoader_hypernetwork_name
         Enum_UpscaleModelLoader_model_name: Enum_UpscaleModelLoader_model_name
-        Enum_ImageBlend_blend_mode: Enum_ImageBlend_blend_mode
-        Enum_ImageQuantize_dither: Enum_ImageQuantize_dither
         Enum_ImageToMask_channel: Enum_ImageToMask_channel
         Enum_MaskComposite_operation: Enum_MaskComposite_operation
         Enum_BrightnessContrast_mode: Enum_BrightnessContrast_mode
+        Enum_AlphaChanelAddByMask_method: Enum_AlphaChanelAddByMask_method
+        Enum_AlphaChanelAsMask_method: Enum_AlphaChanelAsMask_method
+        Enum_ImageCompositeAbsolute_background: Enum_ImageCompositeAbsolute_background
+        Enum_ImageCompositeAbsolute_method: Enum_ImageCompositeAbsolute_method
+        Enum_ImageCompositeAbsoluteByContainer_background: Enum_ImageCompositeAbsoluteByContainer_background
+        Enum_ImageCompositeAbsoluteByContainer_method: Enum_ImageCompositeAbsoluteByContainer_method
+        Enum_ImageCompositeRelative_background: Enum_ImageCompositeRelative_background
+        Enum_ImageCompositeRelative_container_size_type: Enum_ImageCompositeRelative_container_size_type
+        Enum_ImageCompositeRelative_method: Enum_ImageCompositeRelative_method
+        Enum_ImageCompositeRelativeByContainer_background: Enum_ImageCompositeRelativeByContainer_background
+        Enum_ImageCompositeRelativeByContainer_method: Enum_ImageCompositeRelativeByContainer_method
+        Enum_ImageContainerInheritanceAdd_method: Enum_ImageContainerInheritanceAdd_method
+        Enum_ImageContainerInheritanceScale_method: Enum_ImageContainerInheritanceScale_method
+        Enum_ImageContainerInheritanceMax_method: Enum_ImageContainerInheritanceMax_method
+        Enum_ImageContainerInheritanceSum_container_size_type: Enum_ImageContainerInheritanceSum_container_size_type
+        Enum_ImageContainerInheritanceSum_method: Enum_ImageContainerInheritanceSum_method
+        Enum_ImageDrawArc_method: Enum_ImageDrawArc_method
+        Enum_ImageDrawArcByContainer_method: Enum_ImageDrawArcByContainer_method
+        Enum_ImageDrawChord_method: Enum_ImageDrawChord_method
+        Enum_ImageDrawChordByContainer_method: Enum_ImageDrawChordByContainer_method
+        Enum_ImageDrawEllipse_method: Enum_ImageDrawEllipse_method
+        Enum_ImageDrawEllipseByContainer_method: Enum_ImageDrawEllipseByContainer_method
+        Enum_ImageDrawLine_method: Enum_ImageDrawLine_method
+        Enum_ImageDrawLineByContainer_method: Enum_ImageDrawLineByContainer_method
+        Enum_ImageDrawPieslice_method: Enum_ImageDrawPieslice_method
+        Enum_ImageDrawPiesliceByContainer_method: Enum_ImageDrawPiesliceByContainer_method
+        Enum_ImageDrawRectangle_method: Enum_ImageDrawRectangle_method
+        Enum_ImageDrawRectangleByContainer_method: Enum_ImageDrawRectangleByContainer_method
+        Enum_ImageDrawRectangleRounded_top_left_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        Enum_ImageDrawRectangleRounded_top_right_corner: Enum_ImageDrawRectangleRounded_top_right_corner
+        Enum_ImageDrawRectangleRounded_bottom_right_corner: Enum_ImageDrawRectangleRounded_bottom_right_corner
+        Enum_ImageDrawRectangleRounded_bottom_left_corner: Enum_ImageDrawRectangleRounded_bottom_left_corner
+        Enum_ImageDrawRectangleRounded_method: Enum_ImageDrawRectangleRounded_method
+        Enum_ImageDrawRectangleRoundedByContainer_top_left_corner: Enum_ImageDrawRectangleRoundedByContainer_top_left_corner
+        Enum_ImageDrawRectangleRoundedByContainer_top_right_corner: Enum_ImageDrawRectangleRoundedByContainer_top_right_corner
+        Enum_ImageDrawRectangleRoundedByContainer_bottom_right_corner: Enum_ImageDrawRectangleRoundedByContainer_bottom_right_corner
+        Enum_ImageDrawRectangleRoundedByContainer_bottom_left_corner: Enum_ImageDrawRectangleRoundedByContainer_bottom_left_corner
+        Enum_ImageDrawRectangleRoundedByContainer_method: Enum_ImageDrawRectangleRoundedByContainer_method
+        Enum_ImageDrawPolygon_method: Enum_ImageDrawPolygon_method
+        Enum_ImageEffectsChromaticAberration_method: Enum_ImageEffectsChromaticAberration_method
+        Enum_ImageEffectsChromaticAberration_transpose: Enum_ImageEffectsChromaticAberration_transpose
+        Enum_ImageEffectsChromaticAberration_colors: Enum_ImageEffectsChromaticAberration_colors
+        Enum_ImageSegmentation_model: Enum_ImageSegmentation_model
+        Enum_ImageSegmentation_alpha_matting: Enum_ImageSegmentation_alpha_matting
+        Enum_ImageSegmentation_post_process_mask: Enum_ImageSegmentation_post_process_mask
+        Enum_ImageSegmentationCustom_model: Enum_ImageSegmentationCustom_model
+        Enum_ImageSegmentationCustom_alpha_matting: Enum_ImageSegmentationCustom_alpha_matting
+        Enum_ImageSegmentationCustom_post_process_mask: Enum_ImageSegmentationCustom_post_process_mask
+        Enum_ImageSegmentationCustomAdvanced_model: Enum_ImageSegmentationCustomAdvanced_model
+        Enum_ImageSegmentationCustomAdvanced_alpha_matting: Enum_ImageSegmentationCustomAdvanced_alpha_matting
+        Enum_ImageSegmentationCustomAdvanced_post_process_mask: Enum_ImageSegmentationCustomAdvanced_post_process_mask
+        Enum_ImageText_font: Enum_ImageText_font
+        Enum_ImageTextOutlined_font: Enum_ImageTextOutlined_font
+        Enum_ImageTransformResizeAbsolute_method: Enum_ImageTransformResizeAbsolute_method
+        Enum_ImageTransformResizeRelative_method: Enum_ImageTransformResizeRelative_method
+        Enum_ImageTransformCropCorners_top_left_corner: Enum_ImageTransformCropCorners_top_left_corner
+        Enum_ImageTransformCropCorners_top_right_corner: Enum_ImageTransformCropCorners_top_right_corner
+        Enum_ImageTransformCropCorners_bottom_right_corner: Enum_ImageTransformCropCorners_bottom_right_corner
+        Enum_ImageTransformCropCorners_bottom_left_corner: Enum_ImageTransformCropCorners_bottom_left_corner
+        Enum_ImageTransformCropCorners_method: Enum_ImageTransformCropCorners_method
+        Enum_ImageTransformPaddingAbsolute_method: Enum_ImageTransformPaddingAbsolute_method
+        Enum_ImageTransformPaddingRelative_method: Enum_ImageTransformPaddingRelative_method
+        Enum_ImageTransformRotate_expand: Enum_ImageTransformRotate_expand
+        Enum_ImageTransformRotate_method: Enum_ImageTransformRotate_method
+        Enum_ImageTransformTranspose_method: Enum_ImageTransformTranspose_method
         Enum_ImpactSAMLoader_model_name: Enum_ImpactSAMLoader_model_name
         Enum_ImpactMMDetDetectorProvider_model_name: Enum_ImpactMMDetDetectorProvider_model_name
         Enum_ImpactONNXDetectorProvider_model_name: Enum_ImpactONNXDetectorProvider_model_name
@@ -1000,25 +1304,15 @@ declare global {
         Enum_ImpactTiledKSamplerProvider_scheduler: Enum_ImpactTiledKSamplerProvider_scheduler
         Enum_ImpactTiledKSamplerProvider_tiling_strategy: Enum_ImpactTiledKSamplerProvider_tiling_strategy
         Enum_ImpactPreviewBridge_image: Enum_ImpactPreviewBridge_image
+        Enum_ImpactImageReceiver_image: Enum_ImpactImageReceiver_image
+        Enum_ImpactImpactWildcardProcessor_mode: Enum_ImpactImpactWildcardProcessor_mode
+        Enum_ImpactSEGSDetailer_guide_size_for: Enum_ImpactSEGSDetailer_guide_size_for
+        Enum_ImpactSEGSDetailer_sampler_name: Enum_ImpactSEGSDetailer_sampler_name
+        Enum_ImpactSEGSDetailer_scheduler: Enum_ImpactSEGSDetailer_scheduler
+        Enum_ImpactSEGSDetailer_noise_mask: Enum_ImpactSEGSDetailer_noise_mask
+        Enum_ImpactSEGSDetailer_force_inpaint: Enum_ImpactSEGSDetailer_force_inpaint
         Enum_ImpactMaskPainter_image: Enum_ImpactMaskPainter_image
         Enum_ImpactMMDetLoader_model_name: Enum_ImpactMMDetLoader_model_name
-        Enum_LatentToHist_min_auto: Enum_LatentToHist_min_auto
-        Enum_LatentToHist_max_auto: Enum_LatentToHist_max_auto
-        Enum_LatentToHist_bin_auto: Enum_LatentToHist_bin_auto
-        Enum_LatentToHist_ymax_auto: Enum_LatentToHist_ymax_auto
-        Enum_KSamplerSetting_sampler_name: Enum_KSamplerSetting_sampler_name
-        Enum_KSamplerSetting_scheduler: Enum_KSamplerSetting_scheduler
-        Enum_StateDictLoader_ckpt_name: Enum_StateDictLoader_ckpt_name
-        Enum_Dict2Model_config_name: Enum_Dict2Model_config_name
-        Enum_StateDictMerger_position_ids: Enum_StateDictMerger_position_ids
-        Enum_StateDictMerger_half: Enum_StateDictMerger_half
-        Enum_StateDictMergerBlockWeighted_position_ids: Enum_StateDictMergerBlockWeighted_position_ids
-        Enum_StateDictMergerBlockWeighted_half: Enum_StateDictMergerBlockWeighted_half
-        Enum_StateDictMergerBlockWeightedMulti_position_ids: Enum_StateDictMergerBlockWeightedMulti_position_ids
-        Enum_StateDictMergerBlockWeightedMulti_half: Enum_StateDictMergerBlockWeightedMulti_half
-        Enum_StateDictMergerBlockWeightedMulti_config_name: Enum_StateDictMergerBlockWeightedMulti_config_name
-        Enum_SaveStateDict_overwrite: Enum_SaveStateDict_overwrite
-        Enum_ImageBlend2_blend_mode: Enum_ImageBlend2_blend_mode
         Enum_BNK_CutoffRegionsToConditioning_ADV_token_normalization: Enum_BNK_CutoffRegionsToConditioning_ADV_token_normalization
         Enum_BNK_CutoffRegionsToConditioning_ADV_weight_interpretation: Enum_BNK_CutoffRegionsToConditioning_ADV_weight_interpretation
         Enum_BNK_NoisyLatentImage_source: Enum_BNK_NoisyLatentImage_source
@@ -1032,7 +1326,6 @@ declare global {
         Enum_BNK_TiledKSamplerAdvanced_return_with_leftover_noise: Enum_BNK_TiledKSamplerAdvanced_return_with_leftover_noise
         Enum_ClipSeg_device: Enum_ClipSeg_device
         Enum_ClipSeg_mode: Enum_ClipSeg_mode
-        Enum_CannyEdgePreprocessor_l2gradient: Enum_CannyEdgePreprocessor_l2gradient
         Enum_HEDPreprocessor_version: Enum_HEDPreprocessor_version
         Enum_HEDPreprocessor_safe: Enum_HEDPreprocessor_safe
         Enum_PiDiNetPreprocessor_safe: Enum_PiDiNetPreprocessor_safe
@@ -1050,12 +1343,51 @@ declare global {
         Enum_EfficientLoader_ckpt_name: Enum_EfficientLoader_ckpt_name
         Enum_EfficientLoader_vae_name: Enum_EfficientLoader_vae_name
         Enum_EfficientLoader_lora_name: Enum_EfficientLoader_lora_name
-        Enum_XYPlot_X_type: Enum_XYPlot_X_type
-        Enum_XYPlot_Y_type: Enum_XYPlot_Y_type
         Enum_XYPlot_XY_flip: Enum_XYPlot_XY_flip
+        Enum_XYPlot_Y_label_orientation: Enum_XYPlot_Y_label_orientation
+        Enum_XYPlot_cache_models: Enum_XYPlot_cache_models
+        Enum_XYPlot_ksampler_output_image: Enum_XYPlot_ksampler_output_image
+        Enum_XYInputSampler_sampler_1: Enum_XYInputSampler_sampler_1
+        Enum_XYInputSampler_scheduler_1: Enum_XYInputSampler_scheduler_1
+        Enum_XYInputSampler_sampler_2: Enum_XYInputSampler_sampler_2
+        Enum_XYInputSampler_scheduler_2: Enum_XYInputSampler_scheduler_2
+        Enum_XYInputSampler_sampler_3: Enum_XYInputSampler_sampler_3
+        Enum_XYInputSampler_scheduler_3: Enum_XYInputSampler_scheduler_3
+        Enum_XYInputSampler_sampler_4: Enum_XYInputSampler_sampler_4
+        Enum_XYInputSampler_scheduler_4: Enum_XYInputSampler_scheduler_4
+        Enum_XYInputSampler_sampler_5: Enum_XYInputSampler_sampler_5
+        Enum_XYInputSampler_scheduler_5: Enum_XYInputSampler_scheduler_5
+        Enum_XYInputScheduler_scheduler_1: Enum_XYInputScheduler_scheduler_1
+        Enum_XYInputScheduler_scheduler_2: Enum_XYInputScheduler_scheduler_2
+        Enum_XYInputScheduler_scheduler_3: Enum_XYInputScheduler_scheduler_3
+        Enum_XYInputScheduler_scheduler_4: Enum_XYInputScheduler_scheduler_4
+        Enum_XYInputScheduler_scheduler_5: Enum_XYInputScheduler_scheduler_5
+        Enum_XYInputVAE_vae_name_1: Enum_XYInputVAE_vae_name_1
+        Enum_XYInputVAE_vae_name_2: Enum_XYInputVAE_vae_name_2
+        Enum_XYInputVAE_vae_name_3: Enum_XYInputVAE_vae_name_3
+        Enum_XYInputVAE_vae_name_4: Enum_XYInputVAE_vae_name_4
+        Enum_XYInputVAE_vae_name_5: Enum_XYInputVAE_vae_name_5
+        Enum_XYInputCheckpoint_ckpt_name_1: Enum_XYInputCheckpoint_ckpt_name_1
+        Enum_XYInputCheckpoint_ckpt_name_2: Enum_XYInputCheckpoint_ckpt_name_2
+        Enum_XYInputCheckpoint_ckpt_name_3: Enum_XYInputCheckpoint_ckpt_name_3
+        Enum_XYInputCheckpoint_ckpt_name_4: Enum_XYInputCheckpoint_ckpt_name_4
+        Enum_XYInputCheckpoint_ckpt_name_5: Enum_XYInputCheckpoint_ckpt_name_5
+        Enum_XYInputLoRA_lora_name_1: Enum_XYInputLoRA_lora_name_1
+        Enum_XYInputLoRA_lora_name_2: Enum_XYInputLoRA_lora_name_2
+        Enum_XYInputLoRA_lora_name_3: Enum_XYInputLoRA_lora_name_3
+        Enum_XYInputLoRA_lora_name_4: Enum_XYInputLoRA_lora_name_4
+        Enum_XYInputLoRA_lora_name_5: Enum_XYInputLoRA_lora_name_5
+        Enum_XYInputLoRAAdvanced_lora_name_1: Enum_XYInputLoRAAdvanced_lora_name_1
+        Enum_XYInputLoRAAdvanced_lora_name_2: Enum_XYInputLoRAAdvanced_lora_name_2
+        Enum_XYInputLoRAAdvanced_lora_name_3: Enum_XYInputLoRAAdvanced_lora_name_3
+        Enum_XYInputLoRAAdvanced_lora_name_4: Enum_XYInputLoRAAdvanced_lora_name_4
+        Enum_XYInputLoRAAdvanced_lora_name_5: Enum_XYInputLoRAAdvanced_lora_name_5
+        Enum_XYInputManualXYEntry_X_type: Enum_XYInputManualXYEntry_X_type
+        Enum_XYInputManualXYEntry_Y_type: Enum_XYInputManualXYEntry_Y_type
         Enum_ImageOverlay_overlay_resize: Enum_ImageOverlay_overlay_resize
         Enum_ImageOverlay_resize_method: Enum_ImageOverlay_resize_method
         Enum_EvaluateIntegers_print_to_console: Enum_EvaluateIntegers_print_to_console
+        Enum_EvaluateFloats_print_to_console: Enum_EvaluateFloats_print_to_console
         Enum_EvaluateStrings_print_to_console: Enum_EvaluateStrings_print_to_console
         Enum_WASImageFlip_mode: Enum_WASImageFlip_mode
         Enum_LatentUpscaleMultiply_upscale_method: Enum_LatentUpscaleMultiply_upscale_method
@@ -1073,6 +1405,7 @@ declare global {
         Enum_MasqueradeChangeChannelCount_kind: Enum_MasqueradeChangeChannelCount_kind
         Enum_MasqueradeCreateRectMask_mode: Enum_MasqueradeCreateRectMask_mode
         Enum_MasqueradeCreateRectMask_origin: Enum_MasqueradeCreateRectMask_origin
+        Enum_WASBLIPModelLoader_blip_model: Enum_WASBLIPModelLoader_blip_model
         Enum_WASCheckpointLoader_config_name: Enum_WASCheckpointLoader_config_name
         Enum_WASCheckpointLoader_ckpt_name: Enum_WASCheckpointLoader_ckpt_name
         Enum_WASCheckpointLoaderSimple_ckpt_name: Enum_WASCheckpointLoaderSimple_ckpt_name
@@ -1083,7 +1416,10 @@ declare global {
         Enum_WASCreateMorphImageFromPath_filetype: Enum_WASCreateMorphImageFromPath_filetype
         Enum_WASCreateVideoFromPath_codec: Enum_WASCreateVideoFromPath_codec
         Enum_WASDiffusersModelLoader_model_path: Enum_WASDiffusersModelLoader_model_path
+        Enum_WASExportAPI_save_prompt_api: Enum_WASExportAPI_save_prompt_api
         Enum_WASLoraLoader_lora_name: Enum_WASLoraLoader_lora_name
+        Enum_WASImageSSAOAmbientOcclusion_enable_specular_masking: Enum_WASImageSSAOAmbientOcclusion_enable_specular_masking
+        Enum_WASImageSSDODirectOcclusion_colored_occlusion: Enum_WASImageSSDODirectOcclusion_colored_occlusion
         Enum_WASImageAnalyze_mode: Enum_WASImageAnalyze_mode
         Enum_WASImageBlendingMode_mode: Enum_WASImageBlendingMode_mode
         Enum_WASImageCannyFilter_enable_threshold: Enum_WASImageCannyFilter_enable_threshold
@@ -1099,9 +1435,12 @@ declare global {
         Enum_WASImageEdgeDetectionFilter_mode: Enum_WASImageEdgeDetectionFilter_mode
         Enum_WASImageGradientMap_flip_left_right: Enum_WASImageGradientMap_flip_left_right
         Enum_WASImageGenerateGradient_direction: Enum_WASImageGenerateGradient_direction
+        Enum_WASImageHighPassFilter_color_output: Enum_WASImageHighPassFilter_color_output
+        Enum_WASImageHighPassFilter_neutral_background: Enum_WASImageHighPassFilter_neutral_background
         Enum_WASImageHistoryLoader_image: Enum_WASImageHistoryLoader_image
         Enum_WASImageMonitorEffectsFilter_mode: Enum_WASImageMonitorEffectsFilter_mode
         Enum_WASImagePadding_feather_second_pass: Enum_WASImagePadding_feather_second_pass
+        Enum_WASImageRembgRemoveBackground_transparency: Enum_WASImageRembgRemoveBackground_transparency
         Enum_WASImageRemoveBackgroundAlpha_mode: Enum_WASImageRemoveBackgroundAlpha_mode
         Enum_WASImageResize_mode: Enum_WASImageResize_mode
         Enum_WASImageResize_supersample: Enum_WASImageResize_supersample
@@ -1109,8 +1448,11 @@ declare global {
         Enum_WASImageRotate_mode: Enum_WASImageRotate_mode
         Enum_WASImageRotate_sampler: Enum_WASImageRotate_sampler
         Enum_WASImageSave_extension: Enum_WASImageSave_extension
+        Enum_WASImageSave_lossless_webp: Enum_WASImageSave_lossless_webp
         Enum_WASImageSave_overwrite_mode: Enum_WASImageSave_overwrite_mode
         Enum_WASImageSave_show_history: Enum_WASImageSave_show_history
+        Enum_WASImageSave_show_history_by_prefix: Enum_WASImageSave_show_history_by_prefix
+        Enum_WASImageSave_embed_workflow: Enum_WASImageSave_embed_workflow
         Enum_WASImageSeamlessTexture_tiled: Enum_WASImageSeamlessTexture_tiled
         Enum_WASImageSelectChannel_channel: Enum_WASImageSelectChannel_channel
         Enum_WASImageStitch_stitch: Enum_WASImageStitch_stitch
@@ -1120,26 +1462,39 @@ declare global {
         Enum_WASImageToNoise_output_mode: Enum_WASImageToNoise_output_mode
         Enum_WASKSamplerWAS_sampler_name: Enum_WASKSamplerWAS_sampler_name
         Enum_WASKSamplerWAS_scheduler: Enum_WASKSamplerWAS_scheduler
+        Enum_WASKSamplerCycle_sampler_name: Enum_WASKSamplerCycle_sampler_name
+        Enum_WASKSamplerCycle_scheduler: Enum_WASKSamplerCycle_scheduler
+        Enum_WASKSamplerCycle_tiled_vae: Enum_WASKSamplerCycle_tiled_vae
+        Enum_WASKSamplerCycle_scale_denoise: Enum_WASKSamplerCycle_scale_denoise
+        Enum_WASKSamplerCycle_scale_sampling: Enum_WASKSamplerCycle_scale_sampling
+        Enum_WASKSamplerCycle_pos_add_strength_scaling: Enum_WASKSamplerCycle_pos_add_strength_scaling
+        Enum_WASKSamplerCycle_neg_add_strength_scaling: Enum_WASKSamplerCycle_neg_add_strength_scaling
         Enum_WASLatentUpscaleByFactorWAS_mode: Enum_WASLatentUpscaleByFactorWAS_mode
         Enum_WASLatentUpscaleByFactorWAS_align: Enum_WASLatentUpscaleByFactorWAS_align
         Enum_WASLoadImageBatch_mode: Enum_WASLoadImageBatch_mode
         Enum_WASLoadLora_lora_name: Enum_WASLoadLora_lora_name
+        Enum_WASMaskCropRegion_region_type: Enum_WASMaskCropRegion_region_type
+        Enum_WASMiDaSModelLoader_midas_model: Enum_WASMiDaSModelLoader_midas_model
         Enum_WASMiDaSDepthApproximation_use_cpu: Enum_WASMiDaSDepthApproximation_use_cpu
-        Enum_WASMiDaSDepthApproximation_midas_model: Enum_WASMiDaSDepthApproximation_midas_model
+        Enum_WASMiDaSDepthApproximation_midas_type: Enum_WASMiDaSDepthApproximation_midas_type
         Enum_WASMiDaSDepthApproximation_invert_depth: Enum_WASMiDaSDepthApproximation_invert_depth
         Enum_WASMiDaSMaskImage_use_cpu: Enum_WASMiDaSMaskImage_use_cpu
         Enum_WASMiDaSMaskImage_midas_model: Enum_WASMiDaSMaskImage_midas_model
         Enum_WASMiDaSMaskImage_remove: Enum_WASMiDaSMaskImage_remove
         Enum_WASMiDaSMaskImage_threshold: Enum_WASMiDaSMaskImage_threshold
         Enum_WASNumberOperation_operation: Enum_WASNumberOperation_operation
+        Enum_WASNumberInputCondition_return_boolean: Enum_WASNumberInputCondition_return_boolean
         Enum_WASNumberInputCondition_comparison: Enum_WASNumberInputCondition_comparison
         Enum_WASPromptStylesSelector_style: Enum_WASPromptStylesSelector_style
         Enum_WASRandomNumber_number_type: Enum_WASRandomNumber_number_type
         Enum_WASBLIPAnalyzeImage_mode: Enum_WASBLIPAnalyzeImage_mode
         Enum_WASSAMModelLoader_model_size: Enum_WASSAMModelLoader_model_size
+        Enum_WASTextAddTokens_print_current_tokens: Enum_WASTextAddTokens_print_current_tokens
+        Enum_WASTextAddTokenByInput_print_current_tokens: Enum_WASTextAddTokenByInput_print_current_tokens
         Enum_WASTextCompare_mode: Enum_WASTextCompare_mode
         Enum_WASTextConcatenate_linebreak_addition: Enum_WASTextConcatenate_linebreak_addition
         Enum_WASTextFileHistoryLoader_file: Enum_WASTextFileHistoryLoader_file
+        Enum_WASTextLoadLineFromFile_mode: Enum_WASTextLoadLineFromFile_mode
         Enum_WASTextParseNoodleSoupPrompts_mode: Enum_WASTextParseNoodleSoupPrompts_mode
         Enum_WASUnCLIPCheckpointLoader_ckpt_name: Enum_WASUnCLIPCheckpointLoader_ckpt_name
         Enum_WASUpscaleModelLoader_model_name: Enum_WASUpscaleModelLoader_model_name
@@ -1162,8 +1517,7 @@ declare global {
         PreviewImage: PreviewImage
         LoadImage: LoadImage
         LoadImageMask: LoadImageMask
-        ImageScale: ImageScale
-        ImageInvert: ImageInvert
+        ImageScaleBy: ImageScaleBy
         ImagePadForOutpaint: ImagePadForOutpaint
         ConditioningAverage: ConditioningAverage
         ConditioningCombine: ConditioningCombine
@@ -1177,6 +1531,7 @@ declare global {
         LatentCrop: LatentCrop
         LoraLoader: LoraLoader
         CLIPLoader: CLIPLoader
+        DualCLIPLoader: DualCLIPLoader
         CLIPVisionEncode: CLIPVisionEncode
         StyleModelApply: StyleModelApply
         UnCLIPConditioning: UnCLIPConditioning
@@ -1187,21 +1542,14 @@ declare global {
         CLIPVisionLoader: CLIPVisionLoader
         VAEDecodeTiled: VAEDecodeTiled
         VAEEncodeTiled: VAEEncodeTiled
-        TomePatchModel: TomePatchModel
         UnCLIPCheckpointLoader: UnCLIPCheckpointLoader
         GLIGENLoader: GLIGENLoader
         GLIGENTextBoxApply: GLIGENTextBoxApply
         CheckpointLoader: CheckpointLoader
         DiffusersLoader: DiffusersLoader
-        LoadLatent: LoadLatent
-        SaveLatent: SaveLatent
         HypernetworkLoader: HypernetworkLoader
         UpscaleModelLoader: UpscaleModelLoader
         ImageUpscaleWithModel: ImageUpscaleWithModel
-        ImageBlend: ImageBlend
-        ImageBlur: ImageBlur
-        ImageQuantize: ImageQuantize
-        ImageSharpen: ImageSharpen
         LatentCompositeMasked: LatentCompositeMasked
         MaskToImage: MaskToImage
         ImageToMask: ImageToMask
@@ -1212,6 +1560,85 @@ declare global {
         FeatherMask: FeatherMask
         RebatchLatents: RebatchLatents
         BrightnessContrast: BrightnessContrast
+        AlphaChanelAdd: AlphaChanelAdd
+        AlphaChanelAddByMask: AlphaChanelAddByMask
+        AlphaChanelAsMask: AlphaChanelAsMask
+        AlphaChanelRestore: AlphaChanelRestore
+        AlphaChanelRemove: AlphaChanelRemove
+        ClipClamp: ClipClamp
+        ClipVisionClamp: ClipVisionClamp
+        ClipVisionOutputClamp: ClipVisionOutputClamp
+        ConditioningClamp: ConditioningClamp
+        ControlNetClamp: ControlNetClamp
+        GligenClamp: GligenClamp
+        ImageClamp: ImageClamp
+        LatentClamp: LatentClamp
+        MaskClamp: MaskClamp
+        ModelClamp: ModelClamp
+        StyleModelClamp: StyleModelClamp
+        UpscaleModelClamp: UpscaleModelClamp
+        VaeClamp: VaeClamp
+        ImageCompositeAbsolute: ImageCompositeAbsolute
+        ImageCompositeAbsoluteByContainer: ImageCompositeAbsoluteByContainer
+        ImageCompositeRelative: ImageCompositeRelative
+        ImageCompositeRelativeByContainer: ImageCompositeRelativeByContainer
+        ImageContainer: ImageContainer
+        ImageContainerInheritanceAdd: ImageContainerInheritanceAdd
+        ImageContainerInheritanceScale: ImageContainerInheritanceScale
+        ImageContainerInheritanceMax: ImageContainerInheritanceMax
+        ImageContainerInheritanceSum: ImageContainerInheritanceSum
+        ImageDrawArc: ImageDrawArc
+        ImageDrawArcByContainer: ImageDrawArcByContainer
+        ImageDrawChord: ImageDrawChord
+        ImageDrawChordByContainer: ImageDrawChordByContainer
+        ImageDrawEllipse: ImageDrawEllipse
+        ImageDrawEllipseByContainer: ImageDrawEllipseByContainer
+        ImageDrawLine: ImageDrawLine
+        ImageDrawLineByContainer: ImageDrawLineByContainer
+        ImageDrawPieslice: ImageDrawPieslice
+        ImageDrawPiesliceByContainer: ImageDrawPiesliceByContainer
+        ImageDrawRectangle: ImageDrawRectangle
+        ImageDrawRectangleByContainer: ImageDrawRectangleByContainer
+        ImageDrawRectangleRounded: ImageDrawRectangleRounded
+        ImageDrawRectangleRoundedByContainer: ImageDrawRectangleRoundedByContainer
+        ImageDrawPolygon: ImageDrawPolygon
+        ImageEffectsAdjustment: ImageEffectsAdjustment
+        ImageEffectsGrayscale: ImageEffectsGrayscale
+        ImageEffectsNegative: ImageEffectsNegative
+        ImageEffectsSepia: ImageEffectsSepia
+        ImageEffectsChromaticAberration: ImageEffectsChromaticAberration
+        ImageFilterSmooth: ImageFilterSmooth
+        ImageFilterSmoothMore: ImageFilterSmoothMore
+        ImageFilterBlur: ImageFilterBlur
+        ImageFilterBoxBlur: ImageFilterBoxBlur
+        ImageFilterGaussianBlur: ImageFilterGaussianBlur
+        ImageFilterBilateralBlur: ImageFilterBilateralBlur
+        ImageFilterContour: ImageFilterContour
+        ImageFilterDetail: ImageFilterDetail
+        ImageFilterEdgeEnhance: ImageFilterEdgeEnhance
+        ImageFilterEdgeEnhanceMore: ImageFilterEdgeEnhanceMore
+        ImageFilterEmboss: ImageFilterEmboss
+        ImageFilterFindEdges: ImageFilterFindEdges
+        ImageFilterSharpen: ImageFilterSharpen
+        ImageFilterRank: ImageFilterRank
+        ImageFilterMedian: ImageFilterMedian
+        ImageFilterMin: ImageFilterMin
+        ImageFilterMax: ImageFilterMax
+        ImageFilterMode: ImageFilterMode
+        ImageSegmentation: ImageSegmentation
+        ImageSegmentationCustom: ImageSegmentationCustom
+        ImageSegmentationCustomAdvanced: ImageSegmentationCustomAdvanced
+        ImageText: ImageText
+        ImageTextOutlined: ImageTextOutlined
+        ImageTransformResizeAbsolute: ImageTransformResizeAbsolute
+        ImageTransformResizeRelative: ImageTransformResizeRelative
+        ImageTransformCropAbsolute: ImageTransformCropAbsolute
+        ImageTransformCropRelative: ImageTransformCropRelative
+        ImageTransformCropCorners: ImageTransformCropCorners
+        ImageTransformPaddingAbsolute: ImageTransformPaddingAbsolute
+        ImageTransformPaddingRelative: ImageTransformPaddingRelative
+        ImageTransformRotate: ImageTransformRotate
+        ImageTransformTranspose: ImageTransformTranspose
         ImpactSAMLoader: ImpactSAMLoader
         ImpactMMDetDetectorProvider: ImpactMMDetDetectorProvider
         ImpactCLIPSegDetectorProvider: ImpactCLIPSegDetectorProvider
@@ -1254,38 +1681,30 @@ declare global {
         ImpactBboxDetectorSEGS: ImpactBboxDetectorSEGS
         ImpactSegmDetectorSEGS: ImpactSegmDetectorSEGS
         ImpactONNXDetectorSEGS: ImpactONNXDetectorSEGS
-        ImpactBboxDetectorCombined: ImpactBboxDetectorCombined
-        ImpactSegmDetectorCombined: ImpactSegmDetectorCombined
+        ImpactBboxDetectorCombined_v2: ImpactBboxDetectorCombined_v2
+        ImpactSegmDetectorCombined_v2: ImpactSegmDetectorCombined_v2
         ImpactSegsToCombinedMask: ImpactSegsToCombinedMask
         ImpactKSamplerProvider: ImpactKSamplerProvider
         ImpactTwoSamplersForMask: ImpactTwoSamplersForMask
         ImpactTiledKSamplerProvider: ImpactTiledKSamplerProvider
         ImpactPreviewBridge: ImpactPreviewBridge
+        ImpactImageSender: ImpactImageSender
+        ImpactImageReceiver: ImpactImageReceiver
+        ImpactImageMaskSwitch: ImpactImageMaskSwitch
+        ImpactLatentSwitch: ImpactLatentSwitch
+        ImpactSEGSSwitch: ImpactSEGSSwitch
+        ImpactImpactWildcardProcessor: ImpactImpactWildcardProcessor
+        ImpactImpactLogger: ImpactImpactLogger
+        ImpactSEGSDetailer: ImpactSEGSDetailer
+        ImpactSEGSPaste: ImpactSEGSPaste
+        ImpactSEGSPreview: ImpactSEGSPreview
         ImpactMaskPainter: ImpactMaskPainter
         ImpactMMDetLoader: ImpactMMDetLoader
         ImpactSegsMaskCombine: ImpactSegsMaskCombine
         ImpactBboxDetectorForEach: ImpactBboxDetectorForEach
         ImpactSegmDetectorForEach: ImpactSegmDetectorForEach
-        RandomLatentImage: RandomLatentImage
-        VAEDecodeBatched: VAEDecodeBatched
-        VAEEncodeBatched: VAEEncodeBatched
-        LatentToImage: LatentToImage
-        LatentToHist: LatentToHist
-        KSamplerSetting: KSamplerSetting
-        KSamplerOverrided: KSamplerOverrided
-        KSamplerXYZ: KSamplerXYZ
-        StateDictLoader: StateDictLoader
-        Dict2Model: Dict2Model
-        ModelIter: ModelIter
-        CLIPIter: CLIPIter
-        VAEIter: VAEIter
-        StateDictMerger: StateDictMerger
-        StateDictMergerBlockWeighted: StateDictMergerBlockWeighted
-        StateDictMergerBlockWeightedMulti: StateDictMergerBlockWeightedMulti
-        SaveStateDict: SaveStateDict
-        ImageBlend2: ImageBlend2
-        GridImage: GridImage
-        SaveText: SaveText
+        ImpactBboxDetectorCombined: ImpactBboxDetectorCombined
+        ImpactSegmDetectorCombined: ImpactSegmDetectorCombined
         BNK_CutoffBasePrompt: BNK_CutoffBasePrompt
         BNK_CutoffSetRegions: BNK_CutoffSetRegions
         BNK_CutoffRegionsToConditioning: BNK_CutoffRegionsToConditioning
@@ -1302,8 +1721,6 @@ declare global {
         BNK_Unsampler: BNK_Unsampler
         BNK_TiledKSamplerAdvanced: BNK_TiledKSamplerAdvanced
         ClipSeg: ClipSeg
-        CannyEdgePreprocessor: CannyEdgePreprocessor
-        MLSDPreprocessor: MLSDPreprocessor
         HEDPreprocessor: HEDPreprocessor
         ScribblePreprocessor: ScribblePreprocessor
         FakeScribblePreprocessor: FakeScribblePreprocessor
@@ -1312,29 +1729,44 @@ declare global {
         LineArtPreprocessor: LineArtPreprocessor
         AnimeLineArtPreprocessor: AnimeLineArtPreprocessor
         Manga2AnimeLineArtPreprocessor: Manga2AnimeLineArtPreprocessor
-        MiDaSDepthMapPreprocessor: MiDaSDepthMapPreprocessor
         MiDaSNormalMapPreprocessor: MiDaSNormalMapPreprocessor
-        LeReSDepthMapPreprocessor: LeReSDepthMapPreprocessor
         ZoeDepthMapPreprocessor: ZoeDepthMapPreprocessor
         BAENormalMapPreprocessor: BAENormalMapPreprocessor
         OpenposePreprocessor: OpenposePreprocessor
         MediaPipeHandPosePreprocessor: MediaPipeHandPosePreprocessor
-        SemSegPreprocessor: SemSegPreprocessor
-        UniFormerSemSegPreprocessor: UniFormerSemSegPreprocessor
         OneFormerCOCOSemSegPreprocessor: OneFormerCOCOSemSegPreprocessor
         OneFormerADE20KSemSegPreprocessor: OneFormerADE20KSemSegPreprocessor
         MediaPipeFaceMeshPreprocessor: MediaPipeFaceMeshPreprocessor
         ColorPreprocessor: ColorPreprocessor
         TilePreprocessor: TilePreprocessor
+        InpaintPreprocessor: InpaintPreprocessor
         CLIPRegionsBasePrompt: CLIPRegionsBasePrompt
         CLIPSetRegion: CLIPSetRegion
         CLIPRegionsToConditioning: CLIPRegionsToConditioning
         KSamplerEfficient: KSamplerEfficient
         EfficientLoader: EfficientLoader
         XYPlot: XYPlot
+        XYInputSeedsBatch: XYInputSeedsBatch
+        XYInputSteps: XYInputSteps
+        XYInputCFGScale: XYInputCFGScale
+        XYInputSampler: XYInputSampler
+        XYInputScheduler: XYInputScheduler
+        XYInputDenoise: XYInputDenoise
+        XYInputVAE: XYInputVAE
+        XYInputPositivePromptSR: XYInputPositivePromptSR
+        XYInputNegativePromptSR: XYInputNegativePromptSR
+        XYInputCheckpoint: XYInputCheckpoint
+        XYInputClipSkip: XYInputClipSkip
+        XYInputLoRA: XYInputLoRA
+        XYInputLoRAAdvanced: XYInputLoRAAdvanced
+        XYInputManualXYEntry: XYInputManualXYEntry
+        ManualXYEntryInfo: ManualXYEntryInfo
+        JoinXYInputsOfSameType: JoinXYInputsOfSameType
         ImageOverlay: ImageOverlay
         EvaluateIntegers: EvaluateIntegers
+        EvaluateFloats: EvaluateFloats
         EvaluateStrings: EvaluateStrings
+        SimpleEvalExamples: SimpleEvalExamples
         GaussianBlur: GaussianBlur
         HistogramEqualization: HistogramEqualization
         WASImageFlip: WASImageFlip
@@ -1359,10 +1791,13 @@ declare global {
         PseudoHDRStyle: PseudoHDRStyle
         Saturation: Saturation
         ImageSharpening: ImageSharpening
+        WASBLIPModelLoader: WASBLIPModelLoader
         WASCacheNode: WASCacheNode
         WASCheckpointLoader: WASCheckpointLoader
         WASCheckpointLoaderSimple: WASCheckpointLoaderSimple
         WASCLIPTextEncodeNSP: WASCLIPTextEncodeNSP
+        WASCLIPInputSwitch: WASCLIPInputSwitch
+        WASCLIPVisionInputSwitch: WASCLIPVisionInputSwitch
         WASConditioningInputSwitch: WASConditioningInputSwitch
         WASConstantNumber: WASConstantNumber
         WASCreateGridImage: WASCreateGridImage
@@ -1370,16 +1805,21 @@ declare global {
         WASCreateMorphImageFromPath: WASCreateMorphImageFromPath
         WASCreateVideoFromPath: WASCreateVideoFromPath
         WASCLIPSegMasking: WASCLIPSegMasking
+        WASCLIPSegModelLoader: WASCLIPSegModelLoader
         WASCLIPSegBatchMasking: WASCLIPSegBatchMasking
         WASConvertMasksToImages: WASConvertMasksToImages
+        WASControlNetModelInputSwitch: WASControlNetModelInputSwitch
         WASDebugNumberToConsole: WASDebugNumberToConsole
         WASDictionaryToConsole: WASDictionaryToConsole
         WASDiffusersModelLoader: WASDiffusersModelLoader
         WASDiffusersHubModelDownLoader: WASDiffusersHubModelDownLoader
+        WASExportAPI: WASExportAPI
         WASLatentInputSwitch: WASLatentInputSwitch
         WASLoadCache: WASLoadCache
         WASLogicBoolean: WASLogicBoolean
         WASLoraLoader: WASLoraLoader
+        WASImageSSAOAmbientOcclusion: WASImageSSAOAmbientOcclusion
+        WASImageSSDODirectOcclusion: WASImageSSDODirectOcclusion
         WASImageAnalyze: WASImageAnalyze
         WASImageBatch: WASImageBatch
         WASImageBlank: WASImageBlank
@@ -1416,11 +1856,13 @@ declare global {
         WASImageNovaFilter: WASImageNovaFilter
         WASImagePadding: WASImagePadding
         WASImagePerlinNoise: WASImagePerlinNoise
+        WASImageRembgRemoveBackground: WASImageRembgRemoveBackground
         WASImagePerlinPowerFractal: WASImagePerlinPowerFractal
         WASImageRemoveBackgroundAlpha: WASImageRemoveBackgroundAlpha
         WASImageRemoveColor: WASImageRemoveColor
         WASImageResize: WASImageResize
         WASImageRotate: WASImageRotate
+        WASImageRotateHue: WASImageRotateHue
         WASImageSave: WASImageSave
         WASImageSeamlessTexture: WASImageSeamlessTexture
         WASImageSelectChannel: WASImageSelectChannel
@@ -1438,6 +1880,7 @@ declare global {
         WASImageToSeed: WASImageToSeed
         WASImageVoronoiNoiseFilter: WASImageVoronoiNoiseFilter
         WASKSamplerWAS: WASKSamplerWAS
+        WASKSamplerCycle: WASKSamplerCycle
         WASLatentNoiseInjection: WASLatentNoiseInjection
         WASLatentSizeToNumber: WASLatentSizeToNumber
         WASLatentUpscaleByFactorWAS: WASLatentUpscaleByFactorWAS
@@ -1449,6 +1892,10 @@ declare global {
         WASMaskArbitraryRegion: WASMaskArbitraryRegion
         WASMaskBatchToMask: WASMaskBatchToMask
         WASMaskCeilingRegion: WASMaskCeilingRegion
+        WASMaskCropDominantRegion: WASMaskCropDominantRegion
+        WASMaskCropMinorityRegion: WASMaskCropMinorityRegion
+        WASMaskCropRegion: WASMaskCropRegion
+        WASMaskPasteRegion: WASMaskPasteRegion
         WASMaskDilateRegion: WASMaskDilateRegion
         WASMaskDominantRegion: WASMaskDominantRegion
         WASMaskErodeRegion: WASMaskErodeRegion
@@ -1461,8 +1908,10 @@ declare global {
         WASMaskThresholdRegion: WASMaskThresholdRegion
         WASMasksCombineRegions: WASMasksCombineRegions
         WASMasksCombineBatch: WASMasksCombineBatch
+        WASMiDaSModelLoader: WASMiDaSModelLoader
         WASMiDaSDepthApproximation: WASMiDaSDepthApproximation
         WASMiDaSMaskImage: WASMiDaSMaskImage
+        WASModelInputSwitch: WASModelInputSwitch
         WASNumberOperation: WASNumberOperation
         WASNumberToFloat: WASNumberToFloat
         WASNumberInputSwitch: WASNumberInputSwitch
@@ -1483,6 +1932,7 @@ declare global {
         WASSAMParameters: WASSAMParameters
         WASSAMParametersCombine: WASSAMParametersCombine
         WASSAMImageMask: WASSAMImageMask
+        WASSamplesPassthroughStatSystem: WASSamplesPassthroughStatSystem
         WASStringToText: WASStringToText
         WASImageBounds: WASImageBounds
         WASInsetImageBounds: WASInsetImageBounds
@@ -1502,11 +1952,13 @@ declare global {
         WASTextInputSwitch: WASTextInputSwitch
         WASTextList: WASTextList
         WASTextListConcatenate: WASTextListConcatenate
+        WASTextLoadLineFromFile: WASTextLoadLineFromFile
         WASTextMultiline: WASTextMultiline
         WASTextParseA1111Embeddings: WASTextParseA1111Embeddings
         WASTextParseNoodleSoupPrompts: WASTextParseNoodleSoupPrompts
         WASTextParseTokens: WASTextParseTokens
         WASTextRandomLine: WASTextRandomLine
+        WASTextRandomPrompt: WASTextRandomPrompt
         WASTextString: WASTextString
         WASTextToConditioning: WASTextToConditioning
         WASTextToConsole: WASTextToConsole
@@ -1515,8 +1967,10 @@ declare global {
         WASTrueRandomOrgNumberGenerator: WASTrueRandomOrgNumberGenerator
         WASUnCLIPCheckpointLoader: WASUnCLIPCheckpointLoader
         WASUpscaleModelLoader: WASUpscaleModelLoader
+        WASUpscaleModelSwitch: WASUpscaleModelSwitch
         WASWriteToGIF: WASWriteToGIF
         WASWriteToVideo: WASWriteToVideo
+        WASVAEInputSwitch: WASVAEInputSwitch
         WASVideoDumpFrames: WASVideoDumpFrames
         YKImagePadForOutpaint: YKImagePadForOutpaint
         YKMaskToImage: YKMaskToImage
@@ -1559,16 +2013,13 @@ declare global {
             | 'LatentFlip'
             | 'LatentCrop'
             | 'VAEEncodeTiled'
-            | 'LoadLatent'
             | 'LatentCompositeMasked'
             | 'RebatchLatents'
+            | 'LatentClamp'
             | 'ImpactLatentPixelScale'
             | 'ImpactIterativeLatentUpscale'
             | 'ImpactTwoSamplersForMask'
-            | 'RandomLatentImage'
-            | 'VAEEncodeBatched'
-            | 'KSamplerOverrided'
-            | 'KSamplerXYZ'
+            | 'ImpactLatentSwitch'
             | 'MultiLatentComposite'
             | 'BNK_NoisyLatentImage'
             | 'BNK_DuplicateBatchIndex'
@@ -1582,24 +2033,23 @@ declare global {
             | 'WASLatentInputSwitch'
             | 'WASLoadCache'
             | 'WASKSamplerWAS'
+            | 'WASKSamplerCycle'
             | 'WASLatentNoiseInjection'
             | 'WASLatentUpscaleByFactorWAS'
+            | 'WASSamplesPassthroughStatSystem'
         > {}
     export interface CanProduce_MODEL
         extends Pick<
             ComfySetup,
             | 'CheckpointLoaderSimple'
             | 'LoraLoader'
-            | 'TomePatchModel'
             | 'UnCLIPCheckpointLoader'
             | 'CheckpointLoader'
             | 'DiffusersLoader'
             | 'HypernetworkLoader'
+            | 'ModelClamp'
             | 'ImpactFromDetailerPipe'
             | 'ImpactFromBasicPipe'
-            | 'Dict2Model'
-            | 'ModelIter'
-            | 'StateDictMergerBlockWeightedMulti'
             | 'KSamplerEfficient'
             | 'EfficientLoader'
             | 'WASCheckpointLoader'
@@ -1608,6 +2058,7 @@ declare global {
             | 'WASDiffusersHubModelDownLoader'
             | 'WASLoraLoader'
             | 'WASLoadLora'
+            | 'WASModelInputSwitch'
             | 'WASUnCLIPCheckpointLoader'
         > {}
     export interface CanProduce_CLIP
@@ -1617,16 +2068,15 @@ declare global {
             | 'CLIPSetLastLayer'
             | 'LoraLoader'
             | 'CLIPLoader'
+            | 'DualCLIPLoader'
             | 'UnCLIPCheckpointLoader'
             | 'CheckpointLoader'
             | 'DiffusersLoader'
+            | 'ClipClamp'
             | 'ImpactFromBasicPipe'
-            | 'Dict2Model'
-            | 'CLIPIter'
-            | 'StateDictMergerBlockWeightedMulti'
-            | 'EfficientLoader'
             | 'WASCheckpointLoader'
             | 'WASCheckpointLoaderSimple'
+            | 'WASCLIPInputSwitch'
             | 'WASDiffusersModelLoader'
             | 'WASDiffusersHubModelDownLoader'
             | 'WASLoraLoader'
@@ -1641,11 +2091,9 @@ declare global {
             | 'UnCLIPCheckpointLoader'
             | 'CheckpointLoader'
             | 'DiffusersLoader'
+            | 'VaeClamp'
             | 'ImpactFromDetailerPipe'
             | 'ImpactFromBasicPipe'
-            | 'Dict2Model'
-            | 'VAEIter'
-            | 'StateDictMergerBlockWeightedMulti'
             | 'KSamplerEfficient'
             | 'EfficientLoader'
             | 'WASCheckpointLoader'
@@ -1653,6 +2101,7 @@ declare global {
             | 'WASDiffusersModelLoader'
             | 'WASDiffusersHubModelDownLoader'
             | 'WASUnCLIPCheckpointLoader'
+            | 'WASVAEInputSwitch'
         > {}
     export interface CanProduce_CONDITIONING
         extends Pick<
@@ -1666,6 +2115,7 @@ declare global {
             | 'UnCLIPConditioning'
             | 'ControlNetApply'
             | 'GLIGENTextBoxApply'
+            | 'ConditioningClamp'
             | 'ImpactFromDetailerPipe'
             | 'ImpactFromDetailerPipe'
             | 'ImpactFromBasicPipe'
@@ -1690,17 +2140,78 @@ declare global {
             ComfySetup,
             | 'VAEDecode'
             | 'LoadImage'
-            | 'ImageScale'
-            | 'ImageInvert'
+            | 'ImageScaleBy'
             | 'ImagePadForOutpaint'
             | 'VAEDecodeTiled'
             | 'ImageUpscaleWithModel'
-            | 'ImageBlend'
-            | 'ImageBlur'
-            | 'ImageQuantize'
-            | 'ImageSharpen'
             | 'MaskToImage'
             | 'BrightnessContrast'
+            | 'AlphaChanelAdd'
+            | 'AlphaChanelAddByMask'
+            | 'AlphaChanelRestore'
+            | 'AlphaChanelRemove'
+            | 'ImageClamp'
+            | 'ImageCompositeAbsolute'
+            | 'ImageCompositeAbsoluteByContainer'
+            | 'ImageCompositeRelative'
+            | 'ImageCompositeRelativeByContainer'
+            | 'ImageContainer'
+            | 'ImageContainerInheritanceAdd'
+            | 'ImageContainerInheritanceScale'
+            | 'ImageContainerInheritanceMax'
+            | 'ImageContainerInheritanceSum'
+            | 'ImageDrawArc'
+            | 'ImageDrawArcByContainer'
+            | 'ImageDrawChord'
+            | 'ImageDrawChordByContainer'
+            | 'ImageDrawEllipse'
+            | 'ImageDrawEllipseByContainer'
+            | 'ImageDrawLine'
+            | 'ImageDrawLineByContainer'
+            | 'ImageDrawPieslice'
+            | 'ImageDrawPiesliceByContainer'
+            | 'ImageDrawRectangle'
+            | 'ImageDrawRectangleByContainer'
+            | 'ImageDrawRectangleRounded'
+            | 'ImageDrawRectangleRoundedByContainer'
+            | 'ImageDrawPolygon'
+            | 'ImageEffectsAdjustment'
+            | 'ImageEffectsGrayscale'
+            | 'ImageEffectsNegative'
+            | 'ImageEffectsSepia'
+            | 'ImageEffectsChromaticAberration'
+            | 'ImageFilterSmooth'
+            | 'ImageFilterSmoothMore'
+            | 'ImageFilterBlur'
+            | 'ImageFilterBoxBlur'
+            | 'ImageFilterGaussianBlur'
+            | 'ImageFilterBilateralBlur'
+            | 'ImageFilterContour'
+            | 'ImageFilterDetail'
+            | 'ImageFilterEdgeEnhance'
+            | 'ImageFilterEdgeEnhanceMore'
+            | 'ImageFilterEmboss'
+            | 'ImageFilterFindEdges'
+            | 'ImageFilterSharpen'
+            | 'ImageFilterRank'
+            | 'ImageFilterMedian'
+            | 'ImageFilterMin'
+            | 'ImageFilterMax'
+            | 'ImageFilterMode'
+            | 'ImageSegmentation'
+            | 'ImageSegmentationCustom'
+            | 'ImageSegmentationCustomAdvanced'
+            | 'ImageText'
+            | 'ImageTextOutlined'
+            | 'ImageTransformResizeAbsolute'
+            | 'ImageTransformResizeRelative'
+            | 'ImageTransformCropAbsolute'
+            | 'ImageTransformCropRelative'
+            | 'ImageTransformCropCorners'
+            | 'ImageTransformPaddingAbsolute'
+            | 'ImageTransformPaddingRelative'
+            | 'ImageTransformRotate'
+            | 'ImageTransformTranspose'
             | 'ImpactDetailerForEach'
             | 'ImpactDetailerForEachDebug'
             | 'ImpactDetailerForEachDebug'
@@ -1715,13 +2226,10 @@ declare global {
             | 'ImpactFaceDetailerPipe'
             | 'ImpactIterativeImageUpscale'
             | 'ImpactPreviewBridge'
-            | 'VAEDecodeBatched'
-            | 'LatentToImage'
-            | 'LatentToHist'
-            | 'ImageBlend2'
+            | 'ImpactImageReceiver'
+            | 'ImpactImageMaskSwitch'
+            | 'ImpactSEGSPaste'
             | 'ClipSeg'
-            | 'CannyEdgePreprocessor'
-            | 'MLSDPreprocessor'
             | 'HEDPreprocessor'
             | 'ScribblePreprocessor'
             | 'FakeScribblePreprocessor'
@@ -1730,20 +2238,17 @@ declare global {
             | 'LineArtPreprocessor'
             | 'AnimeLineArtPreprocessor'
             | 'Manga2AnimeLineArtPreprocessor'
-            | 'MiDaSDepthMapPreprocessor'
             | 'MiDaSNormalMapPreprocessor'
-            | 'LeReSDepthMapPreprocessor'
             | 'ZoeDepthMapPreprocessor'
             | 'BAENormalMapPreprocessor'
             | 'OpenposePreprocessor'
             | 'MediaPipeHandPosePreprocessor'
-            | 'SemSegPreprocessor'
-            | 'UniFormerSemSegPreprocessor'
             | 'OneFormerCOCOSemSegPreprocessor'
             | 'OneFormerADE20KSemSegPreprocessor'
             | 'MediaPipeFaceMeshPreprocessor'
             | 'ColorPreprocessor'
             | 'TilePreprocessor'
+            | 'InpaintPreprocessor'
             | 'KSamplerEfficient'
             | 'ImageOverlay'
             | 'GaussianBlur'
@@ -1776,6 +2281,13 @@ declare global {
             | 'WASCLIPSegBatchMasking'
             | 'WASConvertMasksToImages'
             | 'WASLoadCache'
+            | 'WASImageSSAOAmbientOcclusion'
+            | 'WASImageSSAOAmbientOcclusion'
+            | 'WASImageSSAOAmbientOcclusion'
+            | 'WASImageSSDODirectOcclusion'
+            | 'WASImageSSDODirectOcclusion'
+            | 'WASImageSSDODirectOcclusion'
+            | 'WASImageSSDODirectOcclusion'
             | 'WASImageAnalyze'
             | 'WASImageBatch'
             | 'WASImageBlank'
@@ -1816,11 +2328,13 @@ declare global {
             | 'WASImagePadding'
             | 'WASImagePadding'
             | 'WASImagePerlinNoise'
+            | 'WASImageRembgRemoveBackground'
             | 'WASImagePerlinPowerFractal'
             | 'WASImageRemoveBackgroundAlpha'
             | 'WASImageRemoveColor'
             | 'WASImageResize'
             | 'WASImageRotate'
+            | 'WASImageRotateHue'
             | 'WASImageSeamlessTexture'
             | 'WASImageSelectChannel'
             | 'WASImageSelectColor'
@@ -1862,18 +2376,24 @@ declare global {
             | 'CropMask'
             | 'MaskComposite'
             | 'FeatherMask'
+            | 'AlphaChanelAsMask'
+            | 'MaskClamp'
             | 'ImpactSAMDetectorCombined'
             | 'ImpactFaceDetailer'
             | 'ImpactFaceDetailerPipe'
             | 'ImpactBitwiseAndMask'
             | 'ImpactSubtractMask'
             | 'ImpactToBinaryMask'
-            | 'ImpactBboxDetectorCombined'
-            | 'ImpactSegmDetectorCombined'
+            | 'ImpactBboxDetectorCombined_v2'
+            | 'ImpactSegmDetectorCombined_v2'
             | 'ImpactSegsToCombinedMask'
             | 'ImpactPreviewBridge'
+            | 'ImpactImageReceiver'
+            | 'ImpactImageMaskSwitch'
             | 'ImpactMaskPainter'
             | 'ImpactSegsMaskCombine'
+            | 'ImpactBboxDetectorCombined'
+            | 'ImpactSegmDetectorCombined'
             | 'ClipSeg'
             | 'MasqueradeImageToMask'
             | 'WASCLIPSegMasking'
@@ -1885,6 +2405,11 @@ declare global {
             | 'WASMaskArbitraryRegion'
             | 'WASMaskBatchToMask'
             | 'WASMaskCeilingRegion'
+            | 'WASMaskCropDominantRegion'
+            | 'WASMaskCropMinorityRegion'
+            | 'WASMaskCropRegion'
+            | 'WASMaskPasteRegion'
+            | 'WASMaskPasteRegion'
             | 'WASMaskDilateRegion'
             | 'WASMaskDominantRegion'
             | 'WASMaskErodeRegion'
@@ -1900,13 +2425,28 @@ declare global {
             | 'WASSAMImageMask'
             | 'YKImagePadForOutpaint'
         > {}
-    export interface CanProduce_CLIP_VISION_OUTPUT extends Pick<ComfySetup, 'CLIPVisionEncode'> {}
-    export interface CanProduce_CONTROL_NET extends Pick<ComfySetup, 'ControlNetLoader' | 'DiffControlNetLoader'> {}
-    export interface CanProduce_STYLE_MODEL extends Pick<ComfySetup, 'StyleModelLoader'> {}
+    export interface CanProduce_CLIP_VISION_OUTPUT extends Pick<ComfySetup, 'CLIPVisionEncode' | 'ClipVisionOutputClamp'> {}
+    export interface CanProduce_CONTROL_NET
+        extends Pick<
+            ComfySetup,
+            'ControlNetLoader' | 'DiffControlNetLoader' | 'ControlNetClamp' | 'WASControlNetModelInputSwitch'
+        > {}
+    export interface CanProduce_STYLE_MODEL extends Pick<ComfySetup, 'StyleModelLoader' | 'StyleModelClamp'> {}
     export interface CanProduce_CLIP_VISION
-        extends Pick<ComfySetup, 'CLIPVisionLoader' | 'UnCLIPCheckpointLoader' | 'WASUnCLIPCheckpointLoader'> {}
-    export interface CanProduce_GLIGEN extends Pick<ComfySetup, 'GLIGENLoader'> {}
-    export interface CanProduce_UPSCALE_MODEL extends Pick<ComfySetup, 'UpscaleModelLoader' | 'WASUpscaleModelLoader'> {}
+        extends Pick<
+            ComfySetup,
+            | 'CLIPVisionLoader'
+            | 'UnCLIPCheckpointLoader'
+            | 'ClipVisionClamp'
+            | 'WASCLIPVisionInputSwitch'
+            | 'WASUnCLIPCheckpointLoader'
+        > {}
+    export interface CanProduce_GLIGEN extends Pick<ComfySetup, 'GLIGENLoader' | 'GligenClamp'> {}
+    export interface CanProduce_UPSCALE_MODEL
+        extends Pick<
+            ComfySetup,
+            'UpscaleModelLoader' | 'UpscaleModelClamp' | 'WASUpscaleModelLoader' | 'WASUpscaleModelSwitch'
+        > {}
     export interface CanProduce_SAM_MODEL
         extends Pick<ComfySetup, 'ImpactSAMLoader' | 'ImpactFromDetailerPipe' | 'WASSAMModelLoader'> {}
     export interface CanProduce_BBOX_DETECTOR
@@ -1924,6 +2464,8 @@ declare global {
             | 'ImpactBboxDetectorSEGS'
             | 'ImpactSegmDetectorSEGS'
             | 'ImpactONNXDetectorSEGS'
+            | 'ImpactSEGSSwitch'
+            | 'ImpactSEGSDetailer'
             | 'ImpactBboxDetectorForEach'
             | 'ImpactSegmDetectorForEach'
         > {}
@@ -1954,12 +2496,12 @@ declare global {
             'ImpactPixelKSampleHookCombine' | 'ImpactDenoiseScheduleHookProvider' | 'ImpactCfgScheduleHookProvider'
         > {}
     export interface CanProduce_KSAMPLER extends Pick<ComfySetup, 'ImpactKSamplerProvider' | 'ImpactTiledKSamplerProvider'> {}
-    export interface CanProduce_BBOX_MODEL extends Pick<ComfySetup, 'ImpactMMDetLoader'> {}
-    export interface CanProduce_SEGM_MODEL extends Pick<ComfySetup, 'ImpactMMDetLoader'> {}
     export interface CanProduce_STRING
         extends Pick<
             ComfySetup,
-            | 'LatentToHist'
+            | 'ImpactImpactWildcardProcessor'
+            | 'EvaluateIntegers'
+            | 'EvaluateFloats'
             | 'EvaluateStrings'
             | 'WASCheckpointLoader'
             | 'WASCheckpointLoaderSimple'
@@ -1971,18 +2513,8 @@ declare global {
             | 'WASTextToString'
             | 'WASUnCLIPCheckpointLoader'
         > {}
-    export interface CanProduce_DICT
-        extends Pick<
-            ComfySetup,
-            | 'KSamplerSetting'
-            | 'StateDictLoader'
-            | 'StateDictMerger'
-            | 'StateDictMergerBlockWeighted'
-            | 'WASDictionaryToConsole'
-            | 'WASLoadTextFile'
-            | 'WASTextDictionaryUpdate'
-            | 'WASTextFileHistoryLoader'
-        > {}
+    export interface CanProduce_BBOX_MODEL extends Pick<ComfySetup, 'ImpactMMDetLoader'> {}
+    export interface CanProduce_SEGM_MODEL extends Pick<ComfySetup, 'ImpactMMDetLoader'> {}
     export interface CanProduce_CLIPREGION
         extends Pick<ComfySetup, 'BNK_CutoffBasePrompt' | 'BNK_CutoffSetRegions' | 'CLIPRegionsBasePrompt' | 'CLIPSetRegion'> {}
     export interface CanProduce_INT
@@ -1991,20 +2523,52 @@ declare global {
             | 'MultiAreaConditioning'
             | 'MultiAreaConditioning'
             | 'EvaluateIntegers'
+            | 'EvaluateFloats'
             | 'MasqueradeGetImageSize'
             | 'MasqueradeGetImageSize'
             | 'WASImageToSeed'
+            | 'WASMaskCropRegion'
+            | 'WASMaskCropRegion'
+            | 'WASMaskCropRegion'
+            | 'WASMaskCropRegion'
+            | 'WASMaskCropRegion'
+            | 'WASMaskCropRegion'
             | 'WASNumberToInt'
         > {}
-    export interface CanProduce_FLOAT extends Pick<ComfySetup, 'BNK_GetSigma' | 'EvaluateIntegers' | 'WASNumberToFloat'> {}
+    export interface CanProduce_FLOAT
+        extends Pick<ComfySetup, 'BNK_GetSigma' | 'EvaluateIntegers' | 'EvaluateFloats' | 'WASNumberToFloat'> {}
+    export interface CanProduce_DEPENDENCIES extends Pick<ComfySetup, 'EfficientLoader'> {}
     export interface CanProduce_SCRIPT extends Pick<ComfySetup, 'XYPlot'> {}
+    export interface CanProduce_XY
+        extends Pick<
+            ComfySetup,
+            | 'XYInputSeedsBatch'
+            | 'XYInputSteps'
+            | 'XYInputCFGScale'
+            | 'XYInputSampler'
+            | 'XYInputScheduler'
+            | 'XYInputDenoise'
+            | 'XYInputVAE'
+            | 'XYInputPositivePromptSR'
+            | 'XYInputNegativePromptSR'
+            | 'XYInputCheckpoint'
+            | 'XYInputClipSkip'
+            | 'XYInputLoRA'
+            | 'XYInputLoRAAdvanced'
+            | 'XYInputManualXYEntry'
+            | 'XYInputManualXYEntry'
+            | 'JoinXYInputsOfSameType'
+        > {}
     export interface CanProduce_MASK_MAPPING extends Pick<ComfySetup, 'MasqueradeSeparateMaskComponents'> {}
+    export interface CanProduce_BLIP_MODEL extends Pick<ComfySetup, 'WASBLIPModelLoader'> {}
     export interface CanProduce_ASCII
         extends Pick<
             ComfySetup,
             | 'WASCacheNode'
             | 'WASCacheNode'
             | 'WASCacheNode'
+            | 'WASCLIPTextEncodeNSP'
+            | 'WASCLIPTextEncodeNSP'
             | 'WASCreateMorphImage'
             | 'WASCreateMorphImage'
             | 'WASCreateMorphImageFromPath'
@@ -2029,11 +2593,13 @@ declare global {
             | 'WASTextFindAndReplaceInput'
             | 'WASTextFindAndReplace'
             | 'WASTextInputSwitch'
+            | 'WASTextLoadLineFromFile'
             | 'WASTextMultiline'
             | 'WASTextParseA1111Embeddings'
             | 'WASTextParseNoodleSoupPrompts'
             | 'WASTextParseTokens'
             | 'WASTextRandomLine'
+            | 'WASTextRandomPrompt'
             | 'WASTextString'
             | 'WASTextString'
             | 'WASTextString'
@@ -2068,40 +2634,54 @@ declare global {
             | 'WASTrueRandomOrgNumberGenerator'
             | 'WASVideoDumpFrames'
         > {}
+    export interface CanProduce_CLIPSEG_MODEL extends Pick<ComfySetup, 'WASCLIPSegModelLoader'> {}
+    export interface CanProduce_DICT
+        extends Pick<
+            ComfySetup,
+            | 'WASDictionaryToConsole'
+            | 'WASLoadTextFile'
+            | 'WASTextDictionaryUpdate'
+            | 'WASTextFileHistoryLoader'
+            | 'WASTextLoadLineFromFile'
+        > {}
     export interface CanProduce_LIST
         extends Pick<ComfySetup, 'WASImageColorPalette' | 'WASTextList' | 'WASTextListConcatenate'> {}
     export interface CanProduce_CROP_DATA
-        extends Pick<ComfySetup, 'WASImageCropFace' | 'WASImageCropLocation' | 'WASImageCropSquareLocation'> {}
+        extends Pick<
+            ComfySetup,
+            'WASImageCropFace' | 'WASImageCropLocation' | 'WASImageCropSquareLocation' | 'WASMaskCropRegion'
+        > {}
+    export interface CanProduce_MIDAS_MODEL extends Pick<ComfySetup, 'WASMiDaSModelLoader'> {}
     export interface CanProduce_SEED extends Pick<ComfySetup, 'WASNumberToSeed' | 'WASSeed'> {}
     export interface CanProduce_SAM_PARAMETERS extends Pick<ComfySetup, 'WASSAMParameters' | 'WASSAMParametersCombine'> {}
     export interface CanProduce_IMAGE_BOUNDS
         extends Pick<ComfySetup, 'WASImageBounds' | 'WASInsetImageBounds' | 'WASBoundedImageCropWithMask'> {}
 
     // TYPES -------------------------------
-    export type SchedulerName = string | Slot<'SchedulerName'>
-    export type SamplerName = string | Slot<'SamplerName'>
     export type CLIP_VISION_OUTPUT = Slot<'CLIP_VISION_OUTPUT'>
-    export type Integer = number | Slot<'Integer'>
     export type STRING = string | Slot<'STRING'>
     export type FLOAT = number | Slot<'FLOAT'>
-    export type Float = number | Slot<'Float'>
     export type SAM_PARAMETERS = Slot<'SAM_PARAMETERS'>
     export type UPSCALE_MODEL = Slot<'UPSCALE_MODEL'>
     export type BBOX_DETECTOR = Slot<'BBOX_DETECTOR'>
     export type SEGM_DETECTOR = Slot<'SEGM_DETECTOR'>
     export type ONNX_DETECTOR = Slot<'ONNX_DETECTOR'>
     export type DETAILER_PIPE = Slot<'DETAILER_PIPE'>
+    export type CLIPSEG_MODEL = Slot<'CLIPSEG_MODEL'>
     export type INT = number | Slot<'INT'>
     export type CONDITIONING = Slot<'CONDITIONING'>
+    export type DEPENDENCIES = Slot<'DEPENDENCIES'>
     export type MASK_MAPPING = Slot<'MASK_MAPPING'>
     export type IMAGE_BOUNDS = Slot<'IMAGE_BOUNDS'>
     export type CLIP_VISION = Slot<'CLIP_VISION'>
     export type STYLE_MODEL = Slot<'STYLE_MODEL'>
     export type CONTROL_NET = Slot<'CONTROL_NET'>
+    export type MIDAS_MODEL = Slot<'MIDAS_MODEL'>
     export type BASIC_PIPE = Slot<'BASIC_PIPE'>
     export type BBOX_MODEL = Slot<'BBOX_MODEL'>
     export type SEGM_MODEL = Slot<'SEGM_MODEL'>
     export type CLIPREGION = Slot<'CLIPREGION'>
+    export type BLIP_MODEL = Slot<'BLIP_MODEL'>
     export type SAM_MODEL = Slot<'SAM_MODEL'>
     export type CROP_DATA = Slot<'CROP_DATA'>
     export type UPSCALER = Slot<'UPSCALER'>
@@ -2121,26 +2701,15 @@ declare global {
     export type LIST = Slot<'LIST'>
     export type SEED = Slot<'SEED'>
     export type VAE = Slot<'VAE'>
+    export type XY = Slot<'XY'>
 
     // ACCEPTABLE INPUTS -------------------------------
-    export type _SchedulerName =
-        | string
-        | Slot<'SchedulerName'>
-        | HasSingle_SchedulerName
-        | ((x: CanProduce_SchedulerName) => _SchedulerName)
-    export type _SamplerName =
-        | string
-        | Slot<'SamplerName'>
-        | HasSingle_SamplerName
-        | ((x: CanProduce_SamplerName) => _SamplerName)
     export type _CLIP_VISION_OUTPUT =
         | Slot<'CLIP_VISION_OUTPUT'>
         | HasSingle_CLIP_VISION_OUTPUT
         | ((x: CanProduce_CLIP_VISION_OUTPUT) => _CLIP_VISION_OUTPUT)
-    export type _Integer = number | Slot<'Integer'> | HasSingle_Integer | ((x: CanProduce_Integer) => _Integer)
     export type _STRING = string | Slot<'STRING'> | HasSingle_STRING | ((x: CanProduce_STRING) => _STRING)
     export type _FLOAT = number | Slot<'FLOAT'> | HasSingle_FLOAT | ((x: CanProduce_FLOAT) => _FLOAT)
-    export type _Float = number | Slot<'Float'> | HasSingle_Float | ((x: CanProduce_Float) => _Float)
     export type _SAM_PARAMETERS =
         | Slot<'SAM_PARAMETERS'>
         | HasSingle_SAM_PARAMETERS
@@ -2165,17 +2734,24 @@ declare global {
         | Slot<'DETAILER_PIPE'>
         | HasSingle_DETAILER_PIPE
         | ((x: CanProduce_DETAILER_PIPE) => _DETAILER_PIPE)
+    export type _CLIPSEG_MODEL =
+        | Slot<'CLIPSEG_MODEL'>
+        | HasSingle_CLIPSEG_MODEL
+        | ((x: CanProduce_CLIPSEG_MODEL) => _CLIPSEG_MODEL)
     export type _INT = number | Slot<'INT'> | HasSingle_INT | ((x: CanProduce_INT) => _INT)
     export type _CONDITIONING = Slot<'CONDITIONING'> | HasSingle_CONDITIONING | ((x: CanProduce_CONDITIONING) => _CONDITIONING)
+    export type _DEPENDENCIES = Slot<'DEPENDENCIES'> | HasSingle_DEPENDENCIES | ((x: CanProduce_DEPENDENCIES) => _DEPENDENCIES)
     export type _MASK_MAPPING = Slot<'MASK_MAPPING'> | HasSingle_MASK_MAPPING | ((x: CanProduce_MASK_MAPPING) => _MASK_MAPPING)
     export type _IMAGE_BOUNDS = Slot<'IMAGE_BOUNDS'> | HasSingle_IMAGE_BOUNDS | ((x: CanProduce_IMAGE_BOUNDS) => _IMAGE_BOUNDS)
     export type _CLIP_VISION = Slot<'CLIP_VISION'> | HasSingle_CLIP_VISION | ((x: CanProduce_CLIP_VISION) => _CLIP_VISION)
     export type _STYLE_MODEL = Slot<'STYLE_MODEL'> | HasSingle_STYLE_MODEL | ((x: CanProduce_STYLE_MODEL) => _STYLE_MODEL)
     export type _CONTROL_NET = Slot<'CONTROL_NET'> | HasSingle_CONTROL_NET | ((x: CanProduce_CONTROL_NET) => _CONTROL_NET)
+    export type _MIDAS_MODEL = Slot<'MIDAS_MODEL'> | HasSingle_MIDAS_MODEL | ((x: CanProduce_MIDAS_MODEL) => _MIDAS_MODEL)
     export type _BASIC_PIPE = Slot<'BASIC_PIPE'> | HasSingle_BASIC_PIPE | ((x: CanProduce_BASIC_PIPE) => _BASIC_PIPE)
     export type _BBOX_MODEL = Slot<'BBOX_MODEL'> | HasSingle_BBOX_MODEL | ((x: CanProduce_BBOX_MODEL) => _BBOX_MODEL)
     export type _SEGM_MODEL = Slot<'SEGM_MODEL'> | HasSingle_SEGM_MODEL | ((x: CanProduce_SEGM_MODEL) => _SEGM_MODEL)
     export type _CLIPREGION = Slot<'CLIPREGION'> | HasSingle_CLIPREGION | ((x: CanProduce_CLIPREGION) => _CLIPREGION)
+    export type _BLIP_MODEL = Slot<'BLIP_MODEL'> | HasSingle_BLIP_MODEL | ((x: CanProduce_BLIP_MODEL) => _BLIP_MODEL)
     export type _SAM_MODEL = Slot<'SAM_MODEL'> | HasSingle_SAM_MODEL | ((x: CanProduce_SAM_MODEL) => _SAM_MODEL)
     export type _CROP_DATA = Slot<'CROP_DATA'> | HasSingle_CROP_DATA | ((x: CanProduce_CROP_DATA) => _CROP_DATA)
     export type _UPSCALER = Slot<'UPSCALER'> | HasSingle_UPSCALER | ((x: CanProduce_UPSCALER) => _UPSCALER)
@@ -2195,6 +2771,7 @@ declare global {
     export type _LIST = Slot<'LIST'> | HasSingle_LIST | ((x: CanProduce_LIST) => _LIST)
     export type _SEED = Slot<'SEED'> | HasSingle_SEED | ((x: CanProduce_SEED) => _SEED)
     export type _VAE = Slot<'VAE'> | HasSingle_VAE | ((x: CanProduce_VAE) => _VAE)
+    export type _XY = Slot<'XY'> | HasSingle_XY | ((x: CanProduce_XY) => _XY)
 
     // ENUMS -------------------------------
     export type Enum_KSampler_sampler_name =
@@ -2226,12 +2803,13 @@ declare global {
     export type Enum_ImpactPixelTiledKSampleUpscalerProviderPipe_sampler_name = Enum_KSampler_sampler_name
     export type Enum_ImpactKSamplerProvider_sampler_name = Enum_KSampler_sampler_name
     export type Enum_ImpactTiledKSamplerProvider_sampler_name = Enum_KSampler_sampler_name
-    export type Enum_KSamplerSetting_sampler_name = Enum_KSampler_sampler_name
+    export type Enum_ImpactSEGSDetailer_sampler_name = Enum_KSampler_sampler_name
     export type Enum_BNK_GetSigma_sampler_name = Enum_KSampler_sampler_name
     export type Enum_BNK_Unsampler_sampler_name = Enum_KSampler_sampler_name
     export type Enum_BNK_TiledKSamplerAdvanced_sampler_name = Enum_KSampler_sampler_name
     export type Enum_KSamplerEfficient_sampler_name = Enum_KSampler_sampler_name
     export type Enum_WASKSamplerWAS_sampler_name = Enum_KSampler_sampler_name
+    export type Enum_WASKSamplerCycle_sampler_name = Enum_KSampler_sampler_name
     export type Enum_KSampler_scheduler = 'ddim_uniform' | 'exponential' | 'karras' | 'normal' | 'simple'
     export type Enum_KSamplerAdvanced_scheduler = Enum_KSampler_scheduler
     export type Enum_ImpactDetailerForEach_scheduler = Enum_KSampler_scheduler
@@ -2246,12 +2824,13 @@ declare global {
     export type Enum_ImpactPixelTiledKSampleUpscalerProviderPipe_scheduler = Enum_KSampler_scheduler
     export type Enum_ImpactKSamplerProvider_scheduler = Enum_KSampler_scheduler
     export type Enum_ImpactTiledKSamplerProvider_scheduler = Enum_KSampler_scheduler
-    export type Enum_KSamplerSetting_scheduler = Enum_KSampler_scheduler
+    export type Enum_ImpactSEGSDetailer_scheduler = Enum_KSampler_scheduler
     export type Enum_BNK_GetSigma_scheduler = Enum_KSampler_scheduler
     export type Enum_BNK_Unsampler_scheduler = Enum_KSampler_scheduler
     export type Enum_BNK_TiledKSamplerAdvanced_scheduler = Enum_KSampler_scheduler
     export type Enum_KSamplerEfficient_scheduler = Enum_KSampler_scheduler
     export type Enum_WASKSamplerWAS_scheduler = Enum_KSampler_scheduler
+    export type Enum_WASKSamplerCycle_scheduler = Enum_KSampler_scheduler
     export type Enum_CheckpointLoaderSimple_ckpt_name =
         | 'AOM3A1_orangemixs.safetensors'
         | 'AOM3A3_orangemixs.safetensors'
@@ -2275,7 +2854,6 @@ declare global {
         | 'wd-1-5-beta2-fp16.safetensors'
     export type Enum_UnCLIPCheckpointLoader_ckpt_name = Enum_CheckpointLoaderSimple_ckpt_name
     export type Enum_CheckpointLoader_ckpt_name = Enum_CheckpointLoaderSimple_ckpt_name
-    export type Enum_StateDictLoader_ckpt_name = Enum_CheckpointLoaderSimple_ckpt_name
     export type Enum_EfficientLoader_ckpt_name = Enum_CheckpointLoaderSimple_ckpt_name
     export type Enum_WASCheckpointLoader_ckpt_name = Enum_CheckpointLoaderSimple_ckpt_name
     export type Enum_WASCheckpointLoaderSimple_ckpt_name = Enum_CheckpointLoaderSimple_ckpt_name
@@ -2285,10 +2863,9 @@ declare global {
         | 'kl-f8-anime2.ckpt'
         | 'orangemix.vae.pt'
         | 'vae-ft-mse-840000-ema-pruned.safetensors'
-    export type Enum_LatentUpscale_upscale_method = 'area' | 'bilinear' | 'bislerp' | 'nearest-exact'
+    export type Enum_LatentUpscale_upscale_method = 'area' | 'bicubic' | 'bilinear' | 'bislerp' | 'nearest-exact'
     export type Enum_LatentUpscaleBy_upscale_method = Enum_LatentUpscale_upscale_method
     export type Enum_LatentUpscale_crop = 'center' | 'disabled'
-    export type Enum_ImageScale_crop = Enum_LatentUpscale_crop
     export type Enum_LatentUpscaleMultiply_crop = Enum_LatentUpscale_crop
     export type Enum_LoadImage_image =
         | '00366-3086397572-spinkledustfairywarrior_1.png'
@@ -2423,24 +3000,15 @@ declare global {
         | 'upload (99).png'
         | 'upload.png'
     export type Enum_LoadImageMask_image = Enum_LoadImage_image
+    export type Enum_ImpactImageReceiver_image = Enum_LoadImage_image
     export type Enum_LoadImageMask_channel = 'alpha' | 'blue' | 'green' | 'red'
     export type Enum_WASImageToLatentMask_channel = Enum_LoadImageMask_channel
-    export type Enum_ImageScale_upscale_method = 'area' | 'bilinear' | 'nearest-exact'
-    export type Enum_ImpactLatentPixelScale_scale_method = Enum_ImageScale_upscale_method
-    export type Enum_ImpactPixelKSampleUpscalerProvider_scale_method = Enum_ImageScale_upscale_method
-    export type Enum_ImpactPixelKSampleUpscalerProviderPipe_scale_method = Enum_ImageScale_upscale_method
-    export type Enum_ImpactPixelTiledKSampleUpscalerProvider_scale_method = Enum_ImageScale_upscale_method
-    export type Enum_ImpactPixelTiledKSampleUpscalerProviderPipe_scale_method = Enum_ImageScale_upscale_method
-    export type Enum_ImpactTwoSamplersForMaskUpscalerProvider_scale_method = Enum_ImageScale_upscale_method
-    export type Enum_ImpactTwoSamplersForMaskUpscalerProviderPipe_scale_method = Enum_ImageScale_upscale_method
-    export type Enum_ImageOverlay_resize_method = Enum_ImageScale_upscale_method
-    export type Enum_LatentUpscaleMultiply_upscale_method = Enum_ImageScale_upscale_method
+    export type Enum_ImageScaleBy_upscale_method = 'area' | 'bicubic' | 'bilinear' | 'nearest-exact'
     export type Enum_ConditioningSetMask_set_cond_area = 'default' | 'mask bounds'
     export type Enum_KSamplerAdvanced_add_noise = 'disable' | 'enable'
     export type Enum_KSamplerAdvanced_return_with_leftover_noise = Enum_KSamplerAdvanced_add_noise
     export type Enum_BNK_TiledKSamplerAdvanced_add_noise = Enum_KSamplerAdvanced_add_noise
     export type Enum_BNK_TiledKSamplerAdvanced_return_with_leftover_noise = Enum_KSamplerAdvanced_add_noise
-    export type Enum_CannyEdgePreprocessor_l2gradient = Enum_KSamplerAdvanced_add_noise
     export type Enum_HEDPreprocessor_safe = Enum_KSamplerAdvanced_add_noise
     export type Enum_PiDiNetPreprocessor_safe = Enum_KSamplerAdvanced_add_noise
     export type Enum_LineArtPreprocessor_coarse = Enum_KSamplerAdvanced_add_noise
@@ -2449,6 +3017,10 @@ declare global {
     export type Enum_OpenposePreprocessor_detect_face = Enum_KSamplerAdvanced_add_noise
     export type Enum_MediaPipeHandPosePreprocessor_detect_pose = Enum_KSamplerAdvanced_add_noise
     export type Enum_MediaPipeHandPosePreprocessor_detect_hands = Enum_KSamplerAdvanced_add_noise
+    export type Enum_WASKSamplerCycle_tiled_vae = Enum_KSamplerAdvanced_add_noise
+    export type Enum_WASKSamplerCycle_scale_denoise = Enum_KSamplerAdvanced_add_noise
+    export type Enum_WASKSamplerCycle_pos_add_strength_scaling = Enum_KSamplerAdvanced_add_noise
+    export type Enum_WASKSamplerCycle_neg_add_strength_scaling = Enum_KSamplerAdvanced_add_noise
     export type Enum_LatentRotate_rotation = '180 degrees' | '270 degrees' | '90 degrees' | 'none'
     export type Enum_LatentFlip_flip_method = 'x-axis: vertically' | 'y-axis: horizontally'
     export type Enum_LoraLoader_lora_name =
@@ -2467,8 +3039,6 @@ declare global {
         | 'test\\Moxin_10.safetensors'
         | 'test\\animeLineartMangaLike_v30MangaLike.safetensors'
         | 'utils\\charTurnBetaLora.safetensors'
-    export type Enum_WASLoraLoader_lora_name = Enum_LoraLoader_lora_name
-    export type Enum_WASLoadLora_lora_name = Enum_LoraLoader_lora_name
     export type Enum_CLIPLoader_clip_name = never
     export type Enum_ControlNetLoader_control_net_name =
         | 'control_depth-fp16.safetensors'
@@ -2497,20 +3067,116 @@ declare global {
         | 'v2-inference.yaml'
         | 'v2-inference_fp32.yaml'
         | 'v2-inpainting-inference.yaml'
-    export type Enum_Dict2Model_config_name = Enum_CheckpointLoader_config_name
-    export type Enum_StateDictMergerBlockWeightedMulti_config_name = Enum_CheckpointLoader_config_name
     export type Enum_WASCheckpointLoader_config_name = Enum_CheckpointLoader_config_name
     export type Enum_UpscaleModelLoader_model_name =
         | '2x_Waifaux-NL3-SuperLite_latest_G.pth'
         | 'RealESRGAN_x2.pth'
         | 'RealESRGAN_x4.pth'
     export type Enum_WASUpscaleModelLoader_model_name = Enum_UpscaleModelLoader_model_name
-    export type Enum_ImageBlend_blend_mode = 'multiply' | 'normal' | 'overlay' | 'screen' | 'soft_light'
-    export type Enum_ImageQuantize_dither = 'floyd-steinberg' | 'none'
     export type Enum_ImageToMask_channel = 'blue' | 'green' | 'red'
     export type Enum_WASImageSelectChannel_channel = Enum_ImageToMask_channel
     export type Enum_MaskComposite_operation = 'add' | 'and' | 'multiply' | 'or' | 'subtract' | 'xor'
     export type Enum_BrightnessContrast_mode = 'brightness' | 'contrast'
+    export type Enum_AlphaChanelAddByMask_method = 'default' | 'invert'
+    export type Enum_AlphaChanelAsMask_method = Enum_AlphaChanelAddByMask_method
+    export type Enum_ImageCompositeAbsolute_background = 'images_a' | 'images_b'
+    export type Enum_ImageCompositeAbsoluteByContainer_background = Enum_ImageCompositeAbsolute_background
+    export type Enum_ImageCompositeRelative_background = Enum_ImageCompositeAbsolute_background
+    export type Enum_ImageCompositeRelativeByContainer_background = Enum_ImageCompositeAbsolute_background
+    export type Enum_ImageCompositeAbsolute_method = 'matrix' | 'pair'
+    export type Enum_ImageCompositeAbsoluteByContainer_method = Enum_ImageCompositeAbsolute_method
+    export type Enum_ImageCompositeRelative_method = Enum_ImageCompositeAbsolute_method
+    export type Enum_ImageCompositeRelativeByContainer_method = Enum_ImageCompositeAbsolute_method
+    export type Enum_ImageCompositeRelative_container_size_type = 'max' | 'sum' | 'sum_height' | 'sum_width'
+    export type Enum_ImageContainerInheritanceAdd_method = 'for_each' | 'single'
+    export type Enum_ImageContainerInheritanceScale_method = Enum_ImageContainerInheritanceAdd_method
+    export type Enum_ImageContainerInheritanceMax_method = 'for_each_matrix' | 'for_each_pair' | 'single'
+    export type Enum_ImageContainerInheritanceSum_method = Enum_ImageContainerInheritanceMax_method
+    export type Enum_ImageContainerInheritanceSum_container_size_type = 'sum' | 'sum_height' | 'sum_width'
+    export type Enum_ImageDrawArc_method = 'bicubic' | 'bilinear' | 'box' | 'hamming' | 'lanczos' | 'nearest'
+    export type Enum_ImageDrawArcByContainer_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawChord_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawChordByContainer_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawEllipse_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawEllipseByContainer_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawLine_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawLineByContainer_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawPieslice_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawPiesliceByContainer_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawRectangle_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawRectangleByContainer_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawRectangleRounded_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawRectangleRoundedByContainer_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawPolygon_method = Enum_ImageDrawArc_method
+    export type Enum_ImageTransformResizeAbsolute_method = Enum_ImageDrawArc_method
+    export type Enum_ImageTransformResizeRelative_method = Enum_ImageDrawArc_method
+    export type Enum_ImageTransformCropCorners_method = Enum_ImageDrawArc_method
+    export type Enum_ImageTransformRotate_method = Enum_ImageDrawArc_method
+    export type Enum_ImageDrawRectangleRounded_top_left_corner = 'false' | 'true'
+    export type Enum_ImageDrawRectangleRounded_top_right_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageDrawRectangleRounded_bottom_right_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageDrawRectangleRounded_bottom_left_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageDrawRectangleRoundedByContainer_top_left_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageDrawRectangleRoundedByContainer_top_right_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageDrawRectangleRoundedByContainer_bottom_right_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageDrawRectangleRoundedByContainer_bottom_left_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageSegmentation_alpha_matting = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageSegmentation_post_process_mask = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageSegmentationCustom_alpha_matting = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageSegmentationCustom_post_process_mask = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageSegmentationCustomAdvanced_alpha_matting = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageSegmentationCustomAdvanced_post_process_mask = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageTransformCropCorners_top_left_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageTransformCropCorners_top_right_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageTransformCropCorners_bottom_right_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageTransformCropCorners_bottom_left_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageTransformRotate_expand = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASCreateGridImage_include_subfolders = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageCannyFilter_enable_threshold = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageDraganPhotographyFilter_colorize = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageGradientMap_flip_left_right = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageHighPassFilter_color_output = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageHighPassFilter_neutral_background = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImagePadding_feather_second_pass = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageRembgRemoveBackground_transparency = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageResize_supersample = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageSave_lossless_webp = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageSave_show_history = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageSave_show_history_by_prefix = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageSave_embed_workflow = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASImageSeamlessTexture_tiled = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASLatentUpscaleByFactorWAS_align = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASMiDaSDepthApproximation_use_cpu = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASMiDaSDepthApproximation_invert_depth = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASMiDaSMaskImage_use_cpu = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASMiDaSMaskImage_threshold = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASNumberInputCondition_return_boolean = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASTextAddTokens_print_current_tokens = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASTextAddTokenByInput_print_current_tokens = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_WASTextConcatenate_linebreak_addition = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageEffectsChromaticAberration_method = 'constant' | 'edge' | 'reflect'
+    export type Enum_ImageTransformPaddingAbsolute_method = Enum_ImageEffectsChromaticAberration_method
+    export type Enum_ImageTransformPaddingRelative_method = Enum_ImageEffectsChromaticAberration_method
+    export type Enum_ImageEffectsChromaticAberration_transpose = 'none' | 'reflect' | 'rotate'
+    export type Enum_ImageEffectsChromaticAberration_colors = 'gb' | 'rb' | 'rg'
+    export type Enum_ImageSegmentation_model =
+        | 'isnet-general-use'
+        | 'isnetis'
+        | 'modnet-p'
+        | 'modnet-w'
+        | 'silueta'
+        | 'u2net'
+        | 'u2net_cloth_seg'
+        | 'u2net_human_seg'
+        | 'u2netp'
+    export type Enum_ImageTransformTranspose_method =
+        | 'flip_horizontally'
+        | 'flip_vertically'
+        | 'rotate_180'
+        | 'rotate_270'
+        | 'rotate_90'
+        | 'transpose'
+        | 'transverse'
     export type Enum_ImpactSAMLoader_model_name = 'sam_vit_b_01ec64.pth' | 'sam_vit_h_4b8939.pth'
     export type Enum_ImpactMMDetDetectorProvider_model_name = 'bbox/mmdet_anime-face_yolov3.pth'
     export type Enum_ImpactMMDetLoader_model_name = Enum_ImpactMMDetDetectorProvider_model_name
@@ -2520,6 +3186,7 @@ declare global {
     export type Enum_ImpactDetailerForEachDebugPipe_guide_size_for = Enum_ImpactDetailerForEach_guide_size_for
     export type Enum_ImpactFaceDetailer_guide_size_for = Enum_ImpactDetailerForEach_guide_size_for
     export type Enum_ImpactFaceDetailerPipe_guide_size_for = Enum_ImpactDetailerForEach_guide_size_for
+    export type Enum_ImpactSEGSDetailer_guide_size_for = Enum_ImpactDetailerForEach_guide_size_for
     export type Enum_ImpactDetailerForEach_noise_mask = 'disabled' | 'enabled'
     export type Enum_ImpactDetailerForEach_force_inpaint = Enum_ImpactDetailerForEach_noise_mask
     export type Enum_ImpactDetailerForEachDebug_noise_mask = Enum_ImpactDetailerForEach_noise_mask
@@ -2538,6 +3205,8 @@ declare global {
     export type Enum_ImpactTwoSamplersForMaskUpscalerProvider_use_tiled_vae = Enum_ImpactDetailerForEach_noise_mask
     export type Enum_ImpactTwoSamplersForMaskUpscalerProviderPipe_use_tiled_vae = Enum_ImpactDetailerForEach_noise_mask
     export type Enum_ImpactMaskToSEGS_bbox_fill = Enum_ImpactDetailerForEach_noise_mask
+    export type Enum_ImpactSEGSDetailer_noise_mask = Enum_ImpactDetailerForEach_noise_mask
+    export type Enum_ImpactSEGSDetailer_force_inpaint = Enum_ImpactDetailerForEach_noise_mask
     export type Enum_ImpactSAMDetectorCombined_detection_hint =
         | 'center-1'
         | 'diamond-4'
@@ -2553,6 +3222,15 @@ declare global {
     export type Enum_ImpactSAMDetectorCombined_mask_hint_use_negative = 'False' | 'Outter' | 'Small'
     export type Enum_ImpactFaceDetailer_sam_mask_hint_use_negative = Enum_ImpactSAMDetectorCombined_mask_hint_use_negative
     export type Enum_ImpactFaceDetailerPipe_sam_mask_hint_use_negative = Enum_ImpactSAMDetectorCombined_mask_hint_use_negative
+    export type Enum_ImpactLatentPixelScale_scale_method = 'area' | 'bilinear' | 'nearest-exact'
+    export type Enum_ImpactPixelKSampleUpscalerProvider_scale_method = Enum_ImpactLatentPixelScale_scale_method
+    export type Enum_ImpactPixelKSampleUpscalerProviderPipe_scale_method = Enum_ImpactLatentPixelScale_scale_method
+    export type Enum_ImpactPixelTiledKSampleUpscalerProvider_scale_method = Enum_ImpactLatentPixelScale_scale_method
+    export type Enum_ImpactPixelTiledKSampleUpscalerProviderPipe_scale_method = Enum_ImpactLatentPixelScale_scale_method
+    export type Enum_ImpactTwoSamplersForMaskUpscalerProvider_scale_method = Enum_ImpactLatentPixelScale_scale_method
+    export type Enum_ImpactTwoSamplersForMaskUpscalerProviderPipe_scale_method = Enum_ImpactLatentPixelScale_scale_method
+    export type Enum_ImageOverlay_resize_method = Enum_ImpactLatentPixelScale_scale_method
+    export type Enum_LatentUpscaleMultiply_upscale_method = Enum_ImpactLatentPixelScale_scale_method
     export type Enum_ImpactPixelTiledKSampleUpscalerProvider_tiling_strategy = 'padded' | 'random' | 'simple'
     export type Enum_ImpactPixelTiledKSampleUpscalerProviderPipe_tiling_strategy =
         Enum_ImpactPixelTiledKSampleUpscalerProvider_tiling_strategy
@@ -2573,35 +3251,18 @@ declare global {
     export type Enum_ImpactCfgScheduleHookProvider_schedule_for_iteration =
         Enum_ImpactDenoiseScheduleHookProvider_schedule_for_iteration
     export type Enum_ImpactMaskToSEGS_combined = 'False' | 'True'
-    export type Enum_StateDictMerger_half = Enum_ImpactMaskToSEGS_combined
-    export type Enum_StateDictMergerBlockWeighted_half = Enum_ImpactMaskToSEGS_combined
-    export type Enum_StateDictMergerBlockWeightedMulti_half = Enum_ImpactMaskToSEGS_combined
-    export type Enum_SaveStateDict_overwrite = Enum_ImpactMaskToSEGS_combined
     export type Enum_XYPlot_XY_flip = Enum_ImpactMaskToSEGS_combined
+    export type Enum_XYPlot_cache_models = Enum_ImpactMaskToSEGS_combined
     export type Enum_EvaluateIntegers_print_to_console = Enum_ImpactMaskToSEGS_combined
+    export type Enum_EvaluateFloats_print_to_console = Enum_ImpactMaskToSEGS_combined
     export type Enum_EvaluateStrings_print_to_console = Enum_ImpactMaskToSEGS_combined
+    export type Enum_WASImageSSAOAmbientOcclusion_enable_specular_masking = Enum_ImpactMaskToSEGS_combined
+    export type Enum_WASImageSSDODirectOcclusion_colored_occlusion = Enum_ImpactMaskToSEGS_combined
     export type Enum_WASImagePixelate_dither = Enum_ImpactMaskToSEGS_combined
     export type Enum_WASImagePixelate_reverse_palette = Enum_ImpactMaskToSEGS_combined
     export type Enum_ImpactPreviewBridge_image = '#placeholder'
     export type Enum_ImpactMaskPainter_image = Enum_ImpactPreviewBridge_image
-    export type Enum_LatentToHist_min_auto = 'Auto' | 'Specified'
-    export type Enum_LatentToHist_max_auto = Enum_LatentToHist_min_auto
-    export type Enum_LatentToHist_bin_auto = Enum_LatentToHist_min_auto
-    export type Enum_LatentToHist_ymax_auto = Enum_LatentToHist_min_auto
-    export type Enum_StateDictMerger_position_ids = 'A' | 'B' | 'Reset'
-    export type Enum_StateDictMergerBlockWeighted_position_ids = Enum_StateDictMerger_position_ids
-    export type Enum_StateDictMergerBlockWeightedMulti_position_ids = Enum_StateDictMerger_position_ids
-    export type Enum_ImageBlend2_blend_mode =
-        | 'abs_diff'
-        | 'compare_color_dark'
-        | 'compare_color_light'
-        | 'compare_dark'
-        | 'compare_light'
-        | 'multiply'
-        | 'normal'
-        | 'overlay'
-        | 'screen'
-        | 'soft_light'
+    export type Enum_ImpactImpactWildcardProcessor_mode = 'Fixed' | 'Populate'
     export type Enum_BNK_CutoffRegionsToConditioning_ADV_token_normalization = 'length' | 'length+mean' | 'mean' | 'none'
     export type Enum_BNK_CutoffRegionsToConditioning_ADV_weight_interpretation = 'A1111' | 'comfy' | 'comfy++' | 'compel'
     export type Enum_BNK_NoisyLatentImage_source = 'CPU' | 'GPU'
@@ -2610,7 +3271,7 @@ declare global {
     export type Enum_HEDPreprocessor_version = 'v1' | 'v1.1'
     export type Enum_OpenposePreprocessor_version = Enum_HEDPreprocessor_version
     export type Enum_KSamplerEfficient_sampler_state = 'Hold' | 'Sample' | 'Script'
-    export type Enum_KSamplerEfficient_preview_image = 'Disabled' | 'Enabled'
+    export type Enum_KSamplerEfficient_preview_image = 'Disabled' | 'Enabled' | 'Output Only'
     export type Enum_EfficientLoader_vae_name =
         | 'Baked VAE'
         | 'blessed2.vae.pt'
@@ -2634,17 +3295,102 @@ declare global {
         | 'test\\Moxin_10.safetensors'
         | 'test\\animeLineartMangaLike_v30MangaLike.safetensors'
         | 'utils\\charTurnBetaLora.safetensors'
-    export type Enum_XYPlot_X_type =
+    export type Enum_XYInputLoRA_lora_name_1 = Enum_EfficientLoader_lora_name
+    export type Enum_XYInputLoRA_lora_name_2 = Enum_EfficientLoader_lora_name
+    export type Enum_XYInputLoRA_lora_name_3 = Enum_EfficientLoader_lora_name
+    export type Enum_XYInputLoRA_lora_name_4 = Enum_EfficientLoader_lora_name
+    export type Enum_XYInputLoRA_lora_name_5 = Enum_EfficientLoader_lora_name
+    export type Enum_XYInputLoRAAdvanced_lora_name_1 = Enum_EfficientLoader_lora_name
+    export type Enum_XYInputLoRAAdvanced_lora_name_2 = Enum_EfficientLoader_lora_name
+    export type Enum_XYInputLoRAAdvanced_lora_name_3 = Enum_EfficientLoader_lora_name
+    export type Enum_XYInputLoRAAdvanced_lora_name_4 = Enum_EfficientLoader_lora_name
+    export type Enum_XYInputLoRAAdvanced_lora_name_5 = Enum_EfficientLoader_lora_name
+    export type Enum_WASLoraLoader_lora_name = Enum_EfficientLoader_lora_name
+    export type Enum_WASLoadLora_lora_name = Enum_EfficientLoader_lora_name
+    export type Enum_XYPlot_Y_label_orientation = 'Horizontal' | 'Vertical'
+    export type Enum_XYPlot_ksampler_output_image = 'Images' | 'Plot'
+    export type Enum_XYInputSampler_sampler_1 =
+        | 'None'
+        | 'ddim'
+        | 'dpm_2'
+        | 'dpm_2_ancestral'
+        | 'dpm_adaptive'
+        | 'dpm_fast'
+        | 'dpmpp_2m'
+        | 'dpmpp_2m_sde'
+        | 'dpmpp_2s_ancestral'
+        | 'dpmpp_sde'
+        | 'euler'
+        | 'euler_ancestral'
+        | 'heun'
+        | 'lms'
+        | 'uni_pc'
+        | 'uni_pc_bh2'
+    export type Enum_XYInputSampler_sampler_2 = Enum_XYInputSampler_sampler_1
+    export type Enum_XYInputSampler_sampler_3 = Enum_XYInputSampler_sampler_1
+    export type Enum_XYInputSampler_sampler_4 = Enum_XYInputSampler_sampler_1
+    export type Enum_XYInputSampler_sampler_5 = Enum_XYInputSampler_sampler_1
+    export type Enum_XYInputSampler_scheduler_1 = 'None' | 'ddim_uniform' | 'exponential' | 'karras' | 'normal' | 'simple'
+    export type Enum_XYInputSampler_scheduler_2 = Enum_XYInputSampler_scheduler_1
+    export type Enum_XYInputSampler_scheduler_3 = Enum_XYInputSampler_scheduler_1
+    export type Enum_XYInputSampler_scheduler_4 = Enum_XYInputSampler_scheduler_1
+    export type Enum_XYInputSampler_scheduler_5 = Enum_XYInputSampler_scheduler_1
+    export type Enum_XYInputScheduler_scheduler_1 = Enum_XYInputSampler_scheduler_1
+    export type Enum_XYInputScheduler_scheduler_2 = Enum_XYInputSampler_scheduler_1
+    export type Enum_XYInputScheduler_scheduler_3 = Enum_XYInputSampler_scheduler_1
+    export type Enum_XYInputScheduler_scheduler_4 = Enum_XYInputSampler_scheduler_1
+    export type Enum_XYInputScheduler_scheduler_5 = Enum_XYInputSampler_scheduler_1
+    export type Enum_XYInputVAE_vae_name_1 =
+        | 'None'
+        | 'blessed2.vae.pt'
+        | 'kl-f8-anime2.ckpt'
+        | 'orangemix.vae.pt'
+        | 'vae-ft-mse-840000-ema-pruned.safetensors'
+    export type Enum_XYInputVAE_vae_name_2 = Enum_XYInputVAE_vae_name_1
+    export type Enum_XYInputVAE_vae_name_3 = Enum_XYInputVAE_vae_name_1
+    export type Enum_XYInputVAE_vae_name_4 = Enum_XYInputVAE_vae_name_1
+    export type Enum_XYInputVAE_vae_name_5 = Enum_XYInputVAE_vae_name_1
+    export type Enum_XYInputCheckpoint_ckpt_name_1 =
+        | 'AOM3A1_orangemixs.safetensors'
+        | 'AOM3A3_orangemixs.safetensors'
+        | 'AbyssOrangeMix2_hard.safetensors'
+        | 'Deliberate-inpainting.safetensors'
+        | 'None'
+        | 'angel1_36224.safetensors'
+        | 'anything-v3-fp16-pruned.safetensors'
+        | 'deliberate_v2.safetensors'
+        | 'ghostmix_v12.safetensors'
+        | 'lyriel_v15.safetensors'
+        | 'mistoonAnime_v10.safetensors'
+        | 'mistoonAnime_v10Inpainting.safetensors'
+        | 'realisticVisionV20_v20.safetensors'
+        | 'revAnimated_v121.safetensors'
+        | 'revAnimated_v121Inp-inpainting.safetensors'
+        | 'revAnimated_v122.safetensors'
+        | 'toonyou_beta1.safetensors'
+        | 'v1-5-pruned-emaonly.ckpt'
+        | 'v2-1_512-ema-pruned.safetensors'
+        | 'v2-1_768-ema-pruned.safetensors'
+        | 'wd-1-5-beta2-fp16.safetensors'
+    export type Enum_XYInputCheckpoint_ckpt_name_2 = Enum_XYInputCheckpoint_ckpt_name_1
+    export type Enum_XYInputCheckpoint_ckpt_name_3 = Enum_XYInputCheckpoint_ckpt_name_1
+    export type Enum_XYInputCheckpoint_ckpt_name_4 = Enum_XYInputCheckpoint_ckpt_name_1
+    export type Enum_XYInputCheckpoint_ckpt_name_5 = Enum_XYInputCheckpoint_ckpt_name_1
+    export type Enum_XYInputManualXYEntry_X_type =
         | 'CFG Scale'
+        | 'Checkpoint'
+        | 'Clip Skip'
         | 'Denoise'
-        | 'Latent Batch'
+        | 'LoRA'
+        | 'Negative Prompt S/R'
         | 'Nothing'
+        | 'Positive Prompt S/R'
         | 'Sampler'
         | 'Scheduler'
         | 'Seeds++ Batch'
         | 'Steps'
         | 'VAE'
-    export type Enum_XYPlot_Y_type = Enum_XYPlot_X_type
+    export type Enum_XYInputManualXYEntry_Y_type = Enum_XYInputManualXYEntry_X_type
     export type Enum_ImageOverlay_overlay_resize = 'Fit' | 'None' | 'Resize by rescale_factor' | 'Resize to width & heigth'
     export type Enum_WASImageFlip_mode = 'horizontal' | 'vertical'
     export type Enum_WASImageGenerateGradient_direction = Enum_WASImageFlip_mode
@@ -2674,28 +3420,17 @@ declare global {
     export type Enum_MasqueradeChangeChannelCount_kind = 'RGB' | 'RGBA' | 'mask'
     export type Enum_MasqueradeCreateRectMask_mode = 'percent' | 'pixels'
     export type Enum_MasqueradeCreateRectMask_origin = 'bottomleft' | 'bottomright' | 'topleft' | 'topright'
+    export type Enum_WASBLIPModelLoader_blip_model = 'caption' | 'interrogate'
+    export type Enum_WASBLIPAnalyzeImage_mode = Enum_WASBLIPModelLoader_blip_model
     export type Enum_WASCLIPTextEncodeNSP_mode = 'Noodle Soup Prompts' | 'Wildcards'
     export type Enum_WASTextParseNoodleSoupPrompts_mode = Enum_WASCLIPTextEncodeNSP_mode
     export type Enum_WASConstantNumber_number_type = 'bool' | 'float' | 'integer'
     export type Enum_WASRandomNumber_number_type = Enum_WASConstantNumber_number_type
-    export type Enum_WASCreateGridImage_include_subfolders = 'false' | 'true'
-    export type Enum_WASImageCannyFilter_enable_threshold = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASImageDraganPhotographyFilter_colorize = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASImageGradientMap_flip_left_right = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASImagePadding_feather_second_pass = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASImageResize_supersample = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASImageSave_show_history = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASImageSeamlessTexture_tiled = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASLatentUpscaleByFactorWAS_align = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASMiDaSDepthApproximation_use_cpu = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASMiDaSDepthApproximation_invert_depth = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASMiDaSMaskImage_use_cpu = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASMiDaSMaskImage_threshold = Enum_WASCreateGridImage_include_subfolders
-    export type Enum_WASTextConcatenate_linebreak_addition = Enum_WASCreateGridImage_include_subfolders
     export type Enum_WASCreateMorphImage_filetype = 'APNG' | 'GIF'
     export type Enum_WASCreateMorphImageFromPath_filetype = Enum_WASCreateMorphImage_filetype
     export type Enum_WASCreateVideoFromPath_codec = 'AVC1' | 'FFV1' | 'H264' | 'MP4V'
     export type Enum_WASWriteToVideo_codec = Enum_WASCreateVideoFromPath_codec
+    export type Enum_WASExportAPI_save_prompt_api = 'true' | 'true'
     export type Enum_WASImageAnalyze_mode = 'Black White Levels' | 'RGB Levels'
     export type Enum_WASImageBlendingMode_mode =
         | 'add'
@@ -2727,7 +3462,7 @@ declare global {
     export type Enum_WASImagePowerNoise_noise_type = 'blue' | 'green' | 'grey' | 'mix' | 'pink' | 'white'
     export type Enum_WASImageEdgeDetectionFilter_mode = 'laplacian' | 'normal'
     export type Enum_WASImageHistoryLoader_image =
-        | '...\\ComfyUI_07114_.png'
+        | '...\\cache\\outputs'
         | '...\\output\\ComfyUI_03515_.png'
         | '...\\output\\ComfyUI_03518_.png'
         | '...\\output\\ComfyUI_03522_.png'
@@ -2763,9 +3498,10 @@ declare global {
     export type Enum_WASImageRemoveBackgroundAlpha_mode = 'background' | 'foreground'
     export type Enum_WASImageResize_mode = 'rescale' | 'resize'
     export type Enum_WASImageResize_resampling = 'bicubic' | 'bilinear' | 'lanczos' | 'nearest'
+    export type Enum_WASKSamplerCycle_scale_sampling = Enum_WASImageResize_resampling
     export type Enum_WASImageRotate_mode = 'internal' | 'transpose'
     export type Enum_WASImageRotate_sampler = 'bicubic' | 'bilinear' | 'nearest'
-    export type Enum_WASImageSave_extension = 'gif' | 'jpeg' | 'png' | 'tiff'
+    export type Enum_WASImageSave_extension = 'gif' | 'jpeg' | 'png' | 'tiff' | 'webp'
     export type Enum_WASImageSave_overwrite_mode = 'false' | 'prefix_as_filename'
     export type Enum_WASImageStitch_stitch = 'bottom' | 'left' | 'right' | 'top'
     export type Enum_WASImageStyleFilter_style =
@@ -2801,8 +3537,10 @@ declare global {
     export type Enum_WASImageToNoise_output_mode = 'batch' | 'list'
     export type Enum_WASLatentUpscaleByFactorWAS_mode = 'area' | 'bicubic' | 'bilinear' | 'nearest'
     export type Enum_WASLoadImageBatch_mode = 'incremental_image' | 'single_image'
-    export type Enum_WASMiDaSDepthApproximation_midas_model = 'DPT_Hybrid' | 'DPT_Large' | 'DPT_Small'
-    export type Enum_WASMiDaSMaskImage_midas_model = Enum_WASMiDaSDepthApproximation_midas_model
+    export type Enum_WASMaskCropRegion_region_type = 'dominant' | 'minority'
+    export type Enum_WASMiDaSModelLoader_midas_model = 'DPT_Hybrid' | 'DPT_Large'
+    export type Enum_WASMiDaSDepthApproximation_midas_type = Enum_WASMiDaSModelLoader_midas_model
+    export type Enum_WASMiDaSMaskImage_midas_model = 'DPT_Hybrid' | 'DPT_Large' | 'DPT_Small'
     export type Enum_WASMiDaSMaskImage_remove = 'background' | 'foregroud'
     export type Enum_WASNumberOperation_operation =
         | 'addition'
@@ -2812,29 +3550,31 @@ declare global {
         | 'exponentiation'
         | 'floor division'
         | 'greater-than'
-        | 'greater-than or equels'
+        | 'greater-than or equals'
         | 'less-than'
         | 'less-than or equals'
         | 'modulus'
         | 'multiplication'
         | 'subtraction'
     export type Enum_WASNumberInputCondition_comparison =
+        | 'and'
         | 'divisible by'
         | 'does not equal'
         | 'equals'
         | 'factor of'
         | 'greater-than'
-        | 'greater-than or equels'
+        | 'greater-than or equals'
         | 'if A even'
         | 'if A odd'
         | 'if A prime'
         | 'less-than'
         | 'less-than or equals'
+        | 'or'
     export type Enum_WASPromptStylesSelector_style = 'None'
-    export type Enum_WASBLIPAnalyzeImage_mode = 'caption' | 'interrogate'
     export type Enum_WASSAMModelLoader_model_size = 'ViT-B (636M)' | 'ViT-H (91M)' | 'ViT-L (308M)'
     export type Enum_WASTextCompare_mode = 'difference' | 'similarity'
     export type Enum_WASTextFileHistoryLoader_file = 'No History'
+    export type Enum_WASTextLoadLineFromFile_mode = 'automatic' | 'index'
     export type Enum_WASVideoDumpFrames_extension = 'gif' | 'jpg' | 'png' | 'tiff'
 
     // INTERFACES --------------------------
@@ -2866,19 +3606,20 @@ declare global {
     export interface HasSingle_KSAMPLER { _KSAMPLER: KSAMPLER } // prettier-ignore
     export interface HasSingle_BBOX_MODEL { _BBOX_MODEL: BBOX_MODEL } // prettier-ignore
     export interface HasSingle_SEGM_MODEL { _SEGM_MODEL: SEGM_MODEL } // prettier-ignore
-    export interface HasSingle_DICT { _DICT: DICT } // prettier-ignore
-    export interface HasSingle_Integer { _Integer: Integer } // prettier-ignore
-    export interface HasSingle_Float { _Float: Float } // prettier-ignore
-    export interface HasSingle_SamplerName { _SamplerName: SamplerName } // prettier-ignore
-    export interface HasSingle_SchedulerName { _SchedulerName: SchedulerName } // prettier-ignore
     export interface HasSingle_CLIPREGION { _CLIPREGION: CLIPREGION } // prettier-ignore
     export interface HasSingle_SCRIPT { _SCRIPT: SCRIPT } // prettier-ignore
+    export interface HasSingle_DEPENDENCIES { _DEPENDENCIES: DEPENDENCIES } // prettier-ignore
+    export interface HasSingle_XY { _XY: XY } // prettier-ignore
     export interface HasSingle_MASK_MAPPING { _MASK_MAPPING: MASK_MAPPING } // prettier-ignore
+    export interface HasSingle_BLIP_MODEL { _BLIP_MODEL: BLIP_MODEL } // prettier-ignore
     export interface HasSingle_ASCII { _ASCII: ASCII } // prettier-ignore
     export interface HasSingle_NUMBER { _NUMBER: NUMBER } // prettier-ignore
+    export interface HasSingle_CLIPSEG_MODEL { _CLIPSEG_MODEL: CLIPSEG_MODEL } // prettier-ignore
+    export interface HasSingle_DICT { _DICT: DICT } // prettier-ignore
     export interface HasSingle_LIST { _LIST: LIST } // prettier-ignore
     export interface HasSingle_CROP_DATA { _CROP_DATA: CROP_DATA } // prettier-ignore
     export interface HasSingle_SEED { _SEED: SEED } // prettier-ignore
+    export interface HasSingle_MIDAS_MODEL { _MIDAS_MODEL: MIDAS_MODEL } // prettier-ignore
     export interface HasSingle_SAM_PARAMETERS { _SAM_PARAMETERS: SAM_PARAMETERS } // prettier-ignore
     export interface HasSingle_IMAGE_BOUNDS { _IMAGE_BOUNDS: IMAGE_BOUNDS } // prettier-ignore
 
@@ -3103,29 +3844,16 @@ declare global {
     }
 
     // |=============================================================================|
-    // | ImageScale [image_upscaling]                                                |
+    // | ImageScaleBy [image_upscaling]                                              |
     // |=============================================================================|
-    export interface ImageScale extends HasSingle_IMAGE, ComfyNode<ImageScale_input> {
+    export interface ImageScaleBy extends HasSingle_IMAGE, ComfyNode<ImageScaleBy_input> {
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageScale_input = {
+    export type ImageScaleBy_input = {
         image: _IMAGE
-        upscale_method: Enum_ImageScale_upscale_method
-        /** default=512 min=8192 max=8192 step=1 */
-        width?: _INT
-        /** default=512 min=8192 max=8192 step=1 */
-        height?: _INT
-        crop: Enum_LatentUpscale_crop
-    }
-
-    // |=============================================================================|
-    // | ImageInvert [image]                                                         |
-    // |=============================================================================|
-    export interface ImageInvert extends HasSingle_IMAGE, ComfyNode<ImageInvert_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageInvert_input = {
-        image: _IMAGE
+        upscale_method: Enum_ImageScaleBy_upscale_method
+        /** default=1 min=8 max=8 step=0.01 */
+        scale_by?: _FLOAT
     }
 
     // |=============================================================================|
@@ -3320,13 +4048,24 @@ declare global {
     }
 
     // |=============================================================================|
-    // | CLIPLoader [loaders]                                                        |
+    // | CLIPLoader [advanced_loaders]                                               |
     // |=============================================================================|
     export interface CLIPLoader extends HasSingle_CLIP, ComfyNode<CLIPLoader_input> {
         CLIP: Slot<'CLIP', 0>
     }
     export type CLIPLoader_input = {
         clip_name: Enum_CLIPLoader_clip_name
+    }
+
+    // |=============================================================================|
+    // | DualCLIPLoader [advanced_loaders]                                           |
+    // |=============================================================================|
+    export interface DualCLIPLoader extends HasSingle_CLIP, ComfyNode<DualCLIPLoader_input> {
+        CLIP: Slot<'CLIP', 0>
+    }
+    export type DualCLIPLoader_input = {
+        clip_name1: Enum_CLIPLoader_clip_name
+        clip_name2: Enum_CLIPLoader_clip_name
     }
 
     // |=============================================================================|
@@ -3423,7 +4162,7 @@ declare global {
     }
 
     // |=============================================================================|
-    // | VAEDecodeTiled [_for_testing]                                               |
+    // | VAEDecodeTiled [latent]                                                     |
     // |=============================================================================|
     export interface VAEDecodeTiled extends HasSingle_IMAGE, ComfyNode<VAEDecodeTiled_input> {
         IMAGE: Slot<'IMAGE', 0>
@@ -3434,7 +4173,7 @@ declare global {
     }
 
     // |=============================================================================|
-    // | VAEEncodeTiled [_for_testing]                                               |
+    // | VAEEncodeTiled [latent]                                                     |
     // |=============================================================================|
     export interface VAEEncodeTiled extends HasSingle_LATENT, ComfyNode<VAEEncodeTiled_input> {
         LATENT: Slot<'LATENT', 0>
@@ -3442,18 +4181,6 @@ declare global {
     export type VAEEncodeTiled_input = {
         pixels: _IMAGE
         vae: _VAE
-    }
-
-    // |=============================================================================|
-    // | TomePatchModel [_for_testing]                                               |
-    // |=============================================================================|
-    export interface TomePatchModel extends HasSingle_MODEL, ComfyNode<TomePatchModel_input> {
-        MODEL: Slot<'MODEL', 0>
-    }
-    export type TomePatchModel_input = {
-        model: _MODEL
-        /** default=0.3 min=1 max=1 step=0.01 */
-        ratio?: _FLOAT
     }
 
     // |=============================================================================|
@@ -3532,26 +4259,6 @@ declare global {
     }
 
     // |=============================================================================|
-    // | LoadLatent [_for_testing]                                                   |
-    // |=============================================================================|
-    export interface LoadLatent extends HasSingle_LATENT, ComfyNode<LoadLatent_input> {
-        LATENT: Slot<'LATENT', 0>
-    }
-    export type LoadLatent_input = {
-        latent: Enum_CLIPLoader_clip_name
-    }
-
-    // |=============================================================================|
-    // | SaveLatent [_for_testing]                                                   |
-    // |=============================================================================|
-    export interface SaveLatent extends ComfyNode<SaveLatent_input> {}
-    export type SaveLatent_input = {
-        samples: _LATENT
-        /** default="latents/ComfyUI" */
-        filename_prefix?: _STRING
-    }
-
-    // |=============================================================================|
     // | HypernetworkLoader [loaders]                                                |
     // |=============================================================================|
     export interface HypernetworkLoader extends HasSingle_MODEL, ComfyNode<HypernetworkLoader_input> {
@@ -3583,63 +4290,6 @@ declare global {
     export type ImageUpscaleWithModel_input = {
         upscale_model: _UPSCALE_MODEL
         image: _IMAGE
-    }
-
-    // |=============================================================================|
-    // | ImageBlend [image_postprocessing]                                           |
-    // |=============================================================================|
-    export interface ImageBlend extends HasSingle_IMAGE, ComfyNode<ImageBlend_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageBlend_input = {
-        image1: _IMAGE
-        image2: _IMAGE
-        /** default=0.5 min=1 max=1 step=0.01 */
-        blend_factor?: _FLOAT
-        blend_mode: Enum_ImageBlend_blend_mode
-    }
-
-    // |=============================================================================|
-    // | ImageBlur [image_postprocessing]                                            |
-    // |=============================================================================|
-    export interface ImageBlur extends HasSingle_IMAGE, ComfyNode<ImageBlur_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageBlur_input = {
-        image: _IMAGE
-        /** default=1 min=31 max=31 step=1 */
-        blur_radius?: _INT
-        /** default=1 min=10 max=10 step=0.1 */
-        sigma?: _FLOAT
-    }
-
-    // |=============================================================================|
-    // | ImageQuantize [image_postprocessing]                                        |
-    // |=============================================================================|
-    export interface ImageQuantize extends HasSingle_IMAGE, ComfyNode<ImageQuantize_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageQuantize_input = {
-        image: _IMAGE
-        /** default=256 min=256 max=256 step=1 */
-        colors?: _INT
-        dither: Enum_ImageQuantize_dither
-    }
-
-    // |=============================================================================|
-    // | ImageSharpen [image_postprocessing]                                         |
-    // |=============================================================================|
-    export interface ImageSharpen extends HasSingle_IMAGE, ComfyNode<ImageSharpen_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageSharpen_input = {
-        image: _IMAGE
-        /** default=1 min=31 max=31 step=1 */
-        sharpen_radius?: _INT
-        /** default=1 min=10 max=10 step=0.1 */
-        sigma?: _FLOAT
-        /** default=1 min=5 max=5 step=0.1 */
-        alpha?: _FLOAT
     }
 
     // |=============================================================================|
@@ -3779,6 +4429,1547 @@ declare global {
         mode: Enum_BrightnessContrast_mode
         /** default=0.5 min=1 max=1 step=0.01 */
         strength?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | AlphaChanelAdd [image_alpha]                                                |
+    // |=============================================================================|
+    export interface AlphaChanelAdd extends HasSingle_IMAGE, ComfyNode<AlphaChanelAdd_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type AlphaChanelAdd_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | AlphaChanelAddByMask [image_alpha]                                          |
+    // |=============================================================================|
+    export interface AlphaChanelAddByMask extends HasSingle_IMAGE, ComfyNode<AlphaChanelAddByMask_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type AlphaChanelAddByMask_input = {
+        images: _IMAGE
+        mask: _MASK
+        method: Enum_AlphaChanelAddByMask_method
+    }
+
+    // |=============================================================================|
+    // | AlphaChanelAsMask [image_alpha]                                             |
+    // |=============================================================================|
+    export interface AlphaChanelAsMask extends HasSingle_MASK, ComfyNode<AlphaChanelAsMask_input> {
+        MASK: Slot<'MASK', 0>
+    }
+    export type AlphaChanelAsMask_input = {
+        images: _IMAGE
+        method: Enum_AlphaChanelAddByMask_method
+    }
+
+    // |=============================================================================|
+    // | AlphaChanelRestore [image_alpha]                                            |
+    // |=============================================================================|
+    export interface AlphaChanelRestore extends HasSingle_IMAGE, ComfyNode<AlphaChanelRestore_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type AlphaChanelRestore_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | AlphaChanelRemove [image_alpha]                                             |
+    // |=============================================================================|
+    export interface AlphaChanelRemove extends HasSingle_IMAGE, ComfyNode<AlphaChanelRemove_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type AlphaChanelRemove_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ClipClamp [clamp]                                                           |
+    // |=============================================================================|
+    export interface ClipClamp extends HasSingle_CLIP, ComfyNode<ClipClamp_input> {
+        CLIP: Slot<'CLIP', 0>
+    }
+    export type ClipClamp_input = {
+        clip: _CLIP
+    }
+
+    // |=============================================================================|
+    // | ClipVisionClamp [clamp]                                                     |
+    // |=============================================================================|
+    export interface ClipVisionClamp extends HasSingle_CLIP_VISION, ComfyNode<ClipVisionClamp_input> {
+        CLIP_VISION: Slot<'CLIP_VISION', 0>
+    }
+    export type ClipVisionClamp_input = {
+        clip_vision: _CLIP_VISION
+    }
+
+    // |=============================================================================|
+    // | ClipVisionOutputClamp [clamp]                                               |
+    // |=============================================================================|
+    export interface ClipVisionOutputClamp extends HasSingle_CLIP_VISION_OUTPUT, ComfyNode<ClipVisionOutputClamp_input> {
+        CLIP_VISION_OUTPUT: Slot<'CLIP_VISION_OUTPUT', 0>
+    }
+    export type ClipVisionOutputClamp_input = {
+        clip_vision_output: _CLIP_VISION_OUTPUT
+    }
+
+    // |=============================================================================|
+    // | ConditioningClamp [clamp]                                                   |
+    // |=============================================================================|
+    export interface ConditioningClamp extends HasSingle_CONDITIONING, ComfyNode<ConditioningClamp_input> {
+        CONDITIONING: Slot<'CONDITIONING', 0>
+    }
+    export type ConditioningClamp_input = {
+        conditioning: _CONDITIONING
+    }
+
+    // |=============================================================================|
+    // | ControlNetClamp [clamp]                                                     |
+    // |=============================================================================|
+    export interface ControlNetClamp extends HasSingle_CONTROL_NET, ComfyNode<ControlNetClamp_input> {
+        CONTROL_NET: Slot<'CONTROL_NET', 0>
+    }
+    export type ControlNetClamp_input = {
+        control_net_clamp: _CONTROL_NET
+    }
+
+    // |=============================================================================|
+    // | GligenClamp [clamp]                                                         |
+    // |=============================================================================|
+    export interface GligenClamp extends HasSingle_GLIGEN, ComfyNode<GligenClamp_input> {
+        GLIGEN: Slot<'GLIGEN', 0>
+    }
+    export type GligenClamp_input = {
+        gligen: _GLIGEN
+    }
+
+    // |=============================================================================|
+    // | ImageClamp [clamp]                                                          |
+    // |=============================================================================|
+    export interface ImageClamp extends HasSingle_IMAGE, ComfyNode<ImageClamp_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageClamp_input = {
+        image: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | LatentClamp [clamp]                                                         |
+    // |=============================================================================|
+    export interface LatentClamp extends HasSingle_LATENT, ComfyNode<LatentClamp_input> {
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type LatentClamp_input = {
+        latent: _LATENT
+    }
+
+    // |=============================================================================|
+    // | MaskClamp [clamp]                                                           |
+    // |=============================================================================|
+    export interface MaskClamp extends HasSingle_MASK, ComfyNode<MaskClamp_input> {
+        MASK: Slot<'MASK', 0>
+    }
+    export type MaskClamp_input = {
+        mask: _MASK
+    }
+
+    // |=============================================================================|
+    // | ModelClamp [clamp]                                                          |
+    // |=============================================================================|
+    export interface ModelClamp extends HasSingle_MODEL, ComfyNode<ModelClamp_input> {
+        MODEL: Slot<'MODEL', 0>
+    }
+    export type ModelClamp_input = {
+        model: _MODEL
+    }
+
+    // |=============================================================================|
+    // | StyleModelClamp [clamp]                                                     |
+    // |=============================================================================|
+    export interface StyleModelClamp extends HasSingle_STYLE_MODEL, ComfyNode<StyleModelClamp_input> {
+        STYLE_MODEL: Slot<'STYLE_MODEL', 0>
+    }
+    export type StyleModelClamp_input = {
+        style_model: _STYLE_MODEL
+    }
+
+    // |=============================================================================|
+    // | UpscaleModelClamp [clamp]                                                   |
+    // |=============================================================================|
+    export interface UpscaleModelClamp extends HasSingle_UPSCALE_MODEL, ComfyNode<UpscaleModelClamp_input> {
+        UPSCALE_MODEL: Slot<'UPSCALE_MODEL', 0>
+    }
+    export type UpscaleModelClamp_input = {
+        upscale_model: _UPSCALE_MODEL
+    }
+
+    // |=============================================================================|
+    // | VaeClamp [clamp]                                                            |
+    // |=============================================================================|
+    export interface VaeClamp extends HasSingle_VAE, ComfyNode<VaeClamp_input> {
+        VAE: Slot<'VAE', 0>
+    }
+    export type VaeClamp_input = {
+        vae: _VAE
+    }
+
+    // |=============================================================================|
+    // | ImageCompositeAbsolute [image_composite]                                    |
+    // |=============================================================================|
+    export interface ImageCompositeAbsolute extends HasSingle_IMAGE, ComfyNode<ImageCompositeAbsolute_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageCompositeAbsolute_input = {
+        images_a: _IMAGE
+        images_b: _IMAGE
+        /** default=0 step=1 */
+        images_a_x?: _INT
+        /** default=0 step=1 */
+        images_a_y?: _INT
+        /** default=0 step=1 */
+        images_b_x?: _INT
+        /** default=0 step=1 */
+        images_b_y?: _INT
+        /** default=0 step=1 */
+        container_width?: _INT
+        /** default=0 step=1 */
+        container_height?: _INT
+        background: Enum_ImageCompositeAbsolute_background
+        method: Enum_ImageCompositeAbsolute_method
+    }
+
+    // |=============================================================================|
+    // | ImageCompositeAbsoluteByContainer [image_composite]                         |
+    // |=============================================================================|
+    export interface ImageCompositeAbsoluteByContainer
+        extends HasSingle_IMAGE,
+            ComfyNode<ImageCompositeAbsoluteByContainer_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageCompositeAbsoluteByContainer_input = {
+        container: _IMAGE
+        images_a: _IMAGE
+        images_b: _IMAGE
+        /** default=0 step=1 */
+        images_a_x?: _INT
+        /** default=0 step=1 */
+        images_a_y?: _INT
+        /** default=0 step=1 */
+        images_b_x?: _INT
+        /** default=0 step=1 */
+        images_b_y?: _INT
+        background: Enum_ImageCompositeAbsolute_background
+        method: Enum_ImageCompositeAbsolute_method
+    }
+
+    // |=============================================================================|
+    // | ImageCompositeRelative [image_composite]                                    |
+    // |=============================================================================|
+    export interface ImageCompositeRelative extends HasSingle_IMAGE, ComfyNode<ImageCompositeRelative_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageCompositeRelative_input = {
+        images_a: _IMAGE
+        images_b: _IMAGE
+        /** default=0 max=1 step=0.01 */
+        images_a_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        images_a_y?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        images_b_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        images_b_y?: _FLOAT
+        background: Enum_ImageCompositeAbsolute_background
+        container_size_type: Enum_ImageCompositeRelative_container_size_type
+        method: Enum_ImageCompositeAbsolute_method
+    }
+
+    // |=============================================================================|
+    // | ImageCompositeRelativeByContainer [image_composite]                         |
+    // |=============================================================================|
+    export interface ImageCompositeRelativeByContainer
+        extends HasSingle_IMAGE,
+            ComfyNode<ImageCompositeRelativeByContainer_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageCompositeRelativeByContainer_input = {
+        container: _IMAGE
+        images_a: _IMAGE
+        images_b: _IMAGE
+        /** default=0 max=1 step=0.01 */
+        images_a_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        images_a_y?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        images_b_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        images_b_y?: _FLOAT
+        background: Enum_ImageCompositeAbsolute_background
+        method: Enum_ImageCompositeAbsolute_method
+    }
+
+    // |=============================================================================|
+    // | ImageContainer [image_container]                                            |
+    // |=============================================================================|
+    export interface ImageContainer extends HasSingle_IMAGE, ComfyNode<ImageContainer_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageContainer_input = {
+        /** default=512 min=undefined step=1 */
+        width?: _INT
+        /** default=512 min=undefined step=1 */
+        height?: _INT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=0 max=1 step=0.01 */
+        alpha?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | ImageContainerInheritanceAdd [image_container]                              |
+    // |=============================================================================|
+    export interface ImageContainerInheritanceAdd extends HasSingle_IMAGE, ComfyNode<ImageContainerInheritanceAdd_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageContainerInheritanceAdd_input = {
+        images: _IMAGE
+        /** default=0 step=1 */
+        add_width?: _INT
+        /** default=0 step=1 */
+        add_height?: _INT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=0 max=1 step=0.01 */
+        alpha?: _FLOAT
+        method: Enum_ImageContainerInheritanceAdd_method
+    }
+
+    // |=============================================================================|
+    // | ImageContainerInheritanceScale [image_container]                            |
+    // |=============================================================================|
+    export interface ImageContainerInheritanceScale extends HasSingle_IMAGE, ComfyNode<ImageContainerInheritanceScale_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageContainerInheritanceScale_input = {
+        images: _IMAGE
+        /** default=1 step=0.1 */
+        scale_width?: _FLOAT
+        /** default=1 step=0.1 */
+        scale_height?: _FLOAT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=0 max=1 step=0.01 */
+        alpha?: _FLOAT
+        method: Enum_ImageContainerInheritanceAdd_method
+    }
+
+    // |=============================================================================|
+    // | ImageContainerInheritanceMax [image_container]                              |
+    // |=============================================================================|
+    export interface ImageContainerInheritanceMax extends HasSingle_IMAGE, ComfyNode<ImageContainerInheritanceMax_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageContainerInheritanceMax_input = {
+        images_a: _IMAGE
+        images_b: _IMAGE
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=0 max=1 step=0.01 */
+        alpha?: _FLOAT
+        method: Enum_ImageContainerInheritanceMax_method
+    }
+
+    // |=============================================================================|
+    // | ImageContainerInheritanceSum [image_container]                              |
+    // |=============================================================================|
+    export interface ImageContainerInheritanceSum extends HasSingle_IMAGE, ComfyNode<ImageContainerInheritanceSum_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageContainerInheritanceSum_input = {
+        images_a: _IMAGE
+        images_b: _IMAGE
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=0 max=1 step=0.01 */
+        alpha?: _FLOAT
+        container_size_type: Enum_ImageContainerInheritanceSum_container_size_type
+        method: Enum_ImageContainerInheritanceMax_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawArc [image_draw]                                                   |
+    // |=============================================================================|
+    export interface ImageDrawArc extends HasSingle_IMAGE, ComfyNode<ImageDrawArc_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawArc_input = {
+        /** default=256 min=undefined step=1 */
+        width?: _INT
+        /** default=256 min=undefined step=1 */
+        height?: _INT
+        /** default=1 min=undefined step=1 */
+        size?: _INT
+        /** default=0 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=0 max=360 step=1 */
+        start?: _INT
+        /** default=180 max=360 step=1 */
+        end?: _INT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawArcByContainer [image_draw]                                        |
+    // |=============================================================================|
+    export interface ImageDrawArcByContainer extends HasSingle_IMAGE, ComfyNode<ImageDrawArcByContainer_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawArcByContainer_input = {
+        container: _IMAGE
+        /** default=1 min=undefined step=1 */
+        size?: _INT
+        /** default=0 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=0 max=360 step=1 */
+        start?: _INT
+        /** default=180 max=360 step=1 */
+        end?: _INT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawChord [image_draw]                                                 |
+    // |=============================================================================|
+    export interface ImageDrawChord extends HasSingle_IMAGE, ComfyNode<ImageDrawChord_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawChord_input = {
+        /** default=256 min=undefined step=1 */
+        width?: _INT
+        /** default=256 min=undefined step=1 */
+        height?: _INT
+        /** default=1 min=undefined step=1 */
+        size?: _INT
+        /** default=0 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=0 max=360 step=1 */
+        start?: _INT
+        /** default=180 max=360 step=1 */
+        end?: _INT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawChordByContainer [image_draw]                                      |
+    // |=============================================================================|
+    export interface ImageDrawChordByContainer extends HasSingle_IMAGE, ComfyNode<ImageDrawChordByContainer_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawChordByContainer_input = {
+        container: _IMAGE
+        /** default=1 min=undefined step=1 */
+        size?: _INT
+        /** default=0 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=0 max=360 step=1 */
+        start?: _INT
+        /** default=180 max=360 step=1 */
+        end?: _INT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawEllipse [image_draw]                                               |
+    // |=============================================================================|
+    export interface ImageDrawEllipse extends HasSingle_IMAGE, ComfyNode<ImageDrawEllipse_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawEllipse_input = {
+        /** default=256 min=undefined step=1 */
+        width?: _INT
+        /** default=256 min=undefined step=1 */
+        height?: _INT
+        /** default=0 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        outline_alpha?: _FLOAT
+        /** default=255 max=255 step=1 */
+        fill_red?: _INT
+        /** default=255 max=255 step=1 */
+        fill_green?: _INT
+        /** default=255 max=255 step=1 */
+        fill_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        fill_alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawEllipseByContainer [image_draw]                                    |
+    // |=============================================================================|
+    export interface ImageDrawEllipseByContainer extends HasSingle_IMAGE, ComfyNode<ImageDrawEllipseByContainer_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawEllipseByContainer_input = {
+        container: _IMAGE
+        /** default=0 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        outline_alpha?: _FLOAT
+        /** default=255 max=255 step=1 */
+        fill_red?: _INT
+        /** default=255 max=255 step=1 */
+        fill_green?: _INT
+        /** default=255 max=255 step=1 */
+        fill_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        fill_alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawLine [image_draw]                                                  |
+    // |=============================================================================|
+    export interface ImageDrawLine extends HasSingle_IMAGE, ComfyNode<ImageDrawLine_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawLine_input = {
+        /** default=256 min=undefined step=1 */
+        width?: _INT
+        /** default=256 min=undefined step=1 */
+        height?: _INT
+        /** default=1 min=undefined step=1 */
+        size?: _INT
+        /** default=0 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawLineByContainer [image_draw]                                       |
+    // |=============================================================================|
+    export interface ImageDrawLineByContainer extends HasSingle_IMAGE, ComfyNode<ImageDrawLineByContainer_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawLineByContainer_input = {
+        container: _IMAGE
+        /** default=1 min=undefined step=1 */
+        size?: _INT
+        /** default=0 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawPieslice [image_draw]                                              |
+    // |=============================================================================|
+    export interface ImageDrawPieslice extends HasSingle_IMAGE, ComfyNode<ImageDrawPieslice_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawPieslice_input = {
+        /** default=256 min=undefined step=1 */
+        width?: _INT
+        /** default=256 min=undefined step=1 */
+        height?: _INT
+        /** default=0 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=0 max=360 step=1 */
+        start?: _INT
+        /** default=240 max=360 step=1 */
+        end?: _INT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        outline_alpha?: _FLOAT
+        /** default=255 max=255 step=1 */
+        fill_red?: _INT
+        /** default=255 max=255 step=1 */
+        fill_green?: _INT
+        /** default=255 max=255 step=1 */
+        fill_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        fill_alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawPiesliceByContainer [image_draw]                                   |
+    // |=============================================================================|
+    export interface ImageDrawPiesliceByContainer extends HasSingle_IMAGE, ComfyNode<ImageDrawPiesliceByContainer_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawPiesliceByContainer_input = {
+        container: _IMAGE
+        /** default=0 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=0 max=360 step=1 */
+        start?: _INT
+        /** default=240 max=360 step=1 */
+        end?: _INT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        outline_alpha?: _FLOAT
+        /** default=255 max=255 step=1 */
+        fill_red?: _INT
+        /** default=255 max=255 step=1 */
+        fill_green?: _INT
+        /** default=255 max=255 step=1 */
+        fill_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        fill_alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawRectangle [image_draw]                                             |
+    // |=============================================================================|
+    export interface ImageDrawRectangle extends HasSingle_IMAGE, ComfyNode<ImageDrawRectangle_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawRectangle_input = {
+        /** default=256 min=undefined step=1 */
+        width?: _INT
+        /** default=256 min=undefined step=1 */
+        height?: _INT
+        /** default=0.1 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0.2 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=0.9 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=0.8 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        outline_alpha?: _FLOAT
+        /** default=255 max=255 step=1 */
+        fill_red?: _INT
+        /** default=255 max=255 step=1 */
+        fill_green?: _INT
+        /** default=255 max=255 step=1 */
+        fill_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        fill_alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawRectangleByContainer [image_draw]                                  |
+    // |=============================================================================|
+    export interface ImageDrawRectangleByContainer extends HasSingle_IMAGE, ComfyNode<ImageDrawRectangleByContainer_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawRectangleByContainer_input = {
+        container: _IMAGE
+        /** default=0.1 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0.2 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=0.9 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=0.8 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        outline_alpha?: _FLOAT
+        /** default=255 max=255 step=1 */
+        fill_red?: _INT
+        /** default=255 max=255 step=1 */
+        fill_green?: _INT
+        /** default=255 max=255 step=1 */
+        fill_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        fill_alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawRectangleRounded [image_draw]                                      |
+    // |=============================================================================|
+    export interface ImageDrawRectangleRounded extends HasSingle_IMAGE, ComfyNode<ImageDrawRectangleRounded_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawRectangleRounded_input = {
+        /** default=256 min=undefined step=1 */
+        width?: _INT
+        /** default=256 min=undefined step=1 */
+        height?: _INT
+        /** default=0.1 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0.2 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=0.9 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=0.8 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=180 max=360 step=1 */
+        radius?: _INT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        outline_alpha?: _FLOAT
+        /** default=255 max=255 step=1 */
+        fill_red?: _INT
+        /** default=255 max=255 step=1 */
+        fill_green?: _INT
+        /** default=255 max=255 step=1 */
+        fill_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        fill_alpha?: _FLOAT
+        top_left_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        top_right_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        bottom_right_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        bottom_left_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawRectangleRoundedByContainer [image_draw]                           |
+    // |=============================================================================|
+    export interface ImageDrawRectangleRoundedByContainer
+        extends HasSingle_IMAGE,
+            ComfyNode<ImageDrawRectangleRoundedByContainer_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawRectangleRoundedByContainer_input = {
+        container: _IMAGE
+        /** default=0.1 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0.2 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=0.9 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=0.8 max=1 step=0.01 */
+        end_y?: _FLOAT
+        /** default=180 max=360 step=1 */
+        radius?: _INT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        outline_alpha?: _FLOAT
+        /** default=255 max=255 step=1 */
+        fill_red?: _INT
+        /** default=255 max=255 step=1 */
+        fill_green?: _INT
+        /** default=255 max=255 step=1 */
+        fill_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        fill_alpha?: _FLOAT
+        top_left_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        top_right_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        bottom_right_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        bottom_left_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageDrawPolygon [image_draw]                                               |
+    // |=============================================================================|
+    export interface ImageDrawPolygon extends HasSingle_IMAGE, ComfyNode<ImageDrawPolygon_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageDrawPolygon_input = {
+        /** default=256 min=undefined step=1 */
+        size?: _INT
+        /** default=5 min=undefined step=1 */
+        sides?: _INT
+        /** default=0 max=360 step=1 */
+        rotation?: _INT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        outline_alpha?: _FLOAT
+        /** default=255 max=255 step=1 */
+        fill_red?: _INT
+        /** default=255 max=255 step=1 */
+        fill_green?: _INT
+        /** default=255 max=255 step=1 */
+        fill_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        fill_alpha?: _FLOAT
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageEffectsAdjustment [image_effects]                                      |
+    // |=============================================================================|
+    export interface ImageEffectsAdjustment extends HasSingle_IMAGE, ComfyNode<ImageEffectsAdjustment_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageEffectsAdjustment_input = {
+        images: _IMAGE
+        /** default=1 step=0.01 */
+        brightness?: _FLOAT
+        /** default=1 step=0.01 */
+        contrast?: _FLOAT
+        /** default=1 step=0.01 */
+        saturation?: _FLOAT
+        /** default=0.5 max=1 step=0.01 */
+        hue?: _FLOAT
+        /** default=1 step=0.01 */
+        gamma?: _FLOAT
+        /** default=1 step=0.01 */
+        sharpness?: _FLOAT
+        /** default=1 step=0.01 */
+        red?: _FLOAT
+        /** default=1 step=0.01 */
+        green?: _FLOAT
+        /** default=1 step=0.01 */
+        blue?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | ImageEffectsGrayscale [image_effects]                                       |
+    // |=============================================================================|
+    export interface ImageEffectsGrayscale extends HasSingle_IMAGE, ComfyNode<ImageEffectsGrayscale_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageEffectsGrayscale_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageEffectsNegative [image_effects]                                        |
+    // |=============================================================================|
+    export interface ImageEffectsNegative extends HasSingle_IMAGE, ComfyNode<ImageEffectsNegative_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageEffectsNegative_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageEffectsSepia [image_effects]                                           |
+    // |=============================================================================|
+    export interface ImageEffectsSepia extends HasSingle_IMAGE, ComfyNode<ImageEffectsSepia_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageEffectsSepia_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageEffectsChromaticAberration [image_effects]                             |
+    // |=============================================================================|
+    export interface ImageEffectsChromaticAberration extends HasSingle_IMAGE, ComfyNode<ImageEffectsChromaticAberration_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageEffectsChromaticAberration_input = {
+        images: _IMAGE
+        /** default=10 step=1 */
+        shift?: _INT
+        method: Enum_ImageEffectsChromaticAberration_method
+        /** default=1 min=4 max=4 step=1 */
+        shift_type?: _INT
+        /** default=1 min=4 max=4 step=1 */
+        mixing_type?: _INT
+        transpose: Enum_ImageEffectsChromaticAberration_transpose
+        colors: Enum_ImageEffectsChromaticAberration_colors
+        /** default=1 max=15 step=0.1 */
+        curvy?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterSmooth [image_filter]                                            |
+    // |=============================================================================|
+    export interface ImageFilterSmooth extends HasSingle_IMAGE, ComfyNode<ImageFilterSmooth_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterSmooth_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageFilterSmoothMore [image_filter]                                        |
+    // |=============================================================================|
+    export interface ImageFilterSmoothMore extends HasSingle_IMAGE, ComfyNode<ImageFilterSmoothMore_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterSmoothMore_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageFilterBlur [image_filter]                                              |
+    // |=============================================================================|
+    export interface ImageFilterBlur extends HasSingle_IMAGE, ComfyNode<ImageFilterBlur_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterBlur_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageFilterBoxBlur [image_filter]                                           |
+    // |=============================================================================|
+    export interface ImageFilterBoxBlur extends HasSingle_IMAGE, ComfyNode<ImageFilterBoxBlur_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterBoxBlur_input = {
+        images: _IMAGE
+        /** default=1 step=1 */
+        radius?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterGaussianBlur [image_filter]                                      |
+    // |=============================================================================|
+    export interface ImageFilterGaussianBlur extends HasSingle_IMAGE, ComfyNode<ImageFilterGaussianBlur_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterGaussianBlur_input = {
+        images: _IMAGE
+        /** default=1 step=1 */
+        radius?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterBilateralBlur [image_filter]                                     |
+    // |=============================================================================|
+    export interface ImageFilterBilateralBlur extends HasSingle_IMAGE, ComfyNode<ImageFilterBilateralBlur_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterBilateralBlur_input = {
+        images: _IMAGE
+        /** default=10 step=2 */
+        size?: _INT
+        /** default=1 max=1 step=0.01 */
+        sigma_color?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        sigma_intensity?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterContour [image_filter]                                           |
+    // |=============================================================================|
+    export interface ImageFilterContour extends HasSingle_IMAGE, ComfyNode<ImageFilterContour_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterContour_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageFilterDetail [image_filter]                                            |
+    // |=============================================================================|
+    export interface ImageFilterDetail extends HasSingle_IMAGE, ComfyNode<ImageFilterDetail_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterDetail_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageFilterEdgeEnhance [image_filter]                                       |
+    // |=============================================================================|
+    export interface ImageFilterEdgeEnhance extends HasSingle_IMAGE, ComfyNode<ImageFilterEdgeEnhance_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterEdgeEnhance_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageFilterEdgeEnhanceMore [image_filter]                                   |
+    // |=============================================================================|
+    export interface ImageFilterEdgeEnhanceMore extends HasSingle_IMAGE, ComfyNode<ImageFilterEdgeEnhanceMore_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterEdgeEnhanceMore_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageFilterEmboss [image_filter]                                            |
+    // |=============================================================================|
+    export interface ImageFilterEmboss extends HasSingle_IMAGE, ComfyNode<ImageFilterEmboss_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterEmboss_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageFilterFindEdges [image_filter]                                         |
+    // |=============================================================================|
+    export interface ImageFilterFindEdges extends HasSingle_IMAGE, ComfyNode<ImageFilterFindEdges_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterFindEdges_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageFilterSharpen [image_filter]                                           |
+    // |=============================================================================|
+    export interface ImageFilterSharpen extends HasSingle_IMAGE, ComfyNode<ImageFilterSharpen_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterSharpen_input = {
+        images: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImageFilterRank [image_filter]                                              |
+    // |=============================================================================|
+    export interface ImageFilterRank extends HasSingle_IMAGE, ComfyNode<ImageFilterRank_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterRank_input = {
+        images: _IMAGE
+        /** default=2 min=undefined step=2 */
+        size?: _INT
+        /** default=1 step=1 */
+        rank?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterMedian [image_filter]                                            |
+    // |=============================================================================|
+    export interface ImageFilterMedian extends HasSingle_IMAGE, ComfyNode<ImageFilterMedian_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterMedian_input = {
+        images: _IMAGE
+        /** default=2 min=undefined step=2 */
+        size?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterMin [image_filter]                                               |
+    // |=============================================================================|
+    export interface ImageFilterMin extends HasSingle_IMAGE, ComfyNode<ImageFilterMin_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterMin_input = {
+        images: _IMAGE
+        /** default=2 min=undefined step=2 */
+        size?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterMax [image_filter]                                               |
+    // |=============================================================================|
+    export interface ImageFilterMax extends HasSingle_IMAGE, ComfyNode<ImageFilterMax_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterMax_input = {
+        images: _IMAGE
+        /** default=2 min=undefined step=2 */
+        size?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterMode [image_filter]                                              |
+    // |=============================================================================|
+    export interface ImageFilterMode extends HasSingle_IMAGE, ComfyNode<ImageFilterMode_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterMode_input = {
+        images: _IMAGE
+        /** default=2 min=undefined step=2 */
+        size?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageSegmentation [image_segmentation]                                      |
+    // |=============================================================================|
+    export interface ImageSegmentation extends HasSingle_IMAGE, ComfyNode<ImageSegmentation_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageSegmentation_input = {
+        images: _IMAGE
+        model: Enum_ImageSegmentation_model
+        alpha_matting: Enum_ImageDrawRectangleRounded_top_left_corner
+        /** default=240 max=250 step=5 */
+        alpha_matting_foreground_threshold?: _INT
+        /** default=20 max=250 step=5 */
+        alpha_matting_background_threshold?: _INT
+        /** default=10 step=1 */
+        alpha_matting_erode_size?: _INT
+        post_process_mask: Enum_ImageDrawRectangleRounded_top_left_corner
+    }
+
+    // |=============================================================================|
+    // | ImageSegmentationCustom [image_segmentation]                                |
+    // |=============================================================================|
+    export interface ImageSegmentationCustom extends HasSingle_IMAGE, ComfyNode<ImageSegmentationCustom_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageSegmentationCustom_input = {
+        images: _IMAGE
+        model: Enum_CLIPLoader_clip_name
+        alpha_matting: Enum_ImageDrawRectangleRounded_top_left_corner
+        /** default=240 max=250 step=5 */
+        alpha_matting_foreground_threshold?: _INT
+        /** default=20 max=250 step=5 */
+        alpha_matting_background_threshold?: _INT
+        /** default=10 step=1 */
+        alpha_matting_erode_size?: _INT
+        post_process_mask: Enum_ImageDrawRectangleRounded_top_left_corner
+        /** default=0.485 max=1 step=0.01 */
+        mean?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        std?: _FLOAT
+        /** default=1024 step=8 */
+        size?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageSegmentationCustomAdvanced [image_segmentation]                        |
+    // |=============================================================================|
+    export interface ImageSegmentationCustomAdvanced extends HasSingle_IMAGE, ComfyNode<ImageSegmentationCustomAdvanced_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageSegmentationCustomAdvanced_input = {
+        images: _IMAGE
+        model: Enum_CLIPLoader_clip_name
+        alpha_matting: Enum_ImageDrawRectangleRounded_top_left_corner
+        /** default=240 max=250 step=5 */
+        alpha_matting_foreground_threshold?: _INT
+        /** default=20 max=250 step=5 */
+        alpha_matting_background_threshold?: _INT
+        /** default=10 step=1 */
+        alpha_matting_erode_size?: _INT
+        post_process_mask: Enum_ImageDrawRectangleRounded_top_left_corner
+        /** default=0.485 max=1 step=0.01 */
+        mean_r?: _FLOAT
+        /** default=0.456 max=1 step=0.01 */
+        mean_g?: _FLOAT
+        /** default=0.406 max=1 step=0.01 */
+        mean_b?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        std_r?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        std_g?: _FLOAT
+        /** default=1 max=1 step=0.01 */
+        std_b?: _FLOAT
+        /** default=1024 step=8 */
+        width?: _INT
+        /** default=1024 step=8 */
+        height?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageText [image_draw]                                                      |
+    // |=============================================================================|
+    export interface ImageText extends HasSingle_IMAGE, ComfyNode<ImageText_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageText_input = {
+        /** */
+        text: _STRING
+        font: Enum_CLIPLoader_clip_name
+        /** default=28 min=undefined step=1 */
+        size?: _INT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        alpha?: _FLOAT
+        /** default=0 step=1 */
+        margin_x?: _INT
+        /** default=0 step=1 */
+        margin_y?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageTextOutlined [image_draw]                                              |
+    // |=============================================================================|
+    export interface ImageTextOutlined extends HasSingle_IMAGE, ComfyNode<ImageTextOutlined_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTextOutlined_input = {
+        /** */
+        text: _STRING
+        font: Enum_CLIPLoader_clip_name
+        /** default=28 min=undefined step=1 */
+        size?: _INT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        alpha?: _FLOAT
+        /** default=0 step=1 */
+        margin_x?: _INT
+        /** default=0 step=1 */
+        margin_y?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageTransformResizeAbsolute [image_transform]                              |
+    // |=============================================================================|
+    export interface ImageTransformResizeAbsolute extends HasSingle_IMAGE, ComfyNode<ImageTransformResizeAbsolute_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTransformResizeAbsolute_input = {
+        images: _IMAGE
+        /** default=256 min=undefined step=1 */
+        width?: _INT
+        /** default=256 min=undefined step=1 */
+        height?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageTransformResizeRelative [image_transform]                              |
+    // |=============================================================================|
+    export interface ImageTransformResizeRelative extends HasSingle_IMAGE, ComfyNode<ImageTransformResizeRelative_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTransformResizeRelative_input = {
+        images: _IMAGE
+        /** default=1 step=0.1 */
+        scale_width?: _FLOAT
+        /** default=1 step=0.1 */
+        scale_height?: _FLOAT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageTransformCropAbsolute [image_transform]                                |
+    // |=============================================================================|
+    export interface ImageTransformCropAbsolute extends HasSingle_IMAGE, ComfyNode<ImageTransformCropAbsolute_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTransformCropAbsolute_input = {
+        images: _IMAGE
+        /** default=0 step=1 */
+        start_x?: _INT
+        /** default=0 step=1 */
+        start_y?: _INT
+        /** default=128 step=1 */
+        end_x?: _INT
+        /** default=128 step=1 */
+        end_y?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageTransformCropRelative [image_transform]                                |
+    // |=============================================================================|
+    export interface ImageTransformCropRelative extends HasSingle_IMAGE, ComfyNode<ImageTransformCropRelative_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTransformCropRelative_input = {
+        images: _IMAGE
+        /** default=0.25 max=1 step=0.01 */
+        start_x?: _FLOAT
+        /** default=0.25 max=1 step=0.01 */
+        start_y?: _FLOAT
+        /** default=0.75 max=1 step=0.01 */
+        end_x?: _FLOAT
+        /** default=0.75 max=1 step=0.01 */
+        end_y?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | ImageTransformCropCorners [image_transform]                                 |
+    // |=============================================================================|
+    export interface ImageTransformCropCorners extends HasSingle_IMAGE, ComfyNode<ImageTransformCropCorners_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTransformCropCorners_input = {
+        images: _IMAGE
+        /** default=180 max=360 step=1 */
+        radius?: _INT
+        top_left_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        top_right_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        bottom_right_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        bottom_left_corner: Enum_ImageDrawRectangleRounded_top_left_corner
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageTransformPaddingAbsolute [image_transform]                             |
+    // |=============================================================================|
+    export interface ImageTransformPaddingAbsolute extends HasSingle_IMAGE, ComfyNode<ImageTransformPaddingAbsolute_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTransformPaddingAbsolute_input = {
+        images: _IMAGE
+        /** default=64 min=undefined */
+        add_width?: _INT
+        /** default=64 min=undefined */
+        add_height?: _INT
+        method: Enum_ImageEffectsChromaticAberration_method
+    }
+
+    // |=============================================================================|
+    // | ImageTransformPaddingRelative [image_transform]                             |
+    // |=============================================================================|
+    export interface ImageTransformPaddingRelative extends HasSingle_IMAGE, ComfyNode<ImageTransformPaddingRelative_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTransformPaddingRelative_input = {
+        images: _IMAGE
+        /** default=0.25 step=0.1 */
+        scale_width?: _FLOAT
+        /** default=0.25 step=0.1 */
+        scale_height?: _FLOAT
+        method: Enum_ImageEffectsChromaticAberration_method
+    }
+
+    // |=============================================================================|
+    // | ImageTransformRotate [image_transform]                                      |
+    // |=============================================================================|
+    export interface ImageTransformRotate extends HasSingle_IMAGE, ComfyNode<ImageTransformRotate_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTransformRotate_input = {
+        images: _IMAGE
+        /** default=35 max=360 step=0.1 */
+        angle?: _FLOAT
+        expand: Enum_ImageDrawRectangleRounded_top_left_corner
+        /** default=4 min=16 max=16 step=1 */
+        SSAA?: _INT
+        method: Enum_ImageDrawArc_method
+    }
+
+    // |=============================================================================|
+    // | ImageTransformTranspose [image_transform]                                   |
+    // |=============================================================================|
+    export interface ImageTransformTranspose extends HasSingle_IMAGE, ComfyNode<ImageTransformTranspose_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTransformTranspose_input = {
+        images: _IMAGE
+        method: Enum_ImageTransformTranspose_method
     }
 
     // |=============================================================================|
@@ -4241,7 +6432,7 @@ declare global {
     }
     export type ImpactLatentPixelScale_input = {
         samples: _LATENT
-        scale_method: Enum_ImageScale_upscale_method
+        scale_method: Enum_ImpactLatentPixelScale_scale_method
         /** default=1.5 min=10000 max=10000 step=0.1 */
         scale_factor?: _FLOAT
         vae: _VAE
@@ -4258,7 +6449,7 @@ declare global {
         UPSCALER: Slot<'UPSCALER', 0>
     }
     export type ImpactPixelKSampleUpscalerProvider_input = {
-        scale_method: Enum_ImageScale_upscale_method
+        scale_method: Enum_ImpactLatentPixelScale_scale_method
         model: _MODEL
         vae: _VAE
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -4287,7 +6478,7 @@ declare global {
         UPSCALER: Slot<'UPSCALER', 0>
     }
     export type ImpactPixelKSampleUpscalerProviderPipe_input = {
-        scale_method: Enum_ImageScale_upscale_method
+        scale_method: Enum_ImpactLatentPixelScale_scale_method
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
         /** default=20 min=10000 max=10000 */
@@ -4348,7 +6539,7 @@ declare global {
         UPSCALER: Slot<'UPSCALER', 0>
     }
     export type ImpactPixelTiledKSampleUpscalerProvider_input = {
-        scale_method: Enum_ImageScale_upscale_method
+        scale_method: Enum_ImpactLatentPixelScale_scale_method
         model: _MODEL
         vae: _VAE
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -4381,7 +6572,7 @@ declare global {
         UPSCALER: Slot<'UPSCALER', 0>
     }
     export type ImpactPixelTiledKSampleUpscalerProviderPipe_input = {
-        scale_method: Enum_ImageScale_upscale_method
+        scale_method: Enum_ImpactLatentPixelScale_scale_method
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
         /** default=20 min=10000 max=10000 */
@@ -4411,7 +6602,7 @@ declare global {
         UPSCALER: Slot<'UPSCALER', 0>
     }
     export type ImpactTwoSamplersForMaskUpscalerProvider_input = {
-        scale_method: Enum_ImageScale_upscale_method
+        scale_method: Enum_ImpactLatentPixelScale_scale_method
         full_sample_schedule: Enum_ImpactTwoSamplersForMaskUpscalerProvider_full_sample_schedule
         use_tiled_vae: Enum_ImpactDetailerForEach_noise_mask
         base_sampler: _KSAMPLER
@@ -4434,7 +6625,7 @@ declare global {
         UPSCALER: Slot<'UPSCALER', 0>
     }
     export type ImpactTwoSamplersForMaskUpscalerProviderPipe_input = {
-        scale_method: Enum_ImageScale_upscale_method
+        scale_method: Enum_ImpactLatentPixelScale_scale_method
         full_sample_schedule: Enum_ImpactTwoSamplersForMaskUpscalerProvider_full_sample_schedule
         use_tiled_vae: Enum_ImpactDetailerForEach_noise_mask
         base_sampler: _KSAMPLER
@@ -4610,13 +6801,13 @@ declare global {
     }
 
     // |=============================================================================|
-    // | ImpactBboxDetectorCombined ("BboxDetectorCombined" in ComfyUI) [ImpactPack_Legacy]   |
+    // | ImpactBboxDetectorCombined_v2 ("BboxDetectorCombined_v2" in ComfyUI) [ImpactPack_Detector]   |
     // |=============================================================================|
-    export interface ImpactBboxDetectorCombined extends HasSingle_MASK, ComfyNode<ImpactBboxDetectorCombined_input> {
+    export interface ImpactBboxDetectorCombined_v2 extends HasSingle_MASK, ComfyNode<ImpactBboxDetectorCombined_v2_input> {
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactBboxDetectorCombined_input = {
-        bbox_model: _BBOX_MODEL
+    export type ImpactBboxDetectorCombined_v2_input = {
+        bbox_detector: _BBOX_DETECTOR
         image: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
         threshold?: _FLOAT
@@ -4625,13 +6816,13 @@ declare global {
     }
 
     // |=============================================================================|
-    // | ImpactSegmDetectorCombined ("SegmDetectorCombined" in ComfyUI) [ImpactPack_Legacy]   |
+    // | ImpactSegmDetectorCombined_v2 ("SegmDetectorCombined_v2" in ComfyUI) [ImpactPack_Detector]   |
     // |=============================================================================|
-    export interface ImpactSegmDetectorCombined extends HasSingle_MASK, ComfyNode<ImpactSegmDetectorCombined_input> {
+    export interface ImpactSegmDetectorCombined_v2 extends HasSingle_MASK, ComfyNode<ImpactSegmDetectorCombined_v2_input> {
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactSegmDetectorCombined_input = {
-        segm_model: _SEGM_MODEL
+    export type ImpactSegmDetectorCombined_v2_input = {
+        segm_detector: _SEGM_DETECTOR
         image: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
         threshold?: _FLOAT
@@ -4720,6 +6911,153 @@ declare global {
     }
 
     // |=============================================================================|
+    // | ImpactImageSender ("ImageSender" in ComfyUI) [ImpactPack_Util]              |
+    // |=============================================================================|
+    export interface ImpactImageSender extends ComfyNode<ImpactImageSender_input> {}
+    export type ImpactImageSender_input = {
+        images: _IMAGE
+        /** default="ImgSender" */
+        filename_prefix?: _STRING
+        /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
+        link_id?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImpactImageReceiver ("ImageReceiver" in ComfyUI) [ImpactPack_Util]          |
+    // |=============================================================================|
+    export interface ImpactImageReceiver extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImpactImageReceiver_input> {
+        IMAGE: Slot<'IMAGE', 0>
+        MASK: Slot<'MASK', 1>
+    }
+    export type ImpactImageReceiver_input = {
+        image: Enum_LoadImage_image
+        /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
+        link_id?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImpactImageMaskSwitch ("ImageMaskSwitch" in ComfyUI) [ImpactPack_Util]      |
+    // |=============================================================================|
+    export interface ImpactImageMaskSwitch extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImpactImageMaskSwitch_input> {
+        IMAGE: Slot<'IMAGE', 0>
+        MASK: Slot<'MASK', 1>
+    }
+    export type ImpactImageMaskSwitch_input = {
+        /** default=1 min=4 max=4 step=1 */
+        select?: _INT
+        images1: _IMAGE
+        mask1_opt?: _MASK
+        images2_opt?: _IMAGE
+        mask2_opt?: _MASK
+        images3_opt?: _IMAGE
+        mask3_opt?: _MASK
+        images4_opt?: _IMAGE
+        mask4_opt?: _MASK
+    }
+
+    // |=============================================================================|
+    // | ImpactLatentSwitch ("LatentSwitch" in ComfyUI) [ImpactPack_Util]            |
+    // |=============================================================================|
+    export interface ImpactLatentSwitch extends HasSingle_LATENT, ComfyNode<ImpactLatentSwitch_input> {
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type ImpactLatentSwitch_input = {
+        /** default=1 min=4 max=4 step=1 */
+        select?: _INT
+        latent1: _IMAGE
+        latent2_opt?: _IMAGE
+        latent3_opt?: _IMAGE
+        latent4_opt?: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | ImpactSEGSSwitch ("SEGSSwitch" in ComfyUI) [ImpactPack_Util]                |
+    // |=============================================================================|
+    export interface ImpactSEGSSwitch extends HasSingle_SEGS, ComfyNode<ImpactSEGSSwitch_input> {
+        SEGS: Slot<'SEGS', 0>
+    }
+    export type ImpactSEGSSwitch_input = {
+        /** default=1 min=4 max=4 step=1 */
+        select?: _INT
+        segs: _SEGS
+        segs2_opt?: _SEGS
+        segs3_opt?: _SEGS
+        segs4_opt?: _SEGS
+    }
+
+    // |=============================================================================|
+    // | ImpactImpactWildcardProcessor ("ImpactWildcardProcessor" in ComfyUI) [ImpactPack_Prompt]   |
+    // |=============================================================================|
+    export interface ImpactImpactWildcardProcessor extends HasSingle_STRING, ComfyNode<ImpactImpactWildcardProcessor_input> {
+        STRING: Slot<'STRING', 0>
+    }
+    export type ImpactImpactWildcardProcessor_input = {
+        /** */
+        wildcard_text: _STRING
+        /** */
+        populated_text: _STRING
+        mode: Enum_ImpactImpactWildcardProcessor_mode
+    }
+
+    // |=============================================================================|
+    // | ImpactImpactLogger ("ImpactLogger" in ComfyUI) [ImpactPack_Debug]           |
+    // |=============================================================================|
+    export interface ImpactImpactLogger extends ComfyNode<ImpactImpactLogger_input> {}
+    export type ImpactImpactLogger_input = {
+        /** default="" */
+        text?: _STRING
+    }
+
+    // |=============================================================================|
+    // | ImpactSEGSDetailer ("SEGSDetailer" in ComfyUI) [ImpactPack_Detailer]        |
+    // |=============================================================================|
+    export interface ImpactSEGSDetailer extends HasSingle_SEGS, ComfyNode<ImpactSEGSDetailer_input> {
+        SEGS: Slot<'SEGS', 0>
+    }
+    export type ImpactSEGSDetailer_input = {
+        image: _IMAGE
+        segs: _SEGS
+        /** default=256 min=8192 max=8192 step=8 */
+        guide_size?: _FLOAT
+        guide_size_for: Enum_ImpactDetailerForEach_guide_size_for
+        /** default=0 min=18446744073709552000 max=18446744073709552000 */
+        seed?: _INT
+        /** default=20 min=10000 max=10000 */
+        steps?: _INT
+        /** default=8 min=100 max=100 */
+        cfg?: _FLOAT
+        sampler_name: Enum_KSampler_sampler_name
+        scheduler: Enum_KSampler_scheduler
+        /** default=0.5 min=1 max=1 step=0.01 */
+        denoise?: _FLOAT
+        noise_mask: Enum_ImpactDetailerForEach_noise_mask
+        force_inpaint: Enum_ImpactDetailerForEach_noise_mask
+        basic_pipe: _BASIC_PIPE
+    }
+
+    // |=============================================================================|
+    // | ImpactSEGSPaste ("SEGSPaste" in ComfyUI) [ImpactPack_Detailer]              |
+    // |=============================================================================|
+    export interface ImpactSEGSPaste extends HasSingle_IMAGE, ComfyNode<ImpactSEGSPaste_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImpactSEGSPaste_input = {
+        image: _IMAGE
+        segs: _SEGS
+        /** default=5 min=100 max=100 step=1 */
+        feather?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImpactSEGSPreview ("SEGSPreview" in ComfyUI) [ImpactPack_Detailer]          |
+    // |=============================================================================|
+    export interface ImpactSEGSPreview extends ComfyNode<ImpactSEGSPreview_input> {}
+    export type ImpactSEGSPreview_input = {
+        segs: _SEGS
+        fallback_image_opt?: _IMAGE
+    }
+
+    // |=============================================================================|
     // | ImpactMaskPainter ("MaskPainter" in ComfyUI) [ImpactPack_Legacy]            |
     // |=============================================================================|
     export interface ImpactMaskPainter extends HasSingle_MASK, ComfyNode<ImpactMaskPainter_input> {
@@ -4787,312 +7125,33 @@ declare global {
     }
 
     // |=============================================================================|
-    // | RandomLatentImage [latent]                                                  |
+    // | ImpactBboxDetectorCombined ("BboxDetectorCombined" in ComfyUI) [ImpactPack_Legacy]   |
     // |=============================================================================|
-    export interface RandomLatentImage extends HasSingle_LATENT, ComfyNode<RandomLatentImage_input> {
-        LATENT: Slot<'LATENT', 0>
+    export interface ImpactBboxDetectorCombined extends HasSingle_MASK, ComfyNode<ImpactBboxDetectorCombined_input> {
+        MASK: Slot<'MASK', 0>
     }
-    export type RandomLatentImage_input = {
-        /** default=512 min=4096 max=4096 step=64 */
-        width?: _INT
-        /** default=512 min=4096 max=4096 step=64 */
-        height?: _INT
-        /** default=1 min=64 max=64 */
-        batch_size?: _INT
-    }
-
-    // |=============================================================================|
-    // | VAEDecodeBatched [latent]                                                   |
-    // |=============================================================================|
-    export interface VAEDecodeBatched extends HasSingle_IMAGE, ComfyNode<VAEDecodeBatched_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type VAEDecodeBatched_input = {
-        samples: _LATENT
-        vae: _VAE
-        /** default=1 min=32 max=32 step=1 */
-        batch_size?: _INT
-    }
-
-    // |=============================================================================|
-    // | VAEEncodeBatched [latent]                                                   |
-    // |=============================================================================|
-    export interface VAEEncodeBatched extends HasSingle_LATENT, ComfyNode<VAEEncodeBatched_input> {
-        LATENT: Slot<'LATENT', 0>
-    }
-    export type VAEEncodeBatched_input = {
-        pixels: _IMAGE
-        vae: _VAE
-        /** default=1 min=32 max=32 step=1 */
-        batch_size?: _INT
-    }
-
-    // |=============================================================================|
-    // | LatentToImage [latent]                                                      |
-    // |=============================================================================|
-    export interface LatentToImage extends HasSingle_IMAGE, ComfyNode<LatentToImage_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type LatentToImage_input = {
-        samples: _LATENT
-        /** default=5 min=100 max=100 step=0.01 */
-        clamp?: _FLOAT
-    }
-
-    // |=============================================================================|
-    // | LatentToHist [latent]                                                       |
-    // |=============================================================================|
-    export interface LatentToHist extends HasSingle_IMAGE, HasSingle_STRING, ComfyNode<LatentToHist_input> {
-        IMAGE: Slot<'IMAGE', 0>
-        STRING: Slot<'STRING', 1>
-    }
-    export type LatentToHist_input = {
-        samples: _LATENT
-        min_auto: Enum_LatentToHist_min_auto
-        /** default=-5 min=0 max=0 step=0.01 */
-        min_value?: _FLOAT
-        max_auto: Enum_LatentToHist_min_auto
-        /** default=5 min=100 max=100 step=0.01 */
-        max_value?: _FLOAT
-        bin_auto: Enum_LatentToHist_min_auto
-        /** default=10 min=1000 max=1000 step=1 */
-        bin_count?: _INT
-        ymax_auto: Enum_LatentToHist_min_auto
-        /** default=1 min=1 max=1 step=0.01 */
-        ymax?: _FLOAT
-    }
-
-    // |=============================================================================|
-    // | KSamplerSetting [sampling]                                                  |
-    // |=============================================================================|
-    export interface KSamplerSetting extends HasSingle_DICT, ComfyNode<KSamplerSetting_input> {
-        DICT: Slot<'DICT', 0>
-    }
-    export type KSamplerSetting_input = {
-        model: _MODEL
-        /** default=0 min=18446744073709552000 max=18446744073709552000 */
-        seed?: _INT
-        /** default=20 min=10000 max=10000 */
-        steps?: _INT
-        /** default=8 min=100 max=100 */
-        cfg?: _FLOAT
-        sampler_name: Enum_KSampler_sampler_name
-        scheduler: Enum_KSampler_scheduler
-        positive: _CONDITIONING
-        negative: _CONDITIONING
-        latent_image: _LATENT
-        /** default=1 min=1 max=1 step=0.01 */
-        denoise?: _FLOAT
-    }
-
-    // |=============================================================================|
-    // | KSamplerOverrided [sampling]                                                |
-    // |=============================================================================|
-    export interface KSamplerOverrided extends HasSingle_LATENT, ComfyNode<KSamplerOverrided_input> {
-        LATENT: Slot<'LATENT', 0>
-    }
-    export type KSamplerOverrided_input = {
-        setting: _DICT
-        model?: _MODEL
-        /** default=0 min=18446744073709552000 max=18446744073709552000 */
-        seed?: _Integer
-        /** default=20 min=10000 max=10000 */
-        steps?: _Integer
-        /** default=8 min=100 max=100 */
-        cfg?: _Float
-        sampler_name?: _SamplerName
-        scheduler?: _SchedulerName
-        positive?: _CONDITIONING
-        negative?: _CONDITIONING
-        latent_image?: _LATENT
-        /** default=1 min=1 max=1 step=0.01 */
-        denoise?: _Float
-    }
-
-    // |=============================================================================|
-    // | KSamplerXYZ [sampling]                                                      |
-    // |=============================================================================|
-    export interface KSamplerXYZ extends HasSingle_LATENT, ComfyNode<KSamplerXYZ_input> {
-        LATENT: Slot<'LATENT', 0>
-    }
-    export type KSamplerXYZ_input = {
-        setting: _DICT
-        model?: _MODEL
-        /** default="" */
-        seed?: _STRING
-        /** default="" */
-        steps?: _STRING
-        /** default="" */
-        cfg?: _STRING
-        /** default="" */
-        sampler_name?: _STRING
-        /** default="" */
-        scheduler?: _STRING
-    }
-
-    // |=============================================================================|
-    // | StateDictLoader [loaders]                                                   |
-    // |=============================================================================|
-    export interface StateDictLoader extends HasSingle_DICT, ComfyNode<StateDictLoader_input> {
-        DICT: Slot<'DICT', 0>
-    }
-    export type StateDictLoader_input = {
-        ckpt_name: Enum_CheckpointLoaderSimple_ckpt_name
-    }
-
-    // |=============================================================================|
-    // | Dict2Model [model]                                                          |
-    // |=============================================================================|
-    export interface Dict2Model extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, ComfyNode<Dict2Model_input> {
-        MODEL: Slot<'MODEL', 0>
-        CLIP: Slot<'CLIP', 1>
-        VAE: Slot<'VAE', 2>
-    }
-    export type Dict2Model_input = {
-        weights: _DICT
-        config_name: Enum_CheckpointLoader_config_name
-    }
-
-    // |=============================================================================|
-    // | ModelIter [model]                                                           |
-    // |=============================================================================|
-    export interface ModelIter extends HasSingle_MODEL, ComfyNode<ModelIter_input> {
-        MODEL: Slot<'MODEL', 0>
-    }
-    export type ModelIter_input = {
-        model1: _MODEL
-        model2: _MODEL
-    }
-
-    // |=============================================================================|
-    // | CLIPIter [model]                                                            |
-    // |=============================================================================|
-    export interface CLIPIter extends HasSingle_CLIP, ComfyNode<CLIPIter_input> {
-        CLIP: Slot<'CLIP', 0>
-    }
-    export type CLIPIter_input = {
-        clip1: _CLIP
-        clip2: _CLIP
-    }
-
-    // |=============================================================================|
-    // | VAEIter [model]                                                             |
-    // |=============================================================================|
-    export interface VAEIter extends HasSingle_VAE, ComfyNode<VAEIter_input> {
-        VAE: Slot<'VAE', 0>
-    }
-    export type VAEIter_input = {
-        vae1: _VAE
-        vae2: _VAE
-    }
-
-    // |=============================================================================|
-    // | StateDictMerger [model]                                                     |
-    // |=============================================================================|
-    export interface StateDictMerger extends HasSingle_DICT, ComfyNode<StateDictMerger_input> {
-        DICT: Slot<'DICT', 0>
-    }
-    export type StateDictMerger_input = {
-        model_A: _DICT
-        model_B: _DICT
-        /** default=0 min=2 max=2 step=0.001 */
-        alpha?: _FLOAT
-        position_ids: Enum_StateDictMerger_position_ids
-        half: Enum_ImpactMaskToSEGS_combined
-        model_C?: _DICT
-    }
-
-    // |=============================================================================|
-    // | StateDictMergerBlockWeighted [model]                                        |
-    // |=============================================================================|
-    export interface StateDictMergerBlockWeighted extends HasSingle_DICT, ComfyNode<StateDictMergerBlockWeighted_input> {
-        DICT: Slot<'DICT', 0>
-    }
-    export type StateDictMergerBlockWeighted_input = {
-        model_A: _DICT
-        model_B: _DICT
-        position_ids: Enum_StateDictMerger_position_ids
-        half: Enum_ImpactMaskToSEGS_combined
-        /** default=0 min=2 max=2 step=0.001 */
-        base_alpha?: _FLOAT
-        /** default="" */
-        alphas?: _STRING
-    }
-
-    // |=============================================================================|
-    // | StateDictMergerBlockWeightedMulti [model]                                   |
-    // |=============================================================================|
-    export interface StateDictMergerBlockWeightedMulti
-        extends HasSingle_MODEL,
-            HasSingle_CLIP,
-            HasSingle_VAE,
-            ComfyNode<StateDictMergerBlockWeightedMulti_input> {
-        MODEL: Slot<'MODEL', 0>
-        CLIP: Slot<'CLIP', 1>
-        VAE: Slot<'VAE', 2>
-    }
-    export type StateDictMergerBlockWeightedMulti_input = {
-        model_A: _DICT
-        model_B: _DICT
-        position_ids: Enum_StateDictMerger_position_ids
-        half: Enum_ImpactMaskToSEGS_combined
-        /** default=0 min=2 max=2 step=0.001 */
-        base_alpha?: _FLOAT
-        /** default="" */
-        alphas?: _STRING
-        config_name: Enum_CheckpointLoader_config_name
-    }
-
-    // |=============================================================================|
-    // | SaveStateDict [model]                                                       |
-    // |=============================================================================|
-    export interface SaveStateDict extends ComfyNode<SaveStateDict_input> {}
-    export type SaveStateDict_input = {
-        weights: _DICT
-        /** default="merged_model.safetensors" */
-        filename?: _STRING
-        overwrite: Enum_ImpactMaskToSEGS_combined
-    }
-
-    // |=============================================================================|
-    // | ImageBlend2 [image_postprocessing]                                          |
-    // |=============================================================================|
-    export interface ImageBlend2 extends HasSingle_IMAGE, ComfyNode<ImageBlend2_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageBlend2_input = {
-        image1: _IMAGE
-        image2: _IMAGE
+    export type ImpactBboxDetectorCombined_input = {
+        bbox_model: _BBOX_MODEL
+        image: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
-        blend_factor?: _FLOAT
-        blend_mode: Enum_ImageBlend2_blend_mode
+        threshold?: _FLOAT
+        /** default=4 min=255 max=255 step=1 */
+        dilation?: _INT
     }
 
     // |=============================================================================|
-    // | GridImage [image]                                                           |
+    // | ImpactSegmDetectorCombined ("SegmDetectorCombined" in ComfyUI) [ImpactPack_Legacy]   |
     // |=============================================================================|
-    export interface GridImage extends ComfyNode<GridImage_input> {}
-    export type GridImage_input = {
-        images: _IMAGE
-        /** default="ComfyUI-Grid" */
-        filename_prefix?: _STRING
-        /** default=1 min=64 max=64 step=1 */
-        x?: _INT
-        /** default=0 min=32 max=32 step=1 */
-        gap?: _INT
+    export interface ImpactSegmDetectorCombined extends HasSingle_MASK, ComfyNode<ImpactSegmDetectorCombined_input> {
+        MASK: Slot<'MASK', 0>
     }
-
-    // |=============================================================================|
-    // | SaveText [utils]                                                            |
-    // |=============================================================================|
-    export interface SaveText extends ComfyNode<SaveText_input> {}
-    export type SaveText_input = {
-        /** default="ComfyUI" */
-        filename_prefix?: _STRING
-        /** default="txt" */
-        ext?: _STRING
-        /** default="" */
-        text?: _STRING
+    export type ImpactSegmDetectorCombined_input = {
+        segm_model: _SEGM_MODEL
+        image: _IMAGE
+        /** default=0.5 min=1 max=1 step=0.01 */
+        threshold?: _FLOAT
+        /** default=0 min=255 max=255 step=1 */
+        dilation?: _INT
     }
 
     // |=============================================================================|
@@ -5367,36 +7426,6 @@ declare global {
     }
 
     // |=============================================================================|
-    // | CannyEdgePreprocessor [preprocessors_edge_line]                             |
-    // |=============================================================================|
-    export interface CannyEdgePreprocessor extends HasSingle_IMAGE, ComfyNode<CannyEdgePreprocessor_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type CannyEdgePreprocessor_input = {
-        image: _IMAGE
-        /** default=100 min=255 max=255 step=1 */
-        low_threshold?: _INT
-        /** default=200 min=255 max=255 step=1 */
-        high_threshold?: _INT
-        /** default="disable" */
-        l2gradient?: Enum_KSamplerAdvanced_add_noise
-    }
-
-    // |=============================================================================|
-    // | MLSDPreprocessor ("M-LSDPreprocessor" in ComfyUI) [preprocessors_edge_line]   |
-    // |=============================================================================|
-    export interface MLSDPreprocessor extends HasSingle_IMAGE, ComfyNode<MLSDPreprocessor_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type MLSDPreprocessor_input = {
-        image: _IMAGE
-        /** default=6.283185307179586 min=6.283185307179586 max=6.283185307179586 step=0.05 */
-        score_threshold?: _FLOAT
-        /** default=0.05 min=1 max=1 step=0.05 */
-        dist_threshold?: _FLOAT
-    }
-
-    // |=============================================================================|
     // | HEDPreprocessor [preprocessors_edge_line]                                   |
     // |=============================================================================|
     export interface HEDPreprocessor extends HasSingle_IMAGE, ComfyNode<HEDPreprocessor_input> {
@@ -5487,20 +7516,6 @@ declare global {
     }
 
     // |=============================================================================|
-    // | MiDaSDepthMapPreprocessor ("MiDaS-DepthMapPreprocessor" in ComfyUI) [preprocessors_normal_depth_map]   |
-    // |=============================================================================|
-    export interface MiDaSDepthMapPreprocessor extends HasSingle_IMAGE, ComfyNode<MiDaSDepthMapPreprocessor_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type MiDaSDepthMapPreprocessor_input = {
-        image: _IMAGE
-        /** default=6.283185307179586 min=15.707963267948966 max=15.707963267948966 step=0.05 */
-        a?: _FLOAT
-        /** default=0.05 min=1 max=1 step=0.05 */
-        bg_threshold?: _FLOAT
-    }
-
-    // |=============================================================================|
     // | MiDaSNormalMapPreprocessor ("MiDaS-NormalMapPreprocessor" in ComfyUI) [preprocessors_normal_depth_map]   |
     // |=============================================================================|
     export interface MiDaSNormalMapPreprocessor extends HasSingle_IMAGE, ComfyNode<MiDaSNormalMapPreprocessor_input> {
@@ -5512,20 +7527,6 @@ declare global {
         a?: _FLOAT
         /** default=0.05 min=1 max=1 step=0.05 */
         bg_threshold?: _FLOAT
-    }
-
-    // |=============================================================================|
-    // | LeReSDepthMapPreprocessor ("LeReS-DepthMapPreprocessor" in ComfyUI) [preprocessors_normal_depth_map]   |
-    // |=============================================================================|
-    export interface LeReSDepthMapPreprocessor extends HasSingle_IMAGE, ComfyNode<LeReSDepthMapPreprocessor_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type LeReSDepthMapPreprocessor_input = {
-        image: _IMAGE
-        /** default=0 min=1 max=1 step=0.05 */
-        rm_nearest?: _FLOAT
-        /** default=0 min=1 max=1 step=0.05 */
-        rm_background?: _FLOAT
     }
 
     // |=============================================================================|
@@ -5578,26 +7579,6 @@ declare global {
         detect_pose?: Enum_KSamplerAdvanced_add_noise
         /** default="enable" */
         detect_hands?: Enum_KSamplerAdvanced_add_noise
-    }
-
-    // |=============================================================================|
-    // | SemSegPreprocessor [preprocessors_semseg]                                   |
-    // |=============================================================================|
-    export interface SemSegPreprocessor extends HasSingle_IMAGE, ComfyNode<SemSegPreprocessor_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type SemSegPreprocessor_input = {
-        image: _IMAGE
-    }
-
-    // |=============================================================================|
-    // | UniFormerSemSegPreprocessor ("UniFormer-SemSegPreprocessor" in ComfyUI) [preprocessors_semseg]   |
-    // |=============================================================================|
-    export interface UniFormerSemSegPreprocessor extends HasSingle_IMAGE, ComfyNode<UniFormerSemSegPreprocessor_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type UniFormerSemSegPreprocessor_input = {
-        image: _IMAGE
     }
 
     // |=============================================================================|
@@ -5656,6 +7637,17 @@ declare global {
         image: _IMAGE
         /** default=3 min=10 max=10 step=1 */
         pyrUp_iters?: _INT
+    }
+
+    // |=============================================================================|
+    // | InpaintPreprocessor [preprocessors_inpaint]                                 |
+    // |=============================================================================|
+    export interface InpaintPreprocessor extends HasSingle_IMAGE, ComfyNode<InpaintPreprocessor_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type InpaintPreprocessor_input = {
+        image: _IMAGE
+        mask: _MASK
     }
 
     // |=============================================================================|
@@ -5725,7 +7717,7 @@ declare global {
         seed?: _INT
         /** default=20 min=10000 max=10000 */
         steps?: _INT
-        /** default=8 min=100 max=100 */
+        /** default=7 min=100 max=100 */
         cfg?: _FLOAT
         sampler_name: Enum_KSampler_sampler_name
         scheduler: Enum_KSampler_scheduler
@@ -5746,14 +7738,14 @@ declare global {
         extends HasSingle_MODEL,
             HasSingle_LATENT,
             HasSingle_VAE,
-            HasSingle_CLIP,
+            HasSingle_DEPENDENCIES,
             ComfyNode<EfficientLoader_input> {
         MODEL: Slot<'MODEL', 0>
         CONDITIONING: Slot<'CONDITIONING', 1>
         CONDITIONING_1: Slot<'CONDITIONING', 2>
         LATENT: Slot<'LATENT', 3>
         VAE: Slot<'VAE', 4>
-        CLIP: Slot<'CLIP', 5>
+        DEPENDENCIES: Slot<'DEPENDENCIES', 5>
     }
     export type EfficientLoader_input = {
         ckpt_name: Enum_CheckpointLoaderSimple_ckpt_name
@@ -5778,25 +7770,317 @@ declare global {
     }
 
     // |=============================================================================|
-    // | XYPlot ("XY Plot" in ComfyUI) [Efficiency Nodes_Scripts]                    |
+    // | XYPlot ("XY Plot" in ComfyUI) [Efficiency Nodes_XY Plot]                    |
     // |=============================================================================|
     export interface XYPlot extends HasSingle_SCRIPT, ComfyNode<XYPlot_input> {
         SCRIPT: Slot<'SCRIPT', 0>
     }
     export type XYPlot_input = {
-        X_type: Enum_XYPlot_X_type
-        /** default="" */
-        X_value?: _STRING
-        Y_type: Enum_XYPlot_X_type
-        /** default="" */
-        Y_value?: _STRING
         /** default=0 min=500 max=500 step=5 */
         grid_spacing?: _INT
         XY_flip: Enum_ImpactMaskToSEGS_combined
-        /** default=0 min=100 max=100 */
-        latent_id?: _INT
-        /** default="____________EXAMPLES____________\n(X/Y_types)     (X/Y_values)\nLatent Batch    n/a\nSeeds++ Batch   3\nSteps           15;20;25\nCFG Scale       5;10;15;20\nSampler(1)      dpmpp_2s_ancestral;euler;ddim\nSampler(2)      dpmpp_2m,karras;heun,normal\nScheduler       normal;simple;karras\nDenoise         .3;.4;.5;.6;.7\nVAE             vae_1; vae_2; vae_3\n\n____________SAMPLERS____________\neuler;\neuler_ancestral;\nheun;\ndpm_2;\ndpm_2_ancestral;\nlms;\ndpm_fast;\ndpm_adaptive;\ndpmpp_2s_ancestral;\ndpmpp_sde;\ndpmpp_2m;\ndpmpp_2m_sde;\nddim;\nuni_pc;\nuni_pc_bh2\n\n___________SCHEDULERS___________\nnormal;\nkarras;\nexponential;\nsimple;\nddim_uniform\n\n______________VAE_______________\nblessed2.vae.pt;\nkl-f8-anime2.ckpt;\norangemix.vae.pt;\nvae-ft-mse-840000-ema-pruned.safetensors\n\n_____________NOTES______________\n- During a 'Latent Batch', the corresponding X/Y_value is ignored.\n- During a 'Latent Batch', the latent_id is ignored.\n- For a 'Seeds++ Batch', starting seed is defined by the KSampler.\n- Trailing semicolons are ignored in the X/Y_values.\n- Parameter types not set by this node are defined in the KSampler." */
-        help?: _STRING
+        Y_label_orientation: Enum_XYPlot_Y_label_orientation
+        cache_models: Enum_ImpactMaskToSEGS_combined
+        ksampler_output_image: Enum_XYPlot_ksampler_output_image
+        dependencies?: _DEPENDENCIES
+        X?: _XY
+        Y?: _XY
+    }
+
+    // |=============================================================================|
+    // | XYInputSeedsBatch ("XY Input: Seeds++ Batch" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputSeedsBatch extends HasSingle_XY, ComfyNode<XYInputSeedsBatch_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputSeedsBatch_input = {
+        /** default=1 min=50 max=50 */
+        batch_count?: _INT
+    }
+
+    // |=============================================================================|
+    // | XYInputSteps ("XY Input: Steps" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputSteps extends HasSingle_XY, ComfyNode<XYInputSteps_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputSteps_input = {
+        /** default=0 min=5 max=5 */
+        selection_count?: _INT
+        /** default=20 min=10000 max=10000 */
+        steps_1?: _INT
+        /** default=20 min=10000 max=10000 */
+        steps_2?: _INT
+        /** default=20 min=10000 max=10000 */
+        steps_3?: _INT
+        /** default=20 min=10000 max=10000 */
+        steps_4?: _INT
+        /** default=20 min=10000 max=10000 */
+        steps_5?: _INT
+    }
+
+    // |=============================================================================|
+    // | XYInputCFGScale ("XY Input: CFG Scale" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputCFGScale extends HasSingle_XY, ComfyNode<XYInputCFGScale_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputCFGScale_input = {
+        /** default=0 min=5 max=5 */
+        selection_count?: _INT
+        /** default=7 min=100 max=100 */
+        cfg_1?: _FLOAT
+        /** default=7 min=100 max=100 */
+        cfg_2?: _FLOAT
+        /** default=7 min=100 max=100 */
+        cfg_3?: _FLOAT
+        /** default=7 min=100 max=100 */
+        cfg_4?: _FLOAT
+        /** default=7 min=100 max=100 */
+        cfg_5?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | XYInputSampler ("XY Input: Sampler" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputSampler extends HasSingle_XY, ComfyNode<XYInputSampler_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputSampler_input = {
+        sampler_1: Enum_XYInputSampler_sampler_1
+        scheduler_1: Enum_XYInputSampler_scheduler_1
+        sampler_2: Enum_XYInputSampler_sampler_1
+        scheduler_2: Enum_XYInputSampler_scheduler_1
+        sampler_3: Enum_XYInputSampler_sampler_1
+        scheduler_3: Enum_XYInputSampler_scheduler_1
+        sampler_4: Enum_XYInputSampler_sampler_1
+        scheduler_4: Enum_XYInputSampler_scheduler_1
+        sampler_5: Enum_XYInputSampler_sampler_1
+        scheduler_5: Enum_XYInputSampler_scheduler_1
+    }
+
+    // |=============================================================================|
+    // | XYInputScheduler ("XY Input: Scheduler" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputScheduler extends HasSingle_XY, ComfyNode<XYInputScheduler_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputScheduler_input = {
+        scheduler_1: Enum_XYInputSampler_scheduler_1
+        scheduler_2: Enum_XYInputSampler_scheduler_1
+        scheduler_3: Enum_XYInputSampler_scheduler_1
+        scheduler_4: Enum_XYInputSampler_scheduler_1
+        scheduler_5: Enum_XYInputSampler_scheduler_1
+    }
+
+    // |=============================================================================|
+    // | XYInputDenoise ("XY Input: Denoise" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputDenoise extends HasSingle_XY, ComfyNode<XYInputDenoise_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputDenoise_input = {
+        /** default=0 min=5 max=5 */
+        select_count?: _INT
+        /** default=1 min=1 max=1 step=0.01 */
+        denoise_1?: _FLOAT
+        /** default=1 min=1 max=1 step=0.01 */
+        denoise_2?: _FLOAT
+        /** default=1 min=1 max=1 step=0.01 */
+        denoise_3?: _FLOAT
+        /** default=1 min=1 max=1 step=0.01 */
+        denoise_4?: _FLOAT
+        /** default=1 min=1 max=1 step=0.01 */
+        denoise_5?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | XYInputVAE ("XY Input: VAE" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputVAE extends HasSingle_XY, ComfyNode<XYInputVAE_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputVAE_input = {
+        vae_name_1: Enum_XYInputVAE_vae_name_1
+        vae_name_2: Enum_XYInputVAE_vae_name_1
+        vae_name_3: Enum_XYInputVAE_vae_name_1
+        vae_name_4: Enum_XYInputVAE_vae_name_1
+        vae_name_5: Enum_XYInputVAE_vae_name_1
+    }
+
+    // |=============================================================================|
+    // | XYInputPositivePromptSR ("XY Input: Positive Prompt S/R" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputPositivePromptSR extends HasSingle_XY, ComfyNode<XYInputPositivePromptSR_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputPositivePromptSR_input = {
+        /** default="" */
+        search_txt?: _STRING
+        /** default=0 min=4 max=4 */
+        replace_count?: _INT
+        /** default="" */
+        replace_1?: _STRING
+        /** default="" */
+        replace_2?: _STRING
+        /** default="" */
+        replace_3?: _STRING
+        /** default="" */
+        replace_4?: _STRING
+    }
+
+    // |=============================================================================|
+    // | XYInputNegativePromptSR ("XY Input: Negative Prompt S/R" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputNegativePromptSR extends HasSingle_XY, ComfyNode<XYInputNegativePromptSR_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputNegativePromptSR_input = {
+        /** default="" */
+        search_txt?: _STRING
+        /** default=0 min=4 max=4 */
+        replace_count?: _INT
+        /** default="" */
+        replace_1?: _STRING
+        /** default="" */
+        replace_2?: _STRING
+        /** default="" */
+        replace_3?: _STRING
+        /** default="" */
+        replace_4?: _STRING
+    }
+
+    // |=============================================================================|
+    // | XYInputCheckpoint ("XY Input: Checkpoint" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputCheckpoint extends HasSingle_XY, ComfyNode<XYInputCheckpoint_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputCheckpoint_input = {
+        ckpt_name_1: Enum_XYInputCheckpoint_ckpt_name_1
+        /** default=-1 min=-1 max=-1 step=1 */
+        clip_skip1?: _INT
+        ckpt_name_2: Enum_XYInputCheckpoint_ckpt_name_1
+        /** default=-1 min=-1 max=-1 step=1 */
+        clip_skip2?: _INT
+        ckpt_name_3: Enum_XYInputCheckpoint_ckpt_name_1
+        /** default=-1 min=-1 max=-1 step=1 */
+        clip_skip3?: _INT
+        ckpt_name_4: Enum_XYInputCheckpoint_ckpt_name_1
+        /** default=-1 min=-1 max=-1 step=1 */
+        clip_skip4?: _INT
+        ckpt_name_5: Enum_XYInputCheckpoint_ckpt_name_1
+        /** default=-1 min=-1 max=-1 step=1 */
+        clip_skip5?: _INT
+    }
+
+    // |=============================================================================|
+    // | XYInputClipSkip ("XY Input: Clip Skip" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputClipSkip extends HasSingle_XY, ComfyNode<XYInputClipSkip_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputClipSkip_input = {
+        /** default=0 min=5 max=5 */
+        select_count?: _INT
+        /** default=-1 min=-1 max=-1 step=1 */
+        clip_skip_1?: _INT
+        /** default=-2 min=-1 max=-1 step=1 */
+        clip_skip_2?: _INT
+        /** default=-3 min=-1 max=-1 step=1 */
+        clip_skip_3?: _INT
+        /** default=-4 min=-1 max=-1 step=1 */
+        clip_skip_4?: _INT
+        /** default=-5 min=-1 max=-1 step=1 */
+        clip_skip_5?: _INT
+    }
+
+    // |=============================================================================|
+    // | XYInputLoRA ("XY Input: LoRA" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputLoRA extends HasSingle_XY, ComfyNode<XYInputLoRA_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputLoRA_input = {
+        /** default=1 min=10 max=10 step=0.01 */
+        model_strengths?: _FLOAT
+        /** default=1 min=10 max=10 step=0.01 */
+        clip_strengths?: _FLOAT
+        lora_name_1: Enum_EfficientLoader_lora_name
+        lora_name_2: Enum_EfficientLoader_lora_name
+        lora_name_3: Enum_EfficientLoader_lora_name
+        lora_name_4: Enum_EfficientLoader_lora_name
+        lora_name_5: Enum_EfficientLoader_lora_name
+    }
+
+    // |=============================================================================|
+    // | XYInputLoRAAdvanced ("XY Input: LoRA (Advanced)" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputLoRAAdvanced extends HasSingle_XY, ComfyNode<XYInputLoRAAdvanced_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type XYInputLoRAAdvanced_input = {
+        lora_name_1: Enum_EfficientLoader_lora_name
+        /** default=1 min=10 max=10 step=0.01 */
+        model_str_1?: _FLOAT
+        /** default=1 min=10 max=10 step=0.01 */
+        clip_str_1?: _FLOAT
+        lora_name_2: Enum_EfficientLoader_lora_name
+        /** default=1 min=10 max=10 step=0.01 */
+        model_str_2?: _FLOAT
+        /** default=1 min=10 max=10 step=0.01 */
+        clip_str_2?: _FLOAT
+        lora_name_3: Enum_EfficientLoader_lora_name
+        /** default=1 min=10 max=10 step=0.01 */
+        model_str_3?: _FLOAT
+        /** default=1 min=10 max=10 step=0.01 */
+        clip_str_3?: _FLOAT
+        lora_name_4: Enum_EfficientLoader_lora_name
+        /** default=1 min=10 max=10 step=0.01 */
+        model_str_4?: _FLOAT
+        /** default=1 min=10 max=10 step=0.01 */
+        clip_str_4?: _FLOAT
+        lora_name_5: Enum_EfficientLoader_lora_name
+        /** default=1 min=10 max=10 step=0.01 */
+        model_str_5?: _FLOAT
+        /** default=1 min=10 max=10 step=0.01 */
+        clip_str_5?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | XYInputManualXYEntry ("XY Input: Manual XY Entry" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface XYInputManualXYEntry extends ComfyNode<XYInputManualXYEntry_input> {
+        XY: Slot<'XY', 0>
+        XY_1: Slot<'XY', 1>
+    }
+    export type XYInputManualXYEntry_input = {
+        X_type: Enum_XYInputManualXYEntry_X_type
+        /** default="" */
+        X_value?: _STRING
+        Y_type: Enum_XYInputManualXYEntry_X_type
+        /** default="" */
+        Y_value?: _STRING
+    }
+
+    // |=============================================================================|
+    // | ManualXYEntryInfo ("Manual XY Entry Info" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface ManualXYEntryInfo extends ComfyNode<ManualXYEntryInfo_input> {}
+    export type ManualXYEntryInfo_input = {
+        /** default="_____________SYNTAX_____________\n(X/Y_types)     (X/Y_values)\nSeeds++ Batch   batch_count\nSteps           steps_1;steps_2;...\nCFG Scale       cfg_1;cfg_2;...\nSampler(1)      sampler_1;sampler_2;...\nSampler(2)      sampler_1,scheduler_1;...\nSampler(3)      sampler_1;...;,default_scheduler\nScheduler       scheduler_1;scheduler_2;...\nDenoise         denoise_1;denoise_2;...\nVAE             vae_1;vae_2;vae_3;...\n+Prompt S/R     search_txt;replace_1;replace_2;...\n-Prompt S/R     search_txt;replace_1;replace_2;...\nCheckpoint(1)   ckpt_1;ckpt_2;ckpt_3;...\nCheckpoint(2)   ckpt_1,clip_skip_1;...\nCheckpoint(3)   ckpt_1;ckpt_2;...;,default_clip_skip\nClip Skip       clip_skip_1;clip_skip_2;...\nLoRA(1)         lora_1;lora_2;lora_3;...\nLoRA(2)         lora_1;...;,default_model_str,default_clip_str\nLoRA(3)         lora_1,model_str_1,clip_str_1;...\n\n____________SAMPLERS____________\neuler;\neuler_ancestral;\nheun;\ndpm_2;\ndpm_2_ancestral;\nlms;\ndpm_fast;\ndpm_adaptive;\ndpmpp_2s_ancestral;\ndpmpp_sde;\ndpmpp_2m;\ndpmpp_2m_sde;\nddim;\nuni_pc;\nuni_pc_bh2\n\n___________SCHEDULERS___________\nnormal;\nkarras;\nexponential;\nsimple;\nddim_uniform\n\n_____________VAES_______________\nblessed2.vae.pt;\nkl-f8-anime2.ckpt;\norangemix.vae.pt;\nvae-ft-mse-840000-ema-pruned.safetensors\n\n___________CHECKPOINTS__________\nAOM3A1_orangemixs.safetensors;\nAOM3A3_orangemixs.safetensors;\nAbyssOrangeMix2_hard.safetensors;\nDeliberate-inpainting.safetensors;\nangel1_36224.safetensors;\nanything-v3-fp16-pruned.safetensors;\ndeliberate_v2.safetensors;\nghostmix_v12.safetensors;\nlyriel_v15.safetensors;\nmistoonAnime_v10.safetensors;\nmistoonAnime_v10Inpainting.safetensors;\nrealisticVisionV20_v20.safetensors;\nrevAnimated_v121.safetensors;\nrevAnimated_v121Inp-inpainting.safetensors;\nrevAnimated_v122.safetensors;\ntoonyou_beta1.safetensors;\nv1-5-pruned-emaonly.ckpt;\nv2-1_512-ema-pruned.safetensors;\nv2-1_768-ema-pruned.safetensors;\nwd-1-5-beta2-fp16.safetensors\n\n_____________LORAS______________\nanimemix_16.safetensors;\nanimemix_v3_offset.safetensors;\nchars\\dark_magician_girl.safetensors;\nchars\\yorha_noDOT_2_type_b.safetensors;\ncolors\\LowRa.safetensors;\ncolors\\theovercomer8sContrastFix_sd15.safetensors;\ncolors\\theovercomer8sContrastFix_sd21768.safetensors;\nstyles\\ConstructionyardAIV3.safetensors;\nstyles\\StonepunkAI-000011.safetensors;\nstyles\\ToonYou_Style.safetensors;\nstyles\\baroqueAI.safetensors;\nstyles\\pixel_f2.safetensors;\ntest\\Moxin_10.safetensors;\ntest\\animeLineartMangaLike_v30MangaLike.safetensors;\nutils\\charTurnBetaLora.safetensors\n" */
+        notes?: _STRING
+    }
+
+    // |=============================================================================|
+    // | JoinXYInputsOfSameType ("Join XY Inputs of Same Type" in ComfyUI) [Efficiency Nodes_XY Plot_XY Inputs]   |
+    // |=============================================================================|
+    export interface JoinXYInputsOfSameType extends HasSingle_XY, ComfyNode<JoinXYInputsOfSameType_input> {
+        XY: Slot<'XY', 0>
+    }
+    export type JoinXYInputsOfSameType_input = {
+        XY_1: _XY
+        XY_2: _XY
     }
 
     // |=============================================================================|
@@ -5809,7 +8093,7 @@ declare global {
         base_image: _IMAGE
         overlay_image: _IMAGE
         overlay_resize: Enum_ImageOverlay_overlay_resize
-        resize_method: Enum_ImageScale_upscale_method
+        resize_method: Enum_ImpactLatentPixelScale_scale_method
         /** default=1 min=16 max=16 step=0.1 */
         rescale_factor?: _FLOAT
         /** default=512 min=8192 max=8192 step=64 */
@@ -5828,11 +8112,16 @@ declare global {
     }
 
     // |=============================================================================|
-    // | EvaluateIntegers ("Evaluate Integers" in ComfyUI) [Efficiency Nodes_Math]   |
+    // | EvaluateIntegers ("Evaluate Integers" in ComfyUI) [Efficiency Nodes_Simple Eval]   |
     // |=============================================================================|
-    export interface EvaluateIntegers extends HasSingle_INT, HasSingle_FLOAT, ComfyNode<EvaluateIntegers_input> {
+    export interface EvaluateIntegers
+        extends HasSingle_INT,
+            HasSingle_FLOAT,
+            HasSingle_STRING,
+            ComfyNode<EvaluateIntegers_input> {
         INT: Slot<'INT', 0>
         FLOAT: Slot<'FLOAT', 1>
+        STRING: Slot<'STRING', 2>
     }
     export type EvaluateIntegers_input = {
         /** default="((a + b) - c) / 2" */
@@ -5847,7 +8136,27 @@ declare global {
     }
 
     // |=============================================================================|
-    // | EvaluateStrings ("Evaluate Strings" in ComfyUI) [Efficiency Nodes_Math]     |
+    // | EvaluateFloats ("Evaluate Floats" in ComfyUI) [Efficiency Nodes_Simple Eval]   |
+    // |=============================================================================|
+    export interface EvaluateFloats extends HasSingle_INT, HasSingle_FLOAT, HasSingle_STRING, ComfyNode<EvaluateFloats_input> {
+        INT: Slot<'INT', 0>
+        FLOAT: Slot<'FLOAT', 1>
+        STRING: Slot<'STRING', 2>
+    }
+    export type EvaluateFloats_input = {
+        /** default="((a + b) - c) / 2" */
+        python_expression?: _STRING
+        print_to_console: Enum_ImpactMaskToSEGS_combined
+        /** default=0 min=1.7976931348623157e+308 max=1.7976931348623157e+308 step=1 */
+        a?: _FLOAT
+        /** default=0 min=1.7976931348623157e+308 max=1.7976931348623157e+308 step=1 */
+        b?: _FLOAT
+        /** default=0 min=1.7976931348623157e+308 max=1.7976931348623157e+308 step=1 */
+        c?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | EvaluateStrings ("Evaluate Strings" in ComfyUI) [Efficiency Nodes_Simple Eval]   |
     // |=============================================================================|
     export interface EvaluateStrings extends HasSingle_STRING, ComfyNode<EvaluateStrings_input> {
         STRING: Slot<'STRING', 0>
@@ -5862,6 +8171,15 @@ declare global {
         b?: _STRING
         /** default="!" */
         c?: _STRING
+    }
+
+    // |=============================================================================|
+    // | SimpleEvalExamples ("Simple Eval Examples" in ComfyUI) [Efficiency Nodes_Simple Eval]   |
+    // |=============================================================================|
+    export interface SimpleEvalExamples extends ComfyNode<SimpleEvalExamples_input> {}
+    export type SimpleEvalExamples_input = {
+        /** default="The Evaluate Integers, Floats, and Strings nodes \nnow employ the SimpleEval library, enabling secure \ncreation and execution of custom Python expressions.\n\n(https://github.com/danthedeckie/simpleeval)\n\nBelow is a short list of what is possible.\n______________________________________________\n\n\"EVALUATE INTEGERS/FLOATS\" NODE EXPRESSION EXAMPLES:\n\nAddition: a + b + c\nSubtraction: a - b - c\nMultiplication: a * b * c\nDivision: a / b / c\nModulo: a % b % c\nExponentiation: a ** b ** c\nFloor Division: a // b // c\nAbsolute Value: abs(a) + abs(b) + abs(c)\nMaximum: max(a, b, c)\nMinimum: min(a, b, c)\nSum of Squares: a**2 + b**2 + c**2\nBitwise And: a & b & c\nBitwise Or: a | b | c\nBitwise Xor: a ^ b ^ c\nLeft Shift: a << 1 + b << 1 + c << 1\nRight Shift: a >> 1 + b >> 1 + c >> 1\nGreater Than Comparison: a > b > c\nLess Than Comparison: a < b < c\nEqual To Comparison: a == b == c\nNot Equal To Comparison: a != b != c\n______________________________________________\n\n\"EVALUATE STRINGS\" NODE EXPRESSION EXAMPLES:\n\nConcatenate: a + b + c\nFormat: f'{a} {b} {c}'\nLength: len(a) + len(b) + len(c)\nUppercase: a.upper() + b.upper() + c.upper()\nLowercase: a.lower() + b.lower() + c.lower()\nCapitalize: a.capitalize() + b.capitalize() + c.capitalize()\nTitle Case: a.title() + b.title() + c.title()\nStrip: a.strip() + b.strip() + c.strip()\nFind Substring: a.find('sub') + b.find('sub') + c.find('sub')\nReplace Substring: a.replace('old', 'new') + b.replace('old', 'new') + c.replace('old', 'new')\nCount Substring: a.count('sub') + b.count('sub') + c.count('sub')\nCheck Numeric: a.isnumeric() + b.isnumeric() + c.isnumeric()\nCheck Alphabetic: a.isalpha() + b.isalpha() + c.isalpha()\nCheck Alphanumeric: a.isalnum() + b.isalnum() + c.isalnum()\nCheck Start: a.startswith('prefix') + b.startswith('prefix') + c.startswith('prefix')\nCheck End: a.endswith('suffix') + b.endswith('suffix') + c.endswith('suffix')\nSplit: a.split(' ') + b.split(' ') + c.split(' ')\nZero Fill: a.zfill(5) + b.zfill(5) + c.zfill(5)\nSlice: a[:5] + b[:5] + c[:5]\nReverse: a[::-1] + b[::-1] + c[::-1]\n______________________________________________" */
+        models_text?: _STRING
     }
 
     // |=============================================================================|
@@ -5895,7 +8213,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
     }
     export type WASImageFlip_input = {
-        image: _IMAGE
+        images: _IMAGE
         mode: Enum_WASImageFlip_mode
     }
 
@@ -5907,7 +8225,7 @@ declare global {
     }
     export type LatentUpscaleMultiply_input = {
         samples: _LATENT
-        upscale_method: Enum_ImageScale_upscale_method
+        upscale_method: Enum_ImpactLatentPixelScale_scale_method
         /** default=1.25 min=10 max=10 step=0.1 */
         WidthMul?: _FLOAT
         /** default=1.25 min=10 max=10 step=0.1 */
@@ -6201,6 +8519,16 @@ declare global {
     }
 
     // |=============================================================================|
+    // | WASBLIPModelLoader ("BLIP Model Loader" in ComfyUI) [WAS Suite_Loaders]     |
+    // |=============================================================================|
+    export interface WASBLIPModelLoader extends HasSingle_BLIP_MODEL, ComfyNode<WASBLIPModelLoader_input> {
+        BLIP_MODEL: Slot<'BLIP_MODEL', 0>
+    }
+    export type WASBLIPModelLoader_input = {
+        blip_model: Enum_WASBLIPModelLoader_blip_model
+    }
+
+    // |=============================================================================|
     // | WASCacheNode ("Cache Node" in ComfyUI) [WAS Suite_IO]                       |
     // |=============================================================================|
     export interface WASCacheNode extends ComfyNode<WASCacheNode_input> {
@@ -6209,11 +8537,11 @@ declare global {
         ASCII_2: Slot<'ASCII', 2>
     }
     export type WASCacheNode_input = {
-        /** default="11613103_cache" */
+        /** default="72479479_cache" */
         latent_suffix?: _STRING
-        /** default="46085955_cache" */
+        /** default="95646616_cache" */
         image_suffix?: _STRING
-        /** default="7133278_cache" */
+        /** default="81785927_cache" */
         conditioning_suffix?: _STRING
         latent?: _LATENT
         image?: _IMAGE
@@ -6262,6 +8590,8 @@ declare global {
     // |=============================================================================|
     export interface WASCLIPTextEncodeNSP extends HasSingle_CONDITIONING, ComfyNode<WASCLIPTextEncodeNSP_input> {
         CONDITIONING: Slot<'CONDITIONING', 0>
+        ASCII: Slot<'ASCII', 1>
+        ASCII_1: Slot<'ASCII', 2>
     }
     export type WASCLIPTextEncodeNSP_input = {
         mode: Enum_WASCLIPTextEncodeNSP_mode
@@ -6272,6 +8602,30 @@ declare global {
         /** */
         text: _STRING
         clip: _CLIP
+    }
+
+    // |=============================================================================|
+    // | WASCLIPInputSwitch ("CLIP Input Switch" in ComfyUI) [WAS Suite_Logic]       |
+    // |=============================================================================|
+    export interface WASCLIPInputSwitch extends HasSingle_CLIP, ComfyNode<WASCLIPInputSwitch_input> {
+        CLIP: Slot<'CLIP', 0>
+    }
+    export type WASCLIPInputSwitch_input = {
+        clip_a: _CLIP
+        clip_b: _CLIP
+        boolean_number: _NUMBER
+    }
+
+    // |=============================================================================|
+    // | WASCLIPVisionInputSwitch ("CLIP Vision Input Switch" in ComfyUI) [WAS Suite_Logic]   |
+    // |=============================================================================|
+    export interface WASCLIPVisionInputSwitch extends HasSingle_CLIP_VISION, ComfyNode<WASCLIPVisionInputSwitch_input> {
+        CLIP_VISION: Slot<'CLIP_VISION', 0>
+    }
+    export type WASCLIPVisionInputSwitch_input = {
+        clip_vision_a: _CLIP_VISION
+        clip_vision_b: _CLIP_VISION
+        boolean_number: _NUMBER
     }
 
     // |=============================================================================|
@@ -6309,7 +8663,7 @@ declare global {
         images_path?: _STRING
         /** default="*" */
         pattern_glob?: _STRING
-        include_subfolders: Enum_WASCreateGridImage_include_subfolders
+        include_subfolders: Enum_ImageDrawRectangleRounded_top_left_corner
         /** default=3 min=100 max=100 step=1 */
         border_width?: _INT
         /** default=6 min=24 max=24 step=1 */
@@ -6418,6 +8772,18 @@ declare global {
         image: _IMAGE
         /** default="" */
         text?: _STRING
+        clipseg_model?: _CLIPSEG_MODEL
+    }
+
+    // |=============================================================================|
+    // | WASCLIPSegModelLoader ("CLIPSeg Model Loader" in ComfyUI) [WAS Suite_Loaders]   |
+    // |=============================================================================|
+    export interface WASCLIPSegModelLoader extends HasSingle_CLIPSEG_MODEL, ComfyNode<WASCLIPSegModelLoader_input> {
+        CLIPSEG_MODEL: Slot<'CLIPSEG_MODEL', 0>
+    }
+    export type WASCLIPSegModelLoader_input = {
+        /** default="CIDAS/clipseg-rd64-refined" */
+        model?: _STRING
     }
 
     // |=============================================================================|
@@ -6457,6 +8823,18 @@ declare global {
     }
     export type WASConvertMasksToImages_input = {
         masks: _MASK
+    }
+
+    // |=============================================================================|
+    // | WASControlNetModelInputSwitch ("Control Net Model Input Switch" in ComfyUI) [WAS Suite_Logic]   |
+    // |=============================================================================|
+    export interface WASControlNetModelInputSwitch extends HasSingle_CONTROL_NET, ComfyNode<WASControlNetModelInputSwitch_input> {
+        CONTROL_NET: Slot<'CONTROL_NET', 0>
+    }
+    export type WASControlNetModelInputSwitch_input = {
+        control_net_a: _CONTROL_NET
+        control_net_b: _CONTROL_NET
+        boolean_number: _NUMBER
     }
 
     // |=============================================================================|
@@ -6523,6 +8901,22 @@ declare global {
     }
 
     // |=============================================================================|
+    // | WASExportAPI ("Export API" in ComfyUI) [WAS Suite_Debug]                    |
+    // |=============================================================================|
+    export interface WASExportAPI extends ComfyNode<WASExportAPI_input> {}
+    export type WASExportAPI_input = {
+        save_prompt_api: Enum_WASExportAPI_save_prompt_api
+        /** default="./ComfyUI/output/" */
+        output_path?: _STRING
+        /** default="ComfyUI_Prompt" */
+        filename_prefix?: _STRING
+        /** default="_" */
+        filename_delimiter?: _STRING
+        /** default=4 min=9 max=9 step=1 */
+        filename_number_padding?: _INT
+    }
+
+    // |=============================================================================|
     // | WASLatentInputSwitch ("Latent Input Switch" in ComfyUI) [WAS Suite_Logic]   |
     // |=============================================================================|
     export interface WASLatentInputSwitch extends HasSingle_LATENT, ComfyNode<WASLatentInputSwitch_input> {
@@ -6577,11 +8971,56 @@ declare global {
     export type WASLoraLoader_input = {
         model: _MODEL
         clip: _CLIP
-        lora_name: Enum_LoraLoader_lora_name
+        lora_name: Enum_EfficientLoader_lora_name
         /** default=1 min=10 max=10 step=0.01 */
         strength_model?: _FLOAT
         /** default=1 min=10 max=10 step=0.01 */
         strength_clip?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | WASImageSSAOAmbientOcclusion ("Image SSAO (Ambient Occlusion)" in ComfyUI) [WAS Suite_Image_Filter]   |
+    // |=============================================================================|
+    export interface WASImageSSAOAmbientOcclusion extends ComfyNode<WASImageSSAOAmbientOcclusion_input> {
+        IMAGE: Slot<'IMAGE', 0>
+        IMAGE_1: Slot<'IMAGE', 1>
+        IMAGE_2: Slot<'IMAGE', 2>
+    }
+    export type WASImageSSAOAmbientOcclusion_input = {
+        images: _IMAGE
+        depth_images: _IMAGE
+        /** default=1 min=5 max=5 step=0.01 */
+        strength?: _FLOAT
+        /** default=30 min=1024 max=1024 step=0.01 */
+        radius?: _FLOAT
+        /** default=2.5 min=1024 max=1024 step=0.01 */
+        ao_blur?: _FLOAT
+        /** default=25 min=255 max=255 step=1 */
+        specular_threshold?: _INT
+        enable_specular_masking: Enum_ImpactMaskToSEGS_combined
+        /** default=1 min=512 max=512 step=1 */
+        tile_size?: _INT
+    }
+
+    // |=============================================================================|
+    // | WASImageSSDODirectOcclusion ("Image SSDO (Direct Occlusion)" in ComfyUI) [WAS Suite_Image_Filter]   |
+    // |=============================================================================|
+    export interface WASImageSSDODirectOcclusion extends ComfyNode<WASImageSSDODirectOcclusion_input> {
+        IMAGE: Slot<'IMAGE', 0>
+        IMAGE_1: Slot<'IMAGE', 1>
+        IMAGE_2: Slot<'IMAGE', 2>
+        IMAGE_3: Slot<'IMAGE', 3>
+    }
+    export type WASImageSSDODirectOcclusion_input = {
+        images: _IMAGE
+        depth_images: _IMAGE
+        /** default=1 min=5 max=5 step=0.01 */
+        strength?: _FLOAT
+        /** default=30 min=1024 max=1024 step=0.01 */
+        radius?: _FLOAT
+        /** default=128 min=255 max=255 step=1 */
+        specular_threshold?: _INT
+        colored_occlusion: Enum_ImpactMaskToSEGS_combined
     }
 
     // |=============================================================================|
@@ -6689,8 +9128,8 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
     }
     export type WASImageCannyFilter_input = {
-        image: _IMAGE
-        enable_threshold: Enum_WASCreateGridImage_include_subfolders
+        images: _IMAGE
+        enable_threshold: Enum_ImageDrawRectangleRounded_top_left_corner
         /** default=0 min=1 max=1 step=0.01 */
         threshold_low?: _FLOAT
         /** default=1 min=1 max=1 step=0.01 */
@@ -6713,6 +9152,8 @@ declare global {
         blue_offset?: _INT
         /** default=0.5 min=1 max=1 step=0.01 */
         intensity?: _FLOAT
+        /** default=12 min=1024 max=1024 step=1 */
+        fade_radius?: _INT
     }
 
     // |=============================================================================|
@@ -6918,7 +9359,7 @@ declare global {
         highpass_samples?: _INT
         /** default=1 min=1 max=1 step=0.01 */
         highpass_strength?: _FLOAT
-        colorize: Enum_WASCreateGridImage_include_subfolders
+        colorize: Enum_ImageDrawRectangleRounded_top_left_corner
     }
 
     // |=============================================================================|
@@ -6983,7 +9424,7 @@ declare global {
     export type WASImageGradientMap_input = {
         image: _IMAGE
         gradient_image: _IMAGE
-        flip_left_right: Enum_WASCreateGridImage_include_subfolders
+        flip_left_right: Enum_ImageDrawRectangleRounded_top_left_corner
     }
 
     // |=============================================================================|
@@ -7011,11 +9452,13 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
     }
     export type WASImageHighPassFilter_input = {
-        image: _IMAGE
+        images: _IMAGE
         /** default=10 min=500 max=500 step=1 */
         radius?: _INT
         /** default=1.5 min=255 max=255 step=0.1 */
         strength?: _FLOAT
+        color_output: Enum_ImageDrawRectangleRounded_top_left_corner
+        neutral_background: Enum_ImageDrawRectangleRounded_top_left_corner
     }
 
     // |=============================================================================|
@@ -7138,7 +9581,7 @@ declare global {
         image: _IMAGE
         /** default=120 min=2048 max=2048 step=1 */
         feathering?: _INT
-        feather_second_pass: Enum_WASCreateGridImage_include_subfolders
+        feather_second_pass: Enum_ImageDrawRectangleRounded_top_left_corner
         /** default=512 min=48000 max=48000 step=1 */
         left_padding?: _INT
         /** default=512 min=48000 max=48000 step=1 */
@@ -7168,6 +9611,17 @@ declare global {
         persistence?: _FLOAT
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
+    }
+
+    // |=============================================================================|
+    // | WASImageRembgRemoveBackground ("Image Rembg (Remove Background)" in ComfyUI) [WAS Suite_Image_AI]   |
+    // |=============================================================================|
+    export interface WASImageRembgRemoveBackground extends HasSingle_IMAGE, ComfyNode<WASImageRembgRemoveBackground_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type WASImageRembgRemoveBackground_input = {
+        images: _IMAGE
+        transparency: Enum_ImageDrawRectangleRounded_top_left_corner
     }
 
     // |=============================================================================|
@@ -7243,7 +9697,7 @@ declare global {
     export type WASImageResize_input = {
         image: _IMAGE
         mode: Enum_WASImageResize_mode
-        supersample: Enum_WASCreateGridImage_include_subfolders
+        supersample: Enum_ImageDrawRectangleRounded_top_left_corner
         resampling: Enum_WASImageResize_resampling
         /** default=2 min=16 max=16 step=0.01 */
         rescale_factor?: _FLOAT
@@ -7260,11 +9714,23 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
     }
     export type WASImageRotate_input = {
-        image: _IMAGE
+        images: _IMAGE
         mode: Enum_WASImageRotate_mode
         /** default=0 min=360 max=360 step=90 */
         rotation?: _INT
         sampler: Enum_WASImageRotate_sampler
+    }
+
+    // |=============================================================================|
+    // | WASImageRotateHue ("Image Rotate Hue" in ComfyUI) [WAS Suite_Image_Adjustment]   |
+    // |=============================================================================|
+    export interface WASImageRotateHue extends HasSingle_IMAGE, ComfyNode<WASImageRotateHue_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type WASImageRotateHue_input = {
+        image: _IMAGE
+        /** default=0 min=1 max=1 step=0.001 */
+        hue_shift?: _FLOAT
     }
 
     // |=============================================================================|
@@ -7273,7 +9739,7 @@ declare global {
     export interface WASImageSave extends ComfyNode<WASImageSave_input> {}
     export type WASImageSave_input = {
         images: _IMAGE
-        /** default="./ComfyUI/output" */
+        /** default="./ComfyUI/output/[time(%Y-%m-%d)]" */
         output_path?: _STRING
         /** default="ComfyUI" */
         filename_prefix?: _STRING
@@ -7284,8 +9750,11 @@ declare global {
         extension: Enum_WASImageSave_extension
         /** default=100 min=100 max=100 step=1 */
         quality?: _INT
+        lossless_webp: Enum_ImageDrawRectangleRounded_top_left_corner
         overwrite_mode: Enum_WASImageSave_overwrite_mode
-        show_history: Enum_WASCreateGridImage_include_subfolders
+        show_history: Enum_ImageDrawRectangleRounded_top_left_corner
+        show_history_by_prefix: Enum_ImageDrawRectangleRounded_top_left_corner
+        embed_workflow: Enum_ImageDrawRectangleRounded_top_left_corner
     }
 
     // |=============================================================================|
@@ -7298,7 +9767,7 @@ declare global {
         images: _IMAGE
         /** default=0.4 min=1 max=1 step=0.01 */
         blending?: _FLOAT
-        tiled: Enum_WASCreateGridImage_include_subfolders
+        tiled: Enum_ImageDrawRectangleRounded_top_left_corner
         /** default=2 min=6 max=6 step=2 */
         tiles?: _INT
     }
@@ -7541,6 +10010,56 @@ declare global {
     }
 
     // |=============================================================================|
+    // | WASKSamplerCycle ("KSampler Cycle" in ComfyUI) [WAS Suite_Sampling]         |
+    // |=============================================================================|
+    export interface WASKSamplerCycle extends HasSingle_LATENT, ComfyNode<WASKSamplerCycle_input> {
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type WASKSamplerCycle_input = {
+        model: _MODEL
+        /** default=0 min=18446744073709552000 max=18446744073709552000 */
+        seed?: _INT
+        /** default=20 min=10000 max=10000 */
+        steps?: _INT
+        /** default=8 min=100 max=100 */
+        cfg?: _FLOAT
+        sampler_name: Enum_KSampler_sampler_name
+        scheduler: Enum_KSampler_scheduler
+        positive: _CONDITIONING
+        negative: _CONDITIONING
+        latent_image: _LATENT
+        tiled_vae: Enum_KSamplerAdvanced_add_noise
+        /** default=2 min=8 max=8 step=0.1 */
+        upscale_factor?: _FLOAT
+        /** default=2 min=12 max=12 step=1 */
+        upscale_steps?: _INT
+        /** default=1 min=1 max=1 step=0.01 */
+        starting_denoise?: _FLOAT
+        /** default=0.5 min=1 max=1 step=0.01 */
+        cycle_denoise?: _FLOAT
+        scale_denoise: Enum_KSamplerAdvanced_add_noise
+        scale_sampling: Enum_WASImageResize_resampling
+        vae: _VAE
+        upscale_model?: _UPSCALE_MODEL
+        pos_additive?: _CONDITIONING
+        neg_additive?: _CONDITIONING
+        /** default=0.25 min=1 max=1 step=0.01 */
+        pos_add_strength?: _FLOAT
+        pos_add_strength_scaling?: Enum_KSamplerAdvanced_add_noise
+        /** default=2 min=10 max=10 step=0.01 */
+        pos_add_strength_cutoff?: _FLOAT
+        /** default=0.25 min=1 max=1 step=0.01 */
+        neg_add_strength?: _FLOAT
+        neg_add_strength_scaling?: Enum_KSamplerAdvanced_add_noise
+        /** default=2 min=10 max=10 step=0.01 */
+        neg_add_strength_cutoff?: _FLOAT
+        /** default=0 min=10 max=10 step=0.01 */
+        sharpen_strength?: _FLOAT
+        /** default=2 min=12 max=12 step=1 */
+        sharpen_radius?: _INT
+    }
+
+    // |=============================================================================|
     // | WASLatentNoiseInjection ("Latent Noise Injection" in ComfyUI) [WAS Suite_Latent_Generate]   |
     // |=============================================================================|
     export interface WASLatentNoiseInjection extends HasSingle_LATENT, ComfyNode<WASLatentNoiseInjection_input> {
@@ -7574,7 +10093,7 @@ declare global {
         mode: Enum_WASLatentUpscaleByFactorWAS_mode
         /** default=2 min=8 max=8 step=0.01 */
         factor?: _FLOAT
-        align: Enum_WASCreateGridImage_include_subfolders
+        align: Enum_ImageDrawRectangleRounded_top_left_corner
     }
 
     // |=============================================================================|
@@ -7621,7 +10140,7 @@ declare global {
     export type WASLoadLora_input = {
         model: _MODEL
         clip: _CLIP
-        lora_name: Enum_LoraLoader_lora_name
+        lora_name: Enum_EfficientLoader_lora_name
         /** default=1 min=10 max=10 step=0.01 */
         strength_model?: _FLOAT
         /** default=1 min=10 max=10 step=0.01 */
@@ -7684,6 +10203,67 @@ declare global {
     }
     export type WASMaskCeilingRegion_input = {
         masks: _MASK
+    }
+
+    // |=============================================================================|
+    // | WASMaskCropDominantRegion ("Mask Crop Dominant Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+    // |=============================================================================|
+    export interface WASMaskCropDominantRegion extends HasSingle_MASK, ComfyNode<WASMaskCropDominantRegion_input> {
+        MASK: Slot<'MASK', 0>
+    }
+    export type WASMaskCropDominantRegion_input = {
+        masks: _MASK
+        /** default=24 min=4096 max=4096 step=1 */
+        padding?: _INT
+    }
+
+    // |=============================================================================|
+    // | WASMaskCropMinorityRegion ("Mask Crop Minority Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+    // |=============================================================================|
+    export interface WASMaskCropMinorityRegion extends HasSingle_MASK, ComfyNode<WASMaskCropMinorityRegion_input> {
+        MASK: Slot<'MASK', 0>
+    }
+    export type WASMaskCropMinorityRegion_input = {
+        masks: _MASK
+        /** default=24 min=4096 max=4096 step=1 */
+        padding?: _INT
+    }
+
+    // |=============================================================================|
+    // | WASMaskCropRegion ("Mask Crop Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+    // |=============================================================================|
+    export interface WASMaskCropRegion extends HasSingle_MASK, HasSingle_CROP_DATA, ComfyNode<WASMaskCropRegion_input> {
+        MASK: Slot<'MASK', 0>
+        CROP_DATA: Slot<'CROP_DATA', 1>
+        INT: Slot<'INT', 2>
+        INT_1: Slot<'INT', 3>
+        INT_2: Slot<'INT', 4>
+        INT_3: Slot<'INT', 5>
+        INT_4: Slot<'INT', 6>
+        INT_5: Slot<'INT', 7>
+    }
+    export type WASMaskCropRegion_input = {
+        mask: _MASK
+        /** default=24 min=4096 max=4096 step=1 */
+        padding?: _INT
+        region_type: Enum_WASMaskCropRegion_region_type
+    }
+
+    // |=============================================================================|
+    // | WASMaskPasteRegion ("Mask Paste Region" in ComfyUI) [WAS Suite_Image_Masking]   |
+    // |=============================================================================|
+    export interface WASMaskPasteRegion extends ComfyNode<WASMaskPasteRegion_input> {
+        MASK: Slot<'MASK', 0>
+        MASK_1: Slot<'MASK', 1>
+    }
+    export type WASMaskPasteRegion_input = {
+        mask: _MASK
+        crop_mask: _MASK
+        crop_data: _CROP_DATA
+        /** default=0.25 min=1 max=1 step=0.01 */
+        crop_blending?: _FLOAT
+        /** default=0 min=3 max=3 step=1 */
+        crop_sharpening?: _INT
     }
 
     // |=============================================================================|
@@ -7828,6 +10408,16 @@ declare global {
     }
 
     // |=============================================================================|
+    // | WASMiDaSModelLoader ("MiDaS Model Loader" in ComfyUI) [WAS Suite_Loaders]   |
+    // |=============================================================================|
+    export interface WASMiDaSModelLoader extends HasSingle_MIDAS_MODEL, ComfyNode<WASMiDaSModelLoader_input> {
+        MIDAS_MODEL: Slot<'MIDAS_MODEL', 0>
+    }
+    export type WASMiDaSModelLoader_input = {
+        midas_model: Enum_WASMiDaSModelLoader_midas_model
+    }
+
+    // |=============================================================================|
     // | WASMiDaSDepthApproximation ("MiDaS Depth Approximation" in ComfyUI) [WAS Suite_Image_AI]   |
     // |=============================================================================|
     export interface WASMiDaSDepthApproximation extends HasSingle_IMAGE, ComfyNode<WASMiDaSDepthApproximation_input> {
@@ -7835,9 +10425,10 @@ declare global {
     }
     export type WASMiDaSDepthApproximation_input = {
         image: _IMAGE
-        use_cpu: Enum_WASCreateGridImage_include_subfolders
-        midas_model: Enum_WASMiDaSDepthApproximation_midas_model
-        invert_depth: Enum_WASCreateGridImage_include_subfolders
+        use_cpu: Enum_ImageDrawRectangleRounded_top_left_corner
+        midas_type: Enum_WASMiDaSModelLoader_midas_model
+        invert_depth: Enum_ImageDrawRectangleRounded_top_left_corner
+        midas_model?: _MIDAS_MODEL
     }
 
     // |=============================================================================|
@@ -7849,10 +10440,10 @@ declare global {
     }
     export type WASMiDaSMaskImage_input = {
         image: _IMAGE
-        use_cpu: Enum_WASCreateGridImage_include_subfolders
-        midas_model: Enum_WASMiDaSDepthApproximation_midas_model
+        use_cpu: Enum_ImageDrawRectangleRounded_top_left_corner
+        midas_model: Enum_WASMiDaSMaskImage_midas_model
         remove: Enum_WASMiDaSMaskImage_remove
-        threshold: Enum_WASCreateGridImage_include_subfolders
+        threshold: Enum_ImageDrawRectangleRounded_top_left_corner
         /** default=10 min=255 max=255 step=1 */
         threshold_low?: _FLOAT
         /** default=200 min=255 max=255 step=1 */
@@ -7867,6 +10458,18 @@ declare global {
         background_green?: _INT
         /** default=0 min=255 max=255 step=1 */
         background_blue?: _INT
+    }
+
+    // |=============================================================================|
+    // | WASModelInputSwitch ("Model Input Switch" in ComfyUI) [WAS Suite_Logic]     |
+    // |=============================================================================|
+    export interface WASModelInputSwitch extends HasSingle_MODEL, ComfyNode<WASModelInputSwitch_input> {
+        MODEL: Slot<'MODEL', 0>
+    }
+    export type WASModelInputSwitch_input = {
+        model_a: _MODEL
+        model_b: _MODEL
+        boolean_number: _NUMBER
     }
 
     // |=============================================================================|
@@ -7912,6 +10515,7 @@ declare global {
     export type WASNumberInputCondition_input = {
         number_a: _NUMBER
         number_b: _NUMBER
+        return_boolean: Enum_ImageDrawRectangleRounded_top_left_corner
         comparison: Enum_WASNumberInputCondition_comparison
     }
 
@@ -8008,11 +10612,15 @@ declare global {
     export interface WASSaveTextFile extends ComfyNode<WASSaveTextFile_input> {}
     export type WASSaveTextFile_input = {
         /** */
-        text: _ASCII
-        /** default="" */
+        text: _STRING
+        /** default="./ComfyUI/output/[time(%Y-%m-%d)]" */
         path?: _STRING
-        /** default="text_[time]" */
-        filename?: _STRING
+        /** default="ComfyUI" */
+        filename_prefix?: _STRING
+        /** default="_" */
+        filename_delimiter?: _STRING
+        /** default=4 min=9 max=9 step=1 */
+        filename_number_padding?: _INT
     }
 
     // |=============================================================================|
@@ -8046,9 +10654,10 @@ declare global {
     }
     export type WASBLIPAnalyzeImage_input = {
         image: _IMAGE
-        mode: Enum_WASBLIPAnalyzeImage_mode
+        mode: Enum_WASBLIPModelLoader_blip_model
         /** default="What does the background consist of?" */
         question?: _STRING
+        blip_model?: _BLIP_MODEL
     }
 
     // |=============================================================================|
@@ -8096,6 +10705,16 @@ declare global {
         sam_model: _SAM_MODEL
         sam_parameters: _SAM_PARAMETERS
         image: _IMAGE
+    }
+
+    // |=============================================================================|
+    // | WASSamplesPassthroughStatSystem ("Samples Passthrough (Stat System)" in ComfyUI) [WAS Suite_Debug]   |
+    // |=============================================================================|
+    export interface WASSamplesPassthroughStatSystem extends HasSingle_LATENT, ComfyNode<WASSamplesPassthroughStatSystem_input> {
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type WASSamplesPassthroughStatSystem_input = {
+        samples: _LATENT
     }
 
     // |=============================================================================|
@@ -8224,6 +10843,7 @@ declare global {
     export type WASTextAddTokens_input = {
         /** default="[hello]: world" */
         tokens?: _STRING
+        print_current_tokens: Enum_ImageDrawRectangleRounded_top_left_corner
     }
 
     // |=============================================================================|
@@ -8235,6 +10855,7 @@ declare global {
         token_name: _ASCII
         /** */
         token_value: _ASCII
+        print_current_tokens: Enum_ImageDrawRectangleRounded_top_left_corner
     }
 
     // |=============================================================================|
@@ -8268,7 +10889,7 @@ declare global {
         text_a: _ASCII
         /** */
         text_b: _ASCII
-        linebreak_addition: Enum_WASCreateGridImage_include_subfolders
+        linebreak_addition: Enum_ImageDrawRectangleRounded_top_left_corner
         /** */
         text_c?: _ASCII
         /** */
@@ -8391,6 +11012,27 @@ declare global {
     }
 
     // |=============================================================================|
+    // | WASTextLoadLineFromFile ("Text Load Line From File" in ComfyUI) [WAS Suite_Text]   |
+    // |=============================================================================|
+    export interface WASTextLoadLineFromFile extends HasSingle_ASCII, HasSingle_DICT, ComfyNode<WASTextLoadLineFromFile_input> {
+        ASCII: Slot<'ASCII', 0>
+        DICT: Slot<'DICT', 1>
+    }
+    export type WASTextLoadLineFromFile_input = {
+        /** default="" */
+        file_path?: _STRING
+        /** default="[filename]" */
+        dictionary_name?: _STRING
+        /** default="TextBatch" */
+        label?: _STRING
+        mode: Enum_WASTextLoadLineFromFile_mode
+        /** default=0 min=undefined step=1 */
+        index?: _INT
+        /** */
+        multiline_text?: _ASCII
+    }
+
+    // |=============================================================================|
     // | WASTextMultiline ("Text Multiline" in ComfyUI) [WAS Suite_Text]             |
     // |=============================================================================|
     export interface WASTextMultiline extends HasSingle_ASCII, ComfyNode<WASTextMultiline_input> {
@@ -8450,6 +11092,17 @@ declare global {
         text: _ASCII
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
+    }
+
+    // |=============================================================================|
+    // | WASTextRandomPrompt ("Text Random Prompt" in ComfyUI) [WAS Suite_Text]      |
+    // |=============================================================================|
+    export interface WASTextRandomPrompt extends HasSingle_ASCII, ComfyNode<WASTextRandomPrompt_input> {
+        ASCII: Slot<'ASCII', 0>
+    }
+    export type WASTextRandomPrompt_input = {
+        /** */
+        search_seed: _STRING
     }
 
     // |=============================================================================|
@@ -8569,6 +11222,18 @@ declare global {
     }
 
     // |=============================================================================|
+    // | WASUpscaleModelSwitch ("Upscale Model Switch" in ComfyUI) [WAS Suite_Logic]   |
+    // |=============================================================================|
+    export interface WASUpscaleModelSwitch extends HasSingle_UPSCALE_MODEL, ComfyNode<WASUpscaleModelSwitch_input> {
+        UPSCALE_MODEL: Slot<'UPSCALE_MODEL', 0>
+    }
+    export type WASUpscaleModelSwitch_input = {
+        upscale_model_a: _UPSCALE_MODEL
+        upscale_model_b: _UPSCALE_MODEL
+        boolean_number: _NUMBER
+    }
+
+    // |=============================================================================|
     // | WASWriteToGIF ("Write to GIF" in ComfyUI) [WAS Suite_Animation_Writer]      |
     // |=============================================================================|
     export interface WASWriteToGIF extends HasSingle_IMAGE, ComfyNode<WASWriteToGIF_input> {
@@ -8620,6 +11285,18 @@ declare global {
     }
 
     // |=============================================================================|
+    // | WASVAEInputSwitch ("VAE Input Switch" in ComfyUI) [WAS Suite_Logic]         |
+    // |=============================================================================|
+    export interface WASVAEInputSwitch extends HasSingle_VAE, ComfyNode<WASVAEInputSwitch_input> {
+        VAE: Slot<'VAE', 0>
+    }
+    export type WASVAEInputSwitch_input = {
+        vae_a: _VAE
+        vae_b: _VAE
+        boolean_number: _NUMBER
+    }
+
+    // |=============================================================================|
     // | WASVideoDumpFrames ("Video Dump Frames" in ComfyUI) [WAS Suite_Animation]   |
     // |=============================================================================|
     export interface WASVideoDumpFrames extends HasSingle_ASCII, HasSingle_NUMBER, ComfyNode<WASVideoDumpFrames_input> {
@@ -8633,6 +11310,8 @@ declare global {
         output_path?: _STRING
         /** default="frame_" */
         prefix?: _STRING
+        /** default=4 min=8 max=8 step=1 */
+        filenumber_digits?: _INT
         extension: Enum_WASVideoDumpFrames_extension
     }
 
@@ -8686,8 +11365,7 @@ declare global {
         PreviewImage: ComfyNodeSchemaJSON
         LoadImage: ComfyNodeSchemaJSON
         LoadImageMask: ComfyNodeSchemaJSON
-        ImageScale: ComfyNodeSchemaJSON
-        ImageInvert: ComfyNodeSchemaJSON
+        ImageScaleBy: ComfyNodeSchemaJSON
         ImagePadForOutpaint: ComfyNodeSchemaJSON
         ConditioningAverage: ComfyNodeSchemaJSON
         ConditioningCombine: ComfyNodeSchemaJSON
@@ -8701,6 +11379,7 @@ declare global {
         LatentCrop: ComfyNodeSchemaJSON
         LoraLoader: ComfyNodeSchemaJSON
         CLIPLoader: ComfyNodeSchemaJSON
+        DualCLIPLoader: ComfyNodeSchemaJSON
         CLIPVisionEncode: ComfyNodeSchemaJSON
         StyleModelApply: ComfyNodeSchemaJSON
         UnCLIPConditioning: ComfyNodeSchemaJSON
@@ -8711,21 +11390,14 @@ declare global {
         CLIPVisionLoader: ComfyNodeSchemaJSON
         VAEDecodeTiled: ComfyNodeSchemaJSON
         VAEEncodeTiled: ComfyNodeSchemaJSON
-        TomePatchModel: ComfyNodeSchemaJSON
         UnCLIPCheckpointLoader: ComfyNodeSchemaJSON
         GLIGENLoader: ComfyNodeSchemaJSON
         GLIGENTextBoxApply: ComfyNodeSchemaJSON
         CheckpointLoader: ComfyNodeSchemaJSON
         DiffusersLoader: ComfyNodeSchemaJSON
-        LoadLatent: ComfyNodeSchemaJSON
-        SaveLatent: ComfyNodeSchemaJSON
         HypernetworkLoader: ComfyNodeSchemaJSON
         UpscaleModelLoader: ComfyNodeSchemaJSON
         ImageUpscaleWithModel: ComfyNodeSchemaJSON
-        ImageBlend: ComfyNodeSchemaJSON
-        ImageBlur: ComfyNodeSchemaJSON
-        ImageQuantize: ComfyNodeSchemaJSON
-        ImageSharpen: ComfyNodeSchemaJSON
         LatentCompositeMasked: ComfyNodeSchemaJSON
         MaskToImage: ComfyNodeSchemaJSON
         ImageToMask: ComfyNodeSchemaJSON
@@ -8736,6 +11408,85 @@ declare global {
         FeatherMask: ComfyNodeSchemaJSON
         RebatchLatents: ComfyNodeSchemaJSON
         BrightnessContrast: ComfyNodeSchemaJSON
+        AlphaChanelAdd: ComfyNodeSchemaJSON
+        AlphaChanelAddByMask: ComfyNodeSchemaJSON
+        AlphaChanelAsMask: ComfyNodeSchemaJSON
+        AlphaChanelRestore: ComfyNodeSchemaJSON
+        AlphaChanelRemove: ComfyNodeSchemaJSON
+        ClipClamp: ComfyNodeSchemaJSON
+        ClipVisionClamp: ComfyNodeSchemaJSON
+        ClipVisionOutputClamp: ComfyNodeSchemaJSON
+        ConditioningClamp: ComfyNodeSchemaJSON
+        ControlNetClamp: ComfyNodeSchemaJSON
+        GligenClamp: ComfyNodeSchemaJSON
+        ImageClamp: ComfyNodeSchemaJSON
+        LatentClamp: ComfyNodeSchemaJSON
+        MaskClamp: ComfyNodeSchemaJSON
+        ModelClamp: ComfyNodeSchemaJSON
+        StyleModelClamp: ComfyNodeSchemaJSON
+        UpscaleModelClamp: ComfyNodeSchemaJSON
+        VaeClamp: ComfyNodeSchemaJSON
+        ImageCompositeAbsolute: ComfyNodeSchemaJSON
+        ImageCompositeAbsoluteByContainer: ComfyNodeSchemaJSON
+        ImageCompositeRelative: ComfyNodeSchemaJSON
+        ImageCompositeRelativeByContainer: ComfyNodeSchemaJSON
+        ImageContainer: ComfyNodeSchemaJSON
+        ImageContainerInheritanceAdd: ComfyNodeSchemaJSON
+        ImageContainerInheritanceScale: ComfyNodeSchemaJSON
+        ImageContainerInheritanceMax: ComfyNodeSchemaJSON
+        ImageContainerInheritanceSum: ComfyNodeSchemaJSON
+        ImageDrawArc: ComfyNodeSchemaJSON
+        ImageDrawArcByContainer: ComfyNodeSchemaJSON
+        ImageDrawChord: ComfyNodeSchemaJSON
+        ImageDrawChordByContainer: ComfyNodeSchemaJSON
+        ImageDrawEllipse: ComfyNodeSchemaJSON
+        ImageDrawEllipseByContainer: ComfyNodeSchemaJSON
+        ImageDrawLine: ComfyNodeSchemaJSON
+        ImageDrawLineByContainer: ComfyNodeSchemaJSON
+        ImageDrawPieslice: ComfyNodeSchemaJSON
+        ImageDrawPiesliceByContainer: ComfyNodeSchemaJSON
+        ImageDrawRectangle: ComfyNodeSchemaJSON
+        ImageDrawRectangleByContainer: ComfyNodeSchemaJSON
+        ImageDrawRectangleRounded: ComfyNodeSchemaJSON
+        ImageDrawRectangleRoundedByContainer: ComfyNodeSchemaJSON
+        ImageDrawPolygon: ComfyNodeSchemaJSON
+        ImageEffectsAdjustment: ComfyNodeSchemaJSON
+        ImageEffectsGrayscale: ComfyNodeSchemaJSON
+        ImageEffectsNegative: ComfyNodeSchemaJSON
+        ImageEffectsSepia: ComfyNodeSchemaJSON
+        ImageEffectsChromaticAberration: ComfyNodeSchemaJSON
+        ImageFilterSmooth: ComfyNodeSchemaJSON
+        ImageFilterSmoothMore: ComfyNodeSchemaJSON
+        ImageFilterBlur: ComfyNodeSchemaJSON
+        ImageFilterBoxBlur: ComfyNodeSchemaJSON
+        ImageFilterGaussianBlur: ComfyNodeSchemaJSON
+        ImageFilterBilateralBlur: ComfyNodeSchemaJSON
+        ImageFilterContour: ComfyNodeSchemaJSON
+        ImageFilterDetail: ComfyNodeSchemaJSON
+        ImageFilterEdgeEnhance: ComfyNodeSchemaJSON
+        ImageFilterEdgeEnhanceMore: ComfyNodeSchemaJSON
+        ImageFilterEmboss: ComfyNodeSchemaJSON
+        ImageFilterFindEdges: ComfyNodeSchemaJSON
+        ImageFilterSharpen: ComfyNodeSchemaJSON
+        ImageFilterRank: ComfyNodeSchemaJSON
+        ImageFilterMedian: ComfyNodeSchemaJSON
+        ImageFilterMin: ComfyNodeSchemaJSON
+        ImageFilterMax: ComfyNodeSchemaJSON
+        ImageFilterMode: ComfyNodeSchemaJSON
+        ImageSegmentation: ComfyNodeSchemaJSON
+        ImageSegmentationCustom: ComfyNodeSchemaJSON
+        ImageSegmentationCustomAdvanced: ComfyNodeSchemaJSON
+        ImageText: ComfyNodeSchemaJSON
+        ImageTextOutlined: ComfyNodeSchemaJSON
+        ImageTransformResizeAbsolute: ComfyNodeSchemaJSON
+        ImageTransformResizeRelative: ComfyNodeSchemaJSON
+        ImageTransformCropAbsolute: ComfyNodeSchemaJSON
+        ImageTransformCropRelative: ComfyNodeSchemaJSON
+        ImageTransformCropCorners: ComfyNodeSchemaJSON
+        ImageTransformPaddingAbsolute: ComfyNodeSchemaJSON
+        ImageTransformPaddingRelative: ComfyNodeSchemaJSON
+        ImageTransformRotate: ComfyNodeSchemaJSON
+        ImageTransformTranspose: ComfyNodeSchemaJSON
         ImpactSAMLoader: ComfyNodeSchemaJSON
         ImpactMMDetDetectorProvider: ComfyNodeSchemaJSON
         ImpactCLIPSegDetectorProvider: ComfyNodeSchemaJSON
@@ -8778,38 +11529,30 @@ declare global {
         ImpactBboxDetectorSEGS: ComfyNodeSchemaJSON
         ImpactSegmDetectorSEGS: ComfyNodeSchemaJSON
         ImpactONNXDetectorSEGS: ComfyNodeSchemaJSON
-        ImpactBboxDetectorCombined: ComfyNodeSchemaJSON
-        ImpactSegmDetectorCombined: ComfyNodeSchemaJSON
+        ImpactBboxDetectorCombined_v2: ComfyNodeSchemaJSON
+        ImpactSegmDetectorCombined_v2: ComfyNodeSchemaJSON
         ImpactSegsToCombinedMask: ComfyNodeSchemaJSON
         ImpactKSamplerProvider: ComfyNodeSchemaJSON
         ImpactTwoSamplersForMask: ComfyNodeSchemaJSON
         ImpactTiledKSamplerProvider: ComfyNodeSchemaJSON
         ImpactPreviewBridge: ComfyNodeSchemaJSON
+        ImpactImageSender: ComfyNodeSchemaJSON
+        ImpactImageReceiver: ComfyNodeSchemaJSON
+        ImpactImageMaskSwitch: ComfyNodeSchemaJSON
+        ImpactLatentSwitch: ComfyNodeSchemaJSON
+        ImpactSEGSSwitch: ComfyNodeSchemaJSON
+        ImpactImpactWildcardProcessor: ComfyNodeSchemaJSON
+        ImpactImpactLogger: ComfyNodeSchemaJSON
+        ImpactSEGSDetailer: ComfyNodeSchemaJSON
+        ImpactSEGSPaste: ComfyNodeSchemaJSON
+        ImpactSEGSPreview: ComfyNodeSchemaJSON
         ImpactMaskPainter: ComfyNodeSchemaJSON
         ImpactMMDetLoader: ComfyNodeSchemaJSON
         ImpactSegsMaskCombine: ComfyNodeSchemaJSON
         ImpactBboxDetectorForEach: ComfyNodeSchemaJSON
         ImpactSegmDetectorForEach: ComfyNodeSchemaJSON
-        RandomLatentImage: ComfyNodeSchemaJSON
-        VAEDecodeBatched: ComfyNodeSchemaJSON
-        VAEEncodeBatched: ComfyNodeSchemaJSON
-        LatentToImage: ComfyNodeSchemaJSON
-        LatentToHist: ComfyNodeSchemaJSON
-        KSamplerSetting: ComfyNodeSchemaJSON
-        KSamplerOverrided: ComfyNodeSchemaJSON
-        KSamplerXYZ: ComfyNodeSchemaJSON
-        StateDictLoader: ComfyNodeSchemaJSON
-        Dict2Model: ComfyNodeSchemaJSON
-        ModelIter: ComfyNodeSchemaJSON
-        CLIPIter: ComfyNodeSchemaJSON
-        VAEIter: ComfyNodeSchemaJSON
-        StateDictMerger: ComfyNodeSchemaJSON
-        StateDictMergerBlockWeighted: ComfyNodeSchemaJSON
-        StateDictMergerBlockWeightedMulti: ComfyNodeSchemaJSON
-        SaveStateDict: ComfyNodeSchemaJSON
-        ImageBlend2: ComfyNodeSchemaJSON
-        GridImage: ComfyNodeSchemaJSON
-        SaveText: ComfyNodeSchemaJSON
+        ImpactBboxDetectorCombined: ComfyNodeSchemaJSON
+        ImpactSegmDetectorCombined: ComfyNodeSchemaJSON
         BNK_CutoffBasePrompt: ComfyNodeSchemaJSON
         BNK_CutoffSetRegions: ComfyNodeSchemaJSON
         BNK_CutoffRegionsToConditioning: ComfyNodeSchemaJSON
@@ -8826,8 +11569,6 @@ declare global {
         BNK_Unsampler: ComfyNodeSchemaJSON
         BNK_TiledKSamplerAdvanced: ComfyNodeSchemaJSON
         ClipSeg: ComfyNodeSchemaJSON
-        CannyEdgePreprocessor: ComfyNodeSchemaJSON
-        MLSDPreprocessor: ComfyNodeSchemaJSON
         HEDPreprocessor: ComfyNodeSchemaJSON
         ScribblePreprocessor: ComfyNodeSchemaJSON
         FakeScribblePreprocessor: ComfyNodeSchemaJSON
@@ -8836,29 +11577,44 @@ declare global {
         LineArtPreprocessor: ComfyNodeSchemaJSON
         AnimeLineArtPreprocessor: ComfyNodeSchemaJSON
         Manga2AnimeLineArtPreprocessor: ComfyNodeSchemaJSON
-        MiDaSDepthMapPreprocessor: ComfyNodeSchemaJSON
         MiDaSNormalMapPreprocessor: ComfyNodeSchemaJSON
-        LeReSDepthMapPreprocessor: ComfyNodeSchemaJSON
         ZoeDepthMapPreprocessor: ComfyNodeSchemaJSON
         BAENormalMapPreprocessor: ComfyNodeSchemaJSON
         OpenposePreprocessor: ComfyNodeSchemaJSON
         MediaPipeHandPosePreprocessor: ComfyNodeSchemaJSON
-        SemSegPreprocessor: ComfyNodeSchemaJSON
-        UniFormerSemSegPreprocessor: ComfyNodeSchemaJSON
         OneFormerCOCOSemSegPreprocessor: ComfyNodeSchemaJSON
         OneFormerADE20KSemSegPreprocessor: ComfyNodeSchemaJSON
         MediaPipeFaceMeshPreprocessor: ComfyNodeSchemaJSON
         ColorPreprocessor: ComfyNodeSchemaJSON
         TilePreprocessor: ComfyNodeSchemaJSON
+        InpaintPreprocessor: ComfyNodeSchemaJSON
         CLIPRegionsBasePrompt: ComfyNodeSchemaJSON
         CLIPSetRegion: ComfyNodeSchemaJSON
         CLIPRegionsToConditioning: ComfyNodeSchemaJSON
         KSamplerEfficient: ComfyNodeSchemaJSON
         EfficientLoader: ComfyNodeSchemaJSON
         XYPlot: ComfyNodeSchemaJSON
+        XYInputSeedsBatch: ComfyNodeSchemaJSON
+        XYInputSteps: ComfyNodeSchemaJSON
+        XYInputCFGScale: ComfyNodeSchemaJSON
+        XYInputSampler: ComfyNodeSchemaJSON
+        XYInputScheduler: ComfyNodeSchemaJSON
+        XYInputDenoise: ComfyNodeSchemaJSON
+        XYInputVAE: ComfyNodeSchemaJSON
+        XYInputPositivePromptSR: ComfyNodeSchemaJSON
+        XYInputNegativePromptSR: ComfyNodeSchemaJSON
+        XYInputCheckpoint: ComfyNodeSchemaJSON
+        XYInputClipSkip: ComfyNodeSchemaJSON
+        XYInputLoRA: ComfyNodeSchemaJSON
+        XYInputLoRAAdvanced: ComfyNodeSchemaJSON
+        XYInputManualXYEntry: ComfyNodeSchemaJSON
+        ManualXYEntryInfo: ComfyNodeSchemaJSON
+        JoinXYInputsOfSameType: ComfyNodeSchemaJSON
         ImageOverlay: ComfyNodeSchemaJSON
         EvaluateIntegers: ComfyNodeSchemaJSON
+        EvaluateFloats: ComfyNodeSchemaJSON
         EvaluateStrings: ComfyNodeSchemaJSON
+        SimpleEvalExamples: ComfyNodeSchemaJSON
         GaussianBlur: ComfyNodeSchemaJSON
         HistogramEqualization: ComfyNodeSchemaJSON
         WASImageFlip: ComfyNodeSchemaJSON
@@ -8883,10 +11639,13 @@ declare global {
         PseudoHDRStyle: ComfyNodeSchemaJSON
         Saturation: ComfyNodeSchemaJSON
         ImageSharpening: ComfyNodeSchemaJSON
+        WASBLIPModelLoader: ComfyNodeSchemaJSON
         WASCacheNode: ComfyNodeSchemaJSON
         WASCheckpointLoader: ComfyNodeSchemaJSON
         WASCheckpointLoaderSimple: ComfyNodeSchemaJSON
         WASCLIPTextEncodeNSP: ComfyNodeSchemaJSON
+        WASCLIPInputSwitch: ComfyNodeSchemaJSON
+        WASCLIPVisionInputSwitch: ComfyNodeSchemaJSON
         WASConditioningInputSwitch: ComfyNodeSchemaJSON
         WASConstantNumber: ComfyNodeSchemaJSON
         WASCreateGridImage: ComfyNodeSchemaJSON
@@ -8894,16 +11653,21 @@ declare global {
         WASCreateMorphImageFromPath: ComfyNodeSchemaJSON
         WASCreateVideoFromPath: ComfyNodeSchemaJSON
         WASCLIPSegMasking: ComfyNodeSchemaJSON
+        WASCLIPSegModelLoader: ComfyNodeSchemaJSON
         WASCLIPSegBatchMasking: ComfyNodeSchemaJSON
         WASConvertMasksToImages: ComfyNodeSchemaJSON
+        WASControlNetModelInputSwitch: ComfyNodeSchemaJSON
         WASDebugNumberToConsole: ComfyNodeSchemaJSON
         WASDictionaryToConsole: ComfyNodeSchemaJSON
         WASDiffusersModelLoader: ComfyNodeSchemaJSON
         WASDiffusersHubModelDownLoader: ComfyNodeSchemaJSON
+        WASExportAPI: ComfyNodeSchemaJSON
         WASLatentInputSwitch: ComfyNodeSchemaJSON
         WASLoadCache: ComfyNodeSchemaJSON
         WASLogicBoolean: ComfyNodeSchemaJSON
         WASLoraLoader: ComfyNodeSchemaJSON
+        WASImageSSAOAmbientOcclusion: ComfyNodeSchemaJSON
+        WASImageSSDODirectOcclusion: ComfyNodeSchemaJSON
         WASImageAnalyze: ComfyNodeSchemaJSON
         WASImageBatch: ComfyNodeSchemaJSON
         WASImageBlank: ComfyNodeSchemaJSON
@@ -8940,11 +11704,13 @@ declare global {
         WASImageNovaFilter: ComfyNodeSchemaJSON
         WASImagePadding: ComfyNodeSchemaJSON
         WASImagePerlinNoise: ComfyNodeSchemaJSON
+        WASImageRembgRemoveBackground: ComfyNodeSchemaJSON
         WASImagePerlinPowerFractal: ComfyNodeSchemaJSON
         WASImageRemoveBackgroundAlpha: ComfyNodeSchemaJSON
         WASImageRemoveColor: ComfyNodeSchemaJSON
         WASImageResize: ComfyNodeSchemaJSON
         WASImageRotate: ComfyNodeSchemaJSON
+        WASImageRotateHue: ComfyNodeSchemaJSON
         WASImageSave: ComfyNodeSchemaJSON
         WASImageSeamlessTexture: ComfyNodeSchemaJSON
         WASImageSelectChannel: ComfyNodeSchemaJSON
@@ -8962,6 +11728,7 @@ declare global {
         WASImageToSeed: ComfyNodeSchemaJSON
         WASImageVoronoiNoiseFilter: ComfyNodeSchemaJSON
         WASKSamplerWAS: ComfyNodeSchemaJSON
+        WASKSamplerCycle: ComfyNodeSchemaJSON
         WASLatentNoiseInjection: ComfyNodeSchemaJSON
         WASLatentSizeToNumber: ComfyNodeSchemaJSON
         WASLatentUpscaleByFactorWAS: ComfyNodeSchemaJSON
@@ -8973,6 +11740,10 @@ declare global {
         WASMaskArbitraryRegion: ComfyNodeSchemaJSON
         WASMaskBatchToMask: ComfyNodeSchemaJSON
         WASMaskCeilingRegion: ComfyNodeSchemaJSON
+        WASMaskCropDominantRegion: ComfyNodeSchemaJSON
+        WASMaskCropMinorityRegion: ComfyNodeSchemaJSON
+        WASMaskCropRegion: ComfyNodeSchemaJSON
+        WASMaskPasteRegion: ComfyNodeSchemaJSON
         WASMaskDilateRegion: ComfyNodeSchemaJSON
         WASMaskDominantRegion: ComfyNodeSchemaJSON
         WASMaskErodeRegion: ComfyNodeSchemaJSON
@@ -8985,8 +11756,10 @@ declare global {
         WASMaskThresholdRegion: ComfyNodeSchemaJSON
         WASMasksCombineRegions: ComfyNodeSchemaJSON
         WASMasksCombineBatch: ComfyNodeSchemaJSON
+        WASMiDaSModelLoader: ComfyNodeSchemaJSON
         WASMiDaSDepthApproximation: ComfyNodeSchemaJSON
         WASMiDaSMaskImage: ComfyNodeSchemaJSON
+        WASModelInputSwitch: ComfyNodeSchemaJSON
         WASNumberOperation: ComfyNodeSchemaJSON
         WASNumberToFloat: ComfyNodeSchemaJSON
         WASNumberInputSwitch: ComfyNodeSchemaJSON
@@ -9007,6 +11780,7 @@ declare global {
         WASSAMParameters: ComfyNodeSchemaJSON
         WASSAMParametersCombine: ComfyNodeSchemaJSON
         WASSAMImageMask: ComfyNodeSchemaJSON
+        WASSamplesPassthroughStatSystem: ComfyNodeSchemaJSON
         WASStringToText: ComfyNodeSchemaJSON
         WASImageBounds: ComfyNodeSchemaJSON
         WASInsetImageBounds: ComfyNodeSchemaJSON
@@ -9026,11 +11800,13 @@ declare global {
         WASTextInputSwitch: ComfyNodeSchemaJSON
         WASTextList: ComfyNodeSchemaJSON
         WASTextListConcatenate: ComfyNodeSchemaJSON
+        WASTextLoadLineFromFile: ComfyNodeSchemaJSON
         WASTextMultiline: ComfyNodeSchemaJSON
         WASTextParseA1111Embeddings: ComfyNodeSchemaJSON
         WASTextParseNoodleSoupPrompts: ComfyNodeSchemaJSON
         WASTextParseTokens: ComfyNodeSchemaJSON
         WASTextRandomLine: ComfyNodeSchemaJSON
+        WASTextRandomPrompt: ComfyNodeSchemaJSON
         WASTextString: ComfyNodeSchemaJSON
         WASTextToConditioning: ComfyNodeSchemaJSON
         WASTextToConsole: ComfyNodeSchemaJSON
@@ -9039,8 +11815,10 @@ declare global {
         WASTrueRandomOrgNumberGenerator: ComfyNodeSchemaJSON
         WASUnCLIPCheckpointLoader: ComfyNodeSchemaJSON
         WASUpscaleModelLoader: ComfyNodeSchemaJSON
+        WASUpscaleModelSwitch: ComfyNodeSchemaJSON
         WASWriteToGIF: ComfyNodeSchemaJSON
         WASWriteToVideo: ComfyNodeSchemaJSON
+        WASVAEInputSwitch: ComfyNodeSchemaJSON
         WASVideoDumpFrames: ComfyNodeSchemaJSON
         YKImagePadForOutpaint: ComfyNodeSchemaJSON
         YKMaskToImage: ComfyNodeSchemaJSON
