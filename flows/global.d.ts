@@ -42,8 +42,6 @@ declare global {
         LoadImage(args: LoadImage_input, uid?: ComfyNodeUID): LoadImage
         /* category=mask output=MASK */
         LoadImageMask(args: LoadImageMask_input, uid?: ComfyNodeUID): LoadImageMask
-        /* category=image_upscaling output=IMAGE */
-        ImageScaleBy(args: ImageScaleBy_input, uid?: ComfyNodeUID): ImageScaleBy
         /* category=image output=IMAGE, MASK */
         ImagePadForOutpaint(args: ImagePadForOutpaint_input, uid?: ComfyNodeUID): ImagePadForOutpaint
         /* category=conditioning output=CONDITIONING */
@@ -128,6 +126,10 @@ declare global {
         RebatchLatents(args: RebatchLatents_input, uid?: ComfyNodeUID): RebatchLatents
         /* category=Image Processing output=IMAGE */
         BrightnessContrast(args: BrightnessContrast_input, uid?: ComfyNodeUID): BrightnessContrast
+        /* category=image output=MASK, IMAGE, IMAGE_1 */
+        CLIPSeg(args: CLIPSeg_input, uid?: ComfyNodeUID): CLIPSeg
+        /* category=image output=MASK, IMAGE, IMAGE_1 */
+        CombineSegMasks(args: CombineSegMasks_input, uid?: ComfyNodeUID): CombineSegMasks
         /* category=image_alpha output=IMAGE */
         AlphaChanelAdd(args: AlphaChanelAdd_input, uid?: ComfyNodeUID): AlphaChanelAdd
         /* category=image_alpha output=IMAGE */
@@ -164,6 +166,14 @@ declare global {
         UpscaleModelClamp(args: UpscaleModelClamp_input, uid?: ComfyNodeUID): UpscaleModelClamp
         /* category=clamp output=VAE */
         VaeClamp(args: VaeClamp_input, uid?: ComfyNodeUID): VaeClamp
+        /* category=image_batch output=IMAGE */
+        ImageBatchGet(args: ImageBatchGet_input, uid?: ComfyNodeUID): ImageBatchGet
+        /* category=image_batch output=IMAGE */
+        ImageBatchRemove(args: ImageBatchRemove_input, uid?: ComfyNodeUID): ImageBatchRemove
+        /* category=image_batch output=IMAGE, IMAGE_1 */
+        ImageBatchFork(args: ImageBatchFork_input, uid?: ComfyNodeUID): ImageBatchFork
+        /* category=image_batch output=IMAGE */
+        ImageBatchJoin(args: ImageBatchJoin_input, uid?: ComfyNodeUID): ImageBatchJoin
         /* category=image_composite output=IMAGE */
         ImageCompositeAbsolute(args: ImageCompositeAbsolute_input, uid?: ComfyNodeUID): ImageCompositeAbsolute
         /* category=image_composite output=IMAGE */
@@ -235,11 +245,19 @@ declare global {
         ImageEffectsNegative(args: ImageEffectsNegative_input, uid?: ComfyNodeUID): ImageEffectsNegative
         /* category=image_effects output=IMAGE */
         ImageEffectsSepia(args: ImageEffectsSepia_input, uid?: ComfyNodeUID): ImageEffectsSepia
-        /* category=image_effects output=IMAGE */
-        ImageEffectsChromaticAberration(
-            args: ImageEffectsChromaticAberration_input,
+        /* category=image_effects_lens output=IMAGE */
+        ImageEffectsLensZoomBurst(args: ImageEffectsLensZoomBurst_input, uid?: ComfyNodeUID): ImageEffectsLensZoomBurst
+        /* category=image_effects_lens output=IMAGE */
+        ImageEffectsLensChromaticAberration(
+            args: ImageEffectsLensChromaticAberration_input,
             uid?: ComfyNodeUID,
-        ): ImageEffectsChromaticAberration
+        ): ImageEffectsLensChromaticAberration
+        /* category=image_effects_lens output=IMAGE */
+        ImageEffectsLensBokeh(args: ImageEffectsLensBokeh_input, uid?: ComfyNodeUID): ImageEffectsLensBokeh
+        /* category=image_effects_lens output=IMAGE, MASK */
+        ImageEffectsLensOpticAxis(args: ImageEffectsLensOpticAxis_input, uid?: ComfyNodeUID): ImageEffectsLensOpticAxis
+        /* category=image_effects_lens output=IMAGE, MASK */
+        ImageEffectsLensVignette(args: ImageEffectsLensVignette_input, uid?: ComfyNodeUID): ImageEffectsLensVignette
         /* category=image_filter output=IMAGE */
         ImageFilterSmooth(args: ImageFilterSmooth_input, uid?: ComfyNodeUID): ImageFilterSmooth
         /* category=image_filter output=IMAGE */
@@ -250,6 +268,15 @@ declare global {
         ImageFilterBoxBlur(args: ImageFilterBoxBlur_input, uid?: ComfyNodeUID): ImageFilterBoxBlur
         /* category=image_filter output=IMAGE */
         ImageFilterGaussianBlur(args: ImageFilterGaussianBlur_input, uid?: ComfyNodeUID): ImageFilterGaussianBlur
+        /* category=image_filter output=IMAGE */
+        ImageFilterGaussianBlurAdvanced(
+            args: ImageFilterGaussianBlurAdvanced_input,
+            uid?: ComfyNodeUID,
+        ): ImageFilterGaussianBlurAdvanced
+        /* category=image_filter output=IMAGE */
+        ImageFilterStackBlur(args: ImageFilterStackBlur_input, uid?: ComfyNodeUID): ImageFilterStackBlur
+        /* category=image_filter output=IMAGE */
+        ImageFilterMedianBlur(args: ImageFilterMedianBlur_input, uid?: ComfyNodeUID): ImageFilterMedianBlur
         /* category=image_filter output=IMAGE */
         ImageFilterBilateralBlur(args: ImageFilterBilateralBlur_input, uid?: ComfyNodeUID): ImageFilterBilateralBlur
         /* category=image_filter output=IMAGE */
@@ -269,8 +296,6 @@ declare global {
         /* category=image_filter output=IMAGE */
         ImageFilterRank(args: ImageFilterRank_input, uid?: ComfyNodeUID): ImageFilterRank
         /* category=image_filter output=IMAGE */
-        ImageFilterMedian(args: ImageFilterMedian_input, uid?: ComfyNodeUID): ImageFilterMedian
-        /* category=image_filter output=IMAGE */
         ImageFilterMin(args: ImageFilterMin_input, uid?: ComfyNodeUID): ImageFilterMin
         /* category=image_filter output=IMAGE */
         ImageFilterMax(args: ImageFilterMax_input, uid?: ComfyNodeUID): ImageFilterMax
@@ -289,6 +314,10 @@ declare global {
         ImageText(args: ImageText_input, uid?: ComfyNodeUID): ImageText
         /* category=image_draw output=IMAGE */
         ImageTextOutlined(args: ImageTextOutlined_input, uid?: ComfyNodeUID): ImageTextOutlined
+        /* category=image_draw output=IMAGE */
+        ImageTextMultiline(args: ImageTextMultiline_input, uid?: ComfyNodeUID): ImageTextMultiline
+        /* category=image_draw output=IMAGE */
+        ImageTextMultilineOutlined(args: ImageTextMultilineOutlined_input, uid?: ComfyNodeUID): ImageTextMultilineOutlined
         /* category=image_transform output=IMAGE */
         ImageTransformResizeAbsolute(args: ImageTransformResizeAbsolute_input, uid?: ComfyNodeUID): ImageTransformResizeAbsolute
         /* category=image_transform output=IMAGE */
@@ -531,6 +560,8 @@ declare global {
         BNK_Unsampler(args: BNK_Unsampler_input, uid?: ComfyNodeUID): BNK_Unsampler
         /* category=sampling output=LATENT */
         BNK_TiledKSamplerAdvanced(args: BNK_TiledKSamplerAdvanced_input, uid?: ComfyNodeUID): BNK_TiledKSamplerAdvanced
+        /* category=sampling output=LATENT */
+        BNK_TiledKSampler(args: BNK_TiledKSampler_input, uid?: ComfyNodeUID): BNK_TiledKSampler
         /* category=image output=IMAGE, MASK */
         ClipSeg(args: ClipSeg_input, uid?: ComfyNodeUID): ClipSeg
         /* category=preprocessors_edge_line output=IMAGE */
@@ -1142,7 +1173,6 @@ declare global {
         Enum_LoadImage_image: Enum_LoadImage_image
         Enum_LoadImageMask_image: Enum_LoadImageMask_image
         Enum_LoadImageMask_channel: Enum_LoadImageMask_channel
-        Enum_ImageScaleBy_upscale_method: Enum_ImageScaleBy_upscale_method
         Enum_ConditioningSetMask_set_cond_area: Enum_ConditioningSetMask_set_cond_area
         Enum_KSamplerAdvanced_add_noise: Enum_KSamplerAdvanced_add_noise
         Enum_KSamplerAdvanced_sampler_name: Enum_KSamplerAdvanced_sampler_name
@@ -1170,6 +1200,7 @@ declare global {
         Enum_BrightnessContrast_mode: Enum_BrightnessContrast_mode
         Enum_AlphaChanelAddByMask_method: Enum_AlphaChanelAddByMask_method
         Enum_AlphaChanelAsMask_method: Enum_AlphaChanelAsMask_method
+        Enum_ImageBatchFork_priority: Enum_ImageBatchFork_priority
         Enum_ImageCompositeAbsolute_background: Enum_ImageCompositeAbsolute_background
         Enum_ImageCompositeAbsolute_method: Enum_ImageCompositeAbsolute_method
         Enum_ImageCompositeAbsoluteByContainer_background: Enum_ImageCompositeAbsoluteByContainer_background
@@ -1207,9 +1238,17 @@ declare global {
         Enum_ImageDrawRectangleRoundedByContainer_bottom_left_corner: Enum_ImageDrawRectangleRoundedByContainer_bottom_left_corner
         Enum_ImageDrawRectangleRoundedByContainer_method: Enum_ImageDrawRectangleRoundedByContainer_method
         Enum_ImageDrawPolygon_method: Enum_ImageDrawPolygon_method
-        Enum_ImageEffectsChromaticAberration_method: Enum_ImageEffectsChromaticAberration_method
-        Enum_ImageEffectsChromaticAberration_transpose: Enum_ImageEffectsChromaticAberration_transpose
-        Enum_ImageEffectsChromaticAberration_colors: Enum_ImageEffectsChromaticAberration_colors
+        Enum_ImageEffectsLensZoomBurst_method: Enum_ImageEffectsLensZoomBurst_method
+        Enum_ImageEffectsLensZoomBurst_stabilization: Enum_ImageEffectsLensZoomBurst_stabilization
+        Enum_ImageEffectsLensChromaticAberration_method: Enum_ImageEffectsLensChromaticAberration_method
+        Enum_ImageEffectsLensChromaticAberration_transpose: Enum_ImageEffectsLensChromaticAberration_transpose
+        Enum_ImageEffectsLensChromaticAberration_colors: Enum_ImageEffectsLensChromaticAberration_colors
+        Enum_ImageEffectsLensBokeh_blur_type: Enum_ImageEffectsLensBokeh_blur_type
+        Enum_ImageEffectsLensBokeh_method: Enum_ImageEffectsLensBokeh_method
+        Enum_ImageEffectsLensOpticAxis_lens_shape: Enum_ImageEffectsLensOpticAxis_lens_shape
+        Enum_ImageEffectsLensOpticAxis_lens_edge: Enum_ImageEffectsLensOpticAxis_lens_edge
+        Enum_ImageEffectsLensVignette_lens_shape: Enum_ImageEffectsLensVignette_lens_shape
+        Enum_ImageEffectsLensVignette_lens_edge: Enum_ImageEffectsLensVignette_lens_edge
         Enum_ImageSegmentation_model: Enum_ImageSegmentation_model
         Enum_ImageSegmentation_alpha_matting: Enum_ImageSegmentation_alpha_matting
         Enum_ImageSegmentation_post_process_mask: Enum_ImageSegmentation_post_process_mask
@@ -1221,6 +1260,10 @@ declare global {
         Enum_ImageSegmentationCustomAdvanced_post_process_mask: Enum_ImageSegmentationCustomAdvanced_post_process_mask
         Enum_ImageText_font: Enum_ImageText_font
         Enum_ImageTextOutlined_font: Enum_ImageTextOutlined_font
+        Enum_ImageTextMultiline_font: Enum_ImageTextMultiline_font
+        Enum_ImageTextMultiline_align: Enum_ImageTextMultiline_align
+        Enum_ImageTextMultilineOutlined_font: Enum_ImageTextMultilineOutlined_font
+        Enum_ImageTextMultilineOutlined_align: Enum_ImageTextMultilineOutlined_align
         Enum_ImageTransformResizeAbsolute_method: Enum_ImageTransformResizeAbsolute_method
         Enum_ImageTransformResizeRelative_method: Enum_ImageTransformResizeRelative_method
         Enum_ImageTransformCropCorners_top_left_corner: Enum_ImageTransformCropCorners_top_left_corner
@@ -1323,10 +1366,15 @@ declare global {
         Enum_BNK_GetSigma_scheduler: Enum_BNK_GetSigma_scheduler
         Enum_BNK_Unsampler_sampler_name: Enum_BNK_Unsampler_sampler_name
         Enum_BNK_Unsampler_scheduler: Enum_BNK_Unsampler_scheduler
+        Enum_BNK_Unsampler_normalize: Enum_BNK_Unsampler_normalize
         Enum_BNK_TiledKSamplerAdvanced_add_noise: Enum_BNK_TiledKSamplerAdvanced_add_noise
+        Enum_BNK_TiledKSamplerAdvanced_tiling_strategy: Enum_BNK_TiledKSamplerAdvanced_tiling_strategy
         Enum_BNK_TiledKSamplerAdvanced_sampler_name: Enum_BNK_TiledKSamplerAdvanced_sampler_name
         Enum_BNK_TiledKSamplerAdvanced_scheduler: Enum_BNK_TiledKSamplerAdvanced_scheduler
         Enum_BNK_TiledKSamplerAdvanced_return_with_leftover_noise: Enum_BNK_TiledKSamplerAdvanced_return_with_leftover_noise
+        Enum_BNK_TiledKSampler_tiling_strategy: Enum_BNK_TiledKSampler_tiling_strategy
+        Enum_BNK_TiledKSampler_sampler_name: Enum_BNK_TiledKSampler_sampler_name
+        Enum_BNK_TiledKSampler_scheduler: Enum_BNK_TiledKSampler_scheduler
         Enum_ClipSeg_device: Enum_ClipSeg_device
         Enum_ClipSeg_mode: Enum_ClipSeg_mode
         Enum_HEDPreprocessor_version: Enum_HEDPreprocessor_version
@@ -1520,7 +1568,6 @@ declare global {
         PreviewImage: PreviewImage
         LoadImage: LoadImage
         LoadImageMask: LoadImageMask
-        ImageScaleBy: ImageScaleBy
         ImagePadForOutpaint: ImagePadForOutpaint
         ConditioningAverage: ConditioningAverage
         ConditioningCombine: ConditioningCombine
@@ -1563,6 +1610,8 @@ declare global {
         FeatherMask: FeatherMask
         RebatchLatents: RebatchLatents
         BrightnessContrast: BrightnessContrast
+        CLIPSeg: CLIPSeg
+        CombineSegMasks: CombineSegMasks
         AlphaChanelAdd: AlphaChanelAdd
         AlphaChanelAddByMask: AlphaChanelAddByMask
         AlphaChanelAsMask: AlphaChanelAsMask
@@ -1581,6 +1630,10 @@ declare global {
         StyleModelClamp: StyleModelClamp
         UpscaleModelClamp: UpscaleModelClamp
         VaeClamp: VaeClamp
+        ImageBatchGet: ImageBatchGet
+        ImageBatchRemove: ImageBatchRemove
+        ImageBatchFork: ImageBatchFork
+        ImageBatchJoin: ImageBatchJoin
         ImageCompositeAbsolute: ImageCompositeAbsolute
         ImageCompositeAbsoluteByContainer: ImageCompositeAbsoluteByContainer
         ImageCompositeRelative: ImageCompositeRelative
@@ -1609,12 +1662,19 @@ declare global {
         ImageEffectsGrayscale: ImageEffectsGrayscale
         ImageEffectsNegative: ImageEffectsNegative
         ImageEffectsSepia: ImageEffectsSepia
-        ImageEffectsChromaticAberration: ImageEffectsChromaticAberration
+        ImageEffectsLensZoomBurst: ImageEffectsLensZoomBurst
+        ImageEffectsLensChromaticAberration: ImageEffectsLensChromaticAberration
+        ImageEffectsLensBokeh: ImageEffectsLensBokeh
+        ImageEffectsLensOpticAxis: ImageEffectsLensOpticAxis
+        ImageEffectsLensVignette: ImageEffectsLensVignette
         ImageFilterSmooth: ImageFilterSmooth
         ImageFilterSmoothMore: ImageFilterSmoothMore
         ImageFilterBlur: ImageFilterBlur
         ImageFilterBoxBlur: ImageFilterBoxBlur
         ImageFilterGaussianBlur: ImageFilterGaussianBlur
+        ImageFilterGaussianBlurAdvanced: ImageFilterGaussianBlurAdvanced
+        ImageFilterStackBlur: ImageFilterStackBlur
+        ImageFilterMedianBlur: ImageFilterMedianBlur
         ImageFilterBilateralBlur: ImageFilterBilateralBlur
         ImageFilterContour: ImageFilterContour
         ImageFilterDetail: ImageFilterDetail
@@ -1624,7 +1684,6 @@ declare global {
         ImageFilterFindEdges: ImageFilterFindEdges
         ImageFilterSharpen: ImageFilterSharpen
         ImageFilterRank: ImageFilterRank
-        ImageFilterMedian: ImageFilterMedian
         ImageFilterMin: ImageFilterMin
         ImageFilterMax: ImageFilterMax
         ImageFilterMode: ImageFilterMode
@@ -1633,6 +1692,8 @@ declare global {
         ImageSegmentationCustomAdvanced: ImageSegmentationCustomAdvanced
         ImageText: ImageText
         ImageTextOutlined: ImageTextOutlined
+        ImageTextMultiline: ImageTextMultiline
+        ImageTextMultilineOutlined: ImageTextMultilineOutlined
         ImageTransformResizeAbsolute: ImageTransformResizeAbsolute
         ImageTransformResizeRelative: ImageTransformResizeRelative
         ImageTransformCropAbsolute: ImageTransformCropAbsolute
@@ -1724,6 +1785,7 @@ declare global {
         BNK_InjectNoise: BNK_InjectNoise
         BNK_Unsampler: BNK_Unsampler
         BNK_TiledKSamplerAdvanced: BNK_TiledKSamplerAdvanced
+        BNK_TiledKSampler: BNK_TiledKSampler
         ClipSeg: ClipSeg
         HEDPreprocessor: HEDPreprocessor
         ScribblePreprocessor: ScribblePreprocessor
@@ -2031,6 +2093,7 @@ declare global {
             | 'BNK_InjectNoise'
             | 'BNK_Unsampler'
             | 'BNK_TiledKSamplerAdvanced'
+            | 'BNK_TiledKSampler'
             | 'KSamplerEfficient'
             | 'EfficientLoader'
             | 'LatentUpscaleMultiply'
@@ -2144,17 +2207,25 @@ declare global {
             ComfySetup,
             | 'VAEDecode'
             | 'LoadImage'
-            | 'ImageScaleBy'
             | 'ImagePadForOutpaint'
             | 'VAEDecodeTiled'
             | 'ImageUpscaleWithModel'
             | 'MaskToImage'
             | 'BrightnessContrast'
+            | 'CLIPSeg'
+            | 'CLIPSeg'
+            | 'CombineSegMasks'
+            | 'CombineSegMasks'
             | 'AlphaChanelAdd'
             | 'AlphaChanelAddByMask'
             | 'AlphaChanelRestore'
             | 'AlphaChanelRemove'
             | 'ImageClamp'
+            | 'ImageBatchGet'
+            | 'ImageBatchRemove'
+            | 'ImageBatchFork'
+            | 'ImageBatchFork'
+            | 'ImageBatchJoin'
             | 'ImageCompositeAbsolute'
             | 'ImageCompositeAbsoluteByContainer'
             | 'ImageCompositeRelative'
@@ -2183,12 +2254,19 @@ declare global {
             | 'ImageEffectsGrayscale'
             | 'ImageEffectsNegative'
             | 'ImageEffectsSepia'
-            | 'ImageEffectsChromaticAberration'
+            | 'ImageEffectsLensZoomBurst'
+            | 'ImageEffectsLensChromaticAberration'
+            | 'ImageEffectsLensBokeh'
+            | 'ImageEffectsLensOpticAxis'
+            | 'ImageEffectsLensVignette'
             | 'ImageFilterSmooth'
             | 'ImageFilterSmoothMore'
             | 'ImageFilterBlur'
             | 'ImageFilterBoxBlur'
             | 'ImageFilterGaussianBlur'
+            | 'ImageFilterGaussianBlurAdvanced'
+            | 'ImageFilterStackBlur'
+            | 'ImageFilterMedianBlur'
             | 'ImageFilterBilateralBlur'
             | 'ImageFilterContour'
             | 'ImageFilterDetail'
@@ -2198,7 +2276,6 @@ declare global {
             | 'ImageFilterFindEdges'
             | 'ImageFilterSharpen'
             | 'ImageFilterRank'
-            | 'ImageFilterMedian'
             | 'ImageFilterMin'
             | 'ImageFilterMax'
             | 'ImageFilterMode'
@@ -2207,6 +2284,8 @@ declare global {
             | 'ImageSegmentationCustomAdvanced'
             | 'ImageText'
             | 'ImageTextOutlined'
+            | 'ImageTextMultiline'
+            | 'ImageTextMultilineOutlined'
             | 'ImageTransformResizeAbsolute'
             | 'ImageTransformResizeRelative'
             | 'ImageTransformCropAbsolute'
@@ -2380,8 +2459,12 @@ declare global {
             | 'CropMask'
             | 'MaskComposite'
             | 'FeatherMask'
+            | 'CLIPSeg'
+            | 'CombineSegMasks'
             | 'AlphaChanelAsMask'
             | 'MaskClamp'
+            | 'ImageEffectsLensOpticAxis'
+            | 'ImageEffectsLensVignette'
             | 'ImpactSAMDetectorCombined'
             | 'ImpactFaceDetailer'
             | 'ImpactFaceDetailerPipe'
@@ -2811,6 +2894,7 @@ declare global {
     export type Enum_BNK_GetSigma_sampler_name = Enum_KSampler_sampler_name
     export type Enum_BNK_Unsampler_sampler_name = Enum_KSampler_sampler_name
     export type Enum_BNK_TiledKSamplerAdvanced_sampler_name = Enum_KSampler_sampler_name
+    export type Enum_BNK_TiledKSampler_sampler_name = Enum_KSampler_sampler_name
     export type Enum_KSamplerEfficient_sampler_name = Enum_KSampler_sampler_name
     export type Enum_WASKSamplerWAS_sampler_name = Enum_KSampler_sampler_name
     export type Enum_WASKSamplerCycle_sampler_name = Enum_KSampler_sampler_name
@@ -2832,6 +2916,7 @@ declare global {
     export type Enum_BNK_GetSigma_scheduler = Enum_KSampler_scheduler
     export type Enum_BNK_Unsampler_scheduler = Enum_KSampler_scheduler
     export type Enum_BNK_TiledKSamplerAdvanced_scheduler = Enum_KSampler_scheduler
+    export type Enum_BNK_TiledKSampler_scheduler = Enum_KSampler_scheduler
     export type Enum_KSamplerEfficient_scheduler = Enum_KSampler_scheduler
     export type Enum_WASKSamplerWAS_scheduler = Enum_KSampler_scheduler
     export type Enum_WASKSamplerCycle_scheduler = Enum_KSampler_scheduler
@@ -3007,10 +3092,10 @@ declare global {
     export type Enum_ImpactImageReceiver_image = Enum_LoadImage_image
     export type Enum_LoadImageMask_channel = 'alpha' | 'blue' | 'green' | 'red'
     export type Enum_WASImageToLatentMask_channel = Enum_LoadImageMask_channel
-    export type Enum_ImageScaleBy_upscale_method = 'area' | 'bicubic' | 'bilinear' | 'nearest-exact'
     export type Enum_ConditioningSetMask_set_cond_area = 'default' | 'mask bounds'
     export type Enum_KSamplerAdvanced_add_noise = 'disable' | 'enable'
     export type Enum_KSamplerAdvanced_return_with_leftover_noise = Enum_KSamplerAdvanced_add_noise
+    export type Enum_BNK_Unsampler_normalize = Enum_KSamplerAdvanced_add_noise
     export type Enum_BNK_TiledKSamplerAdvanced_add_noise = Enum_KSamplerAdvanced_add_noise
     export type Enum_BNK_TiledKSamplerAdvanced_return_with_leftover_noise = Enum_KSamplerAdvanced_add_noise
     export type Enum_HEDPreprocessor_safe = Enum_KSamplerAdvanced_add_noise
@@ -3083,6 +3168,7 @@ declare global {
     export type Enum_BrightnessContrast_mode = 'brightness' | 'contrast'
     export type Enum_AlphaChanelAddByMask_method = 'default' | 'invert'
     export type Enum_AlphaChanelAsMask_method = Enum_AlphaChanelAddByMask_method
+    export type Enum_ImageBatchFork_priority = 'first' | 'second'
     export type Enum_ImageCompositeAbsolute_background = 'images_a' | 'images_b'
     export type Enum_ImageCompositeAbsoluteByContainer_background = Enum_ImageCompositeAbsolute_background
     export type Enum_ImageCompositeRelative_background = Enum_ImageCompositeAbsolute_background
@@ -3124,6 +3210,7 @@ declare global {
     export type Enum_ImageDrawRectangleRoundedByContainer_top_right_corner = Enum_ImageDrawRectangleRounded_top_left_corner
     export type Enum_ImageDrawRectangleRoundedByContainer_bottom_right_corner = Enum_ImageDrawRectangleRounded_top_left_corner
     export type Enum_ImageDrawRectangleRoundedByContainer_bottom_left_corner = Enum_ImageDrawRectangleRounded_top_left_corner
+    export type Enum_ImageEffectsLensZoomBurst_stabilization = Enum_ImageDrawRectangleRounded_top_left_corner
     export type Enum_ImageSegmentation_alpha_matting = Enum_ImageDrawRectangleRounded_top_left_corner
     export type Enum_ImageSegmentation_post_process_mask = Enum_ImageDrawRectangleRounded_top_left_corner
     export type Enum_ImageSegmentationCustom_alpha_matting = Enum_ImageDrawRectangleRounded_top_left_corner
@@ -3158,11 +3245,18 @@ declare global {
     export type Enum_WASTextAddTokens_print_current_tokens = Enum_ImageDrawRectangleRounded_top_left_corner
     export type Enum_WASTextAddTokenByInput_print_current_tokens = Enum_ImageDrawRectangleRounded_top_left_corner
     export type Enum_WASTextConcatenate_linebreak_addition = Enum_ImageDrawRectangleRounded_top_left_corner
-    export type Enum_ImageEffectsChromaticAberration_method = 'constant' | 'edge' | 'reflect'
-    export type Enum_ImageTransformPaddingAbsolute_method = Enum_ImageEffectsChromaticAberration_method
-    export type Enum_ImageTransformPaddingRelative_method = Enum_ImageEffectsChromaticAberration_method
-    export type Enum_ImageEffectsChromaticAberration_transpose = 'none' | 'reflect' | 'rotate'
-    export type Enum_ImageEffectsChromaticAberration_colors = 'gb' | 'rb' | 'rg'
+    export type Enum_ImageEffectsLensZoomBurst_method = 'circle' | 'point'
+    export type Enum_ImageEffectsLensChromaticAberration_method = 'constant' | 'edge' | 'reflect'
+    export type Enum_ImageTransformPaddingAbsolute_method = Enum_ImageEffectsLensChromaticAberration_method
+    export type Enum_ImageTransformPaddingRelative_method = Enum_ImageEffectsLensChromaticAberration_method
+    export type Enum_ImageEffectsLensChromaticAberration_transpose = 'none' | 'reflect' | 'rotate'
+    export type Enum_ImageEffectsLensChromaticAberration_colors = 'gb' | 'rb' | 'rg'
+    export type Enum_ImageEffectsLensBokeh_blur_type = 'bilateral' | 'none' | 'stack'
+    export type Enum_ImageEffectsLensBokeh_method = 'dilate' | 'filter'
+    export type Enum_ImageEffectsLensOpticAxis_lens_shape = 'circle' | 'corners' | 'rectangle' | 'square'
+    export type Enum_ImageEffectsLensOpticAxis_lens_edge = 'around' | 'symmetric'
+    export type Enum_ImageEffectsLensVignette_lens_edge = Enum_ImageEffectsLensOpticAxis_lens_edge
+    export type Enum_ImageEffectsLensVignette_lens_shape = 'circle' | 'rectangle'
     export type Enum_ImageSegmentation_model =
         | 'isnet-general-use'
         | 'isnetis'
@@ -3173,6 +3267,8 @@ declare global {
         | 'u2net_cloth_seg'
         | 'u2net_human_seg'
         | 'u2netp'
+    export type Enum_ImageTextMultiline_align = 'center' | 'left' | 'right'
+    export type Enum_ImageTextMultilineOutlined_align = Enum_ImageTextMultiline_align
     export type Enum_ImageTransformTranspose_method =
         | 'flip_horizontally'
         | 'flip_vertically'
@@ -3239,6 +3335,8 @@ declare global {
     export type Enum_ImpactPixelTiledKSampleUpscalerProviderPipe_tiling_strategy =
         Enum_ImpactPixelTiledKSampleUpscalerProvider_tiling_strategy
     export type Enum_ImpactTiledKSamplerProvider_tiling_strategy = Enum_ImpactPixelTiledKSampleUpscalerProvider_tiling_strategy
+    export type Enum_BNK_TiledKSamplerAdvanced_tiling_strategy = Enum_ImpactPixelTiledKSampleUpscalerProvider_tiling_strategy
+    export type Enum_BNK_TiledKSampler_tiling_strategy = Enum_ImpactPixelTiledKSampleUpscalerProvider_tiling_strategy
     export type Enum_ImpactTwoSamplersForMaskUpscalerProvider_full_sample_schedule =
         | 'interleave1'
         | 'interleave1+last1'
@@ -3849,19 +3947,6 @@ declare global {
     }
 
     // |=============================================================================|
-    // | ImageScaleBy [image_upscaling]                                              |
-    // |=============================================================================|
-    export interface ImageScaleBy extends HasSingle_IMAGE, ComfyNode<ImageScaleBy_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageScaleBy_input = {
-        image: _IMAGE
-        upscale_method: Enum_ImageScaleBy_upscale_method
-        /** default=1 min=8 max=8 step=0.01 */
-        scale_by?: _FLOAT
-    }
-
-    // |=============================================================================|
     // | ImagePadForOutpaint [image]                                                 |
     // |=============================================================================|
     export interface ImagePadForOutpaint extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImagePadForOutpaint_input> {
@@ -4437,6 +4522,41 @@ declare global {
     }
 
     // |=============================================================================|
+    // | CLIPSeg [image]                                                             |
+    // |=============================================================================|
+    export interface CLIPSeg extends HasSingle_MASK, ComfyNode<CLIPSeg_input> {
+        MASK: Slot<'MASK', 0>
+        IMAGE: Slot<'IMAGE', 1>
+        IMAGE_1: Slot<'IMAGE', 2>
+    }
+    export type CLIPSeg_input = {
+        image: _IMAGE
+        /** */
+        text: _STRING
+        /** default=7 min=15 max=15 step=0.1 */
+        blur?: _FLOAT
+        /** default=0.4 min=1 max=1 step=0.05 */
+        threshold?: _FLOAT
+        /** default=4 min=10 max=10 step=1 */
+        dilation_factor?: _INT
+    }
+
+    // |=============================================================================|
+    // | CombineSegMasks [image]                                                     |
+    // |=============================================================================|
+    export interface CombineSegMasks extends HasSingle_MASK, ComfyNode<CombineSegMasks_input> {
+        MASK: Slot<'MASK', 0>
+        IMAGE: Slot<'IMAGE', 1>
+        IMAGE_1: Slot<'IMAGE', 2>
+    }
+    export type CombineSegMasks_input = {
+        input_image: _IMAGE
+        mask_1: _MASK
+        mask_2: _MASK
+        mask_3?: _MASK
+    }
+
+    // |=============================================================================|
     // | AlphaChanelAdd [image_alpha]                                                |
     // |=============================================================================|
     export interface AlphaChanelAdd extends HasSingle_IMAGE, ComfyNode<AlphaChanelAdd_input> {
@@ -4617,6 +4737,53 @@ declare global {
     }
     export type VaeClamp_input = {
         vae: _VAE
+    }
+
+    // |=============================================================================|
+    // | ImageBatchGet [image_batch]                                                 |
+    // |=============================================================================|
+    export interface ImageBatchGet extends HasSingle_IMAGE, ComfyNode<ImageBatchGet_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageBatchGet_input = {
+        images: _IMAGE
+        /** default=1 min=undefined step=1 */
+        index?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageBatchRemove [image_batch]                                              |
+    // |=============================================================================|
+    export interface ImageBatchRemove extends HasSingle_IMAGE, ComfyNode<ImageBatchRemove_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageBatchRemove_input = {
+        images: _IMAGE
+        /** default=1 min=undefined step=1 */
+        index?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageBatchFork [image_batch]                                                |
+    // |=============================================================================|
+    export interface ImageBatchFork extends ComfyNode<ImageBatchFork_input> {
+        IMAGE: Slot<'IMAGE', 0>
+        IMAGE_1: Slot<'IMAGE', 1>
+    }
+    export type ImageBatchFork_input = {
+        images: _IMAGE
+        priority: Enum_ImageBatchFork_priority
+    }
+
+    // |=============================================================================|
+    // | ImageBatchJoin [image_batch]                                                |
+    // |=============================================================================|
+    export interface ImageBatchJoin extends HasSingle_IMAGE, ComfyNode<ImageBatchJoin_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageBatchJoin_input = {
+        images_a: _IMAGE
+        images_b: _IMAGE
     }
 
     // |=============================================================================|
@@ -5474,24 +5641,113 @@ declare global {
     }
 
     // |=============================================================================|
-    // | ImageEffectsChromaticAberration [image_effects]                             |
+    // | ImageEffectsLensZoomBurst [image_effects_lens]                              |
     // |=============================================================================|
-    export interface ImageEffectsChromaticAberration extends HasSingle_IMAGE, ComfyNode<ImageEffectsChromaticAberration_input> {
+    export interface ImageEffectsLensZoomBurst extends HasSingle_IMAGE, ComfyNode<ImageEffectsLensZoomBurst_input> {
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageEffectsChromaticAberration_input = {
+    export type ImageEffectsLensZoomBurst_input = {
+        images: _IMAGE
+        /** default=1.5 min=undefined step=0.01 */
+        scale?: _FLOAT
+        /** default=100 min=undefined */
+        samples?: _INT
+        /** default=0.5 max=1 step=0.01 */
+        position_x?: _FLOAT
+        /** default=0.5 max=1 step=0.01 */
+        position_y?: _FLOAT
+        /** default=0 min=360 max=360 */
+        rotation?: _FLOAT
+        method: Enum_ImageEffectsLensZoomBurst_method
+        stabilization: Enum_ImageDrawRectangleRounded_top_left_corner
+    }
+
+    // |=============================================================================|
+    // | ImageEffectsLensChromaticAberration [image_effects_lens]                    |
+    // |=============================================================================|
+    export interface ImageEffectsLensChromaticAberration
+        extends HasSingle_IMAGE,
+            ComfyNode<ImageEffectsLensChromaticAberration_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageEffectsLensChromaticAberration_input = {
         images: _IMAGE
         /** default=10 step=1 */
         shift?: _INT
-        method: Enum_ImageEffectsChromaticAberration_method
+        method: Enum_ImageEffectsLensChromaticAberration_method
         /** default=1 min=4 max=4 step=1 */
         shift_type?: _INT
         /** default=1 min=4 max=4 step=1 */
         mixing_type?: _INT
-        transpose: Enum_ImageEffectsChromaticAberration_transpose
-        colors: Enum_ImageEffectsChromaticAberration_colors
+        transpose: Enum_ImageEffectsLensChromaticAberration_transpose
+        colors: Enum_ImageEffectsLensChromaticAberration_colors
         /** default=1 max=15 step=0.1 */
-        curvy?: _FLOAT
+        lens_curvy?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | ImageEffectsLensBokeh [image_effects_lens]                                  |
+    // |=============================================================================|
+    export interface ImageEffectsLensBokeh extends HasSingle_IMAGE, ComfyNode<ImageEffectsLensBokeh_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageEffectsLensBokeh_input = {
+        images: _IMAGE
+        /** default=5 min=undefined */
+        blades_shape?: _INT
+        /** default=10 min=undefined */
+        blades_radius?: _INT
+        /** default=0 min=360 max=360 */
+        blades_rotation?: _FLOAT
+        /** default=10 min=undefined step=2 */
+        blur_size?: _INT
+        blur_type: Enum_ImageEffectsLensBokeh_blur_type
+        method: Enum_ImageEffectsLensBokeh_method
+    }
+
+    // |=============================================================================|
+    // | ImageEffectsLensOpticAxis [image_effects_lens]                              |
+    // |=============================================================================|
+    export interface ImageEffectsLensOpticAxis
+        extends HasSingle_IMAGE,
+            HasSingle_MASK,
+            ComfyNode<ImageEffectsLensOpticAxis_input> {
+        IMAGE: Slot<'IMAGE', 0>
+        MASK: Slot<'MASK', 1>
+    }
+    export type ImageEffectsLensOpticAxis_input = {
+        images: _IMAGE
+        lens_shape: Enum_ImageEffectsLensOpticAxis_lens_shape
+        lens_edge: Enum_ImageEffectsLensOpticAxis_lens_edge
+        /** default=4 max=15 step=0.1 */
+        lens_curvy?: _FLOAT
+        /** default=2 step=0.1 */
+        lens_zoom?: _FLOAT
+        /** default=0.5 max=10 step=0.1 */
+        lens_aperture?: _FLOAT
+        /** default=30 min=undefined step=2 */
+        blur_intensity?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageEffectsLensVignette [image_effects_lens]                               |
+    // |=============================================================================|
+    export interface ImageEffectsLensVignette extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImageEffectsLensVignette_input> {
+        IMAGE: Slot<'IMAGE', 0>
+        MASK: Slot<'MASK', 1>
+    }
+    export type ImageEffectsLensVignette_input = {
+        images: _IMAGE
+        lens_shape: Enum_ImageEffectsLensVignette_lens_shape
+        lens_edge: Enum_ImageEffectsLensOpticAxis_lens_edge
+        /** default=3 max=15 step=0.1 */
+        lens_curvy?: _FLOAT
+        /** default=0 step=0.1 */
+        lens_zoom?: _FLOAT
+        /** default=0.25 max=1 step=0.01 */
+        brightness?: _FLOAT
+        /** default=0.5 max=1 step=0.01 */
+        saturation?: _FLOAT
     }
 
     // |=============================================================================|
@@ -5522,6 +5778,10 @@ declare global {
     }
     export type ImageFilterBlur_input = {
         images: _IMAGE
+        /** default=10 min=undefined */
+        size_x?: _INT
+        /** default=10 min=undefined */
+        size_y?: _INT
     }
 
     // |=============================================================================|
@@ -5532,8 +5792,10 @@ declare global {
     }
     export type ImageFilterBoxBlur_input = {
         images: _IMAGE
-        /** default=1 step=1 */
-        radius?: _INT
+        /** default=10 min=undefined */
+        size_x?: _INT
+        /** default=10 min=undefined */
+        size_y?: _INT
     }
 
     // |=============================================================================|
@@ -5544,8 +5806,54 @@ declare global {
     }
     export type ImageFilterGaussianBlur_input = {
         images: _IMAGE
-        /** default=1 step=1 */
-        radius?: _INT
+        /** default=10 min=undefined step=2 */
+        size_x?: _INT
+        /** default=10 min=undefined step=2 */
+        size_y?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterGaussianBlurAdvanced [image_filter]                              |
+    // |=============================================================================|
+    export interface ImageFilterGaussianBlurAdvanced extends HasSingle_IMAGE, ComfyNode<ImageFilterGaussianBlurAdvanced_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterGaussianBlurAdvanced_input = {
+        images: _IMAGE
+        /** default=10 min=undefined step=2 */
+        size_x?: _INT
+        /** default=10 min=undefined step=2 */
+        size_y?: _INT
+        /** default=0 */
+        sigma_x?: _INT
+        /** default=0 */
+        sigma_y?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterStackBlur [image_filter]                                         |
+    // |=============================================================================|
+    export interface ImageFilterStackBlur extends HasSingle_IMAGE, ComfyNode<ImageFilterStackBlur_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterStackBlur_input = {
+        images: _IMAGE
+        /** default=10 min=undefined step=2 */
+        size_x?: _INT
+        /** default=10 min=undefined step=2 */
+        size_y?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageFilterMedianBlur [image_filter]                                        |
+    // |=============================================================================|
+    export interface ImageFilterMedianBlur extends HasSingle_IMAGE, ComfyNode<ImageFilterMedianBlur_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageFilterMedianBlur_input = {
+        images: _IMAGE
+        /** default=10 min=undefined step=2 */
+        size?: _INT
     }
 
     // |=============================================================================|
@@ -5556,7 +5864,7 @@ declare global {
     }
     export type ImageFilterBilateralBlur_input = {
         images: _IMAGE
-        /** default=10 step=2 */
+        /** default=10 min=undefined step=2 */
         size?: _INT
         /** default=1 max=1 step=0.01 */
         sigma_color?: _FLOAT
@@ -5646,18 +5954,6 @@ declare global {
         size?: _INT
         /** default=1 step=1 */
         rank?: _INT
-    }
-
-    // |=============================================================================|
-    // | ImageFilterMedian [image_filter]                                            |
-    // |=============================================================================|
-    export interface ImageFilterMedian extends HasSingle_IMAGE, ComfyNode<ImageFilterMedian_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ImageFilterMedian_input = {
-        images: _IMAGE
-        /** default=2 min=undefined step=2 */
-        size?: _INT
     }
 
     // |=============================================================================|
@@ -5836,6 +6132,68 @@ declare global {
     }
 
     // |=============================================================================|
+    // | ImageTextMultiline [image_draw]                                             |
+    // |=============================================================================|
+    export interface ImageTextMultiline extends HasSingle_IMAGE, ComfyNode<ImageTextMultiline_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTextMultiline_input = {
+        /** */
+        text: _STRING
+        font: Enum_CLIPLoader_clip_name
+        align: Enum_ImageTextMultiline_align
+        /** default=28 min=undefined step=1 */
+        size?: _INT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        alpha?: _FLOAT
+        /** default=0 step=1 */
+        margin_x?: _INT
+        /** default=0 step=1 */
+        margin_y?: _INT
+    }
+
+    // |=============================================================================|
+    // | ImageTextMultilineOutlined [image_draw]                                     |
+    // |=============================================================================|
+    export interface ImageTextMultilineOutlined extends HasSingle_IMAGE, ComfyNode<ImageTextMultilineOutlined_input> {
+        IMAGE: Slot<'IMAGE', 0>
+    }
+    export type ImageTextMultilineOutlined_input = {
+        /** */
+        text: _STRING
+        font: Enum_CLIPLoader_clip_name
+        align: Enum_ImageTextMultiline_align
+        /** default=28 min=undefined step=1 */
+        size?: _INT
+        /** default=255 max=255 step=1 */
+        red?: _INT
+        /** default=255 max=255 step=1 */
+        green?: _INT
+        /** default=255 max=255 step=1 */
+        blue?: _INT
+        /** default=1 step=1 */
+        outline_size?: _INT
+        /** default=0 max=255 step=1 */
+        outline_red?: _INT
+        /** default=0 max=255 step=1 */
+        outline_green?: _INT
+        /** default=0 max=255 step=1 */
+        outline_blue?: _INT
+        /** default=1 max=1 step=0.01 */
+        alpha?: _FLOAT
+        /** default=0 step=1 */
+        margin_x?: _INT
+        /** default=0 step=1 */
+        margin_y?: _INT
+    }
+
+    // |=============================================================================|
     // | ImageTransformResizeAbsolute [image_transform]                              |
     // |=============================================================================|
     export interface ImageTransformResizeAbsolute extends HasSingle_IMAGE, ComfyNode<ImageTransformResizeAbsolute_input> {
@@ -5932,7 +6290,7 @@ declare global {
         add_width?: _INT
         /** default=64 min=undefined */
         add_height?: _INT
-        method: Enum_ImageEffectsChromaticAberration_method
+        method: Enum_ImageEffectsLensChromaticAberration_method
     }
 
     // |=============================================================================|
@@ -5947,7 +6305,7 @@ declare global {
         scale_width?: _FLOAT
         /** default=0.25 step=0.1 */
         scale_height?: _FLOAT
-        method: Enum_ImageEffectsChromaticAberration_method
+        method: Enum_ImageEffectsLensChromaticAberration_method
     }
 
     // |=============================================================================|
@@ -7302,9 +7660,9 @@ declare global {
         source: Enum_BNK_NoisyLatentImage_source
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
-        /** default=512 min=8192 max=8192 step=64 */
+        /** default=512 min=8192 max=8192 step=8 */
         width?: _INT
-        /** default=512 min=8192 max=8192 step=64 */
+        /** default=512 min=8192 max=8192 step=8 */
         height?: _INT
         /** default=1 min=64 max=64 */
         batch_size?: _INT
@@ -7332,9 +7690,10 @@ declare global {
     }
     export type BNK_SlerpLatent_input = {
         latents1: _LATENT
-        latents2: _LATENT
         /** default=0.5 min=1 max=1 step=0.01 */
         factor?: _FLOAT
+        latents2?: _LATENT
+        mask?: _MASK
     }
 
     // |=============================================================================|
@@ -7363,9 +7722,10 @@ declare global {
     }
     export type BNK_InjectNoise_input = {
         latents: _LATENT
-        noise: _LATENT
         /** default=1 min=20 max=20 step=0.01 */
         strength?: _FLOAT
+        noise?: _LATENT
+        mask?: _MASK
     }
 
     // |=============================================================================|
@@ -7378,10 +7738,13 @@ declare global {
         model: _MODEL
         /** default=20 min=10000 max=10000 */
         steps?: _INT
+        /** default=0 min=10000 max=10000 */
+        end_at_step?: _INT
         /** default=1 min=100 max=100 */
         cfg?: _FLOAT
         sampler_name: Enum_KSampler_sampler_name
         scheduler: Enum_KSampler_scheduler
+        normalize: Enum_KSamplerAdvanced_add_noise
         positive: _CONDITIONING
         negative: _CONDITIONING
         latent_image: _LATENT
@@ -7402,8 +7765,7 @@ declare global {
         tile_width?: _INT
         /** default=512 min=8192 max=8192 step=64 */
         tile_height?: _INT
-        /** default=1 min=64 max=64 step=1 */
-        concurrent_tiles?: _INT
+        tiling_strategy: Enum_ImpactPixelTiledKSampleUpscalerProvider_tiling_strategy
         /** default=20 min=10000 max=10000 */
         steps?: _INT
         /** default=8 min=100 max=100 */
@@ -7418,6 +7780,34 @@ declare global {
         /** default=10000 min=10000 max=10000 */
         end_at_step?: _INT
         return_with_leftover_noise: Enum_KSamplerAdvanced_add_noise
+    }
+
+    // |=============================================================================|
+    // | BNK_TiledKSampler [sampling]                                                |
+    // |=============================================================================|
+    export interface BNK_TiledKSampler extends HasSingle_LATENT, ComfyNode<BNK_TiledKSampler_input> {
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type BNK_TiledKSampler_input = {
+        model: _MODEL
+        /** default=0 min=18446744073709552000 max=18446744073709552000 */
+        seed?: _INT
+        /** default=512 min=8192 max=8192 step=64 */
+        tile_width?: _INT
+        /** default=512 min=8192 max=8192 step=64 */
+        tile_height?: _INT
+        tiling_strategy: Enum_ImpactPixelTiledKSampleUpscalerProvider_tiling_strategy
+        /** default=20 min=10000 max=10000 */
+        steps?: _INT
+        /** default=8 min=100 max=100 */
+        cfg?: _FLOAT
+        sampler_name: Enum_KSampler_sampler_name
+        scheduler: Enum_KSampler_scheduler
+        positive: _CONDITIONING
+        negative: _CONDITIONING
+        latent_image: _LATENT
+        /** default=1 min=1 max=1 step=0.01 */
+        denoise?: _FLOAT
     }
 
     // |=============================================================================|
@@ -8555,11 +8945,11 @@ declare global {
         ASCII_2: Slot<'ASCII', 2>
     }
     export type WASCacheNode_input = {
-        /** default="69622130_cache" */
+        /** default="72479479_cache" */
         latent_suffix?: _STRING
-        /** default="66220110_cache" */
+        /** default="95646616_cache" */
         image_suffix?: _STRING
-        /** default="55349338_cache" */
+        /** default="81785927_cache" */
         conditioning_suffix?: _STRING
         latent?: _LATENT
         image?: _IMAGE
@@ -11383,7 +11773,6 @@ declare global {
         PreviewImage: ComfyNodeSchemaJSON
         LoadImage: ComfyNodeSchemaJSON
         LoadImageMask: ComfyNodeSchemaJSON
-        ImageScaleBy: ComfyNodeSchemaJSON
         ImagePadForOutpaint: ComfyNodeSchemaJSON
         ConditioningAverage: ComfyNodeSchemaJSON
         ConditioningCombine: ComfyNodeSchemaJSON
@@ -11426,6 +11815,8 @@ declare global {
         FeatherMask: ComfyNodeSchemaJSON
         RebatchLatents: ComfyNodeSchemaJSON
         BrightnessContrast: ComfyNodeSchemaJSON
+        CLIPSeg: ComfyNodeSchemaJSON
+        CombineSegMasks: ComfyNodeSchemaJSON
         AlphaChanelAdd: ComfyNodeSchemaJSON
         AlphaChanelAddByMask: ComfyNodeSchemaJSON
         AlphaChanelAsMask: ComfyNodeSchemaJSON
@@ -11444,6 +11835,10 @@ declare global {
         StyleModelClamp: ComfyNodeSchemaJSON
         UpscaleModelClamp: ComfyNodeSchemaJSON
         VaeClamp: ComfyNodeSchemaJSON
+        ImageBatchGet: ComfyNodeSchemaJSON
+        ImageBatchRemove: ComfyNodeSchemaJSON
+        ImageBatchFork: ComfyNodeSchemaJSON
+        ImageBatchJoin: ComfyNodeSchemaJSON
         ImageCompositeAbsolute: ComfyNodeSchemaJSON
         ImageCompositeAbsoluteByContainer: ComfyNodeSchemaJSON
         ImageCompositeRelative: ComfyNodeSchemaJSON
@@ -11472,12 +11867,19 @@ declare global {
         ImageEffectsGrayscale: ComfyNodeSchemaJSON
         ImageEffectsNegative: ComfyNodeSchemaJSON
         ImageEffectsSepia: ComfyNodeSchemaJSON
-        ImageEffectsChromaticAberration: ComfyNodeSchemaJSON
+        ImageEffectsLensZoomBurst: ComfyNodeSchemaJSON
+        ImageEffectsLensChromaticAberration: ComfyNodeSchemaJSON
+        ImageEffectsLensBokeh: ComfyNodeSchemaJSON
+        ImageEffectsLensOpticAxis: ComfyNodeSchemaJSON
+        ImageEffectsLensVignette: ComfyNodeSchemaJSON
         ImageFilterSmooth: ComfyNodeSchemaJSON
         ImageFilterSmoothMore: ComfyNodeSchemaJSON
         ImageFilterBlur: ComfyNodeSchemaJSON
         ImageFilterBoxBlur: ComfyNodeSchemaJSON
         ImageFilterGaussianBlur: ComfyNodeSchemaJSON
+        ImageFilterGaussianBlurAdvanced: ComfyNodeSchemaJSON
+        ImageFilterStackBlur: ComfyNodeSchemaJSON
+        ImageFilterMedianBlur: ComfyNodeSchemaJSON
         ImageFilterBilateralBlur: ComfyNodeSchemaJSON
         ImageFilterContour: ComfyNodeSchemaJSON
         ImageFilterDetail: ComfyNodeSchemaJSON
@@ -11487,7 +11889,6 @@ declare global {
         ImageFilterFindEdges: ComfyNodeSchemaJSON
         ImageFilterSharpen: ComfyNodeSchemaJSON
         ImageFilterRank: ComfyNodeSchemaJSON
-        ImageFilterMedian: ComfyNodeSchemaJSON
         ImageFilterMin: ComfyNodeSchemaJSON
         ImageFilterMax: ComfyNodeSchemaJSON
         ImageFilterMode: ComfyNodeSchemaJSON
@@ -11496,6 +11897,8 @@ declare global {
         ImageSegmentationCustomAdvanced: ComfyNodeSchemaJSON
         ImageText: ComfyNodeSchemaJSON
         ImageTextOutlined: ComfyNodeSchemaJSON
+        ImageTextMultiline: ComfyNodeSchemaJSON
+        ImageTextMultilineOutlined: ComfyNodeSchemaJSON
         ImageTransformResizeAbsolute: ComfyNodeSchemaJSON
         ImageTransformResizeRelative: ComfyNodeSchemaJSON
         ImageTransformCropAbsolute: ComfyNodeSchemaJSON
@@ -11587,6 +11990,7 @@ declare global {
         BNK_InjectNoise: ComfyNodeSchemaJSON
         BNK_Unsampler: ComfyNodeSchemaJSON
         BNK_TiledKSamplerAdvanced: ComfyNodeSchemaJSON
+        BNK_TiledKSampler: ComfyNodeSchemaJSON
         ClipSeg: ComfyNodeSchemaJSON
         HEDPreprocessor: ComfyNodeSchemaJSON
         ScribblePreprocessor: ComfyNodeSchemaJSON
