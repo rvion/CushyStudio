@@ -44,7 +44,12 @@ export type Requestable_intOpt = { type: 'int?'; label?: string; default?: numbe
 export type Requestable_bool = { type: 'bool'; label?: string; default?: boolean }
 export type Requestable_boolOpt = { type: 'bool?'; label?: string }
 export type Requestable_embeddings = { type: 'embeddings'; label?: string }
-export type Requestable_enum<T extends keyof LATER<'Requirable'>> = { type: 'enum'; enumName: T; label?: string }
+export type Requestable_enum<T extends keyof LATER<'Requirable'>> = {
+    type: 'enum'
+    enumName: T
+    default?: LATER<'Requirable'>[T]
+    label?: string
+}
 export type Requestable_enumOpt<T extends keyof LATER<'Requirable'>> = { type: 'enum?'; enumName: T; label?: string }
 export type Requestable_loras = { type: 'loras'; label?: string }
 export type Requestable_samMaskPoints = { type: 'samMaskPoints'; label?: string; imageInfo: ImageT }
