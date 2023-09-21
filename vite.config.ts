@@ -32,21 +32,6 @@ export default defineConfig({
             zlib: './src/syms/zlib',
         },
     },
-    // esbuild: {
-    //     // minify: false,
-    //     minifySyntax: false,
-    // },
-    // build: {
-    //     minify: false,
-    //     outDir: 'dist/webview',
-    //     rollupOptions: {
-    //         output: {
-    //             entryFileNames: `assets/[name].js`,
-    //             chunkFileNames: `assets/[name].js`,
-    //             assetFileNames: `assets/[name].[ext]`,
-    //         },
-    //     },
-    // },
 })
 
 function dynamicModulePlugin() {
