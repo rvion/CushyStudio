@@ -3,7 +3,7 @@ action('🎭 mask', {
     priority: 1,
     ui: (form) => ({
         match: form.str({ default: 'dress' }),
-        image: form.selectImage('test', []),
+        image: form.selectImage('test'),
         norm: form.bool({ label: 'normalize', default: true }),
         threeshold: form.int({ default: 2 }),
     }),

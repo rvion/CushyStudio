@@ -3,7 +3,7 @@
 //         // generate an empty table
 //         const fun = (x: string) => `masterpiece, ${x} painting on a wall`
 
-//         const ckpt = $.nodes.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
+//         const ckpt = $.nodes.CheckpointLoaderSimple({ ckpt_name: 'albedobaseXL_v02.safetensors' })
 //         const latent = $.nodes.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
 //         const positive: CLIPTextEncode = $.nodes.CLIPTextEncode({ text: fun('white rectangle'), clip: ckpt })
 //         const negative = $.nodes.CLIPTextEncode({ text: 'bad hands', clip: ckpt })

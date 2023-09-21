@@ -6,7 +6,7 @@ action('🌠 start from image', {
     //     clothes: kk.STRING({ tag: 'clothes' }),
     // }),
     ui: (form) => ({
-        image: form.selectImage('test', []),
+        image: form.selectImage('test'),
     }),
     run: (flow, reqs) => {
         // const image: _IMAGE = reqs.image

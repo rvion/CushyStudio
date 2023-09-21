@@ -2,10 +2,10 @@ action('📘 Load', {
     priority: 1,
     help: 'load model with optional clip-skip, loras, tome ratio, etc.',
     ui: (form) => ({
-        model: form.enum({ enumName: 'Enum_EfficientLoader_ckpt_name' }),
-        vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name' }),
+        model: form.enum({ enumName: 'Enum_EfficientLoader_Ckpt_name' }),
+        vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
         clipSkip: form.intOpt({}),
-        tomeRatio: form.intOpt({}),
+        // tomeRatio: form.intOpt({}),
         loras: form.loras({}),
     }),
     run: async (flow, p) => {

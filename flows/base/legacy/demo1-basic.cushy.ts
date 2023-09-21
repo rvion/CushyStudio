@@ -1,8 +1,8 @@
 action('🪑 demo 1', {
     help: 'generate a basic chair',
     run: async (X) => {
-        const ckpt = X.nodes.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
-        const latent = X.nodes.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
+        const ckpt = X.nodes.CheckpointLoaderSimple({ ckpt_name: 'albedobaseXL_v02.safetensors' })
+        const latent = X.nodes.EmptyLatentImage({ width: 1024, height: 1024, batch_size: 1 })
         const positive = X.nodes.CLIPTextEncode({ text: 'masterpiece, (chair:1.3)', clip: ckpt })
         const negative = X.nodes.CLIPTextEncode({ text: '', clip: ckpt })
         const sampler = X.nodes.KSampler({

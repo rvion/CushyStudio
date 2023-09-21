@@ -1,7 +1,7 @@
 //
 action('vn3', {
     run: async ($) => {
-        const vae: Enum_VAELoader_vae_name = 'kl-f8-anime2.ckpt'
+        const vae: Enum_VAELoader_Vae_name = 'kl-f8-anime2.ckpt'
         const A___ = $.actions.loadModel({ vae, ckptName: 'mistoonAnime_v10.safetensors', tomeRatio: false }) // stop_at_clip_layer: -2
         const B___ = $.actions.loadModel({ vae, ckptName: 'mistoonAnime_v10Inpainting.safetensors', tomeRatio: false }) // stop_at_clip_layer: -2
 
@@ -12,7 +12,7 @@ action('vn3', {
         const seed = $.randomSeed()
         const negativeEmbeddings = [
             //
-            $.embedding('easynegative'),
+            $.embedding('EasyNegative'),
             $.embedding('ng_deepnegative_v1_75t'),
             $.embedding('bad-artist-anime'),
             $.embedding('bad-artist'),

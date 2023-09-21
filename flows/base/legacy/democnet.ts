@@ -1,6 +1,6 @@
 action('democnet', {
     run: async ($) => {
-        const ckpt = $.nodes.CheckpointLoaderSimple({ ckpt_name: 'AOM3A1_orangemixs.safetensors' })
+        const ckpt = $.nodes.CheckpointLoaderSimple({ ckpt_name: 'albedobaseXL_v02.safetensors' })
         const vae = $.nodes.VAELoader({ vae_name: 'orangemix.vae.pt' })
 
         // this is not needed if you work with a local ComfyUI: just use WASImageLoad instead
