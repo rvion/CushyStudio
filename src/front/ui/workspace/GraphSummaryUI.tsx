@@ -2,15 +2,12 @@ import type { GraphL } from 'src/models/Graph'
 import { observer } from 'mobx-react-lite'
 import { Panel } from 'rsuite'
 import { NodeRefUI } from '../NodeRefUI'
+// import { CustomNodeFlow } from '../graph/Graph2UI'
 
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: GraphL }) {
     const graph = p.graph
     return (
-        <Panel className='w-64 h-64'>
-            {/* <Panel className='graph-container self-start w-48'>
-                <CustomNodeFlow />
-                <div>GRAPH DISABLED</div>
-            </Panel> */}
+        <Panel className='w-64 max-h-64'>
             <div>
                 {graph.size === 0 && <div>Empty Graph</div>}
                 {graph.nodes.map((n, ix) => (

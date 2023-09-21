@@ -128,7 +128,7 @@ export class ComfyImporter {
             }
             let outoutIx = 0
             for (const o of schema.outputs ?? []) {
-                availableSignals.set(`${nodeID}-${outoutIx++}`, `${varName}.${o.name}`)
+                availableSignals.set(`${nodeID}-${outoutIx++}`, `${varName}.${o.nameInComfy}`)
             }
 
             if (node == null) throw new Error('node not found')

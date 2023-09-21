@@ -87,7 +87,6 @@ export class STATE {
     }
 
     expandNodes: boolean = false
-    flowDirection: 'down' | 'up' = 'up'
     showAllMessageReceived: boolean = false
     currentAction: Maybe<UIAction> = null
 
@@ -120,7 +119,6 @@ export class STATE {
         this.cushyTSPath = this.resolve(this.rootPath, asRelativePath('.cushy/cushy.d.ts'))
         this.tsConfigPath = this.resolve(this.rootPath, asRelativePath('tsconfig.json'))
         this.outputFolderPath = this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
-
         this.schema = this.db.schema
 
         // if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
@@ -198,8 +196,9 @@ export class STATE {
         )
     }
 
-    initWebsocket = () =>
-        new ResilientWebSocketClient({
+    initWebsocket = () => {
+        console.log('🦊 starting websocket client to ComfyUI')
+        return new ResilientWebSocketClient({
             onClose: () => {
                 // 🔴
                 // this.db. = 'disconnected'
@@ -214,6 +213,7 @@ export class STATE {
             url: this.getWSUrl,
             onMessage: this.onMessage,
         })
+    }
 
     private _pendingMsgs = new Map<PromptID, WsMsg[]>()
     private activePromptID: PromptID | null = null
@@ -234,9 +234,8 @@ export class STATE {
 
     onMessage = (e: MessageEvent) => {
         console.info(`🧦 received ${e.data}`)
+        console.log(e.data)
         const msg: WsMsg = JSON.parse(e.data as any)
-
-        // this.broadCastToAllClients({ ...msg })
 
         if (msg.type === 'status') {
             if (msg.data.sid) this.comfySessionId = msg.data.sid

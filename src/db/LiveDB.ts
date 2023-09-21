@@ -51,10 +51,9 @@ export class LiveDB {
     constructor(public st: STATE) {
         // 1. restore store if  it exists
         this.relPath = asRelativePath('./cushy.db')
-        console.log('relpath:', this.relPath)
         this.absPath = this.st.resolveFromRoot(this.relPath)
-        console.log('abspath:', this.absPath)
         const exists = existsSync(this.absPath)
+        console.log('[💾 liveDB] path:', this.absPath, exists ? '[🟢found]' : '[🔴MISSING]')
         try {
             if (exists) this.store = JSON.parse(readFileSync(this.absPath, 'utf8'))
         } catch (error) {
@@ -97,7 +96,11 @@ export class LiveDB {
         return this.configs.getOrCreate('main-config', () => ({ id: 'main-config' }))
     }
     get schema(): SchemaL {
-        return this.schemas.getOrCreate('main-schema', () => ({ id: 'main-schema', embeddings: [], spec: {} }))
+        return this.schemas.getOrCreate('main-schema', () => ({
+            id: 'main-schema',
+            embeddings: [],
+            spec: {},
+        }))
     }
 
     /* reset the whole DB (🔴?) */

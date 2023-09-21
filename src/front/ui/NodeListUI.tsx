@@ -65,12 +65,12 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                         {/* show values */}
                         <Form layout='horizontal'>
                             {schema.inputs.map((input) => {
-                                let val = node.json.inputs[input.name]
+                                let val = node.json.inputs[input.nameInComfy]
                                 if (Array.isArray(val)) return null
                                 return (
-                                    <Form.Group key={input.name}>
-                                        <Form.ControlLabel>{input.name}</Form.ControlLabel>
-                                        <Form.Control name={input.name} value={val}></Form.Control>
+                                    <Form.Group key={input.nameInComfy}>
+                                        <Form.ControlLabel>{input.nameInComfy}</Form.ControlLabel>
+                                        <Form.Control name={input.nameInComfy} value={val}></Form.Control>
                                     </Form.Group>
                                 )
                             })}
@@ -78,12 +78,12 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                         {/* show refs */}
                         <div>
                             {schema.inputs.map((input) => {
-                                let val = node.json.inputs[input.name]
+                                let val = node.json.inputs[input.nameInComfy]
                                 if (!Array.isArray(val)) return null
                                 return (
-                                    <div key={input.name} className='row gap-2'>
+                                    <div key={input.nameInComfy} className='row gap-2'>
                                         <Form.ControlLabel>{<NodeRefUI node={node} />}</Form.ControlLabel>
-                                        <Form.ControlLabel>{input.name}</Form.ControlLabel>
+                                        <Form.ControlLabel>{input.nameInComfy}</Form.ControlLabel>
                                     </div>
                                 )
                             })}

@@ -74,7 +74,6 @@ export class StepL {
     // }
 
     // tool = new LiveRefOpt<this, ToolL>(this, 'toolID', 'tools')
-    inputGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
 
     reset = () => (this.data.params = {})
 

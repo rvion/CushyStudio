@@ -34,33 +34,33 @@ export const ActionUI = observer(function StepUI_(p: { draft: DraftL }) {
 
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <Panel className='relative mb-3' shaded>
-                <div className='flex justify-between'>
+            <Panel className='relative' shaded>
+                <div className='flex'>
+                    {/* <ButtonGroup> */}
+                    <IconButton
+                        size='sm'
+                        className='self-start'
+                        color='green'
+                        appearance='primary'
+                        icon={<I.PlayOutline />}
+                        onClick={() => draft.start()}
+                    />
                     <ToolPickerUI draft={draft} />
-                    <ButtonGroup>
-                        <IconButton
-                            size='sm'
-                            className='self-start'
-                            color='green'
-                            appearance='primary'
-                            icon={<I.PlayOutline />}
-                            onClick={() => draft.start()}
-                        />
-                        <IconButton
-                            size='sm'
-                            className='self-start'
-                            // color='blue'
-                            // appearance='primary'
-                            icon={<I.PageNext />}
-                            onClick={() => draft.start()}
-                        />
-                    </ButtonGroup>
                 </div>
                 {/* {step.id} */}
                 <div className='flex gap-2' style={{ width: '30rem' }}>
                     <ActionSuggestionUI draft={draft} />
                     {/* widgets ------------------------------- */}
                     <form
+                        onKeyUp={(ev) => {
+                            // submit on meta+enter
+                            if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
+                                console.log('SUBMIT')
+                                ev.preventDefault()
+                                ev.stopPropagation()
+                                draft.start()
+                            }
+                        }}
                         onSubmit={(ev) => {
                             console.log('SUBMIT')
                             ev.preventDefault()
@@ -81,7 +81,12 @@ export const ActionUI = observer(function StepUI_(p: { draft: DraftL }) {
                                             <div>{rootKey}</div>
                                         </Whisper>
                                     </div>
-                                    <WidgetUI key={pathInfo} path={[rootKey]} req={req} focus={ix === 0} />
+                                    <WidgetUI //
+                                        key={pathInfo}
+                                        path={[rootKey]}
+                                        req={req}
+                                        focus={ix === 0}
+                                    />
                                 </div>
                             )
                         })}

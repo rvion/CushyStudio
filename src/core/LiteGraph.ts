@@ -2,6 +2,8 @@ import type { Branded } from '../utils/types'
 import { CytoJSON } from './AutolayoutV2'
 import type { GraphL } from '../models/Graph'
 import type { ComfyNode } from './Node'
+import { toJS } from 'mobx'
+import { bang } from '../utils/bang'
 
 export type LiteGraphJSON = {
     last_node_id: number
@@ -67,8 +69,14 @@ export const convertFlowToLiteGraphJSON = (graph: GraphL, cytoJSON?: CytoJSON): 
 
     const ctx = new LiteGraphCtx(graph)
     const last_node_id = Math.max(...graph.nodes.map((n) => n.uidNumber))
+    // const last_node_id = graph.nodes[graph.nodes.length - 1].uid
     const xxx = graph.nodes.map((n) => convertNodeToLiteGraphNode(ctx, n))
     const nodes = xxx.map((n) => n.node)
+    console.log('🐙 1', nodes)
+    console.log(
+        '🐙 2',
+        cytoJSON!.elements.nodes.map((a) => a.data),
+    )
     for (const n of nodes) {
         if (cytoJSON) {
             const pos = cytoJSON.elements.nodes.find((a) => parseInt(a.data.id, 10) === n.id)
@@ -76,7 +84,7 @@ export const convertFlowToLiteGraphJSON = (graph: GraphL, cytoJSON?: CytoJSON): 
                 n.pos[0] = pos.position.x
                 n.pos[1] = pos.position.y
             } else {
-                console.log('❌ no pos')
+                console.log('❌ no pos', n)
             }
         }
         for (const o of n.outputs) {
@@ -104,25 +112,35 @@ const convertNodeToLiteGraphNode = (
     const incomingLinks: LiteGraphLink[] = []
     for (const ipt of node.$schema.inputs) {
         // if for adding the randomisation is: is it an INT and is it called seed or noise_seed
-        const raw = node.serializeValue(ipt.name, node.json.inputs[ipt.name])
+        const raw = node.serializeValue(ipt.nameInComfy, node.json.inputs[ipt.nameInComfy])
         const isLink = _isLink(raw)
         if (isLink) {
+            console.log('><><>', toJS(raw))
+            const nodeUidNumber = bang(ctx.graph.nodes.find((n) => n.uid === raw[0])?.uidNumber)
             inputs.push({
-                name: ipt.name,
+                name: ipt.nameInComfy,
                 type: ipt.type,
-                link: ctx.allocateLink(parseInt(raw[0], 10), raw[1], node.uidNumber, asLiteGraphSlotIndex(ipt.index), ipt.type),
+                link: ctx.allocateLink(
+                    //
+                    // parseInt(raw[0], 10),
+                    nodeUidNumber,
+                    raw[1],
+                    node.uidNumber,
+                    asLiteGraphSlotIndex(ipt.index),
+                    ipt.type,
+                ),
             })
             // incomingLinks.push(link)
         } else {
             widgets_values.push(raw)
         }
         // add the fake noise_seed field
-        const isSeed = ipt.type === 'INT' && (ipt.name === 'seed' || ipt.name === 'noise_seed')
+        const isSeed = ipt.type === 'INT' && (ipt.nameInComfy === 'seed' || ipt.nameInComfy === 'noise_seed')
         if (isSeed) widgets_values.push(false)
     }
     const outputs = node.$schema.outputs.map(
         (i, ix): LiteGraphNodeOutput => ({
-            name: i.name,
+            name: i.nameInComfy,
             type: i.type,
             links: [], // empty links by default 🔴
             slot_index: asLiteGraphSlotIndex(ix),

@@ -67,6 +67,7 @@ export class ComfyNode<ComfyNode_input extends object> {
         return comfyColors[this.$schema.category]
     }
 
+    // static X: number = 1
     uidNumber: number
     $outputs: Slot<any>[] = []
     constructor(
@@ -75,12 +76,13 @@ export class ComfyNode<ComfyNode_input extends object> {
         public uid: string = graph.getUID(),
         jsonExt: ComfyNodeJSON,
     ) {
+        this.uidNumber = this.graph._uidNumber++
         if (jsonExt == null) throw new Error('invariant violation: jsonExt is null')
         // this.json = graph.data.comfyPromptJSON[uid]
         // if (this.json == null) graph.data.comfyPromptJSON = {}
         // console.log('CONSTRUCTING', xxx.class_type, uid)
 
-        this.uidNumber = parseInt(uid) // 🔴 ugly
+        // this.uidNumber = parseInt(uid) // 🔴 ugly
         this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]
         let ix = 0
 
@@ -96,13 +98,13 @@ export class ComfyNode<ComfyNode_input extends object> {
         // dynamically add properties for every outputs
         const extensions: { [key: string]: any } = {}
         for (const x of this.$schema.outputs) {
-            const output = new Slot(this, ix++, x.name)
-            extensions[x.name] = output
+            const output = new Slot(this, ix++, x.nameInComfy)
+            extensions[x.nameInComfy] = output
             this.$outputs.push(output)
             // console.log(`  - .${x.name} as ComfyNodeOutput(${ix})`)
         }
         for (const x of this.$schema.singleOuputs) {
-            extensions[`_${x.type}`] = extensions[x.name]
+            extensions[`_${x.type}`] = extensions[x.nameInComfy]
         }
 
         extendObservable(this, extensions)
@@ -113,7 +115,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     _convertPromptExtToPrompt(promptExt: ComfyNodeJSON) {
         const inputs: { [inputName: string]: any } = {}
         for (const i of this.$schema.inputs) {
-            inputs[i.name] = this.serializeValue(i.name, promptExt.inputs[i.name])
+            inputs[i.nameInComfy] = this.serializeValue(i.nameInComfy, promptExt.inputs[i.nameInComfy])
         }
         return { class_type: this.$schema.nameInComfy, inputs }
     }
@@ -142,11 +144,15 @@ export class ComfyNode<ComfyNode_input extends object> {
 
     // dimensions for autolayout algorithm
     get width() { return 300 } // prettier-ignore
-    get height() { return Object.keys(this.inputs).length * 20 + 20 } // prettier-ignore
+    get height() {
+        const inputHeights = this.$schema.inputs.map((i) => (i.opts?.multiline ? 40 : 30))
+        const total = inputHeights.reduce((a, b) => a + b, 0)
+        return total + 30
+    }
 
     serializeValue(field: string, value: unknown): unknown {
         if (value == null) {
-            const schema = this.$schema.inputs.find((i: NodeInputExt) => i.name === field)
+            const schema = this.$schema.inputs.find((i: NodeInputExt) => i.nameInComfy === field)
             if (schema == null) throw new Error(`🔴 no schema for field "${field}" (of node ${this.$schema.nameInCushy})`)
             // console.log('def1=', field, schema.opts.default)
             if (schema.opts?.default != null) return schema.opts.default
@@ -177,7 +183,7 @@ export class ComfyNode<ComfyNode_input extends object> {
 
     private _getExpecteTypeForField(name: string): string {
         // console.log('>>name', name)
-        const input = this.$schema.inputs.find((i: NodeInputExt) => i.name === name)
+        const input = this.$schema.inputs.find((i: NodeInputExt) => i.nameInComfy === name)
         // console.log('>>name', name, input)
         if (input == null) throw new Error('🔴 input not found asdf')
         return input.type
@@ -185,17 +191,17 @@ export class ComfyNode<ComfyNode_input extends object> {
 
     private _getOutputForTypeOrCrash(type: string): Slot<any> {
         const i: NodeOutputExt = this.$schema.outputs.find((i: NodeOutputExt) => i.type === type)!
-        const val = (this as any)[i.name]
+        const val = (this as any)[i.nameInComfy]
         // console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
         if (val instanceof Slot) return val
-        throw new Error(`Expected ${i.name} to be a NodeOutput`)
+        throw new Error(`Expected ${i.nameInComfy} to be a NodeOutput`)
     }
     private _getOutputForTypeOrNull(type: string): Slot<any> | null {
         const i: Maybe<NodeOutputExt> = this.$schema.outputs.find((i: NodeOutputExt) => i.type === type)
         if (i == null) return null
-        const val = (this as any)[i.name]
+        const val = (this as any)[i.nameInComfy]
         if (val == null) return null
         if (val instanceof Slot) return val
-        throw new Error(`Expected ${i.name} to be a NodeOutput`)
+        throw new Error(`Expected ${i.nameInComfy} to be a NodeOutput`)
     }
 }

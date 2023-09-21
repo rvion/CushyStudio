@@ -1,4 +1,5 @@
 export const ComfyPrimitiveMapping: { [key: string]: string } = {
+    // '*': 'STAR',
     //
     FLOAT: 'number',
     Float: 'number',

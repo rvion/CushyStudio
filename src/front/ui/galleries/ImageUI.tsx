@@ -8,8 +8,6 @@ import { ImageAnswer } from 'src/controls/askv2'
 import { ImageL } from 'src/models/Image'
 import { useSt } from '../../FrontStateCtx'
 import { useImageDrag } from './dnd'
-import { ItemTypes } from './DnDItemTypes'
-import { useDrag } from 'react-dnd'
 
 export const GalleryImageWidth = '48px'
 export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {

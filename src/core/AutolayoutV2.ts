@@ -1,6 +1,7 @@
 import cytoscape from 'cytoscape'
 import type { GraphL } from '../models/Graph'
 import klay from 'cytoscape-klay'
+import { bang } from '../utils/bang'
 
 cytoscape.use(klay)
 
@@ -23,10 +24,15 @@ export const runAutolayout = async (graph: GraphL): Promise<CytoJSON> => {
     // Define the graph elements
 
     const elements: any[] = []
+    // let uidNumber = 0
+    // for (const node of graph.nodes) {
+    //     node.uidNumber = uidNumber++ // 🔴 HORRIBLE HACK
+    // }
+
     for (const node of graph.nodes) {
         elements.push({
             data: {
-                id: node.uid,
+                id: node.uidNumber,
             },
             style: {
                 shape: 'rectangle',
@@ -35,13 +41,15 @@ export const runAutolayout = async (graph: GraphL): Promise<CytoJSON> => {
             },
         })
         for (const edge of node._incomingEdges()) {
-            elements.push({
-                data: {
-                    id: `${edge.from}-${edge.inputName}->${node.uid}`,
-                    source: edge.from,
-                    target: node.uid,
-                },
-            })
+            const from = bang(graph.nodes.find((n) => n.uid === edge.from)?.uidNumber)
+            const to = node.uidNumber
+            const data = {
+                id: `${from}-${edge.inputName}->${to}`,
+                source: from,
+                target: to,
+            }
+            console.log(data)
+            elements.push({ data })
         }
     }
 

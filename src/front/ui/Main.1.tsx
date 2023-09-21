@@ -13,7 +13,7 @@ import { runInAction } from 'mobx'
 const path = asAbsolutePath(join(process.cwd(), 'flows/'))
 
 export const Main = observer(() => {
-    console.log('rendering MAIN')
+    console.log('starting web app')
     const st = useMemo(
         () =>
             runInAction(

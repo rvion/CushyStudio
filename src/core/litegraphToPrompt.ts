@@ -42,13 +42,13 @@ export const convertLiteGraphToPrompt = (
         const nodeSchema: ComfyNodeSchema = schema.nodesByNameInComfy[nodeTypeName]
         let offset = 0
         for (const field of nodeSchema.inputs) {
-            if (viaInput.has(field.name)) {
-                console.log(`${field.name}: viaInput`)
+            if (viaInput.has(field.nameInComfy)) {
+                console.log(`${field.nameInComfy}: viaInput`)
                 continue
             }
-            inputs[field.name] = node.widgets_values[offset++]
+            inputs[field.nameInComfy] = node.widgets_values[offset++]
             //
-            const isSeed = field.type === 'INT' && (field.name === 'seed' || field.name === 'noise_seed')
+            const isSeed = field.type === 'INT' && (field.nameInComfy === 'seed' || field.nameInComfy === 'noise_seed')
             if (isSeed) offset++
             // for (const val of node.widgets_values)
         }

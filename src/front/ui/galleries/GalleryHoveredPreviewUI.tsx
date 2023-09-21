@@ -1,8 +1,14 @@
 import { observer } from 'mobx-react-lite'
+import { useDragLayer } from 'react-dnd'
 import { useSt } from '../../FrontStateCtx'
 
 export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
     const st = useSt()
+    const cccP = useDragLayer((monitor) => {
+        if (monitor.isDragging()) return true
+        return false
+    })
+    if (cccP) return null
     if (st.hovered == null) return null
     return (
         <div>

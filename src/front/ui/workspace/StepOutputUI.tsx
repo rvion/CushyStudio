@@ -1,6 +1,6 @@
 import { writeFileSync } from 'fs'
 import { observer } from 'mobx-react-lite'
-import { Button } from 'rsuite'
+import { Button, Message, Panel } from 'rsuite'
 import { StepL, StepOutput } from 'src/models/Step'
 import { ComfyNodeUI } from '../NodeListUI'
 import { ImageUI } from '../galleries/ImageUI'
@@ -52,8 +52,14 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
                 >
                     download files
                 </Button>
-
-                <pre>{JSON.stringify(msg.data, null, 3)}</pre>
+                <Message type='error' title='An error occured' showIcon>
+                    <div>{msg.data.node_type}</div>
+                    <div>{msg.data.exception_message}</div>
+                    <div>{msg.data.exception_type}</div>
+                    <Panel title='Details' collapsible defaultExpanded={false}>
+                        <pre>{JSON.stringify(msg.data, null, 3)}</pre>
+                    </Panel>
+                </Message>
             </div>
         )
     }

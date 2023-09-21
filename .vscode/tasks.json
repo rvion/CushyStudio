@@ -16,7 +16,7 @@
             "command": "npm",
             "args": ["run", "front:shell"],
             "isBackground": true,
-            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
+            "presentation": { "reveal": "never", "close": false },
             "group": "build",
             "runOptions": { "instanceLimit": 1 }
         },
@@ -27,7 +27,7 @@
             "command": "npm",
             "args": ["run", "front:dev"],
             "isBackground": true,
-            "presentation": { "reveal": "never", "close": false /* "group": "dev-server" */ },
+            "presentation": { "reveal": "never", "close": false },
             "group": "build",
             "runOptions": { "instanceLimit": 1 }
         },
@@ -40,7 +40,7 @@
             "args": ["--watch", "--noEmit"],
             "isBackground": true,
             "problemMatcher": "$tsc-watch",
-            "presentation": { "reveal": "never" /* "group": "transpiling" */ },
+            "presentation": { "reveal": "never" },
             "group": "build",
             "runOptions": { "instanceLimit": 1 }
         }

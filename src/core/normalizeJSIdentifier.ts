@@ -1,4 +1,5 @@
 export const normalizeJSIdentifier = (name: string) => {
+    if (name === '*') return 'STAR'
     return name
         .replace(/[^a-zA-Z0-9_]/g, ' ')
         .split(' ')

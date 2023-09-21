@@ -75,8 +75,8 @@ export class FormBuilder {
     strOpt = (p: Omit<R.Requestable_strOpt, 'type'>): R.Requestable_strOpt => ({ type: 'str?', ...p })
 
     /** nums */
-    int = (p?: Omit<R.Requestable_int, 'type'>) => ({ type: 'int', ...p })
-    intOpt = (p?: Omit<R.Requestable_intOpt, 'type'>) => ({ type: 'int?', ...p })
+    int = (p?: Omit<R.Requestable_int, 'type'>): R.Requestable_int => ({ type: 'int', ...p })
+    intOpt = (p?: Omit<R.Requestable_intOpt, 'type'>): R.Requestable_intOpt => ({ type: 'int?', ...p })
 
     /** bools */
     bool = (p?: Omit<R.Requestable_bool, 'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })
@@ -107,9 +107,9 @@ export class FormBuilder {
         type: 'samMaskPoints' as const,
         imageInfo: toImageInfos(img),
     })
-    selectImage = (label: string, imgs: (ImageL | ImageT)[]): R.Requestable_selectImage => ({
+    selectImage = (label: string): R.Requestable_selectImage => ({
         type: 'selectImage' as const,
-        imageInfos: imgs.map(toImageInfos),
+        // imageInfos: [], //imgs.map(toImageInfos),
         label,
     })
     manualMask = (label: string, img: ImageL | ImageT) => ({

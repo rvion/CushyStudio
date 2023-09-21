@@ -7,11 +7,11 @@ import { LightBoxUI } from '../LightBox'
 export const WorkspaceUI = observer(function WorkspaceUI_(p: {}) {
     const st = useSt()
     return (
-        <div className='flex flex-col gap-4 p-4'>
-            {st.db.projects.map((prolject) => {
+        <div className='flex flex-col'>
+            {st.db.projects.map((project) => {
                 return (
-                    <projectContext.Provider value={prolject} key={prolject.id}>
-                        <ProjectUI key={prolject.id} />
+                    <projectContext.Provider value={project} key={project.id}>
+                        <ProjectUI key={project.id} />
                         <LightBoxUI lbs={st.lightBox} />
                     </projectContext.Provider>
                 )

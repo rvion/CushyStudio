@@ -29,18 +29,13 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "**/Thumbs.db": true,
-        // so vscode remains fast
-        "**/ComfyUI": true,
-        "**/venv": true,
-        "**/d001": true
+        "**/Thumbs.db": true
     },
     "pasteImage.path": "docs/static/img/screenshots/",
-    // "files.exclude": {
-    //     "out": false // set this to true to hide the "out" folder with the compiled JS files
-    // },
     "search.exclude": {
-        "out": true // set this to false to include "out" folder in search results
+        "out": true, // set this to false to include "out" folder in search results
+        "public": true,
+        "package-lock.json": true
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off"

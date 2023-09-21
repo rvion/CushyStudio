@@ -65,7 +65,7 @@ export class GraphL {
         this._builder = new NodeBuilder(this)
         return this._builder
     }
-
+    _uidNumber = 0
     onUpdate = (prev: Maybe<GraphT>, next: GraphT) => {
         const prevSize = this.size
         if (prev != null) {
@@ -134,10 +134,7 @@ export class GraphL {
     /** create a new Draft slot */
     createDraft = (
         /** the basis step you'd like to base yourself when creating a new branch */
-        basis?: Maybe<{
-            toolID: ToolID
-            params: Maybe<any>
-        }>,
+        basis?: Maybe<{ toolID: ToolID; params: Maybe<any> }>,
     ): DraftL => {
         const draft = this.db.drafts.create({
             toolID: basis?.toolID ?? this.st.toolsSorted[0].id,

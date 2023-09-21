@@ -225,23 +225,30 @@ export class Runtime {
     }
 
     loadImageAnswer = (ia: ImageAnswer): _IMAGE => {
-        //
-        // if (this.)
-        if (ia.type === 'imagePath') return this.nodes.WASImageLoad({ image_path: ia.absPath })
-        if (ia.type === 'imageID') {
-            const img = this.st.db.images.getOrThrow(ia.imageID)
-            return this.nodes.WASImageLoad({ image_path: img.localAbsolutePath })
+        try {
+            if (ia.type === 'imagePath') {
+                return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
+            }
+            if (ia.type === 'imageID') {
+                const img = this.st.db.images.getOrThrow(ia.imageID)
+                return this.nodes.WASImageLoad({ image_path: img.localAbsolutePath, RGBA: 'false' })
+            }
+            if (ia.type === 'imageSignal') {
+                const node = this.graph.nodesIndex.get(ia.nodeID)
+                if (node == null) throw new Error('node is not in current graph')
+                // 🔴 need runtime checking here
+                const xx = (node as any)[ia.fieldName]
+                console.log({ xx })
+                return xx
+            }
+            if (ia.type === 'imageURL') {
+                return this.nodes.WASImageLoad({ image_path: ia.url, RGBA: 'false' })
+            }
+            return exhaust(ia)
+        } catch (err) {
+            console.log('🔴 failed to convert ImageAnser to _IMAGE')
+            throw err
         }
-        if (ia.type === 'imageSignal') {
-            const node = this.graph.nodesIndex.get(ia.nodeID)
-            if (node == null) throw new Error('node is not in current graph')
-            // 🔴 need runtime checking here
-            const xx = (node as any)[ia.fieldName]
-            console.log({ xx })
-            return xx
-        }
-        if (ia.type === 'imageURL') return this.nodes.WASImageLoad({ image_path: ia.url })
-        return exhaust(ia)
     }
 
     private extractString = (message: Printable): string => {

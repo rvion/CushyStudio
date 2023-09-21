@@ -28,6 +28,7 @@ export const sdkRewriteRules: [string | RegExp, string][] = [
 
     // ws stuff
     [`import * as WS from 'ws';`, ''],
+
     [`/// <reference types="ws" />`, ''],
     [`/// <reference types="vscode" />`, ''],
     [`/// <reference types="node" />`, ''],

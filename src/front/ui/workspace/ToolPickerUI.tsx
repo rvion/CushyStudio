@@ -29,7 +29,7 @@ export const ToolPickerUI = observer(function ToolPickerUI_(p: { draft: DraftL }
             {/* SHOW TOOL CODE */}
             {draft.tool.item?.data.codeTS && (
                 <Whisper
-                    // enterable
+                    enterable
                     placement='autoVerticalStart'
                     speaker={
                         <Popover>

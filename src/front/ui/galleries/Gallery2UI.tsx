@@ -9,7 +9,7 @@ export const Gallery2UI = observer(function Gallery2UI_(p: {}) {
 
     return (
         <>
-            <div className='flex flex-col overflow-x-auto'>
+            <div className='flex flex-col overflow-x-auto items-baseline'>
                 <div>New Folder</div>
                 {st.db.folders.map((v) => {
                     return <GalleryFolderUI direction='horizontal' key={v.id} folder={v} />
