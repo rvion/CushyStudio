@@ -10,7 +10,14 @@ action('🟢 Default', {
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
         clipSkip: form.intOpt({}),
         loras: form.loras({}),
-
+        highResFix: form.groupOpt({
+            items: {
+                scaleFactor: form.int({}),
+                steps: form.int({ default: 15 }),
+                denoise: form.float({ default: 0.5 }),
+                saveIntermediaryImage: form.bool({ default: true }),
+            },
+        }),
         // prompt
         positive: form.str({ textarea: true }),
         negative: form.strOpt({ textarea: true }),
@@ -56,23 +63,55 @@ action('🟢 Default', {
         const positive = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.positive })
         const negative = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.negative ?? '' })
 
+        let LATENT = graph.KSampler({
+            seed: p.seed == null ? flow.randomSeed() : p.seed,
+            latent_image: graph.EmptyLatentImage({
+                batch_size: p.batchSize,
+                height: p.height,
+                width: p.width,
+            }),
+            model: flow.AUTO,
+            positive: positive,
+            negative: negative,
+            sampler_name: 'ddim',
+            scheduler: 'karras',
+            steps: p.steps,
+        })
+
+        // HIGHRES FIX
+        if (p.highResFix) {
+            if (p.highResFix.saveIntermediaryImage) {
+                // DECODE
+                graph.SaveImage({
+                    images: graph.VAEDecode({
+                        samples: LATENT,
+                        vae: vae, // flow.AUTO,
+                    }),
+                })
+            }
+            const _1 = graph.LatentUpscale({
+                samples: LATENT,
+                crop: 'disabled',
+                upscale_method: 'nearest-exact',
+                height: p.height * p.highResFix.scaleFactor,
+                width: p.width * p.highResFix.scaleFactor,
+            })
+            LATENT = graph.KSampler({
+                model: flow.AUTO,
+                positive: positive,
+                negative: negative,
+                latent_image: _1,
+                sampler_name: 'ddim',
+                scheduler: 'karras',
+                steps: p.steps,
+                denoise: 0.5,
+            })
+        }
+
         // DECODE
         graph.SaveImage({
             images: graph.VAEDecode({
-                samples: graph.KSampler({
-                    seed: p.seed == null ? flow.randomSeed() : p.seed,
-                    latent_image: graph.EmptyLatentImage({
-                        batch_size: p.batchSize,
-                        height: p.height,
-                        width: p.width,
-                    }),
-                    model: flow.AUTO,
-                    positive: positive,
-                    negative: negative,
-                    sampler_name: 'ddim',
-                    scheduler: 'karras',
-                    steps: p.steps,
-                }),
+                samples: LATENT,
                 vae: vae, // flow.AUTO,
             }),
         })
