@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { useDraft } from '../useDraft'
 import { WidgetWithLabelUI } from './WidgetUI'
 
-export const WidgetItemsUI = observer(function WidgetItemsOptUI_(p: {
+export const WidgetItemsUI = observer(function WidgetItemsUI_(p: {
     get: () => boolean
     set: (v: boolean) => void
     path: FormPath

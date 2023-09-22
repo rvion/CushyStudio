@@ -1,9 +1,12 @@
+import type { Maybe } from 'src/utils/types'
+
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { InputNumber, Toggle } from 'rsuite'
 
-export const WidgetIntOptUI = observer(function WidgetBoolUI_(p: {
+export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: {
     //
-    get: () => number | null
+    get: () => Maybe<number>
+    def: () => Maybe<number>
     set: (v: number | null) => void
 
     mode: 'int' | 'float'
@@ -31,6 +34,7 @@ export const WidgetIntOptUI = observer(function WidgetBoolUI_(p: {
             />
             <InputNumber //
                 disabled={uiSt.disabled}
+                step={{ int: 1, float: 0.1 }[p.mode]}
                 size='sm'
                 value={uiSt.lastNumberVal}
                 onChange={(next) => {

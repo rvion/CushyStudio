@@ -7,7 +7,6 @@ import { exhaust } from '../../../utils/ComfyUtils'
 import { ImageSelection } from './ImageSelection'
 import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
-import { WidgetIntOptUI } from './WidgetNumOptUI'
 import { WidgetNumUI } from './WidgetNumUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetPaintUI } from './WidgetPaintUI'
@@ -18,6 +17,7 @@ import { DraftL } from 'src/models/Draft'
 import { Whisper, Tooltip, Panel } from 'rsuite'
 import { WidgetItemsOptUI } from './WidgetItemsOptUI'
 import { WidgetItemsUI } from './WidgetItemsUI'
+import { WidgetNumOptUI } from './WidgetNumOptUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     draft: DraftL
@@ -33,7 +33,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             className='row gap-2 items-baseline'
             key={rootKey}
         >
-            <div className='w-20 shrink-0 text-right'>
+            <div className='w-20 min-w-max shrink-0 text-right'>
                 <Whisper speaker={<Tooltip>{p.path.join('/')}</Tooltip>}>
                     <div>{rootKey}</div>
                 </Whisper>
@@ -100,6 +100,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     // primitives
     const get = () => draft.getAtPath(p.path)
     const set = (next: any) => draft.setAtPath(p.path, next)
+    const def = () => req.default
     // const finalPath = [p.path]
 
     // group recursion
@@ -108,9 +109,9 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'bool') return <WidgetBoolUI get={get} set={set} optional={false} />
     if (req.type === 'bool?') return <WidgetBoolUI get={get} set={set} optional={true} />
     if (req.type === 'int') return <WidgetNumUI mode='int' get={get} set={set} />
-    if (req.type === 'int?') return <WidgetIntOptUI mode='int' get={get} set={set} />
+    if (req.type === 'int?') return <WidgetNumOptUI mode='int' get={get} set={set} def={def} />
     if (req.type === 'float') return <WidgetNumUI mode='float' get={get} set={set} />
-    if (req.type === 'float?') return <WidgetIntOptUI mode='float' get={get} set={set} />
+    if (req.type === 'float?') return <WidgetNumOptUI mode='float' get={get} set={set} def={def} />
     if (req.type === 'str') return <EditorUI get={get} set={set} />
     if (req.type === 'str?') return <EditorUI get={get} set={set} nullable />
     if (req.type === 'paint') return <>🔴 paint form commented</> //<WidgetPaintUI uri={'foo bar 🔴'} />

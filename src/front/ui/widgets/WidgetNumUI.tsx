@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { InputNumber } from 'rsuite'
 
-export const WidgetNumUI = observer(function WidgetBoolUI_(p: {
+export const WidgetNumUI = observer(function WidgetNumUI_(p: {
     //
     get: () => number
     set: (v: number) => void
@@ -11,6 +11,7 @@ export const WidgetNumUI = observer(function WidgetBoolUI_(p: {
         <InputNumber //
             size='sm'
             value={p.get()}
+            step={{ int: 1, float: 0.1 }[p.mode]}
             onChange={(next) => {
                 // parse value
                 let num =

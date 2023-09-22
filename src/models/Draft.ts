@@ -5,6 +5,7 @@ import type { StepL } from './Step'
 import type { ToolID, ToolL } from './Tool'
 
 import { LiveRef } from '../db/LiveRef'
+import { finalizeAnswer } from '../controls/InfoAnswerFinal'
 
 export type FormPath = (string | number)[]
 
@@ -23,12 +24,18 @@ export interface DraftL extends LiveInstance<DraftT, DraftL> {}
 export class DraftL {
     graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
     tool = new LiveRef<this, ToolL>(this, 'toolID', 'tools')
+
     start = (): StepL => {
         // console.log('🟢', JSON.stringify(this.data))
         const step = this.graph.item.createStep(this.data)
         step.start()
         return step
     }
+
+    get finalJSON(): any {
+        return finalizeAnswer(this.tool.item, this.data.params)
+    }
+
     focus = () => this.graph.item.update({ focusedDraftID: this.id })
     reset = () => (this.data.params = {})
     getPathInfo = (path: FormPath): string => this.id + '/' + path.join('/')

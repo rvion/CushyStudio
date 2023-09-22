@@ -7,16 +7,18 @@ import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import { readFileSync, writeFileSync } from 'fs'
-import { nanoid } from 'nanoid'
+import { marked } from 'marked'
 import { STATE } from 'src/front/state'
+import { ToolL } from 'src/models/Tool'
+import { FormBuilder } from '../controls/FormBuilder'
+import { ImageAnswer, InfoAnswer, InfoRequestFn } from '../controls/InfoAnswer'
+import { finalizeAnswer_UNSAFE } from '../controls/InfoAnswerFinal'
 import { Requestable } from '../controls/InfoRequest'
 import { ScriptStep_ask } from '../controls/misc/ScriptStep_ask'
-import { ImageAnswer, InfoAnswer, InfoRequestFn } from '../controls/InfoAnswer'
-import { FormBuilder } from '../controls/FormBuilder'
 import { auto } from '../core/autoValue'
 import { globalToolFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
-import { GraphL, asGraphID } from '../models/Graph'
+import { GraphL } from '../models/Graph'
 import { ImageL } from '../models/Image'
 import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
@@ -26,9 +28,7 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
-import { ToolL } from 'src/models/Tool'
 import { Status } from './Status'
-import { marked } from 'marked'
 
 /** script exeuction instance */
 export class Runtime {
@@ -65,7 +65,7 @@ export class Runtime {
 
         const action = globalToolFnCache.get(tool)
         const start = Date.now()
-        const formResult = this.step.rawParams
+        const formResult = finalizeAnswer_UNSAFE(tool, this.step.rawParams)
         console.log(`🔴 before: size=${this.graph.nodes.length}`)
 
         try {

@@ -1,33 +1,35 @@
 import type { ImageT } from 'src/models/Image'
 import type { LATER } from 'LATER'
+import { InfoAnswer } from './InfoAnswer'
 
-export type Requestable_str = { type: 'str'; label?: string; default?: string; textarea?: boolean }
-export type Requestable_strOpt = { type: 'str?'; label?: string; default?: string; textarea?: boolean }
-export type Requestable_int = { type: 'int'; label?: string; default?: number }
-export type Requestable_float = { type: 'float'; label?: string; default?: number }
-export type Requestable_floatOpt = { type: 'float?'; label?: string; default?: number }
-export type Requestable_intOpt = { type: 'int?'; label?: string; default?: number | null }
-export type Requestable_bool = { type: 'bool'; label?: string; default?: boolean }
-export type Requestable_boolOpt = { type: 'bool?'; label?: string }
-export type Requestable_embeddings = { type: 'embeddings'; label?: string }
-export type Requestable_enumOpt<T extends keyof LATER<'Requirable'>> = { type: 'enum?'; enumName: T; label?: string }
-export type Requestable_loras = { type: 'loras'; label?: string }
-export type Requestable_samMaskPoints = { type: 'samMaskPoints'; label?: string; imageInfo: ImageT }
-export type Requestable_selectImage = { type: 'selectImage'; label?: string /*imageInfos?: ImageT[]*/ }
-export type Requestable_manualMask = { type: 'manualMask'; label?: string; imageInfo: ImageT }
-export type Requestable_paint = { type: 'paint'; label?: string; url: string }
-export type Requestable_items<T extends { [key: string]: Requestable }> = { type: 'items'; label?: string; items: T }
-export type Requestable_itemsOpt<T extends { [key: string]: Requestable }> = { type: 'itemsOpt'; label?: string; items: T }
-export type Requestable_selectOne = { type: 'selectOne'; label?: string; choices: string[] } //
-export type Requestable_selectOneOrCustom = { type: 'selectOneOrCustom'; label?: string; choices: string[] }
-export type Requestable_selectMany = { type: 'selectMany'; label?: string; choices: string[] }
-export type Requestable_selectManyOrCustom = { type: 'selectManyOrCustom'; label?: string; choices: string[] }
-export type Requestable_enum<T extends keyof LATER<'Requirable'>> = {
-    type: 'enum'
-    enumName: T
-    default?: LATER<'Requirable'>[T]
-    label?: string
-}
+export type Requestable_str          = { type: 'str';    label?: string; default?: string; textarea?: boolean } // prettier-ignore
+export type Requestable_strOpt       = { type: 'str?';   label?: string; default?: string; textarea?: boolean } // prettier-ignore
+export type Requestable_int          = { type: 'int';    label?: string; default?: number  } // prettier-ignore
+export type Requestable_float        = { type: 'float';  label?: string; default?: number  } // prettier-ignore
+export type Requestable_bool         = { type: 'bool';   label?: string; default?: boolean } // prettier-ignore
+export type Requestable_intOpt       = { type: 'int?';   label?: string; default?: number  } // prettier-ignore
+export type Requestable_floatOpt     = { type: 'float?'; label?: string; default?: number  } // prettier-ignore
+export type Requestable_boolOpt      = { type: 'bool?';  label?: string; default?: boolean } // prettier-ignore
+//
+export type Requestable_embeddings   = { type: 'embeddings'; label?: string, default?: LATER<'Embeddings'>  } // prettier-ignore
+//
+export type Requestable_loras        = { type: 'loras';      label?: string, default?: LATER<'Enum_LoraLoader_lora_name'> } // prettier-ignore
+//
+export type Requestable_selectImage  = { type: 'selectImage';   label?: string; default?: undefined;  /*imageInfos?: ImageT[]*/ } // prettier-ignore
+export type Requestable_manualMask   = { type: 'manualMask';    label?: string; default?: undefined; imageInfo: ImageT } // prettier-ignore
+export type Requestable_paint        = { type: 'paint';         label?: string; default?: undefined; url: string } // prettier-ignore
+export type Requestable_samMaskPoints= { type: 'samMaskPoints'; label?: string; default?: undefined; imageInfo: ImageT } // prettier-ignore
+//
+export type Requestable_items<T extends { [key: string]: Requestable }>    = { type: 'items';    label?: string; items: T, default?: {[k in keyof T]: InfoAnswer<T[k]>} } // prettier-ignore
+export type Requestable_itemsOpt<T extends { [key: string]: Requestable }> = { type: 'itemsOpt'; label?: string; items: T, default?: {[k in keyof T]: InfoAnswer<T[k]>} } // prettier-ignore
+//
+export type Requestable_selectOne          = { type: 'selectOne';          label?: string; choices: string[]; default?: string[] } // prettier-ignore
+export type Requestable_selectOneOrCustom  = { type: 'selectOneOrCustom';  label?: string; choices: string[]; default?: string[] } // prettier-ignore
+export type Requestable_selectMany         = { type: 'selectMany';         label?: string; choices: string[]; default?: string[] } // prettier-ignore
+export type Requestable_selectManyOrCustom = { type: 'selectManyOrCustom'; label?: string; choices: string[]; default?: string[] } // prettier-ignore
+//
+export type Requestable_enumOpt<T extends keyof LATER<'Requirable'>> = { type: 'enum?'; enumName: T; default?: LATER<'Requirable'>[T]; label?: string } // prettier-ignore
+export type Requestable_enum<T extends keyof LATER<'Requirable'>>    = { type: 'enum';  enumName: T; default?: LATER<'Requirable'>[T]; label?: string } // prettier-ignore
 
 export type Requestable =
     /** str */

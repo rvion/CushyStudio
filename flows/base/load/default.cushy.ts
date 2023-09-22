@@ -8,6 +8,7 @@ action('🟢 Default', {
             default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
         }),
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
+        cfg: form.intOpt({ default: 8 }),
         clipSkip: form.intOpt({}),
         loras: form.loras({}),
         highResFix: form.groupOpt({
@@ -73,9 +74,10 @@ action('🟢 Default', {
             model: flow.AUTO,
             positive: positive,
             negative: negative,
-            sampler_name: 'ddim',
-            scheduler: 'karras',
+            sampler_name: 'dpmpp_2m',
+            scheduler: 'simple',
             steps: p.steps,
+            cfg: 8,
         })
 
         // HIGHRES FIX
@@ -89,13 +91,16 @@ action('🟢 Default', {
                     }),
                 })
             }
+            const finalH = p.height * p.highResFix.scaleFactor
+            const finalW = p.width * p.highResFix.scaleFactor
             const _1 = graph.LatentUpscale({
                 samples: LATENT,
                 crop: 'disabled',
                 upscale_method: 'nearest-exact',
-                height: p.height * p.highResFix.scaleFactor,
-                width: p.width * p.highResFix.scaleFactor,
+                height: finalH,
+                width: finalW,
             })
+            flow.print(`target dimension: W=${finalW} x H=${finalH}`)
             LATENT = graph.KSampler({
                 model: flow.AUTO,
                 positive: positive,
@@ -103,7 +108,7 @@ action('🟢 Default', {
                 latent_image: _1,
                 sampler_name: 'ddim',
                 scheduler: 'karras',
-                steps: p.steps,
+                steps: p.highResFix.steps,
                 denoise: 0.5,
             })
         }

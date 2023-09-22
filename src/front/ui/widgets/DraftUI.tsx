@@ -89,6 +89,10 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                             the value about to be sent back to the workflow is
                             <pre>{JSON.stringify(draft.data.params, null, 4)}</pre>
                         </DebugUI>
+                        <DebugUI title='👀'>
+                            the final answer is
+                            <pre>{JSON.stringify(draft.finalJSON, null, 4)}</pre>
+                        </DebugUI>
                     </div>
                 </div>
             </Panel>

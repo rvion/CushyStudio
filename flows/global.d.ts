@@ -11207,11 +11207,11 @@ declare global {
         STRING_2: Slot<'STRING', 2>
     }
     export type WASCacheNode_input = {
-        /** default="53254354_cache" */
+        /** default="14645784_cache" */
         latent_suffix?: _STRING
-        /** default="81825776_cache" */
+        /** default="59102130_cache" */
         image_suffix?: _STRING
-        /** default="22996314_cache" */
+        /** default="59575279_cache" */
         conditioning_suffix?: _STRING
         /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
         output_path?: _STRING
