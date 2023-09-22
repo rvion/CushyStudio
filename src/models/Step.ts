@@ -35,7 +35,7 @@ export type StepT = {
     status: Status
 }
 
-/** a thin wrapper around a single Step somewhere in a .cushy.ts file */
+/** a thin wrapper around a single Step / execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
     start = async () => {
@@ -60,44 +60,15 @@ export class StepL {
         this.parentGraph.item.update({ focusedStepID: this.id })
     }
 
-    get actionParams() { return this.data.params } // prettier-ignore
+    get rawParams() { return this.data.params } // prettier-ignore
+    get normalizedParams() {
+        if (this.data.params == null) this.data.params = {}
+        this.tool.item
+        return this.data.params
+    }
     tool = new LiveRef<this, ToolL>(this, 'toolID', 'tools')
     parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
     outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
     runtime: Maybe<Runtime> = null
     append = (output: StepOutput) => this.update({ outputs: [...(this.data.outputs ?? []), output] })
-
-    // form part --------------------------------------------------------
-    // onUpdate = (prev: Maybe<ActionT>, next: ActionT) => {
-    //     if (prev == null) return
-    //     if (prev.toolID !== next.toolID) this.reset()
-    // }
-
-    // tool = new LiveRefOpt<this, ToolL>(this, 'toolID', 'tools')
-
-    reset = () => (this.data.params = {})
-
-    getAtPath(path: FormPath): any {
-        if (this.data.params == null) this.data.params = {}
-        let current = this.data.params
-        for (const key of path) {
-            if (!current.hasOwnProperty(key)) {
-                return undefined
-            }
-            current = current[key]
-        }
-        return current
-    }
-    setAtPath = (path: FormPath, value: any) => {
-        if (this.data.params == null) this.data.params = {}
-        // console.log(path, value, toJS(this.data.value))
-        let current = this.data.params
-        for (let i = 0; i < path.length - 1; i++) {
-            const key = path[i]
-            if (!current[key]) current[key] = typeof path[i + 1] === 'number' ? [] : {}
-            current = current[key]
-        }
-        current[path[path.length - 1]] = value
-        // console.log(this.Form)
-    }
 }

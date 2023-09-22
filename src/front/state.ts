@@ -121,22 +121,6 @@ export class STATE {
         this.outputFolderPath = this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
         this.schema = this.db.schema
 
-        // if (typeof acquireVsCodeApi === 'function') this.vsCodeApi = acquireVsCodeApi()
-        // console.log('a')
-        // this.cushySocket = new ResilientSocketToExtension({
-        //     url: () => 'ws://localhost:8388',
-        //     onConnectOrReconnect: () => {
-        //         this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
-        //         // toaster.push('Connected to CushyStudio')
-        //     },
-        //     onMessage: (msg) => {
-        //         // console.log('received', msg.data)
-        //         const json = JSON.parse(msg.data)
-        //         this.onMessageFromExtension(json)
-        //     },
-        // })
-        // console.log('b')
-        // this.startProject()
         if (opts.genTsConfig) this.createTSConfigIfMissing()
         if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
 
@@ -232,8 +216,39 @@ export class STATE {
         prompt.onPromptRelatedMessage(msg)
     }
 
+    preview: Maybe<{
+        blob: Blob
+        url: string
+    }> = null
     onMessage = (e: MessageEvent) => {
         console.info(`🧦 received ${e.data}`)
+        if (e.data instanceof ArrayBuffer) {
+            console.log('🧦', 'received ArrayBuffer', e.data)
+            const view = new DataView(e.data)
+            const eventType = view.getUint32(0)
+            const buffer = e.data.slice(4)
+            switch (eventType) {
+                case 1:
+                    const view2 = new DataView(e.data)
+                    const imageType = view2.getUint32(0)
+                    let imageMime
+                    switch (imageType) {
+                        case 1:
+                        default:
+                            imageMime = 'image/jpeg'
+                            break
+                        case 2:
+                            imageMime = 'image/png'
+                    }
+                    const imageBlob = new Blob([buffer.slice(4)], { type: imageMime })
+                    const imagePreview = URL.createObjectURL(imageBlob)
+                    this.preview = { blob: imageBlob, url: imagePreview }
+                    break
+                default:
+                    throw new Error(`Unknown binary websocket message of type ${eventType}`)
+            }
+            return
+        }
         console.log(e.data)
         const msg: WsMsg = JSON.parse(e.data as any)
 

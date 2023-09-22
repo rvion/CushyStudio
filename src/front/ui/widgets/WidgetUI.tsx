@@ -1,20 +1,52 @@
-import type { Requestable } from 'src/controls/Requestable'
+import type { Requestable } from 'src/controls/InfoRequest'
 
 import { observer } from 'mobx-react-lite'
 import { FormPath } from 'src/models/Step'
-import { BUG } from '../../../controls/BUG'
+import { BUG } from '../../../controls/InfoRequest'
 import { exhaust } from '../../../utils/ComfyUtils'
 import { ImageSelection } from './ImageSelection'
 import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
-import { WidgetIntOptUI } from './WidgetIntOptUI'
-import { WidgetIntUI } from './WidgetIntUI'
+import { WidgetIntOptUI } from './WidgetNumOptUI'
+import { WidgetNumUI } from './WidgetNumUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetPaintUI } from './WidgetPaintUI'
 // import { WidgetStrUI } from './WidgetStrUI'
 import { EditorUI } from './WidgetLexical'
 import { useDraft } from '../useDraft'
+import { DraftL } from 'src/models/Draft'
+import { Whisper, Tooltip, Panel } from 'rsuite'
+import { WidgetItemsOptUI } from './WidgetItemsOptUI'
+import { WidgetItemsUI } from './WidgetItemsUI'
 
+export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
+    draft: DraftL
+    path: FormPath
+    req: Requestable
+    rootKey: string
+    ix: number
+}) {
+    const { draft, rootKey, req, path, ix } = p
+    return (
+        <div
+            // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
+            className='row gap-2 items-baseline'
+            key={rootKey}
+        >
+            <div className='w-20 shrink-0 text-right'>
+                <Whisper speaker={<Tooltip>{p.path.join('/')}</Tooltip>}>
+                    <div>{rootKey}</div>
+                </Whisper>
+            </div>
+            <WidgetUI //
+                key={[draft.id, p.path].join('/')}
+                path={path}
+                req={req}
+                focus={ix === 0}
+            />
+        </div>
+    )
+})
 /** this widget will then dispatch the individual requests to the appropriate sub-widgets
  * collect the responses and submit them to the back once completed and valid.
  */
@@ -46,17 +78,39 @@ export const WidgetUI = observer(function WidgetUI_(p: {
         )
 
     // group recursion
-    if (req.type === 'items') return <>TODO</>
+    // if (req.type === 'items')
+    //     return (
+    //         <Panel collapsible title='Foo' header={'subgroup'}>
+    //             {Object.entries(req.items).map(([rootKey, req], ix) => (
+    //                 <div key={rootKey}>
+    //                     {/* <div>{i[0]}</div> */}
+    //                     <WidgetWithLabelUI //
+    //                         draft={draft}
+    //                         ix={ix}
+    //                         rootKey={rootKey}
+    //                         req={req as any}
+    //                         // focus={p.focus}
+    //                         // path={[...p.path, i[0]]}
+    //                     />
+    //                 </div>
+    //             ))}
+    //         </Panel>
+    //     )
 
     // primitives
     const get = () => draft.getAtPath(p.path)
     const set = (next: any) => draft.setAtPath(p.path, next)
-    const finalPath = [p.path]
+    // const finalPath = [p.path]
 
+    // group recursion
+    if (req.type === 'items') return <WidgetItemsUI get={get} set={set} path={p.path} req={req} />
+    if (req.type === 'itemsOpt') return <WidgetItemsOptUI get={get} set={set} path={p.path} req={req} />
     if (req.type === 'bool') return <WidgetBoolUI get={get} set={set} optional={false} />
     if (req.type === 'bool?') return <WidgetBoolUI get={get} set={set} optional={true} />
-    if (req.type === 'int') return <WidgetIntUI get={get} set={set} />
-    if (req.type === 'int?') return <WidgetIntOptUI get={get} set={set} />
+    if (req.type === 'int') return <WidgetNumUI mode='int' get={get} set={set} />
+    if (req.type === 'int?') return <WidgetIntOptUI mode='int' get={get} set={set} />
+    if (req.type === 'float') return <WidgetNumUI mode='float' get={get} set={set} />
+    if (req.type === 'float?') return <WidgetIntOptUI mode='float' get={get} set={set} />
     if (req.type === 'str') return <EditorUI get={get} set={set} />
     if (req.type === 'str?') return <EditorUI get={get} set={set} nullable />
     if (req.type === 'paint') return <>🔴 paint form commented</> //<WidgetPaintUI uri={'foo bar 🔴'} />

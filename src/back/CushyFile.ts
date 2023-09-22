@@ -3,7 +3,7 @@ import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { ToolL, asToolID } from '../models/Tool'
 
 import { readFileSync } from 'fs'
-import { FormBuilder } from '../controls/askv2'
+import { FormBuilder } from '../controls/FormBuilder'
 import { transpileCode } from './transpiler'
 import { globalToolFnCache } from '../core/globalActionFnCache'
 import { STATE } from 'src/front/state'

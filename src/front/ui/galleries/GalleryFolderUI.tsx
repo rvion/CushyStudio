@@ -5,9 +5,6 @@ import { observer } from 'mobx-react-lite'
 import { IconButton } from 'rsuite'
 import { ImageUI } from './ImageUI'
 import { useImageDrop } from './dnd'
-import { ItemTypes } from './DnDItemTypes'
-import { ImageL } from 'src/models/Image'
-import { useDrop } from 'react-dnd'
 
 export const GalleryFolderUI = observer(function GalleryFolderUI_(p: {
     //
@@ -15,7 +12,6 @@ export const GalleryFolderUI = observer(function GalleryFolderUI_(p: {
     direction: 'horizontal' | 'vertical'
 }) {
     const [collectedProps, drop] = useImageDrop((img) => {
-        // console.log('AAAA')
         img.update({ folderID: p.folder.id })
     })
     // const [collectedProps, drop] = useDrop(() => ({
@@ -24,7 +20,6 @@ export const GalleryFolderUI = observer(function GalleryFolderUI_(p: {
     //         item.image.update({ folderID: p.folder.id })
     //     },
     // }))
-
     return (
         <div
             style={{ flexDirection: p.direction === 'horizontal' ? 'row' : 'column', ...collectedProps }}

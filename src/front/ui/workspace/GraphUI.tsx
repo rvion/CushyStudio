@@ -6,7 +6,7 @@ import type { DraftL } from 'src/models/Draft'
 import type { GraphL } from 'src/models/Graph'
 import { StepL } from 'src/models/Step'
 import { Maybe } from 'src/utils/types'
-import { ActionUI } from '../widgets/ActionUI'
+import { DraftUI } from '../widgets/DraftUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
 import { StepOutputUI } from './StepOutputUI'
 import { StepTabBtnUI } from './StepTabBtnUI'
@@ -39,7 +39,7 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                     </Nav>
                     <div className='flex gap-2'>
                         {/* {<GraphSummaryUI graph={graph} />} */}
-                        {focusedDraft ? <ActionUI draft={focusedDraft} /> : null}
+                        {focusedDraft ? <DraftUI draft={focusedDraft} /> : null}
                         {/* {focusedStep ? <ActionUI draft={focusedStep} /> : null} */}
                         {/* {focusedDraft ? <GraphSummaryUI graph={focusedDraft.graph.item} /> : null} */}
                         {/* {focusedStep ? <ActionUI step={focusedStep} /> : null} */}

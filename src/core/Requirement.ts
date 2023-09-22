@@ -1,7 +1,8 @@
 import type { LATER } from 'LATER'
 import type { Runtime } from 'src/back/Runtime'
-import type { Requestable } from 'src/controls/Requestable'
-import type { FormBuilder, InfoAnswer } from 'src/controls/askv2'
+import type { Requestable } from '../controls/InfoRequest'
+import type { InfoAnswer } from '../controls/InfoAnswer'
+import type { FormBuilder } from 'src/controls/FormBuilder'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.

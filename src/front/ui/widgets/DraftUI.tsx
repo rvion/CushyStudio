@@ -1,32 +1,21 @@
-import type { StepL } from 'src/models/Step'
-
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { ButtonGroup, IconButton, Panel, Tooltip, Whisper } from 'rsuite'
-import { ToolPickerUI, ActionSuggestionUI } from '../workspace/ToolPickerUI'
-import { DebugUI } from './DebugUI'
-import { WidgetUI } from './WidgetUI'
+import { IconButton, Panel } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
 import { draftContext } from '../useDraft'
+import { ToolPickerUI } from '../workspace/ToolPickerUI'
+import { ToolSuggestionUI } from '../workspace/ToolSuggestionUI'
+import { DebugUI } from './DebugUI'
+import { WidgetWithLabelUI } from './WidgetUI'
 
-export const ActionPlaceholderUI = observer(function ActionPlaceholderUI_(p: {}) {
-    return (
-        <Panel>
-            <div className='flex gap-2' style={{ width: '30rem' }}>
-                Executing...
-            </div>
-        </Panel>
-    )
-})
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const ActionUI = observer(function StepUI_(p: { draft: DraftL }) {
+export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
     // ensure action have a tool
     const draft = p.draft
     const tool = draft.tool.item
-    // if (tool == null) return <ActionPickerUI action={action} />
 
     // prepare basic infos
     const formDefinition = tool?.data.form ?? {}
@@ -36,7 +25,6 @@ export const ActionUI = observer(function StepUI_(p: { draft: DraftL }) {
         <draftContext.Provider value={draft} key={draft.id}>
             <Panel className='relative' shaded>
                 <div className='flex'>
-                    {/* <ButtonGroup> */}
                     <IconButton
                         size='sm'
                         className='self-start'
@@ -47,9 +35,11 @@ export const ActionUI = observer(function StepUI_(p: { draft: DraftL }) {
                     />
                     <ToolPickerUI draft={draft} />
                 </div>
-                {/* {step.id} */}
-                <div className='flex gap-2' style={{ width: '30rem' }}>
-                    <ActionSuggestionUI draft={draft} />
+                <div
+                    className='flex gap-2 max-w-full overflow-auto'
+                    // style={{ width: '30rem' }}
+                >
+                    <ToolSuggestionUI draft={draft} />
                     {/* widgets ------------------------------- */}
                     <form
                         onKeyUp={(ev) => {
@@ -69,25 +59,16 @@ export const ActionUI = observer(function StepUI_(p: { draft: DraftL }) {
                         }}
                     >
                         {Object.entries(formDefinition).map(([rootKey, req], ix) => {
-                            const pathInfo = draft.getPathInfo([rootKey])
+                            // const pathInfo = draft.getPathInfo([rootKey])
                             return (
-                                <div
-                                    // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
-                                    className='row gap-2 items-baseline'
+                                <WidgetWithLabelUI
+                                    path={[rootKey]}
                                     key={rootKey}
-                                >
-                                    <div className='w-20 shrink-0 text-right'>
-                                        <Whisper speaker={<Tooltip>{pathInfo}</Tooltip>}>
-                                            <div>{rootKey}</div>
-                                        </Whisper>
-                                    </div>
-                                    <WidgetUI //
-                                        key={pathInfo}
-                                        path={[rootKey]}
-                                        req={req}
-                                        focus={ix === 0}
-                                    />
-                                </div>
+                                    rootKey={rootKey}
+                                    req={req}
+                                    ix={ix}
+                                    draft={draft}
+                                />
                             )
                         })}
                     </form>
@@ -114,3 +95,13 @@ export const ActionUI = observer(function StepUI_(p: { draft: DraftL }) {
         </draftContext.Provider>
     )
 })
+
+// export const ActionPlaceholderUI = observer(function ActionPlaceholderUI_(p: {}) {
+//     return (
+//         <Panel>
+//             <div className='flex gap-2' style={{ width: '30rem' }}>
+//                 Executing...
+//             </div>
+//         </Panel>
+//     )
+// })

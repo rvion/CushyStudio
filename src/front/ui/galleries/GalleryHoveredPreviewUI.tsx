@@ -13,7 +13,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
     return (
         <div>
             {/* BACKDROP */}
-            <div
+            {/* <div
                 style={{
                     pointerEvents: 'none',
                     zIndex: 999998,
@@ -25,13 +25,14 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                     right: 0,
                     background: '#272727aa',
                 }}
-            ></div>
+            ></div> */}
             {/* OVERLAY CONTAINER */}
             <div
                 style={{
+                    boxShadow: '0 0 1rem 0 #ebebebe0',
                     pointerEvents: 'none',
-                    top: '10rem',
-                    left: '10rem',
+                    top: '5rem',
+                    left: '5rem',
                     position: 'absolute',
                     zIndex: 999999,
                     objectFit: 'contain',
@@ -41,21 +42,20 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                 }}
             >
                 {/* METADATA */}
-                <div>
-                    {/*  */}
+                {/* <div>
                     {st.hovered.prompt.id}
                     <div>downloaded: {st.hovered.data.downloaded ? '✅' : '❌'}</div>
                     <div>{st.hovered.data.imageInfos?.filename ?? 'error'}</div>
                     <div>fpath: {st.hovered.localAbsolutePath}</div>
-                </div>
+                </div> */}
 
                 {/* IMAGE */}
                 <img
                     src={st.hovered.url}
                     style={{
                         objectFit: 'contain',
-                        maxHeight: '100vh',
-                        maxWidth: '100vw',
+                        maxHeight: 'calc(100vh - 10rem)',
+                        maxWidth: 'calc(100vw - 10rem)',
                     }}
                 />
             </div>

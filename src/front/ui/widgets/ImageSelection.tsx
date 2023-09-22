@@ -4,7 +4,7 @@ import { Button, Radio, RadioGroup } from 'rsuite'
 import { LightBoxState, LightBoxUI } from '../LightBox'
 import type { ImageT } from 'src/models/Image'
 import { useImageDrop } from '../galleries/dnd'
-import { ImageAnswer } from 'src/controls/askv2'
+import { ImageAnswer } from 'src/controls/InfoAnswer'
 import { useDraft } from '../useDraft'
 import { ImageUI } from '../galleries/ImageUI'
 

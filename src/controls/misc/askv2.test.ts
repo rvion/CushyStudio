@@ -1,6 +1,7 @@
-import type { Maybe } from '../utils/types'
+import type { Requestable } from '../InfoRequest'
+import type { InfoAnswer } from '../InfoAnswer'
 
-import { fakeInfoRequestFn } from './askv2'
+import { FormBuilder } from '../FormBuilder'
 
 // const r1 = await fakeInfoRequestFn((q) => ({ width: 'int' }))
 // const r2 = await fakeInfoRequestFn((q) => ({ 'wanna clip skip?': 'int?' }))
@@ -24,3 +25,12 @@ const r = await fakeInfoRequestFn((ui) => ({
 // const y: Maybe<number> = r.number
 // const x: string = r.loras[0].name
 // const aa = r.pos3d[2]
+
+async function fakeInfoRequestFn<const Req extends { [key: string]: Requestable }>(
+    //
+    req: (q: FormBuilder) => Req,
+): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> {
+    const q = new FormBuilder()
+    const r = req(q)
+    return 0 as any
+}

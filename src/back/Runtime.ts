@@ -9,9 +9,10 @@ import { execSync } from 'child_process'
 import { readFileSync, writeFileSync } from 'fs'
 import { nanoid } from 'nanoid'
 import { STATE } from 'src/front/state'
-import { Requestable } from '../controls/Requestable'
-import { ScriptStep_ask } from '../controls/ScriptStep_ask'
-import { FormBuilder, ImageAnswer, InfoAnswer, InfoRequestFn } from '../controls/askv2'
+import { Requestable } from '../controls/InfoRequest'
+import { ScriptStep_ask } from '../controls/misc/ScriptStep_ask'
+import { ImageAnswer, InfoAnswer, InfoRequestFn } from '../controls/InfoAnswer'
+import { FormBuilder } from '../controls/FormBuilder'
 import { auto } from '../core/autoValue'
 import { globalToolFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
@@ -64,7 +65,7 @@ export class Runtime {
 
         const action = globalToolFnCache.get(tool)
         const start = Date.now()
-        const formResult = this.step.actionParams
+        const formResult = this.step.rawParams
         console.log(`🔴 before: size=${this.graph.nodes.length}`)
 
         try {
