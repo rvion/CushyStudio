@@ -215,9 +215,9 @@ export class SchemaL {
                     const errMsg =
                         `node (${nodeNameInComfy} ${nodeNameInCushy}) schema for property ${ipt.name} contains an unsupported ` +
                         typeof typeStuff
-                    console.error('🦊', errMsg)
-                    console.error('🦊', JSON.stringify(typeStuff))
-                    console.error('🦊 skipping')
+                    console.error('🦊 skipping', errMsg, { invalid: toJS(typeStuff) })
+                    // console.error('🦊', JSON.stringify())
+                    // console.error('🦊 skipping')
                     // throw new Error(errMsg)
                     continue
                 }
