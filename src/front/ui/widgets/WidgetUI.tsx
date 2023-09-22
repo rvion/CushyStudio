@@ -108,9 +108,9 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'itemsOpt') return <WidgetItemsOptUI get={get} set={set} path={p.path} req={req} />
     if (req.type === 'bool') return <WidgetBoolUI get={get} set={set} optional={false} />
     if (req.type === 'bool?') return <WidgetBoolUI get={get} set={set} optional={true} />
-    if (req.type === 'int') return <WidgetNumUI mode='int' get={get} set={set} />
+    if (req.type === 'int') return <WidgetNumUI mode='int' get={get} set={set} def={def} />
     if (req.type === 'int?') return <WidgetNumOptUI mode='int' get={get} set={set} def={def} />
-    if (req.type === 'float') return <WidgetNumUI mode='float' get={get} set={set} />
+    if (req.type === 'float') return <WidgetNumUI mode='float' get={get} set={set} def={def} />
     if (req.type === 'float?') return <WidgetNumOptUI mode='float' get={get} set={set} def={def} />
     if (req.type === 'str') return <EditorUI get={get} set={set} />
     if (req.type === 'str?') return <EditorUI get={get} set={set} nullable />

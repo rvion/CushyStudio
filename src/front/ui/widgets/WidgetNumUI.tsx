@@ -1,16 +1,20 @@
+import type { Maybe } from 'src/utils/types'
+
 import { observer } from 'mobx-react-lite'
 import { InputNumber } from 'rsuite'
 
 export const WidgetNumUI = observer(function WidgetNumUI_(p: {
     //
     get: () => number
+    def: () => Maybe<number>
     set: (v: number) => void
     mode: 'int' | 'float'
 }) {
+    const value = p.get() ?? p.def() ?? 0
     return (
         <InputNumber //
             size='sm'
-            value={p.get()}
+            value={value}
             step={{ int: 1, float: 0.1 }[p.mode]}
             onChange={(next) => {
                 // parse value

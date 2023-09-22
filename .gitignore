@@ -27,6 +27,7 @@ webview
 *.vsix
 
 flows/private
+flows/.disabled
 
 dbDir
 dbDir*

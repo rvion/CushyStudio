@@ -8,14 +8,13 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: {
     get: () => Maybe<number>
     def: () => Maybe<number>
     set: (v: number | null) => void
-
     mode: 'int' | 'float'
 }) {
     const val = p.get()
     const uiSt = useLocalObservable(() => {
         return {
             disabled: val == null,
-            lastNumberVal: val ?? 0,
+            lastNumberVal: val ?? p.def() ?? 0,
         }
     })
     return (
