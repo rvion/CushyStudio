@@ -197,28 +197,6 @@ declare global {
         CivitAI_Lora_Loader(args: CivitAI_Lora_Loader_input, uid?: ComfyNodeUID): CivitAI_Lora_Loader
         /* category=CivitAI_Loaders output=MODEL, CLIP, VAE */
         CivitAI_Checkpoint_Loader(args: CivitAI_Checkpoint_Loader_input, uid?: ComfyNodeUID): CivitAI_Checkpoint_Loader
-        /* category=loaders output=MODEL, CLIP */
-        LoraLoaderPysssss(args: LoraLoaderPysssss_input, uid?: ComfyNodeUID): LoraLoaderPysssss
-        /* category=loaders output=MODEL, CLIP, VAE */
-        CheckpointLoaderPysssss(args: CheckpointLoaderPysssss_input, uid?: ComfyNodeUID): CheckpointLoaderPysssss
-        /* category=image output=IMAGE */
-        ConstrainImagePysssss(args: ConstrainImagePysssss_input, uid?: ComfyNodeUID): ConstrainImagePysssss
-        /* category=utils output=INT, FLOAT */
-        MathExpressionPysssss(args: MathExpressionPysssss_input, uid?: ComfyNodeUID): MathExpressionPysssss
-        /* category=utils output= */
-        PlaySoundPysssss(args: PlaySoundPysssss_input, uid?: ComfyNodeUID): PlaySoundPysssss
-        /* category=utils output=* */
-        RepeaterPysssss(args: RepeaterPysssss_input, uid?: ComfyNodeUID): RepeaterPysssss
-        /* category=utils output=* */
-        ReroutePrimitivePysssss(args: ReroutePrimitivePysssss_input, uid?: ComfyNodeUID): ReroutePrimitivePysssss
-        /* category=utils output=STRING */
-        ShowTextPysssss(args: ShowTextPysssss_input, uid?: ComfyNodeUID): ShowTextPysssss
-        /* category=utils output=STRING */
-        StringFunctionPysssss(args: StringFunctionPysssss_input, uid?: ComfyNodeUID): StringFunctionPysssss
-        /* category=utils output=STRING */
-        LoadTextPysssss(args: LoadTextPysssss_input, uid?: ComfyNodeUID): LoadTextPysssss
-        /* category=utils output=STRING */
-        SaveTextPysssss(args: SaveTextPysssss_input, uid?: ComfyNodeUID): SaveTextPysssss
         /* category=ImpactPack output=SAM_MODEL */
         ImpactSAMLoader(args: ImpactSAMLoader_input, uid?: ComfyNodeUID): ImpactSAMLoader
         /* category=ImpactPack_Util output=BBOX_DETECTOR */
@@ -1191,8 +1169,6 @@ declare global {
         GLIGEN: GLIGEN
         UPSCALE_MODEL: UPSCALE_MODEL
         BOOLEAN: BOOLEAN
-        INTFLOATIMAGELATENT: INTFLOATIMAGELATENT
-        STAR: STAR
         SAM_MODEL: SAM_MODEL
         BBOX_DETECTOR: BBOX_DETECTOR
         ONNX_DETECTOR: ONNX_DETECTOR
@@ -1212,6 +1188,7 @@ declare global {
         SEG_ELT_bbox: SEG_ELT_bbox
         SEG_ELT_control_net_wrapper: SEG_ELT_control_net_wrapper
         KSAMPLER_ADVANCED: KSAMPLER_ADVANCED
+        STAR: STAR
         REGIONAL_PROMPTS: REGIONAL_PROMPTS
         XY: XY
         ZIPPED_PROMPT: ZIPPED_PROMPT
@@ -1277,18 +1254,6 @@ declare global {
         Enum_CivitAI_Lora_Loader_Download_path: Enum_CivitAI_Lora_Loader_Download_path
         Enum_CivitAI_Checkpoint_Loader_Ckpt_name: Enum_CivitAI_Checkpoint_Loader_Ckpt_name
         Enum_CivitAI_Checkpoint_Loader_Download_path: Enum_CivitAI_Checkpoint_Loader_Download_path
-        ERROR_LoraLoaderPysssss_lora_name: ERROR_LoraLoaderPysssss_lora_name
-        ERROR_CheckpointLoaderPysssss_ckpt_name: ERROR_CheckpointLoaderPysssss_ckpt_name
-        Enum_ConstrainImagePysssss_Crop_if_required: Enum_ConstrainImagePysssss_Crop_if_required
-        Enum_PlaySoundPysssss_Mode: Enum_PlaySoundPysssss_Mode
-        Enum_RepeaterPysssss_Output: Enum_RepeaterPysssss_Output
-        Enum_RepeaterPysssss_Node_mode: Enum_RepeaterPysssss_Node_mode
-        Enum_StringFunctionPysssss_Action: Enum_StringFunctionPysssss_Action
-        Enum_StringFunctionPysssss_Tidy_tags: Enum_StringFunctionPysssss_Tidy_tags
-        Enum_LoadTextPysssss_Root_dir: Enum_LoadTextPysssss_Root_dir
-        Enum_LoadTextPysssss_File: Enum_LoadTextPysssss_File
-        Enum_SaveTextPysssss_Root_dir: Enum_SaveTextPysssss_Root_dir
-        Enum_SaveTextPysssss_Append: Enum_SaveTextPysssss_Append
         Enum_ImpactSAMLoader_Model_name: Enum_ImpactSAMLoader_Model_name
         Enum_ImpactSAMLoader_Device_mode: Enum_ImpactSAMLoader_Device_mode
         Enum_ImpactONNXDetectorProvider_Model_name: Enum_ImpactONNXDetectorProvider_Model_name
@@ -2029,17 +1994,6 @@ declare global {
         RemoveImageBackgroundAbg: RemoveImageBackgroundAbg
         CivitAI_Lora_Loader: CivitAI_Lora_Loader
         CivitAI_Checkpoint_Loader: CivitAI_Checkpoint_Loader
-        LoraLoaderPysssss: LoraLoaderPysssss
-        CheckpointLoaderPysssss: CheckpointLoaderPysssss
-        ConstrainImagePysssss: ConstrainImagePysssss
-        MathExpressionPysssss: MathExpressionPysssss
-        PlaySoundPysssss: PlaySoundPysssss
-        RepeaterPysssss: RepeaterPysssss
-        ReroutePrimitivePysssss: ReroutePrimitivePysssss
-        ShowTextPysssss: ShowTextPysssss
-        StringFunctionPysssss: StringFunctionPysssss
-        LoadTextPysssss: LoadTextPysssss
-        SaveTextPysssss: SaveTextPysssss
         ImpactSAMLoader: ImpactSAMLoader
         ImpactCLIPSegDetectorProvider: ImpactCLIPSegDetectorProvider
         ImpactONNXDetectorProvider: ImpactONNXDetectorProvider
@@ -2523,8 +2477,6 @@ declare global {
             | 'TomePatchModel'
             | 'CivitAI_Lora_Loader'
             | 'CivitAI_Checkpoint_Loader'
-            | 'LoraLoaderPysssss'
-            | 'CheckpointLoaderPysssss'
             | 'ImpactFromDetailerPipe'
             | 'ImpactFromDetailerPipe_v2'
             | 'ImpactFromDetailerPipeSDXL'
@@ -2561,8 +2513,6 @@ declare global {
             | 'CLIPMergeSimple'
             | 'CivitAI_Lora_Loader'
             | 'CivitAI_Checkpoint_Loader'
-            | 'LoraLoaderPysssss'
-            | 'CheckpointLoaderPysssss'
             | 'ImpactFromDetailerPipe'
             | 'ImpactFromDetailerPipe_v2'
             | 'ImpactFromDetailerPipeSDXL'
@@ -2592,7 +2542,6 @@ declare global {
             | 'CheckpointLoader'
             | 'DiffusersLoader'
             | 'CivitAI_Checkpoint_Loader'
-            | 'CheckpointLoaderPysssss'
             | 'ImpactFromDetailerPipe'
             | 'ImpactFromDetailerPipe_v2'
             | 'ImpactFromDetailerPipeSDXL'
@@ -2684,7 +2633,6 @@ declare global {
             | 'MaskToImage'
             | 'Canny'
             | 'RemoveImageBackgroundAbg'
-            | 'ConstrainImagePysssss'
             | 'ImpactDetailerForEach'
             | 'ImpactDetailerForEachDebug'
             | 'ImpactDetailerForEachDebug'
@@ -2908,270 +2856,6 @@ declare global {
     export interface CanProduce_GLIGEN extends Pick<ComfySetup, 'GLIGENLoader'> {}
     export interface CanProduce_UPSCALE_MODEL
         extends Pick<ComfySetup, 'UpscaleModelLoader' | 'WASUpscaleModelLoader' | 'WASUpscaleModelSwitch'> {}
-    export interface CanProduce_INT
-        extends Pick<
-            ComfySetup,
-            | 'MathExpressionPysssss'
-            | 'ImpactImpactInt'
-            | 'ImpactImpactImageInfo'
-            | 'ImpactImpactImageInfo'
-            | 'ImpactImpactImageInfo'
-            | 'ImpactImpactImageInfo'
-            | 'ImpactImpactMinMax'
-            | 'EvaluateIntegers'
-            | 'EvaluateFloats'
-            | 'MasqueradeGetImageSize'
-            | 'MasqueradeGetImageSize'
-            | 'MasqueradeMasqueradeIncrementer'
-            | 'WASConstantNumber'
-            | 'WASLogicBoolean'
-            | 'WASImageSizeToNumber'
-            | 'WASImageSizeToNumber'
-            | 'WASImageToSeed'
-            | 'WASIntegerPlaceCounter'
-            | 'WASLatentSizeToNumber'
-            | 'WASLatentSizeToNumber'
-            | 'WASMaskCropRegion'
-            | 'WASMaskCropRegion'
-            | 'WASMaskCropRegion'
-            | 'WASMaskCropRegion'
-            | 'WASMaskCropRegion'
-            | 'WASMaskCropRegion'
-            | 'WASNumberCounter'
-            | 'WASNumberOperation'
-            | 'WASNumberInputSwitch'
-            | 'WASNumberInputCondition'
-            | 'WASNumberMultipleOf'
-            | 'WASNumberToInt'
-            | 'WASRandomNumber'
-            | 'WASSeed'
-            | 'WASTrueRandomOrgNumberGenerator'
-        > {}
-    export interface CanProduce_FLOAT
-        extends Pick<
-            ComfySetup,
-            | 'MathExpressionPysssss'
-            | 'ImpactImpactFrom_SEG_ELT'
-            | 'EvaluateIntegers'
-            | 'EvaluateFloats'
-            | 'WASConstantNumber'
-            | 'WASImageAspectRatio'
-            | 'WASImageSizeToNumber'
-            | 'WASImageSizeToNumber'
-            | 'WASLatentSizeToNumber'
-            | 'WASLatentSizeToNumber'
-            | 'WASNumberCounter'
-            | 'WASNumberOperation'
-            | 'WASNumberToFloat'
-            | 'WASNumberInputSwitch'
-            | 'WASNumberInputCondition'
-            | 'WASNumberMultipleOf'
-            | 'WASNumberPI'
-            | 'WASRandomNumber'
-            | 'WASSeed'
-            | 'WASTrueRandomOrgNumberGenerator'
-        > {}
-    export interface CanProduce_STAR
-        extends Pick<
-            ComfySetup,
-            | 'RepeaterPysssss'
-            | 'ReroutePrimitivePysssss'
-            | 'ImpactLatentSwitch'
-            | 'ImpactSEGSSwitch'
-            | 'ImpactImpactSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactInversedSwitch'
-            | 'ImpactImpactConditionalBranch'
-            | 'ImpactImpactValueReceiver'
-            | 'ImpactImpactDummyInput'
-        > {}
-    export interface CanProduce_STRING
-        extends Pick<
-            ComfySetup,
-            | 'ShowTextPysssss'
-            | 'StringFunctionPysssss'
-            | 'LoadTextPysssss'
-            | 'SaveTextPysssss'
-            | 'ImpactImpactFrom_SEG_ELT'
-            | 'ImpactLatentSwitch'
-            | 'ImpactSEGSSwitch'
-            | 'ImpactImpactSwitch'
-            | 'ImpactImpactWildcardProcessor'
-            | 'ImpactImpactWildcardEncode'
-            | 'ImpactImpactStringSelector'
-            | 'LoraLoaderBlockWeightInspire'
-            | 'UnzipPromptInspire'
-            | 'UnzipPromptInspire'
-            | 'UnzipPromptInspire'
-            | 'PromptExtractorInspire'
-            | 'PromptExtractorInspire'
-            | 'EvaluateIntegers'
-            | 'EvaluateFloats'
-            | 'EvaluateStrings'
-            | 'WASCacheNode'
-            | 'WASCacheNode'
-            | 'WASCacheNode'
-            | 'WASCheckpointLoader'
-            | 'WASCheckpointLoaderSimple'
-            | 'WASCLIPTextEncodeNSP'
-            | 'WASCLIPTextEncodeNSP'
-            | 'WASCreateMorphImage'
-            | 'WASCreateMorphImage'
-            | 'WASCreateMorphImageFromPath'
-            | 'WASCreateMorphImageFromPath'
-            | 'WASCreateVideoFromPath'
-            | 'WASCreateVideoFromPath'
-            | 'WASDiffusersModelLoader'
-            | 'WASDiffusersHubModelDownLoader'
-            | 'WASLoraLoader'
-            | 'WASImageAspectRatio'
-            | 'WASImageAspectRatio'
-            | 'WASImageHistoryLoader'
-            | 'WASImageLoad'
-            | 'WASLoadImageBatch'
-            | 'WASLoadTextFile'
-            | 'WASLoadLora'
-            | 'WASNumberToString'
-            | 'WASNumberToText'
-            | 'WASPromptStylesSelector'
-            | 'WASPromptStylesSelector'
-            | 'WASPromptMultipleStylesSelector'
-            | 'WASPromptMultipleStylesSelector'
-            | 'WASBLIPAnalyzeImage'
-            | 'WASStringToText'
-            | 'WASTextCompare'
-            | 'WASTextCompare'
-            | 'WASTextCompare'
-            | 'WASTextConcatenate'
-            | 'WASTextFileHistoryLoader'
-            | 'WASTextFindAndReplaceByDictionary'
-            | 'WASTextFindAndReplaceInput'
-            | 'WASTextFindAndReplace'
-            | 'WASTextInputSwitch'
-            | 'WASTextLoadLineFromFile'
-            | 'WASTextMultiline'
-            | 'WASTextParseA1111Embeddings'
-            | 'WASTextParseNoodleSoupPrompts'
-            | 'WASTextParseTokens'
-            | 'WASTextRandomLine'
-            | 'WASTextRandomPrompt'
-            | 'WASTextString'
-            | 'WASTextString'
-            | 'WASTextString'
-            | 'WASTextString'
-            | 'WASTextShuffle'
-            | 'WASTextToConsole'
-            | 'WASTextToString'
-            | 'WASTextStringTruncate'
-            | 'WASTextStringTruncate'
-            | 'WASTextStringTruncate'
-            | 'WASTextStringTruncate'
-            | 'WASUnCLIPCheckpointLoader'
-            | 'WASUpscaleModelLoader'
-            | 'WASWriteToGIF'
-            | 'WASWriteToGIF'
-            | 'WASWriteToVideo'
-            | 'WASWriteToVideo'
-            | 'WASVideoDumpFrames'
-        > {}
     export interface CanProduce_SAM_MODEL
         extends Pick<
             ComfySetup,
@@ -3297,11 +2981,267 @@ declare global {
     export interface CanProduce_SEG_ELT_crop_region extends Pick<ComfySetup, 'ImpactImpactFrom_SEG_ELT'> {}
     export interface CanProduce_SEG_ELT_bbox extends Pick<ComfySetup, 'ImpactImpactFrom_SEG_ELT'> {}
     export interface CanProduce_SEG_ELT_control_net_wrapper extends Pick<ComfySetup, 'ImpactImpactFrom_SEG_ELT'> {}
+    export interface CanProduce_FLOAT
+        extends Pick<
+            ComfySetup,
+            | 'ImpactImpactFrom_SEG_ELT'
+            | 'EvaluateIntegers'
+            | 'EvaluateFloats'
+            | 'WASConstantNumber'
+            | 'WASImageAspectRatio'
+            | 'WASImageSizeToNumber'
+            | 'WASImageSizeToNumber'
+            | 'WASLatentSizeToNumber'
+            | 'WASLatentSizeToNumber'
+            | 'WASNumberCounter'
+            | 'WASNumberOperation'
+            | 'WASNumberToFloat'
+            | 'WASNumberInputSwitch'
+            | 'WASNumberInputCondition'
+            | 'WASNumberMultipleOf'
+            | 'WASNumberPI'
+            | 'WASRandomNumber'
+            | 'WASSeed'
+            | 'WASTrueRandomOrgNumberGenerator'
+        > {}
+    export interface CanProduce_STRING
+        extends Pick<
+            ComfySetup,
+            | 'ImpactImpactFrom_SEG_ELT'
+            | 'ImpactLatentSwitch'
+            | 'ImpactSEGSSwitch'
+            | 'ImpactImpactSwitch'
+            | 'ImpactImpactWildcardProcessor'
+            | 'ImpactImpactWildcardEncode'
+            | 'ImpactImpactStringSelector'
+            | 'LoraLoaderBlockWeightInspire'
+            | 'UnzipPromptInspire'
+            | 'UnzipPromptInspire'
+            | 'UnzipPromptInspire'
+            | 'PromptExtractorInspire'
+            | 'PromptExtractorInspire'
+            | 'EvaluateIntegers'
+            | 'EvaluateFloats'
+            | 'EvaluateStrings'
+            | 'WASCacheNode'
+            | 'WASCacheNode'
+            | 'WASCacheNode'
+            | 'WASCheckpointLoader'
+            | 'WASCheckpointLoaderSimple'
+            | 'WASCLIPTextEncodeNSP'
+            | 'WASCLIPTextEncodeNSP'
+            | 'WASCreateMorphImage'
+            | 'WASCreateMorphImage'
+            | 'WASCreateMorphImageFromPath'
+            | 'WASCreateMorphImageFromPath'
+            | 'WASCreateVideoFromPath'
+            | 'WASCreateVideoFromPath'
+            | 'WASDiffusersModelLoader'
+            | 'WASDiffusersHubModelDownLoader'
+            | 'WASLoraLoader'
+            | 'WASImageAspectRatio'
+            | 'WASImageAspectRatio'
+            | 'WASImageHistoryLoader'
+            | 'WASImageLoad'
+            | 'WASLoadImageBatch'
+            | 'WASLoadTextFile'
+            | 'WASLoadLora'
+            | 'WASNumberToString'
+            | 'WASNumberToText'
+            | 'WASPromptStylesSelector'
+            | 'WASPromptStylesSelector'
+            | 'WASPromptMultipleStylesSelector'
+            | 'WASPromptMultipleStylesSelector'
+            | 'WASBLIPAnalyzeImage'
+            | 'WASStringToText'
+            | 'WASTextCompare'
+            | 'WASTextCompare'
+            | 'WASTextCompare'
+            | 'WASTextConcatenate'
+            | 'WASTextFileHistoryLoader'
+            | 'WASTextFindAndReplaceByDictionary'
+            | 'WASTextFindAndReplaceInput'
+            | 'WASTextFindAndReplace'
+            | 'WASTextInputSwitch'
+            | 'WASTextLoadLineFromFile'
+            | 'WASTextMultiline'
+            | 'WASTextParseA1111Embeddings'
+            | 'WASTextParseNoodleSoupPrompts'
+            | 'WASTextParseTokens'
+            | 'WASTextRandomLine'
+            | 'WASTextRandomPrompt'
+            | 'WASTextString'
+            | 'WASTextString'
+            | 'WASTextString'
+            | 'WASTextString'
+            | 'WASTextShuffle'
+            | 'WASTextToConsole'
+            | 'WASTextToString'
+            | 'WASTextStringTruncate'
+            | 'WASTextStringTruncate'
+            | 'WASTextStringTruncate'
+            | 'WASTextStringTruncate'
+            | 'WASUnCLIPCheckpointLoader'
+            | 'WASUpscaleModelLoader'
+            | 'WASWriteToGIF'
+            | 'WASWriteToGIF'
+            | 'WASWriteToVideo'
+            | 'WASWriteToVideo'
+            | 'WASVideoDumpFrames'
+        > {}
     export interface CanProduce_KSAMPLER extends Pick<ComfySetup, 'ImpactKSamplerProvider' | 'ImpactTiledKSamplerProvider'> {}
     export interface CanProduce_KSAMPLER_ADVANCED extends Pick<ComfySetup, 'ImpactKSamplerAdvancedProvider'> {}
+    export interface CanProduce_STAR
+        extends Pick<
+            ComfySetup,
+            | 'ImpactLatentSwitch'
+            | 'ImpactSEGSSwitch'
+            | 'ImpactImpactSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactInversedSwitch'
+            | 'ImpactImpactConditionalBranch'
+            | 'ImpactImpactValueReceiver'
+            | 'ImpactImpactDummyInput'
+        > {}
     export interface CanProduce_REGIONAL_PROMPTS
         extends Pick<ComfySetup, 'ImpactCombineRegionalPrompts' | 'ImpactRegionalPrompt'> {}
     export interface CanProduce_BOOLEAN extends Pick<ComfySetup, 'ImpactImpactCompare' | 'ImpactImpactNeg'> {}
+    export interface CanProduce_INT
+        extends Pick<
+            ComfySetup,
+            | 'ImpactImpactInt'
+            | 'ImpactImpactImageInfo'
+            | 'ImpactImpactImageInfo'
+            | 'ImpactImpactImageInfo'
+            | 'ImpactImpactImageInfo'
+            | 'ImpactImpactMinMax'
+            | 'EvaluateIntegers'
+            | 'EvaluateFloats'
+            | 'MasqueradeGetImageSize'
+            | 'MasqueradeGetImageSize'
+            | 'MasqueradeMasqueradeIncrementer'
+            | 'WASConstantNumber'
+            | 'WASLogicBoolean'
+            | 'WASImageSizeToNumber'
+            | 'WASImageSizeToNumber'
+            | 'WASImageToSeed'
+            | 'WASIntegerPlaceCounter'
+            | 'WASLatentSizeToNumber'
+            | 'WASLatentSizeToNumber'
+            | 'WASMaskCropRegion'
+            | 'WASMaskCropRegion'
+            | 'WASMaskCropRegion'
+            | 'WASMaskCropRegion'
+            | 'WASMaskCropRegion'
+            | 'WASMaskCropRegion'
+            | 'WASNumberCounter'
+            | 'WASNumberOperation'
+            | 'WASNumberInputSwitch'
+            | 'WASNumberInputCondition'
+            | 'WASNumberMultipleOf'
+            | 'WASNumberToInt'
+            | 'WASRandomNumber'
+            | 'WASSeed'
+            | 'WASTrueRandomOrgNumberGenerator'
+        > {}
     export interface CanProduce_XY
         extends Pick<
             ComfySetup,
@@ -3400,7 +3340,6 @@ declare global {
 
     // TYPES -------------------------------
     export type SEG_ELT_control_net_wrapper = Slot<'SEG_ELT_control_net_wrapper'>
-    export type INTFLOATIMAGELATENT = Slot<'INTFLOATIMAGELATENT'>
     export type SEG_ELT_crop_region = Slot<'SEG_ELT_crop_region'>
     export type CLIP_VISION_OUTPUT = Slot<'CLIP_VISION_OUTPUT'>
     export type SEGS_PREPROCESSOR = Slot<'SEGS_PREPROCESSOR'>
@@ -3449,8 +3388,8 @@ declare global {
     export type MASKS = Slot<'MASKS'>
     export type CLIP = Slot<'CLIP'>
     export type MASK = Slot<'MASK'>
-    export type STAR = Slot<'STAR'>
     export type SEGS = Slot<'SEGS'>
+    export type STAR = Slot<'STAR'>
     export type DICT = Slot<'DICT'>
     export type LIST = Slot<'LIST'>
     export type SEED = Slot<'SEED'>
@@ -3462,10 +3401,6 @@ declare global {
         | Slot<'SEG_ELT_control_net_wrapper'>
         | HasSingle_SEG_ELT_control_net_wrapper
         | ((x: CanProduce_SEG_ELT_control_net_wrapper) => _SEG_ELT_control_net_wrapper)
-    export type _INTFLOATIMAGELATENT =
-        | Slot<'INTFLOATIMAGELATENT'>
-        | HasSingle_INTFLOATIMAGELATENT
-        | ((x: CanProduce_INTFLOATIMAGELATENT) => _INTFLOATIMAGELATENT)
     export type _SEG_ELT_crop_region =
         | Slot<'SEG_ELT_crop_region'>
         | HasSingle_SEG_ELT_crop_region
@@ -3559,8 +3494,8 @@ declare global {
     export type _MASKS = Slot<'MASKS'> | HasSingle_MASKS | ((x: CanProduce_MASKS) => _MASKS)
     export type _CLIP = Slot<'CLIP'> | HasSingle_CLIP | ((x: CanProduce_CLIP) => _CLIP)
     export type _MASK = Slot<'MASK'> | HasSingle_MASK | ((x: CanProduce_MASK) => _MASK)
-    export type _STAR = Slot<'STAR'> | HasSingle_STAR | ((x: CanProduce_STAR) => _STAR)
     export type _SEGS = Slot<'SEGS'> | HasSingle_SEGS | ((x: CanProduce_SEGS) => _SEGS)
+    export type _STAR = Slot<'STAR'> | HasSingle_STAR | ((x: CanProduce_STAR) => _STAR)
     export type _DICT = Slot<'DICT'> | HasSingle_DICT | ((x: CanProduce_DICT) => _DICT)
     export type _LIST = Slot<'LIST'> | HasSingle_LIST | ((x: CanProduce_LIST) => _LIST)
     export type _SEED = Slot<'SEED'> | HasSingle_SEED | ((x: CanProduce_SEED) => _SEED)
@@ -3844,20 +3779,6 @@ declare global {
         | 'wd-1-5-beta2-aesthetic-unclip-h-fp16.safetensors'
         | 'wd-1-5-beta2-fp16.safetensors'
     export type Enum_CivitAI_Checkpoint_Loader_Download_path = 'models\\checkpoints'
-    export type Enum_ConstrainImagePysssss_Crop_if_required = 'no' | 'yes'
-    export type Enum_StringFunctionPysssss_Tidy_tags = Enum_ConstrainImagePysssss_Crop_if_required
-    export type Enum_MasqueradeMaskByText_Normalize = Enum_ConstrainImagePysssss_Crop_if_required
-    export type Enum_MasqueradeCombineMasks_Clamp_result = Enum_ConstrainImagePysssss_Crop_if_required
-    export type Enum_MasqueradeCombineMasks_Round_result = Enum_ConstrainImagePysssss_Crop_if_required
-    export type Enum_SDXLMixSampler_Final_only = Enum_ConstrainImagePysssss_Crop_if_required
-    export type Enum_PlaySoundPysssss_Mode = 'always' | 'on empty queue'
-    export type Enum_RepeaterPysssss_Output = 'multi' | 'single'
-    export type Enum_RepeaterPysssss_Node_mode = 'create' | 'reuse'
-    export type Enum_StringFunctionPysssss_Action = 'append' | 'replace'
-    export type Enum_LoadTextPysssss_Root_dir = 'input' | 'output' | 'temp'
-    export type Enum_SaveTextPysssss_Root_dir = Enum_LoadTextPysssss_Root_dir
-    export type Enum_LoadTextPysssss_File = '[none]'
-    export type Enum_SaveTextPysssss_Append = 'append' | 'new only' | 'overwrite'
     export type Enum_ImpactSAMLoader_Model_name = 'sam_vit_b_01ec64.pth'
     export type Enum_ImpactSAMLoader_Device_mode = 'AUTO' | 'CPU' | 'Prefer GPU'
     export type Enum_ImpactSAMDetectorCombined_Detection_hint =
@@ -4579,6 +4500,10 @@ declare global {
         | '4:3'
         | '9:16'
         | '9:21'
+    export type Enum_MasqueradeMaskByText_Normalize = 'no' | 'yes'
+    export type Enum_MasqueradeCombineMasks_Clamp_result = Enum_MasqueradeMaskByText_Normalize
+    export type Enum_MasqueradeCombineMasks_Round_result = Enum_MasqueradeMaskByText_Normalize
+    export type Enum_SDXLMixSampler_Final_only = Enum_MasqueradeMaskByText_Normalize
     export type Enum_MasqueradeMaskMorphology_Op = 'close' | 'dilate' | 'erode' | 'open'
     export type Enum_MasqueradeCombineMasks_Op =
         | 'add'
@@ -4692,8 +4617,7 @@ declare global {
     export type Enum_WASImageEdgeDetectionFilter_Mode = 'laplacian' | 'normal'
     export type Enum_WASImageFlip_Mode = 'horizontal' | 'vertical'
     export type Enum_WASImageGenerateGradient_Direction = Enum_WASImageFlip_Mode
-    export type Enum_WASImageHistoryLoader_Image = 'No History'
-    export type Enum_WASTextFileHistoryLoader_File = Enum_WASImageHistoryLoader_Image
+    export type Enum_WASImageHistoryLoader_Image = '...\\outputs\\ComfyUI_02381_.png'
     export type Enum_WASImageMonitorEffectsFilter_Mode = 'Digital Distortion' | 'Signal Distortion' | 'TV Distortion'
     export type Enum_WASImageRembgRemoveBackground_Model =
         | 'isnet-anime'
@@ -4797,6 +4721,7 @@ declare global {
     export type Enum_WASPromptMultipleStylesSelector_Style4 = Enum_WASPromptStylesSelector_Style
     export type Enum_WASSAMModelLoader_Model_size = 'ViT-B' | 'ViT-H' | 'ViT-L'
     export type Enum_WASTextCompare_Mode = 'difference' | 'similarity'
+    export type Enum_WASTextFileHistoryLoader_File = 'No History'
     export type Enum_WASTextLoadLineFromFile_Mode = 'automatic' | 'index'
     export type Enum_WASTextStringTruncate_Truncate_by = 'characters' | 'words'
     export type Enum_WASTextStringTruncate_Truncate_from = 'beginning' | 'end'
@@ -4821,8 +4746,6 @@ declare global {
     export interface HasSingle_GLIGEN { _GLIGEN: GLIGEN } // prettier-ignore
     export interface HasSingle_UPSCALE_MODEL { _UPSCALE_MODEL: UPSCALE_MODEL } // prettier-ignore
     export interface HasSingle_BOOLEAN { _BOOLEAN: BOOLEAN } // prettier-ignore
-    export interface HasSingle_INTFLOATIMAGELATENT { _INTFLOATIMAGELATENT: INTFLOATIMAGELATENT } // prettier-ignore
-    export interface HasSingle_STAR { _STAR: STAR } // prettier-ignore
     export interface HasSingle_SAM_MODEL { _SAM_MODEL: SAM_MODEL } // prettier-ignore
     export interface HasSingle_BBOX_DETECTOR { _BBOX_DETECTOR: BBOX_DETECTOR } // prettier-ignore
     export interface HasSingle_ONNX_DETECTOR { _ONNX_DETECTOR: ONNX_DETECTOR } // prettier-ignore
@@ -4842,6 +4765,7 @@ declare global {
     export interface HasSingle_SEG_ELT_bbox { _SEG_ELT_bbox: SEG_ELT_bbox } // prettier-ignore
     export interface HasSingle_SEG_ELT_control_net_wrapper { _SEG_ELT_control_net_wrapper: SEG_ELT_control_net_wrapper } // prettier-ignore
     export interface HasSingle_KSAMPLER_ADVANCED { _KSAMPLER_ADVANCED: KSAMPLER_ADVANCED } // prettier-ignore
+    export interface HasSingle_STAR { _STAR: STAR } // prettier-ignore
     export interface HasSingle_REGIONAL_PROMPTS { _REGIONAL_PROMPTS: REGIONAL_PROMPTS } // prettier-ignore
     export interface HasSingle_XY { _XY: XY } // prettier-ignore
     export interface HasSingle_ZIPPED_PROMPT { _ZIPPED_PROMPT: ZIPPED_PROMPT } // prettier-ignore
@@ -6153,173 +6077,6 @@ declare global {
         /** default=4 min=12 max=12 step=1 */
         download_chunks?: _INT
         download_path?: Enum_CivitAI_Checkpoint_Loader_Download_path
-    }
-
-    // |=============================================================================|
-    // | LoraLoaderPysssss ("LoraLoader|pysssss" in ComfyUI) [loaders]               |
-    // |=============================================================================|
-    export interface LoraLoaderPysssss extends HasSingle_MODEL, HasSingle_CLIP, ComfyNode<LoraLoaderPysssss_input> {
-        MODEL: Slot<'MODEL', 0>
-        CLIP: Slot<'CLIP', 1>
-    }
-    export type LoraLoaderPysssss_input = {
-        model: _MODEL
-        clip: _CLIP
-        /** default=1 min=10 max=10 step=0.01 */
-        strength_model?: _FLOAT
-        /** default=1 min=10 max=10 step=0.01 */
-        strength_clip?: _FLOAT
-    }
-
-    // |=============================================================================|
-    // | CheckpointLoaderPysssss ("CheckpointLoader|pysssss" in ComfyUI) [loaders]   |
-    // |=============================================================================|
-    export interface CheckpointLoaderPysssss
-        extends HasSingle_MODEL,
-            HasSingle_CLIP,
-            HasSingle_VAE,
-            ComfyNode<CheckpointLoaderPysssss_input> {
-        MODEL: Slot<'MODEL', 0>
-        CLIP: Slot<'CLIP', 1>
-        VAE: Slot<'VAE', 2>
-    }
-    export type CheckpointLoaderPysssss_input = {}
-
-    // |=============================================================================|
-    // | ConstrainImagePysssss ("ConstrainImage|pysssss" in ComfyUI) [image]         |
-    // |=============================================================================|
-    export interface ConstrainImagePysssss extends HasSingle_IMAGE, ComfyNode<ConstrainImagePysssss_input> {
-        IMAGE: Slot<'IMAGE', 0>
-    }
-    export type ConstrainImagePysssss_input = {
-        images: _IMAGE
-        /** default=1024 min=undefined */
-        max_width?: _INT
-        /** default=1024 min=undefined */
-        max_height?: _INT
-        /** default=0 min=undefined */
-        min_width?: _INT
-        /** default=0 min=undefined */
-        min_height?: _INT
-        /** default="no" */
-        crop_if_required?: Enum_ConstrainImagePysssss_Crop_if_required
-    }
-
-    // |=============================================================================|
-    // | MathExpressionPysssss ("MathExpression|pysssss" in ComfyUI) [utils]         |
-    // |=============================================================================|
-    export interface MathExpressionPysssss extends HasSingle_INT, HasSingle_FLOAT, ComfyNode<MathExpressionPysssss_input> {
-        INT: Slot<'INT', 0>
-        FLOAT: Slot<'FLOAT', 1>
-    }
-    export type MathExpressionPysssss_input = {
-        /** */
-        expression: _STRING
-        a?: _INTFLOATIMAGELATENT
-        b?: _INTFLOATIMAGELATENT
-        c?: _INTFLOATIMAGELATENT
-    }
-
-    // |=============================================================================|
-    // | PlaySoundPysssss ("PlaySound|pysssss" in ComfyUI) [utils]                   |
-    // |=============================================================================|
-    export interface PlaySoundPysssss extends ComfyNode<PlaySoundPysssss_input> {}
-    export type PlaySoundPysssss_input = {
-        /** */
-        any: _STAR
-        /** */
-        mode: Enum_PlaySoundPysssss_Mode
-        /** default=0.5 min=1 max=1 step=0.1 */
-        volume?: _FLOAT
-    }
-
-    // |=============================================================================|
-    // | RepeaterPysssss ("Repeater|pysssss" in ComfyUI) [utils]                     |
-    // |=============================================================================|
-    export interface RepeaterPysssss extends HasSingle_STAR, ComfyNode<RepeaterPysssss_input> {
-        '*': Slot<'*', 0>
-    }
-    export type RepeaterPysssss_input = {
-        /** */
-        source: _STAR
-        /** default=2 min=5000 max=5000 */
-        repeats?: _INT
-        /** */
-        output: Enum_RepeaterPysssss_Output
-        /** */
-        node_mode: Enum_RepeaterPysssss_Node_mode
-    }
-
-    // |=============================================================================|
-    // | ReroutePrimitivePysssss ("ReroutePrimitive|pysssss" in ComfyUI) [utils]     |
-    // |=============================================================================|
-    export interface ReroutePrimitivePysssss extends HasSingle_STAR, ComfyNode<ReroutePrimitivePysssss_input> {
-        '*': Slot<'*', 0>
-    }
-    export type ReroutePrimitivePysssss_input = {
-        value: _STAR
-    }
-
-    // |=============================================================================|
-    // | ShowTextPysssss ("ShowText|pysssss" in ComfyUI) [utils]                     |
-    // |=============================================================================|
-    export interface ShowTextPysssss extends HasSingle_STRING, ComfyNode<ShowTextPysssss_input> {
-        STRING: Slot<'STRING', 0>
-    }
-    export type ShowTextPysssss_input = {
-        /** */
-        text: _STRING
-    }
-
-    // |=============================================================================|
-    // | StringFunctionPysssss ("StringFunction|pysssss" in ComfyUI) [utils]         |
-    // |=============================================================================|
-    export interface StringFunctionPysssss extends HasSingle_STRING, ComfyNode<StringFunctionPysssss_input> {
-        STRING: Slot<'STRING', 0>
-    }
-    export type StringFunctionPysssss_input = {
-        /** */
-        action: Enum_StringFunctionPysssss_Action
-        /** */
-        tidy_tags: Enum_ConstrainImagePysssss_Crop_if_required
-        /** */
-        text_a: _STRING
-        /** */
-        text_b: _STRING
-        /** */
-        text_c?: _STRING
-    }
-
-    // |=============================================================================|
-    // | LoadTextPysssss ("LoadText|pysssss" in ComfyUI) [utils]                     |
-    // |=============================================================================|
-    export interface LoadTextPysssss extends HasSingle_STRING, ComfyNode<LoadTextPysssss_input> {
-        STRING: Slot<'STRING', 0>
-    }
-    export type LoadTextPysssss_input = {
-        /** */
-        root_dir: Enum_LoadTextPysssss_Root_dir
-        /** */
-        file: Enum_LoadTextPysssss_File
-    }
-
-    // |=============================================================================|
-    // | SaveTextPysssss ("SaveText|pysssss" in ComfyUI) [utils]                     |
-    // |=============================================================================|
-    export interface SaveTextPysssss extends HasSingle_STRING, ComfyNode<SaveTextPysssss_input> {
-        STRING: Slot<'STRING', 0>
-    }
-    export type SaveTextPysssss_input = {
-        /** */
-        root_dir: Enum_LoadTextPysssss_Root_dir
-        /** default="file.txt" */
-        file?: _STRING
-        /** */
-        append: Enum_SaveTextPysssss_Append
-        /** default=true */
-        insert?: _BOOLEAN
-        /** */
-        text: _STRING
     }
 
     // |=============================================================================|
@@ -10826,7 +10583,7 @@ declare global {
         negative_prompt: _STRING
         /** default=0.5 min=1 max=1 step=0.01 */
         precision?: _FLOAT
-        normalize: Enum_ConstrainImagePysssss_Crop_if_required
+        normalize: Enum_MasqueradeMaskByText_Normalize
     }
 
     // |=============================================================================|
@@ -10852,8 +10609,8 @@ declare global {
         image1: _IMAGE
         image2: _IMAGE
         op: Enum_MasqueradeCombineMasks_Op
-        clamp_result: Enum_ConstrainImagePysssss_Crop_if_required
-        round_result: Enum_ConstrainImagePysssss_Crop_if_required
+        clamp_result: Enum_MasqueradeMaskByText_Normalize
+        round_result: Enum_MasqueradeMaskByText_Normalize
     }
 
     // |=============================================================================|
@@ -11171,7 +10928,7 @@ declare global {
         /** default=1 min=1 max=1 step=0.1 */
         denoise?: _FLOAT
         /** default="yes" */
-        final_only?: Enum_ConstrainImagePysssss_Crop_if_required
+        final_only?: Enum_MasqueradeMaskByText_Normalize
     }
 
     // |=============================================================================|
@@ -11207,11 +10964,11 @@ declare global {
         STRING_2: Slot<'STRING', 2>
     }
     export type WASCacheNode_input = {
-        /** default="59108275_cache" */
+        /** default="13137683_cache" */
         latent_suffix?: _STRING
-        /** default="53052437_cache" */
+        /** default="23876959_cache" */
         image_suffix?: _STRING
-        /** default="27780967_cache" */
+        /** default="80014848_cache" */
         conditioning_suffix?: _STRING
         /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
         output_path?: _STRING
@@ -13786,7 +13543,7 @@ declare global {
         DICT: Slot<'DICT', 1>
     }
     export type WASTextFileHistoryLoader_input = {
-        file: Enum_WASImageHistoryLoader_Image
+        file: Enum_WASTextFileHistoryLoader_File
         /** default="[filename]" */
         dictionary_name?: _STRING
     }
@@ -14338,17 +14095,6 @@ declare global {
         RemoveImageBackgroundAbg: ComfyNodeSchemaJSON
         CivitAI_Lora_Loader: ComfyNodeSchemaJSON
         CivitAI_Checkpoint_Loader: ComfyNodeSchemaJSON
-        LoraLoaderPysssss: ComfyNodeSchemaJSON
-        CheckpointLoaderPysssss: ComfyNodeSchemaJSON
-        ConstrainImagePysssss: ComfyNodeSchemaJSON
-        MathExpressionPysssss: ComfyNodeSchemaJSON
-        PlaySoundPysssss: ComfyNodeSchemaJSON
-        RepeaterPysssss: ComfyNodeSchemaJSON
-        ReroutePrimitivePysssss: ComfyNodeSchemaJSON
-        ShowTextPysssss: ComfyNodeSchemaJSON
-        StringFunctionPysssss: ComfyNodeSchemaJSON
-        LoadTextPysssss: ComfyNodeSchemaJSON
-        SaveTextPysssss: ComfyNodeSchemaJSON
         ImpactSAMLoader: ComfyNodeSchemaJSON
         ImpactCLIPSegDetectorProvider: ComfyNodeSchemaJSON
         ImpactONNXDetectorProvider: ComfyNodeSchemaJSON
