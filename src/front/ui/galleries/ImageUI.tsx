@@ -1,5 +1,6 @@
 import type { GraphL } from 'src/models/Graph'
 import type { ProjectL } from 'src/models/Project'
+import type { STATE } from 'src/front/state'
 
 import { observer } from 'mobx-react-lite'
 import { Dropdown, Popover, Whisper } from 'rsuite'
@@ -47,10 +48,11 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
     )
     return (
         <>
+            {/* right click logic 👇 */}
             <Whisper
                 placement='bottomStart'
                 trigger='contextMenu'
-                speaker={(...props) => renderSpeaker(image, ...props)}
+                speaker={(...props) => renderSpeaker(st, image, ...props)}
                 //
             >
                 <div>{IMG}</div>
@@ -79,12 +81,16 @@ type SpeakerProps = { onClose: (delay?: number) => NodeJS.Timeout | void } & Pos
 
 const renderSpeaker = (
     //
+    st: STATE,
     img: ImageL,
     { onClose, left, top, className, ...rest }: SpeakerProps,
     ref: React.RefCallback<HTMLElement>,
 ) => {
     const handleSelect = (eventKey: number | string | undefined) => {
         onClose()
+        if (eventKey === 4) {
+            st.currentAction = { type: 'paint', imageID: img.id }
+        }
         if (eventKey === 3) {
             console.log('🔴')
             const db = img.st.db
@@ -102,6 +108,7 @@ const renderSpeaker = (
     return (
         <Popover ref={ref} className={className} style={{ left, top }} full>
             <Dropdown.Menu onSelect={handleSelect}>
+                <Dropdown.Item eventKey={4}>Paint</Dropdown.Item>
                 <Dropdown.Menu title='Edit'>
                     <Dropdown.Item eventKey={1}>New File</Dropdown.Item>
                     <Dropdown.Item eventKey={2}>New File with Current Profile</Dropdown.Item>
