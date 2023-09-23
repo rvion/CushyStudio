@@ -9,6 +9,7 @@ action('🟢 Default', {
         }),
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
         cfg: form.intOpt({ default: 8 }),
+        denoise: form.floatOpt({ default: 1 }),
         clipSkip: form.intOpt({}),
         loras: form.loras({}),
         highResFix: form.groupOpt({
@@ -30,8 +31,10 @@ action('🟢 Default', {
 
         // startImage
         startImage: form.selectImage('Start image'),
-
         removeBG: form.bool({ default: false }),
+        extra: form.groupOpt({
+            items: { reversePrompt: form.bool({ default: false }) },
+        }),
     }),
     run: async (flow, p) => {
         const graph = flow.nodes
@@ -64,18 +67,27 @@ action('🟢 Default', {
         const positive = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.positive })
         const negative = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.negative ?? '' })
 
+        flow.print(`startImage: ${p.startImage}`)
+        const startImage = p.startImage
+            ? graph.VAEEncode({
+                  pixels: flow.loadImageAnswer(p.startImage),
+                  vae,
+              })
+            : graph.EmptyLatentImage({
+                  batch_size: p.batchSize,
+                  height: p.height,
+                  width: p.width,
+              })
+
         let LATENT = graph.KSampler({
             seed: p.seed == null ? flow.randomSeed() : p.seed,
-            latent_image: graph.EmptyLatentImage({
-                batch_size: p.batchSize,
-                height: p.height,
-                width: p.width,
-            }),
+            latent_image: startImage,
             model: flow.AUTO,
             positive: positive,
             negative: negative,
             sampler_name: 'dpmpp_2m',
             scheduler: 'simple',
+            denoise: p.denoise ?? undefined,
             steps: p.steps,
             cfg: 8,
         })
@@ -131,10 +143,12 @@ action('🟢 Default', {
         // PROMPT
         await flow.PROMPT()
 
-        // // FUNNY PROMPT REVERSAL
-        // positive.set({ text: p.negative ?? '' })
-        // negative.set({ text: p.positive ?? '' })
-        // await flow.PROMPT()
+        if (p.extra?.reversePrompt) {
+            // FUNNY PROMPT REVERSAL
+            positive.set({ text: p.negative ?? '' })
+            negative.set({ text: p.positive ?? '' })
+            await flow.PROMPT()
+        }
 
         // patch
         // if (p.tomeRatio != null && p.tomeRatio !== false) {
