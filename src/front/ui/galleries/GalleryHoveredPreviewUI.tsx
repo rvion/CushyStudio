@@ -42,12 +42,13 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                 }}
             >
                 {/* METADATA */}
-                {/* <div>
-                    {st.hovered.prompt.id}
-                    <div>downloaded: {st.hovered.data.downloaded ? '✅' : '❌'}</div>
-                    <div>{st.hovered.data.imageInfos?.filename ?? 'error'}</div>
-                    <div>fpath: {st.hovered.localAbsolutePath}</div>
-                </div> */}
+                <div className='absolute [background:#000000aa]'>
+                    <div className='flex whitespace-nowrap'>URL = {st.hovered.url}</div>
+                    <div className='flex whitespace-nowrap'>downloaded = {st.hovered.data.downloaded ? '✅' : '❌'}</div>
+                    <div className='flex whitespace-nowrap'>filename = {st.hovered.data.imageInfos?.filename ?? 'error'}</div>
+                    <div className='flex whitespace-nowrap'>fpath = {st.hovered.localAbsolutePath}</div>
+                    <div className='flex whitespace-nowrap'>promptID = {st.hovered.prompt.id}</div>
+                </div>
 
                 {/* IMAGE */}
                 <img

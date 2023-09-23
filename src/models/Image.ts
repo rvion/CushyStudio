@@ -53,10 +53,10 @@ export class ImageL {
 
     /** absolute path on the machine with vscode */
     get localAbsolutePath(): AbsolutePath {
-        return (
-            this.data.localFolderPath ?? //
-            asAbsolutePath(join(this.st.cacheFolderPath, 'outputs', this.data.imageInfos?.filename ?? 'error'))
-        )
+        const fileName = this.data.imageInfos?.filename
+        return this.data.localFolderPath && fileName //
+            ? asAbsolutePath(join(`${this.data.localFolderPath}`, fileName))
+            : asAbsolutePath(join(this.st.cacheFolderPath, 'outputs', fileName ?? 'error'))
     }
 
     onCreate = () => {

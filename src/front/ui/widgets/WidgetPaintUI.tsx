@@ -84,7 +84,9 @@ class MinipaintState {
             writeFileSync(absPath, Buffer.from(buff))
             console.log(`saved`)
             this.st.db.images.create({
-                localFolderPath: absPath,
+                localFolderPath: this.st.outputFolderPath,
+                downloaded: true,
+                imageInfos: { filename: relPath, subfolder: '', type: 'painted' },
             })
         })
         // console.log('f')
