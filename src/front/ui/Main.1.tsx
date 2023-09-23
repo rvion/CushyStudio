@@ -13,7 +13,6 @@ import { runInAction } from 'mobx'
 const path = asAbsolutePath(join(process.cwd(), 'flows/'))
 
 export const Main = observer(() => {
-    console.log('starting web app')
     const st = useMemo(
         () =>
             runInAction(
@@ -26,12 +25,18 @@ export const Main = observer(() => {
         [],
     )
     return (
+        <stContext.Provider value={st}>
+            <MainUI />
+        </stContext.Provider>
+    )
+})
+
+export const MainUI = observer(function MainUI_(p: {}) {
+    return (
         <CustomProvider theme='dark'>
-            <stContext.Provider value={st}>
-                <DndProvider backend={HTML5Backend}>
-                    <CushyUI />
-                </DndProvider>
-            </stContext.Provider>
+            <DndProvider backend={HTML5Backend}>
+                <CushyUI />
+            </DndProvider>
         </CustomProvider>
     )
 })

@@ -53,7 +53,11 @@ export class LiveDB {
         this.relPath = asRelativePath('./cushy.db')
         this.absPath = this.st.resolveFromRoot(this.relPath)
         const exists = existsSync(this.absPath)
-        console.log('[💾 liveDB] path:', this.absPath, exists ? '[🟢found]' : '[🔴MISSING]')
+        if (exists) {
+            console.log(`[💿] DB: found db at "${this.absPath}"`)
+        } else {
+            console.log(`[💿] DB: creating db at "${this.absPath}"`)
+        }
         try {
             if (exists) this.store = JSON.parse(readFileSync(this.absPath, 'utf8'))
         } catch (error) {
@@ -83,9 +87,9 @@ export class LiveDB {
         if (this.saveTimeout != null) return
 
         this.saveTimeout = setTimeout(() => {
-            console.log('saving...')
+            console.log('[💿] DB saving...')
             const data = this.store
-            console.log('saving', data)
+            // console.log('saving', data)
             writeFileSync(this.absPath, readableStringify(data, 3))
             this.saveTimeout = null
         }, 400)

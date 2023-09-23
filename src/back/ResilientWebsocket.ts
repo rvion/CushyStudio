@@ -58,8 +58,8 @@ export class ResilientWebSocketClient {
 
         ws.onopen = (event: Event) => {
             if (ws !== this.currentWS) return
-            console.info('🧦 🟢 WebSocket connected to ' + this.url)
-            console.log('🛋️ 🟢 WebSocket connected')
+            console.info('[👢] WEBSOCKET: ✅ WebSocket connected to ' + this.url)
+            // console.log('🛋️ 🟢 WebSocket connected')
             this.isOpen = true
             this.options.onConnectOrReconnect()
             this.flushMessageBuffer()

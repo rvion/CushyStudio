@@ -1,14 +1,10 @@
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
-import { Button, Radio, RadioGroup } from 'rsuite'
-import { LightBoxState, LightBoxUI } from '../LightBox'
-import type { ImageT } from 'src/models/Image'
-import { useImageDrop } from '../galleries/dnd'
 import { ImageAnswer } from 'src/controls/InfoAnswer'
-import { useDraft } from '../useDraft'
 import { ImageUI } from '../galleries/ImageUI'
+import { useImageDrop } from '../galleries/dnd'
+import { useDraft } from '../useDraft'
 
-export const ImageSelection = observer(function ImageSelection_(p: {
+export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     // infos: ImageInfos[]
     get: () => ImageAnswer | null
     set: (value: ImageAnswer) => void
@@ -51,13 +47,15 @@ export const ImageSelection = observer(function ImageSelection_(p: {
                     )
                 })} */}
                     {/* <LightBoxUI lbs={lbs} /> */}
-                    {answer?.type === 'imageID' ? <ImageUI img={draft.db.images.getOrThrow(answer.imageID)} /> : null}
+                    {answer?.type === 'imageID' ? ( //
+                        <ImageUI img={draft.db.images.getOrThrow(answer.imageID)} />
+                    ) : null}
                 </div>
-                <Button size='sm' onClick={() => set({ type: 'imageSignal', nodeID: node!.uid, fieldName: 'IMAGE' })}>
+                {/* <Button size='sm' onClick={() => set({ type: 'imageSignal', nodeID: node!.uid, fieldName: 'IMAGE' })}>
                     last
-                </Button>
+                </Button> */}
             </div>
-            <pre>{JSON.stringify(answer, null, 3)}</pre>
+            <pre>{JSON.stringify(answer ?? { '❌': '❌' }, null, 3)}</pre>
         </div>
     )
 })

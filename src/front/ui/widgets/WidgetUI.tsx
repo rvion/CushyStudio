@@ -4,13 +4,12 @@ import { observer } from 'mobx-react-lite'
 import { FormPath } from 'src/models/Step'
 import { BUG } from '../../../controls/InfoRequest'
 import { exhaust } from '../../../utils/ComfyUtils'
-import { ImageSelection } from './ImageSelection'
+import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
 import { WidgetNumUI } from './WidgetNumUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetPaintUI } from './WidgetPaintUI'
-// import { WidgetStrUI } from './WidgetStrUI'
 import { EditorUI } from './WidgetLexical'
 import { useDraft } from '../useDraft'
 import { DraftL } from 'src/models/Draft'
@@ -116,7 +115,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'str?') return <EditorUI get={get} set={set} nullable />
     if (req.type === 'paint') return <>🔴 paint form commented</> //<WidgetPaintUI uri={'foo bar 🔴'} />
     if (req.type === 'samMaskPoints') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
-    if (req.type === 'selectImage') return <ImageSelection /*infos={req.imageInfos}*/ get={get} set={set} />
+    if (req.type === 'selectImage') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ get={get} set={set} />
     if (req.type === 'manualMask') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'embeddings') return <>TODO</>
     if (req.type === 'selectMany') return <>TODO</>

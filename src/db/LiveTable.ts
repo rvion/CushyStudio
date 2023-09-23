@@ -156,18 +156,18 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
         // 1. check if instance exists in the entity map
         const val = this.instances.get(id)
         if (val) {
-            console.log(`[${this.name}.get] instance existing`)
+            // console.log(`[${this.name}.get] instance existing`)
             return val
         }
 
         // 2. check if data exists in the data store
         const store = this.db.store[this.name] ?? {}
         if (store[id]) {
-            console.log(`[${this.name}.get] data found, but no instance => creating instance`)
+            // console.log(`[${this.name}.get] data found, but no instance => creating instance`)
             return this._createInstance(store[id] as any)
         }
 
-        console.log(`[${this.name}.get] not found`)
+        // console.log(`[${this.name}.get] not found`)
         // 3. abort
         return null
     }
@@ -179,7 +179,7 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
     }
 
     getOrCreate = (id: string, def: () => T): L => {
-        console.log(`🦊 ${this.name}.getOrCreate`)
+        // console.log(`🦊 ${this.name}.getOrCreate`)
         // 1. check if instance exists in the entity map
         const val = this.get(id)
         if (val == null) return this.create(def())

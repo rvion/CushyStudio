@@ -49,7 +49,7 @@ export class PromptL {
         const graph = this.graph.item
 
         if (msg.type === 'execution_start') return
-        if (msg.type === 'execution_cached') return
+        if (msg.type === 'execution_cached') return graph.onExecutionCached(msg)
         if (msg.type === 'executing') return this.onExecuting(msg)
         if (msg.type === 'progress') return graph.onProgress(msg)
         if (msg.type === 'executed') return this.onExecuted(msg)

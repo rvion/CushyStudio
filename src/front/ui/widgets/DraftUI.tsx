@@ -23,7 +23,7 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
 
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <Panel className='relative' shaded>
+            <Panel className='relative col-form' shaded>
                 <div className='flex'>
                     <IconButton
                         size='sm'

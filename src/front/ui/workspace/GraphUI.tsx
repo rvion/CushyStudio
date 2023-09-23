@@ -10,6 +10,7 @@ import { DraftUI } from '../widgets/DraftUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
 import { StepOutputUI } from './StepOutputUI'
 import { StepTabBtnUI } from './StepTabBtnUI'
+import { CustomNodeFlow } from '../graph/Graph2UI'
 
 export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: number }) {
     const graph = p.graph
@@ -19,8 +20,8 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
         <Fragment>
             <div className='flex gap-2 items-start'>
                 {/* Drafts -------------------------------------------- action form */}
-                <div>
-                    <Nav appearance='tabs'>
+                <div className='flex'>
+                    <Nav appearance='tabs' vertical>
                         {graph.drafts.map((draft) => (
                             // <StepTabBtnUI key={step.id} step={step} />
                             <Nav.Item
@@ -37,6 +38,23 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                             </Button>
                         </Whisper>
                     </Nav>
+                    {/* <Nav appearance='tabs'>
+                        {graph.drafts.map((draft) => (
+                            // <StepTabBtnUI key={step.id} step={step} />
+                            <Nav.Item
+                                key={draft.id}
+                                active={focusedDraft?.id === draft.id}
+                                onClick={() => graph.update({ focusedDraftID: draft.id })}
+                            >
+                                {draft.tool.item.name}
+                            </Nav.Item>
+                        ))}
+                        <Whisper speaker={<Tooltip>Draft Action</Tooltip>}>
+                            <Button appearance='subtle' onClick={() => graph.createDraft(focusedDraft?.data).focus()}>
+                                <I.AddOutline />
+                            </Button>
+                        </Whisper>
+                    </Nav> */}
                     <div className='flex gap-2'>
                         {/* {<GraphSummaryUI graph={graph} />} */}
                         {focusedDraft ? <DraftUI draft={focusedDraft} /> : null}
@@ -62,11 +80,11 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                 {focusedStep && (
                     <div className='flex'>
                         {/* step summary: */}
-                        {<GraphSummaryUI graph={focusedStep.outputGraph.item} />}
+                        {/* {<GraphSummaryUI graph={focusedStep.outputGraph.item} />} */}
                         {/* <div>
                             <pre>{JSON.stringify(focusedStep.data.outputs, null, 3)}</pre>
                         </div> */}
-                        <div className='flex flex-col'>
+                        <div className='flex flex-col gap-1'>
                             {focusedStep.data.outputs?.map((output, ix) => (
                                 <StepOutputUI key={ix} step={focusedStep} output={output} />
                             ))}

@@ -34,7 +34,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                     top: '5rem',
                     left: '5rem',
                     position: 'absolute',
-                    zIndex: 999999,
+                    zIndex: 1050,
                     objectFit: 'contain',
                     maxHeight: '100vh',
                     // background: 'red',

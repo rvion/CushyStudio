@@ -13,6 +13,8 @@ import { auto_ } from './autoValue'
 
 configure({ enforceActions: 'never' })
 
+type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached' | null
+
 /** ComfyNode
  * - correspond to a signal in the graph
  * - belongs to a script
@@ -22,16 +24,17 @@ export class ComfyNode<ComfyNode_input extends object> {
     // images: GeneratedImage[] = []
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema
-    status: 'executing' | 'done' | 'error' | 'waiting' | null = null
+    status: NodeExecutionStatus = null
 
     get isExecuting() { return this.status === 'executing' } // prettier-ignore
     get statusEmoji() {
         const s = this.status
         if (s === 'executing') return '🔥'
+        if (s === 'cached') return '✅' //'💾'
         if (s === 'done') return '✅'
         if (s === 'error') return '❌'
         if (s === 'waiting') return '⏳'
-        if (s == null) return ''
+        if (s == null) return '❓'
         return exhaust(s)
     }
 

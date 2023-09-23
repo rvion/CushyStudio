@@ -26,6 +26,7 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { UIAction } from './UIAction'
 import { LightBoxState } from './ui/LightBox'
+import { ManualPromise } from '../utils/ManualPromise'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -58,7 +59,7 @@ export class STATE {
     outputFolderPath: AbsolutePath
 
     // files and actions
-    knownFiles = new Map<AbsolutePath, CushyFile>()
+    // knownFiles = new Map<AbsolutePath, CushyFile>()
     get toolsSorted() {
         return this.db.tools.values.slice().sort((a, b) => a.data.priority - b.data.priority)
     }
@@ -73,24 +74,26 @@ export class STATE {
     lightBox = new LightBoxState(() => this.db.images.values, false)
     hovered: Maybe<ImageL> = null
 
-    startProject = () => {
-        const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
-        this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
-        const startDraft = initialGraph.createDraft()
-        initialGraph.update({ focusedDraftID: startDraft.id })
-    }
+    // startProject = () => {
+    //     const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
+    //     this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
+    //     const startDraft = initialGraph.createDraft()
+    //     initialGraph.update({ focusedDraftID: startDraft.id })
+    // }
 
     startProjectV2 = () => {
+        console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
         this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
         const startDraft = initialGraph.createDraft()
     }
 
     expandNodes: boolean = false
-    showAllMessageReceived: boolean = false
+    // showAllMessageReceived: boolean = false // ❌ legacy
     currentAction: Maybe<UIAction> = null
-
     gallerySize: number = 256
+    tsFilesMap = new CushyFileWatcher(this)
+    schemaReady = new ManualPromise<true>()
 
     constructor(
         /** path of the workspace */
@@ -109,6 +112,7 @@ export class STATE {
             /** true in prod, false when running from this local subfolder */
         },
     ) {
+        console.log('[🗳️] starting web app')
         this.db = new LiveDB(this)
         this.codePrettier = new CodePrettier(this)
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('.cushy/cache'))
@@ -124,9 +128,14 @@ export class STATE {
         if (opts.genTsConfig) this.createTSConfigIfMissing()
         if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
 
-        this.tsFilesMap.walk(this.rootPath)
+        Promise.all([
+            //
+            this.tsFilesMap.walk(this.rootPath),
+            this.schemaReady,
+        ]).then((_done) => {
+            if (this.db.projects.size === 0) this.startProjectV2()
+        })
 
-        if (this.db.projects.size === 0) this.startProjectV2()
         this.ws = this.initWebsocket()
         // this.autoDiscoverEveryWorkflow()
         makeAutoObservable(this)
@@ -152,7 +161,6 @@ export class STATE {
         // const json = this.readJSON(this.tsConfigUri)
     }
 
-    tsFilesMap = new CushyFileWatcher(this)
     // autoDiscoverEveryWorkflow = () => {
     //     this.tsFilesMap.startWatching(join(this.rootPath))
     // }
@@ -181,7 +189,7 @@ export class STATE {
     }
 
     initWebsocket = () => {
-        console.log('🦊 starting websocket client to ComfyUI')
+        console.log('[👢] WEBSOCKET: starting client to ComfyUI')
         return new ResilientWebSocketClient({
             onClose: () => {
                 // 🔴
@@ -221,9 +229,8 @@ export class STATE {
         url: string
     }> = null
     onMessage = (e: MessageEvent) => {
-        console.info(`🧦 received ${e.data}`)
         if (e.data instanceof ArrayBuffer) {
-            console.log('🧦', 'received ArrayBuffer', e.data)
+            console.log('[👢] WEBSOCKET: received ArrayBuffer', e.data)
             const view = new DataView(e.data)
             const eventType = view.getUint32(0)
             const buffer = e.data.slice(4)
@@ -249,7 +256,7 @@ export class STATE {
             }
             return
         }
-        console.log(e.data)
+        console.info(`[👢] WEBSOCKET: received ${e.data}`)
         const msg: WsMsg = JSON.parse(e.data as any)
 
         if (msg.type === 'status') {
@@ -316,30 +323,30 @@ export class STATE {
         try {
             // 1 ------------------------------------
             const object_info_url = `${this.getServerHostHTTP()}/object_info`
-            console.info(`[.... step 1/4] fetching schema from ${object_info_url} ...`)
+            console.info(`[🐱] CONFY: [.... step 1/4] fetching schema from ${object_info_url} ...`)
             const headers: HeadersInit = { 'Content-Type': 'application/json' }
             const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
             const object_info_json = (await object_info_res.json()) as { [key: string]: any }
             const knownNodeNames = Object.keys(object_info_json)
-            console.info(`[.... step 1/4] found ${knownNodeNames.length} nodes`) // (${JSON.stringify(keys)})
+            console.info(`[🐱] CONFY: [.... step 1/4] found ${knownNodeNames.length} nodes`) // (${JSON.stringify(keys)})
             schema$ = object_info_json as any
-            console.info('[*... step 1/4] schema fetched')
+            console.info('[🐱] CONFY: [*... step 1/4] schema fetched')
 
             // 1 ------------------------------------
             const embeddings_url = `${this.getServerHostHTTP()}/embeddings`
-            console.info(`[.... step 1/4] fetching embeddings from ${embeddings_url} ...`)
+            console.info(`[🐱] CONFY: [.... step 1/4] fetching embeddings from ${embeddings_url} ...`)
             const embeddings_res = await fetch(embeddings_url, { method: 'GET', headers })
             const embeddings_json = (await embeddings_res.json()) as EmbeddingName[]
             writeFileSync(this.embeddingsPath, JSON.stringify(embeddings_json), 'utf-8')
             // const keys2 = Object.keys(data2)
             // console.info(`[.... step 1/4] found ${keys2.length} nodes`) // (${JSON.stringify(keys)})
             // schema$ = data as any
-            console.info(JSON.stringify(embeddings_json))
-            console.info('[*... step x/4] embeddings fetched')
+            console.info('[🐱] CONFY: embedings found:', JSON.stringify(embeddings_json))
+            console.info('[🐱] CONFY: [*... step x/4] embeddings fetched')
 
             // 2 ------------------------------------
             // http:
-            console.info('[*... step 2/4] updating schema...')
+            console.info('[🐱] CONFY: [*... step 2/4] updating schema...')
             const comfyJSONStr = readableStringify(schema$, 3)
             const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
             writeFileSync(this.comfyJSONPath, comfyJSONBuffer, 'utf-8')
@@ -350,26 +357,27 @@ export class STATE {
             if (numNodesInSource !== numNodesInSchema) {
                 console.log(`🔴 ${numNodesInSource} != ${numNodesInSchema}`)
             }
-            console.info('[**.. step 2/4] schema updated')
+            console.info('[🐱] CONFY: [**.. step 2/4] schema updated')
 
             // 3 ------------------------------------
-            console.info('[**.. step 3/4] udpatin schema code...')
+            console.info('[🐱] CONFY: [**.. step 3/4] udpatin schema code...')
             const comfySchemaTs = this.schema.codegenDTS({ cushySrcPathPrefix: this.opts.cushySrcPathPrefix })
-            console.info('[***. step 3/4] schema code updated ')
+            console.info('[🐱] CONFY: [***. step 3/4] schema code updated ')
 
             // 4 ------------------------------------
-            console.info('[**** step 4/4] saving schema')
+            console.info('[🐱] CONFY: [**** step 4/4] saving schema')
             // const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
             const comfySchemaTsFormatted = await this.codePrettier.prettify(comfySchemaTs)
             // console.log(this.nodesTSPath, comfySchemaTsFormatted)
             writeFileSync(this.nodesTSPath, comfySchemaTsFormatted, 'utf-8')
-            console.info('[**** step 4/4] 🟢 schema updated')
+            console.info('[🐱] CONFY: [**** step 4/4] 🟢 schema updated')
         } catch (error) {
             console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
             console.error('🐰', extractErrorMessage(error))
             console.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
             schema$ = {}
         }
+        this.schemaReady.resolve(true)
 
         // this.objectInfoFile.update(schema$)
         // this.comfySDKFile.updateFromCodegen(comfySdkCode)

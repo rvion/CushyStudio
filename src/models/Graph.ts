@@ -4,7 +4,7 @@ import type { Branded, Maybe } from 'src/utils/types'
 import type { Cyto } from '../core/AutolayoutV1'
 import type { VisEdges, VisNodes } from '../front/ui/VisUI'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
-import type { WsMsgExecuting, WsMsgProgress } from '../types/ComfyWsApi'
+import type { WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
 import type { ComfyNodeID } from '../types/NodeUID'
 import type { ComfyNodeSchema, SchemaL } from './Schema'
 
@@ -76,7 +76,7 @@ export class GraphL {
         for (const [uid, node] of Object.entries(next.comfyPromptJSON)) {
             new ComfyNode(this, uid, node)
         }
-        console.log(`📈 graph manually updated ${prevSize} => ${this.size}`)
+        console.log(`[📈] GRAPH: manually updated ${prevSize} => ${this.size}`)
     }
 
     /** cytoscape instance to live update graph */
@@ -259,6 +259,13 @@ export class GraphL {
         const node = this.getNodeOrCrash(msg.data.node)
         this.currentExecutingNode = node
         node.status = 'executing'
+    }
+
+    onExecutionCached = (msg: WsMsgExecutionCached) => {
+        for (const x of msg.data.nodes) {
+            const node = this.getNodeOrCrash(x)
+            node.status = 'cached'
+        }
     }
 
     // onExecuted = (msg: WsMsgExecuted) => {
