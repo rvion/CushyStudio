@@ -6,7 +6,7 @@ import { STATE } from '../../state'
 import { useSt } from '../../FrontStateCtx'
 import { UIActionPaint } from 'src/front/UIAction'
 import { runInAction } from 'mobx'
-import { writeFileSync } from 'fs'
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { asRelativePath } from '../../../utils/fs/pathUtils'
 import { ImageL } from 'src/models/Image'
 
@@ -76,6 +76,11 @@ class MinipaintState {
             console.log({ absPath })
             const buff = await blob.arrayBuffer()
             console.log({ byteLength: buff.byteLength })
+            const dirExists = existsSync(this.st.outputFolderPath)
+            if (!dirExists) {
+                console.log(`creating dir ${this.st.outputFolderPath}`)
+                mkdirSync(this.st.outputFolderPath, { recursive: true })
+            }
             writeFileSync(absPath, Buffer.from(buff))
             console.log(`saved`)
             this.st.db.images.create({
