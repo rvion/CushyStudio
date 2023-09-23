@@ -24,7 +24,8 @@
         //
         "viteplugin.ts",
         "src",
-        "flows",
+        "flows/base",
+        "flows/private",
         "flows/global.d.ts"
     ],
     "exclude": [
