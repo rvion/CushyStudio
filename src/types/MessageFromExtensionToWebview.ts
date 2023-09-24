@@ -1,17 +1,11 @@
-import type { ToolID, ToolT } from 'src/models/Tool'
-import type { ImageT, ImageID } from 'src/models/Image'
 import type { FormDefinition, FormResult } from 'src/core/Requirement'
-import type { EmbeddingName } from 'src/models/Schema'
-// import type { CushyDBData } from 'src/core/storeSchema'
+import type { ImageID, ImageT } from 'src/models/Image'
+import type { ToolID } from 'src/models/Tool'
 import type { FlowID } from 'src/front/FlowID'
 import type { Maybe } from 'src/utils/types'
-import type { PayloadID } from '../core/PayloadID'
-import type { ComfyPromptJSON } from './ComfyPrompt'
-import type { ComfySchemaJSON } from './ComfySchemaJSON'
-import type { WsMsgExecutionCached, WsMsgExecuted, WsMsgExecuting, WsMsgProgress, WsMsgStatus, PromptID } from './ComfyWsApi'
-
-import { exhaust } from '../utils/ComfyUtils'
-import { StepID } from 'src/models/Step'
+import type { PromptID, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
+import type { GraphID } from 'src/models/Graph'
+import type { StepID } from 'src/models/Step'
 
 // =============================================================================================
 // | FRONT => BACK                                                                             |
@@ -86,7 +80,18 @@ export type FromExtension_Prompt = { type: 'prompt'; promptID: PromptID }
 export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
 export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: FormDefinition; result: FormResult<any> }
-export type FromExtension_RuntimeError = { type: 'runtimeError'; message: string; infos: { [key: string]: any } }
+export type FromExtension_RuntimeError = {
+    type: 'runtimeError'
+    message: string
+    infos: { [key: string]: any }
+    promptID?: PromptID
+
+    /** sometimes, we don't have a prompt ID,
+     * because comfy crash trying to assign one
+     * this field is here to allow the UI to offer to
+     * show the offending graph anyway */
+    graphID?: GraphID
+}
 
 export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */
