@@ -119,7 +119,6 @@
         "decl:list": "tsc -p tsconfig.decl.json --listFiles --noEmit | grep /Users/loco/dev/CushyStudio/src"
     },
     "dependencies": {
-        "@electron/remote": "2.0.10",
         "@lexical/react": "^0.11.1",
         "@rsuite/icons": "1.0.2",
         "@types/react-mentions": "^4.1.8",
@@ -136,7 +135,6 @@
         "mobx": "6.9.0",
         "mobx-react-lite": "3.4.3",
         "nanoid": "4.0.2",
-        "node-fetch": "3.3.1",
         "open": "^9.1.0",
         "pathe": "1.1.1",
         "PostCSS": "npm:postcss@8.4.24",
@@ -150,10 +148,7 @@
         "reactflow": "11.7.4",
         "rsuite": "5.35.1",
         "ws": "8.13.0",
-        "y-leveldb": "^0.1.2",
-        "y-websocket": "^1.5.0",
-        "yet-another-react-lightbox": "3.11.2",
-        "yjs": "13.6.5"
+        "yet-another-react-lightbox": "3.11.2"
     },
     "devDependencies": {
         "@swc-node/register": "1.6.6",
@@ -167,7 +162,6 @@
         "@types/prettier": "2.7.3",
         "@types/react": "18.2.14",
         "@types/react-dom": "18.2.6",
-        "@types/vscode": "1.79.1",
         "@types/ws": "8.5.5",
         "@typescript-eslint/eslint-plugin": "5.60.0",
         "@typescript-eslint/parser": "5.60.0",
