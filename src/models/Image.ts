@@ -37,10 +37,6 @@ export interface ImageT {
 
 export interface ImageL extends LiveInstance<ImageT, ImageL> {}
 export class ImageL {
-    get test1() {
-        return 'a123'
-    }
-
     get comfyUrl() {
         return this.st.getServerHostHTTP() + '/view?' + new URLSearchParams(this.data.imageInfos).toString()
     }
@@ -51,7 +47,7 @@ export class ImageL {
         return this.comfyUrl
     }
 
-    /** absolute path on the machine with vscode */
+    /** absolute path on the machine running CushyStudio */
     get localAbsolutePath(): AbsolutePath {
         const fileName = this.data.imageInfos?.filename
         return this.data.localFolderPath && fileName //

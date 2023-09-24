@@ -50,7 +50,7 @@ export const getPngMetadata = (pngData: Uint8Array): Result<string, TextChunks> 
 
     // Check that the PNG signature is present
     if (dataView.getUint32(0) !== 0x89504e47) {
-        showErrorMessage('Not a valid PNG file')
+        // 🔴 showErrorMessage('Not a valid PNG file')
         return resultFailure('Not a valid PNG file')
     }
 

@@ -341,7 +341,7 @@ export class STATE {
             // const keys2 = Object.keys(data2)
             // console.info(`[.... step 1/4] found ${keys2.length} nodes`) // (${JSON.stringify(keys)})
             // schema$ = data as any
-            console.info('[🐱] CONFY: embedings found:', JSON.stringify(embeddings_json))
+            console.info(`[🐱] CONFY: ${embeddings_json.length} embedings found:`, { embeddings_json })
             console.info('[🐱] CONFY: [*... step x/4] embeddings fetched')
 
             // 2 ------------------------------------
