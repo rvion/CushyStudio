@@ -1,13 +1,12 @@
-import { writeFileSync } from 'fs'
 import { observer } from 'mobx-react-lite'
-import { Button, Message, Panel } from 'rsuite'
+import { Message, Panel } from 'rsuite'
 import { StepL, StepOutput } from 'src/models/Step'
 import { ComfyNodeUI } from '../NodeListUI'
 import { ImageUI } from '../galleries/ImageUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
 import { CustomNodeFlow } from '../graph/Graph2UI'
 import { ReactNode } from 'react'
-import { GraphL } from 'src/models/Graph'
+import { ButonDownloadFilesUI } from './ButonDownloadFilesUI'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
@@ -31,20 +30,19 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
         if (graph == null) return <>no graph</>
         const currNode = graph.currentExecutingNode
         return (
-            <div className='flex flex-wrap'>
+            <div className='flex flex-col gap-2'>
                 <div>
                     <GraphSummaryUI graph={graph} />
-                    <ButonDownloadFilesUI graph={graph} />
                     {/* 💬 {prompt?.id} */}
                     {/* <div>({prompt?.images.items.length} images)</div> */}
                 </div>
                 {/* <CustomNodeFlow /> 🔴 */}
                 {currNode && <ComfyNodeUI node={currNode} />}
-                <div className='flex'>
+                <Panel className='flex flex-wrap'>
                     {prompt?.images.map((img) => (
                         <ImageUI key={img.id} img={img} />
                     ))}
-                </div>
+                </Panel>
             </div>
         )
     }
@@ -69,25 +67,4 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
     if (msg.type === 'executed') return <div>✅</div>
 
     return <div className='border'>❌ unhandled message of type `{msg.type}`</div>
-})
-
-export const ButonDownloadFilesUI = observer(function ButonDownloadFilesUI_(p: { graph: GraphL }) {
-    const { graph } = p
-    return (
-        <div>
-            <Button
-                onClick={async () => {
-                    const jsonWorkflow = await graph?.json_workflow()
-                    console.log('>>>🟢', { jsonWorkflow })
-                    const path = graph.getTargetWorkflowFilePath()
-                    console.log('>>>🟢', { path })
-                    // open file
-                    window.require('electron').shell.openExternal(`file://${path}/..`)
-                    writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
-                }}
-            >
-                download files
-            </Button>
-        </div>
-    )
 })

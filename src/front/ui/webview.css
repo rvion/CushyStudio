@@ -79,8 +79,9 @@ body {
 .rs-panel {background: #373737; flex-shrink: 0;}
 .rs-panel .rs-panel {background: #464646; flex-shrink: 0;}
 
+/* .col-folder {background: black !important;} */
 .col-info {background: #3d5282 !important;}
-.col-form {background: var(--rs-bg-card) !important;}
+/* .col-form {background: #39254c !important;} */
 
 .rs-panel-body {padding: .5rem !important;}
 .rs-panel-header { padding-top: .2rem !important;  padding-bottom: .2rem !important; font-size: 1rem !important;}
@@ -154,3 +155,5 @@ body {
 .noscrollbar::-webkit-scrollbar {
     display: none;
 }
+
+.smalltitle { font-weight: bold; }

@@ -4617,7 +4617,7 @@ declare global {
     export type Enum_WASImageEdgeDetectionFilter_Mode = 'laplacian' | 'normal'
     export type Enum_WASImageFlip_Mode = 'horizontal' | 'vertical'
     export type Enum_WASImageGenerateGradient_Direction = Enum_WASImageFlip_Mode
-    export type Enum_WASImageHistoryLoader_Image = '...\\outputs\\ComfyUI_02381_.png'
+    export type Enum_WASImageHistoryLoader_Image = '...\\outputs\\ComfyUI_02513_.png'
     export type Enum_WASImageMonitorEffectsFilter_Mode = 'Digital Distortion' | 'Signal Distortion' | 'TV Distortion'
     export type Enum_WASImageRembgRemoveBackground_Model =
         | 'isnet-anime'
@@ -10964,11 +10964,11 @@ declare global {
         STRING_2: Slot<'STRING', 2>
     }
     export type WASCacheNode_input = {
-        /** default="13137683_cache" */
+        /** default="69488365_cache" */
         latent_suffix?: _STRING
-        /** default="23876959_cache" */
+        /** default="62322364_cache" */
         image_suffix?: _STRING
-        /** default="80014848_cache" */
+        /** default="84596857_cache" */
         conditioning_suffix?: _STRING
         /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
         output_path?: _STRING

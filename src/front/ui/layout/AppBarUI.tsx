@@ -1,6 +1,6 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, ButtonGroup, IconButton, InputGroup, Nav } from 'rsuite'
+import { Button, ButtonGroup, IconButton, InputGroup, Loader, Nav } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
@@ -36,6 +36,12 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 Open ComfyUI
             </Button>
             {/* biegert/ComfyUI-CLIPSeg */}
+            {st.schemaReady.done ? null : (
+                <div className='flex gap-2'>
+                    <Loader />
+                    <div>loading schema</div>
+                </div>
+            )}
         </div>
     )
 })

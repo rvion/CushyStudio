@@ -26,7 +26,7 @@ function createWindow() {
     mainWindow.webContents.openDevTools()
 
     // load cushy
-    mainWindow.loadURL('http://localhost:5173') // Load your localhost URL
+    mainWindow.loadURL('http://localhost:5173', { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
 
     // Open DevTools (optional)
     // mainWindow.webContents.openDevTools();

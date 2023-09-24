@@ -1,8 +1,8 @@
 import type { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
-import { Status } from '../../../back/Status'
-import { Button } from 'rsuite'
+import { Status, renderStatus } from '../../../back/Status'
+import { Button, Nav } from 'rsuite'
 
 export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) {
     const step = p.step
@@ -12,9 +12,10 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
     const isFocused = step.id === focusedBranch?.id
     const status = step.data.status
     return (
-        <Button
+        <Nav.Item
+            active={isFocused}
             id={`button-to-focus-step-${step.id}`}
-            appearance={isFocused ? 'primary' : 'subtle'}
+            // appearance={isFocused ? 'primary' : 'subtle'}
             color={isFocused ? 'yellow' : undefined}
             onKeyDown={(e) => {
                 if (e.key === 'Delete' || e.key === 'Backspace') {
@@ -45,16 +46,16 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
                     return
                 }
             }}
-            size='xs'
+            // size='xs'
             key={step.id}
             style={{
                 fontWeight: isFocused ? 'bold' : undefined,
-                borderTop:
-                    status === Status.Failure //
-                        ? '2px solid red'
-                        : status === Status.Success //
-                        ? '2px solid gray'
-                        : '2px solid purple',
+                // borderLeft:
+                //     status === Status.Failure //
+                //         ? '2px solid red'
+                //         : status === Status.Success //
+                //         ? '2px solid gray'
+                //         : '2px solid purple',
             }}
             onClick={() => {
                 parentGraph.update({ focusedStepID: step.id })
@@ -65,10 +66,11 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
             }}
         >
             <div>
+                {renderStatus(status)}
                 {/* {renderStatus2(step.data.status)}  */}
                 {step.tool.item?.data.name}({step.outputGraph.item.childSteps.items.length})
             </div>
-        </Button>
+        </Nav.Item>
     )
 })
 

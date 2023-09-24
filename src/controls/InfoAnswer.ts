@@ -30,6 +30,7 @@ export type InfoAnswer<Req> =
     /** bools */
     Req extends R.Requestable_bool ? boolean :
     Req extends R.Requestable_boolOpt ? Maybe<boolean> :
+    Req extends R.Requestable_size ? Maybe<CushySize> :
     /** embedding */
     Req extends R.Requestable_embeddings ? Maybe<boolean> :
     /** loras */
@@ -68,3 +69,13 @@ export type ImageAnswer2 = { type: 'imageSignal'; nodeID: ComfyNodeID; fieldName
 export type ImageAnswer3 = { type: 'imagePath'; absPath: AbsolutePath }
 export type ImageAnswer4 = { type: 'imageURL'; url: string }
 export type ImageAnswer = ImageAnswer1 | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
+
+export type CushySizeByRatio = {
+    kind: 'SD1.5 512' | 'SD2.1 768' | 'SDXL 1024' | 'custom'
+    ratio: '16:9' | '1:1' | '1:2' | '1:4' | '21:9' | '2:1' | '2:3' | '3:2' | '3:4' | '4:1' | '4:3' | '9:16' | '9:21'
+}
+
+export type CushySize = {
+    width: number
+    height: number
+}

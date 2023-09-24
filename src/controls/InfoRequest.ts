@@ -10,6 +10,7 @@ export type Requestable_bool         = { type: 'bool';   label?: string; default
 export type Requestable_intOpt       = { type: 'int?';   label?: string; default?: number  } // prettier-ignore
 export type Requestable_floatOpt     = { type: 'float?'; label?: string; default?: number  } // prettier-ignore
 export type Requestable_boolOpt      = { type: 'bool?';  label?: string; default?: boolean } // prettier-ignore
+export type Requestable_size         = { type: 'size';   label?: string; default?: boolean } // prettier-ignore
 //
 export type Requestable_embeddings   = { type: 'embeddings'; label?: string, default?: LATER<'Embeddings'>  } // prettier-ignore
 //

@@ -7,7 +7,6 @@ import { existsSync, readFileSync, writeFileSync } from 'fs'
 // https://vitejs.dev/config/
 export default defineConfig({
     optimizeDeps: { exclude: ['fsevents', 'fs'] },
-
     plugins: [
         // dynamicModulePlugin(),
         react(),

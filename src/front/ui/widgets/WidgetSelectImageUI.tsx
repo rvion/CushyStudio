@@ -55,7 +55,16 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                     last
                 </Button> */}
             </div>
-            <pre>{JSON.stringify(answer ?? { '❌': '❌' }, null, 3)}</pre>
+            <span
+                style={{
+                    // whiteSpace: 'pre-wrap',
+                    wordWrap: 'break-word',
+                }}
+            >
+                {JSON.stringify(answer ?? { '❌': '❌' }, null, 3)}
+                {/* le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le */}
+                {/* chat */}
+            </span>
         </div>
     )
 })

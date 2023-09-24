@@ -13,9 +13,13 @@ export const CushyUI = observer(function CushyUI_() {
     return (
         <div className='col grow h100'>
             <AppBarUI />
-            <div className='flex flex-grow'>
+            <div className='flex flex-grow p-1'>
                 <VerticalGalleryUI />
-                <ScrollablePaneUI className='shrink-0 flex-grow'>
+                <ScrollablePaneUI
+                    //
+                    // style={{ borderLeft: '2px solid #383854' }}
+                    className='shrink-0 flex-grow'
+                >
                     <GalleryHoveredPreviewUI />
                     {action == null ? ( //
                         <WorkspaceUI />

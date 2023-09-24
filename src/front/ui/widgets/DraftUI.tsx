@@ -23,8 +23,8 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
 
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <Panel className='relative col-form' shaded>
-                <div className='flex'>
+            <Panel className='col-form' shaded>
+                <div className='flex flex-wrap'>
                     <IconButton
                         size='sm'
                         className='self-start'
@@ -35,10 +35,7 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                     />
                     <ToolPickerUI draft={draft} />
                 </div>
-                <div
-                    className='flex gap-2 max-w-full overflow-auto'
-                    // style={{ width: '30rem' }}
-                >
+                <div className='flex gap-2'>
                     <ToolSuggestionUI draft={draft} />
                     {/* widgets ------------------------------- */}
                     <form
@@ -80,7 +77,7 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                     )}
 
                     {/* debug -------------------------------*/}
-                    <div className='flex absolute bottom-0 right-0'>
+                    <div className=''>
                         <DebugUI title='⬇'>
                             the form definition is
                             <pre>{JSON.stringify(formDefinition, null, 4)}</pre>

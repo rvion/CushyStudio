@@ -23,9 +23,9 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
     const isDone = node.status === 'done'
     return (
         <Panel
-            collapsible
+            // collapsible
             onClick={() => (st.expandNodes = !st.expandNodes)}
-            expanded={st.expandNodes}
+            // expanded={st.expandNodes}
             header={
                 <div className='row items-center gap'>
                     <NodeRefUI node={node} />

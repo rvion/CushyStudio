@@ -23,14 +23,14 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 <IconButton appearance='subtle' onClick={() => project.delete()} icon={<I.Trash />} />
             </div> */}
             {/* <Divider /> */}
-            <div className='row'>
-                <div className='flex flex-col items-start'>
-                    {/* <EmptyGraphUI /> */}
-                    <GraphUI graph={project.rootGraph.item} depth={1} />
-                    {/* {project.steps.map((step) => i(
+            {/* <div className='row'> */}
+            <GraphUI graph={project.rootGraph.item} depth={1} />
+            {/* <div className='flex flex-col items-start'> */}
+            {/* <EmptyGraphUI /> */}
+            {/* {project.steps.map((step) => i(
                         <StepUI step={step} key={step.id} />
                     ))} */}
-                    {/* {project.groupper.msgGroups.map((group, groupIx) => {
+            {/* {project.groupper.msgGroups.map((group, groupIx) => {
                     return (
                         <div
                         //
@@ -46,8 +46,8 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                         </div>
                     )
                 })} */}
-                </div>
-            </div>
+            {/* </div> */}
+            {/* </div> */}
         </Fragment>
     )
 })
