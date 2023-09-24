@@ -287,7 +287,7 @@ export class SchemaL {
         p(`export interface ComfySetup {`)
         // prettier-ignore
         for (const n of this.nodes) {
-            p(`    /* category=${n.category} output=${n.outputs.map(o => o.nameInComfy).join(', ')} */`)
+            p(`    /* category=${n.category} name="${n.nameInComfy}" output=${n.outputs.map(o => o.nameInComfy).join(', ')} */`)
             p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeUID): ${n.nameInCushy}`)
         }
         p(`}`)
@@ -439,6 +439,7 @@ export class ComfyNodeSchema {
         const msgIfDifferent = this.nameInComfy !== this.nameInCushy ? ` ("${this.nameInComfy}" in ComfyUI)` : ''
         b.bar(`${this.nameInCushy}${msgIfDifferent} [${this.category}]`)
         p(`export interface ${this.nameInCushy} extends ${ifaces.join(', ')} {`)
+        p(`    nameInComfy: "${this.nameInComfy}"`)
         // p(`    $schema: ${this.name}_schema`)
         this.outputs.forEach((i, ix) => {
             p(`    ${escapeJSKey(i.nameInComfy)}: Slot<'${i.type}', ${ix}>,`)

@@ -1,10 +1,11 @@
+import type { DraftL } from 'src/models/Draft'
+import type { GraphL } from 'src/models/Graph'
+import type { StepL } from 'src/models/Step'
+import type { Maybe } from 'src/utils/types'
+
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Button, Nav, Tooltip, Whisper } from 'rsuite'
-import type { DraftL } from 'src/models/Draft'
-import type { GraphL } from 'src/models/Graph'
-import { StepL } from 'src/models/Step'
-import { Maybe } from 'src/utils/types'
 import { DraftUI } from '../widgets/DraftUI'
 import { StepOutputUI } from './StepOutputUI'
 import { StepTabBtnUI } from './StepTabBtnUI'
@@ -41,7 +42,6 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                     </div>
                 ) : null}
             </div>
-
             <div className='flex flex-grow basis-0'>
                 {/* STEP PICKER */}
                 <Nav appearance='tabs' vertical>
@@ -61,6 +61,9 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                     </div>
                 )}
             </div>
+            {/* <ScrollablePaneUI style={{ width: '10rem' }}>
+                <ComfyNodeExplorerUI />
+            </ScrollablePaneUI> */}
         </div>
     )
 })

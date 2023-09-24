@@ -1,9 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../../FrontStateCtx'
 import { projectContext } from '../../ProjectCtx'
-import { ProjectUI } from './ProjectUI'
 import { LightBoxUI } from '../LightBox'
-import { Loader } from 'rsuite'
+import { GraphUI } from './GraphUI'
 
 export const WorkspaceUI = observer(function WorkspaceUI_(p: {}) {
     const st = useSt()
@@ -12,7 +11,7 @@ export const WorkspaceUI = observer(function WorkspaceUI_(p: {}) {
             {st.db.projects.map((project) => {
                 return (
                     <projectContext.Provider value={project} key={project.id}>
-                        <ProjectUI key={project.id} />
+                        <GraphUI graph={project.rootGraph.item} depth={1} />
                         <LightBoxUI lbs={st.lightBox} />
                     </projectContext.Provider>
                 )

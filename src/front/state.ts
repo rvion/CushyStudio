@@ -250,6 +250,10 @@ export class STATE {
                     const imageBlob = new Blob([buffer.slice(4)], { type: imageMime })
                     const imagePreview = URL.createObjectURL(imageBlob)
                     this.preview = { blob: imageBlob, url: imagePreview }
+                    // 🔴 const previewImage = this.db.images.upsert({
+                    // 🔴     id: 'PREVIEW',
+                    // 🔴     localFolderPath: this.resolve(this.rootPath, asRelativePath('PREVIEW')),
+                    // 🔴 })
                     break
                 default:
                     throw new Error(`Unknown binary websocket message of type ${eventType}`)

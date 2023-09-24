@@ -240,7 +240,10 @@ export class Runtime {
             }
             if (ia.type === 'imageID') {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
-                return this.nodes.WASImageLoad({ image_path: img.localAbsolutePath, RGBA: 'false' })
+                return this.nodes.WASImageLoad({
+                    image_path: img.url ?? img.localAbsolutePath,
+                    RGBA: 'false',
+                })
             }
             if (ia.type === 'imageSignal') {
                 const node = this.graph.nodesIndex.get(ia.nodeID)

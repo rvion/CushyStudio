@@ -11,19 +11,21 @@ action('remmg', {
             items: {},
         }),
         withWAS: form.groupOpt({
-            items: {},
-        }),
-        withWASAlpha: form.groupOpt({
-            items: {},
+            items: {
+                model: form.enum({
+                    enumName: 'Enum_WASImageRembgRemoveBackground_Model',
+                    default: 'u2net',
+                }),
+            },
         }),
     }),
 
     run: async (flow, p) => {
         const graph = flow.nodes
         const image = flow.loadImageAnswer(p.startImage)
-        flow.print(JSON.stringify(p))
-        flow.print(image.constructor.name)
-        flow.print(JSON.stringify(p))
+        // flow.print(JSON.stringify(p))
+        // flow.print(image.constructor.name)
+        // flow.print(JSON.stringify(p))
         // 4. options
         if (p.withRemBG) {
             graph.PreviewImage({
@@ -40,7 +42,7 @@ action('remmg', {
                 images: graph.WASImageRembgRemoveBackground({
                     //
                     images: image,
-                    model: 'u2net',
+                    model: p.withWAS.model,
                     background_color: 'magenta',
                 }),
             })
