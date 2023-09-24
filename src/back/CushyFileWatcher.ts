@@ -47,7 +47,7 @@ export class CushyFileWatcher {
 
     private handleNewFile = (filePath: string) => {
         if (!filePath.endsWith(this.extensions)) return
-        console.log(`found`)
+        // console.log(`found`)
         const absPath = asAbsolutePath(filePath)
         this.filesMap.set(asAbsolutePath(absPath), new CushyFile(this.st, absPath))
     }

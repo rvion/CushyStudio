@@ -10,10 +10,8 @@ export const useImageDrag = (image: ImageL) =>
             type: ItemTypes.Image,
             item: { image },
             collect: (monitor) => {
-                console.log('monitor.isDragging()=', monitor.isDragging())
-                return {
-                    opacity: monitor.isDragging() ? 0.5 : 1,
-                }
+                // console.log('monitor.isDragging()=', monitor.isDragging())
+                return { opacity: monitor.isDragging() ? 0.5 : 1 }
             },
         }),
         [image],

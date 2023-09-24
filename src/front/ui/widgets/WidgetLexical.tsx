@@ -96,10 +96,9 @@ export const EditorUI = observer((p: EditorProps) => {
     // useEffect(() => {
     //     updateEditor(p.get())
     // })
-    console.log('🔴------------')
+    console.log('[💬] LEXICAL: mounting lexical widget')
     const initialConfig: InitialConfigType = {
         editorState: () => {
-            console.log('🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴')
             $getRoot().append($createParagraphNode().append($createTextNode(p.get())))
             // const root = $getRoot()
             // const txt = p.get()
