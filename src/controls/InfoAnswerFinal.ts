@@ -61,8 +61,13 @@ export const finalizeAnswer_UNSAFE = (
         if (request.type === 'itemsOpt') {
             if (answer == null) return
             if (!answer.__enabled__) return
-            console.log('>>>', toJS(answer))
-            for (const [key, req] of Object.entries(answer)) {
+            const entries = Object.entries(answer) //
+                .filter((i) => i[0] !== '__enabled__')
+
+            if (entries.length === 0) {
+                setAtPath(path, {})
+            }
+            for (const [key, req] of entries) {
                 if (key === '__enabled__') continue
                 processNode([...path, key], req, answer[key])
             }
