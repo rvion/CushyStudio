@@ -54,7 +54,8 @@ action('Prompt-V1', {
 
         // CLIP
         let clip = clipAndModel._CLIP
-        let model = clipAndModel._MODEL
+        let model: _MODEL = clipAndModel._MODEL
+
         if (p.clipSkip) {
             clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: p.clipSkip }).CLIP
         }
@@ -82,7 +83,7 @@ action('Prompt-V1', {
         let LATENT = graph.KSampler({
             seed: p.seed == null ? flow.randomSeed() : p.seed,
             latent_image: startImage,
-            model: flow.AUTO,
+            model,
             positive: positive,
             negative: negative,
             sampler_name: 'dpmpp_2m',
@@ -114,7 +115,7 @@ action('Prompt-V1', {
             })
             flow.print(`target dimension: W=${finalW} x H=${finalH}`)
             LATENT = graph.KSampler({
-                model: flow.AUTO,
+                model,
                 positive: positive,
                 negative: negative,
                 latent_image: _1,
