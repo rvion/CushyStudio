@@ -1,15 +1,11 @@
 action('remmg', {
     priority: 1,
-    help: 'load model with optional clip-skip, loras, tome ratio, etc.',
+    help: 'quick remove bg with one or many nodes',
     ui: (form) => ({
         // startImage
         startImage: form.selectImage('Start image'),
-        withRemBG: form.groupOpt({
-            items: {},
-        }),
-        withABG: form.groupOpt({
-            items: {},
-        }),
+        withRemBG: form.groupOpt({ items: {} }),
+        withABG: form.groupOpt({ items: {} }),
         withWAS: form.groupOpt({
             items: {
                 model: form.enum({
@@ -23,20 +19,9 @@ action('remmg', {
     run: async (flow, p) => {
         const graph = flow.nodes
         const image = flow.loadImageAnswer(p.startImage)
-        // flow.print(JSON.stringify(p))
-        // flow.print(image.constructor.name)
-        // flow.print(JSON.stringify(p))
         // 4. options
-        if (p.withRemBG) {
-            graph.PreviewImage({
-                images: graph.ImageRemoveBackgroundRembg({ image }),
-            })
-        }
-        if (p.withABG) {
-            graph.PreviewImage({
-                images: graph.RemoveImageBackgroundAbg({ image }),
-            })
-        }
+        if (p.withRemBG) graph.PreviewImage({ images: graph.ImageRemoveBackgroundRembg({ image }) })
+        if (p.withABG) graph.PreviewImage({ images: graph.RemoveImageBackgroundAbg({ image }) })
         if (p.withWAS) {
             graph.PreviewImage({
                 images: graph.WASImageRembgRemoveBackground({
@@ -48,7 +33,6 @@ action('remmg', {
             })
         }
 
-        // PROMPT
         await flow.PROMPT()
     },
 })

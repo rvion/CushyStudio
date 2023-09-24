@@ -8,12 +8,8 @@ import { ButonDownloadFilesUI } from './ButonDownloadFilesUI'
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: GraphL }) {
     const graph = p.graph
     return (
-        <Panel
-            //
-            className='w-64 max-h-64'
-            // header={graph.id}
-        >
-            <div>
+        <Panel>
+            <div className='w-64 max-h-64 overflow-auto'>
                 {graph.size === 0 && <div>Empty Graph</div>}
                 {graph.nodes.map((n, ix) => (
                     <div key={n.uid} className='flex'>
