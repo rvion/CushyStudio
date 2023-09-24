@@ -1,4 +1,4 @@
-action('🟢 Default', {
+action('Prompt-V1', {
     priority: 1,
     help: 'load model with optional clip-skip, loras, tome ratio, etc.',
     ui: (form) => ({
@@ -7,11 +7,14 @@ action('🟢 Default', {
             enumName: 'Enum_EfficientLoader_Ckpt_name',
             default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
         }),
-        vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
-        cfg: form.intOpt({ default: 8 }),
-        denoise: form.floatOpt({ default: 1 }),
-        clipSkip: form.intOpt({}),
+        // prompt
+        positive: form.str({ textarea: true }),
+        negative: form.strOpt({ textarea: true }),
+        cfg: form.int({ default: 8 }),
+        denoise: form.float({ default: 1 }),
         loras: form.loras({}),
+        vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
+        clipSkip: form.intOpt({}),
         highResFix: form.groupOpt({
             items: {
                 scaleFactor: form.int({}),
@@ -20,9 +23,6 @@ action('🟢 Default', {
                 saveIntermediaryImage: form.bool({ default: true }),
             },
         }),
-        // prompt
-        positive: form.str({ textarea: true }),
-        negative: form.strOpt({ textarea: true }),
         batchSize: form.int({ default: 1 }),
         seed: form.intOpt({}),
         steps: form.int({ default: 20 }),

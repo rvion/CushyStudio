@@ -1,9 +1,7 @@
-import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { IconButton, Input, Panel } from 'rsuite'
+import { Fragment } from 'react'
 import { useProject } from '../../ProjectCtx'
 import { GraphUI } from './GraphUI'
-import { Fragment } from 'react'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const project = useProject()

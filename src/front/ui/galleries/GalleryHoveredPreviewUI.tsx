@@ -42,7 +42,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                 }}
             >
                 {/* METADATA */}
-                <div className='absolute [background:#000000aa]'>
+                <div className='absolute bottom-0 [background:#00000033] text-xs'>
                     <div className='flex whitespace-nowrap'>URL = {st.hovered.url}</div>
                     <div className='flex whitespace-nowrap'>downloaded = {st.hovered.data.downloaded ? '✅' : '❌'}</div>
                     <div className='flex whitespace-nowrap'>filename = {st.hovered.data.imageInfos?.filename ?? 'error'}</div>

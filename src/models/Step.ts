@@ -1,4 +1,9 @@
-import type { FromExtension_Print, FromExtension_Prompt, FromExtension_ShowHtml } from 'src/types/MessageFromExtensionToWebview'
+import type {
+    FromExtension_Print,
+    FromExtension_Prompt,
+    FromExtension_RuntimeError,
+    FromExtension_ShowHtml,
+} from 'src/types/MessageFromExtensionToWebview'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from '../models/Graph'
 import type { WsMsgExecuted, WsMsgExecutionError } from '../types/ComfyWsApi'
@@ -17,7 +22,13 @@ export type FormPath = (string | number)[]
 export type StepID = Branded<string, 'StepID'>
 export const asStepID = (s: string): StepID => s as any
 
-export type StepOutput = FromExtension_Print | WsMsgExecuted | WsMsgExecutionError | FromExtension_Prompt | FromExtension_ShowHtml
+export type StepOutput =
+    | FromExtension_Print
+    | WsMsgExecuted
+    | WsMsgExecutionError
+    | FromExtension_Prompt
+    | FromExtension_ShowHtml
+    | FromExtension_RuntimeError
 
 export type StepT = {
     id: StepID

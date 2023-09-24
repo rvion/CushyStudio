@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
+import { ReactNode } from 'react'
 import { Message, Panel } from 'rsuite'
 import { StepL, StepOutput } from 'src/models/Step'
 import { ComfyNodeUI } from '../NodeListUI'
 import { ImageUI } from '../galleries/ImageUI'
-import { GraphSummaryUI } from './GraphSummaryUI'
-import { CustomNodeFlow } from '../graph/Graph2UI'
-import { ReactNode } from 'react'
+import { exhaust } from '../../../utils/ComfyUtils'
 import { ButonDownloadFilesUI } from './ButonDownloadFilesUI'
+import { GraphSummaryUI } from './GraphSummaryUI'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
@@ -23,7 +23,10 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
     const outputGraph = p.step.outputGraph.item
     const db = outputGraph.db
 
-    if (msg.type === 'print') return <OutputWrapperUI label='LOG'>{msg.message}</OutputWrapperUI>
+    if (msg.type === 'print') {
+        return <OutputWrapperUI label='LOG'>{msg.message}</OutputWrapperUI>
+    }
+
     if (msg.type === 'prompt') {
         const prompt = db.prompts.get(msg.promptID)
         const graph = prompt?.graph.item
@@ -65,6 +68,22 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
         )
     }
     if (msg.type === 'executed') return <div>✅</div>
+    if (msg.type === 'runtimeError')
+        return (
+            <Panel>
+                <div>❌ Execution Error</div>
+                <div>{msg.message}</div>
+                <div>{JSON.stringify(msg.infos, null, 3)}</div>
+            </Panel>
+        )
 
-    return <div className='border'>❌ unhandled message of type `{msg.type}`</div>
+    if (msg.type === 'show-html')
+        return (
+            <Panel>
+                <div>{msg.title}</div>
+                <div dangerouslySetInnerHTML={{ __html: msg.content }}></div>
+            </Panel>
+        )
+    exhaust(msg)
+    return <div className='border'>❌ unhandled message of type `{(msg as any).type}`</div>
 })

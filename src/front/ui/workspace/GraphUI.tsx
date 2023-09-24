@@ -17,25 +17,22 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
         <div className='flex gap-2 flex-grow'>
             <div className='flex basis-0 '>
                 {/* DRAFT PICKER */}
-                <div>
-                    <div className='smalltitle'>flows</div>
-                    <Nav appearance='tabs' vertical>
-                        {graph.drafts.map((draft) => (
-                            <Nav.Item
-                                key={draft.id}
-                                active={focusedDraft?.id === draft.id}
-                                onClick={() => graph.update({ focusedDraftID: draft.id })}
-                            >
-                                {draft.tool.item.name}
-                            </Nav.Item>
-                        ))}
-                        <Whisper speaker={<Tooltip>Draft Action</Tooltip>}>
-                            <Button appearance='subtle' onClick={() => graph.createDraft(focusedDraft?.data).focus()}>
-                                <I.AddOutline />
-                            </Button>
-                        </Whisper>
-                    </Nav>
-                </div>
+                <Nav appearance='tabs' vertical>
+                    {graph.drafts.map((draft) => (
+                        <Nav.Item
+                            key={draft.id}
+                            active={focusedDraft?.id === draft.id}
+                            onClick={() => graph.update({ focusedDraftID: draft.id })}
+                        >
+                            {draft.tool.item.name}
+                        </Nav.Item>
+                    ))}
+                    <Whisper speaker={<Tooltip>Draft Action</Tooltip>}>
+                        <Button appearance='subtle' onClick={() => graph.createDraft(focusedDraft?.data).focus()}>
+                            <I.AddOutline />
+                        </Button>
+                    </Whisper>
+                </Nav>
 
                 {/* DRAFT */}
                 {focusedDraft ? (
@@ -47,28 +44,22 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
 
             <div className='flex flex-grow basis-0'>
                 {/* STEP PICKER */}
-                <div>
-                    <div className='smalltitle'>executions</div>
-                    <Nav appearance='tabs' vertical>
-                        {graph.childSteps.map((step) => (
-                            <StepTabBtnUI key={step.id} step={step} />
-                        ))}
-                    </Nav>
-                </div>
+                <Nav appearance='tabs' vertical>
+                    {graph.childSteps.map((step) => (
+                        <StepTabBtnUI key={step.id} step={step} />
+                    ))}
+                </Nav>
                 {/* STEP */}
-                <div>
-                    <div className='smalltitle'>outputs</div>
 
-                    {focusedStep && (
-                        <div className='flex col-output flex-grow p-2'>
-                            <div className='flex flex-col gap-1'>
-                                {focusedStep.data.outputs?.map((output, ix) => (
-                                    <StepOutputUI key={ix} step={focusedStep} output={output} />
-                                ))}
-                            </div>
+                {focusedStep && (
+                    <div className='flex col-output flex-grow p-2'>
+                        <div className='flex flex-col gap-1'>
+                            {focusedStep.data.outputs?.map((output, ix) => (
+                                <StepOutputUI key={ix} step={focusedStep} output={output} />
+                            ))}
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     )

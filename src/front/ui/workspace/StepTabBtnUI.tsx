@@ -13,6 +13,7 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
     const status = step.data.status
     return (
         <Nav.Item
+            // icon={renderStatus(status)}
             active={isFocused}
             id={`button-to-focus-step-${step.id}`}
             // appearance={isFocused ? 'primary' : 'subtle'}
@@ -65,10 +66,11 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
                 // })
             }}
         >
-            <div>
-                {renderStatus(status)}
-                {/* {renderStatus2(step.data.status)}  */}
-                {step.tool.item?.data.name}({step.outputGraph.item.childSteps.items.length})
+            <div className='flex items-baseline'>
+                {renderStatus(step.data.status)}
+                <div>
+                    {step.tool.item?.data.name}({step.outputGraph.item.childSteps.items.length})
+                </div>
             </div>
         </Nav.Item>
     )

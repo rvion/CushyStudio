@@ -82,12 +82,18 @@ export class Runtime {
             //     this.broadcastSchemaMermaid()
             // }
             return Status.Success
-        } catch (error) {
+        } catch (error: any /* 🔴 */) {
             console.log(error)
             // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'failure' })
             console.error('🌠', (error as any as Error).name)
             console.error('🌠', (error as any as Error).message)
             console.error('🌠', 'RUN FAILURE')
+            // insert an error into the output
+            this.step.append({
+                type: 'runtimeError',
+                message: error.message,
+                infos: error,
+            })
             return Status.Failure
         }
     }

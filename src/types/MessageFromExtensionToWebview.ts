@@ -86,6 +86,7 @@ export type FromExtension_Prompt = { type: 'prompt'; promptID: PromptID }
 export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
 export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: FormDefinition; result: FormResult<any> }
+export type FromExtension_RuntimeError = { type: 'runtimeError'; message: string; infos: { [key: string]: any } }
 
 export type MessageFromExtensionToWebview_ =
     /** wether or not cushy server is connected to at least on ComfyUI server */
