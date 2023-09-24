@@ -1,10 +1,18 @@
+import type { GraphID, GraphL } from 'src/models/Graph'
+
 import { writeFileSync } from 'fs'
 import { observer } from 'mobx-react-lite'
 import { Button } from 'rsuite'
-import { GraphL } from 'src/models/Graph'
+import { useSt } from '../../../front/FrontStateCtx'
 
-export const ButonDownloadFilesUI = observer(function ButonDownloadFilesUI_(p: { graph: GraphL }) {
-    const { graph } = p
+export const ButonDownloadFilesUI = observer(function ButonDownloadFilesUI_(p: { graph: GraphL | GraphID }) {
+    let graphOrGraphID = p.graph
+    const st = useSt()
+    const graph =
+        typeof graphOrGraphID === 'string' //
+            ? st.db.graphs.getOrThrow(graphOrGraphID)
+            : graphOrGraphID
+
     return (
         <div>
             <Button
@@ -20,7 +28,7 @@ export const ButonDownloadFilesUI = observer(function ButonDownloadFilesUI_(p: {
                     writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
                 }}
             >
-                download files
+                download ComfyUI file
             </Button>
         </div>
     )

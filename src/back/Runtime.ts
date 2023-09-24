@@ -28,6 +28,7 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
 import { Status } from './Status'
+import { InvalidPromptError } from './RuntimeError'
 
 /** script exeuction instance */
 export class Runtime {
@@ -87,11 +88,13 @@ export class Runtime {
             console.error('🌠', (error as any as Error).name)
             console.error('🌠', (error as any as Error).message)
             console.error('🌠', 'RUN FAILURE')
+            const graphID = error instanceof InvalidPromptError ? error.graph.id : undefined
             // insert an error into the output
             this.step.append({
                 type: 'runtimeError',
                 message: error.message,
                 infos: error,
+                graphID,
             })
             return Status.Failure
         }
@@ -390,23 +393,26 @@ export class Runtime {
         // otherwise, we might get stuck
         const promptEndpoint = `${this.st.getServerHostHTTP()}/prompt`
         console.info('sending prompt to ' + promptEndpoint)
+        const graph = this.st.db.graphs.create({ comfyPromptJSON: currentJSON })
         const res = await fetch(promptEndpoint, {
             method: 'POST',
             body: JSON.stringify(out),
         })
         const prompmtInfo: PromptInfo = await res.json()
-        console.log('prompt status', res.status, res.statusText, prompmtInfo)
-
-        const graph = this.st.db.graphs.create({ comfyPromptJSON: currentJSON })
-        const prompt = this.st.db.prompts.create({
-            id: prompmtInfo.prompt_id,
-            executed: false,
-            graphID: graph.id,
-            stepID,
-        })
-        this.step.append({ type: 'prompt', promptID: prompmtInfo.prompt_id })
-
-        return prompt
+        // console.log('prompt status', res.status, res.statusText, prompmtInfo)
+        if (res.status !== 200) {
+            const err = new InvalidPromptError('ComfyUI Prompt request failed', graph, prompmtInfo)
+            return Promise.reject(err)
+        } else {
+            const prompt = this.st.db.prompts.create({
+                id: prompmtInfo.prompt_id,
+                executed: false,
+                graphID: graph.id,
+                stepID,
+            })
+            this.step.append({ type: 'prompt', promptID: prompmtInfo.prompt_id })
+            return prompt
+        }
         // await sleep(1000)
         // return step
     }

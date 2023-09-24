@@ -1,10 +1,11 @@
+import type { StepL, StepOutput } from 'src/models/Step'
+
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { Message, Panel } from 'rsuite'
-import { StepL, StepOutput } from 'src/models/Step'
+import { exhaust } from '../../../utils/ComfyUtils'
 import { ComfyNodeUI } from '../NodeListUI'
 import { ImageUI } from '../galleries/ImageUI'
-import { exhaust } from '../../../utils/ComfyUtils'
 import { ButonDownloadFilesUI } from './ButonDownloadFilesUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
 
@@ -73,7 +74,8 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
             <Panel>
                 <div>❌ Execution Error</div>
                 <div>{msg.message}</div>
-                <div>{JSON.stringify(msg.infos, null, 3)}</div>
+                <pre>{JSON.stringify(msg.infos, null, 3)}</pre>
+                {msg.graphID ? <ButonDownloadFilesUI graph={msg.graphID} /> : null}
             </Panel>
         )
 
