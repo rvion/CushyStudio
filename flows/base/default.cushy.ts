@@ -7,6 +7,7 @@ action('Prompt-V1', {
             enumName: 'Enum_EfficientLoader_Ckpt_name',
             default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
         }),
+        freeU: form.bool({ default: false }),
         // prompt
         positive: form.str({ textarea: true }),
         negative: form.strOpt({ textarea: true }),
@@ -55,6 +56,7 @@ action('Prompt-V1', {
         // CLIP
         let clip = clipAndModel._CLIP
         let model: _MODEL = clipAndModel._MODEL
+        if (p.freeU) model = graph.FreeU({ model })
 
         if (p.clipSkip) {
             clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: p.clipSkip }).CLIP
