@@ -1,7 +1,7 @@
-import * as vscode from 'vscode'
+// import * as vscode from 'vscode'
 import { resultFailure, Result, resultSuccess } from '../utils/Either'
 
-const showErrorMessage = vscode.window.showErrorMessage
+// const showErrorMessage = vscode.window.showErrorMessage
 
 export type TextChunks = {
     [key: string]: string
@@ -14,13 +14,13 @@ export function getPngMetadataFromFile(file: File): Promise<TextChunks> {
             // A. ensure we properly loaded the file
             const res = event.target?.result
             if (res == null) {
-                showErrorMessage('no reader.onload have no result')
+                // 🔴 showErrorMessage('no reader.onload have no result')
                 return reject('file load error')
             }
 
             // B. ensure we don't have a string
             if (typeof res === 'string') {
-                showErrorMessage('received a string instead of an array buffer')
+                // 🔴 showErrorMessage('received a string instead of an array buffer')
                 return reject('file load error')
             }
 
@@ -28,7 +28,7 @@ export function getPngMetadataFromFile(file: File): Promise<TextChunks> {
             const pngData = new Uint8Array(res)
             const result = getPngMetadata(pngData)
             if (result.type === 'failure') {
-                showErrorMessage(result.value)
+                // 🔴 showErrorMessage(result.value)
                 return reject(result.value)
             }
             resolve(result.value)
