@@ -26,7 +26,6 @@ export const CushyUI = observer(function CushyUI_() {
                     ) : action.type === 'paint' ? (
                         <WidgetPaintUI action={action} />
                     ) : (
-                        // <WorkspaceUI />
                         <WorkspaceUI />
                     )}
                 </ScrollablePaneUI>

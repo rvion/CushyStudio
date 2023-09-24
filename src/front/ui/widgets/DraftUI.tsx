@@ -80,15 +80,15 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                     <div className=''>
                         <DebugUI title='⬇'>
                             the form definition is
-                            <pre>{JSON.stringify(formDefinition, null, 4)}</pre>
+                            <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(formDefinition, null, 4)}</pre>
                         </DebugUI>
                         <DebugUI title={'⬆'}>
                             the value about to be sent back to the workflow is
-                            <pre>{JSON.stringify(draft.data.params, null, 4)}</pre>
+                            <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(draft.data.params, null, 4)}</pre>
                         </DebugUI>
                         <DebugUI title='👀'>
                             the final answer is
-                            <pre>{JSON.stringify(draft.finalJSON, null, 4)}</pre>
+                            <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(draft.finalJSON, null, 4)}</pre>
                         </DebugUI>
                     </div>
                 </div>

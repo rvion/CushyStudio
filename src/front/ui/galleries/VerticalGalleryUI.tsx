@@ -15,14 +15,11 @@ export const VerticalGalleryUI = observer(function VerticalGalleryUI_(p: {}) {
         <div className='flex col-folder'>
             {/* MAIN IMAGE COLUMN */}
             <div
-                //
                 ref={dropRef}
-                //  [background:#343434]
                 className='shrink-0 relative overflow-auto noscrollbar rounded-lg'
                 style={{ width: '3.4rem', ...dropStyle }}
             >
                 <div className='text-center'>Images</div>
-                {/* <IconButton disabled icon={<I.Close />} size='xs' appearance='link'></IconButton> */}
                 {st.preview ? <img style={{ width: '64px', height: '64px' }} src={st.preview.url} /> : null}
 
                 <div className='absolute insert-0'>
