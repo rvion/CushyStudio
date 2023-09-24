@@ -54,7 +54,7 @@ declare global {
         ImagePadForOutpaint(args: ImagePadForOutpaint_input, uid?: ComfyNodeUID): ImagePadForOutpaint
         /* category=image name="EmptyImage" output=IMAGE */
         EmptyImage(args: EmptyImage_input, uid?: ComfyNodeUID): EmptyImage
-        /* category=conditioning name="ConditioningAverage " output=CONDITIONING */
+        /* category=conditioning name="ConditioningAverage" output=CONDITIONING */
         ConditioningAverage(args: ConditioningAverage_input, uid?: ComfyNodeUID): ConditioningAverage
         /* category=conditioning name="ConditioningCombine" output=CONDITIONING */
         ConditioningCombine(args: ConditioningCombine_input, uid?: ComfyNodeUID): ConditioningCombine
@@ -131,6 +131,12 @@ declare global {
         ConditioningZeroOut(args: ConditioningZeroOut_input, uid?: ComfyNodeUID): ConditioningZeroOut
         /* category=advanced_conditioning name="ConditioningSetTimestepRange" output=CONDITIONING */
         ConditioningSetTimestepRange(args: ConditioningSetTimestepRange_input, uid?: ComfyNodeUID): ConditioningSetTimestepRange
+        /* category=latent_advanced name="LatentAdd" output=LATENT */
+        LatentAdd(args: LatentAdd_input, uid?: ComfyNodeUID): LatentAdd
+        /* category=latent_advanced name="LatentSubtract" output=LATENT */
+        LatentSubtract(args: LatentSubtract_input, uid?: ComfyNodeUID): LatentSubtract
+        /* category=latent_advanced name="LatentMultiply" output=LATENT */
+        LatentMultiply(args: LatentMultiply_input, uid?: ComfyNodeUID): LatentMultiply
         /* category=loaders name="HypernetworkLoader" output=MODEL */
         HypernetworkLoader(args: HypernetworkLoader_input, uid?: ComfyNodeUID): HypernetworkLoader
         /* category=loaders name="UpscaleModelLoader" output=UPSCALE_MODEL */
@@ -191,6 +197,8 @@ declare global {
         CLIPTextEncodeSDXL(args: CLIPTextEncodeSDXL_input, uid?: ComfyNodeUID): CLIPTextEncodeSDXL
         /* category=image_preprocessors name="Canny" output=IMAGE */
         Canny(args: Canny_input, uid?: ComfyNodeUID): Canny
+        /* category=_for_testing name="FreeU" output=MODEL */
+        FreeU(args: FreeU_input, uid?: ComfyNodeUID): FreeU
         /* category=image name="Remove Image Background (abg)" output=IMAGE */
         RemoveImageBackgroundAbg(args: RemoveImageBackgroundAbg_input, uid?: ComfyNodeUID): RemoveImageBackgroundAbg
         /* category=CivitAI_Loaders name="CivitAI_Lora_Loader" output=MODEL, CLIP */
@@ -1961,6 +1969,9 @@ declare global {
         SaveLatent: SaveLatent
         ConditioningZeroOut: ConditioningZeroOut
         ConditioningSetTimestepRange: ConditioningSetTimestepRange
+        LatentAdd: LatentAdd
+        LatentSubtract: LatentSubtract
+        LatentMultiply: LatentMultiply
         HypernetworkLoader: HypernetworkLoader
         UpscaleModelLoader: UpscaleModelLoader
         ImageUpscaleWithModel: ImageUpscaleWithModel
@@ -1991,6 +2002,7 @@ declare global {
         CLIPTextEncodeSDXLRefiner: CLIPTextEncodeSDXLRefiner
         CLIPTextEncodeSDXL: CLIPTextEncodeSDXL
         Canny: Canny
+        FreeU: FreeU
         RemoveImageBackgroundAbg: RemoveImageBackgroundAbg
         CivitAI_Lora_Loader: CivitAI_Lora_Loader
         CivitAI_Checkpoint_Loader: CivitAI_Checkpoint_Loader
@@ -2428,6 +2440,9 @@ declare global {
             | 'LatentCrop'
             | 'VAEEncodeTiled'
             | 'LoadLatent'
+            | 'LatentAdd'
+            | 'LatentSubtract'
+            | 'LatentMultiply'
             | 'LatentCompositeMasked'
             | 'RebatchLatents'
             | 'ImpactLatentPixelScale'
@@ -2475,6 +2490,7 @@ declare global {
             | 'ModelMergeSubtract'
             | 'ModelMergeAdd'
             | 'TomePatchModel'
+            | 'FreeU'
             | 'CivitAI_Lora_Loader'
             | 'CivitAI_Checkpoint_Loader'
             | 'ImpactFromDetailerPipe'
@@ -4618,7 +4634,7 @@ declare global {
     export type Enum_WASImageFlip_Mode = 'horizontal' | 'vertical'
     export type Enum_WASImageGenerateGradient_Direction = Enum_WASImageFlip_Mode
     export type Enum_WASImageHistoryLoader_Image =
-        '...\\192.168.1.19:8188\\view?filename=ComfyUI_02611_.png&subfolder=&type=output'
+        '...\\192.168.1.19:8188\\view?filename=ComfyUI_02610_.png&subfolder=&type=output'
     export type Enum_WASImageMonitorEffectsFilter_Mode = 'Digital Distortion' | 'Signal Distortion' | 'TV Distortion'
     export type Enum_WASImageRembgRemoveBackground_Model =
         | 'isnet-anime'
@@ -5123,10 +5139,10 @@ declare global {
     }
 
     // |=============================================================================|
-    // | ConditioningAverage ("ConditioningAverage " in ComfyUI) [conditioning]      |
+    // | ConditioningAverage [conditioning]                                          |
     // |=============================================================================|
     export interface ConditioningAverage extends HasSingle_CONDITIONING, ComfyNode<ConditioningAverage_input> {
-        nameInComfy: 'ConditioningAverage '
+        nameInComfy: 'ConditioningAverage'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
     export type ConditioningAverage_input = {
@@ -5346,9 +5362,9 @@ declare global {
         model: _MODEL
         clip: _CLIP
         lora_name: Enum_LoraLoader_Lora_name
-        /** default=1 min=10 max=10 step=0.01 */
+        /** default=1 min=20 max=20 step=0.01 */
         strength_model?: _FLOAT
-        /** default=1 min=10 max=10 step=0.01 */
+        /** default=1 min=20 max=20 step=0.01 */
         strength_clip?: _FLOAT
     }
 
@@ -5663,6 +5679,43 @@ declare global {
         start?: _FLOAT
         /** default=1 min=1 max=1 step=0.001 */
         end?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | LatentAdd [latent_advanced]                                                 |
+    // |=============================================================================|
+    export interface LatentAdd extends HasSingle_LATENT, ComfyNode<LatentAdd_input> {
+        nameInComfy: 'LatentAdd'
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type LatentAdd_input = {
+        samples1: _LATENT
+        samples2: _LATENT
+    }
+
+    // |=============================================================================|
+    // | LatentSubtract [latent_advanced]                                            |
+    // |=============================================================================|
+    export interface LatentSubtract extends HasSingle_LATENT, ComfyNode<LatentSubtract_input> {
+        nameInComfy: 'LatentSubtract'
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type LatentSubtract_input = {
+        samples1: _LATENT
+        samples2: _LATENT
+    }
+
+    // |=============================================================================|
+    // | LatentMultiply [latent_advanced]                                            |
+    // |=============================================================================|
+    export interface LatentMultiply extends HasSingle_LATENT, ComfyNode<LatentMultiply_input> {
+        nameInComfy: 'LatentMultiply'
+        LATENT: Slot<'LATENT', 0>
+    }
+    export type LatentMultiply_input = {
+        samples: _LATENT
+        /** default=1 min=10 max=10 step=0.01 */
+        multiplier?: _FLOAT
     }
 
     // |=============================================================================|
@@ -6119,6 +6172,25 @@ declare global {
         low_threshold?: _FLOAT
         /** default=0.8 min=0.99 max=0.99 step=0.01 */
         high_threshold?: _FLOAT
+    }
+
+    // |=============================================================================|
+    // | FreeU [_for_testing]                                                        |
+    // |=============================================================================|
+    export interface FreeU extends HasSingle_MODEL, ComfyNode<FreeU_input> {
+        nameInComfy: 'FreeU'
+        MODEL: Slot<'MODEL', 0>
+    }
+    export type FreeU_input = {
+        model: _MODEL
+        /** default=1.1 min=10 max=10 step=0.01 */
+        b1?: _FLOAT
+        /** default=1.2 min=10 max=10 step=0.01 */
+        b2?: _FLOAT
+        /** default=0.9 min=10 max=10 step=0.01 */
+        s1?: _FLOAT
+        /** default=0.2 min=10 max=10 step=0.01 */
+        s2?: _FLOAT
     }
 
     // |=============================================================================|
@@ -14568,6 +14640,9 @@ declare global {
         SaveLatent: ComfyNodeSchemaJSON
         ConditioningZeroOut: ComfyNodeSchemaJSON
         ConditioningSetTimestepRange: ComfyNodeSchemaJSON
+        LatentAdd: ComfyNodeSchemaJSON
+        LatentSubtract: ComfyNodeSchemaJSON
+        LatentMultiply: ComfyNodeSchemaJSON
         HypernetworkLoader: ComfyNodeSchemaJSON
         UpscaleModelLoader: ComfyNodeSchemaJSON
         ImageUpscaleWithModel: ComfyNodeSchemaJSON
@@ -14598,6 +14673,7 @@ declare global {
         CLIPTextEncodeSDXLRefiner: ComfyNodeSchemaJSON
         CLIPTextEncodeSDXL: ComfyNodeSchemaJSON
         Canny: ComfyNodeSchemaJSON
+        FreeU: ComfyNodeSchemaJSON
         RemoveImageBackgroundAbg: ComfyNodeSchemaJSON
         CivitAI_Lora_Loader: ComfyNodeSchemaJSON
         CivitAI_Checkpoint_Loader: ComfyNodeSchemaJSON
