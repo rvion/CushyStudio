@@ -12,7 +12,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <Button size='sm' startIcon={<I.FolderFill />} onClick={() => st.createFolder()}>
                 Add folder
             </Button>
-            <Button loading={Boolean(st.db.saveTimeout)} size='sm' startIcon={<I.FolderFill />} onClick={() => st.db.markDirty()}>
+            <Button loading={Boolean(st.db.saveTimeout)} size='sm' startIcon={<I.Android />} onClick={() => st.db.markDirty()}>
                 save
             </Button>
             {/* <Button

@@ -3,6 +3,7 @@ import { ImageAnswer } from 'src/controls/InfoAnswer'
 import { ImageUI } from '../galleries/ImageUI'
 import { useImageDrop } from '../galleries/dnd'
 import { useDraft } from '../useDraft'
+import { Button } from 'rsuite'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     // infos: ImageInfos[]
@@ -51,9 +52,16 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                         <ImageUI img={draft.db.images.getOrThrow(answer.imageID)} />
                     ) : null}
                 </div>
-                {/* <Button size='sm' onClick={() => set({ type: 'imageSignal', nodeID: node!.uid, fieldName: 'IMAGE' })}>
-                    last
-                </Button> */}
+                <Button
+                    //
+                    size='sm'
+                    // onClick={() => set({ type: 'imageSignal', nodeID: node!.uid, fieldName: 'IMAGE' })}
+                    onClick={() => {
+                        set(null as any /* 🔴 */)
+                    }}
+                >
+                    x
+                </Button>
             </div>
             <span
                 style={{
