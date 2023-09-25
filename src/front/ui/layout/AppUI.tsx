@@ -15,7 +15,7 @@ export const CushyUI = observer(function CushyUI_() {
     return (
         <div className='col grow h100'>
             <AppBarUI />
-            <div className='flex flex-grow p-1'>
+            <div className='flex flex-grow'>
                 <MainNavBarUI />
                 <VerticalGalleryUI />
                 <ScrollablePaneUI

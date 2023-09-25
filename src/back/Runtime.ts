@@ -242,10 +242,10 @@ export class Runtime {
             // }
             if (ia.type === 'imageID') {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
-                this.print(JSON.stringify(img.data, null, 3))
+                // this.print(JSON.stringify(img.data, null, 3))
                 if (img.data.downloaded) {
                     const res = await this.uploadAnyFile(img.localAbsolutePath)
-                    this.print(JSON.stringify(res))
+                    // this.print(JSON.stringify(res))
                     return this.nodes.LoadImage({ image: res.name as any })
                 }
                 console.log(img.data)

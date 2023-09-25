@@ -20,7 +20,7 @@ export const ComfyUIUI = observer(function ComfyUIUI_(p: { action: UIActionComfy
     }, [st.comfyUIIframeRef.current])
     return (
         <>
-            <Button
+            {/* <Button
                 disabled={p.action.json == null}
                 onClick={() => {
                     const k = st.comfyUIIframeRef.current
@@ -41,7 +41,7 @@ export const ComfyUIUI = observer(function ComfyUIUI_(p: { action: UIActionComfy
                 }}
             >
                 Test
-            </Button>
+            </Button> */}
             <iframe //
                 ref={st.comfyUIIframeRef}
                 src={url}
