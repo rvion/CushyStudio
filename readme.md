@@ -12,15 +12,8 @@ and guidance along generation processes. It is cross-platform and open-source.
 </div>
 
 ```sh
-# 1. clone the repo
 git clone https://github.com/rvion/CushyStudio
-
-# 2. cd into the repo
 cd CushyStudio
-
-# 3. install all dependencies
 npm install
-
-# 4. start the two main scripts necessary:
 npm run dev
 ```
