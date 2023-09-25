@@ -5,12 +5,12 @@
     "tasks": [
         {
             "label": "starts everything",
-            "dependsOn": ["⚛️ dev-server", "🛋️ Cushy", "👁  TSC"],
+            "dependsOn": ["⚛️ electron", "🛋️ vite", "👁 typescript"],
             "group": { "kind": "build", "isDefault": true },
             "runOptions": { "runOn": "folderOpen", "instanceLimit": 1 }
         },
         {
-            "label": "⚛️ dev-server",
+            "label": "⚛️ electron",
             "detail": "start FRONTEND dev-server",
             "type": "process",
             "command": "npm",
@@ -21,7 +21,7 @@
             "runOptions": { "instanceLimit": 1 }
         },
         {
-            "label": "🛋️ Cushy",
+            "label": "🛋️ vite",
             "detail": "start FRONTEND dev-server",
             "type": "process",
             "command": "npm",
@@ -32,7 +32,7 @@
             "runOptions": { "instanceLimit": 1 }
         },
         {
-            "label": "👁  TSC",
+            "label": "👁 typescript",
             "detail": "Get all typescript errors in problems pane",
             "type": "process",
             "options": { "env": { "NODE_OPTIONS": "--max-old-space-size=8192" } },
