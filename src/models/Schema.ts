@@ -46,7 +46,7 @@ export class SchemaL {
     }
 
     getLoras = (): string[] => {
-        const candidates = this.knownEnumsByName.get('Enum_LoraLoader_lora_name') ?? []
+        const candidates = this.knownEnumsByName.get('Enum_LoraLoader_Lora_name') ?? []
         return candidates as string[]
     }
 
