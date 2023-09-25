@@ -15,6 +15,17 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <Button loading={Boolean(st.db.saveTimeout)} size='sm' startIcon={<I.FolderFill />} onClick={() => st.db.markDirty()}>
                 save
             </Button>
+            <Button
+                //
+                size='sm'
+                startIcon={<I.ExpandOutline />}
+                onClick={() => {
+                    //
+                    // console.log(window)
+                }}
+            >
+                ComfyV2
+            </Button>
             {/* <IconButton
                 icon={st.showAllMessageReceived ? <I.InfoOutline /> : <I.EyeClose />}
                 onClick={() => (st.showAllMessageReceived = !st.showAllMessageReceived)}

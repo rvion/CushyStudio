@@ -101,7 +101,10 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIActionPai
     const a = p.action
     const st = useSt()
     const k = useMemo(() => new MinipaintState(st), [])
+
+    // load image once the widget is ready
     useLayoutEffect(() => {
+        if (a.imageID == null) return
         const img: ImageL = st.db.images.getOrThrow(a.imageID)
         setTimeout(() => k.loadImage(img), 100)
     }, [p.action.imageID])
@@ -115,7 +118,7 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIActionPai
                     onClick={() => {
                         runInAction(() => {
                             k.saveImage()
-                            st.currentAction = null
+                            st.setAction({ type: 'form' })
                         })
                     }}
                 >
@@ -124,7 +127,7 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIActionPai
                 <Button
                     onClick={() => {
                         runInAction(() => {
-                            st.currentAction = null
+                            st.setAction({ type: 'form' })
                         })
                     }}
                 >

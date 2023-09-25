@@ -3,9 +3,9 @@ import type { GraphID, GraphL } from 'src/models/Graph'
 import { writeFileSync } from 'fs'
 import { observer } from 'mobx-react-lite'
 import { Button } from 'rsuite'
-import { useSt } from '../../../front/FrontStateCtx'
+import { useSt } from '../../FrontStateCtx'
 
-export const ButonDownloadFilesUI = observer(function ButonDownloadFilesUI_(p: { graph: GraphL | GraphID }) {
+export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p: { graph: GraphL | GraphID }) {
     let graphOrGraphID = p.graph
     const st = useSt()
     const graph =

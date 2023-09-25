@@ -26,6 +26,7 @@ import { readableStringify } from '../utils/stringifyReadable'
 import { UIAction } from './UIAction'
 import { LightBoxState } from './ui/LightBox'
 import { ManualPromise } from '../utils/ManualPromise'
+import { createRef } from 'react'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -87,9 +88,15 @@ export class STATE {
         const startDraft = initialGraph.createDraft()
     }
 
-    expandNodes: boolean = false
     // showAllMessageReceived: boolean = false // ❌ legacy
-    currentAction: Maybe<UIAction> = null
+    comfyUIIframeRef = createRef<HTMLIFrameElement>()
+    expandNodes: boolean = false
+
+    // action
+    private _action: UIAction = { type: 'form' }
+    get action() { return this._action } // prettier-ignore
+    setAction = (action: UIAction) => (this._action = action)
+
     gallerySize: number = 256
     tsFilesMap = new CushyFileWatcher(this)
     schemaReady = new ManualPromise<true>()

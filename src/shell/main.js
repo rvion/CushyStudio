@@ -1,6 +1,11 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 
+// required to interract with ComfyUI
+// | https://github.com/electron/electron/issues/18940
+// | https://gist.github.com/nornagon/ff2f8ab8d1ef1ddcc394de1e892015ad
+app.commandLine.appendSwitch('disable-site-isolation-trials')
+
 async function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 800,

@@ -3,7 +3,8 @@ import type { GraphL } from 'src/models/Graph'
 import { observer } from 'mobx-react-lite'
 import { Panel } from 'rsuite'
 import { NodeRefUI } from '../NodeRefUI'
-import { ButonDownloadFilesUI } from './ButonDownloadFilesUI'
+import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
+import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: GraphL }) {
     const graph = p.graph
@@ -20,7 +21,8 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
                     </div>
                 ))}
             </div>
-            <ButonDownloadFilesUI graph={graph} />
+            <ButtonDownloadFilesUI graph={graph} />
+            <ButtonOpenInComfyUI graph={graph} />
         </Panel>
     )
 })

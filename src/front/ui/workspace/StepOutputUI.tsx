@@ -6,7 +6,7 @@ import { Message, Panel } from 'rsuite'
 import { exhaust } from '../../../utils/ComfyUtils'
 import { ComfyNodeUI } from '../NodeListUI'
 import { ImageUI } from '../galleries/ImageUI'
-import { ButonDownloadFilesUI } from './ButonDownloadFilesUI'
+import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
@@ -56,7 +56,7 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
         // const graph = prompt?.graph.item
         return (
             <div>
-                <ButonDownloadFilesUI graph={outputGraph} />
+                <ButtonDownloadFilesUI graph={outputGraph} />
                 <Message type='error' title='An error occured' showIcon>
                     <div>{msg.data.node_type}</div>
                     <div>{msg.data.exception_message}</div>
@@ -75,7 +75,7 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
                 <div>❌ Execution Error</div>
                 <div>{msg.message}</div>
                 <pre>{JSON.stringify(msg.infos, null, 3)}</pre>
-                {msg.graphID ? <ButonDownloadFilesUI graph={msg.graphID} /> : null}
+                {msg.graphID ? <ButtonDownloadFilesUI graph={msg.graphID} /> : null}
             </Panel>
         )
 
