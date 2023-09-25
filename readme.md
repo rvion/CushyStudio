@@ -11,8 +11,21 @@ and guidance along generation processes. It is cross-platform and open-source.
 
 </div>
 
-```
-git clone https://github.com/rvion/CushyStudio/issues
+```sh
+# 1. clone the repo
+git clone https://github.com/rvion/CushyStudio
+
+# 2. cd into the repo
+cd CushyStudio
+
+# 3. install all dependencies
 npm install
-# TODO
+
+# 4. start the two main scripts necessary:
+# 4.1. option 1: by running the two commands manually in two terminals
+npm run front:dev
+npm run front:shell
+# 4.2. option 2: by starting vscode and running the default task:
+# - on windows: `ctrl+shift+b`
+# - on mac: `cmd+shift+b`
 ```
