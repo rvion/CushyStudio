@@ -22,10 +22,5 @@ cd CushyStudio
 npm install
 
 # 4. start the two main scripts necessary:
-# 4.1. option 1: by running the two commands manually in two terminals
-npm run front:dev
-npm run front:shell
-# 4.2. option 2: by starting vscode and running the default task:
-# - on windows: `ctrl+shift+b`
-# - on mac: `cmd+shift+b`
+npm run dev
 ```

@@ -1,7 +1,7 @@
 const { app, BrowserWindow } = require('electron')
 const path = require('path')
 
-function createWindow() {
+async function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 800,
         height: 600,
@@ -22,8 +22,22 @@ function createWindow() {
     // Open DevTools automatically
     mainWindow.webContents.openDevTools()
 
+    // check if cushy is running
+    let viteStarted = false
+    const sleep = (duration) => new Promise((resolve) => setTimeout(resolve, duration))
+    do {
+        console.log('waiting for cushy to start')
+        try {
+            res = await fetch('http://localhost:8288', { method: 'HEAD' })
+            if (res.status !== 200) await sleep(1000)
+            else viteStarted = true
+        } catch (error) {
+            await sleep(1000)
+        }
+    } while (!viteStarted)
+
     // load cushy
-    mainWindow.loadURL('http://localhost:5173', { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
+    mainWindow.loadURL('http://localhost:8288', { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
 
     // Open DevTools (optional)
     // mainWindow.webContents.openDevTools();
@@ -37,5 +51,7 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', function () {
-    if (process.platform !== 'darwin') app.quit()
+    console.log('window-all-closed')
+    app.quit()
+    // if (process.platform !== 'darwin')
 })

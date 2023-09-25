@@ -14,6 +14,7 @@ export default defineConfig({
         // viteSingleFile(),
     ],
     server: {
+        port: 8288,
         watch: {
             ignored: ['flows/**/*'],
         },

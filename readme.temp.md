@@ -302,7 +302,7 @@ want to add your own custom node to the list? open a PR!
         - or with `npm run vscode:dev` (may not properly reload)
           ![](docs/static/img/screenshots/2023-05-07-19-43-19.png)
 
-6. open the WebUI at [http://localhost:5173/](http://localhost:5173/)
+6. open the WebUI at [http://localhost:8288/](http://localhost:8288/)
 
 <details>
 <summary>

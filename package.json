@@ -20,75 +20,8 @@
         "Other"
     ],
     "main": "./main.js",
-    "contributes": {
-        "configuration": {
-            "title": "CushyStudio",
-            "properties": {
-                "cushystudio.serverHostHTTP": {
-                    "type": [
-                        "string"
-                    ],
-                    "default": "http://localhost:8188",
-                    "description": "your ComfyUI http (or https) server host"
-                },
-                "cushystudio.serverWSEndoint": {
-                    "type": [
-                        "string"
-                    ],
-                    "default": "ws://localhost:8188/ws",
-                    "description": "your ComfyUI ws (or wss) endpoint"
-                }
-            }
-        },
-        "viewsContainers": {
-            "activitybar": [
-                {
-                    "id": "cushy-studio",
-                    "title": "Cushy Studio",
-                    "icon": "public/CushyLogo.png"
-                }
-            ]
-        },
-        "views": {
-            "cushy-studio": [
-                {
-                    "id": "cushystudio-servers",
-                    "name": "Servers"
-                },
-                {
-                    "id": "cushyrun",
-                    "name": "Cushy Runs"
-                },
-                {
-                    "id": "cushygraphs",
-                    "name": "CushyGraph"
-                }
-            ]
-        },
-        "commands": [
-            {
-                "command": "cushystudio.helloWorld",
-                "title": "cushystudio.helloWorld | Hello world"
-            },
-            {
-                "command": "cushystudio.updateschema",
-                "title": "cushystudio.updateschema | Connect"
-            },
-            {
-                "command": "cushystudio.openwebview",
-                "title": "cushystudio.openwebview | Open webview"
-            },
-            {
-                "command": "cushystudio.import",
-                "title": "cushystudio.import | import flow"
-            },
-            {
-                "command": "cushystudio.importlegacy",
-                "title": "cushystudio.importlegacy | import flow (preserve legacy IDs)"
-            }
-        ]
-    },
     "scripts": {
+        "dev": "concurrently --kill-others -n vite,electron -c yellow,blue \"yarn front:dev\" \"electron -i src/shell\"",
         "📌 FRONT": "",
         "front:shell": "electron src/shell",
         "front:watch": "vite build --watch",
@@ -123,6 +56,7 @@
         "@rsuite/icons": "1.0.2",
         "@types/react-mentions": "^4.1.8",
         "chokidar": "^3.5.3",
+        "concurrently": "^8.2.1",
         "cors": "^2.8.5",
         "cytoscape": "3.25.0",
         "cytoscape-klay": "3.1.4",
