@@ -95,7 +95,7 @@ export class PromptL {
         for (const img of msg.data.output.images) {
             // const comfyFilename = img.filename
             const comfyRelativePath = `./outputs/${img.filename}`
-            const comfyURL = this.db.config.serverHostHTTP + '/view?' + new URLSearchParams(img).toString()
+            const comfyURL = this.st.getServerHostHTTP() + '/view?' + new URLSearchParams(img).toString()
             const images = this.db.images.create({
                 id: nanoid(),
                 promptID: this.id,

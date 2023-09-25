@@ -6,7 +6,6 @@ import { LiveTable } from './LiveTable'
 // models
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
-import { ConfigL, ConfigT } from '../models/Config'
 import { DraftL, DraftT } from '../models/Draft'
 import { FolderL, FolderT } from '../models/Folder'
 import { GraphL, GraphT } from '../models/Graph'
@@ -35,7 +34,6 @@ export class LiveDB {
     toJSON = (): LiveStore => this.store
 
     // tables ---------------------------------------------------------
-    configs: LiveTable<ConfigT, ConfigL>
     schemas: LiveTable<SchemaT, SchemaL>
     tools: LiveTable<ToolT, ToolL>
     folders: LiveTable<FolderT, FolderL>
@@ -67,7 +65,6 @@ export class LiveDB {
         makeAutoObservable(this)
 
         // 3. create tables (after the store has benn made already observable)
-        this.configs = new LiveTable(this, 'configs', ConfigL)
         this.schemas = new LiveTable(this, 'schemas', SchemaL)
         this.tools = new LiveTable(this, 'tools', ToolL)
         this.folders = new LiveTable(this, 'folders', FolderL)
@@ -94,9 +91,6 @@ export class LiveDB {
     }
 
     // misc ---------------------------------------------------------
-    get config(): ConfigL {
-        return this.configs.getOrCreate('main-config', () => ({ id: 'main-config' }))
-    }
     get schema(): SchemaL {
         return this.schemas.getOrCreate('main-schema', () => ({
             id: 'main-schema',

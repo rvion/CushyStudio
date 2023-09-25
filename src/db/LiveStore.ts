@@ -1,7 +1,6 @@
 import type { Indexed } from './LiveDB'
 
 import type { ToolT } from '../models/Tool'
-import type { ConfigT } from '../models/Config'
 import type { FolderT } from '../models/Folder'
 import type { GraphT } from '../models/Graph'
 import type { ImageT } from '../models/Image'
@@ -12,7 +11,6 @@ import type { StepT } from '../models/Step'
 import type { DraftT } from 'src/models/Draft'
 
 export type LiveStore = {
-    configs?: Indexed<ConfigT>
     schemas?: Indexed<SchemaT>
     statuses?: Indexed<{ id: string }>
     // ???
