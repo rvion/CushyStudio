@@ -15,5 +15,5 @@ and guidance along generation processes. It is cross-platform and open-source.
 git clone https://github.com/rvion/CushyStudio
 cd CushyStudio
 npm install
-npm run dev
+npm start
 ```
