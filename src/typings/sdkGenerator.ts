@@ -1,7 +1,6 @@
 import { execSync } from 'child_process'
 import { readFileSync, writeFileSync } from 'fs'
 import { sdkRewriteRules } from './sdkRewriteRules'
-import { sdkStubDeps } from './sdkStubDeps'
 
 execSync(`tsc -p tsconfig.decl.json`, { stdio: 'inherit' })
 // execSync(`node src/sdk/tsc-wrapper.cjs`, { stdio: 'inherit' })
