@@ -32,3 +32,5 @@ flows/.disabled
 dbDir
 dbDir*
 d001
+
+CONFIG.json

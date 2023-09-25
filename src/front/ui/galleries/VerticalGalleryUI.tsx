@@ -19,7 +19,7 @@ export const VerticalGalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                 className='shrink-0 relative overflow-auto noscrollbar rounded-lg'
                 style={{ width: '3.4rem', ...dropStyle }}
             >
-                <div className='text-center'>Images</div>
+                {/* <div className='text-center'>Images</div> */}
                 {st.preview ? <img style={{ width: '64px', height: '64px' }} src={st.preview.url} /> : null}
 
                 <div className='absolute insert-0'>

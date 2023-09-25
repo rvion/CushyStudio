@@ -1,7 +1,4 @@
-import type { UIAction } from 'src/front/UIAction'
-
 import { observer } from 'mobx-react-lite'
-import * as I from '@rsuite/icons'
 import { useSt } from '../../FrontStateCtx'
 import { GalleryHoveredPreviewUI } from '../galleries/GalleryHoveredPreviewUI'
 import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
@@ -9,8 +6,8 @@ import { ScrollablePaneUI } from '../scrollableArea'
 import { WorkspaceUI } from '../workspace/WorkspaceUI'
 import { AppBarUI } from './AppBarUI'
 import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
-import { Nav } from 'rsuite'
 import { ComfyUIUI } from '../workspace/ComfyUIUI'
+import { MainNavBarUI } from './MainNavBarUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
@@ -19,35 +16,7 @@ export const CushyUI = observer(function CushyUI_() {
         <div className='col grow h100'>
             <AppBarUI />
             <div className='flex flex-grow p-1'>
-                <Nav
-                    //
-                    activeKey={st.action.type}
-                    onSelect={(k: UIAction['type']) => {
-                        if (k === 'comfy') return st.setAction({ type: 'comfy' })
-                        if (k === 'form') return st.setAction({ type: 'form' })
-                        if (k === 'paint') return st.setAction({ type: 'paint' })
-                    }}
-                    className='text-xl'
-                    appearance='tabs'
-                    vertical
-                >
-                    {/* FORM */}
-                    <Nav.Item eventKey='form'>
-                        <div>1 🛋️</div>
-                    </Nav.Item>
-                    {/* PAINT */}
-                    <Nav.Item eventKey='paint'>
-                        2 <I.Image />
-                    </Nav.Item>
-                    {/* COMFY */}
-                    <Nav.Item eventKey='comfy'>
-                        3 <I.Branch />
-                    </Nav.Item>
-                    {/* CONFIG */}
-                    <Nav.Item eventKey='config'>
-                        4 <I.Gear />
-                    </Nav.Item>
-                </Nav>
+                <MainNavBarUI />
                 <VerticalGalleryUI />
                 <ScrollablePaneUI
                     //
@@ -71,6 +40,7 @@ export const CushyUI = observer(function CushyUI_() {
         </div>
     )
 })
+
 export const ScrollableUI = observer(function ScrollableUI_(p: { children: React.ReactNode }) {
     return (
         <div className='relative flex-1 '>

@@ -1,32 +1,34 @@
-import type { ImageL } from '../models/Image'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from './CSCriticalError'
+import type { ConfigFile } from 'src/core/ConfigFile'
+import type { ImageL } from '../models/Image'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
+import { createRef } from 'react'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
-import { CushyFile } from '../back/CushyFile'
-import { CushyFileWatcher } from '../back/CushyFileWatcher'
-import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
-import { LiveDB } from '../db/LiveDB'
-import { asFolderID } from '../models/Folder'
-import { GraphL } from '../models/Graph'
-import { EmbeddingName, SchemaL } from '../models/Schema'
-import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
+
 import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebview'
+import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
+import { extractErrorMessage } from '../utils/extractErrorMessage'
+import { readableStringify } from '../utils/stringifyReadable'
+import { CushyFileWatcher } from '../back/CushyFileWatcher'
+import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
+import { EmbeddingName, SchemaL } from '../models/Schema'
+import { ManualPromise } from '../utils/ManualPromise'
+import { CodePrettier } from '../utils/CodeFormatter'
 import { sdkStubDeps } from '../typings/sdkStubDeps'
 import { sdkTemplate } from '../typings/sdkTemplate'
-import { CodePrettier } from '../utils/CodeFormatter'
-import { exhaust } from '../utils/ComfyUtils'
-import { extractErrorMessage } from '../utils/extractErrorMessage'
-import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
-import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { readableStringify } from '../utils/stringifyReadable'
-import { UIAction } from './UIAction'
 import { LightBoxState } from './ui/LightBox'
-import { ManualPromise } from '../utils/ManualPromise'
-import { createRef } from 'react'
+import { exhaust } from '../utils/ComfyUtils'
+import { asFolderID } from '../models/Folder'
+import { JsonFile } from '../core/JsonFile'
+import { GraphL } from '../models/Graph'
+import { LiveDB } from '../db/LiveDB'
+import { UIAction } from './UIAction'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -80,7 +82,7 @@ export class STATE {
     //     const startDraft = initialGraph.createDraft()
     //     initialGraph.update({ focusedDraftID: startDraft.id })
     // }
-
+    configFile: JsonFile<ConfigFile>
     startProjectV2 = () => {
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
@@ -130,7 +132,16 @@ export class STATE {
         this.tsConfigPath = this.resolve(this.rootPath, asRelativePath('tsconfig.json'))
         this.outputFolderPath = this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
         this.schema = this.db.schema
-
+        this.configFile = new JsonFile<ConfigFile>({
+            folder: this.rootPath,
+            name: 'CONFIG.json',
+            maxLevel: 3,
+            init: () => ({
+                comfyHost: 'localhost',
+                comfyPort: 8188,
+                useHttps: false,
+            }),
+        })
         if (opts.genTsConfig) this.createTSConfigIfMissing()
         if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
 
@@ -167,31 +178,22 @@ export class STATE {
         // const json = this.readJSON(this.tsConfigUri)
     }
 
-    // autoDiscoverEveryWorkflow = () => {
-    //     this.tsFilesMap.startWatching(join(this.rootPath))
-    // }
-
     /**
      * will be created only after we've loaded cnfig file
      * so we don't attempt to connect to some default server
      * */
     ws: ResilientWebSocketClient
-
     getServerHostHTTP(): string {
-        return (
-            // this.configWatcher.jsonContent['cushystudio.serverHostHTTP'] ??
-            //,
-            'http://192.168.1.19:8188'
-            // 'http://localhost:8188' //
-        )
+        const method = this.configFile.value.useHttps ? 'https' : 'http'
+        const host = this.configFile.value.comfyHost
+        const port = this.configFile.value.comfyPort
+        return `${method}://${host}:${port}`
     }
     getWSUrl = (): string => {
-        return (
-            // this.configWatcher.jsonContent['cushystudio.serverWSEndoint'] ??
-            //
-            `ws://192.168.1.19:8188/ws`
-            // `ws://localhost:8188/ws`
-        )
+        const method = this.configFile.value.useHttps ? 'wss' : 'ws'
+        const host = this.configFile.value.comfyHost
+        const port = this.configFile.value.comfyPort
+        return `${method}://${host}:${port}/ws`
     }
 
     initWebsocket = () => {

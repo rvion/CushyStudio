@@ -17,3 +17,9 @@ cd CushyStudio
 npm install
 npm start
 ```
+
+global config file to change path to ComfyUI:
+
+```
+./flows/CONFIG.json
+```
