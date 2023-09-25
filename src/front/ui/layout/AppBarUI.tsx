@@ -40,14 +40,14 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 create project
             </Button> */}
             <Button
-                startIcon={<I.AddOutline />}
+                // startIcon={<I.AddOutline />}
                 size='sm'
                 className='self-start'
                 onClick={() => {
                     window.require('electron').shell.openExternal(st.getServerHostHTTP())
                 }}
             >
-                Open ComfyUI
+                Open ComfyUI in Web
             </Button>
             {/* biegert/ComfyUI-CLIPSeg */}
             {st.schemaReady.done ? null : (

@@ -25,7 +25,11 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
     const db = outputGraph.db
 
     if (msg.type === 'print') {
-        return <OutputWrapperUI label='LOG'>{msg.message}</OutputWrapperUI>
+        return (
+            <OutputWrapperUI label='LOG'>
+                <div className=''>{msg.message}</div>
+            </OutputWrapperUI>
+        )
     }
 
     if (msg.type === 'prompt') {

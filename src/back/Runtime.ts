@@ -7,6 +7,7 @@ import * as path from 'path'
 import { execSync } from 'child_process'
 import { readFileSync, writeFileSync } from 'fs'
 import { marked } from 'marked'
+import { lookup } from 'mime-types'
 import { STATE } from 'src/front/state'
 import { ToolL } from 'src/models/Tool'
 import { FormBuilder } from '../controls/FormBuilder'
@@ -23,12 +24,13 @@ import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo, WsMsgExecuted } from '../types/ComfyWsApi'
 import { deepCopyNaive, exhaust } from '../utils/ComfyUtils'
+import { asSTRING_orCrash } from '../utils/bang'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
-import { Status } from './Status'
 import { InvalidPromptError } from './RuntimeError'
+import { Status } from './Status'
 
 /** script exeuction instance */
 export class Runtime {
@@ -233,32 +235,40 @@ export class Runtime {
         return seed
     }
 
-    loadImageAnswer = (ia: ImageAnswer): _IMAGE => {
+    loadImageAnswer = async (ia: ImageAnswer): Promise<_IMAGE> => {
         try {
-            if (ia.type === 'imagePath') {
-                return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
-            }
+            // if (ia.type === 'imagePath') {
+            //     return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
+            // }
             if (ia.type === 'imageID') {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
+                this.print(JSON.stringify(img.data, null, 3))
+                if (img.data.downloaded) {
+                    const res = await this.uploadAnyFile(img.localAbsolutePath)
+                    this.print(JSON.stringify(res))
+                    return this.nodes.LoadImage({ image: res.name as any })
+                }
+                console.log(img.data)
                 return this.nodes.WASImageLoad({
                     image_path: img.url ?? img.localAbsolutePath,
                     RGBA: 'false',
                 })
             }
-            if (ia.type === 'imageSignal') {
-                const node = this.graph.nodesIndex.get(ia.nodeID)
-                if (node == null) throw new Error('node is not in current graph')
-                // 🔴 need runtime checking here
-                const xx = (node as any)[ia.fieldName]
-                console.log({ xx })
-                return xx
-            }
-            if (ia.type === 'imageURL') {
-                return this.nodes.WASImageLoad({ image_path: ia.url, RGBA: 'false' })
-            }
-            return exhaust(ia)
+            // if (ia.type === 'imageSignal') {
+            //     const node = this.graph.nodesIndex.get(ia.nodeID)
+            //     if (node == null) throw new Error('node is not in current graph')
+            //     // 🔴 need runtime checking here
+            //     const xx = (node as any)[ia.fieldName]
+            //     console.log({ xx })
+            //     return xx
+            // }
+            // if (ia.type === 'imageURL') {
+            //     return this.nodes.WASImageLoad({ image_path: ia.url, RGBA: 'false' })
+            // }
+            throw new Error('FAILURE')
+            // return exhaust(ia)
         } catch (err) {
-            console.log('🔴 failed to convert ImageAnser to _IMAGE')
+            console.log('🔴 failed to convert ImageAnser to _IMAGE', ia)
             throw err
         }
     }
@@ -295,18 +305,26 @@ export class Runtime {
     }
 
     /** upload an image present on disk to ComfyServer */
-    uploadAnyFile = async (path: AbsolutePath): Promise<ComfyUploadImageResult> => {
-        const ui8arr: Uint8Array = readFileSync(path)
-        return await this.uploadUIntArrToComfy(ui8arr)
+    uploadAnyFile = async (filePath: AbsolutePath): Promise<ComfyUploadImageResult> => {
+        // const ui8arr: Uint8Array = readFileSync(path)
+        const mime = asSTRING_orCrash(lookup(filePath))
+        const file = new Blob([await readFileSync(filePath)], { type: mime })
+        return await this.uploadUIntArrToComfy(file)
     }
 
     /** upload an image present on disk to ComfyServer */
     uploadWorkspaceFile = async (path: RelativePath): Promise<ComfyUploadImageResult> => {
         const absPath = this.st.resolveFromRoot(path)
-        const ui8arr: Uint8Array = readFileSync(absPath)
-        return await this.uploadUIntArrToComfy(ui8arr)
+        return this.uploadAnyFile(absPath)
+        // const ui8arr: Uint8Array = readFileSync(absPath)
+        // return await this.uploadUIntArrToComfy(ui8arr)
     }
 
+    /**
+     * [alpha]
+     * as of 2023-09-24: ❓
+     * as of 2023-09-25? ...
+     */
     uploadWorkspaceFileAndLoad = async (path: RelativePath): Promise<LATER<'LoadImage'>> => {
         const upload = await this.uploadWorkspaceFile(path)
         const img = (this.graph as any).LoadImage({ image: upload.name })
@@ -315,24 +333,25 @@ export class Runtime {
 
     uploadURL = async (url: string): Promise<ComfyUploadImageResult> => {
         const blob = await this.st.getUrlAsBlob(url)
-        const bytes = new Uint8Array(await blob.arrayBuffer())
-        return this.uploadUIntArrToComfy(bytes)
+        // const bytes = new Uint8Array(await blob.arrayBuffer())
+        return this.uploadUIntArrToComfy(blob)
     }
 
-    private uploadUIntArrToComfy = async (bytes: Uint8Array): Promise<ComfyUploadImageResult> => {
-        throw new Error('not implemented')
-        // const uploadURL = this.st.getServerHostHTTP() + '/upload/image'
-        // const form = new FormData()
+    private uploadUIntArrToComfy = async (bytes: Blob): Promise<ComfyUploadImageResult> => {
+        // throw new Error('not implemented')
+        const uploadURL = this.st.getServerHostHTTP() + '/upload/image'
+        const form = new FormData()
+        form.set('image', bytes, 'upload.png')
         // form.append('image', Buffer.from(bytes), { filename: 'upload.png' })
-        // const resp = await fetch(uploadURL, {
-        //     method: 'POST',
-        //     headers: form.getHeaders(),
-        //     body: form,
-        // })
-        // const result: ComfyUploadImageResult = (await resp.json()) as any
-        // console.log({ 'resp.data': result })
-        // // this.lastUpload = new CushyImage(this, { filename: result.name, subfolder: '', type: 'output' }).url
-        // return result
+        const resp = await fetch(uploadURL, {
+            method: 'POST',
+            // headers: form.getHeaders(),
+            body: form,
+        })
+        const result: ComfyUploadImageResult = (await resp.json()) as any
+        console.log({ 'resp.data': result })
+        // this.lastUpload = new CushyImage(this, { filename: result.name, subfolder: '', type: 'output' }).url
+        return result
     }
 
     // --------------------

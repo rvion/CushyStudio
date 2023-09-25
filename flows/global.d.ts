@@ -3665,6 +3665,20 @@ declare global {
         | 'init_image_sui_backend_1_1.png'
         | 'test1-1695149536447ComfyUI_01534_.png'
         | 'test1-1695149597290ComfyUI_01538_.png'
+        | 'upload (1).png'
+        | 'upload (10).png'
+        | 'upload (11).png'
+        | 'upload (12).png'
+        | 'upload (13).png'
+        | 'upload (2).png'
+        | 'upload (3).png'
+        | 'upload (4).png'
+        | 'upload (5).png'
+        | 'upload (6).png'
+        | 'upload (7).png'
+        | 'upload (8).png'
+        | 'upload (9).png'
+        | 'upload.png'
     export type Enum_LoadImageMask_Image = Enum_LoadImage_Image
     export type Enum_ImpactImageReceiver_Image = Enum_LoadImage_Image
     export type Enum_PromptExtractorInspire_Image = Enum_LoadImage_Image
@@ -4634,7 +4648,7 @@ declare global {
     export type Enum_WASImageFlip_Mode = 'horizontal' | 'vertical'
     export type Enum_WASImageGenerateGradient_Direction = Enum_WASImageFlip_Mode
     export type Enum_WASImageHistoryLoader_Image =
-        '...\\192.168.1.19:8188\\view?filename=ComfyUI_02673_.png&subfolder=&type=output'
+        '...\\192.168.1.19:8188\\view?filename=ComfyUI_02775_.png&subfolder=&type=output'
     export type Enum_WASImageMonitorEffectsFilter_Mode = 'Digital Distortion' | 'Signal Distortion' | 'TV Distortion'
     export type Enum_WASImageRembgRemoveBackground_Model =
         | 'isnet-anime'
@@ -11347,11 +11361,11 @@ declare global {
         STRING_2: Slot<'STRING', 2>
     }
     export type WASCacheNode_input = {
-        /** default="17919189_cache" */
+        /** default="69235808_cache" */
         latent_suffix?: _STRING
-        /** default="51283235_cache" */
+        /** default="9985792_cache" */
         image_suffix?: _STRING
-        /** default="64185349_cache" */
+        /** default="66952829_cache" */
         conditioning_suffix?: _STRING
         /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
         output_path?: _STRING

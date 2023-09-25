@@ -18,7 +18,7 @@ action('remmg', {
 
     run: async (flow, p) => {
         const graph = flow.nodes
-        const image = flow.loadImageAnswer(p.startImage)
+        const image = await flow.loadImageAnswer(p.startImage)
         // 4. options
         if (p.withRemBG) graph.PreviewImage({ images: graph.ImageRemoveBackgroundRembg({ image }) })
         if (p.withABG) graph.PreviewImage({ images: graph.RemoveImageBackgroundAbg({ image }) })

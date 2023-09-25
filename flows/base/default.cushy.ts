@@ -71,9 +71,10 @@ action('Prompt-V1', {
         const negative = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.negative ?? '' })
 
         flow.print(`startImage: ${p.startImage}`)
+
         const startImage = p.startImage
             ? graph.VAEEncode({
-                  pixels: flow.loadImageAnswer(p.startImage),
+                  pixels: await flow.loadImageAnswer(p.startImage),
                   vae,
               })
             : graph.EmptyLatentImage({

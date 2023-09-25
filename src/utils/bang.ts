@@ -4,6 +4,17 @@ export const bang = <T>(x: Maybe<T>): T => {
     return x
 }
 
-export const ASSERT_ARRAY = (a: any) => {
+export function ASSERT_ARRAY(a: any): a is any[] {
     if (!Array.isArray(a)) throw new Error('❌ not an array')
+    return true
+}
+
+// ----------
+export function ASSERT_STRING(a: any): a is string {
+    if (typeof a !== 'string') throw new Error('❌ not a string')
+    return true
+}
+export function asSTRING_orCrash(a: any): string {
+    if (typeof a !== 'string') throw new Error('❌ not a string')
+    return a
 }

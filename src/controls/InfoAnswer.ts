@@ -64,10 +64,11 @@ export type SamPointLabelsStr = Tagged<string, 'SamPointLabelsStr'>
 
 // IMAGE
 export type ImageAnswer1 = { type: 'imageID'; imageID: ImageID }
-export type ImageAnswer2 = { type: 'imageSignal'; nodeID: ComfyNodeID; fieldName: string } /** node must be in current graph */
-export type ImageAnswer3 = { type: 'imagePath'; absPath: AbsolutePath }
-export type ImageAnswer4 = { type: 'imageURL'; url: string }
-export type ImageAnswer = ImageAnswer1 | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
+// export type ImageAnswer2 = { type: 'imageSignal'; nodeID: ComfyNodeID; fieldName: string } /** node must be in current graph */
+// export type ImageAnswer3 = { type: 'imagePath'; absPath: AbsolutePath }
+// export type ImageAnswer4 = { type: 'imageURL'; url: string }
+// export type ImageAnswer = ImageAnswer1 | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
+export type ImageAnswer = ImageAnswer1 // ImageAnswer1 | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
 
 export type CushySizeByRatio = {
     kind: 'SD1.5 512' | 'SD2.1 768' | 'SDXL 1024' | 'custom'
