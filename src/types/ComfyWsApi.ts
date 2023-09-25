@@ -1,4 +1,3 @@
-import type { Tagged, Branded } from 'src/utils/types'
 import type { ComfyNodeID } from './NodeUID'
 
 // REQUEST PAYLOADS ------------------------------------------------

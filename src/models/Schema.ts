@@ -1,4 +1,3 @@
-import type { Branded, Maybe } from 'src/utils/types'
 import type { ComfyInputOpts, ComfySchemaJSON } from '../types/ComfySchemaJSON'
 
 import { LiveInstance } from 'src/db/LiveInstance'

@@ -1,6 +1,6 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, ButtonGroup, IconButton, InputGroup, Loader, Nav } from 'rsuite'
+import { Button, IconButton, Loader } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
@@ -11,6 +11,9 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             {/* <InputGroup.Addon>🛋️</InputGroup.Addon> */}
             <Button size='sm' startIcon={<I.FolderFill />} onClick={() => st.createFolder()}>
                 Add folder
+            </Button>
+            <Button loading={Boolean(st.db.saveTimeout)} size='sm' startIcon={<I.FolderFill />} onClick={() => st.db.markDirty()}>
+                save
             </Button>
             {/* <IconButton
                 icon={st.showAllMessageReceived ? <I.InfoOutline /> : <I.EyeClose />}

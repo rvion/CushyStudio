@@ -1,7 +1,7 @@
-import type { Branded } from '../utils/types'
-import { CytoJSON } from './AutolayoutV2'
+import type { CytoJSON } from './AutolayoutV2'
 import type { GraphL } from '../models/Graph'
 import type { ComfyNode } from './Node'
+
 import { toJS } from 'mobx'
 import { bang } from '../utils/bang'
 

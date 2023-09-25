@@ -1,5 +1,3 @@
-import type { Branded } from 'src/utils/types'
-
 /**
  * a fake value that is detected at serialization
  * time to try to magically inject stuff

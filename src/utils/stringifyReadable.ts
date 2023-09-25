@@ -2,7 +2,7 @@ const tab = '    '
 export function readableStringify(obj: any, maxLevel = 3, level = 0) {
     if (level > maxLevel) return JSON.stringify(obj)
     if (typeof obj !== 'object' || obj === null) return JSON.stringify(obj)
-    const indent = '  '.repeat(level)
+    const indent = '    '.repeat(level + 1)
     let result = '{\n'
     const keys = Object.keys(obj)
     for (let i = 0; i < keys.length; i++) {
@@ -13,12 +13,12 @@ export function readableStringify(obj: any, maxLevel = 3, level = 0) {
 
         if (i > 0) result += ','
         if (Array.isArray(value)) {
-            result += `${indent}  "${key}": ${JSON.stringify(value)}`
+            result += `${indent}${JSON.stringify(key)}: ${JSON.stringify(value)}`
         } else if (valueType === 'object' && value !== null) {
-            result += `${indent}  "${key}": ${readableStringify(value, maxLevel, level + 1)}`
+            result += `${indent}${JSON.stringify(key)}: ${readableStringify(value, maxLevel, level + 1)}`
         } else {
             const formattedValue = valueType === 'string' ? JSON.stringify(value) : value
-            result += `${indent}  "${key}": ${formattedValue}`
+            result += `${indent}${JSON.stringify(key)}: ${formattedValue}`
         }
         result += '\n'
     }

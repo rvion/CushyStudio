@@ -19,7 +19,7 @@
             "detail": "start CushyStudio",
             "type": "process",
             "command": "npm",
-            "args": ["run", "dev"],
+            "args": ["run", "start"],
             "isBackground": true,
             "presentation": { "reveal": "never", "close": false },
             "group": "build",

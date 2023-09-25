@@ -1,8 +1,6 @@
+import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode } from './LiteGraph'
 import type { ComfyNodeJSON, ComfyPromptJSON } from 'src/types/ComfyPrompt'
-import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode, LiteGraphNodeInput } from './LiteGraph'
-import type { Maybe } from 'src/utils/types'
-import type { SchemaL } from '../models/Schema'
-import type { ComfyNodeSchema } from '../models/Schema'
+import type { ComfyNodeSchema, SchemaL } from '../models/Schema'
 
 export const convertLiteGraphToPrompt = (
     //

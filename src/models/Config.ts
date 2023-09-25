@@ -1,4 +1,3 @@
-import type { Tagged } from 'src/utils/types'
 import type { LiveInstance } from '../db/LiveInstance'
 
 // export type ConfigID = Tagged<string, 'ConfigID'>

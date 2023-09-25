@@ -1,4 +1,3 @@
-import type { Branded } from 'src/utils/types'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { ImageID, ImageL } from './Image'
 

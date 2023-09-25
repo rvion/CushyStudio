@@ -1,5 +1,4 @@
 import type { LiveTable } from './LiveTable'
-import type { Maybe } from 'src/utils/types'
 import type { LiveInstance } from './LiveInstance'
 import type { TableName } from './LiveStore'
 

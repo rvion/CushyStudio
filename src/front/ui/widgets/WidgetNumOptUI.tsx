@@ -1,5 +1,3 @@
-import type { Maybe } from 'src/utils/types'
-
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { InputNumber, Toggle } from 'rsuite'
 

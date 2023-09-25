@@ -1,4 +1,3 @@
-import type { Maybe } from 'src/utils/types'
 import type { LiveDB } from './LiveDB'
 import type { LiveTable } from './LiveTable'
 import type { STATE } from 'src/front/state'

@@ -137,7 +137,7 @@ action('Prompt-V1', {
         })
 
         if (p.removeBG) {
-            graph.PreviewImage({
+            graph.SaveImage({
                 images: graph.RemoveImageBackgroundAbg({
                     image: flow.AUTO,
                 }),

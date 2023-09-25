@@ -1,6 +1,5 @@
 import type { ImageL } from '../models/Image'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
-import type { Maybe } from '../utils/types'
 import type { CSCriticalError } from './CSCriticalError'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'

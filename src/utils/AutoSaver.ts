@@ -1,5 +1,4 @@
 import type { IReactionDisposer } from 'mobx'
-import type { Tagged } from './types'
 
 import { reaction } from 'mobx'
 

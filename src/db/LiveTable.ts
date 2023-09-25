@@ -1,5 +1,4 @@
 import type { Indexed, LiveDB } from './LiveDB'
-import type { Maybe } from 'src/utils/types'
 import type { LiveInstance } from './LiveInstance'
 import type { TableName } from './LiveStore'
 

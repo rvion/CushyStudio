@@ -1,5 +1,3 @@
-import type { Branded } from './types'
-
 export type MDContent = Branded<string, 'MDContent'>
 export type HTMLContent = Branded<string, 'HTML'>
 

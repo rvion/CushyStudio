@@ -7,7 +7,7 @@ import { GraphUI } from './GraphUI'
 export const WorkspaceUI = observer(function WorkspaceUI_(p: {}) {
     const st = useSt()
     return (
-        <div className='flex flex-col'>
+        <div className='h-full'>
             {st.db.projects.map((project) => {
                 return (
                     <projectContext.Provider value={project} key={project.id}>

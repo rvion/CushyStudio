@@ -1,7 +1,6 @@
 import type { ComfyNodeJSON } from '../types/ComfyPrompt'
 import type { NodeProgress, _WsMsgExecutedData } from '../types/ComfyWsApi'
 import type { GraphL } from '../models/Graph'
-import type { Maybe } from 'src/utils/types'
 
 import { configure, extendObservable, makeAutoObservable } from 'mobx'
 import { ComfyNodeID } from '../types/NodeUID'

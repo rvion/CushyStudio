@@ -7,7 +7,6 @@ import type {
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from '../models/Graph'
 import type { WsMsgExecuted, WsMsgExecutionError } from '../types/ComfyWsApi'
-import type { Branded, Maybe } from '../utils/types'
 
 import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'

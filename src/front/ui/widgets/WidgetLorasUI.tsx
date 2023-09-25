@@ -5,28 +5,34 @@ import * as I from '@rsuite/icons'
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { IconButton, MultiCascader, Slider } from 'rsuite'
+import { IconButton, Input, MultiCascader } from 'rsuite'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { useSt } from '../../FrontStateCtx'
 // ----------------------------------------------------------------------
 
 class WidgetLorasState {
-    loras: string[]
-    constructor(public schema: SchemaL) {
-        this.loras = schema.getLoras()
-        for (const lora of this.loras) {
+    allLoras: string[]
+    selectedLoras = new Map<string, SimplifiedLoraDef>()
+    constructor(
+        //
+        public schema: SchemaL,
+        initialValues: SimplifiedLoraDef[] = [],
+    ) {
+        this.allLoras = schema.getLoras()
+        for (const lora of this.allLoras) {
             if (lora === 'None') continue
-            this.insertLora(lora)
+            this._insertLora(lora)
+        }
+        for (const v of initialValues) {
+            this.selectedLoras.set(v.name, v)
         }
         makeAutoObservable(this)
     }
 
     FOLDER: ItemDataType<any>[] = []
-
-    insertLora = (rawPath: string) => {
+    private _insertLora = (rawPath: string) => {
         const path = rawPath.replace(/\\/g, '/')
         const segments = path.split('/')
-        // console.log('a. segments=', segments)
         let folder = this.FOLDER
         for (let i = 0; i < segments.length - 1; i++) {
             const segment = segments[i]
@@ -56,12 +62,13 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: {
     const schema = st.schema
     if (schema == null) return <div>❌ no schema</div>
 
-    const uiSt = useMemo(() => new WidgetLorasState(schema), [])
     const values = p.get() ?? []
+    const uiSt = useMemo(() => new WidgetLorasState(schema), [])
     const names = values.map((x) => x.name)
 
     return (
         <div>
+            {/* {JSON.stringify(names)} */}
             {/* {JSON.stringify(schema.getLoras())} */}
             <MultiCascader //
                 size='sm'
@@ -77,9 +84,8 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: {
                     })
                     console.log({ picks })
                     const nextNames: string[] = []
-                    for (const rawPath of uiSt.loras) {
+                    for (const rawPath of uiSt.allLoras) {
                         const path = rawPath.replace(/\\/g, '/')
-
                         for (const v of picks) {
                             if (typeof v == 'number') continue
                             if (path.startsWith(v)) {
@@ -87,7 +93,15 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: {
                             }
                         }
                     }
-                    // console.log({ nextNames })
+                    // remove old vals
+                    for (const oldNv of uiSt.selectedLoras.keys()) {
+                        if (!nextNames.includes(oldNv)) uiSt.selectedLoras.delete(oldNv)
+                    }
+                    // add new vals
+                    for (const nv of nextNames) {
+                        if (uiSt.selectedLoras.has(nv)) continue
+                        uiSt.selectedLoras.set(nv, { strength_clip: 1, strength_model: 1, name: nv as any })
+                    }
                     const nextValues: SimplifiedLoraDef[] = nextNames.map(
                         (x): SimplifiedLoraDef => ({
                             name: x as any,
@@ -100,22 +114,35 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: {
                 // block
             />
             <div>
-                {names?.map((loraName) => (
-                    <div key={loraName} className='flex items-center'>
+                {[...uiSt.selectedLoras.entries()].map(([loraName, sld]) => (
+                    <div key={loraName} className='flex items-start'>
+                        <div className='shrink-0'>{loraName.replace('.safetensors', '')}</div>
+                        <div className='flex-grow'></div>
+                        <Input
+                            size='xs'
+                            type='number'
+                            value={sld.strength_clip}
+                            step={0.1}
+                            onChange={(v) => (sld.strength_clip = typeof v === 'number' ? v : parseFloat(v))}
+                            style={{ width: '3.5rem' }}
+                        />
+                        <Input
+                            size='xs'
+                            type='number'
+                            value={sld.strength_model}
+                            step={0.1}
+                            onChange={(v) => (sld.strength_model = typeof v === 'number' ? v : parseFloat(v))}
+                            style={{ width: '3.5rem' }}
+                        />
                         <IconButton
+                            size='xs'
                             icon={<I.Trash />}
                             onClick={() => {
                                 const next = values.filter((x) => x.name !== loraName)
+                                uiSt.selectedLoras.delete(loraName)
                                 p.set(next)
                             }}
                         />
-                        <div className='col'>
-                            <div>{loraName}</div>
-                            <div className='flex flex-col justify-evenly' style={{ width: '10rem', height: '4rem' }}>
-                                <Slider value={1} step={0.1} style={{}} min={0} max={2} />
-                                <Slider value={1} step={0.1} style={{}} min={0} max={2} />
-                            </div>
-                        </div>
                     </div>
                 ))}
             </div>

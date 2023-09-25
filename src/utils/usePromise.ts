@@ -1,5 +1,3 @@
-import type { Maybe } from './types'
-
 import { useState, useEffect } from 'react'
 
 /** wrap a promise into a hook */

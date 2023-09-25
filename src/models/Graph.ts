@@ -1,6 +1,5 @@
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { HTMLContent, MDContent } from 'src/utils/markdown'
-import type { Branded, Maybe } from 'src/utils/types'
 import type { Cyto } from '../core/AutolayoutV1'
 import type { VisEdges, VisNodes } from '../front/ui/VisUI'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'

@@ -1,5 +1,3 @@
-import type { Maybe } from '../../utils/types'
-
 export const Image = (p: {
     //
     onClick?: () => void

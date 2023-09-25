@@ -1,4 +1,3 @@
-import type { Maybe, Tagged } from 'src/utils/types'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { FolderL, FolderID } from './Folder'
 import type { PromptID, PromptL } from './Prompt'

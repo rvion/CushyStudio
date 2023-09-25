@@ -1,6 +1,5 @@
 import { makeAutoObservable, reaction } from 'mobx'
 // import { CloseEvent, Event, EventListenerOptions, MessageEvent, WebSocket } from 'ws'
-import type { Maybe } from '../utils/types'
 
 type Message = string | Buffer
 

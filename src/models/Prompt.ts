@@ -1,7 +1,6 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { StepID, StepL } from '../models/Step'
 import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionError } from '../types/ComfyWsApi'
-import type { Branded, Maybe } from '../utils/types'
 import type { GraphID, GraphL } from './Graph'
 
 import { nanoid } from 'nanoid'

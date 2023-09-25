@@ -1,5 +1,4 @@
 import type { STATE } from '../front/state'
-import type { Maybe } from '../utils/types'
 
 import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
@@ -7,20 +6,19 @@ import { LiveTable } from './LiveTable'
 // models
 import { existsSync, readFileSync, writeFileSync } from 'fs'
 import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
-import { ToolL, ToolT } from '../models/Tool'
 import { ConfigL, ConfigT } from '../models/Config'
+import { DraftL, DraftT } from '../models/Draft'
 import { FolderL, FolderT } from '../models/Folder'
-import { Foo } from '../models/Foo'
 import { GraphL, GraphT } from '../models/Graph'
 import { ImageL, ImageT } from '../models/Image'
 import { ProjectL, ProjectT } from '../models/Project'
 import { PromptL, PromptT } from '../models/Prompt'
 import { SchemaL, SchemaT } from '../models/Schema'
 import { StepL, StepT } from '../models/Step'
+import { ToolL, ToolT } from '../models/Tool'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { LiveStore } from './LiveStore'
 import { readableStringify } from '../utils/stringifyReadable'
-import { DraftT, DraftL } from '../models/Draft'
+import { LiveStore } from './LiveStore'
 
 export type Indexed<T> = { [id: string]: T }
 

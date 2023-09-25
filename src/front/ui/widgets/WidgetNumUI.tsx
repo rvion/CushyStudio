@@ -1,5 +1,3 @@
-import type { Maybe } from 'src/utils/types'
-
 import { observer } from 'mobx-react-lite'
 import { InputNumber } from 'rsuite'
 

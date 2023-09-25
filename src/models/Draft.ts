@@ -1,5 +1,4 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { Branded, Maybe } from '../utils/types'
 import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 import type { ToolID, ToolL } from './Tool'

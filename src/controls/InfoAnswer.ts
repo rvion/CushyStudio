@@ -8,7 +8,6 @@
 import type { Base64Image } from 'src/core/b64img'
 import type { ImageID } from 'src/models/Image'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
-import type { Maybe, Tagged } from 'src/utils/types'
 import type { Requestable } from './InfoRequest'
 
 import type { LATER } from 'LATER'

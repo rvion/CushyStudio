@@ -1,5 +1,4 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { Branded } from '../utils/types'
 import type { GraphID, GraphL } from './Graph'
 
 import { LiveRef } from '../db/LiveRef'
@@ -18,7 +17,18 @@ export type ProjectT = {
 export interface ProjectL extends LiveInstance<ProjectT, ProjectL> {}
 export class ProjectL {
     rootGraph = new LiveRef<this, GraphL>(this, 'rootGraphID', 'graphs')
+
+    // _config
+    // getConfig() {}
+
     get schema() {
         return this.db.schema
     }
+}
+
+// ------------
+// Project config is stored outside of the DB for practical reasons
+
+type ProjectConfig = {
+    comfyURL?: Maybe<string>
 }

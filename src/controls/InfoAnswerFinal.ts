@@ -1,11 +1,10 @@
-import type { ToolL } from '../models/Tool'
-import type { Requestable } from 'src/controls/InfoRequest'
 import type { InfoAnswer } from 'src/controls/InfoAnswer'
-import { BUG } from '../controls/InfoRequest'
+import type { Requestable } from 'src/controls/InfoRequest'
+import type { ToolL } from '../models/Tool'
 
-import { ASSERT_ARRAY, bang } from '../utils/bang'
+import { BUG } from '../controls/InfoRequest'
 import { FormPath } from '../models/Step'
-import { toJS } from 'mobx'
+import { ASSERT_ARRAY } from '../utils/bang'
 
 export const finalizeAnswer = (
     //
