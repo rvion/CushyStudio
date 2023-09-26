@@ -1,11 +1,11 @@
 import type { Options } from 'prettier'
+import typescript from 'prettier/plugins/typescript'
+import estree from 'prettier/plugins/estree'
 
 import { existsSync, readFileSync } from 'fs'
 import { asRelativePath } from './fs/pathUtils'
 
-import parserTypeScript from 'prettier/parser-typescript'
 import { STATE } from 'src/front/state'
-// import prettier from 'prettier/standalone'
 
 export class CodePrettier {
     config: Options = {
@@ -32,7 +32,16 @@ export class CodePrettier {
     ): Promise<string> => {
         try {
             const prettier = await import('prettier')
-            return prettier.format(source, { ...this.config, parser, plugins: [parserTypeScript] })
+            return prettier.format(
+                //
+                source,
+                {
+                    plugins: [typescript, estree],
+                    ...this.config,
+                    parser,
+                    // plugins: [parserTypeScript.parsers.typescript],
+                },
+            )
         } catch (error) {
             console.log(`❌ error when formating sourceCode: ${error}`)
             return source
