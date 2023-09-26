@@ -295,7 +295,7 @@ export class SchemaL {
         p(`declare global {`)
         p(`const action: ActionType`)
         p(``)
-        p(`\n// 0 Entrypoint --------------------------`)
+        p(`\n// 0. Entrypoint --------------------------`)
         p(`export interface ComfySetup {`)
         // prettier-ignore
         for (const n of this.nodes) {
@@ -304,13 +304,13 @@ export class SchemaL {
         }
         p(`}`)
 
-        p(`\n// 1 Requirable --------------------------`)
+        p(`\n// 1. Requirable --------------------------`)
         p(`export interface Requirable {`)
         const requirables = this.requirables
         for (const n of requirables) p(`    ${escapeJSKey(n.name)}: ${n.name},`)
         p(`}`)
 
-        p(`\n// 2 Embeddings -------------------------------`)
+        p(`\n// 2. Embeddings -------------------------------`)
         p(
             `export type Embeddings = ${
                 this.data.embeddings.length == 0 //
@@ -319,7 +319,7 @@ export class SchemaL {
             }`,
         )
 
-        p(`\n// 3 Suggestions -------------------------------`)
+        p(`\n// 3. Suggestions -------------------------------`)
         for (const [k, value] of Object.entries(ComfyPrimitiveMapping)) {
             p(`export interface CanProduce_${value} {}`)
         }
@@ -327,7 +327,7 @@ export class SchemaL {
             p(`export interface CanProduce_${tp} extends Pick<ComfySetup, ${nns.map((i) => `'${i}'`).join(' | ')}> { }`)
         }
 
-        p(`\n// 4 TYPES -------------------------------`)
+        p(`\n// 4. TYPES -------------------------------`)
         const types = [...this.knownTypes.values()] //
             .map((comfyType) => ({
                 comfyType,
@@ -341,7 +341,7 @@ export class SchemaL {
             p(`export type ${t.normalizedType} = ${t.tsType}`)
         }
 
-        p(`\n// 5 ACCEPTABLE INPUTS -------------------------------`)
+        p(`\n// 5. ACCEPTABLE INPUTS -------------------------------`)
         for (const t of types) {
             // const tsType = this.toTSType(t)
             p(
@@ -350,7 +350,7 @@ export class SchemaL {
             // ${i.type} | HasSingle_${i.type}
         }
 
-        p(`\n// 6 ENUMS -------------------------------`)
+        p(`\n// 6. ENUMS -------------------------------`)
         for (const e of this.knownEnumsByHash.values()) {
             if (e.values.length > 0) {
                 p(`export type ${e.enumNameInCushy} = ${e.values.map((v) => `${JSON.stringify(v)}`).join(' | ')}`)
@@ -364,7 +364,7 @@ export class SchemaL {
             }
         }
 
-        p(`\n// 7 INTERFACES --------------------------`)
+        p(`\n// 7. INTERFACES --------------------------`)
         for (const t of this.knownTypes.values()) {
             p(`export interface HasSingle_${t} { _${t}: ${t} } // prettier-ignore`)
         }
@@ -374,10 +374,10 @@ export class SchemaL {
         //     )
         // }
 
-        p(`\n// 8 NODES -------------------------------`)
+        p(`\n// 8. NODES -------------------------------`)
         for (const n of this.nodes) p(n.codegen())
 
-        p(`\n// 9 INDEX -------------------------------`)
+        p(`\n// 9. INDEX -------------------------------`)
         // p(`export const nodes = {`)
         // for (const n of this.nodes) p(`    ${n.name},`)
         // p(`}`)
@@ -470,12 +470,11 @@ export class ComfyNodeSchema {
         // p(`    category: ${JSON.stringify(this.category)},`)
         // p(`}`)
 
-        p(`export type ${this.nameInCushy}_input = {`)
+        p(`export interface ${this.nameInCushy}_input {`)
         for (const i of this.inputs) {
             const type = /*ComfyPrimitiveMapping[i.type] //
                 ? i.type
                 : */ i.type.startsWith('Enum_') ? i.type : `_${i.type}`
-
             if (i.opts) p(`    ${this.renderOpts(i.opts)}`)
             const canBeOmmited = i.opts?.default !== undefined || !i.required
             p(`    ${i.nameInComfyEscaped}${canBeOmmited ? '?' : ''}: ${type}`)

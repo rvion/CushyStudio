@@ -20,7 +20,7 @@ import type { ActionType } from '../src/core/Requirement'
 declare global {
     const action: ActionType
 
-    // 0 Entrypoint --------------------------
+    // 0. Entrypoint --------------------------
     export interface ComfySetup {
         /* category:sampling, name:"KSampler", output:LATENT */
         KSampler(p: KSampler_input, id?: ComfyNodeUID): KSampler
@@ -1109,7 +1109,7 @@ declare global {
         WASVideoDumpFrames(p: WASVideoDumpFrames_input, id?: ComfyNodeUID): WASVideoDumpFrames
     }
 
-    // 1 Requirable --------------------------
+    // 1. Requirable --------------------------
     export interface Requirable {
         LATENT: LATENT
         MODEL: MODEL
@@ -2352,7 +2352,7 @@ declare global {
         WASVideoDumpFrames: WASVideoDumpFrames
     }
 
-    // 2 Embeddings -------------------------------
+    // 2. Embeddings -------------------------------
     export type Embeddings =
         | 'EasyNegative'
         | 'bad-artist-anime'
@@ -2362,7 +2362,7 @@ declare global {
         | 'charturnerv2'
         | 'ng_deepnegative_v1_75t'
 
-    // 3 Suggestions -------------------------------
+    // 3. Suggestions -------------------------------
     export interface CanProduce_number {}
     export interface CanProduce_number {}
     export interface CanProduce_number {}
@@ -3305,7 +3305,7 @@ declare global {
     export interface CanProduce_IMAGE_BOUNDS
         extends Pick<ComfySetup, 'WASImageBounds' | 'WASInsetImageBounds' | 'WASBoundedImageCropWithMask'> {}
 
-    // 4 TYPES -------------------------------
+    // 4. TYPES -------------------------------
     export type SEG_ELT_control_net_wrapper = Slot<'SEG_ELT_control_net_wrapper'>
     export type SEG_ELT_crop_region = Slot<'SEG_ELT_crop_region'>
     export type CLIP_VISION_OUTPUT = Slot<'CLIP_VISION_OUTPUT'>
@@ -3363,7 +3363,7 @@ declare global {
     export type VAE = Slot<'VAE'>
     export type XY = Slot<'XY'>
 
-    // 5 ACCEPTABLE INPUTS -------------------------------
+    // 5. ACCEPTABLE INPUTS -------------------------------
     export type _SEG_ELT_control_net_wrapper =
         | Slot<'SEG_ELT_control_net_wrapper'>
         | HasSingle_SEG_ELT_control_net_wrapper
@@ -3469,7 +3469,7 @@ declare global {
     export type _VAE = Slot<'VAE'> | HasSingle_VAE | ((x: CanProduce_VAE) => _VAE)
     export type _XY = Slot<'XY'> | HasSingle_XY | ((x: CanProduce_XY) => _XY)
 
-    // 6 ENUMS -------------------------------
+    // 6. ENUMS -------------------------------
     export type Enum_KSampler_Sampler_name =
         | 'ddim'
         | 'ddpm'
@@ -4723,7 +4723,7 @@ declare global {
     export type Enum_WASTrueRandomOrgNumberGenerator_Mode = 'fixed' | 'random'
     export type Enum_WASVideoDumpFrames_Extension = 'gif' | 'jpg' | 'png' | 'tiff'
 
-    // 7 INTERFACES --------------------------
+    // 7. INTERFACES --------------------------
     export interface HasSingle_LATENT { _LATENT: LATENT } // prettier-ignore
     export interface HasSingle_MODEL { _MODEL: MODEL } // prettier-ignore
     export interface HasSingle_INT { _INT: INT } // prettier-ignore
@@ -4781,13 +4781,13 @@ declare global {
     export interface HasSingle_SAM_PARAMETERS { _SAM_PARAMETERS: SAM_PARAMETERS } // prettier-ignore
     export interface HasSingle_IMAGE_BOUNDS { _IMAGE_BOUNDS: IMAGE_BOUNDS } // prettier-ignore
 
-    // 8 NODES -------------------------------
+    // 8. NODES -------------------------------
     // KSampler [sampling]
     export interface KSampler extends HasSingle_LATENT, ComfyNode<KSampler_input> {
         nameInComfy: 'KSampler'
         LATENT: Slot<'LATENT', 0>
     }
-    export type KSampler_input = {
+    export interface KSampler_input {
         model: _MODEL
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
@@ -4815,7 +4815,7 @@ declare global {
         CLIP: Slot<'CLIP', 1>
         VAE: Slot<'VAE', 2>
     }
-    export type CheckpointLoaderSimple_input = {
+    export interface CheckpointLoaderSimple_input {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
 
@@ -4824,7 +4824,7 @@ declare global {
         nameInComfy: 'CLIPTextEncode'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type CLIPTextEncode_input = {
+    export interface CLIPTextEncode_input {
         /** */
         text: _STRING
         clip: _CLIP
@@ -4835,7 +4835,7 @@ declare global {
         nameInComfy: 'CLIPSetLastLayer'
         CLIP: Slot<'CLIP', 0>
     }
-    export type CLIPSetLastLayer_input = {
+    export interface CLIPSetLastLayer_input {
         clip: _CLIP
         /** default=-1 min=-1 max=-1 step=1 */
         stop_at_clip_layer?: _INT
@@ -4846,7 +4846,7 @@ declare global {
         nameInComfy: 'VAEDecode'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type VAEDecode_input = {
+    export interface VAEDecode_input {
         samples: _LATENT
         vae: _VAE
     }
@@ -4856,7 +4856,7 @@ declare global {
         nameInComfy: 'VAEEncode'
         LATENT: Slot<'LATENT', 0>
     }
-    export type VAEEncode_input = {
+    export interface VAEEncode_input {
         pixels: _IMAGE
         vae: _VAE
     }
@@ -4866,7 +4866,7 @@ declare global {
         nameInComfy: 'VAEEncodeForInpaint'
         LATENT: Slot<'LATENT', 0>
     }
-    export type VAEEncodeForInpaint_input = {
+    export interface VAEEncodeForInpaint_input {
         pixels: _IMAGE
         vae: _VAE
         mask: _MASK
@@ -4879,7 +4879,7 @@ declare global {
         nameInComfy: 'VAELoader'
         VAE: Slot<'VAE', 0>
     }
-    export type VAELoader_input = {
+    export interface VAELoader_input {
         vae_name: Enum_VAELoader_Vae_name
     }
 
@@ -4888,7 +4888,7 @@ declare global {
         nameInComfy: 'EmptyLatentImage'
         LATENT: Slot<'LATENT', 0>
     }
-    export type EmptyLatentImage_input = {
+    export interface EmptyLatentImage_input {
         /** default=512 min=8192 max=8192 step=8 */
         width?: _INT
         /** default=512 min=8192 max=8192 step=8 */
@@ -4902,7 +4902,7 @@ declare global {
         nameInComfy: 'LatentUpscale'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentUpscale_input = {
+    export interface LatentUpscale_input {
         samples: _LATENT
         upscale_method: Enum_LatentUpscale_Upscale_method
         /** default=512 min=8192 max=8192 step=8 */
@@ -4917,7 +4917,7 @@ declare global {
         nameInComfy: 'LatentUpscaleBy'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentUpscaleBy_input = {
+    export interface LatentUpscaleBy_input {
         samples: _LATENT
         upscale_method: Enum_LatentUpscale_Upscale_method
         /** default=1.5 min=8 max=8 step=0.01 */
@@ -4929,7 +4929,7 @@ declare global {
         nameInComfy: 'LatentFromBatch'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentFromBatch_input = {
+    export interface LatentFromBatch_input {
         samples: _LATENT
         /** default=0 min=63 max=63 */
         batch_index?: _INT
@@ -4942,7 +4942,7 @@ declare global {
         nameInComfy: 'RepeatLatentBatch'
         LATENT: Slot<'LATENT', 0>
     }
-    export type RepeatLatentBatch_input = {
+    export interface RepeatLatentBatch_input {
         samples: _LATENT
         /** default=1 min=64 max=64 */
         amount?: _INT
@@ -4952,7 +4952,7 @@ declare global {
     export interface SaveImage extends ComfyNode<SaveImage_input> {
         nameInComfy: 'SaveImage'
     }
-    export type SaveImage_input = {
+    export interface SaveImage_input {
         images: _IMAGE
         /** default="ComfyUI" */
         filename_prefix?: _STRING
@@ -4962,7 +4962,7 @@ declare global {
     export interface PreviewImage extends ComfyNode<PreviewImage_input> {
         nameInComfy: 'PreviewImage'
     }
-    export type PreviewImage_input = {
+    export interface PreviewImage_input {
         images: _IMAGE
     }
 
@@ -4972,7 +4972,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         MASK: Slot<'MASK', 1>
     }
-    export type LoadImage_input = {
+    export interface LoadImage_input {
         /** */
         image: Enum_LoadImage_Image
     }
@@ -4982,7 +4982,7 @@ declare global {
         nameInComfy: 'LoadImageMask'
         MASK: Slot<'MASK', 0>
     }
-    export type LoadImageMask_input = {
+    export interface LoadImageMask_input {
         /** */
         image: Enum_LoadImage_Image
         channel: Enum_LoadImageMask_Channel
@@ -4993,7 +4993,7 @@ declare global {
         nameInComfy: 'ImageScale'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageScale_input = {
+    export interface ImageScale_input {
         image: _IMAGE
         upscale_method: Enum_ImageScale_Upscale_method
         /** default=512 min=8192 max=8192 step=1 */
@@ -5008,7 +5008,7 @@ declare global {
         nameInComfy: 'ImageScaleBy'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageScaleBy_input = {
+    export interface ImageScaleBy_input {
         image: _IMAGE
         upscale_method: Enum_ImageScale_Upscale_method
         /** default=1 min=8 max=8 step=0.01 */
@@ -5020,7 +5020,7 @@ declare global {
         nameInComfy: 'ImageInvert'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageInvert_input = {
+    export interface ImageInvert_input {
         image: _IMAGE
     }
 
@@ -5029,7 +5029,7 @@ declare global {
         nameInComfy: 'ImageBatch'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageBatch_input = {
+    export interface ImageBatch_input {
         image1: _IMAGE
         image2: _IMAGE
     }
@@ -5040,7 +5040,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         MASK: Slot<'MASK', 1>
     }
-    export type ImagePadForOutpaint_input = {
+    export interface ImagePadForOutpaint_input {
         image: _IMAGE
         /** default=0 min=8192 max=8192 step=8 */
         left?: _INT
@@ -5059,7 +5059,7 @@ declare global {
         nameInComfy: 'EmptyImage'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type EmptyImage_input = {
+    export interface EmptyImage_input {
         /** default=512 min=8192 max=8192 step=1 */
         width?: _INT
         /** default=512 min=8192 max=8192 step=1 */
@@ -5075,7 +5075,7 @@ declare global {
         nameInComfy: 'ConditioningAverage'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type ConditioningAverage_input = {
+    export interface ConditioningAverage_input {
         conditioning_to: _CONDITIONING
         conditioning_from: _CONDITIONING
         /** default=1 min=1 max=1 step=0.01 */
@@ -5087,7 +5087,7 @@ declare global {
         nameInComfy: 'ConditioningCombine'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type ConditioningCombine_input = {
+    export interface ConditioningCombine_input {
         conditioning_1: _CONDITIONING
         conditioning_2: _CONDITIONING
     }
@@ -5097,7 +5097,7 @@ declare global {
         nameInComfy: 'ConditioningConcat'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type ConditioningConcat_input = {
+    export interface ConditioningConcat_input {
         conditioning_to: _CONDITIONING
         conditioning_from: _CONDITIONING
     }
@@ -5107,7 +5107,7 @@ declare global {
         nameInComfy: 'ConditioningSetArea'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type ConditioningSetArea_input = {
+    export interface ConditioningSetArea_input {
         conditioning: _CONDITIONING
         /** default=64 min=8192 max=8192 step=8 */
         width?: _INT
@@ -5128,7 +5128,7 @@ declare global {
         nameInComfy: 'ConditioningSetAreaPercentage'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type ConditioningSetAreaPercentage_input = {
+    export interface ConditioningSetAreaPercentage_input {
         conditioning: _CONDITIONING
         /** default=1 min=1 max=1 step=0.01 */
         width?: _FLOAT
@@ -5147,7 +5147,7 @@ declare global {
         nameInComfy: 'ConditioningSetMask'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type ConditioningSetMask_input = {
+    export interface ConditioningSetMask_input {
         conditioning: _CONDITIONING
         mask: _MASK
         /** default=1 min=10 max=10 step=0.01 */
@@ -5160,7 +5160,7 @@ declare global {
         nameInComfy: 'KSamplerAdvanced'
         LATENT: Slot<'LATENT', 0>
     }
-    export type KSamplerAdvanced_input = {
+    export interface KSamplerAdvanced_input {
         model: _MODEL
         add_noise: Enum_KSamplerAdvanced_Add_noise
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -5186,7 +5186,7 @@ declare global {
         nameInComfy: 'SetLatentNoiseMask'
         LATENT: Slot<'LATENT', 0>
     }
-    export type SetLatentNoiseMask_input = {
+    export interface SetLatentNoiseMask_input {
         samples: _LATENT
         mask: _MASK
     }
@@ -5196,7 +5196,7 @@ declare global {
         nameInComfy: 'LatentComposite'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentComposite_input = {
+    export interface LatentComposite_input {
         samples_to: _LATENT
         samples_from: _LATENT
         /** default=0 min=8192 max=8192 step=8 */
@@ -5212,7 +5212,7 @@ declare global {
         nameInComfy: 'LatentBlend'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentBlend_input = {
+    export interface LatentBlend_input {
         samples1: _LATENT
         samples2: _LATENT
         /** default=0.5 min=1 max=1 step=0.01 */
@@ -5224,7 +5224,7 @@ declare global {
         nameInComfy: 'LatentRotate'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentRotate_input = {
+    export interface LatentRotate_input {
         samples: _LATENT
         rotation: Enum_LatentRotate_Rotation
     }
@@ -5234,7 +5234,7 @@ declare global {
         nameInComfy: 'LatentFlip'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentFlip_input = {
+    export interface LatentFlip_input {
         samples: _LATENT
         flip_method: Enum_LatentFlip_Flip_method
     }
@@ -5244,7 +5244,7 @@ declare global {
         nameInComfy: 'LatentCrop'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentCrop_input = {
+    export interface LatentCrop_input {
         samples: _LATENT
         /** default=512 min=8192 max=8192 step=8 */
         width?: _INT
@@ -5262,7 +5262,7 @@ declare global {
         MODEL: Slot<'MODEL', 0>
         CLIP: Slot<'CLIP', 1>
     }
-    export type LoraLoader_input = {
+    export interface LoraLoader_input {
         model: _MODEL
         clip: _CLIP
         lora_name: Enum_LoraLoader_Lora_name
@@ -5277,7 +5277,7 @@ declare global {
         nameInComfy: 'CLIPLoader'
         CLIP: Slot<'CLIP', 0>
     }
-    export type CLIPLoader_input = {
+    export interface CLIPLoader_input {
         clip_name: Enum_CLIPLoader_Clip_name
     }
 
@@ -5286,7 +5286,7 @@ declare global {
         nameInComfy: 'UNETLoader'
         MODEL: Slot<'MODEL', 0>
     }
-    export type UNETLoader_input = {
+    export interface UNETLoader_input {
         unet_name: Enum_UNETLoader_Unet_name
     }
 
@@ -5295,7 +5295,7 @@ declare global {
         nameInComfy: 'DualCLIPLoader'
         CLIP: Slot<'CLIP', 0>
     }
-    export type DualCLIPLoader_input = {
+    export interface DualCLIPLoader_input {
         clip_name1: Enum_CLIPLoader_Clip_name
         clip_name2: Enum_CLIPLoader_Clip_name
     }
@@ -5305,7 +5305,7 @@ declare global {
         nameInComfy: 'CLIPVisionEncode'
         CLIP_VISION_OUTPUT: Slot<'CLIP_VISION_OUTPUT', 0>
     }
-    export type CLIPVisionEncode_input = {
+    export interface CLIPVisionEncode_input {
         clip_vision: _CLIP_VISION
         image: _IMAGE
     }
@@ -5315,7 +5315,7 @@ declare global {
         nameInComfy: 'StyleModelApply'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type StyleModelApply_input = {
+    export interface StyleModelApply_input {
         conditioning: _CONDITIONING
         style_model: _STYLE_MODEL
         clip_vision_output: _CLIP_VISION_OUTPUT
@@ -5326,7 +5326,7 @@ declare global {
         nameInComfy: 'unCLIPConditioning'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type UnCLIPConditioning_input = {
+    export interface UnCLIPConditioning_input {
         conditioning: _CONDITIONING
         clip_vision_output: _CLIP_VISION_OUTPUT
         /** default=1 min=10 max=10 step=0.01 */
@@ -5340,7 +5340,7 @@ declare global {
         nameInComfy: 'ControlNetApply'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type ControlNetApply_input = {
+    export interface ControlNetApply_input {
         conditioning: _CONDITIONING
         control_net: _CONTROL_NET
         image: _IMAGE
@@ -5354,7 +5354,7 @@ declare global {
         CONDITIONING: Slot<'CONDITIONING', 0>
         CONDITIONING_1: Slot<'CONDITIONING', 1>
     }
-    export type ControlNetApplyAdvanced_input = {
+    export interface ControlNetApplyAdvanced_input {
         positive: _CONDITIONING
         negative: _CONDITIONING
         control_net: _CONTROL_NET
@@ -5372,7 +5372,7 @@ declare global {
         nameInComfy: 'ControlNetLoader'
         CONTROL_NET: Slot<'CONTROL_NET', 0>
     }
-    export type ControlNetLoader_input = {
+    export interface ControlNetLoader_input {
         control_net_name: Enum_ControlNetLoader_Control_net_name
     }
 
@@ -5381,7 +5381,7 @@ declare global {
         nameInComfy: 'DiffControlNetLoader'
         CONTROL_NET: Slot<'CONTROL_NET', 0>
     }
-    export type DiffControlNetLoader_input = {
+    export interface DiffControlNetLoader_input {
         model: _MODEL
         control_net_name: Enum_ControlNetLoader_Control_net_name
     }
@@ -5391,7 +5391,7 @@ declare global {
         nameInComfy: 'StyleModelLoader'
         STYLE_MODEL: Slot<'STYLE_MODEL', 0>
     }
-    export type StyleModelLoader_input = {
+    export interface StyleModelLoader_input {
         style_model_name: Enum_CLIPLoader_Clip_name
     }
 
@@ -5400,7 +5400,7 @@ declare global {
         nameInComfy: 'CLIPVisionLoader'
         CLIP_VISION: Slot<'CLIP_VISION', 0>
     }
-    export type CLIPVisionLoader_input = {
+    export interface CLIPVisionLoader_input {
         clip_name: Enum_CLIPVisionLoader_Clip_name
     }
 
@@ -5409,7 +5409,7 @@ declare global {
         nameInComfy: 'VAEDecodeTiled'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type VAEDecodeTiled_input = {
+    export interface VAEDecodeTiled_input {
         samples: _LATENT
         vae: _VAE
         /** default=512 min=4096 max=4096 step=64 */
@@ -5421,7 +5421,7 @@ declare global {
         nameInComfy: 'VAEEncodeTiled'
         LATENT: Slot<'LATENT', 0>
     }
-    export type VAEEncodeTiled_input = {
+    export interface VAEEncodeTiled_input {
         pixels: _IMAGE
         vae: _VAE
         /** default=512 min=4096 max=4096 step=64 */
@@ -5441,7 +5441,7 @@ declare global {
         VAE: Slot<'VAE', 2>
         CLIP_VISION: Slot<'CLIP_VISION', 3>
     }
-    export type UnCLIPCheckpointLoader_input = {
+    export interface UnCLIPCheckpointLoader_input {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
 
@@ -5450,7 +5450,7 @@ declare global {
         nameInComfy: 'GLIGENLoader'
         GLIGEN: Slot<'GLIGEN', 0>
     }
-    export type GLIGENLoader_input = {
+    export interface GLIGENLoader_input {
         gligen_name: Enum_CLIPLoader_Clip_name
     }
 
@@ -5459,7 +5459,7 @@ declare global {
         nameInComfy: 'GLIGENTextBoxApply'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type GLIGENTextBoxApply_input = {
+    export interface GLIGENTextBoxApply_input {
         conditioning_to: _CONDITIONING
         clip: _CLIP
         gligen_textbox_model: _GLIGEN
@@ -5482,7 +5482,7 @@ declare global {
         CLIP: Slot<'CLIP', 1>
         VAE: Slot<'VAE', 2>
     }
-    export type CheckpointLoader_input = {
+    export interface CheckpointLoader_input {
         config_name: Enum_CheckpointLoader_Config_name
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
@@ -5494,7 +5494,7 @@ declare global {
         CLIP: Slot<'CLIP', 1>
         VAE: Slot<'VAE', 2>
     }
-    export type DiffusersLoader_input = {
+    export interface DiffusersLoader_input {
         model_path: Enum_CLIPLoader_Clip_name
     }
 
@@ -5503,7 +5503,7 @@ declare global {
         nameInComfy: 'LoadLatent'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LoadLatent_input = {
+    export interface LoadLatent_input {
         latent: Enum_CLIPLoader_Clip_name
     }
 
@@ -5511,7 +5511,7 @@ declare global {
     export interface SaveLatent extends ComfyNode<SaveLatent_input> {
         nameInComfy: 'SaveLatent'
     }
-    export type SaveLatent_input = {
+    export interface SaveLatent_input {
         samples: _LATENT
         /** default="latents/ComfyUI" */
         filename_prefix?: _STRING
@@ -5522,7 +5522,7 @@ declare global {
         nameInComfy: 'ConditioningZeroOut'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type ConditioningZeroOut_input = {
+    export interface ConditioningZeroOut_input {
         conditioning: _CONDITIONING
     }
 
@@ -5531,7 +5531,7 @@ declare global {
         nameInComfy: 'ConditioningSetTimestepRange'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type ConditioningSetTimestepRange_input = {
+    export interface ConditioningSetTimestepRange_input {
         conditioning: _CONDITIONING
         /** default=0 min=1 max=1 step=0.001 */
         start?: _FLOAT
@@ -5544,7 +5544,7 @@ declare global {
         nameInComfy: 'LatentAdd'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentAdd_input = {
+    export interface LatentAdd_input {
         samples1: _LATENT
         samples2: _LATENT
     }
@@ -5554,7 +5554,7 @@ declare global {
         nameInComfy: 'LatentSubtract'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentSubtract_input = {
+    export interface LatentSubtract_input {
         samples1: _LATENT
         samples2: _LATENT
     }
@@ -5564,7 +5564,7 @@ declare global {
         nameInComfy: 'LatentMultiply'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentMultiply_input = {
+    export interface LatentMultiply_input {
         samples: _LATENT
         /** default=1 min=10 max=10 step=0.01 */
         multiplier?: _FLOAT
@@ -5575,7 +5575,7 @@ declare global {
         nameInComfy: 'HypernetworkLoader'
         MODEL: Slot<'MODEL', 0>
     }
-    export type HypernetworkLoader_input = {
+    export interface HypernetworkLoader_input {
         model: _MODEL
         hypernetwork_name: Enum_CLIPLoader_Clip_name
         /** default=1 min=10 max=10 step=0.01 */
@@ -5587,7 +5587,7 @@ declare global {
         nameInComfy: 'UpscaleModelLoader'
         UPSCALE_MODEL: Slot<'UPSCALE_MODEL', 0>
     }
-    export type UpscaleModelLoader_input = {
+    export interface UpscaleModelLoader_input {
         model_name: Enum_CLIPLoader_Clip_name
     }
 
@@ -5596,7 +5596,7 @@ declare global {
         nameInComfy: 'ImageUpscaleWithModel'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageUpscaleWithModel_input = {
+    export interface ImageUpscaleWithModel_input {
         upscale_model: _UPSCALE_MODEL
         image: _IMAGE
     }
@@ -5606,7 +5606,7 @@ declare global {
         nameInComfy: 'ImageBlend'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageBlend_input = {
+    export interface ImageBlend_input {
         image1: _IMAGE
         image2: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
@@ -5619,7 +5619,7 @@ declare global {
         nameInComfy: 'ImageBlur'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageBlur_input = {
+    export interface ImageBlur_input {
         image: _IMAGE
         /** default=1 min=31 max=31 step=1 */
         blur_radius?: _INT
@@ -5632,7 +5632,7 @@ declare global {
         nameInComfy: 'ImageQuantize'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageQuantize_input = {
+    export interface ImageQuantize_input {
         image: _IMAGE
         /** default=256 min=256 max=256 step=1 */
         colors?: _INT
@@ -5644,7 +5644,7 @@ declare global {
         nameInComfy: 'ImageSharpen'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageSharpen_input = {
+    export interface ImageSharpen_input {
         image: _IMAGE
         /** default=1 min=31 max=31 step=1 */
         sharpen_radius?: _INT
@@ -5659,7 +5659,7 @@ declare global {
         nameInComfy: 'ImageScaleToTotalPixels'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageScaleToTotalPixels_input = {
+    export interface ImageScaleToTotalPixels_input {
         image: _IMAGE
         upscale_method: Enum_ImageScale_Upscale_method
         /** default=1 min=16 max=16 step=0.01 */
@@ -5671,7 +5671,7 @@ declare global {
         nameInComfy: 'LatentCompositeMasked'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentCompositeMasked_input = {
+    export interface LatentCompositeMasked_input {
         destination: _LATENT
         source: _LATENT
         /** default=0 min=8192 max=8192 step=8 */
@@ -5688,7 +5688,7 @@ declare global {
         nameInComfy: 'ImageCompositeMasked'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageCompositeMasked_input = {
+    export interface ImageCompositeMasked_input {
         destination: _IMAGE
         source: _IMAGE
         /** default=0 min=8192 max=8192 step=1 */
@@ -5705,7 +5705,7 @@ declare global {
         nameInComfy: 'MaskToImage'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MaskToImage_input = {
+    export interface MaskToImage_input {
         mask: _MASK
     }
 
@@ -5714,7 +5714,7 @@ declare global {
         nameInComfy: 'ImageToMask'
         MASK: Slot<'MASK', 0>
     }
-    export type ImageToMask_input = {
+    export interface ImageToMask_input {
         image: _IMAGE
         channel: Enum_ImageToMask_Channel
     }
@@ -5724,7 +5724,7 @@ declare global {
         nameInComfy: 'ImageColorToMask'
         MASK: Slot<'MASK', 0>
     }
-    export type ImageColorToMask_input = {
+    export interface ImageColorToMask_input {
         image: _IMAGE
         /** default=0 min=16777215 max=16777215 step=1 */
         color?: _INT
@@ -5735,7 +5735,7 @@ declare global {
         nameInComfy: 'SolidMask'
         MASK: Slot<'MASK', 0>
     }
-    export type SolidMask_input = {
+    export interface SolidMask_input {
         /** default=1 min=1 max=1 step=0.01 */
         value?: _FLOAT
         /** default=512 min=8192 max=8192 step=1 */
@@ -5749,7 +5749,7 @@ declare global {
         nameInComfy: 'InvertMask'
         MASK: Slot<'MASK', 0>
     }
-    export type InvertMask_input = {
+    export interface InvertMask_input {
         mask: _MASK
     }
 
@@ -5758,7 +5758,7 @@ declare global {
         nameInComfy: 'CropMask'
         MASK: Slot<'MASK', 0>
     }
-    export type CropMask_input = {
+    export interface CropMask_input {
         mask: _MASK
         /** default=0 min=8192 max=8192 step=1 */
         x?: _INT
@@ -5775,7 +5775,7 @@ declare global {
         nameInComfy: 'MaskComposite'
         MASK: Slot<'MASK', 0>
     }
-    export type MaskComposite_input = {
+    export interface MaskComposite_input {
         destination: _MASK
         source: _MASK
         /** default=0 min=8192 max=8192 step=1 */
@@ -5790,7 +5790,7 @@ declare global {
         nameInComfy: 'FeatherMask'
         MASK: Slot<'MASK', 0>
     }
-    export type FeatherMask_input = {
+    export interface FeatherMask_input {
         mask: _MASK
         /** default=0 min=8192 max=8192 step=1 */
         left?: _INT
@@ -5807,7 +5807,7 @@ declare global {
         nameInComfy: 'GrowMask'
         MASK: Slot<'MASK', 0>
     }
-    export type GrowMask_input = {
+    export interface GrowMask_input {
         mask: _MASK
         /** default=0 min=8192 max=8192 step=1 */
         expand?: _INT
@@ -5820,7 +5820,7 @@ declare global {
         nameInComfy: 'RebatchLatents'
         LATENT: Slot<'LATENT', 0>
     }
-    export type RebatchLatents_input = {
+    export interface RebatchLatents_input {
         latents: _LATENT
         /** default=1 min=64 max=64 */
         batch_size?: _INT
@@ -5831,7 +5831,7 @@ declare global {
         nameInComfy: 'ModelMergeSimple'
         MODEL: Slot<'MODEL', 0>
     }
-    export type ModelMergeSimple_input = {
+    export interface ModelMergeSimple_input {
         model1: _MODEL
         model2: _MODEL
         /** default=1 min=1 max=1 step=0.01 */
@@ -5843,7 +5843,7 @@ declare global {
         nameInComfy: 'ModelMergeBlocks'
         MODEL: Slot<'MODEL', 0>
     }
-    export type ModelMergeBlocks_input = {
+    export interface ModelMergeBlocks_input {
         model1: _MODEL
         model2: _MODEL
         /** default=1 min=1 max=1 step=0.01 */
@@ -5859,7 +5859,7 @@ declare global {
         nameInComfy: 'ModelMergeSubtract'
         MODEL: Slot<'MODEL', 0>
     }
-    export type ModelMergeSubtract_input = {
+    export interface ModelMergeSubtract_input {
         model1: _MODEL
         model2: _MODEL
         /** default=1 min=10 max=10 step=0.01 */
@@ -5871,7 +5871,7 @@ declare global {
         nameInComfy: 'ModelMergeAdd'
         MODEL: Slot<'MODEL', 0>
     }
-    export type ModelMergeAdd_input = {
+    export interface ModelMergeAdd_input {
         model1: _MODEL
         model2: _MODEL
     }
@@ -5880,7 +5880,7 @@ declare global {
     export interface CheckpointSave extends ComfyNode<CheckpointSave_input> {
         nameInComfy: 'CheckpointSave'
     }
-    export type CheckpointSave_input = {
+    export interface CheckpointSave_input {
         model: _MODEL
         clip: _CLIP
         vae: _VAE
@@ -5893,7 +5893,7 @@ declare global {
         nameInComfy: 'CLIPMergeSimple'
         CLIP: Slot<'CLIP', 0>
     }
-    export type CLIPMergeSimple_input = {
+    export interface CLIPMergeSimple_input {
         clip1: _CLIP
         clip2: _CLIP
         /** default=1 min=1 max=1 step=0.01 */
@@ -5905,7 +5905,7 @@ declare global {
         nameInComfy: 'TomePatchModel'
         MODEL: Slot<'MODEL', 0>
     }
-    export type TomePatchModel_input = {
+    export interface TomePatchModel_input {
         model: _MODEL
         /** default=0.3 min=1 max=1 step=0.01 */
         ratio?: _FLOAT
@@ -5916,7 +5916,7 @@ declare global {
         nameInComfy: 'CLIPTextEncodeSDXLRefiner'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type CLIPTextEncodeSDXLRefiner_input = {
+    export interface CLIPTextEncodeSDXLRefiner_input {
         /** default=6 min=1000 max=1000 step=0.01 */
         ascore?: _FLOAT
         /** default=1024 min=8192 max=8192 */
@@ -5933,7 +5933,7 @@ declare global {
         nameInComfy: 'CLIPTextEncodeSDXL'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type CLIPTextEncodeSDXL_input = {
+    export interface CLIPTextEncodeSDXL_input {
         /** default=1024 min=8192 max=8192 */
         width?: _INT
         /** default=1024 min=8192 max=8192 */
@@ -5958,7 +5958,7 @@ declare global {
         nameInComfy: 'Canny'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type Canny_input = {
+    export interface Canny_input {
         image: _IMAGE
         /** default=0.4 min=0.99 max=0.99 step=0.01 */
         low_threshold?: _FLOAT
@@ -5971,7 +5971,7 @@ declare global {
         nameInComfy: 'FreeU'
         MODEL: Slot<'MODEL', 0>
     }
-    export type FreeU_input = {
+    export interface FreeU_input {
         model: _MODEL
         /** default=1.1 min=10 max=10 step=0.01 */
         b1?: _FLOAT
@@ -5988,7 +5988,7 @@ declare global {
         nameInComfy: 'Remove Image Background (abg)'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type RemoveImageBackgroundAbg_input = {
+    export interface RemoveImageBackgroundAbg_input {
         image: _IMAGE
     }
 
@@ -5998,7 +5998,7 @@ declare global {
         MODEL: Slot<'MODEL', 0>
         CLIP: Slot<'CLIP', 1>
     }
-    export type CivitAI_Lora_Loader_input = {
+    export interface CivitAI_Lora_Loader_input {
         model: _MODEL
         clip: _CLIP
         /** default="{model_id}@{model_version}" */
@@ -6024,7 +6024,7 @@ declare global {
         CLIP: Slot<'CLIP', 1>
         VAE: Slot<'VAE', 2>
     }
-    export type CivitAI_Checkpoint_Loader_input = {
+    export interface CivitAI_Checkpoint_Loader_input {
         /** default="{model_id}@{model_version}" */
         ckpt_air?: _STRING
         ckpt_name: Enum_CivitAI_Checkpoint_Loader_Ckpt_name
@@ -6038,7 +6038,7 @@ declare global {
         nameInComfy: 'SAMLoader'
         SAM_MODEL: Slot<'SAM_MODEL', 0>
     }
-    export type ImpactSAMLoader_input = {
+    export interface ImpactSAMLoader_input {
         model_name: Enum_ImpactSAMLoader_Model_name
         device_mode: Enum_ImpactSAMLoader_Device_mode
     }
@@ -6050,7 +6050,7 @@ declare global {
         nameInComfy: 'CLIPSegDetectorProvider'
         BBOX_DETECTOR: Slot<'BBOX_DETECTOR', 0>
     }
-    export type ImpactCLIPSegDetectorProvider_input = {
+    export interface ImpactCLIPSegDetectorProvider_input {
         /** */
         text: _STRING
         /** default=7 min=15 max=15 step=0.1 */
@@ -6066,7 +6066,7 @@ declare global {
         nameInComfy: 'ONNXDetectorProvider'
         ONNX_DETECTOR: Slot<'ONNX_DETECTOR', 0>
     }
-    export type ImpactONNXDetectorProvider_input = {
+    export interface ImpactONNXDetectorProvider_input {
         model_name: Enum_CLIPLoader_Clip_name
     }
 
@@ -6075,7 +6075,7 @@ declare global {
         nameInComfy: 'BitwiseAndMaskForEach'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactBitwiseAndMaskForEach_input = {
+    export interface ImpactBitwiseAndMaskForEach_input {
         base_segs: _SEGS
         mask_segs: _SEGS
     }
@@ -6085,7 +6085,7 @@ declare global {
         nameInComfy: 'SubtractMaskForEach'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactSubtractMaskForEach_input = {
+    export interface ImpactSubtractMaskForEach_input {
         base_segs: _SEGS
         mask_segs: _SEGS
     }
@@ -6095,7 +6095,7 @@ declare global {
         nameInComfy: 'DetailerForEach'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImpactDetailerForEach_input = {
+    export interface ImpactDetailerForEach_input {
         image: _IMAGE
         segs: _SEGS
         model: _MODEL
@@ -6139,7 +6139,7 @@ declare global {
         IMAGE_3: Slot<'IMAGE', 3>
         IMAGE_4: Slot<'IMAGE', 4>
     }
-    export type ImpactDetailerForEachDebug_input = {
+    export interface ImpactDetailerForEachDebug_input {
         image: _IMAGE
         segs: _SEGS
         model: _MODEL
@@ -6185,7 +6185,7 @@ declare global {
         BASIC_PIPE: Slot<'BASIC_PIPE', 2>
         IMAGE_1: Slot<'IMAGE', 3>
     }
-    export type ImpactDetailerForEachPipe_input = {
+    export interface ImpactDetailerForEachPipe_input {
         image: _IMAGE
         segs: _SEGS
         /** default=256 min=8192 max=8192 step=8 */
@@ -6233,7 +6233,7 @@ declare global {
         IMAGE_3: Slot<'IMAGE', 5>
         IMAGE_4: Slot<'IMAGE', 6>
     }
-    export type ImpactDetailerForEachDebugPipe_input = {
+    export interface ImpactDetailerForEachDebugPipe_input {
         image: _IMAGE
         segs: _SEGS
         /** default=256 min=8192 max=8192 step=8 */
@@ -6272,7 +6272,7 @@ declare global {
         nameInComfy: 'SAMDetectorCombined'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactSAMDetectorCombined_input = {
+    export interface ImpactSAMDetectorCombined_input {
         sam_model: _SAM_MODEL
         segs: _SEGS
         image: _IMAGE
@@ -6297,7 +6297,7 @@ declare global {
         MASK: Slot<'MASK', 0>
         MASKS: Slot<'MASKS', 1>
     }
-    export type ImpactSAMDetectorSegmented_input = {
+    export interface ImpactSAMDetectorSegmented_input {
         sam_model: _SAM_MODEL
         segs: _SEGS
         image: _IMAGE
@@ -6323,7 +6323,7 @@ declare global {
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 4>
         IMAGE_3: Slot<'IMAGE', 5>
     }
-    export type ImpactFaceDetailer_input = {
+    export interface ImpactFaceDetailer_input {
         image: _IMAGE
         model: _MODEL
         clip: _CLIP
@@ -6391,7 +6391,7 @@ declare global {
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 4>
         IMAGE_3: Slot<'IMAGE', 5>
     }
-    export type ImpactFaceDetailerPipe_input = {
+    export interface ImpactFaceDetailerPipe_input {
         image: _IMAGE
         detailer_pipe: _DETAILER_PIPE
         /** default=256 min=8192 max=8192 step=8 */
@@ -6443,7 +6443,7 @@ declare global {
         nameInComfy: 'ToDetailerPipe'
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
     }
-    export type ImpactToDetailerPipe_input = {
+    export interface ImpactToDetailerPipe_input {
         model: _MODEL
         clip: _CLIP
         vae: _VAE
@@ -6463,7 +6463,7 @@ declare global {
         nameInComfy: 'ToDetailerPipeSDXL'
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
     }
-    export type ImpactToDetailerPipeSDXL_input = {
+    export interface ImpactToDetailerPipeSDXL_input {
         model: _MODEL
         clip: _CLIP
         vae: _VAE
@@ -6503,7 +6503,7 @@ declare global {
         SEGM_DETECTOR: Slot<'SEGM_DETECTOR', 7>
         DETAILER_HOOK: Slot<'DETAILER_HOOK', 8>
     }
-    export type ImpactFromDetailerPipe_input = {
+    export interface ImpactFromDetailerPipe_input {
         detailer_pipe: _DETAILER_PIPE
     }
 
@@ -6530,7 +6530,7 @@ declare global {
         SEGM_DETECTOR: Slot<'SEGM_DETECTOR', 8>
         DETAILER_HOOK: Slot<'DETAILER_HOOK', 9>
     }
-    export type ImpactFromDetailerPipe_v2_input = {
+    export interface ImpactFromDetailerPipe_v2_input {
         detailer_pipe: _DETAILER_PIPE
     }
 
@@ -6559,7 +6559,7 @@ declare global {
         CONDITIONING_2: Slot<'CONDITIONING', 12>
         CONDITIONING_3: Slot<'CONDITIONING', 13>
     }
-    export type ImpactFromDetailerPipeSDXL_input = {
+    export interface ImpactFromDetailerPipeSDXL_input {
         detailer_pipe: _DETAILER_PIPE
     }
 
@@ -6568,7 +6568,7 @@ declare global {
         nameInComfy: 'ToBasicPipe'
         BASIC_PIPE: Slot<'BASIC_PIPE', 0>
     }
-    export type ImpactToBasicPipe_input = {
+    export interface ImpactToBasicPipe_input {
         model: _MODEL
         clip: _CLIP
         vae: _VAE
@@ -6589,7 +6589,7 @@ declare global {
         CONDITIONING: Slot<'CONDITIONING', 3>
         CONDITIONING_1: Slot<'CONDITIONING', 4>
     }
-    export type ImpactFromBasicPipe_input = {
+    export interface ImpactFromBasicPipe_input {
         basic_pipe: _BASIC_PIPE
     }
 
@@ -6608,7 +6608,7 @@ declare global {
         CONDITIONING: Slot<'CONDITIONING', 4>
         CONDITIONING_1: Slot<'CONDITIONING', 5>
     }
-    export type ImpactFromBasicPipe_v2_input = {
+    export interface ImpactFromBasicPipe_v2_input {
         basic_pipe: _BASIC_PIPE
     }
 
@@ -6619,7 +6619,7 @@ declare global {
         nameInComfy: 'BasicPipeToDetailerPipe'
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
     }
-    export type ImpactBasicPipeToDetailerPipe_input = {
+    export interface ImpactBasicPipeToDetailerPipe_input {
         basic_pipe: _BASIC_PIPE
         bbox_detector: _BBOX_DETECTOR
         /** */
@@ -6637,7 +6637,7 @@ declare global {
         nameInComfy: 'BasicPipeToDetailerPipeSDXL'
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
     }
-    export type ImpactBasicPipeToDetailerPipeSDXL_input = {
+    export interface ImpactBasicPipeToDetailerPipeSDXL_input {
         base_basic_pipe: _BASIC_PIPE
         refiner_basic_pipe: _BASIC_PIPE
         bbox_detector: _BBOX_DETECTOR
@@ -6655,7 +6655,7 @@ declare global {
         BASIC_PIPE: Slot<'BASIC_PIPE', 0>
         BASIC_PIPE_1: Slot<'BASIC_PIPE', 1>
     }
-    export type ImpactDetailerPipeToBasicPipe_input = {
+    export interface ImpactDetailerPipeToBasicPipe_input {
         detailer_pipe: _DETAILER_PIPE
     }
 
@@ -6664,7 +6664,7 @@ declare global {
         nameInComfy: 'EditBasicPipe'
         BASIC_PIPE: Slot<'BASIC_PIPE', 0>
     }
-    export type ImpactEditBasicPipe_input = {
+    export interface ImpactEditBasicPipe_input {
         basic_pipe: _BASIC_PIPE
         model?: _MODEL
         clip?: _CLIP
@@ -6678,7 +6678,7 @@ declare global {
         nameInComfy: 'EditDetailerPipe'
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
     }
-    export type ImpactEditDetailerPipe_input = {
+    export interface ImpactEditDetailerPipe_input {
         detailer_pipe: _DETAILER_PIPE
         /** */
         wildcard: _STRING
@@ -6699,7 +6699,7 @@ declare global {
         nameInComfy: 'EditDetailerPipeSDXL'
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
     }
-    export type ImpactEditDetailerPipeSDXL_input = {
+    export interface ImpactEditDetailerPipeSDXL_input {
         detailer_pipe: _DETAILER_PIPE
         /** */
         wildcard: _STRING
@@ -6724,7 +6724,7 @@ declare global {
         nameInComfy: 'LatentPixelScale'
         LATENT: Slot<'LATENT', 0>
     }
-    export type ImpactLatentPixelScale_input = {
+    export interface ImpactLatentPixelScale_input {
         samples: _LATENT
         scale_method: Enum_ImpactLatentPixelScale_Scale_method
         /** default=1.5 min=10000 max=10000 step=0.1 */
@@ -6742,7 +6742,7 @@ declare global {
         nameInComfy: 'PixelKSampleUpscalerProvider'
         UPSCALER: Slot<'UPSCALER', 0>
     }
-    export type ImpactPixelKSampleUpscalerProvider_input = {
+    export interface ImpactPixelKSampleUpscalerProvider_input {
         scale_method: Enum_ImpactLatentPixelScale_Scale_method
         model: _MODEL
         vae: _VAE
@@ -6773,7 +6773,7 @@ declare global {
         nameInComfy: 'PixelKSampleUpscalerProviderPipe'
         UPSCALER: Slot<'UPSCALER', 0>
     }
-    export type ImpactPixelKSampleUpscalerProviderPipe_input = {
+    export interface ImpactPixelKSampleUpscalerProviderPipe_input {
         scale_method: Enum_ImpactLatentPixelScale_Scale_method
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
@@ -6799,7 +6799,7 @@ declare global {
         nameInComfy: 'IterativeLatentUpscale'
         LATENT: Slot<'LATENT', 0>
     }
-    export type ImpactIterativeLatentUpscale_input = {
+    export interface ImpactIterativeLatentUpscale_input {
         samples: _LATENT
         /** default=1.5 min=10000 max=10000 step=0.1 */
         upscale_factor?: _FLOAT
@@ -6815,7 +6815,7 @@ declare global {
         nameInComfy: 'IterativeImageUpscale'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImpactIterativeImageUpscale_input = {
+    export interface ImpactIterativeImageUpscale_input {
         pixels: _IMAGE
         /** default=1.5 min=10000 max=10000 step=0.1 */
         upscale_factor?: _FLOAT
@@ -6834,7 +6834,7 @@ declare global {
         nameInComfy: 'PixelTiledKSampleUpscalerProvider'
         UPSCALER: Slot<'UPSCALER', 0>
     }
-    export type ImpactPixelTiledKSampleUpscalerProvider_input = {
+    export interface ImpactPixelTiledKSampleUpscalerProvider_input {
         scale_method: Enum_ImpactLatentPixelScale_Scale_method
         model: _MODEL
         vae: _VAE
@@ -6866,7 +6866,7 @@ declare global {
         nameInComfy: 'PixelTiledKSampleUpscalerProviderPipe'
         UPSCALER: Slot<'UPSCALER', 0>
     }
-    export type ImpactPixelTiledKSampleUpscalerProviderPipe_input = {
+    export interface ImpactPixelTiledKSampleUpscalerProviderPipe_input {
         scale_method: Enum_ImpactLatentPixelScale_Scale_method
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
@@ -6895,7 +6895,7 @@ declare global {
         nameInComfy: 'TwoSamplersForMaskUpscalerProvider'
         UPSCALER: Slot<'UPSCALER', 0>
     }
-    export type ImpactTwoSamplersForMaskUpscalerProvider_input = {
+    export interface ImpactTwoSamplersForMaskUpscalerProvider_input {
         scale_method: Enum_ImpactLatentPixelScale_Scale_method
         full_sample_schedule: Enum_ImpactTwoSamplersForMaskUpscalerProvider_Full_sample_schedule
         /** default=false */
@@ -6920,7 +6920,7 @@ declare global {
         nameInComfy: 'TwoSamplersForMaskUpscalerProviderPipe'
         UPSCALER: Slot<'UPSCALER', 0>
     }
-    export type ImpactTwoSamplersForMaskUpscalerProviderPipe_input = {
+    export interface ImpactTwoSamplersForMaskUpscalerProviderPipe_input {
         scale_method: Enum_ImpactLatentPixelScale_Scale_method
         full_sample_schedule: Enum_ImpactTwoSamplersForMaskUpscalerProvider_Full_sample_schedule
         /** default=false */
@@ -6943,7 +6943,7 @@ declare global {
         nameInComfy: 'PixelKSampleHookCombine'
         PK_HOOK: Slot<'PK_HOOK', 0>
     }
-    export type ImpactPixelKSampleHookCombine_input = {
+    export interface ImpactPixelKSampleHookCombine_input {
         hook1: _PK_HOOK
         hook2: _PK_HOOK
     }
@@ -6955,7 +6955,7 @@ declare global {
         nameInComfy: 'DenoiseScheduleHookProvider'
         PK_HOOK: Slot<'PK_HOOK', 0>
     }
-    export type ImpactDenoiseScheduleHookProvider_input = {
+    export interface ImpactDenoiseScheduleHookProvider_input {
         schedule_for_iteration: Enum_ImpactDenoiseScheduleHookProvider_Schedule_for_iteration
         /** default=0.2 min=100 max=100 */
         target_denoise?: _FLOAT
@@ -6966,7 +6966,7 @@ declare global {
         nameInComfy: 'CfgScheduleHookProvider'
         PK_HOOK: Slot<'PK_HOOK', 0>
     }
-    export type ImpactCfgScheduleHookProvider_input = {
+    export interface ImpactCfgScheduleHookProvider_input {
         schedule_for_iteration: Enum_ImpactDenoiseScheduleHookProvider_Schedule_for_iteration
         /** default=3 min=100 max=100 */
         target_cfg?: _FLOAT
@@ -6979,7 +6979,7 @@ declare global {
         nameInComfy: 'NoiseInjectionHookProvider'
         PK_HOOK: Slot<'PK_HOOK', 0>
     }
-    export type ImpactNoiseInjectionHookProvider_input = {
+    export interface ImpactNoiseInjectionHookProvider_input {
         schedule_for_iteration: Enum_ImpactDenoiseScheduleHookProvider_Schedule_for_iteration
         source: Enum_ImpactNoiseInjectionHookProvider_Source
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -6997,7 +6997,7 @@ declare global {
         nameInComfy: 'NoiseInjectionDetailerHookProvider'
         DETAILER_HOOK: Slot<'DETAILER_HOOK', 0>
     }
-    export type ImpactNoiseInjectionDetailerHookProvider_input = {
+    export interface ImpactNoiseInjectionDetailerHookProvider_input {
         source: Enum_ImpactNoiseInjectionHookProvider_Source
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
@@ -7010,7 +7010,7 @@ declare global {
         nameInComfy: 'BitwiseAndMask'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactBitwiseAndMask_input = {
+    export interface ImpactBitwiseAndMask_input {
         mask1: _MASK
         mask2: _MASK
     }
@@ -7020,7 +7020,7 @@ declare global {
         nameInComfy: 'SubtractMask'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactSubtractMask_input = {
+    export interface ImpactSubtractMask_input {
         mask1: _MASK
         mask2: _MASK
     }
@@ -7030,7 +7030,7 @@ declare global {
         nameInComfy: 'AddMask'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactAddMask_input = {
+    export interface ImpactAddMask_input {
         mask1: _MASK
         mask2: _MASK
     }
@@ -7040,7 +7040,7 @@ declare global {
         nameInComfy: 'Segs & Mask'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactSegsMask_input = {
+    export interface ImpactSegsMask_input {
         segs: _SEGS
         mask: _MASK
     }
@@ -7050,7 +7050,7 @@ declare global {
         nameInComfy: 'Segs & Mask ForEach'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactSegsMaskForEach_input = {
+    export interface ImpactSegsMaskForEach_input {
         segs: _SEGS
         masks: _MASKS
     }
@@ -7060,14 +7060,14 @@ declare global {
         nameInComfy: 'EmptySegs'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactEmptySegs_input = {}
+    export interface ImpactEmptySegs_input {}
 
     // MediaPipeFaceMeshToSEGS [ImpactPack_Operation]
     export interface ImpactMediaPipeFaceMeshToSEGS extends HasSingle_SEGS, ComfyNode<ImpactMediaPipeFaceMeshToSEGS_input> {
         nameInComfy: 'MediaPipeFaceMeshToSEGS'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactMediaPipeFaceMeshToSEGS_input = {
+    export interface ImpactMediaPipeFaceMeshToSEGS_input {
         image: _IMAGE
         /** default=3 min=10 max=10 step=0.1 */
         crop_factor?: _FLOAT
@@ -7102,7 +7102,7 @@ declare global {
         nameInComfy: 'MaskToSEGS'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactMaskToSEGS_input = {
+    export interface ImpactMaskToSEGS_input {
         mask: _MASK
         /** default=false */
         combined?: _BOOLEAN
@@ -7119,7 +7119,7 @@ declare global {
         nameInComfy: 'ToBinaryMask'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactToBinaryMask_input = {
+    export interface ImpactToBinaryMask_input {
         mask: _MASK
         /** default=20 min=255 max=255 */
         threshold?: _INT
@@ -7130,7 +7130,7 @@ declare global {
         nameInComfy: 'MasksToMaskList'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactMasksToMaskList_input = {
+    export interface ImpactMasksToMaskList_input {
         masks: _MASKS
     }
 
@@ -7139,7 +7139,7 @@ declare global {
         nameInComfy: 'MaskListToMaskBatch'
         MASKS: Slot<'MASKS', 0>
     }
-    export type ImpactMaskListToMaskBatch_input = {
+    export interface ImpactMaskListToMaskBatch_input {
         mask: _MASK
     }
 
@@ -7148,7 +7148,7 @@ declare global {
         nameInComfy: 'BboxDetectorSEGS'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactBboxDetectorSEGS_input = {
+    export interface ImpactBboxDetectorSEGS_input {
         bbox_detector: _BBOX_DETECTOR
         image: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
@@ -7166,7 +7166,7 @@ declare global {
         nameInComfy: 'SegmDetectorSEGS'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactSegmDetectorSEGS_input = {
+    export interface ImpactSegmDetectorSEGS_input {
         segm_detector: _SEGM_DETECTOR
         image: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
@@ -7184,7 +7184,7 @@ declare global {
         nameInComfy: 'ONNXDetectorSEGS'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactONNXDetectorSEGS_input = {
+    export interface ImpactONNXDetectorSEGS_input {
         onnx_detector: _ONNX_DETECTOR
         image: _IMAGE
         /** default=0.8 min=1 max=1 step=0.01 */
@@ -7202,7 +7202,7 @@ declare global {
         nameInComfy: 'ImpactSimpleDetectorSEGS'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactImpactSimpleDetectorSEGS_input = {
+    export interface ImpactImpactSimpleDetectorSEGS_input {
         bbox_detector: _BBOX_DETECTOR
         image: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
@@ -7232,7 +7232,7 @@ declare global {
         nameInComfy: 'ImpactSimpleDetectorSEGSPipe'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactImpactSimpleDetectorSEGSPipe_input = {
+    export interface ImpactImpactSimpleDetectorSEGSPipe_input {
         detailer_pipe: _DETAILER_PIPE
         image: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
@@ -7258,7 +7258,7 @@ declare global {
         nameInComfy: 'ImpactControlNetApplySEGS'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactImpactControlNetApplySEGS_input = {
+    export interface ImpactImpactControlNetApplySEGS_input {
         segs: _SEGS
         control_net: _CONTROL_NET
         /** default=1 min=10 max=10 step=0.01 */
@@ -7275,7 +7275,7 @@ declare global {
         SEGS_HEADER: Slot<'SEGS_HEADER', 0>
         SEG_ELT: Slot<'SEG_ELT', 1>
     }
-    export type ImpactImpactDecomposeSEGS_input = {
+    export interface ImpactImpactDecomposeSEGS_input {
         segs: _SEGS
     }
 
@@ -7284,7 +7284,7 @@ declare global {
         nameInComfy: 'ImpactAssembleSEGS'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactImpactAssembleSEGS_input = {
+    export interface ImpactImpactAssembleSEGS_input {
         seg_header: _SEGS_HEADER
         seg_elt: _SEG_ELT
     }
@@ -7310,7 +7310,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 6>
         STRING: Slot<'STRING', 7>
     }
-    export type ImpactImpactFrom_SEG_ELT_input = {
+    export interface ImpactImpactFrom_SEG_ELT_input {
         seg_elt: _SEG_ELT
     }
 
@@ -7319,7 +7319,7 @@ declare global {
         nameInComfy: 'ImpactEdit_SEG_ELT'
         SEG_ELT: Slot<'SEG_ELT', 0>
     }
-    export type ImpactImpactEdit_SEG_ELT_input = {
+    export interface ImpactImpactEdit_SEG_ELT_input {
         seg_elt: _SEG_ELT
         cropped_image_opt?: _IMAGE
         cropped_mask_opt?: _MASK
@@ -7337,7 +7337,7 @@ declare global {
         nameInComfy: 'ImpactDilate_Mask_SEG_ELT'
         SEG_ELT: Slot<'SEG_ELT', 0>
     }
-    export type ImpactImpactDilate_Mask_SEG_ELT_input = {
+    export interface ImpactImpactDilate_Mask_SEG_ELT_input {
         seg_elt: _SEG_ELT
         /** default=10 min=512 max=512 step=1 */
         dilation?: _INT
@@ -7348,7 +7348,7 @@ declare global {
         nameInComfy: 'ImpactDilateMask'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactImpactDilateMask_input = {
+    export interface ImpactImpactDilateMask_input {
         mask: _MASK
         /** default=10 min=512 max=512 step=1 */
         dilation?: _INT
@@ -7361,7 +7361,7 @@ declare global {
         nameInComfy: 'ImpactScaleBy_BBOX_SEG_ELT'
         SEG_ELT: Slot<'SEG_ELT', 0>
     }
-    export type ImpactImpactScaleBy_BBOX_SEG_ELT_input = {
+    export interface ImpactImpactScaleBy_BBOX_SEG_ELT_input {
         seg: _SEG_ELT
         /** default=1 min=8 max=8 step=0.01 */
         scale_by?: _FLOAT
@@ -7372,7 +7372,7 @@ declare global {
         nameInComfy: 'BboxDetectorCombined_v2'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactBboxDetectorCombined_v2_input = {
+    export interface ImpactBboxDetectorCombined_v2_input {
         bbox_detector: _BBOX_DETECTOR
         image: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
@@ -7386,7 +7386,7 @@ declare global {
         nameInComfy: 'SegmDetectorCombined_v2'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactSegmDetectorCombined_v2_input = {
+    export interface ImpactSegmDetectorCombined_v2_input {
         segm_detector: _SEGM_DETECTOR
         image: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
@@ -7400,7 +7400,7 @@ declare global {
         nameInComfy: 'SegsToCombinedMask'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactSegsToCombinedMask_input = {
+    export interface ImpactSegsToCombinedMask_input {
         segs: _SEGS
     }
 
@@ -7409,7 +7409,7 @@ declare global {
         nameInComfy: 'KSamplerProvider'
         KSAMPLER: Slot<'KSAMPLER', 0>
     }
-    export type ImpactKSamplerProvider_input = {
+    export interface ImpactKSamplerProvider_input {
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
         /** default=20 min=10000 max=10000 */
@@ -7428,7 +7428,7 @@ declare global {
         nameInComfy: 'TwoSamplersForMask'
         LATENT: Slot<'LATENT', 0>
     }
-    export type ImpactTwoSamplersForMask_input = {
+    export interface ImpactTwoSamplersForMask_input {
         latent_image: _LATENT
         base_sampler: _KSAMPLER
         mask_sampler: _KSAMPLER
@@ -7440,7 +7440,7 @@ declare global {
         nameInComfy: 'TiledKSamplerProvider'
         KSAMPLER: Slot<'KSAMPLER', 0>
     }
-    export type ImpactTiledKSamplerProvider_input = {
+    export interface ImpactTiledKSamplerProvider_input {
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
         /** default=20 min=10000 max=10000 */
@@ -7466,7 +7466,7 @@ declare global {
         nameInComfy: 'KSamplerAdvancedProvider'
         KSAMPLER_ADVANCED: Slot<'KSAMPLER_ADVANCED', 0>
     }
-    export type ImpactKSamplerAdvancedProvider_input = {
+    export interface ImpactKSamplerAdvancedProvider_input {
         /** default=8 min=100 max=100 */
         cfg?: _FLOAT
         sampler_name: Enum_KSampler_Sampler_name
@@ -7481,7 +7481,7 @@ declare global {
         nameInComfy: 'TwoAdvancedSamplersForMask'
         LATENT: Slot<'LATENT', 0>
     }
-    export type ImpactTwoAdvancedSamplersForMask_input = {
+    export interface ImpactTwoAdvancedSamplersForMask_input {
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
         /** default=20 min=10000 max=10000 */
@@ -7502,7 +7502,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         MASK: Slot<'MASK', 1>
     }
-    export type ImpactPreviewBridge_input = {
+    export interface ImpactPreviewBridge_input {
         images: _IMAGE
         image?: Enum_ImpactPreviewBridge_Image
     }
@@ -7511,7 +7511,7 @@ declare global {
     export interface ImpactImageSender extends ComfyNode<ImpactImageSender_input> {
         nameInComfy: 'ImageSender'
     }
-    export type ImpactImageSender_input = {
+    export interface ImpactImageSender_input {
         images: _IMAGE
         /** default="ImgSender" */
         filename_prefix?: _STRING
@@ -7525,7 +7525,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         MASK: Slot<'MASK', 1>
     }
-    export type ImpactImageReceiver_input = {
+    export interface ImpactImageReceiver_input {
         image: Enum_LoadImage_Image
         /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
         link_id?: _INT
@@ -7535,7 +7535,7 @@ declare global {
     export interface ImpactLatentSender extends ComfyNode<ImpactLatentSender_input> {
         nameInComfy: 'LatentSender'
     }
-    export type ImpactLatentSender_input = {
+    export interface ImpactLatentSender_input {
         samples: _LATENT
         /** default="latents/LatentSender" */
         filename_prefix?: _STRING
@@ -7549,7 +7549,7 @@ declare global {
         nameInComfy: 'LatentReceiver'
         LATENT: Slot<'LATENT', 0>
     }
-    export type ImpactLatentReceiver_input = {
+    export interface ImpactLatentReceiver_input {
         latent: Enum_CLIPLoader_Clip_name
         /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
         link_id?: _INT
@@ -7561,7 +7561,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         MASK: Slot<'MASK', 1>
     }
-    export type ImpactImageMaskSwitch_input = {
+    export interface ImpactImageMaskSwitch_input {
         /** default=1 min=4 max=4 step=1 */
         select?: _INT
         images1: _IMAGE
@@ -7580,7 +7580,7 @@ declare global {
         '*': Slot<'*', 0>
         STRING: Slot<'STRING', 1>
     }
-    export type ImpactLatentSwitch_input = {
+    export interface ImpactLatentSwitch_input {
         /** default=1 min=999999 max=999999 step=1 */
         select?: _INT
         /** default=true */
@@ -7594,7 +7594,7 @@ declare global {
         '*': Slot<'*', 0>
         STRING: Slot<'STRING', 1>
     }
-    export type ImpactSEGSSwitch_input = {
+    export interface ImpactSEGSSwitch_input {
         /** default=1 min=999999 max=999999 step=1 */
         select?: _INT
         /** default=true */
@@ -7608,7 +7608,7 @@ declare global {
         '*': Slot<'*', 0>
         STRING: Slot<'STRING', 1>
     }
-    export type ImpactImpactSwitch_input = {
+    export interface ImpactImpactSwitch_input {
         /** default=1 min=999999 max=999999 step=1 */
         select?: _INT
         /** default=true */
@@ -7720,7 +7720,7 @@ declare global {
         '*_98': Slot<'*', 98>
         '*_99': Slot<'*', 99>
     }
-    export type ImpactImpactInversedSwitch_input = {
+    export interface ImpactImpactInversedSwitch_input {
         /** default=1 min=999999 max=999999 step=1 */
         select?: _INT
         input: _STAR
@@ -7731,7 +7731,7 @@ declare global {
         nameInComfy: 'ImpactWildcardProcessor'
         STRING: Slot<'STRING', 0>
     }
-    export type ImpactImpactWildcardProcessor_input = {
+    export interface ImpactImpactWildcardProcessor_input {
         /** */
         wildcard_text: _STRING
         /** */
@@ -7755,7 +7755,7 @@ declare global {
         CONDITIONING: Slot<'CONDITIONING', 2>
         STRING: Slot<'STRING', 3>
     }
-    export type ImpactImpactWildcardEncode_input = {
+    export interface ImpactImpactWildcardEncode_input {
         model: _MODEL
         clip: _CLIP
         /** */
@@ -7775,7 +7775,7 @@ declare global {
         SEGS: Slot<'SEGS', 0>
         IMAGE: Slot<'IMAGE', 1>
     }
-    export type ImpactSEGSDetailer_input = {
+    export interface ImpactSEGSDetailer_input {
         image: _IMAGE
         segs: _SEGS
         /** default=256 min=8192 max=8192 step=8 */
@@ -7809,7 +7809,7 @@ declare global {
         nameInComfy: 'SEGSPaste'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImpactSEGSPaste_input = {
+    export interface ImpactSEGSPaste_input {
         image: _IMAGE
         segs: _SEGS
         /** default=5 min=100 max=100 step=1 */
@@ -7821,7 +7821,7 @@ declare global {
     export interface ImpactSEGSPreview extends ComfyNode<ImpactSEGSPreview_input> {
         nameInComfy: 'SEGSPreview'
     }
-    export type ImpactSEGSPreview_input = {
+    export interface ImpactSEGSPreview_input {
         segs: _SEGS
         fallback_image_opt?: _IMAGE
     }
@@ -7831,7 +7831,7 @@ declare global {
         nameInComfy: 'SEGSToImageList'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImpactSEGSToImageList_input = {
+    export interface ImpactSEGSToImageList_input {
         segs: _SEGS
         fallback_image_opt?: _IMAGE
     }
@@ -7841,7 +7841,7 @@ declare global {
         nameInComfy: 'ImpactSEGSToMaskList'
         MASK: Slot<'MASK', 0>
     }
-    export type ImpactImpactSEGSToMaskList_input = {
+    export interface ImpactImpactSEGSToMaskList_input {
         segs: _SEGS
     }
 
@@ -7850,7 +7850,7 @@ declare global {
         nameInComfy: 'ImpactSEGSToMaskBatch'
         MASKS: Slot<'MASKS', 0>
     }
-    export type ImpactImpactSEGSToMaskBatch_input = {
+    export interface ImpactImpactSEGSToMaskBatch_input {
         segs: _SEGS
     }
 
@@ -7859,7 +7859,7 @@ declare global {
         nameInComfy: 'ImpactSEGSConcat'
         SEGS: Slot<'SEGS', 0>
     }
-    export type ImpactImpactSEGSConcat_input = {
+    export interface ImpactImpactSEGSConcat_input {
         segs1: _SEGS
         segs2: _SEGS
     }
@@ -7875,7 +7875,7 @@ declare global {
         LATENT: Slot<'LATENT', 1>
         VAE: Slot<'VAE', 2>
     }
-    export type ImpactKSamplerBasicPipe_input = {
+    export interface ImpactKSamplerBasicPipe_input {
         basic_pipe: _BASIC_PIPE
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
@@ -7901,7 +7901,7 @@ declare global {
         LATENT: Slot<'LATENT', 1>
         VAE: Slot<'VAE', 2>
     }
-    export type ImpactKSamplerAdvancedBasicPipe_input = {
+    export interface ImpactKSamplerAdvancedBasicPipe_input {
         basic_pipe: _BASIC_PIPE
         /** default=true */
         add_noise?: _BOOLEAN
@@ -7927,7 +7927,7 @@ declare global {
         nameInComfy: 'ReencodeLatent'
         LATENT: Slot<'LATENT', 0>
     }
-    export type ImpactReencodeLatent_input = {
+    export interface ImpactReencodeLatent_input {
         samples: _LATENT
         tile_mode: Enum_ImpactReencodeLatent_Tile_mode
         input_vae: _VAE
@@ -7941,7 +7941,7 @@ declare global {
         nameInComfy: 'ReencodeLatentPipe'
         LATENT: Slot<'LATENT', 0>
     }
-    export type ImpactReencodeLatentPipe_input = {
+    export interface ImpactReencodeLatentPipe_input {
         samples: _LATENT
         tile_mode: Enum_ImpactReencodeLatent_Tile_mode
         input_basic_pipe: _BASIC_PIPE
@@ -7955,7 +7955,7 @@ declare global {
         nameInComfy: 'ImpactImageBatchToImageList'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImpactImpactImageBatchToImageList_input = {
+    export interface ImpactImpactImageBatchToImageList_input {
         image: _IMAGE
     }
 
@@ -7964,7 +7964,7 @@ declare global {
         nameInComfy: 'ImpactMakeImageList'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImpactImpactMakeImageList_input = {
+    export interface ImpactImpactMakeImageList_input {
         image1: _IMAGE
     }
 
@@ -7973,7 +7973,7 @@ declare global {
         nameInComfy: 'RegionalSampler'
         LATENT: Slot<'LATENT', 0>
     }
-    export type ImpactRegionalSampler_input = {
+    export interface ImpactRegionalSampler_input {
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
         /** default=20 min=10000 max=10000 */
@@ -7994,7 +7994,7 @@ declare global {
         nameInComfy: 'CombineRegionalPrompts'
         REGIONAL_PROMPTS: Slot<'REGIONAL_PROMPTS', 0>
     }
-    export type ImpactCombineRegionalPrompts_input = {
+    export interface ImpactCombineRegionalPrompts_input {
         regional_prompts1: _REGIONAL_PROMPTS
     }
 
@@ -8003,7 +8003,7 @@ declare global {
         nameInComfy: 'RegionalPrompt'
         REGIONAL_PROMPTS: Slot<'REGIONAL_PROMPTS', 0>
     }
-    export type ImpactRegionalPrompt_input = {
+    export interface ImpactRegionalPrompt_input {
         mask: _MASK
         advanced_sampler: _KSAMPLER_ADVANCED
     }
@@ -8014,7 +8014,7 @@ declare global {
         SEGS: Slot<'SEGS', 0>
         SEGS_1: Slot<'SEGS', 1>
     }
-    export type ImpactImpactSEGSLabelFilter_input = {
+    export interface ImpactImpactSEGSLabelFilter_input {
         segs: _SEGS
         preset: Enum_ImpactImpactSEGSLabelFilter_Preset
         /** */
@@ -8027,7 +8027,7 @@ declare global {
         SEGS: Slot<'SEGS', 0>
         SEGS_1: Slot<'SEGS', 1>
     }
-    export type ImpactImpactSEGSRangeFilter_input = {
+    export interface ImpactImpactSEGSRangeFilter_input {
         segs: _SEGS
         target: Enum_ImpactImpactSEGSRangeFilter_Target
         /** default=true */
@@ -8044,7 +8044,7 @@ declare global {
         SEGS: Slot<'SEGS', 0>
         SEGS_1: Slot<'SEGS', 1>
     }
-    export type ImpactImpactSEGSOrderedFilter_input = {
+    export interface ImpactImpactSEGSOrderedFilter_input {
         segs: _SEGS
         target: Enum_ImpactImpactSEGSOrderedFilter_Target
         /** default=true */
@@ -8060,7 +8060,7 @@ declare global {
         nameInComfy: 'ImpactCompare'
         BOOLEAN: Slot<'BOOLEAN', 0>
     }
-    export type ImpactImpactCompare_input = {
+    export interface ImpactImpactCompare_input {
         cmp: Enum_ImpactImpactCompare_Cmp
         a: _STAR
         b: _STAR
@@ -8071,7 +8071,7 @@ declare global {
         nameInComfy: 'ImpactConditionalBranch'
         '*': Slot<'*', 0>
     }
-    export type ImpactImpactConditionalBranch_input = {
+    export interface ImpactImpactConditionalBranch_input {
         /** */
         cond: _BOOLEAN
         tt_value: _STAR
@@ -8083,7 +8083,7 @@ declare global {
         nameInComfy: 'ImpactInt'
         INT: Slot<'INT', 0>
     }
-    export type ImpactImpactInt_input = {
+    export interface ImpactImpactInt_input {
         /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
         value?: _INT
     }
@@ -8092,7 +8092,7 @@ declare global {
     export interface ImpactImpactValueSender extends ComfyNode<ImpactImpactValueSender_input> {
         nameInComfy: 'ImpactValueSender'
     }
-    export type ImpactImpactValueSender_input = {
+    export interface ImpactImpactValueSender_input {
         value: _STAR
         /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
         link_id?: _INT
@@ -8103,7 +8103,7 @@ declare global {
         nameInComfy: 'ImpactValueReceiver'
         '*': Slot<'*', 0>
     }
-    export type ImpactImpactValueReceiver_input = {
+    export interface ImpactImpactValueReceiver_input {
         typ: Enum_ImpactImpactValueReceiver_Typ
         /** default="" */
         value?: _STRING
@@ -8119,7 +8119,7 @@ declare global {
         INT_2: Slot<'INT', 2>
         INT_3: Slot<'INT', 3>
     }
-    export type ImpactImpactImageInfo_input = {
+    export interface ImpactImpactImageInfo_input {
         value: _IMAGE
     }
 
@@ -8128,7 +8128,7 @@ declare global {
         nameInComfy: 'ImpactMinMax'
         INT: Slot<'INT', 0>
     }
-    export type ImpactImpactMinMax_input = {
+    export interface ImpactImpactMinMax_input {
         /** default=true */
         mode?: _BOOLEAN
         a: _STAR
@@ -8140,7 +8140,7 @@ declare global {
         nameInComfy: 'ImpactNeg'
         BOOLEAN: Slot<'BOOLEAN', 0>
     }
-    export type ImpactImpactNeg_input = {
+    export interface ImpactImpactNeg_input {
         /** */
         value: _BOOLEAN
     }
@@ -8149,7 +8149,7 @@ declare global {
     export interface ImpactImpactConditionalStopIteration extends ComfyNode<ImpactImpactConditionalStopIteration_input> {
         nameInComfy: 'ImpactConditionalStopIteration'
     }
-    export type ImpactImpactConditionalStopIteration_input = {
+    export interface ImpactImpactConditionalStopIteration_input {
         /** */
         cond: _BOOLEAN
     }
@@ -8159,7 +8159,7 @@ declare global {
         nameInComfy: 'ImpactStringSelector'
         STRING: Slot<'STRING', 0>
     }
-    export type ImpactImpactStringSelector_input = {
+    export interface ImpactImpactStringSelector_input {
         /** */
         strings: _STRING
         /** default=false */
@@ -8173,7 +8173,7 @@ declare global {
         nameInComfy: 'RemoveNoiseMask'
         LATENT: Slot<'LATENT', 0>
     }
-    export type ImpactRemoveNoiseMask_input = {
+    export interface ImpactRemoveNoiseMask_input {
         samples: _LATENT
     }
 
@@ -8181,7 +8181,7 @@ declare global {
     export interface ImpactImpactLogger extends ComfyNode<ImpactImpactLogger_input> {
         nameInComfy: 'ImpactLogger'
     }
-    export type ImpactImpactLogger_input = {
+    export interface ImpactImpactLogger_input {
         data: _STAR
     }
 
@@ -8190,7 +8190,7 @@ declare global {
         nameInComfy: 'ImpactDummyInput'
         '*': Slot<'*', 0>
     }
-    export type ImpactImpactDummyInput_input = {}
+    export interface ImpactImpactDummyInput_input {}
 
     // UltralyticsDetectorProvider [ImpactPack]
     export interface ImpactUltralyticsDetectorProvider
@@ -8201,7 +8201,7 @@ declare global {
         BBOX_DETECTOR: Slot<'BBOX_DETECTOR', 0>
         SEGM_DETECTOR: Slot<'SEGM_DETECTOR', 1>
     }
-    export type ImpactUltralyticsDetectorProvider_input = {
+    export interface ImpactUltralyticsDetectorProvider_input {
         model_name: Enum_ImpactUltralyticsDetectorProvider_Model_name
     }
 
@@ -8211,7 +8211,7 @@ declare global {
         XY: Slot<'XY', 0>
         XY_1: Slot<'XY', 1>
     }
-    export type XYInputLoraBlockWeightInspire_input = {
+    export interface XYInputLoraBlockWeightInspire_input {
         lora_name: Enum_LoraLoader_Lora_name
         /** default=1 min=10 max=10 step=0.01 */
         strength_model?: _FLOAT
@@ -8247,7 +8247,7 @@ declare global {
         CLIP: Slot<'CLIP', 1>
         STRING: Slot<'STRING', 2>
     }
-    export type LoraLoaderBlockWeightInspire_input = {
+    export interface LoraLoaderBlockWeightInspire_input {
         model: _MODEL
         clip: _CLIP
         lora_name: Enum_LoraLoader_Lora_name
@@ -8272,7 +8272,7 @@ declare global {
     export interface LoraBlockInfoInspire extends ComfyNode<LoraBlockInfoInspire_input> {
         nameInComfy: 'LoraBlockInfo //Inspire'
     }
-    export type LoraBlockInfoInspire_input = {
+    export interface LoraBlockInfoInspire_input {
         model: _MODEL
         clip: _CLIP
         lora_name: Enum_LoraLoader_Lora_name
@@ -8287,7 +8287,7 @@ declare global {
         nameInComfy: 'OpenPose_Preprocessor_Provider_for_SEGS //Inspire'
         SEGS_PREPROCESSOR: Slot<'SEGS_PREPROCESSOR', 0>
     }
-    export type OpenPose_Preprocessor_Provider_for_SEGSInspire_input = {
+    export interface OpenPose_Preprocessor_Provider_for_SEGSInspire_input {
         /** default=true */
         detect_hand?: _BOOLEAN
         /** default=true */
@@ -8303,7 +8303,7 @@ declare global {
         nameInComfy: 'DWPreprocessor_Provider_for_SEGS //Inspire'
         SEGS_PREPROCESSOR: Slot<'SEGS_PREPROCESSOR', 0>
     }
-    export type DWPreprocessor_Provider_for_SEGSInspire_input = {
+    export interface DWPreprocessor_Provider_for_SEGSInspire_input {
         /** default=true */
         detect_hand?: _BOOLEAN
         /** default=true */
@@ -8319,7 +8319,7 @@ declare global {
         nameInComfy: 'MiDaS_DepthMap_Preprocessor_Provider_for_SEGS //Inspire'
         SEGS_PREPROCESSOR: Slot<'SEGS_PREPROCESSOR', 0>
     }
-    export type MiDaS_DepthMap_Preprocessor_Provider_for_SEGSInspire_input = {
+    export interface MiDaS_DepthMap_Preprocessor_Provider_for_SEGSInspire_input {
         /** default=6.283185307179586 min=15.707963267948966 max=15.707963267948966 step=0.05 */
         a?: _FLOAT
         /** default=0.1 min=1 max=1 step=0.05 */
@@ -8333,7 +8333,7 @@ declare global {
         nameInComfy: 'LeRes_DepthMap_Preprocessor_Provider_for_SEGS //Inspire'
         SEGS_PREPROCESSOR: Slot<'SEGS_PREPROCESSOR', 0>
     }
-    export type LeRes_DepthMap_Preprocessor_Provider_for_SEGSInspire_input = {
+    export interface LeRes_DepthMap_Preprocessor_Provider_for_SEGSInspire_input {
         /** default=0 min=100 max=100 step=0.1 */
         rm_nearest?: _FLOAT
         /** default=0 min=100 max=100 step=0.1 */
@@ -8349,7 +8349,7 @@ declare global {
         nameInComfy: 'Canny_Preprocessor_Provider_for_SEGS //Inspire'
         SEGS_PREPROCESSOR: Slot<'SEGS_PREPROCESSOR', 0>
     }
-    export type Canny_Preprocessor_Provider_for_SEGSInspire_input = {
+    export interface Canny_Preprocessor_Provider_for_SEGSInspire_input {
         /** default=0.4 min=0.99 max=0.99 step=0.01 */
         low_threshold?: _FLOAT
         /** default=0.8 min=0.99 max=0.99 step=0.01 */
@@ -8363,7 +8363,7 @@ declare global {
         nameInComfy: 'MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGS //Inspire'
         SEGS_PREPROCESSOR: Slot<'SEGS_PREPROCESSOR', 0>
     }
-    export type MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGSInspire_input = {
+    export interface MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGSInspire_input {
         /** default=10 min=50 max=50 step=1 */
         max_faces?: _INT
         /** default=0.5 min=1 max=1 step=0.01 */
@@ -8379,7 +8379,7 @@ declare global {
         BBOX_DETECTOR: Slot<'BBOX_DETECTOR', 0>
         SEGM_DETECTOR: Slot<'SEGM_DETECTOR', 1>
     }
-    export type MediaPipeFaceMeshDetectorProviderInspire_input = {
+    export interface MediaPipeFaceMeshDetectorProviderInspire_input {
         /** default=10 min=50 max=50 step=1 */
         max_faces?: _INT
         /** default=true */
@@ -8407,7 +8407,7 @@ declare global {
         nameInComfy: 'HEDPreprocessor_Provider_for_SEGS //Inspire'
         SEGS_PREPROCESSOR: Slot<'SEGS_PREPROCESSOR', 0>
     }
-    export type HEDPreprocessor_Provider_for_SEGSInspire_input = {
+    export interface HEDPreprocessor_Provider_for_SEGSInspire_input {
         /** default=true */
         safe?: _BOOLEAN
     }
@@ -8419,7 +8419,7 @@ declare global {
         nameInComfy: 'FakeScribblePreprocessor_Provider_for_SEGS //Inspire'
         SEGS_PREPROCESSOR: Slot<'SEGS_PREPROCESSOR', 0>
     }
-    export type FakeScribblePreprocessor_Provider_for_SEGSInspire_input = {
+    export interface FakeScribblePreprocessor_Provider_for_SEGSInspire_input {
         /** default=true */
         safe?: _BOOLEAN
     }
@@ -8429,7 +8429,7 @@ declare global {
         nameInComfy: 'KSampler //Inspire'
         LATENT: Slot<'LATENT', 0>
     }
-    export type KSamplerInspire_input = {
+    export interface KSamplerInspire_input {
         model: _MODEL
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
@@ -8452,7 +8452,7 @@ declare global {
         nameInComfy: 'LoadPromptsFromDir //Inspire'
         ZIPPED_PROMPT: Slot<'ZIPPED_PROMPT', 0>
     }
-    export type LoadPromptsFromDirInspire_input = {
+    export interface LoadPromptsFromDirInspire_input {
         prompt_dir: Enum_LoadPromptsFromDirInspire_Prompt_dir
     }
 
@@ -8463,7 +8463,7 @@ declare global {
         STRING_1: Slot<'STRING', 1>
         STRING_2: Slot<'STRING', 2>
     }
-    export type UnzipPromptInspire_input = {
+    export interface UnzipPromptInspire_input {
         zipped_prompt: _ZIPPED_PROMPT
     }
 
@@ -8472,7 +8472,7 @@ declare global {
         nameInComfy: 'ZipPrompt //Inspire'
         ZIPPED_PROMPT: Slot<'ZIPPED_PROMPT', 0>
     }
-    export type ZipPromptInspire_input = {
+    export interface ZipPromptInspire_input {
         /** */
         positive: _STRING
         /** */
@@ -8487,7 +8487,7 @@ declare global {
         STRING: Slot<'STRING', 0>
         STRING_1: Slot<'STRING', 1>
     }
-    export type PromptExtractorInspire_input = {
+    export interface PromptExtractorInspire_input {
         /** */
         image: Enum_LoadImage_Image
         /** */
@@ -8502,7 +8502,7 @@ declare global {
     export interface GlobalSeedInspire extends ComfyNode<GlobalSeedInspire_input> {
         nameInComfy: 'GlobalSeed //Inspire'
     }
-    export type GlobalSeedInspire_input = {
+    export interface GlobalSeedInspire_input {
         /** default=0 min=1125899906842624 max=1125899906842624 */
         value?: _INT
         /** default=true */
@@ -8515,7 +8515,7 @@ declare global {
         nameInComfy: 'BNK_TiledKSamplerAdvanced'
         LATENT: Slot<'LATENT', 0>
     }
-    export type BNK_TiledKSamplerAdvanced_input = {
+    export interface BNK_TiledKSamplerAdvanced_input {
         model: _MODEL
         add_noise: Enum_KSamplerAdvanced_Add_noise
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -8547,7 +8547,7 @@ declare global {
         nameInComfy: 'BNK_TiledKSampler'
         LATENT: Slot<'LATENT', 0>
     }
-    export type BNK_TiledKSampler_input = {
+    export interface BNK_TiledKSampler_input {
         model: _MODEL
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
@@ -8584,7 +8584,7 @@ declare global {
         VAE: Slot<'VAE', 4>
         IMAGE: Slot<'IMAGE', 5>
     }
-    export type KSamplerEfficient_input = {
+    export interface KSamplerEfficient_input {
         sampler_state: Enum_KSamplerEfficient_Sampler_state
         model: _MODEL
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -8621,7 +8621,7 @@ declare global {
         VAE: Slot<'VAE', 4>
         IMAGE: Slot<'IMAGE', 5>
     }
-    export type KSamplerAdvEfficient_input = {
+    export interface KSamplerAdvEfficient_input {
         sampler_state: Enum_KSamplerEfficient_Sampler_state
         model: _MODEL
         add_noise: Enum_KSamplerAdvanced_Add_noise
@@ -8660,7 +8660,7 @@ declare global {
         VAE: Slot<'VAE', 2>
         IMAGE: Slot<'IMAGE', 3>
     }
-    export type KSamplerSDXLEff_input = {
+    export interface KSamplerSDXLEff_input {
         sampler_state: Enum_KSamplerEfficient_Sampler_state
         sdxl_tuple: _SDXL_TUPLE
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -8699,7 +8699,7 @@ declare global {
         CLIP: Slot<'CLIP', 5>
         DEPENDENCIES: Slot<'DEPENDENCIES', 6>
     }
-    export type EfficientLoader_input = {
+    export interface EfficientLoader_input {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
         vae_name: Enum_EfficientLoader_Vae_name
         /** default=-1 min=-1 max=-1 step=1 */
@@ -8736,7 +8736,7 @@ declare global {
         VAE: Slot<'VAE', 2>
         DEPENDENCIES: Slot<'DEPENDENCIES', 3>
     }
-    export type EffLoaderSDXL_input = {
+    export interface EffLoaderSDXL_input {
         base_ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
         /** default=-1 min=-1 max=-1 step=1 */
         base_clip_skip?: _INT
@@ -8767,7 +8767,7 @@ declare global {
         nameInComfy: 'LoRA Stacker'
         LORA_STACK: Slot<'LORA_STACK', 0>
     }
-    export type LoRAStacker_input = {
+    export interface LoRAStacker_input {
         input_mode: Enum_LoRAStacker_Input_mode
         /** default=3 min=50 max=50 step=1 */
         lora_count?: _INT
@@ -9122,7 +9122,7 @@ declare global {
         nameInComfy: 'Control Net Stacker'
         CONTROL_NET_STACK: Slot<'CONTROL_NET_STACK', 0>
     }
-    export type ControlNetStacker_input = {
+    export interface ControlNetStacker_input {
         control_net: _CONTROL_NET
         image: _IMAGE
         /** default=1 min=10 max=10 step=0.01 */
@@ -9140,7 +9140,7 @@ declare global {
         CONDITIONING: Slot<'CONDITIONING', 0>
         CONDITIONING_1: Slot<'CONDITIONING', 1>
     }
-    export type ApplyControlNetStack_input = {
+    export interface ApplyControlNetStack_input {
         positive: _CONDITIONING
         negative: _CONDITIONING
         cnet_stack: _CONTROL_NET_STACK
@@ -9158,7 +9158,7 @@ declare global {
         CONDITIONING_2: Slot<'CONDITIONING', 6>
         CONDITIONING_3: Slot<'CONDITIONING', 7>
     }
-    export type UnpackSDXLTuple_input = {
+    export interface UnpackSDXLTuple_input {
         sdxl_tuple: _SDXL_TUPLE
     }
 
@@ -9167,7 +9167,7 @@ declare global {
         nameInComfy: 'Pack SDXL Tuple'
         SDXL_TUPLE: Slot<'SDXL_TUPLE', 0>
     }
-    export type PackSDXLTuple_input = {
+    export interface PackSDXLTuple_input {
         base_model: _MODEL
         base_clip: _CLIP
         base_positive: _CONDITIONING
@@ -9183,7 +9183,7 @@ declare global {
         nameInComfy: 'XY Plot'
         SCRIPT: Slot<'SCRIPT', 0>
     }
-    export type XYPlot_input = {
+    export interface XYPlot_input {
         /** default=0 min=500 max=500 step=5 */
         grid_spacing?: _INT
         XY_flip: Enum_XYPlot_XY_flip
@@ -9200,7 +9200,7 @@ declare global {
         nameInComfy: 'XY Input: Seeds++ Batch'
         XY: Slot<'XY', 0>
     }
-    export type XYInputSeedsBatch_input = {
+    export interface XYInputSeedsBatch_input {
         /** default=3 min=50 max=50 */
         batch_count?: _INT
     }
@@ -9210,7 +9210,7 @@ declare global {
         nameInComfy: 'XY Input: Add/Return Noise'
         XY: Slot<'XY', 0>
     }
-    export type XYInputAddReturnNoise_input = {
+    export interface XYInputAddReturnNoise_input {
         XY_type: Enum_XYInputAddReturnNoise_XY_type
     }
 
@@ -9219,7 +9219,7 @@ declare global {
         nameInComfy: 'XY Input: Steps'
         XY: Slot<'XY', 0>
     }
-    export type XYInputSteps_input = {
+    export interface XYInputSteps_input {
         target_parameter: Enum_XYInputSteps_Target_parameter
         /** default=3 min=50 max=50 */
         batch_count?: _INT
@@ -9246,7 +9246,7 @@ declare global {
         nameInComfy: 'XY Input: CFG Scale'
         XY: Slot<'XY', 0>
     }
-    export type XYInputCFGScale_input = {
+    export interface XYInputCFGScale_input {
         /** default=3 min=50 max=50 */
         batch_count?: _INT
         /** default=7 min=100 max=100 */
@@ -9260,7 +9260,7 @@ declare global {
         nameInComfy: 'XY Input: Sampler/Scheduler'
         XY: Slot<'XY', 0>
     }
-    export type XYInputSamplerScheduler_input = {
+    export interface XYInputSamplerScheduler_input {
         target_parameter: Enum_XYInputSamplerScheduler_Target_parameter
         /** default=3 min=50 max=50 step=1 */
         input_count?: _INT
@@ -9371,7 +9371,7 @@ declare global {
         nameInComfy: 'XY Input: Denoise'
         XY: Slot<'XY', 0>
     }
-    export type XYInputDenoise_input = {
+    export interface XYInputDenoise_input {
         /** default=3 min=50 max=50 */
         batch_count?: _INT
         /** default=0 min=1 max=1 step=0.01 */
@@ -9385,7 +9385,7 @@ declare global {
         nameInComfy: 'XY Input: VAE'
         XY: Slot<'XY', 0>
     }
-    export type XYInputVAE_input = {
+    export interface XYInputVAE_input {
         input_mode: Enum_XYInputVAE_Input_mode
         /** default="C:\\example_folder" */
         batch_path?: _STRING
@@ -9453,7 +9453,7 @@ declare global {
         nameInComfy: 'XY Input: Prompt S/R'
         XY: Slot<'XY', 0>
     }
-    export type XYInputPromptSR_input = {
+    export interface XYInputPromptSR_input {
         target_prompt: Enum_XYInputPromptSR_Target_prompt
         /** default="" */
         search_txt?: _STRING
@@ -9564,7 +9564,7 @@ declare global {
         nameInComfy: 'XY Input: Aesthetic Score'
         XY: Slot<'XY', 0>
     }
-    export type XYInputAestheticScore_input = {
+    export interface XYInputAestheticScore_input {
         target_ascore: Enum_XYInputPromptSR_Target_prompt
         /** default=3 min=50 max=50 */
         batch_count?: _INT
@@ -9579,7 +9579,7 @@ declare global {
         nameInComfy: 'XY Input: Refiner On/Off'
         XY: Slot<'XY', 0>
     }
-    export type XYInputRefinerOnOff_input = {
+    export interface XYInputRefinerOnOff_input {
         /** default=0.8 min=1 max=1 step=0.01 */
         refine_at_percent?: _FLOAT
     }
@@ -9589,7 +9589,7 @@ declare global {
         nameInComfy: 'XY Input: Checkpoint'
         XY: Slot<'XY', 0>
     }
-    export type XYInputCheckpoint_input = {
+    export interface XYInputCheckpoint_input {
         target_ckpt: Enum_XYInputCheckpoint_Target_ckpt
         input_mode: Enum_XYInputCheckpoint_Input_mode
         /** default="C:\\example_folder" */
@@ -9808,7 +9808,7 @@ declare global {
         nameInComfy: 'XY Input: Clip Skip'
         XY: Slot<'XY', 0>
     }
-    export type XYInputClipSkip_input = {
+    export interface XYInputClipSkip_input {
         target_ckpt: Enum_XYInputCheckpoint_Target_ckpt
         /** default=3 min=50 max=50 */
         batch_count?: _INT
@@ -9823,7 +9823,7 @@ declare global {
         nameInComfy: 'XY Input: LoRA'
         XY: Slot<'XY', 0>
     }
-    export type XYInputLoRA_input = {
+    export interface XYInputLoRA_input {
         input_mode: Enum_XYInputLoRA_Input_mode
         /** default="C:\\example_folder" */
         batch_path?: _STRING
@@ -10097,7 +10097,7 @@ declare global {
         XY: Slot<'XY', 0>
         XY_1: Slot<'XY', 1>
     }
-    export type XYInputLoRAPlot_input = {
+    export interface XYInputLoRAPlot_input {
         input_mode: Enum_XYInputLoRAPlot_Input_mode
         lora_name: Enum_EfficientLoader_Lora_name
         /** default=1 min=10 max=10 step=0.01 */
@@ -10129,7 +10129,7 @@ declare global {
         nameInComfy: 'XY Input: LoRA Stacks'
         XY: Slot<'XY', 0>
     }
-    export type XYInputLoRAStacks_input = {
+    export interface XYInputLoRAStacks_input {
         node_state: Enum_XYInputLoRAStacks_Node_state
         lora_stack_1?: _LORA_STACK
         lora_stack_2?: _LORA_STACK
@@ -10143,7 +10143,7 @@ declare global {
         nameInComfy: 'XY Input: Control Net'
         XY: Slot<'XY', 0>
     }
-    export type XYInputControlNet_input = {
+    export interface XYInputControlNet_input {
         control_net: _CONTROL_NET
         image: _IMAGE
         target_parameter: Enum_XYInputControlNet_Target_parameter
@@ -10176,7 +10176,7 @@ declare global {
         XY: Slot<'XY', 0>
         XY_1: Slot<'XY', 1>
     }
-    export type XYInputControlNetPlot_input = {
+    export interface XYInputControlNetPlot_input {
         control_net: _CONTROL_NET
         image: _IMAGE
         plot_type: Enum_XYInputControlNetPlot_Plot_type
@@ -10206,7 +10206,7 @@ declare global {
         nameInComfy: 'XY Input: Manual XY Entry'
         XY: Slot<'XY', 0>
     }
-    export type XYInputManualXYEntry_input = {
+    export interface XYInputManualXYEntry_input {
         plot_type: Enum_XYInputManualXYEntry_Plot_type
         /** default="" */
         plot_value?: _STRING
@@ -10216,7 +10216,7 @@ declare global {
     export interface ManualXYEntryInfo extends ComfyNode<ManualXYEntryInfo_input> {
         nameInComfy: 'Manual XY Entry Info'
     }
-    export type ManualXYEntryInfo_input = {
+    export interface ManualXYEntryInfo_input {
         /** default="_____________SYNTAX_____________\n(X/Y_types)     (X/Y_values)\nSeeds++ Batch   batch_count\nSteps           steps_1;steps_2;...\nStartStep       start_step_1;start_step_2;...\nEndStep         end_step_1;end_step_2;...\nCFG Scale       cfg_1;cfg_2;...\nSampler(1)      sampler_1;sampler_2;...\nSampler(2)      sampler_1,scheduler_1;...\nSampler(3)      sampler_1;...;,default_scheduler\nScheduler       scheduler_1;scheduler_2;...\nDenoise         denoise_1;denoise_2;...\nVAE             vae_1;vae_2;vae_3;...\n+Prompt S/R     search_txt;replace_1;replace_2;...\n-Prompt S/R     search_txt;replace_1;replace_2;...\nCheckpoint(1)   ckpt_1;ckpt_2;ckpt_3;...\nCheckpoint(2)   ckpt_1,clip_skip_1;...\nCheckpoint(3)   ckpt_1;ckpt_2;...;,default_clip_skip\nClip Skip       clip_skip_1;clip_skip_2;...\nLoRA(1)         lora_1;lora_2;lora_3;...\nLoRA(2)         lora_1;...;,default_model_str,default_clip_str\nLoRA(3)         lora_1,model_str_1,clip_str_1;...\n\n____________SAMPLERS____________\neuler;\neuler_ancestral;\nheun;\ndpm_2;\ndpm_2_ancestral;\nlms;\ndpm_fast;\ndpm_adaptive;\ndpmpp_2s_ancestral;\ndpmpp_sde;\ndpmpp_sde_gpu;\ndpmpp_2m;\ndpmpp_2m_sde;\ndpmpp_2m_sde_gpu;\ndpmpp_3m_sde;\ndpmpp_3m_sde_gpu;\nddpm;\nddim;\nuni_pc;\nuni_pc_bh2\n\n___________SCHEDULERS___________\nnormal;\nkarras;\nexponential;\nsgm_uniform;\nsimple;\nddim_uniform\n\n_____________VAES_______________\nblessed2.vae.pt;\nkl-f8-anime2.ckpt;\norangemix.vae.pt;\nvae-ft-mse-840000-ema-pruned.safetensors\n\n___________CHECKPOINTS__________\nAOM3A1_orangemixs.safetensors;\nAOM3A3_orangemixs.safetensors;\nAbyssOrangeMix2_hard.safetensors;\nDeliberate-inpainting.safetensors;\nSevenof9V3.safetensors;\nalbedobaseXL_v02.safetensors;\nangel1_36224.safetensors;\nanything-v3-fp16-pruned.safetensors;\ndeliberate_v2.safetensors;\ndreamshaperXL10_alpha2Xl10.safetensors;\ndynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors;\nghostmix_v12.safetensors;\njuggernautXL_version3.safetensors;\nlyriel_v15.safetensors;\nmistoonAnime_v10.safetensors;\nmistoonAnime_v10Inpainting.safetensors;\nrealisticVisionV20_v20.safetensors;\nrevAnimated_v121.safetensors;\nrevAnimated_v121Inp-inpainting.safetensors;\nrevAnimated_v122.safetensors;\nsd_xl_base_1.0.safetensors;\nsd_xl_refiner_1.0.safetensors;\ntoonyou_beta1.safetensors;\nv1-5-pruned-emaonly.ckpt;\nv1-5-pruned-emaonly.safetensors;\nv2-1_512-ema-pruned.safetensors;\nv2-1_768-ema-pruned.safetensors;\nwd-1-5-beta2-aesthetic-unclip-h-fp16.safetensors;\nwd-1-5-beta2-fp16.safetensors\n\n_____________LORAS______________\nCharacter Design.safetensors;\nIsometric Cutaway.safetensors;\nStained Glass Portrait.safetensors;\npxll.safetensors;\nsd15\\animemix_16.safetensors;\nsd15\\animemix_v3_offset.safetensors;\nsd15\\chars\\dark_magician_girl.safetensors;\nsd15\\chars\\yorha_noDOT_2_type_b.safetensors;\nsd15\\colors\\LowRa.safetensors;\nsd15\\colors\\theovercomer8sContrastFix_sd15.safetensors;\nsd15\\colors\\theovercomer8sContrastFix_sd21768.safetensors;\nsd15\\styles\\ConstructionyardAIV3.safetensors;\nsd15\\styles\\StonepunkAI-000011.safetensors;\nsd15\\styles\\ToonYou_Style.safetensors;\nsd15\\styles\\baroqueAI.safetensors;\nsd15\\styles\\pixel_f2.safetensors;\nsd15\\test\\Moxin_10.safetensors;\nsd15\\test\\animeLineartMangaLike_v30MangaLike.safetensors;\nsd15\\utils\\charTurnBetaLora.safetensors;\nsdxl-baton-v02-e93.safetensors\n" */
         notes?: _STRING
     }
@@ -10226,7 +10226,7 @@ declare global {
         nameInComfy: 'Join XY Inputs of Same Type'
         XY: Slot<'XY', 0>
     }
-    export type JoinXYInputsOfSameType_input = {
+    export interface JoinXYInputsOfSameType_input {
         XY_1: _XY
         XY_2: _XY
     }
@@ -10236,7 +10236,7 @@ declare global {
         nameInComfy: 'Image Overlay'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageOverlay_input = {
+    export interface ImageOverlay_input {
         base_image: _IMAGE
         overlay_image: _IMAGE
         overlay_resize: Enum_ImageOverlay_Overlay_resize
@@ -10263,7 +10263,7 @@ declare global {
         nameInComfy: 'HighRes-Fix Script'
         SCRIPT: Slot<'SCRIPT', 0>
     }
-    export type HighResFixScript_input = {
+    export interface HighResFixScript_input {
         latent_upscale_method: Enum_LatentUpscale_Upscale_method
         /** default=1.25 min=8 max=8 step=0.25 */
         upscale_by?: _FLOAT
@@ -10287,7 +10287,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 1>
         STRING: Slot<'STRING', 2>
     }
-    export type EvaluateIntegers_input = {
+    export interface EvaluateIntegers_input {
         /** default="((a + b) - c) / 2" */
         python_expression?: _STRING
         print_to_console: Enum_XYPlot_XY_flip
@@ -10306,7 +10306,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 1>
         STRING: Slot<'STRING', 2>
     }
-    export type EvaluateFloats_input = {
+    export interface EvaluateFloats_input {
         /** default="((a + b) - c) / 2" */
         python_expression?: _STRING
         print_to_console: Enum_XYPlot_XY_flip
@@ -10323,7 +10323,7 @@ declare global {
         nameInComfy: 'Evaluate Strings'
         STRING: Slot<'STRING', 0>
     }
-    export type EvaluateStrings_input = {
+    export interface EvaluateStrings_input {
         /** default="a + b + c" */
         python_expression?: _STRING
         print_to_console: Enum_XYPlot_XY_flip
@@ -10339,7 +10339,7 @@ declare global {
     export interface SimpleEvalExamples extends ComfyNode<SimpleEvalExamples_input> {
         nameInComfy: 'Simple Eval Examples'
     }
-    export type SimpleEvalExamples_input = {
+    export interface SimpleEvalExamples_input {
         /** default="The Evaluate Integers, Floats, and Strings nodes \nnow employ the SimpleEval library, enabling secure \ncreation and execution of custom Python expressions.\n\n(https://github.com/danthedeckie/simpleeval)\n\nBelow is a short list of what is possible.\n______________________________________________\n\n\"EVALUATE INTEGERS/FLOATS\" NODE EXPRESSION EXAMPLES:\n\nAddition: a + b + c\nSubtraction: a - b - c\nMultiplication: a * b * c\nDivision: a / b / c\nModulo: a % b % c\nExponentiation: a ** b ** c\nFloor Division: a // b // c\nAbsolute Value: abs(a) + abs(b) + abs(c)\nMaximum: max(a, b, c)\nMinimum: min(a, b, c)\nSum of Squares: a**2 + b**2 + c**2\nBitwise And: a & b & c\nBitwise Or: a | b | c\nBitwise Xor: a ^ b ^ c\nLeft Shift: a << 1 + b << 1 + c << 1\nRight Shift: a >> 1 + b >> 1 + c >> 1\nGreater Than Comparison: a > b > c\nLess Than Comparison: a < b < c\nEqual To Comparison: a == b == c\nNot Equal To Comparison: a != b != c\n______________________________________________\n\n\"EVALUATE STRINGS\" NODE EXPRESSION EXAMPLES:\n\nConcatenate: a + b + c\nFormat: f'{a} {b} {c}'\nLength: len(a) + len(b) + len(c)\nUppercase: a.upper() + b.upper() + c.upper()\nLowercase: a.lower() + b.lower() + c.lower()\nCapitalize: a.capitalize() + b.capitalize() + c.capitalize()\nTitle Case: a.title() + b.title() + c.title()\nStrip: a.strip() + b.strip() + c.strip()\nFind Substring: a.find('sub') + b.find('sub') + c.find('sub')\nReplace Substring: a.replace('old', 'new') + b.replace('old', 'new') + c.replace('old', 'new')\nCount Substring: a.count('sub') + b.count('sub') + c.count('sub')\nCheck Numeric: a.isnumeric() + b.isnumeric() + c.isnumeric()\nCheck Alphabetic: a.isalpha() + b.isalpha() + c.isalpha()\nCheck Alphanumeric: a.isalnum() + b.isalnum() + c.isalnum()\nCheck Start: a.startswith('prefix') + b.startswith('prefix') + c.startswith('prefix')\nCheck End: a.endswith('suffix') + b.endswith('suffix') + c.endswith('suffix')\nSplit: a.split(' ') + b.split(' ') + c.split(' ')\nZero Fill: a.zfill(5) + b.zfill(5) + c.zfill(5)\nSlice: a[:5] + b[:5] + c[:5]\nReverse: a[::-1] + b[::-1] + c[::-1]\n______________________________________________" */
         models_text?: _STRING
     }
@@ -10349,7 +10349,7 @@ declare global {
         nameInComfy: 'LatentByRatio'
         LATENT: Slot<'LATENT', 0>
     }
-    export type LatentByRatio_input = {
+    export interface LatentByRatio_input {
         model: Enum_LatentByRatio_Model
         ratio: Enum_LatentByRatio_Ratio
         /** default=1 min=64 max=64 */
@@ -10362,7 +10362,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         IMAGE_1: Slot<'IMAGE', 1>
     }
-    export type MasqueradeMaskByText_input = {
+    export interface MasqueradeMaskByText_input {
         image: _IMAGE
         /** */
         prompt: _STRING
@@ -10378,7 +10378,7 @@ declare global {
         nameInComfy: 'Mask Morphology'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeMaskMorphology_input = {
+    export interface MasqueradeMaskMorphology_input {
         image: _IMAGE
         /** default=5 min=128 max=128 step=1 */
         distance?: _INT
@@ -10390,7 +10390,7 @@ declare global {
         nameInComfy: 'Combine Masks'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeCombineMasks_input = {
+    export interface MasqueradeCombineMasks_input {
         image1: _IMAGE
         image2: _IMAGE
         op: Enum_MasqueradeCombineMasks_Op
@@ -10403,7 +10403,7 @@ declare global {
         nameInComfy: 'Unary Mask Op'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeUnaryMaskOp_input = {
+    export interface MasqueradeUnaryMaskOp_input {
         image: _IMAGE
         op: Enum_MasqueradeUnaryMaskOp_Op
     }
@@ -10413,7 +10413,7 @@ declare global {
         nameInComfy: 'Unary Image Op'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeUnaryImageOp_input = {
+    export interface MasqueradeUnaryImageOp_input {
         image: _IMAGE
         op: Enum_MasqueradeUnaryMaskOp_Op
     }
@@ -10423,7 +10423,7 @@ declare global {
         nameInComfy: 'Blur'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeBlur_input = {
+    export interface MasqueradeBlur_input {
         image: _IMAGE
         /** default=10 min=48 max=48 step=1 */
         radius?: _INT
@@ -10436,7 +10436,7 @@ declare global {
         nameInComfy: 'Image To Mask'
         MASK: Slot<'MASK', 0>
     }
-    export type MasqueradeImageToMask_input = {
+    export interface MasqueradeImageToMask_input {
         image: _IMAGE
         method: Enum_MasqueradeImageToMask_Method
     }
@@ -10446,7 +10446,7 @@ declare global {
         nameInComfy: 'Mix Images By Mask'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeMixImagesByMask_input = {
+    export interface MasqueradeMixImagesByMask_input {
         image1: _IMAGE
         image2: _IMAGE
         mask: _IMAGE
@@ -10457,7 +10457,7 @@ declare global {
         nameInComfy: 'Mix Color By Mask'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeMixColorByMask_input = {
+    export interface MasqueradeMixColorByMask_input {
         image: _IMAGE
         /** default=0 min=255 max=255 step=1 */
         r?: _INT
@@ -10473,7 +10473,7 @@ declare global {
         nameInComfy: 'Mask To Region'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeMaskToRegion_input = {
+    export interface MasqueradeMaskToRegion_input {
         mask: _IMAGE
         /** default=0 min=1048576 max=1048576 step=1 */
         padding?: _INT
@@ -10494,7 +10494,7 @@ declare global {
         nameInComfy: 'Cut By Mask'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeCutByMask_input = {
+    export interface MasqueradeCutByMask_input {
         image: _IMAGE
         mask: _IMAGE
         /** default=0 min=1048576 max=1048576 step=1 */
@@ -10509,7 +10509,7 @@ declare global {
         nameInComfy: 'Paste By Mask'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradePasteByMask_input = {
+    export interface MasqueradePasteByMask_input {
         image_base: _IMAGE
         image_to_paste: _IMAGE
         mask: _IMAGE
@@ -10523,7 +10523,7 @@ declare global {
         INT: Slot<'INT', 0>
         INT_1: Slot<'INT', 1>
     }
-    export type MasqueradeGetImageSize_input = {
+    export interface MasqueradeGetImageSize_input {
         image: _IMAGE
     }
 
@@ -10532,7 +10532,7 @@ declare global {
         nameInComfy: 'Change Channel Count'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeChangeChannelCount_input = {
+    export interface MasqueradeChangeChannelCount_input {
         image: _IMAGE
         kind: Enum_MasqueradeChangeChannelCount_Kind
     }
@@ -10542,7 +10542,7 @@ declare global {
         nameInComfy: 'Constant Mask'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeConstantMask_input = {
+    export interface MasqueradeConstantMask_input {
         /** default=0 min=8 max=8 step=0.01 */
         value?: _FLOAT
         /** default=0 min=1048576 max=1048576 step=1 */
@@ -10557,7 +10557,7 @@ declare global {
         nameInComfy: 'Prune By Mask'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradePruneByMask_input = {
+    export interface MasqueradePruneByMask_input {
         image: _IMAGE
         mask: _IMAGE
     }
@@ -10571,7 +10571,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         MASK_MAPPING: Slot<'MASK_MAPPING', 1>
     }
-    export type MasqueradeSeparateMaskComponents_input = {
+    export interface MasqueradeSeparateMaskComponents_input {
         mask: _IMAGE
     }
 
@@ -10580,7 +10580,7 @@ declare global {
         nameInComfy: 'Create Rect Mask'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeCreateRectMask_input = {
+    export interface MasqueradeCreateRectMask_input {
         mode: Enum_MasqueradeCreateRectMask_Mode
         origin: Enum_MasqueradeCreateRectMask_Origin
         /** default=0 min=1048576 max=1048576 step=1 */
@@ -10603,7 +10603,7 @@ declare global {
         nameInComfy: 'Make Image Batch'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeMakeImageBatch_input = {
+    export interface MasqueradeMakeImageBatch_input {
         image1: _IMAGE
         image2?: _IMAGE
         image3?: _IMAGE
@@ -10617,7 +10617,7 @@ declare global {
         nameInComfy: 'Create QR Code'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeCreateQRCode_input = {
+    export interface MasqueradeCreateQRCode_input {
         /** */
         text: _STRING
         /** default=512 min=4096 max=4096 step=64 */
@@ -10637,7 +10637,7 @@ declare global {
         nameInComfy: 'Convert Color Space'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type MasqueradeConvertColorSpace_input = {
+    export interface MasqueradeConvertColorSpace_input {
         in_space: Enum_MasqueradeConvertColorSpace_In_space
         out_space: Enum_MasqueradeConvertColorSpace_In_space
         image: _IMAGE
@@ -10648,7 +10648,7 @@ declare global {
         nameInComfy: 'MasqueradeIncrementer'
         INT: Slot<'INT', 0>
     }
-    export type MasqueradeMasqueradeIncrementer_input = {
+    export interface MasqueradeMasqueradeIncrementer_input {
         /** default=0 min=18446744073709552000 max=18446744073709552000 step=1 */
         seed?: _INT
         /** default=1 min=18446744073709552000 max=18446744073709552000 step=1 */
@@ -10660,7 +10660,7 @@ declare global {
         nameInComfy: 'Image Remove Background (rembg)'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type ImageRemoveBackgroundRembg_input = {
+    export interface ImageRemoveBackgroundRembg_input {
         image: _IMAGE
     }
 
@@ -10669,7 +10669,7 @@ declare global {
         nameInComfy: 'SDXLMixSampler'
         LATENT: Slot<'LATENT', 0>
     }
-    export type SDXLMixSampler_input = {
+    export interface SDXLMixSampler_input {
         base_model: _MODEL
         ref_model: _MODEL
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -10700,7 +10700,7 @@ declare global {
         nameInComfy: 'BLIP Model Loader'
         BLIP_MODEL: Slot<'BLIP_MODEL', 0>
     }
-    export type WASBLIPModelLoader_input = {
+    export interface WASBLIPModelLoader_input {
         blip_model: Enum_WASBLIPModelLoader_Blip_model
     }
 
@@ -10709,7 +10709,7 @@ declare global {
         nameInComfy: 'Blend Latents'
         LATENT: Slot<'LATENT', 0>
     }
-    export type WASBlendLatents_input = {
+    export interface WASBlendLatents_input {
         latent_a: _LATENT
         latent_b: _LATENT
         operation: Enum_WASBlendLatents_Operation
@@ -10724,12 +10724,12 @@ declare global {
         STRING_1: Slot<'STRING', 1>
         STRING_2: Slot<'STRING', 2>
     }
-    export type WASCacheNode_input = {
-        /** default="16716043_cache" */
+    export interface WASCacheNode_input {
+        /** default="31707980_cache" */
         latent_suffix?: _STRING
-        /** default="35680733_cache" */
+        /** default="58924742_cache" */
         image_suffix?: _STRING
-        /** default="69355498_cache" */
+        /** default="74536984_cache" */
         conditioning_suffix?: _STRING
         /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
         output_path?: _STRING
@@ -10751,7 +10751,7 @@ declare global {
         VAE: Slot<'VAE', 2>
         STRING: Slot<'STRING', 3>
     }
-    export type WASCheckpointLoader_input = {
+    export interface WASCheckpointLoader_input {
         config_name: Enum_CheckpointLoader_Config_name
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
@@ -10769,7 +10769,7 @@ declare global {
         VAE: Slot<'VAE', 2>
         STRING: Slot<'STRING', 3>
     }
-    export type WASCheckpointLoaderSimple_input = {
+    export interface WASCheckpointLoaderSimple_input {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
 
@@ -10780,7 +10780,7 @@ declare global {
         STRING: Slot<'STRING', 1>
         STRING_1: Slot<'STRING', 2>
     }
-    export type WASCLIPTextEncodeNSP_input = {
+    export interface WASCLIPTextEncodeNSP_input {
         mode: Enum_WASCLIPTextEncodeNSP_Mode
         /** default="__" */
         noodle_key?: _STRING
@@ -10796,7 +10796,7 @@ declare global {
         nameInComfy: 'CLIP Input Switch'
         CLIP: Slot<'CLIP', 0>
     }
-    export type WASCLIPInputSwitch_input = {
+    export interface WASCLIPInputSwitch_input {
         clip_a: _CLIP
         clip_b: _CLIP
         boolean_number: _NUMBER
@@ -10807,7 +10807,7 @@ declare global {
         nameInComfy: 'CLIP Vision Input Switch'
         CLIP_VISION: Slot<'CLIP_VISION', 0>
     }
-    export type WASCLIPVisionInputSwitch_input = {
+    export interface WASCLIPVisionInputSwitch_input {
         clip_vision_a: _CLIP_VISION
         clip_vision_b: _CLIP_VISION
         boolean_number: _NUMBER
@@ -10818,7 +10818,7 @@ declare global {
         nameInComfy: 'Conditioning Input Switch'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type WASConditioningInputSwitch_input = {
+    export interface WASConditioningInputSwitch_input {
         conditioning_a: _CONDITIONING
         conditioning_b: _CONDITIONING
         boolean_number: _NUMBER
@@ -10835,7 +10835,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 1>
         INT: Slot<'INT', 2>
     }
-    export type WASConstantNumber_input = {
+    export interface WASConstantNumber_input {
         number_type: Enum_WASConstantNumber_Number_type
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         number?: _FLOAT
@@ -10848,7 +10848,7 @@ declare global {
         nameInComfy: 'Create Grid Image'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASCreateGridImage_input = {
+    export interface WASCreateGridImage_input {
         /** default="./ComfyUI/input/" */
         images_path?: _STRING
         /** default="*" */
@@ -10876,7 +10876,7 @@ declare global {
         STRING: Slot<'STRING', 2>
         STRING_1: Slot<'STRING', 3>
     }
-    export type WASCreateMorphImage_input = {
+    export interface WASCreateMorphImage_input {
         image_a: _IMAGE
         image_b: _IMAGE
         /** default=30 min=60 max=60 step=1 */
@@ -10902,7 +10902,7 @@ declare global {
         STRING: Slot<'STRING', 0>
         STRING_1: Slot<'STRING', 1>
     }
-    export type WASCreateMorphImageFromPath_input = {
+    export interface WASCreateMorphImageFromPath_input {
         /** default=30 min=60 max=60 step=1 */
         transition_frames?: _INT
         /** default=2500 min=60000 max=60000 step=0.1 */
@@ -10930,7 +10930,7 @@ declare global {
         STRING: Slot<'STRING', 0>
         STRING_1: Slot<'STRING', 1>
     }
-    export type WASCreateVideoFromPath_input = {
+    export interface WASCreateVideoFromPath_input {
         /** default=30 min=120 max=120 step=1 */
         transition_frames?: _INT
         /** default=2.5 min=60000 max=60000 step=0.01 */
@@ -10954,7 +10954,7 @@ declare global {
         MASK: Slot<'MASK', 0>
         IMAGE: Slot<'IMAGE', 1>
     }
-    export type WASCLIPSegMasking_input = {
+    export interface WASCLIPSegMasking_input {
         image: _IMAGE
         /** default="" */
         text?: _STRING
@@ -10966,7 +10966,7 @@ declare global {
         nameInComfy: 'CLIPSeg Model Loader'
         CLIPSEG_MODEL: Slot<'CLIPSEG_MODEL', 0>
     }
-    export type WASCLIPSegModelLoader_input = {
+    export interface WASCLIPSegModelLoader_input {
         /** default="CIDAS/clipseg-rd64-refined" */
         model?: _STRING
     }
@@ -10978,7 +10978,7 @@ declare global {
         MASK: Slot<'MASK', 1>
         IMAGE_1: Slot<'IMAGE', 2>
     }
-    export type WASCLIPSegBatchMasking_input = {
+    export interface WASCLIPSegBatchMasking_input {
         image_a: _IMAGE
         image_b: _IMAGE
         /** default="" */
@@ -11004,7 +11004,7 @@ declare global {
         nameInComfy: 'Convert Masks to Images'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASConvertMasksToImages_input = {
+    export interface WASConvertMasksToImages_input {
         masks: _MASK
     }
 
@@ -11013,7 +11013,7 @@ declare global {
         nameInComfy: 'Control Net Model Input Switch'
         CONTROL_NET: Slot<'CONTROL_NET', 0>
     }
-    export type WASControlNetModelInputSwitch_input = {
+    export interface WASControlNetModelInputSwitch_input {
         control_net_a: _CONTROL_NET
         control_net_b: _CONTROL_NET
         boolean_number: _NUMBER
@@ -11024,7 +11024,7 @@ declare global {
         nameInComfy: 'Debug Number to Console'
         NUMBER: Slot<'NUMBER', 0>
     }
-    export type WASDebugNumberToConsole_input = {
+    export interface WASDebugNumberToConsole_input {
         number: _NUMBER
         /** default="Debug to Console" */
         label?: _STRING
@@ -11035,7 +11035,7 @@ declare global {
         nameInComfy: 'Dictionary to Console'
         DICT: Slot<'DICT', 0>
     }
-    export type WASDictionaryToConsole_input = {
+    export interface WASDictionaryToConsole_input {
         dictionary: _DICT
         /** default="Dictionary Output" */
         label?: _STRING
@@ -11054,7 +11054,7 @@ declare global {
         VAE: Slot<'VAE', 2>
         STRING: Slot<'STRING', 3>
     }
-    export type WASDiffusersModelLoader_input = {
+    export interface WASDiffusersModelLoader_input {
         model_path: Enum_CLIPLoader_Clip_name
     }
 
@@ -11071,7 +11071,7 @@ declare global {
         VAE: Slot<'VAE', 2>
         STRING: Slot<'STRING', 3>
     }
-    export type WASDiffusersHubModelDownLoader_input = {
+    export interface WASDiffusersHubModelDownLoader_input {
         /** */
         repo_id: _STRING
         /** default="None" */
@@ -11082,7 +11082,7 @@ declare global {
     export interface WASExportAPI extends ComfyNode<WASExportAPI_input> {
         nameInComfy: 'Export API'
     }
-    export type WASExportAPI_input = {
+    export interface WASExportAPI_input {
         save_prompt_api: Enum_WASExportAPI_Save_prompt_api
         /** default="./ComfyUI/output/" */
         output_path?: _STRING
@@ -11099,7 +11099,7 @@ declare global {
         nameInComfy: 'Latent Input Switch'
         LATENT: Slot<'LATENT', 0>
     }
-    export type WASLatentInputSwitch_input = {
+    export interface WASLatentInputSwitch_input {
         latent_a: _LATENT
         latent_b: _LATENT
         boolean_number: _NUMBER
@@ -11116,7 +11116,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 1>
         CONDITIONING: Slot<'CONDITIONING', 2>
     }
-    export type WASLoadCache_input = {
+    export interface WASLoadCache_input {
         /** default="" */
         latent_path?: _STRING
         /** default="" */
@@ -11131,7 +11131,7 @@ declare global {
         NUMBER: Slot<'NUMBER', 0>
         INT: Slot<'INT', 1>
     }
-    export type WASLogicBoolean_input = {
+    export interface WASLogicBoolean_input {
         /** default=1 min=1 max=1 step=1 */
         boolean_number?: _INT
     }
@@ -11143,7 +11143,7 @@ declare global {
         CLIP: Slot<'CLIP', 1>
         STRING: Slot<'STRING', 2>
     }
-    export type WASLoraLoader_input = {
+    export interface WASLoraLoader_input {
         model: _MODEL
         clip: _CLIP
         lora_name: Enum_EfficientLoader_Lora_name
@@ -11160,7 +11160,7 @@ declare global {
         IMAGE_1: Slot<'IMAGE', 1>
         IMAGE_2: Slot<'IMAGE', 2>
     }
-    export type WASImageSSAOAmbientOcclusion_input = {
+    export interface WASImageSSAOAmbientOcclusion_input {
         images: _IMAGE
         depth_images: _IMAGE
         /** default=1 min=5 max=5 step=0.01 */
@@ -11184,7 +11184,7 @@ declare global {
         IMAGE_2: Slot<'IMAGE', 2>
         IMAGE_3: Slot<'IMAGE', 3>
     }
-    export type WASImageSSDODirectOcclusion_input = {
+    export interface WASImageSSDODirectOcclusion_input {
         images: _IMAGE
         depth_images: _IMAGE
         /** default=1 min=5 max=5 step=0.01 */
@@ -11201,7 +11201,7 @@ declare global {
         nameInComfy: 'Image Analyze'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageAnalyze_input = {
+    export interface WASImageAnalyze_input {
         image: _IMAGE
         mode: Enum_WASImageAnalyze_Mode
     }
@@ -11215,7 +11215,7 @@ declare global {
         STRING: Slot<'STRING', 3>
         STRING_1: Slot<'STRING', 4>
     }
-    export type WASImageAspectRatio_input = {
+    export interface WASImageAspectRatio_input {
         image?: _IMAGE
         width?: _NUMBER
         height?: _NUMBER
@@ -11226,7 +11226,7 @@ declare global {
         nameInComfy: 'Image Batch'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageBatch_input = {
+    export interface WASImageBatch_input {
         images_a?: _IMAGE
         images_b?: _IMAGE
         images_c?: _IMAGE
@@ -11238,7 +11238,7 @@ declare global {
         nameInComfy: 'Image Blank'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageBlank_input = {
+    export interface WASImageBlank_input {
         /** default=512 min=4096 max=4096 step=1 */
         width?: _INT
         /** default=512 min=4096 max=4096 step=1 */
@@ -11256,7 +11256,7 @@ declare global {
         nameInComfy: 'Image Blend by Mask'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageBlendByMask_input = {
+    export interface WASImageBlendByMask_input {
         image_a: _IMAGE
         image_b: _IMAGE
         mask: _IMAGE
@@ -11269,7 +11269,7 @@ declare global {
         nameInComfy: 'Image Blend'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageBlend_input = {
+    export interface WASImageBlend_input {
         image_a: _IMAGE
         image_b: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
@@ -11281,7 +11281,7 @@ declare global {
         nameInComfy: 'Image Blending Mode'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageBlendingMode_input = {
+    export interface WASImageBlendingMode_input {
         image_a: _IMAGE
         image_b: _IMAGE
         mode: Enum_WASImageBlendingMode_Mode
@@ -11294,7 +11294,7 @@ declare global {
         nameInComfy: 'Image Bloom Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageBloomFilter_input = {
+    export interface WASImageBloomFilter_input {
         image: _IMAGE
         /** default=10 min=1024 max=1024 step=0.1 */
         radius?: _FLOAT
@@ -11307,7 +11307,7 @@ declare global {
         nameInComfy: 'Image Canny Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageCannyFilter_input = {
+    export interface WASImageCannyFilter_input {
         images: _IMAGE
         enable_threshold: Enum_WASCreateGridImage_Include_subfolders
         /** default=0 min=1 max=1 step=0.01 */
@@ -11321,7 +11321,7 @@ declare global {
         nameInComfy: 'Image Chromatic Aberration'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageChromaticAberration_input = {
+    export interface WASImageChromaticAberration_input {
         image: _IMAGE
         /** default=2 min=255 max=255 step=1 */
         red_offset?: _INT
@@ -11341,7 +11341,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         LIST: Slot<'LIST', 1>
     }
-    export type WASImageColorPalette_input = {
+    export interface WASImageColorPalette_input {
         image: _IMAGE
         /** default=16 min=256 max=256 step=1 */
         colors?: _INT
@@ -11354,7 +11354,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         CROP_DATA: Slot<'CROP_DATA', 1>
     }
-    export type WASImageCropFace_input = {
+    export interface WASImageCropFace_input {
         image: _IMAGE
         /** default=0.25 min=2 max=2 step=0.01 */
         crop_padding_factor?: _FLOAT
@@ -11367,7 +11367,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         CROP_DATA: Slot<'CROP_DATA', 1>
     }
-    export type WASImageCropLocation_input = {
+    export interface WASImageCropLocation_input {
         image: _IMAGE
         /** default=0 min=10000000 max=10000000 step=1 */
         top?: _INT
@@ -11388,7 +11388,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         CROP_DATA: Slot<'CROP_DATA', 1>
     }
-    export type WASImageCropSquareLocation_input = {
+    export interface WASImageCropSquareLocation_input {
         image: _IMAGE
         /** default=0 min=24576 max=24576 step=1 */
         x?: _INT
@@ -11403,7 +11403,7 @@ declare global {
         nameInComfy: 'Image Displacement Warp'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageDisplacementWarp_input = {
+    export interface WASImageDisplacementWarp_input {
         images: _IMAGE
         displacement_maps: _IMAGE
         /** default=25 min=4096 max=4096 step=0.1 */
@@ -11415,7 +11415,7 @@ declare global {
         nameInComfy: 'Image Lucy Sharpen'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageLucySharpen_input = {
+    export interface WASImageLucySharpen_input {
         images: _IMAGE
         /** default=2 min=12 max=12 step=1 */
         iterations?: _INT
@@ -11429,7 +11429,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         IMAGE_1: Slot<'IMAGE', 1>
     }
-    export type WASImagePasteFace_input = {
+    export interface WASImagePasteFace_input {
         image: _IMAGE
         crop_image: _IMAGE
         crop_data: _CROP_DATA
@@ -11445,7 +11445,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         IMAGE_1: Slot<'IMAGE', 1>
     }
-    export type WASImagePasteCrop_input = {
+    export interface WASImagePasteCrop_input {
         image: _IMAGE
         crop_image: _IMAGE
         crop_data: _CROP_DATA
@@ -11461,7 +11461,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         IMAGE_1: Slot<'IMAGE', 1>
     }
-    export type WASImagePasteCropByLocation_input = {
+    export interface WASImagePasteCropByLocation_input {
         image: _IMAGE
         crop_image: _IMAGE
         /** default=0 min=10000000 max=10000000 step=1 */
@@ -11483,7 +11483,7 @@ declare global {
         nameInComfy: 'Image Pixelate'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImagePixelate_input = {
+    export interface WASImagePixelate_input {
         images: _IMAGE
         /** default=164 min=480 max=480 step=1 */
         pixelation_size?: _FLOAT
@@ -11505,7 +11505,7 @@ declare global {
         nameInComfy: 'Image Power Noise'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImagePowerNoise_input = {
+    export interface WASImagePowerNoise_input {
         /** default=512 min=4096 max=4096 step=1 */
         width?: _INT
         /** default=512 min=4096 max=4096 step=1 */
@@ -11524,7 +11524,7 @@ declare global {
         nameInComfy: 'Image Dragan Photography Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageDraganPhotographyFilter_input = {
+    export interface WASImageDraganPhotographyFilter_input {
         image: _IMAGE
         /** default=1 min=16 max=16 step=0.01 */
         saturation?: _FLOAT
@@ -11548,7 +11548,7 @@ declare global {
         nameInComfy: 'Image Edge Detection Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageEdgeDetectionFilter_input = {
+    export interface WASImageEdgeDetectionFilter_input {
         image: _IMAGE
         mode: Enum_WASImageEdgeDetectionFilter_Mode
     }
@@ -11558,7 +11558,7 @@ declare global {
         nameInComfy: 'Image Film Grain'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageFilmGrain_input = {
+    export interface WASImageFilmGrain_input {
         image: _IMAGE
         /** default=1 min=1 max=1 step=0.01 */
         density?: _FLOAT
@@ -11575,7 +11575,7 @@ declare global {
         nameInComfy: 'Image Filter Adjustments'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageFilterAdjustments_input = {
+    export interface WASImageFilterAdjustments_input {
         image: _IMAGE
         /** default=0 min=1 max=1 step=0.01 */
         brightness?: _FLOAT
@@ -11599,7 +11599,7 @@ declare global {
         nameInComfy: 'Image Flip'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageFlip_input = {
+    export interface WASImageFlip_input {
         images: _IMAGE
         mode: Enum_WASImageFlip_Mode
     }
@@ -11609,7 +11609,7 @@ declare global {
         nameInComfy: 'Image Gradient Map'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageGradientMap_input = {
+    export interface WASImageGradientMap_input {
         image: _IMAGE
         gradient_image: _IMAGE
         flip_left_right: Enum_WASCreateGridImage_Include_subfolders
@@ -11620,7 +11620,7 @@ declare global {
         nameInComfy: 'Image Generate Gradient'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageGenerateGradient_input = {
+    export interface WASImageGenerateGradient_input {
         /** default=512 min=4096 max=4096 step=1 */
         width?: _INT
         /** default=512 min=4096 max=4096 step=1 */
@@ -11637,7 +11637,7 @@ declare global {
         nameInComfy: 'Image High Pass Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageHighPassFilter_input = {
+    export interface WASImageHighPassFilter_input {
         images: _IMAGE
         /** default=10 min=500 max=500 step=1 */
         radius?: _INT
@@ -11653,7 +11653,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         STRING: Slot<'STRING', 1>
     }
-    export type WASImageHistoryLoader_input = {
+    export interface WASImageHistoryLoader_input {
         image: Enum_WASImageHistoryLoader_Image
     }
 
@@ -11662,7 +11662,7 @@ declare global {
         nameInComfy: 'Image Input Switch'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageInputSwitch_input = {
+    export interface WASImageInputSwitch_input {
         image_a: _IMAGE
         image_b: _IMAGE
         boolean_number: _NUMBER
@@ -11673,7 +11673,7 @@ declare global {
         nameInComfy: 'Image Levels Adjustment'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageLevelsAdjustment_input = {
+    export interface WASImageLevelsAdjustment_input {
         image: _IMAGE
         /** default=0 min=255 max=255 step=0.1 */
         black_level?: _FLOAT
@@ -11690,7 +11690,7 @@ declare global {
         MASK: Slot<'MASK', 1>
         STRING: Slot<'STRING', 2>
     }
-    export type WASImageLoad_input = {
+    export interface WASImageLoad_input {
         /** default="./ComfyUI/input/example.png" */
         image_path?: _STRING
         RGBA: Enum_WASCreateGridImage_Include_subfolders
@@ -11702,7 +11702,7 @@ declare global {
         nameInComfy: 'Image Median Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageMedianFilter_input = {
+    export interface WASImageMedianFilter_input {
         image: _IMAGE
         /** default=2 min=255 max=255 step=1 */
         diameter?: _INT
@@ -11717,7 +11717,7 @@ declare global {
         nameInComfy: 'Image Mix RGB Channels'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageMixRGBChannels_input = {
+    export interface WASImageMixRGBChannels_input {
         red_channel: _IMAGE
         green_channel: _IMAGE
         blue_channel: _IMAGE
@@ -11728,7 +11728,7 @@ declare global {
         nameInComfy: 'Image Monitor Effects Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageMonitorEffectsFilter_input = {
+    export interface WASImageMonitorEffectsFilter_input {
         image: _IMAGE
         mode: Enum_WASImageMonitorEffectsFilter_Mode
         /** default=5 min=255 max=255 step=1 */
@@ -11742,7 +11742,7 @@ declare global {
         nameInComfy: 'Image Nova Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageNovaFilter_input = {
+    export interface WASImageNovaFilter_input {
         image: _IMAGE
         /** default=0.1 min=1 max=1 step=0.001 */
         amplitude?: _FLOAT
@@ -11756,7 +11756,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         IMAGE_1: Slot<'IMAGE', 1>
     }
-    export type WASImagePadding_input = {
+    export interface WASImagePadding_input {
         image: _IMAGE
         /** default=120 min=2048 max=2048 step=1 */
         feathering?: _INT
@@ -11776,7 +11776,7 @@ declare global {
         nameInComfy: 'Image Perlin Noise'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImagePerlinNoise_input = {
+    export interface WASImagePerlinNoise_input {
         /** default=512 min=2048 max=2048 step=1 */
         width?: _INT
         /** default=512 min=2048 max=2048 step=1 */
@@ -11796,7 +11796,7 @@ declare global {
         nameInComfy: 'Image Rembg (Remove Background)'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageRembgRemoveBackground_input = {
+    export interface WASImageRembgRemoveBackground_input {
         images: _IMAGE
         /** default=true */
         transparency?: _BOOLEAN
@@ -11821,7 +11821,7 @@ declare global {
         nameInComfy: 'Image Perlin Power Fractal'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImagePerlinPowerFractal_input = {
+    export interface WASImagePerlinPowerFractal_input {
         /** default=512 min=8192 max=8192 step=1 */
         width?: _INT
         /** default=512 min=8192 max=8192 step=1 */
@@ -11845,7 +11845,7 @@ declare global {
         nameInComfy: 'Image Remove Background (Alpha)'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageRemoveBackgroundAlpha_input = {
+    export interface WASImageRemoveBackgroundAlpha_input {
         images: _IMAGE
         mode: Enum_WASImageRemoveBackgroundAlpha_Mode
         /** default=127 min=255 max=255 step=1 */
@@ -11859,7 +11859,7 @@ declare global {
         nameInComfy: 'Image Remove Color'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageRemoveColor_input = {
+    export interface WASImageRemoveColor_input {
         image: _IMAGE
         /** default=255 min=255 max=255 step=1 */
         target_red?: _INT
@@ -11882,7 +11882,7 @@ declare global {
         nameInComfy: 'Image Resize'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageResize_input = {
+    export interface WASImageResize_input {
         image: _IMAGE
         mode: Enum_WASImageResize_Mode
         supersample: Enum_WASCreateGridImage_Include_subfolders
@@ -11900,7 +11900,7 @@ declare global {
         nameInComfy: 'Image Rotate'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageRotate_input = {
+    export interface WASImageRotate_input {
         images: _IMAGE
         mode: Enum_WASImageRotate_Mode
         /** default=0 min=360 max=360 step=90 */
@@ -11913,7 +11913,7 @@ declare global {
         nameInComfy: 'Image Rotate Hue'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageRotateHue_input = {
+    export interface WASImageRotateHue_input {
         image: _IMAGE
         /** default=0 min=1 max=1 step=0.001 */
         hue_shift?: _FLOAT
@@ -11923,7 +11923,7 @@ declare global {
     export interface WASImageSave extends ComfyNode<WASImageSave_input> {
         nameInComfy: 'Image Save'
     }
-    export type WASImageSave_input = {
+    export interface WASImageSave_input {
         images: _IMAGE
         /** default="[time(%Y-%m-%d)]" */
         output_path?: _STRING
@@ -11950,7 +11950,7 @@ declare global {
         nameInComfy: 'Image Seamless Texture'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageSeamlessTexture_input = {
+    export interface WASImageSeamlessTexture_input {
         images: _IMAGE
         /** default=0.4 min=1 max=1 step=0.01 */
         blending?: _FLOAT
@@ -11964,7 +11964,7 @@ declare global {
         nameInComfy: 'Image Select Channel'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageSelectChannel_input = {
+    export interface WASImageSelectChannel_input {
         image: _IMAGE
         channel: Enum_ImageToMask_Channel
     }
@@ -11974,7 +11974,7 @@ declare global {
         nameInComfy: 'Image Select Color'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageSelectColor_input = {
+    export interface WASImageSelectColor_input {
         image: _IMAGE
         /** default=255 min=255 max=255 step=0.1 */
         red?: _INT
@@ -11993,7 +11993,7 @@ declare global {
         IMAGE_1: Slot<'IMAGE', 1>
         IMAGE_2: Slot<'IMAGE', 2>
     }
-    export type WASImageShadowsAndHighlights_input = {
+    export interface WASImageShadowsAndHighlights_input {
         image: _IMAGE
         /** default=75 min=255 max=255 step=0.1 */
         shadow_threshold?: _FLOAT
@@ -12021,7 +12021,7 @@ declare global {
         INT: Slot<'INT', 4>
         INT_1: Slot<'INT', 5>
     }
-    export type WASImageSizeToNumber_input = {
+    export interface WASImageSizeToNumber_input {
         image: _IMAGE
     }
 
@@ -12030,7 +12030,7 @@ declare global {
         nameInComfy: 'Image Stitch'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageStitch_input = {
+    export interface WASImageStitch_input {
         image_a: _IMAGE
         image_b: _IMAGE
         stitch: Enum_WASImageStitch_Stitch
@@ -12043,7 +12043,7 @@ declare global {
         nameInComfy: 'Image Style Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageStyleFilter_input = {
+    export interface WASImageStyleFilter_input {
         image: _IMAGE
         style: Enum_WASImageStyleFilter_Style
     }
@@ -12053,7 +12053,7 @@ declare global {
         nameInComfy: 'Image Threshold'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageThreshold_input = {
+    export interface WASImageThreshold_input {
         image: _IMAGE
         /** default=0.5 min=1 max=1 step=0.01 */
         threshold?: _FLOAT
@@ -12064,7 +12064,7 @@ declare global {
         nameInComfy: 'Image Tiled'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageTiled_input = {
+    export interface WASImageTiled_input {
         image: _IMAGE
         /** default=4 min=64 max=64 step=1 */
         num_tiles?: _INT
@@ -12075,7 +12075,7 @@ declare global {
         nameInComfy: 'Image Transpose'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageTranspose_input = {
+    export interface WASImageTranspose_input {
         image: _IMAGE
         image_overlay: _IMAGE
         /** default=512 min=48000 max=48000 step=1 */
@@ -12097,7 +12097,7 @@ declare global {
         nameInComfy: 'Image fDOF Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageFDOFFilter_input = {
+    export interface WASImageFDOFFilter_input {
         image: _IMAGE
         depth: _IMAGE
         mode: Enum_WASImageFDOFFilter_Mode
@@ -12112,7 +12112,7 @@ declare global {
         nameInComfy: 'Image to Latent Mask'
         MASK: Slot<'MASK', 0>
     }
-    export type WASImageToLatentMask_input = {
+    export interface WASImageToLatentMask_input {
         images: _IMAGE
         channel: Enum_LoadImageMask_Channel
     }
@@ -12122,7 +12122,7 @@ declare global {
         nameInComfy: 'Image to Noise'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageToNoise_input = {
+    export interface WASImageToNoise_input {
         images: _IMAGE
         /** default=16 min=256 max=256 step=2 */
         num_colors?: _INT
@@ -12142,7 +12142,7 @@ declare global {
         nameInComfy: 'Image to Seed'
         INT: Slot<'INT', 0>
     }
-    export type WASImageToSeed_input = {
+    export interface WASImageToSeed_input {
         images: _IMAGE
     }
 
@@ -12151,7 +12151,7 @@ declare global {
         nameInComfy: 'Images to RGB'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImagesToRGB_input = {
+    export interface WASImagesToRGB_input {
         images: _IMAGE
     }
 
@@ -12160,7 +12160,7 @@ declare global {
         nameInComfy: 'Images to Linear'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImagesToLinear_input = {
+    export interface WASImagesToLinear_input {
         images: _IMAGE
     }
 
@@ -12169,7 +12169,7 @@ declare global {
         nameInComfy: 'Integer place counter'
         INT: Slot<'INT', 0>
     }
-    export type WASIntegerPlaceCounter_input = {
+    export interface WASIntegerPlaceCounter_input {
         /** default=0 min=10000000 max=10000000 step=1 */
         int_input?: _INT
     }
@@ -12179,7 +12179,7 @@ declare global {
         nameInComfy: 'Image Voronoi Noise Filter'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASImageVoronoiNoiseFilter_input = {
+    export interface WASImageVoronoiNoiseFilter_input {
         /** default=512 min=4096 max=4096 step=1 */
         width?: _INT
         /** default=512 min=4096 max=4096 step=1 */
@@ -12199,7 +12199,7 @@ declare global {
         nameInComfy: 'KSampler (WAS)'
         LATENT: Slot<'LATENT', 0>
     }
-    export type WASKSamplerWAS_input = {
+    export interface WASKSamplerWAS_input {
         model: _MODEL
         seed: _SEED
         /** default=20 min=10000 max=10000 */
@@ -12220,7 +12220,7 @@ declare global {
         nameInComfy: 'KSampler Cycle'
         LATENT: Slot<'LATENT', 0>
     }
-    export type WASKSamplerCycle_input = {
+    export interface WASKSamplerCycle_input {
         model: _MODEL
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
@@ -12284,7 +12284,7 @@ declare global {
         nameInComfy: 'Latent Noise Injection'
         LATENT: Slot<'LATENT', 0>
     }
-    export type WASLatentNoiseInjection_input = {
+    export interface WASLatentNoiseInjection_input {
         samples: _LATENT
         /** default=0.1 min=1 max=1 step=0.01 */
         noise_std?: _FLOAT
@@ -12300,7 +12300,7 @@ declare global {
         INT: Slot<'INT', 4>
         INT_1: Slot<'INT', 5>
     }
-    export type WASLatentSizeToNumber_input = {
+    export interface WASLatentSizeToNumber_input {
         samples: _LATENT
     }
 
@@ -12309,7 +12309,7 @@ declare global {
         nameInComfy: 'Latent Upscale by Factor (WAS)'
         LATENT: Slot<'LATENT', 0>
     }
-    export type WASLatentUpscaleByFactorWAS_input = {
+    export interface WASLatentUpscaleByFactorWAS_input {
         samples: _LATENT
         mode: Enum_WASLatentUpscaleByFactorWAS_Mode
         /** default=2 min=8 max=8 step=0.01 */
@@ -12323,7 +12323,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         STRING: Slot<'STRING', 1>
     }
-    export type WASLoadImageBatch_input = {
+    export interface WASLoadImageBatch_input {
         mode: Enum_WASLoadImageBatch_Mode
         /** default=0 min=150000 max=150000 step=1 */
         index?: _INT
@@ -12343,7 +12343,7 @@ declare global {
         STRING: Slot<'STRING', 0>
         DICT: Slot<'DICT', 1>
     }
-    export type WASLoadTextFile_input = {
+    export interface WASLoadTextFile_input {
         /** default="" */
         file_path?: _STRING
         /** default="[filename]" */
@@ -12357,7 +12357,7 @@ declare global {
         CLIP: Slot<'CLIP', 1>
         STRING: Slot<'STRING', 2>
     }
-    export type WASLoadLora_input = {
+    export interface WASLoadLora_input {
         model: _MODEL
         clip: _CLIP
         lora_name: Enum_EfficientLoader_Lora_name
@@ -12372,7 +12372,7 @@ declare global {
         nameInComfy: 'Masks Add'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMasksAdd_input = {
+    export interface WASMasksAdd_input {
         masks_a: _MASK
         masks_b: _MASK
     }
@@ -12382,7 +12382,7 @@ declare global {
         nameInComfy: 'Masks Subtract'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMasksSubtract_input = {
+    export interface WASMasksSubtract_input {
         masks_a: _MASK
         masks_b: _MASK
     }
@@ -12392,7 +12392,7 @@ declare global {
         nameInComfy: 'Mask Arbitrary Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskArbitraryRegion_input = {
+    export interface WASMaskArbitraryRegion_input {
         masks: _MASK
         /** default=256 min=4096 max=4096 step=1 */
         size?: _INT
@@ -12405,7 +12405,7 @@ declare global {
         nameInComfy: 'Mask Batch to Mask'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskBatchToMask_input = {
+    export interface WASMaskBatchToMask_input {
         masks: _MASK
         /** default=0 min=64 max=64 step=1 */
         batch_number?: _INT
@@ -12416,7 +12416,7 @@ declare global {
         nameInComfy: 'Mask Batch'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskBatch_input = {
+    export interface WASMaskBatch_input {
         masks_a?: _MASK
         masks_b?: _MASK
         masks_c?: _MASK
@@ -12428,7 +12428,7 @@ declare global {
         nameInComfy: 'Mask Ceiling Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskCeilingRegion_input = {
+    export interface WASMaskCeilingRegion_input {
         masks: _MASK
     }
 
@@ -12437,7 +12437,7 @@ declare global {
         nameInComfy: 'Mask Crop Dominant Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskCropDominantRegion_input = {
+    export interface WASMaskCropDominantRegion_input {
         masks: _MASK
         /** default=24 min=4096 max=4096 step=1 */
         padding?: _INT
@@ -12448,7 +12448,7 @@ declare global {
         nameInComfy: 'Mask Crop Minority Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskCropMinorityRegion_input = {
+    export interface WASMaskCropMinorityRegion_input {
         masks: _MASK
         /** default=24 min=4096 max=4096 step=1 */
         padding?: _INT
@@ -12466,7 +12466,7 @@ declare global {
         INT_4: Slot<'INT', 6>
         INT_5: Slot<'INT', 7>
     }
-    export type WASMaskCropRegion_input = {
+    export interface WASMaskCropRegion_input {
         mask: _MASK
         /** default=24 min=4096 max=4096 step=1 */
         padding?: _INT
@@ -12479,7 +12479,7 @@ declare global {
         MASK: Slot<'MASK', 0>
         MASK_1: Slot<'MASK', 1>
     }
-    export type WASMaskPasteRegion_input = {
+    export interface WASMaskPasteRegion_input {
         mask: _MASK
         crop_mask: _MASK
         crop_data: _CROP_DATA
@@ -12494,7 +12494,7 @@ declare global {
         nameInComfy: 'Mask Dilate Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskDilateRegion_input = {
+    export interface WASMaskDilateRegion_input {
         masks: _MASK
         /** default=5 min=64 max=64 step=1 */
         iterations?: _INT
@@ -12505,7 +12505,7 @@ declare global {
         nameInComfy: 'Mask Dominant Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskDominantRegion_input = {
+    export interface WASMaskDominantRegion_input {
         masks: _MASK
         /** default=128 min=255 max=255 step=1 */
         threshold?: _INT
@@ -12516,7 +12516,7 @@ declare global {
         nameInComfy: 'Mask Erode Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskErodeRegion_input = {
+    export interface WASMaskErodeRegion_input {
         masks: _MASK
         /** default=5 min=64 max=64 step=1 */
         iterations?: _INT
@@ -12527,7 +12527,7 @@ declare global {
         nameInComfy: 'Mask Fill Holes'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskFillHoles_input = {
+    export interface WASMaskFillHoles_input {
         masks: _MASK
     }
 
@@ -12536,7 +12536,7 @@ declare global {
         nameInComfy: 'Mask Floor Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskFloorRegion_input = {
+    export interface WASMaskFloorRegion_input {
         masks: _MASK
     }
 
@@ -12545,7 +12545,7 @@ declare global {
         nameInComfy: 'Mask Gaussian Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskGaussianRegion_input = {
+    export interface WASMaskGaussianRegion_input {
         masks: _MASK
         /** default=5 min=1024 max=1024 step=0.1 */
         radius?: _FLOAT
@@ -12556,7 +12556,7 @@ declare global {
         nameInComfy: 'Mask Invert'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskInvert_input = {
+    export interface WASMaskInvert_input {
         masks: _MASK
     }
 
@@ -12565,7 +12565,7 @@ declare global {
         nameInComfy: 'Mask Minority Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskMinorityRegion_input = {
+    export interface WASMaskMinorityRegion_input {
         masks: _MASK
         /** default=128 min=255 max=255 step=1 */
         threshold?: _INT
@@ -12576,7 +12576,7 @@ declare global {
         nameInComfy: 'Mask Smooth Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskSmoothRegion_input = {
+    export interface WASMaskSmoothRegion_input {
         masks: _MASK
         /** default=5 min=128 max=128 step=0.1 */
         sigma?: _FLOAT
@@ -12587,7 +12587,7 @@ declare global {
         nameInComfy: 'Mask Threshold Region'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMaskThresholdRegion_input = {
+    export interface WASMaskThresholdRegion_input {
         masks: _MASK
         /** default=75 min=255 max=255 step=1 */
         black_threshold?: _INT
@@ -12600,7 +12600,7 @@ declare global {
         nameInComfy: 'Masks Combine Regions'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMasksCombineRegions_input = {
+    export interface WASMasksCombineRegions_input {
         mask_a: _MASK
         mask_b: _MASK
         mask_c?: _MASK
@@ -12614,7 +12614,7 @@ declare global {
         nameInComfy: 'Masks Combine Batch'
         MASK: Slot<'MASK', 0>
     }
-    export type WASMasksCombineBatch_input = {
+    export interface WASMasksCombineBatch_input {
         masks: _MASK
     }
 
@@ -12623,7 +12623,7 @@ declare global {
         nameInComfy: 'MiDaS Model Loader'
         MIDAS_MODEL: Slot<'MIDAS_MODEL', 0>
     }
-    export type WASMiDaSModelLoader_input = {
+    export interface WASMiDaSModelLoader_input {
         midas_model: Enum_WASMiDaSModelLoader_Midas_model
     }
 
@@ -12632,7 +12632,7 @@ declare global {
         nameInComfy: 'MiDaS Depth Approximation'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASMiDaSDepthApproximation_input = {
+    export interface WASMiDaSDepthApproximation_input {
         image: _IMAGE
         use_cpu: Enum_WASCreateGridImage_Include_subfolders
         midas_type: Enum_WASMiDaSModelLoader_Midas_model
@@ -12646,7 +12646,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         IMAGE_1: Slot<'IMAGE', 1>
     }
-    export type WASMiDaSMaskImage_input = {
+    export interface WASMiDaSMaskImage_input {
         image: _IMAGE
         use_cpu: Enum_WASCreateGridImage_Include_subfolders
         midas_model: Enum_WASMiDaSMaskImage_Midas_model
@@ -12673,7 +12673,7 @@ declare global {
         nameInComfy: 'Model Input Switch'
         MODEL: Slot<'MODEL', 0>
     }
-    export type WASModelInputSwitch_input = {
+    export interface WASModelInputSwitch_input {
         model_a: _MODEL
         model_b: _MODEL
         boolean_number: _NUMBER
@@ -12690,7 +12690,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 1>
         INT: Slot<'INT', 2>
     }
-    export type WASNumberCounter_input = {
+    export interface WASNumberCounter_input {
         number_type: Enum_WASNumberCounter_Number_type
         mode: Enum_WASKSamplerCycle_Pos_add_mode
         /** default=0 min=18446744073709552000 max=18446744073709552000 step=0.01 */
@@ -12711,7 +12711,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 1>
         INT: Slot<'INT', 2>
     }
-    export type WASNumberOperation_input = {
+    export interface WASNumberOperation_input {
         number_a: _NUMBER
         number_b: _NUMBER
         operation: Enum_WASNumberOperation_Operation
@@ -12722,7 +12722,7 @@ declare global {
         nameInComfy: 'Number to Float'
         FLOAT: Slot<'FLOAT', 0>
     }
-    export type WASNumberToFloat_input = {
+    export interface WASNumberToFloat_input {
         number: _NUMBER
     }
 
@@ -12737,7 +12737,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 1>
         INT: Slot<'INT', 2>
     }
-    export type WASNumberInputSwitch_input = {
+    export interface WASNumberInputSwitch_input {
         number_a: _NUMBER
         number_b: _NUMBER
         boolean_number: _NUMBER
@@ -12754,7 +12754,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 1>
         INT: Slot<'INT', 2>
     }
-    export type WASNumberInputCondition_input = {
+    export interface WASNumberInputCondition_input {
         number_a: _NUMBER
         number_b: _NUMBER
         return_boolean: Enum_WASCreateGridImage_Include_subfolders
@@ -12772,7 +12772,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 1>
         INT: Slot<'INT', 2>
     }
-    export type WASNumberMultipleOf_input = {
+    export interface WASNumberMultipleOf_input {
         number: _NUMBER
         /** default=8 min=18446744073709552000 max=18446744073709552000 */
         multiple?: _INT
@@ -12784,14 +12784,14 @@ declare global {
         NUMBER: Slot<'NUMBER', 0>
         FLOAT: Slot<'FLOAT', 1>
     }
-    export type WASNumberPI_input = {}
+    export interface WASNumberPI_input {}
 
     // Number to Int [WAS Suite_Number_Operations]
     export interface WASNumberToInt extends HasSingle_INT, ComfyNode<WASNumberToInt_input> {
         nameInComfy: 'Number to Int'
         INT: Slot<'INT', 0>
     }
-    export type WASNumberToInt_input = {
+    export interface WASNumberToInt_input {
         number: _NUMBER
     }
 
@@ -12800,7 +12800,7 @@ declare global {
         nameInComfy: 'Number to Seed'
         SEED: Slot<'SEED', 0>
     }
-    export type WASNumberToSeed_input = {
+    export interface WASNumberToSeed_input {
         number: _NUMBER
     }
 
@@ -12809,7 +12809,7 @@ declare global {
         nameInComfy: 'Number to String'
         STRING: Slot<'STRING', 0>
     }
-    export type WASNumberToString_input = {
+    export interface WASNumberToString_input {
         number: _NUMBER
     }
 
@@ -12818,7 +12818,7 @@ declare global {
         nameInComfy: 'Number to Text'
         STRING: Slot<'STRING', 0>
     }
-    export type WASNumberToText_input = {
+    export interface WASNumberToText_input {
         number: _NUMBER
     }
 
@@ -12828,7 +12828,7 @@ declare global {
         STRING: Slot<'STRING', 0>
         STRING_1: Slot<'STRING', 1>
     }
-    export type WASPromptStylesSelector_input = {
+    export interface WASPromptStylesSelector_input {
         style: Enum_WASPromptStylesSelector_Style
     }
 
@@ -12838,7 +12838,7 @@ declare global {
         STRING: Slot<'STRING', 0>
         STRING_1: Slot<'STRING', 1>
     }
-    export type WASPromptMultipleStylesSelector_input = {
+    export interface WASPromptMultipleStylesSelector_input {
         style1: Enum_WASPromptStylesSelector_Style
         style2: Enum_WASPromptStylesSelector_Style
         style3: Enum_WASPromptStylesSelector_Style
@@ -12852,7 +12852,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 1>
         INT: Slot<'INT', 2>
     }
-    export type WASRandomNumber_input = {
+    export interface WASRandomNumber_input {
         number_type: Enum_WASConstantNumber_Number_type
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         minimum?: _FLOAT
@@ -12866,7 +12866,7 @@ declare global {
     export interface WASSaveTextFile extends ComfyNode<WASSaveTextFile_input> {
         nameInComfy: 'Save Text File'
     }
-    export type WASSaveTextFile_input = {
+    export interface WASSaveTextFile_input {
         /** */
         text: _STRING
         /** default="./ComfyUI/output/[time(%Y-%m-%d)]" */
@@ -12887,7 +12887,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 2>
         INT: Slot<'INT', 3>
     }
-    export type WASSeed_input = {
+    export interface WASSeed_input {
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
         seed?: _INT
     }
@@ -12897,7 +12897,7 @@ declare global {
         nameInComfy: 'Tensor Batch to Image'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASTensorBatchToImage_input = {
+    export interface WASTensorBatchToImage_input {
         images_batch: _IMAGE
         /** default=0 min=64 max=64 step=1 */
         batch_image_number?: _INT
@@ -12908,7 +12908,7 @@ declare global {
         nameInComfy: 'BLIP Analyze Image'
         STRING: Slot<'STRING', 0>
     }
-    export type WASBLIPAnalyzeImage_input = {
+    export interface WASBLIPAnalyzeImage_input {
         image: _IMAGE
         mode: Enum_WASBLIPModelLoader_Blip_model
         /** default="What does the background consist of?" */
@@ -12921,7 +12921,7 @@ declare global {
         nameInComfy: 'SAM Model Loader'
         SAM_MODEL: Slot<'SAM_MODEL', 0>
     }
-    export type WASSAMModelLoader_input = {
+    export interface WASSAMModelLoader_input {
         model_size: Enum_WASSAMModelLoader_Model_size
     }
 
@@ -12930,7 +12930,7 @@ declare global {
         nameInComfy: 'SAM Parameters'
         SAM_PARAMETERS: Slot<'SAM_PARAMETERS', 0>
     }
-    export type WASSAMParameters_input = {
+    export interface WASSAMParameters_input {
         /** default="[128, 128]; [0, 0]" */
         points?: _STRING
         /** default="[1, 0]" */
@@ -12942,7 +12942,7 @@ declare global {
         nameInComfy: 'SAM Parameters Combine'
         SAM_PARAMETERS: Slot<'SAM_PARAMETERS', 0>
     }
-    export type WASSAMParametersCombine_input = {
+    export interface WASSAMParametersCombine_input {
         sam_parameters_a: _SAM_PARAMETERS
         sam_parameters_b: _SAM_PARAMETERS
     }
@@ -12953,7 +12953,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         MASK: Slot<'MASK', 1>
     }
-    export type WASSAMImageMask_input = {
+    export interface WASSAMImageMask_input {
         sam_model: _SAM_MODEL
         sam_parameters: _SAM_PARAMETERS
         image: _IMAGE
@@ -12964,7 +12964,7 @@ declare global {
         nameInComfy: 'Samples Passthrough (Stat System)'
         LATENT: Slot<'LATENT', 0>
     }
-    export type WASSamplesPassthroughStatSystem_input = {
+    export interface WASSamplesPassthroughStatSystem_input {
         samples: _LATENT
     }
 
@@ -12973,7 +12973,7 @@ declare global {
         nameInComfy: 'String to Text'
         STRING: Slot<'STRING', 0>
     }
-    export type WASStringToText_input = {
+    export interface WASStringToText_input {
         /** */
         string: _STRING
     }
@@ -12983,7 +12983,7 @@ declare global {
         nameInComfy: 'Image Bounds'
         IMAGE_BOUNDS: Slot<'IMAGE_BOUNDS', 0>
     }
-    export type WASImageBounds_input = {
+    export interface WASImageBounds_input {
         image: _IMAGE
     }
 
@@ -12992,7 +12992,7 @@ declare global {
         nameInComfy: 'Inset Image Bounds'
         IMAGE_BOUNDS: Slot<'IMAGE_BOUNDS', 0>
     }
-    export type WASInsetImageBounds_input = {
+    export interface WASInsetImageBounds_input {
         image_bounds: _IMAGE_BOUNDS
         /** default=64 min=18446744073709552000 max=18446744073709552000 */
         inset_left?: _INT
@@ -13009,7 +13009,7 @@ declare global {
         nameInComfy: 'Bounded Image Blend'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASBoundedImageBlend_input = {
+    export interface WASBoundedImageBlend_input {
         target: _IMAGE
         target_bounds: _IMAGE_BOUNDS
         source: _IMAGE
@@ -13024,7 +13024,7 @@ declare global {
         nameInComfy: 'Bounded Image Blend with Mask'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASBoundedImageBlendWithMask_input = {
+    export interface WASBoundedImageBlendWithMask_input {
         target: _IMAGE
         target_mask: _MASK
         target_bounds: _IMAGE_BOUNDS
@@ -13040,7 +13040,7 @@ declare global {
         nameInComfy: 'Bounded Image Crop'
         IMAGE: Slot<'IMAGE', 0>
     }
-    export type WASBoundedImageCrop_input = {
+    export interface WASBoundedImageCrop_input {
         image: _IMAGE
         image_bounds: _IMAGE_BOUNDS
     }
@@ -13054,7 +13054,7 @@ declare global {
         IMAGE: Slot<'IMAGE', 0>
         IMAGE_BOUNDS: Slot<'IMAGE_BOUNDS', 1>
     }
-    export type WASBoundedImageCropWithMask_input = {
+    export interface WASBoundedImageCropWithMask_input {
         image: _IMAGE
         mask: _MASK
         /** default=64 min=18446744073709552000 max=18446744073709552000 */
@@ -13072,7 +13072,7 @@ declare global {
         nameInComfy: 'Text Dictionary Update'
         DICT: Slot<'DICT', 0>
     }
-    export type WASTextDictionaryUpdate_input = {
+    export interface WASTextDictionaryUpdate_input {
         dictionary_a: _DICT
         dictionary_b: _DICT
         dictionary_c?: _DICT
@@ -13083,7 +13083,7 @@ declare global {
     export interface WASTextAddTokens extends ComfyNode<WASTextAddTokens_input> {
         nameInComfy: 'Text Add Tokens'
     }
-    export type WASTextAddTokens_input = {
+    export interface WASTextAddTokens_input {
         /** default="[hello]: world" */
         tokens?: _STRING
         print_current_tokens: Enum_WASCreateGridImage_Include_subfolders
@@ -13093,7 +13093,7 @@ declare global {
     export interface WASTextAddTokenByInput extends ComfyNode<WASTextAddTokenByInput_input> {
         nameInComfy: 'Text Add Token by Input'
     }
-    export type WASTextAddTokenByInput_input = {
+    export interface WASTextAddTokenByInput_input {
         /** */
         token_name: _STRING
         /** */
@@ -13110,7 +13110,7 @@ declare global {
         NUMBER_1: Slot<'NUMBER', 3>
         STRING_2: Slot<'STRING', 4>
     }
-    export type WASTextCompare_input = {
+    export interface WASTextCompare_input {
         /** */
         text_a: _STRING
         /** */
@@ -13125,7 +13125,7 @@ declare global {
         nameInComfy: 'Text Concatenate'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextConcatenate_input = {
+    export interface WASTextConcatenate_input {
         /** */
         text_a: _STRING
         /** */
@@ -13146,7 +13146,7 @@ declare global {
         STRING: Slot<'STRING', 0>
         DICT: Slot<'DICT', 1>
     }
-    export type WASTextFileHistoryLoader_input = {
+    export interface WASTextFileHistoryLoader_input {
         file: Enum_WASTextFileHistoryLoader_File
         /** default="[filename]" */
         dictionary_name?: _STRING
@@ -13159,7 +13159,7 @@ declare global {
         nameInComfy: 'Text Find and Replace by Dictionary'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextFindAndReplaceByDictionary_input = {
+    export interface WASTextFindAndReplaceByDictionary_input {
         /** */
         text: _STRING
         dictionary: _DICT
@@ -13174,7 +13174,7 @@ declare global {
         nameInComfy: 'Text Find and Replace Input'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextFindAndReplaceInput_input = {
+    export interface WASTextFindAndReplaceInput_input {
         /** */
         text: _STRING
         /** */
@@ -13188,7 +13188,7 @@ declare global {
         nameInComfy: 'Text Find and Replace'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextFindAndReplace_input = {
+    export interface WASTextFindAndReplace_input {
         /** */
         text: _STRING
         /** default="" */
@@ -13202,7 +13202,7 @@ declare global {
         nameInComfy: 'Text Input Switch'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextInputSwitch_input = {
+    export interface WASTextInputSwitch_input {
         /** */
         text_a: _STRING
         /** */
@@ -13215,7 +13215,7 @@ declare global {
         nameInComfy: 'Text List'
         LIST: Slot<'LIST', 0>
     }
-    export type WASTextList_input = {
+    export interface WASTextList_input {
         /** */
         text_a: _STRING
         /** */
@@ -13237,7 +13237,7 @@ declare global {
         nameInComfy: 'Text List Concatenate'
         LIST: Slot<'LIST', 0>
     }
-    export type WASTextListConcatenate_input = {
+    export interface WASTextListConcatenate_input {
         /** */
         list_a: _LIST
         /** */
@@ -13254,7 +13254,7 @@ declare global {
         STRING: Slot<'STRING', 0>
         DICT: Slot<'DICT', 1>
     }
-    export type WASTextLoadLineFromFile_input = {
+    export interface WASTextLoadLineFromFile_input {
         /** default="" */
         file_path?: _STRING
         /** default="[filename]" */
@@ -13273,7 +13273,7 @@ declare global {
         nameInComfy: 'Text Multiline'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextMultiline_input = {
+    export interface WASTextMultiline_input {
         /** default="" */
         text?: _STRING
     }
@@ -13283,7 +13283,7 @@ declare global {
         nameInComfy: 'Text Parse A1111 Embeddings'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextParseA1111Embeddings_input = {
+    export interface WASTextParseA1111Embeddings_input {
         /** */
         text: _STRING
     }
@@ -13293,7 +13293,7 @@ declare global {
         nameInComfy: 'Text Parse Noodle Soup Prompts'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextParseNoodleSoupPrompts_input = {
+    export interface WASTextParseNoodleSoupPrompts_input {
         mode: Enum_WASCLIPTextEncodeNSP_Mode
         /** default="__" */
         noodle_key?: _STRING
@@ -13308,7 +13308,7 @@ declare global {
         nameInComfy: 'Text Parse Tokens'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextParseTokens_input = {
+    export interface WASTextParseTokens_input {
         /** */
         text: _STRING
     }
@@ -13318,7 +13318,7 @@ declare global {
         nameInComfy: 'Text Random Line'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextRandomLine_input = {
+    export interface WASTextRandomLine_input {
         /** */
         text: _STRING
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -13330,7 +13330,7 @@ declare global {
         nameInComfy: 'Text Random Prompt'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextRandomPrompt_input = {
+    export interface WASTextRandomPrompt_input {
         /** */
         search_seed: _STRING
     }
@@ -13343,7 +13343,7 @@ declare global {
         STRING_2: Slot<'STRING', 2>
         STRING_3: Slot<'STRING', 3>
     }
-    export type WASTextString_input = {
+    export interface WASTextString_input {
         /** default="" */
         text?: _STRING
         /** default="" */
@@ -13359,7 +13359,7 @@ declare global {
         nameInComfy: 'Text Shuffle'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextShuffle_input = {
+    export interface WASTextShuffle_input {
         /** */
         text: _STRING
         /** default="," */
@@ -13373,7 +13373,7 @@ declare global {
         nameInComfy: 'Text to Conditioning'
         CONDITIONING: Slot<'CONDITIONING', 0>
     }
-    export type WASTextToConditioning_input = {
+    export interface WASTextToConditioning_input {
         clip: _CLIP
         /** */
         text: _STRING
@@ -13384,7 +13384,7 @@ declare global {
         nameInComfy: 'Text to Console'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextToConsole_input = {
+    export interface WASTextToConsole_input {
         /** */
         text: _STRING
         /** default="Text Output" */
@@ -13396,7 +13396,7 @@ declare global {
         nameInComfy: 'Text to Number'
         NUMBER: Slot<'NUMBER', 0>
     }
-    export type WASTextToNumber_input = {
+    export interface WASTextToNumber_input {
         /** */
         text: _STRING
     }
@@ -13406,7 +13406,7 @@ declare global {
         nameInComfy: 'Text to String'
         STRING: Slot<'STRING', 0>
     }
-    export type WASTextToString_input = {
+    export interface WASTextToString_input {
         /** */
         text: _STRING
     }
@@ -13419,7 +13419,7 @@ declare global {
         STRING_2: Slot<'STRING', 2>
         STRING_3: Slot<'STRING', 3>
     }
-    export type WASTextStringTruncate_input = {
+    export interface WASTextStringTruncate_input {
         /** */
         text: _STRING
         truncate_by: Enum_WASTextStringTruncate_Truncate_by
@@ -13445,7 +13445,7 @@ declare global {
         FLOAT: Slot<'FLOAT', 1>
         INT: Slot<'INT', 2>
     }
-    export type WASTrueRandomOrgNumberGenerator_input = {
+    export interface WASTrueRandomOrgNumberGenerator_input {
         /** default="00000000-0000-0000-0000-000000000000" */
         api_key?: _STRING
         /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -13470,7 +13470,7 @@ declare global {
         CLIP_VISION: Slot<'CLIP_VISION', 3>
         STRING: Slot<'STRING', 4>
     }
-    export type WASUnCLIPCheckpointLoader_input = {
+    export interface WASUnCLIPCheckpointLoader_input {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
 
@@ -13483,7 +13483,7 @@ declare global {
         UPSCALE_MODEL: Slot<'UPSCALE_MODEL', 0>
         STRING: Slot<'STRING', 1>
     }
-    export type WASUpscaleModelLoader_input = {
+    export interface WASUpscaleModelLoader_input {
         model_name: Enum_CLIPLoader_Clip_name
     }
 
@@ -13492,7 +13492,7 @@ declare global {
         nameInComfy: 'Upscale Model Switch'
         UPSCALE_MODEL: Slot<'UPSCALE_MODEL', 0>
     }
-    export type WASUpscaleModelSwitch_input = {
+    export interface WASUpscaleModelSwitch_input {
         upscale_model_a: _UPSCALE_MODEL
         upscale_model_b: _UPSCALE_MODEL
         boolean_number: _NUMBER
@@ -13505,7 +13505,7 @@ declare global {
         STRING: Slot<'STRING', 1>
         STRING_1: Slot<'STRING', 2>
     }
-    export type WASWriteToGIF_input = {
+    export interface WASWriteToGIF_input {
         image: _IMAGE
         /** default=30 min=60 max=60 step=1 */
         transition_frames?: _INT
@@ -13530,7 +13530,7 @@ declare global {
         STRING: Slot<'STRING', 1>
         STRING_1: Slot<'STRING', 2>
     }
-    export type WASWriteToVideo_input = {
+    export interface WASWriteToVideo_input {
         image: _IMAGE
         /** default=30 min=120 max=120 step=1 */
         transition_frames?: _INT
@@ -13552,7 +13552,7 @@ declare global {
         nameInComfy: 'VAE Input Switch'
         VAE: Slot<'VAE', 0>
     }
-    export type WASVAEInputSwitch_input = {
+    export interface WASVAEInputSwitch_input {
         vae_a: _VAE
         vae_b: _VAE
         boolean_number: _NUMBER
@@ -13564,7 +13564,7 @@ declare global {
         STRING: Slot<'STRING', 0>
         NUMBER: Slot<'NUMBER', 1>
     }
-    export type WASVideoDumpFrames_input = {
+    export interface WASVideoDumpFrames_input {
         /** default="./ComfyUI/input/MyVideo.mp4" */
         video_path?: _STRING
         /** default="./ComfyUI/input/MyVideo" */
@@ -13576,7 +13576,7 @@ declare global {
         extension: Enum_WASVideoDumpFrames_Extension
     }
 
-    // 9 INDEX -------------------------------
+    // 9. INDEX -------------------------------
     export type Schemas = {
         KSampler: ComfyNodeSchemaJSON
         CheckpointLoaderSimple: ComfyNodeSchemaJSON
