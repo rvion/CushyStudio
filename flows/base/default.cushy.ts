@@ -142,8 +142,10 @@ action('Prompt-V1', {
 
         if (p.removeBG) {
             graph.SaveImage({
-                images: graph.RemoveImageBackgroundAbg({
-                    image: flow.AUTO,
+                images: graph.WASImageRembgRemoveBackground({
+                    images: flow.AUTO,
+                    model: 'u2net',
+                    background_color: 'magenta',
                 }),
             })
         }
