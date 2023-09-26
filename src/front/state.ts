@@ -155,7 +155,7 @@ export class STATE {
 
         this.ws = this.initWebsocket()
         // this.autoDiscoverEveryWorkflow()
-        makeAutoObservable(this)
+        makeAutoObservable(this, { comfyUIIframeRef: false })
         // window.addEventListener('message', this.onMessageFromExtension)
         // this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
     }
