@@ -30,7 +30,7 @@ export class OpenPoseAnimV0 {
     ctx: CanvasRenderingContext2D | null = null
 
     // @internal
-    private intervalId: number | null = null
+    private intervalId: any | null = null
 
     ix = 0
 
