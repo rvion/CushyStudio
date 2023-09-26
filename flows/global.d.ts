@@ -3,1162 +3,1113 @@ import type { Slot } from '../src/core/Slot'
 import type { ComfyNodeSchemaJSON } from '../src/types/ComfySchemaJSON'
 import type { ComfyNodeUID } from '../src/types/NodeUID'
 import type { ActionType } from '../src/core/Requirement'
+
+// CONTENT IN THIS FILE:
+//
+//  0. Entrypoint
+//  1. Requirable
+//  2. Embeddings
+//  3. Suggestions
+//  4. TYPES
+//  5. ACCEPTABLE
+//  6. ENUMS
+//  7. INTERFACES
+//  8. NODES
+//  9. INDEX
+
 declare global {
     const action: ActionType
 
-    // Entrypoint --------------------------
+    // 0 Entrypoint --------------------------
     export interface ComfySetup {
-        /* category=sampling name="KSampler" output=LATENT */
-        KSampler(args: KSampler_input, uid?: ComfyNodeUID): KSampler
-        /* category=loaders name="CheckpointLoaderSimple" output=MODEL, CLIP, VAE */
-        CheckpointLoaderSimple(args: CheckpointLoaderSimple_input, uid?: ComfyNodeUID): CheckpointLoaderSimple
-        /* category=conditioning name="CLIPTextEncode" output=CONDITIONING */
-        CLIPTextEncode(args: CLIPTextEncode_input, uid?: ComfyNodeUID): CLIPTextEncode
-        /* category=conditioning name="CLIPSetLastLayer" output=CLIP */
-        CLIPSetLastLayer(args: CLIPSetLastLayer_input, uid?: ComfyNodeUID): CLIPSetLastLayer
-        /* category=latent name="VAEDecode" output=IMAGE */
-        VAEDecode(args: VAEDecode_input, uid?: ComfyNodeUID): VAEDecode
-        /* category=latent name="VAEEncode" output=LATENT */
-        VAEEncode(args: VAEEncode_input, uid?: ComfyNodeUID): VAEEncode
-        /* category=latent_inpaint name="VAEEncodeForInpaint" output=LATENT */
-        VAEEncodeForInpaint(args: VAEEncodeForInpaint_input, uid?: ComfyNodeUID): VAEEncodeForInpaint
-        /* category=loaders name="VAELoader" output=VAE */
-        VAELoader(args: VAELoader_input, uid?: ComfyNodeUID): VAELoader
-        /* category=latent name="EmptyLatentImage" output=LATENT */
-        EmptyLatentImage(args: EmptyLatentImage_input, uid?: ComfyNodeUID): EmptyLatentImage
-        /* category=latent name="LatentUpscale" output=LATENT */
-        LatentUpscale(args: LatentUpscale_input, uid?: ComfyNodeUID): LatentUpscale
-        /* category=latent name="LatentUpscaleBy" output=LATENT */
-        LatentUpscaleBy(args: LatentUpscaleBy_input, uid?: ComfyNodeUID): LatentUpscaleBy
-        /* category=latent_batch name="LatentFromBatch" output=LATENT */
-        LatentFromBatch(args: LatentFromBatch_input, uid?: ComfyNodeUID): LatentFromBatch
-        /* category=latent_batch name="RepeatLatentBatch" output=LATENT */
-        RepeatLatentBatch(args: RepeatLatentBatch_input, uid?: ComfyNodeUID): RepeatLatentBatch
-        /* category=image name="SaveImage" output= */
-        SaveImage(args: SaveImage_input, uid?: ComfyNodeUID): SaveImage
-        /* category=image name="PreviewImage" output= */
-        PreviewImage(args: PreviewImage_input, uid?: ComfyNodeUID): PreviewImage
-        /* category=image name="LoadImage" output=IMAGE, MASK */
-        LoadImage(args: LoadImage_input, uid?: ComfyNodeUID): LoadImage
-        /* category=mask name="LoadImageMask" output=MASK */
-        LoadImageMask(args: LoadImageMask_input, uid?: ComfyNodeUID): LoadImageMask
-        /* category=image_upscaling name="ImageScale" output=IMAGE */
-        ImageScale(args: ImageScale_input, uid?: ComfyNodeUID): ImageScale
-        /* category=image_upscaling name="ImageScaleBy" output=IMAGE */
-        ImageScaleBy(args: ImageScaleBy_input, uid?: ComfyNodeUID): ImageScaleBy
-        /* category=image name="ImageInvert" output=IMAGE */
-        ImageInvert(args: ImageInvert_input, uid?: ComfyNodeUID): ImageInvert
-        /* category=image name="ImageBatch" output=IMAGE */
-        ImageBatch(args: ImageBatch_input, uid?: ComfyNodeUID): ImageBatch
-        /* category=image name="ImagePadForOutpaint" output=IMAGE, MASK */
-        ImagePadForOutpaint(args: ImagePadForOutpaint_input, uid?: ComfyNodeUID): ImagePadForOutpaint
-        /* category=image name="EmptyImage" output=IMAGE */
-        EmptyImage(args: EmptyImage_input, uid?: ComfyNodeUID): EmptyImage
-        /* category=conditioning name="ConditioningAverage" output=CONDITIONING */
-        ConditioningAverage(args: ConditioningAverage_input, uid?: ComfyNodeUID): ConditioningAverage
-        /* category=conditioning name="ConditioningCombine" output=CONDITIONING */
-        ConditioningCombine(args: ConditioningCombine_input, uid?: ComfyNodeUID): ConditioningCombine
-        /* category=conditioning name="ConditioningConcat" output=CONDITIONING */
-        ConditioningConcat(args: ConditioningConcat_input, uid?: ComfyNodeUID): ConditioningConcat
-        /* category=conditioning name="ConditioningSetArea" output=CONDITIONING */
-        ConditioningSetArea(args: ConditioningSetArea_input, uid?: ComfyNodeUID): ConditioningSetArea
-        /* category=conditioning name="ConditioningSetAreaPercentage" output=CONDITIONING */
-        ConditioningSetAreaPercentage(
-            args: ConditioningSetAreaPercentage_input,
-            uid?: ComfyNodeUID,
-        ): ConditioningSetAreaPercentage
-        /* category=conditioning name="ConditioningSetMask" output=CONDITIONING */
-        ConditioningSetMask(args: ConditioningSetMask_input, uid?: ComfyNodeUID): ConditioningSetMask
-        /* category=sampling name="KSamplerAdvanced" output=LATENT */
-        KSamplerAdvanced(args: KSamplerAdvanced_input, uid?: ComfyNodeUID): KSamplerAdvanced
-        /* category=latent_inpaint name="SetLatentNoiseMask" output=LATENT */
-        SetLatentNoiseMask(args: SetLatentNoiseMask_input, uid?: ComfyNodeUID): SetLatentNoiseMask
-        /* category=latent name="LatentComposite" output=LATENT */
-        LatentComposite(args: LatentComposite_input, uid?: ComfyNodeUID): LatentComposite
-        /* category=_for_testing name="LatentBlend" output=LATENT */
-        LatentBlend(args: LatentBlend_input, uid?: ComfyNodeUID): LatentBlend
-        /* category=latent_transform name="LatentRotate" output=LATENT */
-        LatentRotate(args: LatentRotate_input, uid?: ComfyNodeUID): LatentRotate
-        /* category=latent_transform name="LatentFlip" output=LATENT */
-        LatentFlip(args: LatentFlip_input, uid?: ComfyNodeUID): LatentFlip
-        /* category=latent_transform name="LatentCrop" output=LATENT */
-        LatentCrop(args: LatentCrop_input, uid?: ComfyNodeUID): LatentCrop
-        /* category=loaders name="LoraLoader" output=MODEL, CLIP */
-        LoraLoader(args: LoraLoader_input, uid?: ComfyNodeUID): LoraLoader
-        /* category=advanced_loaders name="CLIPLoader" output=CLIP */
-        CLIPLoader(args: CLIPLoader_input, uid?: ComfyNodeUID): CLIPLoader
-        /* category=advanced_loaders name="UNETLoader" output=MODEL */
-        UNETLoader(args: UNETLoader_input, uid?: ComfyNodeUID): UNETLoader
-        /* category=advanced_loaders name="DualCLIPLoader" output=CLIP */
-        DualCLIPLoader(args: DualCLIPLoader_input, uid?: ComfyNodeUID): DualCLIPLoader
-        /* category=conditioning name="CLIPVisionEncode" output=CLIP_VISION_OUTPUT */
-        CLIPVisionEncode(args: CLIPVisionEncode_input, uid?: ComfyNodeUID): CLIPVisionEncode
-        /* category=conditioning_style_model name="StyleModelApply" output=CONDITIONING */
-        StyleModelApply(args: StyleModelApply_input, uid?: ComfyNodeUID): StyleModelApply
-        /* category=conditioning name="unCLIPConditioning" output=CONDITIONING */
-        UnCLIPConditioning(args: UnCLIPConditioning_input, uid?: ComfyNodeUID): UnCLIPConditioning
-        /* category=conditioning name="ControlNetApply" output=CONDITIONING */
-        ControlNetApply(args: ControlNetApply_input, uid?: ComfyNodeUID): ControlNetApply
-        /* category=conditioning name="ControlNetApplyAdvanced" output=CONDITIONING, CONDITIONING_1 */
-        ControlNetApplyAdvanced(args: ControlNetApplyAdvanced_input, uid?: ComfyNodeUID): ControlNetApplyAdvanced
-        /* category=loaders name="ControlNetLoader" output=CONTROL_NET */
-        ControlNetLoader(args: ControlNetLoader_input, uid?: ComfyNodeUID): ControlNetLoader
-        /* category=loaders name="DiffControlNetLoader" output=CONTROL_NET */
-        DiffControlNetLoader(args: DiffControlNetLoader_input, uid?: ComfyNodeUID): DiffControlNetLoader
-        /* category=loaders name="StyleModelLoader" output=STYLE_MODEL */
-        StyleModelLoader(args: StyleModelLoader_input, uid?: ComfyNodeUID): StyleModelLoader
-        /* category=loaders name="CLIPVisionLoader" output=CLIP_VISION */
-        CLIPVisionLoader(args: CLIPVisionLoader_input, uid?: ComfyNodeUID): CLIPVisionLoader
-        /* category=_for_testing name="VAEDecodeTiled" output=IMAGE */
-        VAEDecodeTiled(args: VAEDecodeTiled_input, uid?: ComfyNodeUID): VAEDecodeTiled
-        /* category=_for_testing name="VAEEncodeTiled" output=LATENT */
-        VAEEncodeTiled(args: VAEEncodeTiled_input, uid?: ComfyNodeUID): VAEEncodeTiled
-        /* category=loaders name="unCLIPCheckpointLoader" output=MODEL, CLIP, VAE, CLIP_VISION */
-        UnCLIPCheckpointLoader(args: UnCLIPCheckpointLoader_input, uid?: ComfyNodeUID): UnCLIPCheckpointLoader
-        /* category=loaders name="GLIGENLoader" output=GLIGEN */
-        GLIGENLoader(args: GLIGENLoader_input, uid?: ComfyNodeUID): GLIGENLoader
-        /* category=conditioning_gligen name="GLIGENTextBoxApply" output=CONDITIONING */
-        GLIGENTextBoxApply(args: GLIGENTextBoxApply_input, uid?: ComfyNodeUID): GLIGENTextBoxApply
-        /* category=advanced_loaders name="CheckpointLoader" output=MODEL, CLIP, VAE */
-        CheckpointLoader(args: CheckpointLoader_input, uid?: ComfyNodeUID): CheckpointLoader
-        /* category=advanced_loaders_deprecated name="DiffusersLoader" output=MODEL, CLIP, VAE */
-        DiffusersLoader(args: DiffusersLoader_input, uid?: ComfyNodeUID): DiffusersLoader
-        /* category=_for_testing name="LoadLatent" output=LATENT */
-        LoadLatent(args: LoadLatent_input, uid?: ComfyNodeUID): LoadLatent
-        /* category=_for_testing name="SaveLatent" output= */
-        SaveLatent(args: SaveLatent_input, uid?: ComfyNodeUID): SaveLatent
-        /* category=advanced_conditioning name="ConditioningZeroOut" output=CONDITIONING */
-        ConditioningZeroOut(args: ConditioningZeroOut_input, uid?: ComfyNodeUID): ConditioningZeroOut
-        /* category=advanced_conditioning name="ConditioningSetTimestepRange" output=CONDITIONING */
-        ConditioningSetTimestepRange(args: ConditioningSetTimestepRange_input, uid?: ComfyNodeUID): ConditioningSetTimestepRange
-        /* category=latent_advanced name="LatentAdd" output=LATENT */
-        LatentAdd(args: LatentAdd_input, uid?: ComfyNodeUID): LatentAdd
-        /* category=latent_advanced name="LatentSubtract" output=LATENT */
-        LatentSubtract(args: LatentSubtract_input, uid?: ComfyNodeUID): LatentSubtract
-        /* category=latent_advanced name="LatentMultiply" output=LATENT */
-        LatentMultiply(args: LatentMultiply_input, uid?: ComfyNodeUID): LatentMultiply
-        /* category=loaders name="HypernetworkLoader" output=MODEL */
-        HypernetworkLoader(args: HypernetworkLoader_input, uid?: ComfyNodeUID): HypernetworkLoader
-        /* category=loaders name="UpscaleModelLoader" output=UPSCALE_MODEL */
-        UpscaleModelLoader(args: UpscaleModelLoader_input, uid?: ComfyNodeUID): UpscaleModelLoader
-        /* category=image_upscaling name="ImageUpscaleWithModel" output=IMAGE */
-        ImageUpscaleWithModel(args: ImageUpscaleWithModel_input, uid?: ComfyNodeUID): ImageUpscaleWithModel
-        /* category=image_postprocessing name="ImageBlend" output=IMAGE */
-        ImageBlend(args: ImageBlend_input, uid?: ComfyNodeUID): ImageBlend
-        /* category=image_postprocessing name="ImageBlur" output=IMAGE */
-        ImageBlur(args: ImageBlur_input, uid?: ComfyNodeUID): ImageBlur
-        /* category=image_postprocessing name="ImageQuantize" output=IMAGE */
-        ImageQuantize(args: ImageQuantize_input, uid?: ComfyNodeUID): ImageQuantize
-        /* category=image_postprocessing name="ImageSharpen" output=IMAGE */
-        ImageSharpen(args: ImageSharpen_input, uid?: ComfyNodeUID): ImageSharpen
-        /* category=image_upscaling name="ImageScaleToTotalPixels" output=IMAGE */
-        ImageScaleToTotalPixels(args: ImageScaleToTotalPixels_input, uid?: ComfyNodeUID): ImageScaleToTotalPixels
-        /* category=latent name="LatentCompositeMasked" output=LATENT */
-        LatentCompositeMasked(args: LatentCompositeMasked_input, uid?: ComfyNodeUID): LatentCompositeMasked
-        /* category=image name="ImageCompositeMasked" output=IMAGE */
-        ImageCompositeMasked(args: ImageCompositeMasked_input, uid?: ComfyNodeUID): ImageCompositeMasked
-        /* category=mask name="MaskToImage" output=IMAGE */
-        MaskToImage(args: MaskToImage_input, uid?: ComfyNodeUID): MaskToImage
-        /* category=mask name="ImageToMask" output=MASK */
-        ImageToMask(args: ImageToMask_input, uid?: ComfyNodeUID): ImageToMask
-        /* category=mask name="ImageColorToMask" output=MASK */
-        ImageColorToMask(args: ImageColorToMask_input, uid?: ComfyNodeUID): ImageColorToMask
-        /* category=mask name="SolidMask" output=MASK */
-        SolidMask(args: SolidMask_input, uid?: ComfyNodeUID): SolidMask
-        /* category=mask name="InvertMask" output=MASK */
-        InvertMask(args: InvertMask_input, uid?: ComfyNodeUID): InvertMask
-        /* category=mask name="CropMask" output=MASK */
-        CropMask(args: CropMask_input, uid?: ComfyNodeUID): CropMask
-        /* category=mask name="MaskComposite" output=MASK */
-        MaskComposite(args: MaskComposite_input, uid?: ComfyNodeUID): MaskComposite
-        /* category=mask name="FeatherMask" output=MASK */
-        FeatherMask(args: FeatherMask_input, uid?: ComfyNodeUID): FeatherMask
-        /* category=mask name="GrowMask" output=MASK */
-        GrowMask(args: GrowMask_input, uid?: ComfyNodeUID): GrowMask
-        /* category=latent_batch name="RebatchLatents" output=LATENT */
-        RebatchLatents(args: RebatchLatents_input, uid?: ComfyNodeUID): RebatchLatents
-        /* category=advanced_model_merging name="ModelMergeSimple" output=MODEL */
-        ModelMergeSimple(args: ModelMergeSimple_input, uid?: ComfyNodeUID): ModelMergeSimple
-        /* category=advanced_model_merging name="ModelMergeBlocks" output=MODEL */
-        ModelMergeBlocks(args: ModelMergeBlocks_input, uid?: ComfyNodeUID): ModelMergeBlocks
-        /* category=advanced_model_merging name="ModelMergeSubtract" output=MODEL */
-        ModelMergeSubtract(args: ModelMergeSubtract_input, uid?: ComfyNodeUID): ModelMergeSubtract
-        /* category=advanced_model_merging name="ModelMergeAdd" output=MODEL */
-        ModelMergeAdd(args: ModelMergeAdd_input, uid?: ComfyNodeUID): ModelMergeAdd
-        /* category=advanced_model_merging name="CheckpointSave" output= */
-        CheckpointSave(args: CheckpointSave_input, uid?: ComfyNodeUID): CheckpointSave
-        /* category=advanced_model_merging name="CLIPMergeSimple" output=CLIP */
-        CLIPMergeSimple(args: CLIPMergeSimple_input, uid?: ComfyNodeUID): CLIPMergeSimple
-        /* category=_for_testing name="TomePatchModel" output=MODEL */
-        TomePatchModel(args: TomePatchModel_input, uid?: ComfyNodeUID): TomePatchModel
-        /* category=advanced_conditioning name="CLIPTextEncodeSDXLRefiner" output=CONDITIONING */
-        CLIPTextEncodeSDXLRefiner(args: CLIPTextEncodeSDXLRefiner_input, uid?: ComfyNodeUID): CLIPTextEncodeSDXLRefiner
-        /* category=advanced_conditioning name="CLIPTextEncodeSDXL" output=CONDITIONING */
-        CLIPTextEncodeSDXL(args: CLIPTextEncodeSDXL_input, uid?: ComfyNodeUID): CLIPTextEncodeSDXL
-        /* category=image_preprocessors name="Canny" output=IMAGE */
-        Canny(args: Canny_input, uid?: ComfyNodeUID): Canny
-        /* category=_for_testing name="FreeU" output=MODEL */
-        FreeU(args: FreeU_input, uid?: ComfyNodeUID): FreeU
-        /* category=image name="Remove Image Background (abg)" output=IMAGE */
-        RemoveImageBackgroundAbg(args: RemoveImageBackgroundAbg_input, uid?: ComfyNodeUID): RemoveImageBackgroundAbg
-        /* category=CivitAI_Loaders name="CivitAI_Lora_Loader" output=MODEL, CLIP */
-        CivitAI_Lora_Loader(args: CivitAI_Lora_Loader_input, uid?: ComfyNodeUID): CivitAI_Lora_Loader
-        /* category=CivitAI_Loaders name="CivitAI_Checkpoint_Loader" output=MODEL, CLIP, VAE */
-        CivitAI_Checkpoint_Loader(args: CivitAI_Checkpoint_Loader_input, uid?: ComfyNodeUID): CivitAI_Checkpoint_Loader
-        /* category=ImpactPack name="SAMLoader" output=SAM_MODEL */
-        ImpactSAMLoader(args: ImpactSAMLoader_input, uid?: ComfyNodeUID): ImpactSAMLoader
-        /* category=ImpactPack_Util name="CLIPSegDetectorProvider" output=BBOX_DETECTOR */
-        ImpactCLIPSegDetectorProvider(
-            args: ImpactCLIPSegDetectorProvider_input,
-            uid?: ComfyNodeUID,
-        ): ImpactCLIPSegDetectorProvider
-        /* category=ImpactPack name="ONNXDetectorProvider" output=ONNX_DETECTOR */
-        ImpactONNXDetectorProvider(args: ImpactONNXDetectorProvider_input, uid?: ComfyNodeUID): ImpactONNXDetectorProvider
-        /* category=ImpactPack_Operation name="BitwiseAndMaskForEach" output=SEGS */
-        ImpactBitwiseAndMaskForEach(args: ImpactBitwiseAndMaskForEach_input, uid?: ComfyNodeUID): ImpactBitwiseAndMaskForEach
-        /* category=ImpactPack_Operation name="SubtractMaskForEach" output=SEGS */
-        ImpactSubtractMaskForEach(args: ImpactSubtractMaskForEach_input, uid?: ComfyNodeUID): ImpactSubtractMaskForEach
-        /* category=ImpactPack_Detailer name="DetailerForEach" output=IMAGE */
-        ImpactDetailerForEach(args: ImpactDetailerForEach_input, uid?: ComfyNodeUID): ImpactDetailerForEach
-        /* category=ImpactPack_Detailer name="DetailerForEachDebug" output=IMAGE, IMAGE_1, IMAGE_2, IMAGE_3, IMAGE_4 */
-        ImpactDetailerForEachDebug(args: ImpactDetailerForEachDebug_input, uid?: ComfyNodeUID): ImpactDetailerForEachDebug
-        /* category=ImpactPack_Detailer name="DetailerForEachPipe" output=IMAGE, SEGS, BASIC_PIPE, IMAGE_1 */
-        ImpactDetailerForEachPipe(args: ImpactDetailerForEachPipe_input, uid?: ComfyNodeUID): ImpactDetailerForEachPipe
-        /* category=ImpactPack_Detailer name="DetailerForEachDebugPipe" output=IMAGE, SEGS, BASIC_PIPE, IMAGE_1, IMAGE_2, IMAGE_3, IMAGE_4 */
-        ImpactDetailerForEachDebugPipe(
-            args: ImpactDetailerForEachDebugPipe_input,
-            uid?: ComfyNodeUID,
-        ): ImpactDetailerForEachDebugPipe
-        /* category=ImpactPack_Detector name="SAMDetectorCombined" output=MASK */
-        ImpactSAMDetectorCombined(args: ImpactSAMDetectorCombined_input, uid?: ComfyNodeUID): ImpactSAMDetectorCombined
-        /* category=ImpactPack_Detector name="SAMDetectorSegmented" output=MASK, MASKS */
-        ImpactSAMDetectorSegmented(args: ImpactSAMDetectorSegmented_input, uid?: ComfyNodeUID): ImpactSAMDetectorSegmented
-        /* category=ImpactPack_Simple name="FaceDetailer" output=IMAGE, IMAGE_1, IMAGE_2, MASK, DETAILER_PIPE, IMAGE_3 */
-        ImpactFaceDetailer(args: ImpactFaceDetailer_input, uid?: ComfyNodeUID): ImpactFaceDetailer
-        /* category=ImpactPack_Simple name="FaceDetailerPipe" output=IMAGE, IMAGE_1, IMAGE_2, MASK, DETAILER_PIPE, IMAGE_3 */
-        ImpactFaceDetailerPipe(args: ImpactFaceDetailerPipe_input, uid?: ComfyNodeUID): ImpactFaceDetailerPipe
-        /* category=ImpactPack_Pipe name="ToDetailerPipe" output=DETAILER_PIPE */
-        ImpactToDetailerPipe(args: ImpactToDetailerPipe_input, uid?: ComfyNodeUID): ImpactToDetailerPipe
-        /* category=ImpactPack_Pipe name="ToDetailerPipeSDXL" output=DETAILER_PIPE */
-        ImpactToDetailerPipeSDXL(args: ImpactToDetailerPipeSDXL_input, uid?: ComfyNodeUID): ImpactToDetailerPipeSDXL
-        /* category=ImpactPack_Pipe name="FromDetailerPipe" output=MODEL, CLIP, VAE, CONDITIONING, CONDITIONING_1, BBOX_DETECTOR, SAM_MODEL, SEGM_DETECTOR, DETAILER_HOOK */
-        ImpactFromDetailerPipe(args: ImpactFromDetailerPipe_input, uid?: ComfyNodeUID): ImpactFromDetailerPipe
-        /* category=ImpactPack_Pipe name="FromDetailerPipe_v2" output=DETAILER_PIPE, MODEL, CLIP, VAE, CONDITIONING, CONDITIONING_1, BBOX_DETECTOR, SAM_MODEL, SEGM_DETECTOR, DETAILER_HOOK */
-        ImpactFromDetailerPipe_v2(args: ImpactFromDetailerPipe_v2_input, uid?: ComfyNodeUID): ImpactFromDetailerPipe_v2
-        /* category=ImpactPack_Pipe name="FromDetailerPipeSDXL" output=DETAILER_PIPE, MODEL, CLIP, VAE, CONDITIONING, CONDITIONING_1, BBOX_DETECTOR, SAM_MODEL, SEGM_DETECTOR, DETAILER_HOOK, MODEL_1, CLIP_1, CONDITIONING_2, CONDITIONING_3 */
-        ImpactFromDetailerPipeSDXL(args: ImpactFromDetailerPipeSDXL_input, uid?: ComfyNodeUID): ImpactFromDetailerPipeSDXL
-        /* category=ImpactPack_Pipe name="ToBasicPipe" output=BASIC_PIPE */
-        ImpactToBasicPipe(args: ImpactToBasicPipe_input, uid?: ComfyNodeUID): ImpactToBasicPipe
-        /* category=ImpactPack_Pipe name="FromBasicPipe" output=MODEL, CLIP, VAE, CONDITIONING, CONDITIONING_1 */
-        ImpactFromBasicPipe(args: ImpactFromBasicPipe_input, uid?: ComfyNodeUID): ImpactFromBasicPipe
-        /* category=ImpactPack_Pipe name="FromBasicPipe_v2" output=BASIC_PIPE, MODEL, CLIP, VAE, CONDITIONING, CONDITIONING_1 */
-        ImpactFromBasicPipe_v2(args: ImpactFromBasicPipe_v2_input, uid?: ComfyNodeUID): ImpactFromBasicPipe_v2
-        /* category=ImpactPack_Pipe name="BasicPipeToDetailerPipe" output=DETAILER_PIPE */
-        ImpactBasicPipeToDetailerPipe(
-            args: ImpactBasicPipeToDetailerPipe_input,
-            uid?: ComfyNodeUID,
-        ): ImpactBasicPipeToDetailerPipe
-        /* category=ImpactPack_Pipe name="BasicPipeToDetailerPipeSDXL" output=DETAILER_PIPE */
+        /* category:sampling, name:"KSampler", output:LATENT */
+        KSampler(p: KSampler_input, id?: ComfyNodeUID): KSampler
+        /* category:loaders, name:"CheckpointLoaderSimple", output:MODEL+CLIP+VAE */
+        CheckpointLoaderSimple(p: CheckpointLoaderSimple_input, id?: ComfyNodeUID): CheckpointLoaderSimple
+        /* category:conditioning, name:"CLIPTextEncode", output:CONDITIONING */
+        CLIPTextEncode(p: CLIPTextEncode_input, id?: ComfyNodeUID): CLIPTextEncode
+        /* category:conditioning, name:"CLIPSetLastLayer", output:CLIP */
+        CLIPSetLastLayer(p: CLIPSetLastLayer_input, id?: ComfyNodeUID): CLIPSetLastLayer
+        /* category:latent, name:"VAEDecode", output:IMAGE */
+        VAEDecode(p: VAEDecode_input, id?: ComfyNodeUID): VAEDecode
+        /* category:latent, name:"VAEEncode", output:LATENT */
+        VAEEncode(p: VAEEncode_input, id?: ComfyNodeUID): VAEEncode
+        /* category:latent_inpaint, name:"VAEEncodeForInpaint", output:LATENT */
+        VAEEncodeForInpaint(p: VAEEncodeForInpaint_input, id?: ComfyNodeUID): VAEEncodeForInpaint
+        /* category:loaders, name:"VAELoader", output:VAE */
+        VAELoader(p: VAELoader_input, id?: ComfyNodeUID): VAELoader
+        /* category:latent, name:"EmptyLatentImage", output:LATENT */
+        EmptyLatentImage(p: EmptyLatentImage_input, id?: ComfyNodeUID): EmptyLatentImage
+        /* category:latent, name:"LatentUpscale", output:LATENT */
+        LatentUpscale(p: LatentUpscale_input, id?: ComfyNodeUID): LatentUpscale
+        /* category:latent, name:"LatentUpscaleBy", output:LATENT */
+        LatentUpscaleBy(p: LatentUpscaleBy_input, id?: ComfyNodeUID): LatentUpscaleBy
+        /* category:latent_batch, name:"LatentFromBatch", output:LATENT */
+        LatentFromBatch(p: LatentFromBatch_input, id?: ComfyNodeUID): LatentFromBatch
+        /* category:latent_batch, name:"RepeatLatentBatch", output:LATENT */
+        RepeatLatentBatch(p: RepeatLatentBatch_input, id?: ComfyNodeUID): RepeatLatentBatch
+        /* category:image, name:"SaveImage", output: */
+        SaveImage(p: SaveImage_input, id?: ComfyNodeUID): SaveImage
+        /* category:image, name:"PreviewImage", output: */
+        PreviewImage(p: PreviewImage_input, id?: ComfyNodeUID): PreviewImage
+        /* category:image, name:"LoadImage", output:IMAGE+MASK */
+        LoadImage(p: LoadImage_input, id?: ComfyNodeUID): LoadImage
+        /* category:mask, name:"LoadImageMask", output:MASK */
+        LoadImageMask(p: LoadImageMask_input, id?: ComfyNodeUID): LoadImageMask
+        /* category:image_upscaling, name:"ImageScale", output:IMAGE */
+        ImageScale(p: ImageScale_input, id?: ComfyNodeUID): ImageScale
+        /* category:image_upscaling, name:"ImageScaleBy", output:IMAGE */
+        ImageScaleBy(p: ImageScaleBy_input, id?: ComfyNodeUID): ImageScaleBy
+        /* category:image, name:"ImageInvert", output:IMAGE */
+        ImageInvert(p: ImageInvert_input, id?: ComfyNodeUID): ImageInvert
+        /* category:image, name:"ImageBatch", output:IMAGE */
+        ImageBatch(p: ImageBatch_input, id?: ComfyNodeUID): ImageBatch
+        /* category:image, name:"ImagePadForOutpaint", output:IMAGE+MASK */
+        ImagePadForOutpaint(p: ImagePadForOutpaint_input, id?: ComfyNodeUID): ImagePadForOutpaint
+        /* category:image, name:"EmptyImage", output:IMAGE */
+        EmptyImage(p: EmptyImage_input, id?: ComfyNodeUID): EmptyImage
+        /* category:conditioning, name:"ConditioningAverage", output:CONDITIONING */
+        ConditioningAverage(p: ConditioningAverage_input, id?: ComfyNodeUID): ConditioningAverage
+        /* category:conditioning, name:"ConditioningCombine", output:CONDITIONING */
+        ConditioningCombine(p: ConditioningCombine_input, id?: ComfyNodeUID): ConditioningCombine
+        /* category:conditioning, name:"ConditioningConcat", output:CONDITIONING */
+        ConditioningConcat(p: ConditioningConcat_input, id?: ComfyNodeUID): ConditioningConcat
+        /* category:conditioning, name:"ConditioningSetArea", output:CONDITIONING */
+        ConditioningSetArea(p: ConditioningSetArea_input, id?: ComfyNodeUID): ConditioningSetArea
+        /* category:conditioning, name:"ConditioningSetAreaPercentage", output:CONDITIONING */
+        ConditioningSetAreaPercentage(p: ConditioningSetAreaPercentage_input, id?: ComfyNodeUID): ConditioningSetAreaPercentage
+        /* category:conditioning, name:"ConditioningSetMask", output:CONDITIONING */
+        ConditioningSetMask(p: ConditioningSetMask_input, id?: ComfyNodeUID): ConditioningSetMask
+        /* category:sampling, name:"KSamplerAdvanced", output:LATENT */
+        KSamplerAdvanced(p: KSamplerAdvanced_input, id?: ComfyNodeUID): KSamplerAdvanced
+        /* category:latent_inpaint, name:"SetLatentNoiseMask", output:LATENT */
+        SetLatentNoiseMask(p: SetLatentNoiseMask_input, id?: ComfyNodeUID): SetLatentNoiseMask
+        /* category:latent, name:"LatentComposite", output:LATENT */
+        LatentComposite(p: LatentComposite_input, id?: ComfyNodeUID): LatentComposite
+        /* category:_for_testing, name:"LatentBlend", output:LATENT */
+        LatentBlend(p: LatentBlend_input, id?: ComfyNodeUID): LatentBlend
+        /* category:latent_transform, name:"LatentRotate", output:LATENT */
+        LatentRotate(p: LatentRotate_input, id?: ComfyNodeUID): LatentRotate
+        /* category:latent_transform, name:"LatentFlip", output:LATENT */
+        LatentFlip(p: LatentFlip_input, id?: ComfyNodeUID): LatentFlip
+        /* category:latent_transform, name:"LatentCrop", output:LATENT */
+        LatentCrop(p: LatentCrop_input, id?: ComfyNodeUID): LatentCrop
+        /* category:loaders, name:"LoraLoader", output:MODEL+CLIP */
+        LoraLoader(p: LoraLoader_input, id?: ComfyNodeUID): LoraLoader
+        /* category:advanced_loaders, name:"CLIPLoader", output:CLIP */
+        CLIPLoader(p: CLIPLoader_input, id?: ComfyNodeUID): CLIPLoader
+        /* category:advanced_loaders, name:"UNETLoader", output:MODEL */
+        UNETLoader(p: UNETLoader_input, id?: ComfyNodeUID): UNETLoader
+        /* category:advanced_loaders, name:"DualCLIPLoader", output:CLIP */
+        DualCLIPLoader(p: DualCLIPLoader_input, id?: ComfyNodeUID): DualCLIPLoader
+        /* category:conditioning, name:"CLIPVisionEncode", output:CLIP_VISION_OUTPUT */
+        CLIPVisionEncode(p: CLIPVisionEncode_input, id?: ComfyNodeUID): CLIPVisionEncode
+        /* category:conditioning_style_model, name:"StyleModelApply", output:CONDITIONING */
+        StyleModelApply(p: StyleModelApply_input, id?: ComfyNodeUID): StyleModelApply
+        /* category:conditioning, name:"unCLIPConditioning", output:CONDITIONING */
+        UnCLIPConditioning(p: UnCLIPConditioning_input, id?: ComfyNodeUID): UnCLIPConditioning
+        /* category:conditioning, name:"ControlNetApply", output:CONDITIONING */
+        ControlNetApply(p: ControlNetApply_input, id?: ComfyNodeUID): ControlNetApply
+        /* category:conditioning, name:"ControlNetApplyAdvanced", output:CONDITIONING+CONDITIONING_1 */
+        ControlNetApplyAdvanced(p: ControlNetApplyAdvanced_input, id?: ComfyNodeUID): ControlNetApplyAdvanced
+        /* category:loaders, name:"ControlNetLoader", output:CONTROL_NET */
+        ControlNetLoader(p: ControlNetLoader_input, id?: ComfyNodeUID): ControlNetLoader
+        /* category:loaders, name:"DiffControlNetLoader", output:CONTROL_NET */
+        DiffControlNetLoader(p: DiffControlNetLoader_input, id?: ComfyNodeUID): DiffControlNetLoader
+        /* category:loaders, name:"StyleModelLoader", output:STYLE_MODEL */
+        StyleModelLoader(p: StyleModelLoader_input, id?: ComfyNodeUID): StyleModelLoader
+        /* category:loaders, name:"CLIPVisionLoader", output:CLIP_VISION */
+        CLIPVisionLoader(p: CLIPVisionLoader_input, id?: ComfyNodeUID): CLIPVisionLoader
+        /* category:_for_testing, name:"VAEDecodeTiled", output:IMAGE */
+        VAEDecodeTiled(p: VAEDecodeTiled_input, id?: ComfyNodeUID): VAEDecodeTiled
+        /* category:_for_testing, name:"VAEEncodeTiled", output:LATENT */
+        VAEEncodeTiled(p: VAEEncodeTiled_input, id?: ComfyNodeUID): VAEEncodeTiled
+        /* category:loaders, name:"unCLIPCheckpointLoader", output:MODEL+CLIP+VAE+CLIP_VISION */
+        UnCLIPCheckpointLoader(p: UnCLIPCheckpointLoader_input, id?: ComfyNodeUID): UnCLIPCheckpointLoader
+        /* category:loaders, name:"GLIGENLoader", output:GLIGEN */
+        GLIGENLoader(p: GLIGENLoader_input, id?: ComfyNodeUID): GLIGENLoader
+        /* category:conditioning_gligen, name:"GLIGENTextBoxApply", output:CONDITIONING */
+        GLIGENTextBoxApply(p: GLIGENTextBoxApply_input, id?: ComfyNodeUID): GLIGENTextBoxApply
+        /* category:advanced_loaders, name:"CheckpointLoader", output:MODEL+CLIP+VAE */
+        CheckpointLoader(p: CheckpointLoader_input, id?: ComfyNodeUID): CheckpointLoader
+        /* category:advanced_loaders_deprecated, name:"DiffusersLoader", output:MODEL+CLIP+VAE */
+        DiffusersLoader(p: DiffusersLoader_input, id?: ComfyNodeUID): DiffusersLoader
+        /* category:_for_testing, name:"LoadLatent", output:LATENT */
+        LoadLatent(p: LoadLatent_input, id?: ComfyNodeUID): LoadLatent
+        /* category:_for_testing, name:"SaveLatent", output: */
+        SaveLatent(p: SaveLatent_input, id?: ComfyNodeUID): SaveLatent
+        /* category:advanced_conditioning, name:"ConditioningZeroOut", output:CONDITIONING */
+        ConditioningZeroOut(p: ConditioningZeroOut_input, id?: ComfyNodeUID): ConditioningZeroOut
+        /* category:advanced_conditioning, name:"ConditioningSetTimestepRange", output:CONDITIONING */
+        ConditioningSetTimestepRange(p: ConditioningSetTimestepRange_input, id?: ComfyNodeUID): ConditioningSetTimestepRange
+        /* category:latent_advanced, name:"LatentAdd", output:LATENT */
+        LatentAdd(p: LatentAdd_input, id?: ComfyNodeUID): LatentAdd
+        /* category:latent_advanced, name:"LatentSubtract", output:LATENT */
+        LatentSubtract(p: LatentSubtract_input, id?: ComfyNodeUID): LatentSubtract
+        /* category:latent_advanced, name:"LatentMultiply", output:LATENT */
+        LatentMultiply(p: LatentMultiply_input, id?: ComfyNodeUID): LatentMultiply
+        /* category:loaders, name:"HypernetworkLoader", output:MODEL */
+        HypernetworkLoader(p: HypernetworkLoader_input, id?: ComfyNodeUID): HypernetworkLoader
+        /* category:loaders, name:"UpscaleModelLoader", output:UPSCALE_MODEL */
+        UpscaleModelLoader(p: UpscaleModelLoader_input, id?: ComfyNodeUID): UpscaleModelLoader
+        /* category:image_upscaling, name:"ImageUpscaleWithModel", output:IMAGE */
+        ImageUpscaleWithModel(p: ImageUpscaleWithModel_input, id?: ComfyNodeUID): ImageUpscaleWithModel
+        /* category:image_postprocessing, name:"ImageBlend", output:IMAGE */
+        ImageBlend(p: ImageBlend_input, id?: ComfyNodeUID): ImageBlend
+        /* category:image_postprocessing, name:"ImageBlur", output:IMAGE */
+        ImageBlur(p: ImageBlur_input, id?: ComfyNodeUID): ImageBlur
+        /* category:image_postprocessing, name:"ImageQuantize", output:IMAGE */
+        ImageQuantize(p: ImageQuantize_input, id?: ComfyNodeUID): ImageQuantize
+        /* category:image_postprocessing, name:"ImageSharpen", output:IMAGE */
+        ImageSharpen(p: ImageSharpen_input, id?: ComfyNodeUID): ImageSharpen
+        /* category:image_upscaling, name:"ImageScaleToTotalPixels", output:IMAGE */
+        ImageScaleToTotalPixels(p: ImageScaleToTotalPixels_input, id?: ComfyNodeUID): ImageScaleToTotalPixels
+        /* category:latent, name:"LatentCompositeMasked", output:LATENT */
+        LatentCompositeMasked(p: LatentCompositeMasked_input, id?: ComfyNodeUID): LatentCompositeMasked
+        /* category:image, name:"ImageCompositeMasked", output:IMAGE */
+        ImageCompositeMasked(p: ImageCompositeMasked_input, id?: ComfyNodeUID): ImageCompositeMasked
+        /* category:mask, name:"MaskToImage", output:IMAGE */
+        MaskToImage(p: MaskToImage_input, id?: ComfyNodeUID): MaskToImage
+        /* category:mask, name:"ImageToMask", output:MASK */
+        ImageToMask(p: ImageToMask_input, id?: ComfyNodeUID): ImageToMask
+        /* category:mask, name:"ImageColorToMask", output:MASK */
+        ImageColorToMask(p: ImageColorToMask_input, id?: ComfyNodeUID): ImageColorToMask
+        /* category:mask, name:"SolidMask", output:MASK */
+        SolidMask(p: SolidMask_input, id?: ComfyNodeUID): SolidMask
+        /* category:mask, name:"InvertMask", output:MASK */
+        InvertMask(p: InvertMask_input, id?: ComfyNodeUID): InvertMask
+        /* category:mask, name:"CropMask", output:MASK */
+        CropMask(p: CropMask_input, id?: ComfyNodeUID): CropMask
+        /* category:mask, name:"MaskComposite", output:MASK */
+        MaskComposite(p: MaskComposite_input, id?: ComfyNodeUID): MaskComposite
+        /* category:mask, name:"FeatherMask", output:MASK */
+        FeatherMask(p: FeatherMask_input, id?: ComfyNodeUID): FeatherMask
+        /* category:mask, name:"GrowMask", output:MASK */
+        GrowMask(p: GrowMask_input, id?: ComfyNodeUID): GrowMask
+        /* category:latent_batch, name:"RebatchLatents", output:LATENT */
+        RebatchLatents(p: RebatchLatents_input, id?: ComfyNodeUID): RebatchLatents
+        /* category:advanced_model_merging, name:"ModelMergeSimple", output:MODEL */
+        ModelMergeSimple(p: ModelMergeSimple_input, id?: ComfyNodeUID): ModelMergeSimple
+        /* category:advanced_model_merging, name:"ModelMergeBlocks", output:MODEL */
+        ModelMergeBlocks(p: ModelMergeBlocks_input, id?: ComfyNodeUID): ModelMergeBlocks
+        /* category:advanced_model_merging, name:"ModelMergeSubtract", output:MODEL */
+        ModelMergeSubtract(p: ModelMergeSubtract_input, id?: ComfyNodeUID): ModelMergeSubtract
+        /* category:advanced_model_merging, name:"ModelMergeAdd", output:MODEL */
+        ModelMergeAdd(p: ModelMergeAdd_input, id?: ComfyNodeUID): ModelMergeAdd
+        /* category:advanced_model_merging, name:"CheckpointSave", output: */
+        CheckpointSave(p: CheckpointSave_input, id?: ComfyNodeUID): CheckpointSave
+        /* category:advanced_model_merging, name:"CLIPMergeSimple", output:CLIP */
+        CLIPMergeSimple(p: CLIPMergeSimple_input, id?: ComfyNodeUID): CLIPMergeSimple
+        /* category:_for_testing, name:"TomePatchModel", output:MODEL */
+        TomePatchModel(p: TomePatchModel_input, id?: ComfyNodeUID): TomePatchModel
+        /* category:advanced_conditioning, name:"CLIPTextEncodeSDXLRefiner", output:CONDITIONING */
+        CLIPTextEncodeSDXLRefiner(p: CLIPTextEncodeSDXLRefiner_input, id?: ComfyNodeUID): CLIPTextEncodeSDXLRefiner
+        /* category:advanced_conditioning, name:"CLIPTextEncodeSDXL", output:CONDITIONING */
+        CLIPTextEncodeSDXL(p: CLIPTextEncodeSDXL_input, id?: ComfyNodeUID): CLIPTextEncodeSDXL
+        /* category:image_preprocessors, name:"Canny", output:IMAGE */
+        Canny(p: Canny_input, id?: ComfyNodeUID): Canny
+        /* category:_for_testing, name:"FreeU", output:MODEL */
+        FreeU(p: FreeU_input, id?: ComfyNodeUID): FreeU
+        /* category:image, name:"Remove Image Background (abg)", output:IMAGE */
+        RemoveImageBackgroundAbg(p: RemoveImageBackgroundAbg_input, id?: ComfyNodeUID): RemoveImageBackgroundAbg
+        /* category:CivitAI_Loaders, name:"CivitAI_Lora_Loader", output:MODEL+CLIP */
+        CivitAI_Lora_Loader(p: CivitAI_Lora_Loader_input, id?: ComfyNodeUID): CivitAI_Lora_Loader
+        /* category:CivitAI_Loaders, name:"CivitAI_Checkpoint_Loader", output:MODEL+CLIP+VAE */
+        CivitAI_Checkpoint_Loader(p: CivitAI_Checkpoint_Loader_input, id?: ComfyNodeUID): CivitAI_Checkpoint_Loader
+        /* category:ImpactPack, name:"SAMLoader", output:SAM_MODEL */
+        ImpactSAMLoader(p: ImpactSAMLoader_input, id?: ComfyNodeUID): ImpactSAMLoader
+        /* category:ImpactPack_Util, name:"CLIPSegDetectorProvider", output:BBOX_DETECTOR */
+        ImpactCLIPSegDetectorProvider(p: ImpactCLIPSegDetectorProvider_input, id?: ComfyNodeUID): ImpactCLIPSegDetectorProvider
+        /* category:ImpactPack, name:"ONNXDetectorProvider", output:ONNX_DETECTOR */
+        ImpactONNXDetectorProvider(p: ImpactONNXDetectorProvider_input, id?: ComfyNodeUID): ImpactONNXDetectorProvider
+        /* category:ImpactPack_Operation, name:"BitwiseAndMaskForEach", output:SEGS */
+        ImpactBitwiseAndMaskForEach(p: ImpactBitwiseAndMaskForEach_input, id?: ComfyNodeUID): ImpactBitwiseAndMaskForEach
+        /* category:ImpactPack_Operation, name:"SubtractMaskForEach", output:SEGS */
+        ImpactSubtractMaskForEach(p: ImpactSubtractMaskForEach_input, id?: ComfyNodeUID): ImpactSubtractMaskForEach
+        /* category:ImpactPack_Detailer, name:"DetailerForEach", output:IMAGE */
+        ImpactDetailerForEach(p: ImpactDetailerForEach_input, id?: ComfyNodeUID): ImpactDetailerForEach
+        /* category:ImpactPack_Detailer, name:"DetailerForEachDebug", output:IMAGE+IMAGE_1+IMAGE_2+IMAGE_3+IMAGE_4 */
+        ImpactDetailerForEachDebug(p: ImpactDetailerForEachDebug_input, id?: ComfyNodeUID): ImpactDetailerForEachDebug
+        /* category:ImpactPack_Detailer, name:"DetailerForEachPipe", output:IMAGE+SEGS+BASIC_PIPE+IMAGE_1 */
+        ImpactDetailerForEachPipe(p: ImpactDetailerForEachPipe_input, id?: ComfyNodeUID): ImpactDetailerForEachPipe
+        /* category:ImpactPack_Detailer, name:"DetailerForEachDebugPipe", output:IMAGE+SEGS+BASIC_PIPE+IMAGE_1+IMAGE_2+IMAGE_3+IMAGE_4 */
+        ImpactDetailerForEachDebugPipe(p: ImpactDetailerForEachDebugPipe_input, id?: ComfyNodeUID): ImpactDetailerForEachDebugPipe
+        /* category:ImpactPack_Detector, name:"SAMDetectorCombined", output:MASK */
+        ImpactSAMDetectorCombined(p: ImpactSAMDetectorCombined_input, id?: ComfyNodeUID): ImpactSAMDetectorCombined
+        /* category:ImpactPack_Detector, name:"SAMDetectorSegmented", output:MASK+MASKS */
+        ImpactSAMDetectorSegmented(p: ImpactSAMDetectorSegmented_input, id?: ComfyNodeUID): ImpactSAMDetectorSegmented
+        /* category:ImpactPack_Simple, name:"FaceDetailer", output:IMAGE+IMAGE_1+IMAGE_2+MASK+DETAILER_PIPE+IMAGE_3 */
+        ImpactFaceDetailer(p: ImpactFaceDetailer_input, id?: ComfyNodeUID): ImpactFaceDetailer
+        /* category:ImpactPack_Simple, name:"FaceDetailerPipe", output:IMAGE+IMAGE_1+IMAGE_2+MASK+DETAILER_PIPE+IMAGE_3 */
+        ImpactFaceDetailerPipe(p: ImpactFaceDetailerPipe_input, id?: ComfyNodeUID): ImpactFaceDetailerPipe
+        /* category:ImpactPack_Pipe, name:"ToDetailerPipe", output:DETAILER_PIPE */
+        ImpactToDetailerPipe(p: ImpactToDetailerPipe_input, id?: ComfyNodeUID): ImpactToDetailerPipe
+        /* category:ImpactPack_Pipe, name:"ToDetailerPipeSDXL", output:DETAILER_PIPE */
+        ImpactToDetailerPipeSDXL(p: ImpactToDetailerPipeSDXL_input, id?: ComfyNodeUID): ImpactToDetailerPipeSDXL
+        /* category:ImpactPack_Pipe, name:"FromDetailerPipe", output:MODEL+CLIP+VAE+CONDITIONING+CONDITIONING_1+BBOX_DETECTOR+SAM_MODEL+SEGM_DETECTOR+DETAILER_HOOK */
+        ImpactFromDetailerPipe(p: ImpactFromDetailerPipe_input, id?: ComfyNodeUID): ImpactFromDetailerPipe
+        /* category:ImpactPack_Pipe, name:"FromDetailerPipe_v2", output:DETAILER_PIPE+MODEL+CLIP+VAE+CONDITIONING+CONDITIONING_1+BBOX_DETECTOR+SAM_MODEL+SEGM_DETECTOR+DETAILER_HOOK */
+        ImpactFromDetailerPipe_v2(p: ImpactFromDetailerPipe_v2_input, id?: ComfyNodeUID): ImpactFromDetailerPipe_v2
+        /* category:ImpactPack_Pipe, name:"FromDetailerPipeSDXL", output:DETAILER_PIPE+MODEL+CLIP+VAE+CONDITIONING+CONDITIONING_1+BBOX_DETECTOR+SAM_MODEL+SEGM_DETECTOR+DETAILER_HOOK+MODEL_1+CLIP_1+CONDITIONING_2+CONDITIONING_3 */
+        ImpactFromDetailerPipeSDXL(p: ImpactFromDetailerPipeSDXL_input, id?: ComfyNodeUID): ImpactFromDetailerPipeSDXL
+        /* category:ImpactPack_Pipe, name:"ToBasicPipe", output:BASIC_PIPE */
+        ImpactToBasicPipe(p: ImpactToBasicPipe_input, id?: ComfyNodeUID): ImpactToBasicPipe
+        /* category:ImpactPack_Pipe, name:"FromBasicPipe", output:MODEL+CLIP+VAE+CONDITIONING+CONDITIONING_1 */
+        ImpactFromBasicPipe(p: ImpactFromBasicPipe_input, id?: ComfyNodeUID): ImpactFromBasicPipe
+        /* category:ImpactPack_Pipe, name:"FromBasicPipe_v2", output:BASIC_PIPE+MODEL+CLIP+VAE+CONDITIONING+CONDITIONING_1 */
+        ImpactFromBasicPipe_v2(p: ImpactFromBasicPipe_v2_input, id?: ComfyNodeUID): ImpactFromBasicPipe_v2
+        /* category:ImpactPack_Pipe, name:"BasicPipeToDetailerPipe", output:DETAILER_PIPE */
+        ImpactBasicPipeToDetailerPipe(p: ImpactBasicPipeToDetailerPipe_input, id?: ComfyNodeUID): ImpactBasicPipeToDetailerPipe
+        /* category:ImpactPack_Pipe, name:"BasicPipeToDetailerPipeSDXL", output:DETAILER_PIPE */
         ImpactBasicPipeToDetailerPipeSDXL(
-            args: ImpactBasicPipeToDetailerPipeSDXL_input,
-            uid?: ComfyNodeUID,
+            p: ImpactBasicPipeToDetailerPipeSDXL_input,
+            id?: ComfyNodeUID,
         ): ImpactBasicPipeToDetailerPipeSDXL
-        /* category=ImpactPack_Pipe name="DetailerPipeToBasicPipe" output=BASIC_PIPE, BASIC_PIPE_1 */
-        ImpactDetailerPipeToBasicPipe(
-            args: ImpactDetailerPipeToBasicPipe_input,
-            uid?: ComfyNodeUID,
-        ): ImpactDetailerPipeToBasicPipe
-        /* category=ImpactPack_Pipe name="EditBasicPipe" output=BASIC_PIPE */
-        ImpactEditBasicPipe(args: ImpactEditBasicPipe_input, uid?: ComfyNodeUID): ImpactEditBasicPipe
-        /* category=ImpactPack_Pipe name="EditDetailerPipe" output=DETAILER_PIPE */
-        ImpactEditDetailerPipe(args: ImpactEditDetailerPipe_input, uid?: ComfyNodeUID): ImpactEditDetailerPipe
-        /* category=ImpactPack_Pipe name="EditDetailerPipeSDXL" output=DETAILER_PIPE */
-        ImpactEditDetailerPipeSDXL(args: ImpactEditDetailerPipeSDXL_input, uid?: ComfyNodeUID): ImpactEditDetailerPipeSDXL
-        /* category=ImpactPack_Upscale name="LatentPixelScale" output=LATENT */
-        ImpactLatentPixelScale(args: ImpactLatentPixelScale_input, uid?: ComfyNodeUID): ImpactLatentPixelScale
-        /* category=ImpactPack_Upscale name="PixelKSampleUpscalerProvider" output=UPSCALER */
+        /* category:ImpactPack_Pipe, name:"DetailerPipeToBasicPipe", output:BASIC_PIPE+BASIC_PIPE_1 */
+        ImpactDetailerPipeToBasicPipe(p: ImpactDetailerPipeToBasicPipe_input, id?: ComfyNodeUID): ImpactDetailerPipeToBasicPipe
+        /* category:ImpactPack_Pipe, name:"EditBasicPipe", output:BASIC_PIPE */
+        ImpactEditBasicPipe(p: ImpactEditBasicPipe_input, id?: ComfyNodeUID): ImpactEditBasicPipe
+        /* category:ImpactPack_Pipe, name:"EditDetailerPipe", output:DETAILER_PIPE */
+        ImpactEditDetailerPipe(p: ImpactEditDetailerPipe_input, id?: ComfyNodeUID): ImpactEditDetailerPipe
+        /* category:ImpactPack_Pipe, name:"EditDetailerPipeSDXL", output:DETAILER_PIPE */
+        ImpactEditDetailerPipeSDXL(p: ImpactEditDetailerPipeSDXL_input, id?: ComfyNodeUID): ImpactEditDetailerPipeSDXL
+        /* category:ImpactPack_Upscale, name:"LatentPixelScale", output:LATENT */
+        ImpactLatentPixelScale(p: ImpactLatentPixelScale_input, id?: ComfyNodeUID): ImpactLatentPixelScale
+        /* category:ImpactPack_Upscale, name:"PixelKSampleUpscalerProvider", output:UPSCALER */
         ImpactPixelKSampleUpscalerProvider(
-            args: ImpactPixelKSampleUpscalerProvider_input,
-            uid?: ComfyNodeUID,
+            p: ImpactPixelKSampleUpscalerProvider_input,
+            id?: ComfyNodeUID,
         ): ImpactPixelKSampleUpscalerProvider
-        /* category=ImpactPack_Upscale name="PixelKSampleUpscalerProviderPipe" output=UPSCALER */
+        /* category:ImpactPack_Upscale, name:"PixelKSampleUpscalerProviderPipe", output:UPSCALER */
         ImpactPixelKSampleUpscalerProviderPipe(
-            args: ImpactPixelKSampleUpscalerProviderPipe_input,
-            uid?: ComfyNodeUID,
+            p: ImpactPixelKSampleUpscalerProviderPipe_input,
+            id?: ComfyNodeUID,
         ): ImpactPixelKSampleUpscalerProviderPipe
-        /* category=ImpactPack_Upscale name="IterativeLatentUpscale" output=LATENT */
-        ImpactIterativeLatentUpscale(args: ImpactIterativeLatentUpscale_input, uid?: ComfyNodeUID): ImpactIterativeLatentUpscale
-        /* category=ImpactPack_Upscale name="IterativeImageUpscale" output=IMAGE */
-        ImpactIterativeImageUpscale(args: ImpactIterativeImageUpscale_input, uid?: ComfyNodeUID): ImpactIterativeImageUpscale
-        /* category=ImpactPack_Upscale name="PixelTiledKSampleUpscalerProvider" output=UPSCALER */
+        /* category:ImpactPack_Upscale, name:"IterativeLatentUpscale", output:LATENT */
+        ImpactIterativeLatentUpscale(p: ImpactIterativeLatentUpscale_input, id?: ComfyNodeUID): ImpactIterativeLatentUpscale
+        /* category:ImpactPack_Upscale, name:"IterativeImageUpscale", output:IMAGE */
+        ImpactIterativeImageUpscale(p: ImpactIterativeImageUpscale_input, id?: ComfyNodeUID): ImpactIterativeImageUpscale
+        /* category:ImpactPack_Upscale, name:"PixelTiledKSampleUpscalerProvider", output:UPSCALER */
         ImpactPixelTiledKSampleUpscalerProvider(
-            args: ImpactPixelTiledKSampleUpscalerProvider_input,
-            uid?: ComfyNodeUID,
+            p: ImpactPixelTiledKSampleUpscalerProvider_input,
+            id?: ComfyNodeUID,
         ): ImpactPixelTiledKSampleUpscalerProvider
-        /* category=ImpactPack_Upscale name="PixelTiledKSampleUpscalerProviderPipe" output=UPSCALER */
+        /* category:ImpactPack_Upscale, name:"PixelTiledKSampleUpscalerProviderPipe", output:UPSCALER */
         ImpactPixelTiledKSampleUpscalerProviderPipe(
-            args: ImpactPixelTiledKSampleUpscalerProviderPipe_input,
-            uid?: ComfyNodeUID,
+            p: ImpactPixelTiledKSampleUpscalerProviderPipe_input,
+            id?: ComfyNodeUID,
         ): ImpactPixelTiledKSampleUpscalerProviderPipe
-        /* category=ImpactPack_Upscale name="TwoSamplersForMaskUpscalerProvider" output=UPSCALER */
+        /* category:ImpactPack_Upscale, name:"TwoSamplersForMaskUpscalerProvider", output:UPSCALER */
         ImpactTwoSamplersForMaskUpscalerProvider(
-            args: ImpactTwoSamplersForMaskUpscalerProvider_input,
-            uid?: ComfyNodeUID,
+            p: ImpactTwoSamplersForMaskUpscalerProvider_input,
+            id?: ComfyNodeUID,
         ): ImpactTwoSamplersForMaskUpscalerProvider
-        /* category=ImpactPack_Upscale name="TwoSamplersForMaskUpscalerProviderPipe" output=UPSCALER */
+        /* category:ImpactPack_Upscale, name:"TwoSamplersForMaskUpscalerProviderPipe", output:UPSCALER */
         ImpactTwoSamplersForMaskUpscalerProviderPipe(
-            args: ImpactTwoSamplersForMaskUpscalerProviderPipe_input,
-            uid?: ComfyNodeUID,
+            p: ImpactTwoSamplersForMaskUpscalerProviderPipe_input,
+            id?: ComfyNodeUID,
         ): ImpactTwoSamplersForMaskUpscalerProviderPipe
-        /* category=ImpactPack_Upscale name="PixelKSampleHookCombine" output=PK_HOOK */
-        ImpactPixelKSampleHookCombine(
-            args: ImpactPixelKSampleHookCombine_input,
-            uid?: ComfyNodeUID,
-        ): ImpactPixelKSampleHookCombine
-        /* category=ImpactPack_Upscale name="DenoiseScheduleHookProvider" output=PK_HOOK */
+        /* category:ImpactPack_Upscale, name:"PixelKSampleHookCombine", output:PK_HOOK */
+        ImpactPixelKSampleHookCombine(p: ImpactPixelKSampleHookCombine_input, id?: ComfyNodeUID): ImpactPixelKSampleHookCombine
+        /* category:ImpactPack_Upscale, name:"DenoiseScheduleHookProvider", output:PK_HOOK */
         ImpactDenoiseScheduleHookProvider(
-            args: ImpactDenoiseScheduleHookProvider_input,
-            uid?: ComfyNodeUID,
+            p: ImpactDenoiseScheduleHookProvider_input,
+            id?: ComfyNodeUID,
         ): ImpactDenoiseScheduleHookProvider
-        /* category=ImpactPack_Upscale name="CfgScheduleHookProvider" output=PK_HOOK */
-        ImpactCfgScheduleHookProvider(
-            args: ImpactCfgScheduleHookProvider_input,
-            uid?: ComfyNodeUID,
-        ): ImpactCfgScheduleHookProvider
-        /* category=ImpactPack_Upscale name="NoiseInjectionHookProvider" output=PK_HOOK */
+        /* category:ImpactPack_Upscale, name:"CfgScheduleHookProvider", output:PK_HOOK */
+        ImpactCfgScheduleHookProvider(p: ImpactCfgScheduleHookProvider_input, id?: ComfyNodeUID): ImpactCfgScheduleHookProvider
+        /* category:ImpactPack_Upscale, name:"NoiseInjectionHookProvider", output:PK_HOOK */
         ImpactNoiseInjectionHookProvider(
-            args: ImpactNoiseInjectionHookProvider_input,
-            uid?: ComfyNodeUID,
+            p: ImpactNoiseInjectionHookProvider_input,
+            id?: ComfyNodeUID,
         ): ImpactNoiseInjectionHookProvider
-        /* category=ImpactPack_Detailer name="NoiseInjectionDetailerHookProvider" output=DETAILER_HOOK */
+        /* category:ImpactPack_Detailer, name:"NoiseInjectionDetailerHookProvider", output:DETAILER_HOOK */
         ImpactNoiseInjectionDetailerHookProvider(
-            args: ImpactNoiseInjectionDetailerHookProvider_input,
-            uid?: ComfyNodeUID,
+            p: ImpactNoiseInjectionDetailerHookProvider_input,
+            id?: ComfyNodeUID,
         ): ImpactNoiseInjectionDetailerHookProvider
-        /* category=ImpactPack_Operation name="BitwiseAndMask" output=MASK */
-        ImpactBitwiseAndMask(args: ImpactBitwiseAndMask_input, uid?: ComfyNodeUID): ImpactBitwiseAndMask
-        /* category=ImpactPack_Operation name="SubtractMask" output=MASK */
-        ImpactSubtractMask(args: ImpactSubtractMask_input, uid?: ComfyNodeUID): ImpactSubtractMask
-        /* category=ImpactPack_Operation name="AddMask" output=MASK */
-        ImpactAddMask(args: ImpactAddMask_input, uid?: ComfyNodeUID): ImpactAddMask
-        /* category=ImpactPack_Operation name="Segs & Mask" output=SEGS */
-        ImpactSegsMask(args: ImpactSegsMask_input, uid?: ComfyNodeUID): ImpactSegsMask
-        /* category=ImpactPack_Operation name="Segs & Mask ForEach" output=SEGS */
-        ImpactSegsMaskForEach(args: ImpactSegsMaskForEach_input, uid?: ComfyNodeUID): ImpactSegsMaskForEach
-        /* category=ImpactPack_Util name="EmptySegs" output=SEGS */
-        ImpactEmptySegs(args: ImpactEmptySegs_input, uid?: ComfyNodeUID): ImpactEmptySegs
-        /* category=ImpactPack_Operation name="MediaPipeFaceMeshToSEGS" output=SEGS */
-        ImpactMediaPipeFaceMeshToSEGS(
-            args: ImpactMediaPipeFaceMeshToSEGS_input,
-            uid?: ComfyNodeUID,
-        ): ImpactMediaPipeFaceMeshToSEGS
-        /* category=ImpactPack_Operation name="MaskToSEGS" output=SEGS */
-        ImpactMaskToSEGS(args: ImpactMaskToSEGS_input, uid?: ComfyNodeUID): ImpactMaskToSEGS
-        /* category=ImpactPack_Operation name="ToBinaryMask" output=MASK */
-        ImpactToBinaryMask(args: ImpactToBinaryMask_input, uid?: ComfyNodeUID): ImpactToBinaryMask
-        /* category=ImpactPack_Operation name="MasksToMaskList" output=MASK */
-        ImpactMasksToMaskList(args: ImpactMasksToMaskList_input, uid?: ComfyNodeUID): ImpactMasksToMaskList
-        /* category=ImpactPack_Operation name="MaskListToMaskBatch" output=MASKS */
-        ImpactMaskListToMaskBatch(args: ImpactMaskListToMaskBatch_input, uid?: ComfyNodeUID): ImpactMaskListToMaskBatch
-        /* category=ImpactPack_Detector name="BboxDetectorSEGS" output=SEGS */
-        ImpactBboxDetectorSEGS(args: ImpactBboxDetectorSEGS_input, uid?: ComfyNodeUID): ImpactBboxDetectorSEGS
-        /* category=ImpactPack_Detector name="SegmDetectorSEGS" output=SEGS */
-        ImpactSegmDetectorSEGS(args: ImpactSegmDetectorSEGS_input, uid?: ComfyNodeUID): ImpactSegmDetectorSEGS
-        /* category=ImpactPack_Detector name="ONNXDetectorSEGS" output=SEGS */
-        ImpactONNXDetectorSEGS(args: ImpactONNXDetectorSEGS_input, uid?: ComfyNodeUID): ImpactONNXDetectorSEGS
-        /* category=ImpactPack_Detector name="ImpactSimpleDetectorSEGS" output=SEGS */
-        ImpactImpactSimpleDetectorSEGS(
-            args: ImpactImpactSimpleDetectorSEGS_input,
-            uid?: ComfyNodeUID,
-        ): ImpactImpactSimpleDetectorSEGS
-        /* category=ImpactPack_Detector name="ImpactSimpleDetectorSEGSPipe" output=SEGS */
+        /* category:ImpactPack_Operation, name:"BitwiseAndMask", output:MASK */
+        ImpactBitwiseAndMask(p: ImpactBitwiseAndMask_input, id?: ComfyNodeUID): ImpactBitwiseAndMask
+        /* category:ImpactPack_Operation, name:"SubtractMask", output:MASK */
+        ImpactSubtractMask(p: ImpactSubtractMask_input, id?: ComfyNodeUID): ImpactSubtractMask
+        /* category:ImpactPack_Operation, name:"AddMask", output:MASK */
+        ImpactAddMask(p: ImpactAddMask_input, id?: ComfyNodeUID): ImpactAddMask
+        /* category:ImpactPack_Operation, name:"Segs & Mask", output:SEGS */
+        ImpactSegsMask(p: ImpactSegsMask_input, id?: ComfyNodeUID): ImpactSegsMask
+        /* category:ImpactPack_Operation, name:"Segs & Mask ForEach", output:SEGS */
+        ImpactSegsMaskForEach(p: ImpactSegsMaskForEach_input, id?: ComfyNodeUID): ImpactSegsMaskForEach
+        /* category:ImpactPack_Util, name:"EmptySegs", output:SEGS */
+        ImpactEmptySegs(p: ImpactEmptySegs_input, id?: ComfyNodeUID): ImpactEmptySegs
+        /* category:ImpactPack_Operation, name:"MediaPipeFaceMeshToSEGS", output:SEGS */
+        ImpactMediaPipeFaceMeshToSEGS(p: ImpactMediaPipeFaceMeshToSEGS_input, id?: ComfyNodeUID): ImpactMediaPipeFaceMeshToSEGS
+        /* category:ImpactPack_Operation, name:"MaskToSEGS", output:SEGS */
+        ImpactMaskToSEGS(p: ImpactMaskToSEGS_input, id?: ComfyNodeUID): ImpactMaskToSEGS
+        /* category:ImpactPack_Operation, name:"ToBinaryMask", output:MASK */
+        ImpactToBinaryMask(p: ImpactToBinaryMask_input, id?: ComfyNodeUID): ImpactToBinaryMask
+        /* category:ImpactPack_Operation, name:"MasksToMaskList", output:MASK */
+        ImpactMasksToMaskList(p: ImpactMasksToMaskList_input, id?: ComfyNodeUID): ImpactMasksToMaskList
+        /* category:ImpactPack_Operation, name:"MaskListToMaskBatch", output:MASKS */
+        ImpactMaskListToMaskBatch(p: ImpactMaskListToMaskBatch_input, id?: ComfyNodeUID): ImpactMaskListToMaskBatch
+        /* category:ImpactPack_Detector, name:"BboxDetectorSEGS", output:SEGS */
+        ImpactBboxDetectorSEGS(p: ImpactBboxDetectorSEGS_input, id?: ComfyNodeUID): ImpactBboxDetectorSEGS
+        /* category:ImpactPack_Detector, name:"SegmDetectorSEGS", output:SEGS */
+        ImpactSegmDetectorSEGS(p: ImpactSegmDetectorSEGS_input, id?: ComfyNodeUID): ImpactSegmDetectorSEGS
+        /* category:ImpactPack_Detector, name:"ONNXDetectorSEGS", output:SEGS */
+        ImpactONNXDetectorSEGS(p: ImpactONNXDetectorSEGS_input, id?: ComfyNodeUID): ImpactONNXDetectorSEGS
+        /* category:ImpactPack_Detector, name:"ImpactSimpleDetectorSEGS", output:SEGS */
+        ImpactImpactSimpleDetectorSEGS(p: ImpactImpactSimpleDetectorSEGS_input, id?: ComfyNodeUID): ImpactImpactSimpleDetectorSEGS
+        /* category:ImpactPack_Detector, name:"ImpactSimpleDetectorSEGSPipe", output:SEGS */
         ImpactImpactSimpleDetectorSEGSPipe(
-            args: ImpactImpactSimpleDetectorSEGSPipe_input,
-            uid?: ComfyNodeUID,
+            p: ImpactImpactSimpleDetectorSEGSPipe_input,
+            id?: ComfyNodeUID,
         ): ImpactImpactSimpleDetectorSEGSPipe
-        /* category=ImpactPack_Util name="ImpactControlNetApplySEGS" output=SEGS */
+        /* category:ImpactPack_Util, name:"ImpactControlNetApplySEGS", output:SEGS */
         ImpactImpactControlNetApplySEGS(
-            args: ImpactImpactControlNetApplySEGS_input,
-            uid?: ComfyNodeUID,
+            p: ImpactImpactControlNetApplySEGS_input,
+            id?: ComfyNodeUID,
         ): ImpactImpactControlNetApplySEGS
-        /* category=ImpactPack_Util name="ImpactDecomposeSEGS" output=SEGS_HEADER, SEG_ELT */
-        ImpactImpactDecomposeSEGS(args: ImpactImpactDecomposeSEGS_input, uid?: ComfyNodeUID): ImpactImpactDecomposeSEGS
-        /* category=ImpactPack_Util name="ImpactAssembleSEGS" output=SEGS */
-        ImpactImpactAssembleSEGS(args: ImpactImpactAssembleSEGS_input, uid?: ComfyNodeUID): ImpactImpactAssembleSEGS
-        /* category=ImpactPack_Util name="ImpactFrom_SEG_ELT" output=SEG_ELT, IMAGE, MASK, SEG_ELT_crop_region, SEG_ELT_bbox, SEG_ELT_control_net_wrapper, FLOAT, STRING */
-        ImpactImpactFrom_SEG_ELT(args: ImpactImpactFrom_SEG_ELT_input, uid?: ComfyNodeUID): ImpactImpactFrom_SEG_ELT
-        /* category=ImpactPack_Util name="ImpactEdit_SEG_ELT" output=SEG_ELT */
-        ImpactImpactEdit_SEG_ELT(args: ImpactImpactEdit_SEG_ELT_input, uid?: ComfyNodeUID): ImpactImpactEdit_SEG_ELT
-        /* category=ImpactPack_Util name="ImpactDilate_Mask_SEG_ELT" output=SEG_ELT */
+        /* category:ImpactPack_Util, name:"ImpactDecomposeSEGS", output:SEGS_HEADER+SEG_ELT */
+        ImpactImpactDecomposeSEGS(p: ImpactImpactDecomposeSEGS_input, id?: ComfyNodeUID): ImpactImpactDecomposeSEGS
+        /* category:ImpactPack_Util, name:"ImpactAssembleSEGS", output:SEGS */
+        ImpactImpactAssembleSEGS(p: ImpactImpactAssembleSEGS_input, id?: ComfyNodeUID): ImpactImpactAssembleSEGS
+        /* category:ImpactPack_Util, name:"ImpactFrom_SEG_ELT", output:SEG_ELT+IMAGE+MASK+SEG_ELT_crop_region+SEG_ELT_bbox+SEG_ELT_control_net_wrapper+FLOAT+STRING */
+        ImpactImpactFrom_SEG_ELT(p: ImpactImpactFrom_SEG_ELT_input, id?: ComfyNodeUID): ImpactImpactFrom_SEG_ELT
+        /* category:ImpactPack_Util, name:"ImpactEdit_SEG_ELT", output:SEG_ELT */
+        ImpactImpactEdit_SEG_ELT(p: ImpactImpactEdit_SEG_ELT_input, id?: ComfyNodeUID): ImpactImpactEdit_SEG_ELT
+        /* category:ImpactPack_Util, name:"ImpactDilate_Mask_SEG_ELT", output:SEG_ELT */
         ImpactImpactDilate_Mask_SEG_ELT(
-            args: ImpactImpactDilate_Mask_SEG_ELT_input,
-            uid?: ComfyNodeUID,
+            p: ImpactImpactDilate_Mask_SEG_ELT_input,
+            id?: ComfyNodeUID,
         ): ImpactImpactDilate_Mask_SEG_ELT
-        /* category=ImpactPack_Util name="ImpactDilateMask" output=MASK */
-        ImpactImpactDilateMask(args: ImpactImpactDilateMask_input, uid?: ComfyNodeUID): ImpactImpactDilateMask
-        /* category=ImpactPack_Util name="ImpactScaleBy_BBOX_SEG_ELT" output=SEG_ELT */
+        /* category:ImpactPack_Util, name:"ImpactDilateMask", output:MASK */
+        ImpactImpactDilateMask(p: ImpactImpactDilateMask_input, id?: ComfyNodeUID): ImpactImpactDilateMask
+        /* category:ImpactPack_Util, name:"ImpactScaleBy_BBOX_SEG_ELT", output:SEG_ELT */
         ImpactImpactScaleBy_BBOX_SEG_ELT(
-            args: ImpactImpactScaleBy_BBOX_SEG_ELT_input,
-            uid?: ComfyNodeUID,
+            p: ImpactImpactScaleBy_BBOX_SEG_ELT_input,
+            id?: ComfyNodeUID,
         ): ImpactImpactScaleBy_BBOX_SEG_ELT
-        /* category=ImpactPack_Detector name="BboxDetectorCombined_v2" output=MASK */
-        ImpactBboxDetectorCombined_v2(
-            args: ImpactBboxDetectorCombined_v2_input,
-            uid?: ComfyNodeUID,
-        ): ImpactBboxDetectorCombined_v2
-        /* category=ImpactPack_Detector name="SegmDetectorCombined_v2" output=MASK */
-        ImpactSegmDetectorCombined_v2(
-            args: ImpactSegmDetectorCombined_v2_input,
-            uid?: ComfyNodeUID,
-        ): ImpactSegmDetectorCombined_v2
-        /* category=ImpactPack_Operation name="SegsToCombinedMask" output=MASK */
-        ImpactSegsToCombinedMask(args: ImpactSegsToCombinedMask_input, uid?: ComfyNodeUID): ImpactSegsToCombinedMask
-        /* category=ImpactPack_Sampler name="KSamplerProvider" output=KSAMPLER */
-        ImpactKSamplerProvider(args: ImpactKSamplerProvider_input, uid?: ComfyNodeUID): ImpactKSamplerProvider
-        /* category=ImpactPack_Sampler name="TwoSamplersForMask" output=LATENT */
-        ImpactTwoSamplersForMask(args: ImpactTwoSamplersForMask_input, uid?: ComfyNodeUID): ImpactTwoSamplersForMask
-        /* category=ImpactPack_Sampler name="TiledKSamplerProvider" output=KSAMPLER */
-        ImpactTiledKSamplerProvider(args: ImpactTiledKSamplerProvider_input, uid?: ComfyNodeUID): ImpactTiledKSamplerProvider
-        /* category=ImpactPack_Sampler name="KSamplerAdvancedProvider" output=KSAMPLER_ADVANCED */
-        ImpactKSamplerAdvancedProvider(
-            args: ImpactKSamplerAdvancedProvider_input,
-            uid?: ComfyNodeUID,
-        ): ImpactKSamplerAdvancedProvider
-        /* category=ImpactPack_Sampler name="TwoAdvancedSamplersForMask" output=LATENT */
+        /* category:ImpactPack_Detector, name:"BboxDetectorCombined_v2", output:MASK */
+        ImpactBboxDetectorCombined_v2(p: ImpactBboxDetectorCombined_v2_input, id?: ComfyNodeUID): ImpactBboxDetectorCombined_v2
+        /* category:ImpactPack_Detector, name:"SegmDetectorCombined_v2", output:MASK */
+        ImpactSegmDetectorCombined_v2(p: ImpactSegmDetectorCombined_v2_input, id?: ComfyNodeUID): ImpactSegmDetectorCombined_v2
+        /* category:ImpactPack_Operation, name:"SegsToCombinedMask", output:MASK */
+        ImpactSegsToCombinedMask(p: ImpactSegsToCombinedMask_input, id?: ComfyNodeUID): ImpactSegsToCombinedMask
+        /* category:ImpactPack_Sampler, name:"KSamplerProvider", output:KSAMPLER */
+        ImpactKSamplerProvider(p: ImpactKSamplerProvider_input, id?: ComfyNodeUID): ImpactKSamplerProvider
+        /* category:ImpactPack_Sampler, name:"TwoSamplersForMask", output:LATENT */
+        ImpactTwoSamplersForMask(p: ImpactTwoSamplersForMask_input, id?: ComfyNodeUID): ImpactTwoSamplersForMask
+        /* category:ImpactPack_Sampler, name:"TiledKSamplerProvider", output:KSAMPLER */
+        ImpactTiledKSamplerProvider(p: ImpactTiledKSamplerProvider_input, id?: ComfyNodeUID): ImpactTiledKSamplerProvider
+        /* category:ImpactPack_Sampler, name:"KSamplerAdvancedProvider", output:KSAMPLER_ADVANCED */
+        ImpactKSamplerAdvancedProvider(p: ImpactKSamplerAdvancedProvider_input, id?: ComfyNodeUID): ImpactKSamplerAdvancedProvider
+        /* category:ImpactPack_Sampler, name:"TwoAdvancedSamplersForMask", output:LATENT */
         ImpactTwoAdvancedSamplersForMask(
-            args: ImpactTwoAdvancedSamplersForMask_input,
-            uid?: ComfyNodeUID,
+            p: ImpactTwoAdvancedSamplersForMask_input,
+            id?: ComfyNodeUID,
         ): ImpactTwoAdvancedSamplersForMask
-        /* category=ImpactPack_Util name="PreviewBridge" output=IMAGE, MASK */
-        ImpactPreviewBridge(args: ImpactPreviewBridge_input, uid?: ComfyNodeUID): ImpactPreviewBridge
-        /* category=ImpactPack_Util name="ImageSender" output= */
-        ImpactImageSender(args: ImpactImageSender_input, uid?: ComfyNodeUID): ImpactImageSender
-        /* category=ImpactPack_Util name="ImageReceiver" output=IMAGE, MASK */
-        ImpactImageReceiver(args: ImpactImageReceiver_input, uid?: ComfyNodeUID): ImpactImageReceiver
-        /* category=ImpactPack_Util name="LatentSender" output= */
-        ImpactLatentSender(args: ImpactLatentSender_input, uid?: ComfyNodeUID): ImpactLatentSender
-        /* category=ImpactPack_Util name="LatentReceiver" output=LATENT */
-        ImpactLatentReceiver(args: ImpactLatentReceiver_input, uid?: ComfyNodeUID): ImpactLatentReceiver
-        /* category=ImpactPack_Util name="ImageMaskSwitch" output=IMAGE, MASK */
-        ImpactImageMaskSwitch(args: ImpactImageMaskSwitch_input, uid?: ComfyNodeUID): ImpactImageMaskSwitch
-        /* category=ImpactPack_Util name="LatentSwitch" output=*, STRING */
-        ImpactLatentSwitch(args: ImpactLatentSwitch_input, uid?: ComfyNodeUID): ImpactLatentSwitch
-        /* category=ImpactPack_Util name="SEGSSwitch" output=*, STRING */
-        ImpactSEGSSwitch(args: ImpactSEGSSwitch_input, uid?: ComfyNodeUID): ImpactSEGSSwitch
-        /* category=ImpactPack_Util name="ImpactSwitch" output=*, STRING */
-        ImpactImpactSwitch(args: ImpactImpactSwitch_input, uid?: ComfyNodeUID): ImpactImpactSwitch
-        /* category=ImpactPack_Util name="ImpactInversedSwitch" output=*, *_1, *_2, *_3, *_4, *_5, *_6, *_7, *_8, *_9, *_10, *_11, *_12, *_13, *_14, *_15, *_16, *_17, *_18, *_19, *_20, *_21, *_22, *_23, *_24, *_25, *_26, *_27, *_28, *_29, *_30, *_31, *_32, *_33, *_34, *_35, *_36, *_37, *_38, *_39, *_40, *_41, *_42, *_43, *_44, *_45, *_46, *_47, *_48, *_49, *_50, *_51, *_52, *_53, *_54, *_55, *_56, *_57, *_58, *_59, *_60, *_61, *_62, *_63, *_64, *_65, *_66, *_67, *_68, *_69, *_70, *_71, *_72, *_73, *_74, *_75, *_76, *_77, *_78, *_79, *_80, *_81, *_82, *_83, *_84, *_85, *_86, *_87, *_88, *_89, *_90, *_91, *_92, *_93, *_94, *_95, *_96, *_97, *_98, *_99 */
-        ImpactImpactInversedSwitch(args: ImpactImpactInversedSwitch_input, uid?: ComfyNodeUID): ImpactImpactInversedSwitch
-        /* category=ImpactPack_Prompt name="ImpactWildcardProcessor" output=STRING */
-        ImpactImpactWildcardProcessor(
-            args: ImpactImpactWildcardProcessor_input,
-            uid?: ComfyNodeUID,
-        ): ImpactImpactWildcardProcessor
-        /* category=ImpactPack_Prompt name="ImpactWildcardEncode" output=MODEL, CLIP, CONDITIONING, STRING */
-        ImpactImpactWildcardEncode(args: ImpactImpactWildcardEncode_input, uid?: ComfyNodeUID): ImpactImpactWildcardEncode
-        /* category=ImpactPack_Detailer name="SEGSDetailer" output=SEGS, IMAGE */
-        ImpactSEGSDetailer(args: ImpactSEGSDetailer_input, uid?: ComfyNodeUID): ImpactSEGSDetailer
-        /* category=ImpactPack_Detailer name="SEGSPaste" output=IMAGE */
-        ImpactSEGSPaste(args: ImpactSEGSPaste_input, uid?: ComfyNodeUID): ImpactSEGSPaste
-        /* category=ImpactPack_Util name="SEGSPreview" output= */
-        ImpactSEGSPreview(args: ImpactSEGSPreview_input, uid?: ComfyNodeUID): ImpactSEGSPreview
-        /* category=ImpactPack_Util name="SEGSToImageList" output=IMAGE */
-        ImpactSEGSToImageList(args: ImpactSEGSToImageList_input, uid?: ComfyNodeUID): ImpactSEGSToImageList
-        /* category=ImpactPack_Util name="ImpactSEGSToMaskList" output=MASK */
-        ImpactImpactSEGSToMaskList(args: ImpactImpactSEGSToMaskList_input, uid?: ComfyNodeUID): ImpactImpactSEGSToMaskList
-        /* category=ImpactPack_Util name="ImpactSEGSToMaskBatch" output=MASKS */
-        ImpactImpactSEGSToMaskBatch(args: ImpactImpactSEGSToMaskBatch_input, uid?: ComfyNodeUID): ImpactImpactSEGSToMaskBatch
-        /* category=ImpactPack_Util name="ImpactSEGSConcat" output=SEGS */
-        ImpactImpactSEGSConcat(args: ImpactImpactSEGSConcat_input, uid?: ComfyNodeUID): ImpactImpactSEGSConcat
-        /* category=sampling name="ImpactKSamplerBasicPipe" output=BASIC_PIPE, LATENT, VAE */
-        ImpactKSamplerBasicPipe(args: ImpactKSamplerBasicPipe_input, uid?: ComfyNodeUID): ImpactKSamplerBasicPipe
-        /* category=sampling name="ImpactKSamplerAdvancedBasicPipe" output=BASIC_PIPE, LATENT, VAE */
+        /* category:ImpactPack_Util, name:"PreviewBridge", output:IMAGE+MASK */
+        ImpactPreviewBridge(p: ImpactPreviewBridge_input, id?: ComfyNodeUID): ImpactPreviewBridge
+        /* category:ImpactPack_Util, name:"ImageSender", output: */
+        ImpactImageSender(p: ImpactImageSender_input, id?: ComfyNodeUID): ImpactImageSender
+        /* category:ImpactPack_Util, name:"ImageReceiver", output:IMAGE+MASK */
+        ImpactImageReceiver(p: ImpactImageReceiver_input, id?: ComfyNodeUID): ImpactImageReceiver
+        /* category:ImpactPack_Util, name:"LatentSender", output: */
+        ImpactLatentSender(p: ImpactLatentSender_input, id?: ComfyNodeUID): ImpactLatentSender
+        /* category:ImpactPack_Util, name:"LatentReceiver", output:LATENT */
+        ImpactLatentReceiver(p: ImpactLatentReceiver_input, id?: ComfyNodeUID): ImpactLatentReceiver
+        /* category:ImpactPack_Util, name:"ImageMaskSwitch", output:IMAGE+MASK */
+        ImpactImageMaskSwitch(p: ImpactImageMaskSwitch_input, id?: ComfyNodeUID): ImpactImageMaskSwitch
+        /* category:ImpactPack_Util, name:"LatentSwitch", output:*+STRING */
+        ImpactLatentSwitch(p: ImpactLatentSwitch_input, id?: ComfyNodeUID): ImpactLatentSwitch
+        /* category:ImpactPack_Util, name:"SEGSSwitch", output:*+STRING */
+        ImpactSEGSSwitch(p: ImpactSEGSSwitch_input, id?: ComfyNodeUID): ImpactSEGSSwitch
+        /* category:ImpactPack_Util, name:"ImpactSwitch", output:*+STRING */
+        ImpactImpactSwitch(p: ImpactImpactSwitch_input, id?: ComfyNodeUID): ImpactImpactSwitch
+        /* category:ImpactPack_Util, name:"ImpactInversedSwitch", output:*+*_1+*_2+*_3+*_4+*_5+*_6+*_7+*_8+*_9+*_10+*_11+*_12+*_13+*_14+*_15+*_16+*_17+*_18+*_19+*_20+*_21+*_22+*_23+*_24+*_25+*_26+*_27+*_28+*_29+*_30+*_31+*_32+*_33+*_34+*_35+*_36+*_37+*_38+*_39+*_40+*_41+*_42+*_43+*_44+*_45+*_46+*_47+*_48+*_49+*_50+*_51+*_52+*_53+*_54+*_55+*_56+*_57+*_58+*_59+*_60+*_61+*_62+*_63+*_64+*_65+*_66+*_67+*_68+*_69+*_70+*_71+*_72+*_73+*_74+*_75+*_76+*_77+*_78+*_79+*_80+*_81+*_82+*_83+*_84+*_85+*_86+*_87+*_88+*_89+*_90+*_91+*_92+*_93+*_94+*_95+*_96+*_97+*_98+*_99 */
+        ImpactImpactInversedSwitch(p: ImpactImpactInversedSwitch_input, id?: ComfyNodeUID): ImpactImpactInversedSwitch
+        /* category:ImpactPack_Prompt, name:"ImpactWildcardProcessor", output:STRING */
+        ImpactImpactWildcardProcessor(p: ImpactImpactWildcardProcessor_input, id?: ComfyNodeUID): ImpactImpactWildcardProcessor
+        /* category:ImpactPack_Prompt, name:"ImpactWildcardEncode", output:MODEL+CLIP+CONDITIONING+STRING */
+        ImpactImpactWildcardEncode(p: ImpactImpactWildcardEncode_input, id?: ComfyNodeUID): ImpactImpactWildcardEncode
+        /* category:ImpactPack_Detailer, name:"SEGSDetailer", output:SEGS+IMAGE */
+        ImpactSEGSDetailer(p: ImpactSEGSDetailer_input, id?: ComfyNodeUID): ImpactSEGSDetailer
+        /* category:ImpactPack_Detailer, name:"SEGSPaste", output:IMAGE */
+        ImpactSEGSPaste(p: ImpactSEGSPaste_input, id?: ComfyNodeUID): ImpactSEGSPaste
+        /* category:ImpactPack_Util, name:"SEGSPreview", output: */
+        ImpactSEGSPreview(p: ImpactSEGSPreview_input, id?: ComfyNodeUID): ImpactSEGSPreview
+        /* category:ImpactPack_Util, name:"SEGSToImageList", output:IMAGE */
+        ImpactSEGSToImageList(p: ImpactSEGSToImageList_input, id?: ComfyNodeUID): ImpactSEGSToImageList
+        /* category:ImpactPack_Util, name:"ImpactSEGSToMaskList", output:MASK */
+        ImpactImpactSEGSToMaskList(p: ImpactImpactSEGSToMaskList_input, id?: ComfyNodeUID): ImpactImpactSEGSToMaskList
+        /* category:ImpactPack_Util, name:"ImpactSEGSToMaskBatch", output:MASKS */
+        ImpactImpactSEGSToMaskBatch(p: ImpactImpactSEGSToMaskBatch_input, id?: ComfyNodeUID): ImpactImpactSEGSToMaskBatch
+        /* category:ImpactPack_Util, name:"ImpactSEGSConcat", output:SEGS */
+        ImpactImpactSEGSConcat(p: ImpactImpactSEGSConcat_input, id?: ComfyNodeUID): ImpactImpactSEGSConcat
+        /* category:sampling, name:"ImpactKSamplerBasicPipe", output:BASIC_PIPE+LATENT+VAE */
+        ImpactKSamplerBasicPipe(p: ImpactKSamplerBasicPipe_input, id?: ComfyNodeUID): ImpactKSamplerBasicPipe
+        /* category:sampling, name:"ImpactKSamplerAdvancedBasicPipe", output:BASIC_PIPE+LATENT+VAE */
         ImpactKSamplerAdvancedBasicPipe(
-            args: ImpactKSamplerAdvancedBasicPipe_input,
-            uid?: ComfyNodeUID,
+            p: ImpactKSamplerAdvancedBasicPipe_input,
+            id?: ComfyNodeUID,
         ): ImpactKSamplerAdvancedBasicPipe
-        /* category=ImpactPack_Util name="ReencodeLatent" output=LATENT */
-        ImpactReencodeLatent(args: ImpactReencodeLatent_input, uid?: ComfyNodeUID): ImpactReencodeLatent
-        /* category=ImpactPack_Util name="ReencodeLatentPipe" output=LATENT */
-        ImpactReencodeLatentPipe(args: ImpactReencodeLatentPipe_input, uid?: ComfyNodeUID): ImpactReencodeLatentPipe
-        /* category=ImpactPack_Util name="ImpactImageBatchToImageList" output=IMAGE */
+        /* category:ImpactPack_Util, name:"ReencodeLatent", output:LATENT */
+        ImpactReencodeLatent(p: ImpactReencodeLatent_input, id?: ComfyNodeUID): ImpactReencodeLatent
+        /* category:ImpactPack_Util, name:"ReencodeLatentPipe", output:LATENT */
+        ImpactReencodeLatentPipe(p: ImpactReencodeLatentPipe_input, id?: ComfyNodeUID): ImpactReencodeLatentPipe
+        /* category:ImpactPack_Util, name:"ImpactImageBatchToImageList", output:IMAGE */
         ImpactImpactImageBatchToImageList(
-            args: ImpactImpactImageBatchToImageList_input,
-            uid?: ComfyNodeUID,
+            p: ImpactImpactImageBatchToImageList_input,
+            id?: ComfyNodeUID,
         ): ImpactImpactImageBatchToImageList
-        /* category=ImpactPack_Util name="ImpactMakeImageList" output=IMAGE */
-        ImpactImpactMakeImageList(args: ImpactImpactMakeImageList_input, uid?: ComfyNodeUID): ImpactImpactMakeImageList
-        /* category=ImpactPack_Regional name="RegionalSampler" output=LATENT */
-        ImpactRegionalSampler(args: ImpactRegionalSampler_input, uid?: ComfyNodeUID): ImpactRegionalSampler
-        /* category=ImpactPack_Regional name="CombineRegionalPrompts" output=REGIONAL_PROMPTS */
-        ImpactCombineRegionalPrompts(args: ImpactCombineRegionalPrompts_input, uid?: ComfyNodeUID): ImpactCombineRegionalPrompts
-        /* category=ImpactPack_Regional name="RegionalPrompt" output=REGIONAL_PROMPTS */
-        ImpactRegionalPrompt(args: ImpactRegionalPrompt_input, uid?: ComfyNodeUID): ImpactRegionalPrompt
-        /* category=ImpactPack_Util name="ImpactSEGSLabelFilter" output=SEGS, SEGS_1 */
-        ImpactImpactSEGSLabelFilter(args: ImpactImpactSEGSLabelFilter_input, uid?: ComfyNodeUID): ImpactImpactSEGSLabelFilter
-        /* category=ImpactPack_Util name="ImpactSEGSRangeFilter" output=SEGS, SEGS_1 */
-        ImpactImpactSEGSRangeFilter(args: ImpactImpactSEGSRangeFilter_input, uid?: ComfyNodeUID): ImpactImpactSEGSRangeFilter
-        /* category=ImpactPack_Util name="ImpactSEGSOrderedFilter" output=SEGS, SEGS_1 */
-        ImpactImpactSEGSOrderedFilter(
-            args: ImpactImpactSEGSOrderedFilter_input,
-            uid?: ComfyNodeUID,
-        ): ImpactImpactSEGSOrderedFilter
-        /* category=ImpactPack_Logic name="ImpactCompare" output=BOOLEAN */
-        ImpactImpactCompare(args: ImpactImpactCompare_input, uid?: ComfyNodeUID): ImpactImpactCompare
-        /* category=ImpactPack_Logic name="ImpactConditionalBranch" output=* */
-        ImpactImpactConditionalBranch(
-            args: ImpactImpactConditionalBranch_input,
-            uid?: ComfyNodeUID,
-        ): ImpactImpactConditionalBranch
-        /* category=ImpactPack_Logic name="ImpactInt" output=INT */
-        ImpactImpactInt(args: ImpactImpactInt_input, uid?: ComfyNodeUID): ImpactImpactInt
-        /* category=ImpactPack_Logic name="ImpactValueSender" output= */
-        ImpactImpactValueSender(args: ImpactImpactValueSender_input, uid?: ComfyNodeUID): ImpactImpactValueSender
-        /* category=ImpactPack_Logic name="ImpactValueReceiver" output=* */
-        ImpactImpactValueReceiver(args: ImpactImpactValueReceiver_input, uid?: ComfyNodeUID): ImpactImpactValueReceiver
-        /* category=ImpactPack_Logic__for_test name="ImpactImageInfo" output=INT, INT_1, INT_2, INT_3 */
-        ImpactImpactImageInfo(args: ImpactImpactImageInfo_input, uid?: ComfyNodeUID): ImpactImpactImageInfo
-        /* category=ImpactPack_Logic__for_test name="ImpactMinMax" output=INT */
-        ImpactImpactMinMax(args: ImpactImpactMinMax_input, uid?: ComfyNodeUID): ImpactImpactMinMax
-        /* category=ImpactPack_Logic name="ImpactNeg" output=BOOLEAN */
-        ImpactImpactNeg(args: ImpactImpactNeg_input, uid?: ComfyNodeUID): ImpactImpactNeg
-        /* category=ImpactPack_Logic name="ImpactConditionalStopIteration" output= */
+        /* category:ImpactPack_Util, name:"ImpactMakeImageList", output:IMAGE */
+        ImpactImpactMakeImageList(p: ImpactImpactMakeImageList_input, id?: ComfyNodeUID): ImpactImpactMakeImageList
+        /* category:ImpactPack_Regional, name:"RegionalSampler", output:LATENT */
+        ImpactRegionalSampler(p: ImpactRegionalSampler_input, id?: ComfyNodeUID): ImpactRegionalSampler
+        /* category:ImpactPack_Regional, name:"CombineRegionalPrompts", output:REGIONAL_PROMPTS */
+        ImpactCombineRegionalPrompts(p: ImpactCombineRegionalPrompts_input, id?: ComfyNodeUID): ImpactCombineRegionalPrompts
+        /* category:ImpactPack_Regional, name:"RegionalPrompt", output:REGIONAL_PROMPTS */
+        ImpactRegionalPrompt(p: ImpactRegionalPrompt_input, id?: ComfyNodeUID): ImpactRegionalPrompt
+        /* category:ImpactPack_Util, name:"ImpactSEGSLabelFilter", output:SEGS+SEGS_1 */
+        ImpactImpactSEGSLabelFilter(p: ImpactImpactSEGSLabelFilter_input, id?: ComfyNodeUID): ImpactImpactSEGSLabelFilter
+        /* category:ImpactPack_Util, name:"ImpactSEGSRangeFilter", output:SEGS+SEGS_1 */
+        ImpactImpactSEGSRangeFilter(p: ImpactImpactSEGSRangeFilter_input, id?: ComfyNodeUID): ImpactImpactSEGSRangeFilter
+        /* category:ImpactPack_Util, name:"ImpactSEGSOrderedFilter", output:SEGS+SEGS_1 */
+        ImpactImpactSEGSOrderedFilter(p: ImpactImpactSEGSOrderedFilter_input, id?: ComfyNodeUID): ImpactImpactSEGSOrderedFilter
+        /* category:ImpactPack_Logic, name:"ImpactCompare", output:BOOLEAN */
+        ImpactImpactCompare(p: ImpactImpactCompare_input, id?: ComfyNodeUID): ImpactImpactCompare
+        /* category:ImpactPack_Logic, name:"ImpactConditionalBranch", output:* */
+        ImpactImpactConditionalBranch(p: ImpactImpactConditionalBranch_input, id?: ComfyNodeUID): ImpactImpactConditionalBranch
+        /* category:ImpactPack_Logic, name:"ImpactInt", output:INT */
+        ImpactImpactInt(p: ImpactImpactInt_input, id?: ComfyNodeUID): ImpactImpactInt
+        /* category:ImpactPack_Logic, name:"ImpactValueSender", output: */
+        ImpactImpactValueSender(p: ImpactImpactValueSender_input, id?: ComfyNodeUID): ImpactImpactValueSender
+        /* category:ImpactPack_Logic, name:"ImpactValueReceiver", output:* */
+        ImpactImpactValueReceiver(p: ImpactImpactValueReceiver_input, id?: ComfyNodeUID): ImpactImpactValueReceiver
+        /* category:ImpactPack_Logic__for_test, name:"ImpactImageInfo", output:INT+INT_1+INT_2+INT_3 */
+        ImpactImpactImageInfo(p: ImpactImpactImageInfo_input, id?: ComfyNodeUID): ImpactImpactImageInfo
+        /* category:ImpactPack_Logic__for_test, name:"ImpactMinMax", output:INT */
+        ImpactImpactMinMax(p: ImpactImpactMinMax_input, id?: ComfyNodeUID): ImpactImpactMinMax
+        /* category:ImpactPack_Logic, name:"ImpactNeg", output:BOOLEAN */
+        ImpactImpactNeg(p: ImpactImpactNeg_input, id?: ComfyNodeUID): ImpactImpactNeg
+        /* category:ImpactPack_Logic, name:"ImpactConditionalStopIteration", output: */
         ImpactImpactConditionalStopIteration(
-            args: ImpactImpactConditionalStopIteration_input,
-            uid?: ComfyNodeUID,
+            p: ImpactImpactConditionalStopIteration_input,
+            id?: ComfyNodeUID,
         ): ImpactImpactConditionalStopIteration
-        /* category=ImpactPack_Util name="ImpactStringSelector" output=STRING */
-        ImpactImpactStringSelector(args: ImpactImpactStringSelector_input, uid?: ComfyNodeUID): ImpactImpactStringSelector
-        /* category=ImpactPack_Util name="RemoveNoiseMask" output=LATENT */
-        ImpactRemoveNoiseMask(args: ImpactRemoveNoiseMask_input, uid?: ComfyNodeUID): ImpactRemoveNoiseMask
-        /* category=ImpactPack_Debug name="ImpactLogger" output= */
-        ImpactImpactLogger(args: ImpactImpactLogger_input, uid?: ComfyNodeUID): ImpactImpactLogger
-        /* category=ImpactPack_Debug name="ImpactDummyInput" output=* */
-        ImpactImpactDummyInput(args: ImpactImpactDummyInput_input, uid?: ComfyNodeUID): ImpactImpactDummyInput
-        /* category=ImpactPack name="UltralyticsDetectorProvider" output=BBOX_DETECTOR, SEGM_DETECTOR */
+        /* category:ImpactPack_Util, name:"ImpactStringSelector", output:STRING */
+        ImpactImpactStringSelector(p: ImpactImpactStringSelector_input, id?: ComfyNodeUID): ImpactImpactStringSelector
+        /* category:ImpactPack_Util, name:"RemoveNoiseMask", output:LATENT */
+        ImpactRemoveNoiseMask(p: ImpactRemoveNoiseMask_input, id?: ComfyNodeUID): ImpactRemoveNoiseMask
+        /* category:ImpactPack_Debug, name:"ImpactLogger", output: */
+        ImpactImpactLogger(p: ImpactImpactLogger_input, id?: ComfyNodeUID): ImpactImpactLogger
+        /* category:ImpactPack_Debug, name:"ImpactDummyInput", output:* */
+        ImpactImpactDummyInput(p: ImpactImpactDummyInput_input, id?: ComfyNodeUID): ImpactImpactDummyInput
+        /* category:ImpactPack, name:"UltralyticsDetectorProvider", output:BBOX_DETECTOR+SEGM_DETECTOR */
         ImpactUltralyticsDetectorProvider(
-            args: ImpactUltralyticsDetectorProvider_input,
-            uid?: ComfyNodeUID,
+            p: ImpactUltralyticsDetectorProvider_input,
+            id?: ComfyNodeUID,
         ): ImpactUltralyticsDetectorProvider
-        /* category=InspirePack_LoraBlockWeight name="XY Input: Lora Block Weight //Inspire" output=XY, XY_1 */
-        XYInputLoraBlockWeightInspire(
-            args: XYInputLoraBlockWeightInspire_input,
-            uid?: ComfyNodeUID,
-        ): XYInputLoraBlockWeightInspire
-        /* category=InspirePack_LoraBlockWeight name="LoraLoaderBlockWeight //Inspire" output=MODEL, CLIP, STRING */
-        LoraLoaderBlockWeightInspire(args: LoraLoaderBlockWeightInspire_input, uid?: ComfyNodeUID): LoraLoaderBlockWeightInspire
-        /* category=InspirePack_LoraBlockWeight name="LoraBlockInfo //Inspire" output= */
-        LoraBlockInfoInspire(args: LoraBlockInfoInspire_input, uid?: ComfyNodeUID): LoraBlockInfoInspire
-        /* category=InspirePack_SEGS_ControlNet name="OpenPose_Preprocessor_Provider_for_SEGS //Inspire" output=SEGS_PREPROCESSOR */
+        /* category:InspirePack_LoraBlockWeight, name:"XY Input: Lora Block Weight //Inspire", output:XY+XY_1 */
+        XYInputLoraBlockWeightInspire(p: XYInputLoraBlockWeightInspire_input, id?: ComfyNodeUID): XYInputLoraBlockWeightInspire
+        /* category:InspirePack_LoraBlockWeight, name:"LoraLoaderBlockWeight //Inspire", output:MODEL+CLIP+STRING */
+        LoraLoaderBlockWeightInspire(p: LoraLoaderBlockWeightInspire_input, id?: ComfyNodeUID): LoraLoaderBlockWeightInspire
+        /* category:InspirePack_LoraBlockWeight, name:"LoraBlockInfo //Inspire", output: */
+        LoraBlockInfoInspire(p: LoraBlockInfoInspire_input, id?: ComfyNodeUID): LoraBlockInfoInspire
+        /* category:InspirePack_SEGS_ControlNet, name:"OpenPose_Preprocessor_Provider_for_SEGS //Inspire", output:SEGS_PREPROCESSOR */
         OpenPose_Preprocessor_Provider_for_SEGSInspire(
-            args: OpenPose_Preprocessor_Provider_for_SEGSInspire_input,
-            uid?: ComfyNodeUID,
+            p: OpenPose_Preprocessor_Provider_for_SEGSInspire_input,
+            id?: ComfyNodeUID,
         ): OpenPose_Preprocessor_Provider_for_SEGSInspire
-        /* category=InspirePack_SEGS_ControlNet name="DWPreprocessor_Provider_for_SEGS //Inspire" output=SEGS_PREPROCESSOR */
+        /* category:InspirePack_SEGS_ControlNet, name:"DWPreprocessor_Provider_for_SEGS //Inspire", output:SEGS_PREPROCESSOR */
         DWPreprocessor_Provider_for_SEGSInspire(
-            args: DWPreprocessor_Provider_for_SEGSInspire_input,
-            uid?: ComfyNodeUID,
+            p: DWPreprocessor_Provider_for_SEGSInspire_input,
+            id?: ComfyNodeUID,
         ): DWPreprocessor_Provider_for_SEGSInspire
-        /* category=InspirePack_SEGS_ControlNet name="MiDaS_DepthMap_Preprocessor_Provider_for_SEGS //Inspire" output=SEGS_PREPROCESSOR */
+        /* category:InspirePack_SEGS_ControlNet, name:"MiDaS_DepthMap_Preprocessor_Provider_for_SEGS //Inspire", output:SEGS_PREPROCESSOR */
         MiDaS_DepthMap_Preprocessor_Provider_for_SEGSInspire(
-            args: MiDaS_DepthMap_Preprocessor_Provider_for_SEGSInspire_input,
-            uid?: ComfyNodeUID,
+            p: MiDaS_DepthMap_Preprocessor_Provider_for_SEGSInspire_input,
+            id?: ComfyNodeUID,
         ): MiDaS_DepthMap_Preprocessor_Provider_for_SEGSInspire
-        /* category=InspirePack_SEGS_ControlNet name="LeRes_DepthMap_Preprocessor_Provider_for_SEGS //Inspire" output=SEGS_PREPROCESSOR */
+        /* category:InspirePack_SEGS_ControlNet, name:"LeRes_DepthMap_Preprocessor_Provider_for_SEGS //Inspire", output:SEGS_PREPROCESSOR */
         LeRes_DepthMap_Preprocessor_Provider_for_SEGSInspire(
-            args: LeRes_DepthMap_Preprocessor_Provider_for_SEGSInspire_input,
-            uid?: ComfyNodeUID,
+            p: LeRes_DepthMap_Preprocessor_Provider_for_SEGSInspire_input,
+            id?: ComfyNodeUID,
         ): LeRes_DepthMap_Preprocessor_Provider_for_SEGSInspire
-        /* category=InspirePack_SEGS_ControlNet name="Canny_Preprocessor_Provider_for_SEGS //Inspire" output=SEGS_PREPROCESSOR */
+        /* category:InspirePack_SEGS_ControlNet, name:"Canny_Preprocessor_Provider_for_SEGS //Inspire", output:SEGS_PREPROCESSOR */
         Canny_Preprocessor_Provider_for_SEGSInspire(
-            args: Canny_Preprocessor_Provider_for_SEGSInspire_input,
-            uid?: ComfyNodeUID,
+            p: Canny_Preprocessor_Provider_for_SEGSInspire_input,
+            id?: ComfyNodeUID,
         ): Canny_Preprocessor_Provider_for_SEGSInspire
-        /* category=InspirePack_SEGS_ControlNet name="MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGS //Inspire" output=SEGS_PREPROCESSOR */
+        /* category:InspirePack_SEGS_ControlNet, name:"MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGS //Inspire", output:SEGS_PREPROCESSOR */
         MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGSInspire(
-            args: MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGSInspire_input,
-            uid?: ComfyNodeUID,
+            p: MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGSInspire_input,
+            id?: ComfyNodeUID,
         ): MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGSInspire
-        /* category=InspirePack_Detector name="MediaPipeFaceMeshDetectorProvider //Inspire" output=BBOX_DETECTOR, SEGM_DETECTOR */
+        /* category:InspirePack_Detector, name:"MediaPipeFaceMeshDetectorProvider //Inspire", output:BBOX_DETECTOR+SEGM_DETECTOR */
         MediaPipeFaceMeshDetectorProviderInspire(
-            args: MediaPipeFaceMeshDetectorProviderInspire_input,
-            uid?: ComfyNodeUID,
+            p: MediaPipeFaceMeshDetectorProviderInspire_input,
+            id?: ComfyNodeUID,
         ): MediaPipeFaceMeshDetectorProviderInspire
-        /* category=InspirePack_SEGS_ControlNet name="HEDPreprocessor_Provider_for_SEGS //Inspire" output=SEGS_PREPROCESSOR */
+        /* category:InspirePack_SEGS_ControlNet, name:"HEDPreprocessor_Provider_for_SEGS //Inspire", output:SEGS_PREPROCESSOR */
         HEDPreprocessor_Provider_for_SEGSInspire(
-            args: HEDPreprocessor_Provider_for_SEGSInspire_input,
-            uid?: ComfyNodeUID,
+            p: HEDPreprocessor_Provider_for_SEGSInspire_input,
+            id?: ComfyNodeUID,
         ): HEDPreprocessor_Provider_for_SEGSInspire
-        /* category=InspirePack_SEGS_ControlNet name="FakeScribblePreprocessor_Provider_for_SEGS //Inspire" output=SEGS_PREPROCESSOR */
+        /* category:InspirePack_SEGS_ControlNet, name:"FakeScribblePreprocessor_Provider_for_SEGS //Inspire", output:SEGS_PREPROCESSOR */
         FakeScribblePreprocessor_Provider_for_SEGSInspire(
-            args: FakeScribblePreprocessor_Provider_for_SEGSInspire_input,
-            uid?: ComfyNodeUID,
+            p: FakeScribblePreprocessor_Provider_for_SEGSInspire_input,
+            id?: ComfyNodeUID,
         ): FakeScribblePreprocessor_Provider_for_SEGSInspire
-        /* category=InspirePack_a1111_compat name="KSampler //Inspire" output=LATENT */
-        KSamplerInspire(args: KSamplerInspire_input, uid?: ComfyNodeUID): KSamplerInspire
-        /* category=InspirePack_prompt name="LoadPromptsFromDir //Inspire" output=ZIPPED_PROMPT */
-        LoadPromptsFromDirInspire(args: LoadPromptsFromDirInspire_input, uid?: ComfyNodeUID): LoadPromptsFromDirInspire
-        /* category=InspirePack_prompt name="UnzipPrompt //Inspire" output=STRING, STRING_1, STRING_2 */
-        UnzipPromptInspire(args: UnzipPromptInspire_input, uid?: ComfyNodeUID): UnzipPromptInspire
-        /* category=InspirePack_prompt name="ZipPrompt //Inspire" output=ZIPPED_PROMPT */
-        ZipPromptInspire(args: ZipPromptInspire_input, uid?: ComfyNodeUID): ZipPromptInspire
-        /* category=InspirePack_prompt name="PromptExtractor //Inspire" output=STRING, STRING_1 */
-        PromptExtractorInspire(args: PromptExtractorInspire_input, uid?: ComfyNodeUID): PromptExtractorInspire
-        /* category=InspirePack name="GlobalSeed //Inspire" output= */
-        GlobalSeedInspire(args: GlobalSeedInspire_input, uid?: ComfyNodeUID): GlobalSeedInspire
-        /* category=sampling name="BNK_TiledKSamplerAdvanced" output=LATENT */
-        BNK_TiledKSamplerAdvanced(args: BNK_TiledKSamplerAdvanced_input, uid?: ComfyNodeUID): BNK_TiledKSamplerAdvanced
-        /* category=sampling name="BNK_TiledKSampler" output=LATENT */
-        BNK_TiledKSampler(args: BNK_TiledKSampler_input, uid?: ComfyNodeUID): BNK_TiledKSampler
-        /* category=Efficiency Nodes_Sampling name="KSampler (Efficient)" output=MODEL, CONDITIONING, CONDITIONING_1, LATENT, VAE, IMAGE */
-        KSamplerEfficient(args: KSamplerEfficient_input, uid?: ComfyNodeUID): KSamplerEfficient
-        /* category=Efficiency Nodes_Sampling name="KSampler Adv. (Efficient)" output=MODEL, CONDITIONING, CONDITIONING_1, LATENT, VAE, IMAGE */
-        KSamplerAdvEfficient(args: KSamplerAdvEfficient_input, uid?: ComfyNodeUID): KSamplerAdvEfficient
-        /* category=Efficiency Nodes_Sampling name="KSampler SDXL (Eff.)" output=SDXL_TUPLE, LATENT, VAE, IMAGE */
-        KSamplerSDXLEff(args: KSamplerSDXLEff_input, uid?: ComfyNodeUID): KSamplerSDXLEff
-        /* category=Efficiency Nodes_Loaders name="Efficient Loader" output=MODEL, CONDITIONING, CONDITIONING_1, LATENT, VAE, CLIP, DEPENDENCIES */
-        EfficientLoader(args: EfficientLoader_input, uid?: ComfyNodeUID): EfficientLoader
-        /* category=Efficiency Nodes_Loaders name="Eff. Loader SDXL" output=SDXL_TUPLE, LATENT, VAE, DEPENDENCIES */
-        EffLoaderSDXL(args: EffLoaderSDXL_input, uid?: ComfyNodeUID): EffLoaderSDXL
-        /* category=Efficiency Nodes_Stackers name="LoRA Stacker" output=LORA_STACK */
-        LoRAStacker(args: LoRAStacker_input, uid?: ComfyNodeUID): LoRAStacker
-        /* category=Efficiency Nodes_Stackers name="Control Net Stacker" output=CONTROL_NET_STACK */
-        ControlNetStacker(args: ControlNetStacker_input, uid?: ComfyNodeUID): ControlNetStacker
-        /* category=Efficiency Nodes_Stackers name="Apply ControlNet Stack" output=CONDITIONING, CONDITIONING_1 */
-        ApplyControlNetStack(args: ApplyControlNetStack_input, uid?: ComfyNodeUID): ApplyControlNetStack
-        /* category=Efficiency Nodes_Misc name="Unpack SDXL Tuple" output=MODEL, CLIP, CONDITIONING, CONDITIONING_1, MODEL_1, CLIP_1, CONDITIONING_2, CONDITIONING_3 */
-        UnpackSDXLTuple(args: UnpackSDXLTuple_input, uid?: ComfyNodeUID): UnpackSDXLTuple
-        /* category=Efficiency Nodes_Misc name="Pack SDXL Tuple" output=SDXL_TUPLE */
-        PackSDXLTuple(args: PackSDXLTuple_input, uid?: ComfyNodeUID): PackSDXLTuple
-        /* category=Efficiency Nodes_Scripts name="XY Plot" output=SCRIPT */
-        XYPlot(args: XYPlot_input, uid?: ComfyNodeUID): XYPlot
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Seeds++ Batch" output=XY */
-        XYInputSeedsBatch(args: XYInputSeedsBatch_input, uid?: ComfyNodeUID): XYInputSeedsBatch
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Add/Return Noise" output=XY */
-        XYInputAddReturnNoise(args: XYInputAddReturnNoise_input, uid?: ComfyNodeUID): XYInputAddReturnNoise
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Steps" output=XY */
-        XYInputSteps(args: XYInputSteps_input, uid?: ComfyNodeUID): XYInputSteps
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: CFG Scale" output=XY */
-        XYInputCFGScale(args: XYInputCFGScale_input, uid?: ComfyNodeUID): XYInputCFGScale
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Sampler/Scheduler" output=XY */
-        XYInputSamplerScheduler(args: XYInputSamplerScheduler_input, uid?: ComfyNodeUID): XYInputSamplerScheduler
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Denoise" output=XY */
-        XYInputDenoise(args: XYInputDenoise_input, uid?: ComfyNodeUID): XYInputDenoise
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: VAE" output=XY */
-        XYInputVAE(args: XYInputVAE_input, uid?: ComfyNodeUID): XYInputVAE
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Prompt S/R" output=XY */
-        XYInputPromptSR(args: XYInputPromptSR_input, uid?: ComfyNodeUID): XYInputPromptSR
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Aesthetic Score" output=XY */
-        XYInputAestheticScore(args: XYInputAestheticScore_input, uid?: ComfyNodeUID): XYInputAestheticScore
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Refiner On/Off" output=XY */
-        XYInputRefinerOnOff(args: XYInputRefinerOnOff_input, uid?: ComfyNodeUID): XYInputRefinerOnOff
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Checkpoint" output=XY */
-        XYInputCheckpoint(args: XYInputCheckpoint_input, uid?: ComfyNodeUID): XYInputCheckpoint
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Clip Skip" output=XY */
-        XYInputClipSkip(args: XYInputClipSkip_input, uid?: ComfyNodeUID): XYInputClipSkip
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: LoRA" output=XY */
-        XYInputLoRA(args: XYInputLoRA_input, uid?: ComfyNodeUID): XYInputLoRA
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: LoRA Plot" output=XY, XY_1 */
-        XYInputLoRAPlot(args: XYInputLoRAPlot_input, uid?: ComfyNodeUID): XYInputLoRAPlot
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: LoRA Stacks" output=XY */
-        XYInputLoRAStacks(args: XYInputLoRAStacks_input, uid?: ComfyNodeUID): XYInputLoRAStacks
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Control Net" output=XY */
-        XYInputControlNet(args: XYInputControlNet_input, uid?: ComfyNodeUID): XYInputControlNet
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Control Net Plot" output=XY, XY_1 */
-        XYInputControlNetPlot(args: XYInputControlNetPlot_input, uid?: ComfyNodeUID): XYInputControlNetPlot
-        /* category=Efficiency Nodes_XY Inputs name="XY Input: Manual XY Entry" output=XY */
-        XYInputManualXYEntry(args: XYInputManualXYEntry_input, uid?: ComfyNodeUID): XYInputManualXYEntry
-        /* category=Efficiency Nodes_XY Inputs name="Manual XY Entry Info" output= */
-        ManualXYEntryInfo(args: ManualXYEntryInfo_input, uid?: ComfyNodeUID): ManualXYEntryInfo
-        /* category=Efficiency Nodes_XY Inputs name="Join XY Inputs of Same Type" output=XY */
-        JoinXYInputsOfSameType(args: JoinXYInputsOfSameType_input, uid?: ComfyNodeUID): JoinXYInputsOfSameType
-        /* category=Efficiency Nodes_Image name="Image Overlay" output=IMAGE */
-        ImageOverlay(args: ImageOverlay_input, uid?: ComfyNodeUID): ImageOverlay
-        /* category=Efficiency Nodes_Scripts name="HighRes-Fix Script" output=SCRIPT */
-        HighResFixScript(args: HighResFixScript_input, uid?: ComfyNodeUID): HighResFixScript
-        /* category=Efficiency Nodes_Simple Eval name="Evaluate Integers" output=INT, FLOAT, STRING */
-        EvaluateIntegers(args: EvaluateIntegers_input, uid?: ComfyNodeUID): EvaluateIntegers
-        /* category=Efficiency Nodes_Simple Eval name="Evaluate Floats" output=INT, FLOAT, STRING */
-        EvaluateFloats(args: EvaluateFloats_input, uid?: ComfyNodeUID): EvaluateFloats
-        /* category=Efficiency Nodes_Simple Eval name="Evaluate Strings" output=STRING */
-        EvaluateStrings(args: EvaluateStrings_input, uid?: ComfyNodeUID): EvaluateStrings
-        /* category=Efficiency Nodes_Simple Eval name="Simple Eval Examples" output= */
-        SimpleEvalExamples(args: SimpleEvalExamples_input, uid?: ComfyNodeUID): SimpleEvalExamples
-        /* category=JNode name="LatentByRatio" output=LATENT */
-        LatentByRatio(args: LatentByRatio_input, uid?: ComfyNodeUID): LatentByRatio
-        /* category=Masquerade Nodes name="Mask By Text" output=IMAGE, IMAGE_1 */
-        MasqueradeMaskByText(args: MasqueradeMaskByText_input, uid?: ComfyNodeUID): MasqueradeMaskByText
-        /* category=Masquerade Nodes name="Mask Morphology" output=IMAGE */
-        MasqueradeMaskMorphology(args: MasqueradeMaskMorphology_input, uid?: ComfyNodeUID): MasqueradeMaskMorphology
-        /* category=Masquerade Nodes name="Combine Masks" output=IMAGE */
-        MasqueradeCombineMasks(args: MasqueradeCombineMasks_input, uid?: ComfyNodeUID): MasqueradeCombineMasks
-        /* category=Masquerade Nodes name="Unary Mask Op" output=IMAGE */
-        MasqueradeUnaryMaskOp(args: MasqueradeUnaryMaskOp_input, uid?: ComfyNodeUID): MasqueradeUnaryMaskOp
-        /* category=Masquerade Nodes name="Unary Image Op" output=IMAGE */
-        MasqueradeUnaryImageOp(args: MasqueradeUnaryImageOp_input, uid?: ComfyNodeUID): MasqueradeUnaryImageOp
-        /* category=Masquerade Nodes name="Blur" output=IMAGE */
-        MasqueradeBlur(args: MasqueradeBlur_input, uid?: ComfyNodeUID): MasqueradeBlur
-        /* category=Masquerade Nodes name="Image To Mask" output=MASK */
-        MasqueradeImageToMask(args: MasqueradeImageToMask_input, uid?: ComfyNodeUID): MasqueradeImageToMask
-        /* category=Masquerade Nodes name="Mix Images By Mask" output=IMAGE */
-        MasqueradeMixImagesByMask(args: MasqueradeMixImagesByMask_input, uid?: ComfyNodeUID): MasqueradeMixImagesByMask
-        /* category=Masquerade Nodes name="Mix Color By Mask" output=IMAGE */
-        MasqueradeMixColorByMask(args: MasqueradeMixColorByMask_input, uid?: ComfyNodeUID): MasqueradeMixColorByMask
-        /* category=Masquerade Nodes name="Mask To Region" output=IMAGE */
-        MasqueradeMaskToRegion(args: MasqueradeMaskToRegion_input, uid?: ComfyNodeUID): MasqueradeMaskToRegion
-        /* category=Masquerade Nodes name="Cut By Mask" output=IMAGE */
-        MasqueradeCutByMask(args: MasqueradeCutByMask_input, uid?: ComfyNodeUID): MasqueradeCutByMask
-        /* category=Masquerade Nodes name="Paste By Mask" output=IMAGE */
-        MasqueradePasteByMask(args: MasqueradePasteByMask_input, uid?: ComfyNodeUID): MasqueradePasteByMask
-        /* category=Masquerade Nodes name="Get Image Size" output=INT, INT_1 */
-        MasqueradeGetImageSize(args: MasqueradeGetImageSize_input, uid?: ComfyNodeUID): MasqueradeGetImageSize
-        /* category=Masquerade Nodes name="Change Channel Count" output=IMAGE */
-        MasqueradeChangeChannelCount(args: MasqueradeChangeChannelCount_input, uid?: ComfyNodeUID): MasqueradeChangeChannelCount
-        /* category=Masquerade Nodes name="Constant Mask" output=IMAGE */
-        MasqueradeConstantMask(args: MasqueradeConstantMask_input, uid?: ComfyNodeUID): MasqueradeConstantMask
-        /* category=Masquerade Nodes name="Prune By Mask" output=IMAGE */
-        MasqueradePruneByMask(args: MasqueradePruneByMask_input, uid?: ComfyNodeUID): MasqueradePruneByMask
-        /* category=Masquerade Nodes name="Separate Mask Components" output=IMAGE, MASK_MAPPING */
+        /* category:InspirePack_a1111_compat, name:"KSampler //Inspire", output:LATENT */
+        KSamplerInspire(p: KSamplerInspire_input, id?: ComfyNodeUID): KSamplerInspire
+        /* category:InspirePack_prompt, name:"LoadPromptsFromDir //Inspire", output:ZIPPED_PROMPT */
+        LoadPromptsFromDirInspire(p: LoadPromptsFromDirInspire_input, id?: ComfyNodeUID): LoadPromptsFromDirInspire
+        /* category:InspirePack_prompt, name:"UnzipPrompt //Inspire", output:STRING+STRING_1+STRING_2 */
+        UnzipPromptInspire(p: UnzipPromptInspire_input, id?: ComfyNodeUID): UnzipPromptInspire
+        /* category:InspirePack_prompt, name:"ZipPrompt //Inspire", output:ZIPPED_PROMPT */
+        ZipPromptInspire(p: ZipPromptInspire_input, id?: ComfyNodeUID): ZipPromptInspire
+        /* category:InspirePack_prompt, name:"PromptExtractor //Inspire", output:STRING+STRING_1 */
+        PromptExtractorInspire(p: PromptExtractorInspire_input, id?: ComfyNodeUID): PromptExtractorInspire
+        /* category:InspirePack, name:"GlobalSeed //Inspire", output: */
+        GlobalSeedInspire(p: GlobalSeedInspire_input, id?: ComfyNodeUID): GlobalSeedInspire
+        /* category:sampling, name:"BNK_TiledKSamplerAdvanced", output:LATENT */
+        BNK_TiledKSamplerAdvanced(p: BNK_TiledKSamplerAdvanced_input, id?: ComfyNodeUID): BNK_TiledKSamplerAdvanced
+        /* category:sampling, name:"BNK_TiledKSampler", output:LATENT */
+        BNK_TiledKSampler(p: BNK_TiledKSampler_input, id?: ComfyNodeUID): BNK_TiledKSampler
+        /* category:Efficiency Nodes_Sampling, name:"KSampler (Efficient)", output:MODEL+CONDITIONING+CONDITIONING_1+LATENT+VAE+IMAGE */
+        KSamplerEfficient(p: KSamplerEfficient_input, id?: ComfyNodeUID): KSamplerEfficient
+        /* category:Efficiency Nodes_Sampling, name:"KSampler Adv. (Efficient)", output:MODEL+CONDITIONING+CONDITIONING_1+LATENT+VAE+IMAGE */
+        KSamplerAdvEfficient(p: KSamplerAdvEfficient_input, id?: ComfyNodeUID): KSamplerAdvEfficient
+        /* category:Efficiency Nodes_Sampling, name:"KSampler SDXL (Eff.)", output:SDXL_TUPLE+LATENT+VAE+IMAGE */
+        KSamplerSDXLEff(p: KSamplerSDXLEff_input, id?: ComfyNodeUID): KSamplerSDXLEff
+        /* category:Efficiency Nodes_Loaders, name:"Efficient Loader", output:MODEL+CONDITIONING+CONDITIONING_1+LATENT+VAE+CLIP+DEPENDENCIES */
+        EfficientLoader(p: EfficientLoader_input, id?: ComfyNodeUID): EfficientLoader
+        /* category:Efficiency Nodes_Loaders, name:"Eff. Loader SDXL", output:SDXL_TUPLE+LATENT+VAE+DEPENDENCIES */
+        EffLoaderSDXL(p: EffLoaderSDXL_input, id?: ComfyNodeUID): EffLoaderSDXL
+        /* category:Efficiency Nodes_Stackers, name:"LoRA Stacker", output:LORA_STACK */
+        LoRAStacker(p: LoRAStacker_input, id?: ComfyNodeUID): LoRAStacker
+        /* category:Efficiency Nodes_Stackers, name:"Control Net Stacker", output:CONTROL_NET_STACK */
+        ControlNetStacker(p: ControlNetStacker_input, id?: ComfyNodeUID): ControlNetStacker
+        /* category:Efficiency Nodes_Stackers, name:"Apply ControlNet Stack", output:CONDITIONING+CONDITIONING_1 */
+        ApplyControlNetStack(p: ApplyControlNetStack_input, id?: ComfyNodeUID): ApplyControlNetStack
+        /* category:Efficiency Nodes_Misc, name:"Unpack SDXL Tuple", output:MODEL+CLIP+CONDITIONING+CONDITIONING_1+MODEL_1+CLIP_1+CONDITIONING_2+CONDITIONING_3 */
+        UnpackSDXLTuple(p: UnpackSDXLTuple_input, id?: ComfyNodeUID): UnpackSDXLTuple
+        /* category:Efficiency Nodes_Misc, name:"Pack SDXL Tuple", output:SDXL_TUPLE */
+        PackSDXLTuple(p: PackSDXLTuple_input, id?: ComfyNodeUID): PackSDXLTuple
+        /* category:Efficiency Nodes_Scripts, name:"XY Plot", output:SCRIPT */
+        XYPlot(p: XYPlot_input, id?: ComfyNodeUID): XYPlot
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Seeds++ Batch", output:XY */
+        XYInputSeedsBatch(p: XYInputSeedsBatch_input, id?: ComfyNodeUID): XYInputSeedsBatch
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Add/Return Noise", output:XY */
+        XYInputAddReturnNoise(p: XYInputAddReturnNoise_input, id?: ComfyNodeUID): XYInputAddReturnNoise
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Steps", output:XY */
+        XYInputSteps(p: XYInputSteps_input, id?: ComfyNodeUID): XYInputSteps
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: CFG Scale", output:XY */
+        XYInputCFGScale(p: XYInputCFGScale_input, id?: ComfyNodeUID): XYInputCFGScale
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Sampler/Scheduler", output:XY */
+        XYInputSamplerScheduler(p: XYInputSamplerScheduler_input, id?: ComfyNodeUID): XYInputSamplerScheduler
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Denoise", output:XY */
+        XYInputDenoise(p: XYInputDenoise_input, id?: ComfyNodeUID): XYInputDenoise
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: VAE", output:XY */
+        XYInputVAE(p: XYInputVAE_input, id?: ComfyNodeUID): XYInputVAE
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Prompt S/R", output:XY */
+        XYInputPromptSR(p: XYInputPromptSR_input, id?: ComfyNodeUID): XYInputPromptSR
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Aesthetic Score", output:XY */
+        XYInputAestheticScore(p: XYInputAestheticScore_input, id?: ComfyNodeUID): XYInputAestheticScore
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Refiner On/Off", output:XY */
+        XYInputRefinerOnOff(p: XYInputRefinerOnOff_input, id?: ComfyNodeUID): XYInputRefinerOnOff
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Checkpoint", output:XY */
+        XYInputCheckpoint(p: XYInputCheckpoint_input, id?: ComfyNodeUID): XYInputCheckpoint
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Clip Skip", output:XY */
+        XYInputClipSkip(p: XYInputClipSkip_input, id?: ComfyNodeUID): XYInputClipSkip
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: LoRA", output:XY */
+        XYInputLoRA(p: XYInputLoRA_input, id?: ComfyNodeUID): XYInputLoRA
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: LoRA Plot", output:XY+XY_1 */
+        XYInputLoRAPlot(p: XYInputLoRAPlot_input, id?: ComfyNodeUID): XYInputLoRAPlot
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: LoRA Stacks", output:XY */
+        XYInputLoRAStacks(p: XYInputLoRAStacks_input, id?: ComfyNodeUID): XYInputLoRAStacks
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Control Net", output:XY */
+        XYInputControlNet(p: XYInputControlNet_input, id?: ComfyNodeUID): XYInputControlNet
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Control Net Plot", output:XY+XY_1 */
+        XYInputControlNetPlot(p: XYInputControlNetPlot_input, id?: ComfyNodeUID): XYInputControlNetPlot
+        /* category:Efficiency Nodes_XY Inputs, name:"XY Input: Manual XY Entry", output:XY */
+        XYInputManualXYEntry(p: XYInputManualXYEntry_input, id?: ComfyNodeUID): XYInputManualXYEntry
+        /* category:Efficiency Nodes_XY Inputs, name:"Manual XY Entry Info", output: */
+        ManualXYEntryInfo(p: ManualXYEntryInfo_input, id?: ComfyNodeUID): ManualXYEntryInfo
+        /* category:Efficiency Nodes_XY Inputs, name:"Join XY Inputs of Same Type", output:XY */
+        JoinXYInputsOfSameType(p: JoinXYInputsOfSameType_input, id?: ComfyNodeUID): JoinXYInputsOfSameType
+        /* category:Efficiency Nodes_Image, name:"Image Overlay", output:IMAGE */
+        ImageOverlay(p: ImageOverlay_input, id?: ComfyNodeUID): ImageOverlay
+        /* category:Efficiency Nodes_Scripts, name:"HighRes-Fix Script", output:SCRIPT */
+        HighResFixScript(p: HighResFixScript_input, id?: ComfyNodeUID): HighResFixScript
+        /* category:Efficiency Nodes_Simple Eval, name:"Evaluate Integers", output:INT+FLOAT+STRING */
+        EvaluateIntegers(p: EvaluateIntegers_input, id?: ComfyNodeUID): EvaluateIntegers
+        /* category:Efficiency Nodes_Simple Eval, name:"Evaluate Floats", output:INT+FLOAT+STRING */
+        EvaluateFloats(p: EvaluateFloats_input, id?: ComfyNodeUID): EvaluateFloats
+        /* category:Efficiency Nodes_Simple Eval, name:"Evaluate Strings", output:STRING */
+        EvaluateStrings(p: EvaluateStrings_input, id?: ComfyNodeUID): EvaluateStrings
+        /* category:Efficiency Nodes_Simple Eval, name:"Simple Eval Examples", output: */
+        SimpleEvalExamples(p: SimpleEvalExamples_input, id?: ComfyNodeUID): SimpleEvalExamples
+        /* category:JNode, name:"LatentByRatio", output:LATENT */
+        LatentByRatio(p: LatentByRatio_input, id?: ComfyNodeUID): LatentByRatio
+        /* category:Masquerade Nodes, name:"Mask By Text", output:IMAGE+IMAGE_1 */
+        MasqueradeMaskByText(p: MasqueradeMaskByText_input, id?: ComfyNodeUID): MasqueradeMaskByText
+        /* category:Masquerade Nodes, name:"Mask Morphology", output:IMAGE */
+        MasqueradeMaskMorphology(p: MasqueradeMaskMorphology_input, id?: ComfyNodeUID): MasqueradeMaskMorphology
+        /* category:Masquerade Nodes, name:"Combine Masks", output:IMAGE */
+        MasqueradeCombineMasks(p: MasqueradeCombineMasks_input, id?: ComfyNodeUID): MasqueradeCombineMasks
+        /* category:Masquerade Nodes, name:"Unary Mask Op", output:IMAGE */
+        MasqueradeUnaryMaskOp(p: MasqueradeUnaryMaskOp_input, id?: ComfyNodeUID): MasqueradeUnaryMaskOp
+        /* category:Masquerade Nodes, name:"Unary Image Op", output:IMAGE */
+        MasqueradeUnaryImageOp(p: MasqueradeUnaryImageOp_input, id?: ComfyNodeUID): MasqueradeUnaryImageOp
+        /* category:Masquerade Nodes, name:"Blur", output:IMAGE */
+        MasqueradeBlur(p: MasqueradeBlur_input, id?: ComfyNodeUID): MasqueradeBlur
+        /* category:Masquerade Nodes, name:"Image To Mask", output:MASK */
+        MasqueradeImageToMask(p: MasqueradeImageToMask_input, id?: ComfyNodeUID): MasqueradeImageToMask
+        /* category:Masquerade Nodes, name:"Mix Images By Mask", output:IMAGE */
+        MasqueradeMixImagesByMask(p: MasqueradeMixImagesByMask_input, id?: ComfyNodeUID): MasqueradeMixImagesByMask
+        /* category:Masquerade Nodes, name:"Mix Color By Mask", output:IMAGE */
+        MasqueradeMixColorByMask(p: MasqueradeMixColorByMask_input, id?: ComfyNodeUID): MasqueradeMixColorByMask
+        /* category:Masquerade Nodes, name:"Mask To Region", output:IMAGE */
+        MasqueradeMaskToRegion(p: MasqueradeMaskToRegion_input, id?: ComfyNodeUID): MasqueradeMaskToRegion
+        /* category:Masquerade Nodes, name:"Cut By Mask", output:IMAGE */
+        MasqueradeCutByMask(p: MasqueradeCutByMask_input, id?: ComfyNodeUID): MasqueradeCutByMask
+        /* category:Masquerade Nodes, name:"Paste By Mask", output:IMAGE */
+        MasqueradePasteByMask(p: MasqueradePasteByMask_input, id?: ComfyNodeUID): MasqueradePasteByMask
+        /* category:Masquerade Nodes, name:"Get Image Size", output:INT+INT_1 */
+        MasqueradeGetImageSize(p: MasqueradeGetImageSize_input, id?: ComfyNodeUID): MasqueradeGetImageSize
+        /* category:Masquerade Nodes, name:"Change Channel Count", output:IMAGE */
+        MasqueradeChangeChannelCount(p: MasqueradeChangeChannelCount_input, id?: ComfyNodeUID): MasqueradeChangeChannelCount
+        /* category:Masquerade Nodes, name:"Constant Mask", output:IMAGE */
+        MasqueradeConstantMask(p: MasqueradeConstantMask_input, id?: ComfyNodeUID): MasqueradeConstantMask
+        /* category:Masquerade Nodes, name:"Prune By Mask", output:IMAGE */
+        MasqueradePruneByMask(p: MasqueradePruneByMask_input, id?: ComfyNodeUID): MasqueradePruneByMask
+        /* category:Masquerade Nodes, name:"Separate Mask Components", output:IMAGE+MASK_MAPPING */
         MasqueradeSeparateMaskComponents(
-            args: MasqueradeSeparateMaskComponents_input,
-            uid?: ComfyNodeUID,
+            p: MasqueradeSeparateMaskComponents_input,
+            id?: ComfyNodeUID,
         ): MasqueradeSeparateMaskComponents
-        /* category=Masquerade Nodes name="Create Rect Mask" output=IMAGE */
-        MasqueradeCreateRectMask(args: MasqueradeCreateRectMask_input, uid?: ComfyNodeUID): MasqueradeCreateRectMask
-        /* category=Masquerade Nodes name="Make Image Batch" output=IMAGE */
-        MasqueradeMakeImageBatch(args: MasqueradeMakeImageBatch_input, uid?: ComfyNodeUID): MasqueradeMakeImageBatch
-        /* category=Masquerade Nodes name="Create QR Code" output=IMAGE */
-        MasqueradeCreateQRCode(args: MasqueradeCreateQRCode_input, uid?: ComfyNodeUID): MasqueradeCreateQRCode
-        /* category=Masquerade Nodes name="Convert Color Space" output=IMAGE */
-        MasqueradeConvertColorSpace(args: MasqueradeConvertColorSpace_input, uid?: ComfyNodeUID): MasqueradeConvertColorSpace
-        /* category=Masquerade Nodes name="MasqueradeIncrementer" output=INT */
+        /* category:Masquerade Nodes, name:"Create Rect Mask", output:IMAGE */
+        MasqueradeCreateRectMask(p: MasqueradeCreateRectMask_input, id?: ComfyNodeUID): MasqueradeCreateRectMask
+        /* category:Masquerade Nodes, name:"Make Image Batch", output:IMAGE */
+        MasqueradeMakeImageBatch(p: MasqueradeMakeImageBatch_input, id?: ComfyNodeUID): MasqueradeMakeImageBatch
+        /* category:Masquerade Nodes, name:"Create QR Code", output:IMAGE */
+        MasqueradeCreateQRCode(p: MasqueradeCreateQRCode_input, id?: ComfyNodeUID): MasqueradeCreateQRCode
+        /* category:Masquerade Nodes, name:"Convert Color Space", output:IMAGE */
+        MasqueradeConvertColorSpace(p: MasqueradeConvertColorSpace_input, id?: ComfyNodeUID): MasqueradeConvertColorSpace
+        /* category:Masquerade Nodes, name:"MasqueradeIncrementer", output:INT */
         MasqueradeMasqueradeIncrementer(
-            args: MasqueradeMasqueradeIncrementer_input,
-            uid?: ComfyNodeUID,
+            p: MasqueradeMasqueradeIncrementer_input,
+            id?: ComfyNodeUID,
         ): MasqueradeMasqueradeIncrementer
-        /* category=image name="Image Remove Background (rembg)" output=IMAGE */
-        ImageRemoveBackgroundRembg(args: ImageRemoveBackgroundRembg_input, uid?: ComfyNodeUID): ImageRemoveBackgroundRembg
-        /* category=JNode name="SDXLMixSampler" output=LATENT */
-        SDXLMixSampler(args: SDXLMixSampler_input, uid?: ComfyNodeUID): SDXLMixSampler
-        /* category=WAS Suite_Loaders name="BLIP Model Loader" output=BLIP_MODEL */
-        WASBLIPModelLoader(args: WASBLIPModelLoader_input, uid?: ComfyNodeUID): WASBLIPModelLoader
-        /* category=WAS Suite_Latent name="Blend Latents" output=LATENT */
-        WASBlendLatents(args: WASBlendLatents_input, uid?: ComfyNodeUID): WASBlendLatents
-        /* category=WAS Suite_IO name="Cache Node" output=STRING, STRING_1, STRING_2 */
-        WASCacheNode(args: WASCacheNode_input, uid?: ComfyNodeUID): WASCacheNode
-        /* category=WAS Suite_Loaders_Advanced name="Checkpoint Loader" output=MODEL, CLIP, VAE, STRING */
-        WASCheckpointLoader(args: WASCheckpointLoader_input, uid?: ComfyNodeUID): WASCheckpointLoader
-        /* category=WAS Suite_Loaders name="Checkpoint Loader (Simple)" output=MODEL, CLIP, VAE, STRING */
-        WASCheckpointLoaderSimple(args: WASCheckpointLoaderSimple_input, uid?: ComfyNodeUID): WASCheckpointLoaderSimple
-        /* category=WAS Suite_Conditioning name="CLIPTextEncode (NSP)" output=CONDITIONING, STRING, STRING_1 */
-        WASCLIPTextEncodeNSP(args: WASCLIPTextEncodeNSP_input, uid?: ComfyNodeUID): WASCLIPTextEncodeNSP
-        /* category=WAS Suite_Logic name="CLIP Input Switch" output=CLIP */
-        WASCLIPInputSwitch(args: WASCLIPInputSwitch_input, uid?: ComfyNodeUID): WASCLIPInputSwitch
-        /* category=WAS Suite_Logic name="CLIP Vision Input Switch" output=CLIP_VISION */
-        WASCLIPVisionInputSwitch(args: WASCLIPVisionInputSwitch_input, uid?: ComfyNodeUID): WASCLIPVisionInputSwitch
-        /* category=WAS Suite_Logic name="Conditioning Input Switch" output=CONDITIONING */
-        WASConditioningInputSwitch(args: WASConditioningInputSwitch_input, uid?: ComfyNodeUID): WASConditioningInputSwitch
-        /* category=WAS Suite_Number name="Constant Number" output=NUMBER, FLOAT, INT */
-        WASConstantNumber(args: WASConstantNumber_input, uid?: ComfyNodeUID): WASConstantNumber
-        /* category=WAS Suite_Image_Process name="Create Grid Image" output=IMAGE */
-        WASCreateGridImage(args: WASCreateGridImage_input, uid?: ComfyNodeUID): WASCreateGridImage
-        /* category=WAS Suite_Animation name="Create Morph Image" output=IMAGE, IMAGE_1, STRING, STRING_1 */
-        WASCreateMorphImage(args: WASCreateMorphImage_input, uid?: ComfyNodeUID): WASCreateMorphImage
-        /* category=WAS Suite_Animation name="Create Morph Image from Path" output=STRING, STRING_1 */
-        WASCreateMorphImageFromPath(args: WASCreateMorphImageFromPath_input, uid?: ComfyNodeUID): WASCreateMorphImageFromPath
-        /* category=WAS Suite_Animation name="Create Video from Path" output=STRING, STRING_1 */
-        WASCreateVideoFromPath(args: WASCreateVideoFromPath_input, uid?: ComfyNodeUID): WASCreateVideoFromPath
-        /* category=WAS Suite_Image_Masking name="CLIPSeg Masking" output=MASK, IMAGE */
-        WASCLIPSegMasking(args: WASCLIPSegMasking_input, uid?: ComfyNodeUID): WASCLIPSegMasking
-        /* category=WAS Suite_Loaders name="CLIPSeg Model Loader" output=CLIPSEG_MODEL */
-        WASCLIPSegModelLoader(args: WASCLIPSegModelLoader_input, uid?: ComfyNodeUID): WASCLIPSegModelLoader
-        /* category=WAS Suite_Image_Masking name="CLIPSeg Batch Masking" output=IMAGE, MASK, IMAGE_1 */
-        WASCLIPSegBatchMasking(args: WASCLIPSegBatchMasking_input, uid?: ComfyNodeUID): WASCLIPSegBatchMasking
-        /* category=WAS Suite_Image_Masking name="Convert Masks to Images" output=IMAGE */
-        WASConvertMasksToImages(args: WASConvertMasksToImages_input, uid?: ComfyNodeUID): WASConvertMasksToImages
-        /* category=WAS Suite_Logic name="Control Net Model Input Switch" output=CONTROL_NET */
-        WASControlNetModelInputSwitch(
-            args: WASControlNetModelInputSwitch_input,
-            uid?: ComfyNodeUID,
-        ): WASControlNetModelInputSwitch
-        /* category=WAS Suite_Debug name="Debug Number to Console" output=NUMBER */
-        WASDebugNumberToConsole(args: WASDebugNumberToConsole_input, uid?: ComfyNodeUID): WASDebugNumberToConsole
-        /* category=WAS Suite_Debug name="Dictionary to Console" output=DICT */
-        WASDictionaryToConsole(args: WASDictionaryToConsole_input, uid?: ComfyNodeUID): WASDictionaryToConsole
-        /* category=WAS Suite_Loaders_Advanced name="Diffusers Model Loader" output=MODEL, CLIP, VAE, STRING */
-        WASDiffusersModelLoader(args: WASDiffusersModelLoader_input, uid?: ComfyNodeUID): WASDiffusersModelLoader
-        /* category=WAS Suite_Loaders_Advanced name="Diffusers Hub Model Down-Loader" output=MODEL, CLIP, VAE, STRING */
-        WASDiffusersHubModelDownLoader(
-            args: WASDiffusersHubModelDownLoader_input,
-            uid?: ComfyNodeUID,
-        ): WASDiffusersHubModelDownLoader
-        /* category=WAS Suite_Debug name="Export API" output= */
-        WASExportAPI(args: WASExportAPI_input, uid?: ComfyNodeUID): WASExportAPI
-        /* category=WAS Suite_Logic name="Latent Input Switch" output=LATENT */
-        WASLatentInputSwitch(args: WASLatentInputSwitch_input, uid?: ComfyNodeUID): WASLatentInputSwitch
-        /* category=WAS Suite_IO name="Load Cache" output=LATENT, IMAGE, CONDITIONING */
-        WASLoadCache(args: WASLoadCache_input, uid?: ComfyNodeUID): WASLoadCache
-        /* category=WAS Suite_Logic name="Logic Boolean" output=NUMBER, INT */
-        WASLogicBoolean(args: WASLogicBoolean_input, uid?: ComfyNodeUID): WASLogicBoolean
-        /* category=WAS Suite_Loaders name="Lora Loader" output=MODEL, CLIP, STRING */
-        WASLoraLoader(args: WASLoraLoader_input, uid?: ComfyNodeUID): WASLoraLoader
-        /* category=WAS Suite_Image_Filter name="Image SSAO (Ambient Occlusion)" output=IMAGE, IMAGE_1, IMAGE_2 */
-        WASImageSSAOAmbientOcclusion(args: WASImageSSAOAmbientOcclusion_input, uid?: ComfyNodeUID): WASImageSSAOAmbientOcclusion
-        /* category=WAS Suite_Image_Filter name="Image SSDO (Direct Occlusion)" output=IMAGE, IMAGE_1, IMAGE_2, IMAGE_3 */
-        WASImageSSDODirectOcclusion(args: WASImageSSDODirectOcclusion_input, uid?: ComfyNodeUID): WASImageSSDODirectOcclusion
-        /* category=WAS Suite_Image_Analyze name="Image Analyze" output=IMAGE */
-        WASImageAnalyze(args: WASImageAnalyze_input, uid?: ComfyNodeUID): WASImageAnalyze
-        /* category=WAS Suite_Logic name="Image Aspect Ratio" output=NUMBER, FLOAT, NUMBER_1, STRING, STRING_1 */
-        WASImageAspectRatio(args: WASImageAspectRatio_input, uid?: ComfyNodeUID): WASImageAspectRatio
-        /* category=WAS Suite_Image name="Image Batch" output=IMAGE */
-        WASImageBatch(args: WASImageBatch_input, uid?: ComfyNodeUID): WASImageBatch
-        /* category=WAS Suite_Image name="Image Blank" output=IMAGE */
-        WASImageBlank(args: WASImageBlank_input, uid?: ComfyNodeUID): WASImageBlank
-        /* category=WAS Suite_Image name="Image Blend by Mask" output=IMAGE */
-        WASImageBlendByMask(args: WASImageBlendByMask_input, uid?: ComfyNodeUID): WASImageBlendByMask
-        /* category=WAS Suite_Image name="Image Blend" output=IMAGE */
-        WASImageBlend(args: WASImageBlend_input, uid?: ComfyNodeUID): WASImageBlend
-        /* category=WAS Suite_Image name="Image Blending Mode" output=IMAGE */
-        WASImageBlendingMode(args: WASImageBlendingMode_input, uid?: ComfyNodeUID): WASImageBlendingMode
-        /* category=WAS Suite_Image_Filter name="Image Bloom Filter" output=IMAGE */
-        WASImageBloomFilter(args: WASImageBloomFilter_input, uid?: ComfyNodeUID): WASImageBloomFilter
-        /* category=WAS Suite_Image_Filter name="Image Canny Filter" output=IMAGE */
-        WASImageCannyFilter(args: WASImageCannyFilter_input, uid?: ComfyNodeUID): WASImageCannyFilter
-        /* category=WAS Suite_Image_Filter name="Image Chromatic Aberration" output=IMAGE */
-        WASImageChromaticAberration(args: WASImageChromaticAberration_input, uid?: ComfyNodeUID): WASImageChromaticAberration
-        /* category=WAS Suite_Image_Analyze name="Image Color Palette" output=IMAGE, LIST */
-        WASImageColorPalette(args: WASImageColorPalette_input, uid?: ComfyNodeUID): WASImageColorPalette
-        /* category=WAS Suite_Image_Process name="Image Crop Face" output=IMAGE, CROP_DATA */
-        WASImageCropFace(args: WASImageCropFace_input, uid?: ComfyNodeUID): WASImageCropFace
-        /* category=WAS Suite_Image_Process name="Image Crop Location" output=IMAGE, CROP_DATA */
-        WASImageCropLocation(args: WASImageCropLocation_input, uid?: ComfyNodeUID): WASImageCropLocation
-        /* category=WAS Suite_Image_Process name="Image Crop Square Location" output=IMAGE, CROP_DATA */
-        WASImageCropSquareLocation(args: WASImageCropSquareLocation_input, uid?: ComfyNodeUID): WASImageCropSquareLocation
-        /* category=WAS Suite_Image_Transform name="Image Displacement Warp" output=IMAGE */
-        WASImageDisplacementWarp(args: WASImageDisplacementWarp_input, uid?: ComfyNodeUID): WASImageDisplacementWarp
-        /* category=WAS Suite_Image_Filter name="Image Lucy Sharpen" output=IMAGE */
-        WASImageLucySharpen(args: WASImageLucySharpen_input, uid?: ComfyNodeUID): WASImageLucySharpen
-        /* category=WAS Suite_Image_Process name="Image Paste Face" output=IMAGE, IMAGE_1 */
-        WASImagePasteFace(args: WASImagePasteFace_input, uid?: ComfyNodeUID): WASImagePasteFace
-        /* category=WAS Suite_Image_Process name="Image Paste Crop" output=IMAGE, IMAGE_1 */
-        WASImagePasteCrop(args: WASImagePasteCrop_input, uid?: ComfyNodeUID): WASImagePasteCrop
-        /* category=WAS Suite_Image_Process name="Image Paste Crop by Location" output=IMAGE, IMAGE_1 */
-        WASImagePasteCropByLocation(args: WASImagePasteCropByLocation_input, uid?: ComfyNodeUID): WASImagePasteCropByLocation
-        /* category=WAS Suite_Image_Process name="Image Pixelate" output=IMAGE */
-        WASImagePixelate(args: WASImagePixelate_input, uid?: ComfyNodeUID): WASImagePixelate
-        /* category=WAS Suite_Image_Generate_Noise name="Image Power Noise" output=IMAGE */
-        WASImagePowerNoise(args: WASImagePowerNoise_input, uid?: ComfyNodeUID): WASImagePowerNoise
-        /* category=WAS Suite_Image_Filter name="Image Dragan Photography Filter" output=IMAGE */
+        /* category:image, name:"Image Remove Background (rembg)", output:IMAGE */
+        ImageRemoveBackgroundRembg(p: ImageRemoveBackgroundRembg_input, id?: ComfyNodeUID): ImageRemoveBackgroundRembg
+        /* category:JNode, name:"SDXLMixSampler", output:LATENT */
+        SDXLMixSampler(p: SDXLMixSampler_input, id?: ComfyNodeUID): SDXLMixSampler
+        /* category:WAS Suite_Loaders, name:"BLIP Model Loader", output:BLIP_MODEL */
+        WASBLIPModelLoader(p: WASBLIPModelLoader_input, id?: ComfyNodeUID): WASBLIPModelLoader
+        /* category:WAS Suite_Latent, name:"Blend Latents", output:LATENT */
+        WASBlendLatents(p: WASBlendLatents_input, id?: ComfyNodeUID): WASBlendLatents
+        /* category:WAS Suite_IO, name:"Cache Node", output:STRING+STRING_1+STRING_2 */
+        WASCacheNode(p: WASCacheNode_input, id?: ComfyNodeUID): WASCacheNode
+        /* category:WAS Suite_Loaders_Advanced, name:"Checkpoint Loader", output:MODEL+CLIP+VAE+STRING */
+        WASCheckpointLoader(p: WASCheckpointLoader_input, id?: ComfyNodeUID): WASCheckpointLoader
+        /* category:WAS Suite_Loaders, name:"Checkpoint Loader (Simple)", output:MODEL+CLIP+VAE+STRING */
+        WASCheckpointLoaderSimple(p: WASCheckpointLoaderSimple_input, id?: ComfyNodeUID): WASCheckpointLoaderSimple
+        /* category:WAS Suite_Conditioning, name:"CLIPTextEncode (NSP)", output:CONDITIONING+STRING+STRING_1 */
+        WASCLIPTextEncodeNSP(p: WASCLIPTextEncodeNSP_input, id?: ComfyNodeUID): WASCLIPTextEncodeNSP
+        /* category:WAS Suite_Logic, name:"CLIP Input Switch", output:CLIP */
+        WASCLIPInputSwitch(p: WASCLIPInputSwitch_input, id?: ComfyNodeUID): WASCLIPInputSwitch
+        /* category:WAS Suite_Logic, name:"CLIP Vision Input Switch", output:CLIP_VISION */
+        WASCLIPVisionInputSwitch(p: WASCLIPVisionInputSwitch_input, id?: ComfyNodeUID): WASCLIPVisionInputSwitch
+        /* category:WAS Suite_Logic, name:"Conditioning Input Switch", output:CONDITIONING */
+        WASConditioningInputSwitch(p: WASConditioningInputSwitch_input, id?: ComfyNodeUID): WASConditioningInputSwitch
+        /* category:WAS Suite_Number, name:"Constant Number", output:NUMBER+FLOAT+INT */
+        WASConstantNumber(p: WASConstantNumber_input, id?: ComfyNodeUID): WASConstantNumber
+        /* category:WAS Suite_Image_Process, name:"Create Grid Image", output:IMAGE */
+        WASCreateGridImage(p: WASCreateGridImage_input, id?: ComfyNodeUID): WASCreateGridImage
+        /* category:WAS Suite_Animation, name:"Create Morph Image", output:IMAGE+IMAGE_1+STRING+STRING_1 */
+        WASCreateMorphImage(p: WASCreateMorphImage_input, id?: ComfyNodeUID): WASCreateMorphImage
+        /* category:WAS Suite_Animation, name:"Create Morph Image from Path", output:STRING+STRING_1 */
+        WASCreateMorphImageFromPath(p: WASCreateMorphImageFromPath_input, id?: ComfyNodeUID): WASCreateMorphImageFromPath
+        /* category:WAS Suite_Animation, name:"Create Video from Path", output:STRING+STRING_1 */
+        WASCreateVideoFromPath(p: WASCreateVideoFromPath_input, id?: ComfyNodeUID): WASCreateVideoFromPath
+        /* category:WAS Suite_Image_Masking, name:"CLIPSeg Masking", output:MASK+IMAGE */
+        WASCLIPSegMasking(p: WASCLIPSegMasking_input, id?: ComfyNodeUID): WASCLIPSegMasking
+        /* category:WAS Suite_Loaders, name:"CLIPSeg Model Loader", output:CLIPSEG_MODEL */
+        WASCLIPSegModelLoader(p: WASCLIPSegModelLoader_input, id?: ComfyNodeUID): WASCLIPSegModelLoader
+        /* category:WAS Suite_Image_Masking, name:"CLIPSeg Batch Masking", output:IMAGE+MASK+IMAGE_1 */
+        WASCLIPSegBatchMasking(p: WASCLIPSegBatchMasking_input, id?: ComfyNodeUID): WASCLIPSegBatchMasking
+        /* category:WAS Suite_Image_Masking, name:"Convert Masks to Images", output:IMAGE */
+        WASConvertMasksToImages(p: WASConvertMasksToImages_input, id?: ComfyNodeUID): WASConvertMasksToImages
+        /* category:WAS Suite_Logic, name:"Control Net Model Input Switch", output:CONTROL_NET */
+        WASControlNetModelInputSwitch(p: WASControlNetModelInputSwitch_input, id?: ComfyNodeUID): WASControlNetModelInputSwitch
+        /* category:WAS Suite_Debug, name:"Debug Number to Console", output:NUMBER */
+        WASDebugNumberToConsole(p: WASDebugNumberToConsole_input, id?: ComfyNodeUID): WASDebugNumberToConsole
+        /* category:WAS Suite_Debug, name:"Dictionary to Console", output:DICT */
+        WASDictionaryToConsole(p: WASDictionaryToConsole_input, id?: ComfyNodeUID): WASDictionaryToConsole
+        /* category:WAS Suite_Loaders_Advanced, name:"Diffusers Model Loader", output:MODEL+CLIP+VAE+STRING */
+        WASDiffusersModelLoader(p: WASDiffusersModelLoader_input, id?: ComfyNodeUID): WASDiffusersModelLoader
+        /* category:WAS Suite_Loaders_Advanced, name:"Diffusers Hub Model Down-Loader", output:MODEL+CLIP+VAE+STRING */
+        WASDiffusersHubModelDownLoader(p: WASDiffusersHubModelDownLoader_input, id?: ComfyNodeUID): WASDiffusersHubModelDownLoader
+        /* category:WAS Suite_Debug, name:"Export API", output: */
+        WASExportAPI(p: WASExportAPI_input, id?: ComfyNodeUID): WASExportAPI
+        /* category:WAS Suite_Logic, name:"Latent Input Switch", output:LATENT */
+        WASLatentInputSwitch(p: WASLatentInputSwitch_input, id?: ComfyNodeUID): WASLatentInputSwitch
+        /* category:WAS Suite_IO, name:"Load Cache", output:LATENT+IMAGE+CONDITIONING */
+        WASLoadCache(p: WASLoadCache_input, id?: ComfyNodeUID): WASLoadCache
+        /* category:WAS Suite_Logic, name:"Logic Boolean", output:NUMBER+INT */
+        WASLogicBoolean(p: WASLogicBoolean_input, id?: ComfyNodeUID): WASLogicBoolean
+        /* category:WAS Suite_Loaders, name:"Lora Loader", output:MODEL+CLIP+STRING */
+        WASLoraLoader(p: WASLoraLoader_input, id?: ComfyNodeUID): WASLoraLoader
+        /* category:WAS Suite_Image_Filter, name:"Image SSAO (Ambient Occlusion)", output:IMAGE+IMAGE_1+IMAGE_2 */
+        WASImageSSAOAmbientOcclusion(p: WASImageSSAOAmbientOcclusion_input, id?: ComfyNodeUID): WASImageSSAOAmbientOcclusion
+        /* category:WAS Suite_Image_Filter, name:"Image SSDO (Direct Occlusion)", output:IMAGE+IMAGE_1+IMAGE_2+IMAGE_3 */
+        WASImageSSDODirectOcclusion(p: WASImageSSDODirectOcclusion_input, id?: ComfyNodeUID): WASImageSSDODirectOcclusion
+        /* category:WAS Suite_Image_Analyze, name:"Image Analyze", output:IMAGE */
+        WASImageAnalyze(p: WASImageAnalyze_input, id?: ComfyNodeUID): WASImageAnalyze
+        /* category:WAS Suite_Logic, name:"Image Aspect Ratio", output:NUMBER+FLOAT+NUMBER_1+STRING+STRING_1 */
+        WASImageAspectRatio(p: WASImageAspectRatio_input, id?: ComfyNodeUID): WASImageAspectRatio
+        /* category:WAS Suite_Image, name:"Image Batch", output:IMAGE */
+        WASImageBatch(p: WASImageBatch_input, id?: ComfyNodeUID): WASImageBatch
+        /* category:WAS Suite_Image, name:"Image Blank", output:IMAGE */
+        WASImageBlank(p: WASImageBlank_input, id?: ComfyNodeUID): WASImageBlank
+        /* category:WAS Suite_Image, name:"Image Blend by Mask", output:IMAGE */
+        WASImageBlendByMask(p: WASImageBlendByMask_input, id?: ComfyNodeUID): WASImageBlendByMask
+        /* category:WAS Suite_Image, name:"Image Blend", output:IMAGE */
+        WASImageBlend(p: WASImageBlend_input, id?: ComfyNodeUID): WASImageBlend
+        /* category:WAS Suite_Image, name:"Image Blending Mode", output:IMAGE */
+        WASImageBlendingMode(p: WASImageBlendingMode_input, id?: ComfyNodeUID): WASImageBlendingMode
+        /* category:WAS Suite_Image_Filter, name:"Image Bloom Filter", output:IMAGE */
+        WASImageBloomFilter(p: WASImageBloomFilter_input, id?: ComfyNodeUID): WASImageBloomFilter
+        /* category:WAS Suite_Image_Filter, name:"Image Canny Filter", output:IMAGE */
+        WASImageCannyFilter(p: WASImageCannyFilter_input, id?: ComfyNodeUID): WASImageCannyFilter
+        /* category:WAS Suite_Image_Filter, name:"Image Chromatic Aberration", output:IMAGE */
+        WASImageChromaticAberration(p: WASImageChromaticAberration_input, id?: ComfyNodeUID): WASImageChromaticAberration
+        /* category:WAS Suite_Image_Analyze, name:"Image Color Palette", output:IMAGE+LIST */
+        WASImageColorPalette(p: WASImageColorPalette_input, id?: ComfyNodeUID): WASImageColorPalette
+        /* category:WAS Suite_Image_Process, name:"Image Crop Face", output:IMAGE+CROP_DATA */
+        WASImageCropFace(p: WASImageCropFace_input, id?: ComfyNodeUID): WASImageCropFace
+        /* category:WAS Suite_Image_Process, name:"Image Crop Location", output:IMAGE+CROP_DATA */
+        WASImageCropLocation(p: WASImageCropLocation_input, id?: ComfyNodeUID): WASImageCropLocation
+        /* category:WAS Suite_Image_Process, name:"Image Crop Square Location", output:IMAGE+CROP_DATA */
+        WASImageCropSquareLocation(p: WASImageCropSquareLocation_input, id?: ComfyNodeUID): WASImageCropSquareLocation
+        /* category:WAS Suite_Image_Transform, name:"Image Displacement Warp", output:IMAGE */
+        WASImageDisplacementWarp(p: WASImageDisplacementWarp_input, id?: ComfyNodeUID): WASImageDisplacementWarp
+        /* category:WAS Suite_Image_Filter, name:"Image Lucy Sharpen", output:IMAGE */
+        WASImageLucySharpen(p: WASImageLucySharpen_input, id?: ComfyNodeUID): WASImageLucySharpen
+        /* category:WAS Suite_Image_Process, name:"Image Paste Face", output:IMAGE+IMAGE_1 */
+        WASImagePasteFace(p: WASImagePasteFace_input, id?: ComfyNodeUID): WASImagePasteFace
+        /* category:WAS Suite_Image_Process, name:"Image Paste Crop", output:IMAGE+IMAGE_1 */
+        WASImagePasteCrop(p: WASImagePasteCrop_input, id?: ComfyNodeUID): WASImagePasteCrop
+        /* category:WAS Suite_Image_Process, name:"Image Paste Crop by Location", output:IMAGE+IMAGE_1 */
+        WASImagePasteCropByLocation(p: WASImagePasteCropByLocation_input, id?: ComfyNodeUID): WASImagePasteCropByLocation
+        /* category:WAS Suite_Image_Process, name:"Image Pixelate", output:IMAGE */
+        WASImagePixelate(p: WASImagePixelate_input, id?: ComfyNodeUID): WASImagePixelate
+        /* category:WAS Suite_Image_Generate_Noise, name:"Image Power Noise", output:IMAGE */
+        WASImagePowerNoise(p: WASImagePowerNoise_input, id?: ComfyNodeUID): WASImagePowerNoise
+        /* category:WAS Suite_Image_Filter, name:"Image Dragan Photography Filter", output:IMAGE */
         WASImageDraganPhotographyFilter(
-            args: WASImageDraganPhotographyFilter_input,
-            uid?: ComfyNodeUID,
+            p: WASImageDraganPhotographyFilter_input,
+            id?: ComfyNodeUID,
         ): WASImageDraganPhotographyFilter
-        /* category=WAS Suite_Image_Filter name="Image Edge Detection Filter" output=IMAGE */
-        WASImageEdgeDetectionFilter(args: WASImageEdgeDetectionFilter_input, uid?: ComfyNodeUID): WASImageEdgeDetectionFilter
-        /* category=WAS Suite_Image_Filter name="Image Film Grain" output=IMAGE */
-        WASImageFilmGrain(args: WASImageFilmGrain_input, uid?: ComfyNodeUID): WASImageFilmGrain
-        /* category=WAS Suite_Image_Filter name="Image Filter Adjustments" output=IMAGE */
-        WASImageFilterAdjustments(args: WASImageFilterAdjustments_input, uid?: ComfyNodeUID): WASImageFilterAdjustments
-        /* category=WAS Suite_Image_Transform name="Image Flip" output=IMAGE */
-        WASImageFlip(args: WASImageFlip_input, uid?: ComfyNodeUID): WASImageFlip
-        /* category=WAS Suite_Image_Filter name="Image Gradient Map" output=IMAGE */
-        WASImageGradientMap(args: WASImageGradientMap_input, uid?: ComfyNodeUID): WASImageGradientMap
-        /* category=WAS Suite_Image_Generate name="Image Generate Gradient" output=IMAGE */
-        WASImageGenerateGradient(args: WASImageGenerateGradient_input, uid?: ComfyNodeUID): WASImageGenerateGradient
-        /* category=WAS Suite_Image_Filter name="Image High Pass Filter" output=IMAGE */
-        WASImageHighPassFilter(args: WASImageHighPassFilter_input, uid?: ComfyNodeUID): WASImageHighPassFilter
-        /* category=WAS Suite_History name="Image History Loader" output=IMAGE, STRING */
-        WASImageHistoryLoader(args: WASImageHistoryLoader_input, uid?: ComfyNodeUID): WASImageHistoryLoader
-        /* category=WAS Suite_Logic name="Image Input Switch" output=IMAGE */
-        WASImageInputSwitch(args: WASImageInputSwitch_input, uid?: ComfyNodeUID): WASImageInputSwitch
-        /* category=WAS Suite_Image_Adjustment name="Image Levels Adjustment" output=IMAGE */
-        WASImageLevelsAdjustment(args: WASImageLevelsAdjustment_input, uid?: ComfyNodeUID): WASImageLevelsAdjustment
-        /* category=WAS Suite_IO name="Image Load" output=IMAGE, MASK, STRING */
-        WASImageLoad(args: WASImageLoad_input, uid?: ComfyNodeUID): WASImageLoad
-        /* category=WAS Suite_Image_Filter name="Image Median Filter" output=IMAGE */
-        WASImageMedianFilter(args: WASImageMedianFilter_input, uid?: ComfyNodeUID): WASImageMedianFilter
-        /* category=WAS Suite_Image_Process name="Image Mix RGB Channels" output=IMAGE */
-        WASImageMixRGBChannels(args: WASImageMixRGBChannels_input, uid?: ComfyNodeUID): WASImageMixRGBChannels
-        /* category=WAS Suite_Image_Filter name="Image Monitor Effects Filter" output=IMAGE */
-        WASImageMonitorEffectsFilter(args: WASImageMonitorEffectsFilter_input, uid?: ComfyNodeUID): WASImageMonitorEffectsFilter
-        /* category=WAS Suite_Image_Filter name="Image Nova Filter" output=IMAGE */
-        WASImageNovaFilter(args: WASImageNovaFilter_input, uid?: ComfyNodeUID): WASImageNovaFilter
-        /* category=WAS Suite_Image_Transform name="Image Padding" output=IMAGE, IMAGE_1 */
-        WASImagePadding(args: WASImagePadding_input, uid?: ComfyNodeUID): WASImagePadding
-        /* category=WAS Suite_Image_Generate_Noise name="Image Perlin Noise" output=IMAGE */
-        WASImagePerlinNoise(args: WASImagePerlinNoise_input, uid?: ComfyNodeUID): WASImagePerlinNoise
-        /* category=WAS Suite_Image_AI name="Image Rembg (Remove Background)" output=IMAGE */
-        WASImageRembgRemoveBackground(
-            args: WASImageRembgRemoveBackground_input,
-            uid?: ComfyNodeUID,
-        ): WASImageRembgRemoveBackground
-        /* category=WAS Suite_Image_Generate_Noise name="Image Perlin Power Fractal" output=IMAGE */
-        WASImagePerlinPowerFractal(args: WASImagePerlinPowerFractal_input, uid?: ComfyNodeUID): WASImagePerlinPowerFractal
-        /* category=WAS Suite_Image_Process name="Image Remove Background (Alpha)" output=IMAGE */
-        WASImageRemoveBackgroundAlpha(
-            args: WASImageRemoveBackgroundAlpha_input,
-            uid?: ComfyNodeUID,
-        ): WASImageRemoveBackgroundAlpha
-        /* category=WAS Suite_Image_Process name="Image Remove Color" output=IMAGE */
-        WASImageRemoveColor(args: WASImageRemoveColor_input, uid?: ComfyNodeUID): WASImageRemoveColor
-        /* category=WAS Suite_Image_Transform name="Image Resize" output=IMAGE */
-        WASImageResize(args: WASImageResize_input, uid?: ComfyNodeUID): WASImageResize
-        /* category=WAS Suite_Image_Transform name="Image Rotate" output=IMAGE */
-        WASImageRotate(args: WASImageRotate_input, uid?: ComfyNodeUID): WASImageRotate
-        /* category=WAS Suite_Image_Adjustment name="Image Rotate Hue" output=IMAGE */
-        WASImageRotateHue(args: WASImageRotateHue_input, uid?: ComfyNodeUID): WASImageRotateHue
-        /* category=WAS Suite_IO name="Image Save" output= */
-        WASImageSave(args: WASImageSave_input, uid?: ComfyNodeUID): WASImageSave
-        /* category=WAS Suite_Image_Process name="Image Seamless Texture" output=IMAGE */
-        WASImageSeamlessTexture(args: WASImageSeamlessTexture_input, uid?: ComfyNodeUID): WASImageSeamlessTexture
-        /* category=WAS Suite_Image_Process name="Image Select Channel" output=IMAGE */
-        WASImageSelectChannel(args: WASImageSelectChannel_input, uid?: ComfyNodeUID): WASImageSelectChannel
-        /* category=WAS Suite_Image_Process name="Image Select Color" output=IMAGE */
-        WASImageSelectColor(args: WASImageSelectColor_input, uid?: ComfyNodeUID): WASImageSelectColor
-        /* category=WAS Suite_Image_Adjustment name="Image Shadows and Highlights" output=IMAGE, IMAGE_1, IMAGE_2 */
-        WASImageShadowsAndHighlights(args: WASImageShadowsAndHighlights_input, uid?: ComfyNodeUID): WASImageShadowsAndHighlights
-        /* category=WAS Suite_Number_Operations name="Image Size to Number" output=NUMBER, NUMBER_1, FLOAT, FLOAT_1, INT, INT_1 */
-        WASImageSizeToNumber(args: WASImageSizeToNumber_input, uid?: ComfyNodeUID): WASImageSizeToNumber
-        /* category=WAS Suite_Image_Transform name="Image Stitch" output=IMAGE */
-        WASImageStitch(args: WASImageStitch_input, uid?: ComfyNodeUID): WASImageStitch
-        /* category=WAS Suite_Image_Filter name="Image Style Filter" output=IMAGE */
-        WASImageStyleFilter(args: WASImageStyleFilter_input, uid?: ComfyNodeUID): WASImageStyleFilter
-        /* category=WAS Suite_Image_Process name="Image Threshold" output=IMAGE */
-        WASImageThreshold(args: WASImageThreshold_input, uid?: ComfyNodeUID): WASImageThreshold
-        /* category=WAS Suite_Image_Process name="Image Tiled" output=IMAGE */
-        WASImageTiled(args: WASImageTiled_input, uid?: ComfyNodeUID): WASImageTiled
-        /* category=WAS Suite_Image_Transform name="Image Transpose" output=IMAGE */
-        WASImageTranspose(args: WASImageTranspose_input, uid?: ComfyNodeUID): WASImageTranspose
-        /* category=WAS Suite_Image_Filter name="Image fDOF Filter" output=IMAGE */
-        WASImageFDOFFilter(args: WASImageFDOFFilter_input, uid?: ComfyNodeUID): WASImageFDOFFilter
-        /* category=WAS Suite_Image_Masking name="Image to Latent Mask" output=MASK */
-        WASImageToLatentMask(args: WASImageToLatentMask_input, uid?: ComfyNodeUID): WASImageToLatentMask
-        /* category=WAS Suite_Image_Generate_Noise name="Image to Noise" output=IMAGE */
-        WASImageToNoise(args: WASImageToNoise_input, uid?: ComfyNodeUID): WASImageToNoise
-        /* category=WAS Suite_Image_Analyze name="Image to Seed" output=INT */
-        WASImageToSeed(args: WASImageToSeed_input, uid?: ComfyNodeUID): WASImageToSeed
-        /* category=WAS Suite_Image name="Images to RGB" output=IMAGE */
-        WASImagesToRGB(args: WASImagesToRGB_input, uid?: ComfyNodeUID): WASImagesToRGB
-        /* category=WAS Suite_Image name="Images to Linear" output=IMAGE */
-        WASImagesToLinear(args: WASImagesToLinear_input, uid?: ComfyNodeUID): WASImagesToLinear
-        /* category=WAS Suite_Integer name="Integer place counter" output=INT */
-        WASIntegerPlaceCounter(args: WASIntegerPlaceCounter_input, uid?: ComfyNodeUID): WASIntegerPlaceCounter
-        /* category=WAS Suite_Image_Generate_Noise name="Image Voronoi Noise Filter" output=IMAGE */
-        WASImageVoronoiNoiseFilter(args: WASImageVoronoiNoiseFilter_input, uid?: ComfyNodeUID): WASImageVoronoiNoiseFilter
-        /* category=WAS Suite_Sampling name="KSampler (WAS)" output=LATENT */
-        WASKSamplerWAS(args: WASKSamplerWAS_input, uid?: ComfyNodeUID): WASKSamplerWAS
-        /* category=WAS Suite_Sampling name="KSampler Cycle" output=LATENT */
-        WASKSamplerCycle(args: WASKSamplerCycle_input, uid?: ComfyNodeUID): WASKSamplerCycle
-        /* category=WAS Suite_Latent_Generate name="Latent Noise Injection" output=LATENT */
-        WASLatentNoiseInjection(args: WASLatentNoiseInjection_input, uid?: ComfyNodeUID): WASLatentNoiseInjection
-        /* category=WAS Suite_Number_Operations name="Latent Size to Number" output=NUMBER, NUMBER_1, FLOAT, FLOAT_1, INT, INT_1 */
-        WASLatentSizeToNumber(args: WASLatentSizeToNumber_input, uid?: ComfyNodeUID): WASLatentSizeToNumber
-        /* category=WAS Suite_Latent_Transform name="Latent Upscale by Factor (WAS)" output=LATENT */
-        WASLatentUpscaleByFactorWAS(args: WASLatentUpscaleByFactorWAS_input, uid?: ComfyNodeUID): WASLatentUpscaleByFactorWAS
-        /* category=WAS Suite_IO name="Load Image Batch" output=IMAGE, STRING */
-        WASLoadImageBatch(args: WASLoadImageBatch_input, uid?: ComfyNodeUID): WASLoadImageBatch
-        /* category=WAS Suite_IO name="Load Text File" output=STRING, DICT */
-        WASLoadTextFile(args: WASLoadTextFile_input, uid?: ComfyNodeUID): WASLoadTextFile
-        /* category=WAS Suite_Loaders name="Load Lora" output=MODEL, CLIP, STRING */
-        WASLoadLora(args: WASLoadLora_input, uid?: ComfyNodeUID): WASLoadLora
-        /* category=WAS Suite_Image_Masking name="Masks Add" output=MASK */
-        WASMasksAdd(args: WASMasksAdd_input, uid?: ComfyNodeUID): WASMasksAdd
-        /* category=WAS Suite_Image_Masking name="Masks Subtract" output=MASK */
-        WASMasksSubtract(args: WASMasksSubtract_input, uid?: ComfyNodeUID): WASMasksSubtract
-        /* category=WAS Suite_Image_Masking name="Mask Arbitrary Region" output=MASK */
-        WASMaskArbitraryRegion(args: WASMaskArbitraryRegion_input, uid?: ComfyNodeUID): WASMaskArbitraryRegion
-        /* category=WAS Suite_Image_Masking name="Mask Batch to Mask" output=MASK */
-        WASMaskBatchToMask(args: WASMaskBatchToMask_input, uid?: ComfyNodeUID): WASMaskBatchToMask
-        /* category=WAS Suite_Image_Masking name="Mask Batch" output=MASK */
-        WASMaskBatch(args: WASMaskBatch_input, uid?: ComfyNodeUID): WASMaskBatch
-        /* category=WAS Suite_Image_Masking name="Mask Ceiling Region" output=MASK */
-        WASMaskCeilingRegion(args: WASMaskCeilingRegion_input, uid?: ComfyNodeUID): WASMaskCeilingRegion
-        /* category=WAS Suite_Image_Masking name="Mask Crop Dominant Region" output=MASK */
-        WASMaskCropDominantRegion(args: WASMaskCropDominantRegion_input, uid?: ComfyNodeUID): WASMaskCropDominantRegion
-        /* category=WAS Suite_Image_Masking name="Mask Crop Minority Region" output=MASK */
-        WASMaskCropMinorityRegion(args: WASMaskCropMinorityRegion_input, uid?: ComfyNodeUID): WASMaskCropMinorityRegion
-        /* category=WAS Suite_Image_Masking name="Mask Crop Region" output=MASK, CROP_DATA, INT, INT_1, INT_2, INT_3, INT_4, INT_5 */
-        WASMaskCropRegion(args: WASMaskCropRegion_input, uid?: ComfyNodeUID): WASMaskCropRegion
-        /* category=WAS Suite_Image_Masking name="Mask Paste Region" output=MASK, MASK_1 */
-        WASMaskPasteRegion(args: WASMaskPasteRegion_input, uid?: ComfyNodeUID): WASMaskPasteRegion
-        /* category=WAS Suite_Image_Masking name="Mask Dilate Region" output=MASK */
-        WASMaskDilateRegion(args: WASMaskDilateRegion_input, uid?: ComfyNodeUID): WASMaskDilateRegion
-        /* category=WAS Suite_Image_Masking name="Mask Dominant Region" output=MASK */
-        WASMaskDominantRegion(args: WASMaskDominantRegion_input, uid?: ComfyNodeUID): WASMaskDominantRegion
-        /* category=WAS Suite_Image_Masking name="Mask Erode Region" output=MASK */
-        WASMaskErodeRegion(args: WASMaskErodeRegion_input, uid?: ComfyNodeUID): WASMaskErodeRegion
-        /* category=WAS Suite_Image_Masking name="Mask Fill Holes" output=MASK */
-        WASMaskFillHoles(args: WASMaskFillHoles_input, uid?: ComfyNodeUID): WASMaskFillHoles
-        /* category=WAS Suite_Image_Masking name="Mask Floor Region" output=MASK */
-        WASMaskFloorRegion(args: WASMaskFloorRegion_input, uid?: ComfyNodeUID): WASMaskFloorRegion
-        /* category=WAS Suite_Image_Masking name="Mask Gaussian Region" output=MASK */
-        WASMaskGaussianRegion(args: WASMaskGaussianRegion_input, uid?: ComfyNodeUID): WASMaskGaussianRegion
-        /* category=WAS Suite_Image_Masking name="Mask Invert" output=MASK */
-        WASMaskInvert(args: WASMaskInvert_input, uid?: ComfyNodeUID): WASMaskInvert
-        /* category=WAS Suite_Image_Masking name="Mask Minority Region" output=MASK */
-        WASMaskMinorityRegion(args: WASMaskMinorityRegion_input, uid?: ComfyNodeUID): WASMaskMinorityRegion
-        /* category=WAS Suite_Image_Masking name="Mask Smooth Region" output=MASK */
-        WASMaskSmoothRegion(args: WASMaskSmoothRegion_input, uid?: ComfyNodeUID): WASMaskSmoothRegion
-        /* category=WAS Suite_Image_Masking name="Mask Threshold Region" output=MASK */
-        WASMaskThresholdRegion(args: WASMaskThresholdRegion_input, uid?: ComfyNodeUID): WASMaskThresholdRegion
-        /* category=WAS Suite_Image_Masking name="Masks Combine Regions" output=MASK */
-        WASMasksCombineRegions(args: WASMasksCombineRegions_input, uid?: ComfyNodeUID): WASMasksCombineRegions
-        /* category=WAS Suite_Image_Masking name="Masks Combine Batch" output=MASK */
-        WASMasksCombineBatch(args: WASMasksCombineBatch_input, uid?: ComfyNodeUID): WASMasksCombineBatch
-        /* category=WAS Suite_Loaders name="MiDaS Model Loader" output=MIDAS_MODEL */
-        WASMiDaSModelLoader(args: WASMiDaSModelLoader_input, uid?: ComfyNodeUID): WASMiDaSModelLoader
-        /* category=WAS Suite_Image_AI name="MiDaS Depth Approximation" output=IMAGE */
-        WASMiDaSDepthApproximation(args: WASMiDaSDepthApproximation_input, uid?: ComfyNodeUID): WASMiDaSDepthApproximation
-        /* category=WAS Suite_Image_AI name="MiDaS Mask Image" output=IMAGE, IMAGE_1 */
-        WASMiDaSMaskImage(args: WASMiDaSMaskImage_input, uid?: ComfyNodeUID): WASMiDaSMaskImage
-        /* category=WAS Suite_Logic name="Model Input Switch" output=MODEL */
-        WASModelInputSwitch(args: WASModelInputSwitch_input, uid?: ComfyNodeUID): WASModelInputSwitch
-        /* category=WAS Suite_Number name="Number Counter" output=NUMBER, FLOAT, INT */
-        WASNumberCounter(args: WASNumberCounter_input, uid?: ComfyNodeUID): WASNumberCounter
-        /* category=WAS Suite_Number_Operations name="Number Operation" output=NUMBER, FLOAT, INT */
-        WASNumberOperation(args: WASNumberOperation_input, uid?: ComfyNodeUID): WASNumberOperation
-        /* category=WAS Suite_Number_Operations name="Number to Float" output=FLOAT */
-        WASNumberToFloat(args: WASNumberToFloat_input, uid?: ComfyNodeUID): WASNumberToFloat
-        /* category=WAS Suite_Logic name="Number Input Switch" output=NUMBER, FLOAT, INT */
-        WASNumberInputSwitch(args: WASNumberInputSwitch_input, uid?: ComfyNodeUID): WASNumberInputSwitch
-        /* category=WAS Suite_Logic name="Number Input Condition" output=NUMBER, FLOAT, INT */
-        WASNumberInputCondition(args: WASNumberInputCondition_input, uid?: ComfyNodeUID): WASNumberInputCondition
-        /* category=WAS Suite_Number_Functions name="Number Multiple Of" output=NUMBER, FLOAT, INT */
-        WASNumberMultipleOf(args: WASNumberMultipleOf_input, uid?: ComfyNodeUID): WASNumberMultipleOf
-        /* category=WAS Suite_Number name="Number PI" output=NUMBER, FLOAT */
-        WASNumberPI(args: WASNumberPI_input, uid?: ComfyNodeUID): WASNumberPI
-        /* category=WAS Suite_Number_Operations name="Number to Int" output=INT */
-        WASNumberToInt(args: WASNumberToInt_input, uid?: ComfyNodeUID): WASNumberToInt
-        /* category=WAS Suite_Number_Operations name="Number to Seed" output=SEED */
-        WASNumberToSeed(args: WASNumberToSeed_input, uid?: ComfyNodeUID): WASNumberToSeed
-        /* category=WAS Suite_Number_Operations name="Number to String" output=STRING */
-        WASNumberToString(args: WASNumberToString_input, uid?: ComfyNodeUID): WASNumberToString
-        /* category=WAS Suite_Number_Operations name="Number to Text" output=STRING */
-        WASNumberToText(args: WASNumberToText_input, uid?: ComfyNodeUID): WASNumberToText
-        /* category=WAS Suite_Text name="Prompt Styles Selector" output=STRING, STRING_1 */
-        WASPromptStylesSelector(args: WASPromptStylesSelector_input, uid?: ComfyNodeUID): WASPromptStylesSelector
-        /* category=WAS Suite_Text name="Prompt Multiple Styles Selector" output=STRING, STRING_1 */
+        /* category:WAS Suite_Image_Filter, name:"Image Edge Detection Filter", output:IMAGE */
+        WASImageEdgeDetectionFilter(p: WASImageEdgeDetectionFilter_input, id?: ComfyNodeUID): WASImageEdgeDetectionFilter
+        /* category:WAS Suite_Image_Filter, name:"Image Film Grain", output:IMAGE */
+        WASImageFilmGrain(p: WASImageFilmGrain_input, id?: ComfyNodeUID): WASImageFilmGrain
+        /* category:WAS Suite_Image_Filter, name:"Image Filter Adjustments", output:IMAGE */
+        WASImageFilterAdjustments(p: WASImageFilterAdjustments_input, id?: ComfyNodeUID): WASImageFilterAdjustments
+        /* category:WAS Suite_Image_Transform, name:"Image Flip", output:IMAGE */
+        WASImageFlip(p: WASImageFlip_input, id?: ComfyNodeUID): WASImageFlip
+        /* category:WAS Suite_Image_Filter, name:"Image Gradient Map", output:IMAGE */
+        WASImageGradientMap(p: WASImageGradientMap_input, id?: ComfyNodeUID): WASImageGradientMap
+        /* category:WAS Suite_Image_Generate, name:"Image Generate Gradient", output:IMAGE */
+        WASImageGenerateGradient(p: WASImageGenerateGradient_input, id?: ComfyNodeUID): WASImageGenerateGradient
+        /* category:WAS Suite_Image_Filter, name:"Image High Pass Filter", output:IMAGE */
+        WASImageHighPassFilter(p: WASImageHighPassFilter_input, id?: ComfyNodeUID): WASImageHighPassFilter
+        /* category:WAS Suite_History, name:"Image History Loader", output:IMAGE+STRING */
+        WASImageHistoryLoader(p: WASImageHistoryLoader_input, id?: ComfyNodeUID): WASImageHistoryLoader
+        /* category:WAS Suite_Logic, name:"Image Input Switch", output:IMAGE */
+        WASImageInputSwitch(p: WASImageInputSwitch_input, id?: ComfyNodeUID): WASImageInputSwitch
+        /* category:WAS Suite_Image_Adjustment, name:"Image Levels Adjustment", output:IMAGE */
+        WASImageLevelsAdjustment(p: WASImageLevelsAdjustment_input, id?: ComfyNodeUID): WASImageLevelsAdjustment
+        /* category:WAS Suite_IO, name:"Image Load", output:IMAGE+MASK+STRING */
+        WASImageLoad(p: WASImageLoad_input, id?: ComfyNodeUID): WASImageLoad
+        /* category:WAS Suite_Image_Filter, name:"Image Median Filter", output:IMAGE */
+        WASImageMedianFilter(p: WASImageMedianFilter_input, id?: ComfyNodeUID): WASImageMedianFilter
+        /* category:WAS Suite_Image_Process, name:"Image Mix RGB Channels", output:IMAGE */
+        WASImageMixRGBChannels(p: WASImageMixRGBChannels_input, id?: ComfyNodeUID): WASImageMixRGBChannels
+        /* category:WAS Suite_Image_Filter, name:"Image Monitor Effects Filter", output:IMAGE */
+        WASImageMonitorEffectsFilter(p: WASImageMonitorEffectsFilter_input, id?: ComfyNodeUID): WASImageMonitorEffectsFilter
+        /* category:WAS Suite_Image_Filter, name:"Image Nova Filter", output:IMAGE */
+        WASImageNovaFilter(p: WASImageNovaFilter_input, id?: ComfyNodeUID): WASImageNovaFilter
+        /* category:WAS Suite_Image_Transform, name:"Image Padding", output:IMAGE+IMAGE_1 */
+        WASImagePadding(p: WASImagePadding_input, id?: ComfyNodeUID): WASImagePadding
+        /* category:WAS Suite_Image_Generate_Noise, name:"Image Perlin Noise", output:IMAGE */
+        WASImagePerlinNoise(p: WASImagePerlinNoise_input, id?: ComfyNodeUID): WASImagePerlinNoise
+        /* category:WAS Suite_Image_AI, name:"Image Rembg (Remove Background)", output:IMAGE */
+        WASImageRembgRemoveBackground(p: WASImageRembgRemoveBackground_input, id?: ComfyNodeUID): WASImageRembgRemoveBackground
+        /* category:WAS Suite_Image_Generate_Noise, name:"Image Perlin Power Fractal", output:IMAGE */
+        WASImagePerlinPowerFractal(p: WASImagePerlinPowerFractal_input, id?: ComfyNodeUID): WASImagePerlinPowerFractal
+        /* category:WAS Suite_Image_Process, name:"Image Remove Background (Alpha)", output:IMAGE */
+        WASImageRemoveBackgroundAlpha(p: WASImageRemoveBackgroundAlpha_input, id?: ComfyNodeUID): WASImageRemoveBackgroundAlpha
+        /* category:WAS Suite_Image_Process, name:"Image Remove Color", output:IMAGE */
+        WASImageRemoveColor(p: WASImageRemoveColor_input, id?: ComfyNodeUID): WASImageRemoveColor
+        /* category:WAS Suite_Image_Transform, name:"Image Resize", output:IMAGE */
+        WASImageResize(p: WASImageResize_input, id?: ComfyNodeUID): WASImageResize
+        /* category:WAS Suite_Image_Transform, name:"Image Rotate", output:IMAGE */
+        WASImageRotate(p: WASImageRotate_input, id?: ComfyNodeUID): WASImageRotate
+        /* category:WAS Suite_Image_Adjustment, name:"Image Rotate Hue", output:IMAGE */
+        WASImageRotateHue(p: WASImageRotateHue_input, id?: ComfyNodeUID): WASImageRotateHue
+        /* category:WAS Suite_IO, name:"Image Save", output: */
+        WASImageSave(p: WASImageSave_input, id?: ComfyNodeUID): WASImageSave
+        /* category:WAS Suite_Image_Process, name:"Image Seamless Texture", output:IMAGE */
+        WASImageSeamlessTexture(p: WASImageSeamlessTexture_input, id?: ComfyNodeUID): WASImageSeamlessTexture
+        /* category:WAS Suite_Image_Process, name:"Image Select Channel", output:IMAGE */
+        WASImageSelectChannel(p: WASImageSelectChannel_input, id?: ComfyNodeUID): WASImageSelectChannel
+        /* category:WAS Suite_Image_Process, name:"Image Select Color", output:IMAGE */
+        WASImageSelectColor(p: WASImageSelectColor_input, id?: ComfyNodeUID): WASImageSelectColor
+        /* category:WAS Suite_Image_Adjustment, name:"Image Shadows and Highlights", output:IMAGE+IMAGE_1+IMAGE_2 */
+        WASImageShadowsAndHighlights(p: WASImageShadowsAndHighlights_input, id?: ComfyNodeUID): WASImageShadowsAndHighlights
+        /* category:WAS Suite_Number_Operations, name:"Image Size to Number", output:NUMBER+NUMBER_1+FLOAT+FLOAT_1+INT+INT_1 */
+        WASImageSizeToNumber(p: WASImageSizeToNumber_input, id?: ComfyNodeUID): WASImageSizeToNumber
+        /* category:WAS Suite_Image_Transform, name:"Image Stitch", output:IMAGE */
+        WASImageStitch(p: WASImageStitch_input, id?: ComfyNodeUID): WASImageStitch
+        /* category:WAS Suite_Image_Filter, name:"Image Style Filter", output:IMAGE */
+        WASImageStyleFilter(p: WASImageStyleFilter_input, id?: ComfyNodeUID): WASImageStyleFilter
+        /* category:WAS Suite_Image_Process, name:"Image Threshold", output:IMAGE */
+        WASImageThreshold(p: WASImageThreshold_input, id?: ComfyNodeUID): WASImageThreshold
+        /* category:WAS Suite_Image_Process, name:"Image Tiled", output:IMAGE */
+        WASImageTiled(p: WASImageTiled_input, id?: ComfyNodeUID): WASImageTiled
+        /* category:WAS Suite_Image_Transform, name:"Image Transpose", output:IMAGE */
+        WASImageTranspose(p: WASImageTranspose_input, id?: ComfyNodeUID): WASImageTranspose
+        /* category:WAS Suite_Image_Filter, name:"Image fDOF Filter", output:IMAGE */
+        WASImageFDOFFilter(p: WASImageFDOFFilter_input, id?: ComfyNodeUID): WASImageFDOFFilter
+        /* category:WAS Suite_Image_Masking, name:"Image to Latent Mask", output:MASK */
+        WASImageToLatentMask(p: WASImageToLatentMask_input, id?: ComfyNodeUID): WASImageToLatentMask
+        /* category:WAS Suite_Image_Generate_Noise, name:"Image to Noise", output:IMAGE */
+        WASImageToNoise(p: WASImageToNoise_input, id?: ComfyNodeUID): WASImageToNoise
+        /* category:WAS Suite_Image_Analyze, name:"Image to Seed", output:INT */
+        WASImageToSeed(p: WASImageToSeed_input, id?: ComfyNodeUID): WASImageToSeed
+        /* category:WAS Suite_Image, name:"Images to RGB", output:IMAGE */
+        WASImagesToRGB(p: WASImagesToRGB_input, id?: ComfyNodeUID): WASImagesToRGB
+        /* category:WAS Suite_Image, name:"Images to Linear", output:IMAGE */
+        WASImagesToLinear(p: WASImagesToLinear_input, id?: ComfyNodeUID): WASImagesToLinear
+        /* category:WAS Suite_Integer, name:"Integer place counter", output:INT */
+        WASIntegerPlaceCounter(p: WASIntegerPlaceCounter_input, id?: ComfyNodeUID): WASIntegerPlaceCounter
+        /* category:WAS Suite_Image_Generate_Noise, name:"Image Voronoi Noise Filter", output:IMAGE */
+        WASImageVoronoiNoiseFilter(p: WASImageVoronoiNoiseFilter_input, id?: ComfyNodeUID): WASImageVoronoiNoiseFilter
+        /* category:WAS Suite_Sampling, name:"KSampler (WAS)", output:LATENT */
+        WASKSamplerWAS(p: WASKSamplerWAS_input, id?: ComfyNodeUID): WASKSamplerWAS
+        /* category:WAS Suite_Sampling, name:"KSampler Cycle", output:LATENT */
+        WASKSamplerCycle(p: WASKSamplerCycle_input, id?: ComfyNodeUID): WASKSamplerCycle
+        /* category:WAS Suite_Latent_Generate, name:"Latent Noise Injection", output:LATENT */
+        WASLatentNoiseInjection(p: WASLatentNoiseInjection_input, id?: ComfyNodeUID): WASLatentNoiseInjection
+        /* category:WAS Suite_Number_Operations, name:"Latent Size to Number", output:NUMBER+NUMBER_1+FLOAT+FLOAT_1+INT+INT_1 */
+        WASLatentSizeToNumber(p: WASLatentSizeToNumber_input, id?: ComfyNodeUID): WASLatentSizeToNumber
+        /* category:WAS Suite_Latent_Transform, name:"Latent Upscale by Factor (WAS)", output:LATENT */
+        WASLatentUpscaleByFactorWAS(p: WASLatentUpscaleByFactorWAS_input, id?: ComfyNodeUID): WASLatentUpscaleByFactorWAS
+        /* category:WAS Suite_IO, name:"Load Image Batch", output:IMAGE+STRING */
+        WASLoadImageBatch(p: WASLoadImageBatch_input, id?: ComfyNodeUID): WASLoadImageBatch
+        /* category:WAS Suite_IO, name:"Load Text File", output:STRING+DICT */
+        WASLoadTextFile(p: WASLoadTextFile_input, id?: ComfyNodeUID): WASLoadTextFile
+        /* category:WAS Suite_Loaders, name:"Load Lora", output:MODEL+CLIP+STRING */
+        WASLoadLora(p: WASLoadLora_input, id?: ComfyNodeUID): WASLoadLora
+        /* category:WAS Suite_Image_Masking, name:"Masks Add", output:MASK */
+        WASMasksAdd(p: WASMasksAdd_input, id?: ComfyNodeUID): WASMasksAdd
+        /* category:WAS Suite_Image_Masking, name:"Masks Subtract", output:MASK */
+        WASMasksSubtract(p: WASMasksSubtract_input, id?: ComfyNodeUID): WASMasksSubtract
+        /* category:WAS Suite_Image_Masking, name:"Mask Arbitrary Region", output:MASK */
+        WASMaskArbitraryRegion(p: WASMaskArbitraryRegion_input, id?: ComfyNodeUID): WASMaskArbitraryRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Batch to Mask", output:MASK */
+        WASMaskBatchToMask(p: WASMaskBatchToMask_input, id?: ComfyNodeUID): WASMaskBatchToMask
+        /* category:WAS Suite_Image_Masking, name:"Mask Batch", output:MASK */
+        WASMaskBatch(p: WASMaskBatch_input, id?: ComfyNodeUID): WASMaskBatch
+        /* category:WAS Suite_Image_Masking, name:"Mask Ceiling Region", output:MASK */
+        WASMaskCeilingRegion(p: WASMaskCeilingRegion_input, id?: ComfyNodeUID): WASMaskCeilingRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Crop Dominant Region", output:MASK */
+        WASMaskCropDominantRegion(p: WASMaskCropDominantRegion_input, id?: ComfyNodeUID): WASMaskCropDominantRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Crop Minority Region", output:MASK */
+        WASMaskCropMinorityRegion(p: WASMaskCropMinorityRegion_input, id?: ComfyNodeUID): WASMaskCropMinorityRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Crop Region", output:MASK+CROP_DATA+INT+INT_1+INT_2+INT_3+INT_4+INT_5 */
+        WASMaskCropRegion(p: WASMaskCropRegion_input, id?: ComfyNodeUID): WASMaskCropRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Paste Region", output:MASK+MASK_1 */
+        WASMaskPasteRegion(p: WASMaskPasteRegion_input, id?: ComfyNodeUID): WASMaskPasteRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Dilate Region", output:MASK */
+        WASMaskDilateRegion(p: WASMaskDilateRegion_input, id?: ComfyNodeUID): WASMaskDilateRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Dominant Region", output:MASK */
+        WASMaskDominantRegion(p: WASMaskDominantRegion_input, id?: ComfyNodeUID): WASMaskDominantRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Erode Region", output:MASK */
+        WASMaskErodeRegion(p: WASMaskErodeRegion_input, id?: ComfyNodeUID): WASMaskErodeRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Fill Holes", output:MASK */
+        WASMaskFillHoles(p: WASMaskFillHoles_input, id?: ComfyNodeUID): WASMaskFillHoles
+        /* category:WAS Suite_Image_Masking, name:"Mask Floor Region", output:MASK */
+        WASMaskFloorRegion(p: WASMaskFloorRegion_input, id?: ComfyNodeUID): WASMaskFloorRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Gaussian Region", output:MASK */
+        WASMaskGaussianRegion(p: WASMaskGaussianRegion_input, id?: ComfyNodeUID): WASMaskGaussianRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Invert", output:MASK */
+        WASMaskInvert(p: WASMaskInvert_input, id?: ComfyNodeUID): WASMaskInvert
+        /* category:WAS Suite_Image_Masking, name:"Mask Minority Region", output:MASK */
+        WASMaskMinorityRegion(p: WASMaskMinorityRegion_input, id?: ComfyNodeUID): WASMaskMinorityRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Smooth Region", output:MASK */
+        WASMaskSmoothRegion(p: WASMaskSmoothRegion_input, id?: ComfyNodeUID): WASMaskSmoothRegion
+        /* category:WAS Suite_Image_Masking, name:"Mask Threshold Region", output:MASK */
+        WASMaskThresholdRegion(p: WASMaskThresholdRegion_input, id?: ComfyNodeUID): WASMaskThresholdRegion
+        /* category:WAS Suite_Image_Masking, name:"Masks Combine Regions", output:MASK */
+        WASMasksCombineRegions(p: WASMasksCombineRegions_input, id?: ComfyNodeUID): WASMasksCombineRegions
+        /* category:WAS Suite_Image_Masking, name:"Masks Combine Batch", output:MASK */
+        WASMasksCombineBatch(p: WASMasksCombineBatch_input, id?: ComfyNodeUID): WASMasksCombineBatch
+        /* category:WAS Suite_Loaders, name:"MiDaS Model Loader", output:MIDAS_MODEL */
+        WASMiDaSModelLoader(p: WASMiDaSModelLoader_input, id?: ComfyNodeUID): WASMiDaSModelLoader
+        /* category:WAS Suite_Image_AI, name:"MiDaS Depth Approximation", output:IMAGE */
+        WASMiDaSDepthApproximation(p: WASMiDaSDepthApproximation_input, id?: ComfyNodeUID): WASMiDaSDepthApproximation
+        /* category:WAS Suite_Image_AI, name:"MiDaS Mask Image", output:IMAGE+IMAGE_1 */
+        WASMiDaSMaskImage(p: WASMiDaSMaskImage_input, id?: ComfyNodeUID): WASMiDaSMaskImage
+        /* category:WAS Suite_Logic, name:"Model Input Switch", output:MODEL */
+        WASModelInputSwitch(p: WASModelInputSwitch_input, id?: ComfyNodeUID): WASModelInputSwitch
+        /* category:WAS Suite_Number, name:"Number Counter", output:NUMBER+FLOAT+INT */
+        WASNumberCounter(p: WASNumberCounter_input, id?: ComfyNodeUID): WASNumberCounter
+        /* category:WAS Suite_Number_Operations, name:"Number Operation", output:NUMBER+FLOAT+INT */
+        WASNumberOperation(p: WASNumberOperation_input, id?: ComfyNodeUID): WASNumberOperation
+        /* category:WAS Suite_Number_Operations, name:"Number to Float", output:FLOAT */
+        WASNumberToFloat(p: WASNumberToFloat_input, id?: ComfyNodeUID): WASNumberToFloat
+        /* category:WAS Suite_Logic, name:"Number Input Switch", output:NUMBER+FLOAT+INT */
+        WASNumberInputSwitch(p: WASNumberInputSwitch_input, id?: ComfyNodeUID): WASNumberInputSwitch
+        /* category:WAS Suite_Logic, name:"Number Input Condition", output:NUMBER+FLOAT+INT */
+        WASNumberInputCondition(p: WASNumberInputCondition_input, id?: ComfyNodeUID): WASNumberInputCondition
+        /* category:WAS Suite_Number_Functions, name:"Number Multiple Of", output:NUMBER+FLOAT+INT */
+        WASNumberMultipleOf(p: WASNumberMultipleOf_input, id?: ComfyNodeUID): WASNumberMultipleOf
+        /* category:WAS Suite_Number, name:"Number PI", output:NUMBER+FLOAT */
+        WASNumberPI(p: WASNumberPI_input, id?: ComfyNodeUID): WASNumberPI
+        /* category:WAS Suite_Number_Operations, name:"Number to Int", output:INT */
+        WASNumberToInt(p: WASNumberToInt_input, id?: ComfyNodeUID): WASNumberToInt
+        /* category:WAS Suite_Number_Operations, name:"Number to Seed", output:SEED */
+        WASNumberToSeed(p: WASNumberToSeed_input, id?: ComfyNodeUID): WASNumberToSeed
+        /* category:WAS Suite_Number_Operations, name:"Number to String", output:STRING */
+        WASNumberToString(p: WASNumberToString_input, id?: ComfyNodeUID): WASNumberToString
+        /* category:WAS Suite_Number_Operations, name:"Number to Text", output:STRING */
+        WASNumberToText(p: WASNumberToText_input, id?: ComfyNodeUID): WASNumberToText
+        /* category:WAS Suite_Text, name:"Prompt Styles Selector", output:STRING+STRING_1 */
+        WASPromptStylesSelector(p: WASPromptStylesSelector_input, id?: ComfyNodeUID): WASPromptStylesSelector
+        /* category:WAS Suite_Text, name:"Prompt Multiple Styles Selector", output:STRING+STRING_1 */
         WASPromptMultipleStylesSelector(
-            args: WASPromptMultipleStylesSelector_input,
-            uid?: ComfyNodeUID,
+            p: WASPromptMultipleStylesSelector_input,
+            id?: ComfyNodeUID,
         ): WASPromptMultipleStylesSelector
-        /* category=WAS Suite_Number name="Random Number" output=NUMBER, FLOAT, INT */
-        WASRandomNumber(args: WASRandomNumber_input, uid?: ComfyNodeUID): WASRandomNumber
-        /* category=WAS Suite_IO name="Save Text File" output= */
-        WASSaveTextFile(args: WASSaveTextFile_input, uid?: ComfyNodeUID): WASSaveTextFile
-        /* category=WAS Suite_Number name="Seed" output=SEED, NUMBER, FLOAT, INT */
-        WASSeed(args: WASSeed_input, uid?: ComfyNodeUID): WASSeed
-        /* category=WAS Suite_Latent_Transform name="Tensor Batch to Image" output=IMAGE */
-        WASTensorBatchToImage(args: WASTensorBatchToImage_input, uid?: ComfyNodeUID): WASTensorBatchToImage
-        /* category=WAS Suite_Text_AI name="BLIP Analyze Image" output=STRING */
-        WASBLIPAnalyzeImage(args: WASBLIPAnalyzeImage_input, uid?: ComfyNodeUID): WASBLIPAnalyzeImage
-        /* category=WAS Suite_Image_Masking name="SAM Model Loader" output=SAM_MODEL */
-        WASSAMModelLoader(args: WASSAMModelLoader_input, uid?: ComfyNodeUID): WASSAMModelLoader
-        /* category=WAS Suite_Image_Masking name="SAM Parameters" output=SAM_PARAMETERS */
-        WASSAMParameters(args: WASSAMParameters_input, uid?: ComfyNodeUID): WASSAMParameters
-        /* category=WAS Suite_Image_Masking name="SAM Parameters Combine" output=SAM_PARAMETERS */
-        WASSAMParametersCombine(args: WASSAMParametersCombine_input, uid?: ComfyNodeUID): WASSAMParametersCombine
-        /* category=WAS Suite_Image_Masking name="SAM Image Mask" output=IMAGE, MASK */
-        WASSAMImageMask(args: WASSAMImageMask_input, uid?: ComfyNodeUID): WASSAMImageMask
-        /* category=WAS Suite_Debug name="Samples Passthrough (Stat System)" output=LATENT */
+        /* category:WAS Suite_Number, name:"Random Number", output:NUMBER+FLOAT+INT */
+        WASRandomNumber(p: WASRandomNumber_input, id?: ComfyNodeUID): WASRandomNumber
+        /* category:WAS Suite_IO, name:"Save Text File", output: */
+        WASSaveTextFile(p: WASSaveTextFile_input, id?: ComfyNodeUID): WASSaveTextFile
+        /* category:WAS Suite_Number, name:"Seed", output:SEED+NUMBER+FLOAT+INT */
+        WASSeed(p: WASSeed_input, id?: ComfyNodeUID): WASSeed
+        /* category:WAS Suite_Latent_Transform, name:"Tensor Batch to Image", output:IMAGE */
+        WASTensorBatchToImage(p: WASTensorBatchToImage_input, id?: ComfyNodeUID): WASTensorBatchToImage
+        /* category:WAS Suite_Text_AI, name:"BLIP Analyze Image", output:STRING */
+        WASBLIPAnalyzeImage(p: WASBLIPAnalyzeImage_input, id?: ComfyNodeUID): WASBLIPAnalyzeImage
+        /* category:WAS Suite_Image_Masking, name:"SAM Model Loader", output:SAM_MODEL */
+        WASSAMModelLoader(p: WASSAMModelLoader_input, id?: ComfyNodeUID): WASSAMModelLoader
+        /* category:WAS Suite_Image_Masking, name:"SAM Parameters", output:SAM_PARAMETERS */
+        WASSAMParameters(p: WASSAMParameters_input, id?: ComfyNodeUID): WASSAMParameters
+        /* category:WAS Suite_Image_Masking, name:"SAM Parameters Combine", output:SAM_PARAMETERS */
+        WASSAMParametersCombine(p: WASSAMParametersCombine_input, id?: ComfyNodeUID): WASSAMParametersCombine
+        /* category:WAS Suite_Image_Masking, name:"SAM Image Mask", output:IMAGE+MASK */
+        WASSAMImageMask(p: WASSAMImageMask_input, id?: ComfyNodeUID): WASSAMImageMask
+        /* category:WAS Suite_Debug, name:"Samples Passthrough (Stat System)", output:LATENT */
         WASSamplesPassthroughStatSystem(
-            args: WASSamplesPassthroughStatSystem_input,
-            uid?: ComfyNodeUID,
+            p: WASSamplesPassthroughStatSystem_input,
+            id?: ComfyNodeUID,
         ): WASSamplesPassthroughStatSystem
-        /* category=WAS Suite_Text_Operations name="String to Text" output=STRING */
-        WASStringToText(args: WASStringToText_input, uid?: ComfyNodeUID): WASStringToText
-        /* category=WAS Suite_Image_Bound name="Image Bounds" output=IMAGE_BOUNDS */
-        WASImageBounds(args: WASImageBounds_input, uid?: ComfyNodeUID): WASImageBounds
-        /* category=WAS Suite_Image_Bound name="Inset Image Bounds" output=IMAGE_BOUNDS */
-        WASInsetImageBounds(args: WASInsetImageBounds_input, uid?: ComfyNodeUID): WASInsetImageBounds
-        /* category=WAS Suite_Image_Bound name="Bounded Image Blend" output=IMAGE */
-        WASBoundedImageBlend(args: WASBoundedImageBlend_input, uid?: ComfyNodeUID): WASBoundedImageBlend
-        /* category=WAS Suite_Image_Bound name="Bounded Image Blend with Mask" output=IMAGE */
-        WASBoundedImageBlendWithMask(args: WASBoundedImageBlendWithMask_input, uid?: ComfyNodeUID): WASBoundedImageBlendWithMask
-        /* category=WAS Suite_Image_Bound name="Bounded Image Crop" output=IMAGE */
-        WASBoundedImageCrop(args: WASBoundedImageCrop_input, uid?: ComfyNodeUID): WASBoundedImageCrop
-        /* category=WAS Suite_Image_Bound name="Bounded Image Crop with Mask" output=IMAGE, IMAGE_BOUNDS */
-        WASBoundedImageCropWithMask(args: WASBoundedImageCropWithMask_input, uid?: ComfyNodeUID): WASBoundedImageCropWithMask
-        /* category=WAS Suite_Text name="Text Dictionary Update" output=DICT */
-        WASTextDictionaryUpdate(args: WASTextDictionaryUpdate_input, uid?: ComfyNodeUID): WASTextDictionaryUpdate
-        /* category=WAS Suite_Text_Tokens name="Text Add Tokens" output= */
-        WASTextAddTokens(args: WASTextAddTokens_input, uid?: ComfyNodeUID): WASTextAddTokens
-        /* category=WAS Suite_Text_Tokens name="Text Add Token by Input" output= */
-        WASTextAddTokenByInput(args: WASTextAddTokenByInput_input, uid?: ComfyNodeUID): WASTextAddTokenByInput
-        /* category=WAS Suite_Text_Search name="Text Compare" output=STRING, STRING_1, NUMBER, NUMBER_1, STRING_2 */
-        WASTextCompare(args: WASTextCompare_input, uid?: ComfyNodeUID): WASTextCompare
-        /* category=WAS Suite_Text name="Text Concatenate" output=STRING */
-        WASTextConcatenate(args: WASTextConcatenate_input, uid?: ComfyNodeUID): WASTextConcatenate
-        /* category=WAS Suite_History name="Text File History Loader" output=STRING, DICT */
-        WASTextFileHistoryLoader(args: WASTextFileHistoryLoader_input, uid?: ComfyNodeUID): WASTextFileHistoryLoader
-        /* category=WAS Suite_Text_Search name="Text Find and Replace by Dictionary" output=STRING */
+        /* category:WAS Suite_Text_Operations, name:"String to Text", output:STRING */
+        WASStringToText(p: WASStringToText_input, id?: ComfyNodeUID): WASStringToText
+        /* category:WAS Suite_Image_Bound, name:"Image Bounds", output:IMAGE_BOUNDS */
+        WASImageBounds(p: WASImageBounds_input, id?: ComfyNodeUID): WASImageBounds
+        /* category:WAS Suite_Image_Bound, name:"Inset Image Bounds", output:IMAGE_BOUNDS */
+        WASInsetImageBounds(p: WASInsetImageBounds_input, id?: ComfyNodeUID): WASInsetImageBounds
+        /* category:WAS Suite_Image_Bound, name:"Bounded Image Blend", output:IMAGE */
+        WASBoundedImageBlend(p: WASBoundedImageBlend_input, id?: ComfyNodeUID): WASBoundedImageBlend
+        /* category:WAS Suite_Image_Bound, name:"Bounded Image Blend with Mask", output:IMAGE */
+        WASBoundedImageBlendWithMask(p: WASBoundedImageBlendWithMask_input, id?: ComfyNodeUID): WASBoundedImageBlendWithMask
+        /* category:WAS Suite_Image_Bound, name:"Bounded Image Crop", output:IMAGE */
+        WASBoundedImageCrop(p: WASBoundedImageCrop_input, id?: ComfyNodeUID): WASBoundedImageCrop
+        /* category:WAS Suite_Image_Bound, name:"Bounded Image Crop with Mask", output:IMAGE+IMAGE_BOUNDS */
+        WASBoundedImageCropWithMask(p: WASBoundedImageCropWithMask_input, id?: ComfyNodeUID): WASBoundedImageCropWithMask
+        /* category:WAS Suite_Text, name:"Text Dictionary Update", output:DICT */
+        WASTextDictionaryUpdate(p: WASTextDictionaryUpdate_input, id?: ComfyNodeUID): WASTextDictionaryUpdate
+        /* category:WAS Suite_Text_Tokens, name:"Text Add Tokens", output: */
+        WASTextAddTokens(p: WASTextAddTokens_input, id?: ComfyNodeUID): WASTextAddTokens
+        /* category:WAS Suite_Text_Tokens, name:"Text Add Token by Input", output: */
+        WASTextAddTokenByInput(p: WASTextAddTokenByInput_input, id?: ComfyNodeUID): WASTextAddTokenByInput
+        /* category:WAS Suite_Text_Search, name:"Text Compare", output:STRING+STRING_1+NUMBER+NUMBER_1+STRING_2 */
+        WASTextCompare(p: WASTextCompare_input, id?: ComfyNodeUID): WASTextCompare
+        /* category:WAS Suite_Text, name:"Text Concatenate", output:STRING */
+        WASTextConcatenate(p: WASTextConcatenate_input, id?: ComfyNodeUID): WASTextConcatenate
+        /* category:WAS Suite_History, name:"Text File History Loader", output:STRING+DICT */
+        WASTextFileHistoryLoader(p: WASTextFileHistoryLoader_input, id?: ComfyNodeUID): WASTextFileHistoryLoader
+        /* category:WAS Suite_Text_Search, name:"Text Find and Replace by Dictionary", output:STRING */
         WASTextFindAndReplaceByDictionary(
-            args: WASTextFindAndReplaceByDictionary_input,
-            uid?: ComfyNodeUID,
+            p: WASTextFindAndReplaceByDictionary_input,
+            id?: ComfyNodeUID,
         ): WASTextFindAndReplaceByDictionary
-        /* category=WAS Suite_Text_Search name="Text Find and Replace Input" output=STRING */
-        WASTextFindAndReplaceInput(args: WASTextFindAndReplaceInput_input, uid?: ComfyNodeUID): WASTextFindAndReplaceInput
-        /* category=WAS Suite_Text_Search name="Text Find and Replace" output=STRING */
-        WASTextFindAndReplace(args: WASTextFindAndReplace_input, uid?: ComfyNodeUID): WASTextFindAndReplace
-        /* category=WAS Suite_Logic name="Text Input Switch" output=STRING */
-        WASTextInputSwitch(args: WASTextInputSwitch_input, uid?: ComfyNodeUID): WASTextInputSwitch
-        /* category=WAS Suite_Text name="Text List" output=LIST */
-        WASTextList(args: WASTextList_input, uid?: ComfyNodeUID): WASTextList
-        /* category=WAS Suite_Text name="Text List Concatenate" output=LIST */
-        WASTextListConcatenate(args: WASTextListConcatenate_input, uid?: ComfyNodeUID): WASTextListConcatenate
-        /* category=WAS Suite_Text name="Text Load Line From File" output=STRING, DICT */
-        WASTextLoadLineFromFile(args: WASTextLoadLineFromFile_input, uid?: ComfyNodeUID): WASTextLoadLineFromFile
-        /* category=WAS Suite_Text name="Text Multiline" output=STRING */
-        WASTextMultiline(args: WASTextMultiline_input, uid?: ComfyNodeUID): WASTextMultiline
-        /* category=WAS Suite_Text_Parse name="Text Parse A1111 Embeddings" output=STRING */
-        WASTextParseA1111Embeddings(args: WASTextParseA1111Embeddings_input, uid?: ComfyNodeUID): WASTextParseA1111Embeddings
-        /* category=WAS Suite_Text_Parse name="Text Parse Noodle Soup Prompts" output=STRING */
-        WASTextParseNoodleSoupPrompts(
-            args: WASTextParseNoodleSoupPrompts_input,
-            uid?: ComfyNodeUID,
-        ): WASTextParseNoodleSoupPrompts
-        /* category=WAS Suite_Text_Tokens name="Text Parse Tokens" output=STRING */
-        WASTextParseTokens(args: WASTextParseTokens_input, uid?: ComfyNodeUID): WASTextParseTokens
-        /* category=WAS Suite_Text name="Text Random Line" output=STRING */
-        WASTextRandomLine(args: WASTextRandomLine_input, uid?: ComfyNodeUID): WASTextRandomLine
-        /* category=WAS Suite_Text name="Text Random Prompt" output=STRING */
-        WASTextRandomPrompt(args: WASTextRandomPrompt_input, uid?: ComfyNodeUID): WASTextRandomPrompt
-        /* category=WAS Suite_Text name="Text String" output=STRING, STRING_1, STRING_2, STRING_3 */
-        WASTextString(args: WASTextString_input, uid?: ComfyNodeUID): WASTextString
-        /* category=WAS Suite_Text_Operations name="Text Shuffle" output=STRING */
-        WASTextShuffle(args: WASTextShuffle_input, uid?: ComfyNodeUID): WASTextShuffle
-        /* category=WAS Suite_Text_Operations name="Text to Conditioning" output=CONDITIONING */
-        WASTextToConditioning(args: WASTextToConditioning_input, uid?: ComfyNodeUID): WASTextToConditioning
-        /* category=WAS Suite_Debug name="Text to Console" output=STRING */
-        WASTextToConsole(args: WASTextToConsole_input, uid?: ComfyNodeUID): WASTextToConsole
-        /* category=WAS Suite_Text_Operations name="Text to Number" output=NUMBER */
-        WASTextToNumber(args: WASTextToNumber_input, uid?: ComfyNodeUID): WASTextToNumber
-        /* category=WAS Suite_Text_Operations name="Text to String" output=STRING */
-        WASTextToString(args: WASTextToString_input, uid?: ComfyNodeUID): WASTextToString
-        /* category=WAS Suite_Text_Operations name="Text String Truncate" output=STRING, STRING_1, STRING_2, STRING_3 */
-        WASTextStringTruncate(args: WASTextStringTruncate_input, uid?: ComfyNodeUID): WASTextStringTruncate
-        /* category=WAS Suite_Number name="True Random.org Number Generator" output=NUMBER, FLOAT, INT */
+        /* category:WAS Suite_Text_Search, name:"Text Find and Replace Input", output:STRING */
+        WASTextFindAndReplaceInput(p: WASTextFindAndReplaceInput_input, id?: ComfyNodeUID): WASTextFindAndReplaceInput
+        /* category:WAS Suite_Text_Search, name:"Text Find and Replace", output:STRING */
+        WASTextFindAndReplace(p: WASTextFindAndReplace_input, id?: ComfyNodeUID): WASTextFindAndReplace
+        /* category:WAS Suite_Logic, name:"Text Input Switch", output:STRING */
+        WASTextInputSwitch(p: WASTextInputSwitch_input, id?: ComfyNodeUID): WASTextInputSwitch
+        /* category:WAS Suite_Text, name:"Text List", output:LIST */
+        WASTextList(p: WASTextList_input, id?: ComfyNodeUID): WASTextList
+        /* category:WAS Suite_Text, name:"Text List Concatenate", output:LIST */
+        WASTextListConcatenate(p: WASTextListConcatenate_input, id?: ComfyNodeUID): WASTextListConcatenate
+        /* category:WAS Suite_Text, name:"Text Load Line From File", output:STRING+DICT */
+        WASTextLoadLineFromFile(p: WASTextLoadLineFromFile_input, id?: ComfyNodeUID): WASTextLoadLineFromFile
+        /* category:WAS Suite_Text, name:"Text Multiline", output:STRING */
+        WASTextMultiline(p: WASTextMultiline_input, id?: ComfyNodeUID): WASTextMultiline
+        /* category:WAS Suite_Text_Parse, name:"Text Parse A1111 Embeddings", output:STRING */
+        WASTextParseA1111Embeddings(p: WASTextParseA1111Embeddings_input, id?: ComfyNodeUID): WASTextParseA1111Embeddings
+        /* category:WAS Suite_Text_Parse, name:"Text Parse Noodle Soup Prompts", output:STRING */
+        WASTextParseNoodleSoupPrompts(p: WASTextParseNoodleSoupPrompts_input, id?: ComfyNodeUID): WASTextParseNoodleSoupPrompts
+        /* category:WAS Suite_Text_Tokens, name:"Text Parse Tokens", output:STRING */
+        WASTextParseTokens(p: WASTextParseTokens_input, id?: ComfyNodeUID): WASTextParseTokens
+        /* category:WAS Suite_Text, name:"Text Random Line", output:STRING */
+        WASTextRandomLine(p: WASTextRandomLine_input, id?: ComfyNodeUID): WASTextRandomLine
+        /* category:WAS Suite_Text, name:"Text Random Prompt", output:STRING */
+        WASTextRandomPrompt(p: WASTextRandomPrompt_input, id?: ComfyNodeUID): WASTextRandomPrompt
+        /* category:WAS Suite_Text, name:"Text String", output:STRING+STRING_1+STRING_2+STRING_3 */
+        WASTextString(p: WASTextString_input, id?: ComfyNodeUID): WASTextString
+        /* category:WAS Suite_Text_Operations, name:"Text Shuffle", output:STRING */
+        WASTextShuffle(p: WASTextShuffle_input, id?: ComfyNodeUID): WASTextShuffle
+        /* category:WAS Suite_Text_Operations, name:"Text to Conditioning", output:CONDITIONING */
+        WASTextToConditioning(p: WASTextToConditioning_input, id?: ComfyNodeUID): WASTextToConditioning
+        /* category:WAS Suite_Debug, name:"Text to Console", output:STRING */
+        WASTextToConsole(p: WASTextToConsole_input, id?: ComfyNodeUID): WASTextToConsole
+        /* category:WAS Suite_Text_Operations, name:"Text to Number", output:NUMBER */
+        WASTextToNumber(p: WASTextToNumber_input, id?: ComfyNodeUID): WASTextToNumber
+        /* category:WAS Suite_Text_Operations, name:"Text to String", output:STRING */
+        WASTextToString(p: WASTextToString_input, id?: ComfyNodeUID): WASTextToString
+        /* category:WAS Suite_Text_Operations, name:"Text String Truncate", output:STRING+STRING_1+STRING_2+STRING_3 */
+        WASTextStringTruncate(p: WASTextStringTruncate_input, id?: ComfyNodeUID): WASTextStringTruncate
+        /* category:WAS Suite_Number, name:"True Random.org Number Generator", output:NUMBER+FLOAT+INT */
         WASTrueRandomOrgNumberGenerator(
-            args: WASTrueRandomOrgNumberGenerator_input,
-            uid?: ComfyNodeUID,
+            p: WASTrueRandomOrgNumberGenerator_input,
+            id?: ComfyNodeUID,
         ): WASTrueRandomOrgNumberGenerator
-        /* category=WAS Suite_Loaders name="unCLIP Checkpoint Loader" output=MODEL, CLIP, VAE, CLIP_VISION, STRING */
-        WASUnCLIPCheckpointLoader(args: WASUnCLIPCheckpointLoader_input, uid?: ComfyNodeUID): WASUnCLIPCheckpointLoader
-        /* category=WAS Suite_Loaders name="Upscale Model Loader" output=UPSCALE_MODEL, STRING */
-        WASUpscaleModelLoader(args: WASUpscaleModelLoader_input, uid?: ComfyNodeUID): WASUpscaleModelLoader
-        /* category=WAS Suite_Logic name="Upscale Model Switch" output=UPSCALE_MODEL */
-        WASUpscaleModelSwitch(args: WASUpscaleModelSwitch_input, uid?: ComfyNodeUID): WASUpscaleModelSwitch
-        /* category=WAS Suite_Animation_Writer name="Write to GIF" output=IMAGE, STRING, STRING_1 */
-        WASWriteToGIF(args: WASWriteToGIF_input, uid?: ComfyNodeUID): WASWriteToGIF
-        /* category=WAS Suite_Animation_Writer name="Write to Video" output=IMAGE, STRING, STRING_1 */
-        WASWriteToVideo(args: WASWriteToVideo_input, uid?: ComfyNodeUID): WASWriteToVideo
-        /* category=WAS Suite_Logic name="VAE Input Switch" output=VAE */
-        WASVAEInputSwitch(args: WASVAEInputSwitch_input, uid?: ComfyNodeUID): WASVAEInputSwitch
-        /* category=WAS Suite_Animation name="Video Dump Frames" output=STRING, NUMBER */
-        WASVideoDumpFrames(args: WASVideoDumpFrames_input, uid?: ComfyNodeUID): WASVideoDumpFrames
+        /* category:WAS Suite_Loaders, name:"unCLIP Checkpoint Loader", output:MODEL+CLIP+VAE+CLIP_VISION+STRING */
+        WASUnCLIPCheckpointLoader(p: WASUnCLIPCheckpointLoader_input, id?: ComfyNodeUID): WASUnCLIPCheckpointLoader
+        /* category:WAS Suite_Loaders, name:"Upscale Model Loader", output:UPSCALE_MODEL+STRING */
+        WASUpscaleModelLoader(p: WASUpscaleModelLoader_input, id?: ComfyNodeUID): WASUpscaleModelLoader
+        /* category:WAS Suite_Logic, name:"Upscale Model Switch", output:UPSCALE_MODEL */
+        WASUpscaleModelSwitch(p: WASUpscaleModelSwitch_input, id?: ComfyNodeUID): WASUpscaleModelSwitch
+        /* category:WAS Suite_Animation_Writer, name:"Write to GIF", output:IMAGE+STRING+STRING_1 */
+        WASWriteToGIF(p: WASWriteToGIF_input, id?: ComfyNodeUID): WASWriteToGIF
+        /* category:WAS Suite_Animation_Writer, name:"Write to Video", output:IMAGE+STRING+STRING_1 */
+        WASWriteToVideo(p: WASWriteToVideo_input, id?: ComfyNodeUID): WASWriteToVideo
+        /* category:WAS Suite_Logic, name:"VAE Input Switch", output:VAE */
+        WASVAEInputSwitch(p: WASVAEInputSwitch_input, id?: ComfyNodeUID): WASVAEInputSwitch
+        /* category:WAS Suite_Animation, name:"Video Dump Frames", output:STRING+NUMBER */
+        WASVideoDumpFrames(p: WASVideoDumpFrames_input, id?: ComfyNodeUID): WASVideoDumpFrames
     }
 
-    // Requirable --------------------------
+    // 1 Requirable --------------------------
     export interface Requirable {
         LATENT: LATENT
         MODEL: MODEL
@@ -2401,7 +2352,7 @@ declare global {
         WASVideoDumpFrames: WASVideoDumpFrames
     }
 
-    // Embeddings -------------------------------
+    // 2 Embeddings -------------------------------
     export type Embeddings =
         | 'EasyNegative'
         | 'bad-artist-anime'
@@ -2411,7 +2362,7 @@ declare global {
         | 'charturnerv2'
         | 'ng_deepnegative_v1_75t'
 
-    // Suggestions -------------------------------
+    // 3 Suggestions -------------------------------
     export interface CanProduce_number {}
     export interface CanProduce_number {}
     export interface CanProduce_number {}
@@ -3354,7 +3305,7 @@ declare global {
     export interface CanProduce_IMAGE_BOUNDS
         extends Pick<ComfySetup, 'WASImageBounds' | 'WASInsetImageBounds' | 'WASBoundedImageCropWithMask'> {}
 
-    // TYPES -------------------------------
+    // 4 TYPES -------------------------------
     export type SEG_ELT_control_net_wrapper = Slot<'SEG_ELT_control_net_wrapper'>
     export type SEG_ELT_crop_region = Slot<'SEG_ELT_crop_region'>
     export type CLIP_VISION_OUTPUT = Slot<'CLIP_VISION_OUTPUT'>
@@ -3412,7 +3363,7 @@ declare global {
     export type VAE = Slot<'VAE'>
     export type XY = Slot<'XY'>
 
-    // ACCEPTABLE INPUTS -------------------------------
+    // 5 ACCEPTABLE INPUTS -------------------------------
     export type _SEG_ELT_control_net_wrapper =
         | Slot<'SEG_ELT_control_net_wrapper'>
         | HasSingle_SEG_ELT_control_net_wrapper
@@ -3518,7 +3469,7 @@ declare global {
     export type _VAE = Slot<'VAE'> | HasSingle_VAE | ((x: CanProduce_VAE) => _VAE)
     export type _XY = Slot<'XY'> | HasSingle_XY | ((x: CanProduce_XY) => _XY)
 
-    // ENUMS -------------------------------
+    // 6 ENUMS -------------------------------
     export type Enum_KSampler_Sampler_name =
         | 'ddim'
         | 'ddpm'
@@ -3670,7 +3621,20 @@ declare global {
         | 'upload (11).png'
         | 'upload (12).png'
         | 'upload (13).png'
+        | 'upload (14).png'
+        | 'upload (15).png'
+        | 'upload (16).png'
+        | 'upload (17).png'
+        | 'upload (18).png'
+        | 'upload (19).png'
         | 'upload (2).png'
+        | 'upload (20).png'
+        | 'upload (21).png'
+        | 'upload (22).png'
+        | 'upload (23).png'
+        | 'upload (24).png'
+        | 'upload (25).png'
+        | 'upload (26).png'
         | 'upload (3).png'
         | 'upload (4).png'
         | 'upload (5).png'
@@ -4648,7 +4612,7 @@ declare global {
     export type Enum_WASImageFlip_Mode = 'horizontal' | 'vertical'
     export type Enum_WASImageGenerateGradient_Direction = Enum_WASImageFlip_Mode
     export type Enum_WASImageHistoryLoader_Image =
-        '...\\192.168.1.19:8188\\view?filename=ComfyUI_02775_.png&subfolder=&type=output'
+        '...\\192.168.1.19:8188\\view?filename=ComfyUI_02815_.png&subfolder=&type=output'
     export type Enum_WASImageMonitorEffectsFilter_Mode = 'Digital Distortion' | 'Signal Distortion' | 'TV Distortion'
     export type Enum_WASImageRembgRemoveBackground_Model =
         | 'isnet-anime'
@@ -4759,7 +4723,7 @@ declare global {
     export type Enum_WASTrueRandomOrgNumberGenerator_Mode = 'fixed' | 'random'
     export type Enum_WASVideoDumpFrames_Extension = 'gif' | 'jpg' | 'png' | 'tiff'
 
-    // INTERFACES --------------------------
+    // 7 INTERFACES --------------------------
     export interface HasSingle_LATENT { _LATENT: LATENT } // prettier-ignore
     export interface HasSingle_MODEL { _MODEL: MODEL } // prettier-ignore
     export interface HasSingle_INT { _INT: INT } // prettier-ignore
@@ -4817,10 +4781,8 @@ declare global {
     export interface HasSingle_SAM_PARAMETERS { _SAM_PARAMETERS: SAM_PARAMETERS } // prettier-ignore
     export interface HasSingle_IMAGE_BOUNDS { _IMAGE_BOUNDS: IMAGE_BOUNDS } // prettier-ignore
 
-    // NODES -------------------------------
-    // |=============================================================================|
-    // | KSampler [sampling]                                                         |
-    // |=============================================================================|
+    // 8 NODES -------------------------------
+    // KSampler [sampling]
     export interface KSampler extends HasSingle_LATENT, ComfyNode<KSampler_input> {
         nameInComfy: 'KSampler'
         LATENT: Slot<'LATENT', 0>
@@ -4842,9 +4804,7 @@ declare global {
         denoise?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | CheckpointLoaderSimple [loaders]                                            |
-    // |=============================================================================|
+    // CheckpointLoaderSimple [loaders]
     export interface CheckpointLoaderSimple
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -4859,9 +4819,7 @@ declare global {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
 
-    // |=============================================================================|
-    // | CLIPTextEncode [conditioning]                                               |
-    // |=============================================================================|
+    // CLIPTextEncode [conditioning]
     export interface CLIPTextEncode extends HasSingle_CONDITIONING, ComfyNode<CLIPTextEncode_input> {
         nameInComfy: 'CLIPTextEncode'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -4872,9 +4830,7 @@ declare global {
         clip: _CLIP
     }
 
-    // |=============================================================================|
-    // | CLIPSetLastLayer [conditioning]                                             |
-    // |=============================================================================|
+    // CLIPSetLastLayer [conditioning]
     export interface CLIPSetLastLayer extends HasSingle_CLIP, ComfyNode<CLIPSetLastLayer_input> {
         nameInComfy: 'CLIPSetLastLayer'
         CLIP: Slot<'CLIP', 0>
@@ -4885,9 +4841,7 @@ declare global {
         stop_at_clip_layer?: _INT
     }
 
-    // |=============================================================================|
-    // | VAEDecode [latent]                                                          |
-    // |=============================================================================|
+    // VAEDecode [latent]
     export interface VAEDecode extends HasSingle_IMAGE, ComfyNode<VAEDecode_input> {
         nameInComfy: 'VAEDecode'
         IMAGE: Slot<'IMAGE', 0>
@@ -4897,9 +4851,7 @@ declare global {
         vae: _VAE
     }
 
-    // |=============================================================================|
-    // | VAEEncode [latent]                                                          |
-    // |=============================================================================|
+    // VAEEncode [latent]
     export interface VAEEncode extends HasSingle_LATENT, ComfyNode<VAEEncode_input> {
         nameInComfy: 'VAEEncode'
         LATENT: Slot<'LATENT', 0>
@@ -4909,9 +4861,7 @@ declare global {
         vae: _VAE
     }
 
-    // |=============================================================================|
-    // | VAEEncodeForInpaint [latent_inpaint]                                        |
-    // |=============================================================================|
+    // VAEEncodeForInpaint [latent_inpaint]
     export interface VAEEncodeForInpaint extends HasSingle_LATENT, ComfyNode<VAEEncodeForInpaint_input> {
         nameInComfy: 'VAEEncodeForInpaint'
         LATENT: Slot<'LATENT', 0>
@@ -4924,9 +4874,7 @@ declare global {
         grow_mask_by?: _INT
     }
 
-    // |=============================================================================|
-    // | VAELoader [loaders]                                                         |
-    // |=============================================================================|
+    // VAELoader [loaders]
     export interface VAELoader extends HasSingle_VAE, ComfyNode<VAELoader_input> {
         nameInComfy: 'VAELoader'
         VAE: Slot<'VAE', 0>
@@ -4935,9 +4883,7 @@ declare global {
         vae_name: Enum_VAELoader_Vae_name
     }
 
-    // |=============================================================================|
-    // | EmptyLatentImage [latent]                                                   |
-    // |=============================================================================|
+    // EmptyLatentImage [latent]
     export interface EmptyLatentImage extends HasSingle_LATENT, ComfyNode<EmptyLatentImage_input> {
         nameInComfy: 'EmptyLatentImage'
         LATENT: Slot<'LATENT', 0>
@@ -4947,13 +4893,11 @@ declare global {
         width?: _INT
         /** default=512 min=8192 max=8192 step=8 */
         height?: _INT
-        /** default=1 min=64 max=64 */
+        /** default=1 min=4096 max=4096 */
         batch_size?: _INT
     }
 
-    // |=============================================================================|
-    // | LatentUpscale [latent]                                                      |
-    // |=============================================================================|
+    // LatentUpscale [latent]
     export interface LatentUpscale extends HasSingle_LATENT, ComfyNode<LatentUpscale_input> {
         nameInComfy: 'LatentUpscale'
         LATENT: Slot<'LATENT', 0>
@@ -4968,9 +4912,7 @@ declare global {
         crop: Enum_LatentUpscale_Crop
     }
 
-    // |=============================================================================|
-    // | LatentUpscaleBy [latent]                                                    |
-    // |=============================================================================|
+    // LatentUpscaleBy [latent]
     export interface LatentUpscaleBy extends HasSingle_LATENT, ComfyNode<LatentUpscaleBy_input> {
         nameInComfy: 'LatentUpscaleBy'
         LATENT: Slot<'LATENT', 0>
@@ -4982,9 +4924,7 @@ declare global {
         scale_by?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | LatentFromBatch [latent_batch]                                              |
-    // |=============================================================================|
+    // LatentFromBatch [latent_batch]
     export interface LatentFromBatch extends HasSingle_LATENT, ComfyNode<LatentFromBatch_input> {
         nameInComfy: 'LatentFromBatch'
         LATENT: Slot<'LATENT', 0>
@@ -4997,9 +4937,7 @@ declare global {
         length?: _INT
     }
 
-    // |=============================================================================|
-    // | RepeatLatentBatch [latent_batch]                                            |
-    // |=============================================================================|
+    // RepeatLatentBatch [latent_batch]
     export interface RepeatLatentBatch extends HasSingle_LATENT, ComfyNode<RepeatLatentBatch_input> {
         nameInComfy: 'RepeatLatentBatch'
         LATENT: Slot<'LATENT', 0>
@@ -5010,9 +4948,7 @@ declare global {
         amount?: _INT
     }
 
-    // |=============================================================================|
-    // | SaveImage [image]                                                           |
-    // |=============================================================================|
+    // SaveImage [image]
     export interface SaveImage extends ComfyNode<SaveImage_input> {
         nameInComfy: 'SaveImage'
     }
@@ -5022,9 +4958,7 @@ declare global {
         filename_prefix?: _STRING
     }
 
-    // |=============================================================================|
-    // | PreviewImage [image]                                                        |
-    // |=============================================================================|
+    // PreviewImage [image]
     export interface PreviewImage extends ComfyNode<PreviewImage_input> {
         nameInComfy: 'PreviewImage'
     }
@@ -5032,9 +4966,7 @@ declare global {
         images: _IMAGE
     }
 
-    // |=============================================================================|
-    // | LoadImage [image]                                                           |
-    // |=============================================================================|
+    // LoadImage [image]
     export interface LoadImage extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<LoadImage_input> {
         nameInComfy: 'LoadImage'
         IMAGE: Slot<'IMAGE', 0>
@@ -5045,9 +4977,7 @@ declare global {
         image: Enum_LoadImage_Image
     }
 
-    // |=============================================================================|
-    // | LoadImageMask [mask]                                                        |
-    // |=============================================================================|
+    // LoadImageMask [mask]
     export interface LoadImageMask extends HasSingle_MASK, ComfyNode<LoadImageMask_input> {
         nameInComfy: 'LoadImageMask'
         MASK: Slot<'MASK', 0>
@@ -5058,9 +4988,7 @@ declare global {
         channel: Enum_LoadImageMask_Channel
     }
 
-    // |=============================================================================|
-    // | ImageScale [image_upscaling]                                                |
-    // |=============================================================================|
+    // ImageScale [image_upscaling]
     export interface ImageScale extends HasSingle_IMAGE, ComfyNode<ImageScale_input> {
         nameInComfy: 'ImageScale'
         IMAGE: Slot<'IMAGE', 0>
@@ -5075,9 +5003,7 @@ declare global {
         crop: Enum_LatentUpscale_Crop
     }
 
-    // |=============================================================================|
-    // | ImageScaleBy [image_upscaling]                                              |
-    // |=============================================================================|
+    // ImageScaleBy [image_upscaling]
     export interface ImageScaleBy extends HasSingle_IMAGE, ComfyNode<ImageScaleBy_input> {
         nameInComfy: 'ImageScaleBy'
         IMAGE: Slot<'IMAGE', 0>
@@ -5089,9 +5015,7 @@ declare global {
         scale_by?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImageInvert [image]                                                         |
-    // |=============================================================================|
+    // ImageInvert [image]
     export interface ImageInvert extends HasSingle_IMAGE, ComfyNode<ImageInvert_input> {
         nameInComfy: 'ImageInvert'
         IMAGE: Slot<'IMAGE', 0>
@@ -5100,9 +5024,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | ImageBatch [image]                                                          |
-    // |=============================================================================|
+    // ImageBatch [image]
     export interface ImageBatch extends HasSingle_IMAGE, ComfyNode<ImageBatch_input> {
         nameInComfy: 'ImageBatch'
         IMAGE: Slot<'IMAGE', 0>
@@ -5112,9 +5034,7 @@ declare global {
         image2: _IMAGE
     }
 
-    // |=============================================================================|
-    // | ImagePadForOutpaint [image]                                                 |
-    // |=============================================================================|
+    // ImagePadForOutpaint [image]
     export interface ImagePadForOutpaint extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImagePadForOutpaint_input> {
         nameInComfy: 'ImagePadForOutpaint'
         IMAGE: Slot<'IMAGE', 0>
@@ -5134,9 +5054,7 @@ declare global {
         feathering?: _INT
     }
 
-    // |=============================================================================|
-    // | EmptyImage [image]                                                          |
-    // |=============================================================================|
+    // EmptyImage [image]
     export interface EmptyImage extends HasSingle_IMAGE, ComfyNode<EmptyImage_input> {
         nameInComfy: 'EmptyImage'
         IMAGE: Slot<'IMAGE', 0>
@@ -5146,15 +5064,13 @@ declare global {
         width?: _INT
         /** default=512 min=8192 max=8192 step=1 */
         height?: _INT
-        /** default=1 min=64 max=64 */
+        /** default=1 min=4096 max=4096 */
         batch_size?: _INT
         /** default=0 min=16777215 max=16777215 step=1 */
         color?: _INT
     }
 
-    // |=============================================================================|
-    // | ConditioningAverage [conditioning]                                          |
-    // |=============================================================================|
+    // ConditioningAverage [conditioning]
     export interface ConditioningAverage extends HasSingle_CONDITIONING, ComfyNode<ConditioningAverage_input> {
         nameInComfy: 'ConditioningAverage'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5166,9 +5082,7 @@ declare global {
         conditioning_to_strength?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ConditioningCombine [conditioning]                                          |
-    // |=============================================================================|
+    // ConditioningCombine [conditioning]
     export interface ConditioningCombine extends HasSingle_CONDITIONING, ComfyNode<ConditioningCombine_input> {
         nameInComfy: 'ConditioningCombine'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5178,9 +5092,7 @@ declare global {
         conditioning_2: _CONDITIONING
     }
 
-    // |=============================================================================|
-    // | ConditioningConcat [conditioning]                                           |
-    // |=============================================================================|
+    // ConditioningConcat [conditioning]
     export interface ConditioningConcat extends HasSingle_CONDITIONING, ComfyNode<ConditioningConcat_input> {
         nameInComfy: 'ConditioningConcat'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5190,9 +5102,7 @@ declare global {
         conditioning_from: _CONDITIONING
     }
 
-    // |=============================================================================|
-    // | ConditioningSetArea [conditioning]                                          |
-    // |=============================================================================|
+    // ConditioningSetArea [conditioning]
     export interface ConditioningSetArea extends HasSingle_CONDITIONING, ComfyNode<ConditioningSetArea_input> {
         nameInComfy: 'ConditioningSetArea'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5211,9 +5121,7 @@ declare global {
         strength?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ConditioningSetAreaPercentage [conditioning]                                |
-    // |=============================================================================|
+    // ConditioningSetAreaPercentage [conditioning]
     export interface ConditioningSetAreaPercentage
         extends HasSingle_CONDITIONING,
             ComfyNode<ConditioningSetAreaPercentage_input> {
@@ -5234,9 +5142,7 @@ declare global {
         strength?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ConditioningSetMask [conditioning]                                          |
-    // |=============================================================================|
+    // ConditioningSetMask [conditioning]
     export interface ConditioningSetMask extends HasSingle_CONDITIONING, ComfyNode<ConditioningSetMask_input> {
         nameInComfy: 'ConditioningSetMask'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5249,9 +5155,7 @@ declare global {
         set_cond_area: Enum_ConditioningSetMask_Set_cond_area
     }
 
-    // |=============================================================================|
-    // | KSamplerAdvanced [sampling]                                                 |
-    // |=============================================================================|
+    // KSamplerAdvanced [sampling]
     export interface KSamplerAdvanced extends HasSingle_LATENT, ComfyNode<KSamplerAdvanced_input> {
         nameInComfy: 'KSamplerAdvanced'
         LATENT: Slot<'LATENT', 0>
@@ -5277,9 +5181,7 @@ declare global {
         return_with_leftover_noise: Enum_KSamplerAdvanced_Add_noise
     }
 
-    // |=============================================================================|
-    // | SetLatentNoiseMask [latent_inpaint]                                         |
-    // |=============================================================================|
+    // SetLatentNoiseMask [latent_inpaint]
     export interface SetLatentNoiseMask extends HasSingle_LATENT, ComfyNode<SetLatentNoiseMask_input> {
         nameInComfy: 'SetLatentNoiseMask'
         LATENT: Slot<'LATENT', 0>
@@ -5289,9 +5191,7 @@ declare global {
         mask: _MASK
     }
 
-    // |=============================================================================|
-    // | LatentComposite [latent]                                                    |
-    // |=============================================================================|
+    // LatentComposite [latent]
     export interface LatentComposite extends HasSingle_LATENT, ComfyNode<LatentComposite_input> {
         nameInComfy: 'LatentComposite'
         LATENT: Slot<'LATENT', 0>
@@ -5307,9 +5207,7 @@ declare global {
         feather?: _INT
     }
 
-    // |=============================================================================|
-    // | LatentBlend [_for_testing]                                                  |
-    // |=============================================================================|
+    // LatentBlend [_for_testing]
     export interface LatentBlend extends HasSingle_LATENT, ComfyNode<LatentBlend_input> {
         nameInComfy: 'LatentBlend'
         LATENT: Slot<'LATENT', 0>
@@ -5321,9 +5219,7 @@ declare global {
         blend_factor?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | LatentRotate [latent_transform]                                             |
-    // |=============================================================================|
+    // LatentRotate [latent_transform]
     export interface LatentRotate extends HasSingle_LATENT, ComfyNode<LatentRotate_input> {
         nameInComfy: 'LatentRotate'
         LATENT: Slot<'LATENT', 0>
@@ -5333,9 +5229,7 @@ declare global {
         rotation: Enum_LatentRotate_Rotation
     }
 
-    // |=============================================================================|
-    // | LatentFlip [latent_transform]                                               |
-    // |=============================================================================|
+    // LatentFlip [latent_transform]
     export interface LatentFlip extends HasSingle_LATENT, ComfyNode<LatentFlip_input> {
         nameInComfy: 'LatentFlip'
         LATENT: Slot<'LATENT', 0>
@@ -5345,9 +5239,7 @@ declare global {
         flip_method: Enum_LatentFlip_Flip_method
     }
 
-    // |=============================================================================|
-    // | LatentCrop [latent_transform]                                               |
-    // |=============================================================================|
+    // LatentCrop [latent_transform]
     export interface LatentCrop extends HasSingle_LATENT, ComfyNode<LatentCrop_input> {
         nameInComfy: 'LatentCrop'
         LATENT: Slot<'LATENT', 0>
@@ -5364,9 +5256,7 @@ declare global {
         y?: _INT
     }
 
-    // |=============================================================================|
-    // | LoraLoader [loaders]                                                        |
-    // |=============================================================================|
+    // LoraLoader [loaders]
     export interface LoraLoader extends HasSingle_MODEL, HasSingle_CLIP, ComfyNode<LoraLoader_input> {
         nameInComfy: 'LoraLoader'
         MODEL: Slot<'MODEL', 0>
@@ -5382,9 +5272,7 @@ declare global {
         strength_clip?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | CLIPLoader [advanced_loaders]                                               |
-    // |=============================================================================|
+    // CLIPLoader [advanced_loaders]
     export interface CLIPLoader extends HasSingle_CLIP, ComfyNode<CLIPLoader_input> {
         nameInComfy: 'CLIPLoader'
         CLIP: Slot<'CLIP', 0>
@@ -5393,9 +5281,7 @@ declare global {
         clip_name: Enum_CLIPLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | UNETLoader [advanced_loaders]                                               |
-    // |=============================================================================|
+    // UNETLoader [advanced_loaders]
     export interface UNETLoader extends HasSingle_MODEL, ComfyNode<UNETLoader_input> {
         nameInComfy: 'UNETLoader'
         MODEL: Slot<'MODEL', 0>
@@ -5404,9 +5290,7 @@ declare global {
         unet_name: Enum_UNETLoader_Unet_name
     }
 
-    // |=============================================================================|
-    // | DualCLIPLoader [advanced_loaders]                                           |
-    // |=============================================================================|
+    // DualCLIPLoader [advanced_loaders]
     export interface DualCLIPLoader extends HasSingle_CLIP, ComfyNode<DualCLIPLoader_input> {
         nameInComfy: 'DualCLIPLoader'
         CLIP: Slot<'CLIP', 0>
@@ -5416,9 +5300,7 @@ declare global {
         clip_name2: Enum_CLIPLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | CLIPVisionEncode [conditioning]                                             |
-    // |=============================================================================|
+    // CLIPVisionEncode [conditioning]
     export interface CLIPVisionEncode extends HasSingle_CLIP_VISION_OUTPUT, ComfyNode<CLIPVisionEncode_input> {
         nameInComfy: 'CLIPVisionEncode'
         CLIP_VISION_OUTPUT: Slot<'CLIP_VISION_OUTPUT', 0>
@@ -5428,9 +5310,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | StyleModelApply [conditioning_style_model]                                  |
-    // |=============================================================================|
+    // StyleModelApply [conditioning_style_model]
     export interface StyleModelApply extends HasSingle_CONDITIONING, ComfyNode<StyleModelApply_input> {
         nameInComfy: 'StyleModelApply'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5441,9 +5321,7 @@ declare global {
         clip_vision_output: _CLIP_VISION_OUTPUT
     }
 
-    // |=============================================================================|
-    // | UnCLIPConditioning ("unCLIPConditioning" in ComfyUI) [conditioning]         |
-    // |=============================================================================|
+    // unCLIPConditioning [conditioning]
     export interface UnCLIPConditioning extends HasSingle_CONDITIONING, ComfyNode<UnCLIPConditioning_input> {
         nameInComfy: 'unCLIPConditioning'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5457,9 +5335,7 @@ declare global {
         noise_augmentation?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ControlNetApply [conditioning]                                              |
-    // |=============================================================================|
+    // ControlNetApply [conditioning]
     export interface ControlNetApply extends HasSingle_CONDITIONING, ComfyNode<ControlNetApply_input> {
         nameInComfy: 'ControlNetApply'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5472,9 +5348,7 @@ declare global {
         strength?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ControlNetApplyAdvanced [conditioning]                                      |
-    // |=============================================================================|
+    // ControlNetApplyAdvanced [conditioning]
     export interface ControlNetApplyAdvanced extends ComfyNode<ControlNetApplyAdvanced_input> {
         nameInComfy: 'ControlNetApplyAdvanced'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5493,9 +5367,7 @@ declare global {
         end_percent?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ControlNetLoader [loaders]                                                  |
-    // |=============================================================================|
+    // ControlNetLoader [loaders]
     export interface ControlNetLoader extends HasSingle_CONTROL_NET, ComfyNode<ControlNetLoader_input> {
         nameInComfy: 'ControlNetLoader'
         CONTROL_NET: Slot<'CONTROL_NET', 0>
@@ -5504,9 +5376,7 @@ declare global {
         control_net_name: Enum_ControlNetLoader_Control_net_name
     }
 
-    // |=============================================================================|
-    // | DiffControlNetLoader [loaders]                                              |
-    // |=============================================================================|
+    // DiffControlNetLoader [loaders]
     export interface DiffControlNetLoader extends HasSingle_CONTROL_NET, ComfyNode<DiffControlNetLoader_input> {
         nameInComfy: 'DiffControlNetLoader'
         CONTROL_NET: Slot<'CONTROL_NET', 0>
@@ -5516,9 +5386,7 @@ declare global {
         control_net_name: Enum_ControlNetLoader_Control_net_name
     }
 
-    // |=============================================================================|
-    // | StyleModelLoader [loaders]                                                  |
-    // |=============================================================================|
+    // StyleModelLoader [loaders]
     export interface StyleModelLoader extends HasSingle_STYLE_MODEL, ComfyNode<StyleModelLoader_input> {
         nameInComfy: 'StyleModelLoader'
         STYLE_MODEL: Slot<'STYLE_MODEL', 0>
@@ -5527,9 +5395,7 @@ declare global {
         style_model_name: Enum_CLIPLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | CLIPVisionLoader [loaders]                                                  |
-    // |=============================================================================|
+    // CLIPVisionLoader [loaders]
     export interface CLIPVisionLoader extends HasSingle_CLIP_VISION, ComfyNode<CLIPVisionLoader_input> {
         nameInComfy: 'CLIPVisionLoader'
         CLIP_VISION: Slot<'CLIP_VISION', 0>
@@ -5538,9 +5404,7 @@ declare global {
         clip_name: Enum_CLIPVisionLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | VAEDecodeTiled [_for_testing]                                               |
-    // |=============================================================================|
+    // VAEDecodeTiled [_for_testing]
     export interface VAEDecodeTiled extends HasSingle_IMAGE, ComfyNode<VAEDecodeTiled_input> {
         nameInComfy: 'VAEDecodeTiled'
         IMAGE: Slot<'IMAGE', 0>
@@ -5552,9 +5416,7 @@ declare global {
         tile_size?: _INT
     }
 
-    // |=============================================================================|
-    // | VAEEncodeTiled [_for_testing]                                               |
-    // |=============================================================================|
+    // VAEEncodeTiled [_for_testing]
     export interface VAEEncodeTiled extends HasSingle_LATENT, ComfyNode<VAEEncodeTiled_input> {
         nameInComfy: 'VAEEncodeTiled'
         LATENT: Slot<'LATENT', 0>
@@ -5566,9 +5428,7 @@ declare global {
         tile_size?: _INT
     }
 
-    // |=============================================================================|
-    // | UnCLIPCheckpointLoader ("unCLIPCheckpointLoader" in ComfyUI) [loaders]      |
-    // |=============================================================================|
+    // unCLIPCheckpointLoader [loaders]
     export interface UnCLIPCheckpointLoader
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -5585,9 +5445,7 @@ declare global {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
 
-    // |=============================================================================|
-    // | GLIGENLoader [loaders]                                                      |
-    // |=============================================================================|
+    // GLIGENLoader [loaders]
     export interface GLIGENLoader extends HasSingle_GLIGEN, ComfyNode<GLIGENLoader_input> {
         nameInComfy: 'GLIGENLoader'
         GLIGEN: Slot<'GLIGEN', 0>
@@ -5596,9 +5454,7 @@ declare global {
         gligen_name: Enum_CLIPLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | GLIGENTextBoxApply [conditioning_gligen]                                    |
-    // |=============================================================================|
+    // GLIGENTextBoxApply [conditioning_gligen]
     export interface GLIGENTextBoxApply extends HasSingle_CONDITIONING, ComfyNode<GLIGENTextBoxApply_input> {
         nameInComfy: 'GLIGENTextBoxApply'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5619,9 +5475,7 @@ declare global {
         y?: _INT
     }
 
-    // |=============================================================================|
-    // | CheckpointLoader [advanced_loaders]                                         |
-    // |=============================================================================|
+    // CheckpointLoader [advanced_loaders]
     export interface CheckpointLoader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, ComfyNode<CheckpointLoader_input> {
         nameInComfy: 'CheckpointLoader'
         MODEL: Slot<'MODEL', 0>
@@ -5633,9 +5487,7 @@ declare global {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
 
-    // |=============================================================================|
-    // | DiffusersLoader [advanced_loaders_deprecated]                               |
-    // |=============================================================================|
+    // DiffusersLoader [advanced_loaders_deprecated]
     export interface DiffusersLoader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_VAE, ComfyNode<DiffusersLoader_input> {
         nameInComfy: 'DiffusersLoader'
         MODEL: Slot<'MODEL', 0>
@@ -5646,9 +5498,7 @@ declare global {
         model_path: Enum_CLIPLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | LoadLatent [_for_testing]                                                   |
-    // |=============================================================================|
+    // LoadLatent [_for_testing]
     export interface LoadLatent extends HasSingle_LATENT, ComfyNode<LoadLatent_input> {
         nameInComfy: 'LoadLatent'
         LATENT: Slot<'LATENT', 0>
@@ -5657,9 +5507,7 @@ declare global {
         latent: Enum_CLIPLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | SaveLatent [_for_testing]                                                   |
-    // |=============================================================================|
+    // SaveLatent [_for_testing]
     export interface SaveLatent extends ComfyNode<SaveLatent_input> {
         nameInComfy: 'SaveLatent'
     }
@@ -5669,9 +5517,7 @@ declare global {
         filename_prefix?: _STRING
     }
 
-    // |=============================================================================|
-    // | ConditioningZeroOut [advanced_conditioning]                                 |
-    // |=============================================================================|
+    // ConditioningZeroOut [advanced_conditioning]
     export interface ConditioningZeroOut extends HasSingle_CONDITIONING, ComfyNode<ConditioningZeroOut_input> {
         nameInComfy: 'ConditioningZeroOut'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5680,9 +5526,7 @@ declare global {
         conditioning: _CONDITIONING
     }
 
-    // |=============================================================================|
-    // | ConditioningSetTimestepRange [advanced_conditioning]                        |
-    // |=============================================================================|
+    // ConditioningSetTimestepRange [advanced_conditioning]
     export interface ConditioningSetTimestepRange extends HasSingle_CONDITIONING, ComfyNode<ConditioningSetTimestepRange_input> {
         nameInComfy: 'ConditioningSetTimestepRange'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -5695,9 +5539,7 @@ declare global {
         end?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | LatentAdd [latent_advanced]                                                 |
-    // |=============================================================================|
+    // LatentAdd [latent_advanced]
     export interface LatentAdd extends HasSingle_LATENT, ComfyNode<LatentAdd_input> {
         nameInComfy: 'LatentAdd'
         LATENT: Slot<'LATENT', 0>
@@ -5707,9 +5549,7 @@ declare global {
         samples2: _LATENT
     }
 
-    // |=============================================================================|
-    // | LatentSubtract [latent_advanced]                                            |
-    // |=============================================================================|
+    // LatentSubtract [latent_advanced]
     export interface LatentSubtract extends HasSingle_LATENT, ComfyNode<LatentSubtract_input> {
         nameInComfy: 'LatentSubtract'
         LATENT: Slot<'LATENT', 0>
@@ -5719,9 +5559,7 @@ declare global {
         samples2: _LATENT
     }
 
-    // |=============================================================================|
-    // | LatentMultiply [latent_advanced]                                            |
-    // |=============================================================================|
+    // LatentMultiply [latent_advanced]
     export interface LatentMultiply extends HasSingle_LATENT, ComfyNode<LatentMultiply_input> {
         nameInComfy: 'LatentMultiply'
         LATENT: Slot<'LATENT', 0>
@@ -5732,9 +5570,7 @@ declare global {
         multiplier?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | HypernetworkLoader [loaders]                                                |
-    // |=============================================================================|
+    // HypernetworkLoader [loaders]
     export interface HypernetworkLoader extends HasSingle_MODEL, ComfyNode<HypernetworkLoader_input> {
         nameInComfy: 'HypernetworkLoader'
         MODEL: Slot<'MODEL', 0>
@@ -5746,9 +5582,7 @@ declare global {
         strength?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | UpscaleModelLoader [loaders]                                                |
-    // |=============================================================================|
+    // UpscaleModelLoader [loaders]
     export interface UpscaleModelLoader extends HasSingle_UPSCALE_MODEL, ComfyNode<UpscaleModelLoader_input> {
         nameInComfy: 'UpscaleModelLoader'
         UPSCALE_MODEL: Slot<'UPSCALE_MODEL', 0>
@@ -5757,9 +5591,7 @@ declare global {
         model_name: Enum_CLIPLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | ImageUpscaleWithModel [image_upscaling]                                     |
-    // |=============================================================================|
+    // ImageUpscaleWithModel [image_upscaling]
     export interface ImageUpscaleWithModel extends HasSingle_IMAGE, ComfyNode<ImageUpscaleWithModel_input> {
         nameInComfy: 'ImageUpscaleWithModel'
         IMAGE: Slot<'IMAGE', 0>
@@ -5769,9 +5601,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | ImageBlend [image_postprocessing]                                           |
-    // |=============================================================================|
+    // ImageBlend [image_postprocessing]
     export interface ImageBlend extends HasSingle_IMAGE, ComfyNode<ImageBlend_input> {
         nameInComfy: 'ImageBlend'
         IMAGE: Slot<'IMAGE', 0>
@@ -5784,9 +5614,7 @@ declare global {
         blend_mode: Enum_ImageBlend_Blend_mode
     }
 
-    // |=============================================================================|
-    // | ImageBlur [image_postprocessing]                                            |
-    // |=============================================================================|
+    // ImageBlur [image_postprocessing]
     export interface ImageBlur extends HasSingle_IMAGE, ComfyNode<ImageBlur_input> {
         nameInComfy: 'ImageBlur'
         IMAGE: Slot<'IMAGE', 0>
@@ -5799,9 +5627,7 @@ declare global {
         sigma?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImageQuantize [image_postprocessing]                                        |
-    // |=============================================================================|
+    // ImageQuantize [image_postprocessing]
     export interface ImageQuantize extends HasSingle_IMAGE, ComfyNode<ImageQuantize_input> {
         nameInComfy: 'ImageQuantize'
         IMAGE: Slot<'IMAGE', 0>
@@ -5813,9 +5639,7 @@ declare global {
         dither: Enum_ImageQuantize_Dither
     }
 
-    // |=============================================================================|
-    // | ImageSharpen [image_postprocessing]                                         |
-    // |=============================================================================|
+    // ImageSharpen [image_postprocessing]
     export interface ImageSharpen extends HasSingle_IMAGE, ComfyNode<ImageSharpen_input> {
         nameInComfy: 'ImageSharpen'
         IMAGE: Slot<'IMAGE', 0>
@@ -5830,9 +5654,7 @@ declare global {
         alpha?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImageScaleToTotalPixels [image_upscaling]                                   |
-    // |=============================================================================|
+    // ImageScaleToTotalPixels [image_upscaling]
     export interface ImageScaleToTotalPixels extends HasSingle_IMAGE, ComfyNode<ImageScaleToTotalPixels_input> {
         nameInComfy: 'ImageScaleToTotalPixels'
         IMAGE: Slot<'IMAGE', 0>
@@ -5844,9 +5666,7 @@ declare global {
         megapixels?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | LatentCompositeMasked [latent]                                              |
-    // |=============================================================================|
+    // LatentCompositeMasked [latent]
     export interface LatentCompositeMasked extends HasSingle_LATENT, ComfyNode<LatentCompositeMasked_input> {
         nameInComfy: 'LatentCompositeMasked'
         LATENT: Slot<'LATENT', 0>
@@ -5863,9 +5683,7 @@ declare global {
         mask?: _MASK
     }
 
-    // |=============================================================================|
-    // | ImageCompositeMasked [image]                                                |
-    // |=============================================================================|
+    // ImageCompositeMasked [image]
     export interface ImageCompositeMasked extends HasSingle_IMAGE, ComfyNode<ImageCompositeMasked_input> {
         nameInComfy: 'ImageCompositeMasked'
         IMAGE: Slot<'IMAGE', 0>
@@ -5882,9 +5700,7 @@ declare global {
         mask?: _MASK
     }
 
-    // |=============================================================================|
-    // | MaskToImage [mask]                                                          |
-    // |=============================================================================|
+    // MaskToImage [mask]
     export interface MaskToImage extends HasSingle_IMAGE, ComfyNode<MaskToImage_input> {
         nameInComfy: 'MaskToImage'
         IMAGE: Slot<'IMAGE', 0>
@@ -5893,9 +5709,7 @@ declare global {
         mask: _MASK
     }
 
-    // |=============================================================================|
-    // | ImageToMask [mask]                                                          |
-    // |=============================================================================|
+    // ImageToMask [mask]
     export interface ImageToMask extends HasSingle_MASK, ComfyNode<ImageToMask_input> {
         nameInComfy: 'ImageToMask'
         MASK: Slot<'MASK', 0>
@@ -5905,9 +5719,7 @@ declare global {
         channel: Enum_ImageToMask_Channel
     }
 
-    // |=============================================================================|
-    // | ImageColorToMask [mask]                                                     |
-    // |=============================================================================|
+    // ImageColorToMask [mask]
     export interface ImageColorToMask extends HasSingle_MASK, ComfyNode<ImageColorToMask_input> {
         nameInComfy: 'ImageColorToMask'
         MASK: Slot<'MASK', 0>
@@ -5918,9 +5730,7 @@ declare global {
         color?: _INT
     }
 
-    // |=============================================================================|
-    // | SolidMask [mask]                                                            |
-    // |=============================================================================|
+    // SolidMask [mask]
     export interface SolidMask extends HasSingle_MASK, ComfyNode<SolidMask_input> {
         nameInComfy: 'SolidMask'
         MASK: Slot<'MASK', 0>
@@ -5934,9 +5744,7 @@ declare global {
         height?: _INT
     }
 
-    // |=============================================================================|
-    // | InvertMask [mask]                                                           |
-    // |=============================================================================|
+    // InvertMask [mask]
     export interface InvertMask extends HasSingle_MASK, ComfyNode<InvertMask_input> {
         nameInComfy: 'InvertMask'
         MASK: Slot<'MASK', 0>
@@ -5945,9 +5753,7 @@ declare global {
         mask: _MASK
     }
 
-    // |=============================================================================|
-    // | CropMask [mask]                                                             |
-    // |=============================================================================|
+    // CropMask [mask]
     export interface CropMask extends HasSingle_MASK, ComfyNode<CropMask_input> {
         nameInComfy: 'CropMask'
         MASK: Slot<'MASK', 0>
@@ -5964,9 +5770,7 @@ declare global {
         height?: _INT
     }
 
-    // |=============================================================================|
-    // | MaskComposite [mask]                                                        |
-    // |=============================================================================|
+    // MaskComposite [mask]
     export interface MaskComposite extends HasSingle_MASK, ComfyNode<MaskComposite_input> {
         nameInComfy: 'MaskComposite'
         MASK: Slot<'MASK', 0>
@@ -5981,9 +5785,7 @@ declare global {
         operation: Enum_MaskComposite_Operation
     }
 
-    // |=============================================================================|
-    // | FeatherMask [mask]                                                          |
-    // |=============================================================================|
+    // FeatherMask [mask]
     export interface FeatherMask extends HasSingle_MASK, ComfyNode<FeatherMask_input> {
         nameInComfy: 'FeatherMask'
         MASK: Slot<'MASK', 0>
@@ -6000,9 +5802,7 @@ declare global {
         bottom?: _INT
     }
 
-    // |=============================================================================|
-    // | GrowMask [mask]                                                             |
-    // |=============================================================================|
+    // GrowMask [mask]
     export interface GrowMask extends HasSingle_MASK, ComfyNode<GrowMask_input> {
         nameInComfy: 'GrowMask'
         MASK: Slot<'MASK', 0>
@@ -6015,9 +5815,7 @@ declare global {
         tapered_corners?: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | RebatchLatents [latent_batch]                                               |
-    // |=============================================================================|
+    // RebatchLatents [latent_batch]
     export interface RebatchLatents extends HasSingle_LATENT, ComfyNode<RebatchLatents_input> {
         nameInComfy: 'RebatchLatents'
         LATENT: Slot<'LATENT', 0>
@@ -6028,9 +5826,7 @@ declare global {
         batch_size?: _INT
     }
 
-    // |=============================================================================|
-    // | ModelMergeSimple [advanced_model_merging]                                   |
-    // |=============================================================================|
+    // ModelMergeSimple [advanced_model_merging]
     export interface ModelMergeSimple extends HasSingle_MODEL, ComfyNode<ModelMergeSimple_input> {
         nameInComfy: 'ModelMergeSimple'
         MODEL: Slot<'MODEL', 0>
@@ -6042,9 +5838,7 @@ declare global {
         ratio?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ModelMergeBlocks [advanced_model_merging]                                   |
-    // |=============================================================================|
+    // ModelMergeBlocks [advanced_model_merging]
     export interface ModelMergeBlocks extends HasSingle_MODEL, ComfyNode<ModelMergeBlocks_input> {
         nameInComfy: 'ModelMergeBlocks'
         MODEL: Slot<'MODEL', 0>
@@ -6060,9 +5854,7 @@ declare global {
         out?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ModelMergeSubtract [advanced_model_merging]                                 |
-    // |=============================================================================|
+    // ModelMergeSubtract [advanced_model_merging]
     export interface ModelMergeSubtract extends HasSingle_MODEL, ComfyNode<ModelMergeSubtract_input> {
         nameInComfy: 'ModelMergeSubtract'
         MODEL: Slot<'MODEL', 0>
@@ -6074,9 +5866,7 @@ declare global {
         multiplier?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ModelMergeAdd [advanced_model_merging]                                      |
-    // |=============================================================================|
+    // ModelMergeAdd [advanced_model_merging]
     export interface ModelMergeAdd extends HasSingle_MODEL, ComfyNode<ModelMergeAdd_input> {
         nameInComfy: 'ModelMergeAdd'
         MODEL: Slot<'MODEL', 0>
@@ -6086,9 +5876,7 @@ declare global {
         model2: _MODEL
     }
 
-    // |=============================================================================|
-    // | CheckpointSave [advanced_model_merging]                                     |
-    // |=============================================================================|
+    // CheckpointSave [advanced_model_merging]
     export interface CheckpointSave extends ComfyNode<CheckpointSave_input> {
         nameInComfy: 'CheckpointSave'
     }
@@ -6100,9 +5888,7 @@ declare global {
         filename_prefix?: _STRING
     }
 
-    // |=============================================================================|
-    // | CLIPMergeSimple [advanced_model_merging]                                    |
-    // |=============================================================================|
+    // CLIPMergeSimple [advanced_model_merging]
     export interface CLIPMergeSimple extends HasSingle_CLIP, ComfyNode<CLIPMergeSimple_input> {
         nameInComfy: 'CLIPMergeSimple'
         CLIP: Slot<'CLIP', 0>
@@ -6114,9 +5900,7 @@ declare global {
         ratio?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | TomePatchModel [_for_testing]                                               |
-    // |=============================================================================|
+    // TomePatchModel [_for_testing]
     export interface TomePatchModel extends HasSingle_MODEL, ComfyNode<TomePatchModel_input> {
         nameInComfy: 'TomePatchModel'
         MODEL: Slot<'MODEL', 0>
@@ -6127,9 +5911,7 @@ declare global {
         ratio?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | CLIPTextEncodeSDXLRefiner [advanced_conditioning]                           |
-    // |=============================================================================|
+    // CLIPTextEncodeSDXLRefiner [advanced_conditioning]
     export interface CLIPTextEncodeSDXLRefiner extends HasSingle_CONDITIONING, ComfyNode<CLIPTextEncodeSDXLRefiner_input> {
         nameInComfy: 'CLIPTextEncodeSDXLRefiner'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -6146,9 +5928,7 @@ declare global {
         clip: _CLIP
     }
 
-    // |=============================================================================|
-    // | CLIPTextEncodeSDXL [advanced_conditioning]                                  |
-    // |=============================================================================|
+    // CLIPTextEncodeSDXL [advanced_conditioning]
     export interface CLIPTextEncodeSDXL extends HasSingle_CONDITIONING, ComfyNode<CLIPTextEncodeSDXL_input> {
         nameInComfy: 'CLIPTextEncodeSDXL'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -6173,9 +5953,7 @@ declare global {
         text_l?: _STRING
     }
 
-    // |=============================================================================|
-    // | Canny [image_preprocessors]                                                 |
-    // |=============================================================================|
+    // Canny [image_preprocessors]
     export interface Canny extends HasSingle_IMAGE, ComfyNode<Canny_input> {
         nameInComfy: 'Canny'
         IMAGE: Slot<'IMAGE', 0>
@@ -6188,9 +5966,7 @@ declare global {
         high_threshold?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | FreeU [_for_testing]                                                        |
-    // |=============================================================================|
+    // FreeU [_for_testing]
     export interface FreeU extends HasSingle_MODEL, ComfyNode<FreeU_input> {
         nameInComfy: 'FreeU'
         MODEL: Slot<'MODEL', 0>
@@ -6207,9 +5983,7 @@ declare global {
         s2?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | RemoveImageBackgroundAbg ("Remove Image Background (abg)" in ComfyUI) [image]   |
-    // |=============================================================================|
+    // Remove Image Background (abg) [image]
     export interface RemoveImageBackgroundAbg extends HasSingle_IMAGE, ComfyNode<RemoveImageBackgroundAbg_input> {
         nameInComfy: 'Remove Image Background (abg)'
         IMAGE: Slot<'IMAGE', 0>
@@ -6218,9 +5992,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | CivitAI_Lora_Loader [CivitAI_Loaders]                                       |
-    // |=============================================================================|
+    // CivitAI_Lora_Loader [CivitAI_Loaders]
     export interface CivitAI_Lora_Loader extends HasSingle_MODEL, HasSingle_CLIP, ComfyNode<CivitAI_Lora_Loader_input> {
         nameInComfy: 'CivitAI_Lora_Loader'
         MODEL: Slot<'MODEL', 0>
@@ -6241,9 +6013,7 @@ declare global {
         download_path?: Enum_CivitAI_Lora_Loader_Download_path
     }
 
-    // |=============================================================================|
-    // | CivitAI_Checkpoint_Loader [CivitAI_Loaders]                                 |
-    // |=============================================================================|
+    // CivitAI_Checkpoint_Loader [CivitAI_Loaders]
     export interface CivitAI_Checkpoint_Loader
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -6263,9 +6033,7 @@ declare global {
         download_path?: Enum_CivitAI_Checkpoint_Loader_Download_path
     }
 
-    // |=============================================================================|
-    // | ImpactSAMLoader ("SAMLoader" in ComfyUI) [ImpactPack]                       |
-    // |=============================================================================|
+    // SAMLoader [ImpactPack]
     export interface ImpactSAMLoader extends HasSingle_SAM_MODEL, ComfyNode<ImpactSAMLoader_input> {
         nameInComfy: 'SAMLoader'
         SAM_MODEL: Slot<'SAM_MODEL', 0>
@@ -6275,9 +6043,7 @@ declare global {
         device_mode: Enum_ImpactSAMLoader_Device_mode
     }
 
-    // |=============================================================================|
-    // | ImpactCLIPSegDetectorProvider ("CLIPSegDetectorProvider" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // CLIPSegDetectorProvider [ImpactPack_Util]
     export interface ImpactCLIPSegDetectorProvider
         extends HasSingle_BBOX_DETECTOR,
             ComfyNode<ImpactCLIPSegDetectorProvider_input> {
@@ -6295,9 +6061,7 @@ declare global {
         dilation_factor?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactONNXDetectorProvider ("ONNXDetectorProvider" in ComfyUI) [ImpactPack]   |
-    // |=============================================================================|
+    // ONNXDetectorProvider [ImpactPack]
     export interface ImpactONNXDetectorProvider extends HasSingle_ONNX_DETECTOR, ComfyNode<ImpactONNXDetectorProvider_input> {
         nameInComfy: 'ONNXDetectorProvider'
         ONNX_DETECTOR: Slot<'ONNX_DETECTOR', 0>
@@ -6306,9 +6070,7 @@ declare global {
         model_name: Enum_CLIPLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | ImpactBitwiseAndMaskForEach ("BitwiseAndMaskForEach" in ComfyUI) [ImpactPack_Operation]   |
-    // |=============================================================================|
+    // BitwiseAndMaskForEach [ImpactPack_Operation]
     export interface ImpactBitwiseAndMaskForEach extends HasSingle_SEGS, ComfyNode<ImpactBitwiseAndMaskForEach_input> {
         nameInComfy: 'BitwiseAndMaskForEach'
         SEGS: Slot<'SEGS', 0>
@@ -6318,9 +6080,7 @@ declare global {
         mask_segs: _SEGS
     }
 
-    // |=============================================================================|
-    // | ImpactSubtractMaskForEach ("SubtractMaskForEach" in ComfyUI) [ImpactPack_Operation]   |
-    // |=============================================================================|
+    // SubtractMaskForEach [ImpactPack_Operation]
     export interface ImpactSubtractMaskForEach extends HasSingle_SEGS, ComfyNode<ImpactSubtractMaskForEach_input> {
         nameInComfy: 'SubtractMaskForEach'
         SEGS: Slot<'SEGS', 0>
@@ -6330,9 +6090,7 @@ declare global {
         mask_segs: _SEGS
     }
 
-    // |=============================================================================|
-    // | ImpactDetailerForEach ("DetailerForEach" in ComfyUI) [ImpactPack_Detailer]   |
-    // |=============================================================================|
+    // DetailerForEach [ImpactPack_Detailer]
     export interface ImpactDetailerForEach extends HasSingle_IMAGE, ComfyNode<ImpactDetailerForEach_input> {
         nameInComfy: 'DetailerForEach'
         IMAGE: Slot<'IMAGE', 0>
@@ -6372,9 +6130,7 @@ declare global {
         detailer_hook?: _DETAILER_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactDetailerForEachDebug ("DetailerForEachDebug" in ComfyUI) [ImpactPack_Detailer]   |
-    // |=============================================================================|
+    // DetailerForEachDebug [ImpactPack_Detailer]
     export interface ImpactDetailerForEachDebug extends ComfyNode<ImpactDetailerForEachDebug_input> {
         nameInComfy: 'DetailerForEachDebug'
         IMAGE: Slot<'IMAGE', 0>
@@ -6418,9 +6174,7 @@ declare global {
         detailer_hook?: _DETAILER_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactDetailerForEachPipe ("DetailerForEachPipe" in ComfyUI) [ImpactPack_Detailer]   |
-    // |=============================================================================|
+    // DetailerForEachPipe [ImpactPack_Detailer]
     export interface ImpactDetailerForEachPipe
         extends HasSingle_SEGS,
             HasSingle_BASIC_PIPE,
@@ -6465,9 +6219,7 @@ declare global {
         refiner_basic_pipe_opt?: _BASIC_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactDetailerForEachDebugPipe ("DetailerForEachDebugPipe" in ComfyUI) [ImpactPack_Detailer]   |
-    // |=============================================================================|
+    // DetailerForEachDebugPipe [ImpactPack_Detailer]
     export interface ImpactDetailerForEachDebugPipe
         extends HasSingle_SEGS,
             HasSingle_BASIC_PIPE,
@@ -6515,9 +6267,7 @@ declare global {
         refiner_basic_pipe_opt?: _BASIC_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactSAMDetectorCombined ("SAMDetectorCombined" in ComfyUI) [ImpactPack_Detector]   |
-    // |=============================================================================|
+    // SAMDetectorCombined [ImpactPack_Detector]
     export interface ImpactSAMDetectorCombined extends HasSingle_MASK, ComfyNode<ImpactSAMDetectorCombined_input> {
         nameInComfy: 'SAMDetectorCombined'
         MASK: Slot<'MASK', 0>
@@ -6538,9 +6288,7 @@ declare global {
         mask_hint_use_negative: Enum_ImpactSAMDetectorCombined_Mask_hint_use_negative
     }
 
-    // |=============================================================================|
-    // | ImpactSAMDetectorSegmented ("SAMDetectorSegmented" in ComfyUI) [ImpactPack_Detector]   |
-    // |=============================================================================|
+    // SAMDetectorSegmented [ImpactPack_Detector]
     export interface ImpactSAMDetectorSegmented
         extends HasSingle_MASK,
             HasSingle_MASKS,
@@ -6565,9 +6313,7 @@ declare global {
         mask_hint_use_negative: Enum_ImpactSAMDetectorCombined_Mask_hint_use_negative
     }
 
-    // |=============================================================================|
-    // | ImpactFaceDetailer ("FaceDetailer" in ComfyUI) [ImpactPack_Simple]          |
-    // |=============================================================================|
+    // FaceDetailer [ImpactPack_Simple]
     export interface ImpactFaceDetailer extends HasSingle_MASK, HasSingle_DETAILER_PIPE, ComfyNode<ImpactFaceDetailer_input> {
         nameInComfy: 'FaceDetailer'
         IMAGE: Slot<'IMAGE', 0>
@@ -6632,9 +6378,7 @@ declare global {
         detailer_hook?: _DETAILER_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactFaceDetailerPipe ("FaceDetailerPipe" in ComfyUI) [ImpactPack_Simple]   |
-    // |=============================================================================|
+    // FaceDetailerPipe [ImpactPack_Simple]
     export interface ImpactFaceDetailerPipe
         extends HasSingle_MASK,
             HasSingle_DETAILER_PIPE,
@@ -6694,9 +6438,7 @@ declare global {
         refiner_ratio?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImpactToDetailerPipe ("ToDetailerPipe" in ComfyUI) [ImpactPack_Pipe]        |
-    // |=============================================================================|
+    // ToDetailerPipe [ImpactPack_Pipe]
     export interface ImpactToDetailerPipe extends HasSingle_DETAILER_PIPE, ComfyNode<ImpactToDetailerPipe_input> {
         nameInComfy: 'ToDetailerPipe'
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
@@ -6716,9 +6458,7 @@ declare global {
         detailer_hook?: _DETAILER_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactToDetailerPipeSDXL ("ToDetailerPipeSDXL" in ComfyUI) [ImpactPack_Pipe]   |
-    // |=============================================================================|
+    // ToDetailerPipeSDXL [ImpactPack_Pipe]
     export interface ImpactToDetailerPipeSDXL extends HasSingle_DETAILER_PIPE, ComfyNode<ImpactToDetailerPipeSDXL_input> {
         nameInComfy: 'ToDetailerPipeSDXL'
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
@@ -6742,9 +6482,7 @@ declare global {
         detailer_hook?: _DETAILER_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactFromDetailerPipe ("FromDetailerPipe" in ComfyUI) [ImpactPack_Pipe]    |
-    // |=============================================================================|
+    // FromDetailerPipe [ImpactPack_Pipe]
     export interface ImpactFromDetailerPipe
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -6769,9 +6507,7 @@ declare global {
         detailer_pipe: _DETAILER_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactFromDetailerPipe_v2 ("FromDetailerPipe_v2" in ComfyUI) [ImpactPack_Pipe]   |
-    // |=============================================================================|
+    // FromDetailerPipe_v2 [ImpactPack_Pipe]
     export interface ImpactFromDetailerPipe_v2
         extends HasSingle_DETAILER_PIPE,
             HasSingle_MODEL,
@@ -6798,9 +6534,7 @@ declare global {
         detailer_pipe: _DETAILER_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactFromDetailerPipeSDXL ("FromDetailerPipeSDXL" in ComfyUI) [ImpactPack_Pipe]   |
-    // |=============================================================================|
+    // FromDetailerPipeSDXL [ImpactPack_Pipe]
     export interface ImpactFromDetailerPipeSDXL
         extends HasSingle_DETAILER_PIPE,
             HasSingle_VAE,
@@ -6829,9 +6563,7 @@ declare global {
         detailer_pipe: _DETAILER_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactToBasicPipe ("ToBasicPipe" in ComfyUI) [ImpactPack_Pipe]              |
-    // |=============================================================================|
+    // ToBasicPipe [ImpactPack_Pipe]
     export interface ImpactToBasicPipe extends HasSingle_BASIC_PIPE, ComfyNode<ImpactToBasicPipe_input> {
         nameInComfy: 'ToBasicPipe'
         BASIC_PIPE: Slot<'BASIC_PIPE', 0>
@@ -6844,9 +6576,7 @@ declare global {
         negative: _CONDITIONING
     }
 
-    // |=============================================================================|
-    // | ImpactFromBasicPipe ("FromBasicPipe" in ComfyUI) [ImpactPack_Pipe]          |
-    // |=============================================================================|
+    // FromBasicPipe [ImpactPack_Pipe]
     export interface ImpactFromBasicPipe
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -6863,9 +6593,7 @@ declare global {
         basic_pipe: _BASIC_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactFromBasicPipe_v2 ("FromBasicPipe_v2" in ComfyUI) [ImpactPack_Pipe]    |
-    // |=============================================================================|
+    // FromBasicPipe_v2 [ImpactPack_Pipe]
     export interface ImpactFromBasicPipe_v2
         extends HasSingle_BASIC_PIPE,
             HasSingle_MODEL,
@@ -6884,9 +6612,7 @@ declare global {
         basic_pipe: _BASIC_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactBasicPipeToDetailerPipe ("BasicPipeToDetailerPipe" in ComfyUI) [ImpactPack_Pipe]   |
-    // |=============================================================================|
+    // BasicPipeToDetailerPipe [ImpactPack_Pipe]
     export interface ImpactBasicPipeToDetailerPipe
         extends HasSingle_DETAILER_PIPE,
             ComfyNode<ImpactBasicPipeToDetailerPipe_input> {
@@ -6904,9 +6630,7 @@ declare global {
         detailer_hook?: _DETAILER_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactBasicPipeToDetailerPipeSDXL ("BasicPipeToDetailerPipeSDXL" in ComfyUI) [ImpactPack_Pipe]   |
-    // |=============================================================================|
+    // BasicPipeToDetailerPipeSDXL [ImpactPack_Pipe]
     export interface ImpactBasicPipeToDetailerPipeSDXL
         extends HasSingle_DETAILER_PIPE,
             ComfyNode<ImpactBasicPipeToDetailerPipeSDXL_input> {
@@ -6925,9 +6649,7 @@ declare global {
         detailer_hook?: _DETAILER_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactDetailerPipeToBasicPipe ("DetailerPipeToBasicPipe" in ComfyUI) [ImpactPack_Pipe]   |
-    // |=============================================================================|
+    // DetailerPipeToBasicPipe [ImpactPack_Pipe]
     export interface ImpactDetailerPipeToBasicPipe extends ComfyNode<ImpactDetailerPipeToBasicPipe_input> {
         nameInComfy: 'DetailerPipeToBasicPipe'
         BASIC_PIPE: Slot<'BASIC_PIPE', 0>
@@ -6937,9 +6659,7 @@ declare global {
         detailer_pipe: _DETAILER_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactEditBasicPipe ("EditBasicPipe" in ComfyUI) [ImpactPack_Pipe]          |
-    // |=============================================================================|
+    // EditBasicPipe [ImpactPack_Pipe]
     export interface ImpactEditBasicPipe extends HasSingle_BASIC_PIPE, ComfyNode<ImpactEditBasicPipe_input> {
         nameInComfy: 'EditBasicPipe'
         BASIC_PIPE: Slot<'BASIC_PIPE', 0>
@@ -6953,9 +6673,7 @@ declare global {
         negative?: _CONDITIONING
     }
 
-    // |=============================================================================|
-    // | ImpactEditDetailerPipe ("EditDetailerPipe" in ComfyUI) [ImpactPack_Pipe]    |
-    // |=============================================================================|
+    // EditDetailerPipe [ImpactPack_Pipe]
     export interface ImpactEditDetailerPipe extends HasSingle_DETAILER_PIPE, ComfyNode<ImpactEditDetailerPipe_input> {
         nameInComfy: 'EditDetailerPipe'
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
@@ -6976,9 +6694,7 @@ declare global {
         detailer_hook?: _DETAILER_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactEditDetailerPipeSDXL ("EditDetailerPipeSDXL" in ComfyUI) [ImpactPack_Pipe]   |
-    // |=============================================================================|
+    // EditDetailerPipeSDXL [ImpactPack_Pipe]
     export interface ImpactEditDetailerPipeSDXL extends HasSingle_DETAILER_PIPE, ComfyNode<ImpactEditDetailerPipeSDXL_input> {
         nameInComfy: 'EditDetailerPipeSDXL'
         DETAILER_PIPE: Slot<'DETAILER_PIPE', 0>
@@ -7003,9 +6719,7 @@ declare global {
         detailer_hook?: _DETAILER_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactLatentPixelScale ("LatentPixelScale" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // LatentPixelScale [ImpactPack_Upscale]
     export interface ImpactLatentPixelScale extends HasSingle_LATENT, ComfyNode<ImpactLatentPixelScale_input> {
         nameInComfy: 'LatentPixelScale'
         LATENT: Slot<'LATENT', 0>
@@ -7021,9 +6735,7 @@ declare global {
         upscale_model_opt?: _UPSCALE_MODEL
     }
 
-    // |=============================================================================|
-    // | ImpactPixelKSampleUpscalerProvider ("PixelKSampleUpscalerProvider" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // PixelKSampleUpscalerProvider [ImpactPack_Upscale]
     export interface ImpactPixelKSampleUpscalerProvider
         extends HasSingle_UPSCALER,
             ComfyNode<ImpactPixelKSampleUpscalerProvider_input> {
@@ -7054,9 +6766,7 @@ declare global {
         pk_hook_opt?: _PK_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactPixelKSampleUpscalerProviderPipe ("PixelKSampleUpscalerProviderPipe" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // PixelKSampleUpscalerProviderPipe [ImpactPack_Upscale]
     export interface ImpactPixelKSampleUpscalerProviderPipe
         extends HasSingle_UPSCALER,
             ComfyNode<ImpactPixelKSampleUpscalerProviderPipe_input> {
@@ -7084,9 +6794,7 @@ declare global {
         pk_hook_opt?: _PK_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactIterativeLatentUpscale ("IterativeLatentUpscale" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // IterativeLatentUpscale [ImpactPack_Upscale]
     export interface ImpactIterativeLatentUpscale extends HasSingle_LATENT, ComfyNode<ImpactIterativeLatentUpscale_input> {
         nameInComfy: 'IterativeLatentUpscale'
         LATENT: Slot<'LATENT', 0>
@@ -7102,9 +6810,7 @@ declare global {
         upscaler: _UPSCALER
     }
 
-    // |=============================================================================|
-    // | ImpactIterativeImageUpscale ("IterativeImageUpscale" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // IterativeImageUpscale [ImpactPack_Upscale]
     export interface ImpactIterativeImageUpscale extends HasSingle_IMAGE, ComfyNode<ImpactIterativeImageUpscale_input> {
         nameInComfy: 'IterativeImageUpscale'
         IMAGE: Slot<'IMAGE', 0>
@@ -7121,9 +6827,7 @@ declare global {
         vae: _VAE
     }
 
-    // |=============================================================================|
-    // | ImpactPixelTiledKSampleUpscalerProvider ("PixelTiledKSampleUpscalerProvider" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // PixelTiledKSampleUpscalerProvider [ImpactPack_Upscale]
     export interface ImpactPixelTiledKSampleUpscalerProvider
         extends HasSingle_UPSCALER,
             ComfyNode<ImpactPixelTiledKSampleUpscalerProvider_input> {
@@ -7155,9 +6859,7 @@ declare global {
         pk_hook_opt?: _PK_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactPixelTiledKSampleUpscalerProviderPipe ("PixelTiledKSampleUpscalerProviderPipe" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // PixelTiledKSampleUpscalerProviderPipe [ImpactPack_Upscale]
     export interface ImpactPixelTiledKSampleUpscalerProviderPipe
         extends HasSingle_UPSCALER,
             ComfyNode<ImpactPixelTiledKSampleUpscalerProviderPipe_input> {
@@ -7186,9 +6888,7 @@ declare global {
         pk_hook_opt?: _PK_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactTwoSamplersForMaskUpscalerProvider ("TwoSamplersForMaskUpscalerProvider" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // TwoSamplersForMaskUpscalerProvider [ImpactPack_Upscale]
     export interface ImpactTwoSamplersForMaskUpscalerProvider
         extends HasSingle_UPSCALER,
             ComfyNode<ImpactTwoSamplersForMaskUpscalerProvider_input> {
@@ -7213,9 +6913,7 @@ declare global {
         pk_hook_full_opt?: _PK_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactTwoSamplersForMaskUpscalerProviderPipe ("TwoSamplersForMaskUpscalerProviderPipe" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // TwoSamplersForMaskUpscalerProviderPipe [ImpactPack_Upscale]
     export interface ImpactTwoSamplersForMaskUpscalerProviderPipe
         extends HasSingle_UPSCALER,
             ComfyNode<ImpactTwoSamplersForMaskUpscalerProviderPipe_input> {
@@ -7240,9 +6938,7 @@ declare global {
         pk_hook_full_opt?: _PK_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactPixelKSampleHookCombine ("PixelKSampleHookCombine" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // PixelKSampleHookCombine [ImpactPack_Upscale]
     export interface ImpactPixelKSampleHookCombine extends HasSingle_PK_HOOK, ComfyNode<ImpactPixelKSampleHookCombine_input> {
         nameInComfy: 'PixelKSampleHookCombine'
         PK_HOOK: Slot<'PK_HOOK', 0>
@@ -7252,9 +6948,7 @@ declare global {
         hook2: _PK_HOOK
     }
 
-    // |=============================================================================|
-    // | ImpactDenoiseScheduleHookProvider ("DenoiseScheduleHookProvider" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // DenoiseScheduleHookProvider [ImpactPack_Upscale]
     export interface ImpactDenoiseScheduleHookProvider
         extends HasSingle_PK_HOOK,
             ComfyNode<ImpactDenoiseScheduleHookProvider_input> {
@@ -7267,9 +6961,7 @@ declare global {
         target_denoise?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImpactCfgScheduleHookProvider ("CfgScheduleHookProvider" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // CfgScheduleHookProvider [ImpactPack_Upscale]
     export interface ImpactCfgScheduleHookProvider extends HasSingle_PK_HOOK, ComfyNode<ImpactCfgScheduleHookProvider_input> {
         nameInComfy: 'CfgScheduleHookProvider'
         PK_HOOK: Slot<'PK_HOOK', 0>
@@ -7280,9 +6972,7 @@ declare global {
         target_cfg?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImpactNoiseInjectionHookProvider ("NoiseInjectionHookProvider" in ComfyUI) [ImpactPack_Upscale]   |
-    // |=============================================================================|
+    // NoiseInjectionHookProvider [ImpactPack_Upscale]
     export interface ImpactNoiseInjectionHookProvider
         extends HasSingle_PK_HOOK,
             ComfyNode<ImpactNoiseInjectionHookProvider_input> {
@@ -7300,9 +6990,7 @@ declare global {
         end_strength?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImpactNoiseInjectionDetailerHookProvider ("NoiseInjectionDetailerHookProvider" in ComfyUI) [ImpactPack_Detailer]   |
-    // |=============================================================================|
+    // NoiseInjectionDetailerHookProvider [ImpactPack_Detailer]
     export interface ImpactNoiseInjectionDetailerHookProvider
         extends HasSingle_DETAILER_HOOK,
             ComfyNode<ImpactNoiseInjectionDetailerHookProvider_input> {
@@ -7317,9 +7005,7 @@ declare global {
         strength?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImpactBitwiseAndMask ("BitwiseAndMask" in ComfyUI) [ImpactPack_Operation]   |
-    // |=============================================================================|
+    // BitwiseAndMask [ImpactPack_Operation]
     export interface ImpactBitwiseAndMask extends HasSingle_MASK, ComfyNode<ImpactBitwiseAndMask_input> {
         nameInComfy: 'BitwiseAndMask'
         MASK: Slot<'MASK', 0>
@@ -7329,9 +7015,7 @@ declare global {
         mask2: _MASK
     }
 
-    // |=============================================================================|
-    // | ImpactSubtractMask ("SubtractMask" in ComfyUI) [ImpactPack_Operation]       |
-    // |=============================================================================|
+    // SubtractMask [ImpactPack_Operation]
     export interface ImpactSubtractMask extends HasSingle_MASK, ComfyNode<ImpactSubtractMask_input> {
         nameInComfy: 'SubtractMask'
         MASK: Slot<'MASK', 0>
@@ -7341,9 +7025,7 @@ declare global {
         mask2: _MASK
     }
 
-    // |=============================================================================|
-    // | ImpactAddMask ("AddMask" in ComfyUI) [ImpactPack_Operation]                 |
-    // |=============================================================================|
+    // AddMask [ImpactPack_Operation]
     export interface ImpactAddMask extends HasSingle_MASK, ComfyNode<ImpactAddMask_input> {
         nameInComfy: 'AddMask'
         MASK: Slot<'MASK', 0>
@@ -7353,9 +7035,7 @@ declare global {
         mask2: _MASK
     }
 
-    // |=============================================================================|
-    // | ImpactSegsMask ("Segs & Mask" in ComfyUI) [ImpactPack_Operation]            |
-    // |=============================================================================|
+    // Segs & Mask [ImpactPack_Operation]
     export interface ImpactSegsMask extends HasSingle_SEGS, ComfyNode<ImpactSegsMask_input> {
         nameInComfy: 'Segs & Mask'
         SEGS: Slot<'SEGS', 0>
@@ -7365,9 +7045,7 @@ declare global {
         mask: _MASK
     }
 
-    // |=============================================================================|
-    // | ImpactSegsMaskForEach ("Segs & Mask ForEach" in ComfyUI) [ImpactPack_Operation]   |
-    // |=============================================================================|
+    // Segs & Mask ForEach [ImpactPack_Operation]
     export interface ImpactSegsMaskForEach extends HasSingle_SEGS, ComfyNode<ImpactSegsMaskForEach_input> {
         nameInComfy: 'Segs & Mask ForEach'
         SEGS: Slot<'SEGS', 0>
@@ -7377,18 +7055,14 @@ declare global {
         masks: _MASKS
     }
 
-    // |=============================================================================|
-    // | ImpactEmptySegs ("EmptySegs" in ComfyUI) [ImpactPack_Util]                  |
-    // |=============================================================================|
+    // EmptySegs [ImpactPack_Util]
     export interface ImpactEmptySegs extends HasSingle_SEGS, ComfyNode<ImpactEmptySegs_input> {
         nameInComfy: 'EmptySegs'
         SEGS: Slot<'SEGS', 0>
     }
     export type ImpactEmptySegs_input = {}
 
-    // |=============================================================================|
-    // | ImpactMediaPipeFaceMeshToSEGS ("MediaPipeFaceMeshToSEGS" in ComfyUI) [ImpactPack_Operation]   |
-    // |=============================================================================|
+    // MediaPipeFaceMeshToSEGS [ImpactPack_Operation]
     export interface ImpactMediaPipeFaceMeshToSEGS extends HasSingle_SEGS, ComfyNode<ImpactMediaPipeFaceMeshToSEGS_input> {
         nameInComfy: 'MediaPipeFaceMeshToSEGS'
         SEGS: Slot<'SEGS', 0>
@@ -7423,9 +7097,7 @@ declare global {
         right_pupil?: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | ImpactMaskToSEGS ("MaskToSEGS" in ComfyUI) [ImpactPack_Operation]           |
-    // |=============================================================================|
+    // MaskToSEGS [ImpactPack_Operation]
     export interface ImpactMaskToSEGS extends HasSingle_SEGS, ComfyNode<ImpactMaskToSEGS_input> {
         nameInComfy: 'MaskToSEGS'
         SEGS: Slot<'SEGS', 0>
@@ -7442,9 +7114,7 @@ declare global {
         drop_size?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactToBinaryMask ("ToBinaryMask" in ComfyUI) [ImpactPack_Operation]       |
-    // |=============================================================================|
+    // ToBinaryMask [ImpactPack_Operation]
     export interface ImpactToBinaryMask extends HasSingle_MASK, ComfyNode<ImpactToBinaryMask_input> {
         nameInComfy: 'ToBinaryMask'
         MASK: Slot<'MASK', 0>
@@ -7455,9 +7125,7 @@ declare global {
         threshold?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactMasksToMaskList ("MasksToMaskList" in ComfyUI) [ImpactPack_Operation]   |
-    // |=============================================================================|
+    // MasksToMaskList [ImpactPack_Operation]
     export interface ImpactMasksToMaskList extends HasSingle_MASK, ComfyNode<ImpactMasksToMaskList_input> {
         nameInComfy: 'MasksToMaskList'
         MASK: Slot<'MASK', 0>
@@ -7466,9 +7134,7 @@ declare global {
         masks: _MASKS
     }
 
-    // |=============================================================================|
-    // | ImpactMaskListToMaskBatch ("MaskListToMaskBatch" in ComfyUI) [ImpactPack_Operation]   |
-    // |=============================================================================|
+    // MaskListToMaskBatch [ImpactPack_Operation]
     export interface ImpactMaskListToMaskBatch extends HasSingle_MASKS, ComfyNode<ImpactMaskListToMaskBatch_input> {
         nameInComfy: 'MaskListToMaskBatch'
         MASKS: Slot<'MASKS', 0>
@@ -7477,9 +7143,7 @@ declare global {
         mask: _MASK
     }
 
-    // |=============================================================================|
-    // | ImpactBboxDetectorSEGS ("BboxDetectorSEGS" in ComfyUI) [ImpactPack_Detector]   |
-    // |=============================================================================|
+    // BboxDetectorSEGS [ImpactPack_Detector]
     export interface ImpactBboxDetectorSEGS extends HasSingle_SEGS, ComfyNode<ImpactBboxDetectorSEGS_input> {
         nameInComfy: 'BboxDetectorSEGS'
         SEGS: Slot<'SEGS', 0>
@@ -7497,9 +7161,7 @@ declare global {
         drop_size?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactSegmDetectorSEGS ("SegmDetectorSEGS" in ComfyUI) [ImpactPack_Detector]   |
-    // |=============================================================================|
+    // SegmDetectorSEGS [ImpactPack_Detector]
     export interface ImpactSegmDetectorSEGS extends HasSingle_SEGS, ComfyNode<ImpactSegmDetectorSEGS_input> {
         nameInComfy: 'SegmDetectorSEGS'
         SEGS: Slot<'SEGS', 0>
@@ -7517,9 +7179,7 @@ declare global {
         drop_size?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactONNXDetectorSEGS ("ONNXDetectorSEGS" in ComfyUI) [ImpactPack_Detector]   |
-    // |=============================================================================|
+    // ONNXDetectorSEGS [ImpactPack_Detector]
     export interface ImpactONNXDetectorSEGS extends HasSingle_SEGS, ComfyNode<ImpactONNXDetectorSEGS_input> {
         nameInComfy: 'ONNXDetectorSEGS'
         SEGS: Slot<'SEGS', 0>
@@ -7537,9 +7197,7 @@ declare global {
         drop_size?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactSimpleDetectorSEGS ("ImpactSimpleDetectorSEGS" in ComfyUI) [ImpactPack_Detector]   |
-    // |=============================================================================|
+    // ImpactSimpleDetectorSEGS [ImpactPack_Detector]
     export interface ImpactImpactSimpleDetectorSEGS extends HasSingle_SEGS, ComfyNode<ImpactImpactSimpleDetectorSEGS_input> {
         nameInComfy: 'ImpactSimpleDetectorSEGS'
         SEGS: Slot<'SEGS', 0>
@@ -7567,9 +7225,7 @@ declare global {
         segm_detector_opt?: _SEGM_DETECTOR
     }
 
-    // |=============================================================================|
-    // | ImpactImpactSimpleDetectorSEGSPipe ("ImpactSimpleDetectorSEGSPipe" in ComfyUI) [ImpactPack_Detector]   |
-    // |=============================================================================|
+    // ImpactSimpleDetectorSEGSPipe [ImpactPack_Detector]
     export interface ImpactImpactSimpleDetectorSEGSPipe
         extends HasSingle_SEGS,
             ComfyNode<ImpactImpactSimpleDetectorSEGSPipe_input> {
@@ -7597,9 +7253,7 @@ declare global {
         sam_mask_hint_threshold?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactControlNetApplySEGS ("ImpactControlNetApplySEGS" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactControlNetApplySEGS [ImpactPack_Util]
     export interface ImpactImpactControlNetApplySEGS extends HasSingle_SEGS, ComfyNode<ImpactImpactControlNetApplySEGS_input> {
         nameInComfy: 'ImpactControlNetApplySEGS'
         SEGS: Slot<'SEGS', 0>
@@ -7612,9 +7266,7 @@ declare global {
         segs_preprocessor?: _SEGS_PREPROCESSOR
     }
 
-    // |=============================================================================|
-    // | ImpactImpactDecomposeSEGS ("ImpactDecomposeSEGS" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactDecomposeSEGS [ImpactPack_Util]
     export interface ImpactImpactDecomposeSEGS
         extends HasSingle_SEGS_HEADER,
             HasSingle_SEG_ELT,
@@ -7627,9 +7279,7 @@ declare global {
         segs: _SEGS
     }
 
-    // |=============================================================================|
-    // | ImpactImpactAssembleSEGS ("ImpactAssembleSEGS" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactAssembleSEGS [ImpactPack_Util]
     export interface ImpactImpactAssembleSEGS extends HasSingle_SEGS, ComfyNode<ImpactImpactAssembleSEGS_input> {
         nameInComfy: 'ImpactAssembleSEGS'
         SEGS: Slot<'SEGS', 0>
@@ -7639,9 +7289,7 @@ declare global {
         seg_elt: _SEG_ELT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactFrom_SEG_ELT ("ImpactFrom_SEG_ELT" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactFrom_SEG_ELT [ImpactPack_Util]
     export interface ImpactImpactFrom_SEG_ELT
         extends HasSingle_SEG_ELT,
             HasSingle_IMAGE,
@@ -7666,9 +7314,7 @@ declare global {
         seg_elt: _SEG_ELT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactEdit_SEG_ELT ("ImpactEdit_SEG_ELT" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactEdit_SEG_ELT [ImpactPack_Util]
     export interface ImpactImpactEdit_SEG_ELT extends HasSingle_SEG_ELT, ComfyNode<ImpactImpactEdit_SEG_ELT_input> {
         nameInComfy: 'ImpactEdit_SEG_ELT'
         SEG_ELT: Slot<'SEG_ELT', 0>
@@ -7686,9 +7332,7 @@ declare global {
         label_opt?: _STRING
     }
 
-    // |=============================================================================|
-    // | ImpactImpactDilate_Mask_SEG_ELT ("ImpactDilate_Mask_SEG_ELT" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactDilate_Mask_SEG_ELT [ImpactPack_Util]
     export interface ImpactImpactDilate_Mask_SEG_ELT extends HasSingle_SEG_ELT, ComfyNode<ImpactImpactDilate_Mask_SEG_ELT_input> {
         nameInComfy: 'ImpactDilate_Mask_SEG_ELT'
         SEG_ELT: Slot<'SEG_ELT', 0>
@@ -7699,9 +7343,7 @@ declare global {
         dilation?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactDilateMask ("ImpactDilateMask" in ComfyUI) [ImpactPack_Util]    |
-    // |=============================================================================|
+    // ImpactDilateMask [ImpactPack_Util]
     export interface ImpactImpactDilateMask extends HasSingle_MASK, ComfyNode<ImpactImpactDilateMask_input> {
         nameInComfy: 'ImpactDilateMask'
         MASK: Slot<'MASK', 0>
@@ -7712,9 +7354,7 @@ declare global {
         dilation?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactScaleBy_BBOX_SEG_ELT ("ImpactScaleBy_BBOX_SEG_ELT" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactScaleBy_BBOX_SEG_ELT [ImpactPack_Util]
     export interface ImpactImpactScaleBy_BBOX_SEG_ELT
         extends HasSingle_SEG_ELT,
             ComfyNode<ImpactImpactScaleBy_BBOX_SEG_ELT_input> {
@@ -7727,9 +7367,7 @@ declare global {
         scale_by?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImpactBboxDetectorCombined_v2 ("BboxDetectorCombined_v2" in ComfyUI) [ImpactPack_Detector]   |
-    // |=============================================================================|
+    // BboxDetectorCombined_v2 [ImpactPack_Detector]
     export interface ImpactBboxDetectorCombined_v2 extends HasSingle_MASK, ComfyNode<ImpactBboxDetectorCombined_v2_input> {
         nameInComfy: 'BboxDetectorCombined_v2'
         MASK: Slot<'MASK', 0>
@@ -7743,9 +7381,7 @@ declare global {
         dilation?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactSegmDetectorCombined_v2 ("SegmDetectorCombined_v2" in ComfyUI) [ImpactPack_Detector]   |
-    // |=============================================================================|
+    // SegmDetectorCombined_v2 [ImpactPack_Detector]
     export interface ImpactSegmDetectorCombined_v2 extends HasSingle_MASK, ComfyNode<ImpactSegmDetectorCombined_v2_input> {
         nameInComfy: 'SegmDetectorCombined_v2'
         MASK: Slot<'MASK', 0>
@@ -7759,9 +7395,7 @@ declare global {
         dilation?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactSegsToCombinedMask ("SegsToCombinedMask" in ComfyUI) [ImpactPack_Operation]   |
-    // |=============================================================================|
+    // SegsToCombinedMask [ImpactPack_Operation]
     export interface ImpactSegsToCombinedMask extends HasSingle_MASK, ComfyNode<ImpactSegsToCombinedMask_input> {
         nameInComfy: 'SegsToCombinedMask'
         MASK: Slot<'MASK', 0>
@@ -7770,9 +7404,7 @@ declare global {
         segs: _SEGS
     }
 
-    // |=============================================================================|
-    // | ImpactKSamplerProvider ("KSamplerProvider" in ComfyUI) [ImpactPack_Sampler]   |
-    // |=============================================================================|
+    // KSamplerProvider [ImpactPack_Sampler]
     export interface ImpactKSamplerProvider extends HasSingle_KSAMPLER, ComfyNode<ImpactKSamplerProvider_input> {
         nameInComfy: 'KSamplerProvider'
         KSAMPLER: Slot<'KSAMPLER', 0>
@@ -7791,9 +7423,7 @@ declare global {
         basic_pipe: _BASIC_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactTwoSamplersForMask ("TwoSamplersForMask" in ComfyUI) [ImpactPack_Sampler]   |
-    // |=============================================================================|
+    // TwoSamplersForMask [ImpactPack_Sampler]
     export interface ImpactTwoSamplersForMask extends HasSingle_LATENT, ComfyNode<ImpactTwoSamplersForMask_input> {
         nameInComfy: 'TwoSamplersForMask'
         LATENT: Slot<'LATENT', 0>
@@ -7805,9 +7435,7 @@ declare global {
         mask: _MASK
     }
 
-    // |=============================================================================|
-    // | ImpactTiledKSamplerProvider ("TiledKSamplerProvider" in ComfyUI) [ImpactPack_Sampler]   |
-    // |=============================================================================|
+    // TiledKSamplerProvider [ImpactPack_Sampler]
     export interface ImpactTiledKSamplerProvider extends HasSingle_KSAMPLER, ComfyNode<ImpactTiledKSamplerProvider_input> {
         nameInComfy: 'TiledKSamplerProvider'
         KSAMPLER: Slot<'KSAMPLER', 0>
@@ -7831,9 +7459,7 @@ declare global {
         basic_pipe: _BASIC_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactKSamplerAdvancedProvider ("KSamplerAdvancedProvider" in ComfyUI) [ImpactPack_Sampler]   |
-    // |=============================================================================|
+    // KSamplerAdvancedProvider [ImpactPack_Sampler]
     export interface ImpactKSamplerAdvancedProvider
         extends HasSingle_KSAMPLER_ADVANCED,
             ComfyNode<ImpactKSamplerAdvancedProvider_input> {
@@ -7848,9 +7474,7 @@ declare global {
         basic_pipe: _BASIC_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactTwoAdvancedSamplersForMask ("TwoAdvancedSamplersForMask" in ComfyUI) [ImpactPack_Sampler]   |
-    // |=============================================================================|
+    // TwoAdvancedSamplersForMask [ImpactPack_Sampler]
     export interface ImpactTwoAdvancedSamplersForMask
         extends HasSingle_LATENT,
             ComfyNode<ImpactTwoAdvancedSamplersForMask_input> {
@@ -7872,9 +7496,7 @@ declare global {
         overlap_factor?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactPreviewBridge ("PreviewBridge" in ComfyUI) [ImpactPack_Util]          |
-    // |=============================================================================|
+    // PreviewBridge [ImpactPack_Util]
     export interface ImpactPreviewBridge extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImpactPreviewBridge_input> {
         nameInComfy: 'PreviewBridge'
         IMAGE: Slot<'IMAGE', 0>
@@ -7885,9 +7507,7 @@ declare global {
         image?: Enum_ImpactPreviewBridge_Image
     }
 
-    // |=============================================================================|
-    // | ImpactImageSender ("ImageSender" in ComfyUI) [ImpactPack_Util]              |
-    // |=============================================================================|
+    // ImageSender [ImpactPack_Util]
     export interface ImpactImageSender extends ComfyNode<ImpactImageSender_input> {
         nameInComfy: 'ImageSender'
     }
@@ -7899,9 +7519,7 @@ declare global {
         link_id?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImageReceiver ("ImageReceiver" in ComfyUI) [ImpactPack_Util]          |
-    // |=============================================================================|
+    // ImageReceiver [ImpactPack_Util]
     export interface ImpactImageReceiver extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImpactImageReceiver_input> {
         nameInComfy: 'ImageReceiver'
         IMAGE: Slot<'IMAGE', 0>
@@ -7913,9 +7531,7 @@ declare global {
         link_id?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactLatentSender ("LatentSender" in ComfyUI) [ImpactPack_Util]            |
-    // |=============================================================================|
+    // LatentSender [ImpactPack_Util]
     export interface ImpactLatentSender extends ComfyNode<ImpactLatentSender_input> {
         nameInComfy: 'LatentSender'
     }
@@ -7928,9 +7544,7 @@ declare global {
         preview_method: Enum_ImpactLatentSender_Preview_method
     }
 
-    // |=============================================================================|
-    // | ImpactLatentReceiver ("LatentReceiver" in ComfyUI) [ImpactPack_Util]        |
-    // |=============================================================================|
+    // LatentReceiver [ImpactPack_Util]
     export interface ImpactLatentReceiver extends HasSingle_LATENT, ComfyNode<ImpactLatentReceiver_input> {
         nameInComfy: 'LatentReceiver'
         LATENT: Slot<'LATENT', 0>
@@ -7941,9 +7555,7 @@ declare global {
         link_id?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImageMaskSwitch ("ImageMaskSwitch" in ComfyUI) [ImpactPack_Util]      |
-    // |=============================================================================|
+    // ImageMaskSwitch [ImpactPack_Util]
     export interface ImpactImageMaskSwitch extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<ImpactImageMaskSwitch_input> {
         nameInComfy: 'ImageMaskSwitch'
         IMAGE: Slot<'IMAGE', 0>
@@ -7962,9 +7574,7 @@ declare global {
         mask4_opt?: _MASK
     }
 
-    // |=============================================================================|
-    // | ImpactLatentSwitch ("LatentSwitch" in ComfyUI) [ImpactPack_Util]            |
-    // |=============================================================================|
+    // LatentSwitch [ImpactPack_Util]
     export interface ImpactLatentSwitch extends HasSingle_STAR, HasSingle_STRING, ComfyNode<ImpactLatentSwitch_input> {
         nameInComfy: 'LatentSwitch'
         '*': Slot<'*', 0>
@@ -7978,9 +7588,7 @@ declare global {
         input1?: _STAR
     }
 
-    // |=============================================================================|
-    // | ImpactSEGSSwitch ("SEGSSwitch" in ComfyUI) [ImpactPack_Util]                |
-    // |=============================================================================|
+    // SEGSSwitch [ImpactPack_Util]
     export interface ImpactSEGSSwitch extends HasSingle_STAR, HasSingle_STRING, ComfyNode<ImpactSEGSSwitch_input> {
         nameInComfy: 'SEGSSwitch'
         '*': Slot<'*', 0>
@@ -7994,9 +7602,7 @@ declare global {
         input1?: _STAR
     }
 
-    // |=============================================================================|
-    // | ImpactImpactSwitch ("ImpactSwitch" in ComfyUI) [ImpactPack_Util]            |
-    // |=============================================================================|
+    // ImpactSwitch [ImpactPack_Util]
     export interface ImpactImpactSwitch extends HasSingle_STAR, HasSingle_STRING, ComfyNode<ImpactImpactSwitch_input> {
         nameInComfy: 'ImpactSwitch'
         '*': Slot<'*', 0>
@@ -8010,9 +7616,7 @@ declare global {
         input1?: _STAR
     }
 
-    // |=============================================================================|
-    // | ImpactImpactInversedSwitch ("ImpactInversedSwitch" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactInversedSwitch [ImpactPack_Util]
     export interface ImpactImpactInversedSwitch extends ComfyNode<ImpactImpactInversedSwitch_input> {
         nameInComfy: 'ImpactInversedSwitch'
         '*': Slot<'*', 0>
@@ -8122,9 +7726,7 @@ declare global {
         input: _STAR
     }
 
-    // |=============================================================================|
-    // | ImpactImpactWildcardProcessor ("ImpactWildcardProcessor" in ComfyUI) [ImpactPack_Prompt]   |
-    // |=============================================================================|
+    // ImpactWildcardProcessor [ImpactPack_Prompt]
     export interface ImpactImpactWildcardProcessor extends HasSingle_STRING, ComfyNode<ImpactImpactWildcardProcessor_input> {
         nameInComfy: 'ImpactWildcardProcessor'
         STRING: Slot<'STRING', 0>
@@ -8140,9 +7742,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactWildcardEncode ("ImpactWildcardEncode" in ComfyUI) [ImpactPack_Prompt]   |
-    // |=============================================================================|
+    // ImpactWildcardEncode [ImpactPack_Prompt]
     export interface ImpactImpactWildcardEncode
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -8169,9 +7769,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactSEGSDetailer ("SEGSDetailer" in ComfyUI) [ImpactPack_Detailer]        |
-    // |=============================================================================|
+    // SEGSDetailer [ImpactPack_Detailer]
     export interface ImpactSEGSDetailer extends HasSingle_SEGS, HasSingle_IMAGE, ComfyNode<ImpactSEGSDetailer_input> {
         nameInComfy: 'SEGSDetailer'
         SEGS: Slot<'SEGS', 0>
@@ -8206,9 +7804,7 @@ declare global {
         refiner_basic_pipe_opt?: _BASIC_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactSEGSPaste ("SEGSPaste" in ComfyUI) [ImpactPack_Detailer]              |
-    // |=============================================================================|
+    // SEGSPaste [ImpactPack_Detailer]
     export interface ImpactSEGSPaste extends HasSingle_IMAGE, ComfyNode<ImpactSEGSPaste_input> {
         nameInComfy: 'SEGSPaste'
         IMAGE: Slot<'IMAGE', 0>
@@ -8221,9 +7817,7 @@ declare global {
         ref_image_opt?: _IMAGE
     }
 
-    // |=============================================================================|
-    // | ImpactSEGSPreview ("SEGSPreview" in ComfyUI) [ImpactPack_Util]              |
-    // |=============================================================================|
+    // SEGSPreview [ImpactPack_Util]
     export interface ImpactSEGSPreview extends ComfyNode<ImpactSEGSPreview_input> {
         nameInComfy: 'SEGSPreview'
     }
@@ -8232,9 +7826,7 @@ declare global {
         fallback_image_opt?: _IMAGE
     }
 
-    // |=============================================================================|
-    // | ImpactSEGSToImageList ("SEGSToImageList" in ComfyUI) [ImpactPack_Util]      |
-    // |=============================================================================|
+    // SEGSToImageList [ImpactPack_Util]
     export interface ImpactSEGSToImageList extends HasSingle_IMAGE, ComfyNode<ImpactSEGSToImageList_input> {
         nameInComfy: 'SEGSToImageList'
         IMAGE: Slot<'IMAGE', 0>
@@ -8244,9 +7836,7 @@ declare global {
         fallback_image_opt?: _IMAGE
     }
 
-    // |=============================================================================|
-    // | ImpactImpactSEGSToMaskList ("ImpactSEGSToMaskList" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactSEGSToMaskList [ImpactPack_Util]
     export interface ImpactImpactSEGSToMaskList extends HasSingle_MASK, ComfyNode<ImpactImpactSEGSToMaskList_input> {
         nameInComfy: 'ImpactSEGSToMaskList'
         MASK: Slot<'MASK', 0>
@@ -8255,9 +7845,7 @@ declare global {
         segs: _SEGS
     }
 
-    // |=============================================================================|
-    // | ImpactImpactSEGSToMaskBatch ("ImpactSEGSToMaskBatch" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactSEGSToMaskBatch [ImpactPack_Util]
     export interface ImpactImpactSEGSToMaskBatch extends HasSingle_MASKS, ComfyNode<ImpactImpactSEGSToMaskBatch_input> {
         nameInComfy: 'ImpactSEGSToMaskBatch'
         MASKS: Slot<'MASKS', 0>
@@ -8266,9 +7854,7 @@ declare global {
         segs: _SEGS
     }
 
-    // |=============================================================================|
-    // | ImpactImpactSEGSConcat ("ImpactSEGSConcat" in ComfyUI) [ImpactPack_Util]    |
-    // |=============================================================================|
+    // ImpactSEGSConcat [ImpactPack_Util]
     export interface ImpactImpactSEGSConcat extends HasSingle_SEGS, ComfyNode<ImpactImpactSEGSConcat_input> {
         nameInComfy: 'ImpactSEGSConcat'
         SEGS: Slot<'SEGS', 0>
@@ -8278,9 +7864,7 @@ declare global {
         segs2: _SEGS
     }
 
-    // |=============================================================================|
-    // | ImpactKSamplerBasicPipe [sampling]                                          |
-    // |=============================================================================|
+    // ImpactKSamplerBasicPipe [sampling]
     export interface ImpactKSamplerBasicPipe
         extends HasSingle_BASIC_PIPE,
             HasSingle_LATENT,
@@ -8306,9 +7890,7 @@ declare global {
         denoise?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | ImpactKSamplerAdvancedBasicPipe [sampling]                                  |
-    // |=============================================================================|
+    // ImpactKSamplerAdvancedBasicPipe [sampling]
     export interface ImpactKSamplerAdvancedBasicPipe
         extends HasSingle_BASIC_PIPE,
             HasSingle_LATENT,
@@ -8340,9 +7922,7 @@ declare global {
         return_with_leftover_noise?: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | ImpactReencodeLatent ("ReencodeLatent" in ComfyUI) [ImpactPack_Util]        |
-    // |=============================================================================|
+    // ReencodeLatent [ImpactPack_Util]
     export interface ImpactReencodeLatent extends HasSingle_LATENT, ComfyNode<ImpactReencodeLatent_input> {
         nameInComfy: 'ReencodeLatent'
         LATENT: Slot<'LATENT', 0>
@@ -8356,9 +7936,7 @@ declare global {
         tile_size?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactReencodeLatentPipe ("ReencodeLatentPipe" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ReencodeLatentPipe [ImpactPack_Util]
     export interface ImpactReencodeLatentPipe extends HasSingle_LATENT, ComfyNode<ImpactReencodeLatentPipe_input> {
         nameInComfy: 'ReencodeLatentPipe'
         LATENT: Slot<'LATENT', 0>
@@ -8370,9 +7948,7 @@ declare global {
         output_basic_pipe: _BASIC_PIPE
     }
 
-    // |=============================================================================|
-    // | ImpactImpactImageBatchToImageList ("ImpactImageBatchToImageList" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactImageBatchToImageList [ImpactPack_Util]
     export interface ImpactImpactImageBatchToImageList
         extends HasSingle_IMAGE,
             ComfyNode<ImpactImpactImageBatchToImageList_input> {
@@ -8383,9 +7959,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | ImpactImpactMakeImageList ("ImpactMakeImageList" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactMakeImageList [ImpactPack_Util]
     export interface ImpactImpactMakeImageList extends HasSingle_IMAGE, ComfyNode<ImpactImpactMakeImageList_input> {
         nameInComfy: 'ImpactMakeImageList'
         IMAGE: Slot<'IMAGE', 0>
@@ -8394,9 +7968,7 @@ declare global {
         image1: _IMAGE
     }
 
-    // |=============================================================================|
-    // | ImpactRegionalSampler ("RegionalSampler" in ComfyUI) [ImpactPack_Regional]   |
-    // |=============================================================================|
+    // RegionalSampler [ImpactPack_Regional]
     export interface ImpactRegionalSampler extends HasSingle_LATENT, ComfyNode<ImpactRegionalSampler_input> {
         nameInComfy: 'RegionalSampler'
         LATENT: Slot<'LATENT', 0>
@@ -8415,9 +7987,7 @@ declare global {
         overlap_factor?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactCombineRegionalPrompts ("CombineRegionalPrompts" in ComfyUI) [ImpactPack_Regional]   |
-    // |=============================================================================|
+    // CombineRegionalPrompts [ImpactPack_Regional]
     export interface ImpactCombineRegionalPrompts
         extends HasSingle_REGIONAL_PROMPTS,
             ComfyNode<ImpactCombineRegionalPrompts_input> {
@@ -8428,9 +7998,7 @@ declare global {
         regional_prompts1: _REGIONAL_PROMPTS
     }
 
-    // |=============================================================================|
-    // | ImpactRegionalPrompt ("RegionalPrompt" in ComfyUI) [ImpactPack_Regional]    |
-    // |=============================================================================|
+    // RegionalPrompt [ImpactPack_Regional]
     export interface ImpactRegionalPrompt extends HasSingle_REGIONAL_PROMPTS, ComfyNode<ImpactRegionalPrompt_input> {
         nameInComfy: 'RegionalPrompt'
         REGIONAL_PROMPTS: Slot<'REGIONAL_PROMPTS', 0>
@@ -8440,9 +8008,7 @@ declare global {
         advanced_sampler: _KSAMPLER_ADVANCED
     }
 
-    // |=============================================================================|
-    // | ImpactImpactSEGSLabelFilter ("ImpactSEGSLabelFilter" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactSEGSLabelFilter [ImpactPack_Util]
     export interface ImpactImpactSEGSLabelFilter extends ComfyNode<ImpactImpactSEGSLabelFilter_input> {
         nameInComfy: 'ImpactSEGSLabelFilter'
         SEGS: Slot<'SEGS', 0>
@@ -8455,9 +8021,7 @@ declare global {
         labels: _STRING
     }
 
-    // |=============================================================================|
-    // | ImpactImpactSEGSRangeFilter ("ImpactSEGSRangeFilter" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactSEGSRangeFilter [ImpactPack_Util]
     export interface ImpactImpactSEGSRangeFilter extends ComfyNode<ImpactImpactSEGSRangeFilter_input> {
         nameInComfy: 'ImpactSEGSRangeFilter'
         SEGS: Slot<'SEGS', 0>
@@ -8474,9 +8038,7 @@ declare global {
         max_value?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactSEGSOrderedFilter ("ImpactSEGSOrderedFilter" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactSEGSOrderedFilter [ImpactPack_Util]
     export interface ImpactImpactSEGSOrderedFilter extends ComfyNode<ImpactImpactSEGSOrderedFilter_input> {
         nameInComfy: 'ImpactSEGSOrderedFilter'
         SEGS: Slot<'SEGS', 0>
@@ -8493,9 +8055,7 @@ declare global {
         take_count?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactCompare ("ImpactCompare" in ComfyUI) [ImpactPack_Logic]         |
-    // |=============================================================================|
+    // ImpactCompare [ImpactPack_Logic]
     export interface ImpactImpactCompare extends HasSingle_BOOLEAN, ComfyNode<ImpactImpactCompare_input> {
         nameInComfy: 'ImpactCompare'
         BOOLEAN: Slot<'BOOLEAN', 0>
@@ -8506,9 +8066,7 @@ declare global {
         b: _STAR
     }
 
-    // |=============================================================================|
-    // | ImpactImpactConditionalBranch ("ImpactConditionalBranch" in ComfyUI) [ImpactPack_Logic]   |
-    // |=============================================================================|
+    // ImpactConditionalBranch [ImpactPack_Logic]
     export interface ImpactImpactConditionalBranch extends HasSingle_STAR, ComfyNode<ImpactImpactConditionalBranch_input> {
         nameInComfy: 'ImpactConditionalBranch'
         '*': Slot<'*', 0>
@@ -8520,9 +8078,7 @@ declare global {
         ff_value: _STAR
     }
 
-    // |=============================================================================|
-    // | ImpactImpactInt ("ImpactInt" in ComfyUI) [ImpactPack_Logic]                 |
-    // |=============================================================================|
+    // ImpactInt [ImpactPack_Logic]
     export interface ImpactImpactInt extends HasSingle_INT, ComfyNode<ImpactImpactInt_input> {
         nameInComfy: 'ImpactInt'
         INT: Slot<'INT', 0>
@@ -8532,9 +8088,7 @@ declare global {
         value?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactValueSender ("ImpactValueSender" in ComfyUI) [ImpactPack_Logic]   |
-    // |=============================================================================|
+    // ImpactValueSender [ImpactPack_Logic]
     export interface ImpactImpactValueSender extends ComfyNode<ImpactImpactValueSender_input> {
         nameInComfy: 'ImpactValueSender'
     }
@@ -8544,9 +8098,7 @@ declare global {
         link_id?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactValueReceiver ("ImpactValueReceiver" in ComfyUI) [ImpactPack_Logic]   |
-    // |=============================================================================|
+    // ImpactValueReceiver [ImpactPack_Logic]
     export interface ImpactImpactValueReceiver extends HasSingle_STAR, ComfyNode<ImpactImpactValueReceiver_input> {
         nameInComfy: 'ImpactValueReceiver'
         '*': Slot<'*', 0>
@@ -8559,9 +8111,7 @@ declare global {
         link_id?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactImageInfo ("ImpactImageInfo" in ComfyUI) [ImpactPack_Logic__for_test]   |
-    // |=============================================================================|
+    // ImpactImageInfo [ImpactPack_Logic__for_test]
     export interface ImpactImpactImageInfo extends ComfyNode<ImpactImpactImageInfo_input> {
         nameInComfy: 'ImpactImageInfo'
         INT: Slot<'INT', 0>
@@ -8573,9 +8123,7 @@ declare global {
         value: _IMAGE
     }
 
-    // |=============================================================================|
-    // | ImpactImpactMinMax ("ImpactMinMax" in ComfyUI) [ImpactPack_Logic__for_test]   |
-    // |=============================================================================|
+    // ImpactMinMax [ImpactPack_Logic__for_test]
     export interface ImpactImpactMinMax extends HasSingle_INT, ComfyNode<ImpactImpactMinMax_input> {
         nameInComfy: 'ImpactMinMax'
         INT: Slot<'INT', 0>
@@ -8587,9 +8135,7 @@ declare global {
         b: _STAR
     }
 
-    // |=============================================================================|
-    // | ImpactImpactNeg ("ImpactNeg" in ComfyUI) [ImpactPack_Logic]                 |
-    // |=============================================================================|
+    // ImpactNeg [ImpactPack_Logic]
     export interface ImpactImpactNeg extends HasSingle_BOOLEAN, ComfyNode<ImpactImpactNeg_input> {
         nameInComfy: 'ImpactNeg'
         BOOLEAN: Slot<'BOOLEAN', 0>
@@ -8599,9 +8145,7 @@ declare global {
         value: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | ImpactImpactConditionalStopIteration ("ImpactConditionalStopIteration" in ComfyUI) [ImpactPack_Logic]   |
-    // |=============================================================================|
+    // ImpactConditionalStopIteration [ImpactPack_Logic]
     export interface ImpactImpactConditionalStopIteration extends ComfyNode<ImpactImpactConditionalStopIteration_input> {
         nameInComfy: 'ImpactConditionalStopIteration'
     }
@@ -8610,9 +8154,7 @@ declare global {
         cond: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | ImpactImpactStringSelector ("ImpactStringSelector" in ComfyUI) [ImpactPack_Util]   |
-    // |=============================================================================|
+    // ImpactStringSelector [ImpactPack_Util]
     export interface ImpactImpactStringSelector extends HasSingle_STRING, ComfyNode<ImpactImpactStringSelector_input> {
         nameInComfy: 'ImpactStringSelector'
         STRING: Slot<'STRING', 0>
@@ -8626,9 +8168,7 @@ declare global {
         select?: _INT
     }
 
-    // |=============================================================================|
-    // | ImpactRemoveNoiseMask ("RemoveNoiseMask" in ComfyUI) [ImpactPack_Util]      |
-    // |=============================================================================|
+    // RemoveNoiseMask [ImpactPack_Util]
     export interface ImpactRemoveNoiseMask extends HasSingle_LATENT, ComfyNode<ImpactRemoveNoiseMask_input> {
         nameInComfy: 'RemoveNoiseMask'
         LATENT: Slot<'LATENT', 0>
@@ -8637,9 +8177,7 @@ declare global {
         samples: _LATENT
     }
 
-    // |=============================================================================|
-    // | ImpactImpactLogger ("ImpactLogger" in ComfyUI) [ImpactPack_Debug]           |
-    // |=============================================================================|
+    // ImpactLogger [ImpactPack_Debug]
     export interface ImpactImpactLogger extends ComfyNode<ImpactImpactLogger_input> {
         nameInComfy: 'ImpactLogger'
     }
@@ -8647,18 +8185,14 @@ declare global {
         data: _STAR
     }
 
-    // |=============================================================================|
-    // | ImpactImpactDummyInput ("ImpactDummyInput" in ComfyUI) [ImpactPack_Debug]   |
-    // |=============================================================================|
+    // ImpactDummyInput [ImpactPack_Debug]
     export interface ImpactImpactDummyInput extends HasSingle_STAR, ComfyNode<ImpactImpactDummyInput_input> {
         nameInComfy: 'ImpactDummyInput'
         '*': Slot<'*', 0>
     }
     export type ImpactImpactDummyInput_input = {}
 
-    // |=============================================================================|
-    // | ImpactUltralyticsDetectorProvider ("UltralyticsDetectorProvider" in ComfyUI) [ImpactPack]   |
-    // |=============================================================================|
+    // UltralyticsDetectorProvider [ImpactPack]
     export interface ImpactUltralyticsDetectorProvider
         extends HasSingle_BBOX_DETECTOR,
             HasSingle_SEGM_DETECTOR,
@@ -8671,9 +8205,7 @@ declare global {
         model_name: Enum_ImpactUltralyticsDetectorProvider_Model_name
     }
 
-    // |=============================================================================|
-    // | XYInputLoraBlockWeightInspire ("XY Input: Lora Block Weight //Inspire" in ComfyUI) [InspirePack_LoraBlockWeight]   |
-    // |=============================================================================|
+    // XY Input: Lora Block Weight //Inspire [InspirePack_LoraBlockWeight]
     export interface XYInputLoraBlockWeightInspire extends ComfyNode<XYInputLoraBlockWeightInspire_input> {
         nameInComfy: 'XY Input: Lora Block Weight //Inspire'
         XY: Slot<'XY', 0>
@@ -8704,9 +8236,7 @@ declare global {
         xyplot_mode: Enum_XYInputLoraBlockWeightInspire_Xyplot_mode
     }
 
-    // |=============================================================================|
-    // | LoraLoaderBlockWeightInspire ("LoraLoaderBlockWeight //Inspire" in ComfyUI) [InspirePack_LoraBlockWeight]   |
-    // |=============================================================================|
+    // LoraLoaderBlockWeight //Inspire [InspirePack_LoraBlockWeight]
     export interface LoraLoaderBlockWeightInspire
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -8738,9 +8268,7 @@ declare global {
         block_vector?: _STRING
     }
 
-    // |=============================================================================|
-    // | LoraBlockInfoInspire ("LoraBlockInfo //Inspire" in ComfyUI) [InspirePack_LoraBlockWeight]   |
-    // |=============================================================================|
+    // LoraBlockInfo //Inspire [InspirePack_LoraBlockWeight]
     export interface LoraBlockInfoInspire extends ComfyNode<LoraBlockInfoInspire_input> {
         nameInComfy: 'LoraBlockInfo //Inspire'
     }
@@ -8752,9 +8280,7 @@ declare global {
         block_info: _STRING
     }
 
-    // |=============================================================================|
-    // | OpenPose_Preprocessor_Provider_for_SEGSInspire ("OpenPose_Preprocessor_Provider_for_SEGS //Inspire" in ComfyUI) [InspirePack_SEGS_ControlNet]   |
-    // |=============================================================================|
+    // OpenPose_Preprocessor_Provider_for_SEGS //Inspire [InspirePack_SEGS_ControlNet]
     export interface OpenPose_Preprocessor_Provider_for_SEGSInspire
         extends HasSingle_SEGS_PREPROCESSOR,
             ComfyNode<OpenPose_Preprocessor_Provider_for_SEGSInspire_input> {
@@ -8770,9 +8296,7 @@ declare global {
         detect_face?: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | DWPreprocessor_Provider_for_SEGSInspire ("DWPreprocessor_Provider_for_SEGS //Inspire" in ComfyUI) [InspirePack_SEGS_ControlNet]   |
-    // |=============================================================================|
+    // DWPreprocessor_Provider_for_SEGS //Inspire [InspirePack_SEGS_ControlNet]
     export interface DWPreprocessor_Provider_for_SEGSInspire
         extends HasSingle_SEGS_PREPROCESSOR,
             ComfyNode<DWPreprocessor_Provider_for_SEGSInspire_input> {
@@ -8788,9 +8312,7 @@ declare global {
         detect_face?: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | MiDaS_DepthMap_Preprocessor_Provider_for_SEGSInspire ("MiDaS_DepthMap_Preprocessor_Provider_for_SEGS //Inspire" in ComfyUI) [InspirePack_SEGS_ControlNet]   |
-    // |=============================================================================|
+    // MiDaS_DepthMap_Preprocessor_Provider_for_SEGS //Inspire [InspirePack_SEGS_ControlNet]
     export interface MiDaS_DepthMap_Preprocessor_Provider_for_SEGSInspire
         extends HasSingle_SEGS_PREPROCESSOR,
             ComfyNode<MiDaS_DepthMap_Preprocessor_Provider_for_SEGSInspire_input> {
@@ -8804,9 +8326,7 @@ declare global {
         bg_threshold?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | LeRes_DepthMap_Preprocessor_Provider_for_SEGSInspire ("LeRes_DepthMap_Preprocessor_Provider_for_SEGS //Inspire" in ComfyUI) [InspirePack_SEGS_ControlNet]   |
-    // |=============================================================================|
+    // LeRes_DepthMap_Preprocessor_Provider_for_SEGS //Inspire [InspirePack_SEGS_ControlNet]
     export interface LeRes_DepthMap_Preprocessor_Provider_for_SEGSInspire
         extends HasSingle_SEGS_PREPROCESSOR,
             ComfyNode<LeRes_DepthMap_Preprocessor_Provider_for_SEGSInspire_input> {
@@ -8822,9 +8342,7 @@ declare global {
         boost?: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | Canny_Preprocessor_Provider_for_SEGSInspire ("Canny_Preprocessor_Provider_for_SEGS //Inspire" in ComfyUI) [InspirePack_SEGS_ControlNet]   |
-    // |=============================================================================|
+    // Canny_Preprocessor_Provider_for_SEGS //Inspire [InspirePack_SEGS_ControlNet]
     export interface Canny_Preprocessor_Provider_for_SEGSInspire
         extends HasSingle_SEGS_PREPROCESSOR,
             ComfyNode<Canny_Preprocessor_Provider_for_SEGSInspire_input> {
@@ -8838,9 +8356,7 @@ declare global {
         high_threshold?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGSInspire ("MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGS //Inspire" in ComfyUI) [InspirePack_SEGS_ControlNet]   |
-    // |=============================================================================|
+    // MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGS //Inspire [InspirePack_SEGS_ControlNet]
     export interface MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGSInspire
         extends HasSingle_SEGS_PREPROCESSOR,
             ComfyNode<MediaPipe_FaceMesh_Preprocessor_Provider_for_SEGSInspire_input> {
@@ -8854,9 +8370,7 @@ declare global {
         min_confidence?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | MediaPipeFaceMeshDetectorProviderInspire ("MediaPipeFaceMeshDetectorProvider //Inspire" in ComfyUI) [InspirePack_Detector]   |
-    // |=============================================================================|
+    // MediaPipeFaceMeshDetectorProvider //Inspire [InspirePack_Detector]
     export interface MediaPipeFaceMeshDetectorProviderInspire
         extends HasSingle_BBOX_DETECTOR,
             HasSingle_SEGM_DETECTOR,
@@ -8886,9 +8400,7 @@ declare global {
         right_pupil?: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | HEDPreprocessor_Provider_for_SEGSInspire ("HEDPreprocessor_Provider_for_SEGS //Inspire" in ComfyUI) [InspirePack_SEGS_ControlNet]   |
-    // |=============================================================================|
+    // HEDPreprocessor_Provider_for_SEGS //Inspire [InspirePack_SEGS_ControlNet]
     export interface HEDPreprocessor_Provider_for_SEGSInspire
         extends HasSingle_SEGS_PREPROCESSOR,
             ComfyNode<HEDPreprocessor_Provider_for_SEGSInspire_input> {
@@ -8900,9 +8412,7 @@ declare global {
         safe?: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | FakeScribblePreprocessor_Provider_for_SEGSInspire ("FakeScribblePreprocessor_Provider_for_SEGS //Inspire" in ComfyUI) [InspirePack_SEGS_ControlNet]   |
-    // |=============================================================================|
+    // FakeScribblePreprocessor_Provider_for_SEGS //Inspire [InspirePack_SEGS_ControlNet]
     export interface FakeScribblePreprocessor_Provider_for_SEGSInspire
         extends HasSingle_SEGS_PREPROCESSOR,
             ComfyNode<FakeScribblePreprocessor_Provider_for_SEGSInspire_input> {
@@ -8914,9 +8424,7 @@ declare global {
         safe?: _BOOLEAN
     }
 
-    // |=============================================================================|
-    // | KSamplerInspire ("KSampler //Inspire" in ComfyUI) [InspirePack_a1111_compat]   |
-    // |=============================================================================|
+    // KSampler //Inspire [InspirePack_a1111_compat]
     export interface KSamplerInspire extends HasSingle_LATENT, ComfyNode<KSamplerInspire_input> {
         nameInComfy: 'KSampler //Inspire'
         LATENT: Slot<'LATENT', 0>
@@ -8939,9 +8447,7 @@ declare global {
         noise_mode: Enum_KSamplerInspire_Noise_mode
     }
 
-    // |=============================================================================|
-    // | LoadPromptsFromDirInspire ("LoadPromptsFromDir //Inspire" in ComfyUI) [InspirePack_prompt]   |
-    // |=============================================================================|
+    // LoadPromptsFromDir //Inspire [InspirePack_prompt]
     export interface LoadPromptsFromDirInspire extends HasSingle_ZIPPED_PROMPT, ComfyNode<LoadPromptsFromDirInspire_input> {
         nameInComfy: 'LoadPromptsFromDir //Inspire'
         ZIPPED_PROMPT: Slot<'ZIPPED_PROMPT', 0>
@@ -8950,9 +8456,7 @@ declare global {
         prompt_dir: Enum_LoadPromptsFromDirInspire_Prompt_dir
     }
 
-    // |=============================================================================|
-    // | UnzipPromptInspire ("UnzipPrompt //Inspire" in ComfyUI) [InspirePack_prompt]   |
-    // |=============================================================================|
+    // UnzipPrompt //Inspire [InspirePack_prompt]
     export interface UnzipPromptInspire extends ComfyNode<UnzipPromptInspire_input> {
         nameInComfy: 'UnzipPrompt //Inspire'
         STRING: Slot<'STRING', 0>
@@ -8963,9 +8467,7 @@ declare global {
         zipped_prompt: _ZIPPED_PROMPT
     }
 
-    // |=============================================================================|
-    // | ZipPromptInspire ("ZipPrompt //Inspire" in ComfyUI) [InspirePack_prompt]    |
-    // |=============================================================================|
+    // ZipPrompt //Inspire [InspirePack_prompt]
     export interface ZipPromptInspire extends HasSingle_ZIPPED_PROMPT, ComfyNode<ZipPromptInspire_input> {
         nameInComfy: 'ZipPrompt //Inspire'
         ZIPPED_PROMPT: Slot<'ZIPPED_PROMPT', 0>
@@ -8979,9 +8481,7 @@ declare global {
         name_opt?: _STRING
     }
 
-    // |=============================================================================|
-    // | PromptExtractorInspire ("PromptExtractor //Inspire" in ComfyUI) [InspirePack_prompt]   |
-    // |=============================================================================|
+    // PromptExtractor //Inspire [InspirePack_prompt]
     export interface PromptExtractorInspire extends ComfyNode<PromptExtractorInspire_input> {
         nameInComfy: 'PromptExtractor //Inspire'
         STRING: Slot<'STRING', 0>
@@ -8998,9 +8498,7 @@ declare global {
         info: _STRING
     }
 
-    // |=============================================================================|
-    // | GlobalSeedInspire ("GlobalSeed //Inspire" in ComfyUI) [InspirePack]         |
-    // |=============================================================================|
+    // GlobalSeed //Inspire [InspirePack]
     export interface GlobalSeedInspire extends ComfyNode<GlobalSeedInspire_input> {
         nameInComfy: 'GlobalSeed //Inspire'
     }
@@ -9012,9 +8510,7 @@ declare global {
         action: Enum_GlobalSeedInspire_Action
     }
 
-    // |=============================================================================|
-    // | BNK_TiledKSamplerAdvanced [sampling]                                        |
-    // |=============================================================================|
+    // BNK_TiledKSamplerAdvanced [sampling]
     export interface BNK_TiledKSamplerAdvanced extends HasSingle_LATENT, ComfyNode<BNK_TiledKSamplerAdvanced_input> {
         nameInComfy: 'BNK_TiledKSamplerAdvanced'
         LATENT: Slot<'LATENT', 0>
@@ -9046,9 +8542,7 @@ declare global {
         preview: Enum_KSamplerAdvanced_Add_noise
     }
 
-    // |=============================================================================|
-    // | BNK_TiledKSampler [sampling]                                                |
-    // |=============================================================================|
+    // BNK_TiledKSampler [sampling]
     export interface BNK_TiledKSampler extends HasSingle_LATENT, ComfyNode<BNK_TiledKSampler_input> {
         nameInComfy: 'BNK_TiledKSampler'
         LATENT: Slot<'LATENT', 0>
@@ -9075,9 +8569,7 @@ declare global {
         denoise?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | KSamplerEfficient ("KSampler (Efficient)" in ComfyUI) [Efficiency Nodes_Sampling]   |
-    // |=============================================================================|
+    // KSampler (Efficient) [Efficiency Nodes_Sampling]
     export interface KSamplerEfficient
         extends HasSingle_MODEL,
             HasSingle_LATENT,
@@ -9114,9 +8606,7 @@ declare global {
         script?: _SCRIPT
     }
 
-    // |=============================================================================|
-    // | KSamplerAdvEfficient ("KSampler Adv. (Efficient)" in ComfyUI) [Efficiency Nodes_Sampling]   |
-    // |=============================================================================|
+    // KSampler Adv. (Efficient) [Efficiency Nodes_Sampling]
     export interface KSamplerAdvEfficient
         extends HasSingle_MODEL,
             HasSingle_LATENT,
@@ -9157,9 +8647,7 @@ declare global {
         script?: _SCRIPT
     }
 
-    // |=============================================================================|
-    // | KSamplerSDXLEff ("KSampler SDXL (Eff.)" in ComfyUI) [Efficiency Nodes_Sampling]   |
-    // |=============================================================================|
+    // KSampler SDXL (Eff.) [Efficiency Nodes_Sampling]
     export interface KSamplerSDXLEff
         extends HasSingle_SDXL_TUPLE,
             HasSingle_LATENT,
@@ -9194,9 +8682,7 @@ declare global {
         script?: _SCRIPT
     }
 
-    // |=============================================================================|
-    // | EfficientLoader ("Efficient Loader" in ComfyUI) [Efficiency Nodes_Loaders]   |
-    // |=============================================================================|
+    // Efficient Loader [Efficiency Nodes_Loaders]
     export interface EfficientLoader
         extends HasSingle_MODEL,
             HasSingle_LATENT,
@@ -9237,9 +8723,7 @@ declare global {
         cnet_stack?: _CONTROL_NET_STACK
     }
 
-    // |=============================================================================|
-    // | EffLoaderSDXL ("Eff. Loader SDXL" in ComfyUI) [Efficiency Nodes_Loaders]    |
-    // |=============================================================================|
+    // Eff. Loader SDXL [Efficiency Nodes_Loaders]
     export interface EffLoaderSDXL
         extends HasSingle_SDXL_TUPLE,
             HasSingle_LATENT,
@@ -9278,9 +8762,7 @@ declare global {
         cnet_stack?: _CONTROL_NET_STACK
     }
 
-    // |=============================================================================|
-    // | LoRAStacker ("LoRA Stacker" in ComfyUI) [Efficiency Nodes_Stackers]         |
-    // |=============================================================================|
+    // LoRA Stacker [Efficiency Nodes_Stackers]
     export interface LoRAStacker extends HasSingle_LORA_STACK, ComfyNode<LoRAStacker_input> {
         nameInComfy: 'LoRA Stacker'
         LORA_STACK: Slot<'LORA_STACK', 0>
@@ -9635,9 +9117,7 @@ declare global {
         lora_stack?: _LORA_STACK
     }
 
-    // |=============================================================================|
-    // | ControlNetStacker ("Control Net Stacker" in ComfyUI) [Efficiency Nodes_Stackers]   |
-    // |=============================================================================|
+    // Control Net Stacker [Efficiency Nodes_Stackers]
     export interface ControlNetStacker extends HasSingle_CONTROL_NET_STACK, ComfyNode<ControlNetStacker_input> {
         nameInComfy: 'Control Net Stacker'
         CONTROL_NET_STACK: Slot<'CONTROL_NET_STACK', 0>
@@ -9654,9 +9134,7 @@ declare global {
         cnet_stack?: _CONTROL_NET_STACK
     }
 
-    // |=============================================================================|
-    // | ApplyControlNetStack ("Apply ControlNet Stack" in ComfyUI) [Efficiency Nodes_Stackers]   |
-    // |=============================================================================|
+    // Apply ControlNet Stack [Efficiency Nodes_Stackers]
     export interface ApplyControlNetStack extends ComfyNode<ApplyControlNetStack_input> {
         nameInComfy: 'Apply ControlNet Stack'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -9668,9 +9146,7 @@ declare global {
         cnet_stack: _CONTROL_NET_STACK
     }
 
-    // |=============================================================================|
-    // | UnpackSDXLTuple ("Unpack SDXL Tuple" in ComfyUI) [Efficiency Nodes_Misc]    |
-    // |=============================================================================|
+    // Unpack SDXL Tuple [Efficiency Nodes_Misc]
     export interface UnpackSDXLTuple extends ComfyNode<UnpackSDXLTuple_input> {
         nameInComfy: 'Unpack SDXL Tuple'
         MODEL: Slot<'MODEL', 0>
@@ -9686,9 +9162,7 @@ declare global {
         sdxl_tuple: _SDXL_TUPLE
     }
 
-    // |=============================================================================|
-    // | PackSDXLTuple ("Pack SDXL Tuple" in ComfyUI) [Efficiency Nodes_Misc]        |
-    // |=============================================================================|
+    // Pack SDXL Tuple [Efficiency Nodes_Misc]
     export interface PackSDXLTuple extends HasSingle_SDXL_TUPLE, ComfyNode<PackSDXLTuple_input> {
         nameInComfy: 'Pack SDXL Tuple'
         SDXL_TUPLE: Slot<'SDXL_TUPLE', 0>
@@ -9704,9 +9178,7 @@ declare global {
         refiner_negative: _CONDITIONING
     }
 
-    // |=============================================================================|
-    // | XYPlot ("XY Plot" in ComfyUI) [Efficiency Nodes_Scripts]                    |
-    // |=============================================================================|
+    // XY Plot [Efficiency Nodes_Scripts]
     export interface XYPlot extends HasSingle_SCRIPT, ComfyNode<XYPlot_input> {
         nameInComfy: 'XY Plot'
         SCRIPT: Slot<'SCRIPT', 0>
@@ -9723,9 +9195,7 @@ declare global {
         Y?: _XY
     }
 
-    // |=============================================================================|
-    // | XYInputSeedsBatch ("XY Input: Seeds++ Batch" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Seeds++ Batch [Efficiency Nodes_XY Inputs]
     export interface XYInputSeedsBatch extends HasSingle_XY, ComfyNode<XYInputSeedsBatch_input> {
         nameInComfy: 'XY Input: Seeds++ Batch'
         XY: Slot<'XY', 0>
@@ -9735,9 +9205,7 @@ declare global {
         batch_count?: _INT
     }
 
-    // |=============================================================================|
-    // | XYInputAddReturnNoise ("XY Input: Add/Return Noise" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Add/Return Noise [Efficiency Nodes_XY Inputs]
     export interface XYInputAddReturnNoise extends HasSingle_XY, ComfyNode<XYInputAddReturnNoise_input> {
         nameInComfy: 'XY Input: Add/Return Noise'
         XY: Slot<'XY', 0>
@@ -9746,9 +9214,7 @@ declare global {
         XY_type: Enum_XYInputAddReturnNoise_XY_type
     }
 
-    // |=============================================================================|
-    // | XYInputSteps ("XY Input: Steps" in ComfyUI) [Efficiency Nodes_XY Inputs]    |
-    // |=============================================================================|
+    // XY Input: Steps [Efficiency Nodes_XY Inputs]
     export interface XYInputSteps extends HasSingle_XY, ComfyNode<XYInputSteps_input> {
         nameInComfy: 'XY Input: Steps'
         XY: Slot<'XY', 0>
@@ -9775,9 +9241,7 @@ declare global {
         last_refine_step?: _INT
     }
 
-    // |=============================================================================|
-    // | XYInputCFGScale ("XY Input: CFG Scale" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: CFG Scale [Efficiency Nodes_XY Inputs]
     export interface XYInputCFGScale extends HasSingle_XY, ComfyNode<XYInputCFGScale_input> {
         nameInComfy: 'XY Input: CFG Scale'
         XY: Slot<'XY', 0>
@@ -9791,9 +9255,7 @@ declare global {
         last_cfg?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | XYInputSamplerScheduler ("XY Input: Sampler/Scheduler" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Sampler/Scheduler [Efficiency Nodes_XY Inputs]
     export interface XYInputSamplerScheduler extends HasSingle_XY, ComfyNode<XYInputSamplerScheduler_input> {
         nameInComfy: 'XY Input: Sampler/Scheduler'
         XY: Slot<'XY', 0>
@@ -9904,9 +9366,7 @@ declare global {
         scheduler_50: Enum_XYInputSamplerScheduler_Scheduler_1
     }
 
-    // |=============================================================================|
-    // | XYInputDenoise ("XY Input: Denoise" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Denoise [Efficiency Nodes_XY Inputs]
     export interface XYInputDenoise extends HasSingle_XY, ComfyNode<XYInputDenoise_input> {
         nameInComfy: 'XY Input: Denoise'
         XY: Slot<'XY', 0>
@@ -9920,9 +9380,7 @@ declare global {
         last_denoise?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | XYInputVAE ("XY Input: VAE" in ComfyUI) [Efficiency Nodes_XY Inputs]        |
-    // |=============================================================================|
+    // XY Input: VAE [Efficiency Nodes_XY Inputs]
     export interface XYInputVAE extends HasSingle_XY, ComfyNode<XYInputVAE_input> {
         nameInComfy: 'XY Input: VAE'
         XY: Slot<'XY', 0>
@@ -9990,9 +9448,7 @@ declare global {
         vae_name_50: Enum_XYInputVAE_Vae_name_1
     }
 
-    // |=============================================================================|
-    // | XYInputPromptSR ("XY Input: Prompt S/R" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Prompt S/R [Efficiency Nodes_XY Inputs]
     export interface XYInputPromptSR extends HasSingle_XY, ComfyNode<XYInputPromptSR_input> {
         nameInComfy: 'XY Input: Prompt S/R'
         XY: Slot<'XY', 0>
@@ -10103,9 +9559,7 @@ declare global {
         replace_49?: _STRING
     }
 
-    // |=============================================================================|
-    // | XYInputAestheticScore ("XY Input: Aesthetic Score" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Aesthetic Score [Efficiency Nodes_XY Inputs]
     export interface XYInputAestheticScore extends HasSingle_XY, ComfyNode<XYInputAestheticScore_input> {
         nameInComfy: 'XY Input: Aesthetic Score'
         XY: Slot<'XY', 0>
@@ -10120,9 +9574,7 @@ declare global {
         last_ascore?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | XYInputRefinerOnOff ("XY Input: Refiner On/Off" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Refiner On/Off [Efficiency Nodes_XY Inputs]
     export interface XYInputRefinerOnOff extends HasSingle_XY, ComfyNode<XYInputRefinerOnOff_input> {
         nameInComfy: 'XY Input: Refiner On/Off'
         XY: Slot<'XY', 0>
@@ -10132,9 +9584,7 @@ declare global {
         refine_at_percent?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | XYInputCheckpoint ("XY Input: Checkpoint" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Checkpoint [Efficiency Nodes_XY Inputs]
     export interface XYInputCheckpoint extends HasSingle_XY, ComfyNode<XYInputCheckpoint_input> {
         nameInComfy: 'XY Input: Checkpoint'
         XY: Slot<'XY', 0>
@@ -10353,9 +9803,7 @@ declare global {
         vae_name_50: Enum_EfficientLoader_Vae_name
     }
 
-    // |=============================================================================|
-    // | XYInputClipSkip ("XY Input: Clip Skip" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Clip Skip [Efficiency Nodes_XY Inputs]
     export interface XYInputClipSkip extends HasSingle_XY, ComfyNode<XYInputClipSkip_input> {
         nameInComfy: 'XY Input: Clip Skip'
         XY: Slot<'XY', 0>
@@ -10370,9 +9818,7 @@ declare global {
         last_clip_skip?: _INT
     }
 
-    // |=============================================================================|
-    // | XYInputLoRA ("XY Input: LoRA" in ComfyUI) [Efficiency Nodes_XY Inputs]      |
-    // |=============================================================================|
+    // XY Input: LoRA [Efficiency Nodes_XY Inputs]
     export interface XYInputLoRA extends HasSingle_XY, ComfyNode<XYInputLoRA_input> {
         nameInComfy: 'XY Input: LoRA'
         XY: Slot<'XY', 0>
@@ -10645,9 +10091,7 @@ declare global {
         lora_stack?: _LORA_STACK
     }
 
-    // |=============================================================================|
-    // | XYInputLoRAPlot ("XY Input: LoRA Plot" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: LoRA Plot [Efficiency Nodes_XY Inputs]
     export interface XYInputLoRAPlot extends ComfyNode<XYInputLoRAPlot_input> {
         nameInComfy: 'XY Input: LoRA Plot'
         XY: Slot<'XY', 0>
@@ -10680,9 +10124,7 @@ declare global {
         lora_stack?: _LORA_STACK
     }
 
-    // |=============================================================================|
-    // | XYInputLoRAStacks ("XY Input: LoRA Stacks" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: LoRA Stacks [Efficiency Nodes_XY Inputs]
     export interface XYInputLoRAStacks extends HasSingle_XY, ComfyNode<XYInputLoRAStacks_input> {
         nameInComfy: 'XY Input: LoRA Stacks'
         XY: Slot<'XY', 0>
@@ -10696,9 +10138,7 @@ declare global {
         lora_stack_5?: _LORA_STACK
     }
 
-    // |=============================================================================|
-    // | XYInputControlNet ("XY Input: Control Net" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Control Net [Efficiency Nodes_XY Inputs]
     export interface XYInputControlNet extends HasSingle_XY, ComfyNode<XYInputControlNet_input> {
         nameInComfy: 'XY Input: Control Net'
         XY: Slot<'XY', 0>
@@ -10730,9 +10170,7 @@ declare global {
         cnet_stack?: _CONTROL_NET_STACK
     }
 
-    // |=============================================================================|
-    // | XYInputControlNetPlot ("XY Input: Control Net Plot" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Control Net Plot [Efficiency Nodes_XY Inputs]
     export interface XYInputControlNetPlot extends ComfyNode<XYInputControlNetPlot_input> {
         nameInComfy: 'XY Input: Control Net Plot'
         XY: Slot<'XY', 0>
@@ -10763,9 +10201,7 @@ declare global {
         cnet_stack?: _CONTROL_NET_STACK
     }
 
-    // |=============================================================================|
-    // | XYInputManualXYEntry ("XY Input: Manual XY Entry" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // XY Input: Manual XY Entry [Efficiency Nodes_XY Inputs]
     export interface XYInputManualXYEntry extends HasSingle_XY, ComfyNode<XYInputManualXYEntry_input> {
         nameInComfy: 'XY Input: Manual XY Entry'
         XY: Slot<'XY', 0>
@@ -10776,9 +10212,7 @@ declare global {
         plot_value?: _STRING
     }
 
-    // |=============================================================================|
-    // | ManualXYEntryInfo ("Manual XY Entry Info" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // Manual XY Entry Info [Efficiency Nodes_XY Inputs]
     export interface ManualXYEntryInfo extends ComfyNode<ManualXYEntryInfo_input> {
         nameInComfy: 'Manual XY Entry Info'
     }
@@ -10787,9 +10221,7 @@ declare global {
         notes?: _STRING
     }
 
-    // |=============================================================================|
-    // | JoinXYInputsOfSameType ("Join XY Inputs of Same Type" in ComfyUI) [Efficiency Nodes_XY Inputs]   |
-    // |=============================================================================|
+    // Join XY Inputs of Same Type [Efficiency Nodes_XY Inputs]
     export interface JoinXYInputsOfSameType extends HasSingle_XY, ComfyNode<JoinXYInputsOfSameType_input> {
         nameInComfy: 'Join XY Inputs of Same Type'
         XY: Slot<'XY', 0>
@@ -10799,9 +10231,7 @@ declare global {
         XY_2: _XY
     }
 
-    // |=============================================================================|
-    // | ImageOverlay ("Image Overlay" in ComfyUI) [Efficiency Nodes_Image]          |
-    // |=============================================================================|
+    // Image Overlay [Efficiency Nodes_Image]
     export interface ImageOverlay extends HasSingle_IMAGE, ComfyNode<ImageOverlay_input> {
         nameInComfy: 'Image Overlay'
         IMAGE: Slot<'IMAGE', 0>
@@ -10828,9 +10258,7 @@ declare global {
         optional_mask?: _MASK
     }
 
-    // |=============================================================================|
-    // | HighResFixScript ("HighRes-Fix Script" in ComfyUI) [Efficiency Nodes_Scripts]   |
-    // |=============================================================================|
+    // HighRes-Fix Script [Efficiency Nodes_Scripts]
     export interface HighResFixScript extends HasSingle_SCRIPT, ComfyNode<HighResFixScript_input> {
         nameInComfy: 'HighRes-Fix Script'
         SCRIPT: Slot<'SCRIPT', 0>
@@ -10848,9 +10276,7 @@ declare global {
         script?: _SCRIPT
     }
 
-    // |=============================================================================|
-    // | EvaluateIntegers ("Evaluate Integers" in ComfyUI) [Efficiency Nodes_Simple Eval]   |
-    // |=============================================================================|
+    // Evaluate Integers [Efficiency Nodes_Simple Eval]
     export interface EvaluateIntegers
         extends HasSingle_INT,
             HasSingle_FLOAT,
@@ -10873,9 +10299,7 @@ declare global {
         c?: _INT
     }
 
-    // |=============================================================================|
-    // | EvaluateFloats ("Evaluate Floats" in ComfyUI) [Efficiency Nodes_Simple Eval]   |
-    // |=============================================================================|
+    // Evaluate Floats [Efficiency Nodes_Simple Eval]
     export interface EvaluateFloats extends HasSingle_INT, HasSingle_FLOAT, HasSingle_STRING, ComfyNode<EvaluateFloats_input> {
         nameInComfy: 'Evaluate Floats'
         INT: Slot<'INT', 0>
@@ -10894,9 +10318,7 @@ declare global {
         c?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | EvaluateStrings ("Evaluate Strings" in ComfyUI) [Efficiency Nodes_Simple Eval]   |
-    // |=============================================================================|
+    // Evaluate Strings [Efficiency Nodes_Simple Eval]
     export interface EvaluateStrings extends HasSingle_STRING, ComfyNode<EvaluateStrings_input> {
         nameInComfy: 'Evaluate Strings'
         STRING: Slot<'STRING', 0>
@@ -10913,9 +10335,7 @@ declare global {
         c?: _STRING
     }
 
-    // |=============================================================================|
-    // | SimpleEvalExamples ("Simple Eval Examples" in ComfyUI) [Efficiency Nodes_Simple Eval]   |
-    // |=============================================================================|
+    // Simple Eval Examples [Efficiency Nodes_Simple Eval]
     export interface SimpleEvalExamples extends ComfyNode<SimpleEvalExamples_input> {
         nameInComfy: 'Simple Eval Examples'
     }
@@ -10924,9 +10344,7 @@ declare global {
         models_text?: _STRING
     }
 
-    // |=============================================================================|
-    // | LatentByRatio [JNode]                                                       |
-    // |=============================================================================|
+    // LatentByRatio [JNode]
     export interface LatentByRatio extends HasSingle_LATENT, ComfyNode<LatentByRatio_input> {
         nameInComfy: 'LatentByRatio'
         LATENT: Slot<'LATENT', 0>
@@ -10938,9 +10356,7 @@ declare global {
         batch_size?: _INT
     }
 
-    // |=============================================================================|
-    // | MasqueradeMaskByText ("Mask By Text" in ComfyUI) [Masquerade Nodes]         |
-    // |=============================================================================|
+    // Mask By Text [Masquerade Nodes]
     export interface MasqueradeMaskByText extends ComfyNode<MasqueradeMaskByText_input> {
         nameInComfy: 'Mask By Text'
         IMAGE: Slot<'IMAGE', 0>
@@ -10957,9 +10373,7 @@ declare global {
         normalize: Enum_MasqueradeMaskByText_Normalize
     }
 
-    // |=============================================================================|
-    // | MasqueradeMaskMorphology ("Mask Morphology" in ComfyUI) [Masquerade Nodes]   |
-    // |=============================================================================|
+    // Mask Morphology [Masquerade Nodes]
     export interface MasqueradeMaskMorphology extends HasSingle_IMAGE, ComfyNode<MasqueradeMaskMorphology_input> {
         nameInComfy: 'Mask Morphology'
         IMAGE: Slot<'IMAGE', 0>
@@ -10971,9 +10385,7 @@ declare global {
         op: Enum_MasqueradeMaskMorphology_Op
     }
 
-    // |=============================================================================|
-    // | MasqueradeCombineMasks ("Combine Masks" in ComfyUI) [Masquerade Nodes]      |
-    // |=============================================================================|
+    // Combine Masks [Masquerade Nodes]
     export interface MasqueradeCombineMasks extends HasSingle_IMAGE, ComfyNode<MasqueradeCombineMasks_input> {
         nameInComfy: 'Combine Masks'
         IMAGE: Slot<'IMAGE', 0>
@@ -10986,9 +10398,7 @@ declare global {
         round_result: Enum_MasqueradeMaskByText_Normalize
     }
 
-    // |=============================================================================|
-    // | MasqueradeUnaryMaskOp ("Unary Mask Op" in ComfyUI) [Masquerade Nodes]       |
-    // |=============================================================================|
+    // Unary Mask Op [Masquerade Nodes]
     export interface MasqueradeUnaryMaskOp extends HasSingle_IMAGE, ComfyNode<MasqueradeUnaryMaskOp_input> {
         nameInComfy: 'Unary Mask Op'
         IMAGE: Slot<'IMAGE', 0>
@@ -10998,9 +10408,7 @@ declare global {
         op: Enum_MasqueradeUnaryMaskOp_Op
     }
 
-    // |=============================================================================|
-    // | MasqueradeUnaryImageOp ("Unary Image Op" in ComfyUI) [Masquerade Nodes]     |
-    // |=============================================================================|
+    // Unary Image Op [Masquerade Nodes]
     export interface MasqueradeUnaryImageOp extends HasSingle_IMAGE, ComfyNode<MasqueradeUnaryImageOp_input> {
         nameInComfy: 'Unary Image Op'
         IMAGE: Slot<'IMAGE', 0>
@@ -11010,9 +10418,7 @@ declare global {
         op: Enum_MasqueradeUnaryMaskOp_Op
     }
 
-    // |=============================================================================|
-    // | MasqueradeBlur ("Blur" in ComfyUI) [Masquerade Nodes]                       |
-    // |=============================================================================|
+    // Blur [Masquerade Nodes]
     export interface MasqueradeBlur extends HasSingle_IMAGE, ComfyNode<MasqueradeBlur_input> {
         nameInComfy: 'Blur'
         IMAGE: Slot<'IMAGE', 0>
@@ -11025,9 +10431,7 @@ declare global {
         sigma_factor?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | MasqueradeImageToMask ("Image To Mask" in ComfyUI) [Masquerade Nodes]       |
-    // |=============================================================================|
+    // Image To Mask [Masquerade Nodes]
     export interface MasqueradeImageToMask extends HasSingle_MASK, ComfyNode<MasqueradeImageToMask_input> {
         nameInComfy: 'Image To Mask'
         MASK: Slot<'MASK', 0>
@@ -11037,9 +10441,7 @@ declare global {
         method: Enum_MasqueradeImageToMask_Method
     }
 
-    // |=============================================================================|
-    // | MasqueradeMixImagesByMask ("Mix Images By Mask" in ComfyUI) [Masquerade Nodes]   |
-    // |=============================================================================|
+    // Mix Images By Mask [Masquerade Nodes]
     export interface MasqueradeMixImagesByMask extends HasSingle_IMAGE, ComfyNode<MasqueradeMixImagesByMask_input> {
         nameInComfy: 'Mix Images By Mask'
         IMAGE: Slot<'IMAGE', 0>
@@ -11050,9 +10452,7 @@ declare global {
         mask: _IMAGE
     }
 
-    // |=============================================================================|
-    // | MasqueradeMixColorByMask ("Mix Color By Mask" in ComfyUI) [Masquerade Nodes]   |
-    // |=============================================================================|
+    // Mix Color By Mask [Masquerade Nodes]
     export interface MasqueradeMixColorByMask extends HasSingle_IMAGE, ComfyNode<MasqueradeMixColorByMask_input> {
         nameInComfy: 'Mix Color By Mask'
         IMAGE: Slot<'IMAGE', 0>
@@ -11068,9 +10468,7 @@ declare global {
         mask: _IMAGE
     }
 
-    // |=============================================================================|
-    // | MasqueradeMaskToRegion ("Mask To Region" in ComfyUI) [Masquerade Nodes]     |
-    // |=============================================================================|
+    // Mask To Region [Masquerade Nodes]
     export interface MasqueradeMaskToRegion extends HasSingle_IMAGE, ComfyNode<MasqueradeMaskToRegion_input> {
         nameInComfy: 'Mask To Region'
         IMAGE: Slot<'IMAGE', 0>
@@ -11091,9 +10489,7 @@ declare global {
         batch_behavior: Enum_MasqueradeMaskToRegion_Batch_behavior
     }
 
-    // |=============================================================================|
-    // | MasqueradeCutByMask ("Cut By Mask" in ComfyUI) [Masquerade Nodes]           |
-    // |=============================================================================|
+    // Cut By Mask [Masquerade Nodes]
     export interface MasqueradeCutByMask extends HasSingle_IMAGE, ComfyNode<MasqueradeCutByMask_input> {
         nameInComfy: 'Cut By Mask'
         IMAGE: Slot<'IMAGE', 0>
@@ -11108,9 +10504,7 @@ declare global {
         mask_mapping_optional?: _MASK_MAPPING
     }
 
-    // |=============================================================================|
-    // | MasqueradePasteByMask ("Paste By Mask" in ComfyUI) [Masquerade Nodes]       |
-    // |=============================================================================|
+    // Paste By Mask [Masquerade Nodes]
     export interface MasqueradePasteByMask extends HasSingle_IMAGE, ComfyNode<MasqueradePasteByMask_input> {
         nameInComfy: 'Paste By Mask'
         IMAGE: Slot<'IMAGE', 0>
@@ -11123,9 +10517,7 @@ declare global {
         mask_mapping_optional?: _MASK_MAPPING
     }
 
-    // |=============================================================================|
-    // | MasqueradeGetImageSize ("Get Image Size" in ComfyUI) [Masquerade Nodes]     |
-    // |=============================================================================|
+    // Get Image Size [Masquerade Nodes]
     export interface MasqueradeGetImageSize extends ComfyNode<MasqueradeGetImageSize_input> {
         nameInComfy: 'Get Image Size'
         INT: Slot<'INT', 0>
@@ -11135,9 +10527,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | MasqueradeChangeChannelCount ("Change Channel Count" in ComfyUI) [Masquerade Nodes]   |
-    // |=============================================================================|
+    // Change Channel Count [Masquerade Nodes]
     export interface MasqueradeChangeChannelCount extends HasSingle_IMAGE, ComfyNode<MasqueradeChangeChannelCount_input> {
         nameInComfy: 'Change Channel Count'
         IMAGE: Slot<'IMAGE', 0>
@@ -11147,9 +10537,7 @@ declare global {
         kind: Enum_MasqueradeChangeChannelCount_Kind
     }
 
-    // |=============================================================================|
-    // | MasqueradeConstantMask ("Constant Mask" in ComfyUI) [Masquerade Nodes]      |
-    // |=============================================================================|
+    // Constant Mask [Masquerade Nodes]
     export interface MasqueradeConstantMask extends HasSingle_IMAGE, ComfyNode<MasqueradeConstantMask_input> {
         nameInComfy: 'Constant Mask'
         IMAGE: Slot<'IMAGE', 0>
@@ -11164,9 +10552,7 @@ declare global {
         copy_image_size?: _IMAGE
     }
 
-    // |=============================================================================|
-    // | MasqueradePruneByMask ("Prune By Mask" in ComfyUI) [Masquerade Nodes]       |
-    // |=============================================================================|
+    // Prune By Mask [Masquerade Nodes]
     export interface MasqueradePruneByMask extends HasSingle_IMAGE, ComfyNode<MasqueradePruneByMask_input> {
         nameInComfy: 'Prune By Mask'
         IMAGE: Slot<'IMAGE', 0>
@@ -11176,9 +10562,7 @@ declare global {
         mask: _IMAGE
     }
 
-    // |=============================================================================|
-    // | MasqueradeSeparateMaskComponents ("Separate Mask Components" in ComfyUI) [Masquerade Nodes]   |
-    // |=============================================================================|
+    // Separate Mask Components [Masquerade Nodes]
     export interface MasqueradeSeparateMaskComponents
         extends HasSingle_IMAGE,
             HasSingle_MASK_MAPPING,
@@ -11191,9 +10575,7 @@ declare global {
         mask: _IMAGE
     }
 
-    // |=============================================================================|
-    // | MasqueradeCreateRectMask ("Create Rect Mask" in ComfyUI) [Masquerade Nodes]   |
-    // |=============================================================================|
+    // Create Rect Mask [Masquerade Nodes]
     export interface MasqueradeCreateRectMask extends HasSingle_IMAGE, ComfyNode<MasqueradeCreateRectMask_input> {
         nameInComfy: 'Create Rect Mask'
         IMAGE: Slot<'IMAGE', 0>
@@ -11216,9 +10598,7 @@ declare global {
         copy_image_size?: _IMAGE
     }
 
-    // |=============================================================================|
-    // | MasqueradeMakeImageBatch ("Make Image Batch" in ComfyUI) [Masquerade Nodes]   |
-    // |=============================================================================|
+    // Make Image Batch [Masquerade Nodes]
     export interface MasqueradeMakeImageBatch extends HasSingle_IMAGE, ComfyNode<MasqueradeMakeImageBatch_input> {
         nameInComfy: 'Make Image Batch'
         IMAGE: Slot<'IMAGE', 0>
@@ -11232,9 +10612,7 @@ declare global {
         image6?: _IMAGE
     }
 
-    // |=============================================================================|
-    // | MasqueradeCreateQRCode ("Create QR Code" in ComfyUI) [Masquerade Nodes]     |
-    // |=============================================================================|
+    // Create QR Code [Masquerade Nodes]
     export interface MasqueradeCreateQRCode extends HasSingle_IMAGE, ComfyNode<MasqueradeCreateQRCode_input> {
         nameInComfy: 'Create QR Code'
         IMAGE: Slot<'IMAGE', 0>
@@ -11254,9 +10632,7 @@ declare global {
         border?: _INT
     }
 
-    // |=============================================================================|
-    // | MasqueradeConvertColorSpace ("Convert Color Space" in ComfyUI) [Masquerade Nodes]   |
-    // |=============================================================================|
+    // Convert Color Space [Masquerade Nodes]
     export interface MasqueradeConvertColorSpace extends HasSingle_IMAGE, ComfyNode<MasqueradeConvertColorSpace_input> {
         nameInComfy: 'Convert Color Space'
         IMAGE: Slot<'IMAGE', 0>
@@ -11267,9 +10643,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | MasqueradeMasqueradeIncrementer ("MasqueradeIncrementer" in ComfyUI) [Masquerade Nodes]   |
-    // |=============================================================================|
+    // MasqueradeIncrementer [Masquerade Nodes]
     export interface MasqueradeMasqueradeIncrementer extends HasSingle_INT, ComfyNode<MasqueradeMasqueradeIncrementer_input> {
         nameInComfy: 'MasqueradeIncrementer'
         INT: Slot<'INT', 0>
@@ -11281,9 +10655,7 @@ declare global {
         max_value?: _INT
     }
 
-    // |=============================================================================|
-    // | ImageRemoveBackgroundRembg ("Image Remove Background (rembg)" in ComfyUI) [image]   |
-    // |=============================================================================|
+    // Image Remove Background (rembg) [image]
     export interface ImageRemoveBackgroundRembg extends HasSingle_IMAGE, ComfyNode<ImageRemoveBackgroundRembg_input> {
         nameInComfy: 'Image Remove Background (rembg)'
         IMAGE: Slot<'IMAGE', 0>
@@ -11292,9 +10664,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | SDXLMixSampler [JNode]                                                      |
-    // |=============================================================================|
+    // SDXLMixSampler [JNode]
     export interface SDXLMixSampler extends HasSingle_LATENT, ComfyNode<SDXLMixSampler_input> {
         nameInComfy: 'SDXLMixSampler'
         LATENT: Slot<'LATENT', 0>
@@ -11325,9 +10695,7 @@ declare global {
         final_only?: Enum_MasqueradeMaskByText_Normalize
     }
 
-    // |=============================================================================|
-    // | WASBLIPModelLoader ("BLIP Model Loader" in ComfyUI) [WAS Suite_Loaders]     |
-    // |=============================================================================|
+    // BLIP Model Loader [WAS Suite_Loaders]
     export interface WASBLIPModelLoader extends HasSingle_BLIP_MODEL, ComfyNode<WASBLIPModelLoader_input> {
         nameInComfy: 'BLIP Model Loader'
         BLIP_MODEL: Slot<'BLIP_MODEL', 0>
@@ -11336,9 +10704,7 @@ declare global {
         blip_model: Enum_WASBLIPModelLoader_Blip_model
     }
 
-    // |=============================================================================|
-    // | WASBlendLatents ("Blend Latents" in ComfyUI) [WAS Suite_Latent]             |
-    // |=============================================================================|
+    // Blend Latents [WAS Suite_Latent]
     export interface WASBlendLatents extends HasSingle_LATENT, ComfyNode<WASBlendLatents_input> {
         nameInComfy: 'Blend Latents'
         LATENT: Slot<'LATENT', 0>
@@ -11351,9 +10717,7 @@ declare global {
         blend?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASCacheNode ("Cache Node" in ComfyUI) [WAS Suite_IO]                       |
-    // |=============================================================================|
+    // Cache Node [WAS Suite_IO]
     export interface WASCacheNode extends ComfyNode<WASCacheNode_input> {
         nameInComfy: 'Cache Node'
         STRING: Slot<'STRING', 0>
@@ -11361,11 +10725,11 @@ declare global {
         STRING_2: Slot<'STRING', 2>
     }
     export type WASCacheNode_input = {
-        /** default="69235808_cache" */
+        /** default="16716043_cache" */
         latent_suffix?: _STRING
-        /** default="9985792_cache" */
+        /** default="35680733_cache" */
         image_suffix?: _STRING
-        /** default="66952829_cache" */
+        /** default="69355498_cache" */
         conditioning_suffix?: _STRING
         /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
         output_path?: _STRING
@@ -11374,9 +10738,7 @@ declare global {
         conditioning?: _CONDITIONING
     }
 
-    // |=============================================================================|
-    // | WASCheckpointLoader ("Checkpoint Loader" in ComfyUI) [WAS Suite_Loaders_Advanced]   |
-    // |=============================================================================|
+    // Checkpoint Loader [WAS Suite_Loaders_Advanced]
     export interface WASCheckpointLoader
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -11394,9 +10756,7 @@ declare global {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
 
-    // |=============================================================================|
-    // | WASCheckpointLoaderSimple ("Checkpoint Loader (Simple)" in ComfyUI) [WAS Suite_Loaders]   |
-    // |=============================================================================|
+    // Checkpoint Loader (Simple) [WAS Suite_Loaders]
     export interface WASCheckpointLoaderSimple
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -11413,9 +10773,7 @@ declare global {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
 
-    // |=============================================================================|
-    // | WASCLIPTextEncodeNSP ("CLIPTextEncode (NSP)" in ComfyUI) [WAS Suite_Conditioning]   |
-    // |=============================================================================|
+    // CLIPTextEncode (NSP) [WAS Suite_Conditioning]
     export interface WASCLIPTextEncodeNSP extends HasSingle_CONDITIONING, ComfyNode<WASCLIPTextEncodeNSP_input> {
         nameInComfy: 'CLIPTextEncode (NSP)'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -11433,9 +10791,7 @@ declare global {
         clip: _CLIP
     }
 
-    // |=============================================================================|
-    // | WASCLIPInputSwitch ("CLIP Input Switch" in ComfyUI) [WAS Suite_Logic]       |
-    // |=============================================================================|
+    // CLIP Input Switch [WAS Suite_Logic]
     export interface WASCLIPInputSwitch extends HasSingle_CLIP, ComfyNode<WASCLIPInputSwitch_input> {
         nameInComfy: 'CLIP Input Switch'
         CLIP: Slot<'CLIP', 0>
@@ -11446,9 +10802,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASCLIPVisionInputSwitch ("CLIP Vision Input Switch" in ComfyUI) [WAS Suite_Logic]   |
-    // |=============================================================================|
+    // CLIP Vision Input Switch [WAS Suite_Logic]
     export interface WASCLIPVisionInputSwitch extends HasSingle_CLIP_VISION, ComfyNode<WASCLIPVisionInputSwitch_input> {
         nameInComfy: 'CLIP Vision Input Switch'
         CLIP_VISION: Slot<'CLIP_VISION', 0>
@@ -11459,9 +10813,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASConditioningInputSwitch ("Conditioning Input Switch" in ComfyUI) [WAS Suite_Logic]   |
-    // |=============================================================================|
+    // Conditioning Input Switch [WAS Suite_Logic]
     export interface WASConditioningInputSwitch extends HasSingle_CONDITIONING, ComfyNode<WASConditioningInputSwitch_input> {
         nameInComfy: 'Conditioning Input Switch'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -11472,9 +10824,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASConstantNumber ("Constant Number" in ComfyUI) [WAS Suite_Number]         |
-    // |=============================================================================|
+    // Constant Number [WAS Suite_Number]
     export interface WASConstantNumber
         extends HasSingle_NUMBER,
             HasSingle_FLOAT,
@@ -11493,9 +10843,7 @@ declare global {
         number_as_text?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASCreateGridImage ("Create Grid Image" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Create Grid Image [WAS Suite_Image_Process]
     export interface WASCreateGridImage extends HasSingle_IMAGE, ComfyNode<WASCreateGridImage_input> {
         nameInComfy: 'Create Grid Image'
         IMAGE: Slot<'IMAGE', 0>
@@ -11520,9 +10868,7 @@ declare global {
         border_blue?: _INT
     }
 
-    // |=============================================================================|
-    // | WASCreateMorphImage ("Create Morph Image" in ComfyUI) [WAS Suite_Animation]   |
-    // |=============================================================================|
+    // Create Morph Image [WAS Suite_Animation]
     export interface WASCreateMorphImage extends ComfyNode<WASCreateMorphImage_input> {
         nameInComfy: 'Create Morph Image'
         IMAGE: Slot<'IMAGE', 0>
@@ -11550,9 +10896,7 @@ declare global {
         filetype: Enum_WASCreateMorphImage_Filetype
     }
 
-    // |=============================================================================|
-    // | WASCreateMorphImageFromPath ("Create Morph Image from Path" in ComfyUI) [WAS Suite_Animation]   |
-    // |=============================================================================|
+    // Create Morph Image from Path [WAS Suite_Animation]
     export interface WASCreateMorphImageFromPath extends ComfyNode<WASCreateMorphImageFromPath_input> {
         nameInComfy: 'Create Morph Image from Path'
         STRING: Slot<'STRING', 0>
@@ -11580,9 +10924,7 @@ declare global {
         filetype: Enum_WASCreateMorphImage_Filetype
     }
 
-    // |=============================================================================|
-    // | WASCreateVideoFromPath ("Create Video from Path" in ComfyUI) [WAS Suite_Animation]   |
-    // |=============================================================================|
+    // Create Video from Path [WAS Suite_Animation]
     export interface WASCreateVideoFromPath extends ComfyNode<WASCreateVideoFromPath_input> {
         nameInComfy: 'Create Video from Path'
         STRING: Slot<'STRING', 0>
@@ -11606,9 +10948,7 @@ declare global {
         codec: Enum_WASCreateVideoFromPath_Codec
     }
 
-    // |=============================================================================|
-    // | WASCLIPSegMasking ("CLIPSeg Masking" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // CLIPSeg Masking [WAS Suite_Image_Masking]
     export interface WASCLIPSegMasking extends HasSingle_MASK, HasSingle_IMAGE, ComfyNode<WASCLIPSegMasking_input> {
         nameInComfy: 'CLIPSeg Masking'
         MASK: Slot<'MASK', 0>
@@ -11621,9 +10961,7 @@ declare global {
         clipseg_model?: _CLIPSEG_MODEL
     }
 
-    // |=============================================================================|
-    // | WASCLIPSegModelLoader ("CLIPSeg Model Loader" in ComfyUI) [WAS Suite_Loaders]   |
-    // |=============================================================================|
+    // CLIPSeg Model Loader [WAS Suite_Loaders]
     export interface WASCLIPSegModelLoader extends HasSingle_CLIPSEG_MODEL, ComfyNode<WASCLIPSegModelLoader_input> {
         nameInComfy: 'CLIPSeg Model Loader'
         CLIPSEG_MODEL: Slot<'CLIPSEG_MODEL', 0>
@@ -11633,9 +10971,7 @@ declare global {
         model?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASCLIPSegBatchMasking ("CLIPSeg Batch Masking" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // CLIPSeg Batch Masking [WAS Suite_Image_Masking]
     export interface WASCLIPSegBatchMasking extends HasSingle_MASK, ComfyNode<WASCLIPSegBatchMasking_input> {
         nameInComfy: 'CLIPSeg Batch Masking'
         IMAGE: Slot<'IMAGE', 0>
@@ -11663,9 +10999,7 @@ declare global {
         text_f?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASConvertMasksToImages ("Convert Masks to Images" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Convert Masks to Images [WAS Suite_Image_Masking]
     export interface WASConvertMasksToImages extends HasSingle_IMAGE, ComfyNode<WASConvertMasksToImages_input> {
         nameInComfy: 'Convert Masks to Images'
         IMAGE: Slot<'IMAGE', 0>
@@ -11674,9 +11008,7 @@ declare global {
         masks: _MASK
     }
 
-    // |=============================================================================|
-    // | WASControlNetModelInputSwitch ("Control Net Model Input Switch" in ComfyUI) [WAS Suite_Logic]   |
-    // |=============================================================================|
+    // Control Net Model Input Switch [WAS Suite_Logic]
     export interface WASControlNetModelInputSwitch extends HasSingle_CONTROL_NET, ComfyNode<WASControlNetModelInputSwitch_input> {
         nameInComfy: 'Control Net Model Input Switch'
         CONTROL_NET: Slot<'CONTROL_NET', 0>
@@ -11687,9 +11019,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASDebugNumberToConsole ("Debug Number to Console" in ComfyUI) [WAS Suite_Debug]   |
-    // |=============================================================================|
+    // Debug Number to Console [WAS Suite_Debug]
     export interface WASDebugNumberToConsole extends HasSingle_NUMBER, ComfyNode<WASDebugNumberToConsole_input> {
         nameInComfy: 'Debug Number to Console'
         NUMBER: Slot<'NUMBER', 0>
@@ -11700,9 +11030,7 @@ declare global {
         label?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASDictionaryToConsole ("Dictionary to Console" in ComfyUI) [WAS Suite_Debug]   |
-    // |=============================================================================|
+    // Dictionary to Console [WAS Suite_Debug]
     export interface WASDictionaryToConsole extends HasSingle_DICT, ComfyNode<WASDictionaryToConsole_input> {
         nameInComfy: 'Dictionary to Console'
         DICT: Slot<'DICT', 0>
@@ -11713,9 +11041,7 @@ declare global {
         label?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASDiffusersModelLoader ("Diffusers Model Loader" in ComfyUI) [WAS Suite_Loaders_Advanced]   |
-    // |=============================================================================|
+    // Diffusers Model Loader [WAS Suite_Loaders_Advanced]
     export interface WASDiffusersModelLoader
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -11732,9 +11058,7 @@ declare global {
         model_path: Enum_CLIPLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | WASDiffusersHubModelDownLoader ("Diffusers Hub Model Down-Loader" in ComfyUI) [WAS Suite_Loaders_Advanced]   |
-    // |=============================================================================|
+    // Diffusers Hub Model Down-Loader [WAS Suite_Loaders_Advanced]
     export interface WASDiffusersHubModelDownLoader
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -11754,9 +11078,7 @@ declare global {
         revision?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASExportAPI ("Export API" in ComfyUI) [WAS Suite_Debug]                    |
-    // |=============================================================================|
+    // Export API [WAS Suite_Debug]
     export interface WASExportAPI extends ComfyNode<WASExportAPI_input> {
         nameInComfy: 'Export API'
     }
@@ -11772,9 +11094,7 @@ declare global {
         filename_number_padding?: _INT
     }
 
-    // |=============================================================================|
-    // | WASLatentInputSwitch ("Latent Input Switch" in ComfyUI) [WAS Suite_Logic]   |
-    // |=============================================================================|
+    // Latent Input Switch [WAS Suite_Logic]
     export interface WASLatentInputSwitch extends HasSingle_LATENT, ComfyNode<WASLatentInputSwitch_input> {
         nameInComfy: 'Latent Input Switch'
         LATENT: Slot<'LATENT', 0>
@@ -11785,9 +11105,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASLoadCache ("Load Cache" in ComfyUI) [WAS Suite_IO]                       |
-    // |=============================================================================|
+    // Load Cache [WAS Suite_IO]
     export interface WASLoadCache
         extends HasSingle_LATENT,
             HasSingle_IMAGE,
@@ -11807,9 +11125,7 @@ declare global {
         conditioning_path?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASLogicBoolean ("Logic Boolean" in ComfyUI) [WAS Suite_Logic]              |
-    // |=============================================================================|
+    // Logic Boolean [WAS Suite_Logic]
     export interface WASLogicBoolean extends HasSingle_NUMBER, HasSingle_INT, ComfyNode<WASLogicBoolean_input> {
         nameInComfy: 'Logic Boolean'
         NUMBER: Slot<'NUMBER', 0>
@@ -11820,9 +11136,7 @@ declare global {
         boolean_number?: _INT
     }
 
-    // |=============================================================================|
-    // | WASLoraLoader ("Lora Loader" in ComfyUI) [WAS Suite_Loaders]                |
-    // |=============================================================================|
+    // Lora Loader [WAS Suite_Loaders]
     export interface WASLoraLoader extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_STRING, ComfyNode<WASLoraLoader_input> {
         nameInComfy: 'Lora Loader'
         MODEL: Slot<'MODEL', 0>
@@ -11839,9 +11153,7 @@ declare global {
         strength_clip?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageSSAOAmbientOcclusion ("Image SSAO (Ambient Occlusion)" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image SSAO (Ambient Occlusion) [WAS Suite_Image_Filter]
     export interface WASImageSSAOAmbientOcclusion extends ComfyNode<WASImageSSAOAmbientOcclusion_input> {
         nameInComfy: 'Image SSAO (Ambient Occlusion)'
         IMAGE: Slot<'IMAGE', 0>
@@ -11864,9 +11176,7 @@ declare global {
         tile_size?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageSSDODirectOcclusion ("Image SSDO (Direct Occlusion)" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image SSDO (Direct Occlusion) [WAS Suite_Image_Filter]
     export interface WASImageSSDODirectOcclusion extends ComfyNode<WASImageSSDODirectOcclusion_input> {
         nameInComfy: 'Image SSDO (Direct Occlusion)'
         IMAGE: Slot<'IMAGE', 0>
@@ -11886,9 +11196,7 @@ declare global {
         colored_occlusion: Enum_XYPlot_XY_flip
     }
 
-    // |=============================================================================|
-    // | WASImageAnalyze ("Image Analyze" in ComfyUI) [WAS Suite_Image_Analyze]      |
-    // |=============================================================================|
+    // Image Analyze [WAS Suite_Image_Analyze]
     export interface WASImageAnalyze extends HasSingle_IMAGE, ComfyNode<WASImageAnalyze_input> {
         nameInComfy: 'Image Analyze'
         IMAGE: Slot<'IMAGE', 0>
@@ -11898,9 +11206,7 @@ declare global {
         mode: Enum_WASImageAnalyze_Mode
     }
 
-    // |=============================================================================|
-    // | WASImageAspectRatio ("Image Aspect Ratio" in ComfyUI) [WAS Suite_Logic]     |
-    // |=============================================================================|
+    // Image Aspect Ratio [WAS Suite_Logic]
     export interface WASImageAspectRatio extends HasSingle_FLOAT, ComfyNode<WASImageAspectRatio_input> {
         nameInComfy: 'Image Aspect Ratio'
         NUMBER: Slot<'NUMBER', 0>
@@ -11915,9 +11221,7 @@ declare global {
         height?: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASImageBatch ("Image Batch" in ComfyUI) [WAS Suite_Image]                  |
-    // |=============================================================================|
+    // Image Batch [WAS Suite_Image]
     export interface WASImageBatch extends HasSingle_IMAGE, ComfyNode<WASImageBatch_input> {
         nameInComfy: 'Image Batch'
         IMAGE: Slot<'IMAGE', 0>
@@ -11929,9 +11233,7 @@ declare global {
         images_d?: _IMAGE
     }
 
-    // |=============================================================================|
-    // | WASImageBlank ("Image Blank" in ComfyUI) [WAS Suite_Image]                  |
-    // |=============================================================================|
+    // Image Blank [WAS Suite_Image]
     export interface WASImageBlank extends HasSingle_IMAGE, ComfyNode<WASImageBlank_input> {
         nameInComfy: 'Image Blank'
         IMAGE: Slot<'IMAGE', 0>
@@ -11949,9 +11251,7 @@ declare global {
         blue?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageBlendByMask ("Image Blend by Mask" in ComfyUI) [WAS Suite_Image]    |
-    // |=============================================================================|
+    // Image Blend by Mask [WAS Suite_Image]
     export interface WASImageBlendByMask extends HasSingle_IMAGE, ComfyNode<WASImageBlendByMask_input> {
         nameInComfy: 'Image Blend by Mask'
         IMAGE: Slot<'IMAGE', 0>
@@ -11964,9 +11264,7 @@ declare global {
         blend_percentage?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageBlend ("Image Blend" in ComfyUI) [WAS Suite_Image]                  |
-    // |=============================================================================|
+    // Image Blend [WAS Suite_Image]
     export interface WASImageBlend extends HasSingle_IMAGE, ComfyNode<WASImageBlend_input> {
         nameInComfy: 'Image Blend'
         IMAGE: Slot<'IMAGE', 0>
@@ -11978,9 +11276,7 @@ declare global {
         blend_percentage?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageBlendingMode ("Image Blending Mode" in ComfyUI) [WAS Suite_Image]   |
-    // |=============================================================================|
+    // Image Blending Mode [WAS Suite_Image]
     export interface WASImageBlendingMode extends HasSingle_IMAGE, ComfyNode<WASImageBlendingMode_input> {
         nameInComfy: 'Image Blending Mode'
         IMAGE: Slot<'IMAGE', 0>
@@ -11993,9 +11289,7 @@ declare global {
         blend_percentage?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageBloomFilter ("Image Bloom Filter" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Bloom Filter [WAS Suite_Image_Filter]
     export interface WASImageBloomFilter extends HasSingle_IMAGE, ComfyNode<WASImageBloomFilter_input> {
         nameInComfy: 'Image Bloom Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -12008,9 +11302,7 @@ declare global {
         intensity?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageCannyFilter ("Image Canny Filter" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Canny Filter [WAS Suite_Image_Filter]
     export interface WASImageCannyFilter extends HasSingle_IMAGE, ComfyNode<WASImageCannyFilter_input> {
         nameInComfy: 'Image Canny Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -12024,9 +11316,7 @@ declare global {
         threshold_high?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageChromaticAberration ("Image Chromatic Aberration" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Chromatic Aberration [WAS Suite_Image_Filter]
     export interface WASImageChromaticAberration extends HasSingle_IMAGE, ComfyNode<WASImageChromaticAberration_input> {
         nameInComfy: 'Image Chromatic Aberration'
         IMAGE: Slot<'IMAGE', 0>
@@ -12045,9 +11335,7 @@ declare global {
         fade_radius?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageColorPalette ("Image Color Palette" in ComfyUI) [WAS Suite_Image_Analyze]   |
-    // |=============================================================================|
+    // Image Color Palette [WAS Suite_Image_Analyze]
     export interface WASImageColorPalette extends HasSingle_IMAGE, HasSingle_LIST, ComfyNode<WASImageColorPalette_input> {
         nameInComfy: 'Image Color Palette'
         IMAGE: Slot<'IMAGE', 0>
@@ -12060,9 +11348,7 @@ declare global {
         mode: Enum_WASImageColorPalette_Mode
     }
 
-    // |=============================================================================|
-    // | WASImageCropFace ("Image Crop Face" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Crop Face [WAS Suite_Image_Process]
     export interface WASImageCropFace extends HasSingle_IMAGE, HasSingle_CROP_DATA, ComfyNode<WASImageCropFace_input> {
         nameInComfy: 'Image Crop Face'
         IMAGE: Slot<'IMAGE', 0>
@@ -12075,9 +11361,7 @@ declare global {
         cascade_xml: Enum_WASImageCropFace_Cascade_xml
     }
 
-    // |=============================================================================|
-    // | WASImageCropLocation ("Image Crop Location" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Crop Location [WAS Suite_Image_Process]
     export interface WASImageCropLocation extends HasSingle_IMAGE, HasSingle_CROP_DATA, ComfyNode<WASImageCropLocation_input> {
         nameInComfy: 'Image Crop Location'
         IMAGE: Slot<'IMAGE', 0>
@@ -12095,9 +11379,7 @@ declare global {
         bottom?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageCropSquareLocation ("Image Crop Square Location" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Crop Square Location [WAS Suite_Image_Process]
     export interface WASImageCropSquareLocation
         extends HasSingle_IMAGE,
             HasSingle_CROP_DATA,
@@ -12116,9 +11398,7 @@ declare global {
         size?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageDisplacementWarp ("Image Displacement Warp" in ComfyUI) [WAS Suite_Image_Transform]   |
-    // |=============================================================================|
+    // Image Displacement Warp [WAS Suite_Image_Transform]
     export interface WASImageDisplacementWarp extends HasSingle_IMAGE, ComfyNode<WASImageDisplacementWarp_input> {
         nameInComfy: 'Image Displacement Warp'
         IMAGE: Slot<'IMAGE', 0>
@@ -12130,9 +11410,7 @@ declare global {
         amplitude?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageLucySharpen ("Image Lucy Sharpen" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Lucy Sharpen [WAS Suite_Image_Filter]
     export interface WASImageLucySharpen extends HasSingle_IMAGE, ComfyNode<WASImageLucySharpen_input> {
         nameInComfy: 'Image Lucy Sharpen'
         IMAGE: Slot<'IMAGE', 0>
@@ -12145,9 +11423,7 @@ declare global {
         kernel_size?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImagePasteFace ("Image Paste Face" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Paste Face [WAS Suite_Image_Process]
     export interface WASImagePasteFace extends ComfyNode<WASImagePasteFace_input> {
         nameInComfy: 'Image Paste Face'
         IMAGE: Slot<'IMAGE', 0>
@@ -12163,9 +11439,7 @@ declare global {
         crop_sharpening?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImagePasteCrop ("Image Paste Crop" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Paste Crop [WAS Suite_Image_Process]
     export interface WASImagePasteCrop extends ComfyNode<WASImagePasteCrop_input> {
         nameInComfy: 'Image Paste Crop'
         IMAGE: Slot<'IMAGE', 0>
@@ -12181,9 +11455,7 @@ declare global {
         crop_sharpening?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImagePasteCropByLocation ("Image Paste Crop by Location" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Paste Crop by Location [WAS Suite_Image_Process]
     export interface WASImagePasteCropByLocation extends ComfyNode<WASImagePasteCropByLocation_input> {
         nameInComfy: 'Image Paste Crop by Location'
         IMAGE: Slot<'IMAGE', 0>
@@ -12206,9 +11478,7 @@ declare global {
         crop_sharpening?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImagePixelate ("Image Pixelate" in ComfyUI) [WAS Suite_Image_Process]    |
-    // |=============================================================================|
+    // Image Pixelate [WAS Suite_Image_Process]
     export interface WASImagePixelate extends HasSingle_IMAGE, ComfyNode<WASImagePixelate_input> {
         nameInComfy: 'Image Pixelate'
         IMAGE: Slot<'IMAGE', 0>
@@ -12230,9 +11500,7 @@ declare global {
         reverse_palette?: Enum_XYPlot_XY_flip
     }
 
-    // |=============================================================================|
-    // | WASImagePowerNoise ("Image Power Noise" in ComfyUI) [WAS Suite_Image_Generate_Noise]   |
-    // |=============================================================================|
+    // Image Power Noise [WAS Suite_Image_Generate_Noise]
     export interface WASImagePowerNoise extends HasSingle_IMAGE, ComfyNode<WASImagePowerNoise_input> {
         nameInComfy: 'Image Power Noise'
         IMAGE: Slot<'IMAGE', 0>
@@ -12251,9 +11519,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageDraganPhotographyFilter ("Image Dragan Photography Filter" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Dragan Photography Filter [WAS Suite_Image_Filter]
     export interface WASImageDraganPhotographyFilter extends HasSingle_IMAGE, ComfyNode<WASImageDraganPhotographyFilter_input> {
         nameInComfy: 'Image Dragan Photography Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -12277,9 +11543,7 @@ declare global {
         colorize: Enum_WASCreateGridImage_Include_subfolders
     }
 
-    // |=============================================================================|
-    // | WASImageEdgeDetectionFilter ("Image Edge Detection Filter" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Edge Detection Filter [WAS Suite_Image_Filter]
     export interface WASImageEdgeDetectionFilter extends HasSingle_IMAGE, ComfyNode<WASImageEdgeDetectionFilter_input> {
         nameInComfy: 'Image Edge Detection Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -12289,9 +11553,7 @@ declare global {
         mode: Enum_WASImageEdgeDetectionFilter_Mode
     }
 
-    // |=============================================================================|
-    // | WASImageFilmGrain ("Image Film Grain" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Film Grain [WAS Suite_Image_Filter]
     export interface WASImageFilmGrain extends HasSingle_IMAGE, ComfyNode<WASImageFilmGrain_input> {
         nameInComfy: 'Image Film Grain'
         IMAGE: Slot<'IMAGE', 0>
@@ -12308,9 +11570,7 @@ declare global {
         supersample_factor?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageFilterAdjustments ("Image Filter Adjustments" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Filter Adjustments [WAS Suite_Image_Filter]
     export interface WASImageFilterAdjustments extends HasSingle_IMAGE, ComfyNode<WASImageFilterAdjustments_input> {
         nameInComfy: 'Image Filter Adjustments'
         IMAGE: Slot<'IMAGE', 0>
@@ -12334,9 +11594,7 @@ declare global {
         detail_enhance: Enum_WASCreateGridImage_Include_subfolders
     }
 
-    // |=============================================================================|
-    // | WASImageFlip ("Image Flip" in ComfyUI) [WAS Suite_Image_Transform]          |
-    // |=============================================================================|
+    // Image Flip [WAS Suite_Image_Transform]
     export interface WASImageFlip extends HasSingle_IMAGE, ComfyNode<WASImageFlip_input> {
         nameInComfy: 'Image Flip'
         IMAGE: Slot<'IMAGE', 0>
@@ -12346,9 +11604,7 @@ declare global {
         mode: Enum_WASImageFlip_Mode
     }
 
-    // |=============================================================================|
-    // | WASImageGradientMap ("Image Gradient Map" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Gradient Map [WAS Suite_Image_Filter]
     export interface WASImageGradientMap extends HasSingle_IMAGE, ComfyNode<WASImageGradientMap_input> {
         nameInComfy: 'Image Gradient Map'
         IMAGE: Slot<'IMAGE', 0>
@@ -12359,9 +11615,7 @@ declare global {
         flip_left_right: Enum_WASCreateGridImage_Include_subfolders
     }
 
-    // |=============================================================================|
-    // | WASImageGenerateGradient ("Image Generate Gradient" in ComfyUI) [WAS Suite_Image_Generate]   |
-    // |=============================================================================|
+    // Image Generate Gradient [WAS Suite_Image_Generate]
     export interface WASImageGenerateGradient extends HasSingle_IMAGE, ComfyNode<WASImageGenerateGradient_input> {
         nameInComfy: 'Image Generate Gradient'
         IMAGE: Slot<'IMAGE', 0>
@@ -12378,9 +11632,7 @@ declare global {
         gradient_stops?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASImageHighPassFilter ("Image High Pass Filter" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image High Pass Filter [WAS Suite_Image_Filter]
     export interface WASImageHighPassFilter extends HasSingle_IMAGE, ComfyNode<WASImageHighPassFilter_input> {
         nameInComfy: 'Image High Pass Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -12395,9 +11647,7 @@ declare global {
         neutral_background: Enum_WASCreateGridImage_Include_subfolders
     }
 
-    // |=============================================================================|
-    // | WASImageHistoryLoader ("Image History Loader" in ComfyUI) [WAS Suite_History]   |
-    // |=============================================================================|
+    // Image History Loader [WAS Suite_History]
     export interface WASImageHistoryLoader extends HasSingle_IMAGE, HasSingle_STRING, ComfyNode<WASImageHistoryLoader_input> {
         nameInComfy: 'Image History Loader'
         IMAGE: Slot<'IMAGE', 0>
@@ -12407,9 +11657,7 @@ declare global {
         image: Enum_WASImageHistoryLoader_Image
     }
 
-    // |=============================================================================|
-    // | WASImageInputSwitch ("Image Input Switch" in ComfyUI) [WAS Suite_Logic]     |
-    // |=============================================================================|
+    // Image Input Switch [WAS Suite_Logic]
     export interface WASImageInputSwitch extends HasSingle_IMAGE, ComfyNode<WASImageInputSwitch_input> {
         nameInComfy: 'Image Input Switch'
         IMAGE: Slot<'IMAGE', 0>
@@ -12420,9 +11668,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASImageLevelsAdjustment ("Image Levels Adjustment" in ComfyUI) [WAS Suite_Image_Adjustment]   |
-    // |=============================================================================|
+    // Image Levels Adjustment [WAS Suite_Image_Adjustment]
     export interface WASImageLevelsAdjustment extends HasSingle_IMAGE, ComfyNode<WASImageLevelsAdjustment_input> {
         nameInComfy: 'Image Levels Adjustment'
         IMAGE: Slot<'IMAGE', 0>
@@ -12437,9 +11683,7 @@ declare global {
         white_level?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageLoad ("Image Load" in ComfyUI) [WAS Suite_IO]                       |
-    // |=============================================================================|
+    // Image Load [WAS Suite_IO]
     export interface WASImageLoad extends HasSingle_IMAGE, HasSingle_MASK, HasSingle_STRING, ComfyNode<WASImageLoad_input> {
         nameInComfy: 'Image Load'
         IMAGE: Slot<'IMAGE', 0>
@@ -12453,9 +11697,7 @@ declare global {
         filename_text_extension?: Enum_WASCreateGridImage_Include_subfolders
     }
 
-    // |=============================================================================|
-    // | WASImageMedianFilter ("Image Median Filter" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Median Filter [WAS Suite_Image_Filter]
     export interface WASImageMedianFilter extends HasSingle_IMAGE, ComfyNode<WASImageMedianFilter_input> {
         nameInComfy: 'Image Median Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -12470,9 +11712,7 @@ declare global {
         sigma_space?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageMixRGBChannels ("Image Mix RGB Channels" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Mix RGB Channels [WAS Suite_Image_Process]
     export interface WASImageMixRGBChannels extends HasSingle_IMAGE, ComfyNode<WASImageMixRGBChannels_input> {
         nameInComfy: 'Image Mix RGB Channels'
         IMAGE: Slot<'IMAGE', 0>
@@ -12483,9 +11723,7 @@ declare global {
         blue_channel: _IMAGE
     }
 
-    // |=============================================================================|
-    // | WASImageMonitorEffectsFilter ("Image Monitor Effects Filter" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Monitor Effects Filter [WAS Suite_Image_Filter]
     export interface WASImageMonitorEffectsFilter extends HasSingle_IMAGE, ComfyNode<WASImageMonitorEffectsFilter_input> {
         nameInComfy: 'Image Monitor Effects Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -12499,9 +11737,7 @@ declare global {
         offset?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageNovaFilter ("Image Nova Filter" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Nova Filter [WAS Suite_Image_Filter]
     export interface WASImageNovaFilter extends HasSingle_IMAGE, ComfyNode<WASImageNovaFilter_input> {
         nameInComfy: 'Image Nova Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -12514,9 +11750,7 @@ declare global {
         frequency?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImagePadding ("Image Padding" in ComfyUI) [WAS Suite_Image_Transform]    |
-    // |=============================================================================|
+    // Image Padding [WAS Suite_Image_Transform]
     export interface WASImagePadding extends ComfyNode<WASImagePadding_input> {
         nameInComfy: 'Image Padding'
         IMAGE: Slot<'IMAGE', 0>
@@ -12537,9 +11771,7 @@ declare global {
         bottom_padding?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImagePerlinNoise ("Image Perlin Noise" in ComfyUI) [WAS Suite_Image_Generate_Noise]   |
-    // |=============================================================================|
+    // Image Perlin Noise [WAS Suite_Image_Generate_Noise]
     export interface WASImagePerlinNoise extends HasSingle_IMAGE, ComfyNode<WASImagePerlinNoise_input> {
         nameInComfy: 'Image Perlin Noise'
         IMAGE: Slot<'IMAGE', 0>
@@ -12559,9 +11791,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageRembgRemoveBackground ("Image Rembg (Remove Background)" in ComfyUI) [WAS Suite_Image_AI]   |
-    // |=============================================================================|
+    // Image Rembg (Remove Background) [WAS Suite_Image_AI]
     export interface WASImageRembgRemoveBackground extends HasSingle_IMAGE, ComfyNode<WASImageRembgRemoveBackground_input> {
         nameInComfy: 'Image Rembg (Remove Background)'
         IMAGE: Slot<'IMAGE', 0>
@@ -12586,9 +11816,7 @@ declare global {
         background_color: Enum_WASImageRembgRemoveBackground_Background_color
     }
 
-    // |=============================================================================|
-    // | WASImagePerlinPowerFractal ("Image Perlin Power Fractal" in ComfyUI) [WAS Suite_Image_Generate_Noise]   |
-    // |=============================================================================|
+    // Image Perlin Power Fractal [WAS Suite_Image_Generate_Noise]
     export interface WASImagePerlinPowerFractal extends HasSingle_IMAGE, ComfyNode<WASImagePerlinPowerFractal_input> {
         nameInComfy: 'Image Perlin Power Fractal'
         IMAGE: Slot<'IMAGE', 0>
@@ -12612,9 +11840,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageRemoveBackgroundAlpha ("Image Remove Background (Alpha)" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Remove Background (Alpha) [WAS Suite_Image_Process]
     export interface WASImageRemoveBackgroundAlpha extends HasSingle_IMAGE, ComfyNode<WASImageRemoveBackgroundAlpha_input> {
         nameInComfy: 'Image Remove Background (Alpha)'
         IMAGE: Slot<'IMAGE', 0>
@@ -12628,9 +11854,7 @@ declare global {
         threshold_tolerance?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageRemoveColor ("Image Remove Color" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Remove Color [WAS Suite_Image_Process]
     export interface WASImageRemoveColor extends HasSingle_IMAGE, ComfyNode<WASImageRemoveColor_input> {
         nameInComfy: 'Image Remove Color'
         IMAGE: Slot<'IMAGE', 0>
@@ -12653,9 +11877,7 @@ declare global {
         clip_threshold?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageResize ("Image Resize" in ComfyUI) [WAS Suite_Image_Transform]      |
-    // |=============================================================================|
+    // Image Resize [WAS Suite_Image_Transform]
     export interface WASImageResize extends HasSingle_IMAGE, ComfyNode<WASImageResize_input> {
         nameInComfy: 'Image Resize'
         IMAGE: Slot<'IMAGE', 0>
@@ -12673,9 +11895,7 @@ declare global {
         resize_height?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageRotate ("Image Rotate" in ComfyUI) [WAS Suite_Image_Transform]      |
-    // |=============================================================================|
+    // Image Rotate [WAS Suite_Image_Transform]
     export interface WASImageRotate extends HasSingle_IMAGE, ComfyNode<WASImageRotate_input> {
         nameInComfy: 'Image Rotate'
         IMAGE: Slot<'IMAGE', 0>
@@ -12688,9 +11908,7 @@ declare global {
         sampler: Enum_WASImageRotate_Sampler
     }
 
-    // |=============================================================================|
-    // | WASImageRotateHue ("Image Rotate Hue" in ComfyUI) [WAS Suite_Image_Adjustment]   |
-    // |=============================================================================|
+    // Image Rotate Hue [WAS Suite_Image_Adjustment]
     export interface WASImageRotateHue extends HasSingle_IMAGE, ComfyNode<WASImageRotateHue_input> {
         nameInComfy: 'Image Rotate Hue'
         IMAGE: Slot<'IMAGE', 0>
@@ -12701,9 +11919,7 @@ declare global {
         hue_shift?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageSave ("Image Save" in ComfyUI) [WAS Suite_IO]                       |
-    // |=============================================================================|
+    // Image Save [WAS Suite_IO]
     export interface WASImageSave extends ComfyNode<WASImageSave_input> {
         nameInComfy: 'Image Save'
     }
@@ -12729,9 +11945,7 @@ declare global {
         show_previews: Enum_WASCreateGridImage_Include_subfolders
     }
 
-    // |=============================================================================|
-    // | WASImageSeamlessTexture ("Image Seamless Texture" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Seamless Texture [WAS Suite_Image_Process]
     export interface WASImageSeamlessTexture extends HasSingle_IMAGE, ComfyNode<WASImageSeamlessTexture_input> {
         nameInComfy: 'Image Seamless Texture'
         IMAGE: Slot<'IMAGE', 0>
@@ -12745,9 +11959,7 @@ declare global {
         tiles?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageSelectChannel ("Image Select Channel" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Select Channel [WAS Suite_Image_Process]
     export interface WASImageSelectChannel extends HasSingle_IMAGE, ComfyNode<WASImageSelectChannel_input> {
         nameInComfy: 'Image Select Channel'
         IMAGE: Slot<'IMAGE', 0>
@@ -12757,9 +11969,7 @@ declare global {
         channel: Enum_ImageToMask_Channel
     }
 
-    // |=============================================================================|
-    // | WASImageSelectColor ("Image Select Color" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Select Color [WAS Suite_Image_Process]
     export interface WASImageSelectColor extends HasSingle_IMAGE, ComfyNode<WASImageSelectColor_input> {
         nameInComfy: 'Image Select Color'
         IMAGE: Slot<'IMAGE', 0>
@@ -12776,9 +11986,7 @@ declare global {
         variance?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageShadowsAndHighlights ("Image Shadows and Highlights" in ComfyUI) [WAS Suite_Image_Adjustment]   |
-    // |=============================================================================|
+    // Image Shadows and Highlights [WAS Suite_Image_Adjustment]
     export interface WASImageShadowsAndHighlights extends ComfyNode<WASImageShadowsAndHighlights_input> {
         nameInComfy: 'Image Shadows and Highlights'
         IMAGE: Slot<'IMAGE', 0>
@@ -12803,9 +12011,7 @@ declare global {
         simplify_isolation?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageSizeToNumber ("Image Size to Number" in ComfyUI) [WAS Suite_Number_Operations]   |
-    // |=============================================================================|
+    // Image Size to Number [WAS Suite_Number_Operations]
     export interface WASImageSizeToNumber extends ComfyNode<WASImageSizeToNumber_input> {
         nameInComfy: 'Image Size to Number'
         NUMBER: Slot<'NUMBER', 0>
@@ -12819,9 +12025,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | WASImageStitch ("Image Stitch" in ComfyUI) [WAS Suite_Image_Transform]      |
-    // |=============================================================================|
+    // Image Stitch [WAS Suite_Image_Transform]
     export interface WASImageStitch extends HasSingle_IMAGE, ComfyNode<WASImageStitch_input> {
         nameInComfy: 'Image Stitch'
         IMAGE: Slot<'IMAGE', 0>
@@ -12834,9 +12038,7 @@ declare global {
         feathering?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageStyleFilter ("Image Style Filter" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image Style Filter [WAS Suite_Image_Filter]
     export interface WASImageStyleFilter extends HasSingle_IMAGE, ComfyNode<WASImageStyleFilter_input> {
         nameInComfy: 'Image Style Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -12846,9 +12048,7 @@ declare global {
         style: Enum_WASImageStyleFilter_Style
     }
 
-    // |=============================================================================|
-    // | WASImageThreshold ("Image Threshold" in ComfyUI) [WAS Suite_Image_Process]   |
-    // |=============================================================================|
+    // Image Threshold [WAS Suite_Image_Process]
     export interface WASImageThreshold extends HasSingle_IMAGE, ComfyNode<WASImageThreshold_input> {
         nameInComfy: 'Image Threshold'
         IMAGE: Slot<'IMAGE', 0>
@@ -12859,9 +12059,7 @@ declare global {
         threshold?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASImageTiled ("Image Tiled" in ComfyUI) [WAS Suite_Image_Process]          |
-    // |=============================================================================|
+    // Image Tiled [WAS Suite_Image_Process]
     export interface WASImageTiled extends HasSingle_IMAGE, ComfyNode<WASImageTiled_input> {
         nameInComfy: 'Image Tiled'
         IMAGE: Slot<'IMAGE', 0>
@@ -12872,9 +12070,7 @@ declare global {
         num_tiles?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageTranspose ("Image Transpose" in ComfyUI) [WAS Suite_Image_Transform]   |
-    // |=============================================================================|
+    // Image Transpose [WAS Suite_Image_Transform]
     export interface WASImageTranspose extends HasSingle_IMAGE, ComfyNode<WASImageTranspose_input> {
         nameInComfy: 'Image Transpose'
         IMAGE: Slot<'IMAGE', 0>
@@ -12896,9 +12092,7 @@ declare global {
         feathering?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageFDOFFilter ("Image fDOF Filter" in ComfyUI) [WAS Suite_Image_Filter]   |
-    // |=============================================================================|
+    // Image fDOF Filter [WAS Suite_Image_Filter]
     export interface WASImageFDOFFilter extends HasSingle_IMAGE, ComfyNode<WASImageFDOFFilter_input> {
         nameInComfy: 'Image fDOF Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -12913,9 +12107,7 @@ declare global {
         samples?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageToLatentMask ("Image to Latent Mask" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Image to Latent Mask [WAS Suite_Image_Masking]
     export interface WASImageToLatentMask extends HasSingle_MASK, ComfyNode<WASImageToLatentMask_input> {
         nameInComfy: 'Image to Latent Mask'
         MASK: Slot<'MASK', 0>
@@ -12925,9 +12117,7 @@ declare global {
         channel: Enum_LoadImageMask_Channel
     }
 
-    // |=============================================================================|
-    // | WASImageToNoise ("Image to Noise" in ComfyUI) [WAS Suite_Image_Generate_Noise]   |
-    // |=============================================================================|
+    // Image to Noise [WAS Suite_Image_Generate_Noise]
     export interface WASImageToNoise extends HasSingle_IMAGE, ComfyNode<WASImageToNoise_input> {
         nameInComfy: 'Image to Noise'
         IMAGE: Slot<'IMAGE', 0>
@@ -12947,9 +12137,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageToSeed ("Image to Seed" in ComfyUI) [WAS Suite_Image_Analyze]       |
-    // |=============================================================================|
+    // Image to Seed [WAS Suite_Image_Analyze]
     export interface WASImageToSeed extends HasSingle_INT, ComfyNode<WASImageToSeed_input> {
         nameInComfy: 'Image to Seed'
         INT: Slot<'INT', 0>
@@ -12958,9 +12146,7 @@ declare global {
         images: _IMAGE
     }
 
-    // |=============================================================================|
-    // | WASImagesToRGB ("Images to RGB" in ComfyUI) [WAS Suite_Image]               |
-    // |=============================================================================|
+    // Images to RGB [WAS Suite_Image]
     export interface WASImagesToRGB extends HasSingle_IMAGE, ComfyNode<WASImagesToRGB_input> {
         nameInComfy: 'Images to RGB'
         IMAGE: Slot<'IMAGE', 0>
@@ -12969,9 +12155,7 @@ declare global {
         images: _IMAGE
     }
 
-    // |=============================================================================|
-    // | WASImagesToLinear ("Images to Linear" in ComfyUI) [WAS Suite_Image]         |
-    // |=============================================================================|
+    // Images to Linear [WAS Suite_Image]
     export interface WASImagesToLinear extends HasSingle_IMAGE, ComfyNode<WASImagesToLinear_input> {
         nameInComfy: 'Images to Linear'
         IMAGE: Slot<'IMAGE', 0>
@@ -12980,9 +12164,7 @@ declare global {
         images: _IMAGE
     }
 
-    // |=============================================================================|
-    // | WASIntegerPlaceCounter ("Integer place counter" in ComfyUI) [WAS Suite_Integer]   |
-    // |=============================================================================|
+    // Integer place counter [WAS Suite_Integer]
     export interface WASIntegerPlaceCounter extends HasSingle_INT, ComfyNode<WASIntegerPlaceCounter_input> {
         nameInComfy: 'Integer place counter'
         INT: Slot<'INT', 0>
@@ -12992,9 +12174,7 @@ declare global {
         int_input?: _INT
     }
 
-    // |=============================================================================|
-    // | WASImageVoronoiNoiseFilter ("Image Voronoi Noise Filter" in ComfyUI) [WAS Suite_Image_Generate_Noise]   |
-    // |=============================================================================|
+    // Image Voronoi Noise Filter [WAS Suite_Image_Generate_Noise]
     export interface WASImageVoronoiNoiseFilter extends HasSingle_IMAGE, ComfyNode<WASImageVoronoiNoiseFilter_input> {
         nameInComfy: 'Image Voronoi Noise Filter'
         IMAGE: Slot<'IMAGE', 0>
@@ -13014,9 +12194,7 @@ declare global {
         RGB_output?: Enum_XYPlot_XY_flip
     }
 
-    // |=============================================================================|
-    // | WASKSamplerWAS ("KSampler (WAS)" in ComfyUI) [WAS Suite_Sampling]           |
-    // |=============================================================================|
+    // KSampler (WAS) [WAS Suite_Sampling]
     export interface WASKSamplerWAS extends HasSingle_LATENT, ComfyNode<WASKSamplerWAS_input> {
         nameInComfy: 'KSampler (WAS)'
         LATENT: Slot<'LATENT', 0>
@@ -13037,9 +12215,7 @@ declare global {
         denoise?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASKSamplerCycle ("KSampler Cycle" in ComfyUI) [WAS Suite_Sampling]         |
-    // |=============================================================================|
+    // KSampler Cycle [WAS Suite_Sampling]
     export interface WASKSamplerCycle extends HasSingle_LATENT, ComfyNode<WASKSamplerCycle_input> {
         nameInComfy: 'KSampler Cycle'
         LATENT: Slot<'LATENT', 0>
@@ -13103,9 +12279,7 @@ declare global {
         denoise_cutoff?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASLatentNoiseInjection ("Latent Noise Injection" in ComfyUI) [WAS Suite_Latent_Generate]   |
-    // |=============================================================================|
+    // Latent Noise Injection [WAS Suite_Latent_Generate]
     export interface WASLatentNoiseInjection extends HasSingle_LATENT, ComfyNode<WASLatentNoiseInjection_input> {
         nameInComfy: 'Latent Noise Injection'
         LATENT: Slot<'LATENT', 0>
@@ -13116,9 +12290,7 @@ declare global {
         noise_std?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASLatentSizeToNumber ("Latent Size to Number" in ComfyUI) [WAS Suite_Number_Operations]   |
-    // |=============================================================================|
+    // Latent Size to Number [WAS Suite_Number_Operations]
     export interface WASLatentSizeToNumber extends ComfyNode<WASLatentSizeToNumber_input> {
         nameInComfy: 'Latent Size to Number'
         NUMBER: Slot<'NUMBER', 0>
@@ -13132,9 +12304,7 @@ declare global {
         samples: _LATENT
     }
 
-    // |=============================================================================|
-    // | WASLatentUpscaleByFactorWAS ("Latent Upscale by Factor (WAS)" in ComfyUI) [WAS Suite_Latent_Transform]   |
-    // |=============================================================================|
+    // Latent Upscale by Factor (WAS) [WAS Suite_Latent_Transform]
     export interface WASLatentUpscaleByFactorWAS extends HasSingle_LATENT, ComfyNode<WASLatentUpscaleByFactorWAS_input> {
         nameInComfy: 'Latent Upscale by Factor (WAS)'
         LATENT: Slot<'LATENT', 0>
@@ -13147,9 +12317,7 @@ declare global {
         align: Enum_WASCreateGridImage_Include_subfolders
     }
 
-    // |=============================================================================|
-    // | WASLoadImageBatch ("Load Image Batch" in ComfyUI) [WAS Suite_IO]            |
-    // |=============================================================================|
+    // Load Image Batch [WAS Suite_IO]
     export interface WASLoadImageBatch extends HasSingle_IMAGE, HasSingle_STRING, ComfyNode<WASLoadImageBatch_input> {
         nameInComfy: 'Load Image Batch'
         IMAGE: Slot<'IMAGE', 0>
@@ -13169,9 +12337,7 @@ declare global {
         filename_text_extension?: Enum_WASCreateGridImage_Include_subfolders
     }
 
-    // |=============================================================================|
-    // | WASLoadTextFile ("Load Text File" in ComfyUI) [WAS Suite_IO]                |
-    // |=============================================================================|
+    // Load Text File [WAS Suite_IO]
     export interface WASLoadTextFile extends HasSingle_STRING, HasSingle_DICT, ComfyNode<WASLoadTextFile_input> {
         nameInComfy: 'Load Text File'
         STRING: Slot<'STRING', 0>
@@ -13184,9 +12350,7 @@ declare global {
         dictionary_name?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASLoadLora ("Load Lora" in ComfyUI) [WAS Suite_Loaders]                    |
-    // |=============================================================================|
+    // Load Lora [WAS Suite_Loaders]
     export interface WASLoadLora extends HasSingle_MODEL, HasSingle_CLIP, HasSingle_STRING, ComfyNode<WASLoadLora_input> {
         nameInComfy: 'Load Lora'
         MODEL: Slot<'MODEL', 0>
@@ -13203,9 +12367,7 @@ declare global {
         strength_clip?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASMasksAdd ("Masks Add" in ComfyUI) [WAS Suite_Image_Masking]              |
-    // |=============================================================================|
+    // Masks Add [WAS Suite_Image_Masking]
     export interface WASMasksAdd extends HasSingle_MASK, ComfyNode<WASMasksAdd_input> {
         nameInComfy: 'Masks Add'
         MASK: Slot<'MASK', 0>
@@ -13215,9 +12377,7 @@ declare global {
         masks_b: _MASK
     }
 
-    // |=============================================================================|
-    // | WASMasksSubtract ("Masks Subtract" in ComfyUI) [WAS Suite_Image_Masking]    |
-    // |=============================================================================|
+    // Masks Subtract [WAS Suite_Image_Masking]
     export interface WASMasksSubtract extends HasSingle_MASK, ComfyNode<WASMasksSubtract_input> {
         nameInComfy: 'Masks Subtract'
         MASK: Slot<'MASK', 0>
@@ -13227,9 +12387,7 @@ declare global {
         masks_b: _MASK
     }
 
-    // |=============================================================================|
-    // | WASMaskArbitraryRegion ("Mask Arbitrary Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Arbitrary Region [WAS Suite_Image_Masking]
     export interface WASMaskArbitraryRegion extends HasSingle_MASK, ComfyNode<WASMaskArbitraryRegion_input> {
         nameInComfy: 'Mask Arbitrary Region'
         MASK: Slot<'MASK', 0>
@@ -13242,9 +12400,7 @@ declare global {
         threshold?: _INT
     }
 
-    // |=============================================================================|
-    // | WASMaskBatchToMask ("Mask Batch to Mask" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Batch to Mask [WAS Suite_Image_Masking]
     export interface WASMaskBatchToMask extends HasSingle_MASK, ComfyNode<WASMaskBatchToMask_input> {
         nameInComfy: 'Mask Batch to Mask'
         MASK: Slot<'MASK', 0>
@@ -13255,9 +12411,7 @@ declare global {
         batch_number?: _INT
     }
 
-    // |=============================================================================|
-    // | WASMaskBatch ("Mask Batch" in ComfyUI) [WAS Suite_Image_Masking]            |
-    // |=============================================================================|
+    // Mask Batch [WAS Suite_Image_Masking]
     export interface WASMaskBatch extends HasSingle_MASK, ComfyNode<WASMaskBatch_input> {
         nameInComfy: 'Mask Batch'
         MASK: Slot<'MASK', 0>
@@ -13269,9 +12423,7 @@ declare global {
         masks_d?: _MASK
     }
 
-    // |=============================================================================|
-    // | WASMaskCeilingRegion ("Mask Ceiling Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Ceiling Region [WAS Suite_Image_Masking]
     export interface WASMaskCeilingRegion extends HasSingle_MASK, ComfyNode<WASMaskCeilingRegion_input> {
         nameInComfy: 'Mask Ceiling Region'
         MASK: Slot<'MASK', 0>
@@ -13280,9 +12432,7 @@ declare global {
         masks: _MASK
     }
 
-    // |=============================================================================|
-    // | WASMaskCropDominantRegion ("Mask Crop Dominant Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Crop Dominant Region [WAS Suite_Image_Masking]
     export interface WASMaskCropDominantRegion extends HasSingle_MASK, ComfyNode<WASMaskCropDominantRegion_input> {
         nameInComfy: 'Mask Crop Dominant Region'
         MASK: Slot<'MASK', 0>
@@ -13293,9 +12443,7 @@ declare global {
         padding?: _INT
     }
 
-    // |=============================================================================|
-    // | WASMaskCropMinorityRegion ("Mask Crop Minority Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Crop Minority Region [WAS Suite_Image_Masking]
     export interface WASMaskCropMinorityRegion extends HasSingle_MASK, ComfyNode<WASMaskCropMinorityRegion_input> {
         nameInComfy: 'Mask Crop Minority Region'
         MASK: Slot<'MASK', 0>
@@ -13306,9 +12454,7 @@ declare global {
         padding?: _INT
     }
 
-    // |=============================================================================|
-    // | WASMaskCropRegion ("Mask Crop Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Crop Region [WAS Suite_Image_Masking]
     export interface WASMaskCropRegion extends HasSingle_MASK, HasSingle_CROP_DATA, ComfyNode<WASMaskCropRegion_input> {
         nameInComfy: 'Mask Crop Region'
         MASK: Slot<'MASK', 0>
@@ -13327,9 +12473,7 @@ declare global {
         region_type: Enum_WASMaskCropRegion_Region_type
     }
 
-    // |=============================================================================|
-    // | WASMaskPasteRegion ("Mask Paste Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Paste Region [WAS Suite_Image_Masking]
     export interface WASMaskPasteRegion extends ComfyNode<WASMaskPasteRegion_input> {
         nameInComfy: 'Mask Paste Region'
         MASK: Slot<'MASK', 0>
@@ -13345,9 +12489,7 @@ declare global {
         crop_sharpening?: _INT
     }
 
-    // |=============================================================================|
-    // | WASMaskDilateRegion ("Mask Dilate Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Dilate Region [WAS Suite_Image_Masking]
     export interface WASMaskDilateRegion extends HasSingle_MASK, ComfyNode<WASMaskDilateRegion_input> {
         nameInComfy: 'Mask Dilate Region'
         MASK: Slot<'MASK', 0>
@@ -13358,9 +12500,7 @@ declare global {
         iterations?: _INT
     }
 
-    // |=============================================================================|
-    // | WASMaskDominantRegion ("Mask Dominant Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Dominant Region [WAS Suite_Image_Masking]
     export interface WASMaskDominantRegion extends HasSingle_MASK, ComfyNode<WASMaskDominantRegion_input> {
         nameInComfy: 'Mask Dominant Region'
         MASK: Slot<'MASK', 0>
@@ -13371,9 +12511,7 @@ declare global {
         threshold?: _INT
     }
 
-    // |=============================================================================|
-    // | WASMaskErodeRegion ("Mask Erode Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Erode Region [WAS Suite_Image_Masking]
     export interface WASMaskErodeRegion extends HasSingle_MASK, ComfyNode<WASMaskErodeRegion_input> {
         nameInComfy: 'Mask Erode Region'
         MASK: Slot<'MASK', 0>
@@ -13384,9 +12522,7 @@ declare global {
         iterations?: _INT
     }
 
-    // |=============================================================================|
-    // | WASMaskFillHoles ("Mask Fill Holes" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Fill Holes [WAS Suite_Image_Masking]
     export interface WASMaskFillHoles extends HasSingle_MASK, ComfyNode<WASMaskFillHoles_input> {
         nameInComfy: 'Mask Fill Holes'
         MASK: Slot<'MASK', 0>
@@ -13395,9 +12531,7 @@ declare global {
         masks: _MASK
     }
 
-    // |=============================================================================|
-    // | WASMaskFloorRegion ("Mask Floor Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Floor Region [WAS Suite_Image_Masking]
     export interface WASMaskFloorRegion extends HasSingle_MASK, ComfyNode<WASMaskFloorRegion_input> {
         nameInComfy: 'Mask Floor Region'
         MASK: Slot<'MASK', 0>
@@ -13406,9 +12540,7 @@ declare global {
         masks: _MASK
     }
 
-    // |=============================================================================|
-    // | WASMaskGaussianRegion ("Mask Gaussian Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Gaussian Region [WAS Suite_Image_Masking]
     export interface WASMaskGaussianRegion extends HasSingle_MASK, ComfyNode<WASMaskGaussianRegion_input> {
         nameInComfy: 'Mask Gaussian Region'
         MASK: Slot<'MASK', 0>
@@ -13419,9 +12551,7 @@ declare global {
         radius?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASMaskInvert ("Mask Invert" in ComfyUI) [WAS Suite_Image_Masking]          |
-    // |=============================================================================|
+    // Mask Invert [WAS Suite_Image_Masking]
     export interface WASMaskInvert extends HasSingle_MASK, ComfyNode<WASMaskInvert_input> {
         nameInComfy: 'Mask Invert'
         MASK: Slot<'MASK', 0>
@@ -13430,9 +12560,7 @@ declare global {
         masks: _MASK
     }
 
-    // |=============================================================================|
-    // | WASMaskMinorityRegion ("Mask Minority Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Minority Region [WAS Suite_Image_Masking]
     export interface WASMaskMinorityRegion extends HasSingle_MASK, ComfyNode<WASMaskMinorityRegion_input> {
         nameInComfy: 'Mask Minority Region'
         MASK: Slot<'MASK', 0>
@@ -13443,9 +12571,7 @@ declare global {
         threshold?: _INT
     }
 
-    // |=============================================================================|
-    // | WASMaskSmoothRegion ("Mask Smooth Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Smooth Region [WAS Suite_Image_Masking]
     export interface WASMaskSmoothRegion extends HasSingle_MASK, ComfyNode<WASMaskSmoothRegion_input> {
         nameInComfy: 'Mask Smooth Region'
         MASK: Slot<'MASK', 0>
@@ -13456,9 +12582,7 @@ declare global {
         sigma?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASMaskThresholdRegion ("Mask Threshold Region" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Mask Threshold Region [WAS Suite_Image_Masking]
     export interface WASMaskThresholdRegion extends HasSingle_MASK, ComfyNode<WASMaskThresholdRegion_input> {
         nameInComfy: 'Mask Threshold Region'
         MASK: Slot<'MASK', 0>
@@ -13471,9 +12595,7 @@ declare global {
         white_threshold?: _INT
     }
 
-    // |=============================================================================|
-    // | WASMasksCombineRegions ("Masks Combine Regions" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Masks Combine Regions [WAS Suite_Image_Masking]
     export interface WASMasksCombineRegions extends HasSingle_MASK, ComfyNode<WASMasksCombineRegions_input> {
         nameInComfy: 'Masks Combine Regions'
         MASK: Slot<'MASK', 0>
@@ -13487,9 +12609,7 @@ declare global {
         mask_f?: _MASK
     }
 
-    // |=============================================================================|
-    // | WASMasksCombineBatch ("Masks Combine Batch" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // Masks Combine Batch [WAS Suite_Image_Masking]
     export interface WASMasksCombineBatch extends HasSingle_MASK, ComfyNode<WASMasksCombineBatch_input> {
         nameInComfy: 'Masks Combine Batch'
         MASK: Slot<'MASK', 0>
@@ -13498,9 +12618,7 @@ declare global {
         masks: _MASK
     }
 
-    // |=============================================================================|
-    // | WASMiDaSModelLoader ("MiDaS Model Loader" in ComfyUI) [WAS Suite_Loaders]   |
-    // |=============================================================================|
+    // MiDaS Model Loader [WAS Suite_Loaders]
     export interface WASMiDaSModelLoader extends HasSingle_MIDAS_MODEL, ComfyNode<WASMiDaSModelLoader_input> {
         nameInComfy: 'MiDaS Model Loader'
         MIDAS_MODEL: Slot<'MIDAS_MODEL', 0>
@@ -13509,9 +12627,7 @@ declare global {
         midas_model: Enum_WASMiDaSModelLoader_Midas_model
     }
 
-    // |=============================================================================|
-    // | WASMiDaSDepthApproximation ("MiDaS Depth Approximation" in ComfyUI) [WAS Suite_Image_AI]   |
-    // |=============================================================================|
+    // MiDaS Depth Approximation [WAS Suite_Image_AI]
     export interface WASMiDaSDepthApproximation extends HasSingle_IMAGE, ComfyNode<WASMiDaSDepthApproximation_input> {
         nameInComfy: 'MiDaS Depth Approximation'
         IMAGE: Slot<'IMAGE', 0>
@@ -13524,9 +12640,7 @@ declare global {
         midas_model?: _MIDAS_MODEL
     }
 
-    // |=============================================================================|
-    // | WASMiDaSMaskImage ("MiDaS Mask Image" in ComfyUI) [WAS Suite_Image_AI]      |
-    // |=============================================================================|
+    // MiDaS Mask Image [WAS Suite_Image_AI]
     export interface WASMiDaSMaskImage extends ComfyNode<WASMiDaSMaskImage_input> {
         nameInComfy: 'MiDaS Mask Image'
         IMAGE: Slot<'IMAGE', 0>
@@ -13554,9 +12668,7 @@ declare global {
         background_blue?: _INT
     }
 
-    // |=============================================================================|
-    // | WASModelInputSwitch ("Model Input Switch" in ComfyUI) [WAS Suite_Logic]     |
-    // |=============================================================================|
+    // Model Input Switch [WAS Suite_Logic]
     export interface WASModelInputSwitch extends HasSingle_MODEL, ComfyNode<WASModelInputSwitch_input> {
         nameInComfy: 'Model Input Switch'
         MODEL: Slot<'MODEL', 0>
@@ -13567,9 +12679,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASNumberCounter ("Number Counter" in ComfyUI) [WAS Suite_Number]           |
-    // |=============================================================================|
+    // Number Counter [WAS Suite_Number]
     export interface WASNumberCounter
         extends HasSingle_NUMBER,
             HasSingle_FLOAT,
@@ -13590,9 +12700,7 @@ declare global {
         reset_bool?: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASNumberOperation ("Number Operation" in ComfyUI) [WAS Suite_Number_Operations]   |
-    // |=============================================================================|
+    // Number Operation [WAS Suite_Number_Operations]
     export interface WASNumberOperation
         extends HasSingle_NUMBER,
             HasSingle_FLOAT,
@@ -13609,9 +12717,7 @@ declare global {
         operation: Enum_WASNumberOperation_Operation
     }
 
-    // |=============================================================================|
-    // | WASNumberToFloat ("Number to Float" in ComfyUI) [WAS Suite_Number_Operations]   |
-    // |=============================================================================|
+    // Number to Float [WAS Suite_Number_Operations]
     export interface WASNumberToFloat extends HasSingle_FLOAT, ComfyNode<WASNumberToFloat_input> {
         nameInComfy: 'Number to Float'
         FLOAT: Slot<'FLOAT', 0>
@@ -13620,9 +12726,7 @@ declare global {
         number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASNumberInputSwitch ("Number Input Switch" in ComfyUI) [WAS Suite_Logic]   |
-    // |=============================================================================|
+    // Number Input Switch [WAS Suite_Logic]
     export interface WASNumberInputSwitch
         extends HasSingle_NUMBER,
             HasSingle_FLOAT,
@@ -13639,9 +12743,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASNumberInputCondition ("Number Input Condition" in ComfyUI) [WAS Suite_Logic]   |
-    // |=============================================================================|
+    // Number Input Condition [WAS Suite_Logic]
     export interface WASNumberInputCondition
         extends HasSingle_NUMBER,
             HasSingle_FLOAT,
@@ -13659,9 +12761,7 @@ declare global {
         comparison: Enum_WASNumberInputCondition_Comparison
     }
 
-    // |=============================================================================|
-    // | WASNumberMultipleOf ("Number Multiple Of" in ComfyUI) [WAS Suite_Number_Functions]   |
-    // |=============================================================================|
+    // Number Multiple Of [WAS Suite_Number_Functions]
     export interface WASNumberMultipleOf
         extends HasSingle_NUMBER,
             HasSingle_FLOAT,
@@ -13678,9 +12778,7 @@ declare global {
         multiple?: _INT
     }
 
-    // |=============================================================================|
-    // | WASNumberPI ("Number PI" in ComfyUI) [WAS Suite_Number]                     |
-    // |=============================================================================|
+    // Number PI [WAS Suite_Number]
     export interface WASNumberPI extends HasSingle_NUMBER, HasSingle_FLOAT, ComfyNode<WASNumberPI_input> {
         nameInComfy: 'Number PI'
         NUMBER: Slot<'NUMBER', 0>
@@ -13688,9 +12786,7 @@ declare global {
     }
     export type WASNumberPI_input = {}
 
-    // |=============================================================================|
-    // | WASNumberToInt ("Number to Int" in ComfyUI) [WAS Suite_Number_Operations]   |
-    // |=============================================================================|
+    // Number to Int [WAS Suite_Number_Operations]
     export interface WASNumberToInt extends HasSingle_INT, ComfyNode<WASNumberToInt_input> {
         nameInComfy: 'Number to Int'
         INT: Slot<'INT', 0>
@@ -13699,9 +12795,7 @@ declare global {
         number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASNumberToSeed ("Number to Seed" in ComfyUI) [WAS Suite_Number_Operations]   |
-    // |=============================================================================|
+    // Number to Seed [WAS Suite_Number_Operations]
     export interface WASNumberToSeed extends HasSingle_SEED, ComfyNode<WASNumberToSeed_input> {
         nameInComfy: 'Number to Seed'
         SEED: Slot<'SEED', 0>
@@ -13710,9 +12804,7 @@ declare global {
         number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASNumberToString ("Number to String" in ComfyUI) [WAS Suite_Number_Operations]   |
-    // |=============================================================================|
+    // Number to String [WAS Suite_Number_Operations]
     export interface WASNumberToString extends HasSingle_STRING, ComfyNode<WASNumberToString_input> {
         nameInComfy: 'Number to String'
         STRING: Slot<'STRING', 0>
@@ -13721,9 +12813,7 @@ declare global {
         number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASNumberToText ("Number to Text" in ComfyUI) [WAS Suite_Number_Operations]   |
-    // |=============================================================================|
+    // Number to Text [WAS Suite_Number_Operations]
     export interface WASNumberToText extends HasSingle_STRING, ComfyNode<WASNumberToText_input> {
         nameInComfy: 'Number to Text'
         STRING: Slot<'STRING', 0>
@@ -13732,9 +12822,7 @@ declare global {
         number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASPromptStylesSelector ("Prompt Styles Selector" in ComfyUI) [WAS Suite_Text]   |
-    // |=============================================================================|
+    // Prompt Styles Selector [WAS Suite_Text]
     export interface WASPromptStylesSelector extends ComfyNode<WASPromptStylesSelector_input> {
         nameInComfy: 'Prompt Styles Selector'
         STRING: Slot<'STRING', 0>
@@ -13744,9 +12832,7 @@ declare global {
         style: Enum_WASPromptStylesSelector_Style
     }
 
-    // |=============================================================================|
-    // | WASPromptMultipleStylesSelector ("Prompt Multiple Styles Selector" in ComfyUI) [WAS Suite_Text]   |
-    // |=============================================================================|
+    // Prompt Multiple Styles Selector [WAS Suite_Text]
     export interface WASPromptMultipleStylesSelector extends ComfyNode<WASPromptMultipleStylesSelector_input> {
         nameInComfy: 'Prompt Multiple Styles Selector'
         STRING: Slot<'STRING', 0>
@@ -13759,9 +12845,7 @@ declare global {
         style4: Enum_WASPromptStylesSelector_Style
     }
 
-    // |=============================================================================|
-    // | WASRandomNumber ("Random Number" in ComfyUI) [WAS Suite_Number]             |
-    // |=============================================================================|
+    // Random Number [WAS Suite_Number]
     export interface WASRandomNumber extends HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<WASRandomNumber_input> {
         nameInComfy: 'Random Number'
         NUMBER: Slot<'NUMBER', 0>
@@ -13778,9 +12862,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | WASSaveTextFile ("Save Text File" in ComfyUI) [WAS Suite_IO]                |
-    // |=============================================================================|
+    // Save Text File [WAS Suite_IO]
     export interface WASSaveTextFile extends ComfyNode<WASSaveTextFile_input> {
         nameInComfy: 'Save Text File'
     }
@@ -13797,9 +12879,7 @@ declare global {
         filename_number_padding?: _INT
     }
 
-    // |=============================================================================|
-    // | WASSeed ("Seed" in ComfyUI) [WAS Suite_Number]                              |
-    // |=============================================================================|
+    // Seed [WAS Suite_Number]
     export interface WASSeed extends HasSingle_SEED, HasSingle_NUMBER, HasSingle_FLOAT, HasSingle_INT, ComfyNode<WASSeed_input> {
         nameInComfy: 'Seed'
         SEED: Slot<'SEED', 0>
@@ -13812,9 +12892,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | WASTensorBatchToImage ("Tensor Batch to Image" in ComfyUI) [WAS Suite_Latent_Transform]   |
-    // |=============================================================================|
+    // Tensor Batch to Image [WAS Suite_Latent_Transform]
     export interface WASTensorBatchToImage extends HasSingle_IMAGE, ComfyNode<WASTensorBatchToImage_input> {
         nameInComfy: 'Tensor Batch to Image'
         IMAGE: Slot<'IMAGE', 0>
@@ -13825,9 +12903,7 @@ declare global {
         batch_image_number?: _INT
     }
 
-    // |=============================================================================|
-    // | WASBLIPAnalyzeImage ("BLIP Analyze Image" in ComfyUI) [WAS Suite_Text_AI]   |
-    // |=============================================================================|
+    // BLIP Analyze Image [WAS Suite_Text_AI]
     export interface WASBLIPAnalyzeImage extends HasSingle_STRING, ComfyNode<WASBLIPAnalyzeImage_input> {
         nameInComfy: 'BLIP Analyze Image'
         STRING: Slot<'STRING', 0>
@@ -13840,9 +12916,7 @@ declare global {
         blip_model?: _BLIP_MODEL
     }
 
-    // |=============================================================================|
-    // | WASSAMModelLoader ("SAM Model Loader" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // SAM Model Loader [WAS Suite_Image_Masking]
     export interface WASSAMModelLoader extends HasSingle_SAM_MODEL, ComfyNode<WASSAMModelLoader_input> {
         nameInComfy: 'SAM Model Loader'
         SAM_MODEL: Slot<'SAM_MODEL', 0>
@@ -13851,9 +12925,7 @@ declare global {
         model_size: Enum_WASSAMModelLoader_Model_size
     }
 
-    // |=============================================================================|
-    // | WASSAMParameters ("SAM Parameters" in ComfyUI) [WAS Suite_Image_Masking]    |
-    // |=============================================================================|
+    // SAM Parameters [WAS Suite_Image_Masking]
     export interface WASSAMParameters extends HasSingle_SAM_PARAMETERS, ComfyNode<WASSAMParameters_input> {
         nameInComfy: 'SAM Parameters'
         SAM_PARAMETERS: Slot<'SAM_PARAMETERS', 0>
@@ -13865,9 +12937,7 @@ declare global {
         labels?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASSAMParametersCombine ("SAM Parameters Combine" in ComfyUI) [WAS Suite_Image_Masking]   |
-    // |=============================================================================|
+    // SAM Parameters Combine [WAS Suite_Image_Masking]
     export interface WASSAMParametersCombine extends HasSingle_SAM_PARAMETERS, ComfyNode<WASSAMParametersCombine_input> {
         nameInComfy: 'SAM Parameters Combine'
         SAM_PARAMETERS: Slot<'SAM_PARAMETERS', 0>
@@ -13877,9 +12947,7 @@ declare global {
         sam_parameters_b: _SAM_PARAMETERS
     }
 
-    // |=============================================================================|
-    // | WASSAMImageMask ("SAM Image Mask" in ComfyUI) [WAS Suite_Image_Masking]     |
-    // |=============================================================================|
+    // SAM Image Mask [WAS Suite_Image_Masking]
     export interface WASSAMImageMask extends HasSingle_IMAGE, HasSingle_MASK, ComfyNode<WASSAMImageMask_input> {
         nameInComfy: 'SAM Image Mask'
         IMAGE: Slot<'IMAGE', 0>
@@ -13891,9 +12959,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | WASSamplesPassthroughStatSystem ("Samples Passthrough (Stat System)" in ComfyUI) [WAS Suite_Debug]   |
-    // |=============================================================================|
+    // Samples Passthrough (Stat System) [WAS Suite_Debug]
     export interface WASSamplesPassthroughStatSystem extends HasSingle_LATENT, ComfyNode<WASSamplesPassthroughStatSystem_input> {
         nameInComfy: 'Samples Passthrough (Stat System)'
         LATENT: Slot<'LATENT', 0>
@@ -13902,9 +12968,7 @@ declare global {
         samples: _LATENT
     }
 
-    // |=============================================================================|
-    // | WASStringToText ("String to Text" in ComfyUI) [WAS Suite_Text_Operations]   |
-    // |=============================================================================|
+    // String to Text [WAS Suite_Text_Operations]
     export interface WASStringToText extends HasSingle_STRING, ComfyNode<WASStringToText_input> {
         nameInComfy: 'String to Text'
         STRING: Slot<'STRING', 0>
@@ -13914,9 +12978,7 @@ declare global {
         string: _STRING
     }
 
-    // |=============================================================================|
-    // | WASImageBounds ("Image Bounds" in ComfyUI) [WAS Suite_Image_Bound]          |
-    // |=============================================================================|
+    // Image Bounds [WAS Suite_Image_Bound]
     export interface WASImageBounds extends HasSingle_IMAGE_BOUNDS, ComfyNode<WASImageBounds_input> {
         nameInComfy: 'Image Bounds'
         IMAGE_BOUNDS: Slot<'IMAGE_BOUNDS', 0>
@@ -13925,9 +12987,7 @@ declare global {
         image: _IMAGE
     }
 
-    // |=============================================================================|
-    // | WASInsetImageBounds ("Inset Image Bounds" in ComfyUI) [WAS Suite_Image_Bound]   |
-    // |=============================================================================|
+    // Inset Image Bounds [WAS Suite_Image_Bound]
     export interface WASInsetImageBounds extends HasSingle_IMAGE_BOUNDS, ComfyNode<WASInsetImageBounds_input> {
         nameInComfy: 'Inset Image Bounds'
         IMAGE_BOUNDS: Slot<'IMAGE_BOUNDS', 0>
@@ -13944,9 +13004,7 @@ declare global {
         inset_bottom?: _INT
     }
 
-    // |=============================================================================|
-    // | WASBoundedImageBlend ("Bounded Image Blend" in ComfyUI) [WAS Suite_Image_Bound]   |
-    // |=============================================================================|
+    // Bounded Image Blend [WAS Suite_Image_Bound]
     export interface WASBoundedImageBlend extends HasSingle_IMAGE, ComfyNode<WASBoundedImageBlend_input> {
         nameInComfy: 'Bounded Image Blend'
         IMAGE: Slot<'IMAGE', 0>
@@ -13961,9 +13019,7 @@ declare global {
         feathering?: _INT
     }
 
-    // |=============================================================================|
-    // | WASBoundedImageBlendWithMask ("Bounded Image Blend with Mask" in ComfyUI) [WAS Suite_Image_Bound]   |
-    // |=============================================================================|
+    // Bounded Image Blend with Mask [WAS Suite_Image_Bound]
     export interface WASBoundedImageBlendWithMask extends HasSingle_IMAGE, ComfyNode<WASBoundedImageBlendWithMask_input> {
         nameInComfy: 'Bounded Image Blend with Mask'
         IMAGE: Slot<'IMAGE', 0>
@@ -13979,9 +13035,7 @@ declare global {
         feathering?: _INT
     }
 
-    // |=============================================================================|
-    // | WASBoundedImageCrop ("Bounded Image Crop" in ComfyUI) [WAS Suite_Image_Bound]   |
-    // |=============================================================================|
+    // Bounded Image Crop [WAS Suite_Image_Bound]
     export interface WASBoundedImageCrop extends HasSingle_IMAGE, ComfyNode<WASBoundedImageCrop_input> {
         nameInComfy: 'Bounded Image Crop'
         IMAGE: Slot<'IMAGE', 0>
@@ -13991,9 +13045,7 @@ declare global {
         image_bounds: _IMAGE_BOUNDS
     }
 
-    // |=============================================================================|
-    // | WASBoundedImageCropWithMask ("Bounded Image Crop with Mask" in ComfyUI) [WAS Suite_Image_Bound]   |
-    // |=============================================================================|
+    // Bounded Image Crop with Mask [WAS Suite_Image_Bound]
     export interface WASBoundedImageCropWithMask
         extends HasSingle_IMAGE,
             HasSingle_IMAGE_BOUNDS,
@@ -14015,9 +13067,7 @@ declare global {
         padding_bottom?: _INT
     }
 
-    // |=============================================================================|
-    // | WASTextDictionaryUpdate ("Text Dictionary Update" in ComfyUI) [WAS Suite_Text]   |
-    // |=============================================================================|
+    // Text Dictionary Update [WAS Suite_Text]
     export interface WASTextDictionaryUpdate extends HasSingle_DICT, ComfyNode<WASTextDictionaryUpdate_input> {
         nameInComfy: 'Text Dictionary Update'
         DICT: Slot<'DICT', 0>
@@ -14029,9 +13079,7 @@ declare global {
         dictionary_d?: _DICT
     }
 
-    // |=============================================================================|
-    // | WASTextAddTokens ("Text Add Tokens" in ComfyUI) [WAS Suite_Text_Tokens]     |
-    // |=============================================================================|
+    // Text Add Tokens [WAS Suite_Text_Tokens]
     export interface WASTextAddTokens extends ComfyNode<WASTextAddTokens_input> {
         nameInComfy: 'Text Add Tokens'
     }
@@ -14041,9 +13089,7 @@ declare global {
         print_current_tokens: Enum_WASCreateGridImage_Include_subfolders
     }
 
-    // |=============================================================================|
-    // | WASTextAddTokenByInput ("Text Add Token by Input" in ComfyUI) [WAS Suite_Text_Tokens]   |
-    // |=============================================================================|
+    // Text Add Token by Input [WAS Suite_Text_Tokens]
     export interface WASTextAddTokenByInput extends ComfyNode<WASTextAddTokenByInput_input> {
         nameInComfy: 'Text Add Token by Input'
     }
@@ -14055,9 +13101,7 @@ declare global {
         print_current_tokens: Enum_WASCreateGridImage_Include_subfolders
     }
 
-    // |=============================================================================|
-    // | WASTextCompare ("Text Compare" in ComfyUI) [WAS Suite_Text_Search]          |
-    // |=============================================================================|
+    // Text Compare [WAS Suite_Text_Search]
     export interface WASTextCompare extends ComfyNode<WASTextCompare_input> {
         nameInComfy: 'Text Compare'
         STRING: Slot<'STRING', 0>
@@ -14076,9 +13120,7 @@ declare global {
         tolerance?: _FLOAT
     }
 
-    // |=============================================================================|
-    // | WASTextConcatenate ("Text Concatenate" in ComfyUI) [WAS Suite_Text]         |
-    // |=============================================================================|
+    // Text Concatenate [WAS Suite_Text]
     export interface WASTextConcatenate extends HasSingle_STRING, ComfyNode<WASTextConcatenate_input> {
         nameInComfy: 'Text Concatenate'
         STRING: Slot<'STRING', 0>
@@ -14095,9 +13137,7 @@ declare global {
         text_d?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextFileHistoryLoader ("Text File History Loader" in ComfyUI) [WAS Suite_History]   |
-    // |=============================================================================|
+    // Text File History Loader [WAS Suite_History]
     export interface WASTextFileHistoryLoader
         extends HasSingle_STRING,
             HasSingle_DICT,
@@ -14112,9 +13152,7 @@ declare global {
         dictionary_name?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextFindAndReplaceByDictionary ("Text Find and Replace by Dictionary" in ComfyUI) [WAS Suite_Text_Search]   |
-    // |=============================================================================|
+    // Text Find and Replace by Dictionary [WAS Suite_Text_Search]
     export interface WASTextFindAndReplaceByDictionary
         extends HasSingle_STRING,
             ComfyNode<WASTextFindAndReplaceByDictionary_input> {
@@ -14131,9 +13169,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | WASTextFindAndReplaceInput ("Text Find and Replace Input" in ComfyUI) [WAS Suite_Text_Search]   |
-    // |=============================================================================|
+    // Text Find and Replace Input [WAS Suite_Text_Search]
     export interface WASTextFindAndReplaceInput extends HasSingle_STRING, ComfyNode<WASTextFindAndReplaceInput_input> {
         nameInComfy: 'Text Find and Replace Input'
         STRING: Slot<'STRING', 0>
@@ -14147,9 +13183,7 @@ declare global {
         replace: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextFindAndReplace ("Text Find and Replace" in ComfyUI) [WAS Suite_Text_Search]   |
-    // |=============================================================================|
+    // Text Find and Replace [WAS Suite_Text_Search]
     export interface WASTextFindAndReplace extends HasSingle_STRING, ComfyNode<WASTextFindAndReplace_input> {
         nameInComfy: 'Text Find and Replace'
         STRING: Slot<'STRING', 0>
@@ -14163,9 +13197,7 @@ declare global {
         replace?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextInputSwitch ("Text Input Switch" in ComfyUI) [WAS Suite_Logic]       |
-    // |=============================================================================|
+    // Text Input Switch [WAS Suite_Logic]
     export interface WASTextInputSwitch extends HasSingle_STRING, ComfyNode<WASTextInputSwitch_input> {
         nameInComfy: 'Text Input Switch'
         STRING: Slot<'STRING', 0>
@@ -14178,9 +13210,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASTextList ("Text List" in ComfyUI) [WAS Suite_Text]                       |
-    // |=============================================================================|
+    // Text List [WAS Suite_Text]
     export interface WASTextList extends HasSingle_LIST, ComfyNode<WASTextList_input> {
         nameInComfy: 'Text List'
         LIST: Slot<'LIST', 0>
@@ -14202,9 +13232,7 @@ declare global {
         text_g?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextListConcatenate ("Text List Concatenate" in ComfyUI) [WAS Suite_Text]   |
-    // |=============================================================================|
+    // Text List Concatenate [WAS Suite_Text]
     export interface WASTextListConcatenate extends HasSingle_LIST, ComfyNode<WASTextListConcatenate_input> {
         nameInComfy: 'Text List Concatenate'
         LIST: Slot<'LIST', 0>
@@ -14220,9 +13248,7 @@ declare global {
         list_d?: _LIST
     }
 
-    // |=============================================================================|
-    // | WASTextLoadLineFromFile ("Text Load Line From File" in ComfyUI) [WAS Suite_Text]   |
-    // |=============================================================================|
+    // Text Load Line From File [WAS Suite_Text]
     export interface WASTextLoadLineFromFile extends HasSingle_STRING, HasSingle_DICT, ComfyNode<WASTextLoadLineFromFile_input> {
         nameInComfy: 'Text Load Line From File'
         STRING: Slot<'STRING', 0>
@@ -14242,9 +13268,7 @@ declare global {
         multiline_text?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextMultiline ("Text Multiline" in ComfyUI) [WAS Suite_Text]             |
-    // |=============================================================================|
+    // Text Multiline [WAS Suite_Text]
     export interface WASTextMultiline extends HasSingle_STRING, ComfyNode<WASTextMultiline_input> {
         nameInComfy: 'Text Multiline'
         STRING: Slot<'STRING', 0>
@@ -14254,9 +13278,7 @@ declare global {
         text?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextParseA1111Embeddings ("Text Parse A1111 Embeddings" in ComfyUI) [WAS Suite_Text_Parse]   |
-    // |=============================================================================|
+    // Text Parse A1111 Embeddings [WAS Suite_Text_Parse]
     export interface WASTextParseA1111Embeddings extends HasSingle_STRING, ComfyNode<WASTextParseA1111Embeddings_input> {
         nameInComfy: 'Text Parse A1111 Embeddings'
         STRING: Slot<'STRING', 0>
@@ -14266,9 +13288,7 @@ declare global {
         text: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextParseNoodleSoupPrompts ("Text Parse Noodle Soup Prompts" in ComfyUI) [WAS Suite_Text_Parse]   |
-    // |=============================================================================|
+    // Text Parse Noodle Soup Prompts [WAS Suite_Text_Parse]
     export interface WASTextParseNoodleSoupPrompts extends HasSingle_STRING, ComfyNode<WASTextParseNoodleSoupPrompts_input> {
         nameInComfy: 'Text Parse Noodle Soup Prompts'
         STRING: Slot<'STRING', 0>
@@ -14283,9 +13303,7 @@ declare global {
         text: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextParseTokens ("Text Parse Tokens" in ComfyUI) [WAS Suite_Text_Tokens]   |
-    // |=============================================================================|
+    // Text Parse Tokens [WAS Suite_Text_Tokens]
     export interface WASTextParseTokens extends HasSingle_STRING, ComfyNode<WASTextParseTokens_input> {
         nameInComfy: 'Text Parse Tokens'
         STRING: Slot<'STRING', 0>
@@ -14295,9 +13313,7 @@ declare global {
         text: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextRandomLine ("Text Random Line" in ComfyUI) [WAS Suite_Text]          |
-    // |=============================================================================|
+    // Text Random Line [WAS Suite_Text]
     export interface WASTextRandomLine extends HasSingle_STRING, ComfyNode<WASTextRandomLine_input> {
         nameInComfy: 'Text Random Line'
         STRING: Slot<'STRING', 0>
@@ -14309,9 +13325,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | WASTextRandomPrompt ("Text Random Prompt" in ComfyUI) [WAS Suite_Text]      |
-    // |=============================================================================|
+    // Text Random Prompt [WAS Suite_Text]
     export interface WASTextRandomPrompt extends HasSingle_STRING, ComfyNode<WASTextRandomPrompt_input> {
         nameInComfy: 'Text Random Prompt'
         STRING: Slot<'STRING', 0>
@@ -14321,9 +13335,7 @@ declare global {
         search_seed: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextString ("Text String" in ComfyUI) [WAS Suite_Text]                   |
-    // |=============================================================================|
+    // Text String [WAS Suite_Text]
     export interface WASTextString extends ComfyNode<WASTextString_input> {
         nameInComfy: 'Text String'
         STRING: Slot<'STRING', 0>
@@ -14342,9 +13354,7 @@ declare global {
         text_d?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextShuffle ("Text Shuffle" in ComfyUI) [WAS Suite_Text_Operations]      |
-    // |=============================================================================|
+    // Text Shuffle [WAS Suite_Text_Operations]
     export interface WASTextShuffle extends HasSingle_STRING, ComfyNode<WASTextShuffle_input> {
         nameInComfy: 'Text Shuffle'
         STRING: Slot<'STRING', 0>
@@ -14358,9 +13368,7 @@ declare global {
         seed?: _INT
     }
 
-    // |=============================================================================|
-    // | WASTextToConditioning ("Text to Conditioning" in ComfyUI) [WAS Suite_Text_Operations]   |
-    // |=============================================================================|
+    // Text to Conditioning [WAS Suite_Text_Operations]
     export interface WASTextToConditioning extends HasSingle_CONDITIONING, ComfyNode<WASTextToConditioning_input> {
         nameInComfy: 'Text to Conditioning'
         CONDITIONING: Slot<'CONDITIONING', 0>
@@ -14371,9 +13379,7 @@ declare global {
         text: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextToConsole ("Text to Console" in ComfyUI) [WAS Suite_Debug]           |
-    // |=============================================================================|
+    // Text to Console [WAS Suite_Debug]
     export interface WASTextToConsole extends HasSingle_STRING, ComfyNode<WASTextToConsole_input> {
         nameInComfy: 'Text to Console'
         STRING: Slot<'STRING', 0>
@@ -14385,9 +13391,7 @@ declare global {
         label?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextToNumber ("Text to Number" in ComfyUI) [WAS Suite_Text_Operations]   |
-    // |=============================================================================|
+    // Text to Number [WAS Suite_Text_Operations]
     export interface WASTextToNumber extends HasSingle_NUMBER, ComfyNode<WASTextToNumber_input> {
         nameInComfy: 'Text to Number'
         NUMBER: Slot<'NUMBER', 0>
@@ -14397,9 +13401,7 @@ declare global {
         text: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextToString ("Text to String" in ComfyUI) [WAS Suite_Text_Operations]   |
-    // |=============================================================================|
+    // Text to String [WAS Suite_Text_Operations]
     export interface WASTextToString extends HasSingle_STRING, ComfyNode<WASTextToString_input> {
         nameInComfy: 'Text to String'
         STRING: Slot<'STRING', 0>
@@ -14409,9 +13411,7 @@ declare global {
         text: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTextStringTruncate ("Text String Truncate" in ComfyUI) [WAS Suite_Text_Operations]   |
-    // |=============================================================================|
+    // Text String Truncate [WAS Suite_Text_Operations]
     export interface WASTextStringTruncate extends ComfyNode<WASTextStringTruncate_input> {
         nameInComfy: 'Text String Truncate'
         STRING: Slot<'STRING', 0>
@@ -14434,9 +13434,7 @@ declare global {
         text_d?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASTrueRandomOrgNumberGenerator ("True Random.org Number Generator" in ComfyUI) [WAS Suite_Number]   |
-    // |=============================================================================|
+    // True Random.org Number Generator [WAS Suite_Number]
     export interface WASTrueRandomOrgNumberGenerator
         extends HasSingle_NUMBER,
             HasSingle_FLOAT,
@@ -14457,9 +13455,7 @@ declare global {
         mode: Enum_WASTrueRandomOrgNumberGenerator_Mode
     }
 
-    // |=============================================================================|
-    // | WASUnCLIPCheckpointLoader ("unCLIP Checkpoint Loader" in ComfyUI) [WAS Suite_Loaders]   |
-    // |=============================================================================|
+    // unCLIP Checkpoint Loader [WAS Suite_Loaders]
     export interface WASUnCLIPCheckpointLoader
         extends HasSingle_MODEL,
             HasSingle_CLIP,
@@ -14478,9 +13474,7 @@ declare global {
         ckpt_name: Enum_CheckpointLoaderSimple_Ckpt_name
     }
 
-    // |=============================================================================|
-    // | WASUpscaleModelLoader ("Upscale Model Loader" in ComfyUI) [WAS Suite_Loaders]   |
-    // |=============================================================================|
+    // Upscale Model Loader [WAS Suite_Loaders]
     export interface WASUpscaleModelLoader
         extends HasSingle_UPSCALE_MODEL,
             HasSingle_STRING,
@@ -14493,9 +13487,7 @@ declare global {
         model_name: Enum_CLIPLoader_Clip_name
     }
 
-    // |=============================================================================|
-    // | WASUpscaleModelSwitch ("Upscale Model Switch" in ComfyUI) [WAS Suite_Logic]   |
-    // |=============================================================================|
+    // Upscale Model Switch [WAS Suite_Logic]
     export interface WASUpscaleModelSwitch extends HasSingle_UPSCALE_MODEL, ComfyNode<WASUpscaleModelSwitch_input> {
         nameInComfy: 'Upscale Model Switch'
         UPSCALE_MODEL: Slot<'UPSCALE_MODEL', 0>
@@ -14506,9 +13498,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASWriteToGIF ("Write to GIF" in ComfyUI) [WAS Suite_Animation_Writer]      |
-    // |=============================================================================|
+    // Write to GIF [WAS Suite_Animation_Writer]
     export interface WASWriteToGIF extends HasSingle_IMAGE, ComfyNode<WASWriteToGIF_input> {
         nameInComfy: 'Write to GIF'
         IMAGE: Slot<'IMAGE', 0>
@@ -14533,9 +13523,7 @@ declare global {
         filename?: _STRING
     }
 
-    // |=============================================================================|
-    // | WASWriteToVideo ("Write to Video" in ComfyUI) [WAS Suite_Animation_Writer]   |
-    // |=============================================================================|
+    // Write to Video [WAS Suite_Animation_Writer]
     export interface WASWriteToVideo extends HasSingle_IMAGE, ComfyNode<WASWriteToVideo_input> {
         nameInComfy: 'Write to Video'
         IMAGE: Slot<'IMAGE', 0>
@@ -14559,9 +13547,7 @@ declare global {
         codec: Enum_WASCreateVideoFromPath_Codec
     }
 
-    // |=============================================================================|
-    // | WASVAEInputSwitch ("VAE Input Switch" in ComfyUI) [WAS Suite_Logic]         |
-    // |=============================================================================|
+    // VAE Input Switch [WAS Suite_Logic]
     export interface WASVAEInputSwitch extends HasSingle_VAE, ComfyNode<WASVAEInputSwitch_input> {
         nameInComfy: 'VAE Input Switch'
         VAE: Slot<'VAE', 0>
@@ -14572,9 +13558,7 @@ declare global {
         boolean_number: _NUMBER
     }
 
-    // |=============================================================================|
-    // | WASVideoDumpFrames ("Video Dump Frames" in ComfyUI) [WAS Suite_Animation]   |
-    // |=============================================================================|
+    // Video Dump Frames [WAS Suite_Animation]
     export interface WASVideoDumpFrames extends HasSingle_STRING, HasSingle_NUMBER, ComfyNode<WASVideoDumpFrames_input> {
         nameInComfy: 'Video Dump Frames'
         STRING: Slot<'STRING', 0>
@@ -14592,7 +13576,7 @@ declare global {
         extension: Enum_WASVideoDumpFrames_Extension
     }
 
-    // INDEX -------------------------------
+    // 9 INDEX -------------------------------
     export type Schemas = {
         KSampler: ComfyNodeSchemaJSON
         CheckpointLoaderSimple: ComfyNodeSchemaJSON
