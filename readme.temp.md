@@ -69,8 +69,8 @@ https://user-images.githubusercontent.com/2150990/235221672-8aa28171-0734-4e57-8
 
     ```jsonc
     {
-        "cushystudio.serverHostHTTP": "http://192.168.1.20:8188", // include the protocol, no trailing slash /
-        "cushystudio.serverWSEndoint": "ws://192.168.1.20:8188/ws" // ws endpoint path mandatory (here: /ws)
+        "cushystudio.serverHostHTTP": "http://IP:8188", // include the protocol, no trailing slash /
+        "cushystudio.serverWSEndoint": "ws://IP:8188/ws" // ws endpoint path mandatory (here: /ws)
     }
     ```
 
