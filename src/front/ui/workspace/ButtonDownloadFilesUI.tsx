@@ -1,6 +1,6 @@
 import type { GraphID, GraphL } from 'src/models/Graph'
 
-import { writeFileSync } from 'fs'
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { observer } from 'mobx-react-lite'
 import { Button } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
@@ -21,9 +21,13 @@ export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p:
                 onClick={async () => {
                     const jsonWorkflow = await graph?.json_workflow()
                     console.log('>>>🟢', { jsonWorkflow })
+                    // ensure folder exists
+                    const folderExists = existsSync(graph.cacheFolder)
+                    if (!folderExists) mkdirSync(graph.cacheFolder, { recursive: true })
+                    // save file
                     const path = graph.getTargetWorkflowFilePath()
                     console.log('>>>🟢', { path })
-                    // open file
+                    // open folder containing file
                     window.require('electron').shell.openExternal(`file://${path}/..`)
                     writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
                 }}
