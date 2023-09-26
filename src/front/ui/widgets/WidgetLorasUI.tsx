@@ -103,13 +103,14 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: {
                         if (uiSt.selectedLoras.has(nv)) continue
                         uiSt.selectedLoras.set(nv, { strength_clip: 1, strength_model: 1, name: nv as any })
                     }
-                    const nextValues: SimplifiedLoraDef[] = nextNames.map(
-                        (x): SimplifiedLoraDef => ({
-                            name: x as any,
-                            strength_clip: 1,
-                            strength_model: 1,
-                        }),
-                    )
+                    // const nextValues: SimplifiedLoraDef[] = nextNames.map(
+                    //     (x): SimplifiedLoraDef => ({
+                    //         name: x as any,
+                    //         strength_clip: 1,
+                    //         strength_model: 1,
+                    //     }),
+                    // )
+                    const nextValues = [...uiSt.selectedLoras.values()]
                     p.set(nextValues)
                 }}
                 // block
