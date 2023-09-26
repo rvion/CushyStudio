@@ -14,9 +14,8 @@ class WidgetLorasState {
     allLoras: string[]
     selectedLoras = new Map<string, SimplifiedLoraDef>()
     constructor(
-        //
         public schema: SchemaL,
-        initialValues: SimplifiedLoraDef[] = [],
+        initialValues: SimplifiedLoraDef[],
     ) {
         this.allLoras = schema.getLoras()
         for (const lora of this.allLoras) {
@@ -63,13 +62,15 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: {
     if (schema == null) return <div>❌ no schema</div>
 
     const values = p.get() ?? []
-    const uiSt = useMemo(() => new WidgetLorasState(schema), [])
+    const uiSt = useMemo(() => new WidgetLorasState(schema, values), [])
     const names = values.map((x) => x.name)
 
     return (
         <div>
             {/* {JSON.stringify(names)} */}
+            {/* {JSON.stringify(uiSt.selectedLoras)} */}
             {/* {JSON.stringify(schema.getLoras())} */}
+
             <MultiCascader //
                 size='sm'
                 // appearance='subtle'
