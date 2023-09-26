@@ -56,7 +56,6 @@ export class JsonFile<T extends object> {
 
     init = (p: PersistedJSONInfo<T>): T => {
         // 1. ensure config folder exists
-        console.log('1')
         this._folder = p.folder
         const folderExists = existsSync(this._folder)
         if (!folderExists) {
@@ -65,7 +64,6 @@ export class JsonFile<T extends object> {
         }
 
         // 2. ensure file exists
-        console.log('2')
         this._path = join(this._folder, this.opts.name)
         const configFileExists = existsSync(this._path)
         if (!configFileExists) {
@@ -78,7 +76,6 @@ export class JsonFile<T extends object> {
             this._value = JSON.parse(configStr)
         }
         // 3. report as ready
-        console.log('3')
         return this._value
     }
 }
