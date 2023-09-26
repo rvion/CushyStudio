@@ -2,35 +2,37 @@ import type { ImageT } from 'src/models/Image'
 import type { LATER } from 'LATER'
 import { InfoAnswer } from './InfoAnswer'
 
-export type Requestable_str          = { type: 'str';    label?: string; default?: string; textarea?: boolean } // prettier-ignore
-export type Requestable_strOpt       = { type: 'str?';   label?: string; default?: string; textarea?: boolean } // prettier-ignore
-export type Requestable_int          = { type: 'int';    label?: string; default?: number  } // prettier-ignore
-export type Requestable_float        = { type: 'float';  label?: string; default?: number  } // prettier-ignore
-export type Requestable_bool         = { type: 'bool';   label?: string; default?: boolean } // prettier-ignore
-export type Requestable_intOpt       = { type: 'int?';   label?: string; default?: number  } // prettier-ignore
-export type Requestable_floatOpt     = { type: 'float?'; label?: string; default?: number  } // prettier-ignore
-export type Requestable_boolOpt      = { type: 'bool?';  label?: string; default?: boolean } // prettier-ignore
-export type Requestable_size         = { type: 'size';   label?: string; default?: boolean } // prettier-ignore
+export type Tooltip = string
+
+export type Requestable_str          = { type: 'str';    label?: string; tooltip?: string; default?: string; textarea?: boolean } // prettier-ignore
+export type Requestable_strOpt       = { type: 'str?';   label?: string; tooltip?: string; default?: string; textarea?: boolean } // prettier-ignore
+export type Requestable_int          = { type: 'int';    label?: string; tooltip?: string; default?: number  } // prettier-ignore
+export type Requestable_float        = { type: 'float';  label?: string; tooltip?: string; default?: number  } // prettier-ignore
+export type Requestable_bool         = { type: 'bool';   label?: string; tooltip?: string; default?: boolean } // prettier-ignore
+export type Requestable_intOpt       = { type: 'int?';   label?: string; tooltip?: string; default?: number  } // prettier-ignore
+export type Requestable_floatOpt     = { type: 'float?'; label?: string; tooltip?: string; default?: number  } // prettier-ignore
+export type Requestable_boolOpt      = { type: 'bool?';  label?: string; tooltip?: string; default?: boolean } // prettier-ignore
+export type Requestable_size         = { type: 'size';   label?: string; tooltip?: string; default?: boolean } // prettier-ignore
 //
-export type Requestable_embeddings   = { type: 'embeddings'; label?: string, default?: LATER<'Embeddings'>  } // prettier-ignore
+export type Requestable_embeddings   = { type: 'embeddings'; label?: string; tooltip?: string; default?: LATER<'Embeddings'>  } // prettier-ignore
 //
-export type Requestable_loras        = { type: 'loras';      label?: string, default?: LATER<'Enum_LoraLoader_lora_name'> } // prettier-ignore
+export type Requestable_loras        = { type: 'loras';      label?: string; tooltip?: string; default?: LATER<'Enum_LoraLoader_lora_name'> } // prettier-ignore
 //
-export type Requestable_selectImage  = { type: 'selectImage';   label?: string; default?: undefined;  /*imageInfos?: ImageT[]*/ } // prettier-ignore
-export type Requestable_manualMask   = { type: 'manualMask';    label?: string; default?: undefined; imageInfo: ImageT } // prettier-ignore
-export type Requestable_paint        = { type: 'paint';         label?: string; default?: undefined; url: string } // prettier-ignore
-export type Requestable_samMaskPoints= { type: 'samMaskPoints'; label?: string; default?: undefined; imageInfo: ImageT } // prettier-ignore
+export type Requestable_selectImage  = { type: 'selectImage';   label?: string; tooltip?: string; default?: undefined;  /*imageInfos?: ImageT[]*/ } // prettier-ignore
+export type Requestable_manualMask   = { type: 'manualMask';    label?: string; tooltip?: string; default?: undefined; imageInfo: ImageT } // prettier-ignore
+export type Requestable_paint        = { type: 'paint';         label?: string; tooltip?: string; default?: undefined; url: string } // prettier-ignore
+export type Requestable_samMaskPoints= { type: 'samMaskPoints'; label?: string; tooltip?: string; default?: undefined; imageInfo: ImageT } // prettier-ignore
 //
-export type Requestable_items<T extends { [key: string]: Requestable }>    = { type: 'items';    label?: string; items: T, default?: {[k in keyof T]: InfoAnswer<T[k]>} } // prettier-ignore
-export type Requestable_itemsOpt<T extends { [key: string]: Requestable }> = { type: 'itemsOpt'; label?: string; items: T, default?: {[k in keyof T]: InfoAnswer<T[k]>} } // prettier-ignore
+export type Requestable_items<T extends { [key: string]: Requestable }>    = { type: 'items';    label?: string; tooltip?: string; items: T, default?: {[k in keyof T]: InfoAnswer<T[k]>} } // prettier-ignore
+export type Requestable_itemsOpt<T extends { [key: string]: Requestable }> = { type: 'itemsOpt'; label?: string; tooltip?: string; items: T, default?: {[k in keyof T]: InfoAnswer<T[k]>} } // prettier-ignore
 //
-export type Requestable_selectOne          = { type: 'selectOne';          label?: string; choices: string[]; default?: string[] } // prettier-ignore
-export type Requestable_selectOneOrCustom  = { type: 'selectOneOrCustom';  label?: string; choices: string[]; default?: string[] } // prettier-ignore
-export type Requestable_selectMany         = { type: 'selectMany';         label?: string; choices: string[]; default?: string[] } // prettier-ignore
-export type Requestable_selectManyOrCustom = { type: 'selectManyOrCustom'; label?: string; choices: string[]; default?: string[] } // prettier-ignore
+export type Requestable_selectOne          = { type: 'selectOne';          label?: string; tooltip?: string; choices: string[]; default?: string[] } // prettier-ignore
+export type Requestable_selectOneOrCustom  = { type: 'selectOneOrCustom';  label?: string; tooltip?: string; choices: string[]; default?: string[] } // prettier-ignore
+export type Requestable_selectMany         = { type: 'selectMany';         label?: string; tooltip?: string; choices: string[]; default?: string[] } // prettier-ignore
+export type Requestable_selectManyOrCustom = { type: 'selectManyOrCustom'; label?: string; tooltip?: string; choices: string[]; default?: string[] } // prettier-ignore
 //
-export type Requestable_enumOpt<T extends keyof LATER<'Requirable'>> = { type: 'enum?'; enumName: T; default?: LATER<'Requirable'>[T]; label?: string } // prettier-ignore
-export type Requestable_enum<T extends keyof LATER<'Requirable'>>    = { type: 'enum';  enumName: T; default?: LATER<'Requirable'>[T]; label?: string } // prettier-ignore
+export type Requestable_enumOpt<T extends keyof LATER<'Requirable'>> = { type: 'enum?'; enumName: T; default?: LATER<'Requirable'>[T]; label?: string; tooltip?: string } // prettier-ignore
+export type Requestable_enum<T extends keyof LATER<'Requirable'>>    = { type: 'enum';  enumName: T; default?: LATER<'Requirable'>[T]; label?: string; tooltip?: string } // prettier-ignore
 
 export type Requestable =
     /** str */

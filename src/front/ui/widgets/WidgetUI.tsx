@@ -1,22 +1,22 @@
 import type { Requestable } from 'src/controls/InfoRequest'
+import * as I from '@rsuite/icons'
 
 import { observer } from 'mobx-react-lite'
+import { Tooltip, Whisper } from 'rsuite'
+import { DraftL } from 'src/models/Draft'
 import { FormPath } from 'src/models/Step'
 import { BUG } from '../../../controls/InfoRequest'
 import { exhaust } from '../../../utils/ComfyUtils'
-import { WidgetSelectImageUI } from './WidgetSelectImageUI'
+import { useDraft } from '../useDraft'
 import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
-import { WidgetNumUI } from './WidgetNumUI'
-import { WidgetLorasUI } from './WidgetLorasUI'
-import { WidgetPaintUI } from './WidgetPaintUI'
-import { EditorUI } from './WidgetLexical'
-import { useDraft } from '../useDraft'
-import { DraftL } from 'src/models/Draft'
-import { Whisper, Tooltip, Panel } from 'rsuite'
 import { WidgetItemsOptUI } from './WidgetItemsOptUI'
 import { WidgetItemsUI } from './WidgetItemsUI'
+import { EditorUI } from './WidgetLexical'
+import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetNumOptUI } from './WidgetNumOptUI'
+import { WidgetNumUI } from './WidgetNumUI'
+import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     draft: DraftL
@@ -26,6 +26,21 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     ix: number
 }) {
     const { draft, rootKey, req, path, ix } = p
+
+    let tooltip: Maybe<string>
+    let label: Maybe<string>
+    const fullPath = p.path.join('/')
+    if (Array.isArray(req)) {
+        label = rootKey
+    } else if (req instanceof BUG) {
+        label = '❌ BUG'
+        tooltip = '❌ BUG'
+    } else {
+        label = req.label ?? rootKey
+        tooltip = req.tooltip
+        if (fullPath !== label) tooltip = `${fullPath} ${tooltip ?? ''}`
+    }
+
     return (
         <div
             // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
@@ -33,9 +48,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             key={rootKey}
         >
             <div className='w-20 min-w-max shrink-0 text-right'>
-                <Whisper speaker={<Tooltip>{p.path.join('/')}</Tooltip>}>
-                    <div>{rootKey}</div>
-                </Whisper>
+                {tooltip && (
+                    <Whisper placement='topStart' speaker={<Tooltip>{tooltip}</Tooltip>}>
+                        <I.InfoOutline className='mr-2 cursor-pointer' />
+                    </Whisper>
+                )}
+                {label}
             </div>
             <WidgetUI //
                 key={[draft.id, p.path].join('/')}

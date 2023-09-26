@@ -15,7 +15,10 @@ action('Prompt-V1', {
         denoise: form.float({ default: 1 }),
         loras: form.loras({}),
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
-        clipSetLastLayer: form.intOpt({}),
+        clipSkip: form.intOpt({
+            label: 'Clip Skip',
+            tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
+        }),
         highResFix: form.groupOpt({
             items: {
                 scaleFactor: form.int({}),
@@ -58,8 +61,8 @@ action('Prompt-V1', {
         let model: _MODEL = clipAndModel._MODEL
         if (p.freeU) model = graph.FreeU({ model })
 
-        if (p.clipSetLastLayer) {
-            clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(p.clipSetLastLayer) }).CLIP
+        if (p.clipSkip) {
+            clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(p.clipSkip) }).CLIP
         }
 
         // VAE
