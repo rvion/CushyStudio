@@ -96,7 +96,7 @@ action('Prompt-V1', {
             scheduler: 'simple',
             denoise: p.denoise ?? undefined,
             steps: p.steps,
-            cfg: 8,
+            cfg: p.cfg,
         })
 
         // HIGHRES FIX
