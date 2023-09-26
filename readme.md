@@ -4,7 +4,7 @@
 
 `CushyStudio` is an AI-powered Generative-Art studio.
 
-🔴 This project has been rewritten - master is currently alpha quality again 🔴
+🔴 alpha quality 🔴
 
 It focuses on interractive workflows when AI generation, dynamic interfaces for live human-feedback, curation
 and guidance along generation processes. It is cross-platform and open-source.
@@ -23,3 +23,13 @@ global config file to change path to ComfyUI:
 ```
 ./flows/CONFIG.json
 ```
+
+<!--
+
+---
+
+# Features
+
+- Custom nodes
+- maximum type safety when writing scripts
+-->
