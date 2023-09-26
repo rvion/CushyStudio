@@ -73,7 +73,7 @@ action('Prompt-V1', {
         const positive = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.positive })
         const negative = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.negative ?? '' })
 
-        flow.print(`startImage: ${p.startImage}`)
+        // flow.print(`startImage: ${p.startImage}`)
 
         const startImage = p.startImage
             ? graph.VAEEncode({
