@@ -1,3 +1,3 @@
-git checkout main || true
-git pull origin main || true
+git checkout main
+git pull origin main
 npm install
