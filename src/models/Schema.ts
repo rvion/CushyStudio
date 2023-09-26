@@ -487,7 +487,11 @@ export class ComfyNodeSchema {
     renderOpts(opts?: ComfyInputOpts): Maybe<string> {
         if (opts == null) return null
         let out = '/**'
-        if (opts.default != null) out += ` default=${JSON.stringify(opts.default)}`
+        if (opts.default != null)
+            out +=
+                this.nameInCushy === 'WASCacheNode' //
+                    ? ` default='<redacted>'`
+                    : ` default=${JSON.stringify(opts.default)}`
         if (opts.min != null) out += ` min=${JSON.stringify(opts.max)}`
         if (opts.max != null) out += ` max=${JSON.stringify(opts.max)}`
         if (opts.step != null) out += ` step=${JSON.stringify(opts.step)}`

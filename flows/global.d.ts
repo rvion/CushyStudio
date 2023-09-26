@@ -10725,13 +10725,13 @@ declare global {
         STRING_2: Slot<'STRING', 2>
     }
     export interface WASCacheNode_input {
-        /** default="31707980_cache" */
+        /** default='<redacted>' */
         latent_suffix?: _STRING
-        /** default="58924742_cache" */
+        /** default='<redacted>' */
         image_suffix?: _STRING
-        /** default="74536984_cache" */
+        /** default='<redacted>' */
         conditioning_suffix?: _STRING
-        /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
+        /** default='<redacted>' */
         output_path?: _STRING
         latent?: _LATENT
         image?: _IMAGE
