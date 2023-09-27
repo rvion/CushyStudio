@@ -231,7 +231,7 @@ export class Runtime {
     /** pick a random seed */
     randomSeed() {
         const seed = Math.floor(Math.random() * 99999999)
-        this.print('🔥 seed: ' + seed)
+        this.print('seed: ' + seed)
         return seed
     }
 
