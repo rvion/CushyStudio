@@ -54,6 +54,7 @@
     "dependencies": {
         "@lexical/react": "^0.12.2",
         "@rsuite/icons": "1.0.3",
+        "@types/react-lazyload": "^3.2.1",
         "@types/react-mentions": "^4.1.8",
         "chokidar": "^3.5.3",
         "concurrently": "^8.2.1",
@@ -78,6 +79,7 @@
         "react-dnd": "^16.0.1",
         "react-dnd-html5-backend": "^16.0.1",
         "react-dom": "18.2.0",
+        "react-lazyload": "^3.2.0",
         "react-mentions": "4.4.10",
         "react-zoom-pan-pinch": "3.1.0",
         "reactflow": "11.8.3",
