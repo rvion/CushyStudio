@@ -31,6 +31,8 @@ export type StepOutput =
 
 export type StepT = {
     id: StepID
+    createdAt: number
+    updatedAt: number
     /** form that lead to creating this step */
     toolID: ToolID
     /** tool params */

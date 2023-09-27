@@ -1,6 +1,6 @@
-import type { GraphID, GraphL } from 'src/models/Graph'
 import { observer } from 'mobx-react-lite'
-import { Button } from 'rsuite'
+import { IconButton, Tooltip, Whisper } from 'rsuite'
+import type { GraphID, GraphL } from 'src/models/Graph'
 import { useSt } from '../../FrontStateCtx'
 
 export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { graph: GraphL | GraphID }) {
@@ -12,8 +12,9 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
             : graphOrGraphID
 
     return (
-        <div>
-            <Button
+        <Whisper speaker={<Tooltip>Open in ComfyUI</Tooltip>}>
+            <IconButton
+                icon={<span className='material-symbols-outlined'>open_in_new</span>}
                 appearance='link'
                 size='xs'
                 onClick={async () => {
@@ -27,9 +28,7 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
                     // window.require('electron').shell.openExternal(`file://${path}/..`)
                     // writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
                 }}
-            >
-                Open in ComfyUI
-            </Button>
-        </div>
+            ></IconButton>
+        </Whisper>
     )
 })

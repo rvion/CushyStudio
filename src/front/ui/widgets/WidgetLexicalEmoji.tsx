@@ -1,19 +1,9 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { LexicalTypeaheadMenuPlugin, MenuOption, useBasicTypeaheadTriggerMatch } from '@lexical/react/LexicalTypeaheadMenuPlugin'
 import { $createTextNode, $getSelection, $isRangeSelection, TextNode } from 'lexical'
-import * as React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import * as ReactDOM from 'react-dom'
 import { useSt } from '../../../front/FrontStateCtx'
-// import { useSt } from '../WorkspaceContext'
 import { EmbeddingName } from 'src/models/Schema'
 
 class EmojiOption extends MenuOption {
@@ -21,13 +11,7 @@ class EmojiOption extends MenuOption {
     emoji: string
     keywords: Array<string>
 
-    constructor(
-        title: string,
-        emoji: string,
-        options: {
-            keywords?: Array<string>
-        },
-    ) {
+    constructor(title: string, emoji: string, options: { keywords?: Array<string> }) {
         super(title)
         this.title = title
         this.emoji = emoji

@@ -33,6 +33,8 @@ export type EnumValue = string | boolean | number
 
 export type SchemaT = {
     id: 'main-schema'
+    createdAt: number
+    updatedAt: number
     spec: ComfySchemaJSON
     embeddings: EmbeddingName[]
 }

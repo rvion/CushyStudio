@@ -114,29 +114,33 @@ export const EditorUI = observer((p: EditorProps) => {
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
-            <MyCustomShortcutPlugin />
-            <PlainTextPlugin
-                contentEditable={
-                    <ContentEditable
-                        style={{ background: '#140d04', border: '1px solid #2e2e2e' }}
-                        className='p-0.5 rounded  border-gray-500 [min-width:8rem]'
-                    />
-                }
-                placeholder={null}
-                ErrorBoundary={LexicalErrorBoundary}
-            />
-            {/* https://github.com/facebook/lexical/blob/main/packages/lexical-playground/src/plugins/EmojiPickerPlugin/index.tsx */}
+            <div className='flex flex-col'>
+                <MyCustomShortcutPlugin />
+                <PlainTextPlugin
+                    contentEditable={
+                        <ContentEditable
+                            style={{ background: '#140d04', border: '1px solid #2e2e2e' }}
+                            className='p-0.5 rounded  border-gray-500 [min-width:8rem]'
+                        />
+                    }
+                    placeholder={null}
+                    ErrorBoundary={LexicalErrorBoundary}
+                />
+                {/* https://github.com/facebook/lexical/blob/main/packages/lexical-playground/src/plugins/EmojiPickerPlugin/index.tsx */}
 
-            <EmojiPickerPlugin />
-            <OnChangePlugin
-                onChange={(editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => {
-                    onChange(p, editorState)
-                    // console.log(editorState, editor, tags)
-                    // p.set(editorState.)
-                }}
-            />
-            <HistoryPlugin />
-            {/* <TreeViewPlugin /> */}
+                <EmojiPickerPlugin />
+                <OnChangePlugin
+                    onChange={(editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => {
+                        onChange(p, editorState)
+                        // console.log(editorState, editor, tags)
+                        // p.set(editorState.)
+                    }}
+                />
+                <HistoryPlugin />
+                {/* <div className='text-xs bg-gray-700'>
+                    <TreeViewPlugin />
+                </div> */}
+            </div>
             {/* <MyCustomAutoFocusPlugin /> */}
         </LexicalComposer>
     )

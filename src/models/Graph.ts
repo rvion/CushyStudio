@@ -41,6 +41,8 @@ export const asGraphID = (s: string): GraphID => s as any
 export type GraphT = {
     /** graph ID */
     id: GraphID
+    createdAt: number
+    updatedAt: number
     /** graph json */
     comfyPromptJSON: ComfyPromptJSON
     /** the current node selected in the tree */

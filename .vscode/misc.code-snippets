@@ -14,7 +14,7 @@
     "icon":{
         "scope": "typescriptreact",
         "prefix": "icon",
-        "body": ["<span class='material-symbols-outlined'>$1</span>"],
+        "body": ["<span className='material-symbols-outlined'>$1</span>"],
         "description": "icon"
     }
 }

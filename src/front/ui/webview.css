@@ -83,8 +83,14 @@ body {
 .col-info {background: #3d5282 !important;}
 /* .col-form {background: #39254c !important;} */
 
-.rs-panel-body {padding: .5rem !important;}
-.rs-panel-header { padding-top: .2rem !important;  padding-bottom: .2rem !important; font-size: 1rem !important;}
+.rs-panel-body {padding: .2rem !important;}
+.rs-panel-header {
+    padding-left: 0!important;
+    padding-top: .2rem !important;
+    padding-bottom: .2rem !important;
+    font-size: 1rem !important;
+    /* font-weight: bold !important; */
+}
 /* .rs-panel-title {font-size: 1.2rem;} */
 .rs-panel-collapsible>.rs-panel-header>.rs-icon {
     right: 5px !important;
@@ -157,3 +163,13 @@ body {
 }
 
 .smalltitle { font-weight: bold; }
+
+/* ------ react-split-pane ------ */
+.react-split__sash.react-split__sash--vertical:hover {
+    background-color: #8f8fc288;
+}
+.react-split__sash.react-split__sash--vertical {
+    background-color: #8f8fc211;
+    transform: translateX(-50%);
+    width: 10px !important;
+}

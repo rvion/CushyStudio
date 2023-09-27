@@ -14,6 +14,8 @@ export type ImageID = Tagged<string, 'ImageUID'>
 export interface ImageT {
     /** image ID */
     id: ImageID
+    createdAt: number
+    updatedAt: number
     /** prompt from which the image is generated from; null if the image is manually uploaded or created via a widget */
     promptID?: Maybe<PromptID>
     /** infos returned from ComfyUI; null if the image has another provenence */

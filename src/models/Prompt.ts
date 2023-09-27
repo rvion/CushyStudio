@@ -16,6 +16,8 @@ export const asPromptID = (s: string): PromptID => s as any
 
 export type PromptT = {
     id: PromptID
+    createdAt: number
+    updatedAt: number
     stepID: StepID
     graphID: GraphID
     executed: boolean

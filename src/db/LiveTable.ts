@@ -1,17 +1,18 @@
 import type { Indexed, LiveDB } from './LiveDB'
-import type { LiveInstance } from './LiveInstance'
+import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './LiveInstance'
 import type { TableName } from './LiveStore'
 
 import { MERGE_PROTOTYPES } from './LiveHelpers'
 import { STATE } from 'src/front/state'
 import { nanoid } from 'nanoid'
 import { makeAutoObservable, toJS } from 'mobx'
+import { LiveOrdering } from './LiveOrdering'
 
-export interface LiveEntityClass<T extends { id: string }, L> {
+export interface LiveEntityClass<T extends BaseInstanceFields, L> {
     new (...args: any[]): LiveInstance<T, L> & L
 }
 
-export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
+export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L>> {
     private Ktor: LiveEntityClass<T, L>
     private _store: Indexed<T>
     toJSON = (): Indexed<T> => this._store
@@ -82,6 +83,8 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
             onUpdate?: (prev: Maybe<T>, next: T) => void
 
             get id() { return this.data.id } // prettier-ignore
+            get createdAt() { return this.data.createdAt } // prettier-ignore
+            get updatedAt() { return this.data.updatedAt } // prettier-ignore
 
             update(t: Partial<T>) {
                 const prev = this.onUpdate ? JSON.parse(JSON.stringify(this.data)) : undefined
@@ -141,6 +144,7 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
     get ids(): T['id'][] {
         return Object.keys(this._store)
     }
+    createdAtDesc = new LiveOrdering(this, 'createdAt', 'desc')
 
     get values(): L[] {
         return this.ids.map((id) => this.getOrThrow(id))
@@ -177,7 +181,7 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
         return val
     }
 
-    getOrCreate = (id: string, def: () => T): L => {
+    getOrCreate = (id: string, def: () => Omit<T, $BaseInstanceFields>): L => {
         // console.log(`🦊 ${this.name}.getOrCreate`)
         // 1. check if instance exists in the entity map
         const val = this.get(id)
@@ -192,9 +196,12 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
     }
 
     /** only call with brand new data */
-    create = (data: Omit<T, 'id'> & { id?: Maybe<T['id']> }): L => {
+    create = (data: Omit<T, $BaseInstanceFields> & Partial<BaseInstanceFields>): L => {
         const id: T['id'] = data.id ?? nanoid()
         if (data.id == null) data.id = id
+        const now = Date.now()
+        data.createdAt = now
+        data.updatedAt = now
 
         // ensure no instance exists
         if (this.instances.has(id)) throw new Error(`ERR: ${this.name}(${id}) already exists`)
@@ -220,15 +227,15 @@ export class LiveTable<T extends { id: string }, L extends LiveInstance<T, L>> {
         return instance
     }
 
-    upsert = (data: T): L => {
+    upsert = (data: Omit<T, 'createdAt' | 'updatedAt'>): L => {
         const id = data.id
         // this.yjsMap.set(nanoid(), data)
         const prev = this.get(id)
         if (prev) {
-            prev.update(data)
+            prev.update(data as any /* 🔴 */)
             return prev
         } else {
-            const instance = this.create(data)
+            const instance = this.create(data as any /* 🔴 */)
             return instance
         }
     }

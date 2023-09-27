@@ -29,7 +29,16 @@ action('Prompt-V1', {
                 saveIntermediaryImage: form.bool({ default: true }),
             },
         }),
-        batchSize: form.int({ default: 1 }),
+        batches: form.groupOpt({
+            items: {
+                batchSize: form.int({ default: 1 }),
+                batchCount: form.int({ default: 1 }),
+                delayBetween: form.int({
+                    tooltip: 'in ms',
+                    default: 0,
+                }),
+            },
+        }),
         seed: form.intOpt({}),
         steps: form.int({ default: 20 }),
         width: form.int({ default: 1024 }),
@@ -83,7 +92,7 @@ action('Prompt-V1', {
                   vae,
               })
             : graph.EmptyLatentImage({
-                  batch_size: p.batchSize,
+                  batch_size: p.batches?.batchSize ?? 1,
                   height: p.height,
                   width: p.width,
               })

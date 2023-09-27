@@ -5,6 +5,7 @@ import { useSt } from '../../FrontStateCtx'
 import { GalleryFolderUI } from './GalleryFolderUI'
 import { ImageUI, PlaceholderImageUI } from './ImageUI'
 import { useImageDrop } from './dnd'
+import { IconButton } from 'rsuite'
 
 export const VerticalGalleryUI = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
@@ -12,7 +13,7 @@ export const VerticalGalleryUI = observer(function VerticalGalleryUI_(p: {}) {
         i.update({ folderID: null })
     })
     return (
-        <div className='flex col-folder'>
+        <div className='flex col-folder h-full' style={{ borderRight: '1px solid #383838' }}>
             {/* MAIN IMAGE COLUMN */}
             <div
                 ref={dropRef}
@@ -20,7 +21,8 @@ export const VerticalGalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                 style={{ width: '3.4rem', ...dropStyle }}
             >
                 {/* <div className='text-center'>Images</div> */}
-                {st.preview ? <img style={{ width: '64px', height: '64px' }} src={st.preview.url} /> : null}
+                {/* {st.preview ? <img style={{ width: '64px', height: '64px' }} src={st.preview.url} /> : null} */}
+                <IconButton size='xs' appearance='link' icon={<>📂</>}></IconButton>
 
                 <div className='absolute insert-0'>
                     <div className='flex flex-col-reverse' style={{ overflowX: 'auto' }}>

@@ -1,8 +1,11 @@
-action('B. auto-mask-face', {
+action('mask-face', {
     help: 'extract a mak for the face', // <- action help text
     // requirement: (kk) => ({
     //     image: kk.IMAGE({}),
     // }),
+    ui: (form) => ({
+        image: form.selectImage('image to mask'),
+    }),
     run: async (flow, deps) => {
         const clothesMask = flow.nodes.MasqueradeMaskByText({
             image: flow.AUTO,

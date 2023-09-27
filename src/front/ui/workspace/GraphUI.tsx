@@ -1,23 +1,25 @@
 import type { DraftL } from 'src/models/Draft'
 import type { GraphL } from 'src/models/Graph'
 import type { StepL } from 'src/models/Step'
+import ResponsiveNav from '@rsuite/responsive-nav'
 
 import * as I from '@rsuite/icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Button, Nav, Tooltip, Whisper } from 'rsuite'
 import { DraftUI } from '../widgets/DraftUI'
-import { StepOutputUI } from './StepOutputUI'
 import { StepTabBtnUI } from './StepTabBtnUI'
 
-import 'split-pane-react/esm/themes/default.css'
-import SplitPane from 'split-pane-react/esm/SplitPane'
 import { Pane } from 'split-pane-react'
+import SplitPane from 'split-pane-react/esm/SplitPane'
+import 'split-pane-react/esm/themes/default.css'
+import { StepListUI } from './StepUI'
+import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
 
 export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: number }) {
     const graph = p.graph
     const focusedStep: Maybe<StepL> = graph.focusedStep.item
     const focusedDraft: Maybe<DraftL> = graph.focusedDraft.item
-    const uiSt = useLocalObservable(() => ({ sizes: [50, 50] }))
+    const uiSt = useLocalObservable(() => ({ sizes: [50, 1, 50] }))
 
     return (
         <SplitPane
@@ -27,17 +29,21 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
             split='vertical'
             style={{ height: '100%' }}
         >
-            <Pane minSize={'100px'} style={{ overflow: 'auto' }}>
-                {/* DRAFT PICKER */}
-                <div className='flex'>
+            <Pane minSize={'100px'}>
+                <div className='flex overflow-auto'>
+                    {/* TOOL PICKER */}
                     <Nav appearance='tabs' vertical>
-                        {graph.drafts.map((draft) => (
+                        {graph.db.tools.map((tool) => (
                             <Nav.Item
-                                key={draft.id}
-                                active={focusedDraft?.id === draft.id}
-                                onClick={() => graph.update({ focusedDraftID: draft.id })}
+                                key={tool.id}
+                                active={focusedDraft?.tool.id === tool.id}
+                                onClick={() => {
+                                    const correspondingDraft = graph.db.drafts.find((d) => d.tool.id === tool.id)
+                                    if (correspondingDraft == null) return // 🔴
+                                    graph.update({ focusedDraftID: correspondingDraft.id })
+                                }}
                             >
-                                {draft.tool.item.name}
+                                {tool.name}
                             </Nav.Item>
                         ))}
                         <Whisper speaker={<Tooltip>Draft Action</Tooltip>}>
@@ -46,34 +52,48 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                             </Button>
                         </Whisper>
                     </Nav>
-
-                    {/* DRAFT */}
-                    {focusedDraft ? (
+                    {/* DRAFT PICKER */}
+                    <div className='flex items-start flex-col flex-grow overflow-hidden'>
                         <div className='w-full'>
-                            <DraftUI draft={focusedDraft} />
+                            <ResponsiveNav appearance='tabs' removable>
+                                {graph.drafts.map((draft) => (
+                                    <ResponsiveNav.Item
+                                        key={draft.id}
+                                        active={focusedDraft?.id === draft.id}
+                                        onClick={() => graph.update({ focusedDraftID: draft.id })}
+                                    >
+                                        {draft.tool.item.name}
+                                    </ResponsiveNav.Item>
+                                ))}
+                            </ResponsiveNav>
                         </div>
-                    ) : null}
+                        <Whisper speaker={<Tooltip>Draft Action</Tooltip>}>
+                            <Button appearance='subtle' onClick={() => graph.createDraft(focusedDraft?.data).focus()}>
+                                <I.AddOutline />
+                            </Button>
+                        </Whisper>
+                        {/* DRAFT */}
+                        {focusedDraft ? (
+                            <div className='w-full'>
+                                <DraftUI draft={focusedDraft} />
+                            </div>
+                        ) : null}
+                    </div>
                 </div>
             </Pane>
-            <Pane minSize={'100px'} style={{ overflow: 'auto' }}>
+            <Pane minSize={'100px'}>
+                <VerticalGalleryUI />
+            </Pane>
+            <Pane minSize={'100px'}>
                 <div className='flex'>
+                    <StepListUI />
                     {/* STEP PICKER */}
-                    <Nav appearance='tabs' vertical>
+                    <Nav appearance='tabs' vertical reversed>
                         {graph.childSteps.map((step) => (
                             <StepTabBtnUI key={step.id} step={step} />
                         ))}
                     </Nav>
                     {/* STEP */}
-
-                    {focusedStep && (
-                        <div className='flex col-output flex-grow p-2'>
-                            <div className='flex flex-col gap-1'>
-                                {focusedStep.data.outputs?.map((output, ix) => (
-                                    <StepOutputUI key={ix} step={focusedStep} output={output} />
-                                ))}
-                            </div>
-                        </div>
-                    )}
                 </div>
             </Pane>
         </SplitPane>

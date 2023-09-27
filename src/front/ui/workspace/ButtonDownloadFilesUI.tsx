@@ -2,7 +2,7 @@ import type { GraphID, GraphL } from 'src/models/Graph'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { observer } from 'mobx-react-lite'
-import { Button } from 'rsuite'
+import { IconButton, Tooltip, Whisper } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 
 export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p: { graph: GraphL | GraphID }) {
@@ -14,9 +14,10 @@ export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p:
             : graphOrGraphID
 
     return (
-        <div>
-            <Button
+        <Whisper speaker={<Tooltip>Download as ComfyUI workflow.json</Tooltip>}>
+            <IconButton
                 appearance='link'
+                icon={<span className='material-symbols-outlined'>arrow_circle_down</span>}
                 size='xs'
                 onClick={async () => {
                     const jsonWorkflow = await graph?.json_workflow()
@@ -32,8 +33,8 @@ export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p:
                     writeFileSync(path, JSON.stringify(jsonWorkflow, null, 3))
                 }}
             >
-                download ComfyUI file
-            </Button>
-        </div>
+                {/* download ComfyUI file */}
+            </IconButton>
+        </Whisper>
     )
 })

@@ -8,8 +8,11 @@ export const asProjectID = (s: string): ProjectID => s as any
 
 export type ProjectT = {
     id: ProjectID
+    createdAt: number
+    updatedAt: number
     name: string
     rootGraphID: GraphID
+    // currentToolID
     // rootStepID: StepID
 }
 

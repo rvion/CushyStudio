@@ -11,7 +11,7 @@ import { GraphSummaryUI } from './GraphSummaryUI'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
-        <Panel className='flex flex-row gap-2 col-info'>
+        <Panel className='flex flex-rowcol-info'>
             <div className='flex items-baseline'>
                 <div className='font-bold'>{p.label}:</div>
                 <div>{p.children}</div>
@@ -26,7 +26,7 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
 
     if (msg.type === 'print') {
         return (
-            <OutputWrapperUI label='LOG'>
+            <OutputWrapperUI label='💬'>
                 <div className=''>{msg.message}</div>
             </OutputWrapperUI>
         )
@@ -38,7 +38,7 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
         if (graph == null) return <>no graph</>
         const currNode = graph.currentExecutingNode
         return (
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-1'>
                 <div>
                     <GraphSummaryUI graph={graph} />
                     {/* 💬 {prompt?.id} */}
@@ -46,11 +46,7 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
                 </div>
                 {/* <CustomNodeFlow /> 🔴 */}
                 {currNode && <ComfyNodeUI node={currNode} />}
-                <Panel className='flex flex-wrap'>
-                    {prompt?.images.map((img) => (
-                        <ImageUI key={img.id} img={img} />
-                    ))}
-                </Panel>
+                <Panel className='flex flex-wrap'>{prompt?.images.map((img) => <ImageUI key={img.id} img={img} />)}</Panel>
             </div>
         )
     }

@@ -13,6 +13,8 @@ export const asDraftID = (s: string): DraftID => s as any
 
 export type DraftT = {
     id: DraftID /** form that lead to creating this Draft */
+    createdAt: number
+    updatedAt: number
     toolID: ToolID /** tool params */
     params: Maybe<any> /** parent */
     graphID: GraphID

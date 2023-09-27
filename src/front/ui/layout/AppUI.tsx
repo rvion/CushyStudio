@@ -12,12 +12,12 @@ import { MainNavBarUI } from './MainNavBarUI'
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
     const action = st.action
+    // const project0 = st.db
     return (
         <div className='col grow h100'>
             <AppBarUI />
             <div className='flex flex-grow'>
                 <MainNavBarUI />
-                <VerticalGalleryUI />
                 <ScrollablePaneUI
                     //
                     // style={{ borderLeft: '2px solid #383854' }}

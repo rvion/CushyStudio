@@ -7,6 +7,8 @@ export const asToolID = (s: string): ToolID => s as any
 
 export type ToolT = {
     id: ToolID
+    createdAt: number
+    updatedAt: number
     priority: number
     name: string
     file: AbsolutePath

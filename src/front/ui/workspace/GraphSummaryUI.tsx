@@ -10,6 +10,10 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
     const graph = p.graph
     return (
         <Panel>
+            <div className='float-right'>
+                <ButtonDownloadFilesUI graph={graph} />
+                <ButtonOpenInComfyUI graph={graph} />
+            </div>
             <div className='w-64 max-h-64 overflow-auto'>
                 {graph.size === 0 && <div>Empty Graph</div>}
                 {graph.nodes.map((n, ix) => (
@@ -21,8 +25,6 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
                     </div>
                 ))}
             </div>
-            <ButtonDownloadFilesUI graph={graph} />
-            <ButtonOpenInComfyUI graph={graph} />
         </Panel>
     )
 })

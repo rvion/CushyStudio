@@ -8,6 +8,8 @@ export const asFolderID = (s: string): FolderID => s as any as FolderID
 
 export type FolderT = {
     id: FolderID
+    createdAt: number
+    updatedAt: number
     name?: string
     imageUIDs?: ImageID[]
 }
