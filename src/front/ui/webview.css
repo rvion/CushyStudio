@@ -76,7 +76,7 @@ body {
 .yarl__slide {padding: 0 !important;}
 /*  */
 
-.rs-panel {background: #373737; flex-shrink: 0;}
+.rs-panel {background: #373737; flex-shrink: 0; border-radius: 0!important;}
 .rs-panel .rs-panel {background: #464646; flex-shrink: 0;}
 
 /* .col-folder {background: black !important;} */
@@ -175,7 +175,7 @@ body {
 }
 .react-split__pane {
     overflow: auto;
-    padding: 0 .2rem;
+    padding: 0 0rem;
 }
 
 .material-symbols-outlined{

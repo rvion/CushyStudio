@@ -1,4 +1,3 @@
-import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { IconButton, InputGroup, Popover, SelectPicker, Whisper } from 'rsuite'
 import { useProject } from '../../../front/ProjectCtx'
@@ -18,15 +17,15 @@ export const ToolPickerUI = observer(function ToolPickerUI_(p: {
     return (
         <div>
             {/*  */}
-            <InputGroup size='sm'>
-                <InputGroup.Addon>
+            <InputGroup size='xs'>
+                <InputGroup.Addon className='bg-black'>
                     <span className='material-symbols-outlined'>search</span>
                 </InputGroup.Addon>
                 <SelectPicker
                     //
                     className='grow'
                     data={tools}
-                    size='sm'
+                    size='xs'
                     labelKey='name'
                     valueKey='id'
                     value={pj.data.activeToolID}
@@ -64,7 +63,11 @@ export const ToolPickerUI = observer(function ToolPickerUI_(p: {
                                     </Popover>
                                 }
                             >
-                                <IconButton size='xs' icon={<I.Code />} appearance='subtle' />
+                                <IconButton
+                                    size='xs'
+                                    icon={<span className='material-symbols-outlined text-gray-600'>code</span>}
+                                    appearance='subtle'
+                                />
                             </Whisper>
                         )}
                         {tool.name}

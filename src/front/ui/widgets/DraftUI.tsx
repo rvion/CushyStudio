@@ -7,6 +7,7 @@ import { ToolPickerUI } from '../workspace/ToolPickerUI'
 import { ToolSuggestionUI } from '../workspace/ToolSuggestionUI'
 import { DebugUI } from './DebugUI'
 import { WidgetWithLabelUI } from './WidgetUI'
+import { ScrollablePaneUI } from '../scrollableArea'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
@@ -19,32 +20,33 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
 
     // prepare basic infos
     const formDefinition = tool?.data.form ?? {}
-    const locked = draft.data.params != null
+    // const locked = draft.data.params != null
 
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <Panel shaded className='DraftUI self-start'>
-                <div className='flex'>
-                    <Input
-                        onChange={(v) => draft.update({ title: v })}
-                        size='sm'
-                        placeholder='preset title'
-                        value={draft.data.title ?? ''}
-                    ></Input>
-                    <Button
-                        size='sm'
-                        className='self-start'
-                        color='green'
-                        appearance='ghost'
-                        startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
-                        onClick={() => draft.start()}
-                    >
-                        Run
-                    </Button>
-                </div>
-                <div className='flex gap-2'>
-                    <ToolSuggestionUI draft={draft} />
-                    {/* widgets ------------------------------- */}
+            {/* <Panel shaded className='DraftUI self-start col flex-grow'> */}
+            <div className='flex'>
+                <Input
+                    onChange={(v) => draft.update({ title: v })}
+                    size='sm'
+                    placeholder='preset title'
+                    value={draft.data.title ?? ''}
+                ></Input>
+                <Button
+                    size='sm'
+                    className='self-start'
+                    color='green'
+                    appearance='ghost'
+                    startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
+                    onClick={() => draft.start()}
+                >
+                    Run
+                </Button>
+            </div>
+            <ScrollablePaneUI className='flex-grow'>
+                {/* <ToolSuggestionUI draft={draft} /> */}
+                {/* widgets ------------------------------- */}
+                <Panel>
                     <form
                         onKeyUp={(ev) => {
                             // submit on meta+enter
@@ -76,30 +78,26 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                             )
                         })}
                     </form>
-
-                    {locked ? null : (
-                        <pre className='border-2 border-dashed border-orange-200 p-2'>
-                            action output = {JSON.stringify(draft.data.params, null, 4)}
-                        </pre>
-                    )}
-
-                    {/* debug -------------------------------*/}
-                    <div className=''>
-                        <DebugUI title='⬇'>
-                            the form definition is
-                            <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(formDefinition, null, 4)}</pre>
-                        </DebugUI>
-                        <DebugUI title={'⬆'}>
-                            the value about to be sent back to the workflow is
-                            <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(draft.data.params, null, 4)}</pre>
-                        </DebugUI>
-                        <DebugUI title='👀'>
-                            the final answer is
-                            <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(draft.finalJSON, null, 4)}</pre>
-                        </DebugUI>
-                    </div>
+                </Panel>
+            </ScrollablePaneUI>
+            <div className=''>
+                {/* debug -------------------------------*/}
+                <div className='flex'>
+                    <DebugUI title='⬇'>
+                        the form definition is
+                        <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(formDefinition, null, 4)}</pre>
+                    </DebugUI>
+                    <DebugUI title={'⬆'}>
+                        the value about to be sent back to the workflow is
+                        <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(draft.data.params, null, 4)}</pre>
+                    </DebugUI>
+                    <DebugUI title='👀'>
+                        the final answer is
+                        <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(draft.finalJSON, null, 4)}</pre>
+                    </DebugUI>
                 </div>
-            </Panel>
+            </div>
+            {/* </Panel> */}
         </draftContext.Provider>
     )
 })

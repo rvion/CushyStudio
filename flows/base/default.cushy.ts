@@ -8,6 +8,7 @@ action('Prompt-V1', {
             enumName: 'Enum_EfficientLoader_Ckpt_name',
             default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
         }),
+        startImage: form.selectImage('Start image'),
         freeU: form.bool({ default: false }),
         // prompt
         positive: form.str({ textarea: true }),
@@ -46,7 +47,6 @@ action('Prompt-V1', {
         height: form.int({ default: 1024 }),
 
         // startImage
-        startImage: form.selectImage('Start image'),
         removeBG: form.bool({ default: false }),
         extra: form.groupOpt({
             items: { reversePrompt: form.bool({ default: false }) },

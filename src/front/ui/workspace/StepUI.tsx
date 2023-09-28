@@ -12,7 +12,7 @@ export const StepListUI = observer(function StepListUI_(p: {}) {
     const st = useSt()
     const steps = st.db.steps
     return (
-        <div className='flex flex-col gap-2 flex-grow' style={{ overflow: 'auto' }}>
+        <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
             {steps.map((step) => (
                 <InView as='div' onChange={(inView, entry) => console.log('Inview:', inView)}>
                     <StepUI step={step} />
