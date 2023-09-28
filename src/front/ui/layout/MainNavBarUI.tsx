@@ -47,9 +47,9 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <Nav.Item eventKey='config'>
                 <MainNavEntryUI ix='4' icon={<I.Gear />} label='Config' />
             </Nav.Item>
-            <Nav.Item eventKey='store'>
+            {/* <Nav.Item eventKey='store'>
                 <MainNavEntryUI ix='5' icon={<span className='material-symbols-outlined'>extension</span>} label='More' />
-            </Nav.Item>
+            </Nav.Item> */}
             <Nav.Item eventKey='cloud'>
                 <MainNavEntryUI ix='5' icon={<span className='material-symbols-outlined'>cloud</span>} label='GPU' />
             </Nav.Item>

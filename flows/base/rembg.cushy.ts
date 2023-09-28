@@ -1,4 +1,5 @@
 action('remmg', {
+    author: 'rvion',
     priority: 1,
     help: 'quick remove bg with one or many nodes',
     ui: (form) => ({

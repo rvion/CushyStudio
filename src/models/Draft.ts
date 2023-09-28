@@ -15,6 +15,7 @@ export type DraftT = {
     id: DraftID /** form that lead to creating this Draft */
     createdAt: number
     updatedAt: number
+    title: string
     toolID: ToolID /** tool params */
     params: Maybe<any> /** parent */
     graphID: GraphID

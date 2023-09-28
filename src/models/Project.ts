@@ -2,6 +2,7 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
 
 import { LiveRef } from '../db/LiveRef'
+import { ToolID } from './Tool'
 
 export type ProjectID = Branded<string, 'ProjectID'>
 export const asProjectID = (s: string): ProjectID => s as any
@@ -12,6 +13,7 @@ export type ProjectT = {
     updatedAt: number
     name: string
     rootGraphID: GraphID
+    activeToolID?: ToolID
     // currentToolID
     // rootStepID: StepID
 }

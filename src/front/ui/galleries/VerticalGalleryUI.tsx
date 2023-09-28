@@ -22,7 +22,7 @@ export const VerticalGalleryUI = observer(function VerticalGalleryUI_(p: {}) {
             >
                 {/* <div className='text-center'>Images</div> */}
                 {/* {st.preview ? <img style={{ width: '64px', height: '64px' }} src={st.preview.url} /> : null} */}
-                <IconButton size='xs' appearance='link' icon={<>📂</>}></IconButton>
+                {/* <IconButton size='xs' appearance='link' icon={<>📂</>}></IconButton> */}
 
                 <div className='absolute insert-0'>
                     <div className='flex flex-col-reverse' style={{ overflowX: 'auto' }}>

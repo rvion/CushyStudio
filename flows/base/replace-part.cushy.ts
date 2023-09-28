@@ -1,4 +1,5 @@
 action('🎭 replace', {
+    author: 'rvion',
     help: 'replace a part with anothoer one', // <- action help text
     priority: 1,
     ui: (form) => ({

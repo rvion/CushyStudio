@@ -169,7 +169,15 @@ body {
     background-color: #8f8fc288;
 }
 .react-split__sash.react-split__sash--vertical {
-    background-color: #8f8fc211;
+    /* background-color: #8f8fc211; */
     transform: translateX(-50%);
-    width: 10px !important;
+    width: .4rem !important;
+}
+.react-split__pane {
+    overflow: auto;
+    padding: 0 .2rem;
+}
+
+.material-symbols-outlined{
+    font-size: 1.3em;
 }

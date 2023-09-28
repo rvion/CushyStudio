@@ -13,7 +13,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 //
                 appearance='subtle'
                 size='sm'
-                startIcon={<I.FolderFill />}
+                startIcon={<span className='material-symbols-outlined'>create_new_folder</span>}
                 onClick={() => st.createFolder()}
             >
                 Add folder
@@ -22,7 +22,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 appearance='subtle'
                 loading={Boolean(st.db.saveTimeout)}
                 size='sm'
-                startIcon={<I.Android />}
+                startIcon={<span className='material-symbols-outlined'>save</span>}
                 onClick={() => st.db.markDirty()}
             >
                 save
@@ -49,11 +49,11 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 icon={<I.Reload />}
                 onClick={() => window.location.reload()}
             />
-            <IconButton
+            {/* <IconButton
                 size='sm'
                 appearance='subtle'
                 icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />}
-            />
+            /> */}
             <IconButton
                 //
                 size='sm'

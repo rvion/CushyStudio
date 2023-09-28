@@ -18,7 +18,7 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
 
     const IMG = (
         <img
-            className='scale-in-center'
+            // className='scale-in-center'
             ref={dragRef}
             loading='lazy'
             onMouseEnter={(ev) => {

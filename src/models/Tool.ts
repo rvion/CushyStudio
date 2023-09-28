@@ -7,6 +7,7 @@ export const asToolID = (s: string): ToolID => s as any
 
 export type ToolT = {
     id: ToolID
+    owner: string
     createdAt: number
     updatedAt: number
     priority: number

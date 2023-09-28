@@ -4644,7 +4644,7 @@ declare global {
     export type Enum_WASImageFlip_Mode = 'horizontal' | 'vertical'
     export type Enum_WASImageGenerateGradient_Direction = Enum_WASImageFlip_Mode
     export type Enum_WASImageHistoryLoader_Image =
-        '...\\192.168.1.19:8188\\view?filename=ComfyUI_02815_.png&subfolder=&type=output'
+        '...\\100.120.213.133:8188\\view?filename=ComfyUI_03028_.png&subfolder=&type=output'
     export type Enum_WASImageMonitorEffectsFilter_Mode = 'Digital Distortion' | 'Signal Distortion' | 'TV Distortion'
     export type Enum_WASImageRembgRemoveBackground_Model =
         | 'isnet-anime'

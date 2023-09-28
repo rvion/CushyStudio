@@ -86,7 +86,10 @@ export class STATE {
     startProjectV2 = () => {
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
-        this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
+        this.db.projects.create({
+            rootGraphID: initialGraph.id,
+            name: 'new project',
+        })
         const startDraft = initialGraph.createDraft()
     }
 

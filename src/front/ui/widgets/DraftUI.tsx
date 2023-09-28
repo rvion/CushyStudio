@@ -1,6 +1,6 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { IconButton, Panel } from 'rsuite'
+import { Button, IconButton, Input, Panel } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
 import { draftContext } from '../useDraft'
 import { ToolPickerUI } from '../workspace/ToolPickerUI'
@@ -23,17 +23,24 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
 
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <Panel className='col-form' shaded>
-                <div className='flex flex-wrap'>
-                    <IconButton
+            <Panel shaded className='DraftUI self-start'>
+                <div className='flex'>
+                    <Input
+                        onChange={(v) => draft.update({ title: v })}
+                        size='sm'
+                        placeholder='preset title'
+                        value={draft.data.title ?? ''}
+                    ></Input>
+                    <Button
                         size='sm'
                         className='self-start'
                         color='green'
-                        appearance='primary'
-                        icon={<I.PlayOutline />}
+                        appearance='ghost'
+                        startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
                         onClick={() => draft.start()}
-                    />
-                    <ToolPickerUI draft={draft} />
+                    >
+                        Run
+                    </Button>
                 </div>
                 <div className='flex gap-2'>
                     <ToolSuggestionUI draft={draft} />

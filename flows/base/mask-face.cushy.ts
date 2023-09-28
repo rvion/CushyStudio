@@ -1,4 +1,5 @@
 action('mask-face', {
+    author: 'rvion',
     help: 'extract a mak for the face', // <- action help text
     // requirement: (kk) => ({
     //     image: kk.IMAGE({}),

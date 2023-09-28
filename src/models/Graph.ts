@@ -141,6 +141,7 @@ export class GraphL {
         const draft = this.db.drafts.create({
             toolID: fromDraft?.toolID ?? this.st.toolsSorted[0].id,
             graphID: this.id,
+            title: 'Untitled',
             params: deepCopyNaive(fromDraft?.params ?? {}),
         })
         console.log('🔴', draft.id)

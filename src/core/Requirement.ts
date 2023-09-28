@@ -15,6 +15,7 @@ export type FormDefinition = { [key: string]: Requestable }
 export type FormResult<Req extends FormDefinition> = { [key in keyof Req]: InfoAnswer<Req[key]> }
 
 export type Action<FormDef extends FormDefinition> = {
+    author: string
     /** action name; default to unnamed_action_<nanoid()> */
     name: string
     /** help text to show user */

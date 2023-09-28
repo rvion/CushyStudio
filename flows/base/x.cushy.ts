@@ -1,4 +1,5 @@
 action('demo1-basic', {
+    author: 'featherice',
     run: async ($) => {
         const ckpt = $.nodes.CheckpointLoaderSimple({ ckpt_name: 'albedobaseXL_v02.safetensors' })
         const latent = $.nodes.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })

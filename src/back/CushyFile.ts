@@ -15,7 +15,10 @@ export class CushyFile {
     CONTENT = ''
     actions: ToolL[] = []
 
-    constructor(public st: STATE, public absPath: AbsolutePath) {
+    constructor(
+        public st: STATE,
+        public absPath: AbsolutePath,
+    ) {
         this.CONTENT = readFileSync(absPath, 'utf-8')
         // this.extractWorkflowsV2()
     }
@@ -36,6 +39,7 @@ export class CushyFile {
             const actionID = asToolID(`${this.absPath}#${a.name}`)
             const tool = this.st.db.tools.upsert({
                 id: actionID,
+                owner: a.action.author,
                 file: this.absPath,
                 name: a.name,
                 priority: a.action.priority ?? 100,
