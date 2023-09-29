@@ -11,7 +11,7 @@ export const PanelConfigUI = observer(function PanelConfigUI_(p: { action: UIAct
     const config = st.configFile
     return (
         <div className='flex flex-col items-start p-2'>
-            <Panel header={<SectionTitleUI label='CONFIG' className='bg-pink-900' />} className='col flex-grow'>
+            <Panel header={<SectionTitleUI label='CONFIG' className='bg-pink-900 block' />} className='col flex-grow'>
                 <Form layout='horizontal'>
                     <FieldUI label='use Https?'>
                         <Form.Control //
