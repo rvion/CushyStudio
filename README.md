@@ -4,6 +4,8 @@
 
 ### `CushyStudio`: a Awesome Stable Diffusion Frontend.
 
+[![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
+
 <div>CushyStudio is a Modern, Cross-platform, Extensible, Scriptable, full-featured Stable Diffusion and generative art GUI. Alpha Quality </div>
 
 </div>
