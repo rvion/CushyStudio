@@ -215,7 +215,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         this.instances.delete(id)
     }
 
-    /** only call with brand new data */
+    /** only call with brand & never seen new data */
     create = (data: Omit<T, $BaseInstanceFields> & Partial<BaseInstanceFields>): L => {
         if (this.opts?.singleton && Object.keys(this._store).length >= 1) {
             throw new Error('ERR: singleton already exists')

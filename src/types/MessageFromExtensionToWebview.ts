@@ -116,25 +116,3 @@ export type MessageFromExtensionToWebview_ =
     // generated images as transformed uri by vscode extension so they can be displayed in the webview
     | FromExtension_Images
     | FromExtension_ShowHtml
-
-// export const renderMessageFromExtensionAsEmoji = (msg: MessageFromExtensionToWebview) => {
-//     if (msg.type === 'cushy_status') return 'ℹ️'
-//     if (msg.type === 'action-start') return '🎬'
-//     if (msg.type === 'action-code') return '📝'
-//     if (msg.type === 'action-end') return '🏁'
-//     if (msg.type === 'schema') return '📄'
-//     if (msg.type === 'prompt') return '📝'
-//     if (msg.type === 'status') return '📡'
-//     if (msg.type === 'progress') return '📊'
-//     if (msg.type === 'executing') return '📈'
-//     if (msg.type === 'execution_cached') return '💾'
-//     if (msg.type === 'executed') return '✅'
-//     if (msg.type === 'images') return '🖼️'
-//     if (msg.type === 'print') return '💬'
-//     if (msg.type === 'show-html') return '🥶'
-//     if (msg.type === 'ask') return '👋'
-//     if (msg.type === 'ls') return '📂'
-//     // if (msg.type === 'sync-history') return '⏱️'
-//     exhaust(msg)
-//     return '❓'
-// }

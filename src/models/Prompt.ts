@@ -41,6 +41,11 @@ export class PromptL {
         // if (next)
     }
 
+    // onUpdate = (prev: Maybe<PromptT>, next: PromptT) => {
+    //     // if (!prev?.executed && next.executed) this._finish()
+    //     // if (next)
+    // }
+
     step = new LiveRef<this, StepL>(this, 'stepID', 'steps')
     graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
     // get project() { return this.step.item.project } // prettier-ignore
