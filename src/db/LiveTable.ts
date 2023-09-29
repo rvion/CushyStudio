@@ -47,6 +47,20 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         return this.getOrThrow(id0)
     }
 
+    /** return last entity from table, or null if table is empty */
+    last = (): Maybe<L> => {
+        const idZ = this.ids[this.ids.length - 1]
+        if (idZ == null) return null
+        return this.getOrThrow(idZ)
+    }
+
+    /** return last entity from table, or crash if table is empty */
+    lastOrCrash = (): L => {
+        const idZ = this.ids[this.ids.length - 1]
+        if (idZ == null) throw new Error('collection is empty')
+        return this.getOrThrow(idZ)
+    }
+
     constructor(
         //
         public db: LiveDB,
