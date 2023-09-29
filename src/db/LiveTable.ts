@@ -52,6 +52,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         public db: LiveDB,
         public name: TableName,
         public InstanceClass: LiveEntityClass<T, L>,
+        public opts?: { singleton?: boolean },
     ) {
         // ensure store has a key for this table
         if (!(name in db.store)) db.store[name] = {}
@@ -197,6 +198,10 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
 
     /** only call with brand new data */
     create = (data: Omit<T, $BaseInstanceFields> & Partial<BaseInstanceFields>): L => {
+        if (this.opts?.singleton && Object.keys(this._store).length >= 1) {
+            throw new Error('ERR: singleton already exists')
+        }
+
         const id: T['id'] = data.id ?? nanoid()
         if (data.id == null) data.id = id
         const now = Date.now()

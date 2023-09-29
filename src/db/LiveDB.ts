@@ -65,11 +65,11 @@ export class LiveDB {
         makeAutoObservable(this)
 
         // 3. create tables (after the store has benn made already observable)
-        this.schemas = new LiveTable(this, 'schemas', SchemaL)
+        this.schemas = new LiveTable(this, 'schemas', SchemaL, { singleton: true })
         this.tools = new LiveTable(this, 'tools', ToolL)
         this.folders = new LiveTable(this, 'folders', FolderL)
         this.images = new LiveTable(this, 'images', ImageL)
-        this.projects = new LiveTable(this, 'projects', ProjectL)
+        this.projects = new LiveTable(this, 'projects', ProjectL, { singleton: true })
         this.steps = new LiveTable(this, 'steps', StepL)
         this.prompts = new LiveTable(this, 'prompts', PromptL)
         this.drafts = new LiveTable(this, 'drafts', DraftL)
