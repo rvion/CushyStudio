@@ -1,0 +1,6 @@
+flows
+.vite
+node_modules
+src
+tmp
+.DS_Store
