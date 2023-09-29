@@ -10,10 +10,10 @@ import { ImageL } from 'src/models/Image'
 import { useSt } from '../../FrontStateCtx'
 import { useImageDrag } from './dnd'
 
-export const GalleryImageWidth = '48px'
 export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
     const image = p.img
     const st = useSt()
+    const GalleryImageWidth = st.gallerySize
     const [{ opacity }, dragRef] = useImageDrag(image)
 
     const IMG = (
@@ -63,6 +63,8 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
 })
 
 export const PlaceholderImageUI = observer(function PlaceholderImageUI_(p: {}) {
+    const st = useSt()
+    const GalleryImageWidth = st.configFile.value.galleryImageSize ?? 48
     return (
         <div
             className='scale-in-center'

@@ -8,7 +8,7 @@ import { DraftUI } from '../widgets/DraftUI'
 import { Pane } from 'split-pane-react'
 import SplitPane from 'split-pane-react/esm/SplitPane'
 import { useProject } from '../../../front/ProjectCtx'
-import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
+import { GalleryUI } from '../galleries/GalleryUI'
 import { StepListUI } from './StepUI'
 import { ToolPickerUI } from './ToolPickerUI'
 import { SectionTitleUI } from './SectionTitle'
@@ -19,7 +19,7 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
     const tool = pj.activeTool.item
     // const focusedDraftOld: Maybe<DraftL> = graph.focusedDraft.item
     const focusedDraft: Maybe<DraftL> = tool?.focusedDraft.item
-    const uiSt = useLocalObservable(() => ({ sizes: [150, 300, 150, 150] }))
+    const uiSt = useLocalObservable(() => ({ sizes: [100, 300, 150] }))
 
     const newDraftBtnUI = (
         <Button

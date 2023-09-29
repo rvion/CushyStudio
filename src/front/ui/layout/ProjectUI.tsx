@@ -8,7 +8,7 @@ import { projectContext } from '../../ProjectCtx'
 import { LightBoxUI } from '../LightBox'
 import { GraphUI } from '../workspace/GraphUI'
 import { PanelConfigUI } from './PanelConfigUI'
-import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
+import { GalleryUI } from '../galleries/GalleryUI'
 import { Pane } from 'split-pane-react'
 import SplitPane from 'split-pane-react/esm/SplitPane'
 
@@ -44,7 +44,7 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                     {/* GALLERIE */}
                     <Pane minSize='100px' className='col' style={{ overflow: 'auto' }}>
                         <b className='text-lg bg-blue-950 text-center'>GALLERY</b>
-                        <VerticalGalleryUI />
+                        <GalleryUI />
                     </Pane>
                 </SplitPane>
             </projectContext.Provider>

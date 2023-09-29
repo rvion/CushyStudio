@@ -17,4 +17,7 @@ export type ConfigFile = {
      * @example 8188
      * */
     comfyPort: number
+
+    /** defaults to 48px */
+    galleryImageSize?: number
 }

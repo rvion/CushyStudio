@@ -103,7 +103,9 @@ export class STATE {
     get action() { return this._action } // prettier-ignore
     setAction = (action: UIAction) => (this._action = action)
 
-    gallerySize: number = 256
+    get gallerySize() {
+        return `${this.configFile.value.galleryImageSize ?? 48}px`
+    }
     tsFilesMap = new CushyFileWatcher(this)
     schemaReady = new ManualPromise<true>()
 

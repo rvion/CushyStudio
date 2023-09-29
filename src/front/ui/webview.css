@@ -179,7 +179,7 @@ body {
 }
 .react-split__sash.react-split__sash--horizontal {
     /* background-color: #8f8fc211; */
-    transform: translateX(-50%);
+    transform: translateY(-50%);
     height: .4rem !important;
 }
 
