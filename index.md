@@ -1,0 +1,62 @@
+---
+layout: main
+---
+<div align="center">
+
+# 🛋 CushyStudio {#🛋-cushystudio}
+
+### `CushyStudio`: a Awesome Stable Diffusion Frontend. {#`cushystudio`:-a-awesome-stable-diffusion-frontend.}
+
+<div>CushyStudio is a Modern, Cross-platform, Extensible, Scriptable, full-featured Stable Diffusion and generative art GUI. Alpha Quality </div>
+
+</div>
+
+# Installation {#installation}
+
+{% endhighlight %}sh
+git clone https://github.com/rvion/CushyStudio
+cd CushyStudio
+npm install
+npm start
+{% endhighlight %}
+
+# Features {#features}
+
+## 1. Turn any ComfyUI workflow into a powerful Action with dedicated UI custom execution logic {#1.-turn-any-comfyui-workflow-into-a-powerful-action-with-dedicated-ui-custom-execution-logic}
+
+![](docs/static/img/screenshots/2023-09-29-21-15-36.png)
+
+## 2. Edit and Inpaint like a pro {#2.-edit-and-inpaint-like-a-pro}
+
+![](docs/static/img/screenshots/2023-09-29-22-40-45.png)
+
+1. layers, efects, masks, blending modes, etc. You name it.
+
+## 3. create your own Actions with a {#3.-create-your-own-actions-with-a}
+
+![](docs/static/img/screenshots/2023-09-29-22-35-25.png)
+
+![](docs/static/img/screenshots/2023-09-29-22-37-47.png)
+
+1. define your own UI
+2. build one or many prompts with custom logic in typescript
+3. type-safe experience pushed to the MAXIMUM
+    1. every single value / enum is typed
+    2. a built-in standard library made to quickly build your dream workflow
+    3. use lambda to get completion only for the node that produce value needed
+
+<!-- global config file to change path to ComfyUI:
+
+{% endhighlight %}
+./flows/CONFIG.json
+{% endhighlight %} -->
+
+<!--
+
+---
+
+# Features {#features}
+
+- Custom nodes
+- maximum type safety when writing scripts
+-->
