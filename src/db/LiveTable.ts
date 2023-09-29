@@ -65,6 +65,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         //
         public db: LiveDB,
         public name: TableName,
+        public emoji: string,
         public InstanceClass: LiveEntityClass<T, L>,
         public opts?: { singleton?: boolean },
     ) {
@@ -131,6 +132,10 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
                 this.onHydrate?.(data)
                 this.onUpdate?.(undefined, data)
                 makeAutoObservable(this)
+            }
+
+            log(...args: any[]) {
+                console.log(`[${this.table.emoji}] ${this.table.name}:`, ...args)
             }
         }
 
