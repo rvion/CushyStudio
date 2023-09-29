@@ -236,6 +236,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         this._store[id] = data as T
 
         const instance = this._createInstance(this._store[id])
+        instance.onCreate?.(data as T)
 
         return instance
     }

@@ -36,9 +36,11 @@ export class PromptL {
 
     notifyEmptyPrompt = () => console.log('🔶 No work to do')
 
-    onUpdate = (prev: Maybe<PromptT>, next: PromptT) => {
-        // if (!prev?.executed && next.executed) this._finish()
-        // if (next)
+    onCreate = (data: PromptT) => {
+        const pending = this.st._pendingMsgs.get(data.id)
+        if (pending == null) return
+        this.log(`🟢 onCreate: ${pending.length} pending messages`)
+        for (const msg of pending) this.onPromptRelatedMessage(msg)
     }
 
     // onUpdate = (prev: Maybe<PromptT>, next: PromptT) => {

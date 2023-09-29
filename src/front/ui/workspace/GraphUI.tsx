@@ -1,18 +1,17 @@
 import type { DraftL } from 'src/models/Draft'
 import type { GraphL } from 'src/models/Graph'
-import type { StepL } from 'src/models/Step'
 
-import * as I from '@rsuite/icons'
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { Button, Tooltip, Whisper } from 'rsuite'
+import { Button } from 'rsuite'
 import { DraftUI } from '../widgets/DraftUI'
 
 import { Pane } from 'split-pane-react'
 import SplitPane from 'split-pane-react/esm/SplitPane'
+import { useProject } from '../../../front/ProjectCtx'
 import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
 import { StepListUI } from './StepUI'
 import { ToolPickerUI } from './ToolPickerUI'
-import { useProject } from '../../../front/ProjectCtx'
+import { SectionTitleUI } from './SectionTitle'
 
 export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: number }) {
     const graph = p.graph
@@ -20,7 +19,7 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
     const tool = pj.activeTool.item
     // const focusedDraftOld: Maybe<DraftL> = graph.focusedDraft.item
     const focusedDraft: Maybe<DraftL> = tool?.focusedDraft.item
-    const uiSt = useLocalObservable(() => ({ sizes: [100, 500, 100, 500, 100] }))
+    const uiSt = useLocalObservable(() => ({ sizes: [150, 300, 150, 150] }))
 
     const newDraftBtnUI = (
         <Button
@@ -49,6 +48,7 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
     )
     return (
         <SplitPane
+            performanceMode
             sashRender={() => <div className='bg-gray-200'></div>}
             onChange={(ev) => (uiSt.sizes = ev)}
             sizes={uiSt.sizes}
@@ -56,14 +56,14 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
             style={{ height: '100%' }}
         >
             {/* 1. ACTION */}
-            <Pane minSize='100px' className='col' style={{ minWidth: '100px', overflow: 'auto', background: '120202' }}>
-                <b className='text-lg bg-red-950 text-center'>ACTION</b>
+            <Pane minSize='150px' className='col' style={{ overflow: 'auto', background: '120202' }}>
+                <SectionTitleUI label='ACTION' className='bg-red-950' />
                 <ToolPickerUI />
             </Pane>
 
             {/* 2. DRAFTS  */}
             <Pane minSize='100px' className='col' style={{ background: '#011402' }}>
-                <b className='text-lg bg-green-950 text-center'>DRAFTS</b>
+                <SectionTitleUI label='DRAFTS' className='bg-green-950' />
                 <div className='flex flex-wrap items-center'>
                     {tool
                         ? tool.drafts.map((draft) => (
@@ -91,12 +91,8 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                 <div className='flex-grow col mx-2'>{focusedDraft ? <DraftUI draft={focusedDraft} /> : null}</div>
                 {/* </ScrollablePaneUI> */}
             </Pane>
-            <Pane minSize='100px' className='col' style={{ overflow: 'auto' }}>
-                <b className='text-lg bg-blue-950 text-center'>GALLERY</b>
-                <VerticalGalleryUI />
-            </Pane>
             <Pane minSize='100px' className='col'>
-                <b className='text-lg bg-yellow-900 text-center'>RUNS</b>
+                <SectionTitleUI label='RUNS' className='bg-yellow-900' />
                 <StepListUI />
             </Pane>
             {/* STEP PICKER */}

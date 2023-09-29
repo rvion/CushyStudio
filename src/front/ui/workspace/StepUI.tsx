@@ -7,17 +7,23 @@ import { _formatPreviewDate } from '../../../utils/_formatPreviewDate'
 import { useSt } from '../../../front/FrontStateCtx'
 import { InView } from 'react-intersection-observer'
 import { Status } from '../../../back/Status'
+import { MsgShowHTMLUI } from '../MsgShowHTMLUI'
 
 export const StepListUI = observer(function StepListUI_(p: {}) {
     const st = useSt()
     const steps = st.db.steps
     return (
-        <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
-            {steps.map((step) => (
-                <InView as='div' onChange={(inView, entry) => console.log('Inview:', inView)}>
-                    <StepUI step={step} />
-                </InView>
-            ))}
+        <div className='flex flex-col'>
+            <Panel header='Last Graph' collapsible defaultExpanded>
+                <MsgShowHTMLUI html={st.db.graphs.last()?.flowSummaryHTML} />
+            </Panel>
+            <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
+                {steps.map((step) => (
+                    <InView as='div' onChange={(inView, entry) => console.log('Inview:', inView)}>
+                        <StepUI step={step} />
+                    </InView>
+                ))}
+            </div>
         </div>
     )
 })

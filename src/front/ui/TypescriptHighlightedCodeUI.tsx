@@ -1,11 +1,13 @@
 import * as I from '@rsuite/icons'
 import hljs from 'highlight.js/lib/core'
 import typescript from 'highlight.js/lib/languages/typescript'
+import json from 'highlight.js/lib/languages/json'
 import 'highlight.js/styles/stackoverflow-dark.css'
 import { useLayoutEffect, useRef } from 'react'
 import { Panel } from 'rsuite'
 
 hljs.registerLanguage('typescript', typescript)
+hljs.registerLanguage('json', json)
 
 export const TypescriptHighlightedCodeUI = (p: { code: string }) => {
     const ref = useRef(null)
@@ -15,19 +17,23 @@ export const TypescriptHighlightedCodeUI = (p: { code: string }) => {
         hljs.highlightElement(e)
     }, [ref])
     return (
-        // <Panel
-        //     collapsible
-        //     shaded
-        //     header={
-        //         <div>
-        //             <I.Code /> Code
-        //         </div>
-        //     }
-        // >
         <code className='language-typescript text-xs' style={{ whiteSpace: 'pre-wrap' }} ref={ref}>
             {p.code}
         </code>
-        // </Panel>
+    )
+}
+
+export const JSONHighlightedCodeUI = (p: { code: string }) => {
+    const ref = useRef(null)
+    useLayoutEffect(() => {
+        const e = ref.current
+        if (e == null) return
+        hljs.highlightElement(e)
+    }, [ref])
+    return (
+        <code className='language-json text-xs' style={{ whiteSpace: 'pre-wrap' }} ref={ref}>
+            {p.code}
+        </code>
     )
 }
 

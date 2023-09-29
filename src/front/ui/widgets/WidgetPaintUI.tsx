@@ -1,7 +1,7 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { useLayoutEffect, useMemo } from 'react'
-import { Button } from 'rsuite'
+import { Button, ButtonGroup } from 'rsuite'
 import { STATE } from '../../state'
 import { useSt } from '../../FrontStateCtx'
 import { UIActionPaint } from 'src/front/UIAction'
@@ -111,9 +111,10 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIActionPai
 
     return (
         <div className='flex-grow flex flex-col'>
-            <div>
+            <ButtonGroup className='absolute top-2 right-2'>
                 <Button
-                    appearance='primary'
+                    size='sm'
+                    appearance='ghost'
                     color='green'
                     onClick={() => {
                         runInAction(() => {
@@ -125,6 +126,9 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIActionPai
                     OK
                 </Button>
                 <Button
+                    size='sm'
+                    appearance='ghost'
+                    color='red'
                     onClick={() => {
                         runInAction(() => {
                             st.setAction({ type: 'form' })
@@ -133,7 +137,7 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIActionPai
                 >
                     Close
                 </Button>
-            </div>
+            </ButtonGroup>
             <iframe
                 style={{
                     flexGrow: 1,

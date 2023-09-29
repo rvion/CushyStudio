@@ -3675,6 +3675,10 @@ declare global {
         | 'upload (60).png'
         | 'upload (61).png'
         | 'upload (62).png'
+        | 'upload (63).png'
+        | 'upload (64).png'
+        | 'upload (65).png'
+        | 'upload (66).png'
         | 'upload (7).png'
         | 'upload (8).png'
         | 'upload (9).png'
@@ -4648,7 +4652,7 @@ declare global {
     export type Enum_WASImageFlip_Mode = 'horizontal' | 'vertical'
     export type Enum_WASImageGenerateGradient_Direction = Enum_WASImageFlip_Mode
     export type Enum_WASImageHistoryLoader_Image =
-        '...\\100.120.213.133:8188\\view?filename=ComfyUI_03055_.png&subfolder=&type=output'
+        '...\\100.120.213.133:8188\\view?filename=ComfyUI_03162_.png&subfolder=&type=output'
     export type Enum_WASImageMonitorEffectsFilter_Mode = 'Digital Distortion' | 'Signal Distortion' | 'TV Distortion'
     export type Enum_WASImageRembgRemoveBackground_Model =
         | 'isnet-anime'

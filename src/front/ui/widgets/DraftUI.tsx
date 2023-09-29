@@ -76,7 +76,6 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                             )
                         })}
                     </form>
-                    <MsgShowHTMLUI html={tool.db.graphs.lastOrCrash().flowSummaryHTML} />
                     {/* <div dangerouslySetInnerHTML={{ __html: tool.db.graphs.lastOrCrash().flowSummaryHTML }}></div> */}
                 </Panel>
             </ScrollablePaneUI>

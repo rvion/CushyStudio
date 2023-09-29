@@ -1,12 +1,8 @@
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useRef } from 'react'
-import { Panel } from 'rsuite'
-import { useSt } from '../FrontStateCtx'
 
-export const MsgShowHTMLUI = observer(function MsgShowHTMLUI_(p: { html: string }) {
-    // const st = useSt()
-    // const msg = p.msg
-    // if (msg.type !== 'show-html') return <>error</>
+export const MsgShowHTMLUI = observer(function MsgShowHTMLUI_(p: { html: Maybe<string> }) {
+    if (p.html == null) return null
     const ref = useRef<HTMLDivElement>(null)
     // const zoomed = useLocalObservable(() => ({ zoom: false }))
 
@@ -22,19 +18,13 @@ export const MsgShowHTMLUI = observer(function MsgShowHTMLUI_(p: { html: string 
         svg.style.setProperty('max-height', '200px')
     }, [ref])
 
-    // {/* <Panel collapsible defaultExpanded shaded header='Graph'> */}
-    // {/* <TransformWrapper> */}
-    // {/* <TransformComponent> */}
-    // {/* </TransformComponent> */}
-    // {/* </TransformWrapper> */}
-    // {/* </Panel> */}
     return (
         <div
-            // style={{ maxHeight: '10rem', overflow: 'auto' }}
-            // style={{ flexGrow: 1 }}
             dangerouslySetInnerHTML={{ __html: p.html }}
             ref={ref}
             onClick={() => {
+                if (1 - 1 === 0) return /* 🔴 */
+
                 const e = ref.current
                 if (e == null) return
                 const x = e.querySelectorAll('svg')

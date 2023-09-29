@@ -180,7 +180,7 @@ export class GraphL {
                 )
                 .join('\n'),
         ].join('\n')
-        console.log(out)
+        // console.log(out)
         return out
     }
 

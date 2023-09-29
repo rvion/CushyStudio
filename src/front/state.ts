@@ -219,7 +219,7 @@ export class STATE {
         })
     }
 
-    private _pendingMsgs = new Map<PromptID, WsMsg[]>()
+    _pendingMsgs = new Map<PromptID, PromptRelated_WsMsg[]>()
     private activePromptID: PromptID | null = null
     temporize = (prompt_id: PromptID, msg: PromptRelated_WsMsg) => {
         this.activePromptID = prompt_id

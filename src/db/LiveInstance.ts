@@ -17,6 +17,7 @@ export interface LiveInstance<T extends BaseInstanceFields, L> {
     get id(): T['id']
     get createdAt(): T['createdAt']
     get updatedAt(): T['updatedAt']
+    onHydrate?: (data: T) => void
     onCreate?: (data: T) => void
     onUpdate?: (prev: Maybe<T>, next: T) => void
     update: (t: Partial<T>) => void
@@ -24,4 +25,5 @@ export interface LiveInstance<T extends BaseInstanceFields, L> {
     toJSON: () => T
     init(table: LiveTable<T, any>, data: T): void
     clone(t?: Partial<T>): L
+    log(...args: any[]): void
 }

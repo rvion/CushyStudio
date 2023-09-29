@@ -86,8 +86,9 @@ body {
 .rs-panel-body {padding: .2rem !important;}
 .rs-panel-header {
     padding-left: 0!important;
-    padding-top: .2rem !important;
-    padding-bottom: .2rem !important;
+    padding-right: 0!important;
+    padding-top: 0rem !important;
+    padding-bottom: 0rem !important;
     font-size: 1rem !important;
     /* font-weight: bold !important; */
 }
@@ -173,6 +174,15 @@ body {
     transform: translateX(-50%);
     width: .4rem !important;
 }
+.react-split__sash.react-split__sash--horizontal:hover {
+    background-color: #8f8fc288;
+}
+.react-split__sash.react-split__sash--horizontal {
+    /* background-color: #8f8fc211; */
+    transform: translateX(-50%);
+    height: .4rem !important;
+}
+
 .react-split__pane {
     overflow: auto;
     padding: 0 0rem;
@@ -181,3 +191,11 @@ body {
 .material-symbols-outlined{
     font-size: 1.3em;
 }
+
+
+/* ------ rsuite/messages ------ */
+.rs-message-info {
+    background: none;
+    border: 2px solid var(--rs-message-info-bg);
+}
+/* --------------------------- */
