@@ -60,7 +60,7 @@ export class StepL {
             this.update({ status: scriptExecutionStatus })
             if (scriptExecutionStatus === Status.Success) {
                 // this.parentGraph.item.createDraft(this).focus()
-                this.outputGraph.item.createDraft()
+                // this.outputGraph.item.createDraft()
             }
         }
     }

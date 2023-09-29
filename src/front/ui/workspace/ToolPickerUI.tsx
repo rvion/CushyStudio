@@ -39,17 +39,19 @@ export const ToolPickerUI = observer(function ToolPickerUI_(p: {
                 const codeTS = tool.data.codeTS
                 const action = (
                     <div
-                        className='ml-2 hover:bg-gray-700 cursor-pointer text-ellipsis overflow-hidden'
+                        className='pl-3 hover:bg-gray-700 cursor-pointer text-ellipsis overflow-hidden'
                         key={tool.id}
                         style={{
                             overflow: 'hidden',
                             whiteSpace: 'nowrap',
-                            // fontWeight: focusedDraft?.tool.id === tool.id ? 'bold' : 'normal',
+                            background: pj.activeTool.id === tool.id ? '#2a2a2a' : 'transparent',
+                            fontWeight: pj.activeTool.id === tool.id ? 'bold' : 'normal',
                         }}
                         // active={focusedDraft?.tool.id === tool.id}
                         onClick={() => {
-                            const correspondingDraft = db.drafts.find((d) => d.tool.id === tool.id)
-                            if (correspondingDraft == null) return // 🔴
+                            pj.update({ activeToolID: tool.id })
+                            // const correspondingDraft = db.drafts.find((d) => d.tool.id === tool.id)
+                            // if (correspondingDraft == null) return // 🔴
                             // graph.update({ focusedDraftID: correspondingDraft.id })
                         }}
                     >

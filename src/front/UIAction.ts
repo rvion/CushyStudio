@@ -7,6 +7,6 @@ export type UIAction = UIActionPaint | UIActionForm | UIActionComfy | UIActionCo
 export type UIActionForm = { type: 'form' }
 export type UIActionPaint = { type: 'paint'; imageID?: ImageID }
 export type UIActionComfy = { type: 'comfy'; json?: LiteGraphJSON }
-export type UIActionComfig = { type: 'config'; json: ComfyPromptJSON }
+export type UIActionComfig = { type: 'config' }
 
 // export type UIActionAny = { type: 'any'; form: any }

@@ -1,8 +1,8 @@
 import type { StepL } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
-import { Status, renderStatus } from '../../../back/Status'
-import { Button, Nav } from 'rsuite'
+import { Nav } from 'rsuite'
+import { renderStatus } from '../../../back/Status'
 
 export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) {
     const step = p.step

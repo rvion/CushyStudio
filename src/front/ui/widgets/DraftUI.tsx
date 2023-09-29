@@ -1,13 +1,11 @@
-import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton, Input, Panel } from 'rsuite'
+import { Button, Input, Panel } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
+import { ScrollablePaneUI } from '../scrollableArea'
 import { draftContext } from '../useDraft'
-import { ToolPickerUI } from '../workspace/ToolPickerUI'
-import { ToolSuggestionUI } from '../workspace/ToolSuggestionUI'
 import { DebugUI } from './DebugUI'
 import { WidgetWithLabelUI } from './WidgetUI'
-import { ScrollablePaneUI } from '../scrollableArea'
+import { MsgShowHTMLUI } from '../MsgShowHTMLUI'
 
 /** this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
@@ -31,7 +29,7 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                     size='sm'
                     placeholder='preset title'
                     value={draft.data.title ?? ''}
-                ></Input>
+                />
                 <Button
                     size='sm'
                     className='self-start'
@@ -78,6 +76,8 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                             )
                         })}
                     </form>
+                    <MsgShowHTMLUI html={tool.db.graphs.lastOrCrash().flowSummaryHTML} />
+                    {/* <div dangerouslySetInnerHTML={{ __html: tool.db.graphs.lastOrCrash().flowSummaryHTML }}></div> */}
                 </Panel>
             </ScrollablePaneUI>
             <div className=''>

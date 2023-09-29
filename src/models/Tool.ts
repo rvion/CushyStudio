@@ -1,6 +1,12 @@
-import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
+import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 import type { FormDefinition } from '../core/Requirement'
-import type { LiveInstance } from 'src/db/LiveInstance'
+import type { LiveInstance } from '../db/LiveInstance'
+import type { DraftID, DraftL } from './Draft'
+import type { ProjectL } from './Project'
+
+import { LiveCollection } from '../db/LiveCollection'
+import { deepCopyNaive } from '../utils/ComfyUtils'
+import { LiveRefOpt } from '../db/LiveRefOpt'
 
 export type ToolID = Branded<string, 'FlowDefinitionID'>
 export const asToolID = (s: string): ToolID => s as any
@@ -16,10 +22,31 @@ export type ToolT = {
     form?: Maybe<FormDefinition>
     codeTS?: string
     codeJS?: string
+    focusedDraftID?: Maybe<DraftID> // 🔴
 }
 
 /** a thin wrapper around a single action somewhere in a .cushy.ts file */
 export interface ToolL extends LiveInstance<ToolT, ToolL> {}
 export class ToolL {
     get name() { return this.data.name } // prettier-ignore
+    drafts = new LiveCollection(this, 'toolID', 'drafts')
+
+    focusedDraft = new LiveRefOpt<this, DraftL>(this, 'focusedDraftID', 'drafts')
+
+    /** create a new Draft slot */
+    createDraft = (
+        pj: ProjectL,
+        /** the basis step you'd like to base yourself when creating a new branch */
+        fromDraft?: Maybe<{ toolID: ToolID; params: Maybe<any> }>,
+    ): DraftL => {
+        const draft = this.db.drafts.create({
+            toolID: fromDraft?.toolID ?? this.st.toolsSorted[0].id,
+            graphID: pj.rootGraph.id,
+            title: 'Untitled',
+            params: deepCopyNaive(fromDraft?.params ?? {}),
+        })
+        console.log('🔴', draft.id)
+        this.update({ focusedDraftID: draft.id })
+        return draft
+    }
 }

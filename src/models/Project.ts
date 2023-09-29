@@ -2,7 +2,8 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
 
 import { LiveRef } from '../db/LiveRef'
-import { ToolID } from './Tool'
+import { ToolID, ToolL } from './Tool'
+import { LiveRefOpt } from '../db/LiveRefOpt'
 
 export type ProjectID = Branded<string, 'ProjectID'>
 export const asProjectID = (s: string): ProjectID => s as any
@@ -25,6 +26,7 @@ export class ProjectL {
 
     // _config
     // getConfig() {}
+    activeTool = new LiveRefOpt<this, ToolL>(this, 'activeToolID', 'tools')
 
     get schema() {
         return this.db.schema

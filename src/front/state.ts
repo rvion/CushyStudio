@@ -87,10 +87,11 @@ export class STATE {
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
         this.db.projects.create({
+            activeToolID: this.db.tools.values[0].id,
             rootGraphID: initialGraph.id,
             name: 'new project',
         })
-        const startDraft = initialGraph.createDraft()
+        // const startDraft = initialGraph.createDraft()
     }
 
     // showAllMessageReceived: boolean = false // ❌ legacy

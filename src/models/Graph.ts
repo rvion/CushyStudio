@@ -46,8 +46,8 @@ export type GraphT = {
     /** graph json */
     comfyPromptJSON: ComfyPromptJSON
     /** the current node selected in the tree */
-    focusedStepID?: Maybe<StepID>
-    focusedDraftID?: Maybe<DraftID>
+    focusedStepID?: Maybe<StepID> // 🔴
+    focusedDraftID?: Maybe<DraftID> // 🔴
 }
 
 export interface GraphL extends LiveInstance<GraphT, GraphL> {}
@@ -114,18 +114,12 @@ export class GraphL {
     // 🔴 wrongly named, unclear path draft => graph => step => graph
     createStep = (
         /** the basis step you'd like to base yourself when creating a new branch */
-        draft: {
-            toolID: ToolID
-            params: Maybe<any>
-        },
+        draft: { toolID: ToolID; params: Maybe<any> },
     ): StepL => {
         const step = this.db.steps.create({
             toolID: draft.toolID, // basis?.toolID ?? this.st.toolsSorted[0].id,
             parentGraphID: this.id,
-            outputGraphID: this.clone({
-                focusedStepID: null,
-                focusedDraftID: null,
-            }).id,
+            outputGraphID: this.clone({ focusedStepID: null, focusedDraftID: null }).id,
             params: deepCopyNaive(draft.params ?? {}),
             status: Status.New,
         })
@@ -133,21 +127,21 @@ export class GraphL {
         return step
     }
 
-    /** create a new Draft slot */
-    createDraft = (
-        /** the basis step you'd like to base yourself when creating a new branch */
-        fromDraft?: Maybe<{ toolID: ToolID; params: Maybe<any> }>,
-    ): DraftL => {
-        const draft = this.db.drafts.create({
-            toolID: fromDraft?.toolID ?? this.st.toolsSorted[0].id,
-            graphID: this.id,
-            title: 'Untitled',
-            params: deepCopyNaive(fromDraft?.params ?? {}),
-        })
-        console.log('🔴', draft.id)
-        this.update({ focusedDraftID: draft.id })
-        return draft
-    }
+    // /** create a new Draft slot */
+    // createDraft = (
+    //     /** the basis step you'd like to base yourself when creating a new branch */
+    //     fromDraft?: Maybe<{ toolID: ToolID; params: Maybe<any> }>,
+    // ): DraftL => {
+    //     const draft = this.db.drafts.create({
+    //         toolID: fromDraft?.toolID ?? this.st.toolsSorted[0].id,
+    //         graphID: this.id,
+    //         title: 'Untitled',
+    //         params: deepCopyNaive(fromDraft?.params ?? {}),
+    //     })
+    //     console.log('🔴', draft.id)
+    //     this.update({ focusedDraftID: draft.id })
+    //     return draft
+    // }
 
     /** proxy to this.db.schema */
     get schema() {

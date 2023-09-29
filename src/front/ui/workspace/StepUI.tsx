@@ -28,7 +28,7 @@ export const StepUI = observer(function StepUI_(p: { step: StepL }) {
             collapsible
             defaultExpanded={step.data.status === Status.Running}
             header={
-                <div className='flex justify-between'>
+                <div className='flex justify-between text-xs text-gray-400'>
                     {/*  */}
                     <div>{step.tool.item.name}</div>
                     <div className='text-sm text-gray-400'>{_formatPreviewDate(new Date(step.createdAt))}</div>

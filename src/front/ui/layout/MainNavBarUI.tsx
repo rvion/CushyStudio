@@ -26,6 +26,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 if (k === 'comfy') return st.setAction({ type: 'comfy' })
                 if (k === 'form') return st.setAction({ type: 'form' })
                 if (k === 'paint') return st.setAction({ type: 'paint' })
+                if (k === 'config') return st.setAction({ type: 'config' })
             }}
             className='text-xl'
             appearance='tabs'

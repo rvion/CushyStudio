@@ -1,39 +1,17 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../../FrontStateCtx'
-import { GalleryHoveredPreviewUI } from '../galleries/GalleryHoveredPreviewUI'
-import { VerticalGalleryUI } from '../galleries/VerticalGalleryUI'
-import { ScrollablePaneUI } from '../scrollableArea'
-import { WorkspaceUI } from '../workspace/WorkspaceUI'
 import { AppBarUI } from './AppBarUI'
-import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
-import { ComfyUIUI } from '../workspace/ComfyUIUI'
 import { MainNavBarUI } from './MainNavBarUI'
+import { ProjectUI } from './ProjectUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
-    const action = st.action
-    // const project0 = st.db
     return (
         <div className='col grow h100'>
             <AppBarUI />
             <div className='flex flex-grow'>
                 <MainNavBarUI />
-                <ScrollablePaneUI
-                    //
-                    // style={{ borderLeft: '2px solid #383854' }}
-                    className='shrink-0 flex-grow'
-                >
-                    <GalleryHoveredPreviewUI />
-                    {action == null ? ( //
-                        <WorkspaceUI />
-                    ) : action.type === 'paint' ? (
-                        <WidgetPaintUI action={action} />
-                    ) : action.type === 'comfy' ? (
-                        <ComfyUIUI action={action} />
-                    ) : (
-                        <WorkspaceUI />
-                    )}
-                </ScrollablePaneUI>
+                <ProjectUI />
             </div>
             {/* {st.showAllMessageReceived ? <DebugMessagesUI /> : null} */}
             {/* <pre>{JSON.stringify(st.db.store)}</pre> */}
@@ -41,13 +19,6 @@ export const CushyUI = observer(function CushyUI_() {
     )
 })
 
-export const ScrollableUI = observer(function ScrollableUI_(p: { children: React.ReactNode }) {
-    return (
-        <div className='relative flex-1 '>
-            <div className='inset-0 scrollable'>{p.children}</div>
-        </div>
-    )
-})
 // export const DebugMessagesUI = observer(function DebugMessagesUI_(p: {}) {
 //     const st = useSt()
 //     return (

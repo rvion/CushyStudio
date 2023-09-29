@@ -33,13 +33,16 @@ async function createWindow() {
     do {
         console.log('waiting for cushy to start')
         try {
-            res = await fetch('http://127.0.0.1:8288')
+            res = await fetch('http://localhost:8288') //
+                .catch((err) => fetch('http://127.0.0.1:8288'))
+
+            console.log(res)
             if (res.status !== 200) {
                 console.log(res.status)
                 await sleep(1000)
             } else viteStarted = true
         } catch (error) {
-            // console.log(error.code)
+            console.log('error:', error)
             await sleep(1000)
         }
     } while (!viteStarted)
