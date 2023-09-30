@@ -37,7 +37,6 @@ export const ToolPickerUI = observer(function ToolPickerUI_(p: {
             </InputGroup>
             {db.tools.map((tool) => {
                 const codeTS = tool.data.codeTS
-                console.log('>>>', tool.id)
                 const action = (
                     <div
                         className='pl-3 hover:bg-gray-700 cursor-pointer text-ellipsis overflow-hidden'

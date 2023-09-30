@@ -1,12 +1,4 @@
-import {
-    $createParagraphNode,
-    $createTextNode,
-    $getRoot,
-    $getSelection,
-    EditorState,
-    KEY_ENTER_COMMAND,
-    LexicalEditor,
-} from 'lexical'
+import { $createParagraphNode, $createTextNode, $getRoot, EditorState, KEY_ENTER_COMMAND, LexicalEditor } from 'lexical'
 import { useEffect } from 'react'
 
 import { InitialConfigType, LexicalComposer } from '@lexical/react/LexicalComposer'
@@ -19,15 +11,15 @@ import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
 import { TreeView } from '@lexical/react/LexicalTreeView'
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../../../../front/FrontStateCtx'
+import { wildcards } from '../../../../wildcards/wildcards'
 import { useDraft } from '../../useDraft'
 import { CushyCompletionPlugin } from './CushyCompletionPlugin'
+import { CushyDebugPlugin, getFinalJSON } from './CushyDebugPlugin'
 import theme from './WidgetLexicalTheme'
+import { $createBooruNode, BooruNode } from './_BooruNode'
 import { $createEmbeddingNode, EmbeddingNode } from './_EmbeddingNode'
 import { $createLoraNode, LoraNode } from './_LoraNode'
 import { $createWildcardNode, WildcardNode } from './_WildcardNode'
-import { wildcards } from '../../../../wildcards/wildcards'
-import { $createBooruNode, BooruNode } from './_BooruNode'
-import { CushyDebugPlugin } from './CushyDebugPlugin'
 
 // const theme = {
 //     // Theme styling goes here
@@ -51,17 +43,15 @@ function onChange(p: EditorProps, editorState: EditorState) {
 // highly composable. Furthermore, you can lazy load plugins if
 // desired, so you don't pay the cost for plugins until you
 // actually use them.
+
+// Focus the editor when the effect fires!
 function MyCustomAutoFocusPlugin() {
     const [editor] = useLexicalComposerContext()
-
-    useEffect(() => {
-        // Focus the editor when the effect fires!
-        editor.focus()
-    }, [editor])
-
+    useEffect(() => editor.focus(), [editor])
     return null
 }
 
+// runs the form on cmd+enter within the editor
 function MyCustomShortcutPlugin() {
     const [editor] = useLexicalComposerContext()
     const draft = useDraft()
@@ -168,6 +158,8 @@ export const EditorUI = observer((p: EditorProps) => {
                 <OnChangePlugin
                     onChange={(editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => {
                         onChange(p, editorState)
+                        const { debug, items } = getFinalJSON(editorState)
+                        console.log(debug)
                         // console.log(editorState, editor, tags)
                         // p.set(editorState.)
                     }}
