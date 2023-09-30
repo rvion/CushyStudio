@@ -44,3 +44,4 @@ dbDir*
 d001
 
 CONFIG.json
+flows/global.d.ts
