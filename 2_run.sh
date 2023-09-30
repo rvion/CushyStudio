@@ -1,0 +1,2 @@
+set -eux
+npm start
