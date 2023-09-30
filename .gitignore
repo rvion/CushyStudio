@@ -24,7 +24,7 @@ workspace/outputs/*
 !workspace/outputs/.gitkeep
 
 # keep .schema folder
-!workspace/schema/*
+workspace/schema/*
 !workspace/schema/.gitkeep
 
 workspace/cushy.db
