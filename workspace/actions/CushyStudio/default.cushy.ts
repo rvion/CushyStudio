@@ -19,9 +19,10 @@ action('Prompt-V1', {
         denoise: form.float({ default: 1 }),
         loras: form.loras({}),
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
-        clipSkip: form.intOpt({
+        clipSkip: form.int({
             label: 'Clip Skip',
             tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
+            default: 0,
         }),
         highResFix: form.groupOpt({
             items: {

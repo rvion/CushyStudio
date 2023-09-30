@@ -18,7 +18,7 @@ export const WidgetItemsOptUI = observer(function WidgetItemsOptUI_(p: {
     return (
         <div>
             <Toggle
-                size='sm'
+                // size='sm'
                 checked={checked}
                 onChange={(v) => {
                     if (v) draft.setAtPath([...p.path, '__enabled__'], true)

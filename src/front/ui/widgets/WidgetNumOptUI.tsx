@@ -18,6 +18,7 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: {
     return (
         <>
             <Toggle
+                // size='sm'
                 checked={val != null}
                 onChange={(checked) => {
                     if (checked) {
