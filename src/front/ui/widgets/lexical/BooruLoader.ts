@@ -36,7 +36,7 @@ export class DanbooruTags {
         const resp = readFileSync('flows/completions/danbooru.csv', 'utf-8')
         const result = parse(resp, { delimiter: ',', header: false })
         if (result.errors.length > 0) console.warn(result.errors)
-        console.log('[🏷️] DanBooru:', result.data)
+        // console.log('[🏷️] DanBooru:', result.data.length)
         const rows: string[][] = result.data as any
         const refined = rows.map(this.parseRow)
         this.tags = refined

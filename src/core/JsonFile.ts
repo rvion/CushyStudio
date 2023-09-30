@@ -59,7 +59,7 @@ export class JsonFile<T extends object> {
         this._folder = p.folder
         const folderExists = existsSync(this._folder)
         if (!folderExists) {
-            console.info('🛋', `${p.name} creating missing folder [${this._folder}]`)
+            console.info('[🛋]', `${p.name} creating missing folder [${this._folder}]`)
             mkdirSync(this._folder, { recursive: true })
         }
 
@@ -67,11 +67,11 @@ export class JsonFile<T extends object> {
         this._path = join(this._folder, this.opts.name)
         const configFileExists = existsSync(this._path)
         if (!configFileExists) {
-            console.info('🛋', `${p.name} not found, creating default`)
+            console.info('[🛋]', `${p.name} not found, creating default`)
             this._value = p.init()
             this.save()
         } else {
-            console.info('🛋', `${p.name} found at ${this._path}`)
+            console.info('[🛋]', `${p.name} found at ${this._path}`)
             const configStr = readFileSync(this._path, 'utf-8')
             this._value = JSON.parse(configStr)
         }

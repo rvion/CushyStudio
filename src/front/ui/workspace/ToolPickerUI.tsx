@@ -3,6 +3,7 @@ import { IconButton, InputGroup, Popover, SelectPicker, Whisper } from 'rsuite'
 import { useProject } from '../../../front/ProjectCtx'
 import { useSt } from '../../FrontStateCtx'
 import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
+import { Fragment } from 'react'
 
 export const ToolPickerUI = observer(function ToolPickerUI_(p: {
     //
@@ -81,13 +82,13 @@ export const ToolPickerUI = observer(function ToolPickerUI_(p: {
                 if (tool.data.owner != grup) {
                     grup = tool.data.owner
                     return (
-                        <>
+                        <Fragment key={tool.id}>
                             <div className='[background:#280606] flex gap-1'>
                                 <span className='material-symbols-outlined'>person_outline</span>
                                 {grup}
                             </div>
                             {action}
-                        </>
+                        </Fragment>
                     )
                 }
                 return action

@@ -26,7 +26,7 @@ export class CushyFileWatcher {
     }
 
     private _walk = (dir: string) => {
-        console.log(`[💙] TOOL:  ...exploring ${dir}`)
+        // console.log(`[💙] TOOL:  ...exploring ${dir}`)
 
         // 🔴
         // this.st.db.actions.clear()
