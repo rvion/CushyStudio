@@ -30,8 +30,10 @@ async function createWindow() {
     // check if cushy is running
     let viteStarted = false
     const sleep = (duration) => new Promise((resolve) => setTimeout(resolve, duration))
+    let retryCount = 0
     do {
         console.log('waiting for cushy to start')
+        retryCount++
         try {
             res = await fetch('http://localhost:8288') //
                 .catch((err) => fetch('http://127.0.0.1:8288'))
@@ -42,7 +44,7 @@ async function createWindow() {
                 await sleep(1000)
             } else viteStarted = true
         } catch (error) {
-            console.log('error:', error)
+            if (retryCount > 10) console.log('❌ error:', error)
             await sleep(1000)
         }
     } while (!viteStarted)
