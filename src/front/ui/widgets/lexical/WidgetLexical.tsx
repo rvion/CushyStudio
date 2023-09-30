@@ -18,9 +18,12 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
 import { TreeView } from '@lexical/react/LexicalTreeView'
 import { observer } from 'mobx-react-lite'
-import EmojiPickerPlugin from './WidgetLexicalEmoji'
+import { useSt } from '../../../../front/FrontStateCtx'
+import { useDraft } from '../../useDraft'
+import { CushyCompletionPlugin } from './WidgetLexicalEmbeddings'
 import theme from './WidgetLexicalTheme'
-import { useDraft } from '../useDraft'
+import { $createEmbeddingNode, EmbeddingNode } from './_EmbeddingNode'
+import { $createLoraNode, LoraNode } from './_LoraNode'
 
 // const theme = {
 //     // Theme styling goes here
@@ -93,10 +96,18 @@ type EditorProps = {
 }
 
 export const EditorUI = observer((p: EditorProps) => {
+    const st = useSt()
     // useEffect(() => {
     //     updateEditor(p.get())
     // })
     const initialConfig: InitialConfigType = {
+        nodes: [
+            //
+            // TextNode_color,
+            EmbeddingNode,
+            LoraNode,
+            // CustomParagraphNode,
+        ],
         editorState: () => {
             console.log('[💬] LEXICAL: mounting lexical widget')
             $getRoot().append($createParagraphNode().append($createTextNode(p.get())))
@@ -128,7 +139,19 @@ export const EditorUI = observer((p: EditorProps) => {
                 />
                 {/* https://github.com/facebook/lexical/blob/main/packages/lexical-playground/src/plugins/EmojiPickerPlugin/index.tsx */}
 
-                <EmojiPickerPlugin />
+                <CushyCompletionPlugin
+                    //
+                    trigger=':'
+                    getValues={() => st.schema.data.embeddings}
+                    describeValue={(t) => ({ title: `embedding:${t}`, keywords: [t] })}
+                    createNode={(t) => $createEmbeddingNode(t)}
+                />
+                <CushyCompletionPlugin
+                    trigger='@'
+                    getValues={() => st.schema.getLoras()}
+                    describeValue={(t) => ({ title: `lora:${t}`, keywords: [t] })}
+                    createNode={(t) => $createLoraNode(t)}
+                />
                 <OnChangePlugin
                     onChange={(editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => {
                         onChange(p, editorState)

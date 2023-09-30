@@ -1,56 +1,55 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { LexicalTypeaheadMenuPlugin, MenuOption, useBasicTypeaheadTriggerMatch } from '@lexical/react/LexicalTypeaheadMenuPlugin'
-import { $createTextNode, $getSelection, $isRangeSelection, TextNode } from 'lexical'
+import { $getSelection, $isRangeSelection, LexicalNode, TextNode } from 'lexical'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import * as ReactDOM from 'react-dom'
-import { useSt } from '../../../front/FrontStateCtx'
-import { EmbeddingName } from 'src/models/Schema'
+import { useSt } from '../../../FrontStateCtx'
 
-class EmojiOption extends MenuOption {
+/** menu entry state */
+class CompletionOption<T> extends MenuOption {
     title: string
-    emoji: string
+    payload: T
     keywords: Array<string>
 
-    constructor(title: string, emoji: string, options: { keywords?: Array<string> }) {
+    constructor(
+        //
+        title: string,
+        payload: T,
+        options: { keywords?: Array<string> },
+    ) {
         super(title)
         this.title = title
-        this.emoji = emoji
+        this.payload = payload
         this.keywords = options.keywords || []
     }
 }
 
-function EmojiMenuItem({
-    index,
-    isSelected,
-    onClick,
-    onMouseEnter,
-    option,
-}: {
+/** menu entry appearance */
+function CompletionUI<T>(p: {
     index: number
     isSelected: boolean
     onClick: () => void
     onMouseEnter: () => void
-    option: EmojiOption
+    option: CompletionOption<T>
 }) {
     let className = 'item'
-    if (isSelected) {
-        className += ' selected'
-    }
+    if (p.isSelected) className += ' selected'
+
     return (
         <li
-            key={option.key}
+            key={p.option.key}
             tabIndex={-1}
             className={className}
-            ref={option.setRefElement}
+            ref={p.option.setRefElement}
             role='option'
-            aria-selected={isSelected}
-            id={'typeahead-item-' + index}
-            onMouseEnter={onMouseEnter}
-            onClick={onClick}
+            aria-selected={p.isSelected}
+            id={'typeahead-item-' + p.index}
+            onMouseEnter={p.onMouseEnter}
+            onClick={p.onClick}
         >
             <span className='text'>
                 {/* {option.emoji}  */}
-                {option.title}
+                {p.option.title}
             </span>
         </li>
     )
@@ -63,38 +62,59 @@ const MAX_EMOJI_SUGGESTION_COUNT = 10
 //     const [editor] = useLexicalComposerContext()
 //     editor._listeners.
 //     const [queryString, setQueryString] = useState<string | null>(null)
-
 // }
-export default function EmojiPickerPlugin() {
+
+export const CushyCompletionPlugin = <T extends any>(p: {
+    //
+    trigger: string
+    getValues: () => Array<T>
+    describeValue: (value: T) => { title: string; keywords: string[] }
+    createNode: (value: T) => LexicalNode
+}) => {
     const st = useSt()
     const [editor] = useLexicalComposerContext()
     const [queryString, setQueryString] = useState<string | null>(null)
-    const [emojis, setEmojis] = useState<Array<EmbeddingName>>([])
-    useEffect(() => setEmojis(st.schema.data.embeddings), [])
-    const emojiOptions = useMemo(
-        () => (emojis != null ? emojis.map((x) => new EmojiOption(x, `embedding:${x}`, { keywords: [x] })) : []),
-        [emojis],
+    const [rawCandidates, setRawCandidates] = useState<T[]>([])
+    useEffect(() => setRawCandidates(p.getValues()), [])
+
+    const menuOptions: CompletionOption<T>[] = useMemo(
+        () =>
+            rawCandidates != null //
+                ? rawCandidates.map((x) => {
+                      const desc = p.describeValue(x)
+                      return new CompletionOption(desc.title, x, { keywords: desc.keywords })
+                  })
+                : [],
+        [rawCandidates],
     )
-    const checkForTriggerMatch = useBasicTypeaheadTriggerMatch(':', { minLength: 0 })
-    const options: Array<EmojiOption> = useMemo(() => {
-        return emojiOptions
-            .filter((option: EmojiOption) => {
+    const checkForTriggerMatch = useBasicTypeaheadTriggerMatch(p.trigger /*':'*/, { minLength: 0 })
+    const options: CompletionOption<T>[] = useMemo(() => {
+        return menuOptions
+            .filter((option: CompletionOption<T>) => {
                 return queryString != null
                     ? new RegExp(queryString, 'gi').exec(option.title) || option.keywords != null
                         ? option.keywords.some((keyword: string) => new RegExp(queryString, 'gi').exec(keyword))
                         : false
-                    : emojiOptions
+                    : menuOptions
             })
             .slice(0, MAX_EMOJI_SUGGESTION_COUNT)
-    }, [emojiOptions, queryString])
+    }, [menuOptions, queryString])
 
     const onSelectOption = useCallback(
-        (selectedOption: EmojiOption, nodeToRemove: TextNode | null, closeMenu: () => void) => {
+        (selectedOption: CompletionOption<T>, nodeToRemove: TextNode | null, closeMenu: () => void) => {
             editor.update(() => {
                 const selection = $getSelection()
                 if (!$isRangeSelection(selection) || selectedOption == null) return
                 if (nodeToRemove) nodeToRemove.remove()
-                selection.insertNodes([$createTextNode(selectedOption.emoji)])
+                const insertionResult = selection.insertNodes([
+                    p.createNode(selectedOption.payload),
+                    //
+                    // $createColoredNode('coucou' + selectedOption.emoji, 'blue'),
+                    // $createEmbeddingNode('coucou'),
+                    // $createCustomParagraphNode(),
+                    // $createTextNode(selectedOption.emoji),
+                ])
+                console.log(insertionResult)
 
                 closeMenu()
             })
@@ -117,9 +137,9 @@ export default function EmojiPickerPlugin() {
                     ? ReactDOM.createPortal(
                           <div className='typeahead-popover emoji-menu'>
                               <ul>
-                                  {options.map((option: EmojiOption, index) => (
+                                  {options.map((option: CompletionOption<T>, index) => (
                                       <div key={option.key}>
-                                          <EmojiMenuItem
+                                          <CompletionUI
                                               index={index}
                                               isSelected={selectedIndex === index}
                                               onClick={() => {
