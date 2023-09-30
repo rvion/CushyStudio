@@ -55,7 +55,7 @@ npm start
 <!-- global config file to change path to ComfyUI:
 
 ```
-./flows/CONFIG.json
+./workspace/CONFIG.json
 ``` -->
 
 <!--

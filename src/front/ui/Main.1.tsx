@@ -10,7 +10,7 @@ import { asAbsolutePath } from '../../utils/fs/pathUtils'
 import { join } from 'path'
 import { runInAction } from 'mobx'
 
-const path = asAbsolutePath(join(process.cwd(), 'flows/'))
+const path = asAbsolutePath(join(process.cwd(), 'workspace'))
 
 export const Main = observer(() => {
     const st = useMemo(

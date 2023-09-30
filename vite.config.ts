@@ -16,7 +16,7 @@ export default defineConfig({
     server: {
         port: 8288,
         watch: {
-            ignored: ['flows/**/*'],
+            ignored: ['workspace/**/*'],
         },
     },
     resolve: {

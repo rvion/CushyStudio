@@ -20,18 +20,6 @@
             "LATER": ["src/back/LATER.ts"]
         }
     },
-    "include": [
-        //
-        "viteplugin.ts",
-        "src",
-        "flows/actions",
-        "flows/private",
-        "flows/global.d.ts"
-    ],
-    "exclude": [
-        //
-        "tsconfig.node.json",
-        "src/extension.ts",
-        "src/extension/"
-    ]
+    "include": ["workspace/schema/global.d.ts", "src", "workspace/actions"],
+    "exclude": []
 }

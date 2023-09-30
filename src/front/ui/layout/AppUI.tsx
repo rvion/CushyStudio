@@ -1,11 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../../FrontStateCtx'
 import { AppBarUI } from './AppBarUI'
 import { MainNavBarUI } from './MainNavBarUI'
 import { ProjectUI } from './ProjectUI'
 
 export const CushyUI = observer(function CushyUI_() {
-    const st = useSt()
     return (
         <div className='col grow h100'>
             <AppBarUI />

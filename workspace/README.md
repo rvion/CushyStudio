@@ -1,4 +1,4 @@
-# this folder is both both a cushy workspace, and the official cushy action library.
+# CushyStudio WorkSpace
 
 You can open this folder in cushy, and it will automatically load all the actions in this folder.
 

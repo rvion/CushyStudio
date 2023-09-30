@@ -20,28 +20,23 @@ out
 
 
 # keep .cushy folder
-flows/.cushy/*
-!flows/.cushy/.gitkeep
+workspace/outputs/*
+!workspace/outputs/.gitkeep
 
-# keep .cushy/cache folder
-!flows/.cushy/cache
-flows/.cushy/cache/*
-!flows/.cushy/cache/.gitkeep
+# keep .schema folder
+!workspace/schema/*
+!workspace/schema/.gitkeep
 
-flows/cache
-flows/aaa
-flows/cushy.db
-
-webview
+workspace/cushy.db
 
 *.vsix
 
-flows/private
-flows/.disabled
+workspace/private
+workspace/.disabled
 
 dbDir
 dbDir*
 d001
 
 CONFIG.json
-flows/global.d.ts
+workspace/global.d.ts

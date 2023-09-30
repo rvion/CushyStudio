@@ -56,8 +56,8 @@ export class STATE {
     comfyJSONPath: AbsolutePath
     embeddingsPath: AbsolutePath
     nodesTSPath: AbsolutePath
-    cushyTSPath: AbsolutePath
-    tsConfigPath: AbsolutePath
+    // cushyTSPath: AbsolutePath
+    // tsConfigPath: AbsolutePath
     outputFolderPath: AbsolutePath
 
     // files and actions
@@ -130,26 +130,27 @@ export class STATE {
         console.log('[🗳️] starting web app')
         this.db = new LiveDB(this)
         this.codePrettier = new CodePrettier(this)
-        this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('.cushy/cache'))
-        this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('.cushy/nodes.json'))
-        this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('.cushy/embeddings.json'))
-        this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('global.d.ts'))
-        this.cushyTSPath = this.resolve(this.rootPath, asRelativePath('.cushy/cushy.d.ts'))
-        this.tsConfigPath = this.resolve(this.rootPath, asRelativePath('tsconfig.json'))
-        this.outputFolderPath = this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
+        this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
+        this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/nodes.json'))
+        this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('schema/embeddings.json'))
+        this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
+        // this.cushyTSPath = this.resolve(this.rootPath, asRelativePath('.cushy/cushy.d.ts'))
+        // this.tsConfigPath = this.resolve(this.rootPath, asRelativePath('tsconfig.json'))
+        this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
         this.schema = this.db.schema
         this.configFile = new JsonFile<ConfigFile>({
             folder: this.rootPath,
             name: 'CONFIG.json',
             maxLevel: 3,
-            init: () => ({
+            init: (): ConfigFile => ({
                 comfyHost: 'localhost',
                 comfyPort: 8188,
                 useHttps: false,
+                galleryImageSize: 48,
             }),
         })
-        if (opts.genTsConfig) this.createTSConfigIfMissing()
-        if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
+        // 1️⃣ if (opts.genTsConfig) this.createTSConfigIfMissing()
+        // 1️⃣ if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
 
         Promise.all([
             //
@@ -166,23 +167,23 @@ export class STATE {
         // this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
     }
 
-    createTSConfigIfMissing = () => {
-        // create an empty tsconfig.json if it doesn't exist
-        const tsConfigExists = existsSync(this.tsConfigPath)
-        if (!tsConfigExists) {
-            console.info(`no tsconfig.json found, creating a default one`)
-            const content = {
-                compilerOptions: {
-                    target: 'ESNext',
-                    lib: ['ESNext'],
-                },
-                include: ['.cushy/*.d.ts', '**/*.ts'],
-            }
-            const contentStr = JSON.stringify(content, null, 4)
-            this.writeTextFile(this.tsConfigPath, contentStr)
-        }
-        // const json = this.readJSON(this.tsConfigUri)
-    }
+    // 1️⃣ createTSConfigIfMissing = () => {
+    // 1️⃣     // create an empty tsconfig.json if it doesn't exist
+    // 1️⃣     const tsConfigExists = existsSync(this.tsConfigPath)
+    // 1️⃣     if (!tsConfigExists) {
+    // 1️⃣         console.info(`no tsconfig.json found, creating a default one`)
+    // 1️⃣         const content = {
+    // 1️⃣             compilerOptions: {
+    // 1️⃣                 target: 'ESNext',
+    // 1️⃣                 lib: ['ESNext'],
+    // 1️⃣             },
+    // 1️⃣             include: ['.cushy/*.d.ts', '**/*.ts'],
+    // 1️⃣         }
+    // 1️⃣         const contentStr = JSON.stringify(content, null, 4)
+    // 1️⃣         this.writeTextFile(this.tsConfigPath, contentStr)
+    // 1️⃣     }
+    // 1️⃣     // const json = this.readJSON(this.tsConfigUri)
+    // 1️⃣ }
 
     /**
      * will be created only after we've loaded cnfig file
@@ -345,7 +346,7 @@ export class STATE {
             const headers: HeadersInit = { 'Content-Type': 'application/json' }
             const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
             const object_info_json = (await object_info_res.json()) as { [key: string]: any }
-
+            writeFileSync(this.comfyJSONPath, JSON.stringify(object_info_json), 'utf-8')
             const knownNodeNames = Object.keys(object_info_json)
             console.info(`[🐱] CONFY: [.... step 1/4] found ${knownNodeNames.length} nodes`) // (${JSON.stringify(keys)})
             schema$ = object_info_json as any
