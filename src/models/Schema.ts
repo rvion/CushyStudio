@@ -265,14 +265,14 @@ export class SchemaL {
         return out
     }
 
-    codegenDTS = (opts: { cushySrcPathPrefix?: string }): string => {
-        const prefix = opts.cushySrcPathPrefix ?? ''
+    codegenDTS = (): string => {
+        const prefix = '../../src/'
         const b = new CodeBuffer()
         const p = b.w
 
-        if (opts.cushySrcPathPrefix == null) {
-            p(`/// <reference path="cushy.d.ts" />`)
-        }
+        // 1️⃣ if (opts.cushySrcPathPrefix == null) {
+        // 1️⃣     p(`/// <reference path="cushy.d.ts" />`)
+        // 1️⃣ }
         p('')
         p(`import type { ComfyNode } from '${prefix}core/Node'`)
         p(`import type { Slot } from '${prefix}core/Slot'`)

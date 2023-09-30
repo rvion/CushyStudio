@@ -13,17 +13,7 @@ import { runInAction } from 'mobx'
 const path = asAbsolutePath(join(process.cwd(), 'workspace'))
 
 export const Main = observer(() => {
-    const st = useMemo(
-        () =>
-            runInAction(
-                () =>
-                    new STATE(path, {
-                        cushySrcPathPrefix: '../src/',
-                        genTsConfig: false,
-                    }),
-            ),
-        [],
-    )
+    const st = useMemo(() => runInAction(() => new STATE(path)), [])
     return (
         <stContext.Provider value={st}>
             <MainUI />

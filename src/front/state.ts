@@ -113,19 +113,6 @@ export class STATE {
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
-        /** workspace configuration */
-        public opts: {
-            /**
-             * if set, no stub will be generated
-             * if unset, will generate self-contained stubs
-             * */
-            cushySrcPathPrefix?: string
-            /**
-             * true in prod, false when running from this local subfolder
-             * */
-            genTsConfig: boolean
-            /** true in prod, false when running from this local subfolder */
-        },
     ) {
         console.log('[🗳️] starting web app')
         this.db = new LiveDB(this)
@@ -381,7 +368,7 @@ export class STATE {
 
             // 3 ------------------------------------
             console.info('[🐱] CONFY: [**.. step 3/4] udpatin schema code...')
-            const comfySchemaTs = this.schema.codegenDTS({ cushySrcPathPrefix: this.opts.cushySrcPathPrefix })
+            const comfySchemaTs = this.schema.codegenDTS()
             console.info('[🐱] CONFY: [***. step 3/4] schema code updated ')
 
             // 4 ------------------------------------
