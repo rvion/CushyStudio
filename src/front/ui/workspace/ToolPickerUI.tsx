@@ -50,6 +50,9 @@ export const ToolPickerUI = observer(function ToolPickerUI_(p: {
                         // active={focusedDraft?.tool.id === tool.id}
                         onClick={() => {
                             pj.update({ activeToolID: tool.id })
+                            if (tool.focusedDraft.item == null) {
+                                tool.createDraft(pj).focus()
+                            }
                             // const correspondingDraft = db.drafts.find((d) => d.tool.id === tool.id)
                             // if (correspondingDraft == null) return // 🔴
                             // graph.update({ focusedDraftID: correspondingDraft.id })

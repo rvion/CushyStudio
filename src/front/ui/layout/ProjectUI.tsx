@@ -15,9 +15,9 @@ import SplitPane from 'split-pane-react/esm/SplitPane'
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const st = useSt()
     const project = st.db.projects.first()
-    if (project == null) return <Loader />
     const action = st.action
     const uiSt = useLocalObservable(() => ({ sizes: [500, 100] }))
+    if (project == null) return <Loader />
     return (
         <div className='flex-grow flex flex-col h-full'>
             <projectContext.Provider value={project} key={project.id}>

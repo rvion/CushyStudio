@@ -39,8 +39,10 @@ export class ToolL {
         /** the basis step you'd like to base yourself when creating a new branch */
         fromDraft?: Maybe<{ toolID: ToolID; params: Maybe<any> }>,
     ): DraftL => {
+        if (fromDraft?.toolID && fromDraft.toolID !== this.id) throw new Error('🔴')
+        const toolID = fromDraft?.toolID ?? this.id
         const draft = this.db.drafts.create({
-            toolID: fromDraft?.toolID ?? this.st.toolsSorted[0].id,
+            toolID: toolID,
             graphID: pj.rootGraph.id,
             title: 'Untitled',
             params: deepCopyNaive(fromDraft?.params ?? {}),
