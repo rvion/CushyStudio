@@ -11,7 +11,7 @@ action('Prompt-V1', {
         startImage: form.selectImage('Start image'),
         freeU: form.bool({ default: false }),
         // prompt
-        positive: form.str({ textarea: true }),
+        positive: form.strOpt({ textarea: true }),
         negative: form.strOpt({ textarea: true }),
         cfg: form.int({ default: 8 }),
         sampler_name: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m' }),
@@ -82,7 +82,7 @@ action('Prompt-V1', {
         if (p.vae) vae = graph.VAELoader({ vae_name: p.vae }).VAE
 
         // CLIPS
-        const positive = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.positive })
+        const positive = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.positive ?? '' })
         const negative = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.negative ?? '' })
 
         // flow.print(`startImage: ${p.startImage}`)

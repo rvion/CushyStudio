@@ -4,7 +4,7 @@ import type { ToolL } from '../models/Tool'
 
 import { BUG } from '../controls/InfoRequest'
 import { FormPath } from '../models/Step'
-import { ASSERT_ARRAY } from '../utils/bang'
+import { ASSERT_ARRAY, ASSERT_EQUAL } from '../utils/bang'
 
 export const finalizeAnswer = (
     //
@@ -18,6 +18,28 @@ export const finalizeAnswer = (
         console.log(error)
         return { [`🔴 error`]: true }
     }
+}
+
+const getDefault = (request: Requestable): any => {
+    if (Array.isArray(request)) {
+        return request.map(getDefault)
+    }
+    if (request instanceof BUG) return null
+    if (request.type === 'itemsOpt') {
+        const obj: any = {}
+        for (const [key, req] of Object.entries(request.items)) {
+            obj[key] = getDefault(req as Requestable)
+        }
+        return obj
+    }
+    if (request.type === 'items') {
+        const obj: any = {}
+        for (const [key, req] of Object.entries(request.items)) {
+            obj[key] = getDefault(req as Requestable)
+        }
+        return obj
+    }
+    return request.default
 }
 
 export const finalizeAnswer_UNSAFE = (
@@ -49,23 +71,19 @@ export const finalizeAnswer_UNSAFE = (
     ) {
         if (Array.isArray(request)) {
             ASSERT_ARRAY(answer)
+            ASSERT_EQUAL(request.length, answer.length)
             for (const [key, req] of request.entries()) {
                 processNode([...path, key], req, answer[key])
             }
             return
         }
-        if (request instanceof BUG) {
-            return
-        }
+        if (request instanceof BUG) return
+
         if (request.type === 'itemsOpt') {
             if (answer == null) return
             if (!answer.__enabled__) return
-            const entries = Object.entries(answer) //
-                .filter((i) => i[0] !== '__enabled__')
-
-            if (entries.length === 0) {
-                setAtPath(path, {})
-            }
+            const entries = Object.entries(answer).filter((i) => i[0] !== '__enabled__')
+            if (entries.length === 0) setAtPath(path, {})
             for (const [key, req] of entries) {
                 if (key === '__enabled__') continue
                 processNode([...path, key], req, answer[key])
@@ -80,13 +98,15 @@ export const finalizeAnswer_UNSAFE = (
     for (const [rootKey, requestable] of Object.entries(form)) {
         const param = params[rootKey]
 
-        if (param == null) {
-            // console.log('🔴 PARAM', rootKey, 'IS NULL !')
-            continue
-        } else {
-            // console.log('🟢 PARAM', rootKey, 'IS HERE')
-        }
-        processNode([rootKey], requestable, param)
+        // if (param == null) {
+        //     const def = getDefault(requestable)
+        //     processNode([rootKey], requestable, param ?? def)
+        //     // console.log('🔴 PARAM', rootKey, 'IS NULL !')
+        //     continue
+        // } else {
+        //     // console.log('🟢 PARAM', rootKey, 'IS HERE')
+        // }
+        processNode([rootKey], requestable, param ?? getDefault(requestable))
     }
 
     return normalizedParams

@@ -9,6 +9,11 @@ export function ASSERT_ARRAY(a: any): a is any[] {
     return true
 }
 
+export function ASSERT_EQUAL(a: any, b: any): a is any[] {
+    if (a !== b) throw new Error('❌ not equal')
+    return true
+}
+
 // ----------
 export function ASSERT_STRING(a: any): a is string {
     if (typeof a !== 'string') throw new Error('❌ not a string')
