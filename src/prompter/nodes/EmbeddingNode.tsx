@@ -1,7 +1,7 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
 
-export type EmbeddingNodeJSON = SerializedLexicalNode & { payload: string; type: 'embedding' }
+export type EmbeddingNodeJSON = SerializedLexicalNode & { embeddingName: string; type: 'embedding' }
 export class EmbeddingNode extends DecoratorNode<ReactNode> {
     constructor(
         public embeddingName: string,
@@ -19,11 +19,15 @@ export class EmbeddingNode extends DecoratorNode<ReactNode> {
     }
 
     exportJSON(): EmbeddingNodeJSON {
-        return { type: EmbeddingNode.getType(), payload: this.embeddingName, version: 1 }
+        return { type: EmbeddingNode.getType(), embeddingName: this.embeddingName, version: 1 }
     }
 
     importJSON(json: EmbeddingNodeJSON): EmbeddingNode {
-        return new EmbeddingNode(json.payload)
+        return new EmbeddingNode(json.embeddingName)
+    }
+
+    static importJSON(json: EmbeddingNodeJSON): EmbeddingNode {
+        return new EmbeddingNode(json.embeddingName)
     }
 
     isIsolated(): boolean { return true } // prettier-ignore

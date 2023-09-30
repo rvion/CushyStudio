@@ -3,7 +3,7 @@ import { LexicalTypeaheadMenuPlugin, MenuOption, useBasicTypeaheadTriggerMatch }
 import { $getSelection, $isRangeSelection, LexicalNode, TextNode } from 'lexical'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import * as ReactDOM from 'react-dom'
-import { useSt } from '../front/FrontStateCtx'
+import { useSt } from '../../front/FrontStateCtx'
 
 /** menu entry state */
 class CompletionOption<T> extends MenuOption {

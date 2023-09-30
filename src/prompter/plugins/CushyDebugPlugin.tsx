@@ -1,11 +1,11 @@
 import type { EditorState } from 'lexical'
-import type { LoraNodeJSON } from './nodes/_LoraNode'
-import type { BooruNodeJSON } from './nodes/_BooruNode'
-import type { WildcardNodeJSON } from './nodes/_WildcardNode'
-import type { EmbeddingNodeJSON } from './nodes/_EmbeddingNode'
+import type { LoraNodeJSON } from '../nodes/LoraNode'
+import type { BooruNodeJSON } from '../nodes/BooruNode'
+import type { WildcardNodeJSON } from '../nodes/WildcardNode'
+import type { EmbeddingNodeJSON } from '../nodes/EmbeddingNode'
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { JSONHighlightedCodeUI } from '../front/ui/TypescriptHighlightedCodeUI'
+import { JSONHighlightedCodeUI } from '../../front/ui/TypescriptHighlightedCodeUI'
 
 export const getFinalJSON = (
     editorState: EditorState,
@@ -25,7 +25,7 @@ export const getFinalJSON = (
     let debug = '{\n'
     for (const x of (p0 as any as { children: PossibleSerializedNodes[] }).children) {
         const itemJSON = convertToSimpleJSON(x)
-        items.push(itemJSON)
+        items.push(x)
         debug += '   ' + JSON.stringify(itemJSON) + ',\n'
     }
     debug += '}\n'
@@ -46,19 +46,19 @@ type TextNodeJSON = { type: 'text'; text: string }
 type ParagraphNodeJSON = { type: 'paragraph'; children: PossibleSerializedNodes[] }
 
 // prettier-ignore
-type PossibleSerializedNodes =
+export type PossibleSerializedNodes =
+    | BooruNodeJSON
+    | LoraNodeJSON
     | WildcardNodeJSON
     | EmbeddingNodeJSON
-    | LoraNodeJSON
-    | BooruNodeJSON
     | TextNodeJSON
-    | ParagraphNodeJSON
+// | ParagraphNodeJSON
 
-const convertToSimpleJSON = (node: PossibleSerializedNodes): any => {
-    if (node.type === 'booru') return { type: 'booru', value: node.payload.text }
-    if (node.type === 'lora') return { type: 'lora', value: node.payload }
+const convertToSimpleJSON = (node: PossibleSerializedNodes): { type: string; value: string } => {
+    if (node.type === 'booru') return { type: 'booru', value: node.tag.text }
+    if (node.type === 'lora') return { type: 'lora', value: node.loraName }
     if (node.type === 'wildcard') return { type: 'wildcard', value: node.payload }
-    if (node.type === 'embedding') return { type: 'embedding', value: node.payload }
+    if (node.type === 'embedding') return { type: 'embedding', value: node.embeddingName }
     if (node.type === 'text') return { type: 'text', value: node.text }
     // if (node.type === 'paragraph') return { type: 'paragraph', value: node.children.map(convertToSimpleJSON) }
     return { type: 'unknown', value: node }

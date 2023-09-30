@@ -60,6 +60,7 @@ export class Runtime {
     actions: any
     AUTO = auto
 
+    pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
     run = async (): Promise<Status> => {
         // 1. ensure we have a tool
         const tool: ToolL = this.step.tool.item

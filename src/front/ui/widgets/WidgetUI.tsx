@@ -12,11 +12,13 @@ import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
 import { WidgetItemsOptUI } from './WidgetItemsOptUI'
 import { WidgetItemsUI } from './WidgetItemsUI'
-import { EditorUI } from '../../../prompter/WidgetPromptUI'
+import { WidgetPromptUI } from '../../../prompter/WidgetPromptUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetNumOptUI } from './WidgetNumOptUI'
 import { WidgetNumUI } from './WidgetNumUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
+import { WidgetStrUI } from './WidgetStrUI'
+import { WidgetStrOptUI } from './WidgetStrOptUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     draft: DraftL
@@ -129,8 +131,10 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'int?') return <WidgetNumOptUI mode='int' get={get} set={set} def={def} />
     if (req.type === 'float') return <WidgetNumUI mode='float' get={get} set={set} def={def} />
     if (req.type === 'float?') return <WidgetNumOptUI mode='float' get={get} set={set} def={def} />
-    if (req.type === 'str') return <EditorUI get={get} set={set} />
-    if (req.type === 'str?') return <EditorUI get={get} set={set} nullable />
+    if (req.type === 'str') return <WidgetStrUI get={get} set={set} def={def} textarea={req.textarea} />
+    if (req.type === 'str?') return <WidgetStrOptUI get={get} set={set} def={def} textarea={req.textarea} />
+    if (req.type === 'prompt') return <WidgetPromptUI get={get} set={set} />
+    if (req.type === 'prompt?') return <WidgetPromptUI get={get} set={set} nullable />
     if (req.type === 'paint') return <>🔴 paint form commented</> //<WidgetPaintUI uri={'foo bar 🔴'} />
     if (req.type === 'samMaskPoints') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'selectImage') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ get={get} set={set} />

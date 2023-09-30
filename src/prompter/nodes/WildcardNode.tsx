@@ -26,6 +26,10 @@ export class WildcardNode extends DecoratorNode<ReactNode> {
         return new WildcardNode(json.payload)
     }
 
+    static importJSON(json: WildcardNodeJSON): WildcardNode {
+        return new WildcardNode(json.payload)
+    }
+
     isIsolated(): boolean { return true } // prettier-ignore
     isInline(): boolean { return true } // prettier-ignore
     isKeyboardSelectable(): boolean { return true } // prettier-ignore

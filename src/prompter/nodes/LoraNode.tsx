@@ -1,10 +1,15 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
 
-export type LoraNodeJSON = SerializedLexicalNode & { payload: string; type: 'lora' }
+export type LoraNodeJSON = SerializedLexicalNode & {
+    // strength_clip: number
+    // strength_model: number
+    loraName: Enum_LoraLoader_Lora_name
+    type: 'lora'
+}
 export class LoraNode extends DecoratorNode<ReactNode> {
     constructor(
-        public loraName: string,
+        public loraName: Enum_LoraLoader_Lora_name,
         key?: NodeKey,
     ) {
         super(key)
@@ -19,11 +24,19 @@ export class LoraNode extends DecoratorNode<ReactNode> {
     }
 
     exportJSON(): LoraNodeJSON {
-        return { type: LoraNode.getType(), payload: this.loraName, version: 1 }
+        return {
+            type: LoraNode.getType(),
+            loraName: this.loraName,
+            version: 1,
+        }
     }
 
     importJSON(json: LoraNodeJSON): LoraNode {
-        return new LoraNode(json.payload)
+        return new LoraNode(json.loraName)
+    }
+
+    static importJSON(json: LoraNodeJSON): LoraNode {
+        return new LoraNode(json.loraName)
     }
 
     isIsolated(): boolean { return true } // prettier-ignore
@@ -34,8 +47,8 @@ export class LoraNode extends DecoratorNode<ReactNode> {
     decorate(): ReactNode { return <span className='bg-blue-800 mr-1'>{this.loraName}</span> } // prettier-ignore
 }
 
-export function $createLoraNode(id: string): LoraNode {
-    return new LoraNode(id)
+export function $createLoraNode(loraName: Enum_LoraLoader_Lora_name): LoraNode {
+    return new LoraNode(loraName)
 }
 
 export function $isLoraNode(node: LexicalNode | null | undefined): node is LoraNode {

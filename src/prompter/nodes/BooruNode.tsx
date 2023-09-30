@@ -2,7 +2,7 @@ import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexi
 import { ReactNode } from 'react'
 import { DanbooruTag } from '../../booru/BooruLoader'
 
-export type BooruNodeJSON = SerializedLexicalNode & { payload: DanbooruTag; type: 'booru' }
+export type BooruNodeJSON = SerializedLexicalNode & { tag: DanbooruTag; type: 'booru' }
 export class BooruNode extends DecoratorNode<ReactNode> {
     constructor(
         public booru: DanbooruTag,
@@ -20,11 +20,15 @@ export class BooruNode extends DecoratorNode<ReactNode> {
     }
 
     exportJSON(): BooruNodeJSON {
-        return { type: BooruNode.getType(), payload: this.booru, version: 1 }
+        return { type: BooruNode.getType(), tag: this.booru, version: 1 }
     }
 
     importJSON(json: BooruNodeJSON): BooruNode {
-        return new BooruNode(json.payload)
+        return new BooruNode(json.tag)
+    }
+
+    static importJSON(json: BooruNodeJSON): BooruNode {
+        return new BooruNode(json.tag)
     }
 
     isIsolated(): boolean { return true } // prettier-ignore

@@ -7,6 +7,8 @@ export class FormBuilder {
     /** str */
     str = (p: Omit<R.Requestable_str, 'type'>): R.Requestable_str => ({ type: 'str', ...p })
     strOpt = (p: Omit<R.Requestable_strOpt, 'type'>): R.Requestable_strOpt => ({ type: 'str?', ...p })
+    prompt = (p: Omit<R.Requestable_prompt, 'type'>): R.Requestable_prompt => ({ type: 'prompt', ...p })
+    promptOpt = (p: Omit<R.Requestable_promptOpt, 'type'>): R.Requestable_promptOpt => ({ type: 'prompt?', ...p })
 
     /** nums */
     int = (p?: Omit<R.Requestable_int, 'type'>): R.Requestable_int => ({ type: 'int', ...p })

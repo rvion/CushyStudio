@@ -6,6 +6,8 @@ export type Tooltip = string
 
 export type Requestable_str          = { type: 'str';    label?: string; tooltip?: string; default?: string; textarea?: boolean } // prettier-ignore
 export type Requestable_strOpt       = { type: 'str?';   label?: string; tooltip?: string; default?: string; textarea?: boolean } // prettier-ignore
+export type Requestable_prompt       = { type: 'prompt'; label?: string; tooltip?: string; default?: string; } // prettier-ignore
+export type Requestable_promptOpt    = { type: 'prompt?';label?: string; tooltip?: string; default?: string; } // prettier-ignore
 export type Requestable_int          = { type: 'int';    label?: string; tooltip?: string; default?: number  } // prettier-ignore
 export type Requestable_float        = { type: 'float';  label?: string; tooltip?: string; default?: number  } // prettier-ignore
 export type Requestable_bool         = { type: 'bool';   label?: string; tooltip?: string; default?: boolean } // prettier-ignore
@@ -38,6 +40,8 @@ export type Requestable =
     /** str */
     | Requestable_str
     | Requestable_strOpt
+    | Requestable_prompt
+    | Requestable_promptOpt
     /** nums */
     | Requestable_int
     | Requestable_intOpt

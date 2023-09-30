@@ -11,8 +11,8 @@ action('Prompt-V1', {
         startImage: form.selectImage('Start image'),
         freeU: form.bool({ default: false }),
         // prompt
-        positive: form.strOpt({ textarea: true }),
-        negative: form.strOpt({ textarea: true }),
+        positive: form.promptOpt({}),
+        negative: form.promptOpt({}),
         CFG: form.int({ default: 8 }),
         sampler: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m' }),
         scheduler: form.enum({ enumName: 'Enum_KSampler_Scheduler', default: 'simple' }),
@@ -49,9 +49,9 @@ action('Prompt-V1', {
 
         // startImage
         removeBG: form.bool({ default: false }),
-        extra: form.groupOpt({
-            items: { reversePrompt: form.bool({ default: false }) },
-        }),
+        // extra: form.groupOpt({
+        //     items: { reversePrompt: form.bool({ default: false }) },
+        // }),
     }),
     run: async (flow, p) => {
         const graph = flow.nodes
@@ -69,6 +69,31 @@ action('Prompt-V1', {
             })
         }
 
+        let positiveText = ''
+        const x = p.positive
+        if (x) {
+            for (const tok of x.tokens) {
+                if (tok.type === 'booru') positiveText += ` ${tok.tag.text}`
+                else if (tok.type === 'text') positiveText += ` ${tok.text}`
+                else if (tok.type === 'embedding') positiveText += ` embedding:${tok.embeddingName}`
+                else if (tok.type === 'wildcard') {
+                    const options = (flow.wildcards as any)[tok.payload]
+                    if (Array.isArray(options)) positiveText += ` ${flow.pick(options)}`
+                } else if (tok.type === 'lora') {
+                    clipAndModel = graph.LoraLoader({
+                        model: clipAndModel,
+                        clip: clipAndModel,
+                        lora_name: tok.loraName,
+                        strength_clip: /*lora.strength_clip ??*/ 1.0,
+                        strength_model: /*lora.strength_model ??*/ 1.0,
+                    })
+                }
+            }
+        }
+
+        let negativeText = ''
+        const y = p.negative
+
         // CLIP
         let clip = clipAndModel._CLIP
         let model: _MODEL = clipAndModel._MODEL
@@ -83,8 +108,8 @@ action('Prompt-V1', {
         if (p.vae) vae = graph.VAELoader({ vae_name: p.vae }).VAE
 
         // CLIPS
-        const positive = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.positive ?? '' })
-        const negative = graph.CLIPTextEncode({ clip: flow.AUTO, text: p.negative ?? '' })
+        const positive = graph.CLIPTextEncode({ clip: flow.AUTO, text: positiveText })
+        const negative = graph.CLIPTextEncode({ clip: flow.AUTO, text: negativeText })
 
         // flow.print(`startImage: ${p.startImage}`)
 
@@ -165,12 +190,12 @@ action('Prompt-V1', {
         // PROMPT
         await flow.PROMPT()
 
-        if (p.extra?.reversePrompt) {
-            // FUNNY PROMPT REVERSAL
-            positive.set({ text: p.negative ?? '' })
-            negative.set({ text: p.positive ?? '' })
-            await flow.PROMPT()
-        }
+        // if (p.extra?.reversePrompt) {
+        //     // FUNNY PROMPT REVERSAL
+        //     positive.set({ text: p.negative ?? '' })
+        //     negative.set({ text: p.positive ?? '' })
+        //     await flow.PROMPT()
+        // }
 
         // patch
         // if (p.tomeRatio != null && p.tomeRatio !== false) {

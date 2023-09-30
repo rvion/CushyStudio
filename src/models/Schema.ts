@@ -46,9 +46,9 @@ export class SchemaL {
         return []
     }
 
-    getLoras = (): string[] => {
+    getLoras = (): Enum_LoraLoader_Lora_name[] => {
         const candidates = this.knownEnumsByName.get('Enum_LoraLoader_Lora_name') ?? []
-        return candidates as string[]
+        return candidates as Enum_LoraLoader_Lora_name[]
     }
 
     getEnumOptionsForSelectPicker = (enumName: string) => {

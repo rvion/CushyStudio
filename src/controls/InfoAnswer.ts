@@ -9,10 +9,8 @@ import type { Base64Image } from 'src/core/b64img'
 import type { ImageID } from 'src/models/Image'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { Requestable } from './InfoRequest'
-
 import type { LATER } from 'LATER'
-import type { ComfyNodeID } from 'src/types/NodeUID'
-import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
+import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 import type { FormBuilder } from './FormBuilder'
 import type * as R from './InfoRequest'
 
@@ -21,6 +19,8 @@ export type InfoAnswer<Req> =
     /** str */
     Req extends R.Requestable_str ? string :
     Req extends R.Requestable_strOpt ? Maybe<string> :
+    Req extends R.Requestable_prompt ? WidgetPromptOutput :
+    Req extends R.Requestable_promptOpt ? Maybe<WidgetPromptOutput> :
     /** nums */
     Req extends R.Requestable_int ? number :
     Req extends R.Requestable_intOpt ? Maybe<number> :
