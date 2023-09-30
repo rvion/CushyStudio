@@ -1,6 +1,6 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
-import { DanbooruTag } from '../booru/BooruLoader'
+import { DanbooruTag } from '../../booru/BooruLoader'
 
 export type BooruNodeJSON = SerializedLexicalNode & { payload: DanbooruTag; type: 'booru' }
 export class BooruNode extends DecoratorNode<ReactNode> {

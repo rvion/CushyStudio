@@ -1,8 +1,8 @@
 import type { EditorState } from 'lexical'
-import type { LoraNodeJSON } from './_LoraNode'
-import type { BooruNodeJSON } from './_BooruNode'
-import type { WildcardNodeJSON } from './_WildcardNode'
-import type { EmbeddingNodeJSON } from './_EmbeddingNode'
+import type { LoraNodeJSON } from './nodes/_LoraNode'
+import type { BooruNodeJSON } from './nodes/_BooruNode'
+import type { WildcardNodeJSON } from './nodes/_WildcardNode'
+import type { EmbeddingNodeJSON } from './nodes/_EmbeddingNode'
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { JSONHighlightedCodeUI } from '../front/ui/TypescriptHighlightedCodeUI'

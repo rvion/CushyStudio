@@ -1,5 +1,4 @@
-import { $createParagraphNode, $createTextNode, $getRoot, EditorState, KEY_ENTER_COMMAND, LexicalEditor } from 'lexical'
-import { useEffect } from 'react'
+import { $createParagraphNode, $createTextNode, $getRoot, EditorState, LexicalEditor } from 'lexical'
 
 import { InitialConfigType, LexicalComposer } from '@lexical/react/LexicalComposer'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
@@ -12,14 +11,14 @@ import { TreeView } from '@lexical/react/LexicalTreeView'
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../front/FrontStateCtx'
 import { wildcards } from '../wildcards/wildcards'
-import { useDraft } from '../front/ui/useDraft'
 import { CushyCompletionPlugin } from './CushyCompletionPlugin'
 import { CushyDebugPlugin, getFinalJSON } from './CushyDebugPlugin'
 import theme from './theme/WidgetLexicalTheme'
-import { $createBooruNode, BooruNode } from './_BooruNode'
-import { $createEmbeddingNode, EmbeddingNode } from './_EmbeddingNode'
-import { $createLoraNode, LoraNode } from './_LoraNode'
-import { $createWildcardNode, WildcardNode } from './_WildcardNode'
+import { $createBooruNode, BooruNode } from './nodes/_BooruNode'
+import { $createEmbeddingNode, EmbeddingNode } from './nodes/_EmbeddingNode'
+import { $createLoraNode, LoraNode } from './nodes/_LoraNode'
+import { $createWildcardNode, WildcardNode } from './nodes/_WildcardNode'
+import { CushyShortcutPlugin } from './CushyShortcutPlugin'
 
 // const theme = {
 //     // Theme styling goes here
@@ -37,41 +36,6 @@ function onChange(p: EditorProps, editorState: EditorState) {
         if (txt) p.set(txt)
         // console.log(root, selection)
     })
-}
-
-// Lexical React plugins are React components, which makes them
-// highly composable. Furthermore, you can lazy load plugins if
-// desired, so you don't pay the cost for plugins until you
-// actually use them.
-
-// Focus the editor when the effect fires!
-function MyCustomAutoFocusPlugin() {
-    const [editor] = useLexicalComposerContext()
-    useEffect(() => editor.focus(), [editor])
-    return null
-}
-
-// runs the form on cmd+enter within the editor
-function MyCustomShortcutPlugin() {
-    const [editor] = useLexicalComposerContext()
-    const draft = useDraft()
-    useEffect(() => {
-        return editor.registerCommand(
-            KEY_ENTER_COMMAND,
-            (ev) => {
-                if (!ev?.metaKey) return false
-                console.log(`👋👋👋👋👋👋👋`)
-                ev?.stopImmediatePropagation()
-                ev?.stopPropagation()
-                ev?.preventDefault()
-                draft.start()
-                return true
-            },
-            4,
-        )
-    }, [editor])
-
-    return null
 }
 
 // Catch any errors that occur during Lexical updates and log them
@@ -116,7 +80,7 @@ export const EditorUI = observer((p: EditorProps) => {
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <div className='flex flex-col'>
-                <MyCustomShortcutPlugin />
+                <CushyShortcutPlugin />
                 <PlainTextPlugin
                     contentEditable={
                         <ContentEditable
