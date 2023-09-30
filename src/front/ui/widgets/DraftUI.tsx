@@ -1,28 +1,23 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Input, Panel } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
+import { JSONHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
+import { TabUI } from '../layout/TabUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { draftContext } from '../useDraft'
-import { DebugUI } from './DebugUI'
 import { WidgetWithLabelUI } from './WidgetUI'
-import { MsgShowHTMLUI } from '../MsgShowHTMLUI'
 
-/** this is the root interraction widget
+/**
+ * this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
 export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
-    // ensure action have a tool
     const draft = p.draft
     const tool = draft.tool.item
-
-    // prepare basic infos
     const formDefinition = tool?.data.form ?? {}
-    // const locked = draft.data.params != null
-
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            {/* <Panel shaded className='DraftUI self-start col flex-grow'> */}
             <div className='flex'>
                 <Input
                     onChange={(v) => draft.update({ title: v })}
@@ -42,8 +37,6 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                 </Button>
             </div>
             <ScrollablePaneUI className='flex-grow'>
-                {/* <ToolSuggestionUI draft={draft} /> */}
-                {/* widgets ------------------------------- */}
                 <Panel>
                     <form
                         onKeyUp={(ev) => {
@@ -63,7 +56,6 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                         }}
                     >
                         {Object.entries(formDefinition).map(([rootKey, req], ix) => {
-                            // const pathInfo = draft.getPathInfo([rootKey])
                             return (
                                 <WidgetWithLabelUI
                                     path={[rootKey]}
@@ -76,37 +68,16 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                             )
                         })}
                     </form>
-                    {/* <div dangerouslySetInnerHTML={{ __html: tool.db.graphs.lastOrCrash().flowSummaryHTML }}></div> */}
+                    <TabUI>
+                        <div>result</div>
+                        <JSONHighlightedCodeUI code={JSON.stringify(draft.finalJSON, null, 4)} />
+                        <div>form</div>
+                        <JSONHighlightedCodeUI code={JSON.stringify(formDefinition, null, 4)} />
+                        <div>state</div>
+                        <JSONHighlightedCodeUI code={JSON.stringify(draft.data.params, null, 4)} />
+                    </TabUI>
                 </Panel>
             </ScrollablePaneUI>
-            <div className=''>
-                {/* debug -------------------------------*/}
-                <div className='flex'>
-                    <DebugUI title='⬇'>
-                        the form definition is
-                        <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(formDefinition, null, 4)}</pre>
-                    </DebugUI>
-                    <DebugUI title={'⬆'}>
-                        the value about to be sent back to the workflow is
-                        <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(draft.data.params, null, 4)}</pre>
-                    </DebugUI>
-                    <DebugUI title='👀'>
-                        the final answer is
-                        <pre className='w-80 h-80 overflow-auto'>{JSON.stringify(draft.finalJSON, null, 4)}</pre>
-                    </DebugUI>
-                </div>
-            </div>
-            {/* </Panel> */}
         </draftContext.Provider>
     )
 })
-
-// export const ActionPlaceholderUI = observer(function ActionPlaceholderUI_(p: {}) {
-//     return (
-//         <Panel>
-//             <div className='flex gap-2' style={{ width: '30rem' }}>
-//                 Executing...
-//             </div>
-//         </Panel>
-//     )
-// })

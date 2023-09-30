@@ -199,3 +199,8 @@ body {
     border: 2px solid var(--rs-message-info-bg);
 }
 /* --------------------------- */
+
+
+.rs-nav.xs .rs-nav-item {
+    padding: 0.3rem !important;
+}
