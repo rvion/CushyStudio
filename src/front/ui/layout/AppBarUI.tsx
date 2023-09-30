@@ -83,7 +83,15 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                     <div>loading schema</div>
                 </div>
             )}
-            <a className='ml-auto flex' href='https://github.com/rvion/CushyStudio'>
+            <a
+                className='ml-auto flex'
+                onClick={(ev) => {
+                    ev.preventDefault()
+                    ev.stopPropagation()
+                    window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio')
+                }}
+                href='#'
+            >
                 <span className='material-symbols-outlined text-yellow-600'>star</span>
                 <span className='underline text-blue-300'>github.com/rvion/CushyStudio</span>
             </a>
