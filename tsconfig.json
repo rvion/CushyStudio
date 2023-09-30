@@ -24,7 +24,7 @@
         //
         "viteplugin.ts",
         "src",
-        "flows/base",
+        "flows/actions",
         "flows/private",
         "flows/global.d.ts"
     ],

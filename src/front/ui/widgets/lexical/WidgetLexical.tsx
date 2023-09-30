@@ -20,10 +20,14 @@ import { TreeView } from '@lexical/react/LexicalTreeView'
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../../../../front/FrontStateCtx'
 import { useDraft } from '../../useDraft'
-import { CushyCompletionPlugin } from './WidgetLexicalEmbeddings'
+import { CushyCompletionPlugin } from './CushyCompletionPlugin'
 import theme from './WidgetLexicalTheme'
 import { $createEmbeddingNode, EmbeddingNode } from './_EmbeddingNode'
 import { $createLoraNode, LoraNode } from './_LoraNode'
+import { $createWildcardNode, WildcardNode } from './_WildcardNode'
+import { wildcards } from '../../../../wildcards/wildcards'
+import { $createBooruNode, BooruNode } from './_BooruNode'
+import { CushyDebugPlugin } from './CushyDebugPlugin'
 
 // const theme = {
 //     // Theme styling goes here
@@ -36,10 +40,10 @@ function onChange(p: EditorProps, editorState: EditorState) {
     editorState.read(() => {
         // Read the contents of the EditorState here.
         const root = $getRoot()
-        const selection = $getSelection()
+        // const selection = $getSelection()
         const txt = root.__cachedText
         if (txt) p.set(txt)
-        console.log(root, selection)
+        // console.log(root, selection)
     })
 }
 
@@ -101,16 +105,11 @@ export const EditorUI = observer((p: EditorProps) => {
     //     updateEditor(p.get())
     // })
     const initialConfig: InitialConfigType = {
-        nodes: [
-            //
-            // TextNode_color,
-            EmbeddingNode,
-            LoraNode,
-            // CustomParagraphNode,
-        ],
+        nodes: [EmbeddingNode, LoraNode, WildcardNode, BooruNode],
         editorState: () => {
             console.log('[💬] LEXICAL: mounting lexical widget')
             $getRoot().append($createParagraphNode().append($createTextNode(p.get())))
+            // $getRoot().append($createTextNode(p.get()))
             // const root = $getRoot()
             // const txt = p.get()
             // console.log('🟢>>>', txt)
@@ -143,15 +142,29 @@ export const EditorUI = observer((p: EditorProps) => {
                     //
                     trigger=':'
                     getValues={() => st.schema.data.embeddings}
-                    describeValue={(t) => ({ title: `embedding:${t}`, keywords: [t] })}
+                    describeValue={(t) => ({ title: t, keywords: [t] })}
                     createNode={(t) => $createEmbeddingNode(t)}
                 />
                 <CushyCompletionPlugin
                     trigger='@'
                     getValues={() => st.schema.getLoras()}
-                    describeValue={(t) => ({ title: `lora:${t}`, keywords: [t] })}
+                    describeValue={(t) => ({ title: t, keywords: [t] })}
                     createNode={(t) => $createLoraNode(t)}
                 />
+
+                <CushyCompletionPlugin
+                    trigger='*'
+                    getValues={() => Object.keys(wildcards)}
+                    describeValue={(t) => ({ title: t, keywords: [t] })}
+                    createNode={(t) => $createWildcardNode(t)}
+                />
+                <CushyCompletionPlugin
+                    trigger='&'
+                    getValues={() => st.danbooru.tags}
+                    describeValue={(t) => ({ title: t.text, keywords: t.aliases })}
+                    createNode={(t) => $createBooruNode(t)}
+                />
+
                 <OnChangePlugin
                     onChange={(editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => {
                         onChange(p, editorState)
@@ -160,6 +173,7 @@ export const EditorUI = observer((p: EditorProps) => {
                     }}
                 />
                 <HistoryPlugin />
+                <CushyDebugPlugin />
                 {/* <div className='text-xs bg-gray-700'>
                     <TreeViewPlugin />
                 </div> */}

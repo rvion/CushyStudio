@@ -29,6 +29,7 @@ import { JsonFile } from '../core/JsonFile'
 import { GraphL } from '../models/Graph'
 import { LiveDB } from '../db/LiveDB'
 import { UIAction } from './UIAction'
+import { DanbooruTags } from './ui/widgets/lexical/BooruLoader'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -108,6 +109,7 @@ export class STATE {
     }
     tsFilesMap = new CushyFileWatcher(this)
     schemaReady = new ManualPromise<true>()
+    danbooru = DanbooruTags.build()
 
     constructor(
         /** path of the workspace */

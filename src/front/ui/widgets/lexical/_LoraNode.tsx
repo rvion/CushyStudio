@@ -1,19 +1,29 @@
-import { DecoratorNode, LexicalNode, NodeKey } from 'lexical'
+import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
 
+export type LoraNodeJSON = SerializedLexicalNode & { payload: string; type: 'lora' }
 export class LoraNode extends DecoratorNode<ReactNode> {
-    __id: string
-    constructor(id: string, key?: NodeKey) {
+    constructor(
+        public loraName: string,
+        key?: NodeKey,
+    ) {
         super(key)
-        this.__id = id
     }
 
-    static getType(): string {
+    static getType(): 'lora' {
         return 'lora'
     }
 
     static clone(node: LoraNode): LoraNode {
-        return new LoraNode(node.__id, node.__key)
+        return new LoraNode(node.loraName, node.__key)
+    }
+
+    exportJSON(): LoraNodeJSON {
+        return { type: LoraNode.getType(), payload: this.loraName, version: 1 }
+    }
+
+    importJSON(json: LoraNodeJSON): LoraNode {
+        return new LoraNode(json.payload)
     }
 
     isIsolated(): boolean { return true } // prettier-ignore
@@ -21,7 +31,7 @@ export class LoraNode extends DecoratorNode<ReactNode> {
     isKeyboardSelectable(): boolean { return true } // prettier-ignore
     createDOM(): HTMLElement { return document.createElement('span') } // prettier-ignore
     updateDOM(): false { return false } // prettier-ignore
-    decorate(): ReactNode { return <span className='bg-blue-800'>{this.__id}</span> } // prettier-ignore
+    decorate(): ReactNode { return <span className='bg-blue-800 mr-1'>{this.loraName}</span> } // prettier-ignore
 }
 
 export function $createLoraNode(id: string): LoraNode {

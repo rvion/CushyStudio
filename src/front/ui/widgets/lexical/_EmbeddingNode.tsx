@@ -1,19 +1,29 @@
-import { DecoratorNode, LexicalNode, NodeKey } from 'lexical'
+import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
 
+export type EmbeddingNodeJSON = SerializedLexicalNode & { payload: string; type: 'embedding' }
 export class EmbeddingNode extends DecoratorNode<ReactNode> {
-    __id: string
-    constructor(id: string, key?: NodeKey) {
+    constructor(
+        public embeddingName: string,
+        key?: NodeKey,
+    ) {
         super(key)
-        this.__id = id
     }
 
-    static getType(): string {
+    static getType(): 'embedding' {
         return 'embedding'
     }
 
     static clone(node: EmbeddingNode): EmbeddingNode {
-        return new EmbeddingNode(node.__id, node.__key)
+        return new EmbeddingNode(node.embeddingName, node.__key)
+    }
+
+    exportJSON(): EmbeddingNodeJSON {
+        return { type: EmbeddingNode.getType(), payload: this.embeddingName, version: 1 }
+    }
+
+    importJSON(json: EmbeddingNodeJSON): EmbeddingNode {
+        return new EmbeddingNode(json.payload)
     }
 
     isIsolated(): boolean { return true } // prettier-ignore
@@ -21,7 +31,7 @@ export class EmbeddingNode extends DecoratorNode<ReactNode> {
     isKeyboardSelectable(): boolean { return true } // prettier-ignore
     createDOM(): HTMLElement { return document.createElement('span') } // prettier-ignore
     updateDOM(): false { return false } // prettier-ignore
-    decorate(): ReactNode { return <span className='bg-red-800'>{this.__id}</span> } // prettier-ignore
+    decorate(): ReactNode { return <span className='bg-red-800 mr-1'>embedding:{this.embeddingName}</span> } // prettier-ignore
 }
 
 export function $createEmbeddingNode(id: string): EmbeddingNode {
