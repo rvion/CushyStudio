@@ -70,9 +70,9 @@ action('Prompt-V1', {
         }
 
         let positiveText = ''
-        const x = p.positive
-        if (x) {
-            for (const tok of x.tokens) {
+        const positivePrompt = p.positive
+        if (positivePrompt) {
+            for (const tok of positivePrompt.tokens) {
                 if (tok.type === 'booru') positiveText += ` ${tok.tag.text}`
                 else if (tok.type === 'text') positiveText += ` ${tok.text}`
                 else if (tok.type === 'embedding') positiveText += ` embedding:${tok.embeddingName}`
@@ -92,7 +92,27 @@ action('Prompt-V1', {
         }
 
         let negativeText = ''
-        const y = p.negative
+        const negativePrompt = p.negative
+        if (negativePrompt) {
+            for (const tok of negativePrompt.tokens) {
+                if (tok.type === 'booru') negativeText += ` ${tok.tag.text}`
+                else if (tok.type === 'text') negativeText += ` ${tok.text}`
+                else if (tok.type === 'embedding') negativeText += ` embedding:${tok.embeddingName}`
+                else if (tok.type === 'wildcard') {
+                    const options = (flow.wildcards as any)[tok.payload]
+                    if (Array.isArray(options)) negativeText += ` ${flow.pick(options)}`
+                } else if (tok.type === 'lora') {
+                    flow.print('unsupported: lora in negative prompt; check the default.cushy.ts file')
+                    // clipAndModel = graph.LoraLoader({
+                    //     model: clipAndModel,
+                    //     clip: clipAndModel,
+                    //     lora_name: tok.loraName,
+                    //     strength_clip: /*lora.strength_clip ??*/ 1.0,
+                    //     strength_model: /*lora.strength_model ??*/ 1.0,
+                    // })
+                }
+            }
+        }
 
         // CLIP
         let clip = clipAndModel._CLIP
