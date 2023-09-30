@@ -29,17 +29,20 @@ npm start
 
 ![](docs/static/img/screenshots/2023-09-29-22-40-45.png)
 
-1. layers, efects, masks, blending modes, etc. You name it.
+1. layers
+2. efects
+3. masks
+4. blending modes
+5. ...and more
 
-## 3. create your own Actions with a
+## 3. create your own Actions to streamline any image or video production
 
 ![](docs/static/img/screenshots/2023-09-29-22-35-25.png)
 
 <p align="center">
-![](docs/static/img/screenshots/2023-09-29-22-37-47.png)
   <img alt="Light" src="./docs/static/img/screenshots/2023-09-29-22-37-47.png" width="45%">
 &nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="./docs/static/img/screenshots/2023-09-29-22-37-47.png" width="45%">
+  <img alt="Dark" src="./docs/static/img/screenshots/2023-09-30-08-40-13.png" width="45%">
 </p>
 
 1. define your own UI

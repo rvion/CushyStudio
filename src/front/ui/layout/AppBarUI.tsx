@@ -83,8 +83,9 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                     <div>loading schema</div>
                 </div>
             )}
-            <a className='ml-auto' href='https://github.com/rvion/CushyStudio'>
-                github.com/rvion/CushyStudio
+            <a className='ml-auto flex' href='https://github.com/rvion/CushyStudio'>
+                <span className='material-symbols-outlined text-yellow-600'>star</span>
+                <span className='underline text-blue-300'>github.com/rvion/CushyStudio</span>
             </a>
         </div>
     )
