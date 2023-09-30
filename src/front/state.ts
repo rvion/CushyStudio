@@ -53,7 +53,6 @@ export class STATE {
 
     // paths
     cacheFolderPath: AbsolutePath
-    vscodeSettings: AbsolutePath
     comfyJSONPath: AbsolutePath
     embeddingsPath: AbsolutePath
     nodesTSPath: AbsolutePath
@@ -132,7 +131,6 @@ export class STATE {
         this.db = new LiveDB(this)
         this.codePrettier = new CodePrettier(this)
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('.cushy/cache'))
-        this.vscodeSettings = this.resolve(this.rootPath, asRelativePath('.vscode/settings.json'))
         this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('.cushy/nodes.json'))
         this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('.cushy/embeddings.json'))
         this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('global.d.ts'))
@@ -347,6 +345,7 @@ export class STATE {
             const headers: HeadersInit = { 'Content-Type': 'application/json' }
             const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
             const object_info_json = (await object_info_res.json()) as { [key: string]: any }
+
             const knownNodeNames = Object.keys(object_info_json)
             console.info(`[🐱] CONFY: [.... step 1/4] found ${knownNodeNames.length} nodes`) // (${JSON.stringify(keys)})
             schema$ = object_info_json as any
