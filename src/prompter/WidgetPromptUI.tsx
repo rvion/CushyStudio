@@ -10,12 +10,12 @@ import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
 import { TreeView } from '@lexical/react/LexicalTreeView'
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../../../../front/FrontStateCtx'
-import { wildcards } from '../../../../wildcards/wildcards'
-import { useDraft } from '../../useDraft'
+import { useSt } from '../front/FrontStateCtx'
+import { wildcards } from '../wildcards/wildcards'
+import { useDraft } from '../front/ui/useDraft'
 import { CushyCompletionPlugin } from './CushyCompletionPlugin'
 import { CushyDebugPlugin, getFinalJSON } from './CushyDebugPlugin'
-import theme from './WidgetLexicalTheme'
+import theme from './theme/WidgetLexicalTheme'
 import { $createBooruNode, BooruNode } from './_BooruNode'
 import { $createEmbeddingNode, EmbeddingNode } from './_EmbeddingNode'
 import { $createLoraNode, LoraNode } from './_LoraNode'
@@ -98,6 +98,7 @@ export const EditorUI = observer((p: EditorProps) => {
         nodes: [EmbeddingNode, LoraNode, WildcardNode, BooruNode],
         editorState: () => {
             console.log('[💬] LEXICAL: mounting lexical widget')
+            console.log('[💬] LEXICAL: initial value is', p.get())
             $getRoot().append($createParagraphNode().append($createTextNode(p.get())))
             // $getRoot().append($createTextNode(p.get()))
             // const root = $getRoot()

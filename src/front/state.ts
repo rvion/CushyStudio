@@ -27,7 +27,7 @@ import { JsonFile } from '../core/JsonFile'
 import { GraphL } from '../models/Graph'
 import { LiveDB } from '../db/LiveDB'
 import { UIAction } from './UIAction'
-import { DanbooruTags } from './ui/widgets/lexical/BooruLoader'
+import { DanbooruTags } from '../booru/BooruLoader'
 
 export class STATE {
     //file utils that need to be setup first because

@@ -13,8 +13,8 @@ action('Prompt-V1', {
         // prompt
         positive: form.strOpt({ textarea: true }),
         negative: form.strOpt({ textarea: true }),
-        cfg: form.int({ default: 8 }),
-        sampler_name: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m' }),
+        CFG: form.int({ default: 8 }),
+        sampler: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m' }),
         scheduler: form.enum({ enumName: 'Enum_KSampler_Scheduler', default: 'simple' }),
         denoise: form.float({ default: 1 }),
         loras: form.loras({}),
@@ -105,11 +105,11 @@ action('Prompt-V1', {
             model,
             positive: positive,
             negative: negative,
-            sampler_name: p.sampler_name ?? 'dpmpp_2m',
+            sampler_name: p.sampler ?? 'dpmpp_2m',
             scheduler: p.scheduler ?? 'simple',
             denoise: p.denoise ?? undefined,
             steps: p.steps,
-            cfg: p.cfg,
+            cfg: p.CFG,
         })
 
         // HIGHRES FIX
