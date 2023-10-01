@@ -59,15 +59,18 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
 
             <div>version {st.updater.ready ? st.updater.currentVersion : <Loader />}</div>
             {st.updater.updateAvailable ? (
-                <Message type='warning' header='UDPATE AVAILABLE'>
-                    version {st.updater.nextVersion}
-                    <Button
-                        onClick={async () => {
-                            await st.updater.updateToLastCommitAvailable()
-                            window.location.reload()
-                        }}
-                    ></Button>
-                </Message>
+                <Button
+                    className='animate-pulse'
+                    color='orange'
+                    appearance='primary'
+                    startIcon={<span className='material-symbols-outlined'>update</span>}
+                    onClick={async () => {
+                        await st.updater.updateToLastCommitAvailable()
+                        window.location.reload()
+                    }}
+                >
+                    UPDATE to version {st.updater.nextVersion}
+                </Button>
             ) : (
                 <span className='material-symbols-outlined'>check_circle</span>
             )}
