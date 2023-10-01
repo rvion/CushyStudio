@@ -400,7 +400,7 @@ export class STATE {
     // images: ImageT[] = []
     // imagesById: Map<ImageID, ImageT> = new Map()
     get imageReversed(): ImageL[] {
-        return this.db.images.values.filter((x) => x.data.folderID == null)
+        return this.db.images.values.filter((x) => x.data.folderID == null).reverse()
     }
 
     createFolder = () => {
