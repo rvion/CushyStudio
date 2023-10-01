@@ -135,7 +135,7 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
             <CushyCompletionPlugin
                 trigger='@'
                 getValues={() => st.schema.getLoras()}
-                describeValue={(t) => ({ title: t, keywords: [t] })}
+                describeValue={(t) => ({ title: t.replaceAll('\\', '/').replace('.safetensors', ''), keywords: [t] })}
                 createNode={(t) => $createLoraNode(t)}
             />
 
