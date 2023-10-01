@@ -50,7 +50,7 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
         <>
             {/* right click logic 👇 */}
             <Whisper
-                placement='bottomStart'
+                placement='auto'
                 trigger='contextMenu'
                 speaker={(...props) => renderSpeaker(st, image, ...props)}
                 //
@@ -111,11 +111,11 @@ const renderSpeaker = (
         <Popover ref={ref} className={className} style={{ left, top }} full>
             <Dropdown.Menu onSelect={handleSelect}>
                 <Dropdown.Item eventKey={4}>Paint</Dropdown.Item>
-                <Dropdown.Menu title='Edit'>
+                {/* <Dropdown.Menu title='Edit'>
                     <Dropdown.Item eventKey={1}>New File</Dropdown.Item>
                     <Dropdown.Item eventKey={2}>New File with Current Profile</Dropdown.Item>
-                </Dropdown.Menu>
-                <Dropdown.Item eventKey={3}>Start Flow from this</Dropdown.Item>
+                </Dropdown.Menu> */}
+                {/* <Dropdown.Item eventKey={3}>Start Flow from this</Dropdown.Item> */}
                 {/* <Dropdown.Item eventKey={4}>Export PDF</Dropdown.Item>
                 <Dropdown.Item eventKey={5}>Export HTML</Dropdown.Item>
                 <Dropdown.Item eventKey={6}>Settings</Dropdown.Item>
