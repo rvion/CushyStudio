@@ -91,7 +91,7 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
             const paragraph = $createParagraphNode()
             for (const x of initialValue.tokens) {
                 if (x.type === 'booru') paragraph.append($createBooruNode(x.tag))
-                else if (x.type === 'lora') paragraph.append($createLoraNode(x.loraName))
+                else if (x.type === 'lora') paragraph.append($createLoraNode(x.loraDef))
                 else if (x.type === 'wildcard') paragraph.append($createWildcardNode(x.payload))
                 else if (x.type === 'embedding') paragraph.append($createEmbeddingNode(x.embeddingName))
                 else if (x.type === 'text') paragraph.append($createTextNode(x.text))
@@ -136,7 +136,9 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
                 trigger='@'
                 getValues={() => st.schema.getLoras()}
                 describeValue={(t) => ({ title: t.replaceAll('\\', '/').replace('.safetensors', ''), keywords: [t] })}
-                createNode={(t) => $createLoraNode(t)}
+                createNode={(t) => {
+                    return $createLoraNode({ name: t, strength_clip: 1, strength_model: 1 })
+                }}
             />
 
             <CushyCompletionPlugin

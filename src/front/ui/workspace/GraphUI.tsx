@@ -78,7 +78,7 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                                       graph.update({ focusedDraftID: draft.id })
                                   }}
                               >
-                                  {draft.data.title}
+                                  {draft.data.title || 'Untitled'}
                                   {/* {draft.tool.item.name} */}
                               </Button>
                           ))

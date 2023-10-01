@@ -83,9 +83,9 @@ action('Prompt-V1', {
                     clipAndModel = graph.LoraLoader({
                         model: clipAndModel,
                         clip: clipAndModel,
-                        lora_name: tok.loraName,
-                        strength_clip: /*lora.strength_clip ??*/ 1.0,
-                        strength_model: /*lora.strength_model ??*/ 1.0,
+                        lora_name: tok.loraDef.name,
+                        strength_clip: tok.loraDef.strength_clip,
+                        strength_model: tok.loraDef.strength_model,
                     })
                 }
             }

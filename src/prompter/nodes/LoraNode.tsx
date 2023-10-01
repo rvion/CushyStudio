@@ -1,18 +1,19 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
+import { observable, toJS } from 'mobx'
+import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
+import { IconButton, Input, Popover, Whisper } from 'rsuite'
+import { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 
 export type LoraNodeJSON = SerializedLexicalNode & {
-    // strength_clip: number
-    // strength_model: number
-    loraName: Enum_LoraLoader_Lora_name
+    loraDef: SimplifiedLoraDef
     type: 'lora'
 }
 export class LoraNode extends DecoratorNode<ReactNode> {
-    constructor(
-        public loraName: Enum_LoraLoader_Lora_name,
-        key?: NodeKey,
-    ) {
+    loraDef: SimplifiedLoraDef
+    constructor(loraDef: SimplifiedLoraDef, key?: NodeKey) {
         super(key)
+        this.loraDef = observable(loraDef)
     }
 
     static getType(): 'lora' {
@@ -20,23 +21,23 @@ export class LoraNode extends DecoratorNode<ReactNode> {
     }
 
     static clone(node: LoraNode): LoraNode {
-        return new LoraNode(node.loraName, node.__key)
+        return new LoraNode(node.loraDef, node.__key)
     }
 
     exportJSON(): LoraNodeJSON {
         return {
             type: LoraNode.getType(),
-            loraName: this.loraName,
+            loraDef: toJS(this.loraDef),
             version: 1,
         }
     }
 
     importJSON(json: LoraNodeJSON): LoraNode {
-        return new LoraNode(json.loraName)
+        return new LoraNode(json.loraDef)
     }
 
     static importJSON(json: LoraNodeJSON): LoraNode {
-        return new LoraNode(json.loraName)
+        return new LoraNode(json.loraDef)
     }
 
     isIsolated(): boolean { return true } // prettier-ignore
@@ -44,13 +45,59 @@ export class LoraNode extends DecoratorNode<ReactNode> {
     isKeyboardSelectable(): boolean { return true } // prettier-ignore
     createDOM(): HTMLElement { return document.createElement('span') } // prettier-ignore
     updateDOM(): false { return false } // prettier-ignore
-    decorate(): ReactNode { return <span className='bg-blue-800 mr-1'>{this.loraName}</span> } // prettier-ignore
+    decorate(): ReactNode {
+        return <LoraNodeUI node={this} />
+    }
 }
 
-export function $createLoraNode(loraName: Enum_LoraLoader_Lora_name): LoraNode {
-    return new LoraNode(loraName)
+export function $createLoraNode(loraDef: SimplifiedLoraDef): LoraNode {
+    return new LoraNode(loraDef)
 }
 
 export function $isLoraNode(node: LexicalNode | null | undefined): node is LoraNode {
     return node instanceof LoraNode
 }
+
+export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
+    const node = p.node
+    const def = node.loraDef
+    return (
+        <Whisper
+            enterable
+            placement='auto'
+            speaker={
+                <Popover>
+                    <div key={def.name} className='flex items-start'>
+                        <div className='shrink-0'>{def.name.replace('.safetensors', '')}</div>
+                        <div className='flex-grow'></div>
+                        <Input
+                            size='xs'
+                            type='number'
+                            value={def.strength_clip}
+                            step={0.1}
+                            onChange={(v) => (def.strength_clip = typeof v === 'number' ? v : parseFloat(v))}
+                            style={{ width: '3.5rem' }}
+                        />
+                        <Input
+                            size='xs'
+                            type='number'
+                            value={def.strength_model}
+                            step={0.1}
+                            onChange={(v) => (def.strength_model = typeof v === 'number' ? v : parseFloat(v))}
+                            style={{ width: '3.5rem' }}
+                        />
+                        <IconButton
+                            size='xs'
+                            icon={<span className='material-symbols-outlined'>delete_forever</span>}
+                            onClick={() => node.remove()}
+                        />
+                    </div>
+                </Popover>
+            }
+        >
+            <span className='bg-blue-800 mr-1'>
+                {def.name}:{def.strength_clip}:{def.strength_model}
+            </span>
+        </Whisper>
+    )
+})

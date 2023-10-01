@@ -56,7 +56,7 @@ export type PossibleSerializedNodes =
 
 const convertToSimpleJSON = (node: PossibleSerializedNodes): { type: string; value: string } => {
     if (node.type === 'booru') return { type: 'booru', value: node.tag.text }
-    if (node.type === 'lora') return { type: 'lora', value: node.loraName }
+    if (node.type === 'lora') return { type: 'lora', value: JSON.stringify(node.loraDef) }
     if (node.type === 'wildcard') return { type: 'wildcard', value: node.payload }
     if (node.type === 'embedding') return { type: 'embedding', value: node.embeddingName }
     if (node.type === 'text') return { type: 'text', value: node.text }
