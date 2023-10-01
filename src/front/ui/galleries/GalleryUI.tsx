@@ -3,7 +3,7 @@ import type { FolderL } from 'src/models/Folder'
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../../FrontStateCtx'
 import { GalleryFolderUI } from './GalleryFolderUI'
-import { ImageUI, PlaceholderImageUI } from './ImageUI'
+import { ImageUI } from './ImageUI'
 import { useImageDrop } from './dnd'
 
 export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
