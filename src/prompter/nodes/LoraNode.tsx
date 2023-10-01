@@ -76,7 +76,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                             value={def.strength_clip}
                             step={0.1}
                             onChange={(v) => (def.strength_clip = typeof v === 'number' ? v : parseFloat(v))}
-                            style={{ width: '3.5rem' }}
+                            style={{ width: '4.5rem' }}
                         />
                         <Input
                             size='xs'
@@ -84,7 +84,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                             value={def.strength_model}
                             step={0.1}
                             onChange={(v) => (def.strength_model = typeof v === 'number' ? v : parseFloat(v))}
-                            style={{ width: '3.5rem' }}
+                            style={{ width: '4.5rem' }}
                         />
                         <IconButton
                             size='xs'
