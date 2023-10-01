@@ -137,6 +137,7 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
                 getValues={() => st.schema.getLoras()}
                 describeValue={(t) => ({ title: t.replaceAll('\\', '/').replace('.safetensors', ''), keywords: [t] })}
                 createNode={(t) => {
+                    // console.log('🟢, picked', t)
                     return $createLoraNode({ name: t, strength_clip: 1, strength_model: 1 })
                 }}
             />
@@ -166,7 +167,9 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
             />
             <HistoryPlugin />
             {/* <CushyDebugPlugin /> */}
-            {/* <TreeViewPlugin /> */}
+            {/* <div className='flex-grow'>
+                <TreeViewPlugin />
+            </div> */}
             {/* <MyCustomAutoFocusPlugin /> */}
         </LexicalComposer>
     )
