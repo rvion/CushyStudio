@@ -6,7 +6,7 @@ import { useSt } from '../../FrontStateCtx'
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
     return (
-        <div className='bg-gray-950 mx-2 flex gap-1 items-center' style={{ borderBottom: '1px solid #383838' }}>
+        <div className='bg-gray-950 px-2 flex gap-1 items-center' style={{ borderBottom: '1px solid #383838' }}>
             <div className='text-green-400'>🛋️ CushyStudio</div>
 
             <Button
