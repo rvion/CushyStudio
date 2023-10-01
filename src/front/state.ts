@@ -28,6 +28,7 @@ import { GraphL } from '../models/Graph'
 import { LiveDB } from '../db/LiveDB'
 import { UIAction } from './UIAction'
 import { DanbooruTags } from '../booru/BooruLoader'
+import { Updater } from './updater'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -70,7 +71,13 @@ export class STATE {
     comfyStatus: Maybe<ComfyStatus> = null
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
 
-    // ui stuff
+    updateChecker = (() => {
+        const store = globalThis as any
+        setTimeout
+    })()
+
+    configFile: JsonFile<ConfigFile>
+    updater: Updater
     lightBox = new LightBoxState(() => this.db.images.values, false)
     hovered: Maybe<ImageL> = null
 
@@ -80,7 +87,6 @@ export class STATE {
     //     const startDraft = initialGraph.createDraft()
     //     initialGraph.update({ focusedDraftID: startDraft.id })
     // }
-    configFile: JsonFile<ConfigFile>
     startProjectV2 = () => {
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
@@ -134,6 +140,7 @@ export class STATE {
                 galleryImageSize: 48,
             }),
         })
+        this.updater = new Updater(this)
         // 1️⃣ if (opts.genTsConfig) this.createTSConfigIfMissing()
         // 1️⃣ if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
 

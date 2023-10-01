@@ -1,15 +1,15 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton, Loader } from 'rsuite'
+import { Button, IconButton, Loader, Message } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
     return (
-        <div className='bg-gray-950 px-2 flex gap-1 items-center' style={{ borderBottom: '1px solid #383838' }}>
+        <div className='bg-gray-950 p-2 flex gap-1 items-center' style={{ borderBottom: '1px solid #383838' }}>
             <div className='text-green-400'>🛋️ CushyStudio</div>
 
-            <Button
+            {/* <Button
                 //
                 appearance='subtle'
                 size='sm'
@@ -17,7 +17,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 onClick={() => st.createFolder()}
             >
                 Add folder
-            </Button>
+            </Button> */}
             <Button
                 appearance='subtle'
                 loading={Boolean(st.db.saveTimeout)}
@@ -42,28 +42,43 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 icon={st.showAllMessageReceived ? <I.InfoOutline /> : <I.EyeClose />}
                 onClick={() => (st.showAllMessageReceived = !st.showAllMessageReceived)}
             /> */}
-            <IconButton
+            <Button
                 //
                 size='sm'
                 appearance='subtle'
-                icon={<I.Reload />}
+                startIcon={<I.Reload />}
                 onClick={() => window.location.reload()}
-            />
+            >
+                Reload Schema
+            </Button>
             {/* <IconButton
                 size='sm'
                 appearance='subtle'
                 icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />}
             /> */}
-            <IconButton
+
+            <div>version {st.updater.currentVersion}</div>
+            {st.updater.updateAvailable ? (
+                <Message type='warning' header='UDPATE AVAILABLE'>
+                    version {st.updater.nextVersion}
+                </Message>
+            ) : (
+                <span className='material-symbols-outlined'>check_circle</span>
+            )}
+
+            <Button
                 //
                 size='sm'
                 appearance='subtle'
                 onClick={() => st.db.reset()}
-                icon={<I.Trash color='orange' />}
-            />
+                startIcon={<I.Trash color='orange' />}
+            >
+                Delete DB
+            </Button>
             {/* <Button startIcon={<I.AddOutline />} size='sm' className='self-start' onClick={() => st.startProject()}>
                 create project
             </Button> */}
+            <div className='flex-grow'></div>
             <Button
                 // startIcon={<I.AddOutline />}
                 size='sm'
@@ -74,7 +89,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                     window.require('electron').shell.openExternal(st.getServerHostHTTP())
                 }}
             >
-                Open ComfyUI in Web
+                ComfyUI Web
             </Button>
             {/* biegert/ComfyUI-CLIPSeg */}
             {st.schemaReady.done ? null : (
