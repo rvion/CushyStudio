@@ -135,23 +135,24 @@ export const CushyCompletionPlugin = <T extends any>(p: {
 
                 return anchorElementRef.current && options.length
                     ? ReactDOM.createPortal(
-                          <div className='typeahead-popover emoji-menu'>
-                              <ul>
+                          <div className='typeahead-popover emoji-menu '>
+                              <ul style={{ paddingInlineStart: 0 }}>
                                   {options.map((option: CompletionOption<T>, index) => (
-                                      <div key={option.key}>
-                                          <CompletionUI
-                                              index={index}
-                                              isSelected={selectedIndex === index}
-                                              onClick={() => {
-                                                  setHighlightedIndex(index)
-                                                  selectOptionAndCleanUp(option)
-                                              }}
-                                              onMouseEnter={() => {
-                                                  setHighlightedIndex(index)
-                                              }}
-                                              option={option}
-                                          />
-                                      </div>
+                                      //   <div >
+                                      <CompletionUI
+                                          key={option.key}
+                                          index={index}
+                                          isSelected={selectedIndex === index}
+                                          onClick={() => {
+                                              setHighlightedIndex(index)
+                                              selectOptionAndCleanUp(option)
+                                          }}
+                                          onMouseEnter={() => {
+                                              setHighlightedIndex(index)
+                                          }}
+                                          option={option}
+                                      />
+                                      //   </div>
                                   ))}
                               </ul>
                           </div>,
