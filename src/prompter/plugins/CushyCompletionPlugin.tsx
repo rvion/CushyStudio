@@ -1,7 +1,7 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { LexicalTypeaheadMenuPlugin, MenuOption, useBasicTypeaheadTriggerMatch } from '@lexical/react/LexicalTypeaheadMenuPlugin'
 import { $getSelection, $isRangeSelection, LexicalNode, TextNode } from 'lexical'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
 import * as ReactDOM from 'react-dom'
 import { useSt } from '../../front/FrontStateCtx'
 
@@ -68,7 +68,12 @@ export const CushyCompletionPlugin = <T extends any>(p: {
     //
     trigger: string
     getValues: () => Array<T>
-    describeValue: (value: T) => { title: string; keywords: string[] }
+    // icon: ReactNode
+    describeValue: (value: T) => {
+        // titleUI: ReactNode
+        title: string
+        keywords: string[]
+    }
     createNode: (value: T) => LexicalNode
 }) => {
     const st = useSt()

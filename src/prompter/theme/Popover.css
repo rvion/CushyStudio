@@ -16,7 +16,7 @@
     margin: 0;
     border-radius: 8px;
     max-height: 200px;
-    overflow-y: scroll
+    overflow-y: scroll;
 }
 
 .typeahead-popover ul::-webkit-scrollbar {
@@ -24,12 +24,13 @@
 }
 
 .typeahead-popover ul {
-    -ms-overflow-style: none;
+    /* -ms-overflow-style: none; */
     scrollbar-width: none
 }
 
 .typeahead-popover ul li {
     margin: 0;
+    word-break: break-word;
     min-width: 180px;
     font-size: 14px;
     outline: none;
