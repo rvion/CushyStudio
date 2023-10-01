@@ -16,7 +16,7 @@ export const MsgShowHTMLUI = observer(function MsgShowHTMLUI_(p: { html: Maybe<s
         const svg = x.item(0)
         if (svg == null) return console.log('no svg')
         svg.style.setProperty('max-height', '200px')
-    }, [ref])
+    }, [ref, p.html])
 
     return (
         <div
