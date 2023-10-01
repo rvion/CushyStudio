@@ -27,6 +27,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 if (k === 'form') return st.setAction({ type: 'form' })
                 if (k === 'paint') return st.setAction({ type: 'paint' })
                 if (k === 'config') return st.setAction({ type: 'config' })
+                if (k === 'iframe') return st.setAction({ type: 'iframe', url: 'https://civitai.com' })
             }}
             className='text-xl'
             appearance='tabs'
@@ -48,11 +49,12 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <Nav.Item eventKey='config'>
                 <MainNavEntryUI ix='4' icon={<I.Gear />} label='Config' />
             </Nav.Item>
-            {/* <Nav.Item eventKey='store'>
-                <MainNavEntryUI ix='5' icon={<span className='material-symbols-outlined'>extension</span>} label='More' />
-            </Nav.Item> */}
+            {/* CIVITAI */}
+            <Nav.Item eventKey='iframe'>
+                <MainNavEntryUI ix='5' icon={<I.Gear />} label='Civitai' />
+            </Nav.Item>
             <Nav.Item eventKey='cloud'>
-                <MainNavEntryUI ix='5' icon={<span className='material-symbols-outlined'>cloud</span>} label='GPU' />
+                <MainNavEntryUI ix='6' icon={<span className='material-symbols-outlined'>cloud</span>} label='GPU' />
             </Nav.Item>
         </Nav>
     )

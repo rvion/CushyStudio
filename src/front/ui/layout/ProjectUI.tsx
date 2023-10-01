@@ -37,6 +37,8 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                             <ComfyUIUI action={action} />
                         ) : action.type === 'form' ? (
                             <GraphUI graph={project.rootGraph.item} depth={1} />
+                        ) : action.type === 'iframe' ? (
+                            <iframe className='grow' src={action.url} frameBorder='0'></iframe>
                         ) : (
                             <PanelConfigUI action={action} />
                         )}
