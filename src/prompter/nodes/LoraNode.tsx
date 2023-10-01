@@ -73,17 +73,17 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                         <Input
                             size='xs'
                             type='number'
-                            value={def.strength_clip}
+                            value={def.strength_model}
                             step={0.1}
-                            onChange={(v) => (def.strength_clip = typeof v === 'number' ? v : parseFloat(v))}
+                            onChange={(v) => (def.strength_model = typeof v === 'number' ? v : parseFloat(v))}
                             style={{ width: '4.5rem' }}
                         />
                         <Input
                             size='xs'
                             type='number'
-                            value={def.strength_model}
+                            value={def.strength_clip}
                             step={0.1}
-                            onChange={(v) => (def.strength_model = typeof v === 'number' ? v : parseFloat(v))}
+                            onChange={(v) => (def.strength_clip = typeof v === 'number' ? v : parseFloat(v))}
                             style={{ width: '4.5rem' }}
                         />
                         <IconButton
@@ -96,7 +96,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
             }
         >
             <span className='bg-blue-800 mr-1'>
-                {def.name}:{def.strength_clip}:{def.strength_model}
+                {def.name}:{def.strength_model}:{def.strength_clip}
             </span>
         </Whisper>
     )
