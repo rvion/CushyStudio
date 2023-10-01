@@ -69,7 +69,7 @@ export class Updater {
     }
 
     getCommitCountForMaster(): Promise<number> {
-        return this.getCommitCountForBranch('master')
+        return this.getCommitCountForBranch('origin/master')
     }
 
     getCommitCountForBranch = (branch: string): Promise<number> => {
@@ -109,6 +109,7 @@ export class Updater {
             exec('git rev-parse HEAD', (error, stdout) => {
                 if (error) return reject(error)
                 this.currentCommit = stdout.trim()
+                console.log('[🚀] updater: current Commit is', this.currentCommit)
                 resolve(this.currentCommit)
             })
         })
