@@ -11,20 +11,23 @@ export class FormBuilder {
     promptOpt = (p: Omit<R.Requestable_promptOpt, 'type'>): R.Requestable_promptOpt => ({ type: 'prompt?', ...p })
 
     /** nums */
-    int = (p?: Omit<R.Requestable_int, 'type'>): R.Requestable_int => ({ type: 'int', ...p })
-    intOpt = (p?: Omit<R.Requestable_intOpt, 'type'>): R.Requestable_intOpt => ({ type: 'int?', ...p })
-    float = (p?: Omit<R.Requestable_float, 'type'>): R.Requestable_float => ({ type: 'float', ...p })
-    floatOpt = (p?: Omit<R.Requestable_floatOpt, 'type'>): R.Requestable_floatOpt => ({ type: 'float?', ...p })
+    int = (p: Omit<R.Requestable_int, 'type'>): R.Requestable_int => ({ type: 'int', ...p })
+    intOpt = (p: Omit<R.Requestable_intOpt, 'type'>): R.Requestable_intOpt => ({ type: 'int?', ...p })
+    float = (p: Omit<R.Requestable_float, 'type'>): R.Requestable_float => ({ type: 'float', ...p })
+    floatOpt = (p: Omit<R.Requestable_floatOpt, 'type'>): R.Requestable_floatOpt => ({ type: 'float?', ...p })
 
     /** bools */
-    bool = (p?: Omit<R.Requestable_bool, 'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })
-    boolOpt = (p?: Omit<R.Requestable_boolOpt, 'type'>) => ({ type: 'bool?' as const, ...p })
+    bool = (p: Omit<R.Requestable_bool, 'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })
+    boolOpt = (p: Omit<R.Requestable_boolOpt, 'type'>) => ({ type: 'bool?' as const, ...p })
 
     /** embedding */
     embeddings = (label?: string) => ({ type: 'embeddings' as const, label })
 
     /** embedding */
-    enum = <const T extends keyof LATER<'Requirable'>>(x: Omit<R.Requestable_enum<T>, 'type'>): R.Requestable_enum<T> => ({
+    enum = <const T extends keyof LATER<'Requirable'>>(
+        //
+        x: Omit<R.Requestable_enum<T>, 'type'>,
+    ): R.Requestable_enum<T> => ({
         type: 'enum',
         ...x,
     })
@@ -47,7 +50,6 @@ export class FormBuilder {
     })
     selectImage = (label: string): R.Requestable_selectImage => ({
         type: 'selectImage' as const,
-        // imageInfos: [], //imgs.map(toImageInfos),
         label,
     })
     manualMask = (label: string, img: ImageL | ImageT) => ({
@@ -60,18 +62,12 @@ export class FormBuilder {
     /** optional group */
     groupOpt = <const T extends { [key: string]: Requestable }>(
         p: Omit<R.Requestable_itemsOpt<T>, 'type'>,
-    ): R.Requestable_itemsOpt<T> => ({
-        type: 'itemsOpt',
-        ...p,
-    })
+    ): R.Requestable_itemsOpt<T> => ({ type: 'items?', ...p })
 
     // group
     group = <const T extends { [key: string]: Requestable }>(
         p: Omit<R.Requestable_items<T>, 'type'>,
-    ): R.Requestable_items<T> => ({
-        type: 'items',
-        ...p,
-    })
+    ): R.Requestable_items<T> => ({ type: 'items', ...p })
 
     /** select one */
     selectOne = <const T>(label: string, choices: T): { type: 'selectOne'; choices: T } => ({ type: 'selectOne', choices })

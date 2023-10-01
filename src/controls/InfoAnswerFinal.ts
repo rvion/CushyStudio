@@ -25,7 +25,7 @@ const getDefault = (request: Requestable): any => {
         return request.map(getDefault)
     }
     if (request instanceof BUG) return null
-    if (request.type === 'itemsOpt') {
+    if (request.type === 'items?') {
         const obj: any = {}
         for (const [key, req] of Object.entries(request.items)) {
             obj[key] = getDefault(req as Requestable)
@@ -79,7 +79,7 @@ export const finalizeAnswer_UNSAFE = (
         }
         if (request instanceof BUG) return
 
-        if (request.type === 'itemsOpt') {
+        if (request.type === 'items?') {
             if (answer == null) return
             if (!answer.__enabled__) return
             const entries = Object.entries(answer).filter((i) => i[0] !== '__enabled__')

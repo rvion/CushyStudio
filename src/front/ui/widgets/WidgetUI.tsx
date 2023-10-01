@@ -124,7 +124,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
 
     // group recursion
     if (req.type === 'items') return <WidgetItemsUI get={get} set={set} path={p.path} req={req} />
-    if (req.type === 'itemsOpt') return <WidgetItemsOptUI get={get} set={set} path={p.path} req={req} />
+    if (req.type === 'items?') return <WidgetItemsOptUI get={get} set={set} path={p.path} req={req} />
     if (req.type === 'bool') return <WidgetBoolUI get={get} set={set} optional={false} />
     if (req.type === 'bool?') return <WidgetBoolUI get={get} set={set} optional={true} />
     if (req.type === 'int') return <WidgetNumUI mode='int' get={get} set={set} def={def} />

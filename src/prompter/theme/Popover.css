@@ -73,9 +73,9 @@
     border-radius: 0 0 8px 8px
 }
 
-.typeahead-popover li:hover {
-    /* background-color: #eee */
-}
+/* .typeahead-popover li:hover {
+    background-color: #eee
+} */
 
 .typeahead-popover li .text {
     display: flex;

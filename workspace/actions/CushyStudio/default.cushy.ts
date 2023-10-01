@@ -17,7 +17,7 @@ action('Prompt-V1', {
         sampler: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m' }),
         scheduler: form.enum({ enumName: 'Enum_KSampler_Scheduler', default: 'simple' }),
         denoise: form.float({ default: 1 }),
-        loras: form.loras({}),
+        loras: form.loras({ default: [] }),
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
         clipSkip: form.int({
             label: 'Clip Skip',
@@ -26,7 +26,7 @@ action('Prompt-V1', {
         }),
         highResFix: form.groupOpt({
             items: {
-                scaleFactor: form.int({}),
+                scaleFactor: form.int({ default: 1 }),
                 steps: form.int({ default: 15 }),
                 denoise: form.float({ default: 0.5 }),
                 saveIntermediaryImage: form.bool({ default: true }),

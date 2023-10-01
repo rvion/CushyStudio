@@ -43,7 +43,7 @@ export type InfoAnswer<Req> =
 
     /** group */
     Req extends { type: 'items', items: { [key: string]: any } } ? { [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> } :
-    Req extends { type: 'itemsOpt', items: { [key: string]: any } } ? Maybe<{ [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> }> :
+    Req extends { type: 'items?', items: { [key: string]: any } } ? Maybe<{ [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> }> :
     /** select one */
     Req extends { type: 'selectOne', choices: infer T } ? (T extends readonly any[] ? T[number] : T) :
     Req extends { type: 'selectOneOrCustom', choices: string[] } ? string :
