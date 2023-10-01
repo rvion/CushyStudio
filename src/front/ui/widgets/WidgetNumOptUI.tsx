@@ -16,7 +16,7 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: {
         }
     })
     return (
-        <>
+        <div className='flex gap-1'>
             <Toggle
                 // size='sm'
                 checked={val != null}
@@ -58,6 +58,6 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: {
                     p.set(num)
                 }}
             />
-        </>
+        </div>
     )
 })

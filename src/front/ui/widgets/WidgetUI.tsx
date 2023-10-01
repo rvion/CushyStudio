@@ -25,6 +25,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: Requestable
     rootKey: string
     ix: number
+    vertical?: boolean
 }) {
     const { draft, rootKey, req, path, ix } = p
 
@@ -45,10 +46,20 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     return (
         <div
             // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
-            className='row gap-2 items-baseline'
+            className={
+                p.vertical //
+                    ? 'flex flex-col items-baseline'
+                    : 'flex flex-row gap-2 items-baseline'
+            }
             key={rootKey}
         >
-            <div className='w-20 min-w-max shrink-0 text-right'>
+            <div
+                className={
+                    p.vertical //
+                        ? 'min-w-max shrink-0'
+                        : 'min-w-max shrink-0 text-right'
+                }
+            >
                 {tooltip && (
                     <Whisper placement='topStart' speaker={<Tooltip>{tooltip}</Tooltip>}>
                         <I.InfoOutline className='mr-2 cursor-pointer' />

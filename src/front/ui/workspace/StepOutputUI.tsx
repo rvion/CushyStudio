@@ -46,7 +46,9 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
                 </div>
                 {/* <CustomNodeFlow /> 🔴 */}
                 {currNode && <ComfyNodeUI node={currNode} />}
-                <Panel className='flex flex-wrap'>{prompt?.images.map((img) => <ImageUI key={img.id} img={img} />)}</Panel>
+                <Panel>
+                    <div className='flex flex-wrap'>{prompt?.images.map((img) => <ImageUI key={img.id} img={img} />)}</div>
+                </Panel>
             </div>
         )
     }

@@ -11,6 +11,13 @@ action('Prompt-V1', {
         // prompt
         positive: form.promptOpt({}),
         negative: form.promptOpt({}),
+
+        // latent
+        startImage: form.selectImage({ group: 'latent' }),
+        width: form.int({ default: 1024, group: 'latent' }),
+        height: form.int({ default: 1024, group: 'latent' }),
+        batchSize: form.int({ default: 1, group: 'latent' }),
+
         //
         CFG: form.int({ default: 8, group: 'sampler' }),
         sampler: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
@@ -18,12 +25,6 @@ action('Prompt-V1', {
         denoise: form.float({ default: 1, group: 'sampler' }),
         steps: form.int({ default: 20, group: 'sampler' }),
         seed: form.intOpt({ group: 'sampler' }),
-
-        //
-        startImage: form.selectImage({ group: 'latent' }),
-        width: form.int({ default: 1024, group: 'latent' }),
-        height: form.int({ default: 1024, group: 'latent' }),
-        batchSize: form.int({ default: 1, group: 'latent' }),
 
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
         clipSkip: form.int({

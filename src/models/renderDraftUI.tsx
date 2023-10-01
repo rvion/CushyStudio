@@ -6,7 +6,7 @@ import { WidgetWithLabelUI } from '../front/ui/widgets/WidgetUI'
 import { Panel } from 'rsuite'
 
 type BlockInput = { type: 'input'; key: string; req: Requestable }
-type BlockGroup = { type: 'group'; children: BlockInput[] }
+type BlockGroup = { type: 'group'; children: BlockInput[]; title: string }
 type Block = BlockGroup | BlockInput
 
 // 🔴 todo: do this on recursively
@@ -19,7 +19,7 @@ export const renderToolUI = (draft: DraftL, tool: ToolL) => {
         const group = req.group
         if (group) {
             if (!blocksByGroup[group]) {
-                const blockGroup: BlockGroup = { type: 'group', children: [] }
+                const blockGroup: BlockGroup = { type: 'group', children: [], title: group }
                 blocksByGroup[group] = blockGroup
                 blocks.push(blockGroup)
             }
@@ -31,12 +31,13 @@ export const renderToolUI = (draft: DraftL, tool: ToolL) => {
     return blocks.map((block) => {
         if (block.type === 'group') {
             return (
-                <Panel className='m-2'>
-                    <div className='flex flex-wrap'>
+                <Panel className='m-2' bordered header={block.title}>
+                    <div className='flex flex-wrap gap-x-2'>
                         {block.children.map((input, ix) => {
                             return (
                                 <WidgetWithLabelUI //
                                     path={[input.key]} //🔴
+                                    vertical
                                     key={input.key}
                                     rootKey={input.key}
                                     req={input.req}

@@ -23,21 +23,24 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
         if (p.optional) x.unshift({ label: 'none', value: null })
         return x
     }, [schema, p.optional])
+
     return (
-        <SelectPicker //
-            size='sm'
-            cleanable={Boolean(p.optional)}
-            // appearance='subtle'
-            // defaultOpen={p.autofocus}
-            data={options}
-            value={p.get() ?? null}
-            onChange={(e) => {
-                if (e == null) {
-                    if (p.optional) p.set(null)
-                    return
-                }
-                p.set(e)
-            }}
-        />
+        <>
+            <SelectPicker //
+                size='sm'
+                cleanable={Boolean(p.optional)}
+                // appearance='subtle'
+                // defaultOpen={p.autofocus}
+                data={options}
+                value={p.get() ?? null}
+                onChange={(e) => {
+                    if (e == null) {
+                        if (p.optional) p.set(null)
+                        return
+                    }
+                    p.set(e)
+                }}
+            />
+        </>
     )
 })

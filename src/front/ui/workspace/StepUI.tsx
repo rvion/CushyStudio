@@ -17,7 +17,7 @@ export const StepListUI = observer(function StepListUI_(p: {}) {
             <Panel header='Last Graph' collapsible defaultExpanded>
                 <MsgShowHTMLUI html={st.db.graphs.last()?.flowSummaryHTML} />
             </Panel>
-            <div className='flex flex-col flex-grow' style={{ overflow: 'auto' }}>
+            <div className='flex flex-col-reverse flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
                     <InView as='div' onChange={(inView, entry) => console.log('Inview:', inView)}>
                         <StepUI step={step} />
