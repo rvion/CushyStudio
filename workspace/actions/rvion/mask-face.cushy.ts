@@ -5,7 +5,7 @@ action('mask-face', {
     //     image: kk.IMAGE({}),
     // }),
     ui: (form) => ({
-        image: form.selectImage('image to mask'),
+        image: form.selectImage({ label: 'image to mask' }),
     }),
     run: async (flow, deps) => {
         const clothesMask = flow.nodes.MasqueradeMaskByText({

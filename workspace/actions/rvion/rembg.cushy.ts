@@ -4,7 +4,7 @@ action('remmg', {
     help: 'quick remove bg with one or many nodes',
     ui: (form) => ({
         // startImage
-        startImage: form.selectImage('Start image'),
+        startImage: form.selectImage({ label: 'Start image' }),
         withRemBG: form.groupOpt({ items: {} }),
         withABG: form.groupOpt({ items: {} }),
         withWAS: form.groupOpt({

@@ -8,18 +8,23 @@ action('Prompt-V1', {
             enumName: 'Enum_EfficientLoader_Ckpt_name',
             default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
         }),
-        startImage: form.selectImage('Start image'),
         // prompt
         positive: form.promptOpt({}),
         negative: form.promptOpt({}),
-        CFG: form.int({ default: 8 }),
-        sampler: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m', group: 'abc' }),
-        scheduler: form.enum({ enumName: 'Enum_KSampler_Scheduler', default: 'simple', group: 'abc' }),
-        denoise: form.float({ default: 1, group: 'gr2' }),
-        steps: form.int({ default: 20, group: 'gr2' }),
-        seed: form.intOpt({ group: 'gr3' }),
-        width: form.int({ default: 1024, group: 'gr4' }),
-        height: form.int({ default: 1024, group: 'gr4' }),
+        //
+        CFG: form.int({ default: 8, group: 'sampler' }),
+        sampler: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
+        scheduler: form.enum({ enumName: 'Enum_KSampler_Scheduler', default: 'karras', group: 'sampler' }),
+        denoise: form.float({ default: 1, group: 'sampler' }),
+        steps: form.int({ default: 20, group: 'sampler' }),
+        seed: form.intOpt({ group: 'sampler' }),
+
+        //
+        startImage: form.selectImage({ group: 'latent' }),
+        width: form.int({ default: 1024, group: 'latent' }),
+        height: form.int({ default: 1024, group: 'latent' }),
+        batchSize: form.int({ default: 1, group: 'latent' }),
+
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
         clipSkip: form.int({
             label: 'Clip Skip',
@@ -36,7 +41,6 @@ action('Prompt-V1', {
         }),
         batches: form.groupOpt({
             items: {
-                batchSize: form.int({ default: 1 }),
                 batchCount: form.int({ default: 1 }),
                 delayBetween: form.int({
                     tooltip: 'in ms',
@@ -141,7 +145,7 @@ action('Prompt-V1', {
                   vae,
               })
             : graph.EmptyLatentImage({
-                  batch_size: p.batches?.batchSize ?? 1,
+                  batch_size: p.batchSize ?? 1,
                   height: p.height,
                   width: p.width,
               })

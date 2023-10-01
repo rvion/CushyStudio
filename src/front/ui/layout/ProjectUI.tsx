@@ -44,8 +44,8 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                         )}
                     </Pane>
                     {/* GALLERIE */}
-                    <Pane minSize='100px' className='col' style={{ overflow: 'auto' }}>
-                        <b className='text-lg bg-blue-950 text-center'>GALLERY</b>
+                    <Pane minSize='100px' className='col' style={{ borderTop: '4px solid gray', overflow: 'auto' }}>
+                        {/* <b className='text-lg bg-blue-950 text-center'>GALLERY</b> */}
                         <GalleryUI />
                     </Pane>
                 </SplitPane>

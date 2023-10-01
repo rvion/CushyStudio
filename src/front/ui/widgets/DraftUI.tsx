@@ -73,7 +73,9 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                             )
                         })} */}
                     </form>
-                    <TabUI>
+                    <TabUI title='Debug:'>
+                        <div>no</div>
+                        <div></div>
                         <div>result</div>
                         <JSONHighlightedCodeUI code={JSON.stringify(draft.finalJSON, null, 4)} />
                         <div>form</div>

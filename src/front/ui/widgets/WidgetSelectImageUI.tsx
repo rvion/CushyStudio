@@ -21,7 +21,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     return (
         <div>
             <div className='flex gap-2 flex-row '>
-                <div ref={dropRef} className='flex gap-2 bg-gray-900 rounded p-1 self-center' style={dropStyle}>
+                <div ref={dropRef} className='flex gap-2 bg-yellow-900 rounded p-1 self-center' style={dropStyle}>
                     {/* {infos.map((info) => {
                     const url = info.comfyURL
                     return (

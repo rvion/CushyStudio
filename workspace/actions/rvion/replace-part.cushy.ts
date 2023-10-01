@@ -9,9 +9,9 @@ action('🎭 replace', {
         }),
         query: form.str({ default: 'face' }),
         replacement: form.str({ default: 'orc face' }),
-        image: form.selectImage('test'),
+        image: form.selectImage({ label: 'test' }),
         norm: form.bool({ label: 'normalize', default: true }),
-        threeshold: form.int({ default: 2 }),
+        threeshold: form.float({ default: 0.2 }),
     }),
     run: async (flow, reqs) => {
         const image = await flow.loadImageAnswer(reqs.image)
@@ -20,16 +20,16 @@ action('🎭 replace', {
             prompt: reqs.query,
             negative_prompt: reqs.query,
             normalize: reqs.norm ? 'yes' : 'no',
-            precision: reqs.threeshold / 10,
+            precision: reqs.threeshold,
         })
 
+        const inpaintingModel = flow.nodes.CheckpointLoaderSimple({ ckpt_name: reqs.inpainting })
         const maskedLatent2 = flow.nodes.VAEEncodeForInpaint({
             mask: (m) => m.MasqueradeImageToMask({ image: clothesMask.IMAGE, method: 'intensity' }),
             pixels: image,
-            vae: flow.AUTO,
+            vae: inpaintingModel.VAE,
             grow_mask_by: 0,
         })
-        const inpaintingModel = flow.nodes.CheckpointLoaderSimple({ ckpt_name: reqs.inpainting })
         const sampler = flow.nodes.KSampler({
             seed: flow.randomSeed(),
             steps: 30,

@@ -3,6 +3,7 @@ import type { Requestable } from 'src/controls/InfoRequest'
 import type { DraftL } from './Draft'
 
 import { WidgetWithLabelUI } from '../front/ui/widgets/WidgetUI'
+import { Panel } from 'rsuite'
 
 type BlockInput = { type: 'input'; key: string; req: Requestable }
 type BlockGroup = { type: 'group'; children: BlockInput[] }
@@ -30,20 +31,22 @@ export const renderToolUI = (draft: DraftL, tool: ToolL) => {
     return blocks.map((block) => {
         if (block.type === 'group') {
             return (
-                <div className='flex flex-wrap'>
-                    {block.children.map((input, ix) => {
-                        return (
-                            <WidgetWithLabelUI //
-                                path={[input.key]} //🔴
-                                key={input.key}
-                                rootKey={input.key}
-                                req={input.req}
-                                ix={ix}
-                                draft={draft}
-                            />
-                        )
-                    })}
-                </div>
+                <Panel className='m-2'>
+                    <div className='flex flex-wrap'>
+                        {block.children.map((input, ix) => {
+                            return (
+                                <WidgetWithLabelUI //
+                                    path={[input.key]} //🔴
+                                    key={input.key}
+                                    rootKey={input.key}
+                                    req={input.req}
+                                    ix={ix}
+                                    draft={draft}
+                                />
+                            )
+                        })}
+                    </div>
+                </Panel>
             )
         } else if (block.type === 'input') {
             return (
