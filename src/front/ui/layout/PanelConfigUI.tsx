@@ -73,7 +73,7 @@ export const PanelConfigUI = observer(function PanelConfigUI_(p: { action: UIAct
                             min={0.5}
                             onChange={(v) =>
                                 config.update({
-                                    galleryImageSize:
+                                    checkUpdateEveryMinutes:
                                         typeof v === 'string' //
                                             ? parseFloat(v)
                                             : typeof v === 'number'
