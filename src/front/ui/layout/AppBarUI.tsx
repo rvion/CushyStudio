@@ -57,10 +57,16 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />}
             /> */}
 
-            <div>version {st.updater.currentVersion}</div>
+            <div>version {st.updater.ready ? st.updater.currentVersion : <Loader />}</div>
             {st.updater.updateAvailable ? (
                 <Message type='warning' header='UDPATE AVAILABLE'>
                     version {st.updater.nextVersion}
+                    <Button
+                        onClick={async () => {
+                            await st.updater.updateToLastCommitAvailable()
+                            window.location.reload()
+                        }}
+                    ></Button>
                 </Message>
             ) : (
                 <span className='material-symbols-outlined'>check_circle</span>
