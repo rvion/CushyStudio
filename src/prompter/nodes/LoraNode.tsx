@@ -1,4 +1,5 @@
-import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { $getRoot, DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { observable, toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
@@ -60,6 +61,7 @@ export function $isLoraNode(node: LexicalNode | null | undefined): node is LoraN
 
 export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
     const node = p.node
+    const [editor] = useLexicalComposerContext()
     const def = node.loraDef
     return (
         <Whisper
@@ -89,7 +91,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                         <IconButton
                             size='xs'
                             icon={<span className='material-symbols-outlined'>delete_forever</span>}
-                            onClick={() => node.remove()}
+                            onClick={() => editor.update(() => node.remove())}
                         />
                     </div>
                 </Popover>
