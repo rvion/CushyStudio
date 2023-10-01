@@ -18,24 +18,26 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
     const formDefinition = tool?.data.form ?? {}
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <div className='flex'>
-                <Input
-                    onChange={(v) => draft.update({ title: v })}
-                    size='sm'
-                    placeholder='preset title'
-                    value={draft.data.title ?? ''}
-                />
-                <Button
-                    size='sm'
-                    className='self-start'
-                    color='green'
-                    appearance='ghost'
-                    startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
-                    onClick={() => draft.start()}
-                >
-                    Run
-                </Button>
-            </div>
+            <Panel>
+                <div className='flex p-2'>
+                    <Input
+                        onChange={(v) => draft.update({ title: v })}
+                        size='sm'
+                        placeholder='preset title'
+                        value={draft.data.title ?? ''}
+                    />
+                    <Button
+                        size='sm'
+                        className='self-start'
+                        color='green'
+                        appearance='primary'
+                        startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
+                        onClick={() => draft.start()}
+                    >
+                        Run
+                    </Button>
+                </div>
+            </Panel>
             <ScrollablePaneUI className='flex-grow'>
                 <Panel>
                     <form
