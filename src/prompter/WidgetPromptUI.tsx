@@ -14,6 +14,7 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 
 // theme
 import theme from './theme/WidgetLexicalTheme'
+import './theme/Popover.css'
 
 // nodes
 import { $createEmbeddingNode, EmbeddingNode } from './nodes/EmbeddingNode'
