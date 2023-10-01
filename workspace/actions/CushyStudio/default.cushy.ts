@@ -7,6 +7,14 @@ action('Prompt-V1', {
         model: form.enum({
             enumName: 'Enum_EfficientLoader_Ckpt_name',
             default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
+            group: 'model',
+        }),
+        vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name', group: 'model' }),
+        clipSkip: form.int({
+            label: 'Clip Skip',
+            tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
+            default: 0,
+            group: 'model',
         }),
         // prompt
         positive: form.promptOpt({}),
@@ -26,12 +34,6 @@ action('Prompt-V1', {
         steps: form.int({ default: 20, group: 'sampler' }),
         seed: form.intOpt({ group: 'sampler' }),
 
-        vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
-        clipSkip: form.int({
-            label: 'Clip Skip',
-            tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
-            default: 0,
-        }),
         highResFix: form.groupOpt({
             items: {
                 scaleFactor: form.int({ default: 1 }),

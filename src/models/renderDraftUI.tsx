@@ -31,7 +31,7 @@ export const renderToolUI = (draft: DraftL, tool: ToolL) => {
     return blocks.map((block) => {
         if (block.type === 'group') {
             return (
-                <Panel className='m-2' bordered header={block.title}>
+                <Panel bordered header={<span className='text-gray-500 text-sm'>{block.title}</span>}>
                     <div className='flex flex-wrap gap-x-2'>
                         {block.children.map((input, ix) => {
                             return (

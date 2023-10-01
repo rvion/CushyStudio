@@ -19,7 +19,7 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
     const formDefinition = tool?.data.form ?? {}
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <Panel>
+            <div>
                 <div className='flex p-2'>
                     <Input
                         onChange={(v) => draft.update({ title: v })}
@@ -38,9 +38,9 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                         Run
                     </Button>
                 </div>
-            </Panel>
+            </div>
             <ScrollablePaneUI className='flex-grow'>
-                <Panel>
+                <div className='px-2'>
                     <form
                         onKeyUp={(ev) => {
                             // submit on meta+enter
@@ -83,7 +83,7 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                         <div>state</div>
                         <JSONHighlightedCodeUI code={JSON.stringify(draft.data.params, null, 4)} />
                     </TabUI>
-                </Panel>
+                </div>
             </ScrollablePaneUI>
         </draftContext.Provider>
     )
