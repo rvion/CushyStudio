@@ -9,7 +9,7 @@ export const MainNavEntryUI = observer(function UI_(p: { ix: string; icon: React
     return (
         <div className='flex flex-col'>
             <div className='flex items-center'>
-                <div className='text-sm pr-2 text-gray-500'>{p.ix}</div>
+                <div className='text-xs pr-1 text-gray-500'>{p.ix}</div>
                 <div>{p.icon}</div>
             </div>
             <div className='text-xs text-center text-gray-500'>{p.label}</div>
@@ -51,7 +51,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             </Nav.Item>
             {/* CIVITAI */}
             <Nav.Item eventKey='iframe'>
-                <MainNavEntryUI ix='5' icon={<I.Gear />} label='Civitai' />
+                <MainNavEntryUI ix='5' icon={<img width='25px' height='25px' src='/CivitaiLogo.png'></img>} label='Civitai' />
             </Nav.Item>
             <Nav.Item eventKey='cloud'>
                 <MainNavEntryUI ix='6' icon={<span className='material-symbols-outlined'>cloud</span>} label='GPU' />
