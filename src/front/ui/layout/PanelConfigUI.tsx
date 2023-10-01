@@ -67,6 +67,25 @@ export const PanelConfigUI = observer(function PanelConfigUI_(p: { action: UIAct
                             name='galleryImageSize'
                         />
                     </FieldUI>
+                    <FieldUI label='Check update every X minutes'>
+                        <Form.Control //
+                            value={config.value.checkUpdateEveryMinutes ?? 5}
+                            min={0.5}
+                            onChange={(v) =>
+                                config.update({
+                                    galleryImageSize:
+                                        typeof v === 'string' //
+                                            ? parseFloat(v)
+                                            : typeof v === 'number'
+                                            ? v
+                                            : 5,
+                                })
+                            }
+                            type='number'
+                            placeholder='48'
+                            name='galleryImageSize'
+                        />
+                    </FieldUI>
                 </Form>
                 <Message type='info' showIcon className='self-start'>
                     <div>path: {config.path}</div>
