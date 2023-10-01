@@ -1,4 +1,5 @@
 action('demo1-basic', {
+    // SOON !
     author: 'featherice',
     run: async ($) => {
         const ckpt = $.nodes.CheckpointLoaderSimple({ ckpt_name: 'albedobaseXL_v02.safetensors' })
