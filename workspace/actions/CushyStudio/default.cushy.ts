@@ -9,15 +9,17 @@ action('Prompt-V1', {
             default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
         }),
         startImage: form.selectImage('Start image'),
-        freeU: form.bool({ default: false }),
         // prompt
         positive: form.promptOpt({}),
         negative: form.promptOpt({}),
         CFG: form.int({ default: 8 }),
-        sampler: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m' }),
-        scheduler: form.enum({ enumName: 'Enum_KSampler_Scheduler', default: 'simple' }),
-        denoise: form.float({ default: 1 }),
-        loras: form.loras({ default: [] }),
+        sampler: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m', group: 'abc' }),
+        scheduler: form.enum({ enumName: 'Enum_KSampler_Scheduler', default: 'simple', group: 'abc' }),
+        denoise: form.float({ default: 1, group: 'gr2' }),
+        steps: form.int({ default: 20, group: 'gr2' }),
+        seed: form.intOpt({ group: 'gr3' }),
+        width: form.int({ default: 1024, group: 'gr4' }),
+        height: form.int({ default: 1024, group: 'gr4' }),
         vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name' }),
         clipSkip: form.int({
             label: 'Clip Skip',
@@ -42,16 +44,16 @@ action('Prompt-V1', {
                 }),
             },
         }),
-        seed: form.intOpt({}),
-        steps: form.int({ default: 20 }),
-        width: form.int({ default: 1024 }),
-        height: form.int({ default: 1024 }),
 
         // startImage
         removeBG: form.bool({ default: false }),
-        // extra: form.groupOpt({
-        //     items: { reversePrompt: form.bool({ default: false }) },
-        // }),
+        extra: form.groupOpt({
+            items: {
+                freeU: form.bool({ default: false }),
+                reverse: form.bool({ default: false }),
+                loras: form.loras({ default: [] }),
+            },
+        }),
     }),
     run: async (flow, p) => {
         const graph = flow.nodes
@@ -59,7 +61,7 @@ action('Prompt-V1', {
         // MODEL AND LORAS
         const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.model })
         let clipAndModel: HasSingle_CLIP & HasSingle_MODEL = ckpt
-        for (const lora of p.loras ?? []) {
+        for (const lora of p.extra?.loras ?? []) {
             clipAndModel = graph.LoraLoader({
                 model: clipAndModel,
                 clip: clipAndModel,
@@ -117,7 +119,7 @@ action('Prompt-V1', {
         // CLIP
         let clip = clipAndModel._CLIP
         let model: _MODEL = clipAndModel._MODEL
-        if (p.freeU) model = graph.FreeU({ model })
+        if (p.extra?.freeU) model = graph.FreeU({ model })
 
         if (p.clipSkip) {
             clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(p.clipSkip) }).CLIP

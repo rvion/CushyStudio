@@ -5,6 +5,7 @@ import { ImageAnswer, InfoAnswer } from './InfoAnswer'
 export type Tooltip = string
 export type InptReq<Type extends string, Def, Extra = {}> = {
     type: Type
+    group?: string
     label?: string
     tooltip?: string
     default: Def
@@ -13,6 +14,7 @@ export type InptReq<Type extends string, Def, Extra = {}> = {
 export type InptOpt<Type extends string, Def, Extra = {}> = {
     type: Type
     label?: string
+    group?: string
     tooltip?: string
     default?: Maybe<Def>
 } & Extra
@@ -83,9 +85,9 @@ export type Requestable =
     /** select many */
     | Requestable_selectMany
     | Requestable_selectManyOrCustom
-    /** array */
-    | Requestable[]
-    /** ?? */
-    | BUG
+/** array */
+// | Requestable[]
+/** ?? */
+// | BUG
 
-export class BUG {}
+// export class BUG {}

@@ -2,7 +2,7 @@ import type { InfoAnswer } from 'src/controls/InfoAnswer'
 import type { Requestable } from 'src/controls/InfoRequest'
 import type { ToolL } from '../models/Tool'
 
-import { BUG } from '../controls/InfoRequest'
+// import { BUG } from '../controls/InfoRequest'
 import { FormPath } from '../models/Step'
 import { ASSERT_ARRAY, ASSERT_EQUAL } from '../utils/bang'
 
@@ -24,7 +24,7 @@ const getDefault = (request: Requestable): any => {
     if (Array.isArray(request)) {
         return request.map(getDefault)
     }
-    if (request instanceof BUG) return null
+    // if (request instanceof BUG) return null
     if (request.type === 'items?') {
         const obj: any = {}
         for (const [key, req] of Object.entries(request.items)) {
@@ -77,7 +77,7 @@ export const finalizeAnswer_UNSAFE = (
             }
             return
         }
-        if (request instanceof BUG) return
+        // if (request instanceof BUG) return
 
         if (request.type === 'items?') {
             if (answer == null) return

@@ -6,6 +6,7 @@ import { TabUI } from '../layout/TabUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { draftContext } from '../useDraft'
 import { WidgetWithLabelUI } from './WidgetUI'
+import { renderToolUI } from '../../../models/renderDraftUI'
 
 /**
  * this is the root interraction widget
@@ -57,7 +58,9 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                             draft.start()
                         }}
                     >
-                        {Object.entries(formDefinition).map(([rootKey, req], ix) => {
+                        {/* ROOT */}
+                        {renderToolUI(draft, tool)}
+                        {/* {Object.entries(formDefinition).map(([rootKey, req], ix) => {
                             return (
                                 <WidgetWithLabelUI
                                     path={[rootKey]}
@@ -68,7 +71,7 @@ export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
                                     draft={draft}
                                 />
                             )
-                        })}
+                        })} */}
                     </form>
                     <TabUI>
                         <div>result</div>

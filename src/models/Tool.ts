@@ -25,6 +25,9 @@ export type ToolT = {
     focusedDraftID?: Maybe<DraftID> // 🔴
 }
 
+// export type ToolUIBlock =
+//     { type: 'group', children: ToolUIBlock[] }
+//     | { type: 'input', key: string, req: any }
 /** a thin wrapper around a single action somewhere in a .cushy.ts file */
 export interface ToolL extends LiveInstance<ToolT, ToolL> {}
 export class ToolL {

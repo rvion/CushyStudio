@@ -21,11 +21,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     return (
         <div>
             <div className='flex gap-2 flex-row '>
-                <div
-                    ref={dropRef}
-                    className='flex gap-2'
-                    style={{ border: '1px dashed red', width: '3rem', height: '3rem', ...dropStyle }}
-                >
+                <div ref={dropRef} className='flex gap-2 bg-gray-900 rounded p-1 self-center' style={dropStyle}>
                     {/* {infos.map((info) => {
                     const url = info.comfyURL
                     return (
@@ -50,7 +46,9 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                     {/* <LightBoxUI lbs={lbs} /> */}
                     {answer?.type === 'imageID' ? ( //
                         <ImageUI img={draft.db.images.getOrThrow(answer.imageID)} />
-                    ) : null}
+                    ) : (
+                        <span>drop image here</span>
+                    )}
                 </div>
                 <Button
                     //

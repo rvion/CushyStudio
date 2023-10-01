@@ -5,7 +5,6 @@ import { observer } from 'mobx-react-lite'
 import { Tooltip, Whisper } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
 import { FormPath } from 'src/models/Step'
-import { BUG } from '../../../controls/InfoRequest'
 import { exhaust } from '../../../utils/ComfyUtils'
 import { useDraft } from '../useDraft'
 import { WidgetBoolUI } from './WidgetBoolUI'
@@ -34,9 +33,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const fullPath = p.path.join('/')
     if (Array.isArray(req)) {
         label = rootKey
-    } else if (req instanceof BUG) {
-        label = '❌ BUG'
-        tooltip = '❌ BUG'
+        // } else if (req instanceof BUG) {
+        //     label = '❌ BUG'
+        //     tooltip = '❌ BUG'
     } else {
         label = req.label ?? rootKey
         tooltip = req.tooltip
@@ -77,44 +76,6 @@ export const WidgetUI = observer(function WidgetUI_(p: {
 }) {
     const draft = useDraft()
     const req = p.req
-
-    // forget next line, it's just to make the compiler happy somewhere else
-    if (req instanceof BUG) return <div>❌ BUG</div>
-
-    // array recursion
-    if (Array.isArray(req))
-        return (
-            <div>
-                {req.map((item, ix) => (
-                    <WidgetUI //
-                        focus={p.focus}
-                        path={[...p.path, ix]}
-                        req={item}
-                        key={ix}
-                    />
-                ))}
-            </div>
-        )
-
-    // group recursion
-    // if (req.type === 'items')
-    //     return (
-    //         <Panel collapsible title='Foo' header={'subgroup'}>
-    //             {Object.entries(req.items).map(([rootKey, req], ix) => (
-    //                 <div key={rootKey}>
-    //                     {/* <div>{i[0]}</div> */}
-    //                     <WidgetWithLabelUI //
-    //                         draft={draft}
-    //                         ix={ix}
-    //                         rootKey={rootKey}
-    //                         req={req as any}
-    //                         // focus={p.focus}
-    //                         // path={[...p.path, i[0]]}
-    //                     />
-    //                 </div>
-    //             ))}
-    //         </Panel>
-    //     )
 
     // primitives
     const get = () => draft.getAtPath(p.path)
