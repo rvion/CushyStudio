@@ -4,7 +4,7 @@ action('🎭 replace', {
     priority: 1,
     ui: (form) => ({
         inpainting: form.enum({
-            enumName: 'Enum_CheckpointLoaderSimple_Ckpt_name',
+            enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
             default: 'Deliberate-inpainting.safetensors',
         }),
         query: form.str({ default: 'face' }),
@@ -15,7 +15,7 @@ action('🎭 replace', {
     }),
     run: async (flow, reqs) => {
         const image = await flow.loadImageAnswer(reqs.image)
-        const clothesMask = flow.nodes.MasqueradeMaskByText({
+        const clothesMask = flow.nodes.Mask_By_Text({
             image: image,
             prompt: reqs.query,
             negative_prompt: reqs.query,
@@ -25,7 +25,7 @@ action('🎭 replace', {
 
         const inpaintingModel = flow.nodes.CheckpointLoaderSimple({ ckpt_name: reqs.inpainting })
         const maskedLatent2 = flow.nodes.VAEEncodeForInpaint({
-            mask: (m) => m.MasqueradeImageToMask({ image: clothesMask.IMAGE, method: 'intensity' }),
+            mask: (m) => m.Image_To_Mask({ image: clothesMask.IMAGE, method: 'intensity' }),
             pixels: image,
             vae: inpaintingModel.VAE,
             grow_mask_by: 0,

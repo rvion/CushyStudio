@@ -13,7 +13,7 @@ import { renderToolUI } from '../../../models/renderDraftUI'
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const DraftUI = observer(function StepUI_(p: { draft: DraftL }) {
+export const DraftUI = observer(function DraftUI_(p: { draft: DraftL }) {
     const draft = p.draft
     const tool = draft.tool.item
     const formDefinition = tool?.data.form ?? {}

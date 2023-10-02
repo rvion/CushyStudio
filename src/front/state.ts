@@ -29,6 +29,7 @@ import { LiveDB } from '../db/LiveDB'
 import { UIAction } from './UIAction'
 import { DanbooruTags } from '../booru/BooruLoader'
 import { Updater } from './updater'
+import { ComfyImporter } from '../importers/ImportComfyImage'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -113,7 +114,7 @@ export class STATE {
     tsFilesMap = new CushyFileWatcher(this)
     schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
-
+    importer: ComfyImporter
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
@@ -141,6 +142,7 @@ export class STATE {
             }),
         })
         this.updater = new Updater(this)
+        this.importer = new ComfyImporter(this)
         // 1️⃣ if (opts.genTsConfig) this.createTSConfigIfMissing()
         // 1️⃣ if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
 

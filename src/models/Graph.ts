@@ -77,7 +77,7 @@ export class GraphL {
         for (const [uid, node] of Object.entries(next.comfyPromptJSON)) {
             new ComfyNode(this, uid, node)
         }
-        console.log(`[📈] GRAPH: manually updated ${prevSize} => ${this.size}`)
+        // console.log(`[📈] GRAPH: manually updated ${prevSize} => ${this.size}`)
     }
 
     /** cytoscape instance to live update graph */

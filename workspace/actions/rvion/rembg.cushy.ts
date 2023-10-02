@@ -10,7 +10,7 @@ action('remmg', {
         withWAS: form.groupOpt({
             items: {
                 model: form.enum({
-                    enumName: 'Enum_WASImageRembgRemoveBackground_Model',
+                    enumName: 'Enum_Image_Rembg_$1Remove_Background$2_model',
                     default: 'u2net',
                 }),
             },
@@ -21,11 +21,11 @@ action('remmg', {
         const graph = flow.nodes
         const image = await flow.loadImageAnswer(p.startImage)
         // 4. options
-        if (p.withRemBG) graph.PreviewImage({ images: graph.ImageRemoveBackgroundRembg({ image }) })
-        if (p.withABG) graph.PreviewImage({ images: graph.RemoveImageBackgroundAbg({ image }) })
+        if (p.withRemBG) graph.PreviewImage({ images: graph.Image_Remove_Background_$1rembg$2({ image }) })
+        if (p.withABG) graph.PreviewImage({ images: graph.Remove_Image_Background_$1abg$2({ image }) })
         if (p.withWAS) {
             graph.PreviewImage({
-                images: graph.WASImageRembgRemoveBackground({
+                images: graph.Image_Rembg_$1Remove_Background$2({
                     //
                     images: image,
                     model: p.withWAS.model,

@@ -10,8 +10,9 @@ import { STATE } from 'src/front/state'
 type RuleInput = { nodeName: string; inputName: string; valueStr: string }
 
 export class ComfyImporter {
-    constructor(public client: STATE) {}
+    constructor(public st: STATE) {}
 
+    // -----------------------------------------------------------------------------
     // ATTRIBUTE TO IGNORE
     UI_ONLY_ATTRIBUTES = [
         //
@@ -35,8 +36,9 @@ export class ComfyImporter {
     knownAliaes: { [key: string]: string } = {
         LatentUpscaleBy: 'Latent Upscale by Factor (WAS)',
     }
+    // -----------------------------------------------------------------------------
 
-    naneDedupeCache: { [key: string]: number } = {}
+    nameDedupeCache: { [key: string]: number } = {}
 
     /** handles hygenic naming  */
 
@@ -54,11 +56,11 @@ export class ComfyImporter {
 
     private finalizeName = (rawName: string) => {
         const final = this.smartTrim(this.smartDownCase(rawName))
-        if (this.naneDedupeCache[final] == null) {
-            this.naneDedupeCache[final] = 1
+        if (this.nameDedupeCache[final] == null) {
+            this.nameDedupeCache[final] = 1
             return final
         } else {
-            return `${final}_${this.naneDedupeCache[final]++}`
+            return `${final}_${this.nameDedupeCache[final]++}`
         }
     }
 
@@ -118,12 +120,12 @@ export class ComfyImporter {
 
             generatedName.set(nodeID, varName)
             const schema: ComfyNodeSchema =
-                this.client.schema.nodesByNameInCushy[classType] ?? //
-                this.client.schema.nodesByNameInCushy[this.knownAliaes[classType]]
+                this.st.schema.nodesByNameInCushy[classType] ?? //
+                this.st.schema.nodesByNameInCushy[this.knownAliaes[classType]]
             if (schema == null) {
                 const msg = `schema not found for ${classType}`
                 console.error('🔥', msg)
-                console.error('🔥', `known schemas: ${Object.keys(this.client.schema.nodesByNameInCushy).join(', ')}`)
+                console.error('🔥', `known schemas: ${Object.keys(this.st.schema.nodesByNameInCushy).join(', ')}`)
                 throw new Error(msg)
             }
             let outoutIx = 0

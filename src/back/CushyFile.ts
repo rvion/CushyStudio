@@ -28,7 +28,7 @@ export class CushyFile {
 
         const actionsPool: { name: string; action: Action<FormDefinition> }[] = []
         const registerActionFn = (name: string, action: Action<any>): void => {
-            console.info(`[💙] TOOL: found script: "${name}" in file "${this.absPath}"`)
+            console.info(`[💙] TOOL: found action: "${name}"`, { path: this.absPath })
             actionsPool.push({ name, action })
         }
         const ProjectScriptFn = new Function('action', codeJS)

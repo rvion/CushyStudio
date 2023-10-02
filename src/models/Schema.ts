@@ -46,9 +46,9 @@ export class SchemaL {
         return []
     }
 
-    getLoras = (): Enum_LoraLoader_Lora_name[] => {
+    getLoras = (): Enum_LoraLoader_lora_name[] => {
         const candidates = this.knownEnumsByName.get('Enum_LoraLoader_Lora_name') ?? []
-        return candidates as Enum_LoraLoader_Lora_name[]
+        return candidates as Enum_LoraLoader_lora_name[]
     }
 
     getEnumOptionsForSelectPicker = (enumName: string) => {
@@ -86,6 +86,7 @@ export class SchemaL {
 
     /** on update is called automatically by live instances */
     onUpdate() {
+        this.log('updating schema')
         // reset spec
         // this.spec = this.data.spec
         // this.embeddings = this.data.embeddings
@@ -105,9 +106,9 @@ export class SchemaL {
             const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy)
             // prettier-ignore
             const nodeNameInCushy =
-                nodeDef.category.startsWith('WAS Suite/') ? `WAS${normalizedNodeNameInCushy}` :
-                nodeDef.category.startsWith('ImpactPack') ? `Impact${normalizedNodeNameInCushy}` :
-                nodeDef.category.startsWith('Masquerade Nodes') ? `Masquerade${normalizedNodeNameInCushy}` :
+                // nodeDef.category.startsWith('WAS Suite/') ? `WAS${normalizedNodeNameInCushy}` :
+                // nodeDef.category.startsWith('ImpactPack') ? `Impact${normalizedNodeNameInCushy}` :
+                // nodeDef.category.startsWith('Masquerade Nodes') ? `Masquerade${normalizedNodeNameInCushy}` :
                 normalizedNodeNameInCushy
             // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
 

@@ -11,6 +11,7 @@ export function getPngMetadataFromFile(file: File): Promise<TextChunks> {
     return new Promise<TextChunks>((resolve, reject) => {
         const reader = new FileReader()
         reader.onload = (event) => {
+            console.log('🟢', event)
             // A. ensure we properly loaded the file
             const res = event.target?.result
             if (res == null) {
@@ -26,11 +27,14 @@ export function getPngMetadataFromFile(file: File): Promise<TextChunks> {
 
             // C. Get the PNG data as a Uint8Array
             const pngData = new Uint8Array(res)
-            const result = getPngMetadata(pngData)
+            console.log(`🟢`, pngData)
+            const result = getPngMetadataFromUint8Array(pngData)
             if (result.type === 'failure') {
                 // 🔴 showErrorMessage(result.value)
+                console.log('🔴', result.value)
                 return reject(result.value)
             }
+            console.log('🟢', result.value)
             resolve(result.value)
         }
 
@@ -38,7 +42,7 @@ export function getPngMetadataFromFile(file: File): Promise<TextChunks> {
     })
 }
 
-export const getPngMetadata = (pngData: Uint8Array): Result<string, TextChunks> => {
+export const getPngMetadataFromUint8Array = (pngData: Uint8Array): Result<string, TextChunks> => {
     const dataView = new DataView(
         pngData.buffer,
         pngData.byteOffset, // <-- it just doesn't work without this

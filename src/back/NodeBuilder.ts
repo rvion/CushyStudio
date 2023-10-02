@@ -1,9 +1,7 @@
-import type { Runtime } from './Runtime'
 import type { LATER } from 'LATER'
 
-import { ComfyNode } from '../core/Node'
-import { nanoid } from 'nanoid'
 import { GraphL } from 'src/models/Graph'
+import { ComfyNode } from '../core/Node'
 
 export interface NodeBuilder extends LATER<'ComfySetup'> {}
 
@@ -15,9 +13,15 @@ export class NodeBuilder {
         // with propery object being defined on the client
         // to remove all this extra work
 
+        // console.log('🟢', schema.nodes.length, new Set(schema.nodes).size)
+        // console.log('🟢', schema.nodes.length, new Set(schema.nodes.map((i) => i.nameInCushy)).size)
+        // console.log('🟢', schema.nodes.length, new Set(schema.nodes.map((i) => i.nameInComfy)).size)
+
         // 🔴 remove this from here
         for (const node of schema.nodes) {
+            // console.log('🦊', JSON.stringify(node.nameInComfy))
             // console.log(`node: ${node.name}`)
+            try {
             Object.defineProperty(this, node.nameInCushy, {
                 value: (inputs: any) => {
                     const nthForGivenNode = this.nameCache.get(node.nameInCushy) ?? 0
@@ -30,6 +34,13 @@ export class NodeBuilder {
                     })
                 },
             })
+            } catch (e) {
+                /* ❌ */ console.log(e)
+                /* ❌ */ console.error('impossible to create builder for node')
+                /* ❌ */ console.log(`current:`, JSON.stringify(node.nameInComfy), JSON.stringify(node.nameInCushy))
+                /* ❌ */ const prev = schema.nodes.find((n) => n.nameInCushy === node.nameInCushy)!
+                /* ❌ */ console.log(`prev`, JSON.stringify(prev.nameInComfy), JSON.stringify(prev.nameInCushy))
+            }
         }
     }
 }

@@ -1,8 +1,5 @@
 // import { observer } from 'mobx-react-lite'
 // import { Modal } from 'rsuite'
-// import { useWorkspace } from '../ui/WorkspaceContext'
-// import { DropFileIndicatorUI } from './DropFileIndicatorUI'
-// import { ImportCandidateListUI } from './ImportCandidateListUI'
 
 // export const ImportWindowUI = observer(function ImportWindowUI_(p: {}) {
 //     const workspace = useWorkspace()

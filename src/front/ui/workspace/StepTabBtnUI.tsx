@@ -75,12 +75,3 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
         </Nav.Item>
     )
 })
-
-// export const StepUI = observer(function StepUI_(p: { step: StepL; depth: number }) {
-//     const step = p.step
-//     return (
-//         <div>
-//             <GraphUI graph={step.outputGraph.item} depth={p.depth} />
-//         </div>
-//     )
-// })

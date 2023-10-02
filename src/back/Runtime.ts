@@ -250,9 +250,9 @@ export class Runtime {
                     return this.nodes.LoadImage({ image: res.name as any })
                 }
                 console.log(img.data)
-                return this.nodes.WASImageLoad({
+                return this.nodes.Image_Load({
                     image_path: img.url ?? img.localAbsolutePath,
-                    RGBA: 'false',
+                    RGBA: false,
                 })
             }
             // if (ia.type === 'imageSignal') {

@@ -8,10 +8,9 @@ import { DraftUI } from '../widgets/DraftUI'
 import { Pane } from 'split-pane-react'
 import SplitPane from 'split-pane-react/esm/SplitPane'
 import { useProject } from '../../../front/ProjectCtx'
-import { GalleryUI } from '../galleries/GalleryUI'
-import { StepListUI } from './StepUI'
-import { ToolPickerUI } from './ToolPickerUI'
 import { SectionTitleUI } from './SectionTitle'
+import { StepListUI } from './StepUI'
+import { ActionPickerUI } from './ActionPickerUI'
 
 export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: number }) {
     const graph = p.graph
@@ -58,7 +57,7 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
             {/* 1. ACTION */}
             <Pane minSize='150px' className='col' style={{ overflow: 'auto', background: '120202' }}>
                 <SectionTitleUI label='ACTION' className='bg-red-950' />
-                <ToolPickerUI />
+                <ActionPickerUI />
             </Pane>
 
             {/* 2. DRAFTS  */}

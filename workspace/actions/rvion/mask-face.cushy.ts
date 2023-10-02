@@ -8,7 +8,7 @@ action('mask-face', {
         image: form.selectImage({ label: 'image to mask' }),
     }),
     run: async (flow, deps) => {
-        const clothesMask = flow.nodes.MasqueradeMaskByText({
+        const clothesMask = flow.nodes.Mask_By_Text({
             image: flow.AUTO,
             prompt: 'face',
             negative_prompt: 'arms, hands, legs, feet, background',

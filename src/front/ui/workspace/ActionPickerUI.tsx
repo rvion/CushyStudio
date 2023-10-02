@@ -1,11 +1,14 @@
 import { observer } from 'mobx-react-lite'
 import { IconButton, InputGroup, Message, Popover, SelectPicker, Whisper } from 'rsuite'
-import { useProject } from '../../../front/ProjectCtx'
+import { useProject } from '../../ProjectCtx'
 import { useSt } from '../../FrontStateCtx'
 import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
+import { TargetBox } from '../../../importers/TargetBox'
+import { PanelImport } from '../../../importers/ImportWidget'
+import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 
-export const ToolPickerUI = observer(function ToolPickerUI_(p: {
+export const ActionPickerUI = observer(function ToolPickerUI_(p: {
     //
     // draft: DraftL
 }) {
@@ -98,6 +101,31 @@ export const ToolPickerUI = observer(function ToolPickerUI_(p: {
             <Message showIcon className='m-2' type='info'>
                 Add yours now !
             </Message>
+            <IconButton startIcon={<span className='material-symbols-outlined'>cloud_download</span>} size='lg' className='m-1'>
+                Import
+            </IconButton>
+            <FooBarUI />
+            <PanelImport />
+        </div>
+    )
+})
+
+export const FooBarUI = observer(function FooBarUI_(p: {}) {
+    const [a, set] = useState<Maybe<string>>(() => null)
+    const st = useSt()
+    return (
+        <div>
+            <input
+                type='text'
+                defaultValue={''}
+                onChange={(e) => {
+                    const val = e.target.value
+                    const json = JSON.parse(val) as ComfyPromptJSON
+                    const code = st.importer.convertFlowToCode('test', json, { preserveId: false })
+                    set(code)
+                }}
+            />
+            {a && <TypescriptHighlightedCodeUI code={a} />}
         </div>
     )
 })

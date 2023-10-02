@@ -5,17 +5,18 @@ action('Prompt-V1', {
     ui: (form) => ({
         // load
         model: form.enum({
-            enumName: 'Enum_EfficientLoader_Ckpt_name',
+            enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
             default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
             group: 'model',
         }),
-        vae: form.enumOpt({ enumName: 'Enum_VAELoader_Vae_name', group: 'model' }),
+        vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'model' }),
         clipSkip: form.int({
             label: 'Clip Skip',
             tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
             default: 0,
             group: 'model',
         }),
+
         // prompt
         positive: form.promptOpt({}),
         negative: form.promptOpt({}),
@@ -28,8 +29,8 @@ action('Prompt-V1', {
 
         //
         CFG: form.int({ default: 8, group: 'sampler' }),
-        sampler: form.enum({ enumName: 'Enum_KSampler_Sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
-        scheduler: form.enum({ enumName: 'Enum_KSampler_Scheduler', default: 'karras', group: 'sampler' }),
+        sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
+        scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras', group: 'sampler' }),
         denoise: form.float({ default: 1, group: 'sampler' }),
         steps: form.int({ default: 20, group: 'sampler' }),
         seed: form.intOpt({ group: 'sampler' }),
@@ -209,7 +210,7 @@ action('Prompt-V1', {
 
         if (p.removeBG) {
             graph.SaveImage({
-                images: graph.WASImageRembgRemoveBackground({
+                images: graph.Image_Rembg_$1Remove_Background$2({
                     images: flow.AUTO,
                     model: 'u2net',
                     background_color: 'magenta',

@@ -28,10 +28,14 @@ export const renderToolUI = (draft: DraftL, tool: ToolL) => {
             blocks.push({ type: 'input', key: rootKey, req })
         }
     }
-    return blocks.map((block) => {
+    return blocks.map((block, ix) => {
         if (block.type === 'group') {
             return (
-                <Panel bordered header={<span className='text-gray-500 text-sm'>{block.title}</span>}>
+                <Panel
+                    key={`#block-${block.title}`}
+                    bordered
+                    header={<span className='text-gray-500 text-sm'>{block.title}</span>}
+                >
                     <div className='flex flex-wrap gap-x-2'>
                         {block.children.map((input, ix) => {
                             return (

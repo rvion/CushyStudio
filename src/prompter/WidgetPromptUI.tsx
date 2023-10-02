@@ -27,6 +27,7 @@ import { CushyDebugPlugin, PossibleSerializedNodes, getFinalJSON } from './plugi
 import { CushyCompletionPlugin } from './plugins/CushyCompletionPlugin'
 import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
 import { TreeViewPlugin } from './plugins/TreeViewPlugin'
+import { toJS } from 'mobx'
 
 // const theme = {
 //     // Theme styling goes here
@@ -78,7 +79,7 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
         editorState: () => {
             console.log('[💬] LEXICAL: mounting lexical widget')
             const initialValue: Maybe<WidgetPromptOutput> = p.get()
-            console.log('[💬] LEXICAL: initial value is', initialValue)
+            console.log('[💬] LEXICAL: initial value is', { initialValue: toJS(initialValue) })
 
             if (
                 typeof initialValue === 'string' || // legacy
