@@ -21,7 +21,7 @@ export type DraftT = {
     graphID: GraphID
 }
 
-/** a thin wrapper around a single Draft somewhere in a .cushy.ts file */
+/** a thin wrapper around a single Draft somewhere in a .ts file */
 export interface DraftL extends LiveInstance<DraftT, DraftL> {}
 export class DraftL {
     graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')

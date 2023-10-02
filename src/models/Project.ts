@@ -19,7 +19,7 @@ export type ProjectT = {
     // rootStepID: StepID
 }
 
-/** a thin wrapper around a single Project somewhere in a .cushy.ts file */
+/** a thin wrapper around a single Project somewhere in a .ts file */
 export interface ProjectL extends LiveInstance<ProjectT, ProjectL> {}
 export class ProjectL {
     rootGraph = new LiveRef<this, GraphL>(this, 'rootGraphID', 'graphs')

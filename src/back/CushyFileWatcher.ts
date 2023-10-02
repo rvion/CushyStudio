@@ -11,7 +11,7 @@ export class CushyFileWatcher {
     constructor(
         //
         public st: STATE,
-        public extensions: string = '.cushy.ts',
+        public extensions: string = '.ts',
     ) {
         // this.filesMap = new Map()
     }

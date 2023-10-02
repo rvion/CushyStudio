@@ -4,10 +4,4 @@ You can open this folder in cushy, and it will automatically load all the action
 
 You can add your own actions and submit them via PR
 
-please create a folder with your names, and max one subfolder
-
-e.g.
-
-```
-🟢 rvion/prompts/foo.cushy.ts
-```
+please create a folder with your names

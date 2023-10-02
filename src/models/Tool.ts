@@ -28,7 +28,7 @@ export type ToolT = {
 // export type ToolUIBlock =
 //     { type: 'group', children: ToolUIBlock[] }
 //     | { type: 'input', key: string, req: any }
-/** a thin wrapper around a single action somewhere in a .cushy.ts file */
+/** a thin wrapper around a single action somewhere in a .ts file */
 export interface ToolL extends LiveInstance<ToolT, ToolL> {}
 export class ToolL {
     get name() { return this.data.name } // prettier-ignore
