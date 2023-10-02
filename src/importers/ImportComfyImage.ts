@@ -103,7 +103,10 @@ export class ComfyImporter {
         const b = new CodeBuffer()
         const p = b.w
         const pi = b.append
-        p(`WORKFLOW('${title}', async ({graph, flow}) => {\n`)
+        p(`action('${title}', { `)
+        p(`author: '',\n`)
+        p(`run: async (flow, deps) => {\n`)
+        p(` const graph = flow.nodes\n`)
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 
@@ -162,6 +165,7 @@ export class ComfyImporter {
         }
 
         p('    await flow.PROMPT()')
+        p('}')
         p('})')
         // b.writeTS('./src/compiler/entry.ts')
         return b.content

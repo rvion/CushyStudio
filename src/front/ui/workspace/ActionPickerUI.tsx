@@ -101,9 +101,9 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {
             <Message showIcon className='m-2' type='info'>
                 Add yours now !
             </Message>
-            <IconButton startIcon={<span className='material-symbols-outlined'>cloud_download</span>} size='lg' className='m-1'>
+            {/* <IconButton startIcon={<span className='material-symbols-outlined'>cloud_download</span>} size='lg' className='m-1'>
                 Import
-            </IconButton>
+            </IconButton> */}
             <FooBarUI />
             <PanelImport />
         </div>

@@ -1,9 +1,14 @@
-import { readdirSync, statSync } from 'fs'
+import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
+import type { STATE } from 'src/front/state'
+import type { AbsolutePath } from '../utils/fs/BrandedPaths'
+
+import { readFileSync, readdirSync, statSync } from 'fs'
 import { join } from 'path'
-import { STATE } from 'src/front/state'
+import { LiteGraphJSON } from 'src/core/LiteGraph'
+import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
+import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { CushyFile } from './CushyFile'
-import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 
 export class CushyFileWatcher {
     filesMap = new Map<AbsolutePath, CushyFile>()
@@ -39,13 +44,62 @@ export class CushyFileWatcher {
             const stat = statSync(filePath)
             if (stat.isDirectory()) {
                 this._walk(filePath)
-            } else if (filePath.endsWith(this.extensions)) {
+            } else {
                 this.handleNewFile(filePath)
             }
         }
     }
 
     private handleNewFile = (filePath: string) => {
+        if (filePath.endsWith('.png')) {
+            console.log('🟢 found ', filePath)
+            const result = getPngMetadataFromUint8Array(readFileSync(filePath))
+            // const result = promise.value
+
+            if (result == null) {
+                console.log(`❌0. no metadata`)
+                return // <>loading...</>
+            }
+
+            if (result.type === 'failure') {
+                console.log(`❌1. metadata extraction failed`, result.value)
+                return
+            }
+            const metadata = result.value
+            const workflowStr = (metadata as { [key: string]: any }).workflow
+
+            if (workflowStr == null) {
+                console.log(metadata)
+                console.log(`❌2. no workflow in metadata`)
+                return
+            }
+            let workflowJSON: LiteGraphJSON
+            try {
+                workflowJSON = JSON.parse(workflowStr)
+            } catch (error) {
+                console.log(`❌3. workflow is not valid json`)
+                return
+            }
+            let promptJSON: ComfyPromptJSON
+            try {
+                console.groupCollapsed()
+                promptJSON = convertLiteGraphToPrompt(this.st.schema, workflowJSON)
+                console.groupEnd()
+            } catch (error) {
+                console.log(`❌4. cannot convert LiteGraph To Prompt`)
+                console.log(error)
+                return
+            }
+
+            try {
+                const code = this.st.importer.convertFlowToCode('test', promptJSON, { preserveId: false })
+                console.log(code)
+            } catch (e) {
+                console.log(e)
+                console.log('❌5. cannot convert prompt to code')
+            }
+        }
+
         if (!filePath.endsWith(this.extensions)) return
         // console.log(`found`)
         const absPath = asAbsolutePath(filePath)

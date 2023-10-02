@@ -56,6 +56,7 @@ export class STATE {
     comfyJSONPath: AbsolutePath
     embeddingsPath: AbsolutePath
     nodesTSPath: AbsolutePath
+    actionsFolderPath: AbsolutePath
     // cushyTSPath: AbsolutePath
     // tsConfigPath: AbsolutePath
     outputFolderPath: AbsolutePath
@@ -120,12 +121,15 @@ export class STATE {
         public rootPath: AbsolutePath,
     ) {
         console.log('[🗳️] starting web app')
-        this.db = new LiveDB(this)
+        const db = new LiveDB(this)
+        this.db = db
         this.codePrettier = new CodePrettier(this)
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
         this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/nodes.json'))
         this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('schema/embeddings.json'))
         this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
+        const actionsFolderPath = this.resolve(this.rootPath, asRelativePath('actions'))
+        this.actionsFolderPath = actionsFolderPath
         // this.cushyTSPath = this.resolve(this.rootPath, asRelativePath('.cushy/cushy.d.ts'))
         // this.tsConfigPath = this.resolve(this.rootPath, asRelativePath('tsconfig.json'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
@@ -142,17 +146,19 @@ export class STATE {
             }),
         })
         this.updater = new Updater(this)
+
         this.importer = new ComfyImporter(this)
         // 1️⃣ if (opts.genTsConfig) this.createTSConfigIfMissing()
         // 1️⃣ if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
-
-        Promise.all([
-            //
-            this.tsFilesMap.walk(this.rootPath),
-            this.schemaReady,
-        ]).then((_done) => {
-            if (this.db.projects.size === 0) this.startProjectV2()
-        })
+        ;(async () => {
+            await this.schemaReady
+            await this.tsFilesMap.walk(actionsFolderPath)
+            if (db.projects.size === 0) this.startProjectV2()
+        })()
+        // Promise.all([
+        //     //
+        // ]).then((_done) => {
+        // })
 
         this.ws = this.initWebsocket()
         // this.autoDiscoverEveryWorkflow()

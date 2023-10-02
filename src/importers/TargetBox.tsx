@@ -5,8 +5,8 @@ import { NativeTypes } from 'react-dnd-html5-backend'
 
 const style: CSSProperties = {
     border: '1px solid gray',
-    height: '15rem',
-    width: '15rem',
+    height: '8rem',
+    width: '8rem',
     padding: '2rem',
     textAlign: 'center',
 }
