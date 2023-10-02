@@ -33,7 +33,7 @@ export class DanbooruTags {
     private constructor() {
         if (DanbooruTags._instance) throw new Error('DanbooruTags is a singleton')
         DanbooruTags._instance = this
-        const resp = readFileSync('workspace/completions/danbooru.csv', 'utf-8')
+        const resp = readFileSync('completions/danbooru.csv', 'utf-8')
         const result = parse(resp, { delimiter: ',', header: false })
         if (result.errors.length > 0) console.warn(result.errors)
         // console.log('[🏷️] DanBooru:', result.data.length)
