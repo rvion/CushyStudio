@@ -47,7 +47,7 @@ export class SchemaL {
     }
 
     getLoras = (): Enum_LoraLoader_lora_name[] => {
-        const candidates = this.knownEnumsByName.get('Enum_LoraLoader_Lora_name') ?? []
+        const candidates = this.knownEnumsByName.get('Enum_LoraLoader_lora_name') ?? []
         return candidates as Enum_LoraLoader_lora_name[]
     }
 
@@ -267,7 +267,7 @@ export class SchemaL {
     }
 
     codegenDTS = (): string => {
-        const prefix = '../../src/'
+        const prefix = '../src/'
         const b = new CodeBuffer()
         const p = b.w
 
