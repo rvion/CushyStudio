@@ -49,7 +49,7 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {
                             style={{
                                 overflow: 'hidden',
                                 whiteSpace: 'nowrap',
-                                background: pj.activeTool.id === tool.id ? '#2a2a2a' : 'transparent',
+                                background: pj.activeTool.id === tool.id ? '#343e8d' : 'transparent',
                                 fontWeight: pj.activeTool.id === tool.id ? 'bold' : 'normal',
                             }}
                             // active={focusedDraft?.tool.id === tool.id}
@@ -87,10 +87,10 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {
                         grup = tool.data.owner
                         return (
                             <Fragment key={tool.id}>
-                                <div className='[background:#280606] flex gap-1'>
+                                <b className='flex gap-1' style={{ borderTop: '1px solid #444444' }}>
                                     <span className='material-symbols-outlined'>person_outline</span>
                                     {grup}
-                                </div>
+                                </b>
                                 {action}
                             </Fragment>
                         )

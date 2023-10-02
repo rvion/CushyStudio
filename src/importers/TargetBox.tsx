@@ -20,17 +20,17 @@ export const TargetBox = (props: { onDrop: (item: { files: any[] }) => void }) =
                 if (onDrop) onDrop(item)
             },
             canDrop(item: any) {
-                console.log('canDrop', item.files, item.items)
+                // console.log('canDrop', item.files, item.items)
                 return true
             },
             hover(item: any) {
-                console.log('hover', item.files, item.items)
+                // console.log('hover', item.files, item.items)
             },
             collect: (monitor: DropTargetMonitor) => {
-                const item = monitor.getItem() as any
-                if (item) {
-                    console.log('collect', item.files, item.items)
-                }
+                // const item = monitor.getItem() as any
+                // if (item) {
+                //     console.log('collect', item.files, item.items)
+                // }
 
                 return {
                     isOver: monitor.isOver(),

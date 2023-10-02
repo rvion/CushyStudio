@@ -10,10 +10,11 @@ export const convertLiteGraphToPrompt = (
     const prompt: ComfyPromptJSON = {}
 
     for (const node of workflow.nodes) {
+        console.log(`💎 node ${node.type}#${node.id}`)
         const n = workflow.nodes.find((n) => n.id === node.id)
 
         if (node.isVirtualNode) {
-            console.log('virtual node', node.id, 'skipped')
+            console.log(`    | [🔶 WARN] virtual node ${node.id}(${node.type}) skipped`)
             // Don't serialize frontend only nodes but let them make changes
             // ! if (node.applyToGraph) {
             // !     node.applyToGraph(workflow)
@@ -23,12 +24,18 @@ export const convertLiteGraphToPrompt = (
 
         // Don't serialize muted nodes
         if (node.mode === 2) {
-            console.log('muted node', node.id, 'skipped')
+            console.log(`    | [🔶 WARN] muted node ${node.id}(${node.type}) skipped`)
             continue
         }
 
         // Don't serialize reroute nodes
         if (node.type === 'Reroute') {
+            console.log(`    | [🔶 WARN] "Reroute" node ${node.id} skipped`)
+            continue
+        }
+        // Don't serialize Note nodes (those are like comments)
+        if (node.type === 'Note') {
+            console.log(`    | [🔶 WARN] "Note" node ${node.id} skipped`)
             continue
         }
 
@@ -38,10 +45,14 @@ export const convertLiteGraphToPrompt = (
         const viaInput = new Set((node?.inputs ?? []).map((i) => i.name))
         const nodeTypeName = node.type
         const nodeSchema: ComfyNodeSchema = schema.nodesByNameInComfy[nodeTypeName]
+        if (nodeSchema == null) throw new Error(`❌ node ${node.id}(${node.type}) has no schema`)
+        const nodeInputs = nodeSchema.inputs
+        if (nodeInputs == null) throw new Error(`❌ node ${node.id}(${node.type}) has no input`)
+
         let offset = 0
         for (const field of nodeSchema.inputs) {
             if (viaInput.has(field.nameInComfy)) {
-                console.log(`${field.nameInComfy}: viaInput`)
+                console.log(`    | .${field.nameInComfy} (viaInput)`)
                 continue
             }
             inputs[field.nameInComfy] = node.widgets_values[offset++]
@@ -66,22 +77,27 @@ export const convertLiteGraphToPrompt = (
         type ParentInfo = { node: LiteGraphNode; link: LiteGraphLink }
         const getParentNode = (linkId: LiteGraphLinkID): ParentInfo => {
             const link = workflow.links.find((link) => link[0] === linkId)
-            if (link == null) throw new Error(`Node ${node.id} references a non-existing link (id=${linkId}})`)
+            if (link == null) throw new Error(`Node ${node.id}(${node.type}) references a non-existing link (id=${linkId}})`)
             const parentId = link[1]
             const parentNode = workflow.nodes.find((n) => n.id === parentId)
             if (parentNode == null) throw new Error(`link ${linkId} references a non-existent parent node ${parentId}`)
             return { node: parentNode, link }
         }
 
-        for (const ipt of node?.inputs ?? []) {
+        INPT: for (const ipt of node?.inputs ?? []) {
             let parent: Maybe<ParentInfo> = null
             let max = 100
             while ((parent == null || parent.node.type === 'Reroute') && max-- > 0) {
-                if (parent != null) console.log('skipping reroute')
-                parent = getParentNode(parent?.node.inputs?.[0].link ?? ipt.link)
+                if (parent != null) console.log('    | skipping reroute')
+                const linkId = parent?.node.inputs?.[0].link ?? ipt.link
+                if (linkId == null) {
+                    console.log(`    | [🔶 WARN] node ${node.id}(${node.type}) has an empty input slot`)
+                    continue INPT
+                }
+                parent = getParentNode(linkId)
             }
             if (parent == null) throw new Error(`no parent found for ${node.id}.${ipt.name})`)
-            console.log('  -', String(parent.node.id), parent.link[2], parent.node.type)
+            console.log(`    | .${ipt.name}  (via LINK`, String(parent.node.id), parent.link[2], parent.node.type, ')')
             inputs[ipt.name] = [String(parent.node.id), parent.link[2]]
 
             // console.log('link', ipt.link, 'to', parentId, 'slot', link?.[2])
