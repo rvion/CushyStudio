@@ -3,17 +3,17 @@
 {
     "version": "2.0.0",
     "tasks": [
-        {
-            "label": "starts everything",
-            "dependsOn": [
-                // "⚛️ electron",
-                // "🛋️ vite",
-                "🛋️ Cushy",
-                "👁 TSC"
-            ],
-            "group": { "kind": "build", "isDefault": true },
-            "runOptions": { "runOn": "folderOpen", "instanceLimit": 1 }
-        },
+        // {
+        //     "label": "starts everything",
+        //     "dependsOn": [
+        //         // "⚛️ electron",
+        //         // "🛋️ vite",
+        //         "🛋️ Cushy",
+        //         "👁 TSC"
+        //     ],
+        //     "group": { "kind": "build", "isDefault": true },
+        //     "runOptions": { "runOn": "folderOpen", "instanceLimit": 1 }
+        // },
         {
             "label": "🛋️ Cushy",
             "detail": "start CushyStudio",
@@ -57,7 +57,8 @@
             "isBackground": true,
             "problemMatcher": "$tsc-watch",
             "presentation": { "reveal": "never" },
-            "group": "build",
+            // "group": "build",
+            "group": { "kind": "build", "isDefault": true },
             "runOptions": { "instanceLimit": 1 }
         }
     ]
