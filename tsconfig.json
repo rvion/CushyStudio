@@ -20,6 +20,6 @@
             "LATER": ["src/back/LATER.ts"]
         }
     },
-    "include": ["workspace/schema/global.d.ts", "src", "workspace/actions"],
+    "include": ["schema/global.d.ts", "src", "actions"],
     "exclude": []
 }

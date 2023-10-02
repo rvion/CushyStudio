@@ -1,16 +1,15 @@
-import { CushyUI } from './layout/AppUI'
-import { CustomProvider } from 'rsuite'
-import { useMemo } from 'react'
-import { STATE } from '../state'
-import { stContext } from '../FrontStateCtx'
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { DndProvider } from 'react-dnd'
-import { observer } from 'mobx-react-lite'
-import { asAbsolutePath } from '../../utils/fs/pathUtils'
-import { join } from 'path'
 import { runInAction } from 'mobx'
+import { observer } from 'mobx-react-lite'
+import { useMemo } from 'react'
+import { DndProvider } from 'react-dnd'
+import { HTML5Backend } from 'react-dnd-html5-backend'
+import { CustomProvider } from 'rsuite'
+import { asAbsolutePath } from '../../utils/fs/pathUtils'
+import { stContext } from '../FrontStateCtx'
+import { STATE } from '../state'
+import { CushyUI } from './layout/AppUI'
 
-const path = asAbsolutePath(join(process.cwd(), 'workspace'))
+const path = asAbsolutePath(process.cwd())
 
 export const Main = observer(() => {
     const st = useMemo(() => runInAction(() => new STATE(path)), [])

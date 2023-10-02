@@ -20,23 +20,23 @@ out
 
 
 # keep .cushy folder
-workspace/outputs/*
-!workspace/outputs/.gitkeep
+outputs/*
+!outputs/.gitkeep
 
 # keep .schema folder
-workspace/schema/*
-!workspace/schema/.gitkeep
+schema/*
+!schema/.gitkeep
 
-workspace/cushy.db
+cushy.db
 
 *.vsix
 
-workspace/private
-workspace/.disabled
+private
+.disabled
 
 dbDir
 dbDir*
 d001
 
 CONFIG.json
-workspace/global.d.ts
+global.d.ts
