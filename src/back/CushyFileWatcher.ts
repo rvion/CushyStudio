@@ -2,8 +2,8 @@ import type { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import type { STATE } from 'src/front/state'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 
-import { readFileSync, readdirSync, statSync } from 'fs'
-import { join } from 'path'
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
+import path, { join } from 'path'
 import { LiteGraphJSON } from 'src/core/LiteGraph'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
@@ -51,11 +51,28 @@ export class CushyFileWatcher {
     }
 
     private handleNewFile = (filePath: string) => {
+        //
+        const dest = filePath + '.ts'
+        const destExists = existsSync(dest)
+        if (destExists) return
+
+        if (filePath.endsWith('workflow_api.json')) {
+            const json = JSON.parse(readFileSync(filePath, 'utf-8'))
+            const filename = path.basename(filePath)
+            const author = path.dirname(filePath)
+            const code = this.st.importer.convertFlowToCode(json, {
+                title: filename,
+                author,
+                preserveId: false,
+            })
+            writeFileSync(dest, code, 'utf-8')
+            this.handleNewFile(filePath + '.ts')
+            return
+            // console.log(code)
+        }
         if (filePath.endsWith('.png')) {
             console.log('🟢 found ', filePath)
             const result = getPngMetadataFromUint8Array(readFileSync(filePath))
-            // const result = promise.value
-
             if (result == null) {
                 console.log(`❌0. no metadata`)
                 return // <>loading...</>
@@ -92,8 +109,16 @@ export class CushyFileWatcher {
             }
 
             try {
-                const code = this.st.importer.convertFlowToCode('test', promptJSON, { preserveId: false })
-                console.log(code)
+                const filename = path.basename(filePath)
+                const author = path.dirname(filePath)
+                const code = this.st.importer.convertFlowToCode(promptJSON, {
+                    title: filename,
+                    author,
+                    preserveId: false,
+                })
+                writeFileSync(dest, code, 'utf-8')
+                this.handleNewFile(filePath + '.ts')
+                return
             } catch (e) {
                 console.log(e)
                 console.log('❌5. cannot convert prompt to code')

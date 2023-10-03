@@ -78,10 +78,12 @@ export class ComfyImporter {
     }
 
     convertFlowToCode = (
-        //
-        title: string,
         flow: ComfyPromptJSON,
-        opts: { preserveId: boolean },
+        opts: {
+            title: string
+            author: string
+            preserveId: boolean
+        },
     ): string => {
         const flowNodes = Object.entries(flow)
         const ids = Object.keys(flow)
@@ -103,8 +105,8 @@ export class ComfyImporter {
         const b = new CodeBuffer()
         const p = b.w
         const pi = b.append
-        p(`action('${title}', { `)
-        p(`author: '',\n`)
+        p(`action('${opts.title}', { `)
+        p(`author: '${opts.author}',\n`)
         p(`run: async (flow, deps) => {\n`)
         p(` const graph = flow.nodes\n`)
         // p(`import { Comfy } from '../core/dsl'\n`)

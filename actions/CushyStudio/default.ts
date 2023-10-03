@@ -167,7 +167,7 @@ action('Prompt-V1', {
             cfg: p.CFG,
         })
 
-        // HIGHRES FIX
+        // HIGHRES FIX --------------------------------------------------------------------------------
         if (p.highResFix) {
             if (p.highResFix.saveIntermediaryImage) {
                 // DECODE
@@ -193,14 +193,14 @@ action('Prompt-V1', {
                 positive: positive,
                 negative: negative,
                 latent_image: _1,
-                sampler_name: 'ddim',
-                scheduler: 'karras',
+                sampler_name: p.sampler ?? 'dpmpp_2m',
+                scheduler: p.scheduler ?? 'karras',
                 steps: p.highResFix.steps,
-                denoise: 0.5,
+                denoise: p.highResFix.denoise,
             })
         }
 
-        // DECODE
+        // DECODE --------------------------------------------------------------------------------
         graph.SaveImage({
             images: graph.VAEDecode({
                 samples: LATENT,

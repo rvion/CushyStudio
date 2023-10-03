@@ -1,5 +1,5 @@
-action('test', {
-    author: '',
+action('test-1', {
+    author: 'test',
     help: '',
     run: async (flow, deps) => {
         const graph = flow.nodes
@@ -109,8 +109,8 @@ action('test', {
     },
 })
 
-action('test', {
-    author: '',
+action('test-2', {
+    author: 'test',
 
     run: async (flow, deps) => {
         const graph = flow.nodes

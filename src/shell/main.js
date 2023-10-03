@@ -38,7 +38,7 @@ async function createWindow() {
             res = await fetch('http://localhost:8288') //
                 .catch((err) => fetch('http://127.0.0.1:8288'))
 
-            console.log(res)
+            console.log(res.status)
             if (res.status !== 200) {
                 console.log(res.status)
                 await sleep(1000)
