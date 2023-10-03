@@ -68,6 +68,7 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                 })}
                 {st.tsFilesMap.failures.map((f) => (
                     <Whisper
+                        key={f.filePath}
                         enterable
                         speaker={
                             <Popover>
@@ -78,7 +79,6 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                         <div
                             style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}
                             className='cursor-pointer text-ellipsis overflow-hidden text-red-400 p-1'
-                            key={f.filePath}
                         >
                             {/* <span className='material-symbols-outlined'>error_outline</span> */}
                             {f.filePath}
