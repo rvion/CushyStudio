@@ -1,6 +1,8 @@
 import type { ImageT } from 'src/models/Image'
 import type { LATER } from 'LATER'
 import type { ImageAnswer, InfoAnswer } from './InfoAnswer'
+import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
+import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 
 export type Tooltip = string
 export type InptReq<Type extends string, Def, Extra = {}> = {
@@ -21,8 +23,8 @@ export type InptOpt<Type extends string, Def, Extra = {}> = {
 
 export type Requestable_str          = InptReq<'str',     string, {textarea?: boolean }> // prettier-ignore
 export type Requestable_strOpt       = InptOpt<'str?',    string, {textarea?: boolean }> // prettier-ignore
-export type Requestable_prompt       = InptReq<'prompt',  string  > // prettier-ignore
-export type Requestable_promptOpt    = InptOpt<'prompt?', string  > // prettier-ignore
+export type Requestable_prompt       = InptReq<'prompt',  WidgetPromptOutput > // prettier-ignore
+export type Requestable_promptOpt    = InptOpt<'prompt?', WidgetPromptOutput > // prettier-ignore
 export type Requestable_int          = InptReq<'int',     number, {min?:number, max?:number}  > // prettier-ignore
 export type Requestable_float        = InptReq<'float',   number, {min?:number, max?:number}  > // prettier-ignore
 export type Requestable_bool         = InptReq<'bool',    boolean > // prettier-ignore
@@ -32,7 +34,7 @@ export type Requestable_boolOpt      = InptOpt<'bool?',   boolean > // prettier-
 export type Requestable_size         = InptReq<'size',    boolean > // prettier-ignore
 //
 export type Requestable_embeddings   = InptReq<'embeddings',  LATER<'Embeddings'>> // prettier-ignore
-export type Requestable_loras        = InptReq<'loras',       LATER<'Enum_LoraLoader_lora_name'>[]> // prettier-ignore
+export type Requestable_loras        = InptReq<'loras',       SimplifiedLoraDef[]> // prettier-ignore
 //
 export type Requestable_selectImage  = InptOpt<'selectImage',   ImageAnswer>; /*imageInfos?: ImageT[]*/ // prettier-ignore
 export type Requestable_manualMask   = InptReq<'manualMask',    null,    { imageInfo: ImageT}> // prettier-ignore
