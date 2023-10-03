@@ -31,7 +31,7 @@ export const WebsocketIndicatorUI = observer(function WebsocketIndicatorUI_(p: {
                 </Popover>
             }
         >
-            {st.schemaReady.done ? (
+            {st.ws.isOpen ? (
                 <div className='flex gap-2'>
                     <span className='material-symbols-outlined text-green-400'>check_circle</span>
                     <span className='text-green-400'>WS ready</span>

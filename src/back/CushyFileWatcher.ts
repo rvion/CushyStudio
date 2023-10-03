@@ -13,6 +13,14 @@ import { CushyFile } from './CushyFile'
 export class CushyFileWatcher {
     filesMap = new Map<AbsolutePath, CushyFile>()
 
+    // import failure debug
+    failures: { filePath: string; fileName: string; error: string }[] = []
+    recordFailure(filePath: string, reason: string) {
+        const fileName = path.basename(filePath)
+        this.failures.push({ filePath, fileName, error: reason })
+        console.log(`[Importer] ❌ ${fileName} ${reason}`)
+    }
+
     constructor(
         //
         public st: STATE,
@@ -79,21 +87,17 @@ export class CushyFileWatcher {
         if (filePath.endsWith('.png')) {
             console.log('🟢 found ', filePath)
             const result = getPngMetadataFromUint8Array(readFileSync(filePath))
-            if (result == null) {
-                console.log(`❌0. no metadata`)
-                return // <>loading...</>
-            }
+            if (result == null) return this.recordFailure(filePath, `❌0. no metadata`)
 
             if (result.type === 'failure') {
-                console.log(`❌1. metadata extraction failed`, result.value)
-                return
+                console.log('❌', result.value)
+                return this.recordFailure(filePath, `❌1. metadata extraction failed`)
             }
             const metadata = result.value
             const workflowStr = (metadata as { [key: string]: any }).workflow
             if (workflowStr == null) {
-                console.log(metadata)
-                console.log(`❌2. no workflow in metadata`)
-                return
+                console.log('❌', metadata)
+                return this.recordFailure(filePath, `❌2. no workflow in metadata`)
             }
             return this.importWorkflowFromStr({ workflowStr, dest, filePath })
         }
@@ -111,8 +115,7 @@ export class CushyFileWatcher {
         try {
             workflowJSON = JSON.parse(workflowStr)
         } catch (error) {
-            console.log(`❌3. workflow is not valid json`)
-            return
+            return this.recordFailure(p.filePath, `❌3. workflow is not valid json`)
         }
         let promptJSON: ComfyPromptJSON
         try {
@@ -120,9 +123,8 @@ export class CushyFileWatcher {
             promptJSON = convertLiteGraphToPrompt(this.st.schema, workflowJSON)
             // console.groupEnd()
         } catch (error) {
-            console.log(`❌4. cannot convert LiteGraph To Prompt`)
             console.log(error)
-            return
+            return this.recordFailure(p.filePath, `❌4. cannot convert LiteGraph To Prompt`)
         }
 
         try {
@@ -138,7 +140,7 @@ export class CushyFileWatcher {
             return
         } catch (e) {
             console.log(e)
-            console.log('❌5. cannot convert prompt to code')
+            return this.recordFailure(p.filePath, '❌5. cannot convert prompt to code')
         }
     }
     // private handleFileChange(filePath: string) {

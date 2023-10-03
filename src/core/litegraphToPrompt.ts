@@ -45,7 +45,10 @@ export const convertLiteGraphToPrompt = (
         const viaInput = new Set((node?.inputs ?? []).map((i) => i.name))
         const nodeTypeName = node.type
         const nodeSchema: ComfyNodeSchema = schema.nodesByNameInComfy[nodeTypeName]
-        if (nodeSchema == null) throw new Error(`❌ node ${node.id}(${node.type}) has no schema`)
+        if (nodeSchema == null) {
+            console.log(`❌ node causing a crash:`, { node })
+            throw new Error(`❌ node ${node.id}(${node.type}) has no schema`)
+        }
         const nodeInputs = nodeSchema.inputs
         if (nodeInputs == null) throw new Error(`❌ node ${node.id}(${node.type}) has no input`)
 
