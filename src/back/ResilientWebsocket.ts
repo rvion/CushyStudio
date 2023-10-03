@@ -1,14 +1,23 @@
 import { makeAutoObservable, reaction } from 'mobx'
-// import { CloseEvent, Event, EventListenerOptions, MessageEvent, WebSocket } from 'ws'
 
 type Message = string | Buffer
 
 export class ResilientWebSocketClient {
-    private url: string
     // private protocols?: string | string[]
+    private url: string
     private currentWS?: Maybe<WebSocket>
     private messageBuffer: Message[] = []
     isOpen = false
+
+    debugMessages: { type: 'info' | 'error'; timestamp: number; message: string }[] = []
+    addInfo = (msg: string) => {
+        this.debugMessages.push({ type: 'info', timestamp: Date.now(), message: msg })
+        console.info('[🧦] WS:', msg)
+    }
+    addError = (err: string) => {
+        this.debugMessages.push({ type: 'error', timestamp: Date.now(), message: err })
+        console.error('[🧦] WS:', err)
+    }
 
     constructor(
         public options: {
@@ -40,7 +49,7 @@ export class ResilientWebSocketClient {
 
         this.currentWS = null
         if (prevWS) {
-            console.info('🧦 Previous WebSocket discarded')
+            this.addInfo('Previous WebSocket discarded')
             prevWS.close()
         }
         const ws = new WebSocket(this.url)
@@ -50,15 +59,13 @@ export class ResilientWebSocketClient {
 
         if (this.options.onMessage) {
             ws.onmessage = (event: MessageEvent) => {
-                // console.log(event)
                 this.options.onMessage(event)
             }
         }
 
         ws.onopen = (event: Event) => {
             if (ws !== this.currentWS) return
-            console.info('[👢] WEBSOCKET: ✅ WebSocket connected to ' + this.url)
-            // console.log('🛋️ 🟢 WebSocket connected')
+            this.addInfo('✅ WebSocket connected to ' + this.url)
             this.isOpen = true
             this.options.onConnectOrReconnect()
             this.flushMessageBuffer()
@@ -66,16 +73,16 @@ export class ResilientWebSocketClient {
 
         ws.onclose = (event: CloseEvent) => {
             if (ws !== this.currentWS) return
-            console.error(`🧦 WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
+            this.addError(`WebSocket closed (reason=${JSON.stringify(event.reason)}, code=${event.code})`)
             this.isOpen = false
-            console.info('🧦 ⏱️ reconnecting in 2 seconds...')
+            this.addInfo('⏱️ reconnecting in 2 seconds...')
             this.reconnectTimeout = setTimeout(() => this.connect(), 2000) // Attempt to reconnect after 5 seconds
         }
 
         ws.onerror = (event: Event) => {
             if (ws !== this.currentWS) return
-            console.error(`🧦 WebSocket ERROR`)
-            console.error('WebSocket error:', event)
+            this.addError(`WebSocket ERROR` + JSON.stringify(event))
+            console.error({ event })
         }
     }
 

@@ -67,8 +67,10 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                     return action
                 })}
             </div>
+            <div className='flex-grow'></div>
             <Message showIcon className='m-2' type='info'>
-                Add yours now !
+                {/* <span className='material-symbols-outlined'>folder-</span> */}
+                Add yours now in the actions folder of your installation.
             </Message>
             {/* <FooBarUI /> */}
             {/* <PanelImport /> */}

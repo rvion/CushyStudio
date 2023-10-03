@@ -335,38 +335,44 @@ export class STATE {
 
     CRITICAL_ERROR: Maybe<CSCriticalError> = null
 
-    /** retri e the comfy spec from the schema*/
+    schemaRetrievalLogs: string[] = []
+    /** retrieve the comfy spec from the schema*/
     fetchAndUdpateSchema = async (): Promise<ComfySchemaJSON> => {
         // 1. fetch schema$
         let schema$: ComfySchemaJSON
+        this.schemaRetrievalLogs.splice(0, this.schemaRetrievalLogs.length)
+        const progress = (...args: any[]) => {
+            this.schemaRetrievalLogs.push(args.join(' '))
+            console.info('[🐱] CONFY:', ...args)
+        }
         try {
             // 1 ------------------------------------
             const object_info_url = `${this.getServerHostHTTP()}/object_info`
-            console.info(`[🐱] CONFY: [.... step 1/4] fetching schema from ${object_info_url} ...`)
+            progress(`[.... step 1/4] fetching schema from ${object_info_url} ...`)
             const headers: HeadersInit = { 'Content-Type': 'application/json' }
             const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
             const object_info_json = (await object_info_res.json()) as { [key: string]: any }
             writeFileSync(this.comfyJSONPath, JSON.stringify(object_info_json), 'utf-8')
             const knownNodeNames = Object.keys(object_info_json)
-            console.info(`[🐱] CONFY: [.... step 1/4] found ${knownNodeNames.length} nodes`) // (${JSON.stringify(keys)})
+            progress(`[.... step 1/4] found ${knownNodeNames.length} nodes`) // (${JSON.stringify(keys)})
             schema$ = object_info_json as any
-            console.info('[🐱] CONFY: [*... step 1/4] schema fetched')
+            progress('[*... step 1/4] schema fetched')
 
             // 1 ------------------------------------
             const embeddings_url = `${this.getServerHostHTTP()}/embeddings`
-            console.info(`[🐱] CONFY: [.... step 1/4] fetching embeddings from ${embeddings_url} ...`)
+            progress(`[.... step 1/4] fetching embeddings from ${embeddings_url} ...`)
             const embeddings_res = await fetch(embeddings_url, { method: 'GET', headers })
             const embeddings_json = (await embeddings_res.json()) as EmbeddingName[]
             writeFileSync(this.embeddingsPath, JSON.stringify(embeddings_json), 'utf-8')
             // const keys2 = Object.keys(data2)
             // console.info(`[.... step 1/4] found ${keys2.length} nodes`) // (${JSON.stringify(keys)})
             // schema$ = data as any
-            console.info(`[🐱] CONFY: ${embeddings_json.length} embedings found:`, { embeddings_json })
-            console.info('[🐱] CONFY: [*... step x/4] embeddings fetched')
+            progress(`${embeddings_json.length} embedings found:`, { embeddings_json })
+            progress('[*... step x/4] embeddings fetched')
 
             // 2 ------------------------------------
             // http:
-            console.info('[🐱] CONFY: [*... step 2/4] updating schema...')
+            progress('[*... step 2/4] updating schema...')
             const comfyJSONStr = readableStringify(schema$, 3)
             const comfyJSONBuffer = Buffer.from(comfyJSONStr, 'utf8')
             writeFileSync(this.comfyJSONPath, comfyJSONBuffer, 'utf-8')
@@ -377,20 +383,20 @@ export class STATE {
             if (numNodesInSource !== numNodesInSchema) {
                 console.log(`🔴 ${numNodesInSource} != ${numNodesInSchema}`)
             }
-            console.info('[🐱] CONFY: [**.. step 2/4] schema updated')
+            progress('[**.. step 2/4] schema updated')
 
             // 3 ------------------------------------
-            console.info('[🐱] CONFY: [**.. step 3/4] udpatin schema code...')
+            progress('[**.. step 3/4] udpatin schema code...')
             const comfySchemaTs = this.schema.codegenDTS()
-            console.info('[🐱] CONFY: [***. step 3/4] schema code updated ')
+            progress('[***. step 3/4] schema code updated ')
 
             // 4 ------------------------------------
-            console.info('[🐱] CONFY: [**** step 4/4] saving schema')
+            progress('[**** step 4/4] saving schema')
             // const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
             const comfySchemaTsFormatted = await this.codePrettier.prettify(comfySchemaTs)
             // console.log(this.nodesTSPath, comfySchemaTsFormatted)
             writeFileSync(this.nodesTSPath, comfySchemaTsFormatted, 'utf-8')
-            console.info('[🐱] CONFY: [**** step 4/4] 🟢 schema updated')
+            progress('[**** step 4/4] 🟢 schema updated')
         } catch (error) {
             console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
             console.error('🐰', extractErrorMessage(error))

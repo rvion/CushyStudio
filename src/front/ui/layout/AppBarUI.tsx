@@ -1,7 +1,9 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton, Loader, Message } from 'rsuite'
+import { Button, IconButton, Loader } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
+import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
+import { SchemaIndicatorUI } from './SchemaIndicatorUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
@@ -49,7 +51,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 startIcon={<I.Reload />}
                 onClick={() => window.location.reload()}
             >
-                Reload Schema
+                Reload
             </Button>
             {/* <IconButton
                 size='sm'
@@ -79,16 +81,17 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 //
                 size='sm'
                 appearance='subtle'
+                color='red'
                 onClick={() => st.db.reset()}
-                startIcon={<I.Trash color='orange' />}
+                startIcon={<span className='material-symbols-outlined'>power_settings_new</span>}
             >
-                Delete DB
+                Reset DB
             </Button>
             {/* <Button startIcon={<I.AddOutline />} size='sm' className='self-start' onClick={() => st.startProject()}>
                 create project
             </Button> */}
             <div className='flex-grow'></div>
-            <Button
+            {/* <Button
                 // startIcon={<I.AddOutline />}
                 size='sm'
                 appearance='subtle'
@@ -99,14 +102,11 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 }}
             >
                 ComfyUI Web
-            </Button>
+            </Button> */}
             {/* biegert/ComfyUI-CLIPSeg */}
-            {st.schemaReady.done ? null : (
-                <div className='flex gap-2'>
-                    <Loader />
-                    <div>loading schema</div>
-                </div>
-            )}
+
+            <WebsocketIndicatorUI />
+            <SchemaIndicatorUI />
             <a
                 className='ml-auto flex'
                 onClick={(ev) => {
