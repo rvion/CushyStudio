@@ -1,6 +1,7 @@
 import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode } from './LiteGraph'
 import type { ComfyNodeJSON, ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import type { ComfyNodeSchema, SchemaL } from '../models/Schema'
+import { bang } from '../utils/bang'
 
 export const convertLiteGraphToPrompt = (
     //
@@ -9,6 +10,15 @@ export const convertLiteGraphToPrompt = (
 ): ComfyPromptJSON => {
     const prompt: ComfyPromptJSON = {}
 
+    const PRIMITIVE_VALUES: { [key: string]: any } = {}
+    for (const node of workflow.nodes) {
+        // Don't serialize Note nodes (those are like comments)
+        if (node.type === 'PrimitiveNode') {
+            console.log(`    | [🔶 WARN] "PrimitiveNode" node ${node.id} inline`)
+            PRIMITIVE_VALUES[node.id] = bang(node.widgets_values[0])
+            // debugger
+        }
+    }
     for (const node of workflow.nodes) {
         console.log(`💎 node ${node.type}#${node.id}`)
         const n = workflow.nodes.find((n) => n.id === node.id)
@@ -39,6 +49,12 @@ export const convertLiteGraphToPrompt = (
             continue
         }
 
+        // Don't serialize Note nodes (those are like comments)
+        if (node.type === 'PrimitiveNode') {
+            console.log(`    | [🔶 WARN] "PrimitiveNode" node ${node.id} inline`)
+            continue
+        }
+
         const inputs: ComfyNodeJSON['inputs'] = {}
         // const widgets = node.widgets
 
@@ -47,6 +63,7 @@ export const convertLiteGraphToPrompt = (
         const nodeSchema: ComfyNodeSchema = schema.nodesByNameInComfy[nodeTypeName]
         if (nodeSchema == null) {
             console.log(`❌ node causing a crash:`, { node })
+            console.log(`❌ current prompt Step is:`, { prompt })
             throw new Error(`❌ node ${node.id}(${node.type}) has no schema`)
         }
         const nodeInputs = nodeSchema.inputs
@@ -101,7 +118,13 @@ export const convertLiteGraphToPrompt = (
             }
             if (parent == null) throw new Error(`no parent found for ${node.id}.${ipt.name})`)
             console.log(`    | .${ipt.name}  (via LINK`, String(parent.node.id), parent.link[2], parent.node.type, ')')
-            inputs[ipt.name] = [String(parent.node.id), parent.link[2]]
+
+            if (parent.node.type === 'PrimitiveNode') {
+                console.log('    | inlining primitive', { val: PRIMITIVE_VALUES[parent.node.id] })
+                inputs[inputs[ipt.name]] = PRIMITIVE_VALUES[parent.node.id]
+            } else {
+                inputs[ipt.name] = [String(parent.node.id), parent.link[2]]
+            }
 
             // console.log('link', ipt.link, 'to', parentId, 'slot', link?.[2])
             // let parent = link?.[1] // node.getInputNode(i)
