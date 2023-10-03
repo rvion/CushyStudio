@@ -49,16 +49,30 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                     <div className='flex whitespace-nowrap'>fpath = {st.hovered.localAbsolutePath}</div>
                     <div className='flex whitespace-nowrap'>promptID = {st.hovered.prompt.id}</div>
                 </div>
-
                 {/* IMAGE */}
-                <img
-                    src={st.hovered.url}
-                    style={{
-                        objectFit: 'contain',
-                        maxHeight: 'calc(100vh - 10rem)',
-                        maxWidth: 'calc(100vw - 10rem)',
-                    }}
-                />
+                {st.hovered.data.type === 'video' ? (
+                    <video
+                        style={{
+                            objectFit: 'contain',
+                            maxHeight: 'calc(100vh - 10rem)',
+                            maxWidth: 'calc(100vw - 10rem)',
+                        }}
+                        src={st.hovered.url}
+                        controls
+                        autoPlay
+                        loop
+                    />
+                ) : (
+                    <img
+                        src={st.hovered.url}
+                        style={{
+                            objectFit: 'contain',
+                            maxHeight: 'calc(100vh - 10rem)',
+                            maxWidth: 'calc(100vw - 10rem)',
+                        }}
+                    />
+                )}
+                )
             </div>
         </div>
     )

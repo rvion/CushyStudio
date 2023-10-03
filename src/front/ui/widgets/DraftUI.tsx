@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Input, Panel } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
-import { JSONHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
+import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
 import { TabUI } from '../layout/TabUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { draftContext } from '../useDraft'
@@ -82,6 +82,10 @@ export const DraftUI = observer(function DraftUI_(p: { draft: DraftL }) {
                         <JSONHighlightedCodeUI code={JSON.stringify(formDefinition, null, 4)} />
                         <div>state</div>
                         <JSONHighlightedCodeUI code={JSON.stringify(draft.data.params, null, 4)} />
+                        <div>ts</div>
+                        <TypescriptHighlightedCodeUI code={tool.data.codeTS ?? ''} />
+                        <div>js</div>
+                        <TypescriptHighlightedCodeUI code={tool.data.codeJS ?? ''} />
                     </TabUI>
                 </div>
             </ScrollablePaneUI>

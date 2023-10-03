@@ -25,9 +25,11 @@ export interface ImageT {
     /** Cushy image folder (drag and drop system) */
     folderID?: Maybe<FolderID>
     /** where the file is either located locally / or aimed to be stored */
-    localFolderPath: AbsolutePath
+    localFilePath: AbsolutePath
     /** where the file exists locally */
     downloaded?: boolean
+    /** defaults to image */
+    type?: 'image' | 'video'
 
     // comfyRelativePath?: string
     // comfyURL?: string
@@ -50,10 +52,11 @@ export class ImageL {
 
     /** absolute path on the machine running CushyStudio */
     get localAbsolutePath(): AbsolutePath {
-        const fileName = this.data.imageInfos?.filename
-        return this.data.localFolderPath && fileName //
-            ? asAbsolutePath(join(`${this.data.localFolderPath}`, fileName))
-            : asAbsolutePath(join(this.st.cacheFolderPath, 'outputs', fileName ?? 'error'))
+        // const fileName = this.data.imageInfos?.filename
+        return this.data.localFilePath //
+            ? this.data.localFilePath
+            : asAbsolutePath('/ERROR.png')
+        // : asAbsolutePath(join(this.st.cacheFolderPath, 'outputs', fileName ?? 'error'))
     }
 
     onCreate = () => {
@@ -85,6 +88,7 @@ export class ImageL {
         this.update({ downloaded: true })
         console.info('🖼️ image saved')
         // this.status = ImageStatus.Saved
+        this._resolve(this)
         return true
     }
 

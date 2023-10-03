@@ -1,8 +1,8 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
+import type { ToolID, ToolL } from './Tool'
 
 import { LiveRef } from '../db/LiveRef'
-import { ToolID, ToolL } from './Tool'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 
 export type ProjectID = Branded<string, 'ProjectID'>
@@ -28,6 +28,12 @@ export class ProjectL {
     // getConfig() {}
     activeTool = new LiveRefOpt<this, ToolL>(this, 'activeToolID', 'tools')
 
+    focusTool(tool: ToolL) {
+        this.update({ activeToolID: tool.id })
+        if (tool.focusedDraft.item == null) {
+            tool.createDraft(this).focus()
+        }
+    }
     get schema() {
         return this.db.schema
     }

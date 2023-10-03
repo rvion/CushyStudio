@@ -57,7 +57,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />}
             /> */}
 
-            <div>version {st.updater.ready ? st.updater.currentVersion : <Loader />}</div>
+            <div>version {st.updater.commitCountOnHead ? st.updater.currentVersion : <Loader />}</div>
             {st.updater.updateAvailable ? (
                 <Button
                     className='animate-pulse'

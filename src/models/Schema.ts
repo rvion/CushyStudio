@@ -202,7 +202,7 @@ export class SchemaL {
                     } else {
                         inputTypeNameInCushy = uniqueEnumName
                         this.knownEnumsByHash.set(hash, {
-                            enumNameInCushy: normalizeJSIdentifier(inputTypeNameInCushy),
+                            enumNameInCushy: inputTypeNameInCushy, // normalizeJSIdentifier(inputTypeNameInCushy),
                             enumNameInComfy: inputNameInComfy,
                             values: enumValues,
                             aliases: [],

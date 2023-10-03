@@ -32,17 +32,9 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     let tooltip: Maybe<string>
     let label: Maybe<string>
     const fullPath = p.path.join('/')
-    if (Array.isArray(req)) {
-        label = rootKey
-        // } else if (req instanceof BUG) {
-        //     label = '❌ BUG'
-        //     tooltip = '❌ BUG'
-    } else {
-        label = req.label ?? rootKey
-        tooltip = req.tooltip
-        if (fullPath !== label) tooltip = `${fullPath} ${tooltip ?? ''}`
-    }
-
+    label = req.label ?? rootKey
+    tooltip = req.tooltip
+    if (fullPath !== label) tooltip = `${fullPath} ${tooltip ?? ''}`
     return (
         <div
             // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}

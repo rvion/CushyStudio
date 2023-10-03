@@ -17,6 +17,7 @@ const mapChar = (char: string) => {
     throw new Error(`❌ invalid char in node name: "${char}"`)
 }
 export const normalizeJSIdentifier = (name: string) => {
+    if (name.startsWith('Enum_Image_Rembg_$')) debugger
     let out = ''
     // if (name === '*') return 'STAR'
     for (const char of name) out += mapChar(char)

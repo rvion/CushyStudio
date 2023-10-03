@@ -3,7 +3,7 @@ import type { Requestable_itemsOpt } from 'src/controls/InfoRequest'
 
 import { observer } from 'mobx-react-lite'
 import { useDraft } from '../useDraft'
-import { Toggle } from 'rsuite'
+import { Panel, Toggle } from 'rsuite'
 import { WidgetWithLabelUI } from './WidgetUI'
 
 export const WidgetItemsOptUI = observer(function WidgetItemsOptUI_(p: {

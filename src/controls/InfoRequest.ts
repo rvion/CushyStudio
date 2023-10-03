@@ -1,6 +1,6 @@
 import type { ImageT } from 'src/models/Image'
 import type { LATER } from 'LATER'
-import { ImageAnswer, InfoAnswer } from './InfoAnswer'
+import type { ImageAnswer, InfoAnswer } from './InfoAnswer'
 
 export type Tooltip = string
 export type InptReq<Type extends string, Def, Extra = {}> = {
@@ -85,9 +85,3 @@ export type Requestable =
     /** select many */
     | Requestable_selectMany
     | Requestable_selectManyOrCustom
-/** array */
-// | Requestable[]
-/** ?? */
-// | BUG
-
-// export class BUG {}

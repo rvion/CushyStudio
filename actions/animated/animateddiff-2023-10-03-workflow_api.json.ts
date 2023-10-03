@@ -4,7 +4,7 @@ action('animateddiff-2023-10-03', {
         preText: form.str({
             default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
         }),
-        seed: form.intOpt({ default: 44444444, group: 'sampler' }),
+        seed: form.intOpt({ group: 'sampler' }),
         text: form.str({
             textarea: true,
             default: [
@@ -15,13 +15,15 @@ action('animateddiff-2023-10-03', {
                 ``,
             ].join('\n'),
         }),
-        steps: form.int({ default: 16, group: 'sampler' }),
+        removeBG: form.boolOpt({ default: false }),
+        steps: form.int({ default: 20, group: 'sampler' }),
+        frames: form.int({ default: 16, group: 'video' }),
     }),
     run: async (flow, p) => {
         const graph = flow.nodes
 
         const checkpointLoaderSimpleWithNoiseSelect = graph.CheckpointLoaderSimpleWithNoiseSelect({
-            ckpt_name: 'revAnimated_v121.safetensors',
+            ckpt_name: 'deliberate_v2.safetensors',
             beta_schedule: 'sqrt_linear (AnimateDiff)',
         })
         const vAE = graph.VAELoader({ vae_name: 'vae-ft-mse-840000-ema-pruned.safetensors' })
@@ -54,13 +56,13 @@ action('animateddiff-2023-10-03', {
             clip: checkpointLoaderSimpleWithNoiseSelect.CLIP,
         })
         const aDE_EmptyLatentImageLarge = graph.ADE_EmptyLatentImageLarge({
-            width: 768,
-            height: 768,
-            batch_size: p.steps, //100,
+            width: 512,
+            height: 512,
+            batch_size: p.frames, //100,
         })
-        const kSampler = graph.KSampler({
-            seed: p.seed ?? flow.randomSeed,
-            steps: 25,
+        let kSampler = graph.KSampler({
+            seed: p.seed ?? flow.randomSeed(),
+            steps: p.steps,
             cfg: 7,
             sampler_name: 'euler_ancestral',
             scheduler: 'normal',
@@ -70,9 +72,20 @@ action('animateddiff-2023-10-03', {
             negative: cLIPTextEncode.CONDITIONING,
             latent_image: aDE_EmptyLatentImageLarge.LATENT,
         })
-        const vAEDecode = graph.VAEDecode({ samples: kSampler.LATENT, vae: vAE.VAE })
+        let vAEDecode
+        if (p.removeBG) {
+            vAEDecode = graph.Image_Rembg_$1Remove_Background$2({
+                images: graph.VAEDecode({ samples: kSampler.LATENT, vae: vAE.VAE }),
+                model: 'u2net',
+                background_color: 'black',
+            })
+        } else {
+            vAEDecode = graph.VAEDecode({ samples: kSampler.LATENT, vae: vAE.VAE })
+        }
         const save = graph.SaveImage({ filename_prefix: 'Images\\image', images: vAEDecode.IMAGE })
-        graph.Write_to_Video({ image: vAEDecode, codec: 'H264' })
+        // graph.SaveImage({
+        //     images: graph.Write_to_Video({ image: vAEDecode, codec: 'H264' }),
+        // })
         // const aDE_AnimateDiffCombine = graph.ADE_AnimateDiffCombine({
         //     frame_rate: 10,
         //     loop_count: 0,
@@ -83,7 +96,10 @@ action('animateddiff-2023-10-03', {
         //     // ad_gif_preview__0: '/view?filename=AnimateDiff_00001_.gif&subfolder=&type=output&format=image%2Fgif',
         //     images: vAEDecode.IMAGE,
         // })
+        const gif = graph.Write_to_GIF({
+            image: vAEDecode,
+        })
         await flow.PROMPT()
-        await flow.createAnimation()
+        await flow.createAnimation(undefined, 30, { transparent: p.removeBG })
     },
 })

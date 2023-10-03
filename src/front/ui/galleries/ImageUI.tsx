@@ -16,36 +16,53 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
     const GalleryImageWidth = st.gallerySize
     const [{ opacity }, dragRef] = useImageDrag(image)
 
-    const IMG = (
-        <img
-            // className='scale-in-center'
-            ref={dragRef}
-            loading='lazy'
-            onMouseEnter={(ev) => {
-                st.hovered = image
-            }}
-            onMouseLeave={() => {
-                if (st.hovered === image) st.hovered = null
-            }}
-            style={{
-                objectFit: 'contain',
-                width: GalleryImageWidth,
-                height: GalleryImageWidth,
-                opacity,
-                padding: '0.2rem',
-                borderRadius: '.5rem',
-            }}
-            // onAuxClick={(e) => {
-            //     st.hovered = null
-            //     st.currentAction = { type: 'paint', imageID: image.id }
-            // }}
-            onClick={() => {
-                st.lightBox.opened = true
-                st.lightBox.getImgs
-            }}
-            src={image.url}
-        />
-    )
+    const IMG =
+        image.data.type === 'video' ? (
+            <video
+                //
+                onMouseEnter={(ev) => {
+                    st.hovered = image
+                }}
+                onMouseLeave={() => {
+                    if (st.hovered === image) st.hovered = null
+                }}
+                style={{
+                    //
+                    width: GalleryImageWidth,
+                    height: GalleryImageWidth,
+                }}
+                src={image.url}
+            ></video>
+        ) : (
+            <img
+                // className='scale-in-center'
+                src={image.url}
+                ref={dragRef}
+                loading='lazy'
+                onMouseEnter={(ev) => {
+                    st.hovered = image
+                }}
+                onMouseLeave={() => {
+                    if (st.hovered === image) st.hovered = null
+                }}
+                style={{
+                    objectFit: 'contain',
+                    width: GalleryImageWidth,
+                    height: GalleryImageWidth,
+                    opacity,
+                    padding: '0.2rem',
+                    borderRadius: '.5rem',
+                }}
+                // onAuxClick={(e) => {
+                //     st.hovered = null
+                //     st.currentAction = { type: 'paint', imageID: image.id }
+                // }}
+                onClick={() => {
+                    st.lightBox.opened = true
+                    st.lightBox.getImgs
+                }}
+            />
+        )
     return (
         <>
             {/* right click logic 👇 */}

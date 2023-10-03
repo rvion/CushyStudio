@@ -10,6 +10,7 @@ import { exhaust } from '../utils/ComfyUtils'
 import { ImageL } from './Image'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { Status } from '../back/Status'
+import { join } from 'path'
 
 export type PromptID = Branded<string, 'PromptID'>
 export const asPromptID = (s: string): PromptID => s as any
@@ -105,12 +106,14 @@ export class PromptL {
             // const comfyFilename = img.filename
             const comfyRelativePath = `./outputs/${img.filename}`
             const comfyURL = this.st.getServerHostHTTP() + '/view?' + new URLSearchParams(img).toString()
+            // const absPath = this.st.resolve(this.st.outputFolderPath, asRelativePath(join(img.subfolder, img.filename)))
+            const absPath = this.st.resolve(this.st.outputFolderPath, asRelativePath(img.filename))
             const images = this.db.images.create({
                 id: nanoid(),
                 promptID: this.id,
                 // comfyURL,
                 imageInfos: img,
-                localFolderPath: this.st.resolve(this.st.outputFolderPath, asRelativePath('')),
+                localFilePath: absPath,
                 // comfyRelativePath,
                 // folder: img.subfolder,
                 // localAbsolutePath: img.localAbsolutePath,

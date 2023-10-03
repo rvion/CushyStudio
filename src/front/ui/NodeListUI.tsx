@@ -5,6 +5,7 @@ import { ComfyNode } from '../../core/Node'
 import { ComfyNodeSchema } from '../../models/Schema'
 import { NodeRefUI } from './NodeRefUI'
 import { useSt } from '../FrontStateCtx'
+import { Fragment } from 'react'
 
 export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
     //
@@ -63,18 +64,18 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                     </div> */}
                     <div className='flex gap-2 wrap'>
                         {/* show values */}
-                        <Form layout='horizontal'>
+                        <div className='flex'>
                             {schema.inputs.map((input) => {
                                 let val = node.json.inputs[input.nameInComfy]
                                 if (Array.isArray(val)) return null
                                 return (
-                                    <Form.Group key={input.nameInComfy}>
-                                        <Form.ControlLabel>{input.nameInComfy}</Form.ControlLabel>
-                                        <Form.Control name={input.nameInComfy} value={val}></Form.Control>
-                                    </Form.Group>
+                                    <Fragment key={input.nameInComfy}>
+                                        <span>{input.nameInComfy}</span>
+                                        <span>{val}</span>
+                                    </Fragment>
                                 )
                             })}
-                        </Form>
+                        </div>
                         {/* show refs */}
                         <div>
                             {schema.inputs.map((input) => {

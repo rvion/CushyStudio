@@ -13,24 +13,29 @@ function ShowPopup(message: string) {
 // git rev-parse HEAD: Retrieves the commit hash of the current HEAD, i.e., the latest commit in the current branch.
 
 export class Updater {
-    private lastCommitAvailable: string = ''
-    private currentCommit: string = ''
-    private commitCountOnHead: number = 0
-    private commitCountOnMaster: number = 0
+    private _lastCommitAvailable: string = ''
+    private _currentCommit: string = ''
+    private _commitCountOnHead: number = 0
+    private _commitCountOnMaster: number = 0
+
+    get lastCommitAvailable() {return this._lastCommitAvailable} // prettier-ignore
+    get currentCommit() {return this._currentCommit} // prettier-ignore
+    get commitCountOnHead() {return this._commitCountOnHead} // prettier-ignore
+    get commitCountOnMaster() {return this._commitCountOnMaster} // prettier-ignore
 
     ready = false
 
     get currentVersion() {
-        return `0.9.${this.commitCountOnHead}`
+        return `0.9.${this._commitCountOnHead}`
     }
     get nextVersion() {
-        return `0.9.${this.commitCountOnMaster}`
+        return `0.9.${this._commitCountOnMaster}`
     }
     get updateAvailable() {
         if (!this.ready) return false
-        if (!this.lastCommitAvailable) return false
-        if (!this.currentCommit) return false
-        return this.lastCommitAvailable !== this.currentCommit
+        if (!this._lastCommitAvailable) return false
+        if (!this._currentCommit) return false
+        return this._lastCommitAvailable !== this._currentCommit
     }
 
     private ensureSingleRunningSetIntervalInstance = (p: NodeJS.Timeout) => {
@@ -50,13 +55,13 @@ export class Updater {
     private async checkForUpdates() {
         try {
             console.log('[🚀] updater: checking for noew version')
+            this._commitCountOnHead = await this.getCommitCountForCurrentBranch()
+            console.log('[🚀] updater: current version:', this.currentVersion)
             await this.fetchLastCommitAvailable()
             await this.updateCurrentCommit()
-            this.commitCountOnHead = await this.getCommitCountForCurrentBranch()
-            console.log('[🚀] updater: current version:', this.currentVersion)
-            this.commitCountOnMaster = await this.getCommitCountForMaster()
+            this._commitCountOnMaster = await this.getCommitCountForMaster()
             console.log('[🚀] updater: next version:', this.nextVersion)
-            if (this.lastCommitAvailable !== this.currentCommit)
+            if (this._lastCommitAvailable !== this._currentCommit)
                 ShowPopup('A new version is available! Would you like to update?')
             this.ready = true
         } catch (error) {
@@ -86,9 +91,9 @@ export class Updater {
         return new Promise((resolve, reject) => {
             exec('git fetch && git rev-parse origin/master', (error, stdout) => {
                 if (error) return reject(error)
-                this.lastCommitAvailable = stdout.trim()
-                console.log('[🚀] updater: last Commit Available is', this.lastCommitAvailable)
-                resolve(this.lastCommitAvailable)
+                this._lastCommitAvailable = stdout.trim()
+                console.log('[🚀] updater: last Commit Available is', this._lastCommitAvailable)
+                resolve(this._lastCommitAvailable)
             })
         })
     }
@@ -108,9 +113,9 @@ export class Updater {
         return new Promise((resolve, reject) => {
             exec('git rev-parse HEAD', (error, stdout) => {
                 if (error) return reject(error)
-                this.currentCommit = stdout.trim()
-                console.log('[🚀] updater: current Commit is', this.currentCommit)
-                resolve(this.currentCommit)
+                this._currentCommit = stdout.trim()
+                console.log('[🚀] updater: current Commit is', this._currentCommit)
+                resolve(this._currentCommit)
             })
         })
     }

@@ -9,6 +9,7 @@ import { runInAction } from 'mobx'
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { asRelativePath } from '../../../utils/fs/pathUtils'
 import { ImageL } from 'src/models/Image'
+import { join } from 'path'
 
 const getLayers = (): any => {
     return (document as any).getElementById('miniPaint').contentWindow.Layers
@@ -70,11 +71,13 @@ class MinipaintState {
         const imageID = nanoid()
         tempCanvas.toBlob(async (blob) => {
             if (blob == null) throw new Error(`❌ blob is null`)
-            const relPath = asRelativePath(imageID + '.png')
-            console.log({ relPath })
+            const filename = imageID + '.png'
+            const subfolder = 'minipaint'
+            const relPath = asRelativePath(join(subfolder, filename))
             const absPath = this.st.resolve(this.st.outputFolderPath, relPath)
-            console.log({ absPath })
             const buff = await blob.arrayBuffer()
+            console.log({ relPath })
+            console.log({ absPath })
             console.log({ byteLength: buff.byteLength })
             const dirExists = existsSync(this.st.outputFolderPath)
             if (!dirExists) {
@@ -84,9 +87,9 @@ class MinipaintState {
             writeFileSync(absPath, Buffer.from(buff))
             console.log(`saved`)
             this.st.db.images.create({
-                localFolderPath: this.st.outputFolderPath,
+                localFilePath: absPath,
                 downloaded: true,
-                imageInfos: { filename: relPath, subfolder: '', type: 'painted' },
+                imageInfos: { filename, subfolder, type: 'painted' },
             })
         })
         // console.log('f')

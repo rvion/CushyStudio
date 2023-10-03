@@ -67,6 +67,11 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
                     {tool
                         ? tool.drafts.map((draft) => (
                               <Button
+                                  style={{
+                                      borderBottomLeftRadius: 0,
+                                      borderBottomRightRadius: 0,
+                                      borderBottom: 'none',
+                                  }}
                                   size='xs'
                                   appearance={focusedDraft?.id === draft.id ? 'primary' : 'ghost'}
                                   color={focusedDraft?.id === draft.id ? 'violet' : undefined}

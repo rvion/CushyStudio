@@ -15,6 +15,7 @@ import { ImageAnswer, InfoAnswer, InfoRequestFn } from '../controls/InfoAnswer'
 import { finalizeAnswer_UNSAFE } from '../controls/InfoAnswerFinal'
 import { Requestable } from '../controls/InfoRequest'
 import { ScriptStep_ask } from '../controls/misc/ScriptStep_ask'
+import { Slot } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { globalToolFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
@@ -23,7 +24,7 @@ import { ImageL } from '../models/Image'
 import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo, WsMsgExecuted } from '../types/ComfyWsApi'
-import { deepCopyNaive, exhaust } from '../utils/ComfyUtils'
+import { deepCopyNaive } from '../utils/ComfyUtils'
 import { asSTRING_orCrash } from '../utils/bang'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
@@ -117,7 +118,10 @@ export class Runtime {
     // cyto: Cyto 🔴🔴
 
     /** list of all images produed over the whole script execution */
-    generatedImages: ImageL[] = []
+    // generatedImages: ImageL[] = []
+    get generatedImages(): ImageL[] {
+        return this.step.generatedImages
+    }
     get firstImage() { return this.generatedImages[0] } // prettier-ignore
     get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
 
@@ -147,14 +151,16 @@ export class Runtime {
     createAnimation = async (
         /** image to incldue (defaults to all images generated in the fun) */
         source?: ImageL[],
-        /** frame duration, in ms:
-         * - default is 200 (= 5fps)
-         * - use 16 for ~60 fps
-         * */
-        frameDuration = 200,
+        /** FPS (e.g. 60, 30, etc.) default is 30 */
+        inputFPS = 30,
+        opts: { transparent?: Maybe<boolean> } = {},
     ): Promise<void> => {
+        console.log('🎥 creating animation')
         const outputAbsPath = this.st.cacheFolderPath
-        const targetVideoAbsPath = asAbsolutePath(path.join(outputAbsPath, `video-${Runtime.VideoCounter++}.mp4`))
+        const targetVideoAbsPath = asAbsolutePath(path.join(outputAbsPath, `video-${Date.now()}-${Runtime.VideoCounter++}.mp4`))
+        console.log('🎥 outputAbsPath', outputAbsPath)
+        console.log('🎥 targetVideoAbsPath', targetVideoAbsPath)
+
         // console.info(`target video path: ${targetVideoPath}`)
         // console.info(`target video uri: ${targetVideoURI}`)
         const images = source ?? this.generatedImages
@@ -174,9 +180,15 @@ export class Runtime {
         await createMP4FromImages(
             images.map((i) => i.localAbsolutePath),
             targetVideoAbsPath,
-            frameDuration,
+            inputFPS,
             cwd,
+            opts,
         )
+        console.log('🔴', targetVideoAbsPath)
+        this.st.db.images.create({
+            localFilePath: targetVideoAbsPath,
+            type: 'video',
+        })
         // 🔴 unfinished
         // const fromPath = curr.webview.asWebviewUri(targetVideoURI).toString()
         // const videoURL = this.st.absPathToURL(targetVideoAbsPath)
@@ -278,6 +290,7 @@ export class Runtime {
         if (typeof message === 'string') return message
         if (typeof message === 'number') return message.toString()
         if (typeof message === 'boolean') return message.toString()
+        if (message instanceof Slot) return message.toString() // 🔴
         if (typeof message === 'object')
             return `${message.$schema.nameInCushy}_${message.uid}(${JSON.stringify(message.json, null, 2)})`
         return `❌ (impossible to extract string from ${typeof message} / ${(message as any)?.constructor?.name})`
