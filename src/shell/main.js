@@ -9,7 +9,7 @@ app.commandLine.appendSwitch('disable-site-isolation-trials')
 // update dock icon and text
 const nativeImage = require('electron').nativeImage
 const image = nativeImage.createFromPath('src/public/CushyLogo.png')
-app.dock.setIcon(image)
+// app.dock.setIcon(image)
 // app.dock.setBadge('🛋️ CushySudio')
 
 async function createWindow() {
