@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Fragment, useState } from 'react'
-import { InputGroup, Message, SelectPicker } from 'rsuite'
+import { InputGroup, Message, Popover, SelectPicker, Whisper } from 'rsuite'
 import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
@@ -66,6 +66,25 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                     }
                     return action
                 })}
+                {st.tsFilesMap.failures.map((f) => (
+                    <Whisper
+                        enterable
+                        speaker={
+                            <Popover>
+                                <Message type='error'>{f.error}</Message>
+                            </Popover>
+                        }
+                    >
+                        <div
+                            style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}
+                            className='cursor-pointer text-ellipsis overflow-hidden text-red-400 p-1'
+                            key={f.filePath}
+                        >
+                            {/* <span className='material-symbols-outlined'>error_outline</span> */}
+                            {f.filePath}
+                        </div>
+                    </Whisper>
+                ))}
             </div>
             <div className='flex-grow'></div>
             <Message showIcon className='m-2' type='info'>
