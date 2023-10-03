@@ -14,6 +14,7 @@ const mapChar = (char: string) => {
     if (char === '.') return '$5'
     if (char === '+') return '$6'
     if (char === '-') return '$7'
+    if (char === '|') return '$8'
     throw new Error(`❌ invalid char in node name: "${char}"`)
 }
 export const normalizeJSIdentifier = (name: string) => {
