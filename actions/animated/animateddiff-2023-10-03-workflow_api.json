@@ -1,0 +1,141 @@
+{
+  "1": {
+    "inputs": {
+      "ckpt_name": "revAnimated_v121.safetensors",
+      "beta_schedule": "sqrt_linear (AnimateDiff)"
+    },
+    "class_type": "CheckpointLoaderSimpleWithNoiseSelect"
+  },
+  "2": {
+    "inputs": {
+      "vae_name": "vae-ft-mse-840000-ema-pruned.safetensors"
+    },
+    "class_type": "VAELoader"
+  },
+  "6": {
+    "inputs": {
+      "text": "(bad quality, worst quality:1.2)",
+      "clip": [
+        "1",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "7": {
+    "inputs": {
+      "seed": 44444444,
+      "steps": 25,
+      "cfg": 7,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "normal",
+      "denoise": 1,
+      "model": [
+        "93",
+        0
+      ],
+      "positive": [
+        "100",
+        0
+      ],
+      "negative": [
+        "6",
+        0
+      ],
+      "latent_image": [
+        "101",
+        0
+      ]
+    },
+    "class_type": "KSampler"
+  },
+  "10": {
+    "inputs": {
+      "samples": [
+        "7",
+        0
+      ],
+      "vae": [
+        "2",
+        0
+      ]
+    },
+    "class_type": "VAEDecode"
+  },
+  "12": {
+    "inputs": {
+      "filename_prefix": "Images\\image",
+      "images": [
+        "10",
+        0
+      ]
+    },
+    "class_type": "SaveImage"
+  },
+  "93": {
+    "inputs": {
+      "model_name": "mm_sd_v15_v2.ckpt",
+      "beta_schedule": "sqrt_linear (AnimateDiff)",
+      "model": [
+        "1",
+        0
+      ],
+      "context_options": [
+        "94",
+        0
+      ]
+    },
+    "class_type": "ADE_AnimateDiffLoaderWithContext"
+  },
+  "94": {
+    "inputs": {
+      "context_length": 16,
+      "context_stride": 1,
+      "context_overlap": 4,
+      "context_schedule": "uniform",
+      "closed_loop": false
+    },
+    "class_type": "ADE_AnimateDiffUniformContextOptions"
+  },
+  "95": {
+    "inputs": {
+      "frame_rate": 10,
+      "loop_count": 0,
+      "filename_prefix": "AnimateDiff",
+      "format": "image/gif",
+      "pingpong": false,
+      "save_image": true,
+      "ad_gif_preview__0": "/view?filename=AnimateDiff_00001_.gif&subfolder=&type=output&format=image%2Fgif",
+      "images": [
+        "10",
+        0
+      ]
+    },
+    "class_type": "ADE_AnimateDiffCombine"
+  },
+  "100": {
+    "inputs": {
+      "text": "\"0\" :\"spring day, blossoms, flowers, cloudy\",\n\"25\" :\"summer day, sunny, leaves\",\n\"50\" :\"fall day, colorful leaves dancing in the wind\",\n\"75\" :\"winter day, snowing, cold, jacket\"\n",
+      "max_frames": 120,
+      "pre_text": " (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest",
+      "app_text": "",
+      "pw_a": 0,
+      "pw_b": 0,
+      "pw_c": 0,
+      "pw_d": 0,
+      "clip": [
+        "1",
+        1
+      ]
+    },
+    "class_type": "BatchPromptSchedule"
+  },
+  "101": {
+    "inputs": {
+      "width": 768,
+      "height": 768,
+      "batch_size": 100
+    },
+    "class_type": "ADE_EmptyLatentImageLarge"
+  }
+}
