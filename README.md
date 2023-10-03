@@ -25,6 +25,23 @@ npm start
 
 ![](docs/static/img/screenshots/2023-09-29-21-15-36.png)
 
+You can import your workflow by dropping it into the `./actions` folder
+
+`CushyStudio` can import
+
+-   workflows in `*.png` file
+-   workflows in `*.workflows.json` (exported via save button in ComfyUI)
+-   workflows in `*.workflows-api.json` (exported via save (API Format) button in ComfyUI)
+
+👉 be sure to rename the file so it ends like this one of the options in the list above
+
+<details>
+  <summary>click here to see how to enable the api format</summary>
+
+![](docs/static/img/screenshots/2023-10-03-22-25-12.png)
+
+</details>
+
 ## 2. Edit and Inpaint like a pro
 
 ![](docs/static/img/screenshots/2023-09-29-22-40-45.png)
