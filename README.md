@@ -42,6 +42,15 @@ You can import your workflow by dropping it into the `./actions` folder
 
 </details>
 
+👉 In case you have a problem, can you check the logs and report what you see ?
+
+<details>
+  <summary>click here to see how to reveal the debug console</summary>
+
+![](docs/static/img/screenshots/2023-10-03-22-36-49.png)
+
+</details>
+
 ## 2. Edit and Inpaint like a pro
 
 ![](docs/static/img/screenshots/2023-09-29-22-40-45.png)
