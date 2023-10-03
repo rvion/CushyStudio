@@ -56,6 +56,11 @@ export class CushyFileWatcher {
         const destExists = existsSync(dest)
         if (destExists) return
 
+        if (filePath.endsWith('workflow.json')) {
+            const workflowStr = readFileSync(filePath, 'utf-8')
+            return this.importWorkflowFromStr({ workflowStr, dest, filePath })
+        }
+
         if (filePath.endsWith('workflow_api.json')) {
             const json = JSON.parse(readFileSync(filePath, 'utf-8'))
             const filename = path.basename(filePath)
@@ -70,6 +75,7 @@ export class CushyFileWatcher {
             return
             // console.log(code)
         }
+
         if (filePath.endsWith('.png')) {
             console.log('🟢 found ', filePath)
             const result = getPngMetadataFromUint8Array(readFileSync(filePath))
@@ -84,45 +90,12 @@ export class CushyFileWatcher {
             }
             const metadata = result.value
             const workflowStr = (metadata as { [key: string]: any }).workflow
-
             if (workflowStr == null) {
                 console.log(metadata)
                 console.log(`❌2. no workflow in metadata`)
                 return
             }
-            let workflowJSON: LiteGraphJSON
-            try {
-                workflowJSON = JSON.parse(workflowStr)
-            } catch (error) {
-                console.log(`❌3. workflow is not valid json`)
-                return
-            }
-            let promptJSON: ComfyPromptJSON
-            try {
-                console.groupCollapsed()
-                promptJSON = convertLiteGraphToPrompt(this.st.schema, workflowJSON)
-                console.groupEnd()
-            } catch (error) {
-                console.log(`❌4. cannot convert LiteGraph To Prompt`)
-                console.log(error)
-                return
-            }
-
-            try {
-                const filename = path.basename(filePath)
-                const author = path.dirname(filePath)
-                const code = this.st.importer.convertFlowToCode(promptJSON, {
-                    title: filename,
-                    author,
-                    preserveId: false,
-                })
-                writeFileSync(dest, code, 'utf-8')
-                this.handleNewFile(filePath + '.ts')
-                return
-            } catch (e) {
-                console.log(e)
-                console.log('❌5. cannot convert prompt to code')
-            }
+            return this.importWorkflowFromStr({ workflowStr, dest, filePath })
         }
 
         if (!filePath.endsWith(this.extensions)) return
@@ -131,6 +104,43 @@ export class CushyFileWatcher {
         this.filesMap.set(asAbsolutePath(absPath), new CushyFile(this.st, absPath))
     }
 
+    importWorkflowFromStr = (p: { workflowStr: string; dest: string; filePath: string }) => {
+        const { workflowStr, dest, filePath } = p
+
+        let workflowJSON: LiteGraphJSON
+        try {
+            workflowJSON = JSON.parse(workflowStr)
+        } catch (error) {
+            console.log(`❌3. workflow is not valid json`)
+            return
+        }
+        let promptJSON: ComfyPromptJSON
+        try {
+            // console.groupCollapsed()
+            promptJSON = convertLiteGraphToPrompt(this.st.schema, workflowJSON)
+            // console.groupEnd()
+        } catch (error) {
+            console.log(`❌4. cannot convert LiteGraph To Prompt`)
+            console.log(error)
+            return
+        }
+
+        try {
+            const filename = path.basename(filePath)
+            const author = path.dirname(filePath)
+            const code = this.st.importer.convertFlowToCode(promptJSON, {
+                title: filename,
+                author,
+                preserveId: false,
+            })
+            writeFileSync(dest, code, 'utf-8')
+            this.handleNewFile(filePath + '.ts')
+            return
+        } catch (e) {
+            console.log(e)
+            console.log('❌5. cannot convert prompt to code')
+        }
+    }
     // private handleFileChange(filePath: string) {
     //     // console.log(`${filePath} changed`)
     //     const absPath = asAbsolutePath(filePath)
