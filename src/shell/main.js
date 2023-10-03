@@ -9,7 +9,12 @@ app.commandLine.appendSwitch('disable-site-isolation-trials')
 // update dock icon and text
 const nativeImage = require('electron').nativeImage
 const image = nativeImage.createFromPath('src/public/CushyLogo.png')
+
+// ❌ cause a bug for warloardruby (sent on matrix):
+// ❌ cannot read property 'setIon' of undefined
 // app.dock.setIcon(image)
+
+// ❌ makes an ugly label in the osx dock
 // app.dock.setBadge('🛋️ CushySudio')
 
 async function createWindow() {
