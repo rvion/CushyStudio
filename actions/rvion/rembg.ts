@@ -4,7 +4,7 @@ action('remmg', {
     help: 'quick remove bg with one or many nodes',
     ui: (form) => ({
         // startImage
-        startImage: form.selectImage({ label: 'Start image' }),
+        startImage: form.imageOpt({ label: 'Start image' }),
         withRemBG: form.groupOpt({ items: {} }),
         withABG: form.groupOpt({ items: {} }),
         withWAS: form.groupOpt({
@@ -19,6 +19,7 @@ action('remmg', {
 
     run: async (flow, p) => {
         const graph = flow.nodes
+        if (p.startImage == null) throw new Error('no image provided')
         const image = await flow.loadImageAnswer(p.startImage)
         // 4. options
         if (p.withRemBG) graph.PreviewImage({ images: graph.Image_Remove_Background_$1rembg$2({ image }) })

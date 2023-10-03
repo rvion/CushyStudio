@@ -5,54 +5,12 @@
  * TODO: write them down to explain choices
  */
 
-import type { Base64Image } from 'src/core/b64img'
 import type { ImageID } from 'src/models/Image'
-import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
-import type { Requestable } from './InfoRequest'
-import type { LATER } from 'LATER'
-import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 import type { FormBuilder } from './FormBuilder'
-import type * as R from './InfoRequest'
+import type { Requestable } from './InfoRequest'
 
 // prettier-ignore
-export type InfoAnswer<Req> =
-    /** str */
-    Req extends R.Requestable_str ? string :
-    Req extends R.Requestable_strOpt ? Maybe<string> :
-    Req extends R.Requestable_prompt ? WidgetPromptOutput :
-    Req extends R.Requestable_promptOpt ? Maybe<WidgetPromptOutput> :
-    /** nums */
-    Req extends R.Requestable_int ? number :
-    Req extends R.Requestable_intOpt ? Maybe<number> :
-    Req extends R.Requestable_float ? number :
-    Req extends R.Requestable_floatOpt ? Maybe<number> :
-    /** bools */
-    Req extends R.Requestable_bool ? boolean :
-    Req extends R.Requestable_boolOpt ? Maybe<boolean> :
-    Req extends R.Requestable_size ? Maybe<CushySize> :
-    /** embedding */
-    Req extends R.Requestable_embeddings ? Maybe<boolean> :
-    /** loras */
-    Req extends R.Requestable_enum<infer T> ? LATER<'Requirable'>[T] :
-    Req extends R.Requestable_loras ? SimplifiedLoraDef[] :
-    /** painting */
-    Req extends R.Requestable_samMaskPoints ? {points: SamPointPosStr, labels: SamPointLabelsStr} :
-    Req extends R.Requestable_selectImage ? ImageAnswer :
-    Req extends R.Requestable_manualMask ? Base64Image :
-    Req extends R.Requestable_paint ? Base64Image :
-
-    /** group */
-    Req extends { type: 'items', items: { [key: string]: any } } ? { [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> } :
-    Req extends { type: 'items?', items: { [key: string]: any } } ? Maybe<{ [key in keyof Req['items']]: InfoAnswer<Req['items'][key]> }> :
-    /** select one */
-    Req extends { type: 'selectOne', choices: infer T } ? (T extends readonly any[] ? T[number] : T) :
-    Req extends { type: 'selectOneOrCustom', choices: string[] } ? string :
-    /** select many */
-    Req extends { type: 'selectMany', choices: infer T } ? (T extends readonly any[] ? T[number][] : T) :
-    Req extends { type: 'selectManyOrCustom', choices: string[] } ? string[] :
-    /** array */
-    Req extends readonly [infer X, ...infer Rest] ? [InfoAnswer<X>, ...InfoAnswer<Rest>[]] :
-    never
+export type InfoAnswer<Req extends Requestable> = Req['default']
 
 export type InfoRequestFn = <const Req extends { [key: string]: Requestable }>(
     req: (q: FormBuilder) => Req,

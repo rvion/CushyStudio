@@ -48,8 +48,12 @@ export class FormBuilder {
         type: 'samMaskPoints' as const,
         imageInfo: toImageInfos(img),
     })
-    selectImage = (p: Omit<R.Requestable_selectImage, 'type'>): R.Requestable_selectImage => ({
-        type: 'selectImage' as const,
+    image = (p: Omit<R.Requestable_image, 'type'>): R.Requestable_image => ({
+        type: 'image' as const,
+        ...p,
+    })
+    imageOpt = (p: Omit<R.Requestable_imageOpt, 'type'>): R.Requestable_imageOpt => ({
+        type: 'image?' as const,
         ...p,
     })
     manualMask = (label: string, img: ImageL | ImageT) => ({

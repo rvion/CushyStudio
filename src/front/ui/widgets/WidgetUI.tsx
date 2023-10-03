@@ -101,7 +101,8 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'prompt?') return <WidgetPromptUI get={get} set={set} nullable />
     if (req.type === 'paint') return <>🔴 paint form commented</> //<WidgetPaintUI uri={'foo bar 🔴'} />
     if (req.type === 'samMaskPoints') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
-    if (req.type === 'selectImage') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ get={get} set={set} />
+    if (req.type === 'image') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ get={get} set={set} />
+    if (req.type === 'image?') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ get={get} set={set} />
     if (req.type === 'manualMask') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'embeddings') return <>TODO</>
     if (req.type === 'selectMany') return <>TODO</>

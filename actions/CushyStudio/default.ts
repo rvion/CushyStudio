@@ -22,7 +22,7 @@ action('Prompt-V1', {
         negative: form.promptOpt({}),
 
         // latent
-        startImage: form.selectImage({ group: 'latent' }),
+        startImage: form.imageOpt({ group: 'latent' }),
         width: form.int({ default: 1024, group: 'latent' }),
         height: form.int({ default: 1024, group: 'latent' }),
         batchSize: form.int({ default: 1, group: 'latent', min: 1 }),

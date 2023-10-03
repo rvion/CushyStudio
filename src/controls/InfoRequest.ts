@@ -36,7 +36,8 @@ export type Requestable_size         = InptReq<'size',    boolean > // prettier-
 export type Requestable_embeddings   = InptReq<'embeddings',  LATER<'Embeddings'>> // prettier-ignore
 export type Requestable_loras        = InptReq<'loras',       SimplifiedLoraDef[]> // prettier-ignore
 //
-export type Requestable_selectImage  = InptOpt<'selectImage',   ImageAnswer>; /*imageInfos?: ImageT[]*/ // prettier-ignore
+export type Requestable_image        = InptReq<'image',  ImageAnswer>; /*imageInfos?: ImageT[]*/ // prettier-ignore
+export type Requestable_imageOpt     = InptOpt<'image?', ImageAnswer>; /*imageInfos?: ImageT[]*/ // prettier-ignore
 export type Requestable_manualMask   = InptReq<'manualMask',    null,    { imageInfo: ImageT}> // prettier-ignore
 export type Requestable_paint        = InptReq<'paint',         null,    { url: string }> // prettier-ignore
 export type Requestable_samMaskPoints= InptReq<'samMaskPoints', null,    { imageInfo: ImageT }> // prettier-ignore
@@ -75,7 +76,8 @@ export type Requestable =
     | Requestable_loras
     /** painting */
     | Requestable_samMaskPoints
-    | Requestable_selectImage
+    | Requestable_image
+    | Requestable_imageOpt
     | Requestable_manualMask
     | Requestable_paint
     /** group */
