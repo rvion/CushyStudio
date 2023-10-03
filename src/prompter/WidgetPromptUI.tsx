@@ -4,7 +4,7 @@ import { wildcards } from '../wildcards/wildcards'
 import { useSt } from '../front/FrontStateCtx'
 
 // lexical
-import { $createParagraphNode, $createTextNode, $getRoot, EditorState, LexicalEditor } from 'lexical'
+import { $createLineBreakNode, $createParagraphNode, $createTextNode, $getRoot, EditorState, LexicalEditor } from 'lexical'
 import { InitialConfigType, LexicalComposer } from '@lexical/react/LexicalComposer'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
 import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
@@ -95,6 +95,7 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
                 else if (x.type === 'lora') paragraph.append($createLoraNode(x.loraDef))
                 else if (x.type === 'wildcard') paragraph.append($createWildcardNode(x.payload))
                 else if (x.type === 'embedding') paragraph.append($createEmbeddingNode(x.embeddingName))
+                else if (x.type === 'linebreak') paragraph.append($createLineBreakNode())
                 else if (x.type === 'text') paragraph.append($createTextNode(x.text))
             }
             $getRoot().append(paragraph)

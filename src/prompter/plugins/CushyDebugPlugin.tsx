@@ -44,6 +44,7 @@ export const CushyDebugPlugin = <T extends any>() => {
 
 type TextNodeJSON = { type: 'text'; text: string }
 type ParagraphNodeJSON = { type: 'paragraph'; children: PossibleSerializedNodes[] }
+type LineBreakJSON = { type: 'linebreak' }
 
 // prettier-ignore
 export type PossibleSerializedNodes =
@@ -52,6 +53,7 @@ export type PossibleSerializedNodes =
     | WildcardNodeJSON
     | EmbeddingNodeJSON
     | TextNodeJSON
+    | LineBreakJSON
 // | ParagraphNodeJSON
 
 const convertToSimpleJSON = (node: PossibleSerializedNodes): { type: string; value: string } => {
@@ -60,6 +62,7 @@ const convertToSimpleJSON = (node: PossibleSerializedNodes): { type: string; val
     if (node.type === 'wildcard') return { type: 'wildcard', value: node.payload }
     if (node.type === 'embedding') return { type: 'embedding', value: node.embeddingName }
     if (node.type === 'text') return { type: 'text', value: node.text }
+    if (node.type === 'linebreak') return { type: 'linebreak', value: '' }
     // if (node.type === 'paragraph') return { type: 'paragraph', value: node.children.map(convertToSimpleJSON) }
     return { type: 'unknown', value: node }
 }

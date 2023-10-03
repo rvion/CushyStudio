@@ -25,7 +25,7 @@ action('Prompt-V1', {
         startImage: form.selectImage({ group: 'latent' }),
         width: form.int({ default: 1024, group: 'latent' }),
         height: form.int({ default: 1024, group: 'latent' }),
-        batchSize: form.int({ default: 1, group: 'latent' }),
+        batchSize: form.int({ default: 1, group: 'latent', min: 1 }),
 
         //
         CFG: form.int({ default: 8, group: 'sampler' }),
