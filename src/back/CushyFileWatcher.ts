@@ -59,6 +59,7 @@ export class CushyFileWatcher {
     }
 
     private handleNewFile = (filePath: string) => {
+        console.log('[💙] TOOL: handling', filePath)
         //
         const dest = filePath + '.ts'
         const destExists = existsSync(dest)
