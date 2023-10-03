@@ -17,6 +17,7 @@ export class ComfyImporter {
     UI_ONLY_ATTRIBUTES = [
         //
         'Random seed after every gen',
+        'choose file to upload',
     ]
 
     // ATTRIBUTE THAT HAD AN OTHER NAME BEFORE
@@ -135,7 +136,13 @@ export class ComfyImporter {
             }
             let outoutIx = 0
             for (const o of schema.outputs ?? []) {
-                availableSignals.set(`${nodeID}-${outoutIx++}`, `${varName}.${o.nameInComfy}`)
+                const isValid1234 = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(o.nameInComfy)
+                availableSignals.set(
+                    `${nodeID}-${outoutIx++}`,
+                    isValid1234 //
+                        ? `${varName}.${o.nameInComfy}`
+                        : `${varName}["${o.nameInComfy}"]`,
+                )
             }
 
             if (node == null) throw new Error('node not found')

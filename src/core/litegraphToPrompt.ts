@@ -14,7 +14,7 @@ export const convertLiteGraphToPrompt = (
     for (const node of workflow.nodes) {
         // Don't serialize Note nodes (those are like comments)
         if (node.type === 'PrimitiveNode') {
-            console.log(`    | [🔶 WARN] "PrimitiveNode" node ${node.id} inline`)
+            console.log(`found primitive ${node.type}#${node.id} with value ${bang(node.widgets_values[0])}`)
             PRIMITIVE_VALUES[node.id] = bang(node.widgets_values[0])
             // debugger
         }
@@ -51,7 +51,7 @@ export const convertLiteGraphToPrompt = (
 
         // Don't serialize Note nodes (those are like comments)
         if (node.type === 'PrimitiveNode') {
-            console.log(`    | [🔶 WARN] "PrimitiveNode" node ${node.id} inline`)
+            console.log(`    | [🔶 WARN] PrimitiveNode#${node.id} => will be inlined by children`)
             continue
         }
 
@@ -117,12 +117,12 @@ export const convertLiteGraphToPrompt = (
                 parent = getParentNode(linkId)
             }
             if (parent == null) throw new Error(`no parent found for ${node.id}.${ipt.name})`)
-            console.log(`    | .${ipt.name}  (via LINK`, String(parent.node.id), parent.link[2], parent.node.type, ')')
 
             if (parent.node.type === 'PrimitiveNode') {
                 console.log('    | inlining primitive', { val: PRIMITIVE_VALUES[parent.node.id] })
-                inputs[inputs[ipt.name]] = PRIMITIVE_VALUES[parent.node.id]
+                inputs[ipt.name] = PRIMITIVE_VALUES[parent.node.id]
             } else {
+                console.log(`    | .${ipt.name}  (via LINK`, String(parent.node.id), parent.link[2], parent.node.type, ')')
                 inputs[ipt.name] = [String(parent.node.id), parent.link[2]]
             }
 
@@ -150,6 +150,7 @@ export const convertLiteGraphToPrompt = (
             class_type: node.type,
         }
     }
+    console.log('🟢 converted:', { prompt })
 
     return prompt
 }
