@@ -65,7 +65,10 @@ export class CushyFileWatcher {
         const destExists = existsSync(dest)
         if (destExists) return
 
-        if (filePath.endsWith('workflow.json')) {
+        if (
+            filePath.endsWith('workflow.json') || //
+            filePath.endsWith('workflows.json')
+        ) {
             const workflowStr = readFileSync(filePath, 'utf-8')
             return this.importWorkflowFromStr({ workflowStr, dest, filePath })
         }
