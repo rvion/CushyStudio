@@ -85,7 +85,7 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
                 typeof initialValue === 'string' || // legacy
                 initialValue == null //
             ) {
-                $getRoot().append($createParagraphNode().append($createTextNode('')))
+                $getRoot().append($createParagraphNode().append($createTextNode(initialValue ?? '')))
                 return
             }
 
@@ -99,13 +99,6 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
                 else if (x.type === 'text') paragraph.append($createTextNode(x.text))
             }
             $getRoot().append(paragraph)
-            // $getRoot().append($createTextNode(p.get()))
-            // const root = $getRoot()
-            // const txt = p.get()
-            // console.log('🟢>>>', txt)
-            // // const txt = root.__cachedText
-            // const txtNode = $createTextNode(txt ?? '')
-            // root.append(txtNode)
         },
         namespace: 'MyEditor',
         theme: theme,
