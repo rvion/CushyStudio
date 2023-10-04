@@ -398,6 +398,7 @@ export class STATE {
             writeFileSync(this.nodesTSPath, comfySchemaTsFormatted, 'utf-8')
             progress('[**** step 4/4] 🟢 schema updated')
         } catch (error) {
+            console.error(error)
             console.error('🔴 FAILURE TO GENERATE nodes.d.ts', extractErrorMessage(error))
             console.error('🐰', extractErrorMessage(error))
             console.error('🦊', 'Failed to fetch ObjectInfos from Comfy.')
