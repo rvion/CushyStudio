@@ -417,6 +417,9 @@ export class SchemaL {
 }
 
 const escapeJSKey = (s: string) => {
+    if (typeof s !== 'string') {
+        debugger
+    }
     if (!s.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/)) {
         // debugger
         return `"${s}"`
