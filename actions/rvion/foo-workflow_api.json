@@ -1,0 +1,81 @@
+{
+  "1": {
+    "inputs": {
+      "low_threshold": 100,
+      "high_threshold": 200,
+      "resolution": 512,
+      "image": [
+        "10",
+        0
+      ]
+    },
+    "class_type": "CannyEdgePreprocessor"
+  },
+  "2": {
+    "inputs": {
+      "coarse": "disable",
+      "resolution": 512,
+      "image": [
+        "10",
+        1
+      ]
+    },
+    "class_type": "LineArtPreprocessor"
+  },
+  "3": {
+    "inputs": {
+      "threshold": 32,
+      "resolution": 512,
+      "image": [
+        "10",
+        2
+      ]
+    },
+    "class_type": "Scribble_XDoG_Preprocessor"
+  },
+  "4": {
+    "inputs": {
+      "image": "ComfyUI_temp_xpzye_00096_ (1).png",
+      "choose file to upload": "image"
+    },
+    "class_type": "LoadImage"
+  },
+  "8": {
+    "inputs": {
+      "images": [
+        "9",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "9": {
+    "inputs": {
+      "select": 1,
+      "sel_mode": true,
+      "input1": [
+        "1",
+        0
+      ],
+      "input2": [
+        "2",
+        0
+      ],
+      "input3": [
+        "3",
+        0
+      ]
+    },
+    "class_type": "ImpactSwitch"
+  },
+  "10": {
+    "inputs": {
+      "select": 1,
+      "input": [
+        "4",
+        0
+      ]
+    },
+    "class_type": "ImpactInversedSwitch"
+  }
+}

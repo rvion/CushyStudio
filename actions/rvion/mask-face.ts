@@ -8,15 +8,16 @@ action('mask-face', {
         image: form.imageOpt({ label: 'image to mask' }),
     }),
     run: async (flow, deps) => {
-        const clothesMask = flow.nodes.Mask_By_Text({
+        const graph = flow.nodes
+        const clothesMask = graph.Mask_By_Text({
             image: flow.AUTO,
             prompt: 'face',
             negative_prompt: 'arms, hands, legs, feet, background',
             normalize: 'no',
             precision: 0.3,
         })
-        flow.nodes.SaveImage({ images: clothesMask.IMAGE })
-        flow.nodes.SaveImage({ images: clothesMask.IMAGE_1 })
+        graph.SaveImage({ images: clothesMask.IMAGE })
+        graph.SaveImage({ images: clothesMask.IMAGE_1 })
         await flow.PROMPT()
     },
 })
