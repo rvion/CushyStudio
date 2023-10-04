@@ -18,7 +18,6 @@ export const WebsocketIndicatorUI = observer(function WebsocketIndicatorUI_(p: {
                             <div>{st.getWSUrl()}</div>
                         </Message>
                     )}
-                    Debug Logs:
                     {st.ws.debugMessages.map((x, ix) =>
                         x.type === 'error' ? ( //
                             <div key={ix} className='text-red-400'>

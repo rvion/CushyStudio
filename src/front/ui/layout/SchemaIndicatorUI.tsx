@@ -18,7 +18,6 @@ export const SchemaIndicatorUI = observer(function SchemaIndicatorUI_(p: {}) {
                             <div>{st.getWSUrl()}</div>
                         </Message>
                     )}
-                    Debug Logs:
                     <pre>{st.schemaRetrievalLogs.join('\n')}</pre>
                 </Popover>
             }
