@@ -29,7 +29,8 @@ export class CushyFileWatcher {
         // this.filesMap = new Map()
     }
 
-    walk = async (dir: string): Promise<boolean> => {
+    walk = async (): Promise<boolean> => {
+        const dir = this.st.actionsFolderPath
         console.log(`[💙] TOOL: starting discovery in ${dir}`)
 
         // reset the tree
@@ -55,10 +56,6 @@ export class CushyFileWatcher {
     }
 
     private _walk = (dir: string, parentStack: ItemDataType[]) => {
-        const folder = path.basename(dir)
-        // console.log(`[💙] TOOL:  ...exploring ${dir}`)
-
-        // this.st.db.actions.clear()
         const files = readdirSync(dir)
         // console.log(files)
         for (const file of files) {
@@ -66,15 +63,17 @@ export class CushyFileWatcher {
             const stat = statSync(filePath)
             // const dirName = path.basename(filePath)
             if (stat.isDirectory()) {
-                console.log('----------')
+                // console.log('----------')
                 // console.log('1', folderEntry)
                 const ARRAY: ItemDataType[] = []
                 this._walk(filePath, ARRAY)
                 const folderEntry: ItemDataType = { children: ARRAY, label: file, value: filePath }
-                console.log('2', folderEntry)
+                // console.log('2', folderEntry)
                 parentStack.push(folderEntry)
             } else {
-                console.log('[💙] TOOL: handling', filePath)
+                if (file.startsWith('.')) continue
+                const relPath = path.relative(this.st.actionsFolderPath, filePath)
+                console.log('[💙] TOOL: handling', relPath)
                 const absPath = asAbsolutePath(filePath)
                 const paf = new PossibleActionFile(this.st, absPath)
                 this.filesMap.set(asAbsolutePath(absPath), paf)

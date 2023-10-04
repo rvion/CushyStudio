@@ -6,15 +6,16 @@ import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
 import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
 import { getIconForFilePath } from './filePathIcon'
+import { asAbsolutePath } from '../../../utils/fs/pathUtils'
 
 export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const st = useSt()
     const pj = useProject()
     const db = st.db
     const tools = st.toolsSorted
-    let grup = ''
-    const [value, setValue] = useState([])
-    st.tsFilesMap.renderTree()
+    // let grup = ''
+    // const [value, setValue] = useState([])
+    // st.tsFilesMap.renderTree()
     return (
         <div className='flex flex-col flex-grow'>
             {/*  */}
@@ -57,13 +58,27 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                             ) : (
                                 '❓'
                             )}{' '}
-                            {node.label} {node.children?.length}
+                            {node.label}
+                            {/* {node.children?.length} */}
                         </>
                     )
                 }}
                 // renderTreeIcon={() => <>{'>'}</>}
-                // onChange={(value) => setValue(value)}
                 // value={value}
+                onChange={async (_value: any) => {
+                    if (typeof _value !== 'string') throw new Error('tree selection value is not a string')
+                    const value = _value as string
+                    const paf = st.tsFilesMap.filesMap.get(asAbsolutePath(value))
+                    if (paf == null) throw new Error(`paf not found for ${value}`)
+                    console.log(value, paf)
+                    const res = await paf.load({ logFailures: true })
+                    const tool0 = res.paf?.tools?.[0]
+                    if (tool0 == null) throw new Error(`tool0 not found for ${value}`)
+                    pj.focusTool(tool0)
+                    // console.log(res?.tools.length)
+
+                    // setValue(value)
+                }}
                 // renderTreeNode={(nodeData) => {
                 //     return <div>{nodeData.label}</div>
                 // }}

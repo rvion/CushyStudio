@@ -57,7 +57,9 @@ export class PossibleActionFile {
 
     statusByStrategy = new Map<LoadStrategy, 'pending' | 'success' | 'failure'>()
 
-    load = async (opts: { logFailures: boolean }) => {
+    private loadResult: Maybe<{ paf?: ActionFile; failures: string[] }> = null
+    load = async (opts: { logFailures: boolean }): Promise<{ paf?: ActionFile; failures: string[] }> => {
+        if (this.loadResult) return this.loadResult
         const strategies = this.findLoadStrategies()
         const failures: string[] = []
         for (const strategy of strategies) {
@@ -65,12 +67,16 @@ export class PossibleActionFile {
             const result = await this.loadWithStrategy(strategy)
             if (result.success) {
                 this.loaded.resolve(result.value)
+                this.loadResult = { failures, paf: result.value }
+                return this.loadResult
             } else {
                 this.statusByStrategy.set(strategy, 'failure')
                 if (opts.logFailures) console.error(result)
                 failures.push(result.message)
             }
         }
+        this.loadResult = { failures }
+        return this.loadResult
     }
 
     private loadWithStrategy = async (strategy: LoadStrategy): Promise<ActionFileResult> => {

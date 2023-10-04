@@ -93,7 +93,7 @@ export class STATE {
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
         this.db.projects.create({
-            activeToolID: this.db.tools.values[0].id,
+            // activeToolID: this.db.tools.values[0].id,
             rootGraphID: initialGraph.id,
             name: 'new project',
         })
@@ -152,7 +152,7 @@ export class STATE {
         // 1️⃣ if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
         ;(async () => {
             await this.schemaReady
-            await this.tsFilesMap.walk(actionsFolderPath)
+            await this.tsFilesMap.walk()
             if (db.projects.size === 0) this.startProjectV2()
         })()
         // Promise.all([

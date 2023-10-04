@@ -27,7 +27,13 @@ export const GraphUI = observer(function GraphUI_(p: { graph: GraphL; depth: num
             appearance='ghost'
             size='xs'
             color='green'
+            startIcon={<span className='material-symbols-outlined'>add</span>}
             // code to duplicate the draft
+            style={{
+                borderBottomLeftRadius: 0,
+                borderBottomRightRadius: 0,
+                borderBottom: 'none',
+            }}
             onClick={() => {
                 if (tool == null) return
                 const draft = pj.db.drafts.create({
