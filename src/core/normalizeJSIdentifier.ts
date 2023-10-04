@@ -16,20 +16,11 @@ const mapChar = (char: string) => {
     if (char === '-') return '$7'
     if (char === '|') return '$8'
     if (char === ',') return '$9'
-    throw new Error(`❌ invalid char in node name: "${char}"`)
+    return `$$${char.charCodeAt(0).toString(16).toUpperCase()}`
 }
-export const normalizeJSIdentifier = (name: string) => {
-    if (name.startsWith('Enum_Image_Rembg_$')) debugger
-    let out = ''
-    // if (name === '*') return 'STAR'
-    for (const char of name) out += mapChar(char)
 
+export const normalizeJSIdentifier = (name: string) => {
+    let out = ''
+    for (const char of name) out += mapChar(char)
     return out
-    // return name
-    //     .replace(/[^a-zA-Z0-9_]/g, ' ')
-    //     .split(' ')
-    //     .map((i) => i.trim())
-    //     .filter((i) => i.length > 0)
-    //     .map((i) => i[0].toUpperCase() + i.slice(1))
-    //     .join('')
 }
