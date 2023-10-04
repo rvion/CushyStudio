@@ -1,10 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { Fragment, useState } from 'react'
-import { InputGroup, Message, Popover, SelectPicker, Whisper } from 'rsuite'
+import { Button, InputGroup, Message, Popover, SelectPicker, Tree, Whisper } from 'rsuite'
 import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
 import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
+import { getIconForFilePath } from './filePathIcon'
 
 export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const st = useSt()
@@ -12,6 +13,8 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const db = st.db
     const tools = st.toolsSorted
     let grup = ''
+    const [value, setValue] = useState([])
+    st.tsFilesMap.renderTree()
     return (
         <div className='flex flex-col flex-grow'>
             {/*  */}
@@ -32,61 +35,43 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                     }}
                 />
             </InputGroup>
-            <div>
-                {db.tools.map((tool) => {
-                    const action = (
-                        <div
-                            className='p-1 hover:bg-gray-700 cursor-pointer text-ellipsis overflow-hidden'
-                            key={tool.id}
-                            onClick={() => pj.focusTool(tool)}
-                            style={{
-                                overflow: 'hidden',
-                                whiteSpace: 'nowrap',
-                                background: pj.activeTool.id === tool.id ? '#343e8d' : 'transparent',
-                            }}
-                        >
-                            {tool.data.owner} / {tool.name}
-                        </div>
+            <Button size='sm' startIcon={<span className='material-symbols-outlined'>sync</span>}>
+                Reload
+            </Button>
+            {/* {st.tsFilesMap.filesMap.size} */}
+            {/* {JSON.stringify(st.tsFilesMap.treeData, null, 3)} */}
+            <Tree
+                // height={'900'}
+                defaultExpandAll
+                className='overflow-x-hidden overflow-y-auto flex-grow'
+                key={st.tsFilesMap.filesMap.size}
+                data={st.tsFilesMap.treeData}
+                renderTreeNode={(node) => {
+                    // console.log(node)
+                    return (
+                        <>
+                            {node.children ? (
+                                <span className='material-symbols-outlined'>folder</span>
+                            ) : typeof node.value === 'string' ? (
+                                getIconForFilePath(node.value)
+                            ) : (
+                                '❓'
+                            )}{' '}
+                            {node.label} {node.children?.length}
+                        </>
                     )
-                    if (tool.data.owner != grup) {
-                        grup = tool.data.owner
-                        return (
-                            <Fragment key={tool.id}>
-                                {/* <div
-                                    //
-                                    className='flex gap-1 mt-2'
-                                    // style={{ borderTop: '1px solid #444444' }}
-                                >
-                                    <span className='material-symbols-outlined'>person_outline</span>
-                                    {grup}
-                                </div> */}
-                                {action}
-                            </Fragment>
-                        )
-                    }
-                    return action
-                })}
-                {st.tsFilesMap.failures.map((f) => (
-                    <Whisper
-                        key={f.filePath}
-                        enterable
-                        speaker={
-                            <Popover>
-                                <Message type='error'>{f.error}</Message>
-                            </Popover>
-                        }
-                    >
-                        <div
-                            style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}
-                            className='cursor-pointer text-ellipsis overflow-hidden text-red-400 p-1'
-                        >
-                            {/* <span className='material-symbols-outlined'>error_outline</span> */}
-                            {f.filePath}
-                        </div>
-                    </Whisper>
-                ))}
-            </div>
-            <div className='flex-grow'></div>
+                }}
+                // renderTreeIcon={() => <>{'>'}</>}
+                // onChange={(value) => setValue(value)}
+                // value={value}
+                // renderTreeNode={(nodeData) => {
+                //     return <div>{nodeData.label}</div>
+                // }}
+                // draggable
+                // onDrop={({ createUpdateDataFunction }, event) => setTreeData(createUpdateDataFunction(treeData))}
+            />
+
+            {/* <div className='flex-grow'></div> */}
             <Message showIcon className='m-2' type='info'>
                 {/* <span className='material-symbols-outlined'>folder-</span> */}
                 Add yours now in the actions folder of your installation.
@@ -116,3 +101,58 @@ export const FooBarUI = observer(function FooBarUI_(p: {}) {
         </div>
     )
 })
+
+// <div>
+// {db.tools.map((tool) => {
+//     const action = (
+//         <div
+//             className='p-1 hover:bg-gray-700 cursor-pointer text-ellipsis overflow-hidden'
+//             key={tool.id}
+//             onClick={() => pj.focusTool(tool)}
+//             style={{
+//                 overflow: 'hidden',
+//                 whiteSpace: 'nowrap',
+//                 background: pj.activeTool.id === tool.id ? '#343e8d' : 'transparent',
+//             }}
+//         >
+//             {tool.data.owner} / {tool.name}
+//         </div>
+//     )
+//     if (tool.data.owner != grup) {
+//         grup = tool.data.owner
+//         return (
+//             <Fragment key={tool.id}>
+//                 {/* <div
+//                     //
+//                     className='flex gap-1 mt-2'
+//                     // style={{ borderTop: '1px solid #444444' }}
+//                 >
+//                     <span className='material-symbols-outlined'>person_outline</span>
+//                     {grup}
+//                 </div> */}
+//                 {action}
+//             </Fragment>
+//         )
+//     }
+//     return action
+// })}
+// {st.tsFilesMap.failures.map((f) => (
+//     <Whisper
+//         key={f.filePath}
+//         enterable
+//         speaker={
+//             <Popover>
+//                 <Message type='error'>{f.error}</Message>
+//             </Popover>
+//         }
+//     >
+//         <div
+//             style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}
+//             className='cursor-pointer text-ellipsis overflow-hidden text-red-400 p-1'
+//         >
+//             {/* <span className='material-symbols-outlined'>error_outline</span> */}
+//             {f.filePath}
+//         </div>
+//     </Whisper>
+// ))}
+// </div>

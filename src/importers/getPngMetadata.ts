@@ -1,5 +1,5 @@
 // import * as vscode from 'vscode'
-import { resultFailure, Result, resultSuccess } from '../utils/Either'
+import { resultFailure, Either, resultSuccess } from '../utils/Either'
 
 // const showErrorMessage = vscode.window.showErrorMessage
 
@@ -42,7 +42,7 @@ export function getPngMetadataFromFile(file: File): Promise<TextChunks> {
     })
 }
 
-export const getPngMetadataFromUint8Array = (pngData: Uint8Array): Result<string, TextChunks> => {
+export const getPngMetadataFromUint8Array = (pngData: Uint8Array): Either<string, TextChunks> => {
     const dataView = new DataView(
         pngData.buffer,
         pngData.byteOffset, // <-- it just doesn't work without this

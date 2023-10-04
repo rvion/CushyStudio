@@ -197,3 +197,27 @@ body {
 .rs-nav.xs .rs-nav-item {
     padding: 0.3rem !important;
 }
+
+/* ------------------------------ */
+.rs-tree-node-label-content {
+    padding: 0 0 !important;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+.rs-tree-node-label {
+    line-height: 1rem !important;
+}
+.rs-tree-node{
+    /* padding: 0!important; */
+    margin: 0!important;
+}
+.rs-tree-node-expand-icon-wrapper>.rs-tree-node-custom-icon,
+.rs-tree-node-expand-icon-wrapper>.rs-tree-node-loading-icon{
+    height: unset !important;
+}
+
+.rs-tree {
+    overflow-x: hidden!important;
+    max-height: unset;
+}
