@@ -264,7 +264,7 @@ export class Runtime {
                 console.log(img.data)
                 return this.nodes.Image_Load({
                     image_path: img.url ?? img.localAbsolutePath,
-                    RGBA: false,
+                    RGBA: false, // 'false',
                 })
             }
             // if (ia.type === 'imageSignal') {

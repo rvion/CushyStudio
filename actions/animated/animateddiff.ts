@@ -82,7 +82,7 @@ action('animateddiff-2023-10-03', {
         } else {
             vAEDecode = graph.VAEDecode({ samples: kSampler.LATENT, vae: vAE.VAE })
         }
-        const save = graph.SaveImage({ filename_prefix: 'Images\\image', images: vAEDecode.IMAGE })
+        const save = graph.SaveImage({ filename_prefix: 'Images\\image', images: vAEDecode._IMAGE })
         // graph.SaveImage({
         //     images: graph.Write_to_Video({ image: vAEDecode, codec: 'H264' }),
         // })

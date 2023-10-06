@@ -3,7 +3,7 @@ import type { CSCriticalError } from './CSCriticalError'
 import type { ConfigFile } from 'src/core/ConfigFile'
 import type { ImageL } from '../models/Image'
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFile, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { createRef } from 'react'
 import { nanoid } from 'nanoid'
@@ -16,7 +16,7 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyFileWatcher } from '../back/CushyFileWatcher'
-import { ComfySchemaJSON } from '../types/ComfySchemaJSON'
+import { ComfySchemaJSON, ComfySchemaJSON_zod } from '../types/ComfySchemaJSON'
 import { EmbeddingName, SchemaL } from '../models/Schema'
 import { ManualPromise } from '../utils/ManualPromise'
 import { CodePrettier } from '../utils/CodeFormatter'
@@ -347,16 +347,37 @@ export class STATE {
         }
         try {
             // 1 ------------------------------------
-            const object_info_url = `${this.getServerHostHTTP()}/object_info`
-            progress(`[.... step 1/4] fetching schema from ${object_info_url} ...`)
             const headers: HeadersInit = { 'Content-Type': 'application/json' }
-            const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
-            const object_info_json = (await object_info_res.json()) as { [key: string]: any }
-            writeFileSync(this.comfyJSONPath, JSON.stringify(object_info_json), 'utf-8')
-            const knownNodeNames = Object.keys(object_info_json)
-            progress(`[.... step 1/4] found ${knownNodeNames.length} nodes`) // (${JSON.stringify(keys)})
-            schema$ = object_info_json as any
-            progress('[*... step 1/4] schema fetched')
+            const debugObjectInfosPath = 'schema/debug.json'
+            const hasDebugObjectInfosJSON = existsSync(debugObjectInfosPath)
+            if (hasDebugObjectInfosJSON) {
+                progress('[.... step 1/4] using debug comfyJSONPath')
+                const debugObjectInfosStr = readFileSync(debugObjectInfosPath, 'utf8')
+                const debugObjectInfosJSON = JSON.parse(debugObjectInfosStr)
+                schema$ = debugObjectInfosJSON
+                progress('[*... step 1/4] schema fetched')
+                const res = ComfySchemaJSON_zod.safeParse(schema$) //{ KSampler: schema$['KSampler'] })
+                if (res.success) {
+                    console.log('🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢 valid schema')
+                } else {
+                    console.log('🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴 invalid schema')
+                    const DEBUG_small = JSON.stringify(res.error.flatten(), null, 4)
+                    writeFileSync('schema/debug.errors.json', DEBUG_small, 'utf-8')
+                    const DEBUG_full = JSON.stringify(res.error, null, 4)
+                    writeFileSync('schema/debug.errors-full.json', DEBUG_full, 'utf-8')
+                    console.log(res.error.flatten())
+                }
+            } else {
+                const object_info_url = `${this.getServerHostHTTP()}/object_info`
+                progress(`[.... step 1/4] fetching schema from ${object_info_url} ...`)
+                const object_info_res = await fetch(object_info_url, { method: 'GET', headers })
+                const object_info_json = (await object_info_res.json()) as { [key: string]: any }
+                writeFileSync(this.comfyJSONPath, JSON.stringify(object_info_json), 'utf-8')
+                const knownNodeNames = Object.keys(object_info_json)
+                progress(`[.... step 1/4] found ${knownNodeNames.length} nodes`) // (${JSON.stringify(keys)})
+                schema$ = object_info_json as any
+                progress('[*... step 1/4] schema fetched')
+            }
 
             // 1 ------------------------------------
             const embeddings_url = `${this.getServerHostHTTP()}/embeddings`

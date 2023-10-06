@@ -1,4 +1,4 @@
-import type { ComfyInputOpts, ComfySchemaJSON } from '../types/ComfySchemaJSON'
+import type { ComfyEnumDef, ComfyInputOpts, ComfyInputType, ComfySchemaJSON } from '../types/ComfySchemaJSON'
 
 import { LiveInstance } from 'src/db/LiveInstance'
 import { CodeBuffer } from '../utils/CodeBuffer'
@@ -23,7 +23,7 @@ export type NodeInputExt = {
     index: number
 }
 export type NodeOutputExt = {
-    type: string
+    typeName: string
     nameInComfy: string
     nameInCushy: string
     isPrimitive: boolean
@@ -61,7 +61,7 @@ export class SchemaL {
     knownEnumsByHash = new Map<
         EnumHash,
         {
-            enumNameInComfy: string
+            // enumNameInComfy: string
             enumNameInCushy: EnumName
             values: EnumValue[]
             aliases: string[]
@@ -129,32 +129,46 @@ export class SchemaL {
             this.nodesByNameInCushy[nodeNameInCushy] = node
             this.nodes.push(node)
 
-            // OUTPUTS
+            // OUTPUTS ----------------------------------------------------------------------
             const outputNamer: { [key: string]: number } = {}
             // console.info(JSON.stringify(nodeDef.output))
-            for (const opt of nodeDef.output) {
-                // index type
+            for (const [ix, slotType] of nodeDef.output.entries()) {
+                const rawOutputSlotName = nodeDef.output_name[ix] || (typeof slotType === 'string' ? slotType : `input_${ix}`)
+                const outputNameInComfy = normalizeJSIdentifier(rawOutputSlotName)
+                const at = (outputNamer[outputNameInComfy] ??= 0)
+                const outputNameInCushy = at === 0 ? outputNameInComfy : `${outputNameInComfy}_${at}`
 
-                const optNormalized = normalizeJSIdentifier(opt)
-                this.knownTypes.add(optNormalized)
+                let slotTypeName: string
+                if (typeof slotType === 'string') {
+                    slotTypeName = normalizeJSIdentifier(slotType)
+                    this.knownTypes.add(slotTypeName)
+                } else if (Array.isArray(slotType)) {
+                    const uniqueEnumName = `Enum_${nodeNameInCushy}_${outputNameInCushy}_out`
+                    slotTypeName = this.processEnumNameOrValue({ candidateName: uniqueEnumName, comfyEnumDef: slotType })
+                } else {
+                    throw new Error(`invalid output ${ix} "${slotType}" in node "${nodeNameInComfy}"`)
+                }
+                // const optNormalized = normalizeJSIdentifier(slotType)
+                // this.knownTypes.add(optNormalized)
+
                 // index production
-                let arr = this.nodesByProduction[optNormalized]
-                if (arr == null) this.nodesByProduction[optNormalized] = [nodeNameInCushy]
+                let arr = this.nodesByProduction[slotTypeName]
+                if (arr == null) this.nodesByProduction[slotTypeName] = [nodeNameInCushy]
                 else arr.push(nodeNameInCushy)
 
-                const at = (outputNamer[opt] ??= 0)
-                const nameInComfy = at === 0 ? opt : `${opt}_${at}`
-                const nameInCushy = normalizeJSIdentifier(nameInComfy)
+                // const at = (outputNamer[slotType] ??= 0)
+                // const nameInComfy = at === 0 ? slotType : `${slotType}_${at}`
+                // const nameInCushy = normalizeJSIdentifier(nameInComfy)
                 outputs.push({
-                    type: opt,
-                    nameInComfy,
-                    nameInCushy,
+                    typeName: slotTypeName,
+                    nameInComfy: outputNameInComfy,
+                    nameInCushy: outputNameInCushy,
                     isPrimitive: false,
                 })
-                outputNamer[opt]++
+                // outputNamer[slotType]++
             }
 
-            // INPUTS
+            // INPUTS ----------------------------------------------------------------------
             const requiredInputs = Object.entries(nodeDef.input?.required ?? {}) //
                 .map(([name, spec]) => ({ required: true, name, spec }))
             const optionalInputs = Object.entries(nodeDef.input?.optional ?? {}) //
@@ -169,59 +183,20 @@ export class SchemaL {
                 const inputNameInComfy = ipt.name
                 const inputNameInCushy = normalizeJSIdentifier(ipt.name)
                 const typeDef = ipt.spec
-                const typeStuff = typeDef[0]
-                const typeOpts = typeDef[1]
+                const slotType = typeDef[0]
+                const slotOpts = typeDef[1]
 
                 /** name of the type in cushy */
                 let inputTypeNameInCushy: string | undefined
 
-                if (typeof typeStuff === 'string') {
-                    inputTypeNameInCushy = normalizeJSIdentifier(typeStuff)
+                if (typeof slotType === 'string') {
+                    inputTypeNameInCushy = normalizeJSIdentifier(slotType)
                     this.knownTypes.add(inputTypeNameInCushy)
-                } else if (
-                    //
-                    Array.isArray(typeStuff) &&
-                    typeStuff.every(
-                        (x) =>
-                            typeof x === 'string' || //
-                            typeof x === 'boolean' ||
-                            typeof x === 'number',
-                    )
-                ) {
-                    const enumValues: EnumValue[] = []
-                    for (const enumValue of typeStuff) {
-                        enumValues.push(enumValue)
-                    }
-                    const hash = enumValues.sort().join('|')
-                    const similarEnum = this.knownEnumsByHash.get(hash)
+                } else if (Array.isArray(slotType)) {
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${inputNameInCushy}`
-                    this.knownEnumsByName.set(uniqueEnumName, enumValues)
-                    if (similarEnum != null) {
-                        inputTypeNameInCushy = similarEnum.enumNameInCushy
-                        similarEnum.aliases.push(uniqueEnumName)
-                    } else {
-                        inputTypeNameInCushy = uniqueEnumName
-                        this.knownEnumsByHash.set(hash, {
-                            enumNameInCushy: inputTypeNameInCushy, // normalizeJSIdentifier(inputTypeNameInCushy),
-                            enumNameInComfy: inputNameInComfy,
-                            values: enumValues,
-                            aliases: [],
-                        })
-                    }
+                    inputTypeNameInCushy = this.processEnumNameOrValue({ candidateName: uniqueEnumName, comfyEnumDef: slotType })
                 } else {
-                    const hash = `___${nodeNameInCushy}`
-                    const uniqueEnumName = `ERROR_${nodeNameInCushy}_${inputNameInComfy}`
-                    inputTypeNameInCushy = uniqueEnumName
-                    this.knownEnumsByName.set(uniqueEnumName, [])
-
-                    const errMsg =
-                        `node (${nodeNameInComfy} ${nodeNameInCushy}) schema for property ${ipt.name} contains an unsupported ` +
-                        typeof typeStuff
-                    console.error('🦊 skipping', errMsg, { invalid: toJS(typeStuff) })
-                    // console.error('🦊', JSON.stringify())
-                    // console.error('🦊 skipping')
-                    // throw new Error(errMsg)
-                    continue
+                    throw new Error(`invalid input "${ipt.name}" in node "${nodeNameInComfy}"`)
                 }
 
                 if (inputTypeNameInCushy) {
@@ -230,18 +205,51 @@ export class SchemaL {
                         nameInComfy: inputNameInComfy,
                         nameInComfyEscaped: escapeJSKey(inputNameInComfy),
                         type: inputTypeNameInCushy,
-                        opts: typeOpts,
+                        opts: slotOpts,
                         isPrimitive: ComfyPrimitives.includes(inputTypeNameInCushy),
                         index: node.inputs.length, // 🔴
                     })
                 } else {
-                    console.log(toJS({ ipt, typeDef, typeStuff }))
-                    console.log(toJS({ typeStuff }))
+                    console.log(toJS({ ipt, typeDef, typeStuff: slotType }))
+                    console.log(toJS({ typeStuff: slotType }))
                     throw new Error(`object type not supported`)
                 }
             }
         }
+
         // this.updateComponents()
+    }
+
+    processEnumNameOrValue = (p: {
+        //
+        candidateName: string
+        comfyEnumDef: ComfyEnumDef
+    }): string => {
+        const enumValues: EnumValue[] = []
+        let finalEnumName: string
+        for (const enumValue of p.comfyEnumDef) {
+            if (typeof enumValue === 'string') enumValues.push(enumValue)
+            else if (typeof enumValue === 'boolean') enumValues.push(enumValue)
+            else if (typeof enumValue === 'number') enumValues.push(enumValue)
+            else enumValues.push(enumValue.content)
+        }
+        const hash = enumValues.sort().join('|')
+        const similarEnum = this.knownEnumsByHash.get(hash)
+        const uniqueEnumName = p.candidateName // `Enum_${nodeNameInCushy}_${inputNameInCushy}`
+        this.knownEnumsByName.set(uniqueEnumName, enumValues)
+        if (similarEnum != null) {
+            finalEnumName = similarEnum.enumNameInCushy
+            similarEnum.aliases.push(uniqueEnumName)
+        } else {
+            finalEnumName = uniqueEnumName
+            this.knownEnumsByHash.set(hash, {
+                enumNameInCushy: finalEnumName, // normalizeJSIdentifier(finalEnumName),
+                // enumNameInComfy: inputNameInComfy,
+                values: enumValues,
+                aliases: [],
+            })
+        }
+        return finalEnumName
     }
 
     // updateComponents() {
@@ -418,7 +426,9 @@ export class SchemaL {
 
 const escapeJSKey = (s: string) => {
     if (typeof s !== 'string') {
-        debugger
+        return 'string'
+        // console.log(s)
+        // debugger
     }
     if (!s.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/)) {
         // debugger
@@ -448,9 +458,9 @@ export class ComfyNodeSchema {
 
         // single type interfaces
         let x: { [key: string]: number } = {}
-        for (const i of this.outputs) x[i.type] = (x[i.type] ?? 0) + 1
-        this.singleOuputs = this.outputs.filter((i) => x[i.type] === 1)
-        const ifaces = this.singleOuputs.map((i) => `HasSingle_${i.nameInCushy}`)
+        for (const i of this.outputs) x[i.typeName] = (x[i.typeName] ?? 0) + 1
+        this.singleOuputs = this.outputs.filter((i) => x[i.typeName] === 1)
+        const ifaces = this.singleOuputs.map((i) => `HasSingle_${i.typeName}`)
         ifaces.push(`ComfyNode<${this.nameInCushy}_input>`)
         // inputs
         // p(`\n// ${this.name} -------------------------------`)
@@ -460,7 +470,7 @@ export class ComfyNodeSchema {
         p(`    nameInComfy: "${this.nameInComfy}"`)
         // p(`    $schema: ${this.name}_schema`)
         this.outputs.forEach((i, ix) => {
-            p(`    ${escapeJSKey(i.nameInComfy)}: Slot<'${i.type}', ${ix}>,`)
+            p(`    ${escapeJSKey(i.nameInComfy)}: Slot<'${i.typeName}', ${ix}>,`)
         })
         // INTERFACE
         // if (x[i.type] === 1) p(`    get _${i.type}() { return this.${i.name} } // prettier-ignore`)
@@ -478,11 +488,12 @@ export class ComfyNodeSchema {
 
         p(`export interface ${this.nameInCushy}_input {`)
         for (const i of this.inputs) {
+            const opts = typeof i.opts === 'string' ? null : i.opts
             const type = /*ComfyPrimitiveMapping[i.type] //
                 ? i.type
                 : */ i.type.startsWith('Enum_') ? i.type : `_${i.type}`
-            if (i.opts) p(`    ${this.renderOpts(i.opts)}`)
-            const canBeOmmited = i.opts?.default !== undefined || !i.required
+            if (opts) p(`    ${this.renderOpts(opts)}`)
+            const canBeOmmited = opts?.default !== undefined || !i.required
             p(`    ${i.nameInComfyEscaped}${canBeOmmited ? '?' : ''}: ${type}`)
         }
         p(`}`)
@@ -492,6 +503,7 @@ export class ComfyNodeSchema {
 
     renderOpts(opts?: ComfyInputOpts): Maybe<string> {
         if (opts == null) return null
+        if (typeof opts === 'string') return null
         let out = '/**'
         if (opts.default != null)
             out +=

@@ -105,8 +105,10 @@ export class ComfyNode<ComfyNode_input extends object> {
             this.$outputs.push(output)
             // console.log(`  - .${x.name} as ComfyNodeOutput(${ix})`)
         }
+
+        // implements the _<typeName> property
         for (const x of this.$schema.singleOuputs) {
-            extensions[`_${x.type}`] = extensions[x.nameInComfy]
+            extensions[`_${x.typeName}`] = extensions[x.nameInComfy]
         }
 
         extendObservable(this, extensions)
@@ -147,7 +149,11 @@ export class ComfyNode<ComfyNode_input extends object> {
     // dimensions for autolayout algorithm
     get width() { return 300 } // prettier-ignore
     get height() {
-        const inputHeights = this.$schema.inputs.map((i) => (i.opts?.multiline ? 40 : 30))
+        const inputHeights = this.$schema.inputs.map((i) => {
+            if (i.opts == null) return 30
+            const opts = typeof i.opts === 'object' ? i.opts : {}
+            return opts?.multiline ? 40 : 30
+        })
         const total = inputHeights.reduce((a, b) => a + b, 0)
         return total + 30
     }
@@ -157,7 +163,8 @@ export class ComfyNode<ComfyNode_input extends object> {
             const schema = this.$schema.inputs.find((i: NodeInputExt) => i.nameInComfy === field)
             if (schema == null) throw new Error(`🔴 no schema for field "${field}" (of node ${this.$schema.nameInCushy})`)
             // console.log('def1=', field, schema.opts.default)
-            if (schema.opts?.default != null) return schema.opts.default
+            const opts = schema.opts == null || typeof schema.opts !== 'object' ? undefined : schema.opts
+            if (opts?.default != null) return opts.default
             // console.log('def2=', field, schema.required)
             if (!schema.required) return undefined
             throw new Error(`🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}) value is null`)
@@ -192,14 +199,14 @@ export class ComfyNode<ComfyNode_input extends object> {
     }
 
     private _getOutputForTypeOrCrash(type: string): Slot<any> {
-        const i: NodeOutputExt = this.$schema.outputs.find((i: NodeOutputExt) => i.type === type)!
+        const i: NodeOutputExt = this.$schema.outputs.find((i: NodeOutputExt) => i.typeName === type)!
         const val = (this as any)[i.nameInComfy]
         // console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
         if (val instanceof Slot) return val
         throw new Error(`Expected ${i.nameInComfy} to be a NodeOutput`)
     }
     private _getOutputForTypeOrNull(type: string): Slot<any> | null {
-        const i: Maybe<NodeOutputExt> = this.$schema.outputs.find((i: NodeOutputExt) => i.type === type)
+        const i: Maybe<NodeOutputExt> = this.$schema.outputs.find((i: NodeOutputExt) => i.typeName === type)
         if (i == null) return null
         const val = (this as any)[i.nameInComfy]
         if (val == null) return null

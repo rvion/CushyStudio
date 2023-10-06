@@ -141,7 +141,7 @@ const convertNodeToLiteGraphNode = (
     const outputs = node.$schema.outputs.map(
         (i, ix): LiteGraphNodeOutput => ({
             name: i.nameInComfy,
-            type: i.type,
+            type: i.typeName,
             links: [], // empty links by default 🔴
             slot_index: asLiteGraphSlotIndex(ix),
         }),
