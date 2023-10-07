@@ -5,6 +5,7 @@ import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { toJS } from 'mobx'
+import { escapeJSKey } from './escapeJSKey'
 
 export type EnumHash = string
 export type EnumName = string
@@ -426,19 +427,6 @@ export class SchemaL {
     }
 
     private toTSType = (t: string) => (ComfyPrimitiveMapping[t] ? `${ComfyPrimitiveMapping[t]} | Slot<'${t}'>` : `Slot<'${t}'>`)
-}
-
-const escapeJSKey = (s: string) => {
-    if (typeof s !== 'string') {
-        return 'string'
-        // console.log(s)
-        // debugger
-    }
-    if (!s.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/)) {
-        // debugger
-        return `"${s}"`
-    }
-    return s
 }
 
 export class ComfyNodeSchema {

@@ -5,6 +5,7 @@ import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { TEdge, toposort } from '../utils/toposort'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { STATE } from 'src/front/state'
+import { asJSAccessor, escapeJSKey } from '../models/escapeJSKey'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = {
@@ -115,6 +116,7 @@ export class ComfyImporter {
         const uiVals: {
             type: string
             name: string
+            nameEscaped: string
             default: string | number | boolean | null | undefined
         }[] = []
         p(`action('${opts.title}', { `)
@@ -185,9 +187,10 @@ export class ComfyImporter {
                         uiVals.push({
                             type: typeof valueStr,
                             name: inputName,
+                            nameEscaped: escapeJSKey(inputName),
                             default: valueStr,
                         })
-                        pi(`${name2}: p.${inputName}, `)
+                        pi(`${name2}: p${asJSAccessor(inputName)}, `)
                     } else {
                         pi(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
                     }
@@ -201,7 +204,7 @@ export class ComfyImporter {
         p('    },')
         p(`    ui: (ui) => ({`)
         for (const x of uiVals) {
-            p(`         ${x.name}: ui.${x.type}({default: ${jsEscapeStr(x.default)}}),`)
+            p(`         ${x.nameEscaped}: ui.${x.type}({default: ${jsEscapeStr(x.default)}}),`)
         }
         p(`    })`)
         p('})')

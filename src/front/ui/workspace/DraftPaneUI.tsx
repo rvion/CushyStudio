@@ -5,6 +5,7 @@ import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
 import { DraftUI } from '../widgets/DraftUI'
 import { useProject } from '../../../front/ProjectCtx'
 import { stringifyUnknown } from '../../../utils/stringifyUnknown'
+import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
 
 export const PafUI = observer(function PafUI_(p: {}) {
     const pj = useProject()
@@ -47,6 +48,17 @@ export const PafUI = observer(function PafUI_(p: {}) {
                     </div>
                 </Whisper>
             ))}
+            <Whisper
+                enterable
+                placement='auto'
+                speaker={
+                    <Popover>
+                        <TypescriptHighlightedCodeUI className='h-64 w-64 overflow-auto' code={paf.DEBUG_CODE} />
+                    </Popover>
+                }
+            >
+                <span className='material-symbols-outlined'>help</span>
+            </Whisper>
             {paf.loadResult?.paf?.tools.map((tool) => (
                 <div className='rounded px-1 flex items-center gap-1' key={tool.id} style={{ border: `1px solid pink` }}>
                     {/* LOAD {strategy}: {renderStatus(status)} */}

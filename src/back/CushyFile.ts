@@ -205,8 +205,10 @@ export class PossibleActionFile {
         }
     }
 
+    DEBUG_CODE: string = ''
     private loadTools = async (p: { codeJS: string; codeTS: string }): Promise<ActionFileResult> => {
         const { codeJS, codeTS } = p
+        this.DEBUG_CODE = codeTS
         const actionsPool: { name: string; action: Action<FormDefinition> }[] = []
         const registerActionFn = (name: string, action: Action<any>): void => {
             console.info(`[💙] TOOL: found action: "${name}"`, { path: this.filePath })
@@ -237,7 +239,7 @@ export class PossibleActionFile {
             return __OK({ tools, codeTS, codeJS })
         } catch (e) {
             return __FAIL('❌5. cannot convert prompt to code', {
-                codeJS,
+                // codeJS,
                 error: e,
             })
         }
