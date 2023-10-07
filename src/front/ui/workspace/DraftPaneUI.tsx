@@ -1,9 +1,10 @@
 import type { PafLoadStatus } from 'src/back/CushyFile'
 import type { DraftL } from 'src/models/Draft'
 import { observer } from 'mobx-react-lite'
-import { Button, Loader } from 'rsuite'
+import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
 import { DraftUI } from '../widgets/DraftUI'
 import { useProject } from '../../../front/ProjectCtx'
+import { stringifyUnknown } from '../../../utils/stringifyUnknown'
 
 export const PafUI = observer(function PafUI_(p: {}) {
     const pj = useProject()
@@ -18,13 +19,33 @@ export const PafUI = observer(function PafUI_(p: {}) {
             </div>
             <div>{paf.loaded.done ? null : <Loader />}</div>
             {[...paf.statusByStrategy.entries()].map(([strategy, status]) => (
-                <div
-                    className='rounded px-1 flex items-center gap-1'
-                    key={strategy}
-                    style={{ color: renderStatusColor(status), border: `1px solid ${renderStatusColor(status)}` }}
+                <Whisper
+                    placement='bottom'
+                    enterable
+                    speaker={
+                        <Popover>
+                            {status.type === 'failure' ? (
+                                <Message type='error' showIcon>
+                                    {status.result.message}
+                                    {stringifyUnknown(status.result.error)}
+                                </Message>
+                            ) : status.type === 'success' ? (
+                                <Message type='success' showIcon>
+                                    {status.result.tools.length} tools loaded
+                                    {/* {stringifyUnknown(status.result.error)} */}
+                                </Message>
+                            ) : null}
+                        </Popover>
+                    }
                 >
-                    LOAD {strategy}: {renderStatus(status)}
-                </div>
+                    <div
+                        className='rounded px-1 flex items-center gap-1'
+                        key={strategy}
+                        style={{ color: renderStatusColor(status), border: `1px solid ${renderStatusColor(status)}` }}
+                    >
+                        {strategy}: {renderStatus(status)}
+                    </div>
+                </Whisper>
             ))}
             {paf.loadResult?.paf?.tools.map((tool) => (
                 <div className='rounded px-1 flex items-center gap-1' key={tool.id} style={{ border: `1px solid pink` }}>
@@ -36,15 +57,15 @@ export const PafUI = observer(function PafUI_(p: {}) {
     )
 
     function renderStatusColor(pls: PafLoadStatus) {
-        if (pls === 'failure') return 'red'
-        if (pls === 'pending') return 'cyan'
-        if (pls === 'success') return '#88f088'
+        if (pls.type === 'failure') return 'red'
+        if (pls.type === 'pending') return 'cyan'
+        if (pls.type === 'success') return '#88f088'
     }
 
     function renderStatus(pls: PafLoadStatus) {
-        if (pls === 'failure') return '❌'
-        if (pls === 'pending') return <Loader />
-        if (pls === 'success') return '✅'
+        if (pls.type === 'failure') return '❌'
+        if (pls.type === 'pending') return <Loader />
+        if (pls.type === 'success') return '✅'
     }
 })
 

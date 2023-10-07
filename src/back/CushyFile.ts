@@ -8,7 +8,7 @@ import path from 'pathe'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { ComfyPromptJSON } from '../types/ComfyPrompt'
 import { exhaust } from '../utils/ComfyUtils'
-import { Result, __FAIL, __OK } from '../utils/Either'
+import { Result, ResultFailure, __FAIL, __OK } from '../utils/Either'
 import { ManualPromise } from '../utils/ManualPromise'
 import { FormBuilder } from '../controls/FormBuilder'
 import { globalToolFnCache } from '../core/globalActionFnCache'
@@ -28,6 +28,7 @@ export type LoadStrategy =
     | 'asA1111PngGenerated'
 
 export type ActionFileResult = Result<ActionFile>
+
 export type ActionFile = {
     tools: ToolL[]
     // code
@@ -38,7 +39,10 @@ export type ActionFile = {
     promptJSONd?: ComfyPromptJSON
 }
 
-export type PafLoadStatus = 'pending' | 'success' | 'failure'
+export type PafLoadStatus =
+    | { type: 'pending' }
+    | { type: 'success'; result: ActionFile }
+    | { type: 'failure'; result: ResultFailure }
 
 export class PossibleActionFile {
     // CONTENT = ''
@@ -71,15 +75,15 @@ export class PossibleActionFile {
         const strategies = this.findLoadStrategies()
         const failures: string[] = []
         for (const strategy of strategies) {
-            this.statusByStrategy.set(strategy, 'pending')
+            this.statusByStrategy.set(strategy, { type: 'pending' })
             const result = await this.loadWithStrategy(strategy)
             if (result.success) {
                 this.loaded.resolve(result.value)
-                this.statusByStrategy.set(strategy, 'success')
+                this.statusByStrategy.set(strategy, { type: 'success', result: result.value })
                 this.loadResult = { failures, paf: result.value }
                 return this.loadResult
             } else {
-                this.statusByStrategy.set(strategy, 'failure')
+                this.statusByStrategy.set(strategy, { type: 'failure', result })
                 if (opts.logFailures) console.error(result)
                 failures.push(result.message)
             }

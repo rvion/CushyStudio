@@ -1,13 +1,11 @@
-import type { GraphL } from 'src/models/Graph'
-
 import { observer, useLocalObservable } from 'mobx-react-lite'
 
 import { Pane } from 'split-pane-react'
 import SplitPane from 'split-pane-react/esm/SplitPane'
-import { SectionTitleUI } from './SectionTitle'
-import { StepListUI } from './StepUI'
 import { ActionPickerUI } from './ActionPickerUI'
 import { DraftPaneUI } from './DraftPaneUI'
+import { SectionTitleUI } from './SectionTitle'
+import { StepListUI } from './StepUI'
 
 export const GraphUI = observer(function GraphUI_(p: { depth: number }) {
     const uiSt = useLocalObservable(() => ({ sizes: [100, 300, 150] }))
