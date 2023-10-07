@@ -1,6 +1,9 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
 import type { ToolID, ToolL } from './Tool'
+import type { PossibleActionFile } from 'src/back/CushyFile'
+import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
+import type { SchemaL } from './Schema'
 
 import { LiveRef } from '../db/LiveRef'
 import { LiveRefOpt } from '../db/LiveRefOpt'
@@ -15,6 +18,7 @@ export type ProjectT = {
     name: string
     rootGraphID: GraphID
     activeToolID?: ToolID
+    actionFile?: AbsolutePath
     // currentToolID
     // rootStepID: StepID
 }
@@ -28,20 +32,22 @@ export class ProjectL {
     // getConfig() {}
     activeTool = new LiveRefOpt<this, ToolL>(this, 'activeToolID', 'tools')
 
-    focusTool(tool: ToolL) {
+    get activeFile(): Maybe<PossibleActionFile> {
+        if (this.data.actionFile == null) return null
+        return this.st.toolbox.filesMap.get(this.data.actionFile)
+    }
+
+    focusActionFile(paf: PossibleActionFile): void {
+        this.update({ actionFile: paf.filePath })
+    }
+
+    focusTool(tool: ToolL): void {
         this.update({ activeToolID: tool.id })
         if (tool.focusedDraft.item == null) {
             tool.createDraft(this).focus()
         }
     }
-    get schema() {
+    get schema(): SchemaL {
         return this.db.schema
     }
-}
-
-// ------------
-// Project config is stored outside of the DB for practical reasons
-
-type ProjectConfig = {
-    comfyURL?: Maybe<string>
 }

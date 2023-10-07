@@ -49,6 +49,9 @@ export class PossibleActionFile {
         // this.extractWorkflowsV2()
     }
 
+    get relPath() {
+        return this.filePath.replace(this.st.actionsFolderPath, '')
+    }
     loaded = new ManualPromise<ActionFile>()
 
     // convertToTS = () => {

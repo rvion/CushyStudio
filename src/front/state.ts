@@ -112,7 +112,7 @@ export class STATE {
     get gallerySize() {
         return `${this.configFile.value.galleryImageSize ?? 48}px`
     }
-    tsFilesMap = new CushyFileWatcher(this)
+    toolbox = new CushyFileWatcher(this)
     schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
     importer: ComfyImporter
@@ -152,7 +152,7 @@ export class STATE {
         // 1️⃣ if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
         ;(async () => {
             await this.schemaReady
-            await this.tsFilesMap.walk()
+            await this.toolbox.walk()
             if (db.projects.size === 0) this.startProjectV2()
         })()
         // Promise.all([

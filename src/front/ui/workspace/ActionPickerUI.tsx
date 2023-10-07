@@ -19,23 +19,33 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     return (
         <div className='flex flex-col flex-grow'>
             {/*  */}
-            <InputGroup>
-                <InputGroup.Addon className='bg-black'>
+            {/* <InputGroup> */}
+            {/* <InputGroup.Addon className='bg-black'>
                     <span className='material-symbols-outlined'>search</span>
-                </InputGroup.Addon>
-                <SelectPicker
-                    className='grow'
-                    data={tools}
-                    labelKey='name'
-                    valueKey='id'
-                    value={pj.data.activeToolID}
-                    onChange={(v) => {
-                        if (v == null) return
-                        const tool = db.tools.getOrThrow(v)
-                        pj.focusTool(tool)
-                    }}
-                />
-            </InputGroup>
+                </InputGroup.Addon> */}
+            <SelectPicker
+                // className='grow'
+                data={tools}
+                labelKey='name'
+                valueKey='id'
+                value={pj.data.activeToolID}
+                onChange={(v) => {
+                    if (v == null) return
+                    const tool = db.tools.getOrThrow(v)
+                    pj.focusTool(tool)
+                }}
+            />
+            {/* </InputGroup> */}
+            <FileListUI />
+        </div>
+    )
+})
+
+export const FileListUI = observer(function FileListUI_(p: {}) {
+    const st = useSt()
+    const pj = useProject()
+    return (
+        <>
             <Button size='sm' startIcon={<span className='material-symbols-outlined'>sync</span>}>
                 Reload
             </Button>
@@ -45,8 +55,8 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                 // height={'900'}
                 defaultExpandAll
                 className='overflow-x-hidden overflow-y-auto flex-grow'
-                key={st.tsFilesMap.filesMap.size}
-                data={st.tsFilesMap.treeData}
+                key={st.toolbox.filesMap.size}
+                data={st.toolbox.treeData}
                 renderTreeNode={(node) => {
                     // console.log(node)
                     return (
@@ -58,7 +68,10 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                             ) : (
                                 '❓'
                             )}{' '}
+                            {/* <span className='text-ellipsis overflow-hidden whitespace-nowrap'> */}
+                            {/*  */}
                             {node.label}
+                            {/* </span> */}
                             {/* {node.children?.length} */}
                         </>
                     )
@@ -68,13 +81,14 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                 onChange={async (_value: any) => {
                     if (typeof _value !== 'string') throw new Error('tree selection value is not a string')
                     const value = _value as string
-                    const paf = st.tsFilesMap.filesMap.get(asAbsolutePath(value))
+                    const paf = st.toolbox.filesMap.get(asAbsolutePath(value))
                     if (paf == null) throw new Error(`paf not found for ${value}`)
                     console.log(value, paf)
                     const res = await paf.load({ logFailures: true })
                     const tool0 = res.paf?.tools?.[0]
                     if (tool0 == null) throw new Error(`tool0 not found for ${value}`)
                     pj.focusTool(tool0)
+                    pj.focusActionFile(paf)
                     // console.log(res?.tools.length)
 
                     // setValue(value)
@@ -93,7 +107,7 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
             </Message>
             {/* <FooBarUI /> */}
             {/* <PanelImport /> */}
-        </div>
+        </>
     )
 })
 
