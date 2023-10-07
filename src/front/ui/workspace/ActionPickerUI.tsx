@@ -81,14 +81,18 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                 onChange={async (_value: any) => {
                     if (typeof _value !== 'string') throw new Error('tree selection value is not a string')
                     const value = _value as string
+
+                    // 1. focus paf
                     const paf = st.toolbox.filesMap.get(asAbsolutePath(value))
                     if (paf == null) throw new Error(`paf not found for ${value}`)
+                    pj.focusActionFile(paf)
+
+                    // 2. if paf has a tool, focus it
                     console.log(value, paf)
                     const res = await paf.load({ logFailures: true })
                     const tool0 = res.paf?.tools?.[0]
-                    if (tool0 == null) throw new Error(`tool0 not found for ${value}`)
+                    if (tool0 == null) return null
                     pj.focusTool(tool0)
-                    pj.focusActionFile(paf)
                     // console.log(res?.tools.length)
 
                     // setValue(value)

@@ -1,3 +1,4 @@
+import type { PafLoadStatus } from 'src/back/CushyFile'
 import type { DraftL } from 'src/models/Draft'
 import { observer } from 'mobx-react-lite'
 import { Button, Loader } from 'rsuite'
@@ -8,11 +9,43 @@ export const PafUI = observer(function PafUI_(p: {}) {
     const pj = useProject()
     const paf = pj.activeFile
     if (paf == null) return null
+    // const errors =
     return (
-        <div>
-            <div>file: {paf.relPath}</div>
+        <div className='flex flex-wrap gap-1'>
+            {/* {paf.lo} */}
+            <div className='rounded px-1' style={{ border: '1px solid white' }}>
+                file: {paf.relPath}
+            </div>
+            <div>{paf.loaded.done ? null : <Loader />}</div>
+            {[...paf.statusByStrategy.entries()].map(([strategy, status]) => (
+                <div
+                    className='rounded px-1 flex items-center gap-1'
+                    key={strategy}
+                    style={{ color: renderStatusColor(status), border: `1px solid ${renderStatusColor(status)}` }}
+                >
+                    LOAD {strategy}: {renderStatus(status)}
+                </div>
+            ))}
+            {paf.loadResult?.paf?.tools.map((tool) => (
+                <div className='rounded px-1 flex items-center gap-1' key={tool.id} style={{ border: `1px solid pink` }}>
+                    {/* LOAD {strategy}: {renderStatus(status)} */}
+                    <div>tool: {tool.name}</div>
+                </div>
+            ))}
         </div>
     )
+
+    function renderStatusColor(pls: PafLoadStatus) {
+        if (pls === 'failure') return 'red'
+        if (pls === 'pending') return 'cyan'
+        if (pls === 'success') return '#88f088'
+    }
+
+    function renderStatus(pls: PafLoadStatus) {
+        if (pls === 'failure') return '❌'
+        if (pls === 'pending') return <Loader />
+        if (pls === 'success') return '✅'
+    }
 })
 
 export const DraftPaneUI = observer(function DraftPaneUI_(p: {}) {
@@ -24,7 +57,6 @@ export const DraftPaneUI = observer(function DraftPaneUI_(p: {}) {
     return (
         <>
             <PafUI />
-            <div>tool: {tool?.name}</div>
             <div className='flex flex-wrap items-center'>
                 {tool
                     ? tool.drafts.map((draft) => (

@@ -15,6 +15,7 @@ import { globalToolFnCache } from '../core/globalActionFnCache'
 import { ToolL, asToolID } from '../models/Tool'
 import { transpileCode } from './transpiler'
 import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
+import { makeAutoObservable } from 'mobx'
 
 const formBuilder = new FormBuilder()
 
@@ -37,6 +38,8 @@ export type ActionFile = {
     promptJSONd?: ComfyPromptJSON
 }
 
+export type PafLoadStatus = 'pending' | 'success' | 'failure'
+
 export class PossibleActionFile {
     // CONTENT = ''
     actions: ToolL[] = []
@@ -47,6 +50,8 @@ export class PossibleActionFile {
     ) {
         // this.CONTENT = readFileSync(absPath, 'utf-8')
         // this.extractWorkflowsV2()
+
+        makeAutoObservable(this)
     }
 
     get relPath() {
@@ -58,9 +63,9 @@ export class PossibleActionFile {
     //     //
     // }
 
-    statusByStrategy = new Map<LoadStrategy, 'pending' | 'success' | 'failure'>()
+    statusByStrategy = new Map<LoadStrategy, PafLoadStatus>()
+    loadResult: Maybe<{ paf?: ActionFile; failures: string[] }> = null
 
-    private loadResult: Maybe<{ paf?: ActionFile; failures: string[] }> = null
     load = async (opts: { logFailures: boolean }): Promise<{ paf?: ActionFile; failures: string[] }> => {
         if (this.loadResult) return this.loadResult
         const strategies = this.findLoadStrategies()
@@ -70,6 +75,7 @@ export class PossibleActionFile {
             const result = await this.loadWithStrategy(strategy)
             if (result.success) {
                 this.loaded.resolve(result.value)
+                this.statusByStrategy.set(strategy, 'success')
                 this.loadResult = { failures, paf: result.value }
                 return this.loadResult
             } else {
@@ -79,6 +85,7 @@ export class PossibleActionFile {
             }
         }
         this.loadResult = { failures }
+        this.loaded.reject(new Error(`[💔] TOOL: no strategy worked`))
         return this.loadResult
     }
 

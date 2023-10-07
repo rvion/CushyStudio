@@ -18,7 +18,10 @@ export class ManualPromise<T = any> implements PromiseLike<T> {
                 }
                 resolve(t)
             }
-            this.reject = reject
+            this.reject = (t) => {
+                this.done = true
+                reject(t)
+            }
         })
         this.then = this.promise.then.bind(this.promise)
         makeObservable(this, { done: observable, value: observable })

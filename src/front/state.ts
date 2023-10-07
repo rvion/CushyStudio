@@ -30,6 +30,7 @@ import { UIAction } from './UIAction'
 import { DanbooruTags } from '../booru/BooruLoader'
 import { Updater } from './updater'
 import { ComfyImporter } from '../importers/ImportComfyImage'
+import { ProjectL } from 'src/models/Project'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -89,14 +90,18 @@ export class STATE {
     //     const startDraft = initialGraph.createDraft()
     //     initialGraph.update({ focusedDraftID: startDraft.id })
     // }
-    startProjectV2 = () => {
+    startProjectV2 = (): ProjectL => {
+        if (this.db.projects.size > 0) {
+            return this.db.projects.firstOrCrash()
+        }
         console.log(`[🛋️] creating project`)
         const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
-        this.db.projects.create({
+        const project = this.db.projects.create({
             // activeToolID: this.db.tools.values[0].id,
             rootGraphID: initialGraph.id,
             name: 'new project',
         })
+        return project
         // const startDraft = initialGraph.createDraft()
     }
 
@@ -153,7 +158,8 @@ export class STATE {
         ;(async () => {
             await this.schemaReady
             await this.toolbox.walk()
-            if (db.projects.size === 0) this.startProjectV2()
+            const project = this.startProjectV2()
+            project.activeFile?.load({ logFailures: false })
         })()
         // Promise.all([
         //     //
