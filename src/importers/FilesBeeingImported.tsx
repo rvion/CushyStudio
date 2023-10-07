@@ -84,6 +84,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
                         title: 'file.name',
                         author: 'test',
                         preserveId: false,
+                        autoUI: true,
                     })
                     setCode(x)
                 }}

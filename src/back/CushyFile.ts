@@ -134,7 +134,8 @@ export class PossibleActionFile {
             const codeJS = this.st.importer.convertFlowToCode(json, {
                 title: filename,
                 author,
-                preserveId: false,
+                preserveId: true,
+                autoUI: true,
             })
             const codeTS = codeJS
             return this.loadTools({ codeJS, codeTS })
@@ -194,7 +195,8 @@ export class PossibleActionFile {
             const codeJS = this.st.importer.convertFlowToCode(promptJSON, {
                 title,
                 author,
-                preserveId: false,
+                preserveId: true,
+                autoUI: true,
             })
             const codeTS = codeJS
             return this.loadTools({ codeJS, codeTS })
@@ -210,27 +212,35 @@ export class PossibleActionFile {
             console.info(`[💙] TOOL: found action: "${name}"`, { path: this.filePath })
             actionsPool.push({ name, action })
         }
-        const ProjectScriptFn = new Function('action', codeJS)
-        await ProjectScriptFn(registerActionFn)
 
-        const tools: ToolL[] = []
-        for (const a of actionsPool) {
-            const actionID = asToolID(`${this.filePath}#${a.name}`)
-            const tool = this.st.db.tools.upsert({
-                id: actionID,
-                owner: a.action.author,
-                file: this.filePath,
-                name: a.name,
-                priority: a.action.priority ?? 100,
-                form: a.action.ui?.(formBuilder),
-                codeTS: codeTS,
-                codeJS: codeJS,
+        try {
+            const ProjectScriptFn = new Function('action', codeJS)
+            await ProjectScriptFn(registerActionFn)
+
+            const tools: ToolL[] = []
+            for (const a of actionsPool) {
+                const actionID = asToolID(`${this.filePath}#${a.name}`)
+                const tool = this.st.db.tools.upsert({
+                    id: actionID,
+                    owner: a.action.author,
+                    file: this.filePath,
+                    name: a.name,
+                    priority: a.action.priority ?? 100,
+                    form: a.action.ui?.(formBuilder),
+                    codeTS: codeTS,
+                    codeJS: codeJS,
+                })
+                globalToolFnCache.set(tool, a.action)
+                tools.push(tool)
+            }
+
+            return __OK({ tools, codeTS, codeJS })
+        } catch (e) {
+            return __FAIL('❌5. cannot convert prompt to code', {
+                codeJS,
+                error: e,
             })
-            globalToolFnCache.set(tool, a.action)
-            tools.push(tool)
         }
-
-        return __OK({ tools, codeTS, codeJS })
     }
 }
 

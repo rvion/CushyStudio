@@ -110,6 +110,7 @@ body {
  }
  .rs-message.rs-message-error {
     border: 1px solid #cf5c36;
+    background: none;
  }
  .rs-message-container {
     padding: 0.3rem !important;

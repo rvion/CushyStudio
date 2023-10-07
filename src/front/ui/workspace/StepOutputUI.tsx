@@ -8,6 +8,7 @@ import { ComfyNodeUI } from '../NodeListUI'
 import { ImageUI } from '../galleries/ImageUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
+import { toJS } from 'mobx'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
@@ -56,11 +57,12 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
     if (msg.type === 'execution_error') {
         // const prompt = graph.db.prompts.get(msg.data.prompt_id)
         // const graph = prompt?.graph.item
+        // console.log(toJS(msg.data)) 🔴 TODO: fix this so more infos are shown
         return (
             <div>
                 <ButtonDownloadFilesUI graph={outputGraph} />
                 <Message type='error' title='An error occured' showIcon>
-                    <div>{msg.data.node_type}</div>
+                    <div>node: {msg.data.node_type}</div>
                     <div>{msg.data.exception_message}</div>
                     <div>{msg.data.exception_type}</div>
                     <Panel title='Details' collapsible defaultExpanded={false}>

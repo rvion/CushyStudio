@@ -34,11 +34,15 @@ export const asLiteGraphSlotIndex = (id: number): LiteGraphSlotIndex => id as Li
 export type LiteGraphNodeInput = {
     name: string // 'clip'
     type: string // 'CLIP'
-    link: LiteGraphLinkID // 5
+    link: LiteGraphLinkID | null // 5
+    widget?: {
+        name: string // 'select'
+        config: any // 🔴
+    }
 }
 
 export type LiteGraphNodeOutput = {
-    name: string // 'CONDITIONING'
+    // ❌9 name: string // 'CONDITIONING'
     type: string // 'CONDITIONING'
     links: LiteGraphLinkID[]
     slot_index: LiteGraphSlotIndex
@@ -65,18 +69,13 @@ export type LiteGraphNode = {
 }
 
 export const convertFlowToLiteGraphJSON = (graph: GraphL, cytoJSON?: CytoJSON): LiteGraphJSON => {
-    //
-
     const ctx = new LiteGraphCtx(graph)
     const last_node_id = Math.max(...graph.nodes.map((n) => n.uidNumber))
     // const last_node_id = graph.nodes[graph.nodes.length - 1].uid
     const xxx = graph.nodes.map((n) => convertNodeToLiteGraphNode(ctx, n))
     const nodes = xxx.map((n) => n.node)
-    console.log('🐙 1', nodes)
-    console.log(
-        '🐙 2',
-        cytoJSON!.elements.nodes.map((a) => a.data),
-    )
+    // console.log('🐙 1', nodes)
+    // console.log( '🐙 2', cytoJSON!.elements.nodes.map((a) => a.data), )
     for (const n of nodes) {
         if (cytoJSON) {
             const pos = cytoJSON.elements.nodes.find((a) => parseInt(a.data.id, 10) === n.id)
@@ -94,7 +93,7 @@ export const convertFlowToLiteGraphJSON = (graph: GraphL, cytoJSON?: CytoJSON): 
     return {
         last_node_id,
         last_link_id: ctx.nextLinkId,
-        nodes: xxx.map((n) => n.node),
+        nodes, // : xxx.map((n) => n.node),
         links: ctx.links,
         config: {},
         extra: {},
@@ -140,7 +139,7 @@ const convertNodeToLiteGraphNode = (
     }
     const outputs = node.$schema.outputs.map(
         (i, ix): LiteGraphNodeOutput => ({
-            name: i.nameInComfy,
+            // ❌9 name: i.nameInComfy,
             type: i.typeName,
             links: [], // empty links by default 🔴
             slot_index: asLiteGraphSlotIndex(ix),

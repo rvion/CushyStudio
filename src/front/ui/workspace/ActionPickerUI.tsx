@@ -126,7 +126,12 @@ export const FooBarUI = observer(function FooBarUI_(p: {}) {
                 onChange={(e) => {
                     const val = e.target.value
                     const json = JSON.parse(val) as ComfyPromptJSON
-                    const code = st.importer.convertFlowToCode(json, { title: 'test', author: 'test', preserveId: false })
+                    const code = st.importer.convertFlowToCode(json, {
+                        title: 'test',
+                        author: 'test',
+                        preserveId: true,
+                        autoUI: true,
+                    })
                     set(code)
                 }}
             />

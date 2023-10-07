@@ -1,10 +1,11 @@
 import type { GraphL } from 'src/models/Graph'
 
 import { observer } from 'mobx-react-lite'
-import { Panel } from 'rsuite'
+import { Panel, Popover, Whisper } from 'rsuite'
 import { NodeRefUI } from '../NodeRefUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
+import { JSONHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
 
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: GraphL }) {
     const graph = p.graph
@@ -22,6 +23,17 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
                         {/* {n.status ?? '❓'} */}
                         <NodeRefUI label={ix.toString()} node={n} />
                         {n.$schema.nameInCushy}
+                        <Whisper
+                            enterable
+                            placement='auto'
+                            speaker={
+                                <Popover>
+                                    <JSONHighlightedCodeUI code={JSON.stringify(n.json, null, 3)} />
+                                </Popover>
+                            }
+                        >
+                            <span className='material-symbols-outlined'>info</span>
+                        </Whisper>
                     </div>
                 ))}
             </div>

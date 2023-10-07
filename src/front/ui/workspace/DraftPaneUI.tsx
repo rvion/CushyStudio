@@ -15,7 +15,7 @@ export const PafUI = observer(function PafUI_(p: {}) {
         <div className='flex flex-wrap gap-1'>
             {/* {paf.lo} */}
             <div className='rounded px-1' style={{ border: '1px solid white' }}>
-                file: {paf.relPath}
+                <span className='material-symbols-outlined'>insert_drive_file</span> {paf.relPath}
             </div>
             <div>{paf.loaded.done ? null : <Loader />}</div>
             {[...paf.statusByStrategy.entries()].map(([strategy, status]) => (
@@ -43,21 +43,24 @@ export const PafUI = observer(function PafUI_(p: {}) {
                         key={strategy}
                         style={{ color: renderStatusColor(status), border: `1px solid ${renderStatusColor(status)}` }}
                     >
-                        {strategy}: {renderStatus(status)}
+                        {renderStatus(status)} {strategy}
                     </div>
                 </Whisper>
             ))}
             {paf.loadResult?.paf?.tools.map((tool) => (
                 <div className='rounded px-1 flex items-center gap-1' key={tool.id} style={{ border: `1px solid pink` }}>
                     {/* LOAD {strategy}: {renderStatus(status)} */}
-                    <div>tool: {tool.name}</div>
+                    <div>
+                        <span className='material-symbols-outlined'>scatter_plot</span>
+                        {tool.name}
+                    </div>
                 </div>
             ))}
         </div>
     )
 
     function renderStatusColor(pls: PafLoadStatus) {
-        if (pls.type === 'failure') return 'red'
+        if (pls.type === 'failure') return '#ff8080'
         if (pls.type === 'pending') return 'cyan'
         if (pls.type === 'success') return '#88f088'
     }

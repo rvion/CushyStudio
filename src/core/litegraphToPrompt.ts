@@ -21,7 +21,6 @@ export const convertLiteGraphToPrompt = (
     }
     for (const node of workflow.nodes) {
         console.log(`💎 node ${node.type}#${node.id}`)
-        const n = workflow.nodes.find((n) => n.id === node.id)
 
         if (node.isVirtualNode) {
             console.log(`    | [🔶 WARN] virtual node ${node.id}(${node.type}) skipped`)
@@ -70,7 +69,27 @@ export const convertLiteGraphToPrompt = (
         if (nodeInputs == null) throw new Error(`❌ node ${node.id}(${node.type}) has no input`)
 
         let offset = 0
+        // new logic:
+        // 1 insert all values found in the node, regardless of the schema
+        // 2. then insert all values or default from the schema
+
+        // 1. By value -----------------------------------------------------
+        const _done = new Set<string>()
+        for (const field of node.inputs ?? []) {
+            _done.add(field.name)
+            if (viaInput.has(field.name)) {
+                console.log(`    | .${field.name} (viaInput)`)
+                if (field.widget) offset++
+                continue
+            }
+            inputs[field.name] = node.widgets_values[offset++]
+            const isSeed = field.type === 'INT' && (field.name === 'seed' || field.name === 'noise_seed')
+            if (isSeed) offset++
+            // for (const val of node.widgets_values)
+        }
+        // 2. By Schema -----------------------------------------------------
         for (const field of nodeSchema.inputs) {
+            if (_done.has(field.nameInComfy)) continue
             if (viaInput.has(field.nameInComfy)) {
                 console.log(`    | .${field.nameInComfy} (viaInput)`)
                 continue

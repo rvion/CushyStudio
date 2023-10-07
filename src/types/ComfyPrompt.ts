@@ -5,6 +5,6 @@ export type ComfyPromptJSON = {
 }
 
 export type ComfyNodeJSON = {
-    inputs: { [key: string]: any }
+    inputs: { [key: string]: [string, number] | string | number | boolean | null }
     class_type: string
 }

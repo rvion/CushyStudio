@@ -24,7 +24,6 @@ export type NodeInputExt = {
 }
 export type NodeOutputExt = {
     typeName: string
-    nameInComfy: string
     nameInCushy: string
     isPrimitive: boolean
 }
@@ -133,10 +132,15 @@ export class SchemaL {
             const outputNamer: { [key: string]: number } = {}
             // console.info(JSON.stringify(nodeDef.output))
             for (const [ix, slotType] of nodeDef.output.entries()) {
-                const rawOutputSlotName = nodeDef.output_name[ix] || (typeof slotType === 'string' ? slotType : `input_${ix}`)
+                const rawOutputSlotName =
+                    nodeDef.output_name[ix] || //
+                    (typeof slotType === 'string' ? slotType : `input_${ix}`)
+
                 const outputNameInComfy = normalizeJSIdentifier(rawOutputSlotName)
                 const at = (outputNamer[outputNameInComfy] ??= 0)
                 const outputNameInCushy = at === 0 ? outputNameInComfy : `${outputNameInComfy}_${at}`
+                outputNamer[outputNameInComfy]++
+                // console.log('>>', outputNameInComfy, outputNameInCushy)
 
                 let slotTypeName: string
                 if (typeof slotType === 'string') {
@@ -161,7 +165,7 @@ export class SchemaL {
                 // const nameInCushy = normalizeJSIdentifier(nameInComfy)
                 outputs.push({
                     typeName: slotTypeName,
-                    nameInComfy: outputNameInComfy,
+                    // nameInCushy: outputNameInComfy,
                     nameInCushy: outputNameInCushy,
                     isPrimitive: false,
                 })
@@ -310,7 +314,7 @@ export class SchemaL {
         p(`export interface ComfySetup {`)
         // prettier-ignore
         for (const n of this.nodes) {
-            p(`    /* category:${n.category}, name:"${n.nameInComfy}", output:${n.outputs.map(o => o.nameInComfy).join('+')} */`)
+            p(`    /* category:${n.category}, name:"${n.nameInComfy}", output:${n.outputs.map(o => o.nameInCushy).join('+')} */`)
             p(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, id?: ComfyNodeUID): ${n.nameInCushy}`)
         }
         p(`}`)
@@ -470,7 +474,7 @@ export class ComfyNodeSchema {
         p(`    nameInComfy: "${this.nameInComfy}"`)
         // p(`    $schema: ${this.name}_schema`)
         this.outputs.forEach((i, ix) => {
-            p(`    ${escapeJSKey(i.nameInComfy)}: Slot<'${i.typeName}', ${ix}>,`)
+            p(`    ${escapeJSKey(i.nameInCushy)}: Slot<'${i.typeName}', ${ix}>,`)
         })
         // INTERFACE
         // if (x[i.type] === 1) p(`    get _${i.type}() { return this.${i.name} } // prettier-ignore`)

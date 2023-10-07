@@ -9,7 +9,7 @@ import { Panel } from 'rsuite'
 hljs.registerLanguage('typescript', typescript)
 hljs.registerLanguage('json', json)
 
-export const TypescriptHighlightedCodeUI = (p: { code: string }) => {
+export const TypescriptHighlightedCodeUI = (p: { code: string; wrap?: boolean }) => {
     const ref = useRef(null)
     useLayoutEffect(() => {
         const e = ref.current
@@ -17,7 +17,7 @@ export const TypescriptHighlightedCodeUI = (p: { code: string }) => {
         hljs.highlightElement(e)
     }, [ref, p.code])
     return (
-        <code className='language-typescript text-xs' style={{ whiteSpace: 'pre-wrap' }} ref={ref}>
+        <code className='language-typescript text-xs' style={{ whiteSpace: p.wrap ? 'pre-wrap' : 'pre' }} ref={ref}>
             {p.code}
         </code>
     )

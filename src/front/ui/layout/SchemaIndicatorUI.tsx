@@ -23,9 +23,9 @@ export const SchemaIndicatorUI = observer(function SchemaIndicatorUI_(p: {}) {
             }
         >
             {st.schemaReady.done ? (
-                <div className='flex gap-2'>
+                <div className='flex gap-1'>
                     <span className='material-symbols-outlined text-green-400'>check_circle</span>
-                    <span className='text-green-400'>schema ready</span>
+                    <span className='text-green-400'>Schema</span>
                 </div>
             ) : (
                 <Button appearance='ghost' color='orange' className='flex gap-2'>

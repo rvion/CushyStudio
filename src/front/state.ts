@@ -29,7 +29,7 @@ import { LiveDB } from '../db/LiveDB'
 import { UIAction } from './UIAction'
 import { DanbooruTags } from '../booru/BooruLoader'
 import { Updater } from './updater'
-import { ComfyImporter } from '../importers/ImportComfyImage'
+import { ComfyImporter } from '../importers/ComfyImporter'
 import { ProjectL } from 'src/models/Project'
 
 export class STATE {

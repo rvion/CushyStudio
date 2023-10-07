@@ -31,9 +31,9 @@ export const WebsocketIndicatorUI = observer(function WebsocketIndicatorUI_(p: {
             }
         >
             {st.ws.isOpen ? (
-                <div className='flex gap-2'>
+                <div className='flex gap-1'>
                     <span className='material-symbols-outlined text-green-400'>check_circle</span>
-                    <span className='text-green-400'>WS ready</span>
+                    <span className='text-green-400'>WS</span>
                 </div>
             ) : (
                 <Button color='orange' appearance='ghost' className='flex gap-2'>

@@ -201,6 +201,7 @@ export class GraphL {
         const json: ComfyPromptJSON = {}
         for (const node of this.nodes) {
             if (node.disabled) continue
+            console.log(`🦊 ${node.uid}`)
             json[node.uid] = node.json
         }
         return json
@@ -232,6 +233,9 @@ export class GraphL {
 
     getTargetWorkflowFilePath = () => {
         return asAbsolutePath(join(this.st.cacheFolderPath, 'workflow.json'))
+    }
+    getTargetPromptFilePath = () => {
+        return asAbsolutePath(join(this.st.cacheFolderPath, 'prompt.json'))
     }
 
     get cacheFolder(): AbsolutePath {

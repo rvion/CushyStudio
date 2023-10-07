@@ -7,7 +7,11 @@ import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { STATE } from 'src/front/state'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
-type RuleInput = { nodeName: string; inputName: string; valueStr: string }
+type RuleInput = {
+    nodeName: string
+    inputName: string
+    valueStr: string | number | boolean | null | undefined
+}
 
 export class ComfyImporter {
     constructor(public st: STATE) {}
@@ -27,6 +31,7 @@ export class ComfyImporter {
                 //
                 p.nodeName === 'KSampler' &&
                 p.inputName === 'sampler_name' &&
+                typeof p.valueStr === 'string' &&
                 p.valueStr.startsWith('sample_')
             ) {
                 p.valueStr = p.valueStr.replace('sample_', '')
@@ -84,6 +89,7 @@ export class ComfyImporter {
             title: string
             author: string
             preserveId: boolean
+            autoUI: boolean
         },
     ): string => {
         const flowNodes = Object.entries(flow)
@@ -106,10 +112,15 @@ export class ComfyImporter {
         const b = new CodeBuffer()
         const p = b.w
         const pi = b.append
+        const uiVals: {
+            type: string
+            name: string
+            default: string | number | boolean | null | undefined
+        }[] = []
         p(`action('${opts.title}', { `)
-        p(`author: '${opts.author}',\n`)
-        p(`run: async (flow, deps) => {\n`)
-        p(` const graph = flow.nodes\n`)
+        p(`    author: '${opts.author}',`)
+        p(`    run: async (flow, p) => {`)
+        p(`        const graph = flow.nodes`)
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 
@@ -121,7 +132,6 @@ export class ComfyImporter {
             // @ts-ignore
             const node = flow[nodeID]
             const classType = normalizeJSIdentifier(node.class_type)
-
             const varName = this.mkVarNameForNodeType(classType, []) //`${classType}_${nodeID}`
 
             generatedName.set(nodeID, varName)
@@ -136,17 +146,17 @@ export class ComfyImporter {
             }
             let outoutIx = 0
             for (const o of schema.outputs ?? []) {
-                const isValid1234 = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(o.nameInComfy)
+                const isValid1234 = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(o.nameInCushy)
                 availableSignals.set(
                     `${nodeID}-${outoutIx++}`,
                     isValid1234 //
-                        ? `${varName}.${o.nameInComfy}`
-                        : `${varName}["${o.nameInComfy}"]`,
+                        ? `${varName}.${o.nameInCushy}`
+                        : `${varName}["${o.nameInCushy}"]`,
                 )
             }
 
             if (node == null) throw new Error('node not found')
-            pi(`    const ${varName} = graph.${classType}({`)
+            pi(`        const ${varName} = graph.${classType}({`)
             for (const [name, value] of Object.entries(node.inputs) ?? []) {
                 const isValidJSIdentifier = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(name)
                 if (this.UI_ONLY_ATTRIBUTES.includes(name)) continue
@@ -156,7 +166,11 @@ export class ComfyImporter {
                     : value
 
                 // apply rules
-                let draft: RuleInput = { inputName: name, nodeName: classType, valueStr }
+                let draft: RuleInput = {
+                    inputName: name,
+                    nodeName: classType,
+                    valueStr,
+                }
                 for (const rule of this.RULES) rule(draft)
 
                 // escape name if needed
@@ -166,15 +180,30 @@ export class ComfyImporter {
                     // const signal = availableSignals.get(value.join('-'))
                     pi(`${name2}: ${draft.valueStr}, `)
                 } else {
-                    pi(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
+                    if (opts.autoUI) {
+                        const inputName = `${node.class_type}_${name}`
+                        uiVals.push({
+                            type: typeof valueStr,
+                            name: inputName,
+                            default: valueStr,
+                        })
+                        pi(`${name2}: p.${inputName}, `)
+                    } else {
+                        pi(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
+                    }
                 }
             }
             if (opts.preserveId) p(`}, '${nodeID}')`)
             else p(`})`)
         }
 
-        p('    await flow.PROMPT()')
-        p('}')
+        p('        await flow.PROMPT()')
+        p('    },')
+        p(`    ui: (ui) => ({`)
+        for (const x of uiVals) {
+            p(`         ${x.name}: ui.${x.type}({default: ${jsEscapeStr(x.default)}}),`)
+        }
+        p(`    })`)
         p('})')
         // b.writeTS('./src/compiler/entry.ts')
         return b.content
