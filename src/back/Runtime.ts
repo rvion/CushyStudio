@@ -385,6 +385,7 @@ export class Runtime {
         const liveGraph = this.graph
         if (liveGraph == null) throw new Error('no graph')
         const currentJSON = deepCopyNaive(liveGraph.json_forPrompt)
+        const debugWorkflow = await liveGraph.json_workflow()
         // this.step.append({ type: 'prompt', graph: currentJSON })
         console.info('checkpoint:' + JSON.stringify(currentJSON))
         // const step = new PromptExecution(this, currentJSON)
@@ -404,7 +405,7 @@ export class Runtime {
         // 🔴 TODO: store the whole project in the prompt
         const out: ApiPromptInput = {
             client_id: this.st.comfySessionId,
-            extra_data: { extra_pnginfo: { it: 'works' } },
+            extra_data: { extra_pnginfo: { workflow: debugWorkflow } },
             prompt: currentJSON,
         }
 
