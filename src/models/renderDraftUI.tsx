@@ -16,6 +16,10 @@ export const renderToolUI = (draft: DraftL, tool: ToolL) => {
     const formDef = tool.data.form ?? {}
     const entries = Object.entries(formDef)
     for (const [rootKey, req] of entries) {
+        if (req == null) {
+            // 🔴 🔴 🔴
+            continue
+        }
         const group = req.group
         if (group) {
             if (!blocksByGroup[group]) {
