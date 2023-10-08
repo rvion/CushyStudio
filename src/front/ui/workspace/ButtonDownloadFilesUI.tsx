@@ -18,9 +18,11 @@ export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p:
             <Whisper placement='auto' speaker={<Tooltip>Download as ComfyUI workflow.json</Tooltip>}>
                 <IconButton
                     appearance='link'
-                    icon={<span className='material-symbols-outlined'>arrow_circle_down</span>}
+                    icon={<span className='material-symbols-outlined'>account_tree</span>}
                     size='xs'
-                    onClick={async () => {
+                    onClick={async (ev) => {
+                        ev.preventDefault()
+                        ev.preventDefault()
                         const jsonWorkflow = await graph.json_workflow()
                         console.log('>>>🟢', { jsonWorkflow })
                         // ensure folder exists
@@ -40,9 +42,11 @@ export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p:
             <Whisper placement='auto' speaker={<Tooltip>Download as ComfyUI prompt</Tooltip>}>
                 <IconButton
                     appearance='link'
-                    icon={<span className='material-symbols-outlined'>arrow_circle_down</span>}
+                    icon={<span className='material-symbols-outlined'>message</span>}
                     size='xs'
-                    onClick={async () => {
+                    onClick={async (ev) => {
+                        ev.preventDefault()
+                        ev.stopPropagation()
                         const jsonPrompt = graph.json_forPrompt
                         // console.log('>>>🟢', { jsonPrompt })
                         // ensure folder exists

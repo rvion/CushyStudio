@@ -12,12 +12,19 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
             : graphOrGraphID
 
     return (
-        <Whisper speaker={<Tooltip>Open in ComfyUI</Tooltip>}>
+        <Whisper
+            //
+            enterable
+            placement='autoVerticalEnd'
+            speaker={<Tooltip>Open in ComfyUI</Tooltip>}
+        >
             <IconButton
                 icon={<span className='material-symbols-outlined'>open_in_new</span>}
                 appearance='link'
                 size='xs'
-                onClick={async () => {
+                onClick={async (ev) => {
+                    ev.preventDefault()
+                    ev.stopPropagation()
                     const prompt = await graph?.json_workflow()
                     if (prompt == null) return
                     st.setAction({ type: 'comfy', json: prompt })
