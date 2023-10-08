@@ -1,7 +1,7 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
 import type { ToolID, ToolL } from './Tool'
-import type { PossibleActionFile } from 'src/back/CushyFile'
+import type { PossibleActionFile } from 'src/back/PossibleActionFile'
 import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import type { SchemaL } from './Schema'
 

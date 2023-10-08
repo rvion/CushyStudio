@@ -55,8 +55,8 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                 data={st.toolbox.treeData}
                 renderTreeIcon={(x) => {
                     console.log(x)
-                    if (x.expand) return 'V'
-                    return '>'
+                    if (x.expand) return '▿'
+                    return '▸'
                     // return <span className='material-symbols-outlined'>unfold_more</span>
                 }}
                 // renderMenu={(node) => null}

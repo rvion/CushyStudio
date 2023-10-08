@@ -5,6 +5,7 @@ import { useImageDrop } from '../galleries/dnd'
 import { useDraft } from '../useDraft'
 import { Button } from 'rsuite'
 import { WidgetEnumUI } from './WidgetEnumUI'
+import { useSt } from '../../../front/FrontStateCtx'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     // infos: ImageInfos[]
@@ -15,6 +16,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     const { get, set } = p
     // const lbs = useMemo(() => new LightBoxState(() => infos), [infos])
     const answer = get() ?? p.def()
+    const st = useSt()
     const [dropStyle, dropRef] = useImageDrop((i) => {
         set({ type: 'imageID', imageID: i.id })
     })
@@ -54,12 +56,28 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                 </div>
                 <div>
                     {answer?.type === 'ComfyImage' ? ( //
-                        <WidgetEnumUI
-                            enumName='Enum_LoadImage_image'
-                            get={() => answer.image}
-                            set={(t) => set({ type: 'ComfyImage', image: t as any })}
-                            def={() => answer.image}
-                        />
+                        <>
+                            <WidgetEnumUI
+                                enumName='Enum_LoadImage_image'
+                                get={() => answer.image}
+                                set={(t) => {
+                                    console.log('🦊', t)
+                                    set({ type: 'ComfyImage', image: t as any })
+                                }}
+                                def={() => answer.image}
+                            />
+                            {/* ?filename=upload%20(102).png&type=input&subfolder= */}
+                            <img
+                                style={{
+                                    width: '32px',
+                                    height: '32px',
+                                }}
+                                src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(
+                                    answer.image,
+                                )}&type=input&subfolder=`}
+                                alt=''
+                            />
+                        </>
                     ) : (
                         <WidgetEnumUI
                             enumName='Enum_LoadImage_image'

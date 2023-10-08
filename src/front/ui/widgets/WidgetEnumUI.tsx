@@ -29,7 +29,6 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
     const valueIsValid = (value != null || p.optional) && options.some((x) => x.value === value)
     return (
         <>
-            {valueIsValid ? null : '🔴'}
             <SelectPicker //
                 size='sm'
                 cleanable={Boolean(p.optional)}
@@ -45,6 +44,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
                     p.set(e)
                 }}
             />
+            {valueIsValid ? null : <span className='text-red-700'>🔴 {JSON.stringify(value)}</span>}
         </>
     )
 })

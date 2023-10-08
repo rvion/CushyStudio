@@ -5,7 +5,7 @@ import { readdirSync, statSync } from 'fs'
 import path, { join } from 'path'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { PossibleActionFile } from './CushyFile'
+import { PossibleActionFile } from './PossibleActionFile'
 import { makeAutoObservable } from 'mobx'
 
 export class CushyFileWatcher {

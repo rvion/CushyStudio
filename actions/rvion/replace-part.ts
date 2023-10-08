@@ -9,7 +9,7 @@ action('🎭 replace', {
         }),
         query: form.str({ default: 'face' }),
         replacement: form.str({ default: 'orc face' }),
-        image: form.image({ label: 'test', default: { type: 'imageID', imageID: '❌' } }),
+        image: form.image({ label: 'test', default: { type: 'ComfyImage', image: 'ComfyUI_01264_.png' } }),
         norm: form.bool({ label: 'normalize', default: true }),
         threeshold: form.float({ default: 0.2 }),
     }),

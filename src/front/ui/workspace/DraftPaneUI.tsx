@@ -1,4 +1,4 @@
-import type { PafLoadStatus } from 'src/back/CushyFile'
+import type { PafLoadStatus } from 'src/back/PossibleActionFile'
 import type { DraftL } from 'src/models/Draft'
 import { observer } from 'mobx-react-lite'
 import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
