@@ -103,8 +103,11 @@ export class Updater {
             console.log('[🚀] updater: UPDATING...')
             exec('git pull origin master', (error) => {
                 if (error) return reject(error)
-                console.log('[🚀] updater: UPDATED')
-                resolve()
+                exec('npm install', (error) => {
+                    if (error) return reject(error)
+                    console.log('[🚀] updater: UPDATED')
+                    resolve()
+                })
             })
         })
     }
