@@ -6,6 +6,7 @@ import { TEdge, toposort } from '../utils/toposort'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { STATE } from 'src/front/state'
 import { asJSAccessor, escapeJSKey } from '../models/escapeJSKey'
+import { Namer } from './Namer'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = {
@@ -129,6 +130,7 @@ export class ComfyImporter {
         // const nodeCounter: { [nodeType: string]: number } = {}
         const generatedName = new Map<string, string>()
         const availableSignals = new Map<string, string>()
+        const pNamer = new Namer()
 
         for (const nodeID of sortedNodes) {
             // @ts-ignore
@@ -183,7 +185,7 @@ export class ComfyImporter {
                     pi(`${name2}: ${draft.valueStr}, `)
                 } else {
                     if (opts.autoUI) {
-                        const inputName = `${node.class_type}_${name}`
+                        const inputName = pNamer.name(`${node.class_type}_${name}`)
                         uiVals.push({
                             type: typeof valueStr,
                             name: inputName,
