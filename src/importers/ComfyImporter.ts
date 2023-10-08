@@ -112,18 +112,22 @@ export class ComfyImporter {
         console.log(`1. toposrt (${edges.map((e) => e.join('->')).join(',')})`)
         const sortedNodes = toposort(ids, edges)
         const b = new CodeBuffer()
-        const p = b.w
-        const pi = b.append
+        const bRun = new CodeBuffer()
+        const bUI = new CodeBuffer()
+        const { w: p, append: pi } = b
+        const { w: pRun, append: piRun } = bRun
+        const { w: pUI, append: piUI } = bUI
         const uiVals: {
             type: string
             name: string
             nameEscaped: string
             default: string | number | boolean | null | undefined
         }[] = []
+
         p(`action('${opts.title}', { `)
         p(`    author: '${opts.author}',`)
-        p(`    run: async (flow, p) => {`)
-        p(`        const graph = flow.nodes`)
+        pRun(`    run: async (flow, p) => {`)
+        pRun(`        const graph = flow.nodes`)
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 
@@ -160,7 +164,12 @@ export class ComfyImporter {
             }
 
             if (node == null) throw new Error('node not found')
-            pi(`        const ${varName} = graph.${classType}({`)
+            piRun(`        const ${varName} = graph.${classType}({`)
+
+            // name of the group of fields where primitive input for this node
+            // will be added to the form
+            const inputGroupName = pNamer.name(`${node.class_type}`)
+
             for (const [name, value] of Object.entries(node.inputs) ?? []) {
                 const isValidJSIdentifier = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(name)
                 if (this.UI_ONLY_ATTRIBUTES.includes(name)) continue
@@ -182,33 +191,36 @@ export class ComfyImporter {
 
                 if (Array.isArray(value)) {
                     // const signal = availableSignals.get(value.join('-'))
-                    pi(`${name2}: ${draft.valueStr}, `)
+                    piRun(`${name2}: ${draft.valueStr}, `)
                 } else {
                     if (opts.autoUI) {
                         const inputName = pNamer.name(`${node.class_type}_${name}`)
+                        // console.log('🐙', inputName)
                         uiVals.push({
                             type: typeof valueStr,
                             name: inputName,
                             nameEscaped: escapeJSKey(inputName),
                             default: valueStr,
                         })
-                        pi(`${name2}: p${asJSAccessor(inputName)}, `)
+                        piRun(`${name2}: p${asJSAccessor(inputName)}, `)
                     } else {
-                        pi(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
+                        piRun(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
                     }
                 }
             }
-            if (opts.preserveId) p(`}, '${nodeID}')`)
-            else p(`})`)
+            if (opts.preserveId && false) pRun(`}, '${nodeID}')`)
+            else pRun(`})`)
         }
 
-        p('        await flow.PROMPT()')
-        p('    },')
-        p(`    ui: (ui) => ({`)
+        pRun('        await flow.PROMPT()')
+        pRun('    },')
+        pUI(`    ui: (ui) => ({`)
         for (const x of uiVals) {
-            p(`         ${x.nameEscaped}: ui.${x.type}({default: ${jsEscapeStr(x.default)}}),`)
+            pUI(`         ${x.nameEscaped}: ui.${x.type}({default: ${jsEscapeStr(x.default)}}),`)
         }
-        p(`    })`)
+        pUI(`    }),`)
+        p(bUI.content)
+        p(bRun.content)
         p('})')
         // b.writeTS('./src/compiler/entry.ts')
         return b.content
