@@ -15,9 +15,9 @@ export const PafUI = observer(function PafUI_(p: {}) {
     return (
         <div className='flex flex-wrap gap-1'>
             {/* {paf.lo} */}
-            <div className='rounded px-1' style={{ border: '1px solid white' }}>
+            {/* <div className='rounded px-1' style={{ border: '1px solid white' }}>
                 <span className='material-symbols-outlined'>insert_drive_file</span> {paf.relPath}
-            </div>
+            </div> */}
             <div>{paf.loaded.done ? null : <Loader />}</div>
             {[...paf.statusByStrategy.entries()].map(([strategy, status]) => (
                 <Whisper
@@ -53,11 +53,13 @@ export const PafUI = observer(function PafUI_(p: {}) {
                 placement='auto'
                 speaker={
                     <Popover>
-                        <TypescriptHighlightedCodeUI className='h-64 w-64 overflow-auto' code={paf.DEBUG_CODE} />
+                        <TypescriptHighlightedCodeUI className='h-96 w-96 overflow-auto' code={paf.DEBUG_CODE} />
                     </Popover>
                 }
             >
-                <span className='material-symbols-outlined'>help</span>
+                <Button startIcon={<span className='material-symbols-outlined'>help</span>} appearance='ghost' size='xs'>
+                    code
+                </Button>
             </Whisper>
             {paf.loadResult?.paf?.tools.map((tool) => (
                 <div className='rounded px-1 flex items-center gap-1' key={tool.id} style={{ border: `1px solid pink` }}>

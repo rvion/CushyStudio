@@ -1,12 +1,13 @@
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPromptJSON } from '../types/ComfyPrompt'
-import { ComfyNodeSchema } from '../models/Schema'
+import { ComfyNodeSchema, NodeInputExt } from '../models/Schema'
 import { jsEscapeStr } from '../utils/jsEscapeStr'
 import { TEdge, toposort } from '../utils/toposort'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { STATE } from 'src/front/state'
 import { asJSAccessor, escapeJSKey } from '../models/escapeJSKey'
 import { Namer } from './Namer'
+import { ComfyPrimitiveMapping } from '../core/Primitives'
 
 /** Converts Comfy JSON prompts to ComfyScript code */
 type RuleInput = {
@@ -117,12 +118,14 @@ export class ComfyImporter {
         const { w: p, append: pi } = b
         const { w: pRun, append: piRun } = bRun
         const { w: pUI, append: piUI } = bUI
-        const uiVals: {
-            type: string
+        type UIVal = {
+            typeofValue: string
+            schema: NodeInputExt | undefined
             name: string
             nameEscaped: string
             default: string | number | boolean | null | undefined
-        }[] = []
+        }
+        const uiVals: UIVal[] = []
 
         p(`action('${opts.title}', { `)
         p(`    author: '${opts.author}',`)
@@ -194,11 +197,14 @@ export class ComfyImporter {
                     piRun(`${name2}: ${draft.valueStr}, `)
                 } else {
                     if (opts.autoUI) {
+                        const inputSchema = schema.inputs.find((x) => x.nameInComfy === name)
+                        // if (inputSchema == null) debugger
                         const inputName = pNamer.name(`${node.class_type}_${name}`)
                         // console.log('🐙', inputName)
                         uiVals.push({
-                            type: typeof valueStr,
+                            typeofValue: valueStr == null ? typeof valueStr : 'strOpt',
                             name: inputName,
+                            schema: inputSchema,
                             nameEscaped: escapeJSKey(inputName),
                             default: valueStr,
                         })
@@ -215,8 +221,26 @@ export class ComfyImporter {
         pRun('        await flow.PROMPT()')
         pRun('    },')
         pUI(`    ui: (ui) => ({`)
+        function renderUIForInput(x: UIVal) {
+            const s = x.schema
+            // no schema, let's try to infer the type from the value
+            if (s == null) {
+                return `ui.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`
+            }
+            if (s.type.startsWith('Enum_')) {
+                return `ui.enum({default: ${jsEscapeStr(x.default)}, enumName: ${JSON.stringify(s.type)}})`
+            }
+            if (s.type in ComfyPrimitiveMapping) {
+                let builderFnName = ComfyPrimitiveMapping[s.type]
+                if (!s.required) builderFnName += 'Opt'
+                return `ui.${builderFnName}({default: ${jsEscapeStr(x.default)}})`
+            }
+            if (s.type === 'IMAGE' || s.type === 'MASK') {
+                return `ui.image({default: ${jsEscapeStr(x.default)}})`
+            }
+        }
         for (const x of uiVals) {
-            pUI(`         ${x.nameEscaped}: ui.${x.type}({default: ${jsEscapeStr(x.default)}}),`)
+            pUI(`         ${x.nameEscaped}: ${renderUIForInput(x)} /* ${x.schema?.type} */,`)
         }
         pUI(`    }),`)
         p(bUI.content)

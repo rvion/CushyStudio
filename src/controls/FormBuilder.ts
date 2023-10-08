@@ -3,25 +3,32 @@ import type { Requestable } from './InfoRequest'
 import type * as R from './InfoRequest'
 import type { LATER } from 'LATER'
 
+// prettier-ignore
 export class FormBuilder {
     /** str */
-    string = (p: Omit<R.Requestable_str, 'type'>): R.Requestable_str => ({ type: 'str', ...p })
-    str = (p: Omit<R.Requestable_str, 'type'>): R.Requestable_str => ({ type: 'str', ...p })
-    strOpt = (p: Omit<R.Requestable_strOpt, 'type'>): R.Requestable_strOpt => ({ type: 'str?', ...p })
-    prompt = (p: Omit<R.Requestable_prompt, 'type'>): R.Requestable_prompt => ({ type: 'prompt', ...p })
-    promptOpt = (p: Omit<R.Requestable_promptOpt, 'type'>): R.Requestable_promptOpt => ({ type: 'prompt?', ...p })
+    string =    (p: Omit<R.Requestable_str,       'type'>): R.Requestable_str      => ({ type: 'str',  ...p })
+    stringOpt = (p: Omit<R.Requestable_strOpt,    'type'>): R.Requestable_strOpt   => ({ type: 'str?', ...p })
+
+    str =       (p: Omit<R.Requestable_str,       'type'>): R.Requestable_str      => ({ type: 'str',  ...p })
+    strOpt =    (p: Omit<R.Requestable_strOpt,    'type'>): R.Requestable_strOpt   => ({ type: 'str?', ...p })
+
+    prompt =    (p: Omit<R.Requestable_prompt,    'type'>): R.Requestable_prompt   => ({ type: 'prompt',  ...p })
+    promptOpt = (p: Omit<R.Requestable_promptOpt, 'type'>): R.Requestable_promptOpt=> ({ type: 'prompt?', ...p })
 
     /** nums */
-    int = (p: Omit<R.Requestable_int, 'type'>): R.Requestable_int => ({ type: 'int', ...p })
-    intOpt = (p: Omit<R.Requestable_intOpt, 'type'>): R.Requestable_intOpt => ({ type: 'int?', ...p })
-    float = (p: Omit<R.Requestable_float, 'type'>): R.Requestable_float => ({ type: 'float', ...p })
-    floatOpt = (p: Omit<R.Requestable_floatOpt, 'type'>): R.Requestable_floatOpt => ({ type: 'float?', ...p })
-    number = (p: Omit<R.Requestable_float, 'type'>): R.Requestable_float => ({ type: 'float', ...p })
+    int =       (p: Omit<R.Requestable_int,       'type'>): R.Requestable_int      => ({ type: 'int',  ...p })
+    intOpt =    (p: Omit<R.Requestable_intOpt,    'type'>): R.Requestable_intOpt   => ({ type: 'int?', ...p })
+
+    float =     (p: Omit<R.Requestable_float,     'type'>): R.Requestable_float    => ({ type: 'float',  ...p })
+    floatOpt =  (p: Omit<R.Requestable_floatOpt,  'type'>): R.Requestable_floatOpt => ({ type: 'float?', ...p })
+
+    number =    (p: Omit<R.Requestable_float,     'type'>): R.Requestable_float    => ({ type: 'float',  ...p })
+    numberOpt = (p: Omit<R.Requestable_floatOpt,  'type'>): R.Requestable_floatOpt => ({ type: 'float?', ...p })
 
     /** bools */
-    boolean = (p: Omit<R.Requestable_bool, 'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })
-    bool = (p: Omit<R.Requestable_bool, 'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })
-    boolOpt = (p: Omit<R.Requestable_boolOpt, 'type'>) => ({ type: 'bool?' as const, ...p })
+    boolean =   (p: Omit<R.Requestable_bool,      'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })
+    bool =      (p: Omit<R.Requestable_bool,      'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })
+    boolOpt =   (p: Omit<R.Requestable_boolOpt,   'type'>) => ({ type: 'bool?' as const, ...p })
 
     /** embedding */
     embeddings = (label?: string) => ({ type: 'embeddings' as const, label })
