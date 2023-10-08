@@ -66,7 +66,6 @@ export class GraphL {
         this._builder = new NodeBuilder(this)
         return this._builder
     }
-    _uidNumber = 0
     onUpdate = (prev: Maybe<GraphT>, next: GraphT) => {
         const prevSize = this.size
         if (prev != null) {
@@ -299,8 +298,9 @@ export class GraphL {
         return asHTMLContent(marked.parse(this.flowSummaryMd))
     }
 
-    private _nextUID = 1
-    getUID = () => (this._nextUID++).toString()
+    _uidNumber = 0
+    // private _nextUID = 1
+    // getUID = () => (this._nextUID++).toString()
     getNodeOrCrash = (nodeID: ComfyNodeID): ComfyNode<any> => {
         const node = this.nodesIndex.get(nodeID)
         if (node == null) throw new Error('Node not found:' + nodeID)

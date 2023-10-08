@@ -24,11 +24,11 @@ export class NodeBuilder {
             try {
             Object.defineProperty(this, node.nameInCushy, {
                 value: (inputs: any) => {
-                    const nthForGivenNode = this.nameCache.get(node.nameInCushy) ?? 0
-                    const practicalNameWithinGraph = `${node.nameInCushy}_${nthForGivenNode}`
-                    this.nameCache.set(node.nameInCushy, nthForGivenNode + 1)
-
-                    return new ComfyNode(graph, practicalNameWithinGraph, {
+                    // const nthForGivenNode = this.nameCache.get(node.nameInCushy) ?? 0
+                    // const practicalNameWithinGraph = `${node.nameInCushy}_${nthForGivenNode}`
+                    // this.nameCache.set(node.nameInCushy, nthForGivenNode + 1)
+                    const uidNumber = (this.graph._uidNumber++).toString()
+                    return new ComfyNode(graph, uidNumber, {
                         class_type: node.nameInComfy as any,
                         inputs,
                     })
