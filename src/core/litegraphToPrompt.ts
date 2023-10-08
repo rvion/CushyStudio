@@ -73,33 +73,43 @@ export const convertLiteGraphToPrompt = (
         // 1 insert all values found in the node, regardless of the schema
         // 2. then insert all values or default from the schema
 
-        // 1. By value -----------------------------------------------------
-        const _done = new Set<string>()
-        for (const field of node.inputs ?? []) {
-            _done.add(field.name)
-            if (viaInput.has(field.name)) {
-                console.log(`    | .${field.name} (viaInput)`)
-                if (field.widget) offset++
-                continue
-            }
-            inputs[field.name] = node.widgets_values[offset++]
-            const isSeed = field.type === 'INT' && (field.name === 'seed' || field.name === 'noise_seed')
-            if (isSeed) offset++
-            // for (const val of node.widgets_values)
-        }
+        // const shouldDebug = nodeTypeName === 'Evaluate Strings'
+        // if (shouldDebug) debugger
+
         // 2. By Schema -----------------------------------------------------
         for (const field of nodeSchema.inputs) {
-            if (_done.has(field.nameInComfy)) continue
+            // if (_done.has(field.nameInComfy)) continue
             if (viaInput.has(field.nameInComfy)) {
                 console.log(`    | .${field.nameInComfy} (viaInput)`)
+                if (field.isPrimitive) offset++
                 continue
             }
+            console.log(`    | .${field.nameInComfy} (viaValue: ${node.widgets_values[offset]})`)
             inputs[field.nameInComfy] = node.widgets_values[offset++]
             //
             const isSeed = field.type === 'INT' && (field.nameInComfy === 'seed' || field.nameInComfy === 'noise_seed')
             if (isSeed) offset++
             // for (const val of node.widgets_values)
         }
+        // 1. By value -----------------------------------------------------
+        // ❓ const _done = new Set<string>()
+        // ❓ for (const field of node.inputs ?? []) {
+        // ❓     if (viaInput.has(field.name)) {
+        // ❓         if (field.widget) {
+        // ❓             console.log(`    | .${field.name} (viaInput canceleld) [OFFSET]`)
+        // ❓             offset++
+        // ❓         } else {
+        // ❓             console.log(`    | .${field.name} (viaInput)`)
+        // ❓         }
+        // ❓         continue
+        // ❓     }
+        // ❓     _done.add(field.name)
+        // ❓     inputs[field.name] = node.widgets_values[offset++]
+        // ❓     const isSeed = field.type === 'INT' && (field.name === 'seed' || field.name === 'noise_seed')
+        // ❓     if (isSeed) offset++
+        // ❓     // for (const val of node.widgets_values)
+        // ❓ }
+
         // Store all widget values
         // ! if (widgets) {
         // !     for (const i in widgets) {
@@ -163,6 +173,8 @@ export const convertLiteGraphToPrompt = (
             // !     }
             // ! }
         }
+
+        console.log(`    | [🟢 OK] node ${node.id}(${node.type}) => ${JSON.stringify(inputs)}`)
 
         prompt[String(node.id)] = {
             inputs,

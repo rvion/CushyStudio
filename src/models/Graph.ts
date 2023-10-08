@@ -201,7 +201,7 @@ export class GraphL {
         const json: ComfyPromptJSON = {}
         for (const node of this.nodes) {
             if (node.disabled) continue
-            console.log(`🦊 ${node.uid}`)
+            // console.log(`🦊 ${node.uid}`)
             json[node.uid] = node.json
         }
         return json

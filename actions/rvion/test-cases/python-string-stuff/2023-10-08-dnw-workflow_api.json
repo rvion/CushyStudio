@@ -1,0 +1,193 @@
+{
+  "3": {
+    "inputs": {
+      "seed": 535190685267186,
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "5",
+        0
+      ]
+    },
+    "class_type": "KSampler"
+  },
+  "4": {
+    "inputs": {
+      "ckpt_name": "revAnimated_v121.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple"
+  },
+  "5": {
+    "inputs": {
+      "width": 512,
+      "height": 512,
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage"
+  },
+  "6": {
+    "inputs": {
+      "text": [
+        "22",
+        0
+      ],
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "7": {
+    "inputs": {
+      "text": "text, watermark",
+      "clip": [
+        "4",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "4",
+        2
+      ]
+    },
+    "class_type": "VAEDecode"
+  },
+  "9": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "SaveImage"
+  },
+  "10": {
+    "inputs": {
+      "python_expression": "a + b + c",
+      "print_to_console": "False",
+      "a": [
+        "12",
+        0
+      ],
+      "b": "HairColor",
+      "c": ".txt"
+    },
+    "class_type": "Evaluate Strings"
+  },
+  "12": {
+    "inputs": {
+      "python_expression": "a + b + c",
+      "print_to_console": "True",
+      "a": "C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\",
+      "b": [
+        "14",
+        0
+      ],
+      "c": "\\"
+    },
+    "class_type": "Evaluate Strings"
+  },
+  "13": {
+    "inputs": {
+      "Text": "wildcardTest,"
+    },
+    "class_type": "Text"
+  },
+  "14": {
+    "inputs": {
+      "text": [
+        "13",
+        0
+      ],
+      "find": ",",
+      "replace": ""
+    },
+    "class_type": "Text Find and Replace"
+  },
+  "15": {
+    "inputs": {
+      "text": [
+        "16",
+        0
+      ],
+      "replacement_key": "__",
+      "seed": 1015191210827947,
+      "dictionary": [
+        "17",
+        1
+      ]
+    },
+    "class_type": "Text Find and Replace by Dictionary"
+  },
+  "16": {
+    "inputs": {
+      "Text": "__HairColor__"
+    },
+    "class_type": "Text"
+  },
+  "17": {
+    "inputs": {
+      "file_path": [
+        "10",
+        0
+      ],
+      "dictionary_name": "HairColor"
+    },
+    "class_type": "Load Text File"
+  },
+  "21": {
+    "inputs": {
+      "Text": "1girl, adult,  outside, winter clothes, medium breasts, "
+    },
+    "class_type": "Text box"
+  },
+  "22": {
+    "inputs": {
+      "text_a": [
+        "21",
+        0
+      ],
+      "text_b": [
+        "15",
+        0
+      ],
+      "linebreak_addition": "false",
+      "text_c": [
+        "23",
+        0
+      ]
+    },
+    "class_type": "Text Concatenate"
+  },
+  "23": {
+    "inputs": {
+      "Text": " hair"
+    },
+    "class_type": "Text box"
+  }
+}
