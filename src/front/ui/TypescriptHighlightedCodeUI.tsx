@@ -4,7 +4,7 @@ import typescript from 'highlight.js/lib/languages/typescript'
 import json from 'highlight.js/lib/languages/json'
 import 'highlight.js/styles/stackoverflow-dark.css'
 import { useLayoutEffect, useRef } from 'react'
-import { Panel } from 'rsuite'
+import { IconButton, Panel } from 'rsuite'
 
 hljs.registerLanguage('typescript', typescript)
 hljs.registerLanguage('json', json)
@@ -17,13 +17,23 @@ export const TypescriptHighlightedCodeUI = (p: { className?: string; code: strin
         hljs.highlightElement(e)
     }, [ref, p.code])
     return (
-        <code
-            className={'language-typescript text-xs ' + p.className}
-            style={{ whiteSpace: p.wrap ? 'pre-wrap' : 'pre' }}
-            ref={ref}
-        >
-            {p.code}
-        </code>
+        <div className='relative'>
+            <div className='absolute top-2 right-2'>
+                <IconButton
+                    icon={<span className='material-symbols-outlined'>content_copy</span>}
+                    onClick={() => {
+                        navigator.clipboard.writeText(p.code)
+                    }}
+                ></IconButton>
+            </div>
+            <code
+                className={'language-typescript text-xs ' + p.className}
+                style={{ whiteSpace: p.wrap ? 'pre-wrap' : 'pre' }}
+                ref={ref}
+            >
+                {p.code}
+            </code>
+        </div>
     )
 }
 
