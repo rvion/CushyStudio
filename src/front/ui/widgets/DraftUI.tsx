@@ -1,12 +1,11 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input, Panel } from 'rsuite'
+import { Button, Input } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
+import { renderToolUI } from '../../../models/renderDraftUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
 import { TabUI } from '../layout/TabUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { draftContext } from '../useDraft'
-import { WidgetWithLabelUI } from './WidgetUI'
-import { renderToolUI } from '../../../models/renderDraftUI'
 
 /**
  * this is the root interraction widget

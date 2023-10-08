@@ -248,6 +248,29 @@ export class Runtime {
         return seed
     }
 
+    loadImageAnswerAsEnum = async (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
+        try {
+            if (ia.type === 'imageID') {
+                const img = this.st.db.images.getOrThrow(ia.imageID)
+                // this.print(JSON.stringify(img.data, null, 3))
+                if (img.data.downloaded) {
+                    const res = await this.uploadAnyFile(img.localAbsolutePath)
+                    return res.name as Enum_LoadImage_image // 🔴
+                }
+                return img.localAbsolutePath as Enum_LoadImage_image // 🔴
+                // // console.log(img.data)
+                // return this.nodes.Image_Load({
+                //     image_path: img.url ?? img.localAbsolutePath,
+                //     RGBA: false, // 'false',
+                // })
+            }
+            if (ia.type === 'ComfyImage') return ia.image
+        } catch (err) {
+            console.log('🔴 failed to convert ImageAnser to Enum_LoadImage_image', ia)
+            throw err
+        }
+        throw new Error('FAILURE')
+    }
     loadImageAnswer = async (ia: ImageAnswer): Promise<_IMAGE> => {
         try {
             // if (ia.type === 'imagePath') {

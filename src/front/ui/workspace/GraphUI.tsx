@@ -21,7 +21,6 @@ export const GraphUI = observer(function GraphUI_(p: { depth: number }) {
         >
             {/* 1. ACTION */}
             <Pane minSize='150px' className='col' style={{ overflow: 'auto', background: '120202' }}>
-                <SectionTitleUI label='ACTION' className='bg-red-950' />
                 <ActionPickerUI />
             </Pane>
 

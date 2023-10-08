@@ -26,8 +26,10 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
     }, [schema, p.optional])
 
     const value = p.get() ?? p.def() ?? null
+    const valueIsValid = (value != null || p.optional) && options.some((x) => x.value === value)
     return (
         <>
+            {valueIsValid ? null : '🔴'}
             <SelectPicker //
                 size='sm'
                 cleanable={Boolean(p.optional)}

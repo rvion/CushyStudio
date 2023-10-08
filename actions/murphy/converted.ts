@@ -5,10 +5,9 @@ action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
             default: 'RealESRGAN_x2plus.pth',
             enumName: 'Enum_UpscaleModelLoader_model_name',
         }) /* Enum_UpscaleModelLoader_model_name */,
-        LoadImage_image: ui.enum({
+        LoadImage_image: ui.image({
             default:
                 '00269-xmoerf - dreamshaperXL10_alpha2Xl10 - None - 1girl simple background oil painting sunlight strong light (1).jpg',
-            enumName: 'Enum_LoadImage_image',
         }) /* Enum_LoadImage_image */,
         'CLIPSeg Masking_text': ui.string({ default: 'face' }) /* STRING */,
         'Image Threshold_threshold': ui.number({ default: 0.2 }) /* FLOAT */,
@@ -160,7 +159,7 @@ action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
     run: async (flow, p) => {
         const graph = flow.nodes
         const upscaleModel = graph.UpscaleModelLoader({ model_name: p.UpscaleModelLoader_model_name })
-        const load = graph.LoadImage({ image: p.LoadImage_image })
+        const load = graph.LoadImage({ image: await flow.loadImageAnswerAsEnum(p.LoadImage_image) })
         const imageUpscaleWithModel = graph.ImageUpscaleWithModel({
             upscale_model: upscaleModel.UPSCALE_MODEL,
             image: load.IMAGE,

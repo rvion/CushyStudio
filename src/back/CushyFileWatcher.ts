@@ -29,17 +29,20 @@ export class CushyFileWatcher {
         // this.filesMap = new Map()
     }
 
-    walk = async (): Promise<boolean> => {
+    updatedAt = 0
+    walk = (): boolean => {
         const dir = this.st.actionsFolderPath
         console.log(`[💙] TOOL: starting discovery in ${dir}`)
 
         // reset the tree
         this.treeData.splice(0, this.treeData.length)
+        this.failures.splice(0, this.failures.length)
         this.filesMap.clear()
 
         this._walk(dir, this.treeData)
 
         console.log(`[💙] TOOL: done walking, found ${this.filesMap.size} files`)
+        this.updatedAt = Date.now()
         // await Promise.all([...this.filesMap.values()].map((f) => f.extractWorkflowsV2()))
         // console.log(`[💙] TOOL: all ${this.filesMap.size} files are ready`)
         return true

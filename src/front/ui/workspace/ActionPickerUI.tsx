@@ -1,30 +1,29 @@
 import { observer } from 'mobx-react-lite'
 import { Fragment, useState } from 'react'
-import { Button, InputGroup, Message, Popover, SelectPicker, Tree, Whisper } from 'rsuite'
+import { Button, IconButton, InputGroup, Message, Popover, SelectPicker, Tree, Whisper } from 'rsuite'
 import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
 import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
 import { getIconForFilePath } from './filePathIcon'
 import { asAbsolutePath } from '../../../utils/fs/pathUtils'
+import { SectionTitleUI } from './SectionTitle'
 
 export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const st = useSt()
     const pj = useProject()
     const db = st.db
     const tools = st.toolsSorted
-    // let grup = ''
-    // const [value, setValue] = useState([])
-    // st.tsFilesMap.renderTree()
     return (
         <div className='flex flex-col flex-grow'>
-            {/*  */}
-            {/* <InputGroup> */}
-            {/* <InputGroup.Addon className='bg-black'>
-                    <span className='material-symbols-outlined'>search</span>
-                </InputGroup.Addon> */}
-            <SelectPicker
-                // className='grow'
+            <SectionTitleUI label='ACTION' className='bg-red-950'>
+                <IconButton
+                    onClick={() => st.toolbox.walk()}
+                    size='sm'
+                    icon={<span className='material-symbols-outlined'>sync</span>}
+                />
+            </SectionTitleUI>
+            {/* <SelectPicker
                 data={tools}
                 labelKey='name'
                 valueKey='id'
@@ -34,8 +33,7 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                     const tool = db.tools.getOrThrow(v)
                     pj.focusTool(tool)
                 }}
-            />
-            {/* </InputGroup> */}
+            /> */}
             <FileListUI />
         </div>
     )
@@ -46,21 +44,26 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
     const pj = useProject()
     return (
         <>
-            <Button size='sm' startIcon={<span className='material-symbols-outlined'>sync</span>}>
-                Reload
-            </Button>
             {/* {st.tsFilesMap.filesMap.size} */}
             {/* {JSON.stringify(st.tsFilesMap.treeData, null, 3)} */}
+            {/* <div>updated: {new Date(st.toolbox.updatedAt).toLocaleString()}</div> */}
             <Tree
                 // height={'900'}
                 defaultExpandAll
                 className='overflow-x-hidden overflow-y-auto flex-grow'
-                key={st.toolbox.filesMap.size}
+                key={st.toolbox.updatedAt}
                 data={st.toolbox.treeData}
+                renderTreeIcon={(x) => {
+                    console.log(x)
+                    if (x.expand) return 'V'
+                    return '>'
+                    // return <span className='material-symbols-outlined'>unfold_more</span>
+                }}
+                // renderMenu={(node) => null}
                 renderTreeNode={(node) => {
                     // console.log(node)
                     return (
-                        <>
+                        <div className='flex items-center'>
                             {node.children ? (
                                 <span className='material-symbols-outlined'>folder</span>
                             ) : typeof node.value === 'string' ? (
@@ -68,12 +71,8 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                             ) : (
                                 '❓'
                             )}{' '}
-                            {/* <span className='text-ellipsis overflow-hidden whitespace-nowrap'> */}
-                            {/*  */}
                             {node.label}
-                            {/* </span> */}
-                            {/* {node.children?.length} */}
-                        </>
+                        </div>
                     )
                 }}
                 // renderTreeIcon={() => <>{'>'}</>}

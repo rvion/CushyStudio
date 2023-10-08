@@ -75,7 +75,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     constructor(
         //
         public graph: GraphL,
-        public uid: string = graph.getUID(),
+        public uid: string, //  = graph.getUID(),
         jsonExt: ComfyNodeJSON,
     ) {
         this.uidNumber = this.graph._uidNumber++

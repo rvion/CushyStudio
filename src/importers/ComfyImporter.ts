@@ -200,15 +200,15 @@ export class ComfyImporter {
                         const inputSchema = schema.inputs.find((x) => x.nameInComfy === name)
                         // if (inputSchema == null) debugger
                         const inputName = pNamer.name(`${node.class_type}_${name}`)
-                        // console.log('🐙', inputName)
-                        uiVals.push({
+                        const uiVal: UIVal = {
                             typeofValue: valueStr == null ? typeof valueStr : 'strOpt',
                             name: inputName,
                             schema: inputSchema,
                             nameEscaped: escapeJSKey(inputName),
                             default: valueStr,
-                        })
-                        piRun(`${name2}: p${asJSAccessor(inputName)}, `)
+                        }
+                        uiVals.push(uiVal)
+                        piRun(`${name2}: ${renderAdapterForInput(uiVal)}, `)
                     } else {
                         piRun(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
                     }
@@ -221,15 +221,23 @@ export class ComfyImporter {
         pRun('        await flow.PROMPT()')
         pRun('    },')
         pUI(`    ui: (ui) => ({`)
+
+        function renderAdapterForInput(x: UIVal) {
+            const s = x.schema
+            const inputName = x.name
+            if (s == null) return `null`
+            if (s.type === 'Enum_LoadImage_image') return `await flow.loadImageAnswerAsEnum(p${asJSAccessor(inputName)})`
+            return `p${asJSAccessor(inputName)}`
+        }
         function renderUIForInput(x: UIVal) {
             const s = x.schema
             // no schema, let's try to infer the type from the value
             if (s == null) {
                 return `ui.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`
             }
-            // if (s.type === 'Enum_LoadImage_image') {
-            //     return `ui.image({default: ${jsEscapeStr(x.default)}})`
-            // }
+            if (s.type === 'Enum_LoadImage_image') {
+                return `ui.image({default: ${jsEscapeStr(x.default)}})`
+            }
             if (s.type.startsWith('Enum_')) {
                 return `ui.enum({default: ${jsEscapeStr(x.default)}, enumName: ${JSON.stringify(s.type)}})`
             }

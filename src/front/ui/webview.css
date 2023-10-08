@@ -217,6 +217,9 @@ body {
 }
 
 /* ------------------------------ */
+.rs-tree-node-focus {
+    background-color:#35356d;
+}
 .rs-tree-node-label-content {
     padding: 0 0 !important;
     overflow: hidden;
