@@ -227,6 +227,9 @@ export class ComfyImporter {
             if (s == null) {
                 return `ui.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`
             }
+            // if (s.type === 'Enum_LoadImage_image') {
+            //     return `ui.image({default: ${jsEscapeStr(x.default)}})`
+            // }
             if (s.type.startsWith('Enum_')) {
                 return `ui.enum({default: ${jsEscapeStr(x.default)}, enumName: ${JSON.stringify(s.type)}})`
             }
@@ -234,9 +237,6 @@ export class ComfyImporter {
                 let builderFnName = ComfyPrimitiveMapping[s.type]
                 if (!s.required) builderFnName += 'Opt'
                 return `ui.${builderFnName}({default: ${jsEscapeStr(x.default)}})`
-            }
-            if (s.type === 'IMAGE' || s.type === 'MASK') {
-                return `ui.image({default: ${jsEscapeStr(x.default)}})`
             }
         }
         for (const x of uiVals) {

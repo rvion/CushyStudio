@@ -21,6 +21,7 @@ export const PafUI = observer(function PafUI_(p: {}) {
             <div>{paf.loaded.done ? null : <Loader />}</div>
             {[...paf.statusByStrategy.entries()].map(([strategy, status]) => (
                 <Whisper
+                    key={strategy}
                     placement='bottom'
                     enterable
                     speaker={

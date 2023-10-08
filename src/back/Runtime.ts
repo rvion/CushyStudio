@@ -267,6 +267,9 @@ export class Runtime {
                     RGBA: false, // 'false',
                 })
             }
+            if (ia.type === 'ComfyImage') {
+                return this.nodes.LoadImage({ image: ia.image })
+            }
             // if (ia.type === 'imageSignal') {
             //     const node = this.graph.nodesIndex.get(ia.nodeID)
             //     if (node == null) throw new Error('node is not in current graph')

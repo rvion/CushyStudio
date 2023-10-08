@@ -18,6 +18,8 @@ import { WidgetNumUI } from './WidgetNumUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetStrUI } from './WidgetStrUI'
 import { WidgetStrOptUI } from './WidgetStrOptUI'
+import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorBoundaryFallback } from './ErrorBoundary'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     draft: DraftL
@@ -59,12 +61,19 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 )}
                 {label}
             </div>
-            <WidgetUI //
-                key={[draft.id, p.path].join('/')}
-                path={path}
-                req={req}
-                focus={ix === 0}
-            />
+            <ErrorBoundary
+                FallbackComponent={ErrorBoundaryFallback}
+                onReset={(details) => {
+                    // Reset the state of your app so the error doesn't happen again
+                }}
+            >
+                <WidgetUI //
+                    key={[draft.id, p.path].join('/')}
+                    path={path}
+                    req={req}
+                    focus={ix === 0}
+                />
+            </ErrorBoundary>
         </div>
     )
 })
@@ -101,8 +110,8 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'prompt?') return <WidgetPromptUI get={get} set={set} nullable />
     if (req.type === 'paint') return <>🔴 paint form commented</> //<WidgetPaintUI uri={'foo bar 🔴'} />
     if (req.type === 'samMaskPoints') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
-    if (req.type === 'image') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ get={get} set={set} />
-    if (req.type === 'image?') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ get={get} set={set} />
+    if (req.type === 'image') return <WidgetSelectImageUI get={get} set={set} def={def} /*infos={req.imageInfos}*/ />
+    if (req.type === 'image?') return <WidgetSelectImageUI get={get} set={set} def={def} /*infos={req.imageInfos}*/ />
     if (req.type === 'manualMask') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'embeddings') return <>TODO</>
     if (req.type === 'selectMany') return <>TODO</>

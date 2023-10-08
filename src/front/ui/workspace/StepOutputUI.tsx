@@ -94,7 +94,8 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
                 <div>{msg.message}</div>
 
                 <pre>{JSON.stringify(msg.infos?.message, null, 3)}</pre>
-                <pre>{JSON.stringify(msg.infos?.details, null, 3)}</pre>
+                <pre>{JSON.stringify(msg.infos?.message, null, 3)}</pre>
+                <pre>{JSON.stringify(msg.infos, null, 3)}</pre>
             </Panel>
         )
 

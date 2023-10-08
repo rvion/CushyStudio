@@ -4,15 +4,17 @@ import { ImageUI } from '../galleries/ImageUI'
 import { useImageDrop } from '../galleries/dnd'
 import { useDraft } from '../useDraft'
 import { Button } from 'rsuite'
+import { WidgetEnumUI } from './WidgetEnumUI'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     // infos: ImageInfos[]
     get: () => ImageAnswer | null
     set: (value: ImageAnswer) => void
+    def: () => Maybe<ImageAnswer>
 }) {
     const { get, set } = p
     // const lbs = useMemo(() => new LightBoxState(() => infos), [infos])
-    const answer = get()
+    const answer = get() ?? p.def()
     const [dropStyle, dropRef] = useImageDrop((i) => {
         set({ type: 'imageID', imageID: i.id })
     })
@@ -48,6 +50,23 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                         <ImageUI img={draft.db.images.getOrThrow(answer.imageID)} />
                     ) : (
                         <span>drop image here</span>
+                    )}
+                </div>
+                <div>
+                    {answer?.type === 'ComfyImage' ? ( //
+                        <WidgetEnumUI
+                            enumName='Enum_LoadImage_image'
+                            get={() => answer.image}
+                            set={(t) => set({ type: 'ComfyImage', image: t as any })}
+                            def={() => answer.image}
+                        />
+                    ) : (
+                        <WidgetEnumUI
+                            enumName='Enum_LoadImage_image'
+                            get={() => null}
+                            def={() => null}
+                            set={(t) => set({ type: 'ComfyImage', image: t as any })}
+                        />
                     )}
                 </div>
                 <Button
