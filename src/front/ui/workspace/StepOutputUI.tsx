@@ -63,11 +63,11 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
             <div>
                 <ButtonDownloadFilesUI graph={outputGraph} />
                 <ButtonOpenInComfyUI graph={outputGraph} />
-                <Message type='error' title='An error occured' showIcon>
+                <Message type='error' header='Execution error' showIcon>
                     <div>node: {msg.data.node_type}</div>
                     <div>{msg.data.exception_message}</div>
                     <div>{msg.data.exception_type}</div>
-                    <Panel title='Details' collapsible defaultExpanded={false}>
+                    <Panel header='Details' collapsible defaultExpanded={false}>
                         <pre>{JSON.stringify(msg.data, null, 3)}</pre>
                     </Panel>
                 </Message>
