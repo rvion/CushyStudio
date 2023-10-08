@@ -2,7 +2,12 @@ import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import { Nav } from 'rsuite'
 
-export const TabUI = observer(function TabUI_(p: { title?: string; children: React.ReactNode[] }) {
+export const TabUI = observer(function TabUI_(p: {
+    className?: string
+    style?: React.CSSProperties
+    title?: string
+    children: React.ReactNode[]
+}) {
     const x = p.children
     const [val, setVal] = useState(0)
     const headers = []
@@ -12,7 +17,7 @@ export const TabUI = observer(function TabUI_(p: { title?: string; children: Rea
         contents.push(x[i + 1])
     }
     return (
-        <div>
+        <div className={'TabUI ' + p.className} style={p.style}>
             <Nav className='xs' appearance='tabs' activeKey={`${val}`} onSelect={(k: string) => setVal(parseInt(k, 10))}>
                 {p.title && (
                     <Nav.Item disabled key={p.title} eventKey={`_`}>

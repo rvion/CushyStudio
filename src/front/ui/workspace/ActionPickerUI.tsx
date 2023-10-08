@@ -49,17 +49,20 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
             {/* <div>updated: {new Date(st.toolbox.updatedAt).toLocaleString()}</div> */}
             <Tree
                 // height={'900'}
-                defaultExpandAll
+                // defaultExpandAll
+                value={pj.data.actionFile}
+                defaultExpandItemValues={['CushyStudio']}
                 className='overflow-x-hidden overflow-y-auto flex-grow'
                 key={st.toolbox.updatedAt}
                 data={st.toolbox.treeData}
                 renderTreeIcon={(x) => {
-                    console.log(x)
+                    // console.log(x)
                     if (x.expand) return '▿'
                     return '▸'
                     // return <span className='material-symbols-outlined'>unfold_more</span>
                 }}
                 // renderMenu={(node) => null}
+                // valueKey='label'
                 renderTreeNode={(node) => {
                     // console.log(node)
                     return (
@@ -88,8 +91,8 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
 
                     // 2. if paf has a tool, focus it
                     console.log(value, paf)
-                    const res = await paf.load({ logFailures: true })
-                    const tool0 = res.paf?.tools?.[0]
+                    await paf.load({ logFailures: true })
+                    const tool0 = paf.mainTool
                     if (tool0 == null) return null
                     pj.focusTool(tool0)
                     // console.log(res?.tools.length)
@@ -125,7 +128,7 @@ export const FooBarUI = observer(function FooBarUI_(p: {}) {
                 onChange={(e) => {
                     const val = e.target.value
                     const json = JSON.parse(val) as ComfyPromptJSON
-                    const code = st.importer.convertFlowToCode(json, {
+                    const code = st.importer.convertPromptToCode(json, {
                         title: 'test',
                         author: 'test',
                         preserveId: true,

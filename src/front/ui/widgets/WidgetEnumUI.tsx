@@ -36,6 +36,16 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
                 // defaultOpen={p.autofocus}
                 data={options}
                 value={value}
+                renderValue={(v) => {
+                    if (v === true) return '🟢 true'
+                    if (v === false) return '❌ false'
+                    return v
+                }}
+                renderMenuItem={(v) => {
+                    if (v === true) return '🟢 true'
+                    if (v === false) return '❌ false'
+                    return v
+                }}
                 onChange={(e) => {
                     if (e == null) {
                         if (p.optional) p.set(null)

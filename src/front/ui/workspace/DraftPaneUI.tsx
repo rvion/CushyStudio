@@ -1,90 +1,134 @@
-import type { PafLoadStatus } from 'src/back/PossibleActionFile'
+import { observer, useLocalObservable } from 'mobx-react-lite'
+import { Button, Loader, Message, Nav, Popover, Whisper } from 'rsuite'
 import type { DraftL } from 'src/models/Draft'
-import { observer } from 'mobx-react-lite'
-import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
-import { DraftUI } from '../widgets/DraftUI'
 import { useProject } from '../../../front/ProjectCtx'
-import { stringifyUnknown } from '../../../utils/stringifyUnknown'
-import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
+import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
+import { DraftUI } from '../widgets/DraftUI'
+import { TabUI } from '../layout/TabUI'
+import { TooltipUI } from '../layout/TooltipUI'
+import { ToolL } from 'src/models/Tool'
+import { ToolAndCode } from 'src/back/PossibleActionFile'
+import { Fragment } from 'react'
+import { ComfyUIUI } from './ComfyUIUI'
 
 export const PafUI = observer(function PafUI_(p: {}) {
     const pj = useProject()
     const paf = pj.activeFile
+    // const uiSt = useLocalObservable(() => ({ activeTab: '2' }))
     if (paf == null) return null
-    // const errors =
     return (
-        <div className='flex flex-wrap gap-1'>
-            {/* {paf.lo} */}
-            {/* <div className='rounded px-1' style={{ border: '1px solid white' }}>
-                <span className='material-symbols-outlined'>insert_drive_file</span> {paf.relPath}
-            </div> */}
+        <>
             <div>{paf.loaded.done ? null : <Loader />}</div>
-            {[...paf.statusByStrategy.entries()].map(([strategy, status]) => (
-                <Whisper
-                    key={strategy}
-                    placement='bottom'
-                    enterable
-                    speaker={
-                        <Popover>
-                            {status.type === 'failure' ? (
-                                <Message type='error' showIcon>
-                                    {status.result.message}
-                                    {stringifyUnknown(status.result.error)}
-                                </Message>
-                            ) : status.type === 'success' ? (
-                                <Message type='success' showIcon>
-                                    {status.result.tools.length} tools loaded
-                                    {/* {stringifyUnknown(status.result.error)} */}
-                                </Message>
-                            ) : null}
-                        </Popover>
-                    }
-                >
-                    <div
-                        className='rounded px-1 flex items-center gap-1'
-                        key={strategy}
-                        style={{ color: renderStatusColor(status), border: `1px solid ${renderStatusColor(status)}` }}
-                    >
-                        {renderStatus(status)} {strategy}
-                    </div>
-                </Whisper>
-            ))}
-            <Whisper
-                enterable
-                placement='auto'
-                speaker={
-                    <Popover>
-                        <TypescriptHighlightedCodeUI className='h-96 w-96 overflow-auto' code={paf.DEBUG_CODE} />
-                    </Popover>
-                }
-            >
-                <Button startIcon={<span className='material-symbols-outlined'>help</span>} appearance='ghost' size='xs'>
-                    code
-                </Button>
-            </Whisper>
-            {paf.loadResult?.paf?.tools.map((tool) => (
-                <div className='rounded px-1 flex items-center gap-1' key={tool.id} style={{ border: `1px solid pink` }}>
-                    {/* LOAD {strategy}: {renderStatus(status)} */}
-                    <div>
-                        <span className='material-symbols-outlined'>scatter_plot</span>
-                        {tool.name}
-                    </div>
-                </div>
-            ))}
+            <Nav appearance='tabs' activeKey={paf.focus} onSelect={(k) => (paf.focus = k)}>
+                <Nav.Item disabled={paf.asAction == null} eventKey='action'>
+                    Action
+                </Nav.Item>
+                <Nav.Item disabled={paf.asAutoAction == null} eventKey='autoaction'>
+                    AutoAction
+                </Nav.Item>
+                <Nav.Item disabled={paf.png == null} eventKey='png'>
+                    Png
+                </Nav.Item>
+                <Nav.Item disabled={paf.liteGraphJSON == null} eventKey='workflow'>
+                    Workflow
+                </Nav.Item>
+                <Nav.Item disabled={paf.promptJSON == null} eventKey='prompt'>
+                    Prompt
+                </Nav.Item>
+            </Nav>
+            {paf.focus === 'action' ? (
+                // AUTO-ACTION ----------------------------------------------------------
+                paf.asAction == null ? (
+                    <div>not available</div>
+                ) : paf.asAction.success ? (
+                    <>
+                        <ActionUI tac={paf.asAction.value} />
+                        {/* <pre>{paf.asAction.value.codeTS}</pre> */}
+                    </>
+                ) : (
+                    <div>❌ Action</div>
+                )
+            ) : paf.focus === 'autoaction' ? (
+                // ACTION ----------------------------------------------------------
+                paf.asAutoAction == null ? (
+                    <div>not available</div>
+                ) : paf.asAutoAction.success ? (
+                    <ActionUI tac={paf.asAutoAction.value} />
+                ) : (
+                    <div>❌ Action</div>
+                )
+            ) : paf.focus === 'png' ? (
+                // PNG ----------------------------------------------------------
+                paf.png == null ? (
+                    <div>not available</div>
+                ) : paf.png.success ? (
+                    <img src={`file://${paf.png.value}`} alt='' />
+                ) : (
+                    <div>❌ png</div>
+                )
+            ) : paf.focus === 'workflow' ? (
+                // PNG ----------------------------------------------------------
+                paf.liteGraphJSON == null ? (
+                    <div>not available</div>
+                ) : paf.liteGraphJSON.success ? (
+                    <ComfyUIUI action={{ type: 'comfy', json: paf.liteGraphJSON.value }} />
+                ) : (
+                    // <img src={`file://${paf.liteGraphJSON.value}`} alt='' />
+                    <div>❌ png</div>
+                )
+            ) : paf.focus === 'prompt' ? (
+                // PNG ----------------------------------------------------------
+                paf.promptJSON == null ? (
+                    <div>not available</div>
+                ) : paf.promptJSON.success ? (
+                    <JSONHighlightedCodeUI code={JSON.stringify(paf.promptJSON.value, null, 3)} />
+                ) : (
+                    <div>❌ promptJSON</div>
+                )
+            ) : null}
+            {/* <TabUI>
+                {paf.asAction == null
+                    ? [<Button disabled>Action</Button>, <div></div>]
+                    : paf.asAction.success
+                    ? [<Button>🟢 Action</Button>, <ActionUI tac={paf.asAction.value} />]
+                    : [<Button>❌ Action</Button>, <div>❌</div>]}
+
+                {paf.asAutoAction == null
+                    ? [<Button disabled>Action</Button>, <div></div>]
+                    : paf.asAutoAction.success
+                    ? [<Button>🟢 Action</Button>, <ActionUI tac={paf.asAutoAction.value} />]
+                    : [<Button>❌ Action</Button>, <div>❌</div>]}
+            </TabUI> */}
+        </>
+    )
+})
+
+export const ActionUI = observer(function ActionUI_(p: { tac: ToolAndCode }) {
+    return (
+        <div className='flex flex-col flex-grow'>
+            {/* // <div>Tool</div> */}
+            {p.tac.tools.success ? ( //
+                <ToolUI tool={p.tac.tools.value[0]} />
+            ) : (
+                <Message type='error'>error</Message>
+            )}
+            {/* {p.tac.tools.success ? (
+                p.tac.tools.value.map((tool, ix) => [<div>Tool {ix}</div>, <ToolUI tool={tool} />])
+                ) : (
+                    <Message type='error'>error</Message>
+                )} */}
+            {/* <div>Actions</div>
+                <TypescriptHighlightedCodeUI code={p.tac.codeTS} /> */}
+            <TooltipUI>
+                <div>Code TS</div>
+                <TypescriptHighlightedCodeUI code={p.tac.codeTS} />
+            </TooltipUI>
+            <TooltipUI>
+                <div>Code JS</div>
+                <TypescriptHighlightedCodeUI code={p.tac.codeJS} />
+            </TooltipUI>
         </div>
     )
-
-    function renderStatusColor(pls: PafLoadStatus) {
-        if (pls.type === 'failure') return '#ff8080'
-        if (pls.type === 'pending') return 'cyan'
-        if (pls.type === 'success') return '#88f088'
-    }
-
-    function renderStatus(pls: PafLoadStatus) {
-        if (pls.type === 'failure') return '❌'
-        if (pls.type === 'pending') return <Loader />
-        if (pls.type === 'success') return '✅'
-    }
 })
 
 export const DraftPaneUI = observer(function DraftPaneUI_(p: {}) {
@@ -92,71 +136,88 @@ export const DraftPaneUI = observer(function DraftPaneUI_(p: {}) {
     const graph = pj.rootGraph.item
     const tool = pj.activeTool.item
     const focusedDraft: Maybe<DraftL> = tool?.focusedDraft.item
-    const paf = pj.activeFile
     return (
         <>
             <PafUI />
-            <div className='flex flex-wrap items-center'>
-                {tool
-                    ? tool.drafts.map((draft) => (
-                          <Button
-                              style={{
-                                  borderBottomLeftRadius: 0,
-                                  borderBottomRightRadius: 0,
-                                  borderBottom: 'none',
-                              }}
-                              size='xs'
-                              appearance={focusedDraft?.id === draft.id ? 'primary' : 'ghost'}
-                              color={focusedDraft?.id === draft.id ? 'violet' : undefined}
-                              key={draft.id}
-                              active={focusedDraft?.id === draft.id}
-                              onClick={() => {
-                                  tool.update({ focusedDraftID: draft.id })
-                                  graph.update({ focusedDraftID: draft.id })
-                              }}
-                          >
-                              {draft.data.title || 'Untitled'}
-                              {/* {draft.tool.item.name} */}
-                          </Button>
-                      ))
-                    : null}
-                <Button
-                    disabled={tool == null}
-                    //
-                    appearance='ghost'
-                    size='xs'
-                    color='green'
-                    startIcon={<span className='material-symbols-outlined'>add</span>}
-                    // code to duplicate the draft
-                    style={{
-                        borderBottomLeftRadius: 0,
-                        borderBottomRightRadius: 0,
-                        borderBottom: 'none',
-                    }}
-                    onClick={() => {
-                        if (tool == null) return
-                        const draft = pj.db.drafts.create({
-                            toolID: tool.id,
-                            graphID: pj.rootGraph.id,
-                            title: 'Untitled',
-                            params: {},
-                            // params: deepCopyNaive(fromDraft?.params ?? {}),
-                        })
-                        tool.update({ focusedDraftID: draft.id })
-                    }}
-                >
-                    {/* <I.AddOutline /> */}
-                    New Draft
-                </Button>
-            </div>
-            {/* <ScrollablePaneUI className='flex-grow'> */}
-            {/* DRAFT PICKER */}
-            {/* DRAFT */}
+            {/* {tool && <ToolUI tool={tool} />} */}
+            {/* </ScrollablePaneUI> */}
+        </>
+    )
+})
+
+export const ToolUI = observer(function ToolUI_(p: { tool: ToolL }) {
+    // const pj = useProject()
+    const tool = p.tool
+    const focusedDraft: Maybe<DraftL> = tool?.focusedDraft.item
+    return (
+        <div className='flex flex-col flex-grow'>
+            {tool && <ToolDraftPickerUI tool={tool} />}
             <div className='flex-grow col mx-2'>
                 {/*  */}
                 {focusedDraft ? <DraftUI draft={focusedDraft} /> : <>no draft selected</>}
             </div>
-            {/* </ScrollablePaneUI> */}
-        </>
+        </div>
+    )
+})
+
+export const ToolDraftPickerUI = observer(function ToolDraftPickerUI_(p: { tool: ToolL }) {
+    const pj = useProject()
+    const graph = pj.rootGraph.item
+    const tool = p.tool
+    const focusedDraft: Maybe<DraftL> = tool?.focusedDraft.item
+    return (
+        <div className='flex flex-wrap items-center'>
+            {tool
+                ? tool.drafts.map((draft) => (
+                      <Button
+                          style={{
+                              borderBottomLeftRadius: 0,
+                              borderBottomRightRadius: 0,
+                              borderBottom: 'none',
+                          }}
+                          size='xs'
+                          appearance={focusedDraft?.id === draft.id ? 'primary' : 'ghost'}
+                          color={focusedDraft?.id === draft.id ? 'violet' : undefined}
+                          key={draft.id}
+                          active={focusedDraft?.id === draft.id}
+                          onClick={() => {
+                              tool.update({ focusedDraftID: draft.id })
+                              graph.update({ focusedDraftID: draft.id })
+                          }}
+                      >
+                          {draft.data.title || 'Untitled'}
+                          {/* {draft.tool.item.name} */}
+                      </Button>
+                  ))
+                : null}
+            <Button
+                disabled={tool == null}
+                //
+                appearance='ghost'
+                size='xs'
+                color='green'
+                startIcon={<span className='material-symbols-outlined'>add</span>}
+                // code to duplicate the draft
+                style={{
+                    borderBottomLeftRadius: 0,
+                    borderBottomRightRadius: 0,
+                    borderBottom: 'none',
+                }}
+                onClick={() => {
+                    if (tool == null) return
+                    const draft = pj.db.drafts.create({
+                        toolID: tool.id,
+                        graphID: pj.rootGraph.id,
+                        title: 'Untitled',
+                        params: {},
+                        // params: deepCopyNaive(fromDraft?.params ?? {}),
+                    })
+                    tool.update({ focusedDraftID: draft.id })
+                }}
+            >
+                {/* <I.AddOutline /> */}
+                New Draft
+            </Button>
+        </div>
     )
 })

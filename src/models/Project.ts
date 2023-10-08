@@ -38,7 +38,7 @@ export class ProjectL {
     }
 
     focusActionFile(paf: PossibleActionFile): void {
-        this.update({ actionFile: paf.filePath })
+        this.update({ actionFile: paf.absPath })
     }
 
     focusTool(tool: ToolL): void {

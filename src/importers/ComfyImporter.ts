@@ -86,7 +86,7 @@ export class ComfyImporter {
         return x
     }
 
-    convertFlowToCode = (
+    convertPromptToCode = (
         flow: ComfyPromptJSON,
         opts: {
             title: string

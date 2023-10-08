@@ -2,20 +2,20 @@ import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { Action, FormDefinition } from 'src/core/Requirement'
 import type { STATE } from 'src/front/state'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
+import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 
 import { readFileSync } from 'fs'
+import { makeAutoObservable } from 'mobx'
 import path from 'pathe'
-import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
-import { ComfyPromptJSON } from '../types/ComfyPrompt'
-import { exhaust } from '../utils/ComfyUtils'
-import { Result, ResultFailure, __FAIL, __OK } from '../utils/Either'
-import { ManualPromise } from '../utils/ManualPromise'
 import { FormBuilder } from '../controls/FormBuilder'
 import { globalToolFnCache } from '../core/globalActionFnCache'
-import { ToolL, asToolID } from '../models/Tool'
-import { transpileCode } from './transpiler'
+import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
-import { makeAutoObservable } from 'mobx'
+import { ToolL, asToolID } from '../models/Tool'
+import { exhaust } from '../utils/ComfyUtils'
+import { type Result, __FAIL, __OK } from '../utils/Either'
+import { ManualPromise } from '../utils/ManualPromise'
+import { transpileCode } from './transpiler'
 
 const formBuilder = new FormBuilder()
 
@@ -27,78 +27,65 @@ export type LoadStrategy =
     | 'asComfyUIGeneratedPng'
     | 'asA1111PngGenerated'
 
-export type ActionFileResult = Result<ActionFile>
-
-export type ActionFile = {
-    tools: ToolL[]
-    // code
+export type ToolAndCode = {
     codeTS: string
     codeJS: string
-    // optional; if imported from them
-    liteGraphJSON?: LiteGraphJSON
-    promptJSONd?: ComfyPromptJSON
+    tools: Result<ToolL[]>
 }
 
-export type PafLoadStatus =
-    | { type: 'pending' }
-    | { type: 'success'; result: ActionFile }
-    | { type: 'failure'; result: ResultFailure }
+type Focus = 'action' | 'autoaction' | 'png' | 'prompt' | 'workflow'
 
 export class PossibleActionFile {
-    // CONTENT = ''
-    actions: ToolL[] = []
+    get relPath() { return this.absPath.replace(this.st.actionsFolderPath, '') } // prettier-ignore
 
     constructor(
         public st: STATE,
-        public filePath: AbsolutePath,
+        public absPath: AbsolutePath,
     ) {
-        // this.CONTENT = readFileSync(absPath, 'utf-8')
-        // this.extractWorkflowsV2()
-
         makeAutoObservable(this)
     }
 
-    get relPath() {
-        return this.filePath.replace(this.st.actionsFolderPath, '')
+    focus: Focus = 'action'
+
+    // code
+    asAction?: Result<ToolAndCode>
+
+    // autoui
+    asAutoAction?: Result<ToolAndCode>
+
+    // comfyUI
+    liteGraphJSON?: Result<LiteGraphJSON>
+
+    // prompt
+    promptJSON?: Result<ComfyPromptJSON>
+
+    // illustration
+    png?: Result<AbsolutePath>
+
+    loaded = new ManualPromise<true>()
+
+    get mainTool(): Maybe<ToolL> {
+        if (this.asAutoAction?.success && this.asAutoAction?.value?.tools.success) return this.asAutoAction.value.tools.value?.[0]
+        if (this.asAction?.success && this.asAction?.value?.tools.success) return this.asAction.value.tools.value?.[0]
     }
-    loaded = new ManualPromise<ActionFile>()
 
-    // convertToTS = () => {
-    //     //
-    // }
-
-    statusByStrategy = new Map<LoadStrategy, PafLoadStatus>()
-    loadResult: Maybe<{ paf?: ActionFile; failures: string[] }> = null
-
-    load = async (opts: { logFailures: boolean }): Promise<{ paf?: ActionFile; failures: string[] }> => {
-        if (this.loadResult) return this.loadResult
+    load = async (opts: { logFailures: boolean }): Promise<true> => {
+        if (this.loaded.done) return true
         const strategies = this.findLoadStrategies()
-        const failures: string[] = []
-        for (const strategy of strategies) {
-            this.statusByStrategy.set(strategy, { type: 'pending' })
-            const result = await this.loadWithStrategy(strategy)
-            if (result.success) {
-                this.loaded.resolve(result.value)
-                this.statusByStrategy.set(strategy, { type: 'success', result: result.value })
-                this.loadResult = { failures, paf: result.value }
-                return this.loadResult
-            } else {
-                this.statusByStrategy.set(strategy, { type: 'failure', result })
-                if (opts.logFailures) console.error(result)
-                failures.push(result.message)
-            }
-        }
-        this.loadResult = { failures }
-        this.loaded.reject(new Error(`[💔] TOOL: no strategy worked`))
-        return this.loadResult
+        for (const strategy of strategies) await this.loadWithStrategy(strategy)
+        this.loaded.resolve(true)
+        return true
     }
 
-    private loadWithStrategy = async (strategy: LoadStrategy): Promise<ActionFileResult> => {
+    private loadWithStrategy = async (strategy: LoadStrategy): Promise<void> => {
         if (strategy === 'asCushyStudioAction') return this.load_asCushyStudioAction()
         if (strategy === 'asComfyUIPrompt') return this.load_asComfyUIPrompt()
         if (strategy === 'asComfyUIWorkflow') return this.load_asComfyUIWorkflow()
         if (strategy === 'asComfyUIGeneratedPng') return this.load_asComfyUIGeneratedPng()
-        if (strategy === 'asA1111PngGenerated') return __FAIL('❌1. not implemented yet', null)
+        if (strategy === 'asA1111PngGenerated') {
+            if (this.png == null) this.png = __OK(this.absPath)
+            return console.log('❌ asA1111 import currently broken')
+        }
 
         exhaust(strategy)
         throw new Error(`[💔] TOOL: unknown strategy ${strategy}`)
@@ -107,74 +94,110 @@ export class PossibleActionFile {
 
     // STRATEGIES ---------------------------------------------------------------------
     private findLoadStrategies(): LoadStrategy[] {
-        if (this.filePath.endsWith('.ts')) return ['asCushyStudioAction']
-        if (this.filePath.endsWith('.tsx')) return ['asCushyStudioAction']
-        if (this.filePath.endsWith('.js')) return ['asCushyStudioAction']
-        if (this.filePath.endsWith('.json')) return ['asComfyUIWorkflow', 'asComfyUIPrompt']
-        if (this.filePath.endsWith('.png')) return ['asComfyUIGeneratedPng', 'asA1111PngGenerated']
+        if (this.absPath.endsWith('.ts')) return ['asCushyStudioAction']
+        if (this.absPath.endsWith('.tsx')) return ['asCushyStudioAction']
+        if (this.absPath.endsWith('.js')) return ['asCushyStudioAction']
+        if (this.absPath.endsWith('.json')) return ['asComfyUIWorkflow', 'asComfyUIPrompt']
+        if (this.absPath.endsWith('.png')) return ['asComfyUIGeneratedPng', 'asA1111PngGenerated']
         return ['asCushyStudioAction', 'asComfyUIWorkflow', 'asComfyUIPrompt', 'asComfyUIGeneratedPng', 'asA1111PngGenerated']
     }
 
     // LOADERS ------------------------------------------------------------------------
-    load_asCushyStudioAction = async (): Promise<ActionFileResult> => {
+    private load_asCushyStudioAction = async (): Promise<void> => {
         try {
-            const codeTS = readFileSync(this.filePath, 'utf-8')
-            const codeJS = await transpileCode(codeTS)
-            return this.loadTools({ codeJS, codeTS })
+            // 1. read file
+            const codeTS = readFileSync(this.absPath, 'utf-8')
+
+            // 2. transpile
+            let codeJS: string
+            try {
+                codeJS = await transpileCode(codeTS)
+            } catch (e) {
+                this.asAction = __FAIL(`❌ [load_asCushyStudioAction] transpile error`, e)
+                return
+            }
+            // 3. extract tools
+            const tools = await this.loadTools({ codeJS, codeTS })
+            this.asAction = __OK({ codeJS, codeTS, tools })
         } catch (error) {
-            return __FAIL(`❌2. cannot transpile code`, error)
+            this.asAction = __FAIL(`❌ [load_asCushyStudioAction] crash`, error)
         }
     }
 
-    load_asComfyUIPrompt = async (): Promise<ActionFileResult> => {
+    private load_asComfyUIPrompt = async (): Promise<void> => {
         try {
-            const json = JSON.parse(readFileSync(this.filePath, 'utf-8'))
-            const filename = path.basename(this.filePath)
-            const author = path.dirname(this.filePath)
-            const codeJS = this.st.importer.convertFlowToCode(json, {
-                title: filename,
-                author,
-                preserveId: true,
-                autoUI: true,
-            })
+            const json = JSON.parse(readFileSync(this.absPath, 'utf-8'))
+            const filename = path.basename(this.absPath)
+            const author = path.dirname(this.absPath)
+
+            // convert to simple action (no AutoUI)
+            const title = filename
+            const codeJS = this.st.importer.convertPromptToCode(json, { title, author, preserveId: true, autoUI: false })
             const codeTS = codeJS
-            return this.loadTools({ codeJS, codeTS })
+            // at this point, we know the json was a valid ComfyUI Prompt
+            //  and we have both the prompt, and the workflow
+            this.promptJSON = __OK(json) // 🟢 PROMPT
+
+            const tools = await this.loadTools({ codeJS, codeTS })
+            this.asAction = __OK({ codeJS, codeTS, tools: tools }) // 🟢 ACTION
+
+            const codeJSAuto = this.st.importer.convertPromptToCode(json, { title, author, preserveId: true, autoUI: true })
+            const codeTSAuto = codeJS
+            const toolsAuto = await this.loadTools({ codeJS: codeJSAuto, codeTS: codeTSAuto })
+            this.asAutoAction = __OK({ codeJS: codeJSAuto, codeTS: codeTSAuto, tools: toolsAuto }) // 🟢 AUTOACTION
+
+            const graph = this.st.db.graphs.create({ comfyPromptJSON: json })
+            const workflow = await graph.json_workflow()
+            this.liteGraphJSON = __OK(json.workflow) // 🟢 WORKFLOW
         } catch (error) {
-            return __FAIL(`❌2. cannot transpile code`, error)
+            if (this.promptJSON == null) {
+                this.promptJSON = __FAIL(`❌ [load_asComfyUIPrompt] crash`, error)
+                return
+            }
         }
     }
 
-    load_asComfyUIWorkflow = (): Promise<ActionFileResult> => {
-        const workflowStr = readFileSync(this.filePath, 'utf-8')
+    private load_asComfyUIWorkflow = (): Promise<void> => {
+        const workflowStr = readFileSync(this.absPath, 'utf-8')
         return this.importWorkflowFromStr(workflowStr)
     }
 
-    load_asComfyUIGeneratedPng = async (): Promise<ActionFileResult> => {
-        console.log('🟢 found ', this.filePath)
-        const result = getPngMetadataFromUint8Array(readFileSync(this.filePath))
-        if (result == null) return __FAIL(`❌0. no metadata`, null)
+    private load_asComfyUIGeneratedPng = async (): Promise<void> => {
+        console.log('🟢 found ', this.absPath)
+        if (this.png == null) this.png = __OK(this.absPath)
+
+        const result = getPngMetadataFromUint8Array(readFileSync(this.absPath))
+        if (result == null) {
+            if (this.promptJSON == null) this.promptJSON = __FAIL(`❌ [load_asComfyUIGeneratedPng] no metadata in png`, null) // prettier-ignore
+            if (this.liteGraphJSON == null) this.liteGraphJSON = __FAIL(`❌ [load_asComfyUIGeneratedPng] no metadata in png`, null) // prettier-ignore
+            return
+        }
 
         if (result.type === 'failure') {
-            return __FAIL(`❌1. metadata extraction failed`, result.value)
+            if (this.promptJSON == null) this.promptJSON = __FAIL(`❌ [load_asComfyUIGeneratedPng] metadata extraction failed`, result.value) // prettier-ignore
+            if (this.liteGraphJSON == null) this.liteGraphJSON = __FAIL(`❌ [load_asComfyUIGeneratedPng] metadata extraction failed`, result.value) // prettier-ignore
+            return
         }
 
         const metadata = result.value
         const workflowStr = (metadata as { [key: string]: any }).workflow
         if (workflowStr == null) {
-            return __FAIL(`❌2. no workflow in metadata`, metadata)
+            if (this.promptJSON == null) this.promptJSON = __FAIL(`❌ [load_asComfyUIGeneratedPng] no workflow in metadata`, metadata) // prettier-ignore
+            if (this.liteGraphJSON == null) this.liteGraphJSON = __FAIL(`❌ [load_asComfyUIGeneratedPng] no workflow in metadata`, metadata) // prettier-ignore
+            return
         }
         return this.importWorkflowFromStr(workflowStr)
     }
 
     // LOADERS ------------------------------------------------------------------------
-
-    private importWorkflowFromStr = async (workflowStr: string): Promise<ActionFileResult> => {
+    private importWorkflowFromStr = async (workflowStr: string): Promise<void> => {
         // 1. litegraphJSON
         let workflowJSON: LiteGraphJSON
         try {
             workflowJSON = JSON.parse(workflowStr)
         } catch (error) {
-            return __FAIL(`❌3. workflow is not valid json`, error)
+            this.liteGraphJSON = __FAIL(`❌3. workflow is not valid json`, error)
+            return
         }
 
         // 2. promptJSON
@@ -185,33 +208,58 @@ export class PossibleActionFile {
             // console.groupEnd()
         } catch (error) {
             console.log(error)
-            return __FAIL(`❌4. cannot convert LiteGraph To Prompt`, error)
+            if (this.liteGraphJSON == null)
+                this.liteGraphJSON = __FAIL(`❌ [importWorkflowFromStr] cannot convert LiteGraph To Prompt`, error)
+
+            if (this.promptJSON == null)
+                this.promptJSON = __FAIL(`❌ [importWorkflowFromStr] cannot convert LiteGraph To Prompt`, error)
+            return
+        }
+        // at this point, we know the workflow is valid
+        //  and we have both the prompt, and the workflow
+        this.liteGraphJSON = __OK(workflowJSON)
+        this.promptJSON = __OK(promptJSON)
+
+        const title = path.basename(this.absPath)
+        const author = path.basename(path.dirname(this.absPath))
+
+        // 3. asAction
+        try {
+            const codeJS = this.st.importer.convertPromptToCode(promptJSON, { title, author, preserveId: true, autoUI: true })
+            const codeTS = codeJS
+            const tools = await this.loadTools({ codeJS, codeTS })
+            this.asAction = __OK({ codeJS, codeTS, tools })
+        } catch (error) {
+            if (this.asAction == null)
+                this.asAction = __FAIL(`❌ [importWorkflowFromStr] cannot convert LiteGraph To Prompt`, error)
         }
 
-        // 3. code
+        // 4. asAutoAction
         try {
-            const title = path.basename(this.filePath)
-            const author = path.basename(path.dirname(this.filePath))
-            const codeJS = this.st.importer.convertFlowToCode(promptJSON, {
+            const codeJSAuto = this.st.importer.convertPromptToCode(promptJSON, {
                 title,
                 author,
                 preserveId: true,
-                autoUI: true,
+                autoUI: false,
             })
-            const codeTS = codeJS
-            return this.loadTools({ codeJS, codeTS })
+            const codeTSAuto = codeJSAuto
+            const toolsAuto = await this.loadTools({ codeJS: codeJSAuto, codeTS: codeTSAuto })
+            this.asAutoAction = __OK({ codeJS: codeJSAuto, codeTS: codeTSAuto, tools: toolsAuto })
         } catch (error) {
-            return __FAIL('❌5. cannot convert prompt to code', error)
+            if (this.asAutoAction == null)
+                this.asAutoAction = __FAIL(`❌ [importWorkflowFromStr] cannot convert LiteGraph To Prompt`, error)
+            return
         }
     }
 
-    DEBUG_CODE: string = ''
-    private loadTools = async (p: { codeJS: string; codeTS: string }): Promise<ActionFileResult> => {
+    private _uid = 0
+    private loadTools = async (p: { codeJS: string; codeTS: string }): Promise<Result<ToolL[]>> => {
         const { codeJS, codeTS } = p
-        this.DEBUG_CODE = codeTS
+
+        // this.DEBUG_CODE = codeTS
         const actionsPool: { name: string; action: Action<FormDefinition> }[] = []
         const registerActionFn = (name: string, action: Action<any>): void => {
-            console.info(`[💙] TOOL: found action: "${name}"`, { path: this.filePath })
+            console.info(`[💙] TOOL: found action: "${name}"`, { path: this.absPath })
             actionsPool.push({ name, action })
         }
 
@@ -221,22 +269,25 @@ export class PossibleActionFile {
 
             const tools: ToolL[] = []
             for (const a of actionsPool) {
-                const actionID = asToolID(`${this.filePath}#${a.name}`)
+                const actionID = asToolID(`${this.absPath}#${a.name}#${this._uid++}`)
                 const tool = this.st.db.tools.upsert({
                     id: actionID,
                     owner: a.action.author,
-                    file: this.filePath,
+                    file: this.absPath,
                     name: a.name,
                     priority: a.action.priority ?? 100,
                     form: a.action.ui?.(formBuilder),
                     codeTS: codeTS,
                     codeJS: codeJS,
                 })
+                if (tool.drafts.items.length === 0) {
+                    tool.createDraft(this.st.db.projects.firstOrCrash())
+                }
                 globalToolFnCache.set(tool, a.action)
                 tools.push(tool)
             }
 
-            return __OK({ tools, codeTS, codeJS })
+            return __OK(tools)
         } catch (e) {
             return __FAIL('❌5. cannot convert prompt to code', {
                 // codeJS,

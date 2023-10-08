@@ -80,7 +80,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
                 appearance='primary'
                 onClick={async () => {
                     //
-                    const x = st.importer.convertFlowToCode(promptJSON, {
+                    const x = st.importer.convertPromptToCode(promptJSON, {
                         title: 'file.name',
                         author: 'test',
                         preserveId: false,
