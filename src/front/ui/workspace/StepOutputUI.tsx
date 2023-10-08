@@ -9,6 +9,7 @@ import { ImageUI } from '../galleries/ImageUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
 import { toJS } from 'mobx'
+import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
@@ -61,6 +62,7 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
         return (
             <div>
                 <ButtonDownloadFilesUI graph={outputGraph} />
+                <ButtonOpenInComfyUI graph={outputGraph} />
                 <Message type='error' title='An error occured' showIcon>
                     <div>node: {msg.data.node_type}</div>
                     <div>{msg.data.exception_message}</div>
@@ -75,11 +77,23 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
     if (msg.type === 'executed') return <div>✅</div>
     if (msg.type === 'runtimeError')
         return (
-            <Panel>
-                <div>❌ Execution Error</div>
+            <Panel
+                // collapsible
+                header={
+                    <div className='flex'>
+                        <div>❌ Runtime Error</div>
+                        {msg.graphID ? (
+                            <div className='ml-auto'>
+                                <ButtonDownloadFilesUI graph={msg.graphID} />
+                                <ButtonOpenInComfyUI graph={outputGraph} />
+                            </div>
+                        ) : null}
+                    </div>
+                }
+            >
                 <div>{msg.message}</div>
+
                 <pre>{JSON.stringify(msg.infos, null, 3)}</pre>
-                {msg.graphID ? <ButtonDownloadFilesUI graph={msg.graphID} /> : null}
             </Panel>
         )
 
