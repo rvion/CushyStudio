@@ -106,8 +106,9 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'manualMask') return null // <WidgetPlacePoints url={req.imageInfo.comfyURL ?? '🔴'} get={get} set={set} />
     if (req.type === 'embeddings') return <>TODO</>
     if (req.type === 'selectMany') return <>TODO</>
-    if (req.type === 'enum') return <WidgetEnumUI autofocus={p.focus} get={get} set={set} enumName={req.enumName} />
-    if (req.type === 'enum?') return <WidgetEnumUI autofocus={p.focus} get={get} set={set} enumName={req.enumName} optional />
+    if (req.type === 'enum') return <WidgetEnumUI autofocus={p.focus} get={get} set={set} def={def} enumName={req.enumName} />
+    if (req.type === 'enum?')
+        return <WidgetEnumUI autofocus={p.focus} get={get} set={set} def={def} enumName={req.enumName} optional />
     if (req.type === 'selectManyOrCustom') return <>TODO</>
     if (req.type === 'selectOne') return <>TODO</>
     if (req.type === 'selectOneOrCustom') return <>TODO</>

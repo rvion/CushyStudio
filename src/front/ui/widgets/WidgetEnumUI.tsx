@@ -8,6 +8,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
     enumName: string
     autofocus?: boolean
     get: () => EnumValue | null
+    def: () => Maybe<EnumValue>
     set: (v: EnumValue | null) => void
     optional?: boolean
 }) {
@@ -24,6 +25,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
         return x
     }, [schema, p.optional])
 
+    const value = p.get() ?? p.def() ?? null
     return (
         <>
             <SelectPicker //
@@ -32,7 +34,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
                 // appearance='subtle'
                 // defaultOpen={p.autofocus}
                 data={options}
-                value={p.get() ?? null}
+                value={value}
                 onChange={(e) => {
                     if (e == null) {
                         if (p.optional) p.set(null)
