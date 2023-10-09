@@ -17,7 +17,13 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const project = st.db.projects.first()
     const action = st.action
     const uiSt = useLocalObservable(() => ({ sizes: [500, 100] }))
-    if (project == null) return <Loader />
+    if (project == null)
+        return (
+            <>
+                <Loader />
+                <PanelConfigUI action={{ type: 'config' }} />
+            </>
+        )
     return (
         <div className='flex-grow flex flex-col h-full'>
             <projectContext.Provider value={project} key={project.id}>
