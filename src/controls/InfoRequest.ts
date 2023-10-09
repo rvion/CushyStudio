@@ -42,8 +42,8 @@ export type Requestable_manualMask   = InptReq<'manualMask',    null,    { image
 export type Requestable_paint        = InptReq<'paint',         null,    { url: string }> // prettier-ignore
 export type Requestable_samMaskPoints= InptReq<'samMaskPoints', null,    { imageInfo: ImageT }> // prettier-ignore
 //
-export type Requestable_items   <T extends { [key: string]: Requestable }> = InptReq< 'items',    {[k in keyof T]: InfoAnswer<T[k]>},  {items: T,  }> // prettier-ignore
-export type Requestable_itemsOpt<T extends { [key: string]: Requestable }> = InptOpt< 'items?', {[k in keyof T]: InfoAnswer<T[k]>},  {items: T,  }> // prettier-ignore
+export type Requestable_items   <T extends { [key: string]: Requestable }> = InptReq< 'items',  {[k in keyof T]: InfoAnswer<T[k]>},  {items: T}> // prettier-ignore
+export type Requestable_itemsOpt<T extends { [key: string]: Requestable }> = InptOpt< 'items?', {[k in keyof T]: InfoAnswer<T[k]>},  {items: T}> // prettier-ignore
 //
 export type Requestable_selectOne          = InptReq< 'selectOne',            string,   {choices: string[] }> // prettier-ignore
 export type Requestable_selectOneOrCustom  = InptReq< 'selectOneOrCustom',    string,   {choices: string[] }> // prettier-ignore

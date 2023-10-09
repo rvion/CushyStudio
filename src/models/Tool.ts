@@ -18,6 +18,7 @@ export type ToolT = {
     updatedAt: number
     priority: number
     name: string
+    description?: string
     file: AbsolutePath
     form?: Maybe<FormDefinition>
     codeTS?: string

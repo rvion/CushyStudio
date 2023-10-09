@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input } from 'rsuite'
+import { Button, Input, InputGroup, Toggle } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
 import { renderToolUI } from '../../../models/renderDraftUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
@@ -18,28 +18,38 @@ export const DraftUI = observer(function DraftUI_(p: { draft: DraftL }) {
     const formDefinition = tool?.data.form ?? {}
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <div>
-                <div className='flex p-2'>
-                    <Input
-                        onChange={(v) => draft.update({ title: v })}
-                        size='sm'
-                        placeholder='preset title'
-                        value={draft.data.title ?? ''}
-                    />
-                    <Button
-                        size='sm'
-                        className='self-start'
-                        color='green'
-                        appearance='primary'
-                        startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
-                        onClick={() => draft.start()}
-                    >
-                        Run
-                    </Button>
-                </div>
-            </div>
-            <ScrollablePaneUI className='flex-grow'>
-                <div className='px-2'>
+            <div></div>
+            <ScrollablePaneUI className='flex-grow '>
+                <div
+                    //
+                    className='m-4 p-2 fade-in'
+                    style={{
+                        background: '#1e1e1e',
+                        // boxShadow: '0px 0px 10px 0px rgba(228, 228, 228, 0.75)',
+                    }}
+                >
+                    <div className='flex'>
+                        <InputGroup>
+                            <InputGroup.Addon>{tool.name}</InputGroup.Addon>
+                            <Input
+                                onChange={(v) => draft.update({ title: v })}
+                                size='sm'
+                                placeholder='preset title'
+                                value={draft.data.title ?? ''}
+                            />
+                            <InputGroup.Button
+                                size='sm'
+                                className='self-start'
+                                color='green'
+                                appearance='primary'
+                                startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
+                                onClick={() => draft.start()}
+                            >
+                                Run
+                            </InputGroup.Button>
+                        </InputGroup>
+                    </div>
+                    <div>{tool.data.description}</div>
                     <form
                         onKeyUp={(ev) => {
                             // submit on meta+enter

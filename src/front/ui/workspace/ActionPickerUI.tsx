@@ -16,12 +16,10 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const tools = st.toolsSorted
     return (
         <div className='flex flex-col flex-grow'>
-            <SectionTitleUI label='ACTION' className='bg-red-950'>
-                <IconButton
-                    onClick={() => st.toolbox.walk()}
-                    size='sm'
-                    icon={<span className='material-symbols-outlined'>sync</span>}
-                />
+            <SectionTitleUI label='ACTIONS' className='bg-red-950'>
+                <div onClick={() => st.toolbox.walk()} className='cursor-pointer'>
+                    <span className='text-xs material-symbols-outlined'>sync</span>
+                </div>
             </SectionTitleUI>
             {/* <SelectPicker
                 data={tools}

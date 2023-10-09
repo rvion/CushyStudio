@@ -38,6 +38,17 @@ type Focus = 'action' | 'autoaction' | 'png' | 'prompt' | 'workflow'
 export class PossibleActionFile {
     get relPath() { return this.absPath.replace(this.st.actionsFolderPath, '') } // prettier-ignore
 
+    autoReload = false
+    autoReloadTimeout?: NodeJS.Timeout
+    setAutoReload = (v: boolean) => {
+        if (this.autoReloadTimeout != null) clearTimeout(this.autoReloadTimeout)
+        this.autoReload = v
+        if (!v) return
+        this.autoReloadTimeout = setInterval(() => {
+            console.log('🟢 auto reloading...')
+            this.load({ logFailures: true, force: true })
+        }, 3000)
+    }
     constructor(
         public st: STATE,
         public absPath: AbsolutePath,
@@ -69,8 +80,12 @@ export class PossibleActionFile {
         if (this.asAction?.success && this.asAction?.value?.tools.success) return this.asAction.value.tools.value?.[0]
     }
 
-    load = async (opts: { logFailures: boolean }): Promise<true> => {
-        if (this.loaded.done) return true
+    load = async (p: {
+        //
+        logFailures: boolean
+        force?: boolean
+    }): Promise<true> => {
+        if (this.loaded.done && !p.force) return true
         const strategies = this.findLoadStrategies()
         for (const strategy of strategies) await this.loadWithStrategy(strategy)
         this.loaded.resolve(true)
@@ -274,6 +289,7 @@ export class PossibleActionFile {
                     id: actionID,
                     owner: a.action.author,
                     file: this.absPath,
+                    description: a.action.description,
                     name: a.name,
                     priority: a.action.priority ?? 100,
                     form: a.action.ui?.(formBuilder),

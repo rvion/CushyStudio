@@ -263,3 +263,18 @@ body {
     background-color: rgba(0,0,0,0);
 }
 /*  */
+
+
+.flip-horizontal-bottom{-webkit-animation:flip-horizontal-bottom .4s cubic-bezier(.455,.03,.515,.955) both;animation:flip-horizontal-bottom .4s cubic-bezier(.455,.03,.515,.955) both}
+@-webkit-keyframes flip-horizontal-bottom{0%{-webkit-transform:rotateX(0);transform:rotateX(0)}100%{-webkit-transform:rotateX(-180deg);transform:rotateX(-180deg)}}@keyframes flip-horizontal-bottom{0%{-webkit-transform:rotateX(0);transform:rotateX(0)}100%{-webkit-transform:rotateX(-180deg);transform:rotateX(-180deg)}}
+
+
+.swing-in-top-fwd{animation:swing-in-top-fwd .5s cubic-bezier(.175,.885,.32,1.275) both}
+@keyframes swing-in-top-fwd{0%{transform:rotateX(-100deg);transform-origin:top;opacity:0}100%{transform:rotateX(0deg);transform-origin:top;opacity:1}}
+
+
+.scale-in-center{animation:scale-in-center .5s cubic-bezier(.25,.46,.45,.94) both}
+@keyframes scale-in-center{0%{transform:scale(0);opacity:1}100%{transform:scale(1);opacity:1}}
+
+.fade-in{animation:fade-in 1.2s cubic-bezier(.39,.575,.565,1.000) both}
+@keyframes fade-in{0%{opacity:0}100%{opacity:1}}

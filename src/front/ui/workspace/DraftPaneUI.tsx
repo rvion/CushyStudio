@@ -1,5 +1,5 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { Button, Loader, Message, Nav, Popover, Whisper } from 'rsuite'
+import { Button, Loader, Message, Nav, Popover, Toggle, Whisper } from 'rsuite'
 import type { DraftL } from 'src/models/Draft'
 import { useProject } from '../../../front/ProjectCtx'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
@@ -19,23 +19,26 @@ export const PafUI = observer(function PafUI_(p: {}) {
     return (
         <>
             <div>{paf.loaded.done ? null : <Loader />}</div>
-            <Nav appearance='tabs' activeKey={paf.focus} onSelect={(k) => (paf.focus = k)}>
-                <Nav.Item disabled={paf.asAction == null} eventKey='action'>
-                    Action
-                </Nav.Item>
-                <Nav.Item disabled={paf.asAutoAction == null} eventKey='autoaction'>
-                    AutoAction
-                </Nav.Item>
-                <Nav.Item disabled={paf.png == null} eventKey='png'>
-                    Png
-                </Nav.Item>
-                <Nav.Item disabled={paf.liteGraphJSON == null} eventKey='workflow'>
-                    Workflow
-                </Nav.Item>
-                <Nav.Item disabled={paf.promptJSON == null} eventKey='prompt'>
-                    Prompt
-                </Nav.Item>
-            </Nav>
+            <Toggle checked={paf.autoReload} onChange={(n) => paf.setAutoReload(n)} />
+            <div>
+                <Nav appearance='tabs' activeKey={paf.focus} onSelect={(k) => (paf.focus = k)}>
+                    <Nav.Item disabled={paf.asAction == null} eventKey='action'>
+                        Action
+                    </Nav.Item>
+                    <Nav.Item disabled={paf.asAutoAction == null} eventKey='autoaction'>
+                        AutoAction
+                    </Nav.Item>
+                    <Nav.Item disabled={paf.png == null} eventKey='png'>
+                        Png
+                    </Nav.Item>
+                    <Nav.Item disabled={paf.liteGraphJSON == null} eventKey='workflow'>
+                        Workflow
+                    </Nav.Item>
+                    <Nav.Item disabled={paf.promptJSON == null} eventKey='prompt'>
+                        Prompt
+                    </Nav.Item>
+                </Nav>
+            </div>
             {paf.focus === 'action' ? (
                 // AUTO-ACTION ----------------------------------------------------------
                 paf.asAction == null ? (
@@ -119,14 +122,14 @@ export const ActionUI = observer(function ActionUI_(p: { tac: ToolAndCode }) {
                 )} */}
             {/* <div>Actions</div>
                 <TypescriptHighlightedCodeUI code={p.tac.codeTS} /> */}
-            <TooltipUI>
+            {/* <TooltipUI>
                 <div>Code TS</div>
-                <TypescriptHighlightedCodeUI code={p.tac.codeTS} />
+                <TypescriptHighlightedCodeUI className='h-96 w-96 overflow-auto' code={p.tac.codeTS} />
             </TooltipUI>
             <TooltipUI>
                 <div>Code JS</div>
-                <TypescriptHighlightedCodeUI code={p.tac.codeJS} />
-            </TooltipUI>
+                <TypescriptHighlightedCodeUI className='h-96 w-96 overflow-auto' code={p.tac.codeJS} />
+            </TooltipUI> */}
         </div>
     )
 })

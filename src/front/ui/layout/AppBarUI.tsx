@@ -8,8 +8,8 @@ import { SchemaIndicatorUI } from './SchemaIndicatorUI'
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
     return (
-        <div className='bg-gray-950 p-2 flex gap-1 items-center' style={{ borderBottom: '1px solid #383838' }}>
-            <div className='text-green-400'>🛋️ CushyStudio</div>
+        <div className='bg-gray-950 p-1 flex gap-1 items-center' style={{ borderBottom: '1px solid #383838' }}>
+            <div>🛋️ CushyStudio</div>
 
             {/* <Button
                 //

@@ -39,9 +39,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     }
 
     disabled: boolean = false
-    disable() {
-        this.disabled = true
-    }
+    disable() { this.disabled = true } // prettier-ignore
 
     get inputs(): ComfyNode_input {
         return this.json.inputs as any

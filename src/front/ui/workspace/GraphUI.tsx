@@ -26,13 +26,21 @@ export const GraphUI = observer(function GraphUI_(p: { depth: number }) {
 
             {/* 2. DRAFTS  */}
             <Pane minSize='100px' className='col' style={{ background: '#0c0c0c' }}>
-                <SectionTitleUI label='DRAFTS' className='bg-green-950' />
+                <SectionTitleUI
+                    //
+                    label='DRAFTS'
+                    className='bg-green-950'
+                />
                 <DraftPaneUI />
             </Pane>
 
             {/* 3. STEPS */}
             <Pane minSize='100px' className='col'>
-                <SectionTitleUI label='RUNS' className='bg-yellow-900' />
+                <SectionTitleUI
+                    //
+                    label='RUNS'
+                    className='bg-yellow-900'
+                />
                 <StepListUI />
             </Pane>
         </SplitPane>
