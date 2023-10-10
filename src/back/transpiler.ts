@@ -8,13 +8,25 @@ import ts from 'typescript'
 
 import { spawn } from 'child_process'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
+import os from 'os'
 
 export async function transpileCode(filePath: AbsolutePath): Promise<string> {
-    const esbuildPath = `./node_modules/esbuild/bin/esbuild`
-    const result = await new Promise<string>((resolve, reject) => {
-        const command = 'node'
-        const args = [esbuildPath, '--bundle', filePath]
+    // Attempt to start esbuild from node_modules/.bin/esbuild
+    const isWindows = os.platform() === 'win32'
+    let esbuildPath: string
+    let command: string
+    let args: string[]
+    if (isWindows) {
+        esbuildPath = `./node_modules/esbuild/bin/esbuild`
+        command = 'node'
+        args = [esbuildPath, '--bundle', filePath]
+    } else {
+        esbuildPath = `./node_modules/.bin/esbuild`
+        command = esbuildPath
+        args = ['--bundle', filePath]
+    }
 
+    const result = await new Promise<string>((resolve, reject) => {
         const esbuildProcess = spawn(command, args)
         let output = ''
 
