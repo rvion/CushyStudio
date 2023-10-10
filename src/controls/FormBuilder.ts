@@ -25,6 +25,7 @@ export class FormBuilder {
     number =    (p: Omit<R.Requestable_float,     'type'>): R.Requestable_float    => ({ type: 'float',  ...p })
     numberOpt = (p: Omit<R.Requestable_floatOpt,  'type'>): R.Requestable_floatOpt => ({ type: 'float?', ...p })
 
+    matrix    = (p: Omit<R.Requestable_matrix,    'type'>): R.Requestable_matrix   => ({ type: 'matrix', ...p })
     /** bools */
     boolean =   (p: Omit<R.Requestable_bool,      'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })
     bool =      (p: Omit<R.Requestable_bool,      'type'>): R.Requestable_bool => ({ type: 'bool' as const, ...p })

@@ -3,6 +3,7 @@ import type { LATER } from 'LATER'
 import type { ImageAnswer, InfoAnswer } from './InfoAnswer'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
+import type { CELL } from 'src/front/ui/widgets/WidgetMatrixUI'
 
 export type Tooltip = string
 export type InptReq<Type extends string, Def, Extra = {}> = {
@@ -32,6 +33,7 @@ export type Requestable_intOpt       = InptOpt<'int?',    number  > // prettier-
 export type Requestable_floatOpt     = InptOpt<'float?',  number  > // prettier-ignore
 export type Requestable_boolOpt      = InptOpt<'bool?',   boolean > // prettier-ignore
 export type Requestable_size         = InptReq<'size',    boolean > // prettier-ignore
+export type Requestable_matrix       = InptReq<'matrix',  CELL[], {rows:string[], cols:string[]} > // prettier-ignore
 //
 export type Requestable_embeddings   = InptReq<'embeddings',  LATER<'Embeddings'>> // prettier-ignore
 export type Requestable_loras        = InptReq<'loras',       SimplifiedLoraDef[]> // prettier-ignore
@@ -59,6 +61,7 @@ export type Requestable =
     | Requestable_strOpt
     | Requestable_prompt
     | Requestable_promptOpt
+    | Requestable_matrix
     /** nums */
     | Requestable_int
     | Requestable_intOpt

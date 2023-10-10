@@ -20,6 +20,7 @@ import { WidgetStrUI } from './WidgetStrUI'
 import { WidgetStrOptUI } from './WidgetStrOptUI'
 import { ErrorBoundary } from 'react-error-boundary'
 import { ErrorBoundaryFallback } from './ErrorBoundary'
+import { WidgetMatrixUI } from './WidgetMatrixUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     draft: DraftL
@@ -121,6 +122,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'selectManyOrCustom') return <>TODO</>
     if (req.type === 'selectOne') return <>TODO</>
     if (req.type === 'selectOneOrCustom') return <>TODO</>
+    if (req.type === 'matrix') return <WidgetMatrixUI get={get} set={set} def={def} rows={req.rows} cols={req.cols} />
     if (req.type === 'loras') return <WidgetLorasUI get={get} set={set} />
 
     exhaust(req)
