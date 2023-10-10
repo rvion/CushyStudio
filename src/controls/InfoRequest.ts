@@ -61,6 +61,8 @@ export type Requestable =
     | Requestable_strOpt
     | Requestable_prompt
     | Requestable_promptOpt
+    /** misc */
+    | Requestable_size
     | Requestable_matrix
     /** nums */
     | Requestable_int

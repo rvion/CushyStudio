@@ -77,6 +77,7 @@ body {
 /*  */
 
 .rs-panel {background: #373737; flex-shrink: 0; border-radius: 0!important;}
+.rs-panel.nobg {background: none; flex-shrink: 0; border-radius: 0!important;}
 .rs-panel .rs-panel {background: #464646; flex-shrink: 0;}
 
 /* .col-folder {background: black !important;} */

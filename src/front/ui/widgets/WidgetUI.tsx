@@ -122,6 +122,7 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'selectManyOrCustom') return <>TODO</>
     if (req.type === 'selectOne') return <>TODO</>
     if (req.type === 'selectOneOrCustom') return <>TODO</>
+    if (req.type === 'size') return <>TODO</>
     if (req.type === 'matrix') return <WidgetMatrixUI get={get} set={set} def={def} rows={req.rows} cols={req.cols} />
     if (req.type === 'loras') return <WidgetLorasUI get={get} set={set} />
 

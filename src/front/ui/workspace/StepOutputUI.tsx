@@ -8,19 +8,19 @@ import { ComfyNodeUI } from '../NodeListUI'
 import { ImageUI } from '../galleries/ImageUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
-import { toJS } from 'mobx'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
-        <Panel className='flex flex-rowcol-info'>
+        <div className='flex flex-rowcol-info'>
             <div className='flex items-baseline'>
-                <div className='font-bold'>{p.label}:</div>
+                <div className='font-bold'>{p.label}</div>
                 <div>{p.children}</div>
             </div>
-        </Panel>
+        </div>
     )
 })
+
 export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; output: StepOutput }) {
     const msg = p.output
     const outputGraph = p.step.outputGraph.item

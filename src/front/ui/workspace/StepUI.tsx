@@ -14,7 +14,7 @@ export const StepListUI = observer(function StepListUI_(p: {}) {
     const steps = st.db.steps
     return (
         <div className='flex flex-col'>
-            <Panel header='Last Graph' collapsible defaultExpanded>
+            <Panel className='nobg' header='Last Graph' collapsible defaultExpanded>
                 <MsgShowHTMLUI html={st.db.graphs.last()?.flowSummaryHTML} />
             </Panel>
             <div className='flex flex-col-reverse flex-grow' style={{ overflow: 'auto' }}>
@@ -37,6 +37,7 @@ export const StepUI = observer(function StepUI_(p: { step: StepL }) {
     const step = p.step
     return (
         <Panel
+            className='nobg'
             collapsible
             defaultExpanded={step.data.status === Status.Running}
             header={
