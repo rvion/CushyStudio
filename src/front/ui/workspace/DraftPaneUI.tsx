@@ -1,14 +1,12 @@
-import { observer, useLocalObservable } from 'mobx-react-lite'
-import { Button, Loader, Message, Nav, Popover, Toggle, Whisper } from 'rsuite'
 import type { DraftL } from 'src/models/Draft'
-import { useProject } from '../../../front/ProjectCtx'
-import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
-import { DraftUI } from '../widgets/DraftUI'
-import { TabUI } from '../layout/TabUI'
-import { TooltipUI } from '../layout/TooltipUI'
-import { ToolL } from 'src/models/Tool'
+
+import { observer } from 'mobx-react-lite'
+import { Button, Loader, Message, Nav, Toggle } from 'rsuite'
 import { ToolAndCode } from 'src/back/PossibleActionFile'
-import { Fragment } from 'react'
+import { ToolL } from 'src/models/Tool'
+import { useProject } from '../../../front/ProjectCtx'
+import { JSONHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
+import { DraftUI } from '../widgets/DraftUI'
 import { ComfyUIUI } from './ComfyUIUI'
 
 export const PafUI = observer(function PafUI_(p: {}) {
@@ -113,7 +111,9 @@ export const ActionUI = observer(function ActionUI_(p: { tac: ToolAndCode }) {
             {p.tac.tools.success ? ( //
                 <ToolUI tool={p.tac.tools.value[0]} />
             ) : (
-                <Message type='error'>error</Message>
+                <Message type='error'>
+                    <pre tw='bg-red-900'>{JSON.stringify(p.tac.tools.error, null, 4)}</pre>
+                </Message>
             )}
             {/* {p.tac.tools.success ? (
                 p.tac.tools.value.map((tool, ix) => [<div>Tool {ix}</div>, <ToolUI tool={tool} />])

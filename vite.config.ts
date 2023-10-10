@@ -10,7 +10,7 @@ export default defineConfig({
     publicDir: 'src/public',
     plugins: [
         // dynamicModulePlugin(),
-        react(),
+        react({ jsxImportSource: 'src/custom-jsx' }),
         // viteSingleFile(),
     ],
     server: {
