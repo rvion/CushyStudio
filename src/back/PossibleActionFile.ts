@@ -80,12 +80,14 @@ export class PossibleActionFile {
         if (this.asAction?.success && this.asAction?.value?.tools.success) return this.asAction.value.tools.value?.[0]
     }
 
+    private _uid = 0
     load = async (p: {
         //
         logFailures: boolean
         force?: boolean
     }): Promise<true> => {
         if (this.loaded.done && !p.force) return true
+        this._uid = 0
         const strategies = this.findLoadStrategies()
         for (const strategy of strategies) await this.loadWithStrategy(strategy)
         this.loaded.resolve(true)
@@ -267,7 +269,6 @@ export class PossibleActionFile {
         }
     }
 
-    private _uid = 0
     private loadTools = async (p: { codeJS: string; codeTS: string }): Promise<Result<ToolL[]>> => {
         const { codeJS, codeTS } = p
 
