@@ -10,10 +10,10 @@ import { spawn } from 'child_process'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 
 export async function transpileCode(filePath: AbsolutePath): Promise<string> {
-    const esbuildPath = `./node_modules/.bin/esbuild`
+    const esbuildPath = `./node_modules/esbuild/bin/esbuild`
     const result = await new Promise<string>((resolve, reject) => {
-        const command = esbuildPath
-        const args = ['--bundle', filePath]
+        const command = 'node'
+        const args = [esbuildPath, '--bundle', filePath]
 
         const esbuildProcess = spawn(command, args)
         let output = ''
