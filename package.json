@@ -57,6 +57,7 @@
         "@rsuite/responsive-nav": "^5.0.1",
         "@types/papaparse": "^5.3.9",
         "@types/react-mentions": "^4.1.9",
+        "bun": "^1.0.4",
         "chokidar": "^3.5.3",
         "concurrently": "^8.2.1",
         "cors": "^2.8.5",

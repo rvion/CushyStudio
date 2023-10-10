@@ -1,8 +1,8 @@
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { Action, FormDefinition } from 'src/core/Requirement'
 import type { STATE } from 'src/front/state'
-import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
+import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -13,7 +13,7 @@ import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
 import { ToolL, asToolID } from '../models/Tool'
 import { exhaust } from '../utils/ComfyUtils'
-import { type Result, __FAIL, __OK } from '../utils/Either'
+import { __FAIL, __OK, type Result } from '../utils/Either'
 import { ManualPromise } from '../utils/ManualPromise'
 import { transpileCode } from './transpiler'
 
@@ -128,7 +128,8 @@ export class PossibleActionFile {
             // 2. transpile
             let codeJS: string
             try {
-                codeJS = await transpileCode(codeTS)
+                codeJS = await transpileCode(this.absPath)
+                // codeJS = await transpileCodeOld(codeTS)
             } catch (e) {
                 this.asAction = __FAIL(`❌ [load_asCushyStudioAction] transpile error`, e)
                 return
