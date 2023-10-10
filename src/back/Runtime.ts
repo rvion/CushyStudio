@@ -271,7 +271,7 @@ export class Runtime {
         }
         throw new Error('FAILURE')
     }
-    loadImageAnswer = async (ia: ImageAnswer): Promise<_IMAGE> => {
+    loadImageAnswer = async (ia: ImageAnswer, p?: { joinImageWithAlpha: boolean }): Promise<_IMAGE> => {
         try {
             // if (ia.type === 'imagePath') {
             //     return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
@@ -282,16 +282,22 @@ export class Runtime {
                 if (img.data.downloaded) {
                     const res = await this.uploadAnyFile(img.localAbsolutePath)
                     // this.print(JSON.stringify(res))
-                    return this.nodes.LoadImage({ image: res.name as any })
+
+                    const img2 = this.nodes.LoadImage({ image: res.name as any })
+                    if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
+                    return img2
                 }
                 console.log(img.data)
                 return this.nodes.Image_Load({
                     image_path: img.url ?? img.localAbsolutePath,
-                    RGBA: false, // 'false',
+                    RGBA: p?.joinImageWithAlpha ? 'true' : 'false', // 'false',
                 })
             }
             if (ia.type === 'ComfyImage') {
-                return this.nodes.LoadImage({ image: ia.image })
+                const img2 = this.nodes.LoadImage({ image: ia.image })
+                // const img2 = this.nodes.LoadImage({ image: res.name as any })
+                if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
+                return img2
             }
             // if (ia.type === 'imageSignal') {
             //     const node = this.graph.nodesIndex.get(ia.nodeID)
