@@ -44,7 +44,6 @@ export const PafUI = observer(function PafUI_(p: {}) {
                 ) : paf.asAction.success ? (
                     <>
                         <ActionUI tac={paf.asAction.value} />
-                        {/* <pre>{paf.asAction.value.codeTS}</pre> */}
                     </>
                 ) : (
                     <div>

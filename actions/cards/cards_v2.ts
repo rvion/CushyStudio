@@ -1,3 +1,5 @@
+import { prettifyIcon } from './icons/TEST'
+
 action('cards', {
     author: '',
     description: 'play with cards',
@@ -17,23 +19,28 @@ action('cards', {
         }),
 
         // Main cards
-        illustrationJack: form.str({ default: 'monster Knight', group: 'illusration' }),
-        illustrationQueen: form.str({ default: 'monster Queen', group: 'illusration' }),
-        illustrationKing: form.str({ default: 'monster King', group: 'illusration' }),
+        illustrationJack: form.str({ default: 'gold, Knight', group: 'illusration' }),
+        illustrationQueen: form.str({ default: 'gold, Queen', group: 'illusration' }),
+        illustrationKing: form.str({ default: 'gold, King', group: 'illusration' }),
 
         // [UI] THEME --------------------------------------
-        generalTheme: form.string({ default: 'fantasy game' }),
-        theme1: form.string({ default: 'spring', group: 'theme' }),
-        theme2: form.string({ default: 'summer', group: 'theme' }),
-        theme3: form.string({ default: 'autumn', group: 'theme' }),
-        theme4: form.string({ default: 'winter', group: 'theme' }),
+        generalTheme: form.string({ default: 'fantasy' }),
+        theme1: form.string({ default: 'underwater, sea, fish, tentacles, ocean', group: 'theme' }),
+        theme2: form.string({ default: 'volcanic, lava, rock, fire', group: 'theme' }),
+        theme3: form.string({ default: 'forest, nature, branches, trees', group: 'theme' }),
+        theme4: form.string({ default: 'snow, ice, mountain, transparent winter', group: 'theme' }),
 
         colors: form.group({
-            default: { spades: 'black', hearts: 'red', clubs: 'black', diamonds: 'white' },
+            default: {
+                spades: 'blue',
+                hearts: 'red',
+                clubs: 'green',
+                diamonds: 'white',
+            },
             items: {
-                spades: form.string({ default: 'black' }),
+                spades: form.string({ default: 'blue' }),
                 hearts: form.string({ default: 'red' }),
-                clubs: form.string({ default: 'black' }),
+                clubs: form.string({ default: 'green' }),
                 diamonds: form.string({ default: 'white' }),
             },
         }),
@@ -77,7 +84,8 @@ action('cards', {
             const ima = p.logos?.[suit as keyof typeof p.logos]
             // either the logo is provided
             if (ima) {
-                const x = await flow.loadImageAnswer(ima, { joinImageWithAlpha: true })
+                let y: _IMAGE & _MASK = await flow.loadImageAnswer(ima)
+                let x = prettifyIcon(flow, { image: y, scaleRatio: 1.15 })
                 suitsImages.set(suit, x)
                 continue
             }
@@ -113,7 +121,7 @@ action('cards', {
         const suitsBackgroundLatent = graph.EmptyLatentImage({ width: W, height: H })
         for (const suit of suits) {
             const suitColor = p.colors[suit as keyof typeof p.colors]
-            const suitBGPrompt = `${suitColor} background, pattern, poker ${suit} themed`
+            const suitBGPrompt = `${suitColor} background, pattern, ${p.generalTheme}`
             flow.print(`generating background for ${suit} with prompt "${suitBGPrompt}"`)
             const colorImage = graph.KSampler({
                 seed,
@@ -130,7 +138,12 @@ action('cards', {
         }
 
         // 4. CARDS --------------------------------------------------
-        const themeFor = { spades: p.theme1, hearts: p.theme2, clubs: p.theme3, diamonds: p.theme4 }
+        const themeFor = {
+            spades: p.theme1,
+            hearts: p.theme2,
+            clubs: p.theme3,
+            diamonds: p.theme4,
+        }
         const margin = p.margin ?? 50
         // const emptyLatent = graph.EmptyLatentImage({ width: W, height: H })
         // prettier-ignore
@@ -162,7 +175,7 @@ action('cards', {
                     K: p.illustrationKing,
                 }[value] ?? `background`
 
-            const positiveText = `masterpiece, woman, smiling, full_body character ${basePrompt}, ${suitColor} color, theme of ${theme} and ${p.generalTheme}, 4k, intricate details`
+            const positiveText = `masterpiece, monster, monster-girl, pixar, strong expression rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${p.generalTheme}, 4k`
             flow.print(`👉 ${value}${suit} : ${positiveText}`)
             const positive = graph.CLIPTextEncode({ clip: ckpt, text: positiveText })
             const crop_blending = 0
@@ -253,7 +266,7 @@ action('cards', {
                 negative: graph.CLIPTextEncode({ clip: ckpt, text: negativeText }),
                 sampler_name: 'euler',
                 scheduler: 'karras',
-                denoise: 0.5,
+                denoise: 0.6,
             })
 
             // ADD CORNERS ----------------------------------------
@@ -274,9 +287,24 @@ action('cards', {
                 red: 255,
                 green: 255,
             })
-            // cornuer numbers
-            pixels = graph.ImageCompositeAbsolute({ images_a: pixels, images_b: text, images_b_x: margin, images_b_y: margin, background: 'images_a', method: 'pair', }) // prettier-ignore
-            pixels = graph.ImageCompositeAbsolute({ images_a: pixels, images_b: text, images_b_x: W - margin - 100, images_b_y: H - margin - 100, background: 'images_a', method: 'pair', }) // prettier-ignore
+            const textRotated = graph.Image_Rotate({ images: text, mode: 'transpose', rotation: 180, sampler: 'bilinear' })
+            // corner numbers
+            pixels = graph.ImageCompositeAbsolute({
+                images_a: pixels,
+                images_b: text,
+                images_b_x: margin,
+                images_b_y: margin,
+                background: 'images_a',
+                method: 'pair',
+            })
+            pixels = graph.ImageCompositeAbsolute({
+                images_a: pixels,
+                images_b: textRotated,
+                images_b_x: W - margin - 100,
+                images_b_y: H - margin - 100,
+                background: 'images_a',
+                method: 'pair',
+            })
 
             // round corners
             pixels = graph.ImageTransformCropCorners({

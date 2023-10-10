@@ -271,7 +271,7 @@ export class Runtime {
         }
         throw new Error('FAILURE')
     }
-    loadImageAnswer = async (ia: ImageAnswer, p?: { joinImageWithAlpha: boolean }): Promise<_IMAGE> => {
+    loadImageAnswer = async (ia: ImageAnswer): Promise<_IMAGE & _MASK> => {
         try {
             // if (ia.type === 'imagePath') {
             //     return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
@@ -284,19 +284,20 @@ export class Runtime {
                     // this.print(JSON.stringify(res))
 
                     const img2 = this.nodes.LoadImage({ image: res.name as any })
-                    if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
+                    // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
                     return img2
                 }
                 console.log(img.data)
                 return this.nodes.Image_Load({
                     image_path: img.url ?? img.localAbsolutePath,
-                    RGBA: p?.joinImageWithAlpha ? 'true' : 'false', // 'false',
+                    RGBA: 'false',
+                    // RGBA: p?.joinImageWithAlpha ? 'true' : 'false', // 'false',
                 })
             }
             if (ia.type === 'ComfyImage') {
                 const img2 = this.nodes.LoadImage({ image: ia.image })
                 // const img2 = this.nodes.LoadImage({ image: res.name as any })
-                if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
+                // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
                 return img2
             }
             // if (ia.type === 'imageSignal') {
