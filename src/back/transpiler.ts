@@ -6,19 +6,48 @@
 
 import ts from 'typescript'
 
-import { exec } from 'child_process'
+import { spawn } from 'child_process'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 
 export async function transpileCode(filePath: AbsolutePath): Promise<string> {
     const esbuildPath = `./node_modules/.bin/esbuild`
     const result = await new Promise<string>((resolve, reject) => {
-        exec(`${esbuildPath} --bundle ${filePath}`, (err, stdout, stderr) => {
-            if (err) {
-                console.log('[🌭] transpile error', err, stdout, stderr)
-                reject(err)
-            } else resolve(stdout)
+        const command = esbuildPath
+        const args = ['--bundle', filePath]
+
+        const esbuildProcess = spawn(command, args)
+        let output = ''
+
+        esbuildProcess.stdout.on('data', (data) => {
+            output += data
+        })
+
+        esbuildProcess.stderr.on('data', (data) => {
+            console.log('[🌭] transpile error data:', data.toString())
+        })
+
+        esbuildProcess.on('error', (err) => {
+            console.log('[🌭] transpile error', err)
+            reject(err)
+        })
+
+        esbuildProcess.on('close', (code) => {
+            if (code !== 0) {
+                reject(new Error(`esbuild process exited with code ${code}`))
+            } else {
+                resolve(output)
+            }
         })
     })
+
+    // const result = await new Promise<string>((resolve, reject) => {
+    //     exec(`${esbuildPath} --bundle ${filePath}`, (err, stdout, stderr) => {
+    //         if (err) {
+    //             console.log('[🌭] transpile error', err, stdout, stderr)
+    //             reject(err)
+    //         } else resolve(stdout)
+    //     })
+    // })
     return result
 }
 
