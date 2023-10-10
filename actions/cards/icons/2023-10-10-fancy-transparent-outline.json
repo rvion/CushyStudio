@@ -1,0 +1,589 @@
+{
+  "last_node_id": 141,
+  "last_link_id": 198,
+  "nodes": [
+    {
+      "id": 16,
+      "type": "JoinImageWithAlpha",
+      "pos": [
+        -5235,
+        -3601
+      ],
+      "size": {
+        "0": 176.39999389648438,
+        "1": 46
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 144
+        },
+        {
+          "name": "alpha",
+          "type": "MASK",
+          "link": 27
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            188
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "JoinImageWithAlpha"
+      }
+    },
+    {
+      "id": 1,
+      "type": "LoadImage",
+      "pos": [
+        -5936,
+        -3376
+      ],
+      "size": {
+        "0": 210,
+        "1": 187.78138732910156
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            104,
+            144
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            27,
+            185
+          ],
+          "shape": 3,
+          "slot_index": 1
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "poker-heart.png",
+        "image"
+      ]
+    },
+    {
+      "id": 135,
+      "type": "MaskComposite",
+      "pos": [
+        -5309,
+        -3039
+      ],
+      "size": [
+        210,
+        126
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "destination",
+          "type": "MASK",
+          "link": 185
+        },
+        {
+          "name": "source",
+          "type": "MASK",
+          "link": 181
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            186
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "MaskComposite"
+      },
+      "widgets_values": [
+        0,
+        0,
+        "add"
+      ]
+    },
+    {
+      "id": 48,
+      "type": "Image Levels Adjustment",
+      "pos": [
+        -5148,
+        -3413
+      ],
+      "size": {
+        "0": 210,
+        "1": 106.56979370117188
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 105
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            198
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Image Levels Adjustment"
+      },
+      "widgets_values": [
+        0.1,
+        7.300000000000001,
+        9.4
+      ]
+    },
+    {
+      "id": 40,
+      "type": "ImageColorToMask",
+      "pos": [
+        -5142,
+        -3260
+      ],
+      "size": {
+        "0": 210,
+        "1": 58
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 106
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageColorToMask"
+      },
+      "widgets_values": [
+        0
+      ]
+    },
+    {
+      "id": 58,
+      "type": "Image Resize",
+      "pos": [
+        -5514,
+        -3359
+      ],
+      "size": {
+        "0": 315,
+        "1": 178
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 104,
+          "slot_index": 0
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            105,
+            106
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Image Resize"
+      },
+      "widgets_values": [
+        "rescale",
+        "true",
+        "nearest",
+        1.25,
+        1024,
+        1536
+      ]
+    },
+    {
+      "id": 50,
+      "type": "JoinImageWithAlpha",
+      "pos": [
+        -4808,
+        -3315
+      ],
+      "size": {
+        "0": 176.39999389648438,
+        "1": 46
+      },
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 198,
+          "slot_index": 0
+        },
+        {
+          "name": "alpha",
+          "type": "MASK",
+          "link": 186
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            117,
+            197
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "JoinImageWithAlpha"
+      }
+    },
+    {
+      "id": 139,
+      "type": "ImageCompositeRelative",
+      "pos": [
+        -4521,
+        -3596
+      ],
+      "size": {
+        "0": 237.6610565185547,
+        "1": 222
+      },
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images_a",
+          "type": "IMAGE",
+          "link": 188
+        },
+        {
+          "name": "images_b",
+          "type": "IMAGE",
+          "link": 197
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            190
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageCompositeRelative"
+      },
+      "widgets_values": [
+        0.5,
+        0.49,
+        0,
+        0,
+        "images_b",
+        "max",
+        "pair"
+      ]
+    },
+    {
+      "id": 64,
+      "type": "PreviewImage",
+      "pos": [
+        -4509,
+        -3322
+      ],
+      "size": {
+        "0": 210,
+        "1": 246
+      },
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 117
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 140,
+      "type": "PreviewImage",
+      "pos": [
+        -4222,
+        -3596
+      ],
+      "size": [
+        210,
+        246
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 190
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 128,
+      "type": "LoadImageMask",
+      "pos": [
+        -5589,
+        -3025
+      ],
+      "size": [
+        210,
+        216.69873046875
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            181
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImageMask"
+      },
+      "widgets_values": [
+        "Radial 1 - 512x512.png",
+        "blue",
+        "image"
+      ]
+    },
+    {
+      "id": 141,
+      "type": "ImageTextOutlined",
+      "pos": [
+        -4932,
+        -3070
+      ],
+      "size": {
+        "0": 315,
+        "1": 346
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageTextOutlined"
+      },
+      "widgets_values": [
+        "",
+        "Roboto-Regular.ttf",
+        28,
+        255,
+        255,
+        255,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    }
+  ],
+  "links": [
+    [
+      27,
+      1,
+      1,
+      16,
+      1,
+      "MASK"
+    ],
+    [
+      104,
+      1,
+      0,
+      58,
+      0,
+      "IMAGE"
+    ],
+    [
+      105,
+      58,
+      0,
+      48,
+      0,
+      "IMAGE"
+    ],
+    [
+      106,
+      58,
+      0,
+      40,
+      0,
+      "IMAGE"
+    ],
+    [
+      117,
+      50,
+      0,
+      64,
+      0,
+      "IMAGE"
+    ],
+    [
+      144,
+      1,
+      0,
+      16,
+      0,
+      "IMAGE"
+    ],
+    [
+      181,
+      128,
+      0,
+      135,
+      1,
+      "MASK"
+    ],
+    [
+      185,
+      1,
+      1,
+      135,
+      0,
+      "MASK"
+    ],
+    [
+      186,
+      135,
+      0,
+      50,
+      1,
+      "MASK"
+    ],
+    [
+      188,
+      16,
+      0,
+      139,
+      0,
+      "IMAGE"
+    ],
+    [
+      190,
+      139,
+      0,
+      140,
+      0,
+      "IMAGE"
+    ],
+    [
+      197,
+      50,
+      0,
+      139,
+      1,
+      "IMAGE"
+    ],
+    [
+      198,
+      48,
+      0,
+      50,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

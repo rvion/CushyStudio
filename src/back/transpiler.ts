@@ -10,9 +10,9 @@ import { exec } from 'child_process'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 
 export async function transpileCode(filePath: AbsolutePath): Promise<string> {
-    const bunPath = `./node_modules/.bin/bun`
+    const esbuildPath = `./node_modules/.bin/esbuild`
     const result = await new Promise<string>((resolve, reject) => {
-        exec(`${bunPath} build ${filePath}`, (err, stdout, stderr) => {
+        exec(`${esbuildPath} --bundle ${filePath}`, (err, stdout, stderr) => {
             if (err) {
                 console.log('[🌭] transpile error', err, stdout, stderr)
                 reject(err)
