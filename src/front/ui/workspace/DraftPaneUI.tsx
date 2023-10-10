@@ -47,7 +47,12 @@ export const PafUI = observer(function PafUI_(p: {}) {
                         {/* <pre>{paf.asAction.value.codeTS}</pre> */}
                     </>
                 ) : (
-                    <div>❌ Action</div>
+                    <div>
+                        <Message type='error'>
+                            <pre tw='bg-red-900'>{JSON.stringify(paf.asAction.message, null, 4)}</pre>
+                            <pre tw='bg-red-900'>{JSON.stringify(paf.asAction.error, null, 4)}</pre>
+                        </Message>
+                    </div>
                 )
             ) : paf.focus === 'autoaction' ? (
                 // ACTION ----------------------------------------------------------
