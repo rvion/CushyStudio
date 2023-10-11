@@ -5,9 +5,9 @@ action('cards', {
         theme1: form.string({ default: 'purple spring' }),
         theme2: form.string({ default: 'yellow summer' }),
         theme3: form.string({ default: 'orange autumn' }),
-        theme4: form.string({ default: 'boobs winter' }),
+        theme4: form.string({ default: 'blue winter' }),
         // what kind of border do we want
-        border: form.string({ default: 'boobs winter' }),
+        border: form.string({ default: 'spikes' }),
     }),
     run: async (flow, p) => {
         const graph = flow.nodes
