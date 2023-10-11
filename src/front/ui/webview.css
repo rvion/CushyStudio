@@ -236,7 +236,8 @@ body {
     display: block;
 }
 .rs-tree-node-focus {
-    background-color:#414141;
+    outline: 1px solid #266d9a;
+    /* background-color:#414141; */
 }
 .rs-tree-node-label-content {
     display: flex;
