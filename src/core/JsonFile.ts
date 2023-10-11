@@ -7,11 +7,13 @@ import { basename, dirname, join } from 'path'
 import { readableStringify } from '../utils/stringifyReadable'
 import { bang } from '../utils/bang'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
+import { ZodSchema } from 'zod'
 
 export type PersistedJSONInfo<T> = {
     path: AbsolutePath
     init: () => T
     maxLevel?: number
+    schema?: ZodSchema<T>
 }
 
 export class JsonFile<T extends object> {
