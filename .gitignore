@@ -34,9 +34,5 @@ cushy.db
 private
 .disabled
 
-dbDir
-dbDir*
-d001
-
 CONFIG.json
 global.d.ts

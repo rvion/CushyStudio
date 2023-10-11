@@ -11,9 +11,6 @@ import { SectionTitleUI } from './SectionTitle'
 
 export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const st = useSt()
-    const pj = useProject()
-    const db = st.db
-    const tools = st.toolsSorted
     return (
         <div className='flex flex-col flex-grow'>
             <SectionTitleUI label='ACTIONS' className='bg-red-950'>
@@ -21,17 +18,6 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
                     <span className='text-xs material-symbols-outlined'>sync</span>
                 </div>
             </SectionTitleUI>
-            {/* <SelectPicker
-                data={tools}
-                labelKey='name'
-                valueKey='id'
-                value={pj.data.activeToolID}
-                onChange={(v) => {
-                    if (v == null) return
-                    const tool = db.tools.getOrThrow(v)
-                    pj.focusTool(tool)
-                }}
-            /> */}
             <FileListUI />
         </div>
     )
