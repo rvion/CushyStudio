@@ -65,7 +65,7 @@ export class STATE {
     lightBox = new LightBoxState(() => this.db.images.values, false)
     hovered: Maybe<ImageL> = null
 
-    toolbox = new CushyFileWatcher(this)
+    toolbox: CushyFileWatcher
     schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
     importer: ComfyImporter
@@ -137,6 +137,7 @@ export class STATE {
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
         this.schema = this.db.schema
         this.typecheckingConfig = mkTypescriptConfig()
+        this.toolbox = new CushyFileWatcher(this)
         this.configFile = new JsonFile<ConfigFile>({
             path: asAbsolutePath(resolve('CONFIG.json')),
             maxLevel: 3,
@@ -152,9 +153,9 @@ export class STATE {
         this.importer = new ComfyImporter(this)
         // 1️⃣ if (opts.genTsConfig) this.createTSConfigIfMissing()
         // 1️⃣ if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
+        this.toolbox.findActions()
         ;(async () => {
             await this.schemaReady
-            await this.toolbox.walk()
             const project = this.startProjectV2()
             project.activeFile?.load({ logFailures: false })
         })()

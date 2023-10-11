@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input, InputGroup, Toggle } from 'rsuite'
+import { Input, InputGroup } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
 import { renderToolUI } from '../../../models/renderDraftUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
@@ -22,10 +22,12 @@ export const DraftUI = observer(function DraftUI_(p: { draft: DraftL }) {
             <ScrollablePaneUI className='flex-grow '>
                 <div
                     //
-                    className='m-4 p-4 fade-in'
+                    className='p-4 fade-in [max-width:80%] mx-auto'
                     style={{
                         border: '1px dashed #565656',
                         background: '#1e1e1e',
+                        borderRadius: '0.5rem',
+                        boxShadow: '0 0 2rem #193558',
                     }}
                 >
                     <div className='flex'>

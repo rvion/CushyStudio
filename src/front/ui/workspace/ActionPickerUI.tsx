@@ -19,7 +19,7 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
             style={{ borderRight: '1px solid #2d2d2d' }}
         >
             <SectionTitleUI label='ACTIONS' className='bg-red-950'>
-                <div onClick={() => st.toolbox.walk()} className='cursor-pointer'>
+                <div onClick={() => st.toolbox.findActions()} className='cursor-pointer'>
                     <span className='text-xs material-symbols-outlined'>sync</span>
                 </div>
             </SectionTitleUI>
@@ -31,17 +31,23 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
 export const FileListUI = observer(function FileListUI_(p: {}) {
     const st = useSt()
     const pj = useProject()
+    const tb = st.toolbox
     return (
         <>
             <Tree
-                value={pj.data.actionFile}
-                defaultExpandItemValues={['CushyStudio']}
+                expandItemValues={tb.expandedPaths}
                 tw='overflow-x-hidden overflow-y-auto flex-grow'
                 key={st.toolbox.updatedAt}
                 data={st.toolbox.treeData}
                 renderTreeIcon={(x) => {
                     return <>{x.expand ? '▿' : '▸'}</>
                 }}
+                onExpand={(values, node) => {
+                    const val = node.value as string
+                    if (tb.isExpanded(val)) tb.collapse(val)
+                    else tb.expand(val)
+                }}
+                // onExpand={(value, node) => { })
                 renderTreeNode={(node) => {
                     return (
                         <>
@@ -66,7 +72,7 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                     const value = _value as string
 
                     const isFolder = st.toolbox.treeData.find((x) => x.value === value)?.children != null
-                    if (isFolder) return console.log('❌ a folder')
+                    if (isFolder) return console.log(`❌ "${_value}" a folder`)
 
                     // 1. focus paf
                     const paf = st.toolbox.filesMap.get(asAbsolutePath(value))
