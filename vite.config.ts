@@ -1,6 +1,7 @@
-import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { readFileSync } from 'fs'
+import { defineConfig } from 'vite'
+import { resolve } from 'path'
 // import { viteSingleFile } from 'vite-plugin-singlefile'
 // import { dynamicModulePlugin } from './viteplugin'
 
@@ -21,7 +22,8 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            'src/*': './src/*.ts',
+            src: resolve(__dirname, './src'),
+            // 'src/*': './src/*.ts',
             buffer: './src/syms/buffer',
             child_process: './src/syms/child_process',
             fs: './src/syms/fs',
