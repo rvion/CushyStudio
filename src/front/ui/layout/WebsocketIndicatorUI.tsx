@@ -7,7 +7,7 @@ export const WebsocketIndicatorUI = observer(function WebsocketIndicatorUI_(p: {
     return (
         <Whisper
             enterable
-            placement='auto'
+            placement='autoVertical'
             speaker={
                 <Popover>
                     {/*  */}

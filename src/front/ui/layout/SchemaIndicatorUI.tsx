@@ -7,7 +7,7 @@ export const SchemaIndicatorUI = observer(function SchemaIndicatorUI_(p: {}) {
     return (
         <Whisper
             enterable
-            placement='auto'
+            placement='autoVertical'
             speaker={
                 <Popover>
                     {/*  */}

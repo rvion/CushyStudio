@@ -25,11 +25,17 @@ export class Updater {
 
     ready = false
 
+    private renderVersion = (commitCount: number) => {
+        const major = Math.floor(commitCount / 1000)
+        const minor = Math.floor((commitCount % 1000) / 100)
+        const patch = Math.floor(commitCount % 100)
+        return `${major}.${minor}.${patch}`
+    }
     get currentVersion() {
-        return `0.9.${this._commitCountOnHead}`
+        return this.renderVersion(this._commitCountOnHead)
     }
     get nextVersion() {
-        return `0.9.${this._commitCountOnMaster}`
+        return this.renderVersion(this._commitCountOnMaster)
     }
     get updateAvailable() {
         if (!this.ready) return false

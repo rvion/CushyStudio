@@ -4,11 +4,20 @@ import { Button, IconButton, Loader } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
+import { UpdateBtnUI } from './UpdateBtnUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
     return (
-        <div className='bg-gray-950 p-1 flex gap-1 items-center' style={{ borderBottom: '1px solid #383838' }}>
+        // bg-gray-950
+        <div
+            //
+            className='flex gap-1 items-center'
+            style={{
+                background: 'linear-gradient(90deg, #1a1a1a 0%, #3e3e45 100%)',
+                borderBottom: '1px solid #383838',
+            }}
+        >
             <div>🛋️ CushyStudio</div>
 
             {/* <Button
@@ -59,26 +68,14 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />}
             /> */}
 
-            {st.updater.updateAvailable ? (
-                <Button
-                    className='animate-pulse'
-                    color='orange'
-                    appearance='primary'
-                    startIcon={<span className='material-symbols-outlined'>update</span>}
-                    onClick={async () => {
-                        await st.updater.updateToLastCommitAvailable()
-                        window.location.reload()
-                    }}
-                >
-                    UPDATE to version {st.updater.nextVersion}
-                </Button>
-            ) : (
-                <span className='text-green-400 material-symbols-outlined'>check_circle</span>
-            )}
-            <div className={st.updater.updateAvailable ? 'text-orange-400' : 'text-green-400'}>
-                version {st.updater.commitCountOnHead ? st.updater.currentVersion : <Loader />}
-            </div>
+            <UpdateBtnUI />
+            <WebsocketIndicatorUI />
+            <SchemaIndicatorUI />
 
+            {/* <Button startIcon={<I.AddOutline />} size='sm' className='self-start' onClick={() => st.startProject()}>
+                create project
+            </Button> */}
+            <div className='flex-grow'></div>
             <Button
                 //
                 size='sm'
@@ -89,10 +86,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             >
                 Reset DB
             </Button>
-            {/* <Button startIcon={<I.AddOutline />} size='sm' className='self-start' onClick={() => st.startProject()}>
-                create project
-            </Button> */}
-            <div className='flex-grow'></div>
             {/* <Button
                 // startIcon={<I.AddOutline />}
                 size='sm'
@@ -107,8 +100,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             </Button> */}
             {/* biegert/ComfyUI-CLIPSeg */}
 
-            <WebsocketIndicatorUI />
-            <SchemaIndicatorUI />
             <a
                 className='ml-auto flex'
                 onClick={(ev) => {
