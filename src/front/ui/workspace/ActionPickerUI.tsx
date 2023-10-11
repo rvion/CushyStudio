@@ -43,11 +43,10 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                     return <>{x.expand ? '▿' : '▸'}</>
                 }}
                 onExpand={(values, node) => {
-                    const val = node.value as string
-                    if (tb.isExpanded(val)) tb.collapse(val)
-                    else tb.expand(val)
+                    const value = node.value as string
+                    if (tb.isExpanded(value)) tb.collapse(value)
+                    else tb.expand(value)
                 }}
-                // onExpand={(value, node) => { })
                 renderTreeNode={(node) => {
                     return (
                         <>
@@ -72,7 +71,12 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                     const value = _value as string
 
                     const isFolder = st.toolbox.treeData.find((x) => x.value === value)?.children != null
-                    if (isFolder) return console.log(`❌ "${_value}" a folder`)
+                    if (isFolder) {
+                        if (tb.isExpanded(value)) tb.collapse(value)
+                        else tb.expand(value)
+                        return
+                        // return console.log(`❌ "${_value}" a folder`)
+                    }
 
                     // 1. focus paf
                     const paf = st.toolbox.filesMap.get(asAbsolutePath(value))
