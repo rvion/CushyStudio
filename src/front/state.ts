@@ -448,8 +448,9 @@ export class STATE {
     graph: Maybe<GraphL> = null
     // images: ImageT[] = []
     // imagesById: Map<ImageID, ImageT> = new Map()
-    get imageReversed(): ImageL[] {
-        return this.db.images.values.filter((x) => x.data.folderID == null).reverse()
+    get imageToDisplay(): ImageL[] {
+        const maxImages = this.configFile.value.galleryMaxImages ?? 50
+        return this.db.images.values.slice(-maxImages).reverse()
     }
 
     createFolder = () => {

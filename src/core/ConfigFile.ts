@@ -20,7 +20,8 @@ export type ConfigFile = {
 
     /** defaults to 48px */
     galleryImageSize?: number
-
+    /** defaults to 50 */
+    galleryMaxImages?: number
     /** defaults to 5 */
     checkUpdateEveryMinutes?: number
 }

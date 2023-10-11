@@ -27,7 +27,7 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                 {/* <div className='absolute insert-0'> */}
                 {/* <div className='flex flex-row-reverse' style={{ overflowX: 'auto' }}> */}
                 {/* <PlaceholderImageUI /> */}
-                {st.imageReversed.map((img, ix) => (
+                {st.imageToDisplay.map((img, ix) => (
                     <ImageUI key={ix} img={img} />
                 ))}
                 {/* </div> */}
