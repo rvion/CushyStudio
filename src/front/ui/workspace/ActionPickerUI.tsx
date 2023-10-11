@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Message, Tree } from 'rsuite'
 import { assets } from 'src/public/assets'
 import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
-import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
 import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
@@ -86,7 +86,7 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                     }
 
                     // 1. focus paf
-                    const paf = st.toolbox.filesMap.get(asAbsolutePath(value))
+                    const paf = st.toolbox.filesMap.get(asRelativePath(value))
                     if (paf == null) throw new Error(`paf not found for ${value}`)
                     pj.focusActionFile(paf)
 

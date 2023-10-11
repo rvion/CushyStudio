@@ -2,7 +2,7 @@ import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { Action, FormDefinition } from 'src/core/Requirement'
 import type { STATE } from 'src/front/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
-import type { AbsolutePath } from '../utils/fs/BrandedPaths'
+import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -36,8 +36,6 @@ export type ToolAndCode = {
 type Focus = 'action' | 'autoaction' | 'png' | 'prompt' | 'workflow'
 
 export class PossibleActionFile {
-    get relPath() { return this.absPath.replace(this.st.actionsFolderPath, '') } // prettier-ignore
-
     autoReload = false
     autoReloadTimeout?: NodeJS.Timeout
     setAutoReload = (v: boolean) => {
@@ -49,9 +47,11 @@ export class PossibleActionFile {
             this.load({ logFailures: true, force: true })
         }, 3000)
     }
+
     constructor(
         public st: STATE,
         public absPath: AbsolutePath,
+        public relPath: RelativePath,
     ) {
         makeAutoObservable(this)
     }

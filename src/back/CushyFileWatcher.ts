@@ -1,16 +1,16 @@
 import type { STATE } from 'src/front/state'
-import type { AbsolutePath } from '../utils/fs/BrandedPaths'
+import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 
 import { readdirSync, statSync } from 'fs'
 import path, { join } from 'path'
 import { ItemDataType } from 'rsuite/esm/@types/common'
-import { asAbsolutePath } from '../utils/fs/pathUtils'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { PossibleActionFile } from './PossibleActionFile'
 import { makeAutoObservable } from 'mobx'
 
 export class CushyFileWatcher {
     treeData: ItemDataType[] = []
-    filesMap = new Map<AbsolutePath, PossibleActionFile>()
+    filesMap = new Map<RelativePath, PossibleActionFile>()
     updatedAt = 0
     rootActionFolder: AbsolutePath
 
@@ -74,16 +74,16 @@ export class CushyFileWatcher {
         const files = readdirSync(dir)
         // console.log(files)
         for (const file of files) {
-            const filePath = asAbsolutePath(join(dir, file))
-            const value = filePath.slice(this.rootActionFolder.length + 1)
-            const stat = statSync(filePath)
+            const absPath = asAbsolutePath(join(dir, file))
+            const relPath = asRelativePath(path.relative(this.st.actionsFolderPath, absPath))
+            const stat = statSync(absPath)
             // const dirName = path.basename(filePath)
             if (stat.isDirectory()) {
                 // console.log('1', folderEntry)
                 const ARRAY: ItemDataType[] = []
-                this.findActionsInFolder(filePath, ARRAY)
+                this.findActionsInFolder(absPath, ARRAY)
                 const folderEntry: ItemDataType = {
-                    value,
+                    value: relPath,
                     children: ARRAY,
                     label: file,
                 }
@@ -91,13 +91,12 @@ export class CushyFileWatcher {
                 parentStack.push(folderEntry)
             } else {
                 if (file.startsWith('.')) continue
-                const relPath = path.relative(this.st.actionsFolderPath, filePath)
+                const relPath = asRelativePath(path.relative(this.st.actionsFolderPath, absPath))
                 console.log('[💙] TOOL: handling', relPath)
-                const absPath = asAbsolutePath(filePath)
-                const paf = new PossibleActionFile(this.st, absPath)
-                this.filesMap.set(asAbsolutePath(absPath), paf)
+                const paf = new PossibleActionFile(this.st, absPath, relPath)
+                this.filesMap.set(relPath, paf)
                 const treeEntry = {
-                    value,
+                    value: relPath,
                     label: file,
                 }
                 parentStack.push(treeEntry)

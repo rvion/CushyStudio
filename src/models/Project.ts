@@ -2,7 +2,7 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
 import type { ToolID, ToolL } from './Tool'
 import type { PossibleActionFile } from 'src/back/PossibleActionFile'
-import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
+import type { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 import type { SchemaL } from './Schema'
 
 import { LiveRef } from '../db/LiveRef'
@@ -18,7 +18,7 @@ export type ProjectT = {
     name: string
     rootGraphID: GraphID
     activeToolID?: ToolID
-    actionFile?: AbsolutePath
+    actionFile?: RelativePath
     // currentToolID
     // rootStepID: StepID
 }
@@ -38,7 +38,7 @@ export class ProjectL {
     }
 
     focusActionFile(paf: PossibleActionFile): void {
-        this.update({ actionFile: paf.absPath })
+        this.update({ actionFile: paf.relPath })
     }
 
     focusTool(tool: ToolL): void {
