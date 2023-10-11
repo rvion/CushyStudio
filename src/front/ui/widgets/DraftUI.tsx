@@ -22,10 +22,10 @@ export const DraftUI = observer(function DraftUI_(p: { draft: DraftL }) {
             <ScrollablePaneUI className='flex-grow '>
                 <div
                     //
-                    className='m-4 p-2 fade-in'
+                    className='m-4 p-4 fade-in'
                     style={{
+                        border: '1px dashed #565656',
                         background: '#1e1e1e',
-                        // boxShadow: '0px 0px 10px 0px rgba(228, 228, 228, 0.75)',
                     }}
                 >
                     <div className='flex'>
@@ -41,6 +41,7 @@ export const DraftUI = observer(function DraftUI_(p: { draft: DraftL }) {
                                 size='sm'
                                 className='self-start'
                                 color='green'
+                                disabled={!tool.st.ws.isOpen}
                                 appearance='primary'
                                 startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
                                 onClick={() => draft.start()}

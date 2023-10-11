@@ -20,11 +20,10 @@
             "LATER": ["src/back/LATER.ts"]
         }
     },
-    "include": [
-        //
-        "schema/global.d.ts",
-        "src",
-        "actions"
-    ],
-    "exclude": []
+    "exclude": [],
+    // this file will be created by CushyStudio itself
+    // when it runs for the first time
+    // it will allow to only see errors in actions you either
+    // MAINTAIN or are CURRENTLY WORKING ON
+    "extends": "./tsconfig.custom.json"
 }

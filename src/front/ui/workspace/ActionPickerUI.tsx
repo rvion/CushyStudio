@@ -12,7 +12,11 @@ import { SectionTitleUI } from './SectionTitle'
 export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const st = useSt()
     return (
-        <div className='flex flex-col flex-grow'>
+        <div
+            //
+            className='flex flex-col flex-grow'
+            style={{ borderRight: '1px solid #2d2d2d' }}
+        >
             <SectionTitleUI label='ACTIONS' className='bg-red-950'>
                 <div onClick={() => st.toolbox.walk()} className='cursor-pointer'>
                     <span className='text-xs material-symbols-outlined'>sync</span>
@@ -28,22 +32,15 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
     const pj = useProject()
     return (
         <>
-            {/* {st.tsFilesMap.filesMap.size} */}
-            {/* {JSON.stringify(st.tsFilesMap.treeData, null, 3)} */}
-            {/* <div>updated: {new Date(st.toolbox.updatedAt).toLocaleString()}</div> */}
             <Tree
-                // height={'900'}
-                // defaultExpandAll
                 value={pj.data.actionFile}
                 defaultExpandItemValues={['CushyStudio']}
-                className='overflow-x-hidden overflow-y-auto flex-grow'
+                tw='overflow-x-hidden overflow-y-auto flex-grow'
                 key={st.toolbox.updatedAt}
                 data={st.toolbox.treeData}
                 renderTreeIcon={(x) => {
-                    // console.log(x)
                     if (x.expand) return '▿'
                     return '▸'
-                    // return <span className='material-symbols-outlined'>unfold_more</span>
                 }}
                 // renderMenu={(node) => null}
                 // valueKey='label'
@@ -59,6 +56,7 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                                 '❓'
                             )}{' '}
                             {node.label}
+                            {/* <div tw='ml-auto'>ok</div> */}
                         </div>
                     )
                 }}
@@ -89,11 +87,10 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                 // draggable
                 // onDrop={({ createUpdateDataFunction }, event) => setTreeData(createUpdateDataFunction(treeData))}
             />
-
             {/* <div className='flex-grow'></div> */}
             <Message showIcon className='m-2' type='info'>
                 {/* <span className='material-symbols-outlined'>folder-</span> */}
-                Add yours now in the actions folder of your installation.
+                Add files to `actions` folder to create action
             </Message>
             {/* <FooBarUI /> */}
             {/* <PanelImport /> */}

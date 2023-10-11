@@ -104,7 +104,7 @@ body {
     font-size: 1.3rem;
  }
 .rs-message.rs-message-info {
-    border: 1px solid #91d5ff;
+    border: 1px solid #3d8ec1;
  }
  .rs-message.rs-message-warning {
     border: 1px solid #ffb300;
@@ -218,6 +218,9 @@ body {
 }
 
 /* ------------------------------ */
+.rs-tree-node-label-content {
+    border: none;
+}
 .rs-tree-node-focus {
     background-color:#414141;
 }

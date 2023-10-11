@@ -36,3 +36,4 @@ private
 
 CONFIG.json
 global.d.ts
+tsconfig.custom.json

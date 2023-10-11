@@ -1,7 +1,9 @@
+import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from './CSCriticalError'
 import type { ConfigFile } from 'src/core/ConfigFile'
 import type { ImageL } from '../models/Image'
+import type { UIPage } from './UIAction'
 
 import { existsSync, mkdirSync, readFileSync, writeFile, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -26,31 +28,24 @@ import { asFolderID } from '../models/Folder'
 import { JsonFile } from '../core/JsonFile'
 import { GraphL } from '../models/Graph'
 import { LiveDB } from '../db/LiveDB'
-import { UIPage } from './UIAction'
 import { DanbooruTags } from '../booru/BooruLoader'
 import { Updater } from './updater'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { ProjectL } from 'src/models/Project'
+import { resolve } from 'path'
 
 export class STATE {
     //file utils that need to be setup first because
-    // other stuff depends on them
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
     resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
     codePrettier: CodePrettier
 
-    // front uid to fix hot reload
-    uid = nanoid()
-
-    // core data
-    db: LiveDB
+    uid = nanoid() // front uid to fix hot reload
+    db: LiveDB // core data
 
     // main state api
     schema: SchemaL
     comfySessionId = 'temp' /** send by ComfyUI server */
-    // activePrompt: Maybe<PromptL> = null
-
-    // runs: Runtime[] = []
 
     // paths
     cacheFolderPath: AbsolutePath
@@ -58,9 +53,23 @@ export class STATE {
     embeddingsPath: AbsolutePath
     nodesTSPath: AbsolutePath
     actionsFolderPath: AbsolutePath
-    // cushyTSPath: AbsolutePath
-    // tsConfigPath: AbsolutePath
     outputFolderPath: AbsolutePath
+    status: ComfyStatus | null = null
+
+    // misc
+    sid: Maybe<string> = null
+    comfyStatus: Maybe<ComfyStatus> = null
+    cushyStatus: Maybe<FromExtension_CushyStatus> = null
+    configFile: JsonFile<ConfigFile>
+    updater: Updater
+    lightBox = new LightBoxState(() => this.db.images.values, false)
+    hovered: Maybe<ImageL> = null
+
+    toolbox = new CushyFileWatcher(this)
+    schemaReady = new ManualPromise<true>()
+    danbooru = DanbooruTags.build()
+    importer: ComfyImporter
+    typecheckingConfig: JsonFile<TsConfigCustom>
 
     // files and actions
     // knownFiles = new Map<AbsolutePath, CushyFile>()
@@ -69,20 +78,6 @@ export class STATE {
     }
 
     // runtime
-    status: ComfyStatus | null = null
-    sid: Maybe<string> = null
-    comfyStatus: Maybe<ComfyStatus> = null
-    cushyStatus: Maybe<FromExtension_CushyStatus> = null
-
-    updateChecker = (() => {
-        const store = globalThis as any
-        setTimeout
-    })()
-
-    configFile: JsonFile<ConfigFile>
-    updater: Updater
-    lightBox = new LightBoxState(() => this.db.images.values, false)
-    hovered: Maybe<ImageL> = null
 
     // startProject = () => {
     //     const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
@@ -114,13 +109,15 @@ export class STATE {
     get action() { return this._action } // prettier-ignore
     setAction = (action: UIPage) => (this._action = action)
 
+    // gallery
     get gallerySize() {
         return `${this.configFile.value.galleryImageSize ?? 48}px`
     }
-    toolbox = new CushyFileWatcher(this)
-    schemaReady = new ManualPromise<true>()
-    danbooru = DanbooruTags.build()
-    importer: ComfyImporter
+
+    createTsConfigCustomIfMissing = () => {
+        const exists = existsSync('tsconfig.custom.json')
+        // if
+    }
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
@@ -139,9 +136,9 @@ export class STATE {
         // this.tsConfigPath = this.resolve(this.rootPath, asRelativePath('tsconfig.json'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
         this.schema = this.db.schema
+        this.typecheckingConfig = mkTypescriptConfig()
         this.configFile = new JsonFile<ConfigFile>({
-            folder: this.rootPath,
-            name: 'CONFIG.json',
+            path: asAbsolutePath(resolve('CONFIG.json')),
             maxLevel: 3,
             init: (): ConfigFile => ({
                 comfyHost: 'localhost',

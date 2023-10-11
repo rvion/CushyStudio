@@ -2,16 +2,16 @@ import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import { join } from 'path'
+import { basename, dirname, join } from 'path'
 
 import { readableStringify } from '../utils/stringifyReadable'
 import { bang } from '../utils/bang'
+import { asAbsolutePath } from '../utils/fs/pathUtils'
 
 export type PersistedJSONInfo<T> = {
-    folder: AbsolutePath
-    maxLevel?: number
-    name: string
+    path: AbsolutePath
     init: () => T
+    maxLevel?: number
 }
 
 export class JsonFile<T extends object> {
@@ -22,13 +22,20 @@ export class JsonFile<T extends object> {
         this.ready_no = no
     })
 
-    constructor(private opts: PersistedJSONInfo<T>) {
-        this.init(opts)
+    filePath: AbsolutePath
+    fileName: string
+    folderPath: AbsolutePath
+    folderName: string
+    constructor(private p: PersistedJSONInfo<T>) {
+        this.filePath = p.path
+        this.fileName = basename(p.path)
+        this.folderPath = asAbsolutePath(dirname(p.path))
+        this.folderName = basename(this.folderPath)
+        this.init(p)
         makeAutoObservable(this)
     }
 
-    private _folder!: string
-    get folder() { return bang(this._folder); } // prettier-ignore
+    get folder() { return bang(this.folderPath); } // prettier-ignore
 
     private _path!: string
     get path() { return bang(this._path); } // prettier-ignore
@@ -38,8 +45,8 @@ export class JsonFile<T extends object> {
 
     /** save the file */
     save = (): true => {
-        console.info(`[💾] CONFIGsaving [${this.opts.name}] to ${this._path}`)
-        const maxLevel = this.opts.maxLevel
+        console.info(`[💾] CONFIGsaving [${this.fileName}] to ${this._path}`)
+        const maxLevel = this.p.maxLevel
         const content =
             maxLevel == null //
                 ? JSON.stringify(this.value, null, 4)
@@ -56,22 +63,21 @@ export class JsonFile<T extends object> {
 
     init = (p: PersistedJSONInfo<T>): T => {
         // 1. ensure config folder exists
-        this._folder = p.folder
-        const folderExists = existsSync(this._folder)
+        const folderExists = existsSync(this.folderPath)
         if (!folderExists) {
-            console.info('[🛋]', `${p.name} creating missing folder [${this._folder}]`)
-            mkdirSync(this._folder, { recursive: true })
+            console.info('[🛋]', `${this.fileName} creating missing folder [${this.folderPath}]`)
+            mkdirSync(this.folderPath, { recursive: true })
         }
 
         // 2. ensure file exists
-        this._path = join(this._folder, this.opts.name)
+        this._path = join(this.folderPath, this.fileName)
         const configFileExists = existsSync(this._path)
         if (!configFileExists) {
-            console.info('[🛋]', `${p.name} not found, creating default`)
+            console.info('[🛋]', `${this.fileName} not found, creating default`)
             this._value = p.init()
             this.save()
         } else {
-            console.info('[🛋]', `${p.name} found at ${this._path}`)
+            console.info('[🛋]', `${this.fileName} found at ${this._path}`)
             const configStr = readFileSync(this._path, 'utf-8')
             this._value = JSON.parse(configStr)
         }

@@ -77,6 +77,8 @@ export class LiveDB {
         // this.msgs = new LiveTable(this, 'msgs', Foo)
     }
 
+    // TODO: keep a count of dbsize and display on hover
+
     saveTimeout: Maybe<NodeJS.Timeout> = null
     markDirty = () => {
         if (this.saveTimeout != null) return
