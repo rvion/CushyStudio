@@ -3,6 +3,7 @@
     "peacock.color": "#0b4867",
     "editor.indentSize": 4,
     "css.lint.unknownAtRules": "ignore",
+    "tailwindCSS.classAttributes": ["class", "className", "tw"],
     "workbench.colorCustomizations": {
         "activityBar.activeBackground": "#106895",
         "activityBar.background": "#106895",
