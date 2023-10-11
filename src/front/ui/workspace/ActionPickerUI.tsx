@@ -1,13 +1,14 @@
 import { observer } from 'mobx-react-lite'
-import { Fragment, useState } from 'react'
-import { Button, IconButton, InputGroup, Message, Popover, SelectPicker, Tree, Whisper } from 'rsuite'
+import { useState } from 'react'
+import { Message, Tree } from 'rsuite'
+import { assets } from 'src/public/assets'
 import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
+import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
 import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
-import { getIconForFilePath } from './filePathIcon'
-import { asAbsolutePath } from '../../../utils/fs/pathUtils'
 import { SectionTitleUI } from './SectionTitle'
+import { getIconForFilePath } from './filePathIcon'
 
 export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const st = useSt()
@@ -39,15 +40,11 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                 key={st.toolbox.updatedAt}
                 data={st.toolbox.treeData}
                 renderTreeIcon={(x) => {
-                    if (x.expand) return '▿'
-                    return '▸'
+                    return <>{x.expand ? '▿' : '▸'}</>
                 }}
-                // renderMenu={(node) => null}
-                // valueKey='label'
                 renderTreeNode={(node) => {
-                    // console.log(node)
                     return (
-                        <div className='flex items-center'>
+                        <>
                             {node.children ? (
                                 <span className='material-symbols-outlined'>folder</span>
                             ) : typeof node.value === 'string' ? (
@@ -55,9 +52,11 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                             ) : (
                                 '❓'
                             )}{' '}
-                            {node.label}
-                            {/* <div tw='ml-auto'>ok</div> */}
-                        </div>
+                            <div tw='text-ellipsis overflow-hidden whitespace-nowrap'>{node.label}</div>
+                            <div tw='ml-auto'>
+                                <img style={{ width: '1rem' }} src={assets.tsLogo} alt='' />
+                            </div>
+                        </>
                     )
                 }}
                 // renderTreeIcon={() => <>{'>'}</>}
@@ -65,6 +64,9 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                 onChange={async (_value: any) => {
                     if (typeof _value !== 'string') throw new Error('tree selection value is not a string')
                     const value = _value as string
+
+                    const isFolder = st.toolbox.treeData.find((x) => x.value === value)?.children != null
+                    if (isFolder) return console.log('❌ a folder')
 
                     // 1. focus paf
                     const paf = st.toolbox.filesMap.get(asAbsolutePath(value))

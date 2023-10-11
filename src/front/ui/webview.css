@@ -218,24 +218,30 @@ body {
 }
 
 /* ------------------------------ */
+.rs-tree-node{
+    /* padding: 0!important; */
+    margin: 0!important;
+    display: flex;
+}
+.rs-tree-node-label {
+    line-height: 1rem !important;
+    flex-grow: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 .rs-tree-node-label-content {
     border: none;
+    width: 100%;
+    display: block;
 }
 .rs-tree-node-focus {
     background-color:#414141;
 }
 .rs-tree-node-label-content {
+    display: flex;
+    gap: .1rem;
     padding: 0 0 !important;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-.rs-tree-node-label {
-    line-height: 1rem !important;
-}
-.rs-tree-node{
-    /* padding: 0!important; */
-    margin: 0!important;
 }
 .rs-tree-node-expand-icon-wrapper>.rs-tree-node-custom-icon,
 .rs-tree-node-expand-icon-wrapper>.rs-tree-node-loading-icon{
