@@ -2,12 +2,11 @@ action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
     author: 'murphy',
     ui: (ui) => ({
         UpscaleModelLoader_model_name: ui.enum({
-            default: 'RealESRGAN_x2plus.pth',
+            default: 'RealESRGAN_x2.pth',
             enumName: 'Enum_UpscaleModelLoader_model_name',
         }) /* Enum_UpscaleModelLoader_model_name */,
         LoadImage_image: ui.image({
-            default:
-                '00269-xmoerf - dreamshaperXL10_alpha2Xl10 - None - 1girl simple background oil painting sunlight strong light (1).jpg',
+            default: { type: 'ComfyImage', image: 'example.png' },
         }) /* Enum_LoadImage_image */,
         'CLIPSeg Masking_text': ui.string({ default: 'face' }) /* STRING */,
         'Image Threshold_threshold': ui.number({ default: 0.2 }) /* FLOAT */,
@@ -22,7 +21,7 @@ action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
             enumName: 'Enum_Mask_Crop_Region_region_type',
         }) /* Enum_Mask_Crop_Region_region_type */,
         'ttN pipeLoaderSDXL_ckpt_name': ui.enum({
-            default: 'XL\\crystalClearXL_ccxl.safetensors',
+            default: 'revAnimated_v122.safetensors',
             enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
         }) /* Enum_CheckpointLoaderSimple_ckpt_name */,
         'ttN pipeLoaderSDXL_vae_name': ui.enum({
@@ -42,7 +41,7 @@ action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
         'ttN pipeLoaderSDXL_lora2_model_strength': ui.number({ default: 1 }) /* FLOAT */,
         'ttN pipeLoaderSDXL_lora2_clip_strength': ui.number({ default: 1 }) /* FLOAT */,
         'ttN pipeLoaderSDXL_refiner_ckpt_name': ui.enum({
-            default: 'XL\\canvasxl_Bfloat16V002.safetensors',
+            default: 'sd_xl_refiner_1.0.safetensors',
             enumName: 'Enum_ttN_pipeLoaderSDXL_refiner_ckpt_name',
         }) /* Enum_ttN_pipeLoaderSDXL_refiner_ckpt_name */,
         'ttN pipeLoaderSDXL_refiner_vae_name': ui.enum({
@@ -153,7 +152,7 @@ action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
             default: 'fixed',
             enumName: 'Enum_GlobalSeed_$3$3Inspire_action',
         }) /* Enum_GlobalSeed_$3$3Inspire_action */,
-        'GlobalSeed //Inspire_last_seed': ui.string({ default: undefined }) /* STRING */,
+        'GlobalSeed //Inspire_last_seed': ui.stringOpt({}) /* STRING */,
     }),
 
     run: async (flow, p) => {

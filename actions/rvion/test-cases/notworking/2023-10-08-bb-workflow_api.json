@@ -1,0 +1,2382 @@
+{
+  "243": {
+    "inputs": {
+      "seed": 777355846434126,
+      "steps": 20,
+      "cfg": 7,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 1,
+      "model": [
+        "2276",
+        0
+      ],
+      "positive": [
+        "2164",
+        0
+      ],
+      "negative": [
+        "2164",
+        1
+      ],
+      "latent_image": [
+        "2033",
+        0
+      ]
+    },
+    "class_type": "KSampler"
+  },
+  "245": {
+    "inputs": {
+      "images": [
+        "2171",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "246": {
+    "inputs": {
+      "samples": [
+        "243",
+        0
+      ],
+      "vae": [
+        "2273",
+        0
+      ]
+    },
+    "class_type": "VAEDecode"
+  },
+  "291": {
+    "inputs": {
+      "lora_name": null,
+      "strength_model": 0.52,
+      "strength_clip": 0.6,
+      "model": [
+        "2238",
+        0
+      ],
+      "clip": [
+        "2238",
+        1
+      ]
+    },
+    "class_type": "LoraLoader"
+  },
+  "944": {
+    "inputs": {
+      "width": [
+        "2088",
+        0
+      ],
+      "height": [
+        "2089",
+        0
+      ],
+      "batch_size": 1
+    },
+    "class_type": "EmptyLatentImage"
+  },
+  "949": {
+    "inputs": {
+      "seed": 777355846434126,
+      "steps": 20,
+      "cfg": 7,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.8,
+      "model": [
+        "2276",
+        0
+      ],
+      "positive": [
+        "2163",
+        0
+      ],
+      "negative": [
+        "2163",
+        1
+      ],
+      "latent_image": [
+        "243",
+        0
+      ]
+    },
+    "class_type": "KSampler"
+  },
+  "950": {
+    "inputs": {
+      "images": [
+        "951",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "951": {
+    "inputs": {
+      "samples": [
+        "949",
+        0
+      ],
+      "vae": [
+        "2273",
+        0
+      ]
+    },
+    "class_type": "VAEDecode"
+  },
+  "972": {
+    "inputs": {
+      "text": " , (pregnant):1.2, 9 months, big belly,"
+    },
+    "class_type": "Text Multiline"
+  },
+  "977": {
+    "inputs": {
+      "images": [
+        "2126",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "1199": {
+    "inputs": {
+      "conditioning_1": [
+        "2323",
+        0
+      ],
+      "conditioning_2": [
+        "1747",
+        0
+      ]
+    },
+    "class_type": "ConditioningCombine"
+  },
+  "1231": {
+    "inputs": {
+      "conditioning_1": [
+        "2323",
+        0
+      ],
+      "conditioning_2": [
+        "1754",
+        0
+      ]
+    },
+    "class_type": "ConditioningCombine"
+  },
+  "1232": {
+    "inputs": {
+      "conditioning_1": [
+        "2323",
+        0
+      ],
+      "conditioning_2": [
+        "1772",
+        0
+      ]
+    },
+    "class_type": "ConditioningCombine"
+  },
+  "1235": {
+    "inputs": {
+      "control_net_name": "control_openpose-fp16.safetensors"
+    },
+    "class_type": "ControlNetLoader"
+  },
+  "1238": {
+    "inputs": {
+      "strength": 0.8999999999999999,
+      "conditioning": [
+        "1199",
+        0
+      ],
+      "control_net": [
+        "1235",
+        0
+      ],
+      "image": [
+        "2109",
+        0
+      ]
+    },
+    "class_type": "ControlNetApply"
+  },
+  "1327": {
+    "inputs": {
+      "images": [
+        "2100",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "1347": {
+    "inputs": {
+      "top": [
+        "1861",
+        0
+      ],
+      "left": [
+        "1865",
+        0
+      ],
+      "right": [
+        "1864",
+        0
+      ],
+      "bottom": [
+        "1863",
+        0
+      ],
+      "image": [
+        "2171",
+        0
+      ]
+    },
+    "class_type": "Image Crop Location"
+  },
+  "1348": {
+    "inputs": {
+      "images": [
+        "1347",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "1382": {
+    "inputs": {
+      "text": "female, futa, male\nadult, teen"
+    },
+    "class_type": "Text Multiline"
+  },
+  "1530": {
+    "inputs": {
+      "text_a": [
+        "1533",
+        0
+      ],
+      "text_b": [
+        "1641",
+        0
+      ],
+      "linebreak_addition": "false",
+      "text_c": "",
+      "text_d": ""
+    },
+    "class_type": "Text Concatenate"
+  },
+  "1531": {
+    "inputs": {
+      "text": [
+        "1530",
+        0
+      ],
+      "find": ",",
+      "replace": "/"
+    },
+    "class_type": "Text Find and Replace"
+  },
+  "1532": {
+    "inputs": {
+      "Text": "female,"
+    },
+    "class_type": "Text"
+  },
+  "1533": {
+    "inputs": {
+      "Text": "Elf,"
+    },
+    "class_type": "Text"
+  },
+  "1638": {
+    "inputs": {
+      "boolean_number": 0
+    },
+    "class_type": "Logic Boolean"
+  },
+  "1639": {
+    "inputs": {
+      "boolean_number": 0
+    },
+    "class_type": "Logic Boolean"
+  },
+  "1640": {
+    "inputs": {
+      "text_a": [
+        "1643",
+        0
+      ],
+      "text_b": [
+        "1644",
+        0
+      ],
+      "boolean_number": [
+        "1650",
+        0
+      ]
+    },
+    "class_type": "Text Input Switch"
+  },
+  "1641": {
+    "inputs": {
+      "text_a": [
+        "1645",
+        0
+      ],
+      "text_b": [
+        "1640",
+        0
+      ],
+      "boolean_number": [
+        "1646",
+        0
+      ]
+    },
+    "class_type": "Text Input Switch"
+  },
+  "1642": {
+    "inputs": {
+      "Text": "options   Ma Fe Fu\n\n0,0 Female\n1,0 Male\nx,1 Futa\n\n1: TitsS  o  x  x\n2: AssS   o  x  x\n3: PenisS x  o  x\n"
+    },
+    "class_type": "Text box"
+  },
+  "1643": {
+    "inputs": {
+      "Text": "male,"
+    },
+    "class_type": "Text"
+  },
+  "1644": {
+    "inputs": {
+      "Text": "female,"
+    },
+    "class_type": "Text"
+  },
+  "1645": {
+    "inputs": {
+      "Text": "futa,"
+    },
+    "class_type": "Text"
+  },
+  "1646": {
+    "inputs": {
+      "number_type": "integer",
+      "minimum": 2,
+      "maximum": 12,
+      "seed": 591919907495794
+    },
+    "class_type": "Random Number"
+  },
+  "1650": {
+    "inputs": {
+      "number_type": "integer",
+      "minimum": 2,
+      "maximum": 10,
+      "seed": 88816323765752
+    },
+    "class_type": "Random Number"
+  },
+  "1738": {
+    "inputs": {
+      "Text": "fairy ears, pointy ears, (fairy wing):1.2"
+    },
+    "class_type": "Text box"
+  },
+  "1739": {
+    "inputs": {
+      "Text": "elf ears, pointy ears, body and face same skin color, "
+    },
+    "class_type": "Text box"
+  },
+  "1740": {
+    "inputs": {
+      "Text": "(loli:1.3), (child:1.3), face different color then body, animal ears, cat ears, fox ears, dog ears,  super long hair, long hair, transparent clothes,"
+    },
+    "class_type": "Text box"
+  },
+  "1741": {
+    "inputs": {
+      "Text": "nsfw, blur,k detailed background, body part obscure, worst quality,  cropped, under saturation, oversaturation, thick lips, overexposure, heels, shoes, sneakers, 2girls, big lips, showing back, showing butt, back to viewer, holding clothes, multiple arms, multiple hands,  Deformed, blurry, bad anatomy, disfigured, poorly drawn face, mutation, mutated, extra limb, ugly, poorly drawn hands, missing limb, blurry, floating limbs, disconnected limbs, malformed hands, blur, out of focus, long neck, long body, mutated hands and fingers, out of frame, cowboy clothes, cowboy hat, cowboy theme, hands, 2 navels,"
+    },
+    "class_type": "Text box"
+  },
+  "1743": {
+    "inputs": {
+      "text_a": [
+        "1740",
+        0
+      ],
+      "text_b": [
+        "1741",
+        0
+      ],
+      "linebreak_addition": "false",
+      "text_c": "",
+      "text_d": ""
+    },
+    "class_type": "Text Concatenate"
+  },
+  "1744": {
+    "inputs": {
+      "text": [
+        "1743",
+        0
+      ],
+      "clip": [
+        "1969",
+        0
+      ]
+    },
+    "class_type": "Text to Conditioning"
+  },
+  "1745": {
+    "inputs": {
+      "text": [
+        "1743",
+        0
+      ],
+      "clip": [
+        "1969",
+        0
+      ]
+    },
+    "class_type": "Text to Conditioning"
+  },
+  "1746": {
+    "inputs": {
+      "text": [
+        "1743",
+        0
+      ],
+      "clip": [
+        "1969",
+        0
+      ]
+    },
+    "class_type": "Text to Conditioning"
+  },
+  "1747": {
+    "inputs": {
+      "text": [
+        "1748",
+        0
+      ],
+      "clip": [
+        "1969",
+        0
+      ]
+    },
+    "class_type": "Text to Conditioning"
+  },
+  "1748": {
+    "inputs": {
+      "text_a": [
+        "1752",
+        0
+      ],
+      "text_b": [
+        "1749",
+        0
+      ],
+      "linebreak_addition": "false",
+      "text_c": [
+        "2079",
+        0
+      ],
+      "text_d": ""
+    },
+    "class_type": "Text Concatenate"
+  },
+  "1749": {
+    "inputs": {
+      "Text": " casual clothes, sfw, "
+    },
+    "class_type": "Text box"
+  },
+  "1752": {
+    "inputs": {
+      "text_a": [
+        "1753",
+        0
+      ],
+      "text_b": [
+        "1739",
+        0
+      ],
+      "linebreak_addition": "false",
+      "text_c": [
+        "2065",
+        0
+      ],
+      "text_d": ""
+    },
+    "class_type": "Text Concatenate"
+  },
+  "1753": {
+    "inputs": {
+      "Text": "detail eyes, detail face, sharp body, sharp outline, white background, simple background, masterpiece, best quality, detailed, character lighting, character portrait body, detailed eyes, detailed body, full body, "
+    },
+    "class_type": "Text box"
+  },
+  "1754": {
+    "inputs": {
+      "text": [
+        "1755",
+        0
+      ],
+      "clip": [
+        "1969",
+        0
+      ]
+    },
+    "class_type": "Text to Conditioning"
+  },
+  "1755": {
+    "inputs": {
+      "text_a": [
+        "1752",
+        0
+      ],
+      "text_b": [
+        "1756",
+        0
+      ],
+      "linebreak_addition": "false",
+      "text_c": [
+        "2322",
+        0
+      ],
+      "text_d": ""
+    },
+    "class_type": "Text Concatenate"
+  },
+  "1756": {
+    "inputs": {
+      "Text": " , (pregnant):1.2 9 months, big belly,"
+    },
+    "class_type": "Text box"
+  },
+  "1758": {
+    "inputs": {
+      "Text": "(clothes):1.2"
+    },
+    "class_type": "Text"
+  },
+  "1771": {
+    "inputs": {
+      "boolean_number": 0
+    },
+    "class_type": "Logic Boolean"
+  },
+  "1772": {
+    "inputs": {
+      "text": [
+        "1773",
+        0
+      ],
+      "clip": [
+        "1969",
+        0
+      ]
+    },
+    "class_type": "Text to Conditioning"
+  },
+  "1773": {
+    "inputs": {
+      "text_a": [
+        "1752",
+        0
+      ],
+      "text_b": [
+        "2322",
+        0
+      ],
+      "linebreak_addition": "false",
+      "text_c": "",
+      "text_d": ""
+    },
+    "class_type": "Text Concatenate"
+  },
+  "1780": {
+    "inputs": {
+      "model_a": [
+        "2271",
+        0
+      ],
+      "model_b": [
+        "2271",
+        0
+      ],
+      "boolean_number": [
+        "1972",
+        2
+      ]
+    },
+    "class_type": "Model Input Switch"
+  },
+  "1782": {
+    "inputs": {
+      "boolean_number": 0
+    },
+    "class_type": "Logic Boolean"
+  },
+  "1793": {
+    "inputs": {
+      "boolean_number": 0
+    },
+    "class_type": "Logic Boolean"
+  },
+  "1810": {
+    "inputs": {
+      "control_net_name": "control_v11p_sd15_softedge_fp16.safetensors"
+    },
+    "class_type": "ControlNetLoader"
+  },
+  "1812": {
+    "inputs": {
+      "images": [
+        "1841",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "1814": {
+    "inputs": {
+      "resolution": 512,
+      "image": [
+        "246",
+        0
+      ]
+    },
+    "class_type": "ScribblePreprocessor"
+  },
+  "1820": {
+    "inputs": {
+      "width": [
+        "2094",
+        4
+      ],
+      "height": [
+        "2094",
+        5
+      ],
+      "red": 0,
+      "green": 0,
+      "blue": 0
+    },
+    "class_type": "Image Blank"
+  },
+  "1841": {
+    "inputs": {
+      "safe": "enable",
+      "resolution": 512,
+      "image": [
+        "246",
+        0
+      ]
+    },
+    "class_type": "PiDiNetPreprocessor"
+  },
+  "1850": {
+    "inputs": {
+      "number_a": [
+        "1852",
+        0
+      ],
+      "number_b": [
+        "1851",
+        0
+      ],
+      "boolean_number": [
+        "1793",
+        0
+      ]
+    },
+    "class_type": "Number Input Switch"
+  },
+  "1851": {
+    "inputs": {
+      "number_type": "float",
+      "number": 1
+    },
+    "class_type": "Constant Number"
+  },
+  "1852": {
+    "inputs": {
+      "number_type": "float",
+      "number": 1.5
+    },
+    "class_type": "Constant Number"
+  },
+  "1861": {
+    "inputs": {
+      "integer": [
+        "1900",
+        2
+      ],
+      "multiple": [
+        "1850",
+        1
+      ]
+    },
+    "class_type": "CR Integer Multiple"
+  },
+  "1863": {
+    "inputs": {
+      "integer": [
+        "1907",
+        1
+      ],
+      "multiple": [
+        "1850",
+        1
+      ]
+    },
+    "class_type": "CR Integer Multiple"
+  },
+  "1864": {
+    "inputs": {
+      "integer": [
+        "1914",
+        1
+      ],
+      "multiple": [
+        "1850",
+        1
+      ]
+    },
+    "class_type": "CR Integer Multiple"
+  },
+  "1865": {
+    "inputs": {
+      "integer": [
+        "1901",
+        2
+      ],
+      "multiple": [
+        "1850",
+        1
+      ]
+    },
+    "class_type": "CR Integer Multiple"
+  },
+  "1895": {
+    "inputs": {
+      "Value_A": [
+        "1900",
+        1
+      ],
+      "Value_B": [
+        "1902",
+        1
+      ]
+    },
+    "class_type": "Sum"
+  },
+  "1898": {
+    "inputs": {
+      "Value_A": [
+        "1902",
+        1
+      ],
+      "Value_B": [
+        "1901",
+        1
+      ]
+    },
+    "class_type": "Sum"
+  },
+  "1900": {
+    "inputs": {
+      "number_type": "integer",
+      "number": 16
+    },
+    "class_type": "Constant Number"
+  },
+  "1901": {
+    "inputs": {
+      "number_type": "float",
+      "number": 128
+    },
+    "class_type": "Constant Number"
+  },
+  "1902": {
+    "inputs": {
+      "number_type": "integer",
+      "number": 256
+    },
+    "class_type": "Constant Number"
+  },
+  "1907": {
+    "inputs": {
+      "float": [
+        "1895",
+        0
+      ]
+    },
+    "class_type": "ttN float"
+  },
+  "1914": {
+    "inputs": {
+      "float": [
+        "1898",
+        0
+      ]
+    },
+    "class_type": "ttN float"
+  },
+  "1919": {
+    "inputs": {
+      "number": [
+        "1958",
+        2
+      ]
+    },
+    "class_type": "Number to String"
+  },
+  "1958": {
+    "inputs": {
+      "text_a": [
+        "1961",
+        0
+      ],
+      "text_b": [
+        "1641",
+        0
+      ],
+      "mode": "similarity",
+      "tolerance": 0
+    },
+    "class_type": "Text Compare"
+  },
+  "1961": {
+    "inputs": {
+      "Text": "male,"
+    },
+    "class_type": "Text"
+  },
+  "1962": {
+    "inputs": {
+      "text_a": [
+        "1919",
+        0
+      ],
+      "text_b": [
+        "1965",
+        0
+      ],
+      "mode": "similarity",
+      "tolerance": 0
+    },
+    "class_type": "Text Compare"
+  },
+  "1963": {
+    "inputs": {
+      "text_a": [
+        "1641",
+        0
+      ],
+      "text_b": [
+        "1964",
+        0
+      ],
+      "mode": "similarity",
+      "tolerance": 0
+    },
+    "class_type": "Text Compare"
+  },
+  "1964": {
+    "inputs": {
+      "Text": "futa,"
+    },
+    "class_type": "Text"
+  },
+  "1965": {
+    "inputs": {
+      "number": [
+        "1963",
+        2
+      ]
+    },
+    "class_type": "Number to String"
+  },
+  "1967": {
+    "inputs": {
+      "number": [
+        "1962",
+        2
+      ]
+    },
+    "class_type": "Number to String"
+  },
+  "1969": {
+    "inputs": {
+      "clip_a": [
+        "2271",
+        1
+      ],
+      "clip_b": [
+        "2271",
+        1
+      ],
+      "boolean_number": [
+        "1793",
+        0
+      ]
+    },
+    "class_type": "CLIP Input Switch"
+  },
+  "1972": {
+    "inputs": {
+      "text_a": [
+        "1967",
+        0
+      ],
+      "text_b": [
+        "1975",
+        0
+      ],
+      "mode": "similarity",
+      "tolerance": 0
+    },
+    "class_type": "Text Compare"
+  },
+  "1973": {
+    "inputs": {
+      "number": [
+        "1972",
+        2
+      ]
+    },
+    "class_type": "Number to String"
+  },
+  "1975": {
+    "inputs": {
+      "Text": "0"
+    },
+    "class_type": "Text"
+  },
+  "1977": {
+    "inputs": {
+      "Value": 85
+    },
+    "class_type": "Integer"
+  },
+  "2030": {
+    "inputs": {
+      "Value": 0.8
+    },
+    "class_type": "Float"
+  },
+  "2031": {
+    "inputs": {
+      "upscale_method": "bilinear",
+      "scale_by": [
+        "2034",
+        0
+      ],
+      "samples": [
+        "944",
+        0
+      ]
+    },
+    "class_type": "LatentUpscaleBy"
+  },
+  "2033": {
+    "inputs": {
+      "latent_a": [
+        "2031",
+        0
+      ],
+      "latent_b": [
+        "944",
+        0
+      ],
+      "boolean_number": [
+        "1793",
+        0
+      ]
+    },
+    "class_type": "Latent Input Switch"
+  },
+  "2034": {
+    "inputs": {
+      "number": [
+        "1852",
+        0
+      ]
+    },
+    "class_type": "Number to Float"
+  },
+  "2038": {
+    "inputs": {
+      "images": [
+        "2280",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2044": {
+    "inputs": {
+      "images": [
+        "2282",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2046": {
+    "inputs": {
+      "images": [
+        "2283",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2052": {
+    "inputs": {
+      "images": [
+        "2281",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2054": {
+    "inputs": {
+      "seed": 868746008624207
+    },
+    "class_type": "ttN seed"
+  },
+  "2059": {
+    "inputs": {
+      "model_name": "sam_vit_b_01ec64.pth",
+      "device_mode": "AUTO"
+    },
+    "class_type": "SAMLoader"
+  },
+  "2065": {
+    "inputs": {
+      "python_expression": "a + b + \", \" + a + c + \", \"",
+      "print_to_console": "False",
+      "a": [
+        "2066",
+        0
+      ],
+      "b": " face structure",
+      "c": " body structure"
+    },
+    "class_type": "Evaluate Strings"
+  },
+  "2066": {
+    "inputs": {
+      "text": [
+        "1641",
+        0
+      ],
+      "find": "",
+      "replace": ""
+    },
+    "class_type": "Text Find and Replace"
+  },
+  "2074": {
+    "inputs": {
+      "Text": "var humanoid_races_array = ['Human','Elf','Dark Elf','Tribal Elf','Orc','Ogre','Giant','Gnome','Goblin','Kobold','Demon','Dragonkin']\n\nvar uncommon_races_array = ['Fairy','Seraph','Dryad','Lamia','Harpy','Arachna','Nereid','Scylla','Lizardfolk','Avali']\n\nvar beast_races_array = ['Centaur','Taurus','Gnoll','Beastkin Cat','Beastkin Fox','Beastkin Wolf','Beastkin Bunny','Beastkin Tanuki','Halfkin Cat','Halfkin Fox','Halfkin Wolf','Halfkin Bunny','Halfkin Tanuki','Beastkin Mouse','Halfkin Mouse','Beastkin Squirrel','Halfkin Squirrel','Beastkin Otter','Halfkin Otter','Beastkin Bird','Halfkin Bird',]\n\nvar magic_races_array = ['Slime']"
+    },
+    "class_type": "Text box"
+  },
+  "2076": {
+    "inputs": {
+      "text_a": [
+        "1641",
+        0
+      ],
+      "text_b": [
+        "2077",
+        0
+      ],
+      "mode": "similarity",
+      "tolerance": 0
+    },
+    "class_type": "Text Compare"
+  },
+  "2077": {
+    "inputs": {
+      "Text": "female,"
+    },
+    "class_type": "Text"
+  },
+  "2078": {
+    "inputs": {
+      "text_a": [
+        "2080",
+        0
+      ],
+      "text_b": [
+        "2080",
+        0
+      ],
+      "boolean_number": [
+        "2076",
+        2
+      ]
+    },
+    "class_type": "Text Input Switch"
+  },
+  "2079": {
+    "inputs": {
+      "text_a": [
+        "2078",
+        0
+      ],
+      "text_b": [
+        "1758",
+        0
+      ],
+      "linebreak_addition": "false",
+      "text_c": "",
+      "text_d": ""
+    },
+    "class_type": "Text Concatenate"
+  },
+  "2080": {
+    "inputs": {
+      "Text": ""
+    },
+    "class_type": "Text"
+  },
+  "2088": {
+    "inputs": {
+      "Value": 512
+    },
+    "class_type": "Integer"
+  },
+  "2089": {
+    "inputs": {
+      "Value": 768
+    },
+    "class_type": "Integer"
+  },
+  "2090": {
+    "inputs": {
+      "original": false,
+      "latent": [
+        "2033",
+        0
+      ]
+    },
+    "class_type": "Get latent size"
+  },
+  "2091": {
+    "inputs": {
+      "Prefix": "plok",
+      "Value": [
+        "2090",
+        1
+      ]
+    },
+    "class_type": "Int debug print"
+  },
+  "2094": {
+    "inputs": {
+      "image": [
+        "2100",
+        0
+      ]
+    },
+    "class_type": "Image Size to Number"
+  },
+  "2096": {
+    "inputs": {
+      "vae_name": "kl-f8-anime2.ckpt"
+    },
+    "class_type": "VAELoader"
+  },
+  "2100": {
+    "inputs": {
+      "mode": "rescale",
+      "supersample": "true",
+      "resampling": "lanczos",
+      "rescale_factor": [
+        "2102",
+        1
+      ],
+      "resize_width": 1024,
+      "resize_height": 1536,
+      "image": [
+        "2324",
+        0
+      ]
+    },
+    "class_type": "Image Resize"
+  },
+  "2101": {
+    "inputs": {
+      "number_type": "float",
+      "number": 1
+    },
+    "class_type": "Constant Number"
+  },
+  "2102": {
+    "inputs": {
+      "number_a": [
+        "1852",
+        0
+      ],
+      "number_b": [
+        "2101",
+        0
+      ],
+      "boolean_number": [
+        "1793",
+        0
+      ]
+    },
+    "class_type": "Number Input Switch"
+  },
+  "2109": {
+    "inputs": {
+      "top": [
+        "1861",
+        0
+      ],
+      "left": [
+        "1865",
+        0
+      ],
+      "right": [
+        "1864",
+        0
+      ],
+      "bottom": [
+        "1863",
+        0
+      ],
+      "crop_blending": 0.25,
+      "crop_sharpening": 0,
+      "image": [
+        "1820",
+        0
+      ],
+      "crop_image": [
+        "2110",
+        0
+      ]
+    },
+    "class_type": "Image Paste Crop by Location"
+  },
+  "2110": {
+    "inputs": {
+      "top": [
+        "1861",
+        0
+      ],
+      "left": [
+        "1865",
+        0
+      ],
+      "right": [
+        "1864",
+        0
+      ],
+      "bottom": [
+        "1863",
+        0
+      ],
+      "image": [
+        "2100",
+        0
+      ]
+    },
+    "class_type": "Image Crop Location"
+  },
+  "2111": {
+    "inputs": {
+      "images": [
+        "2109",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2117": {
+    "inputs": {
+      "resolution": 512,
+      "image": [
+        "951",
+        0
+      ]
+    },
+    "class_type": "ColorPreprocessor"
+  },
+  "2118": {
+    "inputs": {
+      "images": [
+        "2117",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2120": {
+    "inputs": {
+      "control_net_name": "control_v11u_sd15_tile.pth"
+    },
+    "class_type": "ControlNetLoader"
+  },
+  "2125": {
+    "inputs": {
+      "seed": 777355846434126,
+      "steps": 20,
+      "cfg": 7,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.9000000000000001,
+      "model": [
+        "2276",
+        0
+      ],
+      "positive": [
+        "2168",
+        0
+      ],
+      "negative": [
+        "2168",
+        1
+      ],
+      "latent_image": [
+        "243",
+        0
+      ]
+    },
+    "class_type": "KSampler"
+  },
+  "2126": {
+    "inputs": {
+      "samples": [
+        "2125",
+        0
+      ],
+      "vae": [
+        "2273",
+        0
+      ]
+    },
+    "class_type": "VAEDecode"
+  },
+  "2130": {
+    "inputs": {
+      "images": [
+        "2126",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2139": {
+    "inputs": {
+      "images": [
+        "951",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2141": {
+    "inputs": {
+      "images": [
+        "246",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2145": {
+    "inputs": {
+      "guide_size": 256,
+      "guide_size_for": true,
+      "max_size": 768,
+      "seed": [
+        "2054",
+        0
+      ],
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.52,
+      "feather": 5,
+      "noise_mask": true,
+      "force_inpaint": true,
+      "bbox_threshold": 0.5,
+      "bbox_dilation": 10,
+      "bbox_crop_factor": 3,
+      "sam_detection_hint": "center-1",
+      "sam_dilation": 0,
+      "sam_threshold": 0.93,
+      "sam_bbox_expansion": 0,
+      "sam_mask_hint_threshold": 0.7,
+      "sam_mask_hint_use_negative": "False",
+      "drop_size": 10,
+      "wildcard": "",
+      "image": [
+        "2171",
+        0
+      ],
+      "model": [
+        "2276",
+        0
+      ],
+      "clip": [
+        "1969",
+        0
+      ],
+      "vae": [
+        "2273",
+        0
+      ],
+      "positive": [
+        "1232",
+        0
+      ],
+      "negative": [
+        "1745",
+        0
+      ],
+      "bbox_detector": [
+        "2146",
+        0
+      ],
+      "sam_model_opt": [
+        "2059",
+        0
+      ]
+    },
+    "class_type": "FaceDetailer"
+  },
+  "2146": {
+    "inputs": {
+      "model_name": "bbox/face_yolov8m.pt"
+    },
+    "class_type": "UltralyticsDetectorProvider"
+  },
+  "2149": {
+    "inputs": {
+      "guide_size": 256,
+      "guide_size_for": true,
+      "max_size": 768,
+      "seed": [
+        "2054",
+        0
+      ],
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.52,
+      "feather": 5,
+      "noise_mask": true,
+      "force_inpaint": false,
+      "bbox_threshold": 0.5,
+      "bbox_dilation": 10,
+      "bbox_crop_factor": 3,
+      "sam_detection_hint": "center-1",
+      "sam_dilation": 0,
+      "sam_threshold": 0.93,
+      "sam_bbox_expansion": 0,
+      "sam_mask_hint_threshold": 0.7,
+      "sam_mask_hint_use_negative": "False",
+      "drop_size": 10,
+      "refiner_ratio": 0.2,
+      "image": [
+        "1347",
+        0
+      ],
+      "detailer_pipe": [
+        "2145",
+        4
+      ]
+    },
+    "class_type": "FaceDetailerPipe"
+  },
+  "2150": {
+    "inputs": {
+      "guide_size": 256,
+      "guide_size_for": true,
+      "max_size": 768,
+      "seed": [
+        "2054",
+        0
+      ],
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.52,
+      "feather": 5,
+      "noise_mask": true,
+      "force_inpaint": false,
+      "bbox_threshold": 0.5,
+      "bbox_dilation": 10,
+      "bbox_crop_factor": 3,
+      "sam_detection_hint": "center-1",
+      "sam_dilation": 0,
+      "sam_threshold": 0.93,
+      "sam_bbox_expansion": 0,
+      "sam_mask_hint_threshold": 0.7,
+      "sam_mask_hint_use_negative": "False",
+      "drop_size": 10,
+      "refiner_ratio": 0.2,
+      "image": [
+        "951",
+        0
+      ],
+      "detailer_pipe": [
+        "2145",
+        4
+      ]
+    },
+    "class_type": "FaceDetailerPipe"
+  },
+  "2151": {
+    "inputs": {
+      "guide_size": 256,
+      "guide_size_for": true,
+      "max_size": 768,
+      "seed": [
+        "2054",
+        0
+      ],
+      "steps": 20,
+      "cfg": 8,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.52,
+      "feather": 5,
+      "noise_mask": true,
+      "force_inpaint": false,
+      "bbox_threshold": 0.5,
+      "bbox_dilation": 10,
+      "bbox_crop_factor": 3,
+      "sam_detection_hint": "center-1",
+      "sam_dilation": 0,
+      "sam_threshold": 0.93,
+      "sam_bbox_expansion": 0,
+      "sam_mask_hint_threshold": 0.7,
+      "sam_mask_hint_use_negative": "False",
+      "drop_size": 10,
+      "refiner_ratio": 0.2,
+      "image": [
+        "2126",
+        0
+      ],
+      "detailer_pipe": [
+        "2150",
+        4
+      ]
+    },
+    "class_type": "FaceDetailerPipe"
+  },
+  "2162": {
+    "inputs": {
+      "strength": 0.8999999999999999,
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "1199",
+        0
+      ],
+      "negative": [
+        "1746",
+        0
+      ],
+      "control_net": [
+        "1810",
+        0
+      ],
+      "image": [
+        "2201",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced"
+  },
+  "2163": {
+    "inputs": {
+      "strength": 0.8999999999999999,
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "1231",
+        0
+      ],
+      "negative": [
+        "1744",
+        0
+      ],
+      "control_net": [
+        "1810",
+        0
+      ],
+      "image": [
+        "2201",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced"
+  },
+  "2164": {
+    "inputs": {
+      "strength": 1.53,
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "1232",
+        0
+      ],
+      "negative": [
+        "1745",
+        0
+      ],
+      "control_net": [
+        "1235",
+        0
+      ],
+      "image": [
+        "2109",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced"
+  },
+  "2167": {
+    "inputs": {
+      "strength": 0.8,
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "2163",
+        0
+      ],
+      "negative": [
+        "2163",
+        1
+      ],
+      "control_net": [
+        "2120",
+        0
+      ],
+      "image": [
+        "2117",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced"
+  },
+  "2168": {
+    "inputs": {
+      "strength": 0.8,
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "2162",
+        0
+      ],
+      "negative": [
+        "2162",
+        1
+      ],
+      "control_net": [
+        "2120",
+        0
+      ],
+      "image": [
+        "2117",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced"
+  },
+  "2169": {
+    "inputs": {
+      "seed": 777355846434126,
+      "steps": 20,
+      "cfg": 7,
+      "sampler_name": "euler_ancestral",
+      "scheduler": "karras",
+      "denoise": 0.7500000000000003,
+      "model": [
+        "2276",
+        0
+      ],
+      "positive": [
+        "2170",
+        0
+      ],
+      "negative": [
+        "2170",
+        1
+      ],
+      "latent_image": [
+        "243",
+        0
+      ]
+    },
+    "class_type": "KSampler"
+  },
+  "2170": {
+    "inputs": {
+      "strength": 0.8,
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "2178",
+        0
+      ],
+      "negative": [
+        "2178",
+        1
+      ],
+      "control_net": [
+        "2120",
+        0
+      ],
+      "image": [
+        "2117",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced"
+  },
+  "2171": {
+    "inputs": {
+      "samples": [
+        "2169",
+        0
+      ],
+      "vae": [
+        "2273",
+        0
+      ]
+    },
+    "class_type": "VAEDecode"
+  },
+  "2172": {
+    "inputs": {
+      "images": [
+        "2171",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2173": {
+    "inputs": {
+      "resolution": 512,
+      "image": [
+        "246",
+        0
+      ]
+    },
+    "class_type": "AnimeLineArtPreprocessor"
+  },
+  "2174": {
+    "inputs": {
+      "images": [
+        "2173",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2176": {
+    "inputs": {
+      "images": [
+        "2243",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2178": {
+    "inputs": {
+      "strength": 0.8999999999999999,
+      "start_percent": 0,
+      "end_percent": 1,
+      "positive": [
+        "2164",
+        0
+      ],
+      "negative": [
+        "2164",
+        1
+      ],
+      "control_net": [
+        "1810",
+        0
+      ],
+      "image": [
+        "2201",
+        0
+      ]
+    },
+    "class_type": "ControlNetApplyAdvanced"
+  },
+  "2197": {
+    "inputs": {
+      "stop_at_clip_layer": -1
+    },
+    "class_type": "CLIPSetLastLayer"
+  },
+  "2201": {
+    "inputs": {
+      "crop_blending": 0.05,
+      "crop_sharpening": 0,
+      "image": [
+        "1820",
+        0
+      ],
+      "crop_image": [
+        "2319",
+        0
+      ],
+      "crop_data": [
+        "2319",
+        1
+      ]
+    },
+    "class_type": "Image Paste Crop"
+  },
+  "2203": {
+    "inputs": {
+      "images": [
+        "2201",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2204": {
+    "inputs": {
+      "input": [
+        "1863",
+        0
+      ],
+      "output": ""
+    },
+    "class_type": "Display Int (rgthree)"
+  },
+  "2205": {
+    "inputs": {
+      "input": [
+        "1864",
+        0
+      ],
+      "output": ""
+    },
+    "class_type": "Display Int (rgthree)"
+  },
+  "2206": {
+    "inputs": {
+      "input": [
+        "1865",
+        0
+      ],
+      "output": ""
+    },
+    "class_type": "Display Int (rgthree)"
+  },
+  "2207": {
+    "inputs": {
+      "input": [
+        "1861",
+        0
+      ],
+      "output": ""
+    },
+    "class_type": "Display Int (rgthree)"
+  },
+  "2209": {
+    "inputs": {
+      "output": "",
+      "source": [
+        "1646",
+        1
+      ]
+    },
+    "class_type": "Display Any (rgthree)"
+  },
+  "2210": {
+    "inputs": {
+      "output": "",
+      "source": [
+        "1650",
+        1
+      ]
+    },
+    "class_type": "Display Any (rgthree)"
+  },
+  "2211": {
+    "inputs": {
+      "output": "",
+      "source": [
+        "1963",
+        2
+      ]
+    },
+    "class_type": "Display Any (rgthree)"
+  },
+  "2212": {
+    "inputs": {
+      "output": "",
+      "source": [
+        "1958",
+        2
+      ]
+    },
+    "class_type": "Display Any (rgthree)"
+  },
+  "2213": {
+    "inputs": {
+      "output": "",
+      "source": [
+        "1641",
+        0
+      ]
+    },
+    "class_type": "Display Any (rgthree)"
+  },
+  "2224": {
+    "inputs": {
+      "text": [
+        "2065",
+        0
+      ]
+    },
+    "class_type": "ShowText|pysssss"
+  },
+  "2228": {
+    "inputs": {
+      "text": [
+        "2322",
+        0
+      ]
+    },
+    "class_type": "ShowText|pysssss"
+  },
+  "2231": {
+    "inputs": {
+      "output_path": "[time(%Y-%m-%d)]",
+      "filename_prefix": [
+        "2326",
+        0
+      ],
+      "filename_delimiter": "_",
+      "filename_number_padding": 4,
+      "filename_number_start": "false",
+      "extension": "webp",
+      "quality": [
+        "1977",
+        0
+      ],
+      "lossless_webp": "false",
+      "overwrite_mode": "false",
+      "show_history": "false",
+      "show_history_by_prefix": "false",
+      "embed_workflow": "false",
+      "show_previews": "true",
+      "images": [
+        "2281",
+        0
+      ]
+    },
+    "class_type": "Image Save"
+  },
+  "2232": {
+    "inputs": {
+      "output_path": "[time(%Y-%m-%d)]",
+      "filename_prefix": [
+        "2326",
+        0
+      ],
+      "filename_delimiter": "_",
+      "filename_number_padding": 4,
+      "filename_number_start": "false",
+      "extension": "webp",
+      "quality": [
+        "1977",
+        0
+      ],
+      "lossless_webp": "false",
+      "overwrite_mode": "false",
+      "show_history": "false",
+      "show_history_by_prefix": "false",
+      "embed_workflow": "false",
+      "show_previews": "true",
+      "images": [
+        "2280",
+        0
+      ]
+    },
+    "class_type": "Image Save"
+  },
+  "2233": {
+    "inputs": {
+      "output_path": "[time(%Y-%m-%d)]",
+      "filename_prefix": [
+        "2326",
+        0
+      ],
+      "filename_delimiter": "_",
+      "filename_number_padding": 4,
+      "filename_number_start": "false",
+      "extension": "webp",
+      "quality": [
+        "1977",
+        0
+      ],
+      "lossless_webp": "false",
+      "overwrite_mode": "false",
+      "show_history": "false",
+      "show_history_by_prefix": "false",
+      "embed_workflow": "false",
+      "show_previews": "true",
+      "images": [
+        "2282",
+        0
+      ]
+    },
+    "class_type": "Image Save"
+  },
+  "2234": {
+    "inputs": {
+      "output_path": "[time(%Y-%m-%d)]",
+      "filename_prefix": [
+        "2326",
+        0
+      ],
+      "filename_delimiter": "_",
+      "filename_number_padding": 4,
+      "filename_number_start": "false",
+      "extension": "webp",
+      "quality": [
+        "1977",
+        0
+      ],
+      "lossless_webp": "false",
+      "overwrite_mode": "false",
+      "show_history": "false",
+      "show_history_by_prefix": "false",
+      "embed_workflow": "false",
+      "show_previews": "true",
+      "images": [
+        "2283",
+        0
+      ]
+    },
+    "class_type": "Image Save"
+  },
+  "2238": {
+    "inputs": {
+      "lora_name": null,
+      "strength_model": 1,
+      "strength_clip": 1,
+      "example": "[none]",
+      "model": [
+        "2271",
+        0
+      ],
+      "clip": [
+        "2271",
+        1
+      ]
+    },
+    "class_type": "LoraLoader|pysssss"
+  },
+  "2243": {
+    "inputs": {
+      "resolution": 512,
+      "image": [
+        "246",
+        0
+      ]
+    },
+    "class_type": "Manga2Anime_LineArt_Preprocessor"
+  },
+  "2244": {
+    "inputs": {
+      "print_to_console": false,
+      "console_title": "",
+      "execute": "Always",
+      "text": [
+        "1773",
+        0
+      ]
+    },
+    "class_type": "ttN textDebug"
+  },
+  "2245": {
+    "inputs": {
+      "print_to_console": false,
+      "console_title": "",
+      "execute": "Always",
+      "text": [
+        "1748",
+        0
+      ]
+    },
+    "class_type": "ttN textDebug"
+  },
+  "2246": {
+    "inputs": {
+      "print_to_console": false,
+      "console_title": "",
+      "execute": "Always",
+      "text": [
+        "1641",
+        0
+      ]
+    },
+    "class_type": "ttN textDebug"
+  },
+  "2247": {
+    "inputs": {
+      "print_to_console": false,
+      "console_title": "",
+      "execute": "Always",
+      "text": [
+        "1967",
+        0
+      ]
+    },
+    "class_type": "ttN textDebug"
+  },
+  "2248": {
+    "inputs": {
+      "print_to_console": false,
+      "console_title": "",
+      "execute": "Always",
+      "text": [
+        "1973",
+        0
+      ]
+    },
+    "class_type": "ttN textDebug"
+  },
+  "2249": {
+    "inputs": {
+      "print_to_console": false,
+      "console_title": "",
+      "execute": "Always",
+      "text": [
+        "1752",
+        0
+      ]
+    },
+    "class_type": "ttN textDebug"
+  },
+  "2271": {
+    "inputs": {
+      "ckpt_name": "revAnimated_v122.safetensors"
+    },
+    "class_type": "CheckpointLoaderSimple"
+  },
+  "2273": {
+    "inputs": {
+      "vae_a": [
+        "2271",
+        2
+      ],
+      "vae_b": [
+        "2096",
+        0
+      ],
+      "boolean_number": [
+        "2274",
+        0
+      ]
+    },
+    "class_type": "VAE Input Switch"
+  },
+  "2274": {
+    "inputs": {
+      "boolean_number": 0
+    },
+    "class_type": "Logic Boolean"
+  },
+  "2275": {
+    "inputs": {
+      "input": [
+        "2273",
+        0
+      ]
+    },
+    "class_type": "DebugInput"
+  },
+  "2276": {
+    "inputs": {
+      "b1": 1.1,
+      "b2": 1.2,
+      "s1": 0.9,
+      "s2": 0.2,
+      "model": [
+        "1780",
+        0
+      ]
+    },
+    "class_type": "FreeU"
+  },
+  "2280": {
+    "inputs": {
+      "transparency": true,
+      "model": "isnet-anime",
+      "post_processing": false,
+      "only_mask": false,
+      "alpha_matting": false,
+      "alpha_matting_foreground_threshold": 240,
+      "alpha_matting_background_threshold": 10,
+      "alpha_matting_erode_size": 10,
+      "background_color": "none",
+      "images": [
+        "2145",
+        0
+      ]
+    },
+    "class_type": "Image Rembg (Remove Background)"
+  },
+  "2281": {
+    "inputs": {
+      "transparency": true,
+      "model": "isnet-anime",
+      "post_processing": false,
+      "only_mask": false,
+      "alpha_matting": false,
+      "alpha_matting_foreground_threshold": 240,
+      "alpha_matting_background_threshold": 10,
+      "alpha_matting_erode_size": 10,
+      "background_color": "none",
+      "images": [
+        "2149",
+        0
+      ]
+    },
+    "class_type": "Image Rembg (Remove Background)"
+  },
+  "2282": {
+    "inputs": {
+      "transparency": true,
+      "model": "isnet-anime",
+      "post_processing": false,
+      "only_mask": false,
+      "alpha_matting": false,
+      "alpha_matting_foreground_threshold": 240,
+      "alpha_matting_background_threshold": 10,
+      "alpha_matting_erode_size": 10,
+      "background_color": "none",
+      "images": [
+        "2150",
+        0
+      ]
+    },
+    "class_type": "Image Rembg (Remove Background)"
+  },
+  "2283": {
+    "inputs": {
+      "transparency": true,
+      "model": "isnet-anime",
+      "post_processing": false,
+      "only_mask": false,
+      "alpha_matting": false,
+      "alpha_matting_foreground_threshold": 240,
+      "alpha_matting_background_threshold": 10,
+      "alpha_matting_erode_size": 10,
+      "background_color": "none",
+      "images": [
+        "2151",
+        0
+      ]
+    },
+    "class_type": "Image Rembg (Remove Background)"
+  },
+  "2299": {
+    "inputs": {
+      "images": [
+        "2319",
+        0
+      ]
+    },
+    "class_type": "PreviewImage"
+  },
+  "2319": {
+    "inputs": {
+      "top": [
+        "1861",
+        0
+      ],
+      "left": [
+        "1865",
+        0
+      ],
+      "right": [
+        "1864",
+        0
+      ],
+      "bottom": [
+        "1863",
+        0
+      ],
+      "image": [
+        "1841",
+        0
+      ]
+    },
+    "class_type": "Image Crop Location"
+  },
+  "2320": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "2280",
+        0
+      ]
+    },
+    "class_type": "SaveImage"
+  },
+  "2322": {
+    "inputs": {
+      "Text": " (wearing a Grass Green Velvet bust-enhancing bra and tanga):1.2  "
+    },
+    "class_type": "Text box"
+  },
+  "2323": {
+    "inputs": {
+      "text": "sfw, casual clothes, medium breasts",
+      "clip": [
+        "1969",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode"
+  },
+  "2324": {
+    "inputs": {
+      "image": "upload (102).png",
+      "choose file to upload": "image"
+    },
+    "class_type": "LoadImage"
+  },
+  "2326": {
+    "inputs": {
+      "value": "wow"
+    },
+    "class_type": "String"
+  }
+}

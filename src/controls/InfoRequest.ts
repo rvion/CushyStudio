@@ -19,7 +19,7 @@ export type InptOpt<Type extends string, Def, Extra = {}> = {
     label?: string
     group?: string
     tooltip?: string
-    default?: Maybe<Def>
+    default?: Def
 } & Extra
 
 export type Requestable_str          = InptReq<'str',     string, {textarea?: boolean }> // prettier-ignore
