@@ -9,6 +9,7 @@ import { useProject } from '../../ProjectCtx'
 import { TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
 import { SectionTitleUI } from './SectionTitle'
 import { getIconForFilePath } from './filePathIcon'
+import { TooltipUI } from '../layout/TooltipUI'
 
 export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const st = useSt()
@@ -48,6 +49,7 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                     else tb.expand(value)
                 }}
                 renderTreeNode={(node) => {
+                    const isExpanded = tb.isExpanded(node.value as string)
                     return (
                         <>
                             {node.children ? (
@@ -59,7 +61,12 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                             )}{' '}
                             <div tw='text-ellipsis overflow-hidden whitespace-nowrap'>{node.label}</div>
                             <div tw='ml-auto'>
-                                <img style={{ width: '1rem' }} src={assets.tsLogo} alt='' />
+                                {isExpanded && (
+                                    <TooltipUI>
+                                        <img style={{ width: '1rem' }} src={assets.tsLogo} alt='' />
+                                        <div>is beeing type-checked</div>
+                                    </TooltipUI>
+                                )}
                             </div>
                         </>
                     )
