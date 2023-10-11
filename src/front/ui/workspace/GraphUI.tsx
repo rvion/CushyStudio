@@ -4,7 +4,6 @@ import { Pane } from 'split-pane-react'
 import SplitPane from 'split-pane-react/esm/SplitPane'
 import { ActionPickerUI } from './ActionPickerUI'
 import { DraftPaneUI } from './DraftPaneUI'
-import { SectionTitleUI } from './SectionTitle'
 import { StepListUI } from './StepUI'
 
 export const GraphUI = observer(function GraphUI_(p: { depth: number }) {
@@ -26,21 +25,21 @@ export const GraphUI = observer(function GraphUI_(p: { depth: number }) {
 
             {/* 2. DRAFTS  */}
             <Pane minSize='100px' className='col' style={{ background: '#0c0c0c' }}>
-                <SectionTitleUI
+                {/* <SectionTitleUI
                     //
                     label='DRAFTS'
-                    className='bg-green-950'
-                />
+                    // className='bg-green-950'
+                /> */}
                 <DraftPaneUI />
             </Pane>
 
             {/* 3. STEPS */}
             <Pane minSize='100px' className='col'>
-                <SectionTitleUI
+                {/* <SectionTitleUI
                     //
                     label='RUNS'
-                    className='bg-yellow-900'
-                />
+                    // className='bg-yellow-900'
+                /> */}
                 <StepListUI />
             </Pane>
         </SplitPane>

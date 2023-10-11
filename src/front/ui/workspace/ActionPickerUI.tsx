@@ -19,7 +19,7 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
             className='flex flex-col flex-grow'
             style={{ borderRight: '1px solid #2d2d2d' }}
         >
-            <SectionTitleUI label='ACTIONS' className='bg-red-950'>
+            <SectionTitleUI label='ACTIONS' className='bg-gray-800 mb-2'>
                 <div onClick={() => st.toolbox.findActions()} className='cursor-pointer'>
                     <span className='text-xs material-symbols-outlined'>sync</span>
                 </div>
@@ -63,7 +63,7 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                             <div tw='ml-auto'>
                                 {isExpanded && (
                                     <TooltipUI>
-                                        <img style={{ width: '1rem' }} src={assets.tsLogo} alt='' />
+                                        <img tw='mr-1' style={{ width: '1rem' }} src={assets.tsLogo} alt='' />
                                         <div>is beeing type-checked</div>
                                     </TooltipUI>
                                 )}
