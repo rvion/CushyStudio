@@ -26,7 +26,7 @@ import { asFolderID } from '../models/Folder'
 import { JsonFile } from '../core/JsonFile'
 import { GraphL } from '../models/Graph'
 import { LiveDB } from '../db/LiveDB'
-import { UIAction } from './UIAction'
+import { UIPage } from './UIAction'
 import { DanbooruTags } from '../booru/BooruLoader'
 import { Updater } from './updater'
 import { ComfyImporter } from '../importers/ComfyImporter'
@@ -110,9 +110,9 @@ export class STATE {
     expandNodes: boolean = false
 
     // action
-    private _action: UIAction = { type: 'form' }
+    private _action: UIPage = { type: 'form' }
     get action() { return this._action } // prettier-ignore
-    setAction = (action: UIAction) => (this._action = action)
+    setAction = (action: UIPage) => (this._action = action)
 
     get gallerySize() {
         return `${this.configFile.value.galleryImageSize ?? 48}px`

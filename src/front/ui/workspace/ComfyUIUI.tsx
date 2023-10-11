@@ -1,4 +1,4 @@
-import type { UIActionComfy } from 'src/front/UIAction'
+import type { UIPageComfy } from 'src/front/UIAction'
 
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
@@ -6,7 +6,7 @@ import { useLayoutEffect } from 'react'
 import { useSt } from '../../../front/FrontStateCtx'
 import { Button } from 'rsuite'
 
-export const ComfyUIUI = observer(function ComfyUIUI_(p: { action: UIActionComfy }) {
+export const ComfyUIUI = observer(function ComfyUIUI_(p: { action: UIPageComfy }) {
     const st = useSt()
     const url = st.getServerHostHTTP()
 

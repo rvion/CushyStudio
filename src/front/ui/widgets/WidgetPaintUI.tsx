@@ -4,7 +4,7 @@ import { useLayoutEffect, useMemo } from 'react'
 import { Button, ButtonGroup } from 'rsuite'
 import { STATE } from '../../state'
 import { useSt } from '../../FrontStateCtx'
-import { UIActionPaint } from 'src/front/UIAction'
+import { UIPagePaint } from 'src/front/UIAction'
 import { runInAction } from 'mobx'
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { asRelativePath } from '../../../utils/fs/pathUtils'
@@ -100,7 +100,7 @@ class MinipaintState {
     }
 }
 // https://github.com/devforth/painterro
-export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIActionPaint }) {
+export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint }) {
     const a = p.action
     const st = useSt()
     const k = useMemo(() => new MinipaintState(st), [])

@@ -1,4 +1,4 @@
-import type { UIAction } from 'src/front/UIAction'
+import type { UIPage } from 'src/front/UIAction'
 import { observer } from 'mobx-react-lite'
 import * as I from '@rsuite/icons'
 import { useSt } from '../../FrontStateCtx'
@@ -22,7 +22,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
         <Nav
             //
             activeKey={st.action.type}
-            onSelect={(k: UIAction['type']) => {
+            onSelect={(k: UIPage['type']) => {
                 if (k === 'comfy') return st.setAction({ type: 'comfy' })
                 if (k === 'form') return st.setAction({ type: 'form' })
                 if (k === 'paint') return st.setAction({ type: 'paint' })

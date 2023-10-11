@@ -1,12 +1,10 @@
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { ImageID } from '../models/Image'
 
-export type UIAction = UIActionPaint | UIActionForm | UIActionComfy | UIActionComfig | UIActionIFrame
+export type UIPage = UIPagePaint | UIPageForm | UIPageComfy | UIPageComfig | UIPageIFrame
 
-export type UIActionForm = { type: 'form' }
-export type UIActionPaint = { type: 'paint'; imageID?: ImageID }
-export type UIActionComfy = { type: 'comfy'; json?: LiteGraphJSON }
-export type UIActionComfig = { type: 'config' }
-export type UIActionIFrame = { type: 'iframe'; url: string }
-
-// export type UIActionAny = { type: 'any'; form: any }
+export type UIPageForm = { type: 'form' }
+export type UIPagePaint = { type: 'paint'; imageID?: ImageID }
+export type UIPageComfy = { type: 'comfy'; json?: LiteGraphJSON }
+export type UIPageComfig = { type: 'config' }
+export type UIPageIFrame = { type: 'iframe'; url: string }
