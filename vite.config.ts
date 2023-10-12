@@ -17,7 +17,11 @@ export default defineConfig({
     server: {
         port: 8288,
         watch: {
-            ignored: ['workspace/**/*'],
+            ignored: [
+                //
+                'actions/**/*',
+                'tsconfig.custom.json',
+            ],
         },
     },
     resolve: {
