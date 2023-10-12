@@ -18,7 +18,11 @@ type NodeExecutionStatus = 'executing' | 'done' | 'error' | 'waiting' | 'cached'
  * - correspond to a signal in the graph
  * - belongs to a script
  */
-export class ComfyNode<ComfyNode_input extends object> {
+export class ComfyNode<
+    //
+    ComfyNode_input extends object,
+    ComfyNode_output extends object = {},
+> {
     // artifacts: _WsMsgExecutedData[] = []
     // images: GeneratedImage[] = []
     progress: NodeProgress | null = null
@@ -70,6 +74,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     // static X: number = 1
     uidNumber: number
     $outputs: Slot<any>[] = []
+    outputs: ComfyNode_output
     constructor(
         //
         public graph: GraphL,
@@ -93,22 +98,22 @@ export class ComfyNode<ComfyNode_input extends object> {
         // register node ensure this
         this.graph.registerNode(this)
 
-        makeAutoObservable(this)
-
         // dynamically add properties for every outputs
-        const extensions: { [key: string]: any } = {}
+        const outputs: { [key: string]: any } = {}
         for (const x of this.$schema.outputs) {
             const output = new Slot(this, ix++, x.nameInCushy)
-            extensions[x.nameInCushy] = output
+            outputs[x.nameInCushy] = output
             this.$outputs.push(output)
             // console.log(`  - .${x.nameInCushy} as ComfyNodeOutput(${ix})`)
         }
+        this.outputs = outputs as ComfyNode_output
 
-        // implements the _<typeName> property
+        // implements the _<typeName> properties (HasSingle interfaces)
+        const extensions: { [key: string]: any } = {}
         for (const x of this.$schema.singleOuputs) {
-            extensions[`_${x.typeName}`] = extensions[x.nameInCushy]
+            extensions[`_${x.typeName}`] = outputs[x.nameInCushy]
         }
-
+        makeAutoObservable(this)
         extendObservable(this, extensions)
         // console.log(Object.keys(Object.getOwnPropertyDescriptors(this)).join(','))
         // makeObservable(this, { artifacts: observable })
@@ -206,7 +211,7 @@ export class ComfyNode<ComfyNode_input extends object> {
 
     private _getOutputForTypeOrCrash(type: string): Slot<any> {
         const i: NodeOutputExt = this.$schema.outputs.find((i: NodeOutputExt) => i.typeName === type)!
-        const val = (this as any)[i.nameInCushy]
+        const val = (this.outputs as any)[i.nameInCushy]
         // console.log(`this[i.name] = ${this.$schema.name}[${i.name}] = ${val}`)
         if (val instanceof Slot) return val
         throw new Error(`Expected ${i.nameInCushy} to be a NodeOutput`)
@@ -214,7 +219,7 @@ export class ComfyNode<ComfyNode_input extends object> {
     private _getOutputForTypeOrNull(type: string): Slot<any> | null {
         const i: Maybe<NodeOutputExt> = this.$schema.outputs.find((i: NodeOutputExt) => i.typeName === type)
         if (i == null) return null
-        const val = (this as any)[i.nameInCushy]
+        const val = (this.outputs as any)[i.nameInCushy]
         if (val == null) return null
         if (val instanceof Slot) return val
         throw new Error(`Expected ${i.nameInCushy} to be a NodeOutput`)

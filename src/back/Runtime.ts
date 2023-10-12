@@ -269,7 +269,7 @@ export class Runtime {
             console.log('🔴 failed to convert ImageAnser to Enum_LoadImage_image', ia)
             throw err
         }
-        throw new Error('FAILURE')
+        throw new Error('FAILURE to load image answer as enum')
     }
     loadImageAnswer = async (ia: ImageAnswer): Promise<_IMAGE & _MASK> => {
         try {

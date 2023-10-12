@@ -103,7 +103,7 @@ export class SchemaL {
         for (const [nodeNameInComfy, nodeDef] of entries) {
             // console.chanel?.append(`[${nodeNameInComfy}]`)
             // apply prefix
-            const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy)
+            const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')
             // prettier-ignore
             const nodeNameInCushy =
                 // nodeDef.category.startsWith('WAS Suite/') ? `WAS${normalizedNodeNameInCushy}` :
@@ -137,7 +137,7 @@ export class SchemaL {
                     nodeDef.output_name[ix] || //
                     (typeof slotType === 'string' ? slotType : `input_${ix}`)
 
-                const outputNameInComfy = normalizeJSIdentifier(rawOutputSlotName)
+                const outputNameInComfy = normalizeJSIdentifier(rawOutputSlotName, '_')
                 const at = (outputNamer[outputNameInComfy] ??= 0)
                 const outputNameInCushy = at === 0 ? outputNameInComfy : `${outputNameInComfy}_${at}`
                 outputNamer[outputNameInComfy]++
@@ -145,7 +145,7 @@ export class SchemaL {
 
                 let slotTypeName: string
                 if (typeof slotType === 'string') {
-                    slotTypeName = normalizeJSIdentifier(slotType)
+                    slotTypeName = normalizeJSIdentifier(slotType, '_')
                     this.knownTypes.add(slotTypeName)
                 } else if (Array.isArray(slotType)) {
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${outputNameInCushy}_out`
@@ -186,7 +186,7 @@ export class SchemaL {
 
             for (const ipt of allInputs) {
                 const inputNameInComfy = ipt.name
-                const inputNameInCushy = normalizeJSIdentifier(ipt.name)
+                const inputNameInCushy = normalizeJSIdentifier(ipt.name, '_')
                 const typeDef = ipt.spec
                 const slotType = typeDef[0]
                 const slotOpts = typeDef[1]
@@ -195,7 +195,7 @@ export class SchemaL {
                 let inputTypeNameInCushy: string | undefined
 
                 if (typeof slotType === 'string') {
-                    inputTypeNameInCushy = normalizeJSIdentifier(slotType)
+                    inputTypeNameInCushy = normalizeJSIdentifier(slotType, '_')
                     this.knownTypes.add(inputTypeNameInCushy)
                 } else if (Array.isArray(slotType)) {
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${inputNameInCushy}`
@@ -347,7 +347,7 @@ export class SchemaL {
         const types = [...this.knownTypes.values()] //
             .map((comfyType) => ({
                 comfyType,
-                normalizedType: normalizeJSIdentifier(comfyType),
+                normalizedType: comfyType,
                 tsType: this.toTSType(comfyType),
             }))
             .sort((a, b) => b.tsType.length - a.tsType.length)
@@ -453,13 +453,15 @@ export class ComfyNodeSchema {
         for (const i of this.outputs) x[i.typeName] = (x[i.typeName] ?? 0) + 1
         this.singleOuputs = this.outputs.filter((i) => x[i.typeName] === 1)
         const ifaces = this.singleOuputs.map((i) => `HasSingle_${i.typeName}`)
-        ifaces.push(`ComfyNode<${this.nameInCushy}_input>`)
+        ifaces.push(`ComfyNode<${this.nameInCushy}_input, ${this.nameInCushy}_output>`)
         // inputs
         // p(`\n// ${this.name} -------------------------------`)
         // const msgIfDifferent = this.nameInComfy !== this.nameInCushy ? ` ("${this.nameInComfy}" in ComfyUI)` : ''
         p(`// ${this.nameInComfy} [${this.category}]`)
         p(`export interface ${this.nameInCushy} extends ${ifaces.join(', ')} {`)
         p(`    nameInComfy: "${this.nameInComfy}"`)
+        p(`}`)
+        p(`export interface ${this.nameInCushy}_output {`)
         // p(`    $schema: ${this.name}_schema`)
         this.outputs.forEach((i, ix) => {
             p(`    ${escapeJSKey(i.nameInCushy)}: Slot<'${i.typeName}', ${ix}>,`)

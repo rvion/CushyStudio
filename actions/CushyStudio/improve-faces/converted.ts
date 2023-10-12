@@ -1,3 +1,4 @@
+const $x = 1
 action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
     author: 'murphy',
     ui: (ui) => ({
@@ -160,34 +161,34 @@ action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
         const upscaleModel = graph.UpscaleModelLoader({ model_name: p.UpscaleModelLoader_model_name })
         const load = graph.LoadImage({ image: await flow.loadImageAnswerAsEnum(p.LoadImage_image) })
         const imageUpscaleWithModel = graph.ImageUpscaleWithModel({
-            upscale_model: upscaleModel.UPSCALE_MODEL,
-            image: load.IMAGE,
+            upscale_model: upscaleModel,
+            image: load,
         })
-        const cLIPSeg_Masking = graph.CLIPSeg_Masking({ text: p['CLIPSeg Masking_text'], image: imageUpscaleWithModel.IMAGE })
+        const cLIPSeg_Masking = graph.CLIPSeg_Masking({ text: p['CLIPSeg Masking_text'], image: imageUpscaleWithModel })
         const image_Threshold = graph.Image_Threshold({
             threshold: p['Image Threshold_threshold'],
-            image: cLIPSeg_Masking.MASK_IMAGE,
+            image: cLIPSeg_Masking,
         })
         const mask_Crop_Dominant_Region = graph.Mask_Crop_Dominant_Region({
             padding: p['Mask Crop Dominant Region_padding'],
-            masks: cLIPSeg_Masking.MASK,
+            masks: cLIPSeg_Masking,
         })
-        const image_To_Mask = graph.Image_To_Mask({ method: p['Image To Mask_method'], image: image_Threshold.IMAGE })
+        const image_To_Mask = graph.Image_To_Mask({ method: p['Image To Mask_method'], image: image_Threshold })
         const mask_Crop_Region = graph.Mask_Crop_Region({
             padding: p['Mask Crop Region_padding'],
             region_type: p['Mask Crop Region_region_type'],
-            mask: image_To_Mask.MASK,
+            mask: image_To_Mask,
         })
-        const maskTo = graph.MaskToImage({ mask: mask_Crop_Region.cropped_mask })
-        const preview = graph.PreviewImage({ images: maskTo.IMAGE })
+        const maskTo = graph.MaskToImage({ mask: mask_Crop_Region.outputs.cropped_mask })
+        const preview = graph.PreviewImage({ images: maskTo })
         const image_Crop_Location = graph.Image_Crop_Location({
-            image: imageUpscaleWithModel.IMAGE,
-            top: mask_Crop_Region.top_int,
-            left: mask_Crop_Region.left_int,
-            right: mask_Crop_Region.right_int,
-            bottom: mask_Crop_Region.bottom_int,
+            image: imageUpscaleWithModel,
+            top: mask_Crop_Region.outputs.top_int,
+            left: mask_Crop_Region.outputs.left_int,
+            right: mask_Crop_Region.outputs.right_int,
+            bottom: mask_Crop_Region.outputs.bottom_int,
         })
-        const preview_1 = graph.PreviewImage({ images: image_Crop_Location.IMAGE })
+        const preview_1 = graph.PreviewImage({ images: image_Crop_Location })
         const ttN_pipeLoaderSDXL = graph.ttN_pipeLoaderSDXL({
             ckpt_name: p['ttN pipeLoaderSDXL_ckpt_name'],
             vae_name: p['ttN pipeLoaderSDXL_vae_name'],
@@ -230,9 +231,9 @@ action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
             image_output: p['ttN pipeKSamplerSDXL_image_output'],
             save_prefix: p['ttN pipeKSamplerSDXL_save_prefix'],
             seed: p['ttN pipeKSamplerSDXL_seed'],
-            sdxl_pipe: ttN_pipeLoaderSDXL.sdxl_pipe,
+            sdxl_pipe: ttN_pipeLoaderSDXL.outputs.sdxl_pipe,
         })
-        const vAEEncode = graph.VAEEncode({ pixels: image_Crop_Location.IMAGE, vae: ttN_pipeKSamplerSDXL.vae })
+        const vAEEncode = graph.VAEEncode({ pixels: image_Crop_Location, vae: ttN_pipeKSamplerSDXL.outputs.vae })
         const kSampler = graph.KSampler({
             seed: p.KSampler_seed,
             steps: p.KSampler_steps,
@@ -240,24 +241,24 @@ action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
             sampler_name: p.KSampler_sampler_name,
             scheduler: p.KSampler_scheduler,
             denoise: p.KSampler_denoise,
-            model: ttN_pipeKSamplerSDXL.model,
-            positive: ttN_pipeKSamplerSDXL.positive,
-            negative: ttN_pipeKSamplerSDXL.negative,
-            latent_image: vAEEncode.LATENT,
+            model: ttN_pipeKSamplerSDXL.outputs.model,
+            positive: ttN_pipeKSamplerSDXL.outputs.positive,
+            negative: ttN_pipeKSamplerSDXL.outputs.negative,
+            latent_image: vAEEncode.outputs.LATENT,
         })
-        const vAEDecode = graph.VAEDecode({ samples: kSampler.LATENT, vae: ttN_pipeKSamplerSDXL.vae })
-        const preview_2 = graph.PreviewImage({ images: vAEDecode.IMAGE })
+        const vAEDecode = graph.VAEDecode({ samples: kSampler.outputs.LATENT, vae: ttN_pipeKSamplerSDXL.outputs.vae })
+        const preview_2 = graph.PreviewImage({ images: vAEDecode })
         const image_Paste_Crop_by_Location = graph.Image_Paste_Crop_by_Location({
             crop_blending: p['Image Paste Crop by Location_crop_blending'],
             crop_sharpening: p['Image Paste Crop by Location_crop_sharpening'],
-            image: imageUpscaleWithModel.IMAGE,
-            crop_image: vAEDecode.IMAGE,
-            top: mask_Crop_Region.top_int,
-            left: mask_Crop_Region.left_int,
-            right: mask_Crop_Region.right_int,
-            bottom: mask_Crop_Region.bottom_int,
+            image: imageUpscaleWithModel,
+            crop_image: vAEDecode,
+            top: mask_Crop_Region.outputs.top_int,
+            left: mask_Crop_Region.outputs.left_int,
+            right: mask_Crop_Region.outputs.right_int,
+            bottom: mask_Crop_Region.outputs.bottom_int,
         })
-        const preview_3 = graph.PreviewImage({ images: image_Paste_Crop_by_Location.IMAGE })
+        const preview_3 = graph.PreviewImage({ images: image_Paste_Crop_by_Location.outputs.IMAGE })
         const ttN_imageOutput = graph.ttN_imageOutput({
             image_output: p['ttN imageOutput_image_output'],
             output_path: p['ttN imageOutput_output_path'],
@@ -266,7 +267,7 @@ action('Murphylanga-x-SDXL_face_grap_and_detail.png', {
             file_type: p['ttN imageOutput_file_type'],
             overwrite_existing: p['ttN imageOutput_overwrite_existing'],
             embed_workflow: p['ttN imageOutput_embed_workflow'],
-            image: image_Paste_Crop_by_Location.IMAGE,
+            image: image_Paste_Crop_by_Location.outputs.IMAGE,
         })
         const globalSeed_$3$3Inspire = graph.GlobalSeed_$3$3Inspire({
             value: p['GlobalSeed //Inspire_value'],

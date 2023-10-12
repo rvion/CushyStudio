@@ -1,12 +1,39 @@
-const p1 = /[a-zA-Z0-9_]/
+/**
+ * there is sadly no perfect normalization for JS identifiers
+ * ComfyUI node names tend to use spaces ' '
+ * ComfyUI node outputs tend to use underscore '_'
+ * so I'm trying to normalize this as best as I can
+ * based on the content to be normalized
+ * */
+export const normalizeJSIdentifier = (
+    //
+    name: string,
+    preferedSeparatorToKeepReadable: ' ' | '_',
+) => {
+    let out = ''
+    for (const char of name) out += mapChar(char, preferedSeparatorToKeepReadable)
+    return out
+}
 
-const mapChar = (char: string) => {
+const p1 = /[a-zA-Z0-9]/
+const mapChar = (
+    //
+    char: string,
+    preferedSeparatorToKeepReadable: ' ' | '_',
+) => {
     if (p1.test(char)) return char
-    if (char === ' ') return '_'
+
+    if (preferedSeparatorToKeepReadable === ' ') {
+        if (char === ' ') return '_'
+        if (char === '_') return '$_'
+    } else {
+        if (char === ' ') return '$_'
+        if (char === '_') return '_'
+    }
+
     if (char === '$') return '$$'
     if (char === '*') return '$Star'
     if (char === '&') return '$And'
-    if (char === '_') return '$_'
     if (char === '(') return '$1'
     if (char === ')') return '$2'
     if (char === '/') return '$3'
@@ -17,10 +44,4 @@ const mapChar = (char: string) => {
     if (char === '|') return '$8'
     if (char === ',') return '$9'
     return `$$${char.charCodeAt(0).toString(16).toUpperCase()}`
-}
-
-export const normalizeJSIdentifier = (name: string) => {
-    let out = ''
-    for (const char of name) out += mapChar(char)
-    return out
 }

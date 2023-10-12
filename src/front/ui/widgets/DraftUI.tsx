@@ -43,7 +43,7 @@ export const DraftUI = observer(function DraftUI_(p: { draft: DraftL }) {
                                 size='sm'
                                 className='self-start'
                                 color='green'
-                                disabled={!tool.st.ws.isOpen}
+                                // disabled={!tool.st.ws.isOpen}
                                 appearance='primary'
                                 startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
                                 onClick={() => draft.start()}

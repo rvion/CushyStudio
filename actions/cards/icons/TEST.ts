@@ -28,12 +28,12 @@ export function prettifyIcon(
         rescale_factor: 1.25,
         image: asset,
     })
-    // const imageColorToMask_1 = graph.ImageColorToMask({ color: 0, image: image_Resize_1.IMAGE })
+    // const imageColorToMask_1 = graph.ImageColorToMask({ color: 0, image: image_Resize_1 })
     const image_Levels_Adjustment_1 = graph.Image_Levels_Adjustment({
         black_level: 0.1,
         mid_level: 7.300000000000001,
         white_level: 9.4,
-        image: image_Resize_1.IMAGE,
+        image: image_Resize_1,
     })
     // const img = 'Radial 1 - 512x512.png'
     const img = 'Circular 10 - 512x512.png' as any
@@ -50,13 +50,13 @@ export function prettifyIcon(
         y: 0,
         operation: 'add',
         destination: asset,
-        source: loadImageMask_1.MASK,
+        source: loadImageMask_1,
     })
     const joinImageWithAlpha_3 = graph.JoinImageWithAlpha({
-        image: image_Levels_Adjustment_1.IMAGE,
-        alpha: maskComposite_1.MASK,
+        image: image_Levels_Adjustment_1,
+        alpha: maskComposite_1,
     })
-    const preview_2 = graph.PreviewImage({ images: joinImageWithAlpha_3.IMAGE })
+    const preview_2 = graph.PreviewImage({ images: joinImageWithAlpha_3 })
     const imageCompositeRelative_1 = graph.ImageCompositeRelative({
         images_a_x: 0.5,
         images_a_y: 0.49,
@@ -65,8 +65,8 @@ export function prettifyIcon(
         background: 'images_b',
         container_size_type: 'max',
         method: 'pair',
-        images_a: assetWithAlpha.IMAGE,
-        images_b: joinImageWithAlpha_3.IMAGE,
+        images_a: assetWithAlpha,
+        images_b: joinImageWithAlpha_3,
     })
     return imageCompositeRelative_1
 }

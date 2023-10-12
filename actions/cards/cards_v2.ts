@@ -219,7 +219,7 @@ action('cards', {
                     // X
                     left: atX,
                     right: atX + finalLogoSize,
-                }).IMAGE
+                }).outputs.IMAGE
             }
             if (value === '1') {
                 flow.print('adding "1" logo')

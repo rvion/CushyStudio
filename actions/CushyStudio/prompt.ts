@@ -68,6 +68,7 @@ action('Prompt-V1', {
 
         // MODEL AND LORAS
         const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.model })
+
         let clipAndModel: HasSingle_CLIP & HasSingle_MODEL = ckpt
         for (const lora of p.extra?.loras ?? []) {
             clipAndModel = graph.LoraLoader({
@@ -125,17 +126,17 @@ action('Prompt-V1', {
         }
 
         // CLIP
-        let clip = clipAndModel._CLIP
+        let clip: _CLIP = clipAndModel._CLIP
         let model: _MODEL = clipAndModel._MODEL
         if (p.extra?.freeU) model = graph.FreeU({ model })
 
         if (p.clipSkip) {
-            clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(p.clipSkip) }).CLIP
+            clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(p.clipSkip) })
         }
 
         // VAE
-        let vae: VAE = ckpt._VAE
-        if (p.vae) vae = graph.VAELoader({ vae_name: p.vae }).VAE
+        let vae: _VAE = ckpt._VAE
+        if (p.vae) vae = graph.VAELoader({ vae_name: p.vae })
 
         // CLIPS
         const positive = graph.CLIPTextEncode({ clip: flow.AUTO, text: positiveText })

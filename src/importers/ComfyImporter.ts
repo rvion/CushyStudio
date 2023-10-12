@@ -142,7 +142,7 @@ export class ComfyImporter {
         for (const nodeID of sortedNodes) {
             // @ts-ignore
             const node = flow[nodeID]
-            const classType = normalizeJSIdentifier(node.class_type)
+            const classType = normalizeJSIdentifier(node.class_type, ' ')
             const varName = this.mkVarNameForNodeType(classType, []) //`${classType}_${nodeID}`
 
             generatedName.set(nodeID, varName)
@@ -161,8 +161,8 @@ export class ComfyImporter {
                 availableSignals.set(
                     `${nodeID}-${outoutIx++}`,
                     isValid1234 //
-                        ? `${varName}.${o.nameInCushy}`
-                        : `${varName}["${o.nameInCushy}"]`,
+                        ? `${varName}.outputs.${o.nameInCushy}`
+                        : `${varName}.outputs["${o.nameInCushy}"]`,
                 )
             }
 

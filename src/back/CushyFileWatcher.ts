@@ -92,7 +92,7 @@ export class CushyFileWatcher {
             } else {
                 if (file.startsWith('.')) continue
                 const relPath = asRelativePath(path.relative(this.st.actionsFolderPath, absPath))
-                console.log('[💙] TOOL: handling', relPath)
+                // console.log('[💙] TOOL: handling', relPath)
                 const paf = new PossibleActionFile(this.st, absPath, relPath)
                 this.filesMap.set(relPath, paf)
                 const treeEntry = {
