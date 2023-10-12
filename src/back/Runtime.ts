@@ -37,6 +37,7 @@ import fs from 'fs'
 export class Runtime {
     st: STATE
     fs = fs
+    path = path
 
     get graph(): GraphL {
         return this.step.outputGraph.item
