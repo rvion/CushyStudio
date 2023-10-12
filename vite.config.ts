@@ -21,6 +21,9 @@ export default defineConfig({
                 //
                 'actions/**/*',
                 'tsconfig.custom.json',
+                'tsconfig.json',
+                '**/tsconfig.custom.json',
+                '**/tsconfig.json',
             ],
         },
     },
