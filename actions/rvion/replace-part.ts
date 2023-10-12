@@ -9,7 +9,7 @@ action('🎭 replace', {
         }),
         query: form.str({ default: 'face' }),
         replacement: form.str({ default: 'orc face' }),
-        image: form.image({ label: 'test', default: { type: 'ComfyImage', image: 'ComfyUI_01264_.png' } }),
+        image: form.image({ label: 'test', default: { type: 'ComfyImage', image: 'example.png' } }),
         norm: form.bool({ label: 'normalize', default: true }),
         threeshold: form.float({ default: 0.2 }),
     }),
@@ -25,9 +25,9 @@ action('🎭 replace', {
 
         const inpaintingModel = flow.nodes.CheckpointLoaderSimple({ ckpt_name: reqs.inpainting })
         const maskedLatent2 = flow.nodes.VAEEncodeForInpaint({
-            mask: (m) => m.Image_To_Mask({ image: clothesMask.IMAGE, method: 'intensity' }),
+            mask: (m) => m.Image_To_Mask({ image: clothesMask.outputs.IMAGE, method: 'intensity' }),
             pixels: image,
-            vae: inpaintingModel.VAE,
+            vae: inpaintingModel,
             grow_mask_by: 0,
         })
         const sampler = flow.nodes.KSampler({
@@ -43,8 +43,8 @@ action('🎭 replace', {
             latent_image: maskedLatent2,
         })
         flow.nodes.PreviewImage({ images: flow.nodes.VAEDecode({ samples: sampler, vae: flow.AUTO }) })
-        flow.nodes.PreviewImage({ images: clothesMask.IMAGE })
-        flow.nodes.PreviewImage({ images: clothesMask.IMAGE_1 })
+        flow.nodes.PreviewImage({ images: clothesMask.outputs.IMAGE })
+        flow.nodes.PreviewImage({ images: clothesMask.outputs.IMAGE_1 })
 
         // flow.nodes.PreviewImage({ images: clothesMask.IMAGE })
         // flow.nodes.PreviewImage({ images: image })

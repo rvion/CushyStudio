@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
 import { Message, Tree } from 'rsuite'
-import { assets } from 'src/public/assets'
+import { assets } from 'src/front/ui/assets'
 import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { useSt } from '../../FrontStateCtx'

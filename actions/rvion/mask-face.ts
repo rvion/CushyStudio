@@ -16,8 +16,8 @@ action('mask-face', {
             normalize: 'no',
             precision: 0.3,
         })
-        graph.SaveImage({ images: clothesMask.IMAGE })
-        graph.SaveImage({ images: clothesMask.IMAGE_1 })
+        graph.SaveImage({ images: clothesMask.outputs.IMAGE })
+        graph.SaveImage({ images: clothesMask.outputs.IMAGE_1 })
         await flow.PROMPT()
     },
 })

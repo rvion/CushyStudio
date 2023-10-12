@@ -29,20 +29,20 @@ action('animateddiff-2023-10-03', {
         const vAE = graph.VAELoader({ vae_name: 'vae-ft-mse-840000-ema-pruned.safetensors' })
         const cLIPTextEncode = graph.CLIPTextEncode({
             text: '(bad quality, worst quality:1.2)',
-            clip: checkpointLoaderSimpleWithNoiseSelect.CLIP,
+            clip: checkpointLoaderSimpleWithNoiseSelect,
         })
-        const aDE_AnimateDiffUniformContextOptions = graph.ADE_AnimateDiffUniformContextOptions({
+        const aDE_AnimateDiffUniformContextOptions = graph.ADE$_AnimateDiffUniformContextOptions({
             context_length: 16,
             context_stride: 1,
             context_overlap: 4,
             context_schedule: 'uniform',
             closed_loop: false,
         })
-        const aDE_AnimateDiffLoaderWithContext = graph.ADE_AnimateDiffLoaderWithContext({
+        const aDE_AnimateDiffLoaderWithContext = graph.ADE$_AnimateDiffLoaderWithContext({
             model_name: 'mm_sd_v15_v2.ckpt',
             beta_schedule: 'sqrt_linear (AnimateDiff)',
-            model: checkpointLoaderSimpleWithNoiseSelect.MODEL,
-            context_options: aDE_AnimateDiffUniformContextOptions.CONTEXT_OPTIONS,
+            model: checkpointLoaderSimpleWithNoiseSelect,
+            context_options: aDE_AnimateDiffUniformContextOptions,
         })
         const batchPromptSchedule = graph.BatchPromptSchedule({
             text: p.text, //'"0" :"spring day, blossoms, flowers, cloudy",\n"25" :"summer day, sunny, leaves",\n"50" :"fall day, colorful leaves dancing in the wind",\n"75" :"winter day, snowing, cold, jacket"\n',
@@ -53,9 +53,9 @@ action('animateddiff-2023-10-03', {
             pw_b: 0,
             pw_c: 0,
             pw_d: 0,
-            clip: checkpointLoaderSimpleWithNoiseSelect.CLIP,
+            clip: checkpointLoaderSimpleWithNoiseSelect,
         })
-        const aDE_EmptyLatentImageLarge = graph.ADE_EmptyLatentImageLarge({
+        const aDE_EmptyLatentImageLarge = graph.ADE$_EmptyLatentImageLarge({
             width: 512,
             height: 512,
             batch_size: p.frames, //100,
@@ -67,20 +67,20 @@ action('animateddiff-2023-10-03', {
             sampler_name: 'euler_ancestral',
             scheduler: 'normal',
             denoise: 1,
-            model: aDE_AnimateDiffLoaderWithContext.MODEL,
-            positive: batchPromptSchedule.CONDITIONING,
-            negative: cLIPTextEncode.CONDITIONING,
-            latent_image: aDE_EmptyLatentImageLarge.LATENT,
+            model: aDE_AnimateDiffLoaderWithContext,
+            positive: batchPromptSchedule,
+            negative: cLIPTextEncode,
+            latent_image: aDE_EmptyLatentImageLarge,
         })
         let vAEDecode
         if (p.removeBG) {
             vAEDecode = graph.Image_Rembg_$1Remove_Background$2({
-                images: graph.VAEDecode({ samples: kSampler.LATENT, vae: vAE.VAE }),
+                images: graph.VAEDecode({ samples: kSampler, vae: vAE }),
                 model: 'u2net',
                 background_color: 'black',
             })
         } else {
-            vAEDecode = graph.VAEDecode({ samples: kSampler.LATENT, vae: vAE.VAE })
+            vAEDecode = graph.VAEDecode({ samples: kSampler, vae: vAE })
         }
         const save = graph.SaveImage({ filename_prefix: 'Images\\image', images: vAEDecode._IMAGE })
         // graph.SaveImage({
