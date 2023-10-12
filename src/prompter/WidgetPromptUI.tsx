@@ -153,9 +153,9 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
             <OnChangePlugin
                 onChange={(editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => {
                     onChange(p, editorState)
-                    editorState.read
-                    const { debug, items } = getFinalJSON(editorState)
-                    console.log(debug)
+                    // const { debug, items } = getFinalJSON(editorState)
+                    // console.log(debug)
+
                     // console.log(editorState, editor, tags)
                     // p.set(editorState.)
                 }}
