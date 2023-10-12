@@ -5,7 +5,7 @@ import { useSt } from 'src/front/FrontStateCtx'
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {}) {
     const st = useSt()
     return (
-        <>
+        <div className='flex gap-1 bg-green-900 px-1 rounded cursor-help'>
             {st.updater.updateAvailable ? (
                 <Button
                     className='animate-pulse'
@@ -22,9 +22,9 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {}) {
             ) : (
                 <span className='text-green-400 material-symbols-outlined'>check_circle</span>
             )}
-            <div className={st.updater.updateAvailable ? 'text-orange-400' : 'text-green-400'}>
+            <div className={st.updater.updateAvailable ? 'text-orange-400' : 'text-green-100'}>
                 v{st.updater.commitCountOnHead ? st.updater.currentVersion : <Loader />}
             </div>
-        </>
+        </div>
     )
 })
