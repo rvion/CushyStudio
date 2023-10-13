@@ -1,4 +1,3 @@
-import type { LATER } from 'LATER'
 import type { Runtime } from 'src/back/Runtime'
 import type { Requestable } from '../controls/InfoRequest'
 import type { InfoAnswer } from '../controls/InfoAnswer'
@@ -56,11 +55,9 @@ export type Requirement<T = any> = {
     creationLogic?: () => T
 }
 
-type Requirable_ = LATER<'Requirable'>
-
 // helper to build requirements in a type-safe way
 export type ReqBuilder = {
-    [k in keyof Requirable_]: (req?: Omit<Requirement<Requirable_[k]>, 'type'>) => Requirement<Requirable_[k]>
+    [k in keyof Requirable]: (req?: Omit<Requirement<Requirable[k]>, 'type'>) => Requirement<Requirable[k]>
 }
 
 // REQUIRABLE ============================================================

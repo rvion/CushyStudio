@@ -1,5 +1,4 @@
 import type { ImageT } from 'src/models/Image'
-import type { LATER } from 'LATER'
 import type { ImageAnswer, InfoAnswer } from './InfoAnswer'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
@@ -35,7 +34,7 @@ export type Requestable_boolOpt      = InptOpt<'bool?',   boolean > // prettier-
 export type Requestable_size         = InptReq<'size',    boolean > // prettier-ignore
 export type Requestable_matrix       = InptReq<'matrix',  CELL[], {rows:string[], cols:string[]} > // prettier-ignore
 //
-export type Requestable_embeddings   = InptReq<'embeddings',  LATER<'Embeddings'>> // prettier-ignore
+export type Requestable_embeddings   = InptReq<'embeddings',  Embeddings> // prettier-ignore
 export type Requestable_loras        = InptReq<'loras',       SimplifiedLoraDef[]> // prettier-ignore
 //
 export type Requestable_image        = InptReq<'image',  ImageAnswer>; /*imageInfos?: ImageT[]*/ // prettier-ignore
@@ -52,8 +51,8 @@ export type Requestable_selectOneOrCustom  = InptReq< 'selectOneOrCustom',    st
 export type Requestable_selectMany         = InptReq< 'selectMany',           string[], {choices: string[] }> // prettier-ignore
 export type Requestable_selectManyOrCustom = InptReq< 'selectManyOrCustom',   string[], {choices: string[] }> // prettier-ignore
 //
-export type Requestable_enumOpt<T extends keyof LATER<'Requirable'>> = InptOpt<'enum?', LATER<'Requirable'>[T], {enumName: T}> // prettier-ignore
-export type Requestable_enum   <T extends keyof LATER<'Requirable'>> = InptReq<'enum',  LATER<'Requirable'>[T], {enumName: T}> // prettier-ignore
+export type Requestable_enumOpt<T extends keyof Requirable> = InptOpt<'enum?', Requirable[T], {enumName: T}> // prettier-ignore
+export type Requestable_enum   <T extends keyof Requirable> = InptReq<'enum',  Requirable[T], {enumName: T}> // prettier-ignore
 
 export type Requestable =
     /** str */

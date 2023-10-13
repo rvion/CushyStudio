@@ -1,7 +1,8 @@
+import type { DraftL } from 'src/models/Draft'
+import type { ToolL } from 'src/models/Tool'
+
 import { observer } from 'mobx-react-lite'
 import { useProject } from 'src/front/ProjectCtx'
-import { DraftL } from 'src/models/Draft'
-import { ToolL } from 'src/models/Tool'
 import { ActionAddDraftBtnUI } from './ActionAddDraftBtnUI'
 
 export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { tool: ToolL }) {

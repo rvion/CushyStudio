@@ -1,9 +1,8 @@
-import type { LATER } from 'LATER'
+import type { GraphL } from 'src/models/Graph'
 
-import { GraphL } from 'src/models/Graph'
 import { ComfyNode } from '../core/Node'
 
-export interface NodeBuilder extends LATER<'ComfySetup'> {}
+export interface NodeBuilder extends ComfySetup {}
 
 export class NodeBuilder {
     private nameCache = new Map<string, number>()
@@ -22,18 +21,18 @@ export class NodeBuilder {
             // console.log('🦊', JSON.stringify(node.nameInComfy))
             // console.log(`node: ${node.name}`)
             try {
-            Object.defineProperty(this, node.nameInCushy, {
-                value: (inputs: any) => {
-                    // const nthForGivenNode = this.nameCache.get(node.nameInCushy) ?? 0
-                    // const practicalNameWithinGraph = `${node.nameInCushy}_${nthForGivenNode}`
-                    // this.nameCache.set(node.nameInCushy, nthForGivenNode + 1)
-                    const uidNumber = (this.graph._uidNumber++).toString()
-                    return new ComfyNode(graph, uidNumber, {
-                        class_type: node.nameInComfy as any,
-                        inputs,
-                    })
-                },
-            })
+                Object.defineProperty(this, node.nameInCushy, {
+                    value: (inputs: any) => {
+                        // const nthForGivenNode = this.nameCache.get(node.nameInCushy) ?? 0
+                        // const practicalNameWithinGraph = `${node.nameInCushy}_${nthForGivenNode}`
+                        // this.nameCache.set(node.nameInCushy, nthForGivenNode + 1)
+                        const uidNumber = (this.graph._uidNumber++).toString()
+                        return new ComfyNode(graph, uidNumber, {
+                            class_type: node.nameInComfy as any,
+                            inputs,
+                        })
+                    },
+                })
             } catch (e) {
                 /* ❌ */ console.log(e)
                 /* ❌ */ console.error('impossible to create builder for node')

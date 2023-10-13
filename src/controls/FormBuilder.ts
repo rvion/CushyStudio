@@ -1,7 +1,6 @@
 import type { ImageL, ImageT } from 'src/models/Image'
 import type { Requestable } from './InfoRequest'
 import type * as R from './InfoRequest'
-import type { LATER } from 'LATER'
 
 // prettier-ignore
 export class FormBuilder {
@@ -35,14 +34,14 @@ export class FormBuilder {
     embeddings = (label?: string) => ({ type: 'embeddings' as const, label })
 
     /** embedding */
-    enum = <const T extends keyof LATER<'Requirable'>>(
+    enum = <const T extends keyof Requirable>(
         //
         x: Omit<R.Requestable_enum<T>, 'type'>,
     ): R.Requestable_enum<T> => ({
         type: 'enum',
         ...x,
     })
-    enumOpt = <const T extends keyof LATER<'Requirable'>>(
+    enumOpt = <const T extends keyof Requirable>(
         x: Omit<R.Requestable_enumOpt<T>, 'type'>,
     ): R.Requestable_enumOpt<T> => ({
         type: 'enum?',

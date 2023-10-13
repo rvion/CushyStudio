@@ -1,4 +1,3 @@
-import type { LATER } from 'LATER'
 import type { Printable } from '../core/Printable'
 
 // import FormData from 'form-data'
@@ -213,7 +212,7 @@ export class Runtime {
     //     this.saveTextFile(relPath, this.flowSummaryMd)
     // }
 
-    embedding = (t: LATER<'Embeddings'>) => `embedding:${t}`
+    embedding = (t: Embeddings) => `embedding:${t}`
 
     /** ask the user a few informations */
     ask: InfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
@@ -372,7 +371,7 @@ export class Runtime {
      * as of 2023-09-24: ❓
      * as of 2023-09-25? ...
      */
-    uploadWorkspaceFileAndLoad = async (path: RelativePath): Promise<LATER<'LoadImage'>> => {
+    uploadWorkspaceFileAndLoad = async (path: RelativePath): Promise<LoadImage> => {
         const upload = await this.uploadWorkspaceFile(path)
         const img = (this.graph as any).LoadImage({ image: upload.name })
         return img
