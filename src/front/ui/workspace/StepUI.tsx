@@ -42,14 +42,13 @@ export const StepUI = observer(function StepUI_(p: { step: StepL }) {
             collapsible
             defaultExpanded={step.data.status === Status.Running}
             header={
-                <div className='flex justify-between text-xs text-gray-400'>
-                    {/*  */}
-                    <div>{step.tool.item.name}</div>
+                <div style={{ borderTop: '1px solid #2d2d2d' }} className='flex justify-between text-xs text-gray-400 mt-2'>
+                    <b>{step.tool.item.name}</b>
                     <div className='text-sm text-gray-400'>{_formatPreviewDate(new Date(step.createdAt))}</div>
                 </div>
             }
         >
-            <div className='flex flex-col gap-1'>
+            <div className='flex flex-col-reverse gap-1'>
                 {step.data.outputs?.map((output, ix) => <StepOutputUI key={ix} step={step} output={output} />)}
             </div>
         </Panel>
