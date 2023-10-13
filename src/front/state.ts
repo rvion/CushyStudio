@@ -56,6 +56,7 @@ export class STATE {
     outputFolderPath: AbsolutePath
     status: ComfyStatus | null = null
 
+    graphHovered: Maybe<{ graph: GraphL; pctTop: number; pctLeft: number }> = null
     // misc
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null

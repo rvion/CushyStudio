@@ -11,7 +11,11 @@ cytoscape.use(klay)
 export type CytoJSON = {
     elements: {
         nodes: {
-            data: { id: string }
+            data: {
+                id: string
+                width: number
+                height: number
+            }
             position: {
                 x: number
                 y: number
@@ -33,6 +37,8 @@ export const runAutolayout = async (graph: GraphL): Promise<CytoJSON> => {
         elements.push({
             data: {
                 id: node.uidNumber,
+                width: node.width,
+                height: node.height,
             },
             style: {
                 shape: 'rectangle',

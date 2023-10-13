@@ -19,33 +19,32 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
     if (graph == null) return <>no execution yet</>
     const curr: ComfyNode<any> = graph.nodesIndex.get(uid)!
     const name = curr.$schema.nameInComfy
-    const schema: ComfyNodeSchema = curr.$schema
+    // const schema: ComfyNodeSchema = curr.$schema
     const percent = node.status === 'done' ? 100 : ((node.progress?.value ?? 0) / (node.progress?.max || 1)) * 100
     const isDone = node.status === 'done'
     return (
-        <Panel
+        <div
             // collapsible
-            onClick={() => (st.expandNodes = !st.expandNodes)}
-            // expanded={st.expandNodes}
-            header={
-                <div className='row items-center gap'>
-                    <NodeRefUI node={node} />
-                    <Progress.Line
-                        style={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}
-                        showInfo={false}
-                        strokeWidth={2}
-                        status={isDone ? 'success' : 'active'}
-                        percent={percent}
-                    />
-                    {name}
-                </div>
-            }
+            // onClick={() => (st.expandNodes = !st.expandNodes)}
+            // header={
+            // }
             style={{ position: 'relative' }}
-            bordered
-            shaded
-            key={uid}
-            className='node'
+            // bordered
+            // shaded
+            // key={uid}
+            // className='node'
         >
+            <div className='row items-center gap'>
+                <NodeRefUI node={node} />
+                <Progress.Line
+                    style={{ position: 'absolute', top: 0, left: 0, zIndex: 1 }}
+                    showInfo={false}
+                    strokeWidth={2}
+                    status={isDone ? 'success' : 'active'}
+                    percent={percent}
+                />
+                {name}
+            </div>
             <div className='row'>
                 {/* {folded ? null : ( */}
                 <div>
@@ -62,53 +61,38 @@ export const ComfyNodeUI = observer(function ComfyNodeUI_(p: {
                             )
                         })}
                     </div> */}
-                    <div className='flex gap-2 wrap'>
-                        {/* show values */}
-                        <div className='flex'>
-                            {schema.inputs.map((input) => {
-                                let val = node.json.inputs[input.nameInComfy]
-                                if (Array.isArray(val)) return null
-                                return (
-                                    <Fragment key={input.nameInComfy}>
-                                        <span>{input.nameInComfy}</span>
-                                        <span>{val}</span>
-                                    </Fragment>
-                                )
-                            })}
-                        </div>
-                        {/* show refs */}
-                        <div>
-                            {schema.inputs.map((input) => {
-                                let val = node.json.inputs[input.nameInComfy]
-                                if (!Array.isArray(val)) return null
-                                return (
-                                    <div key={input.nameInComfy} className='row gap-2'>
-                                        <Form.ControlLabel>{<NodeRefUI node={node} />}</Form.ControlLabel>
-                                        <Form.ControlLabel>{input.nameInComfy}</Form.ControlLabel>
-                                    </div>
-                                )
-                            })}
-                        </div>
-                    </div>
                 </div>
             </div>
             {/* )} */}
-            {p.showArtifacts ? (
-                <div className='row wrap'>
-                    {/* {curr.images.map((img) => (
-                        <img //
-                            key={img.uid}
-                            style={{ width: '5rem', height: '5rem' }}
-                            src={img.comfyURL}
-                        />
-                    ))} */}
-                    {/* {curr?.allArtifactsImgs.map((url) => (
-                    <div key={url}>
-                        <img style={{ width: '5rem', height: '5rem' }} key={url} src={url} />
-                    </div>
-                ))} */}
-                </div>
-            ) : null}
-        </Panel>
+        </div>
     )
 })
+
+// <div className='flex gap-2 wrap'>
+//     {/* show values */}
+//     <div className='flex'>
+//         {schema.inputs.map((input) => {
+//             let val = node.json.inputs[input.nameInComfy]
+//             if (Array.isArray(val)) return null
+//             return (
+//                 <Fragment key={input.nameInComfy}>
+//                     <span>{input.nameInComfy}</span>
+//                     <span>{val}</span>
+//                 </Fragment>
+//             )
+//         })}
+//     </div>
+//     {/* show refs */}
+//     <div>
+//         {schema.inputs.map((input) => {
+//             let val = node.json.inputs[input.nameInComfy]
+//             if (!Array.isArray(val)) return null
+//             return (
+//                 <div key={input.nameInComfy} className='row gap-2'>
+//                     <Form.ControlLabel>{<NodeRefUI node={node} />}</Form.ControlLabel>
+//                     <Form.ControlLabel>{input.nameInComfy}</Form.ControlLabel>
+//                 </div>
+//             )
+//         })}
+//     </div>
+// </div>

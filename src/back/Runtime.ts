@@ -85,9 +85,6 @@ export class Runtime {
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
             // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'success' })
-            // if (numPromptBefore === this._promptCounter) {
-            //     this.broadcastSchemaMermaid()
-            // }
             return Status.Success
         } catch (error: any /* 🔴 */) {
             console.log(error)

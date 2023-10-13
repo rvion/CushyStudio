@@ -1,6 +1,7 @@
-import { observer } from 'mobx-react-lite'
+import { observer, useLocalObservable } from 'mobx-react-lite'
 import { useDragLayer } from 'react-dnd'
 import { useSt } from '../../FrontStateCtx'
+import { useMemo } from 'react'
 
 export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
     const st = useSt()

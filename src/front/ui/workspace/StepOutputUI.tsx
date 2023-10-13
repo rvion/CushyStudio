@@ -28,8 +28,8 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
 
     if (msg.type === 'print') {
         return (
-            <OutputWrapperUI label='💬'>
-                <div className=''>{msg.message}</div>
+            <OutputWrapperUI label=''>
+                <div className='text-gray-400'>{msg.message}</div>
             </OutputWrapperUI>
         )
     }
@@ -38,19 +38,12 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
         const prompt = db.prompts.get(msg.promptID)
         const graph = prompt?.graph.item
         if (graph == null) return <>no graph</>
-        const currNode = graph.currentExecutingNode
+        // const currNode = graph.currentExecutingNode
         return (
             <div className='flex flex-col gap-1'>
-                <div>
-                    <GraphSummaryUI graph={graph} />
-                    {/* 💬 {prompt?.id} */}
-                    {/* <div>({prompt?.images.items.length} images)</div> */}
-                </div>
-                {/* <CustomNodeFlow /> 🔴 */}
-                {currNode && <ComfyNodeUI node={currNode} />}
-                <Panel>
-                    <div className='flex flex-wrap'>{prompt?.images.map((img) => <ImageUI key={img.id} img={img} />)}</div>
-                </Panel>
+                {/* {currNode && <ComfyNodeUI node={currNode} />} */}
+                <GraphSummaryUI graph={graph} />
+                <div className='flex flex-wrap'>{prompt?.images.map((img) => <ImageUI key={img.id} img={img} />)}</div>
             </div>
         )
     }

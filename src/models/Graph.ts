@@ -24,6 +24,7 @@ import { asHTMLContent, asMDContent } from '../utils/markdown'
 import { DraftID, DraftL } from './Draft'
 import { StepID, StepL } from './Step'
 import { ToolID } from './Tool'
+import { ManualPromise } from 'src/utils/ManualPromise'
 
 export type RunMode = 'fake' | 'real'
 
@@ -149,6 +150,15 @@ export class GraphL {
 
     /** nodes, in creation order */
     nodes: ComfyNode<any>[] = []
+    get pendingNodes() {
+        return this.nodes.filter((n) => n.status == null || n.status === 'waiting')
+    }
+    get nodesByUpdatedAt() {
+        return this.nodes //
+            .filter((n) => n.status != null && n.status !== 'waiting')
+            .sort((a, b) => b.updatedAt - a.updatedAt)
+        // return this.nodes.slice().sort((a, b) => b.updatedAt - a.updatedAt)
+    }
 
     findNodeByType = <T extends ComfyNodeType>(nameInCushy: T): Maybe<Requirable[T]> => {
         return this.nodes.find((n) => n.$schema.nameInCushy === nameInCushy) as any
@@ -160,7 +170,6 @@ export class GraphL {
     /** convert to mermaid DSL expression for nice graph rendering */
     toMermaid = (): string => {
         const out = [
-            //
             // 'graph TD',
             'graph LR',
             this.nodes.map((n) => `${n.uid}[${n.$schema.nameInCushy}]`).join('\n'),
@@ -183,6 +192,12 @@ export class GraphL {
         return out
     }
 
+    currentCytoK: ManualPromise<CytoJSON> = new ManualPromise()
+    updateCyto = () => this.json_cyto().then((x) => this.currentCytoK.resolve(x))
+    get currentCyto(): CytoJSON {
+        if (this.currentCytoK.value) return this.currentCytoK.value
+        return { elements: { nodes: [] } }
+    }
     json_cyto = async (): Promise<CytoJSON> => {
         // const cytoJSONPath = asAbsolutePath(path.join(outputAbsPath, `cyto-${this._promptCounter}.json`))
         const cytoJSON = await runAutolayout(this)
@@ -228,6 +243,7 @@ export class GraphL {
     onProgress = (msg: WsMsgProgress) => {
         if (this.currentExecutingNode == null) return console.log('❌ no current executing node', msg)
         this.currentExecutingNode.progress = msg.data
+        this.currentExecutingNode.progressRatio = (msg.data.value ?? 0) / (msg.data.max || 1)
     }
 
     getTargetWorkflowFilePath = () => {
@@ -244,20 +260,29 @@ export class GraphL {
     // private outputs: WsMsgExecuted[] = []
     // images: ImageL[] = []
 
+    done = false
+
     /** @internal update pointer to the currently executing node */
     onExecuting = (msg: WsMsgExecuting) => {
         // 1. mark currentExecutingNode as done
-        if (this.currentExecutingNode) this.currentExecutingNode.status = 'done'
+        if (this.currentExecutingNode) {
+            this.currentExecutingNode.status = 'done'
+            // this.currentExecutingNode.updatedAt = Date.now() + 1000
+        }
         // 2. then two cases:
         // 2.A. no node => the prompt is done
         if (msg.data.node == null) {
             this.currentExecutingNode = null
+            this.done = true
             return
         }
+
+        this.done = false
         // 2.B. a node => node evaluation is starting
         const node = this.getNodeOrCrash(msg.data.node)
         this.currentExecutingNode = node
         node.status = 'executing'
+        node.updatedAt = Date.now()
     }
 
     onExecutionCached = (msg: WsMsgExecutionCached) => {
@@ -282,17 +307,12 @@ export class GraphL {
     //     node.images.push(...images)
     // }
 
+    // @deprecated
     get flowSummaryMd(): MDContent {
-        return asMDContent(
-            [
-                //
-                // '# Flow summary\n',
-                `<pre class="mermaid">`,
-                this.toMermaid(),
-                `</pre>`,
-            ].join('\n'),
-        )
+        return asMDContent([`<pre class="mermaid">`, this.toMermaid(), `</pre>`].join('\n'))
     }
+
+    // @deprecated
     get flowSummaryHTML(): HTMLContent {
         // https://mermaid.js.org/config/usage.html
         return asHTMLContent(marked.parse(this.flowSummaryMd))

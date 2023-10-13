@@ -76,7 +76,8 @@ body {
 .yarl__slide {padding: 0 !important;}
 /*  */
 
-.rs-panel {background: #373737; flex-shrink: 0; border-radius: 0!important;}
+/* .rs-panel {background: #373737; flex-shrink: 0; border-radius: 0!important;} */
+.rs-panel .rs-panel.dark, .rs-panel.dark {background: #1e1e1e; flex-shrink: 0; border-radius: 0!important;}
 .rs-panel.nobg {background: none; flex-shrink: 0; border-radius: 0!important;}
 .rs-panel .rs-panel {background: #464646; flex-shrink: 0;}
 
@@ -86,8 +87,8 @@ body {
 
 .rs-panel-body {padding: .5rem !important;}
 .rs-panel-header {
-    padding-left: 0!important;
-    padding-right: 0!important;
+    padding-left: .5rem!important;
+    padding-right: .5rem!important;
     padding-top: 0rem !important;
     padding-bottom: 0rem !important;
     font-size: 1rem !important;

@@ -7,15 +7,16 @@ import { _formatPreviewDate } from '../../../utils/_formatPreviewDate'
 import { useSt } from '../../../front/FrontStateCtx'
 import { InView } from 'react-intersection-observer'
 import { Status } from '../../../back/Status'
-import { MsgShowHTMLUI } from '../MsgShowHTMLUI'
+import { GraphPreviewUI } from '../MsgShowHTMLUI'
 
 export const StepListUI = observer(function StepListUI_(p: {}) {
     const st = useSt()
     const steps = st.db.steps
+    const lastGraph = st.db.graphs.last()
     return (
         <div className='flex flex-col' style={{ borderLeft: '1px solid #2d2d2d' }}>
             {/* <Panel className='nobg' header='Last Graph' collapsible defaultExpanded> */}
-            <MsgShowHTMLUI html={st.db.graphs.last()?.flowSummaryHTML} />
+            {lastGraph && <GraphPreviewUI graph={lastGraph} />}
             {/* </Panel> */}
             <div className='flex flex-col-reverse flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (

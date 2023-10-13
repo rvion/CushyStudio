@@ -14,7 +14,7 @@ export const NodeRefUI = observer(function NodeRefUI_(p: {
     const { node } = p
     const size = p.size ?? 1.5
     const category = node?.$schema.category
-    const color = comfyColors[category]
+    const color = comfyColors[category] ?? '#354546'
     return (
         <div
             style={{

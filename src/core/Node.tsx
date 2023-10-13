@@ -9,6 +9,8 @@ import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
 import { Slot } from './Slot'
 import { comfyColors } from './Colors'
 import { auto_ } from './autoValue'
+import { ReactNode } from 'react'
+import { Loader } from 'rsuite'
 
 configure({ enforceActions: 'never' })
 
@@ -25,20 +27,22 @@ export class ComfyNode<
 > {
     // artifacts: _WsMsgExecutedData[] = []
     // images: GeneratedImage[] = []
+    progressRatio: number = 0
     progress: NodeProgress | null = null
     $schema: ComfyNodeSchema
     status: NodeExecutionStatus = null
+    updatedAt: number = Date.now()
     json: ComfyNodeJSON
 
     get isExecuting() { return this.status === 'executing' } // prettier-ignore
-    get statusEmoji() {
+    get statusEmoji(): ReactNode {
         const s = this.status
-        if (s === 'executing') return '🔥'
-        if (s === 'cached') return '✅' //'💾'
-        if (s === 'done') return '✅'
-        if (s === 'error') return '❌'
-        if (s === 'waiting') return '⏳'
-        if (s == null) return '❓'
+        if (s === 'executing') return <Loader />
+        if (s === 'cached') return <span className='material-symbols-outlined text-green-600'>bookmark</span>
+        if (s === 'done') return <span className='material-symbols-outlined text-green-600'>done</span>
+        if (s === 'error') return <span className='material-symbols-outlined text-red-600'>error</span>
+        if (s === 'waiting') return <span className='material-symbols-outlined text-blue-600'>next_plan</span>
+        if (s == null) return <span className='material-symbols-outlined text-gray-600'>contact_support</span>
         return exhaust(s)
     }
 

@@ -20,7 +20,7 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }
         <draftContext.Provider value={draft} key={draft.id}>
             <div
                 //
-                className='m-4 fade-in [width:90%] [max-height:90%] flex flex-col flex-grow'
+                className='m-4 fade-in flex flex-col flex-grow'
             >
                 <div tw='row items-center font-bold font justify-between'>
                     <div style={{ fontSize: '1.7rem' }}>{tool.name}</div>
