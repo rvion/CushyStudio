@@ -64,7 +64,7 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                                 {isExpanded && (
                                     <TooltipUI>
                                         <img tw='mr-1' style={{ width: '1rem' }} src={assets.tsLogo} alt='' />
-                                        <div>is beeing type-checked</div>
+                                        <div>is being type-checked</div>
                                     </TooltipUI>
                                 )}
                             </div>
