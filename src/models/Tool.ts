@@ -33,7 +33,8 @@ export type ToolT = {
 export interface ToolL extends LiveInstance<ToolT, ToolL> {}
 export class ToolL {
     get name() { return this.data.name } // prettier-ignore
-    drafts = new LiveCollection(this, 'toolID', 'drafts')
+
+    drafts = new LiveCollection<DraftL>(this, 'toolID', 'drafts')
 
     focusedDraft = new LiveRefOpt<this, DraftL>(this, 'focusedDraftID', 'drafts')
 

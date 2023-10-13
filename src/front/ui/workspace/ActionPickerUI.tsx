@@ -8,7 +8,7 @@ import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
 import { TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { SectionTitleUI } from './SectionTitle'
-import { getIconForFilePath } from './filePathIcon'
+import { getIconForFilePath } from '../utils/filePathIcon'
 import { TooltipUI } from '../layout/TooltipUI'
 
 export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {

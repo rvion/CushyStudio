@@ -4,11 +4,10 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { Message, Panel } from 'rsuite'
 import { exhaust } from '../../../utils/ComfyUtils'
-import { ComfyNodeUI } from '../NodeListUI'
 import { ImageUI } from '../galleries/ImageUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
-import { GraphSummaryUI } from './GraphSummaryUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
+import { GraphSummaryUI } from './GraphSummaryUI'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
