@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import { Input, InputGroup } from 'rsuite'
+import { Button, Input, InputGroup } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
 import { renderToolUI } from '../../../models/renderDraftUI'
-import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
+import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { TabUI } from '../layout/TabUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { draftContext } from '../useDraft'
@@ -12,48 +12,40 @@ import { draftContext } from '../useDraft'
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const DraftUI = observer(function DraftUI_(p: { draft: DraftL }) {
+export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }) {
     const draft = p.draft
     const tool = draft.tool.item
     const formDefinition = tool?.data.form ?? {}
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <div></div>
-            <ScrollablePaneUI className='flex-grow '>
-                <div
-                    //
-                    className='p-4 fade-in [max-width:80%] mx-auto'
-                    style={{
-                        border: '1px dashed #565656',
-                        background: '#1e1e1e',
-                        borderRadius: '0.5rem',
-                        boxShadow: '0 0 2rem #193558',
-                    }}
-                >
-                    <div className='flex'>
-                        <InputGroup>
-                            <InputGroup.Addon>{tool.name}</InputGroup.Addon>
-                            <Input
-                                onChange={(v) => draft.update({ title: v })}
-                                size='sm'
-                                placeholder='preset title'
-                                value={draft.data.title ?? ''}
-                            />
-                            <InputGroup.Button
-                                size='sm'
-                                className='self-start'
-                                color='green'
-                                // disabled={!tool.st.ws.isOpen}
-                                appearance='primary'
-                                startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
-                                onClick={() => draft.start()}
-                            >
-                                Run
-                            </InputGroup.Button>
-                        </InputGroup>
-                    </div>
+            <div
+                //
+                className='m-4 fade-in [width:90%] [max-height:90%] flex flex-col flex-grow'
+            >
+                <div tw='row items-center font-bold font justify-between'>
+                    <div style={{ fontSize: '1.7rem' }}>{tool.name}</div>
+                    <Button
+                        size='sm'
+                        className='self-start'
+                        color='green'
+                        // disabled={!tool.st.ws.isOpen}
+                        appearance='primary'
+                        startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
+                        onClick={() => draft.start()}
+                    >
+                        Run
+                    </Button>
+                </div>
+                <ScrollablePaneUI className='flex-grow '>
                     <div>{tool.data.description}</div>
                     <form
+                        className='p-2 mt-4'
+                        style={{
+                            border: '1px dashed #565656',
+                            background: '#1e1e1e',
+                            borderRadius: '0.5rem',
+                            boxShadow: '0 0 2rem #193558',
+                        }}
                         onKeyUp={(ev) => {
                             // submit on meta+enter
                             if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
@@ -85,7 +77,7 @@ export const DraftUI = observer(function DraftUI_(p: { draft: DraftL }) {
                             )
                         })} */}
                     </form>
-                    <TabUI title='Debug:'>
+                    <TabUI title='Debug:' tw='mt-auto'>
                         <div>no</div>
                         <div></div>
                         <div>result</div>
@@ -99,8 +91,8 @@ export const DraftUI = observer(function DraftUI_(p: { draft: DraftL }) {
                         <div>js</div>
                         <TypescriptHighlightedCodeUI code={tool.data.codeJS ?? ''} />
                     </TabUI>
-                </div>
-            </ScrollablePaneUI>
+                </ScrollablePaneUI>
+            </div>
         </draftContext.Provider>
     )
 })

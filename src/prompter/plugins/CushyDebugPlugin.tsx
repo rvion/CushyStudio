@@ -5,7 +5,7 @@ import type { WildcardNodeJSON } from '../nodes/WildcardNode'
 import type { EmbeddingNodeJSON } from '../nodes/EmbeddingNode'
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { JSONHighlightedCodeUI } from '../../front/ui/TypescriptHighlightedCodeUI'
+import { JSONHighlightedCodeUI } from '../../front/ui/utils/TypescriptHighlightedCodeUI'
 
 export const getFinalJSON = (
     editorState: EditorState,

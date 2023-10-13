@@ -5,7 +5,7 @@ import { Panel, Popover, Whisper } from 'rsuite'
 import { NodeRefUI } from '../NodeRefUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
-import { JSONHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
+import { JSONHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: GraphL }) {
     const graph = p.graph

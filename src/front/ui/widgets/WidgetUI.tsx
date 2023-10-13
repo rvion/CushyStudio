@@ -19,7 +19,7 @@ import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetStrUI } from './WidgetStrUI'
 import { WidgetStrOptUI } from './WidgetStrOptUI'
 import { ErrorBoundary } from 'react-error-boundary'
-import { ErrorBoundaryFallback } from './ErrorBoundary'
+import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {

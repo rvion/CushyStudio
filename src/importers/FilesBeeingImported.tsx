@@ -8,7 +8,7 @@ import { getPngMetadataFromFile } from './getPngMetadata'
 import { usePromise } from './usePromise'
 import { Button, Panel } from 'rsuite'
 import { useSt } from '../front/FrontStateCtx'
-import { TypescriptHighlightedCodeUI } from '../front/ui/TypescriptHighlightedCodeUI'
+import { TypescriptHighlightedCodeUI } from '../front/ui/utils/TypescriptHighlightedCodeUI'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 
 export interface FileListProps {

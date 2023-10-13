@@ -70,7 +70,7 @@ export const ComfyUIUI = observer(function ComfyUIUI_(p: { action: UIPageComfy }
             <iframe //
                 ref={st.comfyUIIframeRef}
                 src={url}
-                style={{ width: '100%', height: '100%' }}
+                style={{ width: '100%', height: '100%', border: 'none' }}
             ></iframe>
         </>
     )

@@ -1,10 +1,9 @@
-import * as I from '@rsuite/icons'
 import hljs from 'highlight.js/lib/core'
-import typescript from 'highlight.js/lib/languages/typescript'
 import json from 'highlight.js/lib/languages/json'
+import typescript from 'highlight.js/lib/languages/typescript'
 import 'highlight.js/styles/stackoverflow-dark.css'
 import { useLayoutEffect, useRef } from 'react'
-import { IconButton, Panel } from 'rsuite'
+import { IconButton } from 'rsuite'
 
 hljs.registerLanguage('typescript', typescript)
 hljs.registerLanguage('json', json)

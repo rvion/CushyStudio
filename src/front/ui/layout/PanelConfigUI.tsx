@@ -3,7 +3,7 @@ import type { UIPageComfig } from 'src/front/UIAction'
 import { observer } from 'mobx-react-lite'
 import { Form, Message, Panel, Toggle } from 'rsuite'
 import { useSt } from '../../../front/FrontStateCtx'
-import { JSONHighlightedCodeUI } from '../TypescriptHighlightedCodeUI'
+import { JSONHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { SectionTitleUI } from '../workspace/SectionTitle'
 
 export const PanelConfigUI = observer(function PanelConfigUI_(p: { action: UIPageComfig }) {

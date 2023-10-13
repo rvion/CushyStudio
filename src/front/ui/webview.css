@@ -258,6 +258,7 @@ body {
 
 *::-webkit-scrollbar {
     width: 20px;
+    height: 20px;
 }
 *::-webkit-scrollbar-corner {
     background: rgba(0,0,0,0);
@@ -289,3 +290,11 @@ body {
 
 .fade-in{animation:fade-in 1.2s cubic-bezier(.39,.575,.565,1.000) both}
 @keyframes fade-in{0%{opacity:0}100%{opacity:1}}
+
+
+/* ------------------------ */
+hr {
+    margin: 8px;
+    padding: 0;
+    height: 1px;
+}

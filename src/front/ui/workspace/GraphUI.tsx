@@ -3,7 +3,7 @@ import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Pane } from 'split-pane-react'
 import SplitPane from 'split-pane-react/esm/SplitPane'
 import { ActionPickerUI } from './ActionPickerUI'
-import { DraftPaneUI } from './DraftPaneUI'
+import { PafUI } from '../actions/ActionPanel'
 import { StepListUI } from './StepUI'
 
 export const GraphUI = observer(function GraphUI_(p: { depth: number }) {
@@ -25,21 +25,11 @@ export const GraphUI = observer(function GraphUI_(p: { depth: number }) {
 
             {/* 2. DRAFTS  */}
             <Pane minSize='100px' className='col' style={{ background: '#0c0c0c' }}>
-                {/* <SectionTitleUI
-                    //
-                    label='DRAFTS'
-                    // className='bg-green-950'
-                /> */}
-                <DraftPaneUI />
+                <PafUI />
             </Pane>
 
             {/* 3. STEPS */}
             <Pane minSize='100px' className='col'>
-                {/* <SectionTitleUI
-                    //
-                    label='RUNS'
-                    // className='bg-yellow-900'
-                /> */}
                 <StepListUI />
             </Pane>
         </SplitPane>

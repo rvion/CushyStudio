@@ -1,5 +1,3 @@
-import { ErrorBoundary } from 'react-error-boundary'
-
 export function ErrorBoundaryFallback({ error, resetErrorBoundary }: any) {
     // Call resetErrorBoundary() to reset the error boundary and retry the render.
 

@@ -58,6 +58,11 @@ export class PossibleActionFile {
 
     focus: Focus = 'action'
 
+    get tool() {
+        if (this.focus === 'action') return this.asAction?.value?.tools.value?.[0]
+        if (this.focus === 'autoaction') return this.asAutoAction?.value?.tools.value?.[0]
+    }
+
     // code
     asAction?: Result<ToolAndCode>
 
