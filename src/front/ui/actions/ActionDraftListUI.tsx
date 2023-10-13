@@ -27,7 +27,13 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { tool:
                       >
                           {/* ▸  */}
                           <span className='material-symbols-outlined'>repeat_one</span>
-                          {draft.data.title || 'Untitled'}
+                          <input
+                              type='text'
+                              tw='border-none bg-transparent'
+                              value={draft.data.title || 'Untitled'}
+                              onChange={(ev) => draft.update({ title: ev.target.value })}
+                          />
+
                           {/* {draft.tool.item.name} */}
                       </div>
                   ))
