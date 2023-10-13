@@ -60,7 +60,7 @@ export class Updater {
 
     private async checkForUpdates() {
         try {
-            console.log('[🚀] updater: checking for noew version')
+            console.log('[🚀] updater: checking for new version')
             this._commitCountOnHead = await this.getCommitCountForCurrentBranch()
             console.log('[🚀] updater: current version:', this.currentVersion)
             await this.fetchLastCommitAvailable()
