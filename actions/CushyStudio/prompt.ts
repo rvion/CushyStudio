@@ -1,5 +1,5 @@
 action('Prompt-V1', {
-    author: 'Cushy',
+    author: 'rvion',
     priority: 1,
     help: 'load model with optional clip-skip, loras, tome ratio, etc.',
     ui: (form) => ({

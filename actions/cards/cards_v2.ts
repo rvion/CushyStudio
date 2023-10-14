@@ -1,7 +1,7 @@
 import { prettifyIcon } from './icons/TEST'
 
 action('cards', {
-    author: '',
+    author: 'rvion',
     description: 'play with cards',
     ui: (form) => ({
         // [UI] MODEL --------------------------------------

@@ -1,5 +1,5 @@
 action('cards', {
-    author: '',
+    author: 'rvion',
     description: 'play with cards',
     ui: (form) => ({
         theme1: form.string({ default: 'purple spring' }),

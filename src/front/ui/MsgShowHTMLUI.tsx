@@ -2,11 +2,9 @@ import { observer } from 'mobx-react-lite'
 import { useLayoutEffect, useMemo } from 'react'
 
 // @ts-ignore
-import { nanoid } from 'nanoid'
 import { createPortal } from 'react-dom'
 import { renderMinimap } from 'src/minimap/Minimap'
 import { GraphL } from 'src/models/Graph'
-import { useSt } from '../FrontStateCtx'
 
 export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: GraphL }) {
     const graph = p.graph
@@ -39,6 +37,7 @@ export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: Graph
                 return (
                     <div
                         className='node'
+                        key={n.data.id}
                         style={{
                             position: 'absolute',
                             top: n.position.y,
