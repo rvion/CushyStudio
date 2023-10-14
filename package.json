@@ -21,7 +21,7 @@
     ],
     "main": "./main.js",
     "scripts": {
-        "start": "concurrently --kill-others -n vite,electron -c yellow,blue \"npm run front:dev\" \"./node_modules/.bin/electron -i src/shell\"",
+        "start": "concurrently --kill-others -n vite,electron -c yellow,blue \"npm run front:dev\" \"electron -i src/shell\"",
         "📌 FRONT": "",
         "front:shell": "electron src/shell",
         "front:watch": "vite build --watch",
