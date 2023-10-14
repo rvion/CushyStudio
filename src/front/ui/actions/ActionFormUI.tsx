@@ -9,6 +9,9 @@ import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/Typ
 import { openInVSCode } from 'src/utils/openInVsCode'
 import { cwd } from 'process'
 import { PossibleActionFile } from 'src/back/PossibleActionFile'
+import { GithubUserUI } from 'src/front/GithubAvatarUI'
+import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 
 /**
  * this is the root interraction widget
@@ -54,6 +57,9 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
                         Run
                     </Button>
                 </div>
+                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+                    <GithubUserUI username={tool.data.owner} />
+                </ErrorBoundary>
                 <ScrollablePaneUI className='flex-grow '>
                     <div>{tool.data.description}</div>
                     <form
