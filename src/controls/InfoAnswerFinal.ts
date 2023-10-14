@@ -39,6 +39,10 @@ const getDefault = (request: Requestable): any => {
         }
         return obj
     }
+    if (request.type === 'list') {
+        const obj: any = {}
+        return getDefault(request.items) ?? []
+    }
     return request.default
 }
 

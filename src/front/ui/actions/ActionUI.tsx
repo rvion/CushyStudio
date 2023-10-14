@@ -1,10 +1,14 @@
 import { observer } from 'mobx-react-lite'
 import { Message } from 'rsuite'
-import { ToolAndCode } from 'src/back/PossibleActionFile'
+import { PossibleActionFile, ToolAndCode } from 'src/back/PossibleActionFile'
 import { DraftL } from 'src/models/Draft'
 import { ActionFormUI } from './ActionFormUI'
 
-export const ActionUI = observer(function ActionUI_(p: { tac: ToolAndCode }) {
+export const ActionUI = observer(function ActionUI_(p: {
+    //
+    paf: PossibleActionFile
+    tac: ToolAndCode
+}) {
     const toolsR = p.tac.tools
     if (!toolsR.success) {
         return (
@@ -16,5 +20,5 @@ export const ActionUI = observer(function ActionUI_(p: { tac: ToolAndCode }) {
     const tool = toolsR.value[0]
     const focusedDraft: Maybe<DraftL> = tool?.focusedDraft.item
     if (focusedDraft == null) return <>no draft selected</>
-    return <ActionFormUI draft={focusedDraft} />
+    return <ActionFormUI paf={p.paf} draft={focusedDraft} />
 })

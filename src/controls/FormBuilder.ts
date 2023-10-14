@@ -83,6 +83,11 @@ export class FormBuilder {
         p: Omit<R.Requestable_items<T>, 'type'>,
     ): R.Requestable_items<T> => ({ type: 'items', ...p })
 
+    // group
+    list = <const T extends Requestable>(
+        p: Omit<R.Requestable_list<T>, 'type'>,
+    ): R.Requestable_list<T> => ({ type: 'list', ...p })
+
     /** select one */
     selectOne = <const T>(label: string, choices: T): { type: 'selectOne'; choices: T } => ({ type: 'selectOne', choices })
     selectOneOrCustom = (label: string, choices: string[]): { type: 'selectOneOrCustom'; choices: string[] } => ({

@@ -1,18 +1,25 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input, InputGroup } from 'rsuite'
+import { Button } from 'rsuite'
 import { DraftL } from 'src/models/Draft'
 import { renderToolUI } from '../../../models/renderDraftUI'
-import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { TabUI } from '../layout/TabUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { draftContext } from '../useDraft'
+import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
+import { openInVSCode } from 'src/utils/openInVsCode'
+import { cwd } from 'process'
+import { PossibleActionFile } from 'src/back/PossibleActionFile'
 
 /**
  * this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }) {
+export const ActionFormUI = observer(function ActionFormUI_(p: {
+    //
+    paf: PossibleActionFile
+    draft: DraftL
+}) {
     const draft = p.draft
     const tool = draft.tool.item
     const formDefinition = tool?.data.form ?? {}
@@ -23,7 +30,18 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }
                 className='m-4 fade-in flex flex-col flex-grow'
             >
                 <div tw='row items-center font-bold font justify-between'>
-                    <div style={{ fontSize: '1.7rem' }}>{tool.name}</div>
+                    <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
+                        <span>{tool.name}</span>
+                        <Button
+                            size='xs'
+                            color='blue'
+                            appearance='ghost'
+                            startIcon={<span className='material-symbols-outlined'>edit</span>}
+                            onClick={() => openInVSCode(cwd(), p.paf.absPath)}
+                        >
+                            Edit
+                        </Button>
+                    </div>
                     <Button
                         size='sm'
                         className='self-start'

@@ -14,11 +14,11 @@ export const ActionTabListUI = observer(function ActionTabListUI_(p: {}) {
     const clx = 'px-4 hover:bg-blue-700 cursor-pointer'
     return (
         <div tw='flex-shrink-0'>
-            {paf.absPath.endsWith('.ts') && (
+            {/* {paf.absPath.endsWith('.ts') && (
                 <div>
                     source: <img tw='mr-1' style={{ width: '1rem' }} src={assets.tsLogo} alt='' />
                 </div>
-            )}
+            )} */}
             {paf.png != null && (
                 <div tw={[clx, paf.focus === 'png' ? 'bg-gray-600' : null]} onClick={() => (paf.focus = 'png')}>
                     Png
@@ -35,31 +35,23 @@ export const ActionTabListUI = observer(function ActionTabListUI_(p: {}) {
                 </div>
             )}
             {paf.asAction != null && (
-                <>
-                    <hr />
-                    <div
-                        tw={['px-4 hover:bg-blue-700 row', paf.focus === 'action' ? 'bg-gray-600' : null]}
-                        onClick={() => (paf.focus = 'action')}
-                    >
-                        <span className='material-symbols-outlined'>dynamic_form</span>
-                        Action
-                    </div>
-                </>
+                <div
+                    tw={['px-4 hover:bg-blue-700 row', paf.focus === 'action' ? 'bg-gray-600' : null]}
+                    onClick={() => (paf.focus = 'action')}
+                >
+                    <span className='material-symbols-outlined'>dynamic_form</span>
+                    Action
+                </div>
             )}
 
             {tool && <ActionDraftListUI tool={tool} />}
-
             {paf.asAutoAction != null && (
-                <>
-                    <hr />
-                    <div tw={[clx, paf.focus === 'autoaction' ? 'bg-gray-600' : null]} onClick={() => (paf.focus = 'autoaction')}>
-                        AutoAction
-                    </div>
-                </>
+                <div tw={[clx, paf.focus === 'autoaction' ? 'bg-gray-600' : null]} onClick={() => (paf.focus = 'autoaction')}>
+                    AutoAction
+                </div>
             )}
-            {autoTool && <ActionDraftListUI tool={autoTool} />}
 
-            <hr />
+            {autoTool && <ActionDraftListUI tool={autoTool} />}
             <div tw='flex items-center'>
                 <Toggle size='sm' checked={paf.autoReload} onChange={(n) => paf.setAutoReload(n)} />
                 <div>hot-reload</div>

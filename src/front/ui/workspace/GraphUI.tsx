@@ -29,7 +29,7 @@ export const GraphUI = observer(function GraphUI_(p: { depth: number }) {
             </Pane>
 
             {/* 3. STEPS */}
-            <Pane minSize='100px' className='col'>
+            <Pane minSize='100px' className='col' style={{ borderLeft: '1px solid #2d2d2d' }}>
                 <StepListUI />
             </Pane>
         </SplitPane>

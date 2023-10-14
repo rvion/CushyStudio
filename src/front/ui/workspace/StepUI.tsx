@@ -14,7 +14,7 @@ export const StepListUI = observer(function StepListUI_(p: {}) {
     const steps = st.db.steps
     const lastGraph = st.db.graphs.last()
     return (
-        <div className='flex flex-col' style={{ borderLeft: '1px solid #2d2d2d' }}>
+        <div className='flex flex-col'>
             {/* <Panel className='nobg' header='Last Graph' collapsible defaultExpanded> */}
             {lastGraph && <GraphPreviewUI graph={lastGraph} />}
             {/* </Panel> */}
@@ -44,7 +44,7 @@ export const StepUI = observer(function StepUI_(p: { step: StepL }) {
             header={
                 <div style={{ borderTop: '1px solid #2d2d2d' }} className='flex justify-between text-xs text-gray-400 mt-2'>
                     <b>{step.tool.item.name}</b>
-                    <div className='text-sm text-gray-400'>{_formatPreviewDate(new Date(step.createdAt))}</div>
+                    <div className='text-xs pr-4 text-gray-400'>{_formatPreviewDate(new Date(step.createdAt))}</div>
                 </div>
             }
         >

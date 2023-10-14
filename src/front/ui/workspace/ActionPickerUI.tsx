@@ -1,15 +1,15 @@
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
-import { Message, Tree } from 'rsuite'
+import { Tree } from 'rsuite'
 import { assets } from 'src/front/ui/assets'
 import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
-import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
+import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
-import { TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
-import { SectionTitleUI } from './SectionTitle'
-import { getIconForFilePath } from '../utils/filePathIcon'
 import { TooltipUI } from '../layout/TooltipUI'
+import { TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
+import { getIconForFilePath } from '../utils/filePathIcon'
+import { SectionTitleUI } from './SectionTitle'
 
 export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const st = useSt()
@@ -96,23 +96,8 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                     const tool0 = paf.mainTool
                     if (tool0 == null) return null
                     pj.focusTool(tool0)
-                    // console.log(res?.tools.length)
-
-                    // setValue(value)
                 }}
-                // renderTreeNode={(nodeData) => {
-                //     return <div>{nodeData.label}</div>
-                // }}
-                // draggable
-                // onDrop={({ createUpdateDataFunction }, event) => setTreeData(createUpdateDataFunction(treeData))}
             />
-            {/* <div className='flex-grow'></div> */}
-            <Message showIcon className='m-2' type='info'>
-                {/* <span className='material-symbols-outlined'>folder-</span> */}
-                Add files to `actions` folder to create action
-            </Message>
-            {/* <FooBarUI /> */}
-            {/* <PanelImport /> */}
         </>
     )
 })

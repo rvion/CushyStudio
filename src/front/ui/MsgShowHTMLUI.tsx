@@ -1,19 +1,16 @@
 import { observer } from 'mobx-react-lite'
-import { useLayoutEffect, useMemo, useRef } from 'react'
+import { useLayoutEffect, useMemo } from 'react'
 
 // @ts-ignore
-import pagemap from 'pagemap'
-import { renderMinimap } from 'src/minimap/Minimap'
 import { nanoid } from 'nanoid'
+import { createPortal } from 'react-dom'
+import { renderMinimap } from 'src/minimap/Minimap'
 import { GraphL } from 'src/models/Graph'
 import { useSt } from '../FrontStateCtx'
-import { createPortal } from 'react-dom'
 
 export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: GraphL }) {
-    const st = useSt()
     const graph = p.graph
     const elMap = document.querySelector('#map')
-    const id = useMemo(() => nanoid(), [])
     useMemo(() => graph.updateCyto(), [graph])
     useLayoutEffect(() => {
         if (graph == null) return console.log('❌ no graph yet')
@@ -34,7 +31,7 @@ export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: Graph
     }, [graph, elMap])
 
     const domNode = document.getElementById('hovered-graph')
-    if (domNode == null) return <>no portal</>
+    if (domNode == null) return null
     const cyto = graph.currentCyto
     const fullGraph = (
         <>

@@ -43,6 +43,8 @@ export type Requestable_manualMask   = InptReq<'manualMask',    null,    { image
 export type Requestable_paint        = InptReq<'paint',         null,    { url: string }> // prettier-ignore
 export type Requestable_samMaskPoints= InptReq<'samMaskPoints', null,    { imageInfo: ImageT }> // prettier-ignore
 //
+export type Requestable_list    <T extends Requestable > = InptReq< 'list', InfoAnswer<T>[],  {items: T}> // prettier-ignore
+//
 export type Requestable_items   <T extends { [key: string]: Requestable }> = InptReq< 'items',  {[k in keyof T]: InfoAnswer<T[k]>},  {items: T}> // prettier-ignore
 export type Requestable_itemsOpt<T extends { [key: string]: Requestable }> = InptOpt< 'items?', {[k in keyof T]: InfoAnswer<T[k]>},  {items: T}> // prettier-ignore
 //
@@ -85,6 +87,7 @@ export type Requestable =
     | Requestable_manualMask
     | Requestable_paint
     /** group */
+    | Requestable_list<any>
     | Requestable_items<any> // a group that is always on
     | Requestable_itemsOpt<any> // a group that can be toggle on/off (wrap results in a Maybe)
     /** select one */
