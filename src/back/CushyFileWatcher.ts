@@ -74,6 +74,9 @@ export class CushyFileWatcher {
         const files = readdirSync(dir)
         // console.log(files)
         for (const file of files) {
+            if (file.startsWith('.')) continue
+            if (file.startsWith('_')) continue
+
             const absPath = asAbsolutePath(join(dir, file))
             const relPath = asRelativePath(path.relative(this.st.actionsFolderPath, absPath))
             const stat = statSync(absPath)
@@ -90,8 +93,6 @@ export class CushyFileWatcher {
                 // console.log('2', folderEntry)
                 parentStack.push(folderEntry)
             } else {
-                if (file.startsWith('.')) continue
-                if (file.startsWith('_')) continue
                 const relPath = asRelativePath(path.relative(this.st.actionsFolderPath, absPath))
                 // console.log('[💙] TOOL: handling', relPath)
                 const paf = new PossibleActionFile(this.st, absPath, relPath)
