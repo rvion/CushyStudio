@@ -151,7 +151,7 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint
                     // height: '612px',
                 }}
                 id='miniPaint'
-                src={'http://localhost:8288/minipaint/index.html'}
+                src={'http://localhost:8788/minipaint/index.html'}
                 allow='camera'
             ></iframe>
 

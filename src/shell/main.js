@@ -61,8 +61,8 @@ async function START() {
             console.log('waiting for cushy to start')
             retryCount++
             try {
-                res = await fetch('http://localhost:8288') //
-                    .catch((err) => fetch('http://127.0.0.1:8288'))
+                res = await fetch('http://localhost:8788') //
+                    .catch((err) => fetch('http://127.0.0.1:8788'))
 
                 console.log(res.status)
                 if (res.status !== 200) {
@@ -76,7 +76,7 @@ async function START() {
         } while (!viteStarted)
 
         // load cushy
-        mainWindow.loadURL('http://localhost:8288', { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
+        mainWindow.loadURL('http://localhost:8788', { extraHeaders: 'pragma: no-cache\n' }) // Load your localhost URL
 
         // Open DevTools (optional)
         // mainWindow.webContents.openDevTools();

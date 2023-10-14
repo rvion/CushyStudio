@@ -15,7 +15,7 @@ export default defineConfig({
         // viteSingleFile(),
     ],
     server: {
-        port: 8288,
+        port: 8788,
         watch: {
             ignored: [
                 //

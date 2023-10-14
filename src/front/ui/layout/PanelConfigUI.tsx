@@ -41,7 +41,7 @@ export const PanelConfigUI = observer(function PanelConfigUI_(p: { action: UIPag
                                             ? parseInt(v)
                                             : typeof v === 'number'
                                             ? Math.abs(v)
-                                            : 8288,
+                                            : 8788,
                                 })
                             }
                             type='number'
