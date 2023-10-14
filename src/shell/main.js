@@ -1,5 +1,7 @@
 START()
 
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
+
 async function START() {
     try {
         const patchElectronIconAndName = require('./patch.js').default
