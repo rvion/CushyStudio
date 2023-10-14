@@ -54,7 +54,7 @@ export const runAutolayout = async (graph: GraphL): Promise<CytoJSON> => {
                 source: from,
                 target: to,
             }
-            console.log(data)
+            // ❌ console.log(data)
             elements.push({ data })
         }
     }

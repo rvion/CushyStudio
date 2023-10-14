@@ -13,8 +13,8 @@ export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: Graph
     const elMap = document.querySelector('#map')
     useMemo(() => graph.updateCyto(), [graph])
     useLayoutEffect(() => {
-        if (graph == null) return console.log('❌ no graph yet')
-        if (elMap == null) return console.log('❌ no elMap yet')
+        if (graph == null) return // ❌ console.log('❌ no graph yet')
+        if (elMap == null) return // ❌ console.log('❌ no elMap yet')
         renderMinimap(document.querySelector('#map')!, {
             viewport: domNode,
             styles: {
