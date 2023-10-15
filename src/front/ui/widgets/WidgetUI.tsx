@@ -3,7 +3,7 @@ import * as R from 'src/controls/InfoRequest'
 
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Tooltip, Whisper } from 'rsuite'
+import { Message, Tooltip, Whisper } from 'rsuite'
 import { WidgetPromptUI } from '../../../prompter/WidgetPromptUI'
 import { exhaust } from '../../../utils/ComfyUtils'
 import { useDraft } from '../useDraft'
@@ -28,13 +28,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     vertical?: boolean
 }) {
     const { rootKey, req } = p
-    const draft = useDraft()
     let tooltip: Maybe<string>
     let label: Maybe<string>
-    // const fullPath = p.path.join('/')
     label = req.input.label ?? rootKey
     tooltip = req.input.tooltip
-    // if (fullPath !== label) tooltip = `${fullPath} ${tooltip ?? ''}`
     return (
         <div
             // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
@@ -75,34 +72,40 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
  * collect the responses and submit them to the back once completed and valid.
  */
+// prettier-ignore
 export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; focus?: boolean }) {
     const req = p.req
-    // widgets
-    if (req instanceof R.Requestable_int) return <WidgetNumUI req={req} />
-    if (req instanceof R.Requestable_intOpt) return <WidgetNumOptUI req={req} />
-    if (req instanceof R.Requestable_float) return <WidgetNumUI req={req} />
-    if (req instanceof R.Requestable_floatOpt) return <WidgetNumOptUI req={req} />
-    if (req instanceof R.Requestable_str) return <WidgetStrUI req={req} />
-    if (req instanceof R.Requestable_strOpt) return <WidgetStrOptUI req={req} />
-    if (req instanceof R.Requestable_image) return <WidgetSelectImageUI req={req} />
-    if (req instanceof R.Requestable_imageOpt) return <WidgetSelectImageUI req={req} />
-    if (req instanceof R.Requestable_list) return <WidgetListUI req={req} />
-    if (req instanceof R.Requestable_group) return <WidgetItemsUI req={req} />
-    if (req instanceof R.Requestable_groupOpt) return <WidgetItemsOptUI req={req} />
-    if (req instanceof R.Requestable_size) return <WigetSizeUI req={req} />
-    if (req instanceof R.Requestable_enum) return <WidgetEnumUI req={req} />
-    if (req instanceof R.Requestable_enumOpt) return <WidgetEnumUI req={req} />
-    if (req instanceof R.Requestable_matrix) return <WidgetMatrixUI req={req} />
-    if (req instanceof R.Requestable_bool) return <WidgetBoolUI req={req} />
-    if (req instanceof R.Requestable_prompt) return <WidgetPromptUI req={req} />
-    if (req instanceof R.Requestable_promptOpt) return <WidgetPromptUI req={req} />
-    if (req instanceof R.Requestable_loras) return <WidgetLorasUI req={req} />
-    if (req instanceof R.Requestable_selectMany) return <>TODO</>
+    if (req==null) return <>NULL</>
+    if (req instanceof R.Requestable_int)                return <WidgetNumUI         req={req} />
+    if (req instanceof R.Requestable_intOpt)             return <WidgetNumOptUI      req={req} />
+    if (req instanceof R.Requestable_float)              return <WidgetNumUI         req={req} />
+    if (req instanceof R.Requestable_floatOpt)           return <WidgetNumOptUI      req={req} />
+    if (req instanceof R.Requestable_str)                return <WidgetStrUI         req={req} />
+    if (req instanceof R.Requestable_strOpt)             return <WidgetStrOptUI      req={req} />
+    if (req instanceof R.Requestable_image)              return <WidgetSelectImageUI req={req} />
+    if (req instanceof R.Requestable_imageOpt)           return <WidgetSelectImageUI req={req} />
+    if (req instanceof R.Requestable_list)               return <WidgetListUI        req={req} />
+    if (req instanceof R.Requestable_group)              return <WidgetItemsUI       req={req} />
+    if (req instanceof R.Requestable_groupOpt)           return <WidgetItemsOptUI    req={req} />
+    if (req instanceof R.Requestable_size)               return <WigetSizeUI         req={req} />
+    if (req instanceof R.Requestable_enum)               return <WidgetEnumUI        req={req} />
+    if (req instanceof R.Requestable_enumOpt)            return <WidgetEnumUI        req={req} />
+    if (req instanceof R.Requestable_matrix)             return <WidgetMatrixUI      req={req} />
+    if (req instanceof R.Requestable_bool)               return <WidgetBoolUI        req={req} />
+    if (req instanceof R.Requestable_prompt)             return <WidgetPromptUI      req={req} />
+    if (req instanceof R.Requestable_promptOpt)          return <WidgetPromptUI      req={req} />
+    if (req instanceof R.Requestable_loras)              return <WidgetLorasUI       req={req} />
+    if (req instanceof R.Requestable_selectMany)         return <>TODO</>
     if (req instanceof R.Requestable_selectManyOrCustom) return <>TODO</>
-    if (req instanceof R.Requestable_selectOne) return <>TODO</>
-    if (req instanceof R.Requestable_selectOneOrCustom) return <>TODO</>
+    if (req instanceof R.Requestable_selectOne)          return <>TODO</>
+    if (req instanceof R.Requestable_selectOneOrCustom)  return <>TODO</>
 
     exhaust(req)
-    console.log(`🔴`, (req as any).type)
-    return <div>{JSON.stringify(req)} not supported </div>
+    console.log(`🔴`, (req as any).type, req)
+    return <Message type='error' showIcon>
+        <div>{(req as any).type}</div>
+        <div>{(req as any).constructor.name}</div>
+        <div>{typeof (req as any)}</div>
+        not supported
+     </Message>
 })

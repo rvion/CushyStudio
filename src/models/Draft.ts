@@ -30,7 +30,7 @@ export class DraftL {
 
     start = (): StepL => {
         // console.log('🟢', JSON.stringify(this.data))
-        const req = this.xxx.value
+        const req = this.form.value
         if (req == null) throw new Error('invalid req')
         const step = this.graph.item.createStep({
             toolID: this.data.toolID,
@@ -41,33 +41,33 @@ export class DraftL {
         return step
     }
 
-    get finalJSON(): any {
-        if (!this.xxx.success) return {}
-        return this.xxx.value.result
-    }
+    // get finalJSON(): any {
+    //     if (!this.xxx.success) return {}
+    //     return this.xxx.value.result
+    // }
 
     focus = () => this.graph.item.update({ focusedDraftID: this.id })
     reset = () => (this.data.params = {})
     getPathInfo = (path: FormPath): string => this.id + '/' + path.join('/')
 
-    xxx!: Result<Requestable>
+    form!: Result<Requestable>
     onHydrate = () => {
         const action = this.tool.item.retrieveAction()
         if (!action.success) {
-            this.xxx = __FAIL('action failed')
+            this.form = __FAIL('action failed')
             return
         }
         const uiFn = action.value.ui
         if (uiFn == null) {
-            this.xxx = __FAIL('no UI function')
+            this.form = __FAIL('no UI function')
             return
         }
         try {
             const formBuilder = new FormBuilder(this.st.schema)
-            const req: Requestable = uiFn(formBuilder)
-            this.xxx = __OK(req)
+            const req: Requestable = formBuilder.group({ items: uiFn(formBuilder) })
+            this.form = __OK(req)
         } catch (e) {
-            this.xxx = __FAIL('ui function crashed', e)
+            this.form = __FAIL('ui function crashed', e)
             return
         }
     }

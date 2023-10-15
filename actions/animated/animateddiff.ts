@@ -1,25 +1,24 @@
 action('animateddiff-2023-10-03', {
     author: 'animateddiff',
-    ui: (form) =>
-        form.ui({
-            preText: form.str({
-                default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
-            }),
-            seed: form.intOpt({ group: 'sampler' }),
-            text: form.str({
-                textarea: true,
-                default: [
-                    `"0" :"spring day, blossoms, flowers, cloudy",`,
-                    `"4" :"summer day, sunny, leaves",`,
-                    `"8" :"fall day, colorful leaves dancing in the wind",`,
-                    `"12" :"winter day, snowing, cold, jacket"`,
-                    ``,
-                ].join('\n'),
-            }),
-            removeBG: form.bool({ default: false }),
-            steps: form.int({ default: 20, group: 'sampler' }),
-            frames: form.int({ default: 16, group: 'video' }),
+    ui: (form) => ({
+        preText: form.str({
+            default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',
         }),
+        seed: form.intOpt({ group: 'sampler' }),
+        text: form.str({
+            textarea: true,
+            default: [
+                `"0" :"spring day, blossoms, flowers, cloudy",`,
+                `"4" :"summer day, sunny, leaves",`,
+                `"8" :"fall day, colorful leaves dancing in the wind",`,
+                `"12" :"winter day, snowing, cold, jacket"`,
+                ``,
+            ].join('\n'),
+        }),
+        removeBG: form.bool({ default: false }),
+        steps: form.int({ default: 20, group: 'sampler' }),
+        frames: form.int({ default: 16, group: 'video' }),
+    }),
     run: async (flow, p) => {
         const graph = flow.nodes
 

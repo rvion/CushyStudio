@@ -1,5 +1,5 @@
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
-import type { Action } from 'src/core/Requirement'
+import type { Action, RequestableDict } from 'src/core/Requirement'
 import type { STATE } from 'src/front/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
@@ -277,7 +277,7 @@ export class PossibleActionFile {
         const { codeJS, codeTS } = p
 
         // this.DEBUG_CODE = codeTS
-        const actionsPool: { name: string; action: Action<Requestable> }[] = []
+        const actionsPool: { name: string; action: Action<RequestableDict> }[] = []
         const registerActionFn = (name: string, action: Action<any>): void => {
             console.info(`[💙] TOOL: found action: "${name}"`, { path: this.absPath })
             actionsPool.push({ name, action })

@@ -5,13 +5,15 @@ import type { FormBuilder, ReqResult, Requestable } from '../controls/InfoReques
 // 1. the main abstraction of cushy are actions.
 /** quick function to help build actions in a type-safe way */
 
-export const action = <const F extends Requestable>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
-export type ActionType = <const F extends Requestable>(name: string, t: Omit<Action<F>, 'name'>) => Action<F>
+// export const action = <const F extends RequestableDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
+export type ActionType = <const F extends RequestableDict>(name: string, t: Omit<Action<F>, 'name'>) => Action<F>
 
 // export type FormDefinition = { [key: string]: Requestable }
 export type FormResult<Req extends Requestable> = ReqResult<Req>
 
-export type Action<Req extends Requestable> = {
+export type RequestableDict = { [key: string]: Requestable }
+
+export type Action<FIELDS extends RequestableDict> = {
     /** who did that? */
     author: string
     /** this description will show-up at the top of the action form */
@@ -23,11 +25,11 @@ export type Action<Req extends Requestable> = {
     /** temporary hack so I can work more efficiently (lower first) */
     priority?: number
     /** the list of dependencies user can specify */
-    ui?: (form: FormBuilder /*, flow: Workflow*/) => Req
+    ui?: (form: FormBuilder /*, flow: Workflow*/) => FIELDS
     /** extra list of dependencies */
     // requirement?: (builder: ReqBuilder) => Reqs
     /** the code to run */
-    run: (f: Runtime, r: FormResult<Req>) => void | Promise<void>
+    run: (f: Runtime, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
     /** next actions to suggest user */
     next?: string[]
 }

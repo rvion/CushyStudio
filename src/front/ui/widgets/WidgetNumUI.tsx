@@ -4,14 +4,14 @@ import { Requestable_float, Requestable_int } from 'src/controls/InfoRequest'
 
 export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Requestable_int | Requestable_float }) {
     const req = p.req
+    const val = req.state.val
     const mode = req instanceof Requestable_int ? 'int' : 'float'
-    const value = req.state.val
     const step = mode === 'int' ? 1 : 0.1
 
     return (
         <InputNumber //
             size='sm'
-            value={value}
+            value={val}
             min={req.input.min}
             max={req.input.max}
             step={step}

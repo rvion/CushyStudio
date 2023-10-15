@@ -7,7 +7,7 @@ import { LiveCollection } from '../db/LiveCollection'
 import { deepCopyNaive } from '../utils/ComfyUtils'
 import { LiveRefOpt } from '../db/LiveRefOpt'
 import { FormBuilder, Requestable } from 'src/controls/InfoRequest'
-import { Action } from 'src/core/Requirement'
+import { Action, RequestableDict } from 'src/core/Requirement'
 import { ManualPromise } from 'src/utils/ManualPromise'
 import { Result, ResultFailure, __FAIL, __OK } from 'src/utils/Either'
 
@@ -50,7 +50,7 @@ export class ToolL {
 
         // eval action
         console.log('[🤖] evaluating code')
-        const actionsPool: { name: string; action: Action<Requestable> }[] = []
+        const actionsPool: { name: string; action: Action<RequestableDict> }[] = []
         const registerActionFn = (name: string, action: Action<any>): void => {
             actionsPool.push({ name, action })
         }

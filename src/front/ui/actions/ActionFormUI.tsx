@@ -86,17 +86,17 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
                             draft.start()
                         }}
                     >
-                        <ResultWrapperUI res={draft.xxx} whenValid={(req) => <WidgetUI req={req} />} />
+                        <ResultWrapperUI res={draft.form} whenValid={(req) => <WidgetUI req={req} />} />
                     </form>
                     <TabUI title='Debug:' tw='mt-auto'>
                         <div>no</div>
                         <div></div>
-                        <div>result</div>
-                        <JSONHighlightedCodeUI code={JSON.stringify(draft.finalJSON, null, 4)} />
+                        {/* <div>result</div> */}
+                        {/* <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} /> */}
                         <div>form</div>
-                        <JSONHighlightedCodeUI code={JSON.stringify(draft.xxx.value?.result, null, 4)} />
-                        <div>state</div>
-                        <JSONHighlightedCodeUI code={JSON.stringify(draft.xxx.value?.state, null, 4)} />
+                        <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
+                        {/* <div>state</div> */}
+                        {/* <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.state, null, 4)} /> */}
                         <div>ts</div>
                         <TypescriptHighlightedCodeUI code={tool.data.codeTS ?? ''} />
                         <div>js</div>
