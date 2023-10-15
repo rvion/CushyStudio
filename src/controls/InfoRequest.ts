@@ -10,6 +10,7 @@ import type { PossibleSerializedNodes } from 'src/prompter/plugins/CushyDebugPlu
 import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
 
 import { makeAutoObservable } from 'mobx'
+import { bang } from 'src/utils/bang'
 
 export type Widget<
     // unique identifier
@@ -380,12 +381,33 @@ export class Requestable_matrix
     implements IRequestable<Requestable_matrix_input, Requestable_matrix_state, Requestable_matrix_output>
 {
     type = 'matrix'
+    rows: string[]
+    cols: string[]
+
     constructor(
         public schema: SchemaL,
         public input: Requestable_matrix_input,
         public prevState?: Requestable_matrix_state,
     ) {
-        this.state = prevState ?? { active: true, selected: [] } // 🔴
+        this.state = prevState ?? { active: true, selected: [] } // 🔴 handle default values
+
+        const rows = input.rows
+        const cols = input.cols
+        // init all cells to false
+        for (const [rowIx, row] of rows.entries()) {
+            for (const [colIx, col] of cols.entries()) {
+                this.store.set(this.key(row, col), { x: rowIx, y: colIx, col, row, value: false })
+            }
+        }
+        // apply default value
+        const values = this.state.selected
+        if (values)
+            for (const v of values) {
+                this.store.set(this.key(rows[v.x], cols[v.y]), v)
+            }
+        this.rows = input.rows
+        this.cols = input.cols
+        // make observable
         makeAutoObservable(this)
     }
     state: Requestable_matrix_state
@@ -393,6 +415,52 @@ export class Requestable_matrix
         // if (!this.state.active) return undefined
         return this.state.selected
     }
+
+    // (((((((((((((((((((((((((((((
+    private sep = ' &&& '
+    private store = new Map<string, CELL>()
+    private key = (row: string, col: string) => `${row}${this.sep}${col}`
+    get allCells() { return Array.from(this.store.values()) } // prettier-ignore
+    UPDATE = () => (this.state.selected = this.RESULT)
+    get RESULT() {
+        return this.allCells.filter((v) => v.value)
+    }
+
+    get firstValue() {
+        return this.allCells[0]?.value ?? false
+    }
+
+    setAll = (value: boolean) => {
+        for (const v of this.allCells) v.value = value
+        // this.p.set(this.values)
+    }
+
+    setRow = (row: string, val: boolean) => {
+        for (const v of this.cols) {
+            const cell = this.get(row, v)
+            cell.value = val
+        }
+        this.UPDATE()
+    }
+
+    setCol = (col: string, val: boolean) => {
+        for (const r of this.rows) {
+            const cell = this.get(r, col)
+            cell.value = val
+        }
+        this.UPDATE()
+    }
+
+    get = (row: string, col: string): CELL => {
+        return bang(this.store.get(this.key(row, col)))
+    }
+
+    set = (row: string, col: string, value: boolean) => {
+        const cell = this.get(row, col)
+        cell.value = value
+        this.UPDATE()
+    }
+    // )))))))))))))))))))))))))))))
 }
 
 // 🅿️ loras ==============================================================================
