@@ -15,7 +15,6 @@ import { exhaust } from '../utils/ComfyUtils'
 import { __FAIL, __OK, type Result } from '../utils/Either'
 import { ManualPromise } from '../utils/ManualPromise'
 import { transpileCode } from './transpiler'
-import { FormBuilder, Requestable } from 'src/controls/InfoRequest'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -283,10 +282,6 @@ export class PossibleActionFile {
             actionsPool.push({ name, action })
         }
 
-        // creating a formBuilder
-        // const schema = this.st.schema
-        // const formBuilder = new FormBuilder(schema)
-
         try {
             const ProjectScriptFn = new Function('action', codeJS)
             await ProjectScriptFn(registerActionFn)
@@ -301,7 +296,7 @@ export class PossibleActionFile {
                     description: a.action.description,
                     name: a.name,
                     priority: a.action.priority ?? 100,
-                    codeTS: codeTS,
+                    // codeTS: codeTS,
                     codeJS: codeJS,
                 })
                 if (tool.drafts.items.length === 0) {

@@ -24,7 +24,7 @@ export type ToolT = {
     description?: string
     file: AbsolutePath
     // form?: Maybe<(fb: FormBuilder) => Requestable>
-    codeTS?: string
+    // codeTS?: string
     codeJS?: string
     focusedDraftID?: Maybe<DraftID> // 🔴
 }
