@@ -126,7 +126,7 @@ export class GraphL {
             outputGraphID: this.clone({ focusedStepID: null, focusedDraftID: null }).id,
             // params: deepCopyNaive(draft.params ?? {}),
             actionResult: draft.actionResult,
-            actionState: draft.actionState,
+            // actionState: draft.actionState,
             status: Status.New,
         })
         this.update({ focusedStepID: step.id })
