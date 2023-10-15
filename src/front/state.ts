@@ -69,7 +69,7 @@ export class STATE {
                 this.dbHealth = { status, size, sizeTxt }
             })
         }
-        store.dbSizeWatcherInterval = setInterval(updateDBSize, 30_000)
+        store.dbSizeWatcherInterval = setInterval(updateDBSize, 2_000)
         updateDBSize()
     }
 
