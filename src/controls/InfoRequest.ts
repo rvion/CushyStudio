@@ -690,7 +690,7 @@ export class Requestable_selectManyOrCustom implements IRequest<'selectManyOrCus
 }
 
 // 🅿️ list ==============================================================================
-export type Requestable_list_input<T extends Requestable> = ReqInput<{ /* 🟢 NO DEFAULT */ mkItem: (ix: number) => T }>
+export type Requestable_list_input<T extends Requestable> = ReqInput<{ /* 🟢 NO DEFAULT */ of: (ix: number) => T }>
 export type Requestable_list_serial<T extends Requestable> = { active: true; items: T['$JSON'][] }
 export type Requestable_list_state<T extends Requestable> = { active: true; items: T[] }
 export type Requestable_list_output<T extends Requestable> = T['$Output'][]
@@ -705,7 +705,7 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
         public input: Requestable_list_input<T>,
         serial?: Requestable_list_serial<T>,
     ) {
-        this._reference = input.mkItem(0)
+        this._reference = input.of(0)
         if (serial) {
             this.state = {
                 active: serial.active,
@@ -725,7 +725,7 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
     get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_list_output<T> { return this.state.items.map((i) => i.result) }
     addItem() {
-        this.state.items.push(this.input.mkItem(this.state.items.length))
+        this.state.items.push(this.input.of(this.state.items.length))
     }
 }
 
