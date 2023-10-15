@@ -31,6 +31,10 @@ export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: Graph
     const domNode = document.getElementById('hovered-graph')
     if (domNode == null) return null
     const cyto = graph.currentCyto
+    if (cyto.elements.nodes == null) {
+        console.log('❓')
+        return null
+    }
     const fullGraph = (
         <>
             {cyto.elements.nodes.map((n) => {
