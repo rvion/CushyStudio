@@ -68,7 +68,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 }}
             >
                 <WidgetUI //
-                    key={[draft.id, p.path].join('/')}
+                    // key={[draft.id, p.path].join('/')}
                     path={path}
                     req={req}
                     focus={ix === 0}
@@ -88,42 +88,32 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     req: R.Requestable
     focus?: boolean
 }) {
-    const draft = useDraft()
     const req = p.req
-
-    const uist = new R.WidgetState(req, p.path, draft)
-    // // primitives
-    // const get = () => draft.getAtPath(p.path)
-    // const set = (next: any) => draft.setAtPath(p.path, next)
-    // const def = () => req.default
-
     // widgets
-    if (req.type === 'int') return <WidgetNumUI mode='int' />
-    if (req.type === 'int?') return <WidgetNumOptUI mode='int' />
-    if (req.type === 'float') return <WidgetNumUI mode='float' />
-    if (req.type === 'float?') return <WidgetNumOptUI mode='float' />
-    if (req.type === 'str') return <WidgetStrUI textarea={req.textarea} />
-    if (req.type === 'str?') return <WidgetStrOptUI textarea={req.textarea} />
-    if (req.type === 'image') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ />
-    if (req.type === 'image?') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ />
-    if (req.type === 'enum') return <WidgetEnumUI autofocus={p.focus} enumName={req.enumName} />
-    if (req.type === 'enum?')   return <WidgetEnumUI autofocus={p.focus}  enumName={req.enumName} optional /> // prettier-ignore
-    if (req.type === 'matrix') return <WidgetMatrixUI rows={req.rows} cols={req.cols} />
-    // 🔶 TODO: SHOULD BETTER SUPPORT DEFAULTS
-    if (req.type === 'list') return <WidgetListUI />
-    if (req.type === 'items') return <WidgetItemsUI get={get} set={set} path={p.path} req={req} />
-    if (req.type === 'items?') return <WidgetItemsOptUI get={get} set={set} path={p.path} req={req} />
-    if (req.type === 'bool') return <WidgetBoolUI get={get} set={set} optional={false} />
-    if (req.type === 'bool?') return <WidgetBoolUI get={get} set={set} optional={true} />
-    if (req.type === 'prompt') return <WidgetPromptUI get={get} set={set} />
-    if (req.type === 'prompt?') return <WidgetPromptUI get={get} set={set} nullable />
-    if (req.type === 'loras') return <WidgetLorasUI get={get} set={set} />
-    // 🔶 TODO: SHOULD BE FIXED SOON
-    if (req.type === 'selectMany') return <>TODO</>
-    if (req.type === 'selectManyOrCustom') return <>TODO</>
-    if (req.type === 'selectOne') return <>TODO</>
-    if (req.type === 'selectOneOrCustom') return <>TODO</>
-    if (req.type === 'size') return <>TODO</>
+    if (req instanceof R.Requestable_int) return <WidgetNumUI req={req} />
+    if (req instanceof R.Requestable_intOpt) return <WidgetNumOptUI req={req} />
+    if (req instanceof R.Requestable_float) return <WidgetNumUI req={req} />
+    if (req instanceof R.Requestable_floatOpt) return <WidgetNumOptUI req={req} />
+    if (req instanceof R.Requestable_str) return <WidgetStrUI req={req} />
+    if (req instanceof R.Requestable_strOpt) return <WidgetStrOptUI req={req} />
+    if (req instanceof R.Requestable_image) return <WidgetSelectImageUI req={req} />
+    if (req instanceof R.Requestable_imageOpt) return <WidgetSelectImageUI req={req} />
+    if (req instanceof R.Requestable_enum) return <WidgetEnumUI req={req} />
+    if (req instanceof R.Requestable_enumOpt) return <WidgetEnumUI req={req} />
+    if (req instanceof R.Requestable_matrix) return <WidgetMatrixUI req={req} />
+    if (req instanceof R.Requestable_list) return <WidgetListUI req={req} />
+    if (req instanceof R.Requestable_group) return <WidgetItemsUI req={req} />
+    if (req instanceof R.Requestable_groupOpt) return <WidgetItemsOptUI req={req} />
+    if (req instanceof R.Requestable_bool) return <WidgetBoolUI req={req} />
+    if (req instanceof R.Requestable_boolOpt) return <WidgetBoolUI req={req} />
+    if (req instanceof R.Requestable_prompt) return <WidgetPromptUI req={req} />
+    if (req instanceof R.Requestable_promptOpt) return <WidgetPromptUI req={req} />
+    if (req instanceof R.Requestable_loras) return <WidgetLorasUI req={req} />
+    if (req instanceof R.Requestable_selectMany) return <>TODO</>
+    if (req instanceof R.Requestable_selectManyOrCustom) return <>TODO</>
+    if (req instanceof R.Requestable_selectOne) return <>TODO</>
+    if (req instanceof R.Requestable_selectOneOrCustom) return <>TODO</>
+    if (req instanceof R.Requestable_size) return <>TODO</>
 
     exhaust(req)
     console.log(`🔴`, (req as any).type)

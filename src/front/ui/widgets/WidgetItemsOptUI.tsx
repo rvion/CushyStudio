@@ -7,33 +7,24 @@ import { Panel, Toggle } from 'rsuite'
 import { WidgetWithLabelUI } from './WidgetUI'
 
 export const WidgetItemsOptUI = observer(function WidgetItemsOptUI_(p: {
-    x: Requestable_groupOpt<{ [key: string]: Requestable }>
-    // get: () => boolean
-    // set: (v: boolean) => void
-    // path: FormPath
-    // req: Requestable_groupOpt<any>
+    req: Requestable_groupOpt<{ [key: string]: Requestable }>
 }) {
-    const x = p.x
-    // const req = p.req
-    // const draft = useDraft()
-    // const checked = draft.getAtPath([...p.path, '__enabled__'])
-    const checked = x.state.active
+    const req = p.req
+    const checked = req.state.active
     return (
         <div>
             <Toggle
                 // size='sm'
-                checked={x.state.active}
-                onChange={(v) => (x.state.active = v)}
+                checked={req.state.active}
+                onChange={(v) => (req.state.active = v)}
             />
             {checked &&
-                Object.entries(x.state.values).map(([rootKey, req], ix) => {
-                    // const path = [...p.path, rootKey]
+                Object.entries(req.state.values).map(([rootKey, sub], ix) => {
                     return (
                         <div key={rootKey}>
-                            {/* <div>{i[0]}</div> */}
                             <WidgetWithLabelUI //
                                 rootKey={rootKey}
-                                req={req}
+                                req={sub}
                             />
                         </div>
                     )
