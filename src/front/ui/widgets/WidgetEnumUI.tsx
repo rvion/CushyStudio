@@ -3,35 +3,36 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { SelectPicker } from 'rsuite'
 import { useProject } from '../../ProjectCtx'
+import { Requestable_enum, Requestable_enumOpt } from 'src/controls/InfoRequest'
 
-export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
-    enumName: string
-    autofocus?: boolean
-    get: () => EnumValue | null
-    def: () => Maybe<EnumValue>
-    set: (v: EnumValue | null) => void
-    optional?: boolean
+type T = {
+    label: EnumValue
+    value: EnumValue | null
+}[]
+
+export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: {
+    req: Requestable_enum<K> | Requestable_enumOpt<K>
 }) {
-    type T = {
-        label: EnumValue
-        value: EnumValue | null
-    }[]
+    const req = p.req
     const project = useProject()
     const schema = project.schema
+    const enumName = req.input.enumName
+    const isOptional = req instanceof Requestable_enumOpt
+
     const options = useMemo(() => {
         if (schema == null) return []
-        const x: T = schema!.getEnumOptionsForSelectPicker(p.enumName)
-        if (p.optional) x.unshift({ label: 'none', value: null })
+        const x: T = schema!.getEnumOptionsForSelectPicker(enumName)
+        if (isOptional) x.unshift({ label: 'none', value: null })
         return x
-    }, [schema, p.optional])
+    }, [schema, isOptional])
 
-    const value = p.get() ?? p.def() ?? null
-    const valueIsValid = (value != null || p.optional) && options.some((x) => x.value === value)
+    const value = req.state.val as any
+    const valueIsValid = (value != null || isOptional) && options.some((x) => x.value === value)
     return (
         <>
             <SelectPicker //
                 size='sm'
-                cleanable={Boolean(p.optional)}
+                cleanable={Boolean(isOptional)}
                 // appearance='subtle'
                 // defaultOpen={p.autofocus}
                 data={options}
@@ -48,10 +49,10 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
                 }}
                 onChange={(e) => {
                     if (e == null) {
-                        if (p.optional) p.set(null)
+                        if (isOptional) req.state.active = false
                         return
                     }
-                    p.set(e)
+                    req.state.val = e
                 }}
             />
             {valueIsValid ? null : <span className='text-red-700'>🔴 {JSON.stringify(value)}</span>}

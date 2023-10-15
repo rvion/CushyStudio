@@ -748,7 +748,7 @@ export class Requestable_enum<T extends KnownEnumNames>
 // 🅿️ enumOpt ==============================================================================
 
 export type Requestable_enumOpt_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
-export type Requestable_enumOpt_state<T extends KnownEnumNames> = { active: boolean; val: Maybe<Requirable[T]> }
+export type Requestable_enumOpt_state<T extends KnownEnumNames> = { active: boolean; val: Requirable[T] }
 export type Requestable_enumOpt_output<T extends KnownEnumNames> = Maybe<Requirable[T]>
 export interface Requestable_enumOpt<T extends KnownEnumNames>
     extends IWidget<Requestable_enumOpt_input<T>, Requestable_enumOpt_state<T>, Requestable_enumOpt_output<T>> {}
