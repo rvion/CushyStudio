@@ -74,12 +74,8 @@ export class Requestable_str implements IRequest<Requestable_str_input, Requesta
         this.state = serial ?? { active: true, val: input.default ?? '' }
         makeAutoObservable(this)
     }
-    get json(): Requestable_str_serial {
-        return this.state
-    }
-    get result(): Requestable_str_output {
-        return this.state.val
-    }
+    get json(): Requestable_str_serial { return this.state }
+    get result(): Requestable_str_output { return this.state.val }
 }
 
 // 🅿️ strOpt ==============================================================================
@@ -101,9 +97,7 @@ export class Requestable_strOpt implements IRequest<Requestable_strOpt_input, Re
         }
         makeAutoObservable(this)
     }
-    get json(){
-        return this.state
-    }
+    get json(){ return this.state }
     get result(): Requestable_strOpt_output {
         if (!this.state.active) return undefined
         return this.state.val
@@ -144,7 +138,6 @@ export class Requestable_prompt implements IRequest<Requestable_prompt_input, Re
     }
     get json(): Requestable_prompt_serial { return this.state } // prettier-ignore
     get result(): Requestable_prompt_output {
-        // does need to check value
         JSON.stringify(this.state) // 🔶 force deep observation
         return this.state
     }
@@ -307,6 +300,7 @@ export type Requestable_size_state = CushySize
 export type Requestable_size_output = CushySize
 export interface Requestable_size extends IWidget<Requestable_size_input, Requestable_size_serial, Requestable_size_state, Requestable_size_output> {}
 export class Requestable_size implements IRequest<Requestable_size_input, Requestable_size_serial, Requestable_size_state, Requestable_size_output> {
+    state: Requestable_size_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_size_input,
@@ -328,7 +322,7 @@ export class Requestable_size implements IRequest<Requestable_size_input, Reques
         }
         makeAutoObservable(this)
     }
-    state: Requestable_size_state
+    get json(): Requestable_size_serial { return this.state }
     get result(): Requestable_size_output {
         return this.state
     }
@@ -341,15 +335,15 @@ export type Requestable_matrix_state = { active: true; selected: CELL[] }
 export type Requestable_matrix_output = CELL[]
 export interface Requestable_matrix extends IWidget<Requestable_matrix_input, Requestable_matrix_serial, Requestable_matrix_state, Requestable_matrix_output> {}
 export class Requestable_matrix implements IRequest<Requestable_matrix_input, Requestable_matrix_serial, Requestable_matrix_state, Requestable_matrix_output> {
+    state: Requestable_matrix_state
     rows: string[]
     cols: string[]
-
     constructor(
         public schema: SchemaL,
         public input: Requestable_matrix_input,
         public serial?: Requestable_matrix_serial,
     ) {
-        this.state = serial ?? { active: true, selected: [] } // 🔴 handle default values
+        this.state = serial ?? { active: true, selected: [] }
 
         const rows = input.rows
         const cols = input.cols
@@ -370,7 +364,7 @@ export class Requestable_matrix implements IRequest<Requestable_matrix_input, Re
         // make observable
         makeAutoObservable(this)
     }
-    state: Requestable_matrix_state
+    get json(): Requestable_matrix_serial { return this.state }
     get result(): Requestable_matrix_output {
         // if (!this.state.active) return undefined
         return this.state.selected
@@ -430,6 +424,7 @@ export type Requestable_loras_state = { active: true; loras: SimplifiedLoraDef[]
 export type Requestable_loras_output = SimplifiedLoraDef[]
 export interface Requestable_loras extends IWidget<Requestable_loras_input, Requestable_loras_serial, Requestable_loras_state, Requestable_loras_output> {}
 export class Requestable_loras implements IRequest<Requestable_loras_input, Requestable_loras_serial, Requestable_loras_state, Requestable_loras_output> {
+    state: Requestable_loras_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_loras_input,
@@ -444,7 +439,7 @@ export class Requestable_loras implements IRequest<Requestable_loras_input, Requ
         for (const v of this.state.loras) this.selectedLoras.set(v.name, v)
         makeAutoObservable(this)
     }
-    state: Requestable_loras_state
+    get json(): Requestable_loras_serial { return this.state }
     get result(): Requestable_loras_output {
         return this.state.loras
     }
@@ -478,6 +473,7 @@ export type Requestable_image_state = ImageAnswerForm<true>
 export type Requestable_image_output = ImageAnswer
 export interface Requestable_image extends IWidget<Requestable_image_input, Requestable_image_serial, Requestable_image_state, Requestable_image_output> {}
 export class Requestable_image implements IRequest<Requestable_image_input, Requestable_image_serial, Requestable_image_state, Requestable_image_output> {
+    state: Requestable_image_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_image_input,
@@ -491,7 +487,7 @@ export class Requestable_image implements IRequest<Requestable_image_input, Requ
         }
         makeAutoObservable(this)
     }
-    state: Requestable_image_state
+    get json(): Requestable_image_serial { return this.state }
     get result(): Requestable_image_output {
         if (this.state.pick === 'cushy' && this.state.cushy) return this.state.cushy
         return this.state.comfy
@@ -505,6 +501,7 @@ export type Requestable_imageOpt_state = ImageAnswerForm<boolean>
 export type Requestable_imageOpt_output = Maybe<ImageAnswer>
 export interface Requestable_imageOpt extends IWidget<Requestable_imageOpt_input, Requestable_imageOpt_serial, Requestable_imageOpt_state, Requestable_imageOpt_output> {}
 export class Requestable_imageOpt implements IRequest<Requestable_imageOpt_input, Requestable_imageOpt_serial, Requestable_imageOpt_state, Requestable_imageOpt_output> {
+    state: Requestable_imageOpt_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_imageOpt_input,
@@ -518,7 +515,7 @@ export class Requestable_imageOpt implements IRequest<Requestable_imageOpt_input
         }
         makeAutoObservable(this)
     }
-    state: Requestable_imageOpt_state
+    get json(): Requestable_imageOpt_serial { return this.state }
     get result(): Requestable_imageOpt_output {
         if (!this.state.active) return undefined
         if (this.state.pick === 'cushy' && this.state.cushy) return this.state.cushy
@@ -533,6 +530,7 @@ export type Requestable_selectOne_state<T> = { query: string; val: T }
 export type Requestable_selectOne_output<T> = T
 export interface Requestable_selectOne<T> extends IWidget<Requestable_selectOne_input<T>, Requestable_selectOne_serial<T>, Requestable_selectOne_state<T>, Requestable_selectOne_output<T>> {}
 export class Requestable_selectOne<T> implements IRequest<Requestable_selectOne_input<T>, Requestable_selectOne_serial<T>, Requestable_selectOne_state<T>, Requestable_selectOne_output<T>> {
+    state: Requestable_selectOne_state<T>
     constructor(
         public schema: SchemaL,
         public input: Requestable_selectOne_input<T>,
@@ -544,10 +542,8 @@ export class Requestable_selectOne<T> implements IRequest<Requestable_selectOne_
         }
         makeAutoObservable(this)
     }
-    state: Requestable_selectOne_state<T>
-    get result(): Requestable_selectOne_output<T> {
-        return this.state.val
-    }
+    get json(): Requestable_selectOne_serial<T> { return this.state }
+    get result(): Requestable_selectOne_output<T> { return this.state.val }
 }
 
 // 🅿️ selectOneOrCustom ==============================================================================
@@ -557,6 +553,7 @@ export type Requestable_selectOneOrCustom_state = { query: string; val: string }
 export type Requestable_selectOneOrCustom_output = string
 export interface Requestable_selectOneOrCustom extends IWidget<Requestable_selectOneOrCustom_input, Requestable_selectOneOrCustom_serial, Requestable_selectOneOrCustom_state, Requestable_selectOneOrCustom_output > {}
 export class Requestable_selectOneOrCustom implements IRequest<Requestable_selectOneOrCustom_input, Requestable_selectOneOrCustom_serial, Requestable_selectOneOrCustom_state, Requestable_selectOneOrCustom_output > {
+    state: Requestable_selectOneOrCustom_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_selectOneOrCustom_input,
@@ -568,10 +565,8 @@ export class Requestable_selectOneOrCustom implements IRequest<Requestable_selec
         }
         makeAutoObservable(this)
     }
-    state: Requestable_selectOneOrCustom_state
-    get result(): Requestable_selectOneOrCustom_output {
-        return this.state.val
-    }
+    get json(): Requestable_selectOneOrCustom_serial { return this.state }
+    get result(): Requestable_selectOneOrCustom_output { return this.state.val }
 }
 
 // 🅿️ selectMany ==============================================================================
@@ -581,18 +576,31 @@ export type Requestable_selectMany_state<T extends { type: string }> = { query: 
 export type Requestable_selectMany_output<T extends { type: string }> = T[]
 export interface Requestable_selectMany<T extends { type: string }> extends IWidget<Requestable_selectMany_input<T>, Requestable_selectMany_serial<T>, Requestable_selectMany_state<T>, Requestable_selectMany_output<T>> {}
 export class Requestable_selectMany<T extends { type: string }> implements IRequest<Requestable_selectMany_input<T>, Requestable_selectMany_serial<T>, Requestable_selectMany_state<T>, Requestable_selectMany_output<T>> {
+    state: Requestable_selectMany_state<T>
     constructor(
         public schema: SchemaL,
         public input: Requestable_selectMany_input<T>,
         public serial?: Requestable_selectMany_serial<T>,
     ) {
-        this.state = serial ?? {
-            query: '',
-            values: input.default ?? [],
+        if (serial) {
+            this.state = {
+                query: serial.query,
+                values: serial.values.map((v) => input.choices.find((c) => c.type === v.type)!).filter((v) => v != null),
+            }
+        } else {
+            this.state = {
+                query: '',
+                values: input.default ?? [],
+            }
         }
         makeAutoObservable(this)
     }
-    state: Requestable_selectMany_state<T>
+    get json(): Requestable_selectMany_serial<T> {
+        return {
+            query: this.state.query,
+            values: this.state.values.map((v) => ({ type: v.type })),
+        }
+    }
     get result(): Requestable_selectMany_output<T> {
         return this.state.values
     }
@@ -605,21 +613,17 @@ export type Requestable_selectManyOrCustom_state = { query: string; values: stri
 export type Requestable_selectManyOrCustom_output = string[]
 export interface Requestable_selectManyOrCustom extends IWidget< Requestable_selectManyOrCustom_input, Requestable_selectManyOrCustom_serial, Requestable_selectManyOrCustom_state, Requestable_selectManyOrCustom_output > {}
 export class Requestable_selectManyOrCustom implements IRequest< Requestable_selectManyOrCustom_input, Requestable_selectManyOrCustom_serial, Requestable_selectManyOrCustom_state, Requestable_selectManyOrCustom_output > {
+    state: Requestable_selectManyOrCustom_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_selectManyOrCustom_input,
         public serial?: Requestable_selectManyOrCustom_serial,
     ) {
-        this.state = serial ?? {
-            query: '',
-            values: input.default ?? [],
-        }
+        this.state = serial ?? { query: '', values: input.default ?? [] }
         makeAutoObservable(this)
     }
-    state: Requestable_selectManyOrCustom_state
-    get result(): Requestable_selectManyOrCustom_output {
-        return this.state.values
-    }
+    get json(): Requestable_selectManyOrCustom_serial { return this.state }
+    get result(): Requestable_selectManyOrCustom_output { return this.state.values }
 }
 
 // 🅿️ list ==============================================================================
@@ -629,19 +633,22 @@ export type Requestable_list_state<T extends Requestable> = { active: true; item
 export type Requestable_list_output<T extends Requestable> = T['$Output'][]
 export interface Requestable_list<T extends Requestable> extends IWidget<Requestable_list_input<T>, Requestable_list_serial<T>, Requestable_list_state<T>, Requestable_list_output<T>> {}
 export class Requestable_list<T extends Requestable> implements IRequest<Requestable_list_input<T>, Requestable_list_serial<T>, Requestable_list_state<T>, Requestable_list_output<T>> {
+    state: Requestable_list_state<T>
     constructor(
         public schema: SchemaL,
         public input: Requestable_list_input<T>,
         public serial?: Requestable_list_serial<T>,
     ) {
-        // 🔴 prev state can't be an instance there
-        this.state = serial ?? {
-            active: true,
-            items: [],
+        if (serial) {
+            this.state = {
+                active: true,
+                items: [] // 🔴 serial.items.map((i) => input.mkItem(this.state.items.length, i)),
+            }
+        } else {
+            this.state = { active: true, items: [], }
         }
         makeAutoObservable(this)
     }
-    state: Requestable_list_state<T>
     get json(): Requestable_list_serial<T> {
         return {
             active: this.state.active,
@@ -663,6 +670,7 @@ export type Requestable_group_state<T extends { [key: string]: Requestable }> = 
 export type Requestable_group_output<T extends { [key: string]: Requestable }> = { [k in keyof T]: ReqResult<T[k]> }
 export interface Requestable_group<T extends { [key: string]: Requestable }> extends IWidget<Requestable_group_input<T>, Requestable_group_serial<T>, Requestable_group_state<T>, Requestable_group_output<T>> {}
 export class Requestable_group<T extends { [key: string]: Requestable }> implements IRequest<Requestable_group_input<T>, Requestable_group_serial<T>, Requestable_group_state<T>, Requestable_group_output<T>> {
+    state: Requestable_group_state<T>
     constructor(
         public schema: SchemaL,
         public input: Requestable_group_input<T>,
@@ -674,7 +682,16 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
         }
         makeAutoObservable(this)
     }
-    state: Requestable_group_state<T>
+    get json(): Requestable_group_serial<T> {
+        const out: { [key: string]: any } = {}
+        for (const key in this.state.values) {
+            out[key] = this.state.values[key].json
+        }
+        return {
+            active: this.state.active,
+            values: out as any,
+        }
+    }
     get result(): Requestable_group_output<T> {
         const out: { [key: string]: any } = {}
         for (const key in this.state.values) {
@@ -691,6 +708,7 @@ export type Requestable_groupOpt_state<T extends { [key: string]: Requestable }>
 export type Requestable_groupOpt_output<T extends { [key: string]: Requestable }> = Maybe<{ [k in keyof T]: ReqResult<T[k]> }>
 export interface Requestable_groupOpt<T extends { [key: string]: Requestable }> extends IWidget<Requestable_groupOpt_input<T>, Requestable_groupOpt_serial<T>, Requestable_groupOpt_state<T>, Requestable_groupOpt_output<T>> {}
 export class Requestable_groupOpt<T extends { [key: string]: Requestable }> implements IRequest<Requestable_groupOpt_input<T>, Requestable_groupOpt_serial<T>, Requestable_groupOpt_state<T>, Requestable_groupOpt_output<T>> {
+    state: Requestable_groupOpt_state<T>
     constructor(
         public schema: SchemaL,
         public input: Requestable_groupOpt_input<T>,
@@ -702,7 +720,16 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
         }
         makeAutoObservable(this)
     }
-    state: Requestable_groupOpt_state<T>
+    get json(): Requestable_groupOpt_serial<T> {
+        const out: { [key: string]: any } = {}
+        for (const key in this.state.values) {
+            out[key] = this.state.values[key].json
+        }
+        return {
+            active: this.state.active,
+            values: out as any,
+        }
+    }
     get result(): Requestable_groupOpt_output<T> {
         if (!this.state.active) return undefined
         const out: { [key: string]: any } = {}
@@ -720,6 +747,7 @@ export type Requestable_enum_state<T extends KnownEnumNames> = { active: true; v
 export type Requestable_enum_output<T extends KnownEnumNames> = Requirable[T]
 export interface Requestable_enum<T extends KnownEnumNames> extends IWidget<Requestable_enum_input<T>, Requestable_enum_serial<T>, Requestable_enum_state<T>, Requestable_enum_output<T>> {}
 export class Requestable_enum<T extends KnownEnumNames> implements IRequest<Requestable_enum_input<T>, Requestable_enum_serial<T>, Requestable_enum_state<T>, Requestable_enum_output<T>> {
+    state: Requestable_enum_state<T>
     constructor(
         public schema: SchemaL,
         public input: Requestable_enum_input<T>,
@@ -732,10 +760,8 @@ export class Requestable_enum<T extends KnownEnumNames> implements IRequest<Requ
         }
         makeAutoObservable(this)
     }
-    state: Requestable_enum_state<T>
-    get result(): Requestable_enum_output<T> {
-        return this.state.val
-    }
+    get json(): Requestable_enum_serial<T> { return this.state }
+    get result(): Requestable_enum_output<T> { return this.state.val }
 }
 
 // 🅿️ enumOpt ==============================================================================
@@ -745,6 +771,7 @@ export type Requestable_enumOpt_state<T extends KnownEnumNames> = { active: bool
 export type Requestable_enumOpt_output<T extends KnownEnumNames> = Maybe<Requirable[T]>
 export interface Requestable_enumOpt<T extends KnownEnumNames> extends IWidget<Requestable_enumOpt_input<T>, Requestable_enumOpt_serial<T>, Requestable_enumOpt_state<T>, Requestable_enumOpt_output<T>> {}
 export class Requestable_enumOpt<T extends KnownEnumNames> implements IRequest<Requestable_enumOpt_input<T>, Requestable_enumOpt_serial<T>, Requestable_enumOpt_state<T>, Requestable_enumOpt_output<T>> {
+    state: Requestable_enumOpt_state<T>
     constructor(
         public schema: SchemaL,
         public input: Requestable_enumOpt_input<T>,
@@ -757,7 +784,7 @@ export class Requestable_enumOpt<T extends KnownEnumNames> implements IRequest<R
         }
         makeAutoObservable(this)
     }
-    state: Requestable_enumOpt_state<T>
+    get json(): Requestable_enumOpt_serial<T> { return this.state }
     get result(): Requestable_enumOpt_output<T> {
         if (!this.state.active) return undefined
         return this.state.val
