@@ -284,8 +284,8 @@ export class PossibleActionFile {
         }
 
         // creating a formBuilder
-        const schema = this.st.schema
-        const formBuilder = new FormBuilder(schema)
+        // const schema = this.st.schema
+        // const formBuilder = new FormBuilder(schema)
 
         try {
             const ProjectScriptFn = new Function('action', codeJS)
@@ -301,7 +301,6 @@ export class PossibleActionFile {
                     description: a.action.description,
                     name: a.name,
                     priority: a.action.priority ?? 100,
-                    form: a.action.ui?.(formBuilder),
                     codeTS: codeTS,
                     codeJS: codeJS,
                 })

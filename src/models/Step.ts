@@ -36,7 +36,9 @@ export type StepT = {
     /** form that lead to creating this step */
     toolID: ToolID
     /** tool params */
-    params: Maybe<any>
+    actionState: Maybe<any>
+    actionResult: Maybe<any>
+    // params: Maybe<any>
     /** parent */
     parentGraphID: GraphID
     /** resulting graph */

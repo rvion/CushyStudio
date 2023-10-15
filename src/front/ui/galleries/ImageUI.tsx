@@ -115,7 +115,7 @@ const renderSpeaker = (
             const db = img.st.db
             const pj: ProjectL = db.projects.firstOrCrash()
             const root: GraphL = pj.rootGraph.item
-            const ia: ImageAnswer = { type: 'imageID', imageID: img.id }
+            const ia: ImageAnswer = { type: 'CushyImage', imageID: img.id }
             const step = root.createStep({
                 toolID: db.tools.findOrCrash((t) => t.name.endsWith('start from image')).id,
                 params: { image: ia },

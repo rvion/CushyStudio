@@ -38,8 +38,9 @@ export type IRequestable<I, S, O> = {
 
 export type ReqInput<X> = X & {
     label?: string
+    group?: string
     tooltip?: string
-    i18n: { [key: string]: string }
+    i18n?: { [key: string]: string }
 }
 
 // 🅿️ str ==============================================================================

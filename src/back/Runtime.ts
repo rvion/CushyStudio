@@ -9,7 +9,6 @@ import { marked } from 'marked'
 import { lookup } from 'mime-types'
 import { STATE } from 'src/front/state'
 import { ToolL } from 'src/models/Tool'
-import { finalizeAnswer_UNSAFE } from '../controls/InfoAnswerFinal'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { Slot } from '../core/Slot'
 import { auto } from '../core/autoValue'
@@ -65,9 +64,9 @@ export class Runtime {
         const tool: ToolL = this.step.tool.item
         if (tool == null) return Status.Failure
 
-        const action = globalToolFnCache.get(tool)
         const start = Date.now()
-        const formResult = finalizeAnswer_UNSAFE(tool, this.step.rawParams)
+        const action = globalToolFnCache.get(tool)
+        const actionResult = this.step.data.actionResult
         console.log(`🔴 before: size=${this.graph.nodes.length}`)
 
         try {
@@ -75,7 +74,7 @@ export class Runtime {
                 console.log(`❌ action not found`)
                 return Status.Failure
             }
-            await action.run(this, formResult)
+            await action.run(this, actionResult)
             console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
@@ -245,7 +244,7 @@ export class Runtime {
 
     loadImageAnswerAsEnum = async (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
         try {
-            if (ia.type === 'imageID') {
+            if (ia.type === 'CushyImage') {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
                 if (img.data.downloaded) {
@@ -271,7 +270,7 @@ export class Runtime {
             // if (ia.type === 'imagePath') {
             //     return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
             // }
-            if (ia.type === 'imageID') {
+            if (ia.type === 'CushyImage') {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
                 if (img.data.downloaded) {

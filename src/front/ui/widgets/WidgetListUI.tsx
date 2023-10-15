@@ -1,32 +1,16 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input } from 'rsuite'
-import { Requestable } from 'src/controls/InfoRequest'
+import { Button } from 'rsuite'
+import { Requestable, Requestable_list } from 'src/controls/InfoRequest'
+import { WidgetUI } from './WidgetUI'
 
-export const WidgetListUI = observer(function WidgetListUI_<T extends Requestable>(p: {
-    //
-    get: () => InfoAnswer<T>[]
-    def: () => Maybe<InfoAnswer<T>[]>
-    set: (v: string) => void
-}) {
-    const values = p.get() ?? p.def() ?? []
+export const WidgetListUI = observer(function WidgetListUI_<T extends Requestable>(p: { req: Requestable_list<T> }) {
+    const req = p.req
+    const values = req.state.items
     return (
         <div className='foo'>
-            <Button
-                onClick={() => {
-                    // p.set(values.push())
-                }}
-            >
-                +
-            </Button>
+            <Button onClick={() => console.log('not implemented')}>+</Button>
             {values.map((v, ix) => (
-                <Input //
-                    key={ix}
-                    size='sm'
-                    // value={value}
-                    onChange={(next) => {
-                        p.set(next)
-                    }}
-                />
+                <WidgetUI key={ix} req={v} />
             ))}
         </div>
     )

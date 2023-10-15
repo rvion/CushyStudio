@@ -4,7 +4,8 @@ import type { StepL } from './Step'
 import type { ToolID, ToolL } from './Tool'
 
 import { LiveRef } from '../db/LiveRef'
-import { finalizeAnswer } from '../controls/InfoAnswerFinal'
+import { FormBuilder, Requestable, Requestable_group } from 'src/controls/InfoRequest'
+import { __FAIL, __OK, Result } from 'src/utils/Either'
 
 export type FormPath = (string | number)[]
 
@@ -35,13 +36,35 @@ export class DraftL {
     }
 
     get finalJSON(): any {
-        return finalizeAnswer(this.tool.item, this.data.params)
+        if (!this.xxx.success) return {}
+        return this.xxx.value.result
     }
 
     focus = () => this.graph.item.update({ focusedDraftID: this.id })
     reset = () => (this.data.params = {})
     getPathInfo = (path: FormPath): string => this.id + '/' + path.join('/')
 
+    xxx!: Result<Requestable>
+    onHydrate = () => {
+        const action = this.tool.item.retrieveAction()
+        if (!action.success) {
+            this.xxx = __FAIL('action failed')
+            return
+        }
+        const uiFn = action.value.ui
+        if (uiFn == null) {
+            this.xxx = __FAIL('no UI function')
+            return
+        }
+        try {
+            const formBuilder = new FormBuilder(this.st.schema)
+            const req: Requestable = uiFn(formBuilder)
+            this.xxx = __OK(req)
+        } catch (e) {
+            this.xxx = __FAIL('ui function crashed', e)
+            return
+        }
+    }
     // form part --------------------------------------------------------
     // onUpdate = (prev: Maybe<ActionT>, next: ActionT) => {
     //     if (prev == null) return

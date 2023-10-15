@@ -1,28 +1,25 @@
-import * as R from 'src/controls/InfoRequest'
 import * as I from '@rsuite/icons'
+import * as R from 'src/controls/InfoRequest'
 
 import { observer } from 'mobx-react-lite'
+import { ErrorBoundary } from 'react-error-boundary'
 import { Tooltip, Whisper } from 'rsuite'
-import { DraftL } from 'src/models/Draft'
-import { FormPath } from 'src/models/Step'
+import { WidgetPromptUI } from '../../../prompter/WidgetPromptUI'
 import { exhaust } from '../../../utils/ComfyUtils'
 import { useDraft } from '../useDraft'
+import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
 import { WidgetItemsOptUI } from './WidgetItemsOptUI'
 import { WidgetItemsUI } from './WidgetItemsUI'
-import { WidgetPromptUI } from '../../../prompter/WidgetPromptUI'
+import { WidgetListUI } from './WidgetListUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
+import { WidgetMatrixUI } from './WidgetMatrixUI'
 import { WidgetNumOptUI } from './WidgetNumOptUI'
 import { WidgetNumUI } from './WidgetNumUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
-import { WidgetStrUI } from './WidgetStrUI'
 import { WidgetStrOptUI } from './WidgetStrOptUI'
-import { ErrorBoundary } from 'react-error-boundary'
-import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
-import { WidgetMatrixUI } from './WidgetMatrixUI'
-import { WidgetListUI } from './WidgetListUI'
-import { makeAutoObservable } from 'mobx'
+import { WidgetStrUI } from './WidgetStrUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Requestable
@@ -64,15 +61,10 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             <ErrorBoundary
                 FallbackComponent={ErrorBoundaryFallback}
                 onReset={(details) => {
-                    // Reset the state of your app so the error doesn't happen again
+                    /* 🔴 */
                 }}
             >
-                <WidgetUI //
-                    // key={[draft.id, p.path].join('/')}
-                    path={path}
-                    req={req}
-                    focus={ix === 0}
-                />
+                <WidgetUI req={req} />
             </ErrorBoundary>
         </div>
     )
@@ -82,12 +74,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
  * collect the responses and submit them to the back once completed and valid.
  */
-export const WidgetUI = observer(function WidgetUI_(p: {
-    //
-    path: FormPath
-    req: R.Requestable
-    focus?: boolean
-}) {
+export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; focus?: boolean }) {
     const req = p.req
     // widgets
     if (req instanceof R.Requestable_int) return <WidgetNumUI req={req} />
