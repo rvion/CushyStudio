@@ -1,18 +1,17 @@
 import { observer } from 'mobx-react-lite'
 import { Toggle } from 'rsuite'
+import { Requestable_bool } from 'src/controls/InfoRequest'
 
 // ----------------------------------------------------------------------
 
 export const WidgetBoolUI = observer(function WidgetBoolUI_(p: {
     //
-    get: () => boolean
-    set: (v: boolean) => void
-    optional: boolean
+    req: Requestable_bool
 }) {
     return (
         <Toggle //
-            checked={p.get()}
-            onChange={(checked) => p.set(checked)}
+            checked={p.req.state.val}
+            onChange={(checked) => (p.req.state.val = checked)}
         />
     )
 })

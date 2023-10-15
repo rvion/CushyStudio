@@ -94,7 +94,6 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; foc
     if (req instanceof R.Requestable_enumOpt) return <WidgetEnumUI req={req} />
     if (req instanceof R.Requestable_matrix) return <WidgetMatrixUI req={req} />
     if (req instanceof R.Requestable_bool) return <WidgetBoolUI req={req} />
-    if (req instanceof R.Requestable_boolOpt) return <WidgetBoolUI req={req} />
     if (req instanceof R.Requestable_prompt) return <WidgetPromptUI req={req} />
     if (req instanceof R.Requestable_promptOpt) return <WidgetPromptUI req={req} />
     if (req instanceof R.Requestable_loras) return <WidgetLorasUI req={req} />

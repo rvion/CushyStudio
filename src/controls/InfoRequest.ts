@@ -8,6 +8,7 @@ import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/prompter/plugins/CushyDebugPlugin'
 import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
+import type { ItemDataType } from 'rsuite/esm/@types/common'
 
 import { makeAutoObservable } from 'mobx'
 import { bang } from 'src/utils/bang'
@@ -131,6 +132,8 @@ export class Requestable_prompt
     }
     state: Requestable_prompt_state
     get result(): Requestable_prompt_output {
+        // does need to check value
+        JSON.stringify(this.state) // 🔶 force deep observation
         return this.state
     }
 }
@@ -302,35 +305,6 @@ export class Requestable_floatOpt
     }
 }
 
-// 🅿️ boolOpt ==============================================================================
-
-export type Requestable_boolOpt_input = ReqInput<{ default?: boolean }>
-export type Requestable_boolOpt_state = { active: boolean; val: boolean }
-export type Requestable_boolOpt_output = Maybe<boolean>
-export interface Requestable_boolOpt
-    extends IWidget<Requestable_boolOpt_input, Requestable_boolOpt_state, Requestable_boolOpt_output> {}
-export class Requestable_boolOpt
-    implements IRequestable<Requestable_boolOpt_input, Requestable_boolOpt_state, Requestable_boolOpt_output>
-{
-    type = 'bool?'
-    constructor(
-        public schema: SchemaL,
-        public input: Requestable_boolOpt_input,
-        public prevState?: Requestable_boolOpt_state,
-    ) {
-        this.state = prevState ?? {
-            active: input.default != null,
-            val: input.default ?? false,
-        }
-        makeAutoObservable(this)
-    }
-    state: Requestable_boolOpt_state
-    get result(): Requestable_boolOpt_output {
-        if (this.state.active === false) return undefined
-        return this.state.val
-    }
-}
-
 // 🅿️ size ==============================================================================
 
 export type Requestable_size_input = ReqInput<{ default?: CushySizeByRatio }>
@@ -479,11 +453,38 @@ export class Requestable_loras
         public prevState?: Requestable_loras_state,
     ) {
         this.state = prevState ?? { active: true, loras: input.default ?? [] }
+        this.allLoras = schema.getLoras()
+        for (const lora of this.allLoras) {
+            if (lora === 'None') continue
+            this._insertLora(lora)
+        }
+        for (const v of this.state.loras) this.selectedLoras.set(v.name, v)
         makeAutoObservable(this)
     }
     state: Requestable_loras_state
     get result(): Requestable_loras_output {
         return this.state.loras
+    }
+    allLoras: string[]
+    selectedLoras = new Map<string, SimplifiedLoraDef>()
+    FOLDER: ItemDataType<any>[] = []
+    private _insertLora = (rawPath: string) => {
+        const path = rawPath.replace(/\\/g, '/')
+        const segments = path.split('/')
+        let folder = this.FOLDER
+        for (let i = 0; i < segments.length - 1; i++) {
+            const segment = segments[i]
+            const found = folder.find((x) => x.label === segment)
+            if (found == null) {
+                const value = segments.slice(0, i + 1).join('\\')
+                const node = { label: segment, value: value, children: [] }
+                folder.push(node)
+                folder = node.children
+            } else {
+                folder = found.children!
+            }
+        }
+        folder.push({ label: segments[segments.length - 1], value: rawPath })
     }
 }
 
@@ -768,7 +769,7 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }>
         public prevState?: Requestable_groupOpt_state<T>,
     ) {
         this.state = prevState ?? {
-            active: true,
+            active: input.default ?? false,
             values: input.items,
         }
         makeAutoObservable(this)
@@ -854,7 +855,6 @@ export type Requestable =
     | Requestable_bool
     | Requestable_intOpt
     | Requestable_floatOpt
-    | Requestable_boolOpt
     | Requestable_size
     | Requestable_matrix
     | Requestable_loras
@@ -889,7 +889,6 @@ export class FormBuilder {
     matrix             = (p: Requestable_matrix_input)             => new Requestable_matrix(this.schema, p)
     boolean            = (p: Requestable_bool_input)               => new Requestable_bool(this.schema, p)
     bool               = (p: Requestable_bool_input)               => new Requestable_bool(this.schema, p)
-    boolOpt            = (p: Requestable_boolOpt_input)            => new Requestable_boolOpt(this.schema, p)
     loras              = (p: Requestable_loras_input)              => new Requestable_loras(this.schema, p)
     image              = (p: Requestable_image_input)              => new Requestable_image(this.schema, p)
     imageOpt           = (p: Requestable_imageOpt_input)           => new Requestable_imageOpt(this.schema, p)

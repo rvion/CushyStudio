@@ -5,7 +5,7 @@ import { useSt } from '../../../front/FrontStateCtx'
 import { ImageUI } from '../galleries/ImageUI'
 import { useImageDrop } from '../galleries/dnd'
 import { useDraft } from '../useDraft'
-import { WidgetEnumUI } from './WidgetEnumUI'
+import { EnumSelectorUI, WidgetEnumUI } from './WidgetEnumUI'
 
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { req: Requestable_image | Requestable_imageOpt }) {
     const req = p.req
@@ -41,11 +41,11 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
                         />
                     )}
 
-                    <WidgetEnumUI
+                    <EnumSelectorUI
                         enumName='Enum_LoadImage_image'
-                        get={() => null}
-                        def={() => null}
-                        set={(t) => {
+                        value={req.state.comfy?.imageName ?? null}
+                        isOptional={req.state.pick !== 'comfy' || !req.state.active}
+                        onChange={(t) => {
                             // handle nullability for Requestable_imageOpt
                             if (
                                 t == null &&

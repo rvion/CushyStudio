@@ -1,9 +1,8 @@
-import type { EnumValue } from '../../../models/Schema'
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
-import { SelectPicker } from 'rsuite'
-import { useProject } from '../../ProjectCtx'
+import { SelectPicker, Toggle } from 'rsuite'
 import { Requestable_enum, Requestable_enumOpt } from 'src/controls/InfoRequest'
+import type { EnumName, EnumValue } from '../../../models/Schema'
+import { useProject } from '../../ProjectCtx'
 
 type T = {
     label: EnumValue
@@ -14,29 +13,51 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
     req: Requestable_enum<K> | Requestable_enumOpt<K>
 }) {
     const req = p.req
-    const project = useProject()
-    const schema = project.schema
     const enumName = req.input.enumName
     const isOptional = req instanceof Requestable_enumOpt
-
-    const options = useMemo(() => {
-        if (schema == null) return []
-        const x: T = schema!.getEnumOptionsForSelectPicker(enumName)
-        if (isOptional) x.unshift({ label: 'none', value: null })
-        return x
-    }, [schema, isOptional])
+    // const options = schema.getEnumOptionsForSelectPicker(enumName)
 
     const value = req.state.val as any
-    const valueIsValid = (value != null || isOptional) && options.some((x) => x.value === value)
+
+    return (
+        <div className='flex gap-1'>
+            <Toggle
+                // size='sm'
+                checked={req.state.active}
+                onChange={(t) => (req.state.active = t)}
+            />
+            <EnumSelectorUI
+                value={value}
+                isOptional={isOptional}
+                enumName={enumName}
+                onChange={(e) => {
+                    if (e == null) {
+                        if (isOptional) req.state.active = false
+                        return
+                    }
+                    req.state.val = e as any // 🔴
+                }}
+            />
+        </div>
+    )
+})
+
+export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
+    isOptional: boolean
+    value: EnumValue | null
+    onChange: (v: EnumValue | null) => void
+    enumName: EnumName
+}) {
+    const project = useProject()
+    const schema = project.schema
+    const options = schema.getEnumOptionsForSelectPicker(p.enumName)
+    const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)
     return (
         <>
             <SelectPicker //
                 size='sm'
-                cleanable={Boolean(isOptional)}
-                // appearance='subtle'
-                // defaultOpen={p.autofocus}
                 data={options}
-                value={value}
+                value={p.value}
                 renderValue={(v) => {
                     if (v === true) return '🟢 true'
                     if (v === false) return '❌ false'
@@ -48,14 +69,10 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
                     return v
                 }}
                 onChange={(e) => {
-                    if (e == null) {
-                        if (isOptional) req.state.active = false
-                        return
-                    }
-                    req.state.val = e
+                    p.onChange(e)
                 }}
             />
-            {valueIsValid ? null : <span className='text-red-700'>🔴 {JSON.stringify(value)}</span>}
+            {valueIsValid ? null : <span className='text-red-700'>🔴 {JSON.stringify(p.value)}</span>}
         </>
     )
 })

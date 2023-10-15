@@ -44,7 +44,7 @@ export const JSONHighlightedCodeUI = (p: { code: string }) => {
         hljs.highlightElement(e)
     }, [ref, p.code])
     return (
-        <code className='language-json text-xs' style={{ whiteSpace: 'pre-wrap' }} ref={ref}>
+        <code key={p.code} className='language-json text-xs' style={{ whiteSpace: 'pre-wrap' }} ref={ref}>
             {p.code}
         </code>
     )
