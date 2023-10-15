@@ -9,6 +9,8 @@ import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/prompter/plugins/CushyDebugPlugin'
 import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
 
+import { makeAutoObservable } from 'mobx'
+
 export type Widget<
     // unique identifier
     Type extends string,
@@ -34,9 +36,15 @@ export type IRequestable<I, S, O> = {
     readonly result: O
 }
 
+export type ReqInput<X> = X & {
+    label?: string
+    tooltip?: string
+    i18n: { [key: string]: string }
+}
+
 // 🅿️ str ==============================================================================
 
-export type Requestable_str_input = { default?: string; textarea?: boolean }
+export type Requestable_str_input = ReqInput<{ default?: string; textarea?: boolean }>
 export type Requestable_str_state = { active: true; val: string }
 export type Requestable_str_output = string
 export interface Requestable_str extends IWidget<Requestable_str_input, Requestable_str_state, Requestable_str_output> {}
@@ -48,6 +56,7 @@ export class Requestable_str implements IRequestable<Requestable_str_input, Requ
         public prevState?: Requestable_str_state,
     ) {
         this.state = prevState ?? { active: true, val: input.default ?? '' }
+        makeAutoObservable(this)
     }
     state: Requestable_str_state
     get result(): Requestable_str_output {
@@ -57,7 +66,7 @@ export class Requestable_str implements IRequestable<Requestable_str_input, Requ
 
 // 🅿️ strOpt ==============================================================================
 
-export type Requestable_strOpt_input = { default?: string; textarea?: boolean }
+export type Requestable_strOpt_input = ReqInput<{ default?: string; textarea?: boolean }>
 export type Requestable_strOpt_state = { active: boolean; val: string }
 export type Requestable_strOpt_output = Maybe<string>
 export interface Requestable_strOpt
@@ -75,6 +84,7 @@ export class Requestable_strOpt
             active: input.default != null,
             val: input.default ?? '',
         }
+        makeAutoObservable(this)
     }
     state: Requestable_strOpt_state
     get result(): Requestable_strOpt_output {
@@ -85,7 +95,7 @@ export class Requestable_strOpt
 
 // 🅿️ prompt ==============================================================================
 
-export type Requestable_prompt_input = { /* 🟢 CUSTOM */ default?: string | WidgetPromptOutput }
+export type Requestable_prompt_input = ReqInput<{ /* 🟢 CUSTOM */ default?: string | WidgetPromptOutput }>
 export type Requestable_prompt_state = WidgetPromptOutput<true>
 export type Requestable_prompt_output = WidgetPromptOutput
 export interface Requestable_prompt
@@ -99,18 +109,23 @@ export class Requestable_prompt
         public input: Requestable_prompt_input,
         public prevState?: Requestable_prompt_state,
     ) {
-        this.state = prevState ?? { active: true, text: '', tokens: [] }
+        if (prevState) {
+            this.state = prevState
+        } else {
+            this.state = { active: true, text: '', tokens: [] }
 
-        const def = input.default
-        if (def != null) {
-            if (typeof def === 'string') {
-                this.state.text = def
-                this.state.tokens = [{ type: 'text', text: def }]
-            }
-            if (typeof Array.isArray(def)) {
-                // 🔴
+            const def = input.default
+            if (def != null) {
+                if (typeof def === 'string') {
+                    this.state.text = def
+                    this.state.tokens = [{ type: 'text', text: def }]
+                }
+                if (typeof Array.isArray(def)) {
+                    // 🔴
+                }
             }
         }
+        makeAutoObservable(this)
     }
     state: Requestable_prompt_state
     get result(): Requestable_prompt_output {
@@ -120,7 +135,7 @@ export class Requestable_prompt
 
 // 🅿️ promptOpt ==============================================================================
 
-export type Requestable_promptOpt_input = { /* 🟢 CUSTOM */ default?: string | PossibleSerializedNodes[] }
+export type Requestable_promptOpt_input = ReqInput<{ /* 🟢 CUSTOM */ default?: string | PossibleSerializedNodes[] }>
 export type Requestable_promptOpt_state = WidgetPromptOutput<boolean>
 export type Requestable_promptOpt_output = Maybe<WidgetPromptOutput>
 export interface Requestable_promptOpt
@@ -134,19 +149,23 @@ export class Requestable_promptOpt
         public input: Requestable_promptOpt_input,
         public prevState?: Requestable_promptOpt_state,
     ) {
-        this.state = prevState ?? { active: false, text: '', tokens: [] }
-
-        const def = input.default
-        if (def != null) {
-            if (typeof def === 'string') {
-                this.state.active = true
-                this.state.text = def
-                this.state.tokens = [{ type: 'text', text: def }]
-            }
-            if (typeof Array.isArray(def)) {
-                // 🔴
+        if (prevState) {
+            this.state = prevState
+        } else {
+            this.state = { active: false, text: '', tokens: [] }
+            const def = input.default
+            if (def != null) {
+                if (typeof def === 'string') {
+                    this.state.active = true
+                    this.state.text = def
+                    this.state.tokens = [{ type: 'text', text: def }]
+                }
+                if (typeof Array.isArray(def)) {
+                    // 🔴
+                }
             }
         }
+        makeAutoObservable(this)
     }
     state: Requestable_promptOpt_state
     get result(): Requestable_promptOpt_output {
@@ -157,7 +176,7 @@ export class Requestable_promptOpt
 
 // 🅿️ int ==============================================================================
 
-export type Requestable_int_input = { default?: number; min?: number; max?: number }
+export type Requestable_int_input = ReqInput<{ default?: number; min?: number; max?: number }>
 export type Requestable_int_state = { active: true; val: number }
 export type Requestable_int_output = number
 export interface Requestable_int extends IWidget<Requestable_int_input, Requestable_int_state, Requestable_int_output> {}
@@ -169,6 +188,7 @@ export class Requestable_int implements IRequestable<Requestable_int_input, Requ
         public prevState?: Requestable_int_state,
     ) {
         this.state = prevState ?? { active: true, val: input.default ?? 0 }
+        makeAutoObservable(this)
     }
     state: Requestable_int_state
     get result(): Requestable_int_output {
@@ -178,7 +198,7 @@ export class Requestable_int implements IRequestable<Requestable_int_input, Requ
 
 // 🅿️ float ==============================================================================
 
-export type Requestable_float_input = { default?: number; min?: number; max?: number }
+export type Requestable_float_input = ReqInput<{ default?: number; min?: number; max?: number }>
 export type Requestable_float_state = { active: true; val: number }
 export type Requestable_float_output = number
 export interface Requestable_float extends IWidget<Requestable_float_input, Requestable_float_state, Requestable_float_output> {}
@@ -192,6 +212,7 @@ export class Requestable_float
         public prevState?: Requestable_float_state,
     ) {
         this.state = prevState ?? { active: true, val: input.default ?? 0 }
+        makeAutoObservable(this)
     }
     state: Requestable_float_state
     get result(): Requestable_float_output {
@@ -201,7 +222,7 @@ export class Requestable_float
 
 // 🅿️ bool ==============================================================================
 
-export type Requestable_bool_input = { default?: boolean }
+export type Requestable_bool_input = ReqInput<{ default?: boolean }>
 export type Requestable_bool_state = { active: true; val: boolean }
 export type Requestable_bool_output = boolean
 export interface Requestable_bool extends IWidget<Requestable_bool_input, Requestable_bool_state, Requestable_bool_output> {}
@@ -213,6 +234,7 @@ export class Requestable_bool implements IRequestable<Requestable_bool_input, Re
         public prevState?: Requestable_bool_state,
     ) {
         this.state = prevState ?? { active: true, val: input.default ?? false }
+        makeAutoObservable(this)
     }
     state: Requestable_bool_state
     get result(): Requestable_bool_output {
@@ -222,7 +244,7 @@ export class Requestable_bool implements IRequestable<Requestable_bool_input, Re
 
 // 🅿️ intOpt ==============================================================================
 
-export type Requestable_intOpt_input = { default?: number }
+export type Requestable_intOpt_input = ReqInput<{ default?: number }>
 export type Requestable_intOpt_state = { active: boolean; val: number }
 export type Requestable_intOpt_output = Maybe<number>
 export interface Requestable_intOpt
@@ -240,6 +262,7 @@ export class Requestable_intOpt
             active: input.default != null,
             val: input.default ?? 0,
         }
+        makeAutoObservable(this)
     }
     state: Requestable_intOpt_state
     get result(): Requestable_intOpt_output {
@@ -250,7 +273,7 @@ export class Requestable_intOpt
 
 // 🅿️ floatOpt ==============================================================================
 
-export type Requestable_floatOpt_input = { default?: number }
+export type Requestable_floatOpt_input = ReqInput<{ default?: number }>
 export type Requestable_floatOpt_state = { active: boolean; val: number }
 export type Requestable_floatOpt_output = Maybe<number>
 export interface Requestable_floatOpt
@@ -268,6 +291,7 @@ export class Requestable_floatOpt
             active: input.default != null,
             val: input.default ?? 0,
         }
+        makeAutoObservable(this)
     }
     state: Requestable_floatOpt_state
     get result(): Requestable_floatOpt_output {
@@ -278,7 +302,7 @@ export class Requestable_floatOpt
 
 // 🅿️ boolOpt ==============================================================================
 
-export type Requestable_boolOpt_input = { default?: boolean }
+export type Requestable_boolOpt_input = ReqInput<{ default?: boolean }>
 export type Requestable_boolOpt_state = { active: boolean; val: boolean }
 export type Requestable_boolOpt_output = Maybe<boolean>
 export interface Requestable_boolOpt
@@ -296,6 +320,7 @@ export class Requestable_boolOpt
             active: input.default != null,
             val: input.default ?? false,
         }
+        makeAutoObservable(this)
     }
     state: Requestable_boolOpt_state
     get result(): Requestable_boolOpt_output {
@@ -306,7 +331,7 @@ export class Requestable_boolOpt
 
 // 🅿️ size ==============================================================================
 
-export type Requestable_size_input = { default?: CushySizeByRatio }
+export type Requestable_size_input = ReqInput<{ default?: CushySizeByRatio }>
 export type Requestable_size_state = CushySize
 export type Requestable_size_output = CushySize
 export interface Requestable_size extends IWidget<Requestable_size_input, Requestable_size_state, Requestable_size_output> {}
@@ -317,16 +342,21 @@ export class Requestable_size implements IRequestable<Requestable_size_input, Re
         public input: Requestable_size_input,
         public prevState?: Requestable_size_state,
     ) {
-        const aspectRatio: AspectRatio = input.default?.aspectRatio ?? '1:1'
-        const modelType: SDModelType = input.default?.modelType ?? 'SD1.5 512'
-        const width = 512 // 🔴
-        const height = 512 // 🔴
-        this.state = prevState ?? {
-            aspectRatio,
-            modelType,
-            height,
-            width,
+        if (prevState) {
+            this.state = prevState
+        } else {
+            const aspectRatio: AspectRatio = input.default?.aspectRatio ?? '1:1'
+            const modelType: SDModelType = input.default?.modelType ?? 'SD1.5 512'
+            const width = 512 // 🔴
+            const height = 512 // 🔴
+            this.state = {
+                aspectRatio,
+                modelType,
+                height,
+                width,
+            }
         }
+        makeAutoObservable(this)
     }
     state: Requestable_size_state
     get result(): Requestable_size_output {
@@ -336,7 +366,11 @@ export class Requestable_size implements IRequestable<Requestable_size_input, Re
 
 // 🅿️ matrix ==============================================================================
 
-export type Requestable_matrix_input = { /* 🟢 CUSOM */ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }
+export type Requestable_matrix_input = ReqInput<{
+    /* 🟢 CUSOM */ default?: { row: string; col: string }[]
+    rows: string[]
+    cols: string[]
+}>
 export type Requestable_matrix_state = { active: true; selected: CELL[] }
 export type Requestable_matrix_output = CELL[]
 export interface Requestable_matrix
@@ -351,6 +385,7 @@ export class Requestable_matrix
         public prevState?: Requestable_matrix_state,
     ) {
         this.state = prevState ?? { active: true, selected: [] } // 🔴
+        makeAutoObservable(this)
     }
     state: Requestable_matrix_state
     get result(): Requestable_matrix_output {
@@ -361,7 +396,7 @@ export class Requestable_matrix
 
 // 🅿️ loras ==============================================================================
 
-export type Requestable_loras_input = { default?: SimplifiedLoraDef[] }
+export type Requestable_loras_input = ReqInput<{ default?: SimplifiedLoraDef[] }>
 export type Requestable_loras_state = { active: true; loras: SimplifiedLoraDef[] }
 export type Requestable_loras_output = SimplifiedLoraDef[]
 export interface Requestable_loras extends IWidget<Requestable_loras_input, Requestable_loras_state, Requestable_loras_output> {}
@@ -375,6 +410,7 @@ export class Requestable_loras
         public prevState?: Requestable_loras_state,
     ) {
         this.state = prevState ?? { active: true, loras: input.default ?? [] }
+        makeAutoObservable(this)
     }
     state: Requestable_loras_state
     get result(): Requestable_loras_output {
@@ -384,7 +420,7 @@ export class Requestable_loras
 
 // 🅿️ image ==============================================================================
 
-export type Requestable_image_input = { default?: ImageAnswer }
+export type Requestable_image_input = ReqInput<{ default?: ImageAnswer }>
 export type Requestable_image_state = ImageAnswerForm<true>
 export type Requestable_image_output = ImageAnswer
 export interface Requestable_image extends IWidget<Requestable_image_input, Requestable_image_state, Requestable_image_output> {}
@@ -403,6 +439,7 @@ export class Requestable_image
             cushy: input.default?.type === 'CushyImage' ? input.default : null,
             pick: input.default?.type === 'CushyImage' ? 'cushy' : 'comfy',
         }
+        makeAutoObservable(this)
     }
     state: Requestable_image_state
     get result(): Requestable_image_output {
@@ -413,7 +450,7 @@ export class Requestable_image
 
 // 🅿️ imageOpt ==============================================================================
 
-export type Requestable_imageOpt_input = { default?: ImageAnswer }
+export type Requestable_imageOpt_input = ReqInput<{ default?: ImageAnswer }>
 export type Requestable_imageOpt_state = ImageAnswerForm<boolean>
 export type Requestable_imageOpt_output = Maybe<ImageAnswer>
 export interface Requestable_imageOpt
@@ -433,6 +470,7 @@ export class Requestable_imageOpt
             cushy: input.default?.type === 'CushyImage' ? input.default : null,
             pick: input.default?.type === 'CushyImage' ? 'cushy' : 'comfy',
         }
+        makeAutoObservable(this)
     }
     state: Requestable_imageOpt_state
     get result(): Requestable_imageOpt_output {
@@ -444,7 +482,7 @@ export class Requestable_imageOpt
 
 // 🅿️ selectOne ==============================================================================
 
-export type Requestable_selectOne_input<T> = { default?: T; choices: T[] }
+export type Requestable_selectOne_input<T> = ReqInput<{ default?: T; choices: T[] }>
 export type Requestable_selectOne_state<T> = { query: string; val: T }
 export type Requestable_selectOne_output<T> = T
 export interface Requestable_selectOne<T>
@@ -462,6 +500,7 @@ export class Requestable_selectOne<T>
             query: '',
             val: input.default ?? input.choices[0],
         }
+        makeAutoObservable(this)
     }
     state: Requestable_selectOne_state<T>
     get result(): Requestable_selectOne_output<T> {
@@ -471,7 +510,7 @@ export class Requestable_selectOne<T>
 
 // 🅿️ selectOneOrCustom ==============================================================================
 
-export type Requestable_selectOneOrCustom_input = { default?: string; choices: string[] }
+export type Requestable_selectOneOrCustom_input = ReqInput<{ default?: string; choices: string[] }>
 export type Requestable_selectOneOrCustom_state = { query: string; val: string }
 export type Requestable_selectOneOrCustom_output = string
 export interface Requestable_selectOneOrCustom
@@ -498,6 +537,7 @@ export class Requestable_selectOneOrCustom
             query: '',
             val: input.default ?? input.choices[0] ?? '',
         }
+        makeAutoObservable(this)
     }
     state: Requestable_selectOneOrCustom_state
     get result(): Requestable_selectOneOrCustom_output {
@@ -507,7 +547,7 @@ export class Requestable_selectOneOrCustom
 
 // 🅿️ selectMany ==============================================================================
 
-export type Requestable_selectMany_input<T extends { type: string }> = { default?: T[]; choices: T[] }
+export type Requestable_selectMany_input<T extends { type: string }> = ReqInput<{ default?: T[]; choices: T[] }>
 export type Requestable_selectMany_state<T extends { type: string }> = { query: string; values: T[] }
 export type Requestable_selectMany_output<T extends { type: string }> = T[]
 export interface Requestable_selectMany<T extends { type: string }>
@@ -525,6 +565,7 @@ export class Requestable_selectMany<T extends { type: string }>
             query: '',
             values: input.default ?? [],
         }
+        makeAutoObservable(this)
     }
     state: Requestable_selectMany_state<T>
     get result(): Requestable_selectMany_output<T> {
@@ -534,7 +575,7 @@ export class Requestable_selectMany<T extends { type: string }>
 
 // 🅿️ selectManyOrCustom ==============================================================================
 
-export type Requestable_selectManyOrCustom_input = { default?: string[]; choices: string[] }
+export type Requestable_selectManyOrCustom_input = ReqInput<{ default?: string[]; choices: string[] }>
 export type Requestable_selectManyOrCustom_state = { query: string; values: string[] }
 export type Requestable_selectManyOrCustom_output = string[]
 export interface Requestable_selectManyOrCustom
@@ -561,6 +602,7 @@ export class Requestable_selectManyOrCustom
             query: '',
             values: input.default ?? [],
         }
+        makeAutoObservable(this)
     }
     state: Requestable_selectManyOrCustom_state
     get result(): Requestable_selectManyOrCustom_output {
@@ -570,7 +612,7 @@ export class Requestable_selectManyOrCustom
 
 // 🅿️ list ==============================================================================
 
-export type Requestable_list_input<T extends Requestable> = { /* 🟢 NO DEFAULT */ mkItem: (ix: number) => T }
+export type Requestable_list_input<T extends Requestable> = ReqInput<{ /* 🟢 NO DEFAULT */ mkItem: (ix: number) => T }>
 export type Requestable_list_state<T extends Requestable> = { active: true; items: T[] }
 export type Requestable_list_output<T extends Requestable> = T['$Output'][]
 export interface Requestable_list<T extends Requestable>
@@ -585,10 +627,12 @@ export class Requestable_list<T extends Requestable>
         public input: Requestable_list_input<T>,
         public prevState?: Requestable_list_state<T>,
     ) {
+        // 🔴 prev state can't be an instance there
         this.state = prevState ?? {
             active: true,
             items: [],
         }
+        makeAutoObservable(this)
     }
     state: Requestable_list_state<T>
     get result(): Requestable_list_output<T> {
@@ -601,7 +645,7 @@ export class Requestable_list<T extends Requestable>
 
 // 🅿️ group ==============================================================================
 
-export type Requestable_group_input<T extends { [key: string]: Requestable }> = { items: T }
+export type Requestable_group_input<T extends { [key: string]: Requestable }> = ReqInput<{ items: T }>
 export type Requestable_group_state<T extends { [key: string]: Requestable }> = {
     active: true
     values: T
@@ -622,6 +666,7 @@ export class Requestable_group<T extends { [key: string]: Requestable }>
             active: true,
             values: input.items,
         }
+        makeAutoObservable(this)
     }
     state: Requestable_group_state<T>
     get result(): Requestable_group_output<T> {
@@ -635,7 +680,7 @@ export class Requestable_group<T extends { [key: string]: Requestable }>
 
 // 🅿️ groupOpt ==============================================================================
 
-export type Requestable_groupOpt_input<T extends { [key: string]: Requestable }> = { default?: boolean; items: T }
+export type Requestable_groupOpt_input<T extends { [key: string]: Requestable }> = ReqInput<{ default?: boolean; items: T }>
 export type Requestable_groupOpt_state<T extends { [key: string]: Requestable }> = {
     active: boolean
     values: T
@@ -657,6 +702,7 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }>
             active: true,
             values: input.items,
         }
+        makeAutoObservable(this)
     }
     state: Requestable_groupOpt_state<T>
     get result(): Requestable_groupOpt_output<T> {
@@ -671,7 +717,7 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }>
 
 // 🅿️ enum ==============================================================================
 
-export type Requestable_enum_input<T extends KnownEnumNames> = { default?: Requirable[T]; enumName: T }
+export type Requestable_enum_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
 export type Requestable_enum_state<T extends KnownEnumNames> = { active: true; val: Requirable[T] }
 export type Requestable_enum_output<T extends KnownEnumNames> = Requirable[T]
 export interface Requestable_enum<T extends KnownEnumNames>
@@ -690,6 +736,7 @@ export class Requestable_enum<T extends KnownEnumNames>
             active: true,
             val: input.default ?? (possibleValues[0] as any) /* 🔴 */,
         }
+        makeAutoObservable(this)
     }
     state: Requestable_enum_state<T>
     get result(): Requestable_enum_output<T> {
@@ -699,7 +746,7 @@ export class Requestable_enum<T extends KnownEnumNames>
 
 // 🅿️ enumOpt ==============================================================================
 
-export type Requestable_enumOpt_input<T extends KnownEnumNames> = { default?: Requirable[T]; enumName: T }
+export type Requestable_enumOpt_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
 export type Requestable_enumOpt_state<T extends KnownEnumNames> = { active: boolean; val: Maybe<Requirable[T]> }
 export type Requestable_enumOpt_output<T extends KnownEnumNames> = Maybe<Requirable[T]>
 export interface Requestable_enumOpt<T extends KnownEnumNames>
@@ -718,6 +765,7 @@ export class Requestable_enumOpt<T extends KnownEnumNames>
             active: input.default != null,
             val: input.default ?? (possibleValues[0] as any) /* 🔴 */,
         }
+        makeAutoObservable(this)
     }
     state: Requestable_enumOpt_state<T>
     get result(): Requestable_enumOpt_output<T> {

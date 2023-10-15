@@ -25,21 +25,18 @@ import { WidgetListUI } from './WidgetListUI'
 import { makeAutoObservable } from 'mobx'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
-    draft: DraftL
-    path: FormPath
     req: R.Requestable
     rootKey: string
-    ix: number
     vertical?: boolean
 }) {
-    const { draft, rootKey, req, path, ix } = p
-
+    const { rootKey, req } = p
+    const draft = useDraft()
     let tooltip: Maybe<string>
     let label: Maybe<string>
-    const fullPath = p.path.join('/')
-    label = req.label ?? rootKey
-    tooltip = req.tooltip
-    if (fullPath !== label) tooltip = `${fullPath} ${tooltip ?? ''}`
+    // const fullPath = p.path.join('/')
+    label = req.input.label ?? rootKey
+    tooltip = req.input.tooltip
+    // if (fullPath !== label) tooltip = `${fullPath} ${tooltip ?? ''}`
     return (
         <div
             // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
