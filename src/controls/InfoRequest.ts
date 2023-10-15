@@ -586,7 +586,7 @@ export class Requestable_selectManyOrCustom implements IRequest< Requestable_sel
 
 // 🅿️ list ==============================================================================
 export type Requestable_list_input<T extends Requestable> = ReqInput<{ /* 🟢 NO DEFAULT */ mkItem: (ix: number) => T }>
-export type Requestable_list_serial<T extends Requestable> = { active: true; items: 🔴T[] }
+export type Requestable_list_serial<T extends Requestable> = { active: true; items: T['$Serial'][] }
 export type Requestable_list_state<T extends Requestable> = { active: true; items: T[] }
 export type Requestable_list_output<T extends Requestable> = T['$Output'][]
 export interface Requestable_list<T extends Requestable> extends IWidget<Requestable_list_input<T>, Requestable_list_serial<T>, Requestable_list_state<T>, Requestable_list_output<T>> {}
@@ -656,7 +656,7 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
     constructor(
         public schema: SchemaL,
         public input: Requestable_groupOpt_input<T>,
-        public serial?: Requestable_groupOpt_staserial,
+        public serial?: Requestable_groupOpt_serial<T>,
     ) {
         this.state = serial ?? {
             active: input.default ?? false,
@@ -677,18 +677,15 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
 
 // 🅿️ enum ==============================================================================
 export type Requestable_enum_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
+export type Requestable_enum_serial<T extends KnownEnumNames> = Requestable_enum_state<T>
 export type Requestable_enum_state<T extends KnownEnumNames> = { active: true; val: Requirable[T] }
 export type Requestable_enum_output<T extends KnownEnumNames> = Requirable[T]
-export interface Requestable_enum<T extends KnownEnumNames>
-    extends IWidget<Requestable_enum_input<T>, Requestable_enum_state<T>, Requestable_enum_output<T>> {}
-export class Requestable_enum<T extends KnownEnumNames>
-    implements IRequest<Requestable_enum_input<T>, Requestable_enum_state<T>, Requestable_enum_output<T>>
-{
-    type = 'enum'
+export interface Requestable_enum<T extends KnownEnumNames> extends IWidget<Requestable_enum_input<T>, Requestable_enum_serial<T>, Requestable_enum_state<T>, Requestable_enum_output<T>> {}
+export class Requestable_enum<T extends KnownEnumNames> implements IRequest<Requestable_enum_input<T>, Requestable_enum_serial<T>, Requestable_enum_state<T>, Requestable_enum_output<T>> {
     constructor(
         public schema: SchemaL,
         public input: Requestable_enum_input<T>,
-        public serial?: Requestable_enum_staserial,
+        public serial?: Requestable_enum_serial<T>,
     ) {
         const possibleValues = this.schema.knownEnumsByName.get(input.enumName) ?? []
         this.state = serial ?? {
@@ -705,18 +702,15 @@ export class Requestable_enum<T extends KnownEnumNames>
 
 // 🅿️ enumOpt ==============================================================================
 export type Requestable_enumOpt_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
+export type Requestable_enumOpt_serial<T extends KnownEnumNames> = Requestable_enumOpt_state<T>
 export type Requestable_enumOpt_state<T extends KnownEnumNames> = { active: boolean; val: Requirable[T] }
 export type Requestable_enumOpt_output<T extends KnownEnumNames> = Maybe<Requirable[T]>
-export interface Requestable_enumOpt<T extends KnownEnumNames>
-    extends IWidget<Requestable_enumOpt_input<T>, Requestable_enumOpt_state<T>, Requestable_enumOpt_output<T>> {}
-export class Requestable_enumOpt<T extends KnownEnumNames>
-    implements IRequest<Requestable_enumOpt_input<T>, Requestable_enumOpt_state<T>, Requestable_enumOpt_output<T>>
-{
-    type = 'enum?'
+export interface Requestable_enumOpt<T extends KnownEnumNames> extends IWidget<Requestable_enumOpt_input<T>, Requestable_enumOpt_serial<T>, Requestable_enumOpt_state<T>, Requestable_enumOpt_output<T>> {}
+export class Requestable_enumOpt<T extends KnownEnumNames> implements IRequest<Requestable_enumOpt_input<T>, Requestable_enumOpt_serial<T>, Requestable_enumOpt_state<T>, Requestable_enumOpt_output<T>> {
     constructor(
         public schema: SchemaL,
         public input: Requestable_enumOpt_input<T>,
-        public serial?: Requestable_enumOpt_staserial,
+        public serial?: Requestable_enumOpt_serial<T>,
     ) {
         const possibleValues = this.schema.knownEnumsByName.get(input.enumName) ?? []
         this.state = serial ?? {
