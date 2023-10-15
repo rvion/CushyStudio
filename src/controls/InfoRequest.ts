@@ -50,14 +50,14 @@ export type IWidget<T, I, X, S, O> = {
     $Serial: X;
     $State: S;
     $Output: O
-    $JSON: {type: T, input: I, serial: X};
+    $JSON: {type: T, /*input: I,*/ serial: X};
 }
 export type IRequest<T, I, X, S, O> = {
     type: T
     state: S
     readonly result: O
     readonly serial: X
-    readonly json: { type: T, input: I, serial: X}
+    readonly json: { type: T, /*input: I,*/ serial: X}
 }
 
 export type ReqInput<X> = X & {
@@ -86,7 +86,7 @@ export class Requestable_str implements IRequest<'str', Requestable_str_input, R
         makeAutoObservable(this)
     }
     get serial(): Requestable_str_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_str_output { return this.state.val }
 }
 
@@ -112,7 +112,7 @@ export class Requestable_strOpt implements IRequest<'strOpt', Requestable_strOpt
         makeAutoObservable(this)
     }
     get serial(){ return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_strOpt_output {
         if (!this.state.active) return undefined
         return this.state.val
@@ -154,7 +154,7 @@ export class Requestable_prompt implements IRequest<'prompt', Requestable_prompt
         makeAutoObservable(this)
     }
     get serial(): Requestable_prompt_serial { return this.state } // prettier-ignore
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_prompt_output {
         JSON.stringify(this.state) // 🔶 force deep observation
         return this.state
@@ -195,7 +195,7 @@ export class Requestable_promptOpt implements IRequest<'promptOpt', Requestable_
         makeAutoObservable(this)
     }
     get serial(): Requestable_promptOpt_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_promptOpt_output {
         if (this.state.active === false) return undefined
         return this.state
@@ -221,7 +221,7 @@ export class Requestable_int implements IRequest<'int', Requestable_int_input, R
         makeAutoObservable(this)
     }
     get serial(): Requestable_int_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_int_output { return this.state.val }
 }
 
@@ -244,7 +244,7 @@ export class Requestable_float implements IRequest<'float', Requestable_float_in
         makeAutoObservable(this)
     }
     get serial(): Requestable_float_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_float_output { return this.state.val }
 }
 
@@ -267,7 +267,7 @@ export class Requestable_bool implements IRequest<'bool', Requestable_bool_input
         makeAutoObservable(this)
     }
     get serial(): Requestable_bool_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_bool_output { return this.state.val }
 }
 
@@ -293,7 +293,7 @@ export class Requestable_intOpt implements IRequest<'intOpt', Requestable_intOpt
         makeAutoObservable(this)
     }
     get serial(): Requestable_intOpt_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_intOpt_output {
         if (this.state.active === false) return undefined
         return this.state.val
@@ -322,7 +322,7 @@ export class Requestable_floatOpt implements IRequest<'floatOpt', Requestable_fl
         makeAutoObservable(this)
     }
     get serial(): Requestable_floatOpt_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_floatOpt_output {
         if (this.state.active === false) return undefined
         return this.state.val
@@ -361,7 +361,7 @@ export class Requestable_size implements IRequest<'size', Requestable_size_input
         makeAutoObservable(this)
     }
     get serial(): Requestable_size_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_size_output {
         return this.state
     }
@@ -406,7 +406,7 @@ export class Requestable_matrix implements IRequest<'matrix', Requestable_matrix
         makeAutoObservable(this)
     }
     get serial(): Requestable_matrix_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_matrix_output {
         // if (!this.state.active) return undefined
         return this.state.selected
@@ -484,7 +484,7 @@ export class Requestable_loras implements IRequest<'loras', Requestable_loras_in
         makeAutoObservable(this)
     }
     get serial(): Requestable_loras_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_loras_output {
         return this.state.loras
     }
@@ -535,7 +535,7 @@ export class Requestable_image implements IRequest<'image', Requestable_image_in
         makeAutoObservable(this)
     }
     get serial(): Requestable_image_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_image_output {
         if (this.state.pick === 'cushy' && this.state.cushy) return this.state.cushy
         return this.state.comfy
@@ -566,7 +566,7 @@ export class Requestable_imageOpt implements IRequest<'imageOpt', Requestable_im
         makeAutoObservable(this)
     }
     get serial(): Requestable_imageOpt_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_imageOpt_output {
         if (!this.state.active) return undefined
         if (this.state.pick === 'cushy' && this.state.cushy) return this.state.cushy
@@ -596,7 +596,7 @@ export class Requestable_selectOne<T> implements IRequest<'selectOne', Requestab
         makeAutoObservable(this)
     }
     get serial(): Requestable_selectOne_serial<T> { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_selectOne_output<T> { return this.state.val }
 }
 
@@ -622,7 +622,7 @@ export class Requestable_selectOneOrCustom implements IRequest<'selectOneOrCusto
         makeAutoObservable(this)
     }
     get serial(): Requestable_selectOneOrCustom_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_selectOneOrCustom_output { return this.state.val }
 }
 
@@ -660,7 +660,7 @@ export class Requestable_selectMany<T extends { type: string }> implements IRequ
             values: this.state.values.map((v) => ({ type: v.type })),
         }
     }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_selectMany_output<T> {
         return this.state.values
     }
@@ -685,7 +685,7 @@ export class Requestable_selectManyOrCustom implements IRequest<'selectManyOrCus
         makeAutoObservable(this)
     }
     get serial(): Requestable_selectManyOrCustom_serial { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_selectManyOrCustom_output { return this.state.values }
 }
 
@@ -698,16 +698,18 @@ export interface Requestable_list<T extends Requestable> extends IWidget<'list',
 export class Requestable_list<T extends Requestable> implements IRequest<'list', Requestable_list_input<T>, Requestable_list_serial<T>, Requestable_list_state<T>, Requestable_list_output<T>> {
     type = 'list' as const
     state: Requestable_list_state<T>
+    private _reference: T
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
         public input: Requestable_list_input<T>,
         serial?: Requestable_list_serial<T>,
     ) {
+        this._reference = input.mkItem(0)
         if (serial) {
             this.state = {
-                active: true,
-                items: [] // 🔴 serial.items.map((i) => input.mkItem(this.state.items.length, i)),
+                active: serial.active,
+                items: serial.items.map((i) => builder.HYDRATE(i.type, this._reference.input, i.serial)), // 🔴 handler filter if wrong type
             }
         } else {
             this.state = { active: true, items: [], }
@@ -720,7 +722,7 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
             items: this.state.items.map((i) => i.json)
         }
     }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_list_output<T> { return this.state.items.map((i) => i.result) }
     addItem() {
         this.state.items.push(this.input.mkItem(this.state.items.length))
@@ -750,7 +752,7 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
                 const newInput = newItem.input
                 const newType = newItem.type
                 if (newType===prev.type) {
-                    this.state.values[key] = this.builder.HYDRATE(prev.type, prev.input, prev.serial)
+                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prev.serial)
                 } else {
                     this.state.values[key] = newItem
                 }
@@ -768,7 +770,7 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
             values: out as any,
         }
     }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_group_output<T> {
         const out: { [key: string]: any } = {}
         for (const key in this.state.values) {
@@ -801,7 +803,7 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
                 const newInput = newItem.input
                 const newType = newItem.type
                 if (newType===prev.type) {
-                    this.state.values[key] = this.builder.HYDRATE(prev.type, prev.input, prev.serial)
+                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prev.serial)
                 } else {
                     this.state.values[key] = newItem
                 }
@@ -822,7 +824,7 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
             values: out as any,
         }
     }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_groupOpt_output<T> {
         if (!this.state.active) return undefined
         const out: { [key: string]: any } = {}
@@ -856,7 +858,7 @@ export class Requestable_enum<T extends KnownEnumNames> implements IRequest<'enu
         makeAutoObservable(this)
     }
     get serial(): Requestable_enum_serial<T> { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_enum_output<T> { return this.state.val }
 }
 
@@ -883,7 +885,7 @@ export class Requestable_enumOpt<T extends KnownEnumNames> implements IRequest<'
         makeAutoObservable(this)
     }
     get serial(): Requestable_enumOpt_serial<T> { return this.state }
-    get json() { return { type: this.type, input: this.input, serial: this.serial } }
+    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_enumOpt_output<T> {
         if (!this.state.active) return undefined
         return this.state.val
@@ -896,7 +898,7 @@ export class FormBuilder {
     constructor(public schema: SchemaL) {}
 
     // 🔴 untyped internals there
-    HYDRATE =(type: Requestable['type'], input:any, serial:any) :any => {
+    HYDRATE =(type: Requestable['type'], input: any, serial?: any ): any => {
         if (type === 'bool')               return new Requestable_bool               (this, this.schema, input, serial)
         if (type === 'str')                return new Requestable_str                (this, this.schema, input, serial)
         if (type === 'strOpt')             return new Requestable_strOpt             (this, this.schema, input, serial)

@@ -8,7 +8,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Requestabl
     const values = req.state.items
     return (
         <div className='foo'>
-            <Button onClick={() => console.log('not implemented')}>+</Button>
+            <Button onClick={() => req.addItem()}>+</Button>
             {values.map((v, ix) => (
                 <WidgetUI key={ix} req={v} />
             ))}
