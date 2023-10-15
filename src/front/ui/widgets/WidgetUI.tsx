@@ -20,6 +20,7 @@ import { WidgetNumUI } from './WidgetNumUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetStrOptUI } from './WidgetStrOptUI'
 import { WidgetStrUI } from './WidgetStrUI'
+import { WigetSizeUI } from './WidgetSizeUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Requestable
@@ -85,12 +86,13 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; foc
     if (req instanceof R.Requestable_strOpt) return <WidgetStrOptUI req={req} />
     if (req instanceof R.Requestable_image) return <WidgetSelectImageUI req={req} />
     if (req instanceof R.Requestable_imageOpt) return <WidgetSelectImageUI req={req} />
-    if (req instanceof R.Requestable_enum) return <WidgetEnumUI req={req} />
-    if (req instanceof R.Requestable_enumOpt) return <WidgetEnumUI req={req} />
-    if (req instanceof R.Requestable_matrix) return <WidgetMatrixUI req={req} />
     if (req instanceof R.Requestable_list) return <WidgetListUI req={req} />
     if (req instanceof R.Requestable_group) return <WidgetItemsUI req={req} />
     if (req instanceof R.Requestable_groupOpt) return <WidgetItemsOptUI req={req} />
+    if (req instanceof R.Requestable_size) return <WigetSizeUI req={req} />
+    if (req instanceof R.Requestable_enum) return <WidgetEnumUI req={req} />
+    if (req instanceof R.Requestable_enumOpt) return <WidgetEnumUI req={req} />
+    if (req instanceof R.Requestable_matrix) return <WidgetMatrixUI req={req} />
     if (req instanceof R.Requestable_bool) return <WidgetBoolUI req={req} />
     if (req instanceof R.Requestable_boolOpt) return <WidgetBoolUI req={req} />
     if (req instanceof R.Requestable_prompt) return <WidgetPromptUI req={req} />
@@ -100,7 +102,6 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; foc
     if (req instanceof R.Requestable_selectManyOrCustom) return <>TODO</>
     if (req instanceof R.Requestable_selectOne) return <>TODO</>
     if (req instanceof R.Requestable_selectOneOrCustom) return <>TODO</>
-    if (req instanceof R.Requestable_size) return <>TODO</>
 
     exhaust(req)
     console.log(`🔴`, (req as any).type)

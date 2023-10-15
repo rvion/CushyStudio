@@ -1,23 +1,40 @@
 import { observer } from 'mobx-react-lite'
-import { Nav } from 'rsuite'
-import { CushySize, CushySizeByRatio } from 'src/controls/misc/InfoAnswer'
+import { Form, Radio, RadioGroup } from 'rsuite'
+import { Requestable_size } from 'src/controls/InfoRequest'
+import { AspectRatio, SDModelType } from 'src/controls/misc/InfoAnswer'
 
-export const WigetSizeUI = observer(function WigetSizeUI_(p: {}) {
+export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Requestable_size }) {
     return (
         <div>
-            <Nav>
-                <Nav.Item>by ratio</Nav.Item>
-                <Nav.Item>custom</Nav.Item>
-            </Nav>
+            <Form.Group controlId='radioList'>
+                <RadioGroup name='radioList' inline>
+                    <Radio value='A'>Item A</Radio>
+                    <Radio value='B'>Item B</Radio>
+                    <Radio value='C'>Item C</Radio>
+                    <Radio value='D' disabled>
+                        Item D
+                    </Radio>
+                </RadioGroup>
+                <RadioGroup name='radioList' inline>
+                    <Radio value='A'>Item A</Radio>
+                    <Radio value='B'>Item B</Radio>
+                    <Radio value='C'>Item C</Radio>
+                    <Radio value='D' disabled>
+                        Item D
+                    </Radio>
+                </RadioGroup>
+                <div>width: TODO</div>
+                <div>height: TODO</div>
+            </Form.Group>
         </div>
     )
 })
 
-const x = (
+const getSizeFromRatio = (
     //
-    model: CushySizeByRatio['kind'],
-    ratio: CushySizeByRatio['ratio'],
-) => {
+    model: SDModelType,
+    ratio: AspectRatio,
+): { width: number; height: number } => {
     let base: number = 512
     if (model === 'SD2.1 768') {
         base = 768
