@@ -10,6 +10,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: {}) {
                 <Button
                     className='animate-pulse'
                     color='orange'
+                    size='xs'
                     appearance='primary'
                     startIcon={<span className='material-symbols-outlined'>update</span>}
                     onClick={async () => {

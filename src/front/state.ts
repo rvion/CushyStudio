@@ -5,7 +5,7 @@ import type { ConfigFile } from 'src/core/ConfigFile'
 import type { ImageL } from '../models/Image'
 import type { UIPage } from './UIAction'
 
-import { existsSync, mkdirSync, readFileSync, writeFile, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, stat, writeFile, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { createRef } from 'react'
 import { nanoid } from 'nanoid'
@@ -33,6 +33,7 @@ import { Updater } from './updater'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { ProjectL } from 'src/models/Project'
 import { resolve } from 'path'
+import { bytesToSize } from 'src/utils/fs/bytesToSize'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -42,6 +43,35 @@ export class STATE {
 
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
+
+    /**
+     * global hotReload persistent cache that should survive hot reload
+     * useful to ensure various singleton stuff (e.g. dbHealth)
+     */
+    private get hotReloadPersistentCache(): { [key: string]: any } {
+        const globalRef = globalThis as any
+        if (globalRef.__hotReloadPersistentCache == null) globalRef.__hotReloadPersistentCache = {}
+        return globalRef.__hotReloadPersistentCache
+    }
+
+    /** self-updating DB size and health */
+    dbHealth: { status: 'good' | 'meh' | 'bad'; size: number; sizeTxt: string } = { status: 'meh', size: 0, sizeTxt: '?' }
+    private watchDBHealth = () => {
+        const store = this.hotReloadPersistentCache
+        if (store.dbSizeWatcherInterval != null) clearInterval(store.dbSizeWatcherInterval)
+        const updateDBSize = () => {
+            // get file size using fs
+            stat(this.db.absPath, (err, stats) => {
+                if (err) return console.log(`❌ impossible to update db size: ${extractErrorMessage(err)}`, err)
+                const size = stats.size
+                const status = size > 30_000_000 ? 'bad' : size > 10_000_000 ? 'meh' : 'good'
+                const sizeTxt = bytesToSize(size)
+                this.dbHealth = { status, size, sizeTxt }
+            })
+        }
+        store.dbSizeWatcherInterval = setInterval(updateDBSize, 30_000)
+        updateDBSize()
+    }
 
     // main state api
     schema: SchemaL
@@ -126,6 +156,7 @@ export class STATE {
         console.log('[🗳️] starting web app')
         const db = new LiveDB(this)
         this.db = db
+        this.watchDBHealth()
         this.codePrettier = new CodePrettier(this)
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
         this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/nodes.json'))
