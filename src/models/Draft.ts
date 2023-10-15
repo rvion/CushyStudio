@@ -3,9 +3,10 @@ import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 import type { ToolID, ToolL } from './Tool'
 
+import { FormBuilder, type Requestable } from 'src/controls/InfoRequest'
+import { type Result, __FAIL, __OK } from 'src/utils/Either'
 import { LiveRef } from '../db/LiveRef'
-import { FormBuilder, Requestable, Requestable_group } from 'src/controls/InfoRequest'
-import { __FAIL, __OK, Result } from 'src/utils/Either'
+import { reaction, toJS } from 'mobx'
 
 export type FormPath = (string | number)[]
 
@@ -18,7 +19,7 @@ export type DraftT = {
     updatedAt: number
     title: string
     toolID: ToolID /** tool params */
-    params: Maybe<any> /** parent */
+    params?: Maybe<any> /** parent */
     graphID: GraphID
 }
 
@@ -41,13 +42,7 @@ export class DraftL {
         return step
     }
 
-    // get finalJSON(): any {
-    //     if (!this.xxx.success) return {}
-    //     return this.xxx.value.result
-    // }
-
     focus = () => this.graph.item.update({ focusedDraftID: this.id })
-    reset = () => (this.data.params = {})
     getPathInfo = (path: FormPath): string => this.id + '/' + path.join('/')
 
     form!: Result<Requestable>
@@ -64,42 +59,14 @@ export class DraftL {
         }
         try {
             const formBuilder = new FormBuilder(this.st.schema)
-            const req: Requestable = formBuilder.group({ items: uiFn(formBuilder) })
+            const req: Requestable = formBuilder.group({ items: uiFn(formBuilder) }, this.data.params)
             this.form = __OK(req)
+            console.log('🔴 1 >>> ', toJS(req.json))
+            console.log('🔴 2 >>> ', toJS(this.data.params))
+            this.update({ params: req.json })
         } catch (e) {
             this.form = __FAIL('ui function crashed', e)
             return
         }
-    }
-    // form part --------------------------------------------------------
-    // onUpdate = (prev: Maybe<ActionT>, next: ActionT) => {
-    //     if (prev == null) return
-    //     if (prev.toolID !== next.toolID) this.reset()
-    // }
-
-    // tool = new LiveRefOpt<this, ToolL>(this, 'toolID', 'tools')
-
-    getAtPath(path: FormPath): any {
-        if (this.data.params == null) this.data.params = {}
-        let current = this.data.params
-        for (const key of path) {
-            if (!current.hasOwnProperty(key)) {
-                return undefined
-            }
-            current = current[key]
-        }
-        return current
-    }
-    setAtPath = (path: FormPath, value: any) => {
-        if (this.data.params == null) this.data.params = {}
-        // console.log(path, value, toJS(this.data.value))
-        let current = this.data.params
-        for (let i = 0; i < path.length - 1; i++) {
-            const key = path[i]
-            if (!current[key]) current[key] = typeof path[i + 1] === 'number' ? [] : {}
-            current = current[key]
-        }
-        current[path[path.length - 1]] = value
-        // console.log(this.Form)
     }
 }

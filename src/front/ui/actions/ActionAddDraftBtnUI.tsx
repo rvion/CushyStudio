@@ -28,8 +28,6 @@ export const ActionAddDraftBtnUI = observer(function ActionAddDraftBtnUI_(p: { t
                     toolID: tool.id,
                     graphID: pj.rootGraph.id,
                     title: 'Untitled',
-                    params: {},
-                    // params: deepCopyNaive(fromDraft?.params ?? {}),
                 })
                 tool.update({ focusedDraftID: draft.id })
             }}

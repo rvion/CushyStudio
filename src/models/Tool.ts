@@ -74,7 +74,7 @@ export class ToolL {
             toolID: toolID,
             graphID: pj.rootGraph.id,
             title: 'Untitled',
-            params: deepCopyNaive(fromDraft?.params ?? {}),
+            params: fromDraft && fromDraft.params ? deepCopyNaive(fromDraft.params) : undefined,
         })
         console.log('🔴', draft.id)
         this.update({ focusedDraftID: draft.id })
