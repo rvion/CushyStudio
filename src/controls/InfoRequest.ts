@@ -743,21 +743,19 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
         serial?: Requestable_group_serial<T>,
     ) {
         if (serial){
-            this.state = {
-                active: true,
-                values: {} as any, // 🔴 serial.values.map((i) => input.mkItem(this.state.items.length, i)),
-            }
+            this.state = { active: serial.active, values: {} as any }
             for (const key in serial.values) {
                 const prev = serial.values[key]
-                this.state.values[key] = this.builder.HYDRATE(prev.type, prev.input, prev.serial)
+                const newItem = input.items[key]
+                const newInput = newItem.input
+                const newType = newItem.type
+                if (newType===prev.type) {
+                    this.state.values[key] = this.builder.HYDRATE(prev.type, prev.input, prev.serial)
+                } else {
+                    this.state.values[key] = newItem
+                }
             }
-        } else {
-            this.state = {
-                active: true,
-                values: input.items,
-            }
-        }
-
+        } else this.state = { active: true, values: input.items, }
         makeAutoObservable(this)
     }
     get serial(): Requestable_group_serial<T> {
@@ -795,9 +793,22 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
         public input: Requestable_groupOpt_input<T>,
         serial?: Requestable_groupOpt_serial<T>,
     ) {
-        this.state = serial ?? {
+        if (serial){
+            this.state = { active: serial.active, values: {} as any }
+            for (const key in serial.values) {
+                const prev = serial.values[key]
+                const newItem = input.items[key]
+                const newInput = newItem.input
+                const newType = newItem.type
+                if (newType===prev.type) {
+                    this.state.values[key] = this.builder.HYDRATE(prev.type, prev.input, prev.serial)
+                } else {
+                    this.state.values[key] = newItem
+                }
+            }
+        } else this.state = {
             active: input.default ?? false,
-            values: input.items,
+            values: input.items
         }
         makeAutoObservable(this)
     }
@@ -886,9 +897,30 @@ export class FormBuilder {
 
     // 🔴 untyped internals there
     HYDRATE =(type: Requestable['type'], input:any, serial:any) :any => {
-        if (type === 'bool') return new Requestable_bool(this, this.schema, input, serial)
-
-
+        if (type === 'bool')               return new Requestable_bool               (this, this.schema, input, serial)
+        if (type === 'str')                return new Requestable_str                (this, this.schema, input, serial)
+        if (type === 'strOpt')             return new Requestable_strOpt             (this, this.schema, input, serial)
+        if (type === 'int')                return new Requestable_int                (this, this.schema, input, serial)
+        if (type === 'intOpt')             return new Requestable_intOpt             (this, this.schema, input, serial)
+        if (type === 'float')              return new Requestable_float              (this, this.schema, input, serial)
+        if (type === 'floatOpt')           return new Requestable_floatOpt           (this, this.schema, input, serial)
+        if (type === 'matrix')             return new Requestable_matrix             (this, this.schema, input, serial)
+        if (type === 'prompt')             return new Requestable_prompt             (this, this.schema, input, serial)
+        if (type === 'promptOpt')          return new Requestable_promptOpt          (this, this.schema, input, serial)
+        if (type === 'loras')              return new Requestable_loras              (this, this.schema, input, serial)
+        if (type === 'image')              return new Requestable_image              (this, this.schema, input, serial)
+        if (type === 'imageOpt')           return new Requestable_imageOpt           (this, this.schema, input, serial)
+        if (type === 'selectOneOrCustom')  return new Requestable_selectOneOrCustom  (this, this.schema, input, serial)
+        if (type === 'selectManyOrCustom') return new Requestable_selectManyOrCustom (this, this.schema, input, serial)
+        if (type === 'enum')               return new Requestable_enum               (this, this.schema, input, serial)
+        if (type === 'enumOpt')            return new Requestable_enumOpt            (this, this.schema, input, serial)
+        if (type === 'list')               return new Requestable_list               (this, this.schema, input, serial)
+        if (type === 'groupOpt')           return new Requestable_groupOpt           (this, this.schema, input, serial)
+        if (type === 'group')              return new Requestable_group              (this, this.schema, input, serial)
+        if (type === 'selectOne')          return new Requestable_selectOne          (this, this.schema, input, serial)
+        if (type === 'selectMany')         return new Requestable_selectMany         (this, this.schema, input, serial)
+        if (type === 'size')               return new Requestable_size               (this, this.schema, input, serial)
+        console.log(`🔴 unknown type ${type}`)
         exhaust(type)
     }
 
