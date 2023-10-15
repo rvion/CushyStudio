@@ -113,16 +113,12 @@ export class Requestable_prompt implements IRequest<Requestable_prompt_input, Re
 }
 
 // 🅿️ promptOpt ==============================================================================
-export type Requestable_promptOpt_input = ReqInput<{ /* 🟢 CUSTOM */ default?: string | PossibleSerializedNodes[] }>
+export type Requestable_promptOpt_input = ReqInput<{ default?: string | PossibleSerializedNodes[] }>
 export type Requestable_promptOpt_serial = Requestable_promptOpt_state
 export type Requestable_promptOpt_state = WidgetPromptOutput<boolean>
 export type Requestable_promptOpt_output = Maybe<WidgetPromptOutput>
-export interface Requestable_promptOpt
-    extends IWidget<Requestable_promptOpt_input, Requestable_promptOpt_serial, Requestable_promptOpt_state, Requestable_promptOpt_output> {}
-export class Requestable_promptOpt
-    implements IRequest<Requestable_promptOpt_input, Requestable_promptOpt_serial, Requestable_promptOpt_state, Requestable_promptOpt_output>
-{
-    type = 'prompt?'
+export interface Requestable_promptOpt extends IWidget<Requestable_promptOpt_input, Requestable_promptOpt_serial, Requestable_promptOpt_state, Requestable_promptOpt_output> {}
+export class Requestable_promptOpt implements IRequest<Requestable_promptOpt_input, Requestable_promptOpt_serial, Requestable_promptOpt_state, Requestable_promptOpt_output> {
     constructor(
         public schema: SchemaL,
         public input: Requestable_promptOpt_input,
@@ -160,7 +156,6 @@ export type Requestable_int_state = { active: true; val: number }
 export type Requestable_int_output = number
 export interface Requestable_int extends IWidget<Requestable_int_input, Requestable_int_serial, Requestable_int_state, Requestable_int_output> {}
 export class Requestable_int implements IRequest<Requestable_int_input, Requestable_int_serial, Requestable_int_state, Requestable_int_output> {
-    type = 'int'
     constructor(
         public schema: SchemaL,
         public input: Requestable_int_input,
@@ -182,7 +177,6 @@ export type Requestable_float_state = { active: true; val: number }
 export type Requestable_float_output = number
 export interface Requestable_float extends IWidget<Requestable_float_input, Requestable_float_serial, Requestable_float_state, Requestable_float_output> {}
 export class Requestable_float implements IRequest<Requestable_float_input, Requestable_float_serial, Requestable_float_state, Requestable_float_output> {
-    type = 'float'
     constructor(
         public schema: SchemaL,
         public input: Requestable_float_input,
@@ -204,7 +198,6 @@ export type Requestable_bool_state = { active: true; val: boolean }
 export type Requestable_bool_output = boolean
 export interface Requestable_bool extends IWidget<Requestable_bool_input, Requestable_bool_serial, Requestable_bool_state, Requestable_bool_output> {}
 export class Requestable_bool implements IRequest<Requestable_bool_input, Requestable_bool_serial, Requestable_bool_state, Requestable_bool_output> {
-    type = 'bool'
     constructor(
         public schema: SchemaL,
         public input: Requestable_bool_input,
@@ -226,7 +219,6 @@ export type Requestable_intOpt_state = { active: boolean; val: number }
 export type Requestable_intOpt_output = Maybe<number>
 export interface Requestable_intOpt extends IWidget<Requestable_intOpt_input, Requestable_intOpt_serial, Requestable_intOpt_state, Requestable_intOpt_output> {}
 export class Requestable_intOpt implements IRequest<Requestable_intOpt_input, Requestable_intOpt_serial, Requestable_intOpt_state, Requestable_intOpt_output> {
-    type = 'int?'
     constructor(
         public schema: SchemaL,
         public input: Requestable_intOpt_input,
@@ -252,7 +244,6 @@ export type Requestable_floatOpt_state = { active: boolean; val: number }
 export type Requestable_floatOpt_output = Maybe<number>
 export interface Requestable_floatOpt extends IWidget<Requestable_floatOpt_input, Requestable_floatOpt_serial, Requestable_floatOpt_state, Requestable_floatOpt_output> {}
 export class Requestable_floatOpt implements IRequest<Requestable_floatOpt_input, Requestable_floatOpt_serial, Requestable_floatOpt_state, Requestable_floatOpt_output> {
-    type = 'float?'
     constructor(
         public schema: SchemaL,
         public input: Requestable_floatOpt_input,
@@ -278,7 +269,6 @@ export type Requestable_size_state = CushySize
 export type Requestable_size_output = CushySize
 export interface Requestable_size extends IWidget<Requestable_size_input, Requestable_size_serial, Requestable_size_state, Requestable_size_output> {}
 export class Requestable_size implements IRequest<Requestable_size_input, Requestable_size_serial, Requestable_size_state, Requestable_size_output> {
-    type = 'size'
     constructor(
         public schema: SchemaL,
         public input: Requestable_size_input,
@@ -313,7 +303,6 @@ export type Requestable_matrix_state = { active: true; selected: CELL[] }
 export type Requestable_matrix_output = CELL[]
 export interface Requestable_matrix extends IWidget<Requestable_matrix_input, Requestable_matrix_serial, Requestable_matrix_state, Requestable_matrix_output> {}
 export class Requestable_matrix implements IRequest<Requestable_matrix_input, Requestable_matrix_serial, Requestable_matrix_state, Requestable_matrix_output> {
-    type = 'matrix'
     rows: string[]
     cols: string[]
 
@@ -403,7 +392,6 @@ export type Requestable_loras_state = { active: true; loras: SimplifiedLoraDef[]
 export type Requestable_loras_output = SimplifiedLoraDef[]
 export interface Requestable_loras extends IWidget<Requestable_loras_input, Requestable_loras_serial, Requestable_loras_state, Requestable_loras_output> {}
 export class Requestable_loras implements IRequest<Requestable_loras_input, Requestable_loras_serial, Requestable_loras_state, Requestable_loras_output> {
-    type = 'loras'
     constructor(
         public schema: SchemaL,
         public input: Requestable_loras_input,
@@ -452,7 +440,6 @@ export type Requestable_image_state = ImageAnswerForm<true>
 export type Requestable_image_output = ImageAnswer
 export interface Requestable_image extends IWidget<Requestable_image_input, Requestable_image_serial, Requestable_image_state, Requestable_image_output> {}
 export class Requestable_image implements IRequest<Requestable_image_input, Requestable_image_serial, Requestable_image_state, Requestable_image_output> {
-    type = 'image'
     constructor(
         public schema: SchemaL,
         public input: Requestable_image_input,
@@ -480,7 +467,6 @@ export type Requestable_imageOpt_state = ImageAnswerForm<boolean>
 export type Requestable_imageOpt_output = Maybe<ImageAnswer>
 export interface Requestable_imageOpt extends IWidget<Requestable_imageOpt_input, Requestable_imageOpt_serial, Requestable_imageOpt_state, Requestable_imageOpt_output> {}
 export class Requestable_imageOpt implements IRequest<Requestable_imageOpt_input, Requestable_imageOpt_serial, Requestable_imageOpt_state, Requestable_imageOpt_output> {
-    type = 'image?'
     constructor(
         public schema: SchemaL,
         public input: Requestable_imageOpt_input,
@@ -507,12 +493,8 @@ export type Requestable_selectOne_input<T> = ReqInput<{ default?: T; choices: T[
 export type Requestable_selectOne_serial<T> = Requestable_selectOne_state<T>
 export type Requestable_selectOne_state<T> = { query: string; val: T }
 export type Requestable_selectOne_output<T> = T
-export interface Requestable_selectOne<T>
-    extends IWidget<Requestable_selectOne_input<T>, Requestable_selectOne_state<T>, Requestable_selectOne_output<T>> {}
-export class Requestable_selectOne<T>
-    implements IRequest<Requestable_selectOne_input<T>, Requestable_selectOne_state<T>, Requestable_selectOne_output<T>>
-{
-    type = 'selectOne'
+export interface Requestable_selectOne<T> extends IWidget<Requestable_selectOne_input<T>, Requestable_selectOne_serial<T>, Requestable_selectOne_state<T>, Requestable_selectOne_output<T>> {}
+export class Requestable_selectOne<T> implements IRequest<Requestable_selectOne_input<T>, Requestable_selectOne_serial<T>, Requestable_selectOne_state<T>, Requestable_selectOne_output<T>> {
     constructor(
         public schema: SchemaL,
         public input: Requestable_selectOne_input<T>,
@@ -535,21 +517,8 @@ export type Requestable_selectOneOrCustom_input = ReqInput<{ default?: string; c
 export type Requestable_selectOneOrCustom_serial = Requestable_selectOneOrCustom_state
 export type Requestable_selectOneOrCustom_state = { query: string; val: string }
 export type Requestable_selectOneOrCustom_output = string
-export interface Requestable_selectOneOrCustom
-    extends IWidget<
-        Requestable_selectOneOrCustom_input,
-        Requestable_selectOneOrCustom_state,
-        Requestable_selectOneOrCustom_output
-    > {}
-export class Requestable_selectOneOrCustom
-    implements
-        IRequest<
-            Requestable_selectOneOrCustom_input,
-            Requestable_selectOneOrCustom_state,
-            Requestable_selectOneOrCustom_output
-        >
-{
-    type = 'selectOneOrCustom'
+export interface Requestable_selectOneOrCustom extends IWidget<Requestable_selectOneOrCustom_input, Requestable_selectOneOrCustom_serial, Requestable_selectOneOrCustom_state, Requestable_selectOneOrCustom_output > {}
+export class Requestable_selectOneOrCustom implements IRequest<Requestable_selectOneOrCustom_input, Requestable_selectOneOrCustom_serial, Requestable_selectOneOrCustom_state, Requestable_selectOneOrCustom_output > {
     constructor(
         public schema: SchemaL,
         public input: Requestable_selectOneOrCustom_input,
@@ -572,12 +541,8 @@ export type Requestable_selectMany_input<T extends { type: string }> = ReqInput<
 export type Requestable_selectMany_serial<T extends { type: string }> = { query: string; values: { type: string }[] }
 export type Requestable_selectMany_state<T extends { type: string }> = { query: string; values: T[] }
 export type Requestable_selectMany_output<T extends { type: string }> = T[]
-export interface Requestable_selectMany<T extends { type: string }>
-    extends IWidget<Requestable_selectMany_input<T>, Requestable_selectMany_state<T>, Requestable_selectMany_output<T>> {}
-export class Requestable_selectMany<T extends { type: string }>
-    implements IRequest<Requestable_selectMany_input<T>, Requestable_selectMany_state<T>, Requestable_selectMany_output<T>>
-{
-    type = 'selectMany'
+export interface Requestable_selectMany<T extends { type: string }> extends IWidget<Requestable_selectMany_input<T>, Requestable_selectMany_serial<T>, Requestable_selectMany_state<T>, Requestable_selectMany_output<T>> {}
+export class Requestable_selectMany<T extends { type: string }> implements IRequest<Requestable_selectMany_input<T>, Requestable_selectMany_serial<T>, Requestable_selectMany_state<T>, Requestable_selectMany_output<T>> {
     constructor(
         public schema: SchemaL,
         public input: Requestable_selectMany_input<T>,
@@ -600,21 +565,8 @@ export type Requestable_selectManyOrCustom_input = ReqInput<{ default?: string[]
 export type Requestable_selectManyOrCustom_serial = Requestable_selectManyOrCustom_state
 export type Requestable_selectManyOrCustom_state = { query: string; values: string[] }
 export type Requestable_selectManyOrCustom_output = string[]
-export interface Requestable_selectManyOrCustom
-    extends IWidget<
-        Requestable_selectManyOrCustom_input,
-        Requestable_selectManyOrCustom_state,
-        Requestable_selectManyOrCustom_output
-    > {}
-export class Requestable_selectManyOrCustom
-    implements
-        IRequest<
-            Requestable_selectManyOrCustom_input,
-            Requestable_selectManyOrCustom_state,
-            Requestable_selectManyOrCustom_output
-        >
-{
-    type = 'selectManyOrCustom'
+export interface Requestable_selectManyOrCustom extends IWidget< Requestable_selectManyOrCustom_input, Requestable_selectManyOrCustom_serial, Requestable_selectManyOrCustom_state, Requestable_selectManyOrCustom_output > {}
+export class Requestable_selectManyOrCustom implements IRequest< Requestable_selectManyOrCustom_input, Requestable_selectManyOrCustom_serial, Requestable_selectManyOrCustom_state, Requestable_selectManyOrCustom_output > {
     constructor(
         public schema: SchemaL,
         public input: Requestable_selectManyOrCustom_input,
@@ -637,13 +589,8 @@ export type Requestable_list_input<T extends Requestable> = ReqInput<{ /* 🟢 N
 export type Requestable_list_serial<T extends Requestable> = { active: true; items: 🔴T[] }
 export type Requestable_list_state<T extends Requestable> = { active: true; items: T[] }
 export type Requestable_list_output<T extends Requestable> = T['$Output'][]
-export interface Requestable_list<T extends Requestable>
-    extends IWidget<Requestable_list_input<T>, Requestable_list_state<T>, Requestable_list_output<T>> {}
-
-export class Requestable_list<T extends Requestable>
-    implements IRequest<Requestable_list_input<T>, Requestable_list_state<T>, Requestable_list_output<T>>
-{
-    type = 'list'
+export interface Requestable_list<T extends Requestable> extends IWidget<Requestable_list_input<T>, Requestable_list_serial<T>, Requestable_list_state<T>, Requestable_list_output<T>> {}
+export class Requestable_list<T extends Requestable> implements IRequest<Requestable_list_input<T>, Requestable_list_serial<T>, Requestable_list_state<T>, Requestable_list_output<T>> {
     constructor(
         public schema: SchemaL,
         public input: Requestable_list_input<T>,
@@ -657,6 +604,12 @@ export class Requestable_list<T extends Requestable>
         makeAutoObservable(this)
     }
     state: Requestable_list_state<T>
+    get json(): Requestable_list_serial<T> {
+        return {
+            active: this.state.active,
+            items: this.state.items.map((i) => i.json)
+        }
+    }
     get result(): Requestable_list_output<T> {
         return this.state.items.map((i) => i.result)
     }
@@ -667,21 +620,15 @@ export class Requestable_list<T extends Requestable>
 
 // 🅿️ group ==============================================================================
 export type Requestable_group_input<T extends { [key: string]: Requestable }> = ReqInput<{ items: T }>
-export type Requestable_group_state<T extends { [key: string]: Requestable }> = {
-    active: true
-    values: T
-}
+export type Requestable_group_serial<T extends { [key: string]: Requestable }> = { active: true; values: {[k in keyof T]: T[k]['$Serial']} }
+export type Requestable_group_state<T extends { [key: string]: Requestable }> = { active: true; values: T }
 export type Requestable_group_output<T extends { [key: string]: Requestable }> = { [k in keyof T]: ReqResult<T[k]> }
-export interface Requestable_group<T>
-    extends IWidget<Requestable_group_input<T>, Requestable_group_state<T>, Requestable_group_output<T>> {}
-export class Requestable_group<T extends { [key: string]: Requestable }>
-    implements IRequest<Requestable_group_input<T>, Requestable_group_state<T>, Requestable_group_output<T>>
-{
-    type = 'items'
+export interface Requestable_group<T extends { [key: string]: Requestable }> extends IWidget<Requestable_group_input<T>, Requestable_group_serial<T>, Requestable_group_state<T>, Requestable_group_output<T>> {}
+export class Requestable_group<T extends { [key: string]: Requestable }> implements IRequest<Requestable_group_input<T>, Requestable_group_serial<T>, Requestable_group_state<T>, Requestable_group_output<T>> {
     constructor(
         public schema: SchemaL,
         public input: Requestable_group_input<T>,
-        public serial?: Requestable_group_staserial,
+        public serial?: Requestable_group_serial<T>,
     ) {
         this.state = serial ?? {
             active: true,
@@ -701,18 +648,11 @@ export class Requestable_group<T extends { [key: string]: Requestable }>
 
 // 🅿️ groupOpt ==============================================================================
 export type Requestable_groupOpt_input<T extends { [key: string]: Requestable }> = ReqInput<{ default?: boolean; items: T }>
-export type Requestable_groupOpt_state<T extends { [key: string]: Requestable }> = {
-    active: boolean
-    values: T
-}
+export type Requestable_groupOpt_serial<T extends { [key: string]: Requestable }> = { active: boolean; values: {[K in keyof T]: T[K]['$Serial']} }
+export type Requestable_groupOpt_state<T extends { [key: string]: Requestable }> = { active: boolean; values: T }
 export type Requestable_groupOpt_output<T extends { [key: string]: Requestable }> = Maybe<{ [k in keyof T]: ReqResult<T[k]> }>
-
-export interface Requestable_groupOpt<T>
-    extends IWidget<Requestable_groupOpt_input<T>, Requestable_groupOpt_state<T>, Requestable_groupOpt_output<T>> {}
-export class Requestable_groupOpt<T extends { [key: string]: Requestable }>
-    implements IRequest<Requestable_groupOpt_input<T>, Requestable_groupOpt_state<T>, Requestable_groupOpt_output<T>>
-{
-    type = 'items?'
+export interface Requestable_groupOpt<T extends { [key: string]: Requestable }> extends IWidget<Requestable_groupOpt_input<T>, Requestable_groupOpt_serial<T>, Requestable_groupOpt_state<T>, Requestable_groupOpt_output<T>> {}
+export class Requestable_groupOpt<T extends { [key: string]: Requestable }> implements IRequest<Requestable_groupOpt_input<T>, Requestable_groupOpt_serial<T>, Requestable_groupOpt_state<T>, Requestable_groupOpt_output<T>> {
     constructor(
         public schema: SchemaL,
         public input: Requestable_groupOpt_input<T>,
