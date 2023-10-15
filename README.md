@@ -1,3 +1,10 @@
+i18n
+number min / max
+lists
+options / branches
+
+---
+
 <div align="center">
 
 # 🛋 CushyStudio

@@ -1,10 +1,11 @@
-import type { Requestable, FormResult } from 'src/core/Requirement'
+import type { FormResult } from 'src/core/Requirement'
 import type { ImageID, ImageT } from 'src/models/Image'
 import type { ToolID } from 'src/models/Tool'
 import type { FlowID } from 'src/front/FlowID'
 import type { PromptID, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
 import type { GraphID } from 'src/models/Graph'
 import type { StepID } from 'src/models/Step'
+import { Requestable } from 'src/controls/InfoRequest'
 
 // =============================================================================================
 // | FRONT => BACK                                                                             |

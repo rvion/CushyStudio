@@ -245,7 +245,7 @@ export class Requestable_bool implements IRequestable<Requestable_bool_input, Re
 
 // 🅿️ intOpt ==============================================================================
 
-export type Requestable_intOpt_input = ReqInput<{ default?: number }>
+export type Requestable_intOpt_input = ReqInput<{ default?: number; min?: number; max?: number; step?: number }>
 export type Requestable_intOpt_state = { active: boolean; val: number }
 export type Requestable_intOpt_output = Maybe<number>
 export interface Requestable_intOpt
@@ -274,7 +274,7 @@ export class Requestable_intOpt
 
 // 🅿️ floatOpt ==============================================================================
 
-export type Requestable_floatOpt_input = ReqInput<{ default?: number }>
+export type Requestable_floatOpt_input = ReqInput<{ default?: number; min?: number; max?: number; step?: number }>
 export type Requestable_floatOpt_state = { active: boolean; val: number }
 export type Requestable_floatOpt_output = Maybe<number>
 export interface Requestable_floatOpt

@@ -1,32 +1,28 @@
 import { observer } from 'mobx-react-lite'
 import { Input } from 'rsuite'
+import { Requestable_str, Requestable_strOpt } from 'src/controls/InfoRequest'
 
-export const WidgetStrUI = observer(function WidgetStrUI_(p: {
-    //
-    get: () => string
-    def: () => Maybe<string>
-    set: (v: string) => void
-    textarea?: boolean
-}) {
-    const value = p.get() ?? p.def() ?? 0
-    if (p.textarea) {
+export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Requestable_str | Requestable_strOpt }) {
+    const req = p.req
+    const val = req.state.val
+    if (req.input.textarea) {
         return (
-            <Input //
+            <Input
                 as='textarea'
                 rows={5}
-                value={value}
+                value={val}
                 onChange={(next) => {
-                    p.set(next)
+                    req.state.val = next
                 }}
             />
         )
     }
     return (
-        <Input //
+        <Input
             size='sm'
-            value={value}
+            value={val}
             onChange={(next) => {
-                p.set(next)
+                req.state.val = next
             }}
         />
     )

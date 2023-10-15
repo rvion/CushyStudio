@@ -18,7 +18,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
     const answer = get() ?? p.def()
     const st = useSt()
     const [dropStyle, dropRef] = useImageDrop((i) => {
-        set({ type: 'imageID', imageID: i.id })
+        set({ type: 'CushyImage', imageID: i.id })
     })
     const draft = useDraft()
     const node = draft.graph.item.findNodeByType('VAEDecode')
@@ -48,7 +48,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                     )
                 })} */}
                     {/* <LightBoxUI lbs={lbs} /> */}
-                    {answer?.type === 'imageID' ? ( //
+                    {answer?.type === 'CushyImage' ? ( //
                         <ImageUI img={draft.db.images.getOrThrow(answer.imageID)} />
                     ) : (
                         <span>drop image here</span>

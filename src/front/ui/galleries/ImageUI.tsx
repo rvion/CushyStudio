@@ -110,18 +110,18 @@ const renderSpeaker = (
         if (eventKey === 4) {
             st.setAction({ type: 'paint', imageID: img.id })
         }
-        if (eventKey === 3) {
-            console.log('🔴')
-            const db = img.st.db
-            const pj: ProjectL = db.projects.firstOrCrash()
-            const root: GraphL = pj.rootGraph.item
-            const ia: ImageAnswer = { type: 'CushyImage', imageID: img.id }
-            const step = root.createStep({
-                toolID: db.tools.findOrCrash((t) => t.name.endsWith('start from image')).id,
-                params: { image: ia },
-            })
-            return
-        }
+        // ⏸️ if (eventKey === 3) {
+        // ⏸️     console.log('🔴')
+        // ⏸️     const db = img.st.db
+        // ⏸️     const pj: ProjectL = db.projects.firstOrCrash()
+        // ⏸️     const root: GraphL = pj.rootGraph.item
+        // ⏸️     const ia: ImageAnswer = { type: 'CushyImage', imageID: img.id }
+        // ⏸️     const step = root.createStep({
+        // ⏸️         toolID: db.tools.findOrCrash((t) => t.name.endsWith('start from image')).id,
+        // ⏸️         params: { image: ia },
+        // ⏸️     })
+        // ⏸️     return
+        // ⏸️ }
         console.log(eventKey)
     }
     return (

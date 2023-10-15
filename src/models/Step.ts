@@ -73,13 +73,6 @@ export class StepL {
     focus() {
         this.parentGraph.item.update({ focusedStepID: this.id })
     }
-
-    get rawParams() { return this.data.params } // prettier-ignore
-    get normalizedParams() {
-        if (this.data.params == null) this.data.params = {}
-        this.tool.item
-        return this.data.params
-    }
     tool = new LiveRef<this, ToolL>(this, 'toolID', 'tools')
     parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
     outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')

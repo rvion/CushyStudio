@@ -30,7 +30,13 @@ export class DraftL {
 
     start = (): StepL => {
         // console.log('🟢', JSON.stringify(this.data))
-        const step = this.graph.item.createStep(this.data)
+        const req = this.xxx.value
+        if (req == null) throw new Error('invalid req')
+        const step = this.graph.item.createStep({
+            toolID: this.data.toolID,
+            actionResult: req.result,
+            actionState: req.state,
+        })
         step.start()
         return step
     }
