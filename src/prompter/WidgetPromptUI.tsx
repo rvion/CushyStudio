@@ -44,6 +44,7 @@ function onChange(p: EditorProps, editorState: EditorState) {
         const txt = root.__cachedText
         if (txt)
             p.set({
+                active: true,
                 text: txt,
                 tokens: getFinalJSON(editorState).items,
             })
@@ -58,7 +59,8 @@ function onError(error: Error) {
     console.error(error)
 }
 
-export type WidgetPromptOutput = {
+export type WidgetPromptOutput<Active extends boolean = boolean> = {
+    active: Active
     text: string
     tokens: PossibleSerializedNodes[]
 }

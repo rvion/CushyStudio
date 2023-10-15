@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Nav } from 'rsuite'
-import { CushySize, CushySizeByRatio } from 'src/controls/InfoAnswer'
+import { CushySize, CushySizeByRatio } from 'src/controls/misc/InfoAnswer'
 
 export const WigetSizeUI = observer(function WigetSizeUI_(p: {}) {
     return (

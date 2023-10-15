@@ -1,5 +1,5 @@
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
-import type { FormDefinition } from '../core/Requirement'
+import type { Requestable } from '../core/Requirement'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { DraftID, DraftL } from './Draft'
 import type { ProjectL } from './Project'
@@ -20,7 +20,7 @@ export type ToolT = {
     name: string
     description?: string
     file: AbsolutePath
-    form?: Maybe<FormDefinition>
+    form?: Maybe<Requestable>
     codeTS?: string
     codeJS?: string
     focusedDraftID?: Maybe<DraftID> // 🔴

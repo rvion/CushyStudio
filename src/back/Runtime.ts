@@ -4,16 +4,13 @@ import type { Printable } from '../core/Printable'
 import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
-import { readFileSync, writeFileSync } from 'fs'
+import fs, { readFileSync, writeFileSync } from 'fs'
 import { marked } from 'marked'
 import { lookup } from 'mime-types'
 import { STATE } from 'src/front/state'
 import { ToolL } from 'src/models/Tool'
-import { FormBuilder } from '../controls/FormBuilder'
-import { ImageAnswer, InfoAnswer, InfoRequestFn } from '../controls/InfoAnswer'
 import { finalizeAnswer_UNSAFE } from '../controls/InfoAnswerFinal'
-import { Requestable } from '../controls/InfoRequest'
-import { ScriptStep_ask } from '../controls/misc/ScriptStep_ask'
+import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { Slot } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { globalToolFnCache } from '../core/globalActionFnCache'
@@ -31,7 +28,6 @@ import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
-import fs from 'fs'
 
 /** script exeuction instance */
 export class Runtime {
@@ -214,19 +210,19 @@ export class Runtime {
 
     embedding = (t: Embeddings) => `embedding:${t}`
 
-    /** ask the user a few informations */
-    ask: InfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
-        //
-        requestFn: (q: FormBuilder) => Req,
-        layout?: 0,
-    ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
-        const reqBuilder = new FormBuilder()
-        const request = requestFn(reqBuilder)
-        const ask = new ScriptStep_ask(request)
-        // this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })
-        // this.steps.unshift(ask)
-        return ask.finished
-    }
+    // 🐉 /** ask the user a few informations */
+    // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
+    // 🐉     //
+    // 🐉     requestFn: (q: FormBuilder) => Req,
+    // 🐉     layout?: 0,
+    // 🐉 ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
+    // 🐉     const reqBuilder = new FormBuilder()
+    // 🐉     const request = requestFn(reqBuilder)
+    // 🐉     const ask = new ScriptStep_ask(request)
+    // 🐉     // this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })
+    // 🐉     // this.steps.unshift(ask)
+    // 🐉     return ask.finished
+    // 🐉 }
 
     exec = (comand: string): string => {
         // promisify exec to run the command and collect the output
@@ -263,7 +259,7 @@ export class Runtime {
                 //     RGBA: false, // 'false',
                 // })
             }
-            if (ia.type === 'ComfyImage') return ia.image
+            if (ia.type === 'ComfyImage') return ia.imageName
         } catch (err) {
             console.log('🔴 failed to convert ImageAnser to Enum_LoadImage_image', ia)
             throw err
@@ -294,7 +290,7 @@ export class Runtime {
                 })
             }
             if (ia.type === 'ComfyImage') {
-                const img2 = this.nodes.LoadImage({ image: ia.image })
+                const img2 = this.nodes.LoadImage({ image: ia.imageName })
                 // const img2 = this.nodes.LoadImage({ image: res.name as any })
                 // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
                 return img2

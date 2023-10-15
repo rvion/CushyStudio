@@ -2,67 +2,69 @@ action('Prompt-V1', {
     author: 'rvion',
     priority: 1,
     help: 'load model with optional clip-skip, loras, tome ratio, etc.',
-    ui: (form) => ({
-        // load
-        model: form.enum({
-            enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
-            default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
-            group: 'model',
-        }),
-        vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'model' }),
-        clipSkip: form.int({
-            label: 'Clip Skip',
-            tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
-            default: 0,
-            group: 'model',
-        }),
+    // 🟢 seems acceptable 🟢 🟢
+    ui: (form) =>
+        form.ui({
+            // load
+            model: form.enum({
+                enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
+                default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
+                group: 'model',
+            }),
+            vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'model' }),
+            clipSkip: form.int({
+                label: 'Clip Skip',
+                tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
+                default: 0,
+                group: 'model',
+            }),
 
-        // prompt
-        positive: form.promptOpt({}),
-        negative: form.promptOpt({}),
+            // prompt
+            positive: form.promptOpt({}),
+            negative: form.promptOpt({}),
 
-        // latent
-        startImage: form.imageOpt({ group: 'latent' }),
-        width: form.int({ default: 1024, group: 'latent' }),
-        height: form.int({ default: 1024, group: 'latent' }),
-        batchSize: form.int({ default: 1, group: 'latent', min: 1 }),
+            // latent
+            startImage: form.imageOpt({ group: 'latent' }),
+            width: form.int({ default: 1024, group: 'latent' }),
+            height: form.int({ default: 1024, group: 'latent' }),
+            batchSize: form.int({ default: 1, group: 'latent', min: 1 }),
 
-        //
-        CFG: form.int({ default: 8, group: 'sampler' }),
-        sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
-        scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras', group: 'sampler' }),
-        denoise: form.float({ default: 1, group: 'sampler' }),
-        steps: form.int({ default: 20, group: 'sampler' }),
-        seed: form.intOpt({ group: 'sampler' }),
+            //
+            CFG: form.int({ default: 8, group: 'sampler' }),
+            sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
+            scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras', group: 'sampler' }),
+            denoise: form.float({ default: 1, group: 'sampler' }),
+            steps: form.int({ default: 20, group: 'sampler' }),
+            seed: form.intOpt({ group: 'sampler' }),
 
-        highResFix: form.groupOpt({
-            items: {
-                scaleFactor: form.int({ default: 1 }),
-                steps: form.int({ default: 15 }),
-                denoise: form.float({ default: 0.5 }),
-                saveIntermediaryImage: form.bool({ default: true }),
-            },
+            highResFix: form.groupOpt({
+                items: {
+                    scaleFactor: form.int({ default: 1 }),
+                    steps: form.int({ default: 15 }),
+                    denoise: form.float({ default: 0.5 }),
+                    saveIntermediaryImage: form.bool({ default: true }),
+                },
+            }),
+            batches: form.groupOpt({
+                items: {
+                    batchCount: form.int({ default: 1 }),
+                    delayBetween: form.int({
+                        tooltip: 'in ms',
+                        default: 0,
+                    }),
+                },
+            }),
+
+            // startImage
+            removeBG: form.bool({ default: false }),
+            extra: form.groupOpt({
+                items: {
+                    freeU: form.bool({ default: false }),
+                    reverse: form.bool({ default: false }),
+                    loras: form.loras({ default: [] }),
+                },
+            }),
         }),
-        batches: form.groupOpt({
-            items: {
-                batchCount: form.int({ default: 1 }),
-                delayBetween: form.int({
-                    tooltip: 'in ms',
-                    default: 0,
-                }),
-            },
-        }),
-
-        // startImage
-        removeBG: form.bool({ default: false }),
-        extra: form.groupOpt({
-            items: {
-                freeU: form.bool({ default: false }),
-                reverse: form.bool({ default: false }),
-                loras: form.loras({ default: [] }),
-            },
-        }),
-    }),
     run: async (flow, p) => {
         const graph = flow.nodes
 

@@ -1,4 +1,4 @@
-import type { Requestable } from 'src/controls/InfoRequest'
+import * as R from 'src/controls/InfoRequest'
 import * as I from '@rsuite/icons'
 
 import { observer } from 'mobx-react-lite'
@@ -22,11 +22,12 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
 import { WidgetListUI } from './WidgetListUI'
+import { makeAutoObservable } from 'mobx'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     draft: DraftL
     path: FormPath
-    req: Requestable
+    req: R.Requestable
     rootKey: string
     ix: number
     vertical?: boolean
@@ -87,32 +88,32 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 export const WidgetUI = observer(function WidgetUI_(p: {
     //
     path: FormPath
-    req: Requestable
+    req: R.Requestable
     focus?: boolean
 }) {
     const draft = useDraft()
     const req = p.req
 
-    // primitives
-    const get = () => draft.getAtPath(p.path)
-    const set = (next: any) => draft.setAtPath(p.path, next)
-    const def = () => req.default
+    const uist = new R.WidgetState(req, p.path, draft)
+    // // primitives
+    // const get = () => draft.getAtPath(p.path)
+    // const set = (next: any) => draft.setAtPath(p.path, next)
+    // const def = () => req.default
 
     // widgets
-    if (req.type === 'int') return <WidgetNumUI mode='int' get={get} set={set} def={def} />
-    if (req.type === 'int?') return <WidgetNumOptUI mode='int' get={get} set={set} def={def} />
-    if (req.type === 'float') return <WidgetNumUI mode='float' get={get} set={set} def={def} />
-    if (req.type === 'float?') return <WidgetNumOptUI mode='float' get={get} set={set} def={def} />
-    if (req.type === 'str') return <WidgetStrUI get={get} set={set} def={def} textarea={req.textarea} />
-    if (req.type === 'str?') return <WidgetStrOptUI get={get} set={set} def={def} textarea={req.textarea} />
-    if (req.type === 'image') return <WidgetSelectImageUI get={get} set={set} def={def} /*infos={req.imageInfos}*/ />
-    if (req.type === 'image?') return <WidgetSelectImageUI get={get} set={set} def={def} /*infos={req.imageInfos}*/ />
-    if (req.type === 'enum') return <WidgetEnumUI autofocus={p.focus} get={get} set={set} def={def} enumName={req.enumName} />
-    if (req.type === 'enum?') return <WidgetEnumUI autofocus={p.focus} get={get} set={set} def={def} enumName={req.enumName} optional /> // prettier-ignore
-    if (req.type === 'matrix') return <WidgetMatrixUI get={get} set={set} def={def} rows={req.rows} cols={req.cols} />
-    if (req.type === 'list') return <WidgetListUI get={get} set={set} def={def} />
-
+    if (req.type === 'int') return <WidgetNumUI mode='int' />
+    if (req.type === 'int?') return <WidgetNumOptUI mode='int' />
+    if (req.type === 'float') return <WidgetNumUI mode='float' />
+    if (req.type === 'float?') return <WidgetNumOptUI mode='float' />
+    if (req.type === 'str') return <WidgetStrUI textarea={req.textarea} />
+    if (req.type === 'str?') return <WidgetStrOptUI textarea={req.textarea} />
+    if (req.type === 'image') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ />
+    if (req.type === 'image?') return <WidgetSelectImageUI /*infos={req.imageInfos}*/ />
+    if (req.type === 'enum') return <WidgetEnumUI autofocus={p.focus} enumName={req.enumName} />
+    if (req.type === 'enum?')   return <WidgetEnumUI autofocus={p.focus}  enumName={req.enumName} optional /> // prettier-ignore
+    if (req.type === 'matrix') return <WidgetMatrixUI rows={req.rows} cols={req.cols} />
     // 🔶 TODO: SHOULD BETTER SUPPORT DEFAULTS
+    if (req.type === 'list') return <WidgetListUI />
     if (req.type === 'items') return <WidgetItemsUI get={get} set={set} path={p.path} req={req} />
     if (req.type === 'items?') return <WidgetItemsOptUI get={get} set={set} path={p.path} req={req} />
     if (req.type === 'bool') return <WidgetBoolUI get={get} set={set} optional={false} />
@@ -120,19 +121,12 @@ export const WidgetUI = observer(function WidgetUI_(p: {
     if (req.type === 'prompt') return <WidgetPromptUI get={get} set={set} />
     if (req.type === 'prompt?') return <WidgetPromptUI get={get} set={set} nullable />
     if (req.type === 'loras') return <WidgetLorasUI get={get} set={set} />
-
     // 🔶 TODO: SHOULD BE FIXED SOON
     if (req.type === 'selectMany') return <>TODO</>
     if (req.type === 'selectManyOrCustom') return <>TODO</>
     if (req.type === 'selectOne') return <>TODO</>
     if (req.type === 'selectOneOrCustom') return <>TODO</>
     if (req.type === 'size') return <>TODO</>
-
-    // 🔶 TODO: LEGACY UNSUPPORTED ANYMORE
-    if (req.type === 'paint') return <>🔴 paint form commented</> //<WidgetPaintUI uri={'foo bar 🔴'} />
-    if (req.type === 'embeddings') return <>TODO</>
-    if (req.type === 'samMaskPoints') return null
-    if (req.type === 'manualMask') return null
 
     exhaust(req)
     console.log(`🔴`, (req as any).type)

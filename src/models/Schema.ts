@@ -379,6 +379,7 @@ export class SchemaL {
                 p(`export type ${e.enumNameInCushy} = '🔴' // never`)
             }
         }
+        p(`export type KnownEnumNames = ${[...this.knownEnumsByName.keys()].map((e) => `'${e}'`).join('\n   | ')}`)
 
         p(`\n// 7. INTERFACES --------------------------`)
         for (const t of this.knownTypes.values()) {

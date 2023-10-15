@@ -1,4 +1,4 @@
-import type { Requestable_items } from 'src/controls/InfoRequest'
+import type { Requestable_group } from 'src/controls/InfoRequest'
 import type { FormPath } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
@@ -9,7 +9,7 @@ export const WidgetItemsUI = observer(function WidgetItemsUI_(p: {
     get: () => boolean
     set: (v: boolean) => void
     path: FormPath
-    req: Requestable_items<any>
+    req: Requestable_group<any>
 }) {
     const req = p.req
     const draft = useDraft()

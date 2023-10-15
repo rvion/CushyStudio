@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { ImageAnswer } from 'src/controls/InfoAnswer'
+import { ImageAnswer } from 'src/controls/misc/InfoAnswer'
 import { ImageUI } from '../galleries/ImageUI'
 import { useImageDrop } from '../galleries/dnd'
 import { useDraft } from '../useDraft'
@@ -59,12 +59,12 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                         <>
                             <WidgetEnumUI
                                 enumName='Enum_LoadImage_image'
-                                get={() => answer.image}
+                                get={() => answer.imageName}
                                 set={(t) => {
                                     console.log('🦊', t)
-                                    set({ type: 'ComfyImage', image: t as any })
+                                    set({ type: 'ComfyImage', imageName: t as any })
                                 }}
-                                def={() => answer.image}
+                                def={() => answer.imageName}
                             />
                             {/* ?filename=upload%20(102).png&type=input&subfolder= */}
                             <img
@@ -73,7 +73,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                                     height: '32px',
                                 }}
                                 src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(
-                                    answer.image,
+                                    answer.imageName,
                                 )}&type=input&subfolder=`}
                                 alt=''
                             />
@@ -83,7 +83,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
                             enumName='Enum_LoadImage_image'
                             get={() => null}
                             def={() => null}
-                            set={(t) => set({ type: 'ComfyImage', image: t as any })}
+                            set={(t) => set({ type: 'ComfyImage', imageName: t as any })}
                         />
                     )}
                 </div>

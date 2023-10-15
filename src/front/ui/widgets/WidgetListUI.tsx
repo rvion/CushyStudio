@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Input } from 'rsuite'
-import { InfoAnswer } from 'src/controls/InfoAnswer'
 import { Requestable } from 'src/controls/InfoRequest'
 
 export const WidgetListUI = observer(function WidgetListUI_<T extends Requestable>(p: {
