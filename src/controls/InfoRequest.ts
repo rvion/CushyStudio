@@ -13,12 +13,42 @@ import type { ItemDataType } from 'rsuite/esm/@types/common'
 import { makeAutoObservable } from 'mobx'
 import { bang } from 'src/utils/bang'
 
+
+// requestable are a closed union
+export type Requestable =
+    | Requestable_str
+    | Requestable_strOpt
+    | Requestable_prompt
+    | Requestable_promptOpt
+    | Requestable_int
+    | Requestable_float
+    | Requestable_bool
+    | Requestable_intOpt
+    | Requestable_floatOpt
+    | Requestable_size
+    | Requestable_matrix
+    | Requestable_loras
+    | Requestable_image
+    | Requestable_imageOpt
+    | Requestable_selectOneOrCustom
+    | Requestable_selectMany<any>
+    | Requestable_selectManyOrCustom
+    | Requestable_selectOne<any>
+    | Requestable_list<any>
+    | Requestable_group<any>
+    | Requestable_groupOpt<any>
+    | Requestable_enum<KnownEnumNames>
+    | Requestable_enumOpt<KnownEnumNames>
+
+// -------------------------------------------------------------------------------------------------------------------------------------------------
+
 export type ReqResult<Req> = Req extends IWidget<any, any, any, infer O> ? O : never
 export type ReqState<Req> = Req extends IWidget<any, any, infer S, any> ? S : never
 export type IWidget<I, X, S, O> = { $Input: I; $Serial: X; $State: S; $Output: O }
 export type IRequest<I, X, S, O> = {
     state: S
     readonly result: O
+    readonly json: X
 }
 
 export type ReqInput<X> = X & {
@@ -35,6 +65,7 @@ export type Requestable_str_state = { active: true; val: string }
 export type Requestable_str_output = string
 export interface Requestable_str extends IWidget<Requestable_str_input, Requestable_str_serial, Requestable_str_state, Requestable_str_output> {}
 export class Requestable_str implements IRequest<Requestable_str_input, Requestable_str_serial, Requestable_str_state, Requestable_str_output> {
+    state: Requestable_str_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_str_input,
@@ -43,7 +74,9 @@ export class Requestable_str implements IRequest<Requestable_str_input, Requesta
         this.state = serial ?? { active: true, val: input.default ?? '' }
         makeAutoObservable(this)
     }
-    state: Requestable_str_state
+    get json(): Requestable_str_serial {
+        return this.state
+    }
     get result(): Requestable_str_output {
         return this.state.val
     }
@@ -56,6 +89,7 @@ export type Requestable_strOpt_state = { active: boolean; val: string }
 export type Requestable_strOpt_output = Maybe<string>
 export interface Requestable_strOpt extends IWidget<Requestable_strOpt_input, Requestable_strOpt_serial, Requestable_strOpt_state, Requestable_strOpt_output> {}
 export class Requestable_strOpt implements IRequest<Requestable_strOpt_input, Requestable_strOpt_serial, Requestable_strOpt_state, Requestable_strOpt_output> {
+    state: Requestable_strOpt_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_strOpt_input,
@@ -67,7 +101,9 @@ export class Requestable_strOpt implements IRequest<Requestable_strOpt_input, Re
         }
         makeAutoObservable(this)
     }
-    state: Requestable_strOpt_state
+    get json(){
+        return this.state
+    }
     get result(): Requestable_strOpt_output {
         if (!this.state.active) return undefined
         return this.state.val
@@ -81,6 +117,8 @@ export type Requestable_prompt_state = WidgetPromptOutput<true>
 export type Requestable_prompt_output = WidgetPromptOutput<true>
 export interface Requestable_prompt extends IWidget<Requestable_prompt_input, Requestable_prompt_serial, Requestable_prompt_state, Requestable_prompt_output> {}
 export class Requestable_prompt implements IRequest<Requestable_prompt_input, Requestable_prompt_serial, Requestable_prompt_state, Requestable_prompt_output> {
+    state: Requestable_prompt_state
+
     constructor(
         public schema: SchemaL,
         public input: Requestable_prompt_input,
@@ -104,7 +142,7 @@ export class Requestable_prompt implements IRequest<Requestable_prompt_input, Re
         }
         makeAutoObservable(this)
     }
-    state: Requestable_prompt_state
+    get json(): Requestable_prompt_serial { return this.state } // prettier-ignore
     get result(): Requestable_prompt_output {
         // does need to check value
         JSON.stringify(this.state) // 🔶 force deep observation
@@ -119,6 +157,7 @@ export type Requestable_promptOpt_state = WidgetPromptOutput<boolean>
 export type Requestable_promptOpt_output = Maybe<WidgetPromptOutput>
 export interface Requestable_promptOpt extends IWidget<Requestable_promptOpt_input, Requestable_promptOpt_serial, Requestable_promptOpt_state, Requestable_promptOpt_output> {}
 export class Requestable_promptOpt implements IRequest<Requestable_promptOpt_input, Requestable_promptOpt_serial, Requestable_promptOpt_state, Requestable_promptOpt_output> {
+    state: Requestable_promptOpt_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_promptOpt_input,
@@ -142,7 +181,7 @@ export class Requestable_promptOpt implements IRequest<Requestable_promptOpt_inp
         }
         makeAutoObservable(this)
     }
-    state: Requestable_promptOpt_state
+    get json(): Requestable_promptOpt_serial { return this.state }
     get result(): Requestable_promptOpt_output {
         if (this.state.active === false) return undefined
         return this.state
@@ -156,6 +195,7 @@ export type Requestable_int_state = { active: true; val: number }
 export type Requestable_int_output = number
 export interface Requestable_int extends IWidget<Requestable_int_input, Requestable_int_serial, Requestable_int_state, Requestable_int_output> {}
 export class Requestable_int implements IRequest<Requestable_int_input, Requestable_int_serial, Requestable_int_state, Requestable_int_output> {
+    state: Requestable_int_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_int_input,
@@ -164,10 +204,8 @@ export class Requestable_int implements IRequest<Requestable_int_input, Requesta
         this.state = serial ?? { active: true, val: input.default ?? 0 }
         makeAutoObservable(this)
     }
-    state: Requestable_int_state
-    get result(): Requestable_int_output {
-        return this.state.val
-    }
+    get json(): Requestable_int_serial { return this.state }
+    get result(): Requestable_int_output { return this.state.val }
 }
 
 // 🅿️ float ==============================================================================
@@ -177,6 +215,7 @@ export type Requestable_float_state = { active: true; val: number }
 export type Requestable_float_output = number
 export interface Requestable_float extends IWidget<Requestable_float_input, Requestable_float_serial, Requestable_float_state, Requestable_float_output> {}
 export class Requestable_float implements IRequest<Requestable_float_input, Requestable_float_serial, Requestable_float_state, Requestable_float_output> {
+    state: Requestable_float_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_float_input,
@@ -185,10 +224,8 @@ export class Requestable_float implements IRequest<Requestable_float_input, Requ
         this.state = serial ?? { active: true, val: input.default ?? 0 }
         makeAutoObservable(this)
     }
-    state: Requestable_float_state
-    get result(): Requestable_float_output {
-        return this.state.val
-    }
+    get json(): Requestable_float_serial { return this.state }
+    get result(): Requestable_float_output { return this.state.val }
 }
 
 // 🅿️ bool ==============================================================================
@@ -198,6 +235,7 @@ export type Requestable_bool_state = { active: true; val: boolean }
 export type Requestable_bool_output = boolean
 export interface Requestable_bool extends IWidget<Requestable_bool_input, Requestable_bool_serial, Requestable_bool_state, Requestable_bool_output> {}
 export class Requestable_bool implements IRequest<Requestable_bool_input, Requestable_bool_serial, Requestable_bool_state, Requestable_bool_output> {
+    state: Requestable_bool_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_bool_input,
@@ -206,10 +244,8 @@ export class Requestable_bool implements IRequest<Requestable_bool_input, Reques
         this.state = serial ?? { active: true, val: input.default ?? false }
         makeAutoObservable(this)
     }
-    state: Requestable_bool_state
-    get result(): Requestable_bool_output {
-        return this.state.val
-    }
+    get json(): Requestable_bool_serial { return this.state }
+    get result(): Requestable_bool_output { return this.state.val }
 }
 
 // 🅿️ intOpt ==============================================================================
@@ -219,6 +255,7 @@ export type Requestable_intOpt_state = { active: boolean; val: number }
 export type Requestable_intOpt_output = Maybe<number>
 export interface Requestable_intOpt extends IWidget<Requestable_intOpt_input, Requestable_intOpt_serial, Requestable_intOpt_state, Requestable_intOpt_output> {}
 export class Requestable_intOpt implements IRequest<Requestable_intOpt_input, Requestable_intOpt_serial, Requestable_intOpt_state, Requestable_intOpt_output> {
+    state: Requestable_intOpt_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_intOpt_input,
@@ -230,7 +267,7 @@ export class Requestable_intOpt implements IRequest<Requestable_intOpt_input, Re
         }
         makeAutoObservable(this)
     }
-    state: Requestable_intOpt_state
+    get json(): Requestable_intOpt_serial { return this.state }
     get result(): Requestable_intOpt_output {
         if (this.state.active === false) return undefined
         return this.state.val
@@ -244,6 +281,7 @@ export type Requestable_floatOpt_state = { active: boolean; val: number }
 export type Requestable_floatOpt_output = Maybe<number>
 export interface Requestable_floatOpt extends IWidget<Requestable_floatOpt_input, Requestable_floatOpt_serial, Requestable_floatOpt_state, Requestable_floatOpt_output> {}
 export class Requestable_floatOpt implements IRequest<Requestable_floatOpt_input, Requestable_floatOpt_serial, Requestable_floatOpt_state, Requestable_floatOpt_output> {
+    state: Requestable_floatOpt_state
     constructor(
         public schema: SchemaL,
         public input: Requestable_floatOpt_input,
@@ -255,7 +293,7 @@ export class Requestable_floatOpt implements IRequest<Requestable_floatOpt_input
         }
         makeAutoObservable(this)
     }
-    state: Requestable_floatOpt_state
+    get json(): Requestable_floatOpt_serial { return this.state }
     get result(): Requestable_floatOpt_output {
         if (this.state.active === false) return undefined
         return this.state.val
@@ -726,31 +764,6 @@ export class Requestable_enumOpt<T extends KnownEnumNames> implements IRequest<R
     }
 }
 
-// requestable are a closed union
-export type Requestable =
-    | Requestable_str
-    | Requestable_strOpt
-    | Requestable_prompt
-    | Requestable_promptOpt
-    | Requestable_int
-    | Requestable_float
-    | Requestable_bool
-    | Requestable_intOpt
-    | Requestable_floatOpt
-    | Requestable_size
-    | Requestable_matrix
-    | Requestable_loras
-    | Requestable_image
-    | Requestable_imageOpt
-    | Requestable_selectOneOrCustom
-    | Requestable_selectMany<any>
-    | Requestable_selectManyOrCustom
-    | Requestable_selectOne<any>
-    | Requestable_list<any>
-    | Requestable_group<any>
-    | Requestable_groupOpt<any>
-    | Requestable_enum<KnownEnumNames>
-    | Requestable_enumOpt<KnownEnumNames>
 
 // prettier-ignore
 export class FormBuilder {
