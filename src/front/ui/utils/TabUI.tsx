@@ -18,6 +18,7 @@ export const TabsUI = observer(function Tabs_(p: {
     className?: string
     grow?: boolean
     bottomTabs?: boolean
+    disabled?: boolean
 }) {
     const [onIx, setIx] = useState(() => p.current ?? 0)
     const tabHeader = (
@@ -26,8 +27,14 @@ export const TabsUI = observer(function Tabs_(p: {
             {p.tabs.map((tab, ix) => (
                 <div
                     key={ix}
-                    tw={['p-3 cursor-pointer hover:(bg-gray-100)', '_header_tab', ix === onIx ? 'active' : undefined]}
+                    tw={[
+                        p.disabled ? 'text-gray-400' : undefined,
+                        'px-2 py-1 cursor-pointer hover:(bg-gray-100)',
+                        '_header_tab',
+                        ix === onIx ? 'bg-gray-700' : undefined,
+                    ]}
                     onClick={() => {
+                        if (p.disabled) return
                         p.onClick?.(ix)
                         setIx(ix)
                     }}
@@ -48,8 +55,20 @@ export const TabsUI = observer(function Tabs_(p: {
     return (
         <div style={p.style} tw={['_TabsUI', p.className, p.grow && '_grow']}>
             {p.bottomTabs ? null : tabHeader}
-            <div className='_tab_body'>
+            <div className='_tab_body relative'>
                 <TabBodyWrapperUI key={onIx} fn={p.tabs[onIx]!.body} />
+                {p.disabled && (
+                    <div
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            bottom: 0,
+                            right: 0,
+                            background: 'rgba(0,0,0,0.5)',
+                        }}
+                    ></div>
+                )}
             </div>
             {p.bottomTabs && tabHeader}
         </div>
