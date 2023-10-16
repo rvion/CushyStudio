@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Button } from 'rsuite'
+import { Button, Toggle } from 'rsuite'
 import { PossibleActionFile } from 'src/back/PossibleActionFile'
 import { GithubUserUI } from 'src/front/GithubAvatarUI'
 import { DraftL } from 'src/models/Draft'
@@ -44,6 +44,12 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
                         >
                             Edit
                         </Button>
+                    </div>
+                    <div>
+                        autorun:
+                        <Toggle size='sm' color='red' onChange={(t) => draft.setAutostart(t)}>
+                            Run
+                        </Toggle>
                     </div>
                     <Button
                         size='sm'

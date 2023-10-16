@@ -29,6 +29,31 @@ export class DraftL {
     graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
     tool = new LiveRef<this, ToolL>(this, 'toolID', 'tools')
 
+    // 🔴 HACKY
+    private shouldAutoStart = false
+    private autoStartTimer: NodeJS.Timeout | null = null
+    setAutostart(val: boolean) {
+        this.shouldAutoStart = val
+        if (this.shouldAutoStart) {
+            // If there is already a timer running, clear it first
+            if (this.autoStartTimer) {
+                clearInterval(this.autoStartTimer)
+            }
+
+            // Start a new timer
+            this.autoStartTimer = setInterval(() => {
+                // Call your start method here
+                this.start()
+            }, 2000)
+        } else {
+            // Stop the timer when shouldAutoStart is false
+            if (this.autoStartTimer) {
+                clearInterval(this.autoStartTimer)
+                this.autoStartTimer = null
+            }
+        }
+    }
+
     start = (): StepL => {
         // console.log('🟢', JSON.stringify(this.data))
         const req = this.form.value
