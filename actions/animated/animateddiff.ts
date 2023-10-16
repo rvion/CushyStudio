@@ -15,7 +15,7 @@ action('animateddiff-2023-10-03', {
                 ``,
             ].join('\n'),
         }),
-        removeBG: form.boolOpt({ default: false }),
+        removeBG: form.bool({ default: false }),
         steps: form.int({ default: 20, group: 'sampler' }),
         frames: form.int({ default: 16, group: 'video' }),
     }),

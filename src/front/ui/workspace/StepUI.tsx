@@ -8,6 +8,8 @@ import { useSt } from '../../../front/FrontStateCtx'
 import { InView } from 'react-intersection-observer'
 import { Status } from '../../../back/Status'
 import { GraphPreviewUI } from '../MsgShowHTMLUI'
+import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 
 export const StepListUI = observer(function StepListUI_(p: {}) {
     const st = useSt()
@@ -16,7 +18,11 @@ export const StepListUI = observer(function StepListUI_(p: {}) {
     return (
         <div className='flex flex-col'>
             {/* <Panel className='nobg' header='Last Graph' collapsible defaultExpanded> */}
-            {lastGraph && <GraphPreviewUI graph={lastGraph} />}
+            {lastGraph && (
+                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+                    <GraphPreviewUI graph={lastGraph} />
+                </ErrorBoundary>
+            )}
             {/* </Panel> */}
             <div className='flex flex-col-reverse flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (

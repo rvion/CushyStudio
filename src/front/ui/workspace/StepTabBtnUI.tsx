@@ -25,27 +25,27 @@ export const StepTabBtnUI = observer(function StepTabBtnUI_(p: { step: StepL }) 
                     e.stopPropagation()
                     return
                 }
-                if (e.key === 'ArrowRight') {
-                    const ix = parentGraph.childSteps.items.indexOf(step)
-                    if (ix === parentGraph.childSteps.items.length - 1) return
-                    const next = parentGraph.childSteps.items[ix + 1]
+                // ⏸️ if (e.key === 'ArrowRight') {
+                // ⏸️     const ix = parentGraph.childSteps.items.indexOf(step)
+                // ⏸️     if (ix === parentGraph.childSteps.items.length - 1) return
+                // ⏸️     const next = parentGraph.childSteps.items[ix + 1]
+                // ⏸️     if (next) parentGraph.focusStepAndUpdateDraft(next)
+                // ⏸️     window.document.getElementById(`button-to-focus-step-${next.id}`)?.focus()
+                // ⏸️     e.preventDefault()
+                // ⏸️     e.stopPropagation()
+                // ⏸️     return
+                // ⏸️ }
 
-                    if (next) parentGraph.focusStepAndUpdateDraft(next)
-                    window.document.getElementById(`button-to-focus-step-${next.id}`)?.focus()
-                    e.preventDefault()
-                    e.stopPropagation()
-                    return
-                }
-                if (e.key === 'ArrowLeft') {
-                    const ix = parentGraph.childSteps.items.indexOf(step)
-                    if (ix === 0) return
-                    const prev = parentGraph.childSteps.items[ix - 1]
-                    if (prev) parentGraph.focusStepAndUpdateDraft(prev)
-                    window.document.getElementById(`button-to-focus-step-${prev.id}`)?.focus()
-                    e.preventDefault()
-                    e.stopPropagation()
-                    return
-                }
+                // ⏸️if (e.key === 'ArrowLeft') {
+                // ⏸️    const ix = parentGraph.childSteps.items.indexOf(step)
+                // ⏸️    if (ix === 0) return
+                // ⏸️    const prev = parentGraph.childSteps.items[ix - 1]
+                // ⏸️    if (prev) parentGraph.focusStepAndUpdateDraft(prev)
+                // ⏸️    window.document.getElementById(`button-to-focus-step-${prev.id}`)?.focus()
+                // ⏸️    e.preventDefault()
+                // ⏸️    e.stopPropagation()
+                // ⏸️    return
+                // ⏸️}
             }}
             // size='xs'
             key={step.id}

@@ -1,5 +1,5 @@
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
-import type { Action, FormDefinition } from 'src/core/Requirement'
+import type { Action, RequestableDict } from 'src/core/Requirement'
 import type { STATE } from 'src/front/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
@@ -7,7 +7,6 @@ import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import path from 'pathe'
-import { FormBuilder } from '../controls/FormBuilder'
 import { globalToolFnCache } from '../core/globalActionFnCache'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
@@ -16,8 +15,6 @@ import { exhaust } from '../utils/ComfyUtils'
 import { __FAIL, __OK, type Result } from '../utils/Either'
 import { ManualPromise } from '../utils/ManualPromise'
 import { transpileCode } from './transpiler'
-
-const formBuilder = new FormBuilder()
 
 // prettier-ignore
 export type LoadStrategy =
@@ -279,7 +276,7 @@ export class PossibleActionFile {
         const { codeJS, codeTS } = p
 
         // this.DEBUG_CODE = codeTS
-        const actionsPool: { name: string; action: Action<FormDefinition> }[] = []
+        const actionsPool: { name: string; action: Action<RequestableDict> }[] = []
         const registerActionFn = (name: string, action: Action<any>): void => {
             console.info(`[💙] TOOL: found action: "${name}"`, { path: this.absPath })
             actionsPool.push({ name, action })
@@ -299,8 +296,7 @@ export class PossibleActionFile {
                     description: a.action.description,
                     name: a.name,
                     priority: a.action.priority ?? 100,
-                    form: a.action.ui?.(formBuilder),
-                    codeTS: codeTS,
+                    // codeTS: codeTS,
                     codeJS: codeJS,
                 })
                 if (tool.drafts.items.length === 0) {

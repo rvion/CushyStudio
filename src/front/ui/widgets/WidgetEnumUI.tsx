@@ -1,41 +1,71 @@
-import type { EnumValue } from '../../../models/Schema'
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
-import { SelectPicker } from 'rsuite'
+import { SelectPicker, Toggle } from 'rsuite'
+import { Requestable_enum, Requestable_enumOpt } from 'src/controls/InfoRequest'
+import type { EnumName, EnumValue } from '../../../models/Schema'
 import { useProject } from '../../ProjectCtx'
 
-export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
-    enumName: string
-    autofocus?: boolean
-    get: () => EnumValue | null
-    def: () => Maybe<EnumValue>
-    set: (v: EnumValue | null) => void
-    optional?: boolean
+type T = {
+    label: EnumValue
+    value: EnumValue | null
+}[]
+
+export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: {
+    req: Requestable_enum<K> | Requestable_enumOpt<K>
 }) {
-    type T = {
-        label: EnumValue
-        value: EnumValue | null
-    }[]
+    const req = p.req
+    const enumName = req.input.enumName
+    const isOptional = req instanceof Requestable_enumOpt
+    // const options = schema.getEnumOptionsForSelectPicker(enumName)
+
+    const value = req.state.val as any
+    const showToogle =
+        req instanceof Requestable_enumOpt //
+            ? true
+            : req.state.active !== true
+    return (
+        <div className='flex gap-1'>
+            {showToogle && (
+                <Toggle
+                    // size='sm'
+                    checked={req.state.active}
+                    onChange={(t) => (req.state.active = t)}
+                />
+            )}
+            <EnumSelectorUI
+                value={value}
+                disabled={!req.state.active}
+                isOptional={isOptional}
+                enumName={enumName}
+                onChange={(e) => {
+                    if (e == null) {
+                        if (isOptional) req.state.active = false
+                        return
+                    }
+                    req.state.val = e as any // 🔴
+                }}
+            />
+        </div>
+    )
+})
+
+export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
+    isOptional: boolean
+    value: EnumValue | null
+    onChange: (v: EnumValue | null) => void
+    disabled?: boolean
+    enumName: EnumName
+}) {
     const project = useProject()
     const schema = project.schema
-    const options = useMemo(() => {
-        if (schema == null) return []
-        const x: T = schema!.getEnumOptionsForSelectPicker(p.enumName)
-        if (p.optional) x.unshift({ label: 'none', value: null })
-        return x
-    }, [schema, p.optional])
-
-    const value = p.get() ?? p.def() ?? null
-    const valueIsValid = (value != null || p.optional) && options.some((x) => x.value === value)
+    const options = schema.getEnumOptionsForSelectPicker(p.enumName)
+    const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)
     return (
         <>
             <SelectPicker //
                 size='sm'
-                cleanable={Boolean(p.optional)}
-                // appearance='subtle'
-                // defaultOpen={p.autofocus}
+                disabled={p.disabled}
                 data={options}
-                value={value}
+                value={p.value}
                 renderValue={(v) => {
                     if (v === true) return '🟢 true'
                     if (v === false) return '❌ false'
@@ -47,14 +77,10 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_(p: {
                     return v
                 }}
                 onChange={(e) => {
-                    if (e == null) {
-                        if (p.optional) p.set(null)
-                        return
-                    }
-                    p.set(e)
+                    p.onChange(e)
                 }}
             />
-            {valueIsValid ? null : <span className='text-red-700'>🔴 {JSON.stringify(value)}</span>}
+            {valueIsValid ? null : <span className='text-red-700'>🔴 {JSON.stringify(p.value)}</span>}
         </>
     )
 })

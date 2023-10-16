@@ -76,16 +76,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 create project
             </Button> */}
             <div className='flex-grow'></div>
-            <Button
-                //
-                size='sm'
-                appearance='subtle'
-                color='red'
-                onClick={() => st.db.reset()}
-                startIcon={<span className='material-symbols-outlined'>power_settings_new</span>}
-            >
-                Reset DB
-            </Button>
+            <DBHealthUI />
             {/* <Button
                 // startIcon={<I.AddOutline />}
                 size='sm'
@@ -112,6 +103,26 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <span className='material-symbols-outlined text-yellow-600'>star</span>
                 <span className='underline text-blue-300'>github.com/rvion/CushyStudio</span>
             </a>
+        </div>
+    )
+})
+
+export const DBHealthUI = observer(function DBHealthUI_(p: {}) {
+    const st = useSt()
+    const dbHealth = st.dbHealth
+    const color = dbHealth.status === 'bad' ? 'red' : dbHealth.status === 'meh' ? 'yellow' : 'green'
+    return (
+        <div>
+            <Button
+                //
+                size='sm'
+                // appearance='subtle'
+                color={color}
+                onClick={() => st.db.reset()}
+                startIcon={<span className='material-symbols-outlined'>power_settings_new</span>}
+            >
+                Reset DB ({dbHealth.sizeTxt})
+            </Button>
         </div>
     )
 })

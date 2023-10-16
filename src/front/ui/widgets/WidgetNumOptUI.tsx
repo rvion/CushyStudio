@@ -1,45 +1,32 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { InputNumber, Toggle } from 'rsuite'
+import { Requestable_floatOpt, Requestable_intOpt } from 'src/controls/InfoRequest'
 
-export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: {
-    //
-    get: () => Maybe<number>
-    def: () => Maybe<number>
-    set: (v: number | null) => void
-    mode: 'int' | 'float'
-}) {
-    const val = p.get()
-    const uiSt = useLocalObservable(() => {
-        return {
-            disabled: val == null,
-            lastNumberVal: val ?? p.def() ?? 0,
-        }
-    })
+export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Requestable_intOpt | Requestable_floatOpt }) {
+    const req = p.req
+    const mode = req instanceof Requestable_intOpt ? 'int' : 'float'
+    const val = req.state.val
+    const step = req.input.step ?? (mode === 'int' ? 1 : 0.1)
+
     return (
         <div className='flex gap-1'>
             <Toggle
                 // size='sm'
-                checked={val != null}
-                onChange={(checked) => {
-                    if (checked) {
-                        uiSt.disabled = false
-                        p.set(uiSt.lastNumberVal)
-                    } else {
-                        uiSt.disabled = true
-                        p.set(null)
-                    }
-                }}
+                checked={req.state.active}
+                onChange={(t) => (req.state.active = t)}
             />
             <InputNumber //
-                disabled={uiSt.disabled}
-                step={{ int: 1, float: 0.1 }[p.mode]}
+                disabled={!req.state.active}
+                min={req.input.min}
+                max={req.input.max}
+                step={step}
                 size='sm'
-                value={uiSt.lastNumberVal}
+                value={val}
                 onChange={(next) => {
                     // parse value
                     let num =
                         typeof next === 'string' //
-                            ? p.mode == 'int'
+                            ? mode == 'int'
                                 ? parseInt(next, 10)
                                 : parseFloat(next)
                             : next
@@ -48,14 +35,9 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: {
                     if (isNaN(num) || typeof num != 'number') {
                         return console.log(`${JSON.stringify(next)} is not a number`)
                     }
-
                     // ensure ints are ints
-                    if (p.mode == 'int') {
-                        num = Math.round(num)
-                    }
-
-                    uiSt.lastNumberVal = num
-                    p.set(num)
+                    if (mode == 'int') num = Math.round(num)
+                    req.state.val = num
                 }}
             />
         </div>

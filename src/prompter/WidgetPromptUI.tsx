@@ -28,6 +28,7 @@ import { CushyCompletionPlugin } from './plugins/CushyCompletionPlugin'
 import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
 import { TreeViewPlugin } from './plugins/TreeViewPlugin'
 import { toJS } from 'mobx'
+import { Requestable_prompt, Requestable_promptOpt } from 'src/controls/InfoRequest'
 
 // const theme = {
 //     // Theme styling goes here
@@ -36,17 +37,28 @@ import { toJS } from 'mobx'
 
 // When the editor changes, you can get notified via the
 // LexicalOnChangePlugin!
-function onChange(p: EditorProps, editorState: EditorState) {
+function onChange(
+    //
+    req: Requestable_prompt | Requestable_promptOpt,
+    editorState: EditorState,
+) {
     editorState.read(() => {
         // Read the contents of the EditorState here.
         const root = $getRoot()
         // const selection = $getSelection()
         const txt = root.__cachedText
-        if (txt)
-            p.set({
-                text: txt,
-                tokens: getFinalJSON(editorState).items,
-            })
+        if (txt) {
+            req.state.text = txt
+            req.state.tokens = getFinalJSON(editorState).items
+            console.log(req.state.tokens)
+        } else {
+            console.log('❌ 🔴')
+        }
+        // .set({
+        //         active: true,
+        //         text: txt,
+        //         tokens: getFinalJSON(editorState).items,
+        //     })
         // console.log(root, selection)
     })
 }
@@ -62,23 +74,15 @@ export type WidgetPromptOutput = {
     text: string
     tokens: PossibleSerializedNodes[]
 }
-type EditorProps = {
-    get: () => Maybe<WidgetPromptOutput>
-    set: (v: WidgetPromptOutput) => void
-    nullable?: boolean
-    textarea?: boolean
-}
 
-export const WidgetPromptUI = observer((p: EditorProps) => {
+export const WidgetPromptUI = observer((p: { req: Requestable_prompt | Requestable_promptOpt }) => {
     const st = useSt()
-    // useEffect(() => {
-    //     updateEditor(p.get())
-    // })
+    const req = p.req
     const initialConfig: InitialConfigType = {
         nodes: [EmbeddingNode, LoraNode, WildcardNode, BooruNode],
         editorState: () => {
             console.log('[💬] LEXICAL: mounting lexical widget')
-            const initialValue: Maybe<WidgetPromptOutput> = p.get()
+            const initialValue: WidgetPromptOutput = req.state
             console.log('[💬] LEXICAL: initial value is', { initialValue: toJS(initialValue) })
 
             if (
@@ -152,7 +156,7 @@ export const WidgetPromptUI = observer((p: EditorProps) => {
 
             <OnChangePlugin
                 onChange={(editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => {
-                    onChange(p, editorState)
+                    onChange(req, editorState)
                     // const { debug, items } = getFinalJSON(editorState)
                     // console.log(debug)
 

@@ -5,7 +5,7 @@ import type { STATE } from 'src/front/state'
 import { observer } from 'mobx-react-lite'
 import { Dropdown, Popover, Whisper } from 'rsuite'
 import { PositionChildProps } from 'rsuite/esm/Picker'
-import { ImageAnswer } from 'src/controls/InfoAnswer'
+import { ImageAnswer } from 'src/controls/misc/InfoAnswer'
 import { ImageL } from 'src/models/Image'
 import { useSt } from '../../FrontStateCtx'
 import { useImageDrag } from './dnd'
@@ -20,9 +20,7 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
         image.data.type === 'video' ? (
             <video
                 //
-                onMouseEnter={(ev) => {
-                    st.hovered = image
-                }}
+                onMouseEnter={(ev) => (st.hovered = image)}
                 onMouseLeave={() => {
                     if (st.hovered === image) st.hovered = null
                 }}
@@ -110,18 +108,18 @@ const renderSpeaker = (
         if (eventKey === 4) {
             st.setAction({ type: 'paint', imageID: img.id })
         }
-        if (eventKey === 3) {
-            console.log('🔴')
-            const db = img.st.db
-            const pj: ProjectL = db.projects.firstOrCrash()
-            const root: GraphL = pj.rootGraph.item
-            const ia: ImageAnswer = { type: 'imageID', imageID: img.id }
-            const step = root.createStep({
-                toolID: db.tools.findOrCrash((t) => t.name.endsWith('start from image')).id,
-                params: { image: ia },
-            })
-            return
-        }
+        // ⏸️ if (eventKey === 3) {
+        // ⏸️     console.log('🔴')
+        // ⏸️     const db = img.st.db
+        // ⏸️     const pj: ProjectL = db.projects.firstOrCrash()
+        // ⏸️     const root: GraphL = pj.rootGraph.item
+        // ⏸️     const ia: ImageAnswer = { type: 'CushyImage', imageID: img.id }
+        // ⏸️     const step = root.createStep({
+        // ⏸️         toolID: db.tools.findOrCrash((t) => t.name.endsWith('start from image')).id,
+        // ⏸️         params: { image: ia },
+        // ⏸️     })
+        // ⏸️     return
+        // ⏸️ }
         console.log(eventKey)
     }
     return (

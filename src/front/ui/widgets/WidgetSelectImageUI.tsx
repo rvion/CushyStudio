@@ -1,113 +1,170 @@
 import { observer } from 'mobx-react-lite'
-import { ImageAnswer } from 'src/controls/InfoAnswer'
+import { Button, Toggle } from 'rsuite'
+import { Requestable_image, Requestable_imageOpt } from 'src/controls/InfoRequest'
+import { useSt } from '../../../front/FrontStateCtx'
 import { ImageUI } from '../galleries/ImageUI'
 import { useImageDrop } from '../galleries/dnd'
 import { useDraft } from '../useDraft'
-import { Button } from 'rsuite'
-import { WidgetEnumUI } from './WidgetEnumUI'
-import { useSt } from '../../../front/FrontStateCtx'
+import { TabsUI } from '../utils/TabUI'
+import { EnumSelectorUI } from './WidgetEnumUI'
+import { ScribbleCanvas } from '../utils/ScribbleUI'
 
-export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: {
-    // infos: ImageInfos[]
-    get: () => ImageAnswer | null
-    set: (value: ImageAnswer) => void
-    def: () => Maybe<ImageAnswer>
-}) {
-    const { get, set } = p
-    // const lbs = useMemo(() => new LightBoxState(() => infos), [infos])
-    const answer = get() ?? p.def()
+enum Tab {
+    Cushy = 0,
+    Comfy = 1,
+    Paint = 2,
+}
+export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { req: Requestable_image | Requestable_imageOpt }) {
+    const req = p.req
     const st = useSt()
     const [dropStyle, dropRef] = useImageDrop((i) => {
-        set({ type: 'imageID', imageID: i.id })
+        console.log('DROPPED', i)
+        req.state.cushy = { type: 'CushyImage', imageID: i.id }
+        req.state.pick = 'cushy'
     })
     const draft = useDraft()
-    const node = draft.graph.item.findNodeByType('VAEDecode')
+    const showToogle =
+        req instanceof Requestable_imageOpt //
+            ? true
+            : req.state.active !== true
     return (
         <div>
             <div className='flex gap-2 flex-row '>
-                <div ref={dropRef} className='flex gap-2 bg-yellow-900 rounded p-1 self-center' style={dropStyle}>
-                    {/* {infos.map((info) => {
-                    const url = info.comfyURL
-                    return (
-                        <RadioGroup value={checkedURL?.comfyURL} name='radioList'>
-                            <div key={url} onClick={() => set(info)} className='hover:bg-gray-500'>
-                                <img
-                                    onClick={() => (lbs.opened = true)}
-                                    style={{
-                                        cursor: 'pointer',
-                                        objectFit: 'contain',
-                                        width: '32px',
-                                        height: '32px',
-                                    }}
-                                    src={url}
-                                    alt=''
-                                />
-                                <Radio value={url} onChange={() => set(info)} />
-                            </div>
-                        </RadioGroup>
-                    )
-                })} */}
-                    {/* <LightBoxUI lbs={lbs} /> */}
-                    {answer?.type === 'imageID' ? ( //
-                        <ImageUI img={draft.db.images.getOrThrow(answer.imageID)} />
-                    ) : (
-                        <span>drop image here</span>
-                    )}
-                </div>
-                <div>
-                    {answer?.type === 'ComfyImage' ? ( //
-                        <>
-                            <WidgetEnumUI
-                                enumName='Enum_LoadImage_image'
-                                get={() => answer.image}
-                                set={(t) => {
-                                    console.log('🦊', t)
-                                    set({ type: 'ComfyImage', image: t as any })
-                                }}
-                                def={() => answer.image}
-                            />
-                            {/* ?filename=upload%20(102).png&type=input&subfolder= */}
-                            <img
-                                style={{
-                                    width: '32px',
-                                    height: '32px',
-                                }}
-                                src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(
-                                    answer.image,
-                                )}&type=input&subfolder=`}
-                                alt=''
-                            />
-                        </>
-                    ) : (
-                        <WidgetEnumUI
-                            enumName='Enum_LoadImage_image'
-                            get={() => null}
-                            def={() => null}
-                            set={(t) => set({ type: 'ComfyImage', image: t as any })}
-                        />
-                    )}
-                </div>
-                <Button
-                    //
-                    size='sm'
-                    // onClick={() => set({ type: 'imageSignal', nodeID: node!.uid, fieldName: 'IMAGE' })}
-                    onClick={() => {
-                        set(null as any /* 🔴 */)
-                    }}
-                >
-                    x
-                </Button>
+                {showToogle && (
+                    <Toggle
+                        // size='sm'
+                        checked={req.state.active}
+                        onChange={(t) => (req.state.active = t)}
+                    />
+                )}
+
+                {req.state.active && (
+                    <TabsUI
+                        onClick={(i) => {
+                            if (i === Tab.Cushy) req.state.pick = 'cushy'
+                            if (i === Tab.Comfy) req.state.pick = 'comfy'
+                            if (i === Tab.Paint) req.state.pick = 'paint'
+                        }}
+                        current={
+                            req.state.pick === 'cushy' //
+                                ? Tab.Cushy
+                                : req.state.pick === 'comfy'
+                                ? Tab.Comfy
+                                : Tab.Paint
+                        }
+                        disabled={!req.state.active}
+                        tabs={[
+                            {
+                                title: () => <>Drop</>,
+                                body: () => (
+                                    <div
+                                        ref={dropRef}
+                                        className='flex gap-2 bg-yellow-900 rounded p-1 self-center'
+                                        style={dropStyle}
+                                    >
+                                        {req.state.cushy != null ? ( //
+                                            <div tw='flex items-start'>
+                                                <ImageUI img={draft.db.images.getOrThrow(req.state.cushy.imageID)} />
+                                                {req instanceof Requestable_imageOpt ? (
+                                                    <Button size='sm' onClick={() => (req.state.active = false)}>
+                                                        X
+                                                    </Button>
+                                                ) : null}
+                                            </div>
+                                        ) : (
+                                            <span>drop image here</span>
+                                        )}
+                                    </div>
+                                ),
+                            },
+                            {
+                                title: () => <>Pick</>,
+                                body: () => (
+                                    <>
+                                        {req.state.comfy && (
+                                            <img
+                                                style={{ width: '32px', height: '32px' }}
+                                                src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(
+                                                    req.state.comfy.imageName,
+                                                )}&type=input&subfolder=`}
+                                                alt=''
+                                            />
+                                        )}
+
+                                        <EnumSelectorUI
+                                            enumName='Enum_LoadImage_image'
+                                            value={req.state.comfy?.imageName ?? null}
+                                            isOptional={req.state.pick !== 'comfy' || !req.state.active}
+                                            onChange={(t) => {
+                                                // handle nullability for Requestable_imageOpt
+                                                if (
+                                                    t == null &&
+                                                    (req instanceof Requestable_imageOpt || req instanceof Requestable_image) &&
+                                                    req.state.active &&
+                                                    req.state.pick === 'comfy'
+                                                ) {
+                                                    req.state.active = false
+                                                }
+
+                                                if (t == null) return
+                                                // handle value
+                                                req.state.comfy.imageName
+                                                req.state.pick = 'comfy'
+                                            }}
+                                        />
+                                    </>
+                                ),
+                            },
+                            {
+                                title: () => <>Scribble</>,
+                                body: () => (
+                                    <ScribbleCanvas
+                                        onChange={(base64: string) => {
+                                            req.state.paint = { type: 'PaintImage', base64 }
+                                            if (req.state.pick !== 'paint') req.state.pick = 'paint'
+                                        }}
+                                    />
+                                ),
+                            },
+                        ]}
+                    />
+                )}
             </div>
-            <span
-                style={{
-                    // whiteSpace: 'pre-wrap',
-                    wordWrap: 'break-word',
-                }}
-            >
-                {/* {JSON.stringify(answer ?? { '❌': '❌' }, null, 3)} */}
-                {/* le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le */}
-                {/* chat */}
-            </span>
         </div>
     )
 })
+
+// ❓ <span
+// ❓     style={{
+// ❓         // whiteSpace: 'pre-wrap',
+// ❓         wordWrap: 'break-word',
+// ❓     }}
+// ❓ >
+// ❓     {/* {JSON.stringify(answer ?? { '❌': '❌' }, null, 3)} */}
+// ❓     {/* le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le */}
+// ❓     {/* chat */}
+// ❓ </span>
+
+// {/* {infos.map((info) => {
+//     const url = info.comfyURL
+//     return (
+//         <RadioGroup value={checkedURL?.comfyURL} name='radioList'>
+//             <div key={url} onClick={() => set(info)} className='hover:bg-gray-500'>
+//                 <img
+//                     onClick={() => (lbs.opened = true)}
+//                     style={{
+//                         cursor: 'pointer',
+//                         objectFit: 'contain',
+//                         width: '32px',
+//                         height: '32px',
+//                     }}
+//                     src={url}
+//                     alt=''
+//                 />
+//                 <Radio value={url} onChange={() => set(info)} />
+//             </div>
+//         </RadioGroup>
+//     )
+// })} */}
+
+// {/* <LightBoxUI lbs={lbs} /> */}

@@ -93,14 +93,14 @@ export class GraphL {
     parentSteps = new LiveCollection<StepL>(this, 'outputGraphID', 'steps')
 
     /** focus step and update selected Draft */
-    focusStepAndUpdateDraft = (step: StepL) => {
-        this.update({ focusedStepID: step.id })
-        if (this.focusedDraft.item == null) return
-        this.focusedDraft.item.update({
-            toolID: step.data.toolID,
-            params: deepCopyNaive(step.data.params),
-        })
-    }
+    // ⏸️ focusStepAndUpdateDraft = (step: StepL) => {
+    // ⏸️     this.update({ focusedStepID: step.id })
+    // ⏸️     if (this.focusedDraft.item == null) return
+    // ⏸️     this.focusedDraft.item.update({
+    // ⏸️         toolID: step.data.toolID,
+    // ⏸️         // params: deepCopyNaive(step.data.params),
+    // ⏸️     })
+    // ⏸️ }
 
     /** @internal every node constructor must call this */
     registerNode = (node: ComfyNode<any>) => {
@@ -114,13 +114,19 @@ export class GraphL {
     // 🔴 wrongly named, unclear path draft => graph => step => graph
     createStep = (
         /** the basis step you'd like to base yourself when creating a new branch */
-        draft: { toolID: ToolID; params: Maybe<any> },
+        draft: {
+            toolID: ToolID
+            actionResult: any
+            actionState: any
+        },
     ): StepL => {
         const step = this.db.steps.create({
             toolID: draft.toolID, // basis?.toolID ?? this.st.toolsSorted[0].id,
             parentGraphID: this.id,
             outputGraphID: this.clone({ focusedStepID: null, focusedDraftID: null }).id,
-            params: deepCopyNaive(draft.params ?? {}),
+            // params: deepCopyNaive(draft.params ?? {}),
+            actionResult: draft.actionResult,
+            // actionState: draft.actionState,
             status: Status.New,
         })
         this.update({ focusedStepID: step.id })

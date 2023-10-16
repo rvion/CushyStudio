@@ -1,10 +1,11 @@
-import type { FormDefinition, FormResult } from 'src/core/Requirement'
+import type { FormResult } from 'src/core/Requirement'
 import type { ImageID, ImageT } from 'src/models/Image'
 import type { ToolID } from 'src/models/Tool'
 import type { FlowID } from 'src/front/FlowID'
 import type { PromptID, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
 import type { GraphID } from 'src/models/Graph'
 import type { StepID } from 'src/models/Step'
+import { Requestable } from 'src/controls/InfoRequest'
 
 // =============================================================================================
 // | FRONT => BACK                                                                             |
@@ -78,7 +79,7 @@ export type FromExtension_Print = { type: 'print'; message: string }
 export type FromExtension_Prompt = { type: 'prompt'; promptID: PromptID }
 export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
-export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: FormDefinition; result: FormResult<any> }
+export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: Requestable; result: FormResult<any> }
 export type FromExtension_RuntimeError = {
     type: 'runtimeError'
     message: string

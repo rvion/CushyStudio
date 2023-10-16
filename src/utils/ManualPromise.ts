@@ -7,7 +7,12 @@ export class ManualPromise<T = any> implements PromiseLike<T> {
     reject!: (err: any) => void
     promise: Promise<T>
     then: Promise<T>['then']
-    constructor() {
+    update = () => this.fn?.(this)
+
+    constructor(
+        //
+        public fn?: (self: ManualPromise<T>) => {},
+    ) {
         this.promise = new Promise((resolve, reject) => {
             this.resolve = (t: T | PromiseLike<T>) => {
                 this.done = true

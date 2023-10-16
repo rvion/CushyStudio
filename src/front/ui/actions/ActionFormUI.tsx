@@ -1,17 +1,18 @@
 import { observer } from 'mobx-react-lite'
+import { cwd } from 'process'
+import { ErrorBoundary } from 'react-error-boundary'
 import { Button } from 'rsuite'
+import { PossibleActionFile } from 'src/back/PossibleActionFile'
+import { GithubUserUI } from 'src/front/GithubAvatarUI'
 import { DraftL } from 'src/models/Draft'
-import { renderToolUI } from '../../../models/renderDraftUI'
+import { openInVSCode } from 'src/utils/openInVsCode'
 import { TabUI } from '../layout/TabUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { draftContext } from '../useDraft'
-import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
-import { openInVSCode } from 'src/utils/openInVsCode'
-import { cwd } from 'process'
-import { PossibleActionFile } from 'src/back/PossibleActionFile'
-import { GithubUserUI } from 'src/front/GithubAvatarUI'
-import { ErrorBoundary } from 'react-error-boundary'
 import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
+import { ResultWrapperUI } from '../utils/ResultWrapperUI'
+import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
+import { WidgetUI } from '../widgets/WidgetUI'
 
 /**
  * this is the root interraction widget
@@ -25,7 +26,6 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
 }) {
     const draft = p.draft
     const tool = draft.tool.item
-    const formDefinition = tool?.data.form ?? {}
     return (
         <draftContext.Provider value={draft} key={draft.id}>
             <div
@@ -86,33 +86,17 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
                             draft.start()
                         }}
                     >
-                        {/* ROOT */}
-                        {renderToolUI(draft, tool)}
-                        {/* {Object.entries(formDefinition).map(([rootKey, req], ix) => {
-                            return (
-                                <WidgetWithLabelUI
-                                    path={[rootKey]}
-                                    key={rootKey}
-                                    rootKey={rootKey}
-                                    req={req}
-                                    ix={ix}
-                                    draft={draft}
-                                />
-                            )
-                        })} */}
+                        <ResultWrapperUI res={draft.form} whenValid={(req) => <WidgetUI req={req} />} />
                     </form>
                     <TabUI title='Debug:' tw='mt-auto'>
                         <div>no</div>
                         <div></div>
-                        <div>result</div>
-                        <JSONHighlightedCodeUI code={JSON.stringify(draft.finalJSON, null, 4)} />
                         <div>form</div>
-                        <JSONHighlightedCodeUI code={JSON.stringify(formDefinition, null, 4)} />
-                        <div>state</div>
-                        <JSONHighlightedCodeUI code={JSON.stringify(draft.data.params, null, 4)} />
-                        <div>ts</div>
-                        <TypescriptHighlightedCodeUI code={tool.data.codeTS ?? ''} />
-                        <div>js</div>
+                        <div tw='flex flex-grow'>
+                            <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
+                            <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10_000)} />
+                        </div>
+                        <div>code</div>
                         <TypescriptHighlightedCodeUI code={tool.data.codeJS ?? ''} />
                     </TabUI>
                 </ScrollablePaneUI>

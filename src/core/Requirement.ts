@@ -1,19 +1,19 @@
 import type { Runtime } from 'src/back/Runtime'
-import type { Requestable } from '../controls/InfoRequest'
-import type { InfoAnswer } from '../controls/InfoAnswer'
-import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { FormBuilder, ReqResult, Requestable } from '../controls/InfoRequest'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
 /** quick function to help build actions in a type-safe way */
 
-export const action = <const F extends FormDefinition>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
-export type ActionType = <const F extends FormDefinition>(name: string, t: Omit<Action<F>, 'name'>) => Action<F>
+// export const action = <const F extends RequestableDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
+export type ActionType = <const F extends RequestableDict>(name: string, t: Omit<Action<F>, 'name'>) => Action<F>
 
-export type FormDefinition = { [key: string]: Requestable }
-export type FormResult<Req extends FormDefinition> = { [key in keyof Req]: InfoAnswer<Req[key]> }
+// export type FormDefinition = { [key: string]: Requestable }
+export type FormResult<Req extends Requestable> = ReqResult<Req>
 
-export type Action<FormDef extends FormDefinition> = {
+export type RequestableDict = { [key: string]: Requestable }
+
+export type Action<FIELDS extends RequestableDict> = {
     /** who did that? */
     author: string
     /** this description will show-up at the top of the action form */
@@ -25,11 +25,11 @@ export type Action<FormDef extends FormDefinition> = {
     /** temporary hack so I can work more efficiently (lower first) */
     priority?: number
     /** the list of dependencies user can specify */
-    ui?: (form: FormBuilder /*, flow: Workflow*/) => FormDef
+    ui?: (form: FormBuilder /*, flow: Workflow*/) => FIELDS
     /** extra list of dependencies */
     // requirement?: (builder: ReqBuilder) => Reqs
     /** the code to run */
-    run: (f: Runtime, r: FormResult<FormDef>) => void | Promise<void>
+    run: (f: Runtime, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
     /** next actions to suggest user */
     next?: string[]
 }

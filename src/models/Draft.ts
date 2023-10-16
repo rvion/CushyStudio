@@ -3,8 +3,10 @@ import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 import type { ToolID, ToolL } from './Tool'
 
+import { FormBuilder, type Requestable } from 'src/controls/InfoRequest'
+import { type Result, __FAIL, __OK } from 'src/utils/Either'
 import { LiveRef } from '../db/LiveRef'
-import { finalizeAnswer } from '../controls/InfoAnswerFinal'
+import { autorun, reaction, runInAction, toJS } from 'mobx'
 
 export type FormPath = (string | number)[]
 
@@ -17,7 +19,7 @@ export type DraftT = {
     updatedAt: number
     title: string
     toolID: ToolID /** tool params */
-    params: Maybe<any> /** parent */
+    params?: Maybe<any> /** parent */
     graphID: GraphID
 }
 
@@ -29,48 +31,66 @@ export class DraftL {
 
     start = (): StepL => {
         // console.log('🟢', JSON.stringify(this.data))
-        const step = this.graph.item.createStep(this.data)
+        const req = this.form.value
+        if (req == null) throw new Error('invalid req')
+        const step = this.graph.item.createStep({
+            toolID: this.data.toolID,
+            actionResult: req.result,
+            actionState: req.state,
+        })
         step.start()
         return step
     }
 
-    get finalJSON(): any {
-        return finalizeAnswer(this.tool.item, this.data.params)
-    }
-
     focus = () => this.graph.item.update({ focusedDraftID: this.id })
-    reset = () => (this.data.params = {})
     getPathInfo = (path: FormPath): string => this.id + '/' + path.join('/')
 
-    // form part --------------------------------------------------------
-    // onUpdate = (prev: Maybe<ActionT>, next: ActionT) => {
-    //     if (prev == null) return
-    //     if (prev.toolID !== next.toolID) this.reset()
-    // }
-
-    // tool = new LiveRefOpt<this, ToolL>(this, 'toolID', 'tools')
-
-    getAtPath(path: FormPath): any {
-        if (this.data.params == null) this.data.params = {}
-        let current = this.data.params
-        for (const key of path) {
-            if (!current.hasOwnProperty(key)) {
-                return undefined
-            }
-            current = current[key]
+    form: Result<Requestable> = __FAIL('not loaded yet')
+    onHydrate = () => {
+        let subState = {
+            unsync: () => {},
         }
-        return current
-    }
-    setAtPath = (path: FormPath, value: any) => {
-        if (this.data.params == null) this.data.params = {}
-        // console.log(path, value, toJS(this.data.value))
-        let current = this.data.params
-        for (let i = 0; i < path.length - 1; i++) {
-            const key = path[i]
-            if (!current[key]) current[key] = typeof path[i + 1] === 'number' ? [] : {}
-            current = current[key]
-        }
-        current[path[path.length - 1]] = value
-        // console.log(this.Form)
+        console.log(`🦊 on hydrate`)
+        // reload action when it changes
+        // 🔴 dangerous
+        reaction(
+            () => this.tool.item.updatedAt,
+            () => {
+                console.log(`🟢 -------- DRAFT LOADING ACTION --------- 🟢 `)
+                const action = this.tool.item.retrieveAction()
+                if (!action.success) {
+                    this.form = __FAIL('action failed')
+                    return
+                }
+                const uiFn = action.value.ui
+                if (uiFn == null) {
+                    this.form = __FAIL('no UI function')
+                    return
+                }
+
+                try {
+                    const formBuilder = new FormBuilder(this.st.schema)
+                    const req: Requestable = formBuilder.group({ items: uiFn(formBuilder) }, this.data.params)
+                    this.form = __OK(req)
+                    console.log(`🦊 form setup`)
+                    // subState.unsync()
+                } catch (e) {
+                    this.form = __FAIL('ui function crashed', e)
+                    return
+                }
+            },
+            { fireImmediately: true },
+        )
+
+        // 🔴 dangerous
+        autorun(() => {
+            const formValue = this.form.value
+            if (formValue == null) return null
+            const _ = JSON.stringify(formValue.serial)
+            runInAction(() => {
+                console.log(`🦊 updating the form`)
+                this.update({ params: formValue.serial })
+            })
+        })
     }
 }

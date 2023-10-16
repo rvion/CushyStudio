@@ -4,16 +4,12 @@ import type { Printable } from '../core/Printable'
 import * as path from 'path'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
-import { readFileSync, writeFileSync } from 'fs'
+import fs, { readFileSync, writeFileSync } from 'fs'
 import { marked } from 'marked'
 import { lookup } from 'mime-types'
 import { STATE } from 'src/front/state'
 import { ToolL } from 'src/models/Tool'
-import { FormBuilder } from '../controls/FormBuilder'
-import { ImageAnswer, InfoAnswer, InfoRequestFn } from '../controls/InfoAnswer'
-import { finalizeAnswer_UNSAFE } from '../controls/InfoAnswerFinal'
-import { Requestable } from '../controls/InfoRequest'
-import { ScriptStep_ask } from '../controls/misc/ScriptStep_ask'
+import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { Slot } from '../core/Slot'
 import { auto } from '../core/autoValue'
 import { globalToolFnCache } from '../core/globalActionFnCache'
@@ -23,7 +19,7 @@ import { ImageL } from '../models/Image'
 import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo, WsMsgExecuted } from '../types/ComfyWsApi'
-import { deepCopyNaive } from '../utils/ComfyUtils'
+import { deepCopyNaive, exhaust } from '../utils/ComfyUtils'
 import { asSTRING_orCrash } from '../utils/bang'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
@@ -31,7 +27,6 @@ import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
-import fs from 'fs'
 
 /** script exeuction instance */
 export class Runtime {
@@ -69,9 +64,9 @@ export class Runtime {
         const tool: ToolL = this.step.tool.item
         if (tool == null) return Status.Failure
 
-        const action = globalToolFnCache.get(tool)
         const start = Date.now()
-        const formResult = finalizeAnswer_UNSAFE(tool, this.step.rawParams)
+        const action = globalToolFnCache.get(tool)
+        const actionResult = this.step.data.actionResult
         console.log(`🔴 before: size=${this.graph.nodes.length}`)
 
         try {
@@ -79,7 +74,7 @@ export class Runtime {
                 console.log(`❌ action not found`)
                 return Status.Failure
             }
-            await action.run(this, formResult)
+            await action.run(this, actionResult)
             console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
@@ -214,19 +209,19 @@ export class Runtime {
 
     embedding = (t: Embeddings) => `embedding:${t}`
 
-    /** ask the user a few informations */
-    ask: InfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
-        //
-        requestFn: (q: FormBuilder) => Req,
-        layout?: 0,
-    ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
-        const reqBuilder = new FormBuilder()
-        const request = requestFn(reqBuilder)
-        const ask = new ScriptStep_ask(request)
-        // this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })
-        // this.steps.unshift(ask)
-        return ask.finished
-    }
+    // 🐉 /** ask the user a few informations */
+    // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
+    // 🐉     //
+    // 🐉     requestFn: (q: FormBuilder) => Req,
+    // 🐉     layout?: 0,
+    // 🐉 ): Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }> => {
+    // 🐉     const reqBuilder = new FormBuilder()
+    // 🐉     const request = requestFn(reqBuilder)
+    // 🐉     const ask = new ScriptStep_ask(request)
+    // 🐉     // this.st.broadCastToAllClients({ type: 'ask', flowID: this.uid, form: request, result: {} })
+    // 🐉     // this.steps.unshift(ask)
+    // 🐉     return ask.finished
+    // 🐉 }
 
     exec = (comand: string): string => {
         // promisify exec to run the command and collect the output
@@ -249,7 +244,7 @@ export class Runtime {
 
     loadImageAnswerAsEnum = async (ia: ImageAnswer): Promise<Enum_LoadImage_image> => {
         try {
-            if (ia.type === 'imageID') {
+            if (ia.type === 'CushyImage') {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
                 if (img.data.downloaded) {
@@ -263,9 +258,15 @@ export class Runtime {
                 //     RGBA: false, // 'false',
                 // })
             }
-            if (ia.type === 'ComfyImage') return ia.image
+            if (ia.type === 'ComfyImage') return ia.imageName
+            if (ia.type === 'PaintImage') {
+                // const res = await this.uploadAnyFile(ia.base64)
+                // return res.name as Enum_LoadImage_image
+                throw new Error('🔴 not implemented')
+            }
+            exhaust(ia)
         } catch (err) {
-            console.log('🔴 failed to convert ImageAnser to Enum_LoadImage_image', ia)
+            console.log('❌ failed to convert ImageAnser to Enum_LoadImage_image', ia)
             throw err
         }
         throw new Error('FAILURE to load image answer as enum')
@@ -275,7 +276,7 @@ export class Runtime {
             // if (ia.type === 'imagePath') {
             //     return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
             // }
-            if (ia.type === 'imageID') {
+            if (ia.type === 'CushyImage') {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
                 if (img.data.downloaded) {
@@ -294,11 +295,18 @@ export class Runtime {
                 })
             }
             if (ia.type === 'ComfyImage') {
-                const img2 = this.nodes.LoadImage({ image: ia.image })
+                const img2 = this.nodes.LoadImage({ image: ia.imageName })
                 // const img2 = this.nodes.LoadImage({ image: res.name as any })
                 // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
                 return img2
             }
+            if (ia.type === 'PaintImage') {
+                const img2 = this.nodes.Base64ImageInput({ bas64_image: ia.base64 })
+                // const img2 = this.nodes.LoadImage({ image: res.name as any })
+                // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
+                return img2 as any // 🔴
+            }
+            exhaust(ia)
             // if (ia.type === 'imageSignal') {
             //     const node = this.graph.nodesIndex.get(ia.nodeID)
             //     if (node == null) throw new Error('node is not in current graph')

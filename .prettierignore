@@ -1,1 +1,2 @@
 schema/global.d.ts
+src/controls/InfoRequest.ts
