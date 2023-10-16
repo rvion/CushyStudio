@@ -6,7 +6,7 @@ import { WidgetWithLabelUI } from './WidgetUI'
 export const WidgetItemsUI = observer(function WidgetItemsUI_(p: { req: Requestable_group<{ [key: string]: Requestable }> }) {
     const req = p.req
     return (
-        <div>
+        <div tw={[req.input.layout === 'H' ? 'flex' : null]}>
             {Object.entries(req.state.values).map(([rootKey, sub], ix) => {
                 return (
                     <div key={rootKey}>

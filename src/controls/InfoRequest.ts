@@ -515,6 +515,7 @@ export class Requestable_image implements IRequest<'image', Requestable_image_in
         public input: Requestable_image_input,
         serial?: Requestable_image_serial,
     ) {
+        console.log('🔴 AAA', serial)
         this.state = serial ?? {
             type: 'image',
             active: true,
@@ -548,6 +549,7 @@ export class Requestable_imageOpt implements IRequest<'imageOpt', Requestable_im
         public input: Requestable_imageOpt_input,
         serial?: Requestable_imageOpt_serial,
     ) {
+        console.log('🔴 BBB', serial)
         this.state = serial ?? {
             type: 'imageOpt',
             active: input.default ? true : false,
@@ -709,7 +711,7 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
 }
 
 // 🅿️ group ==============================================================================
-export type Requestable_group_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: T }>
+export type Requestable_group_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: T, layout?: 'H'| 'V' }>
 export type Requestable_group_serial<T extends { [key: string]: Requestable }> = { type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']} }
 export type Requestable_group_state <T extends { [key: string]: Requestable }> = { type: 'group', active: true; values: T }
 export type Requestable_group_output<T extends { [key: string]: Requestable }> = { [k in keyof T]: ReqResult<T[k]> }
@@ -756,7 +758,7 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
 }
 
 // 🅿️ groupOpt ==============================================================================
-export type Requestable_groupOpt_input <T extends { [key: string]: Requestable }> = ReqInput<{ default?: boolean; items: T }>
+export type Requestable_groupOpt_input <T extends { [key: string]: Requestable }> = ReqInput<{ default?: boolean; items: T, layout?: 'H'| 'V' }>
 export type Requestable_groupOpt_serial<T extends { [key: string]: Requestable }> = { type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']} }
 export type Requestable_groupOpt_state <T extends { [key: string]: Requestable }> = { type: 'groupOpt', active: boolean; values: T }
 export type Requestable_groupOpt_output<T extends { [key: string]: Requestable }> = Maybe<{ [k in keyof T]: ReqResult<T[k]> }>

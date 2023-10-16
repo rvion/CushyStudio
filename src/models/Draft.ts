@@ -6,7 +6,7 @@ import type { ToolID, ToolL } from './Tool'
 import { FormBuilder, type Requestable } from 'src/controls/InfoRequest'
 import { type Result, __FAIL, __OK } from 'src/utils/Either'
 import { LiveRef } from '../db/LiveRef'
-import { autorun, reaction, toJS } from 'mobx'
+import { autorun, reaction, runInAction, toJS } from 'mobx'
 
 export type FormPath = (string | number)[]
 
@@ -50,7 +50,9 @@ export class DraftL {
         let subState = {
             unsync: () => {},
         }
+        console.log(`🦊 on hydrate`)
         // reload action when it changes
+        // 🔴 dangerous
         reaction(
             () => this.tool.item.updatedAt,
             () => {
@@ -70,7 +72,8 @@ export class DraftL {
                     const formBuilder = new FormBuilder(this.st.schema)
                     const req: Requestable = formBuilder.group({ items: uiFn(formBuilder) }, this.data.params)
                     this.form = __OK(req)
-                    subState.unsync()
+                    console.log(`🦊 form setup`)
+                    // subState.unsync()
                 } catch (e) {
                     this.form = __FAIL('ui function crashed', e)
                     return
@@ -79,10 +82,15 @@ export class DraftL {
             { fireImmediately: true },
         )
 
-        subState.unsync = autorun(() => {
-            if (this.form.value == null) return null
-            const _ = JSON.stringify(this.form.value.serial)
-            this.update({ params: this.form.value.serial })
+        // 🔴 dangerous
+        autorun(() => {
+            const formValue = this.form.value
+            if (formValue == null) return null
+            const _ = JSON.stringify(formValue.serial)
+            runInAction(() => {
+                console.log(`🦊 updating the form`)
+                this.update({ params: formValue.serial })
+            })
         })
     }
 }
