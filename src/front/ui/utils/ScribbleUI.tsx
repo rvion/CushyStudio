@@ -1,11 +1,30 @@
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect, useMemo } from 'react'
+import debounce from 'lodash/debounce'
 
 export const ScribbleCanvas = (p: { onChange: (base64: string) => void }) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const [drawing, setDrawing] = useState(false)
-    const [canvasWidth, setCanvasWidth] = useState(400)
-    const [canvasHeight, setCanvasHeight] = useState(400)
+    const [canvasWidth, setCanvasWidth] = useState(512)
+    const [canvasHeight, setCanvasHeight] = useState(512)
     const [position, setPosition] = useState({ x: 0, y: 0 })
+
+    useEffect(() => {
+        const ctx = canvasRef.current?.getContext('2d')
+        if (ctx) {
+            ctx.fillStyle = 'white'
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+        }
+    }, [canvasWidth, canvasHeight])
+
+    const debouncedOnChange = useMemo(
+        () =>
+            debounce(() => {
+                const base64 = canvasRef.current?.toDataURL('image/png')
+                if (base64 == null) return
+                p.onChange(base64.slice('data:image/png;base64,'.length))
+            }, 250),
+        [p.onChange],
+    )
 
     const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         setDrawing(true)
@@ -34,9 +53,8 @@ export const ScribbleCanvas = (p: { onChange: (base64: string) => void }) => {
                 y: e.nativeEvent.offsetY,
             })
         }
-        const base64 = canvasRef.current?.toDataURL('image/png')
-        if (base64 == null) return
-        p.onChange(base64.slice('data:image/png;base64,'.length))
+
+        debouncedOnChange()
     }
 
     const handleMouseUp = () => {
@@ -61,7 +79,7 @@ export const ScribbleCanvas = (p: { onChange: (base64: string) => void }) => {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
-                style={{ border: '1px solid black', display: 'block', marginTop: '10px', background: 'gray' }}
+                style={{ border: '1px solid black', display: 'block', marginTop: '10px' }}
             ></canvas>
         </div>
     )
