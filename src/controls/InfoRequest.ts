@@ -520,6 +520,7 @@ export class Requestable_image implements IRequest<'image', Requestable_image_in
             active: true,
             comfy: input.default?.type === 'ComfyImage' ? input.default : { imageName: 'example.png', type: 'ComfyImage' },
             cushy: input.default?.type === 'CushyImage' ? input.default : null,
+            paint: null,
             pick: input.default?.type === 'CushyImage' ? 'cushy' : 'comfy',
         }
         makeAutoObservable(this)
@@ -527,6 +528,7 @@ export class Requestable_image implements IRequest<'image', Requestable_image_in
     get serial(): Requestable_image_serial { return this.state }
     get result(): Requestable_image_output {
         if (this.state.pick === 'cushy' && this.state.cushy) return this.state.cushy
+        if (this.state.pick === 'paint' && this.state.paint) return this.state.paint
         return this.state.comfy
     }
 }
@@ -551,6 +553,7 @@ export class Requestable_imageOpt implements IRequest<'imageOpt', Requestable_im
             active: input.default ? true : false,
             comfy: input.default?.type === 'ComfyImage' ? input.default : { imageName: 'example.png', type: 'ComfyImage' },
             cushy: input.default?.type === 'CushyImage' ? input.default : null,
+            paint: null,
             pick: input.default?.type === 'CushyImage' ? 'cushy' : 'comfy',
         }
         makeAutoObservable(this)
@@ -559,6 +562,7 @@ export class Requestable_imageOpt implements IRequest<'imageOpt', Requestable_im
     get result(): Requestable_imageOpt_output {
         if (!this.state.active) return undefined
         if (this.state.pick === 'cushy' && this.state.cushy) return this.state.cushy
+        if (this.state.pick === 'paint' && this.state.paint) return this.state.paint
         return this.state.comfy
     }
 }

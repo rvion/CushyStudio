@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 
-export const ScribbleCanvas: React.FC = () => {
+export const ScribbleCanvas = (p: { onChange: (base64: string) => void }) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const [drawing, setDrawing] = useState(false)
     const [canvasWidth, setCanvasWidth] = useState(400)
@@ -34,6 +34,9 @@ export const ScribbleCanvas: React.FC = () => {
                 y: e.nativeEvent.offsetY,
             })
         }
+        const base64 = canvasRef.current?.toDataURL('image/png')
+        if (base64 == null) return
+        p.onChange(base64.slice('data:image/png;base64,'.length))
     }
 
     const handleMouseUp = () => {

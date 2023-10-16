@@ -19,7 +19,7 @@ import { ImageL } from '../models/Image'
 import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
 import { ApiPromptInput, ComfyUploadImageResult, PromptInfo, WsMsgExecuted } from '../types/ComfyWsApi'
-import { deepCopyNaive } from '../utils/ComfyUtils'
+import { deepCopyNaive, exhaust } from '../utils/ComfyUtils'
 import { asSTRING_orCrash } from '../utils/bang'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
@@ -259,8 +259,14 @@ export class Runtime {
                 // })
             }
             if (ia.type === 'ComfyImage') return ia.imageName
+            if (ia.type === 'PaintImage') {
+                // const res = await this.uploadAnyFile(ia.base64)
+                // return res.name as Enum_LoadImage_image
+                throw new Error('🔴 not implemented')
+            }
+            exhaust(ia)
         } catch (err) {
-            console.log('🔴 failed to convert ImageAnser to Enum_LoadImage_image', ia)
+            console.log('❌ failed to convert ImageAnser to Enum_LoadImage_image', ia)
             throw err
         }
         throw new Error('FAILURE to load image answer as enum')
@@ -294,6 +300,13 @@ export class Runtime {
                 // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
                 return img2
             }
+            if (ia.type === 'PaintImage') {
+                const img2 = this.nodes.Base64ImageInput({ bas64_image: ia.base64 })
+                // const img2 = this.nodes.LoadImage({ image: res.name as any })
+                // if (p?.joinImageWithAlpha) return this.nodes.JoinImageWithAlpha({ image: img2, alpha: img2 })
+                return img2 as any // 🔴
+            }
+            exhaust(ia)
             // if (ia.type === 'imageSignal') {
             //     const node = this.graph.nodesIndex.get(ia.nodeID)
             //     if (node == null) throw new Error('node is not in current graph')

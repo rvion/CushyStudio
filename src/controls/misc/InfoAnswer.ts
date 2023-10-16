@@ -20,15 +20,17 @@ import type { ImageID } from 'src/models/Image'
 // export type ImageAnswer = ImageAnswer1 | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
 
 // IMAGE ----------------------------------------------------------------------------
-export type ImageAnswer = CushyImageAnswer | ComfyImageAnswer // | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
+export type ImageAnswer = CushyImageAnswer | ComfyImageAnswer | PaintImageAnswer // | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
 export type CushyImageAnswer = { type: 'CushyImage'; imageID: ImageID }
 export type ComfyImageAnswer = { type: 'ComfyImage'; imageName: Enum_LoadImage_image }
+export type PaintImageAnswer = { type: 'PaintImage'; base64: string }
 export type ImageAnswerForm<Type extends string, Bool extends boolean> = {
     type: Type
     active: Bool
-    pick: 'cushy' | 'comfy'
+    pick: 'cushy' | 'comfy' | 'paint'
     cushy: Maybe<CushyImageAnswer>
     comfy: ComfyImageAnswer // always example.png by default
+    paint: Maybe<PaintImageAnswer> // base64
 }
 
 // SIZES ----------------------------------------------------------------------------

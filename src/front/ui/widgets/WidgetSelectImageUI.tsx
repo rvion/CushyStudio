@@ -1,73 +1,134 @@
 import { observer } from 'mobx-react-lite'
-import { Button } from 'rsuite'
+import { Button, Toggle } from 'rsuite'
 import { Requestable_image, Requestable_imageOpt } from 'src/controls/InfoRequest'
 import { useSt } from '../../../front/FrontStateCtx'
 import { ImageUI } from '../galleries/ImageUI'
 import { useImageDrop } from '../galleries/dnd'
 import { useDraft } from '../useDraft'
-import { EnumSelectorUI, WidgetEnumUI } from './WidgetEnumUI'
+import { TabsUI } from '../utils/TabUI'
+import { EnumSelectorUI } from './WidgetEnumUI'
+import { ScribbleCanvas } from '../utils/ScribbleUI'
 
+enum Tab {
+    Cushy = 0,
+    Comfy = 1,
+    Paint = 2,
+}
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { req: Requestable_image | Requestable_imageOpt }) {
     const req = p.req
     const st = useSt()
     const [dropStyle, dropRef] = useImageDrop((i) => {
+        console.log('DROPPED', i)
         req.state.cushy = { type: 'CushyImage', imageID: i.id }
+        req.state.pick = 'cushy'
     })
     const draft = useDraft()
-    // const node = draft.graph.item.findNodeByType('VAEDecode')
+    const showToogle =
+        req instanceof Requestable_imageOpt //
+            ? true
+            : req.state.active !== true
     return (
         <div>
             <div className='flex gap-2 flex-row '>
-                {/* CUSHY */}
-                <div ref={dropRef} className='flex gap-2 bg-yellow-900 rounded p-1 self-center' style={dropStyle}>
-                    {req.state.pick === 'cushy' && req.state.cushy != null ? ( //
-                        <ImageUI img={draft.db.images.getOrThrow(req.state.cushy.imageID)} />
-                    ) : (
-                        <span>drop image here</span>
-                    )}
-                </div>
-                {/* SCRIBBLE */}
-                {/* TODO */}
-
-                {/* COMFY */}
-                <div>
-                    {req.state.comfy && (
-                        <img
-                            style={{ width: '32px', height: '32px' }}
-                            src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(
-                                req.state.comfy.imageName,
-                            )}&type=input&subfolder=`}
-                            alt=''
-                        />
-                    )}
-
-                    <EnumSelectorUI
-                        enumName='Enum_LoadImage_image'
-                        value={req.state.comfy?.imageName ?? null}
-                        isOptional={req.state.pick !== 'comfy' || !req.state.active}
-                        onChange={(t) => {
-                            // handle nullability for Requestable_imageOpt
-                            if (
-                                t == null &&
-                                req instanceof Requestable_imageOpt &&
-                                req.state.active &&
-                                req.state.pick === 'comfy'
-                            ) {
-                                req.state.active = false
-                            }
-
-                            if (t == null) return
-                            // handle value
-                            req.state.comfy.imageName
-                            req.state.pick = 'comfy'
-                        }}
+                {showToogle && (
+                    <Toggle
+                        // size='sm'
+                        checked={req.state.active}
+                        onChange={(t) => (req.state.active = t)}
                     />
-                </div>
-                {req instanceof Requestable_imageOpt ? (
-                    <Button size='sm' onClick={() => (req.state.active = false)}>
-                        <span className='material-symbols-outlined'>remove</span>
-                    </Button>
-                ) : null}
+                )}
+
+                {req.state.active && (
+                    <TabsUI
+                        onClick={(i) => {
+                            if (i === Tab.Cushy) req.state.pick = 'cushy'
+                            if (i === Tab.Comfy) req.state.pick = 'comfy'
+                            if (i === Tab.Paint) req.state.pick = 'paint'
+                        }}
+                        current={
+                            req.state.pick === 'cushy' //
+                                ? Tab.Cushy
+                                : req.state.pick === 'comfy'
+                                ? Tab.Comfy
+                                : Tab.Paint
+                        }
+                        disabled={!req.state.active}
+                        tabs={[
+                            {
+                                title: () => <>Drop</>,
+                                body: () => (
+                                    <div
+                                        ref={dropRef}
+                                        className='flex gap-2 bg-yellow-900 rounded p-1 self-center'
+                                        style={dropStyle}
+                                    >
+                                        {req.state.cushy != null ? ( //
+                                            <div tw='flex items-start'>
+                                                <ImageUI img={draft.db.images.getOrThrow(req.state.cushy.imageID)} />
+                                                {req instanceof Requestable_imageOpt ? (
+                                                    <Button size='sm' onClick={() => (req.state.active = false)}>
+                                                        X
+                                                    </Button>
+                                                ) : null}
+                                            </div>
+                                        ) : (
+                                            <span>drop image here</span>
+                                        )}
+                                    </div>
+                                ),
+                            },
+                            {
+                                title: () => <>Pick</>,
+                                body: () => (
+                                    <>
+                                        {req.state.comfy && (
+                                            <img
+                                                style={{ width: '32px', height: '32px' }}
+                                                src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(
+                                                    req.state.comfy.imageName,
+                                                )}&type=input&subfolder=`}
+                                                alt=''
+                                            />
+                                        )}
+
+                                        <EnumSelectorUI
+                                            enumName='Enum_LoadImage_image'
+                                            value={req.state.comfy?.imageName ?? null}
+                                            isOptional={req.state.pick !== 'comfy' || !req.state.active}
+                                            onChange={(t) => {
+                                                // handle nullability for Requestable_imageOpt
+                                                if (
+                                                    t == null &&
+                                                    (req instanceof Requestable_imageOpt || req instanceof Requestable_image) &&
+                                                    req.state.active &&
+                                                    req.state.pick === 'comfy'
+                                                ) {
+                                                    req.state.active = false
+                                                }
+
+                                                if (t == null) return
+                                                // handle value
+                                                req.state.comfy.imageName
+                                                req.state.pick = 'comfy'
+                                            }}
+                                        />
+                                    </>
+                                ),
+                            },
+                            {
+                                title: () => <>Scribble</>,
+                                body: () => (
+                                    <ScribbleCanvas
+                                        onChange={(base64: string) => {
+                                            req.state.paint = { type: 'PaintImage', base64 }
+                                            if (req.state.pick !== 'paint') req.state.pick = 'paint'
+                                        }}
+                                    />
+                                ),
+                            },
+                        ]}
+                    />
+                )}
             </div>
         </div>
     )
