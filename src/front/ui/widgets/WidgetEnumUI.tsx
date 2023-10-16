@@ -18,16 +18,22 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
     // const options = schema.getEnumOptionsForSelectPicker(enumName)
 
     const value = req.state.val as any
-
+    const showToogle =
+        req instanceof Requestable_enumOpt //
+            ? true
+            : req.state.active !== true
     return (
         <div className='flex gap-1'>
-            <Toggle
-                // size='sm'
-                checked={req.state.active}
-                onChange={(t) => (req.state.active = t)}
-            />
+            {showToogle && (
+                <Toggle
+                    // size='sm'
+                    checked={req.state.active}
+                    onChange={(t) => (req.state.active = t)}
+                />
+            )}
             <EnumSelectorUI
                 value={value}
+                disabled={!req.state.active}
                 isOptional={isOptional}
                 enumName={enumName}
                 onChange={(e) => {
@@ -46,6 +52,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     isOptional: boolean
     value: EnumValue | null
     onChange: (v: EnumValue | null) => void
+    disabled?: boolean
     enumName: EnumName
 }) {
     const project = useProject()
@@ -56,6 +63,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
         <>
             <SelectPicker //
                 size='sm'
+                disabled={p.disabled}
                 data={options}
                 value={p.value}
                 renderValue={(v) => {

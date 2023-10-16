@@ -20,9 +20,7 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
         image.data.type === 'video' ? (
             <video
                 //
-                onMouseEnter={(ev) => {
-                    st.hovered = image
-                }}
+                onMouseEnter={(ev) => (st.hovered = image)}
                 onMouseLeave={() => {
                     if (st.hovered === image) st.hovered = null
                 }}
