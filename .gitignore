@@ -28,6 +28,7 @@ schema/*
 !schema/.gitkeep
 
 cushy.db
+cushy*.db
 
 *.vsix
 

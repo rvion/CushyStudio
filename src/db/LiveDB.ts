@@ -46,7 +46,7 @@ export class LiveDB {
 
     constructor(public st: STATE) {
         // 1. restore store if  it exists
-        this.relPath = asRelativePath('./cushy.db')
+        this.relPath = asRelativePath('./cushy2.db')
         this.absPath = this.st.resolveFromRoot(this.relPath)
         const exists = existsSync(this.absPath)
         if (exists) {
