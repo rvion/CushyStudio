@@ -17,6 +17,7 @@ export const renderMinimap = (canvas: HTMLCanvasElement, options: MinimapProps) 
     const DOC_EL = DOC.documentElement
     const BODY = DOC.querySelector('body')
     if (BODY == null) throw new Error('no body')
+    if (canvas == null) return console.log('no canvas yet')
     const CTX = canvas.getContext('2d')
     if (CTX == null) throw new Error('no ctx')
 

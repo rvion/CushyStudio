@@ -103,8 +103,15 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
             get updatedAt() { return this.data.updatedAt } // prettier-ignore
 
             update(t: Partial<T>) {
-                const prev = this.onUpdate ? JSON.parse(JSON.stringify(this.data)) : undefined
+                // 1. check if update is needed
+                const isSame = Object.keys(t).every((k) => (this.data as any)[k] === (t as any)[k])
+                if (isSame) return console.log('no need to update') // no need to update
+                // 2. update
+                const prev = this.onUpdate //
+                    ? JSON.parse(JSON.stringify(this.data))
+                    : undefined
                 Object.assign(this.data, t)
+                this.data.updatedAt = Date.now()
                 this.onUpdate?.(prev, this.data)
             }
 

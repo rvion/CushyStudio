@@ -143,21 +143,17 @@ export const CushyCompletionPlugin = <T extends any>(p: {
                           <div className='typeahead-popover emoji-menu '>
                               <ul style={{ paddingInlineStart: 0 }}>
                                   {options.map((option: CompletionOption<T>, index) => (
-                                      //   <div >
                                       <CompletionUI
                                           key={option.key}
                                           index={index}
                                           isSelected={selectedIndex === index}
+                                          option={option}
+                                          onMouseEnter={() => setHighlightedIndex(index)}
                                           onClick={() => {
                                               setHighlightedIndex(index)
                                               selectOptionAndCleanUp(option)
                                           }}
-                                          onMouseEnter={() => {
-                                              setHighlightedIndex(index)
-                                          }}
-                                          option={option}
                                       />
-                                      //   </div>
                                   ))}
                               </ul>
                           </div>,

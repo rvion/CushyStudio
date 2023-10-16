@@ -70,8 +70,7 @@ function onError(error: Error) {
     console.error(error)
 }
 
-export type WidgetPromptOutput<Active extends boolean = boolean> = {
-    active: Active
+export type WidgetPromptOutput = {
     text: string
     tokens: PossibleSerializedNodes[]
 }

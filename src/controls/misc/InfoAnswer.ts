@@ -23,7 +23,8 @@ import type { ImageID } from 'src/models/Image'
 export type ImageAnswer = CushyImageAnswer | ComfyImageAnswer // | ImageAnswer2 | ImageAnswer3 | ImageAnswer4
 export type CushyImageAnswer = { type: 'CushyImage'; imageID: ImageID }
 export type ComfyImageAnswer = { type: 'ComfyImage'; imageName: Enum_LoadImage_image }
-export type ImageAnswerForm<Bool extends boolean> = {
+export type ImageAnswerForm<Type extends string, Bool extends boolean> = {
+    type: Type
     active: Bool
     pick: 'cushy' | 'comfy'
     cushy: Maybe<CushyImageAnswer>
@@ -54,6 +55,7 @@ export type CushySizeByRatio = {
 }
 
 export type CushySize = {
+    type: 'size'
     width: number
     height: number
     modelType: SDModelType

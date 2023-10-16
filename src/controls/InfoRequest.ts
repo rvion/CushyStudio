@@ -10,7 +10,7 @@ import type { PossibleSerializedNodes } from 'src/prompter/plugins/CushyDebugPlu
 import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
 import type { ItemDataType } from 'rsuite/esm/@types/common'
 
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, toJS } from 'mobx'
 import { bang } from 'src/utils/bang'
 import { exhaust } from 'src/utils/ComfyUtils'
 
@@ -45,19 +45,17 @@ export type Requestable =
 
 export type ReqResult<Req> = Req extends IWidget<any, any, any, any, infer O> ? O : never
 export type ReqState<Req> = Req extends IWidget<any, any, any, infer S, any> ? S : never
-export type IWidget<T, I, X, S, O> = {
+export type IWidget<T, I, X extends {type: T}, S, O> = {
     $Input: I;
     $Serial: X;
     $State: S;
     $Output: O
-    $JSON: {type: T, /*input: I,*/ serial: X};
 }
 export type IRequest<T, I, X, S, O> = {
     type: T
     state: S
     readonly result: O
     readonly serial: X
-    readonly json: { type: T, /*input: I,*/ serial: X}
 }
 
 export type ReqInput<X> = X & {
@@ -69,8 +67,8 @@ export type ReqInput<X> = X & {
 
 // 🅿️ str ==============================================================================
 export type Requestable_str_input = ReqInput<{ default?: string; textarea?: boolean }>
-export type Requestable_str_serial = { active: true; val: string }
-export type Requestable_str_state = { active: true; val: string }
+export type Requestable_str_serial = { type: 'str', active: true; val: string }
+export type Requestable_str_state  = { type: 'str', active: true; val: string }
 export type Requestable_str_output = string
 export interface Requestable_str extends IWidget<'str', Requestable_str_input, Requestable_str_serial, Requestable_str_state, Requestable_str_output> {}
 export class Requestable_str implements IRequest<'str', Requestable_str_input, Requestable_str_serial, Requestable_str_state, Requestable_str_output> {
@@ -82,18 +80,17 @@ export class Requestable_str implements IRequest<'str', Requestable_str_input, R
         public input: Requestable_str_input,
         serial?: Requestable_str_serial,
     ) {
-        this.state = serial ?? { active: true, val: input.default ?? '' }
+        this.state = serial ?? { type:'str', active: true, val: input.default ?? '' }
         makeAutoObservable(this)
     }
     get serial(): Requestable_str_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_str_output { return this.state.val }
 }
 
 // 🅿️ strOpt ==============================================================================
 export type Requestable_strOpt_input = ReqInput<{ default?: string; textarea?: boolean }>
 export type Requestable_strOpt_serial = Requestable_strOpt_state
-export type Requestable_strOpt_state = { active: boolean; val: string }
+export type Requestable_strOpt_state = { type:'strOpt', active: boolean; val: string }
 export type Requestable_strOpt_output = Maybe<string>
 export interface Requestable_strOpt extends IWidget<'strOpt', Requestable_strOpt_input, Requestable_strOpt_serial, Requestable_strOpt_state, Requestable_strOpt_output> {}
 export class Requestable_strOpt implements IRequest<'strOpt', Requestable_strOpt_input, Requestable_strOpt_serial, Requestable_strOpt_state, Requestable_strOpt_output> {
@@ -106,13 +103,13 @@ export class Requestable_strOpt implements IRequest<'strOpt', Requestable_strOpt
         serial?: Requestable_strOpt_serial,
     ) {
         this.state = serial ?? {
+            type: 'strOpt',
             active: input.default != null,
             val: input.default ?? '',
         }
         makeAutoObservable(this)
     }
     get serial(){ return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_strOpt_output {
         if (!this.state.active) return undefined
         return this.state.val
@@ -122,8 +119,8 @@ export class Requestable_strOpt implements IRequest<'strOpt', Requestable_strOpt
 // 🅿️ prompt ==============================================================================
 export type Requestable_prompt_input = ReqInput<{ default?: string | WidgetPromptOutput }>
 export type Requestable_prompt_serial = Requestable_prompt_state
-export type Requestable_prompt_state = WidgetPromptOutput<true>
-export type Requestable_prompt_output = WidgetPromptOutput<true>
+export type Requestable_prompt_state =  { type: 'prompt'; active: true; text: string; tokens: PossibleSerializedNodes[] }
+export type Requestable_prompt_output = { type: 'prompt'; active: true; text: string; tokens: PossibleSerializedNodes[] }
 export interface Requestable_prompt extends IWidget<'prompt', Requestable_prompt_input, Requestable_prompt_serial, Requestable_prompt_state, Requestable_prompt_output> {}
 export class Requestable_prompt implements IRequest<'prompt', Requestable_prompt_input, Requestable_prompt_serial, Requestable_prompt_state, Requestable_prompt_output> {
     type = 'prompt' as const
@@ -138,7 +135,7 @@ export class Requestable_prompt implements IRequest<'prompt', Requestable_prompt
         if (serial) {
             this.state = serial
         } else {
-            this.state = { active: true, text: '', tokens: [] }
+            this.state = { type:'prompt', active: true, text: '', tokens: [] }
 
             const def = input.default
             if (def != null) {
@@ -154,7 +151,6 @@ export class Requestable_prompt implements IRequest<'prompt', Requestable_prompt
         makeAutoObservable(this)
     }
     get serial(): Requestable_prompt_serial { return this.state } // prettier-ignore
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_prompt_output {
         JSON.stringify(this.state) // 🔶 force deep observation
         return this.state
@@ -162,9 +158,9 @@ export class Requestable_prompt implements IRequest<'prompt', Requestable_prompt
 }
 
 // 🅿️ promptOpt ==============================================================================
-export type Requestable_promptOpt_input = ReqInput<{ default?: string | PossibleSerializedNodes[] }>
-export type Requestable_promptOpt_serial = Requestable_promptOpt_state
-export type Requestable_promptOpt_state = WidgetPromptOutput<boolean>
+export type Requestable_promptOpt_input  = ReqInput<{ default?: string | PossibleSerializedNodes[] }>
+export type Requestable_promptOpt_serial = { type: 'promptOpt'; active: boolean; text: string; tokens: PossibleSerializedNodes[] }
+export type Requestable_promptOpt_state  = { type: 'promptOpt'; active: boolean; text: string; tokens: PossibleSerializedNodes[] }
 export type Requestable_promptOpt_output = Maybe<WidgetPromptOutput>
 export interface Requestable_promptOpt extends IWidget<'promptOpt', Requestable_promptOpt_input, Requestable_promptOpt_serial, Requestable_promptOpt_state, Requestable_promptOpt_output> {}
 export class Requestable_promptOpt implements IRequest<'promptOpt', Requestable_promptOpt_input, Requestable_promptOpt_serial, Requestable_promptOpt_state, Requestable_promptOpt_output> {
@@ -179,7 +175,7 @@ export class Requestable_promptOpt implements IRequest<'promptOpt', Requestable_
         if (serial) {
             this.state = serial
         } else {
-            this.state = { active: false, text: '', tokens: [] }
+            this.state = { type:'promptOpt', active: false, text: '', tokens: [] }
             const def = input.default
             if (def != null) {
                 if (typeof def === 'string') {
@@ -195,7 +191,6 @@ export class Requestable_promptOpt implements IRequest<'promptOpt', Requestable_
         makeAutoObservable(this)
     }
     get serial(): Requestable_promptOpt_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_promptOpt_output {
         if (this.state.active === false) return undefined
         return this.state
@@ -203,9 +198,9 @@ export class Requestable_promptOpt implements IRequest<'promptOpt', Requestable_
 }
 
 // 🅿️ int ==============================================================================
-export type Requestable_int_input = ReqInput<{ default?: number; min?: number; max?: number }>
+export type Requestable_int_input  = ReqInput<{ default?: number; min?: number; max?: number }>
 export type Requestable_int_serial = Requestable_int_state
-export type Requestable_int_state = { active: true; val: number }
+export type Requestable_int_state  = { type:'int', active: true; val: number }
 export type Requestable_int_output = number
 export interface Requestable_int extends IWidget<'int', Requestable_int_input, Requestable_int_serial, Requestable_int_state, Requestable_int_output> {}
 export class Requestable_int implements IRequest<'int', Requestable_int_input, Requestable_int_serial, Requestable_int_state, Requestable_int_output> {
@@ -217,18 +212,17 @@ export class Requestable_int implements IRequest<'int', Requestable_int_input, R
         public input: Requestable_int_input,
         serial?: Requestable_int_serial,
     ) {
-        this.state = serial ?? { active: true, val: input.default ?? 0 }
+        this.state = serial ?? { type: 'int', active: true, val: input.default ?? 0 }
         makeAutoObservable(this)
     }
     get serial(): Requestable_int_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_int_output { return this.state.val }
 }
 
 // 🅿️ float ==============================================================================
 export type Requestable_float_input = ReqInput<{ default?: number; min?: number; max?: number }>
 export type Requestable_float_serial = Requestable_float_state
-export type Requestable_float_state = { active: true; val: number }
+export type Requestable_float_state = { type:'float', active: true; val: number }
 export type Requestable_float_output = number
 export interface Requestable_float extends IWidget<'float', Requestable_float_input, Requestable_float_serial, Requestable_float_state, Requestable_float_output> {}
 export class Requestable_float implements IRequest<'float', Requestable_float_input, Requestable_float_serial, Requestable_float_state, Requestable_float_output> {
@@ -240,18 +234,17 @@ export class Requestable_float implements IRequest<'float', Requestable_float_in
         public input: Requestable_float_input,
         serial?: Requestable_float_serial,
     ) {
-        this.state = serial ?? { active: true, val: input.default ?? 0 }
+        this.state = serial ?? { type:'float', active: true, val: input.default ?? 0 }
         makeAutoObservable(this)
     }
     get serial(): Requestable_float_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_float_output { return this.state.val }
 }
 
 // 🅿️ bool ==============================================================================
 export type Requestable_bool_input = ReqInput<{ default?: boolean }>
 export type Requestable_bool_serial = Requestable_bool_state
-export type Requestable_bool_state = { active: true; val: boolean }
+export type Requestable_bool_state = { type:'bool', active: true; val: boolean }
 export type Requestable_bool_output = boolean
 export interface Requestable_bool extends IWidget<'bool', Requestable_bool_input, Requestable_bool_serial, Requestable_bool_state, Requestable_bool_output> {}
 export class Requestable_bool implements IRequest<'bool', Requestable_bool_input, Requestable_bool_serial, Requestable_bool_state, Requestable_bool_output> {
@@ -263,18 +256,17 @@ export class Requestable_bool implements IRequest<'bool', Requestable_bool_input
         public input: Requestable_bool_input,
         serial?: Requestable_bool_serial,
     ) {
-        this.state = serial ?? { active: true, val: input.default ?? false }
+        this.state = serial ?? { type: 'bool', active: true, val: input.default ?? false }
         makeAutoObservable(this)
     }
     get serial(): Requestable_bool_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_bool_output { return this.state.val }
 }
 
 // 🅿️ intOpt ==============================================================================
 export type Requestable_intOpt_input = ReqInput<{ default?: number; min?: number; max?: number; step?: number }>
 export type Requestable_intOpt_serial = Requestable_intOpt_state
-export type Requestable_intOpt_state = { active: boolean; val: number }
+export type Requestable_intOpt_state = { type: 'intOpt', active: boolean; val: number }
 export type Requestable_intOpt_output = Maybe<number>
 export interface Requestable_intOpt extends IWidget<'intOpt', Requestable_intOpt_input, Requestable_intOpt_serial, Requestable_intOpt_state, Requestable_intOpt_output> {}
 export class Requestable_intOpt implements IRequest<'intOpt', Requestable_intOpt_input, Requestable_intOpt_serial, Requestable_intOpt_state, Requestable_intOpt_output> {
@@ -287,13 +279,13 @@ export class Requestable_intOpt implements IRequest<'intOpt', Requestable_intOpt
         serial?: Requestable_intOpt_serial,
     ) {
         this.state = serial ?? {
+            type: 'intOpt',
             active: input.default != null,
             val: input.default ?? 0,
         }
         makeAutoObservable(this)
     }
     get serial(): Requestable_intOpt_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_intOpt_output {
         if (this.state.active === false) return undefined
         return this.state.val
@@ -303,7 +295,7 @@ export class Requestable_intOpt implements IRequest<'intOpt', Requestable_intOpt
 // 🅿️ floatOpt ==============================================================================
 export type Requestable_floatOpt_input = ReqInput<{ default?: number; min?: number; max?: number; step?: number }>
 export type Requestable_floatOpt_serial = Requestable_floatOpt_state
-export type Requestable_floatOpt_state = { active: boolean; val: number }
+export type Requestable_floatOpt_state = { type: 'floatOpt', active: boolean; val: number }
 export type Requestable_floatOpt_output = Maybe<number>
 export interface Requestable_floatOpt extends IWidget<'floatOpt', Requestable_floatOpt_input, Requestable_floatOpt_serial, Requestable_floatOpt_state, Requestable_floatOpt_output> {}
 export class Requestable_floatOpt implements IRequest<'floatOpt', Requestable_floatOpt_input, Requestable_floatOpt_serial, Requestable_floatOpt_state, Requestable_floatOpt_output> {
@@ -316,13 +308,13 @@ export class Requestable_floatOpt implements IRequest<'floatOpt', Requestable_fl
         serial?: Requestable_floatOpt_serial,
     ) {
         this.state = serial ?? {
+            type: 'floatOpt',
             active: input.default != null,
             val: input.default ?? 0,
         }
         makeAutoObservable(this)
     }
     get serial(): Requestable_floatOpt_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_floatOpt_output {
         if (this.state.active === false) return undefined
         return this.state.val
@@ -352,6 +344,7 @@ export class Requestable_size implements IRequest<'size', Requestable_size_input
             const width = 512 // 🔴
             const height = 512 // 🔴
             this.state = {
+                type: 'size',
                 aspectRatio,
                 modelType,
                 height,
@@ -361,7 +354,6 @@ export class Requestable_size implements IRequest<'size', Requestable_size_input
         makeAutoObservable(this)
     }
     get serial(): Requestable_size_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_size_output {
         return this.state
     }
@@ -370,7 +362,7 @@ export class Requestable_size implements IRequest<'size', Requestable_size_input
 // 🅿️ matrix ==============================================================================
 export type Requestable_matrix_input = ReqInput<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
 export type Requestable_matrix_serial = Requestable_matrix_state
-export type Requestable_matrix_state = { active: true; selected: CELL[] }
+export type Requestable_matrix_state = { type: 'matrix', active: true; selected: CELL[] }
 export type Requestable_matrix_output = CELL[]
 export interface Requestable_matrix extends IWidget<'matrix', Requestable_matrix_input, Requestable_matrix_serial, Requestable_matrix_state, Requestable_matrix_output> {}
 export class Requestable_matrix implements IRequest<'matrix', Requestable_matrix_input, Requestable_matrix_serial, Requestable_matrix_state, Requestable_matrix_output> {
@@ -384,8 +376,7 @@ export class Requestable_matrix implements IRequest<'matrix', Requestable_matrix
         public input: Requestable_matrix_input,
         serial?: Requestable_matrix_serial,
     ) {
-        this.state = serial ?? { active: true, selected: [] }
-
+        this.state = serial ?? { type:'matrix', active: true, selected: [] }
         const rows = input.rows
         const cols = input.cols
         // init all cells to false
@@ -406,7 +397,6 @@ export class Requestable_matrix implements IRequest<'matrix', Requestable_matrix
         makeAutoObservable(this)
     }
     get serial(): Requestable_matrix_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_matrix_output {
         // if (!this.state.active) return undefined
         return this.state.selected
@@ -462,7 +452,7 @@ export class Requestable_matrix implements IRequest<'matrix', Requestable_matrix
 // 🅿️ loras ==============================================================================
 export type Requestable_loras_input = ReqInput<{ default?: SimplifiedLoraDef[] }>
 export type Requestable_loras_serial = Requestable_loras_state
-export type Requestable_loras_state = { active: true; loras: SimplifiedLoraDef[] }
+export type Requestable_loras_state = { type: 'loras', active: true; loras: SimplifiedLoraDef[] }
 export type Requestable_loras_output = SimplifiedLoraDef[]
 export interface Requestable_loras extends IWidget<'loras', Requestable_loras_input, Requestable_loras_serial, Requestable_loras_state, Requestable_loras_output> {}
 export class Requestable_loras implements IRequest<'loras', Requestable_loras_input, Requestable_loras_serial, Requestable_loras_state, Requestable_loras_output> {
@@ -474,7 +464,7 @@ export class Requestable_loras implements IRequest<'loras', Requestable_loras_in
         public input: Requestable_loras_input,
         serial?: Requestable_loras_serial,
     ) {
-        this.state = serial ?? { active: true, loras: input.default ?? [] }
+        this.state = serial ?? { type: 'loras', active: true, loras: input.default ?? [] }
         this.allLoras = schema.getLoras()
         for (const lora of this.allLoras) {
             if (lora === 'None') continue
@@ -484,7 +474,6 @@ export class Requestable_loras implements IRequest<'loras', Requestable_loras_in
         makeAutoObservable(this)
     }
     get serial(): Requestable_loras_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_loras_output {
         return this.state.loras
     }
@@ -514,7 +503,7 @@ export class Requestable_loras implements IRequest<'loras', Requestable_loras_in
 // 🅿️ image ==============================================================================
 export type Requestable_image_input = ReqInput<{ default?: ImageAnswer }>
 export type Requestable_image_serial = Requestable_image_state
-export type Requestable_image_state = ImageAnswerForm<true>
+export type Requestable_image_state = ImageAnswerForm<'image', true>
 export type Requestable_image_output = ImageAnswer
 export interface Requestable_image extends IWidget<'image', Requestable_image_input, Requestable_image_serial, Requestable_image_state, Requestable_image_output> {}
 export class Requestable_image implements IRequest<'image', Requestable_image_input, Requestable_image_serial, Requestable_image_state, Requestable_image_output> {
@@ -527,6 +516,7 @@ export class Requestable_image implements IRequest<'image', Requestable_image_in
         serial?: Requestable_image_serial,
     ) {
         this.state = serial ?? {
+            type: 'image',
             active: true,
             comfy: input.default?.type === 'ComfyImage' ? input.default : { imageName: 'example.png', type: 'ComfyImage' },
             cushy: input.default?.type === 'CushyImage' ? input.default : null,
@@ -535,7 +525,6 @@ export class Requestable_image implements IRequest<'image', Requestable_image_in
         makeAutoObservable(this)
     }
     get serial(): Requestable_image_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_image_output {
         if (this.state.pick === 'cushy' && this.state.cushy) return this.state.cushy
         return this.state.comfy
@@ -545,7 +534,7 @@ export class Requestable_image implements IRequest<'image', Requestable_image_in
 // 🅿️ imageOpt ==============================================================================
 export type Requestable_imageOpt_input = ReqInput<{ default?: ImageAnswer }>
 export type Requestable_imageOpt_serial = Requestable_imageOpt_state
-export type Requestable_imageOpt_state = ImageAnswerForm<boolean>
+export type Requestable_imageOpt_state = ImageAnswerForm<'imageOpt', boolean>
 export type Requestable_imageOpt_output = Maybe<ImageAnswer>
 export interface Requestable_imageOpt extends IWidget<'imageOpt', Requestable_imageOpt_input, Requestable_imageOpt_serial, Requestable_imageOpt_state, Requestable_imageOpt_output> {}
 export class Requestable_imageOpt implements IRequest<'imageOpt', Requestable_imageOpt_input, Requestable_imageOpt_serial, Requestable_imageOpt_state, Requestable_imageOpt_output> {
@@ -558,6 +547,7 @@ export class Requestable_imageOpt implements IRequest<'imageOpt', Requestable_im
         serial?: Requestable_imageOpt_serial,
     ) {
         this.state = serial ?? {
+            type: 'imageOpt',
             active: input.default ? true : false,
             comfy: input.default?.type === 'ComfyImage' ? input.default : { imageName: 'example.png', type: 'ComfyImage' },
             cushy: input.default?.type === 'CushyImage' ? input.default : null,
@@ -566,7 +556,6 @@ export class Requestable_imageOpt implements IRequest<'imageOpt', Requestable_im
         makeAutoObservable(this)
     }
     get serial(): Requestable_imageOpt_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_imageOpt_output {
         if (!this.state.active) return undefined
         if (this.state.pick === 'cushy' && this.state.cushy) return this.state.cushy
@@ -577,7 +566,7 @@ export class Requestable_imageOpt implements IRequest<'imageOpt', Requestable_im
 // 🅿️ selectOne ==============================================================================
 export type Requestable_selectOne_input<T> = ReqInput<{ default?: T; choices: T[] }>
 export type Requestable_selectOne_serial<T> = Requestable_selectOne_state<T>
-export type Requestable_selectOne_state<T> = { query: string; val: T }
+export type Requestable_selectOne_state<T> = { type:'selectOne', query: string; val: T }
 export type Requestable_selectOne_output<T> = T
 export interface Requestable_selectOne<T>  extends IWidget<'selectOne', Requestable_selectOne_input<T>, Requestable_selectOne_serial<T>, Requestable_selectOne_state<T>, Requestable_selectOne_output<T>> {}
 export class Requestable_selectOne<T> implements IRequest<'selectOne', Requestable_selectOne_input<T>, Requestable_selectOne_serial<T>, Requestable_selectOne_state<T>, Requestable_selectOne_output<T>> {
@@ -590,20 +579,20 @@ export class Requestable_selectOne<T> implements IRequest<'selectOne', Requestab
         serial?: Requestable_selectOne_serial<T>,
     ) {
         this.state = serial ?? {
+            type: 'selectOne',
             query: '',
             val: input.default ?? input.choices[0],
         }
         makeAutoObservable(this)
     }
     get serial(): Requestable_selectOne_serial<T> { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_selectOne_output<T> { return this.state.val }
 }
 
 // 🅿️ selectOneOrCustom ==============================================================================
 export type Requestable_selectOneOrCustom_input = ReqInput<{ default?: string; choices: string[] }>
 export type Requestable_selectOneOrCustom_serial = Requestable_selectOneOrCustom_state
-export type Requestable_selectOneOrCustom_state = { query: string; val: string }
+export type Requestable_selectOneOrCustom_state = { type:'selectOneOrCustom', query: string; val: string }
 export type Requestable_selectOneOrCustom_output = string
 export interface Requestable_selectOneOrCustom extends IWidget<'selectOneOrCustom', Requestable_selectOneOrCustom_input, Requestable_selectOneOrCustom_serial, Requestable_selectOneOrCustom_state, Requestable_selectOneOrCustom_output > {}
 export class Requestable_selectOneOrCustom implements IRequest<'selectOneOrCustom', Requestable_selectOneOrCustom_input, Requestable_selectOneOrCustom_serial, Requestable_selectOneOrCustom_state, Requestable_selectOneOrCustom_output > {
@@ -616,20 +605,20 @@ export class Requestable_selectOneOrCustom implements IRequest<'selectOneOrCusto
         serial?: Requestable_selectOneOrCustom_serial,
     ) {
         this.state = serial ?? {
+            type: 'selectOneOrCustom',
             query: '',
             val: input.default ?? input.choices[0] ?? '',
         }
         makeAutoObservable(this)
     }
     get serial(): Requestable_selectOneOrCustom_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_selectOneOrCustom_output { return this.state.val }
 }
 
 // 🅿️ selectMany ==============================================================================
-export type Requestable_selectMany_input<T extends { type: string }> = ReqInput<{ default?: T[]; choices: T[] }>
-export type Requestable_selectMany_serial<T extends { type: string }> = { query: string; values: { type: string }[] }
-export type Requestable_selectMany_state<T extends { type: string }> = { query: string; values: T[] }
+export type Requestable_selectMany_input<T extends { type: string }>  = ReqInput<{ default?: T[]; choices: T[] }>
+export type Requestable_selectMany_serial<T extends { type: string }> = { type: 'selectMany', query: string; values_: string[] }
+export type Requestable_selectMany_state<T extends { type: string }>  = { type: 'selectMany', query: string; values: T[] }
 export type Requestable_selectMany_output<T extends { type: string }> = T[]
 export interface Requestable_selectMany<T extends { type: string }> extends IWidget<'selectMany', Requestable_selectMany_input<T>, Requestable_selectMany_serial<T>, Requestable_selectMany_state<T>, Requestable_selectMany_output<T>> {}
 export class Requestable_selectMany<T extends { type: string }> implements IRequest<'selectMany', Requestable_selectMany_input<T>, Requestable_selectMany_serial<T>, Requestable_selectMany_state<T>, Requestable_selectMany_output<T>> {
@@ -642,25 +631,17 @@ export class Requestable_selectMany<T extends { type: string }> implements IRequ
         serial?: Requestable_selectMany_serial<T>,
     ) {
         if (serial) {
-            this.state = {
-                query: serial.query,
-                values: serial.values.map((v) => input.choices.find((c) => c.type === v.type)!).filter((v) => v != null),
-            }
+            const values = serial.values_.map((v) => input.choices.find((c) => c.type === v)!).filter((v) => v != null)
+            this.state = { type: 'selectMany', query: serial.query, values: values, }
         } else {
-            this.state = {
-                query: '',
-                values: input.default ?? [],
-            }
+            this.state = { type: 'selectMany', query: '', values: input.default ?? [], }
         }
         makeAutoObservable(this)
     }
     get serial(): Requestable_selectMany_serial<T> {
-        return {
-            query: this.state.query,
-            values: this.state.values.map((v) => ({ type: v.type })),
-        }
+        const values_ = this.state.values.map((v) => v.type)
+        return { type: 'selectMany', query: this.state.query, values_ }
     }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_selectMany_output<T> {
         return this.state.values
     }
@@ -669,7 +650,7 @@ export class Requestable_selectMany<T extends { type: string }> implements IRequ
 // 🅿️ selectManyOrCustom ==============================================================================
 export type Requestable_selectManyOrCustom_input = ReqInput<{ default?: string[]; choices: string[] }>
 export type Requestable_selectManyOrCustom_serial = Requestable_selectManyOrCustom_state
-export type Requestable_selectManyOrCustom_state = { query: string; values: string[] }
+export type Requestable_selectManyOrCustom_state = { type: 'selectManyOrCustom', query: string; values: string[] }
 export type Requestable_selectManyOrCustom_output = string[]
 export interface Requestable_selectManyOrCustom extends IWidget<'selectManyOrCustom',  Requestable_selectManyOrCustom_input, Requestable_selectManyOrCustom_serial, Requestable_selectManyOrCustom_state, Requestable_selectManyOrCustom_output > {}
 export class Requestable_selectManyOrCustom implements IRequest<'selectManyOrCustom', Requestable_selectManyOrCustom_input, Requestable_selectManyOrCustom_serial, Requestable_selectManyOrCustom_state, Requestable_selectManyOrCustom_output > {
@@ -681,18 +662,17 @@ export class Requestable_selectManyOrCustom implements IRequest<'selectManyOrCus
         public input: Requestable_selectManyOrCustom_input,
         serial?: Requestable_selectManyOrCustom_serial,
     ) {
-        this.state = serial ?? { query: '', values: input.default ?? [] }
+        this.state = serial ?? { type: 'selectManyOrCustom', query: '', values: input.default ?? [] }
         makeAutoObservable(this)
     }
     get serial(): Requestable_selectManyOrCustom_serial { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_selectManyOrCustom_output { return this.state.values }
 }
 
 // 🅿️ list ==============================================================================
-export type Requestable_list_input<T extends Requestable> = ReqInput<{ /* 🟢 NO DEFAULT */ of: (ix: number) => T }>
-export type Requestable_list_serial<T extends Requestable> = { active: true; items: T['$JSON'][] }
-export type Requestable_list_state<T extends Requestable> = { active: true; items: T[] }
+export type Requestable_list_input<T extends Requestable>  = ReqInput<{ /* 🟢 NO DEFAULT */ of: (ix: number) => T }>
+export type Requestable_list_serial<T extends Requestable> = { type: 'list', active: true; items_: T['$Serial'][] }
+export type Requestable_list_state<T extends Requestable>  = { type: 'list', active: true; items: T[] }
 export type Requestable_list_output<T extends Requestable> = T['$Output'][]
 export interface Requestable_list<T extends Requestable> extends IWidget<'list', Requestable_list_input<T>, Requestable_list_serial<T>, Requestable_list_state<T>, Requestable_list_output<T>> {}
 export class Requestable_list<T extends Requestable> implements IRequest<'list', Requestable_list_input<T>, Requestable_list_serial<T>, Requestable_list_state<T>, Requestable_list_output<T>> {
@@ -707,22 +687,17 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
     ) {
         this._reference = input.of(0)
         if (serial) {
-            this.state = {
-                active: serial.active,
-                items: serial.items.map((i) => builder.HYDRATE(i.type, this._reference.input, i.serial)), // 🔴 handler filter if wrong type
-            }
+            const items = serial.items_.map((sub_) => builder.HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
+            this.state = { type: 'list', active: serial.active, items }
         } else {
-            this.state = { active: true, items: [], }
+            this.state = { type: 'list', active: true, items: [], }
         }
         makeAutoObservable(this)
     }
     get serial(): Requestable_list_serial<T> {
-        return {
-            active: this.state.active,
-            items: this.state.items.map((i) => i.json)
-        }
+        const items_ = this.state.items.map((i) => i.serial)
+        return { type: 'list', active: this.state.active, items_ }
     }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_list_output<T> { return this.state.items.map((i) => i.result) }
     addItem() {
         this.state.items.push(this.input.of(this.state.items.length))
@@ -730,9 +705,9 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
 }
 
 // 🅿️ group ==============================================================================
-export type Requestable_group_input<T extends { [key: string]: Requestable }> = ReqInput<{ items: T }>
-export type Requestable_group_serial<T extends { [key: string]: Requestable }> = { active: true; values: {[k in keyof T]: T[k]['$JSON']} }
-export type Requestable_group_state<T extends { [key: string]: Requestable }> = { active: true; values: T }
+export type Requestable_group_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: T }>
+export type Requestable_group_serial<T extends { [key: string]: Requestable }> = { type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']} }
+export type Requestable_group_state <T extends { [key: string]: Requestable }> = { type: 'group', active: true; values: T }
 export type Requestable_group_output<T extends { [key: string]: Requestable }> = { [k in keyof T]: ReqResult<T[k]> }
 export interface Requestable_group<T extends { [key: string]: Requestable }> extends IWidget<'group', Requestable_group_input<T>, Requestable_group_serial<T>, Requestable_group_state<T>, Requestable_group_output<T>> {}
 export class Requestable_group<T extends { [key: string]: Requestable }> implements IRequest<'group', Requestable_group_input<T>, Requestable_group_serial<T>, Requestable_group_state<T>, Requestable_group_output<T>> {
@@ -745,33 +720,28 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
         serial?: Requestable_group_serial<T>,
     ) {
         if (serial){
-            console.log('🔴 3 >>>', serial)
-            this.state = { active: serial.active, values: {} as any }
-            for (const key in serial.values) {
-                const prev = serial.values[key]
+            // console.log('🔴 3 >>>', toJS(serial))
+            this.state = { type: 'group', active: serial.active, values: {} as any }
+            for (const key in serial.values_) {
+                const prev_ = serial.values_[key]
                 const newItem = input.items[key]
                 const newInput = newItem.input
                 const newType = newItem.type
-                if (newType===prev.type) {
-                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prev.serial)
+                // console.log(' 👀 >>', key, prev_)
+                if (newType === prev_.type) {
+                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prev_)
                 } else {
                     this.state.values[key] = newItem
                 }
             }
-        } else this.state = { active: true, values: input.items, }
+        } else this.state = { type: 'group', active: true, values: input.items, }
         makeAutoObservable(this)
     }
     get serial(): Requestable_group_serial<T> {
-        const out: { [key: string]: any } = {}
-        for (const key in this.state.values) {
-            out[key] = this.state.values[key].json
-        }
-        return {
-            active: this.state.active,
-            values: out as any,
-        }
+        const values_: { [key: string]: any } = {}
+        for (const key in this.state.values) values_[key] = this.state.values[key].serial
+        return { type: 'group', active: this.state.active, values_: values_ as any, }
     }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_group_output<T> {
         const out: { [key: string]: any } = {}
         for (const key in this.state.values) {
@@ -782,9 +752,9 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
 }
 
 // 🅿️ groupOpt ==============================================================================
-export type Requestable_groupOpt_input<T extends { [key: string]: Requestable }> = ReqInput<{ default?: boolean; items: T }>
-export type Requestable_groupOpt_serial<T extends { [key: string]: Requestable }> = { active: boolean; values: {[K in keyof T]: T[K]['$JSON']} }
-export type Requestable_groupOpt_state<T extends { [key: string]: Requestable }> = { active: boolean; values: T }
+export type Requestable_groupOpt_input <T extends { [key: string]: Requestable }> = ReqInput<{ default?: boolean; items: T }>
+export type Requestable_groupOpt_serial<T extends { [key: string]: Requestable }> = { type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']} }
+export type Requestable_groupOpt_state <T extends { [key: string]: Requestable }> = { type: 'groupOpt', active: boolean; values: T }
 export type Requestable_groupOpt_output<T extends { [key: string]: Requestable }> = Maybe<{ [k in keyof T]: ReqResult<T[k]> }>
 export interface Requestable_groupOpt<T extends { [key: string]: Requestable }> extends IWidget<'groupOpt', Requestable_groupOpt_input<T>, Requestable_groupOpt_serial<T>, Requestable_groupOpt_state<T>, Requestable_groupOpt_output<T>> {}
 export class Requestable_groupOpt<T extends { [key: string]: Requestable }> implements IRequest<'groupOpt', Requestable_groupOpt_input<T>, Requestable_groupOpt_serial<T>, Requestable_groupOpt_state<T>, Requestable_groupOpt_output<T>> {
@@ -797,35 +767,26 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
         serial?: Requestable_groupOpt_serial<T>,
     ) {
         if (serial){
-            this.state = { active: serial.active, values: {} as any }
-            for (const key in serial.values) {
-                const prev = serial.values[key]
+            this.state = { type:'groupOpt', active: serial.active, values: {} as any }
+            for (const key in serial.values_) {
+                const prev = serial.values_[key]
                 const newItem = input.items[key]
                 const newInput = newItem.input
                 const newType = newItem.type
                 if (newType===prev.type) {
-                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prev.serial)
+                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prev)
                 } else {
                     this.state.values[key] = newItem
                 }
             }
-        } else this.state = {
-            active: input.default ?? false,
-            values: input.items
-        }
+        } else this.state = { type: 'groupOpt', active: input.default ?? false, values: input.items }
         makeAutoObservable(this)
     }
     get serial(): Requestable_groupOpt_serial<T> {
         const out: { [key: string]: any } = {}
-        for (const key in this.state.values) {
-            out[key] = this.state.values[key].json
-        }
-        return {
-            active: this.state.active,
-            values: out as any,
-        }
+        for (const key in this.state.values) out[key] = this.state.values[key].serial
+        return { type: 'groupOpt', active: this.state.active, values_: out as any, }
     }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_groupOpt_output<T> {
         if (!this.state.active) return undefined
         const out: { [key: string]: any } = {}
@@ -839,7 +800,7 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
 // 🅿️ enum ==============================================================================
 export type Requestable_enum_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
 export type Requestable_enum_serial<T extends KnownEnumNames> = Requestable_enum_state<T>
-export type Requestable_enum_state<T extends KnownEnumNames> = { active: true; val: Requirable[T] }
+export type Requestable_enum_state<T extends KnownEnumNames> = { type: 'enum', active: true; val: Requirable[T] }
 export type Requestable_enum_output<T extends KnownEnumNames> = Requirable[T]
 export interface Requestable_enum<T extends KnownEnumNames> extends IWidget<'enum', Requestable_enum_input<T>, Requestable_enum_serial<T>, Requestable_enum_state<T>, Requestable_enum_output<T>> {}
 export class Requestable_enum<T extends KnownEnumNames> implements IRequest<'enum', Requestable_enum_input<T>, Requestable_enum_serial<T>, Requestable_enum_state<T>, Requestable_enum_output<T>> {
@@ -853,20 +814,20 @@ export class Requestable_enum<T extends KnownEnumNames> implements IRequest<'enu
     ) {
         const possibleValues = this.schema.knownEnumsByName.get(input.enumName) ?? []
         this.state = serial ?? {
+            type: 'enum',
             active: true,
             val: input.default ?? (possibleValues[0] as any) /* 🔴 */,
         }
         makeAutoObservable(this)
     }
     get serial(): Requestable_enum_serial<T> { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_enum_output<T> { return this.state.val }
 }
 
 // 🅿️ enumOpt ==============================================================================
 export type Requestable_enumOpt_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
 export type Requestable_enumOpt_serial<T extends KnownEnumNames> = Requestable_enumOpt_state<T>
-export type Requestable_enumOpt_state<T extends KnownEnumNames> = { active: boolean; val: Requirable[T] }
+export type Requestable_enumOpt_state<T extends KnownEnumNames> = { type: 'enumOpt', active: boolean; val: Requirable[T] }
 export type Requestable_enumOpt_output<T extends KnownEnumNames> = Maybe<Requirable[T]>
 export interface Requestable_enumOpt<T extends KnownEnumNames> extends IWidget<'enumOpt', Requestable_enumOpt_input<T>, Requestable_enumOpt_serial<T>, Requestable_enumOpt_state<T>, Requestable_enumOpt_output<T>> {}
 export class Requestable_enumOpt<T extends KnownEnumNames> implements IRequest<'enumOpt', Requestable_enumOpt_input<T>, Requestable_enumOpt_serial<T>, Requestable_enumOpt_state<T>, Requestable_enumOpt_output<T>> {
@@ -880,13 +841,13 @@ export class Requestable_enumOpt<T extends KnownEnumNames> implements IRequest<'
     ) {
         const possibleValues = this.schema.knownEnumsByName.get(input.enumName) ?? []
         this.state = serial ?? {
+            type: 'enumOpt',
             active: input.default != null,
             val: input.default ?? (possibleValues[0] as any) /* 🔴 */,
         }
         makeAutoObservable(this)
     }
     get serial(): Requestable_enumOpt_serial<T> { return this.state }
-    get json() { return { type: this.type, serial: this.serial } }
     get result(): Requestable_enumOpt_output<T> {
         if (!this.state.active) return undefined
         return this.state.val

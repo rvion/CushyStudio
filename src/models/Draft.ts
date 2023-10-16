@@ -6,7 +6,7 @@ import type { ToolID, ToolL } from './Tool'
 import { FormBuilder, type Requestable } from 'src/controls/InfoRequest'
 import { type Result, __FAIL, __OK } from 'src/utils/Either'
 import { LiveRef } from '../db/LiveRef'
-import { reaction, toJS } from 'mobx'
+import { autorun, reaction, toJS } from 'mobx'
 
 export type FormPath = (string | number)[]
 
@@ -45,28 +45,44 @@ export class DraftL {
     focus = () => this.graph.item.update({ focusedDraftID: this.id })
     getPathInfo = (path: FormPath): string => this.id + '/' + path.join('/')
 
-    form!: Result<Requestable>
+    form: Result<Requestable> = __FAIL('not loaded yet')
     onHydrate = () => {
-        const action = this.tool.item.retrieveAction()
-        if (!action.success) {
-            this.form = __FAIL('action failed')
-            return
+        let subState = {
+            unsync: () => {},
         }
-        const uiFn = action.value.ui
-        if (uiFn == null) {
-            this.form = __FAIL('no UI function')
-            return
-        }
-        try {
-            const formBuilder = new FormBuilder(this.st.schema)
-            const req: Requestable = formBuilder.group({ items: uiFn(formBuilder) }, this.data.params)
-            this.form = __OK(req)
-            console.log('🔴 1 >>> ', toJS(req.json))
-            console.log('🔴 2 >>> ', toJS(this.data.params))
-            this.update({ params: req.json })
-        } catch (e) {
-            this.form = __FAIL('ui function crashed', e)
-            return
-        }
+        // reload action when it changes
+        reaction(
+            () => this.tool.item.updatedAt,
+            () => {
+                console.log(`🟢 -------- DRAFT LOADING ACTION --------- 🟢 `)
+                const action = this.tool.item.retrieveAction()
+                if (!action.success) {
+                    this.form = __FAIL('action failed')
+                    return
+                }
+                const uiFn = action.value.ui
+                if (uiFn == null) {
+                    this.form = __FAIL('no UI function')
+                    return
+                }
+
+                try {
+                    const formBuilder = new FormBuilder(this.st.schema)
+                    const req: Requestable = formBuilder.group({ items: uiFn(formBuilder) }, this.data.params)
+                    this.form = __OK(req)
+                    subState.unsync()
+                } catch (e) {
+                    this.form = __FAIL('ui function crashed', e)
+                    return
+                }
+            },
+            { fireImmediately: true },
+        )
+
+        subState.unsync = autorun(() => {
+            if (this.form.value == null) return null
+            const _ = JSON.stringify(this.form.value.serial)
+            this.update({ params: this.form.value.serial })
+        })
     }
 }

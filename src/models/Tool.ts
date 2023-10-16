@@ -38,13 +38,11 @@ export class ToolL {
     get name() { return this.data.name } // prettier-ignore
 
     drafts = new LiveCollection<DraftL>(this, 'toolID', 'drafts')
-
     focusedDraft = new LiveRefOpt<this, DraftL>(this, 'focusedDraftID', 'drafts')
 
     /** WIP */
+
     retrieveAction = (): Result<Action<any>> => {
-        // const action = new ManualPromise<Action<Requestable>>()
-        // no code
         const codeJS = this.data.codeJS
         if (codeJS == null) return __FAIL('not no code')
 
@@ -54,8 +52,8 @@ export class ToolL {
         const registerActionFn = (name: string, action: Action<any>): void => {
             actionsPool.push({ name, action })
         }
-        const ProjectScriptFn = new Function('action', codeJS)
-        ProjectScriptFn(registerActionFn)
+        const BUILD_ACTION = new Function('action', codeJS)
+        BUILD_ACTION(registerActionFn)
 
         // fst action
         if (actionsPool.length !== 1) return __FAIL('not exactly one action')

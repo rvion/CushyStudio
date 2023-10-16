@@ -91,16 +91,11 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
                     <TabUI title='Debug:' tw='mt-auto'>
                         <div>no</div>
                         <div></div>
-                        {/* <div>result</div> */}
-                        {/* <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} /> */}
                         <div>form</div>
                         <div tw='flex flex-grow'>
                             <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
-                            <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.json, null, 4)?.slice(0, 10_000)} />
+                            <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10_000)} />
                         </div>
-                        {/* <div>state</div> */}
-                        {/* <div>ts</div>
-                        <TypescriptHighlightedCodeUI code={tool.data.codeTS ?? ''} /> */}
                         <div>code</div>
                         <TypescriptHighlightedCodeUI code={tool.data.codeJS ?? ''} />
                     </TabUI>
