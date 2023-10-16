@@ -2,7 +2,6 @@ action('Prompt-V1', {
     author: 'rvion',
     priority: 1,
     help: 'load model with optional clip-skip, loras, tome ratio, etc.',
-    // 🟢 seems acceptable 🟢 🟢
     ui: (form) => ({
         // load
         model: form.enum({
