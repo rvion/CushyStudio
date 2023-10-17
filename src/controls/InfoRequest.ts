@@ -676,7 +676,7 @@ export class Requestable_selectManyOrCustom implements IRequest<'selectManyOrCus
 }
 
 // 🅿️ list ==============================================================================
-export type Requestable_list_input<T extends Requestable>  = ReqInput<{ /* 🟢 NO DEFAULT */ of: (ix: number) => T }>
+export type Requestable_list_input<T extends Requestable>  = ReqInput<{ of: T }>
 export type Requestable_list_serial<T extends Requestable> = { type: 'list', active: true; items_: T['$Serial'][] }
 export type Requestable_list_state<T extends Requestable>  = { type: 'list', active: true; items: T[] }
 export type Requestable_list_output<T extends Requestable> = T['$Output'][]
@@ -691,7 +691,7 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
         public input: Requestable_list_input<T>,
         serial?: Requestable_list_serial<T>,
     ) {
-        this._reference = input.of(0)
+        this._reference = input.of
         if (serial) {
             const items = serial.items_.map((sub_) => builder.HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
             this.state = { type: 'list', active: serial.active, items }
@@ -706,7 +706,8 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
     }
     get result(): Requestable_list_output<T> { return this.state.items.map((i) => i.result) }
     addItem() {
-        this.state.items.push(this.input.of(this.state.items.length))
+        const _ref = this._reference
+        this.state.items.push(this.builder.HYDRATE(_ref.type, _ref.input))
     }
 }
 
