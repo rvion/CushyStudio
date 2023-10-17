@@ -10,8 +10,7 @@ import { useDraft } from '../useDraft'
 import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
-import { WidgetItemsOptUI } from './WidgetItemsOptUI'
-import { WidgetItemsUI } from './WidgetItemsUI'
+import { WidgetGroupOptUI, WidgetGroupUI } from './WidgetIGroupUI'
 import { WidgetListUI } from './WidgetListUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
@@ -85,8 +84,8 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; foc
     if (req instanceof R.Requestable_image)              return <WidgetSelectImageUI req={req} />
     if (req instanceof R.Requestable_imageOpt)           return <WidgetSelectImageUI req={req} />
     if (req instanceof R.Requestable_list)               return <WidgetListUI        req={req} />
-    if (req instanceof R.Requestable_group)              return <WidgetItemsUI       req={req} />
-    if (req instanceof R.Requestable_groupOpt)           return <WidgetItemsOptUI    req={req} />
+    if (req instanceof R.Requestable_group)              return <WidgetGroupUI       req={req} />
+    if (req instanceof R.Requestable_groupOpt)           return <WidgetGroupOptUI    req={req} />
     if (req instanceof R.Requestable_size)               return <WigetSizeUI         req={req} />
     if (req instanceof R.Requestable_enum)               return <WidgetEnumUI        req={req} />
     if (req instanceof R.Requestable_enumOpt)            return <WidgetEnumUI        req={req} />
