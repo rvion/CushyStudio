@@ -12,7 +12,7 @@ export const PafUI = observer(function PafUI_(p: {}) {
     const paf = pj.activeFile
     if (paf == null) return null
     return (
-        <div className='flex flex-grow'>
+        <div className='flex flex-grow h-full'>
             <div>{paf.loaded.done ? null : <Loader />}</div>
             <ActionTabListUI />
             {paf.focus === 'action' && (

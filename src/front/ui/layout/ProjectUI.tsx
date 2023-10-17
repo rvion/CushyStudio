@@ -34,14 +34,15 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                     style={{ transition: 'all 0.2s ease-in-out', opacity: 0 }}
                 />
                 <LightBoxUI lbs={st.lightBox} />
-                <SplitPane
+                <st.layout.UI />
+                {/* <SplitPane
                     performanceMode
                     sashRender={() => <div className='bg-gray-200'></div>}
                     onChange={(ev) => (uiSt.sizes = ev)}
                     sizes={uiSt.sizes}
                     split='horizontal'
-                >
-                    <Pane className='col'>
+                > */}
+                {/* <Pane className='col'>
                         {action.type === 'paint' ? ( //
                             <WidgetPaintUI action={action} />
                         ) : action.type === 'comfy' ? (
@@ -53,13 +54,13 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                         ) : (
                             <PanelConfigUI action={action} />
                         )}
-                    </Pane>
-                    {/* GALLERIE */}
-                    <Pane minSize='100px' className='col' style={{ borderTop: '2px solid #363636', overflow: 'auto' }}>
-                        {/* <b className='text-lg bg-blue-950 text-center'>GALLERY</b> */}
+                    </Pane> */}
+                {/* GALLERIE */}
+                {/* <b className='text-lg bg-blue-950 text-center'>GALLERY</b> */}
+                {/* <Pane minSize='100px' className='col' style={{ borderTop: '2px solid #363636', overflow: 'auto' }}>
                         <GalleryUI />
-                    </Pane>
-                </SplitPane>
+                    </Pane> */}
+                {/* </SplitPane> */}
             </projectContext.Provider>
         </div>
     )

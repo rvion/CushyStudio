@@ -1,46 +1,47 @@
-import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
-import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
-import type { CSCriticalError } from './CSCriticalError'
 import type { ConfigFile } from 'src/core/ConfigFile'
 import type { ImageL } from '../models/Image'
+import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
+import type { CSCriticalError } from './CSCriticalError'
+import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 import type { UIPage } from './UIAction'
 
-import { existsSync, mkdirSync, readFileSync, stat, writeFile, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, stat, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import { createRef } from 'react'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
+import { createRef } from 'react'
 
-import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebview'
-import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
-import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
-import { extractErrorMessage } from '../utils/extractErrorMessage'
-import { readableStringify } from '../utils/stringifyReadable'
-import { CushyFileWatcher } from '../back/CushyFileWatcher'
-import { ComfySchemaJSON, ComfySchemaJSON_zod } from '../types/ComfySchemaJSON'
-import { EmbeddingName, SchemaL } from '../models/Schema'
-import { ManualPromise } from '../utils/ManualPromise'
-import { CodePrettier } from '../utils/CodeFormatter'
-import { LightBoxState } from './ui/LightBox'
-import { exhaust } from '../utils/ComfyUtils'
-import { asFolderID } from '../models/Folder'
-import { JsonFile } from '../core/JsonFile'
-import { GraphL } from '../models/Graph'
-import { LiveDB } from '../db/LiveDB'
-import { DanbooruTags } from '../booru/BooruLoader'
-import { Updater } from './updater'
-import { ComfyImporter } from '../importers/ComfyImporter'
-import { ProjectL } from 'src/models/Project'
 import { resolve } from 'path'
+import { ProjectL } from 'src/models/Project'
 import { bytesToSize } from 'src/utils/fs/bytesToSize'
+import { CushyFileWatcher } from '../back/CushyFileWatcher'
+import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
+import { DanbooruTags } from '../booru/BooruLoader'
+import { JsonFile } from '../core/JsonFile'
+import { LiveDB } from '../db/LiveDB'
+import { ComfyImporter } from '../importers/ComfyImporter'
+import { asFolderID } from '../models/Folder'
+import { GraphL } from '../models/Graph'
+import { EmbeddingName, SchemaL } from '../models/Schema'
+import { ComfySchemaJSON, ComfySchemaJSON_zod } from '../types/ComfySchemaJSON'
+import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebview'
+import { CodePrettier } from '../utils/CodeFormatter'
+import { exhaust } from '../utils/ComfyUtils'
+import { extractErrorMessage } from '../utils/extractErrorMessage'
+import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { ManualPromise } from '../utils/ManualPromise'
+import { readableStringify } from '../utils/stringifyReadable'
+import { LightBoxState } from './ui/LightBox'
+import { Updater } from './updater'
+import { CushyLayoutManager } from './ui/layout/Layout'
 
 export class STATE {
     //file utils that need to be setup first because
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
     resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
     codePrettier: CodePrettier
-
+    layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
 
@@ -164,6 +165,7 @@ export class STATE {
         this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         const actionsFolderPath = this.resolve(this.rootPath, asRelativePath('actions'))
         this.actionsFolderPath = actionsFolderPath
+        this.layout = new CushyLayoutManager(this)
         // this.cushyTSPath = this.resolve(this.rootPath, asRelativePath('.cushy/cushy.d.ts'))
         // this.tsConfigPath = this.resolve(this.rootPath, asRelativePath('tsconfig.json'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))

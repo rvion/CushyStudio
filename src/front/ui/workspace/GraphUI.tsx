@@ -10,28 +10,16 @@ export const GraphUI = observer(function GraphUI_(p: { depth: number }) {
     const uiSt = useLocalObservable(() => ({ sizes: [100, 300, 150] }))
 
     return (
-        <SplitPane
-            performanceMode
-            sashRender={() => <div className='bg-gray-200'></div>}
-            onChange={(ev) => (uiSt.sizes = ev)}
-            sizes={uiSt.sizes}
-            split='vertical'
-            style={{ height: '100%' }}
-        >
+        <div style={{ height: '100%' }}>
             {/* 1. ACTION */}
-            <Pane minSize='15px' className='col' style={{ overflow: 'auto', background: '120202' }}>
+            {/* <Pane minSize='15px' className='col' style={{ overflow: 'auto', background: '120202' }}>
                 <ActionPickerUI />
-            </Pane>
+            </Pane> */}
 
             {/* 2. DRAFTS  */}
-            <Pane minSize='100px' className='col' style={{ background: '#0c0c0c' }}>
-                <PafUI />
-            </Pane>
+            <PafUI />
 
             {/* 3. STEPS */}
-            <Pane minSize='100px' className='col' style={{ borderLeft: '1px solid #2d2d2d' }}>
-                <StepListUI />
-            </Pane>
-        </SplitPane>
+        </div>
     )
 })
