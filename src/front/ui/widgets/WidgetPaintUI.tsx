@@ -72,13 +72,19 @@ class MinipaintState {
         tempCanvas.toBlob(async (blob) => {
             if (blob == null) throw new Error(`❌ blob is null`)
             const filename = imageID + '.png'
+
+            // create minipaint folder
             const subfolder = 'minipaint'
+            const subFoldePath = join(this.st.outputFolderPath, subfolder)
+            mkdirSync(subFoldePath, { recursive: true })
+
+            //  create image
             const relPath = asRelativePath(join(subfolder, filename))
             const absPath = this.st.resolve(this.st.outputFolderPath, relPath)
             const buff = await blob.arrayBuffer()
-            console.log({ relPath })
-            console.log({ absPath })
-            console.log({ byteLength: buff.byteLength })
+            // console.log({ relPath })
+            // console.log({ absPath })
+            // console.log({ byteLength: buff.byteLength })
             const dirExists = existsSync(this.st.outputFolderPath)
             if (!dirExists) {
                 console.log(`creating dir ${this.st.outputFolderPath}`)
@@ -101,15 +107,15 @@ class MinipaintState {
 }
 // https://github.com/devforth/painterro
 export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint }) {
-    const a = p.action
+    const action = p.action
     const st = useSt()
-    const k = useMemo(() => new MinipaintState(st), [])
+    const minipaintState = useMemo(() => new MinipaintState(st), [])
 
     // load image once the widget is ready
     useLayoutEffect(() => {
-        if (a.imageID == null) return
-        const img: ImageL = st.db.images.getOrThrow(a.imageID)
-        setTimeout(() => k.loadImage(img), 100)
+        if (action.imageID == null) return
+        const img: ImageL = st.db.images.getOrThrow(action.imageID)
+        setTimeout(() => minipaintState.loadImage(img), 100)
     }, [p.action.imageID])
 
     return (
@@ -121,7 +127,7 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint
                     color='green'
                     onClick={() => {
                         runInAction(() => {
-                            k.saveImage()
+                            minipaintState.saveImage()
                             st.setAction({ type: 'form' })
                         })
                     }}
