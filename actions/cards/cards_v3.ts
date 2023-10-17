@@ -8,6 +8,10 @@ const ui = (form: FormBuilder) => ({
         default: 'revAnimated_v122.safetensors',
         group: 'model',
     }),
+    foo: form.selectOne({
+        choices: [{ type: 'foo' }, { type: 'bar' }],
+        group: 'model',
+    }),
 
     // [UI] CARD ---------------------------------------
     cards: form.matrix({
@@ -57,7 +61,7 @@ const ui = (form: FormBuilder) => ({
     symetry: form.bool({ default: false }),
 })
 
-action('cards', {
+action('cards V3', {
     author: 'rvion',
     description: 'play with cards',
     ui,
