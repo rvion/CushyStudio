@@ -521,7 +521,7 @@ export class Requestable_image implements IRequest<'image', Requestable_image_in
             active: true,
             comfy: input.default?.type === 'ComfyImage' ? input.default : { imageName: 'example.png', type: 'ComfyImage' },
             cushy: input.default?.type === 'CushyImage' ? input.default : null,
-            paint: null,
+            paint: input.default?.type === 'PaintImage' ? input.default : null,
             pick: input.default?.type === 'CushyImage' ? 'cushy' : 'comfy',
         }
         makeAutoObservable(this)
@@ -555,7 +555,7 @@ export class Requestable_imageOpt implements IRequest<'imageOpt', Requestable_im
             active: input.default ? true : false,
             comfy: input.default?.type === 'ComfyImage' ? input.default : { imageName: 'example.png', type: 'ComfyImage' },
             cushy: input.default?.type === 'CushyImage' ? input.default : null,
-            paint: null,
+            paint: input.default?.type === 'PaintImage' ? input.default : null,
             pick: input.default?.type === 'CushyImage' ? 'cushy' : 'comfy',
         }
         makeAutoObservable(this)
@@ -913,6 +913,8 @@ export class FormBuilder {
         exhaust(type)
     }
 
+
+    // autoUI             =                                                  (p: Requestable_str_input                , serial?: Requestable_str_serial                ) => new Requestable_str                 (this, this.schema, p, serial)
     string             =                                                  (p: Requestable_str_input                , serial?: Requestable_str_serial                ) => new Requestable_str                 (this, this.schema, p, serial)
     stringOpt          =                                                  (p: Requestable_strOpt_input             , serial?: Requestable_strOpt_serial             ) => new Requestable_strOpt              (this, this.schema, p, serial)
     str                =                                                  (p: Requestable_str_input                , serial?: Requestable_str_serial                ) => new Requestable_str                 (this, this.schema, p, serial)
