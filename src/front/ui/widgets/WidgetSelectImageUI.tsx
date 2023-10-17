@@ -108,7 +108,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
 
                                                 if (t == null) return
                                                 // handle value
-                                                req.state.comfy.imageName
+                                                req.state.comfy.imageName = t as Enum_LoadImage_image
                                                 req.state.pick = 'comfy'
                                             }}
                                         />
