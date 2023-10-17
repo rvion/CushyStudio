@@ -23,18 +23,18 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_(p: { req: 
     }, [req.input.choices])
 
     return (
-        <>
-            <pre>{JSON.stringify(options, null, 4)}</pre>
-            <SelectPicker
-                size='sm'
-                data={options}
-                value={val.type}
-                onSelect={(value, item) => {
-                    const next = req.input.choices.find((c) => c.type === value)
-                    if (next == null) return console.log(`❌ WidgetSelectOneUI: could not find choice for ${value}`)
-                    req.state.val = next
-                }}
-            />
-        </>
+        // <>
+        //     <pre>{JSON.stringify(options, null, 4)}</pre>
+        <SelectPicker
+            size='sm'
+            data={options}
+            value={val.type}
+            onSelect={(value, item) => {
+                const next = req.input.choices.find((c) => c.type === value)
+                if (next == null) return console.log(`❌ WidgetSelectOneUI: could not find choice for ${value}`)
+                req.state.val = next
+            }}
+        />
+        // </>
     )
 })

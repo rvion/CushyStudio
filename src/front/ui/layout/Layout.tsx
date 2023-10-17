@@ -101,20 +101,20 @@ export class CushyLayoutManager {
                 enableEdgeDock: true,
             },
             borders: [
-                {
-                    type: 'border',
-                    location: 'left',
-                    children: [
-                        {
-                            type: 'tab',
-                            id: '#426ca38f-57b1-4973-89f4-424400f95f3d',
-                            name: 'Output',
-                            component: 'grid',
-                            enableClose: false,
-                            icon: 'images/bar_chart.svg',
-                        },
-                    ],
-                },
+                // {
+                //     type: 'border',
+                //     location: 'left',
+                //     children: [
+                //         {
+                //             type: 'tab',
+                //             id: '#426ca38f-57b1-4973-89f4-424400f95f3d',
+                //             name: 'Output',
+                //             component: 'grid',
+                //             enableClose: false,
+                //             icon: 'images/bar_chart.svg',
+                //         },
+                //     ],
+                // },
                 {
                     type: 'border',
                     location: 'right',
