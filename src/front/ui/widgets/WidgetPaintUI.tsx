@@ -119,7 +119,7 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint
     }, [p.action.imageID])
 
     return (
-        <div className='flex-grow flex flex-col'>
+        <div className='flex-grow flex flex-col h-full'>
             <ButtonGroup className='absolute top-2 right-2'>
                 <Button
                     size='sm'
@@ -149,6 +149,7 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint
             </ButtonGroup>
             <iframe
                 style={{
+                    border: 'none',
                     flexGrow: 1,
                     // resize: 'both',
                     minWidth: '200px',

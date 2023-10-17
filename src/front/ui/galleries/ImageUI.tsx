@@ -106,7 +106,8 @@ const renderSpeaker = (
     const handleSelect = (eventKey: number | string | undefined) => {
         onClose()
         if (eventKey === 4) {
-            st.setAction({ type: 'paint', imageID: img.id })
+            st.layout.addPaint(img.id)
+            // st.setAction({ type: 'paint', imageID: img.id })
         }
         // ⏸️ if (eventKey === 3) {
         // ⏸️     console.log('🔴')

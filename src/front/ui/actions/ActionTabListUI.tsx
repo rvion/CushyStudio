@@ -13,7 +13,7 @@ export const ActionTabListUI = observer(function ActionTabListUI_(p: {}) {
 
     const clx = 'px-4 hover:bg-blue-700 cursor-pointer'
     return (
-        <div tw='flex-shrink-0'>
+        <div tw='flex flex-shrink-0'>
             {/* {paf.absPath.endsWith('.ts') && (
                 <div>
                     source: <img tw='mr-1' style={{ width: '1rem' }} src={assets.tsLogo} alt='' />

@@ -10,6 +10,10 @@ import { GraphUI } from '../workspace/GraphUI'
 import { ActionPickerUI } from '../workspace/ActionPickerUI'
 import { StepListUI } from '../workspace/StepUI'
 import { LastGraphUI } from '../workspace/LastGraphUI'
+import { createRef } from 'react'
+import { ImageID } from 'src/models/Image'
+import { nanoid } from 'nanoid'
+import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
 
 // still on phone
 enum Widget {
@@ -32,18 +36,49 @@ export class CushyLayoutManager {
         this.model = Model.fromJson(json)
     }
 
+    layoutRef = createRef<Layout>()
+
     UI = () => (
         <Layout //
+            ref={this.layoutRef}
             model={this.model}
             factory={this.factory}
         />
     )
 
+    nextPaintIDx = 0
+    addPaint = (imgID: ImageID) => {
+        // add a new tabset to the current tabset
+        const tabsetNode = this.model.getActiveTabset()!
+        const currentLayout = this.layoutRef.current
+        if (currentLayout == null) return console.log('❌ no currentLayout')
+
+        const nanoID = nanoid()
+        currentLayout.addTabToTabSet('MAINTYPESET', {
+            component: Widget.Paint,
+            id: nanoID,
+            icon: 'images/article.svg',
+            name: 'Grid ' + this.nextPaintIDx++,
+            // @ts-ignore
+        })
+
+        const tabAdded = this.model.getNodeById(nanoID)
+        // const tabAdded = tabsetNode.getChildren().find((node) => node.getId() === nanoID) as FL.TabNode
+        if (tabAdded == null) return console.log('❌ no tabAdded')
+        const extraData = (tabAdded as any)?.getExtraData()
+        extraData.imgID = imgID
+    }
+
     factory = (node: FL.TabNode): React.ReactNode => {
         const component = node.getComponent() as Widget
+        const extraData = node.getExtraData() // Accesses the extra data stored in the node
         if (component === Widget.Button) return <Button>{node.getName()}</Button>
         if (component === Widget.Gallery) return <GalleryUI />
-        if (component === Widget.Paint) return <div>paint</div>
+        if (component === Widget.Paint) {
+            // 🔴 ensure this is type-safe
+            const imgID = extraData.imgID // Retrieves the imgID from the extra data
+            return <WidgetPaintUI action={{ type: 'paint', imageID: imgID }}></WidgetPaintUI> // You can now use imgID to instantiate your paint component properly
+        }
         if (component === Widget.Graph) return <GraphUI depth={1} />
         if (component === Widget.ComfyUI) return <div>ComfyUI</div>
         if (component === Widget.FileList) return <ActionPickerUI />
@@ -105,6 +140,7 @@ export class CushyLayoutManager {
                         children: [
                             {
                                 type: 'tabset',
+                                id: 'MAINTYPESET',
                                 weight: 100,
                                 children: [
                                     //
@@ -117,7 +153,13 @@ export class CushyLayoutManager {
                                 minHeight: 200,
                                 children: [
                                     //
-                                    { type: 'tab', name: '🎆 Gallery', component: Widget.Gallery },
+                                    {
+                                        type: 'tab',
+                                        name: '🎆 Gallery',
+                                        component: Widget.Gallery,
+                                        enableClose: false,
+                                        enableRename: false,
+                                    },
                                 ],
                             },
                         ],
