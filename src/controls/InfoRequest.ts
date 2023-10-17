@@ -549,7 +549,7 @@ export class Requestable_imageOpt implements IRequest<'imageOpt', Requestable_im
         public input: Requestable_imageOpt_input,
         serial?: Requestable_imageOpt_serial,
     ) {
-        console.log('🔴 BBB', serial)
+        // console.log('🔴 BBB', serial)
         this.state = serial ?? {
             type: 'imageOpt',
             active: input.default ? true : false,
@@ -731,12 +731,18 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
         public input: Requestable_group_input<T>,
         serial?: Requestable_group_serial<T>,
     ) {
+        if (typeof input.items!=='function') {
+            console.log('🔴 group "items" should be af unction')
+            debugger
+        }
         if (serial){
             const _items = input.items()
             this.state = { type: 'group', active: serial.active, values: {} as any }
             for (const key in serial.values_) {
                 const prev_ = serial.values_[key]
                 const newItem = _items[key]
+                if (newItem==null) continue // 🔴 loop should be on now item keys, not prev
+                if (newItem==null) debugger
                 const newInput = newItem.input
                 const newType = newItem.type
                 // console.log(' 👀 >>', key, prev_)
