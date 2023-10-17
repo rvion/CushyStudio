@@ -738,18 +738,19 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
             debugger
         }
         if (serial){
-            const _items = input.items()
+            const _newValues = input.items()
             this.state = { type: 'group', active: serial.active, values: {} as any }
-            for (const key in serial.values_) {
-                const prev_ = serial.values_[key]
-                const newItem = _items[key]
-                if (newItem==null) continue // 🔴 loop should be on now item keys, not prev
-                if (newItem==null) debugger
+            const prevValues_ = serial.values_
+            for (const key in _newValues) {
+                const newItem = _newValues[key]
+                const prevValue_ = prevValues_[key]
+                // if (newItem==null) continue // 🔴 loop should be on now item keys, not prev
+                // if (newItem==null) debugger
                 const newInput = newItem.input
                 const newType = newItem.type
                 // console.log(' 👀 >>', key, prev_)
-                if (newType === prev_.type) {
-                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prev_)
+                if (prevValue_ && newType === prevValue_.type) {
+                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prevValue_)
                 } else {
                     this.state.values[key] = newItem
                 }
@@ -790,15 +791,19 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
         serial?: Requestable_groupOpt_serial<T>,
     ) {
         if (serial){
-            const _items = input.items()
+            const _newValues = input.items()
             this.state = { type:'groupOpt', active: serial.active, values: {} as any }
-            for (const key in serial.values_) {
-                const prev = serial.values_[key]
-                const newItem = _items[key]
+            const prevValues_ = serial.values_
+            for (const key in _newValues) {
+                const newItem = _newValues[key]
+                const prevValue_ = prevValues_[key]
+                // if (newItem==null) continue // 🔴 loop should be on now item keys, not prev
+                // if (newItem==null) debugger
                 const newInput = newItem.input
                 const newType = newItem.type
-                if (newType===prev.type) {
-                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prev)
+                // console.log(' 👀 >>', key, prev_)
+                if (prevValue_ && newType === prevValue_.type) {
+                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prevValue_)
                 } else {
                     this.state.values[key] = newItem
                 }
