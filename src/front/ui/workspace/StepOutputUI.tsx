@@ -2,12 +2,13 @@ import type { StepL, StepOutput } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import { Message, Panel } from 'rsuite'
+import { Button, Message, Panel } from 'rsuite'
 import { exhaust } from '../../../utils/ComfyUtils'
 import { ImageUI } from '../galleries/ImageUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
+import { useSt } from 'src/front/FrontStateCtx'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
@@ -24,7 +25,7 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
     const msg = p.output
     const outputGraph = p.step.outputGraph.item
     const db = outputGraph.db
-
+    const st = useSt()
     if (msg.type === 'print') {
         return (
             <OutputWrapperUI label=''>
@@ -40,6 +41,15 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
         // const currNode = graph.currentExecutingNode
         return (
             <div className='flex flex-col gap-1'>
+                <Button
+                    size='xs'
+                    appearance='ghost'
+                    onClick={() => {
+                        st.stopCurrentPrompt()
+                    }}
+                >
+                    STOP GENERATING
+                </Button>
                 {/* {currNode && <ComfyNodeUI node={currNode} />} */}
                 <div className='flex flex-wrap'>{prompt?.images.map((img) => <ImageUI key={img.id} img={img} />)}</div>
                 <GraphSummaryUI graph={graph} />

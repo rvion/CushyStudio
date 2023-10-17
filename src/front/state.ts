@@ -111,6 +111,13 @@ export class STATE {
 
     // runtime
 
+    // 🔴 this is not the right way to go cause it will cause the action to stay
+    // pending in the background: fix that LATER™️
+    stopCurrentPrompt = async () => {
+        const promptEndpoint = `${this.getServerHostHTTP()}/interrupt`
+        const res = await fetch(promptEndpoint, { method: 'POST' })
+        console.log('🔥 INTERRUPTED.')
+    }
     // startProject = () => {
     //     const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
     //     this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
