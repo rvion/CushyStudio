@@ -31,28 +31,22 @@ action('cards', {
         theme4: form.string({ default: 'snow, ice, mountain, transparent winter', group: 'theme' }),
 
         colors: form.group({
-            default: {
-                spades: 'blue',
-                hearts: 'red',
-                clubs: 'green',
-                diamonds: 'white',
-            },
-            items: {
+            items: () => ({
                 spades: form.string({ default: 'blue' }),
                 hearts: form.string({ default: 'red' }),
                 clubs: form.string({ default: 'green' }),
                 diamonds: form.string({ default: 'white' }),
-            },
+            }),
         }),
 
         // theme5: form.string({ default: 'winter', group: 'theme' }),
         logos: form.groupOpt({
-            items: {
+            items: () => ({
                 spades: form.imageOpt({}),
                 hearts: form.imageOpt({}),
                 clubs: form.imageOpt({}),
                 diamonds: form.imageOpt({}),
-            },
+            }),
         }),
 
         // [UI] SIZES --------------------------------------

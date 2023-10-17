@@ -95,7 +95,7 @@ export class DraftL {
 
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
-                    const req: Requestable = formBuilder.group({ items: uiFn(formBuilder) }, this.data.params)
+                    const req: Requestable = formBuilder.group({ items: () => uiFn(formBuilder) }, this.data.params)
                     this.form = __OK(req)
                     console.log(`🦊 form setup`)
                     // subState.unsync()

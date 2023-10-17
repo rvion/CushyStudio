@@ -36,31 +36,31 @@ action('Prompt-V1', {
         seed: form.intOpt({ group: 'sampler' }),
 
         highResFix: form.groupOpt({
-            items: {
+            items: () => ({
                 scaleFactor: form.int({ default: 1 }),
                 steps: form.int({ default: 15 }),
                 denoise: form.float({ default: 0.5 }),
                 saveIntermediaryImage: form.bool({ default: true }),
-            },
+            }),
         }),
         batches: form.groupOpt({
-            items: {
+            items: () => ({
                 batchCount: form.int({ default: 1 }),
                 delayBetween: form.int({
                     tooltip: 'in ms',
                     default: 0,
                 }),
-            },
+            }),
         }),
 
         // startImage
         removeBG: form.bool({ default: false }),
         extra: form.groupOpt({
-            items: {
+            items: () => ({
                 freeU: form.bool({ default: false }),
                 reverse: form.bool({ default: false }),
                 loras: form.loras({ default: [] }),
-            },
+            }),
         }),
     }),
     run: async (flow, p) => {

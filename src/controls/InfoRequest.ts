@@ -2,17 +2,17 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
+import type { ItemDataType } from 'rsuite/esm/@types/common'
 import type { CELL } from 'src/front/ui/widgets/WidgetMatrixUI'
 import type { SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
-import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/prompter/plugins/CushyDebugPlugin'
+import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
-import type { ItemDataType } from 'rsuite/esm/@types/common'
 
-import { makeAutoObservable, toJS } from 'mobx'
+import { makeAutoObservable } from 'mobx'
 import { bang } from 'src/utils/bang'
-import { exhaust } from 'src/utils/ComfyUtils'
+import { deepCopyNaive, exhaust } from 'src/utils/ComfyUtils'
 
 
 // requestable are a closed union
@@ -676,7 +676,7 @@ export class Requestable_selectManyOrCustom implements IRequest<'selectManyOrCus
 }
 
 // 🅿️ list ==============================================================================
-export type Requestable_list_input<T extends Requestable>  = ReqInput<{ of: T }>
+export type Requestable_list_input<T extends Requestable>  = ReqInput<{ element: () => T }>
 export type Requestable_list_serial<T extends Requestable> = { type: 'list', active: true; items_: T['$Serial'][] }
 export type Requestable_list_state<T extends Requestable>  = { type: 'list', active: true; items: T[] }
 export type Requestable_list_output<T extends Requestable> = T['$Output'][]
@@ -691,7 +691,7 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
         public input: Requestable_list_input<T>,
         serial?: Requestable_list_serial<T>,
     ) {
-        this._reference = input.of
+        this._reference = input.element()
         if (serial) {
             const items = serial.items_.map((sub_) => builder.HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
             this.state = { type: 'list', active: serial.active, items }
@@ -700,19 +700,24 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
         }
         makeAutoObservable(this)
     }
+    removeItem = (item: T) => {
+        const i = this.state.items.indexOf(item)
+        if (i >= 0) this.state.items.splice(i, 1)
+    }
     get serial(): Requestable_list_serial<T> {
         const items_ = this.state.items.map((i) => i.serial)
         return { type: 'list', active: this.state.active, items_ }
     }
     get result(): Requestable_list_output<T> { return this.state.items.map((i) => i.result) }
     addItem() {
-        const _ref = this._reference
-        this.state.items.push(this.builder.HYDRATE(_ref.type, _ref.input))
+        // const _ref = this._reference
+        // const newItem = this.builder.HYDRATE(_ref.type, _ref.input)
+        this.state.items.push(this.input.element())
     }
 }
 
 // 🅿️ group ==============================================================================
-export type Requestable_group_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: T, layout?: 'H'| 'V' }>
+export type Requestable_group_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: () => T, layout?: 'H'| 'V' }>
 export type Requestable_group_serial<T extends { [key: string]: Requestable }> = { type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']} }
 export type Requestable_group_state <T extends { [key: string]: Requestable }> = { type: 'group', active: true; values: T }
 export type Requestable_group_output<T extends { [key: string]: Requestable }> = { [k in keyof T]: ReqResult<T[k]> }
@@ -727,11 +732,11 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
         serial?: Requestable_group_serial<T>,
     ) {
         if (serial){
-            // console.log('🔴 3 >>>', toJS(serial))
+            const _items = input.items()
             this.state = { type: 'group', active: serial.active, values: {} as any }
             for (const key in serial.values_) {
                 const prev_ = serial.values_[key]
-                const newItem = input.items[key]
+                const newItem = _items[key]
                 const newInput = newItem.input
                 const newType = newItem.type
                 // console.log(' 👀 >>', key, prev_)
@@ -741,7 +746,10 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
                     this.state.values[key] = newItem
                 }
             }
-        } else this.state = { type: 'group', active: true, values: input.items, }
+        } else {
+            const _items = input.items()
+            this.state = { type: 'group', active: true, values: _items, }
+        }
         makeAutoObservable(this)
     }
     get serial(): Requestable_group_serial<T> {
@@ -759,7 +767,7 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
 }
 
 // 🅿️ groupOpt ==============================================================================
-export type Requestable_groupOpt_input <T extends { [key: string]: Requestable }> = ReqInput<{ default?: boolean; items: T, layout?: 'H'| 'V' }>
+export type Requestable_groupOpt_input <T extends { [key: string]: Requestable }> = ReqInput<{ default?: boolean; items: () => T, layout?: 'H'| 'V' }>
 export type Requestable_groupOpt_serial<T extends { [key: string]: Requestable }> = { type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']} }
 export type Requestable_groupOpt_state <T extends { [key: string]: Requestable }> = { type: 'groupOpt', active: boolean; values: T }
 export type Requestable_groupOpt_output<T extends { [key: string]: Requestable }> = Maybe<{ [k in keyof T]: ReqResult<T[k]> }>
@@ -774,10 +782,11 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
         serial?: Requestable_groupOpt_serial<T>,
     ) {
         if (serial){
+            const _items = input.items()
             this.state = { type:'groupOpt', active: serial.active, values: {} as any }
             for (const key in serial.values_) {
                 const prev = serial.values_[key]
-                const newItem = input.items[key]
+                const newItem = _items[key]
                 const newInput = newItem.input
                 const newType = newItem.type
                 if (newType===prev.type) {
@@ -786,7 +795,10 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
                     this.state.values[key] = newItem
                 }
             }
-        } else this.state = { type: 'groupOpt', active: input.default ?? false, values: input.items }
+        } else {
+            const _items = input.items()
+            this.state = { type: 'groupOpt', active: input.default ?? false, values: _items }
+        }
         makeAutoObservable(this)
     }
     get serial(): Requestable_groupOpt_serial<T> {

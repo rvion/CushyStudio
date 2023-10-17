@@ -5,15 +5,15 @@ action('remmg', {
     ui: (form) => ({
         // startImage
         startImage: form.imageOpt({ label: 'Start image' }),
-        withRemBG: form.groupOpt({ items: {} }),
-        withABG: form.groupOpt({ items: {} }),
+        withRemBG: form.groupOpt({ items: () => ({}) }),
+        withABG: form.groupOpt({ items: () => ({}) }),
         withWAS: form.groupOpt({
-            items: {
+            items: () => ({
                 model: form.enum({
                     enumName: 'Enum_Image_Rembg_$1Remove_Background$2_model',
                     default: 'u2net',
                 }),
-            },
+            }),
         }),
     }),
 

@@ -27,12 +27,12 @@ action('The Great One (WIP)', {
         theme4: form.string({ default: 'winter', group: 'Theme' }),
 
         colors: form.groupOpt({
-            items: {
+            items: () => ({
                 place: form.int({ default: 0, min: 0, max: 100 }),
                 red: form.int({ default: 0, min: 0, max: 255 }),
                 green: form.int({ default: 0, min: 0, max: 255 }),
                 blue: form.int({ default: 0, min: 0, max: 255 }),
-            },
+            }),
         }),
     }),
     run: async (flow, p) => {
