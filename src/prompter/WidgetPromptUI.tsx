@@ -50,7 +50,7 @@ function onChange(
         if (txt) {
             req.state.text = txt
             req.state.tokens = getFinalJSON(editorState).items
-            console.log(req.state.tokens)
+            if (req instanceof Requestable_promptOpt) req.state.active = true
         } else {
             console.log('❌ 🔴')
         }
