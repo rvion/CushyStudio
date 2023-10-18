@@ -1,10 +1,8 @@
 <div align="center">
 
-# 🛋 CushyStudio
+# 🛋 CushyStudio (alpha)
 
-(ALPHA version)
-
-## The most easy and powerful Stable Diffusion frontend
+## The Easiest and most Powerful Stable Diffusion frontend
 
 [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
 
@@ -23,8 +21,6 @@
 <img src='docs/static/img/screenshots/2023-10-18-22-12-01.png' style='width:60%'></img> <img src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:30%'></img>
 
 </div>
-
-# Overview
 
 🎭 Cushy is made both for `Tinkereers` and for `artists`
 
@@ -47,18 +43,42 @@
 <tr>
 <td>
 
--   Simple and non technical `Actions`
+-   Non technical `Actions` interfaces
 
     -   per use-case UI
     -   simple widgets
-    -
+
+-   `Fast` Previews, `Real Time` feedback
+
+    -   interractive at it's core
+    -   real-time actions with continuous generations
+
+-   `Built-in` commodiities
+
+    -   `Image` and `Mask` editors
+    -   `modular layout` to keep every creative tool at hand
 
 </td>
 <td>
 
--   a full Action creation SDK
--   Deep integration with ComfyUI graph editor
--   a powerful **action publishing**
+-   🚀 The most `Practical` toolset to build actions
+
+    -   Pre-configured ecosystem,
+    -   NO INSTALL, NO SETUP
+    -   great way to learn Stable Diffusion concepts
+    -   a full `typescript Action SDK` + compiler to go further
+
+-   🧠 `ComfyUI` engine At it's core
+
+    -   deep integration with ComfyUI Graph
+    -   a well-though interface to explore and play with nodes
+
+-   💪 from 0 to 100 in no time
+
+    -   get started with automatic conversion of ComfyUI workflows to Actions
+    -   grow your set of prefabs, like sub-workflows, but on steroids
+    -   modularize your work
+    -   share it with the world
 
 </td>
 </tr>
