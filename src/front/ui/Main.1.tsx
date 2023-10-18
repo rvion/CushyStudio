@@ -5,7 +5,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { CustomProvider } from 'rsuite'
 import { asAbsolutePath } from '../../utils/fs/pathUtils'
-import { stContext } from '../FrontStateCtx'
+import { stContext, useSt } from '../FrontStateCtx'
 import { STATE } from '../state'
 import { CushyUI } from './layout/AppUI'
 
@@ -21,8 +21,9 @@ export const Main = observer(() => {
 })
 
 export const MainUI = observer(function MainUI_(p: {}) {
+    const st = useSt()
     return (
-        <CustomProvider theme='dark'>
+        <CustomProvider theme={st.theme.theme}>
             <DndProvider backend={HTML5Backend}>
                 <CushyUI />
             </DndProvider>

@@ -1,0 +1,106 @@
+#CushyStudio.dark #CushyAppBar{
+  background: linear-gradient(90deg, #1a1a1a 0%, #3e3e45 100%);
+}
+#CushyStudio.light #CushyAppBar{
+  background: linear-gradient(90deg, #f7f7f7 0%, #e9e9e9 100%);
+}
+
+#CushyStudio.light .flexlayout__layout {
+    --color-text: black;
+    --color-background: white;
+    --color-base: white;
+    --color-1: #f7f7f7;
+    --color-2: #f0f0f0;
+    --color-3: #e9e9e9;
+    --color-4: #e2e2e2;
+    --color-5: #dbdbdb;
+    --color-6: #d4d4d4;
+    --color-drag1: rgb(95, 134, 196);
+    --color-drag2: rgb(119, 166, 119);
+    --color-drag1-background: rgba(95, 134, 196, 0.1);
+    --color-drag2-background: rgba(119, 166, 119, 0.075);
+    --font-size: medium;
+    --font-family: Roboto, Arial, sans-serif;
+    --color-overflow: gray;
+    --color-icon: gray;
+    --color-tabset-background: var(--color-background);
+    --color-tabset-background-selected: var(--color-1);
+    --color-tabset-background-maximized: var(--color-6);
+    --color-tabset-divider-line: var(--color-4);
+    --color-tabset-header-background: var(--color-background);
+    --color-tabset-header: var(--color-text);
+    --color-border-background: var(--color-background);
+    --color-border-divider-line: var(--color-4);
+    --color-tab-selected: var(--color-text);
+    --color-tab-selected-background: var(--color-4);
+    --color-tab-unselected: gray;
+    --color-tab-unselected-background: transparent;
+    --color-tab-textbox: var(--color-text);
+    --color-tab-textbox-background: var(--color-3);
+    --color-border-tab-selected: var(--color-text);
+    --color-border-tab-selected-background: var(--color-4);
+    --color-border-tab-unselected: gray;
+    --color-border-tab-unselected-background: var(--color-2);
+    --color-splitter: var(--color-1);
+    --color-splitter-hover: var(--color-4);
+    --color-splitter-drag: var(--color-4);
+    --color-drag-rect-border: var(--color-6);
+    --color-drag-rect-background: var(--color-4);
+    --color-drag-rect: var(--color-text);
+    --color-popup-border: var(--color-6);
+    --color-popup-unselected: var(--color-text);
+    --color-popup-unselected-background: white;
+    --color-popup-selected: var(--color-text);
+    --color-popup-selected-background: var(--color-3);
+    --color-edge-marker: gray;
+  }
+
+  #CushyStudio.dark .flexlayout__layout {
+    --color-text: #eeeeee;
+    --color-background: black;
+    --color-base: black;
+    --color-1: #121212;
+    --color-2: #1a1a1a;
+    --color-3: #262626;
+    --color-4: #333333;
+    --color-5: #404040;
+    --color-6: #4d4d4d;
+    --color-drag1: rgb(207, 232, 255);
+    --color-drag2: rgb(183, 209, 181);
+    --color-drag1-background: rgba(128, 128, 128, 0.15);
+    --color-drag2-background: rgba(128, 128, 128, 0.15);
+    --font-size: medium;
+    --font-family: Roboto, Arial, sans-serif;
+    --color-overflow: gray;
+    --color-icon: gray;
+    --color-tabset-background: var(--color-1);
+    --color-tabset-background-selected: var(--color-1);
+    --color-tabset-background-maximized: var(--color-6);
+    --color-tabset-divider-line: var(--color-4);
+    --color-tabset-header-background: var(--color-1);
+    --color-tabset-header: var(--color-text);
+    --color-border-background: var(--color-1);
+    --color-border-divider-line: var(--color-4);
+    --color-tab-selected: var(--color-text);
+    --color-tab-selected-background: var(--color-4);
+    --color-tab-unselected: gray;
+    --color-tab-unselected-background: transparent;
+    --color-tab-textbox: var(--color-text);
+    --color-tab-textbox-background: var(--color-3);
+    --color-border-tab-selected: var(--color-text);
+    --color-border-tab-selected-background: var(--color-4);
+    --color-border-tab-unselected: gray;
+    --color-border-tab-unselected-background: var(--color-2);
+    --color-splitter: var(--color-2);
+    --color-splitter-hover: var(--color-4);
+    --color-splitter-drag: var(--color-5);
+    --color-drag-rect-border: var(--color-4);
+    --color-drag-rect-background: var(--color-1);
+    --color-drag-rect: var(--color-text);
+    --color-popup-border: var(--color-6);
+    --color-popup-unselected: var(--color-text);
+    --color-popup-unselected-background: black;
+    --color-popup-selected: var(--color-text);
+    --color-popup-selected-background: var(--color-4);
+    --color-edge-marker: gray;
+  }

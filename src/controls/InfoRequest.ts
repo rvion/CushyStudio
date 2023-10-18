@@ -517,7 +517,7 @@ export class Requestable_image implements IRequest<'image', Requestable_image_in
         public input: Requestable_image_input,
         serial?: Requestable_image_serial,
     ) {
-        console.log('🔴 AAA', serial)
+        // console.log('🔴 AAA', serial)
         this.state = serial ?? {
             type: 'image',
             active: true,

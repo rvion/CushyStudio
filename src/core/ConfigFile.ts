@@ -1,3 +1,8 @@
+import type { Theme } from 'src/theme/layoutTheme'
+import { JsonFile } from './JsonFile'
+import { asAbsolutePath } from 'src/utils/fs/pathUtils'
+import { resolve } from 'path'
+
 export type ConfigFile = {
     /** e.g.
      * - true
@@ -30,11 +35,26 @@ export type ConfigFile = {
          * */
         comfyPort: number
     }[]
-
+    /** 'light' or 'dark'; default to dark */
+    theme?: Theme
     /** defaults to 48px */
     galleryImageSize?: number
     /** defaults to 50 */
     galleryMaxImages?: number
     /** defaults to 5 */
     checkUpdateEveryMinutes?: number
+}
+
+export const mkConfigFile = (): JsonFile<ConfigFile> => {
+    return new JsonFile<ConfigFile>({
+        path: asAbsolutePath(resolve('CONFIG.json')),
+        maxLevel: 3,
+        init: (): ConfigFile => ({
+            comfyHost: 'localhost',
+            comfyPort: 8188,
+            useHttps: false,
+            galleryImageSize: 48,
+            theme: 'dark',
+        }),
+    })
 }

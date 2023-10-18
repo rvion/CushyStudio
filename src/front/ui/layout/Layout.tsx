@@ -3,7 +3,6 @@ import type { STATE } from 'src/front/state'
 import type * as FL from 'flexlayout-react'
 import { IJsonModel, Layout, Model } from 'flexlayout-react'
 
-import 'flexlayout-react/style/dark.css'
 import { Button, Message } from 'rsuite'
 import { GalleryUI } from '../galleries/GalleryUI'
 import { GraphUI } from '../workspace/GraphUI'

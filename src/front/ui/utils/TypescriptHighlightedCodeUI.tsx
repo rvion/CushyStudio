@@ -1,7 +1,6 @@
 import hljs from 'highlight.js/lib/core'
 import json from 'highlight.js/lib/languages/json'
 import typescript from 'highlight.js/lib/languages/typescript'
-import 'highlight.js/styles/stackoverflow-dark.css'
 import { useLayoutEffect, useRef } from 'react'
 import { IconButton } from 'rsuite'
 

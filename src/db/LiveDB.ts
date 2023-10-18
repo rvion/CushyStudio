@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
 
 // models
-import { existsSync, readFileSync, writeFileSync } from 'fs'
+import { existsSync, readFileSync, stat, writeFileSync } from 'fs'
 import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 import { DraftL, DraftT } from '../models/Draft'
 import { FolderL, FolderT } from '../models/Folder'
@@ -18,6 +18,8 @@ import { ToolL, ToolT } from '../models/Tool'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { LiveStore } from './LiveStore'
+import { bytesToSize } from 'src/utils/fs/bytesToSize'
+import { extractErrorMessage } from 'src/utils/extractErrorMessage'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -75,6 +77,8 @@ export class LiveDB {
         this.drafts = new LiveTable(this, 'drafts', '📝', DraftL)
         this.graphs = new LiveTable(this, 'graphs', '📊', GraphL)
         // this.msgs = new LiveTable(this, 'msgs', Foo)
+
+        this.startMonitoring()
     }
 
     // TODO: keep a count of dbsize and display on hover
@@ -105,5 +109,24 @@ export class LiveDB {
     reset = () => {
         for (const table of this._tables) table.clear()
         this.markDirty()
+    }
+
+    /** self-updating DB size and health */
+    health: { status: 'good' | 'meh' | 'bad'; size: number; sizeTxt: string } = { status: 'meh', size: 0, sizeTxt: '?' }
+    private startMonitoring = () => {
+        const store = this.st.hotReloadPersistentCache
+        if (store.dbSizeWatcherInterval != null) clearInterval(store.dbSizeWatcherInterval)
+        const updateDBSize = () => {
+            // get file size using fs
+            stat(this.absPath, (err, stats) => {
+                if (err) return console.log(`❌ impossible to update db size: ${extractErrorMessage(err)}`, err)
+                const size = stats.size
+                const status = size > 30_000_000 ? 'bad' : size > 10_000_000 ? 'meh' : 'good'
+                const sizeTxt = bytesToSize(size)
+                this.health = { status, size, sizeTxt }
+            })
+        }
+        store.dbSizeWatcherInterval = setInterval(updateDBSize, 2_000)
+        updateDBSize()
     }
 }

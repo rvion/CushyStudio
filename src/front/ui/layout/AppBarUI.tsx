@@ -1,10 +1,10 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton, Loader } from 'rsuite'
+import { Button, IconButton } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
-import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
 import { UpdateBtnUI } from './UpdateBtnUI'
+import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
@@ -12,9 +12,9 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
         // bg-gray-950
         <div
             //
+            id='CushyAppBar'
             className='flex gap-1 items-center'
             style={{
-                background: 'linear-gradient(90deg, #1a1a1a 0%, #3e3e45 100%)',
                 borderBottom: '1px solid #383838',
             }}
         >
@@ -38,6 +38,17 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             >
                 save
             </Button>
+            <IconButton
+                icon={
+                    <span
+                        //
+                        className='material-symbols-outlined'
+                    >
+                        {st.theme.theme === 'light' ? 'highlight' : 'nights_stay'}
+                    </span>
+                }
+                onClick={() => (st.theme.theme = st.theme.theme === 'light' ? 'dark' : 'light')}
+            ></IconButton>
             {/* <Button
                 //
                 size='sm'
@@ -109,7 +120,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
 
 export const DBHealthUI = observer(function DBHealthUI_(p: {}) {
     const st = useSt()
-    const dbHealth = st.dbHealth
+    const dbHealth = st.db.health
     const color = dbHealth.status === 'bad' ? 'red' : dbHealth.status === 'meh' ? 'yellow' : 'green'
     return (
         <div>

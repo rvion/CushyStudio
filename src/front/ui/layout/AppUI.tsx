@@ -6,7 +6,7 @@ import { ProjectUI } from './ProjectUI'
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
     return (
-        <div className='col grow h100'>
+        <div id='CushyStudio' tw={['col grow h100', st.theme.theme]}>
             <AppBarUI />
             <div className='flex flex-grow relative'>
                 {/* <MainNavBarUI /> */}

@@ -1,16 +1,10 @@
 import { observer, useLocalObservable } from 'mobx-react-lite'
-import { useSt } from '../../FrontStateCtx'
-import { GalleryHoveredPreviewUI } from '../galleries/GalleryHoveredPreviewUI'
-import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
-import { ComfyUIUI } from '../workspace/ComfyUIUI'
 import { Loader } from 'rsuite'
+import { useSt } from '../../FrontStateCtx'
 import { projectContext } from '../../ProjectCtx'
 import { LightBoxUI } from '../LightBox'
-import { GraphUI } from '../workspace/GraphUI'
+import { GalleryHoveredPreviewUI } from '../galleries/GalleryHoveredPreviewUI'
 import { PanelConfigUI } from './PanelConfigUI'
-import { GalleryUI } from '../galleries/GalleryUI'
-import { Pane } from 'split-pane-react'
-import SplitPane from 'split-pane-react/esm/SplitPane'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const st = useSt()

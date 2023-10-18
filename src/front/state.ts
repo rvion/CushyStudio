@@ -1,4 +1,4 @@
-import type { ConfigFile } from 'src/core/ConfigFile'
+import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import type { ImageL } from '../models/Image'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from './CSCriticalError'
@@ -35,11 +35,13 @@ import { readableStringify } from '../utils/stringifyReadable'
 import { LightBoxState } from './ui/LightBox'
 import { Updater } from './updater'
 import { CushyLayoutManager } from './ui/layout/Layout'
+import { ThemeManager } from 'src/theme/layoutTheme'
 
 export class STATE {
     //file utils that need to be setup first because
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
     resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
+    theme: ThemeManager
     codePrettier: CodePrettier
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
@@ -49,29 +51,10 @@ export class STATE {
      * global hotReload persistent cache that should survive hot reload
      * useful to ensure various singleton stuff (e.g. dbHealth)
      */
-    private get hotReloadPersistentCache(): { [key: string]: any } {
+    get hotReloadPersistentCache(): { [key: string]: any } {
         const globalRef = globalThis as any
         if (globalRef.__hotReloadPersistentCache == null) globalRef.__hotReloadPersistentCache = {}
         return globalRef.__hotReloadPersistentCache
-    }
-
-    /** self-updating DB size and health */
-    dbHealth: { status: 'good' | 'meh' | 'bad'; size: number; sizeTxt: string } = { status: 'meh', size: 0, sizeTxt: '?' }
-    private watchDBHealth = () => {
-        const store = this.hotReloadPersistentCache
-        if (store.dbSizeWatcherInterval != null) clearInterval(store.dbSizeWatcherInterval)
-        const updateDBSize = () => {
-            // get file size using fs
-            stat(this.db.absPath, (err, stats) => {
-                if (err) return console.log(`❌ impossible to update db size: ${extractErrorMessage(err)}`, err)
-                const size = stats.size
-                const status = size > 30_000_000 ? 'bad' : size > 10_000_000 ? 'meh' : 'good'
-                const sizeTxt = bytesToSize(size)
-                this.dbHealth = { status, size, sizeTxt }
-            })
-        }
-        store.dbSizeWatcherInterval = setInterval(updateDBSize, 2_000)
-        updateDBSize()
     }
 
     // main state api
@@ -162,36 +145,28 @@ export class STATE {
         public rootPath: AbsolutePath,
     ) {
         console.log('[🗳️] starting web app')
-        const db = new LiveDB(this)
-        this.db = db
-        this.watchDBHealth()
-        this.codePrettier = new CodePrettier(this)
         this.cacheFolderPath = this.resolve(this.rootPath, asRelativePath('outputs'))
         this.comfyJSONPath = this.resolve(this.rootPath, asRelativePath('schema/nodes.json'))
         this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('schema/embeddings.json'))
         this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
-        const actionsFolderPath = this.resolve(this.rootPath, asRelativePath('actions'))
-        this.actionsFolderPath = actionsFolderPath
-        this.layout = new CushyLayoutManager(this)
-        // this.cushyTSPath = this.resolve(this.rootPath, asRelativePath('.cushy/cushy.d.ts'))
-        // this.tsConfigPath = this.resolve(this.rootPath, asRelativePath('tsconfig.json'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
-        this.schema = this.db.schema
-        this.typecheckingConfig = mkTypescriptConfig()
-        this.toolbox = new CushyFileWatcher(this)
-        this.configFile = new JsonFile<ConfigFile>({
-            path: asAbsolutePath(resolve('CONFIG.json')),
-            maxLevel: 3,
-            init: (): ConfigFile => ({
-                comfyHost: 'localhost',
-                comfyPort: 8188,
-                useHttps: false,
-                galleryImageSize: 48,
-            }),
-        })
-        this.updater = new Updater(this)
+        this.actionsFolderPath = this.resolve(this.rootPath, asRelativePath('actions'))
 
+        // config files
+        this.typecheckingConfig = mkTypescriptConfig()
+        this.configFile = mkConfigFile()
+
+        // core instances
+        this.db = new LiveDB(this)
+        this.codePrettier = new CodePrettier(this)
+        this.layout = new CushyLayoutManager(this)
+        this.toolbox = new CushyFileWatcher(this)
+        this.theme = new ThemeManager(this)
+        this.updater = new Updater(this)
         this.importer = new ComfyImporter(this)
+
+        this.schema = this.db.schema
+
         // 1️⃣ if (opts.genTsConfig) this.createTSConfigIfMissing()
         // 1️⃣ if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
         this.toolbox.findActions()
