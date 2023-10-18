@@ -10,9 +10,19 @@
 
 </div>
 
-![](docs/static/img/screenshots/2023-10-18-21-40-09.png)
-
 ---
+
+## Discover a world of `Actions`
+
+-   CushyStudio `Actions` are interractive generative "apps" with dedicated UIs.
+-   They make it super `easy` and `fun` to explore all generative art ahs to offer.
+-   CushyStudio allow you to `run`, `create` and `share` Actions`
+
+<div style='display:flex;gap:1rem;'>
+
+<img src='docs/static/img/screenshots/2023-10-18-22-12-01.png' style='width:60%'></img> <img src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:30%'></img>
+
+</div>
 
 # Overview
 
@@ -55,6 +65,8 @@
 </tbody>
 </table>
 
+![](docs/static/img/screenshots/2023-10-18-21-40-09.png)
+
 # Installation
 
 Ensure you have
@@ -72,9 +84,83 @@ npm install
 npm start
 ```
 
+# Quickstart Guide
+
+When you start `Cushy` ... TODO
+
+## Work with remote ComfyUI as if they were local
+
+-   automatically download images in your local outputs folder
+-   automatically upload files
+
+## Switch between ComfyUI remotes like you would
+
+-   ✅ quickly switch between various ComfyUI setups
+-   ⏳ parallelize work across multiple instances
+
+edit the list of ComfyUI setups in `CONFIG.json`
+
+![](docs/static/img/screenshots/2023-10-18-21-41-49.png)
+
+https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-294572450b32
+
+## ComfyUI compatible: convert workflow to Action.
+
+`🛋️ CushyStudio` is directly compatible with `ComfyUI` workflow json format and images. Add them to the action folder to quickly use them inside Cushy.
+
+## Built-in full-featured Image editor
+
+Layers, efects, masks, blending modes, ...and more. Always one click away
+
+![](docs/static/img/screenshots/2023-10-18-22-51-22.png)
+
+## Easy to extend
+
+👉 In case you have a problem, can you check the logs and report what you see ?
+
+<details>
+  <summary>click here to see how to reveal the debug console</summary>
+
+![](docs/static/img/screenshots/2023-10-03-22-36-49.png)
+
+</details>
+
+## 3. create your own Actions to streamline any image or video production
+
+![](docs/static/img/screenshots/2023-09-29-22-35-25.png)
+
+<p align="center">
+  <img alt="Light" src="./docs/static/img/screenshots/2023-09-29-22-37-47.png" width="45%">
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img alt="Dark" src="./docs/static/img/screenshots/2023-09-30-08-40-13.png" width="45%">
+</p>
+
+1. define your own UI
+2. build one or many prompts with custom logic in typescript
+3. type-safe experience pushed to the MAXIMUM
+    1. every single value / enum is typed
+    2. a built-in standard library made to quickly build your dream workflow
+    3. use lambda to get completion only for the node that produce value needed
+
+<!-- global config file to change path to ComfyUI:
+
+```
+./workspace/CONFIG.json
+``` -->
+
+<!--
+
 ---
 
-# Intro Guide For Tinkerers
+# Features
+
+- Custom nodes
+- maximum type safety when writing scripts
+-->
+
+---
+
+# Quickstart Guide For Action Creators
 
 `🛋️ CushyStudio` comes packed with feature to allow you to create your own AI-powered image and video creation tools.
 
@@ -180,84 +266,3 @@ git remote add origin git@github.com:rvion/cushy-example-actions.git
 then open an issue asking [there](https://github.com/rvion/CushyStudio/issues/new/choose)
 
 </details>
-
-## A powerful `Action` creation SDK
-
--   create tailor-made UI on top of your ComfyUI workflow.
--   only display relevant widgets
-
-<div style='display:flex;gap:1rem;'>
-
-<img src='docs/static/img/screenshots/2023-10-18-22-12-01.png' style='width:60%'></img> <img src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:30%'></img>
-
-</div>
-
-## Work with remote ComfyUI as if they were local
-
--   automatically download images in your local outputs folder
--   automatically upload files
-
-## Switch between ComfyUI remotes like you would
-
--   ✅ quickly switch between various ComfyUI setups
--   ⏳ parallelize work across multiple instances
-
-edit the list of ComfyUI setups in `CONFIG.json`
-
-![](docs/static/img/screenshots/2023-10-18-21-41-49.png)
-
-https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-294572450b32
-
-## ComfyUI compatible: convert workflow to Action.
-
-`🛋️ CushyStudio` is directly compatible with `ComfyUI` workflow json format and images. Add them to the action folder to quickly use them inside Cushy.
-
-## Built-in full-featured Image editor
-
-Layers, efects, masks, blending modes, ...and more. Always one click away
-
-![](docs/static/img/screenshots/2023-10-18-22-51-22.png)
-
-## Easy to extend
-
-👉 In case you have a problem, can you check the logs and report what you see ?
-
-<details>
-  <summary>click here to see how to reveal the debug console</summary>
-
-![](docs/static/img/screenshots/2023-10-03-22-36-49.png)
-
-</details>
-
-## 3. create your own Actions to streamline any image or video production
-
-![](docs/static/img/screenshots/2023-09-29-22-35-25.png)
-
-<p align="center">
-  <img alt="Light" src="./docs/static/img/screenshots/2023-09-29-22-37-47.png" width="45%">
-&nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="./docs/static/img/screenshots/2023-09-30-08-40-13.png" width="45%">
-</p>
-
-1. define your own UI
-2. build one or many prompts with custom logic in typescript
-3. type-safe experience pushed to the MAXIMUM
-    1. every single value / enum is typed
-    2. a built-in standard library made to quickly build your dream workflow
-    3. use lambda to get completion only for the node that produce value needed
-
-<!-- global config file to change path to ComfyUI:
-
-```
-./workspace/CONFIG.json
-``` -->
-
-<!--
-
----
-
-# Features
-
-- Custom nodes
-- maximum type safety when writing scripts
--->
