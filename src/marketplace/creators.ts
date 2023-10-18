@@ -5,5 +5,9 @@ type ActionPack = {
 }
 export const knownPlugins: ActionPack[] = [
     //
-    { name: string },
+    {
+        name: 'cushy-example-actions',
+        githubUsername: 'rvion',
+        githubRepository: 'cushy-example-actions',
+    },
 ]
