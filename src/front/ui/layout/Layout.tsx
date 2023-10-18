@@ -14,6 +14,8 @@ import { createRef } from 'react'
 import { ImageID } from 'src/models/Image'
 import { nanoid } from 'nanoid'
 import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
+import { LastImageUI } from './LastImageUI'
+import { HostListUI } from './HostListUI'
 
 // still on phone
 enum Widget {
@@ -26,6 +28,9 @@ enum Widget {
     Steps = 'Steps',
     LastGraph = 'LastGraph',
     LastIMage = 'LastIMage',
+    Civitai = 'Civitai',
+    Image = 'Image',
+    Hosts = 'Hosts',
 }
 
 export class CushyLayoutManager {
@@ -84,7 +89,11 @@ export class CushyLayoutManager {
         if (component === Widget.FileList) return <ActionPickerUI />
         if (component === Widget.Steps) return <StepListUI />
         if (component === Widget.LastGraph) return <LastGraphUI />
-        if (component === Widget.LastIMage) return <div>LastIMage</div>
+        if (component === Widget.LastIMage) return <LastImageUI />
+        if (component === Widget.Civitai)
+            return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0'></iframe>
+        if (component === Widget.Image) return <div>Image</div>
+        if (component === Widget.Hosts) return <HostListUI />
 
         exhaust(component)
 
@@ -95,6 +104,17 @@ export class CushyLayoutManager {
         )
     }
 
+    private _persistentTab = (name: string, widget: Widget, icon?: string): FL.IJsonTabNode => {
+        return {
+            type: 'tab',
+            name,
+            component: widget,
+            enableClose: false,
+            enableRename: false,
+            enableFloat: true,
+            icon,
+        }
+    }
     build = (): IJsonModel => {
         const out: IJsonModel = {
             global: {
@@ -126,12 +146,22 @@ export class CushyLayoutManager {
                 weight: 100,
                 children: [
                     {
-                        type: 'tabset',
+                        type: 'row',
                         weight: 10,
-                        minWidth: 300,
                         children: [
-                            //
-                            { type: 'tab', name: 'FileList', component: Widget.FileList },
+                            {
+                                type: 'tabset',
+                                weight: 10,
+                                minWidth: 300,
+                                children: [this._persistentTab('FileList', Widget.FileList)],
+                            },
+                            {
+                                type: 'tabset',
+                                weight: 1,
+                                minWidth: 300,
+                                minHeight: 300,
+                                children: [this._persistentTab('Hosts', Widget.Hosts)],
+                            },
                         ],
                     },
                     {
@@ -145,22 +175,14 @@ export class CushyLayoutManager {
                                 children: [
                                     //
                                     { type: 'tab', name: 'Graph', component: Widget.Graph },
+                                    this._persistentTab('Civitai', Widget.Civitai, '/CivitaiLogo.png'),
                                 ],
                             },
                             {
                                 type: 'tabset',
                                 weight: 10,
                                 minHeight: 200,
-                                children: [
-                                    //
-                                    {
-                                        type: 'tab',
-                                        name: '🎆 Gallery',
-                                        component: Widget.Gallery,
-                                        enableClose: false,
-                                        enableRename: false,
-                                    },
-                                ],
+                                children: [this._persistentTab('🎆 Gallery', Widget.Gallery)],
                             },
                         ],
                     },
@@ -170,24 +192,23 @@ export class CushyLayoutManager {
                         children: [
                             {
                                 type: 'tabset',
-                                weight: 50,
+                                weight: 1,
+                                minWidth: 100,
+                                minHeight: 100,
+                                children: [this._persistentTab('Last Graph', Widget.LastGraph)],
+                            },
+                            {
+                                type: 'tabset',
                                 minWidth: 300,
-                                children: [
-                                    //
-                                    { type: 'tab', name: 'One', component: Widget.LastGraph },
-                                ],
+                                minHeight: 300,
+                                weight: 10,
+                                children: [this._persistentTab('Last Image', Widget.LastIMage)],
                             },
                             {
                                 type: 'tabset',
                                 minWidth: 300,
                                 weight: 100,
-                                children: [{ type: 'tab', name: 'Two', component: Widget.LastIMage }],
-                            },
-                            {
-                                type: 'tabset',
-                                minWidth: 300,
-                                weight: 100,
-                                children: [{ type: 'tab', name: 'Two', component: Widget.Steps }],
+                                children: [this._persistentTab('Runs', Widget.Steps)],
                             },
                         ],
                     },

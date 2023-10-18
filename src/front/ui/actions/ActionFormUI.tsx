@@ -13,6 +13,7 @@ import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
+import { toJS } from 'mobx'
 
 /**
  * this is the root interraction widget
@@ -26,12 +27,11 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
 }) {
     const draft = p.draft
     const tool = draft.tool.item
+    const { containerClassName, containerStyle } = draft.action.value ?? {}
+
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <div
-                //
-                className='m-4 fade-in flex flex-col flex-grow'
-            >
+            <div className={containerClassName} style={toJS(containerStyle)} tw='m-4 fade-in flex flex-col flex-grow'>
                 <div tw='row items-center font-bold font justify-between'>
                     <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
                         <span>{tool.name}</span>

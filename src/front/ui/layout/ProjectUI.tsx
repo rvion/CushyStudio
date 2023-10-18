@@ -35,32 +35,20 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                 />
                 <LightBoxUI lbs={st.lightBox} />
                 <st.layout.UI />
-                {/* <SplitPane
-                    performanceMode
-                    sashRender={() => <div className='bg-gray-200'></div>}
-                    onChange={(ev) => (uiSt.sizes = ev)}
-                    sizes={uiSt.sizes}
-                    split='horizontal'
-                > */}
+
                 {/* <Pane className='col'>
-                        {action.type === 'paint' ? ( //
-                            <WidgetPaintUI action={action} />
-                        ) : action.type === 'comfy' ? (
-                            <ComfyUIUI action={action} />
-                        ) : action.type === 'form' ? (
-                            <GraphUI depth={1} />
-                        ) : action.type === 'iframe' ? (
-                            <iframe className='grow' src={action.url} frameBorder='0'></iframe>
-                        ) : (
-                            <PanelConfigUI action={action} />
-                        )}
-                    </Pane> */}
-                {/* GALLERIE */}
-                {/* <b className='text-lg bg-blue-950 text-center'>GALLERY</b> */}
-                {/* <Pane minSize='100px' className='col' style={{ borderTop: '2px solid #363636', overflow: 'auto' }}>
-                        <GalleryUI />
-                    </Pane> */}
-                {/* </SplitPane> */}
+                    {action.type === 'paint' ? ( //
+                        <WidgetPaintUI action={action} />
+                    ) : action.type === 'comfy' ? (
+                        <ComfyUIUI action={action} />
+                    ) : action.type === 'form' ? (
+                        <GraphUI depth={1} />
+                    ) : action.type === 'iframe' ? (
+                        <iframe className='grow' src={action.url} frameBorder='0'></iframe>
+                    ) : (
+                        <PanelConfigUI action={action} />
+                    )}
+                </Pane> */}
             </projectContext.Provider>
         </div>
     )

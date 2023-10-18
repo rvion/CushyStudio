@@ -3,10 +3,11 @@ import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 import type { ToolID, ToolL } from './Tool'
 
+import { autorun, reaction, runInAction } from 'mobx'
 import { FormBuilder, type Requestable } from 'src/controls/InfoRequest'
-import { type Result, __FAIL, __OK } from 'src/utils/Either'
+import { Action } from 'src/core/Requirement'
+import { __FAIL, __OK, type Result } from 'src/utils/Either'
 import { LiveRef } from '../db/LiveRef'
-import { autorun, reaction, runInAction, toJS } from 'mobx'
 
 export type FormPath = (string | number)[]
 
@@ -71,6 +72,8 @@ export class DraftL {
     getPathInfo = (path: FormPath): string => this.id + '/' + path.join('/')
 
     form: Result<Requestable> = __FAIL('not loaded yet')
+    action: Result<Action<any>> = __FAIL('not loaded yet')
+
     onHydrate = () => {
         let subState = {
             unsync: () => {},
@@ -83,6 +86,7 @@ export class DraftL {
             () => {
                 console.log(`🟢 -------- DRAFT LOADING ACTION --------- 🟢 `)
                 const action = this.tool.item.retrieveAction()
+                this.action = action
                 if (!action.success) {
                     this.form = __FAIL('action failed')
                     return

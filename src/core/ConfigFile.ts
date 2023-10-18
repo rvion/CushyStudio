@@ -18,6 +18,19 @@ export type ConfigFile = {
      * */
     comfyPort: number
 
+    /** list of all comfyUI setup available */
+    machines?: {
+        /** e.g.
+         * @example localhost
+         * @example 192.168.0.19
+         * */
+        comfyHost: string
+        /** e.g.
+         * @example 8188
+         * */
+        comfyPort: number
+    }[]
+
     /** defaults to 48px */
     galleryImageSize?: number
     /** defaults to 50 */

@@ -1,5 +1,6 @@
 import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder, ReqResult, Requestable } from '../controls/InfoRequest'
+import { CSSProperties } from 'react'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
@@ -32,6 +33,9 @@ export type Action<FIELDS extends RequestableDict> = {
     run: (f: Runtime, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
     /** next actions to suggest user */
     next?: string[]
+    /** form container className */
+    containerClassName?: string
+    containerStyle?: CSSProperties
 }
 
 // REQUIREMENTS ============================================================
