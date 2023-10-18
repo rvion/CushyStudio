@@ -14,6 +14,14 @@
 
 # Installation
 
+Ensure you have
+
+-   [NodeJS](https://nodejs.org/en/download) installed (18 or higher)
+-   [ComfyUI](https://github.com/comfyanonymous/ComfyUI) installed
+-   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed
+
+Install CushyStudio by running these command in a terminal
+
 ```sh
 git clone https://github.com/rvion/CushyStudio
 cd CushyStudio
@@ -21,9 +29,51 @@ npm install
 npm start
 ```
 
-# Features
+---
+
+# Overview
+
+🎭 Cushy is made both for `Tinkereers` and for `artists`
+
+<table class="tg">
+<thead>
+<tr>
+<th class="tg-0pky">
+
+# For artists
+
+</th>
+<th class="tg-0pky">
+
+# For Tinkerers
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+-   a full Action creation SDK
+-   Deep integration with ComfyUI graph editor
+-   a powerful **action publishing**
+
+</td>
+<td>
+
+-   Simple and non technical `Actions`
+
+    -   per use-case UI
+    -   simple widgets
+
+</td>
+</tr>
+</tbody>
+</table>
 
 ---
+
+## Details
 
 ## A marketplace of community-made Actions
 
@@ -54,32 +104,17 @@ edit the list of ComfyUI setups in `CONFIG.json`
 
 https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-294572450b32
 
-## 1. Turn any ComfyUI workflow into a powerful Action with dedicated UI custom execution logic
+## ComfyUI compatible: convert workflow to Action.
 
-![](docs/static/img/screenshots/2023-09-29-21-15-36.png)
+`🛋️ CushyStudio` is directly compatible with `ComfyUI` workflow json format and images. Add them to the action folder to quickly use them inside Cushy.
 
-You can import your workflow by dropping it into the `./actions` folder
+## Built-in full-featured Image editor
 
-`CushyStudio` can import
-
--   workflows in `*.png` file
--   workflows in `*.workflows.json` (exported via save button in ComfyUI)
--   workflows in `*.workflows-api.json` (exported via save (API Format) button in ComfyUI)
-
-👉 be sure to rename the file so it ends like this one of the options in the list above
-
-<details>
-  <summary>click here to see how to enable the api format</summary>
-
-![](docs/static/img/screenshots/2023-10-03-22-25-12.png)
-
-</details>
-
-## 2. Edit and Inpaint like a pro
+Layers, efects, masks, blending modes, ...and more. Always one click away
 
 ![](docs/static/img/screenshots/2023-09-29-22-40-45.png)
 
-1. layers, efects, masks, blending modes, ...and more
+## Easy to extend
 
 👉 In case you have a problem, can you check the logs and report what you see ?
 
