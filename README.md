@@ -1,16 +1,16 @@
 <div align="center">
 
-# 🛋 CushyStudio -
+# 🛋 CushyStudio
 
-### The Ultimate Stable Diffusion Frontend.
+(ALPHA version)
 
-<div>🔶 ALPHA QUALITY - HERE BE DRAGONS 🐉</div>
+## The most easy and powerful Stable Diffusion frontend
 
 [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
 
-<div>CushyStudio is a Modern, Cross-platform, Extensible, Scriptable, full-featured Stable Diffusion and generative art GUI.</div>
-
 </div>
+
+![](docs/static/img/screenshots/2023-10-18-21-40-09.png)
 
 # Installation
 
@@ -22,6 +22,22 @@ npm start
 ```
 
 # Features
+
+---
+
+quickly switch between various ComfyUI setups (local machine, remote machine, cloud vendors, etc...)
+
+|                                                                          |                                                                                          |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| in `CONFIG.json`                                                         |                                                                                          |
+| ![](docs/static/img/screenshots/2023-10-18-21-41-49.png)                 | https://github.com/rvion/CushyStudio/assets/2150990/cf3027e2-28cb-41e5-a21a-589d5b6b54bd |
+| ------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+
+<!-- ![](docs/static/img/screenshots/2023-10-18-21-41-49.png)
+
+https://github.com/rvion/CushyStudio/assets/2150990/cf3027e2-28cb-41e5-a21a-589d5b6b54bd
+
+-->
 
 ## 1. Turn any ComfyUI workflow into a powerful Action with dedicated UI custom execution logic
 
