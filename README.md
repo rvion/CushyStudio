@@ -34,9 +34,7 @@ npm start
 
 <div style='display:flex;gap:1rem;'>
 
-![](docs/static/img/screenshots/2023-10-18-22-12-01.png)
-
-<img src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='height:25rem'></img>
+<img src='docs/static/img/screenshots/2023-10-18-22-12-01.png' style='width:60%'></img> <img src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:30%'></img>
 
 </div>
 
