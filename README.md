@@ -12,6 +12,49 @@
 
 ![](docs/static/img/screenshots/2023-10-18-21-40-09.png)
 
+---
+
+# Overview
+
+🎭 Cushy is made both for `Tinkereers` and for `artists`
+
+<table style='width:100%'>
+<thead>
+<tr>
+<th>
+
+# For artists
+
+</th>
+<th>
+
+# For Tinkerers
+
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+
+-   Simple and non technical `Actions`
+
+    -   per use-case UI
+    -   simple widgets
+    -
+
+</td>
+<td>
+
+-   a full Action creation SDK
+-   Deep integration with ComfyUI graph editor
+-   a powerful **action publishing**
+
+</td>
+</tr>
+</tbody>
+</table>
+
 # Installation
 
 Ensure you have
@@ -31,51 +74,84 @@ npm start
 
 ---
 
-# Overview
+# Intro Guide For Tinkerers
 
-🎭 Cushy is made both for `Tinkereers` and for `artists`
+`🛋️ CushyStudio` comes packed with feature to allow you to create your own AI-powered image and video creation tools.
 
-<table class="tg">
-<thead>
-<tr>
-<th class="tg-0pky">
+In Cushy, tools are called `Actions`.
 
-# For artists
+Creating actions is easy because `🛋️ CushyStudio`
 
-</th>
-<th class="tg-0pky">
+1. on startup, ensure `CushyStudio` is connected to some `ComfyUI` server
 
-# For Tinkerers
+    - a whole `typescript SDK` will be generated in the `schema/` folder
+    - All your custom nodes, models, images will be converted to `enums`, `classes`, `helpers`, etc allowing you to create actions with maximum type safety and completion.
 
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
+1. create a folder in the `actions/` subfolder at the root
+1. create any `myaction.ts` file inside this folder
+1. open the whole CushyStudio repository in `vscode`
 
--   a full Action creation SDK
--   Deep integration with ComfyUI graph editor
--   a powerful **action publishing**
+    - 👉 open the whole CushyStudio installed repository
+    - NOT just the action folder, NOR the action file itself, but
 
-</td>
-<td>
+1. initialize your action from some basic code or generated code from existing workflows
 
--   Simple and non technical `Actions`
+    ```ts
+    action('demo1-basic', {
+        author: 'rvion',
+        // A. define the UI
+        ui: (form) => ({
+            positive: form.str({ label: 'Positive', default: 'flower' }),
+        }),
+        // B. defined the execution logic
+        run: async (action, form) => {
+            //  build a ComfyUI graph
+            const graph = action.nodes
+            const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'albedobaseXL_v02.safetensors' })
+            const seed = action.randomSeed()
+            const sampler = graph.KSampler({
+                seed: seed,
+                steps: 20,
+                cfg: 14,
+                sampler_name: 'euler',
+                scheduler: 'normal',
+                denoise: 0.8,
+                model: ckpt,
+                positive: graph.CLIPTextEncode({ text: form.positive, clip: ckpt }),
+                negative: graph.CLIPTextEncode({ text: '', clip: ckpt }),
+                latent_image: graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 }),
+            })
 
-    -   per use-case UI
-    -   simple widgets
+            graph.SaveImage({
+                images: graph.VAEDecode({ samples: sampler, vae: ckpt }),
+                filename_prefix: 'ComfyUI',
+            })
 
-</td>
-</tr>
-</tbody>
-</table>
+            // run the graph you built
+            await action.PROMPT()
+        },
+    })
+    ```
 
----
+1. see how actions look like by dropping any ComfyUI `workflow` or `image` into the action and looking at the conver
 
-## Details
+An Action is a file containing
 
-## A marketplace of community-made Actions
+-   A UI definition (widgets, form, styles, default values, tabs, etc...) (a bit like gradio in python)
+-   A piece of code that runs your action
+-   ... more stuff
+
+## Publish your action
+
+Publishing your action is easy !
+
+-   Create a github repository.
+-   Commit your actions files.
+-   open an issue asking to add your action to the list of actions.
+
+📋 if you already have a
+
+To get started building your action
 
 ## A powerful `Action` creation SDK
 
@@ -112,7 +188,7 @@ https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-2945
 
 Layers, efects, masks, blending modes, ...and more. Always one click away
 
-![](docs/static/img/screenshots/2023-09-29-22-40-45.png)
+![](docs/static/img/screenshots/2023-10-18-22-51-22.png)
 
 ## Easy to extend
 

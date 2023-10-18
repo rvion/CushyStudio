@@ -1,28 +1,33 @@
 action('demo1-basic', {
-    // SOON !
-    author: 'featherice',
-    ui: () => ({}),
-    run: async ($) => {
-        const ckpt = $.nodes.CheckpointLoaderSimple({ ckpt_name: 'albedobaseXL_v02.safetensors' })
-        const latent = $.nodes.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 })
-        const positive = $.nodes.CLIPTextEncode({ text: 'masterpiece, (chair:1.3)', clip: ckpt })
-        const negative = $.nodes.CLIPTextEncode({ text: '', clip: ckpt })
-        const sampler = $.nodes.KSampler({
-            seed: $.randomSeed(),
+    author: 'rvion',
+    // A. define the UI
+    ui: (form) => ({
+        positive: form.str({ label: 'Positive', default: 'flower' }),
+    }),
+    // B. defined the execution logic
+    run: async (action, form) => {
+        //  build a ComfyUI graph
+        const graph = action.nodes
+        const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'albedobaseXL_v02.safetensors' })
+        const sampler = graph.KSampler({
+            seed: action.randomSeed(),
             steps: 20,
             cfg: 14,
             sampler_name: 'euler',
             scheduler: 'normal',
             denoise: 0.8,
             model: ckpt,
-            positive,
-            negative,
-            latent_image: latent,
+            positive: graph.CLIPTextEncode({ text: form.positive, clip: ckpt }),
+            negative: graph.CLIPTextEncode({ text: '', clip: ckpt }),
+            latent_image: graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 }),
         })
-        const vae = $.nodes.VAEDecode({ samples: sampler, vae: ckpt })
 
-        $.nodes.SaveImage({ filename_prefix: 'ComfyUI', images: vae })
-        await $.PROMPT()
-        // super
+        graph.SaveImage({
+            images: graph.VAEDecode({ samples: sampler, vae: ckpt }),
+            filename_prefix: 'ComfyUI',
+        })
+
+        // run the graph you built
+        await action.PROMPT()
     },
 })
