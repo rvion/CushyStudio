@@ -77,9 +77,14 @@ body {
 /*  */
 
 /* .rs-panel {background: #373737; flex-shrink: 0; border-radius: 0!important;} */
-.rs-panel .rs-panel.dark, .rs-panel.dark {background: #1e1e1e; flex-shrink: 0; border-radius: 0!important;}
+#CushyStudio.dark{background: '#1e1e1e'}
+#CushyStudio.dark{background: '#1e1e1e'}
+
+#CushyStudio.white
+#CushyStudio.white
+
 .rs-panel.nobg {background: none; flex-shrink: 0; border-radius: 0!important;}
-.rs-panel .rs-panel {background: #464646; flex-shrink: 0;}
+/* .rs-panel .rs-panel {background: #464646; flex-shrink: 0;} */
 
 /* .col-folder {background: black !important;} */
 .col-info {background: #3d5282 !important;}
@@ -172,38 +177,8 @@ body {
 
 /* :focus-visible { outline: none; } */
 
-.noscrollbar::-webkit-scrollbar {
-    display: none;
-}
-
 .smalltitle { font-weight: bold; }
-
-/* ------ react-split-pane ------ */
-.react-split__sash.react-split__sash--vertical:hover {
-    background-color: #8f8fc288;
-}
-.react-split__sash.react-split__sash--vertical {
-    /* background-color: #8f8fc211; */
-    transform: translateX(-50%);
-    width: .4rem !important;
-}
-.react-split__sash.react-split__sash--horizontal:hover {
-    background-color: #8f8fc288;
-}
-.react-split__sash.react-split__sash--horizontal {
-    /* background-color: #8f8fc211; */
-    transform: translateY(-50%);
-    height: .4rem !important;
-}
-
-.react-split__pane {
-    overflow: auto;
-    padding: 0 0rem;
-}
-
-.material-symbols-outlined{
-    font-size: 1.3em;
-}
+.material-symbols-outlined{ font-size: 1.3em; }
 
 
 /* ------ rsuite/messages ------ */
@@ -257,23 +232,22 @@ body {
 
 /* scrollbar ----------------------- */
 
-*::-webkit-scrollbar {
-    width: 20px;
-    height: 20px;
-}
-*::-webkit-scrollbar-corner {
-    background: rgba(0,0,0,0);
-}
+/* THEME */
+#CushyStudio.dark *::-webkit-scrollbar-thumb { background-color: #333333; }
+#CushyStudio.light *::-webkit-scrollbar-thumb { background-color: #c1c1c1; }
+
+/*  */
+.noscrollbar::-webkit-scrollbar { display: none; }
+
+*::-webkit-scrollbar { width: 20px; height: 20px; }
+*::-webkit-scrollbar-corner { background: rgba(0,0,0,0); }
+*::-webkit-scrollbar-track { background-color: rgba(0,0,0,0); }
 *::-webkit-scrollbar-thumb {
-    background-color: #333333;
     border-radius: 6px;
     border: 4px solid rgba(0,0,0,0);
     background-clip: content-box;
     min-width: 24px;
     min-height: 24px;
-}
-*::-webkit-scrollbar-track {
-    background-color: rgba(0,0,0,0);
 }
 /*  */
 

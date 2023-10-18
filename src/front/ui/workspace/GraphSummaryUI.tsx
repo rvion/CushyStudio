@@ -10,7 +10,7 @@ import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: GraphL }) {
     const graph = p.graph
     return (
-        <Panel tw='dark relative [min-width:2rem]'>
+        <Panel tw='relative [min-width:2rem]'>
             <div className='absolute top-2 right-0'>
                 <ButtonDownloadFilesUI graph={graph} />
                 <ButtonOpenInComfyUI graph={graph} />
