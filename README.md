@@ -32,6 +32,14 @@ npm start
 -   create tailor-made UI on top of your ComfyUI workflow.
 -   only display relevant widgets
 
+<div style='display:flex;gap:1rem;'>
+
+![](docs/static/img/screenshots/2023-10-18-22-12-01.png)
+
+<img src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='height:25rem'></img>
+
+</div>
+
 ## Work with remote ComfyUI as if they were local
 
 -   automatically download images in your local outputs folder
