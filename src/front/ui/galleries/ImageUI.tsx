@@ -13,7 +13,7 @@ import { useImageDrag } from './dnd'
 export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
     const image = p.img
     const st = useSt()
-    const GalleryImageWidth = st.gallerySize
+    const GalleryImageWidth = st.gallerySizeStr
     const [{ opacity }, dragRef] = useImageDrag(image)
 
     const IMG =

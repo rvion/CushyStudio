@@ -1,9 +1,9 @@
+import type { PossibleActionFile } from 'src/back/PossibleActionFile'
+import type { RelativePath } from 'src/utils/fs/BrandedPaths'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
-import type { ToolID, ToolL } from './Tool'
-import type { PossibleActionFile } from 'src/back/PossibleActionFile'
-import type { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 import type { SchemaL } from './Schema'
+import type { ToolID, ToolL } from './Tool'
 
 import { LiveRef } from '../db/LiveRef'
 import { LiveRefOpt } from '../db/LiveRefOpt'

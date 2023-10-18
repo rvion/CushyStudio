@@ -132,8 +132,14 @@ export class STATE {
     setAction = (action: UIPage) => (this._action = action)
 
     // gallery
+    get gallerySizeStr() {
+        return `${this.gallerySize}px`
+    }
+    set gallerySize(v: number) {
+        this.configFile.update({ galleryImageSize: v })
+    }
     get gallerySize() {
-        return `${this.configFile.value.galleryImageSize ?? 48}px`
+        return this.configFile.value.galleryImageSize ?? 48
     }
 
     createTsConfigCustomIfMissing = () => {

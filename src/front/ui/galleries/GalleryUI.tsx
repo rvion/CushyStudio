@@ -1,8 +1,6 @@
-import type { FolderL } from 'src/models/Folder'
-
 import { observer } from 'mobx-react-lite'
+import { Slider } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
-import { GalleryFolderUI } from './GalleryFolderUI'
 import { ImageUI } from './ImageUI'
 import { useImageDrop } from './dnd'
 
@@ -20,7 +18,15 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                 style={dropStyle}
                 // style={{ width: '3.4rem', ...dropStyle }}
             >
-                {st.preview ? <img style={{ width: st.gallerySize, height: st.gallerySize }} src={st.preview.url} /> : null}
+                <Slider
+                    tw='m-2'
+                    style={{ width: '10rem' }}
+                    min={32}
+                    max={200}
+                    onChange={(v) => (st.gallerySize = v)}
+                    value={st.gallerySize}
+                ></Slider>
+                {st.preview ? <img style={{ width: st.gallerySizeStr, height: st.gallerySizeStr }} src={st.preview.url} /> : null}
                 {/* <div className='text-center'>Images</div> */}
                 {/* <IconButton size='xs' appearance='link' icon={<>📂</>}></IconButton> */}
 
@@ -33,7 +39,6 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                 {/* </div> */}
                 {/* </div> */}
             </div>
-
             {/*  EXTRA FOLDERS */}
             {/* {st.db.folders.map((v: FolderL) => {
                 return (
