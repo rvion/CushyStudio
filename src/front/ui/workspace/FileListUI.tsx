@@ -15,7 +15,7 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
         <>
             <Tree
                 expandItemValues={tb.expandedPaths}
-                tw='overflow-x-hidden overflow-y-auto flex-grow'
+                tw='overflow-x-hidden overflow-y-auto flex-grow h-full'
                 key={st.toolbox.updatedAt}
                 data={st.toolbox.treeData}
                 renderTreeIcon={(x) => {

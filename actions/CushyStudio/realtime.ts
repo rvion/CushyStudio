@@ -112,7 +112,7 @@ action('Prompt-V1', {
 
         const scribble = await flow.loadImageAnswer(p.startImage)
         const positive = graph.ControlNetApply({
-            image: scribble,
+            image: graph.ImageInvert({ image: scribble }),
             strength: p.strength,
             conditioning: graph.CLIPTextEncode({ clip: flow.AUTO, text: positiveText }),
             control_net: (t) => t.ControlNetLoader({ control_net_name: p.cnet }),

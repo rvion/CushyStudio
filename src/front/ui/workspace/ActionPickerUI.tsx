@@ -11,7 +11,7 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     return (
         <div
             //
-            className='flex flex-col flex-grow'
+            className='flex flex-col flex-grow h-full'
             style={{ borderRight: '1px solid #2d2d2d' }}
         >
             <SectionTitleUI label='ACTIONS' className='bg-gray-800 mb-2'>

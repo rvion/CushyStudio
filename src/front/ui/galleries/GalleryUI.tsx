@@ -35,7 +35,7 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
             </div>
 
             {/*  EXTRA FOLDERS */}
-            {st.db.folders.map((v: FolderL) => {
+            {/* {st.db.folders.map((v: FolderL) => {
                 return (
                     <GalleryFolderUI //
                         direction='horizontal'
@@ -43,7 +43,7 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                         folder={v}
                     />
                 )
-            })}
+            })} */}
         </div>
     )
 })
