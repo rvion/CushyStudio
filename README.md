@@ -29,13 +29,15 @@ quickly switch between various ComfyUI setups (local machine, remote machine, cl
 
 |                                                                                 |                                                                                               |
 | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| in `CONFIG.json` <br/> ![](docs/static/img/screenshots/2023-10-18-21-41-49.png) | ![](https://github.com/rvion/CushyStudio/assets/2150990/cf3027e2-28cb-41e5-a21a-589d5b6b54bd) |
+| in `CONFIG.json` <br/> ![](docs/static/img/screenshots/2023-10-18-21-41-49.png) | https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-294572450b32 |
 
-<!-- ![](docs/static/img/screenshots/2023-10-18-21-41-49.png)
 
-https://github.com/rvion/CushyStudio/assets/2150990/cf3027e2-28cb-41e5-a21a-589d5b6b54bd
 
--->
+
+https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-294572450b32
+
+
+
 
 ## 1. Turn any ComfyUI workflow into a powerful Action with dedicated UI custom execution logic
 
