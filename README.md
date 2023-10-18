@@ -63,22 +63,21 @@
 
 -   🚀 The most `Practical` toolset to build actions
 
-    -   Pre-configured ecosystem,
-    -   NO INSTALL, NO SETUP
-    -   great way to learn Stable Diffusion concepts
+    -   Pre-configured ecosystem: NO SETUP NEEDED
+    -   built-in `ComfyUI` to `Action` converter
+    -   Graphical Action builder
     -   a full `typescript Action SDK` + compiler to go further
 
 -   🧠 `ComfyUI` engine At it's core
 
+    -   ALL Custom nodes are supported
     -   deep integration with ComfyUI Graph
     -   a well-though interface to explore and play with nodes
 
 -   💪 from 0 to 100 in no time
 
-    -   get started with automatic conversion of ComfyUI workflows to Actions
-    -   grow your set of prefabs, like sub-workflows, but on steroids
-    -   modularize your work
-    -   share it with the world
+    -   modularize, reuse, grow your toolet
+    -   share your actions with the world
 
 </td>
 </tr>
@@ -108,6 +107,12 @@ npm start
 
 When you start `Cushy` ... TODO
 
+## See it in action
+
+TODO: place video here
+
+# Features
+
 ## Work with remote ComfyUI as if they were local
 
 -   automatically download images in your local outputs folder
@@ -127,6 +132,18 @@ https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-2945
 ## ComfyUI compatible: convert workflow to Action.
 
 `🛋️ CushyStudio` is directly compatible with `ComfyUI` workflow json format and images. Add them to the action folder to quickly use them inside Cushy.
+
+## Real-Time enabled
+
+https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852b17894dc
+
+## Built-in CivitAI integration
+
+![](docs/static/img/screenshots/2023-10-19-00-31-02.png)
+
+-   ✅ embedded Civitai browser
+-   ✅ Civitai custom ComfyUI Nodes support
+-   ✅ dedicated Civitai input widgets to augment your own actions
 
 ## Built-in full-featured Image editor
 
