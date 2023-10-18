@@ -26,7 +26,7 @@ export async function createMP4FromImages(
 
     // Construct the full ffmpeg command
     // const ffmpegCommand = `ffmpeg ${inputArgs} ${encodingArgs} "${outputVideo}"`
-    const transparent = opts?.transparent ? '-pix_fmt yuva420p ' : ''
+    const transparent = opts?.transparent ? '-pix_fmt yuva420p ' : '-pix_fmt yuva420p ' // 🔴
     const ffmpegCommand = `ffmpeg -f concat -safe 0 -r ${inputFPS} -i "${outputVideoFramePaths}" -c:v libx264 -vf "fps=60" ${transparent}"${outputVideo}"`
 
     console.info(`Working directory: ${workingDirectory}`)
