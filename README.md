@@ -141,17 +141,45 @@ An Action is a file containing
 -   A piece of code that runs your action
 -   ... more stuff
 
-## Publish your action
+## Publish your Action pack
 
 Publishing your action is easy !
 
--   Create a github repository.
--   Commit your actions files.
--   open an issue asking to add your action to the list of actions.
+1.  Create a github repository. (https://github.com/new)
 
-📋 if you already have a
+    ![](docs/static/img/screenshots/2023-10-18-23-15-11.png)
 
-To get started building your action
+2.  Commit your actions files (follow instructions given by github on the new repository page).
+
+3.  Open an issue asking to add your `action pack` to the `marketplace`.
+
+    -   https://github.com/rvion/CushyStudio/issues/new/choose
+
+<details>
+<summary>SHOW EXAMPLE</summary>
+
+```sh
+cd actions/rvion
+
+git init
+Initialized empty Git repository in /Users/loco/dev/CushyStudio/actions/rvion/.git/
+
+git add .
+
+git commit -m "first commit"
+[master (root-commit) 602fab1] first commit
+ 4 files changed, 146 insertions(+)
+ create mode 100644 mask-face.ts
+ create mode 100644 rembg.ts
+ create mode 100644 replace-part.ts
+ create mode 100644 test.ts
+
+git remote add origin git@github.com:rvion/cushy-example-actions.git
+```
+
+then open an issue asking [there](https://github.com/rvion/CushyStudio/issues/new/choose)
+
+</details>
 
 ## A powerful `Action` creation SDK
 
