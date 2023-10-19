@@ -1,5 +1,7 @@
+import { rvion } from './cards/_rvion.author'
+
 action('remmg', {
-    author: 'rvion',
+    author: rvion,
     priority: 1,
     help: 'quick remove bg with one or many nodes',
     ui: (form) => ({

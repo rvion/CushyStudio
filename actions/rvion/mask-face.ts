@@ -1,5 +1,7 @@
+import { rvion } from './cards/_rvion.author'
+
 action('mask-face', {
-    author: 'rvion',
+    author: rvion,
     help: 'extract a mak for the face', // <- action help text
     // requirement: (kk) => ({
     //     image: kk.IMAGE({}),

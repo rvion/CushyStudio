@@ -1,5 +1,8 @@
+import { rvion } from './cards/_rvion.author'
+
 action('🎭 replace', {
-    author: 'rvion',
+    author: rvion,
+    categories: ['edit', 'util'],
     help: 'replace a part with anothoer one', // <- action help text
     priority: 1,
     ui: (form) => ({
