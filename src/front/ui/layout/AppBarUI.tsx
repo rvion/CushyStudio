@@ -74,25 +74,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 Reload
             </Button>
 
-            <div tw='flex'>
-                <div>
-                    <SelectPicker
-                        //
-
-                        value={st.layout.currentPerspectiveName}
-                        data={st.layout.allPerspectives}
-                    />
-                </div>
-                <Button
-                    //
-                    size='xs'
-                    // appearance='subtle'
-                    startIcon={<I.Reload />}
-                    onClick={() => st.layout.resetDefault()}
-                >
-                    Reset
-                </Button>
-            </div>
             {/* <IconButton
                 size='sm'
                 appearance='subtle'
@@ -107,6 +88,20 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 create project
             </Button> */}
             <div className='flex-grow'></div>
+            <div tw='flex items-center'>
+                layout:
+                <div>
+                    <SelectPicker
+                        //
+
+                        value={st.layout.currentPerspectiveName}
+                        data={st.layout.allPerspectives}
+                    />
+                </div>
+                <Button startIcon={<I.Reload />} onClick={() => st.layout.resetDefault()}>
+                    Reset Layout
+                </Button>
+            </div>
             <DBHealthUI />
             {/* <Button
                 // startIcon={<I.AddOutline />}

@@ -21,9 +21,15 @@ const ui = (form: FormBuilder) => ({
     }),
 
     // Main cards
-    illustrationJack: form.str({ default: 'gold, Knight', group: 'illusration' }),
-    illustrationQueen: form.str({ default: 'gold, Queen', group: 'illusration' }),
-    illustrationKing: form.str({ default: 'gold, King', group: 'illusration' }),
+    illustrations: form.group({
+        layout: 'H',
+        className: 'p-2 bg-red-800',
+        items: () => ({
+            Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
+            Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
+            King: form.str({ default: 'gold, King', group: 'illusration' }),
+        }),
+    }),
 
     // [UI] THEME --------------------------------------
     generalTheme: form.string({ default: 'fantasy' }),
@@ -42,7 +48,8 @@ const ui = (form: FormBuilder) => ({
     }),
 
     // theme5: form.string({ default: 'winter', group: 'theme' }),
-    logos: form.groupOpt({
+    logos: form.group({
+        className: 'flex flex-wrap',
         items: () => ({
             spades: form.imageOpt({}),
             hearts: form.imageOpt({}),
@@ -173,11 +180,12 @@ action('cards V3', {
             const theme = themeFor[suit as keyof typeof themeFor]
             const suitColor = p.colors[suit as keyof typeof p.colors]
             const suitLogo = suitsImages.get(suit)!
+            const illustrations = p.illustrations
             const basePrompt =
                 {
-                    J: p.illustrationJack,
-                    Q: p.illustrationQueen,
-                    K: p.illustrationKing,
+                    J: illustrations.Jack,
+                    Q: illustrations.Queen,
+                    K: illustrations.King,
                 }[value] ?? `background`
 
             const positiveText = `masterpiece, monster, monster-girl, pixar, strong expression rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${p.generalTheme}, 4k`

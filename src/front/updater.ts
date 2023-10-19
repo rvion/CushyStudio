@@ -83,10 +83,17 @@ export class Updater {
         return this.getCommitCountForBranch('origin/master')
     }
 
+    commandErrors = new Map<string, any>()
+
     getCommitCountForBranch = (branch: string): Promise<number> => {
         return new Promise((resolve, reject) => {
-            exec(`git rev-list --count ${branch}`, (error, stdout) => {
-                if (error) return reject(error)
+            const command = `git rev-list --count ${branch}`
+            this.commandErrors.delete(command)
+            exec(command, (error, stdout) => {
+                if (error) {
+                    this.commandErrors.set(command, error)
+                    return -1
+                }
                 const commitCount = parseInt(stdout.trim(), 10)
                 resolve(commitCount)
             })

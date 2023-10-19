@@ -8,7 +8,11 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Requesta
     const req = p.req
 
     return (
-        <div tw={[req.input.layout === 'H' ? 'flex' : null]} className={req.input.className}>
+        <div
+            //
+            tw={[req.input.layout === 'H' ? 'flex' : null]}
+            className={req.input.className}
+        >
             {Object.entries(req.state.values).map(([rootKey, sub], ix) => {
                 return (
                     <div key={rootKey}>

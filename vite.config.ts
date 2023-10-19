@@ -19,8 +19,8 @@ export default defineConfig({
         watch: {
             ignored: [
                 //
-                'actions/',
-                'actions/**/*',
+                '**/actions/**/*',
+                'actions/**/*.tsx',
                 'tsconfig.custom.json',
                 'tsconfig.json',
                 '**/tsconfig.custom.json',
@@ -45,37 +45,37 @@ export default defineConfig({
     },
 })
 
-function dynamicModulePlugin() {
-    return {
-        name: 'dynamic-module-plugin',
-        load(id: any) {
-            console.log(`2| ${id}`)
-            if (id.startsWith('__window__')) {
-                const final = id.replace('__window__', '')
-                return readFileSync(`src/syms/${final}.js`, 'utf-8')
-                //                 const exists = existsSync(`syms/${final}.txt`)
-                //                 if (!exists) throw new Error(`no syms for ${final}`)
-                //                 const syms = JSON.parse(readFileSync(`syms/${final}.txt`, 'utf-8'))
-                //                 console.log(`3| ${final}`)
-                //                 const output = `const _ = window.require('${final}')
-                // export default _
-                // ${syms.map((x: string) => `export const ${x} = _.${x}`).join('\n')}
-                //                 `
-                //                 writeFileSync(id, output)
-                //                 return output
-                //             }
-            }
-            return null
-        },
-    }
-}
+// function dynamicModulePlugin() {
+//     return {
+//         name: 'dynamic-module-plugin',
+//         load(id: any) {
+//             console.log(`2| ${id}`)
+//             if (id.startsWith('__window__')) {
+//                 const final = id.replace('__window__', '')
+//                 return readFileSync(`src/syms/${final}.js`, 'utf-8')
+//                 //                 const exists = existsSync(`syms/${final}.txt`)
+//                 //                 if (!exists) throw new Error(`no syms for ${final}`)
+//                 //                 const syms = JSON.parse(readFileSync(`syms/${final}.txt`, 'utf-8'))
+//                 //                 console.log(`3| ${final}`)
+//                 //                 const output = `const _ = window.require('${final}')
+//                 // export default _
+//                 // ${syms.map((x: string) => `export const ${x} = _.${x}`).join('\n')}
+//                 //                 `
+//                 //                 writeFileSync(id, output)
+//                 //                 return output
+//                 //             }
+//             }
+//             return null
+//         },
+//     }
+// }
 
-/*
-// run this in node
-const modulesToCache = [ 'process', 'path', 'fs', 'os', 'stream', 'zlib', 'util']
-for (const x of modulesToCache){
+// /*
+// // run this in node
+// const modulesToCache = [ 'process', 'path', 'fs', 'os', 'stream', 'zlib', 'util']
+// for (const x of modulesToCache){
 
-    const out1  = JSON.stringify(Object.keys(require(x)))
-    require('fs').writeFileSync(`syms/${x}.txt`, out1 )
-}
-*/
+//     const out1  = JSON.stringify(Object.keys(require(x)))
+//     require('fs').writeFileSync(`syms/${x}.txt`, out1 )
+// }
+// */
