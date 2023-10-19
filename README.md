@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🛋 CushyStudio (alpha)
+#  🛋️ CushyStudio (Alpha)
 
-## The Easiest and most Powerful Stable Diffusion frontend
+## The **easiest** and most **powerful** Stable Diffusion frontend
 
 [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
 
@@ -12,9 +12,9 @@
 
 ## Discover a world of `Actions`
 
--   CushyStudio `Actions` are interractive generative "apps" with dedicated UIs.
--   They make it super `easy` and `fun` to explore all generative art ahs to offer.
--   CushyStudio allow you to `run`, `create` and `share` Actions`
+-   CushyStudio ***Actions*** are interactive generative "apps" with dedicated UIs.
+-   They make it super easy and fun to explore all generative art has to offer.
+-   CushyStudio allows you to run, create, and share ***Actions***
 
 <div style='display:flex;gap:1rem;'>
 
@@ -22,14 +22,14 @@
 
 </div>
 
-🎭 Cushy is made both for `Tinkereers` and for `artists`
+🎭 Cushy is made both for Tinkereers and Artists
 
 <table style='width:100%'>
 <thead>
 <tr>
 <th>
 
-# For artists
+# For Artists
 
 </th>
 <th>
@@ -43,41 +43,41 @@
 <tr>
 <td>
 
--   Non technical `Actions` interfaces
+-   Non-technical ***Actions*** interfaces
 
-    -   per use-case UI
-    -   simple widgets
+    -   Per use-case UI
+    -   Simple widgets
 
--   `Fast` Previews, `Real Time` feedback
+-   Fast previews, real-time feedback
 
-    -   interractive at it's core
-    -   real-time actions with continuous generations
+    -   Interactive at its core
+    -   Real-time actions with continuous generations
 
--   `Built-in` commodiities
+-   Built-in commodities
 
-    -   `Image` and `Mask` editors
-    -   `modular layout` to keep every creative tool at hand
+    -   Image and Mask editors
+    -   Modular Layout to keep every creative tool at hand
 
 </td>
 <td>
 
--   🚀 The most `Practical` toolset to build actions
+-   🚀 The most practical toolset to build actions
 
     -   Pre-configured ecosystem: NO SETUP NEEDED
-    -   built-in `ComfyUI` to `Action` converter
+    -   Built-in ***ComfyUI*** to ***Action*** converter
     -   Graphical Action builder
-    -   a full `typescript Action SDK` + compiler to go further
+    -   A full ***TypeScript Action SDK*** + Compiler to go further
 
--   🧠 `ComfyUI` engine At it's core
+-   🧠 ***ComfyUI*** engine At its core
 
-    -   ALL Custom nodes are supported
-    -   deep integration with ComfyUI Graph
-    -   a well-though interface to explore and play with nodes
+    -   All custom nodes are supported
+    -   Deep integration with ***ComfyUI Graph***
+    -   A well-thought interface to explore and play with nodes
 
--   💪 from 0 to 100 in no time
+-   💪 From 0 to 100 in no time
 
-    -   modularize, reuse, grow your toolet
-    -   share your actions with the world
+    -   Modularize, reuse, and grow your toolset
+    -   Share your actions with the world
 
 </td>
 </tr>
@@ -88,13 +88,13 @@
 
 # Installation
 
-Ensure you have
+Ensure you have:
 
 -   [NodeJS](https://nodejs.org/en/download) installed (18 or higher)
 -   [ComfyUI](https://github.com/comfyanonymous/ComfyUI) installed
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed
 
-Install CushyStudio by running these command in a terminal
+Install CushyStudio by running these commands in a terminal
 
 ```sh
 git clone https://github.com/rvion/CushyStudio
@@ -105,7 +105,7 @@ npm start
 
 # Quickstart Guide
 
-When you start `Cushy` ... TODO
+When you start `CushyStudio` ... TODO
 
 ## See it in action
 
@@ -115,25 +115,25 @@ TODO: place video here
 
 ## Work with remote ComfyUI as if they were local
 
--   automatically download images in your local outputs folder
--   automatically upload files
+-   Automatically download images in your local outputs folder
+-   Automatically upload files
 
 ## Switch between ComfyUI remotes like you would
 
--   ✅ quickly switch between various ComfyUI setups
--   ⏳ parallelize work across multiple instances
+-   ✅ Quickly switch between various ComfyUI setups
+-   ⏳ Parallelize work across multiple instances
 
-edit the list of ComfyUI setups in `CONFIG.json`
+Edit the list of ComfyUI setups in `CONFIG.json`
 
 ![](docs/static/img/screenshots/2023-10-18-21-41-49.png)
 
 https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-294572450b32
 
-## ComfyUI compatible: convert workflow to Action.
+## ComfyUI compatible: Convert workflow to Action.
 
-`🛋️ CushyStudio` is directly compatible with `ComfyUI` workflow json format and images. Add them to the action folder to quickly use them inside Cushy.
+***🛋️ CushyStudio*** is directly compatible with ***ComfyUI*** workflow json format and images. Add them to the action folder to quickly use them inside CushyStudio.
 
-## Real-Time enabled
+## Real-time enabled
 
 https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852b17894dc
 
@@ -141,28 +141,28 @@ https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852
 
 ![](docs/static/img/screenshots/2023-10-19-00-31-02.png)
 
--   ✅ embedded Civitai browser
+-   ✅ Embedded Civitai browser
 -   ✅ Civitai custom ComfyUI Nodes support
--   ✅ dedicated Civitai input widgets to augment your own actions
+-   ✅ Dedicated Civitai input widgets to augment your own actions
 
-## Built-in full-featured Image editor
+## Built-in full-featured Image Editor
 
-Layers, efects, masks, blending modes, ...and more. Always one click away
+Layers, effects, masks, blending modes, ...and more. Always one click away
 
 ![](docs/static/img/screenshots/2023-10-18-22-51-22.png)
 
 ## Easy to extend
 
-👉 In case you have a problem, can you check the logs and report what you see ?
+👉 In case you have a problem, check the logs and report what you see
 
 <details>
-  <summary>click here to see how to reveal the debug console</summary>
+  <summary> Click here to see how to reveal the debug console</summary>
 
 ![](docs/static/img/screenshots/2023-10-03-22-36-49.png)
 
 </details>
 
-## 3. create your own Actions to streamline any image or video production
+## 3. Create your own Actions to streamline any image or video production
 
 ![](docs/static/img/screenshots/2023-09-29-22-35-25.png)
 
@@ -172,14 +172,14 @@ Layers, efects, masks, blending modes, ...and more. Always one click away
   <img alt="Dark" src="./docs/static/img/screenshots/2023-09-30-08-40-13.png" width="45%">
 </p>
 
-1. define your own UI
-2. build one or many prompts with custom logic in typescript
-3. type-safe experience pushed to the MAXIMUM
-    1. every single value / enum is typed
-    2. a built-in standard library made to quickly build your dream workflow
-    3. use lambda to get completion only for the node that produce value needed
+1. Define your own UI
+2. Build one or many prompts with custom logic in TypeScript
+3. Type-safe experience pushed to the MAXIMUM
+    1. Every single value/enum is typed
+    2. A built-in standard library made to quickly build your dream workflow
+    3. Use lambda to get completion only for the node that produces the value needed
 
-<!-- global config file to change path to ComfyUI:
+<!-- global config file to change the path to ComfyUI:
 
 ```
 ./workspace/CONFIG.json
@@ -199,25 +199,25 @@ Layers, efects, masks, blending modes, ...and more. Always one click away
 
 # Quickstart Guide For Action Creators
 
-`🛋️ CushyStudio` comes packed with feature to allow you to create your own AI-powered image and video creation tools.
+***🛋️ CushyStudio*** comes packed with features to allow you to create your own AI-powered image and video creation tools.
 
 In Cushy, tools are called `Actions`.
 
 Creating actions is easy because `🛋️ CushyStudio`
 
-1. on startup, ensure `CushyStudio` is connected to some `ComfyUI` server
+1. On startup, ensure ***CushyStudio*** is connected to some ***ComfyUI*** server
 
-    - a whole `typescript SDK` will be generated in the `schema/` folder
-    - All your custom nodes, models, images will be converted to `enums`, `classes`, `helpers`, etc allowing you to create actions with maximum type safety and completion.
+    - A whole ***TypeScript Action SDK*** will be generated in the `schema/` folder
+    - All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create actions with maximum type safety and completion.
 
-1. create a folder in the `actions/` subfolder at the root
-1. create any `myaction.ts` file inside this folder
-1. open the whole CushyStudio repository in `vscode`
+1. Create a folder in the `actions/` subfolder at the root
+1. Create any `myaction.ts` file inside this folder
+1. Open the whole ***CushyStudio*** repository in ***Visual Studio Code***
 
-    - 👉 open the whole CushyStudio installed repository
-    - NOT just the action folder, NOR the action file itself, but
+    - 👉 Open the whole CushyStudio installed repository
+    - NOT just the action folder, NOR the action file itself, but:
 
-1. initialize your action from some basic code or generated code from existing workflows
+1. Initialize your action from some basic code or generated code from existing workflows
 
     ```ts
     action('demo1-basic', {
@@ -256,23 +256,23 @@ Creating actions is easy because `🛋️ CushyStudio`
     })
     ```
 
-1. see how actions look like by dropping any ComfyUI `workflow` or `image` into the action and looking at the conver
+1. See how actions look like by dropping any ***ComfyUI*** `workflow` or `image` into the action and looking at the `converted.ts`
 
 An Action is a file containing
 
--   A UI definition (widgets, form, styles, default values, tabs, etc...) (a bit like gradio in python)
+-   An UI definition (widgets, form, styles, default values, tabs, etc...) (a bit like Gradio in Python)
 -   A piece of code that runs your action
--   ... more stuff
+-   ...And more
 
 ## Publish your Action pack
 
-Publishing your action is easy !
+Publishing your action is easy!
 
-1.  Create a github repository. (https://github.com/new)
+1.  Create a GitHub repository. (https://github.com/new)
 
     ![](docs/static/img/screenshots/2023-10-18-23-15-11.png)
 
-2.  Commit your actions files (follow instructions given by github on the new repository page).
+2.  Commit your actions files (follow instructions given by Git Hub on the new repository page).
 
 3.  Open an issue asking to add your `action pack` to the `marketplace`.
 
@@ -300,6 +300,6 @@ git commit -m "first commit"
 git remote add origin git@github.com:rvion/cushy-example-actions.git
 ```
 
-then open an issue asking [there](https://github.com/rvion/CushyStudio/issues/new/choose)
+Then open an issue asking [there](https://github.com/rvion/CushyStudio/issues/new/choose)
 
 </details>
