@@ -35,11 +35,16 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
                                 </div>
                             </div>
                             <div>
-                                <UpdateBtnUI updater={p.updater} />
                                 {p.isInstalled ? (
-                                    <Button size='sm' startIcon={<span className='material-symbols-outlined'>check_circle</span>}>
-                                        Disable
-                                    </Button>
+                                    <div>
+                                        <UpdateBtnUI updater={p.updater} />
+                                        <Button
+                                            size='sm'
+                                            startIcon={<span className='material-symbols-outlined'>check_circle</span>}
+                                        >
+                                            Disable
+                                        </Button>
+                                    </div>
                                 ) : (
                                     <Button
                                         loading={p.installK.isRunning}

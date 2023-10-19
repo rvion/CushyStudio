@@ -48,7 +48,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater 
                     <span className='text-green-400 material-symbols-outlined'>check_circle</span>
                 )}
                 <div className={updater.updateAvailable ? 'text-orange-400' : 'text-green-100'}>
-                    {updater.commitCountOnHead ? `V${updater.currentVersion}` : <Loader />}
+                    {updater.infos.headCommitsCount ? `V${updater.currentVersion}` : <Loader />}
                 </div>
             </div>
         </Whisper>

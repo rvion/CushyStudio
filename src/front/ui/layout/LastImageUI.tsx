@@ -1,6 +1,4 @@
-import React, { Component } from 'react'
-
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import type { ImageID } from 'src/models/Image'
 
 import { observer } from 'mobx-react-lite'

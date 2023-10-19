@@ -59,6 +59,7 @@ export class ActionPack {
     // UGLY CODE
     private _isUpdatingStars = false
     private updateStars = () => {
+        return
         if (this._isUpdatingStars) return
         this._isUpdatingStars = true
         // ugly

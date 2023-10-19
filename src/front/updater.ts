@@ -1,12 +1,8 @@
+import simpleGit, { SimpleGit } from 'simple-git'
 import { exec } from 'child_process'
 import { makeAutoObservable } from 'mobx'
 import { STATE } from './state'
 import { relative } from 'path'
-
-// Mock of the ShowPopup function. Replace with the actual imported function.
-function ShowPopup(message: string) {
-    console.log(`[Popup]: ${message}`)
-}
 
 // git fetch: Fetches the latest changes from the remote repository without making any changes to the local repository.
 // git rev-parse origin/master: Retrieves the commit hash of the last commit on the master branch of the remote repository.
@@ -14,16 +10,6 @@ function ShowPopup(message: string) {
 // git rev-parse HEAD: Retrieves the commit hash of the current HEAD, i.e., the latest commit in the current branch.
 
 export class Updater {
-    private _lastCommitAvailable: string = ''
-    private _currentCommit: string = ''
-    private _commitCountOnHead: number = 0
-    private _commitCountOnMaster: number = 0
-
-    get lastCommitAvailable() {return this._lastCommitAvailable} // prettier-ignore
-    get currentCommit() {return this._currentCommit} // prettier-ignore
-    get commitCountOnHead() {return this._commitCountOnHead} // prettier-ignore
-    get commitCountOnMaster() {return this._commitCountOnMaster} // prettier-ignore
-
     ready = false
 
     private renderVersion = (commitCount: number) => {
@@ -33,16 +19,31 @@ export class Updater {
         return `${major}.${minor}.${patch}`
     }
     get currentVersion() {
-        return this.renderVersion(this._commitCountOnHead)
+        return this.renderVersion(this.infos.headCommitsCount)
     }
     get nextVersion() {
-        return this.renderVersion(this._commitCountOnMaster)
+        return this.renderVersion(this.infos.originCommitsCount)
     }
     get updateAvailable() {
         if (!this.ready) return false
-        if (!this._lastCommitAvailable) return false
-        if (!this._currentCommit) return false
-        return this._lastCommitAvailable !== this._currentCommit
+        if (!this.infos.originCommitHash) return false
+        if (!this.infos.headCommitHash) return false
+        return this.infos.originCommitHash !== this.infos.headCommitHash
+    }
+
+    updateToLastCommitAvailable(): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.log('UPDATING...')
+            const command = 'git pull origin master'
+            exec(command, { cwd: this.p.cwd }, (error) => {
+                if (error) return reject(error)
+                exec('npm install', (error) => {
+                    if (error) return reject(error)
+                    this.log('UPDATED')
+                    resolve()
+                })
+            })
+        })
     }
 
     private ensureSingleRunningSetIntervalInstance = (p: NodeJS.Timeout) => {
@@ -73,87 +74,82 @@ export class Updater {
     log = (...args: any[]) => console.log(`[🚀] updater for (${this.relativeFolder})`, ...args)
 
     async checkForUpdates() {
+        this.commandErrors.clear()
         try {
             this.log('checking for new version')
-            this._commitCountOnHead = await this.getCommitCountForCurrentBranch()
-            this.log('current version:', this.currentVersion)
-            await this.fetchLastCommitAvailable()
-            await this.updateCurrentCommit()
-            this._commitCountOnMaster = await this.getCommitCountForMaster()
-            this.log('next version:', this.nextVersion)
-            if (this._lastCommitAvailable !== this._currentCommit)
-                ShowPopup('A new version is available! Would you like to update?')
+            const infos = await getGitInfo(this.p.cwd)
+            if (infos == null) {
+                this.commandErrors.set('git', '❌ failure')
+                return
+            }
+            this.infos = infos
             this.ready = true
         } catch (error) {
             console.error(`Error checking for updates: ${(error as any).message}`)
         }
     }
-
-    getCommitCountForCurrentBranch(): Promise<number> {
-        return this.getCommitCountForBranch('HEAD')
-    }
-
-    getCommitCountForMaster(): Promise<number> {
-        return this.getCommitCountForBranch('origin/master')
+    infos: GitRepoInfos = {
+        headCommitHash: '',
+        originCommitHash: '',
+        headCommitsCount: 0,
+        originCommitsCount: 1,
+        mainBranchName: '',
     }
 
     commandErrors = new Map<string, any>()
     get hasErrors() {
         return this.commandErrors.size > 0
     }
+}
 
-    getCommitCountForBranch = (branch: string): Promise<number> => {
-        return new Promise((resolve, reject) => {
-            const command = `git rev-list --count ${branch}`
-            this.commandErrors.delete(command)
-            this.log(`🦊 executing command`)
-            exec(command, { cwd: this.p.cwd }, (error, stdout) => {
-                this.log(`🦊 got `, error, stdout)
-                if (error) {
-                    this.commandErrors.set(command, error)
-                    return -1
-                }
-                const commitCount = parseInt(stdout.trim(), 10)
-                resolve(commitCount)
-            })
-        })
+export type GitRepoInfos = {
+    mainBranchName: string
+    headCommitsCount: number
+    originCommitsCount: number
+    headCommitHash: string
+    originCommitHash: string
+}
+
+async function getGitInfo(cwd: string): Promise<Maybe<GitRepoInfos>> {
+    const git: SimpleGit = simpleGit(cwd)
+
+    // Fetch latest from remote
+    await git.fetch()
+
+    async function getHeadCommitsCount(refName: string) {
+        const logs = await git.log([refName])
+        return logs.all.length
     }
 
-    fetchLastCommitAvailable(): Promise<string> {
-        return new Promise((resolve, reject) => {
-            const command = 'git fetch && git rev-parse origin/master'
-            exec(command, { cwd: this.p.cwd }, (error, stdout) => {
-                if (error) return reject(error)
-                this._lastCommitAvailable = stdout.trim()
-                this.log('last Commit Available is', this._lastCommitAvailable)
-                resolve(this._lastCommitAvailable)
-            })
-        })
+    // Get the default remote branch name
+    const remoteInfo = await git.remote(['show', 'origin'])
+    if (remoteInfo == null) return
+
+    const headBranchMatch = remoteInfo.match(/HEAD branch: (\S+)/)
+    if (!headBranchMatch) {
+        console.error("Couldn't determine the default branch.")
+        return
     }
 
-    updateToLastCommitAvailable(): Promise<void> {
-        return new Promise((resolve, reject) => {
-            this.log('UPDATING...')
-            const command = 'git pull origin master'
-            exec(command, { cwd: this.p.cwd }, (error) => {
-                if (error) return reject(error)
-                exec('npm install', (error) => {
-                    if (error) return reject(error)
-                    this.log('UPDATED')
-                    resolve()
-                })
-            })
-        })
-    }
+    const defaultBranch = headBranchMatch[1]
 
-    updateCurrentCommit(): Promise<string> {
-        return new Promise((resolve, reject) => {
-            exec('git rev-parse HEAD', { cwd: this.p.cwd }, (error, stdout) => {
-                if (error) return reject(error)
-                this._currentCommit = stdout.trim()
-                this.log('current Commit is', this._currentCommit)
-                resolve(this._currentCommit)
-            })
-        })
+    // Number of commits in HEAD
+    const headCommitsCount = await getHeadCommitsCount('HEAD')
+
+    // Number of commits in origin/<main branch>
+    const originCommitsCount = await getHeadCommitsCount(`origin/${defaultBranch}`)
+
+    // Hash of commit in HEAD
+    const headCommitHash = await git.revparse(['HEAD'])
+
+    // Hash of commit in origin/<main branch>
+    const originCommitHash = await git.revparse([`origin/${defaultBranch}`])
+
+    return {
+        mainBranchName: defaultBranch,
+        headCommitsCount: headCommitsCount,
+        originCommitsCount: originCommitsCount,
+        headCommitHash: headCommitHash,
+        originCommitHash: originCommitHash,
     }
 }
