@@ -12,6 +12,15 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater 
             speaker={
                 <Popover>
                     <UpdaterErrorUI updater={updater} />
+                    <pre>{updater.p.cwd}</pre>
+                    <Button
+                        onClick={() => {
+                            updater.checkForUpdates()
+                        }}
+                        startIcon={<span className='material-symbols-outlined'>refresh</span>}
+                    >
+                        FORCE REFRESH
+                    </Button>
                 </Popover>
             }
         >

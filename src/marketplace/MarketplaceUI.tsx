@@ -27,7 +27,8 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
                                     <IconButton
                                         size='xs'
                                         as='a'
-                                        href={p.data.github}
+                                        target='_blank'
+                                        href={p.githubURL}
                                         appearance='link'
                                         startIcon={<span className='material-symbols-outlined'>open_in_new</span>}
                                     />

@@ -1,6 +1,7 @@
 import { exec } from 'child_process'
 import { makeAutoObservable } from 'mobx'
 import { STATE } from './state'
+import { relative } from 'path'
 
 // Mock of the ShowPopup function. Replace with the actual imported function.
 function ShowPopup(message: string) {
@@ -46,16 +47,19 @@ export class Updater {
 
     private ensureSingleRunningSetIntervalInstance = (p: NodeJS.Timeout) => {
         const __global__ = globalThis as any
-        if (__global__.updaterInterval) clearInterval(__global__.updaterInterval)
-        __global__.updaterInterval = p
+        const cache = (__global__.__UPDATERCACHE__ ??= {})
+        if (cache[this.p.cwd]) clearInterval(cache[this.p.cwd])
+        cache[this.p.cwd] = p
     }
 
+    relativeFolder: string
     constructor(
         public st: STATE,
         public p: { cwd: string },
     ) {
         // initial udpate
-        const startDelay = Math.floor(Math.random() * 1000 * 10) // ~10seconds
+        this.relativeFolder = relative(this.st.rootPath, p.cwd)
+        const startDelay = Math.floor(Math.random() * 1000 * 2) // ~10seconds
         setTimeout(() => this.checkForUpdates(), startDelay)
 
         // Fetch updates in the background every 5 minutes
@@ -66,15 +70,17 @@ export class Updater {
         makeAutoObservable(this)
     }
 
-    private async checkForUpdates() {
+    log = (...args: any[]) => console.log(`[🚀] updater for (${this.relativeFolder})`, ...args)
+
+    async checkForUpdates() {
         try {
-            console.log('[🚀] updater: checking for new version')
+            this.log('checking for new version')
             this._commitCountOnHead = await this.getCommitCountForCurrentBranch()
-            console.log('[🚀] updater: current version:', this.currentVersion)
+            this.log('current version:', this.currentVersion)
             await this.fetchLastCommitAvailable()
             await this.updateCurrentCommit()
             this._commitCountOnMaster = await this.getCommitCountForMaster()
-            console.log('[🚀] updater: next version:', this.nextVersion)
+            this.log('next version:', this.nextVersion)
             if (this._lastCommitAvailable !== this._currentCommit)
                 ShowPopup('A new version is available! Would you like to update?')
             this.ready = true
@@ -100,7 +106,9 @@ export class Updater {
         return new Promise((resolve, reject) => {
             const command = `git rev-list --count ${branch}`
             this.commandErrors.delete(command)
+            this.log(`🦊 executing command`)
             exec(command, { cwd: this.p.cwd }, (error, stdout) => {
+                this.log(`🦊 got `, error, stdout)
                 if (error) {
                     this.commandErrors.set(command, error)
                     return -1
@@ -117,7 +125,7 @@ export class Updater {
             exec(command, { cwd: this.p.cwd }, (error, stdout) => {
                 if (error) return reject(error)
                 this._lastCommitAvailable = stdout.trim()
-                console.log('[🚀] updater: last Commit Available is', this._lastCommitAvailable)
+                this.log('last Commit Available is', this._lastCommitAvailable)
                 resolve(this._lastCommitAvailable)
             })
         })
@@ -125,13 +133,13 @@ export class Updater {
 
     updateToLastCommitAvailable(): Promise<void> {
         return new Promise((resolve, reject) => {
-            console.log('[🚀] updater: UPDATING...')
+            this.log('UPDATING...')
             const command = 'git pull origin master'
             exec(command, { cwd: this.p.cwd }, (error) => {
                 if (error) return reject(error)
                 exec('npm install', (error) => {
                     if (error) return reject(error)
-                    console.log('[🚀] updater: UPDATED')
+                    this.log('UPDATED')
                     resolve()
                 })
             })
@@ -143,7 +151,7 @@ export class Updater {
             exec('git rev-parse HEAD', { cwd: this.p.cwd }, (error, stdout) => {
                 if (error) return reject(error)
                 this._currentCommit = stdout.trim()
-                console.log('[🚀] updater: current Commit is', this._currentCommit)
+                this.log('current Commit is', this._currentCommit)
                 resolve(this._currentCommit)
             })
         })

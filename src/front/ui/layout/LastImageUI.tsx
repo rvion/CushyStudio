@@ -1,3 +1,6 @@
+import React, { Component } from 'react'
+
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch'
 import type { ImageID } from 'src/models/Image'
 
 import { observer } from 'mobx-react-lite'
@@ -11,15 +14,20 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
     if (imgs == null) return null
     return (
         <div tw='w-full h-full'>
-            <img
-                style={{
-                    maxHeight: '100%',
-                    maxWidth: '100%',
-                    objectFit: 'contain',
-                }}
-                src={imgs.url}
-                alt='last generated image'
-            />
+            <TransformWrapper>
+                <TransformComponent>
+                    {/* <img src="image.jpg" alt="test" /> */}
+                    <img
+                        style={{
+                            maxHeight: '100%',
+                            maxWidth: '100%',
+                            objectFit: 'contain',
+                        }}
+                        src={imgs.url}
+                        alt='last generated image'
+                    />
+                </TransformComponent>
+            </TransformWrapper>
         </div>
     )
 })

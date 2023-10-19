@@ -90,6 +90,7 @@
         "react-mentions": "^4.4.10",
         "react-zoom-pan-pinch": "3.2.0",
         "rsuite": "^5.40.0",
+        "simple-git": "^3.20.0",
         "ws": "^8.14.2",
         "xml2js": "^0.6.2",
         "zod": "^3.22.4"
