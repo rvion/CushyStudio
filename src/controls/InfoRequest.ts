@@ -17,6 +17,7 @@ import { deepCopyNaive, exhaust } from 'src/utils/ComfyUtils'
 
 // requestable are a closed union
 export type Requestable =
+    | Requestable_color
     | Requestable_str
     | Requestable_strOpt
     | Requestable_prompt
@@ -87,6 +88,28 @@ export class Requestable_str implements IRequest<'str', Requestable_str_input, R
     }
     get serial(): Requestable_str_serial { return this.state }
     get result(): Requestable_str_output { return this.state.val }
+}
+
+// 🅿️ str ==============================================================================
+export type Requestable_color_input = ReqInput<{ default?: string; }>
+export type Requestable_color_serial = { type: 'color', active: true; val: string }
+export type Requestable_color_state  = { type: 'color', active: true; val: string }
+export type Requestable_color_output = string
+export interface Requestable_color extends IWidget<'color', Requestable_color_input, Requestable_color_serial, Requestable_color_state, Requestable_color_output> {}
+export class Requestable_color implements IRequest<'color', Requestable_color_input, Requestable_color_serial, Requestable_color_state, Requestable_color_output> {
+    type = 'color' as const
+    state: Requestable_color_state
+    constructor(
+        public builder: FormBuilder,
+        public schema: SchemaL,
+        public input: Requestable_color_input,
+        serial?: Requestable_color_serial,
+    ) {
+        this.state = serial ?? { type:'color', active: true, val: input.default ?? '' }
+        makeAutoObservable(this)
+    }
+    get serial(): Requestable_color_serial { return this.state }
+    get result(): Requestable_color_output { return this.state.val }
 }
 
 // 🅿️ strOpt ==============================================================================
@@ -916,6 +939,7 @@ export class FormBuilder {
         if (type === 'selectOne')          return new Requestable_selectOne          (this, this.schema, input, serial)
         if (type === 'selectMany')         return new Requestable_selectMany         (this, this.schema, input, serial)
         if (type === 'size')               return new Requestable_size               (this, this.schema, input, serial)
+        if (type === 'color')              return new Requestable_color              (this, this.schema, input, serial)
         console.log(`🔴 unknown type ${type}`)
         exhaust(type)
     }
@@ -923,6 +947,7 @@ export class FormBuilder {
 
     // autoUI             =                                                  (p: Requestable_str_input                , serial?: Requestable_str_serial                ) => new Requestable_str                 (this, this.schema, p, serial)
     string             =                                                  (p: Requestable_str_input                , serial?: Requestable_str_serial                ) => new Requestable_str                 (this, this.schema, p, serial)
+    color              =                                                  (p: Requestable_color_input              , serial?: Requestable_color_serial              ) => new Requestable_color               (this, this.schema, p, serial)
     stringOpt          =                                                  (p: Requestable_strOpt_input             , serial?: Requestable_strOpt_serial             ) => new Requestable_strOpt              (this, this.schema, p, serial)
     str                =                                                  (p: Requestable_str_input                , serial?: Requestable_str_serial                ) => new Requestable_str                 (this, this.schema, p, serial)
     strOpt             =                                                  (p: Requestable_strOpt_input             , serial?: Requestable_strOpt_serial             ) => new Requestable_strOpt              (this, this.schema, p, serial)

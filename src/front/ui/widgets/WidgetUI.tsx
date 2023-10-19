@@ -21,6 +21,7 @@ import { WidgetStrOptUI } from './WidgetStrOptUI'
 import { WidgetStrUI } from './WidgetStrUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
+import { WidgetColorUI } from './WidgetCololrUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Requestable
@@ -95,6 +96,7 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; foc
     if (req instanceof R.Requestable_prompt)             return <WidgetPromptUI      req={req} />
     if (req instanceof R.Requestable_promptOpt)          return <WidgetPromptUI      req={req} />
     if (req instanceof R.Requestable_loras)              return <WidgetLorasUI       req={req} />
+    if (req instanceof R.Requestable_color)              return <WidgetColorUI       req={req} />
     if (req instanceof R.Requestable_selectMany)         return <>TODO</>
     if (req instanceof R.Requestable_selectManyOrCustom) return <>TODO</>
     if (req instanceof R.Requestable_selectOne)          return <WidgetSelectOneUI   req={req} />
