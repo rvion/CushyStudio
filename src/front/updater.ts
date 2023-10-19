@@ -50,12 +50,20 @@ export class Updater {
         __global__.updaterInterval = p
     }
 
-    constructor(public st: STATE) {
-        makeAutoObservable(this)
+    constructor(
+        public st: STATE,
+        public p: { cwd: string },
+    ) {
+        // initial udpate
+        const startDelay = Math.floor(Math.random() * 1000 * 10) // ~10seconds
+        setTimeout(() => this.checkForUpdates(), startDelay)
+
         // Fetch updates in the background every 5 minutes
-        this.checkForUpdates()
         const interval = (st.configFile.value.checkUpdateEveryMinutes ?? 5) * 60 * 1000
         this.ensureSingleRunningSetIntervalInstance(setInterval(() => this.checkForUpdates(), interval))
+
+        // mobx stuff
+        makeAutoObservable(this)
     }
 
     private async checkForUpdates() {
@@ -92,7 +100,7 @@ export class Updater {
         return new Promise((resolve, reject) => {
             const command = `git rev-list --count ${branch}`
             this.commandErrors.delete(command)
-            exec(command, (error, stdout) => {
+            exec(command, { cwd: this.p.cwd }, (error, stdout) => {
                 if (error) {
                     this.commandErrors.set(command, error)
                     return -1
@@ -105,7 +113,8 @@ export class Updater {
 
     fetchLastCommitAvailable(): Promise<string> {
         return new Promise((resolve, reject) => {
-            exec('git fetch && git rev-parse origin/master', (error, stdout) => {
+            const command = 'git fetch && git rev-parse origin/master'
+            exec(command, { cwd: this.p.cwd }, (error, stdout) => {
                 if (error) return reject(error)
                 this._lastCommitAvailable = stdout.trim()
                 console.log('[🚀] updater: last Commit Available is', this._lastCommitAvailable)
@@ -117,7 +126,8 @@ export class Updater {
     updateToLastCommitAvailable(): Promise<void> {
         return new Promise((resolve, reject) => {
             console.log('[🚀] updater: UPDATING...')
-            exec('git pull origin master', (error) => {
+            const command = 'git pull origin master'
+            exec(command, { cwd: this.p.cwd }, (error) => {
                 if (error) return reject(error)
                 exec('npm install', (error) => {
                     if (error) return reject(error)
@@ -130,7 +140,7 @@ export class Updater {
 
     updateCurrentCommit(): Promise<string> {
         return new Promise((resolve, reject) => {
-            exec('git rev-parse HEAD', (error, stdout) => {
+            exec('git rev-parse HEAD', { cwd: this.p.cwd }, (error, stdout) => {
                 if (error) return reject(error)
                 this._currentCommit = stdout.trim()
                 console.log('[🚀] updater: current Commit is', this._currentCommit)

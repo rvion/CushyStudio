@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { Button, IconButton, Panel, Rate } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { GithubUserUI } from 'src/front/GithubAvatarUI'
+import { UpdateBtnUI } from 'src/front/ui/layout/UpdateBtnUI'
 
 export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
     const st = useSt()
@@ -33,6 +34,7 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
                                 </div>
                             </div>
                             <div>
+                                <UpdateBtnUI updater={p.updater} />
                                 {p.isInstalled ? (
                                     <Button size='sm' startIcon={<span className='material-symbols-outlined'>check_circle</span>}>
                                         Disable

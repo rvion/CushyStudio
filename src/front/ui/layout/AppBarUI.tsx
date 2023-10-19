@@ -80,7 +80,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 icon={st.cushyStatus?.connected ? <I.CheckRound color='green' /> : <I.ExpiredRound color='red' />}
             /> */}
 
-            <UpdateBtnUI />
+            <UpdateBtnUI updater={st.updater} />
             <WebsocketIndicatorUI />
             <SchemaIndicatorUI />
 

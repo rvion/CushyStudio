@@ -6,6 +6,7 @@ import { ManualPromise } from 'src/utils/ManualPromise'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { Marketplace } from './makerplace'
+import { Updater } from 'src/front/updater'
 
 export type ActionPackData = {
     name: string
@@ -18,12 +19,12 @@ export class ActionPack {
     actionPackFolder: AbsolutePath
     authorFolder: AbsolutePath
     authorName: string
+    updater: Updater
     installK: ManualPromise<true>
 
     get st() {
         return this.makretplace.st
     }
-
     constructor(
         public makretplace: Marketplace,
         public data: ActionPackData,
@@ -33,13 +34,10 @@ export class ActionPack {
         this.authorName = parts[0]
         this.authorFolder = asAbsolutePath(join(this.st.actionsFolderPath, parts[0]))
         this.actionPackFolder = asAbsolutePath(join(this.st.actionsFolderPath, this.data.github))
-
+        this.updater = new Updater(this.makretplace.st, { cwd: this.actionPackFolder })
         this.installK = new ManualPromise<true>()
 
-        if (existsSync(this.actionPackFolder)) {
-            this.installK.resolve(true)
-        }
-
+        if (existsSync(this.actionPackFolder)) this.installK.resolve(true)
         makeAutoObservable(this)
     }
 
