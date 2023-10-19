@@ -53,7 +53,7 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
                             </div>
                         </div>
                     </div>
-                    {p.installK.logs && (
+                    {p.installK.logs.length > 0 && (
                         <div>
                             <pre>{JSON.stringify(p.installK.logs)}</pre>
                         </div>

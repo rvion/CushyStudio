@@ -16,11 +16,11 @@ export class Marketplace {
             github: 'VinsiGit/Cushy_Action',
             description: 'Gradients. Reinvented 🐠',
         },
-        {
-            name: 'Avatar Maker',
-            github: 'noellealarie/CushyStudio',
-            description: 'You can create your own avatar with this action pack',
-        },
+        // {
+        //     name: 'Avatar Maker',
+        //     github: 'noellealarie/CushyStudio',
+        //     description: 'You can create your own avatar with this action pack',
+        // },
     ]
 
     constructor(public st: STATE) {
