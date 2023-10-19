@@ -1,6 +1,6 @@
 <div align="center">
 
-#  🛋️ CushyStudio (Alpha)
+# 🛋️ CushyStudio (Alpha)
 
 ## The **easiest** and most **powerful** Stable Diffusion frontend
 
@@ -12,9 +12,9 @@
 
 ## Discover a world of `Actions`
 
--   CushyStudio ***Actions*** are interactive generative "apps" with dedicated UIs.
+-   CushyStudio **_Actions_** are interactive generative "apps" with dedicated UIs.
 -   They make it super easy and fun to explore all generative art has to offer.
--   CushyStudio allows you to run, create, and share ***Actions***
+-   CushyStudio allows you to run, create, and share **_Actions_**
 
 <div style='display:flex;gap:1rem;'>
 
@@ -29,12 +29,12 @@
 <tr>
 <th>
 
-# For Artists
+## For Artists
 
 </th>
 <th>
 
-# For Tinkerers
+## For Tinkerers
 
 </th>
 </tr>
@@ -43,7 +43,7 @@
 <tr>
 <td>
 
--   Non-technical ***Actions*** interfaces
+-   Non-technical **_Actions_** interfaces
 
     -   Per use-case UI
     -   Simple widgets
@@ -64,14 +64,14 @@
 -   🚀 The most practical toolset to build actions
 
     -   Pre-configured ecosystem: NO SETUP NEEDED
-    -   Built-in ***ComfyUI*** to ***Action*** converter
+    -   Built-in **_ComfyUI_** to **_Action_** converter
     -   Graphical Action builder
-    -   A full ***TypeScript Action SDK*** + Compiler to go further
+    -   A full **_TypeScript Action SDK_** + Compiler to go further
 
--   🧠 ***ComfyUI*** engine At its core
+-   🧠 **_ComfyUI_** engine At its core
 
     -   All custom nodes are supported
-    -   Deep integration with ***ComfyUI Graph***
+    -   Deep integration with **_ComfyUI Graph_**
     -   A well-thought interface to explore and play with nodes
 
 -   💪 From 0 to 100 in no time
@@ -131,7 +131,7 @@ https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-2945
 
 ## ComfyUI compatible: Convert workflow to Action.
 
-***🛋️ CushyStudio*** is directly compatible with ***ComfyUI*** workflow json format and images. Add them to the action folder to quickly use them inside CushyStudio.
+**_🛋️ CushyStudio_** is directly compatible with **_ComfyUI_** workflow json format and images. Add them to the action folder to quickly use them inside CushyStudio.
 
 ## Real-time enabled
 
@@ -199,20 +199,20 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 
 # Quickstart Guide For Action Creators
 
-***🛋️ CushyStudio*** comes packed with features to allow you to create your own AI-powered image and video creation tools.
+**_🛋️ CushyStudio_** comes packed with features to allow you to create your own AI-powered image and video creation tools.
 
 In Cushy, tools are called `Actions`.
 
 Creating actions is easy because `🛋️ CushyStudio`
 
-1. On startup, ensure ***CushyStudio*** is connected to some ***ComfyUI*** server
+1. On startup, ensure **_CushyStudio_** is connected to some **_ComfyUI_** server
 
-    - A whole ***TypeScript Action SDK*** will be generated in the `schema/` folder
+    - A whole **_TypeScript Action SDK_** will be generated in the `schema/` folder
     - All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create actions with maximum type safety and completion.
 
 1. Create a folder in the `actions/` subfolder at the root
 1. Create any `myaction.ts` file inside this folder
-1. Open the whole ***CushyStudio*** repository in ***Visual Studio Code***
+1. Open the whole **_CushyStudio_** repository in **_Visual Studio Code_**
 
     - 👉 Open the whole CushyStudio installed repository
     - NOT just the action folder, NOR the action file itself, but:
@@ -256,7 +256,7 @@ Creating actions is easy because `🛋️ CushyStudio`
     })
     ```
 
-1. See how actions look like by dropping any ***ComfyUI*** `workflow` or `image` into the action and looking at the `converted.ts`
+1. See how actions look like by dropping any **_ComfyUI_** `workflow` or `image` into the action and looking at the `converted.ts`
 
 An Action is a file containing
 
