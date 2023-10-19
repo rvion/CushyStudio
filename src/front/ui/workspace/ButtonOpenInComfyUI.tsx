@@ -27,7 +27,8 @@ export const ButtonOpenInComfyUI = observer(function ButtonOpenInComfyUI_(p: { g
                     ev.stopPropagation()
                     const prompt = await graph?.json_workflow()
                     if (prompt == null) return
-                    st.setAction({ type: 'comfy', json: prompt })
+                    st.layout.addComfy(prompt)
+                    // st.setAction({ type: 'comfy', json: prompt })
                     // console.log('>>>🟢', { jsonWorkflow })
                     // const path = graph.getTargetWorkflowFilePath()
                     // console.log('>>>🟢', { path })

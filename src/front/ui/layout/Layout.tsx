@@ -15,6 +15,8 @@ import { nanoid } from 'nanoid'
 import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
 import { LastImageUI } from './LastImageUI'
 import { HostListUI } from './HostListUI'
+import { ComfyUIUI } from '../workspace/ComfyUIUI'
+import { LiteGraphJSON } from 'src/core/LiteGraph'
 
 // still on phone
 enum Widget {
@@ -52,25 +54,48 @@ export class CushyLayoutManager {
 
     nextPaintIDx = 0
     addPaint = (imgID: ImageID) => {
-        // add a new tabset to the current tabset
-        const tabsetNode = this.model.getActiveTabset()!
+        return this._AddWithProps(Widget.Paint, { title: 'Paint', imgID })
+    }
+
+    addImage = (imgID: ImageID) => {
+        return this._AddWithProps(Widget.Image, { title: 'Image', imgID })
+    }
+
+    addComfy = (litegraphJson: LiteGraphJSON) => {
+        return this._AddWithProps(Widget.ComfyUI, { title: 'Comfy', litegraphJson })
+    }
+
+    _AddWithProps = <
+        T extends {
+            icon?: string
+            title: string
+        },
+    >(
+        widget: Widget,
+        p: T,
+    ): Maybe<FL.Node> => {
         const currentLayout = this.layoutRef.current
-        if (currentLayout == null) return console.log('❌ no currentLayout')
+        if (currentLayout == null) {
+            console.log('❌ no currentLayout')
+            return
+        }
 
         const nanoID = nanoid()
         currentLayout.addTabToTabSet('MAINTYPESET', {
-            component: Widget.Paint,
+            component: widget,
             id: nanoID,
-            icon: 'images/article.svg',
-            name: 'Grid ' + this.nextPaintIDx++,
-            // @ts-ignore
+            icon: p.icon,
+            name: p.title,
         })
 
         const tabAdded = this.model.getNodeById(nanoID)
-        // const tabAdded = tabsetNode.getChildren().find((node) => node.getId() === nanoID) as FL.TabNode
-        if (tabAdded == null) return console.log('❌ no tabAdded')
+        if (tabAdded == null) {
+            console.log('❌ no tabAdded')
+            return
+        }
         const extraData = (tabAdded as any)?.getExtraData()
-        extraData.imgID = imgID
+        Object.assign(extraData, p)
+        return tabAdded
     }
 
     factory = (node: FL.TabNode): React.ReactNode => {
@@ -83,15 +108,22 @@ export class CushyLayoutManager {
             const imgID = extraData.imgID // Retrieves the imgID from the extra data
             return <WidgetPaintUI action={{ type: 'paint', imageID: imgID }}></WidgetPaintUI> // You can now use imgID to instantiate your paint component properly
         }
+        if (component === Widget.Image) {
+            // 🔴 ensure this is type-safe
+            const imgID = extraData.imgID // Retrieves the imgID from the extra data
+            return <LastImageUI imageID={imgID}></LastImageUI> // You can now use imgID to instantiate your paint component properly
+        }
         if (component === Widget.Graph) return <GraphUI depth={1} />
-        if (component === Widget.ComfyUI) return <div>ComfyUI</div>
+        if (component === Widget.ComfyUI) {
+            const litegraphJson = extraData.litegraphJson // Retrieves the imgID from the extra data
+            return <ComfyUIUI litegraphJson={litegraphJson} />
+        }
         if (component === Widget.FileList) return <ActionPickerUI />
         if (component === Widget.Steps) return <StepListUI />
         if (component === Widget.LastGraph) return <LastGraphUI />
         if (component === Widget.LastIMage) return <LastImageUI />
         if (component === Widget.Civitai)
             return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0'></iframe>
-        if (component === Widget.Image) return <div>Image</div>
         if (component === Widget.Hosts) return <HostListUI />
 
         exhaust(component)
@@ -156,10 +188,13 @@ export class CushyLayoutManager {
                             },
                             {
                                 type: 'tabset',
-                                weight: 1,
+                                weight: 10,
                                 minWidth: 300,
                                 minHeight: 300,
-                                children: [this._persistentTab('Hosts', Widget.Hosts)],
+                                children: [
+                                    this._persistentTab('🎆 Gallery', Widget.Gallery),
+                                    this._persistentTab('Hosts', Widget.Hosts),
+                                ],
                             },
                         ],
                     },
@@ -175,14 +210,15 @@ export class CushyLayoutManager {
                                     //
                                     { type: 'tab', name: 'Graph', component: Widget.Graph },
                                     this._persistentTab('Civitai', Widget.Civitai, '/CivitaiLogo.png'),
+                                    this._persistentTab('ComfyUI', Widget.ComfyUI, '/ComfyUILogo.png'),
                                 ],
                             },
-                            {
-                                type: 'tabset',
-                                weight: 10,
-                                minHeight: 200,
-                                children: [this._persistentTab('🎆 Gallery', Widget.Gallery)],
-                            },
+                            // {
+                            //     type: 'tabset',
+                            //     weight: 10,
+                            //     minHeight: 200,
+                            //     children: [this._persistentTab('🎆 Gallery', Widget.Gallery)],
+                            // },
                         ],
                     },
                     {

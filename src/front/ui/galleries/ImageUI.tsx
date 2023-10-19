@@ -56,8 +56,9 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
                 //     st.currentAction = { type: 'paint', imageID: image.id }
                 // }}
                 onClick={() => {
-                    st.lightBox.opened = true
-                    st.lightBox.getImgs
+                    st.layout.addImage(image.id)
+                    // st.lightBox.opened = true
+                    // st.lightBox.getImgs
                 }}
             />
         )

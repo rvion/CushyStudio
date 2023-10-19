@@ -1,18 +1,18 @@
-import type { UIPageComfy } from 'src/front/UIAction'
+import type { LiteGraphJSON } from 'src/core/LiteGraph'
 
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
-import { useSt } from '../../../front/FrontStateCtx'
 import { Button } from 'rsuite'
+import { useSt } from '../../../front/FrontStateCtx'
 
-export const ComfyUIUI = observer(function ComfyUIUI_(p: { action: UIPageComfy }) {
+export const ComfyUIUI = observer(function ComfyUIUI_(p: { litegraphJson?: LiteGraphJSON }) {
     const st = useSt()
     const url = st.getServerHostHTTP()
 
     const loadFn = async () => {
         // ensure we have a flow ready to load
-        if (p.action.json == null) return
+        if (p.litegraphJson == null) return
 
         // ensure the iframe is ready
         const iframe = st.comfyUIIframeRef.current
@@ -37,7 +37,7 @@ export const ComfyUIUI = observer(function ComfyUIUI_(p: { action: UIPageComfy }
         // ;(window as any).cf = iframe
         // const json
         // y.app.handleFile
-        const flowJson = toJS(p.action.json)
+        const flowJson = toJS(p.litegraphJson)
         const flowJsonStr = JSON.stringify(flowJson)
         // console.log(flowJsonStr)
         // https://github.com/comfyanonymous/ComfyUI/blob/ba7dfd60f2ad80d436322b59f456409087a4a1c1/web/scripts/app.js#L1648C1-L1648C3
@@ -60,13 +60,14 @@ export const ComfyUIUI = observer(function ComfyUIUI_(p: { action: UIPageComfy }
         if (!st.comfyUIIframeRef.current) return
         loadFn()
     }, [st.comfyUIIframeRef.current])
+
     return (
         <>
-            <div className='absolute top-0 right-0'>
-                <Button appearance='ghost' size='sm' disabled={p.action.json == null} onClick={loadFn}>
+            {/* <div className='absolute top-0 right-0'>
+                <Button appearance='ghost' size='sm' disabled={p.litegraphJson == null} onClick={loadFn}>
                     Manual load in case it hasn't loaded
                 </Button>
-            </div>
+            </div> */}
             <iframe //
                 ref={st.comfyUIIframeRef}
                 src={url}

@@ -1,19 +1,17 @@
-import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import type { ImageL } from '../models/Image'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
 import type { CSCriticalError } from './CSCriticalError'
-import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
-import type { UIPage } from './UIAction'
 
-import { existsSync, mkdirSync, readFileSync, stat, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
+import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
+import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 
-import { resolve } from 'path'
 import { ProjectL } from 'src/models/Project'
-import { bytesToSize } from 'src/utils/fs/bytesToSize'
+import { ThemeManager } from 'src/theme/layoutTheme'
 import { CushyFileWatcher } from '../back/CushyFileWatcher'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { DanbooruTags } from '../booru/BooruLoader'
@@ -27,15 +25,13 @@ import { ComfySchemaJSON, ComfySchemaJSON_zod } from '../types/ComfySchemaJSON'
 import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebview'
 import { CodePrettier } from '../utils/CodeFormatter'
 import { exhaust } from '../utils/ComfyUtils'
+import { ManualPromise } from '../utils/ManualPromise'
 import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { ManualPromise } from '../utils/ManualPromise'
 import { readableStringify } from '../utils/stringifyReadable'
-import { LightBoxState } from './ui/LightBox'
-import { Updater } from './updater'
 import { CushyLayoutManager } from './ui/layout/Layout'
-import { ThemeManager } from 'src/theme/layoutTheme'
+import { Updater } from './updater'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -77,7 +73,6 @@ export class STATE {
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
     configFile: JsonFile<ConfigFile>
     updater: Updater
-    lightBox = new LightBoxState(() => this.db.images.values, false)
     hovered: Maybe<ImageL> = null
 
     toolbox: CushyFileWatcher
@@ -126,26 +121,11 @@ export class STATE {
     comfyUIIframeRef = createRef<HTMLIFrameElement>()
     expandNodes: boolean = false
 
-    // action
-    private _action: UIPage = { type: 'form' }
-    get action() { return this._action } // prettier-ignore
-    setAction = (action: UIPage) => (this._action = action)
-
     // gallery
-    get gallerySizeStr() {
-        return `${this.gallerySize}px`
-    }
-    set gallerySize(v: number) {
-        this.configFile.update({ galleryImageSize: v })
-    }
-    get gallerySize() {
-        return this.configFile.value.galleryImageSize ?? 48
-    }
+    get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
+    set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
+    get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
 
-    createTsConfigCustomIfMissing = () => {
-        const exists = existsSync('tsconfig.custom.json')
-        // if
-    }
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,

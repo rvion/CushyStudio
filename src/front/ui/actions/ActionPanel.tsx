@@ -26,10 +26,7 @@ export const PafUI = observer(function PafUI_(p: {}) {
                     <ResultWrapperUI res={paf.png} whenValid={(png) => <img src={`file://${png}`} alt='' />} />
                 )}
                 {paf.focus === 'workflow' && (
-                    <ResultWrapperUI
-                        res={paf.liteGraphJSON}
-                        whenValid={(png) => <ComfyUIUI action={{ type: 'comfy', json: png }} />}
-                    />
+                    <ResultWrapperUI res={paf.liteGraphJSON} whenValid={(png) => <ComfyUIUI litegraphJson={png} />} />
                 )}
                 {paf.focus === 'prompt' && (
                     <ResultWrapperUI

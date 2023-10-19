@@ -1,15 +1,17 @@
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import type { ImageID, ImageL } from 'src/models/Image'
+import type { STATE } from '../../state'
+
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
+import { runInAction } from 'mobx'
+import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
+import { join } from 'path'
 import { useLayoutEffect, useMemo } from 'react'
 import { Button, ButtonGroup } from 'rsuite'
-import { STATE } from '../../state'
-import { useSt } from '../../FrontStateCtx'
-import { UIPagePaint } from 'src/front/UIAction'
-import { runInAction } from 'mobx'
-import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { asRelativePath } from '../../../utils/fs/pathUtils'
-import { ImageL } from 'src/models/Image'
-import { join } from 'path'
+import { useSt } from '../../FrontStateCtx'
+
+export type UIPagePaint = { type: 'paint'; imageID?: ImageID }
 
 const getLayers = (): any => {
     return (document as any).getElementById('miniPaint').contentWindow.Layers
@@ -128,20 +130,29 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint
                     onClick={() => {
                         runInAction(() => {
                             minipaintState.saveImage()
-                            st.setAction({ type: 'form' })
                         })
                     }}
                 >
-                    OK
+                    OK (leave open)
+                </Button>
+                <Button
+                    size='sm'
+                    appearance='ghost'
+                    color='green'
+                    onClick={() => {
+                        runInAction(() => {
+                            minipaintState.saveImage()
+                        })
+                    }}
+                >
+                    OK (close)
                 </Button>
                 <Button
                     size='sm'
                     appearance='ghost'
                     color='red'
                     onClick={() => {
-                        runInAction(() => {
-                            st.setAction({ type: 'form' })
-                        })
+                        runInAction(() => {})
                     }}
                 >
                     Close
