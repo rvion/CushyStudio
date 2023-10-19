@@ -72,7 +72,7 @@ export class ComfyNode<
     }
 
     get color(): string {
-        return comfyColors[this.$schema.category]
+        return comfyColors[this.$schema.category] ?? '#aaa'
     }
 
     // static X: number = 1

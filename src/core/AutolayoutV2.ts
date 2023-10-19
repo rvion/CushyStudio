@@ -1,4 +1,4 @@
-import cytoscape from 'cytoscape'
+import cytoscape, { Stylesheet } from 'cytoscape'
 import type { GraphL } from '../models/Graph'
 import klay from 'cytoscape-klay'
 import { bang } from '../utils/bang'
@@ -36,33 +36,55 @@ export const runAutolayout = async (graph: GraphL): Promise<CytoJSON> => {
     for (const node of graph.nodes) {
         elements.push({
             data: {
+                // shape: 'rectangle',
+                label: node.$schema.nameInComfy,
                 id: node.uidNumber,
                 width: node.width,
                 height: node.height,
-            },
-            style: {
-                shape: 'rectangle',
-                width: node.width,
-                height: node.height,
+                color: node.color,
             },
         })
         for (const edge of node._incomingEdges()) {
             const from = bang(graph.nodes.find((n) => n.uid === edge.from)?.uidNumber)
             const to = node.uidNumber
             const data = {
+                label: edge.inputName,
                 id: `${from}-${edge.inputName}->${to}`,
                 source: from,
                 target: to,
             }
-            // ❌ console.log(data)
             elements.push({ data })
         }
     }
 
     // Create a new Cytoscape instance
+    const stylesheet: Stylesheet[] = [
+        {
+            selector: 'node',
+            style: {
+                label: 'data(label)',
+                shape: 'rectangle',
+                width: 'data(width)',
+                height: 'data(height)',
+                'background-color': 'data(color)',
+                'font-size': 6,
+            },
+        },
+        {
+            selector: 'edge',
+            style: {
+                'font-size': 6,
+                'curve-style': 'bezier',
+                'target-arrow-shape': 'triangle',
+                label: 'data(label)',
+                // width: 'data(weight)',
+            },
+        },
+    ]
     const cy = cytoscape({
         headless: true,
         elements: elements,
+        style: stylesheet,
         // layout: { name: 'grid' },
         styleEnabled: true,
     })
