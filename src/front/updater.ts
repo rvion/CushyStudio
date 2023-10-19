@@ -84,6 +84,9 @@ export class Updater {
     }
 
     commandErrors = new Map<string, any>()
+    get hasErrors() {
+        return this.commandErrors.size > 0
+    }
 
     getCommitCountForBranch = (branch: string): Promise<number> => {
         return new Promise((resolve, reject) => {
