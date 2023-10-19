@@ -28,10 +28,15 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
     const draft = p.draft
     const tool = draft.tool.item
     const { containerClassName, containerStyle } = draft.action.value ?? {}
-
+    const defaultContainerStyle = { maxWidth: '40rem', margin: '0 auto', padding: '1rem' }
     return (
         <draftContext.Provider value={draft} key={draft.id}>
-            <div className={containerClassName} style={toJS(containerStyle)} tw='m-4 fade-in flex flex-col flex-grow'>
+            <div
+                //
+                className={containerClassName}
+                style={toJS(containerStyle ?? defaultContainerStyle)}
+                tw='m-4 fade-in flex flex-col flex-grow'
+            >
                 <div tw='row items-center font-bold font justify-between'>
                     <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
                         <span>{tool.name}</span>
@@ -69,12 +74,13 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
                 <ScrollablePaneUI className='flex-grow '>
                     <div>{tool.data.description}</div>
                     <form
-                        className='p-2 mt-4'
+                        className='p-2 m-4'
                         style={{
                             border: '1px dashed #565656',
                             background: '#1e1e1e',
                             borderRadius: '0.5rem',
-                            boxShadow: '0 0 2rem #193558',
+                            // boxShadow: '0 0 2rem #193558',
+                            boxShadow: 'rgb(39 118 217) 0px 0px 2rem',
                         }}
                         onKeyUp={(ev) => {
                             // submit on meta+enter

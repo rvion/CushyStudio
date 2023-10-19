@@ -1,4 +1,6 @@
 import type { Theme } from 'src/theme/layoutTheme'
+import type { IJsonModel } from 'flexlayout-react'
+
 import { JsonFile } from './JsonFile'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { resolve } from 'path'
@@ -43,6 +45,7 @@ export type ConfigFile = {
     galleryMaxImages?: number
     /** defaults to 5 */
     checkUpdateEveryMinutes?: number
+    perspectives?: { [perspectiveName: string]: IJsonModel }
 }
 
 export const mkConfigFile = (): JsonFile<ConfigFile> => {

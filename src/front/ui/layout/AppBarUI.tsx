@@ -1,6 +1,6 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton } from 'rsuite'
+import { Button, ButtonGroup, IconButton, InputGroup, SelectPicker } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
 import { UpdateBtnUI } from './UpdateBtnUI'
@@ -73,6 +73,26 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             >
                 Reload
             </Button>
+
+            <div tw='flex'>
+                <div>
+                    <SelectPicker
+                        //
+
+                        value={st.layout.currentPerspectiveName}
+                        data={st.layout.allPerspectives}
+                    />
+                </div>
+                <Button
+                    //
+                    size='xs'
+                    // appearance='subtle'
+                    startIcon={<I.Reload />}
+                    onClick={() => st.layout.resetDefault()}
+                >
+                    Reset
+                </Button>
+            </div>
             {/* <IconButton
                 size='sm'
                 appearance='subtle'

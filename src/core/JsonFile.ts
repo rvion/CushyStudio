@@ -58,8 +58,12 @@ export class JsonFile<T extends object> {
     }
 
     /** update config then save it */
-    update = (configChanges: Partial<T>): true => {
-        Object.assign(this.value, configChanges)
+    update = (configChanges: Partial<T> | ((data: T) => void)): true => {
+        if (typeof configChanges === 'function') {
+            configChanges(this.value)
+        } else {
+            Object.assign(this.value, configChanges)
+        }
         return this.save()
     }
 

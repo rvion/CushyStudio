@@ -34,18 +34,57 @@ enum Widget {
     Hosts = 'Hosts',
 }
 
+type PerspectiveDataForSelect = {
+    label: string
+    value: string
+}
+
 export class CushyLayoutManager {
     model: Model
+    currentPerspectiveName = 'default'
+    allPerspectives: PerspectiveDataForSelect[] = [
+        //
+        { label: 'default', value: 'default' },
+        { label: 'test', value: 'test' },
+    ]
 
+    saveCurrent = () => this.saveCurrentAs(this.currentPerspectiveName)
+    saveCurrentAsDefault = () => this.saveCurrentAs('default')
+    saveCurrentAs = (perspectiveName: string) => {
+        const curr: FL.IJsonModel = this.model.toJson()
+        this.st.configFile.update((t) => {
+            t.perspectives ??= {}
+            t.perspectives[perspectiveName] = curr
+        })
+    }
+
+    resetCurrent = () => this.reset(this.currentPerspectiveName)
+    resetDefault = () => this.reset('default')
+    reset = (perspectiveName: string) => {
+        this.st.configFile.update((t) => {
+            t.perspectives ??= {}
+            delete t.perspectives[perspectiveName]
+        })
+    }
     constructor(public st: STATE) {
-        const json = this.build()
-        this.model = Model.fromJson(json)
+        const prevLayout = st.configFile.value.perspectives?.default
+        const json = prevLayout ?? this.build()
+        try {
+            this.model = Model.fromJson(json)
+        } catch (e) {
+            console.log('[💠] Layout: ❌ error loading layout', e)
+            this.model = Model.fromJson(this.build())
+        }
     }
 
     layoutRef = createRef<Layout>()
 
     UI = () => (
         <Layout //
+            onModelChange={(model) => {
+                console.log(`[💠] Layout: 📦 onModelChange`)
+                this.saveCurrentAsDefault()
+            }}
             ref={this.layoutRef}
             model={this.model}
             factory={this.factory}
@@ -127,7 +166,6 @@ export class CushyLayoutManager {
         if (component === Widget.Hosts) return <HostListUI />
 
         exhaust(component)
-
         return (
             <Message type='error' showIcon>
                 unknown component
