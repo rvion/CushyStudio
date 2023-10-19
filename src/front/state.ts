@@ -32,6 +32,7 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { Updater } from './updater'
+import { Marketplace } from 'src/marketplace/makerplace'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -72,6 +73,7 @@ export class STATE {
     comfyStatus: Maybe<ComfyStatus> = null
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
     configFile: JsonFile<ConfigFile>
+    marketplace: Marketplace
     updater: Updater
     hovered: Maybe<ImageL> = null
 
@@ -144,6 +146,7 @@ export class STATE {
 
         // core instances
         this.db = new LiveDB(this)
+        this.marketplace = new Marketplace(this)
         this.codePrettier = new CodePrettier(this)
         this.layout = new CushyLayoutManager(this)
         this.toolbox = new CushyFileWatcher(this)
@@ -155,7 +158,7 @@ export class STATE {
 
         // 1️⃣ if (opts.genTsConfig) this.createTSConfigIfMissing()
         // 1️⃣ if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
-        this.toolbox.findActions()
+        this.toolbox.discoverAllActions()
         ;(async () => {
             await this.schemaReady
             const project = this.startProjectV2()

@@ -69,7 +69,7 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
                     </Button>
                 </div>
                 <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-                    <GithubUserUI username={tool.data.owner} />
+                    By <GithubUserUI showName username={tool.data.owner} />
                 </ErrorBoundary>
                 <ScrollablePaneUI className='flex-grow '>
                     <div>{tool.data.description}</div>

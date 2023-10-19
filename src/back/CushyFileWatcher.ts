@@ -11,6 +11,7 @@ import { makeAutoObservable } from 'mobx'
 export class CushyFileWatcher {
     treeData: ItemDataType[] = []
     filesMap = new Map<RelativePath, PossibleActionFile>()
+    folderMap = new Set<RelativePath>()
     updatedAt = 0
     rootActionFolder: AbsolutePath
 
@@ -54,10 +55,11 @@ export class CushyFileWatcher {
         // this.filesMap = new Map()
     }
 
-    findActions = (): boolean => {
+    discoverAllActions = (): boolean => {
         const dir = this.st.actionsFolderPath
         this.treeData.splice(0, this.treeData.length) // reset
         this.filesMap.clear() // reset
+        this.folderMap.clear() // reset
 
         console.log(`[💙] TOOL: starting discovery in ${dir}`)
         this.findActionsInFolder(dir, this.treeData)
@@ -70,7 +72,7 @@ export class CushyFileWatcher {
     }
 
     /** @internal */
-    findActionsInFolder = (dir: string, parentStack: ItemDataType[]) => {
+    private findActionsInFolder = (dir: string, parentStack: ItemDataType[]) => {
         const files = readdirSync(dir)
         // console.log(files)
         for (const file of files) {
@@ -84,6 +86,7 @@ export class CushyFileWatcher {
             if (stat.isDirectory()) {
                 // console.log('1', folderEntry)
                 const ARRAY: ItemDataType[] = []
+                this.folderMap.add(relPath)
                 this.findActionsInFolder(absPath, ARRAY)
                 const folderEntry: ItemDataType = {
                     value: relPath,

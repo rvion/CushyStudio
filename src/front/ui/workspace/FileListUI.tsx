@@ -55,7 +55,8 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                     if (typeof _value !== 'string') throw new Error('tree selection value is not a string')
                     const value = _value as string
 
-                    const isFolder = st.toolbox.treeData.find((x) => x.value === value)?.children != null
+                    const isFolder = st.toolbox.folderMap.has(_value)
+                    console.log(_value, `isFolder: ${isFolder}`)
                     if (isFolder) {
                         if (tb.isExpanded(value)) tb.collapse(value)
                         else tb.expand(value)

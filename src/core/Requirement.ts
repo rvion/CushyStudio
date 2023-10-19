@@ -14,9 +14,21 @@ export type FormResult<Req extends Requestable> = ReqResult<Req>
 
 export type RequestableDict = { [key: string]: Requestable }
 
+export type Author = {
+    name: string
+    email?: string
+    githubUsername?: string
+    website?: string
+    bio?: string
+}
+
 export type Action<FIELDS extends RequestableDict> = {
+    requirements?: {
+        customNode: string[]
+    }
+    categories?: string[]
     /** who did that? */
-    author: string
+    author: string | Author
     /** this description will show-up at the top of the action form */
     description?: string
     /** action name; default to unnamed_action_<nanoid()> */

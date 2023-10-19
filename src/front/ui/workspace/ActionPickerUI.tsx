@@ -15,7 +15,7 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
             style={{ borderRight: '1px solid #2d2d2d' }}
         >
             <SectionTitleUI label='ACTIONS' className='bg-gray-800 mb-2'>
-                <div onClick={() => st.toolbox.findActions()} className='cursor-pointer'>
+                <div onClick={() => st.toolbox.discoverAllActions()} className='cursor-pointer'>
                     <span className='text-xs material-symbols-outlined'>sync</span>
                 </div>
             </SectionTitleUI>

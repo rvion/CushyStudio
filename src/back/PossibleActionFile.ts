@@ -291,7 +291,7 @@ export class PossibleActionFile {
                 const actionID = asToolID(`${this.absPath}#${a.name}#${this._uid++}`)
                 const tool = this.st.db.tools.upsert({
                     id: actionID,
-                    owner: a.action.author,
+                    owner: JSON.stringify(a.action.author), // 🔴
                     file: this.absPath,
                     description: a.action.description,
                     name: a.name,

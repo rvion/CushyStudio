@@ -17,6 +17,7 @@ import { LastImageUI } from './LastImageUI'
 import { HostListUI } from './HostListUI'
 import { ComfyUIUI } from '../workspace/ComfyUIUI'
 import { LiteGraphJSON } from 'src/core/LiteGraph'
+import { MarketplaceUI } from '../../../marketplace/MarketplaceUI'
 
 // still on phone
 enum Widget {
@@ -32,6 +33,7 @@ enum Widget {
     Civitai = 'Civitai',
     Image = 'Image',
     Hosts = 'Hosts',
+    Marketplace = 'Marketplace',
 }
 
 type PerspectiveDataForSelect = {
@@ -164,6 +166,7 @@ export class CushyLayoutManager {
         if (component === Widget.Civitai)
             return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0'></iframe>
         if (component === Widget.Hosts) return <HostListUI />
+        if (component === Widget.Marketplace) return <MarketplaceUI />
 
         exhaust(component)
         return (
@@ -223,6 +226,12 @@ export class CushyLayoutManager {
                                 weight: 10,
                                 minWidth: 300,
                                 children: [this._persistentTab('FileList', Widget.FileList)],
+                            },
+                            {
+                                type: 'tabset',
+                                weight: 10,
+                                minWidth: 300,
+                                children: [this._persistentTab('Marketplace', Widget.Marketplace)],
                             },
                             {
                                 type: 'tabset',
