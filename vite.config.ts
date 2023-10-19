@@ -7,7 +7,13 @@ import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    optimizeDeps: { exclude: ['fsevents', 'fs'] },
+    optimizeDeps: {
+        exclude: [
+            //
+            'fsevents',
+            // 'fs',
+        ],
+    },
     publicDir: 'src/public',
     plugins: [
         // dynamicModulePlugin(),
