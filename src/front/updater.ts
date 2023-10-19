@@ -34,7 +34,7 @@ export class Updater {
     updateToLastCommitAvailable(): Promise<void> {
         return new Promise((resolve, reject) => {
             this.log('UPDATING...')
-            const command = 'git pull origin master'
+            const command = `git pull origin ${this.infos.mainBranchName}`
             exec(command, { cwd: this.p.cwd }, (error) => {
                 if (error) return reject(error)
                 exec('npm install', (error) => {

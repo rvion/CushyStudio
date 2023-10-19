@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton, Panel, Rate } from 'rsuite'
+import { Button, IconButton, Panel } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { GithubUserUI } from 'src/front/GithubAvatarUI'
 import { UpdateBtnUI } from 'src/front/ui/layout/UpdateBtnUI'
