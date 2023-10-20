@@ -70,6 +70,7 @@ export class StepL {
     parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
     outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
 
+    get name() { return this.data.name } // prettier-ignore
     get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
 
     runtime: Maybe<Runtime> = null

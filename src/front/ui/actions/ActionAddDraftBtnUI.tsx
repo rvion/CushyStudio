@@ -1,15 +1,16 @@
 import { observer } from 'mobx-react-lite'
 import { Button } from 'rsuite'
+import { ActionFile } from 'src/back/ActionFile'
 import { useProject } from 'src/front/ProjectCtx'
-import { ToolL } from 'src/models/Tool'
 
-export const ActionAddDraftBtnUI = observer(function ActionAddDraftBtnUI_(p: { tool: ToolL }) {
+export const ActionAddDraftBtnUI = observer(function ActionAddDraftBtnUI_(p: { af: ActionFile }) {
     const pj = useProject()
-    const tool = p.tool
+    const af = p.af
+    const action = af.action
+    // const tool = p.tool
     return (
         <Button
-            disabled={tool == null}
-            //
+            disabled={action == null}
             appearance='subtle'
             size='xs'
             color='green'
@@ -23,9 +24,11 @@ export const ActionAddDraftBtnUI = observer(function ActionAddDraftBtnUI_(p: { t
                 }
             }
             onClick={() => {
-                if (tool == null) return
+                if (action == null) return
                 const draft = pj.db.drafts.create({
-                    toolID: tool.id,
+                    actionParams: {},
+                    actionPath: af.relPath,
+                    // toolID: tool.id,
                     graphID: pj.rootGraph.id,
                     title: 'Untitled',
                 })

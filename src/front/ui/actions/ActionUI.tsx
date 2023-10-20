@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite'
-import { Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { DraftID } from 'src/models/Draft'
 import { ActionFormUI } from './ActionFormUI'

@@ -16,7 +16,7 @@ export const StepUI = observer(function StepUI_(p: { step: StepL }) {
             defaultExpanded={step.data.status === Status.Running}
             header={
                 <div style={{ borderTop: '1px solid #2d2d2d' }} className='flex justify-between text-xs text-gray-400 mt-2'>
-                    <b>{step.data.name}</b>
+                    <b>{step.name}</b>
                     <div className='text-xs pr-4 text-gray-400'>{_formatPreviewDate(new Date(step.createdAt))}</div>
                 </div>
             }

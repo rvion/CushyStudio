@@ -26,7 +26,8 @@ enum Widget {
     Gallery = 'Gallery',
     Button = 'Button',
     Paint = 'Paint',
-    Action = 'Action',
+    Draft = 'Draft',
+    // Action = 'Action',
     ComfyUI = 'ComfyUI',
     FileList = 'FileList',
     Steps = 'Steps',
@@ -169,7 +170,7 @@ export class CushyLayoutManager {
             const imgID = extraData.imgID // Retrieves the imgID from the extra data
             return <LastImageUI imageID={imgID}></LastImageUI> // You can now use imgID to instantiate your paint component properly
         }
-        if (component === Widget.Action) {
+        if (component === Widget.Draft) {
             // 🔴 ensure this is type-safe
             const draftID = extraData.draftID // Retrieves the imgID from the extra data
             return (
