@@ -10,15 +10,15 @@ import { createRef } from 'react'
 import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 
+import { Toolbox } from 'src/back/CushyFileWatcher'
+import { Marketplace } from 'src/marketplace/makerplace'
 import { ProjectL } from 'src/models/Project'
 import { ThemeManager } from 'src/theme/layoutTheme'
-import { CushyFileWatcher } from '../back/CushyFileWatcher'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { DanbooruTags } from '../booru/BooruLoader'
 import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
-import { asFolderID } from '../models/Folder'
 import { GraphL } from '../models/Graph'
 import { EmbeddingName, SchemaL } from '../models/Schema'
 import { ComfySchemaJSON, ComfySchemaJSON_zod } from '../types/ComfySchemaJSON'
@@ -32,7 +32,6 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { Updater } from './updater'
-import { Marketplace } from 'src/marketplace/makerplace'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -77,19 +76,11 @@ export class STATE {
     updater: Updater
     hovered: Maybe<ImageL> = null
 
-    toolbox: CushyFileWatcher
+    toolbox: Toolbox
     schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
-
-    // files and actions
-    // knownFiles = new Map<AbsolutePath, CushyFile>()
-    get toolsSorted() {
-        return this.db.tools.values.slice().sort((a, b) => a.data.priority - b.data.priority)
-    }
-
-    // runtime
 
     // 🔴 this is not the right way to go cause it will cause the action to stay
     // pending in the background: fix that LATER™️
@@ -149,50 +140,20 @@ export class STATE {
         this.marketplace = new Marketplace(this)
         this.codePrettier = new CodePrettier(this)
         this.layout = new CushyLayoutManager(this)
-        this.toolbox = new CushyFileWatcher(this)
+        this.toolbox = new Toolbox(this)
         this.theme = new ThemeManager(this)
         this.updater = new Updater(this, { cwd: this.rootPath })
         this.importer = new ComfyImporter(this)
-
         this.schema = this.db.schema
-
-        // 1️⃣ if (opts.genTsConfig) this.createTSConfigIfMissing()
-        // 1️⃣ if (opts.cushySrcPathPrefix == null) this.writeTextFile(this.cushyTSPath, `${sdkTemplate}\n${sdkStubDeps}`)
         this.toolbox.discoverAllActions()
         ;(async () => {
             await this.schemaReady
             const project = this.startProjectV2()
-            project.activeFile?.load({ logFailures: false })
         })()
-        // Promise.all([
-        //     //
-        // ]).then((_done) => {
-        // })
 
         this.ws = this.initWebsocket()
-        // this.autoDiscoverEveryWorkflow()
         makeAutoObservable(this, { comfyUIIframeRef: false })
-        // window.addEventListener('message', this.onMessageFromExtension)
-        // this.sendMessageToExtension({ type: 'say-ready', frontID: this.uid })
     }
-
-    // 1️⃣ createTSConfigIfMissing = () => {
-    // 1️⃣     // create an empty tsconfig.json if it doesn't exist
-    // 1️⃣     const tsConfigExists = existsSync(this.tsConfigPath)
-    // 1️⃣     if (!tsConfigExists) {
-    // 1️⃣         console.info(`no tsconfig.json found, creating a default one`)
-    // 1️⃣         const content = {
-    // 1️⃣             compilerOptions: {
-    // 1️⃣                 target: 'ESNext',
-    // 1️⃣                 lib: ['ESNext'],
-    // 1️⃣             },
-    // 1️⃣             include: ['.cushy/*.d.ts', '**/*.ts'],
-    // 1️⃣         }
-    // 1️⃣         const contentStr = JSON.stringify(content, null, 4)
-    // 1️⃣         this.writeTextFile(this.tsConfigPath, contentStr)
-    // 1️⃣     }
-    // 1️⃣     // const json = this.readJSON(this.tsConfigUri)
-    // 1️⃣ }
 
     /**
      * will be created only after we've loaded cnfig file
@@ -456,9 +417,6 @@ export class STATE {
         return this.db.images.values.slice(-maxImages).reverse()
     }
 
-    createFolder = () => {
-        this.db.folders.create({ id: asFolderID(nanoid()) })
-    }
     // FILESYSTEM UTILS --------------------------------------------------------------------
     /** write a binary file to given absPath */
     writeBinaryFile(absPath: AbsolutePath, content: Buffer) {

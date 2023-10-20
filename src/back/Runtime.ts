@@ -8,11 +8,9 @@ import fs, { readFileSync, writeFileSync } from 'fs'
 import { marked } from 'marked'
 import { lookup } from 'mime-types'
 import { STATE } from 'src/front/state'
-import { ToolL } from 'src/models/Tool'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { Slot } from '../core/Slot'
 import { auto } from '../core/autoValue'
-import { globalToolFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
 import { GraphL } from '../models/Graph'
 import { ImageL } from '../models/Image'
@@ -60,42 +58,42 @@ export class Runtime {
 
     pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
     run = async (): Promise<Status> => {
-        // 1. ensure we have a tool
-        const tool: ToolL = this.step.tool.item
-        if (tool == null) return Status.Failure
-
-        const start = Date.now()
-        const action = globalToolFnCache.get(tool)
-        const actionResult = this.step.data.actionResult
-        console.log(`🔴 before: size=${this.graph.nodes.length}`)
-
-        try {
-            if (action == null) {
-                console.log(`❌ action not found`)
-                return Status.Failure
-            }
-            await action.run(this, actionResult)
-            console.log(`🔴 after: size=${this.graph.nodes.length}`)
-            console.log('[✅] RUN SUCCESS')
-            const duration = Date.now() - start
-            // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'success' })
-            return Status.Success
-        } catch (error: any /* 🔴 */) {
-            console.log(error)
-            // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'failure' })
-            console.error('🌠', (error as any as Error).name)
-            console.error('🌠', (error as any as Error).message)
-            console.error('🌠', 'RUN FAILURE')
-            const graphID = error instanceof InvalidPromptError ? error.graph.id : undefined
-            // insert an error into the output
-            this.step.append({
-                type: 'runtimeError',
-                message: error.message,
-                infos: error,
-                graphID,
-            })
-            return Status.Failure
-        }
+        throw new Error('❌ 7b919223-7961-4dda-89cc-b84fe3f06d30')
+        return Status.Success
+        //     // 1. ensure we have a tool
+        //     const tool: ToolL = this.step.tool.item
+        //     if (tool == null) return Status.Failure
+        //     const start = Date.now()
+        //     const action = globalToolFnCache.get(tool)
+        //     const actionResult = this.step.data.actionParams
+        //     console.log(`🔴 before: size=${this.graph.nodes.length}`)
+        //     try {
+        //         if (action == null) {
+        //             console.log(`❌ action not found`)
+        //             return Status.Failure
+        //         }
+        //         await action.run(this, actionResult)
+        //         console.log(`🔴 after: size=${this.graph.nodes.length}`)
+        //         console.log('[✅] RUN SUCCESS')
+        //         const duration = Date.now() - start
+        //         // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'success' })
+        //         return Status.Success
+        //     } catch (error: any /* 🔴 */) {
+        //         console.log(error)
+        //         // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'failure' })
+        //         console.error('🌠', (error as any as Error).name)
+        //         console.error('🌠', (error as any as Error).message)
+        //         console.error('🌠', 'RUN FAILURE')
+        //         const graphID = error instanceof InvalidPromptError ? error.graph.id : undefined
+        //         // insert an error into the output
+        //         this.step.append({
+        //             type: 'runtimeError',
+        //             message: error.message,
+        //             infos: error,
+        //             graphID,
+        //         })
+        //         return Status.Failure
+        //     }
     }
 
     /** run an imagemagick convert action */

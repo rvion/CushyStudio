@@ -5,21 +5,19 @@ import { LiveTable } from './LiveTable'
 
 // models
 import { existsSync, readFileSync, stat, writeFileSync } from 'fs'
+import { extractErrorMessage } from 'src/utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
+import { bytesToSize } from 'src/utils/fs/bytesToSize'
 import { DraftL, DraftT } from '../models/Draft'
-import { FolderL, FolderT } from '../models/Folder'
 import { GraphL, GraphT } from '../models/Graph'
 import { ImageL, ImageT } from '../models/Image'
 import { ProjectL, ProjectT } from '../models/Project'
 import { PromptL, PromptT } from '../models/Prompt'
 import { SchemaL, SchemaT } from '../models/Schema'
 import { StepL, StepT } from '../models/Step'
-import { ToolL, ToolT } from '../models/Tool'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { LiveStore } from './LiveStore'
-import { bytesToSize } from 'src/utils/fs/bytesToSize'
-import { extractErrorMessage } from 'src/utils/extractErrorMessage'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -36,15 +34,13 @@ export class LiveDB {
     toJSON = (): LiveStore => this.store
 
     // tables ---------------------------------------------------------
-    schemas: LiveTable<SchemaT, SchemaL>
-    tools: LiveTable<ToolT, ToolL>
-    folders: LiveTable<FolderT, FolderL>
-    images: LiveTable<ImageT, ImageL>
     projects: LiveTable<ProjectT, ProjectL>
-    drafts: LiveTable<DraftT, DraftL>
-    steps: LiveTable<StepT, StepL>
+    schemas: LiveTable<SchemaT, SchemaL>
     prompts: LiveTable<PromptT, PromptL>
+    images: LiveTable<ImageT, ImageL>
+    drafts: LiveTable<DraftT, DraftL>
     graphs: LiveTable<GraphT, GraphL>
+    steps: LiveTable<StepT, StepL>
 
     constructor(public st: STATE) {
         // 1. restore store if  it exists
@@ -67,16 +63,13 @@ export class LiveDB {
         makeAutoObservable(this)
 
         // 3. create tables (after the store has benn made already observable)
-        this.schemas = new LiveTable(this, 'schemas', '📑', SchemaL, { singleton: true })
-        this.tools = new LiveTable(this, 'tools', '🛠️', ToolL)
-        this.folders = new LiveTable(this, 'folders', '📂', FolderL)
-        this.images = new LiveTable(this, 'images', '🖼️', ImageL)
         this.projects = new LiveTable(this, 'projects', '🤠', ProjectL, { singleton: true })
-        this.steps = new LiveTable(this, 'steps', '🚶‍♂️', StepL)
+        this.schemas = new LiveTable(this, 'schemas', '📑', SchemaL, { singleton: true })
         this.prompts = new LiveTable(this, 'prompts', '❓', PromptL)
+        this.images = new LiveTable(this, 'images', '🖼️', ImageL)
         this.drafts = new LiveTable(this, 'drafts', '📝', DraftL)
         this.graphs = new LiveTable(this, 'graphs', '📊', GraphL)
-        // this.msgs = new LiveTable(this, 'msgs', Foo)
+        this.steps = new LiveTable(this, 'steps', '🚶‍♂️', StepL)
 
         this.startMonitoring()
     }

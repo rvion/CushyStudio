@@ -68,14 +68,14 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                     // 1. focus paf
                     const paf = st.toolbox.filesMap.get(asActionPath(value))
                     if (paf == null) throw new Error(`paf not found for ${value}`)
-                    pj.focusActionFile(paf)
+                    // pj.focusActionFile(paf)
 
-                    // 2. if paf has a tool, focus it
-                    console.log(value, paf)
-                    await paf.load({ logFailures: true })
-                    const tool0 = paf.mainTool
-                    if (tool0 == null) return null
-                    pj.focusTool(tool0)
+                    // // 2. if paf has a tool, focus it
+                    // console.log(value, paf)
+                    // await paf.load({ logFailures: true })
+                    // const tool0 = paf.mainTool
+                    // if (tool0 == null) return null
+                    // pj.focusTool(tool0)
                 }}
             />
         </>

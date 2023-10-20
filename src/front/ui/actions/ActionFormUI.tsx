@@ -1,8 +1,8 @@
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Button, Toggle } from 'rsuite'
-import { ActionFile } from 'src/back/ActionFile'
+import { Button, Message, Toggle } from 'rsuite'
 import { GithubUserUI } from 'src/front/GithubAvatarUI'
 import { DraftL } from 'src/models/Draft'
 import { openInVSCode } from 'src/utils/openInVsCode'
@@ -13,21 +13,53 @@ import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
-import { toJS } from 'mobx'
 
 /**
  * this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const ActionFormUI = observer(function ActionFormUI_(p: {
-    //
-    paf: ActionFile
-    draft: DraftL
-}) {
+export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }) {
+    // 1. get draft
     const draft = p.draft
-    const tool = draft.tool.item
-    const { containerClassName, containerStyle } = draft.action.value ?? {}
+
+    // 2. get action file
+    const af = draft.actionFile
+    if (af == null)
+        return (
+            <Message type='error'>
+                <pre tw='bg-red-900'>❌ action file not found</pre>
+            </Message>
+        )
+
+    if (af.errors) {
+        return (
+            <Message type='error'>
+                <pre tw='bg-red-900'>{JSON.stringify(af.errors, null, 4)}</pre>
+            </Message>
+        )
+    }
+
+    // 3. get action
+    const action = af.action
+    if (action == null)
+        return (
+            <Message type='error'>
+                <pre tw='bg-red-900'>❌ action not found</pre>
+            </Message>
+        )
+
+    // 4. get form
+    const formR = draft.form
+    if (!formR.success)
+        return (
+            <Message type='error'>
+                <div></div>❌ form failed
+            </Message>
+        )
+
+    // 5. render form
+    const { containerClassName, containerStyle } = action ?? {}
     const defaultContainerStyle = { maxWidth: '40rem', margin: '0 auto', padding: '1rem' }
     return (
         <draftContext.Provider value={draft} key={draft.id}>
@@ -39,13 +71,13 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
             >
                 <div tw='row items-center font-bold font justify-between'>
                     <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
-                        <span>{tool.name}</span>
+                        <span>{action.name}</span>
                         <Button
                             size='xs'
                             color='blue'
                             appearance='ghost'
                             startIcon={<span className='material-symbols-outlined'>edit</span>}
-                            onClick={() => openInVSCode(cwd(), p.paf.absPath)}
+                            onClick={() => openInVSCode(cwd(), af.absPath)}
                         >
                             Edit
                         </Button>
@@ -69,10 +101,10 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
                     </Button>
                 </div>
                 <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-                    By <GithubUserUI showName username={tool.data.owner} />
+                    By <GithubUserUI showName username={action.author} />
                 </ErrorBoundary>
                 <ScrollablePaneUI className='flex-grow '>
-                    <div>{tool.data.description}</div>
+                    <div>{action.description}</div>
                     <form
                         className='p-2 m-4'
                         style={{
@@ -109,7 +141,7 @@ export const ActionFormUI = observer(function ActionFormUI_(p: {
                             <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10_000)} />
                         </div>
                         <div>code</div>
-                        <TypescriptHighlightedCodeUI code={tool.data.codeJS ?? ''} />
+                        <TypescriptHighlightedCodeUI code={af.codeJS ?? ''} />
                     </TabUI>
                 </ScrollablePaneUI>
             </div>

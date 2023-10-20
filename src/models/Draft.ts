@@ -1,13 +1,14 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
-import type { ToolID, ToolL } from './Tool'
 
 import { autorun, reaction, runInAction } from 'mobx'
+import { ActionFile } from 'src/back/ActionFile'
+import { ActionPath } from 'src/back/ActionPath'
 import { FormBuilder, type Requestable } from 'src/controls/InfoRequest'
-import { Action } from 'src/core/Action'
 import { __FAIL, __OK, type Result } from 'src/utils/Either'
 import { LiveRef } from '../db/LiveRef'
+import { Status } from 'src/back/Status'
 
 export type FormPath = (string | number)[]
 
@@ -18,9 +19,15 @@ export type DraftT = {
     id: DraftID /** form that lead to creating this Draft */
     createdAt: number
     updatedAt: number
+
+    // presetntation
     title: string
-    toolID: ToolID /** tool params */
-    params?: Maybe<any> /** parent */
+
+    // action
+    actionPath: ActionPath
+    actionParams: any
+
+    // starting graph
     graphID: GraphID
 }
 
@@ -28,7 +35,6 @@ export type DraftT = {
 export interface DraftL extends LiveInstance<DraftT, DraftL> {}
 export class DraftL {
     graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
-    tool = new LiveRef<this, ToolL>(this, 'toolID', 'tools')
 
     // 🔴 HACKY
     private shouldAutoStart = false
@@ -56,50 +62,58 @@ export class DraftL {
     }
 
     start = (): StepL => {
-        // console.log('🟢', JSON.stringify(this.data))
+        // 1. ensure req valid (TODO: validate)
         const req = this.form.value
         if (req == null) throw new Error('invalid req')
-        const step = this.graph.item.createStep({
-            toolID: this.data.toolID,
-            actionResult: req.result,
-            actionState: req.state,
+
+        // 2. ensure graph valid
+        const graph = this.graph.item
+        if (graph == null) throw new Error('invalid graph')
+
+        // 3. create step
+        const step = this.db.steps.create({
+            // toolID: draft.toolID, // basis?.toolID ?? this.st.toolsSorted[0].id,
+            actionPath: this.data.actionPath,
+            actionParams: this.data.actionParams,
+
+            parentGraphID: graph.id,
+            outputGraphID: graph.clone().id,
+            // params: deepCopyNaive(draft.params ?? {}),
+            // actionState: draft.actionState,
+            status: Status.New,
         })
         step.start()
         return step
     }
 
-    focus = () => this.graph.item.update({ focusedDraftID: this.id })
-    getPathInfo = (path: FormPath): string => this.id + '/' + path.join('/')
-
     form: Result<Requestable> = __FAIL('not loaded yet')
-    action: Result<Action<any>> = __FAIL('not loaded yet')
+
+    get action() {
+        return this.actionFile?.action
+    }
+
+    get actionFile(): ActionFile | undefined {
+        return this.st.toolbox.filesMap.get(this.data.actionPath)
+    }
 
     onHydrate = () => {
-        let subState = {
-            unsync: () => {},
-        }
+        let subState = { unsync: () => {} }
         console.log(`🦊 on hydrate`)
         // reload action when it changes
         // 🔴 dangerous
-        reaction(
-            () => this.tool.item.updatedAt,
-            () => {
-                console.log(`🟢 -------- DRAFT LOADING ACTION --------- 🟢 `)
-                const action = this.tool.item.retrieveAction()
-                this.action = action
-                if (!action.success) {
-                    this.form = __FAIL('action failed')
-                    return
-                }
-                const uiFn = action.value.ui
-                if (uiFn == null) {
-                    this.form = __FAIL('no UI function')
-                    return
-                }
 
+        reaction(
+            () => this.action,
+            (action) => {
+                console.log(`🟢 -------- DRAFT LOADING ACTION --------- 🟢 `)
+                if (action == null) return
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
-                    const req: Requestable = formBuilder.group({ items: () => uiFn(formBuilder) }, this.data.params)
+                    const uiFn = action.ui
+                    const req: Requestable =
+                        uiFn == null //
+                            ? formBuilder.group({ items: () => ({}) }, this.data.actionParams)
+                            : formBuilder.group({ items: () => uiFn(formBuilder) }, this.data.actionParams)
                     this.form = __OK(req)
                     console.log(`🦊 form setup`)
                     // subState.unsync()
@@ -118,7 +132,7 @@ export class DraftL {
             const _ = JSON.stringify(formValue.serial)
             runInAction(() => {
                 console.log(`🦊 updating the form`)
-                this.update({ params: formValue.serial })
+                this.update({ actionParams: formValue.serial })
             })
         })
     }

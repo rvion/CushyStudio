@@ -5,7 +5,6 @@ import { IJsonModel, Layout, Model } from 'flexlayout-react'
 
 import { Button, Message } from 'rsuite'
 import { GalleryUI } from '../galleries/GalleryUI'
-import { GraphUI } from '../workspace/GraphUI'
 import { ActionPickerUI } from '../workspace/ActionPickerUI'
 import { StepListUI } from '../workspace/StepUI'
 import { LastGraphUI } from '../workspace/LastGraphUI'
@@ -20,13 +19,14 @@ import { LiteGraphJSON } from 'src/core/LiteGraph'
 import { MarketplaceUI } from '../../../marketplace/MarketplaceUI'
 import { observer } from 'mobx-react-lite'
 import { makeAutoObservable } from 'mobx'
+import { PafUI } from '../actions/ActionPanel'
 
 // still on phone
 enum Widget {
     Gallery = 'Gallery',
     Button = 'Button',
     Paint = 'Paint',
-    Graph = 'Graph',
+    Action = 'Action',
     ComfyUI = 'ComfyUI',
     FileList = 'FileList',
     Steps = 'Steps',
@@ -169,7 +169,15 @@ export class CushyLayoutManager {
             const imgID = extraData.imgID // Retrieves the imgID from the extra data
             return <LastImageUI imageID={imgID}></LastImageUI> // You can now use imgID to instantiate your paint component properly
         }
-        if (component === Widget.Graph) return <GraphUI depth={1} />
+        if (component === Widget.Action) {
+            // 🔴 ensure this is type-safe
+            const draftID = extraData.draftID // Retrieves the imgID from the extra data
+            return (
+                <div style={{ height: '100%' }}>
+                    <PafUI />
+                </div>
+            )
+        }
         if (component === Widget.ComfyUI) {
             const litegraphJson = extraData.litegraphJson // Retrieves the imgID from the extra data
             return <ComfyUIUI litegraphJson={litegraphJson} />
@@ -270,7 +278,6 @@ export class CushyLayoutManager {
                                 weight: 100,
                                 children: [
                                     //
-                                    { type: 'tab', name: 'Graph', component: Widget.Graph },
                                     this._persistentTab('Civitai', Widget.Civitai, '/CivitaiLogo.png'),
                                     this._persistentTab('ComfyUI', Widget.ComfyUI, '/ComfyUILogo.png'),
                                 ],

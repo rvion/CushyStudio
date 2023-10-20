@@ -2,24 +2,25 @@ import type { STATE } from 'src/front/state'
 import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 
 import { readdirSync, statSync } from 'fs'
+import { makeAutoObservable } from 'mobx'
 import path, { join } from 'path'
 import { ItemDataType } from 'rsuite/esm/@types/common'
+import { ActionPath, asActionPath } from 'src/back/ActionPath'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { ActionFile } from './ActionFile'
-import { makeAutoObservable } from 'mobx'
-import { ActionPath, asActionPath } from './ActionPath'
 
-export class CushyFileWatcher {
+export class Toolbox {
+    updatedAt = 0
     treeData: ItemDataType[] = []
     filesMap = new Map<ActionPath, ActionFile>()
     folderMap = new Set<RelativePath>()
-    updatedAt = 0
     rootActionFolder: AbsolutePath
 
     // expand mechanism ----------------------------------------
     private expanded: Set<string>
     get expandedPaths(): string[] { return [...this.expanded] } // prettier-ignore
     isExpanded = (path: string): boolean => this.expanded.has(path)
+
     expand = (path: string): void => {
         this.expanded.add(path)
         const jsonF = this.st.typecheckingConfig

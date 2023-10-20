@@ -10,10 +10,10 @@ import type { WsMsgExecuted, WsMsgExecutionError } from '../types/ComfyWsApi'
 
 import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
-import { LiveRef } from '../db/LiveRef'
 import { LiveCollection } from '../db/LiveCollection'
+import { LiveRef } from '../db/LiveRef'
 
-import { ToolID, ToolL } from './Tool'
+import { ActionPath } from 'src/back/ActionPath'
 import { PromptL } from './Prompt'
 
 export type FormPath = (string | number)[]
@@ -34,18 +34,18 @@ export type StepT = {
     createdAt: number
     updatedAt: number
     /** form that lead to creating this step */
-    toolID: ToolID
-    /** tool params */
-    // actionState: Maybe<any>
-    actionResult: Maybe<any>
-    // params: Maybe<any>
-    /** parent */
+
+    // ACTION ------------------------------
+    actionPath: ActionPath
+    actionParams: Maybe<any>
+
+    // GRAPHS ------------------------------
     parentGraphID: GraphID
-    /** resulting graph */
     outputGraphID: GraphID
+
+    // OUTPUTS -----------------------------
     /** outputs of the evaluated step */
     outputs?: Maybe<StepOutput[]>
-    /** step status */
     status: Status
 }
 
@@ -66,16 +66,12 @@ export class StepL {
             }
         }
     }
-
     prompts = new LiveCollection<PromptL>(this, 'stepID', 'prompts')
-    get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
-
-    focus() {
-        this.parentGraph.item.update({ focusedStepID: this.id })
-    }
-    tool = new LiveRef<this, ToolL>(this, 'toolID', 'tools')
     parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
     outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
+
+    get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
+
     runtime: Maybe<Runtime> = null
     append = (output: StepOutput) => this.update({ outputs: [...(this.data.outputs ?? []), output] })
 }
