@@ -18,6 +18,8 @@ import { HostListUI } from './HostListUI'
 import { ComfyUIUI } from '../workspace/ComfyUIUI'
 import { LiteGraphJSON } from 'src/core/LiteGraph'
 import { MarketplaceUI } from '../../../marketplace/MarketplaceUI'
+import { observer } from 'mobx-react-lite'
+import { makeAutoObservable } from 'mobx'
 
 // still on phone
 enum Widget {
@@ -42,7 +44,12 @@ type PerspectiveDataForSelect = {
 }
 
 export class CushyLayoutManager {
-    model: Model
+    model!: Model
+    private modelKey = 0
+    setModel = (model: Model) => {
+        this.model = model
+        this.modelKey++
+    }
     currentPerspectiveName = 'default'
     allPerspectives: PerspectiveDataForSelect[] = [
         //
@@ -60,38 +67,46 @@ export class CushyLayoutManager {
         })
     }
 
-    resetCurrent = () => this.reset(this.currentPerspectiveName)
-    resetDefault = () => this.reset('default')
-    reset = (perspectiveName: string) => {
+    resetCurrent = (): void => this.reset(this.currentPerspectiveName)
+    resetDefault = (): void => this.reset('default')
+    reset = (perspectiveName: string): void => {
         this.st.configFile.update((t) => {
             t.perspectives ??= {}
             delete t.perspectives[perspectiveName]
         })
+        if (perspectiveName === this.currentPerspectiveName) {
+            this.setModel(Model.fromJson(this.build()))
+        }
     }
+
     constructor(public st: STATE) {
         const prevLayout = st.configFile.value.perspectives?.default
         const json = prevLayout ?? this.build()
         try {
-            this.model = Model.fromJson(json)
+            this.setModel(Model.fromJson(json))
         } catch (e) {
             console.log('[💠] Layout: ❌ error loading layout', e)
-            this.model = Model.fromJson(this.build())
+            this.setModel(Model.fromJson(this.build()))
         }
+        makeAutoObservable(this)
     }
 
     layoutRef = createRef<Layout>()
 
-    UI = () => (
-        <Layout //
-            onModelChange={(model) => {
-                console.log(`[💠] Layout: 📦 onModelChange`)
-                this.saveCurrentAsDefault()
-            }}
-            ref={this.layoutRef}
-            model={this.model}
-            factory={this.factory}
-        />
-    )
+    UI = observer(() => {
+        console.log('LAYOUT rendering')
+        return (
+            <Layout //
+                onModelChange={(model) => {
+                    console.log(`[💠] Layout: 📦 onModelChange`)
+                    this.saveCurrentAsDefault()
+                }}
+                ref={this.layoutRef}
+                model={this.model}
+                factory={this.factory}
+            />
+        )
+    })
 
     nextPaintIDx = 0
     addPaint = (imgID: ImageID) => {
@@ -315,3 +330,13 @@ export class CushyLayoutManager {
 // }
 // }
 export const exhaust = (x: never) => x
+
+const memoryRefByUniqueID = new WeakMap<object, string>()
+export const uniqueIDByMemoryRef = (x: object): string => {
+    let id = memoryRefByUniqueID.get(x)
+    if (id == null) {
+        id = nanoid()
+        memoryRefByUniqueID.set(x, id)
+    }
+    return id
+}
