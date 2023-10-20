@@ -9,7 +9,7 @@ export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Requestable_
         return (
             <Input
                 as='textarea'
-                rows={5}
+                rows={2}
                 value={val}
                 onChange={(next) => {
                     req.state.val = next
