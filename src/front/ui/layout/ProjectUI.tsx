@@ -4,6 +4,7 @@ import { useSt } from '../../FrontStateCtx'
 import { projectContext } from '../../ProjectCtx'
 import { GalleryHoveredPreviewUI } from '../galleries/GalleryHoveredPreviewUI'
 import { PanelConfigUI } from './PanelConfigUI'
+import { MainNavBarUI } from './MainNavBarUI'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const st = useSt()
@@ -16,15 +17,18 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
             </div>
         )
     return (
-        <div className='flex-grow flex flex-col h-full'>
+        <div className='relative flex-grow flex flex-col h-full'>
             <projectContext.Provider value={project} key={project.id}>
+                <MainNavBarUI />
                 <GalleryHoveredPreviewUI />
                 <div
                     id='hovered-graph'
                     className='absolute top-3 left-3 right-3 bottom-3 [z-index:2000] overflow-auto pointer-events-none'
                     style={{ transition: 'all 0.2s ease-in-out', opacity: 0 }}
                 />
+                {/* <div tw='relative w-full h-full'> */}
                 <st.layout.UI />
+                {/* </div> */}
             </projectContext.Provider>
         </div>
     )

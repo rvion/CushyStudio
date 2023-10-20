@@ -9,10 +9,7 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
     return (
         <div>
             {st.marketplace.plugins.map((p) => (
-                <Panel
-                    //
-                    key={p.data.name}
-                >
+                <Panel bordered tw='hover:brightness-90' key={p.data.name}>
                     <div tw='flex  gap-2'>
                         <GithubUserUI size='3rem' username={p.authorName} />
                         <div tw='flex-grow'>
@@ -34,32 +31,31 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
                                     />
                                 </div>
                             </div>
-                            <div>
-                                {p.isInstalled ? (
-                                    <div>
-                                        <UpdateBtnUI updater={p.updater} />
-                                        <Button
-                                            size='sm'
-                                            startIcon={<span className='material-symbols-outlined'>check_circle</span>}
-                                        >
-                                            Disable
-                                        </Button>
-                                    </div>
-                                ) : (
-                                    <Button
-                                        loading={p.installK.isRunning}
-                                        appearance='primary'
-                                        onClick={() => p.install()}
-                                        size='xs'
-                                        startIcon={
-                                            <span className='text-gray-700 material-symbols-outlined'>cloud_download</span>
-                                        }
-                                    >
-                                        Install
-                                    </Button>
-                                )}
-                            </div>
                         </div>
+                    </div>
+                    <div>
+                        {p.isInstalled ? (
+                            <div tw='flex'>
+                                <UpdateBtnUI updater={p.updater} />
+                                <Button
+                                    size='sm'
+                                    appearance='link'
+                                    startIcon={<span className='material-symbols-outlined'>toggle_off</span>}
+                                >
+                                    Disable
+                                </Button>
+                            </div>
+                        ) : (
+                            <Button
+                                loading={p.installK.isRunning}
+                                appearance='primary'
+                                onClick={() => p.install()}
+                                size='xs'
+                                startIcon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
+                            >
+                                Install
+                            </Button>
+                        )}
                     </div>
                     {p.installK.logs.length > 0 && (
                         <div>

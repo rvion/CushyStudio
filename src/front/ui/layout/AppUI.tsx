@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { AppBarUI } from './AppBarUI'
 import { useSt } from 'src/front/FrontStateCtx'
 import { ProjectUI } from './ProjectUI'
+import { MainNavBarUI } from './MainNavBarUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
@@ -9,7 +10,7 @@ export const CushyUI = observer(function CushyUI_() {
         <div id='CushyStudio' tw={['col grow h100', st.theme.theme]}>
             <AppBarUI />
             <div className='flex flex-grow relative'>
-                {/* <MainNavBarUI /> */}
+                <MainNavBarUI />
                 <ProjectUI />
             </div>
         </div>
