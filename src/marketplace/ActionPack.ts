@@ -13,6 +13,8 @@ export type ActionPackData = {
     github: string
     description?: string
     recommanded?: boolean
+    BUILT_IN?: boolean
+    customIconUrl?: string
 }
 
 export class ActionPack {

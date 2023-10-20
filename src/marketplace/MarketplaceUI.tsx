@@ -9,7 +9,7 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
     return (
         <div>
             {st.marketplace.plugins.map((p) => (
-                <Panel bordered tw='hover:brightness-90' key={p.data.name}>
+                <div tw='hover:brightness-90' key={p.data.name} style={{ borderTop: '1px solid #515151' }}>
                     <div tw='flex  gap-2'>
                         <GithubUserUI size='3rem' username={p.authorName} />
                         <div tw='flex-grow'>
@@ -33,36 +33,40 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
                             </div>
                         </div>
                     </div>
-                    <div>
-                        {p.isInstalled ? (
-                            <div tw='flex'>
-                                <UpdateBtnUI updater={p.updater} />
+                    {p.data.BUILT_IN ? (
+                        <div tw='text-gray-500'>built-in</div>
+                    ) : (
+                        <div>
+                            {p.isInstalled ? (
+                                <div tw='flex'>
+                                    <UpdateBtnUI updater={p.updater} />
+                                    <Button
+                                        size='sm'
+                                        appearance='link'
+                                        startIcon={<span className='material-symbols-outlined'>toggle_off</span>}
+                                    >
+                                        Disable
+                                    </Button>
+                                </div>
+                            ) : (
                                 <Button
-                                    size='sm'
-                                    appearance='link'
-                                    startIcon={<span className='material-symbols-outlined'>toggle_off</span>}
+                                    loading={p.installK.isRunning}
+                                    appearance='primary'
+                                    onClick={() => p.install()}
+                                    size='xs'
+                                    startIcon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
                                 >
-                                    Disable
+                                    Install
                                 </Button>
-                            </div>
-                        ) : (
-                            <Button
-                                loading={p.installK.isRunning}
-                                appearance='primary'
-                                onClick={() => p.install()}
-                                size='xs'
-                                startIcon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
-                            >
-                                Install
-                            </Button>
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    )}
                     {p.installK.logs.length > 0 && (
                         <div>
                             <pre>{JSON.stringify(p.installK.logs)}</pre>
                         </div>
                     )}
-                </Panel>
+                </div>
             ))}
         </div>
     )

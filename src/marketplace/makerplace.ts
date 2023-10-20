@@ -8,12 +8,6 @@ export class Marketplace {
     private _knownPluginsData: ActionPackData[] = [
         //
         {
-            name: 'cushy-example-actions',
-            github: 'rvion/cushy-example-actions',
-            description: 'some example action pack with a bunch of everything to get started',
-            recommanded: true,
-        },
-        {
             name: 'Vinsi Action Pack',
             github: 'VinsiGit/Cushy_Action',
             description: 'Gradients. Reinvented 🐠',
@@ -25,12 +19,24 @@ export class Marketplace {
             description: 'You can create your own avatar with this action pack',
             recommanded: true,
         },
-        // {
-        //     name: 'Base Action pack',
-        //     github: 'rvion/CushyStudio',
-        //     description: 'Built-in actions for cushy studio',
-        //     recommanded: true,
-        // },
+        {
+            name: 'cushy-example-actions',
+            github: 'rvion/cushy-example-actions',
+            description: 'some example action pack with a bunch of everything to get started',
+            recommanded: true,
+        },
+        {
+            name: 'Base Action pack',
+            BUILT_IN: true,
+            github: 'rvion/CushyStudio',
+            description: 'Built-in actions for cushy studio',
+        },
+        {
+            name: 'My Custom Actions',
+            BUILT_IN: true,
+            github: 'rvion/CushyStudio',
+            description: 'your private local actions',
+        },
     ]
 
     constructor(public st: STATE) {
