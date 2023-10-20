@@ -1,5 +1,5 @@
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
-import type { Action, RequestableDict } from 'src/core/Requirement'
+import type { Action, RequestableDict } from 'src/core/Action'
 import type { STATE } from 'src/front/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'

@@ -1,4 +1,4 @@
-import type { FormResult } from 'src/core/Requirement'
+import type { FormResult } from 'src/core/Action'
 import type { ImageID, ImageT } from 'src/models/Image'
 import type { ToolID } from 'src/models/Tool'
 import type { FlowID } from 'src/front/FlowID'

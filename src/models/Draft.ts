@@ -5,7 +5,7 @@ import type { ToolID, ToolL } from './Tool'
 
 import { autorun, reaction, runInAction } from 'mobx'
 import { FormBuilder, type Requestable } from 'src/controls/InfoRequest'
-import { Action } from 'src/core/Requirement'
+import { Action } from 'src/core/Action'
 import { __FAIL, __OK, type Result } from 'src/utils/Either'
 import { LiveRef } from '../db/LiveRef'
 

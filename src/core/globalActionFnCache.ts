@@ -1,4 +1,4 @@
-import type { Action, RequestableDict } from 'src/core/Requirement'
+import type { Action, RequestableDict } from 'src/core/Action'
 import type { ToolL } from '../models/Tool'
 
 /**

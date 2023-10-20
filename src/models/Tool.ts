@@ -3,7 +3,7 @@ import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 import type { DraftID, DraftL } from './Draft'
 import type { ProjectL } from './Project'
 
-import { Action, RequestableDict } from 'src/core/Requirement'
+import { Action, RequestableDict } from 'src/core/Action'
 import { Result, __FAIL, __OK } from 'src/utils/Either'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRefOpt } from '../db/LiveRefOpt'
