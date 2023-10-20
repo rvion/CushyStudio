@@ -13,6 +13,7 @@ import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
 import { exhaust } from '../utils/ComfyUtils'
 import { ManualPromise } from '../utils/ManualPromise'
 import { transpileCode } from './transpiler'
+import { DraftL } from 'src/models/Draft'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -60,6 +61,11 @@ export class ActionFile {
     /** action display name */
     get name(): string {
         return this.action?.name ?? path.basename(this.absPath)
+    }
+
+    get drafts(): DraftL[] {
+        return this.st.db.drafts //
+            .filter((draft) => draft.data.actionPath === this.relPath)
     }
 
     // extracted stuff

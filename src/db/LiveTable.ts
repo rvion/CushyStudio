@@ -18,10 +18,13 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
     toJSON = (): Indexed<T> => this._store
 
     find = (check: (l: L) => boolean): Maybe<L> => {
-        for (const v of this.values) {
-            if (check(v)) return v
-        }
+        for (const v of this.values) if (check(v)) return v
         return null
+    }
+    filter = (check: (l: L) => boolean): L[] => {
+        const res: L[] = []
+        for (const v of this.values) if (check(v)) res.push(v)
+        return res
     }
     findOrCrash = (check: (l: L) => boolean): L => {
         for (const v of this.values) {

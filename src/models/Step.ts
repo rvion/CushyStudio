@@ -1,3 +1,5 @@
+import type { PromptL } from './Prompt'
+import type { ActionPath } from 'src/back/ActionPath'
 import type {
     FromExtension_Print,
     FromExtension_Prompt,
@@ -12,9 +14,6 @@ import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
-
-import { ActionPath } from 'src/back/ActionPath'
-import { PromptL } from './Prompt'
 
 export type FormPath = (string | number)[]
 
@@ -36,6 +35,7 @@ export type StepT = {
     /** form that lead to creating this step */
 
     // ACTION ------------------------------
+    name: string
     actionPath: ActionPath
     actionParams: Maybe<any>
 
