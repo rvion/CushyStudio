@@ -1,12 +1,12 @@
 import { observer } from 'mobx-react-lite'
 import { Message } from 'rsuite'
-import { PossibleActionFile, ToolAndCode } from 'src/back/PossibleActionFile'
+import { ActionFile, ToolAndCode } from 'src/back/ActionFile'
 import { DraftL } from 'src/models/Draft'
 import { ActionFormUI } from './ActionFormUI'
 
 export const ActionUI = observer(function ActionUI_(p: {
     //
-    paf: PossibleActionFile
+    paf: ActionFile
     tac: ToolAndCode
 }) {
     const toolsR = p.tac.tools

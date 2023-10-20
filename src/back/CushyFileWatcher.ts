@@ -5,12 +5,13 @@ import { readdirSync, statSync } from 'fs'
 import path, { join } from 'path'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { PossibleActionFile } from './PossibleActionFile'
+import { ActionFile } from './ActionFile'
 import { makeAutoObservable } from 'mobx'
+import { ActionPath, asActionPath } from './ActionPath'
 
 export class CushyFileWatcher {
     treeData: ItemDataType[] = []
-    filesMap = new Map<RelativePath, PossibleActionFile>()
+    filesMap = new Map<ActionPath, ActionFile>()
     folderMap = new Set<RelativePath>()
     updatedAt = 0
     rootActionFolder: AbsolutePath
@@ -96,9 +97,9 @@ export class CushyFileWatcher {
                 // console.log('2', folderEntry)
                 parentStack.push(folderEntry)
             } else {
-                const relPath = asRelativePath(path.relative(this.st.actionsFolderPath, absPath))
+                const relPath = asActionPath(path.relative(this.st.actionsFolderPath, absPath))
                 // console.log('[💙] TOOL: handling', relPath)
-                const paf = new PossibleActionFile(this.st, absPath, relPath)
+                const paf = new ActionFile(this.st, absPath, relPath)
                 this.filesMap.set(relPath, paf)
                 const treeEntry = {
                     value: relPath,

@@ -6,6 +6,7 @@ import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
 import { TooltipUI } from '../layout/TooltipUI'
 import { getIconForFilePath } from '../utils/filePathIcon'
+import { asActionPath } from 'src/back/ActionPath'
 
 export const FileListUI = observer(function FileListUI_(p: {}) {
     const st = useSt()
@@ -65,7 +66,7 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                     }
 
                     // 1. focus paf
-                    const paf = st.toolbox.filesMap.get(asRelativePath(value))
+                    const paf = st.toolbox.filesMap.get(asActionPath(value))
                     if (paf == null) throw new Error(`paf not found for ${value}`)
                     pj.focusActionFile(paf)
 

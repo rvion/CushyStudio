@@ -1,4 +1,4 @@
-import type { PossibleActionFile } from 'src/back/PossibleActionFile'
+import type { ActionFile } from 'src/back/ActionFile'
 import type { RelativePath } from 'src/utils/fs/BrandedPaths'
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
@@ -32,12 +32,12 @@ export class ProjectL {
     // getConfig() {}
     activeTool = new LiveRefOpt<this, ToolL>(this, 'activeToolID', 'tools')
 
-    get activeFile(): Maybe<PossibleActionFile> {
+    get activeFile(): Maybe<ActionFile> {
         if (this.data.actionFile == null) return null
         return this.st.toolbox.filesMap.get(this.data.actionFile)
     }
 
-    focusActionFile(paf: PossibleActionFile): void {
+    focusActionFile(paf: ActionFile): void {
         this.update({ actionFile: paf.relPath })
     }
 
