@@ -73,8 +73,8 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         public opts?: { singleton?: boolean },
     ) {
         // ensure store has a key for this table
-        if (!(name in db.store)) db.store[name] = {}
-        this._store = (db.store as any)[name] as Indexed<T>
+        if (!(name in db.store.models)) db.store.models[name] = {}
+        this._store = (db.store.models as any)[name] as Indexed<T>
 
         // register
         this.db._tables.push(this)
@@ -194,7 +194,7 @@ export class LiveTable<T extends BaseInstanceFields, L extends LiveInstance<T, L
         }
 
         // 2. check if data exists in the data store
-        const store = this.db.store[this.name] ?? {}
+        const store = this.db.store.models[this.name] ?? {}
         if (store[id]) {
             // console.log(`[${this.name}.get] data found, but no instance => creating instance`)
             return this._createInstance(store[id] as any)

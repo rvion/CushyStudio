@@ -32,6 +32,7 @@ export class LiveDB {
     // store ---------------------------------------------------------
     store: LiveStore
     toJSON = (): LiveStore => this.store
+    mkNewStore = (): LiveStore => ({ schemaVersion: schemaVersion, models: {} })
 
     // tables ---------------------------------------------------------
     projects: LiveTable<ProjectT, ProjectL>
@@ -60,13 +61,15 @@ export class LiveDB {
                     console.log(`[💿] ❌ DB: schema version mismatch: expected ${schemaVersion}, got ${prevVersion}`)
                     console.log(`[💿] ❌ DB: backing up prev DB at ${backupName} and resetting the database`)
                     renameSync(this.absPath, backupName)
-                    this.store = { schemaVersion: schemaVersion }
+                    this.store = this.mkNewStore()
                 } else {
                     this.store = prevStore
                 }
+            } else {
+                this.store = this.mkNewStore()
             }
         } catch (error) {
-            this.store = { schemaVersion: schemaVersion }
+            this.store = this.mkNewStore()
             console.log(readFileSync(this.absPath, 'utf8'))
             console.log(error)
         }
