@@ -231,11 +231,11 @@ export class CushyLayoutManager {
                 //         },
                 //     ],
                 // },
-                {
-                    type: 'border',
-                    location: 'right',
-                    children: [],
-                },
+                // {
+                //     type: 'border',
+                //     location: 'right',
+                //     children: [],
+                // },
             ],
             layout: {
                 type: 'row',
