@@ -56,7 +56,7 @@ export class LiveDB {
                 const prevStore = JSON.parse(readFileSync(this.absPath, 'utf8'))
                 const prevVersion = prevStore.schemaVersion
                 if (prevVersion != schemaVersion) {
-                    const backupName = this.absPath + `${Date.now}.old`
+                    const backupName = this.absPath + `${Date.now()}.db.backup`
                     console.log(`[💿] ❌ DB: schema version mismatch: expected ${schemaVersion}, got ${prevVersion}`)
                     console.log(`[💿] ❌ DB: backing up prev DB at ${backupName} and resetting the database`)
                     renameSync(this.absPath, backupName)

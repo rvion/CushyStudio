@@ -98,12 +98,17 @@ export class Toolbox {
                 // console.log('2', folderEntry)
                 parentStack.push(folderEntry)
             } else {
-                const relPath = asActionPath(path.relative(this.st.actionsFolderPath, absPath))
+                const relPath = path.relative(this.st.rootPath, absPath)
+                if (!file.endsWith(this.extensions)) {
+                    console.log(`skipping file ${relPath}`)
+                    continue
+                }
+                const actionPath = asActionPath(relPath)
                 // console.log('[💙] TOOL: handling', relPath)
-                const paf = new ActionFile(this.st, absPath, relPath)
-                this.filesMap.set(relPath, paf)
+                const paf = new ActionFile(this.st, absPath, actionPath)
+                this.filesMap.set(actionPath, paf)
                 const treeEntry = {
-                    value: relPath,
+                    value: actionPath,
                     label: file,
                 }
                 parentStack.push(treeEntry)

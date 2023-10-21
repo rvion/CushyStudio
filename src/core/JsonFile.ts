@@ -1,5 +1,5 @@
 import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
-import * as JSON5 from 'json5'
+import JSON5 from 'json5'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
