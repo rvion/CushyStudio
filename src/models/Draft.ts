@@ -42,16 +42,8 @@ export class DraftL {
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
         if (this.shouldAutoStart) {
-            // If there is already a timer running, clear it first
-            if (this.autoStartTimer) {
-                clearInterval(this.autoStartTimer)
-            }
-
-            // Start a new timer
-            this.autoStartTimer = setInterval(() => {
-                // Call your start method here
-                this.start()
-            }, 2000)
+            if (this.autoStartTimer) clearInterval(this.autoStartTimer)
+            this.autoStartTimer = setInterval(() => this.start(), 2000)
         } else {
             // Stop the timer when shouldAutoStart is false
             if (this.autoStartTimer) {
@@ -72,14 +64,14 @@ export class DraftL {
 
         // 3. create step
         const step = this.db.steps.create({
-            // toolID: draft.toolID, // basis?.toolID ?? this.st.toolsSorted[0].id,
+            name: this.data.title,
+            //
             actionPath: this.data.actionPath,
             actionParams: this.data.actionParams,
-
+            //
             parentGraphID: graph.id,
             outputGraphID: graph.clone().id,
-            // params: deepCopyNaive(draft.params ?? {}),
-            // actionState: draft.actionState,
+            //
             status: Status.New,
         })
         step.start()

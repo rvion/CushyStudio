@@ -176,19 +176,10 @@ export class STATE {
     initWebsocket = () => {
         console.log('[👢] WEBSOCKET: starting client to ComfyUI')
         return new ResilientWebSocketClient({
-            onClose: () => {
-                // 🔴
-                // this.db. = 'disconnected'
-                // this.broadCastToAllClients({ type: 'cushy_status', connected: false })
-            },
-            onConnectOrReconnect: () => {
-                // 🔴
-                // this.db.store.config = 'connected'
-                // this.broadCastToAllClients({ type: 'cushy_status', connected: true })
-                this.fetchAndUdpateSchema()
-            },
-            url: this.getWSUrl,
+            onConnectOrReconnect: () => this.fetchAndUdpateSchema(),
             onMessage: this.onMessage,
+            url: this.getWSUrl,
+            onClose: () => {},
         })
     }
 
