@@ -15,6 +15,7 @@ export class Toolbox {
     filesMap = new Map<ActionPath, ActionFile>()
     folderMap = new Set<RelativePath>()
     rootActionFolder: AbsolutePath
+    get = (path: ActionPath): ActionFile | undefined => this.filesMap.get(path)
 
     // expand mechanism ----------------------------------------
     private expanded: Set<string>
@@ -100,7 +101,7 @@ export class Toolbox {
             } else {
                 const relPath = path.relative(this.st.rootPath, absPath)
                 if (!file.endsWith(this.extensions)) {
-                    console.log(`skipping file ${relPath}`)
+                    // console.log(`skipping file ${relPath}`)
                     continue
                 }
                 const actionPath = asActionPath(relPath)

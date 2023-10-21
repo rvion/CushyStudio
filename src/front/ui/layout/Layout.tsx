@@ -1,7 +1,7 @@
 import type { STATE } from 'src/front/state'
 
-import type * as FL from 'flexlayout-react'
-import { IJsonModel, Layout, Model } from 'flexlayout-react'
+import * as FL from 'flexlayout-react'
+import { IJsonModel, Layout, Model, Actions } from 'flexlayout-react'
 
 import { Button, Message } from 'rsuite'
 import { GalleryUI } from '../galleries/GalleryUI'
@@ -19,7 +19,8 @@ import { LiteGraphJSON } from 'src/core/LiteGraph'
 import { MarketplaceUI } from '../../../marketplace/MarketplaceUI'
 import { observer } from 'mobx-react-lite'
 import { makeAutoObservable } from 'mobx'
-import { PafUI } from '../actions/ActionPanel'
+import { ActionFileUI } from '../actions/ActionFileUI'
+import { ActionPath } from 'src/back/ActionPath'
 
 // still on phone
 enum Widget {
@@ -95,7 +96,7 @@ export class CushyLayoutManager {
     layoutRef = createRef<Layout>()
 
     UI = observer(() => {
-        console.log('LAYOUT rendering')
+        console.log('[💠] Rendering Layout')
         return (
             <Layout //
                 onModelChange={(model) => {
@@ -110,77 +111,87 @@ export class CushyLayoutManager {
     })
 
     nextPaintIDx = 0
-    addPaint = (imgID: ImageID) => {
-        return this._AddWithProps(Widget.Paint, { title: 'Paint', imgID })
-    }
-
-    addImage = (imgID: ImageID) => {
-        return this._AddWithProps(Widget.Image, { title: 'Image', imgID })
-    }
-
+    addPaint = (imgID: ImageID) => this._AddWithProps(Widget.Paint, `/paint/${imgID}`, { title: 'Paint', imgID })
+    addImage = (imgID: ImageID) => this._AddWithProps(Widget.Image, `/image/${imgID}`, { title: 'Image', imgID })
     addComfy = (litegraphJson: LiteGraphJSON) => {
-        return this._AddWithProps(Widget.ComfyUI, { title: 'Comfy', litegraphJson })
+        const hash = uniqueIDByMemoryRef(litegraphJson)
+        return this._AddWithProps(Widget.ComfyUI, `/litegraph/${hash}`, { title: 'Comfy', litegraphJson })
     }
+    addAction = (actionPath: ActionPath) =>
+        this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: 'Comfy', actionPath })
 
-    _AddWithProps = <
-        T extends {
-            icon?: string
-            title: string
-        },
-    >(
+    private _AddWithProps = <T extends { icon?: string; title: string }>(
+        //
         widget: Widget,
+        tabID: string,
         p: T,
     ): Maybe<FL.Node> => {
+        // 1. ensure layout is present
         const currentLayout = this.layoutRef.current
         if (currentLayout == null) {
             console.log('❌ no currentLayout')
             return
         }
 
-        const nanoID = nanoid()
-        currentLayout.addTabToTabSet('MAINTYPESET', {
-            component: widget,
-            id: nanoID,
-            icon: p.icon,
-            name: p.title,
-        })
+        // 2. get previous tab
+        let prevTab: FL.TabNode | undefined
+        prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
+        console.log(`🦊 prevTab for ${tabID}:`, prevTab)
 
-        const tabAdded = this.model.getNodeById(nanoID)
-        if (tabAdded == null) {
-            console.log('❌ no tabAdded')
-            return
+        // 3. create tab if not prev type
+        if (prevTab == null) {
+            // 3.1. add the tab
+            currentLayout.addTabToTabSet('MAINTYPESET', {
+                component: widget,
+                id: tabID,
+                icon: p.icon,
+                name: p.title,
+                config: p,
+            })
+            // 3.2. ensure the tab has been properly added
+            prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
+            if (prevTab == null) {
+                console.log('❌ no tabAdded')
+                return
+            }
+        } else {
+            this.model.doAction(Actions.selectTab(tabID))
         }
-        const extraData = (tabAdded as any)?.getExtraData()
-        Object.assign(extraData, p)
-        return tabAdded
+
+        // 4. merge props
+        this.model.doAction(Actions.updateNodeAttributes(tabID, p))
+        console.log('❌', prevTab.toJson())
+        return prevTab
     }
 
     factory = (node: FL.TabNode): React.ReactNode => {
         const component = node.getComponent() as Widget
-        const extraData = node.getExtraData() // Accesses the extra data stored in the node
+        const extra = node.getConfig()
+
         if (component === Widget.Button) return <Button>{node.getName()}</Button>
         if (component === Widget.Gallery) return <GalleryUI />
         if (component === Widget.Paint) {
             // 🔴 ensure this is type-safe
-            const imgID = extraData.imgID // Retrieves the imgID from the extra data
+            const imgID = extra.imgID // Retrieves the imgID from the extra data
             return <WidgetPaintUI action={{ type: 'paint', imageID: imgID }}></WidgetPaintUI> // You can now use imgID to instantiate your paint component properly
         }
         if (component === Widget.Image) {
             // 🔴 ensure this is type-safe
-            const imgID = extraData.imgID // Retrieves the imgID from the extra data
+            const imgID = extra.imgID // Retrieves the imgID from the extra data
             return <LastImageUI imageID={imgID}></LastImageUI> // You can now use imgID to instantiate your paint component properly
         }
         if (component === Widget.Draft) {
             // 🔴 ensure this is type-safe
-            const draftID = extraData.draftID // Retrieves the imgID from the extra data
+            // const actionPath = extra.actionPath // Retrieves the imgID from the extra data
             return (
                 <div style={{ height: '100%' }}>
-                    <PafUI />
+                    {JSON.stringify(extra)}
+                    <ActionFileUI actionPath={extra.actionPath} />
                 </div>
             )
         }
         if (component === Widget.ComfyUI) {
-            const litegraphJson = extraData.litegraphJson // Retrieves the imgID from the extra data
+            const litegraphJson = extra.litegraphJson // Retrieves the imgID from the extra data
             return <ComfyUIUI litegraphJson={litegraphJson} />
         }
         if (component === Widget.FileList) return <ActionPickerUI />
@@ -215,6 +226,8 @@ export class CushyLayoutManager {
         const out: IJsonModel = {
             global: {
                 enableEdgeDock: true,
+                tabSetMinHeight: 64,
+                tabSetMinWidth: 64,
             },
             borders: [
                 // {
@@ -238,10 +251,12 @@ export class CushyLayoutManager {
                 // },
             ],
             layout: {
+                id: 'rootRow',
                 type: 'row',
                 weight: 100,
                 children: [
                     {
+                        id: 'leftPane',
                         type: 'row',
                         weight: 10,
                         children: [
@@ -270,6 +285,7 @@ export class CushyLayoutManager {
                         ],
                     },
                     {
+                        id: 'middlePane',
                         type: 'row',
                         weight: 100,
                         children: [
@@ -277,10 +293,12 @@ export class CushyLayoutManager {
                                 type: 'tabset',
                                 id: 'MAINTYPESET',
                                 weight: 100,
+                                enableClose: false,
+                                enableDeleteWhenEmpty: false,
                                 children: [
                                     //
-                                    this._persistentTab('Civitai', Widget.Civitai, '/CivitaiLogo.png'),
-                                    this._persistentTab('ComfyUI', Widget.ComfyUI, '/ComfyUILogo.png'),
+                                    // this._persistentTab('Civitai', Widget.Civitai, '/CivitaiLogo.png'),
+                                    // this._persistentTab('ComfyUI', Widget.ComfyUI, '/ComfyUILogo.png'),
                                 ],
                             },
                             // {
@@ -292,6 +310,7 @@ export class CushyLayoutManager {
                         ],
                     },
                     {
+                        id: 'rightPane',
                         type: 'row',
                         weight: 10,
                         children: [
