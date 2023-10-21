@@ -29,6 +29,7 @@ schema/*
 
 cushy.db
 cushy*.db
+cushy*.db.old
 
 *.vsix
 
