@@ -1,6 +1,7 @@
-action('Prompt-V1', {
+action({
     author: 'rvion',
     priority: 1,
+    name: 'realtime',
     help: 'load model with optional clip-skip, loras, tome ratio, etc.',
     ui: (form) => ({
         // load
