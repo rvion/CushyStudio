@@ -1,15 +1,39 @@
+import type { ActionPath } from 'src/back/ActionPath'
 import { observer } from 'mobx-react-lite'
-import { Loader } from 'rsuite'
 import { useProject } from '../../ProjectCtx'
-import { ResultWrapperUI } from '../utils/ResultWrapperUI'
-import { JSONHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
-import { ComfyUIUI } from '../workspace/ComfyUIUI'
-import { ActionTabListUI } from './ActionTabListUI'
-import { DraftUI } from './ActionUI'
+import { useSt } from 'src/front/FrontStateCtx'
+import { Button, Message } from 'rsuite'
+import { openInVSCode } from 'src/utils/openInVsCode'
+import { cwd } from 'process'
 
-export const PafUI = observer(function PafUI_(p: {}) {
+export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: ActionPath }) {
     const pj = useProject()
-    return null
+    const st = useSt()
+    const toolbox = st.toolbox
+    const af = toolbox.get(p.actionPath)
+    if (af == null)
+        return (
+            <Message type='error'>
+                <pre tw='bg-red-900'>❌ action file {JSON.stringify(p.actionPath)} not found</pre>
+            </Message>
+        )
+    return (
+        <div>
+            {/*  */}
+            <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
+                <span>{action.name}</span>
+                <Button
+                    size='xs'
+                    color='blue'
+                    appearance='ghost'
+                    startIcon={<span className='material-symbols-outlined'>edit</span>}
+                    onClick={() => openInVSCode(cwd(), af.absPath)}
+                >
+                    Edit
+                </Button>
+            </div>
+        </div>
+    )
     // const paf = pj.activeFile
     // if (paf == null) return null
     // return (
