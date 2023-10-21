@@ -4,7 +4,7 @@ import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'
 
 // models
-import { existsSync, readFileSync, stat, writeFileSync } from 'fs'
+import { existsSync, readFileSync, renameSync, stat, writeFileSync } from 'fs'
 import { extractErrorMessage } from 'src/utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 import { bytesToSize } from 'src/utils/fs/bytesToSize'
@@ -17,7 +17,7 @@ import { SchemaL, SchemaT } from '../models/Schema'
 import { StepL, StepT } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
-import { LiveStore } from './LiveStore'
+import { LiveStore, schemaVersion } from './LiveStore'
 
 export type Indexed<T> = { [id: string]: T }
 
@@ -30,7 +30,7 @@ export class LiveDB {
     absPath: AbsolutePath
 
     // store ---------------------------------------------------------
-    store: LiveStore = {}
+    store: LiveStore
     toJSON = (): LiveStore => this.store
 
     // tables ---------------------------------------------------------
@@ -46,15 +46,27 @@ export class LiveDB {
         // 1. restore store if  it exists
         this.relPath = asRelativePath('./cushy2.db')
         this.absPath = this.st.resolveFromRoot(this.relPath)
-        const exists = existsSync(this.absPath)
-        if (exists) {
-            console.log(`[💿] DB: found db at "${this.absPath}"`)
-        } else {
-            console.log(`[💿] DB: creating db at "${this.absPath}"`)
-        }
+
         try {
-            if (exists) this.store = JSON.parse(readFileSync(this.absPath, 'utf8'))
+            const exists = existsSync(this.absPath)
+            if (exists) console.log(`[💿] DB: found db at "${this.absPath}"`)
+            else console.log(`[💿] DB: creating db at "${this.absPath}"`)
+
+            if (exists) {
+                const prevStore = JSON.parse(readFileSync(this.absPath, 'utf8'))
+                const prevVersion = prevStore.schemaVersion
+                if (prevVersion != schemaVersion) {
+                    const backupName = this.absPath + `${Date.now}.old`
+                    console.log(`[💿] ❌ DB: schema version mismatch: expected ${schemaVersion}, got ${prevVersion}`)
+                    console.log(`[💿] ❌ DB: backing up prev DB at ${backupName} and resetting the database`)
+                    renameSync(this.absPath, backupName)
+                    this.store = { schemaVersion: schemaVersion }
+                } else {
+                    this.store = prevStore
+                }
+            }
         } catch (error) {
+            this.store = { schemaVersion: schemaVersion }
             console.log(readFileSync(this.absPath, 'utf8'))
             console.log(error)
         }
