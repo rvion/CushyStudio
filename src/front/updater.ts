@@ -72,6 +72,7 @@ export class Updater {
     }
 
     log = (...args: any[]) => console.log(`[🚀] updater for (${this.relativeFolder})`, ...args)
+    error = (...args: any[]) => console.error(`[🚀] updater for (${this.relativeFolder})`, ...args)
 
     async checkForUpdates() {
         this.commandErrors.clear()
@@ -85,7 +86,7 @@ export class Updater {
             this.infos = infos
             this.ready = true
         } catch (error) {
-            console.error(`Error checking for updates: ${(error as any).message}`)
+            this.error(`updates check failed: ${(error as any).message}`)
         }
     }
     infos: GitRepoInfos = {
