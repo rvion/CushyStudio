@@ -35,7 +35,9 @@ export default defineConfig({
     resolve: {
         alias: {
             src: resolve(__dirname, './src'),
-            // 'src/*': './src/*.ts',
+
+            // injected node modules
+            // check the `src/syms/_.cjs`
             buffer: './src/syms/buffer',
             child_process: './src/syms/child_process',
             fs: './src/syms/fs',
