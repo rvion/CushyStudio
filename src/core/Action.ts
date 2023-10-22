@@ -30,7 +30,7 @@ export type Action<FIELDS extends RequestableDict> = {
     /** dependencies of your action */
     customNodeRequired?: string[]
     /** who did that? */
-    author: string
+    author?: string
     /** help text to show user */
     help?: string
 
