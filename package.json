@@ -93,6 +93,7 @@
         "rsuite": "^5.40.0",
         "simple-git": "^3.20.0",
         "unique-names-generator": "^4.7.1",
+        "watcher": "^2.3.0",
         "ws": "^8.14.2",
         "xml2js": "^0.6.2",
         "zod": "^3.22.4"
