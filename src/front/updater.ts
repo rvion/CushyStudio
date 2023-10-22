@@ -57,19 +57,21 @@ export class Updater {
     relativeFolder: string
     constructor(
         public st: STATE,
-        public p: { cwd: string },
+        public p: { cwd: string; autoStart: boolean },
     ) {
         // initial udpate
         this.relativeFolder = relative(this.st.rootPath, p.cwd)
+        if (p.autoStart) this.start()
+        makeAutoObservable(this)
+    }
+
+    start = () => {
         const startDelay = Math.floor(Math.random() * 1000 * 2) // ~10seconds
         setTimeout(() => this.checkForUpdates(), startDelay)
-
         // Fetch updates in the background every 5 minutes
-        const interval = (st.configFile.value.checkUpdateEveryMinutes ?? 5) * 60 * 1000
+        const interval = (this.st.configFile.value.checkUpdateEveryMinutes ?? 5) * 60 * 1000
         this.ensureSingleRunningSetIntervalInstance(setInterval(() => this.checkForUpdates(), interval))
-
         // mobx stuff
-        makeAutoObservable(this)
     }
 
     log = (...args: any[]) => console.log(`[🚀] updater for (${this.relativeFolder})`, ...args)

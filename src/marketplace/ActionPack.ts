@@ -36,10 +36,14 @@ export class ActionPack {
         this.authorName = parts[0]
         this.authorFolder = asAbsolutePath(join(this.st.actionsFolderPath, parts[0]))
         this.actionPackFolder = asAbsolutePath(join(this.st.actionsFolderPath, this.data.github))
-        this.updater = new Updater(this.makretplace.st, { cwd: this.actionPackFolder })
+        this.updater = new Updater(this.makretplace.st, { cwd: this.actionPackFolder, autoStart: false })
         this.installK = new ManualPromise<true>()
 
-        if (existsSync(this.actionPackFolder)) this.installK.resolve(true)
+        if (existsSync(this.actionPackFolder)) {
+            this.installK.resolve(true)
+            if (!data.BUILT_IN) this.updater.start()
+        }
+
         makeAutoObservable(this)
     }
 

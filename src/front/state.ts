@@ -148,7 +148,7 @@ export class STATE {
         this.layout = new CushyLayoutManager(this)
         this.toolbox = new Toolbox(this)
         this.theme = new ThemeManager(this)
-        this.updater = new Updater(this, { cwd: this.rootPath })
+        this.updater = new Updater(this, { cwd: this.rootPath, autoStart: true })
         this.importer = new ComfyImporter(this)
         this.schema = this.db.schema
         this.toolbox.discoverAllActions()
