@@ -9,7 +9,7 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
     return (
         <div>
             {st.marketplace.plugins.map((p) => (
-                <div tw='hover:brightness-90' key={p.data.name} style={{ borderTop: '1px solid #515151' }}>
+                <div tw='hover:bg-gray-700 cursor-pointer p-2' key={p.data.name} style={{ borderBottom: '1px solid #515151' }}>
                     <div tw='flex  gap-2'>
                         <GithubUserUI size='3rem' username={p.authorName} />
                         <div tw='flex-grow'>
