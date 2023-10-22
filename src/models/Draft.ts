@@ -37,7 +37,7 @@ export class DraftL {
     graph = new LiveRef<this, GraphL>(this, 'graphID', 'graphs')
 
     // 🔴 HACKY
-    private shouldAutoStart = false
+    shouldAutoStart = false
     private autoStartTimer: NodeJS.Timeout | null = null
     setAutostart(val: boolean) {
         this.shouldAutoStart = val
