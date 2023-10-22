@@ -49,7 +49,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 label='paint'
             />
             <MainNavEntryUI
-                onClick={() => st.layout.addPaint()}
+                onClick={() => st.layout.addGallery()}
                 ix='2'
                 icon={<span className='material-symbols-outlined text-yellow-500'>image</span>}
                 label='Gallery'
