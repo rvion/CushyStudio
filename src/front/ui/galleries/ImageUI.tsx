@@ -128,6 +128,7 @@ const renderSpeaker = (
         <Popover ref={ref} className={className} style={{ left, top }} full>
             <Dropdown.Menu onSelect={handleSelect}>
                 <Dropdown.Item eventKey={4}>Paint</Dropdown.Item>
+                <Dropdown.Item eventKey={4}>Mask</Dropdown.Item>
                 {/* <Dropdown.Menu title='Edit'>
                     <Dropdown.Item eventKey={1}>New File</Dropdown.Item>
                     <Dropdown.Item eventKey={2}>New File with Current Profile</Dropdown.Item>
