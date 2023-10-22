@@ -98,7 +98,6 @@ export class DraftL {
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
                     const uiFn = action.ui
-                    console.log(`🟢`, uiFn, toJS(action))
                     const req: Requestable =
                         uiFn == null //
                             ? formBuilder.group({ items: () => ({}) }, this.data.actionParams)
