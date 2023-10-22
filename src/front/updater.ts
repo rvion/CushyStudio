@@ -28,6 +28,7 @@ export class Updater {
         if (!this.ready) return false
         if (!this.infos.originCommitHash) return false
         if (!this.infos.headCommitHash) return false
+        if (this.infos.originCommitsCount <= this.infos.headCommitsCount) return false
         return this.infos.originCommitHash !== this.infos.headCommitHash
     }
 
@@ -72,6 +73,7 @@ export class Updater {
     }
 
     log = (...args: any[]) => console.log(`[🚀] updater for (${this.relativeFolder})`, ...args)
+    error = (...args: any[]) => console.error(`[🚀] updater for (${this.relativeFolder})`, ...args)
 
     async checkForUpdates() {
         this.commandErrors.clear()
@@ -85,7 +87,7 @@ export class Updater {
             this.infos = infos
             this.ready = true
         } catch (error) {
-            console.error(`Error checking for updates: ${(error as any).message}`)
+            this.error(`updates check failed: ${(error as any).message}`)
         }
     }
     infos: GitRepoInfos = {

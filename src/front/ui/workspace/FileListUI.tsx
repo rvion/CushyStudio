@@ -6,6 +6,7 @@ import { useSt } from '../../FrontStateCtx'
 import { useProject } from '../../ProjectCtx'
 import { TooltipUI } from '../layout/TooltipUI'
 import { getIconForFilePath } from '../utils/filePathIcon'
+import { asActionPath } from 'src/back/ActionPath'
 
 export const FileListUI = observer(function FileListUI_(p: {}) {
     const st = useSt()
@@ -56,7 +57,7 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                     const value = _value as string
 
                     const isFolder = st.toolbox.folderMap.has(asRelativePath(value))
-                    console.log(_value, `isFolder: ${isFolder}`)
+                    // console.log(_value, `isFolder: ${isFolder}`)
                     if (isFolder) {
                         if (tb.isExpanded(value)) tb.collapse(value)
                         else tb.expand(value)
@@ -64,17 +65,19 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
                         // return console.log(`❌ "${_value}" a folder`)
                     }
 
+                    const actionPath = asActionPath(value)
                     // 1. focus paf
-                    const paf = st.toolbox.filesMap.get(asRelativePath(value))
+                    const paf = st.toolbox.filesMap.get(actionPath)
                     if (paf == null) throw new Error(`paf not found for ${value}`)
-                    pj.focusActionFile(paf)
+                    st.layout.addAction(actionPath)
+                    // pj.focusActionFile(paf)
 
-                    // 2. if paf has a tool, focus it
-                    console.log(value, paf)
-                    await paf.load({ logFailures: true })
-                    const tool0 = paf.mainTool
-                    if (tool0 == null) return null
-                    pj.focusTool(tool0)
+                    // // 2. if paf has a tool, focus it
+                    // console.log(value, paf)
+                    // await paf.load({ logFailures: true })
+                    // const tool0 = paf.mainTool
+                    // if (tool0 == null) return null
+                    // pj.focusTool(tool0)
                 }}
             />
         </>

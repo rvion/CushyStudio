@@ -8,11 +8,9 @@ import fs, { readFileSync, writeFileSync } from 'fs'
 import { marked } from 'marked'
 import { lookup } from 'mime-types'
 import { STATE } from 'src/front/state'
-import { ToolL } from 'src/models/Tool'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { Slot } from '../core/Slot'
 import { auto } from '../core/autoValue'
-import { globalToolFnCache } from '../core/globalActionFnCache'
 import { createMP4FromImages } from '../ffmpeg/ffmpegScripts'
 import { GraphL } from '../models/Graph'
 import { ImageL } from '../models/Image'
@@ -60,15 +58,13 @@ export class Runtime {
 
     pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
     run = async (): Promise<Status> => {
+        // return Status.Success
         // 1. ensure we have a tool
-        const tool: ToolL = this.step.tool.item
-        if (tool == null) return Status.Failure
-
         const start = Date.now()
-        const action = globalToolFnCache.get(tool)
-        const actionResult = this.step.data.actionResult
-        console.log(`🔴 before: size=${this.graph.nodes.length}`)
-
+        const action = this.step.action
+        const actionResult = this.step.data.formResult
+        // console.log(`🔴 before: size=${this.graph.nodes.length}`)
+        console.log(`🔴 before: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
         try {
             if (action == null) {
                 console.log(`❌ action not found`)

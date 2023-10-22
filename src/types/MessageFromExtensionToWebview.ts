@@ -1,33 +1,10 @@
-import type { FormResult } from 'src/core/Requirement'
-import type { ImageID, ImageT } from 'src/models/Image'
-import type { ToolID } from 'src/models/Tool'
+import type { Requestable } from 'src/controls/InfoRequest'
+import type { FormResult } from 'src/core/Action'
 import type { FlowID } from 'src/front/FlowID'
-import type { PromptID, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
 import type { GraphID } from 'src/models/Graph'
-import type { StepID } from 'src/models/Step'
-import { Requestable } from 'src/controls/InfoRequest'
+import type { ImageT } from 'src/models/Image'
+import type { PromptID, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
 
-// =============================================================================================
-// | FRONT => BACK                                                                             |
-// =============================================================================================
-// sent when the webpage is loaded
-// request to run a flow
-export type FromWebview_runAction = {
-    type: 'run-action'
-    flowID: FlowID
-    actionID: ToolID
-    /** the execution ID to use (defined client-side, see ActionFront) */
-    stepID: StepID
-    data: FormResult<any>
-}
-// request to open an external URL
-export type FromWebview_openExternal = { type: 'open-external'; uriString: string }
-// answer a data request in the middle of a flow
-export type FromWebview_Answer = { type: 'answer'; value: any }
-// upload an image
-export type FromWebview_Image = { type: 'image'; base64: string; imageID: ImageID }
-// reset the workspace
-export type FromWebview_reset = { type: 'reset' }
 // re-build the action form and check if action is valid in current flow context
 // export type FomrWebview_ProbeAction = { type: 'probe-action'; flowID: FlowID; actionID: ActionDefinitionID }
 

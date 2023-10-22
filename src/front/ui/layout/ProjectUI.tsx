@@ -5,6 +5,8 @@ import { projectContext } from '../../ProjectCtx'
 import { GalleryHoveredPreviewUI } from '../galleries/GalleryHoveredPreviewUI'
 import { PanelConfigUI } from './PanelConfigUI'
 import { MainNavBarUI } from './MainNavBarUI'
+import { ErrorBoundary } from 'react-error-boundary'
+import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const st = useSt()
@@ -27,7 +29,10 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
                     style={{ transition: 'all 0.2s ease-in-out', opacity: 0 }}
                 />
                 {/* <div tw='relative w-full h-full'> */}
-                <st.layout.UI />
+                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+                    {/* <GraphPreviewUI graph={lastGraph} /> */}
+                    <st.layout.UI />
+                </ErrorBoundary>
                 {/* </div> */}
             </projectContext.Provider>
         </div>

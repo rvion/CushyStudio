@@ -1,4 +1,5 @@
 import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
+import JSON5 from 'json5'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -85,7 +86,7 @@ export class JsonFile<T extends object> {
         } else {
             console.info('[🛋]', `${this.fileName} found at ${this._path}`)
             const configStr = readFileSync(this._path, 'utf-8')
-            this._value = JSON.parse(configStr)
+            this._value = JSON5.parse(configStr)
         }
         // 3. report as ready
         return this._value

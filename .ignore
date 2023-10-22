@@ -1,0 +1,6 @@
+# https://stackoverflow.com/questions/55949132/vscode-how-to-get-file-search-not-content-to-include-git-ignored-files
+# vscode uses rules in both .gitignore and .ignore.
+# Since Git only recognizes .gitignore,
+# we can negate some rules in .ignore to bring them back in the vscode search result.
+
+!schema/global.d.ts

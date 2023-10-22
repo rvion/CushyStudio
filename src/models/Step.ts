@@ -1,3 +1,5 @@
+import type { PromptL } from './Prompt'
+import type { ActionPath } from 'src/back/ActionPath'
 import type {
     FromExtension_Print,
     FromExtension_Prompt,
@@ -10,11 +12,9 @@ import type { WsMsgExecuted, WsMsgExecutionError } from '../types/ComfyWsApi'
 
 import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
-import { LiveRef } from '../db/LiveRef'
 import { LiveCollection } from '../db/LiveCollection'
-
-import { ToolID, ToolL } from './Tool'
-import { PromptL } from './Prompt'
+import { LiveRef } from '../db/LiveRef'
+import { ActionFile } from 'src/back/ActionFile'
 
 export type FormPath = (string | number)[]
 
@@ -34,18 +34,20 @@ export type StepT = {
     createdAt: number
     updatedAt: number
     /** form that lead to creating this step */
-    toolID: ToolID
-    /** tool params */
-    // actionState: Maybe<any>
-    actionResult: Maybe<any>
-    // params: Maybe<any>
-    /** parent */
+
+    // ACTION ------------------------------
+    name: string
+    actionPath: ActionPath
+    formResult: Maybe<any>
+    formSerial: Maybe<any>
+
+    // GRAPHS ------------------------------
     parentGraphID: GraphID
-    /** resulting graph */
     outputGraphID: GraphID
+
+    // OUTPUTS -----------------------------
     /** outputs of the evaluated step */
     outputs?: Maybe<StepOutput[]>
-    /** step status */
     status: Status
 }
 
@@ -53,6 +55,9 @@ export type StepT = {
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
     start = async () => {
+        const action = this.action
+        if (action == null) return console.log('🔴 no action found')
+
         // this.data.outputGraphID = out.id
         this.runtime = new Runtime(this)
         this.update({ status: Status.Running })
@@ -60,22 +65,18 @@ export class StepL {
 
         if (this.prompts.items.every((p: PromptL) => p.data.executed)) {
             this.update({ status: scriptExecutionStatus })
-            if (scriptExecutionStatus === Status.Success) {
-                // this.parentGraph.item.createDraft(this).focus()
-                // this.outputGraph.item.createDraft()
-            }
         }
     }
-
     prompts = new LiveCollection<PromptL>(this, 'stepID', 'prompts')
-    get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
-
-    focus() {
-        this.parentGraph.item.update({ focusedStepID: this.id })
-    }
-    tool = new LiveRef<this, ToolL>(this, 'toolID', 'tools')
     parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
     outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
+
+    get actionFile(): ActionFile | undefined { return this.st.toolbox.filesMap.get(this.data.actionPath) } // prettier-ignore
+    get action() { return this.actionFile?.action } // prettier-ignore
+
+    get name() { return this.data.name } // prettier-ignore
+    get generatedImages() { return this.prompts.items.map((p) => p.images.items).flat() } // prettier-ignore
+
     runtime: Maybe<Runtime> = null
     append = (output: StepOutput) => this.update({ outputs: [...(this.data.outputs ?? []), output] })
 }

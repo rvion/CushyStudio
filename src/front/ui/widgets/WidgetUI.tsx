@@ -25,6 +25,7 @@ import { WidgetColorUI } from './WidgetCololrUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Requestable
+    labelPos?: R.LabelPos
     rootKey: string
     vertical?: boolean
 }) {
@@ -33,40 +34,47 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     let label: Maybe<string>
     label = req.input.label ?? rootKey
     tooltip = req.input.tooltip
-    return (
+
+    const LABEL = (
         <div
-            // style={{ background: ix % 2 === 0 ? '#313131' : undefined }}
             className={
                 p.vertical //
-                    ? 'flex flex-col items-baseline'
-                    : 'flex flex-row gap-2 items-baseline'
+                    ? 'min-w-max shrink-0'
+                    : 'min-w-max shrink-0 text-right'
             }
-            key={rootKey}
         >
-            <div
-                className={
-                    p.vertical //
-                        ? 'min-w-max shrink-0'
-                        : 'min-w-max shrink-0 text-right'
-                }
-            >
-                {tooltip && (
-                    <Whisper placement='topStart' speaker={<Tooltip>{tooltip}</Tooltip>}>
-                        <I.InfoOutline className='mr-2 cursor-pointer' />
-                    </Whisper>
-                )}
-                {label}
-            </div>
-            <ErrorBoundary
-                FallbackComponent={ErrorBoundaryFallback}
-                onReset={(details) => {
-                    /* 🔴 */
-                }}
-            >
-                <WidgetUI req={req} />
-            </ErrorBoundary>
+            {tooltip && (
+                <Whisper placement='topStart' speaker={<Tooltip>{tooltip}</Tooltip>}>
+                    <I.InfoOutline className='mr-2 cursor-pointer' />
+                </Whisper>
+            )}
+            {label}
         </div>
     )
+    const WIDGET = (
+        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
+            <WidgetUI req={req} />
+        </ErrorBoundary>
+    )
+    const className = p.vertical //
+        ? 'flex flex-col items-baseline'
+        : 'flex flex-row gap-2 items-baseline'
+
+    if (p.labelPos === 'end') {
+        return (
+            <div className={className} key={rootKey}>
+                {WIDGET}
+                {LABEL}
+            </div>
+        )
+    } else {
+        return (
+            <div className={className} key={rootKey}>
+                {LABEL}
+                {WIDGET}
+            </div>
+        )
+    }
 })
 
 /**

@@ -1,10 +1,10 @@
-import type { ComfyEnumDef, ComfyInputOpts, ComfyInputType, ComfySchemaJSON } from '../types/ComfySchemaJSON'
+import type { ComfyEnumDef, ComfyInputOpts, ComfySchemaJSON } from '../types/ComfySchemaJSON'
 
+import { observable, toJS } from 'mobx'
 import { LiveInstance } from 'src/db/LiveInstance'
-import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
-import { toJS } from 'mobx'
+import { CodeBuffer } from '../utils/CodeBuffer'
 import { escapeJSKey } from './escapeJSKey'
 
 export type EnumHash = string
@@ -40,6 +40,13 @@ export type SchemaT = {
 }
 
 export interface SchemaL extends LiveInstance<SchemaT, SchemaL> {}
+export type EnumInfo = {
+    // enumNameInComfy: string
+    enumNameInCushy: EnumName
+    values: EnumValue[]
+    aliases: string[]
+}
+
 export class SchemaL {
     getLoraHierarchy = (): string[] => {
         const loras = this.getLoras()
@@ -47,42 +54,23 @@ export class SchemaL {
     }
 
     getLoras = (): Enum_LoraLoader_lora_name[] => {
-        const candidates = this.knownEnumsByName.get('Enum_LoraLoader_lora_name') ?? []
+        const candidates = this.knownEnumsByName.get('Enum_LoraLoader_lora_name')?.values ?? []
         return candidates as Enum_LoraLoader_lora_name[]
     }
 
-    getEnumOptionsForSelectPicker = (enumName: string) => {
-        const candidates = this.knownEnumsByName.get(enumName) ?? []
+    getEnumOptionsForSelectPicker = (enumName: string): { label: EnumValue; value: EnumValue }[] => {
+        const candidates = this.knownEnumsByName.get(enumName)?.values ?? []
         return candidates.map((x) => ({ label: x, value: x }))
     }
 
     knownTypes = new Set<string>()
-    knownEnumsByName = new Map<EnumName, EnumValue[]>()
-    knownEnumsByHash = new Map<
-        EnumHash,
-        {
-            // enumNameInComfy: string
-            enumNameInCushy: EnumName
-            values: EnumValue[]
-            aliases: string[]
-        }
-    >()
+    knownEnumsByName = new Map<EnumName, EnumInfo>()
+    knownEnumsByHash = new Map<EnumHash, EnumInfo>()
     nodes: ComfyNodeSchema[] = []
     nodesByNameInComfy: { [key: string]: ComfyNodeSchema } = {}
     nodesByNameInCushy: { [key: string]: ComfyNodeSchema } = {}
     nodesByProduction: { [key: string]: NodeNameInCushy[] } = {}
-
-    // components: ItemDataType[] = []
-
-    // constructor(
-    //     //
-    //     public db: LiveDB,
-    //     public spec: ComfySchemaJSON,
-    //     public embeddings: EmbeddingName[],
-    // ) {
-    //     this.onUpdate(spec, embeddings)
-    //     makeAutoObservable(this)
-    // }
+    enumsAppearingInOutput = new Set<string>()
 
     /** on update is called automatically by live instances */
     onUpdate() {
@@ -97,6 +85,7 @@ export class SchemaL {
         this.nodesByNameInComfy = {}
         this.nodesByNameInCushy = {}
         this.nodesByProduction = {}
+        this.enumsAppearingInOutput.clear()
 
         // compile spec
         const entries = Object.entries(this.data.spec)
@@ -104,12 +93,7 @@ export class SchemaL {
             // console.chanel?.append(`[${nodeNameInComfy}]`)
             // apply prefix
             const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')
-            // prettier-ignore
-            const nodeNameInCushy =
-                // nodeDef.category.startsWith('WAS Suite/') ? `WAS${normalizedNodeNameInCushy}` :
-                // nodeDef.category.startsWith('ImpactPack') ? `Impact${normalizedNodeNameInCushy}` :
-                // nodeDef.category.startsWith('Masquerade Nodes') ? `Masquerade${normalizedNodeNameInCushy}` :
-                normalizedNodeNameInCushy
+            const nodeNameInCushy = normalizedNodeNameInCushy
             // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
 
             const inputs: NodeInputExt[] = []
@@ -150,6 +134,7 @@ export class SchemaL {
                 } else if (Array.isArray(slotType)) {
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${outputNameInCushy}_out`
                     slotTypeName = this.processEnumNameOrValue({ candidateName: uniqueEnumName, comfyEnumDef: slotType })
+                    this.enumsAppearingInOutput.add(slotTypeName)
                 } else {
                     throw new Error(`invalid output ${ix} "${slotType}" in node "${nodeNameInComfy}"`)
                 }
@@ -230,31 +215,36 @@ export class SchemaL {
         candidateName: string
         comfyEnumDef: ComfyEnumDef
     }): string => {
+        // 1. build enum
         const enumValues: EnumValue[] = []
-        let finalEnumName: string
         for (const enumValue of p.comfyEnumDef) {
             if (typeof enumValue === 'string') enumValues.push(enumValue)
             else if (typeof enumValue === 'boolean') enumValues.push(enumValue)
             else if (typeof enumValue === 'number') enumValues.push(enumValue)
             else enumValues.push(enumValue.content)
         }
-        const hash = enumValues.sort().join('|')
-        const similarEnum = this.knownEnumsByHash.get(hash)
-        const uniqueEnumName = p.candidateName // `Enum_${nodeNameInCushy}_${inputNameInCushy}`
-        this.knownEnumsByName.set(uniqueEnumName, enumValues)
-        if (similarEnum != null) {
-            finalEnumName = similarEnum.enumNameInCushy
-            similarEnum.aliases.push(uniqueEnumName)
+        // 2. hash its value
+        const hash =
+            enumValues.length === 0 //
+                ? `[[empty:${p.candidateName}]]`
+                : enumValues.sort().join('|')
+
+        // 3. retrieve or create an EnumInfo
+        let enumInfo: Maybe<EnumInfo> = this.knownEnumsByHash.get(hash)
+        if (enumInfo == null) {
+            // case 3.A. PRE-EXISTING
+            enumInfo = observable({ enumNameInCushy: p.candidateName, values: enumValues, aliases: [] })
+            this.knownEnumsByHash.set(hash, enumInfo)
         } else {
-            finalEnumName = uniqueEnumName
-            this.knownEnumsByHash.set(hash, {
-                enumNameInCushy: finalEnumName, // normalizeJSIdentifier(finalEnumName),
-                // enumNameInComfy: inputNameInComfy,
-                values: enumValues,
-                aliases: [],
-            })
+            // case 3.B. PRE-EXISTING
+            enumInfo.aliases.push(p.candidateName)
         }
-        return finalEnumName
+
+        // ❌ if (p.candidateName === 'Enum_DualCLIPLoader_clip_name1') debugger
+
+        // 4.sore enum by name
+        this.knownEnumsByName.set(p.candidateName, enumInfo)
+        return enumInfo.enumNameInCushy
     }
 
     // updateComponents() {
@@ -291,8 +281,8 @@ export class SchemaL {
         p(`import type { ComfyNode } from '${prefix}core/Node'`)
         p(`import type { Slot } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
-        p(`import type { ComfyNodeUID } from '${prefix}types/NodeUID'`)
-        p(`import type { ActionType } from '${prefix}core/Requirement'`)
+        p(`import type { ComfyNodeID } from '${prefix}types/NodeUID'`)
+        p(`import type { ActionType } from '${prefix}core/Action'`)
         // p(`import type { WorkflowType } from '${prefix}core/WorkflowFn'`)
         p('')
         p(`// CONTENT IN THIS FILE:`)
@@ -316,7 +306,7 @@ export class SchemaL {
         // prettier-ignore
         for (const n of this.nodes) {
             p(`    /* category:${n.category}, name:"${n.nameInComfy}", output:${n.outputs.map(o => o.nameInCushy).join('+')} */`)
-            p(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, id?: ComfyNodeUID): ${n.nameInCushy}`)
+            p(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, id?: ComfyNodeID): ${n.nameInCushy}`)
         }
         p(`}`)
 
@@ -341,6 +331,9 @@ export class SchemaL {
         }
         for (const [tp, nns] of Object.entries(this.nodesByProduction)) {
             p(`export interface CanProduce_${tp} extends Pick<ComfySetup, ${nns.map((i) => `'${i}'`).join(' | ')}> { }`)
+        }
+        for (const tp of this.knownTypes) {
+            if (!(tp in this.nodesByProduction)) p(`export interface CanProduce_${tp} {}`)
         }
 
         p(`\n// 4. TYPES -------------------------------`)
@@ -385,6 +378,10 @@ export class SchemaL {
         for (const t of this.knownTypes.values()) {
             p(`export interface HasSingle_${t} { _${t}: ${t} } // prettier-ignore`)
         }
+        // knownEnumOutput
+        for (const t of this.enumsAppearingInOutput.values()) {
+            p(`export interface HasSingle_${t} { _${t}: ${t} } // prettier-ignore`)
+        }
         // for (const t of this.knownEnums.values()) {
         //     p(
         //         `export interface HasSingle_${t.enumNameInCushy} { _${t.enumNameInCushy}: ${t.enumNameInCushy} } // prettier-ignore`,
@@ -412,7 +409,7 @@ export class SchemaL {
 
         // // prettier-ignore
         // for (const n of this.nodes) {
-        //     p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeUID): ${n.nameInCushy}`)
+        //     p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeID): ${n.nameInCushy}`)
         // }
         // // p(`\n// misc \n`)
         // // prettier-ignore

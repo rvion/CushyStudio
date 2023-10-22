@@ -1,10 +1,10 @@
 {
     "compilerOptions": {
         "target": "ESNext",
-        "useDefineForClassFields": true,
+        "useDefineForClassFields": false,
         "lib": ["DOM", "DOM.Iterable", "ESNext"],
         "allowJs": false,
-        "skipLibCheck": true,
+        "skipLibCheck": false,
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "strict": true,
@@ -16,9 +16,6 @@
         "noEmit": true,
         "jsx": "react-jsx",
         "baseUrl": ".",
-        "paths": {
-            "LATER": ["src/back/LATER.ts"]
-        }
     },
     "exclude": [],
     // this file will be created by CushyStudio itself

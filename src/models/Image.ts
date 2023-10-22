@@ -1,13 +1,11 @@
 import type { LiveInstance } from '../db/LiveInstance'
-import type { FolderL, FolderID } from './Folder'
 import type { PromptID, PromptL } from './Prompt'
 
 import { existsSync } from 'fs'
+import { LiveRef } from '../db/LiveRef'
 import { ComfyImageInfo } from '../types/ComfyWsApi'
 import { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
-import { LiveRef } from '../db/LiveRef'
-import { join } from 'path'
 
 export type ImageID = Tagged<string, 'ImageUID'>
 
@@ -22,8 +20,6 @@ export interface ImageT {
     imageInfos?: ComfyImageInfo
     /** image ratings */
     star?: number
-    /** Cushy image folder (drag and drop system) */
-    folderID?: Maybe<FolderID>
     /** where the file is either located locally / or aimed to be stored */
     localFilePath: AbsolutePath
     /** where the file exists locally */
@@ -108,9 +104,6 @@ export class ImageL {
     // }
 
     test2 = () => 'b123'
-    moveTo(folder: FolderL) {
-        this.update({ folderID: folder.id })
-    }
 }
 
 enum ImageStatus {

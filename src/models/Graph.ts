@@ -11,19 +11,16 @@ import { marked } from 'marked'
 import { join } from 'path'
 import { ManualPromise } from 'src/utils/ManualPromise'
 import { NodeBuilder } from '../back/NodeBuilder'
-import { Status } from '../back/Status'
 import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
 import { comfyColors } from '../core/Colors'
 import { LiteGraphJSON, convertFlowToLiteGraphJSON } from '../core/LiteGraph'
 import { ComfyNode } from '../core/Node'
 import { LiveCollection } from '../db/LiveCollection'
-import { LiveRefOpt } from '../db/LiveRefOpt'
 import { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { asHTMLContent, asMDContent } from '../utils/markdown'
-import { DraftID, DraftL } from './Draft'
-import { StepID, StepL } from './Step'
-import { ToolID } from './Tool'
+import { DraftL } from './Draft'
+import { StepL } from './Step'
 
 export type RunMode = 'fake' | 'real'
 
@@ -45,9 +42,6 @@ export type GraphT = {
     updatedAt: number
     /** graph json */
     comfyPromptJSON: ComfyPromptJSON
-    /** the current node selected in the tree */
-    focusedStepID?: Maybe<StepID> // 🔴
-    focusedDraftID?: Maybe<DraftID> // 🔴
 }
 
 export interface GraphL extends LiveInstance<GraphT, GraphL> {}
@@ -57,15 +51,13 @@ export class GraphL {
         return this.nodes.length
     }
 
-    focusedStep = new LiveRefOpt<this, StepL>(this, 'focusedStepID', 'steps')
-    focusedDraft = new LiveRefOpt<this, DraftL>(this, 'focusedDraftID', 'drafts')
-
     private _builder: NodeBuilder | null = null
     get builder(): NodeBuilder {
         if (this._builder) return this._builder
         this._builder = new NodeBuilder(this)
         return this._builder
     }
+
     onUpdate = (prev: Maybe<GraphT>, next: GraphT) => {
         const prevSize = this.size
         if (prev != null) {
@@ -109,44 +101,6 @@ export class GraphL {
         this.cyto?.trackNode(node)
         // this.graph.run.cyto.addNode(this)
     }
-
-    // 🔴 wrongly named, unclear path draft => graph => step => graph
-    createStep = (
-        /** the basis step you'd like to base yourself when creating a new branch */
-        draft: {
-            toolID: ToolID
-            actionResult: any
-            actionState: any
-        },
-    ): StepL => {
-        const step = this.db.steps.create({
-            toolID: draft.toolID, // basis?.toolID ?? this.st.toolsSorted[0].id,
-            parentGraphID: this.id,
-            outputGraphID: this.clone({ focusedStepID: null, focusedDraftID: null }).id,
-            // params: deepCopyNaive(draft.params ?? {}),
-            actionResult: draft.actionResult,
-            // actionState: draft.actionState,
-            status: Status.New,
-        })
-        this.update({ focusedStepID: step.id })
-        return step
-    }
-
-    // /** create a new Draft slot */
-    // createDraft = (
-    //     /** the basis step you'd like to base yourself when creating a new branch */
-    //     fromDraft?: Maybe<{ toolID: ToolID; params: Maybe<any> }>,
-    // ): DraftL => {
-    //     const draft = this.db.drafts.create({
-    //         toolID: fromDraft?.toolID ?? this.st.toolsSorted[0].id,
-    //         graphID: this.id,
-    //         title: 'Untitled',
-    //         params: deepCopyNaive(fromDraft?.params ?? {}),
-    //     })
-    //     console.log('🔴', draft.id)
-    //     this.update({ focusedDraftID: draft.id })
-    //     return draft
-    // }
 
     /** proxy to this.db.schema */
     get schema() {

@@ -6,6 +6,8 @@ import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { resolve } from 'path'
 
 export type ConfigFile = {
+    /** this will allow you to enable typechecking for folders you manage */
+    githubUsername?: string
     /** e.g.
      * - true
      *   => will use https:// for POST requests

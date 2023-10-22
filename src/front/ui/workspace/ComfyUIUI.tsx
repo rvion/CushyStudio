@@ -6,7 +6,7 @@ import { useLayoutEffect } from 'react'
 import { Button } from 'rsuite'
 import { useSt } from '../../../front/FrontStateCtx'
 
-export const ComfyUIUI = observer(function ComfyUIUI_(p: { litegraphJson?: LiteGraphJSON }) {
+export const ComfyUIUI = observer(function ComfyUIUI_(p: { litegraphJson?: Maybe<LiteGraphJSON> }) {
     const st = useSt()
     const url = st.getServerHostHTTP()
 

@@ -2,23 +2,26 @@ import type { STATE } from 'src/front/state'
 import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 
 import { readdirSync, statSync } from 'fs'
+import { makeAutoObservable } from 'mobx'
 import path, { join } from 'path'
 import { ItemDataType } from 'rsuite/esm/@types/common'
+import { ActionPath, asActionPath } from 'src/back/ActionPath'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
-import { PossibleActionFile } from './PossibleActionFile'
-import { makeAutoObservable } from 'mobx'
+import { ActionFile } from './ActionFile'
 
-export class CushyFileWatcher {
-    treeData: ItemDataType[] = []
-    filesMap = new Map<RelativePath, PossibleActionFile>()
-    folderMap = new Set<RelativePath>()
+export class Toolbox {
     updatedAt = 0
+    treeData: ItemDataType[] = []
+    filesMap = new Map<ActionPath, ActionFile>()
+    folderMap = new Set<RelativePath>()
     rootActionFolder: AbsolutePath
+    get = (path: ActionPath): ActionFile | undefined => this.filesMap.get(path)
 
     // expand mechanism ----------------------------------------
     private expanded: Set<string>
     get expandedPaths(): string[] { return [...this.expanded] } // prettier-ignore
     isExpanded = (path: string): boolean => this.expanded.has(path)
+
     expand = (path: string): void => {
         this.expanded.add(path)
         const jsonF = this.st.typecheckingConfig
@@ -96,12 +99,17 @@ export class CushyFileWatcher {
                 // console.log('2', folderEntry)
                 parentStack.push(folderEntry)
             } else {
-                const relPath = asRelativePath(path.relative(this.st.actionsFolderPath, absPath))
+                const relPath = path.relative(this.st.rootPath, absPath)
+                if (!file.endsWith(this.extensions)) {
+                    // console.log(`skipping file ${relPath}`)
+                    continue
+                }
+                const actionPath = asActionPath(relPath)
                 // console.log('[💙] TOOL: handling', relPath)
-                const paf = new PossibleActionFile(this.st, absPath, relPath)
-                this.filesMap.set(relPath, paf)
+                const paf = new ActionFile(this.st, absPath, actionPath)
+                this.filesMap.set(actionPath, paf)
                 const treeEntry = {
-                    value: relPath,
+                    value: actionPath,
                     label: file,
                 }
                 parentStack.push(treeEntry)

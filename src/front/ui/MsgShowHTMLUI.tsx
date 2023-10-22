@@ -9,10 +9,17 @@ import { GraphL } from 'src/models/Graph'
 export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: GraphL }) {
     const graph = p.graph
     const elMap = document.querySelector('#map')
+
+    // 1. trigger cyto update (🔶 this is asynchronous)
     useMemo(() => graph.updateCyto(), [graph])
+
+    const cyto = graph.currentCyto
+
+    // 2. once cyto is done
     useLayoutEffect(() => {
         if (graph == null) return // ❌ console.log('❌ no graph yet')
         if (elMap == null) return // ❌ console.log('❌ no elMap yet')
+        if (cyto == null) return // ❌ console.log('❌ no cyto yet')
         renderMinimap(document.querySelector('#map')!, {
             viewport: domNode,
             styles: {
@@ -26,15 +33,12 @@ export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: Graph
             drag: 'rgba(0,0,0,0.10)',
             // interval: 2000,
         })
-    }, [graph, elMap])
+    }, [graph, elMap, cyto])
 
     const domNode = document.getElementById('hovered-graph')
     if (domNode == null) return null
-    const cyto = graph.currentCyto
-    if (cyto.elements.nodes == null) {
-        console.log('❓')
-        return null
-    }
+    if (cyto.elements.nodes == null) return null
+
     const fullGraph = (
         <>
             {cyto.elements.nodes.map((n) => {

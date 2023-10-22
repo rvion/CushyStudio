@@ -1,53 +1,49 @@
 import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder, ReqResult, Requestable } from '../controls/InfoRequest'
-import { CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
 /** quick function to help build actions in a type-safe way */
 
 // export const action = <const F extends RequestableDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
-export type ActionType = <const F extends RequestableDict>(name: string, t: Omit<Action<F>, 'name'>) => Action<F>
-
-// export type FormDefinition = { [key: string]: Requestable }
+export type ActionType = <const F extends RequestableDict>(t: Action<F>) => Action<F>
+export type RequestableDict = { [key: string]: Requestable }
 export type FormResult<Req extends Requestable> = ReqResult<Req>
 
-export type RequestableDict = { [key: string]: Requestable }
-
-export type Author = {
-    name: string
-    email?: string
-    githubUsername?: string
-    website?: string
-    bio?: string
-}
+// export type Author = {
+//     name: string
+//     email?: string
+//     githubUsername?: string
+//     website?: string
+//     bio?: string
+// }
 
 export type Action<FIELDS extends RequestableDict> = {
-    requirements?: {
-        customNode: string[]
-    }
-    categories?: string[]
-    /** who did that? */
-    author: string | Author
-    /** this description will show-up at the top of the action form */
-    description?: string
+    // AUTHORING ============================================================
     /** action name; default to unnamed_action_<nanoid()> */
     name: string
+    /** this description will show-up at the top of the action form */
+    description?: string
+    /** tags */
+    categories?: string[]
+    /** dependencies of your action */
+    customNodeRequired?: string[]
+    /** who did that? */
+    author: string
     /** help text to show user */
     help?: string
-    /** temporary hack so I can work more efficiently (lower first) */
-    priority?: number
+
+    // UI PART ============================================================
     /** the list of dependencies user can specify */
     ui?: (form: FormBuilder /*, flow: Workflow*/) => FIELDS
-    /** extra list of dependencies */
-    // requirement?: (builder: ReqBuilder) => Reqs
-    /** the code to run */
-    run: (f: Runtime, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
-    /** next actions to suggest user */
-    next?: string[]
     /** form container className */
     containerClassName?: string
     containerStyle?: CSSProperties
+
+    // EXECUTION PART ============================================================
+    /** the code to run */
+    run: (f: Runtime, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
 }
 
 // REQUIREMENTS ============================================================
