@@ -28,6 +28,7 @@ export class Updater {
         if (!this.ready) return false
         if (!this.infos.originCommitHash) return false
         if (!this.infos.headCommitHash) return false
+        if (this.infos.originCommitsCount <= this.infos.headCommitsCount) return false
         return this.infos.originCommitHash !== this.infos.headCommitHash
     }
 
