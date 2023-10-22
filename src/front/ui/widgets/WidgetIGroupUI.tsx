@@ -14,7 +14,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Requesta
             </Button>
             {req.state.collapsed ? null : (
                 <div
-                    style={{ border: '1px solid gray' }}
+                    // style={{ border: '1px solid gray' }}
                     tw={[req.input.layout === 'H' ? 'flex' : null]}
                     className={req.input.className}
                 >
