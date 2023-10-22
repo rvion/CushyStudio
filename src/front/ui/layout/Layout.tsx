@@ -21,6 +21,7 @@ import { observer } from 'mobx-react-lite'
 import { makeAutoObservable } from 'mobx'
 import { ActionFileUI } from '../drafts/ActionFileUI'
 import { ActionPath } from 'src/back/ActionPath'
+import { PanelConfigUI } from './PanelConfigUI'
 
 // still on phone
 enum Widget {
@@ -38,6 +39,7 @@ enum Widget {
     Image = 'Image',
     Hosts = 'Hosts',
     Marketplace = 'Marketplace',
+    Config = 'Config',
 }
 
 type PerspectiveDataForSelect = {
@@ -111,11 +113,26 @@ export class CushyLayoutManager {
     })
 
     nextPaintIDx = 0
-    addPaint = (imgID: ImageID) => this._AddWithProps(Widget.Paint, `/paint/${imgID}`, { title: 'Paint', imgID })
+    addMarketplace = () =>
+        this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: '/CushyLogo.png' })
+    addCivitai = () => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'Civitai', icon: '/CivitaiLogo.png' })
+    addConfig = () => this._AddWithProps(Widget.Config, `/config`, { title: 'Config' })
+    addPaint = (imgID?: ImageID) => {
+        if (imgID == null) {
+            this._AddWithProps(Widget.Paint, `/paint/blank`, { title: 'Paint' })
+        } else {
+            this._AddWithProps(Widget.Paint, `/paint/${imgID}`, { title: 'Paint', imgID })
+        }
+    }
     addImage = (imgID: ImageID) => this._AddWithProps(Widget.Image, `/image/${imgID}`, { title: 'Image', imgID })
-    addComfy = (litegraphJson: LiteGraphJSON) => {
-        const hash = uniqueIDByMemoryRef(litegraphJson)
-        return this._AddWithProps(Widget.ComfyUI, `/litegraph/${hash}`, { title: 'Comfy', litegraphJson })
+    addComfy = (litegraphJson?: LiteGraphJSON) => {
+        const icon = '/ComfyUILogo.png'
+        if (litegraphJson == null) {
+            return this._AddWithProps(Widget.ComfyUI, `/litegraph/blank`, { title: 'Comfy', icon, litegraphJson: null })
+        } else {
+            const hash = uniqueIDByMemoryRef(litegraphJson)
+            return this._AddWithProps(Widget.ComfyUI, `/litegraph/${hash}`, { title: 'Comfy', icon, litegraphJson })
+        }
     }
     addAction = (actionPath: ActionPath) =>
         this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: actionPath, actionPath })
@@ -212,6 +229,7 @@ export class CushyLayoutManager {
             return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0'></iframe>
         if (component === Widget.Hosts) return <HostListUI />
         if (component === Widget.Marketplace) return <MarketplaceUI />
+        if (component === Widget.Config) return <PanelConfigUI />
 
         exhaust(component)
         return (
@@ -224,6 +242,7 @@ export class CushyLayoutManager {
     private _persistentTab = (name: string, widget: Widget, icon?: string): FL.IJsonTabNode => {
         return {
             type: 'tab',
+            id: '/marketplace',
             name,
             component: widget,
             enableClose: false,
