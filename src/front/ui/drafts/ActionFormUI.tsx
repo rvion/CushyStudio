@@ -2,7 +2,7 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Button, Checkbox, Message } from 'rsuite'
+import { Button, Checkbox, Input, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { GithubUserUI } from 'src/front/GithubAvatarUI'
 import { DraftID, DraftL } from 'src/models/Draft'
@@ -107,6 +107,16 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                         By {action.author ? <GithubUserUI showName username={action.author} /> : 'anonymous'}
                     </div>
                 </ErrorBoundary>
+                <Input
+                    type='text'
+                    className='w-full p-2 m-2'
+                    placeholder='Search...'
+                    value={draft.data.title}
+                    onChange={(next) => {
+                        draft.update({ title: next })
+                        st.layout.renameCurrentTab(next)
+                    }}
+                />
                 <ScrollablePaneUI className='flex-grow '>
                     <div>{action.description}</div>
                     <form

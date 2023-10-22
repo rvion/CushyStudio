@@ -152,6 +152,16 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.renameTab(tabID, newName))
     }
 
+    /** quickly rename the current tab */
+    renameCurrentTab = (newName: string) => {
+        const tabset = this.model.getActiveTabset()
+        if (tabset == null) return
+        const tab = tabset.getSelectedNode()
+        if (tab == null) return
+        const tabID = tab.getId()
+        this.model.doAction(Actions.renameTab(tabID, newName))
+    }
+
     private _AddWithProps = <T extends { icon?: string; title: string }>(
         //
         widget: Widget,
