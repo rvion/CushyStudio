@@ -10,7 +10,7 @@ async function START() {
         console.log('❌ error patching electron icon and name', error)
     }
 
-    const { app, BrowserWindow } = require('electron')
+    const { app, BrowserWindow, globalShortcut } = require('electron')
 
     // required to interract with ComfyUI
     // | https://github.com/electron/electron/issues/18940
@@ -93,5 +93,13 @@ async function START() {
         console.log('window-all-closed')
         app.quit()
         // if (process.platform !== 'darwin')
+    })
+
+    app.on('ready', () => {
+        // globalShortcut.unregisterAll()
+        globalShortcut.register('CommandOrControl+W', () => {
+            //stuff here
+            console.log('CommandOrControl+W')
+        })
     })
 }
