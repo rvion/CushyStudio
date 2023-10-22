@@ -90,7 +90,10 @@ export class CushyLayoutManager {
             this.setModel(Model.fromJson(json))
         } catch (e) {
             console.log('[💠] Layout: ❌ error loading layout', e)
+            // ⏸️ console.log('[💠] Layout: ❌ resetting layout')
+            // ⏸️ this.st.configFile.update((t) => (t.perspectives = {}))
             this.setModel(Model.fromJson(this.build()))
+            // this.setModel(Model.fromJson({ layout: { type: 'row', children: [] } }))
         }
         makeAutoObservable(this)
     }
@@ -242,7 +245,6 @@ export class CushyLayoutManager {
     private _persistentTab = (name: string, widget: Widget, icon?: string): FL.IJsonTabNode => {
         return {
             type: 'tab',
-            id: '/marketplace',
             name,
             component: widget,
             enableClose: false,
@@ -295,12 +297,12 @@ export class CushyLayoutManager {
                                 minWidth: 300,
                                 children: [this._persistentTab('FileList', Widget.FileList)],
                             },
-                            {
-                                type: 'tabset',
-                                weight: 10,
-                                minWidth: 300,
-                                children: [this._persistentTab('Marketplace', Widget.Marketplace)],
-                            },
+                            // {
+                            //     type: 'tabset',
+                            //     weight: 10,
+                            //     minWidth: 300,
+                            //     children: [this._persistentTab('Marketplace', Widget.Marketplace)],
+                            // },
                             {
                                 type: 'tabset',
                                 weight: 10,

@@ -1,22 +1,22 @@
-import { observer } from 'mobx-react-lite'
 import * as I from '@rsuite/icons'
-import { useSt } from '../../FrontStateCtx'
-import { Nav } from 'rsuite'
+import { observer } from 'mobx-react-lite'
 import React from 'react'
+import { useSt } from '../../FrontStateCtx'
 
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: () => void
     ix: string
     icon: React.ReactNode
+    soon?: boolean
     label: string
 }) {
     return (
-        <div className='flex flex-col' onClick={p.onClick}>
-            <div className='flex items-center'>
-                <div className='text-xs pr-1 text-gray-500'>{p.ix}</div>
-                <div>{p.icon}</div>
+        <div className='flex flex-col py-2 cursor-pointer hover:bg-gray-800' onClick={p.onClick}>
+            <div className='flex items-center px-3'>
+                <div className='text-xs pr-1 text-gray-300'>{p.ix}</div>
+                <div tw='text-xl'>{p.icon}</div>
             </div>
-            <div className='text-xs text-center text-gray-500'>{p.label}</div>
+            <div className='text-xs text-center text-gray-300'>{p.label}</div>
         </div>
     )
 })
@@ -30,38 +30,38 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 <MainNavEntryUI onClick={() => st.layout.addComfy()} ix='1' icon='🛋️' label='prompt' />
             </div> */}
             {/* COMFY */}
-            <div tw='p-2'>
-                <MainNavEntryUI onClick={() => st.layout.addComfy()} ix='3' icon={<I.Branch />} label='Comfy' />
-            </div>
+
+            <MainNavEntryUI onClick={() => st.layout.addComfy()} ix='3' icon={<I.Branch />} label='Comfy' />
+
             {/* MARKETPLACE */}
-            <div tw='p-2'>
-                <MainNavEntryUI onClick={() => st.layout.addMarketplace()} ix='3' icon={<I.Plus />} label='Packs' />
-            </div>
+            <MainNavEntryUI
+                onClick={() => st.layout.addMarketplace()}
+                ix='3'
+                icon={<span className='material-symbols-outlined'>apps</span>}
+                label='Packs'
+            />
+
             {/* PAINT */}
-            <div tw='p-2'>
-                <MainNavEntryUI onClick={() => st.layout.addPaint()} ix='2' icon={<I.Image />} label='paint' />
-            </div>
+            <MainNavEntryUI onClick={() => st.layout.addPaint()} ix='2' icon={<I.Image />} label='paint' />
+
             {/* CONFIG */}
-            <div tw='p-2'>
-                <MainNavEntryUI onClick={() => st.layout.addComfy()} ix='4' icon={<I.Gear />} label='Config' />
-            </div>
+            <MainNavEntryUI onClick={() => st.layout.addComfy()} ix='4' icon={<I.Gear />} label='Config' />
+
             {/* CIVITAI */}
-            <div tw='p-2'>
-                <MainNavEntryUI
-                    onClick={() => st.layout.addComfy()}
-                    ix='5'
-                    icon={<img width='25px' height='25px' src='/CivitaiLogo.png'></img>}
-                    label='Civitai'
-                />
-            </div>
-            <div tw='p-2'>
-                <MainNavEntryUI
-                    onClick={() => st.layout.addComfy()}
-                    ix='6'
-                    icon={<span className='material-symbols-outlined'>cloud</span>}
-                    label='GPU'
-                />
-            </div>
+            <MainNavEntryUI
+                onClick={() => st.layout.addCivitai()}
+                ix='5'
+                icon={<img width='25px' height='25px' src='/CivitaiLogo.png'></img>}
+                label='Civitai'
+            />
+
+            <MainNavEntryUI
+                soon
+                onClick={() => st.layout.addComfy()}
+                ix='6'
+                icon={<span className='material-symbols-outlined'>cloud</span>}
+                label='GPU'
+            />
         </div>
     )
 })
