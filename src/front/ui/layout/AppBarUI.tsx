@@ -39,13 +39,9 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 save
             </Button>
             <IconButton
+                size='xs'
                 icon={
-                    <span
-                        //
-                        className='material-symbols-outlined'
-                    >
-                        {st.theme.theme === 'light' ? 'highlight' : 'nights_stay'}
-                    </span>
+                    <span className='material-symbols-outlined'>{st.theme.theme === 'light' ? 'highlight' : 'nights_stay'}</span>
                 }
                 onClick={() => (st.theme.theme = st.theme.theme === 'light' ? 'dark' : 'light')}
             ></IconButton>
