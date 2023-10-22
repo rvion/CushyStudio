@@ -11,9 +11,14 @@ import { Button, ButtonGroup } from 'rsuite'
 import { asRelativePath } from '../../../utils/fs/pathUtils'
 import { useSt } from '../../FrontStateCtx'
 
-export type UIPagePaint = { type: 'paint'; imageID?: ImageID }
+export type UIPagePaint = {
+    type: 'paint'
+    imageID?: ImageID
+    // mask?: boolean
+}
 
 const getLayers = (): any => {
+    // console.log('🟢', (document as any).getElementById('miniPaint').contentWindow.Layers)
     return (document as any).getElementById('miniPaint').contentWindow.Layers
 }
 class MinipaintState {
@@ -42,6 +47,19 @@ class MinipaintState {
                 height_original: img.naturalHeight || img.height,
             }
             Layers.insert(new_layer)
+
+            // if (true) {
+            //     var mask_layer = {
+            //         name: 'MASK',
+            //         type: 'image',
+            //         data: '',
+            //         width: img.naturalWidth || img.width,
+            //         height: img.naturalHeight || img.height,
+            //         width_original: img.naturalWidth || img.width,
+            //         height_original: img.naturalHeight || img.height,
+            //     }
+            //     Layers.insert(mask_layer)
+            // }
         }
     }
     saveImage() {
@@ -56,6 +74,7 @@ class MinipaintState {
         tempCanvas.height = dim.height
         console.log('d')
         Layers.convert_layers_to_canvas(tempCtx)
+        // console.log(Layers.get_layer('MASK'))
 
         // if (is_edge_or_ie() == false) {
         //update image using blob (faster)
