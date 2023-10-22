@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, ButtonGroup, InputGroup, Panel } from 'rsuite'
+import { Button, InputGroup } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 
 export const HostListUI = observer(function HostListUI_(p: {}) {

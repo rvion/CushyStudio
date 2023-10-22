@@ -6,22 +6,36 @@ import { Button, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { openInVSCode } from 'src/utils/openInVsCode'
 import { ActionDraftListUI } from './ActionDraftListUI'
+import { ActionFormUI } from './ActionFormUI'
+import { useEffect } from 'react'
 
 export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: ActionPath }) {
     const st = useSt()
     const toolbox = st.toolbox
     const af = toolbox.get(p.actionPath)
+    // console.log('🟢', st.liveTime)
+
+    useEffect(() => {
+        void af?.load({ logFailures: true })
+    }, [af])
+
     if (af == null)
         return (
             <Message type='error'>
-                <pre tw='bg-red-900'>❌ action file {JSON.stringify(p.actionPath)} not found</pre>
+                <pre tw='bg-red-900'>A. ❌ action file {JSON.stringify(p.actionPath)} not found</pre>
             </Message>
         )
+
+    const errors =
+        af.errors.length > 0 ? ( //
+            <Message type='warning'>{JSON.stringify(af.errors, null, 4)}</Message>
+        ) : null
     return (
-        <div>
-            {/*  */}
+        <>
             <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
+                {/* TITLE */}
                 <span>{af.name}</span>
+                {/* EDIT */}
                 <Button
                     size='xs'
                     color='blue'
@@ -32,8 +46,19 @@ export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: Act
                     Edit
                 </Button>
             </div>
+            {/* {st.liveTime} */}
+            {af.action == null ? (
+                <Message type='error' showIcon>
+                    <pre tw='bg-red-900'>B. ❌ action not found</pre>
+                    <pre>loadRequested: {af.loadRequested ? '🟢' : '❌'}</pre>
+                    <pre tw='bg-red-900'>{JSON.stringify(af.errors)}</pre>
+                </Message>
+            ) : null}
+            {errors}
+            {/* DRAFT LIST */}
             <ActionDraftListUI af={af} />
-        </div>
+            {af.focusedDraft && <ActionFormUI draft={af.focusedDraft} />}
+        </>
     )
     // const paf = pj.activeFile
     // if (paf == null) return null

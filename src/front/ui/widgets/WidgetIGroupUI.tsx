@@ -17,6 +17,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Requesta
                 return (
                     <div key={rootKey}>
                         <WidgetWithLabelUI //
+                            labelPos={sub.input.labelPos}
                             rootKey={rootKey}
                             req={sub}
                         />
@@ -44,6 +45,7 @@ export const WidgetGroupOptUI = observer(function WidgetItemsOptUI_(p: {
                     return (
                         <div key={rootKey}>
                             <WidgetWithLabelUI //
+                                labelPos={sub.input.labelPos}
                                 rootKey={rootKey}
                                 req={sub}
                             />

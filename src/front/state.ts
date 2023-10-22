@@ -43,6 +43,17 @@ export class STATE {
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
 
+    liveTime: number = (() => {
+        const store = this.hotReloadPersistentCache
+        if (store.liveTimeInterval != null) clearInterval(store.liveTimeInterval)
+        store.liveTimeInterval = setInterval(() => {
+            const now = Date.now()
+            // console.log(`time is now ${now}`)
+            this.liveTime = Math.round(now / 1000)
+        }, 1000)
+        return Date.now()
+    })()
+
     /**
      * global hotReload persistent cache that should survive hot reload
      * useful to ensure various singleton stuff (e.g. dbHealth)

@@ -4,7 +4,7 @@ import { cwd } from 'process'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Button, Message, Toggle } from 'rsuite'
 import { GithubUserUI } from 'src/front/GithubAvatarUI'
-import { DraftL } from 'src/models/Draft'
+import { DraftID, DraftL } from 'src/models/Draft'
 import { openInVSCode } from 'src/utils/openInVsCode'
 import { TabUI } from '../layout/TabUI'
 import { ScrollablePaneUI } from '../scrollableArea'
@@ -13,15 +13,24 @@ import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
+import { useSt } from 'src/front/FrontStateCtx'
+import { stringifyUnknown } from 'src/utils/stringifyUnknown'
 
 /**
  * this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }) {
+export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL | DraftID }) {
     // 1. get draft
-    const draft = p.draft
+    const st = useSt()
+    const draft = typeof p.draft === 'string' ? st.db.drafts.get(p.draft) : p.draft
+    if (draft == null)
+        return (
+            <Message type='error'>
+                <pre tw='bg-red-900'>❌ Draft not found</pre>
+            </Message>
+        )
 
     // 2. get action file
     const af = draft.actionFile
@@ -31,14 +40,6 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }
                 <pre tw='bg-red-900'>❌ action file not found</pre>
             </Message>
         )
-
-    if (af.errors) {
-        return (
-            <Message type='error'>
-                <pre tw='bg-red-900'>{JSON.stringify(af.errors, null, 4)}</pre>
-            </Message>
-        )
-    }
 
     // 3. get action
     const action = af.action
@@ -54,7 +55,8 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }
     if (!formR.success)
         return (
             <Message type='error'>
-                <div></div>❌ form failed
+                <div>❌ form failed</div>
+                <div tw='bg-red-900'>{stringifyUnknown(formR.error)}</div>
             </Message>
         )
 
@@ -67,7 +69,7 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }
                 //
                 className={containerClassName}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw='m-4 fade-in flex flex-col flex-grow'
+                tw='m-4 fade-in flex flex-col flex-grow h-full'
             >
                 <div tw='row items-center font-bold font justify-between'>
                     <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
@@ -101,7 +103,9 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }
                     </Button>
                 </div>
                 <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-                    By <GithubUserUI showName username={action.author} />
+                    <div tw='flex items-center'>
+                        By <GithubUserUI showName username={action.author} />
+                    </div>
                 </ErrorBoundary>
                 <ScrollablePaneUI className='flex-grow '>
                     <div>{action.description}</div>
@@ -130,7 +134,11 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL }
                             draft.start()
                         }}
                     >
-                        <ResultWrapperUI res={draft.form} whenValid={(req) => <WidgetUI req={req} />} />
+                        <ResultWrapperUI
+                            //
+                            res={draft.form}
+                            whenValid={(req) => <WidgetUI req={req} />}
+                        />
                     </form>
                     <TabUI title='Debug:' tw='mt-auto'>
                         <div>no</div>

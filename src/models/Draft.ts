@@ -2,7 +2,7 @@ import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 
-import { autorun, reaction, runInAction } from 'mobx'
+import { autorun, reaction, runInAction, toJS } from 'mobx'
 import { ActionFile } from 'src/back/ActionFile'
 import { ActionPath } from 'src/back/ActionPath'
 import { FormBuilder, type Requestable } from 'src/controls/InfoRequest'
@@ -80,13 +80,8 @@ export class DraftL {
 
     form: Result<Requestable> = __FAIL('not loaded yet')
 
-    get action() {
-        return this.actionFile?.action
-    }
-
-    get actionFile(): ActionFile | undefined {
-        return this.st.toolbox.filesMap.get(this.data.actionPath)
-    }
+    get actionFile(): ActionFile | undefined { return this.st.toolbox.filesMap.get(this.data.actionPath) } // prettier-ignore
+    get action() { return this.actionFile?.action } // prettier-ignore
 
     onHydrate = () => {
         let subState = { unsync: () => {} }
@@ -102,6 +97,7 @@ export class DraftL {
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
                     const uiFn = action.ui
+                    console.log(`🟢`, uiFn, toJS(action))
                     const req: Requestable =
                         uiFn == null //
                             ? formBuilder.group({ items: () => ({}) }, this.data.actionParams)
@@ -110,6 +106,7 @@ export class DraftL {
                     console.log(`🦊 form setup`)
                     // subState.unsync()
                 } catch (e) {
+                    console.error(e)
                     this.form = __FAIL('ui function crashed', e)
                     return
                 }

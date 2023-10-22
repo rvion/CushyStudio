@@ -5,7 +5,7 @@ import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 
 import { readFileSync } from 'fs'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import path from 'pathe'
 import { ActionPath } from 'src/back/ActionPath'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
@@ -37,7 +37,7 @@ export class ActionFile {
     ) {
         this.displayName = path.basename(this.absPath)
 
-        makeAutoObservable(this)
+        makeAutoObservable(this, { action: observable.ref })
     }
 
     // autoreload
@@ -72,17 +72,20 @@ export class ActionFile {
     }
 
     // extracted stuff
-    action?: Action<RequestableDict>
-    codeJS?: string
-    codeTS?: string
-    liteGraphJSON?: LiteGraphJSON
-    promptJSON?: ComfyPromptJSON
-    png?: AbsolutePath
+    action?: Maybe<Action<RequestableDict>> = null
+    codeJS?: Maybe<string> = null
+    codeTS?: Maybe<string> = null
+    liteGraphJSON?: Maybe<LiteGraphJSON> = null
+    promptJSON?: Maybe<ComfyPromptJSON> = null
+    png?: Maybe<AbsolutePath> = null
 
-    focusedDraft?: DraftL
+    focusedDraft?: Maybe<DraftL> = null
 
+    loadRequested = false
     /** load a file trying all compatible strategies */
     load = async (p: { logFailures: boolean; force?: boolean }): Promise<true> => {
+        if (this.loadRequested && !p.force) return true
+        this.loadRequested = true
         if (this.loaded.done && !p.force) return true
         const strategies = this.findLoadStrategies()
         for (const strategy of strategies) {

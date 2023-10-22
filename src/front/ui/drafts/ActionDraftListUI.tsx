@@ -6,7 +6,6 @@ import { ActionAddDraftBtnUI } from './ActionAddDraftBtnUI'
 import { ActionFile } from 'src/back/ActionFile'
 
 export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { af: ActionFile }) {
-    const pj = useProject()
     const af = p.af
     const drafts = af.drafts
     const focusedDraft = af.focusedDraft

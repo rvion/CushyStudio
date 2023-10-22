@@ -59,12 +59,14 @@ export type IRequest<T, I, X, S, O> = {
     readonly serial: X
 }
 
+export type LabelPos = 'start' | 'end'
 export type ReqInput<X> = X & {
     label?: string
+    labelPos?: LabelPos
+    layout?: 'H'| 'V',
     group?: string
     tooltip?: string
     i18n?: { [key: string]: string }
-    layout?: 'H'| 'V',
     className?: string
 }
 
@@ -760,10 +762,11 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
             console.log('🔴 group "items" should be af unction')
             debugger
         }
+        // debugger
         if (serial){
             const _newValues = input.items()
             this.state = { type: 'group', active: serial.active, values: {} as any }
-            const prevValues_ = serial.values_
+            const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
                 const newItem = _newValues[key]
                 const prevValue_ = prevValues_[key]
@@ -816,7 +819,7 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
         if (serial){
             const _newValues = input.items()
             this.state = { type:'groupOpt', active: serial.active, values: {} as any }
-            const prevValues_ = serial.values_
+            const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
                 const newItem = _newValues[key]
                 const prevValue_ = prevValues_[key]

@@ -25,7 +25,7 @@ export const ActionAddDraftBtnUI = observer(function ActionAddDraftBtnUI_(p: { a
             }}
         >
             {/* <I.AddOutline /> */}
-            New Draft
+            New Draft for ({af.name} ({af.action?.name}))
         </Button>
     )
 })
