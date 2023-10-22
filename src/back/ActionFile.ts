@@ -29,12 +29,14 @@ enum LoadStatus {
 }
 
 export class ActionFile {
+    displayName: string
     constructor(
         public st: STATE,
         public absPath: AbsolutePath,
         public relPath: ActionPath,
     ) {
         makeAutoObservable(this)
+        this.displayName = path.basename(this.absPath)
     }
 
     // autoreload
@@ -76,6 +78,8 @@ export class ActionFile {
     promptJSON?: ComfyPromptJSON
     png?: AbsolutePath
 
+    focusedDraft?: DraftL
+
     /** load a file trying all compatible strategies */
     load = async (p: { logFailures: boolean; force?: boolean }): Promise<true> => {
         if (this.loaded.done && !p.force) return true
@@ -84,6 +88,8 @@ export class ActionFile {
             const res = await this.loadWithStrategy(strategy)
             if (res) break
         }
+        if (this.action) this.displayName = this.action.name
+        this.st.layout.renameTab(`/action/${this.relPath}`, this.displayName)
         this.loaded.resolve(true)
         return true
     }

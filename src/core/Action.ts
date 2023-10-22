@@ -1,6 +1,6 @@
 import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder, ReqResult, Requestable } from '../controls/InfoRequest'
-import { CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.

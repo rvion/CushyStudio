@@ -1,13 +1,13 @@
 import type { ActionPath } from 'src/back/ActionPath'
+
 import { observer } from 'mobx-react-lite'
-import { useProject } from '../../ProjectCtx'
-import { useSt } from 'src/front/FrontStateCtx'
-import { Button, Message } from 'rsuite'
-import { openInVSCode } from 'src/utils/openInVsCode'
 import { cwd } from 'process'
+import { Button, Message } from 'rsuite'
+import { useSt } from 'src/front/FrontStateCtx'
+import { openInVSCode } from 'src/utils/openInVsCode'
+import { ActionDraftListUI } from './ActionDraftListUI'
 
 export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: ActionPath }) {
-    const pj = useProject()
     const st = useSt()
     const toolbox = st.toolbox
     const af = toolbox.get(p.actionPath)
@@ -21,7 +21,7 @@ export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: Act
         <div>
             {/*  */}
             <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
-                <span>{action.name}</span>
+                <span>{af.name}</span>
                 <Button
                     size='xs'
                     color='blue'
@@ -32,6 +32,7 @@ export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: Act
                     Edit
                 </Button>
             </div>
+            <ActionDraftListUI af={af} />
         </div>
     )
     // const paf = pj.activeFile

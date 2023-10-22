@@ -19,7 +19,7 @@ import { LiteGraphJSON } from 'src/core/LiteGraph'
 import { MarketplaceUI } from '../../../marketplace/MarketplaceUI'
 import { observer } from 'mobx-react-lite'
 import { makeAutoObservable } from 'mobx'
-import { ActionFileUI } from '../actions/ActionFileUI'
+import { ActionFileUI } from '../drafts/ActionFileUI'
 import { ActionPath } from 'src/back/ActionPath'
 
 // still on phone
@@ -118,7 +118,13 @@ export class CushyLayoutManager {
         return this._AddWithProps(Widget.ComfyUI, `/litegraph/${hash}`, { title: 'Comfy', litegraphJson })
     }
     addAction = (actionPath: ActionPath) =>
-        this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: 'Comfy', actionPath })
+        this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: actionPath, actionPath })
+
+    renameTab = (tabID: string, newName: string) => {
+        const tab = this.model.getNodeById(tabID)
+        if (tab == null) return
+        this.model.doAction(Actions.renameTab(tabID, newName))
+    }
 
     private _AddWithProps = <T extends { icon?: string; title: string }>(
         //
@@ -160,7 +166,7 @@ export class CushyLayoutManager {
 
         // 4. merge props
         this.model.doAction(Actions.updateNodeAttributes(tabID, p))
-        console.log('❌', prevTab.toJson())
+        // console.log('❌', prevTab.toJson())
         return prevTab
     }
 
@@ -185,7 +191,11 @@ export class CushyLayoutManager {
             // const actionPath = extra.actionPath // Retrieves the imgID from the extra data
             return (
                 <div style={{ height: '100%' }}>
-                    {JSON.stringify(extra)}
+                    {/* {JSON.stringify(extra)}🟢 */}
+                    {/* <div>test</div> */}
+                    {/* <div>OK this is good</div> */}
+                    {/* <ActionFileUI actionPath={extra.actionPath} /> */}
+                    {/* <div>test</div> */}
                     <ActionFileUI actionPath={extra.actionPath} />
                 </div>
             )

@@ -25,8 +25,8 @@ export default defineConfig({
         watch: {
             ignored: [
                 //
-                '**/actions/**/*',
-                'actions/**/*.tsx',
+                '/actions/**/*.ts',
+                '/actions/**/*.tsx',
                 'tsconfig.custom.json',
                 'tsconfig.json',
                 '**/tsconfig.custom.json',
