@@ -15,6 +15,7 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
         return (
             <div>
                 <Loader />
+                <div>No project yet, you first need to connect to ComfyUI</div>
                 <PanelConfigUI />
             </div>
         )
