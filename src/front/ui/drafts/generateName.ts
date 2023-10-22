@@ -1,7 +1,8 @@
 import { uniqueNamesGenerator, adjectives, colors, animals } from 'unique-names-generator'
 
 export const generateName = (): string => {
-    return uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] })
+    return uniqueNamesGenerator({ dictionaries: [colors] })
+    // return uniqueNamesGenerator({ dictionaries: [adjectives, colors, animals] })
 }
 
 // examples
