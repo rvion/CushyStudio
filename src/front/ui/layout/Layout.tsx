@@ -282,7 +282,7 @@ export class CushyLayoutManager {
                             {
                                 type: 'tabset',
                                 weight: 10,
-                                minWidth: 300,
+                                minWidth: 150,
                                 children: [this._persistentTab('FileList', Widget.FileList)],
                             },
                             // {
@@ -294,8 +294,8 @@ export class CushyLayoutManager {
                             {
                                 type: 'tabset',
                                 weight: 10,
-                                minWidth: 300,
-                                minHeight: 300,
+                                minWidth: 150,
+                                minHeight: 150,
                                 children: [
                                     this._persistentTab('🎆 Gallery', Widget.Gallery),
                                     // this._persistentTab('Hosts', Widget.Hosts),

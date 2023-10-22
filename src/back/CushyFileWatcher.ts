@@ -26,7 +26,7 @@ export class Toolbox {
         this.expanded.add(path)
         const jsonF = this.st.typecheckingConfig
         const prevInclude = jsonF.value.include
-        const nextInclude = [...prevInclude, `actions/${path}/*`]
+        const nextInclude = [...prevInclude, `actions/${path}/**/*`]
         jsonF.update({ include: nextInclude })
     }
 
@@ -49,9 +49,9 @@ export class Toolbox {
         const includedActions = included.filter(
             (x) =>
                 x.startsWith('actions/') && //
-                x.endsWith('/*'),
+                x.endsWith('/**/*'),
         )
-        const expanded = includedActions.map((x) => x.slice(8, -2))
+        const expanded = includedActions.map((x) => x.slice(8, -5))
         this.expanded = new Set(expanded)
 
         makeAutoObservable(this)

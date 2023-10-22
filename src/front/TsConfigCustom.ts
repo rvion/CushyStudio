@@ -20,7 +20,7 @@ export const mkTypescriptConfig = (): JsonFile<TsConfigCustom> => {
                 'schema/global.d.ts',
                 'src',
                 //
-                'actions/CushyStudio/*',
+                'actions/CushyStudio/**/*',
                 // 'actions/rvion/*',
                 // "actions/murphy/*",
                 // "actions/featherice/*",
