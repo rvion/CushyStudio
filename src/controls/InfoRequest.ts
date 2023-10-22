@@ -4,7 +4,7 @@
  */
 import type { ItemDataType } from 'rsuite/esm/@types/common'
 import type { CELL } from 'src/front/ui/widgets/WidgetMatrixUI'
-import type { SchemaL } from 'src/models/Schema'
+import type { EnumInfo, SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { PossibleSerializedNodes } from 'src/prompter/plugins/CushyDebugPlugin'
 import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
@@ -867,7 +867,7 @@ export class Requestable_enum<T extends KnownEnumNames> implements IRequest<'enu
         public input: Requestable_enum_input<T>,
         serial?: Requestable_enum_serial<T>,
     ) {
-        const possibleValues = this.schema.knownEnumsByName.get(input.enumName) ?? []
+        const possibleValues = this.schema.knownEnumsByName.get(input.enumName)?.values ?? []
         this.state = serial ?? {
             type: 'enum',
             active: true,
@@ -894,7 +894,7 @@ export class Requestable_enumOpt<T extends KnownEnumNames> implements IRequest<'
         public input: Requestable_enumOpt_input<T>,
         serial?: Requestable_enumOpt_serial<T>,
     ) {
-        const possibleValues = this.schema.knownEnumsByName.get(input.enumName) ?? []
+        const possibleValues = this.schema.knownEnumsByName.get(input.enumName)?.values ?? []
         this.state = serial ?? {
             type: 'enumOpt',
             active: input.default != null,

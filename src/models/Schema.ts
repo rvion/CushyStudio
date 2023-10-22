@@ -1,10 +1,10 @@
-import type { ComfyEnumDef, ComfyInputOpts, ComfyInputType, ComfySchemaJSON } from '../types/ComfySchemaJSON'
+import type { ComfyEnumDef, ComfyInputOpts, ComfySchemaJSON } from '../types/ComfySchemaJSON'
 
+import { observable, toJS } from 'mobx'
 import { LiveInstance } from 'src/db/LiveInstance'
-import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
-import { observable, toJS } from 'mobx'
+import { CodeBuffer } from '../utils/CodeBuffer'
 import { escapeJSKey } from './escapeJSKey'
 
 export type EnumHash = string
@@ -58,8 +58,8 @@ export class SchemaL {
         return candidates as Enum_LoraLoader_lora_name[]
     }
 
-    getEnumOptionsForSelectPicker = (enumName: string) => {
-        const candidates = this.knownEnumsByName.get(enumName) ?? []
+    getEnumOptionsForSelectPicker = (enumName: string): { label: EnumValue; value: EnumValue }[] => {
+        const candidates = this.knownEnumsByName.get(enumName)?.values ?? []
         return candidates.map((x) => ({ label: x, value: x }))
     }
 
@@ -71,18 +71,6 @@ export class SchemaL {
     nodesByNameInCushy: { [key: string]: ComfyNodeSchema } = {}
     nodesByProduction: { [key: string]: NodeNameInCushy[] } = {}
     enumsAppearingInOutput = new Set<string>()
-
-    // components: ItemDataType[] = []
-
-    // constructor(
-    //     //
-    //     public db: LiveDB,
-    //     public spec: ComfySchemaJSON,
-    //     public embeddings: EmbeddingName[],
-    // ) {
-    //     this.onUpdate(spec, embeddings)
-    //     makeAutoObservable(this)
-    // }
 
     /** on update is called automatically by live instances */
     onUpdate() {
