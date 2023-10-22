@@ -70,6 +70,7 @@ export class SchemaL {
     nodesByNameInComfy: { [key: string]: ComfyNodeSchema } = {}
     nodesByNameInCushy: { [key: string]: ComfyNodeSchema } = {}
     nodesByProduction: { [key: string]: NodeNameInCushy[] } = {}
+    enumsAppearingInOutput = new Set<string>()
 
     // components: ItemDataType[] = []
 
@@ -96,6 +97,7 @@ export class SchemaL {
         this.nodesByNameInComfy = {}
         this.nodesByNameInCushy = {}
         this.nodesByProduction = {}
+        this.enumsAppearingInOutput.clear()
 
         // compile spec
         const entries = Object.entries(this.data.spec)
@@ -103,12 +105,7 @@ export class SchemaL {
             // console.chanel?.append(`[${nodeNameInComfy}]`)
             // apply prefix
             const normalizedNodeNameInCushy = normalizeJSIdentifier(nodeNameInComfy, ' ')
-            // prettier-ignore
-            const nodeNameInCushy =
-                // nodeDef.category.startsWith('WAS Suite/') ? `WAS${normalizedNodeNameInCushy}` :
-                // nodeDef.category.startsWith('ImpactPack') ? `Impact${normalizedNodeNameInCushy}` :
-                // nodeDef.category.startsWith('Masquerade Nodes') ? `Masquerade${normalizedNodeNameInCushy}` :
-                normalizedNodeNameInCushy
+            const nodeNameInCushy = normalizedNodeNameInCushy
             // console.log('>>', nodeTypeDef.category, nodeNameInCushy)
 
             const inputs: NodeInputExt[] = []
@@ -149,6 +146,7 @@ export class SchemaL {
                 } else if (Array.isArray(slotType)) {
                     const uniqueEnumName = `Enum_${nodeNameInCushy}_${outputNameInCushy}_out`
                     slotTypeName = this.processEnumNameOrValue({ candidateName: uniqueEnumName, comfyEnumDef: slotType })
+                    this.enumsAppearingInOutput.add(slotTypeName)
                 } else {
                     throw new Error(`invalid output ${ix} "${slotType}" in node "${nodeNameInComfy}"`)
                 }
@@ -346,6 +344,9 @@ export class SchemaL {
         for (const [tp, nns] of Object.entries(this.nodesByProduction)) {
             p(`export interface CanProduce_${tp} extends Pick<ComfySetup, ${nns.map((i) => `'${i}'`).join(' | ')}> { }`)
         }
+        for (const tp of this.knownTypes) {
+            if (!(tp in this.nodesByProduction)) p(`export interface CanProduce_${tp} {}`)
+        }
 
         p(`\n// 4. TYPES -------------------------------`)
         const types = [...this.knownTypes.values()] //
@@ -387,6 +388,10 @@ export class SchemaL {
 
         p(`\n// 7. INTERFACES --------------------------`)
         for (const t of this.knownTypes.values()) {
+            p(`export interface HasSingle_${t} { _${t}: ${t} } // prettier-ignore`)
+        }
+        // knownEnumOutput
+        for (const t of this.enumsAppearingInOutput.values()) {
             p(`export interface HasSingle_${t} { _${t}: ${t} } // prettier-ignore`)
         }
         // for (const t of this.knownEnums.values()) {

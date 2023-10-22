@@ -4362,6 +4362,8 @@ export interface CanProduce_SAM_PARAMETERS extends Pick<ComfySetup, 'SAM_Paramet
 export interface CanProduce_IMAGE_BOUNDS extends Pick<ComfySetup, 'Image_Bounds' | 'Inset_Image_Bounds' | 'Bounded_Image_Crop_with_Mask'> { }
 export interface CanProduce_CONDITIONING_SEQ extends Pick<ComfySetup, 'CLIPTextEncodeList'> { }
 export interface CanProduce_INFO extends Pick<ComfySetup, 'KSamplerAdvanced_$1WLSH$2'> { }
+export interface CanProduce_INT$9FLOAT$9IMAGE$9LATENT {}
+export interface CanProduce_$$7B$$7D {}
 
 // 4. TYPES -------------------------------
 export type SEG_ELT_control_net_wrapper = Slot<'SEG_ELT_control_net_wrapper'>
@@ -6973,6 +6975,12 @@ export interface HasSingle_MIDAS_MODEL { _MIDAS_MODEL: MIDAS_MODEL } // prettier
 export interface HasSingle_SAM_PARAMETERS { _SAM_PARAMETERS: SAM_PARAMETERS } // prettier-ignore
 export interface HasSingle_IMAGE_BOUNDS { _IMAGE_BOUNDS: IMAGE_BOUNDS } // prettier-ignore
 export interface HasSingle_CONDITIONING_SEQ { _CONDITIONING_SEQ: CONDITIONING_SEQ } // prettier-ignore
+export interface HasSingle_Enum_KSampler_sampler_name { _Enum_KSampler_sampler_name: Enum_KSampler_sampler_name } // prettier-ignore
+export interface HasSingle_Enum_KSampler_scheduler { _Enum_KSampler_scheduler: Enum_KSampler_scheduler } // prettier-ignore
+export interface HasSingle_Enum_KSamplerAdvanced_add_noise { _Enum_KSamplerAdvanced_add_noise: Enum_KSamplerAdvanced_add_noise } // prettier-ignore
+export interface HasSingle_Enum_Generation_Settings_$1JPS$2_crop_position { _Enum_Generation_Settings_$1JPS$2_crop_position: Enum_Generation_Settings_$1JPS$2_crop_position } // prettier-ignore
+export interface HasSingle_Enum_Generation_Settings_$1JPS$2_crop_intpol { _Enum_Generation_Settings_$1JPS$2_crop_intpol: Enum_Generation_Settings_$1JPS$2_crop_intpol } // prettier-ignore
+export interface HasSingle_Enum_CheckpointLoaderSimple_ckpt_name { _Enum_CheckpointLoaderSimple_ckpt_name: Enum_CheckpointLoaderSimple_ckpt_name } // prettier-ignore
 
 // 8. NODES -------------------------------
 // KSampler [sampling]
@@ -21932,11 +21940,11 @@ export interface Cache_Node_output {
     conditioning_filename: Slot<'STRING', 2>,
 }
 export interface Cache_Node_input {
-    /** default="67057175_cache" */
+    /** default="94664879_cache" */
     latent_suffix?: _STRING
-    /** default="47464151_cache" */
+    /** default="57714059_cache" */
     image_suffix?: _STRING
-    /** default="77046212_cache" */
+    /** default="18514940_cache" */
     conditioning_suffix?: _STRING
     /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
     output_path?: _STRING
@@ -26947,4 +26955,5 @@ export type Schemas = {
 }
 export type ComfyNodeType = keyof Schemas
 }
+
 ```
