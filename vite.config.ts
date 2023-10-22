@@ -45,6 +45,18 @@ export default defineConfig({
             stream: './src/syms/stream',
             util: './src/syms/util',
             zlib: './src/syms/zlib',
+            events: './src/syms/events',
+            //
+            'node:buffer': './src/syms/buffer',
+            'node:child_process': './src/syms/child_process',
+            'node:fs': './src/syms/fs',
+            'node:os': './src/syms/os',
+            'node:path': './src/syms/path',
+            'node:process': './src/syms/process',
+            'node:stream': './src/syms/stream',
+            'node:util': './src/syms/util',
+            'node:zlib': './src/syms/zlib',
+            'node:events': './src/syms/events',
         },
     },
 })

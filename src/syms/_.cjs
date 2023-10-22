@@ -9,6 +9,7 @@ const modulesToCache = [
     'stream',
     'util',
     'zlib',
+    'events',
 ]
 
 const fs = require('fs')
