@@ -247,7 +247,7 @@ export class CushyLayoutManager {
             type: 'tab',
             name,
             component: widget,
-            enableClose: false,
+            enableClose: true,
             enableRename: false,
             enableFloat: true,
             icon,
