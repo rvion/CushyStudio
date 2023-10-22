@@ -291,8 +291,8 @@ export class SchemaL {
         p(`import type { ComfyNode } from '${prefix}core/Node'`)
         p(`import type { Slot } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
-        p(`import type { ComfyNodeUID } from '${prefix}types/NodeUID'`)
-        p(`import type { ActionType } from '${prefix}core/Requirement'`)
+        p(`import type { ComfyNodeID } from '${prefix}types/NodeUID'`)
+        p(`import type { ActionType } from '${prefix}core/Action'`)
         // p(`import type { WorkflowType } from '${prefix}core/WorkflowFn'`)
         p('')
         p(`// CONTENT IN THIS FILE:`)
@@ -316,7 +316,7 @@ export class SchemaL {
         // prettier-ignore
         for (const n of this.nodes) {
             p(`    /* category:${n.category}, name:"${n.nameInComfy}", output:${n.outputs.map(o => o.nameInCushy).join('+')} */`)
-            p(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, id?: ComfyNodeUID): ${n.nameInCushy}`)
+            p(`    ${n.nameInCushy}(p: ${n.nameInCushy}_input, id?: ComfyNodeID): ${n.nameInCushy}`)
         }
         p(`}`)
 
@@ -412,7 +412,7 @@ export class SchemaL {
 
         // // prettier-ignore
         // for (const n of this.nodes) {
-        //     p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeUID): ${n.nameInCushy}`)
+        //     p(`    ${n.nameInCushy}(args: ${n.nameInCushy}_input, uid?: ComfyNodeID): ${n.nameInCushy}`)
         // }
         // // p(`\n// misc \n`)
         // // prettier-ignore
