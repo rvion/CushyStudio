@@ -62,7 +62,12 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
 
     // 5. render form
     const { containerClassName, containerStyle } = action ?? {}
-    const defaultContainerStyle = { maxWidth: '40rem', margin: '0 auto', padding: '1rem' }
+    const defaultContainerStyle = {
+        // maxWidth: '40rem',
+        // width: 'fit-content',
+        margin: '0 auto',
+        padding: '1rem',
+    }
     return (
         <draftContext.Provider value={draft} key={draft.id}>
             <div
