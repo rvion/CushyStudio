@@ -241,7 +241,13 @@ export class CushyLayoutManager {
         )
     }
 
-    private _persistentTab = (name: string, widget: Widget, icon?: string): FL.IJsonTabNode => {
+    // 🔴 todo: ensure we correctly pass ids there too
+    private _persistentTab = (
+        //
+        name: string,
+        widget: Widget,
+        icon?: string,
+    ): FL.IJsonTabNode => {
         return {
             type: 'tab',
             name,
