@@ -8,6 +8,7 @@ import { ItemDataType } from 'rsuite/esm/@types/common'
 import { ActionPath, asActionPath } from 'src/back/ActionPath'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { ActionFile } from './ActionFile'
+import Watcher from 'watcher'
 
 export class Toolbox {
     updatedAt = 0
@@ -39,11 +40,15 @@ export class Toolbox {
     }
     // ---------------------------------------------------------
 
+    watcher: Watcher
+
     constructor(
         //
         public st: STATE,
         public extensions: string = '.ts',
     ) {
+        // Watching a single path
+
         this.rootActionFolder = st.actionsFolderPath
         const included = st.typecheckingConfig.value.include
         const includedActions = included.filter(
@@ -53,6 +58,37 @@ export class Toolbox {
         )
         const expanded = includedActions.map((x) => x.slice(8, -5))
         this.expanded = new Set(expanded)
+        const cache = this.st.hotReloadPersistentCache
+        if (cache.watcher) {
+            ;(cache.watcher as Watcher).close()
+        }
+        this.watcher = cache.watcher = new Watcher('actions', {
+            recursive: true,
+            depth: 20,
+            ignore: (t) => {
+                const baseName = path.basename(t)
+                if (baseName.startsWith('.')) return true
+                if (baseName.startsWith('_')) return true
+                if (baseName.startsWith('node_modules')) return true
+                if (baseName.startsWith('dist')) return true
+                return false
+            },
+        })
+        this.watcher.on('all', (event, targetPath, targetPathNext) => {
+            // console.log('🟢 1.', event) // => could be any target event: 'add', 'addDir', 'change', 'rename', 'renameDir', 'unlink' or 'unlinkDir'
+            if (event === 'change') {
+                const relPath = path.relative(this.st.rootPath, targetPath)
+                console.log(relPath)
+                if ((relPath.startsWith('actions/') || relPath.startsWith('actions\\')) && relPath.endsWith('.ts')) {
+                    const af = this.filesMap.get(asActionPath(relPath))
+                    if (af == null) return console.log('file watcher update aborted: not an action')
+                    af.load({ force: true })
+                }
+            }
+            // reutrn
+            // console.log('🟢 2.', targetPath) // => the file system path where the event took place, this is always provided
+            // console.log('🟢 3.', targetPathNext) // => the file system path "targetPath" got renamed to, this is only provided on 'rename'/'renameDir' events
+        })
 
         makeAutoObservable(this)
         // this.filesMap = new Map()
