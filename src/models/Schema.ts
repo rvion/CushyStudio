@@ -4,7 +4,7 @@ import { LiveInstance } from 'src/db/LiveInstance'
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
-import { toJS } from 'mobx'
+import { observable, toJS } from 'mobx'
 import { escapeJSKey } from './escapeJSKey'
 
 export type EnumHash = string
@@ -40,6 +40,13 @@ export type SchemaT = {
 }
 
 export interface SchemaL extends LiveInstance<SchemaT, SchemaL> {}
+export type EnumInfo = {
+    // enumNameInComfy: string
+    enumNameInCushy: EnumName
+    values: EnumValue[]
+    aliases: string[]
+}
+
 export class SchemaL {
     getLoraHierarchy = (): string[] => {
         const loras = this.getLoras()
@@ -57,16 +64,8 @@ export class SchemaL {
     }
 
     knownTypes = new Set<string>()
-    knownEnumsByName = new Map<EnumName, EnumValue[]>()
-    knownEnumsByHash = new Map<
-        EnumHash,
-        {
-            // enumNameInComfy: string
-            enumNameInCushy: EnumName
-            values: EnumValue[]
-            aliases: string[]
-        }
-    >()
+    knownEnumsByName = new Map<EnumName, EnumInfo>()
+    knownEnumsByHash = new Map<EnumHash, EnumInfo>()
     nodes: ComfyNodeSchema[] = []
     nodesByNameInComfy: { [key: string]: ComfyNodeSchema } = {}
     nodesByNameInCushy: { [key: string]: ComfyNodeSchema } = {}
@@ -230,31 +229,36 @@ export class SchemaL {
         candidateName: string
         comfyEnumDef: ComfyEnumDef
     }): string => {
+        // 1. build enum
         const enumValues: EnumValue[] = []
-        let finalEnumName: string
         for (const enumValue of p.comfyEnumDef) {
             if (typeof enumValue === 'string') enumValues.push(enumValue)
             else if (typeof enumValue === 'boolean') enumValues.push(enumValue)
             else if (typeof enumValue === 'number') enumValues.push(enumValue)
             else enumValues.push(enumValue.content)
         }
-        const hash = enumValues.sort().join('|')
-        const similarEnum = this.knownEnumsByHash.get(hash)
-        const uniqueEnumName = p.candidateName // `Enum_${nodeNameInCushy}_${inputNameInCushy}`
-        this.knownEnumsByName.set(uniqueEnumName, enumValues)
-        if (similarEnum != null) {
-            finalEnumName = similarEnum.enumNameInCushy
-            similarEnum.aliases.push(uniqueEnumName)
+        // 2. hash its value
+        const hash =
+            enumValues.length === 0 //
+                ? `[[empty:${p.candidateName}]]`
+                : enumValues.sort().join('|')
+
+        // 3. retrieve or create an EnumInfo
+        let enumInfo: Maybe<EnumInfo> = this.knownEnumsByHash.get(hash)
+        if (enumInfo == null) {
+            // case 3.A. PRE-EXISTING
+            enumInfo = observable({ enumNameInCushy: p.candidateName, values: enumValues, aliases: [] })
+            this.knownEnumsByHash.set(hash, enumInfo)
         } else {
-            finalEnumName = uniqueEnumName
-            this.knownEnumsByHash.set(hash, {
-                enumNameInCushy: finalEnumName, // normalizeJSIdentifier(finalEnumName),
-                // enumNameInComfy: inputNameInComfy,
-                values: enumValues,
-                aliases: [],
-            })
+            // case 3.B. PRE-EXISTING
+            enumInfo.aliases.push(p.candidateName)
         }
-        return finalEnumName
+
+        // ❌ if (p.candidateName === 'Enum_DualCLIPLoader_clip_name1') debugger
+
+        // 4.sore enum by name
+        this.knownEnumsByName.set(p.candidateName, enumInfo)
+        return enumInfo.enumNameInCushy
     }
 
     // updateComponents() {

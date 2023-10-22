@@ -1,4 +1,5 @@
 ```ts
+
 import type { ComfyNode } from '../src/core/Node'
 import type { Slot } from '../src/core/Slot'
 import type { ComfyNodeSchemaJSON } from '../src/types/ComfySchemaJSON'
@@ -4704,11 +4705,18 @@ export type Enum_LoraLoaderBlockWeight_$3$3Inspire_lora_name = Enum_LoraLoader_l
 export type Enum_LoraBlockInfo_$3$3Inspire_lora_name = Enum_LoraLoader_lora_name
 export type Enum_CLIPLoader_clip_name = '🔴' // never
 export type Enum_UNETLoader_unet_name = "xl-inpaint-0.1\\diffusion_pytorch_model.fp16.safetensors"
+export type Enum_DualCLIPLoader_clip_name1 = '🔴' // never
+export type Enum_DualCLIPLoader_clip_name2 = '🔴' // never
 export type Enum_ControlNetLoader_control_net_name = "control-lora-depth-rank256.safetensors" | "control-lora-sketch-rank128-metadata.safetensors" | "control_depth-fp16.safetensors" | "control_openpose-fp16.safetensors" | "control_scribble-fp16.safetensors" | "control_v11p_sd15_canny_fp16.safetensors" | "control_v11p_sd15_lineart_fp16.safetensors" | "control_v11u_sd15_tile.pth" | "t2iadapter_canny_sd14v1.pth" | "t2iadapter_sketch_sd14v1.pth"
 export type Enum_DiffControlNetLoader_control_net_name = Enum_ControlNetLoader_control_net_name
+export type Enum_StyleModelLoader_style_model_name = '🔴' // never
 export type Enum_CLIPVisionLoader_clip_name = "SD1.5\\pytorch_model.bin" | "clip_vit14.bin"
+export type Enum_GLIGENLoader_gligen_name = '🔴' // never
 export type Enum_CheckpointLoader_config_name = "anything_v3.yaml" | "v1-inference.yaml" | "v1-inference_clip_skip_2.yaml" | "v1-inference_clip_skip_2_fp16.yaml" | "v1-inference_fp16.yaml" | "v1-inpainting-inference.yaml" | "v2-inference-v.yaml" | "v2-inference-v_fp32.yaml" | "v2-inference.yaml" | "v2-inference_fp32.yaml" | "v2-inpainting-inference.yaml"
 export type Enum_Checkpoint_Loader_config_name = Enum_CheckpointLoader_config_name
+export type Enum_DiffusersLoader_model_path = '🔴' // never
+export type Enum_LoadLatent_latent = '🔴' // never
+export type Enum_HypernetworkLoader_hypernetwork_name = '🔴' // never
 export type Enum_UpscaleModelLoader_model_name = "4x-UltraSharp.pth" | "RealESRGAN_x2.pth" | "RealESRGAN_x4.pth"
 export type Enum_CR_Upscale_Image_upscale_model = Enum_UpscaleModelLoader_model_name
 export type Enum_ttN_hiresfixScale_model_name = Enum_UpscaleModelLoader_model_name
@@ -4868,6 +4876,7 @@ export type Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule = "cosine" | "l
 export type Enum_CheckpointLoaderSimpleWithNoiseSelect_beta_schedule = Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule
 export type Enum_AnimateDiffLoaderV1_beta_schedule = Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule
 export type Enum_ADE$_AnimateDiffLoaderV1Advanced_beta_schedule = Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule
+export type Enum_ADE$_AnimateDiffLoRALoader_lora_name = '🔴' // never
 export type Enum_ADE$_AnimateDiffCombine_format = "image/gif" | "image/webp"
 export type Enum_ConstrainImage$8pysssss_crop_if_required = "no" | "yes"
 export type Enum_StringFunction$8pysssss_tidy_tags = Enum_ConstrainImage$8pysssss_crop_if_required
@@ -4940,6 +4949,7 @@ export type Enum_NoiseInjectionHookProvider_schedule_for_iteration = Enum_Denois
 export type Enum_NoiseInjectionHookProvider_source = "CPU" | "GPU"
 export type Enum_NoiseInjectionDetailerHookProvider_source = Enum_NoiseInjectionHookProvider_source
 export type Enum_LatentSender_preview_method = "Latent2RGB-SD15" | "Latent2RGB-SDXL" | "TAESD15" | "TAESDXL"
+export type Enum_LatentReceiver_latent = '🔴' // never
 export type Enum_ReencodeLatent_tile_mode = "Both" | "Decode(input) only" | "Encode(output) only" | "None"
 export type Enum_ReencodeLatentPipe_tile_mode = Enum_ReencodeLatent_tile_mode
 export type Enum_RegionalSampler_seed_2nd_mode = "decrement" | "fixed" | "ignore" | "increment" | "randomize" | "seed+seed_2nd" | "seed-seed_2nd"
@@ -4980,9 +4990,12 @@ export type Enum_ttN_pipeEncodeConcat_positive_weight_interpretation = Enum_Wild
 export type Enum_ttN_pipeEncodeConcat_negative_weight_interpretation = Enum_WildcardEncode_$3$3Inspire_weight_interpretation
 export type Enum_LoadImage_$3$3Inspire_image = "#DATA" | "2023-07-24_10-58-29.png" | "Angled 5 - 512x512 (1).png" | "Angled 5 - 512x512.png" | "Angled 8 - 512x512.png" | "Circular 1 - 512x512.png" | "Circular 10 - 512x512.png" | "Circular 3 - 512x512.png" | "Circular 4 - 512x512.png" | "Circular 6 - 512x512 (1).png" | "Circular 6 - 512x512.png" | "Circular 8 - 512x512.png" | "Radial 1 - 512x512.png" | "Radial 11 - 512x512.png" | "Radial 9 - 512x512.png" | "Spherical 6 - 512x512.png" | "example.png" | "icon-1024.png" | "il_570xN.4895517340_bhko-removebg-preview.png" | "images.jpeg" | "poker-club.png" | "poker-diamond.png" | "poker-heart.png" | "poker-spade.png" | "upload (1).png" | "upload (10).png" | "upload (11).png" | "upload (12).png" | "upload (13).png" | "upload (14).png" | "upload (15).png" | "upload (16).png" | "upload (17).png" | "upload (18).png" | "upload (19).png" | "upload (2).png" | "upload (20).png" | "upload (21).png" | "upload (22).png" | "upload (23).png" | "upload (24).png" | "upload (25).png" | "upload (26).png" | "upload (27).png" | "upload (28).png" | "upload (29).png" | "upload (3).png" | "upload (30).png" | "upload (31).png" | "upload (32).png" | "upload (33).png" | "upload (34).png" | "upload (35).png" | "upload (36).png" | "upload (37).png" | "upload (38).png" | "upload (39).png" | "upload (4).png" | "upload (40).png" | "upload (41).png" | "upload (42).png" | "upload (43).png" | "upload (5).png" | "upload (6).png" | "upload (7).png" | "upload (8).png" | "upload (9).png" | "upload.png"
 export type Enum_Compare_comparison = "a != b" | "a < b" | "a <= b" | "a == b" | "a > b" | "a >= b"
+export type Enum_ChatGPT_Simple_$_O_model = '🔴' // never
 export type Enum_ChatGPT_Simple_$_O_behaviour = "description" | "tags"
+export type Enum_ChatGPT_compact_$_O_model = '🔴' // never
 export type Enum_Chat$_Message_$_O_role = "assistant" | "system" | "user"
 export type Enum_Chat$_Message$_fromString_$_O_role = Enum_Chat$_Message_$_O_role
+export type Enum_Chat_completion_$_O_model = '🔴' // never
 export type Enum_create_image_$_O_size = "1024x1024" | "256x256" | "512x512"
 export type Enum_variation$_image_$_O_size = Enum_create_image_$_O_size
 export type Enum_create$_image_$_O_size = Enum_create_image_$_O_size
@@ -5618,6 +5631,7 @@ export type Enum_Create_Morph_Image_filetype = "APNG" | "GIF"
 export type Enum_Create_Morph_Image_from_Path_filetype = Enum_Create_Morph_Image_filetype
 export type Enum_Create_Video_from_Path_codec = "AVC1" | "FFV1" | "H264" | "MP4V"
 export type Enum_Write_to_Video_codec = Enum_Create_Video_from_Path_codec
+export type Enum_Diffusers_Model_Loader_model_path = '🔴' // never
 export type Enum_Export_API_save_prompt_api = "true" | "true"
 export type Enum_Image_Analyze_mode = "Black White Levels" | "RGB Levels"
 export type Enum_Image_Blending_Mode_mode = "add" | "color" | "color_burn" | "color_dodge" | "darken" | "difference" | "exclusion" | "hard_light" | "hue" | "lighten" | "multiply" | "overlay" | "screen" | "soft_light"
@@ -7549,8 +7563,8 @@ export interface DualCLIPLoader_output {
     CLIP: Slot<'CLIP', 0>,
 }
 export interface DualCLIPLoader_input {
-    clip_name1: Enum_CLIPLoader_clip_name
-    clip_name2: Enum_CLIPLoader_clip_name
+    clip_name1: Enum_DualCLIPLoader_clip_name1
+    clip_name2: Enum_DualCLIPLoader_clip_name2
 }
 
 // CLIPVisionEncode [conditioning]
@@ -7661,7 +7675,7 @@ export interface StyleModelLoader_output {
     STYLE_MODEL: Slot<'STYLE_MODEL', 0>,
 }
 export interface StyleModelLoader_input {
-    style_model_name: Enum_CLIPLoader_clip_name
+    style_model_name: Enum_StyleModelLoader_style_model_name
 }
 
 // CLIPVisionLoader [loaders]
@@ -7725,7 +7739,7 @@ export interface GLIGENLoader_output {
     GLIGEN: Slot<'GLIGEN', 0>,
 }
 export interface GLIGENLoader_input {
-    gligen_name: Enum_CLIPLoader_clip_name
+    gligen_name: Enum_GLIGENLoader_gligen_name
 }
 
 // GLIGENTextBoxApply [conditioning_gligen]
@@ -7775,7 +7789,7 @@ export interface DiffusersLoader_output {
     VAE: Slot<'VAE', 2>,
 }
 export interface DiffusersLoader_input {
-    model_path: Enum_CLIPLoader_clip_name
+    model_path: Enum_DiffusersLoader_model_path
 }
 
 // LoadLatent [_for_testing]
@@ -7786,7 +7800,7 @@ export interface LoadLatent_output {
     LATENT: Slot<'LATENT', 0>,
 }
 export interface LoadLatent_input {
-    latent: Enum_CLIPLoader_clip_name
+    latent: Enum_LoadLatent_latent
 }
 
 // SaveLatent [_for_testing]
@@ -7873,7 +7887,7 @@ export interface HypernetworkLoader_output {
 }
 export interface HypernetworkLoader_input {
     model: _MODEL
-    hypernetwork_name: Enum_CLIPLoader_clip_name
+    hypernetwork_name: Enum_HypernetworkLoader_hypernetwork_name
     /** default=1 min=10 max=10 step=0.01 */
     strength?: _FLOAT
 }
@@ -10610,7 +10624,7 @@ export interface ADE$_AnimateDiffLoRALoader_output {
     MOTION_LORA: Slot<'MOTION_LORA', 0>,
 }
 export interface ADE$_AnimateDiffLoRALoader_input {
-    lora_name: Enum_CLIPLoader_clip_name
+    lora_name: Enum_ADE$_AnimateDiffLoRALoader_lora_name
     /** default=1 min=10 max=10 step=0.001 */
     strength?: _FLOAT
     prev_motion_lora?: _MOTION_LORA
@@ -12507,7 +12521,7 @@ export interface LatentReceiver_output {
     LATENT: Slot<'LATENT', 0>,
 }
 export interface LatentReceiver_input {
-    latent: Enum_CLIPLoader_clip_name
+    latent: Enum_LatentReceiver_latent
     /** default=0 min=9223372036854776000 max=9223372036854776000 step=1 */
     link_id?: _INT
 }
@@ -14167,7 +14181,7 @@ export interface ChatGPT_Simple_$_O_input {
     /** */
     prompt: _STRING
     /** default="gpt-3.5-turbo" */
-    model?: Enum_CLIPLoader_clip_name
+    model?: Enum_ChatGPT_Simple_$_O_model
     /** default="description" */
     behaviour?: Enum_ChatGPT_Simple_$_O_behaviour
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -14187,7 +14201,7 @@ export interface ChatGPT_compact_$_O_input {
     /** default="\nact as prompt generator ,i will give you text and you describe an image that match that text in details use gelbooru  tags in your description also describe the high quality of the image, answer with one response only \n" */
     initMsg?: _STRING
     /** default="gpt-3.5-turbo" */
-    model?: Enum_CLIPLoader_clip_name
+    model?: Enum_ChatGPT_compact_$_O_model
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
     seed?: _INT
 }
@@ -14239,7 +14253,7 @@ export interface Chat_completion_$_O_output {
 export interface Chat_completion_$_O_input {
     openai: _OPENAI
     /** default="gpt-3.5-turbo" */
-    model?: Enum_CLIPLoader_clip_name
+    model?: Enum_Chat_completion_$_O_model
     messages: _OPENAI_CHAT_MESSAGES
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
     seed?: _INT
@@ -21918,11 +21932,11 @@ export interface Cache_Node_output {
     conditioning_filename: Slot<'STRING', 2>,
 }
 export interface Cache_Node_input {
-    /** default="37424625_cache" */
+    /** default="67057175_cache" */
     latent_suffix?: _STRING
-    /** default="32270013_cache" */
+    /** default="47464151_cache" */
     image_suffix?: _STRING
-    /** default="24771316_cache" */
+    /** default="77046212_cache" */
     conditioning_suffix?: _STRING
     /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
     output_path?: _STRING
@@ -22290,7 +22304,7 @@ export interface Diffusers_Model_Loader_output {
     NAME_STRING: Slot<'STRING', 3>,
 }
 export interface Diffusers_Model_Loader_input {
-    model_path: Enum_CLIPLoader_clip_name
+    model_path: Enum_Diffusers_Model_Loader_model_path
 }
 
 // Diffusers Hub Model Down-Loader [WAS Suite_Loaders_Advanced]
