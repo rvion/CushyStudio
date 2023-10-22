@@ -73,7 +73,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
 
             <MainNavEntryUI
                 soon
-                onClick={() => st.layout.addComfy()}
+                onClick={() => st.layout.addHosts()}
                 ix='6'
                 icon={<span className='material-symbols-outlined text-amber-800'>cloud</span>}
                 label='GPU'

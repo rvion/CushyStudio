@@ -128,6 +128,7 @@ export class CushyLayoutManager {
         }
     }
     addImage = (imgID: ImageID) => this._AddWithProps(Widget.Image, `/image/${imgID}`, { title: 'Image', imgID })
+    addHosts = () => this._AddWithProps(Widget.Hosts, `/hosts`, { title: 'Hosts' })
     addComfy = (litegraphJson?: LiteGraphJSON) => {
         const icon = '/ComfyUILogo.png'
         if (litegraphJson == null) {
@@ -310,7 +311,7 @@ export class CushyLayoutManager {
                                 minHeight: 300,
                                 children: [
                                     this._persistentTab('🎆 Gallery', Widget.Gallery),
-                                    this._persistentTab('Hosts', Widget.Hosts),
+                                    // this._persistentTab('Hosts', Widget.Hosts),
                                 ],
                             },
                         ],
