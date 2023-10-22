@@ -745,8 +745,8 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
 
 // 🅿️ group ==============================================================================
 export type Requestable_group_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: () => T }>
-export type Requestable_group_serial<T extends { [key: string]: Requestable }> = { type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']} }
-export type Requestable_group_state <T extends { [key: string]: Requestable }> = { type: 'group', active: true; values: T }
+export type Requestable_group_serial<T extends { [key: string]: Requestable }> = { type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }
+export type Requestable_group_state <T extends { [key: string]: Requestable }> = { type: 'group', active: true; values: T, collapsed?: boolean }
 export type Requestable_group_output<T extends { [key: string]: Requestable }> = { [k in keyof T]: ReqResult<T[k]> }
 export interface Requestable_group<T extends { [key: string]: Requestable }> extends IWidget<'group', Requestable_group_input<T>, Requestable_group_serial<T>, Requestable_group_state<T>, Requestable_group_output<T>> {}
 export class Requestable_group<T extends { [key: string]: Requestable }> implements IRequest<'group', Requestable_group_input<T>, Requestable_group_serial<T>, Requestable_group_state<T>, Requestable_group_output<T>> {
@@ -765,7 +765,7 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
         // debugger
         if (serial){
             const _newValues = input.items()
-            this.state = { type: 'group', active: serial.active, values: {} as any }
+            this.state = { type: 'group', active: serial.active, collapsed: serial.collapsed, values: {} as any }
             const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
                 const newItem = _newValues[key]
@@ -790,7 +790,7 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
     get serial(): Requestable_group_serial<T> {
         const values_: { [key: string]: any } = {}
         for (const key in this.state.values) values_[key] = this.state.values[key].serial
-        return { type: 'group', active: this.state.active, values_: values_ as any, }
+        return { type: 'group', active: this.state.active, values_: values_ as any, collapsed: this.state.collapsed }
     }
     get result(): Requestable_group_output<T> {
         const out: { [key: string]: any } = {}
@@ -803,8 +803,8 @@ export class Requestable_group<T extends { [key: string]: Requestable }> impleme
 
 // 🅿️ groupOpt ==============================================================================
 export type Requestable_groupOpt_input <T extends { [key: string]: Requestable }> = ReqInput<{ default?: boolean; items: () => T }>
-export type Requestable_groupOpt_serial<T extends { [key: string]: Requestable }> = { type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']} }
-export type Requestable_groupOpt_state <T extends { [key: string]: Requestable }> = { type: 'groupOpt', active: boolean; values: T }
+export type Requestable_groupOpt_serial<T extends { [key: string]: Requestable }> = { type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']}, collapsed?: boolean }
+export type Requestable_groupOpt_state <T extends { [key: string]: Requestable }> = { type: 'groupOpt', active: boolean; values: T, collapsed?: boolean }
 export type Requestable_groupOpt_output<T extends { [key: string]: Requestable }> = Maybe<{ [k in keyof T]: ReqResult<T[k]> }>
 export interface Requestable_groupOpt<T extends { [key: string]: Requestable }> extends IWidget<'groupOpt', Requestable_groupOpt_input<T>, Requestable_groupOpt_serial<T>, Requestable_groupOpt_state<T>, Requestable_groupOpt_output<T>> {}
 export class Requestable_groupOpt<T extends { [key: string]: Requestable }> implements IRequest<'groupOpt', Requestable_groupOpt_input<T>, Requestable_groupOpt_serial<T>, Requestable_groupOpt_state<T>, Requestable_groupOpt_output<T>> {
@@ -818,7 +818,7 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
     ) {
         if (serial){
             const _newValues = input.items()
-            this.state = { type:'groupOpt', active: serial.active, values: {} as any }
+            this.state = { type:'groupOpt', active: serial.active, collapsed: serial.collapsed, values: {} as any }
             const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
                 const newItem = _newValues[key]
@@ -843,7 +843,7 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
     get serial(): Requestable_groupOpt_serial<T> {
         const out: { [key: string]: any } = {}
         for (const key in this.state.values) out[key] = this.state.values[key].serial
-        return { type: 'groupOpt', active: this.state.active, values_: out as any, }
+        return { type: 'groupOpt', active: this.state.active, values_: out as any, collapsed: this.state.collapsed }
     }
     get result(): Requestable_groupOpt_output<T> {
         if (!this.state.active) return undefined

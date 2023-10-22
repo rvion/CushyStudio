@@ -22,10 +22,14 @@ action({
         negative: form.promptOpt({}),
 
         // latent
-        startImage: form.imageOpt({ group: 'latent' }),
-        width: form.int({ default: 1024, group: 'latent' }),
-        height: form.int({ default: 1024, group: 'latent' }),
-        batchSize: form.int({ default: 1, group: 'latent', min: 1 }),
+        latent: form.group({
+            items: () => ({
+                startImage: form.imageOpt({ group: 'latent' }),
+                width: form.int({ default: 1024, group: 'latent' }),
+                height: form.int({ default: 1024, group: 'latent' }),
+                batchSize: form.int({ default: 1, group: 'latent', min: 1 }),
+            }),
+        }),
 
         //
         CFG: form.int({ default: 8, group: 'sampler' }),
@@ -43,7 +47,7 @@ action({
                 saveIntermediaryImage: form.bool({ default: true }),
             }),
         }),
-        batches: form.groupOpt({
+        loop: form.groupOpt({
             items: () => ({
                 batchCount: form.int({ default: 1 }),
                 delayBetween: form.int({
@@ -144,15 +148,15 @@ action({
 
         // flow.print(`startImage: ${p.startImage}`)
 
-        const startImage = p.startImage
+        const startImage = p.latent.startImage
             ? graph.VAEEncode({
-                  pixels: await flow.loadImageAnswer(p.startImage),
+                  pixels: await flow.loadImageAnswer(p.latent.startImage),
                   vae,
               })
             : graph.EmptyLatentImage({
-                  batch_size: p.batchSize ?? 1,
-                  height: p.height,
-                  width: p.width,
+                  batch_size: p.latent.batchSize ?? 1,
+                  height: p.latent.height,
+                  width: p.latent.width,
               })
 
         let LATENT = graph.KSampler({
@@ -179,8 +183,8 @@ action({
                     }),
                 })
             }
-            const finalH = p.height * p.highResFix.scaleFactor
-            const finalW = p.width * p.highResFix.scaleFactor
+            const finalH = p.latent.height * p.highResFix.scaleFactor
+            const finalW = p.latent.width * p.highResFix.scaleFactor
             const _1 = graph.LatentUpscale({
                 samples: LATENT,
                 crop: 'disabled',
