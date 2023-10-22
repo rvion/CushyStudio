@@ -22,6 +22,7 @@ import { WidgetStrUI } from './WidgetStrUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WidgetColorUI } from './WidgetCololrUI'
+import { WidgetChoiceUI } from './WidgetChoice'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Requestable
@@ -84,7 +85,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 // prettier-ignore
 export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; focus?: boolean }) {
     const req = p.req
-    if (req==null) return <>NULL</>
+    if (req == null) return <>NULL</>
     if (req instanceof R.Requestable_int)                return <WidgetNumUI         req={req} />
     if (req instanceof R.Requestable_intOpt)             return <WidgetNumOptUI      req={req} />
     if (req instanceof R.Requestable_float)              return <WidgetNumUI         req={req} />
@@ -109,6 +110,7 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; foc
     if (req instanceof R.Requestable_selectManyOrCustom) return <>TODO</>
     if (req instanceof R.Requestable_selectOne)          return <WidgetSelectOneUI   req={req} />
     if (req instanceof R.Requestable_selectOneOrCustom)  return <>TODO</>
+    if (req instanceof R.Requestable_choice)             return <WidgetChoiceUI      req={req} />
 
     exhaust(req)
     console.log(`🔴`, (req as any).type, req)

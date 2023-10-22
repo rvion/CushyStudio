@@ -17,10 +17,10 @@ import { deepCopyNaive, exhaust } from 'src/utils/ComfyUtils'
 
 // requestable are a closed union
 export type Requestable =
-    | Requestable_color
-    | Requestable_str
-    | Requestable_strOpt
-    | Requestable_prompt
+| Requestable_color
+| Requestable_str
+| Requestable_strOpt
+| Requestable_prompt
     | Requestable_promptOpt
     | Requestable_int
     | Requestable_float
@@ -39,6 +39,7 @@ export type Requestable =
     | Requestable_list<any>
     | Requestable_group<any>
     | Requestable_groupOpt<any>
+    | Requestable_choice<any>
     | Requestable_enum<KnownEnumNames>
     | Requestable_enumOpt<KnownEnumNames>
 
@@ -855,6 +856,58 @@ export class Requestable_groupOpt<T extends { [key: string]: Requestable }> impl
     }
 }
 
+// 🅿️ choice ==============================================================================
+export type Requestable_choice_input <T extends { [key: string]: Requestable }> = ReqInput<{ default?: keyof T; items: () => T }>
+export type Requestable_choice_serial<T extends { [key: string]: Requestable }> = { type: 'choice', active: boolean; pick: keyof T & string, values_: {[K in keyof T]: T[K]['$Serial']}, collapsed?: boolean }
+export type Requestable_choice_state <T extends { [key: string]: Requestable }> = { type: 'choice', active: boolean; pick: keyof T & string, values: T, collapsed?: boolean }
+export type Requestable_choice_output<T extends { [key: string]: Requestable }> = ReqResult<T[keyof T]>
+export interface Requestable_choice  <T extends { [key: string]: Requestable }> extends    IWidget<'choice',  Requestable_choice_input<T>, Requestable_choice_serial<T>, Requestable_choice_state<T>, Requestable_choice_output<T>> {}
+export class Requestable_choice      <T extends { [key: string]: Requestable }> implements IRequest<'choice', Requestable_choice_input<T>, Requestable_choice_serial<T>, Requestable_choice_state<T>, Requestable_choice_output<T>> {
+    type = 'choice' as const
+    state: Requestable_choice_state<T>
+    constructor(
+        public builder: FormBuilder,
+        public schema: SchemaL,
+        public input: Requestable_choice_input<T>,
+        serial?: Requestable_choice_serial<T>,
+    ) {
+        if (serial){
+            const _newValues = input.items()
+            this.state = { type:'choice', active: serial.active, collapsed: serial.collapsed, values: {} as any, pick: serial.pick }
+            const prevValues_ = serial.values_??{}
+            for (const key in _newValues) {
+                const newItem = _newValues[key]
+                const prevValue_ = prevValues_[key]
+                const newInput = newItem.input
+                const newType = newItem.type
+                if (prevValue_ && newType === prevValue_.type) {
+                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prevValue_)
+                } else {
+                    this.state.values[key] = newItem
+                }
+            }
+        } else {
+            const _items = input.items()
+            const defaultPick: keyof T & string = (Object.keys(_items)[0]  ?? '_error_')
+            this.state = { type: 'choice', active: (input.default!=null) ?? false, values: _items, pick: defaultPick }
+        }
+        makeAutoObservable(this)
+    }
+    get serial(): Requestable_choice_serial<T> {
+        const out: { [key: string]: any } = {}
+        for (const key in this.state.values) out[key] = this.state.values[key].serial
+        return { type: 'choice', active: this.state.active, values_: out as any, collapsed: this.state.collapsed, pick: this.state.pick }
+    }
+    get result(): Requestable_choice_output<T> {
+        // @ts-ignore
+        if (!this.state.active) return undefined
+        // @ts-ignore
+        if (this.state.pick==null)return undefined
+
+        return this.state.values[this.state.pick].result
+    }
+}
+
 // 🅿️ enum ==============================================================================
 export type Requestable_enum_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
 export type Requestable_enum_serial<T extends KnownEnumNames> = Requestable_enum_state<T>
@@ -943,12 +996,13 @@ export class FormBuilder {
         if (type === 'selectMany')         return new Requestable_selectMany         (this, this.schema, input, serial)
         if (type === 'size')               return new Requestable_size               (this, this.schema, input, serial)
         if (type === 'color')              return new Requestable_color              (this, this.schema, input, serial)
+        if (type === 'choice')             return new Requestable_choice             (this, this.schema, input, serial)
         console.log(`🔴 unknown type ${type}`)
         exhaust(type)
     }
 
 
-    // autoUI             =                                                  (p: Requestable_str_input                , serial?: Requestable_str_serial                ) => new Requestable_str                 (this, this.schema, p, serial)
+    // autoUI          =                                                  (p: Requestable_str_input                , serial?: Requestable_str_serial                ) => new Requestable_str                 (this, this.schema, p, serial)
     string             =                                                  (p: Requestable_str_input                , serial?: Requestable_str_serial                ) => new Requestable_str                 (this, this.schema, p, serial)
     color              =                                                  (p: Requestable_color_input              , serial?: Requestable_color_serial              ) => new Requestable_color               (this, this.schema, p, serial)
     stringOpt          =                                                  (p: Requestable_strOpt_input             , serial?: Requestable_strOpt_serial             ) => new Requestable_strOpt              (this, this.schema, p, serial)
@@ -977,4 +1031,5 @@ export class FormBuilder {
     group              = <const T extends { [key: string]: Requestable }> (p: Requestable_group_input<T>           , serial?: Requestable_group_serial<T>           ) => new Requestable_group               (this, this.schema, p, serial)
     selectOne          = <const T extends { type: string}>                (p: Requestable_selectOne_input<T>       , serial?: Requestable_selectOne_serial<T>       ) => new Requestable_selectOne           (this, this.schema, p, serial)
     selectMany         = <const T extends { type: string}>                (p: Requestable_selectMany_input<T>      , serial?: Requestable_selectMany_serial<T>      ) => new Requestable_selectMany          (this, this.schema, p, serial)
+    choice             = <const T extends { [key: string]: Requestable }> (p: Requestable_choice_input<T>          , serial?: Requestable_choice_serial<T>          ) => new Requestable_choice              (this, this.schema, p, serial)
 }
