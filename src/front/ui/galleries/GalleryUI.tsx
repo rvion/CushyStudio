@@ -18,16 +18,18 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                 className='flex flex-wrap items-start'
                 // style={{ width: '3.4rem', ...dropStyle }}
             >
-                <div tw='text-center'>
-                    <div tw='text-gray-400'>Image size</div>
-                    <Slider
-                        tw='m-2'
-                        style={{ width: '5rem' }}
-                        min={32}
-                        max={200}
-                        onChange={(v) => (st.gallerySize = v)}
-                        value={st.gallerySize}
-                    ></Slider>
+                <div tw='text-center w-full'>
+                    <div tw='self-start w-fit'>
+                        <div tw='text-gray-400'>Image size</div>
+                        <Slider
+                            tw='m-2'
+                            style={{ width: '5rem' }}
+                            min={32}
+                            max={200}
+                            onChange={(v) => (st.gallerySize = v)}
+                            value={st.gallerySize}
+                        ></Slider>
+                    </div>
                 </div>
                 {st.preview ? <img style={{ width: st.gallerySizeStr, height: st.gallerySizeStr }} src={st.preview.url} /> : null}
                 {/* <div className='text-center'>Images</div> */}
