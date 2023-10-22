@@ -1,4 +1,5 @@
 import type { STATE } from 'src/front/state'
+import type { DraftID } from 'src/models/Draft'
 
 import * as FL from 'flexlayout-react'
 import { IJsonModel, Layout, Model, Actions } from 'flexlayout-react'
@@ -22,14 +23,15 @@ import { makeAutoObservable } from 'mobx'
 import { ActionFileUI } from '../drafts/ActionFileUI'
 import { ActionPath } from 'src/back/ActionPath'
 import { PanelConfigUI } from './PanelConfigUI'
+import { ActionFormUI } from '../drafts/ActionFormUI'
 
 // still on phone
 enum Widget {
     Gallery = 'Gallery',
     Button = 'Button',
     Paint = 'Paint',
+    Action = 'Action',
     Draft = 'Draft',
-    // Action = 'Action',
     ComfyUI = 'ComfyUI',
     FileList = 'FileList',
     Steps = 'Steps',
@@ -139,7 +141,10 @@ export class CushyLayoutManager {
         }
     }
     addAction = (actionPath: ActionPath) =>
-        this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: actionPath, actionPath })
+        this._AddWithProps(Widget.Action, `/action/${actionPath}`, { title: actionPath, actionPath })
+
+    addDraft = (title: string, draftID: DraftID) =>
+        this._AddWithProps(Widget.Draft, `/draft/${draftID}`, { title, draftID }, 'current')
 
     renameTab = (tabID: string, newName: string) => {
         const tab = this.model.getNodeById(tabID)
@@ -152,13 +157,11 @@ export class CushyLayoutManager {
         widget: Widget,
         tabID: string,
         p: T,
+        where: 'current' | 'main' = 'main',
     ): Maybe<FL.Node> => {
         // 1. ensure layout is present
         const currentLayout = this.layoutRef.current
-        if (currentLayout == null) {
-            console.log('❌ no currentLayout')
-            return
-        }
+        if (currentLayout == null) return void console.log('❌ no currentLayout')
 
         // 2. get previous tab
         let prevTab: FL.TabNode | undefined
@@ -167,27 +170,14 @@ export class CushyLayoutManager {
 
         // 3. create tab if not prev type
         if (prevTab == null) {
-            // 3.1. add the tab
-            currentLayout.addTabToTabSet('MAINTYPESET', {
-                component: widget,
-                id: tabID,
-                icon: p.icon,
-                name: p.title,
-                config: p,
-            })
-            // 3.2. ensure the tab has been properly added
+            currentLayout.addTabToTabSet('MAINTYPESET', { component: widget, id: tabID, icon: p.icon, name: p.title, config: p })
             prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
-            if (prevTab == null) {
-                console.log('❌ no tabAdded')
-                return
-            }
+            if (prevTab == null) return void console.log('❌ no tabAdded')
         } else {
             this.model.doAction(Actions.selectTab(tabID))
         }
-
         // 4. merge props
         this.model.doAction(Actions.updateNodeAttributes(tabID, p))
-        // console.log('❌', prevTab.toJson())
         return prevTab
     }
 
@@ -207,16 +197,10 @@ export class CushyLayoutManager {
             const imgID = extra.imgID // Retrieves the imgID from the extra data
             return <LastImageUI imageID={imgID}></LastImageUI> // You can now use imgID to instantiate your paint component properly
         }
-        if (component === Widget.Draft) {
+        if (component === Widget.Action) {
             // 🔴 ensure this is type-safe
-            // const actionPath = extra.actionPath // Retrieves the imgID from the extra data
             return (
                 <div style={{ height: '100%' }}>
-                    {/* {JSON.stringify(extra)}🟢 */}
-                    {/* <div>test</div> */}
-                    {/* <div>OK this is good</div> */}
-                    {/* <ActionFileUI actionPath={extra.actionPath} /> */}
-                    {/* <div>test</div> */}
                     <ActionFileUI actionPath={extra.actionPath} />
                 </div>
             )
@@ -234,6 +218,9 @@ export class CushyLayoutManager {
         if (component === Widget.Hosts) return <HostListUI />
         if (component === Widget.Marketplace) return <MarketplaceUI />
         if (component === Widget.Config) return <PanelConfigUI />
+        if (component === Widget.Draft) {
+            return <ActionFormUI draft={extra.draftID} />
+        }
 
         exhaust(component)
         return (

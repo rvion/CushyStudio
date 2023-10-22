@@ -2,12 +2,11 @@ import type { ActionPath } from 'src/back/ActionPath'
 
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
+import { useEffect } from 'react'
 import { Button, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { openInVSCode } from 'src/utils/openInVsCode'
 import { ActionDraftListUI } from './ActionDraftListUI'
-import { ActionFormUI } from './ActionFormUI'
-import { useEffect } from 'react'
 
 export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: ActionPath }) {
     const st = useSt()
@@ -16,7 +15,7 @@ export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: Act
     // console.log('🟢', st.liveTime)
 
     useEffect(() => {
-        void af?.load({ logFailures: true })
+        void af?.load()
     }, [af])
 
     if (af == null)
@@ -57,7 +56,6 @@ export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: Act
             {errors}
             {/* DRAFT LIST */}
             <ActionDraftListUI af={af} />
-            {af.focusedDraft && <ActionFormUI draft={af.focusedDraft} />}
         </>
     )
     // const paf = pj.activeFile

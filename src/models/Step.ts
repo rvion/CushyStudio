@@ -65,10 +65,6 @@ export class StepL {
 
         if (this.prompts.items.every((p: PromptL) => p.data.executed)) {
             this.update({ status: scriptExecutionStatus })
-            if (scriptExecutionStatus === Status.Success) {
-                // this.parentGraph.item.createDraft(this).focus()
-                // this.outputGraph.item.createDraft()
-            }
         }
     }
     prompts = new LiveCollection<PromptL>(this, 'stepID', 'prompts')

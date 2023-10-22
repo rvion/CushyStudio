@@ -100,12 +100,7 @@ export class STATE {
         const res = await fetch(promptEndpoint, { method: 'POST' })
         console.log('🔥 INTERRUPTED.')
     }
-    // startProject = () => {
-    //     const initialGraph = this.db.graphs.create({ comfyPromptJSON: {} })
-    //     this.db.projects.create({ rootGraphID: initialGraph.id, name: 'new project' })
-    //     const startDraft = initialGraph.createDraft()
-    //     initialGraph.update({ focusedDraftID: startDraft.id })
-    // }
+
     startProjectV2 = (): ProjectL => {
         if (this.db.projects.size > 0) {
             return this.db.projects.firstOrCrash()

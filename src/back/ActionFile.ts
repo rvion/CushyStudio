@@ -49,7 +49,7 @@ export class ActionFile {
         if (!v) return
         this.autoReloadTimeout = setInterval(() => {
             console.log('🟢 auto reloading...')
-            this.load({ logFailures: true, force: true })
+            this.load({ force: true })
         }, 3000)
     }
 
@@ -71,6 +71,10 @@ export class ActionFile {
             .filter((draft) => draft.data.actionPath === this.relPath)
     }
 
+    getAction() {
+        this.load()
+        return this.action
+    }
     // extracted stuff
     action?: Maybe<Action<RequestableDict>> = null
     codeJS?: Maybe<string> = null
@@ -83,10 +87,10 @@ export class ActionFile {
 
     loadRequested = false
     /** load a file trying all compatible strategies */
-    load = async (p: { logFailures: boolean; force?: boolean }): Promise<true> => {
-        if (this.loadRequested && !p.force) return true
+    load = async (p?: { force?: boolean }): Promise<true> => {
+        if (this.loadRequested && !p?.force) return true
         this.loadRequested = true
-        if (this.loaded.done && !p.force) return true
+        if (this.loaded.done && !p?.force) return true
         const strategies = this.findLoadStrategies()
         for (const strategy of strategies) {
             const res = await this.loadWithStrategy(strategy)
