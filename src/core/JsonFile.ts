@@ -10,11 +10,13 @@ import { bang } from '../utils/bang'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { ZodSchema } from 'zod'
 
-export type PersistedJSONInfo<T> = {
+export type PersistedJSONInfo<T extends object> = {
     path: AbsolutePath
     init: () => T
     maxLevel?: number
     schema?: ZodSchema<T>
+    /** practical way to attempt to fix the config file if it's invalid */
+    fixup?: (self: JsonFile<T>) => void
 }
 
 export class JsonFile<T extends object> {
@@ -35,6 +37,7 @@ export class JsonFile<T extends object> {
         this.folderPath = asAbsolutePath(dirname(p.path))
         this.folderName = basename(this.folderPath)
         this.init(p)
+        p.fixup?.(this)
         makeAutoObservable(this)
     }
 

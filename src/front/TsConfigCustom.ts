@@ -17,10 +17,7 @@ export const mkTypescriptConfig = (): JsonFile<TsConfigCustom> => {
             // it will allow to only see errors in actions you either
             // MAINTAIN or are CURRENTLY WORKING ON
             include: [
-                'schema/global.d.ts',
-                'src',
-                //
-                'actions/CushyStudio/**/*',
+                ...mandatoryIncludes,
                 // 'actions/rvion/*',
                 // "actions/murphy/*",
                 // "actions/featherice/*",
@@ -28,5 +25,19 @@ export const mkTypescriptConfig = (): JsonFile<TsConfigCustom> => {
             ],
             exclude: [],
         }),
+        fixup: (self) => {
+            if (mandatoryIncludes.some((x) => !self.value.include.includes(x))) {
+                self.update((t) => {
+                    t.include = Array.from(new Set([...t.include, ...mandatoryIncludes]))
+                })
+            }
+        },
     })
 }
+
+const mandatoryIncludes: string[] = [
+    //
+    'src',
+    'actions/CushyStudio/**/*',
+    'schema/global.d.ts',
+]
