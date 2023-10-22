@@ -37,15 +37,31 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <MainNavEntryUI
                 onClick={() => st.layout.addMarketplace()}
                 ix='3'
-                icon={<span className='material-symbols-outlined'>apps</span>}
+                icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
                 label='Packs'
             />
 
             {/* PAINT */}
-            <MainNavEntryUI onClick={() => st.layout.addPaint()} ix='2' icon={<I.Image />} label='paint' />
+            <MainNavEntryUI
+                onClick={() => st.layout.addPaint()}
+                ix='2'
+                icon={<span className='material-symbols-outlined text-red-500'>brush</span>}
+                label='paint'
+            />
+            <MainNavEntryUI
+                onClick={() => st.layout.addPaint()}
+                ix='2'
+                icon={<span className='material-symbols-outlined text-yellow-500'>image</span>}
+                label='Gallery'
+            />
 
             {/* CONFIG */}
-            <MainNavEntryUI onClick={() => st.layout.addComfy()} ix='4' icon={<I.Gear />} label='Config' />
+            <MainNavEntryUI
+                onClick={() => st.layout.addConfig()}
+                ix='4'
+                icon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
+                label='Config'
+            />
 
             {/* CIVITAI */}
             <MainNavEntryUI
@@ -59,7 +75,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 soon
                 onClick={() => st.layout.addComfy()}
                 ix='6'
-                icon={<span className='material-symbols-outlined'>cloud</span>}
+                icon={<span className='material-symbols-outlined text-amber-800'>cloud</span>}
                 label='GPU'
             />
         </div>
