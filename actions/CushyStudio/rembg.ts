@@ -5,7 +5,7 @@ action({
     // prettier-ignore
     ui: (form) => ({
         // startImage
-        startImage: form.imageOpt({ label: 'Start image' }),
+        startImage: form.image({ label: 'Start image', default: { type:'ComfyImage', imageName:'example.png' }}),
         //
         with_RemBG:           form.groupOpt({ labelPos: 'end', label: 'RemBG', items: () => ({}) }),
         with_ABG:             form.groupOpt({ labelPos: 'end', label: 'ABG',   items: () => ({}) }),

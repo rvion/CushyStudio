@@ -38,7 +38,8 @@ export type StepT = {
     // ACTION ------------------------------
     name: string
     actionPath: ActionPath
-    actionParams: Maybe<any>
+    formResult: Maybe<any>
+    formSerial: Maybe<any>
 
     // GRAPHS ------------------------------
     parentGraphID: GraphID

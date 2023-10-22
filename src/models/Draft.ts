@@ -67,7 +67,8 @@ export class DraftL {
             name: this.data.title,
             //
             actionPath: this.data.actionPath,
-            actionParams: this.data.actionParams,
+            formResult: req.result,
+            formSerial: req.serial,
             //
             parentGraphID: graph.id,
             outputGraphID: graph.clone().id,

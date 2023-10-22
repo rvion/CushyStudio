@@ -62,9 +62,9 @@ export class Runtime {
         // 1. ensure we have a tool
         const start = Date.now()
         const action = this.step.action
-        const actionResult = this.step.data.actionParams
+        const actionResult = this.step.data.formResult
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
-        console.log(`🔴 before: data=${JSON.stringify(this.step.data.actionParams, null, 3)}`)
+        console.log(`🔴 before: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
         try {
             if (action == null) {
                 console.log(`❌ action not found`)

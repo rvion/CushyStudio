@@ -22,6 +22,7 @@ export const ActionAddDraftBtnUI = observer(function ActionAddDraftBtnUI_(p: { a
                     graphID: pj.rootGraph.id,
                     title: 'Untitled',
                 })
+                af.focusedDraft = draft
             }}
         >
             {/* <I.AddOutline /> */}
