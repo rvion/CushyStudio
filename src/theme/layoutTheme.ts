@@ -4,6 +4,9 @@ import { STATE } from 'src/front/state'
 export type Theme = 'light' | 'dark'
 
 export class ThemeManager {
+    toggle() {
+        this.theme = this.theme === 'dark' ? 'light' : 'dark'
+    }
     get theme(): Theme {
         return this.st.configFile.value.theme ?? 'dark'
     }

@@ -8,27 +8,15 @@ import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
+    const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
     return (
-        // bg-gray-950
         <div
             //
             id='CushyAppBar'
             className='flex gap-1 items-center'
-            style={{
-                borderBottom: '1px solid #383838',
-            }}
+            style={{ borderBottom: '1px solid #383838' }}
         >
-            <div>🛋️ CushyStudio</div>
-
-            {/* <Button
-                //
-                appearance='subtle'
-                size='sm'
-                startIcon={<span className='material-symbols-outlined'>create_new_folder</span>}
-                onClick={() => st.createFolder()}
-            >
-                Add folder
-            </Button> */}
+            <div tw='whitespace-nowrap'>🛋️ CushyStudio</div>
             <Button
                 appearance='subtle'
                 loading={Boolean(st.db.saveTimeout)}
@@ -40,26 +28,9 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             </Button>
             <IconButton
                 size='xs'
-                icon={
-                    <span className='material-symbols-outlined'>{st.theme.theme === 'light' ? 'highlight' : 'nights_stay'}</span>
-                }
-                onClick={() => (st.theme.theme = st.theme.theme === 'light' ? 'dark' : 'light')}
-            ></IconButton>
-            {/* <Button
-                //
-                size='sm'
-                startIcon={<I.ExpandOutline />}
-                onClick={() => {
-                    //
-                    // console.log(window)
-                }}
-            >
-                ComfyV2
-            </Button> */}
-            {/* <IconButton
-                icon={st.showAllMessageReceived ? <I.InfoOutline /> : <I.EyeClose />}
-                onClick={() => (st.showAllMessageReceived = !st.showAllMessageReceived)}
-            /> */}
+                icon={<span className='material-symbols-outlined'>{themeIcon}</span>}
+                onClick={() => st.theme.toggle()}
+            />
             <Button
                 //
                 size='sm'
@@ -100,7 +71,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                     startIcon={<I.Reload />}
                     onClick={() => st.layout.resetCurrent()}
                 >
-                    Reset Layout
+                    Fix Layout
                 </Button>
             </div>
             <div className='flex-grow'></div>
