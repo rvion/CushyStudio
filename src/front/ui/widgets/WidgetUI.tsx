@@ -52,12 +52,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         </div>
     )
     const WIDGET = (
-        <ErrorBoundary
-            FallbackComponent={ErrorBoundaryFallback}
-            onReset={(details) => {
-                /* 🔴 */
-            }}
-        >
+        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <WidgetUI req={req} />
         </ErrorBoundary>
     )
@@ -75,7 +70,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     } else {
         return (
             <div className={className} key={rootKey}>
-                ({p.labelPos}){LABEL}
+                {LABEL}
                 {WIDGET}
             </div>
         )
