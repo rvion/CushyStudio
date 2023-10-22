@@ -35,8 +35,9 @@ export class ActionFile {
         public absPath: AbsolutePath,
         public relPath: ActionPath,
     ) {
-        makeAutoObservable(this)
         this.displayName = path.basename(this.absPath)
+
+        makeAutoObservable(this)
     }
 
     // autoreload

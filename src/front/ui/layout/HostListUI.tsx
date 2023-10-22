@@ -12,7 +12,7 @@ export const HostListUI = observer(function HostListUI_(p: {}) {
             {machines?.map((m, ix) => {
                 const isMain = m.comfyHost === mainComfyHost && m.comfyPort === mainComfyPort
                 return (
-                    <InputGroup>
+                    <InputGroup key={ix}>
                         <InputGroup.Addon>
                             {isMain ? (
                                 <span className='text-green-500 material-symbols-outlined'>done</span>
