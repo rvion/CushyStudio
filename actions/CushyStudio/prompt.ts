@@ -1,7 +1,6 @@
 action({
     author: 'rvion',
     name: 'Prompt-V1',
-    priority: 1,
     help: 'load model with optional clip-skip, loras, tome ratio, etc.',
     ui: (form) => ({
         // load
