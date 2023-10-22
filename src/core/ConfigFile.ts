@@ -47,7 +47,7 @@ export type ConfigFile = {
     galleryMaxImages?: number
     /** defaults to 5 */
     checkUpdateEveryMinutes?: number
-    perspectives?: { [perspectiveName: string]: IJsonModel }
+    layouts?: { [perspectiveName: string]: IJsonModel }
     // bad place to store that
     stars?: { [actionPackName: string]: { at: Timestamp; stars: number } }
     packs?: { [actionPackName: string]: { installed: boolean } }
