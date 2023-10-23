@@ -3,6 +3,7 @@ import type { ImageID } from 'src/models/Image'
 
 import { observer } from 'mobx-react-lite'
 import { useSt } from 'src/front/FrontStateCtx'
+import { Rate } from 'rsuite'
 
 export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID }) {
     const st = useSt()
@@ -12,6 +13,7 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
     if (imgs == null) return null
     return (
         <div tw='w-full h-full'>
+            <Rate size='xs' onChange={(next) => imgs.update({ star: next })} value={imgs.data.star} />
             <TransformWrapper>
                 <TransformComponent>
                     {/* <img src="image.jpg" alt="test" /> */}
