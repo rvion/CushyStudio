@@ -24,44 +24,57 @@
 
 </div>
 
-🎭 Cushy is made both for Tinkereers and Artists
+<div style='display:flex;gap:1rem;'>
+
+<!-- <div src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:49%'>
+test</div>  -->
+
+</div>
+
+<!-- ---------------------------------------------- -->
 
 <table style='width:100%'>
-<thead>
+<tbody>
+
+<!-- ---------------------------------------------- -->
 <tr>
-<th>
+<td style='vertical-align:top'>
 
 ## For Artists
 
-</th>
-<th>
-
-## For Tinkerers
-
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-
--   Non-technical **_Actions_** interfaces
+-   ✅ Non-technical **_Actions_** interfaces
 
     -   Per use-case UI
     -   Simple widgets
 
--   Fast previews, real-time feedback
+-   🚂 Fast previews, real-time feedback
 
     -   Interactive at its core
     -   Real-time actions with continuous generations
 
--   Built-in commodities
+-   🖌️ Built-in commodities
 
     -   Image and Mask editors
     -   Modular Layout to keep every creative tool at hand
 
 </td>
 <td>
+
+<img src='docs/static/img/screenshots/2023-10-23-19-04-01.png' style='width:100%'></img>
+
+</td>
+</tr>
+
+<!-- ---------------------------------------------- -->
+<tr tyle='vertical-align:top'>
+<td>
+
+![](docs/static/img/screenshots/2023-10-23-19-30-40.png)
+
+</td>
+<td style='vertical-align:top'>
+
+## For Creatives
 
 -   🚀 The most practical toolset to build actions
 
@@ -111,7 +124,11 @@ When you start `CushyStudio` ... TODO
 
 ## See it in action
 
+# Global Vidoe
+
 TODO: place video here
+
+# Screenshots
 
 # Features
 
