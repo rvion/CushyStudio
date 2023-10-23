@@ -161,6 +161,8 @@ export class STATE {
         makeAutoObservable(this, { comfyUIIframeRef: false })
     }
 
+    getCurrentProjectOrCrash = () => this.db.projects.firstOrCrash() // 🔴
+
     /**
      * will be created only after we've loaded cnfig file
      * so we don't attempt to connect to some default server

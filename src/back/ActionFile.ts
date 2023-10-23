@@ -14,6 +14,7 @@ import { exhaust } from '../utils/ComfyUtils'
 import { ManualPromise } from '../utils/ManualPromise'
 import { transpileCode } from './transpiler'
 import { DraftL } from 'src/models/Draft'
+import { generateName } from 'src/front/ui/drafts/generateName'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -66,6 +67,18 @@ export class ActionFile {
         return this.action?.name ?? path.basename(this.absPath)
     }
 
+    createDraft = (): DraftL => {
+        const title = generateName()
+        const pj = this.st.getCurrentProjectOrCrash()
+        const draft = this.st.db.drafts.create({
+            actionParams: {},
+            actionPath: this.relPath,
+            graphID: pj.rootGraph.id,
+            title: title,
+        })
+        pj.st.layout.addDraft(draft.data.title, draft.id)
+        return draft
+    }
     get drafts(): DraftL[] {
         return this.st.db.drafts //
             .filter((draft) => draft.data.actionPath === this.relPath)
@@ -99,6 +112,9 @@ export class ActionFile {
         if (this.action) this.displayName = this.action.name
         this.st.layout.renameTab(`/action/${this.relPath}`, this.displayName)
         this.loaded.resolve(true)
+        if (this.drafts.length === 0) {
+            this.createDraft()
+        }
         return true
     }
 

@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite'
-import { ReactNode } from 'react'
 import { InputNumber, Slider } from 'rsuite'
 import { Requestable_float, Requestable_int } from 'src/controls/InfoRequest'
 
@@ -12,9 +11,8 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Requestable_
     const theme = req.input.theme ?? 'slider'
     const step = mode === 'int' ? 1 : 0.1
 
-    const children: ReactNode[] = []
-    if (theme === 'slider')
-        children.push(
+    const sliderUI =
+        theme === 'slider' ? (
             <Slider //
                 style={{ width: '10rem' }}
                 value={val}
@@ -37,36 +35,43 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Requestable_
                     if (mode == 'int') num = Math.round(num)
                     req.state.val = num
                 }}
-            />,
-        )
-    return (
-        <>
-            <InputNumber //
-                size='sm'
-                value={val}
-                style={{ width: '10rem' }}
-                min={req.input.min}
-                max={req.input.max}
-                step={step}
-                onChange={(next) => {
-                    // parse value
-                    let num =
-                        typeof next === 'string' //
-                            ? mode == 'int'
-                                ? parseInt(next, 10)
-                                : parseFloat(next)
-                            : next
-
-                    // ensure is a number
-                    if (isNaN(num) || typeof num != 'number') {
-                        return console.log(`${JSON.stringify(next)} is not a number`)
-                    }
-                    // ensure ints are ints
-                    if (mode == 'int') num = Math.round(num)
-                    req.state.val = num
-                }}
             />
-            {children}
-        </>
+        ) : null
+
+    const inputUI = (
+        <InputNumber //
+            size='sm'
+            value={val}
+            style={{ width: '10rem' }}
+            min={req.input.min}
+            max={req.input.max}
+            step={step}
+            onChange={(next) => {
+                // parse value
+                let num =
+                    typeof next === 'string' //
+                        ? mode == 'int'
+                            ? parseInt(next, 10)
+                            : parseFloat(next)
+                        : next
+
+                // ensure is a number
+                if (isNaN(num) || typeof num != 'number') {
+                    return console.log(`${JSON.stringify(next)} is not a number`)
+                }
+                // ensure ints are ints
+                if (mode == 'int') num = Math.round(num)
+                req.state.val = num
+            }}
+        />
     )
+
+    if (sliderUI)
+        return (
+            <>
+                {inputUI}
+                {sliderUI}
+            </>
+        )
+    return inputUI
 })

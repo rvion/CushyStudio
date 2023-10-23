@@ -2,7 +2,7 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Button, Checkbox, Input, Message } from 'rsuite'
+import { Button, Input, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { GithubUserUI } from 'src/front/GithubAvatarUI'
 import { DraftID, DraftL } from 'src/models/Draft'
@@ -15,6 +15,7 @@ import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
+import { ActionDraftListUI } from './ActionDraftListUI'
 
 /**
  * this is the root interraction widget
@@ -89,32 +90,16 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                             Edit
                         </Button>
                     </div>
-                    <div>
-                        <Checkbox checked={draft.shouldAutoStart} onChange={(_, next) => draft.setAutostart(next)}>
-                            Autorun
-                        </Checkbox>
-                        {/* <Toggle size='sm' color='red' onChange={(t) => draft.setAutostart(t)} /> */}
-                    </div>
-                    <Button
-                        size='sm'
-                        className='self-start'
-                        color='green'
-                        // disabled={!tool.st.ws.isOpen}
-                        appearance='primary'
-                        startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
-                        onClick={() => draft.start()}
-                    >
-                        Run
-                    </Button>
                 </div>
                 <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
                     <div tw='flex items-center'>
                         By {action.author ? <GithubUserUI showName username={action.author} /> : 'anonymous'}
                     </div>
                 </ErrorBoundary>
+                <ActionDraftListUI af={af} />
                 <Input
                     type='text'
-                    className='w-full p-2 m-2'
+                    className='w-full my-2'
                     placeholder='Search...'
                     value={draft.data.title}
                     onChange={(next) => {
@@ -122,16 +107,19 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                         st.layout.renameCurrentTab(next)
                     }}
                 />
-                <ScrollablePaneUI className='flex-grow '>
+                <ScrollablePaneUI
+                    //
+                    // style={{ boxShadow: 'rgb(39 118 217) 0px 0px 2rem' }}
+                    className='flex-grow  '
+                >
                     <div>{action.description}</div>
                     <form
-                        className='p-2 m-4'
+                        className='p-2'
                         style={{
                             border: '1px dashed #565656',
                             background: '#1e1e1e',
                             borderRadius: '0.5rem',
                             // boxShadow: '0 0 2rem #193558',
-                            boxShadow: 'rgb(39 118 217) 0px 0px 2rem',
                         }}
                         onKeyUp={(ev) => {
                             // submit on meta+enter

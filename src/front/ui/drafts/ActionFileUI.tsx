@@ -7,6 +7,7 @@ import { Button, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { openInVSCode } from 'src/utils/openInVsCode'
 import { ActionDraftListUI } from './ActionDraftListUI'
+import { ActionFormUI } from './ActionFormUI'
 
 export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: ActionPath }) {
     const st = useSt()
@@ -25,39 +26,46 @@ export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: Act
             </Message>
         )
 
+    const defaultDraft = af?.drafts[0]
     const errors =
         af.errors.length > 0 ? ( //
             <Message type='warning'>{JSON.stringify(af.errors, null, 4)}</Message>
         ) : null
-    return (
-        <>
-            <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
-                {/* TITLE */}
-                <span>{af.name}</span>
-                {/* EDIT */}
-                <Button
-                    size='xs'
-                    color='blue'
-                    appearance='ghost'
-                    startIcon={<span className='material-symbols-outlined'>edit</span>}
-                    onClick={() => openInVSCode(cwd(), af.absPath)}
-                >
-                    Edit
-                </Button>
-            </div>
-            {/* {st.liveTime} */}
-            {af.action == null ? (
-                <Message type='error' showIcon>
-                    <pre tw='bg-red-900'>B. ❌ action not found</pre>
-                    <pre>loadRequested: {af.loadRequested ? '🟢' : '❌'}</pre>
-                    <pre tw='bg-red-900'>{JSON.stringify(af.errors)}</pre>
-                </Message>
-            ) : null}
-            {errors}
-            {/* DRAFT LIST */}
-            <ActionDraftListUI af={af} />
-        </>
-    )
+
+    if (defaultDraft == null)
+        return (
+            <>
+                <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
+                    {/* TITLE */}
+                    <span>{af.name}</span>
+                    {/* EDIT */}
+                    <Button
+                        size='xs'
+                        color='blue'
+                        appearance='ghost'
+                        startIcon={<span className='material-symbols-outlined'>edit</span>}
+                        onClick={() => openInVSCode(cwd(), af.absPath)}
+                    >
+                        Edit
+                    </Button>
+                </div>
+                {/* {st.liveTime} */}
+                {af.action == null ? (
+                    <Message type='error' showIcon>
+                        <pre tw='bg-red-900'>B. ❌ action not found</pre>
+                        <pre>loadRequested: {af.loadRequested ? '🟢' : '❌'}</pre>
+                        <pre tw='bg-red-900'>{JSON.stringify(af.errors)}</pre>
+                    </Message>
+                ) : null}
+                {errors}
+                {/* DRAFT LIST */}
+                {/* <ActionDraftListUI af={af} /> */}
+            </>
+        )
+
+    // return <div>nok</div>
+    return <ActionFormUI draft={defaultDraft} />
+
     // const paf = pj.activeFile
     // if (paf == null) return null
     // return (

@@ -10,9 +10,9 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Reques
     const step = req.input.step ?? (mode === 'int' ? 1 : 0.1)
     const theme = req.input.theme ?? 'slider'
 
-    const children: ReactNode[] = []
+    let children: Maybe<ReactNode> = null
     if (theme === 'slider')
-        children.push(
+        children = (
             <Slider //
                 style={{ width: '10rem' }}
                 value={val}
@@ -36,7 +36,7 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Reques
                     if (mode == 'int') num = Math.round(num)
                     req.state.val = num
                 }}
-            />,
+            />
         )
 
     return (
