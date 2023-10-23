@@ -24,32 +24,39 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater 
                 </Popover>
             }
         >
-            <div tw={['flex gap-1 px-1 rounded cursor-help items-center', hasErrors ? 'bg-red-900' : 'bg-green-900 ']}>
-                {hasErrors ? (
-                    <>
-                        <span className='text-orange-500 material-symbols-outlined'>error</span>
-                        version
-                    </>
-                ) : updater.updateAvailable ? (
+            <div tw={['flex gap-1 cursor-help items-center']}>
+                {/* // hasErrors ? 'bg-red-900' : 'bg-green-900 ', */}
+                <div tw='bg-green-900 flex gap-1 px-1'>
+                    {hasErrors ? (
+                        <>
+                            <span className='text-orange-500 material-symbols-outlined'>error</span>
+                            version
+                        </>
+                    ) : (
+                        <span className='text-green-400 material-symbols-outlined'>check_circle</span>
+                    )}
+
+                    <div className={updater.updateAvailable ? 'text-orange-400' : 'text-green-100 '}>
+                        {updater.infos.headCommitsCount ? `V${updater.currentVersion}` : <Loader />}
+                    </div>
+                </div>
+                {updater.updateAvailable && (
                     <Button
                         className='animate-pulse'
-                        color='orange'
+                        color='red'
                         size='xs'
                         appearance='primary'
                         startIcon={<span className='material-symbols-outlined'>update</span>}
-                        onClick={async () => {
+                        onClick={async (ev) => {
+                            ev.stopPropagation()
+                            ev.preventDefault()
                             await updater.updateToLastCommitAvailable()
                             window.location.reload()
                         }}
                     >
                         UPDATE to version {updater.nextVersion}
                     </Button>
-                ) : (
-                    <span className='text-green-400 material-symbols-outlined'>check_circle</span>
                 )}
-                <div className={updater.updateAvailable ? 'text-orange-400' : 'text-green-100'}>
-                    {updater.infos.headCommitsCount ? `V${updater.currentVersion}` : <Loader />}
-                </div>
             </div>
         </Whisper>
     )

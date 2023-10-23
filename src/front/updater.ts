@@ -11,6 +11,17 @@ import { relative } from 'path'
 
 export class Updater {
     ready = false
+    relativeFolder: string
+
+    constructor(
+        public st: STATE,
+        public p: { cwd: string; autoStart: boolean; runNpmInstall: boolean },
+    ) {
+        // initial udpate
+        this.relativeFolder = relative(this.st.rootPath, p.cwd)
+        if (p.autoStart) this.start()
+        makeAutoObservable(this)
+    }
 
     private renderVersion = (commitCount: number) => {
         const major = Math.floor(commitCount / 1000)
@@ -38,11 +49,16 @@ export class Updater {
             const command = `git pull origin ${this.infos.mainBranchName}`
             exec(command, { cwd: this.p.cwd }, (error) => {
                 if (error) return reject(error)
-                exec('npm install', (error) => {
-                    if (error) return reject(error)
+                if (this.p.runNpmInstall) {
+                    exec('npm install', (error) => {
+                        if (error) return reject(error)
+                        this.log('UPDATED')
+                        resolve()
+                    })
+                } else {
                     this.log('UPDATED')
                     resolve()
-                })
+                }
             })
         })
     }
@@ -52,17 +68,6 @@ export class Updater {
         const cache = (__global__.__UPDATERCACHE__ ??= {})
         if (cache[this.p.cwd]) clearInterval(cache[this.p.cwd])
         cache[this.p.cwd] = p
-    }
-
-    relativeFolder: string
-    constructor(
-        public st: STATE,
-        public p: { cwd: string; autoStart: boolean },
-    ) {
-        // initial udpate
-        this.relativeFolder = relative(this.st.rootPath, p.cwd)
-        if (p.autoStart) this.start()
-        makeAutoObservable(this)
     }
 
     start = () => {
