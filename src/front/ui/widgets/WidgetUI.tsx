@@ -6,9 +6,11 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { Message, Tooltip, Whisper } from 'rsuite'
 import { WidgetPromptUI } from '../../../prompter/WidgetPromptUI'
 import { exhaust } from '../../../utils/ComfyUtils'
-import { useDraft } from '../useDraft'
 import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { WidgetBoolUI } from './WidgetBoolUI'
+import { WidgetChoiceUI } from './WidgetChoice'
+import { WidgetChoicesUI } from './WidgetChoices'
+import { WidgetColorUI } from './WidgetCololrUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
 import { WidgetGroupOptUI, WidgetGroupUI } from './WidgetIGroupUI'
 import { WidgetListUI } from './WidgetListUI'
@@ -16,14 +18,12 @@ import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetMatrixUI } from './WidgetMatrixUI'
 import { WidgetNumOptUI } from './WidgetNumOptUI'
 import { WidgetNumUI } from './WidgetNumUI'
+import { WidgetSeedUI } from './WidgetSeedUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
+import { WidgetSelectOneUI } from './WidgetSelectOneUI'
+import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrOptUI } from './WidgetStrOptUI'
 import { WidgetStrUI } from './WidgetStrUI'
-import { WigetSizeUI } from './WidgetSizeUI'
-import { WidgetSelectOneUI } from './WidgetSelectOneUI'
-import { WidgetColorUI } from './WidgetCololrUI'
-import { WidgetChoiceUI } from './WidgetChoice'
-import { WidgetChoicesUI } from './WidgetChoices'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Requestable
@@ -87,6 +87,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; focus?: boolean }) {
     const req = p.req
     if (req == null) return <>NULL</>
+    if (req instanceof R.Requestable_seed)               return <WidgetSeedUI        req={req} />
     if (req instanceof R.Requestable_int)                return <WidgetNumUI         req={req} />
     if (req instanceof R.Requestable_intOpt)             return <WidgetNumOptUI      req={req} />
     if (req instanceof R.Requestable_float)              return <WidgetNumUI         req={req} />
@@ -107,12 +108,12 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; foc
     if (req instanceof R.Requestable_promptOpt)          return <WidgetPromptUI      req={req} />
     if (req instanceof R.Requestable_loras)              return <WidgetLorasUI       req={req} />
     if (req instanceof R.Requestable_color)              return <WidgetColorUI       req={req} />
-    if (req instanceof R.Requestable_selectMany)         return <>TODO</>
-    if (req instanceof R.Requestable_selectManyOrCustom) return <>TODO</>
     if (req instanceof R.Requestable_selectOne)          return <WidgetSelectOneUI   req={req} />
-    if (req instanceof R.Requestable_selectOneOrCustom)  return <>TODO</>
     if (req instanceof R.Requestable_choice)             return <WidgetChoiceUI      req={req} />
     if (req instanceof R.Requestable_choices)            return <WidgetChoicesUI     req={req} />
+    if (req instanceof R.Requestable_selectMany)         return <>TODO</>
+    if (req instanceof R.Requestable_selectManyOrCustom) return <>TODO</>
+    if (req instanceof R.Requestable_selectOneOrCustom)  return <>TODO</>
 
     exhaust(req)
     console.log(`🔴`, (req as any).type, req)

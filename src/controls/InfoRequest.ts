@@ -22,6 +22,7 @@ export type Requestable =
     | Requestable_strOpt
     | Requestable_prompt
     | Requestable_promptOpt
+    | Requestable_seed
     | Requestable_int
     | Requestable_float
     | Requestable_bool
@@ -246,6 +247,37 @@ export class Requestable_int implements IRequest<'int', Requestable_int_input, R
     }
     get serial(): Requestable_int_serial { return this.state }
     get result(): Requestable_int_output { return this.state.val }
+}
+
+// 🅿️ seed ==============================================================================
+export type Requestable_seed_input  = ReqInput<{ default?: number; defaultMode?: 'randomize' | 'fixed', min?: number; max?: number }>
+export type Requestable_seed_serial = Requestable_seed_state
+export type Requestable_seed_state  = { type:'seed', active: true; val: number, mode: 'randomize' | 'fixed' | 'last' }
+export type Requestable_seed_output = number
+export interface Requestable_seed extends IWidget<'seed', Requestable_seed_input, Requestable_seed_serial, Requestable_seed_state, Requestable_seed_output> {}
+export class Requestable_seed implements IRequest<'seed', Requestable_seed_input, Requestable_seed_serial, Requestable_seed_state, Requestable_seed_output> {
+    type = 'seed' as const
+    state: Requestable_seed_state
+    constructor(
+        public builder: FormBuilder,
+        public schema: SchemaL,
+        public input: Requestable_seed_input,
+        serial?: Requestable_seed_serial,
+    ) {
+        this.state = serial ?? {
+            type: 'seed',
+            active: true,
+            val: input.default ?? 0,
+            mode: input.defaultMode ?? 'randomize'
+        }
+        makeAutoObservable(this)
+    }
+    get serial(): Requestable_seed_serial { return this.state }
+    get result(): Requestable_seed_output {
+        return this.state.mode ==='randomize'
+            ? Math.floor(Math.random()* 9_999_999)
+            : this.state.val
+    }
 }
 
 // 🅿️ float ==============================================================================
@@ -1051,6 +1083,7 @@ export class FormBuilder {
         if (type === 'str')                return new Requestable_str                (this, this.schema, input, serial)
         if (type === 'strOpt')             return new Requestable_strOpt             (this, this.schema, input, serial)
         if (type === 'int')                return new Requestable_int                (this, this.schema, input, serial)
+        if (type === 'seed')               return new Requestable_seed               (this, this.schema, input, serial)
         if (type === 'intOpt')             return new Requestable_intOpt             (this, this.schema, input, serial)
         if (type === 'float')              return new Requestable_float              (this, this.schema, input, serial)
         if (type === 'floatOpt')           return new Requestable_floatOpt           (this, this.schema, input, serial)
@@ -1086,6 +1119,7 @@ export class FormBuilder {
     strOpt             =                                                  (p: Requestable_strOpt_input             , serial?: Requestable_strOpt_serial             ) => new Requestable_strOpt              (this, this.schema, p, serial)
     prompt             =                                                  (p: Requestable_prompt_input             , serial?: Requestable_prompt_serial             ) => new Requestable_prompt              (this, this.schema, p, serial)
     promptOpt          =                                                  (p: Requestable_promptOpt_input          , serial?: Requestable_promptOpt_serial          ) => new Requestable_promptOpt           (this, this.schema, p, serial)
+    seed               =                                                 (p: Requestable_seed_input               , serial?: Requestable_seed_serial               ) => new Requestable_seed                (this, this.schema, p, serial)
     int                =                                                  (p: Requestable_int_input                , serial?: Requestable_int_serial                ) => new Requestable_int                 (this, this.schema, p, serial)
     intOpt             =                                                  (p: Requestable_intOpt_input             , serial?: Requestable_intOpt_serial             ) => new Requestable_intOpt              (this, this.schema, p, serial)
     float              =                                                  (p: Requestable_float_input              , serial?: Requestable_float_serial              ) => new Requestable_float               (this, this.schema, p, serial)
