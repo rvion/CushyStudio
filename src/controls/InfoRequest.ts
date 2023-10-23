@@ -250,7 +250,7 @@ export class Requestable_int implements IRequest<'int', Requestable_int_input, R
 }
 
 // 🅿️ seed ==============================================================================
-export type Requestable_seed_input  = ReqInput<{ default?: number; defaultMode?: 'randomize' | 'fixed', min?: number; max?: number }>
+export type Requestable_seed_input  = ReqInput<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
 export type Requestable_seed_serial = Requestable_seed_state
 export type Requestable_seed_state  = { type:'seed', active: true; val: number, mode: 'randomize' | 'fixed' | 'last' }
 export type Requestable_seed_output = number

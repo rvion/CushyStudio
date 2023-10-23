@@ -9,41 +9,45 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
     return (
         <div>
             {st.marketplace.plugins.map((p) => (
-                <div tw='hover:bg-gray-700 cursor-pointer p-2' key={p.data.name} style={{ borderBottom: '1px solid #515151' }}>
+                <div tw='hover:bg-gray-700 p-2' key={p.data.name} style={{ borderBottom: '1px solid #515151' }}>
                     <div tw='flex  gap-2'>
                         <GithubUserUI size='3rem' username={p.authorName} />
                         <div tw='flex-grow'>
                             <div tw='font-bold'>{p.data.name}</div>
                             <div tw='text-gray-400'>{p.data.description}</div>
                         </div>
-                        <div>
-                            <div tw='flex gap-2'>
+                        {p.data.BUILT_IN ? null : (
+                            <div>
                                 <div tw='flex items-cetner'>
-                                    {p.stars}
-                                    <span className='material-symbols-outlined'>star_rate</span>
-                                    <IconButton
+                                    <Button
                                         size='xs'
-                                        as='a'
-                                        target='_blank'
-                                        href={p.githubURL}
+                                        color='yellow'
+                                        // target='_blank'
+                                        onClick={() => {
+                                            window.require('electron').shell.openExternal(p.githubURL)
+                                        }}
+                                        // href={p.githubURL}
                                         appearance='link'
-                                        startIcon={<span className='material-symbols-outlined'>open_in_new</span>}
-                                    />
+                                        endIcon={<span className='material-symbols-outlined'>star_rate</span>}
+                                    >
+                                        {p.stars} Star
+                                    </Button>
                                 </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                     {p.data.BUILT_IN ? (
                         <div tw='text-gray-500'>built-in</div>
                     ) : (
                         <div>
                             {p.isInstalled ? (
-                                <div tw='flex'>
+                                <div tw='flex justify-between'>
                                     <UpdateBtnUI updater={p.updater} />
                                     <Button
                                         size='sm'
                                         appearance='link'
-                                        startIcon={<span className='material-symbols-outlined'>toggle_off</span>}
+                                        tw='text-gray-500'
+                                        // startIcon={<span className='material-symbols-outlined'>toggle_off</span>}
                                     >
                                         Disable
                                     </Button>
