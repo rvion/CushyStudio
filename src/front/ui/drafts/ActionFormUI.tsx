@@ -2,7 +2,7 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Button, Input, Message } from 'rsuite'
+import { Button, Checkbox, Input, InputGroup, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { GithubUserUI } from 'src/front/GithubAvatarUI'
 import { DraftID, DraftL } from 'src/models/Draft'
@@ -97,16 +97,39 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                     </div>
                 </ErrorBoundary>
                 <ActionDraftListUI af={af} />
-                <Input
-                    type='text'
-                    className='w-full my-2'
-                    placeholder='Search...'
-                    value={draft.data.title}
-                    onChange={(next) => {
-                        draft.update({ title: next })
-                        st.layout.renameCurrentTab(next)
-                    }}
-                />
+                <InputGroup size='sm'>
+                    <InputGroup.Addon>Preset:</InputGroup.Addon>
+                    <Input
+                        type='text'
+                        className='w-full'
+                        placeholder='Search...'
+                        value={draft.data.title}
+                        onChange={(next) => {
+                            draft.update({ title: next })
+                            st.layout.renameCurrentTab(next)
+                        }}
+                    />
+                    <InputGroup.Button
+                        color={draft.shouldAutoStart ? 'green' : undefined}
+                        appearance={draft.shouldAutoStart ? 'primary' : 'subtle'}
+                        onClick={() => draft.setAutostart(!Boolean(draft.shouldAutoStart))}
+                    >
+                        {draft.shouldAutoStart && <span className='material-symbols-outlined'>check_circle</span>}
+                        Autorun
+                    </InputGroup.Button>
+                    {/* <Toggle size='sm' color='red' onChange={(t) => draft.setAutostart(t)} /> */}
+                    <InputGroup.Button
+                        size='sm'
+                        className='self-start'
+                        color='green'
+                        // disabled={!tool.st.ws.isOpen}
+                        appearance='primary'
+                        startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
+                        onClick={() => draft.start()}
+                    >
+                        Run
+                    </InputGroup.Button>
+                </InputGroup>
                 <ScrollablePaneUI
                     //
                     // style={{ boxShadow: 'rgb(39 118 217) 0px 0px 2rem' }}
