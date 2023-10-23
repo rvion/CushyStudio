@@ -1,8 +1,10 @@
 <div align="center">
 
-# 🛋️ CushyStudio (Alpha)
+# 🛋️ CushyStudio
 
 ## The **easiest** and most **powerful** Stable Diffusion frontend
+
+![Static Badge](https://img.shields.io/badge/status-BETA-yellow) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio) ![GitHub Sponsors](https://img.shields.io/github/sponsors/rvion)
 
 [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
 
