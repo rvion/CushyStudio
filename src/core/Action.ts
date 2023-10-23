@@ -11,14 +11,6 @@ export type ActionType = <const F extends RequestableDict>(t: Action<F>) => Acti
 export type RequestableDict = { [key: string]: Requestable }
 export type FormResult<Req extends Requestable> = ReqResult<Req>
 
-// export type Author = {
-//     name: string
-//     email?: string
-//     githubUsername?: string
-//     website?: string
-//     bio?: string
-// }
-
 export type Action<FIELDS extends RequestableDict> = {
     // AUTHORING ============================================================
     /** action name; default to unnamed_action_<nanoid()> */
