@@ -943,7 +943,7 @@ export class Requestable_choice      <T extends { [key: string]: Requestable }> 
 
 
 // 🅿️ choices ==============================================================================
-export type Requestable_choices_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: () => T }>
+export type Requestable_choices_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: () => T, defaultActiveBranches?: {[k in keyof T]?: boolean}  }>
 export type Requestable_choices_serial<T extends { [key: string]: Requestable }> = { type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }
 export type Requestable_choices_state <T extends { [key: string]: Requestable }> = { type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values: T, collapsed?: boolean }
 export type Requestable_choices_output<T extends { [key: string]: Requestable }> = { [k in keyof T]?: ReqResult<T[k]> }
@@ -968,7 +968,7 @@ export class Requestable_choices<T extends { [key: string]: Requestable }> imple
                 type: 'choices',
                 active: serial.active,
                 collapsed: serial.collapsed,
-                branches: {},
+                branches: this.input.defaultActiveBranches??{},
                 values: {} as any
             }
             const prevValues_ = serial.values_??{}
