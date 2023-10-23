@@ -158,11 +158,10 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                     <TabUI title='Debug:' tw='mt-auto'>
                         <div>no</div>
                         <div></div>
-                        <div>form</div>
-                        <div tw='flex flex-grow'>
-                            <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
-                            <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10_000)} />
-                        </div>
+                        <div>result</div>
+                        <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
+                        <div>state</div>
+                        <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10_000)} />
                         <div>code</div>
                         <TypescriptHighlightedCodeUI code={af.codeJS ?? ''} />
                     </TabUI>
