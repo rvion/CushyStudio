@@ -46,7 +46,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: Act
                                 appearance='link'
                                 endIcon={<span className='material-symbols-outlined'>star_rate</span>}
                             >
-                                {ap.stars} Star
+                                {repo.data?.json.stargazers_count} Star
                             </Button>
                         </div>
                     </div>

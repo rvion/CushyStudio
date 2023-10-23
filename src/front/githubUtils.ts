@@ -10,7 +10,9 @@ export type Timestamp = Branded<number, 'Timestamp'>
 // --------------------------------------------------------------------------------
 export type GithubRepoData = {
     fetchedAt: Timestamp
-    json: any
+    json: {
+        stargazers_count: number
+    }
 }
 export type GithubRepoName = Branded<string, 'GithubRepoName'>
 export const asGithubRepoName = (s: string) => s as GithubRepoName
