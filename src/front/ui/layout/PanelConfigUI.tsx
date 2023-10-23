@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Form, Message, Panel, Toggle } from 'rsuite'
+import { Form, Input, Message, Panel, Toggle } from 'rsuite'
 import { useSt } from '../../../front/FrontStateCtx'
 import { JSONHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { SectionTitleUI } from '../workspace/SectionTitle'
@@ -11,6 +11,13 @@ export const PanelConfigUI = observer(function PanelConfigUI_() {
         <div className='flex flex-col items-start p-2'>
             <Panel header={<SectionTitleUI label='CONFIG' className='bg-pink-900 block' />} className='col flex-grow'>
                 <Form layout='horizontal'>
+                    <FieldUI label='Your github username'>
+                        <Form.Control //
+                            value={config.value.githubUsername}
+                            onChange={(v) => config.update({ githubUsername: v })}
+                            name='githubUsername'
+                        />
+                    </FieldUI>
                     <FieldUI label='use Https?'>
                         <Form.Control //
                             accepter={Toggle}

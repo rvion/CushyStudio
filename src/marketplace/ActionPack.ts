@@ -7,6 +7,7 @@ import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { Marketplace } from './makerplace'
 import { Updater } from 'src/front/updater'
+import { GithubRepoName, GithubUserName, asGithubRepoName, asGithubUserName } from 'src/front/githubUtils'
 
 export type ActionPackData = {
     name: string
@@ -20,7 +21,8 @@ export type ActionPackData = {
 export class ActionPack {
     actionPackFolder: AbsolutePath
     authorFolder: AbsolutePath
-    authorName: string
+    authorName: GithubUserName
+    repositoryName: GithubRepoName
     updater: Updater
     installK: ManualPromise<true>
 
@@ -33,7 +35,8 @@ export class ActionPack {
     ) {
         const parts = this.data.github.split('/')
         if (parts.length !== 2) throw new Error(`❌ Invalid github url: ${this.data.github}`)
-        this.authorName = parts[0]
+        this.authorName = asGithubUserName(parts[0])
+        this.repositoryName = asGithubRepoName(parts[1])
         this.authorFolder = asAbsolutePath(join(this.st.actionsFolderPath, parts[0]))
         this.actionPackFolder = asAbsolutePath(join(this.st.actionsFolderPath, this.data.github))
         this.updater = new Updater(this.makretplace.st, { cwd: this.actionPackFolder, autoStart: false, runNpmInstall: false })
@@ -58,32 +61,7 @@ export class ActionPack {
             // check timestamps
             return cache[this.data.github].stars
         }
-        this.updateStars()
         return 0
-    }
-
-    // UGLY CODE
-    private _isUpdatingStars = false
-    private updateStars = () => {
-        return
-        if (this._isUpdatingStars) return
-        this._isUpdatingStars = true
-        // ugly
-        const cmd = `curl -s https://api.github.com/repos/${this.data.github} | jq .stargazers_count`
-        return new Promise<number>((resolve, reject) => {
-            exec(cmd, {}, (error, stdout) => {
-                if (error) reject(error)
-                const stars = Number(stdout)
-                this.st.configFile.update((t) => {
-                    t.stars ??= {}
-                    t.stars[this.data.github] = {
-                        at: Date.now(),
-                        stars,
-                    }
-                })
-                resolve(stars)
-            })
-        })
     }
 
     get githubURL() {
