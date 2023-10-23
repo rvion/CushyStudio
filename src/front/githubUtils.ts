@@ -73,7 +73,9 @@ export class GithubRepo {
 // --------------------------------------------------------------------------------
 export type GithubUserData = {
     fetchedAt: Timestamp
-    json: any
+    json: {
+        avatar_url: string
+    }
 }
 export type GithubUserName = Branded<string, 'GithubUserName'>
 export const asGithubUserName = (s: string) => s as GithubUserName
@@ -103,6 +105,8 @@ export class GithubUser {
     ) {
         this.fPath = asRelativePath(`.cushy/github/${username}/.${username}.json`)
         const prevExists = existsSync(this.fPath)
+
+        // 1. cache info
         if (prevExists) {
             try {
                 const raw = readFileSync(this.fPath, 'utf-8')
@@ -112,9 +116,38 @@ export class GithubUser {
         } else {
             this.downloadInfos()
         }
+
+        // 2. cache avatar
+        if (!existsSync(this._foo)) {
+            this.downloadImage()
+        }
         makeAutoObservable(this)
     }
 
+    // --------------------------------------------------------------------------------
+    private _foo = `.cushy/github/${this.username}/avatar.png`
+    get localAvatarURL() {
+        return `file://${this.st.resolveFromRoot(asRelativePath(this._foo))}`
+    }
+    get avatarURL() {
+        return this.data?.json.avatar_url
+    }
+    private _downloadImageRequested = false
+    downloadImage = async () => {
+        if (this._downloadImageRequested) return
+        this._downloadImageRequested = true
+        const imageURL = this.avatarURL
+        if (!imageURL) return
+        const response = await fetch(imageURL)
+        if (!response.ok) throw new Error('Failed to fetch user data')
+        try {
+            const buffer = await response.arrayBuffer()
+            writeFileSync(this._foo, Buffer.from(buffer))
+        } catch (error) {
+            console.error(`❌ GithubUser: downloadImage`, error)
+        }
+    }
+    // --------------------------------------------------------------------------------
     downloadInfos = async () => {
         const now = Date.now()
         const response = await fetch(`https://api.github.com/users/${this.username}`)
