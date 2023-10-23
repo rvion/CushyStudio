@@ -120,6 +120,7 @@ export class CushyLayoutManager {
     nextPaintIDx = 0
     addMarketplace = () =>
         this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: '/CushyLogo.png' })
+    addFileTree = () => this._AddWithProps(Widget.FileList, `/filetree`, { title: 'Actions', icon: '/CushyLogo.png' })
     addCivitai = () => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'Civitai', icon: '/CivitaiLogo.png' })
     addConfig = () => this._AddWithProps(Widget.Config, `/config`, { title: 'Config' })
     addPaint = (imgID?: ImageID) => {

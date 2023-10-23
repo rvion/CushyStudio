@@ -31,26 +31,34 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             </div> */}
             {/* COMFY */}
 
-            <MainNavEntryUI onClick={() => st.layout.addComfy()} ix='3' icon={<I.Branch />} label='Comfy' />
+            <MainNavEntryUI
+                onClick={() => st.layout.addFileTree()}
+                ix='1'
+                icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
+                label='Actions'
+            />
 
             {/* MARKETPLACE */}
             <MainNavEntryUI
                 onClick={() => st.layout.addMarketplace()}
-                ix='3'
-                icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
+                ix='2'
+                icon={<span className='material-symbols-outlined text-blue-500'>extension</span>}
                 label='Packs'
             />
 
             {/* PAINT */}
             <MainNavEntryUI
                 onClick={() => st.layout.addPaint()}
-                ix='2'
+                ix='3'
                 icon={<span className='material-symbols-outlined text-red-500'>brush</span>}
                 label='paint'
             />
+
+            <MainNavEntryUI onClick={() => st.layout.addComfy()} ix='3' icon={<I.Branch />} label='Comfy' />
+
             <MainNavEntryUI
                 onClick={() => st.layout.addGallery()}
-                ix='2'
+                ix='4'
                 icon={<span className='material-symbols-outlined text-yellow-500'>image</span>}
                 label='Gallery'
             />
@@ -58,7 +66,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             {/* CONFIG */}
             <MainNavEntryUI
                 onClick={() => st.layout.addConfig()}
-                ix='4'
+                ix='5'
                 icon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
                 label='Config'
             />
@@ -66,7 +74,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             {/* CIVITAI */}
             <MainNavEntryUI
                 onClick={() => st.layout.addCivitai()}
-                ix='5'
+                ix='6'
                 icon={<img width='25px' height='25px' src='/CivitaiLogo.png'></img>}
                 label='Civitai'
             />
@@ -74,7 +82,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <MainNavEntryUI
                 soon
                 onClick={() => st.layout.addHosts()}
-                ix='6'
+                ix='7'
                 icon={<span className='material-symbols-outlined text-amber-800'>cloud</span>}
                 label='GPU'
             />
