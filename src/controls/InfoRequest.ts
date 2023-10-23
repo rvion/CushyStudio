@@ -17,10 +17,10 @@ import { deepCopyNaive, exhaust } from 'src/utils/ComfyUtils'
 
 // requestable are a closed union
 export type Requestable =
-| Requestable_color
-| Requestable_str
-| Requestable_strOpt
-| Requestable_prompt
+    | Requestable_color
+    | Requestable_str
+    | Requestable_strOpt
+    | Requestable_prompt
     | Requestable_promptOpt
     | Requestable_int
     | Requestable_float
@@ -40,6 +40,7 @@ export type Requestable =
     | Requestable_group<any>
     | Requestable_groupOpt<any>
     | Requestable_choice<any>
+    | Requestable_choices<any>
     | Requestable_enum<KnownEnumNames>
     | Requestable_enumOpt<KnownEnumNames>
 
@@ -908,6 +909,80 @@ export class Requestable_choice      <T extends { [key: string]: Requestable }> 
     }
 }
 
+
+// 🅿️ choices ==============================================================================
+export type Requestable_choices_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: () => T }>
+export type Requestable_choices_serial<T extends { [key: string]: Requestable }> = { type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }
+export type Requestable_choices_state <T extends { [key: string]: Requestable }> = { type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values: T, collapsed?: boolean }
+export type Requestable_choices_output<T extends { [key: string]: Requestable }> = { [k in keyof T]?: ReqResult<T[k]> }
+export interface Requestable_choices<T extends { [key: string]: Requestable }> extends IWidget<'choices', Requestable_choices_input<T>, Requestable_choices_serial<T>, Requestable_choices_state<T>, Requestable_choices_output<T>> {}
+export class Requestable_choices<T extends { [key: string]: Requestable }> implements IRequest<'choices', Requestable_choices_input<T>, Requestable_choices_serial<T>, Requestable_choices_state<T>, Requestable_choices_output<T>> {
+    type = 'choices' as const
+    state: Requestable_choices_state<T>
+    constructor(
+        public builder: FormBuilder,
+        public schema: SchemaL,
+        public input: Requestable_choices_input<T>,
+        serial?: Requestable_choices_serial<T>,
+    ) {
+        if (typeof input.items!=='function') {
+            console.log('🔴 choices "items" should be af unction')
+            debugger
+        }
+        // debugger
+        if (serial){
+            const _newValues = input.items()
+            this.state = {
+                type: 'choices',
+                active: serial.active,
+                collapsed: serial.collapsed,
+                branches: {},
+                values: {} as any
+            }
+            const prevValues_ = serial.values_??{}
+            for (const key in _newValues) {
+                const newItem = _newValues[key]
+                const prevValue_ = prevValues_[key]
+                const newInput = newItem.input
+                const newType = newItem.type
+                // restore branches value
+                if (prevValue_ && newType === prevValue_.type) {
+                    this.state.values[key] = this.builder.HYDRATE(newType, newInput, prevValue_)
+                } else {
+                    this.state.values[key] = newItem
+                }
+                // restore branch action state
+                if (serial.branches[key]!=null) {
+                    this.state.branches[key] = serial.branches[key]
+                }
+            }
+        } else {
+            const _items = input.items()
+            this.state = { type: 'choices', active: true, values: _items, branches: {} }
+        }
+        makeAutoObservable(this)
+    }
+    get serial(): Requestable_choices_serial<T> {
+        const values_: { [key: string]: any } = {}
+        for (const key in this.state.values) values_[key] = this.state.values[key].serial
+        return {
+            type: 'choices',
+            active: this.state.active,
+            values_: values_ as any,
+            collapsed: this.state.collapsed ,
+            branches: this.state.branches
+        }
+    }
+    get result(): Requestable_choices_output<T> {
+        const out: { [key: string]: any } = {}
+        for (const key in this.state.values) {
+            if (this.state.branches[key] !== true) continue
+            out[key] = this.state.values[key].result
+        }
+        return out as any
+    }
+}
+
 // 🅿️ enum ==============================================================================
 export type Requestable_enum_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
 export type Requestable_enum_serial<T extends KnownEnumNames> = Requestable_enum_state<T>
@@ -997,6 +1072,7 @@ export class FormBuilder {
         if (type === 'size')               return new Requestable_size               (this, this.schema, input, serial)
         if (type === 'color')              return new Requestable_color              (this, this.schema, input, serial)
         if (type === 'choice')             return new Requestable_choice             (this, this.schema, input, serial)
+        if (type === 'choices')            return new Requestable_choices            (this, this.schema, input, serial)
         console.log(`🔴 unknown type ${type}`)
         exhaust(type)
     }
@@ -1032,4 +1108,5 @@ export class FormBuilder {
     selectOne          = <const T extends { type: string}>                (p: Requestable_selectOne_input<T>       , serial?: Requestable_selectOne_serial<T>       ) => new Requestable_selectOne           (this, this.schema, p, serial)
     selectMany         = <const T extends { type: string}>                (p: Requestable_selectMany_input<T>      , serial?: Requestable_selectMany_serial<T>      ) => new Requestable_selectMany          (this, this.schema, p, serial)
     choice             = <const T extends { [key: string]: Requestable }> (p: Requestable_choice_input<T>          , serial?: Requestable_choice_serial<T>          ) => new Requestable_choice              (this, this.schema, p, serial)
+    choices            = <const T extends { [key: string]: Requestable }> (p: Requestable_choices_input<T>         , serial?: Requestable_choices_serial<T>         ) => new Requestable_choices             (this, this.schema, p, serial)
 }
