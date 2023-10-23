@@ -12,13 +12,7 @@ export const StepListUI = observer(function StepListUI_(p: {}) {
             {/* </Panel> */}
             <div className='flex flex-col-reverse flex-grow' style={{ overflow: 'auto' }}>
                 {steps.map((step) => (
-                    <InView
-                        key={step.id}
-                        as='div'
-                        onChange={(inView, entry) => {
-                            // console.log('Inview:', inView)
-                        }}
-                    >
+                    <InView key={step.id} as='div' onChange={(inView, entry) => {}}>
                         <StepUI step={step} />
                     </InView>
                 ))}
