@@ -3,8 +3,11 @@ Todo before release
 ☐ one-click create action pack
 ☐ proper action pack manifest file
 ☐ show readme in marketplace
+☐ self discoverable completsion `:`, `@`, `#`, `*`
 ☐ better default action pack files  (that shows how to build modular ui helper, etc)
 ☐ support assets in action packs
+☐ refresh star count and readme every few hours (add expire mechanism)
+☐ marketplace should allow custom assets for images
 ☐ polish some widgets
     ☐ choices
     ☐ lists (re-ordering, ...)
