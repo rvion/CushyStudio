@@ -9,6 +9,7 @@ import { ActionPath, asActionPath } from 'src/back/ActionPath'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { ActionFile } from './ActionFile'
 import Watcher from 'watcher'
+import { hasValidActionExtension } from './ActionExtensions'
 
 export class Toolbox {
     updatedAt = 0
@@ -45,7 +46,6 @@ export class Toolbox {
     constructor(
         //
         public st: STATE,
-        public extensions: string = '.ts',
     ) {
         // Watching a single path
 
@@ -136,7 +136,7 @@ export class Toolbox {
                 parentStack.push(folderEntry)
             } else {
                 const relPath = path.relative(this.st.rootPath, absPath)
-                if (!file.endsWith(this.extensions)) {
+                if (!hasValidActionExtension(relPath)) {
                     // console.log(`skipping file ${relPath}`)
                     continue
                 }
