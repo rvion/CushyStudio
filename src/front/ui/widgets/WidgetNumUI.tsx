@@ -9,7 +9,7 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Requestable_
     const val = req.state.val
     const mode = req instanceof Requestable_int ? 'int' : 'float'
     const theme = req.input.theme ?? 'slider'
-    const step = mode === 'int' ? 1 : 0.1
+    const step = req.input.step ?? (mode === 'int' ? 1 : 0.1)
 
     const sliderUI =
         theme === 'slider' ? (
