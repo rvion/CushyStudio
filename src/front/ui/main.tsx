@@ -8,7 +8,7 @@ import 'rsuite/dist/rsuite.min.css'
 import './webview.css'
 import 'src/theme/theme.css'
 
-import { Main } from './Main.1'
+import { Main } from './MainUI'
 
 const root = document.getElementById('root') as HTMLElement
 ReactDOM.createRoot(root).render(<Main />)
