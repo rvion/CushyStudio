@@ -27,6 +27,12 @@ export const shortcutsDef: Shortcut<STATE>[] = [
     // simpleValidInInput('meta+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
     simpleValidInInput('meta+1', (st) => st.layout.addFileTree()),
     simpleValidInInput('meta+2', (st) => st.layout.addMarketplace()),
+    simpleValidInInput('meta+3', (st) => st.layout.addPaint()),
+    simpleValidInInput('meta+4', (st) => st.layout.addComfy()),
+    simpleValidInInput('meta+5', (st) => st.layout.addGallery()),
+    simpleValidInInput('meta+6', (st) => st.layout.addConfig()),
+    simpleValidInInput('meta+7', (st) => st.layout.addCivitai()),
+    simpleValidInInput('meta+8', (st) => st.layout.addHosts()),
     // simple('meta+x s', (st) => st.auth.stopImpersonating()),
     // simple('meta+x q', (st) => st.auth.logOut()),
 

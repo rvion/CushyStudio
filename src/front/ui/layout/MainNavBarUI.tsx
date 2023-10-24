@@ -25,12 +25,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
     const st = useSt()
     return (
         <div tw='fle flex-col'>
-            {/* FORM */}
-            {/* <div tw='p-2'>
-                <MainNavEntryUI onClick={() => st.layout.addComfy()} ix='1' icon='🛋️' label='prompt' />
-            </div> */}
             {/* COMFY */}
-
             <MainNavEntryUI
                 onClick={() => st.layout.addFileTree()}
                 ix='1'
@@ -54,11 +49,17 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 label='paint'
             />
 
-            <MainNavEntryUI onClick={() => st.layout.addComfy()} ix='3' icon={<I.Branch />} label='Comfy' />
+            <MainNavEntryUI
+                //
+                onClick={() => st.layout.addComfy()}
+                ix='4'
+                icon={<img src='/ComfyUILogo.png' style={{ width: '1.5rem', height: '1.5rem' }} />}
+                label='Comfy'
+            />
 
             <MainNavEntryUI
                 onClick={() => st.layout.addGallery()}
-                ix='4'
+                ix='5'
                 icon={<span className='material-symbols-outlined text-yellow-500'>image</span>}
                 label='Gallery'
             />
@@ -66,7 +67,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             {/* CONFIG */}
             <MainNavEntryUI
                 onClick={() => st.layout.addConfig()}
-                ix='5'
+                ix='6'
                 icon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
                 label='Config'
             />
@@ -74,7 +75,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             {/* CIVITAI */}
             <MainNavEntryUI
                 onClick={() => st.layout.addCivitai()}
-                ix='6'
+                ix='7'
                 icon={<img width='25px' height='25px' src='/CivitaiLogo.png'></img>}
                 label='Civitai'
             />
@@ -82,7 +83,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <MainNavEntryUI
                 soon
                 onClick={() => st.layout.addHosts()}
-                ix='7'
+                ix='8'
                 icon={<span className='material-symbols-outlined text-amber-800'>cloud</span>}
                 label='GPU'
             />
