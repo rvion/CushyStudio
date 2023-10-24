@@ -1,10 +1,12 @@
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton, Panel } from 'rsuite'
+import { ErrorBoundary } from 'react-error-boundary'
+import { Button } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { GithubUserUI } from 'src/front/GithubAvatarUI'
-import { UpdateBtnUI } from 'src/front/ui/layout/UpdateBtnUI'
-import { ActionPack } from './ActionPack'
 import { GithubRepo, GithubUser } from 'src/front/githubUtils'
+import { UpdateBtnUI } from 'src/front/ui/layout/UpdateBtnUI'
+import { ErrorBoundaryFallback } from 'src/front/ui/utils/ErrorBoundary'
+import { ActionPack } from './ActionPack'
 
 export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
     const st = useSt()
@@ -16,7 +18,9 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
                 </Button>
             </div>
             {st.marketplace.plugins.map((actionPack) => (
-                <ActionPackUI key={actionPack.data.github} actionPack={actionPack} />
+                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+                    <ActionPackUI key={actionPack.data.github} actionPack={actionPack} />
+                </ErrorBoundary>
             ))}
         </div>
     )
@@ -46,7 +50,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: Act
                                 appearance='link'
                                 endIcon={<span className='material-symbols-outlined'>star_rate</span>}
                             >
-                                {repo.data?.json.stargazers_count} Star
+                                {repo.data?.json?.stargazers_count ?? '?'} Star
                             </Button>
                         </div>
                     </div>
