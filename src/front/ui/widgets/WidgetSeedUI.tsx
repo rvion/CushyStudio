@@ -9,7 +9,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Requestabl
         <div tw='flex flex-row gap-1'>
             <InputNumber //
                 size='sm'
-                disabled={req.state.mode !== 'randomize' || !req.state.active}
+                disabled={!(req.state.mode !== 'randomize' || !req.state.active)}
                 value={val}
                 min={req.input.min}
                 max={req.input.max}

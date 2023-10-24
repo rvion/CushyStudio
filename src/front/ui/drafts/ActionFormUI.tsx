@@ -15,7 +15,7 @@ import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
-import { ActionDraftListUI } from './ActionDraftListUI'
+import { ActionDraftListUI, AddDraftUI } from './ActionDraftListUI'
 
 /**
  * this is the root interraction widget
@@ -75,10 +75,10 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                 //
                 className={containerClassName}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw='m-4 fade-in flex flex-col flex-grow h-full'
+                tw='m-4 flex flex-col flex-grow h-full'
             >
-                <div tw='row items-center font-bold font justify-between'>
-                    <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
+                <div tw='row items-center font justify-between'>
+                    <div tw='row items-center gap-2' style={{ fontSize: '1.3rem' }}>
                         <span>{action.name}</span>
                         <Button
                             size='xs'
@@ -89,47 +89,52 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                         >
                             Edit
                         </Button>
+                        <AddDraftUI af={af} />
                     </div>
+                    <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+                        <div tw='flex items-center gap-1'>
+                            <span>By</span>
+                            {action.author ? <GithubUserUI showName username={action.author} /> : 'anonymous'}
+                        </div>
+                    </ErrorBoundary>
                 </div>
-                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-                    <div tw='flex items-center'>
-                        By {action.author ? <GithubUserUI showName username={action.author} /> : 'anonymous'}
-                    </div>
-                </ErrorBoundary>
                 <ActionDraftListUI af={af} />
-                <InputGroup size='sm'>
-                    <InputGroup.Addon>Preset:</InputGroup.Addon>
-                    <Input
-                        type='text'
-                        className='w-full'
-                        placeholder='Search...'
-                        value={draft.data.title}
-                        onChange={(next) => {
-                            draft.update({ title: next })
-                            st.layout.renameCurrentTab(next)
-                        }}
-                    />
-                    <InputGroup.Button
-                        color={draft.shouldAutoStart ? 'green' : undefined}
-                        appearance={draft.shouldAutoStart ? 'primary' : 'subtle'}
-                        onClick={() => draft.setAutostart(!Boolean(draft.shouldAutoStart))}
-                    >
-                        {draft.shouldAutoStart && <span className='material-symbols-outlined'>check_circle</span>}
-                        Autorun
-                    </InputGroup.Button>
-                    {/* <Toggle size='sm' color='red' onChange={(t) => draft.setAutostart(t)} /> */}
-                    <InputGroup.Button
-                        size='sm'
-                        className='self-start'
-                        color='green'
-                        // disabled={!tool.st.ws.isOpen}
-                        appearance='primary'
-                        startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
-                        onClick={() => draft.start()}
-                    >
-                        Run
-                    </InputGroup.Button>
-                </InputGroup>
+                <div tw='flex'>
+                    <div tw='flex-grow'></div>
+                    <InputGroup size='sm' tw='self-end' style={{ width: 'fit-content' }}>
+                        {/* <InputGroup.Addon>Preset:</InputGroup.Addon>
+                        <Input
+                            type='text'
+                            className='w-full'
+                            placeholder='Search...'
+                            value={draft.data.title}
+                            onChange={(next) => {
+                                draft.update({ title: next })
+                                st.layout.renameCurrentTab(next)
+                            }}
+                        /> */}
+                        <InputGroup.Button
+                            color={draft.shouldAutoStart ? 'green' : undefined}
+                            appearance={draft.shouldAutoStart ? 'primary' : 'subtle'}
+                            onClick={() => draft.setAutostart(!Boolean(draft.shouldAutoStart))}
+                        >
+                            {draft.shouldAutoStart && <span className='material-symbols-outlined'>check_circle</span>}
+                            Autorun
+                        </InputGroup.Button>
+                        {/* <Toggle size='sm' color='red' onChange={(t) => draft.setAutostart(t)} /> */}
+                        <InputGroup.Button
+                            size='sm'
+                            className='self-start'
+                            color='green'
+                            // disabled={!tool.st.ws.isOpen}
+                            appearance='primary'
+                            startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
+                            onClick={() => draft.start()}
+                        >
+                            Run
+                        </InputGroup.Button>
+                    </InputGroup>
+                </div>
                 <ScrollablePaneUI
                     //
                     // style={{ boxShadow: 'rgb(39 118 217) 0px 0px 2rem' }}

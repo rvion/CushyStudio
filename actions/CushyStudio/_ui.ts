@@ -11,7 +11,6 @@ import type { FormBuilder } from 'src/controls/InfoRequest'
 export class UIAddons {
     startImage = () =>
         this.form.group({
-            className: 'animate-pulse',
             items: () => ({
                 startImage: this.form.imageOpt({ group: 'latent' }),
                 width: this.form.int({ default: 1024, group: 'latent', step: 128, min: 128, max: 4096 }),

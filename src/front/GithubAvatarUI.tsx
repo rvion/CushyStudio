@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { useSt } from './FrontStateCtx'
 import { GithubUser, asGithubUserName } from './githubUtils'
 
@@ -16,17 +15,10 @@ export function GithubUserUI(p: {
 
     try {
         return (
-            <div tw='flex items-center gap-2 italic text-gray-400'>
+            <div tw='flex items-center gap-1 italic text-gray-400'>
                 <img
                     style={{ borderRadius: '100%', height: size, width: size }}
                     src={ghuser.localAvatarURL}
-                    // src={ghuser.data?.json.avatar_url}
-                    // onError={(e) => {
-                    //     const tgt = e.target
-                    //     if (!(tgt instanceof HTMLImageElement)) return
-                    //     tgt.onerror = null
-                    //     tgt.src = 'fallback_image_url'
-                    // }}
                     alt={`${username}'s avatar`}
                     width='100'
                 />
