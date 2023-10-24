@@ -21,6 +21,7 @@ import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { asHTMLContent, asMDContent } from '../utils/markdown'
 import { DraftL } from './Draft'
 import { StepL } from './Step'
+import { IDNaminScheemeInPromptSentToComfyUI } from 'src/back/IDNaminScheemeInPromptSentToComfyUI'
 
 export type RunMode = 'fake' | 'real'
 
@@ -170,12 +171,16 @@ export class GraphL {
         // this.st.writeTextFile(workflowJSONPath, JSON.stringify(liteGraphJSON, null, 4))
     }
     /** return the coresponding comfy prompt  */
-    get json_forPrompt(): ComfyPromptJSON {
+    json_forPrompt = (ns: IDNaminScheemeInPromptSentToComfyUI): ComfyPromptJSON => {
         const json: ComfyPromptJSON = {}
         for (const node of this.nodes) {
             if (node.disabled) continue
             // console.log(`🦊 ${node.uid}`)
-            json[node.uid] = node.json
+            if (ns === 'use_stringified_numbers_only') {
+                json[node.uid] = node.json
+            } else {
+                json[node.uidPrefixed] = node.json
+            }
         }
         return json
     }
@@ -288,7 +293,7 @@ export class GraphL {
 
     /** visjs JSON format (network visualisation) */
     get JSON_forVisDataVisualisation(): { nodes: VisNodes[]; edges: VisEdges[] } {
-        const json: ComfyPromptJSON = this.json_forPrompt
+        const json: ComfyPromptJSON = this.json_forPrompt('use_stringified_numbers_only')
         const schemas: SchemaL = this.db.schema
         const nodes: VisNodes[] = []
         const edges: VisEdges[] = []

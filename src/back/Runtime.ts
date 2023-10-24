@@ -25,6 +25,7 @@ import { wildcards } from '../wildcards/wildcards'
 import { NodeBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
+import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSentToComfyUI'
 
 /** script exeuction instance */
 export class Runtime {
@@ -407,20 +408,22 @@ export class Runtime {
     // --------------------
     // INTERRACTIONS
 
-    async PROMPT(): Promise<PromptL> {
+    async PROMPT(p?: {
+        /** defaults to numbers */
+        ids?: IDNaminScheemeInPromptSentToComfyUI
+    }): Promise<PromptL> {
         console.info('prompt requested')
-        const step = await this.sendPromp()
+        const step = await this.sendPromp(p?.ids ?? 'use_stringified_numbers_only')
         // this.run.cyto.animate()
         await step.finished
         return step
     }
 
     private _promptCounter = 0
-
-    private sendPromp = async (): Promise<PromptL> => {
+    private sendPromp = async (idMode: IDNaminScheemeInPromptSentToComfyUI): Promise<PromptL> => {
         const liveGraph = this.graph
         if (liveGraph == null) throw new Error('no graph')
-        const currentJSON = deepCopyNaive(liveGraph.json_forPrompt)
+        const currentJSON = deepCopyNaive(liveGraph.json_forPrompt(idMode))
         const debugWorkflow = await liveGraph.json_workflow()
         // this.step.append({ type: 'prompt', graph: currentJSON })
         console.info('checkpoint:' + JSON.stringify(currentJSON))

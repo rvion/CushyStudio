@@ -79,6 +79,7 @@ export class ComfyNode<
     uidNumber: number
     $outputs: Slot<any>[] = []
     outputs: ComfyNode_output
+    uidPrefixed: string
     constructor(
         //
         public graph: GraphL,
@@ -93,6 +94,7 @@ export class ComfyNode<
 
         // this.uidNumber = parseInt(uid) // 🔴 ugly
         this.$schema = graph.schema.nodesByNameInComfy[jsonExt.class_type]
+        this.uidPrefixed = `${this.$schema.nameInCushy}_${this.uidNumber}`
         let ix = 0
 
         // 🔶 1 this declare the json locally,

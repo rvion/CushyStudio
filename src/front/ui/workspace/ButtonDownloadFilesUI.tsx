@@ -47,7 +47,7 @@ export const ButtonDownloadFilesUI = observer(function ButtonDownloadFilesUI_(p:
                     onClick={async (ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
-                        const jsonPrompt = graph.json_forPrompt
+                        const jsonPrompt = graph.json_forPrompt('use_class_name_and_number')
                         // console.log('>>>🟢', { jsonPrompt })
                         // ensure folder exists
                         const folderExists = existsSync(graph.cacheFolder)
