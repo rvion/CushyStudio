@@ -4,16 +4,16 @@
  */
 import type { ItemDataType } from 'rsuite/esm/@types/common'
 import type { CELL } from 'src/front/ui/widgets/WidgetMatrixUI'
-import type { EnumInfo, SchemaL } from 'src/models/Schema'
+import type { SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
-import type { PossibleSerializedNodes } from 'src/prompter/plugins/CushyDebugPlugin'
 import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
+import type { PossibleSerializedNodes } from 'src/prompter/plugins/CushyDebugPlugin'
 import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
 
 import { makeAutoObservable } from 'mobx'
-import { bang } from 'src/utils/bang'
-import { deepCopyNaive, exhaust } from 'src/utils/ComfyUtils'
 import { NumbericTheme } from 'src/front/ui/widgets/WidgetNumUI'
+import { exhaust } from 'src/utils/ComfyUtils'
+import { bang } from 'src/utils/bang'
 
 
 // requestable are a closed union
@@ -29,6 +29,7 @@ export type Requestable =
     | Requestable_bool
     | Requestable_intOpt
     | Requestable_floatOpt
+    | Requestable_markdown
     | Requestable_size
     | Requestable_matrix
     | Requestable_loras
@@ -94,6 +95,28 @@ export class Requestable_str implements IRequest<'str', Requestable_str_input, R
     }
     get serial(): Requestable_str_serial { return this.state }
     get result(): Requestable_str_output { return this.state.val }
+}
+
+// 🅿️ markdown ==============================================================================
+export type Requestable_markdown_input = ReqInput<{ markdown: string; }>
+export type Requestable_markdown_serial = { type: 'markdown', active: true }
+export type Requestable_markdown_state  = { type: 'markdown', active: true }
+export type Requestable_markdown_output = { type: 'markdown', active: true }
+export interface Requestable_markdown extends IWidget<'markdown', Requestable_markdown_input, Requestable_markdown_serial, Requestable_markdown_state, Requestable_markdown_output> {}
+export class Requestable_markdown implements IRequest<'markdown', Requestable_markdown_input, Requestable_markdown_serial, Requestable_markdown_state, Requestable_markdown_output> {
+    type = 'markdown' as const
+    state: Requestable_markdown_state
+    constructor(
+        public builder: FormBuilder,
+        public schema: SchemaL,
+        public input: Requestable_markdown_input,
+        serial?: Requestable_markdown_serial,
+    ) {
+        this.state = serial ?? { type:'markdown', active: true }
+        makeAutoObservable(this)
+    }
+    get serial(): Requestable_markdown_serial { return this.state }
+    get result(): Requestable_markdown_output { return this.state }
 }
 
 // 🅿️ str ==============================================================================
@@ -252,6 +275,7 @@ export class Requestable_seed implements IRequest<'seed', Requestable_seed_input
         makeAutoObservable(this)
     }
     get serial(): Requestable_seed_serial { return this.state }
+    // 🔴 inject prompt id there to fix expiration mechanism
     get result(): Requestable_seed_output {
         return this.state.mode ==='randomize'
             ? Math.floor(Math.random()* 9_999_999)
@@ -1107,6 +1131,7 @@ export class FormBuilder {
         if (type === 'color')              return new Requestable_color              (this, this.schema, input, serial)
         if (type === 'choice')             return new Requestable_choice             (this, this.schema, input, serial)
         if (type === 'choices')            return new Requestable_choices            (this, this.schema, input, serial)
+        if (type === 'markdown')           return new Requestable_markdown           (this, this.schema, input, serial)
         console.log(`🔴 unknown type ${type}`)
         exhaust(type)
     }
@@ -1132,6 +1157,7 @@ export class FormBuilder {
     bool               =                                                  (p: Requestable_bool_input               , serial?: Requestable_bool_serial               ) => new Requestable_bool                (this, this.schema, p, serial)
     loras              =                                                  (p: Requestable_loras_input              , serial?: Requestable_loras_serial              ) => new Requestable_loras               (this, this.schema, p, serial)
     image              =                                                  (p: Requestable_image_input              , serial?: Requestable_image_serial              ) => new Requestable_image               (this, this.schema, p, serial)
+    markdown           =                                                  (p: Requestable_markdown_input           , serial?: Requestable_markdown_serial           ) => new Requestable_markdown            (this, this.schema, p, serial)
     imageOpt           =                                                  (p: Requestable_imageOpt_input           , serial?: Requestable_imageOpt_serial           ) => new Requestable_imageOpt            (this, this.schema, p, serial)
     selectOneOrCustom  =                                                  (p: Requestable_selectOneOrCustom_input  , serial?: Requestable_selectOneOrCustom_serial  ) => new Requestable_selectOneOrCustom   (this, this.schema, p, serial)
     selectManyOrCustom =                                                  (p: Requestable_selectManyOrCustom_input , serial?: Requestable_selectManyOrCustom_serial ) => new Requestable_selectManyOrCustom  (this, this.schema, p, serial)

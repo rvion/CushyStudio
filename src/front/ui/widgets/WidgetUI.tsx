@@ -24,6 +24,7 @@ import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrOptUI } from './WidgetStrOptUI'
 import { WidgetStrUI } from './WidgetStrUI'
+import { WidgetMardownUI } from './WidgetMarkdownUI'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Requestable
@@ -112,6 +113,7 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Requestable; foc
     if (req instanceof R.Requestable_selectOne)          return <WidgetSelectOneUI   req={req} />
     if (req instanceof R.Requestable_choice)             return <WidgetChoiceUI      req={req} />
     if (req instanceof R.Requestable_choices)            return <WidgetChoicesUI     req={req} />
+    if (req instanceof R.Requestable_markdown)           return <WidgetMardownUI     req={req} />
     if (req instanceof R.Requestable_selectMany)         return <>TODO</>
     if (req instanceof R.Requestable_selectManyOrCustom) return <>TODO</>
     if (req instanceof R.Requestable_selectOneOrCustom)  return <>TODO</>
