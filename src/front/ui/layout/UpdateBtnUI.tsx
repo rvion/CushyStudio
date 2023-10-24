@@ -7,16 +7,17 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater 
     const hasErrors = updater.hasErrors
     return (
         <Whisper
-            placement='bottom'
+            placement='auto'
             enterable
             speaker={
                 <Popover>
                     <UpdaterErrorUI updater={updater} />
-                    <pre>{updater.p.cwd}</pre>
+                    <pre>{updater.relativePathFromRoot}</pre>
                     <Button
-                        onClick={() => {
-                            updater.checkForUpdates()
-                        }}
+                        size='sm'
+                        color='orange'
+                        appearance='ghost'
+                        onClick={() => updater.checkForUpdates()}
                         startIcon={<span className='material-symbols-outlined'>refresh</span>}
                     >
                         FORCE REFRESH

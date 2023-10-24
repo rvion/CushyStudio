@@ -1,8 +1,19 @@
-import simpleGit, { SimpleGit } from 'simple-git'
 import { exec } from 'child_process'
 import { makeAutoObservable } from 'mobx'
+import { relative } from 'pathe'
+import simpleGit, { SimpleGit } from 'simple-git'
 import { STATE } from './state'
-import { relative } from 'path'
+
+export type UpdateTrace = {
+    attemptedAt: Timestamp
+    status: 'success' | 'failure'
+    gitPullTrace: string
+    gitPullStdout: string
+    gitPullStrderr: string
+    npmInstallTrace?: string
+    npmInstallStdout?: string
+    npmInstallStrderr?: string
+}
 
 // git fetch: Fetches the latest changes from the remote repository without making any changes to the local repository.
 // git rev-parse origin/master: Retrieves the commit hash of the last commit on the master branch of the remote repository.
@@ -13,6 +24,9 @@ export class Updater {
     ready = false
     relativeFolder: string
 
+    get relativePathFromRoot() {
+        return relative(this.st.rootPath, this.p.cwd)
+    }
     constructor(
         public st: STATE,
         public p: { cwd: string; autoStart: boolean; runNpmInstall: boolean },
@@ -22,7 +36,7 @@ export class Updater {
         if (p.autoStart) this.start()
         makeAutoObservable(this)
     }
-
+    lastUpdateAttempt: Maybe<UpdateTrace> = null
     private renderVersion = (commitCount: number) => {
         const major = Math.floor(commitCount / 1000)
         const minor = Math.floor((commitCount % 1000) / 100)
@@ -44,21 +58,50 @@ export class Updater {
     }
 
     updateToLastCommitAvailable(): Promise<void> {
+        const attemptedAt = Date.now() as Timestamp
         return new Promise((resolve, reject) => {
             this.log('UPDATING...')
             const command = `git pull origin ${this.infos.mainBranchName}`
-            exec(command, { cwd: this.p.cwd }, (error) => {
-                if (error) return reject(error)
-                if (this.p.runNpmInstall) {
-                    exec('npm install', (error) => {
-                        if (error) return reject(error)
-                        this.log('UPDATED')
-                        resolve()
-                    })
-                } else {
-                    this.log('UPDATED')
-                    resolve()
+            // phase 1: git pull
+            exec(command, { cwd: this.p.cwd }, (error, gitPullStdout, gitPullStrderr) => {
+                if (error) {
+                    this.lastUpdateAttempt = {
+                        attemptedAt,
+                        status: 'failure',
+                        gitPullTrace: error.message,
+                        gitPullStdout,
+                        gitPullStrderr,
+                    }
+                    return reject(error)
                 }
+                const lastAttempt: UpdateTrace = {
+                    attemptedAt,
+                    status: 'success',
+                    gitPullTrace: 'success',
+                    gitPullStdout,
+                    gitPullStrderr,
+                }
+                this.lastUpdateAttempt = lastAttempt
+                if (!this.p.runNpmInstall) {
+                    this.log('UPDATED')
+                    return resolve()
+                }
+
+                // phase 2: npm install
+                exec('npm install', (error, npmInstallStdout, npmInstallStrderr) => {
+                    lastAttempt.npmInstallStdout = npmInstallStdout
+                    lastAttempt.npmInstallStrderr = npmInstallStrderr
+                    if (error) {
+                        lastAttempt.status = 'failure'
+                        lastAttempt.npmInstallTrace = error.message
+                        return reject(error)
+                    } else {
+                        lastAttempt.status = 'success'
+                        lastAttempt.npmInstallTrace = 'success'
+                        this.log('UPDATED')
+                        return resolve()
+                    }
+                })
             })
         })
     }
