@@ -166,12 +166,19 @@ export class CushyLayoutManager {
     }
 
     closeCurrentTab = () => {
+        // 1. find tabset
         const tabset = this.model.getActiveTabset()
         if (tabset == null) return Trigger.UNMATCHED_CONDITIONS
+        // 2. find active tab
         const tab = tabset.getSelectedNode()
         if (tab == null) return Trigger.UNMATCHED_CONDITIONS
+        // 3. close tab
         const tabID = tab.getId()
         this.model.doAction(Actions.deleteTab(tabID))
+        // 4. focus preview tab in the tabset if it exists
+        const prevTab = tabset.getSelectedNode()
+        if (prevTab != null) this.model.doAction(Actions.selectTab(prevTab.getId()))
+        // 5. mark action as success
         return Trigger.Success
     }
 
