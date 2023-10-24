@@ -7,15 +7,17 @@ import { WidgetWithLabelUI } from './WidgetUI'
 export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Requestable_group<{ [key: string]: Requestable }> }) {
     const req = p.req
     const collapsed = req.state.collapsed
-
+    const isTopLevel = req.input.topLevel
     return (
         <div tw='relative flex items-start'>
-            <Button tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
-                {collapsed ? '▸' : '▿'}
-            </Button>
+            {isTopLevel ? null : (
+                <Button tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
+                    {collapsed ? '▸' : '▿'}
+                </Button>
+            )}
             {req.state.collapsed ? null : (
                 <div
-                    style={{ border: '1px solid #303030', backgroundColor: '#0f0f0f2a' }}
+                    style={isTopLevel ? undefined : { border: '1px solid #424242' }}
                     tw={['px-1 mx-1', req.input.layout === 'H' ? 'flex' : null]}
                     className={req.input.className}
                 >
@@ -55,7 +57,11 @@ export const WidgetGroupOptUI = observer(function WidgetItemsOptUI_(p: {
                 </Button>
             )}
             {checked ? (
-                <>
+                <div
+                    style={{ border: '1px solid #424242' }}
+                    tw={['px-1 mx-1', req.input.layout === 'H' ? 'flex' : null]}
+                    className={req.input.className}
+                >
                     {req.state.collapsed
                         ? null
                         : Object.entries(req.state.values).map(([rootKey, sub], ix) => {
@@ -69,7 +75,7 @@ export const WidgetGroupOptUI = observer(function WidgetItemsOptUI_(p: {
                                   </div>
                               )
                           })}
-                </>
+                </div>
             ) : (
                 <Button size='xs' disabled>
                     ▸

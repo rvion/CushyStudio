@@ -37,9 +37,9 @@ action({
         CFG: form.int({ default: 8, group: 'sampler' }),
         sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
         scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras', group: 'sampler' }),
-        denoise: form.float({ default: 1, group: 'sampler' }),
+        denoise: form.float({ default: 1, group: 'sampler', min: 0, max: 1, step: 0.01 }),
         steps: form.int({ default: 20, group: 'sampler' }),
-        seed: form.intOpt({ group: 'sampler' }),
+        seed: form.seed({}),
 
         highResFix: form.groupOpt({
             items: () => ({

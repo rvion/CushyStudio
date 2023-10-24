@@ -100,8 +100,8 @@ export class DraftL {
                     const uiFn = action.ui
                     const req: Requestable =
                         uiFn == null //
-                            ? formBuilder.group({ items: () => ({}) }, this.data.actionParams)
-                            : formBuilder.group({ items: () => uiFn(formBuilder) }, this.data.actionParams)
+                            ? formBuilder.group({ topLevel: true, items: () => ({}) }, this.data.actionParams)
+                            : formBuilder.group({ topLevel: true, items: () => uiFn(formBuilder) }, this.data.actionParams)
                     this.form = __OK(req)
                     console.log(`🦊 form setup`)
                     // subState.unsync()

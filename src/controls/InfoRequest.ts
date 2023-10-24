@@ -779,7 +779,7 @@ export class Requestable_list<T extends Requestable> implements IRequest<'list',
 }
 
 // 🅿️ group ==============================================================================
-export type Requestable_group_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: () => T }>
+export type Requestable_group_input <T extends { [key: string]: Requestable }> = ReqInput<{ items: () => T, topLevel?: boolean }>
 export type Requestable_group_serial<T extends { [key: string]: Requestable }> = { type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }
 export type Requestable_group_state <T extends { [key: string]: Requestable }> = { type: 'group', active: true; values: T, collapsed?: boolean }
 export type Requestable_group_output<T extends { [key: string]: Requestable }> = { [k in keyof T]: ReqResult<T[k]> }

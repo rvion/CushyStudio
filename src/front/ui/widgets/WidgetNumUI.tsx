@@ -69,8 +69,8 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Requestable_
     if (sliderUI)
         return (
             <>
-                {inputUI}
                 {sliderUI}
+                {inputUI}
             </>
         )
     return inputUI
