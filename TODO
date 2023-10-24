@@ -1,19 +1,21 @@
-I first need
-- one-click create action pack
-- proper action pack manifest file
-- better default action pack files  (that shows how to build modular ui helper, etc)
-- support assets in action packs
-- polish some widgets
-    - choices
-    - lists (re-ordering, ...)
-    - image loader (local files by path)
-    - ...
-- better default layout on first run
-- minor cleanup here and there
-- add CLA for contributors,
-- code builder:
-   - select nodes  => see the corresponding code in realtime
-    - have a better auto-UI generated
-    - new primitive to add all the primitive inputs instead of having super long names,
-- fix prompt (-api.json) import
-- fix png import
+Todo before release
+
+☐ one-click create action pack
+☐ proper action pack manifest file
+☐ show readme in marketplace
+☐ better default action pack files  (that shows how to build modular ui helper, etc)
+☐ support assets in action packs
+☐ polish some widgets
+    ☐ choices
+    ☐ lists (re-ordering, ...)
+    ☐ image loader (local files by path)
+    ☐ ...
+☐ better default layout on first run
+☐ minor cleanup here and there
+☐ add CLA for contributors,
+☐ code builder:
+   ☐ select nodes  => see the corresponding code in realtime
+    ☐ have a better auto-UI generated
+    ☐ new primitive to add all the primitive inputs instead of having super long names,
+☐ fix prompt (-api.json) import
+✔ fix png import @started(23-10-24 18:23) @done(23-10-24 18:24) @lasted(1m32s)
