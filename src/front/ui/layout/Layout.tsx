@@ -266,41 +266,21 @@ export class CushyLayoutManager {
                 tabSetMinHeight: 64,
                 tabSetMinWidth: 64,
             },
-            borders: [
-                // {
-                //     type: 'border',
-                //     location: 'left',
-                //     children: [
-                //         {
-                //             type: 'tab',
-                //             id: '#426ca38f-57b1-4973-89f4-424400f95f3d',
-                //             name: 'Output',
-                //             component: 'grid',
-                //             enableClose: false,
-                //             icon: 'images/bar_chart.svg',
-                //         },
-                //     ],
-                // },
-                // {
-                //     type: 'border',
-                //     location: 'right',
-                //     children: [],
-                // },
-            ],
             layout: {
                 id: 'rootRow',
                 type: 'row',
-                weight: 100,
+                // weight: 100,
                 children: [
                     {
                         id: 'leftPane',
                         type: 'row',
-                        weight: 10,
+                        width: 300,
+                        // weight: 10,
                         children: [
                             {
                                 type: 'tabset',
-                                weight: 10,
-                                minWidth: 150,
+                                // weight: 10,
+                                minWidth: 200,
                                 children: [this._persistentTab('FileList', Widget.FileList)],
                             },
                             // {
@@ -311,7 +291,7 @@ export class CushyLayoutManager {
                             // },
                             {
                                 type: 'tabset',
-                                weight: 10,
+                                // weight: 10,
                                 minWidth: 150,
                                 minHeight: 150,
                                 children: [
@@ -324,12 +304,12 @@ export class CushyLayoutManager {
                     {
                         id: 'middlePane',
                         type: 'row',
-                        weight: 100,
+                        // weight: 100,
                         children: [
                             {
                                 type: 'tabset',
                                 id: 'MAINTYPESET',
-                                weight: 100,
+                                // weight: 100,
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
                                 children: [
@@ -349,11 +329,12 @@ export class CushyLayoutManager {
                     {
                         id: 'rightPane',
                         type: 'row',
-                        weight: 10,
+                        width: 300,
+                        // weight: 10,
                         children: [
                             {
                                 type: 'tabset',
-                                weight: 1,
+                                // weight: 1,
                                 minWidth: 100,
                                 minHeight: 100,
                                 children: [this._persistentTab('Last Graph', Widget.LastGraph)],
@@ -362,13 +343,13 @@ export class CushyLayoutManager {
                                 type: 'tabset',
                                 minWidth: 300,
                                 minHeight: 300,
-                                weight: 10,
+                                // weight: 10,
                                 children: [this._persistentTab('Last Image', Widget.LastIMage)],
                             },
                             {
                                 type: 'tabset',
                                 minWidth: 300,
-                                weight: 100,
+                                // weight: 100,
                                 children: [this._persistentTab('Runs', Widget.Steps)],
                             },
                         ],
