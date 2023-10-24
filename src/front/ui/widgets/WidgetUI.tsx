@@ -39,6 +39,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const LABEL = (
         <div
+            style={{ minWidth: '5rem' }}
             className={
                 p.vertical //
                     ? 'min-w-max shrink-0'
