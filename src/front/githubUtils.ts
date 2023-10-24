@@ -51,6 +51,10 @@ export class GithubRepo {
                 this.data = json
             } catch (error) {}
         } else {
+            this.data = {
+                fetchedAt: 0 as Timestamp,
+                json: { stargazers_count: 0 },
+            }
             this.downloadInfos()
         }
         makeAutoObservable(this)
