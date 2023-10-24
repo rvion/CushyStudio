@@ -15,8 +15,8 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Requesta
             </Button>
             {req.state.collapsed ? null : (
                 <div
-                    // style={{ border: '1px solid gray' }}
-                    tw={[req.input.layout === 'H' ? 'flex' : null]}
+                    style={{ border: '1px solid #303030', backgroundColor: '#0f0f0f2a' }}
+                    tw={['px-1 mx-1', req.input.layout === 'H' ? 'flex' : null]}
                     className={req.input.className}
                 >
                     {Object.entries(req.state.values).map(([rootKey, sub], ix) => {
