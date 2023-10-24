@@ -150,8 +150,8 @@ export class Requestable_strOpt implements IRequest<'strOpt', Requestable_strOpt
 // 🅿️ prompt ==============================================================================
 export type Requestable_prompt_input = ReqInput<{ default?: string | WidgetPromptOutput }>
 export type Requestable_prompt_serial = Requestable_prompt_state
-export type Requestable_prompt_state =  { type: 'prompt'; active: true; text: string; tokens: PossibleSerializedNodes[] }
-export type Requestable_prompt_output = { type: 'prompt'; active: true; text: string; tokens: PossibleSerializedNodes[] }
+export type Requestable_prompt_state =  { type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }
+export type Requestable_prompt_output = { type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }
 export interface Requestable_prompt extends IWidget<'prompt', Requestable_prompt_input, Requestable_prompt_serial, Requestable_prompt_state, Requestable_prompt_output> {}
 export class Requestable_prompt implements IRequest<'prompt', Requestable_prompt_input, Requestable_prompt_serial, Requestable_prompt_state, Requestable_prompt_output> {
     type = 'prompt' as const
@@ -166,12 +166,12 @@ export class Requestable_prompt implements IRequest<'prompt', Requestable_prompt
         if (serial) {
             this.state = serial
         } else {
-            this.state = { type:'prompt', active: true, text: '', tokens: [] }
+            this.state = { type:'prompt', active: true, /*text: '',*/ tokens: [] }
 
             const def = input.default
             if (def != null) {
                 if (typeof def === 'string') {
-                    this.state.text = def
+                    // this.state.text = def
                     this.state.tokens = [{ type: 'text', text: def }]
                 }
                 if (typeof Array.isArray(def)) {
@@ -190,8 +190,8 @@ export class Requestable_prompt implements IRequest<'prompt', Requestable_prompt
 
 // 🅿️ promptOpt ==============================================================================
 export type Requestable_promptOpt_input  = ReqInput<{ default?: string | PossibleSerializedNodes[] }>
-export type Requestable_promptOpt_serial = { type: 'promptOpt'; active: boolean; text: string; tokens: PossibleSerializedNodes[] }
-export type Requestable_promptOpt_state  = { type: 'promptOpt'; active: boolean; text: string; tokens: PossibleSerializedNodes[] }
+export type Requestable_promptOpt_serial = { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
+export type Requestable_promptOpt_state  = { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
 export type Requestable_promptOpt_output = Maybe<WidgetPromptOutput>
 export interface Requestable_promptOpt extends IWidget<'promptOpt', Requestable_promptOpt_input, Requestable_promptOpt_serial, Requestable_promptOpt_state, Requestable_promptOpt_output> {}
 export class Requestable_promptOpt implements IRequest<'promptOpt', Requestable_promptOpt_input, Requestable_promptOpt_serial, Requestable_promptOpt_state, Requestable_promptOpt_output> {
@@ -206,12 +206,12 @@ export class Requestable_promptOpt implements IRequest<'promptOpt', Requestable_
         if (serial) {
             this.state = serial
         } else {
-            this.state = { type:'promptOpt', active: false, text: '', tokens: [] }
+            this.state = { type:'promptOpt', active: false, /*text: '',*/ tokens: [] }
             const def = input.default
             if (def != null) {
                 if (typeof def === 'string') {
                     this.state.active = true
-                    this.state.text = def
+                    // this.state.text = def
                     this.state.tokens = [{ type: 'text', text: def }]
                 }
                 if (typeof Array.isArray(def)) {

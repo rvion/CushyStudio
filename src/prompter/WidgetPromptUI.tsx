@@ -48,11 +48,11 @@ function onChange(
         // const selection = $getSelection()
         const txt = root.__cachedText
         if (txt) {
-            req.state.text = txt
+            // req.state.text = txt
             req.state.tokens = getFinalJSON(editorState).items
             if (req instanceof Requestable_promptOpt) req.state.active = true
         } else {
-            console.log('❌ 🔴')
+            req.state.tokens = getFinalJSON(editorState).items
         }
         // .set({
         //         active: true,
@@ -71,7 +71,7 @@ function onError(error: Error) {
 }
 
 export type WidgetPromptOutput = {
-    text: string
+    // text: string
     tokens: PossibleSerializedNodes[]
 }
 
