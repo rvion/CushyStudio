@@ -24,6 +24,7 @@ import { ActionFileUI } from '../drafts/ActionFileUI'
 import { ActionPath } from 'src/back/ActionPath'
 import { PanelConfigUI } from './PanelConfigUI'
 import { ActionFormUI } from '../drafts/ActionFormUI'
+import { Trigger } from 'src/shortcuts/Trigger'
 
 // still on phone
 enum Widget {
@@ -162,6 +163,16 @@ export class CushyLayoutManager {
         if (tab == null) return
         const tabID = tab.getId()
         this.model.doAction(Actions.renameTab(tabID, newName))
+    }
+
+    closeCurrentTab = () => {
+        const tabset = this.model.getActiveTabset()
+        if (tabset == null) return Trigger.UNMATCHED_CONDITIONS
+        const tab = tabset.getSelectedNode()
+        if (tab == null) return Trigger.UNMATCHED_CONDITIONS
+        const tabID = tab.getId()
+        this.model.doAction(Actions.deleteTab(tabID))
+        return Trigger.Success
     }
 
     private _AddWithProps = <T extends { icon?: string; title: string }>(

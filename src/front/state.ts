@@ -32,6 +32,8 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { Updater } from './updater'
+import { ShortcutWatcher } from 'src/shortcuts/ShortcutManager'
+import { shortcutsDef } from 'src/shortcuts/shortcuts'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -42,6 +44,7 @@ export class STATE {
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
+    shortcuts: ShortcutWatcher
 
     liveTime: number = (() => {
         const store = this.hotReloadPersistentCache
@@ -144,6 +147,7 @@ export class STATE {
         // core instances
         this.db = new LiveDB(this)
         this.marketplace = new Marketplace(this)
+        this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { log: true, name: nanoid() })
         this.codePrettier = new CodePrettier(this)
         this.layout = new CushyLayoutManager(this)
         this.toolbox = new Toolbox(this)

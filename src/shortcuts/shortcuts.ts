@@ -1,0 +1,49 @@
+import { STATE } from 'src/front/state'
+import { Combo, Shortcut } from './ShortcutManager'
+import { Trigger } from './Trigger'
+
+// ------------------------------------------------------------------------------------
+// basic utils
+const always = (fn: (st: STATE) => any) => (st: STATE) => {
+    fn(st)
+    return Trigger.Success
+}
+
+const simple = (combo: Combo, action: (fn: STATE) => void): Shortcut<STATE> => ({
+    combos: [combo],
+    action: always(action),
+})
+
+const simpleValidInInput = (combo: Combo, action: (fn: STATE) => void): Shortcut<STATE> => ({
+    combos: [combo],
+    action: always(action),
+    validInInput: true,
+})
+
+// ------------------------------------------------------------------------------------
+// core global shortcuts
+export const shortcutsDef: Shortcut<STATE>[] = [
+    // simpleValidInInput('meta+shift+k', (st) => (st.showSuperAdmin = !st.showSuperAdmin)),
+    // simpleValidInInput('meta+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
+    simpleValidInInput('meta+1', (st) => st.layout.addFileTree()),
+    simpleValidInInput('meta+2', (st) => st.layout.addMarketplace()),
+    // simple('meta+x s', (st) => st.auth.stopImpersonating()),
+    // simple('meta+x q', (st) => st.auth.logOut()),
+
+    // T   - Toogle
+    // { combos: ['t a m'], action: (st) => Trigger.UNMATCHED_CONDITIONS, info: 'Tooggle Automation Menu' },
+    // { combos: ['t a p'], action: (st) => Trigger.UNMATCHED_CONDITIONS, info: 'Tooggle Automation Preview' },
+    {
+        combos: ['meta+w', 'ctrl+w'],
+        validInInput: true,
+        action: (st) => st.layout.closeCurrentTab(),
+        info: 'Tooggle Graph Monitor',
+    },
+
+    // G   - Go
+    // G M - Go Messagerie
+    // { combos: ['g m'], action: (st) => st.router.goTo('CHAT', { inbox: { filter: 'all' } }) }, // Messagerie   | Appbar
+    // { combos: ['g m s'], action: (st) => st.router.goTo('CHAT_NEW', {}) }, //         Messagerie   | Appbar
+    // { combos: 'cmd+k cmd+s', action: () => {} },
+    // { combos: 'cmd+k cmd+s', action: () => {} },
+]

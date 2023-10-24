@@ -1,12 +1,8 @@
 import type { KeyboardEvent } from 'react'
 import type { STATE } from 'src/front/state'
+import { Trigger } from './Trigger'
 
 type Ctx = STATE
-
-export enum Trigger {
-    Success = 'success',
-    UNMATCHED_CONDITIONS = 'skipped',
-}
 
 /** @todo improve to detect shortkey without order */
 export type Combo = string // 'ctrl+k ctrl+shift+i'
