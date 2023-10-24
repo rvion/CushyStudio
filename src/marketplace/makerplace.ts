@@ -26,16 +26,16 @@ export class Marketplace {
             recommanded: true,
         },
         {
+            name: 'comfy2cushy-examples',
+            github: 'noellealarie/comfy2cushy-examples',
+            description: 'A port from ComfyUI Examples to CushyStudio',
+            recommanded: true,
+        },
+        {
             name: 'Base Action pack',
             BUILT_IN: true,
             github: 'rvion/CushyStudio',
             description: 'Built-in actions for cushy studio',
-        },
-        {
-            name: 'My Custom Actions',
-            BUILT_IN: true,
-            github: 'rvion/CushyStudio',
-            description: 'your private local actions',
         },
     ]
 
