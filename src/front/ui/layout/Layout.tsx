@@ -354,6 +354,7 @@ export class CushyLayoutManager {
                                 type: 'tabset',
                                 // weight: 1,
                                 minWidth: 100,
+                                height: 100,
                                 minHeight: 100,
                                 children: [this._persistentTab('Last Graph', Widget.LastGraph)],
                             },

@@ -1,76 +1,74 @@
-import { Action_Helper } from './_run'
+import { ActionAddons } from './_run'
+import { UIAddons } from './_ui'
 
 action({
     author: 'rvion',
     name: 'Prompt-V1',
     help: 'load model with optional clip-skip, loras, tome ratio, etc.',
-    ui: (form) => ({
-        // load
-        model: form.enum({
-            enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
-            default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
-            group: 'model',
-        }),
-        vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'model' }),
-        clipSkip: form.int({
-            label: 'Clip Skip',
-            tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
-            default: 0,
-            group: 'model',
-        }),
-
-        // prompt
-        positive: form.prompt({}),
-        negative: form.prompt({}),
-
-        // latent
-        latent: form.group({
-            items: () => ({
-                startImage: form.imageOpt({ group: 'latent' }),
-                width: form.int({ default: 1024, group: 'latent', step: 128, min: 128, max: 4096 }),
-                height: form.int({ default: 1024, group: 'latent', step: 128, min: 128, max: 4096 }),
-                batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 20 }),
+    ui: (form) => {
+        const $ = new UIAddons(form)
+        return {
+            // load
+            model: form.enum({
+                enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
+                default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
+                group: 'model',
             }),
-        }),
-
-        //
-        CFG: form.int({ default: 8, group: 'sampler' }),
-        sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
-        scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras', group: 'sampler' }),
-        denoise: form.float({ default: 1, group: 'sampler', min: 0, max: 1, step: 0.01 }),
-        steps: form.int({ default: 20, group: 'sampler' }),
-        seed: form.seed({}),
-
-        highResFix: form.groupOpt({
-            items: () => ({
-                scaleFactor: form.int({ default: 1 }),
-                steps: form.int({ default: 15 }),
-                denoise: form.float({ default: 0.5 }),
-                saveIntermediaryImage: form.bool({ default: true }),
+            vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'model' }),
+            clipSkip: form.int({
+                label: 'Clip Skip',
+                tooltip: 'same as ClipSetLastLayer; you can use both positive and negative values',
+                default: 0,
+                group: 'model',
             }),
-        }),
-        loop: form.groupOpt({
-            items: () => ({
-                batchCount: form.int({ default: 1 }),
-                delayBetween: form.int({
-                    tooltip: 'in ms',
-                    default: 0,
+
+            // prompt
+            positive: form.prompt({}),
+            negative: form.prompt({}),
+            latent: $.startImage(),
+            // latent2: $.startImage(),
+            // latents: form.list({
+            //     element: () => $.startImage(),
+            // }),
+            //
+            CFG: form.int({ default: 8, group: 'sampler' }),
+            sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
+            scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras', group: 'sampler' }),
+            denoise: form.float({ default: 1, group: 'sampler', min: 0, max: 1, step: 0.01 }),
+            steps: form.int({ default: 20, group: 'sampler' }),
+            seed: form.seed({}),
+
+            highResFix: form.groupOpt({
+                items: () => ({
+                    scaleFactor: form.int({ default: 1 }),
+                    steps: form.int({ default: 15 }),
+                    denoise: form.float({ default: 0.5 }),
+                    saveIntermediaryImage: form.bool({ default: true }),
                 }),
             }),
-        }),
-
-        // startImage
-        removeBG: form.bool({ default: false }),
-        extra: form.groupOpt({
-            items: () => ({
-                freeU: form.bool({ default: false }),
-                reverse: form.bool({ default: false }),
+            loop: form.groupOpt({
+                items: () => ({
+                    batchCount: form.int({ default: 1 }),
+                    delayBetween: form.int({
+                        tooltip: 'in ms',
+                        default: 0,
+                    }),
+                }),
             }),
-        }),
-    }),
+
+            // startImage
+            removeBG: form.bool({ default: false }),
+            extra: form.groupOpt({
+                items: () => ({
+                    freeU: form.bool({ default: false }),
+                    reverse: form.bool({ default: false }),
+                }),
+            }),
+        }
+    },
     run: async (flow, p) => {
         const graph = flow.nodes
-        const _ = new Action_Helper(flow)
+        const $ = new ActionAddons(flow)
 
         // MODEL AND LORAS
         const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.model })
@@ -78,11 +76,11 @@ action({
         let clipAndModelPositive: _CLIP & _MODEL = ckpt
         let clipAndModelNegative: _CLIP & _MODEL = ckpt
 
-        const x = _.procesPromptResult(p.positive, clipAndModelPositive)
+        const x = $.procesPromptResult(p.positive, clipAndModelPositive)
         clipAndModelPositive = x.clipAndModel
         const positiveText = x.text
 
-        const y = _.procesPromptResult(p.negative, clipAndModelPositive)
+        const y = $.procesPromptResult(p.negative, clipAndModelPositive)
         clipAndModelNegative = y.clipAndModel
         const negativeText = y.text
 
@@ -184,6 +182,16 @@ action({
         }
         // PROMPT
         await flow.PROMPT()
+
+        // in case the user
+        const loop = p.loop
+        if (loop) {
+            const ixes = new Array(p.loop.batchCount).fill(0).map((_, i) => i)
+            for (const i of ixes) {
+                await new Promise((r) => setTimeout(r, loop.delayBetween))
+                await flow.PROMPT()
+            }
+        }
 
         // if (p.extra?.reversePrompt) {
         //     // FUNNY PROMPT REVERSAL

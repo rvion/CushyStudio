@@ -8,7 +8,7 @@ import type { NodeBuilder } from 'src/back/NodeBuilder'
 import type { Runtime } from 'src/back/Runtime'
 import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 
-export class Action_Helper {
+export class ActionAddons {
     /**
      * here, I make sure both `flow` and `graph` are always
      * available in all subsequent methods

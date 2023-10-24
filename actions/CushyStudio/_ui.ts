@@ -8,7 +8,18 @@
 
 import type { FormBuilder } from 'src/controls/InfoRequest'
 
-export class UI_Helper {
+export class UIAddons {
+    startImage = () =>
+        this.form.group({
+            className: 'animate-pulse',
+            items: () => ({
+                startImage: this.form.imageOpt({ group: 'latent' }),
+                width: this.form.int({ default: 1024, group: 'latent', step: 128, min: 128, max: 4096 }),
+                height: this.form.int({ default: 1024, group: 'latent', step: 128, min: 128, max: 4096 }),
+                batchSize: this.form.int({ default: 1, group: 'latent', min: 1, max: 20 }),
+            }),
+        })
+
     /**
      * 👇 here, I make sure `form` builder is always available
      * though `this.form` in the rest of the methods
