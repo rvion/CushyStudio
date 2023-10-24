@@ -1,3 +1,5 @@
+import { Action_Helper } from './_run'
+
 action({
     author: 'rvion',
     name: 'Prompt-V1',
@@ -18,16 +20,16 @@ action({
         }),
 
         // prompt
-        positive: form.promptOpt({}),
-        negative: form.promptOpt({}),
+        positive: form.prompt({}),
+        negative: form.prompt({}),
 
         // latent
         latent: form.group({
             items: () => ({
                 startImage: form.imageOpt({ group: 'latent' }),
-                width: form.int({ default: 1024, group: 'latent' }),
-                height: form.int({ default: 1024, group: 'latent' }),
-                batchSize: form.int({ default: 1, group: 'latent', min: 1 }),
+                width: form.int({ default: 1024, group: 'latent', step: 128, min: 128, max: 4096 }),
+                height: form.int({ default: 1024, group: 'latent', step: 128, min: 128, max: 4096 }),
+                batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 20 }),
             }),
         }),
 
@@ -63,88 +65,46 @@ action({
             items: () => ({
                 freeU: form.bool({ default: false }),
                 reverse: form.bool({ default: false }),
-                loras: form.loras({ default: [] }),
             }),
         }),
     }),
     run: async (flow, p) => {
         const graph = flow.nodes
+        const _ = new Action_Helper(flow)
 
         // MODEL AND LORAS
         const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.model })
 
-        let clipAndModel: HasSingle_CLIP & HasSingle_MODEL = ckpt
-        for (const lora of p.extra?.loras ?? []) {
-            clipAndModel = graph.LoraLoader({
-                model: clipAndModel,
-                clip: clipAndModel,
-                lora_name: lora.name,
-                strength_clip: lora.strength_clip ?? 1.0,
-                strength_model: lora.strength_model ?? 1.0,
-            })
-        }
+        let clipAndModelPositive: _CLIP & _MODEL = ckpt
+        let clipAndModelNegative: _CLIP & _MODEL = ckpt
 
-        let positiveText = ''
-        const positivePrompt = p.positive
-        if (positivePrompt) {
-            for (const tok of positivePrompt.tokens) {
-                if (tok.type === 'booru') positiveText += ` ${tok.tag.text}`
-                else if (tok.type === 'text') positiveText += ` ${tok.text}`
-                else if (tok.type === 'embedding') positiveText += ` embedding:${tok.embeddingName}`
-                else if (tok.type === 'wildcard') {
-                    const options = (flow.wildcards as any)[tok.payload]
-                    if (Array.isArray(options)) positiveText += ` ${flow.pick(options)}`
-                } else if (tok.type === 'lora') {
-                    clipAndModel = graph.LoraLoader({
-                        model: clipAndModel,
-                        clip: clipAndModel,
-                        lora_name: tok.loraDef.name,
-                        strength_clip: tok.loraDef.strength_clip,
-                        strength_model: tok.loraDef.strength_model,
-                    })
-                }
-            }
-        }
+        const x = _.procesPromptResult(p.positive, clipAndModelPositive)
+        clipAndModelPositive = x.clipAndModel
+        const positiveText = x.text
 
-        let negativeText = ''
-        const negativePrompt = p.negative
-        if (negativePrompt) {
-            for (const tok of negativePrompt.tokens) {
-                if (tok.type === 'booru') negativeText += ` ${tok.tag.text}`
-                else if (tok.type === 'text') negativeText += ` ${tok.text}`
-                else if (tok.type === 'embedding') negativeText += ` embedding:${tok.embeddingName}`
-                else if (tok.type === 'wildcard') {
-                    const options = (flow.wildcards as any)[tok.payload]
-                    if (Array.isArray(options)) negativeText += ` ${flow.pick(options)}`
-                } else if (tok.type === 'lora') {
-                    flow.print('unsupported: lora in negative prompt; check the default.cushy.ts file')
-                    // clipAndModel = graph.LoraLoader({
-                    //     model: clipAndModel,
-                    //     clip: clipAndModel,
-                    //     lora_name: tok.loraName,
-                    //     strength_clip: /*lora.strength_clip ??*/ 1.0,
-                    //     strength_model: /*lora.strength_model ??*/ 1.0,
-                    // })
-                }
-            }
-        }
+        const y = _.procesPromptResult(p.negative, clipAndModelPositive)
+        clipAndModelNegative = y.clipAndModel
+        const negativeText = y.text
 
         // CLIP
-        let clip: _CLIP = clipAndModel._CLIP
-        let model: _MODEL = clipAndModel._MODEL
+        let clipPos: _CLIP = clipAndModelPositive._CLIP
+        let clipNeg: _CLIP = clipAndModelNegative._CLIP
+        let model: _MODEL = clipAndModelPositive._MODEL
         if (p.extra?.freeU) model = graph.FreeU({ model })
 
+        // CLIP SKIP
         if (p.clipSkip) {
-            clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(p.clipSkip) })
+            clipPos = graph.CLIPSetLastLayer({ clip: clipPos, stop_at_clip_layer: -Math.abs(p.clipSkip) })
+            clipNeg = graph.CLIPSetLastLayer({ clip: clipNeg, stop_at_clip_layer: -Math.abs(p.clipSkip) })
         }
 
-        // VAE
+        // OPTIONAL CUSTOM VAE
         let vae: _VAE = ckpt._VAE
         if (p.vae) vae = graph.VAELoader({ vae_name: p.vae })
 
         // CLIPS
-        const positive = graph.CLIPTextEncode({ clip: flow.AUTO, text: positiveText })
-        const negative = graph.CLIPTextEncode({ clip: flow.AUTO, text: negativeText })
+        const positive = graph.CLIPTextEncode({ clip: clipPos, text: positiveText })
+        const negative = graph.CLIPTextEncode({ clip: clipNeg, text: negativeText })
 
         // flow.print(`startImage: ${p.startImage}`)
 
