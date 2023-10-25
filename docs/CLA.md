@@ -22,7 +22,7 @@ _(or rather questions I expect people to ask often)_
 
 ### 🚨 1: Cushy is TEMPORARILLY AGPL only. 2: CushyStudio is a tool so you can use any assets you make with it in any way without any problem.
 
--   Due to the face CushyStudio is a tool, AGPL is not that restrictive. I'm not forcing you to open source your project just because you used CushyStudio to make some assets. the tool is free to use, your assets are yours.
+-   Due to the fact CushyStudio is a tool, AGPL is not that restrictive. I'm not forcing you to open source your project just because you used CushyStudio to make some assets. the tool is free to use, your assets are yours.
 
 -   I picked AGPL because I don't want to work for some other cloud company to suddenly start offering Cushy actions in the cloud and make money of me while I still can't provide as I want for my family. I want to be able to make some money with CushyStudio in a community friendly way.
 
@@ -40,7 +40,7 @@ What I want to do, is:
 
 -   offer GPU cloud services for `CushyStudio` users who do not own a powerful GPU locally, so they can run any actions they want very easilly.
 
--   Build some kind of opt-in retribution system / marketplace to help action makers who build advanced action to earn money for either via revenue sharing from the cloud GPU services , or though paid usage by commercial users.
+-   Build some kind of marketplace sponsorship system to help action makers who build advanced action to earn money for either via revenue sharing from the cloud GPU services , or though paid usage by commercial users.
 
 -   and Possibly sell permissive licenses to companies that would want to embed `CushyStudio` engine (SDK) in their products for real-time generation, or backend usage in private commercial products.
 
