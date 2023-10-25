@@ -14,13 +14,13 @@ _(or rather questions I expect people to ask often)_
 
 `CushyStudio` is, and always will be 100% open source and free to use as a tool. Make assets with the app. Use those assets in your games or products; make art, etc. I don't own your work, nor want to. I want to help you create it, help you promote it, and have fun in the process.
 
-🚨 👉 Its AGPL license just say that you **can not EMBED** CushyStudio engine in a commercial project without a license. Nor you can re-sell it, nor use it on some closed-source backend server of your project. Unless you want to support my work, and buy a GPL license for a fair price.
+Its AGPL license just say that you **can not EMBED** CushyStudio engine in a commercial project without a license. Nor you can re-sell it, nor use it on some closed-source backend server of your project. Unless you want to support my work, and buy a GPL license for a fair price.
 
 ---
 
 ### Q. Why did you pick AGPL instead of GPLV3 then.
 
-### 🚨 1: Cushy is TEMPORARILLY AGPL only. 2: CushyStudio is a tool so you can use any assets you make with it in any way without any problem.
+#### Cushy is TEMPORARILLY AGPL only (I'll switch to GPLV3 later); also, it is a tool so you can use any assets you make with it in any way without any problem.
 
 -   Due to the fact CushyStudio is a tool, AGPL is not that restrictive. I'm not forcing you to open source your project just because you used CushyStudio to make some assets. the tool is free to use, your assets are yours.
 
