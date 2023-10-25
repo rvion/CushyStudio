@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { InputNumber, Slider } from 'rsuite'
-import { Widget_float, Widget_int } from 'src/controls/InfoRequest'
+import { Widget_float, Widget_int } from 'src/controls/Widget'
 
 export type NumbericTheme = 'input' | 'slider'
 

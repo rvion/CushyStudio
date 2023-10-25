@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Form, Radio, RadioGroup } from 'rsuite'
-import { Widget_size } from 'src/controls/InfoRequest'
+import { Widget_size } from 'src/controls/Widget'
 import { AspectRatio, SDModelType } from 'src/controls/misc/InfoAnswer'
 
 export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size }) {

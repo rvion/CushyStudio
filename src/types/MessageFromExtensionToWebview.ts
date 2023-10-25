@@ -1,4 +1,4 @@
-import type { Widget } from 'src/controls/InfoRequest'
+import type { Widget } from 'src/controls/Widget'
 import type { FormResult } from 'src/core/Action'
 import type { FlowID } from 'src/front/FlowID'
 import type { GraphID } from 'src/models/Graph'

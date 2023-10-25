@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { InputNumber, Slider, Toggle } from 'rsuite'
-import { Widget_floatOpt, Widget_intOpt } from 'src/controls/InfoRequest'
+import { Widget_floatOpt, Widget_intOpt } from 'src/controls/Widget'
 
 export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget_intOpt | Widget_floatOpt }) {
     const req = p.req

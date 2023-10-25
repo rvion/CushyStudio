@@ -1,7 +1,7 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { IconButton, Input, MultiCascader } from 'rsuite'
-import { Widget_loras } from 'src/controls/InfoRequest'
+import { Widget_loras } from 'src/controls/Widget'
 import { useSt } from '../../FrontStateCtx'
 // ----------------------------------------------------------------------
 

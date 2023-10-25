@@ -12,9 +12,9 @@ import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswer
 
 import { makeAutoObservable } from 'mobx'
 import { NumbericTheme } from 'src/front/ui/widgets/WidgetNumUI'
-import { exhaust } from 'src/utils/ComfyUtils'
 import { bang } from 'src/utils/bang'
-
+import { FormBuilder } from './FormBuilder'
+import { IRequest, IWidget, ReqInput, ReqResult } from './IWidget'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -46,34 +46,6 @@ export type Widget =
     | Widget_choices<any>
     | Widget_enum<KnownEnumNames>
     | Widget_enumOpt<KnownEnumNames>
-
-// -------------------------------------------------------------------------------------------------------------------------------------------------
-
-export type ReqResult<Req> = Req extends IWidget<any, any, any, any, infer O> ? O : never
-export type ReqState<Req> = Req extends IWidget<any, any, any, infer S, any> ? S : never
-export type IWidget<T, I, X extends {type: T}, S, O> = {
-    $Input: I;
-    $Serial: X;
-    $State: S;
-    $Output: O
-}
-export type IRequest<T, I, X, S, O> = {
-    type: T
-    state: S
-    readonly result: O
-    readonly serial: X
-}
-
-export type LabelPos = 'start' | 'end'
-export type ReqInput<X> = X & {
-    label?: string
-    labelPos?: LabelPos
-    layout?: 'H'| 'V',
-    group?: string
-    tooltip?: string
-    i18n?: { [key: string]: string }
-    className?: string
-}
 
 // 🅿️ str ==============================================================================
 export type Widget_str_input = ReqInput<{ default?: string; textarea?: boolean }>
@@ -1095,82 +1067,4 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumO
         if (!this.state.active) return undefined
         return this.state.val
     }
-}
-
-
-// prettier-ignore
-export class FormBuilder {
-    _cache :{ count:number } = { count:0 }
-    constructor(public schema: SchemaL) {
-        makeAutoObservable(this)
-    }
-
-    // 🔴 untyped internals there
-    HYDRATE =(type: Widget['type'], input: any, serial?: any ): any => {
-        if (type === 'bool')               return new Widget_bool               (this, this.schema, input, serial)
-        if (type === 'str')                return new Widget_str                (this, this.schema, input, serial)
-        if (type === 'strOpt')             return new Widget_strOpt             (this, this.schema, input, serial)
-        if (type === 'int')                return new Widget_int                (this, this.schema, input, serial)
-        if (type === 'seed')               return new Widget_seed               (this, this.schema, input, serial)
-        if (type === 'intOpt')             return new Widget_intOpt             (this, this.schema, input, serial)
-        if (type === 'float')              return new Widget_float              (this, this.schema, input, serial)
-        if (type === 'floatOpt')           return new Widget_floatOpt           (this, this.schema, input, serial)
-        if (type === 'matrix')             return new Widget_matrix             (this, this.schema, input, serial)
-        if (type === 'prompt')             return new Widget_prompt             (this, this.schema, input, serial)
-        if (type === 'promptOpt')          return new Widget_promptOpt          (this, this.schema, input, serial)
-        if (type === 'loras')              return new Widget_loras              (this, this.schema, input, serial)
-        if (type === 'image')              return new Widget_image              (this, this.schema, input, serial)
-        if (type === 'imageOpt')           return new Widget_imageOpt           (this, this.schema, input, serial)
-        if (type === 'selectOneOrCustom')  return new Widget_selectOneOrCustom  (this, this.schema, input, serial)
-        if (type === 'selectManyOrCustom') return new Widget_selectManyOrCustom (this, this.schema, input, serial)
-        if (type === 'enum')               return new Widget_enum               (this, this.schema, input, serial)
-        if (type === 'enumOpt')            return new Widget_enumOpt            (this, this.schema, input, serial)
-        if (type === 'list')               return new Widget_list               (this, this.schema, input, serial)
-        if (type === 'groupOpt')           return new Widget_groupOpt           (this, this.schema, input, serial)
-        if (type === 'group')              return new Widget_group              (this, this.schema, input, serial)
-        if (type === 'selectOne')          return new Widget_selectOne          (this, this.schema, input, serial)
-        if (type === 'selectMany')         return new Widget_selectMany         (this, this.schema, input, serial)
-        if (type === 'size')               return new Widget_size               (this, this.schema, input, serial)
-        if (type === 'color')              return new Widget_color              (this, this.schema, input, serial)
-        if (type === 'choice')             return new Widget_choice             (this, this.schema, input, serial)
-        if (type === 'choices')            return new Widget_choices            (this, this.schema, input, serial)
-        if (type === 'markdown')           return new Widget_markdown           (this, this.schema, input, serial)
-        console.log(`🔴 unknown type ${type}`)
-        exhaust(type)
-    }
-
-
-    // autoUI          =                                                  (p: Widget_str_input                , serial?: Widget_str_serial                ) => new Widget_str                 (this, this.schema, p, serial)
-    string             =                                                  (p: Widget_str_input                , serial?: Widget_str_serial                ) => new Widget_str                 (this, this.schema, p, serial)
-    color              =                                                  (p: Widget_color_input              , serial?: Widget_color_serial              ) => new Widget_color               (this, this.schema, p, serial)
-    stringOpt          =                                                  (p: Widget_strOpt_input             , serial?: Widget_strOpt_serial             ) => new Widget_strOpt              (this, this.schema, p, serial)
-    str                =                                                  (p: Widget_str_input                , serial?: Widget_str_serial                ) => new Widget_str                 (this, this.schema, p, serial)
-    strOpt             =                                                  (p: Widget_strOpt_input             , serial?: Widget_strOpt_serial             ) => new Widget_strOpt              (this, this.schema, p, serial)
-    prompt             =                                                  (p: Widget_prompt_input             , serial?: Widget_prompt_serial             ) => new Widget_prompt              (this, this.schema, p, serial)
-    promptOpt          =                                                  (p: Widget_promptOpt_input          , serial?: Widget_promptOpt_serial          ) => new Widget_promptOpt           (this, this.schema, p, serial)
-    seed               =                                                  (p: Widget_seed_input                , serial?: Widget_seed_serial              ) => new Widget_seed                (this, this.schema, p, serial)
-    int                =                                                  (p: Widget_int_input                , serial?: Widget_int_serial                ) => new Widget_int                 (this, this.schema, p, serial)
-    intOpt             =                                                  (p: Widget_intOpt_input             , serial?: Widget_intOpt_serial             ) => new Widget_intOpt              (this, this.schema, p, serial)
-    float              =                                                  (p: Widget_float_input              , serial?: Widget_float_serial              ) => new Widget_float               (this, this.schema, p, serial)
-    floatOpt           =                                                  (p: Widget_floatOpt_input           , serial?: Widget_floatOpt_serial           ) => new Widget_floatOpt            (this, this.schema, p, serial)
-    number             =                                                  (p: Widget_float_input              , serial?: Widget_float_serial              ) => new Widget_float               (this, this.schema, p, serial)
-    numberOpt          =                                                  (p: Widget_floatOpt_input           , serial?: Widget_floatOpt_serial           ) => new Widget_floatOpt            (this, this.schema, p, serial)
-    matrix             =                                                  (p: Widget_matrix_input             , serial?: Widget_matrix_serial             ) => new Widget_matrix              (this, this.schema, p, serial)
-    boolean            =                                                  (p: Widget_bool_input               , serial?: Widget_bool_serial               ) => new Widget_bool                (this, this.schema, p, serial)
-    bool               =                                                  (p: Widget_bool_input               , serial?: Widget_bool_serial               ) => new Widget_bool                (this, this.schema, p, serial)
-    loras              =                                                  (p: Widget_loras_input              , serial?: Widget_loras_serial              ) => new Widget_loras               (this, this.schema, p, serial)
-    image              =                                                  (p: Widget_image_input              , serial?: Widget_image_serial              ) => new Widget_image               (this, this.schema, p, serial)
-    markdown           =                                                  (p: Widget_markdown_input           , serial?: Widget_markdown_serial           ) => new Widget_markdown            (this, this.schema, p, serial)
-    imageOpt           =                                                  (p: Widget_imageOpt_input           , serial?: Widget_imageOpt_serial           ) => new Widget_imageOpt            (this, this.schema, p, serial)
-    selectOneOrCustom  =                                                  (p: Widget_selectOneOrCustom_input  , serial?: Widget_selectOneOrCustom_serial  ) => new Widget_selectOneOrCustom   (this, this.schema, p, serial)
-    selectManyOrCustom =                                                  (p: Widget_selectManyOrCustom_input , serial?: Widget_selectManyOrCustom_serial ) => new Widget_selectManyOrCustom  (this, this.schema, p, serial)
-    enum               = <const T extends KnownEnumNames>                 (p: Widget_enum_input<T>            , serial?: Widget_enum_serial<T>            ) => new Widget_enum                (this, this.schema, p, serial)
-    enumOpt            = <const T extends KnownEnumNames>                 (p: Widget_enumOpt_input<T>         , serial?: Widget_enumOpt_serial<T>         ) => new Widget_enumOpt             (this, this.schema, p, serial)
-    list               = <const T extends Widget>                    (p: Widget_list_input<T>            , serial?: Widget_list_serial<T>            ) => new Widget_list                (this, this.schema, p, serial)
-    groupOpt           = <const T extends { [key: string]: Widget }> (p: Widget_groupOpt_input<T>        , serial?: Widget_groupOpt_serial<T>        ) => new Widget_groupOpt            (this, this.schema, p, serial)
-    group              = <const T extends { [key: string]: Widget }> (p: Widget_group_input<T>           , serial?: Widget_group_serial<T>           ) => new Widget_group               (this, this.schema, p, serial)
-    selectOne          = <const T extends { type: string}>                (p: Widget_selectOne_input<T>       , serial?: Widget_selectOne_serial<T>       ) => new Widget_selectOne           (this, this.schema, p, serial)
-    selectMany         = <const T extends { type: string}>                (p: Widget_selectMany_input<T>      , serial?: Widget_selectMany_serial<T>      ) => new Widget_selectMany          (this, this.schema, p, serial)
-    choice             = <const T extends { [key: string]: Widget }> (p: Widget_choice_input<T>          , serial?: Widget_choice_serial<T>          ) => new Widget_choice              (this, this.schema, p, serial)
-    choices            = <const T extends { [key: string]: Widget }> (p: Widget_choices_input<T>         , serial?: Widget_choices_serial<T>         ) => new Widget_choices             (this, this.schema, p, serial)
 }

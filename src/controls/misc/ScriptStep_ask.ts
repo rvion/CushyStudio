@@ -1,5 +1,6 @@
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
-import type { ReqResult, Widget } from '../InfoRequest'
+import type { Widget } from '../Widget'
+import type { ReqResult } from '../IWidget'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'

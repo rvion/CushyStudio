@@ -28,7 +28,7 @@ import { CushyCompletionPlugin } from './plugins/CushyCompletionPlugin'
 import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
 import { TreeViewPlugin } from './plugins/TreeViewPlugin'
 import { toJS } from 'mobx'
-import { Widget_prompt, Widget_promptOpt } from 'src/controls/InfoRequest'
+import { Widget_prompt, Widget_promptOpt } from 'src/controls/Widget'
 
 // const theme = {
 //     // Theme styling goes here

@@ -1,4 +1,4 @@
-import type { Widget, Widget_choice, Widget_choices } from 'src/controls/InfoRequest'
+import type { Widget, Widget_choice, Widget_choices } from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
 import { Button, SelectPicker, TagPicker } from 'rsuite'

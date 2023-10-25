@@ -1,5 +1,7 @@
 import type { Runtime } from 'src/back/Runtime'
-import type { FormBuilder, ReqResult, Widget } from '../controls/InfoRequest'
+import type { Widget } from '../controls/Widget'
+import type { FormBuilder } from 'src/controls/FormBuilder'
+import type { ReqResult } from 'src/controls/IWidget'
 import type { CSSProperties } from 'react'
 
 // ACTIONS ============================================================

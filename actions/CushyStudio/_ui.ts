@@ -6,7 +6,8 @@
  *
  */
 
-import type * as W from 'src/controls/InfoRequest'
+import type { FormBuilder } from 'src/controls/FormBuilder'
+import type * as W from 'src/controls/Widget'
 
 export class UIAddons {
     startImage = (): W.Widget_group<{
@@ -28,7 +29,7 @@ export class UIAddons {
      * 👇 here, I make sure `form` builder is always available
      * though `this.form` in the rest of the methods
      */
-    constructor(private form: W.FormBuilder) {}
+    constructor(private form: FormBuilder) {}
 
     vae = (): W.Widget_enumOpt<'Enum_VAELoader_vae_name'> =>
         this.form.enumOpt({

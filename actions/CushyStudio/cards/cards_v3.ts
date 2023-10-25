@@ -1,4 +1,4 @@
-import type { FormBuilder } from 'src/controls/InfoRequest'
+import type { FormBuilder } from 'src/controls/FormBuilder'
 import { prettifyIcon } from '../../private/cards/icons/TEST'
 
 const ui = (form: FormBuilder) => ({

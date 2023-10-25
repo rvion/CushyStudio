@@ -1,4 +1,4 @@
-import type { Widget, Widget_group, Widget_groupOpt } from 'src/controls/InfoRequest'
+import type { Widget, Widget_group, Widget_groupOpt } from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
 import { Button, Toggle } from 'rsuite'

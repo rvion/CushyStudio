@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { bang } from '../../../utils/bang'
-import { Widget_matrix } from 'src/controls/InfoRequest'
+import { Widget_matrix } from 'src/controls/Widget'
 
 export type CELL = {
     x: number

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Button, ButtonGroup, InputNumber } from 'rsuite'
-import { Widget_seed } from 'src/controls/InfoRequest'
+import { Widget_seed } from 'src/controls/Widget'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_seed }) {
     const req = p.req

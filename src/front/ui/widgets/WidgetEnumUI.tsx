@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { SelectPicker, Toggle } from 'rsuite'
-import { Widget_enum, Widget_enumOpt } from 'src/controls/InfoRequest'
+import { Widget_enum, Widget_enumOpt } from 'src/controls/Widget'
 import type { EnumName, EnumValue } from '../../../models/Schema'
 import { useProject } from '../../ProjectCtx'
 

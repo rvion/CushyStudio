@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Toggle } from 'rsuite'
-import { Widget_bool } from 'src/controls/InfoRequest'
+import { Widget_bool } from 'src/controls/Widget'
 
 // ----------------------------------------------------------------------
 

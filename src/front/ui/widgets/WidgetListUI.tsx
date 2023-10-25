@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Button } from 'rsuite'
-import { Widget, Widget_list } from 'src/controls/InfoRequest'
+import { Widget, Widget_list } from 'src/controls/Widget'
 import { WidgetUI } from './WidgetUI'
 
 export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p: { req: Widget_list<T> }) {

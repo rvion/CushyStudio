@@ -1,5 +1,5 @@
 import * as I from '@rsuite/icons'
-import * as R from 'src/controls/InfoRequest'
+import * as R from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
@@ -25,10 +25,11 @@ import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrOptUI } from './WidgetStrOptUI'
 import { WidgetStrUI } from './WidgetStrUI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
+import { LabelPos } from 'src/controls/IWidget'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Widget
-    labelPos?: R.LabelPos
+    labelPos?: LabelPos
     rootKey: string
     vertical?: boolean
 }) {

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Widget_color } from 'src/controls/InfoRequest'
+import { Widget_color } from 'src/controls/Widget'
 
 export const WidgetColorUI = observer(function WidgetColorUI_(p: { req: Widget_color }) {
     const req = p.req
