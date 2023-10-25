@@ -40,7 +40,6 @@ export class STATE {
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
     resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))
     theme: ThemeManager
-    codePrettier: CodePrettier
     layout: CushyLayoutManager
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
@@ -148,7 +147,6 @@ export class STATE {
         this.db = new LiveDB(this)
         this.marketplace = new Marketplace(this)
         this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { log: true, name: nanoid() })
-        this.codePrettier = new CodePrettier(this)
         this.layout = new CushyLayoutManager(this)
         this.toolbox = new Toolbox(this)
         this.theme = new ThemeManager(this)
@@ -387,7 +385,7 @@ export class STATE {
             // 4 ------------------------------------
             progress('[**** step 4/4] saving schema')
             // const comfySchemaBuff = Buffer.from(comfySchemaTs, 'utf8')
-            const comfySchemaTsFormatted = await this.codePrettier.prettify(comfySchemaTs)
+            const comfySchemaTsFormatted = comfySchemaTs
             // console.log(this.nodesTSPath, comfySchemaTsFormatted)
             writeFileSync(this.nodesTSPath, comfySchemaTsFormatted, 'utf-8')
             progress('[**** step 4/4] 🟢 schema updated')
