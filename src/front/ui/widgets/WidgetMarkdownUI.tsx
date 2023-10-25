@@ -4,5 +4,5 @@ import { Widget_markdown } from 'src/controls/Widget'
 
 export const WidgetMardownUI = observer(function WidgetMardownUI_(p: { req: Widget_markdown }) {
     const req = p.req
-    return <div>{marked(req.input.markdown)}</div>
+    return <div className='_MD' dangerouslySetInnerHTML={{ __html: marked(req.input.markdown) }}></div>
 })
