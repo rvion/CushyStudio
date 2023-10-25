@@ -44,8 +44,8 @@ exports.default = async function patchElectronIconAndName() {
             // patch icon and name at once
             await rcedit(windowsExePath, {
                 icon: iconPathWindows,
-                'product-version': newAppName,
-                'file-version': newAppName,
+                // 'product-version': newAppName,
+                // 'file-version': newAppName,
             })
         }
 
