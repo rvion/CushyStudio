@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { SelectPicker } from 'rsuite'
-import { Requestable_selectOne } from 'src/controls/InfoRequest'
+import { Widget_selectOne } from 'src/controls/InfoRequest'
 
-export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_(p: { req: Requestable_selectOne<any> }) {
+export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_(p: { req: Widget_selectOne<any> }) {
     const req = p.req
     const val = req.state.val
 

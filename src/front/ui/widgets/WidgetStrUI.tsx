@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { Input } from 'rsuite'
-import { Requestable_str, Requestable_strOpt } from 'src/controls/InfoRequest'
+import { Widget_str, Widget_strOpt } from 'src/controls/InfoRequest'
 
-export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Requestable_str | Requestable_strOpt }) {
+export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Widget_str | Widget_strOpt }) {
     const req = p.req
     const val = req.state.val
     if (req.input.textarea) {

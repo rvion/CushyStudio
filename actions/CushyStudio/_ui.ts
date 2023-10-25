@@ -6,10 +6,15 @@
  *
  */
 
-import type { FormBuilder } from 'src/controls/InfoRequest'
+import type * as W from 'src/controls/InfoRequest'
 
 export class UIAddons {
-    startImage = () =>
+    startImage = (): W.Widget_group<{
+        readonly startImage: W.Widget_imageOpt
+        readonly width: W.Widget_int
+        readonly height: W.Widget_int
+        readonly batchSize: W.Widget_int
+    }> =>
         this.form.group({
             items: () => ({
                 startImage: this.form.imageOpt({ group: 'latent' }),
@@ -23,15 +28,15 @@ export class UIAddons {
      * 👇 here, I make sure `form` builder is always available
      * though `this.form` in the rest of the methods
      */
-    constructor(private form: FormBuilder) {}
+    constructor(private form: W.FormBuilder) {}
 
-    vae = () =>
+    vae = (): W.Widget_enumOpt<'Enum_VAELoader_vae_name'> =>
         this.form.enumOpt({
             label: 'VAE',
             enumName: 'Enum_VAELoader_vae_name',
         })
 
-    modelName = () =>
+    modelName = (): W.Widget_enum<'Enum_CheckpointLoaderSimple_ckpt_name'> =>
         this.form.enum({
             label: 'Checkpoint',
             enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',

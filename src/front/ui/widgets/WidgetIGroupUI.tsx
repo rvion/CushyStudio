@@ -1,10 +1,10 @@
-import type { Requestable, Requestable_group, Requestable_groupOpt } from 'src/controls/InfoRequest'
+import type { Widget, Widget_group, Widget_groupOpt } from 'src/controls/InfoRequest'
 
 import { observer } from 'mobx-react-lite'
 import { Button, Toggle } from 'rsuite'
 import { WidgetWithLabelUI } from './WidgetUI'
 
-export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Requestable_group<{ [key: string]: Requestable }> }) {
+export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Widget_group<{ [key: string]: Widget }> }) {
     const req = p.req
     const collapsed = req.state.collapsed
     const isTopLevel = req.input.topLevel
@@ -38,9 +38,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Requesta
     )
 })
 
-export const WidgetGroupOptUI = observer(function WidgetItemsOptUI_(p: {
-    req: Requestable_groupOpt<{ [key: string]: Requestable }>
-}) {
+export const WidgetGroupOptUI = observer(function WidgetItemsOptUI_(p: { req: Widget_groupOpt<{ [key: string]: Widget }> }) {
     const req = p.req
     const checked = req.state.active
     const collapsed = req.state.collapsed

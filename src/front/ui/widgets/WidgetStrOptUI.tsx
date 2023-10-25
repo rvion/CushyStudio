@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { Toggle } from 'rsuite'
-import { Requestable_strOpt } from 'src/controls/InfoRequest'
+import { Widget_strOpt } from 'src/controls/InfoRequest'
 import { WidgetStrUI } from './WidgetStrUI'
 
-export const WidgetStrOptUI = observer(function WidgetStrOptUI_(p: { req: Requestable_strOpt }) {
+export const WidgetStrOptUI = observer(function WidgetStrOptUI_(p: { req: Widget_strOpt }) {
     const req = p.req
     const val = req.state.val
 

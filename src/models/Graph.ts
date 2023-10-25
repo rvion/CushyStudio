@@ -45,6 +45,8 @@ export type GraphT = {
     comfyPromptJSON: ComfyPromptJSON
 }
 
+export const GraphIDCache = new Map<string, number>()
+
 export interface GraphL extends LiveInstance<GraphT, GraphL> {}
 export class GraphL {
     /** number of node in the graph */

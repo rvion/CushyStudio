@@ -28,7 +28,7 @@ import { CushyCompletionPlugin } from './plugins/CushyCompletionPlugin'
 import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
 import { TreeViewPlugin } from './plugins/TreeViewPlugin'
 import { toJS } from 'mobx'
-import { Requestable_prompt, Requestable_promptOpt } from 'src/controls/InfoRequest'
+import { Widget_prompt, Widget_promptOpt } from 'src/controls/InfoRequest'
 
 // const theme = {
 //     // Theme styling goes here
@@ -39,7 +39,7 @@ import { Requestable_prompt, Requestable_promptOpt } from 'src/controls/InfoRequ
 // LexicalOnChangePlugin!
 function onChange(
     //
-    req: Requestable_prompt | Requestable_promptOpt,
+    req: Widget_prompt | Widget_promptOpt,
     editorState: EditorState,
 ) {
     editorState.read(() => {
@@ -50,7 +50,7 @@ function onChange(
         if (txt) {
             // req.state.text = txt
             req.state.tokens = getFinalJSON(editorState).items
-            if (req instanceof Requestable_promptOpt) req.state.active = true
+            if (req instanceof Widget_promptOpt) req.state.active = true
         } else {
             req.state.tokens = getFinalJSON(editorState).items
         }
@@ -75,7 +75,7 @@ export type WidgetPromptOutput = {
     tokens: PossibleSerializedNodes[]
 }
 
-export const WidgetPromptUI = observer((p: { req: Requestable_prompt | Requestable_promptOpt }) => {
+export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptOpt }) => {
     const st = useSt()
     const req = p.req
     const initialConfig: InitialConfigType = {

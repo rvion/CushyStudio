@@ -5,7 +5,7 @@ import type { StepL } from './Step'
 import { autorun, reaction, runInAction, toJS } from 'mobx'
 import { ActionFile } from 'src/back/ActionFile'
 import { ActionPath } from 'src/back/ActionPath'
-import { FormBuilder, type Requestable } from 'src/controls/InfoRequest'
+import { FormBuilder, type Widget } from 'src/controls/InfoRequest'
 import { __FAIL, __OK, type Result } from 'src/utils/Either'
 import { LiveRef } from '../db/LiveRef'
 import { Status } from 'src/back/Status'
@@ -84,7 +84,7 @@ export class DraftL {
         return step
     }
 
-    form: Result<Requestable> = __FAIL('not loaded yet')
+    form: Result<Widget> = __FAIL('not loaded yet')
 
     get actionFile(): ActionFile | undefined { return this.st.toolbox.filesMap.get(this.data.actionPath) } // prettier-ignore
     get action() { return this.actionFile?.action } // prettier-ignore
@@ -103,7 +103,7 @@ export class DraftL {
                 try {
                     const formBuilder = new FormBuilder(this.st.schema)
                     const uiFn = action.ui
-                    const req: Requestable =
+                    const req: Widget =
                         uiFn == null //
                             ? formBuilder.group({ topLevel: true, items: () => ({}) }, this.data.actionParams)
                             : formBuilder.group({ topLevel: true, items: () => uiFn(formBuilder) }, this.data.actionParams)

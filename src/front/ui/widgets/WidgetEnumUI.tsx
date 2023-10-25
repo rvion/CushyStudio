@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { SelectPicker, Toggle } from 'rsuite'
-import { Requestable_enum, Requestable_enumOpt } from 'src/controls/InfoRequest'
+import { Widget_enum, Widget_enumOpt } from 'src/controls/InfoRequest'
 import type { EnumName, EnumValue } from '../../../models/Schema'
 import { useProject } from '../../ProjectCtx'
 
@@ -10,16 +10,16 @@ type T = {
 }[]
 
 export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumNames>(p: {
-    req: Requestable_enum<K> | Requestable_enumOpt<K>
+    req: Widget_enum<K> | Widget_enumOpt<K>
 }) {
     const req = p.req
     const enumName = req.input.enumName
-    const isOptional = req instanceof Requestable_enumOpt
+    const isOptional = req instanceof Widget_enumOpt
     // const options = schema.getEnumOptionsForSelectPicker(enumName)
 
     const value = req.state.val as any
     const showToogle =
-        req instanceof Requestable_enumOpt //
+        req instanceof Widget_enumOpt //
             ? true
             : req.state.active !== true
     return (

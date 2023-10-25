@@ -1,17 +1,17 @@
 import type { Runtime } from 'src/back/Runtime'
-import type { FormBuilder, ReqResult, Requestable } from '../controls/InfoRequest'
+import type { FormBuilder, ReqResult, Widget } from '../controls/InfoRequest'
 import type { CSSProperties } from 'react'
 
 // ACTIONS ============================================================
 // 1. the main abstraction of cushy are actions.
 /** quick function to help build actions in a type-safe way */
 
-// export const action = <const F extends RequestableDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
-export type ActionType = <const F extends RequestableDict>(t: Action<F>) => Action<F>
-export type RequestableDict = { [key: string]: Requestable }
-export type FormResult<Req extends Requestable> = ReqResult<Req>
+// export const action = <const F extends WidgetDict>(name: string, t: Omit<Action<F>, 'name'>): Action<F> => ({ name, ...t })
+export type ActionType = <const F extends WidgetDict>(t: Action<F>) => Action<F>
+export type WidgetDict = { [key: string]: Widget }
+export type FormResult<Req extends Widget> = ReqResult<Req>
 
-export type Action<FIELDS extends RequestableDict> = {
+export type Action<FIELDS extends WidgetDict> = {
     // AUTHORING ============================================================
     /** action name; default to unnamed_action_<nanoid()> */
     name: string

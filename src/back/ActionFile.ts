@@ -1,5 +1,5 @@
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
-import type { Action, RequestableDict } from 'src/core/Action'
+import type { Action, WidgetDict } from 'src/core/Action'
 import type { STATE } from 'src/front/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
@@ -89,7 +89,7 @@ export class ActionFile {
         return this.action
     }
     // extracted stuff
-    action?: Maybe<Action<RequestableDict>> = null
+    action?: Maybe<Action<WidgetDict>> = null
     codeJS?: Maybe<string> = null
     codeTS?: Maybe<string> = null
     liteGraphJSON?: Maybe<LiteGraphJSON> = null
@@ -253,9 +253,9 @@ export class ActionFile {
         }
     }
 
-    RUN_ACTION_FILE = (codeJS: string): Action<RequestableDict> | undefined => {
+    RUN_ACTION_FILE = (codeJS: string): Action<WidgetDict> | undefined => {
         // 1. DI registering mechanism
-        const ACTIONS: Action<RequestableDict>[] = []
+        const ACTIONS: Action<WidgetDict>[] = []
         const registerActionFn = (a1: string, a2: Action<any>): void => {
             const action = typeof a1 !== 'string' ? a1 : a2
             console.info(`[💙] found action: "${name}"`, { path: this.absPath })

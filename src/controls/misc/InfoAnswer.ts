@@ -9,7 +9,7 @@ import type { ImageID } from 'src/models/Image'
 
 // prettier-ignore
 
-// 🐉 export type InfoRequestFn = <const Req extends { [key: string]: Requestable }>(
+// 🐉 export type InfoRequestFn = <const Req extends { [key: string]: Widget }>(
 // 🐉     req: (q: FormBuilder) => Req,
 // 🐉 ) => Promise<{ [key in keyof Req]: InfoAnswer<Req[key]> }>
 

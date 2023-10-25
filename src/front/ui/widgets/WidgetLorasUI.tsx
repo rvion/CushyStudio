@@ -1,11 +1,11 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { IconButton, Input, MultiCascader } from 'rsuite'
-import { Requestable_loras } from 'src/controls/InfoRequest'
+import { Widget_loras } from 'src/controls/InfoRequest'
 import { useSt } from '../../FrontStateCtx'
 // ----------------------------------------------------------------------
 
-export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { req: Requestable_loras }) {
+export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { req: Widget_loras }) {
     const req = p.req
     const st = useSt()
     const schema = st.schema

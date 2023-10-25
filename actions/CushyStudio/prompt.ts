@@ -31,7 +31,7 @@ action({
             //     element: () => $.startImage(),
             // }),
             //
-            CFG: form.int({ default: 8, group: 'sampler' }),
+            CFG: form.int({ default: 8, group: 'sampler', min: 1, max: 30 }),
             sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
             scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras', group: 'sampler' }),
             denoise: form.float({ default: 1, group: 'sampler', min: 0, max: 1, step: 0.01 }),
@@ -181,6 +181,7 @@ action({
             })
         }
         // PROMPT
+        // await flow.PROMPT({ ids: 'use_class_name_and_number' })
         await flow.PROMPT()
 
         // in case the user

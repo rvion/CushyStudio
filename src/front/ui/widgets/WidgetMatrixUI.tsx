@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { bang } from '../../../utils/bang'
-import { Requestable_matrix } from 'src/controls/InfoRequest'
+import { Widget_matrix } from 'src/controls/InfoRequest'
 
 export type CELL = {
     x: number
@@ -12,7 +12,7 @@ export type CELL = {
     value: boolean
 }
 
-export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { req: Requestable_matrix }) {
+export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { req: Widget_matrix }) {
     const req = p.req
     const cols = req.cols
     const rows = req.rows

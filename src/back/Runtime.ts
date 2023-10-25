@@ -207,7 +207,7 @@ export class Runtime {
     embedding = (t: Embeddings) => `embedding:${t}`
 
     // 🐉 /** ask the user a few informations */
-    // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Requestable }>(
+    // 🐉 ask: InfoRequestFn = async <const Req extends { [key: string]: Widget }>(
     // 🐉     //
     // 🐉     requestFn: (q: FormBuilder) => Req,
     // 🐉     layout?: 0,

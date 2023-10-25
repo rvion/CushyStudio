@@ -1,13 +1,13 @@
 import { observer } from 'mobx-react-lite'
 import { InputNumber, Slider } from 'rsuite'
-import { Requestable_float, Requestable_int } from 'src/controls/InfoRequest'
+import { Widget_float, Widget_int } from 'src/controls/InfoRequest'
 
 export type NumbericTheme = 'input' | 'slider'
 
-export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Requestable_int | Requestable_float }) {
+export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int | Widget_float }) {
     const req = p.req
     const val = req.state.val
-    const mode = req instanceof Requestable_int ? 'int' : 'float'
+    const mode = req instanceof Widget_int ? 'int' : 'float'
     const theme = req.input.theme ?? 'slider'
     const step = req.input.step ?? (mode === 'int' ? 1 : 0.1)
 

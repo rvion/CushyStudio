@@ -1,4 +1,4 @@
-import type { Requestable } from 'src/controls/InfoRequest'
+import type { Widget } from 'src/controls/InfoRequest'
 import type { FormResult } from 'src/core/Action'
 import type { FlowID } from 'src/front/FlowID'
 import type { GraphID } from 'src/models/Graph'
@@ -56,7 +56,7 @@ export type FromExtension_Print = { type: 'print'; message: string }
 export type FromExtension_Prompt = { type: 'prompt'; promptID: PromptID }
 export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }
 export type FromExtension_ShowHtml = { type: 'show-html'; flowID?: FlowID; content: string; title: string }
-export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: Requestable; result: FormResult<any> }
+export type FromExtension_ask = { type: 'ask'; flowID: FlowID; form: Widget; result: FormResult<any> }
 export type FromExtension_RuntimeError = {
     type: 'runtimeError'
     message: string

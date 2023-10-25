@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Toggle } from 'rsuite'
-import { Requestable_image, Requestable_imageOpt } from 'src/controls/InfoRequest'
+import { Widget_image, Widget_imageOpt } from 'src/controls/InfoRequest'
 import { useSt } from '../../../front/FrontStateCtx'
 import { ImageUI } from '../galleries/ImageUI'
 import { useImageDrop } from '../galleries/dnd'
@@ -14,7 +14,7 @@ enum Tab {
     Comfy = 1,
     Paint = 2,
 }
-export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { req: Requestable_image | Requestable_imageOpt }) {
+export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { req: Widget_image | Widget_imageOpt }) {
     const req = p.req
     const st = useSt()
     const [dropStyle, dropRef] = useImageDrop((i) => {
@@ -24,7 +24,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
     })
     const draft = useDraft()
     const showToogle =
-        req instanceof Requestable_imageOpt //
+        req instanceof Widget_imageOpt //
             ? true
             : req.state.active !== true
     return (
@@ -65,7 +65,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
                                         {req.state.cushy != null ? ( //
                                             <div tw='flex items-start'>
                                                 <ImageUI img={draft.db.images.getOrThrow(req.state.cushy.imageID)} />
-                                                {req instanceof Requestable_imageOpt ? (
+                                                {req instanceof Widget_imageOpt ? (
                                                     <Button size='sm' onClick={() => (req.state.active = false)}>
                                                         X
                                                     </Button>
@@ -96,10 +96,10 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
                                             value={req.state.comfy?.imageName ?? null}
                                             isOptional={req.state.pick !== 'comfy' || !req.state.active}
                                             onChange={(t) => {
-                                                // handle nullability for Requestable_imageOpt
+                                                // handle nullability for Widget_imageOpt
                                                 if (
                                                     t == null &&
-                                                    (req instanceof Requestable_imageOpt || req instanceof Requestable_image) &&
+                                                    (req instanceof Widget_imageOpt || req instanceof Widget_image) &&
                                                     req.state.active &&
                                                     req.state.pick === 'comfy'
                                                 ) {

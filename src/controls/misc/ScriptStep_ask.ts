@@ -1,10 +1,10 @@
 import type { ScriptStep_Iface } from './ScriptStep_Iface'
-import type { ReqResult, Requestable } from '../InfoRequest'
+import type { ReqResult, Widget } from '../InfoRequest'
 
 import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 
-export class ScriptStep_ask<const Req extends { [key: string]: Requestable }>
+export class ScriptStep_ask<const Req extends { [key: string]: Widget }>
     implements ScriptStep_Iface<{ [key in keyof Req]: ReqResult<Req[key]> }>
 {
     uid = nanoid()

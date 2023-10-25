@@ -1,13 +1,11 @@
-import type { Requestable, Requestable_choice, Requestable_choices } from 'src/controls/InfoRequest'
+import type { Widget, Widget_choice, Widget_choices } from 'src/controls/InfoRequest'
 
 import { observer } from 'mobx-react-lite'
 import { Button, SelectPicker, TagPicker } from 'rsuite'
 import { WidgetWithLabelUI } from './WidgetUI'
 import { runInAction } from 'mobx'
 
-export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: {
-    req: Requestable_choices<{ [key: string]: Requestable }>
-}) {
+export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { req: Widget_choices<{ [key: string]: Widget }> }) {
     const req = p.req
     const collapsed = req.state.collapsed
 

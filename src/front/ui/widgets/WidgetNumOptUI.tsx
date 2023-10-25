@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { InputNumber, Slider, Toggle } from 'rsuite'
-import { Requestable_floatOpt, Requestable_intOpt } from 'src/controls/InfoRequest'
+import { Widget_floatOpt, Widget_intOpt } from 'src/controls/InfoRequest'
 
-export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Requestable_intOpt | Requestable_floatOpt }) {
+export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget_intOpt | Widget_floatOpt }) {
     const req = p.req
-    const mode = req instanceof Requestable_intOpt ? 'int' : 'float'
+    const mode = req instanceof Widget_intOpt ? 'int' : 'float'
     const val = req.state.val
     const step = req.input.step ?? (mode === 'int' ? 1 : 0.1)
     const theme = req.input.theme ?? 'slider'
