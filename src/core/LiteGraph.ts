@@ -72,7 +72,9 @@ export const convertFlowToLiteGraphJSON = (graph: GraphL, cytoJSON?: CytoJSON): 
     const ctx = new LiteGraphCtx(graph)
     const last_node_id = Math.max(...graph.nodes.map((n) => n.uidNumber))
     // const last_node_id = graph.nodes[graph.nodes.length - 1].uid
+    console.groupCollapsed('convertNodeToLiteGraphNode')
     const xxx = graph.nodes.map((n) => convertNodeToLiteGraphNode(ctx, n))
+    console.groupEnd()
     const nodes = xxx.map((n) => n.node)
     // console.log('🐙 1', nodes)
     // console.log( '🐙 2', cytoJSON!.elements.nodes.map((a) => a.data), )
