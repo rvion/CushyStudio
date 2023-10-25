@@ -20,7 +20,7 @@ Its AGPL license just say that you **can not EMBED** CushyStudio engine in a com
 
 ### Q. Why did you pick AGPL instead of GPLV3 then.
 
-#### Cushy is TEMPORARILLY AGPL only (I'll switch to GPLV3 later); also, it is a tool so you can use any assets you make with it in any way without any problem.
+#### Cushy is TEMPORARILY AGPL only (I'll switch to GPLV3 later); also, it is a tool so you can use any assets you make with it in any way without any problem.
 
 -   Due to the fact CushyStudio is a tool, AGPL is not that restrictive. I'm not forcing you to open source your project just because you used CushyStudio to make some assets. the tool is free to use, your assets are yours.
 
@@ -93,7 +93,7 @@ CLAs are not uncommon in free and open source software (FOSS). Apache, Django, J
 
 # Contributor License Agreement
 
-(totaly inspired by some other CLA found online, hence the serious & legal tone)
+(totally inspired by some other CLA found online, hence the serious & legal tone)
 
 Thank you for your interest in contributing to `CushyStudio` code. This page describes the established guidelines for contributions of code, patches and artwork to `CushyStudio`.
 
