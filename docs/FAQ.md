@@ -38,9 +38,9 @@ I will not create a paid version of `CushyStudio`. I will not introduce feature 
 
 What I want to do, is:
 
--   offer GPU cloud services for `CushyStudio` users who do not own a powerful GPU locally, so they can run any actions they want very easilly.
+-   Offer GPU cloud services for `CushyStudio` users who do not own a powerful GPU locally, so they can run any actions they want very easilly.
 
--   Build some kind of marketplace sponsorship system to help action makers who build advanced action to earn money for either via revenue sharing from the cloud GPU services , or though paid usage by commercial users.
+-   Build a system for sharing revenue with and/or driving donations to action creators.
 
 -   and Possibly sell permissive licenses to companies that would want to embed `CushyStudio` engine (SDK) in their products for real-time generation, or backend usage in private commercial products.
 
