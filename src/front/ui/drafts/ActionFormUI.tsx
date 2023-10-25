@@ -77,7 +77,7 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                 style={toJS(containerStyle ?? defaultContainerStyle)}
                 tw='m-4 flex flex-col flex-grow h-full'
             >
-                <div tw='row items-center font justify-between'>
+                <div tw='row items-center font justify-between mb-2'>
                     <div tw='row items-center gap-2' style={{ fontSize: '1.3rem' }}>
                         <span>{action.name}</span>
                         <Button
@@ -98,10 +98,9 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                         </div>
                     </ErrorBoundary>
                 </div>
-                <ActionDraftListUI af={af} />
                 <div tw='flex'>
                     <div tw='flex-grow'></div>
-                    <InputGroup size='sm' tw='self-end' style={{ width: 'fit-content' }}>
+                    <InputGroup size='xs' tw='self-end' style={{ width: 'fit-content' }}>
                         {/* <InputGroup.Addon>Preset:</InputGroup.Addon>
                         <Input
                             type='text'
@@ -116,6 +115,7 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                         <InputGroup.Button
                             color={draft.shouldAutoStart ? 'green' : undefined}
                             appearance={draft.shouldAutoStart ? 'primary' : 'subtle'}
+                            startIcon={<span className='material-symbols-outlined'>autorenew</span>}
                             onClick={() => draft.setAutostart(!Boolean(draft.shouldAutoStart))}
                         >
                             {draft.shouldAutoStart && <span className='material-symbols-outlined'>check_circle</span>}
@@ -126,7 +126,6 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                             size='sm'
                             className='self-start'
                             color='green'
-                            // disabled={!tool.st.ws.isOpen}
                             appearance='primary'
                             startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
                             onClick={() => draft.start()}
@@ -135,19 +134,14 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                         </InputGroup.Button>
                     </InputGroup>
                 </div>
-                <ScrollablePaneUI
-                    //
-                    // style={{ boxShadow: 'rgb(39 118 217) 0px 0px 2rem' }}
-                    className='flex-grow  '
-                >
+                <ActionDraftListUI af={af} />
+                <ScrollablePaneUI className='flex-grow  '>
                     <div>{action.description}</div>
                     <form
-                        className='p-2'
+                        className='mx-2'
                         style={{
-                            border: '1px dashed #565656',
-                            background: '#1e1e1e',
-                            borderRadius: '0.5rem',
-                            // boxShadow: '0 0 2rem #193558',
+                            border: '1px solid #343434',
+                            background: '#131313',
                         }}
                         onKeyUp={(ev) => {
                             // submit on meta+enter

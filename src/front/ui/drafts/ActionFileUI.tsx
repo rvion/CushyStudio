@@ -59,7 +59,7 @@ export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: Act
                 ) : null}
                 {errors}
                 {/* DRAFT LIST */}
-                {/* <ActionDraftListUI af={af} /> */}
+                <ActionDraftListUI af={af} />
             </>
         )
 

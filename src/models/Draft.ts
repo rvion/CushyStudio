@@ -62,7 +62,12 @@ export class DraftL {
         const graph = this.graph.item
         if (graph == null) throw new Error('invalid graph')
 
-        // 3. create step
+        // 3. bumpt the builder cache count
+        // so widgets like seed can properly update
+        const builder = req.builder
+        builder._cache.count++
+
+        // 4. create step
         const step = this.db.steps.create({
             name: this.data.title,
             //
@@ -118,6 +123,7 @@ export class DraftL {
         autorun(() => {
             const formValue = this.form.value
             if (formValue == null) return null
+            const count = formValue.builder._cache.count // manual mobx invalidation
             const _ = JSON.stringify(formValue.serial)
             runInAction(() => {
                 console.log(`🦊 updating the form`)

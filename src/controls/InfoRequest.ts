@@ -275,8 +275,8 @@ export class Requestable_seed implements IRequest<'seed', Requestable_seed_input
         makeAutoObservable(this)
     }
     get serial(): Requestable_seed_serial { return this.state }
-    // 🔴 inject prompt id there to fix expiration mechanism
     get result(): Requestable_seed_output {
+        const count = this.builder._cache.count
         return this.state.mode ==='randomize'
             ? Math.floor(Math.random()* 9_999_999)
             : this.state.val
@@ -1100,7 +1100,10 @@ export class Requestable_enumOpt<T extends KnownEnumNames> implements IRequest<'
 
 // prettier-ignore
 export class FormBuilder {
-    constructor(public schema: SchemaL) {}
+    _cache :{ count:number } = { count:0 }
+    constructor(public schema: SchemaL) {
+        makeAutoObservable(this)
+    }
 
     // 🔴 untyped internals there
     HYDRATE =(type: Requestable['type'], input: any, serial?: any ): any => {
@@ -1145,7 +1148,7 @@ export class FormBuilder {
     strOpt             =                                                  (p: Requestable_strOpt_input             , serial?: Requestable_strOpt_serial             ) => new Requestable_strOpt              (this, this.schema, p, serial)
     prompt             =                                                  (p: Requestable_prompt_input             , serial?: Requestable_prompt_serial             ) => new Requestable_prompt              (this, this.schema, p, serial)
     promptOpt          =                                                  (p: Requestable_promptOpt_input          , serial?: Requestable_promptOpt_serial          ) => new Requestable_promptOpt           (this, this.schema, p, serial)
-    seed               =                                                  (p: Requestable_seed_input                , serial?: Requestable_seed_serial               ) => new Requestable_seed                (this, this.schema, p, serial)
+    seed               =                                                  (p: Requestable_seed_input                , serial?: Requestable_seed_serial              ) => new Requestable_seed                (this, this.schema, p, serial)
     int                =                                                  (p: Requestable_int_input                , serial?: Requestable_int_serial                ) => new Requestable_int                 (this, this.schema, p, serial)
     intOpt             =                                                  (p: Requestable_intOpt_input             , serial?: Requestable_intOpt_serial             ) => new Requestable_intOpt              (this, this.schema, p, serial)
     float              =                                                  (p: Requestable_float_input              , serial?: Requestable_float_serial              ) => new Requestable_float               (this, this.schema, p, serial)

@@ -19,7 +19,7 @@ import { ComfyUIUI } from '../workspace/ComfyUIUI'
 import { LiteGraphJSON } from 'src/core/LiteGraph'
 import { MarketplaceUI } from '../../../marketplace/MarketplaceUI'
 import { observer } from 'mobx-react-lite'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { ActionFileUI } from '../drafts/ActionFileUI'
 import { ActionPath } from 'src/back/ActionPath'
 import { PanelConfigUI } from './PanelConfigUI'
@@ -102,12 +102,25 @@ export class CushyLayoutManager {
     }
 
     layoutRef = createRef<Layout>()
+    updateCurrentTab = (p: Partial<FL.TabNode>) => {
+        const tab = this.currentTab
+        if (tab == null) return
+        this.model.doAction(Actions.updateNodeAttributes(tab.getId(), p))
+    }
 
+    currentTabSet: Maybe<FL.TabSetNode> = null
+    currentTab: Maybe<FL.Node> = null
+    currentTabID: Maybe<string> = null
     UI = observer(() => {
         console.log('[💠] Rendering Layout')
         return (
             <Layout //
                 onModelChange={(model) => {
+                    runInAction(() => {
+                        this.currentTabSet = model.getActiveTabset()
+                        this.currentTab = this.currentTabSet?.getSelectedNode()
+                        this.currentTabID = this.currentTab?.getId()
+                    })
                     console.log(`[💠] Layout: 📦 onModelChange`)
                     this.saveCurrentAsDefault()
                 }}
@@ -179,6 +192,12 @@ export class CushyLayoutManager {
         const prevTab = tabset.getSelectedNode()
         if (prevTab != null) this.model.doAction(Actions.selectTab(prevTab.getId()))
         // 5. mark action as success
+        return Trigger.Success
+    }
+
+    closeTab = (tabID: string) => {
+        const shouldRefocusAfter = this.currentTabID === tabID
+        this.model.doAction(Actions.deleteTab(tabID))
         return Trigger.Success
     }
 
