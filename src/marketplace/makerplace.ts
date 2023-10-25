@@ -20,6 +20,12 @@ export class Marketplace {
             recommanded: true,
         },
         {
+            name: 'Portrait emotion change',
+            github: 'featherice/cushy-actions',
+            description: 'tweak your portrait, change emotions. More soon',
+            recommanded: true,
+        },
+        {
             name: 'cushy-example-actions',
             github: 'rvion/cushy-example-actions',
             description: 'some example action pack with a bunch of everything to get started',
