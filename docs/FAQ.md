@@ -24,9 +24,9 @@ Its AGPL license just say that you **can not EMBED** CushyStudio engine in a com
 
 -   Due to the fact CushyStudio is a tool, AGPL is not that restrictive. I'm not forcing you to open source your project just because you used CushyStudio to make some assets. the tool is free to use, your assets are yours.
 
--   I picked AGPL because I don't want to work for some other cloud company to suddenly start offering Cushy actions in the cloud and make money of me while I still can't provide as I want for my family. I want to be able to make some money with CushyStudio in a community friendly way.
+-   I picked AGPL because I don't want to work for free, and suddenly discover that some other cloud company has started offering Cushy actions in the cloud and make money, while I still can't provide as I would want for my family.
 
--   Once I'll have made enough to provide my family (haven't decided yet how much that is, but will be public soon), I'll switch CushyStudio to a fully free GPL v3 license. 🚨 My goal is to state a clear goal for full GPL v3 release as soon as possible and be 100% transparent on all earnings I make. Any big company will have the opportunity to pay once for everyone to have access to CushyStudio in a full GPLV3 way. (👋 feel free to contact me anytime)
+-   I want to be able to make some money with CushyStudio in a community friendly way. And once I'll have made enough to provide my family (haven't decided yet how much that is, but will be public soon), I'll switch CushyStudio to a fully free GPL v3 license. 🚨 My goal is to state a clear goal for full GPL v3 release as soon as possible and be 100% transparent on all earnings I make. Any big company will have the opportunity to pay once for everyone to have access to CushyStudio in a full GPLV3 way. (👋 feel free to contact me anytime)
 
 ---
 
