@@ -44,8 +44,8 @@ export type Widget =
     | Widget_groupOpt<any>
     | Widget_choice<any>
     | Widget_choices<any>
-    | Widget_enum<KnownEnumNames>
-    | Widget_enumOpt<KnownEnumNames>
+    | Widget_enum<any>
+    | Widget_enumOpt<any>
 
 // 🅿️ str ==============================================================================
 export type Widget_str_input = ReqInput<{ default?: string; textarea?: boolean }>
