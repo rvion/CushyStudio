@@ -93,6 +93,8 @@ CLAs are not uncommon in free and open source software (FOSS). Apache, Django, J
 
 # Contributor License Agreement
 
+(totaly inspired by some other CLA found online, hence the serious & legal tone)
+
 Thank you for your interest in contributing to `CushyStudio` code. This page describes the established guidelines for contributions of code, patches and artwork to `CushyStudio`.
 
 In order to clarify the intellectual property license granted with contributions from any person or entity, `CushyStudio` must have a Contributor License Agreement (CLA) on file that has been signed by each Contributor, indicating agreement to certain license terms. This license is not only for the protection of the contributors themselves, but also for the protection of the project and its users; it does not change your rights to use your own Contributions for any other purpose.
