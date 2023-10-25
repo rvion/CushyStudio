@@ -8,9 +8,9 @@ _(or rather questions I expect people to ask often)_
 
 ---
 
-### Q. Will `CushyStudio` remain open source?
+### Q. Will `CushyStudio` remain open source and free ?
 
-### A. Yes.
+### A. Yes. and Yes.
 
 `CushyStudio` is, and always will be 100% open source and free to use as a tool. Make assets with the app. Use those assets in your games or products; make art, etc. I don't own your work, nor want to. I want to help you create it, help you promote it, and have fun in the process.
 
@@ -18,17 +18,31 @@ _(or rather questions I expect people to ask often)_
 
 ---
 
-### Q. Will you create a paid version of `CushyStudio`?
+### Q. Why did you pick AGPL instead of GPLV3 then.
+
+### 🚨 1: Cushy is TEMPORARILLY AGPL only. 2: CushyStudio is a tool so you can use any assets you make with it in any way without any problem.
+
+-   Due to the face CushyStudio is a tool, AGPL is not that restrictive. I'm not forcing you to open source your project just because you used CushyStudio to make some assets. the tool is free to use, your assets are yours.
+
+-   I picked AGPL because I don't want to work for some other cloud company to suddenly start offering Cushy actions in the cloud and make money of me while I still can't provide as I want for my family. I want to be able to make some money with CushyStudio in a community friendly way.
+
+-   Once I'll have made enough to provide my family (haven't decided yet how much that is, but will be public soon), I'll switch CushyStudio to a fully free GPL v3 license. 🚨 My goal is to state a clear goal for full GPL v3 release as soon as possible and be 100% transparent on all earnings I make. Any big company will have the opportunity to pay once for everyone to have access to CushyStudio in a full GPLV3 way. (👋 feel free to contact me anytime)
+
+---
+
+### Q. SO.. Will you create a paid version of `CushyStudio`?
 
 ### A. No. Again, `CushyStudio` will always be free and open source.
 
-I will not create a paid version of `CushyStudio`. I will not introduce limitations in the free version that you have to pay to unlock. It is to everyone's benefit that `CushyStudio` remains free and open source, including me.
+I will not create a paid version of `CushyStudio`. I will not introduce feature limitations in the free version that you have to pay to unlock. It is to everyone's benefit that `CushyStudio` remains free and open source, including me.
 
 What I want to do, is:
 
 -   offer GPU cloud services for `CushyStudio` users who do not own a powerful GPU locally, so they can run any actions they want very easilly.
 
--   Allow you to get paid for your actions, both by allowing you to handle access to your actions your way, and by enabling revenue sharing on the cloud GPU services users will rent to run your free actions.
+-   Build some kind of opt-in retribution system / marketplace to help action makers who build advanced action to earn money for either via revenue sharing from the cloud GPU services , or though paid usage by commercial users.
+
+-   and Possibly sell permissive licenses to companies that would want to embed `CushyStudio` engine (SDK) in their products for real-time generation, or backend usage in private commercial products.
 
 I hope that these services will fund the future development of `CushyStudio`.
 
@@ -43,9 +57,9 @@ I hope that these services will fund the future development of `CushyStudio`.
 
 ---
 
-### Q. it's AGPL - Do you accept contributions like bug fixes ?
+### Q. Okay, so for now, CushyStudio license is AGPL - Do you accept contributions like bug fixes to the core engine ?
 
-### A. yes, that's why I have a CLA
+### A. yes, that's part of the reason why I have a CLA
 
 This CLA only concern your contribution to the main repository, (not your actions !). It allows me to relicense the patches you submit in the main repo so I can still sell those GPL licenses to companies looking to embed CushyStudio, and still use the whole CushyStudio engine in the backend to provide those extra cloud features and support the continued development of `CushyStudio`.
 
@@ -53,39 +67,19 @@ I can obviously already do this with the code I wrote myself, but the CLA allows
 
 ---
 
-### Q. Does this concern `User submitted action packs` ?
+### Q. Does the CLA concern `User-published action packs in the marketplace` ?
 
-### A. No; your actions are yours !
+### A. No; your actions are yours.
 
 Pick any license you want. Do what you want with them, they are yours. I don't want to steal your work, quite the opposite! I want to build the platform to let you express yourselves, publish your work, and even get paid for it.
 
 ---
 
-### Q. How does the CLA benefit the community?
-
-### A. Depends who you ask 😄
-
-The CLA enables me:
-
--   to release `CushyStudio` on platforms that I wouldn't otherwise be able to release on, such as within Apple's App Store.
-
--   to dual-license certain parts of the code under a permissive license in order to create an open standard that is usable across all SD applications.
-
--   to fund the project though selling licenses to some companies that would want to embed `CushyStudio` in their products.
-
----
-
 ### Q. What if I want to contribute something like a bug-fix but I don't want to sign the CLA?
 
-A. Unfortunately, signing the CLA is a necessary requirement if you want to contribute to the `CushyStudio` project. If I allow code into `CushyStudio` that is not covered by the CLA, I would be opening myselve up to the possibility of being blocked from distributing `CushyStudio` on other platforms (eg: Apple) or from launching a cloud service to rent GPUs version.
+### A. Unfortunately, signing the CLA is a necessary requirement
 
----
-
-### Q. What does this mean for `CushyStudio`'s development?
-
-A. The CLA provides a way for me to fund the future development of `CushyStudio` without me having to charge for `CushyStudio` itself. As a result of this, `CushyStudio`'s development will happen faster and the quality of the user experience will be better, yet the program will remain open source and completely free for all users.
-
-If this project ever becomes successfull, it will allow me to bring in people with the right skills to make `CushyStudio` the best generative art program in the world, and not just the best free program either!
+if you want to contribute to the `CushyStudio` project. If I allow code into `CushyStudio` that is not covered by the CLA, I would be opening myselve up to the possibility of being blocked from distributing `CushyStudio` on other platforms (eg: Apple) or from launching a cloud service to rent GPUs version.
 
 ---
 
@@ -94,14 +88,6 @@ If this project ever becomes successfull, it will allow me to bring in people wi
 ### A. No. Apache, Django, Joomla, OpenJS, Python and QT all have CLAs
 
 CLAs are not uncommon in free and open source software (FOSS). Apache, Django, Joomla, OpenJS, Python and QT all have CLAs. The Free Software Foundation (authors of the GPL) ask their contributors to assign copyright to the FSF or disclaim copyright entirely, which is more than I am asking for in `CushyStudio`'s CLA. Under this CLA, contributors retain copyright to their code and are free to use it however they like.
-
----
-
-### Q. I have already submitted code that is waiting to be merged. What should I do now?
-
-### A. Jus tadd you name in CLA-signatures.txt file
-
-If you have already submitted code that is waiting to be merged, please add your name to the CLA-signatures.txt file in the `CushyStudio` repository. This will allow me to merge your code into `CushyStudio` without any further delay.
 
 ---
 
