@@ -28,7 +28,7 @@ export const SchemaIndicatorUI = observer(function SchemaIndicatorUI_(p: {}) {
                     <span className='text-green-100'>Schema</span>
                 </div>
             ) : (
-                <Button appearance='ghost' color='orange' className='flex gap-2'>
+                <Button size='xs' appearance='ghost' color='orange' className='flex gap-2'>
                     <Loader />
                     <div> schema</div>
                 </Button>

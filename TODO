@@ -7,11 +7,14 @@ marketplace:
     ☐ refresh star count and readme every few hours (add expire mechanism)
 
 perf:
-    ☐ split UI so type inference is faster
+    ✔ make type inference is faster @done(23-10-26 20:55)
 
 discoverability:
-    ☐ self discoverable completsion `:`, `@`, `#`, `*`
-    ☐ better default action pack files  (that shows how to build modular ui helper, etc)
+    ✔ self discoverable completsion `:`, `@`, `#`, `*` @done(23-10-26 20:54)
+    ✔ better default action pack files  (that shows how to build modular ui helper, etc) @done(23-10-26 20:55)
+
+panes:
+    ✔ ComfyNodeExplorer @done(23-10-26 20:04)
 
 asset pack:
     ☐ marketplace should allow custom assets for images
@@ -20,6 +23,7 @@ asset pack:
 widget UI:
     ☐ polish some widgets
     ☐ choices
+    ✔ improve image preview so it fit by default + more features @done(23-10-26 21:47)
     ☐ lists (re-ordering, ...)
     ☐ image loader (local files by path)
     ☐ permutations

@@ -13,6 +13,8 @@ import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 import { Toolbox } from 'src/back/CushyFileWatcher'
 import { Marketplace } from 'src/marketplace/makerplace'
 import { ProjectL } from 'src/models/Project'
+import { ShortcutWatcher } from 'src/shortcuts/ShortcutManager'
+import { shortcutsDef } from 'src/shortcuts/shortcuts'
 import { ThemeManager } from 'src/theme/layoutTheme'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { DanbooruTags } from '../booru/BooruLoader'
@@ -31,8 +33,6 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { Updater } from './updater'
-import { ShortcutWatcher } from 'src/shortcuts/ShortcutManager'
-import { shortcutsDef } from 'src/shortcuts/shortcuts'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -454,4 +454,5 @@ export class STATE {
         mkdirSync(folder, { recursive: true })
         writeFileSync(absPath, content, 'utf-8')
     }
+    // ----------------------------
 }

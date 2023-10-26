@@ -1,10 +1,10 @@
-import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import React from 'react'
+import { Popover, Whisper } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 
 export const MainNavEntryUI = observer(function UI_(p: {
-    onClick: () => void
+    onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
     ix: string
     icon: React.ReactNode
     soon?: boolean
@@ -49,13 +49,41 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 label='paint'
             />
 
-            <MainNavEntryUI
-                //
-                onClick={() => st.layout.addComfy()}
-                ix='4'
-                icon={<img src='/ComfyUILogo.png' style={{ width: '1.5rem', height: '1.5rem' }} />}
-                label='Comfy'
-            />
+            <Whisper
+                placement='right'
+                enterable
+                speaker={
+                    <Popover>
+                        <MainNavEntryUI
+                            //
+                            onClick={(ev) => {
+                                ev.preventD
+                                st.layout.addComfyNodeExplorer()
+                            }}
+                            ix='A'
+                            icon={<img src='/ComfyUILogo.png' style={{ width: '1.5rem', height: '1.5rem' }} />}
+                            label='Comfy'
+                        />
+                        <MainNavEntryUI
+                            //
+                            onClick={() => st.layout.addComfyNodeExplorer()}
+                            ix='B'
+                            icon={<img src='/ComfyUILogo.png' style={{ width: '1.5rem', height: '1.5rem' }} />}
+                            label='Comfy'
+                        />
+                    </Popover>
+                }
+            >
+                <div>
+                    <MainNavEntryUI
+                        //
+                        onClick={() => st.layout.addComfy()}
+                        ix='4'
+                        icon={<img src='/ComfyUILogo.png' style={{ width: '1.5rem', height: '1.5rem' }} />}
+                        label='Comfy'
+                    />
+                </div>
+            </Whisper>
 
             <MainNavEntryUI
                 onClick={() => st.layout.addGallery()}

@@ -25,6 +25,7 @@ import { ActionPath } from 'src/back/ActionPath'
 import { PanelConfigUI } from './PanelConfigUI'
 import { ActionFormUI } from '../drafts/ActionFormUI'
 import { Trigger } from 'src/shortcuts/Trigger'
+import { ComfyNodeExplorerUI } from './ComfyNodeExplorerUI'
 
 // still on phone
 enum Widget {
@@ -34,6 +35,7 @@ enum Widget {
     Action = 'Action',
     Draft = 'Draft',
     ComfyUI = 'ComfyUI',
+    ComfyUINodeExplorer = 'ComfyUINodeExplorer',
     FileList = 'FileList',
     Steps = 'Steps',
     LastGraph = 'LastGraph',
@@ -144,7 +146,7 @@ export class CushyLayoutManager {
             this._AddWithProps(Widget.Paint, `/paint/${imgID}`, { title: 'Paint', imgID })
         }
     }
-    addImage = (imgID: ImageID) => this._AddWithProps(Widget.Image, `/image/${imgID}`, { title: 'Image', imgID })
+    addImage = (imgID: ImageID) => this._AddWithProps(Widget.Image, `/image/${imgID}`, { title: '🎇 Image', imgID })
     addGallery = () => this._AddWithProps(Widget.Gallery, `/gallery`, { title: 'Gallery' })
     addHosts = () => this._AddWithProps(Widget.Hosts, `/hosts`, { title: 'Hosts' })
     addComfy = (litegraphJson?: LiteGraphJSON) => {
@@ -155,6 +157,10 @@ export class CushyLayoutManager {
             const hash = uniqueIDByMemoryRef(litegraphJson)
             return this._AddWithProps(Widget.ComfyUI, `/litegraph/${hash}`, { title: 'Comfy', icon, litegraphJson })
         }
+    }
+    addComfyNodeExplorer = () => {
+        const icon = '/ComfyUILogo.png'
+        this._AddWithProps(Widget.ComfyUINodeExplorer, `/ComfyUINodeExplorer`, { title: `Node Explorer`, icon })
     }
     addAction = (actionPath: ActionPath) =>
         this._AddWithProps(Widget.Action, `/action/${actionPath}`, { title: actionPath, actionPath })
@@ -267,9 +273,8 @@ export class CushyLayoutManager {
         if (component === Widget.Hosts) return <HostListUI />
         if (component === Widget.Marketplace) return <MarketplaceUI />
         if (component === Widget.Config) return <PanelConfigUI />
-        if (component === Widget.Draft) {
-            return <ActionFormUI draft={extra.draftID} />
-        }
+        if (component === Widget.Draft) return <ActionFormUI draft={extra.draftID} />
+        if (component === Widget.ComfyUINodeExplorer) return <ComfyNodeExplorerUI />
 
         exhaust(component)
         return (

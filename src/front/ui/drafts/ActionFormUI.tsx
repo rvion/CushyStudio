@@ -47,7 +47,8 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
     if (action == null)
         return (
             <Message type='error'>
-                <pre tw='bg-red-900'>❌ action not found</pre>
+                <pre tw='text-red-600'>❌ action not found</pre>
+                <pre tw='text-red-600'>❌ errors: {JSON.stringify(af.errors, null, 2)}</pre>
             </Message>
         )
 
@@ -100,29 +101,12 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                 </div>
                 <div tw='flex'>
                     <div tw='flex-grow'></div>
-                    <InputGroup size='xs' tw='self-end' style={{ width: 'fit-content' }}>
-                        {/* <InputGroup.Addon>Preset:</InputGroup.Addon>
-                        <Input
-                            type='text'
-                            className='w-full'
-                            placeholder='Search...'
-                            value={draft.data.title}
-                            onChange={(next) => {
-                                draft.update({ title: next })
-                                st.layout.renameCurrentTab(next)
-                            }}
-                        /> */}
-                        <InputGroup.Button
-                            color={draft.shouldAutoStart ? 'green' : undefined}
-                            appearance={draft.shouldAutoStart ? 'primary' : 'subtle'}
-                            startIcon={<span className='material-symbols-outlined'>autorenew</span>}
-                            onClick={() => draft.setAutostart(!Boolean(draft.shouldAutoStart))}
-                        >
-                            {draft.shouldAutoStart && <span className='material-symbols-outlined'>check_circle</span>}
+                    <div tw='self-end flex gap-2 items-center' style={{ width: 'fit-content' }}>
+                        <Checkbox checked={draft.shouldAutoStart} onChange={(ev, checked) => draft.setAutostart(checked)}>
                             Autorun
-                        </InputGroup.Button>
+                        </Checkbox>
                         {/* <Toggle size='sm' color='red' onChange={(t) => draft.setAutostart(t)} /> */}
-                        <InputGroup.Button
+                        <Button
                             size='sm'
                             className='self-start'
                             color='green'
@@ -131,8 +115,8 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                             onClick={() => draft.start()}
                         >
                             Run
-                        </InputGroup.Button>
-                    </InputGroup>
+                        </Button>
+                    </div>
                 </div>
                 <ActionDraftListUI af={af} />
                 <ScrollablePaneUI className='flex-grow  '>

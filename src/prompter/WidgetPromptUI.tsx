@@ -29,6 +29,10 @@ import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
 import { TreeViewPlugin } from './plugins/TreeViewPlugin'
 import { toJS } from 'mobx'
 import { Widget_prompt, Widget_promptOpt } from 'src/controls/Widget'
+import { useMemo } from 'react'
+import { CompletionState } from './plugins/CompletionProviders'
+import { Button, IconButton } from 'rsuite'
+import { PrompterConfigUI } from './PropmterConfig'
 
 // const theme = {
 //     // Theme styling goes here
@@ -78,6 +82,16 @@ export type WidgetPromptOutput = {
 export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptOpt }) => {
     const st = useSt()
     const req = p.req
+    const cs = useMemo(
+        () =>
+            new CompletionState(st, {
+                booru: true,
+                embedding: true,
+                lora: true,
+                wildcard: true,
+            }),
+        [],
+    )
     const initialConfig: InitialConfigType = {
         nodes: [EmbeddingNode, LoraNode, WildcardNode, BooruNode],
         editorState: () => {
@@ -115,7 +129,11 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
             <PlainTextPlugin
                 contentEditable={
                     <ContentEditable
-                        style={{ background: 'var(--rs-input-bg)', border: '1px solid #2e2e2e' }}
+                        style={{
+                            minHeight: '3rem',
+                            background: 'var(--rs-input-bg)',
+                            border: '1px solid #2e2e2e',
+                        }}
                         className='p-0.5 mr-0.5 rounded flex flex-grow border-gray-500 [min-width:8rem]'
                     />
                 }
@@ -124,44 +142,11 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
             />
             {/* https://github.com/facebook/lexical/blob/main/packages/lexical-playground/src/plugins/EmojiPickerPlugin/index.tsx */}
 
-            <CushyCompletionPlugin
-                //
-                trigger=':'
-                getValues={() => st.schema.data.embeddings}
-                describeValue={(t) => ({ title: t, keywords: [t] })}
-                createNode={(t) => $createEmbeddingNode(t)}
-            />
-            <CushyCompletionPlugin
-                trigger='@'
-                getValues={() => st.schema.getLoras()}
-                describeValue={(t) => ({ title: t.replaceAll('\\', '/').replace('.safetensors', ''), keywords: [t] })}
-                createNode={(t) => {
-                    // console.log('🟢, picked', t)
-                    return $createLoraNode({ name: t, strength_clip: 1, strength_model: 1 })
-                }}
-            />
-
-            <CushyCompletionPlugin
-                trigger='*'
-                getValues={() => Object.keys(wildcards)}
-                describeValue={(t) => ({ title: t, keywords: [t] })}
-                createNode={(t) => $createWildcardNode(t)}
-            />
-            <CushyCompletionPlugin
-                trigger='&'
-                getValues={() => st.danbooru.tags}
-                describeValue={(t) => ({ title: t.text, keywords: t.aliases })}
-                createNode={(t) => $createBooruNode(t)}
-            />
-
+            <CushyCompletionPlugin cs={cs} />
+            <PrompterConfigUI />
             <OnChangePlugin
                 onChange={(editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => {
                     onChange(req, editorState)
-                    // const { debug, items } = getFinalJSON(editorState)
-                    // console.log(debug)
-
-                    // console.log(editorState, editor, tags)
-                    // p.set(editorState.)
                 }}
             />
             <HistoryPlugin />

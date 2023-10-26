@@ -7,3 +7,11 @@ export const comfyColors: { [category: string]: string } = {
     sampling: '#634a1b',
     image: '#7e3a3a',
 }
+
+export const getColor = (_category: string) => {
+    const category = _category.toLowerCase()
+    if (category in comfyColors) {
+        return comfyColors[category]
+    }
+    return '#000000'
+}

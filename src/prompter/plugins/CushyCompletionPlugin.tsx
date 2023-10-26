@@ -1,26 +1,23 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { LexicalTypeaheadMenuPlugin, MenuOption, useBasicTypeaheadTriggerMatch } from '@lexical/react/LexicalTypeaheadMenuPlugin'
-import { $getSelection, $isRangeSelection, LexicalNode, TextNode } from 'lexical'
-import { ReactNode, useCallback, useEffect, useMemo, useState } from 'react'
+import { LexicalTypeaheadMenuPlugin, MenuOption, MenuTextMatch, TriggerFn } from '@lexical/react/LexicalTypeaheadMenuPlugin'
+import { $getSelection, $isRangeSelection, TextNode } from 'lexical'
+import { observer } from 'mobx-react-lite'
+import { useCallback, useMemo, useState } from 'react'
 import * as ReactDOM from 'react-dom'
 import { useSt } from '../../front/FrontStateCtx'
+import { CompletionCandidate, CompletionState } from './CompletionProviders'
 
 /** menu entry state */
-class CompletionOption<T> extends MenuOption {
+export class CompletionOption<T = any> extends MenuOption {
     title: string
     payload: T
     keywords: Array<string>
 
-    constructor(
-        //
-        title: string,
-        payload: T,
-        options: { keywords?: Array<string> },
-    ) {
-        super(title)
-        this.title = title
-        this.payload = payload
-        this.keywords = options.keywords || []
+    constructor(public _candidate: CompletionCandidate<T>) {
+        super(_candidate.title)
+        this.title = _candidate.title
+        this.payload = _candidate.value
+        this.keywords = _candidate.keywords || []
     }
 }
 
@@ -48,6 +45,7 @@ function CompletionUI<T>(p: {
             onClick={p.onClick}
         >
             <span className='text'>
+                {p.option._candidate.menuLabel}
                 {/* {option.emoji}  */}
                 {p.option.title}
             </span>
@@ -55,64 +53,54 @@ function CompletionUI<T>(p: {
     )
 }
 
-const MAX_EMOJI_SUGGESTION_COUNT = 10
+const MAX_SUGGESTION_COUNT = 10
 
-// export const  ShortcutPlugn =() =>  {
-//     const st = useSt()
-//     const [editor] = useLexicalComposerContext()
-//     editor._listeners.
-//     const [queryString, setQueryString] = useState<string | null>(null)
-// }
+const PUNCTUATION = [',.']
+function FOO(/*trigger: string,*/ { minLength = 1, maxLength = 75 }) {
+    return useCallback(
+        (text: string): MenuTextMatch | null => {
+            const lastWord = text.split(/\s+/).pop()?.trim()
+            if (!lastWord) return null
+            return {
+                leadOffset: text.length - lastWord.length,
+                matchingString: lastWord,
+                replaceableString: lastWord,
+            }
+            return null
+        },
+        [maxLength, minLength /*, trigger*/],
+    )
+}
 
-export const CushyCompletionPlugin = <T extends any>(p: {
-    //
-    trigger: string
-    getValues: () => Array<T>
-    // icon: ReactNode
-    describeValue: (value: T) => {
-        // titleUI: ReactNode
-        title: string
-        keywords: string[]
-    }
-    createNode: (value: T) => LexicalNode
-}) => {
+export const CushyCompletionPlugin = observer((p: { cs: CompletionState }) => {
     const st = useSt()
     const [editor] = useLexicalComposerContext()
     const [queryString, setQueryString] = useState<string | null>(null)
-    const [rawCandidates, setRawCandidates] = useState<T[]>([])
-    useEffect(() => setRawCandidates(p.getValues()), [])
 
-    const menuOptions: CompletionOption<T>[] = useMemo(
-        () =>
-            rawCandidates != null //
-                ? rawCandidates.map((x) => {
-                      const desc = p.describeValue(x)
-                      return new CompletionOption(desc.title, x, { keywords: desc.keywords })
-                  })
-                : [],
-        [rawCandidates],
-    )
-    const checkForTriggerMatch = useBasicTypeaheadTriggerMatch(p.trigger /*':'*/, { minLength: 0 })
-    const options: CompletionOption<T>[] = useMemo(() => {
+    const menuOptions = p.cs.completionOptions
+    const checkForTriggerMatch: TriggerFn = FOO({ minLength: 0 })
+    // const checkForTriggerMatch2: TriggerFn = useBasicTypeaheadTriggerMatch(p.trigger, { minLength: 0 })
+
+    const options: CompletionOption[] = useMemo(() => {
         return menuOptions
-            .filter((option: CompletionOption<T>) => {
+            .filter((option: CompletionOption) => {
                 return queryString != null
                     ? new RegExp(queryString, 'gi').exec(option.title) || option.keywords != null
                         ? option.keywords.some((keyword: string) => new RegExp(queryString, 'gi').exec(keyword))
                         : false
                     : menuOptions
             })
-            .slice(0, MAX_EMOJI_SUGGESTION_COUNT)
+            .slice(0, MAX_SUGGESTION_COUNT)
     }, [menuOptions, queryString])
 
     const onSelectOption = useCallback(
-        (selectedOption: CompletionOption<T>, nodeToRemove: TextNode | null, closeMenu: () => void) => {
+        (selectedOption: CompletionOption, nodeToRemove: TextNode | null, closeMenu: () => void) => {
             editor.update(() => {
                 const selection = $getSelection()
                 if (!$isRangeSelection(selection) || selectedOption == null) return
                 if (nodeToRemove) nodeToRemove.remove()
                 const insertionResult = selection.insertNodes([
-                    p.createNode(selectedOption.payload),
+                    selectedOption._candidate.createNode(selectedOption.payload),
                     //
                     // $createColoredNode('coucou' + selectedOption.emoji, 'blue'),
                     // $createEmbeddingNode('coucou'),
@@ -142,7 +130,7 @@ export const CushyCompletionPlugin = <T extends any>(p: {
                     ? ReactDOM.createPortal(
                           <div className='typeahead-popover emoji-menu '>
                               <ul style={{ paddingInlineStart: 0 }}>
-                                  {options.map((option: CompletionOption<T>, index) => (
+                                  {options.map((option: CompletionOption, index) => (
                                       <CompletionUI
                                           key={option.key}
                                           index={index}
@@ -163,4 +151,4 @@ export const CushyCompletionPlugin = <T extends any>(p: {
             }}
         />
     )
-}
+})

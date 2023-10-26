@@ -36,7 +36,7 @@ export const WebsocketIndicatorUI = observer(function WebsocketIndicatorUI_(p: {
                     <span className='text-green-100'>WS</span>
                 </div>
             ) : (
-                <Button color='orange' appearance='ghost' className='flex gap-2'>
+                <Button size='xs' color='orange' appearance='ghost' className='flex gap-2'>
                     <Loader />
                     <div>Connecting to ComfyUI</div>
                 </Button>

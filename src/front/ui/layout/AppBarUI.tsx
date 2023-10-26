@@ -1,6 +1,6 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton } from 'rsuite'
+import { Button, IconButton, Input, InputGroup } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
 import { UpdateBtnUI } from './UpdateBtnUI'
@@ -26,6 +26,18 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             >
                 save
             </Button>
+
+            <InputGroup size='xs' tw='w-auto'>
+                <InputGroup.Addon>
+                    <img src='/GithubLogo2.png' alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
+                    your github:
+                </InputGroup.Addon>
+                <Input
+                    onChange={(next) => st.configFile.update({ githubUsername: next })}
+                    value={st.configFile.value.githubUsername}
+                    placeholder='your github username'
+                ></Input>
+            </InputGroup>
 
             <Button
                 //
