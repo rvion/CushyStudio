@@ -42,8 +42,11 @@ enum Widget {
     LastIMage = 'LastIMage',
     Civitai = 'Civitai',
     Image = 'Image',
-    Hosts = 'Hosts',
+    // action pack marketplace
     Marketplace = 'Marketplace',
+    ActionPack = 'ActionPack',
+    // config pages
+    Hosts = 'Hosts',
     Config = 'Config',
 }
 
@@ -275,6 +278,7 @@ export class CushyLayoutManager {
         if (component === Widget.Config) return <PanelConfigUI />
         if (component === Widget.Draft) return <ActionFormUI draft={extra.draftID} />
         if (component === Widget.ComfyUINodeExplorer) return <ComfyNodeExplorerUI />
+        if (component === Widget.ActionPack) return <div>🔴 todo: action pack page</div>
 
         exhaust(component)
         return (

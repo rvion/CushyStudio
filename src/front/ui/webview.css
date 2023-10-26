@@ -282,3 +282,7 @@ hr {
 ._MD table, ._MD th, ._MD td {
     border: 1px solid rgb(57, 57, 57);
 }
+
+.rv-tooltip {display: none;}
+.rv-tooltip-container:hover { display: relative;}
+.rv-tooltip-container:hover .rv-tooltip {display: block; position: absolute; background: #333333; z-index: 9999;}

@@ -32,6 +32,8 @@ widget UI:
 misc:
     ☐ minor cleanup here and there
     ☐ code builder:
+    ☐ image drop
+    ☐ image upload by hash system (multi host !!!)
     ☐ select nodes  => see the corresponding code in realtime
     ☐ have a better auto-UI generated
     ☐ new primitive to add all the primitive inputs instead of having super long names,

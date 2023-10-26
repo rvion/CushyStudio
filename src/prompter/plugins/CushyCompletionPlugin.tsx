@@ -82,13 +82,19 @@ export const CushyCompletionPlugin = observer((p: { cs: CompletionState }) => {
     // const checkForTriggerMatch2: TriggerFn = useBasicTypeaheadTriggerMatch(p.trigger, { minLength: 0 })
 
     const options: CompletionOption[] = useMemo(() => {
+        if (queryString == null) return menuOptions
+        if (!queryString.length) return menuOptions
         return menuOptions
             .filter((option: CompletionOption) => {
-                return queryString != null
-                    ? new RegExp(queryString, 'gi').exec(option.title) || option.keywords != null
-                        ? option.keywords.some((keyword: string) => new RegExp(queryString, 'gi').exec(keyword))
-                        : false
-                    : menuOptions
+                const c0 = queryString[0]
+                if ([':', '&', '*', '@'].includes(c0)) {
+                    if (option._candidate.trigger !== c0) return false
+                }
+                const lastWordWithoutSymbols = queryString?.replace(/[^a-zA-Z0-9]/g, '')
+                const patrn = new RegExp(lastWordWithoutSymbols, 'gi')
+                if (patrn.exec(option.title)) return true
+                if (option.keywords.some((keyword: string) => patrn.exec(keyword))) return true
+                return false
             })
             .slice(0, MAX_SUGGESTION_COUNT)
     }, [menuOptions, queryString])
@@ -101,7 +107,6 @@ export const CushyCompletionPlugin = observer((p: { cs: CompletionState }) => {
                 if (nodeToRemove) nodeToRemove.remove()
                 const insertionResult = selection.insertNodes([
                     selectedOption._candidate.createNode(selectedOption.payload),
-                    //
                     // $createColoredNode('coucou' + selectedOption.emoji, 'blue'),
                     // $createEmbeddingNode('coucou'),
                     // $createCustomParagraphNode(),

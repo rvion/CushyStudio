@@ -66,7 +66,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
     return (
         <Whisper
             enterable
-            placement='auto'
+            placement='bottom'
             speaker={
                 <Popover>
                     <div key={def.name} className='flex items-start'>

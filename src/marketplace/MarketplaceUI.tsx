@@ -13,7 +13,7 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
     return (
         <div>
             <div tw='p-2'>
-                <Button appearance='ghost' color='green' tw='w-full'>
+                <Button appearance='ghost' color='green' tw='w-full self-start'>
                     Create action
                 </Button>
             </div>

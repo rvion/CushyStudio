@@ -37,8 +37,8 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <MainNavEntryUI
                 onClick={() => st.layout.addMarketplace()}
                 ix='2'
-                icon={<span className='material-symbols-outlined text-blue-500'>extension</span>}
-                label='Packs'
+                icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
+                label='Apps'
             />
 
             {/* PAINT */}
@@ -56,21 +56,21 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                     <Popover>
                         <MainNavEntryUI
                             //
-                            onClick={(ev) => {
-                                ev.preventD
+                            onClick={() => {
                                 st.layout.addComfyNodeExplorer()
                             }}
                             ix='A'
-                            icon={<img src='/ComfyUILogo.png' style={{ width: '1.5rem', height: '1.5rem' }} />}
-                            label='Comfy'
+                            icon={<span className='material-symbols-outlined'>explore</span>}
+                            label='Node Explorer'
                         />
-                        <MainNavEntryUI
+                        {/* <MainNavEntryUI
                             //
                             onClick={() => st.layout.addComfyNodeExplorer()}
                             ix='B'
-                            icon={<img src='/ComfyUILogo.png' style={{ width: '1.5rem', height: '1.5rem' }} />}
+                            icon={
+                            }
                             label='Comfy'
-                        />
+                        /> */}
                     </Popover>
                 }
             >

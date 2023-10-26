@@ -50,6 +50,16 @@ export class GithubRepo {
                 const json = JSON.parse(raw)
                 this.data = json
             } catch (error) {}
+            const cacheTime = this.data?.fetchedAt
+            if (typeof cacheTime === 'number') {
+                const now = Date.now()
+                const lastFetchWas = now - cacheTime
+                const hour = 1000 * 60 * 60
+                const maxDelay = hour * 4
+                if (lastFetchWas > maxDelay) {
+                    this.downloadInfos()
+                }
+            }
         } else {
             this.data = {
                 fetchedAt: 0 as Timestamp,

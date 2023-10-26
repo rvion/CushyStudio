@@ -12,7 +12,7 @@ export const StepUI = observer(function StepUI_(p: { step: StepL }) {
     }))
     const header = (
         <div
-            tw='cursor-pointer hover:bg-gray-900 py-3'
+            tw='cursor-pointer hover:bg-gray-900 py-2'
             onClick={() => (uiSt.expanded = !uiSt.expanded)}
             style={{ borderTop: '1px solid #2d2d2d' }}
             className='flex justify-between text-xs text-gray-400'
@@ -27,7 +27,9 @@ export const StepUI = observer(function StepUI_(p: { step: StepL }) {
             <div>
                 {header}
                 <div className='flex flex-col-reverse gap-1'>
-                    {step.data.outputs?.map((output, ix) => <StepOutputUI key={ix} step={step} output={output} />)}
+                    {step.data.outputs?.map((output, ix) => (
+                        <StepOutputUI key={ix} step={step} output={output} />
+                    ))}
                 </div>
             </div>
         )

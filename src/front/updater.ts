@@ -27,10 +27,7 @@ export class Updater {
     get relativePathFromRoot() {
         return relative(this.st.rootPath, this.p.cwd)
     }
-    constructor(
-        public st: STATE,
-        public p: { cwd: string; autoStart: boolean; runNpmInstall: boolean },
-    ) {
+    constructor(public st: STATE, public p: { cwd: string; autoStart: boolean; runNpmInstall: boolean }) {
         // initial udpate
         this.relativeFolder = relative(this.st.rootPath, p.cwd)
         if (p.autoStart) this.start()
@@ -141,6 +138,7 @@ export class Updater {
         }
     }
     infos: GitRepoInfos = {
+        fetchedAt: 0 as Timestamp,
         headCommitHash: '',
         originCommitHash: '',
         headCommitsCount: 0,
@@ -155,6 +153,7 @@ export class Updater {
 }
 
 export type GitRepoInfos = {
+    fetchedAt: Timestamp
     mainBranchName: string
     headCommitsCount: number
     originCommitsCount: number
@@ -198,6 +197,7 @@ async function getGitInfo(cwd: string): Promise<Maybe<GitRepoInfos>> {
     const originCommitHash = await git.revparse([`origin/${defaultBranch}`])
 
     return {
+        fetchedAt: Date.now() as Timestamp,
         mainBranchName: defaultBranch,
         headCommitsCount: headCommitsCount,
         originCommitsCount: originCommitsCount,

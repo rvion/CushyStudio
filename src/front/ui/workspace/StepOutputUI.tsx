@@ -41,8 +41,15 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
         // const currNode = graph.currentExecutingNode
         return (
             <div className='flex flex-col gap-1'>
+                {/* {currNode && <ComfyNodeUI node={currNode} />} */}
+                <div className='flex flex-wrap'>
+                    {prompt?.images.map((img) => (
+                        <ImageUI key={img.id} img={img} />
+                    ))}
+                </div>
                 {graph.done ? null : (
                     <Button
+                        tw='self-end'
                         size='xs'
                         appearance='ghost'
                         onClick={() => {
@@ -52,8 +59,6 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
                         STOP GENERATING
                     </Button>
                 )}
-                {/* {currNode && <ComfyNodeUI node={currNode} />} */}
-                <div className='flex flex-wrap'>{prompt?.images.map((img) => <ImageUI key={img.id} img={img} />)}</div>
                 <GraphSummaryUI graph={graph} />
             </div>
         )

@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
 import { Updater } from 'src/front/updater'
+import { _formatPreviewDate } from 'src/utils/_formatPreviewDate'
 
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater }) {
     const updater = p.updater
@@ -12,16 +13,28 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater 
             speaker={
                 <Popover>
                     <UpdaterErrorUI updater={updater} />
-                    <pre>{updater.relativePathFromRoot}</pre>
-                    <Button
-                        size='sm'
-                        color='orange'
-                        appearance='ghost'
-                        onClick={() => updater.checkForUpdates()}
-                        startIcon={<span className='material-symbols-outlined'>refresh</span>}
-                    >
-                        FORCE REFRESH
-                    </Button>
+                    <div tw='flex items-center'>
+                        <span className='material-symbols-outlined'>folder</span>
+                        <pre>{updater.relativePathFromRoot || 'root'}</pre>
+                    </div>
+                    <div>
+                        {updater.infos.fetchedAt ? (
+                            <div tw='flex items-center'>
+                                update checked at :{_formatPreviewDate(new Date(updater.infos.fetchedAt))}
+                            </div>
+                        ) : (
+                            <>no update done</>
+                        )}
+                        <Button
+                            size='sm'
+                            color='orange'
+                            appearance='ghost'
+                            onClick={() => updater.checkForUpdates()}
+                            startIcon={<span className='material-symbols-outlined'>refresh</span>}
+                        >
+                            FORCE REFRESH
+                        </Button>
+                    </div>
                 </Popover>
             }
         >

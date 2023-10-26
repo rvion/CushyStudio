@@ -21,9 +21,9 @@ export class CompletionState {
         const createNode = (t: EmbeddingName) => $createEmbeddingNode(t)
         const menuLabel = <span tw='text-red-500'>embedding:</span>
         const provider = new CopmletionProvider({
-            trigger: ':',
             getValues: () =>
                 st.schema.data.embeddings.map((x) => ({
+                    trigger: ':',
                     title: x,
                     keywords: [x],
                     value: x,
@@ -43,9 +43,9 @@ export class CompletionState {
         const createNode = (t: Enum_LoraLoader_lora_name) =>
             $createLoraNode({ name: t as any, strength_clip: 1, strength_model: 1 })
         const provider = new CopmletionProvider({
-            trigger: '@',
             getValues: () =>
                 st.schema.getLoras().map((x) => ({
+                    trigger: '@',
                     title: x.replaceAll('\\', '/').replace('.safetensors', ''),
                     keywords: [x],
                     value: x,
@@ -62,9 +62,9 @@ export class CompletionState {
         const createNode = (t: string) => $createWildcardNode(t)
         const menuLabel = <span tw='text-yellow-500'>wildcard:</span>
         const provider = new CopmletionProvider({
-            trigger: '*',
             getValues: () =>
                 Object.keys(wildcards).map((x) => ({
+                    trigger: '*',
                     menuLabel,
                     title: x,
                     keywords: [x],
@@ -81,9 +81,9 @@ export class CompletionState {
         const createNode = (t: DanbooruTag) => $createBooruNode(t)
         const menuLabel = <span tw='text-yellow-500'>danbooru:</span>
         const provider = new CopmletionProvider({
-            trigger: '&',
             getValues: () =>
                 st.danbooru.tags.map((x) => ({
+                    trigger: '&',
                     title: x.text,
                     keywords: x.aliases,
                     value: x,
@@ -126,9 +126,9 @@ export type CompletionCandidate<T> = {
     value: T
     createNode: (value: T) => LexicalNode
     menuLabel: ReactElement
+    trigger: string
 }
 export type CompletionProviderProps<T> = {
-    trigger: string
     getValues: () => Array<CompletionCandidate<T>>
 }
 
