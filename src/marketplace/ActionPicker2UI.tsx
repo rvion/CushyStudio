@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 import { useSt } from '../front/FrontStateCtx'
 import { ActionPackStatusUI } from './ActionPackStatusUI'
+import { ActionPackStarsUI } from './ActionPackStarsUI'
 
 export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
     const st = useSt()
@@ -28,7 +29,7 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
 export const ActionPackUI = observer(function ActionPackUI_(p: { pack: ActionPack }) {
     const pack = p.pack
     return (
-        <div tw='m-2 flex-grow cursor-pointer' key={pack.folderRel}>
+        <div tw='m-2 flex-grow' key={pack.folderRel}>
             <ActionPackHeaderUI pack={pack} />
             {pack.folded ? null : (
                 <div>
@@ -47,7 +48,7 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { af: ActionFil
     return (
         <div
             //
-            tw='pl-4 hover:bg-gray-900 flex gap-2'
+            tw='pl-4 hover:bg-gray-900 flex gap-2 cursor-pointer'
             style={{ borderTop: '1px solid #161616' }}
             key={af.absPath}
             onClick={(ev) => {
@@ -71,29 +72,22 @@ export const ActionPackHeaderUI = observer(function ActionPackHeaderUI_(p: { pac
     const pack = p.pack
     return (
         <div
-            onClick={() => {
-                pack.folded = !pack.folded
-            }}
-            tw='flex items-center gap-1 bg-gray-800 hover:bg-gray-800 p-0.5'
+            tw='cursor-pointer flex items-center gap-1 bg-gray-800 hover:bg-gray-800 p-0.5'
+            onClick={() => (pack.folded = !pack.folded)}
         >
-            <img tw='rounded' style={{ height: `2rem` }} src={pack.logo} alt='' />
+            <img tw='rounded' style={{ height: `2rem` }} src={pack.logo} alt='pack logo' />
             <div tw='flex-grow'>
                 <div tw='flex'>
                     <div>
                         <div tw='font-bold text-sm'>{pack.name}</div>
-                        <div tw='text-sm'>by {pack.githubUserName}</div>
+                        <div tw='text-sm text-gray-400 flex justify-between w-full'>by {pack.githubUserName}</div>
                     </div>
                     <div className='flex-grow'></div>
-                    {/* {pack.score} */}
-                    {pack.BUILT_IN ? <div tw='text-gray-600'>built-in</div> : <ActionPackStatusUI pack={pack} />}
+                    <div>
+                        {pack.BUILT_IN ? <div tw='text-gray-600'>built-in</div> : <ActionPackStatusUI pack={pack} />}
+                        <ActionPackStarsUI tw='float-right' pack={pack} />
+                    </div>
                 </div>
-                {/* <GithubUserUI
-                    textClassName='text-sm'
-                    size='1.3rem'
-                    tw='ml-auto'
-                    username={pack.githubUserName}
-                    showName='after'
-                /> */}
             </div>
         </div>
     )
@@ -111,8 +105,8 @@ export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { a
                         af.setFavorite(false)
                     }}
                 >
-                    <span tw='text-yellow-500' className='material-symbols-outlined'>
-                        star
+                    <span style={{ color: '#562152' }} className='material-symbols-outlined'>
+                        favorite
                     </span>
                 </div>
             ) : (
@@ -123,8 +117,8 @@ export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { a
                         af.setFavorite(true)
                     }}
                 >
-                    <span tw='text-gray-700 hover:text-yellow-500' className='material-symbols-outlined'>
-                        star
+                    <span tw='text-gray-800 hover:text-red-500' className='material-symbols-outlined'>
+                        favorite_border
                     </span>
                 </div>
             )}
