@@ -51,6 +51,7 @@ export class ActionPack {
     githubRepository: GithubRepo
 
     // -------------
+    folded = false
     updater: Updater
     installK: ManualPromise<true>
 
@@ -148,8 +149,10 @@ export class ActionPack {
             this.installK.addLog(stdout)
             if (error) {
                 this.installK.addLog(error.message)
+                console.log(`[💝] actionpack install failure`, error)
                 return this.installK.reject(error)
             }
+            console.log(`[💝] actionpack installed`)
             this.installK.resolve(true)
         })
         return this.installK

@@ -1,9 +1,10 @@
+import type { ActionFile } from 'src/marketplace/ActionFile'
+import type { ActionPack } from './ActionPack'
+
 import { observer } from 'mobx-react-lite'
-import { ActionFile } from 'src/marketplace/ActionFile'
-import { useSt } from '../front/FrontStateCtx'
-import { ActionPack } from './ActionPack'
-import { ActionPackStatusUI } from './ActionPackStatusUI'
 import { Fragment } from 'react'
+import { useSt } from '../front/FrontStateCtx'
+import { ActionPackStatusUI } from './ActionPackStatusUI'
 
 export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
     const st = useSt()
@@ -11,30 +12,34 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
     return (
         <>
             {/* FAVORITES */}
-            <div tw='p-1 font-bold bg-yellow-900'>Favorites</div>
             {tb.allFavorites.map((af) => (
                 <ActionEntryUI key={af.relPath} af={af} />
             ))}
             {/* INSTALLED */}
-            <div tw='p-1 font-bold bg-blue-900'>Installed</div>
-            <div tw='flex flex-wrap'>
-                {tb.packsSorted.map((pack) => {
-                    return (
-                        <div tw='m-2 flex-grow cursor-pointer' key={pack.folderRel}>
-                            <ActionPackHeaderUI pack={pack} />
-                            <div>
-                                {pack.actions.map((af) => (
-                                    <ActionEntryUI key={af.relPath} af={af} />
-                                ))}
-                            </div>
-                        </div>
-                    )
-                })}
+            <div tw='flex flex-col'>
+                {tb.packsSorted.map((pack) => (
+                    <ActionPackUI key={pack.folderRel} pack={pack} />
+                ))}
             </div>
         </>
     )
 })
 
+export const ActionPackUI = observer(function ActionPackUI_(p: { pack: ActionPack }) {
+    const pack = p.pack
+    return (
+        <div tw='m-2 flex-grow cursor-pointer' key={pack.folderRel}>
+            <ActionPackHeaderUI pack={pack} />
+            {pack.folded ? null : (
+                <div>
+                    {pack.actions.map((af) => (
+                        <ActionEntryUI key={af.relPath} af={af} />
+                    ))}
+                </div>
+            )}
+        </div>
+    )
+})
 export const ActionEntryUI = observer(function ActionEntryUI_(p: { af: ActionFile }) {
     const st = useSt()
     const af = p.af
@@ -65,7 +70,12 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { af: ActionFil
 export const ActionPackHeaderUI = observer(function ActionPackHeaderUI_(p: { pack: ActionPack }) {
     const pack = p.pack
     return (
-        <div tw='flex items-center gap-1 bg-gray-800 hover:bg-gray-800 p-0.5'>
+        <div
+            onClick={() => {
+                pack.folded = !pack.folded
+            }}
+            tw='flex items-center gap-1 bg-gray-800 hover:bg-gray-800 p-0.5'
+        >
             <img tw='rounded' style={{ height: `2rem` }} src={pack.logo} alt='' />
             <div tw='flex-grow'>
                 <div tw='flex'>

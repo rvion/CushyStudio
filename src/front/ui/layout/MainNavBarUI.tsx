@@ -27,20 +27,30 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
     return (
         <div tw='fle flex-col'>
             {/* COMFY */}
-            <MainNavEntryUI
-                onClick={() => st.layout.addFileTree()}
-                ix='1'
-                icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
-                label='Actions'
-            />
-
-            {/* MARKETPLACE */}
-            <MainNavEntryUI
-                onClick={() => st.layout.addMarketplace()}
-                ix='2'
-                icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
-                label='Apps'
-            />
+            <Whisper
+                placement='right'
+                enterable
+                speaker={
+                    <Popover>
+                        {/* MARKETPLACE */}
+                        <MainNavEntryUI
+                            onClick={() => st.layout.addMarketplace()}
+                            ix='2'
+                            icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
+                            label='Apps'
+                        />
+                    </Popover>
+                }
+            >
+                <div>
+                    <MainNavEntryUI
+                        onClick={() => st.layout.addFileTree()}
+                        ix='1'
+                        icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
+                        label='Actions'
+                    />
+                </div>
+            </Whisper>
 
             {/* PAINT */}
             <MainNavEntryUI
