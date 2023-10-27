@@ -9,13 +9,13 @@ import { getIconForFilePath } from '../front/ui/utils/filePathIcon'
 
 export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
     const st = useSt()
-    const tb = st.toolbox
+    const tb = st.library
     return (
         <Tree
             expandItemValues={tb.expandedPaths}
             tw='overflow-x-hidden overflow-y-auto flex-grow h-full'
-            key={st.toolbox.updatedAt}
-            data={st.toolbox.treeData}
+            key={st.library.updatedAt}
+            data={st.library.treeData}
             renderTreeIcon={(x) => {
                 return <>{x.expand ? '▿' : '▸'}</>
             }}
@@ -53,7 +53,7 @@ export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
                 if (typeof _value !== 'string') throw new Error('tree selection value is not a string')
                 const value = asRelativePath(_value)
 
-                const isFolder = st.toolbox.folderMap.has(value)
+                const isFolder = st.library.folderMap.has(value)
                 // console.log(_value, `isFolder: ${isFolder}`)
                 if (isFolder) {
                     if (tb.isExpanded(value)) tb.collapse(value)
@@ -64,7 +64,7 @@ export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
 
                 const actionPath = asActionPath(value)
                 // 1. focus paf
-                const paf = st.toolbox.actionsByPath.get(actionPath)
+                const paf = st.library.actionsByPath.get(actionPath)
                 if (paf == null) throw new Error(`paf not found for ${value}`)
                 st.layout.addAction(actionPath)
                 // pj.focusActionFile(paf)

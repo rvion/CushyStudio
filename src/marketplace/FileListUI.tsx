@@ -6,7 +6,7 @@ import { ActionPicker2UI } from './ActionPicker2UI'
 
 export const FileListUI = observer(function FileListUI_(p: {}) {
     const st = useSt()
-    const tb = st.toolbox
+    const tb = st.library
     return (
         <>
             <TabUI>

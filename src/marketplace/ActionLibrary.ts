@@ -36,6 +36,7 @@ export class ActionLibrary {
         return next
     }
 
+    favoritesFolded = false
     watcher: Watcher
     constructor(
         //

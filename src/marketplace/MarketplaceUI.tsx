@@ -18,7 +18,7 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
                     Create action
                 </Button>
             </div>
-            {st.toolbox.packs.map((actionPack) => (
+            {st.library.packs.map((actionPack) => (
                 <ErrorBoundary key={actionPack.github} FallbackComponent={ErrorBoundaryFallback}>
                     <ActionPackUI key={actionPack.github} actionPack={actionPack} />
                 </ErrorBoundary>

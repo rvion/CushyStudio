@@ -11,7 +11,7 @@ import { ActionFormUI } from './ActionFormUI'
 
 export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: ActionPath }) {
     const st = useSt()
-    const toolbox = st.toolbox
+    const toolbox = st.library
     const af = toolbox.getAction(p.actionPath)
     // console.log('🟢', st.liveTime)
 

@@ -9,13 +9,20 @@ import { ActionPackStarsUI } from './ActionPackStarsUI'
 
 export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
     const st = useSt()
-    const tb = st.toolbox
+    const tb = st.library
     return (
         <>
             {/* FAVORITES */}
-            {tb.allFavorites.map((af) => (
-                <ActionEntryUI key={af.relPath} af={af} />
-            ))}
+            {tb.allFavorites.length && (
+                <div
+                    tw='cursor-pointer flex items-center gap-1 bg-gray-800 hover:bg-gray-800 p-0.5 flex justify-between'
+                    onClick={() => (tb.favoritesFolded = !tb.favoritesFolded)}
+                >
+                    <div>Favorites</div>
+                    <div>{tb.favoritesFolded ? '▸' : '▿'}</div>
+                </div>
+            )}
+            {tb.favoritesFolded ? null : tb.allFavorites.map((af) => <ActionEntryUI key={af.relPath} af={af} />)}
             {/* INSTALLED */}
             <div tw='flex flex-col'>
                 {tb.packsSorted.map((pack) => (
@@ -29,7 +36,7 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
 export const ActionPackUI = observer(function ActionPackUI_(p: { pack: ActionPack }) {
     const pack = p.pack
     return (
-        <div tw='m-2 flex-grow' key={pack.folderRel}>
+        <div tw='my-0.5 flex-grow' key={pack.folderRel}>
             <ActionPackHeaderUI pack={pack} />
             {pack.folded ? null : (
                 <div>

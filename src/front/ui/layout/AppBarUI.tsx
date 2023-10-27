@@ -130,7 +130,7 @@ export const GithubAppBarInputUI = observer(function GithubAppBarInputUI_(p: {})
                 </Popover>
             }
         >
-            <InputGroup size='xs' tw='w-auto' style={{ border: '1px solid #834ad9' }}>
+            <InputGroup size='xs' tw='w-auto' style={{ border: '1px solid #868516' }}>
                 <InputGroup.Addon>
                     <img src='/GithubLogo2.png' alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
                     your github:

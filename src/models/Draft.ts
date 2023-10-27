@@ -87,7 +87,7 @@ export class DraftL {
 
     form: Result<Widget> = __FAIL('not loaded yet')
 
-    get actionFile(): ActionFile | undefined { return this.st.toolbox.actionsByPath.get(this.data.actionPath) } // prettier-ignore
+    get actionFile(): ActionFile | undefined { return this.st.library.actionsByPath.get(this.data.actionPath) } // prettier-ignore
     get action() { return this.actionFile?.action } // prettier-ignore
 
     onHydrate = () => {

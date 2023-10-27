@@ -88,7 +88,7 @@ export class STATE {
     updater: Updater
     hovered: Maybe<ImageL> = null
 
-    toolbox: ActionLibrary
+    library: ActionLibrary
     schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
     importer: ComfyImporter
@@ -157,7 +157,7 @@ export class STATE {
         this.theme = new ThemeManager(this)
         this.updater = new Updater(this, { cwd: this.rootPath, autoStart: true, runNpmInstall: true })
         this.importer = new ComfyImporter(this)
-        this.toolbox = new ActionLibrary(this)
+        this.library = new ActionLibrary(this)
         ;(async () => {
             await this.schemaReady
             const project = this.startProjectV2()
