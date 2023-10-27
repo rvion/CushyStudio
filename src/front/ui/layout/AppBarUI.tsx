@@ -39,7 +39,6 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <UpdateBtnUI updater={st.updater} />
             <WebsocketIndicatorUI />
             <SchemaIndicatorUI />
-            <OpenComfyExternalUI />
 
             <div className='flex-grow'></div>
             <Button size='xs' appearance='ghost' color='orange' startIcon={<I.Reload />} onClick={() => st.layout.resetCurrent()}>
@@ -139,6 +138,8 @@ export const GithubAppBarInputUI = observer(function GithubAppBarInputUI_(p: {})
                 <Input
                     onChange={(next) => st.configFile.update({ githubUsername: next })}
                     value={githubUsername}
+                    tw='font-mono'
+                    style={{ width: `${githubUsername.length + 4}ch` }}
                     placeholder='your github username'
                 ></Input>
             </InputGroup>

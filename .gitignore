@@ -33,15 +33,15 @@ cushy*.db.backup
 
 *.vsix
 
-private
 .disabled
 
 CONFIG.json
 global.d.ts
 tsconfig.custom.json
 
-!actions/CushyStudio
 actions/*
+!actions/CushyStudio
+
 # actions/rvion/cushy-example-actions
 # actions/VinsiGit/Cushy_Action
 # actions/noellealarie/cushy-avatar-maker

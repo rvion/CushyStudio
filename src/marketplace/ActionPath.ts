@@ -1,7 +1,7 @@
 import { pathe } from 'src/utils/fs/pathUtils'
-import { ActionExtensions, hasValidActionExtension } from './ActionExtensions'
+import { ActionExtensions, hasValidActionExtension } from '../back/ActionExtensions'
 
-export type ActionPath = Branded<string, 'ActionPath'>
+export type ActionPath = Branded<string, { ActionPath: true; RelativePath: true }>
 
 export const asActionPath = (path: string): ActionPath => {
     if (pathe.isAbsolute(path)) throw new Error(`action path (${path}) must be relative`)

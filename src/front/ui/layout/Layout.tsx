@@ -21,7 +21,7 @@ import { MarketplaceUI } from '../../../marketplace/MarketplaceUI'
 import { observer } from 'mobx-react-lite'
 import { makeAutoObservable, runInAction } from 'mobx'
 import { ActionFileUI } from '../drafts/ActionFileUI'
-import { ActionPath } from 'src/back/ActionPath'
+import { ActionPath } from 'src/marketplace/ActionPath'
 import { PanelConfigUI } from './PanelConfigUI'
 import { ActionFormUI } from '../drafts/ActionFormUI'
 import { Trigger } from 'src/shortcuts/Trigger'
@@ -165,11 +165,18 @@ export class CushyLayoutManager {
         const icon = '/ComfyUILogo.png'
         this._AddWithProps(Widget.ComfyUINodeExplorer, `/ComfyUINodeExplorer`, { title: `Node Explorer`, icon })
     }
-    addAction = (actionPath: ActionPath) =>
-        this._AddWithProps(Widget.Action, `/action/${actionPath}`, { title: actionPath, actionPath })
+    addAction = (actionPath: ActionPath) => {
+        const af = this.st.toolbox.getAction(actionPath)
+        const icon = af?.logoURL
+        this._AddWithProps(Widget.Action, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
+    }
 
-    addDraft = (title: string, draftID: DraftID) =>
-        this._AddWithProps(Widget.Draft, `/draft/${draftID}`, { title, draftID }, 'current')
+    addDraft = (title: string, draftID: DraftID) => {
+        const draft = this.st.db.drafts.get(draftID)
+        const af = draft?.actionFile
+        const icon = af?.logoURL
+        this._AddWithProps(Widget.Draft, `/draft/${draftID}`, { title, draftID, icon }, 'current')
+    }
 
     renameTab = (tabID: string, newName: string) => {
         const tab = this.model.getNodeById(tabID)
@@ -289,20 +296,16 @@ export class CushyLayoutManager {
     }
 
     // 🔴 todo: ensure we correctly pass ids there too
-    private _persistentTab = (
-        //
-        name: string,
-        widget: Widget,
-        icon?: string,
-    ): FL.IJsonTabNode => {
+    private _persistentTab = (p: { id: string; name: string; widget: Widget; icon?: string }): FL.IJsonTabNode => {
         return {
+            id: p.id,
             type: 'tab',
-            name,
-            component: widget,
+            name: p.name,
+            component: p.widget,
             enableClose: true,
             enableRename: false,
             enableFloat: true,
-            icon,
+            icon: p.icon,
         }
     }
     build = (): IJsonModel => {
@@ -315,19 +318,17 @@ export class CushyLayoutManager {
             layout: {
                 id: 'rootRow',
                 type: 'row',
-                // weight: 100,
                 children: [
                     {
                         id: 'leftPane',
                         type: 'row',
                         width: 300,
-                        // weight: 10,
                         children: [
                             {
                                 type: 'tabset',
-                                // weight: 10,
                                 minWidth: 200,
-                                children: [this._persistentTab('FileList', Widget.FileList)],
+                                width: 300,
+                                children: [this._persistentTab({ name: 'FileList', widget: Widget.FileList, id: '/filetree' })],
                             },
                             // {
                             //     type: 'tabset',
@@ -335,27 +336,15 @@ export class CushyLayoutManager {
                             //     minWidth: 300,
                             //     children: [this._persistentTab('Marketplace', Widget.Marketplace)],
                             // },
-                            {
-                                type: 'tabset',
-                                // weight: 10,
-                                minWidth: 150,
-                                minHeight: 150,
-                                children: [
-                                    this._persistentTab('🎆 Gallery', Widget.Gallery),
-                                    // this._persistentTab('Hosts', Widget.Hosts),
-                                ],
-                            },
                         ],
                     },
                     {
                         id: 'middlePane',
                         type: 'row',
-                        // weight: 100,
                         children: [
                             {
                                 type: 'tabset',
                                 id: 'MAINTYPESET',
-                                // weight: 100,
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
                                 children: [
@@ -364,6 +353,17 @@ export class CushyLayoutManager {
                                     // this._persistentTab('ComfyUI', Widget.ComfyUI, '/ComfyUILogo.png'),
                                 ],
                             },
+                            {
+                                type: 'tabset',
+                                height: 200,
+                                minWidth: 150,
+                                minHeight: 150,
+                                children: [
+                                    this._persistentTab({ name: '🎆 Gallery', widget: Widget.Gallery, id: '/gallery' }),
+                                    // this._persistentTab('Hosts', Widget.Hosts),
+                                ],
+                            },
+
                             // {
                             //     type: 'tabset',
                             //     weight: 10,
@@ -376,28 +376,28 @@ export class CushyLayoutManager {
                         id: 'rightPane',
                         type: 'row',
                         width: 300,
-                        // weight: 10,
                         children: [
                             {
                                 type: 'tabset',
-                                // weight: 1,
                                 minWidth: 100,
                                 height: 100,
                                 minHeight: 100,
-                                children: [this._persistentTab('Last Graph', Widget.LastGraph)],
+                                children: [
+                                    this._persistentTab({ name: 'Last Graph', id: '/lastGraph', widget: Widget.LastGraph }),
+                                ],
                             },
                             {
                                 type: 'tabset',
                                 minWidth: 300,
                                 minHeight: 300,
-                                // weight: 10,
-                                children: [this._persistentTab('Last Image', Widget.LastIMage)],
+                                children: [
+                                    this._persistentTab({ name: 'Last Image', id: '/lastImage', widget: Widget.LastIMage }),
+                                ],
                             },
                             {
                                 type: 'tabset',
                                 minWidth: 300,
-                                // weight: 100,
-                                children: [this._persistentTab('Runs', Widget.Steps)],
+                                children: [this._persistentTab({ name: 'Runs', id: '/steps', widget: Widget.Steps })],
                             },
                         ],
                     },

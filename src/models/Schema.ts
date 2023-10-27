@@ -12,7 +12,7 @@ export type EnumName = string
 
 export type NodeNameInComfy = string
 export type NodeNameInCushy = string
-export type EmbeddingName = Branded<string, 'Embedding'>
+export type EmbeddingName = Branded<string, { Embedding: true }>
 
 export type NodeInputExt = {
     nameInComfy: string

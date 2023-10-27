@@ -63,11 +63,11 @@ export class CompletionState {
         const menuLabel = <span tw='text-yellow-500'>wildcard:</span>
         const provider = new CopmletionProvider({
             getValues: () =>
-                Object.keys(wildcards).map((x) => ({
+                Object.entries(wildcards).map(([x, values]) => ({
                     trigger: '*',
                     menuLabel,
                     title: x,
-                    keywords: [x],
+                    keywords: values,
                     value: x,
                     createNode,
                 })),

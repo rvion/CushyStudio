@@ -1,10 +1,10 @@
 Todo before release
 
 marketplace:
-    ☐ one-click create action pack
+    ☐ one-click create action pack @started(23-10-26 21:30)
     ☐ proper action pack manifest file
     ☐ show readme in marketplace
-    ☐ refresh star count and readme every few hours (add expire mechanism)
+    ✔ refresh star count and readme every few hours (add expire mechanism) @done(23-10-26 21:29)
 
 perf:
     ✔ make type inference is faster @done(23-10-26 20:55)

@@ -34,43 +34,44 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater 
                         >
                             FORCE REFRESH
                         </Button>
+                        <UninstallUI updater={updater} />
                     </div>
                 </Popover>
             }
         >
-            <div tw={['flex gap-1 cursor-help items-center']}>
+            <div tw={['flex gap-1 cursor-help']}>
                 {/* // hasErrors ? 'bg-red-900' : 'bg-green-900 ', */}
-                <div tw='bg-green-900 flex gap-1 px-1'>
+                <div tw='flex gap-1'>
                     {hasErrors ? (
                         <>
                             <span className='text-orange-500 material-symbols-outlined'>error</span>
                             version
                         </>
+                    ) : updater.updateAvailable ? (
+                        <Button
+                            className='animate-pulse'
+                            color='red'
+                            size='xs'
+                            appearance='primary'
+                            startIcon={<span className='material-symbols-outlined'>update</span>}
+                            onClick={async (ev) => {
+                                ev.stopPropagation()
+                                ev.preventDefault()
+                                await updater.updateToLastCommitAvailable()
+                                window.location.reload()
+                            }}
+                        >
+                            update
+                            {/* to version {updater.nextVersion} */}
+                        </Button>
                     ) : (
                         <span className='text-green-400 material-symbols-outlined'>check_circle</span>
                     )}
 
                     <div className={updater.updateAvailable ? 'text-orange-400' : 'text-green-100 '}>
-                        {updater.infos.headCommitsCount ? `V${updater.currentVersion}` : <Loader />}
+                        {updater.infos.headCommitsCount ? `v${updater.currentVersion}` : <Loader />}
                     </div>
                 </div>
-                {updater.updateAvailable && (
-                    <Button
-                        className='animate-pulse'
-                        color='red'
-                        size='xs'
-                        appearance='primary'
-                        startIcon={<span className='material-symbols-outlined'>update</span>}
-                        onClick={async (ev) => {
-                            ev.stopPropagation()
-                            ev.preventDefault()
-                            await updater.updateToLastCommitAvailable()
-                            window.location.reload()
-                        }}
-                    >
-                        UPDATE to version {updater.nextVersion}
-                    </Button>
-                )}
             </div>
         </Whisper>
     )
@@ -98,5 +99,23 @@ export const UpdaterErrorUI = observer(function UpdaterErrorUI_(p: { updater: Up
                 </div>
             ))}
         </div>
+    )
+})
+
+export const UninstallUI = observer(function UninstallUI_(p: { updater: Updater }) {
+    const updater = p.updater
+    return (
+        <Button
+            tw='text-gray-500 text-xs flex items-center gap-1'
+            color='red'
+            startIcon={<span className='material-symbols-outlined'>highlight_off</span>}
+            onClick={(ev) => {
+                ev.stopPropagation()
+                ev.preventDefault()
+                // toaster.push(<Notification>Not implemented yet</Notification>, { placement: 'topEnd' })
+            }}
+        >
+            REMOVE
+        </Button>
     )
 })

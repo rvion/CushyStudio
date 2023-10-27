@@ -4,15 +4,14 @@ import type { PromptRelated_WsMsg, WsMsgExecuted, WsMsgExecuting, WsMsgExecution
 import type { GraphID, GraphL } from './Graph'
 
 import { nanoid } from 'nanoid'
+import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
 import { exhaust } from '../utils/ComfyUtils'
-import { ImageL } from './Image'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { Status } from '../back/Status'
-import { join } from 'path'
+import { ImageL } from './Image'
 
-export type PromptID = Branded<string, 'PromptID'>
+export type PromptID = Branded<string, { PromptID: true }>
 export const asPromptID = (s: string): PromptID => s as any
 
 export type PromptT = {

@@ -1,7 +1,7 @@
 action({
-    name: 'cards',
+    name: 'cards v1',
     author: 'rvion',
-    description: 'play with cards',
+    description: 'card generator',
     ui: (form) => ({
         theme1: form.string({ default: 'purple spring' }),
         theme2: form.string({ default: 'yellow summer' }),

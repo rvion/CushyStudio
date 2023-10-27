@@ -7,7 +7,7 @@ import { ComfyImageInfo } from '../types/ComfyWsApi'
 import { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 
-export type ImageID = Tagged<string, 'ImageUID'>
+export type ImageID = Branded<string, { ImageUID: true }>
 
 export interface ImageT {
     /** image ID */

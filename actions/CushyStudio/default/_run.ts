@@ -35,7 +35,13 @@ export class ActionAddons {
                 else if (tok.type === 'embedding') text += ` embedding:${tok.embeddingName}`
                 else if (tok.type === 'wildcard') {
                     const options = (this.flow.wildcards as any)[tok.payload]
-                    if (Array.isArray(options)) text += ` ${this.flow.pick(options)}`
+                    if (Array.isArray(options)) {
+                        const valuePicked = this.flow.pick(options)
+                        this.flow.print(`${tok.payload} => "${valuePicked}"`)
+                        text += ` ${valuePicked}`
+                    } else {
+                        console.log(`❌ invalid wildcard ${tok.payload}`)
+                    }
                 } else if (tok.type === 'lora') {
                     clipAndModel = this.flow.nodes.LoraLoader({
                         model: clipAndModel,

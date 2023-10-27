@@ -1,9 +1,9 @@
-import { prettifyIcon } from '../../private/cards/icons/TEST'
+import { prettifyIcon } from '../../rvion/private/cards/icons/TEST'
 
 action({
     name: 'cards v2',
     author: 'rvion',
-    description: 'play with cards',
+    description: 'card / deck generator',
     ui: (form) => ({
         // [UI] MODEL --------------------------------------
         model: form.enum({

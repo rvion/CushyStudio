@@ -1,7 +1,7 @@
 import type { Printable } from '../core/Printable'
 
 // import FormData from 'form-data'
-import * as path from 'path'
+import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
 import fs, { readFileSync, writeFileSync } from 'fs'
@@ -26,6 +26,7 @@ import { NodeBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
 import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSentToComfyUI'
+import { braceExpansion } from 'src/utils/expansion'
 
 /** script exeuction instance */
 export class Runtime {
@@ -121,6 +122,10 @@ export class Runtime {
     sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
     // High level API--------------------
+
+    expandBraces = (string: string): string[] => {
+        return braceExpansion(string)
+    }
 
     saveTextFile = async (path: RelativePath, content: string): Promise<void> => {
         const absPath = this.st.resolve(this.folder, path)

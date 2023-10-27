@@ -2,24 +2,24 @@ import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Button } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
-import { GithubUserUI } from 'src/front/GithubAvatarUI'
-import { GithubRepo, GithubUser } from 'src/front/githubUtils'
-import { UpdateBtnUI } from 'src/front/ui/layout/UpdateBtnUI'
+import { GithubUserUI } from 'src/marketplace/GithubAvatarUI'
+import { GithubRepo, GithubUser } from 'src/marketplace/githubUtils'
 import { ErrorBoundaryFallback } from 'src/front/ui/utils/ErrorBoundary'
 import { ActionPack } from './ActionPack'
+import { ActionPackStatusUI } from './ActionPackStatusUI'
 
 export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
     const st = useSt()
     return (
         <div>
             <div tw='p-2'>
-                <Button appearance='ghost' color='green' tw='w-full self-start'>
+                <Button onClick={() => {}} appearance='ghost' color='green' tw='w-full self-start'>
                     Create action
                 </Button>
             </div>
-            {st.marketplace.plugins.map((actionPack) => (
-                <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-                    <ActionPackUI key={actionPack.data.github} actionPack={actionPack} />
+            {st.toolbox.packs.map((actionPack) => (
+                <ErrorBoundary key={actionPack.github} FallbackComponent={ErrorBoundaryFallback}>
+                    <ActionPackUI key={actionPack.github} actionPack={actionPack} />
                 </ErrorBoundary>
             ))}
         </div>
@@ -29,62 +29,38 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
 export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: ActionPack }) {
     const st = useSt()
     const ap = p.actionPack
-    const ghuser = GithubUser.get(st, ap.authorName)
-    const repo = GithubRepo.get(st, ghuser, ap.repositoryName)
+    const ghuser = ap.githubUser
+    const repo = ap.githubRepository
 
     return (
-        <div tw='hover:bg-gray-700 p-2' key={ap.data.name} style={{ borderBottom: '1px solid #515151' }}>
+        <div tw='cursor-pointer hover:bg-gray-700 p-2' key={ap.name} style={{ borderBottom: '1px solid #515151' }}>
             <div tw='flex  gap-2'>
                 <div tw='flex-grow'>
-                    <div tw='text-lg font-bold'>{ap.data.name}</div>
-                    <GithubUserUI size='1.5rem' username={ap.authorName} showName />
-                    <div tw='text-gray-400'>{ap.data.description}</div>
+                    <div tw='text-lg font-bold'>{ap.name}</div>
+                    <GithubUserUI size='1.5rem' username={ap.githubUserName} showName />
+                    <div tw='text-gray-400'>{ap.description}</div>
                 </div>
-                {ap.data.BUILT_IN ? null : (
+                {ap.BUILT_IN ? null : (
                     <div>
                         <div tw='flex items-cetner'>
                             <Button
-                                size='xs'
+                                size='sm'
                                 color='yellow'
-                                onClick={() => window.require('electron').shell.openExternal(ap.githubURL)}
+                                onClick={(ev) => {
+                                    ev.preventDefault()
+                                    ev.stopPropagation()
+                                    window.require('electron').shell.openExternal(ap.githubURL)
+                                }}
                                 appearance='link'
-                                endIcon={<span className='material-symbols-outlined'>star_rate</span>}
                             >
-                                {repo.data?.json?.stargazers_count ?? '?'} Star
+                                {repo.data?.json?.stargazers_count ?? '?'}
+                                <span className='material-symbols-outlined'>star_rate</span>
                             </Button>
                         </div>
                     </div>
                 )}
             </div>
-            {ap.data.BUILT_IN ? (
-                <div tw='text-gray-500'>built-in</div>
-            ) : (
-                <div>
-                    {ap.isInstalled ? (
-                        <div tw='flex justify-between'>
-                            <UpdateBtnUI updater={ap.updater} />
-                            <Button
-                                size='sm'
-                                appearance='link'
-                                tw='text-gray-500'
-                                // startIcon={<span className='material-symbols-outlined'>toggle_off</span>}
-                            >
-                                Disable
-                            </Button>
-                        </div>
-                    ) : (
-                        <Button
-                            loading={ap.installK.isRunning}
-                            appearance='primary'
-                            onClick={() => ap.install()}
-                            size='xs'
-                            startIcon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
-                        >
-                            Install
-                        </Button>
-                    )}
-                </div>
-            )}
+            <ActionPackStatusUI pack={ap} />
             {ap.installK.logs.length > 0 && (
                 <div>
                     <pre>{JSON.stringify(ap.installK.logs)}</pre>

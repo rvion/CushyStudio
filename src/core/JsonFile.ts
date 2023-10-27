@@ -3,7 +3,7 @@ import JSON5 from 'json5'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import { basename, dirname, join } from 'path'
+import { basename, dirname, join } from 'pathe'
 
 import { readableStringify } from '../utils/stringifyReadable'
 import { bang } from '../utils/bang'

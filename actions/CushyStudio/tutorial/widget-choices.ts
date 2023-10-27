@@ -1,5 +1,5 @@
 action({
-    name: 'choices',
+    name: 'demo-widget-choices',
     ui: (form) => ({
         foo: form.choices({
             items: () => ({

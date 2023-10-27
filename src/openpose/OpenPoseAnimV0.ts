@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import * as path from 'path'
+import * as path from 'pathe'
 
 import { drawOpenPoseBones } from './drawPoseV2'
 import samplePose1 from './json_inputs/32/001.json'

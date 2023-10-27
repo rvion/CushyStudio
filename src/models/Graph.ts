@@ -8,7 +8,7 @@ import type { ComfyNodeID } from '../types/NodeUID'
 import type { ComfyNodeSchema, SchemaL } from './Schema'
 
 import { marked } from 'marked'
-import { join } from 'path'
+import { join } from 'pathe'
 import { ManualPromise } from 'src/utils/ManualPromise'
 import { NodeBuilder } from '../back/NodeBuilder'
 import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
@@ -33,7 +33,7 @@ export type RunMode = 'fake' | 'real'
  *   - so no link to workspace or run
  */
 
-export type GraphID = Branded<string, 'GraphID'>
+export type GraphID = Branded<string, { GraphID: true }>
 export const asGraphID = (s: string): GraphID => s as any
 
 export type GraphT = {

@@ -1,5 +1,5 @@
 action({
-    name: 'background-removal-playground',
+    name: 'demo-widget-choice',
     ui: (form) => ({
         foo: form.choice({
             items: () => ({

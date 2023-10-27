@@ -1,11 +1,11 @@
 import type { RelativePath } from 'src/utils/fs/BrandedPaths'
-import type { STATE } from './state'
+import type { STATE } from '../front/state'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 
-export type Timestamp = Branded<number, 'Timestamp'>
+export type Timestamp = Branded<number, { Timestamp: true }>
 
 // --------------------------------------------------------------------------------
 export type GithubRepoData = {
@@ -14,15 +14,17 @@ export type GithubRepoData = {
         stargazers_count: number
     }
 }
-export type GithubRepoName = Branded<string, 'GithubRepoName'>
+export type GithubRepoName = Branded<string, { GithubRepoName: true }>
 export const asGithubRepoName = (s: string) => s as GithubRepoName
 export class GithubRepo {
+    // --------------------------------------------------------------------------------
     static cache = new Map<GithubRepoName, GithubRepo>()
     static get = (
         //
         st: STATE,
         user: GithubUser,
         repoName: GithubRepoName,
+        isFake: boolean,
     ) => {
         // ensure cache folder exists
         const cacheFolder = `.cushy/github/${user.username}/`
@@ -30,10 +32,12 @@ export class GithubRepo {
 
         let repo = GithubRepo.cache.get(repoName)
         if (repo) return repo
-        repo = new GithubRepo(st, user, repoName)
+        repo = new GithubRepo(st, user, repoName, isFake)
         GithubRepo.cache.set(repoName, repo)
         return repo
     }
+
+    // --------------------------------------------------------------------------------
     fPath: RelativePath
     data: Maybe<GithubRepoData> = null
     constructor(
@@ -41,6 +45,7 @@ export class GithubRepo {
         public st: STATE,
         public user: GithubUser,
         public repoName: GithubRepoName,
+        public isFake: boolean,
     ) {
         this.fPath = asRelativePath(`.cushy/github/${user.username}/${repoName}.json`)
         const prevExists = existsSync(this.fPath)
@@ -71,6 +76,7 @@ export class GithubRepo {
     }
 
     downloadInfos = async () => {
+        if (this.isFake) return
         const now = Date.now()
         const response = await fetch(`https://api.github.com/repos/${this.user.username}/${this.repoName}`)
         if (!response.ok) throw new Error('Failed to fetch user data')
@@ -91,7 +97,7 @@ export type GithubUserData = {
         avatar_url: string
     }
 }
-export type GithubUserName = Branded<string, 'GithubUserName'>
+export type GithubUserName = Branded<string, { GithubUserName: true }>
 export const asGithubUserName = (s: string) => s as GithubUserName
 export class GithubUser {
     static cache = new Map<string, GithubUser>()
@@ -99,6 +105,7 @@ export class GithubUser {
         //
         st: STATE,
         username: GithubUserName,
+        isFake: boolean,
     ): GithubUser => {
         // ensure cache folder exists
         const cacheFolder = `.cushy/github/${username}/`
@@ -106,7 +113,7 @@ export class GithubUser {
         // instanciate a Github user
         let user = GithubUser.cache.get(username)
         if (user) return user
-        user = new GithubUser(st, username)
+        user = new GithubUser(st, username, isFake)
         GithubUser.cache.set(username, user)
         return user
     }
@@ -116,6 +123,7 @@ export class GithubUser {
         //
         public st: STATE,
         public username: GithubUserName,
+        public isFake: boolean,
     ) {
         this.fPath = asRelativePath(`.cushy/github/${username}/.${username}.json`)
         const prevExists = existsSync(this.fPath)
@@ -148,6 +156,7 @@ export class GithubUser {
     }
     private _downloadImageRequested = false
     downloadImage = async () => {
+        if (this.isFake) return
         if (this._downloadImageRequested) return
         this._downloadImageRequested = true
         const imageURL = this.avatarURL

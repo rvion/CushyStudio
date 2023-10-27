@@ -25,10 +25,10 @@ export type LiteGraphLink = [
     linkType: string, //         "IMAGE" // type
 ]
 
-export type LiteGraphLinkID = Branded<number, 'LiteGraphLinkID'>
+export type LiteGraphLinkID = Branded<number, { LiteGraphLinkID: true }>
 const asLiteGraphLinkID = (id: number): LiteGraphLinkID => id as LiteGraphLinkID
 
-export type LiteGraphSlotIndex = Branded<number, 'LiteGraphSlotIndex'>
+export type LiteGraphSlotIndex = Branded<number, { LiteGraphSlotIndex: true }>
 export const asLiteGraphSlotIndex = (id: number): LiteGraphSlotIndex => id as LiteGraphSlotIndex
 
 export type LiteGraphNodeInput = {

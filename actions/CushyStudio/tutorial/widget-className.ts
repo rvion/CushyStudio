@@ -1,5 +1,5 @@
 action({
-    name: 'background-removal-playground',
+    name: 'demo-widget-classname',
     ui: (form) => ({
         steps: form.choices({
             defaultActiveBranches: {
@@ -7,7 +7,7 @@ action({
             },
             items: () => ({
                 frame: form.group({
-                    className: ' p-2 bg-blue-800 shadow rounded-xl animate-pulse',
+                    className: ' p-2 bg-blue-800 rounded-xl',
                     items: () => ({
                         seed: form.seed({
                             default: 12,
@@ -17,6 +17,7 @@ action({
                     }),
                 }),
                 portrait: form.group({
+                    className: 'p-2 bg-red-800 ',
                     items: () => ({
                         seed: form.seed({}),
                     }),

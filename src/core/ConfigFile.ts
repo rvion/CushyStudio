@@ -3,7 +3,8 @@ import type { IJsonModel } from 'flexlayout-react'
 
 import { JsonFile } from './JsonFile'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
-import { resolve } from 'path'
+import { resolve } from 'pathe'
+import { ActionPath } from 'src/marketplace/ActionPath'
 
 export type ConfigFile = {
     /** this will allow you to enable typechecking for folders you manage */
@@ -26,7 +27,7 @@ export type ConfigFile = {
      * @example 8188
      * */
     comfyPort: number
-
+    favoriteActions?: ActionPath[]
     /** list of all comfyUI setup available */
     machines?: {
         /** e.g.

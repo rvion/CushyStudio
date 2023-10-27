@@ -9,7 +9,7 @@
 // import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 // import { makeAutoObservable } from 'mobx'
 // // import fetch from 'node-fetch'
-// import { join, relative } from 'path'
+// import { join, relative } from 'pathe'
 // import { PayloadID } from 'src/core/PayloadID'
 // import { logger } from '../logger/logger'
 // import { ActionID, ActionL } from '../models/Action'

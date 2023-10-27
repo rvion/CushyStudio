@@ -50,7 +50,7 @@ export type ComfyUploadImageResult = { name: string }
 
 /** payload send back when triggering a promp */
 export type UUID = Tagged<string, 'UUID'>
-export type PromptID = Branded<UUID, 'PromptID'>
+export type PromptID = Branded<UUID, { PromptID: true }>
 export type PromptInfo = {
     prompt_id: PromptID /** uuid */
 }

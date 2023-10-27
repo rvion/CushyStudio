@@ -1,4 +1,4 @@
-import type { ActionPath } from 'src/back/ActionPath'
+import type { ActionPath } from 'src/marketplace/ActionPath'
 
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
@@ -12,7 +12,7 @@ import { ActionFormUI } from './ActionFormUI'
 export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: ActionPath }) {
     const st = useSt()
     const toolbox = st.toolbox
-    const af = toolbox.get(p.actionPath)
+    const af = toolbox.getAction(p.actionPath)
     // console.log('🟢', st.liveTime)
 
     useEffect(() => {

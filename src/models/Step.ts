@@ -1,5 +1,5 @@
 import type { PromptL } from './Prompt'
-import type { ActionPath } from 'src/back/ActionPath'
+import type { ActionPath } from 'src/marketplace/ActionPath'
 import type {
     FromExtension_Print,
     FromExtension_Prompt,
@@ -14,11 +14,11 @@ import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
-import { ActionFile } from 'src/back/ActionFile'
+import { ActionFile } from 'src/marketplace/ActionFile'
 
 export type FormPath = (string | number)[]
 
-export type StepID = Branded<string, 'StepID'>
+export type StepID = Branded<string, { StepID: true }>
 export const asStepID = (s: string): StepID => s as any
 
 export type StepOutput =
@@ -71,7 +71,7 @@ export class StepL {
     parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
     outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
 
-    get actionFile(): ActionFile | undefined { return this.st.toolbox.filesMap.get(this.data.actionPath) } // prettier-ignore
+    get actionFile(): ActionFile | undefined { return this.st.toolbox.actionsByPath.get(this.data.actionPath) } // prettier-ignore
     get action() { return this.actionFile?.action } // prettier-ignore
 
     get name() { return this.data.name } // prettier-ignore

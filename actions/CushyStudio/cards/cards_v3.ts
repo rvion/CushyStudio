@@ -1,5 +1,5 @@
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import { prettifyIcon } from '../../private/cards/icons/TEST'
+import { prettifyIcon } from '../../rvion/private/cards/icons/TEST'
 
 const ui = (form: FormBuilder) => ({
     // [UI] MODEL --------------------------------------
@@ -69,7 +69,7 @@ const ui = (form: FormBuilder) => ({
 })
 
 action({
-    name: 'cards V3',
+    name: 'cards v3',
     author: 'rvion',
     description: 'play with cards',
     ui,

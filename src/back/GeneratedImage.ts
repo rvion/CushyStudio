@@ -3,7 +3,7 @@
 // import type { Maybe } from '../utils/types'
 
 // import { nanoid } from 'nanoid'
-// import * as path from 'path'
+// import * as path from 'pathe'
 // import { ImageID, ImageT } from 'src/models/Image'
 // import { logger } from '../logger/logger'
 // import { AbsolutePath } from '../utils/fs/BrandedPaths'

@@ -17,6 +17,8 @@ export type Action<FIELDS extends WidgetDict> = {
     // AUTHORING ============================================================
     /** action name; default to unnamed_action_<nanoid()> */
     name: string
+    /** action image that will be displayed in the tree picker */
+    logo?: string
     /** this description will show-up at the top of the action form */
     description?: string
     /** tags */

@@ -2,7 +2,7 @@
  * a fake value that is detected at serialization
  * time to try to magically inject stuff
  * */
-export type AUTO = Branded<{ ___AUTO___: true }, 'AUTO'>
+export type AUTO = Branded<{ ___AUTO___: true }, { AUTO: true }>
 
 /**
  * you can use this as a placeholder anywhere in your graph

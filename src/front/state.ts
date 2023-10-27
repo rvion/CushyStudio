@@ -10,8 +10,7 @@ import { createRef } from 'react'
 import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 
-import { Toolbox } from 'src/back/CushyFileWatcher'
-import { Marketplace } from 'src/marketplace/makerplace'
+import { ActionLibrary } from 'src/marketplace/ActionLibrary'
 import { ProjectL } from 'src/models/Project'
 import { ShortcutWatcher } from 'src/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/shortcuts/shortcuts'
@@ -33,6 +32,7 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { Updater } from './updater'
+import { ActionPath } from 'src/marketplace/ActionPath'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -74,7 +74,8 @@ export class STATE {
     comfyJSONPath: AbsolutePath
     embeddingsPath: AbsolutePath
     nodesTSPath: AbsolutePath
-    actionsFolderPath: AbsolutePath
+    actionsFolderPathAbs: AbsolutePath
+    actionsFolderPathRel: RelativePath
     outputFolderPath: AbsolutePath
     status: ComfyStatus | null = null
 
@@ -84,16 +85,19 @@ export class STATE {
     comfyStatus: Maybe<ComfyStatus> = null
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
     configFile: JsonFile<ConfigFile>
-    marketplace: Marketplace
     updater: Updater
     hovered: Maybe<ImageL> = null
 
-    toolbox: Toolbox
+    toolbox: ActionLibrary
     schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
 
+    get githubUsername() { return this.configFile.value.githubUsername } // prettier-ignore
+    get favoriteActions(): ActionPath[] {
+        return this.configFile.value.favoriteActions ?? []
+    }
     // 🔴 this is not the right way to go cause it will cause the action to stay
     // pending in the background: fix that LATER™️
     stopCurrentPrompt = async () => {
@@ -136,7 +140,9 @@ export class STATE {
         this.embeddingsPath = this.resolve(this.rootPath, asRelativePath('schema/embeddings.json'))
         this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
-        this.actionsFolderPath = this.resolve(this.rootPath, asRelativePath('actions'))
+
+        this.actionsFolderPathRel = asRelativePath('actions')
+        this.actionsFolderPathAbs = this.resolve(this.rootPath, this.actionsFolderPathRel)
 
         // config files
         this.typecheckingConfig = mkTypescriptConfig()
@@ -144,15 +150,14 @@ export class STATE {
 
         // core instances
         this.db = new LiveDB(this)
-        this.marketplace = new Marketplace(this)
+        this.schema = this.db.schema
+
         this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { log: true, name: nanoid() })
         this.layout = new CushyLayoutManager(this)
-        this.toolbox = new Toolbox(this)
         this.theme = new ThemeManager(this)
         this.updater = new Updater(this, { cwd: this.rootPath, autoStart: true, runNpmInstall: true })
         this.importer = new ComfyImporter(this)
-        this.schema = this.db.schema
-        this.toolbox.discoverAllActions()
+        this.toolbox = new ActionLibrary(this)
         ;(async () => {
             await this.schemaReady
             const project = this.startProjectV2()

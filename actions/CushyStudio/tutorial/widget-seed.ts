@@ -1,9 +1,7 @@
 action({
-    name: 'playground-seed-widget',
+    name: 'demo-widget-seed',
     ui: (form) => ({
         seed1: form.seed({ defaultMode: 'randomize' }),
-        seed2: form.seed({ defaultMode: 'fixed' }),
-        seed3: form.seed({ defaultMode: 'fixed', default: 12 }),
     }),
 
     run: async (flow, form) => {
@@ -14,28 +12,36 @@ action({
         const negative = graph.CLIPTextEncode({ clip: ckpt, text: 'bad' })
         const positive = graph.CLIPTextEncode({ clip: ckpt, text: 'a house' })
 
-        const generate = (seed: number) => {
-            graph.PreviewImage({
-                images: graph.VAEDecode({
-                    vae: ckpt,
-                    samples: graph.KSampler({
-                        latent_image,
-                        model: ckpt,
-                        negative,
-                        positive,
-                        sampler_name: 'ddim',
-                        scheduler: 'karras',
-                        cfg: 8,
-                        denoise: 1,
-                        seed,
-                        steps: 10,
-                    }),
+        graph.PreviewImage({
+            images: graph.VAEDecode({
+                vae: ckpt,
+                samples: graph.KSampler({
+                    latent_image,
+                    model: ckpt,
+                    negative,
+                    positive,
+                    sampler_name: 'ddim',
+                    scheduler: 'karras',
+                    cfg: 8,
+                    denoise: 1,
+                    seed: form.seed1,
+                    steps: 10,
                 }),
-            })
+            }),
+        })
+
+        //        👇 for every value
+        for (const i of [1, 2, 3]) {
+            //                 👇 we patch the postive text
+            positive.json.inputs.text = `a house ${i}`
+            //        👇 and re-run the prompt
+            await flow.PROMPT()
         }
 
-        generate(form.seed1)
-        generate(form.seed2)
-        generate(form.seed3)
+        // 👇 as a bonus, here is a way to access last image
+        // within the action lifetime so you can do stuff with it
+        const lastImageURL = flow.lastImage.comfyUrl
+        flow.print(lastImageURL)
+        // await flow.createAnimation()
     },
 })

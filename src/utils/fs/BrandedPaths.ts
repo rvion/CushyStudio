@@ -1,2 +1,2 @@
-export type RelativePath = Branded<string, 'WorkspaceRelativePath'>
-export type AbsolutePath = Branded<string, 'Absolute'>
+export type RelativePath = Branded<string, { RelativePath: true }>
+export type AbsolutePath = Branded<string, { AbsolutePath: true }>

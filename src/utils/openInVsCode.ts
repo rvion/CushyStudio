@@ -1,6 +1,6 @@
 import { exec } from 'child_process'
 import { existsSync } from 'fs'
-import { resolve as pathResolve } from 'path'
+import { resolve as pathResolve } from 'pathe'
 
 export async function openInVSCode(workspaceFolderPath: string, filePathWithinWorkspace: string): Promise<void> {
     return new Promise((resolvePromise, rejectPromise) => {

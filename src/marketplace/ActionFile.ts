@@ -1,5 +1,5 @@
-import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { Action, WidgetDict } from 'src/core/Action'
+import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { STATE } from 'src/front/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
@@ -7,14 +7,16 @@ import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 import { readFileSync } from 'fs'
 import { makeAutoObservable, observable } from 'mobx'
 import path from 'pathe'
-import { ActionPath } from 'src/back/ActionPath'
+import { generateName } from 'src/front/ui/drafts/generateName'
+import { ActionPack } from 'src/marketplace/ActionPack'
+import { ActionPath } from 'src/marketplace/ActionPath'
+import { DraftL } from 'src/models/Draft'
+import { transpileCode } from '../back/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
 import { exhaust } from '../utils/ComfyUtils'
 import { ManualPromise } from '../utils/ManualPromise'
-import { transpileCode } from './transpiler'
-import { DraftL } from 'src/models/Draft'
-import { generateName } from 'src/front/ui/drafts/generateName'
+import { ActionLibrary } from './ActionLibrary'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -30,28 +32,27 @@ enum LoadStatus {
 }
 
 export class ActionFile {
+    st: STATE
     displayName: string
+
+    get actionPackFolderRel() {
+        return this.pack.folderRel
+    }
+
+    get actionAuthorFolderRel() {
+        return this.pack.authorFolderRel
+    }
+
     constructor(
-        public st: STATE,
+        //
+        public library: ActionLibrary,
+        public pack: ActionPack,
         public absPath: AbsolutePath,
         public relPath: ActionPath,
     ) {
+        this.st = library.st
         this.displayName = path.basename(this.absPath)
-
         makeAutoObservable(this, { action: observable.ref })
-    }
-
-    // autoreload
-    autoReload = false
-    autoReloadTimeout?: NodeJS.Timeout
-    setAutoReload = (v: boolean) => {
-        if (this.autoReloadTimeout != null) clearTimeout(this.autoReloadTimeout)
-        this.autoReload = v
-        if (!v) return
-        this.autoReloadTimeout = setInterval(() => {
-            console.log('🟢 auto reloading...')
-            this.load({ force: true })
-        }, 3000)
     }
 
     // status
@@ -63,8 +64,32 @@ export class ActionFile {
     }
 
     /** action display name */
+    get logoURL(): string {
+        return this.action?.logo ?? this.pack?.logo ?? ''
+    }
+
     get name(): string {
         return this.action?.name ?? path.basename(this.absPath)
+    }
+
+    get isFavorite(): boolean {
+        return this.st.configFile.value.favoriteActions?.includes(this.relPath) ?? false
+    }
+
+    setFavorite = (fav: boolean) => {
+        const favArray = this.st.configFile.value.favoriteActions ?? []
+        if (fav) {
+            if (!favArray.includes(this.relPath)) favArray.push(this.relPath)
+        } else {
+            const index = favArray.indexOf(this.relPath)
+            if (index !== -1) favArray.splice(index, 1)
+        }
+        this.st.configFile.update({ favoriteActions: favArray })
+    }
+
+    get namePretty(): string {
+        if (this.name.endsWith('.ts')) return this.name.slice(0, -3)
+        return this.name
     }
 
     createDraft = (): DraftL => {

@@ -4,7 +4,7 @@ import { cwd } from 'process'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Button, Checkbox, Input, InputGroup, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
-import { GithubUserUI } from 'src/front/GithubAvatarUI'
+import { GithubUserUI } from 'src/marketplace/GithubAvatarUI'
 import { DraftID, DraftL } from 'src/models/Draft'
 import { openInVSCode } from 'src/utils/openInVsCode'
 import { stringifyUnknown } from 'src/utils/stringifyUnknown'
@@ -16,6 +16,7 @@ import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
 import { ActionDraftListUI, AddDraftUI } from './ActionDraftListUI'
+import { GithubUserName } from 'src/marketplace/githubUtils'
 
 /**
  * this is the root interraction widget
@@ -95,7 +96,14 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                     <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
                         <div tw='flex items-center gap-1'>
                             <span>By</span>
-                            {action.author ? <GithubUserUI showName username={action.author} /> : 'anonymous'}
+                            {action.author ? ( //
+                                <GithubUserUI //
+                                    showName
+                                    username={action.author as GithubUserName}
+                                />
+                            ) : (
+                                'anonymous'
+                            )}
                         </div>
                     </ErrorBoundary>
                 </div>
@@ -120,7 +128,6 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                 </div>
                 <ActionDraftListUI af={af} />
                 <ScrollablePaneUI className='flex-grow  '>
-                    <div>{action.description}</div>
                     <form
                         className='mx-2'
                         style={{
@@ -143,6 +150,7 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                             draft.start()
                         }}
                     >
+                        <div tw='[margin-left:6rem]'>{action.description}</div>
                         <ResultWrapperUI
                             //
                             res={draft.form}

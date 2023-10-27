@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { Popover, Whisper } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
+import { OpenComfyExternalUI } from './AppBarUI'
 
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
@@ -63,14 +64,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                             icon={<span className='material-symbols-outlined'>explore</span>}
                             label='Node Explorer'
                         />
-                        {/* <MainNavEntryUI
-                            //
-                            onClick={() => st.layout.addComfyNodeExplorer()}
-                            ix='B'
-                            icon={
-                            }
-                            label='Comfy'
-                        /> */}
+                        <OpenComfyExternalUI />
                     </Popover>
                 }
             >

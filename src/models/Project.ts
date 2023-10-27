@@ -4,7 +4,7 @@ import type { SchemaL } from './Schema'
 
 import { LiveRef } from '../db/LiveRef'
 
-export type ProjectID = Branded<string, 'ProjectID'>
+export type ProjectID = Branded<string, { ProjectID: true }>
 export const asProjectID = (s: string): ProjectID => s as any
 
 export type ProjectT = {

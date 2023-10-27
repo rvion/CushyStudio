@@ -3,8 +3,8 @@ import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 
 import { autorun, reaction, runInAction, toJS } from 'mobx'
-import { ActionFile } from 'src/back/ActionFile'
-import { ActionPath } from 'src/back/ActionPath'
+import { ActionFile } from 'src/marketplace/ActionFile'
+import { ActionPath } from 'src/marketplace/ActionPath'
 import { type Widget } from 'src/controls/Widget'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { __FAIL, __OK, type Result } from 'src/utils/Either'
@@ -13,7 +13,7 @@ import { Status } from 'src/back/Status'
 
 export type FormPath = (string | number)[]
 
-export type DraftID = Branded<string, 'DraftID'>
+export type DraftID = Branded<string, { DraftID: true }>
 export const asDraftID = (s: string): DraftID => s as any
 
 export type DraftT = {
@@ -87,7 +87,7 @@ export class DraftL {
 
     form: Result<Widget> = __FAIL('not loaded yet')
 
-    get actionFile(): ActionFile | undefined { return this.st.toolbox.filesMap.get(this.data.actionPath) } // prettier-ignore
+    get actionFile(): ActionFile | undefined { return this.st.toolbox.actionsByPath.get(this.data.actionPath) } // prettier-ignore
     get action() { return this.actionFile?.action } // prettier-ignore
 
     onHydrate = () => {
