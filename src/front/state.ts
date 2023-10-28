@@ -135,7 +135,7 @@ export class STATE {
     /**  */
     updateTsConfig = () => {
         const finalInclude = ['src', 'schema/global.d.ts']
-        finalInclude.push(`actions/${this.githubUsername}/**/*`)
+        if (this.githubUsername) finalInclude.push(`actions/${this.githubUsername}/**/*`)
         if (this.githubUsername === 'rvion') finalInclude.push('actions/CushyStudio/**/*')
         this.typecheckingConfig.update({ include: finalInclude })
     }
