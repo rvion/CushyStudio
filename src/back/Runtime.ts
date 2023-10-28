@@ -4,10 +4,11 @@ import type { Printable } from '../core/Printable'
 import * as path from 'pathe'
 // import { Cyto } from '../graph/cyto' 🔴🔴
 import { execSync } from 'child_process'
-import fs, { readFileSync, writeFileSync } from 'fs'
+import fs, { writeFileSync } from 'fs'
 import { marked } from 'marked'
-import { lookup } from 'mime-types'
+import { Uploader } from 'src/front/Uploader'
 import { STATE } from 'src/front/state'
+import { braceExpansion } from 'src/utils/expansion'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { Slot } from '../core/Slot'
 import { auto } from '../core/autoValue'
@@ -16,17 +17,15 @@ import { GraphL } from '../models/Graph'
 import { ImageL } from '../models/Image'
 import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
-import { ApiPromptInput, ComfyUploadImageResult, PromptInfo, WsMsgExecuted } from '../types/ComfyWsApi'
+import { ApiPromptInput, PromptInfo, WsMsgExecuted } from '../types/ComfyWsApi'
 import { deepCopyNaive, exhaust } from '../utils/ComfyUtils'
-import { asSTRING_orCrash } from '../utils/bang'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../wildcards/wildcards'
+import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSentToComfyUI'
 import { NodeBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
-import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSentToComfyUI'
-import { braceExpansion } from 'src/utils/expansion'
 
 /** script exeuction instance */
 export class Runtime {
@@ -44,14 +43,10 @@ export class Runtime {
 
     constructor(public step: StepL) {
         this.st = step.st
-        // console.log('🔴A', this.step.parentGraph.item.size, Object.keys(this.step.parentGraph.item.data.comfyPromptJSON).length)
-        // this.graph = this.step.parentGraph.item.clone()
-        // console.log('🔴B', this.graph.size)
-        this.folder = step.st.outputFolderPath // output.resolve(relPath)
-        // this.nodes = new NodeBuilder(this)
-        // this.graph = st.db //new GraphL(this.st.schema)
-        // this.cyto = new Cyto(this.graph) // 🔴🔴
-        // .makeAutoObservable(this)
+        this.folder = step.st.outputFolderPath
+        this.uploadFromAbsolutePath = this.st.uploader.uploadFromAbsolutePath.bind(this.st.uploader)
+        this.uploadFromURL = this.st.uploader.uploadFromURL.bind(this.st.uploader)
+        this.uploadFromAsset = this.st.uploader.uploadFromAsset.bind(this.st.uploader)
     }
 
     /** list all actions ; codegen during dev-time */
@@ -95,6 +90,9 @@ export class Runtime {
             return Status.Failure
         }
     }
+
+    hasLora = (loraName: string): boolean => this.st.schema.hasLora(loraName)
+    hasCheckpoint = (loraName: string): boolean => this.st.schema.hasLora(loraName)
 
     /** run an imagemagick convert action */
     imagemagicConvert = (img: ImageL, partialCmd: string, suffix: string): string => {
@@ -250,7 +248,7 @@ export class Runtime {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
                 if (img.data.downloaded) {
-                    const res = await this.uploadAnyFile(img.localAbsolutePath)
+                    const res = await this.uploadFromAbsolutePath(img.localAbsolutePath)
                     return res.name as Enum_LoadImage_image // 🔴
                 }
                 return img.localAbsolutePath as Enum_LoadImage_image // 🔴
@@ -282,7 +280,7 @@ export class Runtime {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
                 if (img.data.downloaded) {
-                    const res = await this.uploadAnyFile(img.localAbsolutePath)
+                    const res = await this.uploadFromAbsolutePath(img.localAbsolutePath)
                     // this.print(JSON.stringify(res))
 
                     const img2 = this.nodes.LoadImage({ image: res.name as any })
@@ -351,68 +349,22 @@ export class Runtime {
     // }
 
     resolveRelative = (path: string): RelativePath => asRelativePath(path)
-
     resolveAbsolute = (path: string): AbsolutePath => asAbsolutePath(path)
-
     range = (start: number, end: number, increment: number = 1): number[] => {
         const res = []
         for (let i = start; i < end; i += increment) res.push(i)
         return res
     }
 
-    /** upload an image present on disk to ComfyServer */
-    uploadAnyFile = async (filePath: AbsolutePath): Promise<ComfyUploadImageResult> => {
-        // const ui8arr: Uint8Array = readFileSync(path)
-        const mime = asSTRING_orCrash(lookup(filePath))
-        const file = new Blob([await readFileSync(filePath)], { type: mime })
-        return await this.uploadUIntArrToComfy(file)
-    }
+    // UPLOAD ------------------------------------------------------------------------------------------
+    /** upload an image present on disk to ComfyUI */
+    uploadFromAbsolutePath: Uploader['uploadFromAbsolutePath']
+    /** upload an image that can be downloaded form a given URL to ComfyUI */
+    uploadFromURL: Uploader['uploadFromURL']
+    /** upload a deck asset to ComfyUI */
+    uploadFromAsset: Uploader['uploadFromAsset']
 
-    /** upload an image present on disk to ComfyServer */
-    uploadWorkspaceFile = async (path: RelativePath): Promise<ComfyUploadImageResult> => {
-        const absPath = this.st.resolveFromRoot(path)
-        return this.uploadAnyFile(absPath)
-        // const ui8arr: Uint8Array = readFileSync(absPath)
-        // return await this.uploadUIntArrToComfy(ui8arr)
-    }
-
-    /**
-     * [alpha]
-     * as of 2023-09-24: ❓
-     * as of 2023-09-25? ...
-     */
-    uploadWorkspaceFileAndLoad = async (path: RelativePath): Promise<LoadImage> => {
-        const upload = await this.uploadWorkspaceFile(path)
-        const img = (this.graph as any).LoadImage({ image: upload.name })
-        return img
-    }
-
-    uploadURL = async (url: string): Promise<ComfyUploadImageResult> => {
-        const blob = await this.st.getUrlAsBlob(url)
-        // const bytes = new Uint8Array(await blob.arrayBuffer())
-        return this.uploadUIntArrToComfy(blob)
-    }
-
-    private uploadUIntArrToComfy = async (bytes: Blob): Promise<ComfyUploadImageResult> => {
-        // throw new Error('not implemented')
-        const uploadURL = this.st.getServerHostHTTP() + '/upload/image'
-        const form = new FormData()
-        form.set('image', bytes, 'upload.png')
-        // form.append('image', Buffer.from(bytes), { filename: 'upload.png' })
-        const resp = await fetch(uploadURL, {
-            method: 'POST',
-            // headers: form.getHeaders(),
-            body: form,
-        })
-        const result: ComfyUploadImageResult = (await resp.json()) as any
-        console.log({ 'resp.data': result })
-        // this.lastUpload = new CushyImage(this, { filename: result.name, subfolder: '', type: 'output' }).url
-        return result
-    }
-
-    // --------------------
-    // INTERRACTIONS
-
+    // INTERRACTIONS ------------------------------------------------------------------------------------------
     async PROMPT(p?: {
         /** defaults to numbers */
         ids?: IDNaminScheemeInPromptSentToComfyUI
@@ -503,3 +455,21 @@ export class Runtime {
 
     // ctx = {}
 }
+
+/** upload an image present on disk to ComfyServer */
+// uploadWorkspaceFile = async (path: RelativePath): Promise<ComfyUploadImageResult> => {
+//     const absPath = this.st.resolveFromRoot(path)
+//     return this.uploadAnyFile(absPath)
+//     // const ui8arr: Uint8Array = readFileSync(absPath)
+//     // return await this.uploadUIntArrToComfy(ui8arr)
+// }
+/**
+ * [alpha]
+ * as of 2023-09-24: ❓
+ * as of 2023-09-25? ...
+ */
+// uploadWorkspaceFileAndLoad = async (path: RelativePath): Promise<LoadImage> => {
+//     const upload = await this.uploadWorkspaceFile(path)
+//     const img = (this.graph as any).LoadImage({ image: upload.name })
+//     return img
+// }

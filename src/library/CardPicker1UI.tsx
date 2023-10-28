@@ -25,7 +25,6 @@ export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
                 else library.expand(value)
             }}
             renderTreeNode={(node) => {
-                const isExpanded = library.isExpanded(node.value as string)
                 const isTypechecked = library.isTypeChecked(node.value as string)
                 return (
                     <>

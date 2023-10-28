@@ -13,11 +13,12 @@ enum Tab {
     Cushy = 0,
     Comfy = 1,
     Paint = 2,
+    Asset = 3,
 }
 export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { req: Widget_image | Widget_imageOpt }) {
     const req = p.req
     const st = useSt()
-    const [dropStyle, dropRef] = useImageDrop((i) => {
+    const [dropStyle, dropRef] = useImageDrop(st, (i) => {
         console.log('DROPPED', i)
         req.state.cushy = { type: 'CushyImage', imageID: i.id }
         req.state.pick = 'cushy'
@@ -44,13 +45,19 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
                             if (i === Tab.Cushy) req.state.pick = 'cushy'
                             if (i === Tab.Comfy) req.state.pick = 'comfy'
                             if (i === Tab.Paint) req.state.pick = 'paint'
+                            if (i === Tab.Asset) req.state.pick = 'asset'
                         }}
                         current={
                             req.state.pick === 'cushy' //
                                 ? Tab.Cushy
                                 : req.state.pick === 'comfy'
                                 ? Tab.Comfy
-                                : Tab.Paint
+                                : req.state.pick === 'paint'
+                                ? Tab.Paint
+                                : req.state.pick === 'asset'
+                                ? Tab.Asset
+                                : // defaul't
+                                  Tab.Asset
                         }
                         disabled={!req.state.active}
                         tabs={[

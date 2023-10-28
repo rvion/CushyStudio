@@ -49,7 +49,7 @@ const ui = (form: FormBuilder) => ({
 
     // theme5: form.string({ default: 'winter', group: 'theme' }),
     logos: form.group({
-        className: 'flex flex-wrap',
+        // className: 'flex flex-wrap',
         items: () => ({
             spades: form.imageOpt({}),
             hearts: form.imageOpt({}),

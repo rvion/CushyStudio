@@ -33,6 +33,7 @@ import { readableStringify } from '../utils/stringifyReadable'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { Updater } from './updater'
 import { CardPath } from 'src/library/CardPath'
+import { Uploader } from './Uploader'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -43,6 +44,7 @@ export class STATE {
     uid = nanoid() // front uid to fix hot reload
     db: LiveDB // core data
     shortcuts: ShortcutWatcher
+    uploader: Uploader
 
     liveTime: number = (() => {
         const store = this.hotReloadPersistentCache
@@ -162,6 +164,7 @@ export class STATE {
         this.schema = this.db.schema
 
         this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { log: true, name: nanoid() })
+        this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
         this.theme = new ThemeManager(this)
         this.updater = new Updater(this, { cwd: this.rootPath, autoStart: true, runNpmInstall: true })

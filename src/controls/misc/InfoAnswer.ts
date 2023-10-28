@@ -27,7 +27,7 @@ export type PaintImageAnswer = { type: 'PaintImage'; base64: string }
 export type ImageAnswerForm<Type extends string, Bool extends boolean> = {
     type: Type
     active: Bool
-    pick: 'cushy' | 'comfy' | 'paint'
+    pick: 'cushy' | 'comfy' | 'paint' | 'asset'
     cushy: Maybe<CushyImageAnswer>
     comfy: ComfyImageAnswer // always example.png by default
     paint: Maybe<PaintImageAnswer> // base64

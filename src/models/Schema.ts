@@ -48,16 +48,35 @@ export type EnumInfo = {
 }
 
 export class SchemaL {
-    getLoraHierarchy = (): string[] => {
-        const loras = this.getLoras()
-        return []
-    }
-
+    // LORA --------------------------------------------------------------
+    hasLora = (loraName: string): boolean => this.getLoras().includes(loraName as Enum_LoraLoader_lora_name)
     getLoras = (): Enum_LoraLoader_lora_name[] => {
         const candidates = this.knownEnumsByName.get('Enum_LoraLoader_lora_name')?.values ?? []
         return candidates as Enum_LoraLoader_lora_name[]
     }
 
+    // IMAGES --------------------------------------------------------------
+    hasImage = (imgName: string): boolean => this.getImages().includes(imgName as Enum_LoadImage_image)
+    getImages = (): Enum_LoadImage_image[] => {
+        const candidates = this.knownEnumsByName.get('Enum_LoadImage_image')?.values ?? []
+        return candidates as Enum_LoadImage_image[]
+    }
+
+    /** only use this function after an upload success, when you say this asset is now part of ComfyUI */
+    unsafely_addImageInSchemaWithoutReloading = (imgName: string): void => {
+        const enumInfo = this.knownEnumsByName.get('Enum_LoadImage_image')
+        if (enumInfo == null) throw new Error(`Enum_LoadImage_image not found`)
+        enumInfo.values.push(imgName as Enum_LoadImage_image)
+    }
+
+    // CHECKPOINT --------------------------------------------------------------
+    hasCheckpoint = (ckptName: string): boolean => this.getCheckpoints().includes(ckptName as Enum_CheckpointLoaderSimple_ckpt_name) // prettier-ignore
+    getCheckpoints = (): Enum_CheckpointLoaderSimple_ckpt_name[] => {
+        const candidates = this.knownEnumsByName.get('Enum_CheckpointLoaderSimple_ckpt_name')?.values ?? []
+        return candidates as Enum_CheckpointLoaderSimple_ckpt_name[]
+    }
+
+    // ENUM --------------------------------------------------------------
     getEnumOptionsForSelectPicker = (enumName: string): { label: EnumValue; value: EnumValue }[] => {
         const candidates = this.knownEnumsByName.get(enumName)?.values ?? []
         return candidates.map((x) => ({ label: x, value: x }))
