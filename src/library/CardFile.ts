@@ -289,8 +289,8 @@ export class CardFile {
 
         // 2. eval file to extract actions
         try {
-            const ProjectScriptFn = new Function('action', codeJS)
-            ProjectScriptFn(registerActionFn)
+            const ProjectScriptFn = new Function('action', 'card', codeJS)
+            ProjectScriptFn(registerActionFn, registerActionFn)
             if (ACTIONS.length === 0) return
             if (ACTIONS.length > 1)
                 this.addError(

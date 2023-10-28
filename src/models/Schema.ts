@@ -300,6 +300,7 @@ export class SchemaL {
         p('')
         p(`declare global {`)
         p(`const action: ActionType`)
+        p(`const card: ActionType`)
         p(``)
         p(`\n// 0. Entrypoint --------------------------`)
         p(`export interface ComfySetup {`)

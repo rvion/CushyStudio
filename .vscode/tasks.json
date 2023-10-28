@@ -14,17 +14,17 @@
         //     "group": { "kind": "build", "isDefault": true },
         //     "runOptions": { "runOn": "folderOpen", "instanceLimit": 1 }
         // },
-        {
-            "label": "🛋️ Cushy",
-            "detail": "start CushyStudio",
-            "type": "process",
-            "command": "npm",
-            "args": ["run", "start"],
-            "isBackground": true,
-            "presentation": { "reveal": "never", "close": false },
-            "group": "build",
-            "runOptions": { "instanceLimit": 1 }
-        },
+        // {
+        //     "label": "🛋️ Cushy",
+        //     "detail": "start CushyStudio",
+        //     "type": "process",
+        //     "command": "npm",
+        //     "args": ["run", "start"],
+        //     "isBackground": true,
+        //     "presentation": { "reveal": "never", "close": false },
+        //     "group": "build",
+        //     "runOptions": { "instanceLimit": 1 }
+        // },
         // {
         //     "label": "⚛️ electron",
         //     "detail": "start FRONTEND dev-server",
