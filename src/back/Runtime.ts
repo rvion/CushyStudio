@@ -271,6 +271,7 @@ export class Runtime {
         }
         throw new Error('FAILURE to load image answer as enum')
     }
+
     loadImageAnswer = async (ia: ImageAnswer): Promise<_IMAGE & _MASK> => {
         try {
             // if (ia.type === 'imagePath') {

@@ -78,4 +78,17 @@ export class FormBuilder {
     selectMany         = <const T extends { type: string}>                (p: W.Widget_selectMany_input<T>      , serial?: W.Widget_selectMany_serial<T>      ) => new W.Widget_selectMany          (this, this.schema, p, serial)
     choice             = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_choice_input<T>          , serial?: W.Widget_choice_serial<T>          ) => new W.Widget_choice              (this, this.schema, p, serial)
     choices            = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_choices_input<T>         , serial?: W.Widget_choices_serial<T>         ) => new W.Widget_choices             (this, this.schema, p, serial)
+
+
+    // quick helper for markdown
+    // todo: 🦊 2023-10-29 move elsewhere
+    _FIX_INDENTATION = (str: TemplateStringsArray) => {
+        // split string into lines
+        let lines = str[0].split('\n').slice(1)
+        const indent = (lines[0]! ?? '').match(/^\s*/)![0].length
+        // trim whitespace at the start and end of each line
+        lines = lines.map((line) => line.slice(indent))
+        // join lines back together with preserved newlines
+        return lines.join('\n')
+    }
 }

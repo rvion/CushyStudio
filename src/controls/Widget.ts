@@ -420,7 +420,7 @@ export class Widget_size implements IRequest<'size', Widget_size_input, Widget_s
 // 🅿️ matrix ==============================================================================
 export type Widget_matrix_input = ReqInput<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
 export type Widget_matrix_serial = Widget_matrix_state
-export type Widget_matrix_state = { type: 'matrix', active: true; selected: CELL[] }
+export type Widget_matrix_state = { type: 'matrix', active: true; selected: CELL[], collapsed?: boolean }
 export type Widget_matrix_output = CELL[]
 export interface Widget_matrix extends IWidget<'matrix', Widget_matrix_input, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {}
 export class Widget_matrix implements IRequest<'matrix', Widget_matrix_input, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {

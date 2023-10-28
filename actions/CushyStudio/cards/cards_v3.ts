@@ -33,10 +33,14 @@ const ui = (form: FormBuilder) => ({
 
     // [UI] THEME --------------------------------------
     generalTheme: form.string({ default: 'fantasy' }),
-    theme1: form.string({ default: 'underwater, sea, fish, tentacles, ocean', group: 'theme' }),
-    theme2: form.string({ default: 'volcanic, lava, rock, fire', group: 'theme' }),
-    theme3: form.string({ default: 'forest, nature, branches, trees', group: 'theme' }),
-    theme4: form.string({ default: 'snow, ice, mountain, transparent winter', group: 'theme' }),
+    themes: form.group({
+        items: () => ({
+            theme1: form.string({ default: 'underwater, sea, fish, tentacles, ocean', group: 'theme' }),
+            theme2: form.string({ default: 'volcanic, lava, rock, fire', group: 'theme' }),
+            theme3: form.string({ default: 'forest, nature, branches, trees', group: 'theme' }),
+            theme4: form.string({ default: 'snow, ice, mountain, transparent winter', group: 'theme' }),
+        }),
+    }),
 
     colors: form.group({
         items: () => ({
@@ -64,6 +68,13 @@ const ui = (form: FormBuilder) => ({
     H: form.int({ default: 726, group: 'size' }),
 
     // [UI] BORDERS ------------------------------------
+    background: form.group({
+        items: () => ({
+            seed: form.seed({ default: 0, defaultMode: 'fixed' }),
+            help: form.markdown({ markdown: `Use \`{color}\` and \`{suit}\` to insert the current color and suit` }),
+            prompt: form.string({ default: `{color} background pattern` }),
+        }),
+    }),
     margin: form.intOpt({ default: 40 }),
     symetry: form.bool({ default: false }),
 })
@@ -134,17 +145,20 @@ action({
         const suitsBackgroundLatent = graph.EmptyLatentImage({ width: W, height: H })
         for (const suit of suits) {
             const suitColor = p.colors[suit as keyof typeof p.colors]
-            const suitBGPrompt = `${suitColor} background, pattern, ${p.generalTheme}`
+            // `${suitColor} background, pattern`
+            const suitBGPrompt = p.background.prompt //
+                .replace('{color}', suitColor)
+                .replace('{suit}', suit)
             flow.print(`generating background for ${suit} with prompt "${suitBGPrompt}"`)
             const colorImage = graph.KSampler({
-                seed,
+                seed: p.background.seed,
                 latent_image: suitsBackgroundLatent,
                 sampler_name: 'euler',
                 scheduler: 'karras',
                 // steps: 5,
                 model: ckpt,
-                negative: graph.CLIPTextEncode({ clip: ckpt, text: 'text, watermarks, logo' }),
                 positive: graph.CLIPTextEncode({ clip: ckpt, text: suitBGPrompt }),
+                negative: graph.CLIPTextEncode({ clip: ckpt, text: 'text, watermarks, logo, 1girl' }),
             })
             graph.PreviewImage({ images: graph.VAEDecode({ samples: colorImage, vae: ckpt }) })
             suitsBackground.set(suit, colorImage)
@@ -152,10 +166,10 @@ action({
 
         // 4. CARDS --------------------------------------------------
         const themeFor = {
-            spades: p.theme1,
-            hearts: p.theme2,
-            clubs: p.theme3,
-            diamonds: p.theme4,
+            spades: p.themes.theme1,
+            hearts: p.themes.theme2,
+            clubs: p.themes.theme3,
+            diamonds: p.themes.theme4,
         }
         const margin = p.margin ?? 50
         // const emptyLatent = graph.EmptyLatentImage({ width: W, height: H })
@@ -189,7 +203,8 @@ action({
                     K: illustrations.King,
                 }[value] ?? `background`
 
-            const positiveText = `masterpiece, monster, monster-girl, pixar, strong expression rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${p.generalTheme}, 4k`
+            // monster, monster-girl, pixar, strong expression
+            const positiveText = `masterpiece, rpg, ${basePrompt}, ${suitColor} of ${suit} color, intricate details, theme of ${theme} and ${p.generalTheme}, 4k`
             flow.print(`👉 ${value}${suit} : ${positiveText}`)
             const positive = graph.CLIPTextEncode({ clip: ckpt, text: positiveText })
             const crop_blending = 0
@@ -210,13 +225,8 @@ action({
 
             // ADD LOGOS ----------------------------------------
             let pixels: _IMAGE = graph.VAEDecode({ vae: ckpt, samples: sample })
-            const addLogo = (
-                //
-                pixels: _IMAGE,
-                atX_: number,
-                atY_: number,
-                factor = 1,
-            ) => {
+
+            const addLogo = (pixels: _IMAGE, atX_: number, atY_: number, factor = 1) => {
                 const finalLogoSize = p.logoSize * factor
                 const atX = floor(atX_ - finalLogoSize / 2)
                 const atY = floor(atY_ - finalLogoSize / 2)
@@ -235,6 +245,7 @@ action({
                     right: atX + finalLogoSize,
                 }).outputs.IMAGE
             }
+
             if (value === '1') {
                 flow.print('adding "1" logo')
                 pixels = addLogo(pixels, W / 2, H / 2, 3)
@@ -302,7 +313,8 @@ action({
                 green: 255,
             })
             const textRotated = graph.Image_Rotate({ images: text, mode: 'transpose', rotation: 180, sampler: 'bilinear' })
-            // corner numbers
+
+            // CORNER NUMBERS ---------------------------------------------------
             pixels = graph.ImageCompositeAbsolute({
                 images_a: pixels,
                 images_b: text,
@@ -320,7 +332,7 @@ action({
                 method: 'pair',
             })
 
-            // round corners
+            // ROUND CORNERS ----------------------------------------------------
             pixels = graph.ImageTransformCropCorners({
                 images: pixels,
                 bottom_left_corner: 'true',
