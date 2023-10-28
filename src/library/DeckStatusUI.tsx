@@ -1,11 +1,11 @@
-import type { ActionPack } from './ActionPack'
+import type { Deck } from './Deck'
 import type { Updater } from 'src/front/updater'
 
 import { observer } from 'mobx-react-lite'
 import { Button, Notification, toaster } from 'rsuite'
 import { UpdateBtnUI } from 'src/front/ui/layout/UpdateBtnUI'
 
-export const ActionPackStatusUI = observer(function PackStatusUI_(p: { pack: ActionPack }) {
+export const ActionPackStatusUI = observer(function PackStatusUI_(p: { pack: Deck }) {
     const ap = p.pack
     if (ap.BUILT_IN) return <div tw='text-gray-500'>built-in</div>
     return ap.isInstalled ? (

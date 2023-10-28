@@ -7,30 +7,30 @@ import Watcher from 'watcher'
 import { readdirSync, statSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { ItemDataType } from 'rsuite/esm/@types/common'
-import { ActionPath, asActionPath } from 'src/marketplace/ActionPath'
-import { ActionPack, ActionPackFolder } from 'src/marketplace/ActionPack'
+import { CardPath, asCardPath } from 'src/library/CardPath'
+import { Deck, DeckFolder } from 'src/library/Deck'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { hasValidActionExtension } from '../back/ActionExtensions'
-import { ActionFile } from './ActionFile'
+import { CardFile } from './CardFile'
 
 export class ActionLibrary {
     updatedAt = 0
     treeData: ItemDataType[] = []
-    actionsByPath = new Map<ActionPath, ActionFile>()
+    actionsByPath = new Map<CardPath, CardFile>()
 
     // --------------------------
-    packs: ActionPack[] = []
-    get packsSorted(): ActionPack[] {
+    packs: Deck[] = []
+    get packsSorted(): Deck[] {
         return [...this.packs].sort((a, b) => {
             return b.score - a.score
         })
     }
-    packsByFolder = new Map<ActionPackFolder, ActionPack>()
-    getAction = (path: ActionPath): ActionFile | undefined => this.actionsByPath.get(path)
-    getPack = (folder: ActionPackFolder): ActionPack => {
+    packsByFolder = new Map<DeckFolder, Deck>()
+    getAction = (path: CardPath): CardFile | undefined => this.actionsByPath.get(path)
+    getPack = (folder: DeckFolder): Deck => {
         const prev = this.packsByFolder.get(folder)
         if (prev) return prev
-        const next = new ActionPack(this, folder)
+        const next = new Deck(this, folder)
         this.packsByFolder.set(folder, next)
         this.packs.push(next)
         return next
@@ -82,7 +82,7 @@ export class ActionLibrary {
                 const relPath = path.relative(this.st.rootPath, targetPath)
                 console.log(relPath)
                 if ((relPath.startsWith('actions/') || relPath.startsWith('actions\\')) && relPath.endsWith('.ts')) {
-                    const af = this.actionsByPath.get(asActionPath(relPath))
+                    const af = this.actionsByPath.get(asCardPath(relPath))
                     if (af == null) return console.log('file watcher update aborted: not an action')
                     af.load({ force: true })
                 }
@@ -97,21 +97,21 @@ export class ActionLibrary {
     }
 
     private addKnownPacks = () => {
-        this.getPack('actions/VinsiGit/Cushy_Action' as ActionPackFolder)
-        this.getPack('actions/noellealarie/cushy-avatar-maker' as ActionPackFolder)
-        this.getPack('actions/featherice/cushy-actions' as ActionPackFolder)
-        this.getPack('actions/rvion/cushy-example-actions' as ActionPackFolder)
-        this.getPack('actions/noellealarie/comfy2cushy-examples' as ActionPackFolder)
-        this.getPack('actions/CushyStudio/default' as ActionPackFolder)
-        this.getPack('actions/CushyStudio/cards' as ActionPackFolder)
-        this.getPack('actions/CushyStudio/tutorial' as ActionPackFolder)
+        this.getPack('actions/VinsiGit/Cushy_Action' as DeckFolder)
+        this.getPack('actions/noellealarie/cushy-avatar-maker' as DeckFolder)
+        this.getPack('actions/featherice/cushy-actions' as DeckFolder)
+        this.getPack('actions/rvion/cushy-example-actions' as DeckFolder)
+        this.getPack('actions/noellealarie/comfy2cushy-examples' as DeckFolder)
+        this.getPack('actions/CushyStudio/default' as DeckFolder)
+        this.getPack('actions/CushyStudio/cards' as DeckFolder)
+        this.getPack('actions/CushyStudio/tutorial' as DeckFolder)
     }
 
     get allActions() {
         return [...this.actionsByPath.values()]
     }
 
-    get allFavorites(): ActionFile[] {
+    get allFavorites(): CardFile[] {
         return this.st.favoriteActions //
             .map((ap) => this.getAction(ap)!)
             .filter(Boolean)
@@ -137,14 +137,18 @@ export class ActionLibrary {
     // expand mechanism ----------------------------------------
     private expanded: Set<string>
     get expandedPaths(): string[] { return [...this.expanded] } // prettier-ignore
+
     isExpanded = (path: string): boolean => this.expanded.has(path)
+    isTypeChecked = (path: string): boolean => {
+        const deckP = path.split('/')[0]
+        console.log(deckP)
+        if (this.st.githubUsername === 'rvion' && deckP === 'CushyStudio') return true
+        if (this.st.githubUsername === deckP) return true
+        return false
+    }
 
     expand = (path: string): void => {
         this.expanded.add(path)
-        const jsonF = this.st.typecheckingConfig
-        const prevInclude = jsonF.value.include
-        const nextInclude = [...prevInclude, `actions/${path}/**/*`]
-        jsonF.update({ include: nextInclude })
     }
 
     collapse = (path: string): void => {
@@ -211,14 +215,14 @@ export class ActionLibrary {
                     console.log(`skipping file ${relPath} cause it's not in a valid action folder`)
                     continue
                 }
-                const apf = asRelativePath(path.join(...parts)) as ActionPackFolder
+                const apf = asRelativePath(path.join(...parts)) as DeckFolder
                 const pack = this.getPack(apf)
-                const actionPath = asActionPath(relPath)
+                const actionPath = asCardPath(relPath)
                 const prev = this.getAction(actionPath)
                 if (prev) {
                     prev.load({ force: true })
                 } else {
-                    const af = new ActionFile(this, pack, absPath, actionPath)
+                    const af = new CardFile(this, pack, absPath, actionPath)
                     pack.actions.push(af)
                     this.actionsByPath.set(actionPath, af)
                 }

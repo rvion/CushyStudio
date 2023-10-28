@@ -1,5 +1,5 @@
 import type { PromptL } from './Prompt'
-import type { ActionPath } from 'src/marketplace/ActionPath'
+import type { CardPath } from 'src/library/CardPath'
 import type {
     FromExtension_Print,
     FromExtension_Prompt,
@@ -14,7 +14,7 @@ import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
-import { ActionFile } from 'src/marketplace/ActionFile'
+import { CardFile } from 'src/library/CardFile'
 
 export type FormPath = (string | number)[]
 
@@ -37,7 +37,7 @@ export type StepT = {
 
     // ACTION ------------------------------
     name: string
-    actionPath: ActionPath
+    actionPath: CardPath
     formResult: Maybe<any>
     formSerial: Maybe<any>
 
@@ -71,7 +71,7 @@ export class StepL {
     parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
     outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
 
-    get actionFile(): ActionFile | undefined { return this.st.library.actionsByPath.get(this.data.actionPath) } // prettier-ignore
+    get actionFile(): CardFile | undefined { return this.st.library.actionsByPath.get(this.data.actionPath) } // prettier-ignore
     get action() { return this.actionFile?.action } // prettier-ignore
 
     get name() { return this.data.name } // prettier-ignore

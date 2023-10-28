@@ -1,10 +1,10 @@
-import type { ActionFile } from './ActionFile'
+import type { CardFile } from './CardFile'
 
 import { exec } from 'child_process'
 import { existsSync, mkdirSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { join } from 'pathe'
-import { ActionLibrary } from 'src/marketplace/ActionLibrary'
+import { ActionLibrary } from 'src/library/Library'
 import {
     GithubRepo,
     GithubRepoName,
@@ -12,38 +12,29 @@ import {
     GithubUserName,
     asGithubRepoName,
     asGithubUserName,
-} from 'src/marketplace/githubUtils'
+} from 'src/library/githubUtils'
 import { Updater } from 'src/front/updater'
 import { ManualPromise } from 'src/utils/ManualPromise'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { generateAvatar } from './AvatarGenerator'
-
-export type ActionPackManifest = {
-    /** customize your action pack name */
-    name?: string
-    /** customize your author name */
-    authorName?: string
-    /** short summary of your action pack */
-    description?: string
-    /** local path to an image in your action pack that should be used */
-    icon?: string
-}
+import { DeckManifest } from './DeckManifest'
 
 /** e.g. actions/rvion/foo */
-export type ActionPackFolder = Branded<string, { ActionPackFolder: true; RelativePath: true }>
+export type DeckFolder = Branded<string, { ActionPackFolder: true; RelativePath: true }>
 
 /** e.g. actions/rvion */
-export type ActionAuthorFolder = Branded<string, { ActionAuthorFolder: true; RelativePath: true }>
+export type AuthorFolder = Branded<string, { ActionAuthorFolder: true; RelativePath: true }>
 
-export class ActionPack {
+/** a set of cards created by someone */
+export class Deck {
     // "actions/rvion/cushy-example-actions"
     folderAbs: AbsolutePath
-    folderRel: ActionPackFolder
+    folderRel: DeckFolder
 
     // "actions/rvion/cushy-example-actions"
     authorFolderAbs: AbsolutePath
-    authorFolderRel: ActionAuthorFolder
+    authorFolderRel: AuthorFolder
 
     githubUserName: GithubUserName // "rvion"
     githubUser: GithubUser
@@ -58,8 +49,9 @@ export class ActionPack {
     /** sorting socre */
     get score() {
         if (this.st.githubUsername === this.githubUserName) return 100
-        if (this.BUILT_IN) return 30
-        return 1
+        if (this.BUILT_IN && this.githubRepositoryName === 'default') return 99
+        if (this.BUILT_IN) return 1
+        return 1 + this.stars / 1000
     }
 
     get st() {
@@ -68,8 +60,8 @@ export class ActionPack {
     name: string
     github: string
     BUILT_IN: boolean
-    manifest: ActionPackManifest = {}
-    actions: ActionFile[] = []
+    manifest: DeckManifest = {}
+    actions: CardFile[] = []
 
     get description() {
         return this.manifest.description ?? ''
@@ -78,7 +70,7 @@ export class ActionPack {
     constructor(
         //
         public makretplace: ActionLibrary,
-        public folder: ActionPackFolder,
+        public folder: DeckFolder,
     ) {
         const parts2 = folder.split('/')
         if (parts2.length !== 3) throw new Error(`❌ Invalid github url: ${this.folder}`)
@@ -93,9 +85,9 @@ export class ActionPack {
         this.githubRepositoryName = asGithubRepoName(parts[1])
         this.githubRepository = GithubRepo.get(this.st, this.githubUser, this.githubRepositoryName, this.BUILT_IN)
         this.authorFolderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, parts[0]))
-        this.authorFolderRel = asRelativePath(join(this.st.actionsFolderPathRel, parts[0])) as ActionAuthorFolder
+        this.authorFolderRel = asRelativePath(join(this.st.actionsFolderPathRel, parts[0])) as AuthorFolder
         this.folderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, this.github))
-        this.folderRel = asRelativePath(join(this.st.actionsFolderPathRel, this.github)) as ActionPackFolder
+        this.folderRel = asRelativePath(join(this.st.actionsFolderPathRel, this.github)) as DeckFolder
         this.updater = new Updater(this.makretplace.st, { cwd: this.folderAbs, autoStart: false, runNpmInstall: false })
         this.installK = new ManualPromise<true>()
 

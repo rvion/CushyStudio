@@ -3,8 +3,8 @@ import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 
 import { autorun, reaction, runInAction, toJS } from 'mobx'
-import { ActionFile } from 'src/marketplace/ActionFile'
-import { ActionPath } from 'src/marketplace/ActionPath'
+import { CardFile } from 'src/library/CardFile'
+import { CardPath } from 'src/library/CardPath'
 import { type Widget } from 'src/controls/Widget'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { __FAIL, __OK, type Result } from 'src/utils/Either'
@@ -25,7 +25,7 @@ export type DraftT = {
     title: string
 
     // action
-    actionPath: ActionPath
+    actionPath: CardPath
     actionParams: any
 
     // starting graph
@@ -87,7 +87,7 @@ export class DraftL {
 
     form: Result<Widget> = __FAIL('not loaded yet')
 
-    get actionFile(): ActionFile | undefined { return this.st.library.actionsByPath.get(this.data.actionPath) } // prettier-ignore
+    get actionFile(): CardFile | undefined { return this.st.library.actionsByPath.get(this.data.actionPath) } // prettier-ignore
     get action() { return this.actionFile?.action } // prettier-ignore
 
     onHydrate = () => {

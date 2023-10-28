@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
-import { ActionPack } from './ActionPack'
+import { Deck } from './Deck'
 
-export const ActionPackStarsUI = observer(function ActionPackStarsUI_(p: { className?: string; pack: ActionPack }) {
+export const ActionPackStarsUI = observer(function ActionPackStarsUI_(p: { className?: string; pack: Deck }) {
     const pack = p.pack
     if (pack.BUILT_IN) return null
     return (

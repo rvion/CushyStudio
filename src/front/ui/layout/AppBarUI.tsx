@@ -136,7 +136,10 @@ export const GithubAppBarInputUI = observer(function GithubAppBarInputUI_(p: {})
                     your github:
                 </InputGroup.Addon>
                 <Input
-                    onChange={(next) => st.configFile.update({ githubUsername: next })}
+                    onChange={(next) => {
+                        st.configFile.update({ githubUsername: next })
+                        st.updateTsConfig()
+                    }}
                     value={githubUsername}
                     tw='font-mono'
                     style={{ width: `${githubUsername.length + 4}ch` }}

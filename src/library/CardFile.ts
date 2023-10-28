@@ -1,4 +1,4 @@
-import type { Action, WidgetDict } from 'src/core/Action'
+import type { Action, WidgetDict } from 'src/library/Card'
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { STATE } from 'src/front/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
@@ -8,15 +8,15 @@ import { readFileSync } from 'fs'
 import { makeAutoObservable, observable } from 'mobx'
 import path from 'pathe'
 import { generateName } from 'src/front/ui/drafts/generateName'
-import { ActionPack } from 'src/marketplace/ActionPack'
-import { ActionPath } from 'src/marketplace/ActionPath'
+import { Deck } from 'src/library/Deck'
+import { CardPath } from 'src/library/CardPath'
 import { DraftL } from 'src/models/Draft'
 import { transpileCode } from '../back/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
 import { exhaust } from '../utils/ComfyUtils'
 import { ManualPromise } from '../utils/ManualPromise'
-import { ActionLibrary } from './ActionLibrary'
+import { ActionLibrary } from './Library'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -31,7 +31,7 @@ enum LoadStatus {
     FAILURE,
 }
 
-export class ActionFile {
+export class CardFile {
     st: STATE
     displayName: string
 
@@ -46,9 +46,9 @@ export class ActionFile {
     constructor(
         //
         public library: ActionLibrary,
-        public pack: ActionPack,
+        public pack: Deck,
         public absPath: AbsolutePath,
-        public relPath: ActionPath,
+        public relPath: CardPath,
     ) {
         this.st = library.st
         this.displayName = path.basename(this.absPath)

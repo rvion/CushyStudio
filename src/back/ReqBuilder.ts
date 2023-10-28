@@ -1,4 +1,4 @@
-import type { ReqBuilder, Requirement } from '../core/Action'
+import type { ReqBuilder, Requirement } from '../library/Card'
 import type { Runtime } from './Runtime'
 
 export interface RequirementBuilder extends ReqBuilder {}

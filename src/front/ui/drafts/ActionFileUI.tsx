@@ -1,4 +1,4 @@
-import type { ActionPath } from 'src/marketplace/ActionPath'
+import type { CardPath } from 'src/library/CardPath'
 
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
@@ -9,7 +9,7 @@ import { openInVSCode } from 'src/utils/openInVsCode'
 import { ActionDraftListUI } from './ActionDraftListUI'
 import { ActionFormUI } from './ActionFormUI'
 
-export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: ActionPath }) {
+export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: CardPath }) {
     const st = useSt()
     const toolbox = st.library
     const af = toolbox.getAction(p.actionPath)

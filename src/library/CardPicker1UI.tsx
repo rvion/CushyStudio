@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Tree } from 'rsuite'
-import { asActionPath } from 'src/marketplace/ActionPath'
+import { asCardPath } from 'src/library/CardPath'
 import { assets } from 'src/front/ui/assets'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { useSt } from '../front/FrontStateCtx'
@@ -9,10 +9,10 @@ import { getIconForFilePath } from '../front/ui/utils/filePathIcon'
 
 export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
     const st = useSt()
-    const tb = st.library
+    const library = st.library
     return (
         <Tree
-            expandItemValues={tb.expandedPaths}
+            expandItemValues={library.expandedPaths}
             tw='overflow-x-hidden overflow-y-auto flex-grow h-full'
             key={st.library.updatedAt}
             data={st.library.treeData}
@@ -21,11 +21,12 @@ export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
             }}
             onExpand={(values, node) => {
                 const value = node.value as string
-                if (tb.isExpanded(value)) tb.collapse(value)
-                else tb.expand(value)
+                if (library.isExpanded(value)) library.collapse(value)
+                else library.expand(value)
             }}
             renderTreeNode={(node) => {
-                const isExpanded = tb.isExpanded(node.value as string)
+                const isExpanded = library.isExpanded(node.value as string)
+                const isTypechecked = library.isTypeChecked(node.value as string)
                 return (
                     <>
                         {node.children ? (
@@ -37,7 +38,7 @@ export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
                         )}{' '}
                         <div tw='text-ellipsis overflow-hidden whitespace-nowrap'>{node.label}</div>
                         <div tw='ml-auto'>
-                            {isExpanded && (
+                            {isTypechecked && (
                                 <TooltipUI>
                                     <img tw='mr-1' style={{ width: '1rem' }} src={assets.tsLogo} alt='' />
                                     <div>is being type-checked</div>
@@ -56,13 +57,13 @@ export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
                 const isFolder = st.library.folderMap.has(value)
                 // console.log(_value, `isFolder: ${isFolder}`)
                 if (isFolder) {
-                    if (tb.isExpanded(value)) tb.collapse(value)
-                    else tb.expand(value)
+                    if (library.isExpanded(value)) library.collapse(value)
+                    else library.expand(value)
                     return
                     // return console.log(`❌ "${_value}" a folder`)
                 }
 
-                const actionPath = asActionPath(value)
+                const actionPath = asCardPath(value)
                 // 1. focus paf
                 const paf = st.library.actionsByPath.get(actionPath)
                 if (paf == null) throw new Error(`paf not found for ${value}`)

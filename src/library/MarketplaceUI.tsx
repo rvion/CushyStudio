@@ -2,12 +2,12 @@ import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Button } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
-import { GithubUserUI } from 'src/marketplace/GithubAvatarUI'
-import { GithubRepo, GithubUser } from 'src/marketplace/githubUtils'
+import { GithubUserUI } from 'src/library/GithubAvatarUI'
+import { GithubRepo, GithubUser } from 'src/library/githubUtils'
 import { ErrorBoundaryFallback } from 'src/front/ui/utils/ErrorBoundary'
-import { ActionPack } from './ActionPack'
-import { ActionPackStatusUI } from './ActionPackStatusUI'
-import { ActionPackStarsUI } from './ActionPackStarsUI'
+import { Deck } from './Deck'
+import { ActionPackStatusUI } from './DeckStatusUI'
+import { ActionPackStarsUI } from './DeckStarsUI'
 
 export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
     const st = useSt()
@@ -27,7 +27,7 @@ export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
     )
 })
 
-export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: ActionPack }) {
+export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: Deck }) {
     const pack = p.actionPack
     return (
         <div tw='cursor-pointer hover:bg-gray-700 p-2' key={pack.name} style={{ borderBottom: '1px solid #515151' }}>

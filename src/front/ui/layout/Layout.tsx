@@ -17,11 +17,11 @@ import { LastImageUI } from './LastImageUI'
 import { HostListUI } from './HostListUI'
 import { ComfyUIUI } from '../workspace/ComfyUIUI'
 import { LiteGraphJSON } from 'src/core/LiteGraph'
-import { MarketplaceUI } from '../../../marketplace/MarketplaceUI'
+import { MarketplaceUI } from '../../../library/MarketplaceUI'
 import { observer } from 'mobx-react-lite'
 import { makeAutoObservable, runInAction } from 'mobx'
 import { ActionFileUI } from '../drafts/ActionFileUI'
-import { ActionPath } from 'src/marketplace/ActionPath'
+import { CardPath } from 'src/library/CardPath'
 import { PanelConfigUI } from './PanelConfigUI'
 import { ActionFormUI } from '../drafts/ActionFormUI'
 import { Trigger } from 'src/shortcuts/Trigger'
@@ -165,7 +165,7 @@ export class CushyLayoutManager {
         const icon = '/ComfyUILogo.png'
         this._AddWithProps(Widget.ComfyUINodeExplorer, `/ComfyUINodeExplorer`, { title: `Node Explorer`, icon })
     }
-    addAction = (actionPath: ActionPath) => {
+    addAction = (actionPath: CardPath) => {
         const af = this.st.library.getAction(actionPath)
         const icon = af?.logoURL
         this._AddWithProps(Widget.Action, `/action/${actionPath}`, { title: actionPath, actionPath, icon })

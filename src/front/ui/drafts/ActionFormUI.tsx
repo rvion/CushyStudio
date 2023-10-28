@@ -4,7 +4,7 @@ import { cwd } from 'process'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Button, Checkbox, Input, InputGroup, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
-import { GithubUserUI } from 'src/marketplace/GithubAvatarUI'
+import { GithubUserUI } from 'src/library/GithubAvatarUI'
 import { DraftID, DraftL } from 'src/models/Draft'
 import { openInVSCode } from 'src/utils/openInVsCode'
 import { stringifyUnknown } from 'src/utils/stringifyUnknown'
@@ -16,7 +16,7 @@ import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
 import { ActionDraftListUI, AddDraftUI } from './ActionDraftListUI'
-import { GithubUserName } from 'src/marketplace/githubUtils'
+import { GithubUserName } from 'src/library/githubUtils'
 
 /**
  * this is the root interraction widget

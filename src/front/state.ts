@@ -10,7 +10,7 @@ import { createRef } from 'react'
 import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 
-import { ActionLibrary } from 'src/marketplace/ActionLibrary'
+import { ActionLibrary } from 'src/library/Library'
 import { ProjectL } from 'src/models/Project'
 import { ShortcutWatcher } from 'src/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/shortcuts/shortcuts'
@@ -32,7 +32,7 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { Updater } from './updater'
-import { ActionPath } from 'src/marketplace/ActionPath'
+import { CardPath } from 'src/library/CardPath'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -95,7 +95,7 @@ export class STATE {
     typecheckingConfig: JsonFile<TsConfigCustom>
 
     get githubUsername() { return this.configFile.value.githubUsername } // prettier-ignore
-    get favoriteActions(): ActionPath[] {
+    get favoriteActions(): CardPath[] {
         return this.configFile.value.favoriteActions ?? []
     }
     // 🔴 this is not the right way to go cause it will cause the action to stay
@@ -130,6 +130,14 @@ export class STATE {
     set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
     get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
 
+    /**  */
+    updateTsConfig = () => {
+        const finalInclude = ['src', 'schema/global.d.ts']
+        finalInclude.push(`actions/${this.githubUsername}/**/*`)
+        if (this.githubUsername === 'rvion') finalInclude.push('actions/CushyStudio/**/*')
+        this.typecheckingConfig.update({ include: finalInclude })
+    }
+
     constructor(
         /** path of the workspace */
         public rootPath: AbsolutePath,
@@ -147,6 +155,7 @@ export class STATE {
         // config files
         this.typecheckingConfig = mkTypescriptConfig()
         this.configFile = mkConfigFile()
+        this.updateTsConfig()
 
         // core instances
         this.db = new LiveDB(this)

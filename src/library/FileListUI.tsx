@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../front/FrontStateCtx'
 import { TabUI } from '../front/ui/layout/TabUI'
-import { ActionPicker1UI } from './ActionPicker1UI'
-import { ActionPicker2UI } from './ActionPicker2UI'
+import { ActionPicker1UI } from './CardPicker1UI'
+import { ActionPicker2UI } from './CardPicker2UI'
 
 export const FileListUI = observer(function FileListUI_(p: {}) {
     const st = useSt()

@@ -1,11 +1,11 @@
-import type { ActionFile } from 'src/marketplace/ActionFile'
-import type { ActionPack } from './ActionPack'
+import type { CardFile } from 'src/library/CardFile'
+import type { Deck } from './Deck'
 
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 import { useSt } from '../front/FrontStateCtx'
-import { ActionPackStatusUI } from './ActionPackStatusUI'
-import { ActionPackStarsUI } from './ActionPackStarsUI'
+import { ActionPackStatusUI } from './DeckStatusUI'
+import { ActionPackStarsUI } from './DeckStarsUI'
 
 export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
     const st = useSt()
@@ -15,7 +15,7 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
             {/* FAVORITES */}
             {tb.allFavorites.length && (
                 <div
-                    tw='cursor-pointer flex items-center gap-1 bg-gray-800 hover:bg-gray-800 p-0.5 flex justify-between'
+                    tw='cursor-pointer items-center gap-1 bg-gray-800 hover:bg-gray-800 p-0.5 flex justify-between'
                     onClick={() => (tb.favoritesFolded = !tb.favoritesFolded)}
                 >
                     <div>Favorites</div>
@@ -33,7 +33,7 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
     )
 })
 
-export const ActionPackUI = observer(function ActionPackUI_(p: { pack: ActionPack }) {
+export const ActionPackUI = observer(function ActionPackUI_(p: { pack: Deck }) {
     const pack = p.pack
     return (
         <div tw='my-0.5 flex-grow' key={pack.folderRel}>
@@ -48,7 +48,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { pack: ActionPac
         </div>
     )
 })
-export const ActionEntryUI = observer(function ActionEntryUI_(p: { af: ActionFile }) {
+export const ActionEntryUI = observer(function ActionEntryUI_(p: { af: CardFile }) {
     const st = useSt()
     const af = p.af
     const pack = af.pack
@@ -75,7 +75,7 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { af: ActionFil
     )
 })
 
-export const ActionPackHeaderUI = observer(function ActionPackHeaderUI_(p: { pack: ActionPack }) {
+export const ActionPackHeaderUI = observer(function ActionPackHeaderUI_(p: { pack: Deck }) {
     const pack = p.pack
     return (
         <div
@@ -100,7 +100,7 @@ export const ActionPackHeaderUI = observer(function ActionPackHeaderUI_(p: { pac
     )
 })
 
-export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { af: ActionFile }) {
+export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { af: CardFile }) {
     const af = p.af
     return (
         <Fragment>
