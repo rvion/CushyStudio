@@ -282,7 +282,7 @@ export class SchemaL {
         p(`import type { Slot } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
         p(`import type { ComfyNodeID } from '${prefix}types/NodeUID'`)
-        p(`import type { ActionType } from '${prefix}core/Action'`)
+        p(`import type { ActionType } from '${prefix}library/Card'`)
         // p(`import type { WorkflowType } from '${prefix}core/WorkflowFn'`)
         p('')
         p(`// CONTENT IN THIS FILE:`)
