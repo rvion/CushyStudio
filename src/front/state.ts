@@ -34,6 +34,7 @@ import { CushyLayoutManager } from './ui/layout/Layout'
 import { GitManagedFolder } from './updater'
 import { CardPath } from 'src/library/CardPath'
 import { Uploader } from './Uploader'
+import { ElectronUtils } from './ElectronUtils'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -89,7 +90,7 @@ export class STATE {
     configFile: JsonFile<ConfigFile>
     updater: GitManagedFolder
     hovered: Maybe<ImageL> = null
-
+    electronUtils: ElectronUtils
     library: ActionLibrary
     schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
@@ -163,6 +164,7 @@ export class STATE {
         this.db = new LiveDB(this)
         this.schema = this.db.schema
 
+        this.electronUtils = new ElectronUtils(this)
         this.shortcuts = new ShortcutWatcher(shortcutsDef, this, { log: true, name: nanoid() })
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)

@@ -1,5 +1,4 @@
 import type { STATE } from './state'
-import type { GithubUserName } from 'src/library/githubUtils'
 import type { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 
 import { exec } from 'child_process'
@@ -8,6 +7,7 @@ import { join, relative } from 'pathe'
 import simpleGit, { SimpleGit } from 'simple-git'
 import { existsSync, statSync } from 'fs'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { GithubUserName } from 'src/library/GithubUser'
 
 export enum FolderKind {
     /** folder is managed by git (has a .git)*/
@@ -29,7 +29,7 @@ export class GitManagedFolder {
     lastFetchAt = 0 as Timestamp
     nextFetchAt = 0 as Timestamp
     /** Number of commits in origin/<main branch> */
-    originCommitsCount = 1
+    originCommitsCount = 0
     /** Number of commits in HEAD */
     headCommitsCount = 0
     /** main branch name; usually master (previous git default) or main (new git default) */
@@ -186,10 +186,7 @@ export class GitManagedFolder {
 
         // 1. check if is git folder
         const isGitFolder = this._isGitFolder()
-        if (!isGitFolder) {
-            this.status = FolderKind.NotGit
-            return this.log('❌ not a git folder')
-        }
+        if (!isGitFolder) return
 
         // 2. get last fetch datetime
         const stats = statSync(this.p.cwd + '/.git/FETCH_HEAD')
@@ -221,14 +218,15 @@ export class GitManagedFolder {
         this.ensureSingleRunningSetIntervalInstance(periodicCheck)
     }
 
-    log = (...args: any[]) => console.log(`[🚀] updater for (${this.relPath})`, ...args)
-    error = (...args: any[]) => console.error(`[🚀] updater for (${this.relPath})`, ...args)
+    log = (...args: any[]) => console.log(`[🚀] (${this.relPath || 'root'})`, ...args)
+    error = (...args: any[]) => console.error(`[🚀] (${this.relPath || 'root'})`, ...args)
 
     private _gitInit = async (cwd: string, githubUserName: GithubUserName): Promise<void> => {
         const git: SimpleGit = simpleGit(cwd)
         await git.init()
         await git.addRemote('origin', `https://github.com/${githubUserName}/CushyStudio`)
         await git.addRemote('origin', `git@github.com:${githubUserName}/CushyStudio.git`)
+        this.status = FolderKind.Git
     }
 
     private _isGitFolder = (): boolean => {
@@ -236,7 +234,6 @@ export class GitManagedFolder {
         const isGitFolder = existsSync(gitFolder)
         if (!isGitFolder) {
             this.status = FolderKind.NotGit
-            this.log('❌ not a git folder')
         } else {
             this.status = FolderKind.Git
         }

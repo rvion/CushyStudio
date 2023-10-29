@@ -1,6 +1,6 @@
 import { assets } from 'src/assets/assets'
 import { useSt } from '../front/FrontStateCtx'
-import { GithubUser, GithubUserName, asGithubUserName } from './githubUtils'
+import { GithubUser, GithubUserName, asGithubUserName } from './GithubUser'
 
 export function GithubUserUI(p: {
     //

@@ -5,14 +5,7 @@ import { existsSync, mkdirSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { join } from 'pathe'
 import { ActionLibrary } from 'src/library/Library'
-import {
-    GithubRepo,
-    GithubRepoName,
-    GithubUser,
-    GithubUserName,
-    asGithubRepoName,
-    asGithubUserName,
-} from 'src/library/githubUtils'
+import { GithubRepo, GithubRepoName, asGithubRepoName } from 'src/library/githubRepo'
 import { GitManagedFolder } from 'src/front/updater'
 import { ManualPromise } from 'src/utils/ManualPromise'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
@@ -20,6 +13,7 @@ import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { generateAvatar } from './AvatarGenerator'
 import { DeckManifest } from './DeckManifest'
 import { assets } from 'src/assets/assets'
+import { GithubUserName, GithubUser, asGithubUserName } from './GithubUser'
 
 /** e.g. actions/rvion/foo */
 export type DeckFolder = Branded<string, { ActionPackFolder: true; RelativePath: true }>

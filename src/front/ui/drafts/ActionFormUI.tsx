@@ -16,7 +16,7 @@ import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
 import { ActionDraftListUI, AddDraftUI } from './ActionDraftListUI'
-import { GithubUserName } from 'src/library/githubUtils'
+import { GithubUserName } from 'src/library/GithubUser'
 
 /**
  * this is the root interraction widget

@@ -9,49 +9,77 @@ import { assets } from 'src/assets/assets'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
-    const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
+    // const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
     return (
         <div
             //
             id='CushyAppBar'
-            className='flex gap-1 items-center'
+            tw='flex gap-2 mb-1'
             style={{ borderBottom: '1px solid #383838' }}
         >
-            <CushyStudioLinkUI />
-            <Button
-                appearance='subtle'
-                loading={Boolean(st.db.saveTimeout)}
-                size='sm'
-                startIcon={<span className='material-symbols-outlined'>save</span>}
-                onClick={() => st.db.markDirty()}
-            >
-                save
-            </Button>
-            <GithubAppBarInputUI />
-            <Button
-                //
-                size='sm'
-                appearance='subtle'
-                startIcon={<I.Reload />}
-                onClick={() => window.location.reload()}
-            >
-                Reload
-            </Button>
-            <UpdateBtnUI updater={st.updater} />
-            <WebsocketIndicatorUI />
-            <SchemaIndicatorUI />
+            <div>
+                <img tw='p-3' style={{ width: '4rem' }} src={assets.public_CushyLogo_512_png} alt='' />
+            </div>
+            <div tw='flex-grow'>
+                <div className='flex gap-2 p-1 items-center'>
+                    <CushyStudioLinkUI />
+                    <div tw='flex-grow'></div>
+                    <Button
+                        //
+                        size='xs'
+                        appearance='subtle'
+                        color='orange'
+                        startIcon={<I.Reload />}
+                        onClick={() => window.location.reload()}
+                    >
+                        Reload App
+                    </Button>
+                    <Button //
+                        size='xs'
+                        appearance='subtle'
+                        color='orange'
+                        startIcon={<span className='material-symbols-outlined'>bug_report</span>}
+                        onClick={() => st.electronUtils.toggleDevTools()}
+                    >
+                        Open console
+                    </Button>
+                    <Button
+                        size='xs'
+                        appearance='subtle'
+                        color='orange'
+                        startIcon={<I.Reload />}
+                        onClick={() => st.layout.resetCurrent()}
+                    >
+                        Reset Layout
+                    </Button>
+                </div>
+                <div className='flex gap-2 p-1 items-center'>
+                    <GithubAppBarInputUI />
 
-            <div className='flex-grow'></div>
-            <Button size='xs' appearance='ghost' color='orange' startIcon={<I.Reload />} onClick={() => st.layout.resetCurrent()}>
-                Layout
-            </Button>
-            <DBHealthUI />
-            <IconButton
-                appearance='ghost'
-                size='xs'
-                icon={<span className='material-symbols-outlined'>{themeIcon}</span>}
-                onClick={() => st.theme.toggle()}
-            />
+                    <UpdateBtnUI updater={st.updater} />
+                    <WebsocketIndicatorUI />
+                    <SchemaIndicatorUI />
+                    <div className='flex-grow'></div>
+                    <Button
+                        appearance='ghost'
+                        loading={Boolean(st.db.saveTimeout)}
+                        size='xs'
+                        startIcon={<span className='material-symbols-outlined'>save</span>}
+                        onClick={() => st.db.markDirty()}
+                    >
+                        save
+                    </Button>
+                    <DBHealthUI />
+                    {/* <Button
+                        appearance='ghost'
+                        size='xs'
+                        startIcon={<span className='material-symbols-outlined'>{themeIcon}</span>}
+                        onClick={() => st.theme.toggle()}
+                    >
+                        Theme
+                    </Button> */}
+                </div>
+            </div>
         </div>
     )
 })
@@ -134,7 +162,7 @@ export const GithubAppBarInputUI = observer(function GithubAppBarInputUI_(p: {})
             <InputGroup size='xs' tw='w-auto' style={{ border: '1px solid #868516' }}>
                 <InputGroup.Addon>
                     <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
-                    your github:
+                    github:
                 </InputGroup.Addon>
                 <Input
                     onChange={(next) => {

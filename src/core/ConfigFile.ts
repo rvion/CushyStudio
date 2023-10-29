@@ -48,6 +48,8 @@ export type ConfigFile = {
     galleryMaxImages?: number
     /** defaults to 50 */
     galleryBgColor?: string
+    /** if true, will auto-open devtools on startup */
+    preferDevToolsOpen?: boolean
     /** defaults to 5 */
     checkUpdateEveryMinutes?: number
     layouts?: { [perspectiveName: string]: IJsonModel }

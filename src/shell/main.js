@@ -10,7 +10,19 @@ async function START() {
         console.log('❌ error patching electron icon and name', error)
     }
 
-    const { app, BrowserWindow, globalShortcut } = require('electron')
+    const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron')
+    ipcMain.on('toggle-devtools', (event, arg) => {
+        const focusedWindow = BrowserWindow.getFocusedWindow()
+        if (focusedWindow) focusedWindow.webContents.toggleDevTools()
+    })
+    ipcMain.on('open-devtools', (event, arg) => {
+        const focusedWindow = BrowserWindow.getFocusedWindow()
+        if (focusedWindow) focusedWindow.webContents.openDevTools()
+    })
+    ipcMain.on('close-devtools', (event, arg) => {
+        const focusedWindow = BrowserWindow.getFocusedWindow()
+        if (focusedWindow) focusedWindow.webContents.closeDevTools()
+    })
 
     // required to interract with ComfyUI
     // | https://github.com/electron/electron/issues/18940
@@ -51,7 +63,7 @@ async function START() {
         mainWindow.maximize()
 
         // Open DevTools automatically
-        mainWindow.webContents.openDevTools()
+        // mainWindow.webContents.openDevTools()
 
         // check if cushy is running
         let viteStarted = false

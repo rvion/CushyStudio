@@ -144,7 +144,7 @@ export class CushyLayoutManager {
     addCivitai = () => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'Civitai', icon: '/CivitaiLogo.png' })
     addConfig = () => this._AddWithProps(Widget.Config, `/config`, { title: 'Config' })
     addPaint = (imgID?: ImageID) => {
-        const icon = '/minipaint/images/logo.svg'
+        const icon = assets.public_minipaint_images_logo_svg
         if (imgID == null) {
             this._AddWithProps(Widget.Paint, `/paint/blank`, { title: 'Paint', icon })
         } else {
