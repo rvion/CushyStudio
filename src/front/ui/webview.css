@@ -233,18 +233,19 @@ body {
 /* scrollbar ----------------------- */
 
 /* THEME */
-#CushyStudio.dark *::-webkit-scrollbar-thumb { background-color: #333333; }
+#CushyStudio.dark *::-webkit-scrollbar-thumb { background-color: #4b4b4b; }
 #CushyStudio.light *::-webkit-scrollbar-thumb { background-color: #c1c1c1; }
 
 /*  */
 .noscrollbar::-webkit-scrollbar { display: none; }
 
-*::-webkit-scrollbar { width: 20px; height: 20px; }
+*::-webkit-scrollbar { width: 5px; height: 5px; }
 *::-webkit-scrollbar-corner { background: rgba(0,0,0,0); }
 *::-webkit-scrollbar-track { background-color: rgba(0,0,0,0); }
 *::-webkit-scrollbar-thumb {
     border-radius: 6px;
-    border: 4px solid rgba(0,0,0,0);
+    border: 0;
+    /* 4px solid rgba(0,0,0,0); */
     background-clip: content-box;
     min-width: 24px;
     min-height: 24px;
