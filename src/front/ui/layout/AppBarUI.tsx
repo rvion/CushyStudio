@@ -68,7 +68,7 @@ export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {
             href='#'
         >
             <span className='material-symbols-outlined text-yellow-600'>star</span>
-            <img src='/GithubLogo2.png' alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
+            <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
             <span className='underline text-blue-300'>rvion/CushyStudio</span>
         </a>
     )
