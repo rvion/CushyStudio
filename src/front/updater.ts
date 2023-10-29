@@ -83,13 +83,13 @@ export class GitManagedFolder {
         this.mainBranchName = defaultBranch
         this.headCommitsCount = await this._getHeadCommitsCount('HEAD')
         this.originCommitsCount = await this._getHeadCommitsCount(`origin/${defaultBranch}`)
-        console.log(
-            //
-            `🔴`,
-            this.mainBranchName,
-            this.headCommitsCount,
-            this.originCommitsCount,
-        )
+        // console.log(
+        //     //
+        //     `🔴`,
+        //     this.mainBranchName,
+        //     this.headCommitsCount,
+        //     this.originCommitsCount,
+        // )
 
         // ⏸️ // Hash of commit in HEAD
         // ⏸️ const headCommitHash = await this.git.revparse(['HEAD'])
