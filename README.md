@@ -124,7 +124,7 @@ When you start `CushyStudio` ... TODO
 
 ## See it in action
 
-# Global Vidoe
+# Global Video
 
 TODO: place video here
 
