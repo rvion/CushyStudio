@@ -6,11 +6,13 @@ First off, a big thank you for considering contributing to `CushyStudio`. Every 
 
 This Contributor License Agreement (CLA) is a little formality we need to go through to ensure the integrity of `CushyStudio` for everyone involved. Let's get through this together.
 
+Just so it's clear: this CLA is solely about contributions to the main repository, not your individual creations, custom actions, or the art you craft with `CushyStudio`.
+
 #### Why Do We Need This Agreement?
 
 -   **For you**: It ensures your contributions are recognized and establishes clarity about how they can be used.
 -   **For `CushyStudio` and its users**: It ensures that the rights around the contributed code are clear and prevent any potential hiccups down the road.
--   **For me (rvion)**: It makes sure I can use your contributions in possible way, like providing cloud GPU services or other open-source-friendly services to sustain the project. Check the CLA summary below to know more, but don't worry. This project is free, open source, and I'll even switch it to GPLV3 at some point.
+-   **For me (rvion)**: This ensures that I can utilize your contributions to enhance `CushyStudio`, such as by offering cloud GPU services or other community-friendly features to support the project. Please review the CLA summary for details. And remember, `CushyStudio` remains a free, open-source initiative, with plans to transition to GPLV3 in the future.
 
 #### What's Expected from Our Contributors?
 
@@ -21,11 +23,11 @@ Version 2.0 – Dated 2023-10-29
 
 #### Our Agreement:
 
-1. **Your Contribution**: By signing below, you're giving me, Rémi Vion (aka rvion on Github), the green light to use your contributions however I see fit. In more formal terms, this means granting a perpetual, non-exclusive, global, and royalty-free license to use, modify, distribute, and build upon your work.
+1. **Your Contribution**: By signing below, you're giving me, Rémi Vion (aka rvion on Github), the green light to use your contributions for enhancing `CushyStudio` and providing associated services. Formally, this means granting a perpetual, non-exclusive, global, and royalty-free license to use, modify, distribute, and build upon your work.
 
 2. **You've Got the Power**: By signing, you're saying you're legally allowed to make this contribution. If someone else, like an employer, has rights to what you're contributing, please make sure they're okay with this before signing.
 
-3. **Your Original Work**: Please ensure that what you're contributing is your original creation. If there's any doubt or potential conflict, let's talk.
+3. **Your Original Work**: Please ensure what you're contributing is genuinely yours. If there's any doubt or potential conflict, please reach out, and we can clarify things together.
 
 4. **Inclusion in the Project**: Whether your contribution makes it to the final cut is up to me. But know this – every contribution is valuable, and we appreciate your effort.
 
@@ -44,10 +46,10 @@ If your questions are not covered, you can take a look at the full FAQ: https://
 
 ### Q: Why the AGPL and not the GPLV3?
 
-**A**: For now, `CushyStudio` is under AGPL, because I want to drive the project how I see fit. I plan to switch it to GPLV3 down the line once, once I'll have make enough money through donations or cloud GPU renting services to buy a home. I've chosen this path to protect myself, the project and ensure its sustainable growth. Rest assured, using `CushyStudio` for asset creation won't bind you in any restrictive way. I just don't want other people to re-sell `CushyStudio` as a service without my consent or .
+**A**: For now, `CushyStudio` is licensed under AGPL as I aim to guide the project towards sustainability. I plan to transition to GPLV3 in the future, once the project achieves a stable foundation. This choice is designed to safeguard the project and its dedicated community. Rest assured, utilizing `CushyStudio` for asset creation remains unrestricted. My primary intention is to prevent the unauthorized resale or commercialization of `CushyStudio` as a service.
 
 ### Q: Any plans for a paid version of `CushyStudio`?
 
-**A**: No, and that's a promise. `CushyStudio` will always be free and open source. While we do have plans to offer complementary services (like cloud GPU services or revenue-sharing systems), the core of `CushyStudio` will remain untouched and free for all.
+**A**: No, and that's a promise. `CushyStudio` will always be free and open source. While I do have plans to offer complementary services (like cloud GPU services), the core of `CushyStudio` will remain free for all. Again, I simply wish to prevent unauthorized resale or commercialization of `CushyStudio` as a service.
 
-Let's create something amazing together! 💪🎉
+Thank you for your understanding and patience in going through this agreement. Together, let's make `CushyStudio` better for everyone! 💪🎉
