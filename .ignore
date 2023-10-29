@@ -5,3 +5,4 @@
 
 !schema/global.d.ts
 !tsconfig.custom.json
+!CONFIG.json
