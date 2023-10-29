@@ -4,7 +4,7 @@
 
 ## The **easiest** and most **powerful** Stable Diffusion frontend
 
-![Static Badge](https://img.shields.io/badge/status-BETA-yellow) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio) ![GitHub Sponsors](https://img.shields.io/github/sponsors/rvion)
+![Static Badge](https://img.shields.io/badge/status-BETA-yellow) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio) ![GitHub Sponsors](https://img.shields.io/github/sponsors/rvion) [![CLA assistant](https://cla-assistant.io/readme/badge/rvion/CushyStudio)](https://cla-assistant.io/rvion/CushyStudio)
 
 [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
 
