@@ -4,3 +4,4 @@
 # we can negate some rules in .ignore to bring them back in the vscode search result.
 
 !schema/global.d.ts
+!tsconfig.custom.json

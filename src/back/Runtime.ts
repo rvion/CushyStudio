@@ -59,11 +59,11 @@ export class Runtime {
     constructor(public step: StepL) {
         this.st = step.st
         this.folder = step.st.outputFolderPath
-        // this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
-        // this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
-        // this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
-        // this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
-        // this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
+        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
+        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
+        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
+        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
+        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
     }
 
     /** list all actions ; codegen during dev-time */
@@ -397,19 +397,19 @@ export class Runtime {
 
     // UPLOAD ------------------------------------------------------------------------------------------
     /** upload an image present on disk to ComfyUI */
-    // upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
+    upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
 
     // /** upload an image that can be downloaded form a given URL to ComfyUI */
-    // upload_ImageAtURL: Uploader['upload_ImageAtURL']
+    upload_ImageAtURL: Uploader['upload_ImageAtURL']
 
     // /** upload an image from dataURL */
-    // upload_dataURL: Uploader['upload_dataURL']
+    upload_dataURL: Uploader['upload_dataURL']
 
     // /** upload a deck asset to ComfyUI */
-    // upload_Asset: Uploader['upload_Asset']
+    upload_Asset: Uploader['upload_Asset']
 
     // /** upload a Blob */
-    // upload_Blob: Uploader['upload_Blob']
+    upload_Blob: Uploader['upload_Blob']
 
     // LOAD IMAGE --------------------------------------------------------------------------------------
     /** load an image present on disk to ComfyUI */
