@@ -1,15 +1,28 @@
 import { STATE } from 'src/front/state'
 
+export type Konva = typeof import('konva').default
 export class ImageSDK {
     static init = async (st: STATE) => {
         const t = await import('konva')
         return new ImageSDK(st, t.default)
     }
+
+    Stage: Konva['Stage']
+    Layer: Konva['Layer']
+    Image: Konva['Image']
+    Text: Konva['Text']
+    Rect: Konva['Rect']
     private constructor(
         //
         public st: STATE,
-        public Konva: typeof import('konva').default,
-    ) {}
+        public Konva: Konva,
+    ) {
+        this.Stage = Konva.Stage
+        this.Layer = Konva.Layer
+        this.Image = Konva.Image
+        this.Text = Konva.Text
+        this.Rect = Konva.Rect
+    }
 
     loadImage(
         /** the same `src` value you would use in an <img /> html node */
