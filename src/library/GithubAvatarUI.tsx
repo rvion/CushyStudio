@@ -1,3 +1,4 @@
+import { assets } from 'src/assets/assets'
 import { useSt } from '../front/FrontStateCtx'
 import { GithubUser, GithubUserName, asGithubUserName } from './githubUtils'
 
@@ -16,7 +17,7 @@ export function GithubUserUI(p: {
     const textClassName = p.textClassName ?? 'text-xl'
     const imgURL =
         username === 'CushyStudio' //
-            ? '/CushyLogo-512.png'
+            ? assets.public_CushyLogo_512_png
             : GithubUser.get(st, asGithubUserName(username), false).localAvatarURL
     try {
         return (

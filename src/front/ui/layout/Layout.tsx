@@ -26,6 +26,7 @@ import { PanelConfigUI } from './PanelConfigUI'
 import { ActionFormUI } from '../drafts/ActionFormUI'
 import { Trigger } from 'src/shortcuts/Trigger'
 import { ComfyNodeExplorerUI } from './ComfyNodeExplorerUI'
+import { assets } from 'src/assets/assets'
 
 // still on phone
 enum Widget {
@@ -154,7 +155,7 @@ export class CushyLayoutManager {
     addGallery = () => this._AddWithProps(Widget.Gallery, `/gallery`, { title: 'Gallery' })
     addHosts = () => this._AddWithProps(Widget.Hosts, `/hosts`, { title: 'Hosts' })
     addComfy = (litegraphJson?: LiteGraphJSON) => {
-        const icon = '/ComfyUILogo.png'
+        const icon = assets.public_ComfyUILogo_png
         if (litegraphJson == null) {
             return this._AddWithProps(Widget.ComfyUI, `/litegraph/blank`, { title: 'Comfy', icon, litegraphJson: null })
         } else {
@@ -163,7 +164,7 @@ export class CushyLayoutManager {
         }
     }
     addComfyNodeExplorer = () => {
-        const icon = '/ComfyUILogo.png'
+        const icon = assets.public_ComfyUILogo_png
         this._AddWithProps(Widget.ComfyUINodeExplorer, `/ComfyUINodeExplorer`, { title: `Node Explorer`, icon })
     }
     addAction = (actionPath: CardPath) => {

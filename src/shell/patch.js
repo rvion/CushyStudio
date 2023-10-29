@@ -1,9 +1,9 @@
 const fs = require('fs')
 const path = require('path')
 
-const iconPathMac = path.resolve('src/public/CushyLogo-512.icns')
-const iconPathWindows = path.resolve('src/public/CushyLogo-512.png')
-const iconPathLinux = path.resolve('src/public/CushyLogo-512.png')
+const iconPathMac = path.resolve('actions/CushyStudio/_public/CushyLogo-512.icns')
+const iconPathWindows = path.resolve('actions/CushyStudio/_public/CushyLogo-512.png')
+const iconPathLinux = path.resolve('actions/CushyStudio/_public/CushyLogo-512.png')
 
 const newAppName = 'CushyStudio'
 

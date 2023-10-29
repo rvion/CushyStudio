@@ -19,6 +19,7 @@ import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { generateAvatar } from './AvatarGenerator'
 import { DeckManifest } from './DeckManifest'
+import { assets } from 'src/assets/assets'
 
 /** e.g. actions/rvion/foo */
 export type DeckFolder = Branded<string, { ActionPackFolder: true; RelativePath: true }>
@@ -100,7 +101,7 @@ export class Deck {
     }
 
     get logo() {
-        if (this.BUILT_IN) return '/CushyLogo-512.png'
+        if (this.BUILT_IN) return assets.public_CushyLogo_512_png
         return this.githubUser.localAvatarURL
         return generateAvatar(this.name)
     }

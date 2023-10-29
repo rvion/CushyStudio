@@ -3,6 +3,7 @@ import React from 'react'
 import { Popover, Whisper } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 import { OpenComfyExternalUI } from './AppBarUI'
+import { assets } from 'src/assets/assets'
 
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
@@ -83,7 +84,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                         //
                         onClick={() => st.layout.addComfy()}
                         ix='4'
-                        icon={<img src='/ComfyUILogo.png' style={{ width: '1.5rem', height: '1.5rem' }} />}
+                        icon={<img src={assets.public_ComfyUILogo_png} style={{ width: '1.5rem', height: '1.5rem' }} />}
                         label='Comfy'
                     />
                 </div>
