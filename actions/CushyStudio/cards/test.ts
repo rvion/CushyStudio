@@ -3,8 +3,10 @@ import type { ImageAndMask, Runtime } from 'src/back/Runtime'
 card({
     name: 'cards v3',
     author: 'rvion',
-    description: 'play with cards',
-    ui: () => ({}),
+    description: 'showcase the API builder',
+    ui: (form) => ({
+        color: form.color({ default: 'red' }),
+    }),
     run: async (flow, p) => {
         const res = await fooKonva(flow)
         flow.nodes.PreviewImage({ images: res })
@@ -13,25 +15,12 @@ card({
 })
 
 export async function fooKonva(flow: Runtime): Promise<ImageAndMask> {
-    const { Stage, Layer, Image, Text, Rect } = await flow.loadImageMaker()
+    const I = await flow.loadImageSDK()
+    const { Stage, Layer, Image, Text, Rect } = I.Konva
 
     const layer = new Layer()
-    const container: HTMLDivElement =
-        (document.getElementById('konvaPreview') as Maybe<HTMLDivElement>) ?? //
-        document.createElement('div')
-    container.style.width = '300px'
-    container.id = 'konvaPreview'
-    container.style.height = '450px'
-    // container.style.backgroundColor = 'red'
-    container.style.zIndex = '99999999'
-    container.style.border = '1px solid red'
 
-    // make absolute
-    container.style.position = 'absolute'
-    container.style.top = '10px'
-    container.style.left = '10px'
-    // mount to body
-    document.body.appendChild(container)
+    const container: HTMLDivElement = I.createContainer()
 
     // container.style.backgroundColor = 'blue'
     const stage = new Stage({ container: container, width: 300, height: 450 })
@@ -50,7 +39,7 @@ export async function fooKonva(flow: Runtime): Promise<ImageAndMask> {
 
     stage.add(layer)
 
-    const image = await loadImage('CushyStudio/cards/_assets/symbol-diamond.png')
+    const image = await I.loadImage('CushyStudio/cards/_assets/symbol-diamond.png')
 
     // const diamonds = []
     const positions: { x: number; y: number; scaleY: number }[] = [
@@ -91,13 +80,4 @@ export async function fooKonva(flow: Runtime): Promise<ImageAndMask> {
     // export the image
     stage.draw()
     return flow.load_dataURL(stage.toDataURL({ width: stage.width(), height: stage.height() }))
-}
-
-function loadImage(src: string): Promise<HTMLImageElement> {
-    return new Promise((resolve, reject) => {
-        const img = new Image()
-        img.onload = () => resolve(img)
-        img.onerror = reject
-        img.src = src
-    })
 }
