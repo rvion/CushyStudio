@@ -1,21 +1,53 @@
-# Contributor License Agreement
+## Revised Contributor License Agreement
 
-Thank you for your interest in contributing to `CushyStudio` code.
+### Welcome to the `CushyStudio` Contributor Family!
 
-In order to clarify the intellectual property license granted with contributions to `CushyStudio` main repository from any person or entity, `CushyStudio` must have a Contributor License Agreement (CLA) on file that has been signed by each Contributor, indicating agreement to certain license terms. This license is not only for the protection of the contributors themselves, but also for the protection of the project and its users; it does not change your rights to use your own Contributions for any other purpose.
+First off, a big thank you for considering contributing to `CushyStudio`. Every contribution, big or small, enriches our community and gets us one step closer to our shared vision.
 
-All past and future contributors of non-trivial amounts of code (more than just a line or two) to `CushyStudio` are required to sign the CLA. If somebody is unable to sign the document, their contribution will not be accepted or will be removed from `CushyStudio`.
+This Contributor License Agreement (CLA) is a little formality we need to go through to ensure the integrity of `CushyStudio` for everyone involved. Let's get through this together.
 
-Version 1.0 – 2023-10-24
+#### Why Do We Need This Agreement?
 
-You and `CushyStudio` agree:
+-   **For you**: It ensures your contributions are recognized and establishes clarity about how they can be used.
+-   **For `CushyStudio` and its users**: It ensures that the rights around the contributed code are clear and prevent any potential hiccups down the road.
+-   **For me (rvion)**: It makes sure I can use your contributions in possible way, like providing cloud GPU services or other open-source-friendly services to sustain the project. Check the CLA summary below to know more, but don't worry. This project is free, open source, and I'll even switch it to GPLV3 at some point.
 
-You grant me, Rémi Vion (rvion on github), the ability to use the Contributions in any way. You hereby grant to me, a perpetual, non-exclusive, worldwide, fully paid-up, royalty free, irrevocable copyright license to reproduce, prepare derivative works of, publicly display, publicly perform, sublicense, and distribute your Contribution and such derivative works.
+#### What's Expected from Our Contributors?
 
-You are able to grant me these rights. You represent that You are legally entitled to grant the above license. If Your employer has rights to intellectual property that You create, You represent that You have received permission to make the Contributions on behalf of that employer, or that Your employer has waived such rights for the Contributions.
+1. If you're contributing more than just a minor tweak (think more than a line or two), I'll need you to sign this CLA. It's a one-time thing.
+2. If, for some reason, you can't sign this CLA, I might not be able to accept your contribution.
 
-The Contributions are your original work. You represent that the Contributions are Your original works of authorship, and to Your knowledge, no other person claims, or has the right to claim, any right in any invention or patent related to the Contributions. You also represent that You are not legally obligated, whether by entering into an agreement or otherwise, in any way that conflicts with the terms of this license. For example, if you have signed an agreement requiring you to assign the intellectual property rights in the Contributions to an employer or customer, that would conflict with the terms of this license.
+Version 1.0 – Dated 2023-10-24
 
-I determines the code that is in the project. You understand that the decision to include the Contribution in any project or source repository is entirely that of mine, and this agreement does not guarantee that the Contributions will be included in any product.
+#### Our Agreement:
 
-No Implied Warranties. I acknowledges that, except as explicitly described in this Agreement, the Contribution is provided on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, WITHOUT LIMITATION, ANY WARRANTIES OR CONDITIONS OF TITLE, NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE.
+1. **Your Contribution**: By signing below, you're giving me, Rémi Vion (aka rvion on Github), the green light to use your contributions however I see fit. In more formal terms, this means granting a perpetual, non-exclusive, global, and royalty-free license to use, modify, distribute, and build upon your work.
+
+2. **You've Got the Power**: By signing, you're saying you're legally allowed to make this contribution. If someone else, like an employer, has rights to what you're contributing, please make sure they're okay with this before signing.
+
+3. **Your Original Work**: Please ensure that what you're contributing is your original creation. If there's any doubt or potential conflict, let's talk.
+
+4. **Inclusion in the Project**: Whether your contribution makes it to the final cut is up to me. But know this – every contribution is valuable, and we appreciate your effort.
+
+5. **No Hidden Strings Attached**: Unless explicitly stated here, your contribution comes as-is, with no warranties. That said, we trust and value the quality of contributions from our community.
+
+---
+
+## Frequently Asked Questions:
+
+In case you want to know more about the CLA, here are some answers to questions you might have:
+If your questions are not covered, you can take a look at the full FAQ: https://github.com/rvion/CushyStudio/blob/master/docs/FAQ.md
+
+### Q: Will `CushyStudio` remain open source and free?
+
+**A**: Absolutely! I're committed to keeping `CushyStudio` 100% open source and free. Create assets, art, games – you name it. It's your creation, and I're just here to help you make it.
+
+### Q: Why the AGPL and not the GPLV3?
+
+**A**: For now, `CushyStudio` is under AGPL, because I want to drive the project how I see fit. I plan to switch it to GPLV3 down the line once, once I'll have make enough money through donations or cloud GPU renting services to buy a home. I've chosen this path to protect myself, the project and ensure its sustainable growth. Rest assured, using `CushyStudio` for asset creation won't bind you in any restrictive way. I just don't want other people to re-sell `CushyStudio` as a service without my consent or .
+
+### Q: Any plans for a paid version of `CushyStudio`?
+
+**A**: No, and that's a promise. `CushyStudio` will always be free and open source. While we do have plans to offer complementary services (like cloud GPU services or revenue-sharing systems), the core of `CushyStudio` will remain untouched and free for all.
+
+Let's create something amazing together! 💪🎉
