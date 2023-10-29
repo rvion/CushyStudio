@@ -43,7 +43,7 @@ export class Deck {
     githubRepository: GithubRepo
 
     // -------------
-    folded = false
+    folded = true
     updater: Updater
     installK: ManualPromise<true>
 

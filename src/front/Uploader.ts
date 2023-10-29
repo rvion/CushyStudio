@@ -22,7 +22,7 @@ export class Uploader {
     /** upload an image from dataURL */
     upload_dataURL = async (dataURL: string): Promise<ComfyUploadImageResult> => {
         const mime = dataURL.split(';')[0].split(':')[1]
-        console.log('🟢', mime)
+        console.log('[⬆️] upload_dataURL', mime)
         const file = new Blob([Buffer.from(dataURL.split(',')[1], 'base64')], { type: mime })
         return await this.upload_Blob(file)
     }
@@ -47,6 +47,7 @@ export class Uploader {
 
     /** upload a blob */
     upload_Blob = async (blob: Blob): Promise<ComfyUploadImageResult> => {
+        console.warn('[⬆️] upload_Blob')
         // 1. hash the image blob, and retrieve its stable name for quick lookup
         const hash = await this.hashBlob(blob)
         const uniqFileName = `${hash}.png` as Enum_LoadImage_image

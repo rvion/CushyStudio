@@ -46,6 +46,8 @@ export type ConfigFile = {
     galleryImageSize?: number
     /** defaults to 50 */
     galleryMaxImages?: number
+    /** defaults to 50 */
+    galleryBgColor?: string
     /** defaults to 5 */
     checkUpdateEveryMinutes?: number
     layouts?: { [perspectiveName: string]: IJsonModel }

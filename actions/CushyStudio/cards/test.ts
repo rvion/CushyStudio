@@ -8,20 +8,41 @@ card({
         color: form.color({ default: 'red' }),
     }),
     run: async (flow, p) => {
+        flow.print('YOLO')
         const res = await fooKonva(flow, p)
-        flow.nodes.PreviewImage({ images: res })
+        flow.previewImageWithAlpha(res)
         await flow.PROMPT()
     },
 })
 
 export async function fooKonva(flow: Runtime, p: { color: string }): Promise<ImageAndMask> {
     const I = await flow.loadImageSDK()
-    const container: HTMLDivElement = I.createContainer()
-    const stage = new I.Stage({ container: container, width: 300, height: 450 })
+    const container: HTMLDivElement = I.createContainerDebug()
+    const stage = new I.Stage({ container: container, width: 300, height: 450, opacity: 0.99 })
     const layer = new I.Layer()
     stage.add(layer)
 
-    I.fillFullLayerWithGradient(stage, layer, [0.2, 'blue', 0.5, p.color, 0.8, 'rgba(0, 0, 0, 0)'])
+    // layer.add(
+    //     new I.Rect({ x: 0, y: 0, width: stage.width(), height: stage.height(), fill: 'rgba(0, 0, 0, 0)', listening: false }),
+    // )
+
+    // 👇 self contain utility you can add in your own helper file
+    I.fillFullLayerWithGradient(stage, layer, [0.2, 'red', 0.5, p.color, 0.8, 'rgba(0, 0, 0, 0)'])
+    // 👇 example using the base gradient primitives
+    layer.add(
+        new I.Rect({
+            x: 0,
+            y: stage.height() / 4,
+            width: stage.width(),
+            height: stage.height() / 2,
+            fillRadialGradientStartPoint: { x: 100, y: 100 },
+            fillRadialGradientStartRadius: 0,
+            fillRadialGradientEndPoint: { x: 100, y: 100 },
+            fillRadialGradientEndRadius: 100,
+            fillRadialGradientColorStops: [0, 'red', 0.5, 'yellow', 1, 'rgba(0, 0, 0, 0)'],
+            listening: false,
+        }),
+    )
 
     const image = await I.loadImage('CushyStudio/cards/_assets/symbol-diamond.png')
 
@@ -62,5 +83,7 @@ export async function fooKonva(flow: Runtime, p: { color: string }): Promise<Ima
 
     // export the image
     stage.draw()
-    return flow.load_dataURL(stage.toDataURL({ width: stage.width(), height: stage.height() }))
+    const dataURL = stage.toDataURL({ width: stage.width(), height: stage.height() })
+    // flow.downloadURI(dataURL, 'foo.png')
+    return flow.load_dataURL(dataURL)
 }

@@ -39,7 +39,7 @@ export class ImageSDK {
                 y: 0,
                 width: stage.width(),
                 height: stage.height(),
-                illLinearGradientStartPoint: { x: 0, y: 0 },
+                fillLinearGradientStartPoint: { x: 0, y: 0 },
                 fillLinearGradientEndPoint: { x: stage.width(), y: stage.height() },
                 fillLinearGradientColorStops: color,
                 listening: false,

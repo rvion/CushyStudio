@@ -12,7 +12,12 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
         : st.db.images.last()
     if (imgs == null) return null
     return (
-        <div tw='w-full h-full flex flex-col'>
+        <div
+            tw='w-full h-full flex flex-col'
+            style={{
+                background: st.configFile.value.galleryBgColor,
+            }}
+        >
             <div tw='flex gap-2 p-0.5'>
                 {/* <ButtonGroup disabled size='xs'>
                     <Button>fit</Button>

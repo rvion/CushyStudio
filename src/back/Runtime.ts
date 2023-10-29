@@ -42,6 +42,16 @@ export class Runtime {
         return this.step.outputGraph.item
     }
 
+    // miscs subgraphs until there is a better place to place them
+    previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK) => {
+        return this.nodes.PreviewImage({
+            images: this.nodes.JoinImageWithAlpha({
+                image: image,
+                alpha: image,
+            }),
+        })
+    }
+
     get nodes(): NodeBuilder {
         return this.graph.builder
     }
@@ -49,11 +59,11 @@ export class Runtime {
     constructor(public step: StepL) {
         this.st = step.st
         this.folder = step.st.outputFolderPath
-        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
-        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
-        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
-        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
-        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
+        // this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
+        // this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
+        // this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
+        // this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
+        // this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
     }
 
     /** list all actions ; codegen during dev-time */
@@ -387,45 +397,45 @@ export class Runtime {
 
     // UPLOAD ------------------------------------------------------------------------------------------
     /** upload an image present on disk to ComfyUI */
-    upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
+    // upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
 
-    /** upload an image that can be downloaded form a given URL to ComfyUI */
-    upload_ImageAtURL: Uploader['upload_ImageAtURL']
+    // /** upload an image that can be downloaded form a given URL to ComfyUI */
+    // upload_ImageAtURL: Uploader['upload_ImageAtURL']
 
-    /** upload an image from dataURL */
-    upload_dataURL: Uploader['upload_dataURL']
+    // /** upload an image from dataURL */
+    // upload_dataURL: Uploader['upload_dataURL']
 
-    /** upload a deck asset to ComfyUI */
-    upload_Asset: Uploader['upload_Asset']
+    // /** upload a deck asset to ComfyUI */
+    // upload_Asset: Uploader['upload_Asset']
 
-    /** upload a Blob */
-    upload_Blob: Uploader['upload_Blob']
+    // /** upload a Blob */
+    // upload_Blob: Uploader['upload_Blob']
 
     // LOAD IMAGE --------------------------------------------------------------------------------------
     /** load an image present on disk to ComfyUI */
     load_FileAtAbsolutePath = async (absPath: AbsolutePath): Promise<ImageAndMask> => {
-        const res = await this.upload_FileAtAbsolutePath(absPath)
+        const res = await this.st.uploader.upload_FileAtAbsolutePath(absPath)
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }
     /** load an image that can be downloaded form a given URL to ComfyUI */
     load_ImageAtURL = async (url: string): Promise<ImageAndMask> => {
-        const res = await this.upload_ImageAtURL(url)
+        const res = await this.st.uploader.upload_ImageAtURL(url)
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }
     /** load an image from dataURL */
     load_dataURL = async (dataURL: string): Promise<ImageAndMask> => {
-        const res = await this.upload_dataURL(dataURL)
+        const res = await this.st.uploader.upload_dataURL(dataURL)
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }
 
     /** load a deck asset to ComfyUI */
     load_Asset = async (asset: CardPath): Promise<ImageAndMask> => {
-        const res = await this.upload_Asset(asset)
+        const res = await this.st.uploader.upload_Asset(asset)
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }
     /** load a Blob */
     load_Blob = async (blob: Blob): Promise<ImageAndMask> => {
-        const res = await this.upload_Blob(blob)
+        const res = await this.st.uploader.upload_Blob(blob)
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }
 
