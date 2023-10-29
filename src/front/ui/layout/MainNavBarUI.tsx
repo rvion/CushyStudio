@@ -109,7 +109,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <MainNavEntryUI
                 onClick={() => st.layout.addCivitai()}
                 ix='7'
-                icon={<img width='25px' height='25px' src='/CivitaiLogo.png'></img>}
+                icon={<img width='25px' height='25px' src={assets.public_CivitaiLogo_png}></img>}
                 label='Civitai'
             />
 
