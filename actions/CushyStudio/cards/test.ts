@@ -17,7 +17,7 @@ card({
 
 export async function fooKonva(flow: Runtime, p: { color: string }): Promise<ImageAndMask> {
     const I = await flow.loadImageSDK()
-    const container: HTMLDivElement = I.createContainerDebug()
+    const container: HTMLDivElement = I.createContainer()
     const stage = new I.Stage({ container: container, width: 300, height: 450, opacity: 0.99 })
     const layer = new I.Layer()
     stage.add(layer)
