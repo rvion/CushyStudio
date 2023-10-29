@@ -141,10 +141,11 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint
 
     return (
         <div className='flex-grow flex flex-col h-full'>
-            <ButtonGroup className='absolute top-2 right-2'>
+            <ButtonGroup className='absolute top-1 right-2'>
                 <Button
                     size='sm'
-                    appearance='ghost'
+                    startIcon={<span className='material-symbols-outlined'>save</span>}
+                    appearance='primary'
                     color='green'
                     onClick={() => {
                         runInAction(() => {
@@ -152,9 +153,9 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint
                         })
                     }}
                 >
-                    OK (leave open)
+                    Save
                 </Button>
-                <Button
+                {/* <Button
                     size='sm'
                     appearance='ghost'
                     color='green'
@@ -165,8 +166,8 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint
                     }}
                 >
                     OK (close)
-                </Button>
-                <Button
+                </Button> */}
+                {/* <Button
                     size='sm'
                     appearance='ghost'
                     color='red'
@@ -175,20 +176,20 @@ export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint
                     }}
                 >
                     Close
-                </Button>
+                </Button> */}
             </ButtonGroup>
             <iframe
                 style={{
                     border: 'none',
                     flexGrow: 1,
-                    // resize: 'both',
                     minWidth: '200px',
-                    // minHeight: '100%',
                     width: '100%',
+                    // resize: 'both',
+                    // minHeight: '100%',
                     // height: '612px',
                 }}
                 id='miniPaint'
-                src={'http://localhost:8788/minipaint/index.html'}
+                src={'http://localhost:8788/CushyStudio/_public/minipaint/index.html'}
                 allow='camera'
             ></iframe>
 
