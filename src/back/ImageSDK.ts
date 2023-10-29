@@ -1,4 +1,6 @@
-import { STATE } from 'src/front/state'
+import type { Layer } from 'konva/lib/Layer'
+import type { Stage } from 'konva/lib/Stage'
+import type { STATE } from 'src/front/state'
 
 export type Konva = typeof import('konva').default
 export class ImageSDK {
@@ -12,6 +14,7 @@ export class ImageSDK {
     Image: Konva['Image']
     Text: Konva['Text']
     Rect: Konva['Rect']
+
     private constructor(
         //
         public st: STATE,
@@ -22,6 +25,26 @@ export class ImageSDK {
         this.Image = Konva.Image
         this.Text = Konva.Text
         this.Rect = Konva.Rect
+    }
+
+    fillFullLayerWithGradient = (
+        //
+        stage: Stage,
+        layer: Layer,
+        color: Array<number | string>,
+    ) => {
+        layer.add(
+            new this.Rect({
+                x: 0,
+                y: 0,
+                width: stage.width(),
+                height: stage.height(),
+                illLinearGradientStartPoint: { x: 0, y: 0 },
+                fillLinearGradientEndPoint: { x: stage.width(), y: stage.height() },
+                fillLinearGradientColorStops: color,
+                listening: false,
+            }),
+        )
     }
 
     loadImage(

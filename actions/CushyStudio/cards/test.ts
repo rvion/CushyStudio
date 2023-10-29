@@ -8,38 +8,23 @@ card({
         color: form.color({ default: 'red' }),
     }),
     run: async (flow, p) => {
-        const res = await fooKonva(flow)
+        const res = await fooKonva(flow, p)
         flow.nodes.PreviewImage({ images: res })
         await flow.PROMPT()
     },
 })
 
-export async function fooKonva(flow: Runtime): Promise<ImageAndMask> {
+export async function fooKonva(flow: Runtime, p: { color: string }): Promise<ImageAndMask> {
     const I = await flow.loadImageSDK()
-
-    const layer = new I.Layer()
     const container: HTMLDivElement = I.createContainer()
-
-    // container.style.backgroundColor = 'blue'
     const stage = new I.Stage({ container: container, width: 300, height: 450 })
-    layer.add(
-        new I.Rect({
-            x: 0,
-            y: 0,
-            width: stage.width(),
-            height: stage.height(),
-            illLinearGradientStartPoint: { x: 0, y: 0 },
-            fillLinearGradientEndPoint: { x: stage.width(), y: stage.height() },
-            fillLinearGradientColorStops: [0.5, 'purple', 0.8, 'rgba(0, 0, 0, 0)'],
-            listening: false,
-        }),
-    )
-
+    const layer = new I.Layer()
     stage.add(layer)
+
+    I.fillFullLayerWithGradient(stage, layer, [0.2, 'blue', 0.5, p.color, 0.8, 'rgba(0, 0, 0, 0)'])
 
     const image = await I.loadImage('CushyStudio/cards/_assets/symbol-diamond.png')
 
-    // const diamonds = []
     const positions: { x: number; y: number; scaleY: number }[] = [
         { x: 50, y: 60, scaleY: 1 },
         { x: 200, y: 60, scaleY: 1 },
