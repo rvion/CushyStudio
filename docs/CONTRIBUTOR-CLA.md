@@ -1,4 +1,4 @@
-## Revised Contributor License Agreement
+## Contributor License Agreement
 
 ### Welcome to the `CushyStudio` Contributor Family!
 
@@ -17,7 +17,7 @@ This Contributor License Agreement (CLA) is a little formality we need to go thr
 1. If you're contributing more than just a minor tweak (think more than a line or two), I'll need you to sign this CLA. It's a one-time thing.
 2. If, for some reason, you can't sign this CLA, I might not be able to accept your contribution.
 
-Version 1.0 – Dated 2023-10-24
+Version 2.0 – Dated 2023-10-29
 
 #### Our Agreement:
 
@@ -40,7 +40,7 @@ If your questions are not covered, you can take a look at the full FAQ: https://
 
 ### Q: Will `CushyStudio` remain open source and free?
 
-**A**: Absolutely! I're committed to keeping `CushyStudio` 100% open source and free. Create assets, art, games – you name it. It's your creation, and I're just here to help you make it.
+**A**: Absolutely! I'm committed to keeping `CushyStudio` 100% open source and free. Create assets, art, games – you name it. It's your creation, and I'm just here to help you make it.
 
 ### Q: Why the AGPL and not the GPLV3?
 
