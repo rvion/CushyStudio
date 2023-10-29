@@ -13,34 +13,43 @@ export class Uploader {
     constructor(private st: STATE) {}
 
     /** upload an image present on disk to ComfyUI */
-    uploadFromAbsolutePath = async (filePath: AbsolutePath): Promise<ComfyUploadImageResult> => {
+    upload_FileAtAbsolutePath = async (filePath: AbsolutePath): Promise<ComfyUploadImageResult> => {
         const mime = asSTRING_orCrash(lookup(filePath))
         const file = new Blob([readFileSync(filePath)], { type: mime })
-        return await this.uploadUIntArrToComfy(file)
+        return await this.upload_Blob(file)
+    }
+
+    /** upload an image from dataURL */
+    upload_dataURL = async (dataURL: string): Promise<ComfyUploadImageResult> => {
+        const mime = dataURL.split(';')[0].split(':')[1]
+        console.log('🟢', mime)
+        const file = new Blob([Buffer.from(dataURL.split(',')[1], 'base64')], { type: mime })
+        return await this.upload_Blob(file)
     }
 
     /** upload an image present on disk to ComfyUI */
-    uploadNativeFile = async (file: File): Promise<ComfyUploadImageResult> => {
+    upload_NativeFile = async (file: File): Promise<ComfyUploadImageResult> => {
         const blob = new Blob([await file.arrayBuffer()], { type: file.type })
-        return await this.uploadUIntArrToComfy(blob)
+        return await this.upload_Blob(blob)
     }
 
     /** upload an image that can be downloaded form a given URL to ComfyUI */
-    uploadFromURL = async (url: string): Promise<ComfyUploadImageResult> => {
+    upload_ImageAtURL = async (url: string): Promise<ComfyUploadImageResult> => {
         const blob: Blob = await this.st.getUrlAsBlob(url)
-        return this.uploadUIntArrToComfy(blob)
+        return this.upload_Blob(blob)
     }
 
     /** upload a deck asset to ComfyUI */
-    uploadFromAsset = async (assetName: CardPath): Promise<ComfyUploadImageResult> => {
+    upload_Asset = async (assetName: CardPath): Promise<ComfyUploadImageResult> => {
         const absPath = asAbsolutePath(path.join(this.st.rootPath, assetName))
-        return this.st.uploader.uploadFromAbsolutePath(absPath)
+        return this.st.uploader.upload_FileAtAbsolutePath(absPath)
     }
 
-    private uploadUIntArrToComfy = async (blob: Blob): Promise<ComfyUploadImageResult> => {
+    /** upload a blob */
+    upload_Blob = async (blob: Blob): Promise<ComfyUploadImageResult> => {
         // 1. hash the image blob, and retrieve its stable name for quick lookup
         const hash = await this.hashBlob(blob)
-        const uniqFileName = `${hash}.png`
+        const uniqFileName = `${hash}.png` as Enum_LoadImage_image
 
         // 2. if image already exists, return it
         if (this.st.schema.hasImage(uniqFileName)) {

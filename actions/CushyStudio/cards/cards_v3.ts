@@ -79,16 +79,11 @@ const ui = (form: FormBuilder) => ({
     symetry: form.bool({ default: false }),
 })
 
-action({
+card({
     name: 'cards v3',
     author: 'rvion',
     description: 'play with cards',
     ui,
-    // presets: {
-    //     smol: {
-    //         cards
-    //     },
-    // },
     run: async (flow, p) => {
         // 1. SETUP --------------------------------------------------
         const graph = flow.nodes

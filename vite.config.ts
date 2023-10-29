@@ -14,7 +14,7 @@ export default defineConfig({
             // 'fs',
         ],
     },
-    publicDir: 'src/public',
+    publicDir: 'actions',
     plugins: [
         // dynamicModulePlugin(),
         react({ jsxImportSource: 'src/custom-jsx' }),

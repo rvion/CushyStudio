@@ -26,6 +26,10 @@ import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSen
 import { NodeBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
+import { assets } from 'src/assets/assets'
+import { CardPath } from 'src/library/CardPath'
+
+export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
 /** script exeuction instance */
 export class Runtime {
@@ -44,9 +48,11 @@ export class Runtime {
     constructor(public step: StepL) {
         this.st = step.st
         this.folder = step.st.outputFolderPath
-        this.uploadFromAbsolutePath = this.st.uploader.uploadFromAbsolutePath.bind(this.st.uploader)
-        this.uploadFromURL = this.st.uploader.uploadFromURL.bind(this.st.uploader)
-        this.uploadFromAsset = this.st.uploader.uploadFromAsset.bind(this.st.uploader)
+        this.upload_FileAtAbsolutePath = this.st.uploader.upload_FileAtAbsolutePath.bind(this.st.uploader)
+        this.upload_ImageAtURL = this.st.uploader.upload_ImageAtURL.bind(this.st.uploader)
+        this.upload_dataURL = this.st.uploader.upload_dataURL.bind(this.st.uploader)
+        this.upload_Asset = this.st.uploader.upload_Asset.bind(this.st.uploader)
+        this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
     }
 
     /** list all actions ; codegen during dev-time */
@@ -116,6 +122,8 @@ export class Runtime {
     get lastImage() { return this.generatedImages[this.generatedImages.length - 1] } // prettier-ignore
 
     folder: AbsolutePath
+    assets = assets
+    loadImageMaker = () => import('konva').then((t) => t.default) // browser
 
     sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms))
 
@@ -139,6 +147,17 @@ export class Runtime {
         const htmlContent = marked.parse(p.markdownContent)
         this.step.append({ type: 'show-html', content: htmlContent, title: p.title })
         // this.st.broadCastToAllClients({ type: 'show-html', content: htmlContent, title: p.title })
+    }
+
+    // private
+    downloadURI = (uri: string, name: string) => {
+        var link = document.createElement('a')
+        link.download = name
+        link.href = uri
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        // delete link
     }
 
     static VideoCounter = 1
@@ -248,7 +267,7 @@ export class Runtime {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
                 if (img.data.downloaded) {
-                    const res = await this.uploadFromAbsolutePath(img.localAbsolutePath)
+                    const res = await this.upload_FileAtAbsolutePath(img.localAbsolutePath)
                     return res.name as Enum_LoadImage_image // 🔴
                 }
                 return img.localAbsolutePath as Enum_LoadImage_image // 🔴
@@ -272,7 +291,7 @@ export class Runtime {
         throw new Error('FAILURE to load image answer as enum')
     }
 
-    loadImageAnswer = async (ia: ImageAnswer): Promise<_IMAGE & _MASK> => {
+    loadImageAnswer = async (ia: ImageAnswer): Promise<ImageAndMask> => {
         try {
             // if (ia.type === 'imagePath') {
             //     return this.nodes.WASImageLoad({ image_path: ia.absPath, RGBA: 'false' })
@@ -281,7 +300,7 @@ export class Runtime {
                 const img = this.st.db.images.getOrThrow(ia.imageID)
                 // this.print(JSON.stringify(img.data, null, 3))
                 if (img.data.downloaded) {
-                    const res = await this.uploadFromAbsolutePath(img.localAbsolutePath)
+                    const res = await this.upload_FileAtAbsolutePath(img.localAbsolutePath)
                     // this.print(JSON.stringify(res))
 
                     const img2 = this.nodes.LoadImage({ image: res.name as any })
@@ -359,11 +378,47 @@ export class Runtime {
 
     // UPLOAD ------------------------------------------------------------------------------------------
     /** upload an image present on disk to ComfyUI */
-    uploadFromAbsolutePath: Uploader['uploadFromAbsolutePath']
+    upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
+
     /** upload an image that can be downloaded form a given URL to ComfyUI */
-    uploadFromURL: Uploader['uploadFromURL']
+    upload_ImageAtURL: Uploader['upload_ImageAtURL']
+
+    /** upload an image from dataURL */
+    upload_dataURL: Uploader['upload_dataURL']
+
     /** upload a deck asset to ComfyUI */
-    uploadFromAsset: Uploader['uploadFromAsset']
+    upload_Asset: Uploader['upload_Asset']
+
+    /** upload a Blob */
+    upload_Blob: Uploader['upload_Blob']
+
+    // LOAD IMAGE --------------------------------------------------------------------------------------
+    /** load an image present on disk to ComfyUI */
+    load_FileAtAbsolutePath = async (absPath: AbsolutePath): Promise<ImageAndMask> => {
+        const res = await this.upload_FileAtAbsolutePath(absPath)
+        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    }
+    /** load an image that can be downloaded form a given URL to ComfyUI */
+    load_ImageAtURL = async (url: string): Promise<ImageAndMask> => {
+        const res = await this.upload_ImageAtURL(url)
+        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    }
+    /** load an image from dataURL */
+    load_dataURL = async (dataURL: string): Promise<ImageAndMask> => {
+        const res = await this.upload_dataURL(dataURL)
+        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    }
+
+    /** load a deck asset to ComfyUI */
+    load_Asset = async (asset: CardPath): Promise<ImageAndMask> => {
+        const res = await this.upload_Asset(asset)
+        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    }
+    /** load a Blob */
+    load_Blob = async (blob: Blob): Promise<ImageAndMask> => {
+        const res = await this.upload_Blob(blob)
+        return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
+    }
 
     // INTERRACTIONS ------------------------------------------------------------------------------------------
     async PROMPT(p?: {

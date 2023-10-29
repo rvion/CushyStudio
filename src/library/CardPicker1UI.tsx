@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { Tree } from 'rsuite'
 import { asCardPath } from 'src/library/CardPath'
-import { assets } from 'src/front/ui/assets'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { useSt } from '../front/FrontStateCtx'
 import { TooltipUI } from '../front/ui/layout/TooltipUI'
 import { getIconForFilePath } from '../front/ui/utils/filePathIcon'
+import { assets } from 'src/assets/assets'
 
 export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
     const st = useSt()
@@ -39,7 +39,7 @@ export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
                         <div tw='ml-auto'>
                             {isTypechecked && (
                                 <TooltipUI>
-                                    <img tw='mr-1' style={{ width: '1rem' }} src={assets.tsLogo} alt='' />
+                                    <img tw='mr-1' style={{ width: '1rem' }} src={assets.public_typescript_512_png} alt='' />
                                     <div>is being type-checked</div>
                                 </TooltipUI>
                             )}

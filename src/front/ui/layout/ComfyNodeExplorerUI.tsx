@@ -93,7 +93,11 @@ export const ComfyNodeExplorerUI = observer(function ComfyNodeExplorerUI_(p: {})
                         return (
                             <tr key={name}>
                                 <td tw='[max-width:10rem]'>{name}</td>
-                                <td tw='[max-width:10rem]'>{name}</td>
+                                <td tw='[max-width:10rem]'>
+                                    {node.inputs.map((i) => (
+                                        <Tag size='sm'>{i.nameInComfy}</Tag>
+                                    ))}
+                                </td>
                                 <td>
                                     {node.outputs.map((o) => (
                                         <Tag size='sm'>{o.nameInCushy}</Tag>

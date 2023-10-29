@@ -23,6 +23,7 @@
     "scripts": {
         "start": "concurrently --kill-others -n vite,electron -c yellow,blue \"npm run front:dev\" \"electron -i src/shell\"",
         "📌 FRONT": "",
+        "assets": "bun src/assets/assets.gen.ts",
         "front:shell": "electron src/shell",
         "front:watch": "vite build --watch",
         "front:dev": "vite dev",
@@ -68,6 +69,7 @@
         "form-data": "^4.0.0",
         "highlight.js": "^11.9.0",
         "json5": "^2.2.3",
+        "konva": "^9.2.2",
         "lexical": "^0.12.2",
         "marked": "^9.1.2",
         "mime-types": "^2.1.35",

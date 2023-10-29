@@ -5,6 +5,7 @@ import { useSt } from '../../FrontStateCtx'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
 import { UpdateBtnUI } from './UpdateBtnUI'
 import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
+import { assets } from 'src/assets/assets'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
@@ -132,7 +133,7 @@ export const GithubAppBarInputUI = observer(function GithubAppBarInputUI_(p: {})
         >
             <InputGroup size='xs' tw='w-auto' style={{ border: '1px solid #868516' }}>
                 <InputGroup.Addon>
-                    <img src='/GithubLogo2.png' alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
+                    <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
                     your github:
                 </InputGroup.Addon>
                 <Input
