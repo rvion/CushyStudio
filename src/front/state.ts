@@ -31,7 +31,7 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyLayoutManager } from './ui/layout/Layout'
-import { Updater } from './updater'
+import { GitManagedFolder } from './updater'
 import { CardPath } from 'src/library/CardPath'
 import { Uploader } from './Uploader'
 
@@ -87,7 +87,7 @@ export class STATE {
     comfyStatus: Maybe<ComfyStatus> = null
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
     configFile: JsonFile<ConfigFile>
-    updater: Updater
+    updater: GitManagedFolder
     hovered: Maybe<ImageL> = null
 
     library: ActionLibrary
@@ -167,7 +167,7 @@ export class STATE {
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
         this.theme = new ThemeManager(this)
-        this.updater = new Updater(this, { cwd: this.rootPath, autoStart: true, runNpmInstall: true })
+        this.updater = new GitManagedFolder(this, { cwd: this.rootPath, autoStart: true, runNpmInstall: true })
         this.importer = new ComfyImporter(this)
         this.library = new ActionLibrary(this)
         ;(async () => {

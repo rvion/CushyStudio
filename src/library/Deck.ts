@@ -13,7 +13,7 @@ import {
     asGithubRepoName,
     asGithubUserName,
 } from 'src/library/githubUtils'
-import { Updater } from 'src/front/updater'
+import { GitManagedFolder } from 'src/front/updater'
 import { ManualPromise } from 'src/utils/ManualPromise'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
@@ -44,7 +44,7 @@ export class Deck {
 
     // -------------
     folded = true
-    updater: Updater
+    updater: GitManagedFolder
     installK: ManualPromise<true>
 
     /** sorting socre */
@@ -89,12 +89,12 @@ export class Deck {
         this.authorFolderRel = asRelativePath(join(this.st.actionsFolderPathRel, parts[0])) as AuthorFolder
         this.folderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, this.github))
         this.folderRel = asRelativePath(join(this.st.actionsFolderPathRel, this.github)) as DeckFolder
-        this.updater = new Updater(this.makretplace.st, { cwd: this.folderAbs, autoStart: false, runNpmInstall: false })
+        this.updater = new GitManagedFolder(this.makretplace.st, { cwd: this.folderAbs, autoStart: false, runNpmInstall: false })
         this.installK = new ManualPromise<true>()
 
         if (existsSync(this.folderAbs)) {
             this.installK.resolve(true)
-            if (!this.BUILT_IN) this.updater.start()
+            if (!this.BUILT_IN) this.updater.periodicallyFetch()
         }
 
         makeAutoObservable(this)

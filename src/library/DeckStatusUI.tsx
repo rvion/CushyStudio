@@ -1,8 +1,7 @@
 import type { Deck } from './Deck'
-import type { Updater } from 'src/front/updater'
 
 import { observer } from 'mobx-react-lite'
-import { Button, Notification, toaster } from 'rsuite'
+import { Button } from 'rsuite'
 import { UpdateBtnUI } from 'src/front/ui/layout/UpdateBtnUI'
 
 export const ActionPackStatusUI = observer(function PackStatusUI_(p: { pack: Deck }) {

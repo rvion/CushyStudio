@@ -1,11 +1,25 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
-import { Updater } from 'src/front/updater'
+import { FolderKind, GitManagedFolder } from 'src/front/updater'
 import { _formatPreviewDate } from 'src/utils/_formatPreviewDate'
 
-export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater }) {
+export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater
     const hasErrors = updater.hasErrors
+    if (updater.status === FolderKind.Unknown) return <Loader />
+    if (updater.status === FolderKind.NotGit)
+        return (
+            <Button
+                disabled
+                // onClick={() => {
+
+                // }}
+                size='xs'
+                appearance='primary'
+            >
+                git init
+            </Button>
+        )
     return (
         <Whisper
             placement='auto'
@@ -15,12 +29,13 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater 
                     <UpdaterErrorUI updater={updater} />
                     <div tw='flex items-center'>
                         <span className='material-symbols-outlined'>folder</span>
-                        <pre>{updater.relativePathFromRoot || 'root'}</pre>
+                        <pre>{updater.relPath || 'root'}</pre>
                     </div>
                     <div>
-                        {updater.infos.fetchedAt ? (
+                        {updater.lastFetchAt ? (
                             <div tw='flex items-center'>
-                                update checked at :{_formatPreviewDate(new Date(updater.infos.fetchedAt))}
+                                prev update : {getRelativeTimeString(updater.lastFetchAt)}
+                                next update : {getRelativeTimeString(updater.nextFetchAt)}
                             </div>
                         ) : (
                             <>no update done</>
@@ -69,7 +84,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater 
                     )}
 
                     <div className={updater.updateAvailable ? 'text-orange-400' : 'text-green-100 '}>
-                        {updater.infos.headCommitsCount ? `v${updater.currentVersion}` : <Loader />}
+                        {updater.headCommitsCount ? `v${updater.currentVersion}` : <Loader />}
                     </div>
                 </div>
             </div>
@@ -77,7 +92,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: Updater 
     )
 })
 
-export const UpdaterErrorUI = observer(function UpdaterErrorUI_(p: { updater: Updater }) {
+export const UpdaterErrorUI = observer(function UpdaterErrorUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater
     const errs = updater.commandErrors
     if (errs.size === 0) return null
@@ -102,7 +117,7 @@ export const UpdaterErrorUI = observer(function UpdaterErrorUI_(p: { updater: Up
     )
 })
 
-export const UninstallUI = observer(function UninstallUI_(p: { updater: Updater }) {
+export const UninstallUI = observer(function UninstallUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater
     return (
         <Button
@@ -119,3 +134,34 @@ export const UninstallUI = observer(function UninstallUI_(p: { updater: Updater 
         </Button>
     )
 })
+
+/**
+ * from: https://www.builder.io/blog/relative-time
+ * Convert a date to a relative time string, such as
+ * "a minute ago", "in 2 hours", "yesterday", "3 months ago", etc.
+ * using Intl.RelativeTimeFormat
+ */
+export function getRelativeTimeString(date: Date | number, lang = navigator.language): string {
+    // Allow dates or times to be passed
+    const timeMs = typeof date === 'number' ? date : date.getTime()
+
+    // Get the amount of seconds between the given date and now
+    const deltaSeconds = Math.round((timeMs - Date.now()) / 1000)
+
+    // Array reprsenting one minute, hour, day, week, month, etc in seconds
+    const cutoffs = [60, 3600, 86400, 86400 * 7, 86400 * 30, 86400 * 365, Infinity]
+
+    // Array equivalent to the above but in the string representation of the units
+    const units: Intl.RelativeTimeFormatUnit[] = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year']
+
+    // Grab the ideal cutoff unit
+    const unitIndex = cutoffs.findIndex((cutoff) => cutoff > Math.abs(deltaSeconds))
+
+    // Get the divisor to divide from the seconds. E.g. if our unit is "day" our divisor
+    // is one day in seconds, so we can divide our seconds by this to get the # of days
+    const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1
+
+    // Intl.RelativeTimeFormat do its magic
+    const rtf = new Intl.RelativeTimeFormat(lang, { numeric: 'auto' })
+    return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex])
+}

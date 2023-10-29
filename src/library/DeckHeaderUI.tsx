@@ -2,6 +2,7 @@ import type { Deck } from './Deck'
 import { observer } from 'mobx-react-lite'
 import { ActionPackStatusUI } from './DeckStatusUI'
 import { ActionPackStarsUI } from './DeckStarsUI'
+import { FolderKind } from 'src/front/updater'
 
 export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { pack: Deck }) {
     const pack = p.pack
@@ -20,7 +21,9 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { pack: Dec
                     <div className='flex-grow'></div>
                     <div>
                         {pack.BUILT_IN ? <div tw='text-gray-600'>built-in</div> : <ActionPackStatusUI pack={pack} />}
-                        <ActionPackStarsUI tw='float-right' pack={pack} />
+                        {pack.updater.status === FolderKind.Git ? ( //
+                            <ActionPackStarsUI tw='float-right' pack={pack} />
+                        ) : null}
                     </div>
                 </div>
             </div>
