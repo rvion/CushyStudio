@@ -22,8 +22,8 @@ export const CushyUI = observer(function CushyUI_() {
             tw={['col grow h100', st.theme.theme]}
         >
             <AppBarUI />
+            <MainNavBarUI />
             <div className='flex flex-grow relative'>
-                <MainNavBarUI />
                 <ProjectUI />
             </div>
         </div>

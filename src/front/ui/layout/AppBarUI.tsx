@@ -1,11 +1,11 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Button, IconButton, Input, InputGroup, Popover, Tag, Whisper } from 'rsuite'
+import { assets } from 'src/assets/assets'
 import { useSt } from '../../FrontStateCtx'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
 import { UpdateBtnUI } from './UpdateBtnUI'
 import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
-import { assets } from 'src/assets/assets'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
@@ -14,14 +14,15 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
         <div
             //
             id='CushyAppBar'
-            tw='flex gap-2 mb-1'
-            style={{ borderBottom: '1px solid #383838' }}
+            // style={{ borderBottom: '1px solid #0f0f0f' }}
+            tw='flex gap-2 p-1'
+            // style={{ borderBottom: '1px solid #383838' }}
         >
             <div>
-                <img tw='p-3' style={{ width: '4rem' }} src={assets.public_CushyLogo_512_png} alt='' />
+                <img tw='p-2' style={{ width: '3rem' }} src={assets.public_CushyLogo_512_png} alt='' />
             </div>
             <div tw='flex-grow'>
-                <div className='flex gap-2 p-1 items-center'>
+                <div className='flex gap-2  items-center'>
                     <CushyStudioLinkUI />
                     <div tw='flex-grow'></div>
                     <Button
@@ -32,7 +33,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                         startIcon={<I.Reload />}
                         onClick={() => window.location.reload()}
                     >
-                        Reload App
+                        Reload
                     </Button>
                     <Button //
                         size='xs'
@@ -53,9 +54,8 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                         Reset Layout
                     </Button>
                 </div>
-                <div className='flex gap-2 p-1 items-center'>
+                <div className='flex gap-2  items-center'>
                     <GithubAppBarInputUI />
-
                     <UpdateBtnUI updater={st.updater} />
                     <WebsocketIndicatorUI />
                     <SchemaIndicatorUI />
@@ -95,7 +95,7 @@ export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {
             }}
             href='#'
         >
-            <span className='material-symbols-outlined text-yellow-600'>star</span>
+            {/* <span className='material-symbols-outlined text-yellow-600'>star</span> */}
             <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
             <span className='underline text-blue-300'>rvion/CushyStudio</span>
         </a>

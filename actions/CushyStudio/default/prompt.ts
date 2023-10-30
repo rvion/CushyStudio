@@ -11,7 +11,7 @@ action({
             // load
             model: form.enum({
                 enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
-                default: 'dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors',
+                default: 'revAnimated_v122.safetensors',
                 group: 'model',
             }),
             vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'model' }),

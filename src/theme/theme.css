@@ -1,3 +1,13 @@
+.flexlayout__tabset_tabbar_outer_top {
+  /* background: #393939!important; */
+}
+.flexlayout__tabset-selected{
+  background: #0d3e55!important;
+}
+
+#CushyStudio.dark #main-navbar{
+  background: linear-gradient(0, #1a1a1a 0%, #3e3e45 100%);
+}
 #CushyStudio.dark #CushyAppBar{
   background: linear-gradient(-90deg, #1a1a1a 0%, #3e3e45 100%);
 }

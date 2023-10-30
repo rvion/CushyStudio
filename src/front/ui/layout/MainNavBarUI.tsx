@@ -13,7 +13,7 @@ export const MainNavEntryUI = observer(function UI_(p: {
     label: string
 }) {
     return (
-        <div className='flex flex-col py-2 cursor-pointer hover:bg-gray-800' onClick={p.onClick}>
+        <div className='flex flex-col cursor-pointer hover:bg-gray-800' onClick={p.onClick}>
             <div className='flex items-center px-3'>
                 <div className='text-xs pr-1 text-gray-300'>{p.ix}</div>
                 <div tw='text-xl'>{p.icon}</div>
@@ -26,38 +26,48 @@ export const MainNavEntryUI = observer(function UI_(p: {
 export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
     const st = useSt()
     return (
-        <div tw='fle flex-col'>
+        <div id='main-navbar' tw='flex'>
             {/* COMFY */}
-            <Whisper
-                placement='right'
-                enterable
-                speaker={
-                    <Popover>
-                        {/* MARKETPLACE */}
-                        <MainNavEntryUI
-                            onClick={() => st.layout.addMarketplace()}
-                            ix='2'
-                            icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
-                            label='Apps'
-                        />
-                    </Popover>
+            <MainNavEntryUI
+                onClick={() => st.layout.addActionPicker()}
+                ix='1'
+                icon={
+                    <span style={{ fontSize: '1em' }} className='material-symbols-outlined text-green-500'>
+                        play_circle
+                    </span>
                 }
-            >
-                <div>
-                    <MainNavEntryUI
-                        onClick={() => st.layout.addActionPicker()}
-                        ix='1'
-                        icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
-                        label='Cards'
-                    />
-                </div>
-            </Whisper>
+                label='Cards'
+            />
+            <MainNavEntryUI
+                onClick={() => st.layout.addMarketplace()}
+                ix='2'
+                icon={
+                    <span style={{ fontSize: '1em' }} className='material-symbols-outlined text-blue-500'>
+                        apps
+                    </span>
+                }
+                label='Apps'
+            />
+            <MainNavEntryUI
+                onClick={() => st.layout.addActionPickerTree()}
+                ix='2'
+                icon={
+                    <span style={{ fontSize: '1em' }} className='material-symbols-outlined text-blue-500'>
+                        account_tree
+                    </span>
+                }
+                label='Files'
+            />
 
             {/* PAINT */}
             <MainNavEntryUI
                 onClick={() => st.layout.addPaint()}
                 ix='3'
-                icon={<span className='material-symbols-outlined text-red-500'>brush</span>}
+                icon={
+                    <span style={{ fontSize: '1em' }} className='material-symbols-outlined text-red-500'>
+                        brush
+                    </span>
+                }
                 label='paint'
             />
 
@@ -72,7 +82,11 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                                 st.layout.addComfyNodeExplorer()
                             }}
                             ix='A'
-                            icon={<span className='material-symbols-outlined'>explore</span>}
+                            icon={
+                                <span style={{ fontSize: '1em' }} className='material-symbols-outlined'>
+                                    explore
+                                </span>
+                            }
                             label='Node Explorer'
                         />
                         <OpenComfyExternalUI />
@@ -93,7 +107,11 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <MainNavEntryUI
                 onClick={() => st.layout.addGallery()}
                 ix='5'
-                icon={<span className='material-symbols-outlined text-yellow-500'>image</span>}
+                icon={
+                    <span style={{ fontSize: '1em' }} className='material-symbols-outlined text-yellow-500'>
+                        image
+                    </span>
+                }
                 label='Gallery'
             />
 
@@ -101,7 +119,11 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <MainNavEntryUI
                 onClick={() => st.layout.addConfig()}
                 ix='6'
-                icon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
+                icon={
+                    <span style={{ fontSize: '1em' }} className='material-symbols-outlined text-purple-500'>
+                        settings
+                    </span>
+                }
                 label='Config'
             />
 
@@ -117,7 +139,11 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 soon
                 onClick={() => st.layout.addHosts()}
                 ix='8'
-                icon={<span className='material-symbols-outlined text-amber-800'>cloud</span>}
+                icon={
+                    <span style={{ fontSize: '1em' }} className='material-symbols-outlined text-amber-800'>
+                        cloud
+                    </span>
+                }
                 label='GPU'
             />
         </div>

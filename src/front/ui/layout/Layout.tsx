@@ -2,33 +2,32 @@ import type { STATE } from 'src/front/state'
 import type { DraftID } from 'src/models/Draft'
 
 import * as FL from 'flexlayout-react'
-import { IJsonModel, Layout, Model, Actions } from 'flexlayout-react'
+import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
 
-import { Button, Message } from 'rsuite'
-import { GalleryUI } from '../galleries/GalleryUI'
-import { ActionPickerUI } from '../workspace/ActionPickerUI'
-import { StepListUI } from '../workspace/StepListUI'
-import { LastGraphUI } from '../workspace/LastGraphUI'
-import { createRef } from 'react'
-import { ImageID } from 'src/models/Image'
-import { nanoid } from 'nanoid'
-import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
-import { LastImageUI } from './LastImageUI'
-import { HostListUI } from './HostListUI'
-import { ComfyUIUI } from '../workspace/ComfyUIUI'
-import { LiteGraphJSON } from 'src/core/LiteGraph'
-import { MarketplaceUI } from '../../../library/MarketplaceUI'
-import { observer } from 'mobx-react-lite'
 import { makeAutoObservable, runInAction } from 'mobx'
-import { ActionFileUI } from '../drafts/ActionFileUI'
-import { CardPath } from 'src/library/CardPath'
-import { PanelConfigUI } from './PanelConfigUI'
-import { ActionFormUI } from '../drafts/ActionFormUI'
-import { Trigger } from 'src/shortcuts/Trigger'
-import { ComfyNodeExplorerUI } from './ComfyNodeExplorerUI'
+import { observer } from 'mobx-react-lite'
+import { nanoid } from 'nanoid'
+import { createRef } from 'react'
+import { Button, Message } from 'rsuite'
 import { assets } from 'src/assets/assets'
+import { LiteGraphJSON } from 'src/core/LiteGraph'
+import { CardPath } from 'src/library/CardPath'
 import { ActionPicker1UI } from 'src/library/CardPicker1UI'
 import { ActionPicker2UI } from 'src/library/CardPicker2UI'
+import { ImageID } from 'src/models/Image'
+import { Trigger } from 'src/shortcuts/Trigger'
+import { MarketplaceUI } from '../../../library/MarketplaceUI'
+import { ActionFileUI } from '../drafts/ActionFileUI'
+import { ActionFormUI } from '../drafts/ActionFormUI'
+import { GalleryUI } from '../galleries/GalleryUI'
+import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
+import { ComfyUIUI } from '../workspace/ComfyUIUI'
+import { LastGraphUI } from '../workspace/LastGraphUI'
+import { StepListUI } from '../workspace/StepListUI'
+import { ComfyNodeExplorerUI } from './ComfyNodeExplorerUI'
+import { HostListUI } from './HostListUI'
+import { LastImageUI } from './LastImageUI'
+import { PanelConfigUI } from './PanelConfigUI'
 
 // still on phone
 enum Widget {
@@ -144,7 +143,7 @@ export class CushyLayoutManager {
     addMarketplace = () =>
         this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: assets.public_CushyLogo_512_png })
     addActionPicker = () =>
-        this._AddWithProps(Widget.FileList, `/filetree`, { title: 'Actions', icon: assets.public_CushyLogo_512_png })
+        this._AddWithProps(Widget.FileList, `/Library`, { title: 'Actions', icon: assets.public_CushyLogo_512_png })
     addActionPickerTree = () =>
         this._AddWithProps(Widget.FileList2, `/filetree`, { title: 'Actions', icon: assets.public_CushyLogo_512_png })
     addCivitai = () => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'Civitai', icon: '/CivitaiLogo.png' })
@@ -345,7 +344,17 @@ export class CushyLayoutManager {
                                 enableSingleTabStretch: true,
                                 minWidth: 200,
                                 width: 300,
-                                children: [this._persistentTab({ name: 'FileList', widget: Widget.FileList, id: '/filetree' })],
+                                children: [this._persistentTab({ name: 'FileList', widget: Widget.FileList, id: '/Library' })],
+                            },
+                            {
+                                type: 'tabset',
+                                height: 200,
+                                minWidth: 150,
+                                minHeight: 150,
+                                children: [
+                                    this._persistentTab({ name: '🎆 Gallery', widget: Widget.Gallery, id: '/gallery' }),
+                                    // this._persistentTab('Hosts', Widget.Hosts),
+                                ],
                             },
                         ],
                     },
@@ -365,16 +374,6 @@ export class CushyLayoutManager {
                                     // this._persistentTab('ComfyUI', Widget.ComfyUI, '/ComfyUILogo.png'),
                                 ],
                             },
-                            {
-                                type: 'tabset',
-                                height: 200,
-                                minWidth: 150,
-                                minHeight: 150,
-                                children: [
-                                    this._persistentTab({ name: '🎆 Gallery', widget: Widget.Gallery, id: '/gallery' }),
-                                    // this._persistentTab('Hosts', Widget.Hosts),
-                                ],
-                            },
 
                             // {
                             //     type: 'tabset',
@@ -389,15 +388,15 @@ export class CushyLayoutManager {
                         type: 'row',
                         width: 300,
                         children: [
-                            {
-                                type: 'tabset',
-                                minWidth: 100,
-                                height: 100,
-                                minHeight: 100,
-                                children: [
-                                    this._persistentTab({ name: 'Last Graph', id: '/lastGraph', widget: Widget.LastGraph }),
-                                ],
-                            },
+                            // {
+                            //     type: 'tabset',
+                            //     minWidth: 100,
+                            //     height: 100,
+                            //     minHeight: 100,
+                            //     children: [
+                            //         this._persistentTab({ name: 'Last Graph', id: '/lastGraph', widget: Widget.LastGraph }),
+                            //     ],
+                            // },
                             {
                                 type: 'tabset',
                                 minWidth: 300,

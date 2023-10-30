@@ -8,7 +8,8 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { pack: Dec
     const pack = p.pack
     return (
         <div
-            tw='cursor-pointer flex items-center gap-1 bg-gray-800 hover:bg-gray-800 p-0.5'
+            style={{ borderTop: '1px solid #1d1d1d' }}
+            tw='cursor-pointer flex items-center gap-1 hover:bg-gray-800 p-0.5'
             onClick={() => (pack.folded = !pack.folded)}
         >
             <img tw='rounded' style={{ height: `2rem` }} src={pack.logo} alt='pack logo' />

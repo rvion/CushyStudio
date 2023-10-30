@@ -19,8 +19,8 @@ export class UIAddons {
         this.form.group({
             items: () => ({
                 startImage: this.form.imageOpt({ group: 'latent' }),
-                width: this.form.int({ default: 1024, group: 'latent', step: 128, min: 128, max: 4096 }),
-                height: this.form.int({ default: 1024, group: 'latent', step: 128, min: 128, max: 4096 }),
+                width: this.form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
+                height: this.form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
                 batchSize: this.form.int({ default: 1, group: 'latent', min: 1, max: 20 }),
             }),
         })
