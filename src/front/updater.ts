@@ -5,7 +5,7 @@ import { exec } from 'child_process'
 import { makeAutoObservable } from 'mobx'
 import { join, relative } from 'pathe'
 import simpleGit, { SimpleGit } from 'simple-git'
-import { existsSync, statSync } from 'fs'
+import { existsSync, lstatSync, statSync } from 'fs'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { GithubUserName } from 'src/library/GithubUser'
 
@@ -51,6 +51,12 @@ export class GitManagedFolder {
         if (!existsSync(this.p.cwd)) {
             this.status = FolderKind.Unknown
             this.log('❌ folder could not be found')
+            this.log(`      folder name: ${this.p.cwd}`)
+            return
+        }
+        if (!lstatSync(this.p.cwd).isDirectory()) {
+            this.status = FolderKind.Unknown
+            this.log('❌ folder is not a directory')
             this.log(`      folder name: ${this.p.cwd}`)
             return
         }
