@@ -48,6 +48,12 @@ export class GitManagedFolder {
             runNpmInstall: boolean
         },
     ) {
+        if (!existsSync(this.p.cwd)) {
+            this.status = FolderKind.Unknown
+            this.log('❌ folder could not be found')
+            this.log(`      folder name: ${this.p.cwd}`)
+            return
+        }
         this.git = simpleGit(this.p.cwd)
         this.relPath = asRelativePath(relative(this.st.rootPath, p.cwd))
         this.absPath = p.cwd
