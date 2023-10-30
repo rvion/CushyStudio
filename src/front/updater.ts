@@ -48,13 +48,13 @@ export class GitManagedFolder {
             runNpmInstall: boolean
         },
     ) {
-        if (!existsSync(this.p.cwd)) {
+        if (!existsSync(this.p.cwd)) { // I've noticed this happens when A user has a marketplace addon they have not installed
             this.status = FolderKind.Unknown
             this.log('❌ folder could not be found')
             this.log(`      folder name: ${this.p.cwd}`)
             return
         }
-        if (!lstatSync(this.p.cwd).isDirectory()) {
+        if (!lstatSync(this.p.cwd).isDirectory()) { // TODO: Figure out why this constructor is even reciving non-directories
             this.status = FolderKind.Unknown
             this.log('❌ folder is not a directory')
             this.log(`      folder name: ${this.p.cwd}`)
