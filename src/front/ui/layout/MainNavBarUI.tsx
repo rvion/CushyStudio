@@ -45,10 +45,10 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             >
                 <div>
                     <MainNavEntryUI
-                        onClick={() => st.layout.addFileTree()}
+                        onClick={() => st.layout.addActionPicker()}
                         ix='1'
                         icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
-                        label='Actions'
+                        label='Cards'
                     />
                 </div>
             </Whisper>

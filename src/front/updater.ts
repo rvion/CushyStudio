@@ -285,11 +285,19 @@ export class GitManagedFolder {
         const isGitFolder = this._isGitFolder()
         if (!isGitFolder) return
 
+        const FETCH_HEAD_path = this.p.cwd + '/.git/FETCH_HEAD'
+        const FETCH_HEAD_path_exists = existsSync(FETCH_HEAD_path)
+
         // 2. get last fetch datetime
-        const stats = statSync(this.p.cwd + '/.git/FETCH_HEAD')
-        const lastCheckTs = stats.mtime.getTime() as Timestamp
-        this.log('Last fetch was on:', stats.mtime)
-        this.lastFetchAt = lastCheckTs
+        let lastFetchAt: Timestamp
+        if (FETCH_HEAD_path_exists) {
+            const stats = statSync(FETCH_HEAD_path)
+            lastFetchAt = stats.mtime.getTime() as Timestamp
+            this.log('Last fetch was on:', stats.mtime)
+        } else {
+            lastFetchAt = 0 as Timestamp
+        }
+        this.lastFetchAt = lastFetchAt
 
         // 3. check desired update interval
         const minutesBetweenChecks = this.st.configFile.value.checkUpdateEveryMinutes ?? 5
@@ -297,11 +305,11 @@ export class GitManagedFolder {
         const interval = minutesBetweenChecks * MINUTE
 
         // 4. wait until we should start the interval timer (based on past check)
-        this.log(`last check was ${(now - lastCheckTs) / 1000}s ago`)
-        const shouldUpdateNow = now - lastCheckTs > minutesBetweenChecks * MINUTE
+        this.log(`last check was ${(now - lastFetchAt) / 1000}s ago`)
+        const shouldUpdateNow = now - lastFetchAt > minutesBetweenChecks * MINUTE
         const delayBeforeFirstUpdate = shouldUpdateNow
             ? Math.floor(Math.random() * 1000 * 1)
-            : minutesBetweenChecks * MINUTE - (now - lastCheckTs)
+            : minutesBetweenChecks * MINUTE - (now - lastFetchAt)
         this.nextFetchAt = now + delayBeforeFirstUpdate
         this.log(`udpate checking will start in ${Math.round(delayBeforeFirstUpdate / 1000)} seconds`)
         await new Promise((resolve) => setTimeout(resolve, delayBeforeFirstUpdate))

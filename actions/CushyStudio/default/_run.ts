@@ -17,7 +17,6 @@ export class ActionAddons {
     constructor(public flow: Runtime) {
         this.graph = this.flow.nodes
     }
-
     procesPromptResult = (
         promptResult: WidgetPromptOutput,
         startingClipAndModel: HasSingle_CLIP & HasSingle_MODEL,

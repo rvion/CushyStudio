@@ -27,6 +27,8 @@ import { ActionFormUI } from '../drafts/ActionFormUI'
 import { Trigger } from 'src/shortcuts/Trigger'
 import { ComfyNodeExplorerUI } from './ComfyNodeExplorerUI'
 import { assets } from 'src/assets/assets'
+import { ActionPicker1UI } from 'src/library/CardPicker1UI'
+import { ActionPicker2UI } from 'src/library/CardPicker2UI'
 
 // still on phone
 enum Widget {
@@ -38,6 +40,7 @@ enum Widget {
     ComfyUI = 'ComfyUI',
     ComfyUINodeExplorer = 'ComfyUINodeExplorer',
     FileList = 'FileList',
+    FileList2 = 'FileList2',
     Steps = 'Steps',
     LastGraph = 'LastGraph',
     LastIMage = 'LastIMage',
@@ -139,8 +142,11 @@ export class CushyLayoutManager {
 
     nextPaintIDx = 0
     addMarketplace = () =>
-        this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: '/CushyLogo.png' })
-    addFileTree = () => this._AddWithProps(Widget.FileList, `/filetree`, { title: 'Actions', icon: '/CushyLogo.png' })
+        this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: assets.public_CushyLogo_512_png })
+    addActionPicker = () =>
+        this._AddWithProps(Widget.FileList, `/filetree`, { title: 'Actions', icon: assets.public_CushyLogo_512_png })
+    addActionPickerTree = () =>
+        this._AddWithProps(Widget.FileList2, `/filetree`, { title: 'Actions', icon: assets.public_CushyLogo_512_png })
     addCivitai = () => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'Civitai', icon: '/CivitaiLogo.png' })
     addConfig = () => this._AddWithProps(Widget.Config, `/config`, { title: 'Config' })
     addPaint = (imgID?: ImageID) => {
@@ -237,7 +243,13 @@ export class CushyLayoutManager {
 
         // 3. create tab if not prev type
         if (prevTab == null) {
-            currentLayout.addTabToTabSet('MAINTYPESET', { component: widget, id: tabID, icon: p.icon, name: p.title, config: p })
+            currentLayout.addTabToTabSet('MAINTYPESET', {
+                component: widget,
+                id: tabID,
+                icon: p.icon,
+                name: p.title,
+                config: p,
+            })
             prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
             if (prevTab == null) return void console.log('❌ no tabAdded')
         } else {
@@ -276,7 +288,8 @@ export class CushyLayoutManager {
             const litegraphJson = extra.litegraphJson // Retrieves the imgID from the extra data
             return <ComfyUIUI litegraphJson={litegraphJson} />
         }
-        if (component === Widget.FileList) return <ActionPickerUI />
+        if (component === Widget.FileList) return <ActionPicker2UI />
+        if (component === Widget.FileList2) return <ActionPicker1UI />
         if (component === Widget.Steps) return <StepListUI />
         if (component === Widget.LastGraph) return <LastGraphUI />
         if (component === Widget.LastIMage) return <LastImageUI />
@@ -316,6 +329,7 @@ export class CushyLayoutManager {
                 enableEdgeDock: true,
                 tabSetMinHeight: 64,
                 tabSetMinWidth: 64,
+                tabSetEnableSingleTabStretch: true,
             },
             layout: {
                 id: 'rootRow',
@@ -328,16 +342,11 @@ export class CushyLayoutManager {
                         children: [
                             {
                                 type: 'tabset',
+                                enableSingleTabStretch: true,
                                 minWidth: 200,
                                 width: 300,
                                 children: [this._persistentTab({ name: 'FileList', widget: Widget.FileList, id: '/filetree' })],
                             },
-                            // {
-                            //     type: 'tabset',
-                            //     weight: 10,
-                            //     minWidth: 300,
-                            //     children: [this._persistentTab('Marketplace', Widget.Marketplace)],
-                            // },
                         ],
                     },
                     {
@@ -346,6 +355,7 @@ export class CushyLayoutManager {
                         children: [
                             {
                                 type: 'tabset',
+                                enableSingleTabStretch: true,
                                 id: 'MAINTYPESET',
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
