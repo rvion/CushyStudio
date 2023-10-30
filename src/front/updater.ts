@@ -1,21 +1,26 @@
-import type { STATE } from './state'
 import type { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
+import type { STATE } from './state'
 
 import { exec } from 'child_process'
+import { existsSync, lstatSync, mkdirSync, statSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { join, relative } from 'pathe'
 import simpleGit, { SimpleGit } from 'simple-git'
-import { existsSync, lstatSync, statSync } from 'fs'
-import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { GithubUserName } from 'src/library/GithubUser'
+import { asRelativePath } from 'src/utils/fs/pathUtils'
+import { deleteDirectoryRecursive } from './deleteDirectoryRecursive'
 
 export enum FolderKind {
     /** folder is managed by git (has a .git)*/
-    Git = 1,
+    FolderWithGit = 1,
     /** folder is not managed by git (no .git folder) */
-    NotGit,
+    FolderWithoutGit,
     /** we don't know yet if the folder is managed by git */
     Unknown,
+    /** Does not exists */
+    DoesNotExist,
+    /** is not a directory */
+    NotADirectory,
 }
 
 export class GitManagedFolder {
@@ -34,53 +39,129 @@ export class GitManagedFolder {
     headCommitsCount = 0
     /** main branch name; usually master (previous git default) or main (new git default) */
     mainBranchName = ''
-
-    git: SimpleGit
+    /** the simple git  */
+    git: Maybe<SimpleGit> = null
+    /** so we can lock the interface during {fetch/install/uninstall/etc.} */
+    currentAction: Maybe<string> = null
+    /** debug logs go there */
+    logs: string[] = []
 
     constructor(
         public st: STATE,
         public p: {
             /** current working directory */
             cwd: AbsolutePath
+            /** github url */
+            githubURL: string
             /** if true, will start checking for update right away */
             autoStart: boolean
             /** if true, will perform an `npm install` after succesful update */
-            runNpmInstall: boolean
+            runNpmInstallAfterUpdate: boolean
+            /** can be uninstalled */
+            canBeUninstalled: boolean
         },
     ) {
-        if (!existsSync(this.p.cwd)) { // I've noticed this happens when A user has a marketplace addon they have not installed
-            this.status = FolderKind.Unknown
-            this.log('❌ folder could not be found')
-            this.log(`      folder name: ${this.p.cwd}`)
-            return
-        }
-        if (!lstatSync(this.p.cwd).isDirectory()) { // TODO: Figure out why this constructor is even reciving non-directories
-            this.status = FolderKind.Unknown
-            this.log('❌ folder is not a directory')
-            this.log(`      folder name: ${this.p.cwd}`)
-            return
-        }
-        this.git = simpleGit(this.p.cwd)
         this.relPath = asRelativePath(relative(this.st.rootPath, p.cwd))
         this.absPath = p.cwd
 
-        // 1. check if is git folder
-        const isGitFolder = this._isGitFolder()
-        if (isGitFolder) {
-            this.updateGitInfo()
-            this.periodicallyFetch()
-        } else {
-            this.status = FolderKind.NotGit
-            this.log('❌ not a git folder')
+        this.updateInfos()
+        makeAutoObservable(this)
+    }
+
+    updateInfos = () => {
+        // case 1. folder does not exists
+        if (!existsSync(this.p.cwd)) {
+            // I've noticed this happens when A user has a marketplace addon they have not installed
+            this.status = FolderKind.DoesNotExist
+            this.log(`❌ folder ${this.p.cwd} could not be found`)
         }
 
-        makeAutoObservable(this)
+        // case 2. folder is not a directory
+        else if (!lstatSync(this.p.cwd).isDirectory()) {
+            // TODO: Figure out why this constructor is even reciving non-directories
+            this.status = FolderKind.NotADirectory
+            this.log(`❌ folder ${this.p.cwd} is not a directory`)
+            return
+        }
+
+        // case 3. folder is a directory
+        else {
+            if (this.git == null) this.git = simpleGit(this.p.cwd)
+
+            // 1. check if is git folder
+            const isGitFolder = this._isGitFolder()
+            if (isGitFolder) {
+                this.updateGitInfo()
+                this.periodicallyFetch()
+            } else {
+                this.status = FolderKind.FolderWithoutGit
+                this.log('❌ not a git folder')
+            }
+        }
+    }
+
+    install = async (): Promise<void> => {
+        if (this.git != null) throw new Error(`install: git is not null`)
+        if (existsSync(this.p.cwd)) throw new Error(`install: folder already exists`)
+        if (this.currentAction != null) throw new Error(`install: already installing`)
+        if (!this.p.canBeUninstalled) throw new Error(`install: cannot be installed`)
+
+        this.currentAction = 'installing'
+        // 1. make root folder
+        const parentFolder = join(this.absPath, '..')
+        mkdirSync(parentFolder, { recursive: true })
+
+        // 2. clone
+        const cmd = `git clone ${this.p.githubURL}`
+        console.log('[💝] actionpack: installing with cmd:', cmd)
+        const success = await new Promise<boolean>((resolve, reject) => {
+            // this.installK.isRunning = true
+            exec(cmd, { cwd: parentFolder }, (error, stdout) => {
+                console.log(stdout)
+                // this.installK.addLog(stdout)
+                if (error) {
+                    this.logs.push(error.message)
+                    console.log(`[💝] actionpack install failure`, error)
+                    return reject(error)
+                } else {
+                    console.log(`[💝] actionpack installed`)
+                    resolve(true)
+                }
+            })
+        })
+        this.currentAction = null
+        this.updateInfos()
+        return
+    }
+
+    /** ask confirmation, then remove the whole folder */
+    uninstall = () => {
+        // 1. check if the folder exists
+        if (!existsSync(this.p.cwd)) {
+            // I've noticed this happens when A user has a marketplace addon they have not installed
+            this.status = FolderKind.DoesNotExist
+            this.log(`❌ folder ${this.p.cwd} could not be found`)
+            return
+        }
+        // 2. check if the folder is a directory
+        if (!this.p.canBeUninstalled) {
+            this.log('❌ folder cannot be uninstalled')
+            return
+        }
+        const confirm = window.confirm(`Are you sure you want to delete ${this.relPath}?`)
+        if (confirm) {
+            deleteDirectoryRecursive(this.absPath)
+            this.git = null
+            this.status = FolderKind.DoesNotExist
+        }
+        this.updateInfos()
     }
 
     // GIT INFOS -------------------------------------------------------------------------
 
     updateGitInfo = async (): Promise<void> => {
         // Get the default remote branch name
+        if (this.git == null) return
         const remoteInfo = await this.git.remote(['show', 'origin'])
         if (remoteInfo == null) return
 
@@ -110,7 +191,8 @@ export class GitManagedFolder {
         // ⏸️ const originCommitHash = await this.git.revparse([`origin/${defaultBranch}`])
     }
 
-    private _getHeadCommitsCount = async (refName: string) => {
+    private _getHeadCommitsCount = async (refName: string): Promise<number> => {
+        if (this.git == null) return 0
         const logs = await this.git.log([refName])
         return logs.all.length
     }
@@ -160,7 +242,7 @@ export class GitManagedFolder {
                 }
                 const lastAttempt: UpdateTrace = { attemptedAt, status: 'success', gitPullTrace: 'success', gitPullStdout, gitPullStrderr, } // prettier-ignore
                 this.lastPullAttempt = lastAttempt
-                if (!this.p.runNpmInstall) {
+                if (!this.p.runNpmInstallAfterUpdate) {
                     this.log('UPDATED')
                     return resolve()
                 }
@@ -191,7 +273,10 @@ export class GitManagedFolder {
         cache[this.p.cwd] = p
     }
 
-    periodicallyFetch = async () => {
+    periodicallyFetch = async (): Promise<void> => {
+        const git = this.git
+        if (git == null) return
+
         const MINUTE = 60 * 1000
         const now = Date.now() as Timestamp
         this.ensureSingleRunningSetIntervalInstance()
@@ -224,7 +309,7 @@ export class GitManagedFolder {
         // 5. start the update interval
         const periodicCheck = setInterval(async () => {
             this.nextFetchAt = Date.now() + interval
-            await this.git.fetch()
+            await git.fetch()
             this.checkForUpdates()
         }, interval)
         this.ensureSingleRunningSetIntervalInstance(periodicCheck)
@@ -238,22 +323,22 @@ export class GitManagedFolder {
         await git.init()
         await git.addRemote('origin', `https://github.com/${githubUserName}/CushyStudio`)
         await git.addRemote('origin', `git@github.com:${githubUserName}/CushyStudio.git`)
-        this.status = FolderKind.Git
+        this.status = FolderKind.FolderWithGit
     }
 
     private _isGitFolder = (): boolean => {
         const gitFolder = join(this.p.cwd, '.git')
         const isGitFolder = existsSync(gitFolder)
         if (!isGitFolder) {
-            this.status = FolderKind.NotGit
+            this.status = FolderKind.FolderWithoutGit
         } else {
-            this.status = FolderKind.Git
+            this.status = FolderKind.FolderWithGit
         }
         return isGitFolder
     }
 
     checkForUpdates = async (): Promise<void> => {
-        // if (!this._isGitFolder()) return
+        if (this.git == null) return
         this.commandErrors.clear()
         try {
             await this.git.fetch()
@@ -281,40 +366,3 @@ export type UpdateTrace = {
     npmInstallStdout?: string
     npmInstallStrderr?: string
 }
-
-// git fetch: Fetches the latest changes from the remote repository without making any changes to the local repository.
-// git rev-parse origin/master: Retrieves the commit hash of the last commit on the master branch of the remote repository.
-// git pull origin master: Pulls the latest changes from the master branch of the remote repository and merges them into the current branch.
-// git rev-parse HEAD: Retrieves the commit hash of the current HEAD, i.e., the latest commit in the current branch.
-
-// export type GitRepoInfos = {
-//     fetchedAt: Timestamp
-//     mainBranchName: string
-//     headCommitsCount: number
-//     originCommitsCount: number
-//     // headCommitHash: string
-//     // originCommitHash: string
-// }
-
-// this.fet
-// const isGitFolder = this._isGitFolder()
-// if (!isGitFolder) {
-//     this.infos = {
-//         isGitRepository: false,
-//         fetchedAt: Date.now() as Timestamp,
-//         headCommitHash: '-',
-//         originCommitHash: '-',
-//         headCommitsCount: 0,
-//         mainBranchName: '-',
-//         originCommitsCount: 0,
-//     }
-//     return
-// }
-
-// this.log('checking for new version')
-// // const infos = await this.getGitInfo(this.p.cwd, true)
-// if (infos == null) {
-//     this.commandErrors.set('git', '❌ failure')
-//     return
-// }
-// this.infos = infos

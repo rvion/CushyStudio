@@ -50,7 +50,7 @@ export class Deck {
     }
 
     get st() {
-        return this.makretplace.st
+        return this.library.st
     }
     name: string
     github: string
@@ -63,8 +63,9 @@ export class Deck {
     }
 
     constructor(
-        //
-        public makretplace: ActionLibrary,
+        /** singleton libraray */
+        public library: ActionLibrary,
+        /** e.g. "actions/rvion/foo" */
         public folder: DeckFolder,
     ) {
         const parts2 = folder.split('/')
@@ -83,7 +84,13 @@ export class Deck {
         this.authorFolderRel = asRelativePath(join(this.st.actionsFolderPathRel, parts[0])) as AuthorFolder
         this.folderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, this.github))
         this.folderRel = asRelativePath(join(this.st.actionsFolderPathRel, this.github)) as DeckFolder
-        this.updater = new GitManagedFolder(this.makretplace.st, { cwd: this.folderAbs, autoStart: false, runNpmInstall: false })
+        this.updater = new GitManagedFolder(this.library.st, {
+            cwd: this.folderAbs,
+            autoStart: false,
+            runNpmInstallAfterUpdate: false,
+            canBeUninstalled: this.githubUserName == 'CushyStudio' ? false : true,
+            githubURL: this.githubURL,
+        })
         this.installK = new ManualPromise<true>()
 
         if (existsSync(this.folderAbs)) {
@@ -100,10 +107,6 @@ export class Deck {
         return generateAvatar(this.name)
     }
 
-    get isInstalled() {
-        return Boolean(this.installK.value)
-    }
-
     get stars() {
         const cache = (this.st.configFile.value.stars ??= {})
         const hasStarsCached = this.github in cache
@@ -116,32 +119,5 @@ export class Deck {
 
     get githubURL() {
         return `https://github.com/${this.github}`
-    }
-
-    uninstall = () => {
-        // toaster.push(<Notification>message</Notification>, { placement: 'topEnd' })
-    }
-
-    install = () => {
-        // 1. make root folder
-        mkdirSync(this.folderAbs, { recursive: true })
-
-        // 2. clone
-        const cmd = `git clone ${this.githubURL}`
-
-        console.log('[💝] actionpack: installing with cmd:', cmd)
-        this.installK.isRunning = true
-        exec(cmd, { cwd: this.authorFolderAbs }, (error, stdout) => {
-            console.log(stdout)
-            this.installK.addLog(stdout)
-            if (error) {
-                this.installK.addLog(error.message)
-                console.log(`[💝] actionpack install failure`, error)
-                return this.installK.reject(error)
-            }
-            console.log(`[💝] actionpack installed`)
-            this.installK.resolve(true)
-        })
-        return this.installK
     }
 }

@@ -169,7 +169,13 @@ export class STATE {
         this.uploader = new Uploader(this)
         this.layout = new CushyLayoutManager(this)
         this.theme = new ThemeManager(this)
-        this.updater = new GitManagedFolder(this, { cwd: this.rootPath, autoStart: true, runNpmInstall: true })
+        this.updater = new GitManagedFolder(this, {
+            cwd: this.rootPath,
+            autoStart: true,
+            runNpmInstallAfterUpdate: true,
+            canBeUninstalled: false,
+            githubURL: 'rvion/CushyStudio',
+        })
         this.importer = new ComfyImporter(this)
         this.library = new ActionLibrary(this)
         ;(async () => {

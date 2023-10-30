@@ -3,23 +3,47 @@ import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
 import { FolderKind, GitManagedFolder } from 'src/front/updater'
 import { _formatPreviewDate } from 'src/utils/_formatPreviewDate'
 
+export const GitInitBtnUI = observer(function GitInitBtnUI_(p: {}) {
+    return (
+        <Button
+            disabled
+            // onClick={() => {
+
+            // }}
+            size='xs'
+            appearance='primary'
+        >
+            git init
+        </Button>
+    )
+})
+
+export const GitInstallUI = observer(function GitInstallUI_(p: { udpater: GitManagedFolder }) {
+    const updater = p.udpater
+    return (
+        <Button
+            loading={updater.currentAction != null}
+            appearance='primary'
+            size='xs'
+            startIcon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
+            onClick={(ev) => {
+                ev.stopPropagation()
+                ev.preventDefault()
+                updater.install()
+            }}
+        >
+            Install
+        </Button>
+    )
+})
+
 export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater
     const hasErrors = updater.hasErrors
     if (updater.status === FolderKind.Unknown) return <Loader />
-    if (updater.status === FolderKind.NotGit)
-        return (
-            <Button
-                disabled
-                // onClick={() => {
-
-                // }}
-                size='xs'
-                appearance='primary'
-            >
-                git init
-            </Button>
-        )
+    if (updater.status === FolderKind.DoesNotExist) return <GitInstallUI udpater={updater} />
+    if (updater.status === FolderKind.NotADirectory) return <div>❓ unespected file</div>
+    if (updater.status === FolderKind.FolderWithoutGit) return <GitInitBtnUI />
     return (
         <Whisper
             placement='auto'
@@ -49,7 +73,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                         >
                             FORCE REFRESH
                         </Button>
-                        <UninstallUI updater={updater} />
+                        {updater.p.canBeUninstalled ? <UninstallUI updater={updater} /> : null}
                     </div>
                 </Popover>
             }
@@ -121,12 +145,13 @@ export const UninstallUI = observer(function UninstallUI_(p: { updater: GitManag
     const updater = p.updater
     return (
         <Button
-            tw='text-gray-500 text-xs flex items-center gap-1'
             color='red'
+            appearance='ghost'
             startIcon={<span className='material-symbols-outlined'>highlight_off</span>}
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()
+                updater.uninstall()
                 // toaster.push(<Notification>Not implemented yet</Notification>, { placement: 'topEnd' })
             }}
         >

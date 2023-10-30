@@ -21,7 +21,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { pack: Dec
                     <div className='flex-grow'></div>
                     <div>
                         {pack.BUILT_IN ? <div tw='text-gray-600'>built-in</div> : <ActionPackStatusUI pack={pack} />}
-                        {pack.updater.status === FolderKind.Git ? ( //
+                        {pack.updater.status === FolderKind.FolderWithGit ? ( //
                             <ActionPackStarsUI tw='float-right' pack={pack} />
                         ) : null}
                     </div>
