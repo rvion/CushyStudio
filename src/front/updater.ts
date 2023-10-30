@@ -5,7 +5,7 @@ import { exec } from 'child_process'
 import { makeAutoObservable } from 'mobx'
 import { join, relative } from 'pathe'
 import simpleGit, { SimpleGit } from 'simple-git'
-import { existsSync, statSync } from 'fs'
+import { existsSync, lstatSync, statSync } from 'fs'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { GithubUserName } from 'src/library/GithubUser'
 
@@ -48,6 +48,18 @@ export class GitManagedFolder {
             runNpmInstall: boolean
         },
     ) {
+        if (!existsSync(this.p.cwd)) { // I've noticed this happens when A user has a marketplace addon they have not installed
+            this.status = FolderKind.Unknown
+            this.log('❌ folder could not be found')
+            this.log(`      folder name: ${this.p.cwd}`)
+            return
+        }
+        if (!lstatSync(this.p.cwd).isDirectory()) { // TODO: Figure out why this constructor is even reciving non-directories
+            this.status = FolderKind.Unknown
+            this.log('❌ folder is not a directory')
+            this.log(`      folder name: ${this.p.cwd}`)
+            return
+        }
         this.git = simpleGit(this.p.cwd)
         this.relPath = asRelativePath(relative(this.st.rootPath, p.cwd))
         this.absPath = p.cwd
