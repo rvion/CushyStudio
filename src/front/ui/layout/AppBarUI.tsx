@@ -12,66 +12,22 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
     // const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
     return (
         <div
-            //
             id='CushyAppBar'
-            // style={{ borderBottom: '1px solid #0f0f0f' }}
             tw='flex gap-2 p-1 overflow-auto'
+            // style={{ borderBottom: '1px solid #0f0f0f' }}
             // style={{ borderBottom: '1px solid #383838' }}
         >
-            <div>
-                <img tw='p-2' style={{ width: '3rem' }} src={assets.public_CushyLogo_512_png} alt='' />
-            </div>
             <div tw='flex-grow'>
-                <div className='flex gap-2  items-center'>
-                    <CushyStudioLinkUI />
-                    <div tw='flex-grow'></div>
-                    <ButtonGroup tw='opacity-30 hover:opacity-100' style={{ border: '1px solid gray' }}>
-                        <Button
-                            //
-                            size='xs'
-                            appearance='subtle'
-                            color='orange'
-                            startIcon={<I.Reload />}
-                            onClick={() => window.location.reload()}
-                        >
-                            Reload
-                        </Button>
-                        <Button //
-                            size='xs'
-                            appearance='subtle'
-                            color='orange'
-                            startIcon={<span className='material-symbols-outlined'>bug_report</span>}
-                            onClick={() => st.electronUtils.toggleDevTools()}
-                        >
-                            Open console
-                        </Button>
-                        <Button
-                            size='xs'
-                            appearance='subtle'
-                            color='orange'
-                            startIcon={<I.Reload />}
-                            onClick={() => st.layout.resetCurrent()}
-                        >
-                            Reset Layout
-                        </Button>
-                    </ButtonGroup>
-                </div>
-                <div className='flex gap-2  items-center'>
-                    {/* <GithubAppBarInputUI /> */}
+                <div className='flex gap-2 items-center'>
+                    <img tw='p-0.5' style={{ width: '2rem' }} src={assets.public_CushyLogo_512_png} alt='' />
+                    Cushy Studio
                     <UpdateBtnUI updater={st.updater} />
+                    {/* <GithubAppBarInputUI /> */}
+                    <div className='flex-grow'></div>
+                    <DebugButtonsUI />
                     <WebsocketIndicatorUI />
                     <SchemaIndicatorUI />
-                    <div className='flex-grow'></div>
-                    <Button
-                        appearance='ghost'
-                        loading={Boolean(st.db.saveTimeout)}
-                        size='xs'
-                        startIcon={<span className='material-symbols-outlined'>save</span>}
-                        onClick={() => st.db.markDirty()}
-                    >
-                        save
-                    </Button>
-                    <DBHealthUI />
+                    <CushyStudioLinkUI />
                     {/* <Button
                         appearance='ghost'
                         size='xs'
@@ -81,15 +37,68 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                         Theme
                     </Button> */}
                 </div>
+                {/* <div className='flex gap-2  items-center'>
+                    <div tw='flex-grow'></div>
+                </div> */}
             </div>
         </div>
+    )
+})
+
+export const DebugButtonsUI = observer(function DebugButtonsUI_(p: {}) {
+    const st = useSt()
+    return (
+        <ButtonGroup
+            //
+            tw='opacity-30 hover:opacity-100'
+            // style={{ border: '1px solid gray' }}
+        >
+            <Button
+                //
+                size='xs'
+                appearance='subtle'
+                color='orange'
+                startIcon={<I.Reload />}
+                onClick={() => window.location.reload()}
+            >
+                Reload
+            </Button>
+            <Button //
+                size='xs'
+                appearance='subtle'
+                color='orange'
+                startIcon={<span className='material-symbols-outlined'>bug_report</span>}
+                onClick={() => st.electronUtils.toggleDevTools()}
+            >
+                Open console
+            </Button>
+            <Button
+                size='xs'
+                appearance='subtle'
+                color='orange'
+                startIcon={<I.Reload />}
+                onClick={() => st.layout.resetCurrent()}
+            >
+                Reset Layout
+            </Button>
+            <Button
+                appearance='subtle'
+                loading={Boolean(st.db.saveTimeout)}
+                size='xs'
+                startIcon={<span className='material-symbols-outlined'>save</span>}
+                onClick={() => st.db.markDirty()}
+            >
+                save
+            </Button>
+            <DBHealthUI />
+        </ButtonGroup>
     )
 })
 
 export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {
     return (
         <a
-            className='ml-auto flex'
+            className='flex'
             onClick={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
@@ -98,8 +107,8 @@ export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {
             href='#'
         >
             {/* <span className='material-symbols-outlined text-yellow-600'>star</span> */}
-            <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
             <span className='underline text-blue-300'>rvion/CushyStudio</span>
+            <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
         </a>
     )
 })
@@ -109,19 +118,17 @@ export const DBHealthUI = observer(function DBHealthUI_(p: {}) {
     const dbHealth = st.db.health
     const color = dbHealth.status === 'bad' ? 'red' : dbHealth.status === 'meh' ? 'yellow' : 'green'
     return (
-        <div>
-            <Button
-                //
-                size='xs'
-                appearance='ghost'
-                color={color}
-                onClick={() => st.db.reset()}
-                startIcon={<I.Reload />}
-                // startIcon={<span className='material-symbols-outlined'>power_settings_new</span>}
-            >
-                DB ({dbHealth.sizeTxt})
-            </Button>
-        </div>
+        <Button
+            //
+            size='xs'
+            appearance='subtle'
+            color={color}
+            onClick={() => st.db.reset()}
+            startIcon={<I.Reload />}
+            // startIcon={<span className='material-symbols-outlined'>power_settings_new</span>}
+        >
+            DB ({dbHealth.sizeTxt})
+        </Button>
     )
 })
 

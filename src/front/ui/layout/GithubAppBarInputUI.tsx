@@ -21,7 +21,8 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
         <>
             <InputGroup
                 //
-                size={p.size ?? 'sm'}
+                // size={p.size ?? 'sm'}
+                size={'xs'}
                 tw='w-auto'
             >
                 <InputGroup.Addon>
@@ -40,7 +41,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
                             </Popover>
                         }
                     >
-                        <div>your github:</div>
+                        <div tw='text-xs'>your github:</div>
                     </Whisper>
                 </InputGroup.Addon>
                 <Input
@@ -58,7 +59,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
                     tw='bg-green-600'
                     appearance='primary'
                     color='green'
-                    startIcon={<span className='material-symbols-outlined'>add</span>}
+                    // startIcon={<span className='material-symbols-outlined'>add</span>}
                 >
                     Create Deck
                 </InputGroup.Button>
