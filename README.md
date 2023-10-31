@@ -26,7 +26,7 @@
 
 <div style='display:flex;gap:1rem;'>
 
-<!-- <div src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:49%'>
+<!-- <div src='docs/static/img/screenshots/2023-10-18-22-13-26.png' s='width:49%'>
 test</div>  -->
 
 </div>
@@ -66,7 +66,7 @@ test</div>  -->
 </tr>
 
 <!-- ---------------------------------------------- -->
-<tr tyle='vertical-align:top'>
+<tr style='vertical-align:top'>
 <td>
 
 ![](docs/static/img/screenshots/2023-10-23-19-30-40.png)
