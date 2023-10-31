@@ -66,7 +66,7 @@ test</div>  -->
 </tr>
 
 <!-- ---------------------------------------------- -->
-<tr tyle='vertical-align:top'>
+<tr style='vertical-align:top'>
 <td>
 
 ![](docs/static/img/screenshots/2023-10-23-19-30-40.png)
