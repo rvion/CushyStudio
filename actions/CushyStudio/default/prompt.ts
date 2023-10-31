@@ -24,7 +24,7 @@ action({
 
             // prompt
             positive: form.prompt({}),
-            negative: form.prompt({}),
+            negative: form.prompt({ default: 'nsfw, nude' }),
             latent: $.startImage(),
             // latent2: $.startImage(),
             // latents: form.list({

@@ -1,6 +1,6 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton, Input, InputGroup, Popover, Tag, Whisper } from 'rsuite'
+import { Button, ButtonGroup, IconButton } from 'rsuite'
 import { assets } from 'src/assets/assets'
 import { useSt } from '../../FrontStateCtx'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
@@ -15,7 +15,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             //
             id='CushyAppBar'
             // style={{ borderBottom: '1px solid #0f0f0f' }}
-            tw='flex gap-2 p-1'
+            tw='flex gap-2 p-1 overflow-auto'
             // style={{ borderBottom: '1px solid #383838' }}
         >
             <div>
@@ -25,37 +25,39 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <div className='flex gap-2  items-center'>
                     <CushyStudioLinkUI />
                     <div tw='flex-grow'></div>
-                    <Button
-                        //
-                        size='xs'
-                        appearance='subtle'
-                        color='orange'
-                        startIcon={<I.Reload />}
-                        onClick={() => window.location.reload()}
-                    >
-                        Reload
-                    </Button>
-                    <Button //
-                        size='xs'
-                        appearance='subtle'
-                        color='orange'
-                        startIcon={<span className='material-symbols-outlined'>bug_report</span>}
-                        onClick={() => st.electronUtils.toggleDevTools()}
-                    >
-                        Open console
-                    </Button>
-                    <Button
-                        size='xs'
-                        appearance='subtle'
-                        color='orange'
-                        startIcon={<I.Reload />}
-                        onClick={() => st.layout.resetCurrent()}
-                    >
-                        Reset Layout
-                    </Button>
+                    <ButtonGroup style={{ border: '1px solid gray' }}>
+                        <Button
+                            //
+                            size='xs'
+                            appearance='subtle'
+                            color='orange'
+                            startIcon={<I.Reload />}
+                            onClick={() => window.location.reload()}
+                        >
+                            Reload
+                        </Button>
+                        <Button //
+                            size='xs'
+                            appearance='subtle'
+                            color='orange'
+                            startIcon={<span className='material-symbols-outlined'>bug_report</span>}
+                            onClick={() => st.electronUtils.toggleDevTools()}
+                        >
+                            Open console
+                        </Button>
+                        <Button
+                            size='xs'
+                            appearance='subtle'
+                            color='orange'
+                            startIcon={<I.Reload />}
+                            onClick={() => st.layout.resetCurrent()}
+                        >
+                            Reset Layout
+                        </Button>
+                    </ButtonGroup>
                 </div>
                 <div className='flex gap-2  items-center'>
-                    <GithubAppBarInputUI />
+                    {/* <GithubAppBarInputUI /> */}
                     <UpdateBtnUI updater={st.updater} />
                     <WebsocketIndicatorUI />
                     <SchemaIndicatorUI />
@@ -138,43 +140,5 @@ export const OpenComfyExternalUI = observer(function OpenComfyExternalUI_(p: {})
         >
             {/* ComfyUI Web */}
         </IconButton>
-    )
-})
-
-export const GithubAppBarInputUI = observer(function GithubAppBarInputUI_(p: {}) {
-    const st = useSt()
-    const githubUsername = st.configFile.value.githubUsername || '<your-github-username>'
-    return (
-        <Whisper
-            //
-            enterable
-            placement='bottomStart'
-            speaker={
-                <Popover>
-                    <div>
-                        Only folders in
-                        <Tag>actions/{githubUsername}/</Tag>
-                        will have type-checking in your vscode
-                    </div>
-                </Popover>
-            }
-        >
-            <InputGroup size='xs' tw='w-auto' style={{ border: '1px solid #868516' }}>
-                <InputGroup.Addon>
-                    <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
-                    github:
-                </InputGroup.Addon>
-                <Input
-                    onChange={(next) => {
-                        st.configFile.update({ githubUsername: next })
-                        st.updateTsConfig()
-                    }}
-                    value={githubUsername}
-                    tw='font-mono'
-                    style={{ width: `${githubUsername.length + 4}ch` }}
-                    placeholder='your github username'
-                ></Input>
-            </InputGroup>
-        </Whisper>
     )
 })

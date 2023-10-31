@@ -50,30 +50,38 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
             enterable
             speaker={
                 <Popover>
-                    <UpdaterErrorUI updater={updater} />
-                    <div tw='flex items-center'>
-                        <span className='material-symbols-outlined'>folder</span>
-                        <pre>{updater.relPath || 'root'}</pre>
-                    </div>
                     <div>
-                        {updater.lastFetchAt ? (
-                            <div tw='flex items-center'>
-                                prev update : {getRelativeTimeString(updater.lastFetchAt)}
-                                next update : {getRelativeTimeString(updater.nextFetchAt)}
-                            </div>
-                        ) : (
-                            <>no update done</>
-                        )}
-                        <Button
-                            size='sm'
-                            color='orange'
-                            appearance='ghost'
-                            onClick={() => updater.checkForUpdates()}
-                            startIcon={<span className='material-symbols-outlined'>refresh</span>}
-                        >
-                            FORCE REFRESH
-                        </Button>
-                        {updater.p.canBeUninstalled ? <UninstallUI updater={updater} /> : null}
+                        <UpdaterErrorUI updater={updater} />
+                        <div tw='flex items-center'>
+                            <span className='material-symbols-outlined'>folder</span>
+                            <pre>{updater.relPath || 'root'}</pre>
+                        </div>
+                        <div>
+                            {updater.lastFetchAt ? (
+                                <div tw='flex items-center'>
+                                    prev update : {getRelativeTimeString(updater.lastFetchAt)}
+                                    next update : {getRelativeTimeString(updater.nextFetchAt)}
+                                </div>
+                            ) : (
+                                <>no update done</>
+                            )}
+                        </div>
+                        <div>
+                            <Button
+                                size='sm'
+                                color='orange'
+                                appearance='ghost'
+                                onClick={() => updater.checkForUpdates()}
+                                startIcon={<span className='material-symbols-outlined'>refresh</span>}
+                            >
+                                FORCE REFRESH
+                            </Button>
+                        </div>
+                        <div>
+                            {updater.p.canBeUninstalled ? ( //
+                                <UninstallUI updater={updater} />
+                            ) : null}
+                        </div>
                     </div>
                 </Popover>
             }
@@ -146,6 +154,7 @@ export const UninstallUI = observer(function UninstallUI_(p: { updater: GitManag
     return (
         <Button
             color='red'
+            size='sm'
             appearance='ghost'
             startIcon={<span className='material-symbols-outlined'>highlight_off</span>}
             onClick={(ev) => {

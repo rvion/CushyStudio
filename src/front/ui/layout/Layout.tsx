@@ -173,7 +173,7 @@ export class CushyLayoutManager {
         this._AddWithProps(Widget.ComfyUINodeExplorer, `/ComfyUINodeExplorer`, { title: `Node Explorer`, icon })
     }
     addAction = (actionPath: CardPath) => {
-        const af = this.st.library.getAction(actionPath)
+        const af = this.st.library.getCard(actionPath)
         const icon = af?.logoURL
         this._AddWithProps(Widget.Action, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }

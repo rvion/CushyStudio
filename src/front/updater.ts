@@ -9,6 +9,7 @@ import simpleGit, { SimpleGit } from 'simple-git'
 import { GithubUserName } from 'src/library/GithubUser'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { deleteDirectoryRecursive } from './deleteDirectoryRecursive'
+import { GithubRepoName } from 'src/library/githubRepo'
 
 export enum FolderKind {
     /** folder is managed by git (has a .git)*/
@@ -51,8 +52,12 @@ export class GitManagedFolder {
         public p: {
             /** current working directory */
             cwd: AbsolutePath
+
             /** github url */
             githubURL: string
+            userName: GithubUserName
+            repositoryName: GithubRepoName
+
             /** if true, will start checking for update right away */
             autoStart: boolean
             /** if true, will perform an `npm install` after succesful update */
@@ -326,11 +331,13 @@ export class GitManagedFolder {
     log = (...args: any[]) => console.log(`[🚀] (${this.relPath || 'root'})`, ...args)
     error = (...args: any[]) => console.error(`[🚀] (${this.relPath || 'root'})`, ...args)
 
-    private _gitInit = async (cwd: string, githubUserName: GithubUserName): Promise<void> => {
-        const git: SimpleGit = simpleGit(cwd)
+    _gitInit = async (): Promise<void> => {
+        const githubUserName: Maybe<GithubUserName> = this.st.githubUsername
+        if (githubUserName == null) return console.log('❌ github username not set when runnign git init')
+        const git: SimpleGit = simpleGit(this.p.cwd)
         await git.init()
-        await git.addRemote('origin', `https://github.com/${githubUserName}/CushyStudio`)
-        await git.addRemote('origin', `git@github.com:${githubUserName}/CushyStudio.git`)
+        await git.addRemote('origin', `https://github.com/${this.p.userName}/${this.p.repositoryName}`)
+        await git.addRemote('github', `git@github.com:${this.p.userName}/${this.p.repositoryName}.git`)
         this.status = FolderKind.FolderWithGit
     }
 

@@ -12,7 +12,7 @@ import { ActionFormUI } from './ActionFormUI'
 export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: CardPath }) {
     const st = useSt()
     const toolbox = st.library
-    const af = toolbox.getAction(p.actionPath)
+    const af = toolbox.getCard(p.actionPath)
     // console.log('🟢', st.liveTime)
 
     useEffect(() => {

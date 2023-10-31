@@ -35,6 +35,8 @@ import { GitManagedFolder } from './updater'
 import { CardPath } from 'src/library/CardPath'
 import { Uploader } from './Uploader'
 import { ElectronUtils } from './ElectronUtils'
+import { GithubUserName } from 'src/library/GithubUser'
+import { GithubRepoName } from 'src/library/githubRepo'
 
 export class STATE {
     //file utils that need to be setup first because
@@ -97,7 +99,7 @@ export class STATE {
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
 
-    get githubUsername() { return this.configFile.value.githubUsername } // prettier-ignore
+    get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
     get favoriteActions(): CardPath[] {
         return this.configFile.value.favoriteActions ?? []
     }
@@ -175,6 +177,8 @@ export class STATE {
             runNpmInstallAfterUpdate: true,
             canBeUninstalled: false,
             githubURL: 'rvion/CushyStudio',
+            repositoryName: 'CushyStudio' as GithubRepoName,
+            userName: 'rvion' as GithubUserName,
         })
         this.importer = new ComfyImporter(this)
         this.library = new ActionLibrary(this)

@@ -26,7 +26,7 @@ export const MainNavEntryUI = observer(function UI_(p: {
 export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
     const st = useSt()
     return (
-        <div id='main-navbar' tw='flex'>
+        <div id='main-navbar' tw='flex overflow-auto'>
             {/* COMFY */}
             <MainNavEntryUI
                 onClick={() => st.layout.addActionPicker()}

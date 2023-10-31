@@ -90,6 +90,8 @@ export class Deck {
             runNpmInstallAfterUpdate: false,
             canBeUninstalled: this.githubUserName == 'CushyStudio' ? false : true,
             githubURL: this.githubURL,
+            repositoryName: this.githubRepositoryName,
+            userName: this.githubUserName,
         })
         this.installK = new ManualPromise<true>()
 

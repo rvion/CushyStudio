@@ -4,13 +4,13 @@ import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import path, { join } from 'pathe'
 import Watcher from 'watcher'
 
-import { readdirSync, statSync } from 'fs'
+import { existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { CardPath, asCardPath } from 'src/library/CardPath'
 import { Deck, DeckFolder } from 'src/library/Deck'
-import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { hasValidActionExtension } from '../back/ActionExtensions'
+import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { CardFile } from './CardFile'
 
 export class ActionLibrary {
@@ -26,8 +26,8 @@ export class ActionLibrary {
         })
     }
     packsByFolder = new Map<DeckFolder, Deck>()
-    getAction = (path: CardPath): CardFile | undefined => this.actionsByPath.get(path)
-    getPack = (folder: DeckFolder): Deck => {
+    getCard = (path: CardPath): CardFile | undefined => this.actionsByPath.get(path)
+    getDeck = (folder: DeckFolder): Deck => {
         const prev = this.packsByFolder.get(folder)
         if (prev) return prev
         const next = new Deck(this, folder)
@@ -104,14 +104,26 @@ export class ActionLibrary {
     }
 
     private addKnownPacks = () => {
-        this.getPack('actions/VinsiGit/Cushy_Action' as DeckFolder)
-        this.getPack('actions/noellealarie/cushy-avatar-maker' as DeckFolder)
-        this.getPack('actions/featherice/cushy-actions' as DeckFolder)
-        this.getPack('actions/rvion/cushy-example-actions' as DeckFolder)
-        this.getPack('actions/noellealarie/comfy2cushy-examples' as DeckFolder)
-        this.getPack('actions/CushyStudio/default' as DeckFolder)
-        this.getPack('actions/CushyStudio/cards' as DeckFolder)
-        this.getPack('actions/CushyStudio/tutorial' as DeckFolder)
+        this.getDeck('actions/VinsiGit/Cushy_Action' as DeckFolder)
+        this.getDeck('actions/noellealarie/cushy-avatar-maker' as DeckFolder)
+        this.getDeck('actions/featherice/cushy-actions' as DeckFolder)
+        this.getDeck('actions/rvion/cushy-example-actions' as DeckFolder)
+        this.getDeck('actions/noellealarie/comfy2cushy-examples' as DeckFolder)
+        this.getDeck('actions/CushyStudio/default' as DeckFolder)
+        this.getDeck('actions/CushyStudio/cards' as DeckFolder)
+        this.getDeck('actions/CushyStudio/tutorial' as DeckFolder)
+    }
+
+    createDeck = async (folder: DeckFolder): Promise<Deck> => {
+        if (existsSync(folder)) return Promise.reject(`deck already exists: ${folder}`)
+        mkdirSync(folder, { recursive: true })
+        writeFileSync(join(folder, 'readme.md'), `# ${folder}\n\nThis is a new deck, created by CushyStudio.`)
+        writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
+        // copyFileSync(join(this.st.rootPath, 'assets', 'cushy-deck.png'), join(folder, 'cushy-deck.png'))
+        // writeFileSync(join(folder, 'cushy-deck.png'), ``)
+        const deck = this.getDeck(folder)
+        await deck.updater._gitInit()
+        return deck
     }
 
     get allActions() {
@@ -120,7 +132,7 @@ export class ActionLibrary {
 
     get allFavorites(): CardFile[] {
         return this.st.favoriteActions //
-            .map((ap) => this.getAction(ap)!)
+            .map((ap) => this.getCard(ap)!)
             .filter(Boolean)
     }
 
@@ -223,9 +235,9 @@ export class ActionLibrary {
                     continue
                 }
                 const apf = asRelativePath(path.join(...parts)) as DeckFolder
-                const pack = this.getPack(apf)
+                const pack = this.getDeck(apf)
                 const actionPath = asCardPath(relPath)
-                const prev = this.getAction(actionPath)
+                const prev = this.getCard(actionPath)
                 if (prev) {
                     prev.load({ force: true })
                 } else {
