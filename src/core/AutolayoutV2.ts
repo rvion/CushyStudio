@@ -39,8 +39,8 @@ export const runAutolayout = async (graph: GraphL): Promise<CytoJSON> => {
                 // shape: 'rectangle',
                 label: node.$schema.nameInComfy,
                 id: node.uidNumber,
-                width: node.width,
-                height: node.height,
+                width: node.width * 1.2,
+                height: node.height * 1.2,
                 color: node.color,
             },
         })
