@@ -3,13 +3,16 @@ import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
 import { FolderKind, GitManagedFolder } from 'src/front/updater'
 import { _formatPreviewDate } from 'src/utils/_formatPreviewDate'
 
-export const GitInitBtnUI = observer(function GitInitBtnUI_(p: {}) {
+export const GitInitBtnUI = observer(function GitInitBtnUI_(p: { updater: GitManagedFolder }) {
+    const updater = p.updater
+
     return (
         <Button
-            disabled
-            // onClick={() => {
-
-            // }}
+            disabled={updater.currentAction != null}
+            startIcon={<span className='material-symbols-outlined'>track_changes</span>}
+            onClick={async () => {
+                await updater._gitInit()
+            }}
             size='xs'
             appearance='primary'
         >
@@ -43,7 +46,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
     if (updater.status === FolderKind.Unknown) return <Loader />
     if (updater.status === FolderKind.DoesNotExist) return <GitInstallUI udpater={updater} />
     if (updater.status === FolderKind.NotADirectory) return <div>❓ unespected file</div>
-    if (updater.status === FolderKind.FolderWithoutGit) return <GitInitBtnUI />
+    if (updater.status === FolderKind.FolderWithoutGit) return <GitInitBtnUI updater={updater} />
     return (
         <Whisper
             placement='auto'

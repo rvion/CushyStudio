@@ -332,13 +332,19 @@ export class GitManagedFolder {
     error = (...args: any[]) => console.error(`[🚀] (${this.relPath || 'root'})`, ...args)
 
     _gitInit = async (): Promise<void> => {
-        const githubUserName: Maybe<GithubUserName> = this.st.githubUsername
-        if (githubUserName == null) return console.log('❌ github username not set when runnign git init')
-        const git: SimpleGit = simpleGit(this.p.cwd)
-        await git.init()
-        await git.addRemote('origin', `https://github.com/${this.p.userName}/${this.p.repositoryName}`)
-        await git.addRemote('github', `git@github.com:${this.p.userName}/${this.p.repositoryName}.git`)
-        this.status = FolderKind.FolderWithGit
+        if (this.currentAction != null) throw new Error(`updater is already already running`)
+        try {
+            this.currentAction = 'git init'
+            const githubUserName: Maybe<GithubUserName> = this.st.githubUsername
+            if (githubUserName == null) return console.log('❌ github username not set when runnign git init')
+            const git: SimpleGit = simpleGit(this.p.cwd)
+            await git.init()
+            await git.addRemote('origin', `https://github.com/${this.p.userName}/${this.p.repositoryName}`)
+            await git.addRemote('github', `git@github.com:${this.p.userName}/${this.p.repositoryName}.git`)
+            this.status = FolderKind.FolderWithGit
+        } finally {
+            this.currentAction = null
+        }
     }
 
     private _isGitFolder = (): boolean => {
