@@ -37,6 +37,13 @@ export class ActionLibrary {
     }
 
     favoritesFolded = false
+
+    // // misc (later?)
+    // installedFolded = false
+    // marketplaceFolded = false
+    // builtInFolded = false
+    // unknownFolded = false
+
     watcher: Watcher
     constructor(
         //

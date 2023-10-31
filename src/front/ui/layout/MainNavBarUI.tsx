@@ -13,12 +13,12 @@ export const MainNavEntryUI = observer(function UI_(p: {
     label: string
 }) {
     return (
-        <div className='flex flex-col cursor-pointer hover:bg-gray-800' onClick={p.onClick}>
-            <div className='flex items-center px-3'>
-                <div className='text-xs pr-1 text-gray-300'>{p.ix}</div>
+        <div className='m-1 rounded bg-gray-900 cursor-pointer hover:bg-gray-800' onClick={p.onClick}>
+            <div className='flex items-center px-3 '>
+                <div className='text-xs pr-1 text-gray-500'>{p.ix}</div>
                 <div tw='text-xl'>{p.icon}</div>
             </div>
-            <div className='text-xs text-center text-gray-300'>{p.label}</div>
+            <div className='text-xs text-center text-gray-500'>{p.label}</div>
         </div>
     )
 })
@@ -98,7 +98,17 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                         //
                         onClick={() => st.layout.addComfy()}
                         ix='4'
-                        icon={<img src={assets.public_ComfyUILogo_png} style={{ width: '1.5rem', height: '1.5rem' }} />}
+                        icon={
+                            <img
+                                src={assets.public_ComfyUILogo_png}
+                                style={{
+                                    paddingBottom: '0.4rem',
+                                    paddingLeft: '0.4rem',
+                                    width: '1.5rem',
+                                    height: '1.5rem',
+                                }}
+                            />
+                        }
                         label='Comfy'
                     />
                 </div>

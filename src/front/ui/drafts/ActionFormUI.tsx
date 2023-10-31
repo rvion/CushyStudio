@@ -93,22 +93,6 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                         </Button>
                         <AddDraftUI af={af} />
                     </div>
-                    <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-                        <div tw='flex items-center gap-1'>
-                            <span>By</span>
-                            {action.author ? ( //
-                                <GithubUserUI //
-                                    showName
-                                    username={action.author as GithubUserName}
-                                />
-                            ) : (
-                                'anonymous'
-                            )}
-                        </div>
-                    </ErrorBoundary>
-                </div>
-                <div tw='flex'>
-                    <div tw='flex-grow'></div>
                     <div tw='self-end flex gap-2 items-center' style={{ width: 'fit-content' }}>
                         <Checkbox checked={draft.shouldAutoStart} onChange={(ev, checked) => draft.setAutostart(checked)}>
                             Autorun
@@ -125,15 +109,27 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                             Run
                         </Button>
                     </div>
+                    {/* <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+                        <div tw='flex items-center gap-1'>
+                            <span>By</span>
+                            {action.author ? ( //
+                                <GithubUserUI //
+                                    showName
+                                    username={action.author as GithubUserName}
+                                />
+                            ) : (
+                                'anonymous'
+                            )}
+                        </div>
+                    </ErrorBoundary> */}
                 </div>
                 <ActionDraftListUI af={af} />
-                <ScrollablePaneUI className='flex-grow  '>
+                <ScrollablePaneUI
+                    // style={{ border: '1px solid blue' }}
+                    style={{ border: '3px solid #2c2e39' }}
+                    className='flex-grow  rounded-xl bg-contrasted-gradient'
+                >
                     <form
-                        className='mx-2'
-                        style={{
-                            border: '1px solid #343434',
-                            background: '#131313',
-                        }}
                         onKeyUp={(ev) => {
                             // submit on meta+enter
                             if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
@@ -157,17 +153,17 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                             whenValid={(req) => <WidgetUI req={req} />}
                         />
                     </form>
-                    <TabUI title='Debug:' tw='mt-auto'>
-                        <div>no</div>
-                        <div></div>
-                        <div>result</div>
-                        <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
-                        <div>state</div>
-                        <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10_000)} />
-                        <div>code</div>
-                        <TypescriptHighlightedCodeUI code={af.codeJS ?? ''} />
-                    </TabUI>
                 </ScrollablePaneUI>
+                <TabUI title='Debug:' tw='mt-auto'>
+                    <div>no</div>
+                    <div></div>
+                    <div>result</div>
+                    <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
+                    <div>state</div>
+                    <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10_000)} />
+                    <div>code</div>
+                    <TypescriptHighlightedCodeUI code={af.codeJS ?? ''} />
+                </TabUI>
             </div>
         </draftContext.Provider>
     )

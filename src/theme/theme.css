@@ -1,15 +1,15 @@
-.flexlayout__tabset_tabbar_outer_top {
-  /* background: #393939!important; */
+.bg-contrasted-gradient {
+  background: linear-gradient(337deg, #202020, #0c0c0c);
 }
 .flexlayout__tabset-selected{
-  background: #0d3e55!important;
+  background: #1b1b1b!important;
 }
 
-#CushyStudio.dark #main-navbar{
-  background: linear-gradient(0, #1a1a1a 0%, #3e3e45 100%);
-}
+#CushyStudio.dark #main-navbar,
 #CushyStudio.dark #CushyAppBar{
-  background: linear-gradient(-90deg, #1a1a1a 0%, #3e3e45 100%);
+  /* background: linear-gradient(0, #1a1a1a 0%, #3e3e45 100%); */
+  background: rgb(0, 0, 0);
+  /* background: linear-gradient(-90deg, #1a1a1a 0%, #3e3e45 100%); */
 }
 #CushyStudio.light #CushyAppBar{
   background: linear-gradient(-90deg, #f7f7f7 0%, #e9e9e9 100%);
