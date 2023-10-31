@@ -1,5 +1,4 @@
 import type { NodeConfig } from 'konva/lib/Node'
-import type { ImageConfig } from 'konva/lib/shapes/Image'
 import type { ImageAndMask, Runtime } from 'src/back/Runtime'
 
 card({
@@ -56,7 +55,7 @@ export async function fooKonva(flow: Runtime, p: { color: string }): Promise<Ima
 
     const image = await I.loadImage('CushyStudio/cards/_assets/symbol-diamond.png')
 
-    for (const value of [1, 2, 3, 8]) {
+    for (const value of [1, 2, 3, 4, 5, 8]) {
         const base = mkImage()
         const mask = mkImage()
 
@@ -68,13 +67,28 @@ export async function fooKonva(flow: Runtime, p: { color: string }): Promise<Ima
             if (value === 1) return [{ x: 0.5, y: 0.5, size: 0.4 }]
             if (value === 2)
                 return [
-                    { x: 0.5, y: 0.2 },
-                    { x: 0.5, y: 0.8 },
+                    { x: 0.5, y: 0.3 },
+                    { x: 0.5, y: 0.7 },
                 ]
             if (value === 3)
                 return [
-                    { x: 0.5, y: 0.2 },
-                    { x: 0.5, y: 0.8 },
+                    { x: 0.5, y: 0.3 },
+                    { x: 0.5, y: 0.7 },
+                    { x: 0.5, y: 0.5 },
+                ]
+            if (value === 4)
+                return [
+                    { x: 0.3, y: 0.2 },
+                    { x: 0.3, y: 0.8 },
+                    { x: 0.7, y: 0.2 },
+                    { x: 0.7, y: 0.8 },
+                ]
+            if (value === 5)
+                return [
+                    { x: 0.3, y: 0.2 },
+                    { x: 0.3, y: 0.8 },
+                    { x: 0.7, y: 0.2 },
+                    { x: 0.7, y: 0.8 },
                     { x: 0.5, y: 0.5 },
                 ]
             if (value === 8)
@@ -91,8 +105,8 @@ export async function fooKonva(flow: Runtime, p: { color: string }): Promise<Ima
             return []
         })()
 
-        const normalize = (p: Pos): NodeConfig => {
-            const width = p.size != null ? p.size * base.stage.width() : iconSize
+        const normalize = (p: Pos, growBy = 1): NodeConfig => {
+            const width = growBy * (p.size != null ? p.size * base.stage.width() : iconSize)
             return {
                 x: p.x * base.stage.width() + 10 * Math.random(),
                 y: p.y * base.stage.height() + 10 * Math.random(),
@@ -109,28 +123,20 @@ export async function fooKonva(flow: Runtime, p: { color: string }): Promise<Ima
 
         // add main shapes on the card body
         const haloSize = 20
-        const iconSize = base.stage.width() / 6
+        const iconSize = base.stage.width() / 4
         for (const pos of positions) {
-            // image -------------------
+            // base image
             const norm = normalize(pos)
             const nthSymbol = new I.Image({ image, ...norm })
-            const scaleY = pos.flip ? -1 : 1
-            const nthHalo = new I.Image({
-                image,
-                width: 70 + haloSize,
-                height: 70 + haloSize,
-                x: pos.x - haloSize / 2,
-                y: pos.y - (haloSize * scaleY) / 2,
-                scaleY,
-                opacity: 0.5,
-            })
+            // base halo
+            const norm2 = normalize(pos, 1.4)
+            const nthHalo = new I.Image({ image, ...norm2, opacity: 0.5 })
             base.layer.add(nthHalo, nthSymbol)
-
-            // mask --------------------
+            // mask image
             const maskImg = new I.Image({ image, ...norm })
             maskImg.cache()
             maskImg.filters([I.Konva.Filters.Brighten])
-            maskImg.brightness(0.01)
+            maskImg.brightness(-1)
             mask.layer.add(maskImg)
         }
 
