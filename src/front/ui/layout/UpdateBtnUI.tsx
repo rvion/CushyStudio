@@ -92,34 +92,35 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
             <div tw={['flex gap-1 cursor-help']}>
                 {/* // hasErrors ? 'bg-red-900' : 'bg-green-900 ', */}
                 <div tw='flex gap-1'>
-                    {hasErrors ? (
-                        <>
-                            <span className='text-orange-500 material-symbols-outlined'>error</span>
-                            version
-                        </>
-                    ) : updater.updateAvailable ? (
-                        <Button
-                            className='animate-pulse'
-                            color='red'
-                            size='xs'
-                            appearance='primary'
-                            startIcon={<span className='material-symbols-outlined'>update</span>}
-                            onClick={async (ev) => {
-                                ev.stopPropagation()
-                                ev.preventDefault()
-                                await updater.updateToLastCommitAvailable()
-                                window.location.reload()
-                            }}
-                        >
-                            update
-                            {/* to version {updater.nextVersion} */}
-                        </Button>
-                    ) : (
-                        <span className='text-green-400 material-symbols-outlined'>check_circle</span>
-                    )}
+                    {
+                        hasErrors ? (
+                            <>
+                                <span className='text-orange-500 material-symbols-outlined'>error</span>
+                                version
+                            </>
+                        ) : updater.updateAvailable ? (
+                            <Button
+                                className='animate-pulse'
+                                color='red'
+                                size='xs'
+                                appearance='primary'
+                                startIcon={<span className='material-symbols-outlined'>update</span>}
+                                onClick={async (ev) => {
+                                    ev.stopPropagation()
+                                    ev.preventDefault()
+                                    await updater.updateToLastCommitAvailable()
+                                    window.location.reload()
+                                }}
+                            >
+                                update
+                                {/* to version {updater.nextVersion} */}
+                            </Button>
+                        ) : null
+                        // <span className='text-green-400 material-symbols-outlined'>check_circle</span>
+                    }
 
-                    <div className={updater.updateAvailable ? 'text-orange-400' : 'text-green-100 '}>
-                        v{updater.currentVersion}
+                    <div tw='text-xs' className={updater.updateAvailable ? 'text-orange-400' : 'text-green-300 '}>
+                        {updater.currentVersion}
                         {/* {updater.headCommitsCount ? `v${updater.currentVersion}` : <Loader />} */}
                     </div>
                 </div>
