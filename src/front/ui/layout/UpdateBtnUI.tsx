@@ -119,7 +119,8 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                     )}
 
                     <div className={updater.updateAvailable ? 'text-orange-400' : 'text-green-100 '}>
-                        {updater.headCommitsCount ? `v${updater.currentVersion}` : <Loader />}
+                        v{updater.currentVersion}
+                        {/* {updater.headCommitsCount ? `v${updater.currentVersion}` : <Loader />} */}
                     </div>
                 </div>
             </div>

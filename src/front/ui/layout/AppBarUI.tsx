@@ -25,7 +25,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <div className='flex gap-2  items-center'>
                     <CushyStudioLinkUI />
                     <div tw='flex-grow'></div>
-                    <ButtonGroup style={{ border: '1px solid gray' }}>
+                    <ButtonGroup tw='opacity-30 hover:opacity-100' style={{ border: '1px solid gray' }}>
                         <Button
                             //
                             size='xs'
