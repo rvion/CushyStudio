@@ -52,7 +52,7 @@ export const CreateDeckModalUI = observer(function CreateDeckModalUI_(p: { uist:
                     loading={uist.isCreating}
                     onClick={async () => {
                         uist.isCreating = true
-                        const res = await st.library.createDeck(`actions/${st.githubUsername}/${uist.deckName}` as DeckFolder)
+                        const res = await st.library.createDeck(`library/${st.githubUsername}/${uist.deckName}` as DeckFolder)
                         await new Promise((yes) => setTimeout(yes, 1_000))
                         uist.isCreating = false
                         uist.handleClose()

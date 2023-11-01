@@ -40,6 +40,7 @@
   - [4.4. Create your first deck](#44-create-your-first-deck)
   - [4.5. `Prefabs` so you don't repeat yourself](#45-prefabs-so-you-dont-repeat-yourself)
     - [4.5.1. prefabs are just functions.](#451-prefabs-are-just-functions)
+    - [Naming Conventions](#naming-conventions)
     - [4.5.2. Use a UI Prefab](#452-use-a-ui-prefab)
     - [4.5.3. Execution Prefab](#453-execution-prefab)
   - [4.6. Various Function notations](#46-various-function-notations)
@@ -425,8 +426,9 @@ _Best practices:_
 
 ### 4.5.1. prefabs are just functions.
 
-- 👉 a `UI prefab` is a `function` that takes a `formBuilder` and returns a `Widget`.
-- 👉 a `logic prefab` is a function that takes a `runtime` and modify it's `graph` or performother actions.
+- 👉 a `ui prefab` is a `function` that takes a `formBuilder` and returns a `Widget`.
+- 👉 a `run prefab` is a function that takes a `runtime` and modify it's `graph` or performother actions.
+- 👉 a `util prefab` is an helper function that do whatever.
 
 example:
 
@@ -434,8 +436,8 @@ example:
 // FILE: `_ui.ts`
 import type { FormBuilder } from 'src/controls/FormBuilder'
 
-// 📝 this is a self-contained UI kit you can use in any card you want.
-export const subform_startImage = (form: FormBuilder) =>
+// 📝 this is a ui prefab you can use in any card you want.
+export const ui_startImage = (form: FormBuilder) =>
     form.group({
         items: () => ({
             startImage: form.imageOpt({ group: 'latent' }),
@@ -446,6 +448,9 @@ export const subform_startImage = (form: FormBuilder) =>
     })
 ```
 
+### Naming Conventions
+
+
 
 ### 4.5.2. Use a UI Prefab
 
@@ -453,20 +458,23 @@ To use a `prefab` in your card, you can simply import it and use it.
 
 ![](./docs/static/img/screenshots/2023-11-01-18-27-38.webp)
 
-- `ui prefabs` are made to be used in the `ui` function of your card.
-- `Runtime prefabs` are made to be used in the `run` function of your card.
+- `ui  prefabs` are made to be used in the `ui` function of your card.
+- `run prefabs` are made to be used in the `run` function of your card.
+- `run prefabs` are made to be used in the `run` function of your card.
+
+
 
 
 ```ts
 // FILE: `card1.ts`
-import { subform_startImage } from './_ui'
+import { ui_startImage } from './_ui'
 
 card({
     name: 'card1',
     ui: (formBuilder) => {
         return {
-            a: subform_startImage(formBuilder), // 👈 HERE
-            b: subform_startImage(formBuilder), // 👈 HERE
+            a: ui_startImage(formBuilder), // 👈 HERE
+            b: ui_startImage(formBuilder), // 👈 HERE
             c: formBuilder.int({ default: 1 }),
         }
     },

@@ -121,6 +121,31 @@ export class ActionLibrary {
         mkdirSync(folder, { recursive: true })
         writeFileSync(join(folder, 'readme.md'), `# ${folder}\n\nThis is a new deck, created by CushyStudio.`)
         writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
+        // prettier-ignore
+        writeFileSync(join(folder, '_prefab.ts'), _FIX_INDENTATION`
+            import type { FormBuilder } from "src/controls/FormBuilder"
+            export const ui_vaeName = (form: FormBuilder) =>
+                form.enumOpt({
+                    label: 'VAE',
+                    enumName: 'Enum_VAELoader_vae_name',
+                })
+
+            export const ui_modelName = (form: FormBuilder) =>
+                form.enum({
+                    label: 'Checkpoint',
+                    enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
+                })
+        `)
+        const baseActionCode = _FIX_INDENTATION`
+            card({
+                name: 'A simple card',
+                ui: (form) => ({ name: form.str({}) }),
+                run: (runtime) => runtime.print('Hello World')
+            })
+        `
+        writeFileSync(join(folder, 'sample-card-1.ts'), baseActionCode)
+        writeFileSync(join(folder, 'sample-card-2.ts'), baseActionCode)
+
         // writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
         // writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
         // copyFileSync(join(this.st.rootPath, 'assets', 'cushy-deck.png'), join(folder, 'cushy-deck.png'))
@@ -275,4 +300,14 @@ export class ActionLibrary {
     //     }
     //     return current[0]
     // }
+}
+
+const _FIX_INDENTATION = (str: TemplateStringsArray) => {
+    // split string into lines
+    let lines = str[0].split('\n').slice(1)
+    const indent = (lines[0]! ?? '').match(/^\s*/)![0].length
+    // trim whitespace at the start and end of each line
+    lines = lines.map((line) => line.slice(indent))
+    // join lines back together with preserved newlines
+    return lines.join('\n')
 }
