@@ -13,13 +13,13 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
     return (
         <div
             id='CushyAppBar'
-            tw='flex gap-2 p-1 overflow-auto'
+            tw='flex gap-2 px-1 overflow-auto'
             // style={{ borderBottom: '1px solid #0f0f0f' }}
             // style={{ borderBottom: '1px solid #383838' }}
         >
             <div tw='flex-grow'>
                 <div className='flex gap-2 items-center'>
-                    <img tw='p-0.5' style={{ width: '2rem' }} src={assets.public_CushyLogo_512_png} alt='' />
+                    <img style={{ width: '1rem' }} src={assets.public_CushyLogo_512_png} alt='' />
                     Cushy Studio
                     <UpdateBtnUI updater={st.updater} />
                     {/* <GithubAppBarInputUI /> */}

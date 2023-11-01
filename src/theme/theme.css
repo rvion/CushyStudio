@@ -1,8 +1,13 @@
-.bg-contrasted-gradient {
-  background: linear-gradient(337deg, #202020, #0c0c0c);
+.flexlayout__tabset_tabbar_outer_top {
+  background: linear-gradient(90deg, #3a3a3a 0%, #000000 100%);
 }
 .flexlayout__tabset-selected{
-  background: #1b1b1b!important;
+  background: linear-gradient(90deg, #2b426f 0%, #000000 100%);
+  /* background: #1b406f!important; */
+}
+/*  */
+.bg-contrasted-gradient {
+  background: linear-gradient(337deg, #202020, #0c0c0c);
 }
 
 #CushyStudio.dark #main-navbar,

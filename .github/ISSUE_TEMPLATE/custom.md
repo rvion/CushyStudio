@@ -1,7 +1,7 @@
 ---
 name: Marketplace submission
-about: Template to submit your action pack.
-title: 'Marketplace Submission: <your action pack name>'
+about: Template to submit your deck.
+title: 'Marketplace Submission: <your deck name>'
 labels: '🚀 Marketplace Submission'
 assignees: '@rvion'
 ---

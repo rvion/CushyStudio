@@ -25,7 +25,7 @@ export const CreateDeckModalUI = observer(function CreateDeckModalUI_(p: { uist:
         <Modal open={uist.open} onClose={uist.handleClose}>
             <Modal.Header>
                 <Modal.Title>
-                    <b>Let's create an action pack !</b>
+                    <b>Create your action pack !</b>
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -42,7 +42,7 @@ export const CreateDeckModalUI = observer(function CreateDeckModalUI_(p: { uist:
                             value={uist.deckName}
                         ></Input>
                     </div>
-                    <Placeholder.Paragraph />
+                    {/* <Placeholder.Paragraph /> */}
                 </div>
             </Modal.Body>
             <Modal.Footer>

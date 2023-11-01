@@ -2,7 +2,7 @@
 
 # 🛋️ CushyStudio
 
-## The **easiest** and most **powerful** Stable Diffusion frontend
+## _The **easiest** and most **powerful** Stable Diffusion frontend_
 
 ![Static Badge](https://img.shields.io/badge/status-BETA-yellow) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio) ![GitHub Sponsors](https://img.shields.io/github/sponsors/rvion) [![CLA assistant](https://cla-assistant.io/readme/badge/rvion/CushyStudio)](https://cla-assistant.io/rvion/CushyStudio)
 
@@ -10,37 +10,57 @@
 
 </div>
 
----
 
-## Discover a world of `Actions`
+- [1. CushyStudio `Cards`: self-contained mini Stable diffusion apps](#1-cushystudio-cards-self-contained-mini-stable-diffusion-apps)
+  - [1.1. `Cards` are simple to use.](#11-cards-are-simple-to-use)
+  - [1.2. `Cards` are pleasant to make](#12-cards-are-pleasant-to-make)
+  - [1.3. `Cards` are easy to share](#13-cards-are-easy-to-share)
+- [2. Quickstart Guide](#2-quickstart-guide)
+  - [2.1. Installation](#21-installation)
+  - [2.2. Starting](#22-starting)
+  - [2.3. Updating](#23-updating)
+  - [2.4. Core concepts](#24-core-concepts)
+  - [2.5. Moving around](#25-moving-around)
+  - [2.6. Use built-in cards](#26-use-built-in-cards)
+  - [2.7. Install custom cards](#27-install-custom-cards)
+  - [2.8. create custom cards](#28-create-custom-cards)
+- [3. Features](#3-features)
+  - [3.1. support `Local`, `Remote`, and `Cloud` ComfyUI instances](#31-support-local-remote-and-cloud-comfyui-instances)
+  - [3.2. support multiple-ComfyUI support](#32-support-multiple-comfyui-support)
+  - [3.3. ComfyUI compatible: Convert workflow to Action.](#33-comfyui-compatible-convert-workflow-to-action)
+  - [3.4. Real-time enabled](#34-real-time-enabled)
+  - [3.5. CivitAI integration](#35-civitai-integration)
+  - [3.6. Built-in full-featured Image Editor](#36-built-in-full-featured-image-editor)
+  - [3.7. Easy to extend](#37-easy-to-extend)
+  - [3.8. Create your own Actions to streamline any image or video production](#38-create-your-own-actions-to-streamline-any-image-or-video-production)
+- [4. Quickstart Guide For Action Creators](#4-quickstart-guide-for-action-creators)
+  - [Card creation basics: how does `CushySudio` Work](#card-creation-basics-how-does-cushysudio-work)
+  - [4.1. Create your first deck](#41-create-your-first-deck)
+  - [4.2. Simple example](#42-simple-example)
+    - [4.2.1. define a modular UI kit](#421-define-a-modular-ui-kit)
+    - [4.2.2. UI prefab](#422-ui-prefab)
+      - [4.2.2.1. define a UI prefab](#4221-define-a-ui-prefab)
+      - [4.2.2.2. Use a UI Prefab](#4222-use-a-ui-prefab)
+    - [4.2.3. Execution Prefab](#423-execution-prefab)
+  - [4.3. Various Function notations](#43-various-function-notations)
+    - [4.3.1. the special `() => ({ })` notation to return objects in a single line](#431-the-special-----notation-to-return-objects-in-a-single-line)
+  - [4.4. Publish your Deck](#44-publish-your-deck)
 
--   CushyStudio **_Actions_** are interactive generative "apps" with dedicated UIs.
+# 1. CushyStudio `Cards`: self-contained mini Stable diffusion apps
+
+-   CushyStudio **_Cards_** are interactive generative "apps" with dedicated UIs.
 -   They make it super easy and fun to explore all generative art has to offer.
--   CushyStudio allows you to run, create, and share **_Actions_**
+-   CushyStudio allows you to run, create, and share **_Cards_**
 
-<div style='display:flex;gap:1rem;'>
 
 <img src='docs/static/img/screenshots/2023-10-18-22-12-01.png' style='width:60%'></img> <img src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:30%'></img>
-
-</div>
-
-<div style='display:flex;gap:1rem;'>
 
 <!-- <div src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:49%'>
 test</div>  -->
 
-</div>
-
 <!-- ---------------------------------------------- -->
 
-<table style='width:100%'>
-<tbody>
-
-<!-- ---------------------------------------------- -->
-<tr>
-<td style='vertical-align:top'>
-
-## For Artists
+## 1.1. `Cards` are simple to use.
 
 -   ✅ Non-technical **_Actions_** interfaces
 
@@ -54,38 +74,30 @@ test</div>  -->
 
 -   🖌️ Built-in commodities
 
-    -   Image and Mask editors
-    -   Modular Layout to keep every creative tool at hand
+    -   `Image` and `Mask` editors
+    -   Modular Layout to stay organized and focuses
 
-</td>
-<td>
+<!-- <img src='docs/static/img/screenshots/2023-10-23-19-04-01.png' style='width:100%'></img> -->
 
-<img src='docs/static/img/screenshots/2023-10-23-19-04-01.png' style='width:100%'></img>
 
-</td>
-</tr>
+## 1.2. `Cards` are pleasant to make
 
-<!-- ---------------------------------------------- -->
-<tr style='vertical-align:top'>
-<td>
-
-![](docs/static/img/screenshots/2023-10-23-19-30-40.png)
-
-</td>
-<td style='vertical-align:top'>
-
-## For Creatives
-
--   🚀 The most practical toolset to build actions
+-   🚀 CushyStudio comes with amakes it easy to build cards
 
     -   Pre-configured ecosystem: NO SETUP NEEDED
     -   Built-in **_ComfyUI_** to **_Action_** converter
-    -   Graphical Action builder
+    -   Graphical Action builder `(soon™️)`
     -   A full **_TypeScript Action SDK_** + Compiler to go further
+
+-   🧑‍💻 Powerful fully-type-safe typescript SDK
+    -   A built-in standard library made to quickly build your dream workflow
+    -   Use lambda to get completion only for the node that produces the value needed
+    -   Every single value/enum is typed
 
 -   🧠 **_ComfyUI_** engine At its core
 
     -   All custom nodes are supported
+    -   Custom interface to explore and play with nodes
     -   Deep integration with **_ComfyUI Graph_**
     -   A well-thought interface to explore and play with nodes
 
@@ -94,69 +106,120 @@ test</div>  -->
     -   Modularize, reuse, and grow your toolset
     -   Share your actions with the world
 
-</td>
-</tr>
-</tbody>
-</table>
 
-![](docs/static/img/screenshots/2023-10-18-21-40-09.png)
+## 1.3. `Cards` are easy to share
 
-# Installation
+-  📦 one-click create your custom `Deck`
 
-Ensure you have:
+    -   one-click open a fully pre-configured `vscode` workspace ready to go
+    -   No setup needed: injected globals so you can focus on your card logic
+    -   No dependencies
 
--   [NodeJS](https://nodejs.org/en/download) installed (18 or higher)
--   [ComfyUI](https://github.com/comfyanonymous/ComfyUI) installed
--   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) installed
 
-Install CushyStudio by running these commands in a terminal
+<!-- ![](docs/static/img/screenshots/2023-10-18-21-40-09.png) -->
+
+
+
+![](docs/static/img/screenshots/2023-11-01-19-03-12.webp)
+
+
+# 2. Quickstart Guide
+
+## 2.1. Installation
+
+During `Beta`, `CushyStudio` install is done manually with git.
+
+Ensure you have the following installed:
+
+-   [NodeJS](https://nodejs.org/en/download) (18 or higher)
+-   [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
+-   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+Then, to install `CushyStudio`, run these commands in a terminal:
 
 ```sh
 git clone https://github.com/rvion/CushyStudio
 cd CushyStudio
 npm install
-npm start
 ```
 
-# Quickstart Guide
+## 2.2. Starting
 
-When you start `CushyStudio` ... TODO
+You can start `CushyStudio` in two ways:
 
-## See it in action
+- by running `npm start` in a terminal, at the root of you CushyStudio install
+- by running the `2_run.sh` (mac, linux) or `2_run.bat` (window)
 
-# Global Video
 
-TODO: place video here
+## 2.3. Updating
 
-# Screenshots
+you can update `CushyStudio` in 3 ways:
 
-# Features
+- 1. Using the update button in the top navbar
+- 2. By running the `1_update.sh` (mac, linux) or `1_update.sh` (window)
+- 3. By running in a terminal:
+  ```
+  git pull
+  npm install
+  ```
 
-## Work with remote ComfyUI as if they were local
+⚠️ some update will require you to close `CushyStudio` first, for `npm install` to work properly.
+If in-app (1) update fails, try to close Cushy and run other update methods (2, 3)
+
+<!-- ## 2.4. See it in action -->
+
+## 2.4. Core concepts
+
+- `Library`
+
+
+## 2.5. Moving around
+
+- `CushyStudio` use a powerful `dock` system to organize your workspace.
+- every panel can be moved around, and even detached from the main window.
+
+the top bar
+
+## 2.6. Use built-in cards
+
+- Use the `Library` panel to select the `CushyStudio/prompt` card.
+- pick a model and click `run` to see it in action
+
+## 2.7. Install custom cards
+
+- Open the `Library` panel to select the `CushyStudio/prompt` card.
+
+
+## 2.8. create custom cards
+
+# 3. Features
+
+## 3.1. support `Local`, `Remote`, and `Cloud` ComfyUI instances
 
 -   Automatically download images in your local outputs folder
--   Automatically upload files
+-   Automatically upload missing files
+-   powerfull image hashing system to avoid duplicate uploads
 
-## Switch between ComfyUI remotes like you would
+## 3.2. support multiple-ComfyUI support
 
 -   ✅ Quickly switch between various ComfyUI setups
--   ⏳ Parallelize work across multiple instances
+-   ✅ Parallelize work across multiple instances
 
-Edit the list of ComfyUI setups in `CONFIG.json`
+Edit the list of ComfyUI setups in `CONFIG.json` or click the `HOSTS` button in the top bar to configure your instances.
 
 ![](docs/static/img/screenshots/2023-10-18-21-41-49.png)
 
 https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-294572450b32
 
-## ComfyUI compatible: Convert workflow to Action.
+## 3.3. ComfyUI compatible: Convert workflow to Action.
 
 **_🛋️ CushyStudio_** is directly compatible with **_ComfyUI_** workflow json format and images. Add them to the action folder to quickly use them inside CushyStudio.
 
-## Real-time enabled
+## 3.4. Real-time enabled
 
 https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852b17894dc
 
-## Built-in CivitAI integration
+## 3.5. CivitAI integration
 
 ![](docs/static/img/screenshots/2023-10-19-00-31-02.png)
 
@@ -164,13 +227,13 @@ https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852
 -   ✅ Civitai custom ComfyUI Nodes support
 -   ✅ Dedicated Civitai input widgets to augment your own actions
 
-## Built-in full-featured Image Editor
+## 3.6. Built-in full-featured Image Editor
 
 Layers, effects, masks, blending modes, ...and more. Always one click away
 
 ![](docs/static/img/screenshots/2023-10-18-22-51-22.png)
 
-## Easy to extend
+## 3.7. Easy to extend
 
 👉 In case you have a problem, check the logs and report what you see
 
@@ -181,7 +244,7 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 
 </details>
 
-## 3. Create your own Actions to streamline any image or video production
+## 3.8. Create your own Actions to streamline any image or video production
 
 ![](docs/static/img/screenshots/2023-09-29-22-35-25.png)
 
@@ -198,82 +261,70 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
     2. A built-in standard library made to quickly build your dream workflow
     3. Use lambda to get completion only for the node that produces the value needed
 
-<!-- global config file to change the path to ComfyUI:
+# 4. Quickstart Guide For Action Creators
 
-```
-./workspace/CONFIG.json
-``` -->
+Creating `cards` is easy.
+In this section, we'll see how to create a simple card.
 
-<!--
+## Card creation basics: how does `CushySudio` Work
 
----
+1. On startup, **_CushyStudio_** connect to your **_ComfyUI_** server(s)
 
-# Features
+2. `CushyStudio` then scan you `ComfyUI` install and generates whole **_TypeScript SDK_** supporting all your custom nodes, assets, models instaleld, etc.
 
-- Custom nodes
-- maximum type safety when writing scripts
--->
+3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create actions with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
+    - 👉 this file is updated after each ComfyUI connection.
+    - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
----
 
-# Quickstart Guide For Action Creators
+##  4.1. Create your first deck
 
-**_🛋️ CushyStudio_** comes packed with features to allow you to create your own AI-powered image and video creation tools.
-
-In Cushy, tools are called `Actions`.
-
-Creating actions is easy because `🛋️ CushyStudio`
-
-1. On startup, ensure **_CushyStudio_** is connected to some **_ComfyUI_** server
-
-    - A whole **_TypeScript Action SDK_** will be generated in the `schema/` folder
-    - All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create actions with maximum type safety and completion.
-
-1. Create a folder in the `actions/` subfolder at the root
-1. Create any `myaction.ts` file inside this folder
-1. Open the whole **_CushyStudio_** repository in **_Visual Studio Code_**
+![](./docs/static/img/screenshots/2023-11-01-18-58-13.webp)
+2. Create a folder in the `actions/` subfolder at the root
+3. Create any `myaction.ts` file inside this folder
+4. Open the whole **_CushyStudio_** repository in **_Visual Studio Code_**
 
     - 👉 Open the whole CushyStudio installed repository
     - NOT just the action folder, NOR the action file itself, but:
 
-1. Initialize your action from some basic code or generated code from existing workflows
+5. Initialize your action from some basic code or generated code from existing workflows
 
-    ```ts
-    action('demo1-basic', {
-        author: 'rvion',
-        // A. define the UI
-        ui: (form) => ({
-            positive: form.str({ label: 'Positive', default: 'flower' }),
-        }),
-        // B. defined the execution logic
-        run: async (action, form) => {
-            //  build a ComfyUI graph
-            const graph = action.nodes
-            const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'albedobaseXL_v02.safetensors' })
-            const seed = action.randomSeed()
-            const sampler = graph.KSampler({
-                seed: seed,
-                steps: 20,
-                cfg: 14,
-                sampler_name: 'euler',
-                scheduler: 'normal',
-                denoise: 0.8,
-                model: ckpt,
-                positive: graph.CLIPTextEncode({ text: form.positive, clip: ckpt }),
-                negative: graph.CLIPTextEncode({ text: '', clip: ckpt }),
-                latent_image: graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 }),
-            })
+```ts
+action('demo1-basic', {
+    author: 'rvion',
+    // A. define the UI
+    ui: (form) => ({
+        positive: form.str({ label: 'Positive', default: 'flower' }),
+    }),
+    // B. defined the execution logic
+    run: async (action, form) => {
+        //  build a ComfyUI graph
+        const graph = action.nodes
+        const ckpt = graph.CheckpointLoaderSimple({ ckpt_name: 'albedobaseXL_v02.safetensors' })
+        const seed = action.randomSeed()
+        const sampler = graph.KSampler({
+            seed: seed,
+            steps: 20,
+            cfg: 14,
+            sampler_name: 'euler',
+            scheduler: 'normal',
+            denoise: 0.8,
+            model: ckpt,
+            positive: graph.CLIPTextEncode({ text: form.positive, clip: ckpt }),
+            negative: graph.CLIPTextEncode({ text: '', clip: ckpt }),
+            latent_image: graph.EmptyLatentImage({ width: 512, height: 512, batch_size: 1 }),
+        })
 
-            graph.SaveImage({
-                images: graph.VAEDecode({ samples: sampler, vae: ckpt }),
-                filename_prefix: 'ComfyUI',
-            })
+        graph.SaveImage({
+            images: graph.VAEDecode({ samples: sampler, vae: ckpt }),
+            filename_prefix: 'ComfyUI',
+        })
 
-            // run the graph you built
-            await action.PROMPT()
-        },
-    })
-    ```
+        // run the graph you built
+        await action.PROMPT()
+    },
+})
+```
 
 1. See how actions look like by dropping any **_ComfyUI_** `workflow` or `image` into the action and looking at the `converted.ts`
 
@@ -283,7 +334,108 @@ An Action is a file containing
 -   A piece of code that runs your action
 -   ...And more
 
-## Publish your Action pack
+## 4.2. Simple example
+
+### 4.2.1. define a modular UI kit
+
+The simplest way to modularize your `cards` is to build `prefabs`. `Prefabs` are functions that can add `widgets` (ui part) or `subgraphs` (execution part).
+
+
+Usually, each `deck` contain one or many  `prefab` files, such as `actions/CushyStudio/default/_prefab.ts`:
+
+![](./docs/static/img/screenshots/2023-11-01-18-27-38.webp)
+
+
+### 4.2.2. UI prefab
+
+#### 4.2.2.1. define a UI prefab
+
+to create a file that exports function that takes a `frormBuilder` as single parameter, and returns a widget.
+
+example:
+
+```ts
+// FILE: `_ui.ts`
+import type { FormBuilder } from 'src/controls/FormBuilder'
+
+// 📝 this is a self-contained UI kit you can use in any card you want.
+export const subform_startImage = (form: FormBuilder) =>
+    form.group({
+        items: () => ({
+            startImage: form.imageOpt({ group: 'latent' }),
+            width: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
+            height: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
+            batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 20 }),
+        }),
+    })
+```
+
+---
+
+#### 4.2.2.2. Use a UI Prefab
+
+To use this UI kit in your card, you can simply import it and use it in the `ui` function of your card.
+
+**Example**: in the `card1.ts` card, you can see that both fields `"a"` and `"b"` re-use the same helper
+
+```ts
+// FILE: `card1.ts`
+import { subform_startImage } from './_ui'
+
+card({
+    name: 'card1',
+    ui: (formBuilder) => {
+        return {
+            a: subform_startImage(formBuilder), // 👈 HERE
+            b: subform_startImage(formBuilder), // 👈 HERE
+            c: formBuilder.int({ default: 1 }),
+        }
+    },
+    run: async (flow, p) => {
+        flow.print(`startImage: ${p.a.startImage}`)
+        flow.print(`startImage: ${p.b.startImage}`)
+    },
+})
+```
+### 4.2.3. Execution Prefab
+
+The resulting card looks like this:
+
+![](./docs/static/img/screenshots/2023-11-01-18-20-20.webp)
+
+
+
+## 4.3. Various Function notations
+
+Be careful to understand those various notations for functions
+
+
+### 4.3.1. the special `() => ({ })` notation to return objects in a single line
+
+
+```ts
+const fn = () => ({ a: 1 })
+//               👆      👆
+
+```
+
+This is equivalent to:
+
+```ts
+const fn = () => {
+    return {a: 1}
+}
+```
+
+or to
+
+```ts
+function fn() {
+    return {a: 1}
+}
+```
+
+## 4.4. Publish your Deck
 
 Publishing your action is easy!
 
@@ -291,9 +443,11 @@ Publishing your action is easy!
 
     ![](docs/static/img/screenshots/2023-10-18-23-15-11.png)
 
-2.  Commit your actions files (follow instructions given by Git Hub on the new repository page).
+2.  Commit your actions files
+    1.  you can one-click the `publish` button in your deck entry in the library
+    2.  or youyou can follow instructions given by Git Hub on the new repository page
 
-3.  Open an issue asking to add your `action pack` to the `marketplace`.
+3.  Open an issue asking to add your `Deck` to the `Library`.
 
     -   https://github.com/rvion/CushyStudio/issues/new/choose
 

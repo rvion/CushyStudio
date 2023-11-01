@@ -325,6 +325,8 @@ export class CushyLayoutManager {
     build = (): IJsonModel => {
         const out: IJsonModel = {
             global: {
+                borderSize: 8,
+                tabSetTabStripHeight: 22,
                 enableEdgeDock: true,
                 tabSetMinHeight: 64,
                 tabSetMinWidth: 64,
@@ -344,7 +346,7 @@ export class CushyLayoutManager {
                                 enableSingleTabStretch: true,
                                 minWidth: 200,
                                 width: 300,
-                                children: [this._persistentTab({ name: 'FileList', widget: Widget.FileList, id: '/Library' })],
+                                children: [this._persistentTab({ name: 'Library', widget: Widget.FileList, id: '/Library' })],
                             },
                             {
                                 type: 'tabset',
@@ -399,7 +401,7 @@ export class CushyLayoutManager {
                             // },
                             {
                                 type: 'tabset',
-                                minWidth: 300,
+                                minWidth: 150,
                                 minHeight: 300,
                                 children: [
                                     this._persistentTab({ name: 'Last Image', id: '/lastImage', widget: Widget.LastIMage }),
@@ -407,7 +409,7 @@ export class CushyLayoutManager {
                             },
                             {
                                 type: 'tabset',
-                                minWidth: 300,
+                                minWidth: 150,
                                 children: [this._persistentTab({ name: 'Runs', id: '/steps', widget: Widget.Steps })],
                             },
                         ],

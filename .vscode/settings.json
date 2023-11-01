@@ -39,5 +39,24 @@
         "package-lock.json": true
     },
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
-    "typescript.tsc.autoDetect": "off"
+    "typescript.tsc.autoDetect": "off",
+
+    "markdown.extension.toc.omittedFromToc": {
+        "actions/CushyStudio/tutorial/reusable-ui-kits/readme.md": [
+            //
+            "# Modular decks example"
+        ],
+        // Use a path relative to your workspace.
+        "README.md": [
+            //
+            "# 🛋️ CushyStudio",
+            "## _The **easiest** and most **powerful** Stable Diffusion frontend_",
+            "# Table of content",
+            "## Table of content"
+            // "# Introduction",
+            // "## Also omitted"
+        ],
+        // Or an absolute path for standalone files.
+        "/home/foo/Documents/todo-list.md": ["## Shame list (I'll never do these)"]
+    }
 }

@@ -28,7 +28,7 @@ const ui = (form: FormBuilder) => ({
     // Main cards
     illustrations: form.group({
         layout: 'H',
-        className: 'p-2 bg-red-800',
+        // className: 'p-2 bg-red-800',
         items: () => ({
             Jack: form.str({ default: 'gold, Knight', group: 'illusration' }),
             Queen: form.str({ default: 'gold, Queen', group: 'illusration' }),
