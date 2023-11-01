@@ -11,10 +11,10 @@
 </div>
 
 
-- [1. CushyStudio **_Cards_**: self-contained mini Stable diffusion apps](#1-cushystudio-cards-self-contained-mini-stable-diffusion-apps)
-  - [1.1. **_Cards_** are simple to use.](#11-cards-are-simple-to-use)
-  - [1.2. **_Cards_** are pleasant to make](#12-cards-are-pleasant-to-make)
-  - [1.3. **_Cards_** are easy to share](#13-cards-are-easy-to-share)
+- [1. CushyStudio **Cards**: self-contained mini Stable diffusion apps](#1-cushystudio-cards-self-contained-mini-stable-diffusion-apps)
+  - [1.1. **Cards** are simple to use.](#11-cards-are-simple-to-use)
+  - [1.2. **Cards** are pleasant to make](#12-cards-are-pleasant-to-make)
+  - [1.3. **Cards** are easy to share](#13-cards-are-easy-to-share)
 - [2. Quickstart Guide](#2-quickstart-guide)
   - [2.1. Installation](#21-installation)
   - [2.2. Starting](#22-starting)
@@ -51,11 +51,11 @@
   - [5.2. Q: Why the AGPL and not the GPLV3?](#52-q-why-the-agpl-and-not-the-gplv3)
   - [5.3. Q: Any plans for a paid version of **CushyStudio**?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
 
-# 1. CushyStudio **_Cards_**: self-contained mini Stable diffusion apps
+# 1. CushyStudio **Cards**: self-contained mini Stable diffusion apps
 
--   CushyStudio **_Cards_** are interactive generative "apps" with dedicated UIs.
+-   CushyStudio **Cards** are interactive generative "apps" with dedicated UIs.
 -   They make it super easy and fun to explore all generative art has to offer.
--   CushyStudio allows you to run, create, and share **_Cards_**
+-   CushyStudio allows you to run, create, and share **Cards**
 
 
 <img src='docs/static/img/screenshots/2023-10-18-22-12-01.png' style='width:60%'></img> <img src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:30%'></img>
@@ -65,7 +65,7 @@ test</div>  -->
 
 <!-- ---------------------------------------------- -->
 
-## 1.1. **_Cards_** are simple to use.
+## 1.1. **Cards** are simple to use.
 
 -   ✅ Non-technical **_Card_** interfaces
 
@@ -75,7 +75,7 @@ test</div>  -->
 -   🚂 Fast previews, real-time feedback
 
     -   Interactive at its core
-    -   Real-time actions with continuous generations
+    -   Real-time **cards** with continuous generations
 
 -   🖌️ Built-in commodities
 
@@ -85,7 +85,7 @@ test</div>  -->
 <!-- <img src='docs/static/img/screenshots/2023-10-23-19-04-01.png' style='width:100%'></img> -->
 
 
-## 1.2. **_Cards_** are pleasant to make
+## 1.2. **Cards** are pleasant to make
 
 -   🚀 CushyStudio comes with amakes it easy to build cards
 
@@ -112,7 +112,7 @@ test</div>  -->
     -   Share your actions with the world
 
 
-## 1.3. **_Cards_** are easy to share
+## 1.3. **Cards** are easy to share
 
 -  📦 one-click create your custom `Deck`
 
@@ -268,7 +268,7 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 
 # 4. Quickstart Guide For Action Creators
 
-Creating **_Cards_** is easy.
+Creating **Cards** is easy.
 In this section, we will
 
 - understand how **CushyStudio** works,
@@ -282,7 +282,7 @@ In this section, we will
 
 2. **CushyStudio** then scan you `ComfyUI` install and generates whole **_TypeScript SDK_** supporting all your custom nodes, assets, models instaleld, etc.
 
-3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create **_Cards_** with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
+3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create **Cards** with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
     - 👉 this file is updated after each ComfyUI connection.
     - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
@@ -313,7 +313,7 @@ card({
 
 A `Deck` is a folder containing
 
-  - a list of **_Cards_**
+  - a list of **Cards**
   - a list of `assets`
   - a list of `prefabs`
   - some `documentation` about how to use those cards
@@ -411,23 +411,23 @@ An `Card` is a file containing
 
 ## 4.5. `Prefabs` so you don't repeat yourself
 
-The simplest way to modularize your **_Cards_** is to build `prefabs`.
+The simplest way to modularize your **Cards** is to build `prefabs`.
 
 - `Prefabs` allow you to re-use parts of your cards in other cards.
 - `Prefabs` allow you to re-use parts of your cards multiple times in your card
 - `Prefabs` are functions that can add `widgets` (ui part) or `subgraphs` (execution part).
-- `Prefabs` allow you to build complex actions very efficiently.
+- `Prefabs` allow you to build complex cards very efficiently.
 
 _Best practices:_
 
 - Usually, your `Deck` will contain one or many `prefab` files,
-- you can The main `prefab` used by the built-in `deck` here: `actions/CushyStudio/default/_prefab.ts`:
+- you can The main `prefab` used by the built-in `deck` here: `library/CushyStudio/default/_prefab.ts`:
 
 
 ### 4.5.1. prefabs are just functions.
 
 - 👉 a `ui prefab` is a `function` that takes a `formBuilder` and returns a `Widget`.
-- 👉 a `run prefab` is a function that takes a `runtime` and modify it's `graph` or performother actions.
+- 👉 a `run prefab` is a function that takes a `runtime` and modify it's `graph` or perform other actions.
 - 👉 a `util prefab` is an helper function that do whatever.
 
 example:
@@ -497,7 +497,7 @@ The resulting card looks like this:
 
 **CushyStudio** aims to be accessible to non-programmers, while still being powerful enough for advanced users. You don't need to know typescript to get started, you can just learn what you need along the way.
 
-This section is not a typescript tutorial, but rather a list of points of attention you may need to pay attention when building actions if you're not a typescript develloper.
+This section is not a typescript tutorial, but rather a list of points of attention you may need to pay attention when building cards if you're not a typescript develloper.
 
 Be careful to understand those various notations for functions
 
@@ -529,7 +529,7 @@ function fn() {
 
 ## 4.7. Publish your Deck
 
-Publishing your action is easy!
+Publishing your deck/cards is easy!
 
 1. When creating a deck, **CushyStudio** automatically
    1. initialize the git repository for you.
@@ -540,7 +540,7 @@ Publishing your action is easy!
 
     ![](docs/static/img/screenshots/2023-10-18-23-15-11.png)
 
-3.  Commit your actions files
+3.  Commit your deck files
     1.  you can one-click the `publish` button in your deck entry in the library
     2.  or youyou can follow instructions given by Git Hub on the new repository page
 
@@ -552,7 +552,7 @@ Publishing your action is easy!
 <summary>SHOW EXAMPLE</summary>
 
 ```sh
-cd actions/rvion
+cd library/rvion
 
 git init
 Initialized empty Git repository in /Users/loco/dev/CushyStudio/library/rvion/.git/
@@ -567,7 +567,7 @@ git commit -m "first commit"
  create mode 100644 replace-part.ts
  create mode 100644 test.ts
 
-git remote add origin git@github.com:rvion/cushy-example-actions.git
+git remote add origin git@github.com:rvion/cushy-example-deck.git
 ```
 
 Then open an issue asking [there](https://github.com/rvion/CushyStudio/issues/new/choose)
