@@ -1,3 +1,15 @@
+/**
+ * This file contains all the prefabs that are used in the default card.
+ *
+ * naming convention:
+ *
+ * - `ui` functions are prefixed with `ui`
+ * - `run` functions are prefixed with `run`
+ *
+ * make sure you only impot types from this file
+ * 🟢 import type {...} from '...'
+ * ❌ import {...} from '...'`
+ * */
 import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ReqResult } from 'src/controls/IWidget'
@@ -8,7 +20,7 @@ import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<ReturnType<UIFn>>
 
 // -----------------------------------------------------------
-export const ui_sampler = (form: FormBuilder) => {
+export const uiSampler = (form: FormBuilder) => {
     return form.group({
         items: () => ({
             modelName: form.enum({
@@ -31,7 +43,7 @@ export const ui_sampler = (form: FormBuilder) => {
     })
 }
 
-export const run_sampler = (p: {
+export const runSampler = (p: {
     //
     flow: Runtime
     ckpt: HasSingle_VAE & HasSingle_CLIP
@@ -39,7 +51,7 @@ export const run_sampler = (p: {
     latent: HasSingle_LATENT
     positive: string
     negative: string
-    model: OutputFor<typeof ui_sampler>
+    model: OutputFor<typeof uiSampler>
     preview?: boolean
 }): VAEDecode => {
     const graph = p.flow.nodes
@@ -68,7 +80,7 @@ export const run_sampler = (p: {
     return image
 }
 // ---------------------------------------------------------
-export const ui_themes = (form: FormBuilder) =>
+export const uiThemes = (form: FormBuilder) =>
     form.list({
         element: () =>
             form.group({
@@ -90,7 +102,7 @@ export const ui_themes = (form: FormBuilder) =>
 
 //-----------------------------------------------------------
 // UI PART
-export const ui_latent = (form: FormBuilder) => {
+export const uiLatent = (form: FormBuilder) => {
     return form.group({
         items: () => ({
             image: form.imageOpt({ group: 'latent' }),
@@ -103,10 +115,10 @@ export const ui_latent = (form: FormBuilder) => {
 }
 
 // RUN PART
-export const run_latent = async (p: {
+export const runLatent = async (p: {
     //
     flow: Runtime
-    opts: OutputFor<typeof ui_latent>
+    opts: OutputFor<typeof uiLatent>
     vae: _VAE
 }) => {
     // init stuff
@@ -157,7 +169,7 @@ export const braceExpansion = (str: string): string[] => {
 }
 
 // --------------------------------------------------------
-export const run_prompt = (
+export const runPrompt = (
     flow: Runtime,
     promptResult: WidgetPromptOutput,
     startingClipAndModel: HasSingle_CLIP & HasSingle_MODEL,
@@ -193,19 +205,19 @@ export const run_prompt = (
     }
 }
 
-export const ui_vaeName = (form: FormBuilder) =>
+export const uiVaeName = (form: FormBuilder) =>
     form.enumOpt({
         label: 'VAE',
         enumName: 'Enum_VAELoader_vae_name',
     })
 
-export const ui_modelName = (form: FormBuilder) =>
+export const uiModelName = (form: FormBuilder) =>
     form.enum({
         label: 'Checkpoint',
         enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
     })
 
-export const ui_resolutionPicker = (form: FormBuilder) =>
+export const uiResolutionPicker = (form: FormBuilder) =>
     form.selectOne({
         label: 'Resolution',
         choices: [
@@ -223,7 +235,7 @@ export const ui_resolutionPicker = (form: FormBuilder) =>
     })
 
 /** allow to easilly pick a shape */
-export const ui_shapePicker_round_or_square = (form: FormBuilder) => {
+export const uiShapePickerBasic = (form: FormBuilder) => {
     return form.selectOne({
         label: 'Shape',
         choices: [{ type: 'round' }, { type: 'square' }],
@@ -231,7 +243,7 @@ export const ui_shapePicker_round_or_square = (form: FormBuilder) => {
 }
 
 /** allow to easilly pick any shape given as parameter */
-export const ui_shapePicker = <const T extends string>(form: FormBuilder, values: T[]) => {
+export const uiShapePickerExt = <const T extends string>(form: FormBuilder, values: T[]) => {
     return form.selectOne({
         label: 'Shape',
         choices: values.map((t) => ({ type: t })),

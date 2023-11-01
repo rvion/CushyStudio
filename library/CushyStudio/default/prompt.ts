@@ -22,7 +22,7 @@ action({
         // prompt
         positive: form.prompt({}),
         negative: form.prompt({ default: 'nsfw, nude' }),
-        latent: _.ui_latent(form),
+        latent: _.uiLatent(form),
         // latent2: $.startImage(),
         // latents: form.list({
         //     element: () => $.startImage(),
@@ -71,11 +71,11 @@ action({
         let clipAndModelPositive: _CLIP & _MODEL = ckpt
         let clipAndModelNegative: _CLIP & _MODEL = ckpt
 
-        const x = _.run_prompt(flow, p.positive, clipAndModelPositive)
+        const x = _.runPrompt(flow, p.positive, clipAndModelPositive)
         clipAndModelPositive = x.clipAndModel
         const positiveText = x.text
 
-        const y = _.run_prompt(flow, p.negative, clipAndModelPositive)
+        const y = _.runPrompt(flow, p.negative, clipAndModelPositive)
         clipAndModelNegative = y.clipAndModel
         const negativeText = y.text
 
@@ -101,7 +101,7 @@ action({
 
         // flow.print(`startImage: ${p.startImage}`)
 
-        let { latent: LATENT } = await _.run_latent({ flow, opts: p.latent, vae })
+        let { latent: LATENT } = await _.runLatent({ flow, opts: p.latent, vae })
         // const startImage = p.latent.startImage
         //     ? graph.VAEEncode({
         //           pixels: await flow.loadImageAnswer(p.latent.startImage),

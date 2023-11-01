@@ -6,11 +6,11 @@ action({
     description: 'Make a Image',
     help: 'Find me on the CushyStudio Discord as Vinsi',
     ui: (form) => ({
-        startImage: _.ui_latent(form),
-        model: _.ui_sampler(form),
+        startImage: _.uiLatent(form),
+        model: _.uiSampler(form),
         positive: form.prompt({ label: 'Positive prompt' }),
         negative: form.prompt({ label: 'Negative prompt' }),
-        themesHead: _.ui_themes(form),
+        themesHead: _.uiThemes(form),
     }),
     run: async (flow, p) => {
         const graph = flow.nodes
@@ -22,8 +22,8 @@ action({
         let clipAndModelPositive: HasSingle_CLIP & HasSingle_MODEL = ckpt
         let clipAndModelNegative: HasSingle_CLIP & HasSingle_MODEL = ckpt
 
-        const posRes = _.run_prompt(flow, p.positive, clipAndModelPositive)
-        const negRes = _.run_prompt(flow, p.negative, clipAndModelNegative)
+        const posRes = _.runPrompt(flow, p.positive, clipAndModelPositive)
+        const negRes = _.runPrompt(flow, p.negative, clipAndModelNegative)
         clipAndModelPositive = posRes.clipAndModel
         clipAndModelPositive = negRes.clipAndModel
         positive += posRes.text
@@ -32,7 +32,7 @@ action({
 
         const clipAndModel = clipAndModelPositive
 
-        let { latent } = await _.run_latent({ flow, opts: p.startImage, vae: ckpt })
+        let { latent } = await _.runLatent({ flow, opts: p.startImage, vae: ckpt })
 
         if (p.themesHead.length != 0) {
             for (const themeHead of p.themesHead) {
@@ -40,7 +40,7 @@ action({
                     flow.print(theme.text)
                     let posit_text = _.braceExpansion(`${positive}, ${themeHead.text} ${theme.text}`)
                     for (const text of posit_text) {
-                        const image = _.run_sampler({
+                        const image = _.runSampler({
                             flow,
                             ckpt,
                             clipAndModel,
@@ -57,7 +57,7 @@ action({
             let posit_text = _.braceExpansion(`${positive}`)
 
             for (const text of posit_text) {
-                const image = _.run_sampler({
+                const image = _.runSampler({
                     flow,
                     ckpt,
                     clipAndModel,
