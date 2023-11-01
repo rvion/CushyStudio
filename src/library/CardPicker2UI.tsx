@@ -26,7 +26,7 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
             {tb.favoritesFolded ? null : tb.allFavorites.map((af) => <ActionEntryUI key={af.relPath} af={af} />)}
             {/* INSTALLED */}
             <div tw='flex flex-col'>
-                {tb.packsSorted.map((pack) => (
+                {tb.decksSorted.map((pack) => (
                     <ActionPackUI key={pack.folderRel} pack={pack} />
                 ))}
             </div>

@@ -16,7 +16,7 @@ import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
 import { exhaust } from '../utils/ComfyUtils'
 import { ManualPromise } from '../utils/ManualPromise'
-import { ActionLibrary } from './Library'
+import { Library } from './Library'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -45,7 +45,7 @@ export class CardFile {
 
     constructor(
         //
-        public library: ActionLibrary,
+        public library: Library,
         public pack: Deck,
         public absPath: AbsolutePath,
         public relPath: CardPath,

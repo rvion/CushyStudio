@@ -13,17 +13,17 @@ import { hasValidActionExtension } from '../back/ActionExtensions'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { CardFile } from './CardFile'
 
-export class ActionLibrary {
+export class Library {
     updatedAt = 0
     fileTree: ItemDataType[] = []
     cardsByPath = new Map<CardPath, CardFile>()
     folderMap = new Set<RelativePath>()
-    rootActionFolder: AbsolutePath
+    rootLibraryFolder: AbsolutePath
 
     // --------------------------
-    packs: Deck[] = []
-    get packsSorted(): Deck[] {
-        return [...this.packs].sort((a, b) => {
+    decks: Deck[] = []
+    get decksSorted(): Deck[] {
+        return [...this.decks].sort((a, b) => {
             return b.score - a.score
         })
     }
@@ -34,7 +34,7 @@ export class ActionLibrary {
         if (prev) return prev
         const next = new Deck(this, folder)
         this.packsByFolder.set(folder, next)
-        this.packs.push(next)
+        this.decks.push(next)
         return next
     }
 
@@ -53,7 +53,7 @@ export class ActionLibrary {
     ) {
         // Watching a single path
 
-        this.rootActionFolder = st.actionsFolderPathAbs
+        this.rootLibraryFolder = st.actionsFolderPathAbs
         const included = st.typecheckingConfig.value.include
         const includedCards = included.filter(
             (x) =>

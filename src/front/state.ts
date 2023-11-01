@@ -10,7 +10,7 @@ import { createRef } from 'react'
 import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 
-import { ActionLibrary } from 'src/library/Library'
+import { Library } from 'src/library/Library'
 import { ProjectL } from 'src/models/Project'
 import { ShortcutWatcher } from 'src/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/shortcuts/shortcuts'
@@ -98,7 +98,7 @@ export class STATE {
     updater: GitManagedFolder
     hovered: Maybe<HoveredAsset> = null
     electronUtils: ElectronUtils
-    library: ActionLibrary
+    library: Library
     schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
     importer: ComfyImporter
@@ -186,7 +186,7 @@ export class STATE {
             userName: 'rvion' as GithubUserName,
         })
         this.importer = new ComfyImporter(this)
-        this.library = new ActionLibrary(this)
+        this.library = new Library(this)
         ;(async () => {
             await this.schemaReady
             const project = this.startProjectV2()
