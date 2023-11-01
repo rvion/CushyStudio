@@ -109,7 +109,7 @@ test</div>  -->
 -   💪 From 0 to 100 in no time
 
     -   Modularize, reuse, and grow your toolset
-    -   Share your actions with the world
+    -   Share your deck/cards with the world
 
 
 ## 1.3. **Cards** are easy to share
@@ -230,7 +230,7 @@ https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852
 
 -   ✅ Embedded Civitai browser
 -   ✅ Civitai custom ComfyUI Nodes support
--   ✅ Dedicated Civitai input widgets to augment your own actions
+-   ✅ Dedicated Civitai input widgets to augment your allow your cards to select CivitAI models directly
 
 ## 3.6. Built-in full-featured Image Editor
 

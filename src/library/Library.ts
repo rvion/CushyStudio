@@ -55,12 +55,12 @@ export class ActionLibrary {
 
         this.rootActionFolder = st.actionsFolderPathAbs
         const included = st.typecheckingConfig.value.include
-        const includedActions = included.filter(
+        const includedCards = included.filter(
             (x) =>
                 x.startsWith('library/') && //
                 x.endsWith('/**/*'),
         )
-        const expanded = includedActions.map((x) => x.slice(8, -5))
+        const expanded = includedCards.map((x) => x.slice(8, -5))
         this.expanded = new Set(expanded)
         const cache = this.st.hotReloadPersistentCache
         if (cache.watcher) {
@@ -70,7 +70,7 @@ export class ActionLibrary {
         this.addKnownPacks()
         this.discoverAllCards()
 
-        // register watcher to properly reload all actions
+        // register watcher to properly reload all cards
         this.watcher = cache.watcher = new Watcher('library', {
             recursive: true,
             depth: 20,
@@ -92,7 +92,7 @@ export class ActionLibrary {
                 console.log(relPath)
                 const isInLibrary = relPath.startsWith('library/') || relPath.startsWith('library\\')
                 if (isInLibrary && relPath.endsWith('.ts')) {
-                    // TODO 🔴 need to reload all actions in tne pack, so `prefabs` properly "hot-reload"
+                    // TODO 🔴 need to reload all cards in tne deck, so `prefabs` properly "hot-reload"
                     const af = this.cardsByPath.get(asCardPath(relPath))
                     if (af == null) return console.log('file watcher update aborted: not an action')
                     af.load({ force: true })
@@ -111,7 +111,7 @@ export class ActionLibrary {
         this.getDeck('library/VinsiGit/Cushy_Action' as DeckFolder)
         this.getDeck('library/noellealarie/cushy-avatar-maker' as DeckFolder)
         this.getDeck('library/featherice/cushy-actions' as DeckFolder)
-        this.getDeck('library/rvion/cushy-example-actions' as DeckFolder)
+        this.getDeck('library/rvion/cushy-example-deck' as DeckFolder)
         this.getDeck('library/noellealarie/comfy2cushy-examples' as DeckFolder)
         this.getDeck('library/CushyStudio/default' as DeckFolder)
         this.getDeck('library/CushyStudio/cards' as DeckFolder)

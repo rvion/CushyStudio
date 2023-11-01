@@ -10,7 +10,7 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
     return (
         <>
             <TabUI>
-                <div>Actions</div>
+                <div>Cards</div>
                 <ActionPicker2UI />
                 <div>Files</div>
                 <ActionPicker1UI />
