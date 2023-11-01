@@ -15,8 +15,10 @@ import { CardFile } from './CardFile'
 
 export class ActionLibrary {
     updatedAt = 0
-    treeData: ItemDataType[] = []
-    actionsByPath = new Map<CardPath, CardFile>()
+    fileTree: ItemDataType[] = []
+    cardsByPath = new Map<CardPath, CardFile>()
+    folderMap = new Set<RelativePath>()
+    rootActionFolder: AbsolutePath
 
     // --------------------------
     packs: Deck[] = []
@@ -26,7 +28,7 @@ export class ActionLibrary {
         })
     }
     packsByFolder = new Map<DeckFolder, Deck>()
-    getCard = (path: CardPath): CardFile | undefined => this.actionsByPath.get(path)
+    getCard = (path: CardPath): CardFile | undefined => this.cardsByPath.get(path)
     getDeck = (folder: DeckFolder): Deck => {
         const prev = this.packsByFolder.get(folder)
         if (prev) return prev
@@ -91,7 +93,7 @@ export class ActionLibrary {
                 const isInLibrary = relPath.startsWith('library/') || relPath.startsWith('library\\')
                 if (isInLibrary && relPath.endsWith('.ts')) {
                     // TODO 🔴 need to reload all actions in tne pack, so `prefabs` properly "hot-reload"
-                    const af = this.actionsByPath.get(asCardPath(relPath))
+                    const af = this.cardsByPath.get(asCardPath(relPath))
                     if (af == null) return console.log('file watcher update aborted: not an action')
                     af.load({ force: true })
                 }
@@ -152,11 +154,12 @@ export class ActionLibrary {
         // writeFileSync(join(folder, 'cushy-deck.png'), ``)
         const deck = this.getDeck(folder)
         await deck.updater._gitInit()
+        this.findActionsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
         return deck
     }
 
     get allActions() {
-        return [...this.actionsByPath.values()]
+        return [...this.cardsByPath.values()]
     }
 
     get allFavorites(): CardFile[] {
@@ -164,23 +167,6 @@ export class ActionLibrary {
             .map((ap) => this.getCard(ap)!)
             .filter(Boolean)
     }
-
-    // get actionsByPack(): Map<ActionPackFolder, ActionFile[]> {
-    //     const map = new Map<ActionPackFolder, ActionFile[]>()
-    //     for (const af of this.allActions) {
-    //         const pack = af.actionPackFolderRel
-    //         const list = map.get(pack)
-    //         if (list == null) map.set(pack, [af])
-    //         else list.push(af)
-    //     }
-    //     return map
-    // }
-
-    // get actionsByPack(): {string, ActionFile[]> {
-    //     const entries = [...this._actionsByPack.entries()]
-    // }
-    folderMap = new Set<RelativePath>()
-    rootActionFolder: AbsolutePath
 
     // expand mechanism ----------------------------------------
     private expanded: Set<string>
@@ -209,15 +195,14 @@ export class ActionLibrary {
     // ---------------------------------------------------------
 
     discoverAllActions = (): boolean => {
-        const dir = this.st.actionsFolderPathAbs
-        this.treeData.splice(0, this.treeData.length) // reset
-        this.actionsByPath.clear() // reset
+        this.fileTree.splice(0, this.fileTree.length) // reset
+        this.cardsByPath.clear() // reset
         this.folderMap.clear() // reset
 
-        console.log(`[💙] TOOL: starting discovery in ${dir}`)
-        this.findActionsInFolder(dir, this.treeData)
+        console.log(`[💙] TOOL: starting discovery in ${this.st.actionsFolderPathAbs}`)
+        this.findActionsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
 
-        console.log(`[💙] TOOL: done walking, found ${this.actionsByPath.size} files`)
+        console.log(`[💙] TOOL: done walking, found ${this.cardsByPath.size} files`)
         this.updatedAt = Date.now()
         // await Promise.all([...this.filesMap.values()].map((f) => f.extractWorkflowsV2()))
         // console.log(`[💙] TOOL: all ${this.filesMap.size} files are ready`)
@@ -272,7 +257,7 @@ export class ActionLibrary {
                 } else {
                     const af = new CardFile(this, pack, absPath, actionPath)
                     pack.cards.push(af)
-                    this.actionsByPath.set(actionPath, af)
+                    this.cardsByPath.set(actionPath, af)
                 }
                 const treeEntry = { value: actionPath, label: file }
                 parentStack.push(treeEntry)
@@ -280,7 +265,7 @@ export class ActionLibrary {
         }
     }
 
-    debug = (at: ItemDataType = { children: this.treeData, label: 'root' }, level = 0) => {
+    debug = (at: ItemDataType = { children: this.fileTree, label: 'root' }, level = 0) => {
         const indent = ' '.repeat(level * 2)
         console.log(`|| ${indent}${at.label}`)
         if (at.children) {

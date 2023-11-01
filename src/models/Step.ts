@@ -71,7 +71,7 @@ export class StepL {
     parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
     outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
 
-    get actionFile(): CardFile | undefined { return this.st.library.actionsByPath.get(this.data.actionPath) } // prettier-ignore
+    get actionFile(): CardFile | undefined { return this.st.library.cardsByPath.get(this.data.actionPath) } // prettier-ignore
     get action() { return this.actionFile?.action } // prettier-ignore
 
     get name() { return this.data.name } // prettier-ignore

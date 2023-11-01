@@ -15,7 +15,7 @@ export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
             expandItemValues={library.expandedPaths}
             tw='overflow-x-hidden overflow-y-auto flex-grow h-full'
             key={st.library.updatedAt}
-            data={st.library.treeData}
+            data={st.library.fileTree}
             renderTreeIcon={(x) => {
                 return <>{x.expand ? '▿' : '▸'}</>
             }}
@@ -64,7 +64,7 @@ export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
 
                 const actionPath = asCardPath(value)
                 // 1. focus paf
-                const paf = st.library.actionsByPath.get(actionPath)
+                const paf = st.library.cardsByPath.get(actionPath)
                 if (paf == null) throw new Error(`paf not found for ${value}`)
                 st.layout.addAction(actionPath)
                 // pj.focusActionFile(paf)
