@@ -123,7 +123,7 @@ export class ActionLibrary {
         writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
         // prettier-ignore
         writeFileSync(join(folder, '_prefab.ts'), _FIX_INDENTATION`
-            import type { FormBuilder } from "src/controls/FormBuilder"
+            import type { FormBuilder } from "src/controls/FormBuilder"
             export const ui_vaeName = (form: FormBuilder) =>
                 form.enumOpt({
                     label: 'VAE',
