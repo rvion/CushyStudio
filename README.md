@@ -46,9 +46,9 @@
     - [4.6.1. the special `() => ({ })` notation to return objects in a single line](#461-the-special-----notation-to-return-objects-in-a-single-line)
   - [4.7. Publish your Deck](#47-publish-your-deck)
 - [5. Frequently Asked Questions:](#5-frequently-asked-questions)
-  - [5.1. Q: Will `CushyStudio` remain open source and free?](#51-q-will-cushystudio-remain-open-source-and-free)
+  - [5.1. Q: Will **CushyStudio** remain open source and free?](#51-q-will-cushystudio-remain-open-source-and-free)
   - [5.2. Q: Why the AGPL and not the GPLV3?](#52-q-why-the-agpl-and-not-the-gplv3)
-  - [5.3. Q: Any plans for a paid version of `CushyStudio`?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
+  - [5.3. Q: Any plans for a paid version of **CushyStudio**?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
 
 # 1. CushyStudio `Cards`: self-contained mini Stable diffusion apps
 
@@ -131,7 +131,7 @@ test</div>  -->
 
 ## 2.1. Installation
 
-During `Beta`, `CushyStudio` install is done manually with git.
+During `Beta`, **CushyStudio** install is done manually with git.
 
 Ensure you have the following installed:
 
@@ -139,7 +139,7 @@ Ensure you have the following installed:
 -   [ComfyUI](https://github.com/comfyanonymous/ComfyUI)
 -   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-Then, to install `CushyStudio`, run these commands in a terminal:
+Then, to install **CushyStudio**, run these commands in a terminal:
 
 ```sh
 git clone https://github.com/rvion/CushyStudio
@@ -149,7 +149,7 @@ npm install
 
 ## 2.2. Starting
 
-You can start `CushyStudio` in two ways:
+You can start **CushyStudio** in two ways:
 
 - by running `npm start` in a terminal, at the root of you CushyStudio install
 - by running the `2_run.sh` (mac, linux) or `2_run.bat` (window)
@@ -157,7 +157,7 @@ You can start `CushyStudio` in two ways:
 
 ## 2.3. Updating
 
-you can update `CushyStudio` in 3 ways:
+you can update **CushyStudio** in 3 ways:
 
 - 1. Using the update button in the top navbar
 - 2. By running the `1_update.sh` (mac, linux) or `1_update.sh` (window)
@@ -167,7 +167,7 @@ you can update `CushyStudio` in 3 ways:
   npm install
   ```
 
-⚠️ some update will require you to close `CushyStudio` first, for `npm install` to work properly.
+⚠️ some update will require you to close **CushyStudio** first, for `npm install` to work properly.
 If in-app (1) update fails, try to close Cushy and run other update methods (2, 3)
 
 <!-- ## 2.4. See it in action -->
@@ -179,7 +179,7 @@ If in-app (1) update fails, try to close Cushy and run other update methods (2, 
 
 ## 2.5. Moving around
 
-- `CushyStudio` use a powerful `dock` system to organize your workspace.
+- **CushyStudio** use a powerful `dock` system to organize your workspace.
 - every panel can be moved around, and even detached from the main window.
 
 the top bar
@@ -270,7 +270,7 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 Creating `cards` is easy.
 In this section, we will
 
-- understand how `CushyStudio` works,
+- understand how **CushyStudio** works,
 - see how to create a custom deck
 - see how to edit your cards
 - see how to publish your deck on the library
@@ -279,7 +279,7 @@ In this section, we will
 
 1. On startup, **_CushyStudio_** connect to your **_ComfyUI_** server(s)
 
-2. `CushyStudio` then scan you `ComfyUI` install and generates whole **_TypeScript SDK_** supporting all your custom nodes, assets, models instaleld, etc.
+2. **CushyStudio** then scan you `ComfyUI` install and generates whole **_TypeScript SDK_** supporting all your custom nodes, assets, models instaleld, etc.
 
 3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create `Cards` with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
     - 👉 this file is updated after each ComfyUI connection.
@@ -487,7 +487,7 @@ The resulting card looks like this:
 ## 4.6. Various Function notations
 
 
-`CushyStudio` aims to be accessible to non-programmers, while still being powerful enough for advanced users. You don't need to know typescript to get started, you can just learn what you need along the way.
+**CushyStudio** aims to be accessible to non-programmers, while still being powerful enough for advanced users. You don't need to know typescript to get started, you can just learn what you need along the way.
 
 This section is not a typescript tutorial, but rather a list of points of attention you may need to pay attention when building actions if you're not a typescript develloper.
 
@@ -523,7 +523,7 @@ function fn() {
 
 Publishing your action is easy!
 
-1. When creating a deck, `CushyStudio` automatically
+1. When creating a deck, **CushyStudio** automatically
    1. initialize the git repository for you.
    2. configure remote to point to the GitHub repository with the same name as your deck
       1.
@@ -573,16 +573,16 @@ Then open an issue asking [there](https://github.com/rvion/CushyStudio/issues/ne
 In case you want to know more about the CLA, here are some answers to questions you might have:
 If your questions are not covered, you can take a look at the full FAQ: https://github.com/rvion/CushyStudio/blob/master/docs/FAQ.md
 
-## 5.1. Q: Will `CushyStudio` remain open source and free?
+## 5.1. Q: Will **CushyStudio** remain open source and free?
 
-**A**: Absolutely! I'm committed to keeping `CushyStudio` 100% open source and free to use as a tool. Create assets, art, games – you name it. It's your creation, and I'm just here to help you make it.
+**A**: Absolutely! I'm committed to keeping **CushyStudio** 100% open source and free to use as a tool. Create assets, art, games – you name it. It's your creation, and I'm just here to help you make it.
 
 ## 5.2. Q: Why the AGPL and not the GPLV3?
 
-**A**: For now, `CushyStudio` is licensed under AGPL as I aim to guide the project towards sustainability. I plan to transition to GPLV3 in the future, once the project achieves a stable foundation. This choice is designed to safeguard the project and its dedicated community. Rest assured, utilizing `CushyStudio` for asset creation remains unrestricted. My primary intention is to prevent the unauthorized resale or commercialization of `CushyStudio` as a service.
+**A**: For now, **CushyStudio** is licensed under AGPL as I aim to guide the project towards sustainability. I plan to transition to GPLV3 in the future, once the project achieves a stable foundation. This choice is designed to safeguard the project and its dedicated community. Rest assured, utilizing **CushyStudio** for asset creation remains unrestricted. My primary intention is to prevent the unauthorized resale or commercialization of **CushyStudio** as a service.
 
-## 5.3. Q: Any plans for a paid version of `CushyStudio`?
+## 5.3. Q: Any plans for a paid version of **CushyStudio**?
 
-**A**: No, and that's a promise. `CushyStudio` will always be free and open source. While I do have plans to offer complementary services (like cloud GPU services), the core of `CushyStudio` will remain free for all. Again, I simply wish to prevent unauthorized resale or commercialization of `CushyStudio` as a service.
+**A**: No, and that's a promise. **CushyStudio** will always be free and open source. While I do have plans to offer complementary services (like cloud GPU services), the core of **CushyStudio** will remain free for all. Again, I simply wish to prevent unauthorized resale or commercialization of **CushyStudio** as a service.
 
-Thank you for your understanding and patience in going through this agreement. Together, let's make `CushyStudio` better for everyone! 💪🎉
+Thank you for your understanding and patience in going through this agreement. Together, let's make **CushyStudio** better for everyone! 💪🎉
