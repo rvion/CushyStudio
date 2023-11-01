@@ -4,7 +4,6 @@ action({
     author: 'VinsiGit',
     name: 'Normal',
     description: 'Make a Image',
-    help: 'Find me on the CushyStudio Discord as Vinsi',
     ui: (form) => ({
         startImage: ui_latent(form),
         model: ui_sampler(form),
