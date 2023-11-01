@@ -14,7 +14,7 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
         <>
             <CreateDeckBtnUI />
             {/* FAVORITES */}
-            {tb.allFavorites.length && (
+            {tb.allFavorites.length ? (
                 <div
                     tw='cursor-pointer items-center gap-1  hover:bg-gray-800 p-0.5 flex justify-between'
                     onClick={() => (tb.favoritesFolded = !tb.favoritesFolded)}
@@ -22,7 +22,7 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
                     <div>Favorite Cards</div>
                     <div>{tb.favoritesFolded ? '▸' : '▿'}</div>
                 </div>
-            )}
+            ) : null}
             {tb.favoritesFolded ? null : tb.allFavorites.map((af) => <ActionEntryUI key={af.relPath} af={af} />)}
             {/* INSTALLED */}
             <div tw='flex flex-col'>
