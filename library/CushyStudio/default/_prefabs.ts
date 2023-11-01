@@ -3,8 +3,8 @@
  *
  * naming convention:
  *
- * - `ui` functions are prefixed with `ui`
- * - `run` functions are prefixed with `run`
+ * - `ui`  functions are prefixed with `ui_`
+ * - `run` functions are prefixed with `run_`
  *
  * make sure you only impot types from this file
  * 🟢 import type {...} from '...'
@@ -20,7 +20,7 @@ import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<ReturnType<UIFn>>
 
 // -----------------------------------------------------------
-export const uiSampler = (form: FormBuilder) => {
+export const ui_sampler = (form: FormBuilder) => {
     return form.group({
         items: () => ({
             modelName: form.enum({
@@ -43,7 +43,7 @@ export const uiSampler = (form: FormBuilder) => {
     })
 }
 
-export const runSampler = (p: {
+export const run_sampler = (p: {
     //
     flow: Runtime
     ckpt: HasSingle_VAE & HasSingle_CLIP
@@ -51,7 +51,7 @@ export const runSampler = (p: {
     latent: HasSingle_LATENT
     positive: string
     negative: string
-    model: OutputFor<typeof uiSampler>
+    model: OutputFor<typeof ui_sampler>
     preview?: boolean
 }): VAEDecode => {
     const graph = p.flow.nodes
@@ -80,7 +80,7 @@ export const runSampler = (p: {
     return image
 }
 // ---------------------------------------------------------
-export const uiThemes = (form: FormBuilder) =>
+export const ui_themes = (form: FormBuilder) =>
     form.list({
         element: () =>
             form.group({
@@ -102,7 +102,7 @@ export const uiThemes = (form: FormBuilder) =>
 
 //-----------------------------------------------------------
 // UI PART
-export const uiLatent = (form: FormBuilder) => {
+export const ui_latent = (form: FormBuilder) => {
     return form.group({
         items: () => ({
             image: form.imageOpt({ group: 'latent' }),
@@ -115,10 +115,10 @@ export const uiLatent = (form: FormBuilder) => {
 }
 
 // RUN PART
-export const runLatent = async (p: {
+export const run_latent = async (p: {
     //
     flow: Runtime
-    opts: OutputFor<typeof uiLatent>
+    opts: OutputFor<typeof ui_latent>
     vae: _VAE
 }) => {
     // init stuff
@@ -154,7 +154,7 @@ export const runLatent = async (p: {
 }
 
 // --------------------------------------------------------
-export const braceExpansion = (str: string): string[] => {
+export const util_braceExpansion = (str: string): string[] => {
     const matches = str.match(/{([^{}]+)}/)
     if (!matches) {
         return [str]
@@ -162,14 +162,14 @@ export const braceExpansion = (str: string): string[] => {
     const parts = matches[1].split(',')
     const result: Set<string> = new Set()
     for (const part of parts) {
-        const expanded = braceExpansion(str.replace(matches[0], part))
+        const expanded = util_braceExpansion(str.replace(matches[0], part))
         expanded.forEach((item) => result.add(item))
     }
     return Array.from(result)
 }
 
 // --------------------------------------------------------
-export const runPrompt = (
+export const run_prompt = (
     flow: Runtime,
     promptResult: WidgetPromptOutput,
     startingClipAndModel: HasSingle_CLIP & HasSingle_MODEL,
@@ -205,19 +205,19 @@ export const runPrompt = (
     }
 }
 
-export const uiVaeName = (form: FormBuilder) =>
+export const ui_vaeName = (form: FormBuilder) =>
     form.enumOpt({
         label: 'VAE',
         enumName: 'Enum_VAELoader_vae_name',
     })
 
-export const uiModelName = (form: FormBuilder) =>
+export const ui_modelName = (form: FormBuilder) =>
     form.enum({
         label: 'Checkpoint',
         enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
     })
 
-export const uiResolutionPicker = (form: FormBuilder) =>
+export const ui_resolutionPicker = (form: FormBuilder) =>
     form.selectOne({
         label: 'Resolution',
         choices: [
@@ -235,7 +235,7 @@ export const uiResolutionPicker = (form: FormBuilder) =>
     })
 
 /** allow to easilly pick a shape */
-export const uiShapePickerBasic = (form: FormBuilder) => {
+export const ui_shapePickerBasic = (form: FormBuilder) => {
     return form.selectOne({
         label: 'Shape',
         choices: [{ type: 'round' }, { type: 'square' }],
@@ -243,7 +243,7 @@ export const uiShapePickerBasic = (form: FormBuilder) => {
 }
 
 /** allow to easilly pick any shape given as parameter */
-export const uiShapePickerExt = <const T extends string>(form: FormBuilder, values: T[]) => {
+export const ui_shapePickerExt = <const T extends string>(form: FormBuilder, values: T[]) => {
     return form.selectOne({
         label: 'Shape',
         choices: values.map((t) => ({ type: t })),
