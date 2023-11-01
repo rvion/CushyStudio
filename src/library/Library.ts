@@ -53,7 +53,7 @@ export class ActionLibrary {
     ) {
         // Watching a single path
 
-        this.rootActionFolder = st.libraryFolderPathAbs
+        this.rootActionFolder = st.actionsFolderPathAbs
         const included = st.typecheckingConfig.value.include
         const includedActions = included.filter(
             (x) =>
@@ -154,7 +154,7 @@ export class ActionLibrary {
         // writeFileSync(join(folder, 'cushy-deck.png'), ``)
         const deck = this.getDeck(folder)
         await deck.updater._gitInit()
-        this.recursivelyFindCardsInFolder(this.st.libraryFolderPathAbs, this.fileTree)
+        this.recursivelyFindCardsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
         return deck
     }
 
@@ -199,8 +199,8 @@ export class ActionLibrary {
         this.cardsByPath.clear() // reset
         this.folderMap.clear() // reset
 
-        console.log(`[💙] TOOL: starting discovery in ${this.st.libraryFolderPathAbs}`)
-        this.recursivelyFindCardsInFolder(this.st.libraryFolderPathAbs, this.fileTree)
+        console.log(`[💙] TOOL: starting discovery in ${this.st.actionsFolderPathAbs}`)
+        this.recursivelyFindCardsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
 
         console.log(`[💙] TOOL: done walking, found ${this.cardsByPath.size} files`)
         this.updatedAt = Date.now()
@@ -225,7 +225,7 @@ export class ActionLibrary {
             const stat = statSync(absPath)
             // const dirName = path.basename(filePath)
             if (stat.isDirectory()) {
-                const relPath = asRelativePath(path.relative(this.st.libraryFolderPathAbs, absPath))
+                const relPath = asRelativePath(path.relative(this.st.actionsFolderPathAbs, absPath))
                 // console.log('1', folderEntry)
                 const ARRAY: ItemDataType[] = []
                 this.folderMap.add(relPath)

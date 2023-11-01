@@ -84,8 +84,8 @@ export class STATE {
     comfyJSONPath: AbsolutePath
     embeddingsPath: AbsolutePath
     nodesTSPath: AbsolutePath
-    libraryFolderPathAbs: AbsolutePath
-    libraryFolderPathRel: RelativePath
+    actionsFolderPathAbs: AbsolutePath
+    actionsFolderPathRel: RelativePath
     outputFolderPath: AbsolutePath
     status: ComfyStatus | null = null
 
@@ -159,8 +159,8 @@ export class STATE {
         this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
 
-        this.libraryFolderPathRel = asRelativePath('library')
-        this.libraryFolderPathAbs = this.resolve(this.rootPath, this.libraryFolderPathRel)
+        this.actionsFolderPathRel = asRelativePath('library')
+        this.actionsFolderPathAbs = this.resolve(this.rootPath, this.actionsFolderPathRel)
 
         // config files
         this.typecheckingConfig = mkTypescriptConfig()

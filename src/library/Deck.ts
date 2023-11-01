@@ -79,10 +79,10 @@ export class Deck {
         this.githubUser = GithubUser.get(this.st, this.githubUserName, this.BUILT_IN)
         this.githubRepositoryName = asGithubRepoName(parts[1])
         this.githubRepository = GithubRepo.get(this.st, this.githubUser, this.githubRepositoryName, this.BUILT_IN)
-        this.authorFolderAbs = asAbsolutePath(join(this.st.libraryFolderPathAbs, parts[0]))
-        this.authorFolderRel = asRelativePath(join(this.st.libraryFolderPathRel, parts[0])) as AuthorFolder
-        this.folderAbs = asAbsolutePath(join(this.st.libraryFolderPathAbs, this.github))
-        this.folderRel = asRelativePath(join(this.st.libraryFolderPathRel, this.github)) as DeckFolder
+        this.authorFolderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, parts[0]))
+        this.authorFolderRel = asRelativePath(join(this.st.actionsFolderPathRel, parts[0])) as AuthorFolder
+        this.folderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, this.github))
+        this.folderRel = asRelativePath(join(this.st.actionsFolderPathRel, this.github)) as DeckFolder
         this.updater = new GitManagedFolder(this.library.st, {
             cwd: this.folderAbs,
             autoStart: false,
