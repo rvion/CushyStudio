@@ -11,10 +11,10 @@
 </div>
 
 
-- [1. CushyStudio `Cards`: self-contained mini Stable diffusion apps](#1-cushystudio-cards-self-contained-mini-stable-diffusion-apps)
-  - [1.1. `Cards` are simple to use.](#11-cards-are-simple-to-use)
-  - [1.2. `Cards` are pleasant to make](#12-cards-are-pleasant-to-make)
-  - [1.3. `Cards` are easy to share](#13-cards-are-easy-to-share)
+- [1. CushyStudio **_Cards_**: self-contained mini Stable diffusion apps](#1-cushystudio-cards-self-contained-mini-stable-diffusion-apps)
+  - [1.1. **_Cards_** are simple to use.](#11-cards-are-simple-to-use)
+  - [1.2. **_Cards_** are pleasant to make](#12-cards-are-pleasant-to-make)
+  - [1.3. **_Cards_** are easy to share](#13-cards-are-easy-to-share)
 - [2. Quickstart Guide](#2-quickstart-guide)
   - [2.1. Installation](#21-installation)
   - [2.2. Starting](#22-starting)
@@ -50,7 +50,7 @@
   - [5.2. Q: Why the AGPL and not the GPLV3?](#52-q-why-the-agpl-and-not-the-gplv3)
   - [5.3. Q: Any plans for a paid version of **CushyStudio**?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
 
-# 1. CushyStudio `Cards`: self-contained mini Stable diffusion apps
+# 1. CushyStudio **_Cards_**: self-contained mini Stable diffusion apps
 
 -   CushyStudio **_Cards_** are interactive generative "apps" with dedicated UIs.
 -   They make it super easy and fun to explore all generative art has to offer.
@@ -64,7 +64,7 @@ test</div>  -->
 
 <!-- ---------------------------------------------- -->
 
-## 1.1. `Cards` are simple to use.
+## 1.1. **_Cards_** are simple to use.
 
 -   ✅ Non-technical **_Card_** interfaces
 
@@ -84,7 +84,7 @@ test</div>  -->
 <!-- <img src='docs/static/img/screenshots/2023-10-23-19-04-01.png' style='width:100%'></img> -->
 
 
-## 1.2. `Cards` are pleasant to make
+## 1.2. **_Cards_** are pleasant to make
 
 -   🚀 CushyStudio comes with amakes it easy to build cards
 
@@ -111,7 +111,7 @@ test</div>  -->
     -   Share your actions with the world
 
 
-## 1.3. `Cards` are easy to share
+## 1.3. **_Cards_** are easy to share
 
 -  📦 one-click create your custom `Deck`
 
@@ -179,7 +179,7 @@ If in-app (1) update fails, try to close Cushy and run other update methods (2, 
 
 ## 2.5. Moving around
 
-- **CushyStudio** use a powerful `dock` system to organize your workspace.
+- **CushyStudio** use a powerful **dock** system to organize your workspace.
 - every panel can be moved around, and even detached from the main window.
 
 the top bar
@@ -267,7 +267,7 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 
 # 4. Quickstart Guide For Action Creators
 
-Creating `cards` is easy.
+Creating **_Cards_** is easy.
 In this section, we will
 
 - understand how **CushyStudio** works,
@@ -281,7 +281,7 @@ In this section, we will
 
 2. **CushyStudio** then scan you `ComfyUI` install and generates whole **_TypeScript SDK_** supporting all your custom nodes, assets, models instaleld, etc.
 
-3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create `Cards` with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
+3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create **_Cards_** with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
     - 👉 this file is updated after each ComfyUI connection.
     - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
@@ -312,7 +312,7 @@ card({
 
 A `Deck` is a folder containing
 
-  - a list of `cards`
+  - a list of **_Cards_**
   - a list of `assets`
   - a list of `prefabs`
   - some `documentation` about how to use those cards
@@ -410,7 +410,7 @@ An `Card` is a file containing
 
 ## 4.5. `Prefabs` so you don't repeat yourself
 
-The simplest way to modularize your `cards` is to build `prefabs`.
+The simplest way to modularize your **_Cards_** is to build `prefabs`.
 
 - `Prefabs` allow you to re-use parts of your cards in other cards.
 - `Prefabs` allow you to re-use parts of your cards multiple times in your card
