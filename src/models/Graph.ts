@@ -81,7 +81,6 @@ export class GraphL {
         return this.nodes.map((n) => n.$schema.nameInCushy)
     }
 
-    // actions = new LiveCollection<ActionL>(this, 'inputGraphID', 'actions')
     drafts = new LiveCollection<DraftL>(this, 'graphID', 'drafts')
     childSteps = new LiveCollection<StepL>(this, 'parentGraphID', 'steps')
     parentSteps = new LiveCollection<StepL>(this, 'outputGraphID', 'steps')

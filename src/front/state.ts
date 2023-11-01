@@ -143,8 +143,8 @@ export class STATE {
     /**  */
     updateTsConfig = () => {
         const finalInclude = ['src', 'schema/global.d.ts']
-        if (this.githubUsername) finalInclude.push(`actions/${this.githubUsername}/**/*`)
-        if (this.githubUsername === 'rvion') finalInclude.push('actions/CushyStudio/**/*')
+        if (this.githubUsername) finalInclude.push(`library/${this.githubUsername}/**/*`)
+        if (this.githubUsername === 'rvion') finalInclude.push('library/CushyStudio/**/*')
         this.typecheckingConfig.update({ include: finalInclude })
     }
 
@@ -159,7 +159,7 @@ export class STATE {
         this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
 
-        this.actionsFolderPathRel = asRelativePath('actions')
+        this.actionsFolderPathRel = asRelativePath('library')
         this.actionsFolderPathAbs = this.resolve(this.rootPath, this.actionsFolderPathRel)
 
         // config files

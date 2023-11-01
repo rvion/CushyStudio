@@ -1,39 +1,38 @@
 import type { CardFile } from './CardFile'
 
-import { exec } from 'child_process'
-import { existsSync, mkdirSync } from 'fs'
+import { existsSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { join } from 'pathe'
+import { assets } from 'src/assets/assets'
+import { GitManagedFolder } from 'src/front/updater'
 import { ActionLibrary } from 'src/library/Library'
 import { GithubRepo, GithubRepoName, asGithubRepoName } from 'src/library/githubRepo'
-import { GitManagedFolder } from 'src/front/updater'
 import { ManualPromise } from 'src/utils/ManualPromise'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { generateAvatar } from './AvatarGenerator'
 import { DeckManifest } from './DeckManifest'
-import { assets } from 'src/assets/assets'
-import { GithubUserName, GithubUser, asGithubUserName } from './GithubUser'
+import { GithubUser, GithubUserName, asGithubUserName } from './GithubUser'
 
-/** e.g. actions/rvion/foo */
+/** e.g. library/rvion/foo */
 export type DeckFolder = Branded<string, { ActionPackFolder: true; RelativePath: true }>
 
-/** e.g. actions/rvion */
+/** e.g. library/rvion */
 export type AuthorFolder = Branded<string, { ActionAuthorFolder: true; RelativePath: true }>
 
 /** a set of cards created by someone */
 export class Deck {
-    // "actions/rvion/cushy-example-actions"
+    // "library/rvion/example-deck"
     folderAbs: AbsolutePath
     folderRel: DeckFolder
 
-    // "actions/rvion/cushy-example-actions"
+    // "library/rvion/example-deck"
     authorFolderAbs: AbsolutePath
     authorFolderRel: AuthorFolder
 
     githubUserName: GithubUserName // "rvion"
     githubUser: GithubUser
-    githubRepositoryName: GithubRepoName // "cushy-example-actions"
+    githubRepositoryName: GithubRepoName // "example-deck"
     githubRepository: GithubRepo
 
     // -------------
@@ -56,7 +55,7 @@ export class Deck {
     github: string
     BUILT_IN: boolean
     manifest: DeckManifest = {}
-    actions: CardFile[] = []
+    cards: CardFile[] = []
 
     get description() {
         return this.manifest.description ?? ''
@@ -65,7 +64,7 @@ export class Deck {
     constructor(
         /** singleton libraray */
         public library: ActionLibrary,
-        /** e.g. "actions/rvion/foo" */
+        /** e.g. "library/rvion/foo" */
         public folder: DeckFolder,
     ) {
         const parts2 = folder.split('/')

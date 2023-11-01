@@ -14,7 +14,7 @@ export default defineConfig({
             // 'fs',
         ],
     },
-    publicDir: 'actions',
+    publicDir: 'library',
     plugins: [
         // dynamicModulePlugin(),
         react({ jsxImportSource: 'src/custom-jsx' }),
@@ -25,8 +25,8 @@ export default defineConfig({
         watch: {
             ignored: [
                 //
-                '**/actions/**/*.ts',
-                '**/actions/**/*.tsx',
+                '**/library/**/*.ts',
+                '**/library/**/*.tsx',
                 '**/tsconfig.custom.json',
                 '**/tsconfig.json',
             ],

@@ -42,7 +42,7 @@
     "typescript.tsc.autoDetect": "off",
 
     "markdown.extension.toc.omittedFromToc": {
-        "actions/CushyStudio/tutorial/reusable-ui-kits/readme.md": [
+        "library/CushyStudio/tutorial/reusable-ui-kits/readme.md": [
             //
             "# Modular decks example"
         ],

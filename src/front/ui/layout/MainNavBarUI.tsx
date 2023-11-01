@@ -38,12 +38,13 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
                 label='Cards'
             />
-            <MainNavEntryUI
-                onClick={() => st.layout.addMarketplace()}
+            {/* LEGACY MARKETPLACE */}
+            {/* <MainNavEntryUI
+                onClick={() => st.layout.addLibrary()}
                 ix='2'
                 icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
                 label='Apps'
-            />
+            /> */}
             <MainNavEntryUI
                 onClick={() => st.layout.addActionPickerTree()}
                 ix='2'

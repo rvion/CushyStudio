@@ -2,7 +2,6 @@ import type { NodeConfig } from 'konva/lib/Node'
 import type { ImageAndMask, Runtime } from 'src/back/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 
-import { prettifyIcon } from '../../rvion/private/cards/icons/TEST'
 type Value = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' | '10' | 'J' | 'Q' | 'K'
 type Suit = 'spades' | 'hearts' | 'clubs' | 'diamonds'
 

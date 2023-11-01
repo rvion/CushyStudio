@@ -42,7 +42,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
                         <Popover>
                             <div>
                                 Only folders in
-                                <Tag>actions/{githubUsername}/</Tag>
+                                <Tag>library/{githubUsername}/</Tag>
                                 will have type-checking in your vscode
                             </div>
                         </Popover>

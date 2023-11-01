@@ -9,27 +9,26 @@ import { openInVSCode } from 'src/utils/openInVsCode'
 import { ActionDraftListUI } from './ActionDraftListUI'
 import { ActionFormUI } from './ActionFormUI'
 
-export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: CardPath }) {
+export const CardUI = observer(function ActionFileUI_(p: { actionPath: CardPath }) {
     const st = useSt()
     const toolbox = st.library
-    const af = toolbox.getCard(p.actionPath)
-    // console.log('🟢', st.liveTime)
+    const card = toolbox.getCard(p.actionPath)
 
     useEffect(() => {
-        void af?.load()
-    }, [af])
+        void card?.load()
+    }, [card])
 
-    if (af == null)
+    if (card == null)
         return (
             <Message type='error'>
                 <pre tw='bg-red-900'>A. ❌ action file {JSON.stringify(p.actionPath)} not found</pre>
             </Message>
         )
 
-    const defaultDraft = af?.drafts[0]
+    const defaultDraft = card?.drafts[0]
     const errors =
-        af.errors.length > 0 ? ( //
-            <Message type='warning'>{JSON.stringify(af.errors, null, 4)}</Message>
+        card.errors.length > 0 ? ( //
+            <Message type='warning'>{JSON.stringify(card.errors, null, 4)}</Message>
         ) : null
 
     if (defaultDraft == null)
@@ -37,61 +36,31 @@ export const ActionFileUI = observer(function ActionFileUI_(p: { actionPath: Car
             <>
                 <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
                     {/* TITLE */}
-                    <span>{af.name}</span>
+                    <span>{card.name}</span>
                     {/* EDIT */}
                     <Button
                         size='xs'
                         color='blue'
                         appearance='ghost'
                         startIcon={<span className='material-symbols-outlined'>edit</span>}
-                        onClick={() => openInVSCode(cwd(), af.absPath)}
+                        onClick={() => openInVSCode(cwd(), card.absPath)}
                     >
                         Edit
                     </Button>
                 </div>
                 {/* {st.liveTime} */}
-                {af.action == null ? (
+                {card.action == null ? (
                     <Message type='error' showIcon>
                         <pre tw='bg-red-900'>B. ❌ action not found</pre>
-                        <pre>loadRequested: {af.loadRequested ? '🟢' : '❌'}</pre>
-                        <pre tw='bg-red-900'>{JSON.stringify(af.errors)}</pre>
+                        <pre>loadRequested: {card.loadRequested ? '🟢' : '❌'}</pre>
+                        <pre tw='bg-red-900'>{JSON.stringify(card.errors)}</pre>
                     </Message>
                 ) : null}
                 {errors}
                 {/* DRAFT LIST */}
-                <ActionDraftListUI af={af} />
+                <ActionDraftListUI af={card} />
             </>
         )
 
-    // return <div>nok</div>
     return <ActionFormUI draft={defaultDraft} />
-
-    // const paf = pj.activeFile
-    // if (paf == null) return null
-    // return (
-    //     <>
-    //         <ActionTabListUI />
-    //         <div className='flex flex-grow h-full'>
-    //             <div>{paf.loaded.done ? null : <Loader />}</div>
-    //             {paf.focus === 'action' && (
-    //                 <ResultWrapperUI res={paf.asAction} whenValid={(tac) => <ActionUI af={paf} tac={tac} />} />
-    //             )}
-    //             {paf.focus === 'autoaction' && (
-    //                 <ResultWrapperUI res={paf.asAutoAction} whenValid={(tac) => <ActionUI af={paf} tac={tac} />} />
-    //             )}
-    //             {paf.focus === 'png' && (
-    //                 <ResultWrapperUI res={paf.png} whenValid={(png) => <img src={`file://${png}`} alt='' />} />
-    //             )}
-    //             {paf.focus === 'workflow' && (
-    //                 <ResultWrapperUI res={paf.liteGraphJSON} whenValid={(png) => <ComfyUIUI litegraphJson={png} />} />
-    //             )}
-    //             {paf.focus === 'prompt' && (
-    //                 <ResultWrapperUI
-    //                     res={paf.liteGraphJSON}
-    //                     whenValid={(x) => <JSONHighlightedCodeUI code={JSON.stringify(x)} />}
-    //                 />
-    //             )}
-    //         </div>
-    //     </>
-    // )
 })

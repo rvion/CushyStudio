@@ -32,17 +32,23 @@
   - [3.5. CivitAI integration](#35-civitai-integration)
   - [3.6. Built-in full-featured Image Editor](#36-built-in-full-featured-image-editor)
   - [3.7. Easy to extend](#37-easy-to-extend)
-  - [3.8. Create your own Actions to streamline any image or video production](#38-create-your-own-actions-to-streamline-any-image-or-video-production)
+  - [3.8. Create your own Cards to streamline any image or video production](#38-create-your-own-cards-to-streamline-any-image-or-video-production)
 - [4. Quickstart Guide For Action Creators](#4-quickstart-guide-for-action-creators)
   - [4.1. How does `CushySudio` Work](#41-how-does-cushysudio-work)
-  - [4.2. Create your first deck](#42-create-your-first-deck)
-  - [4.3. `Prefabs` so you don't repeat yourself](#43-prefabs-so-you-dont-repeat-yourself)
-    - [4.3.1. prefabs are just functions.](#431-prefabs-are-just-functions)
-    - [4.3.2. Use a UI Prefab](#432-use-a-ui-prefab)
-    - [4.3.3. Execution Prefab](#433-execution-prefab)
-  - [4.4. Various Function notations](#44-various-function-notations)
-    - [4.4.1. the special `() => ({ })` notation to return objects in a single line](#441-the-special-----notation-to-return-objects-in-a-single-line)
-  - [4.5. Publish your Deck](#45-publish-your-deck)
+  - [4.2. What is a `Card` ?](#42-what-is-a-card-)
+  - [4.3. What is a `Deck` ?](#43-what-is-a-deck-)
+  - [4.4. Create your first deck](#44-create-your-first-deck)
+  - [4.5. `Prefabs` so you don't repeat yourself](#45-prefabs-so-you-dont-repeat-yourself)
+    - [4.5.1. prefabs are just functions.](#451-prefabs-are-just-functions)
+    - [4.5.2. Use a UI Prefab](#452-use-a-ui-prefab)
+    - [4.5.3. Execution Prefab](#453-execution-prefab)
+  - [4.6. Various Function notations](#46-various-function-notations)
+    - [4.6.1. the special `() => ({ })` notation to return objects in a single line](#461-the-special-----notation-to-return-objects-in-a-single-line)
+  - [4.7. Publish your Deck](#47-publish-your-deck)
+- [5. Frequently Asked Questions:](#5-frequently-asked-questions)
+  - [5.1. Q: Will `CushyStudio` remain open source and free?](#51-q-will-cushystudio-remain-open-source-and-free)
+  - [5.2. Q: Why the AGPL and not the GPLV3?](#52-q-why-the-agpl-and-not-the-gplv3)
+  - [5.3. Q: Any plans for a paid version of `CushyStudio`?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
 
 # 1. CushyStudio `Cards`: self-contained mini Stable diffusion apps
 
@@ -60,7 +66,7 @@ test</div>  -->
 
 ## 1.1. `Cards` are simple to use.
 
--   ✅ Non-technical **_Actions_** interfaces
+-   ✅ Non-technical **_Card_** interfaces
 
     -   Per use-case UI
     -   Simple widgets
@@ -242,7 +248,7 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 
 </details>
 
-## 3.8. Create your own Actions to streamline any image or video production
+## 3.8. Create your own Cards to streamline any image or video production
 
 ![](docs/static/img/screenshots/2023-09-29-22-35-25.png)
 
@@ -275,12 +281,50 @@ In this section, we will
 
 2. `CushyStudio` then scan you `ComfyUI` install and generates whole **_TypeScript SDK_** supporting all your custom nodes, assets, models instaleld, etc.
 
-3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create actions with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
+3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create `Cards` with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
     - 👉 this file is updated after each ComfyUI connection.
     - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
 
-##  4.2. Create your first deck
+## 4.2. What is a `Card` ?
+
+A `Card` is a file containing
+- a name
+- a widget definition ( `"ui"` function)
+- an execution logic  ( `"run"` function)
+  - the `"run"` function will receive the widget value when you click the `run` button
+
+
+Here is a very simple card that print the value you enter
+
+
+```ts
+card({
+    name: 'A simple card',
+    ui: (form) => ({ name: form.str({}) }),
+    run: (runtime) => runtime.print('Hello World')
+})
+```
+
+
+
+## 4.3. What is a `Deck` ?
+
+A `Deck` is a folder containing
+
+  - a list of `cards`
+  - a list of `assets`
+  - a list of `prefabs`
+  - some `documentation` about how to use those cards
+  - some `metadata` for proper library indexing.
+
+Decks are made to be shared.
+
+- You can download `Decks` from the `Library` panel
+- You can publish `Decks` from the `Library` panel
+
+
+##  4.4. Create your first deck
 
 1. click the `[+ Create Deck]` button at the top of the `Library`
 
@@ -323,13 +367,9 @@ In this section, we will
 
 
 ```ts
-action('demo1-basic', {
+card('demo1-basic', {
     author: 'rvion',
-    // A. define the UI
-    ui: (form) => ({
-        positive: form.str({ label: 'Positive', default: 'flower' }),
-    }),
-    // B. defined the execution logic
+    ui: (form) => ({ positive: form.str({ label: 'Positive', default: 'flower' }), }),
     run: async (action, form) => {
         //  build a ComfyUI graph
         const graph = action.nodes
@@ -359,16 +399,16 @@ action('demo1-basic', {
 })
 ```
 
-1. See how actions look like by dropping any **_ComfyUI_** `workflow` or `image` into the action and looking at the `converted.ts`
+<!-- 1. See how actions look like by dropping any **_ComfyUI_** `workflow` or `image` into the action and looking at the `converted.ts` -->
 
-An Action is a file containing
+An `Card` is a file containing
 
--   An UI definition (widgets, form, styles, default values, tabs, etc...) (a bit like Gradio in Python)
+-   An UI definition (widgets, form, styles, default values, tabs, etc...)
 -   A piece of code that runs your action
 -   ...And more
 
 
-## 4.3. `Prefabs` so you don't repeat yourself
+## 4.5. `Prefabs` so you don't repeat yourself
 
 The simplest way to modularize your `cards` is to build `prefabs`.
 
@@ -383,7 +423,7 @@ _Best practices:_
 - you can The main `prefab` used by the built-in `deck` here: `actions/CushyStudio/default/_prefab.ts`:
 
 
-### 4.3.1. prefabs are just functions.
+### 4.5.1. prefabs are just functions.
 
 - 👉 a `UI prefab` is a `function` that takes a `formBuilder` and returns a `Widget`.
 - 👉 a `logic prefab` is a function that takes a `runtime` and modify it's `graph` or performother actions.
@@ -407,7 +447,7 @@ export const subform_startImage = (form: FormBuilder) =>
 ```
 
 
-### 4.3.2. Use a UI Prefab
+### 4.5.2. Use a UI Prefab
 
 To use a `prefab` in your card, you can simply import it and use it.
 
@@ -436,7 +476,7 @@ card({
     },
 })
 ```
-### 4.3.3. Execution Prefab
+### 4.5.3. Execution Prefab
 
 The resulting card looks like this:
 
@@ -444,12 +484,17 @@ The resulting card looks like this:
 
 
 
-## 4.4. Various Function notations
+## 4.6. Various Function notations
+
+
+`CushyStudio` aims to be accessible to non-programmers, while still being powerful enough for advanced users. You don't need to know typescript to get started, you can just learn what you need along the way.
+
+This section is not a typescript tutorial, but rather a list of points of attention you may need to pay attention when building actions if you're not a typescript develloper.
 
 Be careful to understand those various notations for functions
 
 
-### 4.4.1. the special `() => ({ })` notation to return objects in a single line
+### 4.6.1. the special `() => ({ })` notation to return objects in a single line
 
 
 ```ts
@@ -474,7 +519,7 @@ function fn() {
 }
 ```
 
-## 4.5. Publish your Deck
+## 4.7. Publish your Deck
 
 Publishing your action is easy!
 
@@ -502,7 +547,7 @@ Publishing your action is easy!
 cd actions/rvion
 
 git init
-Initialized empty Git repository in /Users/loco/dev/CushyStudio/actions/rvion/.git/
+Initialized empty Git repository in /Users/loco/dev/CushyStudio/library/rvion/.git/
 
 git add .
 
@@ -520,3 +565,24 @@ git remote add origin git@github.com:rvion/cushy-example-actions.git
 Then open an issue asking [there](https://github.com/rvion/CushyStudio/issues/new/choose)
 
 </details>
+
+
+
+# 5. Frequently Asked Questions:
+
+In case you want to know more about the CLA, here are some answers to questions you might have:
+If your questions are not covered, you can take a look at the full FAQ: https://github.com/rvion/CushyStudio/blob/master/docs/FAQ.md
+
+## 5.1. Q: Will `CushyStudio` remain open source and free?
+
+**A**: Absolutely! I'm committed to keeping `CushyStudio` 100% open source and free to use as a tool. Create assets, art, games – you name it. It's your creation, and I'm just here to help you make it.
+
+## 5.2. Q: Why the AGPL and not the GPLV3?
+
+**A**: For now, `CushyStudio` is licensed under AGPL as I aim to guide the project towards sustainability. I plan to transition to GPLV3 in the future, once the project achieves a stable foundation. This choice is designed to safeguard the project and its dedicated community. Rest assured, utilizing `CushyStudio` for asset creation remains unrestricted. My primary intention is to prevent the unauthorized resale or commercialization of `CushyStudio` as a service.
+
+## 5.3. Q: Any plans for a paid version of `CushyStudio`?
+
+**A**: No, and that's a promise. `CushyStudio` will always be free and open source. While I do have plans to offer complementary services (like cloud GPU services), the core of `CushyStudio` will remain free for all. Again, I simply wish to prevent unauthorized resale or commercialization of `CushyStudio` as a service.
+
+Thank you for your understanding and patience in going through this agreement. Together, let's make `CushyStudio` better for everyone! 💪🎉

@@ -66,8 +66,6 @@ export class Runtime {
         this.upload_Blob = this.st.uploader.upload_Blob.bind(this.st.uploader)
     }
 
-    /** list all actions ; codegen during dev-time */
-    actions: any
     AUTO = auto
 
     pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
@@ -88,11 +86,9 @@ export class Runtime {
             console.log(`🔴 after: size=${this.graph.nodes.length}`)
             console.log('[✅] RUN SUCCESS')
             const duration = Date.now() - start
-            // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'success' })
             return Status.Success
         } catch (error: any /* 🔴 */) {
             console.log(error)
-            // broadcast({ type: 'action-end', flowID, actionID, executionID: stepID, status: 'failure' })
             console.error('🌠', (error as any as Error).name)
             console.error('🌠', (error as any as Error).message)
             console.error('🌠', 'RUN FAILURE')

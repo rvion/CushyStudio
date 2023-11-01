@@ -17,7 +17,7 @@ import { ActionPicker2UI } from 'src/library/CardPicker2UI'
 import { ImageID } from 'src/models/Image'
 import { Trigger } from 'src/shortcuts/Trigger'
 import { MarketplaceUI } from '../../../library/MarketplaceUI'
-import { ActionFileUI } from '../drafts/ActionFileUI'
+import { CardUI } from '../drafts/ActionFileUI'
 import { ActionFormUI } from '../drafts/ActionFormUI'
 import { GalleryUI } from '../galleries/GalleryUI'
 import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
@@ -34,7 +34,7 @@ enum Widget {
     Gallery = 'Gallery',
     Button = 'Button',
     Paint = 'Paint',
-    Action = 'Action',
+    Card = 'Card',
     Draft = 'Draft',
     ComfyUI = 'ComfyUI',
     ComfyUINodeExplorer = 'ComfyUINodeExplorer',
@@ -45,10 +45,8 @@ enum Widget {
     LastIMage = 'LastIMage',
     Civitai = 'Civitai',
     Image = 'Image',
-    // action pack marketplace
     Marketplace = 'Marketplace',
-    ActionPack = 'ActionPack',
-    // config pages
+    Deck = 'Deck',
     Hosts = 'Hosts',
     Config = 'Config',
 }
@@ -143,10 +141,10 @@ export class CushyLayoutManager {
     addMarketplace = () =>
         this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: assets.public_CushyLogo_512_png })
     addActionPicker = () =>
-        this._AddWithProps(Widget.FileList, `/Library`, { title: 'Actions', icon: assets.public_CushyLogo_512_png })
+        this._AddWithProps(Widget.FileList, `/Library`, { title: 'Library', icon: assets.public_CushyLogo_512_png })
     addActionPickerTree = () =>
-        this._AddWithProps(Widget.FileList2, `/filetree`, { title: 'Actions', icon: assets.public_CushyLogo_512_png })
-    addCivitai = () => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'Civitai', icon: '/CivitaiLogo.png' })
+        this._AddWithProps(Widget.FileList2, `/filetree`, { title: 'Library Files', icon: assets.public_CushyLogo_512_png })
+    addCivitai = () => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'CivitAI', icon: '/CivitaiLogo.png' })
     addConfig = () => this._AddWithProps(Widget.Config, `/config`, { title: 'Config' })
     addPaint = (imgID?: ImageID) => {
         const icon = assets.public_minipaint_images_logo_svg
@@ -175,7 +173,7 @@ export class CushyLayoutManager {
     addAction = (actionPath: CardPath) => {
         const af = this.st.library.getCard(actionPath)
         const icon = af?.logoURL
-        this._AddWithProps(Widget.Action, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
+        this._AddWithProps(Widget.Card, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }
 
     addDraft = (title: string, draftID: DraftID) => {
@@ -275,11 +273,11 @@ export class CushyLayoutManager {
             const imgID = extra.imgID // Retrieves the imgID from the extra data
             return <LastImageUI imageID={imgID}></LastImageUI> // You can now use imgID to instantiate your paint component properly
         }
-        if (component === Widget.Action) {
+        if (component === Widget.Card) {
             // 🔴 ensure this is type-safe
             return (
                 <div style={{ height: '100%' }}>
-                    <ActionFileUI actionPath={extra.actionPath} />
+                    <CardUI actionPath={extra.actionPath} />
                 </div>
             )
         }
@@ -292,14 +290,13 @@ export class CushyLayoutManager {
         if (component === Widget.Steps) return <StepListUI />
         if (component === Widget.LastGraph) return <LastGraphUI />
         if (component === Widget.LastIMage) return <LastImageUI />
-        if (component === Widget.Civitai)
-            return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0'></iframe>
+        if (component === Widget.Civitai) return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0'></iframe> // prettier-ignore
         if (component === Widget.Hosts) return <HostListUI />
         if (component === Widget.Marketplace) return <MarketplaceUI />
         if (component === Widget.Config) return <PanelConfigUI />
         if (component === Widget.Draft) return <ActionFormUI draft={extra.draftID} />
         if (component === Widget.ComfyUINodeExplorer) return <ComfyNodeExplorerUI />
-        if (component === Widget.ActionPack) return <div>🔴 todo: action pack page</div>
+        if (component === Widget.Deck) return <div>🔴 todo: action pack page: show readme</div>
 
         exhaust(component)
         return (

@@ -55,7 +55,7 @@ export class ActionLibrary {
         const included = st.typecheckingConfig.value.include
         const includedActions = included.filter(
             (x) =>
-                x.startsWith('actions/') && //
+                x.startsWith('library/') && //
                 x.endsWith('/**/*'),
         )
         const expanded = includedActions.map((x) => x.slice(8, -5))
@@ -69,7 +69,7 @@ export class ActionLibrary {
         this.discoverAllActions()
 
         // register watcher to properly reload all actions
-        this.watcher = cache.watcher = new Watcher('actions', {
+        this.watcher = cache.watcher = new Watcher('library', {
             recursive: true,
             depth: 20,
             ignore: (t) => {
@@ -88,7 +88,9 @@ export class ActionLibrary {
             if (event === 'change') {
                 const relPath = path.relative(this.st.rootPath, targetPath)
                 console.log(relPath)
-                if ((relPath.startsWith('actions/') || relPath.startsWith('actions\\')) && relPath.endsWith('.ts')) {
+                const isInLibrary = relPath.startsWith('library/') || relPath.startsWith('library\\')
+                if (isInLibrary && relPath.endsWith('.ts')) {
+                    // TODO 🔴 need to reload all actions in tne pack, so `prefabs` properly "hot-reload"
                     const af = this.actionsByPath.get(asCardPath(relPath))
                     if (af == null) return console.log('file watcher update aborted: not an action')
                     af.load({ force: true })
@@ -104,14 +106,14 @@ export class ActionLibrary {
     }
 
     private addKnownPacks = () => {
-        this.getDeck('actions/VinsiGit/Cushy_Action' as DeckFolder)
-        this.getDeck('actions/noellealarie/cushy-avatar-maker' as DeckFolder)
-        this.getDeck('actions/featherice/cushy-actions' as DeckFolder)
-        this.getDeck('actions/rvion/cushy-example-actions' as DeckFolder)
-        this.getDeck('actions/noellealarie/comfy2cushy-examples' as DeckFolder)
-        this.getDeck('actions/CushyStudio/default' as DeckFolder)
-        this.getDeck('actions/CushyStudio/cards' as DeckFolder)
-        this.getDeck('actions/CushyStudio/tutorial' as DeckFolder)
+        this.getDeck('library/VinsiGit/Cushy_Action' as DeckFolder)
+        this.getDeck('library/noellealarie/cushy-avatar-maker' as DeckFolder)
+        this.getDeck('library/featherice/cushy-actions' as DeckFolder)
+        this.getDeck('library/rvion/cushy-example-actions' as DeckFolder)
+        this.getDeck('library/noellealarie/comfy2cushy-examples' as DeckFolder)
+        this.getDeck('library/CushyStudio/default' as DeckFolder)
+        this.getDeck('library/CushyStudio/cards' as DeckFolder)
+        this.getDeck('library/CushyStudio/tutorial' as DeckFolder)
     }
 
     createDeck = async (folder: DeckFolder): Promise<Deck> => {
@@ -176,7 +178,7 @@ export class ActionLibrary {
         this.expanded.delete(path)
         const jsonF = this.st.typecheckingConfig
         const prevInclude = jsonF.value.include
-        const nextInclude = prevInclude.filter((x) => !x.startsWith(`actions/${path}`))
+        const nextInclude = prevInclude.filter((x) => !x.startsWith(`library/${path}`))
         jsonF.update({ include: nextInclude })
     }
     // ---------------------------------------------------------
@@ -244,7 +246,7 @@ export class ActionLibrary {
                     prev.load({ force: true })
                 } else {
                     const af = new CardFile(this, pack, absPath, actionPath)
-                    pack.actions.push(af)
+                    pack.cards.push(af)
                     this.actionsByPath.set(actionPath, af)
                 }
                 const treeEntry = { value: actionPath, label: file }

@@ -35,13 +35,13 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
 })
 
 export const ActionPackUI = observer(function ActionPackUI_(p: { pack: Deck }) {
-    const pack = p.pack
+    const pack: Deck = p.pack
     return (
         <div tw='my-0.5 flex-grow' key={pack.folderRel}>
             <DeckHeaderUI pack={pack} />
             {pack.folded ? null : (
                 <div>
-                    {pack.actions.map((af) => (
+                    {pack.cards.map((af) => (
                         <ActionEntryUI key={af.relPath} af={af} />
                     ))}
                 </div>

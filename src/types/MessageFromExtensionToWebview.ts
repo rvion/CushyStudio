@@ -28,30 +28,6 @@ export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boole
 // // export type FromExtension_SyncHistory = { type: 'sync-history'; history: CushyDBData }
 // export type FromExtension_Ls = { type: 'ls'; actions: ToolT[] }
 
-// // actions payloads ------------------------------------------------------
-// export type FromExtension_ActionStart = {
-//     type: 'action-start'
-//     flowID: FlowID
-//     actionID: ToolID
-//     executionID: StepID
-//     data: FormResult<any>
-// }
-// export type FromExtension_ActionCode = {
-//     type: 'action-code'
-//     flowID: FlowID
-//     actionID: ToolID
-//     executionID: StepID
-//     code: string
-// }
-// export type ActionEndStatus = 'success' | 'failure'
-// export type FromExtension_ActionEnd = {
-//     type: 'action-end'
-//     flowID: FlowID
-//     actionID: ToolID
-//     executionID: StepID
-//     status: ActionEndStatus
-// }
-
 export type FromExtension_Print = { type: 'print'; message: string }
 export type FromExtension_Prompt = { type: 'prompt'; promptID: PromptID }
 export type FromExtension_Images = { type: 'images'; flowID?: Maybe<FlowID>; images: ImageT[] }

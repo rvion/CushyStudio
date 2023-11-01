@@ -39,12 +39,7 @@ CONFIG.json
 global.d.ts
 tsconfig.custom.json
 
-actions/*
-!actions/CushyStudio
-
-# actions/rvion/cushy-example-actions
-# actions/VinsiGit/Cushy_Action
-# actions/noellealarie/cushy-avatar-maker
-# noellealarie/CushyStudio
+library/*
+!library/CushyStudio
 
 .cushy/

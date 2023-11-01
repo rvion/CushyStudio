@@ -21,7 +21,7 @@ Its AGPL license just say that you **can not EMBED** CushyStudio engine in a com
 
 Due to the fact CushyStudio is a tool, AGPL is not that restrictive. I'm not forcing you to open source your project just because you used CushyStudio to make some assets. the tool is free to use, your assets are yours.
 
-I picked AGPL because I don't want to work for free, and suddenly discover that some other cloud company has started offering Cushy actions in the cloud and make money, while I still can't provide as I would want for my family.
+I picked AGPL because I don't want to work for free, and suddenly discover that some other cloud company has started offering Cushy cards in the cloud and make money, while I still can't provide as I would want for my family.
 
 I want to be able to make some money with CushyStudio in a community friendly way. And once I'll have made enough to provide my family (haven't decided yet how much that is, but will be public soon), I'll switch CushyStudio to a fully free GPL v3 license. 🚨 My goal is to state a clear goal for full GPL v3 release as soon as possible and be 100% transparent on all earnings I make. Any big company will have the opportunity to pay once for everyone to have access to CushyStudio in a full GPLV3 way. (👋 feel free to contact me anytime)
 
@@ -35,7 +35,7 @@ I will not create a paid version of `CushyStudio`. I will not introduce feature 
 
 What I want to do, is:
 
--   Offer GPU cloud services for `CushyStudio` users who do not own a powerful GPU locally, so they can run any actions they want very easilly.
+-   Offer GPU cloud services for `CushyStudio` users who do not own a powerful GPU locally, so they can run any cards they want very easilly.
 
 -   Build a system for sharing revenue with and/or driving donations to action creators.
 
@@ -52,7 +52,7 @@ I hope that these services will fund the future development of `CushyStudio`.
 
 ### A: Yes, that's part of the reason why I have a CLA
 
-This CLA only concern your contribution to the main repository, (not your actions !). It allows me to relicense the patches you submit in the main repo so I can still sell those GPL licenses to companies looking to embed CushyStudio, and still use the whole CushyStudio engine in the backend to provide those extra cloud features and support the continued development of `CushyStudio`.
+This CLA only concern your contribution to the main repository, (not your cards !). It allows me to relicense the patches you submit in the main repo so I can still sell those GPL licenses to companies looking to embed CushyStudio, and still use the whole CushyStudio engine in the backend to provide those extra cloud features and support the continued development of `CushyStudio`.
 
 I can obviously already do this with the code I wrote myself, but the CLA allows me to do it with those fixes you contribute for the community too. I feel this is really fair.
 
@@ -60,7 +60,7 @@ I can obviously already do this with the code I wrote myself, but the CLA allows
 
 ### Q: Does the CLA concern `User-published action packs in the marketplace` ?
 
-### A: No; your actions are yours.
+### A: No; your cards are yours.
 
 Pick any license you want. Do what you want with them, they are yours. I don't want to steal your work, quite the opposite! I want to build the platform to let you express yourselves, publish your work, and even get paid for it.
 
