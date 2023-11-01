@@ -144,7 +144,7 @@ export class CushyLayoutManager {
         this._AddWithProps(Widget.FileList, `/Library`, { title: 'Library', icon: assets.public_CushyLogo_512_png })
     addActionPickerTree = () =>
         this._AddWithProps(Widget.FileList2, `/filetree`, { title: 'Library Files', icon: assets.public_CushyLogo_512_png })
-    addCivitai = () => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'CivitAI', icon: '/CivitaiLogo.png' })
+    addCivitai = () => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'CivitAI', icon: assets.public_CivitaiLogo_png })
     addConfig = () => this._AddWithProps(Widget.Config, `/config`, { title: 'Config' })
     addPaint = (imgID?: ImageID) => {
         const icon = assets.public_minipaint_images_logo_svg
