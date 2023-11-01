@@ -21,19 +21,28 @@ export class Library {
     rootLibraryFolder: AbsolutePath
 
     // --------------------------
+
+    /** flat list of all decks */
     decks: Deck[] = []
+
+    /** flat list of all decks, sorted by importance */
     get decksSorted(): Deck[] {
         return [...this.decks].sort((a, b) => {
             return b.score - a.score
         })
     }
-    packsByFolder = new Map<DeckFolder, Deck>()
-    getCard = (path: CardPath): CardFile | undefined => this.cardsByPath.get(path)
-    getDeck = (folder: DeckFolder): Deck => {
-        const prev = this.packsByFolder.get(folder)
+
+    getCard = (cardPath: CardPath): CardFile | undefined => {
+        return this.cardsByPath.get(cardPath)
+    }
+
+    private decksByFolder = new Map<DeckFolder, Deck>()
+
+    getDeck = (deckFolder: DeckFolder): Deck => {
+        const prev = this.decksByFolder.get(deckFolder)
         if (prev) return prev
-        const next = new Deck(this, folder)
-        this.packsByFolder.set(folder, next)
+        const next = new Deck(this, deckFolder)
+        this.decksByFolder.set(deckFolder, next)
         this.decks.push(next)
         return next
     }
