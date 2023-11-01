@@ -34,17 +34,15 @@
   - [3.7. Easy to extend](#37-easy-to-extend)
   - [3.8. Create your own Actions to streamline any image or video production](#38-create-your-own-actions-to-streamline-any-image-or-video-production)
 - [4. Quickstart Guide For Action Creators](#4-quickstart-guide-for-action-creators)
-  - [Card creation basics: how does `CushySudio` Work](#card-creation-basics-how-does-cushysudio-work)
-  - [4.1. Create your first deck](#41-create-your-first-deck)
-  - [4.2. Simple example](#42-simple-example)
-    - [4.2.1. define a modular UI kit](#421-define-a-modular-ui-kit)
-    - [4.2.2. UI prefab](#422-ui-prefab)
-      - [4.2.2.1. define a UI prefab](#4221-define-a-ui-prefab)
-      - [4.2.2.2. Use a UI Prefab](#4222-use-a-ui-prefab)
-    - [4.2.3. Execution Prefab](#423-execution-prefab)
-  - [4.3. Various Function notations](#43-various-function-notations)
-    - [4.3.1. the special `() => ({ })` notation to return objects in a single line](#431-the-special-----notation-to-return-objects-in-a-single-line)
-  - [4.4. Publish your Deck](#44-publish-your-deck)
+  - [4.1. How does `CushySudio` Work](#41-how-does-cushysudio-work)
+  - [4.2. Create your first deck](#42-create-your-first-deck)
+  - [4.3. `Prefabs` so you don't repeat yourself](#43-prefabs-so-you-dont-repeat-yourself)
+    - [4.3.1. prefabs are just functions.](#431-prefabs-are-just-functions)
+    - [4.3.2. Use a UI Prefab](#432-use-a-ui-prefab)
+    - [4.3.3. Execution Prefab](#433-execution-prefab)
+  - [4.4. Various Function notations](#44-various-function-notations)
+    - [4.4.1. the special `() => ({ })` notation to return objects in a single line](#441-the-special-----notation-to-return-objects-in-a-single-line)
+  - [4.5. Publish your Deck](#45-publish-your-deck)
 
 # 1. CushyStudio `Cards`: self-contained mini Stable diffusion apps
 
@@ -264,9 +262,14 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 # 4. Quickstart Guide For Action Creators
 
 Creating `cards` is easy.
-In this section, we'll see how to create a simple card.
+In this section, we will
 
-## Card creation basics: how does `CushySudio` Work
+- understand how `CushyStudio` works,
+- see how to create a custom deck
+- see how to edit your cards
+- see how to publish your deck on the library
+
+## 4.1. How does `CushySudio` Work
 
 1. On startup, **_CushyStudio_** connect to your **_ComfyUI_** server(s)
 
@@ -277,17 +280,47 @@ In this section, we'll see how to create a simple card.
     - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
 
-##  4.1. Create your first deck
+##  4.2. Create your first deck
 
-![](./docs/static/img/screenshots/2023-11-01-18-58-13.webp)
-2. Create a folder in the `actions/` subfolder at the root
-3. Create any `myaction.ts` file inside this folder
-4. Open the whole **_CushyStudio_** repository in **_Visual Studio Code_**
+1. click the `[+ Create Deck]` button at the top of the `Library`
 
-    - 👉 Open the whole CushyStudio installed repository
-    - NOT just the action folder, NOR the action file itself, but:
+2. enter your `github username` and `deck name`
+   1. 👉 your `github username` will be your dedicated namespace in the library
+   2. 👉 all your decks will live under the `library/<username>/` folder
 
-5. Initialize your action from some basic code or generated code from existing workflows
+    ![](./docs/static/img/screenshots/2023-11-01-18-58-13.webp)
+
+3. click `[OK]`
+
+   1. it will create those files
+      1.  `library/<username>/<deckname>/readme.md`
+          - a readme file to explain what your deck is about
+      2.  `library/<username>/<deckname>/cushy-deck.json`
+          -  manifest that list all your cards for better library integration
+      3.  `library/<username>/<deckname>/_prefab.ts`
+          - a file where you can place your prefabs.
+          - it contains some example prefabs for you to build uppon
+          - file starts with an `_` so it's not listed in CushyStudio
+      4.  `library/<username>/<deckname>/sample-card-1.ts`
+          - first sample action
+      5.  `library/<username>/<deckname>/sample-action-2.ts`
+          - second sample action
+
+    2.  it will also initialize a git
+        1.  it will run `git init` in the created repository
+        2.  it will run `git remote add origin "https://github.com/<username>/<deckname>`)
+        3.  it will run `git remote add github "git@github.com:<username>/<deckname>.git`)
+        - 👉 this is to make it easy to publish your deck to GitHub
+        - 👉 you can also use any other git host, or none at all
+
+
+4. Open the `sample-action-1.ts` card
+
+ 5. click the `[edit]` button to open the card in `vscode`
+    - 👉 everything is preconfigure to run correctly in vscode and make you productive right away
+    - 👉 fo this, you need to open the whole CushyStudio folder within vscode
+    - 👉 (NOT just the action folder, NOR the action file itself)
+
 
 ```ts
 action('demo1-basic', {
@@ -334,23 +367,26 @@ An Action is a file containing
 -   A piece of code that runs your action
 -   ...And more
 
-## 4.2. Simple example
 
-### 4.2.1. define a modular UI kit
+## 4.3. `Prefabs` so you don't repeat yourself
 
-The simplest way to modularize your `cards` is to build `prefabs`. `Prefabs` are functions that can add `widgets` (ui part) or `subgraphs` (execution part).
+The simplest way to modularize your `cards` is to build `prefabs`.
+
+- `Prefabs` allow you to re-use parts of your cards in other cards.
+- `Prefabs` allow you to re-use parts of your cards multiple times in your card
+- `Prefabs` are functions that can add `widgets` (ui part) or `subgraphs` (execution part).
+- `Prefabs` allow you to build complex actions very efficiently.
+
+_Best practices:_
+
+- Usually, your `Deck` will contain one or many `prefab` files,
+- you can The main `prefab` used by the built-in `deck` here: `actions/CushyStudio/default/_prefab.ts`:
 
 
-Usually, each `deck` contain one or many  `prefab` files, such as `actions/CushyStudio/default/_prefab.ts`:
+### 4.3.1. prefabs are just functions.
 
-![](./docs/static/img/screenshots/2023-11-01-18-27-38.webp)
-
-
-### 4.2.2. UI prefab
-
-#### 4.2.2.1. define a UI prefab
-
-to create a file that exports function that takes a `frormBuilder` as single parameter, and returns a widget.
+- 👉 a `UI prefab` is a `function` that takes a `formBuilder` and returns a `Widget`.
+- 👉 a `logic prefab` is a function that takes a `runtime` and modify it's `graph` or performother actions.
 
 example:
 
@@ -370,13 +406,16 @@ export const subform_startImage = (form: FormBuilder) =>
     })
 ```
 
----
 
-#### 4.2.2.2. Use a UI Prefab
+### 4.3.2. Use a UI Prefab
 
-To use this UI kit in your card, you can simply import it and use it in the `ui` function of your card.
+To use a `prefab` in your card, you can simply import it and use it.
 
-**Example**: in the `card1.ts` card, you can see that both fields `"a"` and `"b"` re-use the same helper
+![](./docs/static/img/screenshots/2023-11-01-18-27-38.webp)
+
+- `ui prefabs` are made to be used in the `ui` function of your card.
+- `Runtime prefabs` are made to be used in the `run` function of your card.
+
 
 ```ts
 // FILE: `card1.ts`
@@ -397,7 +436,7 @@ card({
     },
 })
 ```
-### 4.2.3. Execution Prefab
+### 4.3.3. Execution Prefab
 
 The resulting card looks like this:
 
@@ -405,12 +444,12 @@ The resulting card looks like this:
 
 
 
-## 4.3. Various Function notations
+## 4.4. Various Function notations
 
 Be careful to understand those various notations for functions
 
 
-### 4.3.1. the special `() => ({ })` notation to return objects in a single line
+### 4.4.1. the special `() => ({ })` notation to return objects in a single line
 
 
 ```ts
@@ -435,19 +474,24 @@ function fn() {
 }
 ```
 
-## 4.4. Publish your Deck
+## 4.5. Publish your Deck
 
 Publishing your action is easy!
 
-1.  Create a GitHub repository. (https://github.com/new)
+1. When creating a deck, `CushyStudio` automatically
+   1. initialize the git repository for you.
+   2. configure remote to point to the GitHub repository with the same name as your deck
+      1.
+
+2.  Create a GitHub repository. (https://github.com/new)
 
     ![](docs/static/img/screenshots/2023-10-18-23-15-11.png)
 
-2.  Commit your actions files
+3.  Commit your actions files
     1.  you can one-click the `publish` button in your deck entry in the library
     2.  or youyou can follow instructions given by Git Hub on the new repository page
 
-3.  Open an issue asking to add your `Deck` to the `Library`.
+4.  Open an issue asking to add your `Deck` to the `Library`.
 
     -   https://github.com/rvion/CushyStudio/issues/new/choose
 
