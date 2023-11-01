@@ -321,8 +321,8 @@ export async function drawCard(
     const normalize = (p: CardConfig, growBy = 1): NodeConfig => {
         const width = growBy * (p.size != null ? p.size * base.stage.width() : iconSize)
         return {
-            x: p.x * base.stage.width() + 10 * Math.random(),
-            y: p.y * base.stage.height() + 10 * Math.random(),
+            x: p.x * base.stage.width(), //  + 10 * Math.random(),
+            y: p.y * base.stage.height(), //  + 10 * Math.random(),
             width: width,
             height: width,
             scaleY: p.flip ? -1 : 1,

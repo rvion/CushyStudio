@@ -19,7 +19,7 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
                     tw='cursor-pointer items-center gap-1  hover:bg-gray-800 p-0.5 flex justify-between'
                     onClick={() => (tb.favoritesFolded = !tb.favoritesFolded)}
                 >
-                    <div>Favorites</div>
+                    <div>Favorite Cards</div>
                     <div>{tb.favoritesFolded ? '▸' : '▿'}</div>
                 </div>
             )}

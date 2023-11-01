@@ -9,7 +9,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Widget_g
     const collapsed = req.state.collapsed
     const isTopLevel = req.input.topLevel
     return (
-        <div tw='relative flex items-start'>
+        <div tw='relative flex items-start w-full'>
             {isTopLevel ? null : (
                 <Button tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
                     {collapsed ? '▸' : '▿'}
@@ -17,21 +17,18 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Widget_g
             )}
             {req.state.collapsed ? null : (
                 <div
-                    style={isTopLevel ? undefined : { border: '1px solid #424242' }}
-                    tw={['px-1 mx-1', req.input.layout === 'H' ? 'flex' : null]}
+                    style={isTopLevel ? undefined : { border: '1px solid #262626' }}
+                    tw={['w-full', req.input.layout === 'H' ? 'flex' : null]}
                     className={req.input.className}
                 >
-                    {Object.entries(req.state.values).map(([rootKey, sub], ix) => {
-                        return (
-                            <div key={rootKey}>
-                                <WidgetWithLabelUI //
-                                    labelPos={sub.input.labelPos}
-                                    rootKey={rootKey}
-                                    req={sub}
-                                />
-                            </div>
-                        )
-                    })}
+                    {Object.entries(req.state.values).map(([rootKey, sub], ix) => (
+                        <WidgetWithLabelUI //
+                            key={rootKey}
+                            labelPos={sub.input.labelPos}
+                            rootKey={rootKey}
+                            req={sub}
+                        />
+                    ))}
                 </div>
             )}
         </div>

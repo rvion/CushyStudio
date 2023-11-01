@@ -17,7 +17,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { pack: Dec
                 <div tw='flex'>
                     <div>
                         <div tw='font-bold text-sm'>{pack.name}</div>
-                        <div tw='text-sm text-gray-400 flex justify-between w-full'>by {pack.githubUserName}</div>
+                        <div tw='text-xs text-gray-400 flex justify-between w-full'>{pack.githubUserName}</div>
                     </div>
                     <div className='flex-grow'></div>
                     <div>
