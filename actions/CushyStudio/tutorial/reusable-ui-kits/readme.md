@@ -1,4 +1,4 @@
-# modular decks example
+# Uodular decks example
 
 This deck define a few cards that reuse the same high-level widgets via modular UI kits
 
@@ -60,4 +60,4 @@ card({
 
 The resulting card looks like this:
 
-![](_docs/image.webp)
+![](./_image.webp)
