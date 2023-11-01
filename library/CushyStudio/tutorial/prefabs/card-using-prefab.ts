@@ -1,7 +1,7 @@
-import { subform_startImage } from './_ui'
+import { subform_startImage } from './_prefab'
 
 card({
-    name: 'card2',
+    name: 'card1',
     ui: (formBuilder) => {
         return {
             a: subform_startImage(formBuilder),
