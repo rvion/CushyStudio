@@ -22,20 +22,68 @@ export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<Retur
 // const form = getGlobalFormBuilder()
 // const flow = getGlobalRuntime()
 
-// -----------------------------------------------------------
-export const ui_sampler = (form: FormBuilder) => {
+// HIGH_RES_FIX -----------------------------------------------------------
+
+export const ui_highresfix = (form: FormBuilder) =>
+    form.groupOpt({
+        items: () => ({
+            scaleFactor: form.int({ default: 1 }),
+            steps: form.int({ default: 15 }),
+            denoise: form.float({ min: 0, default: 0.5, max: 1, step: 0.01 }),
+            saveIntermediaryImage: form.bool({ default: true }),
+        }),
+    })
+
+// MODEL PREFAB -----------------------------------------------------------
+export const ui_model = (form: FormBuilder) => {
     return form.group({
         items: () => ({
-            modelName: form.enum({
+            ckpt_name: form.enum({
                 enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
                 default: 'revAnimated_v122.safetensors',
                 group: 'Model',
             }),
             vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'Model' }),
+            clipSkip: form.int({ label: 'Clip Skip', default: 0, group: 'model' }),
+            freeU: form.bool({ default: false }),
+        }),
+    })
+}
+
+export const run_model = (flow: Runtime, p: OutputFor<typeof ui_model>) => {
+    const graph = flow.nodes
+
+    // 1. MODEL
+    const ckptSimple = graph.CheckpointLoaderSimple({ ckpt_name: p.ckpt_name })
+    let ckpt: HasSingle_MODEL = ckptSimple
+    let clip: HasSingle_CLIP = ckptSimple
+
+    // 2. OPTIONAL CUSTOM VAE
+    let vae: _VAE = ckptSimple._VAE
+    if (p.vae) vae = graph.VAELoader({ vae_name: p.vae })
+
+    // 3. OPTIONAL CLIP SKIP
+    if (p.clipSkip) clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(p.clipSkip) })
+
+    // 4. Optional FreeU
+    if (p.freeU) ckpt = graph.FreeU({ model: ckpt })
+
+    return { ckpt, vae, clip }
+}
+
+// -----------------------------------------------------------
+export const ui_sampler = (form: FormBuilder) => {
+    return form.group({
+        items: () => ({
             denoise: form.float({ step: 0.01, min: 0, max: 1, default: 1, label: 'Denoise', group: 'KSampler' }),
             steps: form.int({ default: 20, label: 'Steps', min: 0, group: 'KSampler' }),
             cfg: form.float({ label: 'CFG', default: 8.0, group: 'KSampler' }),
-            sampler: form.enum({ label: 'Sampler', enumName: 'Enum_KSampler_sampler_name', default: 'euler', group: 'KSampler' }),
+            sampler_name: form.enum({
+                label: 'Sampler',
+                enumName: 'Enum_KSampler_sampler_name',
+                default: 'euler',
+                group: 'KSampler',
+            }),
             scheduler: form.enum({
                 label: 'Scheduler',
                 enumName: 'Enum_KSampler_scheduler',
@@ -49,38 +97,34 @@ export const ui_sampler = (form: FormBuilder) => {
 export const run_sampler = (p: {
     //
     flow: Runtime
-    ckpt: HasSingle_VAE & HasSingle_CLIP
-    clipAndModel: HasSingle_CLIP & HasSingle_MODEL
+    ckpt: _MODEL
+    clip: _CLIP
     latent: HasSingle_LATENT
-    positive: string
-    negative: string
+    positive: string | _CONDITIONING
+    negative: string | _CONDITIONING
     model: OutputFor<typeof ui_sampler>
     preview?: boolean
-}): VAEDecode => {
+    vae: _VAE
+}): { image: VAEDecode; latent: HasSingle_LATENT } => {
     const graph = p.flow.nodes
+    const latent: HasSingle_LATENT = graph.KSampler({
+        model: p.ckpt,
+        seed: p.flow.randomSeed(),
+        latent_image: p.latent,
+        cfg: p.model.cfg,
+        steps: p.model.steps,
+        sampler_name: p.model.sampler_name,
+        scheduler: p.model.scheduler,
+        denoise: p.model.denoise,
+        positive: typeof p.positive === 'string' ? graph.CLIPTextEncode({ clip: p.clip, text: p.positive }) : p.positive,
+        negative: typeof p.negative === 'string' ? graph.CLIPTextEncode({ clip: p.clip, text: p.negative }) : p.negative,
+    })
     const image = graph.VAEDecode({
-        vae: p.ckpt,
-        samples: graph.KSampler({
-            model: p.clipAndModel,
-            seed: p.flow.randomSeed(),
-            latent_image: p.latent,
-            cfg: p.model.cfg,
-            steps: p.model.steps,
-            sampler_name: p.model.sampler,
-            scheduler: p.model.scheduler,
-            denoise: p.model.denoise,
-            positive: graph.CLIPTextEncode({
-                clip: p.ckpt,
-                text: p.positive,
-            }),
-            negative: graph.CLIPTextEncode({
-                clip: p.ckpt,
-                text: p.negative,
-            }),
-        }),
+        vae: p.vae,
+        samples: latent,
     })
     if (p.preview) graph.PreviewImage({ images: image })
-    return image
+    return { image, latent }
 }
 // ---------------------------------------------------------
 export const ui_themes = (form: FormBuilder) =>
@@ -174,17 +218,23 @@ export const util_expandBrances = (str: string): string[] => {
 // --------------------------------------------------------
 export const run_prompt = (
     flow: Runtime,
-    promptResult: WidgetPromptOutput,
-    startingClipAndModel: HasSingle_CLIP & HasSingle_MODEL,
+    p: {
+        richPrompt: WidgetPromptOutput
+        clip: _CLIP
+        ckpt: _MODEL
+    },
 ): {
     text: string
-    clipAndModel: HasSingle_CLIP & HasSingle_MODEL
+    clip: _CLIP
+    ckpt: _MODEL
+    conditionning: _CONDITIONING
 } => {
     let text = ''
-    const positivePrompt = promptResult
-    let clipAndModel = startingClipAndModel
-    if (positivePrompt) {
-        for (const tok of positivePrompt.tokens) {
+    const richPrompt = p.richPrompt
+    let clip = p.clip
+    let ckpt = p.ckpt
+    if (richPrompt) {
+        for (const tok of richPrompt.tokens) {
             if (tok.type === 'booru') text += ` ${tok.tag.text}`
             else if (tok.type === 'text') text += ` ${tok.text}`
             else if (tok.type === 'embedding') text += ` embedding:${tok.embeddingName}`
@@ -192,17 +242,20 @@ export const run_prompt = (
                 const options = (flow.wildcards as any)[tok.payload]
                 if (Array.isArray(options)) text += ` ${flow.pick(options)}`
             } else if (tok.type === 'lora') {
-                clipAndModel = flow.nodes.LoraLoader({
-                    model: clipAndModel,
-                    clip: clipAndModel,
+                const next = flow.nodes.LoraLoader({
+                    model: ckpt,
+                    clip: clip,
                     lora_name: tok.loraDef.name,
                     strength_clip: tok.loraDef.strength_clip,
                     strength_model: tok.loraDef.strength_model,
                 })
+                clip = next._CLIP
+                ckpt = next._MODEL
             }
         }
     }
-    return { text, clipAndModel }
+    const conditionning = flow.nodes.CLIPTextEncode({ clip, text })
+    return { text, conditionning, clip, ckpt }
 }
 
 export const ui_vaeName = (form: FormBuilder) =>

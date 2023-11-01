@@ -17,7 +17,7 @@ action({
         let negative = ''
         let positive = ''
 
-        let ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.model.modelName })
+        let ckpt = graph.CheckpointLoaderSimple({ ckpt_name: p.model.ckpt_name })
         let clipAndModelPositive: HasSingle_CLIP & HasSingle_MODEL = ckpt
         let clipAndModelNegative: HasSingle_CLIP & HasSingle_MODEL = ckpt
 
