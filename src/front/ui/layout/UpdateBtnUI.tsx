@@ -49,21 +49,26 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
     if (updater.status === FolderKind.FolderWithoutGit) return <GitInitBtnUI updater={updater} />
     return (
         <Whisper
-            placement='auto'
+            placement='bottomStart'
             enterable
             speaker={
                 <Popover>
                     <div>
                         <UpdaterErrorUI updater={updater} />
                         <div tw='flex items-center'>
-                            <span className='material-symbols-outlined'>folder</span>
-                            <pre>{updater.relPath || 'root'}</pre>
+                            <span className='material-symbols-outlined'>folder</span> <div>{updater.relPath || 'root'}</div>
                         </div>
                         <div>
                             {updater.lastFetchAt ? (
-                                <div tw='flex items-center'>
-                                    prev update : {getRelativeTimeString(updater.lastFetchAt)}
-                                    next update : {getRelativeTimeString(updater.nextFetchAt)}
+                                <div>
+                                    <div>
+                                        <span className='material-symbols-outlined'>history</span> prev update :{' '}
+                                        {getRelativeTimeString(updater.lastFetchAt)}
+                                    </div>
+                                    <div>
+                                        <span className='material-symbols-outlined'>schedule</span> next update :{' '}
+                                        {getRelativeTimeString(updater.nextFetchAt)}
+                                    </div>
                                 </div>
                             ) : (
                                 <>no update done</>
@@ -119,7 +124,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                         // <span className='text-green-400 material-symbols-outlined'>check_circle</span>
                     }
 
-                    <div tw='text-xs' className={updater.updateAvailable ? 'text-orange-400' : 'text-green-700 '}>
+                    <div tw='text-sm' className={updater.updateAvailable ? 'text-orange-400' : 'text-green-700 '}>
                         {updater.currentVersion}
                         {/* {updater.headCommitsCount ? `v${updater.currentVersion}` : <Loader />} */}
                     </div>
