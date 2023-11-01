@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Input, InputGroup, Tag } from 'rsuite'
 import { useProject } from '../../../front/ProjectCtx'
+import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from 'src/core/Colors'
 
 class ComfyNodeExplorerState {
     // globalSearch = ''
@@ -45,8 +46,8 @@ export const ComfyNodeExplorerUI = observer(function ComfyNodeExplorerUI_(p: {})
                 </InputGroup.Addon>
                 <Input value={search.name} onChange={(n) => (search.name = n)} />
             </InputGroup> */}
-            <table>
-                <thead>
+            <table cellPadding={0} cellSpacing={0}>
+                <thead tw='sticky top-0 bg-gray-600 z-40'>
                     <tr>
                         <th>name</th>
                         <th>input</th>
@@ -94,14 +95,28 @@ export const ComfyNodeExplorerUI = observer(function ComfyNodeExplorerUI_(p: {})
                             <tr key={name}>
                                 <td tw='[max-width:10rem]'>{name}</td>
                                 <td tw='[max-width:10rem]'>
-                                    {node.inputs.map((i) => (
-                                        <Tag size='sm'>{i.nameInComfy}</Tag>
-                                    ))}
+                                    <div tw='flex flex-wrap gap-0.5'>
+                                        {node.inputs.map((i) => (
+                                            <span
+                                                style={{ background: getColorForInputNameInComfy(i.nameInComfy) }}
+                                                tw='rounded bg-gray-700 p-0.5'
+                                            >
+                                                {i.nameInComfy}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </td>
                                 <td>
-                                    {node.outputs.map((o) => (
-                                        <Tag size='sm'>{o.nameInCushy}</Tag>
-                                    ))}
+                                    <div tw='flex flex-wrap gap-0.5'>
+                                        {node.outputs.map((o) => (
+                                            <span
+                                                style={{ background: getColorForOutputNameInCushy(o.nameInCushy) }}
+                                                tw='rounded bg-gray-700 p-0.5'
+                                            >
+                                                {o.nameInCushy}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </td>
                                 <td>{node.category}</td>
                             </tr>
