@@ -1,13 +1,30 @@
 Todo before release
 
+☐ make the run button red if cushy is not running
+☐ center preview
+☐ better latent preview
+    ☐ fix aspect ratio
+    ☐ zoom on hover
+
+☐ better scribble
+☐ error messages
+☐ edit should add to type-checking
+☐ autorun
+☐ scribble
+☐ close things
+☐ close things
+☐ better type-checking config
+☐ better type-checking config
+
 marketplace:
-    ☐ one-click create action pack @started(23-10-26 21:30)
     ☐ proper action pack manifest file
     ☐ show readme in marketplace
+    ✔ one-click create action pack @started(23-10-26 21:30) @done(23-11-01 10:39) @lasted(5d14h9m30s)
     ✔ refresh star count and readme every few hours (add expire mechanism) @done(23-10-26 21:29)
 
 perf:
     ✔ make type inference is faster @done(23-10-26 20:55)
+    ☐ ...
 
 discoverability:
     ✔ self discoverable completsion `:`, `@`, `#`, `*` @done(23-10-26 20:54)
@@ -22,6 +39,7 @@ asset pack:
 
 widget UI:
     ☐ polish some widgets
+    ☐ prompts disable
     ☐ choices
     ✔ improve image preview so it fit by default + more features @done(23-10-26 21:47)
     ☐ lists (re-ordering, ...)
