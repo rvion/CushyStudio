@@ -19,6 +19,9 @@ import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 // this should be a default
 export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<ReturnType<UIFn>>
 
+// const form = getGlobalFormBuilder()
+// const flow = getGlobalRuntime()
+
 // -----------------------------------------------------------
 export const ui_sampler = (form: FormBuilder) => {
     return form.group({
@@ -154,7 +157,7 @@ export const run_latent = async (p: {
 }
 
 // --------------------------------------------------------
-export const util_braceExpansion = (str: string): string[] => {
+export const util_expandBrances = (str: string): string[] => {
     const matches = str.match(/{([^{}]+)}/)
     if (!matches) {
         return [str]
@@ -162,7 +165,7 @@ export const util_braceExpansion = (str: string): string[] => {
     const parts = matches[1].split(',')
     const result: Set<string> = new Set()
     for (const part of parts) {
-        const expanded = util_braceExpansion(str.replace(matches[0], part))
+        const expanded = util_expandBrances(str.replace(matches[0], part))
         expanded.forEach((item) => result.add(item))
     }
     return Array.from(result)
@@ -199,10 +202,7 @@ export const run_prompt = (
             }
         }
     }
-    return {
-        text,
-        clipAndModel,
-    }
+    return { text, clipAndModel }
 }
 
 export const ui_vaeName = (form: FormBuilder) =>

@@ -8,7 +8,7 @@ import type { FormBuilder } from 'src/controls/FormBuilder'
 
 // Example 1 -------------------------------------------------------------------------------------
 // 📝 this is a self-contained UI kit you can use in any card you want.
-export const subform_startImage = (form: FormBuilder) =>
+export const ui_startImage = (form: FormBuilder) =>
     form.group({
         items: () => ({
             startImage: form.imageOpt({ group: 'latent' }),

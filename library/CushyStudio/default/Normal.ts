@@ -1,4 +1,4 @@
-import { run_latent, run_prompt, run_sampler, ui_latent, ui_sampler, ui_themes, util_braceExpansion } from './_prefabs'
+import { run_latent, run_prompt, run_sampler, ui_latent, ui_sampler, ui_themes, util_expandBrances } from './_prefabs'
 
 action({
     author: 'VinsiGit',
@@ -38,7 +38,7 @@ action({
             for (const themeHead of p.themesHead) {
                 for (const theme of themeHead.theme) {
                     flow.print(theme.text)
-                    let posit_text = util_braceExpansion(`${positive}, ${themeHead.text} ${theme.text}`)
+                    let posit_text = util_expandBrances(`${positive}, ${themeHead.text} ${theme.text}`)
                     for (const text of posit_text) {
                         const image = run_sampler({
                             flow,
@@ -54,7 +54,7 @@ action({
                 }
             }
         } else {
-            let posit_text = util_braceExpansion(`${positive}`)
+            let posit_text = util_expandBrances(`${positive}`)
 
             for (const text of posit_text) {
                 const image = run_sampler({
