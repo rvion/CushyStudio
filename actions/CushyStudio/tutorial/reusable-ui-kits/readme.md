@@ -1,10 +1,19 @@
-# Uodular decks example
+<!-- no toc -->
+# Modular decks example
 
-This deck define a few cards that reuse the same high-level widgets via modular UI kits
+- [1. Simple example](#1-simple-example)
+  - [1.1. Step 1: define a modular UI kit](#11-step-1-define-a-modular-ui-kit)
+  - [1.2. Step 2: use your UI-kit](#12-step-2-use-your-ui-kit)
+  - [1.3. Step 3: Profit](#13-step-3-profit)
+- [2. Various Function notations](#2-various-function-notations)
+  - [2.1. the special `() => ({ })` notation to return objects in a single line](#21-the-special-----notation-to-return-objects-in-a-single-line)
 
 ---
 
-### Step 1: define a modular UI kit
+## 1. Simple example
+
+
+### 1.1. Step 1: define a modular UI kit
 
 The simplest way to define a modular UI kit is to create a file that exports a function that takes a `frormBuilder` as single parameter, and returns a widget.
 
@@ -28,7 +37,7 @@ export const subform_startImage = (form: FormBuilder) =>
 
 ---
 
-### Step 2: use your UI-kit
+### 1.2. Step 2: use your UI-kit
 
 To use this UI kit in your card, you can simply import it and use it in the `ui` function of your card.
 
@@ -56,8 +65,40 @@ card({
 
 ---
 
-### Step 3: Profit
+### 1.3. Step 3: Profit
 
 The resulting card looks like this:
 
 ![](./_image.webp)
+
+---
+
+## 2. Various Function notations
+
+Be careful to understand those various notations for functions
+
+
+### 2.1. the special `() => ({ })` notation to return objects in a single line
+
+
+```ts
+const fn = () => ({ a: 1 })
+//               👆      👆
+
+```
+
+This is equivalent to:
+
+```ts
+const fn = () => {
+    return {a: 1}
+}
+```
+
+or to
+
+```ts
+function fn() {
+    return {a: 1}
+}
+```
