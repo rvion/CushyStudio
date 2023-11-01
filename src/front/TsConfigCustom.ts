@@ -14,7 +14,7 @@ export const mkTypescriptConfig = (): JsonFile<TsConfigCustom> => {
         init: () => ({
             // this file is created by CushyStudio itself
             // when it runs for the first time
-            // it will allow to only see errors in actions you either
+            // it will allow to only see errors in cards you either
             // MAINTAIN or are CURRENTLY WORKING ON
             include: [...mandatoryIncludes],
             exclude: [],

@@ -53,7 +53,7 @@ export class ActionLibrary {
     ) {
         // Watching a single path
 
-        this.rootActionFolder = st.actionsFolderPathAbs
+        this.rootActionFolder = st.libraryFolderPathAbs
         const included = st.typecheckingConfig.value.include
         const includedActions = included.filter(
             (x) =>
@@ -68,7 +68,7 @@ export class ActionLibrary {
         }
 
         this.addKnownPacks()
-        this.discoverAllActions()
+        this.discoverAllCards()
 
         // register watcher to properly reload all actions
         this.watcher = cache.watcher = new Watcher('library', {
@@ -154,7 +154,7 @@ export class ActionLibrary {
         // writeFileSync(join(folder, 'cushy-deck.png'), ``)
         const deck = this.getDeck(folder)
         await deck.updater._gitInit()
-        this.findActionsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
+        this.recursivelyFindCardsInFolder(this.st.libraryFolderPathAbs, this.fileTree)
         return deck
     }
 
@@ -194,13 +194,13 @@ export class ActionLibrary {
     }
     // ---------------------------------------------------------
 
-    discoverAllActions = (): boolean => {
+    discoverAllCards = (): boolean => {
         this.fileTree.splice(0, this.fileTree.length) // reset
         this.cardsByPath.clear() // reset
         this.folderMap.clear() // reset
 
-        console.log(`[💙] TOOL: starting discovery in ${this.st.actionsFolderPathAbs}`)
-        this.findActionsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
+        console.log(`[💙] TOOL: starting discovery in ${this.st.libraryFolderPathAbs}`)
+        this.recursivelyFindCardsInFolder(this.st.libraryFolderPathAbs, this.fileTree)
 
         console.log(`[💙] TOOL: done walking, found ${this.cardsByPath.size} files`)
         this.updatedAt = Date.now()
@@ -210,7 +210,7 @@ export class ActionLibrary {
     }
 
     /** @internal */
-    private findActionsInFolder = (
+    private recursivelyFindCardsInFolder = (
         //
         dir: string,
         parentStack: ItemDataType[],
@@ -225,11 +225,11 @@ export class ActionLibrary {
             const stat = statSync(absPath)
             // const dirName = path.basename(filePath)
             if (stat.isDirectory()) {
-                const relPath = asRelativePath(path.relative(this.st.actionsFolderPathAbs, absPath))
+                const relPath = asRelativePath(path.relative(this.st.libraryFolderPathAbs, absPath))
                 // console.log('1', folderEntry)
                 const ARRAY: ItemDataType[] = []
                 this.folderMap.add(relPath)
-                this.findActionsInFolder(absPath, ARRAY)
+                this.recursivelyFindCardsInFolder(absPath, ARRAY)
                 const folderEntry: ItemDataType = {
                     value: relPath,
                     children: ARRAY,

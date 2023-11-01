@@ -73,18 +73,18 @@ export class CardFile {
     }
 
     get isFavorite(): boolean {
-        return this.st.configFile.value.favoriteActions?.includes(this.relPath) ?? false
+        return this.st.configFile.value.favoriteCards?.includes(this.relPath) ?? false
     }
 
     setFavorite = (fav: boolean) => {
-        const favArray = this.st.configFile.value.favoriteActions ?? []
+        const favArray = this.st.configFile.value.favoriteCards ?? []
         if (fav) {
             if (!favArray.includes(this.relPath)) favArray.push(this.relPath)
         } else {
             const index = favArray.indexOf(this.relPath)
             if (index !== -1) favArray.splice(index, 1)
         }
-        this.st.configFile.update({ favoriteActions: favArray })
+        this.st.configFile.update({ favoriteCards: favArray })
     }
 
     get namePretty(): string {

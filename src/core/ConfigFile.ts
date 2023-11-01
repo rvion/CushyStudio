@@ -27,7 +27,7 @@ export type ConfigFile = {
      * @example 8188
      * */
     comfyPort: number
-    favoriteActions?: CardPath[]
+    favoriteCards?: CardPath[]
     /** list of all comfyUI setup available */
     machines?: {
         /** e.g.

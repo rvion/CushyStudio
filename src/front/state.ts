@@ -84,8 +84,8 @@ export class STATE {
     comfyJSONPath: AbsolutePath
     embeddingsPath: AbsolutePath
     nodesTSPath: AbsolutePath
-    actionsFolderPathAbs: AbsolutePath
-    actionsFolderPathRel: RelativePath
+    libraryFolderPathAbs: AbsolutePath
+    libraryFolderPathRel: RelativePath
     outputFolderPath: AbsolutePath
     status: ComfyStatus | null = null
 
@@ -106,7 +106,7 @@ export class STATE {
 
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
     get favoriteActions(): CardPath[] {
-        return this.configFile.value.favoriteActions ?? []
+        return this.configFile.value.favoriteCards ?? []
     }
     // 🔴 this is not the right way to go cause it will cause the action to stay
     // pending in the background: fix that LATER™️
@@ -159,8 +159,8 @@ export class STATE {
         this.nodesTSPath = this.resolve(this.rootPath, asRelativePath('schema/global.d.ts'))
         this.outputFolderPath = this.cacheFolderPath // this.resolve(this.cacheFolderPath, asRelativePath('outputs'))
 
-        this.actionsFolderPathRel = asRelativePath('library')
-        this.actionsFolderPathAbs = this.resolve(this.rootPath, this.actionsFolderPathRel)
+        this.libraryFolderPathRel = asRelativePath('library')
+        this.libraryFolderPathAbs = this.resolve(this.rootPath, this.libraryFolderPathRel)
 
         // config files
         this.typecheckingConfig = mkTypescriptConfig()
