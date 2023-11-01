@@ -30,17 +30,19 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
             ></div> */}
             {/* OVERLAY CONTAINER */}
             <div
+                tw='ml-auto inset-0 text-center'
                 style={{
+                    opacity: 0.9,
                     boxShadow: '0 0 1rem 0 #ebebebe0',
                     pointerEvents: 'none',
-                    top: '5rem',
-                    left: '5rem',
                     position: 'absolute',
                     zIndex: 1050,
                     objectFit: 'contain',
                     maxHeight: '100vh',
-                    // background: 'red',
                     maxWidth: '100vw',
+                    // top: '5rem',
+                    // left: '5rem',
+                    // background: 'red',
                 }}
             >
                 {/* METADATA */}
@@ -68,6 +70,8 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                     <img
                         src={hovered.url}
                         style={{
+                            width: '100%',
+
                             objectFit: 'contain',
                             maxHeight: 'calc(100vh - 10rem)',
                             maxWidth: 'calc(100vw - 10rem)',

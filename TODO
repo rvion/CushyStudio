@@ -2,9 +2,9 @@ Todo before release
 
 ☐ make the run button red if cushy is not running
 ☐ center preview
-☐ better latent preview
-    ☐ fix aspect ratio
-    ☐ zoom on hover
+✔ better latent preview @done(23-11-01 13:15)
+    ✔ fix aspect ratio @done(23-11-01 13:15)
+    ✔ zoom on hover @done(23-11-01 13:15)
 
 ☐ better scribble
 ☐ error messages
@@ -15,6 +15,7 @@ Todo before release
 ☐ close things
 ☐ better type-checking config
 ☐ better type-checking config
+
 
 marketplace:
     ☐ proper action pack manifest file
