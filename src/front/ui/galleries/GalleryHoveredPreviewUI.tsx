@@ -10,7 +10,8 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
         return false
     })
     if (cccP) return null
-    if (st.hovered == null) return null
+    const hovered = st.hovered
+    if (hovered == null) return null
     return (
         <div>
             {/* BACKDROP */}
@@ -43,29 +44,29 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                 }}
             >
                 {/* METADATA */}
-                <div className='absolute bottom-0 [background:#00000033] text-xs'>
-                    <div className='flex whitespace-nowrap'>URL = {st.hovered.url}</div>
-                    <div className='flex whitespace-nowrap'>downloaded = {st.hovered.data.downloaded ? '✅' : '❌'}</div>
-                    <div className='flex whitespace-nowrap'>filename = {st.hovered.data.imageInfos?.filename ?? 'error'}</div>
-                    <div className='flex whitespace-nowrap'>fpath = {st.hovered.localAbsolutePath}</div>
-                    <div className='flex whitespace-nowrap'>promptID = {st.hovered.prompt.id}</div>
-                </div>
+                {/* <div className='absolute bottom-0 [background:#00000033] text-xs'>
+                    <div className='flex whitespace-nowrap'>URL = {hovered.url}</div>
+                    <div className='flex whitespace-nowrap'>downloaded = {hovered.data.downloaded ? '✅' : '❌'}</div>
+                    <div className='flex whitespace-nowrap'>filename = {hovered.data.imageInfos?.filename ?? 'error'}</div>
+                    <div className='flex whitespace-nowrap'>fpath = {hovered.localAbsolutePath}</div>
+                    <div className='flex whitespace-nowrap'>promptID = {hovered.prompt.id}</div>
+                </div> */}
                 {/* IMAGE */}
-                {st.hovered.data.type === 'video' ? (
+                {hovered.type === 'video' ? (
                     <video
                         style={{
                             objectFit: 'contain',
                             maxHeight: 'calc(100vh - 10rem)',
                             maxWidth: 'calc(100vw - 10rem)',
                         }}
-                        src={st.hovered.url}
+                        src={hovered.url}
                         controls
                         autoPlay
                         loop
                     />
                 ) : (
                     <img
-                        src={st.hovered.url}
+                        src={hovered.url}
                         style={{
                             objectFit: 'contain',
                             maxHeight: 'calc(100vh - 10rem)',

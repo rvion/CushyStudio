@@ -281,7 +281,8 @@ hr {
     padding-left: .2rem
 }
 ._MD table, ._MD th, ._MD td {
-    border: 1px solid rgb(57, 57, 57);
+    border-top: 1px solid #333333;
+    border-left: 1px solid #333333;
 }
 
 .rv-tooltip {display: none;}

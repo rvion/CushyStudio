@@ -38,6 +38,11 @@ import { ElectronUtils } from './ElectronUtils'
 import { GithubUserName } from 'src/library/GithubUser'
 import { GithubRepoName } from 'src/library/githubRepo'
 
+// prettier-ignore
+type HoveredAsset =
+    | { type: 'image'; url: string }
+    | { type: 'video'; url: string }
+
 export class STATE {
     //file utils that need to be setup first because
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
@@ -91,7 +96,7 @@ export class STATE {
     cushyStatus: Maybe<FromExtension_CushyStatus> = null
     configFile: JsonFile<ConfigFile>
     updater: GitManagedFolder
-    hovered: Maybe<ImageL> = null
+    hovered: Maybe<HoveredAsset> = null
     electronUtils: ElectronUtils
     library: ActionLibrary
     schemaReady = new ManualPromise<true>()

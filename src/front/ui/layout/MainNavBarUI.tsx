@@ -71,48 +71,46 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 label='paint'
             />
 
-            <Whisper
+            {/* <Whisper
                 placement='right'
                 enterable
                 speaker={
                     <Popover>
-                        <MainNavEntryUI
-                            //
-                            onClick={() => {
-                                st.layout.addComfyNodeExplorer()
-                            }}
-                            ix='A'
-                            icon={
-                                <span style={{ fontSize: '1em' }} className='material-symbols-outlined'>
-                                    explore
-                                </span>
-                            }
-                            label='Node Explorer'
-                        />
-                        <OpenComfyExternalUI />
                     </Popover>
                 }
             >
                 <div>
-                    <MainNavEntryUI
-                        //
-                        onClick={() => st.layout.addComfy()}
-                        ix='4'
-                        icon={
-                            <img
-                                src={assets.public_ComfyUILogo_png}
-                                style={{
-                                    paddingBottom: '0.4rem',
-                                    paddingLeft: '0.4rem',
-                                    width: '1.5rem',
-                                    height: '1.5rem',
-                                }}
-                            />
-                        }
-                        label='Comfy'
-                    />
                 </div>
-            </Whisper>
+            </Whisper> */}
+            <MainNavEntryUI
+                //
+                onClick={() => st.layout.addComfy()}
+                ix='4'
+                icon={
+                    <img
+                        src={assets.public_ComfyUILogo_png}
+                        style={{
+                            paddingBottom: '0.4rem',
+                            paddingLeft: '0.4rem',
+                            width: '1.5rem',
+                            height: '1.5rem',
+                        }}
+                    />
+                }
+                label='Comfy'
+            />
+            <MainNavEntryUI
+                //
+                onClick={() => st.layout.addComfyNodeExplorer()}
+                ix='A'
+                icon={
+                    <span style={{ fontSize: '1em' }} className='material-symbols-outlined'>
+                        explore
+                    </span>
+                }
+                label='Nodes'
+            />
+            <OpenComfyExternalUI />
 
             <MainNavEntryUI
                 onClick={() => st.layout.addGallery()}

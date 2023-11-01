@@ -1,11 +1,8 @@
-import type { GraphL } from 'src/models/Graph'
-import type { ProjectL } from 'src/models/Project'
 import type { STATE } from 'src/front/state'
 
 import { observer } from 'mobx-react-lite'
 import { Dropdown, Popover, Whisper } from 'rsuite'
 import { PositionChildProps } from 'rsuite/esm/Picker'
-import { ImageAnswer } from 'src/controls/misc/InfoAnswer'
 import { ImageL } from 'src/models/Image'
 import { useSt } from '../../FrontStateCtx'
 import { useImageDrag } from './dnd'
@@ -20,9 +17,9 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
         image.data.type === 'video' ? (
             <video
                 //
-                onMouseEnter={(ev) => (st.hovered = image)}
+                onMouseEnter={(ev) => (st.hovered = { type: 'video', url: image.url })}
                 onMouseLeave={() => {
-                    if (st.hovered === image) st.hovered = null
+                    if (st.hovered?.url === image.url) st.hovered = null
                 }}
                 style={{
                     //
@@ -37,11 +34,9 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
                 src={image.url}
                 ref={dragRef}
                 loading='lazy'
-                onMouseEnter={(ev) => {
-                    st.hovered = image
-                }}
+                onMouseEnter={(ev) => (st.hovered = { type: 'image', url: image.url })}
                 onMouseLeave={() => {
-                    if (st.hovered === image) st.hovered = null
+                    if (st.hovered?.url === image.url) st.hovered = null
                 }}
                 style={{
                     objectFit: 'contain',

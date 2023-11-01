@@ -6,6 +6,7 @@ import { ImageUI } from './ImageUI'
 
 export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
+    const preview = st.preview
     // ⏸️ const [dropStyle, dropRef] = useImageDrop((i) => {
     // ⏸️     i.update({ folderID: null })
     // ⏸️ })
@@ -50,7 +51,24 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                         </div>
                     </div>
                 </div>
-                {st.preview ? <img style={{ width: st.gallerySizeStr, height: st.gallerySizeStr }} src={st.preview.url} /> : null}
+                {preview ? ( //
+                    <img
+                        //
+                        style={{
+                            objectFit: 'contain',
+                            opacity: 1,
+                            padding: '0.2rem',
+                            borderRadius: '.5rem',
+                            width: st.gallerySizeStr,
+                            height: st.gallerySizeStr,
+                        }}
+                        src={preview.url}
+                        onMouseEnter={(ev) => (st.hovered = { type: 'image', url: preview.url })}
+                        onMouseLeave={() => {
+                            if (st.hovered?.url === preview.url) st.hovered = null
+                        }}
+                    />
+                ) : null}
                 {/* <div className='text-center'>Images</div> */}
                 {/* <IconButton size='xs' appearance='link' icon={<>📂</>}></IconButton> */}
 
