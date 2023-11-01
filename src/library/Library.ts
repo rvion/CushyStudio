@@ -119,6 +119,8 @@ export class ActionLibrary {
         mkdirSync(folder, { recursive: true })
         writeFileSync(join(folder, 'readme.md'), `# ${folder}\n\nThis is a new deck, created by CushyStudio.`)
         writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
+        // writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
+        // writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
         // copyFileSync(join(this.st.rootPath, 'assets', 'cushy-deck.png'), join(folder, 'cushy-deck.png'))
         // writeFileSync(join(folder, 'cushy-deck.png'), ``)
         const deck = this.getDeck(folder)
