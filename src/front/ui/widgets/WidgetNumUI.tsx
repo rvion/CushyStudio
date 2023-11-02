@@ -14,7 +14,7 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
     const sliderUI =
         theme === 'slider' ? (
             <Slider //
-                style={{ width: '10rem' }}
+                style={{ width: '6rem' }}
                 value={val}
                 min={req.input.min}
                 max={req.input.max}

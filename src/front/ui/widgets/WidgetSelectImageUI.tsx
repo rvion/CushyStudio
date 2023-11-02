@@ -137,6 +137,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
                     />
                 )}
                 <TabsUI
+                    inline
                     disabled={!req.state.active}
                     onClick={(i) => {
                         // if (i === Tab.None && req instanceof Widget_imageOpt) req.state.active = false

@@ -20,13 +20,13 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { req: Widget_ma
     const collapsed = req.state.collapsed
     if (collapsed)
         return (
-            <Button tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
+            <Button appearance='subtle' tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
                 {collapsed ? '▸' : '▿'}
             </Button>
         )
     return (
         <>
-            <Button tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
+            <Button appearance='subtle' tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
                 {collapsed ? '▸' : '▿'}
             </Button>
             <table cellSpacing={0} cellPadding={0}>
