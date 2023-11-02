@@ -740,7 +740,12 @@ export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom',
 }
 
 // 🅿️ list ==============================================================================
-export type Widget_list_input<T extends Widget>  = ReqInput<{ element: () => T }>
+export type Widget_list_input<T extends Widget>  = ReqInput<{
+    element: () => T,
+    min?: number,
+    max?:number,
+    defaultLength?:number
+}>
 export type Widget_list_serial<T extends Widget> = { type: 'list', active: true; items_: T['$Serial'][] }
 export type Widget_list_state<T extends Widget>  = { type: 'list', active: true; items: T[] }
 export type Widget_list_output<T extends Widget> = T['$Output'][]
@@ -760,7 +765,16 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
             const items = serial.items_.map((sub_) => builder.HYDRATE(sub_.type, this._reference.input, sub_)) // 🔴 handler filter if wrong type
             this.state = { type: 'list', active: serial.active, items }
         } else {
-            this.state = { type: 'list', active: true, items: [], }
+            const clamp = (v: number, min: number, max: number) => Math.min(Math.max(v, min), max)
+            const defaultLen = clamp(input.defaultLength ?? 0, input.min ?? 0, input.max ?? 10)
+            const items = defaultLen
+                ? new Array(defaultLen).fill(0).map(() => input.element())
+                : []
+            this.state = {
+                type: 'list',
+                active: true,
+                items: items,
+            }
         }
         makeAutoObservable(this)
     }
