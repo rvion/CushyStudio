@@ -31,12 +31,12 @@ export const WebsocketIndicatorUI = observer(function WebsocketIndicatorUI_(p: {
             }
         >
             {st.ws.isOpen ? (
-                <div className='flex gap-1 text-xs px-1 rounded cursor-help'>
+                <div className='flex gap-1 text-sm px-1 rounded cursor-help'>
                     {/* <span className='material-symbols-outlined text-green-400 '>check_circle</span> */}
                     <span className='text-green-300'>WS</span>
                 </div>
             ) : (
-                <Button size='xs' color='orange' appearance='ghost' className='flex gap-2'>
+                <Button size='sm' color='orange' appearance='ghost' className='flex gap-2'>
                     <Loader />
                     <div>Connecting to ComfyUI</div>
                 </Button>

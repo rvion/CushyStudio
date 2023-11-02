@@ -11,8 +11,8 @@ import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
     return (
-        <div id='CushyAppBar' tw='flex items-start gap-2 px-1 overflow-auto'>
-            <div tw='flex py-2 gap-1'>
+        <div id='CushyAppBar' tw='flex items-center gap-2 px-1 overflow-auto'>
+            <div tw='flex py-2 gap-1 self-start'>
                 <img style={{ width: '1rem' }} src={assets.public_CushyLogo_512_png} alt='' />
                 <div tw='whitespace-nowrap'>Cushy Studio</div>
                 <UpdateBtnUI updater={st.updater} />
@@ -20,7 +20,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
             <MainNavBarUI />
             <div className='flex-grow'></div>
             <DebugButtonsUI />
-            <div tw='flex py-2'>
+            <div tw='flex py-2 self-start'>
                 <WebsocketIndicatorUI />
                 <SchemaIndicatorUI />
             </div>
@@ -81,22 +81,21 @@ export const DebugButtonsUI = observer(function DebugButtonsUI_(p: {}) {
 
 export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {
     return (
-        <div>
-            <Button
-                as='a'
-                appearance='link'
-                href='#'
-                onClick={(ev) => {
-                    ev.preventDefault()
-                    ev.stopPropagation()
-                    window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio')
-                }}
-            >
-                {/* <span className='material-symbols-outlined text-yellow-600'>star</span> */}
-                rvion/CushyStudio
-                {/* <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} /> */}
-            </Button>
-        </div>
+        <Button
+            as='a'
+            tw='self-start'
+            appearance='link'
+            href='#'
+            onClick={(ev) => {
+                ev.preventDefault()
+                ev.stopPropagation()
+                window.require('electron').shell.openExternal('https://github.com/rvion/CushyStudio')
+            }}
+        >
+            {/* <span className='material-symbols-outlined text-yellow-600'>star</span> */}
+            rvion/CushyStudio
+            <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
+        </Button>
     )
 })
 

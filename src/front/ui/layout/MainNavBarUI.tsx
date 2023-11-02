@@ -22,7 +22,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
     const st = useSt()
     const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
     return (
-        <ButtonGroup id='main-navbar' tw='flex flex-wrap'>
+        <ButtonGroup id='main-navbar' tw='flex flex-wrap items-center'>
             {/* COMFY */}
             <MainNavEntryUI
                 onClick={() => st.layout.addActionPicker()}
