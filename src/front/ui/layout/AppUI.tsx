@@ -7,9 +7,7 @@ export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
     return (
         <div
-            // id
             id='CushyStudio'
-            // shortcuts
             tabIndex={-1}
             onKeyDown={st.shortcuts.processKeyDownEvent}
             ref={(e) => {

@@ -11,16 +11,19 @@ import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
     return (
-        <div id='CushyAppBar' tw='flex items-center gap-2 px-1 overflow-auto'>
-            <img style={{ width: '1rem' }} src={assets.public_CushyLogo_512_png} alt='' />
-            <div tw='whitespace-nowrap'>Cushy Studio</div>
-            <UpdateBtnUI updater={st.updater} />
-            <div className='flex-grow'></div>
+        <div id='CushyAppBar' tw='flex items-start gap-2 px-1 overflow-auto'>
+            <div tw='flex py-2 gap-1'>
+                <img style={{ width: '1rem' }} src={assets.public_CushyLogo_512_png} alt='' />
+                <div tw='whitespace-nowrap'>Cushy Studio</div>
+                <UpdateBtnUI updater={st.updater} />
+            </div>
             <MainNavBarUI />
             <div className='flex-grow'></div>
             <DebugButtonsUI />
-            <WebsocketIndicatorUI />
-            <SchemaIndicatorUI />
+            <div tw='flex py-2'>
+                <WebsocketIndicatorUI />
+                <SchemaIndicatorUI />
+            </div>
             <CushyStudioLinkUI />
         </div>
     )
