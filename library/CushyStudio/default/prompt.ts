@@ -83,8 +83,8 @@ action({
                 model: {
                     // reuse model stuff
                     cfg: p.sampler.cfg,
-                    sampler_name: p.sampler.sampler_name,
-                    scheduler: p.sampler.scheduler,
+                    sampler_name: 'ddim',
+                    scheduler: 'ddim_uniform',
                     // override the snd pass specific stuff
                     denoise: p.highResFix.denoise,
                     steps: p.highResFix.steps,
