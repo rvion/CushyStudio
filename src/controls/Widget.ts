@@ -795,9 +795,9 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
 }
 
 // 🅿️ group ==============================================================================
-export type Widget_group_input <T extends { [key: string]: Widget }> = ReqInput<{ items: () => T, topLevel?: boolean }>
+export type Widget_group_input <T extends { [key: string]: Widget }> = ReqInput<{ items: () => T, topLevel?: boolean, verticalLabels?: boolean }>
 export type Widget_group_serial<T extends { [key: string]: Widget }> = { type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }
-export type Widget_group_state <T extends { [key: string]: Widget }> = { type: 'group', active: true; values: T, collapsed?: boolean }
+export type Widget_group_state <T extends { [key: string]: Widget }> = { type: 'group', active: true; values: T, collapsed?: boolean, verticalLabels?: boolean }
 export type Widget_group_output<T extends { [key: string]: Widget }> = { [k in keyof T]: ReqResult<T[k]> }
 export interface Widget_group<T extends { [key: string]: Widget }> extends IWidget<'group', Widget_group_input<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {}
 export class Widget_group<T extends { [key: string]: Widget }> implements IRequest<'group', Widget_group_input<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {
@@ -816,7 +816,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
         // debugger
         if (serial){
             const _newValues = input.items()
-            this.state = { type: 'group', active: serial.active, collapsed: serial.collapsed, values: {} as any }
+            this.state = { type: 'group', active: serial.active, collapsed: serial.collapsed, values: {} as any}
             const prevValues_ = serial.values_??{}
             for (const key in _newValues) {
                 const newItem = _newValues[key]
@@ -834,7 +834,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
             }
         } else {
             const _items = input.items()
-            this.state = { type: 'group', active: true, values: _items, }
+            this.state = { type: 'group', active: true, values: _items, verticalLabels: input.verticalLabels }
         }
         makeAutoObservable(this)
     }

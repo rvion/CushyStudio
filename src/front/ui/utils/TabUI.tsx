@@ -12,6 +12,7 @@ type Tab = {
 export const TabsUI = observer(function Tabs_(p: {
     //
     title?: string
+    inline?: boolean
     tabs: Tab[]
     onClick?: (ix: number) => void
     current?: number
@@ -47,7 +48,11 @@ export const TabsUI = observer(function Tabs_(p: {
     )
     const selectedTab = p.tabs[onIx]
     return (
-        <div style={p.style} tw={['_TabsUI', p.className, p.grow && '_grow', 'relative']}>
+        <div
+            //
+            style={p.style}
+            tw={['_TabsUI', p.className, p.grow && '_grow', 'relative', p.inline && 'flex']}
+        >
             {p.bottomTabs ? null : tabHeader}
             <div className='_tab_body'>
                 {selectedTab ? ( //
