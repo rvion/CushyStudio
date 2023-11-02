@@ -10,7 +10,7 @@ import 'rsuite/dist/rsuite.min.css'
 
 import './webview.css'
 import 'src/theme/theme.css'
-import 'src/theme/card.css'
+// import 'src/theme/card.css'
 
 import { Main } from './MainUI'
 

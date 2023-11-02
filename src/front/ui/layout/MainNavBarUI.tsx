@@ -69,7 +69,13 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <MainNavEntryUI
                 onClick={() => st.layout.addGallery()}
                 ix='5'
-                icon={<span className='material-symbols-outlined text-yellow-500'>image</span>}
+                icon={<span className='material-symbols-outlined text-yellow-500'>image_search</span>}
+                label='Gallery'
+            />
+            <MainNavEntryUI
+                onClick={() => st.layout.addLastImage()}
+                ix='5'
+                icon={<span className='material-symbols-outlined text-yellow-500'>image_search</span>}
                 label='Gallery'
             />
 

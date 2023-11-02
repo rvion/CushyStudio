@@ -42,7 +42,7 @@ enum Widget {
     FileList2 = 'FileList2',
     Steps = 'Steps',
     LastGraph = 'LastGraph',
-    LastIMage = 'LastIMage',
+    LastImage = 'LastIMage',
     Civitai = 'Civitai',
     Image = 'Image',
     Marketplace = 'Marketplace',
@@ -155,6 +155,7 @@ export class CushyLayoutManager {
         }
     }
     addImage = (imgID: ImageID) => this._AddWithProps(Widget.Image, `/image/${imgID}`, { title: '🎇 Image', imgID })
+    addLastImage = () => this._AddWithProps(Widget.LastImage, `/lastImage`, { title: '🎇 Last Image' })
     addGallery = () => this._AddWithProps(Widget.Gallery, `/gallery`, { title: 'Gallery' })
     addHosts = () => this._AddWithProps(Widget.Hosts, `/hosts`, { title: 'Hosts' })
     addComfy = (litegraphJson?: LiteGraphJSON) => {
@@ -289,7 +290,7 @@ export class CushyLayoutManager {
         if (component === Widget.FileList2) return <ActionPicker1UI />
         if (component === Widget.Steps) return <StepListUI />
         if (component === Widget.LastGraph) return <LastGraphUI />
-        if (component === Widget.LastIMage) return <LastImageUI />
+        if (component === Widget.LastImage) return <LastImageUI />
         if (component === Widget.Civitai) return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0'></iframe> // prettier-ignore
         if (component === Widget.Hosts) return <HostListUI />
         if (component === Widget.Marketplace) return <MarketplaceUI />
@@ -401,7 +402,7 @@ export class CushyLayoutManager {
                                 minWidth: 150,
                                 minHeight: 300,
                                 children: [
-                                    this._persistentTab({ name: 'Last Image', id: '/lastImage', widget: Widget.LastIMage }),
+                                    this._persistentTab({ name: 'Last Image', id: '/lastImage', widget: Widget.LastImage }),
                                 ],
                             },
                             {
