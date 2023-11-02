@@ -1,7 +1,13 @@
-import React, { useRef, useState, useEffect, useMemo } from 'react'
+import React, { useRef, useState, useEffect, useMemo, CSSProperties } from 'react'
 import debounce from 'lodash/debounce'
+import { Input } from 'rsuite'
 
-export const ScribbleCanvas = (p: { onChange: (base64: string) => void }) => {
+export const ScribbleCanvas = (p: {
+    style: CSSProperties
+    fillStyle: string
+    strokeStyle: string
+    onChange: (base64: string) => void
+}) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const [drawing, setDrawing] = useState(false)
     const [canvasWidth, setCanvasWidth] = useState(512)
@@ -11,7 +17,7 @@ export const ScribbleCanvas = (p: { onChange: (base64: string) => void }) => {
     useEffect(() => {
         const ctx = canvasRef.current?.getContext('2d')
         if (ctx) {
-            ctx.fillStyle = 'white'
+            ctx.fillStyle = p.fillStyle
             ctx.fillRect(0, 0, canvasWidth, canvasHeight)
         }
     }, [canvasWidth, canvasHeight])
@@ -34,6 +40,7 @@ export const ScribbleCanvas = (p: { onChange: (base64: string) => void }) => {
         })
     }
 
+    const handleMouseUp = () => setDrawing(false)
     const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         if (!drawing) return
 
@@ -41,7 +48,7 @@ export const ScribbleCanvas = (p: { onChange: (base64: string) => void }) => {
         if (ctx) {
             ctx.lineWidth = 5
             ctx.lineCap = 'round'
-            ctx.strokeStyle = 'black'
+            ctx.strokeStyle = p.strokeStyle
 
             ctx.beginPath()
             ctx.moveTo(position.x, position.y)
@@ -56,21 +63,30 @@ export const ScribbleCanvas = (p: { onChange: (base64: string) => void }) => {
 
         debouncedOnChange()
     }
-
-    const handleMouseUp = () => {
-        setDrawing(false)
-    }
-
     return (
-        <div>
-            <label>
-                Width:
-                <input type='number' value={canvasWidth} onChange={(e) => setCanvasWidth(Number(e.target.value))} />
-            </label>
-            <label>
-                Height:
-                <input type='number' value={canvasHeight} onChange={(e) => setCanvasHeight(Number(e.target.value))} />
-            </label>
+        <div style={p.style}>
+            <div tw='flex gap-2 items-center'>
+                W:
+                <Input
+                    style={{
+                        fontFamily: 'monospace',
+                        width: canvasWidth.toString().length + 8 + 'ch',
+                    }}
+                    type='number'
+                    value={canvasWidth}
+                    onChange={(e) => setCanvasWidth(Number(e))}
+                />
+                H:
+                <Input
+                    style={{
+                        fontFamily: 'monospace',
+                        width: canvasHeight.toString().length + 8 + 'ch',
+                    }}
+                    type='number'
+                    value={canvasHeight}
+                    onChange={(e) => setCanvasHeight(Number(e))}
+                />
+            </div>
             <canvas
                 ref={canvasRef}
                 width={canvasWidth}
@@ -79,7 +95,7 @@ export const ScribbleCanvas = (p: { onChange: (base64: string) => void }) => {
                 onMouseMove={handleMouseMove}
                 onMouseUp={handleMouseUp}
                 onMouseLeave={handleMouseUp}
-                style={{ border: '1px solid black', display: 'block', marginTop: '10px' }}
+                style={{ border: '1px solid gray', display: 'block', marginTop: '10px' }}
             ></canvas>
         </div>
     )

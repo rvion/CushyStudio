@@ -6,10 +6,10 @@ import { useSt } from '../../FrontStateCtx'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
 import { UpdateBtnUI } from './UpdateBtnUI'
 import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
+import { MainNavBarUI } from './MainNavBarUI'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
-    // const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
     return (
         <div
             id='CushyAppBar'
@@ -22,20 +22,14 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                     <img style={{ width: '1rem' }} src={assets.public_CushyLogo_512_png} alt='' />
                     Cushy Studio
                     <UpdateBtnUI updater={st.updater} />
+                    <div className='flex-grow'></div>
+                    <MainNavBarUI />
                     {/* <GithubAppBarInputUI /> */}
                     <div className='flex-grow'></div>
                     <DebugButtonsUI />
                     <WebsocketIndicatorUI />
                     <SchemaIndicatorUI />
                     <CushyStudioLinkUI />
-                    {/* <Button
-                        appearance='ghost'
-                        size='xs'
-                        startIcon={<span className='material-symbols-outlined'>{themeIcon}</span>}
-                        onClick={() => st.theme.toggle()}
-                    >
-                        Theme
-                    </Button> */}
                 </div>
                 {/* <div className='flex gap-2  items-center'>
                     <div tw='flex-grow'></div>
@@ -97,7 +91,9 @@ export const DebugButtonsUI = observer(function DebugButtonsUI_(p: {}) {
 
 export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {
     return (
-        <a
+        <Button
+            as='a'
+            appearance='link'
             className='flex'
             onClick={(ev) => {
                 ev.preventDefault()
@@ -107,9 +103,9 @@ export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {
             href='#'
         >
             {/* <span className='material-symbols-outlined text-yellow-600'>star</span> */}
-            <span className='underline text-blue-300'>rvion/CushyStudio</span>
+            rvion/CushyStudio
             <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
-        </a>
+        </Button>
     )
 })
 

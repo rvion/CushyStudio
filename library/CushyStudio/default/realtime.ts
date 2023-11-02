@@ -22,9 +22,9 @@ action({
         negative: form.promptOpt({}),
 
         // latent
-        strength: form.float({ default: 0.5, group: 'latent' }),
-        cnet: form.enum({ enumName: 'Enum_ControlNetLoader_control_net_name' }),
-        startImage: form.image({ group: 'latent', default: { type: 'PaintImage', base64: '' } }),
+        strength: form.float({ default: 0.9, group: 'latent', min: 0, max: 1, step: 0.1 }),
+        cnet: form.enum({ enumName: 'Enum_ControlNetLoader_control_net_name', default: 'control_scribble-fp16.safetensors' }),
+        startImage: form.image({ group: 'latent', default: 'paint', defaultPaint: { type: 'PaintImage', base64: '' } }),
         // width: form.int({ default: 1024, group: 'latent' }),
         // height: form.int({ default: 1024, group: 'latent' }),
         batchSize: form.int({ default: 1, group: 'latent', min: 1 }),
@@ -112,7 +112,7 @@ action({
 
         const scribble = await flow.loadImageAnswer(p.startImage)
         const positive = graph.ControlNetApply({
-            image: graph.ImageInvert({ image: scribble }),
+            image: scribble,
             strength: p.strength,
             conditioning: graph.CLIPTextEncode({ clip: flow.AUTO, text: positiveText }),
             control_net: (t) => t.ControlNetLoader({ control_net_name: p.cnet }),

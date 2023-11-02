@@ -7,7 +7,8 @@ action({
             enumName: 'Enum_UpscaleModelLoader_model_name',
         }) /* Enum_UpscaleModelLoader_model_name */,
         LoadImage_image: ui.image({
-            default: { type: 'ComfyImage', imageName: 'example.png' },
+            default: 'comfy',
+            defaultComfy: { type: 'ComfyImage', imageName: 'example.png' },
         }) /* Enum_LoadImage_image */,
         'CLIPSeg Masking_text': ui.string({ default: 'face' }) /* STRING */,
         'Image Threshold_threshold': ui.number({ default: 0.2 }) /* FLOAT */,

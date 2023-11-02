@@ -20,7 +20,7 @@ export const Main = observer(() => {
     )
 })
 
-export const MainUI = observer(function MainUI_(p: {}) {
+const MainUI = observer(function MainUI_(p: {}) {
     const st = useSt()
     return (
         <CustomProvider theme={st.theme.theme}>

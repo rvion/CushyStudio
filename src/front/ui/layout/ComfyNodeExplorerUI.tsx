@@ -4,9 +4,9 @@ import type { ComfyNodeSchema } from 'src/models/Schema'
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { Input, InputGroup, Tag } from 'rsuite'
-import { useProject } from '../../../front/ProjectCtx'
+import { Input, InputGroup } from 'rsuite'
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from 'src/core/Colors'
+import { useProject } from '../../../front/ProjectCtx'
 
 class ComfyNodeExplorerState {
     // globalSearch = ''

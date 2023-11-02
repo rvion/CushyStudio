@@ -2,35 +2,27 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { assets } from 'src/assets/assets'
 import { useSt } from '../../FrontStateCtx'
-
-const iconSize = '1.4rem'
+import { ButtonGroup, IconButton, Popover, Whisper } from 'rsuite'
 
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
     ix: string
-    icon: React.ReactNode
+    icon: React.ReactElement
     soon?: boolean
     label: string
 }) {
     return (
-        <div className='p-0.5 mx-0.5 rounded text-center bg-gray-900 cursor-pointer hover:bg-gray-700' onClick={p.onClick}>
-            {/* <div className='flex items-center'> */}
-            {/* <div className='text-xs pr-1 text-gray-500'>{p.ix}</div> */}
-            <div tw='p-0.5' style={{ fontSize: iconSize, lineHeight: '1em' }}>
-                {p.icon}
-            </div>
-            {/* </div> */}
-            {/* <div style={{ fontSize: '.9rem' }} className='text-center text-gray-500'>
-                {p.label}
-            </div> */}
-        </div>
+        <Whisper placement='bottomStart' speaker={<Popover>{p.label}</Popover>}>
+            <IconButton appearance='subtle' size='sm' icon={p.icon} onClick={p.onClick}></IconButton>
+        </Whisper>
     )
 })
 
 export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
     const st = useSt()
+    const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
     return (
-        <div id='main-navbar' tw='flex overflow-auto'>
+        <ButtonGroup id='main-navbar' tw='flex flex-wrap'>
             {/* COMFY */}
             <MainNavEntryUI
                 onClick={() => st.layout.addActionPicker()}
@@ -39,12 +31,12 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 label='Cards'
             />
             {/* LEGACY MARKETPLACE */}
-            {/* <MainNavEntryUI
-                onClick={() => st.layout.addLibrary()}
+            <MainNavEntryUI
+                onClick={() => st.layout.addMarketplace()}
                 ix='2'
                 icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
                 label='Apps'
-            /> */}
+            />
             <MainNavEntryUI
                 onClick={() => st.layout.addActionPickerTree()}
                 ix='2'
@@ -104,6 +96,13 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 icon={<span className='material-symbols-outlined text-amber-800'>cloud</span>}
                 label='GPU'
             />
-        </div>
+            <MainNavEntryUI
+                soon
+                onClick={() => st.theme.toggle()}
+                ix='8'
+                icon={<span className='material-symbols-outlined text-amber-800'>{themeIcon}</span>}
+                label='GPU'
+            />
+        </ButtonGroup>
     )
 })

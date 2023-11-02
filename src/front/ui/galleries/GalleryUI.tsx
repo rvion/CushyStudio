@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Input, Slider } from 'rsuite'
+import { Button, Input, Slider, Toggle } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 import { ImageUI } from './ImageUI'
 // ⏸️ import { useImageDrop } from './dnd'
@@ -39,15 +39,20 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                             ></Slider>
                         </div>
                         <div tw='self-start w-fit'>
-                            <div tw='text-gray-400'>background color</div>
-                            <input
+                            <div tw='text-gray-400'>
+                                background color
+                                <Button size='xs' onClick={() => st.configFile.update({ galleryBgColor: undefined })}>
+                                    reset
+                                </Button>
+                            </div>
+                            <Input
                                 //
                                 type='color'
                                 tw='p-0 m-0 border'
                                 style={{ width: '5rem' }}
                                 value={st.configFile.value.galleryBgColor ?? undefined}
-                                onChange={(ev) => st.configFile.update({ galleryBgColor: ev.target.value })}
-                            ></input>
+                                onChange={(ev) => st.configFile.update({ galleryBgColor: ev })}
+                            ></Input>
                         </div>
                     </div>
                 </div>

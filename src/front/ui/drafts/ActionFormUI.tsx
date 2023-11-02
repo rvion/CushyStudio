@@ -1,22 +1,18 @@
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
-import { ErrorBoundary } from 'react-error-boundary'
-import { Button, Checkbox, Input, InputGroup, Message } from 'rsuite'
+import { Button, Checkbox, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
-import { GithubUserUI } from 'src/library/GithubAvatarUI'
 import { DraftID, DraftL } from 'src/models/Draft'
 import { openInVSCode } from 'src/utils/openInVsCode'
 import { stringifyUnknown } from 'src/utils/stringifyUnknown'
 import { TabUI } from '../layout/TabUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { draftContext } from '../useDraft'
-import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'
 import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
 import { ActionDraftListUI, AddDraftUI } from './ActionDraftListUI'
-import { GithubUserName } from 'src/library/GithubUser'
 
 /**
  * this is the root interraction widget
@@ -126,7 +122,7 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                 <ActionDraftListUI af={af} />
                 <ScrollablePaneUI
                     // style={{ border: '1px solid blue' }}
-                    style={{ border: '3px solid #2c2e39' }}
+                    style={{ border: '3px solid var(--rs-btn-default-text)' }}
                     className='flex-grow  rounded-xl bg-contrasted-gradient'
                 >
                     <form

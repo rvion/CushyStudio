@@ -8,7 +8,7 @@ import type { SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/prompter/plugins/CushyDebugPlugin'
-import type { AspectRatio, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, SDModelType } from './misc/InfoAnswer'
+import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
 
 import { makeAutoObservable } from 'mobx'
 import { NumbericTheme } from 'src/front/ui/widgets/WidgetNumUI'
@@ -559,9 +559,16 @@ export class Widget_loras implements IRequest<'loras', Widget_loras_input, Widge
 }
 
 // 🅿️ image ==============================================================================
-export type Widget_image_input = ReqInput<{ default?: ImageAnswer }>
+export type Widget_image_input  = ReqInput<{
+    default?: 'cushy' | 'comfy' | 'paint',
+    defaultComfy?: ComfyImageAnswer,
+    defaultCushy?: CushyImageAnswer,
+    defaultPaint?: PaintImageAnswer,
+    scribbleStrokeColor?: string,
+    scribbleFillColor?: string
+}>
 export type Widget_image_serial = Widget_image_state
-export type Widget_image_state = ImageAnswerForm<'image', true>
+export type Widget_image_state  = ImageAnswerForm<'image', true>
 export type Widget_image_output = ImageAnswer
 export interface Widget_image extends IWidget<'image', Widget_image_input, Widget_image_serial, Widget_image_state, Widget_image_output> {}
 export class Widget_image implements IRequest<'image', Widget_image_input, Widget_image_serial, Widget_image_state, Widget_image_output> {
@@ -577,10 +584,10 @@ export class Widget_image implements IRequest<'image', Widget_image_input, Widge
         this.state = serial ?? {
             type: 'image',
             active: true,
-            comfy: input.default?.type === 'ComfyImage' ? input.default : { imageName: 'example.png', type: 'ComfyImage' },
-            cushy: input.default?.type === 'CushyImage' ? input.default : null,
-            paint: input.default?.type === 'PaintImage' ? input.default : null,
-            pick: input.default?.type === 'CushyImage' ? 'cushy' : 'comfy',
+            comfy: input.defaultComfy ?? { imageName: 'example.png', type: 'ComfyImage' },
+            cushy: input.defaultCushy,
+            paint: input.defaultPaint,
+            pick: input.default ?? 'comfy',
         }
         makeAutoObservable(this)
     }
@@ -593,9 +600,9 @@ export class Widget_image implements IRequest<'image', Widget_image_input, Widge
 }
 
 // 🅿️ imageOpt ==============================================================================
-export type Widget_imageOpt_input = ReqInput<{ default?: ImageAnswer }>
+export type Widget_imageOpt_input  = Widget_image_input // same as image
 export type Widget_imageOpt_serial = Widget_imageOpt_state
-export type Widget_imageOpt_state = ImageAnswerForm<'imageOpt', boolean>
+export type Widget_imageOpt_state  = ImageAnswerForm<'imageOpt', boolean>
 export type Widget_imageOpt_output = Maybe<ImageAnswer>
 export interface Widget_imageOpt extends IWidget<'imageOpt', Widget_imageOpt_input, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
 export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_input, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
@@ -607,14 +614,13 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_inp
         public input: Widget_imageOpt_input,
         serial?: Widget_imageOpt_serial,
     ) {
-        // console.log('🔴 BBB', serial)
         this.state = serial ?? {
             type: 'imageOpt',
             active: input.default ? true : false,
-            comfy: input.default?.type === 'ComfyImage' ? input.default : { imageName: 'example.png', type: 'ComfyImage' },
-            cushy: input.default?.type === 'CushyImage' ? input.default : null,
-            paint: input.default?.type === 'PaintImage' ? input.default : null,
-            pick: input.default?.type === 'CushyImage' ? 'cushy' : 'comfy',
+            comfy: input.defaultComfy ?? { imageName: 'example.png', type: 'ComfyImage' },
+            cushy: input.defaultCushy,
+            paint: input.defaultPaint,
+            pick: input.default ?? 'comfy',
         }
         makeAutoObservable(this)
     }

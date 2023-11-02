@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import { Form, Input, Message, Panel, Toggle } from 'rsuite'
+import { Form, Panel, Toggle } from 'rsuite'
 import { useSt } from '../../../front/FrontStateCtx'
-import { JSONHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { SectionTitleUI } from '../workspace/SectionTitle'
 
 export const PanelConfigUI = observer(function PanelConfigUI_() {
@@ -9,8 +8,17 @@ export const PanelConfigUI = observer(function PanelConfigUI_() {
     const config = st.configFile
     return (
         <div className='flex flex-col items-start p-2'>
-            <Panel header={<SectionTitleUI label='CONFIG' className='bg-pink-900 block' />} className='col flex-grow'>
+            <Panel header={<SectionTitleUI label='CONFIG' className='block' />} className='col flex-grow'>
                 <Form layout='horizontal'>
+                    <FieldUI label='Comfig file path'>
+                        <Form.ControlLabel>{config.path}</Form.ControlLabel>
+                        {/* <Form.Control //
+                            value={config.value.githubUsername}
+                            onChange={(v) => config.update({ githubUsername: v })}
+                            name='githubUsername'
+                        /> */}
+                    </FieldUI>
+
                     <FieldUI label='Your github username'>
                         <Form.Control //
                             value={config.value.githubUsername}
@@ -92,23 +100,27 @@ export const PanelConfigUI = observer(function PanelConfigUI_() {
                         />
                     </FieldUI>
                 </Form>
-                <Message type='info' showIcon className='self-start'>
-                    <div>path: {config.path}</div>
+                {/* <Message type='info' showIcon className='self-start'>
                     <JSONHighlightedCodeUI code={JSON.stringify(config.value, null, 3)} />
-                </Message>
+                </Message> */}
                 {/* <pre>{JSON.stringify(action)}</pre> */}
             </Panel>
         </div>
     )
 })
 
-export const FieldUI = observer(function FieldUI_(p: { label?: string; help?: string; children: React.ReactNode }) {
+export const FieldUI = observer(function FieldUI_(p: {
+    required?: boolean
+    label?: string
+    help?: string
+    children: React.ReactNode
+}) {
     return (
         <Form.Group>
             <Form.ControlLabel>{p.label}</Form.ControlLabel>
             {p.children}
 
-            <Form.HelpText>Required</Form.HelpText>
+            {p.required && <Form.HelpText>Required</Form.HelpText>}
         </Form.Group>
     )
 })
