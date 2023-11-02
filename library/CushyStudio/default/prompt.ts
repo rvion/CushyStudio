@@ -21,7 +21,12 @@ action({
                 }),
             }),
         }),
-
+        recursiveImgToImg: form.groupOpt({
+            items: () => ({
+                steps: form.int({ default: 5 }),
+                denoise: form.float({ min: 0, max: 1, step: 0.01, default: 0.3 }),
+            }),
+        }),
         // startImage
         removeBG: form.bool({ default: false }),
         extra: form.groupOpt({
@@ -61,6 +66,30 @@ action({
             preview: false,
         })
         latent = fstPass.latent
+
+        if (p.recursiveImgToImg) {
+            for (let i = 0; i < p.recursiveImgToImg.steps; i++) {
+                latent = _.run_sampler({
+                    ckpt: ckptPos,
+                    clip: clipPos,
+                    vae,
+                    flow,
+                    latent,
+                    model: {
+                        // reuse model stuff
+                        cfg: p.sampler.cfg,
+                        sampler_name: 'ddim',
+                        scheduler: 'ddim_uniform',
+                        // override the snd pass specific stuff
+                        denoise: p.recursiveImgToImg.denoise,
+                        steps: 10,
+                    },
+                    positive: positive,
+                    negative: negative,
+                    preview: true,
+                }).latent
+            }
+        }
 
         // SECOND PASS (a.k.a. highres fix) ---------------------------------------------------------
         if (p.highResFix) {
