@@ -122,8 +122,8 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                 <ActionDraftListUI af={af} />
                 <ScrollablePaneUI
                     // style={{ border: '1px solid blue' }}
-                    style={{ border: '3px solid var(--rs-btn-default-text)' }}
-                    className='flex-grow  rounded-xl bg-contrasted-gradient'
+                    style={{ border: '7px solid #152865' }}
+                    className='flex-grow rounded-xl bg-contrasted-gradient'
                 >
                     <form
                         onKeyUp={(ev) => {
