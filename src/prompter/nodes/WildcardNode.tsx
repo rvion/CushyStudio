@@ -39,7 +39,7 @@ export class WildcardNode extends DecoratorNode<ReactNode> {
         return (
             <span
                 //
-                className='bg-yellow-800 mr-1 rv-tooltip-container'
+                className='bg-yellow-800 rv-tooltip-container'
             >
                 <div className='rv-tooltip'>{((wildcards as any)[this.wildcardName] ?? []).slice(0, 20).join(', ') + '...'}</div>
                 {this.wildcardName}

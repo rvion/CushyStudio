@@ -97,7 +97,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                 </Popover>
             }
         >
-            <span className='bg-blue-800 mr-1'>
+            <span className='bg-blue-800'>
                 {def.name}:{def.strength_model}:{def.strength_clip}
             </span>
         </Whisper>
