@@ -36,7 +36,7 @@ export class BooruNode extends DecoratorNode<ReactNode> {
     isKeyboardSelectable(): boolean { return true } // prettier-ignore
     createDOM(): HTMLElement { return document.createElement('span') } // prettier-ignore
     updateDOM(): false { return false } // prettier-ignore
-    decorate(): ReactNode { return <span className='bg-teal-800 mr-1'>{this.booru.text}</span> } // prettier-ignore
+    decorate(): ReactNode { return <span className='bg-teal-800'>{this.booru.text}</span> } // prettier-ignore
 }
 
 export function $createBooruNode(booru: DanbooruTag): BooruNode {
