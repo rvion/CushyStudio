@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 import { assets } from 'src/assets/assets'
 import { useSt } from '../../FrontStateCtx'
-import { ButtonGroup, IconButton, Popover, Whisper } from 'rsuite'
+import { Button, ButtonGroup, IconButton, Popover, Whisper } from 'rsuite'
 
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
@@ -13,7 +13,9 @@ export const MainNavEntryUI = observer(function UI_(p: {
 }) {
     return (
         <Whisper placement='bottomStart' speaker={<Popover>{p.label}</Popover>}>
-            <IconButton appearance='subtle' size='sm' icon={p.icon} onClick={p.onClick}></IconButton>
+            <Button appearance='subtle' size='sm' startIcon={p.icon} onClick={p.onClick}>
+                {p.label}
+            </Button>
         </Whisper>
     )
 })
@@ -75,8 +77,8 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <MainNavEntryUI
                 onClick={() => st.layout.addLastImage()}
                 ix='5'
-                icon={<span className='material-symbols-outlined text-yellow-500'>image_search</span>}
-                label='Gallery'
+                icon={<span className='material-symbols-outlined text-yellow-500'>history</span>}
+                label='Last'
             />
 
             {/* CONFIG */}
@@ -107,7 +109,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 onClick={() => st.theme.toggle()}
                 ix='8'
                 icon={<span className='material-symbols-outlined text-amber-800'>{themeIcon}</span>}
-                label='GPU'
+                label='Theme'
             />
         </ButtonGroup>
     )

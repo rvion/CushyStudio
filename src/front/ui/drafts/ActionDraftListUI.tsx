@@ -70,7 +70,7 @@ export const AddDraftUI = observer(function AddDraftUI_(p: { af: CardFile }) {
     return (
         <Button
             disabled={af.action == null}
-            appearance='ghost'
+            appearance='subtle'
             size='xs'
             color='green'
             startIcon={<span className='material-symbols-outlined'>add</span>}

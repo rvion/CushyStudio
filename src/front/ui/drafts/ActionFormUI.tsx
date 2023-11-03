@@ -1,7 +1,7 @@
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
-import { Button, Checkbox, Message } from 'rsuite'
+import { Button, ButtonGroup, Checkbox, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { DraftID, DraftL } from 'src/models/Draft'
 import { openInVSCode } from 'src/utils/openInVsCode'
@@ -78,16 +78,17 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                 <div tw='row items-center font justify-between mb-2'>
                     <div tw='row items-center gap-2' style={{ fontSize: '1.3rem' }}>
                         <span>{action.name}</span>
-                        <Button
-                            size='xs'
-                            color='blue'
-                            appearance='ghost'
-                            startIcon={<span className='material-symbols-outlined'>edit</span>}
-                            onClick={() => openInVSCode(cwd(), af.absPath)}
-                        >
-                            Edit
-                        </Button>
-                        <AddDraftUI af={af} />
+                        <ButtonGroup size='xs'>
+                            <Button
+                                color='blue'
+                                appearance='subtle'
+                                startIcon={<span className='material-symbols-outlined'>edit</span>}
+                                onClick={() => openInVSCode(cwd(), af.absPath)}
+                            >
+                                Edit
+                            </Button>
+                            <AddDraftUI af={af} />
+                        </ButtonGroup>
                     </div>
                     <div tw='self-end flex gap-2 items-center' style={{ width: 'fit-content' }}>
                         <Checkbox checked={draft.shouldAutoStart} onChange={(ev, checked) => draft.setAutostart(checked)}>
@@ -122,7 +123,7 @@ export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL |
                 <ActionDraftListUI af={af} />
                 <ScrollablePaneUI
                     // style={{ border: '1px solid blue' }}
-                    style={{ border: '7px solid #152865' }}
+                    // style={{ border: '7px solid #152865' }}
                     className='flex-grow rounded-xl bg-contrasted-gradient'
                 >
                     <form
