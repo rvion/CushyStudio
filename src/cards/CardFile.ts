@@ -18,6 +18,7 @@ import { exhaust } from '../utils/ComfyUtils'
 import { ManualPromise } from '../utils/ManualPromise'
 import { Library } from './Library'
 import { CardManifest } from './DeckManifest'
+import { join } from 'pathe'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -96,8 +97,15 @@ export class CardFile {
     }
 
     /** action display name */
-    get illustration(): Maybe<string> {
+    get illustrationPathRelativeToDeckRoot(): Maybe<string> {
         return this.manifest.illustration
+    }
+
+    get illustrationPathWithFileProtocol() {
+        if (this.illustrationPathRelativeToDeckRoot)
+            return `file://${join(this.deck.folderAbs, this.illustrationPathRelativeToDeckRoot)}`
+        // default illustration if none is provided
+        return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_illustrations/default-card-illustration.jpg')}`
     }
 
     get isFavorite(): boolean {

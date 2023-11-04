@@ -1,5 +1,5 @@
 card({
-    name: 'playground-seed-widget',
+    // name: 'playground-seed-widget',
     ui: (form) => ({
         nesstedGroups: form.group({
             verticalLabels: true,

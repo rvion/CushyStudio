@@ -91,7 +91,7 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
             >
                 <div tw='row items-center font justify-between mb-2'>
                     <div tw='row items-center gap-2' style={{ fontSize: '1.3rem' }}>
-                        <span>{action.name}</span>
+                        <span>{card.displayName}</span>
                         <ButtonGroup size='xs'>
                             <Button
                                 color='blue'
@@ -157,7 +157,7 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                             draft.start()
                         }}
                     >
-                        <div tw='[margin-left:6rem]'>{action.description}</div>
+                        <div tw='[margin-left:6rem]'>{card.manifest.description}</div>
                         <ResultWrapperUI
                             //
                             res={draft.form}

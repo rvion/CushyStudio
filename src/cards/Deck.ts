@@ -60,13 +60,6 @@ export class Deck {
     manifest: DeckManifest
     cards: CardFile[] = []
 
-    cardIllustration = (card: CardManifest) => {
-        if (card.illustration) {
-            return `file://${join(this.folderAbs, card.illustration)}`
-        }
-        return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_illustrations/default-card-illustration.jpg')}`
-    }
-
     get cardManifests(): CardManifest[] {
         const seen = new Set<string>()
         const out: CardManifest[] = []

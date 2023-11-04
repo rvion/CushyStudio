@@ -176,7 +176,7 @@ export class CushyLayoutManager {
 
     addCard = (actionPath: CardPath) => {
         const af = this.st.library.getCard(actionPath)
-        const icon = af?.illustration
+        const icon = af?.illustrationPathWithFileProtocol
         this._AddWithProps(Widget.Card, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }
 
@@ -186,7 +186,7 @@ export class CushyLayoutManager {
     addDraft = (title: string, draftID: DraftID) => {
         const draft = this.st.db.drafts.get(draftID)
         const af = draft?.card
-        const icon = af?.illustration
+        const icon = af?.illustrationPathWithFileProtocol
         this._AddWithProps(Widget.Draft, `/draft/${draftID}`, { title, draftID, icon }, 'current')
     }
 

@@ -1,14 +1,15 @@
-import type { CardManifest } from '../DeckManifest'
 import type { CSSProperties } from 'react'
 
 import { makeAutoObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 
-import './FancyCard.css' // Assuming the CSS is written in this file
-import { Deck } from '../Deck'
 import { Tag } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
+import { CardFile } from '../CardFile'
+import { Deck } from '../Deck'
+
+import './FancyCard.css' // Assuming the CSS is written in this file
 
 export class FancyCardState {
     constructor(public theme: CardStyle) {
@@ -69,12 +70,12 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     //
     deck: Deck
     style: CardStyle
-    card: Card
+    card: CardFile
 }) {
     const st = useSt()
     const uiSt = useMemo(() => new FancyCardState(p.style), [p.style])
     const card = p.card
-    const cardIllustration = p.deck.cardIllustration(card)
+    const cardIllustration = card.illustrationPathWithFileProtocol
     return (
         <div className='m-2' tw='cursor-pointer'>
             {/* <style ref={uiSt.styleRef}>{uiSt.hoverStyle}</style> */}
@@ -95,31 +96,26 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
                     tw='overflow-auto'
                     style={{ fontSize: '1.3rem', height: '2rem', overflow: 'hidden' }}
                 >
-                    {card.name}
+                    {card.displayName}
                 </div>
                 <img
                     tw='mx-auto'
-                    style={{
-                        width: '10rem',
-                        height: '10rem',
-                    }}
+                    style={{ width: '10rem', height: '10rem' }}
                     src={cardIllustration}
                     alt='card illustration'
                     onClick={() => {
                         console.log('clicked')
-                        st.currentCardAndDraft = {
-                            cardPath: card.relativePath,
-                        }
+                        st.currentCardAndDraft = { cardPath: card.relPath }
                         st.closeCardPicker()
                     }}
                 />
                 {/* {cardIllustration} */}
                 <div>
-                    {(card.categories ?? []).map((i, ix) => (
+                    {(card.manifest.categories ?? []).map((i, ix) => (
                         <Tag key={ix}>{i}</Tag>
                     ))}
                 </div>
-                <div>{card.description}</div>
+                <div>{card.manifest.description ?? 'no description'}</div>
                 {/* <div className={`card STYLE_${p.style}`}></div> */}
                 {/* Content of the card */}
                 <div style={uiSt.gradientStyle} className='card_before'></div>
