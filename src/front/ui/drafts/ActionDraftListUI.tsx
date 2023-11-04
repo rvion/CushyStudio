@@ -3,8 +3,8 @@ import { Button, Input, InputGroup } from 'rsuite'
 import { CardFile } from 'src/cards/CardFile'
 import { useSt } from 'src/front/FrontStateCtx'
 
-export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { af: CardFile }) {
-    const af = p.af
+export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card: CardFile }) {
+    const af = p.card
     const st = useSt()
     const drafts = af.drafts
     return (

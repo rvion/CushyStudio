@@ -10,7 +10,8 @@
             "relativePath": "./prompt.ts",
             "priority": 100,
             "style": "D",
-            "illustration": "_assets/mc.jpg"
+            "illustration": "_assets/mc.jpg",
+            "description": "A card that contains all the features needed to play with stable diffusion"
         },
         {
             "name": "Simple animation maker",

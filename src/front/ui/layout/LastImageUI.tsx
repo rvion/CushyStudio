@@ -4,14 +4,14 @@ import type { ImageID, ImageL } from 'src/models/Image'
 import { observer } from 'mobx-react-lite'
 import { Button, Rate, Toggle } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
-import { openExternal } from './openExternal'
+import { openExternal, showItemInFolder } from './openExternal'
 
 export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID }) {
     const st = useSt()
     const img: Maybe<ImageL> = p.imageID //
         ? st.db.images.get(p.imageID)
         : st.db.images.last()
-    const imgFolder = img ? `file://${img.localAbsolutePath}/..` : null
+    const imgPathWithFileProtocol = img ? `file://${img.localAbsolutePath}` : null
     if (img == null) return null
     return (
         <div
@@ -21,27 +21,42 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
             }}
         >
             <div tw='flex gap-2 p-0.5'>
-                {/* <ButtonGroup disabled size='xs'>
-                    <Button>fit</Button>
-                    <Button appearance='primary'>original</Button>
-                    <Button>cover</Button>
-                </ButtonGroup> */}
+                {/* 1. RATER */}
                 <Rate size='xs' onChange={(next) => img.update({ star: next })} value={img.data.star} />
-                <div>
-                    <Toggle
-                        checked={st.showLatentPreviewInLastImagePanel}
-                        onChange={(next) => (st.showLatentPreviewInLastImagePanel = next)}
-                    />
-                    <span tw='text-light'>include sampler preview</span>
-                </div>
-                {imgFolder && (
+
+                {/* 2. LATENT PREVIEW TOOGLE */}
+                {/* (only on "last-image" mode; when p.imageID is null )  */}
+                {p.imageID == null ? (
+                    <div>
+                        <Toggle
+                            checked={st.showLatentPreviewInLastImagePanel}
+                            onChange={(next) => (st.showLatentPreviewInLastImagePanel = next)}
+                        />
+                        <span tw='text-light'>include sampler preview</span>
+                    </div>
+                ) : null}
+
+                {/* 3. OPEN OUTPUT FOLDER */}
+                {img.localAbsolutePath && (
                     <Button
                         startIcon={<span className='material-symbols-outlined'>folder</span>}
                         size='xs'
                         appearance='link'
-                        onClick={() => openExternal(imgFolder)}
+                        onClick={() => showItemInFolder(img.localAbsolutePath)}
                     >
                         open folder
+                    </Button>
+                )}
+
+                {/* 3. OPEN FILE ITSELF */}
+                {imgPathWithFileProtocol && (
+                    <Button
+                        startIcon={<span className='material-symbols-outlined'>folder</span>}
+                        size='xs'
+                        appearance='link'
+                        onClick={() => openExternal(imgPathWithFileProtocol)}
+                    >
+                        open
                     </Button>
                 )}
             </div>

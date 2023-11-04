@@ -120,7 +120,7 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                         </div>
                     </ErrorBoundary> */}
                 </div>
-                <ActionDraftListUI af={af} />
+                <ActionDraftListUI card={af} />
                 <ScrollablePaneUI
                     // style={{ border: '1px solid blue' }}
                     // style={{ border: '7px solid #152865' }}

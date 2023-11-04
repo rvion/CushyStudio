@@ -91,7 +91,8 @@ export const FancyCardUI = observer(
                 >
                     <div
                         //
-                        style={{ fontSize: '1.3rem', height: '2rem', textOverflow: 'ellipsis', overflow: 'hidden' }}
+                        tw='overflow-auto'
+                        style={{ fontSize: '1.3rem', height: '2rem', overflow: 'hidden' }}
                     >
                         {card.name}
                     </div>
@@ -104,12 +105,13 @@ export const FancyCardUI = observer(
                         src={cardIllustration}
                         alt='card illustration'
                     />
-                    {cardIllustration}
+                    {/* {cardIllustration} */}
                     <div>
                         {(card.categories ?? []).map((i, ix) => (
                             <Tag key={ix}>{i}</Tag>
                         ))}
                     </div>
+                    <div>{card.description}</div>
                     {/* <div className={`card STYLE_${p.style}`}></div> */}
                     {/* Content of the card */}
                     <div style={uiSt.gradientStyle} className='card_before'></div>

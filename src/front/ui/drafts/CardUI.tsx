@@ -58,7 +58,7 @@ export const CardUI = observer(function ActionFileUI_(p: { actionPath: CardPath 
                 ) : null}
                 {errors}
                 {/* DRAFT LIST */}
-                <ActionDraftListUI af={card} />
+                <ActionDraftListUI card={card} />
             </>
         )
 

@@ -30,6 +30,8 @@ export type ConfigFile = {
     favoriteCards?: CardPath[]
     /** list of all comfyUI setup available */
     machines?: {
+        /** server name */
+        name?: string
         /** e.g.
          * @example localhost
          * @example 192.168.0.19
@@ -39,6 +41,10 @@ export type ConfigFile = {
          * @example 8188
          * */
         comfyPort: number
+        /** true if on the same machine */
+        isLocal?: boolean
+        /** foo */
+        localPath?: string
     }[]
     /** 'light' or 'dark'; default to dark */
     theme?: Theme
