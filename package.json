@@ -58,6 +58,7 @@
         "@lexical/react": "^0.12.2",
         "@rsuite/icons": "^1.0.3",
         "@rsuite/responsive-nav": "^5.0.1",
+        "@sinclair/typebox": "^0.31.22",
         "@types/papaparse": "^5.3.10",
         "chokidar": "^3.5.3",
         "concurrently": "^8.2.2",
