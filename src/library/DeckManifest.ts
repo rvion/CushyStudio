@@ -23,4 +23,9 @@ export type CardManifest = {
     customNodeRequired?: string[]
     /** who did that? */
     author?: string
+    /**
+     * an example of what this card can produce
+     * this may be displayed in the output Panel on first card opening
+     */
+    sampleOutput?: string
 }
