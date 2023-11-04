@@ -4,20 +4,31 @@ import { ActionTagMethod } from 'src/library/Card'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { observer } from 'mobx-react-lite'
 import { IconButton, Input, Popover, Whisper } from 'rsuite'
+import { IObservable, IObservableArray, observable, values } from 'mobx'
 
 export type ActionTag = {
     key: string,
     action: ActionTagMethod,
+}
+
+export type ActionTagInst = {
+    tag: ActionTag,
     param: string
 }
 
-export type ActionNodeJSON = SerializedLexicalNode & { tag: ActionTag; type: 'action' }
+export type ActionNodeJSON = SerializedLexicalNode & { tag: ActionTagInst; type: 'action' }
 export class ActionNode extends DecoratorNode<ReactNode> {
+    tag: ActionTagInst
     constructor(
-        public tag: ActionTag,
+        tag: ActionTagInst,
         key?: NodeKey,
     ) {
         super(key)
+        this.tag = observable(tag);
+    }
+
+    setParam(v: string): void {
+        this.param = v;
     }
 
     static getType(): 'action' {
@@ -48,7 +59,7 @@ export class ActionNode extends DecoratorNode<ReactNode> {
     decorate(): ReactNode { return <ActionNodeUI node={this} /> } // prettier-ignore
 }
 
-export function $createActionNode(tag: ActionTag, key?: NodeKey): ActionNode {
+export function $createActionNode(tag: ActionTagInst, key?: NodeKey): ActionNode {
     return new ActionNode(tag, key);
 }
 
@@ -59,21 +70,25 @@ export function $isActionNode(node: LexicalNode | null | undefined): node is Act
 export const ActionNodeUI = observer(function ActionNodeUI_(p: { node: ActionNode }) {
     const node = p.node
     const [editor] = useLexicalComposerContext()
-    const def = node
+    const def = node.tag
+    let set = node.setParam
+    console.log(set)
+    console.log(node, def)
     return (
         <Whisper
             enterable
             placement='bottom'
             speaker={
                 <Popover>
-                    <div key={def.name} className='flex items-start'>
-                        <div className='shrink-0'>{def.name.replace('.safetensors', '')}</div>
+                    <div key={def.tag.key} className='flex items-start'>
+                        <div className='shrink-0'>{def.tag.key}(</div>
                         <div className='flex-grow'></div>
                         <Input
                             size='xs'
                             type='text'
-                            value={def.tag.param}
-                            onChange={(v) => (node.tag.param = v)}
+                            value={def.param}
+                            step={0.1}
+                            onChange={(v) => (def.param = v)}
                             style={{ width: '4.5rem' }}
                         />
                         <IconButton
@@ -81,13 +96,15 @@ export const ActionNodeUI = observer(function ActionNodeUI_(p: { node: ActionNod
                             icon={<span className='material-symbols-outlined'>delete_forever</span>}
                             onClick={() => editor.update(() => node.remove())}
                         />
+                        <div className='shrink-0'>)</div>
                     </div>
                 </Popover>
             }
         >
-            <span className='bg-green-800'>
-                /{node.tag.key}({node.tag.param})
+            <span className='bg-green-800' style={{ padding: "1px" }}>
+                /{def.tag.key}({def.param})
             </span>
         </Whisper>
+
     )
 })

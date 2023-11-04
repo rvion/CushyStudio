@@ -92,6 +92,7 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
                 lora: true,
                 wildcard: true,
                 user: true,
+                action: true
             }),
         [],
     )
@@ -117,7 +118,7 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
                 else if (x.type === 'wildcard') paragraph.append($createWildcardNode(x.payload))
                 else if (x.type === 'embedding') paragraph.append($createEmbeddingNode(x.embeddingName))
                 else if (x.type === 'user') paragraph.append($createUserNode(x.tag))
-                else if (x.type === 'action') paragraph.append($createActionNode(x.tag))
+                else if (x.type === 'action') paragraph.append($createActionNode(x.tag, ''))
                 else if (x.type === 'linebreak') paragraph.append($createLineBreakNode())
                 else if (x.type === 'text') paragraph.append($createTextNode(x.text))
             }

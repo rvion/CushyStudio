@@ -231,7 +231,7 @@ export class Library {
         for (const file of files) {
             if (file.startsWith('.')) continue
             if (file.startsWith('_')) {
-                if (file === "_actionTags.ts") {
+                if (file === "_actionTags.ts" || file === "_actionTags.js") {
                     const name = dir.split("/").at(-1);
                     const _this = this;
                     function load(tags: ActionTagMethodList) {

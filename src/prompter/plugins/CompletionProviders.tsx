@@ -119,9 +119,8 @@ export class CompletionState {
     static getActionCompletionProvider = (st: STATE) => {
         const key = 'Action'
         if (_providerCache.has(key)) return _providerCache.get(key)!
-        const createNode = (t: ActionTag) => $createActionNode(t)
+        const createNode = (t: ActionTag) => $createActionNode({ tag: t, param: "" })
         const menuLabel = <span tw='text-green-500'>action:</span>
-        console.log(st.actionTags);
         const provider = new CopmletionProvider({
             getValues: () =>
                 st.actionTags.map((x) => ({
@@ -146,6 +145,7 @@ export class CompletionState {
             wildcard?: boolean
             booru?: boolean
             user?: boolean
+            action?: boolean
         },
     ) {
         if (features.embedding) this.providers.push(CompletionState.getEmbeddingCompletionProvider(st))
@@ -153,7 +153,7 @@ export class CompletionState {
         if (features.wildcard) this.providers.push(CompletionState.getWildcardCompletionProvider(st))
         if (features.booru) this.providers.push(CompletionState.getBooruCompletionProvider(st))
         if (features.user) this.providers.push(CompletionState.getUserCompletionProvider(st))
-        if (features.user) this.providers.push(CompletionState.getActionCompletionProvider(st))
+        if (features.action) this.providers.push(CompletionState.getActionCompletionProvider(st))
         makeAutoObservable(this)
     }
     get rawCandidates(): CompletionCandidate<any>[] {
