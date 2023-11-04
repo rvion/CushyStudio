@@ -12,6 +12,7 @@ import { Deck, DeckFolder } from 'src/cards/Deck'
 import { hasValidActionExtension } from '../back/ActionExtensions'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { CardFile } from './CardFile'
+import { _FIX_INDENTATION } from 'src/controls/_FIX_INDENTATION'
 
 export class Library {
     updatedAt = 0
@@ -271,17 +272,15 @@ export class Library {
                     continue
                 }
                 const apf = asRelativePath(path.join(...parts)) as DeckFolder
-                const pack = this.getDeck(apf)
-                const actionPath = asCardPath(relPath)
-                const prev = this.getCard(actionPath)
-                if (prev) {
-                    prev.load({ force: true })
-                } else {
-                    const af = new CardFile(this, pack, absPath, actionPath)
-                    pack.cards.push(af)
-                    this.cardsByPath.set(actionPath, af)
-                }
-                const treeEntry = { value: actionPath, label: baseName }
+                const deck = this.getDeck(apf)
+                const cardPath = asCardPath(relPath)
+                const prev = this.getCard(cardPath)
+                if (prev == null) {
+                    const af = new CardFile(this, deck, absPath, cardPath)
+                    deck.cards.push(af)
+                    this.cardsByPath.set(cardPath, af)
+                } // else prev.load({ force: true })
+                const treeEntry = { value: cardPath, label: baseName }
                 parentStack.push(treeEntry)
             }
         }
@@ -296,25 +295,4 @@ export class Library {
             }
         }
     }
-
-    // getTreeItem = (path: string): Maybe<ItemDataType> => {
-    //     const parts = path.split('/')
-    //     let current = this.treeData
-    //     for (const part of parts) {
-    //         const found = current.find((x) => x.label === part)
-    //         if (found == null) return null
-    //         current = found.children ?? []
-    //     }
-    //     return current[0]
-    // }
-}
-
-const _FIX_INDENTATION = (str: TemplateStringsArray) => {
-    // split string into lines
-    let lines = str[0].split('\n').slice(1)
-    const indent = (lines[0]! ?? '').match(/^\s*/)![0].length
-    // trim whitespace at the start and end of each line
-    lines = lines.map((line) => line.slice(indent))
-    // join lines back together with preserved newlines
-    return lines.join('\n')
 }

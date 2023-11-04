@@ -1,7 +1,4 @@
-action({
-    author: 'rvion',
-    name: 'realtime',
-    help: 'load model with optional clip-skip, loras, tome ratio, etc.',
+card({
     ui: (form) => ({
         // load
         model: form.enum({

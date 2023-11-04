@@ -10,15 +10,16 @@ import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 import { Button, Message } from 'rsuite'
 import { assets } from 'src/assets/assets'
-import { LiteGraphJSON } from 'src/core/LiteGraph'
 import { CardPath } from 'src/cards/CardPath'
 import { ActionPicker1UI } from 'src/cards/CardPicker1UI'
 import { ActionPicker2UI } from 'src/cards/CardPicker2UI'
+import { LiteGraphJSON } from 'src/core/LiteGraph'
 import { ImageID } from 'src/models/Image'
 import { Trigger } from 'src/shortcuts/Trigger'
+import { stringifyUnknown } from 'src/utils/stringifyUnknown'
 import { MarketplaceUI } from '../../../cards/MarketplaceUI'
 import { CardUI } from '../drafts/CardUI'
-import { DraftUI } from '../drafts/DraftUI'
+import { CurrentDraftUI, DraftUI } from '../drafts/DraftUI'
 import { GalleryUI } from '../galleries/GalleryUI'
 import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
 import { ComfyUIUI } from '../workspace/ComfyUIUI'
@@ -28,8 +29,6 @@ import { ComfyNodeExplorerUI } from './ComfyNodeExplorerUI'
 import { HostListUI } from './HostListUI'
 import { LastImageUI } from './LastImageUI'
 import { PanelConfigUI } from './PanelConfigUI'
-import { ErrorScreenUI } from '../ErrorScreenUI'
-import { stringifyUnknown } from 'src/utils/stringifyUnknown'
 
 // still on phone
 enum Widget {
@@ -177,7 +176,7 @@ export class CushyLayoutManager {
 
     addCard = (actionPath: CardPath) => {
         const af = this.st.library.getCard(actionPath)
-        const icon = af?.logoURL
+        const icon = af?.illustration
         this._AddWithProps(Widget.Card, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }
 
@@ -186,8 +185,8 @@ export class CushyLayoutManager {
     }
     addDraft = (title: string, draftID: DraftID) => {
         const draft = this.st.db.drafts.get(draftID)
-        const af = draft?.actionFile
-        const icon = af?.logoURL
+        const af = draft?.card
+        const icon = af?.illustration
         this._AddWithProps(Widget.Draft, `/draft/${draftID}`, { title, draftID, icon }, 'current')
     }
 
@@ -286,7 +285,7 @@ export class CushyLayoutManager {
             if (component === Widget.Marketplace) return <MarketplaceUI />
             if (component === Widget.Config) return <PanelConfigUI />
             if (component === Widget.Draft) return <DraftUI draft={extra.draftID} />
-            if (component === Widget.CurrentDraft) return <DraftUI draft={extra.draftID} />
+            if (component === Widget.CurrentDraft) return <CurrentDraftUI />
             if (component === Widget.ComfyUINodeExplorer) return <ComfyNodeExplorerUI />
             if (component === Widget.Deck) return <div>🔴 todo: action pack page: show readme</div>
         } catch (e) {
@@ -362,13 +361,13 @@ export class CushyLayoutManager {
                                     // this._persistentTab('ComfyUI', Widget.ComfyUI, '/ComfyUILogo.png'),
                                 ],
                             },
-                            {
-                                type: 'tabset',
-                                enableSingleTabStretch: true,
-                                minWidth: 200,
-                                width: 300,
-                                children: [this._persistentTab({ name: 'Library', widget: Widget.FileList, id: '/Library' })],
-                            },
+                            // {
+                            //     type: 'tabset',
+                            //     enableSingleTabStretch: true,
+                            //     minWidth: 200,
+                            //     width: 300,
+                            //     children: [this._persistentTab({ name: 'Library', widget: Widget.FileList, id: '/Library' })],
+                            // },
                         ],
                     },
                     {

@@ -1,9 +1,6 @@
 import * as _ from './_prefabs'
 
-action({
-    author: 'rvion',
-    name: 'Prompt-V1',
-    help: 'load model with optional clip-skip, loras, tome ratio, etc.',
+card({
     ui: (form) => ({
         model: _.ui_model(form),
         sampler: _.ui_sampler(form),

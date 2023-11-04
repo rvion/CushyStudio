@@ -1,6 +1,4 @@
-action({
-    author: 'rvion',
-    name: 'demo-widget-markdown',
+card({
     ui: (form) => ({
         int: form.number({}),
         html: form.markdown({

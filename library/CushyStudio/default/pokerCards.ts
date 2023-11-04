@@ -84,9 +84,6 @@ const ui = (form: FormBuilder) => ({
 })
 
 card({
-    name: 'cards v3',
-    author: 'rvion',
-    description: 'play with cards',
     ui,
     run: async (flow, p) => {
         // 1. SETUP --------------------------------------------------

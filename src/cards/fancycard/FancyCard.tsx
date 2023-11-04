@@ -8,6 +8,7 @@ import React, { useMemo } from 'react'
 import './FancyCard.css' // Assuming the CSS is written in this file
 import { Deck } from '../Deck'
 import { Tag } from 'rsuite'
+import { useSt } from 'src/front/FrontStateCtx'
 
 export class FancyCardState {
     constructor(public theme: CardStyle) {
@@ -64,60 +65,66 @@ export class FancyCardState {
 
 export type CardStyle = 'A' | 'B' | 'C' | 'D'
 
-export const FancyCardUI = observer(
-    (p: {
-        //
-        deck: Deck
-        style: CardStyle
-        card: CardManifest
-    }) => {
-        const uiSt = useMemo(() => new FancyCardState(p.style), [p.style])
-        const card = p.card
-        const cardIllustration = p.deck.cardIllustration(card)
-        return (
-            <div className='m-2'>
-                {/* <style ref={uiSt.styleRef}>{uiSt.hoverStyle}</style> */}
-                <div
-                    tw='text-center'
-                    style={uiSt.cardStyle}
-                    className={`card STYLE_${p.style}`}
-                    // className='card'
+export const FancyCardUI = observer(function FancyCardUI_(p: {
+    //
+    deck: Deck
+    style: CardStyle
+    card: Card
+}) {
+    const st = useSt()
+    const uiSt = useMemo(() => new FancyCardState(p.style), [p.style])
+    const card = p.card
+    const cardIllustration = p.deck.cardIllustration(card)
+    return (
+        <div className='m-2' tw='cursor-pointer'>
+            {/* <style ref={uiSt.styleRef}>{uiSt.hoverStyle}</style> */}
+            <div
+                tw='text-center'
+                style={uiSt.cardStyle}
+                className={`card STYLE_${p.style}`}
+                // className='card'
 
-                    onMouseMove={uiSt.handleMove}
-                    // onTouchMove={uiSt.handleMove}
-                    // onMouseOut={uiSt.handleOut}
-                    // onTouchEnd={uiSt.handleOut}
-                    // onTouchCancel={uiSt.handleOut}
+                onMouseMove={uiSt.handleMove}
+                // onTouchMove={uiSt.handleMove}
+                // onMouseOut={uiSt.handleOut}
+                // onTouchEnd={uiSt.handleOut}
+                // onTouchCancel={uiSt.handleOut}
+            >
+                <div
+                    //
+                    tw='overflow-auto'
+                    style={{ fontSize: '1.3rem', height: '2rem', overflow: 'hidden' }}
                 >
-                    <div
-                        //
-                        tw='overflow-auto'
-                        style={{ fontSize: '1.3rem', height: '2rem', overflow: 'hidden' }}
-                    >
-                        {card.name}
-                    </div>
-                    <img
-                        tw='mx-auto'
-                        style={{
-                            width: '10rem',
-                            height: '10rem',
-                        }}
-                        src={cardIllustration}
-                        alt='card illustration'
-                    />
-                    {/* {cardIllustration} */}
-                    <div>
-                        {(card.categories ?? []).map((i, ix) => (
-                            <Tag key={ix}>{i}</Tag>
-                        ))}
-                    </div>
-                    <div>{card.description}</div>
-                    {/* <div className={`card STYLE_${p.style}`}></div> */}
-                    {/* Content of the card */}
-                    <div style={uiSt.gradientStyle} className='card_before'></div>
-                    {/* <div style={uiSt.sparklesStyle} className='card_after'></div> */}
+                    {card.name}
                 </div>
+                <img
+                    tw='mx-auto'
+                    style={{
+                        width: '10rem',
+                        height: '10rem',
+                    }}
+                    src={cardIllustration}
+                    alt='card illustration'
+                    onClick={() => {
+                        console.log('clicked')
+                        st.currentCardAndDraft = {
+                            cardPath: card.relativePath,
+                        }
+                        st.closeCardPicker()
+                    }}
+                />
+                {/* {cardIllustration} */}
+                <div>
+                    {(card.categories ?? []).map((i, ix) => (
+                        <Tag key={ix}>{i}</Tag>
+                    ))}
+                </div>
+                <div>{card.description}</div>
+                {/* <div className={`card STYLE_${p.style}`}></div> */}
+                {/* Content of the card */}
+                <div style={uiSt.gradientStyle} className='card_before'></div>
+                {/* <div style={uiSt.sparklesStyle} className='card_after'></div> */}
             </div>
-        )
-    },
-)
+        </div>
+    )
+})

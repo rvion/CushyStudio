@@ -87,10 +87,13 @@ export class DraftL {
 
     form: Result<Widget> = __FAIL('not loaded yet')
 
-    get actionFile(): CardFile | undefined {
+    get card(): CardFile | undefined {
         return this.st.library.cardsByPath.get(this.data.actionPath)
     }
-    get action() { return this.actionFile?.action } // prettier-ignore
+
+    get action() {
+        return this.card?.action
+    }
 
     onHydrate = () => {
         let subState = { unsync: () => {} }

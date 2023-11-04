@@ -34,32 +34,36 @@ enum LoadStatus {
 
 export class CardFile {
     st: STATE
-    displayName: string
+
+    /** card display name */
+    get displayName(): string {
+        return this.manifest.name
+    }
 
     get actionPackFolderRel() {
-        return this.pack.folderRel
+        return this.deck.folderRel
     }
 
     get actionAuthorFolderRel() {
-        return this.pack.authorFolderRel
+        return this.deck.authorFolderRel
     }
 
     constructor(
         //
         public library: Library,
-        public pack: Deck,
+        public deck: Deck,
         public absPath: AbsolutePath,
         public relPath: CardPath,
     ) {
         this.st = library.st
-        this.displayName = path.basename(this.absPath)
         makeAutoObservable(this, { action: observable.ref })
     }
 
+    // --------------------------------------------------------
     get manifest(): CardManifest {
-        const cards = this.pack.manifest.cards ?? []
+        const cards = this.deck.manifest.cards ?? []
         const match = cards.find((c) => {
-            const absPath = path.join(this.pack.folderAbs, c.relativePath)
+            const absPath = path.join(this.deck.folderAbs, c.deckRelativeFilePath)
             if (absPath === this.absPath) return true
         })
         if (match) return match
@@ -67,33 +71,33 @@ export class CardFile {
     }
 
     private get defaultManifest(): CardManifest {
-        const relativePath = relative(this.pack.folderAbs, this.absPath)
+        const baseName = this.deckRelativeFilePath
         return {
-            name: this.name,
-            relativePath: this.relPath,
-            author: this.action?.author,
-            categories: [],
-            customNodeRequired: [],
-            description: this.action?.description ?? 'no description',
-            illustration: this.action?.logo,
+            name: baseName.endsWith('.ts') //
+                ? baseName.slice(0, -3)
+                : baseName,
+            deckRelativeFilePath: this.relPath,
+            author: this.deck.githubUserName,
+            description: 'no description',
         }
     }
+
+    private get deckRelativeFilePath(): string {
+        return relative(this.deck.folderAbs, this.absPath)
+    }
+    // --------------------------------------------------------
 
     // status
     loaded = new ManualPromise<true>()
     errors: { title: string; details: any }[] = []
-    addError = (title: string, details: any): LoadStatus => {
+    addError = (title: string, details: any = null): LoadStatus => {
         this.errors.push({ title, details })
         return LoadStatus.FAILURE
     }
 
     /** action display name */
-    get logoURL(): string {
-        return this.action?.logo ?? this.pack?.logo ?? ''
-    }
-
-    get name(): string {
-        return this.action?.name ?? path.basename(this.absPath)
+    get illustration(): Maybe<string> {
+        return this.manifest.illustration
     }
 
     get isFavorite(): boolean {
@@ -109,11 +113,6 @@ export class CardFile {
             if (index !== -1) favArray.splice(index, 1)
         }
         this.st.configFile.update({ favoriteCards: favArray })
-    }
-
-    get namePretty(): string {
-        if (this.name.endsWith('.ts')) return this.name.slice(0, -3)
-        return this.name
     }
 
     createDraft = (): DraftL => {
@@ -144,10 +143,8 @@ export class CardFile {
     liteGraphJSON?: Maybe<LiteGraphJSON> = null
     promptJSON?: Maybe<ComfyPromptJSON> = null
     png?: Maybe<AbsolutePath> = null
-
-    focusedDraft?: Maybe<DraftL> = null
-
     loadRequested = false
+
     /** load a file trying all compatible strategies */
     load = async (p?: { force?: boolean }): Promise<true> => {
         if (this.loadRequested && !p?.force) return true
@@ -158,7 +155,7 @@ export class CardFile {
             const res = await this.loadWithStrategy(strategy)
             if (res) break
         }
-        if (this.action) this.displayName = this.action.name
+        // if (this.action) this.displayName = this.action.name
         this.st.layout.renameTab(`/action/${this.relPath}`, this.displayName)
         this.loaded.resolve(true)
         if (this.drafts.length === 0) {
@@ -304,24 +301,21 @@ export class CardFile {
 
     RUN_ACTION_FILE = (codeJS: string): Action<WidgetDict> | undefined => {
         // 1. DI registering mechanism
-        const ACTIONS: Action<WidgetDict>[] = []
-        const registerActionFn = (a1: string, a2: Action<any>): void => {
+        const CARDS_FOUND_IN_FILE: Action<WidgetDict>[] = []
+
+        const registerCardFn = (a1: string, a2: Action<any>): void => {
             const action = typeof a1 !== 'string' ? a1 : a2
             console.info(`[💙] found action: "${name}"`, { path: this.absPath })
-            ACTIONS.push(action)
+            CARDS_FOUND_IN_FILE.push(action)
         }
 
         // 2. eval file to extract actions
         try {
             const ProjectScriptFn = new Function('action', 'card', codeJS)
-            ProjectScriptFn(registerActionFn, registerActionFn)
-            if (ACTIONS.length === 0) return
-            if (ACTIONS.length > 1)
-                this.addError(
-                    '❌4. more than one action found',
-                    ACTIONS.map((a) => a.name),
-                )
-            return ACTIONS[0]
+            ProjectScriptFn(registerCardFn, registerCardFn)
+            if (CARDS_FOUND_IN_FILE.length === 0) return
+            if (CARDS_FOUND_IN_FILE.length > 1) this.addError(`❌4. more than one action found: (${CARDS_FOUND_IN_FILE.length})`)
+            return CARDS_FOUND_IN_FILE[0]
         } catch (e) {
             this.addError('❌5. cannot convert prompt to code', e)
             return

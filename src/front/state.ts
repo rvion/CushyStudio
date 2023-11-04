@@ -32,11 +32,12 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { GitManagedFolder } from './updater'
-import { CardPath } from 'src/cards/CardPath'
+import { CardPath, asCardPath } from 'src/cards/CardPath'
 import { Uploader } from './Uploader'
 import { ElectronUtils } from './ElectronUtils'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { GithubRepoName } from 'src/cards/githubRepo'
+import { DraftID } from 'src/models/Draft'
 
 // prettier-ignore
 type HoveredAsset =
@@ -149,6 +150,14 @@ export class STATE {
         return project
         // const startDraft = initialGraph.createDraft()
     }
+
+    currentCardAndDraft: Maybe<{
+        cardPath: CardPath
+        draftID?: DraftID
+    }> = null
+    // {
+    //     cardPath: asCardPath('library/CushyStudio/default/prompt.ts'),
+    // }
 
     // showAllMessageReceived: boolean = false // ❌ legacy
     comfyUIIframeRef = createRef<HTMLIFrameElement>()

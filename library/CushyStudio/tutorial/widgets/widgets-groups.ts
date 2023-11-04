@@ -1,4 +1,4 @@
-action({
+card({
     name: 'playground-seed-widget',
     ui: (form) => ({
         nesstedGroups: form.group({

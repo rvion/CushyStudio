@@ -23,7 +23,7 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
                     <div>{tb.favoritesFolded ? '▸' : '▿'}</div>
                 </div>
             ) : null}
-            {tb.favoritesFolded ? null : tb.allFavorites.map((af) => <ActionEntryUI key={af.relPath} af={af} />)}
+            {tb.favoritesFolded ? null : tb.allFavorites.map((af) => <ActionEntryUI key={af.relPath} card={af} />)}
             {/* INSTALLED */}
             <div tw='flex flex-col'>
                 {tb.decksSorted.map((pack) => (
@@ -42,35 +42,35 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Deck }) {
             {deck.folded ? null : (
                 <div>
                     {deck.cards.map((af) => (
-                        <ActionEntryUI key={af.relPath} af={af} />
+                        <ActionEntryUI key={af.relPath} card={af} />
                     ))}
                 </div>
             )}
         </div>
     )
 })
-export const ActionEntryUI = observer(function ActionEntryUI_(p: { af: CardFile }) {
+export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFile }) {
     const st = useSt()
-    const af = p.af
-    const pack = af.pack
+    const card = p.card
+    const pack = card.deck
     return (
         <div
             //
             tw='pl-4 hover:bg-gray-900 flex gap-2 cursor-pointer'
             style={{ borderTop: '1px solid #161616' }}
-            key={af.absPath}
+            key={card.absPath}
             onClick={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
-                const actionPath = af.relPath
+                const actionPath = card.relPath
                 st.layout.addCard(actionPath)
             }}
         >
             {/* <span className='material-symbols-outlined'>keyboard_arrow_right</span> */}
             <img style={{ width: '1rem', height: '1rem' }} src={pack?.logo ?? ''}></img>
-            <div>{af.namePretty}</div>
+            <div>{card.displayName}</div>
             <div tw='ml-auto'>
-                <ActionFavoriteBtnUI af={af} />
+                <ActionFavoriteBtnUI af={card} />
             </div>
         </div>
     )

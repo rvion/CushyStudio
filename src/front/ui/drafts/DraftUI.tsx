@@ -13,6 +13,20 @@ import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
 import { ActionDraftListUI, AddDraftUI } from './ActionDraftListUI'
+import { useEffect } from 'react'
+
+export const CurrentDraftUI = observer(function CurrentDraftUI_(p: {}) {
+    const st = useSt()
+    const draft = st.currentCardAndDraft
+
+    // just in case no card is selected, open one
+    useEffect(() => {
+        if (draft?.cardPath == null) st.openCardPicker()
+    }, [])
+
+    if (draft?.draftID == null) return null
+    return <div>🟢</div>
+})
 
 /**
  * this is the root interraction widget
@@ -31,21 +45,21 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
         )
 
     // 2. get action file
-    const af = draft.actionFile
-    if (af == null)
+    const card = draft.card
+    if (card == null)
         return (
             <Message type='error'>
-                <pre tw='bg-red-900'>❌ action file not found</pre>
+                <pre tw='bg-red-900'>❌ card file not found</pre>
             </Message>
         )
 
     // 3. get action
-    const action = af.getAction()
+    const action = card.getAction()
     if (action == null)
         return (
             <Message type='error'>
                 <pre tw='text-red-600'>❌ action not found</pre>
-                <pre tw='text-red-600'>❌ errors: {JSON.stringify(af.errors, null, 2)}</pre>
+                <pre tw='text-red-600'>❌ errors: {JSON.stringify(card.errors, null, 2)}</pre>
             </Message>
         )
 
@@ -83,11 +97,11 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                                 color='blue'
                                 appearance='subtle'
                                 startIcon={<span className='material-symbols-outlined'>edit</span>}
-                                onClick={() => openInVSCode(cwd(), af.absPath)}
+                                onClick={() => openInVSCode(cwd(), card.absPath)}
                             >
                                 Edit
                             </Button>
-                            <AddDraftUI af={af} />
+                            <AddDraftUI af={card} />
                         </ButtonGroup>
                     </div>
                     <div tw='self-end flex gap-2 items-center' style={{ width: 'fit-content' }}>
@@ -120,7 +134,7 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                         </div>
                     </ErrorBoundary> */}
                 </div>
-                <ActionDraftListUI card={af} />
+                <ActionDraftListUI card={card} />
                 <ScrollablePaneUI
                     // style={{ border: '1px solid blue' }}
                     // style={{ border: '7px solid #152865' }}
@@ -159,7 +173,7 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                     <div>state</div>
                     <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10_000)} />
                     <div>code</div>
-                    <TypescriptHighlightedCodeUI code={af.codeJS ?? ''} />
+                    <TypescriptHighlightedCodeUI code={card.codeJS ?? ''} />
                 </TabUI>
             </div>
         </draftContext.Provider>

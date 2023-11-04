@@ -1,5 +1,4 @@
-action({
-    name: 'demo-widget-seed',
+card({
     ui: (form) => ({
         seed1: form.seed({ defaultMode: 'randomize' }),
     }),

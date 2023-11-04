@@ -1,5 +1,4 @@
-action({
-    name: 'demo-widget-choices',
+card({
     ui: (form) => ({
         foo: form.choices({
             items: () => ({

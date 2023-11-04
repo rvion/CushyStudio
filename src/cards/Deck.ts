@@ -73,14 +73,14 @@ export class Deck {
         // add cards listed in manifest:
         for (const cardManifest of this.manifest.cards ?? []) {
             // if (seen.has(card.name)) continue
-            seen.add(cardManifest.relativePath)
+            seen.add(cardManifest.deckRelativeFilePath)
             out.push(cardManifest)
         }
         // add cards detected locally but not listed in manifest
         for (const card of this.cards) {
             const cardManifest = card.manifest
-            if (seen.has(cardManifest.relativePath)) continue
-            seen.add(cardManifest.relativePath)
+            if (seen.has(cardManifest.deckRelativeFilePath)) continue
+            seen.add(cardManifest.deckRelativeFilePath)
             out.push(cardManifest)
         }
 

@@ -23,7 +23,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                     </div>
                     <div className='flex-grow self-start italic'>{deck.description}</div>
                     {/* manifest */}
-                    <Message showIcon type={deck.manifestType === 'implicit' ? 'error' : 'info'}>
+                    <Message showIcon type={deck.manifestType === 'implicit' ? 'error' : 'success'}>
                         {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
                     </Message>
                     <div tw='w-3'></div>

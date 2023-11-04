@@ -14,22 +14,6 @@ export type WidgetDict = { [key: string]: Widget }
 export type FormResult<Req extends Widget> = ReqResult<Req>
 
 export type Action<FIELDS extends WidgetDict> = {
-    // AUTHORING ============================================================
-    /** action name; default to unnamed_action_<nanoid()> */
-    name: string
-    /** action image that will be displayed in the tree picker */
-    logo?: string
-    /** this description will show-up at the top of the action form */
-    description?: string
-    /** tags */
-    categories?: string[]
-    /** dependencies of your action */
-    customNodeRequired?: string[]
-    /** who did that? */
-    author?: string
-    /** help text to show user */
-    help?: string
-
     // UI PART ============================================================
     /** the list of dependencies user can specify */
     ui?: (form: FormBuilder /*, flow: Workflow*/) => FIELDS
@@ -40,6 +24,12 @@ export type Action<FIELDS extends WidgetDict> = {
     // EXECUTION PART ============================================================
     /** the code to run */
     run: (f: Runtime, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
+
+    // HELP ============================================================
+    /** dependencies of your action */
+    customNodeRequired?: string[]
+    /** help text to show user when using their card */
+    help?: string
 }
 
 // REQUIREMENTS ============================================================

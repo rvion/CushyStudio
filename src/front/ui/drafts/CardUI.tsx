@@ -36,7 +36,7 @@ export const CardUI = observer(function ActionFileUI_(p: { actionPath: CardPath 
             <>
                 <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
                     {/* TITLE */}
-                    <span>{card.name}</span>
+                    <span>{card.displayName}</span>
                     {/* EDIT */}
                     <Button
                         size='xs'

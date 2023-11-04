@@ -21,7 +21,7 @@ export type DeckManifest = {
 // DECK --------------------------------------
 export type CardManifest = {
     /** relative to the deck root */
-    relativePath: string
+    deckRelativeFilePath: string
 
     /**
      * card name;
@@ -58,7 +58,7 @@ export type CardManifest = {
 }
 
 export const CardSchema = Type.Object({
-    relativePath: Type.String(),
+    deckRelativeFilePath: Type.String(),
     name: Type.String(),
     illustration: Type.Optional(Type.String()),
     priority: Type.Optional(Type.Number()),

@@ -4,6 +4,7 @@ import { FancyCardUI } from 'src/cards/fancycard/FancyCard'
 import { CreateDeckBtnUI } from '../front/ui/layout/GithubAppBarInputUI'
 import { DeckHeaderUI } from 'src/cards/DeckHeaderUI'
 import { Button, Modal, Panel, Placeholder } from 'rsuite'
+import { Fragment } from 'react'
 
 export const CardsPickerModalUI = observer(function CardsPickerModalUI_(p: {}) {
     const st = useSt()
@@ -52,14 +53,22 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                             {/* {deck.name} */}
                         </div>
                         <div tw='flex flex-wrap'>
-                            {cards.map((card, ix) => (
-                                <FancyCardUI //
-                                    deck={deck}
-                                    key={card.relativePath}
-                                    style={card.style ?? 'A'}
-                                    card={card}
-                                />
-                            ))}
+                            {cards.map((card, ix) => {
+                                return (
+                                    <Fragment key={card.deckRelativeFilePath}>
+                                        <FancyCardUI //
+                                            deck={deck}
+                                            key={card.deckRelativeFilePath}
+                                            style={card.style ?? 'A'}
+                                            card={card}
+                                        />
+                                        <div>
+                                            <div>foo</div>
+                                            <div>bar</div>
+                                        </div>
+                                    </Fragment>
+                                )
+                            })}
                         </div>
                     </Panel>
                 )

@@ -29,7 +29,7 @@
             "name": "remove background",
             "relativePath": "./rembg.ts",
             "illustration": "",
-            "description": "quick way to try "
+            "description": "quick way to try various ComfyUI nodes to removem background"
         },
         {
             "name": "Simple animate-diff example",
