@@ -834,7 +834,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
             }
         } else {
             const _items = input.items()
-            this.state = { type: 'group', active: true, values: _items, verticalLabels: input.verticalLabels }
+            this.state = { type: 'group', active: true, values: _items, verticalLabels: input.verticalLabels??true }
         }
         makeAutoObservable(this)
     }

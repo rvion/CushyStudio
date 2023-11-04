@@ -10,7 +10,7 @@ import { createRef } from 'react'
 import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 
-import { Library } from 'src/library/Library'
+import { Library } from 'src/cards/Library'
 import { ProjectL } from 'src/models/Project'
 import { ShortcutWatcher } from 'src/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/shortcuts/shortcuts'
@@ -32,11 +32,11 @@ import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { GitManagedFolder } from './updater'
-import { CardPath } from 'src/library/CardPath'
+import { CardPath } from 'src/cards/CardPath'
 import { Uploader } from './Uploader'
 import { ElectronUtils } from './ElectronUtils'
-import { GithubUserName } from 'src/library/GithubUser'
-import { GithubRepoName } from 'src/library/githubRepo'
+import { GithubUserName } from 'src/cards/GithubUser'
+import { GithubRepoName } from 'src/cards/githubRepo'
 
 // prettier-ignore
 type HoveredAsset =
@@ -104,6 +104,11 @@ export class STATE {
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
 
+    // showLatentPreviewInLastImagePanel
+    get showLatentPreviewInLastImagePanel() { return this.configFile.value.showLatentPreviewInLastImagePanel ?? false } // prettier-ignore
+    set showLatentPreviewInLastImagePanel(v: boolean) { this.configFile.update({ showLatentPreviewInLastImagePanel: v }) } // prettier-ignore
+
+    //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
     get favoriteActions(): CardPath[] {
         return this.configFile.value.favoriteCards ?? []
@@ -177,13 +182,17 @@ export class STATE {
         this.layout = new CushyLayoutManager(this)
         this.theme = new ThemeManager(this)
         this.updater = new GitManagedFolder(this, {
-            cwd: this.rootPath,
-            autoStart: true,
+            absFolderPath: this.rootPath,
+            shouldAutoUpdate: true,
             runNpmInstallAfterUpdate: true,
             canBeUninstalled: false,
             githubURL: 'rvion/CushyStudio',
             repositoryName: 'CushyStudio' as GithubRepoName,
             userName: 'rvion' as GithubUserName,
+            branches: {
+                dev: 'dev',
+                stable: 'master',
+            },
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)

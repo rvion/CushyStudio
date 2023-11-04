@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
 import { FolderKind, GitManagedFolder } from 'src/front/updater'
 import { _formatPreviewDate } from 'src/utils/_formatPreviewDate'
+import { ReleaseChannelUI } from './ReleaseChannelUI'
 
 export const GitInitBtnUI = observer(function GitInitBtnUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater
@@ -54,6 +55,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
             speaker={
                 <Popover>
                     <div>
+                        <ReleaseChannelUI onChange={(e) => console.log(e)} />
                         <UpdaterErrorUI updater={updater} />
                         <div tw='flex items-center'>
                             <span className='material-symbols-outlined'>folder</span> <div>{updater.relPath || 'root'}</div>

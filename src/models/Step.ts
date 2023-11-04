@@ -1,5 +1,5 @@
 import type { PromptL } from './Prompt'
-import type { CardPath } from 'src/library/CardPath'
+import type { CardPath } from 'src/cards/CardPath'
 import type {
     FromExtension_Print,
     FromExtension_Prompt,
@@ -14,7 +14,7 @@ import { Runtime } from '../back/Runtime'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
-import { CardFile } from 'src/library/CardFile'
+import { CardFile } from 'src/cards/CardFile'
 
 export type FormPath = (string | number)[]
 

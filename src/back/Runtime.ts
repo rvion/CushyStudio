@@ -27,7 +27,7 @@ import { NodeBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
 import { assets } from 'src/assets/assets'
-import { CardPath } from 'src/library/CardPath'
+import { CardPath } from 'src/cards/CardPath'
 import { ImageSDK } from './ImageSDK'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK

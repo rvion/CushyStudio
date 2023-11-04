@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Input, InputGroup } from 'rsuite'
-import { CardFile } from 'src/library/CardFile'
+import { CardFile } from 'src/cards/CardFile'
 import { useSt } from 'src/front/FrontStateCtx'
 
 export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { af: CardFile }) {

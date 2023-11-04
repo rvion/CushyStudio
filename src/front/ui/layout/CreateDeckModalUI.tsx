@@ -3,7 +3,7 @@ import { Button, Input, Loader, Modal, Placeholder } from 'rsuite'
 import { GithubUsernameInputUI } from './GithubAppBarInputUI'
 import { makeAutoObservable } from 'mobx'
 import { useSt } from 'src/front/FrontStateCtx'
-import { DeckFolder } from 'src/library/Deck'
+import { DeckFolder } from 'src/cards/Deck'
 
 export class CreateDeckModalState {
     constructor() {

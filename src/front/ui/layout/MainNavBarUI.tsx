@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
+import { Button, ButtonGroup, Popover, Whisper } from 'rsuite'
 import { assets } from 'src/assets/assets'
 import { useSt } from '../../FrontStateCtx'
-import { Button, ButtonGroup, IconButton, Popover, Whisper } from 'rsuite'
+import { DBHealthUI } from './AppBarUI'
 
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
@@ -20,11 +21,22 @@ export const MainNavEntryUI = observer(function UI_(p: {
     )
 })
 
-export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
+export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: string }) {
     const st = useSt()
     const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
     return (
-        <ButtonGroup id='main-navbar' tw='flex flex-wrap items-center'>
+        <ButtonGroup id='main-navbar' tw='flex flex-wrap items-center' className={p.className}>
+            {/* debug buttons */}
+            <Button
+                //
+                size='sm'
+                appearance='subtle'
+                color='orange'
+                startIcon={<span className='material-symbols-outlined'>sync</span>}
+                onClick={() => window.location.reload()}
+            >
+                Reload
+            </Button>
             {/* COMFY */}
             <MainNavEntryUI
                 onClick={() => st.layout.addActionPicker()}
@@ -111,6 +123,34 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 icon={<span className='material-symbols-outlined text-amber-800'>{themeIcon}</span>}
                 label='Theme'
             />
+            <Button //
+                size='sm'
+                appearance='subtle'
+                color='orange'
+                startIcon={<span className='material-symbols-outlined'>bug_report</span>}
+                onClick={() => st.electronUtils.toggleDevTools()}
+            >
+                Open console
+            </Button>
+            <Button
+                size='sm'
+                appearance='subtle'
+                color='orange'
+                startIcon={<span className='material-symbols-outlined'>sync</span>}
+                onClick={() => st.layout.resetCurrent()}
+            >
+                Reset Layout
+            </Button>
+            <Button
+                appearance='subtle'
+                loading={Boolean(st.db.saveTimeout)}
+                size='sm'
+                startIcon={<span className='material-symbols-outlined'>save</span>}
+                onClick={() => st.db.markDirty()}
+            >
+                save
+            </Button>
+            <DBHealthUI />
         </ButtonGroup>
     )
 })

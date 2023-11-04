@@ -1,0 +1,240 @@
+:root {
+    --color1: rgb(0, 231, 255);
+    --color2: rgb(255, 0, 231);
+    --back: url(https://cdn2.bulbagarden.net/upload/1/17/Cardback.jpg);
+    /* A */
+    --STYLE_A1: #fac;
+    --STYLE_A2: #ddccaa;
+    --STYLE_Afront: url(https://assets.codepen.io/13471/charizard-gx.webp);
+    /* B */
+    --STYLE_B1: #54a29e;
+    --STYLE_B2: #a79d66;
+    --STYLE_Bfront: url(https://assets.codepen.io/13471/pikachu-gx.webp);
+    /*  C*/
+    --STYLE_C1: #efb2fb;
+    --STYLE_C2: #acc6f8;
+    --STYLE_Cfront: url(https://assets.codepen.io/13471/eevee-gx.webp);
+    /* D */
+    --STYLE_D1: #efb2fb;
+    --STYLE_D2: #acc6f8;
+    --STYLE_Dfront: url(https://assets.codepen.io/13471/mewtwo-gx.webp);
+}
+
+.card {
+    width: 71.5vw;
+    height: 100vw;
+    width: clamp(200px, 61vh, 18vw);
+    height: clamp(280px, 85vh, 25.2vw);
+    @media screen and (min-width: 600px) {
+        width: 61vh;
+        height: 85vh;
+        max-width: 500px;
+        max-height: 700px;
+        width: clamp(12.9vw, 61vh, 18vw);
+        height: clamp(18vw, 85vh, 25.2vw);
+    }
+
+    position: relative;
+    overflow: hidden;
+    /* margin: 20px; */
+    overflow: hidden;
+    /* z-index: 10; */
+    z-index: 9999;
+    touch-action: none;
+    border-radius: 5% / 3.5%;
+    box-shadow: -5px -5px 5px -5px var(--color1), 5px 5px 5px -5px var(--color2), -7px -7px 10px -5px transparent,
+        7px 7px 10px -5px transparent, 0 0 5px 0px rgba(255, 255, 255, 0), 0 55px 35px -20px rgba(0, 0, 0, 0.5);
+
+    transition: transform 0.5s ease, box-shadow 0.2s ease;
+    will-change: transform, filter;
+
+    background-color: #040712;
+    background-image: var(--front);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    transform-origin: center;
+}
+
+/* FANCY BORDER AROUND THE CARD */
+.card:hover {
+    box-shadow: -20px -20px 30px -25px var(--color1), 20px 20px 30px -25px var(--color2), -7px -7px 10px -5px var(--color1),
+        7px 7px 10px -5px var(--color2), 0 0 13px 4px rgba(255, 255, 255, 0.3), 0 55px 35px -20px rgba(0, 0, 0, 0.5);
+}
+
+/* STYLES */
+.card.STYLE_A {
+    --color1: var(--STYLE_A1);
+    --color2: var(--STYLE_A2);
+    --front: var(--STYLE_Afront);
+}
+.card.STYLE_B {
+    --color1: var(--STYLE_B1);
+    --color2: var(--STYLE_B2);
+    --front: var(--STYLE_Bfront);
+}
+.card.STYLE_C {
+    --color1: #ec9bb6;
+    --color2: #ccac6f;
+    --color3: #69e4a5;
+    --color4: #8ec5d6;
+    --color5: #b98cce;
+    --front: var(--STYLE_Cfront);
+}
+.card.STYLE_D {
+    --color1: var(--STYLE_D1);
+    --color2: var(--STYLE_D2);
+    --front: var(--STYLE_Dfront);
+}
+
+.card:before,
+.card:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-repeat: no-repeat;
+    opacity: 0.5;
+    mix-blend-mode: color-dodge;
+    transition: all 0.33s ease;
+}
+
+.card:before {
+    background-position: 50% 50%;
+    background-size: 300% 300%;
+    background-image: linear-gradient(
+        115deg,
+        transparent 0%,
+        var(--color1) 25%,
+        transparent 47%,
+        transparent 53%,
+        var(--color2) 75%,
+        transparent 100%
+    );
+    opacity: 0.5;
+    filter: brightness(0.5) contrast(1);
+    z-index: 1;
+}
+
+.card:after {
+    opacity: 1;
+    background-image: url('https://assets.codepen.io/13471/sparkles.gif'), url(https://assets.codepen.io/13471/holo.png),
+        linear-gradient(125deg, #ff008450 15%, #fca40040 30%, #ffff0030 40%, #00ff8a20 60%, #00cfff40 70%, #cc4cfa50 85%);
+    background-position: 50% 50%;
+    background-size: 160%;
+    background-blend-mode: overlay;
+    z-index: 2;
+    filter: brightness(1) contrast(1);
+    transition: all 0.33s ease;
+    mix-blend-mode: color-dodge;
+    opacity: 0.75;
+}
+
+.card.active:after,
+.card:hover:after {
+    filter: brightness(1) contrast(1);
+    opacity: 1;
+}
+
+.card.active,
+.card:hover {
+    animation: none;
+    transition: box-shadow 0.1s ease-out;
+}
+
+.card.active:before,
+.card:hover:before {
+    animation: none;
+    background-image: linear-gradient(110deg, transparent 25%, var(--color1) 48%, var(--color2) 52%, transparent 75%);
+    background-position: 50% 50%;
+    background-size: 250% 250%;
+    opacity: 0.88;
+    filter: brightness(0.66) contrast(1.33);
+    transition: none;
+}
+
+.card.active:before,
+.card:hover:before,
+.card.active:after,
+.card:hover:after {
+    animation: none;
+    transition: none;
+}
+
+/* prettier-ignore */
+@keyframes holoSparkle {
+    0%, 100% { opacity: 0.75; background-position: 50% 50%; filter: brightness(1.2) contrast(1.25); }
+    5%,   8% { opacity: 1; background-position: 40% 40%; filter: brightness(0.8) contrast(1.2); }
+    13%, 16% { opacity: 0.5; background-position: 50% 50%; filter: brightness(1.2) contrast(0.8); }
+    35%, 38% { opacity: 1; background-position: 60% 60%; filter: brightness(1) contrast(1); }
+    55% { opacity: 0.33; background-position: 45% 45%; filter: brightness(1.2) contrast(1.25); }
+}
+
+/* prettier-ignore */
+@keyframes holoGradient {
+    0%, 100% { opacity: 0.5; background-position: 50% 50%; filter: brightness(0.5) contrast(1); }
+    5%,   9% { background-position: 100% 100%; opacity: 1; filter: brightness(0.75) contrast(1.25); }
+    13%, 17% { background-position: 0% 0%; opacity: 0.88; }
+    35%, 39% { background-position: 100% 100%; opacity: 1; filter: brightness(0.5) contrast(1); }
+    55% { background-position: 0% 0%; opacity: 1; filter: brightness(0.75) contrast(1.25); }
+}
+
+/* prettier-ignore */
+@keyframes holoCard {
+    0%, 100% { transform: rotateZ(0deg) rotateX(0deg) rotateY(0deg); }
+    5%, 8% { transform: rotateZ(0deg) rotateX(6deg) rotateY(-20deg); }
+    13%, 16% { transform: rotateZ(0deg) rotateX(-9deg) rotateY(32deg); }
+    35%, 38% { transform: rotateZ(3deg) rotateX(12deg) rotateY(20deg); }
+    55% { transform: rotateZ(-3deg) rotateX(-12deg) rotateY(-27deg); }
+}
+
+/* SYTLE 3 */
+
+/* prettier-ignore */
+.card.STYLE_C:hover { box-shadow: 0 0 30px -5px white, 0 0 10px -2px white, 0 55px 35px -20px rgba(0, 0, 0, 0.5); }
+.card.STYLE_C:hover:before,
+.card.STYLE_C.active:before {
+    background-image: linear-gradient(
+        115deg,
+        transparent 20%,
+        var(--color1) 36%,
+        var(--color2) 43%,
+        var(--color3) 50%,
+        var(--color4) 57%,
+        var(--color5) 64%,
+        transparent 80%
+    );
+}
+
+/* --------------------------------------------------------------- */
+
+.operator {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 6vh;
+}
+
+.demo,
+.cards {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    perspective: 2000px;
+    position: relative;
+    z-index: 1;
+    transform: translate3d(0.1px, 0.1px, 0.1px);
+}
+
+/* prettier-ignore */
+@keyframes rubberBand {
+    from { transform: scale3d(1,    1,    1); }
+    30%  { transform: scale3d(1.25, 0.75, 1); }
+    40%  { transform: scale3d(0.75, 1.25, 1); }
+    50%  { transform: scale3d(1.15, 0.85, 1); }
+    65%  { transform: scale3d(0.95, 1.05, 1); }
+    75%  { transform: scale3d(1.05, 0.95, 1); }
+    to   { transform: scale3d(1,    1,    1); }
+}

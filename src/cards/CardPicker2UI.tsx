@@ -1,4 +1,4 @@
-import type { CardFile } from 'src/library/CardFile'
+import type { CardFile } from 'src/cards/CardFile'
 import type { Deck } from './Deck'
 
 import { observer } from 'mobx-react-lite'
@@ -63,7 +63,7 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { af: CardFile 
                 ev.preventDefault()
                 ev.stopPropagation()
                 const actionPath = af.relPath
-                st.layout.addAction(actionPath)
+                st.layout.addCard(actionPath)
             }}
         >
             {/* <span className='material-symbols-outlined'>keyboard_arrow_right</span> */}

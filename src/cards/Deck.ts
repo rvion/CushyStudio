@@ -5,8 +5,8 @@ import { makeAutoObservable } from 'mobx'
 import { join } from 'pathe'
 import { assets } from 'src/assets/assets'
 import { GitManagedFolder } from 'src/front/updater'
-import { Library } from 'src/library/Library'
-import { GithubRepo, GithubRepoName, asGithubRepoName } from 'src/library/githubRepo'
+import { Library } from 'src/cards/Library'
+import { GithubRepo, GithubRepoName, asGithubRepoName } from 'src/cards/githubRepo'
 import { ManualPromise } from 'src/utils/ManualPromise'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
@@ -42,8 +42,8 @@ export class Deck {
 
     /** sorting socre */
     get score() {
+        if (this.BUILT_IN && this.githubRepositoryName === 'default') return 1000
         if (this.st.githubUsername === this.githubUserName) return 100
-        if (this.BUILT_IN && this.githubRepositoryName === 'default') return 99
         if (this.BUILT_IN) return 1
         return 1 + this.stars / 1000
     }
@@ -84,8 +84,8 @@ export class Deck {
         this.folderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, this.github))
         this.folderRel = asRelativePath(join(this.st.actionsFolderPathRel, this.github)) as DeckFolder
         this.updater = new GitManagedFolder(this.library.st, {
-            cwd: this.folderAbs,
-            autoStart: false,
+            absFolderPath: this.folderAbs,
+            shouldAutoUpdate: false,
             runNpmInstallAfterUpdate: false,
             canBeUninstalled: this.githubUserName == 'CushyStudio' ? false : true,
             githubURL: this.githubURL,

@@ -19,7 +19,7 @@ import { ActionDraftListUI, AddDraftUI } from './ActionDraftListUI'
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const ActionFormUI = observer(function ActionFormUI_(p: { draft: DraftL | DraftID }) {
+export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | DraftID }) {
     // 1. get draft
     const st = useSt()
     const draft = typeof p.draft === 'string' ? st.db.drafts.get(p.draft) : p.draft

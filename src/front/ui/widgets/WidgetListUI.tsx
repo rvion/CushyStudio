@@ -20,7 +20,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                 Add
             </Button>
             {values.map((v, ix) => (
-                <div tw='flex gap-2'>
+                <div tw='flex gap-2 items-center'>
                     <Button
                         disabled={min ? req.state.items.length <= min : undefined}
                         tw='self-center'

@@ -2,7 +2,7 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import type { ImageID } from 'src/models/Image'
 
 import { observer } from 'mobx-react-lite'
-import { Rate } from 'rsuite'
+import { Rate, Toggle } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 
 export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID }) {
@@ -25,6 +25,13 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
                     <Button>cover</Button>
                 </ButtonGroup> */}
                 <Rate size='xs' onChange={(next) => imgs.update({ star: next })} value={imgs.data.star} />
+                <div>
+                    <Toggle
+                        checked={st.showLatentPreviewInLastImagePanel}
+                        onChange={(next) => (st.showLatentPreviewInLastImagePanel = next)}
+                    />
+                    <span tw='text-light'>include sampler preview</span>
+                </div>
             </div>
             <TransformWrapper centerZoomedOut centerOnInit>
                 <TransformComponent
