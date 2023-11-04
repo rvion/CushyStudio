@@ -8,6 +8,7 @@ export class FancyCardState {
     constructor(public cardStyle: CardStyle) {
         makeAutoObservable(this)
     }
+
     style: React.CSSProperties = {}
     setStyle = (style: React.CSSProperties) => (this.style = style)
 
@@ -48,37 +49,34 @@ export class FancyCardState {
         const pxSpark = 50 + (px - 50) / 7
         const pySpark = 50 + (py - 50) / 7
         const pOpc = 20 + Math.abs(pa) * 1.5
-        const ty = ((tp - 50) / 2) * -1
-        const tx = ((lp - 50) / 1.5) * 0.5
+        const ty = 0.4 * ((tp - 50) / 2) * -1
+        const tx = 0.4 * ((lp - 50) / 1.5) * 0.5
         // css to apply for active card
         const gradPos = `background-position: ${lp}% ${tp}%;`
-        const sparkPos = `background-position: ${pxSpark}% ${pySpark}%;`
-        const opc = `opacity: ${pOpc / 100};`
-        const tf = `transform: rotateX(${ty}deg) rotateY(${tx}deg);`
+        const sparklesPosition = `background-position: ${pxSpark}% ${pySpark}%;`
+        const sparklesOpacity = `opacity: ${pOpc / 100};`
+        const cardTransform = `transform: rotateX(${ty}deg) rotateY(${tx}deg);`
         // need to use a <style> tag for pseudo elements
+        console.log(gradPos)
+        // todo:
         const style = `
           .card:hover:before { ${gradPos} }  /* gradient */
-          .card:hover:after { ${sparkPos} ${opc} }   /* sparkles */
+          .card:hover:after { ${sparklesPosition} ${sparklesOpacity} }   /* sparkles */
         `
         // set / apply css class and style
         // cards.forEach((c) => c.classList.remove('active'))
         // card.classList.remove('animated')
-        card.setAttribute('style', tf)
+        card.setAttribute('style', cardTransform)
         this.styleRef.current!.innerHTML = style
 
-        if (e instanceof TouchEvent) {
-            return false
-        }
+        if (e instanceof TouchEvent) return false
 
-        this.clearTimeout()
+        // this.clearTimeout()
     }
 
     handleOut = () => {
         this.setStyle({})
         this.setHoverStyle('')
-        this.timeoutId = setTimeout(() => {
-            this.cardRef.current?.classList.add('animated')
-        }, 2500)
     }
 }
 
@@ -92,18 +90,19 @@ export const FancyCardUI = observer((p: { style: CardStyle }) => {
     useEffect(() => uiSt.clearTimeout, [])
 
     return (
-        <div className='demo m-2 p-2'>
+        <div className='m-2 p-2'>
             <style ref={uiSt.styleRef}>{uiSt.hoverStyle}</style>
             <div
                 ref={uiSt.cardRef}
-                className='card'
+                // className='card'
+                className={`card STYLE_${p.style}`}
                 onMouseMove={uiSt.handleMove}
-                onTouchMove={uiSt.handleMove}
+                // onTouchMove={uiSt.handleMove}
                 onMouseOut={uiSt.handleOut}
                 onTouchEnd={uiSt.handleOut}
                 onTouchCancel={uiSt.handleOut}
             >
-                <div className={`card STYLE_${p.style}`}></div>
+                {/* <div className={`card STYLE_${p.style}`}></div> */}
                 {/* Content of the card */}
             </div>
         </div>
