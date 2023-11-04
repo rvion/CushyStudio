@@ -43,9 +43,9 @@ export class Deck {
 
     /** sorting socre */
     get score() {
-        if (this.BUILT_IN && this.githubRepositoryName === 'default') return 1000
+        if (this.BUILT_IN) return 1000
+        // if (this.BUILT_IN && this.githubRepositoryName === 'default') return 1000
         if (this.st.githubUsername === this.githubUserName) return 100
-        if (this.BUILT_IN) return 1
         return 1 + this.stars / 1000
     }
 
@@ -64,7 +64,7 @@ export class Deck {
         if (card.illustration) {
             return `file://${join(this.folderAbs, card.illustration)}`
         }
-        return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_assets/default-card-illustration.jpg')}`
+        return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_illustrations/default-card-illustration.jpg')}`
     }
 
     get cardManifests(): CardManifest[] {

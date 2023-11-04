@@ -126,11 +126,11 @@ export class Library {
         this.getDeck('library/VinsiGit/Cushy_Action' as DeckFolder)
         this.getDeck('library/noellealarie/cushy-avatar-maker' as DeckFolder)
         this.getDeck('library/featherice/cushy-actions' as DeckFolder)
-        this.getDeck('library/rvion/cushy-example-deck' as DeckFolder)
         this.getDeck('library/noellealarie/comfy2cushy-examples' as DeckFolder)
         this.getDeck('library/CushyStudio/default' as DeckFolder)
-        this.getDeck('library/CushyStudio/cards' as DeckFolder)
         this.getDeck('library/CushyStudio/tutorial' as DeckFolder)
+        // this.getDeck('library/rvion/cushy-example-deck' as DeckFolder)
+        // this.getDeck('library/CushyStudio/cards' as DeckFolder)
     }
 
     createDeck = async (folder: DeckFolder): Promise<Deck> => {

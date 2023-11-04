@@ -10,20 +10,18 @@
             "relativePath": "./prompt.ts",
             "priority": 100,
             "style": "D",
-            "illustration": "_assets/mc.jpg",
+            "illustration": "_illustrations/mc.jpg",
             "description": "A card that contains all the features needed to play with stable diffusion"
         },
         {
             "name": "a Cushy card generate a deck of... 'cards'",
-            "relativePath": "./pokerCard.ts",
-            // a nice split image from
-            "illustration": "_assets/poker-card-generator.jpg",
+            "relativePath": "./pokerCards.ts",
+            "illustration": "_illustrations/poker-card-generator.jpg",
             "description": "Few Cushy cards are about 'playing cards'. But this one is."
         },
         {
             "name": "real-time drawer",
             "relativePath": "./realtime.ts",
-            // a nice split image from
             "illustration": "",
             "description": "real-time drawing to painting"
         },
