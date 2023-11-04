@@ -69,6 +69,7 @@ export const FancyCardUI = observer(
         card: CardManifest
     }) => {
         const uiSt = useMemo(() => new FancyCardState(p.style), [p.style])
+        const card = p.card
         return (
             <div className='m-2'>
                 {/* <style ref={uiSt.styleRef}>{uiSt.hoverStyle}</style> */}
@@ -76,16 +77,17 @@ export const FancyCardUI = observer(
                     style={uiSt.cardStyle}
                     // className='card'
                     className={`card STYLE_${p.style}`}
-                    onMouseMove={uiSt.handleMove}
+                    // onMouseMove={uiSt.handleMove}
                     // onTouchMove={uiSt.handleMove}
                     // onMouseOut={uiSt.handleOut}
                     // onTouchEnd={uiSt.handleOut}
                     // onTouchCancel={uiSt.handleOut}
                 >
+                    <div style={{ fontSize: '1.3rem' }}>{card.name}</div>
                     {/* <div className={`card STYLE_${p.style}`}></div> */}
                     {/* Content of the card */}
                     <div style={uiSt.gradientStyle} className='card_before'></div>
-                    <div style={uiSt.sparklesStyle} className='card_after'></div>
+                    {/* <div style={uiSt.sparklesStyle} className='card_after'></div> */}
                 </div>
             </div>
         )

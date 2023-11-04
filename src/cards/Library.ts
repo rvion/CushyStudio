@@ -85,11 +85,7 @@ export class Library {
             depth: 20,
             ignore: (t) => {
                 const baseName = path.basename(t)
-                if (baseName.startsWith('.')) return true
-                if (baseName.startsWith('_')) return true
-                if (baseName.startsWith('node_modules')) return true
-                if (baseName.startsWith('dist')) return true
-                return false
+                return this.shouldSkip(baseName)
             },
         })
 
@@ -114,6 +110,16 @@ export class Library {
 
         makeAutoObservable(this)
         // this.filesMap = new Map()
+    }
+
+    /** return true if the file or folder */
+    private shouldSkip = (baseName: string): boolean => {
+        if (baseName === 'cushy-deck.json') return true
+        if (baseName.startsWith('.')) return true
+        if (baseName.startsWith('_')) return true
+        if (baseName.startsWith('node_modules')) return true
+        if (baseName.startsWith('dist')) return true
+        return false
     }
 
     private addKnownPacks = () => {
@@ -233,11 +239,11 @@ export class Library {
     ) => {
         const files = readdirSync(dir)
         // console.log(files)
-        for (const file of files) {
-            if (file.startsWith('.')) continue
-            if (file.startsWith('_')) continue
+        for (const baseName of files) {
+            const shouldSkip = this.shouldSkip(baseName)
+            if (shouldSkip) continue
 
-            const absPath = asAbsolutePath(join(dir, file))
+            const absPath = asAbsolutePath(join(dir, baseName))
             const stat = statSync(absPath)
             // const dirName = path.basename(filePath)
             if (stat.isDirectory()) {
@@ -249,7 +255,7 @@ export class Library {
                 const folderEntry: ItemDataType = {
                     value: relPath,
                     children: ARRAY,
-                    label: file,
+                    label: baseName,
                 }
                 // console.log('2', folderEntry)
                 parentStack.push(folderEntry)
@@ -275,7 +281,7 @@ export class Library {
                     pack.cards.push(af)
                     this.cardsByPath.set(actionPath, af)
                 }
-                const treeEntry = { value: actionPath, label: file }
+                const treeEntry = { value: actionPath, label: baseName }
                 parentStack.push(treeEntry)
             }
         }

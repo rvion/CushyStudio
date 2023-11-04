@@ -71,8 +71,8 @@ export class Deck {
         }
         // add cards detected locally but not listed in manifest
         for (const card of this.cards) {
-            if (seen.has(card.name)) continue
             const cardManifest = card.manifest
+            if (seen.has(cardManifest.relativePath)) continue
             seen.add(cardManifest.relativePath)
             out.push(cardManifest)
         }
