@@ -33,6 +33,8 @@ import { useMemo } from 'react'
 import { CompletionState } from './plugins/CompletionProviders'
 import { Button, IconButton } from 'rsuite'
 import { PrompterConfigUI } from './PropmterConfig'
+import { $createUserNode, UserNode } from './nodes/UserNode'
+import { $createActionNode, ActionNode } from './nodes/ActionNode'
 
 // const theme = {
 //     // Theme styling goes here
@@ -89,11 +91,12 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
                 embedding: true,
                 lora: true,
                 wildcard: true,
+                user: true,
             }),
         [],
     )
     const initialConfig: InitialConfigType = {
-        nodes: [EmbeddingNode, LoraNode, WildcardNode, BooruNode],
+        nodes: [EmbeddingNode, LoraNode, WildcardNode, BooruNode, UserNode, ActionNode],
         editorState: () => {
             console.log('[💬] LEXICAL: mounting lexical widget')
             const initialValue: WidgetPromptOutput = req.state
@@ -113,6 +116,8 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
                 else if (x.type === 'lora') paragraph.append($createLoraNode(x.loraDef))
                 else if (x.type === 'wildcard') paragraph.append($createWildcardNode(x.payload))
                 else if (x.type === 'embedding') paragraph.append($createEmbeddingNode(x.embeddingName))
+                else if (x.type === 'user') paragraph.append($createUserNode(x.tag))
+                else if (x.type === 'action') paragraph.append($createActionNode(x.tag))
                 else if (x.type === 'linebreak') paragraph.append($createLineBreakNode())
                 else if (x.type === 'text') paragraph.append($createTextNode(x.text))
             }

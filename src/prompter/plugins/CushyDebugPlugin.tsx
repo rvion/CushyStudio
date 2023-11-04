@@ -6,6 +6,8 @@ import type { EmbeddingNodeJSON } from '../nodes/EmbeddingNode'
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { JSONHighlightedCodeUI } from '../../front/ui/utils/TypescriptHighlightedCodeUI'
+import { UserNodeJSON } from '../nodes/UserNode'
+import { ActionNodeJSON } from '../nodes/ActionNode'
 
 export const getFinalJSON = (
     editorState: EditorState,
@@ -54,6 +56,8 @@ export type PossibleSerializedNodes =
     | EmbeddingNodeJSON
     | TextNodeJSON
     | LineBreakJSON
+    | UserNodeJSON
+    | ActionNodeJSON
 // | ParagraphNodeJSON
 
 const convertToSimpleJSON = (node: PossibleSerializedNodes): { type: string; value: string } => {
@@ -61,6 +65,8 @@ const convertToSimpleJSON = (node: PossibleSerializedNodes): { type: string; val
     if (node.type === 'lora') return { type: 'lora', value: JSON.stringify(node.loraDef) }
     if (node.type === 'wildcard') return { type: 'wildcard', value: node.payload }
     if (node.type === 'embedding') return { type: 'embedding', value: node.embeddingName }
+    if (node.type === 'user') return { type: 'user', value: node.tag.value }
+    if (node.type === 'action') return { type: 'user', value: node.tag.key }
     if (node.type === 'text') return { type: 'text', value: node.text }
     if (node.type === 'linebreak') return { type: 'linebreak', value: '' }
     // if (node.type === 'paragraph') return { type: 'paragraph', value: node.children.map(convertToSimpleJSON) }

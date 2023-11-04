@@ -1,10 +1,11 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
+import { UserTag } from 'src/usertags/UserLoader';
 
-export type UserNodeJSON = SerializedLexicalNode & { tag: string; type: 'user' }
+export type UserNodeJSON = SerializedLexicalNode & { tag: UserTag; type: 'user' }
 export class UserNode extends DecoratorNode<ReactNode> {
     constructor(
-        public tag: string,
+        public tag: UserTag,
         key?: NodeKey,
     ) {
         super(key)
@@ -15,7 +16,7 @@ export class UserNode extends DecoratorNode<ReactNode> {
     }
 
     static clone(node: UserNode): UserNode {
-        return new UserNode(node.booru, node.__key)
+        return new UserNode(node.tag, node.__key)
     }
 
     exportJSON(): UserNodeJSON {
@@ -35,10 +36,10 @@ export class UserNode extends DecoratorNode<ReactNode> {
     isKeyboardSelectable(): boolean { return true } // prettier-ignore
     createDOM(): HTMLElement { return document.createElement('span') } // prettier-ignore
     updateDOM(): false { return false } // prettier-ignore
-    decorate(): ReactNode { return <span className='bg-purple-800'>{this.booru.text}</span> } // prettier-ignore
+    decorate(): ReactNode { return <span className='bg-purple-800'>^{this.tag.key}</span> } // prettier-ignore
 }
 
-export function $createUserNode(tag: string, key?: NodeKey): UserNode {
+export function $createUserNode(tag: UserTag, key?: NodeKey): UserNode {
     return new UserNode(tag, key);
 }
 

@@ -35,7 +35,7 @@ export class EmbeddingNode extends DecoratorNode<ReactNode> {
     isKeyboardSelectable(): boolean { return true } // prettier-ignore
     createDOM(): HTMLElement { return document.createElement('span') } // prettier-ignore
     updateDOM(): false { return false } // prettier-ignore
-    decorate(): ReactNode { return <span className='bg-red-800'>embedding:{this.embeddingName}</span> } // prettier-ignore
+    decorate(): ReactNode { return <span className='bg-red-800'>:{this.embeddingName}</span> } // prettier-ignore
 }
 
 export function $createEmbeddingNode(id: string): EmbeddingNode {
