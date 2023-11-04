@@ -1,0 +1,60 @@
+{
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "customize your action pack name",
+            "type": "string"
+        },
+        "authorName": {
+            "description": "customize your author name",
+            "type": "string"
+        },
+        "description": {
+            "description": "short summary of your action pack",
+            "type": "string"
+        },
+        "icon": {
+            "description": "local path to an image in your action pack that should be used",
+            "type": "string"
+        },
+        "cards": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "relativePath": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "logo": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "categories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "customNodeRequired": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "author": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "relativePath",
+                    "name"
+                ]
+            }
+        }
+    }
+}

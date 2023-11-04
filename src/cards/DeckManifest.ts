@@ -1,3 +1,6 @@
+import { Type, Static } from '@sinclair/typebox'
+
+// DECK --------------------------------------
 export type DeckManifest = {
     /** customize your action pack name */
     name?: string
@@ -15,6 +18,7 @@ export type DeckManifest = {
     cards?: CardManifest[]
 }
 
+// DECK --------------------------------------
 export type CardManifest = {
     /** relative to the deck root */
     relativePath: string
@@ -44,18 +48,31 @@ export type CardManifest = {
     sampleOutput?: string
 }
 
-import { Type, Static } from '@sinclair/typebox'
-
-const DeckSchema = Type.Object({
-    name: Type.Optional(Type.String()),
-    authorName: Type.Optional(Type.String()),
+export const CardSchema = Type.Object({
+    relativePath: Type.String(),
+    name: Type.String(),
+    logo: Type.Optional(Type.String()),
     description: Type.Optional(Type.String()),
-    icon: Type.Optional(Type.String()),
-    cards: Type.Array(Type.Any()),
+    categories: Type.Optional(Type.Array(Type.String())),
+    customNodeRequired: Type.Optional(Type.Array(Type.String())),
+    author: Type.Optional(Type.String()),
 })
 
-type DeckSchemaT = Static<typeof DeckSchema>
-const _a1: DeckManifest = 0 as any as DeckSchemaT
+/* ✅ */ type _CardSchemaT = Static<typeof CardSchema>
+/* ✅ */ const _a2: CardManifest = 0 as any as _CardSchemaT
 
-console.log(DeckSchema)
-console.log(JSON.stringify(DeckSchema))
+const optionalString = (description: string) => Type.Optional(Type.String({ description }))
+export const DeckSchema = Type.Object({
+    name: optionalString('customize your action pack name'),
+    authorName: optionalString('customize your author name'),
+    description: optionalString('short summary of your action pack'),
+    icon: optionalString('local path to an image in your action pack that should be used'),
+    cards: Type.Optional(Type.Array(CardSchema)),
+})
+
+/* ✅ */ type _DeckSchemaT = Static<typeof DeckSchema>
+/* ✅ */ const _a1: DeckManifest = 0 as any as _DeckSchemaT
+
+// DECK --------------------------------------
+// console.log(DeckSchema)
+// console.log(JSON.stringify(DeckSchema))

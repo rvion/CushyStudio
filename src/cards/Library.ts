@@ -131,7 +131,14 @@ export class Library {
         if (existsSync(folder)) return Promise.reject(`deck already exists: ${folder}`)
         mkdirSync(folder, { recursive: true })
         writeFileSync(join(folder, 'readme.md'), `# ${folder}\n\nThis is a new deck, created by CushyStudio.`)
-        writeFileSync(join(folder, 'cushy-deck.json'), `{}`)
+        writeFileSync(
+            join(folder, 'cushy-deck.json'),
+            _FIX_INDENTATION`
+            {
+                "$schema": "../../../src/cards/DeckManifest.schema.json"
+            }
+        `,
+        )
         // prettier-ignore
         writeFileSync(join(folder, '_prefab.ts'), _FIX_INDENTATION`
             import type { FormBuilder } from "src/controls/FormBuilder"

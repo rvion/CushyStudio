@@ -6,7 +6,7 @@ import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable, observable } from 'mobx'
-import path from 'pathe'
+import path, { relative } from 'pathe'
 import { generateName } from 'src/front/ui/drafts/generateName'
 import { Deck } from 'src/cards/Deck'
 import { CardPath } from 'src/cards/CardPath'
@@ -17,6 +17,7 @@ import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
 import { exhaust } from '../utils/ComfyUtils'
 import { ManualPromise } from '../utils/ManualPromise'
 import { Library } from './Library'
+import { CardManifest } from './DeckManifest'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -53,6 +54,29 @@ export class CardFile {
         this.st = library.st
         this.displayName = path.basename(this.absPath)
         makeAutoObservable(this, { action: observable.ref })
+    }
+
+    get manifest(): CardManifest {
+        const cards = this.pack.manifest.cards ?? []
+        const match = cards.find((c) => {
+            const absPath = path.join(this.pack.folderAbs, c.relativePath)
+            if (absPath === this.absPath) return true
+        })
+        if (match) return match
+        return this.defaultManifest
+    }
+
+    private get defaultManifest(): CardManifest {
+        const relativePath = relative(this.pack.folderAbs, this.absPath)
+        return {
+            name: this.name,
+            relativePath: this.relPath,
+            author: this.action?.author,
+            categories: [],
+            customNodeRequired: [],
+            description: this.action?.description ?? 'no description',
+            logo: this.action?.logo,
+        }
     }
 
     // status

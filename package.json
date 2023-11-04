@@ -24,6 +24,7 @@
         "start": "concurrently --kill-others -n vite,electron -c yellow,blue \"npm run front:dev\" \"electron -i src/shell\"",
         "📌 CODEGEN": "",
         "assets": "bun src/assets/assets.gen.ts",
+        "deckschema": "bun src/cards/DeckManifestGen.ts",
         "syms": "node src/syms/_.cjs",
         "📌 FRONT": "",
         "front:shell": "electron src/shell",
