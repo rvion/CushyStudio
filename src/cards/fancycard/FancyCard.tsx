@@ -1,6 +1,9 @@
+import type { CardManifest } from '../DeckManifest'
+import type { CSSProperties } from 'react'
+
 import { makeAutoObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import React, { CSSProperties, createRef, useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 
 import './FancyCard.css' // Assuming the CSS is written in this file
 
@@ -55,34 +58,36 @@ export class FancyCardState {
         this.gradientStyle = { backgroundPosition: `${lp}% ${tp}%` }
         this.sparklesStyle = { opacity: `${pOpc / 100}`, backgroundPosition: `${pxSpark}% ${pySpark}%` }
     }
-
-    // handleOut = () => {
-    //     this.setStyle({})
-    // }
 }
 
 export type CardStyle = 'A' | 'B' | 'C' | 'D'
 
-export const FancyCardUI = observer((p: { style: CardStyle }) => {
-    const uiSt = useMemo(() => new FancyCardState(p.style), [p.style])
-    return (
-        <div className='m-2'>
-            {/* <style ref={uiSt.styleRef}>{uiSt.hoverStyle}</style> */}
-            <div
-                style={uiSt.cardStyle}
-                // className='card'
-                className={`card STYLE_${p.style}`}
-                onMouseMove={uiSt.handleMove}
-                // onTouchMove={uiSt.handleMove}
-                // onMouseOut={uiSt.handleOut}
-                // onTouchEnd={uiSt.handleOut}
-                // onTouchCancel={uiSt.handleOut}
-            >
-                {/* <div className={`card STYLE_${p.style}`}></div> */}
-                {/* Content of the card */}
-                <div style={uiSt.gradientStyle} className='card_before'></div>
-                <div style={uiSt.sparklesStyle} className='card_after'></div>
+export const FancyCardUI = observer(
+    (p: {
+        //
+        style: CardStyle
+        card: CardManifest
+    }) => {
+        const uiSt = useMemo(() => new FancyCardState(p.style), [p.style])
+        return (
+            <div className='m-2'>
+                {/* <style ref={uiSt.styleRef}>{uiSt.hoverStyle}</style> */}
+                <div
+                    style={uiSt.cardStyle}
+                    // className='card'
+                    className={`card STYLE_${p.style}`}
+                    onMouseMove={uiSt.handleMove}
+                    // onTouchMove={uiSt.handleMove}
+                    // onMouseOut={uiSt.handleOut}
+                    // onTouchEnd={uiSt.handleOut}
+                    // onTouchCancel={uiSt.handleOut}
+                >
+                    {/* <div className={`card STYLE_${p.style}`}></div> */}
+                    {/* Content of the card */}
+                    <div style={uiSt.gradientStyle} className='card_before'></div>
+                    <div style={uiSt.sparklesStyle} className='card_after'></div>
+                </div>
             </div>
-        </div>
-    )
-})
+        )
+    },
+)

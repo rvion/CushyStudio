@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { AppBarUI } from './AppBarUI'
 import { ProjectUI } from './ProjectUI'
-import { FancyCardUI } from 'src/cards/fancycard/FancyCard'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
@@ -22,24 +21,6 @@ export const CushyUI = observer(function CushyUI_() {
             <AppBarUI />
             <div className='flex flex-grow relative'>
                 <ProjectUI />
-            </div>
-
-            <div tw='absolute '>
-                <div tw='relative flex flex-wrap'>
-                    <div>CARD 1</div>
-                    {/* <img style={{ border: '3px solid blue' }} src='CushyStudio/_public/sparkles.webp' /> */}
-                    {/* <FancyCardUI style='A' /> */}
-                    {/* <FancyCardUI style='B' /> */}
-                    <FancyCardUI style='A' />
-                    <FancyCardUI style='B' />
-                    <FancyCardUI style='C' />
-                    <FancyCardUI style='D' />
-                    <FancyCardUI style='D' />
-                    <FancyCardUI style='D' />
-                    <FancyCardUI style='D' />
-                    <FancyCardUI style='D' />
-                    <FancyCardUI style='D' />
-                </div>
             </div>
         </div>
     )

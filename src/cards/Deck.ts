@@ -11,7 +11,7 @@ import { ManualPromise } from 'src/utils/ManualPromise'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { generateAvatar } from './AvatarGenerator'
-import { DeckManifest } from './DeckManifest'
+import { CardManifest, DeckManifest } from './DeckManifest'
 import { GithubUser, GithubUserName, asGithubUserName } from './GithubUser'
 
 /** e.g. library/rvion/foo */
@@ -54,8 +54,30 @@ export class Deck {
     name: string
     github: string
     BUILT_IN: boolean
-    manifest: DeckManifest = {}
+    manifest: DeckManifest = {
+        name: '',
+        authorName: '',
+        description: '',
+    }
     cards: CardFile[] = []
+    get cardManifests(): CardManifest[] {
+        const seen = new Set<string>()
+        const out: CardManifest[] = []
+        // add cards listed in manifest:
+        for (const cardManifest of this.manifest.cards ?? []) {
+            // if (seen.has(card.name)) continue
+            seen.add(cardManifest.relativePath)
+            out.push(cardManifest)
+        }
+        // add cards detected locally but not listed in manifest
+        for (const card of this.cards) {
+            if (seen.has(card.name)) continue
+            const cardManifest = card.manifest
+            seen.add(cardManifest.relativePath)
+            out.push(cardManifest)
+        }
+        return out
+    }
 
     get description() {
         return this.manifest.description ?? ''

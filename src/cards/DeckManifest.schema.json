@@ -13,7 +13,7 @@
             "description": "short summary of your action pack",
             "type": "string"
         },
-        "icon": {
+        "relativeIconPath": {
             "description": "local path to an image in your action pack that should be used",
             "type": "string"
         },
@@ -30,6 +30,26 @@
                     },
                     "logo": {
                         "type": "string"
+                    },
+                    "style": {
+                        "anyOf": [
+                            {
+                                "const": "A",
+                                "type": "string"
+                            },
+                            {
+                                "const": "B",
+                                "type": "string"
+                            },
+                            {
+                                "const": "C",
+                                "type": "string"
+                            },
+                            {
+                                "const": "D",
+                                "type": "string"
+                            }
+                        ]
                     },
                     "description": {
                         "type": "string"
@@ -56,5 +76,10 @@
                 ]
             }
         }
-    }
+    },
+    "required": [
+        "name",
+        "authorName",
+        "description"
+    ]
 }

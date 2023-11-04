@@ -3,16 +3,16 @@ import { Type, Static } from '@sinclair/typebox'
 // DECK --------------------------------------
 export type DeckManifest = {
     /** customize your action pack name */
-    name?: string
+    name: string
 
     /** customize your author name */
-    authorName?: string
+    authorName: string
 
     /** short summary of your action pack */
-    description?: string
+    description: string
 
-    /** local path to an image in your action pack that should be used */
-    icon?: string
+    /** deck-relativei local path to an image in your action pack that should be used */
+    relativeIconPath?: string
 
     /** the list of all cards exposed by this deck */
     cards?: CardManifest[]
@@ -28,6 +28,9 @@ export type CardManifest = {
 
     /** action image that will be displayed in the tree picker */
     logo?: string
+
+    /** card style in the library */
+    style?: 'A' | 'B' | 'C' | 'D'
 
     /** this description will show-up at the top of the action form */
     description?: string
@@ -52,6 +55,7 @@ export const CardSchema = Type.Object({
     relativePath: Type.String(),
     name: Type.String(),
     logo: Type.Optional(Type.String()),
+    style: Type.Optional(Type.Union([Type.Literal('A'), Type.Literal('B'), Type.Literal('C'), Type.Literal('D')])),
     description: Type.Optional(Type.String()),
     categories: Type.Optional(Type.Array(Type.String())),
     customNodeRequired: Type.Optional(Type.Array(Type.String())),
@@ -62,11 +66,12 @@ export const CardSchema = Type.Object({
 /* ✅ */ const _a2: CardManifest = 0 as any as _CardSchemaT
 
 const optionalString = (description: string) => Type.Optional(Type.String({ description }))
+const string = (description: string) => Type.String({ description })
 export const DeckSchema = Type.Object({
-    name: optionalString('customize your action pack name'),
-    authorName: optionalString('customize your author name'),
-    description: optionalString('short summary of your action pack'),
-    icon: optionalString('local path to an image in your action pack that should be used'),
+    name: string('customize your action pack name'),
+    authorName: string('customize your author name'),
+    description: string('short summary of your action pack'),
+    relativeIconPath: optionalString('local path to an image in your action pack that should be used'),
     cards: Type.Optional(Type.Array(CardSchema)),
 })
 

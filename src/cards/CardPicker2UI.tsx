@@ -27,21 +27,21 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
             {/* INSTALLED */}
             <div tw='flex flex-col'>
                 {tb.decksSorted.map((pack) => (
-                    <ActionPackUI key={pack.folderRel} pack={pack} />
+                    <ActionPackUI key={pack.folderRel} deck={pack} />
                 ))}
             </div>
         </>
     )
 })
 
-export const ActionPackUI = observer(function ActionPackUI_(p: { pack: Deck }) {
-    const pack: Deck = p.pack
+export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Deck }) {
+    const deck: Deck = p.deck
     return (
-        <div tw='my-0.5 flex-grow' key={pack.folderRel}>
-            <DeckHeaderUI pack={pack} />
-            {pack.folded ? null : (
+        <div tw='my-0.5 flex-grow' key={deck.folderRel}>
+            <DeckHeaderUI deck={deck} />
+            {deck.folded ? null : (
                 <div>
-                    {pack.cards.map((af) => (
+                    {deck.cards.map((af) => (
                         <ActionEntryUI key={af.relPath} af={af} />
                     ))}
                 </div>
