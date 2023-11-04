@@ -87,7 +87,7 @@ export const CushyCompletionPlugin = observer((p: { cs: CompletionState }) => {
         return menuOptions
             .filter((option: CompletionOption) => {
                 const c0 = queryString[0]
-                if ([':', '&', '*', '@'].includes(c0)) {
+                if ([':', '&', '*', '@', '^', '/'].includes(c0)) {
                     if (option._candidate.trigger !== c0) return false
                 }
                 const lastWordWithoutSymbols = queryString?.replace(/[^a-zA-Z0-9]/g, '')
@@ -133,25 +133,25 @@ export const CushyCompletionPlugin = observer((p: { cs: CompletionState }) => {
 
                 return anchorElementRef.current && options.length
                     ? ReactDOM.createPortal(
-                          <div className='typeahead-popover emoji-menu '>
-                              <ul style={{ paddingInlineStart: 0 }}>
-                                  {options.map((option: CompletionOption, index) => (
-                                      <CompletionUI
-                                          key={option.key}
-                                          index={index}
-                                          isSelected={selectedIndex === index}
-                                          option={option}
-                                          onMouseEnter={() => setHighlightedIndex(index)}
-                                          onClick={() => {
-                                              setHighlightedIndex(index)
-                                              selectOptionAndCleanUp(option)
-                                          }}
-                                      />
-                                  ))}
-                              </ul>
-                          </div>,
-                          anchorElementRef.current,
-                      )
+                        <div className='typeahead-popover emoji-menu '>
+                            <ul style={{ paddingInlineStart: 0 }}>
+                                {options.map((option: CompletionOption, index) => (
+                                    <CompletionUI
+                                        key={option.key}
+                                        index={index}
+                                        isSelected={selectedIndex === index}
+                                        option={option}
+                                        onMouseEnter={() => setHighlightedIndex(index)}
+                                        onClick={() => {
+                                            setHighlightedIndex(index)
+                                            selectOptionAndCleanUp(option)
+                                        }}
+                                    />
+                                ))}
+                            </ul>
+                        </div>,
+                        anchorElementRef.current,
+                    )
                     : null
             }}
         />
