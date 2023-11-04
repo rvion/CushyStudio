@@ -3,5 +3,9 @@
     "name": "Default deck name",
     "authorName": "rvion",
     "description": "Base deck containing necessary cards to have fun with generative art",
-    "cards": [{ "name": "main", "relativePath": "./prompt.ts" }]
+    "cards": [
+        //
+        { "name": "Kitchen Sink", "relativePath": "./prompt.ts", "priority": 100 },
+        { "name": "Simple animation maker", "relativePath": "./animateddiff.ts" }
+    ]
 }

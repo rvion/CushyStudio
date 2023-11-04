@@ -75,7 +75,7 @@ export class CardFile {
             categories: [],
             customNodeRequired: [],
             description: this.action?.description ?? 'no description',
-            logo: this.action?.logo,
+            illustration: this.action?.logo,
         }
     }
 

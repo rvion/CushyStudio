@@ -23,6 +23,9 @@
         "titleBar.inactiveBackground": "#0b486799",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
+    "files.associations": {
+        "**/cushy-deck.json": "jsonc"
+    },
     "typescript.tsserver.experimental.enableProjectDiagnostics": true,
     "files.exclude": {
         "**/.git": true,

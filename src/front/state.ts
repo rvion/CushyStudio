@@ -113,6 +113,11 @@ export class STATE {
     get favoriteActions(): CardPath[] {
         return this.configFile.value.favoriteCards ?? []
     }
+
+    showCardPicker: boolean = false
+    closeCardPicker = () => (this.showCardPicker = false)
+    openCardPicker = () => (this.showCardPicker = true)
+
     // 🔴 this is not the right way to go cause it will cause the action to stay
     // pending in the background: fix that LATER™️
     stopCurrentPrompt = async () => {

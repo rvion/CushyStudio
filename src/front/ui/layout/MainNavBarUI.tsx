@@ -4,6 +4,7 @@ import { Button, ButtonGroup, Popover, Whisper } from 'rsuite'
 import { assets } from 'src/assets/assets'
 import { useSt } from '../../FrontStateCtx'
 import { DBHealthUI } from './AppBarUI'
+import { CardsPickerModalUI } from 'src/cards/CardPicker3UI'
 
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
@@ -39,18 +40,27 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
             </Button>
             {/* COMFY */}
             <MainNavEntryUI
-                onClick={() => st.layout.addActionPicker()}
+                // onClick={() => st.layout.addActionPicker()}
+                onClick={() => st.openCardPicker()}
                 ix='1'
                 icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
                 label='Cards'
             />
+            <CardsPickerModalUI />
+
+            {/* <MainNavEntryUI
+                onClick={() => st.layout.addActionPicker()}
+                ix='1'
+                icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
+                label='Cards'
+            /> */}
             {/* LEGACY MARKETPLACE */}
-            <MainNavEntryUI
+            {/* <MainNavEntryUI
                 onClick={() => st.layout.addMarketplace()}
                 ix='2'
                 icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
                 label='Apps'
-            />
+            /> */}
             <MainNavEntryUI
                 onClick={() => st.layout.addActionPickerTree()}
                 ix='2'

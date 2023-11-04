@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { ActionPackStatusUI } from './DeckStatusUI'
 import { ActionPackStarsUI } from './DeckStarsUI'
 import { FolderKind } from 'src/front/updater'
+import { Message } from 'rsuite'
 
 export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Deck }) {
     const deck = p.deck
@@ -15,9 +16,12 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
             <img tw='rounded' style={{ height: `2rem` }} src={deck.logo} alt='pack logo' />
             <div tw='flex-grow'>
                 <div tw='flex'>
+                    <Message showIcon type={deck.manifestType === 'implicit' ? 'error' : 'info'}>
+                        {deck.manifestType === 'implicit' ? 'No Manifest found' : '🟢'}
+                    </Message>
                     <div>
-                        <div tw='font-bold text-sm'>{deck.name}</div>
-                        <div tw='text-xs text-gray-400 flex justify-between w-full'>{deck.githubUserName}</div>
+                        <div tw='font-bold'>{deck.name}</div>
+                        <div tw='text-gray-400 flex justify-between w-full'>{deck.githubUserName}</div>
                     </div>
                     <div className='flex-grow'></div>
                     <div>

@@ -1,6 +1,7 @@
 import type { CardFile } from './CardFile'
 
-import { existsSync } from 'fs'
+import JSON5 from 'json5'
+import { existsSync, readFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { join } from 'pathe'
 import { assets } from 'src/assets/assets'
@@ -54,12 +55,11 @@ export class Deck {
     name: string
     github: string
     BUILT_IN: boolean
-    manifest: DeckManifest = {
-        name: '',
-        authorName: '',
-        description: '',
-    }
+
+    manifestType: 'explicit' | 'implicit'
+    manifest: DeckManifest
     cards: CardFile[] = []
+
     get cardManifests(): CardManifest[] {
         const seen = new Set<string>()
         const out: CardManifest[] = []
@@ -76,7 +76,13 @@ export class Deck {
             seen.add(cardManifest.relativePath)
             out.push(cardManifest)
         }
-        return out
+
+        return out.sort((a, b) => {
+            const aPriority = a.priority ?? 0
+            const bPriority = b.priority ?? 0
+            if (aPriority !== bPriority) return bPriority - aPriority
+            return a.name.localeCompare(b.name)
+        })
     }
 
     get description() {
@@ -115,6 +121,24 @@ export class Deck {
             userName: this.githubUserName,
         })
         this.installK = new ManualPromise<true>()
+
+        try {
+            const manifestPath = join(this.folderAbs, 'cushy-deck.json')
+            console.log('🔴', manifestPath)
+            const manifestStr = readFileSync(manifestPath, 'utf8')
+            const manifestJSON = JSON5.parse(manifestStr)
+            this.manifestType = 'explicit'
+            this.manifest = manifestJSON
+            console.log('🔴 🟢', manifestJSON)
+        } catch (error) {
+            console.log('🔴 ❌ failed with error', error)
+            this.manifestType = 'implicit'
+            this.manifest = {
+                name: '',
+                authorName: '',
+                description: '',
+            }
+        }
 
         if (existsSync(this.folderAbs)) {
             this.installK.resolve(true)

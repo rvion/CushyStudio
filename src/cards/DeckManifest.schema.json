@@ -28,8 +28,11 @@
                     "name": {
                         "type": "string"
                     },
-                    "logo": {
+                    "illustration": {
                         "type": "string"
+                    },
+                    "priority": {
+                        "type": "number"
                     },
                     "style": {
                         "anyOf": [

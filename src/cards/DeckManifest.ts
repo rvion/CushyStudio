@@ -23,11 +23,17 @@ export type CardManifest = {
     /** relative to the deck root */
     relativePath: string
 
-    /** action name; default to unnamed_action_<nanoid()> */
+    /**
+     * card name;
+     * defaults to the file name without extension
+     * */
     name: string
 
-    /** action image that will be displayed in the tree picker */
-    logo?: string
+    /** card image that will be displayed in the tree picker */
+    illustration?: string
+
+    /** high priority means this card will be displayed other others */
+    priority?: number
 
     /** card style in the library */
     style?: 'A' | 'B' | 'C' | 'D'
@@ -54,7 +60,8 @@ export type CardManifest = {
 export const CardSchema = Type.Object({
     relativePath: Type.String(),
     name: Type.String(),
-    logo: Type.Optional(Type.String()),
+    illustration: Type.Optional(Type.String()),
+    priority: Type.Optional(Type.Number()),
     style: Type.Optional(Type.Union([Type.Literal('A'), Type.Literal('B'), Type.Literal('C'), Type.Literal('D')])),
     description: Type.Optional(Type.String()),
     categories: Type.Optional(Type.Array(Type.String())),
