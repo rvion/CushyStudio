@@ -108,6 +108,15 @@ export class STATE {
     get showLatentPreviewInLastImagePanel() { return this.configFile.value.showLatentPreviewInLastImagePanel ?? false } // prettier-ignore
     set showLatentPreviewInLastImagePanel(v: boolean) { this.configFile.update({ showLatentPreviewInLastImagePanel: v }) } // prettier-ignore
 
+    // showPreviewInFullScreen
+    get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
+    set showPreviewInFullScreen(v: boolean) { this.configFile.update({ showPreviewInFullScreen: v }) } // prettier-ignore
+
+    // gallery size
+    get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
+    set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
+    get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
+
     //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
     get favoriteActions(): CardPath[] {
@@ -144,11 +153,6 @@ export class STATE {
     // showAllMessageReceived: boolean = false // ❌ legacy
     comfyUIIframeRef = createRef<HTMLIFrameElement>()
     expandNodes: boolean = false
-
-    // gallery
-    get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
-    set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
-    get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
 
     /**  */
     updateTsConfig = () => {

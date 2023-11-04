@@ -5,7 +5,16 @@
     "description": "Base deck containing necessary cards to have fun with generative art",
     "cards": [
         //
-        { "name": "Kitchen Sink", "relativePath": "./prompt.ts", "priority": 100 },
-        { "name": "Simple animation maker", "relativePath": "./animateddiff.ts" }
+        {
+            "name": "Kitchen Sink",
+            "relativePath": "./prompt.ts",
+            "priority": 100,
+            "style": "D",
+            "illustration": "_assets/mc.jpg"
+        },
+        {
+            "name": "Simple animation maker",
+            "relativePath": "./animateddiff.ts"
+        }
     ]
 }

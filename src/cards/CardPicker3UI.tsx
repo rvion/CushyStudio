@@ -32,14 +32,11 @@ export const CardsPickerModalUI = observer(function CardsPickerModalUI_(p: {}) {
 export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
     const st = useSt()
     return (
-        // <div
-        //     style={{
-        //         border: '1px solid blue',
-        //         background: '#000000f1',
-        //     }}
-        //     tw='absolute inset-0 overflow-auto p-10'
-        // >
-        <div tw='relative' style={{ zIndex: 9999999 }}>
+        <div
+            //
+            tw='relative'
+            style={{ zIndex: 9999999 }}
+        >
             <CreateDeckBtnUI />
 
             {/* <div>CARD 1</div> */}
@@ -51,12 +48,13 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                     >
                         <div>
                             <DeckHeaderUI deck={deck} />
-                            <b>{deck.cards.length} cards</b>
+                            {/* <b>{deck.cards.length} cards</b> */}
                             {/* {deck.name} */}
                         </div>
                         <div tw='flex flex-wrap'>
                             {cards.map((card, ix) => (
                                 <FancyCardUI //
+                                    deck={deck}
                                     key={card.relativePath}
                                     style={card.style ?? 'A'}
                                     card={card}

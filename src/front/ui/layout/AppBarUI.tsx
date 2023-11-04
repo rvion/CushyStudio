@@ -7,6 +7,7 @@ import { MainNavBarUI } from './MainNavBarUI'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
 import { UpdateBtnUI } from './UpdateBtnUI'
 import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
+import { openExternal } from './openExternal'
 
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
@@ -82,10 +83,8 @@ export const OpenComfyExternalUI = observer(function OpenComfyExternalUI_(p: {})
             appearance='subtle'
             className='self-start'
             icon={<span className='material-symbols-outlined'>open_in_new</span>}
+            onClick={() => openExternal(st.getServerHostHTTP())}
             // endIcon={}
-            onClick={() => {
-                window.require('electron').shell.openExternal(st.getServerHostHTTP())
-            }}
         >
             {/* ComfyUI Web */}
         </IconButton>

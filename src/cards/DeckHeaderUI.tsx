@@ -15,16 +15,19 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
         >
             <img tw='rounded' style={{ height: `2rem` }} src={deck.logo} alt='pack logo' />
             <div tw='flex-grow'>
-                <div tw='flex'>
-                    <Message showIcon type={deck.manifestType === 'implicit' ? 'error' : 'info'}>
-                        {deck.manifestType === 'implicit' ? 'No Manifest found' : '🟢'}
-                    </Message>
+                <div tw='flex items-center'>
+                    {/* manifest */}
                     <div>
                         <div tw='font-bold'>{deck.name}</div>
                         <div tw='text-gray-400 flex justify-between w-full'>{deck.githubUserName}</div>
                     </div>
-                    <div className='flex-grow'></div>
-                    <div>
+                    <div className='flex-grow self-start italic'>{deck.description}</div>
+                    {/* manifest */}
+                    <Message showIcon type={deck.manifestType === 'implicit' ? 'error' : 'info'}>
+                        {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
+                    </Message>
+                    <div tw='w-3'></div>
+                    <div tw='mr-3'>
                         {deck.BUILT_IN ? <div tw='text-gray-600'>built-in</div> : <ActionPackStatusUI pack={deck} />}
                         {deck.updater.status === FolderKind.FolderWithGit ? ( //
                             <ActionPackStarsUI tw='float-right' pack={deck} />

@@ -6,6 +6,8 @@ import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 
 import './FancyCard.css' // Assuming the CSS is written in this file
+import { Deck } from '../Deck'
+import { Tag } from 'rsuite'
 
 export class FancyCardState {
     constructor(public theme: CardStyle) {
@@ -65,25 +67,49 @@ export type CardStyle = 'A' | 'B' | 'C' | 'D'
 export const FancyCardUI = observer(
     (p: {
         //
+        deck: Deck
         style: CardStyle
         card: CardManifest
     }) => {
         const uiSt = useMemo(() => new FancyCardState(p.style), [p.style])
         const card = p.card
+        const cardIllustration = p.deck.cardIllustration(card)
         return (
             <div className='m-2'>
                 {/* <style ref={uiSt.styleRef}>{uiSt.hoverStyle}</style> */}
                 <div
+                    tw='text-center'
                     style={uiSt.cardStyle}
-                    // className='card'
                     className={`card STYLE_${p.style}`}
-                    // onMouseMove={uiSt.handleMove}
+                    // className='card'
+
+                    onMouseMove={uiSt.handleMove}
                     // onTouchMove={uiSt.handleMove}
                     // onMouseOut={uiSt.handleOut}
                     // onTouchEnd={uiSt.handleOut}
                     // onTouchCancel={uiSt.handleOut}
                 >
-                    <div style={{ fontSize: '1.3rem' }}>{card.name}</div>
+                    <div
+                        //
+                        style={{ fontSize: '1.3rem', height: '2rem', textOverflow: 'ellipsis', overflow: 'hidden' }}
+                    >
+                        {card.name}
+                    </div>
+                    <img
+                        tw='mx-auto'
+                        style={{
+                            width: '10rem',
+                            height: '10rem',
+                        }}
+                        src={cardIllustration}
+                        alt='card illustration'
+                    />
+                    {cardIllustration}
+                    <div>
+                        {(card.categories ?? []).map((i, ix) => (
+                            <Tag key={ix}>{i}</Tag>
+                        ))}
+                    </div>
                     {/* <div className={`card STYLE_${p.style}`}></div> */}
                     {/* Content of the card */}
                     <div style={uiSt.gradientStyle} className='card_before'></div>

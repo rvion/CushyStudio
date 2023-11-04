@@ -1,16 +1,18 @@
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
-import type { ImageID } from 'src/models/Image'
+import type { ImageID, ImageL } from 'src/models/Image'
 
 import { observer } from 'mobx-react-lite'
-import { Rate, Toggle } from 'rsuite'
+import { Button, Rate, Toggle } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
+import { openExternal } from './openExternal'
 
 export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID }) {
     const st = useSt()
-    const imgs = p.imageID //
+    const img: Maybe<ImageL> = p.imageID //
         ? st.db.images.get(p.imageID)
         : st.db.images.last()
-    if (imgs == null) return null
+    const imgFolder = img ? `file://${img.localAbsolutePath}/..` : null
+    if (img == null) return null
     return (
         <div
             tw='w-full h-full flex flex-col'
@@ -24,7 +26,7 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
                     <Button appearance='primary'>original</Button>
                     <Button>cover</Button>
                 </ButtonGroup> */}
-                <Rate size='xs' onChange={(next) => imgs.update({ star: next })} value={imgs.data.star} />
+                <Rate size='xs' onChange={(next) => img.update({ star: next })} value={img.data.star} />
                 <div>
                     <Toggle
                         checked={st.showLatentPreviewInLastImagePanel}
@@ -32,6 +34,16 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
                     />
                     <span tw='text-light'>include sampler preview</span>
                 </div>
+                {imgFolder && (
+                    <Button
+                        startIcon={<span className='material-symbols-outlined'>folder</span>}
+                        size='xs'
+                        appearance='link'
+                        onClick={() => openExternal(imgFolder)}
+                    >
+                        open folder
+                    </Button>
+                )}
             </div>
             <TransformWrapper centerZoomedOut centerOnInit>
                 <TransformComponent
@@ -40,7 +52,7 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
                 >
                     <img
                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                        src={imgs.url}
+                        src={img.url}
                         alt='last generated image'
                     />
                     {/* </div> */}

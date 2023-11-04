@@ -54,6 +54,19 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                                 onChange={(ev) => st.configFile.update({ galleryBgColor: ev })}
                             ></Input>
                         </div>
+                        <div tw='self-start w-fit'>
+                            <div tw='text-gray-400'>
+                                full screen hover
+                                <Toggle
+                                    //
+                                    size='xs'
+                                    checked={st.showPreviewInFullScreen ?? true}
+                                    onChange={(next) => (st.showPreviewInFullScreen = next)}
+                                >
+                                    reset
+                                </Toggle>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 {preview ? ( //

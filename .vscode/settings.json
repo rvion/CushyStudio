@@ -23,6 +23,10 @@
         "titleBar.inactiveBackground": "#0b486799",
         "titleBar.inactiveForeground": "#e7e7e799"
     },
+    "[css]": {
+        // "editor.defaultFormatter": null
+        "editor.formatOnSave": false
+    },
     "files.associations": {
         "**/cushy-deck.json": "jsonc"
     },
