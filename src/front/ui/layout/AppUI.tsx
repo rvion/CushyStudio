@@ -25,11 +25,19 @@ export const CushyUI = observer(function CushyUI_() {
             </div>
 
             <div tw='absolute '>
-                <div tw='relative'>
+                <div tw='relative flex flex-wrap'>
                     <div>CARD 1</div>
+                    {/* <img style={{ border: '3px solid blue' }} src='CushyStudio/_public/sparkles.webp' /> */}
+                    {/* <FancyCardUI style='A' /> */}
+                    {/* <FancyCardUI style='B' /> */}
                     <FancyCardUI style='A' />
                     <FancyCardUI style='B' />
                     <FancyCardUI style='C' />
+                    <FancyCardUI style='D' />
+                    <FancyCardUI style='D' />
+                    <FancyCardUI style='D' />
+                    <FancyCardUI style='D' />
+                    <FancyCardUI style='D' />
                     <FancyCardUI style='D' />
                 </div>
             </div>
