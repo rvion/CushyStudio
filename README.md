@@ -302,7 +302,6 @@ Here is a very simple card that print the value you enter
 
 ```ts
 card({
-    name: 'A simple card',
     ui: (form) => ({ name: form.str({}) }),
     run: (runtime) => runtime.print('Hello World')
 })

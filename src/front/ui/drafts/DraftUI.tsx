@@ -134,6 +134,7 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                         </ButtonGroup>
                     </div>
                     <div tw='self-end flex gap-2 items-center' style={{ width: 'fit-content' }}>
+                        {/* <Input>foo</Input> */}
                         <RunOrAutorunUI draft={draft} />
                     </div>
                     {/* <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>

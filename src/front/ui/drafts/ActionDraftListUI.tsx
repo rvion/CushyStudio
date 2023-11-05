@@ -64,19 +64,3 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card:
         </div>
     )
 })
-
-export const AddDraftUI = observer(function AddDraftUI_(p: { af: CardFile }) {
-    const af = p.af
-    return (
-        <Button
-            disabled={af.action == null}
-            appearance='subtle'
-            size='xs'
-            color='green'
-            startIcon={<span className='material-symbols-outlined'>add</span>}
-            onClick={() => void af.createDraft()}
-        >
-            New Draft
-        </Button>
-    )
-})

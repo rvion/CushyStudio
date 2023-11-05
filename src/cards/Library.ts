@@ -171,7 +171,6 @@ export class Library {
         `)
         const baseActionCode = _FIX_INDENTATION`
             card({
-                name: 'A simple card',
                 ui: (form) => ({ name: form.str({}) }),
                 run: (runtime) => runtime.print('Hello World')
             })
