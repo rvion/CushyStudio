@@ -279,6 +279,7 @@ export class STATE {
     }
 
     preview: Maybe<{
+        receivedAt: Timestamp
         blob: Blob
         url: string
     }> = null
@@ -303,7 +304,7 @@ export class STATE {
                     }
                     const imageBlob = new Blob([buffer.slice(4)], { type: imageMime })
                     const imagePreview = URL.createObjectURL(imageBlob)
-                    this.preview = { blob: imageBlob, url: imagePreview }
+                    this.preview = { blob: imageBlob, url: imagePreview, receivedAt: Date.now() }
                     // 🔴 const previewImage = this.db.images.upsert({
                     // 🔴     id: 'PREVIEW',
                     // 🔴     localFolderPath: this.resolve(this.rootPath, asRelativePath('PREVIEW')),
