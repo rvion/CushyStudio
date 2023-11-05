@@ -1,42 +1,12 @@
 import { observer } from 'mobx-react-lite'
-import React, { ReactNode } from 'react'
-import { Button, ButtonGroup, Popover, Whisper } from 'rsuite'
+import React from 'react'
+import { Button, ButtonGroup } from 'rsuite'
 import { assets } from 'src/assets/assets'
 import { useSt } from '../../FrontStateCtx'
 import { DBHealthUI } from './AppBarUI'
 import { CardsPickerModalUI } from 'src/cards/CardPicker3UI'
-import { TypeAttributes } from 'rsuite/esm/@types/common'
 import { ComboUI } from './ComboUI'
-
-export const MainNavEntryUI = observer(function UI_(p: {
-    onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-    color?: TypeAttributes.Color
-    appearance?: TypeAttributes.Appearance
-    ix: string
-    icon: React.ReactElement
-    soon?: boolean
-    label: string
-    tooltip?: ReactNode
-}) {
-    const btn = (
-        <Button //
-            color={p.color}
-            appearance={p.appearance ?? 'subtle'}
-            size='sm'
-            startIcon={p.icon}
-            onClick={p.onClick}
-        >
-            {p.label}
-        </Button>
-    )
-    if (p.tooltip)
-        return (
-            <Whisper placement='bottomStart' speaker={<Popover>{p.tooltip}</Popover>}>
-                {btn}
-            </Whisper>
-        )
-    return btn
-})
+import { MainNavEntryUI } from './MainNavEntryUI'
 
 export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: string }) {
     const st = useSt()

@@ -1,19 +1,21 @@
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
-import { Button, ButtonGroup, Checkbox, Loader, Message } from 'rsuite'
+import { useEffect } from 'react'
+import { Button, ButtonGroup, Loader, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { DraftID, DraftL } from 'src/models/Draft'
 import { openInVSCode } from 'src/utils/openInVsCode'
 import { stringifyUnknown } from 'src/utils/stringifyUnknown'
+import { ComboUI } from '../layout/ComboUI'
+import { MainNavEntryUI } from '../layout/MainNavEntryUI'
 import { TabUI } from '../layout/TabUI'
 import { ScrollablePaneUI } from '../scrollableArea'
 import { draftContext } from '../useDraft'
 import { ResultWrapperUI } from '../utils/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../widgets/WidgetUI'
-import { ActionDraftListUI, AddDraftUI } from './ActionDraftListUI'
-import { useEffect } from 'react'
+import { ActionDraftListUI } from './ActionDraftListUI'
 
 export const CurrentDraftUI = observer(function CurrentDraftUI_(p: {}) {
     const st = useSt()
@@ -24,7 +26,26 @@ export const CurrentDraftUI = observer(function CurrentDraftUI_(p: {}) {
         if (draft?.cardPath == null) st.openCardPicker()
     }, [])
 
-    if (draft == null) return <Loader />
+    if (draft == null) {
+        return (
+            <MainNavEntryUI
+                tw='m-2'
+                size='lg'
+                color='green'
+                appearance='primary'
+                onClick={() => st.openCardPicker()}
+                ix='1'
+                icon={<span className='material-symbols-outlined'>play_circle</span>}
+                label='Open Card Picker'
+                tooltip={
+                    <>
+                        Open the card picker
+                        <ComboUI combo='meta+1' />
+                    </>
+                }
+            />
+        )
+    }
     const card = st.library.getCard(draft.cardPath)
     if (card == null)
         return (

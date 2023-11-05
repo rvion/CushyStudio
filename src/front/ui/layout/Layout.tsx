@@ -181,7 +181,7 @@ export class CushyLayoutManager {
     }
 
     addCurrentDraft = () => {
-        this._AddWithProps(Widget.CurrentDraft, `/draft`, { title: 'Draft' })
+        this._AddWithProps(Widget.CurrentDraft, `/draft`, { title: 'Current Draft' })
     }
     addDraft = (title: string, draftID: DraftID) => {
         const draft = this.st.db.drafts.get(draftID)
@@ -356,7 +356,7 @@ export class CushyLayoutManager {
                                 enableDeleteWhenEmpty: false,
                                 children: [
                                     this._persistentTab({
-                                        name: 'Draft',
+                                        name: 'Current Draft',
                                         widget: Widget.CurrentDraft,
                                         enableClose: false,
                                         id: '/draft',
