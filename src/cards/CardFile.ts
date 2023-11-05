@@ -271,8 +271,7 @@ export class CardFile {
         // extract metadata
         const result = getPngMetadataFromUint8Array(readFileSync(this.absPath))
         if (result == null) return this.addError(`❌ [load_asComfyUIGeneratedPng] no metadata in png`, null)
-        if (result.type === 'failure')
-            return this.addError(`❌ [load_asComfyUIGeneratedPng] metadata extraction failed`, result.value)
+        if (!result.success) return this.addError(`❌ [load_asComfyUIGeneratedPng] metadata extraction failed`, result.value)
         const metadata = result.value
         const workflowStr = (metadata as { [key: string]: any }).workflow
         if (workflowStr == null) return this.addError(`❌ [load_asComfyUIGeneratedPng] no workflow in metadata`, metadata)

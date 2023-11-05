@@ -10,11 +10,11 @@ export const CardsPickerModalUI = observer(function CardsPickerModalUI_(p: {}) {
     const st = useSt()
     return (
         <Modal tw='h-full' size='full' open={st.showCardPicker} onClose={st.closeCardPicker}>
-            <Modal.Header>
+            {/* <Modal.Header>
                 <Modal.Title>
                     <h4>Pick a card</h4>
                 </Modal.Title>
-            </Modal.Header>
+            </Modal.Header> */}
             <Modal.Body>
                 <CardPicker3UI />
             </Modal.Body>
@@ -38,7 +38,10 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
             tw='relative'
             style={{ zIndex: 9999999 }}
         >
-            <CreateDeckBtnUI />
+            <div tw='flex justify-between'>
+                <h3>Choose a card</h3>
+                <CreateDeckBtnUI />
+            </div>
 
             {/* <div>CARD 1</div> */}
             {st.library.decksSorted.map((deck) => {
@@ -49,11 +52,12 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                     >
                         <div>
                             <DeckHeaderUI deck={deck} />
-                            {/* <b>{deck.cards.length} cards</b> */}
-                            {/* {deck.name} */}
+                            <b>{deck.cards.length} cards</b>
+                            {/* <pre tw='whitespace-pre-wrap'>{JSON.stringify(deck.manifest)}</pre> */}
                         </div>
                         <div tw='flex flex-wrap'>
                             {cards.map((card, ix) => {
+                                const drafts = card.drafts
                                 return (
                                     <Fragment key={card.relPath}>
                                         <FancyCardUI //
@@ -61,10 +65,14 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                                             style={card.style}
                                             card={card}
                                         />
-                                        {/* <div>
-                                            <div>foo</div>
-                                            <div>bar</div>
-                                        </div> */}
+                                        {/* {card.priority} */}
+                                        {drafts.length > 0 ? (
+                                            <div tw='flex flex-col'>
+                                                {drafts.map((d) => (
+                                                    <Button key={d.id}>{d.data.title}</Button>
+                                                ))}
+                                            </div>
+                                        ) : null}
                                     </Fragment>
                                 )
                             })}

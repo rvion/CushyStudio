@@ -5,6 +5,7 @@ import { ActionPackStarsUI } from './DeckStarsUI'
 import { FolderKind } from 'src/front/updater'
 import { Message } from 'rsuite'
 import { stringifyUnknown } from 'src/utils/stringifyUnknown'
+import { ManifestError } from './DeckManifest'
 
 export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Deck }) {
     const deck = p.deck
@@ -24,10 +25,6 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                     </div>
                     <div className='flex-grow self-start italic'>{deck.description}</div>
                     {/* manifest */}
-                    <Message showIcon type={deck.manifestType === 'implicit' ? 'error' : 'success'}>
-                        {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
-                        <pre>{stringifyUnknown(deck.manifestError)}</pre>
-                    </Message>
                     <div tw='w-3'></div>
                     <div tw='mr-3'>
                         {deck.BUILT_IN ? <div tw='text-gray-600'>built-in</div> : <ActionPackStatusUI pack={deck} />}
@@ -36,7 +33,45 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                         ) : null}
                     </div>
                 </div>
+                <DeckManifestErrorUI err={deck.manifestError} />
+                {/* <Message showIcon type={deck.manifestError.}>
+                    {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
+                    <pre>{stringifyUnknown(deck.manifestError)}</pre>
+                </Message> */}
             </div>
         </div>
     )
+})
+
+export const DeckManifestErrorUI = observer(function DeckManifestErrorUI_(p: { err: Maybe<ManifestError> }) {
+    const err = p.err
+    if (err == null) return null
+    if (err.type === 'crash')
+        return (
+            <Message header='crash' showIcon type='error'>
+                <pre>{stringifyUnknown(err)}</pre>
+            </Message>
+        )
+    if (err.type === 'no manifest')
+        return (
+            <Message tw='[width:fit-content]' header='manifest missing' showIcon type='error'>
+                {/* <pre>{stringifyUnknown(err)}</pre> */}
+            </Message>
+        )
+
+    if (err.type === 'invalid manifest')
+        return (
+            <Message tw='[width:fit-content]' header='INVALID manifest' showIcon type='error'>
+                <ul>
+                    {err.errors.map((e, ix) => (
+                        <li key={ix}>
+                            {e.message} at '{e.path}'
+                        </li>
+                    ))}
+                </ul>
+            </Message>
+        )
+
+    exhaust(err)
+    return <div>❌ error</div>
 })

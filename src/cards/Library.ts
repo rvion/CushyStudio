@@ -87,7 +87,7 @@ export class Library {
             depth: 20,
             ignore: (t) => {
                 const baseName = path.basename(t)
-                return this.shouldSkip(baseName)
+                return this.shouldSkip_duringWatch(baseName)
             },
         })
 
@@ -100,9 +100,11 @@ export class Library {
                 const isInLibrary = relPath.startsWith('library/') || relPath.startsWith('library\\')
                 if (isInLibrary && relPath.endsWith('.ts')) {
                     // TODO 🔴 need to reload all cards in tne deck, so `prefabs` properly "hot-reload"
-                    const af = this.cardsByPath.get(asCardPath(relPath))
-                    if (af == null) return console.log('file watcher update aborted: not an action')
-                    af.load({ force: true })
+                    const card = this.cardsByPath.get(asCardPath(relPath))
+                    if (card == null) return console.log('file watcher update aborted: not an action')
+
+                    // reload the card if it's already loaded
+                    if (card.loaded.value) card.load({ force: true })
                 }
             }
             // reutrn
@@ -112,6 +114,11 @@ export class Library {
 
         makeAutoObservable(this)
         // this.filesMap = new Map()
+    }
+
+    private shouldSkip_duringWatch = (baseName: string): boolean => {
+        if (baseName.startsWith('node_modules')) return true
+        return false
     }
 
     /** return true if the file or folder */
@@ -219,8 +226,8 @@ export class Library {
     // ---------------------------------------------------------
 
     discoverAllCards = (): boolean => {
+        // this.cardsByPath.clear() // reset
         this.fileTree.splice(0, this.fileTree.length) // reset
-        this.cardsByPath.clear() // reset
         this.folderMap.clear() // reset
         this.st.actionTags = [] // reset
 
@@ -263,7 +270,7 @@ export class Library {
                 } catch (error) {
                     console.log(`[🔴] Failed to load action tags for ${dir}/_actionTags.ts`)
                 }
-            } else continue
+            }
 
             const shouldSkip = this.shouldSkip(baseName)
             if (shouldSkip) continue
@@ -298,12 +305,7 @@ export class Library {
                 const apf = asRelativePath(path.join(...parts)) as DeckFolder
                 const deck = this.getDeck(apf)
                 const cardPath = asCardPath(relPath)
-                const prev = this.getCard(cardPath)
-                if (prev == null) {
-                    const af = new CardFile(this, deck, absPath, cardPath)
-                    deck.cards.push(af)
-                    this.cardsByPath.set(cardPath, af)
-                } // else prev.load({ force: true })
+                deck._registerCard(absPath, 'B')
                 const treeEntry = { value: cardPath, label: baseName }
                 parentStack.push(treeEntry)
             }
