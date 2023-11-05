@@ -1,7 +1,7 @@
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
-import { Button, ButtonGroup, Checkbox, Message } from 'rsuite'
+import { Button, ButtonGroup, Checkbox, Loader, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { DraftID, DraftL } from 'src/models/Draft'
 import { openInVSCode } from 'src/utils/openInVsCode'
@@ -24,7 +24,15 @@ export const CurrentDraftUI = observer(function CurrentDraftUI_(p: {}) {
         if (draft?.cardPath == null) st.openCardPicker()
     }, [])
 
-    if (draft?.draftID == null) return null
+    if (draft == null) return <Loader />
+    const card = st.library.getCard(draft.cardPath)
+    if (card == null)
+        return (
+            <Message type='error' showIcon>
+                card not found
+            </Message>
+        )
+    if (draft?.draftID == null) return <ActionDraftListUI card={card} />
     return <div>🟢</div>
 })
 

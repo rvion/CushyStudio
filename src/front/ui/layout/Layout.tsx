@@ -355,7 +355,12 @@ export class CushyLayoutManager {
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
                                 children: [
-                                    this._persistentTab({ name: 'Draft', widget: Widget.CurrentDraft, id: '/draft' }),
+                                    this._persistentTab({
+                                        name: 'Draft',
+                                        widget: Widget.CurrentDraft,
+                                        enableClose: false,
+                                        id: '/draft',
+                                    }),
                                     //
                                     // this._persistentTab('Civitai', Widget.Civitai, '/CivitaiLogo.png'),
                                     // this._persistentTab('ComfyUI', Widget.ComfyUI, '/ComfyUILogo.png'),

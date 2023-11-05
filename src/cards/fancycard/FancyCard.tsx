@@ -106,6 +106,7 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
                     onClick={() => {
                         console.log('clicked')
                         runInAction(() => {
+                            card.load()
                             st.currentCardAndDraft = { cardPath: card.relPath }
                             st.closeCardPicker()
                         })
@@ -121,7 +122,7 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
                 {/* ------------------------------------------------------------- */}
                 {/* Content of the card */}
                 {/* <div className={`card STYLE_${p.style}`}></div> */}
-                <div style={uiSt.gradientStyle} className='card_before'></div>
+                <div tw='pointer-events-none' style={uiSt.gradientStyle} className='card_before'></div>
                 {/* <div style={uiSt.sparklesStyle} className='card_after'></div> */}
             </div>
         </div>

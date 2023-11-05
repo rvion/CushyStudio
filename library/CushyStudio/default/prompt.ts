@@ -4,7 +4,15 @@ card({
     ui: (form) => ({
         model: _.ui_model(form),
         sampler: _.ui_sampler(form),
-        positive: form.prompt({}),
+        positive: form.prompt({
+            default: {
+                tokens: [
+                    { type: 'text', text: 'masterpiece, tree' },
+                    { type: 'wildcard', payload: 'color', version: 1 },
+                    { type: 'wildcard', payload: '3d_term', version: 1 },
+                ],
+            },
+        }),
         negative: form.prompt({ default: 'nsfw, nude' }),
         latent: _.ui_latent(form),
         seed: form.seed({}),

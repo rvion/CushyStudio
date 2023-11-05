@@ -4,13 +4,13 @@ import { CardFile } from 'src/cards/CardFile'
 import { useSt } from 'src/front/FrontStateCtx'
 
 export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card: CardFile }) {
-    const af = p.card
+    const card = p.card
     const st = useSt()
-    const drafts = af.drafts
+    const drafts = card.drafts
     return (
         <div className='flex flex-wrap items-center gap-1 mx-2'>
             <Button
-                disabled={af.action == null}
+                disabled={card.action == null}
                 appearance='ghost'
                 size='xs'
                 style={{
@@ -20,7 +20,7 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card:
                 }}
                 color='green'
                 startIcon={<span className='material-symbols-outlined'>add</span>}
-                onClick={() => void af.createDraft()}
+                onClick={() => void card.createDraft()}
             >
                 New Draft
             </Button>
