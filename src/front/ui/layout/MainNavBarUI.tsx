@@ -36,7 +36,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 tooltip={
                     <>
                         Open the card picker
-                        <ComboUI combo='meta+1' />
+                        <ComboUI combo='cmd+1' /> or <ComboUI combo='ctrl+1' />
                     </>
                 }
             />

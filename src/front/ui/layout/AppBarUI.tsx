@@ -22,11 +22,9 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                     <div tw='whitespace-nowrap'>Cushy Studio</div>
                     <UpdateBtnUI updater={st.updater} />
                 </div>
-                <div tw='flex py-2 self-start'>
-                    <WebsocketIndicatorUI />
-                    <SchemaIndicatorUI />
-                </div>
-                <div tw='flex-grow' />
+                <div className='flex flex-grow'></div>
+                <WebsocketIndicatorUI />
+                <SchemaIndicatorUI />
                 <CushyStudioLinkUI />
             </div>
             <div tw='p-1'>
