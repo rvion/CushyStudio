@@ -3,7 +3,7 @@ import { useSt } from 'src/front/FrontStateCtx'
 import { FancyCardUI } from 'src/cards/fancycard/FancyCard'
 import { CreateDeckBtnUI } from '../front/ui/layout/GithubAppBarInputUI'
 import { DeckHeaderUI } from 'src/cards/DeckHeaderUI'
-import { Button, ButtonGroup, ButtonToolbar, IconButton, Modal, Panel, Placeholder } from 'rsuite'
+import { Button, ButtonGroup, ButtonToolbar, IconButton, Input, InputGroup, Modal, Panel, Placeholder } from 'rsuite'
 import { Fragment } from 'react'
 import { runInAction } from 'mobx'
 
@@ -33,6 +33,7 @@ export const CardsPickerModalUI = observer(function CardsPickerModalUI_(p: {}) {
 
 export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
     const st = useSt()
+    const library = st.library
     return (
         <div
             //
@@ -43,10 +44,27 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                 <h3>Choose a card</h3>
                 <CreateDeckBtnUI />
             </div>
+            <InputGroup size='lg'>
+                <InputGroup.Addon>
+                    <span className='material-symbols-outlined'>search</span>
+                </InputGroup.Addon>
+                <Input
+                    value={library.query}
+                    onChange={(v) => {
+                        library.query = v
+                    }}
+                    autoFocus
+                    placeholder='search'
+                    type='string'
+                ></Input>
+                ({library.query} - {library.query.length})
+            </InputGroup>
 
             {/* <div>CARD 1</div> */}
             {st.library.decksSorted.map((deck) => {
-                const cards = deck.cardsSorted
+                let cards = deck.cardsSorted
+                if (st.library.query) cards = cards.filter((c) => c.matchesSearch(st.library.query))
+                if (cards.length === 0) return null
                 return (
                     <Panel //
                         key={deck.folderAbs}

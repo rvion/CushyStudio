@@ -24,6 +24,7 @@ export class Library {
 
     // --------------------------
 
+    query = ''
     /** flat list of all decks */
     decks: Deck[] = []
 

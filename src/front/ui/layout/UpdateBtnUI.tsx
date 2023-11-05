@@ -55,7 +55,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
             speaker={
                 <Popover>
                     <div>
-                        <ReleaseChannelUI onChange={(e) => console.log(e)} />
+                        {updater.config.betaBranch ? <ReleaseChannelUI onChange={(e) => console.log(e)} /> : null}
                         <UpdaterErrorUI updater={updater} />
                         <div tw='flex items-center'>
                             <span className='material-symbols-outlined'>folder</span> <div>{updater.relPath || 'root'}</div>
@@ -88,7 +88,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                             </Button>
                         </div>
                         <div>
-                            {updater.p.canBeUninstalled ? ( //
+                            {updater.config.canBeUninstalled ? ( //
                                 <UninstallUI updater={updater} />
                             ) : null}
                         </div>

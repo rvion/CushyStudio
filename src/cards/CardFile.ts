@@ -61,6 +61,13 @@ export class CardFile {
         return this.manifest.style ?? 'A'
     }
 
+    matchesSearch = (search: string): boolean => {
+        if (search === '') return true
+        const searchLower = search.toLowerCase()
+        const nameLower = this.displayName.toLowerCase()
+        const descriptionLower = this.description.toLowerCase()
+        return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
+    }
     constructor(
         //
         public library: Library,
@@ -181,7 +188,7 @@ export class CardFile {
             if (res) break
         }
         // if (this.action) this.displayName = this.action.name
-        this.st.layout.renameTab(`/action/${this.relPath}`, this.displayName)
+        // this.st.layout.renameTab(`/action/${this.relPath}`, this.displayName)
         this.loaded.resolve(true)
         if (this.drafts.length === 0) {
             this.createDraft()

@@ -37,11 +37,11 @@ type ManagedFolderConfig = {
     runNpmInstallAfterUpdate: boolean
     /** can be uninstalled */
     canBeUninstalled: boolean
-    /** allow you to specify the name of the main and dev branches */
-    branches?: {
-        stable?: string
-        dev?: string
-    }
+    /**
+     * allow you to specify the name of the beta branch if you have one
+     * so early adopters can opt-out for early features
+     * */
+    betaBranch?: string
 }
 
 export class GitManagedFolder {
@@ -70,10 +70,10 @@ export class GitManagedFolder {
     constructor(
         //
         public st: STATE,
-        public p: ManagedFolderConfig,
+        public config: ManagedFolderConfig,
     ) {
-        this.relPath = asRelativePath(relative(this.st.rootPath, p.absFolderPath))
-        this.absPath = p.absFolderPath
+        this.relPath = asRelativePath(relative(this.st.rootPath, config.absFolderPath))
+        this.absPath = config.absFolderPath
 
         this.updateInfos()
         makeAutoObservable(this)
@@ -81,23 +81,23 @@ export class GitManagedFolder {
 
     updateInfos = () => {
         // case 1. folder does not exists
-        if (!existsSync(this.p.absFolderPath)) {
+        if (!existsSync(this.config.absFolderPath)) {
             // I've noticed this happens when A user has a marketplace addon they have not installed
             this.status = FolderKind.DoesNotExist
-            this.log(`❌ folder ${this.p.absFolderPath} could not be found`)
+            this.log(`❌ folder ${this.config.absFolderPath} could not be found`)
         }
 
         // case 2. folder is not a directory
-        else if (!lstatSync(this.p.absFolderPath).isDirectory()) {
+        else if (!lstatSync(this.config.absFolderPath).isDirectory()) {
             // TODO: Figure out why this constructor is even reciving non-directories
             this.status = FolderKind.NotADirectory
-            this.log(`❌ folder ${this.p.absFolderPath} is not a directory`)
+            this.log(`❌ folder ${this.config.absFolderPath} is not a directory`)
             return
         }
 
         // case 3. folder is a directory
         else {
-            if (this.git == null) this.git = simpleGit(this.p.absFolderPath)
+            if (this.git == null) this.git = simpleGit(this.config.absFolderPath)
 
             // 1. check if is git folder
             const isGitFolder = this._isGitFolder()
@@ -113,9 +113,9 @@ export class GitManagedFolder {
 
     install = async (): Promise<void> => {
         if (this.git != null) throw new Error(`install: git is not null`)
-        if (existsSync(this.p.absFolderPath)) throw new Error(`install: folder already exists`)
+        if (existsSync(this.config.absFolderPath)) throw new Error(`install: folder already exists`)
         if (this.currentAction != null) throw new Error(`install: already installing`)
-        if (!this.p.canBeUninstalled) throw new Error(`install: cannot be installed`)
+        if (!this.config.canBeUninstalled) throw new Error(`install: cannot be installed`)
 
         this.currentAction = 'installing'
         // 1. make root folder
@@ -123,7 +123,7 @@ export class GitManagedFolder {
         mkdirSync(parentFolder, { recursive: true })
 
         // 2. clone
-        const cmd = `git clone ${this.p.githubURL}`
+        const cmd = `git clone ${this.config.githubURL}`
         console.log('[💝] actionpack: installing with cmd:', cmd)
         const success = await new Promise<boolean>((resolve, reject) => {
             // this.installK.isRunning = true
@@ -148,14 +148,14 @@ export class GitManagedFolder {
     /** ask confirmation, then remove the whole folder */
     uninstall = () => {
         // 1. check if the folder exists
-        if (!existsSync(this.p.absFolderPath)) {
+        if (!existsSync(this.config.absFolderPath)) {
             // I've noticed this happens when A user has a marketplace addon they have not installed
             this.status = FolderKind.DoesNotExist
-            this.log(`❌ folder ${this.p.absFolderPath} could not be found`)
+            this.log(`❌ folder ${this.config.absFolderPath} could not be found`)
             return
         }
         // 2. check if the folder is a directory
-        if (!this.p.canBeUninstalled) {
+        if (!this.config.canBeUninstalled) {
             this.log('❌ folder cannot be uninstalled')
             return
         }
@@ -246,14 +246,14 @@ export class GitManagedFolder {
             this.log('UPDATING...')
             const command = `git pull origin ${this.mainBranchName}`
             // phase 1: git pull
-            exec(command, { cwd: this.p.absFolderPath }, (error, gitPullStdout, gitPullStrderr) => {
+            exec(command, { cwd: this.config.absFolderPath }, (error, gitPullStdout, gitPullStrderr) => {
                 if (error) {
                     this.lastPullAttempt = { attemptedAt, status: 'failure', gitPullTrace: error.message, gitPullStdout, gitPullStrderr, } // prettier-ignore
                     return reject(error)
                 }
                 const lastAttempt: UpdateTrace = { attemptedAt, status: 'success', gitPullTrace: 'success', gitPullStdout, gitPullStrderr, } // prettier-ignore
                 this.lastPullAttempt = lastAttempt
-                if (!this.p.runNpmInstallAfterUpdate) {
+                if (!this.config.runNpmInstallAfterUpdate) {
                     this.log('UPDATED')
                     return resolve()
                 }
@@ -280,8 +280,8 @@ export class GitManagedFolder {
     private ensureSingleRunningSetIntervalInstance = (p: Maybe<NodeJS.Timeout> = null) => {
         const __global__ = globalThis as any
         const cache = (__global__.__UPDATERCACHE__ ??= {})
-        if (cache[this.p.absFolderPath]) clearInterval(cache[this.p.absFolderPath])
-        cache[this.p.absFolderPath] = p
+        if (cache[this.config.absFolderPath]) clearInterval(cache[this.config.absFolderPath])
+        cache[this.config.absFolderPath] = p
     }
 
     periodicallyFetch = async (): Promise<void> => {
@@ -296,7 +296,7 @@ export class GitManagedFolder {
         const isGitFolder = this._isGitFolder()
         if (!isGitFolder) return
 
-        const FETCH_HEAD_path = this.p.absFolderPath + '/.git/FETCH_HEAD'
+        const FETCH_HEAD_path = this.config.absFolderPath + '/.git/FETCH_HEAD'
         const FETCH_HEAD_path_exists = existsSync(FETCH_HEAD_path)
 
         // 2. get last fetch datetime
@@ -343,10 +343,10 @@ export class GitManagedFolder {
             this.currentAction = 'git init'
             const githubUserName: Maybe<GithubUserName> = this.st.githubUsername
             if (githubUserName == null) return console.log('❌ github username not set when runnign git init')
-            const git: SimpleGit = simpleGit(this.p.absFolderPath)
+            const git: SimpleGit = simpleGit(this.config.absFolderPath)
             await git.init()
-            await git.addRemote('origin', `https://github.com/${this.p.userName}/${this.p.repositoryName}`)
-            await git.addRemote('github', `git@github.com:${this.p.userName}/${this.p.repositoryName}.git`)
+            await git.addRemote('origin', `https://github.com/${this.config.userName}/${this.config.repositoryName}`)
+            await git.addRemote('github', `git@github.com:${this.config.userName}/${this.config.repositoryName}.git`)
             this.status = FolderKind.FolderWithGit
         } finally {
             this.currentAction = null
@@ -354,7 +354,7 @@ export class GitManagedFolder {
     }
 
     private _isGitFolder = (): boolean => {
-        const gitFolder = join(this.p.absFolderPath, '.git')
+        const gitFolder = join(this.config.absFolderPath, '.git')
         const isGitFolder = existsSync(gitFolder)
         if (!isGitFolder) {
             this.status = FolderKind.FolderWithoutGit

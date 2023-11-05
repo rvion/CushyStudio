@@ -1,5 +1,4 @@
 import { observer } from 'mobx-react-lite'
-import React from 'react'
 import { Button, ButtonGroup } from 'rsuite'
 import { assets } from 'src/assets/assets'
 import { useSt } from '../../FrontStateCtx'

@@ -221,10 +221,7 @@ export class STATE {
             githubURL: 'rvion/CushyStudio',
             repositoryName: 'CushyStudio' as GithubRepoName,
             userName: 'rvion' as GithubUserName,
-            branches: {
-                dev: 'dev',
-                stable: 'master',
-            },
+            betaBranch: 'dev',
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)
