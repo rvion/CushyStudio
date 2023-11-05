@@ -4,6 +4,7 @@ import { ActionPackStatusUI } from './DeckStatusUI'
 import { ActionPackStarsUI } from './DeckStarsUI'
 import { FolderKind } from 'src/front/updater'
 import { Message } from 'rsuite'
+import { stringifyUnknown } from 'src/utils/stringifyUnknown'
 
 export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Deck }) {
     const deck = p.deck
@@ -25,6 +26,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                     {/* manifest */}
                     <Message showIcon type={deck.manifestType === 'implicit' ? 'error' : 'success'}>
                         {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
+                        <pre>{stringifyUnknown(deck.manifestError)}</pre>
                     </Message>
                     <div tw='w-3'></div>
                     <div tw='mr-3'>

@@ -22,7 +22,7 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "relativePath": {
+                    "deckRelativeFilePath": {
                         "type": "string"
                     },
                     "name": {
@@ -74,7 +74,7 @@
                     }
                 },
                 "required": [
-                    "relativePath",
+                    "deckRelativeFilePath",
                     "name"
                 ]
             }

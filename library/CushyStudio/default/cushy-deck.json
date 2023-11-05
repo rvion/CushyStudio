@@ -7,7 +7,7 @@
         //
         {
             "name": "Kitchen Sink",
-            "relativePath": "./prompt.ts",
+            "deckRelativeFilePath": "./prompt.ts",
             "priority": 100,
             "style": "D",
             "illustration": "_illustrations/mc.jpg",
@@ -15,25 +15,25 @@
         },
         {
             "name": "a Cushy card generate a deck of... 'cards'",
-            "relativePath": "./pokerCards.ts",
+            "deckRelativeFilePath": "./pokerCards.ts",
             "illustration": "_illustrations/poker-card-generator.jpg",
             "description": "Few Cushy cards are about 'playing cards'. But this one is."
         },
         {
             "name": "real-time drawer",
-            "relativePath": "./realtime.ts",
+            "deckRelativeFilePath": "./realtime.ts",
             "illustration": "",
             "description": "real-time drawing to painting"
         },
         {
             "name": "remove background",
-            "relativePath": "./rembg.ts",
+            "deckRelativeFilePath": "./rembg.ts",
             "illustration": "",
             "description": "quick way to try various ComfyUI nodes to removem background"
         },
         {
             "name": "Simple animate-diff example",
-            "relativePath": "./animateddiff.ts",
+            "deckRelativeFilePath": "./animateddiff.ts",
             "illustration": "",
             "description": "you can generate simple animations with this card"
         }

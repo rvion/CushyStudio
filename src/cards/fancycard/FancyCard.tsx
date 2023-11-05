@@ -1,6 +1,6 @@
 import type { CSSProperties } from 'react'
 
-import { makeAutoObservable, observable } from 'mobx'
+import { makeAutoObservable, observable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 
@@ -105,8 +105,10 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
                     alt='card illustration'
                     onClick={() => {
                         console.log('clicked')
-                        st.currentCardAndDraft = { cardPath: card.relPath }
-                        st.closeCardPicker()
+                        runInAction(() => {
+                            st.currentCardAndDraft = { cardPath: card.relPath }
+                            st.closeCardPicker()
+                        })
                     }}
                 />
                 {/* {cardIllustration} */}

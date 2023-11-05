@@ -120,9 +120,11 @@ export class Deck {
 
     loadManifest = () => {
         const manifestPath = join(this.folderAbs, 'cushy-deck.json')
-        const manifestIsHere = existsSync(manifestPath)
-        
+
         try {
+            const manifestIsHere = existsSync(manifestPath)
+            if (!manifestIsHere) throw new Error(`❌ no manifest found`)
+
             const manifestStr = readFileSync(manifestPath, 'utf8')
             const manifestJSON_ = JSON5.parse(manifestStr)
             const manifestJSON = parseDeckManifestOrCrash(manifestJSON_)
