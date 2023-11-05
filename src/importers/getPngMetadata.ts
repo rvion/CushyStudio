@@ -29,7 +29,7 @@ export function getPngMetadataFromFile(file: File): Promise<TextChunks> {
             const pngData = new Uint8Array(res)
             console.log(`🟢`, pngData)
             const result = getPngMetadataFromUint8Array(pngData)
-            if (result.type === 'failure') {
+            if (!result.success) {
                 // 🔴 showErrorMessage(result.value)
                 console.log('🔴', result.value)
                 return reject(result.value)

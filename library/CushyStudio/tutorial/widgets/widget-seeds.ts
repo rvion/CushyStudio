@@ -1,5 +1,5 @@
-action({
-    name: 'playground-seed-widget',
+card({
+    // name: 'playground-seed-widget',
     ui: (form) => ({
         seed1: form.seed({ defaultMode: 'randomize' }),
         seed2: form.seed({ defaultMode: 'fixed' }),

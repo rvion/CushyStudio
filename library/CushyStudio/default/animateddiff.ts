@@ -1,6 +1,4 @@
-action({
-    name: 'animateddiff-2023-10-03',
-    author: 'animateddiff',
+card({
     ui: (form) => ({
         preText: form.str({
             default: ' (Masterpiece, best quality:1.2), closeup, close-up, a girl in a forest',

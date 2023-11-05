@@ -1,34 +1,31 @@
-import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
-import { ReactNode } from 'react'
-import { ActionTagMethod } from 'src/library/Card'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
+import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
+import { observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
+import { ReactNode } from 'react'
 import { IconButton, Input, Popover, Whisper } from 'rsuite'
-import { IObservable, IObservableArray, observable, values } from 'mobx'
+import { ActionTagMethod } from 'src/cards/Card'
 
 export type ActionTag = {
-    key: string,
-    action: ActionTagMethod,
+    key: string
+    action: ActionTagMethod
 }
 
 export type ActionTagInst = {
-    tag: ActionTag,
+    tag: ActionTag
     param: string
 }
 
 export type ActionNodeJSON = SerializedLexicalNode & { tag: ActionTagInst; type: 'action' }
 export class ActionNode extends DecoratorNode<ReactNode> {
     tag: ActionTagInst
-    constructor(
-        tag: ActionTagInst,
-        key?: NodeKey,
-    ) {
+    constructor(tag: ActionTagInst, key?: NodeKey) {
         super(key)
-        this.tag = observable(tag);
+        this.tag = observable(tag)
     }
 
     setParam(v: string): void {
-        this.param = v;
+        this.param = v
     }
 
     static getType(): 'action' {
@@ -60,7 +57,7 @@ export class ActionNode extends DecoratorNode<ReactNode> {
 }
 
 export function $createActionNode(tag: ActionTagInst, key?: NodeKey): ActionNode {
-    return new ActionNode(tag, key);
+    return new ActionNode(tag, key)
 }
 
 export function $isActionNode(node: LexicalNode | null | undefined): node is ActionNode {
@@ -101,10 +98,9 @@ export const ActionNodeUI = observer(function ActionNodeUI_(p: { node: ActionNod
                 </Popover>
             }
         >
-            <span className='bg-green-800' style={{ padding: "1px" }}>
+            <span className='bg-green-800' style={{ padding: '1px' }}>
                 /{def.tag.key}({def.param})
             </span>
         </Whisper>
-
     )
 })

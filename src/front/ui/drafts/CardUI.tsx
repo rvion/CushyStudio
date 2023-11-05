@@ -1,4 +1,4 @@
-import type { CardPath } from 'src/library/CardPath'
+import type { CardPath } from 'src/cards/CardPath'
 
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
@@ -7,7 +7,7 @@ import { Button, Message } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { openInVSCode } from 'src/utils/openInVsCode'
 import { ActionDraftListUI } from './ActionDraftListUI'
-import { ActionFormUI } from './ActionFormUI'
+import { DraftUI } from './DraftUI'
 
 export const CardUI = observer(function ActionFileUI_(p: { actionPath: CardPath }) {
     const st = useSt()
@@ -36,7 +36,7 @@ export const CardUI = observer(function ActionFileUI_(p: { actionPath: CardPath 
             <>
                 <div tw='row items-center gap-2' style={{ fontSize: '1.7rem' }}>
                     {/* TITLE */}
-                    <span>{card.name}</span>
+                    <span>{card.displayName}</span>
                     {/* EDIT */}
                     <Button
                         size='xs'
@@ -58,9 +58,9 @@ export const CardUI = observer(function ActionFileUI_(p: { actionPath: CardPath 
                 ) : null}
                 {errors}
                 {/* DRAFT LIST */}
-                <ActionDraftListUI af={card} />
+                <ActionDraftListUI card={card} />
             </>
         )
 
-    return <ActionFormUI draft={defaultDraft} />
+    return <DraftUI draft={defaultDraft} />
 })

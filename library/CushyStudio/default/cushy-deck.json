@@ -1,0 +1,41 @@
+{
+    "$schema": "../../../src/cards/DeckManifest.schema.json",
+    "name": "Default deck name",
+    "authorName": "rvion",
+    "description": "Base deck containing necessary cards to have fun with generative art",
+    "cards": [
+        //
+        {
+            "name": "Kitchen Sink",
+            "deckRelativeFilePath": "./prompt.ts",
+            "priority": 100,
+            "style": "D",
+            "illustration": "_illustrations/mc.jpg",
+            "description": "A card that contains all the features needed to play with stable diffusion"
+        },
+        {
+            "name": "A confusing 'card' to generate poker cards",
+            "deckRelativeFilePath": "./pokerCards.ts",
+            "illustration": "_illustrations/poker-card-generator.jpg",
+            "description": "Few Cushy cards are about 'playing cards'. But this one is."
+        },
+        {
+            "name": "Real-time drawer",
+            "deckRelativeFilePath": "./realtime.ts",
+            "illustration": "_illustrations/image.jpg",
+            "description": "Real-time drawing to painting"
+        },
+        {
+            "name": "Remove background",
+            "deckRelativeFilePath": "./rembg.ts",
+            "illustration": "",
+            "description": "Quick way to try various ComfyUI nodes to removem background"
+        },
+        {
+            "name": "Simple animate-diff example",
+            "deckRelativeFilePath": "./animateddiff.ts",
+            "illustration": "",
+            "description": "You can generate simple animations with this card"
+        }
+    ]
+}

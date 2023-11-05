@@ -10,11 +10,17 @@ import { createRef } from 'react'
 import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 
-import { Library } from 'src/library/Library'
+import type { ActionTagMethodList } from 'src/cards/Card'
+import { CardPath } from 'src/cards/CardPath'
+import { GithubUserName } from 'src/cards/GithubUser'
+import { Library } from 'src/cards/Library'
+import { GithubRepoName } from 'src/cards/githubRepo'
+import { DraftID } from 'src/models/Draft'
 import { ProjectL } from 'src/models/Project'
 import { ShortcutWatcher } from 'src/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/shortcuts/shortcuts'
 import { ThemeManager } from 'src/theme/layoutTheme'
+import { UserTags } from 'src/usertags/UserLoader'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { DanbooruTags } from '../booru/BooruLoader'
 import { JsonFile } from '../core/JsonFile'
@@ -30,16 +36,10 @@ import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
+import { ElectronUtils } from './ElectronUtils'
+import { Uploader } from './Uploader'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { GitManagedFolder } from './updater'
-import { CardPath } from 'src/library/CardPath'
-import { Uploader } from './Uploader'
-import { ElectronUtils } from './ElectronUtils'
-import { GithubUserName } from 'src/library/GithubUser'
-import { GithubRepoName } from 'src/library/githubRepo'
-import { UserTags } from 'src/usertags/UserLoader'
-import { ActionTag } from 'src/prompter/nodes/ActionNode'
-import { ActionTagMethodList } from 'src/library/Card'
 
 // prettier-ignore
 type HoveredAsset =
@@ -109,10 +109,33 @@ export class STATE {
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
 
+    // showLatentPreviewInLastImagePanel
+    get showLatentPreviewInLastImagePanel() { return this.configFile.value.showLatentPreviewInLastImagePanel ?? false } // prettier-ignore
+    set showLatentPreviewInLastImagePanel(v: boolean) { this.configFile.update({ showLatentPreviewInLastImagePanel: v }) } // prettier-ignore
+
+    // showPreviewInFullScreen
+    get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
+    set showPreviewInFullScreen(v: boolean) { this.configFile.update({ showPreviewInFullScreen: v }) } // prettier-ignore
+
+    // showPreviewInFullScreen
+    get galleryHoverOpacity() { return this.configFile.value.galleryHoverOpacity ?? .9 } // prettier-ignore
+    set galleryHoverOpacity(v: number) { this.configFile.update({ galleryHoverOpacity: v }) } // prettier-ignore
+
+    // gallery size
+    get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
+    set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
+    get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
+
+    //
     get githubUsername(): Maybe<GithubUserName> { return this.configFile.value.githubUsername as Maybe<GithubUserName> } // prettier-ignore
     get favoriteActions(): CardPath[] {
         return this.configFile.value.favoriteCards ?? []
     }
+
+    showCardPicker: boolean = false
+    closeCardPicker = () => (this.showCardPicker = false)
+    openCardPicker = () => (this.showCardPicker = true)
+
     // 🔴 this is not the right way to go cause it will cause the action to stay
     // pending in the background: fix that LATER™️
     stopCurrentPrompt = async () => {
@@ -136,14 +159,17 @@ export class STATE {
         // const startDraft = initialGraph.createDraft()
     }
 
+    currentCardAndDraft: Maybe<{
+        cardPath: CardPath
+        draftID?: DraftID
+    }> = null
+    // {
+    //     cardPath: asCardPath('library/CushyStudio/default/prompt.ts'),
+    // }
+
     // showAllMessageReceived: boolean = false // ❌ legacy
     comfyUIIframeRef = createRef<HTMLIFrameElement>()
     expandNodes: boolean = false
-
-    // gallery
-    get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
-    set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore
-    get gallerySize() { return this.configFile.value.galleryImageSize ?? 48 } // prettier-ignore
 
     /**  */
     updateTsConfig = () => {
@@ -182,20 +208,24 @@ export class STATE {
         this.layout = new CushyLayoutManager(this)
         this.theme = new ThemeManager(this)
         this.updater = new GitManagedFolder(this, {
-            cwd: this.rootPath,
-            autoStart: true,
+            absFolderPath: this.rootPath,
+            shouldAutoUpdate: true,
             runNpmInstallAfterUpdate: true,
             canBeUninstalled: false,
             githubURL: 'rvion/CushyStudio',
             repositoryName: 'CushyStudio' as GithubRepoName,
             userName: 'rvion' as GithubUserName,
+            branches: {
+                dev: 'dev',
+                stable: 'master',
+            },
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)
-            ; (async () => {
-                await this.schemaReady
-                const project = this.startProjectV2()
-            })()
+        ;(async () => {
+            await this.schemaReady
+            const project = this.startProjectV2()
+        })()
 
         this.ws = this.initWebsocket()
         makeAutoObservable(this, { comfyUIIframeRef: false })
@@ -227,7 +257,7 @@ export class STATE {
             onConnectOrReconnect: () => this.fetchAndUdpateSchema(),
             onMessage: this.onMessage,
             url: this.getWSUrl,
-            onClose: () => { },
+            onClose: () => {},
         })
     }
 

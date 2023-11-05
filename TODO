@@ -17,6 +17,19 @@ Todo before release
 ☐ better type-checking config
 
 
+☐ remove the action picker completely
+    ☐ have a full-screen card picker that appear on pick  an action part
+☐ make the default layout have two columns:
+    ☐ one for the card UI
+    ☐ one for the preview
+☐ have the "gallery" be a "bottom" border so it don't take space
+☐ switch to a nice vertical layout for forms, since 80% of people prefer that
+☐ redo the navbar, so labels are visible for all main menus
+
+☐ have the "run" panel be a  right "border" so it don't take space
+    ☐ https://rawgit.com/caplin/FlexLayout/demos/demos/v0.7/demo/index.html
+
+
 marketplace:
     ☐ proper action pack manifest file
     ☐ show readme in marketplace

@@ -4,7 +4,7 @@ import { ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import { useSt } from '../../FrontStateCtx'
 import { TypescriptHighlightedCodeUI } from '../utils/TypescriptHighlightedCodeUI'
 import { SectionTitleUI } from './SectionTitle'
-import { FileListUI } from '../../../library/FileListUI'
+import { FileListUI } from '../../../cards/FileListUI'
 
 export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
     const st = useSt()

@@ -39,11 +39,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     label = req.input.label ?? rootKey
     tooltip = req.input.tooltip
 
+    // const vertical = false // p.vertical
+    const vertical = p.vertical
     const LABEL = (
         <div
             style={{ minWidth: '5rem' }}
+            tw='font-bold'
             className={
-                p.vertical //
+                vertical //
                     ? 'min-w-max shrink-0'
                     : 'min-w-max shrink-0 text-right'
             }
@@ -56,15 +59,18 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             {label}
         </div>
     )
-    const WIDGET = (
+    let WIDGET = (
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <WidgetUI req={req} />
         </ErrorBoundary>
     )
-    const className = p.vertical //
+    const className = vertical //
         ? 'flex flex-col items-baseline'
         : 'flex flex-row gap-2 items-baseline'
 
+    if (vertical) {
+        WIDGET = <div tw='flex items-center gap-2'>{WIDGET}</div>
+    }
     if (p.labelPos === 'end') {
         return (
             <div className={className} key={rootKey}>

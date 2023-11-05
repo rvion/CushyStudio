@@ -1,5 +1,4 @@
-action({
-    name: 'demo-widget-choice',
+card({
     ui: (form) => ({
         basicList: form.list({
             element: () => form.int({}),

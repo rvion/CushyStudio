@@ -15,14 +15,24 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Widget_g
                     {collapsed ? '▸' : '▿'}
                 </Button>
             )}
+            {/* <Button
+                appearance='subtle'
+                tw=''
+                size='xs'
+                onClick={() => (req.state.verticalLabels = !Boolean(req.state.verticalLabels))}
+            >
+                {req.state.verticalLabels ? '👇' : '👉'}
+            </Button> */}
+
             {req.state.collapsed ? null : (
                 <div
                     style={isTopLevel ? undefined : { border: '1px solid #262626' }}
-                    tw={['w-full', req.input.layout === 'H' ? 'flex' : null]}
+                    tw={['p-2 w-full', req.input.layout === 'H' ? 'flex' : null]}
                     className={req.input.className}
                 >
                     {Object.entries(req.state.values).map(([rootKey, sub], ix) => (
                         <WidgetWithLabelUI //
+                            vertical={req.state.verticalLabels}
                             key={rootKey}
                             labelPos={sub.input.labelPos}
                             rootKey={rootKey}

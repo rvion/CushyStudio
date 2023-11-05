@@ -1,14 +1,27 @@
 import * as _ from './_prefabs'
 
-action({
-    author: 'rvion',
-    name: 'Prompt-V1',
-    help: 'load model with optional clip-skip, loras, tome ratio, etc.',
+card({
     ui: (form) => ({
         model: _.ui_model(form),
         sampler: _.ui_sampler(form),
-        positive: form.prompt({}),
-        negative: form.prompt({ default: 'nsfw, nude' }),
+        positive: form.prompt({
+            default: {
+                tokens: [
+                    { type: 'text', text: 'masterpiece, tree ' },
+                    { type: 'wildcard', payload: 'color', version: 1 },
+                    { type: 'text', text: ' ' },
+                    { type: 'wildcard', payload: '3d_term', version: 1 },
+                    { type: 'text', text: ' ' },
+                    { type: 'wildcard', payload: 'adj_beauty', version: 1 },
+                    { type: 'text', text: ' ' },
+                    { type: 'wildcard', payload: 'adj_general', version: 1 },
+                    { type: 'text', text: ' nature, intricate_details' },
+                ],
+            },
+        }),
+        negative: form.prompt({
+            default: 'nsfw, nude, girl, woman, human',
+        }),
         latent: _.ui_latent(form),
         seed: form.seed({}),
         highResFix: _.ui_highresfix(form),

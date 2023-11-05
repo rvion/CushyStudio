@@ -1,6 +1,6 @@
 import type { ComfyUploadImageResult } from 'src/types/ComfyWsApi'
 import type { AbsolutePath } from 'src/utils/fs/BrandedPaths'
-import type { CardPath } from 'src/library/CardPath'
+import type { CardPath } from 'src/cards/CardPath'
 
 import path from 'pathe'
 import { readFileSync } from 'fs'

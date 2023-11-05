@@ -1,0 +1,89 @@
+{
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "customize your action pack name",
+            "type": "string"
+        },
+        "authorName": {
+            "description": "customize your author name",
+            "type": "string"
+        },
+        "description": {
+            "description": "short summary of your action pack",
+            "type": "string"
+        },
+        "relativeIconPath": {
+            "description": "local path to an image in your action pack that should be used",
+            "type": "string"
+        },
+        "cards": {
+            "type": "array",
+            "items": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                    "deckRelativeFilePath": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "illustration": {
+                        "type": "string"
+                    },
+                    "priority": {
+                        "type": "number"
+                    },
+                    "style": {
+                        "anyOf": [
+                            {
+                                "const": "A",
+                                "type": "string"
+                            },
+                            {
+                                "const": "B",
+                                "type": "string"
+                            },
+                            {
+                                "const": "C",
+                                "type": "string"
+                            },
+                            {
+                                "const": "D",
+                                "type": "string"
+                            }
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "categories": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "customNodeRequired": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "author": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "deckRelativeFilePath",
+                    "name"
+                ]
+            }
+        }
+    },
+    "required": [
+        "name",
+        "authorName",
+        "description"
+    ]
+}

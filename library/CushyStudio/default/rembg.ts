@@ -1,7 +1,4 @@
-action({
-    name: 'background-removal-playground',
-    author: 'rvion',
-    help: 'quick remove bg with one or many nodes',
+card({
     // prettier-ignore
     ui: (form) => ({
         // startImage

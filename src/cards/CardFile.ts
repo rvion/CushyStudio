@@ -1,4 +1,4 @@
-import type { Action, WidgetDict } from 'src/library/Card'
+import type { Action, WidgetDict } from 'src/cards/Card'
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import type { STATE } from 'src/front/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
@@ -6,10 +6,10 @@ import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 
 import { readFileSync } from 'fs'
 import { makeAutoObservable, observable } from 'mobx'
-import path from 'pathe'
+import path, { relative } from 'pathe'
 import { generateName } from 'src/front/ui/drafts/generateName'
-import { Deck } from 'src/library/Deck'
-import { CardPath } from 'src/library/CardPath'
+import { Deck } from 'src/cards/Deck'
+import { CardPath } from 'src/cards/CardPath'
 import { DraftL } from 'src/models/Draft'
 import { transpileCode } from '../back/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
@@ -17,6 +17,9 @@ import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
 import { exhaust } from '../utils/ComfyUtils'
 import { ManualPromise } from '../utils/ManualPromise'
 import { Library } from './Library'
+import { CardManifest } from './DeckManifest'
+import { join } from 'pathe'
+import { CardStyle } from './fancycard/FancyCard'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -33,43 +36,88 @@ enum LoadStatus {
 
 export class CardFile {
     st: STATE
-    displayName: string
 
-    get actionPackFolderRel() {
-        return this.pack.folderRel
+    /** card display name */
+    get displayName(): string {
+        return this.manifest.name
     }
 
-    get actionAuthorFolderRel() {
-        return this.pack.authorFolderRel
+    get actionPackFolderRel(): string {
+        return this.deck.folderRel
+    }
+
+    get actionAuthorFolderRel(): string {
+        return this.deck.authorFolderRel
+    }
+
+    get priority(): number {
+        return this.manifest.priority ?? 0
+    }
+    get description(): string {
+        return this.manifest.description ?? 'no description'
+    }
+
+    get style(): CardStyle {
+        return this.manifest.style ?? 'A'
     }
 
     constructor(
         //
         public library: Library,
-        public pack: Deck,
+        public deck: Deck,
         public absPath: AbsolutePath,
         public relPath: CardPath,
     ) {
         this.st = library.st
-        this.displayName = path.basename(this.absPath)
         makeAutoObservable(this, { action: observable.ref })
     }
+
+    // --------------------------------------------------------
+    get manifest(): CardManifest {
+        const cards = this.deck.manifest.cards ?? []
+        const match = cards.find((c) => {
+            const absPath = path.join(this.deck.folderAbs, c.deckRelativeFilePath)
+            if (absPath === this.absPath) return true
+        })
+        if (match) return match
+        return this.defaultManifest
+    }
+
+    private get defaultManifest(): CardManifest {
+        const baseName = this.deckRelativeFilePath
+        return {
+            name: baseName.endsWith('.ts') //
+                ? baseName.slice(0, -3)
+                : baseName,
+            deckRelativeFilePath: this.relPath,
+            author: this.deck.githubUserName,
+            description: '<card not listed in manifest>',
+        }
+    }
+
+    private get deckRelativeFilePath(): string {
+        return relative(this.deck.folderAbs, this.absPath)
+    }
+    // --------------------------------------------------------
 
     // status
     loaded = new ManualPromise<true>()
     errors: { title: string; details: any }[] = []
-    addError = (title: string, details: any): LoadStatus => {
+    addError = (title: string, details: any = null): LoadStatus => {
         this.errors.push({ title, details })
         return LoadStatus.FAILURE
     }
 
     /** action display name */
-    get logoURL(): string {
-        return this.action?.logo ?? this.pack?.logo ?? ''
+    get illustrationPathRelativeToDeckRoot(): Maybe<string> {
+        return this.manifest.illustration
     }
 
-    get name(): string {
-        return this.action?.name ?? path.basename(this.absPath)
+    get illustrationPathWithFileProtocol() {
+        if (this.illustrationPathRelativeToDeckRoot)
+            return `file://${join(this.deck.folderAbs, this.illustrationPathRelativeToDeckRoot)}`
+        // default illustration if none is provided
+        return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_illustrations/default-card-illustration.jpg')}`
     }
 
     get isFavorite(): boolean {
@@ -85,11 +133,6 @@ export class CardFile {
             if (index !== -1) favArray.splice(index, 1)
         }
         this.st.configFile.update({ favoriteCards: favArray })
-    }
-
-    get namePretty(): string {
-        if (this.name.endsWith('.ts')) return this.name.slice(0, -3)
-        return this.name
     }
 
     createDraft = (): DraftL => {
@@ -120,10 +163,8 @@ export class CardFile {
     liteGraphJSON?: Maybe<LiteGraphJSON> = null
     promptJSON?: Maybe<ComfyPromptJSON> = null
     png?: Maybe<AbsolutePath> = null
-
-    focusedDraft?: Maybe<DraftL> = null
-
     loadRequested = false
+
     /** load a file trying all compatible strategies */
     load = async (p?: { force?: boolean }): Promise<true> => {
         if (this.loadRequested && !p?.force) return true
@@ -134,7 +175,7 @@ export class CardFile {
             const res = await this.loadWithStrategy(strategy)
             if (res) break
         }
-        if (this.action) this.displayName = this.action.name
+        // if (this.action) this.displayName = this.action.name
         this.st.layout.renameTab(`/action/${this.relPath}`, this.displayName)
         this.loaded.resolve(true)
         if (this.drafts.length === 0) {
@@ -230,8 +271,7 @@ export class CardFile {
         // extract metadata
         const result = getPngMetadataFromUint8Array(readFileSync(this.absPath))
         if (result == null) return this.addError(`❌ [load_asComfyUIGeneratedPng] no metadata in png`, null)
-        if (result.type === 'failure')
-            return this.addError(`❌ [load_asComfyUIGeneratedPng] metadata extraction failed`, result.value)
+        if (!result.success) return this.addError(`❌ [load_asComfyUIGeneratedPng] metadata extraction failed`, result.value)
         const metadata = result.value
         const workflowStr = (metadata as { [key: string]: any }).workflow
         if (workflowStr == null) return this.addError(`❌ [load_asComfyUIGeneratedPng] no workflow in metadata`, metadata)
@@ -280,24 +320,21 @@ export class CardFile {
 
     RUN_ACTION_FILE = (codeJS: string): Action<WidgetDict> | undefined => {
         // 1. DI registering mechanism
-        const ACTIONS: Action<WidgetDict>[] = []
-        const registerActionFn = (a1: string, a2: Action<any>): void => {
+        const CARDS_FOUND_IN_FILE: Action<WidgetDict>[] = []
+
+        const registerCardFn = (a1: string, a2: Action<any>): void => {
             const action = typeof a1 !== 'string' ? a1 : a2
             console.info(`[💙] found action: "${name}"`, { path: this.absPath })
-            ACTIONS.push(action)
+            CARDS_FOUND_IN_FILE.push(action)
         }
 
         // 2. eval file to extract actions
         try {
             const ProjectScriptFn = new Function('action', 'card', codeJS)
-            ProjectScriptFn(registerActionFn, registerActionFn)
-            if (ACTIONS.length === 0) return
-            if (ACTIONS.length > 1)
-                this.addError(
-                    '❌4. more than one action found',
-                    ACTIONS.map((a) => a.name),
-                )
-            return ACTIONS[0]
+            ProjectScriptFn(registerCardFn, registerCardFn)
+            if (CARDS_FOUND_IN_FILE.length === 0) return
+            if (CARDS_FOUND_IN_FILE.length > 1) this.addError(`❌4. more than one action found: (${CARDS_FOUND_IN_FILE.length})`)
+            return CARDS_FOUND_IN_FILE[0]
         } catch (e) {
             this.addError('❌5. cannot convert prompt to code', e)
             return

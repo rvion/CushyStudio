@@ -166,11 +166,9 @@ export class Widget_prompt implements IRequest<'prompt', Widget_prompt_input, Wi
             const def = input.default
             if (def != null) {
                 if (typeof def === 'string') {
-                    // this.state.text = def
                     this.state.tokens = [{ type: 'text', text: def }]
-                }
-                if (typeof Array.isArray(def)) {
-                    // 🔴
+                }else {
+                    this.state.tokens = def.tokens
                 }
             }
         }
@@ -184,7 +182,7 @@ export class Widget_prompt implements IRequest<'prompt', Widget_prompt_input, Wi
 }
 
 // 🅿️ promptOpt ==============================================================================
-export type Widget_promptOpt_input  = ReqInput<{ default?: string | PossibleSerializedNodes[] }>
+export type Widget_promptOpt_input  = ReqInput<{ default?: string | WidgetPromptOutput }>
 export type Widget_promptOpt_serial = { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
 export type Widget_promptOpt_state  = { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
 export type Widget_promptOpt_output = Maybe<WidgetPromptOutput>
@@ -206,11 +204,9 @@ export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_
             if (def != null) {
                 if (typeof def === 'string') {
                     this.state.active = true
-                    // this.state.text = def
                     this.state.tokens = [{ type: 'text', text: def }]
-                }
-                if (typeof Array.isArray(def)) {
-                    // 🔴
+                }else {
+                    this.state.tokens = def.tokens
                 }
             }
         }
@@ -834,7 +830,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
             }
         } else {
             const _items = input.items()
-            this.state = { type: 'group', active: true, values: _items, verticalLabels: input.verticalLabels }
+            this.state = { type: 'group', active: true, values: _items, verticalLabels: input.verticalLabels??true }
         }
         makeAutoObservable(this)
     }

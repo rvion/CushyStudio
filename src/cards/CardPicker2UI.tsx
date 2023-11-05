@@ -1,4 +1,4 @@
-import type { CardFile } from 'src/library/CardFile'
+import type { CardFile } from 'src/cards/CardFile'
 import type { Deck } from './Deck'
 
 import { observer } from 'mobx-react-lite'
@@ -23,54 +23,54 @@ export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
                     <div>{tb.favoritesFolded ? '▸' : '▿'}</div>
                 </div>
             ) : null}
-            {tb.favoritesFolded ? null : tb.allFavorites.map((af) => <ActionEntryUI key={af.relPath} af={af} />)}
+            {tb.favoritesFolded ? null : tb.allFavorites.map((af) => <ActionEntryUI key={af.relPath} card={af} />)}
             {/* INSTALLED */}
             <div tw='flex flex-col'>
                 {tb.decksSorted.map((pack) => (
-                    <ActionPackUI key={pack.folderRel} pack={pack} />
+                    <ActionPackUI key={pack.folderRel} deck={pack} />
                 ))}
             </div>
         </>
     )
 })
 
-export const ActionPackUI = observer(function ActionPackUI_(p: { pack: Deck }) {
-    const pack: Deck = p.pack
+export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Deck }) {
+    const deck: Deck = p.deck
     return (
-        <div tw='my-0.5 flex-grow' key={pack.folderRel}>
-            <DeckHeaderUI pack={pack} />
-            {pack.folded ? null : (
+        <div tw='my-0.5 flex-grow' key={deck.folderRel}>
+            <DeckHeaderUI deck={deck} />
+            {deck.folded ? null : (
                 <div>
-                    {pack.cards.map((af) => (
-                        <ActionEntryUI key={af.relPath} af={af} />
+                    {deck.cards.map((af) => (
+                        <ActionEntryUI key={af.relPath} card={af} />
                     ))}
                 </div>
             )}
         </div>
     )
 })
-export const ActionEntryUI = observer(function ActionEntryUI_(p: { af: CardFile }) {
+export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFile }) {
     const st = useSt()
-    const af = p.af
-    const pack = af.pack
+    const card = p.card
+    const pack = card.deck
     return (
         <div
             //
             tw='pl-4 hover:bg-gray-900 flex gap-2 cursor-pointer'
             style={{ borderTop: '1px solid #161616' }}
-            key={af.absPath}
+            key={card.absPath}
             onClick={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()
-                const actionPath = af.relPath
-                st.layout.addAction(actionPath)
+                const actionPath = card.relPath
+                st.layout.addCard(actionPath)
             }}
         >
             {/* <span className='material-symbols-outlined'>keyboard_arrow_right</span> */}
             <img style={{ width: '1rem', height: '1rem' }} src={pack?.logo ?? ''}></img>
-            <div>{af.namePretty}</div>
+            <div>{card.displayName}</div>
             <div tw='ml-auto'>
-                <ActionFavoriteBtnUI af={af} />
+                <ActionFavoriteBtnUI af={card} />
             </div>
         </div>
     )

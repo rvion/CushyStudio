@@ -1,48 +1,66 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
+import { Button, ButtonGroup } from 'rsuite'
 import { assets } from 'src/assets/assets'
 import { useSt } from '../../FrontStateCtx'
-import { ButtonGroup, IconButton, Popover, Whisper } from 'rsuite'
+import { DBHealthUI } from './AppBarUI'
+import { CardsPickerModalUI } from 'src/cards/CardPicker3UI'
+import { ComboUI } from './ComboUI'
+import { MainNavEntryUI } from './MainNavEntryUI'
 
-export const MainNavEntryUI = observer(function UI_(p: {
-    onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
-    ix: string
-    icon: React.ReactElement
-    soon?: boolean
-    label: string
-}) {
-    return (
-        <Whisper placement='bottomStart' speaker={<Popover>{p.label}</Popover>}>
-            <IconButton appearance='subtle' size='sm' icon={p.icon} onClick={p.onClick}></IconButton>
-        </Whisper>
-    )
-})
-
-export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
+export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: string }) {
     const st = useSt()
     const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
     return (
-        <ButtonGroup id='main-navbar' tw='flex flex-wrap items-center'>
+        <ButtonGroup id='main-navbar' tw='flex flex-wrap items-center' className={p.className}>
+            {/* debug buttons */}
+            <Button
+                //
+                size='sm'
+                appearance='subtle'
+                color='orange'
+                startIcon={<span className='material-symbols-outlined'>sync</span>}
+                onClick={() => window.location.reload()}
+            >
+                Reload
+            </Button>
             {/* COMFY */}
             <MainNavEntryUI
+                // onClick={() => st.layout.addActionPicker()}
+                color='green'
+                appearance='primary'
+                onClick={() => st.openCardPicker()}
+                ix='1'
+                icon={<span className='material-symbols-outlined'>play_circle</span>}
+                label='Cards'
+                tooltip={
+                    <>
+                        Open the card picker
+                        <ComboUI combo='meta+1' />
+                    </>
+                }
+            />
+            <CardsPickerModalUI />
+
+            {/* <MainNavEntryUI
                 onClick={() => st.layout.addActionPicker()}
                 ix='1'
                 icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
                 label='Cards'
-            />
+            /> */}
             {/* LEGACY MARKETPLACE */}
-            <MainNavEntryUI
+            {/* <MainNavEntryUI
                 onClick={() => st.layout.addMarketplace()}
                 ix='2'
                 icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
                 label='Apps'
-            />
-            <MainNavEntryUI
+            /> */}
+            {/* <MainNavEntryUI
                 onClick={() => st.layout.addActionPickerTree()}
                 ix='2'
                 icon={<span className='material-symbols-outlined text-blue-500'>account_tree</span>}
                 label='Files'
-            />
+            /> */}
 
             {/* PAINT */}
             <MainNavEntryUI
@@ -75,8 +93,8 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
             <MainNavEntryUI
                 onClick={() => st.layout.addLastImage()}
                 ix='5'
-                icon={<span className='material-symbols-outlined text-yellow-500'>image_search</span>}
-                label='Gallery'
+                icon={<span className='material-symbols-outlined text-yellow-500'>history</span>}
+                label='Last'
             />
 
             {/* CONFIG */}
@@ -100,15 +118,43 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: {}) {
                 onClick={() => st.layout.addHosts()}
                 ix='8'
                 icon={<span className='material-symbols-outlined text-amber-800'>cloud</span>}
-                label='GPU'
+                label='GPUs'
             />
             <MainNavEntryUI
                 soon
                 onClick={() => st.theme.toggle()}
                 ix='8'
                 icon={<span className='material-symbols-outlined text-amber-800'>{themeIcon}</span>}
-                label='GPU'
+                label='Theme'
             />
+            <Button //
+                size='sm'
+                appearance='subtle'
+                color='orange'
+                startIcon={<span className='material-symbols-outlined'>bug_report</span>}
+                onClick={() => st.electronUtils.toggleDevTools()}
+            >
+                Open console
+            </Button>
+            <Button
+                size='sm'
+                appearance='subtle'
+                color='orange'
+                startIcon={<span className='material-symbols-outlined'>sync</span>}
+                onClick={() => st.layout.resetCurrent()}
+            >
+                Reset Layout
+            </Button>
+            <Button
+                appearance='subtle'
+                loading={Boolean(st.db.saveTimeout)}
+                size='sm'
+                startIcon={<span className='material-symbols-outlined'>save</span>}
+                onClick={() => st.db.markDirty()}
+            >
+                save
+            </Button>
+            <DBHealthUI />
         </ButtonGroup>
     )
 })

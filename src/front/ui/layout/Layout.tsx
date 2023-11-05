@@ -10,15 +10,16 @@ import { nanoid } from 'nanoid'
 import { createRef } from 'react'
 import { Button, Message } from 'rsuite'
 import { assets } from 'src/assets/assets'
+import { CardPath } from 'src/cards/CardPath'
+import { ActionPicker1UI } from 'src/cards/CardPicker1UI'
+import { ActionPicker2UI } from 'src/cards/CardPicker2UI'
 import { LiteGraphJSON } from 'src/core/LiteGraph'
-import { CardPath } from 'src/library/CardPath'
-import { ActionPicker1UI } from 'src/library/CardPicker1UI'
-import { ActionPicker2UI } from 'src/library/CardPicker2UI'
 import { ImageID } from 'src/models/Image'
 import { Trigger } from 'src/shortcuts/Trigger'
-import { MarketplaceUI } from '../../../library/MarketplaceUI'
-import { CardUI } from '../drafts/ActionFileUI'
-import { ActionFormUI } from '../drafts/ActionFormUI'
+import { stringifyUnknown } from 'src/utils/stringifyUnknown'
+import { MarketplaceUI } from '../../../cards/MarketplaceUI'
+import { CardUI } from '../drafts/CardUI'
+import { CurrentDraftUI, DraftUI } from '../drafts/DraftUI'
 import { GalleryUI } from '../galleries/GalleryUI'
 import { WidgetPaintUI } from '../widgets/WidgetPaintUI'
 import { ComfyUIUI } from '../workspace/ComfyUIUI'
@@ -34,6 +35,7 @@ enum Widget {
     Gallery = 'Gallery',
     Button = 'Button',
     Paint = 'Paint',
+    CurrentDraft = 'CurrentDraft',
     Card = 'Card',
     Draft = 'Draft',
     ComfyUI = 'ComfyUI',
@@ -75,8 +77,8 @@ export class CushyLayoutManager {
     saveCurrentAs = (perspectiveName: string) => {
         const curr: FL.IJsonModel = this.model.toJson()
         this.st.configFile.update((t) => {
-            t.layouts ??= {}
-            t.layouts[perspectiveName] = curr
+            t.layouts_2 ??= {}
+            t.layouts_2[perspectiveName] = curr
         })
     }
 
@@ -84,8 +86,8 @@ export class CushyLayoutManager {
     resetDefault = (): void => this.reset('default')
     reset = (perspectiveName: string): void => {
         this.st.configFile.update((t) => {
-            t.layouts ??= {}
-            delete t.layouts[perspectiveName]
+            t.layouts_2 ??= {}
+            delete t.layouts_2[perspectiveName]
         })
         if (perspectiveName === this.currentPerspectiveName) {
             this.setModel(Model.fromJson(this.build()))
@@ -93,7 +95,7 @@ export class CushyLayoutManager {
     }
 
     constructor(public st: STATE) {
-        const prevLayout = st.configFile.value.layouts?.default
+        const prevLayout = st.configFile.value.layouts_2?.default
         const json = prevLayout ?? this.build()
         try {
             this.setModel(Model.fromJson(json))
@@ -171,16 +173,20 @@ export class CushyLayoutManager {
         const icon = assets.public_ComfyUILogo_png
         this._AddWithProps(Widget.ComfyUINodeExplorer, `/ComfyUINodeExplorer`, { title: `Node Explorer`, icon })
     }
-    addAction = (actionPath: CardPath) => {
+
+    addCard = (actionPath: CardPath) => {
         const af = this.st.library.getCard(actionPath)
-        const icon = af?.logoURL
+        const icon = af?.illustrationPathWithFileProtocol
         this._AddWithProps(Widget.Card, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }
 
+    addCurrentDraft = () => {
+        this._AddWithProps(Widget.CurrentDraft, `/draft`, { title: 'Current Draft' })
+    }
     addDraft = (title: string, draftID: DraftID) => {
         const draft = this.st.db.drafts.get(draftID)
-        const af = draft?.actionFile
-        const icon = af?.logoURL
+        const af = draft?.card
+        const icon = af?.illustrationPathWithFileProtocol
         this._AddWithProps(Widget.Draft, `/draft/${draftID}`, { title, draftID, icon }, 'current')
     }
 
@@ -262,42 +268,34 @@ export class CushyLayoutManager {
         const component = node.getComponent() as Widget
         const extra = node.getConfig()
 
-        if (component === Widget.Button) return <Button>{node.getName()}</Button>
-        if (component === Widget.Gallery) return <GalleryUI />
-        if (component === Widget.Paint) {
-            // 🔴 ensure this is type-safe
-            const imgID = extra.imgID // Retrieves the imgID from the extra data
-            return <WidgetPaintUI action={{ type: 'paint', imageID: imgID }}></WidgetPaintUI> // You can now use imgID to instantiate your paint component properly
-        }
-        if (component === Widget.Image) {
-            // 🔴 ensure this is type-safe
-            const imgID = extra.imgID // Retrieves the imgID from the extra data
-            return <LastImageUI imageID={imgID}></LastImageUI> // You can now use imgID to instantiate your paint component properly
-        }
-        if (component === Widget.Card) {
-            // 🔴 ensure this is type-safe
+        try {
+            if (component === Widget.Button) return <Button>{node.getName()}</Button>
+            if (component === Widget.Gallery) return <GalleryUI />
+            if (component === Widget.Paint) return <WidgetPaintUI action={{ type: 'paint', imageID: extra.imgID }} /> // You can now use imgID to instantiate your paint component properly
+            if (component === Widget.Image) return <LastImageUI imageID={extra.imgID}></LastImageUI> // You can now use imgID to instantiate your paint component properly
+            if (component === Widget.Card) return <CardUI actionPath={extra.actionPath} />
+            if (component === Widget.ComfyUI) return <ComfyUIUI litegraphJson={extra.litegraphJson} />
+            if (component === Widget.FileList) return <ActionPicker2UI />
+            if (component === Widget.FileList2) return <ActionPicker1UI />
+            if (component === Widget.Steps) return <StepListUI />
+            if (component === Widget.LastGraph) return <LastGraphUI />
+            if (component === Widget.LastImage) return <LastImageUI />
+            if (component === Widget.Civitai) return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0'></iframe> // prettier-ignore
+            if (component === Widget.Hosts) return <HostListUI />
+            if (component === Widget.Marketplace) return <MarketplaceUI />
+            if (component === Widget.Config) return <PanelConfigUI />
+            if (component === Widget.Draft) return <DraftUI draft={extra.draftID} />
+            if (component === Widget.CurrentDraft) return <CurrentDraftUI />
+            if (component === Widget.ComfyUINodeExplorer) return <ComfyNodeExplorerUI />
+            if (component === Widget.Deck) return <div>🔴 todo: action pack page: show readme</div>
+        } catch (e) {
             return (
-                <div style={{ height: '100%' }}>
-                    <CardUI actionPath={extra.actionPath} />
-                </div>
+                <pre tw='text-red-500'>
+                    <div>component "{component}" failed to render:</div>
+                    error: {stringifyUnknown(e)}
+                </pre>
             )
         }
-        if (component === Widget.ComfyUI) {
-            const litegraphJson = extra.litegraphJson // Retrieves the imgID from the extra data
-            return <ComfyUIUI litegraphJson={litegraphJson} />
-        }
-        if (component === Widget.FileList) return <ActionPicker2UI />
-        if (component === Widget.FileList2) return <ActionPicker1UI />
-        if (component === Widget.Steps) return <StepListUI />
-        if (component === Widget.LastGraph) return <LastGraphUI />
-        if (component === Widget.LastImage) return <LastImageUI />
-        if (component === Widget.Civitai) return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0'></iframe> // prettier-ignore
-        if (component === Widget.Hosts) return <HostListUI />
-        if (component === Widget.Marketplace) return <MarketplaceUI />
-        if (component === Widget.Config) return <PanelConfigUI />
-        if (component === Widget.Draft) return <ActionFormUI draft={extra.draftID} />
-        if (component === Widget.ComfyUINodeExplorer) return <ComfyNodeExplorerUI />
-        if (component === Widget.Deck) return <div>🔴 todo: action pack page: show readme</div>
 
         exhaust(component)
         return (
@@ -308,13 +306,22 @@ export class CushyLayoutManager {
     }
 
     // 🔴 todo: ensure we correctly pass ids there too
-    private _persistentTab = (p: { id: string; name: string; widget: Widget; icon?: string }): FL.IJsonTabNode => {
+    private _persistentTab = (p: {
+        //
+        id: string
+        name: string
+        widget: Widget
+        icon?: string
+        width?: number
+        minWidth?: number
+        enableClose?: boolean
+    }): FL.IJsonTabNode => {
         return {
             id: p.id,
             type: 'tab',
             name: p.name,
             component: p.widget,
-            enableClose: true,
+            enableClose: p.enableClose ?? true,
             enableRename: false,
             enableFloat: true,
             icon: p.icon,
@@ -323,13 +330,14 @@ export class CushyLayoutManager {
     build = (): IJsonModel => {
         const out: IJsonModel = {
             global: {
-                borderSize: 8,
-                tabSetTabStripHeight: 22,
-                enableEdgeDock: true,
-                tabSetMinHeight: 64,
-                tabSetMinWidth: 64,
+                // borderSize: 8,
+                // tabSetTabStripHeight: 30,
+                // enableEdgeDock: true,
+                // tabSetMinHeight: 64,
+                // tabSetMinWidth: 64,
                 tabSetEnableSingleTabStretch: true,
             },
+
             layout: {
                 id: 'rootRow',
                 type: 'row',
@@ -337,30 +345,8 @@ export class CushyLayoutManager {
                     {
                         id: 'leftPane',
                         type: 'row',
-                        width: 300,
-                        children: [
-                            {
-                                type: 'tabset',
-                                enableSingleTabStretch: true,
-                                minWidth: 200,
-                                width: 300,
-                                children: [this._persistentTab({ name: 'Library', widget: Widget.FileList, id: '/Library' })],
-                            },
-                            {
-                                type: 'tabset',
-                                height: 200,
-                                minWidth: 150,
-                                minHeight: 150,
-                                children: [
-                                    this._persistentTab({ name: '🎆 Gallery', widget: Widget.Gallery, id: '/gallery' }),
-                                    // this._persistentTab('Hosts', Widget.Hosts),
-                                ],
-                            },
-                        ],
-                    },
-                    {
-                        id: 'middlePane',
-                        type: 'row',
+                        // width: 300,
+                        weight: 100,
                         children: [
                             {
                                 type: 'tabset',
@@ -369,24 +355,30 @@ export class CushyLayoutManager {
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,
                                 children: [
+                                    this._persistentTab({
+                                        name: 'Current Draft',
+                                        widget: Widget.CurrentDraft,
+                                        enableClose: false,
+                                        id: '/draft',
+                                    }),
                                     //
                                     // this._persistentTab('Civitai', Widget.Civitai, '/CivitaiLogo.png'),
                                     // this._persistentTab('ComfyUI', Widget.ComfyUI, '/ComfyUILogo.png'),
                                 ],
                             },
-
                             // {
                             //     type: 'tabset',
-                            //     weight: 10,
-                            //     minHeight: 200,
-                            //     children: [this._persistentTab('🎆 Gallery', Widget.Gallery)],
+                            //     enableSingleTabStretch: true,
+                            //     minWidth: 200,
+                            //     width: 300,
+                            //     children: [this._persistentTab({ name: 'Library', widget: Widget.FileList, id: '/Library' })],
                             // },
                         ],
                     },
                     {
                         id: 'rightPane',
                         type: 'row',
-                        width: 300,
+                        weight: 100,
                         children: [
                             // {
                             //     type: 'tabset',
@@ -402,12 +394,38 @@ export class CushyLayoutManager {
                                 minWidth: 150,
                                 minHeight: 300,
                                 children: [
-                                    this._persistentTab({ name: 'Last Image', id: '/lastImage', widget: Widget.LastImage }),
+                                    this._persistentTab({
+                                        name: 'Last Image',
+                                        id: '/lastImage',
+                                        widget: Widget.LastImage,
+                                        enableClose: false,
+                                    }),
                                 ],
                             },
                             {
                                 type: 'tabset',
+                                height: 200,
                                 minWidth: 150,
+                                minHeight: 150,
+                                children: [
+                                    this._persistentTab({ name: '🎆 Gallery', widget: Widget.Gallery, id: '/gallery' }),
+                                    // this._persistentTab('Hosts', Widget.Hosts),
+                                ],
+                            },
+                            // {
+                            //     type: 'tabset',
+                            //     minWidth: 150,
+                            //     children: [this._persistentTab({ name: 'Runs', id: '/steps', widget: Widget.Steps })],
+                            // },
+                        ],
+                    },
+                    {
+                        id: 'middlePane',
+                        type: 'row',
+                        children: [
+                            {
+                                type: 'tabset',
+                                width: 250,
                                 children: [this._persistentTab({ name: 'Runs', id: '/steps', widget: Widget.Steps })],
                             },
                         ],

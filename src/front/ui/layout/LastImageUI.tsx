@@ -1,16 +1,18 @@
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
-import type { ImageID } from 'src/models/Image'
+import type { ImageID, ImageL } from 'src/models/Image'
 
 import { observer } from 'mobx-react-lite'
-import { Rate } from 'rsuite'
+import { Button, Rate, Toggle } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
+import { openExternal, showItemInFolder } from './openExternal'
 
 export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID }) {
     const st = useSt()
-    const imgs = p.imageID //
+    const img: Maybe<ImageL> = p.imageID //
         ? st.db.images.get(p.imageID)
         : st.db.images.last()
-    if (imgs == null) return null
+    const imgPathWithFileProtocol = img ? `file://${img.localAbsolutePath}` : null
+    if (img == null) return null
     return (
         <div
             tw='w-full h-full flex flex-col'
@@ -19,12 +21,44 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
             }}
         >
             <div tw='flex gap-2 p-0.5'>
-                {/* <ButtonGroup disabled size='xs'>
-                    <Button>fit</Button>
-                    <Button appearance='primary'>original</Button>
-                    <Button>cover</Button>
-                </ButtonGroup> */}
-                <Rate size='xs' onChange={(next) => imgs.update({ star: next })} value={imgs.data.star} />
+                {/* 1. RATER */}
+                <Rate size='xs' onChange={(next) => img.update({ star: next })} value={img.data.star} />
+
+                {/* 2. LATENT PREVIEW TOOGLE */}
+                {/* (only on "last-image" mode; when p.imageID is null )  */}
+                {p.imageID == null ? (
+                    <div>
+                        <Toggle
+                            checked={st.showLatentPreviewInLastImagePanel}
+                            onChange={(next) => (st.showLatentPreviewInLastImagePanel = next)}
+                        />
+                        <span tw='text-light'>include sampler preview</span>
+                    </div>
+                ) : null}
+
+                {/* 3. OPEN OUTPUT FOLDER */}
+                {img.localAbsolutePath && (
+                    <Button
+                        startIcon={<span className='material-symbols-outlined'>folder</span>}
+                        size='xs'
+                        appearance='link'
+                        onClick={() => showItemInFolder(img.localAbsolutePath)}
+                    >
+                        open folder
+                    </Button>
+                )}
+
+                {/* 3. OPEN FILE ITSELF */}
+                {imgPathWithFileProtocol && (
+                    <Button
+                        startIcon={<span className='material-symbols-outlined'>folder</span>}
+                        size='xs'
+                        appearance='link'
+                        onClick={() => openExternal(imgPathWithFileProtocol)}
+                    >
+                        open
+                    </Button>
+                )}
             </div>
             <TransformWrapper centerZoomedOut centerOnInit>
                 <TransformComponent
@@ -33,7 +67,7 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
                 >
                     <img
                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
-                        src={imgs.url}
+                        src={img.url}
                         alt='last generated image'
                     />
                     {/* </div> */}

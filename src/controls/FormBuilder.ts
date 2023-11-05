@@ -2,6 +2,7 @@ import type { SchemaL } from 'src/models/Schema'
 import * as W from './Widget'
 import { exhaust } from 'src/utils/ComfyUtils'
 import { makeAutoObservable } from 'mobx'
+import { _FIX_INDENTATION } from './_FIX_INDENTATION'
 
 // prettier-ignore
 export class FormBuilder {
@@ -80,15 +81,5 @@ export class FormBuilder {
     choices            = <const T extends { [key: string]: W.Widget }>    (p: W.Widget_choices_input<T>         , serial?: W.Widget_choices_serial<T>         ) => new W.Widget_choices             (this, this.schema, p, serial)
 
 
-    // quick helper for markdown
-    // todo: 🦊 2023-10-29 move elsewhere
-    _FIX_INDENTATION = (str: TemplateStringsArray) => {
-        // split string into lines
-        let lines = str[0].split('\n').slice(1)
-        const indent = (lines[0]! ?? '').match(/^\s*/)![0].length
-        // trim whitespace at the start and end of each line
-        lines = lines.map((line) => line.slice(indent))
-        // join lines back together with preserved newlines
-        return lines.join('\n')
-    }
+    _FIX_INDENTATION = _FIX_INDENTATION
 }

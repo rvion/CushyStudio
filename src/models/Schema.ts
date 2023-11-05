@@ -39,7 +39,7 @@ export type SchemaT = {
     embeddings: EmbeddingName[]
 }
 
-export interface SchemaL extends LiveInstance<SchemaT, SchemaL> { }
+export interface SchemaL extends LiveInstance<SchemaT, SchemaL> {}
 export type EnumInfo = {
     // enumNameInComfy: string
     enumNameInCushy: EnumName
@@ -301,7 +301,8 @@ export class SchemaL {
         p(`import type { Slot } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
         p(`import type { ComfyNodeID } from '${prefix}types/NodeUID'`)
-        p(`import type { ActionType, ActionTags } from '${prefix}library/Card'`)
+        p(`import type { CardType, ActionTags } from '${prefix}cards/Card'`)
+        // p(`import type { ActionType, ActionTags } from '${prefix}library/Card'`)
         // p(`import type { WorkflowType } from '${prefix}core/WorkflowFn'`)
         p('')
         p(`// CONTENT IN THIS FILE:`)
@@ -318,8 +319,8 @@ export class SchemaL {
         p('//  9. INDEX')
         p('')
         p(`declare global {`)
-        p(`const action: ActionType`)
-        p(`const card: ActionType`)
+        p(`const action: CardType`)
+        p(`const card: CardType`)
         p(`const actionTags: ActionTags`)
         p(``)
         p(`\n// 0. Entrypoint --------------------------`)
@@ -339,9 +340,10 @@ export class SchemaL {
 
         p(`\n// 2. Embeddings -------------------------------`)
         p(
-            `export type Embeddings = ${this.data.embeddings.length == 0 //
-                ? '""' // fixes the problem when someone has no embedding
-                : this.data.embeddings.map((e) => wrapQuote(e)).join(' | ')
+            `export type Embeddings = ${
+                this.data.embeddings.length == 0 //
+                    ? '""' // fixes the problem when someone has no embedding
+                    : this.data.embeddings.map((e) => wrapQuote(e)).join(' | ')
             }`,
         )
 

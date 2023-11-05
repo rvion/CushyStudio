@@ -3,8 +3,8 @@ import type { GraphID, GraphL } from './Graph'
 import type { StepL } from './Step'
 
 import { autorun, reaction, runInAction, toJS } from 'mobx'
-import { CardFile } from 'src/library/CardFile'
-import { CardPath } from 'src/library/CardPath'
+import { CardFile } from 'src/cards/CardFile'
+import { CardPath } from 'src/cards/CardPath'
 import { type Widget } from 'src/controls/Widget'
 import { FormBuilder } from 'src/controls/FormBuilder'
 import { __FAIL, __OK, type Result } from 'src/utils/Either'
@@ -87,10 +87,13 @@ export class DraftL {
 
     form: Result<Widget> = __FAIL('not loaded yet')
 
-    get actionFile(): CardFile | undefined {
+    get card(): CardFile | undefined {
         return this.st.library.cardsByPath.get(this.data.actionPath)
     }
-    get action() { return this.actionFile?.action } // prettier-ignore
+
+    get action() {
+        return this.card?.action
+    }
 
     onHydrate = () => {
         let subState = { unsync: () => {} }
@@ -108,8 +111,14 @@ export class DraftL {
                     const uiFn = action.ui
                     const req: Widget =
                         uiFn == null //
-                            ? formBuilder.group({ topLevel: true, items: () => ({}) }, this.data.actionParams)
-                            : formBuilder.group({ topLevel: true, items: () => uiFn(formBuilder) }, this.data.actionParams)
+                            ? formBuilder.group(
+                                  { verticalLabels: true, topLevel: true, items: () => ({}) },
+                                  this.data.actionParams,
+                              )
+                            : formBuilder.group(
+                                  { verticalLabels: true, topLevel: true, items: () => uiFn(formBuilder) },
+                                  this.data.actionParams,
+                              )
                     this.form = __OK(req)
                     console.log(`🦊 form setup`)
                     // subState.unsync()

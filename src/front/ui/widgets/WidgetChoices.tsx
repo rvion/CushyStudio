@@ -46,6 +46,7 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { req: Widg
                         const subReq = req.state.values[k.value]
                         return (
                             <WidgetWithLabelUI //
+                                key={k.value}
                                 rootKey={k.value}
                                 labelPos={subReq.input.labelPos}
                                 req={subReq}

@@ -1,7 +1,7 @@
-import { observer, useLocalObservable } from 'mobx-react-lite'
+import { observer } from 'mobx-react-lite'
+import { CSSProperties } from 'react'
 import { useDragLayer } from 'react-dnd'
 import { useSt } from '../../FrontStateCtx'
-import { useMemo } from 'react'
 
 export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
     const st = useSt()
@@ -12,6 +12,15 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
     if (cccP) return null
     const hovered = st.hovered
     if (hovered == null) return null
+
+    const extraProps: CSSProperties = st.showPreviewInFullScreen
+        ? {
+              maxHeight: st.showPreviewInFullScreen ? '100vh' : undefined,
+              maxWidth: st.showPreviewInFullScreen ? '100vw' : undefined,
+              width: '100%',
+          }
+        : {}
+
     return (
         <div>
             {/* BACKDROP */}
@@ -32,7 +41,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
             <div
                 tw='ml-auto inset-0 text-center'
                 style={{
-                    opacity: 0.9,
+                    opacity: st.galleryHoverOpacity,
                     boxShadow: '0 0 1rem 0 #ebebebe0',
                     pointerEvents: 'none',
                     position: 'absolute',
@@ -58,8 +67,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                     <video
                         style={{
                             objectFit: 'contain',
-                            maxHeight: 'calc(100vh - 10rem)',
-                            maxWidth: 'calc(100vw - 10rem)',
+                            ...extraProps,
                         }}
                         src={hovered.url}
                         controls
@@ -70,11 +78,8 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
                     <img
                         src={hovered.url}
                         style={{
-                            width: '100%',
-
                             objectFit: 'contain',
-                            maxHeight: 'calc(100vh - 10rem)',
-                            maxWidth: 'calc(100vw - 10rem)',
+                            ...extraProps,
                         }}
                     />
                 )}

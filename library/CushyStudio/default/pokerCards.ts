@@ -84,9 +84,6 @@ const ui = (form: FormBuilder) => ({
 })
 
 card({
-    name: 'cards v3',
-    author: 'rvion',
-    description: 'play with cards',
     ui,
     run: async (flow, p) => {
         // 1. SETUP --------------------------------------------------
@@ -259,10 +256,10 @@ export async function drawCard(
     }
 
     const image = await (() => {
-        if (suit === 'diamonds') return I.loadImage('CushyStudio/cards/_assets/symbol-diamond.png')
-        if (suit === 'clubs') return I.loadImage('CushyStudio/cards/_assets/symbol-club.png')
-        if (suit === 'hearts') return I.loadImage('CushyStudio/cards/_assets/symbol-heart.png')
-        if (suit === 'spades') return I.loadImage('CushyStudio/cards/_assets/symbol-spades.png')
+        if (suit === 'diamonds') return I.loadImage('CushyStudio/default/_assets/symbol-diamond.png')
+        if (suit === 'clubs') return I.loadImage('CushyStudio/default/_assets/symbol-club.png')
+        if (suit === 'hearts') return I.loadImage('CushyStudio/default/_assets/symbol-heart.png')
+        if (suit === 'spades') return I.loadImage('CushyStudio/default/_assets/symbol-spades.png')
         return exhaust(suit)
     })()
 

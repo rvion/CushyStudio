@@ -1,5 +1,4 @@
-action({
-    name: 'demo-widget-classname',
+card({
     ui: (form) => ({
         steps: form.choices({
             defaultActiveBranches: {

@@ -1,6 +1,8 @@
 import type { LiveInstance } from '../db/LiveInstance'
 import type { GraphID, GraphL } from './Graph'
 import type { SchemaL } from './Schema'
+import type { CardPath } from 'src/cards/CardPath'
+import type { DraftID } from './Draft'
 
 import { LiveRef } from '../db/LiveRef'
 
@@ -13,6 +15,8 @@ export type ProjectT = {
     updatedAt: number
     name: string
     rootGraphID: GraphID
+    currentCard?: Maybe<CardPath>
+    currentDraftID?: Maybe<DraftID>
     // currentToolID
     // rootStepID: StepID
 }

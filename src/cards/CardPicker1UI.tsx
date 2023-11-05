@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Tree } from 'rsuite'
-import { asCardPath } from 'src/library/CardPath'
+import { asCardPath } from 'src/cards/CardPath'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { useSt } from '../front/FrontStateCtx'
 import { TooltipUI } from '../front/ui/layout/TooltipUI'
@@ -66,7 +66,7 @@ export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
                 // 1. focus paf
                 const paf = st.library.cardsByPath.get(actionPath)
                 if (paf == null) throw new Error(`paf not found for ${value}`)
-                st.layout.addAction(actionPath)
+                st.layout.addCard(actionPath)
                 // pj.focusActionFile(paf)
                 // // 2. if paf has a tool, focus it
                 // console.log(value, paf)

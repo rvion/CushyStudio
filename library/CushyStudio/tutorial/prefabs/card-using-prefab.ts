@@ -1,7 +1,6 @@
 import { ui_startImage } from './_prefab'
 
 card({
-    name: 'card1',
     ui: (formBuilder) => {
         return {
             a: ui_startImage(formBuilder),

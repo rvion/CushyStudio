@@ -11,12 +11,12 @@ export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
         <div>
             <Button
                 onClick={uist.handleOpen}
-                tw='w-full'
-                appearance='ghost'
+                // tw='w-full'
+                appearance='primary'
                 color='green'
                 startIcon={<span className='material-symbols-outlined'>add</span>}
             >
-                Create Deck
+                Create my own Deck
             </Button>
             <CreateDeckModalUI uist={uist} />
         </div>

@@ -4,7 +4,7 @@ import type { ComfyNode } from '../src/core/Node'
 import type { Slot } from '../src/core/Slot'
 import type { ComfyNodeSchemaJSON } from '../src/types/ComfySchemaJSON'
 import type { ComfyNodeID } from '../src/types/NodeUID'
-import type { ActionType } from '../src/core/Action'
+import type { CardType } from '../src/cards/Card'
 
 // CONTENT IN THIS FILE:
 //
@@ -20,7 +20,7 @@ import type { ActionType } from '../src/core/Action'
 //  9. INDEX
 
 declare global {
-const action: ActionType
+const action: CardType
 
 
 // 0. Entrypoint --------------------------

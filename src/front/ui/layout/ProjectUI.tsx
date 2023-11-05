@@ -22,7 +22,7 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
     return (
         <div className='relative flex-grow flex flex-col h-full'>
             <projectContext.Provider value={project} key={project.id}>
-                <MainNavBarUI />
+                {/* <MainNavBarUI /> */}
                 <GalleryHoveredPreviewUI />
                 <div
                     id='hovered-graph'

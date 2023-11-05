@@ -1,16 +1,16 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Input, InputGroup } from 'rsuite'
-import { CardFile } from 'src/library/CardFile'
+import { CardFile } from 'src/cards/CardFile'
 import { useSt } from 'src/front/FrontStateCtx'
 
-export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { af: CardFile }) {
-    const af = p.af
+export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card: CardFile }) {
+    const card = p.card
     const st = useSt()
-    const drafts = af.drafts
+    const drafts = card.drafts
     return (
         <div className='flex flex-wrap items-center gap-1 mx-2'>
             <Button
-                disabled={af.action == null}
+                disabled={card.action == null}
                 appearance='ghost'
                 size='xs'
                 style={{
@@ -20,7 +20,7 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { af: C
                 }}
                 color='green'
                 startIcon={<span className='material-symbols-outlined'>add</span>}
-                onClick={() => void af.createDraft()}
+                onClick={() => void card.createDraft()}
             >
                 New Draft
             </Button>
@@ -62,21 +62,5 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { af: C
                 )
             })}
         </div>
-    )
-})
-
-export const AddDraftUI = observer(function AddDraftUI_(p: { af: CardFile }) {
-    const af = p.af
-    return (
-        <Button
-            disabled={af.action == null}
-            appearance='ghost'
-            size='xs'
-            color='green'
-            startIcon={<span className='material-symbols-outlined'>add</span>}
-            onClick={() => void af.createDraft()}
-        >
-            New Draft
-        </Button>
     )
 })
