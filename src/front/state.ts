@@ -11,11 +11,11 @@ import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 
 import type { ActionTagMethodList } from 'src/cards/Card'
-import { CardPath } from 'src/cards/CardPath'
+import { CardPath, asCardPath } from 'src/cards/CardPath'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
 import { GithubRepoName } from 'src/cards/githubRepo'
-import { DraftID } from 'src/models/Draft'
+import { DraftID, DraftL } from 'src/models/Draft'
 import { ProjectL } from 'src/models/Project'
 import { ShortcutWatcher } from 'src/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/shortcuts/shortcuts'
@@ -144,7 +144,7 @@ export class STATE {
         console.log('🔥 INTERRUPTED.')
     }
 
-    startProjectV2 = (): ProjectL => {
+    getProject = (): ProjectL => {
         if (this.db.projects.size > 0) {
             return this.db.projects.firstOrCrash()
         }
@@ -159,10 +159,16 @@ export class STATE {
         // const startDraft = initialGraph.createDraft()
     }
 
-    currentCardAndDraft: Maybe<{
-        cardPath: CardPath
-        draftID?: DraftID
-    }> = null
+    _currentDraft: DraftL
+    get currentDraft(): DraftL {
+        return this._currentDraft
+    }
+    set currentDraft(draft: DraftL) {
+        const card = draft.card
+        card?.load()
+        this.closeCardPicker()
+        this._currentDraft = draft
+    }
     // {
     //     cardPath: asCardPath('library/CushyStudio/default/prompt.ts'),
     // }
@@ -222,16 +228,16 @@ export class STATE {
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)
+        const defaultCard = this.library.getCardOrThrow(asCardPath('library/CushyStudio/default/prompt.ts'))
+        this._currentDraft = defaultCard.getLastDraft()
         ;(async () => {
             await this.schemaReady
-            const project = this.startProjectV2()
+            const project = this.getProject()
         })()
 
         this.ws = this.initWebsocket()
         makeAutoObservable(this, { comfyUIIframeRef: false })
     }
-
-    getCurrentProjectOrCrash = () => this.db.projects.firstOrCrash() // 🔴
 
     /**
      * will be created only after we've loaded cnfig file

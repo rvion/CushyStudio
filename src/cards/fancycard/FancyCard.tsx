@@ -105,11 +105,7 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
                     alt='card illustration'
                     onClick={() => {
                         console.log('clicked')
-                        runInAction(() => {
-                            card.load()
-                            st.currentCardAndDraft = { cardPath: card.relPath }
-                            st.closeCardPicker()
-                        })
+                        st.currentDraft = card.getLastDraft()
                     }}
                 />
                 {/* {cardIllustration} */}

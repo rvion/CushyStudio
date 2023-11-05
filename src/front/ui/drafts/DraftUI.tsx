@@ -19,12 +19,12 @@ import { ActionDraftListUI } from './ActionDraftListUI'
 
 export const CurrentDraftUI = observer(function CurrentDraftUI_(p: {}) {
     const st = useSt()
-    const draft = st.currentCardAndDraft
+    const draft = st._currentDraft
 
     // just in case no card is selected, open one
-    useEffect(() => {
-        if (draft?.cardPath == null) st.openCardPicker()
-    }, [])
+    // useEffect(() => {
+    //     if (draft?.cardPath == null) st.openCardPicker()
+    // }, [])
 
     if (draft == null) {
         return (
@@ -46,15 +46,15 @@ export const CurrentDraftUI = observer(function CurrentDraftUI_(p: {}) {
             />
         )
     }
-    const card = st.library.getCard(draft.cardPath)
+    const card = draft.card
     if (card == null)
         return (
             <Message type='error' showIcon>
                 card not found
             </Message>
         )
-    if (draft?.draftID == null) return <ActionDraftListUI card={card} />
-    return <DraftUI draft={draft.draftID} />
+    // if (draft?.draftID == null) return <ActionDraftListUI card={card} />
+    return <DraftUI draft={draft} />
 })
 
 /**

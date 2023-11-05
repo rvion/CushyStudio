@@ -137,7 +137,7 @@ export class CardFile {
 
     createDraft = (): DraftL => {
         const title = generateName()
-        const pj = this.st.getCurrentProjectOrCrash()
+        const pj = this.st.getProject()
         const draft = this.st.db.drafts.create({
             actionParams: {},
             actionPath: this.relPath,
@@ -146,6 +146,11 @@ export class CardFile {
         })
         pj.st.layout.addDraft(draft.data.title, draft.id)
         return draft
+    }
+    getLastDraft = (): DraftL => {
+        const pj = this.st.getProject()
+        const drafts = this.drafts
+        return drafts.length > 0 ? drafts[0] : this.createDraft()
     }
     get drafts(): DraftL[] {
         return this.st.db.drafts //

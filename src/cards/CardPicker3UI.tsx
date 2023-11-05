@@ -68,16 +68,7 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                                                 {drafts.map((draft) => (
                                                     <div key={draft.id}>
                                                         <Button
-                                                            onClick={() => {
-                                                                runInAction(() => {
-                                                                    st.currentCardAndDraft = {
-                                                                        cardPath: card.relPath,
-                                                                        draftID: draft.id,
-                                                                    }
-                                                                    card.load()
-                                                                    st.closeCardPicker()
-                                                                })
-                                                            }}
+                                                            onClick={() => (st.currentDraft = draft)}
                                                             startIcon={
                                                                 <span className='material-symbols-outlined'>play_arrow</span>
                                                             }

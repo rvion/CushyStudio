@@ -38,6 +38,13 @@ export class Library {
         return this.cardsByPath.get(cardPath)
     }
 
+    /** returns the card or throws an error */
+    getCardOrThrow = (cardPath: CardPath): CardFile => {
+        const card = this.cardsByPath.get(cardPath)
+        if (card == null) throw new Error(`card not found: ${cardPath}`)
+        return card
+    }
+
     private decksByFolder = new Map<DeckFolder, Deck>()
 
     getDeck = (deckFolder: DeckFolder): Deck => {
