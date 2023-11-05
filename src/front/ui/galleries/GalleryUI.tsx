@@ -59,7 +59,7 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                                 full screen hover
                                 <Toggle
                                     //
-                                    size='xs'
+                                    size='sm'
                                     checked={st.showPreviewInFullScreen ?? true}
                                     onChange={(next) => (st.showPreviewInFullScreen = next)}
                                 >

@@ -2,7 +2,7 @@ import type { CardFile } from './CardFile'
 
 import JSON5 from 'json5'
 import { existsSync, readFileSync } from 'fs'
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 import { join } from 'pathe'
 import { assets } from 'src/assets/assets'
 import { GitManagedFolder } from 'src/front/updater'
@@ -12,7 +12,7 @@ import { ManualPromise } from 'src/utils/ManualPromise'
 import { AbsolutePath } from 'src/utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from 'src/utils/fs/pathUtils'
 import { generateAvatar } from './AvatarGenerator'
-import { CardManifest, DeckManifest } from './DeckManifest'
+import { CardManifest, DeckManifest, DeckSchema, parseDeckManifestOrCrash } from './DeckManifest'
 import { GithubUser, GithubUserName, asGithubUserName } from './GithubUser'
 
 /** e.g. library/rvion/foo */
@@ -56,32 +56,17 @@ export class Deck {
     github: string
     BUILT_IN: boolean
 
-    manifestType: 'explicit' | 'implicit'
-    manifest: DeckManifest
+    //
+    manifestError: unknown = null
+    manifestType!: 'explicit' | 'implicit'
+    manifest!: DeckManifest
     cards: CardFile[] = []
 
-    get cardManifests(): CardManifest[] {
-        const seen = new Set<string>()
-        const out: CardManifest[] = []
-        // add cards listed in manifest:
-        for (const cardManifest of this.manifest.cards ?? []) {
-            // if (seen.has(card.name)) continue
-            seen.add(cardManifest.deckRelativeFilePath)
-            out.push(cardManifest)
-        }
-        // add cards detected locally but not listed in manifest
-        for (const card of this.cards) {
-            const cardManifest = card.manifest
-            if (seen.has(cardManifest.deckRelativeFilePath)) continue
-            seen.add(cardManifest.deckRelativeFilePath)
-            out.push(cardManifest)
-        }
-
-        return out.sort((a, b) => {
-            const aPriority = a.priority ?? 0
-            const bPriority = b.priority ?? 0
-            if (aPriority !== bPriority) return bPriority - aPriority
-            return a.name.localeCompare(b.name)
+    get cardsSorted(): CardFile[] {
+        return this.cards.slice().sort((a, b) => {
+            const diff = b.priority - a.priority
+            if (diff) return diff
+            return a.displayName.localeCompare(b.displayName)
         })
     }
 
@@ -122,23 +107,8 @@ export class Deck {
         })
         this.installK = new ManualPromise<true>()
 
-        try {
-            const manifestPath = join(this.folderAbs, 'cushy-deck.json')
-            console.log('🔴', manifestPath)
-            const manifestStr = readFileSync(manifestPath, 'utf8')
-            const manifestJSON = JSON5.parse(manifestStr)
-            this.manifestType = 'explicit'
-            this.manifest = manifestJSON
-            console.log('🔴 🟢', manifestJSON)
-        } catch (error) {
-            console.log('🔴 ❌ failed with error', error)
-            this.manifestType = 'implicit'
-            this.manifest = {
-                name: '',
-                authorName: '',
-                description: '',
-            }
-        }
+        // sets: manifestError, manifestType, manifest
+        this.loadManifest()
 
         if (existsSync(this.folderAbs)) {
             this.installK.resolve(true)
@@ -146,6 +116,34 @@ export class Deck {
         }
 
         makeAutoObservable(this)
+    }
+
+    loadManifest = () => {
+        const manifestPath = join(this.folderAbs, 'cushy-deck.json')
+        const manifestIsHere = existsSync(manifestPath)
+        
+        try {
+            const manifestStr = readFileSync(manifestPath, 'utf8')
+            const manifestJSON_ = JSON5.parse(manifestStr)
+            const manifestJSON = parseDeckManifestOrCrash(manifestJSON_)
+
+            runInAction(() => {
+                this.manifestError = null
+                this.manifestType = 'explicit'
+                this.manifest = manifestJSON
+            })
+        } catch (error) {
+            console.log(`❌ failed to read ${manifestPath}`, error)
+            runInAction(() => {
+                this.manifestError = error
+                this.manifestType = 'implicit'
+                this.manifest = {
+                    name: this.githubRepositoryName,
+                    authorName: this.githubUserName,
+                    description: '<action not listed in manifest>',
+                }
+            })
+        }
     }
 
     get logo() {

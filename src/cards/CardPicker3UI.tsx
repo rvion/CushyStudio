@@ -42,7 +42,7 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
 
             {/* <div>CARD 1</div> */}
             {st.library.decksSorted.map((deck) => {
-                const cards = deck.cardManifests
+                const cards = deck.cardsSorted
                 return (
                     <Panel //
                         key={deck.folderAbs}
@@ -55,17 +55,16 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                         <div tw='flex flex-wrap'>
                             {cards.map((card, ix) => {
                                 return (
-                                    <Fragment key={card.deckRelativeFilePath}>
+                                    <Fragment key={card.relPath}>
                                         <FancyCardUI //
                                             deck={deck}
-                                            key={card.deckRelativeFilePath}
-                                            style={card.style ?? 'A'}
+                                            style={card.style}
                                             card={card}
                                         />
-                                        <div>
+                                        {/* <div>
                                             <div>foo</div>
                                             <div>bar</div>
-                                        </div>
+                                        </div> */}
                                     </Fragment>
                                 )
                             })}

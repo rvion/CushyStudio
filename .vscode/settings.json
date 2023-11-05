@@ -27,6 +27,16 @@
         // "editor.defaultFormatter": null
         "editor.formatOnSave": false
     },
+    // automatically format code with prettier for all contributors
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
     "files.associations": {
         "**/cushy-deck.json": "jsonc"
     },

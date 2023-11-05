@@ -19,6 +19,7 @@ import { ManualPromise } from '../utils/ManualPromise'
 import { Library } from './Library'
 import { CardManifest } from './DeckManifest'
 import { join } from 'pathe'
+import { CardStyle } from './fancycard/FancyCard'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -41,12 +42,23 @@ export class CardFile {
         return this.manifest.name
     }
 
-    get actionPackFolderRel() {
+    get actionPackFolderRel(): string {
         return this.deck.folderRel
     }
 
-    get actionAuthorFolderRel() {
+    get actionAuthorFolderRel(): string {
         return this.deck.authorFolderRel
+    }
+
+    get priority(): number {
+        return this.manifest.priority ?? 0
+    }
+    get description(): string {
+        return this.manifest.description ?? 'no description'
+    }
+
+    get style(): CardStyle {
+        return this.manifest.style ?? 'A'
     }
 
     constructor(

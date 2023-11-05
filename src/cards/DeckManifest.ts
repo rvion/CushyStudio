@@ -1,4 +1,5 @@
 import { Type, Static } from '@sinclair/typebox'
+import { Value } from '@sinclair/typebox/value'
 
 // DECK --------------------------------------
 export type DeckManifest = {
@@ -81,6 +82,10 @@ export const DeckSchema = Type.Object({
     relativeIconPath: optionalString('local path to an image in your action pack that should be used'),
     cards: Type.Optional(Type.Array(CardSchema)),
 })
+
+export const parseDeckManifestOrCrash = (manifest: unknown): DeckManifest => {
+    return Value.Decode(DeckSchema, manifest)
+}
 
 /* ✅ */ type _DeckSchemaT = Static<typeof DeckSchema>
 /* ✅ */ const _a1: DeckManifest = 0 as any as _DeckSchemaT

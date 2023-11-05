@@ -115,9 +115,10 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
                         <Tag key={ix}>{i}</Tag>
                     ))}
                 </div>
-                <div>{card.manifest.description ?? 'no description'}</div>
-                {/* <div className={`card STYLE_${p.style}`}></div> */}
+                <div>{card.description}</div>
+                {/* ------------------------------------------------------------- */}
                 {/* Content of the card */}
+                {/* <div className={`card STYLE_${p.style}`}></div> */}
                 <div style={uiSt.gradientStyle} className='card_before'></div>
                 {/* <div style={uiSt.sparklesStyle} className='card_after'></div> */}
             </div>
