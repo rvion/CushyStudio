@@ -10,11 +10,17 @@ import { createRef } from 'react'
 import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
 
+import type { ActionTagMethodList } from 'src/cards/Card'
+import { CardPath } from 'src/cards/CardPath'
+import { GithubUserName } from 'src/cards/GithubUser'
 import { Library } from 'src/cards/Library'
+import { GithubRepoName } from 'src/cards/githubRepo'
+import { DraftID } from 'src/models/Draft'
 import { ProjectL } from 'src/models/Project'
 import { ShortcutWatcher } from 'src/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/shortcuts/shortcuts'
 import { ThemeManager } from 'src/theme/layoutTheme'
+import { UserTags } from 'src/usertags/UserLoader'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { DanbooruTags } from '../booru/BooruLoader'
 import { JsonFile } from '../core/JsonFile'
@@ -30,14 +36,10 @@ import { extractErrorMessage } from '../utils/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/stringifyReadable'
+import { ElectronUtils } from './ElectronUtils'
+import { Uploader } from './Uploader'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { GitManagedFolder } from './updater'
-import { CardPath, asCardPath } from 'src/cards/CardPath'
-import { Uploader } from './Uploader'
-import { ElectronUtils } from './ElectronUtils'
-import { GithubUserName } from 'src/cards/GithubUser'
-import { GithubRepoName } from 'src/cards/githubRepo'
-import { DraftID } from 'src/models/Draft'
 
 // prettier-ignore
 type HoveredAsset =
@@ -102,6 +104,8 @@ export class STATE {
     library: Library
     schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
+    userTags = UserTags.build()
+    actionTags: ActionTagMethodList = []
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
 

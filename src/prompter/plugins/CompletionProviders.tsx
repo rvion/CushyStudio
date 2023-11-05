@@ -10,6 +10,9 @@ import { $createWildcardNode } from '../nodes/WildcardNode'
 import { CompletionOption } from './CushyCompletionPlugin'
 import { DanbooruTag } from 'src/booru/BooruLoader'
 import { EmbeddingName } from 'src/models/Schema'
+import { $createUserNode } from '../nodes/UserNode'
+import { UserTag } from 'src/usertags/UserLoader'
+import { $createActionNode, ActionTag } from '../nodes/ActionNode'
 
 const _providerCache = new Map<string, CopmletionProvider>()
 // ----------------------------------------------------------------------
@@ -94,6 +97,44 @@ export class CompletionState {
         _providerCache.set(key, provider)
         return provider
     }
+    static getUserCompletionProvider = (st: STATE) => {
+        const key = 'User'
+        if (_providerCache.has(key)) return _providerCache.get(key)!
+        const createNode = (t: UserTag) => $createUserNode(t)
+        const menuLabel = <span tw='text-purple-500'>user:</span>
+        const provider = new CopmletionProvider({
+            getValues: () =>
+                st.userTags.tags.map((x) => ({
+                    trigger: '^',
+                    title: x.key,
+                    keywords: [x.key],
+                    value: x,
+                    createNode,
+                    menuLabel,
+                })),
+        })
+        _providerCache.set(key, provider)
+        return provider
+    }
+    static getActionCompletionProvider = (st: STATE) => {
+        const key = 'Action'
+        if (_providerCache.has(key)) return _providerCache.get(key)!
+        const createNode = (t: ActionTag) => $createActionNode({ tag: t, param: "" })
+        const menuLabel = <span tw='text-green-500'>action:</span>
+        const provider = new CopmletionProvider({
+            getValues: () =>
+                st.actionTags.map((x) => ({
+                    trigger: '/',
+                    title: x.key,
+                    keywords: [x.key],
+                    value: { key: x.key, action: x.method, param: '' },
+                    createNode,
+                    menuLabel,
+                })),
+        })
+        _providerCache.set(key, provider)
+        return provider
+    }
 
     providers: CopmletionProvider[] = []
     constructor(
@@ -103,12 +144,16 @@ export class CompletionState {
             embedding?: boolean
             wildcard?: boolean
             booru?: boolean
+            user?: boolean
+            action?: boolean
         },
     ) {
         if (features.embedding) this.providers.push(CompletionState.getEmbeddingCompletionProvider(st))
         if (features.lora) this.providers.push(CompletionState.getLoraCompletionProvider(st))
         if (features.wildcard) this.providers.push(CompletionState.getWildcardCompletionProvider(st))
         if (features.booru) this.providers.push(CompletionState.getBooruCompletionProvider(st))
+        if (features.user) this.providers.push(CompletionState.getUserCompletionProvider(st))
+        if (features.action) this.providers.push(CompletionState.getActionCompletionProvider(st))
         makeAutoObservable(this)
     }
     get rawCandidates(): CompletionCandidate<any>[] {

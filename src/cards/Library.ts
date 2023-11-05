@@ -4,7 +4,7 @@ import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import path, { join } from 'pathe'
 import Watcher from 'watcher'
 
-import { existsSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'fs'
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { ItemDataType } from 'rsuite/esm/@types/common'
 import { CardPath, asCardPath } from 'src/cards/CardPath'
@@ -13,6 +13,7 @@ import { hasValidActionExtension } from '../back/ActionExtensions'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { CardFile } from './CardFile'
 import { _FIX_INDENTATION } from 'src/controls/_FIX_INDENTATION'
+import { ActionTagMethodList } from './Card'
 
 export class Library {
     updatedAt = 0
@@ -221,6 +222,7 @@ export class Library {
         this.fileTree.splice(0, this.fileTree.length) // reset
         this.cardsByPath.clear() // reset
         this.folderMap.clear() // reset
+        this.st.actionTags = [] // reset
 
         console.log(`[💙] TOOL: starting discovery in ${this.st.actionsFolderPathAbs}`)
         this.recursivelyFindCardsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
@@ -241,6 +243,28 @@ export class Library {
         const files = readdirSync(dir)
         // console.log(files)
         for (const baseName of files) {
+            if (baseName === '_actionTags.ts' || baseName === '_actionTags.js') {
+                const name = dir.split('/').at(-1)
+                const _this = this
+                function load(tags: ActionTagMethodList) {
+                    try {
+                        tags.forEach((tag) => {
+                            tag.key = `${name ? name : ''}/${tag.key}`
+                            _this.st.actionTags.push(tag)
+                        })
+                        console.log(`[🏷️] Loaded action tags for ${dir}`)
+                    } catch (error) {
+                        console.log(`[🔴] Failed to load action tags for ${dir}/_actionTags.ts\nGot: ${tags}`)
+                    }
+                }
+                try {
+                    const loader = new Function('actionTags', readFileSync(asAbsolutePath(join(dir, file))).toString())
+                    loader(load)
+                } catch (error) {
+                    console.log(`[🔴] Failed to load action tags for ${dir}/_actionTags.ts`)
+                }
+            } else continue
+
             const shouldSkip = this.shouldSkip(baseName)
             if (shouldSkip) continue
 
