@@ -6,6 +6,7 @@ export function GithubUserUI(p: {
     //
     username: GithubUserName
     size?: string
+    prefix?: string
     showName?: boolean | 'after'
     className?: string
     textClassName?: string
@@ -14,20 +15,24 @@ export function GithubUserUI(p: {
     const { username } = p
     const size = p.size ?? '1.5rem'
 
-    const textClassName = p.textClassName ?? 'text-xl'
+    const textClassName = p.textClassName
     const imgURL =
         username === 'CushyStudio' //
             ? assets.public_CushyLogo_512_png
             : GithubUser.get(st, asGithubUserName(username), false).localAvatarURL
     try {
         return (
-            <div className={p.className} tw='flex items-center gap-1 italic text-gray-400'>
-                {p.showName === 'after' && <p className={textClassName}>{username}</p>}
+            <div
+                //
+                className={p.className}
+                tw='flex items-center gap-1'
+            >
+                {p.prefix} {p.showName === 'after' && <p className={textClassName}>{username}</p>}
                 <img
                     style={{ borderRadius: '100%', height: size, width: size }}
                     src={imgURL}
                     alt={`${username}'s avatar`}
-                    width='100'
+                    // width='100'
                 />
                 {p.showName === true && <p className={textClassName}>{username}</p>}
             </div>

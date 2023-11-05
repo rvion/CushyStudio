@@ -51,11 +51,7 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                     <Panel //
                         key={deck.folderAbs}
                     >
-                        <div>
-                            <DeckHeaderUI deck={deck} />
-                            <b>{deck.cards.length} cards</b>
-                            {/* <pre tw='whitespace-pre-wrap'>{JSON.stringify(deck.manifest)}</pre> */}
-                        </div>
+                        <DeckHeaderUI deck={deck} />
                         <div tw='flex flex-wrap'>
                             {cards.map((card, ix) => {
                                 const drafts = card.drafts
