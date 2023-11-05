@@ -19,21 +19,21 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
             <div tw='flex-grow'>
                 <div tw='flex items-center'>
                     {/* manifest */}
-                    <div>
-                        <div tw='font-bold'>{deck.name}</div>
-                        <div tw='text-gray-400 flex justify-between w-full'>{deck.githubUserName}</div>
+                    <div tw='flex gap-2 items-baseline'>
+                        <h3 tw='font-bold'>{deck.name}</h3>
+                        by <div tw='text-gray-400 flex justify-between w-full'>{deck.githubUserName}</div>
                     </div>
-                    <div className='flex-grow self-start italic'>{deck.description}</div>
                     {/* manifest */}
-                    <div tw='w-3'></div>
-                    <div tw='mr-3'>
+                    <div tw='flex-grow'></div>
+                    <div>
+                        <DeckManifestErrorUI err={deck.manifestError} />
                         {deck.BUILT_IN ? <div tw='text-gray-600'>built-in</div> : <ActionPackStatusUI pack={deck} />}
                         {deck.updater.status === FolderKind.FolderWithGit ? ( //
                             <ActionPackStarsUI tw='float-right' pack={deck} />
                         ) : null}
                     </div>
                 </div>
-                <DeckManifestErrorUI err={deck.manifestError} />
+                <div className='flex-grow self-start italic'>{deck.description}</div>
                 {/* <Message showIcon type={deck.manifestError.}>
                     {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
                     <pre>{stringifyUnknown(deck.manifestError)}</pre>

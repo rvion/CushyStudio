@@ -166,7 +166,7 @@ export class Deck {
         this.manifest = {
             name: this.githubRepositoryName,
             authorName: this.githubUserName,
-            description: '<action not listed in manifest>',
+            description: '<no description because no manifest>',
         }
     }
 

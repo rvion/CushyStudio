@@ -14,7 +14,7 @@
             "description": "A card that contains all the features needed to play with stable diffusion"
         },
         {
-            "name": "a Cushy card generate a deck of... 'cards'",
+            "name": "a confusing 'card' to generate poker cards",
             "deckRelativeFilePath": "./pokerCards.ts",
             "illustration": "_illustrations/poker-card-generator.jpg",
             "description": "Few Cushy cards are about 'playing cards'. But this one is."
@@ -22,20 +22,20 @@
         {
             "name": "real-time drawer",
             "deckRelativeFilePath": "./realtime.ts",
-            "illustration": "",
-            "description": "real-time drawing to painting"
+            "illustration": "_illustrations/image.jpg",
+            "description": "Real-time drawing to painting"
         },
         {
             "name": "remove background",
             "deckRelativeFilePath": "./rembg.ts",
             "illustration": "",
-            "description": "quick way to try various ComfyUI nodes to removem background"
+            "description": "Quick way to try various ComfyUI nodes to removem background"
         },
         {
             "name": "Simple animate-diff example",
             "deckRelativeFilePath": "./animateddiff.ts",
             "illustration": "",
-            "description": "you can generate simple animations with this card"
+            "description": "You can generate simple animations with this card"
         }
     ]
 }

@@ -1,25 +1,41 @@
 import { observer } from 'mobx-react-lite'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Button, ButtonGroup, Popover, Whisper } from 'rsuite'
 import { assets } from 'src/assets/assets'
 import { useSt } from '../../FrontStateCtx'
 import { DBHealthUI } from './AppBarUI'
 import { CardsPickerModalUI } from 'src/cards/CardPicker3UI'
+import { TypeAttributes } from 'rsuite/esm/@types/common'
+import { ComboUI } from './ComboUI'
 
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+    color?: TypeAttributes.Color
+    appearance?: TypeAttributes.Appearance
     ix: string
     icon: React.ReactElement
     soon?: boolean
     label: string
+    tooltip?: ReactNode
 }) {
-    return (
-        <Whisper placement='bottomStart' speaker={<Popover>{p.label}</Popover>}>
-            <Button appearance='subtle' size='sm' startIcon={p.icon} onClick={p.onClick}>
-                {p.label}
-            </Button>
-        </Whisper>
+    const btn = (
+        <Button //
+            color={p.color}
+            appearance={p.appearance ?? 'subtle'}
+            size='sm'
+            startIcon={p.icon}
+            onClick={p.onClick}
+        >
+            {p.label}
+        </Button>
     )
+    if (p.tooltip)
+        return (
+            <Whisper placement='bottomStart' speaker={<Popover>{p.tooltip}</Popover>}>
+                {btn}
+            </Whisper>
+        )
+    return btn
 })
 
 export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: string }) {
@@ -41,10 +57,18 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
             {/* COMFY */}
             <MainNavEntryUI
                 // onClick={() => st.layout.addActionPicker()}
+                color='green'
+                appearance='primary'
                 onClick={() => st.openCardPicker()}
                 ix='1'
-                icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
+                icon={<span className='material-symbols-outlined'>play_circle</span>}
                 label='Cards'
+                tooltip={
+                    <>
+                        Open the card picker
+                        <ComboUI combo='meta+1' />
+                    </>
+                }
             />
             <CardsPickerModalUI />
 
@@ -61,12 +85,12 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
                 label='Apps'
             /> */}
-            <MainNavEntryUI
+            {/* <MainNavEntryUI
                 onClick={() => st.layout.addActionPickerTree()}
                 ix='2'
                 icon={<span className='material-symbols-outlined text-blue-500'>account_tree</span>}
                 label='Files'
-            />
+            /> */}
 
             {/* PAINT */}
             <MainNavEntryUI
@@ -124,7 +148,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 onClick={() => st.layout.addHosts()}
                 ix='8'
                 icon={<span className='material-symbols-outlined text-amber-800'>cloud</span>}
-                label='GPU'
+                label='GPUs'
             />
             <MainNavEntryUI
                 soon

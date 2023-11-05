@@ -330,11 +330,11 @@ export class CushyLayoutManager {
     build = (): IJsonModel => {
         const out: IJsonModel = {
             global: {
-                borderSize: 8,
-                tabSetTabStripHeight: 22,
-                enableEdgeDock: true,
-                tabSetMinHeight: 64,
-                tabSetMinWidth: 64,
+                // borderSize: 8,
+                // tabSetTabStripHeight: 30,
+                // enableEdgeDock: true,
+                // tabSetMinHeight: 64,
+                // tabSetMinWidth: 64,
                 tabSetEnableSingleTabStretch: true,
             },
 

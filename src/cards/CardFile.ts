@@ -91,7 +91,7 @@ export class CardFile {
                 : baseName,
             deckRelativeFilePath: this.relPath,
             author: this.deck.githubUserName,
-            description: 'no description',
+            description: '<card not listed in manifest>',
         }
     }
 

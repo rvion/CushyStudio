@@ -33,7 +33,7 @@ export const CurrentDraftUI = observer(function CurrentDraftUI_(p: {}) {
             </Message>
         )
     if (draft?.draftID == null) return <ActionDraftListUI card={card} />
-    return <div>🟢</div>
+    return <DraftUI draft={draft.draftID} />
 })
 
 /**
@@ -97,8 +97,8 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                 style={toJS(containerStyle ?? defaultContainerStyle)}
                 tw='m-4 flex flex-col flex-grow h-full'
             >
-                <div tw='row items-center font justify-between mb-2'>
-                    <div tw='row items-center gap-2' style={{ fontSize: '1.3rem' }}>
+                <div tw='col items-center font justify-between mb-2'>
+                    <div tw='self-start items-center gap-2' style={{ fontSize: '1.3rem' }}>
                         <span>{card.displayName}</span>
                         <ButtonGroup size='xs'>
                             <Button
@@ -109,24 +109,11 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                             >
                                 Edit
                             </Button>
-                            <AddDraftUI af={card} />
+                            {/* <AddDraftUI af={card} /> */}
                         </ButtonGroup>
                     </div>
                     <div tw='self-end flex gap-2 items-center' style={{ width: 'fit-content' }}>
-                        <Checkbox checked={draft.shouldAutoStart} onChange={(ev, checked) => draft.setAutostart(checked)}>
-                            Autorun
-                        </Checkbox>
-                        {/* <Toggle size='sm' color='red' onChange={(t) => draft.setAutostart(t)} /> */}
-                        <Button
-                            size='sm'
-                            className='self-start'
-                            color='green'
-                            appearance='primary'
-                            startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
-                            onClick={() => draft.start()}
-                        >
-                            Run
-                        </Button>
+                        <RunOrAutorunUI draft={draft} />
                     </div>
                     {/* <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
                         <div tw='flex items-center gap-1'>
@@ -142,7 +129,7 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                         </div>
                     </ErrorBoundary> */}
                 </div>
-                <ActionDraftListUI card={card} />
+                {/* <ActionDraftListUI card={card} /> */}
                 <ScrollablePaneUI
                     // style={{ border: '1px solid blue' }}
                     // style={{ border: '7px solid #152865' }}
@@ -185,5 +172,34 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                 </TabUI>
             </div>
         </draftContext.Provider>
+    )
+})
+
+export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { draft: DraftL }) {
+    const draft = p.draft
+    return (
+        <ButtonGroup size='sm'>
+            <Button
+                //
+
+                startIcon={draft.shouldAutoStart ? <Loader /> : undefined}
+                active={draft.shouldAutoStart}
+                color={draft.shouldAutoStart ? 'green' : undefined}
+                onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
+                // onChange={(ev, checked) => draft.setAutostart(checked)}
+            >
+                Autorun
+            </Button>
+            {/* <Toggle size='sm' color='red' onChange={(t) => draft.setAutostart(t)} /> */}
+            <Button
+                className='self-start'
+                color='green'
+                appearance='primary'
+                startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
+                onClick={() => draft.start()}
+            >
+                Run
+            </Button>
+        </ButtonGroup>
     )
 })
