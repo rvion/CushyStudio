@@ -7,13 +7,21 @@ card({
         positive: form.prompt({
             default: {
                 tokens: [
-                    { type: 'text', text: 'masterpiece, tree' },
+                    { type: 'text', text: 'masterpiece, tree ' },
                     { type: 'wildcard', payload: 'color', version: 1 },
+                    { type: 'text', text: ' ' },
                     { type: 'wildcard', payload: '3d_term', version: 1 },
+                    { type: 'text', text: ' ' },
+                    { type: 'wildcard', payload: 'adj_beauty', version: 1 },
+                    { type: 'text', text: ' ' },
+                    { type: 'wildcard', payload: 'adj_general', version: 1 },
+                    { type: 'text', text: ' nature, intricate_details' },
                 ],
             },
         }),
-        negative: form.prompt({ default: 'nsfw, nude' }),
+        negative: form.prompt({
+            default: 'nsfw, nude, girl, woman, human',
+        }),
         latent: _.ui_latent(form),
         seed: form.seed({}),
         highResFix: _.ui_highresfix(form),
