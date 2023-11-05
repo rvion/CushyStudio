@@ -41,7 +41,7 @@ export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI
             <div
                 tw='ml-auto inset-0 text-center'
                 style={{
-                    opacity: 0.9,
+                    opacity: st.galleryHoverOpacity,
                     boxShadow: '0 0 1rem 0 #ebebebe0',
                     pointerEvents: 'none',
                     position: 'absolute',

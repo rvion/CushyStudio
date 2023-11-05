@@ -117,6 +117,10 @@ export class STATE {
     get showPreviewInFullScreen() { return this.configFile.value.showPreviewInFullScreen ?? false } // prettier-ignore
     set showPreviewInFullScreen(v: boolean) { this.configFile.update({ showPreviewInFullScreen: v }) } // prettier-ignore
 
+    // showPreviewInFullScreen
+    get galleryHoverOpacity() { return this.configFile.value.galleryHoverOpacity ?? .9 } // prettier-ignore
+    set galleryHoverOpacity(v: number) { this.configFile.update({ galleryHoverOpacity: v }) } // prettier-ignore
+
     // gallery size
     get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
     set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore

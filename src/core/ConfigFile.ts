@@ -54,6 +54,8 @@ export type ConfigFile = {
     galleryMaxImages?: number
     /** defaults to 50 */
     galleryBgColor?: string
+    /** opacity of hovered images */
+    galleryHoverOpacity?: number
     /** if true, will auto-open devtools on startup */
     preferDevToolsOpen?: boolean
     /** defaults to 5 */

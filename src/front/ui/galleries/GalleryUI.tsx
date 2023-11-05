@@ -1,15 +1,11 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input, Slider, Toggle } from 'rsuite'
+import { IconButton, Input, Slider, Toggle } from 'rsuite'
 import { useSt } from '../../FrontStateCtx'
 import { ImageUI } from './ImageUI'
-// ⏸️ import { useImageDrop } from './dnd'
 
 export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
     const preview = st.preview
-    // ⏸️ const [dropStyle, dropRef] = useImageDrop((i) => {
-    // ⏸️     i.update({ folderID: null })
-    // ⏸️ })
     return (
         <div //
             className='flex flex-wrap col-folder'
@@ -19,14 +15,10 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
             }}
         >
             {/* MAIN IMAGE COLUMN */}
-            <div
-                // ⏸️ ref={dropRef}
-                // ⏸️ style={dropStyle}
-                className='flex flex-wrap items-start'
-                // style={{ width: '3.4rem', ...dropStyle }}
-            >
+            <div className='flex flex-wrap items-start'>
                 <div tw='text-center w-full'>
                     <div tw='flex gap-2'>
+                        {/* IMAGE SIZE === */}
                         <div tw='self-start w-fit'>
                             <div tw='text-gray-400'>Image size</div>
                             <Slider
@@ -39,33 +31,44 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                             ></Slider>
                         </div>
                         <div tw='self-start w-fit'>
-                            <div tw='text-gray-400'>
-                                background color
-                                <Button size='xs' onClick={() => st.configFile.update({ galleryBgColor: undefined })}>
-                                    reset
-                                </Button>
+                            <div tw='text-gray-400'>background</div>
+                            <div tw='flex'>
+                                <IconButton
+                                    tw='!px-1 !py-0'
+                                    icon={<span className='material-symbols-outlined'>format_color_reset</span>}
+                                    size='xs'
+                                    onClick={() => st.configFile.update({ galleryBgColor: undefined })}
+                                ></IconButton>
+                                <Input
+                                    type='color'
+                                    tw='p-0 m-0 border'
+                                    style={{ width: '5rem' }}
+                                    value={st.configFile.value.galleryBgColor ?? undefined}
+                                    onChange={(ev) => st.configFile.update({ galleryBgColor: ev })}
+                                ></Input>
                             </div>
-                            <Input
-                                //
-                                type='color'
-                                tw='p-0 m-0 border'
-                                style={{ width: '5rem' }}
-                                value={st.configFile.value.galleryBgColor ?? undefined}
-                                onChange={(ev) => st.configFile.update({ galleryBgColor: ev })}
-                            ></Input>
                         </div>
                         <div tw='self-start w-fit'>
                             <div tw='text-gray-400'>
-                                full screen hover
+                                <div>full-screen</div>
                                 <Toggle
-                                    //
                                     size='sm'
                                     checked={st.showPreviewInFullScreen ?? true}
                                     onChange={(next) => (st.showPreviewInFullScreen = next)}
-                                >
-                                    reset
-                                </Toggle>
+                                />
                             </div>
+                        </div>
+                        <div tw='self-start w-fit'>
+                            <div tw='text-gray-400'>hover opacity</div>
+                            <Slider
+                                tw='m-2'
+                                style={{ width: '5rem' }}
+                                step={0.01}
+                                min={0}
+                                max={1}
+                                onChange={(v) => (st.galleryHoverOpacity = v)}
+                                value={st.galleryHoverOpacity}
+                            ></Slider>
                         </div>
                     </div>
                 </div>
@@ -87,28 +90,11 @@ export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
                         }}
                     />
                 ) : null}
-                {/* <div className='text-center'>Images</div> */}
-                {/* <IconButton size='xs' appearance='link' icon={<>📂</>}></IconButton> */}
 
-                {/* <div className='absolute insert-0'> */}
-                {/* <div className='flex flex-row-reverse' style={{ overflowX: 'auto' }}> */}
-                {/* <PlaceholderImageUI /> */}
                 {st.imageToDisplay.map((img, ix) => (
                     <ImageUI key={ix} img={img} />
                 ))}
-                {/* </div> */}
-                {/* </div> */}
             </div>
-            {/*  EXTRA FOLDERS */}
-            {/* {st.db.folders.map((v: FolderL) => {
-                return (
-                    <GalleryFolderUI //
-                        direction='horizontal'
-                        key={v.id}
-                        folder={v}
-                    />
-                )
-            })} */}
         </div>
     )
 })
