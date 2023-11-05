@@ -37,6 +37,9 @@ import { Uploader } from './Uploader'
 import { ElectronUtils } from './ElectronUtils'
 import { GithubUserName } from 'src/library/GithubUser'
 import { GithubRepoName } from 'src/library/githubRepo'
+import { UserTags } from 'src/usertags/UserLoader'
+import { ActionTag } from 'src/prompter/nodes/ActionNode'
+import { ActionTagMethodList } from 'src/library/Card'
 
 // prettier-ignore
 type HoveredAsset =
@@ -101,6 +104,8 @@ export class STATE {
     library: Library
     schemaReady = new ManualPromise<true>()
     danbooru = DanbooruTags.build()
+    userTags = UserTags.build()
+    actionTags: ActionTagMethodList = []
     importer: ComfyImporter
     typecheckingConfig: JsonFile<TsConfigCustom>
 
@@ -187,10 +192,10 @@ export class STATE {
         })
         this.importer = new ComfyImporter(this)
         this.library = new Library(this)
-        ;(async () => {
-            await this.schemaReady
-            const project = this.startProjectV2()
-        })()
+            ; (async () => {
+                await this.schemaReady
+                const project = this.startProjectV2()
+            })()
 
         this.ws = this.initWebsocket()
         makeAutoObservable(this, { comfyUIIframeRef: false })
@@ -222,7 +227,7 @@ export class STATE {
             onConnectOrReconnect: () => this.fetchAndUdpateSchema(),
             onMessage: this.onMessage,
             url: this.getWSUrl,
-            onClose: () => {},
+            onClose: () => { },
         })
     }
 
