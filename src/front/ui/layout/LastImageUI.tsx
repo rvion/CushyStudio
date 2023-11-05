@@ -1,16 +1,11 @@
-import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
+import type { STATE } from 'src/front/state'
 import type { ImageID, ImageL } from 'src/models/Image'
 
+import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { observer } from 'mobx-react-lite'
 import { Button, Rate, Toggle } from 'rsuite'
 import { useSt } from 'src/front/FrontStateCtx'
 import { openExternal, showItemInFolder } from './openExternal'
-import { STATE } from 'src/front/state'
-
-// prettier-ignore
-type PreviewType =
-    | {type: 'latent'}
-    | {type: 'generated', image: ImageL}
 
 const getPreviewType = (
     st: STATE,
@@ -26,14 +21,19 @@ const getPreviewType = (
         return { url: img?.url ?? errorURL, img }
     }
     if (imageID == null) {
-        const lastImage = st.db.images.last()
-        const latent = st.preview
-        if (latent == null) return { url: lastImage?.url ?? errorURL, img: lastImage }
-        if (lastImage == null) return { url: latent.url }
-        if (latent.receivedAt > lastImage.createdAt) {
-            return { url: latent.url }
+        if (st.showLatentPreviewInLastImagePanel) {
+            const lastImage = st.db.images.last()
+            const latent = st.preview
+            if (latent == null) return { url: lastImage?.url ?? errorURL, img: lastImage }
+            if (lastImage == null) return { url: latent.url }
+            if (latent.receivedAt > lastImage.createdAt) {
+                return { url: latent.url }
+            } else {
+                return { url: lastImage.url, img: lastImage }
+            }
         } else {
-            return { url: lastImage.url, img: lastImage }
+            const lastImage = st.db.images.last()
+            return { url: lastImage?.url ?? errorURL, img: lastImage }
         }
     }
     return { url: errorURL }
@@ -61,8 +61,9 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
                 {/* 2. LATENT PREVIEW TOOGLE */}
                 {/* (only on "last-image" mode; when p.imageID is null )  */}
                 {p.imageID == null ? (
-                    <div>
+                    <div tw='flex gap-1 items-center'>
                         <Toggle
+                            size='sm'
                             checked={st.showLatentPreviewInLastImagePanel}
                             onChange={(next) => (st.showLatentPreviewInLastImagePanel = next)}
                         />
