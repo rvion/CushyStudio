@@ -258,7 +258,7 @@ export class Library {
                     }
                 }
                 try {
-                    const loader = new Function('actionTags', readFileSync(asAbsolutePath(join(dir, file))).toString())
+                    const loader = new Function('actionTags', readFileSync(asAbsolutePath(join(dir, baseName))).toString())
                     loader(load)
                 } catch (error) {
                     console.log(`[🔴] Failed to load action tags for ${dir}/_actionTags.ts`)
