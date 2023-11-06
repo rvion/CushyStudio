@@ -1,12 +1,12 @@
 import type { EditorState } from 'lexical'
 import type { LoraNodeJSON } from '../nodes/LoraNode'
-import type { BooruNodeJSON } from '../nodes/BooruNode'
+import type { BooruNodeJSON } from '../nodes/booru/BooruNode'
 import type { WildcardNodeJSON } from '../nodes/WildcardNode'
 import type { EmbeddingNodeJSON } from '../nodes/EmbeddingNode'
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { JSONHighlightedCodeUI } from '../../front/ui/utils/TypescriptHighlightedCodeUI'
-import { UserNodeJSON } from '../nodes/UserNode'
+import { UserNodeJSON } from '../nodes/usertags/UserNode'
 import { ActionNodeJSON } from '../nodes/ActionNode'
 
 export const getFinalJSON = (

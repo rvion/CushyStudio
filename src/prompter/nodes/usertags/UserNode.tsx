@@ -1,13 +1,10 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
-import { UserTag } from 'src/usertags/UserLoader';
+import { UserTag } from 'src/prompter/nodes/usertags/UserLoader'
 
 export type UserNodeJSON = SerializedLexicalNode & { tag: UserTag; type: 'user' }
 export class UserNode extends DecoratorNode<ReactNode> {
-    constructor(
-        public tag: UserTag,
-        key?: NodeKey,
-    ) {
+    constructor(public tag: UserTag, key?: NodeKey) {
         super(key)
     }
 
@@ -40,7 +37,7 @@ export class UserNode extends DecoratorNode<ReactNode> {
 }
 
 export function $createUserNode(tag: UserTag, key?: NodeKey): UserNode {
-    return new UserNode(tag, key);
+    return new UserNode(tag, key)
 }
 
 export function $isUserNode(node: LexicalNode | null | undefined): node is UserNode {

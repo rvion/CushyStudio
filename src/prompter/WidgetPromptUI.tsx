@@ -19,7 +19,7 @@ import './theme/Popover.css'
 // nodes
 import { $createEmbeddingNode, EmbeddingNode } from './nodes/EmbeddingNode'
 import { $createWildcardNode, WildcardNode } from './nodes/WildcardNode'
-import { $createBooruNode, BooruNode } from './nodes/BooruNode'
+import { $createBooruNode, BooruNode } from './nodes/booru/BooruNode'
 import { $createLoraNode, LoraNode } from './nodes/LoraNode'
 
 // plugins
@@ -33,7 +33,7 @@ import { useMemo } from 'react'
 import { CompletionState } from './plugins/CompletionProviders'
 import { Button, IconButton } from 'rsuite'
 import { PrompterConfigUI } from './PropmterConfig'
-import { $createUserNode, UserNode } from './nodes/UserNode'
+import { $createUserNode, UserNode } from './nodes/usertags/UserNode'
 import { $createActionNode, ActionNode } from './nodes/ActionNode'
 
 // const theme = {
@@ -92,7 +92,7 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
                 lora: true,
                 wildcard: true,
                 user: true,
-                action: true
+                action: true,
             }),
         [],
     )

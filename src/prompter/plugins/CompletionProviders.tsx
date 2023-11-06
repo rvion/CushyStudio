@@ -3,15 +3,15 @@ import { wildcards } from 'src/wildcards/wildcards'
 import { LexicalNode } from 'lexical'
 import { makeAutoObservable } from 'mobx'
 import { ReactElement, ReactNode } from 'react'
-import { $createBooruNode } from '../nodes/BooruNode'
+import { $createBooruNode } from '../nodes/booru/BooruNode'
 import { $createEmbeddingNode } from '../nodes/EmbeddingNode'
 import { $createLoraNode } from '../nodes/LoraNode'
 import { $createWildcardNode } from '../nodes/WildcardNode'
 import { CompletionOption } from './CushyCompletionPlugin'
-import { DanbooruTag } from 'src/booru/BooruLoader'
+import { DanbooruTag } from 'src/prompter/nodes/booru/BooruLoader'
 import { EmbeddingName } from 'src/models/Schema'
-import { $createUserNode } from '../nodes/UserNode'
-import { UserTag } from 'src/usertags/UserLoader'
+import { $createUserNode } from '../nodes/usertags/UserNode'
+import { UserTag } from 'src/prompter/nodes/usertags/UserLoader'
 import { $createActionNode, ActionTag } from '../nodes/ActionNode'
 
 const _providerCache = new Map<string, CopmletionProvider>()
@@ -119,7 +119,7 @@ export class CompletionState {
     static getActionCompletionProvider = (st: STATE) => {
         const key = 'Action'
         if (_providerCache.has(key)) return _providerCache.get(key)!
-        const createNode = (t: ActionTag) => $createActionNode({ tag: t, param: "" })
+        const createNode = (t: ActionTag) => $createActionNode({ tag: t, param: '' })
         const menuLabel = <span tw='text-green-500'>action:</span>
         const provider = new CopmletionProvider({
             getValues: () =>
