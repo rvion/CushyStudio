@@ -1,6 +1,6 @@
 import type { LiveDB } from './LiveDB'
 import type { LiveTable } from './LiveTable'
-import type { STATE } from 'src/front/state'
+import type { STATE } from 'src/widgets/state'
 
 export type $BaseInstanceFields = 'id' | 'createdAt' | 'updatedAt'
 export type BaseInstanceFields = {

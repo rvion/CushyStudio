@@ -1,5 +1,5 @@
 import type { KeyboardEvent } from 'react'
-import type { STATE } from 'src/front/state'
+import type { STATE } from 'src/widgets/state'
 import { Trigger } from './Trigger'
 
 type Ctx = STATE

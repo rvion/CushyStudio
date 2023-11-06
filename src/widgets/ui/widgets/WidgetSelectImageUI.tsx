@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Toggle } from 'rsuite'
 import { Widget_image, Widget_imageOpt } from 'src/controls/Widget'
-import { useSt } from '../../../front/FrontStateCtx'
+import { useSt } from '../../FrontStateCtx'
 import { ImageUI } from '../galleries/ImageUI'
 import { useImageDrop } from '../galleries/dnd'
 import { useDraft } from '../useDraft'

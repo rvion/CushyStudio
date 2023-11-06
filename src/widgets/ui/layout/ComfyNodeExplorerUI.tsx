@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
 import { Input, InputGroup } from 'rsuite'
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from 'src/core/Colors'
-import { useProject } from '../../../front/ProjectCtx'
+import { useProject } from '../../ProjectCtx'
 
 class ComfyNodeExplorerState {
     // globalSearch = ''

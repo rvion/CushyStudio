@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 
 import { Tag } from 'rsuite'
-import { useSt } from 'src/front/FrontStateCtx'
+import { useSt } from 'src/widgets/FrontStateCtx'
 import { CardFile } from '../CardFile'
 import { Deck } from '../Deck'
 

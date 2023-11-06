@@ -1,7 +1,7 @@
 import { KEY_ENTER_COMMAND } from 'lexical'
 import { useEffect } from 'react'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { useDraft } from '../../front/ui/useDraft'
+import { useDraft } from '../../widgets/ui/useDraft'
 
 // runs the form on cmd+enter within the editor
 

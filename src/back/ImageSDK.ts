@@ -1,6 +1,6 @@
 import type { Layer } from 'konva/lib/Layer'
 import type { Stage } from 'konva/lib/Stage'
-import type { STATE } from 'src/front/state'
+import type { STATE } from 'src/widgets/state'
 
 export type Konva = typeof import('konva').default
 export class ImageSDK {

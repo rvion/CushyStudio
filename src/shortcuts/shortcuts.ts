@@ -1,4 +1,4 @@
-import { STATE } from 'src/front/state'
+import { STATE } from 'src/widgets/state'
 import { Combo, Shortcut } from './ShortcutManager'
 import { Trigger } from './Trigger'
 

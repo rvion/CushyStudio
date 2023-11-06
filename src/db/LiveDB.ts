@@ -1,4 +1,4 @@
-import type { STATE } from '../front/state'
+import type { STATE } from '../widgets/state'
 
 import { makeAutoObservable } from 'mobx'
 import { LiveTable } from './LiveTable'

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../../../front/FrontStateCtx'
+import { useSt } from '../../FrontStateCtx'
 import { GraphPreviewUI } from '../MsgShowHTMLUI'
 import { ErrorBoundary } from 'react-error-boundary'
 import { ErrorBoundaryFallback } from '../utils/ErrorBoundary'

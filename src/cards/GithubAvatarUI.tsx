@@ -1,5 +1,5 @@
 import { assets } from 'src/assets/assets'
-import { useSt } from '../front/FrontStateCtx'
+import { useSt } from '../widgets/FrontStateCtx'
 import { GithubUser, GithubUserName, asGithubUserName } from './GithubUser'
 
 export function GithubUserUI(p: {

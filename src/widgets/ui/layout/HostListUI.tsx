@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Input, InputGroup, Panel, Toggle } from 'rsuite'
-import { useSt } from 'src/front/FrontStateCtx'
+import { useSt } from 'src/widgets/FrontStateCtx'
 
 export const LabelUI = observer(function LabelUI_(p: { children: React.ReactNode }) {
     return <b>{p.children}: </b>

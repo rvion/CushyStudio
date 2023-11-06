@@ -1,4 +1,4 @@
-import type { STATE } from 'src/front/state'
+import type { STATE } from 'src/widgets/state'
 import type { ImageL } from 'src/models/Image'
 
 import { NativeTypes } from 'react-dnd-html5-backend'

@@ -3,7 +3,7 @@ import { useLayoutEffect, useMemo } from 'react'
 
 // @ts-ignore
 import { createPortal } from 'react-dom'
-import { renderMinimap } from 'src/minimap/Minimap'
+import { renderMinimap } from 'src/widgets/minimap/Minimap'
 import { GraphL } from 'src/models/Graph'
 
 export const GraphPreviewUI = observer(function MsgShowHTMLUI_(p: { graph: GraphL }) {

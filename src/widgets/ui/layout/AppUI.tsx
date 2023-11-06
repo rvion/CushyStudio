@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from 'src/front/FrontStateCtx'
+import { useSt } from 'src/widgets/FrontStateCtx'
 import { AppBarUI } from './AppBarUI'
 import { ProjectUI } from './ProjectUI'
 

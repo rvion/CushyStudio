@@ -3,7 +3,7 @@ import type { $BaseInstanceFields, BaseInstanceFields, LiveInstance } from './Li
 import type { TableName } from './LiveStore'
 
 import { MERGE_PROTOTYPES } from './LiveHelpers'
-import { STATE } from 'src/front/state'
+import { STATE } from 'src/widgets/state'
 import { nanoid } from 'nanoid'
 import { makeAutoObservable, toJS } from 'mobx'
 import { LiveOrdering } from './LiveOrdering'

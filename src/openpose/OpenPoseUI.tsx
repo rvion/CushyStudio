@@ -10,7 +10,7 @@ const canvas = document.getElementById('canvas')
 import { useMemo } from 'react'
 import { IconButton } from 'rsuite'
 import { OpenPoseAnimV0 } from './OpenPoseAnimV0'
-import { useSt } from 'src/front/FrontStateCtx'
+import { useSt } from 'src/widgets/FrontStateCtx'
 
 export const OpenPoseViewerUI = observer(function OpenPoseViewerUI_(p: {}) {
     const workspace = useSt()

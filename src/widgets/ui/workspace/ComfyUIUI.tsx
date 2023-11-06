@@ -3,7 +3,7 @@ import type { LiteGraphJSON } from 'src/core/LiteGraph'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useLayoutEffect } from 'react'
-import { useSt } from '../../../front/FrontStateCtx'
+import { useSt } from '../../FrontStateCtx'
 
 export const ComfyUIUI = observer(function ComfyUIUI_(p: { litegraphJson?: Maybe<LiteGraphJSON> }) {
     const st = useSt()

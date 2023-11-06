@@ -1,6 +1,6 @@
 import { Type, Static } from '@sinclair/typebox'
 import { Value, ValueError } from '@sinclair/typebox/value'
-import { Either, ResultFailure, __FAIL, __OK, resultFailure, resultSuccess } from 'src/utils/Either'
+import { Either, ResultFailure, __FAIL, __OK, resultFailure, resultSuccess } from 'src/types/Either'
 
 // DECK --------------------------------------
 export type DeckManifest = {

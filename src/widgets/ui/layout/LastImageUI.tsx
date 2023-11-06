@@ -1,10 +1,10 @@
-import type { STATE } from 'src/front/state'
+import type { STATE } from 'src/widgets/state'
 import type { ImageID, ImageL } from 'src/models/Image'
 
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { observer } from 'mobx-react-lite'
 import { Button, Rate, Toggle } from 'rsuite'
-import { useSt } from 'src/front/FrontStateCtx'
+import { useSt } from 'src/widgets/FrontStateCtx'
 import { openExternal, showItemInFolder } from './openExternal'
 
 const getPreviewType = (

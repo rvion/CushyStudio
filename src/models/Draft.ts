@@ -7,7 +7,7 @@ import { CardFile } from 'src/cards/CardFile'
 import { CardPath } from 'src/cards/CardPath'
 import { type Widget } from 'src/controls/Widget'
 import { FormBuilder } from 'src/controls/FormBuilder'
-import { __FAIL, __OK, type Result } from 'src/utils/Either'
+import { __FAIL, __OK, type Result } from 'src/types/Either'
 import { LiveRef } from '../db/LiveRef'
 import { Status } from 'src/back/Status'
 

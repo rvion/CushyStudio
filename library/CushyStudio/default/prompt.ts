@@ -45,6 +45,7 @@ card({
         extra: form.groupOpt({
             items: () => ({
                 reverse: form.bool({ default: false }),
+                show3d: form.bool({ default: false }),
             }),
         }),
     }),

@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from 'src/front/FrontStateCtx'
+import { useSt } from 'src/widgets/FrontStateCtx'
 import { useImageDrag } from './dnd'
 
 export const SamplerPreviewImageUI = observer(function SamplerPreviewImageUI_(p: {}) {

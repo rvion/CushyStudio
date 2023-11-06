@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Form, Panel, Toggle } from 'rsuite'
-import { useSt } from '../../../front/FrontStateCtx'
+import { useSt } from '../../FrontStateCtx'
 import { SectionTitleUI } from '../workspace/SectionTitle'
 
 export const PanelConfigUI = observer(function PanelConfigUI_() {

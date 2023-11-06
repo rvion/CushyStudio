@@ -2,7 +2,7 @@ import type { ReleaseChannels } from 'src/core/ConfigFile'
 
 import { observer } from 'mobx-react-lite'
 import { RadioTile, RadioTileGroup } from 'rsuite'
-import { useSt } from 'src/front/FrontStateCtx'
+import { useSt } from 'src/widgets/FrontStateCtx'
 
 export const ReleaseChannelUI = observer(function ReleaseChannelUI_(p: {
     //

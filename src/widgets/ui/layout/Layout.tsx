@@ -1,4 +1,4 @@
-import type { STATE } from 'src/front/state'
+import type { STATE } from 'src/widgets/state'
 import type { DraftID } from 'src/models/Draft'
 
 import * as FL from 'flexlayout-react'

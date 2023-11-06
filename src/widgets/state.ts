@@ -36,7 +36,7 @@ import { extractErrorMessage } from '../utils/formatters/extractErrorMessage'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/formatters/stringifyReadable'
-import { ElectronUtils } from './ElectronUtils'
+import { ElectronUtils } from '../utils/electron/ElectronUtils'
 import { Uploader } from './Uploader'
 import { CushyLayoutManager } from './ui/layout/Layout'
 import { GitManagedFolder } from '../cards/updater'
@@ -91,9 +91,7 @@ export class STATE {
     actionsFolderPathRel: RelativePath
     outputFolderPath: AbsolutePath
     status: ComfyStatus | null = null
-
     graphHovered: Maybe<{ graph: GraphL; pctTop: number; pctLeft: number }> = null
-    // misc
     sid: Maybe<string> = null
     comfyStatus: Maybe<ComfyStatus> = null
     cushyStatus: Maybe<FromExtension_CushyStatus> = null

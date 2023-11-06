@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../../../front/FrontStateCtx'
+import { useSt } from '../../FrontStateCtx'
 import { InView } from 'react-intersection-observer'
 import { StepUI } from './StepUI'
 

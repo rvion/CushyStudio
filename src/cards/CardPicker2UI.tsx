@@ -3,8 +3,8 @@ import type { Deck } from './Deck'
 
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
-import { CreateDeckBtnUI } from 'src/front/ui/layout/GithubAppBarInputUI'
-import { useSt } from '../front/FrontStateCtx'
+import { CreateDeckBtnUI } from 'src/widgets/ui/layout/GithubAppBarInputUI'
+import { useSt } from '../widgets/FrontStateCtx'
 import { DeckHeaderUI } from './DeckHeaderUI'
 
 export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
