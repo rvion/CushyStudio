@@ -300,7 +300,7 @@ export class SchemaL {
         p(`import type { ComfyNode } from '${prefix}core/Node'`)
         p(`import type { Slot } from '${prefix}core/Slot'`)
         p(`import type { ComfyNodeSchemaJSON } from '${prefix}types/ComfySchemaJSON'`)
-        p(`import type { ComfyNodeID } from '${prefix}types/NodeUID'`)
+        p(`import type { ComfyNodeID } from '${prefix}types/ComfyNodeID'`)
         p(`import type { CardType, ActionTags } from '${prefix}cards/Card'`)
         // p(`import type { ActionType, ActionTags } from '${prefix}library/Card'`)
         // p(`import type { WorkflowType } from '${prefix}core/WorkflowFn'`)
