@@ -8,11 +8,11 @@ import 'highlight.js/styles/stackoverflow-dark.css'
 import 'rsuite/dist/rsuite.min.css'
 // import 'src/theme/theme-rvion.css'
 
-import './webview.css'
+import './index.css'
 import 'src/theme/theme.css'
 // import 'src/theme/card.css'
 
-import { Main } from './MainUI'
+import { Main } from '../widgets/ui/MainUI'
 
 const root = document.getElementById('root') as HTMLElement
 ReactDOM.createRoot(root).render(<Main />)

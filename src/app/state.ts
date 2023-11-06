@@ -1,6 +1,6 @@
 import type { ImageL } from '../models/Image'
 import type { ComfyStatus, PromptID, PromptRelated_WsMsg, WsMsg } from '../types/ComfyWsApi'
-import type { CSCriticalError } from './CSCriticalError'
+import type { CSCriticalError } from '../widgets/CSCriticalError'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
@@ -8,7 +8,7 @@ import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
 import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
-import { mkTypescriptConfig, type TsConfigCustom } from './TsConfigCustom'
+import { mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 
 import type { ActionTagMethodList } from 'src/cards/Card'
 import { CardPath, asCardPath } from 'src/cards/CardPath'
@@ -37,8 +37,8 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { readableStringify } from '../utils/formatters/stringifyReadable'
 import { ElectronUtils } from '../utils/electron/ElectronUtils'
-import { Uploader } from './Uploader'
-import { CushyLayoutManager } from './ui/layout/Layout'
+import { Uploader } from '../widgets/Uploader'
+import { CushyLayoutManager } from '../widgets/ui/layout/Layout'
 import { GitManagedFolder } from '../cards/updater'
 
 // prettier-ignore

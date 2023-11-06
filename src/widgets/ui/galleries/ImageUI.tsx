@@ -1,4 +1,4 @@
-import type { STATE } from 'src/widgets/state'
+import type { STATE } from 'src/app/state'
 
 import { observer } from 'mobx-react-lite'
 import { Dropdown, Popover, Whisper } from 'rsuite'

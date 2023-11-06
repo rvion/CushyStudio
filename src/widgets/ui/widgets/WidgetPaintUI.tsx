@@ -1,5 +1,5 @@
 import type { ImageID, ImageL } from 'src/models/Image'
-import type { STATE } from '../../state'
+import type { STATE } from '../../../app/state'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { runInAction } from 'mobx'

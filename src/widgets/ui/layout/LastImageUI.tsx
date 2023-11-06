@@ -1,4 +1,4 @@
-import type { STATE } from 'src/widgets/state'
+import type { STATE } from 'src/app/state'
 import type { ImageID, ImageL } from 'src/models/Image'
 
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'

@@ -1,4 +1,4 @@
-import type { STATE } from './state'
+import type { STATE } from '../app/state'
 
 import React from 'react'
 

@@ -1,5 +1,5 @@
 import { makeAutoObservable } from 'mobx'
-import { STATE } from 'src/widgets/state'
+import { STATE } from 'src/app/state'
 
 export type Theme = 'light' | 'dark'
 

@@ -1,4 +1,4 @@
-import type { STATE } from 'src/widgets/state'
+import type { STATE } from 'src/app/state'
 import type { RelativePath } from 'src/utils/fs/BrandedPaths'
 
 import { mkdirSync, existsSync, readFileSync, writeFileSync } from 'fs'

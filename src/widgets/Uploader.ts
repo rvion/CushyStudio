@@ -6,7 +6,7 @@ import path from 'pathe'
 import { readFileSync } from 'fs'
 import { lookup } from 'mime-types'
 import { asSTRING_orCrash } from 'src/utils/bang'
-import { STATE } from './state'
+import { STATE } from '../app/state'
 import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 
 export class Uploader {

@@ -1,5 +1,5 @@
 import type { RelativePath } from 'src/utils/fs/BrandedPaths'
-import type { STATE } from '../widgets/state'
+import type { STATE } from '../app/state'
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'

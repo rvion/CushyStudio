@@ -1,6 +1,6 @@
 import type { Action, WidgetDict } from 'src/cards/Card'
 import type { LiteGraphJSON } from 'src/core/LiteGraph'
-import type { STATE } from 'src/widgets/state'
+import type { STATE } from 'src/app/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 

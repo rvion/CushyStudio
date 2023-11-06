@@ -1,4 +1,4 @@
-import type { STATE } from '../../widgets/state'
+import type { STATE } from '../../app/state'
 
 export class ElectronUtils {
     constructor(public st: STATE) {
