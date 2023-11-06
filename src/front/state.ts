@@ -39,7 +39,7 @@ import { readableStringify } from '../utils/stringifyReadable'
 import { ElectronUtils } from './ElectronUtils'
 import { Uploader } from './Uploader'
 import { CushyLayoutManager } from './ui/layout/Layout'
-import { GitManagedFolder } from './updater'
+import { GitManagedFolder } from '../cards/updater'
 
 // prettier-ignore
 type HoveredAsset =

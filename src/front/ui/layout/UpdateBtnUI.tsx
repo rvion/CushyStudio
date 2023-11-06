@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
-import { FolderKind, GitManagedFolder } from 'src/front/updater'
+import { FolderKind, GitManagedFolder } from 'src/cards/updater'
 import { _formatPreviewDate } from 'src/utils/_formatPreviewDate'
 import { ReleaseChannelUI } from './ReleaseChannelUI'
 

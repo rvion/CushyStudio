@@ -1,5 +1,5 @@
 import type { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
-import type { STATE } from './state'
+import type { STATE } from '../front/state'
 
 import { exec } from 'child_process'
 import { existsSync, lstatSync, mkdirSync, statSync } from 'fs'
