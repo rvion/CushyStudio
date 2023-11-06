@@ -1,7 +1,7 @@
 import type { LiveInstance } from 'src/db/LiveInstance'
 import type { HTMLContent, MDContent } from 'src/types/markdown'
 import type { Cyto } from '../core/AutolayoutV1'
-import type { VisEdges, VisNodes } from '../widgets/ui/VisUI'
+import type { VisEdges, VisNodes } from '../widgets/misc/VisUI'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
 import type { ComfyNodeID } from '../types/ComfyNodeID'

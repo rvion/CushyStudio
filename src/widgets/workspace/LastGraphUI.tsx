@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../../state/stateContext'
-import { GraphPreviewUI } from '../ui/MsgShowHTMLUI'
+import { GraphPreviewUI } from '../misc/MsgShowHTMLUI'
 import { ErrorBoundary } from 'react-error-boundary'
 import { ErrorBoundaryFallback } from '../misc/ErrorBoundary'
 

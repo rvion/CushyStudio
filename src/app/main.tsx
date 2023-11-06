@@ -12,7 +12,7 @@ import './index.css'
 import 'src/theme/theme.css'
 // import 'src/theme/card.css'
 
-import { Main } from '../widgets/ui/MainUI'
+import { Main } from '../widgets/misc/MainUI'
 
 const root = document.getElementById('root') as HTMLElement
 ReactDOM.createRoot(root).render(<Main />)
