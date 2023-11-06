@@ -1,6 +1,6 @@
 // misc
 import { observer } from 'mobx-react-lite'
-import { wildcards } from '../wildcards/wildcards'
+import { wildcards } from './nodes/wildcards/wildcards'
 import { useSt } from '../front/FrontStateCtx'
 
 // lexical
@@ -18,7 +18,7 @@ import './theme/Popover.css'
 
 // nodes
 import { $createEmbeddingNode, EmbeddingNode } from './nodes/EmbeddingNode'
-import { $createWildcardNode, WildcardNode } from './nodes/WildcardNode'
+import { $createWildcardNode, WildcardNode } from './nodes/wildcards/WildcardNode'
 import { $createBooruNode, BooruNode } from './nodes/booru/BooruNode'
 import { $createLoraNode, LoraNode } from './nodes/LoraNode'
 

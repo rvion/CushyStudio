@@ -1,6 +1,6 @@
 import type { LoraNodeJSON } from '../nodes/LoraNode'
 import type { BooruNodeJSON } from '../nodes/booru/BooruNode'
-import type { WildcardNodeJSON } from '../nodes/WildcardNode'
+import type { WildcardNodeJSON } from '../nodes/wildcards/WildcardNode'
 import type { EmbeddingNodeJSON } from '../nodes/EmbeddingNode'
 import type { UserNodeJSON } from '../nodes/usertags/UserNode'
 import type { ActionNodeJSON } from '../nodes/ActionNode'

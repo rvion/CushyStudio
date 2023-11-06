@@ -1,8 +1,6 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
-import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import { useSt } from 'src/front/FrontStateCtx'
-import { wildcards } from 'src/wildcards/wildcards'
+import { wildcards } from './wildcards'
 
 export type WildcardNodeJSON = SerializedLexicalNode & { payload: string; type: 'wildcard' }
 export class WildcardNode extends DecoratorNode<ReactNode> {
@@ -41,8 +39,8 @@ export class WildcardNode extends DecoratorNode<ReactNode> {
                 //
                 className='bg-yellow-800 rv-tooltip-container'
             >
-                <div className='rv-tooltip'>{((wildcards as any)[this.wildcardName] ?? []).slice(0, 20).join(', ') + '...'}</div>
-                *{this.wildcardName}
+                <div className='rv-tooltip'>{((wildcards as any)[this.wildcardName] ?? []).slice(0, 20).join(', ') + '...'}</div>*
+                {this.wildcardName}
             </span>
         )
     }
