@@ -7,8 +7,8 @@ import { useMemo, useState } from 'react'
 import { getPngMetadataFromFile } from './getPngMetadata'
 import { usePromise } from './usePromise'
 import { Button, Panel } from 'rsuite'
-import { useSt } from '../widgets/FrontStateCtx'
-import { TypescriptHighlightedCodeUI } from '../widgets/ui/utils/TypescriptHighlightedCodeUI'
+import { useSt } from '../state/stateContext'
+import { TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 
 export interface FileListProps {

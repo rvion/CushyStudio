@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { IconButton, Input, Slider, Toggle } from 'rsuite'
-import { useSt } from '../FrontStateCtx'
+import { useSt } from '../../state/stateContext'
 import { ImageUI } from './ImageUI'
 
 export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {

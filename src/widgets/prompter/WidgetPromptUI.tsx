@@ -1,7 +1,7 @@
 // misc
 import { observer } from 'mobx-react-lite'
 import { wildcards } from './nodes/wildcards/wildcards'
-import { useSt } from '../FrontStateCtx'
+import { useSt } from '../../state/stateContext'
 
 // lexical
 import { $createLineBreakNode, $createParagraphNode, $createTextNode, $getRoot, EditorState, LexicalEditor } from 'lexical'

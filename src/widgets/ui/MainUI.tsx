@@ -5,9 +5,9 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { CustomProvider } from 'rsuite'
 import { asAbsolutePath } from '../../utils/fs/pathUtils'
-import { stContext, useSt } from '../FrontStateCtx'
-import { STATE } from '../../app/state'
-import { CushyUI } from './layout/AppUI'
+import { stContext, useSt } from '../../state/stateContext'
+import { STATE } from '../../state/state'
+import { CushyUI } from '../../app/layout/AppUI'
 
 const path = asAbsolutePath(process.cwd())
 

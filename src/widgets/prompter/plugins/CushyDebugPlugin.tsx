@@ -6,7 +6,7 @@ import type { UserNodeJSON } from '../nodes/usertags/UserNode'
 import type { ActionNodeJSON } from '../nodes/ActionNode'
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
-import { JSONHighlightedCodeUI } from '../../ui/utils/TypescriptHighlightedCodeUI'
+import { JSONHighlightedCodeUI } from '../../misc/TypescriptHighlightedCodeUI'
 import { getFinalJSON } from './getFinalJSON'
 
 export const CushyDebugPlugin = <T extends any>() => {

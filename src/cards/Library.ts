@@ -1,4 +1,4 @@
-import type { STATE } from 'src/app/state'
+import type { STATE } from 'src/state/state'
 import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 
 import path, { join } from 'pathe'

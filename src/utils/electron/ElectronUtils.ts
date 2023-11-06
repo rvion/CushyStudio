@@ -1,4 +1,4 @@
-import type { STATE } from '../../app/state'
+import type { STATE } from '../../state/state'
 
 export class ElectronUtils {
     constructor(public st: STATE) {

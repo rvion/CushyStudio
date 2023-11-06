@@ -3,7 +3,7 @@
  * file so it's easy to add any widget in the future
  */
 import type { ItemDataType } from 'rsuite/esm/@types/common'
-import type { CELL } from 'src/widgets/ui/widgets/WidgetMatrixUI'
+import type { CELL } from 'src/widgets/forms/WidgetMatrixUI'
 import type { SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
@@ -11,7 +11,7 @@ import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/Cushy
 import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
 
 import { makeAutoObservable } from 'mobx'
-import { NumbericTheme } from 'src/widgets/ui/widgets/WidgetNumUI'
+import { NumbericTheme } from 'src/widgets/forms/WidgetNumUI'
 import { bang } from 'src/utils/bang'
 import { FormBuilder } from './FormBuilder'
 import { IRequest, IWidget, ReqInput, ReqResult } from './IWidget'

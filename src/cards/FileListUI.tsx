@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../widgets/FrontStateCtx'
-import { TabUI } from '../widgets/ui/layout/TabUI'
+import { useSt } from '../state/stateContext'
+import { TabUI } from '../app/layout/TabUI'
 import { ActionPicker1UI } from './CardPicker1UI'
 import { ActionPicker2UI } from './CardPicker2UI'
 

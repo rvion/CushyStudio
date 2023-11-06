@@ -2,9 +2,9 @@ import { observer } from 'mobx-react-lite'
 import { Tree } from 'rsuite'
 import { asCardPath } from 'src/cards/CardPath'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { useSt } from '../widgets/FrontStateCtx'
-import { TooltipUI } from '../widgets/ui/layout/TooltipUI'
-import { getIconForFilePath } from '../widgets/ui/utils/filePathIcon'
+import { useSt } from '../state/stateContext'
+import { TooltipUI } from '../app/layout/TooltipUI'
+import { getIconForFilePath } from '../widgets/misc/filePathIcon'
 import { assets } from 'src/utils/assets/assets'
 
 export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {

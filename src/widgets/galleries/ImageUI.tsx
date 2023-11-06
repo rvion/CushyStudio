@@ -1,10 +1,10 @@
-import type { STATE } from 'src/app/state'
+import type { STATE } from 'src/state/state'
 
 import { observer } from 'mobx-react-lite'
 import { Dropdown, Popover, Whisper } from 'rsuite'
 import { PositionChildProps } from 'rsuite/esm/Picker'
 import { ImageL } from 'src/models/Image'
-import { useSt } from '../FrontStateCtx'
+import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
 
 export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
