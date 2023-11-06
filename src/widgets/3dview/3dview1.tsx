@@ -54,6 +54,7 @@ export const SceneViewer = observer(function SceneViewer_(p: { imageSrc: string;
         // Load textures
         const loader = new THREE.TextureLoader()
         const texture = loader.load(state.imageSrc)
+        texture.encoding = THREE.sRGBEncoding
         const depthTexture = loader.load(state.depthMapSrc)
         const normalTexture = loader.load(state.normalMapSrc)
 
@@ -64,6 +65,8 @@ export const SceneViewer = observer(function SceneViewer_(p: { imageSrc: string;
             displacementMap: depthTexture,
             displacementScale: 3,
             normalMap: normalTexture,
+            metalness: 0,
+            roughness: 1,
         })
         const plane = new THREE.Mesh(geometry, material)
 
@@ -84,6 +87,7 @@ export const SceneViewer = observer(function SceneViewer_(p: { imageSrc: string;
         const animate = function () {
             requestAnimationFrame(animate)
             controls.update() // only required if controls.enableDamping = true, or if controls.autoRotate = true
+            // renderer.gammaOutput = true;
 
             // Animation logic here
             // plane.rotation.x += 0.01
