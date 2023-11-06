@@ -110,9 +110,10 @@ async function START() {
     app.on('ready', () => {
         // globalShortcut.unregisterAll()
         app.on('browser-window-focus', () => {
-            globalShortcut.registerAll(['CommandOrControl+W'], () => {
-                return
-            })
+            globalShortcut.unregisterAll()
+            // globalShortcut.registerAll(['CommandOrControl+W'], () => {
+            //     return
+            // })
         })
         app.on('browser-window-blur', () => {
             globalShortcut.unregisterAll()
