@@ -23,7 +23,8 @@ import { $createBooruNode, BooruNode } from './nodes/booru/BooruNode'
 import { $createLoraNode, LoraNode } from './nodes/LoraNode'
 
 // plugins
-import { CushyDebugPlugin, PossibleSerializedNodes, getFinalJSON } from './plugins/CushyDebugPlugin'
+import { CushyDebugPlugin, PossibleSerializedNodes } from './plugins/CushyDebugPlugin'
+import { getFinalJSON } from './plugins/getFinalJSON'
 import { CushyCompletionPlugin } from './plugins/CushyCompletionPlugin'
 import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
 import { TreeViewPlugin } from './plugins/TreeViewPlugin'
