@@ -7,7 +7,7 @@ import { nanoid } from 'nanoid'
 import { Status } from '../back/Status'
 import { LiveCollection } from '../db/LiveCollection'
 import { LiveRef } from '../db/LiveRef'
-import { exhaust } from '../utils/ComfyUtils'
+import { exhaust } from '../utils/misc/ComfyUtils'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { ImageL } from './Image'
 

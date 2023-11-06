@@ -1,7 +1,7 @@
 import cytoscape, { Stylesheet } from 'cytoscape'
 import type { GraphL } from '../models/Graph'
 import klay from 'cytoscape-klay'
-import { bang } from '../utils/bang'
+import { bang } from '../utils/misc/bang'
 
 cytoscape.use(klay)
 

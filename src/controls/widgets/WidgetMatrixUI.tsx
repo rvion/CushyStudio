@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { bang } from '../../utils/bang'
+import { bang } from '../../utils/misc/bang'
 import { Widget_matrix } from 'src/controls/Widget'
 import { Button } from 'rsuite'
 

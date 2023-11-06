@@ -9,7 +9,7 @@ import type { ComfyNodeSchema, SchemaL } from './Schema'
 
 import { marked } from 'marked'
 import { join } from 'pathe'
-import { ManualPromise } from 'src/utils/ManualPromise'
+import { ManualPromise } from 'src/utils/misc/ManualPromise'
 import { NodeBuilder } from '../back/NodeBuilder'
 import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
 import { comfyColors } from '../core/Colors'

@@ -12,7 +12,7 @@ import { Deck, DeckFolder } from 'src/cards/Deck'
 import { hasValidActionExtension } from '../back/ActionExtensions'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { CardFile } from './CardFile'
-import { _FIX_INDENTATION } from 'src/controls/_FIX_INDENTATION'
+import { _FIX_INDENTATION } from 'src/utils/misc/_FIX_INDENTATION'
 import { ActionTagMethodList } from './Card'
 
 export class Library {

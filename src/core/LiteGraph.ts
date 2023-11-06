@@ -3,7 +3,7 @@ import type { GraphL } from '../models/Graph'
 import type { ComfyNode } from './Node'
 
 import { toJS } from 'mobx'
-import { bang } from '../utils/bang'
+import { bang } from '../utils/misc/bang'
 
 export type LiteGraphJSON = {
     last_node_id: number

@@ -1,8 +1,8 @@
 import type { SchemaL } from 'src/models/Schema'
 import * as W from './Widget'
-import { exhaust } from 'src/utils/ComfyUtils'
+import { exhaust } from 'src/utils/misc/ComfyUtils'
 import { makeAutoObservable } from 'mobx'
-import { _FIX_INDENTATION } from './_FIX_INDENTATION'
+import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 
 // prettier-ignore
 export class FormBuilder {

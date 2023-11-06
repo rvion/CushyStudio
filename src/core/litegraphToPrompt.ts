@@ -1,7 +1,7 @@
 import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode } from './LiteGraph'
 import type { ComfyNodeJSON, ComfyPromptJSON } from 'src/types/ComfyPrompt'
 import type { ComfyNodeSchema, SchemaL } from '../models/Schema'
-import { bang } from '../utils/bang'
+import { bang } from '../utils/misc/bang'
 
 export const convertLiteGraphToPrompt = (
     //

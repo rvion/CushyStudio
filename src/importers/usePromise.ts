@@ -1,5 +1,5 @@
 import { DependencyList, useMemo } from 'react'
-import { ManualPromise } from '../utils/ManualPromise'
+import { ManualPromise } from '../utils/misc/ManualPromise'
 
 export const usePromise = (fn: () => Promise<any>, deps: DependencyList) => {
     return useMemo(() => {

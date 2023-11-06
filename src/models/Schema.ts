@@ -4,7 +4,7 @@ import { observable, toJS } from 'mobx'
 import { LiveInstance } from 'src/db/LiveInstance'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
-import { CodeBuffer } from '../utils/CodeBuffer'
+import { CodeBuffer } from '../utils/codegen/CodeBuffer'
 import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 
 export type EnumHash = string

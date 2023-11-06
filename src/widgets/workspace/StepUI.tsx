@@ -2,7 +2,7 @@ import type { StepL } from 'src/models/Step'
 
 import { observer, useLocalObservable } from 'mobx-react-lite'
 import { Status } from '../../back/Status'
-import { _formatPreviewDate } from '../../utils/_formatPreviewDate'
+import { _formatPreviewDate } from '../../utils/formatters/_formatPreviewDate'
 import { StepOutputUI } from './StepOutputUI'
 
 export const StepUI = observer(function StepUI_(p: { step: StepL }) {

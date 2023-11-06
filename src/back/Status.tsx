@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { exhaust } from '../utils/ComfyUtils'
+import { exhaust } from '../utils/misc/ComfyUtils'
 import { Loader } from 'rsuite'
 
 export enum Status {

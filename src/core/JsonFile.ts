@@ -6,7 +6,7 @@ import { makeAutoObservable } from 'mobx'
 import { basename, dirname, join } from 'pathe'
 
 import { readableStringify } from '../utils/formatters/stringifyReadable'
-import { bang } from '../utils/bang'
+import { bang } from '../utils/misc/bang'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { ZodSchema } from 'zod'
 

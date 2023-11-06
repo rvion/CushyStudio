@@ -14,7 +14,7 @@ import { ScrollablePaneUI } from '../misc/scrollableArea'
 import { draftContext } from '../misc/useDraft'
 import { ResultWrapperUI } from '../misc/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
-import { WidgetUI } from '../forms/WidgetUI'
+import { WidgetUI } from '../../controls/widgets/WidgetUI'
 import { ActionDraftListUI } from './ActionDraftListUI'
 
 export const CurrentDraftUI = observer(function CurrentDraftUI_(p: {}) {
