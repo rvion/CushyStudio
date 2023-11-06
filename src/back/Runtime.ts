@@ -26,7 +26,7 @@ import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSen
 import { NodeBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
-import { assets } from 'src/assets/assets'
+import { assets } from 'src/utils/assets/assets'
 import { CardPath } from 'src/cards/CardPath'
 import { ImageSDK } from './ImageSDK'
 

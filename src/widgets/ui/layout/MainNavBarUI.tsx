@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Button, ButtonGroup } from 'rsuite'
-import { assets } from 'src/assets/assets'
+import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../FrontStateCtx'
 import { DBHealthUI } from './AppBarUI'
 import { CardsPickerModalUI } from 'src/cards/CardPicker3UI'

@@ -3,7 +3,7 @@ import type { RelativePath } from 'src/utils/fs/BrandedPaths'
 
 import { mkdirSync, existsSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import { assets } from 'src/assets/assets'
+import { assets } from 'src/utils/assets/assets'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 
 // --------------------------------------------------------------------------------

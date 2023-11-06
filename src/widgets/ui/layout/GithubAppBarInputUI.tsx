@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode, useMemo } from 'react'
 import { Button, Input, InputGroup, Popover, Tag, Whisper } from 'rsuite'
-import { assets } from 'src/assets/assets'
+import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../FrontStateCtx'
 import { CreateDeckModalState, CreateDeckModalUI } from './CreateDeckModalUI'
 

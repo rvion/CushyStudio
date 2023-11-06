@@ -5,7 +5,7 @@ import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { useSt } from '../widgets/FrontStateCtx'
 import { TooltipUI } from '../widgets/ui/layout/TooltipUI'
 import { getIconForFilePath } from '../widgets/ui/utils/filePathIcon'
-import { assets } from 'src/assets/assets'
+import { assets } from 'src/utils/assets/assets'
 
 export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
     const st = useSt()

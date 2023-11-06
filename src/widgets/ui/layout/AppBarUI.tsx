@@ -1,7 +1,7 @@
 import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
 import { Button, IconButton } from 'rsuite'
-import { assets } from 'src/assets/assets'
+import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../FrontStateCtx'
 import { MainNavBarUI } from './MainNavBarUI'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'

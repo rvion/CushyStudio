@@ -17,7 +17,7 @@ export default defineConfig({
     publicDir: 'library',
     plugins: [
         // dynamicModulePlugin(),
-        react({ jsxImportSource: 'src/custom-jsx' }),
+        react({ jsxImportSource: 'src/utils/custom-jsx' }),
         // viteSingleFile(),
     ],
     server: {

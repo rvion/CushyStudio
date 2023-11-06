@@ -1,4 +1,4 @@
-import { assets } from 'src/assets/assets'
+import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../widgets/FrontStateCtx'
 import { GithubUser, GithubUserName, asGithubUserName } from './GithubUser'
 
