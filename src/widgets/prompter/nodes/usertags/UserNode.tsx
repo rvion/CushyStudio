@@ -1,6 +1,6 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
-import { UserTag } from 'src/prompter/nodes/usertags/UserLoader'
+import { UserTag } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 
 export type UserNodeJSON = SerializedLexicalNode & { tag: UserTag; type: 'user' }
 export class UserNode extends DecoratorNode<ReactNode> {

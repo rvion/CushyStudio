@@ -4,7 +4,7 @@ import { $getSelection, $isRangeSelection, TextNode } from 'lexical'
 import { observer } from 'mobx-react-lite'
 import { useCallback, useMemo, useState } from 'react'
 import * as ReactDOM from 'react-dom'
-import { useSt } from '../../widgets/FrontStateCtx'
+import { useSt } from '../../FrontStateCtx'
 import { CompletionCandidate, CompletionState } from './CompletionProviders'
 
 /** menu entry state */

@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { CSSProperties } from 'react'
 import { useDragLayer } from 'react-dnd'
-import { useSt } from '../../FrontStateCtx'
+import { useSt } from '../FrontStateCtx'
 
 export const GalleryHoveredPreviewUI = observer(function GalleryHoveredPreviewUI_(p: {}) {
     const st = useSt()

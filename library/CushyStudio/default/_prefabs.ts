@@ -14,7 +14,7 @@ import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ReqResult } from 'src/controls/IWidget'
 import type { Slot } from 'src/core/Slot'
-import type { WidgetPromptOutput } from 'src/prompter/WidgetPromptUI'
+import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 
 // this should be a default
 export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<ReturnType<UIFn>>
