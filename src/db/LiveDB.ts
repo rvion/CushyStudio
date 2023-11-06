@@ -5,7 +5,7 @@ import { LiveTable } from './LiveTable'
 
 // models
 import { existsSync, readFileSync, renameSync, stat, writeFileSync } from 'fs'
-import { extractErrorMessage } from 'src/utils/extractErrorMessage'
+import { extractErrorMessage } from 'src/utils/formatters/extractErrorMessage'
 import { AbsolutePath, RelativePath } from 'src/utils/fs/BrandedPaths'
 import { bytesToSize } from 'src/utils/fs/bytesToSize'
 import { DraftL, DraftT } from '../models/Draft'
@@ -16,7 +16,7 @@ import { PromptL, PromptT } from '../models/Prompt'
 import { SchemaL, SchemaT } from '../models/Schema'
 import { StepL, StepT } from '../models/Step'
 import { asRelativePath } from '../utils/fs/pathUtils'
-import { readableStringify } from '../utils/stringifyReadable'
+import { readableStringify } from '../utils/formatters/stringifyReadable'
 import { LiveStore, schemaVersion } from './LiveStore'
 
 export type Indexed<T> = { [id: string]: T }

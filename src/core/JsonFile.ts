@@ -5,7 +5,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
 import { basename, dirname, join } from 'pathe'
 
-import { readableStringify } from '../utils/stringifyReadable'
+import { readableStringify } from '../utils/formatters/stringifyReadable'
 import { bang } from '../utils/bang'
 import { asAbsolutePath } from '../utils/fs/pathUtils'
 import { ZodSchema } from 'zod'

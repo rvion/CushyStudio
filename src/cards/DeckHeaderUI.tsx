@@ -4,7 +4,7 @@ import { ActionPackStatusUI } from './DeckStatusUI'
 import { ActionPackStarsUI } from './DeckStarsUI'
 import { FolderKind } from 'src/cards/updater'
 import { Message } from 'rsuite'
-import { stringifyUnknown } from 'src/utils/stringifyUnknown'
+import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { ManifestError } from './DeckManifest'
 import { GithubUserUI } from './GithubAvatarUI'
 

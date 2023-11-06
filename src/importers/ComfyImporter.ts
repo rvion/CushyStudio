@@ -1,11 +1,11 @@
 import { CodeBuffer } from '../utils/CodeBuffer'
 import { ComfyPromptJSON } from '../types/ComfyPrompt'
 import { ComfyNodeSchema, NodeInputExt } from '../models/Schema'
-import { jsEscapeStr } from '../utils/jsEscapeStr'
+import { jsEscapeStr } from '../utils/codegen/jsEscapeStr'
 import { TEdge, toposort } from '../utils/toposort'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { STATE } from 'src/front/state'
-import { asJSAccessor, escapeJSKey } from '../models/escapeJSKey'
+import { asJSAccessor, escapeJSKey } from '../utils/codegen/escapeJSKey'
 import { Namer } from './Namer'
 import { ComfyPrimitiveMapping } from '../core/Primitives'
 

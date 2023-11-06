@@ -5,7 +5,7 @@ import { LiveInstance } from 'src/db/LiveInstance'
 import { ComfyPrimitiveMapping, ComfyPrimitives } from '../core/Primitives'
 import { normalizeJSIdentifier } from '../core/normalizeJSIdentifier'
 import { CodeBuffer } from '../utils/CodeBuffer'
-import { escapeJSKey } from './escapeJSKey'
+import { escapeJSKey } from '../utils/codegen/escapeJSKey'
 
 export type EnumHash = string
 export type EnumName = string
