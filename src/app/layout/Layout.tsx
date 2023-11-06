@@ -29,10 +29,12 @@ import { ComfyNodeExplorerUI } from './ComfyNodeExplorerUI'
 import { HostListUI } from './HostListUI'
 import { LastImageUI } from './LastImageUI'
 import { PanelConfigUI } from './PanelConfigUI'
+import { SceneViewer } from 'src/widgets/3dview/3dview1'
 
 // still on phone
 enum Widget {
     Gallery = 'Gallery',
+    DisplacedImage = 'DisplacedImage',
     Button = 'Button',
     Paint = 'Paint',
     CurrentDraft = 'CurrentDraft',
@@ -142,6 +144,13 @@ export class CushyLayoutManager {
     nextPaintIDx = 0
     addMarketplace = () =>
         this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: assets.public_CushyLogo_512_png })
+    addDisplacedImage = (p: { image: string; depth: string; normal: string }) =>
+        this._AddWithProps(Widget.DisplacedImage, `/DisplacedImage`, {
+            title: 'DisplacedImage',
+            image: p.image,
+            depth: p.depth,
+            normal: p.normal,
+        })
     addActionPicker = () =>
         this._AddWithProps(Widget.FileList, `/Library`, { title: 'Library', icon: assets.public_CushyLogo_512_png })
     addActionPickerTree = () =>
@@ -257,6 +266,7 @@ export class CushyLayoutManager {
             prevTab = this.model.getNodeById(tabID) as FL.TabNode // 🔴 UNSAFE ?
             if (prevTab == null) return void console.log('❌ no tabAdded')
         } else {
+            this.model.doAction(Actions.updateNodeAttributes(tabID, { config: p }))
             this.model.doAction(Actions.selectTab(tabID))
         }
         // 4. merge props
@@ -288,6 +298,14 @@ export class CushyLayoutManager {
             if (component === Widget.CurrentDraft) return <CurrentDraftUI />
             if (component === Widget.ComfyUINodeExplorer) return <ComfyNodeExplorerUI />
             if (component === Widget.Deck) return <div>🔴 todo: action pack page: show readme</div>
+            if (component === Widget.DisplacedImage)
+                return (
+                    <SceneViewer //
+                        imageSrc={extra.image}
+                        depthMapSrc={extra.depth}
+                        normalMapSrc={extra.normal}
+                    />
+                )
         } catch (e) {
             return (
                 <pre tw='text-red-500'>

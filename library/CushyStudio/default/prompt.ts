@@ -139,8 +139,9 @@ card({
             latent = sndPass.latent
         }
 
+        const image = graph.VAEDecode({ samples: latent, vae })
         // DECODE --------------------------------------------------------------------------------
-        graph.SaveImage({ images: graph.VAEDecode({ samples: latent, vae }) })
+        graph.SaveImage({ images: image })
 
         // REMOVE BACKGROUND ---------------------------------------------------------------------
         if (p.removeBG) {
@@ -153,7 +154,18 @@ card({
             })
         }
 
+        // SHOW 3D --------------------------------------------------------------------------------
+        if (p.extra?.show3d) {
+            flow.add_saveImage(image, 'base')
+            const depth = graph.MiDaS$7DepthMapPreprocessor({ image })
+            flow.add_saveImage(depth, 'depth')
+            const normal = graph.MiDaS$7NormalMapPreprocessor({ image })
+            flow.add_saveImage(normal, 'normal')
+        }
+
         await flow.PROMPT()
+
+        flow.out_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
         const loop = p.loop

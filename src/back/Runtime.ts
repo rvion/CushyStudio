@@ -43,12 +43,36 @@ export class Runtime {
     }
 
     // miscs subgraphs until there is a better place to place them
-    previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK) => {
+    add_previewImageWithAlpha = (image: HasSingle_IMAGE & HasSingle_MASK) => {
         return this.nodes.PreviewImage({
             images: this.nodes.JoinImageWithAlpha({
                 image: image,
                 alpha: image,
             }),
+        })
+    }
+    add_previewImage = (image: HasSingle_IMAGE) => {
+        return this.nodes.PreviewImage({ images: image })
+    }
+
+    add_saveImage = (image: HasSingle_IMAGE, prefix?: string) => {
+        return this.nodes.SaveImage({ images: image, filename_prefix: prefix })
+    }
+    out_3dImage = (p: { image: string; depth: string; normal: string }) => {
+        const image = this.generatedImages //
+            .find((i) => i.data.imageInfos?.filename.startsWith(p.image))
+        const depth = this.generatedImages //
+            .find((i) => i.data.imageInfos?.filename.startsWith(p.depth))
+        const normal = this.generatedImages //
+            .find((i) => i.data.imageInfos?.filename.startsWith(p.normal))
+        if (image == null) throw new Error(`image not found: ${p.image}`)
+        if (depth == null) throw new Error(`image not found: ${p.image}`)
+        if (normal == null) throw new Error(`image not found: ${p.image}`)
+        this.st.layout.addDisplacedImage({
+            //
+            depth: depth.url,
+            image: image.url,
+            normal: normal.url,
         })
     }
 
