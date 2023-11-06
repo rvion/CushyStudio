@@ -4,7 +4,7 @@ import type { Cyto } from '../core/AutolayoutV1'
 import type { VisEdges, VisNodes } from '../front/ui/VisUI'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress } from '../types/ComfyWsApi'
-import type { ComfyNodeID } from '../types/NodeUID'
+import type { ComfyNodeID } from '../types/ComfyNodeID'
 import type { ComfyNodeSchema, SchemaL } from './Schema'
 
 import { marked } from 'marked'

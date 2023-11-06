@@ -3,7 +3,7 @@ import type { NodeProgress, _WsMsgExecutedData } from '../types/ComfyWsApi'
 import type { GraphL } from '../models/Graph'
 
 import { configure, extendObservable, makeAutoObservable, toJS } from 'mobx'
-import { ComfyNodeID } from '../types/NodeUID'
+import { ComfyNodeID } from '../types/ComfyNodeID'
 import { exhaust } from '../utils/ComfyUtils'
 import { ComfyNodeSchema, NodeInputExt, NodeOutputExt } from '../models/Schema'
 import { Slot } from './Slot'

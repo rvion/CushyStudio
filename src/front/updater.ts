@@ -8,7 +8,7 @@ import { join, relative } from 'pathe'
 import simpleGit, { SimpleGit } from 'simple-git'
 import { GithubUserName } from 'src/cards/GithubUser'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
-import { deleteDirectoryRecursive } from './deleteDirectoryRecursive'
+import { deleteDirectoryRecursive } from '../utils/fs/deleteDirectoryRecursive'
 import { GithubRepoName } from 'src/cards/githubRepo'
 
 export enum FolderKind {

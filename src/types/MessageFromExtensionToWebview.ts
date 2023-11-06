@@ -1,9 +1,9 @@
-import type { Widget } from 'src/controls/Widget'
 import type { FormResult } from 'src/cards/Card'
+import type { Widget } from 'src/controls/Widget'
 import type { FlowID } from 'src/front/FlowID'
 import type { GraphID } from 'src/models/Graph'
 import type { ImageT } from 'src/models/Image'
-import type { PromptID, WsMsgExecuted, WsMsgExecuting, WsMsgExecutionCached, WsMsgProgress, WsMsgStatus } from './ComfyWsApi'
+import type { PromptID } from './ComfyWsApi'
 
 export type FromExtension_CushyStatus = { type: 'cushy_status'; connected: boolean }
 
