@@ -58,7 +58,7 @@ export const SceneViewer = observer(function SceneViewer_(p: { imageSrc: string;
         const normalTexture = loader.load(state.normalMapSrc)
 
         // Create a plane geometry for the image
-        const geometry = new THREE.PlaneGeometry(5, 5, 128, 128)
+        const geometry = new THREE.PlaneGeometry(5, 5, 512, 512)
         const material = new THREE.MeshStandardMaterial({
             map: texture,
             displacementMap: depthTexture,
@@ -74,7 +74,7 @@ export const SceneViewer = observer(function SceneViewer_(p: { imageSrc: string;
         camera.position.z = 5
 
         // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+        const ambientLight = new THREE.AmbientLight(0xffffff, 3)
         scene.add(ambientLight)
 
         const pointLight = new THREE.PointLight(0xffffff, 1)

@@ -11,10 +11,10 @@
 </div>
 
 
-- [1. CushyStudio **Cards**: self-contained mini Stable diffusion apps](#1-cushystudio-cards-self-contained-mini-stable-diffusion-apps)
-  - [1.1. **Cards** are simple to use.](#11-cards-are-simple-to-use)
-  - [1.2. **Cards** are pleasant to make](#12-cards-are-pleasant-to-make)
-  - [1.3. **Cards** are easy to share](#13-cards-are-easy-to-share)
+- [1. CushyStudio **Actions**: self-contained mini Stable diffusion apps](#1-cushystudio-actions-self-contained-mini-stable-diffusion-apps)
+  - [1.1. **Actions** are simple to use.](#11-actions-are-simple-to-use)
+  - [1.2. **Actions** are pleasant to make](#12-actions-are-pleasant-to-make)
+  - [1.3. **Actions** are easy to share](#13-actions-are-easy-to-share)
 - [2. Quickstart Guide](#2-quickstart-guide)
   - [2.1. Installation](#21-installation)
   - [2.2. Starting](#22-starting)
@@ -52,11 +52,11 @@
   - [5.3. Q: Any plans for a paid version of **CushyStudio**?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
 - [Theming](#theming)
 
-# 1. CushyStudio **Cards**: self-contained mini Stable diffusion apps
+# 1. CushyStudio **Actions**: self-contained mini Stable diffusion apps
 
--   CushyStudio **Cards** are interactive generative "apps" with dedicated UIs.
+-   CushyStudio **Actions** are interactive generative "apps" with dedicated UIs.
 -   They make it super easy and fun to explore all generative art has to offer.
--   CushyStudio allows you to run, create, and share **Cards**
+-   CushyStudio allows you to run, create, and share **Actions**
 
 
 <img src='docs/static/img/screenshots/2023-10-18-22-12-01.png' style='width:60%'></img> <img src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:30%'></img>
@@ -66,7 +66,7 @@ test</div>  -->
 
 <!-- ---------------------------------------------- -->
 
-## 1.1. **Cards** are simple to use.
+## 1.1. **Actions** are simple to use.
 
 -   ✅ Non-technical **_Card_** interfaces
 
@@ -76,7 +76,7 @@ test</div>  -->
 -   🚂 Fast previews, real-time feedback
 
     -   Interactive at its core
-    -   Real-time **cards** with continuous generations
+    -   Real-time **Actions** with continuous generations
 
 -   🖌️ Built-in commodities
 
@@ -86,7 +86,7 @@ test</div>  -->
 <!-- <img src='docs/static/img/screenshots/2023-10-23-19-04-01.png' style='width:100%'></img> -->
 
 
-## 1.2. **Cards** are pleasant to make
+## 1.2. **Actions** are pleasant to make
 
 -   🚀 CushyStudio comes with amakes it easy to build cards
 
@@ -113,7 +113,7 @@ test</div>  -->
     -   Share your deck/cards with the world
 
 
-## 1.3. **Cards** are easy to share
+## 1.3. **Actions** are easy to share
 
 -  📦 one-click create your custom `Deck`
 
@@ -269,7 +269,7 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 
 # 4. Quickstart Guide For Action Creators
 
-Creating **Cards** is easy.
+Creating **Actions** is easy.
 In this section, we will
 
 - understand how **CushyStudio** works,
@@ -283,7 +283,7 @@ In this section, we will
 
 2. **CushyStudio** then scan you `ComfyUI` install and generates whole **_TypeScript SDK_** supporting all your custom nodes, assets, models instaleld, etc.
 
-3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create **Cards** with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
+3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create **Actions** with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
     - 👉 this file is updated after each ComfyUI connection.
     - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
@@ -313,7 +313,7 @@ card({
 
 A `Deck` is a folder containing
 
-  - a list of **Cards**
+  - a list of **Actions**
   - a list of `assets`
   - a list of `prefabs`
   - some `documentation` about how to use those cards
@@ -411,7 +411,7 @@ An `Card` is a file containing
 
 ## 4.5. `Prefabs` so you don't repeat yourself
 
-The simplest way to modularize your **Cards** is to build `prefabs`.
+The simplest way to modularize your **Actions** is to build `prefabs`.
 
 - `Prefabs` allow you to re-use parts of your cards in other cards.
 - `Prefabs` allow you to re-use parts of your cards multiple times in your card
