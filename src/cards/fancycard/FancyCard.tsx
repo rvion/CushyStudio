@@ -10,6 +10,8 @@ import { CardFile } from '../CardFile'
 import { Deck } from '../Deck'
 
 import './FancyCard.css' // Assuming the CSS is written in this file
+import { ActionFavoriteBtnUI } from '../CardPicker2UI'
+import { GithubUserUI } from '../GithubAvatarUI'
 
 export class FancyCardState {
     constructor(public theme: CardStyle) {
@@ -77,48 +79,49 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     const card = p.card
     const cardIllustration = card.illustrationPathWithFileProtocol
     return (
-        <div className='m-2' tw='cursor-pointer'>
-            {/* <style ref={uiSt.styleRef}>{uiSt.hoverStyle}</style> */}
+        <div className='m-2' tw='cursor-pointer relative'>
             <div
-                tw='text-center'
+                tw='p-1'
                 style={uiSt.cardStyle}
                 className={`card STYLE_${p.style}`}
-                // className='card'
-
                 onMouseMove={uiSt.handleMove}
                 // onTouchMove={uiSt.handleMove}
                 // onMouseOut={uiSt.handleOut}
                 // onTouchEnd={uiSt.handleOut}
                 // onTouchCancel={uiSt.handleOut}
             >
-                <div
-                    //
-                    tw='overflow-auto'
-                    style={{ fontSize: '1.3rem', height: '2rem', overflow: 'hidden' }}
-                >
+                <div tw='overflow-auto whitespace-pre-wrap font-bold flex-grow' style={{ fontSize: '1rem' }}>
+                    <ActionFavoriteBtnUI card={card} />
                     {card.displayName}
                 </div>
-                <img
-                    tw='mx-auto'
-                    style={{ width: '10rem', height: '10rem' }}
-                    src={cardIllustration}
-                    alt='card illustration'
-                    onClick={() => {
-                        console.log('clicked')
-                        st.currentDraft = card.getLastDraft()
-                    }}
-                />
-                {/* {cardIllustration} */}
-                <div>
-                    {(card.manifest.categories ?? []).map((i, ix) => (
-                        <Tag key={ix}>{i}</Tag>
-                    ))}
+                <div tw='flex'>
+                    <img
+                        tw='rounded m-2'
+                        style={{ width: '12rem', height: '12rem' }}
+                        src={cardIllustration}
+                        alt='card illustration'
+                        onClick={() => {
+                            console.log('clicked')
+                            st.currentDraft = card.getLastDraft()
+                        }}
+                    />
+                    {/* {cardIllustration} */}
+                    <div tw='flex-grow flex flex-col ml-1'>
+                        <div>
+                            {(card.manifest.categories ?? []).map((i, ix) => (
+                                <Tag key={ix}>{i}</Tag>
+                            ))}
+                        </div>
+                        <div style={{ width: '10rem', height: '5rem' }} tw='m-1 flex-grow text-sm'>
+                            {card.description}
+                        </div>
+                        <GithubUserUI username={card.deck.githubUserName} showName size='1.2rem' tw='text-gray-300' />
+                    </div>
                 </div>
-                <div>{card.description}</div>
                 {/* ------------------------------------------------------------- */}
                 {/* Content of the card */}
                 {/* <div className={`card STYLE_${p.style}`}></div> */}
-                <div tw='pointer-events-none' style={uiSt.gradientStyle} className='card_before'></div>
+                {/* <div tw='pointer-events-none' style={uiSt.gradientStyle} className='card_before'></div> */}
                 {/* <div style={uiSt.sparklesStyle} className='card_after'></div> */}
             </div>
         </div>

@@ -1,21 +1,14 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from 'src/state/stateContext'
+import { Button, ButtonGroup, Input, InputGroup, Modal, Panel } from 'rsuite'
 import { FancyCardUI } from 'src/cards/fancycard/FancyCard'
+import { useSt } from 'src/state/stateContext'
 import { CreateDeckBtnUI } from '../app/layout/GithubAppBarInputUI'
-import { DeckHeaderUI } from 'src/cards/DeckHeaderUI'
-import { Button, ButtonGroup, ButtonToolbar, IconButton, Input, InputGroup, Modal, Panel, Placeholder } from 'rsuite'
-import { Fragment } from 'react'
-import { runInAction } from 'mobx'
+import { ActionPicker2UI } from './CardPicker2UI'
 
 export const CardsPickerModalUI = observer(function CardsPickerModalUI_(p: {}) {
     const st = useSt()
     return (
         <Modal tw='h-full' size='full' open={st.showCardPicker} onClose={st.closeCardPicker}>
-            {/* <Modal.Header>
-                <Modal.Title>
-                    <h4>Pick a card</h4>
-                </Modal.Title>
-            </Modal.Header> */}
             <Modal.Body>
                 <CardPicker3UI />
             </Modal.Body>
@@ -41,85 +34,122 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
             style={{ zIndex: 9999999 }}
         >
             <div tw='flex justify-between'>
-                <h3>Choose a card</h3>
+                <h3>Choose an action</h3>
                 <CreateDeckBtnUI />
             </div>
-            <InputGroup size='lg'>
-                <InputGroup.Addon>
-                    <span className='material-symbols-outlined'>search</span>
-                </InputGroup.Addon>
-                <Input
-                    value={library.query}
-                    onChange={(v) => {
-                        library.query = v
-                    }}
-                    autoFocus
-                    placeholder='search'
-                    type='string'
-                ></Input>
-                ({library.query} - {library.query.length})
-            </InputGroup>
 
             {/* <div>CARD 1</div> */}
-            {st.library.decksSorted.map((deck) => {
-                let cards = deck.cardsSorted
-                if (st.library.query) cards = cards.filter((c) => c.matchesSearch(st.library.query))
-                if (cards.length === 0) return null
-                return (
-                    <Panel //
-                        key={deck.folderAbs}
-                    >
-                        <DeckHeaderUI deck={deck} />
-                        <div tw='flex flex-wrap'>
-                            {cards.map((card, ix) => {
-                                const drafts = card.drafts
-                                return (
-                                    <div key={card.relPath}>
-                                        <FancyCardUI //
-                                            deck={deck}
-                                            style={card.style}
-                                            card={card}
-                                        />
-                                        {/* {card.priority} */}
-                                        {drafts.length > 0 ? (
-                                            <div tw='flex flex-col'>
-                                                {drafts.map((draft) => (
-                                                    <div key={draft.id}>
-                                                        <Button
-                                                            onClick={() => (st.currentDraft = draft)}
-                                                            startIcon={
-                                                                <span className='material-symbols-outlined'>play_arrow</span>
-                                                            }
-                                                        >
-                                                            {draft.data.title}
-                                                        </Button>
-                                                        <Button appearance='subtle' color='red'>
-                                                            <span className='material-symbols-outlined'>delete</span>
-                                                        </Button>
-                                                        <Button appearance='subtle' color='blue'>
-                                                            <span className='material-symbols-outlined'>open_in_new</span>
-                                                        </Button>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        ) : null}
-                                    </div>
-                                )
-                            })}
-                        </div>
+            <div tw='flex'>
+                <div tw='w-96 shrink-0'>
+                    <Panel bordered>
+                        <ActionPicker2UI />
                     </Panel>
-                )
-            })}
-            {/* <FancyCardUI style='A' />
-                <FancyCardUI style='B' />
-                <FancyCardUI style='C' />
-                <FancyCardUI style='D' />
-                <FancyCardUI style='D' />
-                <FancyCardUI style='D' />
-                <FancyCardUI style='D' />
-                <FancyCardUI style='D' />
-                <FancyCardUI style='D' /> */}
+                </div>
+                <div>
+                    <InputGroup size='lg' tw='self-start'>
+                        <InputGroup.Addon>
+                            <span className='material-symbols-outlined'>search</span>
+                        </InputGroup.Addon>
+                        <Input
+                            value={library.query}
+                            onChange={(v) => (library.query = v)}
+                            autoFocus
+                            placeholder='search'
+                            type='string'
+                        ></Input>
+                        {/* ({library.query} - {library.query.length}) */}
+                    </InputGroup>
+                    <div className='my-2'>
+                        <ButtonGroup>
+                            <Button>Foo</Button>
+                            <Button>Foo</Button>
+                            <Button>Foo</Button>
+                        </ButtonGroup>
+                    </div>
+                    <div tw='flex flex-wrap'>
+                        {st.library.cardsFiltered.map((card) => (
+                            <div key={card.relPath}>
+                                <FancyCardUI //
+                                    deck={card.deck}
+                                    style={card.style}
+                                    card={card}
+                                />
+                                {/* {card.priority} */}
+                                {card.drafts.length > 0 ? (
+                                    <div tw='flex flex-col'>
+                                        {card.drafts.map((draft) => (
+                                            <div key={draft.id}>
+                                                <Button
+                                                    onClick={() => (st.currentDraft = draft)}
+                                                    startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
+                                                >
+                                                    {draft.data.title}
+                                                </Button>
+                                                <Button appearance='subtle' color='red'>
+                                                    <span className='material-symbols-outlined'>delete</span>
+                                                </Button>
+                                                <Button appearance='subtle' color='blue'>
+                                                    <span className='material-symbols-outlined'>open_in_new</span>
+                                                </Button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : null}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
         </div>
         // </div>
     )
 })
+
+// {st.library.decksSorted.map((deck) => {
+//     let cards = deck.cardsSorted
+//     if (st.library.query) cards = cards.filter((c) => c.matchesSearch(st.library.query))
+//     if (cards.length === 0) return null
+//     return (
+//         <Panel key={deck.folderAbs}>
+//             <div tw='flex flex-wrap'>
+//                 {cards.map((card, ix) => {
+//                     const drafts = card.drafts
+//                     return (
+//                         <div key={card.relPath}>
+//                             <FancyCardUI //
+//                                 deck={deck}
+//                                 style={card.style}
+//                                 card={card}
+//                             />
+//                             {/* {card.priority} */}
+//                             {drafts.length > 0 ? (
+//                                 <div tw='flex flex-col'>
+//                                     {drafts.map((draft) => (
+//                                         <div key={draft.id}>
+//                                             <Button
+//                                                 onClick={() => (st.currentDraft = draft)}
+//                                                 startIcon={
+//                                                     <span className='material-symbols-outlined'>
+//                                                         play_arrow
+//                                                     </span>
+//                                                 }
+//                                             >
+//                                                 {draft.data.title}
+//                                             </Button>
+//                                             <Button appearance='subtle' color='red'>
+//                                                 <span className='material-symbols-outlined'>delete</span>
+//                                             </Button>
+//                                             <Button appearance='subtle' color='blue'>
+//                                                 <span className='material-symbols-outlined'>open_in_new</span>
+//                                             </Button>
+//                                         </div>
+//                                     ))}
+//                                 </div>
+//                             ) : null}
+//                         </div>
+//                     )
+//                 })}
+//             </div>
+//         </Panel>
+//     )
+// })}

@@ -1,55 +1,70 @@
-import type { Deck } from './Deck'
 import { observer } from 'mobx-react-lite'
-import { ActionPackStatusUI } from './DeckStatusUI'
-import { ActionPackStarsUI } from './DeckStarsUI'
 import { FolderKind } from 'src/cards/updater'
-import { Message } from 'rsuite'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
+import type { Deck } from './Deck'
 import { ManifestError } from './DeckManifest'
+import { ActionPackStarsUI } from './DeckStarsUI'
+import { ActionPackStatusUI } from './DeckStatusUI'
 import { GithubUserUI } from './GithubAvatarUI'
+import { Popover, Whisper } from 'rsuite'
 
 export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Deck }) {
     const deck = p.deck
     return (
-        <div
-            style={{ borderTop: '1px solid #1d1d1d' }}
-            tw='cursor-pointer flex gap-1 hover:bg-gray-800 p-0.5'
-            onClick={() => (deck.folded = !deck.folded)}
-        >
-            <img //
-                style={{ height: `3rem` }}
-                src={deck.logo}
-                alt='pack logo'
-            />
+        <>
+            <div
+                style={{ borderTop: '1px solid #1d1d1d' }}
+                tw='cursor-pointer flex gap-1 hover:bg-gray-800 p-0.5'
+                onClick={() => (deck.folded = !deck.folded)}
+            >
+                <img //
+                    style={{ height: `3rem` }}
+                    src={deck.logo}
+                    alt='pack logo'
+                />
 
-            <div tw='flex flex-grow'>
-                <div tw='flex-grow'>
-                    {/* manifest */}
-                    <div>
-                        <div tw='flex gap-2 items-baseline'>
-                            <h3 tw='font-bold text-purple-400'>{deck.name}</h3>
-                            {/* by <div tw='text-gray-400 flex justify-between w-full'>{deck.githubUserName}</div> */}
-                            <GithubUserUI prefix='by' size='1rem' showName username={deck.githubUserName} />
+                <div tw='flex flex-grow'>
+                    <div tw='flex-grow'>
+                        {/* manifest */}
+                        <div>
+                            <div tw='flex gap-2 items-baseline'>
+                                <div tw='font-bold'>{deck.name}</div>
+                                {/* by <div tw='text-gray-400 flex justify-between w-full'>{deck.githubUserName}</div> */}
+                            </div>
+                        </div>
+                        <GithubUserUI prefix='by' size='1rem' showName username={deck.githubUserName} />
+                        <div className='flex-grow self-start italic text-gray-500'>
+                            {/* <b>{deck.cards.length} cards</b> -  */}
+                            {deck.description}
                         </div>
                     </div>
-                    <div className='flex-grow self-start italic'>
-                        <b>{deck.cards.length} cards</b> - {deck.description}
+                    {/* manifest */}
+                    <div>
+                        <div className='flex gap-1'>
+                            {deck.BUILT_IN ? <div tw='text-gray-600'>built-in</div> : <ActionPackStatusUI pack={deck} />}
+                            {deck.manifestError && (
+                                <Whisper
+                                    speaker={
+                                        <Popover>
+                                            <DeckManifestErrorUI err={deck.manifestError} />
+                                        </Popover>
+                                    }
+                                >
+                                    <span className='text-red-500 material-symbols-outlined'>error</span>
+                                </Whisper>
+                            )}
+                        </div>
+                        {deck.updater.status === FolderKind.FolderWithGit ? ( //
+                            <ActionPackStarsUI tw='float-right' pack={deck} />
+                        ) : null}
                     </div>
-                </div>
-                {/* manifest */}
-                <div>
-                    <DeckManifestErrorUI err={deck.manifestError} />
-                    {deck.BUILT_IN ? <div tw='text-gray-600'>built-in</div> : <ActionPackStatusUI pack={deck} />}
-                    {deck.updater.status === FolderKind.FolderWithGit ? ( //
-                        <ActionPackStarsUI tw='float-right' pack={deck} />
-                    ) : null}
-                </div>
-                {/* <Message showIcon type={deck.manifestError.}>
+                    {/* <Message showIcon type={deck.manifestError.}>
                     {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
                     <pre>{stringifyUnknown(deck.manifestError)}</pre>
                 </Message> */}
+                </div>
             </div>
-        </div>
+        </>
     )
 })
 
@@ -58,20 +73,23 @@ export const DeckManifestErrorUI = observer(function DeckManifestErrorUI_(p: { e
     if (err == null) return null
     if (err.type === 'crash')
         return (
-            <Message header='crash' showIcon type='error'>
+            <div tw='text-red-500'>
+                <div>crash</div>
                 <pre>{stringifyUnknown(err)}</pre>
-            </Message>
+            </div>
         )
     if (err.type === 'no manifest')
         return (
-            <Message tw='[width:fit-content]' header='manifest missing' showIcon type='error'>
+            <div tw='text-red-500 [width:fit-content]'>
+                <div>manifest missing</div>
                 {/* <pre>{stringifyUnknown(err)}</pre> */}
-            </Message>
+            </div>
         )
 
     if (err.type === 'invalid manifest')
         return (
-            <Message tw='[width:fit-content]' header='INVALID manifest' showIcon type='error'>
+            <div tw='[width:fit-content] text-red-500'>
+                <div>INVALID manifest</div>
                 <ul>
                     {err.errors.map((e, ix) => (
                         <li key={ix}>
@@ -79,7 +97,7 @@ export const DeckManifestErrorUI = observer(function DeckManifestErrorUI_(p: { e
                         </li>
                     ))}
                 </ul>
-            </Message>
+            </div>
         )
 
     exhaust(err)

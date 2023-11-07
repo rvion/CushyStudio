@@ -126,7 +126,10 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                         // <span className='text-green-400 material-symbols-outlined'>check_circle</span>
                     }
 
-                    <div tw='text-sm' className={updater.updateAvailable ? 'text-orange-400' : 'text-green-300 '}>
+                    <div
+                        tw='text-sm whitespace-nowrap'
+                        className={updater.updateAvailable ? 'text-orange-400' : 'text-green-300 '}
+                    >
                         {updater.currentVersion} - {updater.mainBranchName}
                         {/* {updater.headCommitsCount ? `v${updater.currentVersion}` : <Loader />} */}
                     </div>

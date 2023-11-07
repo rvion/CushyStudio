@@ -28,6 +28,13 @@ export class Library {
     /** flat list of all decks */
     decks: Deck[] = []
 
+    get cards(): CardFile[] {
+        return [...this.cardsByPath.values()]
+    }
+    get cardsFiltered() {
+        return this.cards.filter((c) => c.matchesSearch(this.query))
+    }
+
     /** flat list of all decks, sorted by importance */
     get decksSorted(): Deck[] {
         return [...this.decks].sort((a, b) => {

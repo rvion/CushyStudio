@@ -14,7 +14,7 @@
             "description": "A card that contains all the features needed to play with stable diffusion"
         },
         {
-            "name": "A confusing 'card' to generate poker cards",
+            "name": "An action to generate cards or decks",
             "deckRelativeFilePath": "./pokerCards.ts",
             "illustration": "_illustrations/poker-card-generator.jpg",
             "description": "Few Cushy cards are about 'playing cards'. But this one is."

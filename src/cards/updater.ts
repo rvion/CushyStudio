@@ -59,7 +59,7 @@ export class GitManagedFolder {
     /** Number of commits in HEAD */
     headCommitsCount = 0
     /** main branch name; usually master (previous git default) or main (new git default) */
-    mainBranchName = ''
+    mainBranchName = '#local'
     /** the simple git  */
     git: Maybe<SimpleGit> = null
     /** so we can lock the interface during {fetch/install/uninstall/etc.} */

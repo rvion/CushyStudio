@@ -21,9 +21,6 @@
 }
 
 .card {
-    width: 12rem;
-    height: 18rem;
-
     position: relative;
     overflow: hidden;
     /* margin: 20px; */
@@ -31,7 +28,7 @@
     z-index: 10;
     /* z-index: 9999; */
     touch-action: none;
-    border-radius: 5% / 3.5%;
+    /* border-radius: 5% / 3.5%; */
     /* prettier-ignore */
     box-shadow:
         -5px -5px 5px -5px var(--color1),

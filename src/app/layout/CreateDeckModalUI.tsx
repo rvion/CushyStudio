@@ -4,6 +4,7 @@ import { GithubUsernameInputUI } from './GithubAppBarInputUI'
 import { makeAutoObservable } from 'mobx'
 import { useSt } from 'src/state/stateContext'
 import { DeckFolder } from 'src/cards/Deck'
+import { ActionPicker2UI } from 'src/cards/CardPicker2UI'
 
 export class CreateDeckModalState {
     constructor() {

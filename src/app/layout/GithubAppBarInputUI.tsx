@@ -16,7 +16,7 @@ export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
                 color='green'
                 startIcon={<span className='material-symbols-outlined'>add</span>}
             >
-                Create my own Deck
+                Create an action
             </Button>
             <CreateDeckModalUI uist={uist} />
         </div>

@@ -3,30 +3,36 @@ import type { Deck } from './Deck'
 
 import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
-import { CreateDeckBtnUI } from 'src/app/layout/GithubAppBarInputUI'
 import { useSt } from '../state/stateContext'
 import { DeckHeaderUI } from './DeckHeaderUI'
 
 export const ActionPicker2UI = observer(function ActionPicker2UI_(p: {}) {
     const st = useSt()
-    const tb = st.library
+    const library = st.library
     return (
         <>
-            <CreateDeckBtnUI />
+            {/* <CreateDeckBtnUI /> */}
             {/* FAVORITES */}
-            {tb.allFavorites.length ? (
+            {library.allFavorites.length ? (
                 <div
                     tw='cursor-pointer items-center gap-1  hover:bg-gray-800 p-0.5 flex justify-between'
-                    onClick={() => (tb.favoritesFolded = !tb.favoritesFolded)}
+                    onClick={() => (library.favoritesFolded = !library.favoritesFolded)}
                 >
-                    <div>Favorite Cards</div>
-                    <div>{tb.favoritesFolded ? '▸' : '▿'}</div>
+                    <div>
+                        <span style={{ fontSize: '3rem' }} tw='text-yellow-500' className='material-symbols-outlined'>
+                            star
+                        </span>
+                    </div>
+                    <div tw='flex-grow'>
+                        <div>Favorite Actiosn</div>
+                    </div>
+                    <div>{library.favoritesFolded ? '▸' : '▿'}</div>
                 </div>
             ) : null}
-            {tb.favoritesFolded ? null : tb.allFavorites.map((af) => <ActionEntryUI key={af.relPath} card={af} />)}
+            {library.favoritesFolded ? null : library.allFavorites.map((af) => <ActionEntryUI key={af.relPath} card={af} />)}
             {/* INSTALLED */}
             <div tw='flex flex-col'>
-                {tb.decksSorted.map((pack) => (
+                {library.decksSorted.map((pack) => (
                     <ActionPackUI key={pack.folderRel} deck={pack} />
                 ))}
             </div>
@@ -57,7 +63,7 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFil
         <div
             //
             tw='pl-4 hover:bg-gray-900 flex gap-2 cursor-pointer'
-            style={{ borderTop: '1px solid #161616' }}
+            // style={{ borderTop: '1px solid #161616' }}
             key={card.absPath}
             onClick={(ev) => {
                 ev.preventDefault()
@@ -70,40 +76,42 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFil
             <img style={{ width: '1rem', height: '1rem' }} src={pack?.logo ?? ''}></img>
             <div>{card.displayName}</div>
             <div tw='ml-auto'>
-                <ActionFavoriteBtnUI af={card} />
+                <ActionFavoriteBtnUI card={card} />
             </div>
         </div>
     )
 })
 
-export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { af: CardFile }) {
-    const af = p.af
+export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { card: CardFile }) {
+    const af = p.card
     return (
         <Fragment>
             {af.isFavorite ? (
-                <div
+                <span
                     onClick={(ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
                         af.setFavorite(false)
                     }}
+                    //
+                    style={{ fontSize: '1.5rem' }}
+                    className='material-symbols-outlined text-yellow-500'
                 >
-                    <span style={{ color: '#562152' }} className='material-symbols-outlined'>
-                        favorite
-                    </span>
-                </div>
+                    star
+                </span>
             ) : (
-                <div
+                <span
                     onClick={(ev) => {
                         ev.preventDefault()
                         ev.stopPropagation()
                         af.setFavorite(true)
                     }}
+                    style={{ fontSize: '1.5rem' }}
+                    tw='hover:text-yellow-500 text-gray-500'
+                    className='material-symbols-outlined'
                 >
-                    <span tw='text-gray-800 hover:text-red-500' className='material-symbols-outlined'>
-                        favorite_border
-                    </span>
-                </div>
+                    star
+                </span>
             )}
         </Fragment>
     )

@@ -22,11 +22,7 @@ export function GithubUserUI(p: {
             : GithubUser.get(st, asGithubUserName(username), false).localAvatarURL
     try {
         return (
-            <div
-                //
-                className={p.className}
-                tw='flex items-center gap-1'
-            >
+            <div className={p.className} tw='flex gap-1'>
                 {p.prefix} {p.showName === 'after' && <p className={textClassName}>{username}</p>}
                 <img
                     style={{ borderRadius: '100%', height: size, width: size }}
