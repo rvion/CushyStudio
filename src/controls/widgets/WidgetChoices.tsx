@@ -19,23 +19,26 @@ export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { req: Widg
     const values = choiceSubReq.map((i) => i.value)
 
     return (
-        <div tw='relative'>
-            <Button tw='float-right' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
-                {collapsed ? '▿' : '▸'}
-            </Button>
-            <TagPicker
-                value={values}
-                data={choices}
-                style={{ width: 300 }}
-                onChange={(vs: string[]) => {
-                    runInAction(() => {
-                        req.state.branches = {}
-                        for (const v of vs) {
-                            req.state.branches[v] = true
-                        }
-                    })
-                }}
-            />
+        <div className='_WidgetChoicesUI' tw='relative'>
+            <div tw='flex items-start w-full'>
+                <TagPicker
+                    tw='flex-grow'
+                    value={values}
+                    data={choices}
+                    style={{ width: 300 }}
+                    onChange={(vs: string[]) => {
+                        runInAction(() => {
+                            req.state.branches = {}
+                            for (const v of vs) {
+                                req.state.branches[v] = true
+                            }
+                        })
+                    }}
+                />
+                {/* <Button appearance='subtle' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
+                    {collapsed ? '▿' : '▸'}
+                </Button> */}
+            </div>
             {req.state.collapsed ? null : (
                 <div
                     // style={{ border: '1px solid gray' }}

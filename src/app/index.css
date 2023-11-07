@@ -291,3 +291,11 @@ hr {
 
 .rs-modal-body {margin-top: 0 !important;}
 .rs-modal-content {padding: 10px !important;}
+
+
+._WidgetChoicesUI {
+    width: 100%;
+}
+._WidgetListUI {
+    /* border: 1px solid blue; */
+}

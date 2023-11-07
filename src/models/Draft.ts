@@ -111,14 +111,8 @@ export class DraftL {
                     const uiFn = action.ui
                     const req: Widget =
                         uiFn == null //
-                            ? formBuilder.group(
-                                  { verticalLabels: true, topLevel: true, items: () => ({}) },
-                                  this.data.actionParams,
-                              )
-                            : formBuilder.group(
-                                  { verticalLabels: true, topLevel: true, items: () => uiFn(formBuilder) },
-                                  this.data.actionParams,
-                              )
+                            ? formBuilder.group({ topLevel: true, items: () => ({}) }, this.data.actionParams)
+                            : formBuilder.group({ topLevel: true, items: () => uiFn(formBuilder) }, this.data.actionParams)
                     this.form = __OK(req)
                     console.log(`🦊 form setup`)
                     // subState.unsync()

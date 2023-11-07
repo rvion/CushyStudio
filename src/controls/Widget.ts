@@ -14,7 +14,7 @@ import { makeAutoObservable } from 'mobx'
 import { NumbericTheme } from 'src/controls/widgets/WidgetNumUI'
 import { bang } from 'src/utils/misc/bang'
 import { FormBuilder } from './FormBuilder'
-import { IRequest, IWidget, ReqInput, ReqResult } from './IWidget'
+import { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -48,9 +48,9 @@ export type Widget =
     | Widget_enumOpt<any>
 
 // 🅿️ str ==============================================================================
-export type Widget_str_input = ReqInput<{ default?: string; textarea?: boolean }>
-export type Widget_str_serial = { type: 'str', active: true; val: string }
-export type Widget_str_state  = { type: 'str', active: true; val: string }
+export type Widget_str_input  = ReqInput<{ default?: string; textarea?: boolean }>
+export type Widget_str_serial = StateFields<{ type: 'str', active: true; val: string }>
+export type Widget_str_state  = StateFields<{ type: 'str', active: true; val: string }>
 export type Widget_str_output = string
 export interface Widget_str extends IWidget<'str', Widget_str_input, Widget_str_serial, Widget_str_state, Widget_str_output> {}
 export class Widget_str implements IRequest<'str', Widget_str_input, Widget_str_serial, Widget_str_state, Widget_str_output> {
@@ -71,8 +71,8 @@ export class Widget_str implements IRequest<'str', Widget_str_input, Widget_str_
 
 // 🅿️ markdown ==============================================================================
 export type Widget_markdown_input = ReqInput<{ markdown: string; }>
-export type Widget_markdown_serial = { type: 'markdown', active: true }
-export type Widget_markdown_state  = { type: 'markdown', active: true }
+export type Widget_markdown_serial = StateFields<{ type: 'markdown', active: true }>
+export type Widget_markdown_state  = StateFields<{ type: 'markdown', active: true }>
 export type Widget_markdown_output = { type: 'markdown', active: true }
 export interface Widget_markdown extends IWidget<'markdown', Widget_markdown_input, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {}
 export class Widget_markdown implements IRequest<'markdown', Widget_markdown_input, Widget_markdown_serial, Widget_markdown_state, Widget_markdown_output> {
@@ -93,8 +93,8 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_inp
 
 // 🅿️ str ==============================================================================
 export type Widget_color_input = ReqInput<{ default?: string; }>
-export type Widget_color_serial = { type: 'color', active: true; val: string }
-export type Widget_color_state  = { type: 'color', active: true; val: string }
+export type Widget_color_serial = StateFields<{ type: 'color', active: true; val: string }>
+export type Widget_color_state  = StateFields<{ type: 'color', active: true; val: string }>
 export type Widget_color_output = string
 export interface Widget_color extends IWidget<'color', Widget_color_input, Widget_color_serial, Widget_color_state, Widget_color_output> {}
 export class Widget_color implements IRequest<'color', Widget_color_input, Widget_color_serial, Widget_color_state, Widget_color_output> {
@@ -114,9 +114,9 @@ export class Widget_color implements IRequest<'color', Widget_color_input, Widge
 }
 
 // 🅿️ strOpt ==============================================================================
-export type Widget_strOpt_input = ReqInput<{ default?: string; textarea?: boolean }>
+export type Widget_strOpt_input  = ReqInput<{ default?: string; textarea?: boolean }>
 export type Widget_strOpt_serial = Widget_strOpt_state
-export type Widget_strOpt_state = { type:'strOpt', active: boolean; val: string }
+export type Widget_strOpt_state  = StateFields<{ type:'strOpt', active: boolean; val: string }>
 export type Widget_strOpt_output = Maybe<string>
 export interface Widget_strOpt extends IWidget<'strOpt', Widget_strOpt_input, Widget_strOpt_serial, Widget_strOpt_state, Widget_strOpt_output> {}
 export class Widget_strOpt implements IRequest<'strOpt', Widget_strOpt_input, Widget_strOpt_serial, Widget_strOpt_state, Widget_strOpt_output> {
@@ -143,9 +143,9 @@ export class Widget_strOpt implements IRequest<'strOpt', Widget_strOpt_input, Wi
 }
 
 // 🅿️ prompt ==============================================================================
-export type Widget_prompt_input = ReqInput<{ default?: string | WidgetPromptOutput }>
+export type Widget_prompt_input  = ReqInput<{ default?: string | WidgetPromptOutput }>
 export type Widget_prompt_serial = Widget_prompt_state
-export type Widget_prompt_state =  { type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }
+export type Widget_prompt_state  = StateFields<{ type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }>
 export type Widget_prompt_output = { type: 'prompt'; active: true; /*text: string;*/ tokens: PossibleSerializedNodes[] }
 export interface Widget_prompt extends IWidget<'prompt', Widget_prompt_input, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {}
 export class Widget_prompt implements IRequest<'prompt', Widget_prompt_input, Widget_prompt_serial, Widget_prompt_state, Widget_prompt_output> {
@@ -183,8 +183,8 @@ export class Widget_prompt implements IRequest<'prompt', Widget_prompt_input, Wi
 
 // 🅿️ promptOpt ==============================================================================
 export type Widget_promptOpt_input  = ReqInput<{ default?: string | WidgetPromptOutput }>
-export type Widget_promptOpt_serial = { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
-export type Widget_promptOpt_state  = { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
+export type Widget_promptOpt_serial = Widget_promptOpt_state // { type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }
+export type Widget_promptOpt_state  = StateFields<{ type: 'promptOpt'; active: boolean; /* text: string;*/ tokens: PossibleSerializedNodes[] }>
 export type Widget_promptOpt_output = Maybe<WidgetPromptOutput>
 export interface Widget_promptOpt extends IWidget<'promptOpt', Widget_promptOpt_input, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {}
 export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_input, Widget_promptOpt_serial, Widget_promptOpt_state, Widget_promptOpt_output> {
@@ -222,7 +222,7 @@ export class Widget_promptOpt implements IRequest<'promptOpt', Widget_promptOpt_
 // 🅿️ seed ==============================================================================
 export type Widget_seed_input  = ReqInput<{ default?: number; defaultMode?: 'randomize' | 'fixed' | 'last', min?: number; max?: number }>
 export type Widget_seed_serial = Widget_seed_state
-export type Widget_seed_state  = { type:'seed', active: true; val: number, mode: 'randomize' | 'fixed' | 'last' }
+export type Widget_seed_state  = StateFields<{ type:'seed', active: true; val: number, mode: 'randomize' | 'fixed' | 'last' }>
 export type Widget_seed_output = number
 export interface Widget_seed extends IWidget<'seed', Widget_seed_input, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {}
 export class Widget_seed implements IRequest<'seed', Widget_seed_input, Widget_seed_serial, Widget_seed_state, Widget_seed_output> {
@@ -254,7 +254,7 @@ export class Widget_seed implements IRequest<'seed', Widget_seed_input, Widget_s
 // 🅿️ int ==============================================================================
 export type Widget_int_input  = ReqInput<{ default?: number; min?: number; max?: number, step?: number, theme?: NumbericTheme }>
 export type Widget_int_serial = Widget_int_state
-export type Widget_int_state  = { type:'int', active: true; val: number }
+export type Widget_int_state  = StateFields<{ type:'int', active: true; val: number }>
 export type Widget_int_output = number
 export interface Widget_int extends IWidget<'int', Widget_int_input, Widget_int_serial, Widget_int_state, Widget_int_output> {}
 export class Widget_int implements IRequest<'int', Widget_int_input, Widget_int_serial, Widget_int_state, Widget_int_output> {
@@ -274,9 +274,9 @@ export class Widget_int implements IRequest<'int', Widget_int_input, Widget_int_
 }
 
 // 🅿️ float ==============================================================================
-export type Widget_float_input = ReqInput<{ default?: number; min?: number; max?: number, step?: number, theme?: NumbericTheme }>
+export type Widget_float_input  = ReqInput<{ default?: number; min?: number; max?: number, step?: number, theme?: NumbericTheme }>
 export type Widget_float_serial = Widget_float_state
-export type Widget_float_state = { type:'float', active: true; val: number }
+export type Widget_float_state  = StateFields<{ type:'float', active: true; val: number }>
 export type Widget_float_output = number
 export interface Widget_float extends IWidget<'float', Widget_float_input, Widget_float_serial, Widget_float_state, Widget_float_output> {}
 export class Widget_float implements IRequest<'float', Widget_float_input, Widget_float_serial, Widget_float_state, Widget_float_output> {
@@ -296,9 +296,9 @@ export class Widget_float implements IRequest<'float', Widget_float_input, Widge
 }
 
 // 🅿️ bool ==============================================================================
-export type Widget_bool_input = ReqInput<{ default?: boolean }>
+export type Widget_bool_input  = ReqInput<{ default?: boolean }>
 export type Widget_bool_serial = Widget_bool_state
-export type Widget_bool_state = { type:'bool', active: true; val: boolean }
+export type Widget_bool_state  = StateFields<{ type:'bool', active: true; val: boolean }>
 export type Widget_bool_output = boolean
 export interface Widget_bool extends IWidget<'bool', Widget_bool_input, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {}
 export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {
@@ -318,9 +318,9 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_b
 }
 
 // 🅿️ intOpt ==============================================================================
-export type Widget_intOpt_input = ReqInput<{ default?: number; min?: number; max?: number; step?: number, theme?: NumbericTheme }>
+export type Widget_intOpt_input  = ReqInput<{ default?: number; min?: number; max?: number; step?: number, theme?: NumbericTheme }>
 export type Widget_intOpt_serial = Widget_intOpt_state
-export type Widget_intOpt_state = { type: 'intOpt', active: boolean; val: number }
+export type Widget_intOpt_state  = StateFields<{ type: 'intOpt', active: boolean; val: number }>
 export type Widget_intOpt_output = Maybe<number>
 export interface Widget_intOpt extends IWidget<'intOpt', Widget_intOpt_input, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {}
 export class Widget_intOpt implements IRequest<'intOpt', Widget_intOpt_input, Widget_intOpt_serial, Widget_intOpt_state, Widget_intOpt_output> {
@@ -347,9 +347,9 @@ export class Widget_intOpt implements IRequest<'intOpt', Widget_intOpt_input, Wi
 }
 
 // 🅿️ floatOpt ==============================================================================
-export type Widget_floatOpt_input = ReqInput<{ default?: number; min?: number; max?: number; step?: number, theme?: NumbericTheme }>
+export type Widget_floatOpt_input  = ReqInput<{ default?: number; min?: number; max?: number; step?: number, theme?: NumbericTheme }>
 export type Widget_floatOpt_serial = Widget_floatOpt_state
-export type Widget_floatOpt_state = { type: 'floatOpt', active: boolean; val: number }
+export type Widget_floatOpt_state  = StateFields<{ type: 'floatOpt', active: boolean; val: number }>
 export type Widget_floatOpt_output = Maybe<number>
 export interface Widget_floatOpt extends IWidget<'floatOpt', Widget_floatOpt_input, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {}
 export class Widget_floatOpt implements IRequest<'floatOpt', Widget_floatOpt_input, Widget_floatOpt_serial, Widget_floatOpt_state, Widget_floatOpt_output> {
@@ -376,9 +376,9 @@ export class Widget_floatOpt implements IRequest<'floatOpt', Widget_floatOpt_inp
 }
 
 // 🅿️ size ==============================================================================
-export type Widget_size_input = ReqInput<{ default?: CushySizeByRatio }>
+export type Widget_size_input  = ReqInput<{ default?: CushySizeByRatio }>
 export type Widget_size_serial = Widget_size_state
-export type Widget_size_state = CushySize
+export type Widget_size_state  = StateFields<CushySize>
 export type Widget_size_output = CushySize
 export interface Widget_size extends IWidget<'size', Widget_size_input, Widget_size_serial, Widget_size_state, Widget_size_output> {}
 export class Widget_size implements IRequest<'size', Widget_size_input, Widget_size_serial, Widget_size_state, Widget_size_output> {
@@ -414,9 +414,9 @@ export class Widget_size implements IRequest<'size', Widget_size_input, Widget_s
 }
 
 // 🅿️ matrix ==============================================================================
-export type Widget_matrix_input = ReqInput<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
+export type Widget_matrix_input  = ReqInput<{ default?: { row: string; col: string }[]; rows: string[]; cols: string[] }>
 export type Widget_matrix_serial = Widget_matrix_state
-export type Widget_matrix_state = { type: 'matrix', active: true; selected: CELL[], collapsed?: boolean }
+export type Widget_matrix_state  = StateFields<{ type: 'matrix', active: true; selected: CELL[] }>
 export type Widget_matrix_output = CELL[]
 export interface Widget_matrix extends IWidget<'matrix', Widget_matrix_input, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {}
 export class Widget_matrix implements IRequest<'matrix', Widget_matrix_input, Widget_matrix_serial, Widget_matrix_state, Widget_matrix_output> {
@@ -504,9 +504,9 @@ export class Widget_matrix implements IRequest<'matrix', Widget_matrix_input, Wi
 }
 
 // 🅿️ loras ==============================================================================
-export type Widget_loras_input = ReqInput<{ default?: SimplifiedLoraDef[] }>
+export type Widget_loras_input  = ReqInput<{ default?: SimplifiedLoraDef[] }>
 export type Widget_loras_serial = Widget_loras_state
-export type Widget_loras_state = { type: 'loras', active: true; loras: SimplifiedLoraDef[] }
+export type Widget_loras_state  = StateFields<{ type: 'loras', active: true; loras: SimplifiedLoraDef[] }>
 export type Widget_loras_output = SimplifiedLoraDef[]
 export interface Widget_loras extends IWidget<'loras', Widget_loras_input, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {}
 export class Widget_loras implements IRequest<'loras', Widget_loras_input, Widget_loras_serial, Widget_loras_state, Widget_loras_output> {
@@ -564,7 +564,7 @@ export type Widget_image_input  = ReqInput<{
     scribbleFillColor?: string
 }>
 export type Widget_image_serial = Widget_image_state
-export type Widget_image_state  = ImageAnswerForm<'image', true>
+export type Widget_image_state  = StateFields<ImageAnswerForm<'image', true>>
 export type Widget_image_output = ImageAnswer
 export interface Widget_image extends IWidget<'image', Widget_image_input, Widget_image_serial, Widget_image_state, Widget_image_output> {}
 export class Widget_image implements IRequest<'image', Widget_image_input, Widget_image_serial, Widget_image_state, Widget_image_output> {
@@ -598,7 +598,7 @@ export class Widget_image implements IRequest<'image', Widget_image_input, Widge
 // 🅿️ imageOpt ==============================================================================
 export type Widget_imageOpt_input  = Widget_image_input // same as image
 export type Widget_imageOpt_serial = Widget_imageOpt_state
-export type Widget_imageOpt_state  = ImageAnswerForm<'imageOpt', boolean>
+export type Widget_imageOpt_state  = StateFields<ImageAnswerForm<'imageOpt', boolean>>
 export type Widget_imageOpt_output = Maybe<ImageAnswer>
 export interface Widget_imageOpt extends IWidget<'imageOpt', Widget_imageOpt_input, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {}
 export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_input, Widget_imageOpt_serial, Widget_imageOpt_state, Widget_imageOpt_output> {
@@ -630,9 +630,9 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_inp
 }
 
 // 🅿️ selectOne ==============================================================================
-export type Widget_selectOne_input<T> = ReqInput<{ default?: T; choices: T[] }>
+export type Widget_selectOne_input<T>  = ReqInput<{ default?: T; choices: T[] }>
 export type Widget_selectOne_serial<T> = Widget_selectOne_state<T>
-export type Widget_selectOne_state<T> = { type:'selectOne', query: string; val: T }
+export type Widget_selectOne_state<T>  = StateFields<{ type:'selectOne', query: string; val: T }>
 export type Widget_selectOne_output<T> = T
 export interface Widget_selectOne<T>  extends IWidget<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
 export class Widget_selectOne<T> implements IRequest<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
@@ -656,9 +656,9 @@ export class Widget_selectOne<T> implements IRequest<'selectOne', Widget_selectO
 }
 
 // 🅿️ selectOneOrCustom ==============================================================================
-export type Widget_selectOneOrCustom_input = ReqInput<{ default?: string; choices: string[] }>
+export type Widget_selectOneOrCustom_input  = ReqInput<{ default?: string; choices: string[] }>
 export type Widget_selectOneOrCustom_serial = Widget_selectOneOrCustom_state
-export type Widget_selectOneOrCustom_state = { type:'selectOneOrCustom', query: string; val: string }
+export type Widget_selectOneOrCustom_state  = StateFields<{ type:'selectOneOrCustom', query: string; val: string }>
 export type Widget_selectOneOrCustom_output = string
 export interface Widget_selectOneOrCustom extends IWidget<'selectOneOrCustom', Widget_selectOneOrCustom_input, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {}
 export class Widget_selectOneOrCustom implements IRequest<'selectOneOrCustom', Widget_selectOneOrCustom_input, Widget_selectOneOrCustom_serial, Widget_selectOneOrCustom_state, Widget_selectOneOrCustom_output > {
@@ -683,8 +683,8 @@ export class Widget_selectOneOrCustom implements IRequest<'selectOneOrCustom', W
 
 // 🅿️ selectMany ==============================================================================
 export type Widget_selectMany_input<T extends { type: string }>  = ReqInput<{ default?: T[]; choices: T[] }>
-export type Widget_selectMany_serial<T extends { type: string }> = { type: 'selectMany', query: string; values_: string[] }
-export type Widget_selectMany_state<T extends { type: string }>  = { type: 'selectMany', query: string; values: T[] }
+export type Widget_selectMany_serial<T extends { type: string }> = StateFields<{ type: 'selectMany', query: string; values_: string[] }>
+export type Widget_selectMany_state<T extends { type: string }>  = StateFields<{ type: 'selectMany', query: string; values: T[] }>
 export type Widget_selectMany_output<T extends { type: string }> = T[]
 export interface Widget_selectMany<T extends { type: string }> extends IWidget<'selectMany', Widget_selectMany_input<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {}
 export class Widget_selectMany<T extends { type: string }> implements IRequest<'selectMany', Widget_selectMany_input<T>, Widget_selectMany_serial<T>, Widget_selectMany_state<T>, Widget_selectMany_output<T>> {
@@ -714,9 +714,9 @@ export class Widget_selectMany<T extends { type: string }> implements IRequest<'
 }
 
 // 🅿️ selectManyOrCustom ==============================================================================
-export type Widget_selectManyOrCustom_input = ReqInput<{ default?: string[]; choices: string[] }>
+export type Widget_selectManyOrCustom_input  = ReqInput<{ default?: string[]; choices: string[] }>
 export type Widget_selectManyOrCustom_serial = Widget_selectManyOrCustom_state
-export type Widget_selectManyOrCustom_state = { type: 'selectManyOrCustom', query: string; values: string[] }
+export type Widget_selectManyOrCustom_state  = StateFields<{ type: 'selectManyOrCustom', query: string; values: string[] }>
 export type Widget_selectManyOrCustom_output = string[]
 export interface Widget_selectManyOrCustom extends IWidget<'selectManyOrCustom',  Widget_selectManyOrCustom_input, Widget_selectManyOrCustom_serial, Widget_selectManyOrCustom_state, Widget_selectManyOrCustom_output > {}
 export class Widget_selectManyOrCustom implements IRequest<'selectManyOrCustom', Widget_selectManyOrCustom_input, Widget_selectManyOrCustom_serial, Widget_selectManyOrCustom_state, Widget_selectManyOrCustom_output > {
@@ -742,8 +742,8 @@ export type Widget_list_input<T extends Widget>  = ReqInput<{
     max?:number,
     defaultLength?:number
 }>
-export type Widget_list_serial<T extends Widget> = { type: 'list', active: true; items_: T['$Serial'][] }
-export type Widget_list_state<T extends Widget>  = { type: 'list', active: true; items: T[] }
+export type Widget_list_serial<T extends Widget> = StateFields<{ type: 'list', active: true; items_: T['$Serial'][] }>
+export type Widget_list_state<T extends Widget>  = StateFields<{ type: 'list', active: true; items: T[] }>
 export type Widget_list_output<T extends Widget> = T['$Output'][]
 export interface Widget_list<T extends Widget> extends IWidget<'list', Widget_list_input<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {}
 export class Widget_list<T extends Widget> implements IRequest<'list', Widget_list_input<T>, Widget_list_serial<T>, Widget_list_state<T>, Widget_list_output<T>> {
@@ -792,8 +792,8 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
 
 // 🅿️ group ==============================================================================
 export type Widget_group_input <T extends { [key: string]: Widget }> = ReqInput<{ items: () => T, topLevel?: boolean, verticalLabels?: boolean }>
-export type Widget_group_serial<T extends { [key: string]: Widget }> = { type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }
-export type Widget_group_state <T extends { [key: string]: Widget }> = { type: 'group', active: true; values: T, collapsed?: boolean, verticalLabels?: boolean }
+export type Widget_group_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'group', active: true; values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }>
+export type Widget_group_state <T extends { [key: string]: Widget }> = StateFields<{ type: 'group', active: true; values: T, vertical?: boolean }>
 export type Widget_group_output<T extends { [key: string]: Widget }> = { [k in keyof T]: ReqResult<T[k]> }
 export interface Widget_group<T extends { [key: string]: Widget }> extends IWidget<'group', Widget_group_input<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {}
 export class Widget_group<T extends { [key: string]: Widget }> implements IRequest<'group', Widget_group_input<T>, Widget_group_serial<T>, Widget_group_state<T>, Widget_group_output<T>> {
@@ -830,7 +830,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
             }
         } else {
             const _items = input.items()
-            this.state = { type: 'group', active: true, values: _items, verticalLabels: input.verticalLabels??true }
+            this.state = { type: 'group', active: true, values: _items, vertical: input.verticalLabels??true }
         }
         makeAutoObservable(this)
     }
@@ -850,8 +850,8 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
 
 // 🅿️ groupOpt ==============================================================================
 export type Widget_groupOpt_input <T extends { [key: string]: Widget }> = ReqInput<{ default?: boolean; items: () => T }>
-export type Widget_groupOpt_serial<T extends { [key: string]: Widget }> = { type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']}, collapsed?: boolean }
-export type Widget_groupOpt_state <T extends { [key: string]: Widget }> = { type: 'groupOpt', active: boolean; values: T, collapsed?: boolean }
+export type Widget_groupOpt_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']}, }>
+export type Widget_groupOpt_state <T extends { [key: string]: Widget }> = StateFields<{ type: 'groupOpt', active: boolean; values: T, }>
 export type Widget_groupOpt_output<T extends { [key: string]: Widget }> = Maybe<{ [k in keyof T]: ReqResult<T[k]> }>
 export interface Widget_groupOpt<T extends { [key: string]: Widget }> extends IWidget<'groupOpt', Widget_groupOpt_input<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {}
 export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRequest<'groupOpt', Widget_groupOpt_input<T>, Widget_groupOpt_serial<T>, Widget_groupOpt_state<T>, Widget_groupOpt_output<T>> {
@@ -904,8 +904,8 @@ export class Widget_groupOpt<T extends { [key: string]: Widget }> implements IRe
 
 // 🅿️ choice ==============================================================================
 export type Widget_choice_input <T extends { [key: string]: Widget }> = ReqInput<{ default?: keyof T; items: () => T }>
-export type Widget_choice_serial<T extends { [key: string]: Widget }> = { type: 'choice', active: boolean; pick: keyof T & string, values_: {[K in keyof T]: T[K]['$Serial']}, collapsed?: boolean }
-export type Widget_choice_state <T extends { [key: string]: Widget }> = { type: 'choice', active: boolean; pick: keyof T & string, values: T, collapsed?: boolean }
+export type Widget_choice_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'choice', active: boolean; pick: keyof T & string, values_: {[K in keyof T]: T[K]['$Serial']} }>
+export type Widget_choice_state <T extends { [key: string]: Widget }> = StateFields<{ type: 'choice', active: boolean; pick: keyof T & string, values: T }>
 export type Widget_choice_output<T extends { [key: string]: Widget }> = ReqResult<T[keyof T]>
 export interface Widget_choice  <T extends { [key: string]: Widget }> extends    IWidget<'choice',  Widget_choice_input<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {}
 export class Widget_choice      <T extends { [key: string]: Widget }> implements IRequest<'choice', Widget_choice_input<T>, Widget_choice_serial<T>, Widget_choice_state<T>, Widget_choice_output<T>> {
@@ -957,8 +957,8 @@ export class Widget_choice      <T extends { [key: string]: Widget }> implements
 
 // 🅿️ choices ==============================================================================
 export type Widget_choices_input <T extends { [key: string]: Widget }> = ReqInput<{ items: () => T, defaultActiveBranches?: {[k in keyof T]?: boolean}  }>
-export type Widget_choices_serial<T extends { [key: string]: Widget }> = { type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values_: {[k in keyof T]: T[k]['$Serial']}, collapsed?: boolean }
-export type Widget_choices_state <T extends { [key: string]: Widget }> = { type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values: T, collapsed?: boolean }
+export type Widget_choices_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values_: {[k in keyof T]: T[k]['$Serial']} }>
+export type Widget_choices_state <T extends { [key: string]: Widget }> = StateFields<{ type: 'choices', active: true; branches: {[k in keyof T]?: boolean}, values: T }>
 export type Widget_choices_output<T extends { [key: string]: Widget }> = { [k in keyof T]?: ReqResult<T[k]> }
 export interface Widget_choices<T extends { [key: string]: Widget }> extends IWidget<'choices', Widget_choices_input<T>, Widget_choices_serial<T>, Widget_choices_state<T>, Widget_choices_output<T>> {}
 export class Widget_choices<T extends { [key: string]: Widget }> implements IRequest<'choices', Widget_choices_input<T>, Widget_choices_serial<T>, Widget_choices_state<T>, Widget_choices_output<T>> {
@@ -1029,9 +1029,9 @@ export class Widget_choices<T extends { [key: string]: Widget }> implements IReq
 }
 
 // 🅿️ enum ==============================================================================
-export type Widget_enum_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
+export type Widget_enum_input<T extends KnownEnumNames>  = ReqInput<{ default?: Requirable[T]; enumName: T }>
 export type Widget_enum_serial<T extends KnownEnumNames> = Widget_enum_state<T>
-export type Widget_enum_state<T extends KnownEnumNames> = { type: 'enum', active: true; val: Requirable[T] }
+export type Widget_enum_state<T extends KnownEnumNames>  = StateFields<{ type: 'enum', active: true; val: Requirable[T] }>
 export type Widget_enum_output<T extends KnownEnumNames> = Requirable[T]
 export interface Widget_enum<T extends KnownEnumNames> extends IWidget<'enum', Widget_enum_input<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {}
 export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', Widget_enum_input<T>, Widget_enum_serial<T>, Widget_enum_state<T>, Widget_enum_output<T>> {
@@ -1056,9 +1056,9 @@ export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', W
 }
 
 // 🅿️ enumOpt ==============================================================================
-export type Widget_enumOpt_input<T extends KnownEnumNames> = ReqInput<{ default?: Requirable[T]; enumName: T }>
+export type Widget_enumOpt_input<T extends KnownEnumNames>  = ReqInput<{ default?: Requirable[T]; enumName: T }>
 export type Widget_enumOpt_serial<T extends KnownEnumNames> = Widget_enumOpt_state<T>
-export type Widget_enumOpt_state<T extends KnownEnumNames> = { type: 'enumOpt', active: boolean; val: Requirable[T] }
+export type Widget_enumOpt_state<T extends KnownEnumNames>  = StateFields<{ type: 'enumOpt', active: boolean; val: Requirable[T] }>
 export type Widget_enumOpt_output<T extends KnownEnumNames> = Maybe<Requirable[T]>
 export interface Widget_enumOpt<T extends KnownEnumNames> extends IWidget<'enumOpt', Widget_enumOpt_input<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {}
 export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumOpt', Widget_enumOpt_input<T>, Widget_enumOpt_serial<T>, Widget_enumOpt_state<T>, Widget_enumOpt_output<T>> {

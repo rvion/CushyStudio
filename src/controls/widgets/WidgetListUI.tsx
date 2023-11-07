@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button } from 'rsuite'
+import { Button, ButtonGroup } from 'rsuite'
 import { Widget, Widget_list } from 'src/controls/Widget'
 import { WidgetUI } from './WidgetUI'
 
@@ -9,29 +9,36 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
     const max = req.input.max
     const min = req.input.min
     return (
-        <div>
+        <div className='_WidgetListUI' tw='flex-grow w-full'>
             <Button
                 //
                 tw='mb-2'
                 disabled={max ? req.state.items.length >= max : undefined}
-                size='sm'
+                size='xs'
+                startIcon={<span className='material-symbols-outlined'>add</span>}
                 onClick={() => req.addItem()}
             >
                 Add
             </Button>
-            {values.map((v, ix) => (
-                <div tw='flex gap-2 items-center'>
-                    <Button
-                        disabled={min ? req.state.items.length <= min : undefined}
-                        tw='self-center'
-                        onClick={() => req.removeItem(v)}
-                        size='xs'
-                    >
-                        X
-                    </Button>
-                    <WidgetUI key={ix} req={v} />
-                </div>
-            ))}
+            <div tw='flex flex-col gap-1'>
+                {values.map((v, ix) => (
+                    <div tw='flex items-start'>
+                        <Button
+                            appearance='subtle'
+                            disabled={min ? req.state.items.length <= min : undefined}
+                            tw='self-start'
+                            onClick={() => req.removeItem(v)}
+                            size='xs'
+                        >
+                            X
+                        </Button>
+                        <Button appearance='subtle' size='xs' onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}>
+                            {v.state.collapsed ? '▸' : '▿'}
+                        </Button>
+                        <WidgetUI key={ix} req={v} />
+                    </div>
+                ))}
+            </div>
         </div>
     )
 })

@@ -68,10 +68,10 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
 
     if (sliderUI)
         return (
-            <>
-                {sliderUI}
+            <div tw='relative flex items-center gap-2'>
+                <div tw='ml-2'>{sliderUI}</div>
                 {inputUI}
-            </>
+            </div>
         )
     return inputUI
 })

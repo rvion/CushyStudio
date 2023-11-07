@@ -40,7 +40,7 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget
         )
 
     return (
-        <div className='flex gap-1'>
+        <div className='flex gap-1 items-center'>
             <Toggle
                 // size='sm'
                 checked={req.state.active}

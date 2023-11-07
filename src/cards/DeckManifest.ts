@@ -25,6 +25,9 @@ export type CardManifest = {
     /** relative to the deck root */
     deckRelativeFilePath: string
 
+    /** should be AAAxBBB pixel wide */
+    cardBanner?: string
+
     /**
      * card name;
      * defaults to the file name without extension
@@ -62,6 +65,7 @@ export type CardManifest = {
 export const CardSchema = Type.Object(
     {
         deckRelativeFilePath: Type.String(),
+        cardBanner: Type.Optional(Type.String()),
         name: Type.String(),
         illustration: Type.Optional(Type.String()),
         priority: Type.Optional(Type.Number()),

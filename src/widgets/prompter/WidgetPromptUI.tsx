@@ -150,7 +150,7 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
             {/* https://github.com/facebook/lexical/blob/main/packages/lexical-playground/src/plugins/EmojiPickerPlugin/index.tsx */}
 
             <CushyCompletionPlugin cs={cs} />
-            <PrompterConfigUI />
+            {/* <PrompterConfigUI /> */}
             <OnChangePlugin
                 onChange={(editorState: EditorState, editor: LexicalEditor, tags: Set<string>) => {
                     onChange(req, editorState)

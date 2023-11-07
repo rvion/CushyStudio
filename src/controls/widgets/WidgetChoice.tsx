@@ -1,8 +1,8 @@
 import type { Widget, Widget_choice } from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
-import { Button, SelectPicker } from 'rsuite'
-import { WidgetWithLabelUI } from './WidgetUI'
+import { Button, InputGroup, SelectPicker } from 'rsuite'
+import { WidgetUI, WidgetWithLabelUI } from './WidgetUI'
 
 export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget_choice<{ [key: string]: Widget }> }) {
     const req = p.req
@@ -11,20 +11,24 @@ export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget
     const choices = choicesStr.map((v) => ({ label: v, value: v }))
     const choiceSubReq = req.state.values[req.state.pick]
     return (
-        <div tw='relative'>
-            <Button tw='float-right' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
-                {collapsed ? '▿' : '▸'}
-            </Button>
-            <SelectPicker
-                //
-                onChange={(v) => {
-                    if (v == null) return
-                    req.state.pick = v
-                    req.state.active = true
-                }}
-                data={choices}
-                value={req.state.pick}
-            />
+        <div tw='_WidgetChoiceUI relative w-full'>
+            <div>
+                <SelectPicker
+                    //
+                    cleanable={false}
+                    size='sm'
+                    onChange={(v) => {
+                        if (v == null) return
+                        req.state.pick = v
+                        req.state.active = true
+                    }}
+                    data={choices}
+                    value={req.state.pick}
+                />
+                {/* <Button appearance='subtle' size='sm' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
+                    {collapsed ? '▿' : '▸'}
+                </Button> */}
+            </div>
 
             {req.state.collapsed ? null : (
                 <div
@@ -33,9 +37,9 @@ export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget
                     className={req.input.className}
                 >
                     {choiceSubReq && (
-                        <WidgetWithLabelUI //
-                            labelPos={choiceSubReq.input.labelPos}
-                            rootKey={req.state.pick}
+                        <WidgetUI //
+                            // labelPos={choiceSubReq.input.labelPos}
+                            // rootKey={req.state.pick}
                             req={choiceSubReq}
                         />
                     )}

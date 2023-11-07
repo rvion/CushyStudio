@@ -5,9 +5,9 @@ import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Message, Tooltip, Whisper } from 'rsuite'
 import { LabelPos } from 'src/controls/IWidget'
-import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
+import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetChoiceUI } from './WidgetChoice'
 import { WidgetChoicesUI } from './WidgetChoices'
@@ -40,47 +40,56 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     tooltip = req.input.tooltip
 
     // const vertical = false // p.vertical
-    const vertical = p.vertical
+    const vertical = p.vertical ?? true
+    const v = p.req
     const LABEL = (
         <div
-            style={{ minWidth: '5rem' }}
-            tw='font-bold'
+            // style={{ minWidth: '5rem' }}
+            // tw='font-bold'
             className={
                 vertical //
-                    ? 'min-w-max shrink-0'
+                    ? 'min-w-max shrink-0 w-full'
                     : 'min-w-max shrink-0 text-right'
             }
         >
-            {tooltip && (
-                <Whisper placement='topStart' speaker={<Tooltip>{tooltip}</Tooltip>}>
-                    <I.InfoOutline className='mr-2 cursor-pointer' />
-                </Whisper>
-            )}
-            {label}
+            <div
+                tw='py-0.5 rounded hover:bg-blue-500 cursor-pointer'
+                //
+                // appearance='subtle'
+                // size='sm'
+                onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}
+            >
+                {tooltip && (
+                    <Whisper placement='topStart' speaker={<Tooltip>{tooltip}</Tooltip>}>
+                        <I.InfoOutline className='mr-2 cursor-pointer' />
+                    </Whisper>
+                )}
+                {label || '<no label>'} {v.state.collapsed ? '▸ {...}' : '▿'}
+            </div>
         </div>
     )
-    let WIDGET = (
+    let WIDGET = v.state.collapsed ? null : (
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <WidgetUI req={req} />
         </ErrorBoundary>
     )
     const className = vertical //
         ? 'flex flex-col items-baseline'
-        : 'flex flex-row gap-2 items-baseline'
+        : 'flex flex-row items-baseline gap-2 '
 
-    if (vertical) {
-        WIDGET = <div tw='flex items-center gap-2'>{WIDGET}</div>
-    }
+    // if (vertical) {
+    //     WIDGET = <div tw='flex items-center gap-2'>{WIDGET}</div>
+    // }
     if (p.labelPos === 'end') {
         return (
-            <div className={className} key={rootKey}>
+            <div tw='_WidgetWithLabelUI' className={className} key={rootKey}>
                 {WIDGET}
                 {LABEL}
             </div>
         )
     } else {
         return (
-            <div className={className} key={rootKey}>
+            <div tw='_WidgetWithLabelUI' className={className} key={rootKey}>
                 {LABEL}
                 {WIDGET}
             </div>
