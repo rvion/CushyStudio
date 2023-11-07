@@ -45,7 +45,18 @@ card({
         extra: form.groupOpt({
             items: () => ({
                 reverse: form.bool({ default: false }),
-                show3d: form.bool({ default: false }),
+                show3d: form.groupOpt({
+                    items: () => ({
+                        normal: form.selectOne({
+                            default: { type: 'MiDaS' },
+                            choices: [{ type: 'MiDaS' }, { type: 'BAE' }],
+                        }),
+                        depth: form.selectOne({
+                            default: { type: 'Zoe' },
+                            choices: [{ type: 'MiDaS' }, { type: 'Zoe' }, { type: 'LeReS' }],
+                        }),
+                    }),
+                }),
             }),
         }),
     }),
@@ -139,32 +150,42 @@ card({
             latent = sndPass.latent
         }
 
-        const image = graph.VAEDecode({ samples: latent, vae })
+        let finalImage: HasSingle_IMAGE = graph.VAEDecode({ samples: latent, vae })
         // DECODE --------------------------------------------------------------------------------
-        graph.SaveImage({ images: image })
+        graph.SaveImage({ images: finalImage })
 
         // REMOVE BACKGROUND ---------------------------------------------------------------------
         if (p.removeBG) {
-            graph.SaveImage({
-                images: graph.Image_Rembg_$1Remove_Background$2({
-                    images: flow.AUTO,
-                    model: 'u2net',
-                    background_color: 'magenta',
-                }),
+            finalImage = graph.Image_Rembg_$1Remove_Background$2({
+                images: flow.AUTO,
+                model: 'u2net',
+                background_color: 'magenta',
             })
+            graph.SaveImage({ images: finalImage })
         }
 
         // SHOW 3D --------------------------------------------------------------------------------
-        if (p.extra?.show3d) {
-            flow.add_saveImage(image, 'base')
-            const depth = graph.MiDaS$7DepthMapPreprocessor({ image })
+        const show3d = p.extra?.show3d
+        if (show3d) {
+            flow.add_saveImage(finalImage, 'base')
+
+            const depth = (() => {
+                if (show3d.depth.type === 'MiDaS') return graph.MiDaS$7DepthMapPreprocessor({ image: finalImage })
+                if (show3d.depth.type === 'Zoe') return graph.Zoe$7DepthMapPreprocessor({ image: finalImage })
+                if (show3d.depth.type === 'LeReS') return graph.LeReS$7DepthMapPreprocessor({ image: finalImage })
+                return exhaust(show3d.depth)
+            })()
             flow.add_saveImage(depth, 'depth')
-            const normal = graph.MiDaS$7NormalMapPreprocessor({ image })
+
+            const normal = (() => {
+                if (show3d.normal.type === 'MiDaS') return graph.MiDaS$7NormalMapPreprocessor({ image: finalImage })
+                if (show3d.normal.type === 'BAE') return graph.BAE$7NormalMapPreprocessor({ image: finalImage })
+                return exhaust(show3d.normal)
+            })()
             flow.add_saveImage(normal, 'normal')
         }
 
         await flow.PROMPT()
-
         flow.out_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
