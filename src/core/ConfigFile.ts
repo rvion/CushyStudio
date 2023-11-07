@@ -27,6 +27,10 @@ export type ConfigFile = {
      * @example 8188
      * */
     comfyPort: number
+
+    /** prefer dense form */
+    preferDenseForms?: boolean
+
     favoriteCards?: CardPath[]
     /** list of all comfyUI setup available */
     machines?: {

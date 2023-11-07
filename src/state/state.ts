@@ -119,6 +119,10 @@ export class STATE {
     get galleryHoverOpacity() { return this.configFile.value.galleryHoverOpacity ?? .9 } // prettier-ignore
     set galleryHoverOpacity(v: number) { this.configFile.update({ galleryHoverOpacity: v }) } // prettier-ignore
 
+    // showPreviewInFullScreen
+    get preferDenseForms() { return this.configFile.value.preferDenseForms ?? false } // prettier-ignore
+    set preferDenseForms(v: boolean) { this.configFile.update({ preferDenseForms: v }) } // prettier-ignore
+
     // gallery size
     get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore
     set gallerySize(v: number) { this.configFile.update({ galleryImageSize: v }) } // prettier-ignore

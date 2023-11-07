@@ -26,6 +26,7 @@ import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrOptUI } from './WidgetStrOptUI'
 import { WidgetStrUI } from './WidgetStrUI'
+import { useSt } from 'src/state/stateContext'
 
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Widget
@@ -33,6 +34,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     rootKey: string
     vertical?: boolean
 }) {
+    const st = useSt()
     const { rootKey, req } = p
     let tooltip: Maybe<string>
     let label: Maybe<string>
@@ -40,7 +42,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     tooltip = req.input.tooltip
 
     // const vertical = false // p.vertical
-    const vertical = p.vertical ?? true
+    const vertical = p.vertical ?? (st.preferDenseForms ? false : true)
     const v = p.req
     const LABEL = (
         <div
