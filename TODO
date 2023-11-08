@@ -1,44 +1,42 @@
 Todo before release
 
 ☐ make the run button red if cushy is not running
-☐ center preview
+✔ center preview @done(23-11-08 20:55)
 ✔ better latent preview @done(23-11-01 13:15)
     ✔ fix aspect ratio @done(23-11-01 13:15)
     ✔ zoom on hover @done(23-11-01 13:15)
 
-☐ better scribble
+✔ better scribble @done(23-11-08 20:55)
 ☐ error messages
-☐ edit should add to type-checking
-☐ autorun
-☐ scribble
-☐ close things
-☐ close things
-☐ better type-checking config
-☐ better type-checking config
+✔ edit should add to type-checking @done(23-11-08 20:55)
+✔ autorun @done(23-11-08 20:55)
+✔ scribble @done(23-11-08 20:55)
+✔ close things @done(23-11-08 20:56)
+✔ better type-checking config @done(23-11-08 20:56)
 
+✔ remove the action picker completely @done(23-11-08 20:56)
+    ✔ have a full-screen card picker that appear on pick  an action part @done(23-11-08 20:56)
+✔ make the default layout have two columns: @done(23-11-08 20:56)
+    ✔ one for the card UI @done(23-11-08 20:56)
+    ✔ one for the preview @done(23-11-08 20:56)
+✘ have the "gallery" be a "bottom" border so it don't take space @cancelled(23-11-08 20:57)
+✔ switch to a nice vertical layout for forms, since 80% of people prefer that @done(23-11-08 20:57)
+✔ redo the navbar, so labels are visible for all main menus @done(23-11-08 20:57)
 
-☐ remove the action picker completely
-    ☐ have a full-screen card picker that appear on pick  an action part
-☐ make the default layout have two columns:
-    ☐ one for the card UI
-    ☐ one for the preview
-☐ have the "gallery" be a "bottom" border so it don't take space
-☐ switch to a nice vertical layout for forms, since 80% of people prefer that
-☐ redo the navbar, so labels are visible for all main menus
-
-☐ have the "run" panel be a  right "border" so it don't take space
-    ☐ https://rawgit.com/caplin/FlexLayout/demos/demos/v0.7/demo/index.html
+✘ have the "run" panel be a  right "border" so it don't take space @cancelled(23-11-08 20:57)
+    ✘ https://rawgit.com/caplin/FlexLayout/demos/demos/v0.7/demo/index.html @cancelled(23-11-08 20:57)
 
 
 marketplace:
-    ☐ proper action pack manifest file
-    ☐ show readme in marketplace
+    ✔ proper action pack manifest file @done(23-11-08 20:57)
+    ✘ show readme in marketplace @cancelled(23-11-08 20:57)
     ✔ one-click create action pack @started(23-10-26 21:30) @done(23-11-01 10:39) @lasted(5d14h9m30s)
     ✔ refresh star count and readme every few hours (add expire mechanism) @done(23-10-26 21:29)
 
 perf:
     ✔ make type inference is faster @done(23-10-26 20:55)
-    ☐ ...
+    ✔ make Cushy not load all actions/draft by default @done(23-11-08 20:56)
+    ☐ cache action compilation
 
 discoverability:
     ✔ self discoverable completsion `:`, `@`, `#`, `*` @done(23-10-26 20:54)
@@ -48,13 +46,13 @@ panes:
     ✔ ComfyNodeExplorer @done(23-10-26 20:04)
 
 asset pack:
-    ☐ marketplace should allow custom assets for images
-    ☐ support assets in action packs
+    ✔ marketplace should allow custom assets for images @done(23-11-08 20:57)
+    ✔ support assets in action packs @done(23-11-08 20:57)
 
 widget UI:
-    ☐ polish some widgets
-    ☐ prompts disable
-    ☐ choices
+    ✔ polish some widgets @done(23-11-08 20:57)
+    ✔ prompts disable @done(23-11-08 20:57)
+    ✔ choices @done(23-11-08 20:57)
     ✔ improve image preview so it fit by default + more features @done(23-10-26 21:47)
     ☐ lists (re-ordering, ...)
     ☐ image loader (local files by path)
