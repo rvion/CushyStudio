@@ -56,9 +56,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         >
             <div
                 tw='py-0.5 rounded hover:bg-blue-500 cursor-pointer'
-                //
-                // appearance='subtle'
-                // size='sm'
                 onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}
             >
                 {tooltip && (
@@ -66,7 +63,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         <I.InfoOutline className='mr-2 cursor-pointer' />
                     </Whisper>
                 )}
-                {label || '<no label>'} {v.state.collapsed ? '▸ {...}' : '▿'}
+                {label || '<no label>'} <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : '▿'}</span>
             </div>
         </div>
     )

@@ -60,7 +60,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
                 <>
                     {req.state.comfy && (
                         <img
-                            style={{ width: '32px', height: '32px' }}
+                            style={{ width: '7rem', height: '7rem' }}
                             src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(
                                 req.state.comfy.imageName,
                             )}&type=input&subfolder=`}

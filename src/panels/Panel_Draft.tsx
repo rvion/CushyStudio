@@ -75,11 +75,11 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | D
                 style={toJS(containerStyle ?? defaultContainerStyle)}
                 tw='flex flex-col flex-grow h-full'
             >
-                <div tw='col items-center font justify-between mb-2'>
-                    <div tw='self-start items-center gap-2 flex'>
+                <div tw='col font justify-between mb-2 w-full'>
+                    <div tw='gap-2 flex flex-grow'>
                         <img
                             tw='rounded m-2'
-                            style={{ width: '5rem', height: '5rem' }}
+                            style={{ width: '6rem', height: '6rem' }}
                             src={card.illustrationPathWithFileProtocol}
                             alt='card illustration'
                             onClick={() => {
@@ -87,25 +87,25 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | D
                                 st.currentDraft = card.getLastDraft()
                             }}
                         />
-                        <div>
+                        <div tw='w-full'>
                             <div tw='flex gap-2 items-center'>
-                                <b style={{ fontSize: '1.3rem' }}>{card.displayName}</b>
-                                <ButtonGroup size='xs'>
-                                    <Button
-                                        color='blue'
-                                        appearance='ghost'
-                                        startIcon={<span className='material-symbols-outlined'>edit</span>}
-                                        onClick={() => openInVSCode(cwd(), card.absPath)}
-                                    >
-                                        Edit
-                                    </Button>
-                                    {/* <AddDraftUI af={card} /> */}
-                                </ButtonGroup>
+                                <b tw='flex-grow' style={{ fontSize: '1.3rem' }}>
+                                    {card.displayName}
+                                </b>
+                                <Button
+                                    color='blue'
+                                    size='xs'
+                                    appearance='subtle'
+                                    startIcon={<span className='material-symbols-outlined'>edit</span>}
+                                    onClick={() => openInVSCode(cwd(), card.absPath)}
+                                >
+                                    Edit
+                                </Button>
                             </div>
                             <div tw='italic'>{card.manifest.description}</div>
                         </div>
                     </div>
-                    <div tw='self-end flex gap-2 items-center' style={{ width: 'fit-content' }}>
+                    <div tw='flex gap-2 items-center'>
                         {/* <Input>foo</Input> */}
                         <div tw='whitespace-nowrap flex items-center'>
                             <Toggle
@@ -113,8 +113,9 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | D
                                 onChange={(t) => (st.preferDenseForms = t)}
                                 checked={st.preferDenseForms}
                             ></Toggle>
-                            <div tw='animate-pulse text-red-500'>PREFER DENSER FORM</div>
+                            <div tw='text-red-500'>PREFER DENSER FORM</div>
                         </div>
+                        <div className='flex-grow'></div>
                         <RunOrAutorunUI draft={draft} />
                     </div>
                     {/* <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
