@@ -145,6 +145,7 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | D
                 {/* <ActionDraftListUI card={card} /> */}
                 <ScrollablePaneUI className='flex-grow bg-contrasted-gradient'>
                     <form
+                        tw='pb-80'
                         onKeyUp={(ev) => {
                             // submit on meta+enter
                             if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {

@@ -27,13 +27,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
             req.state.pick = 'cushy'
         })
     })
-
     const draft = useDraft()
-    const showToogle =
-        req instanceof Widget_imageOpt //
-            ? true
-            : req.state.active !== true
-
     const tabs = [
         {
             title: () => <>Drop</>,
@@ -124,18 +118,9 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
         ? Tab.Asset
         : Tab.Asset
 
-    // const showToogle = req instanceof Widget_imageOpt
-
     return (
         <div>
             <div style={dropStyle} ref={dropRef} className='flex gap-2 flex-row items-center'>
-                {showToogle && (
-                    <Toggle
-                        // size='sm'
-                        checked={req.state.active}
-                        onChange={(t) => (req.state.active = t)}
-                    />
-                )}
                 <TabsUI
                     inline
                     disabled={!req.state.active}

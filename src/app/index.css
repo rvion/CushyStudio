@@ -297,6 +297,10 @@ hr {
     width: 100%;
 }
 
+._WidgetWithLabelUI {
+    background-color: #28282868;
+}
+
 ._WidgetListUI {
     /* border: 1px solid blue; */
 }

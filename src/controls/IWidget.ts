@@ -6,6 +6,7 @@ export type IWidget<T, I, X extends { type: T }, S, O> = {
 }
 export type IRequest<T, I, X, S, O> = {
     id: string
+    isOptional: boolean
     type: T
     state: S
     readonly result: O

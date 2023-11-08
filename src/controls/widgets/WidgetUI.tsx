@@ -3,7 +3,7 @@ import * as R from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Message, Tooltip, Whisper } from 'rsuite'
+import { Message, Toggle, Tooltip, Whisper } from 'rsuite'
 import { LabelPos } from 'src/controls/IWidget'
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
@@ -24,7 +24,6 @@ import { WidgetSeedUI } from './WidgetSeedUI'
 import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
-import { WidgetStrOptUI } from './WidgetStrOptUI'
 import { WidgetStrUI } from './WidgetStrUI'
 import { useSt } from 'src/state/stateContext'
 
@@ -56,6 +55,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const vertical = (() => {
         if (p.vertical) return p.vertical
         if (st.preferedFormLayout === 'auto') {
+            // if (req.isOptional) return true
             if (req instanceof R.Widget_group) return true
             if (req instanceof R.Widget_groupOpt) return true
             if (req instanceof R.Widget_list) return true
@@ -72,10 +72,20 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         // p.vertical ?? (st.preferedFormLayout ? false : true)
     })()
     const v = p.req
+
+    const toogle = (
+        <Toggle
+            //
+            // size='sm'
+            checked={req.state.active}
+            onChange={(t) => (req.state.active = t)}
+        />
+    )
+    const showToogle = req.isOptional || !req.state.active
+
     const LABEL = (
         <div
-            // style={{ minWidth: '5rem' }}
-            // tw='font-bold'
+            style={{ minWidth: '5rem' }}
             className={
                 vertical //
                     ? 'min-w-max shrink-0 self-start w-full'
@@ -91,12 +101,14 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         <I.InfoOutline className='mr-2 cursor-pointer' />
                     </Whisper>
                 )}
-                <span tw='text-sm'>{label || '<no label>'}</span>{' '}
-                <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : '▿'}</span>
+                <span tw=''>{label || '<no label>'}</span> {/* {req.constructor.name} */}
+                {showToogle ? toogle : null}
+                {/* {req.constructor.name} */}
+                <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>
             </div>
         </div>
     )
-    let WIDGET = v.state.collapsed ? null : (
+    let WIDGET = v.state.collapsed ? null : !v.state.active ? null : ( //
         <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
             <WidgetUI req={req} />
         </ErrorBoundary>
@@ -118,11 +130,12 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     } else {
         return (
             <div
-                style={{
-                    //
-                    marginBottom: vertical ? '.1rem' : undefined,
-                    marginLeft: vertical ? '.5rem' : undefined,
-                }}
+                style={
+                    {
+                        // marginBottom: vertical ? '.1rem' : undefined,
+                        // marginLeft: vertical ? '.5rem' : undefined,
+                    }
+                }
                 tw='_WidgetWithLabelUI'
                 className={className}
                 key={rootKey}
@@ -148,7 +161,7 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Widget; focus?: 
     if (req instanceof R.Widget_float)              return <WidgetNumUI         req={req} />
     if (req instanceof R.Widget_floatOpt)           return <WidgetNumOptUI      req={req} />
     if (req instanceof R.Widget_str)                return <WidgetStrUI         req={req} />
-    if (req instanceof R.Widget_strOpt)             return <WidgetStrOptUI      req={req} />
+    if (req instanceof R.Widget_strOpt)             return <WidgetStrUI         req={req} />
     if (req instanceof R.Widget_image)              return <WidgetSelectImageUI req={req} />
     if (req instanceof R.Widget_imageOpt)           return <WidgetSelectImageUI req={req} />
     if (req instanceof R.Widget_list)               return <WidgetListUI        req={req} />
