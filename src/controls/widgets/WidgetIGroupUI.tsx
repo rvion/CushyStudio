@@ -60,36 +60,37 @@ export const WidgetGroupOptUI = observer(function WidgetItemsOptUI_(p: { req: Wi
                 checked={req.state.active}
                 onChange={(v) => (req.state.active = v)}
             />
-            {checked && (
+            {/* {checked && (
                 <Button size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
                     {collapsed ? '▸' : '▿'}
                 </Button>
-            )}
-            {checked ? (
-                <div
-                    style={{ border: '1px solid #424242' }}
-                    tw={['px-1 mx-1', req.input.layout === 'H' ? 'flex' : null]}
-                    className={req.input.className}
-                >
-                    {req.state.collapsed
-                        ? null
-                        : Object.entries(req.state.values).map(([rootKey, sub], ix) => {
-                              return (
-                                  <div key={rootKey}>
-                                      <WidgetWithLabelUI //
-                                          labelPos={sub.input.labelPos}
-                                          rootKey={rootKey}
-                                          req={sub}
-                                      />
-                                  </div>
-                              )
-                          })}
-                </div>
-            ) : (
-                <Button size='xs' disabled>
-                    ▸
-                </Button>
-            )}
+            )} */}
+            {
+                checked ? (
+                    <div
+                        style={{ border: '1px solid #424242' }}
+                        tw={['px-1 mx-1', req.input.layout === 'H' ? 'flex' : null]}
+                        className={req.input.className}
+                    >
+                        {req.state.collapsed
+                            ? null
+                            : Object.entries(req.state.values).map(([rootKey, sub], ix) => {
+                                  return (
+                                      <div key={rootKey}>
+                                          <WidgetWithLabelUI //
+                                              labelPos={sub.input.labelPos}
+                                              rootKey={rootKey}
+                                              req={sub}
+                                          />
+                                      </div>
+                                  )
+                              })}
+                    </div>
+                ) : null
+                // <Button size='xs' disabled>
+                //     ▸
+                // </Button>
+            }
         </div>
     )
 })

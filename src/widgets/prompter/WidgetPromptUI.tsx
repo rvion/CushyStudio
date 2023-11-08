@@ -1,81 +1,43 @@
 // misc
 import { observer } from 'mobx-react-lite'
-import { wildcards } from './nodes/wildcards/wildcards'
 import { useSt } from '../../state/stateContext'
 
 // lexical
-import { $createLineBreakNode, $createParagraphNode, $createTextNode, $getRoot, EditorState, LexicalEditor } from 'lexical'
 import { InitialConfigType, LexicalComposer } from '@lexical/react/LexicalComposer'
 import { ContentEditable } from '@lexical/react/LexicalContentEditable'
-import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'
-import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
+import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
+import { PlainTextPlugin } from '@lexical/react/LexicalPlainTextPlugin'
+import { $createLineBreakNode, $createParagraphNode, $createTextNode, $getRoot, EditorState, LexicalEditor } from 'lexical'
 
 // theme
-import theme from './theme/WidgetLexicalTheme'
 import './theme/Popover.css'
+import theme from './theme/WidgetLexicalTheme'
 
 // nodes
 import { $createEmbeddingNode, EmbeddingNode } from './nodes/EmbeddingNode'
-import { $createWildcardNode, WildcardNode } from './nodes/wildcards/WildcardNode'
-import { $createBooruNode, BooruNode } from './nodes/booru/BooruNode'
 import { $createLoraNode, LoraNode } from './nodes/LoraNode'
+import { $createBooruNode, BooruNode } from './nodes/booru/BooruNode'
+import { $createWildcardNode, WildcardNode } from './nodes/wildcards/WildcardNode'
 
 // plugins
-import { CushyDebugPlugin, PossibleSerializedNodes } from './plugins/CushyDebugPlugin'
-import { getFinalJSON } from './plugins/getFinalJSON'
-import { CushyCompletionPlugin } from './plugins/CushyCompletionPlugin'
-import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
-import { TreeViewPlugin } from './plugins/TreeViewPlugin'
 import { toJS } from 'mobx'
-import { Widget_prompt, Widget_promptOpt } from 'src/controls/Widget'
 import { useMemo } from 'react'
-import { CompletionState } from './plugins/CompletionProviders'
-import { Button, IconButton } from 'rsuite'
-import { PrompterConfigUI } from './PropmterConfig'
-import { $createUserNode, UserNode } from './nodes/usertags/UserNode'
+import { Widget_prompt, Widget_promptOpt } from 'src/controls/Widget'
 import { $createActionNode, ActionNode } from './nodes/ActionNode'
+import { $createUserNode, UserNode } from './nodes/usertags/UserNode'
+import { CompletionState } from './plugins/CompletionProviders'
+import { CushyCompletionPlugin } from './plugins/CushyCompletionPlugin'
+import { PossibleSerializedNodes } from './plugins/CushyDebugPlugin'
+import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
+import { getFinalJSON } from './plugins/getFinalJSON'
+import { Toggle } from 'rsuite'
 
 // const theme = {
 //     // Theme styling goes here
 //     // ...
 // }
-
-// When the editor changes, you can get notified via the
-// LexicalOnChangePlugin!
-function onChange(
-    //
-    req: Widget_prompt | Widget_promptOpt,
-    editorState: EditorState,
-) {
-    editorState.read(() => {
-        // Read the contents of the EditorState here.
-        const root = $getRoot()
-        // const selection = $getSelection()
-        const txt = root.__cachedText
-        if (txt) {
-            // req.state.text = txt
-            req.state.tokens = getFinalJSON(editorState).items
-            if (req instanceof Widget_promptOpt) req.state.active = true
-        } else {
-            req.state.tokens = getFinalJSON(editorState).items
-        }
-        // .set({
-        //         active: true,
-        //         text: txt,
-        //         tokens: getFinalJSON(editorState).items,
-        //     })
-        // console.log(root, selection)
-    })
-}
-
-// Catch any errors that occur during Lexical updates and log them
-// or throw them as needed. If you don't throw them, Lexical will
-// try to recover gracefully without losing user data.
-function onError(error: Error) {
-    console.error(error)
-}
 
 export type WidgetPromptOutput = {
     // text: string
@@ -130,8 +92,19 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
         onError,
     }
 
+    const toggleUI = (
+        <Toggle
+            // size='sm'
+            checked={req.state.active}
+            onChange={(t) => (req.state.active = t)}
+        />
+    )
+    const toggle2UI = req instanceof Widget_promptOpt ? toggleUI : <></>
+    if (!req.state.active) return toggleUI
+
     return (
         <LexicalComposer initialConfig={initialConfig}>
+            {toggle2UI}
             <CushyShortcutPlugin />
             <PlainTextPlugin
                 contentEditable={
@@ -165,3 +138,38 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
         </LexicalComposer>
     )
 })
+
+// When the editor changes, you can get notified via the
+// LexicalOnChangePlugin!
+function onChange(
+    //
+    req: Widget_prompt | Widget_promptOpt,
+    editorState: EditorState,
+) {
+    editorState.read(() => {
+        // Read the contents of the EditorState here.
+        const root = $getRoot()
+        // const selection = $getSelection()
+        const txt = root.__cachedText
+        if (txt) {
+            // req.state.text = txt
+            req.state.tokens = getFinalJSON(editorState).items
+            if (req instanceof Widget_promptOpt) req.state.active = true
+        } else {
+            req.state.tokens = getFinalJSON(editorState).items
+        }
+        // .set({
+        //         active: true,
+        //         text: txt,
+        //         tokens: getFinalJSON(editorState).items,
+        //     })
+        // console.log(root, selection)
+    })
+}
+
+// Catch any errors that occur during Lexical updates and log them
+// or throw them as needed. If you don't throw them, Lexical will
+// try to recover gracefully without losing user data.
+function onError(error: Error) {
+    console.error(error)
+}

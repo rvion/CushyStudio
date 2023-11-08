@@ -4,6 +4,7 @@ import { createRef, useEffect, useLayoutEffect, useMemo } from 'react'
 import { Input, Slider } from 'rsuite'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { SubtlePanelConfUI } from '../misc/SubtlePanelConf'
 
 // State class
 class State {
@@ -203,26 +204,24 @@ export const SceneViewer = observer(function SceneViewer_(p: { imageSrc: string;
     return (
         <div>
             <div tw='flex gap-2 px-2'>
-                <div tw='py-2'>
-                    displacement
+                <SubtlePanelConfUI label='displacement'>
                     <Slider
                         style={{ width: '5rem' }}
                         min={0}
                         max={8}
                         value={state.displacementScale}
                         onChange={(next) => (state.displacementScale = next)}
-                    ></Slider>
-                </div>
-                <div tw='p-2'>
-                    light
+                    />
+                </SubtlePanelConfUI>
+                <SubtlePanelConfUI label='light'>
                     <Slider
                         style={{ width: '5rem' }}
                         min={0}
                         max={8}
                         value={state.ambientLightIntensity}
                         onChange={(next) => (state.ambientLightIntensity = next)}
-                    ></Slider>
-                </div>
+                    />
+                </SubtlePanelConfUI>
                 <div>
                     light color
                     <Input

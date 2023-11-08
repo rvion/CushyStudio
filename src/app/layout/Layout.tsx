@@ -34,6 +34,7 @@ import { Panel_Minipaint } from '../../panels/Panel_Minipaint'
 import { Panel_Squoosh } from '../../panels/Panel_Squoosh'
 import { Panel_Steps } from '../../panels/Panel_Steps'
 import { Panel_ViewImage } from '../../panels/Panel_ViewImage'
+import { Panel_3dScene } from 'src/panels/Panel_3dScene'
 
 // still on phone
 enum Widget {
@@ -303,14 +304,7 @@ export class CushyLayoutManager {
             if (component === Widget.CurrentDraft)        return <Panel_CurrentDraft />
             if (component === Widget.ComfyUINodeExplorer) return <Panel_ComfyNodeExplorer />
             if (component === Widget.Deck)                return <div>🔴 todo: action pack page: show readme</div>
-            if (component === Widget.DisplacedImage)
-                return (
-                    <SceneViewer //
-                        imageSrc={extra.image}
-                        depthMapSrc={extra.depth}
-                        normalMapSrc={extra.normal}
-                    />
-                )
+            if (component === Widget.DisplacedImage)      return <Panel_3dScene {...extra} />
         } catch (e) {
             return (
                 <pre tw='text-red-500'>
@@ -352,15 +346,7 @@ export class CushyLayoutManager {
     }
     build = (): IJsonModel => {
         const out: IJsonModel = {
-            global: {
-                // borderSize: 8,
-                // tabSetTabStripHeight: 30,
-                // enableEdgeDock: true,
-                // tabSetMinHeight: 64,
-                // tabSetMinWidth: 64,
-                tabSetEnableSingleTabStretch: true,
-            },
-
+            global: { tabSetEnableSingleTabStretch: true },
             layout: {
                 id: 'rootRow',
                 type: 'row',
@@ -368,7 +354,6 @@ export class CushyLayoutManager {
                     {
                         id: 'leftPane',
                         type: 'row',
-                        // width: 300,
                         weight: 100,
                         children: [
                             {
@@ -384,18 +369,8 @@ export class CushyLayoutManager {
                                         enableClose: false,
                                         id: '/draft',
                                     }),
-                                    //
-                                    // this._persistentTab('Civitai', Widget.Civitai, '/CivitaiLogo.png'),
-                                    // this._persistentTab('ComfyUI', Widget.ComfyUI, '/ComfyUILogo.png'),
                                 ],
                             },
-                            // {
-                            //     type: 'tabset',
-                            //     enableSingleTabStretch: true,
-                            //     minWidth: 200,
-                            //     width: 300,
-                            //     children: [this._persistentTab({ name: 'Library', widget: Widget.FileList, id: '/Library' })],
-                            // },
                         ],
                     },
                     {
@@ -403,15 +378,6 @@ export class CushyLayoutManager {
                         type: 'row',
                         weight: 100,
                         children: [
-                            // {
-                            //     type: 'tabset',
-                            //     minWidth: 100,
-                            //     height: 100,
-                            //     minHeight: 100,
-                            //     children: [
-                            //         this._persistentTab({ name: 'Last Graph', id: '/lastGraph', widget: Widget.LastGraph }),
-                            //     ],
-                            // },
                             {
                                 type: 'tabset',
                                 minWidth: 150,
@@ -435,11 +401,6 @@ export class CushyLayoutManager {
                                     // this._persistentTab('Hosts', Widget.Hosts),
                                 ],
                             },
-                            // {
-                            //     type: 'tabset',
-                            //     minWidth: 150,
-                            //     children: [this._persistentTab({ name: 'Runs', id: '/steps', widget: Widget.Steps })],
-                            // },
                         ],
                     },
                     {
@@ -461,18 +422,6 @@ export class CushyLayoutManager {
     }
 }
 
-// function App() {
-//     const factory = (node) => {
-//         var component = node.getComponent()
-
-//         if (component === 'button') {
-//             return <button>{node.getName()}</button>
-//         }
-//     }
-
-//     return <Layout model={model} factory={factory} />
-// }
-// }
 export const exhaust = (x: never) => x
 
 const memoryRefByUniqueID = new WeakMap<object, string>()

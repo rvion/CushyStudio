@@ -61,7 +61,7 @@ export const DBHealthUI = observer(function DBHealthUI_(p: {}) {
     return (
         <Button
             //
-            size='xs'
+            size='sm'
             appearance='subtle'
             color={color}
             onClick={() => st.db.reset()}
