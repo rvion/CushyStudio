@@ -114,14 +114,30 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | D
                         </div>
                     </div>
                     <div tw='flex gap-2 items-center'>
-                        <div tw='whitespace-nowrap flex items-center'>
-                            <Toggle
-                                //
-                                onChange={(t) => (st.preferDenseForms = t)}
-                                checked={st.preferDenseForms}
-                            />
-                            <div tw='text-red-500'>PREFER DENSER FORM</div>
-                        </div>
+                        <div tw='text-xs text-gray-500'>Layout:</div>
+                        <ButtonGroup size='xs'>
+                            <Button
+                                appearance={st.preferedFormLayout == 'dense' ? 'primary' : undefined}
+                                onClick={() => (st.preferedFormLayout = 'dense')}
+                                active={st.preferedFormLayout == 'dense'}
+                            >
+                                dense
+                            </Button>
+                            <Button
+                                appearance={st.preferedFormLayout == 'auto' ? 'primary' : undefined}
+                                onClick={() => (st.preferedFormLayout = 'auto')}
+                                active={st.preferedFormLayout == 'auto'}
+                            >
+                                auto
+                            </Button>
+                            <Button
+                                appearance={st.preferedFormLayout == 'mobile' ? 'primary' : undefined}
+                                onClick={() => (st.preferedFormLayout = 'mobile')}
+                                active={st.preferedFormLayout == 'mobile'}
+                            >
+                                mobile
+                            </Button>
+                        </ButtonGroup>
                         <div className='flex-grow'></div>
                         <RunOrAutorunUI draft={draft} />
                     </div>

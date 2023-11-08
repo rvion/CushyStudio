@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, ButtonGroup } from 'rsuite'
+import { Button } from 'rsuite'
 import { Widget, Widget_list } from 'src/controls/Widget'
 import { WidgetUI } from './WidgetUI'
 
@@ -21,8 +21,8 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                 Add
             </Button>
             <div tw='flex flex-col gap-1'>
-                {values.map((v, ix) => (
-                    <div tw='flex items-start'>
+                {values.map((v) => (
+                    <div key={v.id} tw='flex items-start'>
                         <Button
                             appearance='subtle'
                             disabled={min ? req.state.items.length <= min : undefined}
@@ -35,7 +35,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                         <Button appearance='subtle' size='xs' onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}>
                             {v.state.collapsed ? '▸' : '▿'}
                         </Button>
-                        <WidgetUI key={ix} req={v} />
+                        <WidgetUI req={v} />
                     </div>
                 ))}
             </div>

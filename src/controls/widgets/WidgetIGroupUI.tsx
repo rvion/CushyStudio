@@ -6,16 +6,20 @@ import { WidgetWithLabelUI } from './WidgetUI'
 
 export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Widget_group<{ [key: string]: Widget }> }) {
     const req = p.req
-    // const collapsed = req.state.collapsed
     const isTopLevel = req.input.topLevel
     return (
         <div
-            tw={['relative flex items-start w-full', isTopLevel ? 'px-2' : 'pl-4 px-2']}
-            style={{ borderLeft: '1px solid #636363' }}
+            tw={['relative flex items-start w-full', isTopLevel ? 'px-2' : 'px-2']}
+            style={{
+                //
+                borderLeft: isTopLevel ? undefined : '1px solid #636363',
+                borderRadius: isTopLevel ? undefined : '1rem',
+            }}
         >
+            {/* {isTopLevel ? '🟢' : '🔴'} */}
             {req.state.collapsed ? null : (
                 <div
-                    style={isTopLevel ? undefined : { border: '1px solid #262626' }}
+                    // style={isTopLevel ? undefined : { border: '1px solid #262626' }}
                     tw={['w-full', req.input.layout === 'H' ? 'flex gap-2' : null]}
                     className={req.input.className}
                 >
@@ -37,7 +41,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Widget_g
 export const WidgetGroupOptUI = observer(function WidgetItemsOptUI_(p: { req: Widget_groupOpt<{ [key: string]: Widget }> }) {
     const req = p.req
     const checked = req.state.active
-    const collapsed = req.state.collapsed
+    const isTopLevel = false
     return (
         <div tw={[req.input.layout === 'H' ? 'flex gap-2' : null]} className={req.input.className}>
             <Toggle
@@ -45,37 +49,33 @@ export const WidgetGroupOptUI = observer(function WidgetItemsOptUI_(p: { req: Wi
                 checked={req.state.active}
                 onChange={(v) => (req.state.active = v)}
             />
-            {/* {checked && (
-                <Button size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
-                    {collapsed ? '▸' : '▿'}
-                </Button>
-            )} */}
-            {
-                checked ? (
-                    <div
-                        style={{ border: '1px solid #424242' }}
-                        tw={['px-1 mx-1', req.input.layout === 'H' ? 'flex' : null]}
-                        className={req.input.className}
-                    >
-                        {req.state.collapsed
-                            ? null
-                            : Object.entries(req.state.values).map(([rootKey, sub], ix) => {
-                                  return (
-                                      <div key={rootKey}>
-                                          <WidgetWithLabelUI //
-                                              labelPos={sub.input.labelPos}
-                                              rootKey={rootKey}
-                                              req={sub}
-                                          />
-                                      </div>
-                                  )
-                              })}
-                    </div>
-                ) : null
-                // <Button size='xs' disabled>
-                //     ▸
-                // </Button>
-            }
+
+            {checked ? (
+                <div
+                    // style={{ border: '1px solid #424242' }}
+                    tw={['px-1 mx-1', req.input.layout === 'H' ? 'flex' : null]}
+                    style={{
+                        //
+                        borderLeft: isTopLevel ? undefined : '1px solid #636363',
+                        borderRadius: isTopLevel ? undefined : '1rem',
+                    }}
+                    className={req.input.className}
+                >
+                    {req.state.collapsed
+                        ? null
+                        : Object.entries(req.state.values).map(([rootKey, sub], ix) => {
+                              return (
+                                  <div key={rootKey}>
+                                      <WidgetWithLabelUI //
+                                          labelPos={sub.input.labelPos}
+                                          rootKey={rootKey}
+                                          req={sub}
+                                      />
+                                  </div>
+                              )
+                          })}
+                </div>
+            ) : null}
         </div>
     )
 })

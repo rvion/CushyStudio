@@ -7,7 +7,7 @@ import { makeAutoObservable } from 'mobx'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { createRef } from 'react'
-import { mkConfigFile, type ConfigFile } from 'src/core/ConfigFile'
+import { mkConfigFile, type ConfigFile, PreferedFormLayout } from 'src/core/ConfigFile'
 import { mkTypescriptConfig, type TsConfigCustom } from '../widgets/TsConfigCustom'
 
 import type { ActionTagMethodList } from 'src/cards/Card'
@@ -120,8 +120,8 @@ export class STATE {
     set galleryHoverOpacity(v: number) { this.configFile.update({ galleryHoverOpacity: v }) } // prettier-ignore
 
     // showPreviewInFullScreen
-    get preferDenseForms() { return this.configFile.value.preferDenseForms ?? false } // prettier-ignore
-    set preferDenseForms(v: boolean) { this.configFile.update({ preferDenseForms: v }) } // prettier-ignore
+    get preferedFormLayout() { return this.configFile.value.preferedFormLayout ?? 'auto' } // prettier-ignore
+    set preferedFormLayout(v: PreferedFormLayout) { this.configFile.update({ preferedFormLayout: v }) } // prettier-ignore
 
     // gallery size
     get gallerySizeStr() { return `${this.gallerySize}px` } // prettier-ignore

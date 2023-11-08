@@ -6,6 +6,8 @@ import { asAbsolutePath } from 'src/utils/fs/pathUtils'
 import { resolve } from 'pathe'
 import { CardPath } from 'src/cards/CardPath'
 
+export type PreferedFormLayout = 'mobile' | 'dense' | 'auto'
+
 export type ConfigFile = {
     /** this will allow you to enable typechecking for folders you manage */
     githubUsername?: string
@@ -29,7 +31,7 @@ export type ConfigFile = {
     comfyPort: number
 
     /** prefer dense form */
-    preferDenseForms?: boolean
+    preferedFormLayout?: PreferedFormLayout
 
     favoriteCards?: CardPath[]
     /** list of all comfyUI setup available */

@@ -28,6 +28,17 @@ import { WidgetStrOptUI } from './WidgetStrOptUI'
 import { WidgetStrUI } from './WidgetStrUI'
 import { useSt } from 'src/state/stateContext'
 
+const makeNicer = (s: string) => {
+    if (s == null) return ''
+    if (s.length === 0) return s
+    s = s.replace(/([a-z])([A-Z])/g, '$1 $2')
+    s = s.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
+    s = s.replace(/_/g, ' ')
+    s = s.replace(/([a-z])([A-Z])/g, '$1 $2')
+    s = s.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
+    return s[0].toUpperCase() + s.slice(1)
+}
+
 export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     req: R.Widget
     labelPos?: LabelPos
@@ -38,11 +49,28 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const { rootKey, req } = p
     let tooltip: Maybe<string>
     let label: Maybe<string>
-    label = req.input.label ?? rootKey
+    label = req.input.label ?? makeNicer(rootKey)
     tooltip = req.input.tooltip
 
     // const vertical = false // p.vertical
-    const vertical = p.vertical ?? (st.preferDenseForms ? false : true)
+    const vertical = (() => {
+        if (p.vertical) return p.vertical
+        if (st.preferedFormLayout === 'auto') {
+            if (req instanceof R.Widget_group) return true
+            if (req instanceof R.Widget_groupOpt) return true
+            if (req instanceof R.Widget_list) return true
+            if (req instanceof R.Widget_prompt) return true
+            if (req instanceof R.Widget_promptOpt) return true
+            return false
+        }
+        if (st.preferedFormLayout === 'mobile') {
+            return true
+        }
+        if (st.preferedFormLayout === 'dense') {
+            return false
+        }
+        // p.vertical ?? (st.preferedFormLayout ? false : true)
+    })()
     const v = p.req
     const LABEL = (
         <div
@@ -50,8 +78,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             // tw='font-bold'
             className={
                 vertical //
-                    ? 'min-w-max shrink-0 w-full'
-                    : 'min-w-max shrink-0 text-right'
+                    ? 'min-w-max shrink-0 self-start w-full'
+                    : 'min-w-max shrink-0 self-start'
             }
         >
             <div
@@ -63,7 +91,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         <I.InfoOutline className='mr-2 cursor-pointer' />
                     </Whisper>
                 )}
-                {label || '<no label>'} <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : '▿'}</span>
+                <span tw='text-sm'>{label || '<no label>'}</span>{' '}
+                <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : '▿'}</span>
             </div>
         </div>
     )
@@ -74,7 +103,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     )
     const className = vertical //
         ? 'flex flex-col items-baseline'
-        : 'flex flex-row items-baseline gap-2 '
+        : 'flex flex-row items-baseline gap-1'
 
     // if (vertical) {
     //     WIDGET = <div tw='flex items-center gap-2'>{WIDGET}</div>
@@ -88,7 +117,16 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         )
     } else {
         return (
-            <div tw='_WidgetWithLabelUI' className={className} key={rootKey}>
+            <div
+                style={{
+                    //
+                    marginBottom: vertical ? '.1rem' : undefined,
+                    marginLeft: vertical ? '.5rem' : undefined,
+                }}
+                tw='_WidgetWithLabelUI'
+                className={className}
+                key={rootKey}
+            >
                 {LABEL}
                 {WIDGET}
             </div>
