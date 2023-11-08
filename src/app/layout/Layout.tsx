@@ -1,5 +1,5 @@
-import type { STATE } from 'src/state/state'
 import type { DraftID } from 'src/models/Draft'
+import type { STATE } from 'src/state/state'
 
 import * as FL from 'flexlayout-react'
 import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
@@ -8,51 +8,55 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { createRef } from 'react'
-import { Button, Message } from 'rsuite'
-import { assets } from 'src/utils/assets/assets'
+import { Message } from 'rsuite'
 import { CardPath } from 'src/cards/CardPath'
-import { ActionPicker1UI } from 'src/cards/CardPicker1UI'
-import { ActionPicker2UI } from 'src/cards/CardPicker2UI'
 import { LiteGraphJSON } from 'src/core/LiteGraph'
 import { ImageID } from 'src/models/Image'
-import { Trigger } from 'src/shortcuts/Trigger'
+import { Panel_DeckList } from 'src/panels/Panel_DeckList'
+import { Trigger } from 'src/app/shortcuts/Trigger'
+import { assets } from 'src/utils/assets/assets'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { MarketplaceUI } from '../../cards/MarketplaceUI'
-import { CardUI } from '../../widgets/drafts/CardUI'
-import { CurrentDraftUI, DraftUI } from '../../widgets/drafts/DraftUI'
-import { GalleryUI } from '../../widgets/galleries/GalleryUI'
-import { WidgetPaintUI } from '../../controls/widgets/WidgetPaintUI'
-import { ComfyUIUI } from '../../widgets/workspace/ComfyUIUI'
-import { LastGraphUI } from '../../widgets/workspace/LastGraphUI'
-import { StepListUI } from '../../widgets/workspace/StepListUI'
-import { ComfyNodeExplorerUI } from './ComfyNodeExplorerUI'
-import { HostListUI } from './HostListUI'
-import { LastImageUI } from './LastImageUI'
-import { PanelConfigUI } from './PanelConfigUI'
 import { SceneViewer } from 'src/widgets/3dview/3dview1'
+
+import { Panel_Draft } from '../../panels/Panel_Draft'
+import { Panel_FileTree } from '../../panels/Panel_FileTree'
+import { Panel_Card } from '../../panels/Panel_Card'
+import { Panel_Civitai } from '../../panels/Panel_Civitai'
+import { Panel_ComfyNodeExplorer } from '../../panels/Panel_ComfyNodeExplorer'
+import { Panel_ComfyUI } from '../../panels/Panel_ComfyUI'
+import { Panel_Config } from '../../panels/Panel_Config'
+import { Panel_CurrentDraft } from '../../panels/Panel_CurrentDraft'
+import { Panel_Gallery } from '../../panels/Panel_Gallery'
+import { Panel_LastGraph } from '../../panels/Panel_LastGraph'
+import { Panel_MachineManager } from '../../panels/Panel_MachineManager'
+import { Panel_Marketplace } from '../../panels/Panel_Marketplace'
+import { Panel_Minipaint } from '../../panels/Panel_Minipaint'
+import { Panel_Squoosh } from '../../panels/Panel_Squoosh'
+import { Panel_Steps } from '../../panels/Panel_Steps'
+import { Panel_ViewImage } from '../../panels/Panel_ViewImage'
 
 // still on phone
 enum Widget {
-    Gallery = 'Gallery',
-    DisplacedImage = 'DisplacedImage',
-    Button = 'Button',
-    Paint = 'Paint',
-    CurrentDraft = 'CurrentDraft',
-    Card = 'Card',
-    Draft = 'Draft',
-    ComfyUI = 'ComfyUI',
-    ComfyUINodeExplorer = 'ComfyUINodeExplorer',
-    FileList = 'FileList',
-    FileList2 = 'FileList2',
-    Steps = 'Steps',
-    LastGraph = 'LastGraph',
-    LastImage = 'LastIMage',
-    Civitai = 'Civitai',
-    Image = 'Image',
-    Marketplace = 'Marketplace',
-    Deck = 'Deck',
-    Hosts = 'Hosts',
-    Config = 'Config',
+    Gallery = 'Gallery', //: { 'Gallery',}
+    DisplacedImage = 'DisplacedImage', //: { 'DisplacedImage',}
+    Paint = 'Paint', //: { 'Paint',}
+    CurrentDraft = 'CurrentDraft', //: { 'CurrentDraft',}
+    Card = 'Card', //: { 'Card',}
+    Draft = 'Draft', //: { 'Draft',}
+    ComfyUI = 'ComfyUI', //: { 'ComfyUI',}
+    ComfyUINodeExplorer = 'ComfyUINodeExplorer', //: { 'ComfyUINodeExplorer',}
+    FileList = 'FileList', //: { 'FileList',}
+    FileList2 = 'FileList2', //: { 'FileList2',}
+    Steps = 'Steps', //: { 'Steps',}
+    LastGraph = 'LastGraph', //: { 'LastGraph',}
+    LastImage = 'LastImage', //: { 'LastIMage',}
+    Civitai = 'Civitai', //: { 'Civitai',}
+    Squoosh = 'Squoosh', //: { 'Squoosh',}
+    Image = 'Image', //: { 'Image',}
+    Marketplace = 'Marketplace', //: { 'Marketplace',}
+    Deck = 'Deck', //: { 'Deck',}
+    Hosts = 'Hosts', //: { 'Hosts',}
+    Config = 'Config', //: { 'Config',}
 }
 
 type PerspectiveDataForSelect = {
@@ -278,26 +282,27 @@ export class CushyLayoutManager {
         const component = node.getComponent() as Widget
         const extra = node.getConfig()
 
+        // prettier-ignore
         try {
-            if (component === Widget.Button) return <Button>{node.getName()}</Button>
-            if (component === Widget.Gallery) return <GalleryUI />
-            if (component === Widget.Paint) return <WidgetPaintUI action={{ type: 'paint', imageID: extra.imgID }} /> // You can now use imgID to instantiate your paint component properly
-            if (component === Widget.Image) return <LastImageUI imageID={extra.imgID}></LastImageUI> // You can now use imgID to instantiate your paint component properly
-            if (component === Widget.Card) return <CardUI actionPath={extra.actionPath} />
-            if (component === Widget.ComfyUI) return <ComfyUIUI litegraphJson={extra.litegraphJson} />
-            if (component === Widget.FileList) return <ActionPicker2UI />
-            if (component === Widget.FileList2) return <ActionPicker1UI />
-            if (component === Widget.Steps) return <StepListUI />
-            if (component === Widget.LastGraph) return <LastGraphUI />
-            if (component === Widget.LastImage) return <LastImageUI />
-            if (component === Widget.Civitai) return <iframe className='w-full h-full' src={'https://civitai.com'} frameBorder='0'></iframe> // prettier-ignore
-            if (component === Widget.Hosts) return <HostListUI />
-            if (component === Widget.Marketplace) return <MarketplaceUI />
-            if (component === Widget.Config) return <PanelConfigUI />
-            if (component === Widget.Draft) return <DraftUI draft={extra.draftID} />
-            if (component === Widget.CurrentDraft) return <CurrentDraftUI />
-            if (component === Widget.ComfyUINodeExplorer) return <ComfyNodeExplorerUI />
-            if (component === Widget.Deck) return <div>🔴 todo: action pack page: show readme</div>
+            if (component === Widget.Gallery)             return <Panel_Gallery />
+            if (component === Widget.Paint)               return <Panel_Minipaint action={{ type: 'paint', imageID: extra.imgID }} /> // You can now use imgID to instantiate your paint component properly
+            if (component === Widget.Image)               return <Panel_ViewImage imageID={extra.imgID}></Panel_ViewImage> // You can now use imgID to instantiate your paint component properly
+            if (component === Widget.Card)                return <Panel_Card actionPath={extra.actionPath} />
+            if (component === Widget.ComfyUI)             return <Panel_ComfyUI litegraphJson={extra.litegraphJson} />
+            if (component === Widget.FileList)            return <Panel_DeckList />
+            if (component === Widget.FileList2)           return <Panel_FileTree />
+            if (component === Widget.Steps)               return <Panel_Steps />
+            if (component === Widget.LastGraph)           return <Panel_LastGraph />
+            if (component === Widget.LastImage)           return <Panel_ViewImage />
+            if (component === Widget.Civitai)             return <Panel_Civitai />
+            if (component === Widget.Squoosh)             return <Panel_Squoosh />
+            if (component === Widget.Hosts)               return <Panel_MachineManager />
+            if (component === Widget.Marketplace)         return <Panel_Marketplace />
+            if (component === Widget.Config)              return <Panel_Config />
+            if (component === Widget.Draft)               return <Panel_Draft draft={extra.draftID} />
+            if (component === Widget.CurrentDraft)        return <Panel_CurrentDraft />
+            if (component === Widget.ComfyUINodeExplorer) return <Panel_ComfyNodeExplorer />
+            if (component === Widget.Deck)                return <div>🔴 todo: action pack page: show readme</div>
             if (component === Widget.DisplacedImage)
                 return (
                     <SceneViewer //

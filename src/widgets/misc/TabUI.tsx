@@ -1,7 +1,7 @@
 import { CSSProperties, ReactElement, ReactNode, useState } from 'react'
 
-import { observer, useAsObservableSource } from 'mobx-react-lite'
-import { Button, ButtonGroup } from 'rsuite'
+import { observer } from 'mobx-react-lite'
+import { Nav } from 'rsuite'
 
 type TabBody = () => ReactElement | null
 type Tab = {
@@ -11,7 +11,6 @@ type Tab = {
 
 export const TabsUI = observer(function Tabs_(p: {
     //
-    title?: string
     inline?: boolean
     tabs: Tab[]
     onClick?: (ix: number) => void
@@ -24,15 +23,14 @@ export const TabsUI = observer(function Tabs_(p: {
 }) {
     const [onIx, setIx] = useState(() => p.current ?? 0)
     const tabHeader = (
-        <ButtonGroup size='xs' disabled={p.disabled}>
-            {p.title ? <div tw='mr-3'>{p.title}</div> : null}
+        <Nav vertical appearance='tabs'>
             {p.tabs.map((tab, ix) => {
                 const active = ix === onIx
                 return (
-                    <Button
+                    <Nav.Item
+                        // size='sm'
                         color={p.disabled ? undefined : 'blue'}
                         active={active}
-                        appearance={active ? 'primary' : 'ghost'}
                         key={ix}
                         onClick={() => {
                             // if (p.disabled) return
@@ -41,10 +39,10 @@ export const TabsUI = observer(function Tabs_(p: {
                         }}
                     >
                         {tab.title()}
-                    </Button>
+                    </Nav.Item>
                 )
             })}
-        </ButtonGroup>
+        </Nav>
     )
     const selectedTab = p.tabs[onIx]
     return (

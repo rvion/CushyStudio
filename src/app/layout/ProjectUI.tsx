@@ -4,7 +4,7 @@ import { Loader } from 'rsuite'
 import { useSt } from '../../state/stateContext'
 import { GalleryHoveredPreviewUI } from '../../widgets/galleries/GalleryHoveredPreviewUI'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
-import { PanelConfigUI } from './PanelConfigUI'
+import { Panel_Config } from '../../panels/Panel_Config'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const st = useSt()
@@ -14,7 +14,7 @@ export const ProjectUI = observer(function ProjectUI_(p: {}) {
             <div>
                 <Loader />
                 <div>No project yet, you first need to connect to ComfyUI</div>
-                <PanelConfigUI />
+                <Panel_Config />
             </div>
         )
     return (

@@ -128,7 +128,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
 
     return (
         <div>
-            <div style={dropStyle} ref={dropRef} className='flex gap-2 flex-row'>
+            <div style={dropStyle} ref={dropRef} className='flex gap-2 flex-row items-center'>
                 {showToogle && (
                     <Toggle
                         // size='sm'

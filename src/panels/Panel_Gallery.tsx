@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { IconButton, Input, Slider, Toggle } from 'rsuite'
-import { useSt } from '../../state/stateContext'
-import { ImageUI } from './ImageUI'
+import { useSt } from '../state/stateContext'
+import { ImageUI } from '../widgets/galleries/ImageUI'
 
-export const GalleryUI = observer(function VerticalGalleryUI_(p: {}) {
+export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
     const preview = st.preview
     return (

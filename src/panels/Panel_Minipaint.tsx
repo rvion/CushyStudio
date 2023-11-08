@@ -1,5 +1,5 @@
 import type { ImageID, ImageL } from 'src/models/Image'
-import type { STATE } from '../../state/state'
+import type { STATE } from '../state/state'
 
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { runInAction } from 'mobx'
@@ -8,8 +8,8 @@ import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { useLayoutEffect, useMemo } from 'react'
 import { Button, ButtonGroup } from 'rsuite'
-import { asRelativePath } from '../../utils/fs/pathUtils'
-import { useSt } from '../../state/stateContext'
+import { asRelativePath } from '../utils/fs/pathUtils'
+import { useSt } from '../state/stateContext'
 
 export type UIPagePaint = {
     type: 'paint'
@@ -127,7 +127,7 @@ class MinipaintState {
     }
 }
 // https://github.com/devforth/painterro
-export const WidgetPaintUI = observer(function PaintUI_(p: { action: UIPagePaint }) {
+export const Panel_Minipaint = observer(function PaintUI_(p: { action: UIPagePaint }) {
     const action = p.action
     const st = useSt()
     const minipaintState = useMemo(() => new MinipaintState(st), [])

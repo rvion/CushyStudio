@@ -6,10 +6,10 @@ import { useEffect } from 'react'
 import { Button, Message } from 'rsuite'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
-import { ActionDraftListUI } from './ActionDraftListUI'
-import { DraftUI } from './DraftUI'
+import { ActionDraftListUI } from '../widgets/drafts/ActionDraftListUI'
+import { Panel_Draft } from 'src/panels/Panel_Draft'
 
-export const CardUI = observer(function ActionFileUI_(p: { actionPath: CardPath }) {
+export const Panel_Card = observer(function ActionFileUI_(p: { actionPath: CardPath }) {
     const st = useSt()
     const toolbox = st.library
     const card = toolbox.getCard(p.actionPath)
@@ -62,5 +62,5 @@ export const CardUI = observer(function ActionFileUI_(p: { actionPath: CardPath 
             </>
         )
 
-    return <DraftUI draft={defaultDraft} />
+    return <Panel_Draft draft={defaultDraft} />
 })

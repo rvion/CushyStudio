@@ -5,7 +5,7 @@ import { useSt } from 'src/state/stateContext'
 export const LabelUI = observer(function LabelUI_(p: { children: React.ReactNode }) {
     return <b>{p.children}: </b>
 })
-export const HostListUI = observer(function HostListUI_(p: {}) {
+export const Panel_MachineManager = observer(function HostListUI_(p: {}) {
     const st = useSt()
     const mainComfyHost = st.configFile.value.comfyHost
     const mainComfyPort = st.configFile.value.comfyPort

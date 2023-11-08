@@ -5,41 +5,9 @@ import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { observer } from 'mobx-react-lite'
 import { Button, Rate, Toggle } from 'rsuite'
 import { useSt } from 'src/state/stateContext'
-import { openExternal, showItemInFolder } from './openExternal'
+import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 
-const getPreviewType = (
-    st: STATE,
-    imageID: Maybe<ImageID | 'latent'>,
-): {
-    url: string
-    img?: Maybe<ImageL>
-} => {
-    const errorURL = ''
-    if (imageID === 'latent') return { url: st.preview?.url ?? errorURL }
-    if (imageID != null) {
-        const img = st.db.images.get(imageID)
-        return { url: img?.url ?? errorURL, img }
-    }
-    if (imageID == null) {
-        if (st.showLatentPreviewInLastImagePanel) {
-            const lastImage = st.db.images.last()
-            const latent = st.preview
-            if (latent == null) return { url: lastImage?.url ?? errorURL, img: lastImage }
-            if (lastImage == null) return { url: latent.url }
-            if (latent.receivedAt > lastImage.createdAt) {
-                return { url: latent.url }
-            } else {
-                return { url: lastImage.url, img: lastImage }
-            }
-        } else {
-            const lastImage = st.db.images.last()
-            return { url: lastImage?.url ?? errorURL, img: lastImage }
-        }
-    }
-    return { url: errorURL }
-}
-
-export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID | 'latent' }) {
+export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?: ImageID | 'latent' }) {
     const st = useSt()
     // const img: Maybe<ImageL> = p.imageID //
     //     ? st.db.images.get(p.imageID)
@@ -107,3 +75,35 @@ export const LastImageUI = observer(function LastImageUI_(p: { imageID?: ImageID
         </div>
     )
 })
+
+const getPreviewType = (
+    st: STATE,
+    imageID: Maybe<ImageID | 'latent'>,
+): {
+    url: string
+    img?: Maybe<ImageL>
+} => {
+    const errorURL = ''
+    if (imageID === 'latent') return { url: st.preview?.url ?? errorURL }
+    if (imageID != null) {
+        const img = st.db.images.get(imageID)
+        return { url: img?.url ?? errorURL, img }
+    }
+    if (imageID == null) {
+        if (st.showLatentPreviewInLastImagePanel) {
+            const lastImage = st.db.images.last()
+            const latent = st.preview
+            if (latent == null) return { url: lastImage?.url ?? errorURL, img: lastImage }
+            if (lastImage == null) return { url: latent.url }
+            if (latent.receivedAt > lastImage.createdAt) {
+                return { url: latent.url }
+            } else {
+                return { url: lastImage.url, img: lastImage }
+            }
+        } else {
+            const lastImage = st.db.images.last()
+            return { url: lastImage?.url ?? errorURL, img: lastImage }
+        }
+    }
+    return { url: errorURL }
+}

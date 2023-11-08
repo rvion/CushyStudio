@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../state/stateContext'
 import { TabUI } from '../app/layout/TabUI'
-import { ActionPicker1UI } from './CardPicker1UI'
-import { ActionPicker2UI } from './CardPicker2UI'
+import { Panel_FileTree } from '../panels/Panel_FileTree'
+import { Panel_DeckList } from '../panels/Panel_DeckList'
 
 export const FileListUI = observer(function FileListUI_(p: {}) {
     const st = useSt()
@@ -11,9 +11,9 @@ export const FileListUI = observer(function FileListUI_(p: {}) {
         <>
             <TabUI>
                 <div>Cards</div>
-                <ActionPicker2UI />
+                <Panel_DeckList />
                 <div>Files</div>
-                <ActionPicker1UI />
+                <Panel_FileTree />
             </TabUI>
         </>
     )

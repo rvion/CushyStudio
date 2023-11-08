@@ -34,7 +34,7 @@ class ComfyNodeExplorerState {
     }
 }
 
-export const ComfyNodeExplorerUI = observer(function ComfyNodeExplorerUI_(p: {}) {
+export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p: {}) {
     const pj = useSt().getProject()
     const search = useMemo(() => new ComfyNodeExplorerState(pj), [])
 

@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../../state/stateContext'
+import { useSt } from '../state/stateContext'
 import { InView } from 'react-intersection-observer'
-import { StepUI } from './StepUI'
+import { StepUI } from '../widgets/workspace/StepUI'
 
-export const StepListUI = observer(function StepListUI_(p: {}) {
+export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()
     const steps = st.db.steps
     const lastGraph = st.db.graphs.last()

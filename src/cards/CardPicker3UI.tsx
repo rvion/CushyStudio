@@ -3,7 +3,7 @@ import { Button, ButtonGroup, Input, InputGroup, Modal, Panel } from 'rsuite'
 import { FancyCardUI } from 'src/cards/fancycard/FancyCard'
 import { useSt } from 'src/state/stateContext'
 import { CreateDeckBtnUI } from '../app/layout/GithubAppBarInputUI'
-import { ActionPicker2UI } from './CardPicker2UI'
+import { Panel_DeckList } from '../panels/Panel_DeckList'
 
 export const CardsPickerModalUI = observer(function CardsPickerModalUI_(p: {}) {
     const st = useSt()
@@ -42,7 +42,7 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
             <div tw='flex'>
                 <div tw='w-96 shrink-0'>
                     <Panel bordered>
-                        <ActionPicker2UI />
+                        <Panel_DeckList />
                     </Panel>
                 </div>
                 <div>

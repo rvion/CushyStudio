@@ -11,6 +11,7 @@
 </div>
 
 
+
 - [1. CushyStudio **Actions**: self-contained mini Stable diffusion apps](#1-cushystudio-actions-self-contained-mini-stable-diffusion-apps)
   - [1.1. **Actions** are simple to use.](#11-actions-are-simple-to-use)
   - [1.2. **Actions** are pleasant to make](#12-actions-are-pleasant-to-make)
@@ -35,14 +36,14 @@
   - [3.8. Create your own Cards to streamline any image or video production](#38-create-your-own-cards-to-streamline-any-image-or-video-production)
 - [4. Quickstart Guide For Action Creators](#4-quickstart-guide-for-action-creators)
   - [4.1. How does `CushySudio` Work](#41-how-does-cushysudio-work)
-  - [4.2. What is a `Card` ?](#42-what-is-a-card-)
-  - [4.3. What is a `Deck` ?](#43-what-is-a-deck-)
+  - [4.2. What is an `Action` ?](#42-what-is-an-action-)
+  - [4.3. What is an `Action` ?](#43-what-is-an-action-)
   - [4.4. Create your first deck](#44-create-your-first-deck)
   - [4.5. `Prefabs` so you don't repeat yourself](#45-prefabs-so-you-dont-repeat-yourself)
     - [4.5.1. prefabs are just functions.](#451-prefabs-are-just-functions)
-    - [Naming Conventions](#naming-conventions)
-    - [4.5.2. Use a UI Prefab](#452-use-a-ui-prefab)
-    - [4.5.3. Execution Prefab](#453-execution-prefab)
+    - [4.5.2. Naming Conventions](#452-naming-conventions)
+    - [4.5.3. Use a UI Prefab](#453-use-a-ui-prefab)
+    - [4.5.4. Execution Prefab](#454-execution-prefab)
   - [4.6. Various Function notations](#46-various-function-notations)
     - [4.6.1. the special `() => ({ })` notation to return objects in a single line](#461-the-special-----notation-to-return-objects-in-a-single-line)
   - [4.7. Publish your Deck](#47-publish-your-deck)
@@ -50,7 +51,7 @@
   - [5.1. Q: Will **CushyStudio** remain open source and free?](#51-q-will-cushystudio-remain-open-source-and-free)
   - [5.2. Q: Why the AGPL and not the GPLV3?](#52-q-why-the-agpl-and-not-the-gplv3)
   - [5.3. Q: Any plans for a paid version of **CushyStudio**?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
-- [Theming](#theming)
+- [6. Theming](#6-theming)
 
 # 1. CushyStudio **Actions**: self-contained mini Stable diffusion apps
 
@@ -288,10 +289,9 @@ In this section, we will
     - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
 
-## 4.2. What is a `Card` ?
+## 4.2. What is an `Action` ?
 
-A `Card` is a file containing
-- a name
+An `Action` is a self  containing
 - a widget definition ( `"ui"` function)
 - an execution logic  ( `"run"` function)
   - the `"run"` function will receive the widget value when you click the `run` button
@@ -309,7 +309,7 @@ card({
 
 
 
-## 4.3. What is a `Deck` ?
+## 4.3. What is an `Action` ?
 
 A `Deck` is a folder containing
 
@@ -448,11 +448,11 @@ export const ui_startImage = (form: FormBuilder) =>
     })
 ```
 
-### Naming Conventions
+### 4.5.2. Naming Conventions
 
 
 
-### 4.5.2. Use a UI Prefab
+### 4.5.3. Use a UI Prefab
 
 To use a `prefab` in your card, you can simply import it and use it.
 
@@ -484,7 +484,7 @@ card({
     },
 })
 ```
-### 4.5.3. Execution Prefab
+### 4.5.4. Execution Prefab
 
 The resulting card looks like this:
 
@@ -598,4 +598,4 @@ Thank you for your understanding and patience in going through this agreement. T
 
 
 
-# Theming
+# 6. Theming

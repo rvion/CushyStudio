@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { Form, Panel, Toggle } from 'rsuite'
-import { useSt } from '../../state/stateContext'
-import { SectionTitleUI } from '../../widgets/workspace/SectionTitle'
+import { useSt } from '../state/stateContext'
+import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
 
-export const PanelConfigUI = observer(function PanelConfigUI_() {
+export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()
     const config = st.configFile
     return (

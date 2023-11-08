@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Combo, parseInputSequence } from 'src/shortcuts/ShortcutManager'
+import { Combo, parseInputSequence } from 'src/app/shortcuts/ShortcutManager'
 
 export const ComboUI = observer(function ComboUI_(p: { theme?: 'dark' | 'light'; combo?: Combo }) {
     if (p.combo == null) return null

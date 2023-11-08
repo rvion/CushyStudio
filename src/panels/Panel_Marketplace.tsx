@@ -4,11 +4,11 @@ import { Button } from 'rsuite'
 import { useSt } from 'src/state/stateContext'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'
-import { Deck } from './Deck'
-import { ActionPackStatusUI } from './DeckStatusUI'
-import { ActionPackStarsUI } from './DeckStarsUI'
+import { Deck } from '../cards/Deck'
+import { ActionPackStatusUI } from '../cards/DeckStatusUI'
+import { ActionPackStarsUI } from '../cards/DeckStarsUI'
 
-export const MarketplaceUI = observer(function MarketplaceUI_(p: {}) {
+export const Panel_Marketplace = observer(function Panel_Marketplace_(p: {}) {
     const st = useSt()
     return (
         <div>

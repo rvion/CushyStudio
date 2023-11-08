@@ -5,7 +5,7 @@ import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 import { MainNavBarUI } from './MainNavBarUI'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
-import { UpdateBtnUI } from './UpdateBtnUI'
+import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
 import { openExternal } from './openExternal'
 

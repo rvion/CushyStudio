@@ -1,68 +1,25 @@
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
-import { useEffect } from 'react'
 import { Button, ButtonGroup, Loader, Message, Toggle } from 'rsuite'
 import { useSt } from 'src/state/stateContext'
 import { DraftID, DraftL } from 'src/models/Draft'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { ComboUI } from '../../app/layout/ComboUI'
-import { MainNavEntryUI } from '../../app/layout/MainNavEntryUI'
-import { TabUI } from '../../app/layout/TabUI'
-import { ScrollablePaneUI } from '../misc/scrollableArea'
-import { draftContext } from '../misc/useDraft'
-import { ResultWrapperUI } from '../misc/ResultWrapperUI'
-import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
-import { WidgetUI } from '../../controls/widgets/WidgetUI'
-import { ActionDraftListUI } from './ActionDraftListUI'
-
-export const CurrentDraftUI = observer(function CurrentDraftUI_(p: {}) {
-    const st = useSt()
-    const draft = st._currentDraft
-
-    // just in case no card is selected, open one
-    // useEffect(() => {
-    //     if (draft?.cardPath == null) st.openCardPicker()
-    // }, [])
-
-    if (draft == null) {
-        return (
-            <MainNavEntryUI
-                tw='m-2'
-                size='lg'
-                color='green'
-                appearance='primary'
-                onClick={() => st.openCardPicker()}
-                ix='1'
-                icon={<span className='material-symbols-outlined'>play_circle</span>}
-                label='Open Card Picker'
-                tooltip={
-                    <>
-                        Open the card picker
-                        <ComboUI combo='meta+1' />
-                    </>
-                }
-            />
-        )
-    }
-    const card = draft.card
-    if (card == null)
-        return (
-            <Message type='error' showIcon>
-                card not found
-            </Message>
-        )
-    // if (draft?.draftID == null) return <ActionDraftListUI card={card} />
-    return <DraftUI draft={draft} />
-})
+import { TabUI } from '../app/layout/TabUI'
+import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
+import { draftContext } from '../widgets/misc/useDraft'
+import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
+import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
+import { WidgetUI } from '../controls/widgets/WidgetUI'
 
 /**
  * this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
-export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | DraftID }) {
+
+export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | DraftID }) {
     // 1. get draft
     const st = useSt()
     const draft = typeof p.draft === 'string' ? st.db.drafts.get(p.draft) : p.draft
@@ -116,48 +73,63 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                 //
                 className={containerClassName}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw='m-4 flex flex-col flex-grow h-full'
+                tw='flex flex-col flex-grow h-full'
             >
                 <div tw='col items-center font justify-between mb-2'>
-                    <div tw='self-start items-center gap-2' style={{ fontSize: '1.3rem' }}>
-                        <span>{card.displayName}</span>
-                        <ButtonGroup size='xs'>
-                            <Button
-                                color='blue'
-                                appearance='subtle'
-                                startIcon={<span className='material-symbols-outlined'>edit</span>}
-                                onClick={() => openInVSCode(cwd(), card.absPath)}
-                            >
-                                Edit
-                            </Button>
-                            {/* <AddDraftUI af={card} /> */}
-                        </ButtonGroup>
+                    <div tw='self-start items-center gap-2 flex'>
+                        <img
+                            tw='rounded m-2'
+                            style={{ width: '5rem', height: '5rem' }}
+                            src={card.illustrationPathWithFileProtocol}
+                            alt='card illustration'
+                            onClick={() => {
+                                console.log('clicked')
+                                st.currentDraft = card.getLastDraft()
+                            }}
+                        />
+                        <div>
+                            <div tw='flex gap-2 items-center'>
+                                <b style={{ fontSize: '1.3rem' }}>{card.displayName}</b>
+                                <ButtonGroup size='xs'>
+                                    <Button
+                                        color='blue'
+                                        appearance='ghost'
+                                        startIcon={<span className='material-symbols-outlined'>edit</span>}
+                                        onClick={() => openInVSCode(cwd(), card.absPath)}
+                                    >
+                                        Edit
+                                    </Button>
+                                    {/* <AddDraftUI af={card} /> */}
+                                </ButtonGroup>
+                            </div>
+                            <div tw='italic'>{card.manifest.description}</div>
+                        </div>
                     </div>
                     <div tw='self-end flex gap-2 items-center' style={{ width: 'fit-content' }}>
                         {/* <Input>foo</Input> */}
-                        <div>
+                        <div tw='whitespace-nowrap flex items-center'>
                             <Toggle
                                 //
                                 onChange={(t) => (st.preferDenseForms = t)}
                                 checked={st.preferDenseForms}
                             ></Toggle>
-                            dense
+                            <div tw='animate-pulse text-red-500'>PREFER DENSER FORM</div>
                         </div>
                         <RunOrAutorunUI draft={draft} />
                     </div>
                     {/* <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-                        <div tw='flex items-center gap-1'>
-                            <span>By</span>
-                            {action.author ? ( //
-                                <GithubUserUI //
-                                    showName
-                                    username={action.author as GithubUserName}
-                                />
-                            ) : (
-                                'anonymous'
-                            )}
-                        </div>
-                    </ErrorBoundary> */}
+                <div tw='flex items-center gap-1'>
+                    <span>By</span>
+                    {action.author ? ( //
+                        <GithubUserUI //
+                            showName
+                            username={action.author as GithubUserName}
+                        />
+                    ) : (
+                        'anonymous'
+                    )}
+                </div>
+            </ErrorBoundary> */}
                 </div>
                 {/* <ActionDraftListUI card={card} /> */}
                 <ScrollablePaneUI
@@ -182,7 +154,6 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                             draft.start()
                         }}
                     >
-                        <div tw='italic'>{card.manifest.description}</div>
                         <ResultWrapperUI
                             //
                             res={draft.form}
@@ -196,7 +167,7 @@ export const DraftUI = observer(function ActionFormUI_(p: { draft: DraftL | Draf
                     <div>result</div>
                     <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
                     <div>state</div>
-                    <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10_000)} />
+                    <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10000)} />
                     <div>code</div>
                     <TypescriptHighlightedCodeUI code={card.codeJS ?? ''} />
                 </TabUI>
@@ -211,12 +182,10 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { draft: Draf
         <ButtonGroup size='sm'>
             <Button
                 //
-
                 startIcon={draft.shouldAutoStart ? <Loader /> : undefined}
                 active={draft.shouldAutoStart}
                 color={draft.shouldAutoStart ? 'green' : undefined}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
-                // onChange={(ev, checked) => draft.setAutostart(checked)}
             >
                 Autorun
             </Button>

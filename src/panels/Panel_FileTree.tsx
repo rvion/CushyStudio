@@ -7,7 +7,7 @@ import { TooltipUI } from '../app/layout/TooltipUI'
 import { getIconForFilePath } from '../widgets/misc/filePathIcon'
 import { assets } from 'src/utils/assets/assets'
 
-export const ActionPicker1UI = observer(function ActionPicker1UI_(p: {}) {
+export const Panel_FileTree = observer(function Panel_FileTree_(p: {}) {
     const st = useSt()
     const library = st.library
     return (

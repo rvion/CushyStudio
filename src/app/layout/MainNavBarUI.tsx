@@ -4,7 +4,7 @@ import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 import { DBHealthUI } from './AppBarUI'
 import { CardsPickerModalUI } from 'src/cards/CardPicker3UI'
-import { ComboUI } from './ComboUI'
+import { ComboUI } from '../shortcuts/ComboUI'
 import { MainNavEntryUI } from './MainNavEntryUI'
 
 export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: string }) {
