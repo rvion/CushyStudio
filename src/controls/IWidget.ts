@@ -5,6 +5,7 @@ export type IWidget<T, I, X extends { type: T }, S, O> = {
     $Output: O
 }
 export type IRequest<T, I, X, S, O> = {
+    id: string
     type: T
     state: S
     readonly result: O
@@ -15,6 +16,7 @@ export type ReqState<Req> = Req extends IWidget<any, any, any, infer S, any> ? S
 
 export type LabelPos = 'start' | 'end'
 export type StateFields<X> = X & {
+    id: string
     active?: boolean
     collapsed?: boolean
     vertical?: boolean
