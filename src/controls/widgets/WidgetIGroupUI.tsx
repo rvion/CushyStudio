@@ -10,24 +10,9 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: { req: Widget_g
     const isTopLevel = req.input.topLevel
     return (
         <div
-            //
             tw={['relative flex items-start w-full', isTopLevel ? 'px-2' : 'pl-4 px-2']}
-            style={{ border: '1px solid #636363' }}
+            style={{ borderLeft: '1px solid #636363' }}
         >
-            {/* {isTopLevel ? null : (
-                <Button appearance='subtle' tw='' size='xs' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
-                    {collapsed ? '▸' : '▿'}
-                </Button>
-            )} */}
-            {/* <Button
-                appearance='subtle'
-                tw=''
-                size='xs'
-                onClick={() => (req.state.verticalLabels = !Boolean(req.state.verticalLabels))}
-            >
-                {req.state.verticalLabels ? '👇' : '👉'}
-            </Button> */}
-
             {req.state.collapsed ? null : (
                 <div
                     style={isTopLevel ? undefined : { border: '1px solid #262626' }}

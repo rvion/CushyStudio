@@ -296,6 +296,11 @@ hr {
 ._WidgetChoicesUI {
     width: 100%;
 }
+
 ._WidgetListUI {
     /* border: 1px solid blue; */
+}
+
+.rs-input[type='color']{
+    padding: 0!important;
 }

@@ -12,6 +12,7 @@ import { draftContext } from '../widgets/misc/useDraft'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../controls/widgets/WidgetUI'
+import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 
 /**
  * this is the root interraction widget
@@ -103,41 +104,30 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | D
                                 </Button>
                             </div>
                             <div tw='italic'>{card.manifest.description}</div>
+                            <GithubUserUI //
+                                showName
+                                tw='text-gray-500'
+                                prefix='by'
+                                size='1rem'
+                                username={card.deck.githubUserName}
+                            />
                         </div>
                     </div>
                     <div tw='flex gap-2 items-center'>
-                        {/* <Input>foo</Input> */}
                         <div tw='whitespace-nowrap flex items-center'>
                             <Toggle
                                 //
                                 onChange={(t) => (st.preferDenseForms = t)}
                                 checked={st.preferDenseForms}
-                            ></Toggle>
+                            />
                             <div tw='text-red-500'>PREFER DENSER FORM</div>
                         </div>
                         <div className='flex-grow'></div>
                         <RunOrAutorunUI draft={draft} />
                     </div>
-                    {/* <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
-                <div tw='flex items-center gap-1'>
-                    <span>By</span>
-                    {action.author ? ( //
-                        <GithubUserUI //
-                            showName
-                            username={action.author as GithubUserName}
-                        />
-                    ) : (
-                        'anonymous'
-                    )}
-                </div>
-            </ErrorBoundary> */}
                 </div>
                 {/* <ActionDraftListUI card={card} /> */}
-                <ScrollablePaneUI
-                    // style={{ border: '1px solid blue' }}
-                    // style={{ border: '7px solid #152865' }}
-                    className='flex-grow rounded-xl bg-contrasted-gradient'
-                >
+                <ScrollablePaneUI className='flex-grow bg-contrasted-gradient'>
                     <form
                         onKeyUp={(ev) => {
                             // submit on meta+enter

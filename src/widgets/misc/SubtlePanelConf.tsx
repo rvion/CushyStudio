@@ -7,7 +7,7 @@ export const SubtlePanelConfUI = observer(function SubtlePanelConfUI_(p: {
 }) {
     return (
         <div tw='py-2 opacity-50 hover:opacity-100'>
-            displacement
+            {p.label}
             {p.children}
         </div>
     )

@@ -222,8 +222,7 @@ export const SceneViewer = observer(function SceneViewer_(p: { imageSrc: string;
                         onChange={(next) => (state.ambientLightIntensity = next)}
                     />
                 </SubtlePanelConfUI>
-                <div>
-                    light color
+                <SubtlePanelConfUI label='light color'>
                     <Input
                         //
                         style={{ width: '5rem' }}
@@ -233,19 +232,11 @@ export const SceneViewer = observer(function SceneViewer_(p: { imageSrc: string;
                             state.ambientLightColor = hex
                         }}
                         type='color'
-                    ></Input>
-                </div>
-                {/* Symmetry toggle */}
-                <div>
-                    <label>
-                        Symmetric Model
-                        <input
-                            type='checkbox'
-                            checked={state.isSymmetric}
-                            onChange={(e) => (state.isSymmetric = e.target.checked)}
-                        />
-                    </label>
-                </div>
+                    />
+                </SubtlePanelConfUI>
+                <SubtlePanelConfUI label='Symmetric Model'>
+                    <input type='checkbox' checked={state.isSymmetric} onChange={(e) => (state.isSymmetric = e.target.checked)} />
+                </SubtlePanelConfUI>
             </div>
             <div ref={state.mountRef} />
         </div>
