@@ -92,19 +92,8 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
         onError,
     }
 
-    const toggleUI = (
-        <Toggle
-            // size='sm'
-            checked={req.state.active}
-            onChange={(t) => (req.state.active = t)}
-        />
-    )
-    const toggle2UI = req instanceof Widget_promptOpt ? toggleUI : <></>
-    if (!req.state.active) return toggleUI
-
     return (
         <LexicalComposer initialConfig={initialConfig}>
-            {toggle2UI}
             <CushyShortcutPlugin />
             <PlainTextPlugin
                 contentEditable={

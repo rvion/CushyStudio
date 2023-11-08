@@ -308,3 +308,30 @@ hr {
 .rs-input[type='color']{
     padding: 0!important;
 }
+
+.xxxxx {
+    /* border:10px solid blue; */
+    box-shadow: 0 0 8px 0px #63a9c5;
+
+    /* box-shadow:
+        -5px -5px 5px -5px var(--color1),
+        5px 5px 5px -5px var(--color2),
+        -7px -7px 10px -5px transparent,
+        7px 7px 10px -5px transparent,
+        0 0 5px 0px rgba(255, 255, 255, 0)
+        ,0 55px 35px -20px rgba(0, 0, 0, 0.5)
+    ; */
+
+
+
+}
+
+/* .xxxxx:hover {
+    box-shadow:
+        -20px -20px 30px -25px var(--color1),
+        20px 20px 30px -25px var(--color2),
+        -7px -7px 10px -5px var(--color1),
+        7px 7px 10px -5px var(--color2),
+        0 0 13px 4px rgba(255, 255, 255, 0.3),
+        0 55px 35px -20px rgba(0, 0, 0, 0.5);
+} */

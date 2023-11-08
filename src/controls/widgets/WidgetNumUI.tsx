@@ -42,7 +42,10 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
         <InputNumber //
             size='sm'
             value={val}
-            style={{ width: '10rem' }}
+            style={{
+                fontFamily: 'monospace',
+                width: val.toString().length + 6 + 'ch',
+            }}
             min={req.input.min}
             max={req.input.max}
             step={step}

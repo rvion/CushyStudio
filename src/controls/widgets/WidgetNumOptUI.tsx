@@ -46,6 +46,10 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget
                 min={req.input.min}
                 max={req.input.max}
                 step={step}
+                style={{
+                    fontFamily: 'monospace',
+                    width: val.toString().length + 6 + 'ch',
+                }}
                 size='sm'
                 value={val}
                 onChange={(next) => {

@@ -143,7 +143,7 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | D
                     </div>
                 </div>
                 {/* <ActionDraftListUI card={card} /> */}
-                <ScrollablePaneUI className='flex-grow bg-contrasted-gradient'>
+                <ScrollablePaneUI className='flex-grow xxxxx'>
                     <form
                         tw='pb-80'
                         onKeyUp={(ev) => {

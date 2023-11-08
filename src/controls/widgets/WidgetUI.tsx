@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Message, Toggle, Tooltip, Whisper } from 'rsuite'
 import { LabelPos } from 'src/controls/IWidget'
+import { useSt } from 'src/state/stateContext'
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
@@ -25,7 +26,6 @@ import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrUI } from './WidgetStrUI'
-import { useSt } from 'src/state/stateContext'
 
 const makeNicer = (s: string) => {
     if (s == null) return ''
@@ -53,7 +53,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     // const vertical = false // p.vertical
     const vertical = (() => {
-        if (p.vertical) return p.vertical
+        // 🔴 (do I want to let this configurable => probably not, or if so, only optionally)
+        // 🔴 if (p.vertical != null) return p.vertical
         if (st.preferedFormLayout === 'auto') {
             // if (req.isOptional) return true
             if (req instanceof R.Widget_group) return true
@@ -85,7 +86,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
 
     const LABEL = (
         <div
-            style={{ minWidth: '5rem' }}
+            // style={{ minWidth: '5rem' }}
             className={
                 vertical //
                     ? 'min-w-max shrink-0 self-start w-full'
@@ -101,7 +102,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         <I.InfoOutline className='mr-2 cursor-pointer' />
                     </Whisper>
                 )}
-                <span tw=''>{label || '<no label>'}</span> {/* {req.constructor.name} */}
+                <span tw=''>{label || '...'}</span> {/* {req.constructor.name} */}
                 {showToogle ? toogle : null}
                 {/* {req.constructor.name} */}
                 <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>
@@ -117,9 +118,13 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         ? 'flex flex-col items-baseline'
         : 'flex flex-row items-baseline gap-1'
 
-    // if (vertical) {
-    //     WIDGET = <div tw='flex items-center gap-2'>{WIDGET}</div>
-    // }
+    if (/*st.preferedFormLayout !== 'dense'*/ vertical) {
+        WIDGET = (
+            <div tw='w-full' style={{ paddingLeft: '2rem' }}>
+                {WIDGET}
+            </div>
+        )
+    }
     if (p.labelPos === 'end') {
         return (
             <div tw='_WidgetWithLabelUI' className={className} key={rootKey}>
@@ -129,17 +134,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         )
     } else {
         return (
-            <div
-                style={
-                    {
-                        // marginBottom: vertical ? '.1rem' : undefined,
-                        // marginLeft: vertical ? '.5rem' : undefined,
-                    }
-                }
-                tw='_WidgetWithLabelUI'
-                className={className}
-                key={rootKey}
-            >
+            <div tw='_WidgetWithLabelUI' className={className} key={rootKey}>
                 {LABEL}
                 {WIDGET}
             </div>
