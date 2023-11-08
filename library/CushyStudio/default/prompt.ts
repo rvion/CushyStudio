@@ -36,8 +36,9 @@ card({
         }),
         recursiveImgToImg: form.groupOpt({
             items: () => ({
-                steps: form.int({ default: 5 }),
+                loops: form.int({ default: 5, min: 2, max: 20 }),
                 denoise: form.float({ min: 0, max: 1, step: 0.01, default: 0.3 }),
+                steps: form.int({ default: 2, min: 2, max: 20 }),
             }),
         }),
         // startImage
@@ -93,7 +94,7 @@ card({
         latent = fstPass.latent
 
         if (p.recursiveImgToImg) {
-            for (let i = 0; i < p.recursiveImgToImg.steps; i++) {
+            for (let i = 0; i < p.recursiveImgToImg.loops; i++) {
                 latent = _.run_sampler({
                     ckpt: ckptPos,
                     clip: clipPos,
@@ -107,7 +108,7 @@ card({
                         scheduler: 'ddim_uniform',
                         // override the snd pass specific stuff
                         denoise: p.recursiveImgToImg.denoise,
-                        steps: 10,
+                        steps: p.recursiveImgToImg.steps,
                     },
                     positive: positive,
                     negative: negative,
