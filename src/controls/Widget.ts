@@ -947,7 +947,7 @@ export class Widget_group<T extends { [key: string]: Widget }> implements IReque
 }
 
 // 🅿️ groupOpt ==============================================================================
-export type Widget_groupOpt_input <T extends { [key: string]: Widget }> = ReqInput<{ default?: boolean; items: () => T }>
+export type Widget_groupOpt_input <T extends { [key: string]: Widget }> = ReqInput<{ default?: boolean; items: () => T, topLevel?: false }>
 export type Widget_groupOpt_serial<T extends { [key: string]: Widget }> = StateFields<{ type: 'groupOpt', active: boolean; values_: {[K in keyof T]: T[K]['$Serial']}, }>
 export type Widget_groupOpt_state <T extends { [key: string]: Widget }> = StateFields<{ type: 'groupOpt', active: boolean; values: T, }>
 export type Widget_groupOpt_output<T extends { [key: string]: Widget }> = Maybe<{ [k in keyof T]: ReqResult<T[k]> }>

@@ -13,7 +13,7 @@ import { WidgetChoiceUI } from './WidgetChoice'
 import { WidgetChoicesUI } from './WidgetChoices'
 import { WidgetColorUI } from './WidgetCololrUI'
 import { WidgetEnumUI } from './WidgetEnumUI'
-import { WidgetGroupOptUI, WidgetGroupUI } from './WidgetIGroupUI'
+import { WidgetGroupUI } from './WidgetIGroupUI'
 import { WidgetListUI } from './WidgetListUI'
 import { WidgetLorasUI } from './WidgetLorasUI'
 import { WidgetMardownUI } from './WidgetMarkdownUI'
@@ -166,7 +166,7 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Widget; focus?: 
     if (req instanceof R.Widget_imageOpt)           return <WidgetSelectImageUI req={req} />
     if (req instanceof R.Widget_list)               return <WidgetListUI        req={req} />
     if (req instanceof R.Widget_group)              return <WidgetGroupUI       req={req} />
-    if (req instanceof R.Widget_groupOpt)           return <WidgetGroupOptUI    req={req} />
+    if (req instanceof R.Widget_groupOpt)           return <WidgetGroupUI       req={req} />
     if (req instanceof R.Widget_size)               return <WigetSizeUI         req={req} />
     if (req instanceof R.Widget_enum)               return <WidgetEnumUI        req={req} />
     if (req instanceof R.Widget_enumOpt)            return <WidgetEnumUI        req={req} />
