@@ -16,7 +16,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
             <Button
                 //
                 size='sm'
-                appearance='subtle'
+                appearance='ghost'
                 color='orange'
                 startIcon={<span className='material-symbols-outlined'>sync</span>}
                 onClick={() => window.location.reload()}
@@ -31,10 +31,10 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 onClick={() => st.openCardPicker()}
                 ix='1'
                 icon={<span className='material-symbols-outlined'>play_circle</span>}
-                label='Cards'
+                label='Actions'
                 tooltip={
                     <>
-                        Open the card picker
+                        Open the Action picker
                         <ComboUI combo='cmd+1' /> or <ComboUI combo='ctrl+1' />
                     </>
                 }
