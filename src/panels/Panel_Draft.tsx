@@ -80,7 +80,7 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | D
                     <div tw='gap-2 flex flex-grow'>
                         <img
                             tw='rounded m-2'
-                            style={{ width: '6rem', height: '6rem' }}
+                            style={{ width: '5rem', height: '5rem' }}
                             src={card.illustrationPathWithFileProtocol}
                             alt='card illustration'
                             onClick={() => {
