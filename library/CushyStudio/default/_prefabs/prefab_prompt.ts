@@ -21,9 +21,11 @@ export const run_prompt = (
     let ckpt = p.ckpt
     if (richPrompt) {
         for (const tok of richPrompt.tokens) {
-            if (tok.type === 'booru') text += ` ${tok.tag.text}`
-            else if (tok.type === 'text') text += ` ${tok.text}`
-            else if (tok.type === 'embedding') text += ` embedding:${tok.embeddingName}`
+            const _lastChar = text[text.length - 1] ?? ''
+            const _space = _lastChar === ' ' ? '' : ' '
+            if (tok.type === 'booru') text += `${_space}${tok.tag.text}`
+            else if (tok.type === 'text') text += `${_space}${tok.text}`
+            else if (tok.type === 'embedding') text += `${_space}embedding:${tok.embeddingName}`
             else if (tok.type === 'wildcard') {
                 const options = (flow.wildcards as any)[tok.payload]
                 if (Array.isArray(options)) text += ` ${flow.pick(options)}`
