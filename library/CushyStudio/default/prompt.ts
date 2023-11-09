@@ -1,10 +1,11 @@
 import * as _ from './_prefabs'
+import * as ui_sampler from './_prefabs/prefab_sampler'
 import * as ui_model from './_prefabs/prefab_model'
 
 card({
     ui: (form) => ({
         model: ui_model.ui_model(form),
-        sampler: _.ui_sampler(form),
+        sampler: ui_sampler.ui_sampler(form),
         positive: form.prompt({
             default: {
                 tokens: [
@@ -81,7 +82,7 @@ card({
         let { latent } = await _.run_latent({ flow, opts: p.latent, vae })
 
         // FIRST PASS --------------------------------------------------------------------------------
-        const fstPass = _.run_sampler({
+        const fstPass = ui_sampler.run_sampler({
             ckpt: ckptPos,
             clip: clipPos,
             vae,
@@ -96,7 +97,7 @@ card({
 
         if (p.recursiveImgToImg) {
             for (let i = 0; i < p.recursiveImgToImg.loops; i++) {
-                latent = _.run_sampler({
+                latent = ui_sampler.run_sampler({
                     ckpt: ckptPos,
                     clip: clipPos,
                     vae,
@@ -130,7 +131,7 @@ card({
                 height: p.latent.height * p.highResFix.scaleFactor,
                 width: p.latent.width * p.highResFix.scaleFactor,
             })
-            const sndPass = _.run_sampler({
+            const sndPass = ui_sampler.run_sampler({
                 ckpt: ckptPos,
                 clip: clipPos,
                 vae,
@@ -188,7 +189,10 @@ card({
         }
 
         await flow.PROMPT()
-        flow.out_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
+
+        if (show3d) {
+            flow.out_3dImage({ image: 'base', depth: 'depth', normal: 'normal' })
+        }
 
         // LOOP IF NEED BE -----------------------------------------------------------------------
         const loop = p.loop

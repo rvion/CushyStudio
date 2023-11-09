@@ -2,8 +2,7 @@ import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import { OutputFor } from '../_prefabs'
 
-// MODEL PREFAB -----------------------------------------------------------
-
+// UI -----------------------------------------------------------
 export const ui_model = (form: FormBuilder) => {
     return form.group({
         items: () => ({
@@ -20,6 +19,7 @@ export const ui_model = (form: FormBuilder) => {
     })
 }
 
+// RUN -----------------------------------------------------------
 export const run_model = (flow: Runtime, p: OutputFor<typeof ui_model>) => {
     const graph = flow.nodes
 
