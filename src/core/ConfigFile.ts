@@ -31,7 +31,10 @@ export type ConfigFile = {
     comfyPort: number
 
     loraPrompts?: {
-        [loraName: string]: { text: string }
+        [loraName: string]: {
+            text?: string
+            url?: string
+        }
     }
 
     /** prefer dense form */

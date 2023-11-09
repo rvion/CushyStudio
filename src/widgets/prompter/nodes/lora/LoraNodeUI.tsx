@@ -1,17 +1,21 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { observer } from 'mobx-react-lite'
-import { IconButton, Input, Popover, Slider, Whisper } from 'rsuite'
+import { Button, IconButton, Input, Popover, Slider, Whisper } from 'rsuite'
 import { LoraNode } from './LoraNode'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { useSt } from 'src/state/stateContext'
 import { bang } from 'src/utils/misc/bang'
+import { openExternal } from 'src/app/layout/openExternal'
 
 export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
     const node = p.node
     const [editor] = useLexicalComposerContext()
     const def = node.loraDef
     const st = useSt()
-    const associatedText = st.configFile.value?.loraPrompts?.[def.name]?.text ?? ''
+
+    const loraMetadata = st.configFile.value?.loraPrompts?.[def.name]
+    const associatedText = loraMetadata?.text ?? ''
+    const associatedUrl = loraMetadata?.url ?? ''
 
     return (
         <Whisper
@@ -23,28 +27,6 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                         {/* <div className='shrink-0'>{def.name.replace('.safetensors', '')}</div> */}
                         <div className='flex-grow'></div>
                         <div>
-                            <div>
-                                <div>Associated text</div>
-                                <Input
-                                    //
-                                    type='text'
-                                    value={associatedText}
-                                    onChange={(v) => {
-                                        st.configFile.update((prev) => {
-                                            // ensure prev.loraPrompts
-                                            if (!prev.loraPrompts) prev.loraPrompts = {}
-                                            const lp = prev.loraPrompts
-                                            // ensure entry for lora name
-                                            let entry = lp[def.name]
-                                            if (!entry) entry = lp[def.name] = { text: '' }
-                                            // aptch the name
-                                            entry.text = v
-                                        })
-                                        // init lora prompt if need be
-                                    }}
-                                ></Input>
-                            </div>
-
                             <div>model strength</div>
                             <div tw='flex items-center'>
                                 <Slider //
@@ -85,6 +67,55 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                                     style={{ width: '4.5rem' }}
                                 />
                             </div>
+                        </div>
+
+                        <div>
+                            <div>Associated text</div>
+                            <Input
+                                //
+                                type='text'
+                                value={associatedText}
+                                onChange={(nextText) => {
+                                    st.configFile.update((prev) => {
+                                        // ensure prev.loraPrompts
+                                        if (!prev.loraPrompts) prev.loraPrompts = {}
+                                        const lp = prev.loraPrompts
+                                        // ensure entry for lora name
+                                        let entry = lp[def.name]
+                                        if (!entry) entry = lp[def.name] = { text: '' }
+                                        entry.text = nextText
+                                    })
+                                    // init lora prompt if need be
+                                }}
+                            ></Input>
+                        </div>
+
+                        <div>
+                            <Button
+                                size='xs'
+                                onClick={() => openExternal(associatedUrl)}
+                                appearance='link'
+                                startIcon={<span className='material-symbols-outlined'>open_in_new</span>}
+                            >
+                                Associated URL
+                            </Button>
+                            <Input
+                                //
+                                type='text'
+                                value={associatedUrl}
+                                onChange={(nextURL) => {
+                                    st.configFile.update((prev) => {
+                                        // ensure prev.loraPrompts
+                                        if (!prev.loraPrompts) prev.loraPrompts = {}
+                                        const lp = prev.loraPrompts
+                                        // ensure entry for lora name
+                                        let entry = lp[def.name]
+                                        if (!entry) entry = lp[def.name] = { url: '' }
+                                        entry.url = nextURL
+                                    })
+                                    // init lora prompt if need be
+                                }}
+                            ></Input>
                         </div>
                         <IconButton
                             size='xs'
