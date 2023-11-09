@@ -3,11 +3,16 @@ import { observer } from 'mobx-react-lite'
 import { IconButton, Input, Popover, Slider, Whisper } from 'rsuite'
 import { LoraNode } from './LoraNode'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { useSt } from 'src/state/stateContext'
+import { bang } from 'src/utils/misc/bang'
 
 export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
     const node = p.node
     const [editor] = useLexicalComposerContext()
     const def = node.loraDef
+    const st = useSt()
+    const associatedText = st.configFile.value?.loraPrompts?.[def.name]?.text ?? ''
+
     return (
         <Whisper
             enterable
@@ -18,8 +23,30 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                         {/* <div className='shrink-0'>{def.name.replace('.safetensors', '')}</div> */}
                         <div className='flex-grow'></div>
                         <div>
+                            <div>
+                                <div>Associated text</div>
+                                <Input
+                                    //
+                                    type='text'
+                                    value={associatedText}
+                                    onChange={(v) => {
+                                        st.configFile.update((prev) => {
+                                            // ensure prev.loraPrompts
+                                            if (!prev.loraPrompts) prev.loraPrompts = {}
+                                            const lp = prev.loraPrompts
+                                            // ensure entry for lora name
+                                            let entry = lp[def.name]
+                                            if (!entry) entry = lp[def.name] = { text: '' }
+                                            // aptch the name
+                                            entry.text = v
+                                        })
+                                        // init lora prompt if need be
+                                    }}
+                                ></Input>
+                            </div>
+
                             <div>model strength</div>
-                            <div tw='flex items-center pl-3'>
+                            <div tw='flex items-center'>
                                 <Slider //
                                     style={{ width: '5rem' }}
                                     value={def.strength_model}
@@ -40,7 +67,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                         </div>
                         <div>
                             <div>clip strength</div>
-                            <div tw='flex items-center pl-3'>
+                            <div tw='flex items-center'>
                                 <Slider //
                                     style={{ width: '5rem' }}
                                     value={def.strength_clip}
@@ -74,6 +101,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                 className='text-blue-400 rv-tooltip-container p-1'
             >
                 {def.name}:{def.strength_model}:{def.strength_clip} ✨
+                {associatedText ? `+ "${associatedText}"` : <span tw='text-red-500'>no associated text</span>}
             </span>
         </Whisper>
     )

@@ -30,6 +30,10 @@ export type ConfigFile = {
      * */
     comfyPort: number
 
+    loraPrompts?: {
+        [loraName: string]: { text: string }
+    }
+
     /** prefer dense form */
     preferedFormLayout?: PreferedFormLayout
 
