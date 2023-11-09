@@ -47,6 +47,9 @@ type HoveredAsset =
     | { type: 'video'; url: string }
 
 export class STATE {
+    /** hack to help closing prompt completions */
+    currentPromptFocused: Maybe<HTMLDivElement> = null
+
     //file utils that need to be setup first because
     resolveFromRoot = (relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(this.rootPath, relativePath))
     resolve = (from: AbsolutePath, relativePath: RelativePath): AbsolutePath => asAbsolutePath(join(from, relativePath))

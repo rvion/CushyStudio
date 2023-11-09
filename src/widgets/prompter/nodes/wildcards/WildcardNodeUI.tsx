@@ -8,8 +8,8 @@ export const WildcardNodeUI = observer(function WildcardNodeUI_(p: { node: Wildc
     return (
         <span
             //
-            style={{ border: '1px solid #747474' }}
-            className='text-yellow-700 rv-tooltip-container p-0.5'
+            style={{ border: '1px solid #b2ad54' }}
+            className='text-yellow-500 rv-tooltip-container p-0.5'
         >
             <Whisper
                 placement='bottomStart'

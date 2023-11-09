@@ -2,7 +2,7 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { LexicalTypeaheadMenuPlugin, MenuOption, MenuTextMatch, TriggerFn } from '@lexical/react/LexicalTypeaheadMenuPlugin'
 import { $getSelection, $isRangeSelection, TextNode } from 'lexical'
 import { observer } from 'mobx-react-lite'
-import { useCallback, useMemo, useState } from 'react'
+import { MutableRefObject, useCallback, useMemo, useState } from 'react'
 import * as ReactDOM from 'react-dom'
 import { useSt } from '../../../state/stateContext'
 import { CompletionCandidate, CompletionState } from './CompletionProviders'
@@ -55,8 +55,8 @@ function CompletionUI<T>(p: {
 
 const MAX_SUGGESTION_COUNT = 10
 
-const PUNCTUATION = [',.']
-function FOO(/*trigger: string,*/ { minLength = 1, maxLength = 75 }) {
+// const PUNCTUATION = [',.']
+function useCustomTriggerMatch(/*trigger: string,*/ { minLength = 1, maxLength = 75 }) {
     return useCallback(
         (text: string): MenuTextMatch | null => {
             const lastWord = text.split(/\s+/).pop()?.trim()
@@ -73,12 +73,11 @@ function FOO(/*trigger: string,*/ { minLength = 1, maxLength = 75 }) {
 }
 
 export const CushyCompletionPlugin = observer((p: { cs: CompletionState }) => {
-    const st = useSt()
     const [editor] = useLexicalComposerContext()
     const [queryString, setQueryString] = useState<string | null>(null)
-
+    const st = useSt()
     const menuOptions = p.cs.completionOptions
-    const checkForTriggerMatch: TriggerFn = FOO({ minLength: 0 })
+    const checkForTriggerMatch: TriggerFn = useCustomTriggerMatch({ minLength: 0 })
     // const checkForTriggerMatch2: TriggerFn = useBasicTypeaheadTriggerMatch(p.trigger, { minLength: 0 })
 
     const options: CompletionOption[] = useMemo(() => {
@@ -127,33 +126,71 @@ export const CushyCompletionPlugin = observer((p: { cs: CompletionState }) => {
             triggerFn={checkForTriggerMatch}
             options={options}
             menuRenderFn={(anchorElementRef, { selectedIndex, selectOptionAndCleanUp, setHighlightedIndex }) => {
-                if (anchorElementRef.current == null || options.length === 0) {
-                    return null
-                }
-
-                return anchorElementRef.current && options.length
-                    ? ReactDOM.createPortal(
-                          <div className='typeahead-popover emoji-menu '>
-                              <ul style={{ paddingInlineStart: 0 }}>
-                                  {options.map((option: CompletionOption, index) => (
-                                      <CompletionUI
-                                          key={option.key}
-                                          index={index}
-                                          isSelected={selectedIndex === index}
-                                          option={option}
-                                          onMouseEnter={() => setHighlightedIndex(index)}
-                                          onClick={() => {
-                                              setHighlightedIndex(index)
-                                              selectOptionAndCleanUp(option)
-                                          }}
-                                      />
-                                  ))}
-                              </ul>
-                          </div>,
-                          anchorElementRef.current,
-                      )
-                    : null
+                if (anchorElementRef.current == null || options.length === 0) return null
+                const root = editor.getRootElement()
+                if (root == null) return null
+                return (
+                    <CompletionMenuUI
+                        root={root}
+                        anchorElement={anchorElementRef.current}
+                        options={options}
+                        selectedIndex={selectedIndex}
+                        setHighlightedIndex={setHighlightedIndex}
+                        selectOptionAndCleanUp={selectOptionAndCleanUp}
+                    />
+                )
             }}
         />
     )
 })
+
+export const CompletionMenuUI = observer(function CompletionMenuUI_(p: {
+    root: HTMLElement
+    anchorElement: HTMLElement
+    options: CompletionOption<any>[]
+    selectedIndex: number | null
+    setHighlightedIndex: (index: number) => void
+    selectOptionAndCleanUp: (option: CompletionOption<any>) => void
+}) {
+    // ENSURE WE'RE IN A FOCUSED INPUT
+    const st = useSt()
+    if (st.currentPromptFocused == null) return null
+    const isPartOfFocusedInput = isChildOf(p.root, st.currentPromptFocused)
+    if (!isPartOfFocusedInput) return null
+
+    // RENDER MENU
+    const { anchorElement, options, selectedIndex, setHighlightedIndex, selectOptionAndCleanUp } = p
+    return ReactDOM.createPortal(
+        <div className='typeahead-popover emoji-menu '>
+            <ul style={{ paddingInlineStart: 0 }}>
+                {options.map((option: CompletionOption, index) => (
+                    <CompletionUI
+                        key={option.key}
+                        index={index}
+                        isSelected={selectedIndex === index}
+                        option={option}
+                        onMouseEnter={() => setHighlightedIndex(index)}
+                        onClick={() => {
+                            setHighlightedIndex(index)
+                            selectOptionAndCleanUp(option)
+                        }}
+                    />
+                ))}
+            </ul>
+        </div>,
+        anchorElement,
+    )
+})
+
+function isChildOf(parent: Node, child: Node | null): boolean {
+    if (child == null) return false
+    if (child === parent) return true
+    return isChildOf(parent, child.parentNode)
+}
+
+// function isChildOf(parent: Node, child: Node | null): boolean {
+// function isPartOfAnFocusedContentEditable(node: Node | null): boolean {
+//     if (node == null) return false
+//     if (node instanceof HTMLElement && node.isContentEditable) return true
+//     return isPartOfAnFocusedContentEditable(node.parentNode)
+// }

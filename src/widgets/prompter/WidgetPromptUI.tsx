@@ -94,6 +94,23 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
             <PlainTextPlugin
                 contentEditable={
                     <ContentEditable
+                        // TRACK IF THE INPUT IS FOCUSED ------------------------
+                        onBlur={(ev) => {
+                            if (
+                                st.currentPromptFocused && //
+                                st.currentPromptFocused &&
+                                st.currentPromptFocused === ev.target
+                            )
+                                st.currentPromptFocused = null
+                        }}
+                        onFocus={(ev) => {
+                            if (
+                                ev.target && //
+                                st.currentPromptFocused !== ev.target
+                            )
+                                st.currentPromptFocused = ev.target
+                        }}
+                        // -----------------------------------------------------
                         style={{
                             minHeight: '3rem',
                             background: 'var(--rs-input-bg)',
