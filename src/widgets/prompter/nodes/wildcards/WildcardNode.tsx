@@ -21,6 +21,7 @@ export class WildcardNode extends DecoratorNode<ReactNode> {
     }
 
     importJSON(json: WildcardNodeJSON): WildcardNode {
+        // console.log('1️⃣ >>> json:', json)
         return new WildcardNode(json.payload)
     }
 

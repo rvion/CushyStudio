@@ -5,7 +5,6 @@ import {
     $getSelection,
     $isNodeSelection,
     $isRangeSelection,
-    COMMAND_PRIORITY_CRITICAL,
     COMMAND_PRIORITY_NORMAL,
     COPY_COMMAND,
     CUT_COMMAND,
@@ -16,7 +15,7 @@ import {
 } from 'lexical'
 import { useEffect } from 'react'
 
-export function CopyPastePlugin() {
+export const CopyPastePlugin = () => {
     const [editor] = useLexicalComposerContext()
     useEffect(() => {
         return mergeRegister(
