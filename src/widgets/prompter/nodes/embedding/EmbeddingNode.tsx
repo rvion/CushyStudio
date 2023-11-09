@@ -1,12 +1,10 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
+import { EmbeddingNodeUI } from './EmbeddingNodeUI'
 
 export type EmbeddingNodeJSON = SerializedLexicalNode & { embeddingName: string; type: 'embedding' }
 export class EmbeddingNode extends DecoratorNode<ReactNode> {
-    constructor(
-        public embeddingName: string,
-        key?: NodeKey,
-    ) {
+    constructor(public embeddingName: string, key?: NodeKey) {
         super(key)
     }
 
@@ -35,7 +33,7 @@ export class EmbeddingNode extends DecoratorNode<ReactNode> {
     isKeyboardSelectable(): boolean { return true } // prettier-ignore
     createDOM(): HTMLElement { return document.createElement('span') } // prettier-ignore
     updateDOM(): false { return false } // prettier-ignore
-    decorate(): ReactNode { return <span className='bg-red-800'>:{this.embeddingName}</span> } // prettier-ignore
+    decorate(): ReactNode { return <EmbeddingNodeUI node={this} /> } // prettier-ignore
 }
 
 export function $createEmbeddingNode(id: string): EmbeddingNode {

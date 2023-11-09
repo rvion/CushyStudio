@@ -2,7 +2,6 @@ export const parseFloatNoRoundingErr = (str: string | number, maxDigitsAfterDot 
     const result = typeof str === 'number' ? str : parseFloat(str)
     if (isNaN(result)) return 0
     const out = Number(result.toFixed(maxDigitsAfterDot))
-    console.log('🔴', out)
     return out
 }
 

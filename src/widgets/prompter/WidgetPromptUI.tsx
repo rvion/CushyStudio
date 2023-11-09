@@ -16,7 +16,7 @@ import './theme/Popover.css'
 import theme from './theme/WidgetLexicalTheme'
 
 // nodes
-import { $createEmbeddingNode, EmbeddingNode } from './nodes/EmbeddingNode'
+import { $createEmbeddingNode, EmbeddingNode } from './nodes/embedding/EmbeddingNode'
 import { $createBooruNode, BooruNode } from './nodes/booru/BooruNode'
 import { $createLoraNode, LoraNode } from './nodes/lora/LoraNode'
 import { $createWildcardNode, WildcardNode } from './nodes/wildcards/WildcardNode'
@@ -27,17 +27,12 @@ import { useMemo } from 'react'
 import { Widget_prompt, Widget_promptOpt } from 'src/controls/Widget'
 import { $createActionNode, ActionNode } from './nodes/ActionNode'
 import { $createUserNode, UserNode } from './nodes/usertags/UserNode'
-import { CopyPastePlugin } from './onCutForRichText'
+import { CopyPastePlugin } from './CopyPastePlugin'
 import { CompletionState } from './plugins/CompletionProviders'
 import { CushyCompletionPlugin } from './plugins/CushyCompletionPlugin'
 import { PossibleSerializedNodes } from './plugins/CushyDebugPlugin'
 import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
 import { getFinalJSON } from './plugins/getFinalJSON'
-
-// const theme = {
-//     // Theme styling goes here
-//     // ...
-// }
 
 export type WidgetPromptOutput = {
     // text: string
