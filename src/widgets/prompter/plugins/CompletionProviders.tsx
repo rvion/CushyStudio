@@ -12,7 +12,7 @@ import { DanbooruTag } from 'src/widgets/prompter/nodes/booru/BooruLoader'
 import { EmbeddingName } from 'src/models/Schema'
 import { $createUserNode } from '../nodes/usertags/UserNode'
 import { UserTag } from 'src/widgets/prompter/nodes/usertags/UserLoader'
-import { $createActionNode, ActionTag } from '../nodes/ActionNode'
+import { $createActionNode, ActionTag } from '../nodes/actions/ActionNode'
 
 const _providerCache = new Map<string, CopmletionProvider>()
 // ----------------------------------------------------------------------

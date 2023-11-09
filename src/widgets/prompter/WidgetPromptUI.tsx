@@ -25,7 +25,7 @@ import { $createWildcardNode, WildcardNode } from './nodes/wildcards/WildcardNod
 import { toJS } from 'mobx'
 import { useMemo } from 'react'
 import { Widget_prompt, Widget_promptOpt } from 'src/controls/Widget'
-import { $createActionNode, ActionNode } from './nodes/ActionNode'
+import { $createActionNode, ActionNode } from './nodes/actions/ActionNode'
 import { $createUserNode, UserNode } from './nodes/usertags/UserNode'
 import { CopyPastePlugin } from './CopyPastePlugin'
 import { CompletionState } from './plugins/CompletionProviders'

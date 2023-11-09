@@ -3,7 +3,7 @@ import type { BooruNodeJSON } from '../nodes/booru/BooruNode'
 import type { WildcardNodeJSON } from '../nodes/wildcards/WildcardNode'
 import type { EmbeddingNodeJSON } from '../nodes/embedding/EmbeddingNode'
 import type { UserNodeJSON } from '../nodes/usertags/UserNode'
-import type { ActionNodeJSON } from '../nodes/ActionNode'
+import type { ActionNodeJSON } from '../nodes/actions/ActionNode'
 
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { JSONHighlightedCodeUI } from '../../misc/TypescriptHighlightedCodeUI'
