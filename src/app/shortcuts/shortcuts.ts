@@ -25,7 +25,7 @@ const simpleValidInInput = (combo: Combo | Combo[], action: (fn: STATE) => void)
 export const shortcutsDef: Shortcut<STATE>[] = [
     // simpleValidInInput('meta+shift+k', (st) => (st.showSuperAdmin = !st.showSuperAdmin)),
     // simpleValidInInput('meta+shift+z', (st) => (st.showSuperAdminBubbles = !st.showSuperAdminBubbles)),
-    simpleValidInInput(['meta+1', 'ctrl+1'], (st) => st.openCardPicker()),
+    simpleValidInInput(['meta+1', 'ctrl+1', 'meta+p', 'meta+j'], (st) => st.openCardPicker()),
     // simpleValidInInput(['meta+2', 'ctrl+2'], (st) => st.layout.addMarketplace()),
     simpleValidInInput(['meta+3', 'ctrl+3'], (st) => st.layout.addPaint()),
     simpleValidInInput(['meta+4', 'ctrl+4'], (st) => st.layout.addComfy()),
