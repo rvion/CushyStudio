@@ -28,6 +28,7 @@ export const run_model = (flow: Runtime, p: OutputFor<typeof ui_model>) => {
         ? graph.CivitAI$_Checkpoint$_Loader({
               ckpt_name: p.ckpt_name,
               ckpt_air: p.civtai_ckpt_air,
+              download_path: 'models\\checkpoints',
           })
         : graph.CheckpointLoaderSimple({ ckpt_name: p.ckpt_name })
     let ckpt: HasSingle_MODEL = ckptSimple
