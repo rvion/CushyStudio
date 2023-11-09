@@ -74,7 +74,7 @@ export class Widget_str implements IRequest<'str', Widget_str_input, Widget_str_
 }
 
 // 🅿️ markdown ==============================================================================
-export type Widget_markdown_input = ReqInput<{ markdown: string; }>
+export type Widget_markdown_input = ReqInput<{ markdown: string | ((formRoot:Widget_group<any>) => string); }>
 export type Widget_markdown_serial = StateFields<{ type: 'markdown', active: true }>
 export type Widget_markdown_state  = StateFields<{ type: 'markdown', active: true }>
 export type Widget_markdown_output = { type: 'markdown', active: true }
@@ -84,6 +84,13 @@ export class Widget_markdown implements IRequest<'markdown', Widget_markdown_inp
     id: string
     type = 'markdown' as const
     state: Widget_markdown_state
+
+    get markdown() :string{
+        const md= this.input.markdown
+        if (typeof md === 'string') return md
+        return md(this.builder.ROOT)
+    }
+
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
@@ -689,7 +696,7 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_inp
 }
 
 // 🅿️ selectOne ==============================================================================
-export type Widget_selectOne_input<T>  = ReqInput<{ default?: T; choices: T[] }>
+export type Widget_selectOne_input<T>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
 export type Widget_selectOne_serial<T> = Widget_selectOne_state<T>
 export type Widget_selectOne_state<T>  = StateFields<{ type:'selectOne', query: string; val: T }>
 export type Widget_selectOne_output<T> = T
@@ -699,6 +706,13 @@ export class Widget_selectOne<T> implements IRequest<'selectOne', Widget_selectO
     id: string
     type = 'selectOne' as const
     state: Widget_selectOne_state<T>
+
+    get choices(){
+        const _choices = this.input.choices
+        return typeof _choices === 'function' //
+            ? _choices(this.builder.ROOT)
+            : _choices
+    }
     constructor(
         public builder: FormBuilder,
         public schema: SchemaL,
@@ -706,12 +720,13 @@ export class Widget_selectOne<T> implements IRequest<'selectOne', Widget_selectO
         serial?: Widget_selectOne_serial<T>,
     ) {
         this.id = serial?.id ?? nanoid()
+        const choices = this.choices
         this.state = serial ?? {
             type: 'selectOne',
             active: true,
             id: this.id,
             query: '',
-            val: input.default ?? input.choices[0],
+            val: input.default ?? choices[0],
         }
         makeAutoObservable(this)
     }

@@ -7,6 +7,13 @@ import { _FIX_INDENTATION } from '../utils/misc/_FIX_INDENTATION'
 // prettier-ignore
 export class FormBuilder {
     _cache :{ count:number } = { count:0 }
+
+    /**
+     * 🔴 UGLY HACK: this is set in the FormBuilder root at from creation
+     * when the root is created.
+     */
+    ROOT!: W.Widget_group<any>
+
     constructor(public schema: SchemaL) {
         makeAutoObservable(this)
     }

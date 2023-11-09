@@ -1,12 +1,11 @@
 import type { Widget, Widget_choice } from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
-import { Button, InputGroup, SelectPicker } from 'rsuite'
-import { WidgetUI, WidgetWithLabelUI } from './WidgetUI'
+import { SelectPicker } from 'rsuite'
+import { WidgetUI } from './WidgetUI'
 
 export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget_choice<{ [key: string]: Widget }> }) {
     const req = p.req
-    const collapsed = req.state.collapsed
     const choicesStr: string[] = Object.keys(req.state.values)
     const choices = choicesStr.map((v) => ({ label: v, value: v }))
     const choiceSubReq = req.state.values[req.state.pick]
@@ -25,9 +24,6 @@ export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget
                     data={choices}
                     value={req.state.pick}
                 />
-                {/* <Button appearance='subtle' size='sm' onClick={() => (req.state.collapsed = !Boolean(req.state.collapsed))}>
-                    {collapsed ? '▿' : '▸'}
-                </Button> */}
             </div>
 
             {req.state.collapsed ? null : (

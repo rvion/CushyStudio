@@ -11,7 +11,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_(p: { req: 
 
     // do some magic to adapt to user-submitted enums without crashing
     const options: Entry[] = useMemo(() => {
-        return req.input.choices.map((choice) => {
+        return req.choices.map((choice) => {
             const choice_ = choice as Record<string, unknown>
             const label =
                 typeof choice_.label === 'string' && choice_.label.length > 0 //
@@ -20,7 +20,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_(p: { req: 
             const value = choice.type
             return { label, value }
         })
-    }, [req.input.choices])
+    }, [req.choices])
 
     return (
         // <>
@@ -30,7 +30,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_(p: { req: 
             data={options}
             value={val.type}
             onSelect={(value, item) => {
-                const next = req.input.choices.find((c) => c.type === value)
+                const next = req.choices.find((c) => c.type === value)
                 if (next == null) return console.log(`❌ WidgetSelectOneUI: could not find choice for ${value}`)
                 req.state.val = next
             }}

@@ -113,6 +113,8 @@ export class DraftL {
                         uiFn == null //
                             ? formBuilder.group({ topLevel: true, items: () => ({}) }, this.data.actionParams)
                             : formBuilder.group({ topLevel: true, items: () => uiFn(formBuilder) }, this.data.actionParams)
+                    /** 👇 HACK; see the comment near the ROOT property definition */
+                    formBuilder.ROOT = req
                     this.form = __OK(req)
                     console.log(`🦊 form setup`)
                     // subState.unsync()
