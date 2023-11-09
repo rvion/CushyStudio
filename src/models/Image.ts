@@ -26,7 +26,8 @@ export interface ImageT {
     downloaded?: boolean
     /** defaults to image */
     type?: 'image' | 'video'
-
+    width?: number
+    height?: number
     // comfyRelativePath?: string
     // comfyURL?: string
     //
@@ -75,13 +76,25 @@ export class ImageL {
             // responseType: ResponseType.Binary,
         })
         const binArr = await response.arrayBuffer()
+
+        let size: Maybe<{ width: number; height: number }>
+        try {
+            size = readPngSize(binArr)
+            this.update
+        } catch (error) {
+            console.log(error)
+        }
         // const binArr = new Uint16Array(numArr)
 
         this.st.writeBinaryFile(this.localAbsolutePath, Buffer.from(binArr))
         // const folder = join(absPath, '..')
         // mkdirSync(folder, { recursive: true })
         // writeFileSync(absPath, Buffer.from(binArr))
-        this.update({ downloaded: true })
+        this.update({
+            downloaded: true,
+            width: size?.width,
+            height: size?.height,
+        })
         console.info('🖼️ image saved')
         // this.status = ImageStatus.Saved
         this._resolve(this)
@@ -97,17 +110,31 @@ export class ImageL {
         this._resolve = resolve
         this._rejects = rejects
     })
-
-    // onUpdate = (prev: Maybe<ImageT>, next: ImageT) => {
-    //     console.log('🟢 ImageL.onUpdate', prev, next)
-    //     // if (next.localAbsolutePath) return this._resolve(this)
-    // }
-
-    test2 = () => 'b123'
 }
 
-enum ImageStatus {
-    Known = 1,
-    Downloading = 2,
-    Saved = 3,
+export function readPngSize(buffer: ArrayBuffer): { width: number; height: number } {
+    const dataView = new DataView(buffer)
+
+    // Check the PNG signature
+    const hasSignature = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a].every(
+        (byte, index) => dataView.getUint8(index) === byte,
+    )
+
+    if (!hasSignature) {
+        throw new Error('Not a PNG file.')
+    }
+
+    // The IHDR chunk is located at offset 8 (after the 8-byte signature)
+    const length = dataView.getUint32(8) // Should be 13 for IHDR
+    const type = dataView.getUint32(12) // Should be 'IHDR' (0x49484452)
+
+    if (type === 0x49484452) {
+        // 'IHDR' in hex
+        // IHDR chunk found, read the width and height
+        const width = dataView.getUint32(16) // Width: Offset 16 to 19
+        const height = dataView.getUint32(20) // Height: Offset 20 to 23
+        return { width, height }
+    } else {
+        throw new Error('IHDR chunk not found.')
+    }
 }

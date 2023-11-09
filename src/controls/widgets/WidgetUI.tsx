@@ -102,7 +102,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                         <I.InfoOutline className='mr-2 cursor-pointer' />
                     </Whisper>
                 )}
-                <span tw=''>{label || '...'}</span> {/* {req.constructor.name} */}
+                <span>{label || '...'}</span> {/* {req.constructor.name} */}
                 {showToogle ? toogle : null}
                 {/* {req.constructor.name} */}
                 <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>

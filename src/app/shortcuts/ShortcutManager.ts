@@ -184,12 +184,15 @@ export function parseInputSequence(combo: Combo): InputSequence {
 
 // ctrl+shift+a  => a+ctrl+shift
 function normalizeInput(input: InputToken): InputToken {
-    return input //
-        .split('+')
-        .map(normalizeKey)
-        .sort()
-        .join('+')
-        .toLowerCase()
+    return (
+        input //
+            .split('+')
+            .map(normalizeKey)
+            // .sort((a, b) => {})
+            .sort()
+            .join('+')
+            .toLowerCase()
+    )
 }
 
 function normalizeKey(key: string): string {

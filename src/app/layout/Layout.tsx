@@ -7,7 +7,7 @@ import { Actions, IJsonModel, Layout, Model } from 'flexlayout-react'
 import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
-import { createRef } from 'react'
+import { FC, createRef } from 'react'
 import { Message } from 'rsuite'
 import { CardPath } from 'src/cards/CardPath'
 import { LiteGraphJSON } from 'src/core/LiteGraph'
@@ -16,7 +16,6 @@ import { Panel_DeckList } from 'src/panels/Panel_DeckList'
 import { Trigger } from 'src/app/shortcuts/Trigger'
 import { assets } from 'src/utils/assets/assets'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import { SceneViewer } from 'src/widgets/3dview/3dview1'
 
 import { Panel_Draft } from '../../panels/Panel_Draft'
 import { Panel_FileTree } from '../../panels/Panel_FileTree'
@@ -59,6 +58,8 @@ enum Widget {
     Hosts = 'Hosts', //: { 'Hosts',}
     Config = 'Config', //: { 'Config',}
 }
+
+export type PropsOf<T> = T extends FC<infer Props> ? Props : '❌'
 
 type PerspectiveDataForSelect = {
     label: string
@@ -149,13 +150,8 @@ export class CushyLayoutManager {
     nextPaintIDx = 0
     addMarketplace = () =>
         this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: assets.public_CushyLogo_512_png })
-    addDisplacedImage = (p: { image: string; depth: string; normal: string }) =>
-        this._AddWithProps(Widget.DisplacedImage, `/DisplacedImage`, {
-            title: 'DisplacedImage',
-            image: p.image,
-            depth: p.depth,
-            normal: p.normal,
-        })
+    addDisplacedImage = (p: PropsOf<typeof Panel_3dScene>) =>
+        this._AddWithProps(Widget.DisplacedImage, `/DisplacedImage`, { title: 'DisplacedImage', ...p })
     addActionPicker = () =>
         this._AddWithProps(Widget.FileList, `/Library`, { title: 'Library', icon: assets.public_CushyLogo_512_png })
     addActionPickerTree = () =>
@@ -286,10 +282,10 @@ export class CushyLayoutManager {
         // prettier-ignore
         try {
             if (component === Widget.Gallery)             return <Panel_Gallery />
-            if (component === Widget.Paint)               return <Panel_Minipaint action={{ type: 'paint', imageID: extra.imgID }} /> // You can now use imgID to instantiate your paint component properly
+            if (component === Widget.Paint)               return <Panel_Minipaint {...extra} /> // You can now use imgID to instantiate your paint component properly
             if (component === Widget.Image)               return <Panel_ViewImage imageID={extra.imgID}></Panel_ViewImage> // You can now use imgID to instantiate your paint component properly
-            if (component === Widget.Card)                return <Panel_Card actionPath={extra.actionPath} />
-            if (component === Widget.ComfyUI)             return <Panel_ComfyUI litegraphJson={extra.litegraphJson} />
+            if (component === Widget.Card)                return <Panel_Card      actionPath={extra.actionPath} />
+            if (component === Widget.ComfyUI)             return <Panel_ComfyUI   litegraphJson={extra.litegraphJson} />
             if (component === Widget.FileList)            return <Panel_DeckList />
             if (component === Widget.FileList2)           return <Panel_FileTree />
             if (component === Widget.Steps)               return <Panel_Steps />
@@ -300,7 +296,7 @@ export class CushyLayoutManager {
             if (component === Widget.Hosts)               return <Panel_MachineManager />
             if (component === Widget.Marketplace)         return <Panel_Marketplace />
             if (component === Widget.Config)              return <Panel_Config />
-            if (component === Widget.Draft)               return <Panel_Draft draft={extra.draftID} />
+            if (component === Widget.Draft)               return <Panel_Draft     draft={extra.draftID} />
             if (component === Widget.CurrentDraft)        return <Panel_CurrentDraft />
             if (component === Widget.ComfyUINodeExplorer) return <Panel_ComfyNodeExplorer />
             if (component === Widget.Deck)                return <div>🔴 todo: action pack page: show readme</div>

@@ -11,11 +11,11 @@ import { Button, ButtonGroup } from 'rsuite'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { useSt } from '../state/stateContext'
 
-export type UIPagePaint = {
-    type: 'paint'
-    imageID?: ImageID
-    // mask?: boolean
-}
+// export type UIPagePaint = {
+//     type: 'paint'
+//     imageID?: ImageID
+//     // mask?: boolean
+// }
 
 const getLayers = (): any => {
     // console.log('🟢', (document as any).getElementById('miniPaint').contentWindow.Layers)
@@ -127,17 +127,17 @@ class MinipaintState {
     }
 }
 // https://github.com/devforth/painterro
-export const Panel_Minipaint = observer(function PaintUI_(p: { action: UIPagePaint }) {
-    const action = p.action
+export const Panel_Minipaint = observer(function PaintUI_(p: { imgID: ImageID }) {
+    // const action = p.action
     const st = useSt()
     const minipaintState = useMemo(() => new MinipaintState(st), [])
 
     // load image once the widget is ready
     useLayoutEffect(() => {
-        if (action.imageID == null) return
-        const img: ImageL = st.db.images.getOrThrow(action.imageID)
+        if (p.imgID == null) return
+        const img: ImageL = st.db.images.getOrThrow(p.imgID)
         setTimeout(() => minipaintState.loadImage(img), 100)
-    }, [p.action.imageID])
+    }, [p.imgID])
 
     return (
         <div className='flex-grow flex flex-col h-full'>

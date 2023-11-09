@@ -22,7 +22,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                 background: st.configFile.value.galleryBgColor,
             }}
         >
-            <div tw='flex gap-2 p-0.5'>
+            <div tw='flex items-center gap-2 p-0.5'>
                 {/* 1. RATER */}
                 {img && <Rate size='xs' onChange={(next) => img.update({ star: next })} value={img.data.star} />}
 
@@ -39,6 +39,9 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                     </div>
                 ) : null}
 
+                <div tw='text-gray-500 text-sm'>
+                    W={img?.data.width ?? '?'} x H={img?.data.height ?? '?'}
+                </div>
                 {/* 3. OPEN OUTPUT FOLDER */}
                 {img?.localAbsolutePath && (
                     <Button

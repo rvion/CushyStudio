@@ -69,10 +69,11 @@ export class Runtime {
         if (depth == null) throw new Error(`image not found: ${p.image}`)
         if (normal == null) throw new Error(`image not found: ${p.image}`)
         this.st.layout.addDisplacedImage({
-            //
-            depth: depth.url,
+            width: image.data.width ?? 512,
+            height: image.data.height ?? 512,
             image: image.url,
-            normal: normal.url,
+            depthMap: depth.url,
+            normalMap: normal.url,
         })
     }
 

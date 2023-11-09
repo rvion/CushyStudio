@@ -18,6 +18,7 @@ export const NodeRefUI = observer(function NodeRefUI_(p: {
     return (
         <div
             style={{
+                flexShrink: 0,
                 fontSize: `1rem`,
                 backgroundColor: color,
                 lineHeight: `${size}em`,

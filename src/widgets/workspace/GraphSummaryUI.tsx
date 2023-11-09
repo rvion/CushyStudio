@@ -23,7 +23,7 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
                 </div>
                 {graph.pendingNodes.length > 0 && <div>+{graph.pendingNodes.length} nodes remaining</div>}
                 {graph.nodesByUpdatedAt.map((n, ix) => (
-                    <div key={n.uid} className='flex'>
+                    <div key={n.uid} className='flex items-center gap-0.5'>
                         {/* {n.status ?? '❓'} */}
                         <Whisper
                             enterable
@@ -37,8 +37,8 @@ export const GraphSummaryUI = observer(function GraphSummaryUI_(p: { graph: Grap
                             <span>{n.statusEmoji}</span>
                             {/* <span className='material-symbols-outlined'>info</span> */}
                         </Whisper>
-                        <NodeRefUI label={ix.toString()} node={n} />
-                        <span tw='overflow-hidden text-ellipsis'>{n.$schema.nameInComfy}</span>
+                        <NodeRefUI size={1.1} label={ix.toString()} node={n} />
+                        <span tw='text-sm overflow-hidden whitespace-nowrap text-ellipsis'>{n.$schema.nameInComfy}</span>
                     </div>
                 ))}
             </div>

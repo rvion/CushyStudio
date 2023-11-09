@@ -40,28 +40,6 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 }
             />
             <CardsPickerModalUI />
-
-            {/* <MainNavEntryUI
-                onClick={() => st.layout.addActionPicker()}
-                ix='1'
-                icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
-                label='Cards'
-            /> */}
-            {/* LEGACY MARKETPLACE */}
-            {/* <MainNavEntryUI
-                onClick={() => st.layout.addMarketplace()}
-                ix='2'
-                icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
-                label='Apps'
-            /> */}
-            {/* <MainNavEntryUI
-                onClick={() => st.layout.addActionPickerTree()}
-                ix='2'
-                icon={<span className='material-symbols-outlined text-blue-500'>account_tree</span>}
-                label='Files'
-            /> */}
-
-            {/* PAINT */}
             <MainNavEntryUI
                 onClick={() => st.layout.addPaint()}
                 ix='3'
@@ -157,3 +135,25 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
         </ButtonGroup>
     )
 })
+
+// {/* <MainNavEntryUI
+//     onClick={() => st.layout.addActionPicker()}
+//     ix='1'
+//     icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
+//     label='Cards'
+// /> */}
+// {/* LEGACY MARKETPLACE */}
+// {/* <MainNavEntryUI
+//     onClick={() => st.layout.addMarketplace()}
+//     ix='2'
+//     icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
+//     label='Apps'
+// /> */}
+// {/* <MainNavEntryUI
+//     onClick={() => st.layout.addActionPickerTree()}
+//     ix='2'
+//     icon={<span className='material-symbols-outlined text-blue-500'>account_tree</span>}
+//     label='Files'
+// /> */}
+
+// {/* PAINT */}

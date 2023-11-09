@@ -1,10 +1,11 @@
 ```ts
 
+
 import type { ComfyNode } from '../src/core/Node'
 import type { Slot } from '../src/core/Slot'
 import type { ComfyNodeSchemaJSON } from '../src/types/ComfySchemaJSON'
-import type { ComfyNodeID } from '../src/types/NodeUID'
-import type { CardType } from '../src/cards/Card'
+import type { ComfyNodeID } from '../src/types/ComfyNodeID'
+import type { CardType, ActionTags } from '../src/cards/Card'
 
 // CONTENT IN THIS FILE:
 //
@@ -21,6 +22,8 @@ import type { CardType } from '../src/cards/Card'
 
 declare global {
 const action: CardType
+const card: CardType
+const actionTags: ActionTags
 
 
 // 0. Entrypoint --------------------------
@@ -223,6 +226,8 @@ export interface ComfySetup {
     Canny(p: Canny_input, id?: ComfyNodeID): Canny
     /* category:_for_testing, name:"FreeU", output:MODEL */
     FreeU(p: FreeU_input, id?: ComfyNodeID): FreeU
+    /* category:_for_testing, name:"FreeU_V2", output:MODEL */
+    FreeU$_V2(p: FreeU$_V2_input, id?: ComfyNodeID): FreeU$_V2
     /* category:sampling_custom_sampling, name:"SamplerCustom", output:output+denoised_output */
     SamplerCustom(p: SamplerCustom_input, id?: ComfyNodeID): SamplerCustom
     /* category:sampling_custom_sampling, name:"KarrasScheduler", output:SIGMAS */
@@ -243,6 +248,8 @@ export interface ComfySetup {
     BasicScheduler(p: BasicScheduler_input, id?: ComfyNodeID): BasicScheduler
     /* category:sampling_custom_sampling, name:"SplitSigmas", output:SIGMAS+SIGMAS_1 */
     SplitSigmas(p: SplitSigmas_input, id?: ComfyNodeID): SplitSigmas
+    /* category:_for_testing, name:"HyperTile", output:MODEL */
+    HyperTile(p: HyperTile_input, id?: ComfyNodeID): HyperTile
     /* category:A8R8, name:"Base64ImageInput", output:IMAGE */
     Base64ImageInput(p: Base64ImageInput_input, id?: ComfyNodeID): Base64ImageInput
     /* category:A8R8, name:"Base64ImageOutput", output: */
@@ -769,6 +776,8 @@ export interface ComfySetup {
     LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire(p: LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire_input, id?: ComfyNodeID): LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire
     /* category:InspirePack_SEGS_ControlNet, name:"Color_Preprocessor_Provider_for_SEGS //Inspire", output:SEGS_PREPROCESSOR */
     Color$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire(p: Color$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire_input, id?: ComfyNodeID): Color$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire
+    /* category:InspirePack_SEGS_ControlNet, name:"InpaintPreprocessor_Provider_for_SEGS //Inspire", output:SEGS_PREPROCESSOR */
+    InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire(p: InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_input, id?: ComfyNodeID): InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire
     /* category:InspirePack_a1111_compat, name:"KSampler //Inspire", output:LATENT */
     KSampler_$3$3Inspire(p: KSampler_$3$3Inspire_input, id?: ComfyNodeID): KSampler_$3$3Inspire
     /* category:InspirePack_a1111_compat, name:"KSamplerAdvanced //Inspire", output:LATENT */
@@ -973,8 +982,6 @@ export interface ComfySetup {
     CR_Img2Img_Process_Switch(p: CR_Img2Img_Process_Switch_input, id?: ComfyNodeID): CR_Img2Img_Process_Switch
     /* category:Comfyroll_Process, name:"CR Hires Fix Process Switch", output:LATENT */
     CR_Hires_Fix_Process_Switch(p: CR_Hires_Fix_Process_Switch_input, id?: ComfyNodeID): CR_Hires_Fix_Process_Switch
-    /* category:Comfyroll_Image, name:"CR Halftone Grid", output:IMAGE */
-    CR_Halftone_Grid(p: CR_Halftone_Grid_input, id?: ComfyNodeID): CR_Halftone_Grid
     /* category:Comfyroll_Latent, name:"CR Latent Batch Size", output:LATENT */
     CR_Latent_Batch_Size(p: CR_Latent_Batch_Size_input, id?: ComfyNodeID): CR_Latent_Batch_Size
     /* category:Comfyroll_IO, name:"CR LoRA Stack", output:LORA_STACK */
@@ -1039,6 +1046,30 @@ export interface ComfySetup {
     CR_XY_From_Folder(p: CR_XY_From_Folder_input, id?: ComfyNodeID): CR_XY_From_Folder
     /* category:Comfyroll_XY Grid, name:"CR XY Save Grid Image", output: */
     CR_XY_Save_Grid_Image(p: CR_XY_Save_Grid_Image_input, id?: ComfyNodeID): CR_XY_Save_Grid_Image
+    /* category:Comfyroll_Image, name:"CR Halftone Grid", output:IMAGE */
+    CR_Halftone_Grid(p: CR_Halftone_Grid_input, id?: ComfyNodeID): CR_Halftone_Grid
+    /* category:Comfyroll_Image, name:"CR Color Bars", output:IMAGE */
+    CR_Color_Bars(p: CR_Color_Bars_input, id?: ComfyNodeID): CR_Color_Bars
+    /* category:Comfyroll_Image, name:"CR Style Bars", output:IMAGE */
+    CR_Style_Bars(p: CR_Style_Bars_input, id?: ComfyNodeID): CR_Style_Bars
+    /* category:Comfyroll_Image, name:"CR Checker Pattern", output:IMAGE */
+    CR_Checker_Pattern(p: CR_Checker_Pattern_input, id?: ComfyNodeID): CR_Checker_Pattern
+    /* category:Comfyroll_Image, name:"CR Polygons", output:IMAGE */
+    CR_Polygons(p: CR_Polygons_input, id?: ComfyNodeID): CR_Polygons
+    /* category:Comfyroll_Image, name:"CR Color Gradient", output:IMAGE */
+    CR_Color_Gradient(p: CR_Color_Gradient_input, id?: ComfyNodeID): CR_Color_Gradient
+    /* category:Comfyroll_Image, name:"CR Starburst Lines", output:IMAGE */
+    CR_Starburst_Lines(p: CR_Starburst_Lines_input, id?: ComfyNodeID): CR_Starburst_Lines
+    /* category:Comfyroll_Image, name:"CR Starburst Colors", output:IMAGE */
+    CR_Starburst_Colors(p: CR_Starburst_Colors_input, id?: ComfyNodeID): CR_Starburst_Colors
+    /* category:Comfyroll_Image, name:"CR Overlay Text", output:IMAGE */
+    CR_Overlay_Text(p: CR_Overlay_Text_input, id?: ComfyNodeID): CR_Overlay_Text
+    /* category:Comfyroll_Image, name:"CR Draw Text", output:IMAGE */
+    CR_Draw_Text(p: CR_Draw_Text_input, id?: ComfyNodeID): CR_Draw_Text
+    /* category:Comfyroll_Image, name:"CR Mask Text", output:IMAGE */
+    CR_Mask_Text(p: CR_Mask_Text_input, id?: ComfyNodeID): CR_Mask_Text
+    /* category:Comfyroll_Image, name:"CR Composite Text", output:IMAGE */
+    CR_Composite_Text(p: CR_Composite_Text_input, id?: ComfyNodeID): CR_Composite_Text
     /* category:Comfyroll_Utils, name:"CR Index", output:INT */
     CR_Index(p: CR_Index_input, id?: ComfyNodeID): CR_Index
     /* category:Comfyroll_Utils, name:"CR Index Increment", output:index+interval */
@@ -1439,8 +1470,14 @@ export interface ComfySetup {
     Join_XY_Inputs_of_Same_Type(p: Join_XY_Inputs_of_Same_Type_input, id?: ComfyNodeID): Join_XY_Inputs_of_Same_Type
     /* category:Efficiency Nodes_Image, name:"Image Overlay", output:IMAGE */
     Image_Overlay(p: Image_Overlay_input, id?: ComfyNodeID): Image_Overlay
+    /* category:Efficiency Nodes_Scripts, name:"Noise Control Script", output:SCRIPT */
+    Noise_Control_Script(p: Noise_Control_Script_input, id?: ComfyNodeID): Noise_Control_Script
     /* category:Efficiency Nodes_Scripts, name:"HighRes-Fix Script", output:SCRIPT */
     HighRes$7Fix_Script(p: HighRes$7Fix_Script_input, id?: ComfyNodeID): HighRes$7Fix_Script
+    /* category:Efficiency Nodes_Scripts, name:"Tiled Upscaler Script", output:SCRIPT */
+    Tiled_Upscaler_Script(p: Tiled_Upscaler_Script_input, id?: ComfyNodeID): Tiled_Upscaler_Script
+    /* category:Efficiency Nodes_Scripts, name:"AnimateDiff Script", output:SCRIPT */
+    AnimateDiff_Script(p: AnimateDiff_Script_input, id?: ComfyNodeID): AnimateDiff_Script
     /* category:Efficiency Nodes_Simple Eval, name:"Evaluate Integers", output:INT+FLOAT+STRING */
     Evaluate_Integers(p: Evaluate_Integers_input, id?: ComfyNodeID): Evaluate_Integers
     /* category:Efficiency Nodes_Simple Eval, name:"Evaluate Floats", output:INT+FLOAT+STRING */
@@ -1497,13 +1534,13 @@ export interface ComfySetup {
     MasqueradeIncrementer(p: MasqueradeIncrementer_input, id?: ComfyNodeID): MasqueradeIncrementer
     /* category:image, name:"Image Remove Background (rembg)", output:IMAGE */
     Image_Remove_Background_$1rembg$2(p: Image_Remove_Background_$1rembg$2_input, id?: ComfyNodeID): Image_Remove_Background_$1rembg$2
-    /* category:rgthree, name:"Context Big (rgthree)", output:CONTEXT+MODEL+CLIP+VAE+POSITIVE+NEGATIVE+LATENT+IMAGE+SEED+STEPS+STEP_REFINER+CFG+CKPT_NAME+SAMPLER+SCHEDULER+CLIP_WIDTH+CLIP_HEIGTH+TEXT_POS_G+TEXT_POS_L+TEXT_NEG_G+TEXT_NEG_L+MASK+CONTROL_NET */
+    /* category:rgthree, name:"Context Big (rgthree)", output:CONTEXT+MODEL+CLIP+VAE+POSITIVE+NEGATIVE+LATENT+IMAGE+SEED+STEPS+STEP_REFINER+CFG+CKPT_NAME+SAMPLER+SCHEDULER+CLIP_WIDTH+CLIP_HEIGHT+TEXT_POS_G+TEXT_POS_L+TEXT_NEG_G+TEXT_NEG_L+MASK+CONTROL_NET */
     Context_Big_$1rgthree$2(p: Context_Big_$1rgthree$2_input, id?: ComfyNodeID): Context_Big_$1rgthree$2
     /* category:rgthree, name:"Context (rgthree)", output:CONTEXT+MODEL+CLIP+VAE+POSITIVE+NEGATIVE+LATENT+IMAGE+SEED */
     Context_$1rgthree$2(p: Context_$1rgthree$2_input, id?: ComfyNodeID): Context_$1rgthree$2
     /* category:rgthree, name:"Context Switch (rgthree)", output:CONTEXT+MODEL+CLIP+VAE+POSITIVE+NEGATIVE+LATENT+IMAGE+SEED */
     Context_Switch_$1rgthree$2(p: Context_Switch_$1rgthree$2_input, id?: ComfyNodeID): Context_Switch_$1rgthree$2
-    /* category:rgthree, name:"Context Switch Big (rgthree)", output:CONTEXT+MODEL+CLIP+VAE+POSITIVE+NEGATIVE+LATENT+IMAGE+SEED+STEPS+STEP_REFINER+CFG+CKPT_NAME+SAMPLER+SCHEDULER+CLIP_WIDTH+CLIP_HEIGTH+TEXT_POS_G+TEXT_POS_L+TEXT_NEG_G+TEXT_NEG_L+MASK+CONTROL_NET */
+    /* category:rgthree, name:"Context Switch Big (rgthree)", output:CONTEXT+MODEL+CLIP+VAE+POSITIVE+NEGATIVE+LATENT+IMAGE+SEED+STEPS+STEP_REFINER+CFG+CKPT_NAME+SAMPLER+SCHEDULER+CLIP_WIDTH+CLIP_HEIGHT+TEXT_POS_G+TEXT_POS_L+TEXT_NEG_G+TEXT_NEG_L+MASK+CONTROL_NET */
     Context_Switch_Big_$1rgthree$2(p: Context_Switch_Big_$1rgthree$2_input, id?: ComfyNodeID): Context_Switch_Big_$1rgthree$2
     /* category:rgthree, name:"Display Int (rgthree)", output: */
     Display_Int_$1rgthree$2(p: Display_Int_$1rgthree$2_input, id?: ComfyNodeID): Display_Int_$1rgthree$2
@@ -1993,6 +2030,8 @@ export interface ComfySetup {
     Time_String_$1WLSH$2(p: Time_String_$1WLSH$2_input, id?: ComfyNodeID): Time_String_$1WLSH$2
     /* category:WLSH Nodes_text, name:"Simple Pattern Replace (WLSH)", output:string */
     Simple_Pattern_Replace_$1WLSH$2(p: Simple_Pattern_Replace_$1WLSH$2_input, id?: ComfyNodeID): Simple_Pattern_Replace_$1WLSH$2
+    /* category:WLSH Nodes_text, name:"Simple String Combine (WLSH)", output:combined */
+    Simple_String_Combine_$1WLSH$2(p: Simple_String_Combine_$1WLSH$2_input, id?: ComfyNodeID): Simple_String_Combine_$1WLSH$2
     /* category:WLSH Nodes_IO, name:"Image Save with Prompt (WLSH)", output: */
     Image_Save_with_Prompt_$1WLSH$2(p: Image_Save_with_Prompt_$1WLSH$2_input, id?: ComfyNodeID): Image_Save_with_Prompt_$1WLSH$2
     /* category:WLSH Nodes_IO, name:"Image Save with Prompt/Info (WLSH)", output: */
@@ -2412,9 +2451,6 @@ export interface Requirable {
     Enum_CR_Color_Tint_mode: Enum_CR_Color_Tint_mode,
     Enum_CR_Img2Img_Process_Switch_Input: Enum_CR_Img2Img_Process_Switch_Input,
     Enum_CR_Hires_Fix_Process_Switch_Input: Enum_CR_Hires_Fix_Process_Switch_Input,
-    Enum_CR_Halftone_Grid_dot_style: Enum_CR_Halftone_Grid_dot_style,
-    Enum_CR_Halftone_Grid_reverse_dot_style: Enum_CR_Halftone_Grid_reverse_dot_style,
-    Enum_CR_Halftone_Grid_background_color: Enum_CR_Halftone_Grid_background_color,
     Enum_CR_LoRA_Stack_switch_1: Enum_CR_LoRA_Stack_switch_1,
     Enum_CR_LoRA_Stack_lora_name_1: Enum_CR_LoRA_Stack_lora_name_1,
     Enum_CR_LoRA_Stack_switch_2: Enum_CR_LoRA_Stack_switch_2,
@@ -2463,6 +2499,50 @@ export interface Requirable {
     Enum_CR_XY_Save_Grid_Image_mode: Enum_CR_XY_Save_Grid_Image_mode,
     Enum_CR_XY_Save_Grid_Image_output_folder: Enum_CR_XY_Save_Grid_Image_output_folder,
     Enum_CR_XY_Save_Grid_Image_file_format: Enum_CR_XY_Save_Grid_Image_file_format,
+    Enum_CR_Halftone_Grid_dot_style: Enum_CR_Halftone_Grid_dot_style,
+    Enum_CR_Halftone_Grid_reverse_dot_style: Enum_CR_Halftone_Grid_reverse_dot_style,
+    Enum_CR_Halftone_Grid_background_color: Enum_CR_Halftone_Grid_background_color,
+    Enum_CR_Color_Bars_mode: Enum_CR_Color_Bars_mode,
+    Enum_CR_Color_Bars_color1: Enum_CR_Color_Bars_color1,
+    Enum_CR_Color_Bars_color2: Enum_CR_Color_Bars_color2,
+    Enum_CR_Color_Bars_orientation: Enum_CR_Color_Bars_orientation,
+    Enum_CR_Style_Bars_mode: Enum_CR_Style_Bars_mode,
+    Enum_CR_Style_Bars_bar_style: Enum_CR_Style_Bars_bar_style,
+    Enum_CR_Style_Bars_orientation: Enum_CR_Style_Bars_orientation,
+    Enum_CR_Checker_Pattern_mode: Enum_CR_Checker_Pattern_mode,
+    Enum_CR_Checker_Pattern_color1: Enum_CR_Checker_Pattern_color1,
+    Enum_CR_Checker_Pattern_color2: Enum_CR_Checker_Pattern_color2,
+    Enum_CR_Polygons_mode: Enum_CR_Polygons_mode,
+    Enum_CR_Polygons_face_color: Enum_CR_Polygons_face_color,
+    Enum_CR_Polygons_line_color: Enum_CR_Polygons_line_color,
+    Enum_CR_Color_Gradient_mode: Enum_CR_Color_Gradient_mode,
+    Enum_CR_Color_Gradient_start_color: Enum_CR_Color_Gradient_start_color,
+    Enum_CR_Color_Gradient_end_color: Enum_CR_Color_Gradient_end_color,
+    Enum_CR_Color_Gradient_orientation: Enum_CR_Color_Gradient_orientation,
+    Enum_CR_Starburst_Lines_line_color: Enum_CR_Starburst_Lines_line_color,
+    Enum_CR_Starburst_Lines_background_color: Enum_CR_Starburst_Lines_background_color,
+    Enum_CR_Starburst_Colors_color_1: Enum_CR_Starburst_Colors_color_1,
+    Enum_CR_Starburst_Colors_color_2: Enum_CR_Starburst_Colors_color_2,
+    Enum_CR_Overlay_Text_font_name: Enum_CR_Overlay_Text_font_name,
+    Enum_CR_Overlay_Text_font_color: Enum_CR_Overlay_Text_font_color,
+    Enum_CR_Overlay_Text_alignment_options: Enum_CR_Overlay_Text_alignment_options,
+    Enum_CR_Overlay_Text_justify: Enum_CR_Overlay_Text_justify,
+    Enum_CR_Overlay_Text_rotation_options: Enum_CR_Overlay_Text_rotation_options,
+    Enum_CR_Draw_Text_font_name: Enum_CR_Draw_Text_font_name,
+    Enum_CR_Draw_Text_font_color: Enum_CR_Draw_Text_font_color,
+    Enum_CR_Draw_Text_background_color: Enum_CR_Draw_Text_background_color,
+    Enum_CR_Draw_Text_alignment_options: Enum_CR_Draw_Text_alignment_options,
+    Enum_CR_Draw_Text_justify: Enum_CR_Draw_Text_justify,
+    Enum_CR_Draw_Text_rotation_options: Enum_CR_Draw_Text_rotation_options,
+    Enum_CR_Mask_Text_font_name: Enum_CR_Mask_Text_font_name,
+    Enum_CR_Mask_Text_background_color: Enum_CR_Mask_Text_background_color,
+    Enum_CR_Mask_Text_alignment_options: Enum_CR_Mask_Text_alignment_options,
+    Enum_CR_Mask_Text_justify: Enum_CR_Mask_Text_justify,
+    Enum_CR_Mask_Text_rotation_options: Enum_CR_Mask_Text_rotation_options,
+    Enum_CR_Composite_Text_font_name: Enum_CR_Composite_Text_font_name,
+    Enum_CR_Composite_Text_alignment_options: Enum_CR_Composite_Text_alignment_options,
+    Enum_CR_Composite_Text_justify: Enum_CR_Composite_Text_justify,
+    Enum_CR_Composite_Text_rotation_options: Enum_CR_Composite_Text_rotation_options,
     Enum_DWPreprocessor_detect_hand: Enum_DWPreprocessor_detect_hand,
     Enum_DWPreprocessor_detect_body: Enum_DWPreprocessor_detect_body,
     Enum_DWPreprocessor_detect_face: Enum_DWPreprocessor_detect_face,
@@ -2662,19 +2742,16 @@ export interface Requirable {
     Enum_Image_scale_to_side_side: Enum_Image_scale_to_side_side,
     Enum_Image_scale_to_side_upscale_method: Enum_Image_scale_to_side_upscale_method,
     Enum_Image_scale_to_side_crop: Enum_Image_scale_to_side_crop,
-    "Enum_KSampler_$1Efficient$2_sampler_state": Enum_KSampler_$1Efficient$2_sampler_state,
     "Enum_KSampler_$1Efficient$2_sampler_name": Enum_KSampler_$1Efficient$2_sampler_name,
     "Enum_KSampler_$1Efficient$2_scheduler": Enum_KSampler_$1Efficient$2_scheduler,
     "Enum_KSampler_$1Efficient$2_preview_method": Enum_KSampler_$1Efficient$2_preview_method,
     "Enum_KSampler_$1Efficient$2_vae_decode": Enum_KSampler_$1Efficient$2_vae_decode,
-    "Enum_KSampler_Adv$5_$1Efficient$2_sampler_state": Enum_KSampler_Adv$5_$1Efficient$2_sampler_state,
     "Enum_KSampler_Adv$5_$1Efficient$2_add_noise": Enum_KSampler_Adv$5_$1Efficient$2_add_noise,
     "Enum_KSampler_Adv$5_$1Efficient$2_sampler_name": Enum_KSampler_Adv$5_$1Efficient$2_sampler_name,
     "Enum_KSampler_Adv$5_$1Efficient$2_scheduler": Enum_KSampler_Adv$5_$1Efficient$2_scheduler,
     "Enum_KSampler_Adv$5_$1Efficient$2_return_with_leftover_noise": Enum_KSampler_Adv$5_$1Efficient$2_return_with_leftover_noise,
     "Enum_KSampler_Adv$5_$1Efficient$2_preview_method": Enum_KSampler_Adv$5_$1Efficient$2_preview_method,
     "Enum_KSampler_Adv$5_$1Efficient$2_vae_decode": Enum_KSampler_Adv$5_$1Efficient$2_vae_decode,
-    "Enum_KSampler_SDXL_$1Eff$5$2_sampler_state": Enum_KSampler_SDXL_$1Eff$5$2_sampler_state,
     "Enum_KSampler_SDXL_$1Eff$5$2_sampler_name": Enum_KSampler_SDXL_$1Eff$5$2_sampler_name,
     "Enum_KSampler_SDXL_$1Eff$5$2_scheduler": Enum_KSampler_SDXL_$1Eff$5$2_scheduler,
     "Enum_KSampler_SDXL_$1Eff$5$2_preview_method": Enum_KSampler_SDXL_$1Eff$5$2_preview_method,
@@ -2682,9 +2759,13 @@ export interface Requirable {
     Enum_Efficient_Loader_ckpt_name: Enum_Efficient_Loader_ckpt_name,
     Enum_Efficient_Loader_vae_name: Enum_Efficient_Loader_vae_name,
     Enum_Efficient_Loader_lora_name: Enum_Efficient_Loader_lora_name,
+    Enum_Efficient_Loader_token_normalization: Enum_Efficient_Loader_token_normalization,
+    Enum_Efficient_Loader_weight_interpretation: Enum_Efficient_Loader_weight_interpretation,
     "Enum_Eff$5_Loader_SDXL_base_ckpt_name": Enum_Eff$5_Loader_SDXL_base_ckpt_name,
     "Enum_Eff$5_Loader_SDXL_refiner_ckpt_name": Enum_Eff$5_Loader_SDXL_refiner_ckpt_name,
     "Enum_Eff$5_Loader_SDXL_vae_name": Enum_Eff$5_Loader_SDXL_vae_name,
+    "Enum_Eff$5_Loader_SDXL_token_normalization": Enum_Eff$5_Loader_SDXL_token_normalization,
+    "Enum_Eff$5_Loader_SDXL_weight_interpretation": Enum_Eff$5_Loader_SDXL_weight_interpretation,
     Enum_LoRA_Stacker_input_mode: Enum_LoRA_Stacker_input_mode,
     Enum_LoRA_Stacker_lora_name_1: Enum_LoRA_Stacker_lora_name_1,
     Enum_LoRA_Stacker_lora_name_2: Enum_LoRA_Stacker_lora_name_2,
@@ -3061,7 +3142,18 @@ export interface Requirable {
     "Enum_XY_Input$4_Manual_XY_Entry_plot_type": Enum_XY_Input$4_Manual_XY_Entry_plot_type,
     Enum_Image_Overlay_overlay_resize: Enum_Image_Overlay_overlay_resize,
     Enum_Image_Overlay_resize_method: Enum_Image_Overlay_resize_method,
-    "Enum_HighRes$7Fix_Script_latent_upscale_method": Enum_HighRes$7Fix_Script_latent_upscale_method,
+    Enum_Noise_Control_Script_rng_source: Enum_Noise_Control_Script_rng_source,
+    "Enum_HighRes$7Fix_Script_upscale_type": Enum_HighRes$7Fix_Script_upscale_type,
+    "Enum_HighRes$7Fix_Script_hires_ckpt_name": Enum_HighRes$7Fix_Script_hires_ckpt_name,
+    "Enum_HighRes$7Fix_Script_latent_upscaler": Enum_HighRes$7Fix_Script_latent_upscaler,
+    "Enum_HighRes$7Fix_Script_pixel_upscaler": Enum_HighRes$7Fix_Script_pixel_upscaler,
+    "Enum_HighRes$7Fix_Script_control_net_name": Enum_HighRes$7Fix_Script_control_net_name,
+    "Enum_HighRes$7Fix_Script_preprocessor": Enum_HighRes$7Fix_Script_preprocessor,
+    Enum_Tiled_Upscaler_Script_tiling_strategy: Enum_Tiled_Upscaler_Script_tiling_strategy,
+    Enum_Tiled_Upscaler_Script_tile_controlnet: Enum_Tiled_Upscaler_Script_tile_controlnet,
+    Enum_AnimateDiff_Script_motion_model: Enum_AnimateDiff_Script_motion_model,
+    Enum_AnimateDiff_Script_beta_schedule: Enum_AnimateDiff_Script_beta_schedule,
+    Enum_AnimateDiff_Script_format: Enum_AnimateDiff_Script_format,
     Enum_Evaluate_Integers_print_to_console: Enum_Evaluate_Integers_print_to_console,
     Enum_Evaluate_Floats_print_to_console: Enum_Evaluate_Floats_print_to_console,
     Enum_Evaluate_Strings_print_to_console: Enum_Evaluate_Strings_print_to_console,
@@ -3270,6 +3362,8 @@ export interface Requirable {
     "Enum_SDXL_Resolutions_$1WLSH$2_resolution": Enum_SDXL_Resolutions_$1WLSH$2_resolution,
     "Enum_SDXL_Resolutions_$1WLSH$2_direction": Enum_SDXL_Resolutions_$1WLSH$2_direction,
     "Enum_Time_String_$1WLSH$2_style": Enum_Time_String_$1WLSH$2_style,
+    "Enum_Simple_String_Combine_$1WLSH$2_placement": Enum_Simple_String_Combine_$1WLSH$2_placement,
+    "Enum_Simple_String_Combine_$1WLSH$2_separator": Enum_Simple_String_Combine_$1WLSH$2_separator,
     "Enum_Image_Save_with_Prompt_$1WLSH$2_extension": Enum_Image_Save_with_Prompt_$1WLSH$2_extension,
     "Enum_Image_Save_with_Prompt$3Info_$1WLSH$2_extension": Enum_Image_Save_with_Prompt$3Info_$1WLSH$2_extension,
     "Enum_Image_Save_with_Prompt_File_$1WLSH$2_extension": Enum_Image_Save_with_Prompt_File_$1WLSH$2_extension,
@@ -3373,6 +3467,7 @@ export interface Requirable {
     CLIPTextEncodeSDXL: CLIPTextEncodeSDXL,
     Canny: Canny,
     FreeU: FreeU,
+    "FreeU$_V2": FreeU$_V2,
     SamplerCustom: SamplerCustom,
     KarrasScheduler: KarrasScheduler,
     ExponentialScheduler: ExponentialScheduler,
@@ -3383,6 +3478,7 @@ export interface Requirable {
     "SamplerDPMPP$_SDE": SamplerDPMPP$_SDE,
     BasicScheduler: BasicScheduler,
     SplitSigmas: SplitSigmas,
+    HyperTile: HyperTile,
     Base64ImageInput: Base64ImageInput,
     Base64ImageOutput: Base64ImageOutput,
     "Remove_Image_Background_$1abg$2": Remove_Image_Background_$1abg$2,
@@ -3646,6 +3742,7 @@ export interface Requirable {
     "Manga2Anime$_LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire": Manga2Anime$_LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire,
     "LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire": LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire,
     "Color$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire": Color$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire,
+    "InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire": InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire,
     "KSampler_$3$3Inspire": KSampler_$3$3Inspire,
     "KSamplerAdvanced_$3$3Inspire": KSamplerAdvanced_$3$3Inspire,
     "LoadPromptsFromDir_$3$3Inspire": LoadPromptsFromDir_$3$3Inspire,
@@ -3748,7 +3845,6 @@ export interface Requirable {
     CR_Color_Tint: CR_Color_Tint,
     CR_Img2Img_Process_Switch: CR_Img2Img_Process_Switch,
     CR_Hires_Fix_Process_Switch: CR_Hires_Fix_Process_Switch,
-    CR_Halftone_Grid: CR_Halftone_Grid,
     CR_Latent_Batch_Size: CR_Latent_Batch_Size,
     CR_LoRA_Stack: CR_LoRA_Stack,
     CR_Apply_LoRA_Stack: CR_Apply_LoRA_Stack,
@@ -3781,6 +3877,18 @@ export interface Requirable {
     CR_XY_Index: CR_XY_Index,
     CR_XY_From_Folder: CR_XY_From_Folder,
     CR_XY_Save_Grid_Image: CR_XY_Save_Grid_Image,
+    CR_Halftone_Grid: CR_Halftone_Grid,
+    CR_Color_Bars: CR_Color_Bars,
+    CR_Style_Bars: CR_Style_Bars,
+    CR_Checker_Pattern: CR_Checker_Pattern,
+    CR_Polygons: CR_Polygons,
+    CR_Color_Gradient: CR_Color_Gradient,
+    CR_Starburst_Lines: CR_Starburst_Lines,
+    CR_Starburst_Colors: CR_Starburst_Colors,
+    CR_Overlay_Text: CR_Overlay_Text,
+    CR_Draw_Text: CR_Draw_Text,
+    CR_Mask_Text: CR_Mask_Text,
+    CR_Composite_Text: CR_Composite_Text,
     CR_Index: CR_Index,
     CR_Index_Increment: CR_Index_Increment,
     CR_Index_Multiply: CR_Index_Multiply,
@@ -3981,7 +4089,10 @@ export interface Requirable {
     Manual_XY_Entry_Info: Manual_XY_Entry_Info,
     Join_XY_Inputs_of_Same_Type: Join_XY_Inputs_of_Same_Type,
     Image_Overlay: Image_Overlay,
+    Noise_Control_Script: Noise_Control_Script,
     "HighRes$7Fix_Script": HighRes$7Fix_Script,
+    Tiled_Upscaler_Script: Tiled_Upscaler_Script,
+    AnimateDiff_Script: AnimateDiff_Script,
     Evaluate_Integers: Evaluate_Integers,
     Evaluate_Floats: Evaluate_Floats,
     Evaluate_Strings: Evaluate_Strings,
@@ -4258,6 +4369,7 @@ export interface Requirable {
     "Build_Filename_String_$1WLSH$2": Build_Filename_String_$1WLSH$2,
     "Time_String_$1WLSH$2": Time_String_$1WLSH$2,
     "Simple_Pattern_Replace_$1WLSH$2": Simple_Pattern_Replace_$1WLSH$2,
+    "Simple_String_Combine_$1WLSH$2": Simple_String_Combine_$1WLSH$2,
     "Image_Save_with_Prompt_$1WLSH$2": Image_Save_with_Prompt_$1WLSH$2,
     "Image_Save_with_Prompt$3Info_$1WLSH$2": Image_Save_with_Prompt$3Info_$1WLSH$2,
     "Image_Save_with_Prompt_File_$1WLSH$2": Image_Save_with_Prompt_File_$1WLSH$2,
@@ -4282,11 +4394,11 @@ export interface CanProduce_string {}
 export interface CanProduce_string {}
 export interface CanProduce_string {}
 export interface CanProduce_LATENT extends Pick<ComfySetup, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'LoadLatent' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentCompositeMasked' | 'RebatchLatents' | 'SamplerCustom' | 'SamplerCustom' | 'LatentClamp' | 'ADE$_EmptyLatentImageLarge' | 'AnimateDiffLoaderV1' | 'ADE$_AnimateDiffLoaderV1Advanced' | 'LatentPixelScale' | 'IterativeLatentUpscale' | 'TwoSamplersForMask' | 'TwoAdvancedSamplersForMask' | 'LatentReceiver' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'ReencodeLatent' | 'ReencodeLatentPipe' | 'RegionalSampler' | 'RegionalSamplerAdvanced' | 'RemoveNoiseMask' | 'KSampler_$3$3Inspire' | 'KSamplerAdvanced_$3$3Inspire' | 'KSamplerProgress_$3$3Inspire' | 'KSamplerProgress_$3$3Inspire' | 'KSamplerAdvancedProgress_$3$3Inspire' | 'KSamplerAdvancedProgress_$3$3Inspire' | 'LatentUpscaleFactor_$_O' | 'LatentUpscaleFactorSimple_$_O' | 'selectLatentFromBatch_$_O' | 'LatentUpscaleMultiply' | 'CR_Latent_Input_Switch' | 'CR_Img2Img_Process_Switch' | 'CR_Hires_Fix_Process_Switch' | 'CR_Latent_Batch_Size' | 'CR_Module_Input' | 'Latent_Switch_$1JPS$2' | 'BNK$_TiledKSamplerAdvanced' | 'BNK$_TiledKSampler' | 'ttN_pipeLoader' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_hiresfixScale' | 'Latent_Scale_by_ratio' | 'Latent_Scale_to_side' | 'LatentComposite_with_tuples' | 'KSampler_$1Efficient$2' | 'KSampler_Adv$5_$1Efficient$2' | 'KSampler_SDXL_$1Eff$5$2' | 'Efficient_Loader' | 'Eff$5_Loader_SDXL' | 'LatentByRatio' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'SDXL_Empty_Latent_Image_$1rgthree$2' | 'SDXLMixSampler' | 'Blend_Latents' | 'Latent_Input_Switch' | 'Load_Cache' | 'KSampler_$1WAS$2' | 'KSampler_Cycle' | 'Latent_Noise_Injection' | 'Latent_Upscale_by_Factor_$1WAS$2' | 'Samples_Passthrough_$1Stat_System$2' | 'VAEEncodeForInpaint_$1WAS$2' | 'KSamplerSeq' | 'BLVAEEncode' | 'KSamplerAdvanced_$1WLSH$2' | 'Empty_Latent_by_Pixels_$1WLSH$2' | 'Empty_Latent_by_Ratio_$1WLSH$2' | 'Empty_Latent_by_Size_$1WLSH$2' | 'SDXL_Quick_Empty_Latent_$1WLSH$2' | 'VAE_Encode_for_Inpaint_w$3Padding_$1WLSH$2'> { }
-export interface CanProduce_MODEL extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'CivitAI$_Lora$_Loader' | 'CivitAI$_Checkpoint$_Loader' | 'ModelClamp' | 'ADE$_AnimateDiffLoaderWithContext' | 'ADE$_AnimateDiffUnload' | 'CheckpointLoaderSimpleWithNoiseSelect' | 'AnimateDiffLoaderV1' | 'ADE$_AnimateDiffLoaderV1Advanced' | 'LoraLoader$8pysssss' | 'CheckpointLoader$8pysssss' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode' | 'LoraLoaderBlockWeight_$3$3Inspire' | 'WildcardEncode_$3$3Inspire' | 'CR_Model_Input_Switch' | 'CR_Switch_Model_and_CLIP' | 'CR_Load_LoRA' | 'CR_Apply_LoRA_Stack' | 'CR_Apply_Model_Merge' | 'CR_Module_Input' | 'Lora_Loader_$1JPS$2' | 'Model_Switch_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'ttN_pipeLoader' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_multiModelMerge' | 'KSampler_$1Efficient$2' | 'KSampler_Adv$5_$1Efficient$2' | 'Efficient_Loader' | 'Unpack_SDXL_Tuple' | 'Unpack_SDXL_Tuple' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Lora_Loader_Stack_$1rgthree$2' | 'Power_Prompt_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Positive_$1rgthree$2' | 'Bus_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'Lora_Loader' | 'Load_Lora' | 'Lora_Input_Switch' | 'Model_Input_Switch' | 'unCLIP_Checkpoint_Loader' | 'Checkpoint_Loader_w$3Name_$1WLSH$2'> { }
+export interface CanProduce_MODEL extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'FreeU$_V2' | 'HyperTile' | 'CivitAI$_Lora$_Loader' | 'CivitAI$_Checkpoint$_Loader' | 'ModelClamp' | 'ADE$_AnimateDiffLoaderWithContext' | 'ADE$_AnimateDiffUnload' | 'CheckpointLoaderSimpleWithNoiseSelect' | 'AnimateDiffLoaderV1' | 'ADE$_AnimateDiffLoaderV1Advanced' | 'LoraLoader$8pysssss' | 'CheckpointLoader$8pysssss' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode' | 'LoraLoaderBlockWeight_$3$3Inspire' | 'WildcardEncode_$3$3Inspire' | 'CR_Model_Input_Switch' | 'CR_Switch_Model_and_CLIP' | 'CR_Load_LoRA' | 'CR_Apply_LoRA_Stack' | 'CR_Apply_Model_Merge' | 'CR_Module_Input' | 'Lora_Loader_$1JPS$2' | 'Model_Switch_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'ttN_pipeLoader' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_multiModelMerge' | 'KSampler_$1Efficient$2' | 'KSampler_Adv$5_$1Efficient$2' | 'Efficient_Loader' | 'Unpack_SDXL_Tuple' | 'Unpack_SDXL_Tuple' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Lora_Loader_Stack_$1rgthree$2' | 'Power_Prompt_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Positive_$1rgthree$2' | 'Bus_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'Lora_Loader' | 'Load_Lora' | 'Lora_Input_Switch' | 'Model_Input_Switch' | 'unCLIP_Checkpoint_Loader' | 'Checkpoint_Loader_w$3Name_$1WLSH$2'> { }
 export interface CanProduce_CLIP extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'CLIPSetLastLayer' | 'LoraLoader' | 'CLIPLoader' | 'DualCLIPLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'CLIPMergeSimple' | 'CivitAI$_Lora$_Loader' | 'CivitAI$_Checkpoint$_Loader' | 'ClipClamp' | 'CheckpointLoaderSimpleWithNoiseSelect' | 'LoraLoader$8pysssss' | 'CheckpointLoader$8pysssss' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode' | 'LoraLoaderBlockWeight_$3$3Inspire' | 'WildcardEncode_$3$3Inspire' | 'CR_Clip_Input_Switch' | 'CR_Switch_Model_and_CLIP' | 'CR_Load_LoRA' | 'CR_Apply_LoRA_Stack' | 'CR_Apply_Model_Merge' | 'CR_Module_Input' | 'Lora_Loader_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'ttN_pipeLoader' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_pipeEncodeConcat' | 'ttN_multiModelMerge' | 'Efficient_Loader' | 'Unpack_SDXL_Tuple' | 'Unpack_SDXL_Tuple' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Lora_Loader_Stack_$1rgthree$2' | 'Power_Prompt_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Positive_$1rgthree$2' | 'Bus_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'CLIP_Input_Switch' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'Lora_Loader' | 'Load_Lora' | 'Lora_Input_Switch' | 'unCLIP_Checkpoint_Loader' | 'Checkpoint_Loader_w$3Name_$1WLSH$2'> { }
 export interface CanProduce_VAE extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'VAELoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'CivitAI$_Checkpoint$_Loader' | 'VaeClamp' | 'CheckpointLoaderSimpleWithNoiseSelect' | 'CheckpointLoader$8pysssss' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'CR_Module_Input' | 'VAE_Switch_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'ttN_pipeLoader' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_multiModelMerge' | 'KSampler_$1Efficient$2' | 'KSampler_Adv$5_$1Efficient$2' | 'KSampler_SDXL_$1Eff$5$2' | 'Efficient_Loader' | 'Eff$5_Loader_SDXL' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Bus_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'unCLIP_Checkpoint_Loader' | 'VAE_Input_Switch' | 'Checkpoint_Loader_w$3Name_$1WLSH$2'> { }
 export interface CanProduce_CONDITIONING extends Pick<ComfySetup, 'CLIPTextEncode' | 'ConditioningAverage' | 'ConditioningCombine' | 'ConditioningConcat' | 'ConditioningSetArea' | 'ConditioningSetAreaPercentage' | 'ConditioningSetMask' | 'StyleModelApply' | 'unCLIPConditioning' | 'ControlNetApply' | 'ControlNetApplyAdvanced' | 'ControlNetApplyAdvanced' | 'GLIGENTextBoxApply' | 'ConditioningZeroOut' | 'ConditioningSetTimestepRange' | 'CLIPTextEncodeSDXLRefiner' | 'CLIPTextEncodeSDXL' | 'ConditioningClamp' | 'FromDetailerPipe' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode' | 'ImpactCombineConditionings' | 'WildcardEncode_$3$3Inspire' | 'RegionalConditioningSimple_$3$3Inspire' | 'RegionalConditioningColorMask_$3$3Inspire' | 'CLIPStringEncode_$_O' | 'CR_Conditioning_Input_Switch' | 'CR_Apply_ControlNet' | 'CR_Apply_Multi$7ControlNet' | 'CR_Apply_Multi$7ControlNet' | 'CR_Module_Input' | 'CR_Module_Input' | 'CR_SDXL_Base_Prompt_Encoder' | 'CR_SDXL_Base_Prompt_Encoder' | 'BNK$_CutoffRegionsToConditioning' | 'BNK$_CutoffRegionsToConditioning$_ADV' | 'PromptSchedule' | 'PromptScheduleNodeFlowEnd' | 'PromptScheduleEncodeSDXL' | 'BatchPromptSchedule' | 'BatchPromptScheduleEncodeSDXL' | 'Conditioning_Switch_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'ttN_pipeLoader' | 'ttN_pipeLoader' | 'ttN_pipeKSampler' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_pipeEDIT' | 'ttN_pipeEncodeConcat' | 'ttN_pipeEncodeConcat' | 'Conditioning_area_scale_by_ratio' | 'ConditioningSetArea_with_tuples' | 'KSampler_$1Efficient$2' | 'KSampler_$1Efficient$2' | 'KSampler_Adv$5_$1Efficient$2' | 'KSampler_Adv$5_$1Efficient$2' | 'Efficient_Loader' | 'Efficient_Loader' | 'Apply_ControlNet_Stack' | 'Apply_ControlNet_Stack' | 'Unpack_SDXL_Tuple' | 'Unpack_SDXL_Tuple' | 'Unpack_SDXL_Tuple' | 'Unpack_SDXL_Tuple' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Power_Prompt_$1rgthree$2' | 'Power_Prompt_$7_Simple_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Positive_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Simple_$3_Negative_$1rgthree$2' | 'Bus_Node' | 'Bus_Node' | 'CLIPTextEncode_$1NSP$2' | 'Conditioning_Input_Switch' | 'Load_Cache' | 'Text_to_Conditioning' | 'ConditioningBlend' | 'CLIP_Positive$7Negative_$1WLSH$2' | 'CLIP_Positive$7Negative_$1WLSH$2' | 'CLIP_Positive$7Negative_w$3Text_$1WLSH$2' | 'CLIP_Positive$7Negative_w$3Text_$1WLSH$2' | 'CLIP_Positive$7Negative_XL_$1WLSH$2' | 'CLIP_Positive$7Negative_XL_$1WLSH$2' | 'CLIP_Positive$7Negative_XL_w$3Text_$1WLSH$2' | 'CLIP_Positive$7Negative_XL_w$3Text_$1WLSH$2'> { }
-export interface CanProduce_IMAGE extends Pick<ComfySetup, 'VAEDecode' | 'LoadImage' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'VAEDecodeTiled' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'ImageCompositeMasked' | 'MaskToImage' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'Canny' | 'Base64ImageInput' | 'Remove_Image_Background_$1abg$2' | 'AlphaChanelAdd' | 'AlphaChanelAddByMask' | 'AlphaChanelRestore' | 'AlphaChanelRemove' | 'ImageClamp' | 'ImageBatchGet' | 'ImageBatchRemove' | 'ImageBatchFork' | 'ImageBatchFork' | 'ImageBatchJoin' | 'ImageCompositeAbsolute' | 'ImageCompositeAbsoluteByContainer' | 'ImageCompositeRelative' | 'ImageCompositeRelativeByContainer' | 'ImageContainer' | 'ImageContainerInheritanceAdd' | 'ImageContainerInheritanceScale' | 'ImageContainerInheritanceMax' | 'ImageContainerInheritanceSum' | 'ImageDrawArc' | 'ImageDrawArcByContainer' | 'ImageDrawChord' | 'ImageDrawChordByContainer' | 'ImageDrawEllipse' | 'ImageDrawEllipseByContainer' | 'ImageDrawLine' | 'ImageDrawLineByContainer' | 'ImageDrawPieslice' | 'ImageDrawPiesliceByContainer' | 'ImageDrawRectangle' | 'ImageDrawRectangleByContainer' | 'ImageDrawRectangleRounded' | 'ImageDrawRectangleRoundedByContainer' | 'ImageDrawPolygon' | 'ImageEffectsAdjustment' | 'ImageEffectsGrayscale' | 'ImageEffectsNegative' | 'ImageEffectsSepia' | 'ImageEffectsLensZoomBurst' | 'ImageEffectsLensChromaticAberration' | 'ImageEffectsLensBokeh' | 'ImageEffectsLensOpticAxis' | 'ImageEffectsLensVignette' | 'ImageFilterSmooth' | 'ImageFilterSmoothMore' | 'ImageFilterBlur' | 'ImageFilterBoxBlur' | 'ImageFilterGaussianBlur' | 'ImageFilterGaussianBlurAdvanced' | 'ImageFilterStackBlur' | 'ImageFilterMedianBlur' | 'ImageFilterBilateralBlur' | 'ImageFilterContour' | 'ImageFilterDetail' | 'ImageFilterEdgeEnhance' | 'ImageFilterEdgeEnhanceMore' | 'ImageFilterEmboss' | 'ImageFilterFindEdges' | 'ImageFilterSharpen' | 'ImageFilterRank' | 'ImageFilterMin' | 'ImageFilterMax' | 'ImageFilterMode' | 'ImageNoiseBeta' | 'ImageNoiseBinomial' | 'ImageNoiseBytes' | 'ImageNoiseGaussian' | 'ImageSegmentation' | 'ImageSegmentationCustom' | 'ImageSegmentationCustomAdvanced' | 'ImageText' | 'ImageTextOutlined' | 'ImageTextMultiline' | 'ImageTextMultilineOutlined' | 'ImageTransformResizeAbsolute' | 'ImageTransformResizeRelative' | 'ImageTransformCropAbsolute' | 'ImageTransformCropRelative' | 'ImageTransformCropCorners' | 'ImageTransformPaddingAbsolute' | 'ImageTransformPaddingRelative' | 'ImageTransformRotate' | 'ImageTransformTranspose' | 'ConstrainImage$8pysssss' | 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'IterativeImageUpscale' | 'ImageListToImageBatch' | 'ImpactFrom$_SEG$_ELT' | 'PreviewBridge' | 'ImageReceiver' | 'ImageMaskSwitch' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSToImageList' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch' | 'BindImageListPromptList_$3$3Inspire' | 'LoadImagesFromDir_$3$3Inspire' | 'LoadImage_$3$3Inspire' | 'create_image_$_O' | 'variation$_image_$_O' | 'Text2Image_$_O' | 'ImageScaleFactor_$_O' | 'ImageScaleFactorSimple_$_O' | 'create$_image_$_O' | 'string2Image_$_O' | 'CR_Image_Input_Switch' | 'CR_Image_Input_Switch_$14_way$2' | 'CR_Color_Tint' | 'CR_Halftone_Grid' | 'CR_Batch_Process_Switch' | 'CR_Module_Input' | 'CR_Image_Pipe_Out' | 'CR_Upscale_Image' | 'CR_Apply_Multi_Upscale' | 'CR_XY_From_Folder' | 'BinaryPreprocessor' | 'CannyEdgePreprocessor' | 'ColorPreprocessor' | 'DWPreprocessor' | 'HEDPreprocessor' | 'FakeScribblePreprocessor' | 'InpaintPreprocessor' | 'LeReS$7DepthMapPreprocessor' | 'LineArtPreprocessor' | 'AnimeLineArtPreprocessor' | 'Manga2Anime$_LineArt$_Preprocessor' | 'MediaPipe$7FaceMeshPreprocessor' | 'MiDaS$7NormalMapPreprocessor' | 'MiDaS$7DepthMapPreprocessor' | 'M$7LSDPreprocessor' | 'BAE$7NormalMapPreprocessor' | 'OneFormer$7COCO$7SemSegPreprocessor' | 'OneFormer$7ADE20K$7SemSegPreprocessor' | 'OpenposePreprocessor' | 'PiDiNetPreprocessor' | 'ScribblePreprocessor' | 'Scribble$_XDoG$_Preprocessor' | 'SAMPreprocessor' | 'ShufflePreprocessor' | 'TilePreprocessor' | 'UniFormer$7SemSegPreprocessor' | 'SemSegPreprocessor' | 'Zoe$7DepthMapPreprocessor' | 'AIO$_Preprocessor' | 'HintImageEnchance' | 'Image_Switch_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Crop_Image_Square_$1JPS$2' | 'Crop_Image_TargetSize_$1JPS$2' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_imageOutput' | 'ttN_imageREMBG' | 'ttN_hiresfixScale' | 'Image_scale_by_ratio' | 'Image_scale_to_side' | 'KSampler_$1Efficient$2' | 'KSampler_Adv$5_$1Efficient$2' | 'KSampler_SDXL_$1Eff$5$2' | 'Image_Overlay' | 'Mask_By_Text' | 'Mask_By_Text' | 'Mask_Morphology' | 'Combine_Masks' | 'Unary_Mask_Op' | 'Unary_Image_Op' | 'Blur' | 'Mix_Images_By_Mask' | 'Mix_Color_By_Mask' | 'Mask_To_Region' | 'Cut_By_Mask' | 'Paste_By_Mask' | 'Change_Channel_Count' | 'Constant_Mask' | 'Prune_By_Mask' | 'Separate_Mask_Components' | 'Create_Rect_Mask' | 'Make_Image_Batch' | 'Create_QR_Code' | 'Convert_Color_Space' | 'Image_Remove_Background_$1rembg$2' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Image_Inset_Crop_$1rgthree$2' | 'Create_Grid_Image' | 'Create_Grid_Image_from_Batch' | 'Create_Morph_Image' | 'Create_Morph_Image' | 'CLIPSeg_Masking' | 'CLIPSeg_Batch_Masking' | 'CLIPSeg_Batch_Masking' | 'Convert_Masks_to_Images' | 'Load_Cache' | 'Image_SSAO_$1Ambient_Occlusion$2' | 'Image_SSAO_$1Ambient_Occlusion$2' | 'Image_SSAO_$1Ambient_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_Analyze' | 'Image_Batch' | 'Image_Blank' | 'Image_Blend_by_Mask' | 'Image_Blend' | 'Image_Blending_Mode' | 'Image_Bloom_Filter' | 'Image_Canny_Filter' | 'Image_Chromatic_Aberration' | 'Image_Color_Palette' | 'Image_Crop_Face' | 'Image_Crop_Location' | 'Image_Crop_Square_Location' | 'Image_Displacement_Warp' | 'Image_Lucy_Sharpen' | 'Image_Paste_Face' | 'Image_Paste_Face' | 'Image_Paste_Crop' | 'Image_Paste_Crop' | 'Image_Paste_Crop_by_Location' | 'Image_Paste_Crop_by_Location' | 'Image_Pixelate' | 'Image_Power_Noise' | 'Image_Dragan_Photography_Filter' | 'Image_Edge_Detection_Filter' | 'Image_Film_Grain' | 'Image_Filter_Adjustments' | 'Image_Flip' | 'Image_Gradient_Map' | 'Image_Generate_Gradient' | 'Image_High_Pass_Filter' | 'Image_History_Loader' | 'Image_Input_Switch' | 'Image_Levels_Adjustment' | 'Image_Load' | 'Image_Median_Filter' | 'Image_Mix_RGB_Channels' | 'Image_Monitor_Effects_Filter' | 'Image_Nova_Filter' | 'Image_Padding' | 'Image_Padding' | 'Image_Perlin_Noise' | 'Image_Rembg_$1Remove_Background$2' | 'Image_Perlin_Power_Fractal' | 'Image_Remove_Background_$1Alpha$2' | 'Image_Remove_Color' | 'Image_Resize' | 'Image_Rotate' | 'Image_Rotate_Hue' | 'Image_Seamless_Texture' | 'Image_Select_Channel' | 'Image_Select_Color' | 'Image_Shadows_and_Highlights' | 'Image_Shadows_and_Highlights' | 'Image_Shadows_and_Highlights' | 'Image_Stitch' | 'Image_Style_Filter' | 'Image_Threshold' | 'Image_Tiled' | 'Image_Transpose' | 'Image_fDOF_Filter' | 'Image_to_Noise' | 'Images_to_RGB' | 'Images_to_Linear' | 'Image_Voronoi_Noise_Filter' | 'Load_Image_Batch' | 'MiDaS_Depth_Approximation' | 'MiDaS_Mask_Image' | 'MiDaS_Mask_Image' | 'Tensor_Batch_to_Image' | 'SAM_Image_Mask' | 'Bounded_Image_Blend' | 'Bounded_Image_Blend_with_Mask' | 'Bounded_Image_Crop' | 'Bounded_Image_Crop_with_Mask' | 'Write_to_GIF' | 'Write_to_Video' | 'VividSharpen' | 'Image_Load_with_Metadata_$1WLSH$2' | 'Grayscale_Image_$1WLSH$2' | 'Generate_Border_Mask_$1WLSH$2' | 'Outpaint_to_Image_$1WLSH$2' | 'Image_Scale_By_Factor_$1WLSH$2' | 'SDXL_Quick_Image_Scale_$1WLSH$2' | 'Upscale_by_Factor_with_Model_$1WLSH$2'> { }
+export interface CanProduce_IMAGE extends Pick<ComfySetup, 'VAEDecode' | 'LoadImage' | 'ImageScale' | 'ImageScaleBy' | 'ImageInvert' | 'ImageBatch' | 'ImagePadForOutpaint' | 'EmptyImage' | 'VAEDecodeTiled' | 'ImageUpscaleWithModel' | 'ImageBlend' | 'ImageBlur' | 'ImageQuantize' | 'ImageSharpen' | 'ImageScaleToTotalPixels' | 'ImageCompositeMasked' | 'MaskToImage' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'JoinImageWithAlpha' | 'Canny' | 'Base64ImageInput' | 'Remove_Image_Background_$1abg$2' | 'AlphaChanelAdd' | 'AlphaChanelAddByMask' | 'AlphaChanelRestore' | 'AlphaChanelRemove' | 'ImageClamp' | 'ImageBatchGet' | 'ImageBatchRemove' | 'ImageBatchFork' | 'ImageBatchFork' | 'ImageBatchJoin' | 'ImageCompositeAbsolute' | 'ImageCompositeAbsoluteByContainer' | 'ImageCompositeRelative' | 'ImageCompositeRelativeByContainer' | 'ImageContainer' | 'ImageContainerInheritanceAdd' | 'ImageContainerInheritanceScale' | 'ImageContainerInheritanceMax' | 'ImageContainerInheritanceSum' | 'ImageDrawArc' | 'ImageDrawArcByContainer' | 'ImageDrawChord' | 'ImageDrawChordByContainer' | 'ImageDrawEllipse' | 'ImageDrawEllipseByContainer' | 'ImageDrawLine' | 'ImageDrawLineByContainer' | 'ImageDrawPieslice' | 'ImageDrawPiesliceByContainer' | 'ImageDrawRectangle' | 'ImageDrawRectangleByContainer' | 'ImageDrawRectangleRounded' | 'ImageDrawRectangleRoundedByContainer' | 'ImageDrawPolygon' | 'ImageEffectsAdjustment' | 'ImageEffectsGrayscale' | 'ImageEffectsNegative' | 'ImageEffectsSepia' | 'ImageEffectsLensZoomBurst' | 'ImageEffectsLensChromaticAberration' | 'ImageEffectsLensBokeh' | 'ImageEffectsLensOpticAxis' | 'ImageEffectsLensVignette' | 'ImageFilterSmooth' | 'ImageFilterSmoothMore' | 'ImageFilterBlur' | 'ImageFilterBoxBlur' | 'ImageFilterGaussianBlur' | 'ImageFilterGaussianBlurAdvanced' | 'ImageFilterStackBlur' | 'ImageFilterMedianBlur' | 'ImageFilterBilateralBlur' | 'ImageFilterContour' | 'ImageFilterDetail' | 'ImageFilterEdgeEnhance' | 'ImageFilterEdgeEnhanceMore' | 'ImageFilterEmboss' | 'ImageFilterFindEdges' | 'ImageFilterSharpen' | 'ImageFilterRank' | 'ImageFilterMin' | 'ImageFilterMax' | 'ImageFilterMode' | 'ImageNoiseBeta' | 'ImageNoiseBinomial' | 'ImageNoiseBytes' | 'ImageNoiseGaussian' | 'ImageSegmentation' | 'ImageSegmentationCustom' | 'ImageSegmentationCustomAdvanced' | 'ImageText' | 'ImageTextOutlined' | 'ImageTextMultiline' | 'ImageTextMultilineOutlined' | 'ImageTransformResizeAbsolute' | 'ImageTransformResizeRelative' | 'ImageTransformCropAbsolute' | 'ImageTransformCropRelative' | 'ImageTransformCropCorners' | 'ImageTransformPaddingAbsolute' | 'ImageTransformPaddingRelative' | 'ImageTransformRotate' | 'ImageTransformTranspose' | 'ConstrainImage$8pysssss' | 'DetailerForEach' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachDebug' | 'DetailerForEachPipe' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'DetailerForEachDebugPipe' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailer' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'FaceDetailerPipe' | 'IterativeImageUpscale' | 'ImageListToImageBatch' | 'ImpactFrom$_SEG$_ELT' | 'PreviewBridge' | 'ImageReceiver' | 'ImageMaskSwitch' | 'SEGSDetailer' | 'SEGSPaste' | 'SEGSToImageList' | 'ImpactImageBatchToImageList' | 'ImpactMakeImageList' | 'ImpactMakeImageBatch' | 'BindImageListPromptList_$3$3Inspire' | 'LoadImagesFromDir_$3$3Inspire' | 'LoadImage_$3$3Inspire' | 'create_image_$_O' | 'variation$_image_$_O' | 'Text2Image_$_O' | 'ImageScaleFactor_$_O' | 'ImageScaleFactorSimple_$_O' | 'create$_image_$_O' | 'string2Image_$_O' | 'CR_Image_Input_Switch' | 'CR_Image_Input_Switch_$14_way$2' | 'CR_Color_Tint' | 'CR_Batch_Process_Switch' | 'CR_Module_Input' | 'CR_Image_Pipe_Out' | 'CR_Upscale_Image' | 'CR_Apply_Multi_Upscale' | 'CR_XY_From_Folder' | 'CR_Halftone_Grid' | 'CR_Color_Bars' | 'CR_Style_Bars' | 'CR_Checker_Pattern' | 'CR_Polygons' | 'CR_Color_Gradient' | 'CR_Starburst_Lines' | 'CR_Starburst_Colors' | 'CR_Overlay_Text' | 'CR_Draw_Text' | 'CR_Mask_Text' | 'CR_Composite_Text' | 'BinaryPreprocessor' | 'CannyEdgePreprocessor' | 'ColorPreprocessor' | 'DWPreprocessor' | 'HEDPreprocessor' | 'FakeScribblePreprocessor' | 'InpaintPreprocessor' | 'LeReS$7DepthMapPreprocessor' | 'LineArtPreprocessor' | 'AnimeLineArtPreprocessor' | 'Manga2Anime$_LineArt$_Preprocessor' | 'MediaPipe$7FaceMeshPreprocessor' | 'MiDaS$7NormalMapPreprocessor' | 'MiDaS$7DepthMapPreprocessor' | 'M$7LSDPreprocessor' | 'BAE$7NormalMapPreprocessor' | 'OneFormer$7COCO$7SemSegPreprocessor' | 'OneFormer$7ADE20K$7SemSegPreprocessor' | 'OpenposePreprocessor' | 'PiDiNetPreprocessor' | 'ScribblePreprocessor' | 'Scribble$_XDoG$_Preprocessor' | 'SAMPreprocessor' | 'ShufflePreprocessor' | 'TilePreprocessor' | 'UniFormer$7SemSegPreprocessor' | 'SemSegPreprocessor' | 'Zoe$7DepthMapPreprocessor' | 'AIO$_Preprocessor' | 'HintImageEnchance' | 'Image_Switch_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Crop_Image_Square_$1JPS$2' | 'Crop_Image_TargetSize_$1JPS$2' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_imageOutput' | 'ttN_imageREMBG' | 'ttN_hiresfixScale' | 'Image_scale_by_ratio' | 'Image_scale_to_side' | 'KSampler_$1Efficient$2' | 'KSampler_Adv$5_$1Efficient$2' | 'KSampler_SDXL_$1Eff$5$2' | 'Image_Overlay' | 'Mask_By_Text' | 'Mask_By_Text' | 'Mask_Morphology' | 'Combine_Masks' | 'Unary_Mask_Op' | 'Unary_Image_Op' | 'Blur' | 'Mix_Images_By_Mask' | 'Mix_Color_By_Mask' | 'Mask_To_Region' | 'Cut_By_Mask' | 'Paste_By_Mask' | 'Change_Channel_Count' | 'Constant_Mask' | 'Prune_By_Mask' | 'Separate_Mask_Components' | 'Create_Rect_Mask' | 'Make_Image_Batch' | 'Create_QR_Code' | 'Convert_Color_Space' | 'Image_Remove_Background_$1rembg$2' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Image_Inset_Crop_$1rgthree$2' | 'Create_Grid_Image' | 'Create_Grid_Image_from_Batch' | 'Create_Morph_Image' | 'Create_Morph_Image' | 'CLIPSeg_Masking' | 'CLIPSeg_Batch_Masking' | 'CLIPSeg_Batch_Masking' | 'Convert_Masks_to_Images' | 'Load_Cache' | 'Image_SSAO_$1Ambient_Occlusion$2' | 'Image_SSAO_$1Ambient_Occlusion$2' | 'Image_SSAO_$1Ambient_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_SSDO_$1Direct_Occlusion$2' | 'Image_Analyze' | 'Image_Batch' | 'Image_Blank' | 'Image_Blend_by_Mask' | 'Image_Blend' | 'Image_Blending_Mode' | 'Image_Bloom_Filter' | 'Image_Canny_Filter' | 'Image_Chromatic_Aberration' | 'Image_Color_Palette' | 'Image_Crop_Face' | 'Image_Crop_Location' | 'Image_Crop_Square_Location' | 'Image_Displacement_Warp' | 'Image_Lucy_Sharpen' | 'Image_Paste_Face' | 'Image_Paste_Face' | 'Image_Paste_Crop' | 'Image_Paste_Crop' | 'Image_Paste_Crop_by_Location' | 'Image_Paste_Crop_by_Location' | 'Image_Pixelate' | 'Image_Power_Noise' | 'Image_Dragan_Photography_Filter' | 'Image_Edge_Detection_Filter' | 'Image_Film_Grain' | 'Image_Filter_Adjustments' | 'Image_Flip' | 'Image_Gradient_Map' | 'Image_Generate_Gradient' | 'Image_High_Pass_Filter' | 'Image_History_Loader' | 'Image_Input_Switch' | 'Image_Levels_Adjustment' | 'Image_Load' | 'Image_Median_Filter' | 'Image_Mix_RGB_Channels' | 'Image_Monitor_Effects_Filter' | 'Image_Nova_Filter' | 'Image_Padding' | 'Image_Padding' | 'Image_Perlin_Noise' | 'Image_Rembg_$1Remove_Background$2' | 'Image_Perlin_Power_Fractal' | 'Image_Remove_Background_$1Alpha$2' | 'Image_Remove_Color' | 'Image_Resize' | 'Image_Rotate' | 'Image_Rotate_Hue' | 'Image_Seamless_Texture' | 'Image_Select_Channel' | 'Image_Select_Color' | 'Image_Shadows_and_Highlights' | 'Image_Shadows_and_Highlights' | 'Image_Shadows_and_Highlights' | 'Image_Stitch' | 'Image_Style_Filter' | 'Image_Threshold' | 'Image_Tiled' | 'Image_Transpose' | 'Image_fDOF_Filter' | 'Image_to_Noise' | 'Images_to_RGB' | 'Images_to_Linear' | 'Image_Voronoi_Noise_Filter' | 'Load_Image_Batch' | 'MiDaS_Depth_Approximation' | 'MiDaS_Mask_Image' | 'MiDaS_Mask_Image' | 'Tensor_Batch_to_Image' | 'SAM_Image_Mask' | 'Bounded_Image_Blend' | 'Bounded_Image_Blend_with_Mask' | 'Bounded_Image_Crop' | 'Bounded_Image_Crop_with_Mask' | 'Write_to_GIF' | 'Write_to_Video' | 'VividSharpen' | 'Image_Load_with_Metadata_$1WLSH$2' | 'Grayscale_Image_$1WLSH$2' | 'Generate_Border_Mask_$1WLSH$2' | 'Outpaint_to_Image_$1WLSH$2' | 'Image_Scale_By_Factor_$1WLSH$2' | 'SDXL_Quick_Image_Scale_$1WLSH$2' | 'Upscale_by_Factor_with_Model_$1WLSH$2'> { }
 export interface CanProduce_MASK extends Pick<ComfySetup, 'LoadImage' | 'LoadImageMask' | 'ImagePadForOutpaint' | 'ImageToMask' | 'ImageColorToMask' | 'SolidMask' | 'InvertMask' | 'CropMask' | 'MaskComposite' | 'FeatherMask' | 'GrowMask' | 'PorterDuffImageComposite' | 'SplitImageWithAlpha' | 'AlphaChanelAsMask' | 'MaskClamp' | 'ImageEffectsLensOpticAxis' | 'ImageEffectsLensVignette' | 'SAMDetectorCombined' | 'SAMDetectorSegmented' | 'SAMDetectorSegmented' | 'FaceDetailer' | 'FaceDetailerPipe' | 'BitwiseAndMask' | 'SubtractMask' | 'AddMask' | 'ToBinaryMask' | 'MasksToMaskList' | 'MaskListToMaskBatch' | 'ImpactFrom$_SEG$_ELT' | 'ImpactDilateMask' | 'BboxDetectorCombined$_v2' | 'SegmDetectorCombined$_v2' | 'SegsToCombinedMask' | 'PreviewBridge' | 'ImageReceiver' | 'ImageMaskSwitch' | 'ImpactSEGSToMaskList' | 'ImpactSEGSToMaskBatch' | 'LoadImagesFromDir_$3$3Inspire' | 'LoadImage_$3$3Inspire' | 'RegionalPromptColorMask_$3$3Inspire' | 'RegionalConditioningColorMask_$3$3Inspire' | 'create_image_$_O' | 'variation$_image_$_O' | 'create$_image_$_O' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'ttN_imageREMBG' | 'Image_To_Mask' | 'Context_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'CLIPSeg_Masking' | 'CLIPSeg_Batch_Masking' | 'Image_Load' | 'Image_to_Latent_Mask' | 'Masks_Add' | 'Masks_Subtract' | 'Mask_Arbitrary_Region' | 'Mask_Batch_to_Mask' | 'Mask_Batch' | 'Mask_Ceiling_Region' | 'Mask_Crop_Dominant_Region' | 'Mask_Crop_Minority_Region' | 'Mask_Crop_Region' | 'Mask_Paste_Region' | 'Mask_Paste_Region' | 'Mask_Dilate_Region' | 'Mask_Dominant_Region' | 'Mask_Erode_Region' | 'Mask_Fill_Holes' | 'Mask_Floor_Region' | 'Mask_Gaussian_Region' | 'Mask_Invert' | 'Mask_Minority_Region' | 'Mask_Smooth_Region' | 'Mask_Threshold_Region' | 'Masks_Combine_Regions' | 'Masks_Combine_Batch' | 'SAM_Image_Mask' | 'Outpaint_to_Image_$1WLSH$2'> { }
 export interface CanProduce_CLIP_VISION_OUTPUT extends Pick<ComfySetup, 'CLIPVisionEncode' | 'ClipVisionOutputClamp'> { }
 export interface CanProduce_CONTROL_NET extends Pick<ComfySetup, 'ControlNetLoader' | 'DiffControlNetLoader' | 'ControlNetClamp' | 'CR_ControlNet_Input_Switch' | 'CR_Module_Input' | 'ControlNet_Switch_$1JPS$2' | 'Context_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Control_Net_Model_Input_Switch'> { }
@@ -4302,7 +4414,7 @@ export interface CanProduce_GIF extends Pick<ComfySetup, 'ADE$_AnimateDiffCombin
 export interface CanProduce_INT extends Pick<ComfySetup, 'MathExpression$8pysssss' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactInt' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactImageInfo' | 'ImpactMinMax' | 'LoadImagesFromDir_$3$3Inspire' | 'Int' | 'Equation2params_$_O' | 'Equation2params_$_O' | 'floatToInt_$_O' | 'GetImage$_$1Width$AndHeight$2_$_O' | 'GetImage$_$1Width$AndHeight$2_$_O' | 'GetLatent$_$1Width$AndHeight$2_$_O' | 'GetLatent$_$1Width$AndHeight$2_$_O' | 'seed_$_O' | 'int_$_O' | 'CR_Image_Size' | 'CR_Image_Size' | 'CR_Integer_Multiple' | 'CR_Aspect_Ratio' | 'CR_Aspect_Ratio' | 'CR_Aspect_Ratio' | 'CR_Seed_to_Int' | 'CR_SD1$55_Aspect_Ratio' | 'CR_SD1$55_Aspect_Ratio' | 'CR_SD1$55_Aspect_Ratio' | 'CR_Seed' | 'CR_Module_Input' | 'CR_Image_Pipe_Out' | 'CR_Image_Pipe_Out' | 'CR_SDXL_Aspect_Ratio' | 'CR_SDXL_Aspect_Ratio' | 'CR_SDXL_Aspect_Ratio' | 'CR_Aspect_Ratio_SDXL' | 'CR_Aspect_Ratio_SDXL' | 'CR_Aspect_Ratio_SDXL' | 'CR_XY_Index' | 'CR_XY_Index' | 'CR_Index' | 'CR_Index_Increment' | 'CR_Index_Increment' | 'CR_Index_Multiply' | 'CR_Index_Multiply' | 'CR_Index_Reset' | 'CR_Index_Reset' | 'CR_Trigger' | 'CR_String_To_Number' | 'CR_Float_To_Integer' | 'PixelPerfectResolution' | 'ImageGenResolutionFromImage' | 'ImageGenResolutionFromImage' | 'ImageGenResolutionFromLatent' | 'ImageGenResolutionFromLatent' | 'Lerp' | 'SinWave' | 'InvSinWave' | 'CosWave' | 'InvCosWave' | 'SquareWave' | 'SawtoothWave' | 'TriangleWave' | 'AbsCosWave' | 'AbsSinWave' | 'ValueSchedule' | 'PromptScheduleNodeFlow' | 'BatchValueSchedule' | 'SDXL_Resolutions_$1JPS$2' | 'SDXL_Resolutions_$1JPS$2' | 'Generation_TXT_IMG_Settings_$1JPS$2' | 'Integer_Switch_$1JPS$2' | 'SDXL_Basic_Settings_Pipe_$1JPS$2' | 'SDXL_Basic_Settings_Pipe_$1JPS$2' | 'SDXL_Basic_Settings_Pipe_$1JPS$2' | 'SDXL_Basic_Settings_Pipe_$1JPS$2' | 'SDXL_Basic_Settings_Pipe_$1JPS$2' | 'Generation_Settings_Pipe_$1JPS$2' | 'Generation_Settings_Pipe_$1JPS$2' | 'Generation_Settings_Pipe_$1JPS$2' | 'Generation_Settings_Pipe_$1JPS$2' | 'Generation_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'Revision_Settings_Pipe_$1JPS$2' | 'Revision_Settings_Pipe_$1JPS$2' | 'Revision_Settings_Pipe_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'SDXL_Recommended_Resolution_Calc_$1JPS$2' | 'SDXL_Recommended_Resolution_Calc_$1JPS$2' | 'Resolution_Multiply_$1JPS$2' | 'Resolution_Multiply_$1JPS$2' | 'Largest_Int_$1JPS$2' | 'Largest_Int_$1JPS$2' | 'Largest_Int_$1JPS$2' | 'Multiply_Int_Int_$1JPS$2' | 'Multiply_Int_Float_$1JPS$2' | 'Multiply_Float_Float_$1JPS$2' | 'Substract_Int_Int_$1JPS$2' | 'Get_Image_Size_$1JPS$2' | 'Get_Image_Size_$1JPS$2' | 'ttN_pipeLoader' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_int' | 'ttN_float' | 'ttN_seed' | 'Integer' | 'Tuple_to_ints' | 'Tuple_to_ints' | 'Ceil' | 'Floor' | 'Get_latent_size' | 'Get_latent_size' | 'Get_image_size' | 'Get_image_size' | 'Evaluate_Integers' | 'Evaluate_Floats' | 'Get_Image_Size' | 'Get_Image_Size' | 'MasqueradeIncrementer' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Seed_$1rgthree$2' | 'KSampler_Config_$1rgthree$2' | 'KSampler_Config_$1rgthree$2' | 'SDXL_Empty_Latent_Image_$1rgthree$2' | 'SDXL_Empty_Latent_Image_$1rgthree$2' | 'Constant_Number' | 'Logic_Boolean' | 'Image_Size_to_Number' | 'Image_Size_to_Number' | 'Image_to_Seed' | 'Integer_place_counter' | 'Latent_Size_to_Number' | 'Latent_Size_to_Number' | 'Mask_Crop_Region' | 'Mask_Crop_Region' | 'Mask_Crop_Region' | 'Mask_Crop_Region' | 'Mask_Crop_Region' | 'Mask_Crop_Region' | 'Number_Counter' | 'Number_Operation' | 'Number_Input_Switch' | 'Number_Input_Condition' | 'Number_Multiple_Of' | 'Number_to_Int' | 'Random_Number' | 'Seed' | 'Text_Find_and_Replace_Input' | 'Text_Find_and_Replace' | 'True_Random$5org_Number_Generator' | 'Empty_Latent_by_Pixels_$1WLSH$2' | 'Empty_Latent_by_Pixels_$1WLSH$2' | 'Empty_Latent_by_Ratio_$1WLSH$2' | 'Empty_Latent_by_Ratio_$1WLSH$2' | 'Empty_Latent_by_Size_$1WLSH$2' | 'Empty_Latent_by_Size_$1WLSH$2' | 'SDXL_Quick_Empty_Latent_$1WLSH$2' | 'SDXL_Quick_Empty_Latent_$1WLSH$2' | 'Image_Load_with_Metadata_$1WLSH$2' | 'Image_Load_with_Metadata_$1WLSH$2' | 'Image_Load_with_Metadata_$1WLSH$2' | 'Image_Load_with_Metadata_$1WLSH$2' | 'Multiply_Integer_$1WLSH$2' | 'Quick_Resolution_Multiply_$1WLSH$2' | 'Quick_Resolution_Multiply_$1WLSH$2' | 'Resolutions_by_Ratio_$1WLSH$2' | 'Resolutions_by_Ratio_$1WLSH$2' | 'Seed_to_Number_$1WLSH$2' | 'Seed_and_Int_$1WLSH$2' | 'SDXL_Steps_$1WLSH$2' | 'SDXL_Steps_$1WLSH$2' | 'SDXL_Steps_$1WLSH$2' | 'SDXL_Resolutions_$1WLSH$2' | 'SDXL_Resolutions_$1WLSH$2'> { }
 export interface CanProduce_FLOAT extends Pick<ComfySetup, 'MathExpression$8pysssss' | 'ImpactFrom$_SEG$_ELT' | 'Equation1param_$_O' | 'Equation2params_$_O' | 'Equation2params_$_O' | 'intToFloat_$_O' | 'float_$_O' | 'CR_Image_Size' | 'CR_Aspect_Ratio' | 'CR_Aspect_Ratio' | 'CR_SD1$55_Aspect_Ratio' | 'CR_Image_Pipe_Out' | 'CR_SDXL_Aspect_Ratio' | 'CR_Aspect_Ratio_SDXL' | 'CR_Aspect_Ratio_SDXL' | 'CR_XY_Interpolate' | 'CR_XY_Interpolate' | 'CR_String_To_Number' | 'Lerp' | 'SinWave' | 'InvSinWave' | 'CosWave' | 'InvCosWave' | 'SquareWave' | 'SawtoothWave' | 'TriangleWave' | 'AbsCosWave' | 'AbsSinWave' | 'ValueSchedule' | 'BatchValueSchedule' | 'Generation_TXT_IMG_Settings_$1JPS$2' | 'SDXL_Basic_Settings_Pipe_$1JPS$2' | 'SDXL_Basic_Settings_Pipe_$1JPS$2' | 'SDXL_Basic_Settings_Pipe_$1JPS$2' | 'Generation_Settings_Pipe_$1JPS$2' | 'Generation_Settings_Pipe_$1JPS$2' | 'Generation_Settings_Pipe_$1JPS$2' | 'Generation_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'IP_Adapter_Settings_Pipe_$1JPS$2' | 'Revision_Settings_Pipe_$1JPS$2' | 'Revision_Settings_Pipe_$1JPS$2' | 'Revision_Settings_Pipe_$1JPS$2' | 'Revision_Settings_Pipe_$1JPS$2' | 'Multiply_Int_Int_$1JPS$2' | 'Multiply_Int_Float_$1JPS$2' | 'Multiply_Float_Float_$1JPS$2' | 'Substract_Int_Int_$1JPS$2' | 'ttN_int' | 'ttN_float' | 'Float' | 'Random' | 'Tuple_to_floats' | 'Tuple_to_floats' | 'Int_to_float' | 'Absolute_value' | 'Sum' | 'Subtract' | 'Multiply' | 'Divide' | 'Power' | 'Square_root' | 'Square_root' | 'Sinus' | 'Cosines' | 'Tangent' | 'Evaluate_Integers' | 'Evaluate_Floats' | 'Context_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'KSampler_Config_$1rgthree$2' | 'Constant_Number' | 'Image_Aspect_Ratio' | 'Image_Size_to_Number' | 'Image_Size_to_Number' | 'Latent_Size_to_Number' | 'Latent_Size_to_Number' | 'Number_Counter' | 'Number_Operation' | 'Number_to_Float' | 'Number_Input_Switch' | 'Number_Input_Condition' | 'Number_Multiple_Of' | 'Number_PI' | 'Random_Number' | 'Seed' | 'Text_Find_and_Replace_Input' | 'Text_Find_and_Replace' | 'True_Random$5org_Number_Generator' | 'Image_Load_with_Metadata_$1WLSH$2'> { }
 export interface CanProduce_$Star extends Pick<ComfySetup, 'Repeater$8pysssss' | 'ReroutePrimitive$8pysssss' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactInversedSwitch' | 'ImpactConditionalBranch' | 'ImpactValueReceiver' | 'ImpactDummyInput' | 'ImpactQueueTrigger' | 'ImpactSetWidgetValue' | 'ImpactNodeSetMuteState' | 'ImpactControlBridge' | 'CacheBackendData_$3$3Inspire' | 'CacheBackendDataNumberKey_$3$3Inspire' | 'RetrieveBackendData_$3$3Inspire' | 'RetrieveBackendDataNumberKey_$3$3Inspire' | 'RemoveBackendData_$3$3Inspire' | 'RemoveBackendDataNumberKey_$3$3Inspire' | 'If_ANY_execute_A_else_B' | 'CR_String_To_Combo' | 'Any_Switch_$1rgthree$2'> { }
-export interface CanProduce_STRING extends Pick<ComfySetup, 'ShowText$8pysssss' | 'StringFunction$8pysssss' | 'LoadText$8pysssss' | 'SaveText$8pysssss' | 'ImpactFrom$_SEG$_ELT' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'ImpactStringSelector' | 'LoraLoaderBlockWeight_$3$3Inspire' | 'UnzipPrompt_$3$3Inspire' | 'UnzipPrompt_$3$3Inspire' | 'UnzipPrompt_$3$3Inspire' | 'PromptExtractor_$3$3Inspire' | 'PromptExtractor_$3$3Inspire' | 'BindImageListPromptList_$3$3Inspire' | 'BindImageListPromptList_$3$3Inspire' | 'BindImageListPromptList_$3$3Inspire' | 'WildcardEncode_$3$3Inspire' | 'String' | 'ChatGPT_Simple_$_O' | 'ChatGPT_compact_$_O' | 'Chat_completion_$_O' | 'RandomNSP_$_O' | 'ConcatRandomNSP$_O' | 'Concat_Text_$_O' | 'Trim_Text_$_O' | 'Replace_Text_$_O' | 'floatToText_$_O' | 'Debug_Text_route_$_O' | 'Text_$_O' | 'CR_Text_Input_Switch' | 'CR_Text_Input_Switch_$14_way$2' | 'CR_Integer_To_String' | 'CR_Float_To_String' | 'CR_Apply_Model_Merge' | 'CR_Prompt_Text' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Style_Text' | 'CR_SDXL_Style_Text' | 'CR_XY_List' | 'CR_XY_List' | 'CR_XY_List' | 'CR_XY_List' | 'CR_XY_Interpolate' | 'CR_XY_Interpolate' | 'CR_Split_String' | 'CR_Split_String' | 'CR_Split_String' | 'CR_Split_String' | 'CR_Text_List_To_String' | 'PromptScheduleNodeFlow' | 'StringSchedule' | 'SDXL_Basic_Settings_Pipe_$1JPS$2' | 'Text_Concatenate_$1JPS$2' | 'Get_Date_Time_String_$1JPS$2' | 'SDXL_Prompt_Styler_$1JPS$2' | 'SDXL_Prompt_Styler_$1JPS$2' | 'SDXL_Prompt_Styler_$1JPS$2' | 'SDXL_Prompt_Styler_$1JPS$2' | 'SDXL_Prompt_Handling_$1JPS$2' | 'SDXL_Prompt_Handling_$1JPS$2' | 'SDXL_Prompt_Handling_Plus_$1JPS$2' | 'SDXL_Prompt_Handling_Plus_$1JPS$2' | 'SDXL_Prompt_Handling_Plus_$1JPS$2' | 'ttN_text' | 'ttN_textDebug' | 'ttN_concat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_int' | 'ttN_float' | 'Text' | 'Text_box' | 'Evaluate_Integers' | 'Evaluate_Floats' | 'Evaluate_Strings' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Power_Prompt_$1rgthree$2' | 'Power_Prompt_$7_Simple_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Positive_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Positive_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Simple_$3_Negative_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Simple_$3_Negative_$1rgthree$2' | 'Cache_Node' | 'Cache_Node' | 'Cache_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'CLIPTextEncode_$1NSP$2' | 'CLIPTextEncode_$1NSP$2' | 'Create_Morph_Image' | 'Create_Morph_Image' | 'Create_Morph_Image_from_Path' | 'Create_Morph_Image_from_Path' | 'Create_Video_from_Path' | 'Create_Video_from_Path' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'Lora_Loader' | 'Image_Aspect_Ratio' | 'Image_Aspect_Ratio' | 'Image_History_Loader' | 'Image_Load' | 'Load_Image_Batch' | 'Load_Text_File' | 'Load_Lora' | 'Number_to_String' | 'Number_to_Text' | 'Prompt_Styles_Selector' | 'Prompt_Styles_Selector' | 'Prompt_Multiple_Styles_Selector' | 'Prompt_Multiple_Styles_Selector' | 'BLIP_Analyze_Image' | 'String_to_Text' | 'Text_Compare' | 'Text_Compare' | 'Text_Compare' | 'Text_Concatenate' | 'Text_File_History_Loader' | 'Text_Find_and_Replace_by_Dictionary' | 'Text_Find_and_Replace_Input' | 'Text_Find_and_Replace' | 'Text_Input_Switch' | 'Text_Load_Line_From_File' | 'Text_Multiline' | 'Text_Parse_A1111_Embeddings' | 'Text_Parse_Noodle_Soup_Prompts' | 'Text_Parse_Tokens' | 'Text_Random_Line' | 'Text_Random_Prompt' | 'Text_String' | 'Text_String' | 'Text_String' | 'Text_String' | 'Text_Shuffle' | 'Text_to_Console' | 'Text_to_String' | 'Text_String_Truncate' | 'Text_String_Truncate' | 'Text_String_Truncate' | 'Text_String_Truncate' | 'unCLIP_Checkpoint_Loader' | 'Upscale_Model_Loader' | 'Write_to_GIF' | 'Write_to_GIF' | 'Write_to_Video' | 'Write_to_Video' | 'Video_Dump_Frames' | 'Checkpoint_Loader_w$3Name_$1WLSH$2' | 'CLIP_Positive$7Negative_w$3Text_$1WLSH$2' | 'CLIP_Positive$7Negative_w$3Text_$1WLSH$2' | 'CLIP_Positive$7Negative_XL_w$3Text_$1WLSH$2' | 'CLIP_Positive$7Negative_XL_w$3Text_$1WLSH$2' | 'Image_Load_with_Metadata_$1WLSH$2' | 'Image_Load_with_Metadata_$1WLSH$2' | 'Build_Filename_String_$1WLSH$2' | 'Time_String_$1WLSH$2' | 'Simple_Pattern_Replace_$1WLSH$2'> { }
+export interface CanProduce_STRING extends Pick<ComfySetup, 'ShowText$8pysssss' | 'StringFunction$8pysssss' | 'LoadText$8pysssss' | 'SaveText$8pysssss' | 'ImpactFrom$_SEG$_ELT' | 'LatentSwitch' | 'SEGSSwitch' | 'ImpactSwitch' | 'ImpactWildcardProcessor' | 'ImpactWildcardEncode' | 'ImpactStringSelector' | 'LoraLoaderBlockWeight_$3$3Inspire' | 'UnzipPrompt_$3$3Inspire' | 'UnzipPrompt_$3$3Inspire' | 'UnzipPrompt_$3$3Inspire' | 'PromptExtractor_$3$3Inspire' | 'PromptExtractor_$3$3Inspire' | 'BindImageListPromptList_$3$3Inspire' | 'BindImageListPromptList_$3$3Inspire' | 'BindImageListPromptList_$3$3Inspire' | 'WildcardEncode_$3$3Inspire' | 'String' | 'ChatGPT_Simple_$_O' | 'ChatGPT_compact_$_O' | 'Chat_completion_$_O' | 'RandomNSP_$_O' | 'ConcatRandomNSP$_O' | 'Concat_Text_$_O' | 'Trim_Text_$_O' | 'Replace_Text_$_O' | 'floatToText_$_O' | 'Debug_Text_route_$_O' | 'Text_$_O' | 'CR_Text_Input_Switch' | 'CR_Text_Input_Switch_$14_way$2' | 'CR_Integer_To_String' | 'CR_Float_To_String' | 'CR_Apply_Model_Merge' | 'CR_Prompt_Text' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mix_Presets' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Prompt_Mixer' | 'CR_SDXL_Style_Text' | 'CR_SDXL_Style_Text' | 'CR_XY_List' | 'CR_XY_List' | 'CR_XY_List' | 'CR_XY_List' | 'CR_XY_Interpolate' | 'CR_XY_Interpolate' | 'CR_Split_String' | 'CR_Split_String' | 'CR_Split_String' | 'CR_Split_String' | 'CR_Text_List_To_String' | 'PromptScheduleNodeFlow' | 'StringSchedule' | 'SDXL_Basic_Settings_Pipe_$1JPS$2' | 'Text_Concatenate_$1JPS$2' | 'Get_Date_Time_String_$1JPS$2' | 'SDXL_Prompt_Styler_$1JPS$2' | 'SDXL_Prompt_Styler_$1JPS$2' | 'SDXL_Prompt_Styler_$1JPS$2' | 'SDXL_Prompt_Styler_$1JPS$2' | 'SDXL_Prompt_Handling_$1JPS$2' | 'SDXL_Prompt_Handling_$1JPS$2' | 'SDXL_Prompt_Handling_Plus_$1JPS$2' | 'SDXL_Prompt_Handling_Plus_$1JPS$2' | 'SDXL_Prompt_Handling_Plus_$1JPS$2' | 'ttN_text' | 'ttN_textDebug' | 'ttN_concat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text3BOX$_3WAYconcat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_text7BOX$_concat' | 'ttN_int' | 'ttN_float' | 'Text' | 'Text_box' | 'Evaluate_Integers' | 'Evaluate_Floats' | 'Evaluate_Strings' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Power_Prompt_$1rgthree$2' | 'Power_Prompt_$7_Simple_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Positive_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Positive_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Simple_$3_Negative_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Simple_$3_Negative_$1rgthree$2' | 'Cache_Node' | 'Cache_Node' | 'Cache_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'CLIPTextEncode_$1NSP$2' | 'CLIPTextEncode_$1NSP$2' | 'Create_Morph_Image' | 'Create_Morph_Image' | 'Create_Morph_Image_from_Path' | 'Create_Morph_Image_from_Path' | 'Create_Video_from_Path' | 'Create_Video_from_Path' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'Lora_Loader' | 'Image_Aspect_Ratio' | 'Image_Aspect_Ratio' | 'Image_History_Loader' | 'Image_Load' | 'Load_Image_Batch' | 'Load_Text_File' | 'Load_Lora' | 'Number_to_String' | 'Number_to_Text' | 'Prompt_Styles_Selector' | 'Prompt_Styles_Selector' | 'Prompt_Multiple_Styles_Selector' | 'Prompt_Multiple_Styles_Selector' | 'BLIP_Analyze_Image' | 'String_to_Text' | 'Text_Compare' | 'Text_Compare' | 'Text_Compare' | 'Text_Concatenate' | 'Text_File_History_Loader' | 'Text_Find_and_Replace_by_Dictionary' | 'Text_Find_and_Replace_Input' | 'Text_Find_and_Replace' | 'Text_Input_Switch' | 'Text_Load_Line_From_File' | 'Text_Multiline' | 'Text_Parse_A1111_Embeddings' | 'Text_Parse_Noodle_Soup_Prompts' | 'Text_Parse_Tokens' | 'Text_Random_Line' | 'Text_Random_Prompt' | 'Text_String' | 'Text_String' | 'Text_String' | 'Text_String' | 'Text_Shuffle' | 'Text_to_Console' | 'Text_to_String' | 'Text_String_Truncate' | 'Text_String_Truncate' | 'Text_String_Truncate' | 'Text_String_Truncate' | 'unCLIP_Checkpoint_Loader' | 'Upscale_Model_Loader' | 'Write_to_GIF' | 'Write_to_GIF' | 'Write_to_Video' | 'Write_to_Video' | 'Video_Dump_Frames' | 'Checkpoint_Loader_w$3Name_$1WLSH$2' | 'CLIP_Positive$7Negative_w$3Text_$1WLSH$2' | 'CLIP_Positive$7Negative_w$3Text_$1WLSH$2' | 'CLIP_Positive$7Negative_XL_w$3Text_$1WLSH$2' | 'CLIP_Positive$7Negative_XL_w$3Text_$1WLSH$2' | 'Image_Load_with_Metadata_$1WLSH$2' | 'Image_Load_with_Metadata_$1WLSH$2' | 'Build_Filename_String_$1WLSH$2' | 'Time_String_$1WLSH$2' | 'Simple_Pattern_Replace_$1WLSH$2' | 'Simple_String_Combine_$1WLSH$2'> { }
 export interface CanProduce_SAM_MODEL extends Pick<ComfySetup, 'SAMLoader' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'SAM_Model_Loader'> { }
 export interface CanProduce_BBOX_DETECTOR extends Pick<ComfySetup, 'CLIPSegDetectorProvider' | 'ONNXDetectorProvider' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'UltralyticsDetectorProvider' | 'MediaPipeFaceMeshDetectorProvider_$3$3Inspire'> { }
 export interface CanProduce_SEGS extends Pick<ComfySetup, 'BitwiseAndMaskForEach' | 'SubtractMaskForEach' | 'DetailerForEachPipe' | 'DetailerForEachDebugPipe' | 'Segs_$And_Mask' | 'Segs_$And_Mask_ForEach' | 'EmptySegs' | 'MediaPipeFaceMeshToSEGS' | 'MaskToSEGS' | 'BboxDetectorSEGS' | 'SegmDetectorSEGS' | 'ONNXDetectorSEGS' | 'ImpactSimpleDetectorSEGS' | 'ImpactSimpleDetectorSEGSPipe' | 'ImpactControlNetApplySEGS' | 'ImpactAssembleSEGS' | 'SEGSDetailer' | 'ImpactSEGSConcat' | 'ImpactSEGSPicker' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSLabelFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSRangeFilter' | 'ImpactSEGSOrderedFilter' | 'ImpactSEGSOrderedFilter'> { }
@@ -4322,7 +4434,7 @@ export interface CanProduce_KSAMPLER_ADVANCED extends Pick<ComfySetup, 'KSampler
 export interface CanProduce_REGIONAL_PROMPTS extends Pick<ComfySetup, 'CombineRegionalPrompts' | 'RegionalPrompt' | 'RegionalPromptSimple_$3$3Inspire' | 'RegionalPromptColorMask_$3$3Inspire'> { }
 export interface CanProduce_BOOLEAN extends Pick<ComfySetup, 'ImpactCompare' | 'ImpactNeg' | 'Compare' | 'CR_Image_Output' | 'CR_XY_List' | 'CR_XY_Interpolate' | 'CR_XY_From_Folder' | 'CR_Trigger'> { }
 export interface CanProduce_XY extends Pick<ComfySetup, 'XY_Input$4_Lora_Block_Weight_$3$3Inspire' | 'XY_Input$4_Lora_Block_Weight_$3$3Inspire' | 'XY_Input$4_Seeds$6$6_Batch' | 'XY_Input$4_Add$3Return_Noise' | 'XY_Input$4_Steps' | 'XY_Input$4_CFG_Scale' | 'XY_Input$4_Sampler$3Scheduler' | 'XY_Input$4_Denoise' | 'XY_Input$4_VAE' | 'XY_Input$4_Prompt_S$3R' | 'XY_Input$4_Aesthetic_Score' | 'XY_Input$4_Refiner_On$3Off' | 'XY_Input$4_Checkpoint' | 'XY_Input$4_Clip_Skip' | 'XY_Input$4_LoRA' | 'XY_Input$4_LoRA_Plot' | 'XY_Input$4_LoRA_Plot' | 'XY_Input$4_LoRA_Stacks' | 'XY_Input$4_Control_Net' | 'XY_Input$4_Control_Net_Plot' | 'XY_Input$4_Control_Net_Plot' | 'XY_Input$4_Manual_XY_Entry' | 'Join_XY_Inputs_of_Same_Type'> { }
-export interface CanProduce_SEGS_PREPROCESSOR extends Pick<ComfySetup, 'OpenPose$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'MiDaS$_DepthMap$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'LeRes$_DepthMap$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'Canny$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'MediaPipe$_FaceMesh$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'HEDPreprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'FakeScribblePreprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'AnimeLineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'Manga2Anime$_LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'Color$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire'> { }
+export interface CanProduce_SEGS_PREPROCESSOR extends Pick<ComfySetup, 'OpenPose$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'DWPreprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'MiDaS$_DepthMap$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'LeRes$_DepthMap$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'Canny$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'MediaPipe$_FaceMesh$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'HEDPreprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'FakeScribblePreprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'AnimeLineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'Manga2Anime$_LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'Color$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire' | 'InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire'> { }
 export interface CanProduce_ZIPPED_PROMPT extends Pick<ComfySetup, 'LoadPromptsFromDir_$3$3Inspire' | 'LoadPromptsFromFile_$3$3Inspire' | 'ZipPrompt_$3$3Inspire'> { }
 export interface CanProduce_OPENAI extends Pick<ComfySetup, 'load$_openAI_$_O' | 'ChatGPT_$_O'> { }
 export interface CanProduce_OPENAI_CHAT_MESSAGES extends Pick<ComfySetup, 'Chat$_Message_$_O' | 'combine$_chat$_messages_$_O' | 'Chat$_Message$_fromString_$_O' | 'compine$_chat$_messages_$_O'> { }
@@ -4345,7 +4457,7 @@ export interface CanProduce_XYPLOT extends Pick<ComfySetup, 'ttN_xyPlot'> { }
 export interface CanProduce_TUPLE extends Pick<ComfySetup, 'Tuple' | 'Int_to_tuple' | 'Tuple_swap' | 'Tuple_multiply' | 'Get_latent_size' | 'Get_image_size'> { }
 export interface CanProduce_SDXL_TUPLE extends Pick<ComfySetup, 'KSampler_SDXL_$1Eff$5$2' | 'Eff$5_Loader_SDXL' | 'Pack_SDXL_Tuple'> { }
 export interface CanProduce_DEPENDENCIES extends Pick<ComfySetup, 'Efficient_Loader' | 'Eff$5_Loader_SDXL'> { }
-export interface CanProduce_SCRIPT extends Pick<ComfySetup, 'XY_Plot' | 'HighRes$7Fix_Script'> { }
+export interface CanProduce_SCRIPT extends Pick<ComfySetup, 'XY_Plot' | 'Noise_Control_Script' | 'HighRes$7Fix_Script' | 'Tiled_Upscaler_Script' | 'AnimateDiff_Script'> { }
 export interface CanProduce_MASK_MAPPING extends Pick<ComfySetup, 'Separate_Mask_Components'> { }
 export interface CanProduce_RGTHREE_CONTEXT extends Pick<ComfySetup, 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2'> { }
 export interface CanProduce_Enum_CheckpointLoaderSimple_ckpt_name extends Pick<ComfySetup, 'Context_Big_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2'> { }
@@ -4638,7 +4750,6 @@ export type Enum_Checkpoint_Loader_w$3Name_$1WLSH$2_ckpt_name = Enum_CheckpointL
 export type Enum_VAELoader_vae_name = "blessed2.vae.pt" | "kl-f8-anime2.ckpt" | "orangemix.vae.pt" | "vae-ft-mse-840000-ema-pruned.safetensors"
 export type Enum_LatentUpscale_upscale_method = "area" | "bicubic" | "bilinear" | "bislerp" | "nearest-exact"
 export type Enum_LatentUpscaleBy_upscale_method = Enum_LatentUpscale_upscale_method
-export type Enum_HighRes$7Fix_Script_latent_upscale_method = Enum_LatentUpscale_upscale_method
 export type Enum_LatentUpscale_crop = "center" | "disabled"
 export type Enum_ImageScale_crop = Enum_LatentUpscale_crop
 export type Enum_LatentUpscaleFactor_$_O_crop = Enum_LatentUpscale_crop
@@ -4655,7 +4766,7 @@ export type Enum_Latent_Scale_to_side_crop = Enum_LatentUpscale_crop
 export type Enum_Image_scale_by_ratio_crop = Enum_LatentUpscale_crop
 export type Enum_Image_scale_to_side_crop = Enum_LatentUpscale_crop
 export type Enum_SDXL_Quick_Image_Scale_$1WLSH$2_crop = Enum_LatentUpscale_crop
-export type Enum_LoadImage_image = "2023-07-24_10-58-29.png" | "Angled 5 - 512x512 (1).png" | "Angled 5 - 512x512.png" | "Angled 8 - 512x512.png" | "Circular 1 - 512x512.png" | "Circular 10 - 512x512.png" | "Circular 3 - 512x512.png" | "Circular 4 - 512x512.png" | "Circular 6 - 512x512 (1).png" | "Circular 6 - 512x512.png" | "Circular 8 - 512x512.png" | "Radial 1 - 512x512.png" | "Radial 11 - 512x512.png" | "Radial 9 - 512x512.png" | "Spherical 6 - 512x512.png" | "example.png" | "icon-1024.png" | "il_570xN.4895517340_bhko-removebg-preview.png" | "images.jpeg" | "poker-club.png" | "poker-diamond.png" | "poker-heart.png" | "poker-spade.png" | "upload (1).png" | "upload (10).png" | "upload (11).png" | "upload (12).png" | "upload (13).png" | "upload (14).png" | "upload (15).png" | "upload (16).png" | "upload (17).png" | "upload (18).png" | "upload (19).png" | "upload (2).png" | "upload (20).png" | "upload (21).png" | "upload (22).png" | "upload (23).png" | "upload (24).png" | "upload (25).png" | "upload (26).png" | "upload (27).png" | "upload (28).png" | "upload (29).png" | "upload (3).png" | "upload (30).png" | "upload (31).png" | "upload (32).png" | "upload (33).png" | "upload (34).png" | "upload (35).png" | "upload (36).png" | "upload (37).png" | "upload (38).png" | "upload (39).png" | "upload (4).png" | "upload (40).png" | "upload (41).png" | "upload (42).png" | "upload (43).png" | "upload (5).png" | "upload (6).png" | "upload (7).png" | "upload (8).png" | "upload (9).png" | "upload.png"
+export type Enum_LoadImage_image = "013142180a23ae44035924d7027c4a8030b0cefa3f7890324429f1f75bf0484b.png" | "01b10a0537d3786963e6aab7a496b4846c231e3f5090c5a3b7047a62f96c6f92.png" | "01c627f4c6f3c8e21289306a1248e3975405ac42a833c44e3525e835e4acdfe5.png" | "01d19ac7d7a8ab628c7fad740856a30ad2148bc8bd20ccdd234683dcb4e825e9.png" | "021e9f22187d860681ff1d848d3b1b2762cfc0be864c12251b99e54f6e7c7e10.png" | "0266a57c5821fae4de7ac05e99fa103ee0a6071c44ea591924728dafb9b7b282.png" | "0314df821679c25e88d404b8e69b8834c3d60d3fda4009146c661a9a8614eaf2.png" | "03251e7e2a83d4cec3d360e99ed61959293b806d58a2d9538d267c5b5f605b11.png" | "03991ea94b2abccca8f40a8cd49734752d95779247488a68b55afcec0d076c22.png" | "04023d7570526ff8150eff5ae479e78615c7cae1eafdfb532e8c5d8462cfe302.png" | "047db288201917b6056598c8177c39930a7ad510e93e6f06cbba7ad11c4806ac.png" | "06a9f36f988adea2abb603156c8184e177da0d4f274a6218acf729f3357a1894.png" | "06ac1c7a67feb9ec28c9ee62678c7e0ae079a56d348ce94794e2e8db0ab02966.png" | "07e4bead49b839dd15bf345b84d3c839b4190972b9bc09e463f7f42ee656c9d8.png" | "07e8c1aa513051271c5fb8ae61cc746168aa0d88bcac2f994c3cfe46a177ebb9.png" | "0857f197e0da3bdd2daa7a4dc09aa4bef6dfd324c7d4d478f4be577514009132.png" | "098cb928a6be50e0b6a7958796140e38d57f739f73b45471b4744178e7fdd353.png" | "0aab92c46de981310b3c0befc4ea8ba3160c0e2809109bb9f3993c7459d40972.png" | "0ad4e1c2aace727971e751911efb22ea1f168966cc0ac40bf39d674086fbb047.png" | "0bca7998212c14452adf796b001aac2abb7272325c6d2f035950b2e5d5ad5af6.png" | "0c31d144739fa3edc04c44e7420961a95a1ecc45c3190c2c7ec412e266b816fc (1).png" | "0c31d144739fa3edc04c44e7420961a95a1ecc45c3190c2c7ec412e266b816fc.png" | "0d45f14c4453da45c069fd947f5da24a98c09d37dd42f318a1d6d6e24472a1f6.png" | "0d937d5e6418fb15a16d8638b418263988eb860a1c7d0c7a42ecb6a37b33c4cf.png" | "0e693d6d4cd5663ef86f075393aa36afd356e86d1ce05ff4e59d6aff8e2a391b.png" | "0e6c09d94c23d6b0b3c24c1d7df66dd2306049909bafa4207407bdbe9ace91f6.png" | "0f58d3cc02f82fc3b2fb46e6d4d434b5e0169a3d40e5c72495c5b6b1ad18dcdb.png" | "0fbcaada7de8e48d5a2873f15fe5e4388265e37f46fe21d67c9d7950a3b7199c.png" | "0fcd6a8b1e765cb3c72be213845de0fceea45fe0bd02e3caa9b392f162e7bd2e.png" | "0fffe52b4a6eb756f5a8e75768c236743f52af51a038fc9a46cb3e0e8b123297.png" | "1003b096b5bb04e9e4d317f21a6761e23299eae4e74742c3fb16afba2c21bfaa.png" | "101afbbfe7a2069303012346ababed2066e1a56c2ea0f19e1ebc6acb40ec9854.png" | "114509d144e8221e3ef638b47e19f505da8ffc6834e02af56098ba585737ea8b.png" | "11e831b76b11aed4dc5b32840f02cffe05168c2232425a8e5651a73cd38e9a7a.png" | "11ea3dc2b0ff56a3906180ff44f7f4caa077dc44550c5ee9be2a516e3b293d4f.png" | "1395a2c56b6e9b8df24fd7dd9d80e21c173721b978b27c0aa53239e42eb6a1e5.png" | "14a2b466d11093901cce3091cc688bddf03975b789e26eb85bc75032db671e38.png" | "16a4a5e9283f63e93560c2b38bcb580aa5b0b60936b2978c8f0c8d9df0251c4e.png" | "174a85317a4e25a4292ea68205718eef6e706694b98dd1283971abacf4398ee2.png" | "1818af14d3380e20d37156b2b5848d9a910cb1b526890d51c86af2688515de68.png" | "181d54df4b07de4d5017f4da566b45bb9018124407e46da0954d838a2996a8e6.png" | "1823faf3f51acb45cb49171ea9609858964a33addcfd3c34868a914038cc3468.png" | "182d425ba8311266dd734a91da23738354fe46ffe8f1e6bc453dd09d13fc905d.png" | "1a3e6e24d5a09c8e187c5fa12eb57a0ff890a9383f21c0173e7cb3e7d91ab583.png" | "1a6919bcc2a8bc61e56493b7975da8e57a7eb9b74714405ccd44658d3e668ee3.png" | "1b1b1301298aa1b8f1295737cf1919cf8dbb53a1e61bf57f9d491e32065baa6f.png" | "1b4e45d8e51951216454495bf53e988f650f04dc69c905126c88a5c052f23e42.png" | "1bb8f9c121f1fe19ef2a297092ed670c93097ba58c798dbcbd483b63cc345515.png" | "1bc853153e489de848193a3749bfe876d6494692b90fd8d39ffd8cf63d573301.png" | "1c8724f145ebb34aaba0c491e356905025e3b8f5bd49eac6a825a11b509c06c8.png" | "1d422961c7f0c2a0ed48c8a5c594648297007abaa0465c6f52ba765a0ca22867.png" | "1e52980a4f927d6874740041d49e747bf42cefb62c7bd2ec0d95c7be9ff01c21.png" | "1f3e56527f7658c9ae0a07f7976e991cdb591937a0fa00883fad02884dddbe7c.png" | "1fad0f26b20d4f2f3d73879f9af0cc274eed768d95496dd87d520b0516c64da2.png" | "2023-07-24_10-58-29.png" | "2113899878f13bd9df9d7d3094bd33e5635c2550f27aa2909e810cec61ad4caa.png" | "2212a8492838ec2404300f0b000be19f95982daefd8514155c02d9ffc50b5673.png" | "22cb0cef1ccaa516ef92676d3c983758286cc9d1e376980b774f7879a2138e4f.png" | "22d19332230177848d7934a7d5101650676ed62b678bc782dee4663422f2c128.png" | "2315fe6a8fb8d2e6b4351d864128dad66734bd82bdefb81791d5ae52a9a9ef63.png" | "23181430469a9c8e574bf27c9d4e3ef20b1f0207a418db9cbb1ea3822f7cdbcd.png" | "23901ef6e3a4e8c36f5653b9c87ff91bfacb30929437c640d7a6f6bb6ecf7ed6.png" | "23a2ed3c58cd01edd9d6fc48b87b73b60fae0d749ce00ca61bbc7c60e3892140.png" | "23bba920cf1638560bb9f085922a100f93f533735ed3071ca23f296bb033955d.png" | "23bd6099107688fe5784ffc1774d47fe10e5d41cf7e5b7e141ef853127234f99.png" | "23f2385f05f25ecc42a4e3bedf466eb86bdcaa0cbce324d39e883ec0267a402c.png" | "242843db8e0a4bf38b2c4f78aeadd60f1783585902fe9528107ff3f2d955299b.png" | "245733dd1388cf98083cb0ee300e931257cdce15a9748f94b092198cee7cfeca.png" | "25be7a1121a26c104fa4577c08c24202783cede3ffe6fa0e5630a30d5804fc93.png" | "26a87205864c76dd010b18462bf9704394672eea3837d9b94eeede038cd7f261.png" | "26d004045e940ccd3119716b0a27de05e0a952b1492d74aab1835f454eab98fa.png" | "26fdcfa48ee6f9ade03ab0b44bea3faa564025b5392c2538420bae58ae1537f4.png" | "2732b6926cd08fd10c353e5e1506307621b0efa9325f8b7ad920f9a7e401145f.png" | "27bf375161ac6a57c59528ae614af9360e71d81caa16c07a4aa4286fa9e5cbbc.png" | "294c58c403772e251a2050d0cd61333047cedf33815870de6818022ff2e54981.png" | "2a0452da4e6ac8016e1f1bc546efcb3fbf2e75aca05ab700d81474a98c970da0.png" | "2ac37dde22e5ff6580e890ffa1fe804b3e7769fe4f0aa033d72ec752c8e61379.png" | "2b0d1015da51221f460223b6729cec91bfd5c505709346d8c4804578c82a58c1.png" | "2b15250cbf524b7daf358af4c99810572d0396a2bd5e611dd2eed9cdd3817cae.png" | "2b3d1bc263e7ee9082bde1dd1dfc36783d7718ec935294ae26d62a41db2a3002.png" | "2b4644d767f4909749858e9fb3b8ed5905a3c1c63fbd449f9acb603850dc758d.png" | "2b762f1086e6cb414d2137c5c12f44a95c233563cd991ba140154821e2d55995.png" | "2bcf78d4153c811d9fdc97833f8f6c5e81c8319972fb651ea1d92e7244b3dbf2.png" | "2c386409b8a3f5f0d4d04efd9fdfc12a3437b49535a433afd6fba2a97baba812.png" | "2c734f7be997810d2f7fdde02f1b1282f981b3075bbc1979e26faf384590ec09.png" | "2cfb3a761b50a090a72939054e9aee5cd827e8c30bb168d3982094078c90fd3f.png" | "2da69e2d9b45d8d399a747dcddb917148e66df7b57d2cb8adf4b46b52a5a51e7.png" | "2dc9bb46df29d57870d3c894549df71a502d1f4ffbecff1a470079b35d88f844.png" | "2df0ecde14493c7f4559d124de105aa5aa9c9da21d3008d3fb23863874d78f51.png" | "2e1fc51adde0bff1221a9c3cf57347482c72510a326360e587792a6f7e3f980f.png" | "2e48271728d9a09cb009e779c7f90cdb8b4b657e13fddd102f745b63169ebf5c.png" | "2e8bef71b6063b7077786786d5f6e4c0cac8579021f383343fd89e45a8d3be14.png" | "2f4b9e738b48d5567583a5e2d4278fde58da2ac86f3cd28c0ac4a10dc1760e6f.png" | "301b39a8da9a848ce3b047cdde6b10800fd1a5ada1e1e22647ff3aa943d304c2.png" | "302181528b0d6980832ae8e0b78bbec500ec0b573a59243b7e8e363238b68603.png" | "30256f8f6ffa76bc2d66b607a3cdf87f37eed72d41d9d8330d2335b9eab9d594.png" | "30885f4c80fe15823ebff5cc14a18d3280fa6d9de388ec5ff8b4604540a85eb5.png" | "30cfc7dd87bc48e48f1945c48deac17837c3761f0c8b16106ea9e301fc1d25be.png" | "30d084de0567be6c71bd6b919b579ea1e3b58c8e7153cea7fd6e092c81edd8e5.png" | "318c00d15359335758fb11f8808e58652eab549233185b33a39b03536b8c103a.png" | "32e96d1ab97172f422daf99241ad8381bceaf54c9e41348467f26f3faf0bb74a.png" | "336d325bc89ae60e8f7ab396017ec5919c45b9aceb86c356f16e6ffc8f84400e.png" | "33b9ff9e21bdfcbef77ec96a5988826c34dde5082db1493ddab876e372e32b5a.png" | "3438064ae2ceb26fae6f12366ae28275511a2e0d1818eefaa59db398f76cf689.png" | "34b361c62abd68296db128f04056620631fa6228ee18c086f9b363dd2f815d09.png" | "353a1591eb17134be17aa2fbc5b499a8715c95769b7752e52af3a7447d1c2640.png" | "354b75db5c1dcb7700295a2ce206520c180f5c73bece5bc449c9833ba6dd1cf8.png" | "35630a0d9c0c2042d1288b6bc0c1d0a1e2472d94a3520193d44539c5ad251c0d.png" | "364f4e863f2d8000734a8ba7fc7e78127c84f15405ad5ee1920e21f6c2bd0478.png" | "3702b1967f4aa202290d1015e3b4ba6c66a4174fe34b2c2cebb0756de46143ce.png" | "37428eb2ce737b88a0efa01b839ea0d2626f96cbd39daba4b30b4337c2947e71.png" | "376432e14be80fe4a2603ad05a9fa1719a58cc8df81853bf8d0ce7f247fa4e7f.png" | "37a835115b6b2d07e086e5ee946c6cea04e2c119e82f60a30f49c758b7b6a420.png" | "37e09959c0889799b228a25df83a55767b14b104b27a90c64882dc11b3230647.png" | "3818248ce5b34eb8d0c8120092229ebad1c46f7deb9296538562fa7d2cb4fda9.png" | "3879e3892058e6ef54eed26044f9b50782e79bfb7e332731a066137a4cfb7fd5.png" | "388b060e4b952125a23f851fd70f580adeb679002f824a50814558b4961723da.png" | "3a18041a484af79c8a68884c4865853299959342a5af21bd8ddc411bf2a48162.png" | "3a249c4b161b0cf37d5c00ab19793e1bb26dfa1a9c23aa54dec2255543efa93b.png" | "3b5f46a0baf076608cfaad8226f015cee4afdcb59b3eb69dc5a30aa0959b3dfe.png" | "3b6f9277866c594a19c8a079136f0be6c96ba6a08df71e52f04af7aa1f1c205a.png" | "3bf970aa54118b359c3b61fda5cc16c66c2a080b7ac8938c3a6b624a37470391.png" | "3d2cd18a6605e55c3c0cd47a746b5fdf7cb7442f51bdfff8dc613892a5a65bcb.png" | "3d9d79b4f6b8e3f8c5a6a4d708e0f99dc24c5ecebcdd2c6058c9c8f36f66b712.png" | "3dc376133e034df03c7e6b8006f7b9c690ded463de5a392dd09b947626be4842.png" | "3e52c04107fb06108f2c7897beb944691178f12726519b7d8caea9b64e1f6c0d.png" | "3e91dfd40dd2e6a1752817ee7760cf2d7b6b8076749e3ba61cc17d17c35e40d7.png" | "3e9f0948f5610a8d4abf77b38babbef203ee20b8b0721d2713afeae38bf72476.png" | "3ef9b833eced6de3d874e880a2b92d060e6ac0fe59e881adfad84bbce04251d3.png" | "3f153367eb085cf197a3f5d393cf97ca61d6b099871d6b933961c4a99f1d5b55.png" | "4007c43882170bd46d08370f4d6e0927c1f66d5529de1ae93341e255d9274734.png" | "40bef9e07f89dd028841e057f15f12a74a9eec26ef09e4a45b99190374ba7897.png" | "41ff155a300f9846cff3593b258a9986ff28091a1dac21a40636ad3b1d4e7e1b.png" | "42b0e4e544ac0343456226426db8156d0ab1ba17c2eb7cfb46ccc16abb9c17fb.png" | "42f65344df6278e57f12ca5c00a2c1e8b32558e3272f65d708fe8ec37593ab11.png" | "449f3442c2d310be229066a2c584d99fc2e79e2cf7b25544a1ce9a40e4e6b875.png" | "44d01e8a12d7c47cacc88bf15c0636d6ad13cdef08239fa3397bcb4220ad419f.png" | "45453e44f5d5c1fc3734b78c0152911b54f7f6995135461fa2870c72b4a0dc55.png" | "457aaa3c302019521c3b41cd37488e11c3c63f834e868606e3379573e874b83b.png" | "4582a3eda2fcc64f78c24a9b82cc9f73eda097468afa7de86890c0ab690e10c6.png" | "46534c7b1a25708459f73cafe03e34f5cb74bec3ae0d378825b3876994ef0c6e.png" | "46547041bb67aaf6c89938d0e31e2e9f643cb3152544725ab899a06a573e2b43.png" | "4786e3a7c8df5c3bccb5b29c4af3c6f19cd7d1b9dc91f3ef359d79811f62cc06.png" | "491ee1e8e66bf3bbab877472d1408afaf23a7bace1b17559987b15ec2c5d042c.png" | "4973205b4ccbeecd2d57952f583ee76169d81a05834636b40c289226157ddf85.png" | "49c4d3f0e5dba52d8e1febec6fa2069ce90a489ac13fcbdcd1e796978aaf2e93.png" | "4a2f0bb3d4002fc891965e5b5d5e647c501563e53919e9a9529332c7a92fe2e7.png" | "4ac8b2695095d072d74364f289014a1f471733af2dc1fdff659c8aeaf3332ac4.png" | "4b6cdcf0d453cfb6d87a64c653d4194c838d4f9cc08fbaf3ae40a8b29f5c0bc5.png" | "4bf01e19d4b34078253fd048ec77491a54a1a5f1366014da9ee053dceb56c638.png" | "4c079e0936605256b38c94bd31c2717f8fb0408358d754d2b857b9d31ae2e6bf.png" | "4c7cfcbb81c6fe3f5982992f431c987c59a60a9b914b05d59683f49bb07cb57b.png" | "4d109abed8024e9ae3795eb6028bb886c44cbd201a958ebb0e97e5efd5977c36.png" | "4d8e28fc990fc2609a20ba308ade3862232d7cdde8437ca529bb4e2f125bf096.png" | "4dfeb7c95f2733e498fd7337a7037b36ac18837b48c7a2a6d5724acd34686870.png" | "4ea60028780fdebaabceefabb3554fe88757f140dee62f5c5545aeea010db2e5.png" | "4efe165893352b2c08368ae81b380dfac9aee01576b7defe7823192fad73f97e.png" | "4fd68921e0dd2f3a47ec19b459d38efbb49f9724591f98533198063f8a3397de.png" | "5068478f96ca219063d0449e873c3203d2ee2f94a7f3ef57bcc8496814213fe8.png" | "508566abe7f88190ff49be7b4b2c7e7e1a659dff2762c284289154bc839e425e.png" | "50bd0a5cbf5d96f5cf1694fa775cf3f5caa5d67f1840ddd871fdd506214802a0.png" | "50e6673fee18359bb648fc0ddf0a502923c92c6ecaf28b5eb6557d728b5af541.png" | "51388551e3cb287b829a10e696415fe95bfcbb45b79ba19daa540e293511ca11.png" | "51ae2e447762c7438d23f797c6fcef37fc10a035a1787897fa040831592068cb.png" | "51ea7daf8eb6956c7d42b953579eec4f6491fc492fd0a63397b96eb1e316f4fb.png" | "530af8fb91253ea36d856fe6c8c9bf1249170eb4334cf8869d976b1dcb266da6.png" | "5340bfb9e62932ac7f301d18e6127628d1a5dd57a35317bbf16a5664039c8c1e.png" | "567329aaba4ed5f30c8a285f35e13545898467b51c597d04740c938d2ac4a86c.png" | "59510c5aa6d714a9b6c2185ee12d9c74c8f453d11a68161ae62e3ef3236582e4.png" | "5a0ae8796e30d143f698c3786fd1d2aa4251326b43d8af1a6d045fe0989b8954.png" | "5a72f2227ed42c73939ddb094806b7eabaafb6fc9e5f2365654b97a6a8d258a6.png" | "5ac6404da970e5e656d63e7a728288ab4b2a2747476e58776e29ac3a3fd6269c.png" | "5adaaf472da71cbc531c3089d0332031bfcd9597d3e106dd56bb53704ec155f1.png" | "5aeaaa7ecafd4a6972947ad1b7abf977700d23efa4585f3fb10301b0b63d026e.png" | "5ba8388028a6768002d3baff8b79c7722d14cc86e417d4fa1e82a16ab3080fdf.png" | "5bd1ff8f9ebd14e35a9ff144366bfacbbe2f2404208370f383fbd2e5c3e21bcd.png" | "5c14e6c7c5ef83fcdf450c8d45106be8f32740aebb9f7b04b9ada7f8768e80a0.png" | "5c2675ab5e407fbb37bea06a1eeeb1fc337dc18997022c5b86220c8a4368d323.png" | "5e8c12969e1b38c80caaa829be7331d6c7d83d955c5d39d041ea1c9f592204c9.png" | "5f29aeefa5459ccf7f44d64e349dafc73ee3760ac569ab0f827e0a3a0f713dfe.png" | "5f5ce9cfbc443c33b321fefb54308c8b00d044e956c94fe4e28ae9d5b11d0631.png" | "5f734d8ec1e0d6045388a9087634622c0de768dc733a0a70edf866d05e9d6277.png" | "5faf07e34756413c84d98cc85ac94b546c4b88e9ea0ab877bfaec7948a3b536b.png" | "5fedb80f05fd1725852f3290dd7439c5bada5fc11e120c5ea3148bc6d2263372.png" | "603fd86d2f085e49c5388dc634aa174dab504720f23a8752ef7e8a7153a8999a.png" | "608dda502e27de64f3abd0d28b4460f85110f3c373549bc61298934aa4ad18a4.png" | "60c58a09f6df5e2897a89c1a3e4b39754bc30378ae3e04954086720bffcff70d.png" | "6102c572bf135a2d4fbf0dc969a106ba2353ad22cb4c93ea81a7cc0f54e0d79e.png" | "630f3976c59922a4345e2690b7fc62deebe8be39c17c61b5cda984565ca718c7.png" | "64a4546f1d8b04bd6a1acf8343debe6279db8a6c4c1549187ef435bec27450ba.png" | "650061b7fd78d57507dc6fe6806045a98e423c379a9203c388ff4a2356c73134.png" | "653f75991c10748da0633575d361e7a6d85d39c63d2f8620b13a3b41f98b5e3e.png" | "65ba925a18ed5807681d636cdc7fe333f19edede3a1047cc4376fa7098657831.png" | "65fdca1bc29cfcf06e685510b0066edc6f646c3cfd25e228eb1db6734692d837.png" | "6604131cc422b0a534d788bcc9f879c25371210e82324249f82eb38e6ebeda7f.png" | "661c5f1e0e295f4b7b91aabf7d0b4665457d3559dbf3778f7ad762257665ca0f.png" | "68213c1408080b86edebf143ebcb9749ef1e31180510593f5944d5395e5532aa.png" | "6867bd7b185ddc9cc09209f910b2eb6e540f8f72ab2becb8ac126504e4a88ac2.png" | "68f12321f726e0b548224e71795e252b6085aed2cf8971ef3a06a2b7dc8504ee.png" | "691e31061fee3f12bdf54120d57370b704799a53d79aa83d2f9d7d55b0d1ff77.png" | "6a0fb2744cd66a5396869b63000ff7da378d1c05a26b17e7f419d139b9712eaf.png" | "6a336930f726ab0e48a011695b883521695102d0ae4d8ac89dcd44b6413d4e0b.png" | "6a4686ff925b09d44b84a727966d8fce000e91f5e439302166193b4846c74e1b.png" | "6a49fc1fbfac57996607b7fa22399da91aa606cb680e49003cba2c2bb11a31db.png" | "6a7be9971cfa118d013ddee8451a19084c25cee68da4ffdee171165e7b9dcf28.png" | "6bf86be6707d9f46649245f3f8a7363b26113c3687f2bb6b40ac916e0fe32d55.png" | "6c17e36e70082a6fd121abd8eb15d54ca45cd6c4954e3080062c9cbf962ab173.png" | "6da8beb6c4afd3a6e8e15c8c5b3988981922d9130538689d314c3d4baa02549f.png" | "6dceaafcfed3a991be623444b2d299b47b692d577c9cbce0094108827e0ca65c.png" | "6ee02eb90d28325529a89621002df4d75d53f06006c6db7f72de955d272cb398.png" | "700657cdd6b72fb48dc81e613694fdba04cf2a8943dab7df9c08644c2914321e.png" | "70fc6dc58482cb0ff929be8649568c28facb1d73f71a4f066ec9d5336d6ce212.png" | "717b18a3035e486309aa27040e89625d05580df12b6699ffd02ffac7163654e7.png" | "7180bda62d4290e734f25f928ff57766191343c29a1aa5ae6aa9a128a23082f4.png" | "720ebe6cd9b9dfdbbdc243d9d784f6a46671d73c1750d452c7f5f8fe403e37cb.png" | "746c52fce9498f1af275340c64f3b4277715e763e0587404d41ab42fb945b366.png" | "750d36257b02ab7a52c7b3c01de4c9c35b219e30824fce9cc8a2c417dc42829a.png" | "75ae9ea412781d0e656a8e1412a49ba25d9476ac5d3b5221e1c08b516b5301ff.png" | "75c2b35846919449548d1d55de5dd1244f72d40fee99af367e577d8d03770681.png" | "7a0ee5604946156b7f31a95c324dcf02cc14ac59242dd38632dcdaa42c78dbf9.png" | "7a603d3dc5998e6cc4db6c99d86ad931d6b45dce1820ccff80be3724258fa6b4.png" | "7ad3be95acc886392233f4e36b367f7cafb500b36fc3d202c277cf3126f31fe6.png" | "7c799c0b13150ec7f452583f3f17f468a9cec83af2400de1b57ce73d1e088928.png" | "7d12c98481459268644529acd354845ffe03fb76ddec9e8fc4de5fdb25e14f11.png" | "7e42653d32ee2e61614dbb1eb4613675b008e35cdc830800dfc1fce6f657d9d8.png" | "7fb0c067a66317a32427ef18598bb0b6be3c7504d372fdc4c331b9c10dde981e.png" | "80cd378ca80808b2ddfeaadb428b3666430bdefd922a415eba603f07e3ecb4d3.png" | "8146087cd45226172f8f583108416d96df5c726dac16ed11ec1c9b09612308a9.png" | "81dfe2be3c15d810d0be726f90d1750f23dcccba532baaf75132aba2f3c8a254.png" | "81e1a4a7b3d0c74daa0a5bc40b1e91abb67f7a6bc5bf65e2a5538ba0087906c0.png" | "828b507feb099fdb42005fe1bf8ddce8caaa53a8d9bbe972e78962302f69efe0.png" | "82a94a50f4baf0024b3c221ddf783723d300474db18ed700f716876b0b606e64.png" | "83b2f91aab6a3fdbc579d204e6d90b75a8ad71758f02245158df8bdddc0466ad.png" | "83dc6b2dfef175100cc78fd9308274f28f2269e982f5dd061f9d47729c80b525.png" | "85ad751eea31a616b3a7c9bc85a29fcc97a9a958d6333cd424b28e04cf0dc787.png" | "866d7ce1e88c40e75abe1291a555c7bdfc6d234e3727dcd250a9d3d086c6e57d.png" | "86d343b2bba22f38a2f16cd30b0ee40e9691cafe791f69f0c50423be02b49b85.png" | "872d754cb8b467debdf17e1f4e6d09a6a27bbf0ec573d6f4a6c0fa2994af4bb3.png" | "873ef92ca73fd4edb9887e1d765aa6bf5aad844cab923d2c996b96aae1908138.png" | "889163f5ae9e2ea2bd73d85b4c9c647337442f37887071c08e8adcfcdccd24ad.png" | "88a2a7c821566400094adafd9affbe606ce9b9b273bc72fd7e40b23b8d5cfb48.png" | "88ca6a26fb46a1bd406d1a4201838a833ad079ffdebeae9e6299ab76c607247b.png" | "891eeae0374ca79e35cf7ef9d36e865e417dac544633830ef6e384bbc5d2d011.png" | "89459c938d265bb02f650d05c182edad19cca1034a7aa25aa63a69b5a6511910.png" | "8c9b63cd722c2ebbeef765bcdb7d5df78ca6503c8c8626902d667bedd4887d6e.png" | "8cbcb3a0856a96b2067291361c764dbb24b5b0b4e0125ba8a6569e2ff8ecebb8.png" | "8d43c0b703ad08a9dde70c67730be0032ea9b899c3ef43d1cf4496542dbcdec9.png" | "8d76aaedc7b5fc948f3aa9b3d3bf2ff4ebcbe5386bbdc2c70a7025359e10f98d.png" | "8daa15847f4057a416fc5c777157e319a9458744944c026daa1209be0b75fb85.png" | "8dbeac85286627b586f12f2693316ac9b3434ce100eb3ebc7b9081773123e18f.png" | "8dd2978f72152d9bd63c3e1823b34267111e3676ef689b7469fd5fde47228cc0.png" | "8e6e275c5e3076760f3a9b5f835b935d52615adeabc261c4047c4f03130dfe30.png" | "8e908fe4465d35294307d59dda9dd3c642f0907623d5983a3f197ab3ad1773be.png" | "8f22bcddc1b1f7a2d92dc2265faed11ce605ccd1a587d68969afb73eee6c7aed.png" | "8f64ee1e5b6013e2aca7761f6107d8314a3cde8bed6427aa90a54c11d530955b.png" | "907549073cbd1c19d2fae866031897a1b9ccf7d04b01d694bb70f6cf6027adf6.png" | "90aab77e938aa7bb6d1918bb3091bb5bb1886e49119fb047ab366e481caf3128.png" | "9329aeb7e7cf86d0e9d6a7b67e0b7cedb6bc52e94e01a18206a9f86d680ab6ec.png" | "93bd672d4ead0b2dd5d1888cc0392e0feebad8e4b23207c404dad376567aec76.png" | "951e916de04c60bccb57137de35e58560699fc104cb98865c1931f1dbc33609f.png" | "95d66b389a6d99cbc285e9224a33d2ce7ed273a656faac9b4baf0cf5ae9ee7fb.png" | "95dc486fa25e74509fa8d85fd3f5f9ade62336d1890a64da91fea387ea627c01.png" | "96227bc44a20f37c0203571f9e12d97e039ba965d871c7f3be83e48c3c53370b.png" | "969316d559b378d15f2af060c80f59d5ce7817d5489d0cea21f832ae37f28af1.png" | "9699413b43a64187d47a5147210c3a3645c85033de2b8d659f15cc374389a23d.png" | "971b3b5d327b4831f75a74a3c8e0c64f7f39302c5d38e67e176de412e2a9e7c3.png" | "97287d2075d1cc649e7e2c3270cf7c3d552a2c7c06d695898ac751e5e834b8df.png" | "980b9d782f9d41673ea8d50d57428245520f55f20cfc7b2a93aabe562d118646.png" | "9878e0e59d39c396ce48d7b7bc9a30e6f6011306b4b93165774a10eadfd34c84.png" | "98ff7213052f2f3514850f86340d4ee5dd730f5bec499201cba897c76409f81a.png" | "992e019588e119db577e28c3bd09f69bce94200a57b06a48222d334cf26b45db.png" | "9960c8d37693622cf1ddeb0062b1d623b103f9c364f7d00466a4665dbd7abbc6.png" | "997c2bcf9c4a0341705f27c621e50126d845fa8b8665025b7dd61c2e5fe1f190.png" | "99d55c40ae895b1982e3e05122406e83106b48ecdf6673bdfe4875edf501d3dc.png" | "9a3b62b5d104f3dc7ac4c50a1df6c0a7201b832035e97689af8b0294352adb6c.png" | "9a9176eec21eb3de877d01c813f9d1a22d3a63df1296a28ded75315923afaa1a.png" | "9b17f8e7a2dbc54ee32f9c18242ed45ca5e85b7b3a8524d69e8b8f379c35f581.png" | "9b6b6423de686215b698ed59b8b1f51256678b9914421df79311c2ac1393bd52.png" | "9b725cc4c43b739856da3bc86d6403c66217da3acf81e40231460c413e5b3acd.png" | "9ba1f29b454beb5849f0a800ff864ea411d3d199689a34ab4f4ac978702c0eea.png" | "9c8fc610ee00f46cc7774d9183a420b1c869026dbd0971ac3d272c687afff735.png" | "9d8951ccac6640c50b2275542338d891d1000e3806836f64434818b931368109.png" | "9dfd3e55ac0e755d11a04d360a9067b05492f041e38dc33bd1f1ef940bda843e.png" | "9eda215402120d08cb72e79aa7a08cf00cf437395690fdbf1b56baae58e470e5.png" | "9fe2fb2c3fff61c49d434339a71ddee66564a5da1f44c117c414f8f8d204816c.png" | "Angled 5 - 512x512 (1).png" | "Angled 5 - 512x512.png" | "Angled 8 - 512x512.png" | "Circular 1 - 512x512.png" | "Circular 10 - 512x512.png" | "Circular 3 - 512x512.png" | "Circular 4 - 512x512.png" | "Circular 6 - 512x512 (1).png" | "Circular 6 - 512x512.png" | "Circular 8 - 512x512.png" | "Radial 1 - 512x512.png" | "Radial 11 - 512x512.png" | "Radial 9 - 512x512.png" | "Spherical 6 - 512x512.png" | "a0db265a38a87666c98745b28a7124709d59c6fcd982cfa061e71b08a1416763.png" | "a133649715b8c5e5c9e40a1e40a18f2e46d8e63c79ceb6aef7913f6f1fa210ff.png" | "a1ae9e97b26717a2e077ef73ebd8414ebf6f12e35c5b9a50463f36b8bbf81db1.png" | "a25d002802d2f9859c155fa3d8f370ac88deceffc973385f72cd24e7b7bf7dca.png" | "a2612eabb4607b1aea8bd36de2e36b4434a0d46387246df7ce9d148739147bb3.png" | "a264ef3b68e39531e1afb4f3a4844908546ca227aef934fc947325730a1024f4.png" | "a26564d7612637804bc8c7922921b06f7520468f98e8983713272bb7d9c9b8ff.png" | "a291d8e0730134a6fa1c055040d9ad83e86e3d81eeda8b7aea518b7715aa734f.png" | "a3bc0dbcfa27e3a340cd1987c5cc93d70a51a489beaaf2b1bf7b0d9733fa6e02.png" | "a4793c0232c9c8e8c4364f155eff56a9e8760eb3086cdc47f31def5ac86b5d67.png" | "a53aa22a86bb84439d9d05c1869926e93ebedc7a9041db26cf6d9dda5a2920d1.png" | "a540bf30357b6f381e1551af65cb366f60e9db5b2f9ad2dc741ed7c20e23d8db.png" | "a65f533fc35cc2d42de1993c247c40f331f019d27b4d2a09783ffebbcbd99fe9.png" | "a671774193adf9e29903f6640ce0069b2b555ec27f0e294263f7b361d8ee65f8.png" | "a6a0045708acaa78d6b5765c164203192063baf3ff9585159ff8e7e48c07a821.png" | "a73b523923f91b87ad62666ef2d3f3973d429242293c756777ac1666bfe12e2a.png" | "a77c932efebdc4497d8ff200adf68efba3bb28ca6d2f45e326c99b5379bb58ca.png" | "a80d57be5260a81ed7c4d02e726af45029eb45b4fa02acd8dcdef70878c7ed83.png" | "a885757596a1a234d9f84f366f817a7b6f1a1d2fad98e4142a366e084e4240ec.png" | "a8ec1f956778186f54817524ebd974fcbbfe6d0d8b000d211f93a793f4037004.png" | "a9e70dea526e324a8f73c43853944c38c57f9188cb693a413ddb1ca04d351b59.png" | "aa6f45a8b9621d8ffb5747d0e86697c4038d67eafd265370dbd62ddfe19b9174.png" | "aa7ed853d0ae85f238cc221d697d1602a40fc21c75fd51bc482dcfb7c59ef77a.png" | "aadbb39cd8a5c74fd33f6dbc713b524b2ce233a674c0ea640a9e330feff3f0e8.png" | "ab5d805ea44870b3cbbbfc8a23724b953be2d918e8a432638c222d8990885fdd.png" | "aba02b374afa21fe7fc273a7d56e23db993b03ae848e95a7f6a53b93be55a2e3.png" | "abe0928e2cd77fa15100e9dbf5d1fe5026c2ec712c0dcd62531307de55d5899d.png" | "ac05ad7bed3cd3dea3c31d2db186644db83b843435a5733b712d56ef2e3f4425.png" | "ac0a861db7eb9e666172333ac2694f2cef4a0058869f1372b16902f670c9cafb.png" | "ac9a76ef508ca9f6397ef1984e4457a6aadf13a7dc4869fbaf6472b30fef0624.png" | "ad63e40da11aa08aa3c894783bcffdc711fb7781a3da3e8fbe3c13eb9ce8e4ff.png" | "ad9057cf4345e994a7f6f2ae71a16abac7584732d69d2c2b5f348022308ba014 (1).png" | "ad9057cf4345e994a7f6f2ae71a16abac7584732d69d2c2b5f348022308ba014.png" | "ae6cf428ea315bc88cd096dc99fc13c6d5211af981d307a3d21940d24ea1100e.png" | "ae71d22676a2253c6288abf4a58a18c912dd0a5d9de3c21277eac2d1162e2b74.png" | "aea5377a802fade786abf0b6993a2c2a2417dd0891c409529fb420cd6e42bc5c.png" | "aeb2c86a7c14d153a4d0a6e01f0bc95a54fb18cc7efa9fa38c4a462672af383e.png" | "af2c092e88f2fc715dc8a62fa6511126bf6088d034fa1151cdf4db26bbaa78d0.png" | "b029b4604b1f64a6cc69f97026c8dd68d158f41cfa82cf6b8a83ccd5222759c7.png" | "b0ebde92d8d87cf3193dc5cc157c5c2d83ae2c0d41b60252c896e6a23af03048.png" | "b13daeefbaa3aeec34c8280b6667190e8db9d14d9ec42c6511f69639f9dd53b3.png" | "b16a22a5788b7a74e7e59e8f31439c26bb4ab4039935d21b6ee7cfd29348cf5c.png" | "b239357c715d2df51aaf24170a8d1907b9e56e353191bb7d02843f69d71a517c.png" | "b2a12f60fd10dc3363572299586fd17cf2dc65158d499efd6f4b96c238d93f87.png" | "b2cb75ac6ff8e51e12d54bcd2e741aa0ebbbea419309c6205d276c739ce72b27.png" | "b3b8de713f8f74f9831da4a3b9111f5bab1af66e27aeeb3f99909ee2b70ff386.png" | "b4012b32117e580bce1854c5a39dbcbd348461b8d462a6813a4c73a757a78654.png" | "b6564d2295f29ed9e3176738458fdf252a88c6f479a360e9e01b0aae80b845cd.png" | "b69b0a37c644088e707902754898efa58e4574adb3a0452a9ba8448ac6716d48.png" | "b8cefee842bf0ebcc0470a8ca917548a0d5ba76eccda754abedd587f760bbf30.png" | "b9f9469141808b4779d4053aaa1de24ffa172ab09be4a0cbf2a9a7d89dec7bf5.png" | "bb094c121245801db469f4d7ff18b642e33c69349b1f447de558be4441975a1c.png" | "bbd85ead9fd832ac7e85ba85515ad3612d562f5f8a21f6083364653bd5a4565f.png" | "bc0d8ac98d295c3539556875bb89bc333fc7f385f19b9ad15c040bbc2961abb3.png" | "bc2c6a164037e0d8e3900e5393e35a1eaaa942451213771c37d83181020d3f9e.png" | "bc3c23dab96227c68ec029a987de4e1c4e4b71f1c9792b76043bfb998491271b.png" | "bc813e4129011b56979165f384f1690233b96b32665e81fd81d77fae183da05e.png" | "bd6d0a38bb0a3da4d0eb821be66ca4d37193d8b4317c5c805b9be5b5b0df7e53.png" | "bd8c3def3f3fc95bd32b7e5186f3ef5a3881f3628984741ea17821f72355199a.png" | "be0d76972f21c306232961ae6dbffdf70bcc8cbfcd6df0d14e951375116edcaa.png" | "be377b9df0c53d41912bced4d62ecabdb9889e804a7fbae6328a92df4b62a800.png" | "be681212e8edb5bc7cb213a0ae60a978954eee75d1fb4dd45f0c0dc9c4e411a0.png" | "bf26db4c9d1091a4ff963c97b0e2b2d22b97a60b0b3181b1c9e12b9080e20ebb.png" | "c45d7f4a460f3bebb60a20c85e6bd9ee12dc38f4cfe8883c985eb4aa6d376eb2.png" | "c474bf0882a03634f3fa8e73c0f86a278d6eab4a1d35f3699fc2b19d30fb0fac.png" | "c5645bd849afa52e0e7f2fbea6648485ddd0f55aa3a0702e281d3fd37b287c2e.png" | "c68bc36bdbd774b533ce3aabaa352530c41808937fdc729a9ca23b14f0ef41ad.png" | "c8321565aa4dc11272761c8698d853b81b92280ead83c091f8146575ebc65821.png" | "c92ffa6b508303c60bd7af708662b62ab6e339a71ebcd5a10b41646367e1c5a1.png" | "c9a9b46ccb0b19a694f195c2fe3d78749e5a28d9e6c3993130983bdd7719f36a.png" | "cad68047bd4e727be7d20da40c436e7567a8dce8dfe19309e81982474591f287.png" | "cafcbff3eefd79a54ace120e510761fc269a17efad02cafeb4577fcaae2ebf9c.png" | "cb1f71d0349e79adf59272c24db883563d7e6ae35f9af312c18460959f6fe421.png" | "cb7022c761d9b62c217923dfaa7c7444fb47d5dac524f46dc827e28ce73cd28b.png" | "cbd8025b437d7fa12f958bf6a930544fb6f61cd3652e38cbb104b3a1e70240bb.png" | "cbe31ffb99a39fe0964f629cb79ed23ee602c4bded06825dd225402285d0d084.png" | "cca25a21d1404970455849f7f9487e1a5de640a7122014e99717d2a9839ab231.png" | "ccb051dc541052bc5eddcbd51690ae7258c144c8e8bd6ecd6817c7000f9e7a74.png" | "ccc7645bb074b18baef0cffde71775af9ff5e4025275b75b0a1f52281fe72059.png" | "cdeacb9870bcaa8ec722db3a3d7e34e752e43e9f7ce0e07b7bb25e6607e16185.png" | "ce730ad3f40e04a11b76fdb535ed12c44c3a7f00e563acbd05c96a2b80577f49.png" | "ced8f05d0b1f443c79cdc633fc0633ec8f46075b4308ea7367ed79d0ba1c346c.png" | "cf310cdcbf409050810d4bd00c5fe2b1f8e9ab167bd0ef5fc7abf99174d0959e.png" | "cf4e813f00d967000a8a62ff81f7104f856e819b82d0685969e44e96b5f56d2c.png" | "cff4b3cf0e927a2ec5329457bc6c652bb995997ba1b1ab31d083dd47a8e06e3e.png" | "d052b82aba0a9361758dbfd1af238f35705376dd376f5dccd7d6a2e4c0dd1c3a.png" | "d0577d8809e78fc41092fb411c3580480c792b3d7e7903bd8db8e366cdb845d5.png" | "d0b3d0b75fe57dc26b85a02056c1734f84da8f47533da8ddfd2ab4947e7eb955.png" | "d21474777b29bab3c008de6e7c55f0f100abe05c9b2736a6a5cf7c4a587d0bba.png" | "d25a448b4c1a12779325d260a111b7637521008f04df380181496b260d4f5888.png" | "d2682d5d22c49723a9ecfd3ea009790809c47a0cebd9218455f0393d393219a1.png" | "d2684948a819700cdfb879dbae54ae5bc2fc54bc6c40f88128f039c09654ce2c.png" | "d2f9c798443624fac2bdb843a0e84457926b87fe7cb67cbd4382c462fe939ab6.png" | "d327d55e3864ced33777910dcf9a4d404064b2ef253760f0175ed32d9fe7207f.png" | "d3302abdf07948a5a32475edb6986d5b4cd22451495bcbd9bff125304ecc7a61.png" | "d38f39ec2ca415b4e450f3b552d909b784aad9235e7372f1a914ebfdf434e4aa.png" | "d440807f2b35c533c4e4ea36d92fb6d96a94f23bd6598e9bd50b97b7e2a2ba0d.png" | "d552e5e8156a9bfdfaa102b2292afb6ba725bc5213c9aa6698d9457ad26c135a.png" | "d5c7e9cee25b5b9a81cb94265591b0fbe132d5ebc0d9d03b4d80c9aff1fd5db9.png" | "d618e73c48e663af9a633831ba2927c9346bd51cba24a77d5ef4670d50fcfd97.png" | "d6aeb0f6b2290bb3eb7ba355943a0ecd78d2ca9d6afbfd974e1fab68e483a1bd.png" | "d727b61350376e5883bd1acf5d17496626b6933842ce4fc7f47126adfb960df1.png" | "d7a01335ea903cc0d37be95b553828d3aeb2cd07a224ae008c94eb944929e2c2.png" | "d7a1ca791f404008a3aa834d76e0c310d726a9a77f13e783ffa69eccaa8f6d8a.png" | "d8978e44e3da25d35f466fe6003881fe4102dea9f001111559e4246f242771dd.png" | "d993fdb0ca7f68a6578aeccf1f615c48a2e634d77b81c8dec31b471105809873.png" | "d9a9c7d48f5215e54dda772bafab2b81a4985bbd82dc0c46c73fd89b73033d62.png" | "da51ca8e4f7784c05f0cf42764a8c70719e25364e9d296c2babac84f199569c6.png" | "dab6da0fcf58ddd80f18b17c5f608662eccfc3c24ffcabe451379e29f795c920.png" | "db79398d7a7dd7edfbb00fe23d4af417fb3ab0f4d2c73e8df464ab83ae1bfad8.png" | "dc67a3a240f659e55cb39be8e024ecefe2f80a5353d192ba243ea83c68965e43.png" | "dcddfedf8a43044b93b7dc0d63664c99935c7e2378df7ca1f860da39a16dba63.png" | "dd2e18caa2c44d1d200b658597db1fd7c5c905c3ec00e44e45abdd07f60c7349.png" | "dd3c4ec89776177f40d9605a9b8bcd2f5a5274e5ac4963f18ed7e729dc2c1907.png" | "de3c198966192be2f97798370d78e7302e6190d93525a9cd1e14aeae3fd278ef.png" | "de5a7af6f053f03aaa1a47f529c8baf4762686c89f73f803225e046e8737879d.png" | "df0fe24f0cd6dc030d56dff302949800d04ebc8471746357e68b912a65a910d0.png" | "dfd66426c7586427cb83451cbb23eadfdc694ddb1520a203b1fc3835d150f591.png" | "dfe52dd3697cab54b5ca6fb0ace531e5906c62006bf17d13320b577a0895373a.png" | "e08d9ad763c6d58afe01d10ddd9fdfb569116bc2684a98ed673042b8bd204371.png" | "e0af1667400d47918bd50cccadc3cd365701ea73c45db9bc521e5ff0e192f0bd.png" | "e1151723738cc554e6d6dc3975469e79a2338456e41610f8ed9b81a914b78ade.png" | "e1475979afe9b48a1091238c429c42cae1776ee580ec7db977a4beb50df2bd07.png" | "e17e0d0e0ad7e21dfb8f88e2cb8dd157377d96886f5d81b25002a46f00b913de.png" | "e1f82e63a4c84864851dc05367eb27426752fbef61072f84f6c343b6c3ccd2e8.png" | "e1f870350aa7ce9f002afff84fe35e7baf7a97505ee2fb70517f23cc9fb45a39.png" | "e23212d45965f5336491894e786b23bf12e45b43e3bc41c1998ca53361d9fb11.png" | "e233854a37dbf3ae6164dd0565494b722e97da3b26b55a69b610d92410da22b4.png" | "e39c349a13d14812bb8fbbd1d8b5c325b6d633e91a0f609cb60b29bc13f2ed79.png" | "e477febd62b853e3fb6c7e274a2c07c8e63876b6e67d93ffb201c2a8d709d1b7.png" | "e4ec4229d248c32876afdb142ff2eae8105d409e1d088fb1144a98142962995f.png" | "e58134be0d7924fdebf65f6db5d467cbe4138a19ac93f34b9128c4f100bfef44.png" | "e67573373034cadbd7dcc2ed9d83287d2db7d7d3e038079c3702f2556fe183e1.png" | "e6ad027a22a601d4077e30e7a84a47b2817d78a2cc4b2696eaf228f9d8eb19ca.png" | "e6f7d254e2117fc354d42220301dcd48ab7954566fbb1123e28363f7e0567af7.png" | "e7121646f87304a8eb0d69aea177daeefda2be7e691b38c231d088acafc0dfdc.png" | "e715c4ff83edd32225b6bd07e03343b5b24df5500063067d0f93dd925d64ff23.png" | "e77232724f2276b96a80d2b5103fb80f3666e6e4a6fc0661dbe597e47465ce28.png" | "e79164e0bb1fb312881783941545e005d07ccbbb8cd8ba6a7198523606ffd15a.png" | "e814b579216a642ab4f171da5541051f16982ce5eea312bc10359908ceb1de0b.png" | "e8498567278aee34940f4396a0d4663a5f6205d97b8e8bb7a9ca9954380c5b7e.png" | "e850a7dd41d8a3fbad55ad490a98318c2482e084c7abc9ff147f5d1a8169d147.png" | "e9670c25afd59f0c5a90f499e7f3425557f3090b9bde6f6510e0b66be84fb099.png" | "e969d1ec43c95d14f181210d646cb9529968ee54fb0e34cecffca6741a39ef56.png" | "e9c3b03c94df6f2549e81711dd667ed96b1647bf79c006aa88a9b4a9f2e6f3b9.png" | "e9fa8d7bd9098e7e69f0c37cd9855f996e777f821684c4e6b5e03ef483677862.png" | "ea15b9372ee33e02a06309b77e547387095924d5a087a752da6c68b102cb4a1e.png" | "ea30d7d829ff42475f60035c9c7a81cee20ab0354c252ef7a8c8efbe7934376c.png" | "ec333835b948b8bcb6203cfd669d45163254c5a61416302e8d9f8933662e50be.png" | "ecb46853ce5b38d0c43201582c90b2006b585cc9a8f360553917d346bb1d6ad2.png" | "ed123b9a0d5e4818f35265cdb488819249ef966bf4da7470ee6d047f33ec0346.png" | "ed3aa8f06e7953dde9f98922d8e33ab229a8f21c21b2a9d8d30c40d851a35eae.png" | "ef938834a56c8fb4d607216cafc97c1ed62f56d147133b485dec219bb49e45ce.png" | "example.png" | "f02ed705f1eb33e9f1b15b0d623fb6a02b2d0e2aaead031c0d41881ebb6c91b3.png" | "f04d8f38cbf49e23d9b8b9f56a19b6d7239eb2be62e7051b4e1d66d8af3a0e6c.png" | "f05f088f4cce7f5b4fb2fa7a3ca259980aee32cf4c265b53d6f3c8ffe2e50c43.png" | "f0bf34ee7e14af9a1f9d27cc163c9e3ffb41c38c3fabcfd28d2b764ac2b7e658.png" | "f1b33f9eb70e7072cca05df6a71a1e217a7a23081aefc379c9af88ce93fa4781.png" | "f1b50eb388dc7f56408ec679c629c9222dcdb239c03f11af2bfe73b8c1f320cc.png" | "f1bc3f525c104e7d68cca9b1eecd42bdb3195a05ce2f62f3897c7bd3ad9e8127.png" | "f1dd51c11ef110b0c7c04ba895552e5cd12ae147a475703e699896ecf16c56fd.png" | "f218802f85334c2d42e609809ee57e247543724976c87c01f7223f6f303e321e.png" | "f24af2b3be33e64f0d9892842e1290b5af0f79e6f883ed62c5825d29475d481f.png" | "f286d82a6c64c516797f4154740a1e6119979bb963e4d3dcab31adf13423bd5c.png" | "f2bf4369fe8b6d6b2709c04614774e0ee3e42b4a35fa3937d03f1c1fec3eeb9e.png" | "f2de5f3ed573743bd0eecf9d131127a459dbfde9a4d1e7d2d317d5452a6ab286.png" | "f3a67174435155505491b893ca731205ce649144d84f43aec7a1c151eadeb021.png" | "f3e956879aa5c6f177657d7950b97fcd43181234c8298847d2b8720fc20a4be8.png" | "f3f239e8b35b638c8ceee2363d3e4dadfecdfeecacc660772fafbb999105968b.png" | "f409ff3929a59d36b063861d58bd3532affe645ad681c4c1dbcbcd22ebdd99ef.png" | "f638df4f4ba783d99b627287d609c87313d9d90f962213d0226e13de5d9fd2dd.png" | "f688182ff8f83e5bff6c96d551a231d2a95b60bc3066f204d4080d5d8799152b.png" | "f7bff324491b588ebbae9de903b8f072e51955fba9bbe6eca99945b83e1dfa99.png" | "f84c3a4abb685dd9dbc61cadb2fb70e8b2357cb26a205d29b117a38967051f23.png" | "f95cb6dd0698324ffefc41cc5e45401a1a412c66147f09927d091a3255457911.png" | "f963d3dde7a5618702f3b9173e2b3aa68015602312acf110cd628d79f5580e84.png" | "f9acd1d7a3159a48bdec5c34cb49f4bd12a4dd4f6072f954f100c4f7a1d54e04.png" | "fa45fc6aa5cf7586eb40818b32b5c8e9db8b0d6f28fce95624aa244ca3f5e142.png" | "fa4949e7ebbe8d78fb6735887c5e57b43f358fa6f806eb0138869733b95a7635.png" | "fa54b16780255584df81f7c4efaed50b2ed69bf1ba43f53204e44a9560fd81c8.png" | "fa690bcbc50f0cb627e938718990b35924b1778d030c08bdde831229066346ca.png" | "fa70db55f59ed715af1a92479ca78a8d735dd0dec3e6d9ed85c3997fb6973384.png" | "fafae3959553520d64df0c63f1b3ea7673ffb07f6a1f124d674368daf2a176f7.png" | "fb10ec352feb939adf2c8f9edcd029535c19775a9e9e542d93630e50036ce8da.png" | "fb11ccdb3da6f162e89440b72a44d6439c4f6c4e98089c376803074aee45d158.png" | "fb9529d1dda7b1faf1fcde52f8875440fe66920bc259bcdbf9587538234f143f.png" | "fc9eeb99ff08b3dd5b376f61b66aa0ba93902e25f4b85d02defa738e7278184f.png" | "fcbd9fb7dce154b204557753402b2d67d358ef69428bb096ef36e90442294537.png" | "fd3a170292dd06f14a6d10d7e798950df7c6ceed8a58dc0e1a583b9362f03155.png" | "fd3cffb5f7538770bf0442da2a02cce8d8b83c74cb6e4dd1601e37c9d9e3b443.png" | "fd4c698c81674720f6f0aaebf3cf5b8b111b20948a853fab78f15a07b4a7314a.png" | "fd9819e61bfa950458f0353de0e39c64a0c7976f3cd06ffc038843e10dfa31dd.png" | "fdd641be331372a1abe2865cf2cf20db3e693a679fa36c08bfe85ac99f039d01.png" | "fdf1c76eed74a0430e63c7022338e91ed78484aa6b843f9dbf7cc427177be66d.png" | "fe052816594c062e076dd4d4804638b8f14be6cacecd9bc1f5b7990e5923437e.png" | "fe31b64e4164c2bfec98a43eb4d283f020dd142cbaf06996dbd1d30f84d76f49.png" | "ff02407b1d904056482396ccd0e22fc58785379507c3d6915b440f7078a3b2f3.png" | "ff2bf848ae6268b07588703db362682bcd7121935fa98fa11dd2b8b3645f65c1.png" | "ff68d1b2c9f0da3b7a6c43e573e79b5c3e7929bced62c5f3686995d71cd1c8aa.png" | "foo (1).png" | "foo (2).png" | "foo (3).png" | "foo.png" | "icon-1024.png" | "il_570xN.4895517340_bhko-removebg-preview.png" | "images.jpeg" | "poker-club.png" | "poker-diamond.png" | "poker-heart.png" | "poker-spade.png" | "upload (1).png" | "upload (10).png" | "upload (100).png" | "upload (101).png" | "upload (102).png" | "upload (103).png" | "upload (104).png" | "upload (105).png" | "upload (106).png" | "upload (107).png" | "upload (108).png" | "upload (109).png" | "upload (11).png" | "upload (110).png" | "upload (111).png" | "upload (112).png" | "upload (113).png" | "upload (114).png" | "upload (115).png" | "upload (116).png" | "upload (117).png" | "upload (118).png" | "upload (119).png" | "upload (12).png" | "upload (120).png" | "upload (121).png" | "upload (122).png" | "upload (123).png" | "upload (124).png" | "upload (125).png" | "upload (126).png" | "upload (127).png" | "upload (128).png" | "upload (129).png" | "upload (13).png" | "upload (130).png" | "upload (131).png" | "upload (132).png" | "upload (133).png" | "upload (134).png" | "upload (135).png" | "upload (136).png" | "upload (137).png" | "upload (138).png" | "upload (139).png" | "upload (14).png" | "upload (140).png" | "upload (141).png" | "upload (142).png" | "upload (143).png" | "upload (144).png" | "upload (145).png" | "upload (146).png" | "upload (147).png" | "upload (148).png" | "upload (149).png" | "upload (15).png" | "upload (150).png" | "upload (151).png" | "upload (152).png" | "upload (153).png" | "upload (154).png" | "upload (155).png" | "upload (156).png" | "upload (157).png" | "upload (158).png" | "upload (159).png" | "upload (16).png" | "upload (160).png" | "upload (161).png" | "upload (162).png" | "upload (163).png" | "upload (164).png" | "upload (165).png" | "upload (166).png" | "upload (167).png" | "upload (168).png" | "upload (169).png" | "upload (17).png" | "upload (170).png" | "upload (171).png" | "upload (172).png" | "upload (173).png" | "upload (174).png" | "upload (175).png" | "upload (176).png" | "upload (177).png" | "upload (178).png" | "upload (179).png" | "upload (18).png" | "upload (180).png" | "upload (181).png" | "upload (182).png" | "upload (183).png" | "upload (184).png" | "upload (185).png" | "upload (186).png" | "upload (187).png" | "upload (188).png" | "upload (189).png" | "upload (19).png" | "upload (190).png" | "upload (191).png" | "upload (192).png" | "upload (193).png" | "upload (194).png" | "upload (195).png" | "upload (196).png" | "upload (197).png" | "upload (198).png" | "upload (199).png" | "upload (2).png" | "upload (20).png" | "upload (200).png" | "upload (201).png" | "upload (202).png" | "upload (203).png" | "upload (21).png" | "upload (22).png" | "upload (23).png" | "upload (24).png" | "upload (25).png" | "upload (26).png" | "upload (27).png" | "upload (28).png" | "upload (29).png" | "upload (3).png" | "upload (30).png" | "upload (31).png" | "upload (32).png" | "upload (33).png" | "upload (34).png" | "upload (35).png" | "upload (36).png" | "upload (37).png" | "upload (38).png" | "upload (39).png" | "upload (4).png" | "upload (40).png" | "upload (41).png" | "upload (42).png" | "upload (43).png" | "upload (44).png" | "upload (45).png" | "upload (46).png" | "upload (47).png" | "upload (48).png" | "upload (49).png" | "upload (5).png" | "upload (50).png" | "upload (51).png" | "upload (52).png" | "upload (53).png" | "upload (54).png" | "upload (55).png" | "upload (56).png" | "upload (57).png" | "upload (58).png" | "upload (59).png" | "upload (6).png" | "upload (60).png" | "upload (61).png" | "upload (62).png" | "upload (63).png" | "upload (64).png" | "upload (65).png" | "upload (66).png" | "upload (67).png" | "upload (68).png" | "upload (69).png" | "upload (7).png" | "upload (70).png" | "upload (71).png" | "upload (72).png" | "upload (73).png" | "upload (74).png" | "upload (75).png" | "upload (76).png" | "upload (77).png" | "upload (78).png" | "upload (79).png" | "upload (8).png" | "upload (80).png" | "upload (81).png" | "upload (82).png" | "upload (83).png" | "upload (84).png" | "upload (85).png" | "upload (86).png" | "upload (87).png" | "upload (88).png" | "upload (89).png" | "upload (9).png" | "upload (90).png" | "upload (91).png" | "upload (92).png" | "upload (93).png" | "upload (94).png" | "upload (95).png" | "upload (96).png" | "upload (97).png" | "upload (98).png" | "upload (99).png" | "upload.png"
 export type Enum_LoadImageMask_image = Enum_LoadImage_image
 export type Enum_ImageReceiver_image = Enum_LoadImage_image
 export type Enum_PromptExtractor_$3$3Inspire_image = Enum_LoadImage_image
@@ -4709,8 +4820,9 @@ export type Enum_CLIPLoader_clip_name = '🔴' // never
 export type Enum_UNETLoader_unet_name = "xl-inpaint-0.1\\diffusion_pytorch_model.fp16.safetensors"
 export type Enum_DualCLIPLoader_clip_name1 = '🔴' // never
 export type Enum_DualCLIPLoader_clip_name2 = '🔴' // never
-export type Enum_ControlNetLoader_control_net_name = "control-lora-depth-rank256.safetensors" | "control-lora-sketch-rank128-metadata.safetensors" | "control_depth-fp16.safetensors" | "control_openpose-fp16.safetensors" | "control_scribble-fp16.safetensors" | "control_v11p_sd15_canny_fp16.safetensors" | "control_v11p_sd15_lineart_fp16.safetensors" | "control_v11u_sd15_tile.pth" | "t2iadapter_canny_sd14v1.pth" | "t2iadapter_sketch_sd14v1.pth"
+export type Enum_ControlNetLoader_control_net_name = "control-lora-depth-rank256.safetensors" | "control-lora-sketch-rank128-metadata.safetensors" | "control_depth-fp16.safetensors" | "control_openpose-fp16.safetensors" | "control_scribble-fp16.safetensors" | "control_v11p_sd15_canny_fp16.safetensors" | "control_v11p_sd15_lineart_fp16.safetensors" | "control_v11u_sd15_tile.pth" | "control_v11u_sd15_tile_fp16.safetensors" | "t2iadapter_canny_sd14v1.pth" | "t2iadapter_sketch_sd14v1.pth"
 export type Enum_DiffControlNetLoader_control_net_name = Enum_ControlNetLoader_control_net_name
+export type Enum_HighRes$7Fix_Script_control_net_name = Enum_ControlNetLoader_control_net_name
 export type Enum_StyleModelLoader_style_model_name = '🔴' // never
 export type Enum_CLIPVisionLoader_clip_name = "SD1.5\\pytorch_model.bin" | "clip_vit14.bin"
 export type Enum_GLIGENLoader_gligen_name = '🔴' // never
@@ -4722,6 +4834,7 @@ export type Enum_HypernetworkLoader_hypernetwork_name = '🔴' // never
 export type Enum_UpscaleModelLoader_model_name = "4x-UltraSharp.pth" | "RealESRGAN_x2.pth" | "RealESRGAN_x4.pth"
 export type Enum_CR_Upscale_Image_upscale_model = Enum_UpscaleModelLoader_model_name
 export type Enum_ttN_hiresfixScale_model_name = Enum_UpscaleModelLoader_model_name
+export type Enum_HighRes$7Fix_Script_pixel_upscaler = Enum_UpscaleModelLoader_model_name
 export type Enum_Upscale_Model_Loader_model_name = Enum_UpscaleModelLoader_model_name
 export type Enum_ImageBlend_blend_mode = "multiply" | "normal" | "overlay" | "screen" | "soft_light"
 export type Enum_ImageQuantize_dither = "floyd-steinberg" | "none"
@@ -4874,12 +4987,15 @@ export type Enum_ADE$_AnimateDiffLoaderV1Advanced_context_schedule = Enum_ADE$_A
 export type Enum_ADE$_AnimateDiffLoaderWithContext_model_name = "mm_sd_v15_v2.ckpt" | "v2_lora_PanLeft.ckpt" | "v2_lora_PanRight.ckpt" | "v2_lora_RollingAnticlockwise.ckpt" | "v2_lora_RollingClockwise.ckpt" | "v2_lora_ZoomIn.ckpt" | "v2_lora_ZoomOut.ckpt"
 export type Enum_AnimateDiffLoaderV1_model_name = Enum_ADE$_AnimateDiffLoaderWithContext_model_name
 export type Enum_ADE$_AnimateDiffLoaderV1Advanced_model_name = Enum_ADE$_AnimateDiffLoaderWithContext_model_name
+export type Enum_AnimateDiff_Script_motion_model = Enum_ADE$_AnimateDiffLoaderWithContext_model_name
 export type Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule = "cosine" | "linear (HotshotXL/default)" | "sqrt" | "sqrt_linear (AnimateDiff)" | "squaredcos_cap_v2"
 export type Enum_CheckpointLoaderSimpleWithNoiseSelect_beta_schedule = Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule
 export type Enum_AnimateDiffLoaderV1_beta_schedule = Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule
 export type Enum_ADE$_AnimateDiffLoaderV1Advanced_beta_schedule = Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule
+export type Enum_AnimateDiff_Script_beta_schedule = Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule
 export type Enum_ADE$_AnimateDiffLoRALoader_lora_name = '🔴' // never
 export type Enum_ADE$_AnimateDiffCombine_format = "image/gif" | "image/webp"
+export type Enum_AnimateDiff_Script_format = Enum_ADE$_AnimateDiffCombine_format
 export type Enum_ConstrainImage$8pysssss_crop_if_required = "no" | "yes"
 export type Enum_StringFunction$8pysssss_tidy_tags = Enum_ConstrainImage$8pysssss_crop_if_required
 export type Enum_Mask_By_Text_normalize = Enum_ConstrainImage$8pysssss_crop_if_required
@@ -4955,7 +5071,7 @@ export type Enum_LatentReceiver_latent = '🔴' // never
 export type Enum_ReencodeLatent_tile_mode = "Both" | "Decode(input) only" | "Encode(output) only" | "None"
 export type Enum_ReencodeLatentPipe_tile_mode = Enum_ReencodeLatent_tile_mode
 export type Enum_RegionalSampler_seed_2nd_mode = "decrement" | "fixed" | "ignore" | "increment" | "randomize" | "seed+seed_2nd" | "seed-seed_2nd"
-export type Enum_ImpactSEGSLabelFilter_preset = "all" | "eyebrows" | "eyes" | "face" | "hand" | "left_eye" | "left_eyebrow" | "left_pupil" | "long_sleeved_dress" | "long_sleeved_outwear" | "long_sleeved_shirt" | "mouth" | "pupils" | "right_eye" | "right_eyebrow" | "right_pupil" | "short_sleeved_dress" | "short_sleeved_outwear" | "short_sleeved_shirt" | "shorts" | "skirt" | "sling" | "sling_dress" | "trousers" | "vest" | "vest_dress"
+export type Enum_ImpactSEGSLabelFilter_preset = "airplane" | "all" | "apple" | "backpack" | "banana" | "baseball bat" | "baseball glove" | "bear" | "bed" | "bench" | "bicycle" | "bird" | "boat" | "book" | "bottle" | "bowl" | "broccoli" | "bus" | "cake" | "car" | "carrot" | "cat" | "cell phone" | "chair" | "clock" | "couch" | "cow" | "cup" | "dining table" | "dog" | "donut" | "elephant" | "eyebrows" | "eyes" | "face" | "fire hydrant" | "fork" | "frisbee" | "giraffe" | "hair drier" | "hand" | "handbag" | "horse" | "hot dog" | "keyboard" | "kite" | "knife" | "laptop" | "left_eye" | "left_eyebrow" | "left_pupil" | "long_sleeved_dress" | "long_sleeved_outwear" | "long_sleeved_shirt" | "microwave" | "motorcycle" | "mouse" | "mouth" | "orange" | "oven" | "parking meter" | "person" | "pizza" | "potted plant" | "pupils" | "refrigerator" | "remote" | "right_eye" | "right_eyebrow" | "right_pupil" | "sandwich" | "scissors" | "sheep" | "short_sleeved_dress" | "short_sleeved_outwear" | "short_sleeved_shirt" | "shorts" | "sink" | "skateboard" | "skirt" | "skis" | "sling" | "sling_dress" | "snowboard" | "spoon" | "sports ball" | "stop sign" | "suitcase" | "surfboard" | "teddy bear" | "tennis racket" | "tie" | "toaster" | "toilet" | "toothbrush" | "traffic light" | "train" | "trousers" | "truck" | "tv" | "umbrella" | "vase" | "vest" | "vest_dress" | "wine glass" | "zebra"
 export type Enum_ImpactSEGSRangeFilter_target = "area(=w*h)" | "height" | "length_percent" | "width" | "x1" | "x2" | "y1" | "y2"
 export type Enum_ImpactSEGSOrderedFilter_target = "area(=w*h)" | "height" | "width" | "x1" | "x2" | "y1" | "y2"
 export type Enum_ImpactCompare_cmp = "a < b" | "a <= b" | "a <> b" | "a = b" | "a > b" | "a >= b" | "ff" | "tt"
@@ -4982,6 +5098,8 @@ export type Enum_ttN_pipeLoaderSDXL_positive_token_normalization = Enum_Wildcard
 export type Enum_ttN_pipeLoaderSDXL_negative_token_normalization = Enum_WildcardEncode_$3$3Inspire_token_normalization
 export type Enum_ttN_pipeEncodeConcat_positive_token_normalization = Enum_WildcardEncode_$3$3Inspire_token_normalization
 export type Enum_ttN_pipeEncodeConcat_negative_token_normalization = Enum_WildcardEncode_$3$3Inspire_token_normalization
+export type Enum_Efficient_Loader_token_normalization = Enum_WildcardEncode_$3$3Inspire_token_normalization
+export type Enum_Eff$5_Loader_SDXL_token_normalization = Enum_WildcardEncode_$3$3Inspire_token_normalization
 export type Enum_CLIPTextEncodeList_token_normalization = Enum_WildcardEncode_$3$3Inspire_token_normalization
 export type Enum_WildcardEncode_$3$3Inspire_weight_interpretation = "A1111" | "comfy" | "comfy++" | "compel" | "down_weight"
 export type Enum_ttN_pipeLoader_positive_weight_interpretation = Enum_WildcardEncode_$3$3Inspire_weight_interpretation
@@ -4990,7 +5108,9 @@ export type Enum_ttN_pipeLoaderSDXL_positive_weight_interpretation = Enum_Wildca
 export type Enum_ttN_pipeLoaderSDXL_negative_weight_interpretation = Enum_WildcardEncode_$3$3Inspire_weight_interpretation
 export type Enum_ttN_pipeEncodeConcat_positive_weight_interpretation = Enum_WildcardEncode_$3$3Inspire_weight_interpretation
 export type Enum_ttN_pipeEncodeConcat_negative_weight_interpretation = Enum_WildcardEncode_$3$3Inspire_weight_interpretation
-export type Enum_LoadImage_$3$3Inspire_image = "#DATA" | "2023-07-24_10-58-29.png" | "Angled 5 - 512x512 (1).png" | "Angled 5 - 512x512.png" | "Angled 8 - 512x512.png" | "Circular 1 - 512x512.png" | "Circular 10 - 512x512.png" | "Circular 3 - 512x512.png" | "Circular 4 - 512x512.png" | "Circular 6 - 512x512 (1).png" | "Circular 6 - 512x512.png" | "Circular 8 - 512x512.png" | "Radial 1 - 512x512.png" | "Radial 11 - 512x512.png" | "Radial 9 - 512x512.png" | "Spherical 6 - 512x512.png" | "example.png" | "icon-1024.png" | "il_570xN.4895517340_bhko-removebg-preview.png" | "images.jpeg" | "poker-club.png" | "poker-diamond.png" | "poker-heart.png" | "poker-spade.png" | "upload (1).png" | "upload (10).png" | "upload (11).png" | "upload (12).png" | "upload (13).png" | "upload (14).png" | "upload (15).png" | "upload (16).png" | "upload (17).png" | "upload (18).png" | "upload (19).png" | "upload (2).png" | "upload (20).png" | "upload (21).png" | "upload (22).png" | "upload (23).png" | "upload (24).png" | "upload (25).png" | "upload (26).png" | "upload (27).png" | "upload (28).png" | "upload (29).png" | "upload (3).png" | "upload (30).png" | "upload (31).png" | "upload (32).png" | "upload (33).png" | "upload (34).png" | "upload (35).png" | "upload (36).png" | "upload (37).png" | "upload (38).png" | "upload (39).png" | "upload (4).png" | "upload (40).png" | "upload (41).png" | "upload (42).png" | "upload (43).png" | "upload (5).png" | "upload (6).png" | "upload (7).png" | "upload (8).png" | "upload (9).png" | "upload.png"
+export type Enum_Efficient_Loader_weight_interpretation = Enum_WildcardEncode_$3$3Inspire_weight_interpretation
+export type Enum_Eff$5_Loader_SDXL_weight_interpretation = Enum_WildcardEncode_$3$3Inspire_weight_interpretation
+export type Enum_LoadImage_$3$3Inspire_image = "#DATA" | "013142180a23ae44035924d7027c4a8030b0cefa3f7890324429f1f75bf0484b.png" | "01b10a0537d3786963e6aab7a496b4846c231e3f5090c5a3b7047a62f96c6f92.png" | "01c627f4c6f3c8e21289306a1248e3975405ac42a833c44e3525e835e4acdfe5.png" | "01d19ac7d7a8ab628c7fad740856a30ad2148bc8bd20ccdd234683dcb4e825e9.png" | "021e9f22187d860681ff1d848d3b1b2762cfc0be864c12251b99e54f6e7c7e10.png" | "0266a57c5821fae4de7ac05e99fa103ee0a6071c44ea591924728dafb9b7b282.png" | "0314df821679c25e88d404b8e69b8834c3d60d3fda4009146c661a9a8614eaf2.png" | "03251e7e2a83d4cec3d360e99ed61959293b806d58a2d9538d267c5b5f605b11.png" | "03991ea94b2abccca8f40a8cd49734752d95779247488a68b55afcec0d076c22.png" | "04023d7570526ff8150eff5ae479e78615c7cae1eafdfb532e8c5d8462cfe302.png" | "047db288201917b6056598c8177c39930a7ad510e93e6f06cbba7ad11c4806ac.png" | "06a9f36f988adea2abb603156c8184e177da0d4f274a6218acf729f3357a1894.png" | "06ac1c7a67feb9ec28c9ee62678c7e0ae079a56d348ce94794e2e8db0ab02966.png" | "07e4bead49b839dd15bf345b84d3c839b4190972b9bc09e463f7f42ee656c9d8.png" | "07e8c1aa513051271c5fb8ae61cc746168aa0d88bcac2f994c3cfe46a177ebb9.png" | "0857f197e0da3bdd2daa7a4dc09aa4bef6dfd324c7d4d478f4be577514009132.png" | "098cb928a6be50e0b6a7958796140e38d57f739f73b45471b4744178e7fdd353.png" | "0aab92c46de981310b3c0befc4ea8ba3160c0e2809109bb9f3993c7459d40972.png" | "0ad4e1c2aace727971e751911efb22ea1f168966cc0ac40bf39d674086fbb047.png" | "0bca7998212c14452adf796b001aac2abb7272325c6d2f035950b2e5d5ad5af6.png" | "0c31d144739fa3edc04c44e7420961a95a1ecc45c3190c2c7ec412e266b816fc (1).png" | "0c31d144739fa3edc04c44e7420961a95a1ecc45c3190c2c7ec412e266b816fc.png" | "0d45f14c4453da45c069fd947f5da24a98c09d37dd42f318a1d6d6e24472a1f6.png" | "0d937d5e6418fb15a16d8638b418263988eb860a1c7d0c7a42ecb6a37b33c4cf.png" | "0e693d6d4cd5663ef86f075393aa36afd356e86d1ce05ff4e59d6aff8e2a391b.png" | "0e6c09d94c23d6b0b3c24c1d7df66dd2306049909bafa4207407bdbe9ace91f6.png" | "0f58d3cc02f82fc3b2fb46e6d4d434b5e0169a3d40e5c72495c5b6b1ad18dcdb.png" | "0fbcaada7de8e48d5a2873f15fe5e4388265e37f46fe21d67c9d7950a3b7199c.png" | "0fcd6a8b1e765cb3c72be213845de0fceea45fe0bd02e3caa9b392f162e7bd2e.png" | "0fffe52b4a6eb756f5a8e75768c236743f52af51a038fc9a46cb3e0e8b123297.png" | "1003b096b5bb04e9e4d317f21a6761e23299eae4e74742c3fb16afba2c21bfaa.png" | "101afbbfe7a2069303012346ababed2066e1a56c2ea0f19e1ebc6acb40ec9854.png" | "114509d144e8221e3ef638b47e19f505da8ffc6834e02af56098ba585737ea8b.png" | "11e831b76b11aed4dc5b32840f02cffe05168c2232425a8e5651a73cd38e9a7a.png" | "11ea3dc2b0ff56a3906180ff44f7f4caa077dc44550c5ee9be2a516e3b293d4f.png" | "1395a2c56b6e9b8df24fd7dd9d80e21c173721b978b27c0aa53239e42eb6a1e5.png" | "14a2b466d11093901cce3091cc688bddf03975b789e26eb85bc75032db671e38.png" | "16a4a5e9283f63e93560c2b38bcb580aa5b0b60936b2978c8f0c8d9df0251c4e.png" | "174a85317a4e25a4292ea68205718eef6e706694b98dd1283971abacf4398ee2.png" | "1818af14d3380e20d37156b2b5848d9a910cb1b526890d51c86af2688515de68.png" | "181d54df4b07de4d5017f4da566b45bb9018124407e46da0954d838a2996a8e6.png" | "1823faf3f51acb45cb49171ea9609858964a33addcfd3c34868a914038cc3468.png" | "182d425ba8311266dd734a91da23738354fe46ffe8f1e6bc453dd09d13fc905d.png" | "1a3e6e24d5a09c8e187c5fa12eb57a0ff890a9383f21c0173e7cb3e7d91ab583.png" | "1a6919bcc2a8bc61e56493b7975da8e57a7eb9b74714405ccd44658d3e668ee3.png" | "1b1b1301298aa1b8f1295737cf1919cf8dbb53a1e61bf57f9d491e32065baa6f.png" | "1b4e45d8e51951216454495bf53e988f650f04dc69c905126c88a5c052f23e42.png" | "1bb8f9c121f1fe19ef2a297092ed670c93097ba58c798dbcbd483b63cc345515.png" | "1bc853153e489de848193a3749bfe876d6494692b90fd8d39ffd8cf63d573301.png" | "1c8724f145ebb34aaba0c491e356905025e3b8f5bd49eac6a825a11b509c06c8.png" | "1d422961c7f0c2a0ed48c8a5c594648297007abaa0465c6f52ba765a0ca22867.png" | "1e52980a4f927d6874740041d49e747bf42cefb62c7bd2ec0d95c7be9ff01c21.png" | "1f3e56527f7658c9ae0a07f7976e991cdb591937a0fa00883fad02884dddbe7c.png" | "1fad0f26b20d4f2f3d73879f9af0cc274eed768d95496dd87d520b0516c64da2.png" | "2023-07-24_10-58-29.png" | "2113899878f13bd9df9d7d3094bd33e5635c2550f27aa2909e810cec61ad4caa.png" | "2212a8492838ec2404300f0b000be19f95982daefd8514155c02d9ffc50b5673.png" | "22cb0cef1ccaa516ef92676d3c983758286cc9d1e376980b774f7879a2138e4f.png" | "22d19332230177848d7934a7d5101650676ed62b678bc782dee4663422f2c128.png" | "2315fe6a8fb8d2e6b4351d864128dad66734bd82bdefb81791d5ae52a9a9ef63.png" | "23181430469a9c8e574bf27c9d4e3ef20b1f0207a418db9cbb1ea3822f7cdbcd.png" | "23901ef6e3a4e8c36f5653b9c87ff91bfacb30929437c640d7a6f6bb6ecf7ed6.png" | "23a2ed3c58cd01edd9d6fc48b87b73b60fae0d749ce00ca61bbc7c60e3892140.png" | "23bba920cf1638560bb9f085922a100f93f533735ed3071ca23f296bb033955d.png" | "23bd6099107688fe5784ffc1774d47fe10e5d41cf7e5b7e141ef853127234f99.png" | "23f2385f05f25ecc42a4e3bedf466eb86bdcaa0cbce324d39e883ec0267a402c.png" | "242843db8e0a4bf38b2c4f78aeadd60f1783585902fe9528107ff3f2d955299b.png" | "245733dd1388cf98083cb0ee300e931257cdce15a9748f94b092198cee7cfeca.png" | "25be7a1121a26c104fa4577c08c24202783cede3ffe6fa0e5630a30d5804fc93.png" | "26a87205864c76dd010b18462bf9704394672eea3837d9b94eeede038cd7f261.png" | "26d004045e940ccd3119716b0a27de05e0a952b1492d74aab1835f454eab98fa.png" | "26fdcfa48ee6f9ade03ab0b44bea3faa564025b5392c2538420bae58ae1537f4.png" | "2732b6926cd08fd10c353e5e1506307621b0efa9325f8b7ad920f9a7e401145f.png" | "27bf375161ac6a57c59528ae614af9360e71d81caa16c07a4aa4286fa9e5cbbc.png" | "294c58c403772e251a2050d0cd61333047cedf33815870de6818022ff2e54981.png" | "2a0452da4e6ac8016e1f1bc546efcb3fbf2e75aca05ab700d81474a98c970da0.png" | "2ac37dde22e5ff6580e890ffa1fe804b3e7769fe4f0aa033d72ec752c8e61379.png" | "2b0d1015da51221f460223b6729cec91bfd5c505709346d8c4804578c82a58c1.png" | "2b15250cbf524b7daf358af4c99810572d0396a2bd5e611dd2eed9cdd3817cae.png" | "2b3d1bc263e7ee9082bde1dd1dfc36783d7718ec935294ae26d62a41db2a3002.png" | "2b4644d767f4909749858e9fb3b8ed5905a3c1c63fbd449f9acb603850dc758d.png" | "2b762f1086e6cb414d2137c5c12f44a95c233563cd991ba140154821e2d55995.png" | "2bcf78d4153c811d9fdc97833f8f6c5e81c8319972fb651ea1d92e7244b3dbf2.png" | "2c386409b8a3f5f0d4d04efd9fdfc12a3437b49535a433afd6fba2a97baba812.png" | "2c734f7be997810d2f7fdde02f1b1282f981b3075bbc1979e26faf384590ec09.png" | "2cfb3a761b50a090a72939054e9aee5cd827e8c30bb168d3982094078c90fd3f.png" | "2da69e2d9b45d8d399a747dcddb917148e66df7b57d2cb8adf4b46b52a5a51e7.png" | "2dc9bb46df29d57870d3c894549df71a502d1f4ffbecff1a470079b35d88f844.png" | "2df0ecde14493c7f4559d124de105aa5aa9c9da21d3008d3fb23863874d78f51.png" | "2e1fc51adde0bff1221a9c3cf57347482c72510a326360e587792a6f7e3f980f.png" | "2e48271728d9a09cb009e779c7f90cdb8b4b657e13fddd102f745b63169ebf5c.png" | "2e8bef71b6063b7077786786d5f6e4c0cac8579021f383343fd89e45a8d3be14.png" | "2f4b9e738b48d5567583a5e2d4278fde58da2ac86f3cd28c0ac4a10dc1760e6f.png" | "301b39a8da9a848ce3b047cdde6b10800fd1a5ada1e1e22647ff3aa943d304c2.png" | "302181528b0d6980832ae8e0b78bbec500ec0b573a59243b7e8e363238b68603.png" | "30256f8f6ffa76bc2d66b607a3cdf87f37eed72d41d9d8330d2335b9eab9d594.png" | "30885f4c80fe15823ebff5cc14a18d3280fa6d9de388ec5ff8b4604540a85eb5.png" | "30cfc7dd87bc48e48f1945c48deac17837c3761f0c8b16106ea9e301fc1d25be.png" | "30d084de0567be6c71bd6b919b579ea1e3b58c8e7153cea7fd6e092c81edd8e5.png" | "318c00d15359335758fb11f8808e58652eab549233185b33a39b03536b8c103a.png" | "32e96d1ab97172f422daf99241ad8381bceaf54c9e41348467f26f3faf0bb74a.png" | "336d325bc89ae60e8f7ab396017ec5919c45b9aceb86c356f16e6ffc8f84400e.png" | "33b9ff9e21bdfcbef77ec96a5988826c34dde5082db1493ddab876e372e32b5a.png" | "3438064ae2ceb26fae6f12366ae28275511a2e0d1818eefaa59db398f76cf689.png" | "34b361c62abd68296db128f04056620631fa6228ee18c086f9b363dd2f815d09.png" | "353a1591eb17134be17aa2fbc5b499a8715c95769b7752e52af3a7447d1c2640.png" | "354b75db5c1dcb7700295a2ce206520c180f5c73bece5bc449c9833ba6dd1cf8.png" | "35630a0d9c0c2042d1288b6bc0c1d0a1e2472d94a3520193d44539c5ad251c0d.png" | "364f4e863f2d8000734a8ba7fc7e78127c84f15405ad5ee1920e21f6c2bd0478.png" | "3702b1967f4aa202290d1015e3b4ba6c66a4174fe34b2c2cebb0756de46143ce.png" | "37428eb2ce737b88a0efa01b839ea0d2626f96cbd39daba4b30b4337c2947e71.png" | "376432e14be80fe4a2603ad05a9fa1719a58cc8df81853bf8d0ce7f247fa4e7f.png" | "37a835115b6b2d07e086e5ee946c6cea04e2c119e82f60a30f49c758b7b6a420.png" | "37e09959c0889799b228a25df83a55767b14b104b27a90c64882dc11b3230647.png" | "3818248ce5b34eb8d0c8120092229ebad1c46f7deb9296538562fa7d2cb4fda9.png" | "3879e3892058e6ef54eed26044f9b50782e79bfb7e332731a066137a4cfb7fd5.png" | "388b060e4b952125a23f851fd70f580adeb679002f824a50814558b4961723da.png" | "3a18041a484af79c8a68884c4865853299959342a5af21bd8ddc411bf2a48162.png" | "3a249c4b161b0cf37d5c00ab19793e1bb26dfa1a9c23aa54dec2255543efa93b.png" | "3b5f46a0baf076608cfaad8226f015cee4afdcb59b3eb69dc5a30aa0959b3dfe.png" | "3b6f9277866c594a19c8a079136f0be6c96ba6a08df71e52f04af7aa1f1c205a.png" | "3bf970aa54118b359c3b61fda5cc16c66c2a080b7ac8938c3a6b624a37470391.png" | "3d2cd18a6605e55c3c0cd47a746b5fdf7cb7442f51bdfff8dc613892a5a65bcb.png" | "3d9d79b4f6b8e3f8c5a6a4d708e0f99dc24c5ecebcdd2c6058c9c8f36f66b712.png" | "3dc376133e034df03c7e6b8006f7b9c690ded463de5a392dd09b947626be4842.png" | "3e52c04107fb06108f2c7897beb944691178f12726519b7d8caea9b64e1f6c0d.png" | "3e91dfd40dd2e6a1752817ee7760cf2d7b6b8076749e3ba61cc17d17c35e40d7.png" | "3e9f0948f5610a8d4abf77b38babbef203ee20b8b0721d2713afeae38bf72476.png" | "3ef9b833eced6de3d874e880a2b92d060e6ac0fe59e881adfad84bbce04251d3.png" | "3f153367eb085cf197a3f5d393cf97ca61d6b099871d6b933961c4a99f1d5b55.png" | "4007c43882170bd46d08370f4d6e0927c1f66d5529de1ae93341e255d9274734.png" | "40bef9e07f89dd028841e057f15f12a74a9eec26ef09e4a45b99190374ba7897.png" | "41ff155a300f9846cff3593b258a9986ff28091a1dac21a40636ad3b1d4e7e1b.png" | "42b0e4e544ac0343456226426db8156d0ab1ba17c2eb7cfb46ccc16abb9c17fb.png" | "42f65344df6278e57f12ca5c00a2c1e8b32558e3272f65d708fe8ec37593ab11.png" | "449f3442c2d310be229066a2c584d99fc2e79e2cf7b25544a1ce9a40e4e6b875.png" | "44d01e8a12d7c47cacc88bf15c0636d6ad13cdef08239fa3397bcb4220ad419f.png" | "45453e44f5d5c1fc3734b78c0152911b54f7f6995135461fa2870c72b4a0dc55.png" | "457aaa3c302019521c3b41cd37488e11c3c63f834e868606e3379573e874b83b.png" | "4582a3eda2fcc64f78c24a9b82cc9f73eda097468afa7de86890c0ab690e10c6.png" | "46534c7b1a25708459f73cafe03e34f5cb74bec3ae0d378825b3876994ef0c6e.png" | "46547041bb67aaf6c89938d0e31e2e9f643cb3152544725ab899a06a573e2b43.png" | "4786e3a7c8df5c3bccb5b29c4af3c6f19cd7d1b9dc91f3ef359d79811f62cc06.png" | "491ee1e8e66bf3bbab877472d1408afaf23a7bace1b17559987b15ec2c5d042c.png" | "4973205b4ccbeecd2d57952f583ee76169d81a05834636b40c289226157ddf85.png" | "49c4d3f0e5dba52d8e1febec6fa2069ce90a489ac13fcbdcd1e796978aaf2e93.png" | "4a2f0bb3d4002fc891965e5b5d5e647c501563e53919e9a9529332c7a92fe2e7.png" | "4ac8b2695095d072d74364f289014a1f471733af2dc1fdff659c8aeaf3332ac4.png" | "4b6cdcf0d453cfb6d87a64c653d4194c838d4f9cc08fbaf3ae40a8b29f5c0bc5.png" | "4bf01e19d4b34078253fd048ec77491a54a1a5f1366014da9ee053dceb56c638.png" | "4c079e0936605256b38c94bd31c2717f8fb0408358d754d2b857b9d31ae2e6bf.png" | "4c7cfcbb81c6fe3f5982992f431c987c59a60a9b914b05d59683f49bb07cb57b.png" | "4d109abed8024e9ae3795eb6028bb886c44cbd201a958ebb0e97e5efd5977c36.png" | "4d8e28fc990fc2609a20ba308ade3862232d7cdde8437ca529bb4e2f125bf096.png" | "4dfeb7c95f2733e498fd7337a7037b36ac18837b48c7a2a6d5724acd34686870.png" | "4ea60028780fdebaabceefabb3554fe88757f140dee62f5c5545aeea010db2e5.png" | "4efe165893352b2c08368ae81b380dfac9aee01576b7defe7823192fad73f97e.png" | "4fd68921e0dd2f3a47ec19b459d38efbb49f9724591f98533198063f8a3397de.png" | "5068478f96ca219063d0449e873c3203d2ee2f94a7f3ef57bcc8496814213fe8.png" | "508566abe7f88190ff49be7b4b2c7e7e1a659dff2762c284289154bc839e425e.png" | "50bd0a5cbf5d96f5cf1694fa775cf3f5caa5d67f1840ddd871fdd506214802a0.png" | "50e6673fee18359bb648fc0ddf0a502923c92c6ecaf28b5eb6557d728b5af541.png" | "51388551e3cb287b829a10e696415fe95bfcbb45b79ba19daa540e293511ca11.png" | "51ae2e447762c7438d23f797c6fcef37fc10a035a1787897fa040831592068cb.png" | "51ea7daf8eb6956c7d42b953579eec4f6491fc492fd0a63397b96eb1e316f4fb.png" | "530af8fb91253ea36d856fe6c8c9bf1249170eb4334cf8869d976b1dcb266da6.png" | "5340bfb9e62932ac7f301d18e6127628d1a5dd57a35317bbf16a5664039c8c1e.png" | "567329aaba4ed5f30c8a285f35e13545898467b51c597d04740c938d2ac4a86c.png" | "59510c5aa6d714a9b6c2185ee12d9c74c8f453d11a68161ae62e3ef3236582e4.png" | "5a0ae8796e30d143f698c3786fd1d2aa4251326b43d8af1a6d045fe0989b8954.png" | "5a72f2227ed42c73939ddb094806b7eabaafb6fc9e5f2365654b97a6a8d258a6.png" | "5ac6404da970e5e656d63e7a728288ab4b2a2747476e58776e29ac3a3fd6269c.png" | "5adaaf472da71cbc531c3089d0332031bfcd9597d3e106dd56bb53704ec155f1.png" | "5aeaaa7ecafd4a6972947ad1b7abf977700d23efa4585f3fb10301b0b63d026e.png" | "5ba8388028a6768002d3baff8b79c7722d14cc86e417d4fa1e82a16ab3080fdf.png" | "5bd1ff8f9ebd14e35a9ff144366bfacbbe2f2404208370f383fbd2e5c3e21bcd.png" | "5c14e6c7c5ef83fcdf450c8d45106be8f32740aebb9f7b04b9ada7f8768e80a0.png" | "5c2675ab5e407fbb37bea06a1eeeb1fc337dc18997022c5b86220c8a4368d323.png" | "5e8c12969e1b38c80caaa829be7331d6c7d83d955c5d39d041ea1c9f592204c9.png" | "5f29aeefa5459ccf7f44d64e349dafc73ee3760ac569ab0f827e0a3a0f713dfe.png" | "5f5ce9cfbc443c33b321fefb54308c8b00d044e956c94fe4e28ae9d5b11d0631.png" | "5f734d8ec1e0d6045388a9087634622c0de768dc733a0a70edf866d05e9d6277.png" | "5faf07e34756413c84d98cc85ac94b546c4b88e9ea0ab877bfaec7948a3b536b.png" | "5fedb80f05fd1725852f3290dd7439c5bada5fc11e120c5ea3148bc6d2263372.png" | "603fd86d2f085e49c5388dc634aa174dab504720f23a8752ef7e8a7153a8999a.png" | "608dda502e27de64f3abd0d28b4460f85110f3c373549bc61298934aa4ad18a4.png" | "60c58a09f6df5e2897a89c1a3e4b39754bc30378ae3e04954086720bffcff70d.png" | "6102c572bf135a2d4fbf0dc969a106ba2353ad22cb4c93ea81a7cc0f54e0d79e.png" | "630f3976c59922a4345e2690b7fc62deebe8be39c17c61b5cda984565ca718c7.png" | "64a4546f1d8b04bd6a1acf8343debe6279db8a6c4c1549187ef435bec27450ba.png" | "650061b7fd78d57507dc6fe6806045a98e423c379a9203c388ff4a2356c73134.png" | "653f75991c10748da0633575d361e7a6d85d39c63d2f8620b13a3b41f98b5e3e.png" | "65ba925a18ed5807681d636cdc7fe333f19edede3a1047cc4376fa7098657831.png" | "65fdca1bc29cfcf06e685510b0066edc6f646c3cfd25e228eb1db6734692d837.png" | "6604131cc422b0a534d788bcc9f879c25371210e82324249f82eb38e6ebeda7f.png" | "661c5f1e0e295f4b7b91aabf7d0b4665457d3559dbf3778f7ad762257665ca0f.png" | "68213c1408080b86edebf143ebcb9749ef1e31180510593f5944d5395e5532aa.png" | "6867bd7b185ddc9cc09209f910b2eb6e540f8f72ab2becb8ac126504e4a88ac2.png" | "68f12321f726e0b548224e71795e252b6085aed2cf8971ef3a06a2b7dc8504ee.png" | "691e31061fee3f12bdf54120d57370b704799a53d79aa83d2f9d7d55b0d1ff77.png" | "6a0fb2744cd66a5396869b63000ff7da378d1c05a26b17e7f419d139b9712eaf.png" | "6a336930f726ab0e48a011695b883521695102d0ae4d8ac89dcd44b6413d4e0b.png" | "6a4686ff925b09d44b84a727966d8fce000e91f5e439302166193b4846c74e1b.png" | "6a49fc1fbfac57996607b7fa22399da91aa606cb680e49003cba2c2bb11a31db.png" | "6a7be9971cfa118d013ddee8451a19084c25cee68da4ffdee171165e7b9dcf28.png" | "6bf86be6707d9f46649245f3f8a7363b26113c3687f2bb6b40ac916e0fe32d55.png" | "6c17e36e70082a6fd121abd8eb15d54ca45cd6c4954e3080062c9cbf962ab173.png" | "6da8beb6c4afd3a6e8e15c8c5b3988981922d9130538689d314c3d4baa02549f.png" | "6dceaafcfed3a991be623444b2d299b47b692d577c9cbce0094108827e0ca65c.png" | "6ee02eb90d28325529a89621002df4d75d53f06006c6db7f72de955d272cb398.png" | "700657cdd6b72fb48dc81e613694fdba04cf2a8943dab7df9c08644c2914321e.png" | "70fc6dc58482cb0ff929be8649568c28facb1d73f71a4f066ec9d5336d6ce212.png" | "717b18a3035e486309aa27040e89625d05580df12b6699ffd02ffac7163654e7.png" | "7180bda62d4290e734f25f928ff57766191343c29a1aa5ae6aa9a128a23082f4.png" | "720ebe6cd9b9dfdbbdc243d9d784f6a46671d73c1750d452c7f5f8fe403e37cb.png" | "746c52fce9498f1af275340c64f3b4277715e763e0587404d41ab42fb945b366.png" | "750d36257b02ab7a52c7b3c01de4c9c35b219e30824fce9cc8a2c417dc42829a.png" | "75ae9ea412781d0e656a8e1412a49ba25d9476ac5d3b5221e1c08b516b5301ff.png" | "75c2b35846919449548d1d55de5dd1244f72d40fee99af367e577d8d03770681.png" | "7a0ee5604946156b7f31a95c324dcf02cc14ac59242dd38632dcdaa42c78dbf9.png" | "7a603d3dc5998e6cc4db6c99d86ad931d6b45dce1820ccff80be3724258fa6b4.png" | "7ad3be95acc886392233f4e36b367f7cafb500b36fc3d202c277cf3126f31fe6.png" | "7c799c0b13150ec7f452583f3f17f468a9cec83af2400de1b57ce73d1e088928.png" | "7d12c98481459268644529acd354845ffe03fb76ddec9e8fc4de5fdb25e14f11.png" | "7e42653d32ee2e61614dbb1eb4613675b008e35cdc830800dfc1fce6f657d9d8.png" | "7fb0c067a66317a32427ef18598bb0b6be3c7504d372fdc4c331b9c10dde981e.png" | "80cd378ca80808b2ddfeaadb428b3666430bdefd922a415eba603f07e3ecb4d3.png" | "8146087cd45226172f8f583108416d96df5c726dac16ed11ec1c9b09612308a9.png" | "81dfe2be3c15d810d0be726f90d1750f23dcccba532baaf75132aba2f3c8a254.png" | "81e1a4a7b3d0c74daa0a5bc40b1e91abb67f7a6bc5bf65e2a5538ba0087906c0.png" | "828b507feb099fdb42005fe1bf8ddce8caaa53a8d9bbe972e78962302f69efe0.png" | "82a94a50f4baf0024b3c221ddf783723d300474db18ed700f716876b0b606e64.png" | "83b2f91aab6a3fdbc579d204e6d90b75a8ad71758f02245158df8bdddc0466ad.png" | "83dc6b2dfef175100cc78fd9308274f28f2269e982f5dd061f9d47729c80b525.png" | "85ad751eea31a616b3a7c9bc85a29fcc97a9a958d6333cd424b28e04cf0dc787.png" | "866d7ce1e88c40e75abe1291a555c7bdfc6d234e3727dcd250a9d3d086c6e57d.png" | "86d343b2bba22f38a2f16cd30b0ee40e9691cafe791f69f0c50423be02b49b85.png" | "872d754cb8b467debdf17e1f4e6d09a6a27bbf0ec573d6f4a6c0fa2994af4bb3.png" | "873ef92ca73fd4edb9887e1d765aa6bf5aad844cab923d2c996b96aae1908138.png" | "889163f5ae9e2ea2bd73d85b4c9c647337442f37887071c08e8adcfcdccd24ad.png" | "88a2a7c821566400094adafd9affbe606ce9b9b273bc72fd7e40b23b8d5cfb48.png" | "88ca6a26fb46a1bd406d1a4201838a833ad079ffdebeae9e6299ab76c607247b.png" | "891eeae0374ca79e35cf7ef9d36e865e417dac544633830ef6e384bbc5d2d011.png" | "89459c938d265bb02f650d05c182edad19cca1034a7aa25aa63a69b5a6511910.png" | "8c9b63cd722c2ebbeef765bcdb7d5df78ca6503c8c8626902d667bedd4887d6e.png" | "8cbcb3a0856a96b2067291361c764dbb24b5b0b4e0125ba8a6569e2ff8ecebb8.png" | "8d43c0b703ad08a9dde70c67730be0032ea9b899c3ef43d1cf4496542dbcdec9.png" | "8d76aaedc7b5fc948f3aa9b3d3bf2ff4ebcbe5386bbdc2c70a7025359e10f98d.png" | "8daa15847f4057a416fc5c777157e319a9458744944c026daa1209be0b75fb85.png" | "8dbeac85286627b586f12f2693316ac9b3434ce100eb3ebc7b9081773123e18f.png" | "8dd2978f72152d9bd63c3e1823b34267111e3676ef689b7469fd5fde47228cc0.png" | "8e6e275c5e3076760f3a9b5f835b935d52615adeabc261c4047c4f03130dfe30.png" | "8e908fe4465d35294307d59dda9dd3c642f0907623d5983a3f197ab3ad1773be.png" | "8f22bcddc1b1f7a2d92dc2265faed11ce605ccd1a587d68969afb73eee6c7aed.png" | "8f64ee1e5b6013e2aca7761f6107d8314a3cde8bed6427aa90a54c11d530955b.png" | "907549073cbd1c19d2fae866031897a1b9ccf7d04b01d694bb70f6cf6027adf6.png" | "90aab77e938aa7bb6d1918bb3091bb5bb1886e49119fb047ab366e481caf3128.png" | "9329aeb7e7cf86d0e9d6a7b67e0b7cedb6bc52e94e01a18206a9f86d680ab6ec.png" | "93bd672d4ead0b2dd5d1888cc0392e0feebad8e4b23207c404dad376567aec76.png" | "951e916de04c60bccb57137de35e58560699fc104cb98865c1931f1dbc33609f.png" | "95d66b389a6d99cbc285e9224a33d2ce7ed273a656faac9b4baf0cf5ae9ee7fb.png" | "95dc486fa25e74509fa8d85fd3f5f9ade62336d1890a64da91fea387ea627c01.png" | "96227bc44a20f37c0203571f9e12d97e039ba965d871c7f3be83e48c3c53370b.png" | "969316d559b378d15f2af060c80f59d5ce7817d5489d0cea21f832ae37f28af1.png" | "9699413b43a64187d47a5147210c3a3645c85033de2b8d659f15cc374389a23d.png" | "971b3b5d327b4831f75a74a3c8e0c64f7f39302c5d38e67e176de412e2a9e7c3.png" | "97287d2075d1cc649e7e2c3270cf7c3d552a2c7c06d695898ac751e5e834b8df.png" | "980b9d782f9d41673ea8d50d57428245520f55f20cfc7b2a93aabe562d118646.png" | "9878e0e59d39c396ce48d7b7bc9a30e6f6011306b4b93165774a10eadfd34c84.png" | "98ff7213052f2f3514850f86340d4ee5dd730f5bec499201cba897c76409f81a.png" | "992e019588e119db577e28c3bd09f69bce94200a57b06a48222d334cf26b45db.png" | "9960c8d37693622cf1ddeb0062b1d623b103f9c364f7d00466a4665dbd7abbc6.png" | "997c2bcf9c4a0341705f27c621e50126d845fa8b8665025b7dd61c2e5fe1f190.png" | "99d55c40ae895b1982e3e05122406e83106b48ecdf6673bdfe4875edf501d3dc.png" | "9a3b62b5d104f3dc7ac4c50a1df6c0a7201b832035e97689af8b0294352adb6c.png" | "9a9176eec21eb3de877d01c813f9d1a22d3a63df1296a28ded75315923afaa1a.png" | "9b17f8e7a2dbc54ee32f9c18242ed45ca5e85b7b3a8524d69e8b8f379c35f581.png" | "9b6b6423de686215b698ed59b8b1f51256678b9914421df79311c2ac1393bd52.png" | "9b725cc4c43b739856da3bc86d6403c66217da3acf81e40231460c413e5b3acd.png" | "9ba1f29b454beb5849f0a800ff864ea411d3d199689a34ab4f4ac978702c0eea.png" | "9c8fc610ee00f46cc7774d9183a420b1c869026dbd0971ac3d272c687afff735.png" | "9d8951ccac6640c50b2275542338d891d1000e3806836f64434818b931368109.png" | "9dfd3e55ac0e755d11a04d360a9067b05492f041e38dc33bd1f1ef940bda843e.png" | "9eda215402120d08cb72e79aa7a08cf00cf437395690fdbf1b56baae58e470e5.png" | "9fe2fb2c3fff61c49d434339a71ddee66564a5da1f44c117c414f8f8d204816c.png" | "Angled 5 - 512x512 (1).png" | "Angled 5 - 512x512.png" | "Angled 8 - 512x512.png" | "Circular 1 - 512x512.png" | "Circular 10 - 512x512.png" | "Circular 3 - 512x512.png" | "Circular 4 - 512x512.png" | "Circular 6 - 512x512 (1).png" | "Circular 6 - 512x512.png" | "Circular 8 - 512x512.png" | "Radial 1 - 512x512.png" | "Radial 11 - 512x512.png" | "Radial 9 - 512x512.png" | "Spherical 6 - 512x512.png" | "a0db265a38a87666c98745b28a7124709d59c6fcd982cfa061e71b08a1416763.png" | "a133649715b8c5e5c9e40a1e40a18f2e46d8e63c79ceb6aef7913f6f1fa210ff.png" | "a1ae9e97b26717a2e077ef73ebd8414ebf6f12e35c5b9a50463f36b8bbf81db1.png" | "a25d002802d2f9859c155fa3d8f370ac88deceffc973385f72cd24e7b7bf7dca.png" | "a2612eabb4607b1aea8bd36de2e36b4434a0d46387246df7ce9d148739147bb3.png" | "a264ef3b68e39531e1afb4f3a4844908546ca227aef934fc947325730a1024f4.png" | "a26564d7612637804bc8c7922921b06f7520468f98e8983713272bb7d9c9b8ff.png" | "a291d8e0730134a6fa1c055040d9ad83e86e3d81eeda8b7aea518b7715aa734f.png" | "a3bc0dbcfa27e3a340cd1987c5cc93d70a51a489beaaf2b1bf7b0d9733fa6e02.png" | "a4793c0232c9c8e8c4364f155eff56a9e8760eb3086cdc47f31def5ac86b5d67.png" | "a53aa22a86bb84439d9d05c1869926e93ebedc7a9041db26cf6d9dda5a2920d1.png" | "a540bf30357b6f381e1551af65cb366f60e9db5b2f9ad2dc741ed7c20e23d8db.png" | "a65f533fc35cc2d42de1993c247c40f331f019d27b4d2a09783ffebbcbd99fe9.png" | "a671774193adf9e29903f6640ce0069b2b555ec27f0e294263f7b361d8ee65f8.png" | "a6a0045708acaa78d6b5765c164203192063baf3ff9585159ff8e7e48c07a821.png" | "a73b523923f91b87ad62666ef2d3f3973d429242293c756777ac1666bfe12e2a.png" | "a77c932efebdc4497d8ff200adf68efba3bb28ca6d2f45e326c99b5379bb58ca.png" | "a80d57be5260a81ed7c4d02e726af45029eb45b4fa02acd8dcdef70878c7ed83.png" | "a885757596a1a234d9f84f366f817a7b6f1a1d2fad98e4142a366e084e4240ec.png" | "a8ec1f956778186f54817524ebd974fcbbfe6d0d8b000d211f93a793f4037004.png" | "a9e70dea526e324a8f73c43853944c38c57f9188cb693a413ddb1ca04d351b59.png" | "aa6f45a8b9621d8ffb5747d0e86697c4038d67eafd265370dbd62ddfe19b9174.png" | "aa7ed853d0ae85f238cc221d697d1602a40fc21c75fd51bc482dcfb7c59ef77a.png" | "aadbb39cd8a5c74fd33f6dbc713b524b2ce233a674c0ea640a9e330feff3f0e8.png" | "ab5d805ea44870b3cbbbfc8a23724b953be2d918e8a432638c222d8990885fdd.png" | "aba02b374afa21fe7fc273a7d56e23db993b03ae848e95a7f6a53b93be55a2e3.png" | "abe0928e2cd77fa15100e9dbf5d1fe5026c2ec712c0dcd62531307de55d5899d.png" | "ac05ad7bed3cd3dea3c31d2db186644db83b843435a5733b712d56ef2e3f4425.png" | "ac0a861db7eb9e666172333ac2694f2cef4a0058869f1372b16902f670c9cafb.png" | "ac9a76ef508ca9f6397ef1984e4457a6aadf13a7dc4869fbaf6472b30fef0624.png" | "ad63e40da11aa08aa3c894783bcffdc711fb7781a3da3e8fbe3c13eb9ce8e4ff.png" | "ad9057cf4345e994a7f6f2ae71a16abac7584732d69d2c2b5f348022308ba014 (1).png" | "ad9057cf4345e994a7f6f2ae71a16abac7584732d69d2c2b5f348022308ba014.png" | "ae6cf428ea315bc88cd096dc99fc13c6d5211af981d307a3d21940d24ea1100e.png" | "ae71d22676a2253c6288abf4a58a18c912dd0a5d9de3c21277eac2d1162e2b74.png" | "aea5377a802fade786abf0b6993a2c2a2417dd0891c409529fb420cd6e42bc5c.png" | "aeb2c86a7c14d153a4d0a6e01f0bc95a54fb18cc7efa9fa38c4a462672af383e.png" | "af2c092e88f2fc715dc8a62fa6511126bf6088d034fa1151cdf4db26bbaa78d0.png" | "b029b4604b1f64a6cc69f97026c8dd68d158f41cfa82cf6b8a83ccd5222759c7.png" | "b0ebde92d8d87cf3193dc5cc157c5c2d83ae2c0d41b60252c896e6a23af03048.png" | "b13daeefbaa3aeec34c8280b6667190e8db9d14d9ec42c6511f69639f9dd53b3.png" | "b16a22a5788b7a74e7e59e8f31439c26bb4ab4039935d21b6ee7cfd29348cf5c.png" | "b239357c715d2df51aaf24170a8d1907b9e56e353191bb7d02843f69d71a517c.png" | "b2a12f60fd10dc3363572299586fd17cf2dc65158d499efd6f4b96c238d93f87.png" | "b2cb75ac6ff8e51e12d54bcd2e741aa0ebbbea419309c6205d276c739ce72b27.png" | "b3b8de713f8f74f9831da4a3b9111f5bab1af66e27aeeb3f99909ee2b70ff386.png" | "b4012b32117e580bce1854c5a39dbcbd348461b8d462a6813a4c73a757a78654.png" | "b6564d2295f29ed9e3176738458fdf252a88c6f479a360e9e01b0aae80b845cd.png" | "b69b0a37c644088e707902754898efa58e4574adb3a0452a9ba8448ac6716d48.png" | "b8cefee842bf0ebcc0470a8ca917548a0d5ba76eccda754abedd587f760bbf30.png" | "b9f9469141808b4779d4053aaa1de24ffa172ab09be4a0cbf2a9a7d89dec7bf5.png" | "bb094c121245801db469f4d7ff18b642e33c69349b1f447de558be4441975a1c.png" | "bbd85ead9fd832ac7e85ba85515ad3612d562f5f8a21f6083364653bd5a4565f.png" | "bc0d8ac98d295c3539556875bb89bc333fc7f385f19b9ad15c040bbc2961abb3.png" | "bc2c6a164037e0d8e3900e5393e35a1eaaa942451213771c37d83181020d3f9e.png" | "bc3c23dab96227c68ec029a987de4e1c4e4b71f1c9792b76043bfb998491271b.png" | "bc813e4129011b56979165f384f1690233b96b32665e81fd81d77fae183da05e.png" | "bd6d0a38bb0a3da4d0eb821be66ca4d37193d8b4317c5c805b9be5b5b0df7e53.png" | "bd8c3def3f3fc95bd32b7e5186f3ef5a3881f3628984741ea17821f72355199a.png" | "be0d76972f21c306232961ae6dbffdf70bcc8cbfcd6df0d14e951375116edcaa.png" | "be377b9df0c53d41912bced4d62ecabdb9889e804a7fbae6328a92df4b62a800.png" | "be681212e8edb5bc7cb213a0ae60a978954eee75d1fb4dd45f0c0dc9c4e411a0.png" | "bf26db4c9d1091a4ff963c97b0e2b2d22b97a60b0b3181b1c9e12b9080e20ebb.png" | "c45d7f4a460f3bebb60a20c85e6bd9ee12dc38f4cfe8883c985eb4aa6d376eb2.png" | "c474bf0882a03634f3fa8e73c0f86a278d6eab4a1d35f3699fc2b19d30fb0fac.png" | "c5645bd849afa52e0e7f2fbea6648485ddd0f55aa3a0702e281d3fd37b287c2e.png" | "c68bc36bdbd774b533ce3aabaa352530c41808937fdc729a9ca23b14f0ef41ad.png" | "c8321565aa4dc11272761c8698d853b81b92280ead83c091f8146575ebc65821.png" | "c92ffa6b508303c60bd7af708662b62ab6e339a71ebcd5a10b41646367e1c5a1.png" | "c9a9b46ccb0b19a694f195c2fe3d78749e5a28d9e6c3993130983bdd7719f36a.png" | "cad68047bd4e727be7d20da40c436e7567a8dce8dfe19309e81982474591f287.png" | "cafcbff3eefd79a54ace120e510761fc269a17efad02cafeb4577fcaae2ebf9c.png" | "cb1f71d0349e79adf59272c24db883563d7e6ae35f9af312c18460959f6fe421.png" | "cb7022c761d9b62c217923dfaa7c7444fb47d5dac524f46dc827e28ce73cd28b.png" | "cbd8025b437d7fa12f958bf6a930544fb6f61cd3652e38cbb104b3a1e70240bb.png" | "cbe31ffb99a39fe0964f629cb79ed23ee602c4bded06825dd225402285d0d084.png" | "cca25a21d1404970455849f7f9487e1a5de640a7122014e99717d2a9839ab231.png" | "ccb051dc541052bc5eddcbd51690ae7258c144c8e8bd6ecd6817c7000f9e7a74.png" | "ccc7645bb074b18baef0cffde71775af9ff5e4025275b75b0a1f52281fe72059.png" | "cdeacb9870bcaa8ec722db3a3d7e34e752e43e9f7ce0e07b7bb25e6607e16185.png" | "ce730ad3f40e04a11b76fdb535ed12c44c3a7f00e563acbd05c96a2b80577f49.png" | "ced8f05d0b1f443c79cdc633fc0633ec8f46075b4308ea7367ed79d0ba1c346c.png" | "cf310cdcbf409050810d4bd00c5fe2b1f8e9ab167bd0ef5fc7abf99174d0959e.png" | "cf4e813f00d967000a8a62ff81f7104f856e819b82d0685969e44e96b5f56d2c.png" | "cff4b3cf0e927a2ec5329457bc6c652bb995997ba1b1ab31d083dd47a8e06e3e.png" | "d052b82aba0a9361758dbfd1af238f35705376dd376f5dccd7d6a2e4c0dd1c3a.png" | "d0577d8809e78fc41092fb411c3580480c792b3d7e7903bd8db8e366cdb845d5.png" | "d0b3d0b75fe57dc26b85a02056c1734f84da8f47533da8ddfd2ab4947e7eb955.png" | "d21474777b29bab3c008de6e7c55f0f100abe05c9b2736a6a5cf7c4a587d0bba.png" | "d25a448b4c1a12779325d260a111b7637521008f04df380181496b260d4f5888.png" | "d2682d5d22c49723a9ecfd3ea009790809c47a0cebd9218455f0393d393219a1.png" | "d2684948a819700cdfb879dbae54ae5bc2fc54bc6c40f88128f039c09654ce2c.png" | "d2f9c798443624fac2bdb843a0e84457926b87fe7cb67cbd4382c462fe939ab6.png" | "d327d55e3864ced33777910dcf9a4d404064b2ef253760f0175ed32d9fe7207f.png" | "d3302abdf07948a5a32475edb6986d5b4cd22451495bcbd9bff125304ecc7a61.png" | "d38f39ec2ca415b4e450f3b552d909b784aad9235e7372f1a914ebfdf434e4aa.png" | "d440807f2b35c533c4e4ea36d92fb6d96a94f23bd6598e9bd50b97b7e2a2ba0d.png" | "d552e5e8156a9bfdfaa102b2292afb6ba725bc5213c9aa6698d9457ad26c135a.png" | "d5c7e9cee25b5b9a81cb94265591b0fbe132d5ebc0d9d03b4d80c9aff1fd5db9.png" | "d618e73c48e663af9a633831ba2927c9346bd51cba24a77d5ef4670d50fcfd97.png" | "d6aeb0f6b2290bb3eb7ba355943a0ecd78d2ca9d6afbfd974e1fab68e483a1bd.png" | "d727b61350376e5883bd1acf5d17496626b6933842ce4fc7f47126adfb960df1.png" | "d7a01335ea903cc0d37be95b553828d3aeb2cd07a224ae008c94eb944929e2c2.png" | "d7a1ca791f404008a3aa834d76e0c310d726a9a77f13e783ffa69eccaa8f6d8a.png" | "d8978e44e3da25d35f466fe6003881fe4102dea9f001111559e4246f242771dd.png" | "d993fdb0ca7f68a6578aeccf1f615c48a2e634d77b81c8dec31b471105809873.png" | "d9a9c7d48f5215e54dda772bafab2b81a4985bbd82dc0c46c73fd89b73033d62.png" | "da51ca8e4f7784c05f0cf42764a8c70719e25364e9d296c2babac84f199569c6.png" | "dab6da0fcf58ddd80f18b17c5f608662eccfc3c24ffcabe451379e29f795c920.png" | "db79398d7a7dd7edfbb00fe23d4af417fb3ab0f4d2c73e8df464ab83ae1bfad8.png" | "dc67a3a240f659e55cb39be8e024ecefe2f80a5353d192ba243ea83c68965e43.png" | "dcddfedf8a43044b93b7dc0d63664c99935c7e2378df7ca1f860da39a16dba63.png" | "dd2e18caa2c44d1d200b658597db1fd7c5c905c3ec00e44e45abdd07f60c7349.png" | "dd3c4ec89776177f40d9605a9b8bcd2f5a5274e5ac4963f18ed7e729dc2c1907.png" | "de3c198966192be2f97798370d78e7302e6190d93525a9cd1e14aeae3fd278ef.png" | "de5a7af6f053f03aaa1a47f529c8baf4762686c89f73f803225e046e8737879d.png" | "df0fe24f0cd6dc030d56dff302949800d04ebc8471746357e68b912a65a910d0.png" | "dfd66426c7586427cb83451cbb23eadfdc694ddb1520a203b1fc3835d150f591.png" | "dfe52dd3697cab54b5ca6fb0ace531e5906c62006bf17d13320b577a0895373a.png" | "e08d9ad763c6d58afe01d10ddd9fdfb569116bc2684a98ed673042b8bd204371.png" | "e0af1667400d47918bd50cccadc3cd365701ea73c45db9bc521e5ff0e192f0bd.png" | "e1151723738cc554e6d6dc3975469e79a2338456e41610f8ed9b81a914b78ade.png" | "e1475979afe9b48a1091238c429c42cae1776ee580ec7db977a4beb50df2bd07.png" | "e17e0d0e0ad7e21dfb8f88e2cb8dd157377d96886f5d81b25002a46f00b913de.png" | "e1f82e63a4c84864851dc05367eb27426752fbef61072f84f6c343b6c3ccd2e8.png" | "e1f870350aa7ce9f002afff84fe35e7baf7a97505ee2fb70517f23cc9fb45a39.png" | "e23212d45965f5336491894e786b23bf12e45b43e3bc41c1998ca53361d9fb11.png" | "e233854a37dbf3ae6164dd0565494b722e97da3b26b55a69b610d92410da22b4.png" | "e39c349a13d14812bb8fbbd1d8b5c325b6d633e91a0f609cb60b29bc13f2ed79.png" | "e477febd62b853e3fb6c7e274a2c07c8e63876b6e67d93ffb201c2a8d709d1b7.png" | "e4ec4229d248c32876afdb142ff2eae8105d409e1d088fb1144a98142962995f.png" | "e58134be0d7924fdebf65f6db5d467cbe4138a19ac93f34b9128c4f100bfef44.png" | "e67573373034cadbd7dcc2ed9d83287d2db7d7d3e038079c3702f2556fe183e1.png" | "e6ad027a22a601d4077e30e7a84a47b2817d78a2cc4b2696eaf228f9d8eb19ca.png" | "e6f7d254e2117fc354d42220301dcd48ab7954566fbb1123e28363f7e0567af7.png" | "e7121646f87304a8eb0d69aea177daeefda2be7e691b38c231d088acafc0dfdc.png" | "e715c4ff83edd32225b6bd07e03343b5b24df5500063067d0f93dd925d64ff23.png" | "e77232724f2276b96a80d2b5103fb80f3666e6e4a6fc0661dbe597e47465ce28.png" | "e79164e0bb1fb312881783941545e005d07ccbbb8cd8ba6a7198523606ffd15a.png" | "e814b579216a642ab4f171da5541051f16982ce5eea312bc10359908ceb1de0b.png" | "e8498567278aee34940f4396a0d4663a5f6205d97b8e8bb7a9ca9954380c5b7e.png" | "e850a7dd41d8a3fbad55ad490a98318c2482e084c7abc9ff147f5d1a8169d147.png" | "e9670c25afd59f0c5a90f499e7f3425557f3090b9bde6f6510e0b66be84fb099.png" | "e969d1ec43c95d14f181210d646cb9529968ee54fb0e34cecffca6741a39ef56.png" | "e9c3b03c94df6f2549e81711dd667ed96b1647bf79c006aa88a9b4a9f2e6f3b9.png" | "e9fa8d7bd9098e7e69f0c37cd9855f996e777f821684c4e6b5e03ef483677862.png" | "ea15b9372ee33e02a06309b77e547387095924d5a087a752da6c68b102cb4a1e.png" | "ea30d7d829ff42475f60035c9c7a81cee20ab0354c252ef7a8c8efbe7934376c.png" | "ec333835b948b8bcb6203cfd669d45163254c5a61416302e8d9f8933662e50be.png" | "ecb46853ce5b38d0c43201582c90b2006b585cc9a8f360553917d346bb1d6ad2.png" | "ed123b9a0d5e4818f35265cdb488819249ef966bf4da7470ee6d047f33ec0346.png" | "ed3aa8f06e7953dde9f98922d8e33ab229a8f21c21b2a9d8d30c40d851a35eae.png" | "ef938834a56c8fb4d607216cafc97c1ed62f56d147133b485dec219bb49e45ce.png" | "example.png" | "f02ed705f1eb33e9f1b15b0d623fb6a02b2d0e2aaead031c0d41881ebb6c91b3.png" | "f04d8f38cbf49e23d9b8b9f56a19b6d7239eb2be62e7051b4e1d66d8af3a0e6c.png" | "f05f088f4cce7f5b4fb2fa7a3ca259980aee32cf4c265b53d6f3c8ffe2e50c43.png" | "f0bf34ee7e14af9a1f9d27cc163c9e3ffb41c38c3fabcfd28d2b764ac2b7e658.png" | "f1b33f9eb70e7072cca05df6a71a1e217a7a23081aefc379c9af88ce93fa4781.png" | "f1b50eb388dc7f56408ec679c629c9222dcdb239c03f11af2bfe73b8c1f320cc.png" | "f1bc3f525c104e7d68cca9b1eecd42bdb3195a05ce2f62f3897c7bd3ad9e8127.png" | "f1dd51c11ef110b0c7c04ba895552e5cd12ae147a475703e699896ecf16c56fd.png" | "f218802f85334c2d42e609809ee57e247543724976c87c01f7223f6f303e321e.png" | "f24af2b3be33e64f0d9892842e1290b5af0f79e6f883ed62c5825d29475d481f.png" | "f286d82a6c64c516797f4154740a1e6119979bb963e4d3dcab31adf13423bd5c.png" | "f2bf4369fe8b6d6b2709c04614774e0ee3e42b4a35fa3937d03f1c1fec3eeb9e.png" | "f2de5f3ed573743bd0eecf9d131127a459dbfde9a4d1e7d2d317d5452a6ab286.png" | "f3a67174435155505491b893ca731205ce649144d84f43aec7a1c151eadeb021.png" | "f3e956879aa5c6f177657d7950b97fcd43181234c8298847d2b8720fc20a4be8.png" | "f3f239e8b35b638c8ceee2363d3e4dadfecdfeecacc660772fafbb999105968b.png" | "f409ff3929a59d36b063861d58bd3532affe645ad681c4c1dbcbcd22ebdd99ef.png" | "f638df4f4ba783d99b627287d609c87313d9d90f962213d0226e13de5d9fd2dd.png" | "f688182ff8f83e5bff6c96d551a231d2a95b60bc3066f204d4080d5d8799152b.png" | "f7bff324491b588ebbae9de903b8f072e51955fba9bbe6eca99945b83e1dfa99.png" | "f84c3a4abb685dd9dbc61cadb2fb70e8b2357cb26a205d29b117a38967051f23.png" | "f95cb6dd0698324ffefc41cc5e45401a1a412c66147f09927d091a3255457911.png" | "f963d3dde7a5618702f3b9173e2b3aa68015602312acf110cd628d79f5580e84.png" | "f9acd1d7a3159a48bdec5c34cb49f4bd12a4dd4f6072f954f100c4f7a1d54e04.png" | "fa45fc6aa5cf7586eb40818b32b5c8e9db8b0d6f28fce95624aa244ca3f5e142.png" | "fa4949e7ebbe8d78fb6735887c5e57b43f358fa6f806eb0138869733b95a7635.png" | "fa54b16780255584df81f7c4efaed50b2ed69bf1ba43f53204e44a9560fd81c8.png" | "fa690bcbc50f0cb627e938718990b35924b1778d030c08bdde831229066346ca.png" | "fa70db55f59ed715af1a92479ca78a8d735dd0dec3e6d9ed85c3997fb6973384.png" | "fafae3959553520d64df0c63f1b3ea7673ffb07f6a1f124d674368daf2a176f7.png" | "fb10ec352feb939adf2c8f9edcd029535c19775a9e9e542d93630e50036ce8da.png" | "fb11ccdb3da6f162e89440b72a44d6439c4f6c4e98089c376803074aee45d158.png" | "fb9529d1dda7b1faf1fcde52f8875440fe66920bc259bcdbf9587538234f143f.png" | "fc9eeb99ff08b3dd5b376f61b66aa0ba93902e25f4b85d02defa738e7278184f.png" | "fcbd9fb7dce154b204557753402b2d67d358ef69428bb096ef36e90442294537.png" | "fd3a170292dd06f14a6d10d7e798950df7c6ceed8a58dc0e1a583b9362f03155.png" | "fd3cffb5f7538770bf0442da2a02cce8d8b83c74cb6e4dd1601e37c9d9e3b443.png" | "fd4c698c81674720f6f0aaebf3cf5b8b111b20948a853fab78f15a07b4a7314a.png" | "fd9819e61bfa950458f0353de0e39c64a0c7976f3cd06ffc038843e10dfa31dd.png" | "fdd641be331372a1abe2865cf2cf20db3e693a679fa36c08bfe85ac99f039d01.png" | "fdf1c76eed74a0430e63c7022338e91ed78484aa6b843f9dbf7cc427177be66d.png" | "fe052816594c062e076dd4d4804638b8f14be6cacecd9bc1f5b7990e5923437e.png" | "fe31b64e4164c2bfec98a43eb4d283f020dd142cbaf06996dbd1d30f84d76f49.png" | "ff02407b1d904056482396ccd0e22fc58785379507c3d6915b440f7078a3b2f3.png" | "ff2bf848ae6268b07588703db362682bcd7121935fa98fa11dd2b8b3645f65c1.png" | "ff68d1b2c9f0da3b7a6c43e573e79b5c3e7929bced62c5f3686995d71cd1c8aa.png" | "foo (1).png" | "foo (2).png" | "foo (3).png" | "foo.png" | "icon-1024.png" | "il_570xN.4895517340_bhko-removebg-preview.png" | "images.jpeg" | "poker-club.png" | "poker-diamond.png" | "poker-heart.png" | "poker-spade.png" | "upload (1).png" | "upload (10).png" | "upload (100).png" | "upload (101).png" | "upload (102).png" | "upload (103).png" | "upload (104).png" | "upload (105).png" | "upload (106).png" | "upload (107).png" | "upload (108).png" | "upload (109).png" | "upload (11).png" | "upload (110).png" | "upload (111).png" | "upload (112).png" | "upload (113).png" | "upload (114).png" | "upload (115).png" | "upload (116).png" | "upload (117).png" | "upload (118).png" | "upload (119).png" | "upload (12).png" | "upload (120).png" | "upload (121).png" | "upload (122).png" | "upload (123).png" | "upload (124).png" | "upload (125).png" | "upload (126).png" | "upload (127).png" | "upload (128).png" | "upload (129).png" | "upload (13).png" | "upload (130).png" | "upload (131).png" | "upload (132).png" | "upload (133).png" | "upload (134).png" | "upload (135).png" | "upload (136).png" | "upload (137).png" | "upload (138).png" | "upload (139).png" | "upload (14).png" | "upload (140).png" | "upload (141).png" | "upload (142).png" | "upload (143).png" | "upload (144).png" | "upload (145).png" | "upload (146).png" | "upload (147).png" | "upload (148).png" | "upload (149).png" | "upload (15).png" | "upload (150).png" | "upload (151).png" | "upload (152).png" | "upload (153).png" | "upload (154).png" | "upload (155).png" | "upload (156).png" | "upload (157).png" | "upload (158).png" | "upload (159).png" | "upload (16).png" | "upload (160).png" | "upload (161).png" | "upload (162).png" | "upload (163).png" | "upload (164).png" | "upload (165).png" | "upload (166).png" | "upload (167).png" | "upload (168).png" | "upload (169).png" | "upload (17).png" | "upload (170).png" | "upload (171).png" | "upload (172).png" | "upload (173).png" | "upload (174).png" | "upload (175).png" | "upload (176).png" | "upload (177).png" | "upload (178).png" | "upload (179).png" | "upload (18).png" | "upload (180).png" | "upload (181).png" | "upload (182).png" | "upload (183).png" | "upload (184).png" | "upload (185).png" | "upload (186).png" | "upload (187).png" | "upload (188).png" | "upload (189).png" | "upload (19).png" | "upload (190).png" | "upload (191).png" | "upload (192).png" | "upload (193).png" | "upload (194).png" | "upload (195).png" | "upload (196).png" | "upload (197).png" | "upload (198).png" | "upload (199).png" | "upload (2).png" | "upload (20).png" | "upload (200).png" | "upload (201).png" | "upload (202).png" | "upload (203).png" | "upload (21).png" | "upload (22).png" | "upload (23).png" | "upload (24).png" | "upload (25).png" | "upload (26).png" | "upload (27).png" | "upload (28).png" | "upload (29).png" | "upload (3).png" | "upload (30).png" | "upload (31).png" | "upload (32).png" | "upload (33).png" | "upload (34).png" | "upload (35).png" | "upload (36).png" | "upload (37).png" | "upload (38).png" | "upload (39).png" | "upload (4).png" | "upload (40).png" | "upload (41).png" | "upload (42).png" | "upload (43).png" | "upload (44).png" | "upload (45).png" | "upload (46).png" | "upload (47).png" | "upload (48).png" | "upload (49).png" | "upload (5).png" | "upload (50).png" | "upload (51).png" | "upload (52).png" | "upload (53).png" | "upload (54).png" | "upload (55).png" | "upload (56).png" | "upload (57).png" | "upload (58).png" | "upload (59).png" | "upload (6).png" | "upload (60).png" | "upload (61).png" | "upload (62).png" | "upload (63).png" | "upload (64).png" | "upload (65).png" | "upload (66).png" | "upload (67).png" | "upload (68).png" | "upload (69).png" | "upload (7).png" | "upload (70).png" | "upload (71).png" | "upload (72).png" | "upload (73).png" | "upload (74).png" | "upload (75).png" | "upload (76).png" | "upload (77).png" | "upload (78).png" | "upload (79).png" | "upload (8).png" | "upload (80).png" | "upload (81).png" | "upload (82).png" | "upload (83).png" | "upload (84).png" | "upload (85).png" | "upload (86).png" | "upload (87).png" | "upload (88).png" | "upload (89).png" | "upload (9).png" | "upload (90).png" | "upload (91).png" | "upload (92).png" | "upload (93).png" | "upload (94).png" | "upload (95).png" | "upload (96).png" | "upload (97).png" | "upload (98).png" | "upload (99).png" | "upload.png"
 export type Enum_Compare_comparison = "a != b" | "a < b" | "a <= b" | "a == b" | "a > b" | "a >= b"
 export type Enum_ChatGPT_Simple_$_O_model = '🔴' // never
 export type Enum_ChatGPT_Simple_$_O_behaviour = "description" | "tags"
@@ -5174,15 +5294,13 @@ export type Enum_CR_SD1$55_Aspect_Ratio_aspect_ratio = Enum_CR_Aspect_Ratio_aspe
 export type Enum_CR_Color_Tint_mode = "black" | "blue" | "cool" | "cyan" | "green" | "lavender" | "lime" | "magenta" | "maroon" | "navy" | "olive" | "orange" | "peach" | "purple" | "red" | "rose" | "sepia" | "teal" | "vintage" | "warm" | "white" | "yellow"
 export type Enum_CR_Img2Img_Process_Switch_Input = "img2img" | "txt2img"
 export type Enum_CR_Hires_Fix_Process_Switch_Input = "image_upscale" | "latent_upscale"
-export type Enum_CR_Halftone_Grid_dot_style = "Accent" | "Blues" | "BrBG" | "BuGn" | "BuPu" | "CMRmap" | "Dark2" | "GnBu" | "Greens" | "Greys" | "OrRd" | "Oranges" | "PRGn" | "Paired" | "Pastel1" | "Pastel2" | "PiYG" | "PuBu" | "PuBuGn" | "PuOr" | "PuRd" | "Purples" | "RdBu" | "RdGy" | "RdPu" | "RdYlBu" | "RdYlGn" | "Reds" | "Set1" | "Set2" | "Set3" | "Spectral" | "Wistia" | "YlGn" | "YlGnBu" | "YlOrBr" | "YlOrRd" | "afmhot" | "autumn" | "binary" | "bone" | "brg" | "bwr" | "cividis" | "cool" | "coolwarm" | "copper" | "cubehelix" | "flag" | "gist_earth" | "gist_gray" | "gist_heat" | "gist_rainbow" | "gist_stern" | "gist_yarg" | "gnuplot" | "gnuplot2" | "gray" | "hot" | "hsv" | "inferno" | "jet" | "magma" | "nipy_spectral" | "ocean" | "pink" | "plasma" | "prism" | "rainbow" | "seismic" | "spring" | "summer" | "tab10" | "tab20" | "tab20b" | "tab20c" | "terrain" | "turbo" | "twilight" | "twilight_shifted" | "viridis" | "winter"
-export type Enum_CR_Halftone_Grid_reverse_dot_style = "No" | "Yes"
-export type Enum_CR_Apply_Model_Merge_normalise_ratios = Enum_CR_Halftone_Grid_reverse_dot_style
-export type Enum_CR_Halftone_Grid_background_color = "black" | "blue" | "custom" | "cyan" | "green" | "lavender" | "lime" | "magenta" | "maroon" | "navy" | "olive" | "orange" | "purple" | "red" | "teal" | "white" | "yellow"
 export type Enum_CR_Batch_Process_Switch_Input = "image" | "image batch"
-export type Enum_CR_Multi$7ControlNet_Stack_controlnet_1 = "None" | "control-lora-depth-rank256.safetensors" | "control-lora-sketch-rank128-metadata.safetensors" | "control_depth-fp16.safetensors" | "control_openpose-fp16.safetensors" | "control_scribble-fp16.safetensors" | "control_v11p_sd15_canny_fp16.safetensors" | "control_v11p_sd15_lineart_fp16.safetensors" | "control_v11u_sd15_tile.pth" | "t2iadapter_canny_sd14v1.pth" | "t2iadapter_sketch_sd14v1.pth"
+export type Enum_CR_Multi$7ControlNet_Stack_controlnet_1 = "None" | "control-lora-depth-rank256.safetensors" | "control-lora-sketch-rank128-metadata.safetensors" | "control_depth-fp16.safetensors" | "control_openpose-fp16.safetensors" | "control_scribble-fp16.safetensors" | "control_v11p_sd15_canny_fp16.safetensors" | "control_v11p_sd15_lineart_fp16.safetensors" | "control_v11u_sd15_tile.pth" | "control_v11u_sd15_tile_fp16.safetensors" | "t2iadapter_canny_sd14v1.pth" | "t2iadapter_sketch_sd14v1.pth"
 export type Enum_CR_Multi$7ControlNet_Stack_controlnet_2 = Enum_CR_Multi$7ControlNet_Stack_controlnet_1
 export type Enum_CR_Multi$7ControlNet_Stack_controlnet_3 = Enum_CR_Multi$7ControlNet_Stack_controlnet_1
 export type Enum_CR_Apply_Model_Merge_merge_method = "Recursive" | "Weighted"
+export type Enum_CR_Apply_Model_Merge_normalise_ratios = "No" | "Yes"
+export type Enum_CR_Halftone_Grid_reverse_dot_style = Enum_CR_Apply_Model_Merge_normalise_ratios
 export type Enum_CR_Model_Merge_Stack_ckpt_name1 = "AOM3A1_orangemixs.safetensors" | "AOM3A3_orangemixs.safetensors" | "AbyssOrangeMix2_hard.safetensors" | "Deliberate-inpainting.safetensors" | "None" | "Sevenof9V3.safetensors" | "albedobaseXL_v02.safetensors" | "angel1_36224.safetensors" | "anything-v3-fp16-pruned.safetensors" | "deliberate_v2.safetensors" | "dreamshaperXL10_alpha2Xl10.safetensors" | "dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors" | "ghostmix_v12.safetensors" | "juggernautXL_version3.safetensors" | "lyriel_v15.safetensors" | "mistoonAnime_v10.safetensors" | "mistoonAnime_v10Inpainting.safetensors" | "realisticVisionV20_v20.safetensors" | "revAnimated_v121.safetensors" | "revAnimated_v121Inp-inpainting.safetensors" | "revAnimated_v122.safetensors" | "sd_xl_base_1.0.safetensors" | "sd_xl_refiner_1.0.safetensors" | "toonyou_beta1.safetensors" | "v1-5-pruned-emaonly.ckpt" | "v1-5-pruned-emaonly.safetensors" | "v2-1_512-ema-pruned.safetensors" | "v2-1_768-ema-pruned.safetensors" | "wd-1-5-beta2-aesthetic-unclip-h-fp16.safetensors" | "wd-1-5-beta2-fp16.safetensors"
 export type Enum_CR_Model_Merge_Stack_ckpt_name2 = Enum_CR_Model_Merge_Stack_ckpt_name1
 export type Enum_CR_Model_Merge_Stack_ckpt_name3 = Enum_CR_Model_Merge_Stack_ckpt_name1
@@ -5258,7 +5376,53 @@ export type Enum_CR_XY_Interpolate_gradient_profile = "Lerp"
 export type Enum_CR_XY_From_Folder_image_folder = "Images" | "avatars" | "latents"
 export type Enum_CR_XY_Save_Grid_Image_output_folder = Enum_CR_XY_From_Folder_image_folder
 export type Enum_CR_XY_Save_Grid_Image_file_format = "jpg" | "png" | "tif" | "webp"
+export type Enum_CR_Halftone_Grid_dot_style = "Accent" | "Blues" | "BrBG" | "BuGn" | "BuPu" | "CMRmap" | "Dark2" | "GnBu" | "Greens" | "Greys" | "OrRd" | "Oranges" | "PRGn" | "Paired" | "Pastel1" | "Pastel2" | "PiYG" | "PuBu" | "PuBuGn" | "PuOr" | "PuRd" | "Purples" | "RdBu" | "RdGy" | "RdPu" | "RdYlBu" | "RdYlGn" | "Reds" | "Set1" | "Set2" | "Set3" | "Spectral" | "Wistia" | "YlGn" | "YlGnBu" | "YlOrBr" | "YlOrRd" | "afmhot" | "autumn" | "binary" | "bone" | "brg" | "bwr" | "cividis" | "cool" | "coolwarm" | "copper" | "cubehelix" | "flag" | "gist_earth" | "gist_gray" | "gist_heat" | "gist_rainbow" | "gist_stern" | "gist_yarg" | "gnuplot" | "gnuplot2" | "gray" | "hot" | "hsv" | "inferno" | "jet" | "magma" | "nipy_spectral" | "ocean" | "pink" | "plasma" | "prism" | "rainbow" | "seismic" | "spring" | "summer" | "tab10" | "tab20" | "tab20b" | "tab20c" | "terrain" | "turbo" | "twilight" | "twilight_shifted" | "viridis" | "winter"
+export type Enum_CR_Style_Bars_bar_style = Enum_CR_Halftone_Grid_dot_style
+export type Enum_CR_Halftone_Grid_background_color = "black" | "blue" | "custom" | "cyan" | "green" | "lavender" | "lime" | "magenta" | "maroon" | "navy" | "olive" | "orange" | "purple" | "red" | "teal" | "white" | "yellow"
+export type Enum_CR_Color_Bars_mode = "2-color"
+export type Enum_CR_Color_Bars_color1 = "aqua" | "black" | "blue" | "brown" | "coral" | "cyan" | "darkgray" | "fuchsia" | "gold" | "gray" | "green" | "indigo" | "lavender" | "lightgray" | "lime" | "magenta" | "maroon" | "navy" | "olive" | "orange" | "pink" | "purple" | "red" | "silver" | "teal" | "turquoise" | "violet" | "white" | "yellow"
+export type Enum_CR_Color_Bars_color2 = Enum_CR_Color_Bars_color1
+export type Enum_CR_Checker_Pattern_color1 = Enum_CR_Color_Bars_color1
+export type Enum_CR_Checker_Pattern_color2 = Enum_CR_Color_Bars_color1
+export type Enum_CR_Polygons_face_color = Enum_CR_Color_Bars_color1
+export type Enum_CR_Polygons_line_color = Enum_CR_Color_Bars_color1
+export type Enum_CR_Color_Gradient_start_color = Enum_CR_Color_Bars_color1
+export type Enum_CR_Color_Gradient_end_color = Enum_CR_Color_Bars_color1
+export type Enum_CR_Starburst_Lines_line_color = Enum_CR_Color_Bars_color1
+export type Enum_CR_Starburst_Lines_background_color = Enum_CR_Color_Bars_color1
+export type Enum_CR_Starburst_Colors_color_1 = Enum_CR_Color_Bars_color1
+export type Enum_CR_Starburst_Colors_color_2 = Enum_CR_Color_Bars_color1
+export type Enum_CR_Overlay_Text_font_color = Enum_CR_Color_Bars_color1
+export type Enum_CR_Draw_Text_font_color = Enum_CR_Color_Bars_color1
+export type Enum_CR_Draw_Text_background_color = Enum_CR_Color_Bars_color1
+export type Enum_CR_Mask_Text_background_color = Enum_CR_Color_Bars_color1
+export type Enum_CR_Color_Bars_orientation = "diagonal" | "horizontal" | "vertical"
+export type Enum_CR_Style_Bars_mode = "color bars" | "gradient bars" | "sin wave"
+export type Enum_CR_Style_Bars_orientation = "horizontal" | "vertical"
+export type Enum_CR_Color_Gradient_orientation = Enum_CR_Style_Bars_orientation
+export type Enum_Image_Flip_mode = Enum_CR_Style_Bars_orientation
+export type Enum_Image_Generate_Gradient_direction = Enum_CR_Style_Bars_orientation
+export type Enum_CR_Checker_Pattern_mode = "regular" | "stepped"
+export type Enum_CR_Polygons_mode = "hexagons" | "triangles"
+export type Enum_CR_Color_Gradient_mode = "linear" | "radial"
+export type Enum_CR_Overlay_Text_font_name = "AlumniSansCollegiateOne-Regular.ttf" | "Oswald-Bold.ttf" | "PixelifySans-Bold.ttf" | "Quicksand-Bold.ttf" | "Roboto-Regular.ttf" | "YoungSerif-Regular.ttf"
+export type Enum_CR_Draw_Text_font_name = Enum_CR_Overlay_Text_font_name
+export type Enum_CR_Mask_Text_font_name = Enum_CR_Overlay_Text_font_name
+export type Enum_CR_Composite_Text_font_name = Enum_CR_Overlay_Text_font_name
+export type Enum_CR_Overlay_Text_alignment_options = "bottom center" | "bottom left" | "bottom right" | "center" | "top center" | "top left" | "top right"
+export type Enum_CR_Draw_Text_alignment_options = Enum_CR_Overlay_Text_alignment_options
+export type Enum_CR_Mask_Text_alignment_options = Enum_CR_Overlay_Text_alignment_options
+export type Enum_CR_Composite_Text_alignment_options = Enum_CR_Overlay_Text_alignment_options
+export type Enum_CR_Overlay_Text_justify = "tbd"
+export type Enum_CR_Overlay_Text_rotation_options = Enum_CR_Overlay_Text_justify
+export type Enum_CR_Draw_Text_justify = Enum_CR_Overlay_Text_justify
+export type Enum_CR_Draw_Text_rotation_options = Enum_CR_Overlay_Text_justify
+export type Enum_CR_Mask_Text_justify = Enum_CR_Overlay_Text_justify
+export type Enum_CR_Composite_Text_justify = Enum_CR_Overlay_Text_justify
+export type Enum_CR_Mask_Text_rotation_options = "image center" | "text center"
+export type Enum_CR_Composite_Text_rotation_options = Enum_CR_Mask_Text_rotation_options
 export type Enum_AIO$_Preprocessor_preprocessor = "AnimeLineArtPreprocessor" | "BAE-NormalMapPreprocessor" | "BinaryPreprocessor" | "CannyEdgePreprocessor" | "ColorPreprocessor" | "DWPreprocessor" | "FakeScribblePreprocessor" | "HEDPreprocessor" | "LeReS-DepthMapPreprocessor" | "LineArtPreprocessor" | "M-LSDPreprocessor" | "Manga2Anime_LineArt_Preprocessor" | "MediaPipe-FaceMeshPreprocessor" | "MiDaS-DepthMapPreprocessor" | "MiDaS-NormalMapPreprocessor" | "OneFormer-ADE20K-SemSegPreprocessor" | "OneFormer-COCO-SemSegPreprocessor" | "OpenposePreprocessor" | "PiDiNetPreprocessor" | "SAMPreprocessor" | "ScribblePreprocessor" | "Scribble_XDoG_Preprocessor" | "SemSegPreprocessor" | "ShufflePreprocessor" | "TilePreprocessor" | "UniFormer-SemSegPreprocessor" | "Zoe-DepthMapPreprocessor"
+export type Enum_HighRes$7Fix_Script_preprocessor = Enum_AIO$_Preprocessor_preprocessor
 export type Enum_PixelPerfectResolution_resize_mode = "Crop and Resize" | "Just Resize" | "Resize and Fill"
 export type Enum_HintImageEnchance_resize_mode = Enum_PixelPerfectResolution_resize_mode
 export type Enum_BNK$_CutoffRegionsToConditioning$_ADV_weight_interpretation = "A1111" | "comfy" | "comfy++" | "compel"
@@ -5413,15 +5577,12 @@ export type Enum_Cosines_type_ = Enum_Sinus_type_
 export type Enum_Tangent_type_ = Enum_Sinus_type_
 export type Enum_Latent_Scale_to_side_side = "Height" | "Longest" | "Width"
 export type Enum_Image_scale_to_side_side = Enum_Latent_Scale_to_side_side
-export type Enum_KSampler_$1Efficient$2_sampler_state = "Hold" | "Sample" | "Script"
-export type Enum_KSampler_Adv$5_$1Efficient$2_sampler_state = Enum_KSampler_$1Efficient$2_sampler_state
-export type Enum_KSampler_SDXL_$1Eff$5$2_sampler_state = Enum_KSampler_$1Efficient$2_sampler_state
-export type Enum_KSampler_$1Efficient$2_preview_method = "auto" | "latent2rgb" | "none" | "taesd"
-export type Enum_KSampler_Adv$5_$1Efficient$2_preview_method = Enum_KSampler_$1Efficient$2_preview_method
-export type Enum_KSampler_SDXL_$1Eff$5$2_preview_method = Enum_KSampler_$1Efficient$2_preview_method
-export type Enum_KSampler_$1Efficient$2_vae_decode = "false" | "output only" | "output only (tiled)" | "true" | "true (tiled)"
-export type Enum_KSampler_Adv$5_$1Efficient$2_vae_decode = Enum_KSampler_$1Efficient$2_vae_decode
-export type Enum_KSampler_SDXL_$1Eff$5$2_vae_decode = Enum_KSampler_$1Efficient$2_vae_decode
+export type Enum_KSampler_$1Efficient$2_preview_method = "auto" | "latent2rgb" | "none" | "taesd" | "vae_decoded_only"
+export type Enum_KSampler_$1Efficient$2_vae_decode = "false" | "true" | "true (tiled)"
+export type Enum_KSampler_Adv$5_$1Efficient$2_preview_method = "auto" | "latent2rgb" | "none" | "taesd"
+export type Enum_KSampler_SDXL_$1Eff$5$2_preview_method = Enum_KSampler_Adv$5_$1Efficient$2_preview_method
+export type Enum_KSampler_Adv$5_$1Efficient$2_vae_decode = "false" | "output only" | "output only (tiled)" | "true" | "true (tiled)"
+export type Enum_KSampler_SDXL_$1Eff$5$2_vae_decode = Enum_KSampler_Adv$5_$1Efficient$2_vae_decode
 export type Enum_XY_Plot_Y_label_orientation = "Horizontal" | "Vertical"
 export type Enum_XY_Plot_ksampler_output_image = "Images" | "Plot"
 export type Enum_XY_Input$4_Add$3Return_Noise_XY_type = "add_noise" | "return_with_leftover_noise"
@@ -5594,6 +5755,12 @@ export type Enum_XY_Input$4_Control_Net_target_parameter = "end_percent" | "star
 export type Enum_XY_Input$4_Control_Net_Plot_plot_type = "X: End%, Y: Start%" | "X: End%, Y: Strength" | "X: Start%, Y: End%" | "X: Start%, Y: Strength" | "X: Strength, Y: End%" | "X: Strength, Y: Start%"
 export type Enum_XY_Input$4_Manual_XY_Entry_plot_type = "CFG Scale" | "Checkpoint" | "Clip Skip" | "Denoise" | "EndStep" | "LoRA" | "Negative Prompt S/R" | "Nothing" | "Positive Prompt S/R" | "Sampler" | "Scheduler" | "Seeds++ Batch" | "StartStep" | "Steps" | "VAE"
 export type Enum_Image_Overlay_overlay_resize = "Fit" | "None" | "Resize by rescale_factor" | "Resize to width & heigth"
+export type Enum_Noise_Control_Script_rng_source = "cpu" | "gpu" | "nv"
+export type Enum_HighRes$7Fix_Script_upscale_type = "latent" | "pixel"
+export type Enum_HighRes$7Fix_Script_hires_ckpt_name = "(use same)" | "AOM3A1_orangemixs.safetensors" | "AOM3A3_orangemixs.safetensors" | "AbyssOrangeMix2_hard.safetensors" | "Deliberate-inpainting.safetensors" | "Sevenof9V3.safetensors" | "albedobaseXL_v02.safetensors" | "angel1_36224.safetensors" | "anything-v3-fp16-pruned.safetensors" | "deliberate_v2.safetensors" | "dreamshaperXL10_alpha2Xl10.safetensors" | "dynavisionXLAllInOneStylized_beta0411Bakedvae.safetensors" | "ghostmix_v12.safetensors" | "juggernautXL_version3.safetensors" | "lyriel_v15.safetensors" | "mistoonAnime_v10.safetensors" | "mistoonAnime_v10Inpainting.safetensors" | "realisticVisionV20_v20.safetensors" | "revAnimated_v121.safetensors" | "revAnimated_v121Inp-inpainting.safetensors" | "revAnimated_v122.safetensors" | "sd_xl_base_1.0.safetensors" | "sd_xl_refiner_1.0.safetensors" | "toonyou_beta1.safetensors" | "v1-5-pruned-emaonly.ckpt" | "v1-5-pruned-emaonly.safetensors" | "v2-1_512-ema-pruned.safetensors" | "v2-1_768-ema-pruned.safetensors" | "wd-1-5-beta2-aesthetic-unclip-h-fp16.safetensors" | "wd-1-5-beta2-fp16.safetensors"
+export type Enum_HighRes$7Fix_Script_latent_upscaler = "area" | "bicubic" | "bilinear" | "bislerp" | "city96.v1" | "city96.xl" | "nearest-exact" | "ttl_nn.SD 1.x" | "ttl_nn.SDXL"
+export type Enum_Tiled_Upscaler_Script_tiling_strategy = "none" | "padded" | "random" | "random strict" | "simple"
+export type Enum_Tiled_Upscaler_Script_tile_controlnet = "control_v11u_sd15_tile.pth" | "control_v11u_sd15_tile_fp16.safetensors"
 export type Enum_LatentByRatio_model = "SD1.5 512" | "SD2.1 768" | "SDXL 1024"
 export type Enum_LatentByRatio_ratio = "16:9" | "1:1" | "1:2" | "1:4" | "21:9" | "2:1" | "2:3" | "3:2" | "3:4" | "4:1" | "4:3" | "9:16" | "9:21"
 export type Enum_Mask_Morphology_op = "close" | "dilate" | "erode" | "open"
@@ -5644,8 +5811,6 @@ export type Enum_Image_Pixelate_dither_mode = "FloydSteinberg" | "Ordered"
 export type Enum_Image_Pixelate_color_palette_mode = "Brightness" | "BrightnessAndTonal" | "Linear" | "Tonal"
 export type Enum_Image_Power_Noise_noise_type = "blue" | "green" | "grey" | "mix" | "pink" | "white"
 export type Enum_Image_Edge_Detection_Filter_mode = "laplacian" | "normal"
-export type Enum_Image_Flip_mode = "horizontal" | "vertical"
-export type Enum_Image_Generate_Gradient_direction = Enum_Image_Flip_mode
 export type Enum_Image_History_Loader_image = "...\\input\\example.png" | "...\\input\\poker-heart.png" | "...\\input\\poker-heart.png"
 export type Enum_Image_Monitor_Effects_Filter_mode = "Digital Distortion" | "Signal Distortion" | "TV Distortion"
 export type Enum_Image_Rembg_$1Remove_Background$2_model = "isnet-anime" | "isnet-general-use" | "silueta" | "u2net" | "u2net_human_seg" | "u2netp"
@@ -5657,7 +5822,7 @@ export type Enum_Image_Save_extension = "bmp" | "gif" | "jpeg" | "jpg" | "png" |
 export type Enum_Image_Save_overwrite_mode = "false" | "prefix_as_filename"
 export type Enum_Image_Select_Channel_channel = "blue" | "green" | "red"
 export type Enum_Image_Stitch_stitch = "bottom" | "left" | "right" | "top"
-export type Enum_Image_Style_Filter_style = "1977" | "aden" | "brannan" | "brooklyn" | "clarendon" | "earlybird" | "fairy tale" | "gingham" | "hudson" | "inkwell" | "kelvin" | "lark" | "lofi" | "maven" | "mayfair" | "moon" | "nashville" | "perpetua" | "reyes" | "rise" | "sci-fi" | "slumber" | "stinson" | "toaster" | "valencia" | "walden" | "willow" | "xpro2"
+export type Enum_Image_Style_Filter_style = "1977" | "aden" | "brannan" | "brooklyn" | "clarendon" | "earlybird" | "fairy tale" | "gingham" | "hudson" | "inkwell" | "kelvin" | "lark" | "lofi" | "maven" | "mayfair" | "moon" | "nashville" | "perpetua" | "reyes" | "rise" | "slumber" | "stinson" | "toaster" | "valencia" | "walden" | "willow" | "xpro2"
 export type Enum_Image_fDOF_Filter_mode = "box" | "gaussian" | "mock"
 export type Enum_Image_to_Noise_output_mode = "batch" | "list"
 export type Enum_KSampler_Cycle_latent_upscale = "area" | "bicubic" | "bilinear" | "bislerp" | "disable" | "nearest-exact"
@@ -5706,1196 +5871,13 @@ export type Enum_Generate_Border_Mask_$1WLSH$2_direction = "down" | "left" | "ri
 export type Enum_Outpaint_to_Image_$1WLSH$2_direction = Enum_Generate_Border_Mask_$1WLSH$2_direction
 export type Enum_Resolutions_by_Ratio_$1WLSH$2_aspect = "16:10" | "16:9" | "1:1" | "21:9" | "2:1" | "3:1" | "3:2" | "4:1" | "4:3" | "5:4"
 export type Enum_Time_String_$1WLSH$2_style = "%Y%m%d" | "%Y%m%d%H%M" | "%Y%m%d%H%M%S" | "%Y-%m-%d" | "%Y-%m-%d-%H%M" | "%Y-%m-%d-%H%M%S"
+export type Enum_Simple_String_Combine_$1WLSH$2_placement = "after" | "before"
+export type Enum_Simple_String_Combine_$1WLSH$2_separator = "comma" | "newline" | "none" | "space"
 export type Enum_Image_Save_with_Prompt_$1WLSH$2_extension = "gif" | "jpeg" | "png" | "tiff"
 export type Enum_Image_Save_with_Prompt$3Info_$1WLSH$2_extension = Enum_Image_Save_with_Prompt_$1WLSH$2_extension
 export type Enum_Image_Save_with_Prompt_File_$1WLSH$2_extension = Enum_Image_Save_with_Prompt_$1WLSH$2_extension
 export type Enum_Image_Save_with_Prompt$3Info_File_$1WLSH$2_extension = Enum_Image_Save_with_Prompt_$1WLSH$2_extension
-export type KnownEnumNames = 'Enum_KSampler_sampler_name'
-   | 'Enum_KSampler_scheduler'
-   | 'Enum_CheckpointLoaderSimple_ckpt_name'
-   | 'Enum_VAELoader_vae_name'
-   | 'Enum_LatentUpscale_upscale_method'
-   | 'Enum_LatentUpscale_crop'
-   | 'Enum_LatentUpscaleBy_upscale_method'
-   | 'Enum_LoadImage_image'
-   | 'Enum_LoadImageMask_image'
-   | 'Enum_LoadImageMask_channel'
-   | 'Enum_ImageScale_upscale_method'
-   | 'Enum_ImageScale_crop'
-   | 'Enum_ImageScaleBy_upscale_method'
-   | 'Enum_ConditioningSetMask_set_cond_area'
-   | 'Enum_KSamplerAdvanced_add_noise'
-   | 'Enum_KSamplerAdvanced_sampler_name'
-   | 'Enum_KSamplerAdvanced_scheduler'
-   | 'Enum_KSamplerAdvanced_return_with_leftover_noise'
-   | 'Enum_LatentRotate_rotation'
-   | 'Enum_LatentFlip_flip_method'
-   | 'Enum_LoraLoader_lora_name'
-   | 'Enum_CLIPLoader_clip_name'
-   | 'Enum_UNETLoader_unet_name'
-   | 'Enum_DualCLIPLoader_clip_name1'
-   | 'Enum_DualCLIPLoader_clip_name2'
-   | 'Enum_ControlNetLoader_control_net_name'
-   | 'Enum_DiffControlNetLoader_control_net_name'
-   | 'Enum_StyleModelLoader_style_model_name'
-   | 'Enum_CLIPVisionLoader_clip_name'
-   | 'Enum_unCLIPCheckpointLoader_ckpt_name'
-   | 'Enum_GLIGENLoader_gligen_name'
-   | 'Enum_CheckpointLoader_config_name'
-   | 'Enum_CheckpointLoader_ckpt_name'
-   | 'Enum_DiffusersLoader_model_path'
-   | 'Enum_LoadLatent_latent'
-   | 'Enum_HypernetworkLoader_hypernetwork_name'
-   | 'Enum_UpscaleModelLoader_model_name'
-   | 'Enum_ImageBlend_blend_mode'
-   | 'Enum_ImageQuantize_dither'
-   | 'Enum_ImageScaleToTotalPixels_upscale_method'
-   | 'Enum_ImageToMask_channel'
-   | 'Enum_MaskComposite_operation'
-   | 'Enum_PorterDuffImageComposite_mode'
-   | 'Enum_KSamplerSelect_sampler_name'
-   | 'Enum_SamplerDPMPP$_2M$_SDE_solver_type'
-   | 'Enum_SamplerDPMPP$_2M$_SDE_noise_device'
-   | 'Enum_SamplerDPMPP$_SDE_noise_device'
-   | 'Enum_BasicScheduler_scheduler'
-   | 'Enum_CivitAI$_Lora$_Loader_lora_name'
-   | 'Enum_CivitAI$_Lora$_Loader_download_path'
-   | 'Enum_CivitAI$_Checkpoint$_Loader_ckpt_name'
-   | 'Enum_CivitAI$_Checkpoint$_Loader_download_path'
-   | 'Enum_AlphaChanelAddByMask_method'
-   | 'Enum_AlphaChanelAsMask_method'
-   | 'Enum_ImageBatchFork_priority'
-   | 'Enum_ImageCompositeAbsolute_background'
-   | 'Enum_ImageCompositeAbsolute_method'
-   | 'Enum_ImageCompositeAbsoluteByContainer_background'
-   | 'Enum_ImageCompositeAbsoluteByContainer_method'
-   | 'Enum_ImageCompositeRelative_background'
-   | 'Enum_ImageCompositeRelative_container_size_type'
-   | 'Enum_ImageCompositeRelative_method'
-   | 'Enum_ImageCompositeRelativeByContainer_background'
-   | 'Enum_ImageCompositeRelativeByContainer_method'
-   | 'Enum_ImageContainerInheritanceAdd_method'
-   | 'Enum_ImageContainerInheritanceScale_method'
-   | 'Enum_ImageContainerInheritanceMax_method'
-   | 'Enum_ImageContainerInheritanceSum_container_size_type'
-   | 'Enum_ImageContainerInheritanceSum_method'
-   | 'Enum_ImageDrawArc_method'
-   | 'Enum_ImageDrawArcByContainer_method'
-   | 'Enum_ImageDrawChord_method'
-   | 'Enum_ImageDrawChordByContainer_method'
-   | 'Enum_ImageDrawEllipse_method'
-   | 'Enum_ImageDrawEllipseByContainer_method'
-   | 'Enum_ImageDrawLine_method'
-   | 'Enum_ImageDrawLineByContainer_method'
-   | 'Enum_ImageDrawPieslice_method'
-   | 'Enum_ImageDrawPiesliceByContainer_method'
-   | 'Enum_ImageDrawRectangle_method'
-   | 'Enum_ImageDrawRectangleByContainer_method'
-   | 'Enum_ImageDrawRectangleRounded_top_left_corner'
-   | 'Enum_ImageDrawRectangleRounded_top_right_corner'
-   | 'Enum_ImageDrawRectangleRounded_bottom_right_corner'
-   | 'Enum_ImageDrawRectangleRounded_bottom_left_corner'
-   | 'Enum_ImageDrawRectangleRounded_method'
-   | 'Enum_ImageDrawRectangleRoundedByContainer_top_left_corner'
-   | 'Enum_ImageDrawRectangleRoundedByContainer_top_right_corner'
-   | 'Enum_ImageDrawRectangleRoundedByContainer_bottom_right_corner'
-   | 'Enum_ImageDrawRectangleRoundedByContainer_bottom_left_corner'
-   | 'Enum_ImageDrawRectangleRoundedByContainer_method'
-   | 'Enum_ImageDrawPolygon_method'
-   | 'Enum_ImageEffectsLensZoomBurst_method'
-   | 'Enum_ImageEffectsLensZoomBurst_stabilization'
-   | 'Enum_ImageEffectsLensChromaticAberration_method'
-   | 'Enum_ImageEffectsLensChromaticAberration_transpose'
-   | 'Enum_ImageEffectsLensChromaticAberration_colors'
-   | 'Enum_ImageEffectsLensBokeh_blur_type'
-   | 'Enum_ImageEffectsLensBokeh_method'
-   | 'Enum_ImageEffectsLensOpticAxis_lens_shape'
-   | 'Enum_ImageEffectsLensOpticAxis_lens_edge'
-   | 'Enum_ImageEffectsLensVignette_lens_shape'
-   | 'Enum_ImageEffectsLensVignette_lens_edge'
-   | 'Enum_ImageNoiseBeta_monochromatic'
-   | 'Enum_ImageNoiseBeta_invert'
-   | 'Enum_ImageNoiseBeta_channels'
-   | 'Enum_ImageNoiseBinomial_monochromatic'
-   | 'Enum_ImageNoiseBinomial_invert'
-   | 'Enum_ImageNoiseBinomial_channels'
-   | 'Enum_ImageNoiseBytes_monochromatic'
-   | 'Enum_ImageNoiseBytes_invert'
-   | 'Enum_ImageNoiseBytes_channels'
-   | 'Enum_ImageNoiseGaussian_monochromatic'
-   | 'Enum_ImageNoiseGaussian_invert'
-   | 'Enum_ImageNoiseGaussian_channels'
-   | 'Enum_ImageSegmentation_model'
-   | 'Enum_ImageSegmentation_alpha_matting'
-   | 'Enum_ImageSegmentation_post_process_mask'
-   | 'Enum_ImageSegmentationCustom_model'
-   | 'Enum_ImageSegmentationCustom_alpha_matting'
-   | 'Enum_ImageSegmentationCustom_post_process_mask'
-   | 'Enum_ImageSegmentationCustomAdvanced_model'
-   | 'Enum_ImageSegmentationCustomAdvanced_alpha_matting'
-   | 'Enum_ImageSegmentationCustomAdvanced_post_process_mask'
-   | 'Enum_ImageText_font'
-   | 'Enum_ImageTextOutlined_font'
-   | 'Enum_ImageTextMultiline_font'
-   | 'Enum_ImageTextMultiline_align'
-   | 'Enum_ImageTextMultilineOutlined_font'
-   | 'Enum_ImageTextMultilineOutlined_align'
-   | 'Enum_ImageTransformResizeAbsolute_method'
-   | 'Enum_ImageTransformResizeRelative_method'
-   | 'Enum_ImageTransformCropCorners_top_left_corner'
-   | 'Enum_ImageTransformCropCorners_top_right_corner'
-   | 'Enum_ImageTransformCropCorners_bottom_right_corner'
-   | 'Enum_ImageTransformCropCorners_bottom_left_corner'
-   | 'Enum_ImageTransformCropCorners_method'
-   | 'Enum_ImageTransformPaddingAbsolute_method'
-   | 'Enum_ImageTransformPaddingRelative_method'
-   | 'Enum_ImageTransformRotate_expand'
-   | 'Enum_ImageTransformRotate_method'
-   | 'Enum_ImageTransformTranspose_method'
-   | 'Enum_ADE$_AnimateDiffUniformContextOptions_context_schedule'
-   | 'Enum_ADE$_AnimateDiffLoaderWithContext_model_name'
-   | 'Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule'
-   | 'Enum_ADE$_AnimateDiffLoRALoader_lora_name'
-   | 'Enum_CheckpointLoaderSimpleWithNoiseSelect_ckpt_name'
-   | 'Enum_CheckpointLoaderSimpleWithNoiseSelect_beta_schedule'
-   | 'Enum_AnimateDiffLoaderV1_model_name'
-   | 'Enum_AnimateDiffLoaderV1_beta_schedule'
-   | 'Enum_ADE$_AnimateDiffLoaderV1Advanced_model_name'
-   | 'Enum_ADE$_AnimateDiffLoaderV1Advanced_context_schedule'
-   | 'Enum_ADE$_AnimateDiffLoaderV1Advanced_beta_schedule'
-   | 'Enum_ADE$_AnimateDiffCombine_format'
-   | 'Enum_LoraLoader$8pysssss_lora_name'
-   | 'Enum_CheckpointLoader$8pysssss_ckpt_name'
-   | 'Enum_ConstrainImage$8pysssss_crop_if_required'
-   | 'Enum_PlaySound$8pysssss_mode'
-   | 'Enum_Repeater$8pysssss_output'
-   | 'Enum_Repeater$8pysssss_node_mode'
-   | 'Enum_StringFunction$8pysssss_action'
-   | 'Enum_StringFunction$8pysssss_tidy_tags'
-   | 'Enum_LoadText$8pysssss_root_dir'
-   | 'Enum_LoadText$8pysssss_file'
-   | 'Enum_SaveText$8pysssss_root_dir'
-   | 'Enum_SaveText$8pysssss_append'
-   | 'Enum_SAMLoader_model_name'
-   | 'Enum_SAMLoader_device_mode'
-   | 'Enum_ONNXDetectorProvider_model_name'
-   | 'Enum_DetailerForEach_sampler_name'
-   | 'Enum_DetailerForEach_scheduler'
-   | 'Enum_DetailerForEachDebug_sampler_name'
-   | 'Enum_DetailerForEachDebug_scheduler'
-   | 'Enum_DetailerForEachPipe_sampler_name'
-   | 'Enum_DetailerForEachPipe_scheduler'
-   | 'Enum_DetailerForEachDebugPipe_sampler_name'
-   | 'Enum_DetailerForEachDebugPipe_scheduler'
-   | 'Enum_SAMDetectorCombined_detection_hint'
-   | 'Enum_SAMDetectorCombined_mask_hint_use_negative'
-   | 'Enum_SAMDetectorSegmented_detection_hint'
-   | 'Enum_SAMDetectorSegmented_mask_hint_use_negative'
-   | 'Enum_FaceDetailer_sampler_name'
-   | 'Enum_FaceDetailer_scheduler'
-   | 'Enum_FaceDetailer_sam_detection_hint'
-   | 'Enum_FaceDetailer_sam_mask_hint_use_negative'
-   | 'Enum_FaceDetailerPipe_sampler_name'
-   | 'Enum_FaceDetailerPipe_scheduler'
-   | 'Enum_FaceDetailerPipe_sam_detection_hint'
-   | 'Enum_FaceDetailerPipe_sam_mask_hint_use_negative'
-   | 'Enum_ToDetailerPipe_Select$_to$_add$_LoRA'
-   | 'Enum_ToDetailerPipe_Select$_to$_add$_Wildcard'
-   | 'Enum_ToDetailerPipeSDXL_Select$_to$_add$_LoRA'
-   | 'Enum_ToDetailerPipeSDXL_Select$_to$_add$_Wildcard'
-   | 'Enum_BasicPipeToDetailerPipe_Select$_to$_add$_LoRA'
-   | 'Enum_BasicPipeToDetailerPipe_Select$_to$_add$_Wildcard'
-   | 'Enum_BasicPipeToDetailerPipeSDXL_Select$_to$_add$_LoRA'
-   | 'Enum_BasicPipeToDetailerPipeSDXL_Select$_to$_add$_Wildcard'
-   | 'Enum_EditDetailerPipe_Select$_to$_add$_LoRA'
-   | 'Enum_EditDetailerPipe_Select$_to$_add$_Wildcard'
-   | 'Enum_EditDetailerPipeSDXL_Select$_to$_add$_LoRA'
-   | 'Enum_EditDetailerPipeSDXL_Select$_to$_add$_Wildcard'
-   | 'Enum_LatentPixelScale_scale_method'
-   | 'Enum_PixelKSampleUpscalerProvider_scale_method'
-   | 'Enum_PixelKSampleUpscalerProvider_sampler_name'
-   | 'Enum_PixelKSampleUpscalerProvider_scheduler'
-   | 'Enum_PixelKSampleUpscalerProviderPipe_scale_method'
-   | 'Enum_PixelKSampleUpscalerProviderPipe_sampler_name'
-   | 'Enum_PixelKSampleUpscalerProviderPipe_scheduler'
-   | 'Enum_PixelTiledKSampleUpscalerProvider_scale_method'
-   | 'Enum_PixelTiledKSampleUpscalerProvider_sampler_name'
-   | 'Enum_PixelTiledKSampleUpscalerProvider_scheduler'
-   | 'Enum_PixelTiledKSampleUpscalerProvider_tiling_strategy'
-   | 'Enum_PixelTiledKSampleUpscalerProviderPipe_scale_method'
-   | 'Enum_PixelTiledKSampleUpscalerProviderPipe_sampler_name'
-   | 'Enum_PixelTiledKSampleUpscalerProviderPipe_scheduler'
-   | 'Enum_PixelTiledKSampleUpscalerProviderPipe_tiling_strategy'
-   | 'Enum_TwoSamplersForMaskUpscalerProvider_scale_method'
-   | 'Enum_TwoSamplersForMaskUpscalerProvider_full_sample_schedule'
-   | 'Enum_TwoSamplersForMaskUpscalerProviderPipe_scale_method'
-   | 'Enum_TwoSamplersForMaskUpscalerProviderPipe_full_sample_schedule'
-   | 'Enum_DenoiseScheduleHookProvider_schedule_for_iteration'
-   | 'Enum_CfgScheduleHookProvider_schedule_for_iteration'
-   | 'Enum_NoiseInjectionHookProvider_schedule_for_iteration'
-   | 'Enum_NoiseInjectionHookProvider_source'
-   | 'Enum_NoiseInjectionDetailerHookProvider_source'
-   | 'Enum_KSamplerProvider_sampler_name'
-   | 'Enum_KSamplerProvider_scheduler'
-   | 'Enum_TiledKSamplerProvider_sampler_name'
-   | 'Enum_TiledKSamplerProvider_scheduler'
-   | 'Enum_TiledKSamplerProvider_tiling_strategy'
-   | 'Enum_KSamplerAdvancedProvider_sampler_name'
-   | 'Enum_KSamplerAdvancedProvider_scheduler'
-   | 'Enum_ImageReceiver_image'
-   | 'Enum_LatentSender_preview_method'
-   | 'Enum_LatentReceiver_latent'
-   | 'Enum_ImpactWildcardEncode_Select$_to$_add$_LoRA'
-   | 'Enum_ImpactWildcardEncode_Select$_to$_add$_Wildcard'
-   | 'Enum_SEGSDetailer_sampler_name'
-   | 'Enum_SEGSDetailer_scheduler'
-   | 'Enum_ImpactKSamplerBasicPipe_sampler_name'
-   | 'Enum_ImpactKSamplerBasicPipe_scheduler'
-   | 'Enum_ImpactKSamplerAdvancedBasicPipe_sampler_name'
-   | 'Enum_ImpactKSamplerAdvancedBasicPipe_scheduler'
-   | 'Enum_ReencodeLatent_tile_mode'
-   | 'Enum_ReencodeLatentPipe_tile_mode'
-   | 'Enum_RegionalSampler_seed_2nd_mode'
-   | 'Enum_ImpactSEGSLabelFilter_preset'
-   | 'Enum_ImpactSEGSRangeFilter_target'
-   | 'Enum_ImpactSEGSOrderedFilter_target'
-   | 'Enum_ImpactCompare_cmp'
-   | 'Enum_ImpactValueReceiver_typ'
-   | 'Enum_UltralyticsDetectorProvider_model_name'
-   | 'Enum_XY_Input$4_Lora_Block_Weight_$3$3Inspire_category_filter'
-   | 'Enum_XY_Input$4_Lora_Block_Weight_$3$3Inspire_lora_name'
-   | 'Enum_XY_Input$4_Lora_Block_Weight_$3$3Inspire_preset'
-   | 'Enum_XY_Input$4_Lora_Block_Weight_$3$3Inspire_heatmap_palette'
-   | 'Enum_XY_Input$4_Lora_Block_Weight_$3$3Inspire_xyplot_mode'
-   | 'Enum_LoraLoaderBlockWeight_$3$3Inspire_category_filter'
-   | 'Enum_LoraLoaderBlockWeight_$3$3Inspire_lora_name'
-   | 'Enum_LoraLoaderBlockWeight_$3$3Inspire_preset'
-   | 'Enum_LoraBlockInfo_$3$3Inspire_lora_name'
-   | 'Enum_KSampler_$3$3Inspire_sampler_name'
-   | 'Enum_KSampler_$3$3Inspire_scheduler'
-   | 'Enum_KSampler_$3$3Inspire_noise_mode'
-   | 'Enum_KSamplerAdvanced_$3$3Inspire_sampler_name'
-   | 'Enum_KSamplerAdvanced_$3$3Inspire_scheduler'
-   | 'Enum_KSamplerAdvanced_$3$3Inspire_noise_mode'
-   | 'Enum_LoadPromptsFromDir_$3$3Inspire_prompt_dir'
-   | 'Enum_LoadPromptsFromFile_$3$3Inspire_prompt_file'
-   | 'Enum_PromptExtractor_$3$3Inspire_image'
-   | 'Enum_GlobalSeed_$3$3Inspire_action'
-   | 'Enum_WildcardEncode_$3$3Inspire_token_normalization'
-   | 'Enum_WildcardEncode_$3$3Inspire_weight_interpretation'
-   | 'Enum_WildcardEncode_$3$3Inspire_Select$_to$_add$_LoRA'
-   | 'Enum_WildcardEncode_$3$3Inspire_Select$_to$_add$_Wildcard'
-   | 'Enum_LoadImage_$3$3Inspire_image'
-   | 'Enum_RegionalPromptSimple_$3$3Inspire_sampler_name'
-   | 'Enum_RegionalPromptSimple_$3$3Inspire_scheduler'
-   | 'Enum_RegionalPromptColorMask_$3$3Inspire_sampler_name'
-   | 'Enum_RegionalPromptColorMask_$3$3Inspire_scheduler'
-   | 'Enum_RegionalConditioningSimple_$3$3Inspire_set_cond_area'
-   | 'Enum_RegionalConditioningColorMask_$3$3Inspire_set_cond_area'
-   | 'Enum_KSamplerProgress_$3$3Inspire_sampler_name'
-   | 'Enum_KSamplerProgress_$3$3Inspire_scheduler'
-   | 'Enum_KSamplerProgress_$3$3Inspire_noise_mode'
-   | 'Enum_KSamplerAdvancedProgress_$3$3Inspire_sampler_name'
-   | 'Enum_KSamplerAdvancedProgress_$3$3Inspire_scheduler'
-   | 'Enum_KSamplerAdvancedProgress_$3$3Inspire_noise_mode'
-   | 'Enum_Compare_comparison'
-   | 'Enum_ChatGPT_Simple_$_O_model'
-   | 'Enum_ChatGPT_Simple_$_O_behaviour'
-   | 'Enum_ChatGPT_compact_$_O_model'
-   | 'Enum_Chat$_Message_$_O_role'
-   | 'Enum_Chat_completion_$_O_model'
-   | 'Enum_create_image_$_O_size'
-   | 'Enum_variation$_image_$_O_size'
-   | 'Enum_LatentUpscaleFactor_$_O_upscale_method'
-   | 'Enum_LatentUpscaleFactor_$_O_crop'
-   | 'Enum_LatentUpscaleFactorSimple_$_O_upscale_method'
-   | 'Enum_LatentUpscaleFactorSimple_$_O_crop'
-   | 'Enum_RandomNSP_$_O_terminology'
-   | 'Enum_ConcatRandomNSP$_O_terminology'
-   | 'Enum_saveTextToFile_$_O_append'
-   | 'Enum_Text2Image_$_O_font'
-   | 'Enum_Text2Image_$_O_expand'
-   | 'Enum_ImageScaleFactor_$_O_upscale_method'
-   | 'Enum_ImageScaleFactor_$_O_MulOf46'
-   | 'Enum_ImageScaleFactor_$_O_crop'
-   | 'Enum_ImageScaleFactorSimple_$_O_upscale_method'
-   | 'Enum_ImageScaleFactorSimple_$_O_MulOf46'
-   | 'Enum_ImageScaleFactorSimple_$_O_crop'
-   | 'Enum_Chat$_Message$_fromString_$_O_role'
-   | 'Enum_create$_image_$_O_size'
-   | 'Enum_LatentUpscaleMultiply_upscale_method'
-   | 'Enum_LatentUpscaleMultiply_crop'
-   | 'Enum_CR_Load_LoRA_switch'
-   | 'Enum_CR_Load_LoRA_lora_name'
-   | 'Enum_CR_Apply_ControlNet_switch'
-   | 'Enum_CR_Image_Output_output_type'
-   | 'Enum_CR_Aspect_Ratio_aspect_ratio'
-   | 'Enum_CR_Aspect_Ratio_swap_dimensions'
-   | 'Enum_CR_Color_Tint_mode'
-   | 'Enum_CR_Img2Img_Process_Switch_Input'
-   | 'Enum_CR_Hires_Fix_Process_Switch_Input'
-   | 'Enum_CR_Halftone_Grid_dot_style'
-   | 'Enum_CR_Halftone_Grid_reverse_dot_style'
-   | 'Enum_CR_Halftone_Grid_background_color'
-   | 'Enum_CR_LoRA_Stack_switch_1'
-   | 'Enum_CR_LoRA_Stack_lora_name_1'
-   | 'Enum_CR_LoRA_Stack_switch_2'
-   | 'Enum_CR_LoRA_Stack_lora_name_2'
-   | 'Enum_CR_LoRA_Stack_switch_3'
-   | 'Enum_CR_LoRA_Stack_lora_name_3'
-   | 'Enum_CR_SD1$55_Aspect_Ratio_aspect_ratio'
-   | 'Enum_CR_SD1$55_Aspect_Ratio_swap_dimensions'
-   | 'Enum_CR_Batch_Process_Switch_Input'
-   | 'Enum_CR_Multi$7ControlNet_Stack_switch_1'
-   | 'Enum_CR_Multi$7ControlNet_Stack_controlnet_1'
-   | 'Enum_CR_Multi$7ControlNet_Stack_switch_2'
-   | 'Enum_CR_Multi$7ControlNet_Stack_controlnet_2'
-   | 'Enum_CR_Multi$7ControlNet_Stack_switch_3'
-   | 'Enum_CR_Multi$7ControlNet_Stack_controlnet_3'
-   | 'Enum_CR_Apply_Multi$7ControlNet_switch'
-   | 'Enum_CR_Apply_Model_Merge_merge_method'
-   | 'Enum_CR_Apply_Model_Merge_normalise_ratios'
-   | 'Enum_CR_Model_Merge_Stack_switch_1'
-   | 'Enum_CR_Model_Merge_Stack_ckpt_name1'
-   | 'Enum_CR_Model_Merge_Stack_switch_2'
-   | 'Enum_CR_Model_Merge_Stack_ckpt_name2'
-   | 'Enum_CR_Model_Merge_Stack_switch_3'
-   | 'Enum_CR_Model_Merge_Stack_ckpt_name3'
-   | 'Enum_CR_SDXL_Prompt_Mix_Presets_preset'
-   | 'Enum_CR_SDXL_Aspect_Ratio_aspect_ratio'
-   | 'Enum_CR_SDXL_Aspect_Ratio_swap_dimensions'
-   | 'Enum_CR_SDXL_Prompt_Mixer_preset'
-   | 'Enum_CR_SDXL_Base_Prompt_Encoder_preset'
-   | 'Enum_CR_Aspect_Ratio_SDXL_aspect_ratio'
-   | 'Enum_CR_Aspect_Ratio_SDXL_swap_dimensions'
-   | 'Enum_CR_Multi_Upscale_Stack_switch_1'
-   | 'Enum_CR_Multi_Upscale_Stack_upscale_model_1'
-   | 'Enum_CR_Multi_Upscale_Stack_switch_2'
-   | 'Enum_CR_Multi_Upscale_Stack_upscale_model_2'
-   | 'Enum_CR_Multi_Upscale_Stack_switch_3'
-   | 'Enum_CR_Multi_Upscale_Stack_upscale_model_3'
-   | 'Enum_CR_Upscale_Image_upscale_model'
-   | 'Enum_CR_Upscale_Image_mode'
-   | 'Enum_CR_Upscale_Image_resampling_method'
-   | 'Enum_CR_Upscale_Image_supersample'
-   | 'Enum_CR_Apply_Multi_Upscale_resampling_method'
-   | 'Enum_CR_Apply_Multi_Upscale_supersample'
-   | 'Enum_CR_XY_Interpolate_gradient_profile'
-   | 'Enum_CR_XY_From_Folder_image_folder'
-   | 'Enum_CR_XY_Save_Grid_Image_mode'
-   | 'Enum_CR_XY_Save_Grid_Image_output_folder'
-   | 'Enum_CR_XY_Save_Grid_Image_file_format'
-   | 'Enum_DWPreprocessor_detect_hand'
-   | 'Enum_DWPreprocessor_detect_body'
-   | 'Enum_DWPreprocessor_detect_face'
-   | 'Enum_HEDPreprocessor_safe'
-   | 'Enum_FakeScribblePreprocessor_safe'
-   | 'Enum_LeReS$7DepthMapPreprocessor_boost'
-   | 'Enum_LineArtPreprocessor_coarse'
-   | 'Enum_OpenposePreprocessor_detect_hand'
-   | 'Enum_OpenposePreprocessor_detect_body'
-   | 'Enum_OpenposePreprocessor_detect_face'
-   | 'Enum_PiDiNetPreprocessor_safe'
-   | 'Enum_AIO$_Preprocessor_preprocessor'
-   | 'Enum_PixelPerfectResolution_resize_mode'
-   | 'Enum_HintImageEnchance_resize_mode'
-   | 'Enum_BNK$_CutoffRegionsToConditioning$_ADV_token_normalization'
-   | 'Enum_BNK$_CutoffRegionsToConditioning$_ADV_weight_interpretation'
-   | 'Enum_Lora_Loader_$1JPS$2_switch'
-   | 'Enum_Lora_Loader_$1JPS$2_lora_name'
-   | 'Enum_SDXL_Resolutions_$1JPS$2_resolution'
-   | 'Enum_SDXL_Basic_Settings_$1JPS$2_resolution'
-   | 'Enum_SDXL_Basic_Settings_$1JPS$2_sampler_name'
-   | 'Enum_SDXL_Basic_Settings_$1JPS$2_scheduler'
-   | 'Enum_Generation_TXT_IMG_Settings_$1JPS$2_mode'
-   | 'Enum_Generation_Settings_$1JPS$2_mode'
-   | 'Enum_Generation_Settings_$1JPS$2_resfrom'
-   | 'Enum_Generation_Settings_$1JPS$2_crop_position'
-   | 'Enum_Generation_Settings_$1JPS$2_crop_intpol'
-   | 'Enum_Revision_Settings_$1JPS$2_rev1_crop'
-   | 'Enum_Revision_Settings_$1JPS$2_rev2_crop'
-   | 'Enum_Revision_Settings_$1JPS$2_crop_intpol'
-   | 'Enum_IP_Adapter_Settings_$1JPS$2_ipa_weight'
-   | 'Enum_IP_Adapter_Settings_$1JPS$2_ipa_noise'
-   | 'Enum_IP_Adapter_Settings_$1JPS$2_ipa1_crop'
-   | 'Enum_IP_Adapter_Settings_$1JPS$2_ipa2_crop'
-   | 'Enum_IP_Adapter_Settings_$1JPS$2_ipa3_crop'
-   | 'Enum_IP_Adapter_Settings_$1JPS$2_ipa4_crop'
-   | 'Enum_IP_Adapter_Settings_$1JPS$2_ipa5_crop'
-   | 'Enum_IP_Adapter_Settings_$1JPS$2_crop_intpol'
-   | 'Enum_Sampler_Scheduler_Settings_$1JPS$2_sampler_name_out'
-   | 'Enum_Sampler_Scheduler_Settings_$1JPS$2_scheduler_out'
-   | 'Enum_Sampler_Scheduler_Settings_$1JPS$2_sampler_name'
-   | 'Enum_Sampler_Scheduler_Settings_$1JPS$2_scheduler'
-   | 'Enum_Disable_Enable_Switch_$1JPS$2_disable_enable_out'
-   | 'Enum_Disable_Enable_Switch_$1JPS$2_match'
-   | 'Enum_Enable_Disable_Switch_$1JPS$2_enable_disable_out'
-   | 'Enum_Enable_Disable_Switch_$1JPS$2_match'
-   | 'Enum_SDXL_Basic_Settings_Pipe_$1JPS$2_sampler_name_out'
-   | 'Enum_SDXL_Basic_Settings_Pipe_$1JPS$2_scheduler_out'
-   | 'Enum_Generation_Settings_Pipe_$1JPS$2_crop_position_out'
-   | 'Enum_Generation_Settings_Pipe_$1JPS$2_crop_intpol_out'
-   | 'Enum_IP_Adapter_Settings_Pipe_$1JPS$2_crop_intpol_out'
-   | 'Enum_IP_Adapter_Settings_Pipe_$1JPS$2_ipa1_crop_out'
-   | 'Enum_IP_Adapter_Settings_Pipe_$1JPS$2_ipa2_crop_out'
-   | 'Enum_IP_Adapter_Settings_Pipe_$1JPS$2_ipa3_crop_out'
-   | 'Enum_IP_Adapter_Settings_Pipe_$1JPS$2_ipa4_crop_out'
-   | 'Enum_IP_Adapter_Settings_Pipe_$1JPS$2_ipa5_crop_out'
-   | 'Enum_Revision_Settings_Pipe_$1JPS$2_crop_intpol_out'
-   | 'Enum_Revision_Settings_Pipe_$1JPS$2_rev1_crop_out'
-   | 'Enum_Revision_Settings_Pipe_$1JPS$2_rev2_crop_out'
-   | 'Enum_Text_Concatenate_$1JPS$2_delimiter'
-   | 'Enum_Get_Date_Time_String_$1JPS$2_style'
-   | 'Enum_Crop_Image_Square_$1JPS$2_crop_position'
-   | 'Enum_Crop_Image_Square_$1JPS$2_interpolation'
-   | 'Enum_Crop_Image_TargetSize_$1JPS$2_crop_position'
-   | 'Enum_Crop_Image_TargetSize_$1JPS$2_interpolation'
-   | 'Enum_SDXL_Prompt_Styler_$1JPS$2_artist'
-   | 'Enum_SDXL_Prompt_Styler_$1JPS$2_movie'
-   | 'Enum_SDXL_Prompt_Styler_$1JPS$2_style'
-   | 'Enum_SDXL_Prompt_Styler_$1JPS$2_universal_neg'
-   | 'Enum_SDXL_Prompt_Handling_$1JPS$2_handling'
-   | 'Enum_SDXL_Prompt_Handling_Plus_$1JPS$2_handling'
-   | 'Enum_SDXL_Prompt_Handling_Plus_$1JPS$2_universal_neg'
-   | 'Enum_BNK$_TiledKSamplerAdvanced_add_noise'
-   | 'Enum_BNK$_TiledKSamplerAdvanced_tiling_strategy'
-   | 'Enum_BNK$_TiledKSamplerAdvanced_sampler_name'
-   | 'Enum_BNK$_TiledKSamplerAdvanced_scheduler'
-   | 'Enum_BNK$_TiledKSamplerAdvanced_return_with_leftover_noise'
-   | 'Enum_BNK$_TiledKSamplerAdvanced_preview'
-   | 'Enum_BNK$_TiledKSampler_tiling_strategy'
-   | 'Enum_BNK$_TiledKSampler_sampler_name'
-   | 'Enum_BNK$_TiledKSampler_scheduler'
-   | 'Enum_ttN_pipeLoader_ckpt_name'
-   | 'Enum_ttN_pipeLoader_config_name'
-   | 'Enum_ttN_pipeLoader_vae_name'
-   | 'Enum_ttN_pipeLoader_lora1_name'
-   | 'Enum_ttN_pipeLoader_lora2_name'
-   | 'Enum_ttN_pipeLoader_lora3_name'
-   | 'Enum_ttN_pipeLoader_positive_token_normalization'
-   | 'Enum_ttN_pipeLoader_positive_weight_interpretation'
-   | 'Enum_ttN_pipeLoader_negative_token_normalization'
-   | 'Enum_ttN_pipeLoader_negative_weight_interpretation'
-   | 'Enum_ttN_pipeKSampler_lora_name'
-   | 'Enum_ttN_pipeKSampler_upscale_method'
-   | 'Enum_ttN_pipeKSampler_crop'
-   | 'Enum_ttN_pipeKSampler_sampler_state'
-   | 'Enum_ttN_pipeKSampler_sampler_name'
-   | 'Enum_ttN_pipeKSampler_scheduler'
-   | 'Enum_ttN_pipeKSampler_image_output'
-   | 'Enum_ttN_pipeKSamplerAdvanced_lora_name'
-   | 'Enum_ttN_pipeKSamplerAdvanced_upscale_method'
-   | 'Enum_ttN_pipeKSamplerAdvanced_crop'
-   | 'Enum_ttN_pipeKSamplerAdvanced_sampler_state'
-   | 'Enum_ttN_pipeKSamplerAdvanced_add_noise'
-   | 'Enum_ttN_pipeKSamplerAdvanced_sampler_name'
-   | 'Enum_ttN_pipeKSamplerAdvanced_scheduler'
-   | 'Enum_ttN_pipeKSamplerAdvanced_return_with_leftover_noise'
-   | 'Enum_ttN_pipeKSamplerAdvanced_image_output'
-   | 'Enum_ttN_pipeLoaderSDXL_ckpt_name'
-   | 'Enum_ttN_pipeLoaderSDXL_vae_name'
-   | 'Enum_ttN_pipeLoaderSDXL_lora1_name'
-   | 'Enum_ttN_pipeLoaderSDXL_lora2_name'
-   | 'Enum_ttN_pipeLoaderSDXL_refiner_ckpt_name'
-   | 'Enum_ttN_pipeLoaderSDXL_refiner_vae_name'
-   | 'Enum_ttN_pipeLoaderSDXL_refiner_lora1_name'
-   | 'Enum_ttN_pipeLoaderSDXL_refiner_lora2_name'
-   | 'Enum_ttN_pipeLoaderSDXL_positive_token_normalization'
-   | 'Enum_ttN_pipeLoaderSDXL_positive_weight_interpretation'
-   | 'Enum_ttN_pipeLoaderSDXL_negative_token_normalization'
-   | 'Enum_ttN_pipeLoaderSDXL_negative_weight_interpretation'
-   | 'Enum_ttN_pipeKSamplerSDXL_upscale_method'
-   | 'Enum_ttN_pipeKSamplerSDXL_crop'
-   | 'Enum_ttN_pipeKSamplerSDXL_sampler_state'
-   | 'Enum_ttN_pipeKSamplerSDXL_sampler_name'
-   | 'Enum_ttN_pipeKSamplerSDXL_scheduler'
-   | 'Enum_ttN_pipeKSamplerSDXL_image_output'
-   | 'Enum_ttN_xyPlot_output_individuals'
-   | 'Enum_ttN_xyPlot_flip_xy'
-   | 'Enum_ttN_xyPlot_x_axis'
-   | 'Enum_ttN_xyPlot_y_axis'
-   | 'Enum_ttN_pipeEncodeConcat_toggle'
-   | 'Enum_ttN_pipeEncodeConcat_positive_token_normalization'
-   | 'Enum_ttN_pipeEncodeConcat_positive_weight_interpretation'
-   | 'Enum_ttN_pipeEncodeConcat_negative_token_normalization'
-   | 'Enum_ttN_pipeEncodeConcat_negative_weight_interpretation'
-   | 'Enum_ttN_pipeLoraStack_toggle'
-   | 'Enum_ttN_pipeLoraStack_mode'
-   | 'Enum_ttN_pipeLoraStack_lora_1_name'
-   | 'Enum_ttN_pipeLoraStack_lora_2_name'
-   | 'Enum_ttN_pipeLoraStack_lora_3_name'
-   | 'Enum_ttN_pipeLoraStack_lora_4_name'
-   | 'Enum_ttN_pipeLoraStack_lora_5_name'
-   | 'Enum_ttN_pipeLoraStack_lora_6_name'
-   | 'Enum_ttN_pipeLoraStack_lora_7_name'
-   | 'Enum_ttN_pipeLoraStack_lora_8_name'
-   | 'Enum_ttN_pipeLoraStack_lora_9_name'
-   | 'Enum_ttN_pipeLoraStack_lora_10_name'
-   | 'Enum_ttN_pipeLoraStack_lora_11_name'
-   | 'Enum_ttN_pipeLoraStack_lora_12_name'
-   | 'Enum_ttN_pipeLoraStack_lora_13_name'
-   | 'Enum_ttN_pipeLoraStack_lora_14_name'
-   | 'Enum_ttN_pipeLoraStack_lora_15_name'
-   | 'Enum_ttN_pipeLoraStack_lora_16_name'
-   | 'Enum_ttN_pipeLoraStack_lora_17_name'
-   | 'Enum_ttN_pipeLoraStack_lora_18_name'
-   | 'Enum_ttN_pipeLoraStack_lora_19_name'
-   | 'Enum_ttN_pipeLoraStack_lora_20_name'
-   | 'Enum_ttN_multiModelMerge_ckpt_A_name'
-   | 'Enum_ttN_multiModelMerge_config_A_name'
-   | 'Enum_ttN_multiModelMerge_ckpt_B_name'
-   | 'Enum_ttN_multiModelMerge_config_B_name'
-   | 'Enum_ttN_multiModelMerge_ckpt_C_name'
-   | 'Enum_ttN_multiModelMerge_config_C_name'
-   | 'Enum_ttN_multiModelMerge_model_interpolation'
-   | 'Enum_ttN_multiModelMerge_clip_interpolation'
-   | 'Enum_ttN_multiModelMerge_save_model'
-   | 'Enum_ttN_textDebug_print_to_console'
-   | 'Enum_ttN_textDebug_execute'
-   | 'Enum_ttN_imageOutput_image_output'
-   | 'Enum_ttN_imageOutput_number_padding'
-   | 'Enum_ttN_imageOutput_file_type'
-   | 'Enum_ttN_imageOutput_overwrite_existing'
-   | 'Enum_ttN_imageOutput_embed_workflow'
-   | 'Enum_ttN_imageREMBG_image_output'
-   | 'Enum_ttN_hiresfixScale_model_name'
-   | 'Enum_ttN_hiresfixScale_rescale_after_model'
-   | 'Enum_ttN_hiresfixScale_rescale_method'
-   | 'Enum_ttN_hiresfixScale_rescale'
-   | 'Enum_ttN_hiresfixScale_crop'
-   | 'Enum_ttN_hiresfixScale_image_output'
-   | 'Enum_ttN_hiresfixScale_output_latent'
-   | 'Enum_Tuple_round_'
-   | 'Enum_Absolute_value_negative_out'
-   | 'Enum_Get_latent_size_original'
-   | 'Enum_Sinus_type_'
-   | 'Enum_Sinus_arcSin'
-   | 'Enum_Cosines_type_'
-   | 'Enum_Cosines_arcCos'
-   | 'Enum_Tangent_type_'
-   | 'Enum_Tangent_arcTan'
-   | 'Enum_Latent_Scale_by_ratio_scale_method'
-   | 'Enum_Latent_Scale_by_ratio_crop'
-   | 'Enum_Latent_Scale_to_side_side'
-   | 'Enum_Latent_Scale_to_side_scale_method'
-   | 'Enum_Latent_Scale_to_side_crop'
-   | 'Enum_Image_scale_by_ratio_upscale_method'
-   | 'Enum_Image_scale_by_ratio_crop'
-   | 'Enum_Image_scale_to_side_side'
-   | 'Enum_Image_scale_to_side_upscale_method'
-   | 'Enum_Image_scale_to_side_crop'
-   | 'Enum_KSampler_$1Efficient$2_sampler_state'
-   | 'Enum_KSampler_$1Efficient$2_sampler_name'
-   | 'Enum_KSampler_$1Efficient$2_scheduler'
-   | 'Enum_KSampler_$1Efficient$2_preview_method'
-   | 'Enum_KSampler_$1Efficient$2_vae_decode'
-   | 'Enum_KSampler_Adv$5_$1Efficient$2_sampler_state'
-   | 'Enum_KSampler_Adv$5_$1Efficient$2_add_noise'
-   | 'Enum_KSampler_Adv$5_$1Efficient$2_sampler_name'
-   | 'Enum_KSampler_Adv$5_$1Efficient$2_scheduler'
-   | 'Enum_KSampler_Adv$5_$1Efficient$2_return_with_leftover_noise'
-   | 'Enum_KSampler_Adv$5_$1Efficient$2_preview_method'
-   | 'Enum_KSampler_Adv$5_$1Efficient$2_vae_decode'
-   | 'Enum_KSampler_SDXL_$1Eff$5$2_sampler_state'
-   | 'Enum_KSampler_SDXL_$1Eff$5$2_sampler_name'
-   | 'Enum_KSampler_SDXL_$1Eff$5$2_scheduler'
-   | 'Enum_KSampler_SDXL_$1Eff$5$2_preview_method'
-   | 'Enum_KSampler_SDXL_$1Eff$5$2_vae_decode'
-   | 'Enum_Efficient_Loader_ckpt_name'
-   | 'Enum_Efficient_Loader_vae_name'
-   | 'Enum_Efficient_Loader_lora_name'
-   | 'Enum_Eff$5_Loader_SDXL_base_ckpt_name'
-   | 'Enum_Eff$5_Loader_SDXL_refiner_ckpt_name'
-   | 'Enum_Eff$5_Loader_SDXL_vae_name'
-   | 'Enum_LoRA_Stacker_input_mode'
-   | 'Enum_LoRA_Stacker_lora_name_1'
-   | 'Enum_LoRA_Stacker_lora_name_2'
-   | 'Enum_LoRA_Stacker_lora_name_3'
-   | 'Enum_LoRA_Stacker_lora_name_4'
-   | 'Enum_LoRA_Stacker_lora_name_5'
-   | 'Enum_LoRA_Stacker_lora_name_6'
-   | 'Enum_LoRA_Stacker_lora_name_7'
-   | 'Enum_LoRA_Stacker_lora_name_8'
-   | 'Enum_LoRA_Stacker_lora_name_9'
-   | 'Enum_LoRA_Stacker_lora_name_10'
-   | 'Enum_LoRA_Stacker_lora_name_11'
-   | 'Enum_LoRA_Stacker_lora_name_12'
-   | 'Enum_LoRA_Stacker_lora_name_13'
-   | 'Enum_LoRA_Stacker_lora_name_14'
-   | 'Enum_LoRA_Stacker_lora_name_15'
-   | 'Enum_LoRA_Stacker_lora_name_16'
-   | 'Enum_LoRA_Stacker_lora_name_17'
-   | 'Enum_LoRA_Stacker_lora_name_18'
-   | 'Enum_LoRA_Stacker_lora_name_19'
-   | 'Enum_LoRA_Stacker_lora_name_20'
-   | 'Enum_LoRA_Stacker_lora_name_21'
-   | 'Enum_LoRA_Stacker_lora_name_22'
-   | 'Enum_LoRA_Stacker_lora_name_23'
-   | 'Enum_LoRA_Stacker_lora_name_24'
-   | 'Enum_LoRA_Stacker_lora_name_25'
-   | 'Enum_LoRA_Stacker_lora_name_26'
-   | 'Enum_LoRA_Stacker_lora_name_27'
-   | 'Enum_LoRA_Stacker_lora_name_28'
-   | 'Enum_LoRA_Stacker_lora_name_29'
-   | 'Enum_LoRA_Stacker_lora_name_30'
-   | 'Enum_LoRA_Stacker_lora_name_31'
-   | 'Enum_LoRA_Stacker_lora_name_32'
-   | 'Enum_LoRA_Stacker_lora_name_33'
-   | 'Enum_LoRA_Stacker_lora_name_34'
-   | 'Enum_LoRA_Stacker_lora_name_35'
-   | 'Enum_LoRA_Stacker_lora_name_36'
-   | 'Enum_LoRA_Stacker_lora_name_37'
-   | 'Enum_LoRA_Stacker_lora_name_38'
-   | 'Enum_LoRA_Stacker_lora_name_39'
-   | 'Enum_LoRA_Stacker_lora_name_40'
-   | 'Enum_LoRA_Stacker_lora_name_41'
-   | 'Enum_LoRA_Stacker_lora_name_42'
-   | 'Enum_LoRA_Stacker_lora_name_43'
-   | 'Enum_LoRA_Stacker_lora_name_44'
-   | 'Enum_LoRA_Stacker_lora_name_45'
-   | 'Enum_LoRA_Stacker_lora_name_46'
-   | 'Enum_LoRA_Stacker_lora_name_47'
-   | 'Enum_LoRA_Stacker_lora_name_48'
-   | 'Enum_LoRA_Stacker_lora_name_49'
-   | 'Enum_XY_Plot_XY_flip'
-   | 'Enum_XY_Plot_Y_label_orientation'
-   | 'Enum_XY_Plot_cache_models'
-   | 'Enum_XY_Plot_ksampler_output_image'
-   | 'Enum_XY_Input$4_Add$3Return_Noise_XY_type'
-   | 'Enum_XY_Input$4_Steps_target_parameter'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_target_parameter'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_1'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_1'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_2'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_2'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_3'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_3'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_4'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_4'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_5'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_5'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_6'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_6'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_7'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_7'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_8'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_8'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_9'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_9'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_10'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_10'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_11'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_11'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_12'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_12'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_13'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_13'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_14'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_14'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_15'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_15'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_16'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_16'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_17'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_17'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_18'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_18'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_19'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_19'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_20'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_20'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_21'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_21'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_22'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_22'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_23'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_23'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_24'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_24'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_25'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_25'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_26'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_26'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_27'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_27'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_28'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_28'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_29'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_29'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_30'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_30'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_31'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_31'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_32'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_32'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_33'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_33'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_34'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_34'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_35'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_35'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_36'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_36'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_37'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_37'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_38'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_38'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_39'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_39'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_40'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_40'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_41'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_41'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_42'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_42'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_43'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_43'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_44'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_44'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_45'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_45'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_46'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_46'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_47'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_47'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_48'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_48'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_49'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_49'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_sampler_50'
-   | 'Enum_XY_Input$4_Sampler$3Scheduler_scheduler_50'
-   | 'Enum_XY_Input$4_VAE_input_mode'
-   | 'Enum_XY_Input$4_VAE_batch_sort'
-   | 'Enum_XY_Input$4_VAE_vae_name_1'
-   | 'Enum_XY_Input$4_VAE_vae_name_2'
-   | 'Enum_XY_Input$4_VAE_vae_name_3'
-   | 'Enum_XY_Input$4_VAE_vae_name_4'
-   | 'Enum_XY_Input$4_VAE_vae_name_5'
-   | 'Enum_XY_Input$4_VAE_vae_name_6'
-   | 'Enum_XY_Input$4_VAE_vae_name_7'
-   | 'Enum_XY_Input$4_VAE_vae_name_8'
-   | 'Enum_XY_Input$4_VAE_vae_name_9'
-   | 'Enum_XY_Input$4_VAE_vae_name_10'
-   | 'Enum_XY_Input$4_VAE_vae_name_11'
-   | 'Enum_XY_Input$4_VAE_vae_name_12'
-   | 'Enum_XY_Input$4_VAE_vae_name_13'
-   | 'Enum_XY_Input$4_VAE_vae_name_14'
-   | 'Enum_XY_Input$4_VAE_vae_name_15'
-   | 'Enum_XY_Input$4_VAE_vae_name_16'
-   | 'Enum_XY_Input$4_VAE_vae_name_17'
-   | 'Enum_XY_Input$4_VAE_vae_name_18'
-   | 'Enum_XY_Input$4_VAE_vae_name_19'
-   | 'Enum_XY_Input$4_VAE_vae_name_20'
-   | 'Enum_XY_Input$4_VAE_vae_name_21'
-   | 'Enum_XY_Input$4_VAE_vae_name_22'
-   | 'Enum_XY_Input$4_VAE_vae_name_23'
-   | 'Enum_XY_Input$4_VAE_vae_name_24'
-   | 'Enum_XY_Input$4_VAE_vae_name_25'
-   | 'Enum_XY_Input$4_VAE_vae_name_26'
-   | 'Enum_XY_Input$4_VAE_vae_name_27'
-   | 'Enum_XY_Input$4_VAE_vae_name_28'
-   | 'Enum_XY_Input$4_VAE_vae_name_29'
-   | 'Enum_XY_Input$4_VAE_vae_name_30'
-   | 'Enum_XY_Input$4_VAE_vae_name_31'
-   | 'Enum_XY_Input$4_VAE_vae_name_32'
-   | 'Enum_XY_Input$4_VAE_vae_name_33'
-   | 'Enum_XY_Input$4_VAE_vae_name_34'
-   | 'Enum_XY_Input$4_VAE_vae_name_35'
-   | 'Enum_XY_Input$4_VAE_vae_name_36'
-   | 'Enum_XY_Input$4_VAE_vae_name_37'
-   | 'Enum_XY_Input$4_VAE_vae_name_38'
-   | 'Enum_XY_Input$4_VAE_vae_name_39'
-   | 'Enum_XY_Input$4_VAE_vae_name_40'
-   | 'Enum_XY_Input$4_VAE_vae_name_41'
-   | 'Enum_XY_Input$4_VAE_vae_name_42'
-   | 'Enum_XY_Input$4_VAE_vae_name_43'
-   | 'Enum_XY_Input$4_VAE_vae_name_44'
-   | 'Enum_XY_Input$4_VAE_vae_name_45'
-   | 'Enum_XY_Input$4_VAE_vae_name_46'
-   | 'Enum_XY_Input$4_VAE_vae_name_47'
-   | 'Enum_XY_Input$4_VAE_vae_name_48'
-   | 'Enum_XY_Input$4_VAE_vae_name_49'
-   | 'Enum_XY_Input$4_VAE_vae_name_50'
-   | 'Enum_XY_Input$4_Prompt_S$3R_target_prompt'
-   | 'Enum_XY_Input$4_Aesthetic_Score_target_ascore'
-   | 'Enum_XY_Input$4_Checkpoint_target_ckpt'
-   | 'Enum_XY_Input$4_Checkpoint_input_mode'
-   | 'Enum_XY_Input$4_Checkpoint_batch_sort'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_1'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_1'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_2'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_2'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_3'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_3'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_4'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_4'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_5'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_5'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_6'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_6'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_7'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_7'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_8'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_8'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_9'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_9'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_10'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_10'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_11'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_11'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_12'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_12'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_13'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_13'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_14'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_14'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_15'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_15'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_16'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_16'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_17'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_17'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_18'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_18'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_19'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_19'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_20'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_20'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_21'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_21'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_22'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_22'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_23'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_23'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_24'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_24'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_25'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_25'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_26'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_26'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_27'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_27'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_28'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_28'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_29'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_29'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_30'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_30'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_31'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_31'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_32'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_32'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_33'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_33'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_34'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_34'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_35'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_35'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_36'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_36'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_37'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_37'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_38'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_38'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_39'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_39'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_40'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_40'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_41'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_41'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_42'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_42'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_43'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_43'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_44'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_44'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_45'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_45'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_46'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_46'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_47'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_47'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_48'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_48'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_49'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_49'
-   | 'Enum_XY_Input$4_Checkpoint_ckpt_name_50'
-   | 'Enum_XY_Input$4_Checkpoint_vae_name_50'
-   | 'Enum_XY_Input$4_Clip_Skip_target_ckpt'
-   | 'Enum_XY_Input$4_LoRA_input_mode'
-   | 'Enum_XY_Input$4_LoRA_batch_sort'
-   | 'Enum_XY_Input$4_LoRA_lora_name_1'
-   | 'Enum_XY_Input$4_LoRA_lora_name_2'
-   | 'Enum_XY_Input$4_LoRA_lora_name_3'
-   | 'Enum_XY_Input$4_LoRA_lora_name_4'
-   | 'Enum_XY_Input$4_LoRA_lora_name_5'
-   | 'Enum_XY_Input$4_LoRA_lora_name_6'
-   | 'Enum_XY_Input$4_LoRA_lora_name_7'
-   | 'Enum_XY_Input$4_LoRA_lora_name_8'
-   | 'Enum_XY_Input$4_LoRA_lora_name_9'
-   | 'Enum_XY_Input$4_LoRA_lora_name_10'
-   | 'Enum_XY_Input$4_LoRA_lora_name_11'
-   | 'Enum_XY_Input$4_LoRA_lora_name_12'
-   | 'Enum_XY_Input$4_LoRA_lora_name_13'
-   | 'Enum_XY_Input$4_LoRA_lora_name_14'
-   | 'Enum_XY_Input$4_LoRA_lora_name_15'
-   | 'Enum_XY_Input$4_LoRA_lora_name_16'
-   | 'Enum_XY_Input$4_LoRA_lora_name_17'
-   | 'Enum_XY_Input$4_LoRA_lora_name_18'
-   | 'Enum_XY_Input$4_LoRA_lora_name_19'
-   | 'Enum_XY_Input$4_LoRA_lora_name_20'
-   | 'Enum_XY_Input$4_LoRA_lora_name_21'
-   | 'Enum_XY_Input$4_LoRA_lora_name_22'
-   | 'Enum_XY_Input$4_LoRA_lora_name_23'
-   | 'Enum_XY_Input$4_LoRA_lora_name_24'
-   | 'Enum_XY_Input$4_LoRA_lora_name_25'
-   | 'Enum_XY_Input$4_LoRA_lora_name_26'
-   | 'Enum_XY_Input$4_LoRA_lora_name_27'
-   | 'Enum_XY_Input$4_LoRA_lora_name_28'
-   | 'Enum_XY_Input$4_LoRA_lora_name_29'
-   | 'Enum_XY_Input$4_LoRA_lora_name_30'
-   | 'Enum_XY_Input$4_LoRA_lora_name_31'
-   | 'Enum_XY_Input$4_LoRA_lora_name_32'
-   | 'Enum_XY_Input$4_LoRA_lora_name_33'
-   | 'Enum_XY_Input$4_LoRA_lora_name_34'
-   | 'Enum_XY_Input$4_LoRA_lora_name_35'
-   | 'Enum_XY_Input$4_LoRA_lora_name_36'
-   | 'Enum_XY_Input$4_LoRA_lora_name_37'
-   | 'Enum_XY_Input$4_LoRA_lora_name_38'
-   | 'Enum_XY_Input$4_LoRA_lora_name_39'
-   | 'Enum_XY_Input$4_LoRA_lora_name_40'
-   | 'Enum_XY_Input$4_LoRA_lora_name_41'
-   | 'Enum_XY_Input$4_LoRA_lora_name_42'
-   | 'Enum_XY_Input$4_LoRA_lora_name_43'
-   | 'Enum_XY_Input$4_LoRA_lora_name_44'
-   | 'Enum_XY_Input$4_LoRA_lora_name_45'
-   | 'Enum_XY_Input$4_LoRA_lora_name_46'
-   | 'Enum_XY_Input$4_LoRA_lora_name_47'
-   | 'Enum_XY_Input$4_LoRA_lora_name_48'
-   | 'Enum_XY_Input$4_LoRA_lora_name_49'
-   | 'Enum_XY_Input$4_LoRA_lora_name_50'
-   | 'Enum_XY_Input$4_LoRA_Plot_input_mode'
-   | 'Enum_XY_Input$4_LoRA_Plot_lora_name'
-   | 'Enum_XY_Input$4_LoRA_Plot_X_batch_sort'
-   | 'Enum_XY_Input$4_LoRA_Stacks_node_state'
-   | 'Enum_XY_Input$4_Control_Net_target_parameter'
-   | 'Enum_XY_Input$4_Control_Net_Plot_plot_type'
-   | 'Enum_XY_Input$4_Manual_XY_Entry_plot_type'
-   | 'Enum_Image_Overlay_overlay_resize'
-   | 'Enum_Image_Overlay_resize_method'
-   | 'Enum_HighRes$7Fix_Script_latent_upscale_method'
-   | 'Enum_Evaluate_Integers_print_to_console'
-   | 'Enum_Evaluate_Floats_print_to_console'
-   | 'Enum_Evaluate_Strings_print_to_console'
-   | 'Enum_LatentByRatio_model'
-   | 'Enum_LatentByRatio_ratio'
-   | 'Enum_Mask_By_Text_normalize'
-   | 'Enum_Mask_Morphology_op'
-   | 'Enum_Combine_Masks_op'
-   | 'Enum_Combine_Masks_clamp_result'
-   | 'Enum_Combine_Masks_round_result'
-   | 'Enum_Unary_Mask_Op_op'
-   | 'Enum_Unary_Image_Op_op'
-   | 'Enum_Image_To_Mask_method'
-   | 'Enum_Mask_To_Region_constraints'
-   | 'Enum_Mask_To_Region_batch_behavior'
-   | 'Enum_Paste_By_Mask_resize_behavior'
-   | 'Enum_Change_Channel_Count_kind'
-   | 'Enum_Create_Rect_Mask_mode'
-   | 'Enum_Create_Rect_Mask_origin'
-   | 'Enum_Create_QR_Code_error_correction'
-   | 'Enum_Convert_Color_Space_in_space'
-   | 'Enum_Convert_Color_Space_out_space'
-   | 'Enum_Context_Big_$1rgthree$2_CKPT_NAME_out'
-   | 'Enum_Context_Big_$1rgthree$2_SAMPLER_out'
-   | 'Enum_Context_Big_$1rgthree$2_SCHEDULER_out'
-   | 'Enum_Context_Big_$1rgthree$2_ckpt_name'
-   | 'Enum_Context_Big_$1rgthree$2_sampler'
-   | 'Enum_Context_Big_$1rgthree$2_scheduler'
-   | 'Enum_Context_Switch_Big_$1rgthree$2_CKPT_NAME_out'
-   | 'Enum_Context_Switch_Big_$1rgthree$2_SAMPLER_out'
-   | 'Enum_Context_Switch_Big_$1rgthree$2_SCHEDULER_out'
-   | 'Enum_Lora_Loader_Stack_$1rgthree$2_lora_01'
-   | 'Enum_Lora_Loader_Stack_$1rgthree$2_lora_02'
-   | 'Enum_Lora_Loader_Stack_$1rgthree$2_lora_03'
-   | 'Enum_Lora_Loader_Stack_$1rgthree$2_lora_04'
-   | 'Enum_Image_Inset_Crop_$1rgthree$2_measurement'
-   | 'Enum_Power_Prompt_$1rgthree$2_insert_lora'
-   | 'Enum_Power_Prompt_$1rgthree$2_insert_embedding'
-   | 'Enum_Power_Prompt_$1rgthree$2_insert_saved'
-   | 'Enum_Power_Prompt_$7_Simple_$1rgthree$2_insert_embedding'
-   | 'Enum_Power_Prompt_$7_Simple_$1rgthree$2_insert_saved'
-   | 'Enum_KSampler_Config_$1rgthree$2_SAMPLER_out'
-   | 'Enum_KSampler_Config_$1rgthree$2_SCHEDULER_out'
-   | 'Enum_KSampler_Config_$1rgthree$2_sampler_name'
-   | 'Enum_KSampler_Config_$1rgthree$2_scheduler'
-   | 'Enum_SDXL_Empty_Latent_Image_$1rgthree$2_dimensions'
-   | 'Enum_SDXL_Power_Prompt_$7_Positive_$1rgthree$2_insert_lora'
-   | 'Enum_SDXL_Power_Prompt_$7_Positive_$1rgthree$2_insert_embedding'
-   | 'Enum_SDXL_Power_Prompt_$7_Positive_$1rgthree$2_insert_saved'
-   | 'Enum_SDXL_Power_Prompt_$7_Simple_$3_Negative_$1rgthree$2_insert_embedding'
-   | 'Enum_SDXL_Power_Prompt_$7_Simple_$3_Negative_$1rgthree$2_insert_saved'
-   | 'Enum_SDXLMixSampler_sampler_name'
-   | 'Enum_SDXLMixSampler_scheduler'
-   | 'Enum_SDXLMixSampler_final_only'
-   | 'Enum_BLIP_Model_Loader_blip_model'
-   | 'Enum_Blend_Latents_operation'
-   | 'Enum_Checkpoint_Loader_config_name'
-   | 'Enum_Checkpoint_Loader_ckpt_name'
-   | 'Enum_Checkpoint_Loader_$1Simple$2_ckpt_name'
-   | 'Enum_CLIPTextEncode_$1NSP$2_mode'
-   | 'Enum_Constant_Number_number_type'
-   | 'Enum_Create_Grid_Image_include_subfolders'
-   | 'Enum_Create_Morph_Image_filetype'
-   | 'Enum_Create_Morph_Image_from_Path_filetype'
-   | 'Enum_Create_Video_from_Path_codec'
-   | 'Enum_Diffusers_Model_Loader_model_path'
-   | 'Enum_Export_API_save_prompt_api'
-   | 'Enum_Lora_Loader_lora_name'
-   | 'Enum_Image_SSAO_$1Ambient_Occlusion$2_enable_specular_masking'
-   | 'Enum_Image_SSDO_$1Direct_Occlusion$2_colored_occlusion'
-   | 'Enum_Image_Analyze_mode'
-   | 'Enum_Image_Blending_Mode_mode'
-   | 'Enum_Image_Canny_Filter_enable_threshold'
-   | 'Enum_Image_Color_Palette_mode'
-   | 'Enum_Image_Crop_Face_cascade_xml'
-   | 'Enum_Image_Pixelate_init_mode'
-   | 'Enum_Image_Pixelate_dither'
-   | 'Enum_Image_Pixelate_dither_mode'
-   | 'Enum_Image_Pixelate_color_palette_mode'
-   | 'Enum_Image_Pixelate_reverse_palette'
-   | 'Enum_Image_Power_Noise_noise_type'
-   | 'Enum_Image_Dragan_Photography_Filter_colorize'
-   | 'Enum_Image_Edge_Detection_Filter_mode'
-   | 'Enum_Image_Filter_Adjustments_detail_enhance'
-   | 'Enum_Image_Flip_mode'
-   | 'Enum_Image_Gradient_Map_flip_left_right'
-   | 'Enum_Image_Generate_Gradient_direction'
-   | 'Enum_Image_High_Pass_Filter_color_output'
-   | 'Enum_Image_High_Pass_Filter_neutral_background'
-   | 'Enum_Image_History_Loader_image'
-   | 'Enum_Image_Load_RGBA'
-   | 'Enum_Image_Load_filename_text_extension'
-   | 'Enum_Image_Monitor_Effects_Filter_mode'
-   | 'Enum_Image_Padding_feather_second_pass'
-   | 'Enum_Image_Rembg_$1Remove_Background$2_model'
-   | 'Enum_Image_Rembg_$1Remove_Background$2_background_color'
-   | 'Enum_Image_Remove_Background_$1Alpha$2_mode'
-   | 'Enum_Image_Resize_mode'
-   | 'Enum_Image_Resize_supersample'
-   | 'Enum_Image_Resize_resampling'
-   | 'Enum_Image_Rotate_mode'
-   | 'Enum_Image_Rotate_sampler'
-   | 'Enum_Image_Save_filename_number_start'
-   | 'Enum_Image_Save_extension'
-   | 'Enum_Image_Save_lossless_webp'
-   | 'Enum_Image_Save_overwrite_mode'
-   | 'Enum_Image_Save_show_history'
-   | 'Enum_Image_Save_show_history_by_prefix'
-   | 'Enum_Image_Save_embed_workflow'
-   | 'Enum_Image_Save_show_previews'
-   | 'Enum_Image_Seamless_Texture_tiled'
-   | 'Enum_Image_Select_Channel_channel'
-   | 'Enum_Image_Stitch_stitch'
-   | 'Enum_Image_Style_Filter_style'
-   | 'Enum_Image_fDOF_Filter_mode'
-   | 'Enum_Image_to_Latent_Mask_channel'
-   | 'Enum_Image_to_Noise_output_mode'
-   | 'Enum_Image_Voronoi_Noise_Filter_flat'
-   | 'Enum_Image_Voronoi_Noise_Filter_RGB_output'
-   | 'Enum_KSampler_$1WAS$2_sampler_name'
-   | 'Enum_KSampler_$1WAS$2_scheduler'
-   | 'Enum_KSampler_Cycle_sampler_name'
-   | 'Enum_KSampler_Cycle_scheduler'
-   | 'Enum_KSampler_Cycle_tiled_vae'
-   | 'Enum_KSampler_Cycle_latent_upscale'
-   | 'Enum_KSampler_Cycle_scale_denoise'
-   | 'Enum_KSampler_Cycle_scale_sampling'
-   | 'Enum_KSampler_Cycle_pos_add_mode'
-   | 'Enum_KSampler_Cycle_pos_add_strength_scaling'
-   | 'Enum_KSampler_Cycle_neg_add_mode'
-   | 'Enum_KSampler_Cycle_neg_add_strength_scaling'
-   | 'Enum_KSampler_Cycle_steps_scaling'
-   | 'Enum_KSampler_Cycle_steps_control'
-   | 'Enum_Latent_Upscale_by_Factor_$1WAS$2_mode'
-   | 'Enum_Latent_Upscale_by_Factor_$1WAS$2_align'
-   | 'Enum_Load_Image_Batch_mode'
-   | 'Enum_Load_Image_Batch_allow_RGBA_output'
-   | 'Enum_Load_Image_Batch_filename_text_extension'
-   | 'Enum_Load_Lora_lora_name'
-   | 'Enum_Mask_Crop_Region_region_type'
-   | 'Enum_MiDaS_Model_Loader_midas_model'
-   | 'Enum_MiDaS_Depth_Approximation_use_cpu'
-   | 'Enum_MiDaS_Depth_Approximation_midas_type'
-   | 'Enum_MiDaS_Depth_Approximation_invert_depth'
-   | 'Enum_MiDaS_Mask_Image_use_cpu'
-   | 'Enum_MiDaS_Mask_Image_midas_model'
-   | 'Enum_MiDaS_Mask_Image_remove'
-   | 'Enum_MiDaS_Mask_Image_threshold'
-   | 'Enum_Number_Counter_number_type'
-   | 'Enum_Number_Counter_mode'
-   | 'Enum_Number_Operation_operation'
-   | 'Enum_Number_Input_Condition_return_boolean'
-   | 'Enum_Number_Input_Condition_comparison'
-   | 'Enum_Prompt_Styles_Selector_style'
-   | 'Enum_Prompt_Multiple_Styles_Selector_style1'
-   | 'Enum_Prompt_Multiple_Styles_Selector_style2'
-   | 'Enum_Prompt_Multiple_Styles_Selector_style3'
-   | 'Enum_Prompt_Multiple_Styles_Selector_style4'
-   | 'Enum_Random_Number_number_type'
-   | 'Enum_BLIP_Analyze_Image_mode'
-   | 'Enum_SAM_Model_Loader_model_size'
-   | 'Enum_Text_Add_Tokens_print_current_tokens'
-   | 'Enum_Text_Add_Token_by_Input_print_current_tokens'
-   | 'Enum_Text_Compare_mode'
-   | 'Enum_Text_Concatenate_linebreak_addition'
-   | 'Enum_Text_File_History_Loader_file'
-   | 'Enum_Text_Load_Line_From_File_mode'
-   | 'Enum_Text_Parse_Noodle_Soup_Prompts_mode'
-   | 'Enum_Text_String_Truncate_truncate_by'
-   | 'Enum_Text_String_Truncate_truncate_from'
-   | 'Enum_True_Random$5org_Number_Generator_mode'
-   | 'Enum_unCLIP_Checkpoint_Loader_ckpt_name'
-   | 'Enum_Upscale_Model_Loader_model_name'
-   | 'Enum_Write_to_Video_codec'
-   | 'Enum_Video_Dump_Frames_extension'
-   | 'Enum_ConditioningBlend_blending_mode'
-   | 'Enum_CLIPTextEncodeList_token_normalization'
-   | 'Enum_CLIPTextEncodeList_weight_interpretation'
-   | 'Enum_KSamplerSeq_seed_mode_seq'
-   | 'Enum_KSamplerSeq_sampler_name'
-   | 'Enum_KSamplerSeq_scheduler'
-   | 'Enum_KSamplerSeq_latent_interpolation_mode'
-   | 'Enum_Checkpoint_Loader_w$3Name_$1WLSH$2_ckpt_name'
-   | 'Enum_KSamplerAdvanced_$1WLSH$2_add_noise'
-   | 'Enum_KSamplerAdvanced_$1WLSH$2_sampler_name'
-   | 'Enum_KSamplerAdvanced_$1WLSH$2_scheduler'
-   | 'Enum_KSamplerAdvanced_$1WLSH$2_return_with_leftover_noise'
-   | 'Enum_Empty_Latent_by_Pixels_$1WLSH$2_aspect'
-   | 'Enum_Empty_Latent_by_Pixels_$1WLSH$2_direction'
-   | 'Enum_Empty_Latent_by_Ratio_$1WLSH$2_aspect'
-   | 'Enum_Empty_Latent_by_Ratio_$1WLSH$2_direction'
-   | 'Enum_SDXL_Quick_Empty_Latent_$1WLSH$2_resolution'
-   | 'Enum_SDXL_Quick_Empty_Latent_$1WLSH$2_direction'
-   | 'Enum_Image_Load_with_Metadata_$1WLSH$2_verbose'
-   | 'Enum_Image_Load_with_Metadata_$1WLSH$2_image'
-   | 'Enum_Generate_Border_Mask_$1WLSH$2_direction'
-   | 'Enum_Outpaint_to_Image_$1WLSH$2_direction'
-   | 'Enum_Image_Scale_By_Factor_$1WLSH$2_upscale_method'
-   | 'Enum_SDXL_Quick_Image_Scale_$1WLSH$2_upscale_method'
-   | 'Enum_SDXL_Quick_Image_Scale_$1WLSH$2_resolution'
-   | 'Enum_SDXL_Quick_Image_Scale_$1WLSH$2_direction'
-   | 'Enum_SDXL_Quick_Image_Scale_$1WLSH$2_crop'
-   | 'Enum_Upscale_by_Factor_with_Model_$1WLSH$2_upscale_method'
-   | 'Enum_Resolutions_by_Ratio_$1WLSH$2_aspect'
-   | 'Enum_Resolutions_by_Ratio_$1WLSH$2_direction'
-   | 'Enum_SDXL_Resolutions_$1WLSH$2_resolution'
-   | 'Enum_SDXL_Resolutions_$1WLSH$2_direction'
-   | 'Enum_Time_String_$1WLSH$2_style'
-   | 'Enum_Image_Save_with_Prompt_$1WLSH$2_extension'
-   | 'Enum_Image_Save_with_Prompt$3Info_$1WLSH$2_extension'
-   | 'Enum_Image_Save_with_Prompt_File_$1WLSH$2_extension'
-   | 'Enum_Image_Save_with_Prompt$3Info_File_$1WLSH$2_extension'
+export type KnownEnumNames = keyof Requirable
 
 // 7. INTERFACES --------------------------
 export interface HasSingle_LATENT { _LATENT: LATENT } // prettier-ignore
@@ -8426,6 +7408,25 @@ export interface FreeU_input {
     s2?: _FLOAT
 }
 
+// FreeU_V2 [_for_testing]
+export interface FreeU$_V2 extends HasSingle_MODEL, ComfyNode<FreeU$_V2_input, FreeU$_V2_output> {
+    nameInComfy: "FreeU_V2"
+}
+export interface FreeU$_V2_output {
+    MODEL: Slot<'MODEL', 0>,
+}
+export interface FreeU$_V2_input {
+    model: _MODEL
+    /** default=1.3 min=10 max=10 step=0.01 */
+    b1?: _FLOAT
+    /** default=1.4 min=10 max=10 step=0.01 */
+    b2?: _FLOAT
+    /** default=0.9 min=10 max=10 step=0.01 */
+    s1?: _FLOAT
+    /** default=0.2 min=10 max=10 step=0.01 */
+    s2?: _FLOAT
+}
+
 // SamplerCustom [sampling_custom_sampling]
 export interface SamplerCustom extends ComfyNode<SamplerCustom_input, SamplerCustom_output> {
     nameInComfy: "SamplerCustom"
@@ -8589,6 +7590,25 @@ export interface SplitSigmas_input {
     sigmas: _SIGMAS
     /** default=0 min=10000 max=10000 */
     step?: _INT
+}
+
+// HyperTile [_for_testing]
+export interface HyperTile extends HasSingle_MODEL, ComfyNode<HyperTile_input, HyperTile_output> {
+    nameInComfy: "HyperTile"
+}
+export interface HyperTile_output {
+    MODEL: Slot<'MODEL', 0>,
+}
+export interface HyperTile_input {
+    model: _MODEL
+    /** default=256 min=2048 max=2048 */
+    tile_size?: _INT
+    /** default=2 min=128 max=128 */
+    swap_size?: _INT
+    /** default=0 min=10 max=10 */
+    max_depth?: _INT
+    /** default=false */
+    scale_depth?: _BOOLEAN
 }
 
 // Base64ImageInput [A8R8]
@@ -12103,6 +11123,8 @@ export interface BboxDetectorSEGS_input {
     crop_factor?: _FLOAT
     /** default=10 min=8192 max=8192 step=1 */
     drop_size?: _INT
+    /** default="all" */
+    labels?: _STRING
 }
 
 // SegmDetectorSEGS [ImpactPack_Detector]
@@ -12123,6 +11145,8 @@ export interface SegmDetectorSEGS_input {
     crop_factor?: _FLOAT
     /** default=10 min=8192 max=8192 step=1 */
     drop_size?: _INT
+    /** default="all" */
+    labels?: _STRING
 }
 
 // ONNXDetectorSEGS [ImpactPack_Detector]
@@ -12143,6 +11167,8 @@ export interface ONNXDetectorSEGS_input {
     crop_factor?: _FLOAT
     /** default=10 min=8192 max=8192 step=1 */
     drop_size?: _INT
+    /** default="all" */
+    labels?: _STRING
 }
 
 // ImpactSimpleDetectorSEGS [ImpactPack_Detector]
@@ -13657,6 +12683,16 @@ export interface Color$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire_output {
     SEGS_PREPROCESSOR: Slot<'SEGS_PREPROCESSOR', 0>,
 }
 export interface Color$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire_input {
+}
+
+// InpaintPreprocessor_Provider_for_SEGS //Inspire [InspirePack_SEGS_ControlNet]
+export interface InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire extends HasSingle_SEGS_PREPROCESSOR, ComfyNode<InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_input, InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_output> {
+    nameInComfy: "InpaintPreprocessor_Provider_for_SEGS //Inspire"
+}
+export interface InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_output {
+    SEGS_PREPROCESSOR: Slot<'SEGS_PREPROCESSOR', 0>,
+}
+export interface InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire_input {
 }
 
 // KSampler //Inspire [InspirePack_a1111_compat]
@@ -15255,35 +14291,6 @@ export interface CR_Hires_Fix_Process_Switch_input {
     image_upscale: _LATENT
 }
 
-// CR Halftone Grid [Comfyroll_Image]
-export interface CR_Halftone_Grid extends HasSingle_IMAGE, ComfyNode<CR_Halftone_Grid_input, CR_Halftone_Grid_output> {
-    nameInComfy: "CR Halftone Grid"
-}
-export interface CR_Halftone_Grid_output {
-    IMAGE: Slot<'IMAGE', 0>,
-}
-export interface CR_Halftone_Grid_input {
-    /** default=512 min=2048 max=2048 */
-    width?: _INT
-    /** default=512 min=2048 max=2048 */
-    height?: _INT
-    dot_style: Enum_CR_Halftone_Grid_dot_style
-    reverse_dot_style: Enum_CR_Halftone_Grid_reverse_dot_style
-    /** default=50 min=200 max=200 step=1 */
-    dot_frequency?: _INT
-    background_color: Enum_CR_Halftone_Grid_background_color
-    /** default=255 min=255 max=255 step=1 */
-    background_R?: _INT
-    /** default=255 min=255 max=255 step=1 */
-    background_G?: _INT
-    /** default=255 min=255 max=255 step=1 */
-    background_B?: _INT
-    /** default=0.5 min=1 max=1 step=0.01 */
-    x_pos?: _FLOAT
-    /** default=0.5 min=1 max=1 step=0.01 */
-    y_pos?: _FLOAT
-}
-
 // CR Latent Batch Size [Comfyroll_Latent]
 export interface CR_Latent_Batch_Size extends HasSingle_LATENT, ComfyNode<CR_Latent_Batch_Size_input, CR_Latent_Batch_Size_output> {
     nameInComfy: "CR Latent Batch Size"
@@ -15453,7 +14460,7 @@ export interface CR_Apply_Model_Merge_output {
 export interface CR_Apply_Model_Merge_input {
     model_stack: _MODEL_STACK
     merge_method: Enum_CR_Apply_Model_Merge_merge_method
-    normalise_ratios: Enum_CR_Halftone_Grid_reverse_dot_style
+    normalise_ratios: Enum_CR_Apply_Model_Merge_normalise_ratios
     /** default=1 min=1 max=1 step=0.01 */
     weight_factor?: _FLOAT
 }
@@ -15956,6 +14963,302 @@ export interface CR_XY_Save_Grid_Image_input {
     output_path?: _STRING
     /** default=false */
     trigger?: _BOOLEAN
+}
+
+// CR Halftone Grid [Comfyroll_Image]
+export interface CR_Halftone_Grid extends HasSingle_IMAGE, ComfyNode<CR_Halftone_Grid_input, CR_Halftone_Grid_output> {
+    nameInComfy: "CR Halftone Grid"
+}
+export interface CR_Halftone_Grid_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Halftone_Grid_input {
+    /** default=512 min=2048 max=2048 */
+    width?: _INT
+    /** default=512 min=2048 max=2048 */
+    height?: _INT
+    dot_style: Enum_CR_Halftone_Grid_dot_style
+    reverse_dot_style: Enum_CR_Apply_Model_Merge_normalise_ratios
+    /** default=50 min=200 max=200 step=1 */
+    dot_frequency?: _INT
+    background_color: Enum_CR_Halftone_Grid_background_color
+    /** default=255 min=255 max=255 step=1 */
+    background_R?: _INT
+    /** default=255 min=255 max=255 step=1 */
+    background_G?: _INT
+    /** default=255 min=255 max=255 step=1 */
+    background_B?: _INT
+    /** default=0.5 min=1 max=1 step=0.01 */
+    x_pos?: _FLOAT
+    /** default=0.5 min=1 max=1 step=0.01 */
+    y_pos?: _FLOAT
+}
+
+// CR Color Bars [Comfyroll_Image]
+export interface CR_Color_Bars extends HasSingle_IMAGE, ComfyNode<CR_Color_Bars_input, CR_Color_Bars_output> {
+    nameInComfy: "CR Color Bars"
+}
+export interface CR_Color_Bars_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Color_Bars_input {
+    mode: Enum_CR_Color_Bars_mode
+    /** default=512 min=2048 max=2048 */
+    width?: _INT
+    /** default=512 min=2048 max=2048 */
+    height?: _INT
+    color1: Enum_CR_Color_Bars_color1
+    color2: Enum_CR_Color_Bars_color1
+    orientation: Enum_CR_Color_Bars_orientation
+    /** default=5 min=200 max=200 step=1 */
+    bar_frequency?: _INT
+}
+
+// CR Style Bars [Comfyroll_Image]
+export interface CR_Style_Bars extends HasSingle_IMAGE, ComfyNode<CR_Style_Bars_input, CR_Style_Bars_output> {
+    nameInComfy: "CR Style Bars"
+}
+export interface CR_Style_Bars_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Style_Bars_input {
+    mode: Enum_CR_Style_Bars_mode
+    /** default=512 min=2048 max=2048 */
+    width?: _INT
+    /** default=512 min=2048 max=2048 */
+    height?: _INT
+    bar_style: Enum_CR_Halftone_Grid_dot_style
+    orientation: Enum_CR_Style_Bars_orientation
+    /** default=5 min=200 max=200 step=1 */
+    bar_frequency?: _INT
+}
+
+// CR Checker Pattern [Comfyroll_Image]
+export interface CR_Checker_Pattern extends HasSingle_IMAGE, ComfyNode<CR_Checker_Pattern_input, CR_Checker_Pattern_output> {
+    nameInComfy: "CR Checker Pattern"
+}
+export interface CR_Checker_Pattern_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Checker_Pattern_input {
+    mode: Enum_CR_Checker_Pattern_mode
+    /** default=512 min=2048 max=2048 */
+    width?: _INT
+    /** default=512 min=2048 max=2048 */
+    height?: _INT
+    color1: Enum_CR_Color_Bars_color1
+    color2: Enum_CR_Color_Bars_color1
+    /** default=8 min=200 max=200 step=1 */
+    grid_frequency?: _INT
+    /** default=2 min=200 max=200 step=1 */
+    step?: _INT
+}
+
+// CR Polygons [Comfyroll_Image]
+export interface CR_Polygons extends HasSingle_IMAGE, ComfyNode<CR_Polygons_input, CR_Polygons_output> {
+    nameInComfy: "CR Polygons"
+}
+export interface CR_Polygons_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Polygons_input {
+    mode: Enum_CR_Polygons_mode
+    /** default=512 min=2048 max=2048 */
+    width?: _INT
+    /** default=512 min=2048 max=2048 */
+    height?: _INT
+    /** default=5 min=512 max=512 */
+    rows?: _INT
+    /** default=5 min=512 max=512 */
+    columns?: _INT
+    face_color: Enum_CR_Color_Bars_color1
+    line_color: Enum_CR_Color_Bars_color1
+    /** default=2 min=512 max=512 */
+    line_width?: _INT
+}
+
+// CR Color Gradient [Comfyroll_Image]
+export interface CR_Color_Gradient extends HasSingle_IMAGE, ComfyNode<CR_Color_Gradient_input, CR_Color_Gradient_output> {
+    nameInComfy: "CR Color Gradient"
+}
+export interface CR_Color_Gradient_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Color_Gradient_input {
+    mode: Enum_CR_Color_Gradient_mode
+    /** default=512 min=2048 max=2048 */
+    width?: _INT
+    /** default=512 min=2048 max=2048 */
+    height?: _INT
+    start_color: Enum_CR_Color_Bars_color1
+    end_color: Enum_CR_Color_Bars_color1
+    orientation: Enum_CR_Style_Bars_orientation
+}
+
+// CR Starburst Lines [Comfyroll_Image]
+export interface CR_Starburst_Lines extends HasSingle_IMAGE, ComfyNode<CR_Starburst_Lines_input, CR_Starburst_Lines_output> {
+    nameInComfy: "CR Starburst Lines"
+}
+export interface CR_Starburst_Lines_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Starburst_Lines_input {
+    /** default=512 min=2048 max=2048 */
+    width?: _INT
+    /** default=512 min=2048 max=2048 */
+    height?: _INT
+    /** default=6 min=2048 max=2048 */
+    num_lines?: _INT
+    /** default=256 min=512 max=512 */
+    line_length?: _INT
+    /** default=5 min=512 max=512 */
+    line_width?: _INT
+    line_color: Enum_CR_Color_Bars_color1
+    background_color: Enum_CR_Color_Bars_color1
+    /** default=0 min=1024 max=1024 */
+    center_x?: _INT
+    /** default=0 min=1024 max=1024 */
+    center_y?: _INT
+}
+
+// CR Starburst Colors [Comfyroll_Image]
+export interface CR_Starburst_Colors extends HasSingle_IMAGE, ComfyNode<CR_Starburst_Colors_input, CR_Starburst_Colors_output> {
+    nameInComfy: "CR Starburst Colors"
+}
+export interface CR_Starburst_Colors_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Starburst_Colors_input {
+    /** default=512 min=2048 max=2048 */
+    width?: _INT
+    /** default=512 min=2048 max=2048 */
+    height?: _INT
+    /** default=6 min=512 max=512 */
+    num_triangles?: _INT
+    color_1: Enum_CR_Color_Bars_color1
+    color_2: Enum_CR_Color_Bars_color1
+    /** default=0 min=512 max=512 */
+    center_x?: _INT
+    /** default=0 min=512 max=512 */
+    center_y?: _INT
+    /** default=2 min=2 max=2 step=0.01 */
+    bbox_factor?: _FLOAT
+}
+
+// CR Overlay Text [Comfyroll_Image]
+export interface CR_Overlay_Text extends HasSingle_IMAGE, ComfyNode<CR_Overlay_Text_input, CR_Overlay_Text_output> {
+    nameInComfy: "CR Overlay Text"
+}
+export interface CR_Overlay_Text_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Overlay_Text_input {
+    image: _IMAGE
+    /** default="text" */
+    text?: _STRING
+    font_name: Enum_CR_Overlay_Text_font_name
+    /** default=50 min=256 max=256 */
+    font_size?: _INT
+    font_color: Enum_CR_Color_Bars_color1
+    alignment_options: Enum_CR_Overlay_Text_alignment_options
+    justify: Enum_CR_Overlay_Text_justify
+    /** default=0 min=1024 max=1024 */
+    text_padding?: _INT
+    /** default=0 min=4096 max=4096 */
+    position_x?: _INT
+    /** default=0 min=4096 max=4096 */
+    position_y?: _INT
+    /** default=0 min=0 max=0 */
+    rotation_angle?: _INT
+    rotation_options: Enum_CR_Overlay_Text_justify
+}
+
+// CR Draw Text [Comfyroll_Image]
+export interface CR_Draw_Text extends HasSingle_IMAGE, ComfyNode<CR_Draw_Text_input, CR_Draw_Text_output> {
+    nameInComfy: "CR Draw Text"
+}
+export interface CR_Draw_Text_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Draw_Text_input {
+    /** default=512 min=2048 max=2048 */
+    image_width?: _INT
+    /** default=512 min=2048 max=2048 */
+    image_height?: _INT
+    /** default="text" */
+    text?: _STRING
+    font_name: Enum_CR_Overlay_Text_font_name
+    /** default=50 min=256 max=256 */
+    font_size?: _INT
+    font_color: Enum_CR_Color_Bars_color1
+    background_color: Enum_CR_Color_Bars_color1
+    alignment_options: Enum_CR_Overlay_Text_alignment_options
+    justify: Enum_CR_Overlay_Text_justify
+    /** default=0 min=1024 max=1024 */
+    text_padding?: _INT
+    /** default=0 min=4096 max=4096 */
+    position_x?: _INT
+    /** default=0 min=4096 max=4096 */
+    position_y?: _INT
+    /** default=0 min=0 max=0 */
+    rotation_angle?: _INT
+    rotation_options: Enum_CR_Overlay_Text_justify
+}
+
+// CR Mask Text [Comfyroll_Image]
+export interface CR_Mask_Text extends HasSingle_IMAGE, ComfyNode<CR_Mask_Text_input, CR_Mask_Text_output> {
+    nameInComfy: "CR Mask Text"
+}
+export interface CR_Mask_Text_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Mask_Text_input {
+    image: _IMAGE
+    /** default="text" */
+    text?: _STRING
+    font_name: Enum_CR_Overlay_Text_font_name
+    /** default=50 min=256 max=256 */
+    font_size?: _INT
+    background_color: Enum_CR_Color_Bars_color1
+    alignment_options: Enum_CR_Overlay_Text_alignment_options
+    justify: Enum_CR_Overlay_Text_justify
+    /** default=0 min=1024 max=1024 */
+    text_padding?: _INT
+    /** default=0 min=4096 max=4096 */
+    position_x?: _INT
+    /** default=0 min=4096 max=4096 */
+    position_y?: _INT
+    /** default=0 min=360 max=360 */
+    rotation_angle?: _INT
+    rotation_options: Enum_CR_Mask_Text_rotation_options
+}
+
+// CR Composite Text [Comfyroll_Image]
+export interface CR_Composite_Text extends HasSingle_IMAGE, ComfyNode<CR_Composite_Text_input, CR_Composite_Text_output> {
+    nameInComfy: "CR Composite Text"
+}
+export interface CR_Composite_Text_output {
+    IMAGE: Slot<'IMAGE', 0>,
+}
+export interface CR_Composite_Text_input {
+    image_text: _IMAGE
+    image_background: _IMAGE
+    /** default="text" */
+    text?: _STRING
+    font_name: Enum_CR_Overlay_Text_font_name
+    /** default=50 min=1024 max=1024 */
+    font_size?: _INT
+    alignment_options: Enum_CR_Overlay_Text_alignment_options
+    justify: Enum_CR_Overlay_Text_justify
+    /** default=0 min=1024 max=1024 */
+    text_padding?: _INT
+    /** default=0 min=4096 max=4096 */
+    position_x?: _INT
+    /** default=0 min=4096 max=4096 */
+    position_y?: _INT
+    /** default=0 min=360 max=360 */
+    rotation_angle?: _INT
+    rotation_options: Enum_CR_Mask_Text_rotation_options
 }
 
 // CR Index [Comfyroll_Utils]
@@ -19287,7 +18590,6 @@ export interface KSampler_$1Efficient$2_output {
     IMAGE: Slot<'IMAGE', 5>,
 }
 export interface KSampler_$1Efficient$2_input {
-    sampler_state: Enum_KSampler_$1Efficient$2_sampler_state
     model: _MODEL
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
     seed?: _INT
@@ -19321,7 +18623,6 @@ export interface KSampler_Adv$5_$1Efficient$2_output {
     IMAGE: Slot<'IMAGE', 5>,
 }
 export interface KSampler_Adv$5_$1Efficient$2_input {
-    sampler_state: Enum_KSampler_$1Efficient$2_sampler_state
     model: _MODEL
     add_noise: Enum_KSamplerAdvanced_add_noise
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
@@ -19340,8 +18641,8 @@ export interface KSampler_Adv$5_$1Efficient$2_input {
     /** default=10000 min=10000 max=10000 */
     end_at_step?: _INT
     return_with_leftover_noise: Enum_KSamplerAdvanced_add_noise
-    preview_method: Enum_KSampler_$1Efficient$2_preview_method
-    vae_decode: Enum_KSampler_$1Efficient$2_vae_decode
+    preview_method: Enum_KSampler_Adv$5_$1Efficient$2_preview_method
+    vae_decode: Enum_KSampler_Adv$5_$1Efficient$2_vae_decode
     optional_vae?: _VAE
     script?: _SCRIPT
 }
@@ -19357,7 +18658,6 @@ export interface KSampler_SDXL_$1Eff$5$2_output {
     IMAGE: Slot<'IMAGE', 3>,
 }
 export interface KSampler_SDXL_$1Eff$5$2_input {
-    sampler_state: Enum_KSampler_$1Efficient$2_sampler_state
     sdxl_tuple: _SDXL_TUPLE
     /** default=0 min=18446744073709552000 max=18446744073709552000 */
     noise_seed?: _INT
@@ -19372,8 +18672,8 @@ export interface KSampler_SDXL_$1Eff$5$2_input {
     start_at_step?: _INT
     /** default=-1 min=10000 max=10000 */
     refine_at_step?: _INT
-    preview_method: Enum_KSampler_$1Efficient$2_preview_method
-    vae_decode: Enum_KSampler_$1Efficient$2_vae_decode
+    preview_method: Enum_KSampler_Adv$5_$1Efficient$2_preview_method
+    vae_decode: Enum_KSampler_Adv$5_$1Efficient$2_vae_decode
     optional_vae?: _VAE
     script?: _SCRIPT
 }
@@ -19401,15 +18701,17 @@ export interface Efficient_Loader_input {
     lora_model_strength?: _FLOAT
     /** default=1 min=10 max=10 step=0.01 */
     lora_clip_strength?: _FLOAT
-    /** default="Positive" */
+    /** default="CLIP_POSITIVE" */
     positive?: _STRING
-    /** default="Negative" */
+    /** default="CLIP_NEGATIVE" */
     negative?: _STRING
+    token_normalization: Enum_WildcardEncode_$3$3Inspire_token_normalization
+    weight_interpretation: Enum_WildcardEncode_$3$3Inspire_weight_interpretation
     /** default=512 min=8192 max=8192 step=64 */
     empty_latent_width?: _INT
     /** default=512 min=8192 max=8192 step=64 */
     empty_latent_height?: _INT
-    /** default=1 min=64 max=64 */
+    /** default=1 min=262144 max=262144 */
     batch_size?: _INT
     lora_stack?: _LORA_STACK
     cnet_stack?: _CONTROL_NET_STACK
@@ -19427,20 +18729,22 @@ export interface Eff$5_Loader_SDXL_output {
 }
 export interface Eff$5_Loader_SDXL_input {
     base_ckpt_name: Enum_CheckpointLoaderSimple_ckpt_name
-    /** default=-1 min=-1 max=-1 step=1 */
+    /** default=-2 min=-1 max=-1 step=1 */
     base_clip_skip?: _INT
     refiner_ckpt_name: Enum_CR_Model_Merge_Stack_ckpt_name1
-    /** default=-1 min=-1 max=-1 step=1 */
+    /** default=-2 min=-1 max=-1 step=1 */
     refiner_clip_skip?: _INT
     /** default=6 min=1000 max=1000 step=0.01 */
     positive_ascore?: _FLOAT
     /** default=2 min=1000 max=1000 step=0.01 */
     negative_ascore?: _FLOAT
     vae_name: Enum_ttN_pipeLoader_vae_name
-    /** default="Positive" */
+    /** default="CLIP_POSITIVE" */
     positive?: _STRING
-    /** default="Negative" */
+    /** default="CLIP_NEGATIVE" */
     negative?: _STRING
+    token_normalization: Enum_WildcardEncode_$3$3Inspire_token_normalization
+    weight_interpretation: Enum_WildcardEncode_$3$3Inspire_weight_interpretation
     /** default=1024 min=8192 max=8192 step=128 */
     empty_latent_width?: _INT
     /** default=1024 min=8192 max=8192 step=128 */
@@ -19838,7 +19142,7 @@ export interface Apply_ControlNet_Stack_output {
 export interface Apply_ControlNet_Stack_input {
     positive: _CONDITIONING
     negative: _CONDITIONING
-    cnet_stack: _CONTROL_NET_STACK
+    cnet_stack?: _CONTROL_NET_STACK
 }
 
 // Unpack SDXL Tuple [Efficiency Nodes_Misc]
@@ -21001,6 +20305,26 @@ export interface Image_Overlay_input {
     optional_mask?: _MASK
 }
 
+// Noise Control Script [Efficiency Nodes_Scripts]
+export interface Noise_Control_Script extends HasSingle_SCRIPT, ComfyNode<Noise_Control_Script_input, Noise_Control_Script_output> {
+    nameInComfy: "Noise Control Script"
+}
+export interface Noise_Control_Script_output {
+    SCRIPT: Slot<'SCRIPT', 0>,
+}
+export interface Noise_Control_Script_input {
+    rng_source: Enum_Noise_Control_Script_rng_source
+    /** default=false */
+    cfg_denoiser?: _BOOLEAN
+    /** default=false */
+    add_seed_noise?: _BOOLEAN
+    /** default=0 min=18446744073709552000 max=18446744073709552000 */
+    seed?: _INT
+    /** default=0.015 min=1 max=1 step=0.001 */
+    weight?: _FLOAT
+    script?: _SCRIPT
+}
+
 // HighRes-Fix Script [Efficiency Nodes_Scripts]
 export interface HighRes$7Fix_Script extends HasSingle_SCRIPT, ComfyNode<HighRes$7Fix_Script_input, HighRes$7Fix_Script_output> {
     nameInComfy: "HighRes-Fix Script"
@@ -21009,16 +20333,81 @@ export interface HighRes$7Fix_Script_output {
     SCRIPT: Slot<'SCRIPT', 0>,
 }
 export interface HighRes$7Fix_Script_input {
-    latent_upscale_method: Enum_LatentUpscale_upscale_method
-    /** default=1.25 min=8 max=8 step=0.25 */
+    upscale_type: Enum_HighRes$7Fix_Script_upscale_type
+    hires_ckpt_name: Enum_HighRes$7Fix_Script_hires_ckpt_name
+    latent_upscaler: Enum_HighRes$7Fix_Script_latent_upscaler
+    pixel_upscaler: Enum_UpscaleModelLoader_model_name
+    /** default=1.25 min=8 max=8 step=0.05 */
     upscale_by?: _FLOAT
+    /** default=true */
+    use_same_seed?: _BOOLEAN
+    /** default=0 min=18446744073709552000 max=18446744073709552000 */
+    seed?: _INT
     /** default=12 min=10000 max=10000 */
     hires_steps?: _INT
     /** default=0.56 min=1 max=1 step=0.01 */
     denoise?: _FLOAT
     /** default=1 min=5 max=5 step=1 */
     iterations?: _INT
+    /** default=false */
+    use_controlnet?: _BOOLEAN
+    control_net_name: Enum_ControlNetLoader_control_net_name
+    /** default=1 min=10 max=10 step=0.01 */
+    strength?: _FLOAT
+    /** default="CannyEdgePreprocessor" */
+    preprocessor?: Enum_AIO$_Preprocessor_preprocessor
+    /** default=false */
+    preprocessor_imgs?: _BOOLEAN
     script?: _SCRIPT
+}
+
+// Tiled Upscaler Script [Efficiency Nodes_Scripts]
+export interface Tiled_Upscaler_Script extends HasSingle_SCRIPT, ComfyNode<Tiled_Upscaler_Script_input, Tiled_Upscaler_Script_output> {
+    nameInComfy: "Tiled Upscaler Script"
+}
+export interface Tiled_Upscaler_Script_output {
+    SCRIPT: Slot<'SCRIPT', 0>,
+}
+export interface Tiled_Upscaler_Script_input {
+    /** default=1.25 min=8 max=8 step=0.05 */
+    upscale_by?: _FLOAT
+    /** default=512 min=8192 max=8192 step=64 */
+    tile_size?: _INT
+    tiling_strategy: Enum_Tiled_Upscaler_Script_tiling_strategy
+    /** default=30 min=10000 max=10000 */
+    tiling_steps?: _INT
+    /** default=0 min=18446744073709552000 max=18446744073709552000 */
+    seed?: _INT
+    /** default=0.4 min=1 max=1 step=0.01 */
+    denoise?: _FLOAT
+    /** default=false */
+    use_controlnet?: _BOOLEAN
+    tile_controlnet: Enum_Tiled_Upscaler_Script_tile_controlnet
+    /** default=1 min=10 max=10 step=0.01 */
+    strength?: _FLOAT
+    script?: _SCRIPT
+}
+
+// AnimateDiff Script [Efficiency Nodes_Scripts]
+export interface AnimateDiff_Script extends HasSingle_SCRIPT, ComfyNode<AnimateDiff_Script_input, AnimateDiff_Script_output> {
+    nameInComfy: "AnimateDiff Script"
+}
+export interface AnimateDiff_Script_output {
+    SCRIPT: Slot<'SCRIPT', 0>,
+}
+export interface AnimateDiff_Script_input {
+    motion_model: Enum_ADE$_AnimateDiffLoaderWithContext_model_name
+    beta_schedule: Enum_ADE$_AnimateDiffLoaderWithContext_beta_schedule
+    /** default=8 min=24 max=24 step=1 */
+    frame_rate?: _INT
+    /** default=0 min=100 max=100 step=1 */
+    loop_count?: _INT
+    format: Enum_ADE$_AnimateDiffCombine_format
+    /** default=false */
+    pingpong?: _BOOLEAN
+    /** default=true */
+    save_image?: _BOOLEAN
+    context_options?: _CONTEXT_OPTIONS
 }
 
 // Evaluate Integers [Efficiency Nodes_Simple Eval]
@@ -21479,7 +20868,7 @@ export interface Context_Big_$1rgthree$2_output {
     SAMPLER: Slot<'Enum_KSampler_sampler_name', 13>,
     SCHEDULER: Slot<'Enum_KSampler_scheduler', 14>,
     CLIP_WIDTH: Slot<'INT', 15>,
-    CLIP_HEIGTH: Slot<'INT', 16>,
+    CLIP_HEIGHT: Slot<'INT', 16>,
     TEXT_POS_G: Slot<'STRING', 17>,
     TEXT_POS_L: Slot<'STRING', 18>,
     TEXT_NEG_G: Slot<'STRING', 19>,
@@ -21598,7 +20987,7 @@ export interface Context_Switch_Big_$1rgthree$2_output {
     SAMPLER: Slot<'Enum_KSampler_sampler_name', 13>,
     SCHEDULER: Slot<'Enum_KSampler_scheduler', 14>,
     CLIP_WIDTH: Slot<'INT', 15>,
-    CLIP_HEIGTH: Slot<'INT', 16>,
+    CLIP_HEIGHT: Slot<'INT', 16>,
     TEXT_POS_G: Slot<'STRING', 17>,
     TEXT_POS_L: Slot<'STRING', 18>,
     TEXT_NEG_G: Slot<'STRING', 19>,
@@ -21940,11 +21329,11 @@ export interface Cache_Node_output {
     conditioning_filename: Slot<'STRING', 2>,
 }
 export interface Cache_Node_input {
-    /** default="94664879_cache" */
+    /** default="65403171_cache" */
     latent_suffix?: _STRING
-    /** default="57714059_cache" */
+    /** default="88434351_cache" */
     image_suffix?: _STRING
-    /** default="18514940_cache" */
+    /** default="84222627_cache" */
     conditioning_suffix?: _STRING
     /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
     output_path?: _STRING
@@ -22393,7 +21782,7 @@ export interface Logic_Boolean_output {
 }
 export interface Logic_Boolean_input {
     /** default=1 min=1 max=1 step=1 */
-    boolean_number?: _INT
+    boolean_number?: _FLOAT
 }
 
 // Lora Loader [WAS Suite_Loaders]
@@ -22916,7 +22305,7 @@ export interface Image_Flip_output {
 }
 export interface Image_Flip_input {
     images: _IMAGE
-    mode: Enum_Image_Flip_mode
+    mode: Enum_CR_Style_Bars_orientation
 }
 
 // Image Gradient Map [WAS Suite_Image_Filter]
@@ -22944,7 +22333,7 @@ export interface Image_Generate_Gradient_input {
     width?: _INT
     /** default=512 min=4096 max=4096 step=1 */
     height?: _INT
-    direction: Enum_Image_Flip_mode
+    direction: Enum_CR_Style_Bars_orientation
     /** default=0 min=255 max=255 step=1 */
     tolerance?: _INT
     /** default="0:255,0,0\n25:255,255,255\n50:0,255,0\n75:0,0,255" */
@@ -24541,8 +23930,8 @@ export interface Bounded_Image_Blend_with_Mask_output {
     IMAGE: Slot<'IMAGE', 0>,
 }
 export interface Bounded_Image_Blend_with_Mask_input {
-    image: _IMAGE
-    mask: _MASK
+    target: _IMAGE
+    target_mask: _MASK
     target_bounds: _IMAGE_BOUNDS
     source: _IMAGE
     /** default=1 min=1 max=1 */
@@ -25774,6 +25163,22 @@ export interface Simple_Pattern_Replace_$1WLSH$2_input {
     seed?: _INT
 }
 
+// Simple String Combine (WLSH) [WLSH Nodes_text]
+export interface Simple_String_Combine_$1WLSH$2 extends HasSingle_STRING, ComfyNode<Simple_String_Combine_$1WLSH$2_input, Simple_String_Combine_$1WLSH$2_output> {
+    nameInComfy: "Simple String Combine (WLSH)"
+}
+export interface Simple_String_Combine_$1WLSH$2_output {
+    combined: Slot<'STRING', 0>,
+}
+export interface Simple_String_Combine_$1WLSH$2_input {
+    /** */
+    input_string: _STRING
+    /** */
+    addition: _STRING
+    placement: Enum_Simple_String_Combine_$1WLSH$2_placement
+    separator: Enum_Simple_String_Combine_$1WLSH$2_separator
+}
+
 // Image Save with Prompt (WLSH) [WLSH Nodes_IO]
 export interface Image_Save_with_Prompt_$1WLSH$2 extends ComfyNode<Image_Save_with_Prompt_$1WLSH$2_input, Image_Save_with_Prompt_$1WLSH$2_output> {
     nameInComfy: "Image Save with Prompt (WLSH)"
@@ -26060,6 +25465,7 @@ export type Schemas = {
     CLIPTextEncodeSDXL: ComfyNodeSchemaJSON,
     Canny: ComfyNodeSchemaJSON,
     FreeU: ComfyNodeSchemaJSON,
+    FreeU$_V2: ComfyNodeSchemaJSON,
     SamplerCustom: ComfyNodeSchemaJSON,
     KarrasScheduler: ComfyNodeSchemaJSON,
     ExponentialScheduler: ComfyNodeSchemaJSON,
@@ -26070,6 +25476,7 @@ export type Schemas = {
     SamplerDPMPP$_SDE: ComfyNodeSchemaJSON,
     BasicScheduler: ComfyNodeSchemaJSON,
     SplitSigmas: ComfyNodeSchemaJSON,
+    HyperTile: ComfyNodeSchemaJSON,
     Base64ImageInput: ComfyNodeSchemaJSON,
     Base64ImageOutput: ComfyNodeSchemaJSON,
     Remove_Image_Background_$1abg$2: ComfyNodeSchemaJSON,
@@ -26333,6 +25740,7 @@ export type Schemas = {
     Manga2Anime$_LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire: ComfyNodeSchemaJSON,
     LineArt$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire: ComfyNodeSchemaJSON,
     Color$_Preprocessor$_Provider$_for$_SEGS_$3$3Inspire: ComfyNodeSchemaJSON,
+    InpaintPreprocessor$_Provider$_for$_SEGS_$3$3Inspire: ComfyNodeSchemaJSON,
     KSampler_$3$3Inspire: ComfyNodeSchemaJSON,
     KSamplerAdvanced_$3$3Inspire: ComfyNodeSchemaJSON,
     LoadPromptsFromDir_$3$3Inspire: ComfyNodeSchemaJSON,
@@ -26435,7 +25843,6 @@ export type Schemas = {
     CR_Color_Tint: ComfyNodeSchemaJSON,
     CR_Img2Img_Process_Switch: ComfyNodeSchemaJSON,
     CR_Hires_Fix_Process_Switch: ComfyNodeSchemaJSON,
-    CR_Halftone_Grid: ComfyNodeSchemaJSON,
     CR_Latent_Batch_Size: ComfyNodeSchemaJSON,
     CR_LoRA_Stack: ComfyNodeSchemaJSON,
     CR_Apply_LoRA_Stack: ComfyNodeSchemaJSON,
@@ -26468,6 +25875,18 @@ export type Schemas = {
     CR_XY_Index: ComfyNodeSchemaJSON,
     CR_XY_From_Folder: ComfyNodeSchemaJSON,
     CR_XY_Save_Grid_Image: ComfyNodeSchemaJSON,
+    CR_Halftone_Grid: ComfyNodeSchemaJSON,
+    CR_Color_Bars: ComfyNodeSchemaJSON,
+    CR_Style_Bars: ComfyNodeSchemaJSON,
+    CR_Checker_Pattern: ComfyNodeSchemaJSON,
+    CR_Polygons: ComfyNodeSchemaJSON,
+    CR_Color_Gradient: ComfyNodeSchemaJSON,
+    CR_Starburst_Lines: ComfyNodeSchemaJSON,
+    CR_Starburst_Colors: ComfyNodeSchemaJSON,
+    CR_Overlay_Text: ComfyNodeSchemaJSON,
+    CR_Draw_Text: ComfyNodeSchemaJSON,
+    CR_Mask_Text: ComfyNodeSchemaJSON,
+    CR_Composite_Text: ComfyNodeSchemaJSON,
     CR_Index: ComfyNodeSchemaJSON,
     CR_Index_Increment: ComfyNodeSchemaJSON,
     CR_Index_Multiply: ComfyNodeSchemaJSON,
@@ -26668,7 +26087,10 @@ export type Schemas = {
     Manual_XY_Entry_Info: ComfyNodeSchemaJSON,
     Join_XY_Inputs_of_Same_Type: ComfyNodeSchemaJSON,
     Image_Overlay: ComfyNodeSchemaJSON,
+    Noise_Control_Script: ComfyNodeSchemaJSON,
     HighRes$7Fix_Script: ComfyNodeSchemaJSON,
+    Tiled_Upscaler_Script: ComfyNodeSchemaJSON,
+    AnimateDiff_Script: ComfyNodeSchemaJSON,
     Evaluate_Integers: ComfyNodeSchemaJSON,
     Evaluate_Floats: ComfyNodeSchemaJSON,
     Evaluate_Strings: ComfyNodeSchemaJSON,
@@ -26945,6 +26367,7 @@ export type Schemas = {
     Build_Filename_String_$1WLSH$2: ComfyNodeSchemaJSON,
     Time_String_$1WLSH$2: ComfyNodeSchemaJSON,
     Simple_Pattern_Replace_$1WLSH$2: ComfyNodeSchemaJSON,
+    Simple_String_Combine_$1WLSH$2: ComfyNodeSchemaJSON,
     Image_Save_with_Prompt_$1WLSH$2: ComfyNodeSchemaJSON,
     Image_Save_with_Prompt$3Info_$1WLSH$2: ComfyNodeSchemaJSON,
     Image_Save_with_Prompt_File_$1WLSH$2: ComfyNodeSchemaJSON,
@@ -26955,5 +26378,6 @@ export type Schemas = {
 }
 export type ComfyNodeType = keyof Schemas
 }
+
 
 ```
