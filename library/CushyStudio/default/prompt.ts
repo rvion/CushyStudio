@@ -45,9 +45,9 @@ card({
         }),
         // startImage
         removeBG: form.bool({ default: false }),
-        extra: form.groupOpt({
+        extra: form.group({
             items: () => ({
-                reverse: form.bool({ default: false }),
+                reversePositiveAndNegative: form.bool({ default: false }),
                 show3d: form.groupOpt({
                     items: () => ({
                         normal: form.selectOne({
@@ -69,13 +69,16 @@ card({
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = ui_model.run_model(flow, p.model)
 
+        const posPrompt = p.extra.reversePositiveAndNegative ? p.negative : p.positive
+        const negPrompt = p.extra.reversePositiveAndNegative ? p.positive : p.negative
+
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
-        const x = _.run_prompt(flow, { richPrompt: p.positive, clip, ckpt })
+        const x = _.run_prompt(flow, { richPrompt: posPrompt, clip, ckpt })
         const clipPos = x.clip
         const ckptPos = x.ckpt
         const positive = x.conditionning
 
-        const y = _.run_prompt(flow, { richPrompt: p.negative, clip, ckpt })
+        const y = _.run_prompt(flow, { richPrompt: negPrompt, clip, ckpt })
         const negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
@@ -205,13 +208,6 @@ card({
         }
     },
 })
-
-// if (p.extra?.reversePrompt) {
-//     // FUNNY PROMPT REVERSAL
-//     positive.set({ text: p.negative ?? '' })
-//     negative.set({ text: p.positive ?? '' })
-//     await flow.PROMPT()
-// }
 
 // patch
 // if (p.tomeRatio != null && p.tomeRatio !== false) {
