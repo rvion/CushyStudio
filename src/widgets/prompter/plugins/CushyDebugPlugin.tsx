@@ -1,4 +1,4 @@
-import type { LoraNodeJSON } from '../nodes/LoraNode'
+import type { LoraNodeJSON } from '../nodes/lora/LoraNode'
 import type { BooruNodeJSON } from '../nodes/booru/BooruNode'
 import type { WildcardNodeJSON } from '../nodes/wildcards/WildcardNode'
 import type { EmbeddingNodeJSON } from '../nodes/EmbeddingNode'

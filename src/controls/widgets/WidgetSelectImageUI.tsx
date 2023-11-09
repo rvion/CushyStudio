@@ -122,7 +122,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
         <div>
             <div style={dropStyle} ref={dropRef} className='flex gap-2 flex-row items-center'>
                 <TabsUI
-                    inline
+                    // inline
                     disabled={!req.state.active}
                     onClick={(i) => {
                         // if (i === Tab.None && req instanceof Widget_imageOpt) req.state.active = false
@@ -139,38 +139,3 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
         </div>
     )
 })
-
-// ❓ <span
-// ❓     style={{
-// ❓         // whiteSpace: 'pre-wrap',
-// ❓         wordWrap: 'break-word',
-// ❓     }}
-// ❓ >
-// ❓     {/* {JSON.stringify(answer ?? { '❌': '❌' }, null, 3)} */}
-// ❓     {/* le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le chat le */}
-// ❓     {/* chat */}
-// ❓ </span>
-
-// {/* {infos.map((info) => {
-//     const url = info.comfyURL
-//     return (
-//         <RadioGroup value={checkedURL?.comfyURL} name='radioList'>
-//             <div key={url} onClick={() => set(info)} className='hover:bg-gray-500'>
-//                 <img
-//                     onClick={() => (lbs.opened = true)}
-//                     style={{
-//                         cursor: 'pointer',
-//                         objectFit: 'contain',
-//                         width: '32px',
-//                         height: '32px',
-//                     }}
-//                     src={url}
-//                     alt=''
-//                 />
-//                 <Radio value={url} onChange={() => set(info)} />
-//             </div>
-//         </RadioGroup>
-//     )
-// })} */}
-
-// {/* <LightBoxUI lbs={lbs} /> */}

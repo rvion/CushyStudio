@@ -1,6 +1,6 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
-import { wildcards } from './wildcards'
+import { WildcardNodeUI } from './WildcardNodeUI'
 
 export type WildcardNodeJSON = SerializedLexicalNode & { payload: string; type: 'wildcard' }
 export class WildcardNode extends DecoratorNode<ReactNode> {
@@ -33,17 +33,7 @@ export class WildcardNode extends DecoratorNode<ReactNode> {
     isKeyboardSelectable(): boolean { return true } // prettier-ignore
     createDOM(): HTMLElement { return document.createElement('span') } // prettier-ignore
     updateDOM(): false { return false } // prettier-ignore
-    decorate(): ReactNode {
-        return (
-            <span
-                //
-                className='bg-yellow-800 rv-tooltip-container'
-            >
-                <div className='rv-tooltip'>{((wildcards as any)[this.wildcardName] ?? []).slice(0, 20).join(', ') + '...'}</div>*
-                {this.wildcardName}
-            </span>
-        )
-    }
+    decorate(): ReactNode { return <WildcardNodeUI node={this} /> } // prettier-ignore
 }
 
 export function $createWildcardNode(id: string): WildcardNode {

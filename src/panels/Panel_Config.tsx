@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { Form, Panel, Toggle } from 'rsuite'
 import { useSt } from '../state/stateContext'
 import { SectionTitleUI } from '../widgets/workspace/SectionTitle'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()
@@ -88,7 +89,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                                 config.update({
                                     checkUpdateEveryMinutes:
                                         typeof v === 'string' //
-                                            ? parseFloat(v)
+                                            ? parseFloatNoRoundingErr(v, 2)
                                             : typeof v === 'number'
                                             ? v
                                             : 5,

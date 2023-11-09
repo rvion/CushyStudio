@@ -3,6 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { IconButton, Input, MultiCascader } from 'rsuite'
 import { Widget_loras } from 'src/controls/Widget'
 import { useSt } from '../../state/stateContext'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 // ----------------------------------------------------------------------
 
 export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { req: Widget_loras }) {
@@ -68,7 +69,7 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { req: Widget_lo
                             type='number'
                             value={sld.strength_clip}
                             step={0.1}
-                            onChange={(v) => (sld.strength_clip = typeof v === 'number' ? v : parseFloat(v))}
+                            onChange={(v) => (sld.strength_clip = parseFloatNoRoundingErr(v, 2))}
                             style={{ width: '3.5rem' }}
                         />
                         <Input
@@ -76,7 +77,7 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { req: Widget_lo
                             type='number'
                             value={sld.strength_model}
                             step={0.1}
-                            onChange={(v) => (sld.strength_model = typeof v === 'number' ? v : parseFloat(v))}
+                            onChange={(v) => (sld.strength_model = parseFloatNoRoundingErr(v, 2))}
                             style={{ width: '3.5rem' }}
                         />
                         <IconButton

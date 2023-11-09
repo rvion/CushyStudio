@@ -1,6 +1,7 @@
 import { DecoratorNode, LexicalNode, NodeKey, SerializedLexicalNode } from 'lexical'
 import { ReactNode } from 'react'
 import { DanbooruTag } from './BooruLoader'
+import { BooruNodeUI } from './BooruNodeUI'
 
 export type BooruNodeJSON = SerializedLexicalNode & { tag: DanbooruTag; type: 'booru' }
 export class BooruNode extends DecoratorNode<ReactNode> {
@@ -33,7 +34,7 @@ export class BooruNode extends DecoratorNode<ReactNode> {
     isKeyboardSelectable(): boolean { return true } // prettier-ignore
     createDOM(): HTMLElement { return document.createElement('span') } // prettier-ignore
     updateDOM(): false { return false } // prettier-ignore
-    decorate(): ReactNode { return <span className='bg-teal-800'>&{this.booru.text}</span> } // prettier-ignore
+    decorate(): ReactNode { return <BooruNodeUI node={this} /> } // prettier-ignore
 }
 
 export function $createBooruNode(booru: DanbooruTag): BooruNode {

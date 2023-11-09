@@ -1,8 +1,9 @@
 import * as _ from './_prefabs'
+import * as ui_model from './_prefabs/prefab_model'
 
 card({
     ui: (form) => ({
-        model: _.ui_model(form),
+        model: ui_model.ui_model(form),
         sampler: _.ui_sampler(form),
         positive: form.prompt({
             default: {
@@ -65,7 +66,7 @@ card({
     run: async (flow, p) => {
         const graph = flow.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
-        let { ckpt, vae, clip } = _.run_model(flow, p.model)
+        let { ckpt, vae, clip } = ui_model.run_model(flow, p.model)
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
         const x = _.run_prompt(flow, { richPrompt: p.positive, clip, ckpt })

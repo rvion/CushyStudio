@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 import { InputNumber, Slider, Toggle } from 'rsuite'
 import { Widget_floatOpt, Widget_intOpt } from 'src/controls/Widget'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget_intOpt | Widget_floatOpt }) {
     const req = p.req
@@ -25,7 +26,7 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget
                         typeof next === 'string' //
                             ? mode == 'int'
                                 ? parseInt(next, 10)
-                                : parseFloat(next)
+                                : parseFloatNoRoundingErr(next, 3)
                             : next
 
                     // ensure is a number
@@ -58,7 +59,7 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget
                         typeof next === 'string' //
                             ? mode == 'int'
                                 ? parseInt(next, 10)
-                                : parseFloat(next)
+                                : parseFloatNoRoundingErr(next, 3)
                             : next
 
                     // ensure is a number

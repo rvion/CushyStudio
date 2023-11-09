@@ -56,6 +56,7 @@
         "decl:list": "tsc -p tsconfig.decl.json --listFiles --noEmit | grep /Users/loco/dev/CushyStudio/src"
     },
     "dependencies": {
+        "@lexical/clipboard": "^0.12.2",
         "@lexical/react": "^0.12.2",
         "@rsuite/icons": "^1.0.3",
         "@rsuite/responsive-nav": "^5.0.1",

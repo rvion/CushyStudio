@@ -17,8 +17,8 @@ import theme from './theme/WidgetLexicalTheme'
 
 // nodes
 import { $createEmbeddingNode, EmbeddingNode } from './nodes/EmbeddingNode'
-import { $createLoraNode, LoraNode } from './nodes/LoraNode'
 import { $createBooruNode, BooruNode } from './nodes/booru/BooruNode'
+import { $createLoraNode, LoraNode } from './nodes/lora/LoraNode'
 import { $createWildcardNode, WildcardNode } from './nodes/wildcards/WildcardNode'
 
 // plugins
@@ -27,12 +27,12 @@ import { useMemo } from 'react'
 import { Widget_prompt, Widget_promptOpt } from 'src/controls/Widget'
 import { $createActionNode, ActionNode } from './nodes/ActionNode'
 import { $createUserNode, UserNode } from './nodes/usertags/UserNode'
+import { CopyPastePlugin } from './onCutForRichText'
 import { CompletionState } from './plugins/CompletionProviders'
 import { CushyCompletionPlugin } from './plugins/CushyCompletionPlugin'
 import { PossibleSerializedNodes } from './plugins/CushyDebugPlugin'
 import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
 import { getFinalJSON } from './plugins/getFinalJSON'
-import { Toggle } from 'rsuite'
 
 // const theme = {
 //     // Theme styling goes here
@@ -94,6 +94,7 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
+            <CopyPastePlugin />
             <CushyShortcutPlugin />
             <PlainTextPlugin
                 contentEditable={

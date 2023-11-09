@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { InputNumber, Slider } from 'rsuite'
 import { Widget_float, Widget_int } from 'src/controls/Widget'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 export type NumbericTheme = 'input' | 'slider'
 
@@ -25,7 +26,7 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
                         typeof next === 'string' //
                             ? mode == 'int'
                                 ? parseInt(next, 10)
-                                : parseFloat(next)
+                                : parseFloatNoRoundingErr(next, 2)
                             : next
                     // ensure is a number
                     if (isNaN(num) || typeof num != 'number') {

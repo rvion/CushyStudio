@@ -23,7 +23,7 @@ export const TabsUI = observer(function Tabs_(p: {
 }) {
     const [onIx, setIx] = useState(() => p.current ?? 0)
     const tabHeader = (
-        <Nav vertical appearance='tabs'>
+        <Nav appearance='tabs'>
             {p.tabs.map((tab, ix) => {
                 const active = ix === onIx
                 return (
