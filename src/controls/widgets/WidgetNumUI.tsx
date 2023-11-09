@@ -47,8 +47,8 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
                 fontFamily: 'monospace',
                 width: val.toString().length + 6 + 'ch',
             }}
-            min={req.input.min}
-            max={req.input.max}
+            // min={req.input.min}
+            // max={req.input.max}
             step={step}
             onChange={(next) => {
                 // parse value
