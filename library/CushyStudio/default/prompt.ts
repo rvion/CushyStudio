@@ -1,4 +1,5 @@
 import * as _ from './_prefabs'
+import * as run_prompt from './_prefabs/prefab_prompt'
 import * as ui_sampler from './_prefabs/prefab_sampler'
 import * as ui_model from './_prefabs/prefab_model'
 
@@ -73,12 +74,12 @@ card({
         const negPrompt = p.extra.reversePositiveAndNegative ? p.positive : p.negative
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
-        const x = _.run_prompt(flow, { richPrompt: posPrompt, clip, ckpt })
+        const x = run_prompt.run_prompt(flow, { richPrompt: posPrompt, clip, ckpt })
         const clipPos = x.clip
         const ckptPos = x.ckpt
         const positive = x.conditionning
 
-        const y = _.run_prompt(flow, { richPrompt: negPrompt, clip, ckpt })
+        const y = run_prompt.run_prompt(flow, { richPrompt: negPrompt, clip, ckpt })
         const negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
