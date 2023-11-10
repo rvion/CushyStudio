@@ -20,20 +20,20 @@ Misc:
     ☐ select nodes  => see the corresponding code in realtime
     ☐ have a better auto-UI generated
     ☐ new primitive to add all the primitive inputs instead of having super long names,
-    ☐ no git init when creating actions
-    ☐ faster clone
+    ✔ no git init when creating actions @done(23-11-10 20:21)
+    ✔ faster clone @done(23-11-10 20:21)
     ☐ optimize all images
     ☐ add squoosh images
+    ☐ make the run button red if cushy is not running
+    ☐ error messages
 
 
-☐ make the run button red if cushy is not running
 ✔ center preview @done(23-11-08 20:55)
 ✔ better latent preview @done(23-11-01 13:15)
     ✔ fix aspect ratio @done(23-11-01 13:15)
     ✔ zoom on hover @done(23-11-01 13:15)
 
 ✔ better scribble @done(23-11-08 20:55)
-☐ error messages
 ✔ edit should add to type-checking @done(23-11-08 20:55)
 ✔ autorun @done(23-11-08 20:55)
 ✔ scribble @done(23-11-08 20:55)

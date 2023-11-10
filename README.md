@@ -351,12 +351,12 @@ Decks are made to be shared.
       5.  `library/<username>/<deckname>/sample-action-2.ts`
           - second sample action
 
-    2.  it will also initialize a git
+    <!-- 2.  it will also initialize a git
         1.  it will run `git init` in the created repository
         2.  it will run `git remote add origin "https://github.com/<username>/<deckname>`)
         3.  it will run `git remote add github "git@github.com:<username>/<deckname>.git`)
         - 👉 this is to make it easy to publish your deck to GitHub
-        - 👉 you can also use any other git host, or none at all
+        - 👉 you can also use any other git host, or none at all -->
 
 
 4. Open the `sample-action-1.ts` card

@@ -198,7 +198,7 @@ export class Library {
         // copyFileSync(join(this.st.rootPath, 'assets', 'cushy-deck.png'), join(folder, 'cushy-deck.png'))
         // writeFileSync(join(folder, 'cushy-deck.png'), ``)
         const deck = this.getDeck(folder)
-        await deck.updater._gitInit()
+        // await deck.updater._gitInit()
         this.recursivelyFindCardsInFolder(this.st.actionsFolderPathAbs, this.fileTree)
         return deck
     }
