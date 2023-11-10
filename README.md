@@ -4,9 +4,20 @@
 
 ## _The **easiest** and most **powerful** Stable Diffusion frontend_
 
-![Static Badge](https://img.shields.io/badge/status-BETA-yellow) ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio) ![GitHub Sponsors](https://img.shields.io/github/sponsors/rvion) [![CLA assistant](https://cla-assistant.io/readme/badge/rvion/CushyStudio)](https://cla-assistant.io/rvion/CushyStudio)
+![Static Badge](https://img.shields.io/badge/status-BETA-yellow)
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio)
+![GitHub Sponsors](https://img.shields.io/github/sponsors/rvion)
+<!-- [![CLA assistant](https://cla-assistant.io/readme/badge/rvion/CushyStudio)](https://cla-assistant.io/rvion/CushyStudio) -->
 
-[![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad)](https://discord.gg/GfAN6hF2ad)
+[![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat)](https://discord.gg/GfAN6hF2ad)
+<a href="https://twitter.com/_rvion_">
+    <img alt="Follow _rvion on Twitter" src="https://img.shields.io/badge/%40__rvion-666666?style=flat&logo=twitter&labelColor=555&label=Follow">
+</a>
+
+<!-- twitter badge -->
+<!-- [![](https://img.shields.io/twitter/follow/_rvion?style=flat&logo=twitter)](https://twitter.com/_rvion) -->
+
+
 
 </div>
 
