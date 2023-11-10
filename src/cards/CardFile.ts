@@ -40,29 +40,14 @@ export class CardFile {
     st: STATE
 
     /** card display name */
-    get displayName(): string {
-        return this.manifest.name
-    }
+    get displayName(): string { return this.manifest.name } // prettier-ignore
+    get actionPackFolderRel(): string { return this.deck.folderRel } // prettier-ignore
+    get actionAuthorFolderRel(): string { return this.deck.authorFolderRel } // prettier-ignore
+    get priority(): number { return this.manifest.priority ?? 0 } // prettier-ignore
+    get description(): string { return this.manifest.description ?? 'no description' } // prettier-ignore
+    get style(): CardStyle { return this.manifest.style ?? 'A' } // prettier-ignore
 
-    get actionPackFolderRel(): string {
-        return this.deck.folderRel
-    }
-
-    get actionAuthorFolderRel(): string {
-        return this.deck.authorFolderRel
-    }
-
-    get priority(): number {
-        return this.manifest.priority ?? 0
-    }
-    get description(): string {
-        return this.manifest.description ?? 'no description'
-    }
-
-    get style(): CardStyle {
-        return this.manifest.style ?? 'A'
-    }
-
+    /** true if card match current library search */
     matchesSearch = (search: string): boolean => {
         if (search === '') return true
         const searchLower = search.toLowerCase()
@@ -70,6 +55,7 @@ export class CardFile {
         const descriptionLower = this.description.toLowerCase()
         return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
     }
+
     constructor(
         //
         public library: Library,
@@ -97,10 +83,19 @@ export class CardFile {
         return score
     }
 
-    get deckManifestType() {
+    /** meh */
+    get deckManifestType(): 'no manifest' | 'invalid manifest' | 'crash' | 'valid' {
         return this.deck.manifestError?.type ?? ('valid' as const)
     }
-    get authorDefinedManifest(): Maybe<CardManifest> {
+
+    get manifest(): CardManifest {
+        return (
+            this.authorDefinedManifest ?? //
+            this.defaultManifest
+        )
+    }
+
+    private get authorDefinedManifest(): Maybe<CardManifest> {
         const cards = this.deck.manifest.cards ?? []
         const match = cards.find((c) => {
             const absPath = path.join(this.deck.folderAbs, c.deckRelativeFilePath)
@@ -108,13 +103,8 @@ export class CardFile {
         })
         return match
     }
-    get manifest(): CardManifest {
-        const match = this.authorDefinedManifest
-        if (match) return match
-        return this.defaultManifest
-    }
 
-    defaultManifest: CardManifest
+    private defaultManifest: CardManifest
     private mkDefaultManifest(): CardManifest {
         const baseName = this.deckRelativeFilePath
         return {
@@ -134,7 +124,6 @@ export class CardFile {
         return relative(this.deck.folderAbs, this.absPath)
     }
     // --------------------------------------------------------
-
     // status
     loaded = new ManualPromise<true>()
     errors: { title: string; details: any }[] = []
@@ -152,7 +141,7 @@ export class CardFile {
         const tmp = this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded
         console.log('>>>', tmp, '<<<')
         if (tmp?.startsWith('data:')) return tmp
-        if (tmp) return `file://${join(this.deck.folderAbs, this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded)}`
+        if (tmp) return `file://${join(this.deck.folderAbs, tmp)}`
         // default illustration if none is provided
         return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_illustrations/default-card-illustration.jpg')}`
     }
@@ -318,9 +307,6 @@ export class CardFile {
         const workflowStr = (metadata as { [key: string]: any }).workflow
         if (workflowStr == null) return this.addError(`❌ [load_asComfyUIGeneratedPng] no workflow in metadata`, metadata)
         const res = await this.importWorkflowFromStr(workflowStr)
-        if (res === LoadStatus.SUCCESS) {
-            this.defaultManifest.illustration = this.relPath
-        }
         return res
     }
 
