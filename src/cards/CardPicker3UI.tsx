@@ -67,7 +67,7 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                         </ButtonGroup>
                     </div>
                     <div tw='flex flex-wrap'>
-                        {st.library.cardsFiltered.map((card) => (
+                        {st.library.cardsFilteredSorted.map((card) => (
                             <div key={card.relPath}>
                                 <FancyCardUI //
                                     deck={card.deck}

@@ -12,6 +12,7 @@ import { Deck } from '../Deck'
 import './FancyCard.css' // Assuming the CSS is written in this file
 import { ActionFavoriteBtnUI } from '../CardPicker2UI'
 import { GithubUserUI } from '../GithubAvatarUI'
+import { CardIllustrationUI } from './CardIllustrationUI'
 
 export class FancyCardState {
     constructor(public theme: CardStyle) {
@@ -74,10 +75,8 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     style: CardStyle
     card: CardFile
 }) {
-    const st = useSt()
     const uiSt = useMemo(() => new FancyCardState(p.style), [p.style])
     const card = p.card
-    const cardIllustration = card.illustrationPathWithFileProtocol
     return (
         <div className='m-2' tw='cursor-pointer relative'>
             <div
@@ -95,17 +94,7 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
                     {card.displayName}
                 </div>
                 <div tw='flex'>
-                    <img
-                        tw='rounded m-2'
-                        style={{ width: '12rem', height: '12rem' }}
-                        src={cardIllustration}
-                        alt='card illustration'
-                        onClick={() => {
-                            console.log('clicked')
-                            st.currentDraft = card.getLastDraft()
-                        }}
-                    />
-                    {/* {cardIllustration} */}
+                    <CardIllustrationUI card={card} size='12rem' />
                     <div tw='flex-grow flex flex-col ml-1'>
                         <div>
                             {(card.manifest.categories ?? []).map((i, ix) => (

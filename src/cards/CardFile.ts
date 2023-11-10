@@ -20,6 +20,8 @@ import { Library } from './Library'
 import { CardManifest } from './DeckManifest'
 import { join } from 'pathe'
 import { CardStyle } from './fancycard/FancyCard'
+import { generateAvatar } from './AvatarGenerator'
+import { clamp } from 'three/src/math/MathUtils'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -76,21 +78,44 @@ export class CardFile {
         public relPath: CardPath,
     ) {
         this.st = library.st
+        this.defaultManifest = this.mkDefaultManifest()
         makeAutoObservable(this, { action: observable.ref })
     }
 
     // --------------------------------------------------------
-    get manifest(): CardManifest {
+    // prettier-ignore
+    get score(): number {
+        let score = 0
+        // malus
+        if (this.deckManifestType === 'crash')            score -= 60
+        if (this.deckManifestType === 'invalid manifest') score -= 50
+        if (this.deckManifestType === 'no manifest')      score -= 40
+        // positives
+        if (this.manifest.priority)                       score += clamp(this.manifest.priority, -100, 100)
+        if (this.authorDefinedManifest)                   score += 50
+        if (this.manifest.illustration?.endsWith('.png')) score += 10
+        return score
+    }
+
+    get deckManifestType() {
+        return this.deck.manifestError?.type ?? ('valid' as const)
+    }
+    get authorDefinedManifest(): Maybe<CardManifest> {
         const cards = this.deck.manifest.cards ?? []
         const match = cards.find((c) => {
             const absPath = path.join(this.deck.folderAbs, c.deckRelativeFilePath)
             if (absPath === this.absPath) return true
         })
+        return match
+    }
+    get manifest(): CardManifest {
+        const match = this.authorDefinedManifest
         if (match) return match
         return this.defaultManifest
     }
 
-    private get defaultManifest(): CardManifest {
+    defaultManifest: CardManifest
+    private mkDefaultManifest(): CardManifest {
         const baseName = this.deckRelativeFilePath
         return {
             name: baseName.endsWith('.ts') //
@@ -98,6 +123,9 @@ export class CardFile {
                 : baseName,
             deckRelativeFilePath: this.relPath,
             author: this.deck.githubUserName,
+            illustration: baseName.endsWith('.png') //
+                ? baseName
+                : generateAvatar(baseName),
             description: '<card not listed in manifest>',
         }
     }
@@ -116,13 +144,15 @@ export class CardFile {
     }
 
     /** action display name */
-    get illustrationPathRelativeToDeckRoot(): Maybe<string> {
+    get illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded(): Maybe<string> {
         return this.manifest.illustration
     }
 
     get illustrationPathWithFileProtocol() {
-        if (this.illustrationPathRelativeToDeckRoot)
-            return `file://${join(this.deck.folderAbs, this.illustrationPathRelativeToDeckRoot)}`
+        const tmp = this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded
+        console.log('>>>', tmp, '<<<')
+        if (tmp?.startsWith('data:')) return tmp
+        if (tmp) return `file://${join(this.deck.folderAbs, this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded)}`
         // default illustration if none is provided
         return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_illustrations/default-card-illustration.jpg')}`
     }
@@ -287,7 +317,11 @@ export class CardFile {
         const metadata = result.value
         const workflowStr = (metadata as { [key: string]: any }).workflow
         if (workflowStr == null) return this.addError(`❌ [load_asComfyUIGeneratedPng] no workflow in metadata`, metadata)
-        return this.importWorkflowFromStr(workflowStr)
+        const res = await this.importWorkflowFromStr(workflowStr)
+        if (res === LoadStatus.SUCCESS) {
+            this.defaultManifest.illustration = this.relPath
+        }
+        return res
     }
 
     // LOADERS ------------------------------------------------------------------------
@@ -305,6 +339,7 @@ export class CardFile {
         try {
             promptJSON = convertLiteGraphToPrompt(this.st.schema, workflowJSON)
         } catch (error) {
+            console.error(error)
             return this.addError(`❌ [importWorkflowFromStr] cannot convert LiteGraph To Prompt`, error)
         }
         // at this point, we know the workflow is valid

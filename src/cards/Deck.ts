@@ -117,7 +117,11 @@ export class Deck {
         makeAutoObservable(this)
     }
 
-    /** this functions must set {manifestError, manifestType, manifest} */
+    /**
+     * this functions must set
+     *  - manifestError (contains the error type as `manifestError.type`)
+     *  - manifest
+     * */
     private loadManifest = () => {
         const manifestPath = join(this.folderAbs, 'cushy-deck.json')
         try {

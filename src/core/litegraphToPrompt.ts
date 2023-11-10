@@ -9,21 +9,30 @@ export const convertLiteGraphToPrompt = (
     workflow: LiteGraphJSON,
 ): ComfyPromptJSON => {
     const prompt: ComfyPromptJSON = {}
+    const LOG = (...args: any[]) => console.log  ('[🔥] converter ℹ️ :', ...args) // prettier-ignore
+    const ERR = (...args: any[]) => console.error('[🔥] converter 🔴 :', ...args) // prettier-ignore
 
     const PRIMITIVE_VALUES: { [key: string]: any } = {}
     for (const node of workflow.nodes) {
         // Don't serialize Note nodes (those are like comments)
         if (node.type === 'PrimitiveNode') {
-            console.log(`found primitive ${node.type}#${node.id} with value ${bang(node.widgets_values[0])}`)
+            const widgetValues = node.widgets_values
+            if (widgetValues == null) {
+                ERR(`PrimitiveNode#${node.id} has no widget values`)
+                LOG(`skipping PrimitiveNode#${node.id} because it has no widget values`, node)
+                debugger
+                continue
+            }
+            LOG(`found primitive ${node.type}#${node.id} with value ${bang(node.widgets_values[0])}`)
             PRIMITIVE_VALUES[node.id] = bang(node.widgets_values[0])
             // debugger
         }
     }
     for (const node of workflow.nodes) {
-        console.log(`💎 node ${node.type}#${node.id}`)
+        LOG(`💎 node ${node.type}#${node.id}`)
 
         if (node.isVirtualNode) {
-            console.log(`    | [🔶 WARN] virtual node ${node.id}(${node.type}) skipped`)
+            LOG(`    | [🔶 WARN] virtual node ${node.id}(${node.type}) skipped`)
             // Don't serialize frontend only nodes but let them make changes
             // ! if (node.applyToGraph) {
             // !     node.applyToGraph(workflow)
@@ -33,24 +42,24 @@ export const convertLiteGraphToPrompt = (
 
         // Don't serialize muted nodes
         if (node.mode === 2) {
-            console.log(`    | [🔶 WARN] muted node ${node.id}(${node.type}) skipped`)
+            LOG(`    | [🔶 WARN] muted node ${node.id}(${node.type}) skipped`)
             continue
         }
 
         // Don't serialize reroute nodes
         if (node.type === 'Reroute') {
-            console.log(`    | [🔶 WARN] "Reroute" node ${node.id} skipped`)
+            LOG(`    | [🔶 WARN] "Reroute" node ${node.id} skipped`)
             continue
         }
         // Don't serialize Note nodes (those are like comments)
         if (node.type === 'Note') {
-            console.log(`    | [🔶 WARN] "Note" node ${node.id} skipped`)
+            LOG(`    | [🔶 WARN] "Note" node ${node.id} skipped`)
             continue
         }
 
         // Don't serialize Note nodes (those are like comments)
         if (node.type === 'PrimitiveNode') {
-            console.log(`    | [🔶 WARN] PrimitiveNode#${node.id} => will be inlined by children`)
+            LOG(`    | [🔶 WARN] PrimitiveNode#${node.id} => will be inlined by children`)
             continue
         }
 
@@ -61,8 +70,8 @@ export const convertLiteGraphToPrompt = (
         const nodeTypeName = node.type
         const nodeSchema: ComfyNodeSchema = schema.nodesByNameInComfy[nodeTypeName]
         if (nodeSchema == null) {
-            console.log(`❌ node causing a crash:`, { node })
-            console.log(`❌ current prompt Step is:`, { prompt })
+            LOG(`❌ node causing a crash:`, { node })
+            LOG(`❌ current prompt Step is:`, { prompt })
             throw new Error(`❌ node ${node.id}(${node.type}) has no schema`)
         }
         const nodeInputs = nodeSchema.inputs
@@ -80,11 +89,11 @@ export const convertLiteGraphToPrompt = (
         for (const field of nodeSchema.inputs) {
             // if (_done.has(field.nameInComfy)) continue
             if (viaInput.has(field.nameInComfy)) {
-                console.log(`    | .${field.nameInComfy} (viaInput)`)
+                LOG(`    | .${field.nameInComfy} (viaInput)`)
                 if (field.isPrimitive) offset++
                 continue
             }
-            console.log(`    | .${field.nameInComfy} (viaValue: ${node.widgets_values[offset]})`)
+            LOG(`    | .${field.nameInComfy} (viaValue: ${node.widgets_values[offset]})`)
             inputs[field.nameInComfy] = node.widgets_values[offset++]
             //
             const isSeed = field.type === 'INT' && (field.nameInComfy === 'seed' || field.nameInComfy === 'noise_seed')
@@ -96,10 +105,10 @@ export const convertLiteGraphToPrompt = (
         // ❓ for (const field of node.inputs ?? []) {
         // ❓     if (viaInput.has(field.name)) {
         // ❓         if (field.widget) {
-        // ❓             console.log(`    | .${field.name} (viaInput canceleld) [OFFSET]`)
+        // ❓             LOG(`    | .${field.name} (viaInput canceleld) [OFFSET]`)
         // ❓             offset++
         // ❓         } else {
-        // ❓             console.log(`    | .${field.name} (viaInput)`)
+        // ❓             LOG(`    | .${field.name} (viaInput)`)
         // ❓         }
         // ❓         continue
         // ❓     }
@@ -120,7 +129,7 @@ export const convertLiteGraphToPrompt = (
         // !     }
         // ! }
 
-        // console.log(node)
+        // LOG(node)
         // Store all node links
 
         type ParentInfo = { node: LiteGraphNode; link: LiteGraphLink }
@@ -137,10 +146,10 @@ export const convertLiteGraphToPrompt = (
             let parent: Maybe<ParentInfo> = null
             let max = 100
             while ((parent == null || parent.node.type === 'Reroute') && max-- > 0) {
-                if (parent != null) console.log('    | skipping reroute')
+                if (parent != null) LOG('    | skipping reroute')
                 const linkId = parent?.node.inputs?.[0].link ?? ipt.link
                 if (linkId == null) {
-                    console.log(`    | [🔶 WARN] node ${node.id}(${node.type}) has an empty input slot`)
+                    LOG(`    | [🔶 WARN] node ${node.id}(${node.type}) has an empty input slot`)
                     continue INPT
                 }
                 parent = getParentNode(linkId)
@@ -148,14 +157,14 @@ export const convertLiteGraphToPrompt = (
             if (parent == null) throw new Error(`no parent found for ${node.id}.${ipt.name})`)
 
             if (parent.node.type === 'PrimitiveNode') {
-                console.log('    | inlining primitive', { val: PRIMITIVE_VALUES[parent.node.id] })
+                LOG('    | inlining primitive', { val: PRIMITIVE_VALUES[parent.node.id] })
                 inputs[ipt.name] = PRIMITIVE_VALUES[parent.node.id]
             } else {
-                console.log(`    | .${ipt.name}  (via LINK`, String(parent.node.id), parent.link[2], parent.node.type, ')')
+                LOG(`    | .${ipt.name}  (via LINK`, String(parent.node.id), parent.link[2], parent.node.type, ')')
                 inputs[ipt.name] = [String(parent.node.id), parent.link[2]]
             }
 
-            // console.log('link', ipt.link, 'to', parentId, 'slot', link?.[2])
+            // LOG('link', ipt.link, 'to', parentId, 'slot', link?.[2])
             // let parent = link?.[1] // node.getInputNode(i)
             // !if (parent) {
             // !    let link = node.getInputLink(ipt)
@@ -174,14 +183,14 @@ export const convertLiteGraphToPrompt = (
             // ! }
         }
 
-        console.log(`    | [🟢 OK] node ${node.id}(${node.type}) => ${JSON.stringify(inputs)}`)
+        LOG(`    | [🟢 OK] node ${node.id}(${node.type}) => ${JSON.stringify(inputs)}`)
 
         prompt[String(node.id)] = {
             inputs,
             class_type: node.type,
         }
     }
-    console.log('🟢 converted:', { prompt })
+    LOG('🟢 converted:', { prompt })
 
     return prompt
 }

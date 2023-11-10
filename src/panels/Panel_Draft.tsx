@@ -13,6 +13,7 @@ import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
+import { CardIllustrationUI } from 'src/cards/fancycard/CardIllustrationUI'
 
 /**
  * this is the root interraction widget
@@ -78,16 +79,7 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | D
             >
                 <div tw='col font justify-between mb-2 w-full'>
                     <div tw='gap-2 flex flex-grow'>
-                        <img
-                            tw='rounded m-2'
-                            style={{ width: '5rem', height: '5rem' }}
-                            src={card.illustrationPathWithFileProtocol}
-                            alt='card illustration'
-                            onClick={() => {
-                                console.log('clicked')
-                                st.currentDraft = card.getLastDraft()
-                            }}
-                        />
+                        <CardIllustrationUI card={card} size='5rem' />
                         <div tw='w-full'>
                             <div tw='flex gap-2 items-center'>
                                 <b tw='flex-grow' style={{ fontSize: '1.3rem' }}>
