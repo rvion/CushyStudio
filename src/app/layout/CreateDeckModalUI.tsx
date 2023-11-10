@@ -1,10 +1,9 @@
-import { observer } from 'mobx-react-lite'
-import { Button, Input, Loader, Modal, Placeholder } from 'rsuite'
-import { GithubUsernameInputUI } from './GithubAppBarInputUI'
 import { makeAutoObservable } from 'mobx'
-import { useSt } from 'src/state/stateContext'
+import { observer } from 'mobx-react-lite'
+import { Button, Input, Modal } from 'rsuite'
 import { DeckFolder } from 'src/cards/Deck'
-import { Panel_DeckList } from 'src/panels/Panel_DeckList'
+import { useSt } from 'src/state/stateContext'
+import { GithubUsernameInputUI } from './GithubUsernameInputUI'
 
 export class CreateDeckModalState {
     constructor() {

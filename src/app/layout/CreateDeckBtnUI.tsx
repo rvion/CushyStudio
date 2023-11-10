@@ -1,0 +1,21 @@
+import { observer } from 'mobx-react-lite'
+import { useMemo } from 'react'
+import { Button } from 'rsuite'
+import { CreateDeckModalState, CreateDeckModalUI } from './CreateDeckModalUI'
+
+export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
+    const uist = useMemo(() => new CreateDeckModalState(), [])
+    return (
+        <div>
+            <Button
+                onClick={uist.handleOpen}
+                appearance='ghost'
+                color='green'
+                startIcon={<span className='material-symbols-outlined'>add</span>}
+            >
+                Create an action
+            </Button>
+            <CreateDeckModalUI uist={uist} />
+        </div>
+    )
+})

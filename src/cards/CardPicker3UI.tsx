@@ -2,13 +2,14 @@ import { observer } from 'mobx-react-lite'
 import { Button, ButtonGroup, Input, InputGroup, Modal, Panel } from 'rsuite'
 import { FancyCardUI } from 'src/cards/fancycard/FancyCard'
 import { useSt } from 'src/state/stateContext'
-import { CreateDeckBtnUI } from '../app/layout/GithubAppBarInputUI'
+import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
 import { Panel_DeckList } from '../panels/Panel_DeckList'
+import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
 
 export const CardsPickerModalUI = observer(function CardsPickerModalUI_(p: {}) {
     const st = useSt()
     return (
-        <Modal tw='h-full' size='full' open={st.showCardPicker} onClose={st.closeCardPicker}>
+        <Modal size='full' open={st.showCardPicker} onClose={st.closeCardPicker}>
             <Modal.Body>
                 <CardPicker3UI />
             </Modal.Body>
@@ -28,45 +29,36 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
     const st = useSt()
     const library = st.library
     return (
-        <div
-            //
-            tw='relative'
-            style={{ zIndex: 9999999 }}
-        >
-            <div tw='flex justify-between'>
-                <h3>Choose an action</h3>
+        <div tw='relative flex-grow flex flex-col '>
+            <div tw='flex gap-1 items-center'>
+                <h3 tw='mr-2'>Library</h3>
+                <InputGroup>
+                    <InputGroup.Addon>
+                        <span className='material-symbols-outlined'>search</span>
+                    </InputGroup.Addon>
+                    <Input
+                        value={library.query}
+                        onChange={(v) => (library.query = v)}
+                        autoFocus
+                        placeholder='search'
+                        type='string'
+                    ></Input>
+                    {/* ({library.query} - {library.query.length}) */}
+                    <InputGroup.Button>Foo</InputGroup.Button>
+                    <InputGroup.Button>Bar</InputGroup.Button>
+                    <InputGroup.Button>Baz</InputGroup.Button>
+                </InputGroup>
                 <CreateDeckBtnUI />
             </div>
 
-            {/* <div>CARD 1</div> */}
-            <div tw='flex'>
-                <div tw='w-96 shrink-0'>
-                    <Panel bordered>
-                        <Panel_DeckList />
-                    </Panel>
-                </div>
-                <div>
-                    <InputGroup size='lg' tw='self-start'>
-                        <InputGroup.Addon>
-                            <span className='material-symbols-outlined'>search</span>
-                        </InputGroup.Addon>
-                        <Input
-                            value={library.query}
-                            onChange={(v) => (library.query = v)}
-                            autoFocus
-                            placeholder='search'
-                            type='string'
-                        ></Input>
-                        {/* ({library.query} - {library.query.length}) */}
-                    </InputGroup>
-                    <div className='my-2'>
-                        <ButtonGroup>
-                            <Button>Foo</Button>
-                            <Button>Foo</Button>
-                            <Button>Foo</Button>
-                        </ButtonGroup>
-                    </div>
-                    <div tw='flex flex-wrap'>
+            <div tw='flex flex-grow'>
+                <ScrollablePaneUI tw='w-96 shrink-0'>
+                    <Panel_DeckList />
+                </ScrollablePaneUI>
+                <ScrollablePaneUI tw='flex-grow'>
+                    <div tw='sticky top-0 z-50 bg-gray'></div>
+
+                    <div tw='flex flex-wrap gap-2'>
                         {st.library.cardsFilteredSorted.map((card) => (
                             <div key={card.relPath}>
                                 <FancyCardUI //
@@ -98,7 +90,7 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                             </div>
                         ))}
                     </div>
-                </div>
+                </ScrollablePaneUI>
             </div>
         </div>
         // </div>

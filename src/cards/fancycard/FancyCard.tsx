@@ -1,18 +1,17 @@
 import type { CSSProperties } from 'react'
 
-import { makeAutoObservable, observable, runInAction } from 'mobx'
+import { makeAutoObservable, observable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import React, { useMemo } from 'react'
 
 import { Tag } from 'rsuite'
-import { useSt } from 'src/state/stateContext'
 import { CardFile } from '../CardFile'
 import { Deck } from '../Deck'
 
-import './FancyCard.css' // Assuming the CSS is written in this file
 import { ActionFavoriteBtnUI } from '../CardPicker2UI'
 import { GithubUserUI } from '../GithubAvatarUI'
 import { CardIllustrationUI } from './CardIllustrationUI'
+import './FancyCard.css' // Assuming the CSS is written in this file
 
 export class FancyCardState {
     constructor(public theme: CardStyle) {
@@ -78,41 +77,42 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     const uiSt = useMemo(() => new FancyCardState(p.style), [p.style])
     const card = p.card
     return (
-        <div className='m-2' tw='cursor-pointer relative'>
-            <div
-                tw='p-1'
-                style={uiSt.cardStyle}
-                className={`card STYLE_${p.style}`}
-                onMouseMove={uiSt.handleMove}
-                // onTouchMove={uiSt.handleMove}
-                // onMouseOut={uiSt.handleOut}
-                // onTouchEnd={uiSt.handleOut}
-                // onTouchCancel={uiSt.handleOut}
-            >
-                <div tw='overflow-auto whitespace-pre-wrap font-bold flex-grow' style={{ fontSize: '1rem' }}>
-                    <ActionFavoriteBtnUI card={card} />
-                    {card.displayName}
-                </div>
-                <div tw='flex'>
-                    <CardIllustrationUI card={card} size='12rem' />
-                    <div tw='flex-grow flex flex-col ml-1'>
-                        <div>
-                            {(card.manifest.categories ?? []).map((i, ix) => (
-                                <Tag key={ix}>{i}</Tag>
-                            ))}
-                        </div>
-                        <div style={{ width: '10rem', height: '5rem' }} tw='m-1 flex-grow text-sm'>
-                            {card.description}
-                        </div>
-                        <GithubUserUI username={card.deck.githubUserName} showName size='1.2rem' tw='text-gray-300' />
-                    </div>
-                </div>
-                {/* ------------------------------------------------------------- */}
-                {/* Content of the card */}
-                {/* <div className={`card STYLE_${p.style}`}></div> */}
-                {/* <div tw='pointer-events-none' style={uiSt.gradientStyle} className='card_before'></div> */}
-                {/* <div style={uiSt.sparklesStyle} className='card_after'></div> */}
+        // <div className='m-2' tw='cursor-pointer relative'>
+        <div
+            tw='p-1 w-96 '
+            style={uiSt.cardStyle}
+            className={`card STYLE_${p.style}`}
+            onMouseMove={uiSt.handleMove}
+
+            // onTouchMove={uiSt.handleMove}
+            // onMouseOut={uiSt.handleOut}
+            // onTouchEnd={uiSt.handleOut}
+            // onTouchCancel={uiSt.handleOut}
+        >
+            <div tw='overflow-auto whitespace-pre-wrap font-bold flex-grow' style={{ fontSize: '1rem' }}>
+                <ActionFavoriteBtnUI card={card} />
+                {card.displayName}
             </div>
+            <div tw='flex'>
+                <CardIllustrationUI card={card} size='10rem' />
+                <div tw='flex-grow flex flex-col ml-1'>
+                    <div>
+                        {(card.manifest.categories ?? []).map((i, ix) => (
+                            <Tag key={ix}>{i}</Tag>
+                        ))}
+                    </div>
+                    <div style={{ height: '5rem' }} tw='m-1 flex-grow text-sm'>
+                        {card.description}
+                    </div>
+                    <GithubUserUI username={card.deck.githubUserName} showName size='1.2rem' tw='text-gray-300' />
+                </div>
+            </div>
+            {/* ------------------------------------------------------------- */}
+            {/* Content of the card */}
+            {/* <div className={`card STYLE_${p.style}`}></div> */}
+            {/* <div tw='pointer-events-none' style={uiSt.gradientStyle} className='card_before'></div> */}
+            {/* <div style={uiSt.sparklesStyle} className='card_after'></div> */}
         </div>
+        // </div>
     )
 })

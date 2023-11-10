@@ -1,27 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import { ReactNode, useMemo } from 'react'
-import { Button, Input, InputGroup, Popover, Tag, Whisper } from 'rsuite'
+import { ReactNode } from 'react'
+import { Input, InputGroup, Popover, Tag, Whisper } from 'rsuite'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
-import { CreateDeckModalState, CreateDeckModalUI } from './CreateDeckModalUI'
-
-export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
-    const uist = useMemo(() => new CreateDeckModalState(), [])
-    return (
-        <div>
-            <Button
-                onClick={uist.handleOpen}
-                // tw='w-full'
-                appearance='primary'
-                color='green'
-                startIcon={<span className='material-symbols-outlined'>add</span>}
-            >
-                Create an action
-            </Button>
-            <CreateDeckModalUI uist={uist} />
-        </div>
-    )
-})
 
 export type RsuiteSize = 'lg' | 'md' | 'sm' | 'xs'
 export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p: {

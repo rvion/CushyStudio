@@ -72,6 +72,8 @@ export class CardFile {
     // prettier-ignore
     get score(): number {
         let score = 0
+        // hardcoded rules
+        if (this.relPath==='library/CushyStudio/default/prompt.ts') score+=1000
         // malus
         if (this.deckManifestType === 'crash')            score -= 60
         if (this.deckManifestType === 'invalid manifest') score -= 50
@@ -79,7 +81,7 @@ export class CardFile {
         // positives
         if (this.manifest.priority)                       score += clamp(this.manifest.priority, -100, 100)
         if (this.authorDefinedManifest)                   score += 50
-        if (this.manifest.illustration?.endsWith('.png')) score += 10
+        if (this.manifest.illustration?.endsWith('.png')) score += 100
         return score
     }
 
@@ -106,16 +108,17 @@ export class CardFile {
 
     private defaultManifest: CardManifest
     private mkDefaultManifest(): CardManifest {
-        const baseName = this.deckRelativeFilePath
+        const deckRelPath = this.deckRelativeFilePath
+        const baseName = path.basename(deckRelPath)
         return {
             name: baseName.endsWith('.ts') //
                 ? baseName.slice(0, -3)
                 : baseName,
             deckRelativeFilePath: this.relPath,
             author: this.deck.githubUserName,
-            illustration: baseName.endsWith('.png') //
-                ? baseName
-                : generateAvatar(baseName),
+            illustration: deckRelPath.endsWith('.png') //
+                ? deckRelPath
+                : generateAvatar(deckRelPath),
             description: '<card not listed in manifest>',
         }
     }
