@@ -13,6 +13,7 @@ import { EmbeddingName } from 'src/models/Schema'
 import { $createUserNode } from '../nodes/usertags/UserNode'
 import { UserTag } from 'src/widgets/prompter/nodes/usertags/UserLoader'
 import { $createActionNode, ActionTag } from '../nodes/actions/ActionNode'
+import { $createBreakNode } from '../nodes/break/BreakNode'
 
 const _providerCache = new Map<string, CopmletionProvider>()
 // ----------------------------------------------------------------------
@@ -74,6 +75,26 @@ export class CompletionState {
                     value: x,
                     createNode,
                 })),
+        })
+        _providerCache.set(key, provider)
+        return provider
+    }
+    static getBreakCompletionProvider = (st: STATE) => {
+        const key = 'Break'
+        if (_providerCache.has(key)) return _providerCache.get(key)!
+        const createNode = (_t: string) => $createBreakNode('basic')
+        const menuLabel = <span tw='text-gray-300'>break</span>
+        const provider = new CopmletionProvider({
+            getValues: () => [
+                {
+                    trigger: '|',
+                    menuLabel,
+                    title: 'basic break',
+                    keywords: ['break'],
+                    value: 'basic',
+                    createNode,
+                },
+            ],
         })
         _providerCache.set(key, provider)
         return provider
@@ -146,8 +167,10 @@ export class CompletionState {
             booru?: boolean
             user?: boolean
             action?: boolean
+            break?: boolean
         },
     ) {
+        if (features.break) this.providers.push(CompletionState.getBreakCompletionProvider(st))
         if (features.embedding) this.providers.push(CompletionState.getEmbeddingCompletionProvider(st))
         if (features.lora) this.providers.push(CompletionState.getLoraCompletionProvider(st))
         if (features.wildcard) this.providers.push(CompletionState.getWildcardCompletionProvider(st))

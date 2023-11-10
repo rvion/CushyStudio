@@ -8,6 +8,7 @@ import type { ActionNodeJSON } from '../nodes/actions/ActionNode'
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { JSONHighlightedCodeUI } from '../../misc/TypescriptHighlightedCodeUI'
 import { getFinalJSON } from './getFinalJSON'
+import { BreakNodeJSON } from '../nodes/break/BreakNode'
 
 export const CushyDebugPlugin = <T extends any>() => {
     const [editor] = useLexicalComposerContext()
@@ -29,6 +30,7 @@ export type PossibleSerializedNodes =
     | LoraNodeJSON
     | WildcardNodeJSON
     | EmbeddingNodeJSON
+    | BreakNodeJSON
     | TextNodeJSON
     | LineBreakJSON
     | UserNodeJSON

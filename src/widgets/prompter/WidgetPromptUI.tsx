@@ -33,6 +33,7 @@ import { CushyCompletionPlugin } from './plugins/CushyCompletionPlugin'
 import { PossibleSerializedNodes } from './plugins/CushyDebugPlugin'
 import { CushyShortcutPlugin } from './plugins/CushyShortcutPlugin'
 import { getFinalJSON } from './plugins/getFinalJSON'
+import { $createBreakNode, BreakNode } from './nodes/break/BreakNode'
 
 export type WidgetPromptOutput = {
     // text: string
@@ -51,11 +52,21 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
                 wildcard: true,
                 user: true,
                 action: true,
+                break: true,
             }),
         [],
     )
     const initialConfig: InitialConfigType = {
-        nodes: [EmbeddingNode, LoraNode, WildcardNode, BooruNode, UserNode, ActionNode],
+        nodes: [
+            //
+            EmbeddingNode,
+            LoraNode,
+            WildcardNode,
+            BooruNode,
+            UserNode,
+            ActionNode,
+            BreakNode,
+        ],
         editorState: () => {
             console.log('[💬] LEXICAL: mounting lexical widget')
             const initialValue: WidgetPromptOutput = req.state
@@ -70,16 +81,18 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
             }
 
             const paragraph = $createParagraphNode()
-            for (const x of initialValue.tokens) {
-                if (x.type === 'booru') paragraph.append($createBooruNode(x.tag))
-                else if (x.type === 'lora') paragraph.append($createLoraNode(x.loraDef))
-                else if (x.type === 'wildcard') paragraph.append($createWildcardNode(x.payload))
-                else if (x.type === 'embedding') paragraph.append($createEmbeddingNode(x.embeddingName))
-                else if (x.type === 'user') paragraph.append($createUserNode(x.tag))
-                else if (x.type === 'action') paragraph.append($createActionNode(x.tag, ''))
-                else if (x.type === 'linebreak') paragraph.append($createLineBreakNode())
-                else if (x.type === 'text') paragraph.append($createTextNode(x.text))
-            }
+            initialValue.tokens.forEach((x) => {
+                if (x.type === 'booru') return paragraph.append($createBooruNode(x.tag))
+                if (x.type === 'lora') return paragraph.append($createLoraNode(x.loraDef))
+                if (x.type === 'wildcard') return paragraph.append($createWildcardNode(x.payload))
+                if (x.type === 'embedding') return paragraph.append($createEmbeddingNode(x.embeddingName))
+                if (x.type === 'user') return paragraph.append($createUserNode(x.tag))
+                if (x.type === 'action') return paragraph.append($createActionNode(x.tag, ''))
+                if (x.type === 'linebreak') return paragraph.append($createLineBreakNode())
+                if (x.type === 'text') return paragraph.append($createTextNode(x.text))
+                if (x.type === 'break') return paragraph.append($createBreakNode(x.breakType))
+                exhaust(x)
+            })
             $getRoot().append(paragraph)
         },
         namespace: 'MyEditor',
