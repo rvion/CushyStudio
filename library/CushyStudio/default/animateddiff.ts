@@ -67,7 +67,7 @@ card({
             scheduler: 'normal',
             denoise: 1,
             model: aDE_AnimateDiffLoaderWithContext,
-            positive: batchPromptSchedule,
+            positive: batchPromptSchedule as any /* 🔴 */,
             negative: cLIPTextEncode,
             latent_image: aDE_EmptyLatentImageLarge,
         })
