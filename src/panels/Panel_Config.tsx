@@ -9,7 +9,11 @@ export const Panel_Config = observer(function Panel_Config_() {
     const config = st.configFile
     return (
         <div className='flex flex-col items-start p-2'>
-            <Panel header={<SectionTitleUI label='CONFIG' className='block' />} className='col flex-grow'>
+            <Panel
+                //
+                // header={<SectionTitleUI label='CONFIG' className='block' />}
+                className='col flex-grow'
+            >
                 <Form layout='horizontal'>
                     <FieldUI label='Comfig file path'>
                         <Form.ControlLabel>{config.path}</Form.ControlLabel>
@@ -19,7 +23,6 @@ export const Panel_Config = observer(function Panel_Config_() {
                             name='githubUsername'
                         /> */}
                     </FieldUI>
-
                     <FieldUI label='Your github username'>
                         <Form.Control //
                             value={config.value.githubUsername}

@@ -27,9 +27,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 <SchemaIndicatorUI />
                 <CushyStudioLinkUI />
             </div>
-            <div tw='p-1'>
-                <MainNavBarUI />
-            </div>
+            <MainNavBarUI />
         </div>
     )
 })
@@ -65,7 +63,7 @@ export const DBHealthUI = observer(function DBHealthUI_(p: {}) {
             appearance='subtle'
             color={color}
             onClick={() => st.db.reset()}
-            startIcon={<I.Reload />}
+            startIcon={<span className='text-orange-500 material-symbols-outlined'>sync</span>}
             // startIcon={<span className='material-symbols-outlined'>power_settings_new</span>}
         >
             DB ({dbHealth.sizeTxt})
