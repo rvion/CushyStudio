@@ -2,22 +2,26 @@
 
 # 🛋️ CushyStudio
 
-## _The **easiest** and most **powerful** Stable Diffusion frontend_
+## _The **easiest** and most **powerful** Generative Art platform_
 
-![Static Badge](https://img.shields.io/badge/status-BETA-yellow)
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio)
-![GitHub Sponsors](https://img.shields.io/github/sponsors/rvion)
+<img height="25" alt="Build Status" src="https://img.shields.io/badge/build-passing-%20brightgreen" />
+<img height="25"  alt="Maturity"     src="https://img.shields.io/badge/status-BETA-yellow" />
+<img height="25"  alt="Activity"     src="https://img.shields.io/github/commit-activity/y/rvion/cushystudio" />
+<img height="25"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" />
+
+<!-- ![GitHub Sponsors](https://img.shields.io/github/sponsors/rvion) -->
+<!-- ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio) -->
 <!-- [![CLA assistant](https://cla-assistant.io/readme/badge/rvion/CushyStudio)](https://cla-assistant.io/rvion/CushyStudio) -->
 
-[![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat)](https://discord.gg/GfAN6hF2ad)
+<a href="https://discord.gg/GfAN6hF2ad">
+    <img height="25" alt="Join our Discord" src="https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat">
+</a>
 <a href="https://twitter.com/_rvion_">
-    <img alt="Follow _rvion on Twitter" src="https://img.shields.io/badge/%40__rvion-666666?style=flat&logo=twitter&labelColor=555&label=Follow">
+    <img height="25" alt="Follow _rvion on Twitter" src="https://img.shields.io/badge/%40__rvion-666666?style=flat&logo=twitter&labelColor=555&label=Follow">
 </a>
 
-<!-- twitter badge -->
+<!-- [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat)](https://discord.gg/GfAN6hF2ad) -->
 <!-- [![](https://img.shields.io/twitter/follow/_rvion?style=flat&logo=twitter)](https://twitter.com/_rvion) -->
-
-
 
 </div>
 
