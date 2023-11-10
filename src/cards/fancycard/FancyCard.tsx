@@ -82,16 +82,15 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
             tw='p-1 w-96 '
             style={uiSt.cardStyle}
             className={`card STYLE_${p.style}`}
-            onMouseMove={uiSt.handleMove}
-
+            // onMouseMove={uiSt.handleMove}
             // onTouchMove={uiSt.handleMove}
             // onMouseOut={uiSt.handleOut}
             // onTouchEnd={uiSt.handleOut}
             // onTouchCancel={uiSt.handleOut}
         >
-            <div tw='overflow-auto whitespace-pre-wrap font-bold flex-grow' style={{ fontSize: '1rem' }}>
+            <div tw='flex items-center font-bold flex-grow text-blue-300' style={{ fontSize: '1rem' }}>
                 <ActionFavoriteBtnUI card={card} />
-                {card.displayName}
+                <div tw='whitespace-nowrap overflow-hidden overflow-ellipsis pt-1'>{card.displayName}</div>
             </div>
             <div tw='flex'>
                 <CardIllustrationUI card={card} size='10rem' />

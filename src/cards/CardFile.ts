@@ -115,7 +115,7 @@ export class CardFile {
                 ? baseName.slice(0, -3)
                 : baseName,
             deckRelativeFilePath: this.relPath,
-            author: this.deck.githubUserName,
+            author: 'unknown', // this.deck.githubUserName,
             illustration: deckRelPath.endsWith('.png') //
                 ? deckRelPath
                 : generateAvatar(deckRelPath),

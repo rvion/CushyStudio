@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, ButtonGroup, Input, InputGroup, Modal, Panel } from 'rsuite'
+import { Button, ButtonGroup, IconButton, Input, InputGroup, Modal, Panel } from 'rsuite'
 import { FancyCardUI } from 'src/cards/fancycard/FancyCard'
 import { useSt } from 'src/state/stateContext'
 import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
@@ -69,20 +69,29 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                                 {/* {card.priority} */}
                                 {card.drafts.length > 0 ? (
                                     <div tw='flex flex-col'>
-                                        {card.drafts.map((draft) => (
-                                            <div key={draft.id}>
+                                        {card.drafts.map((draft, ix) => (
+                                            <div tw='flex w-96' key={draft.id}>
                                                 <Button
+                                                    tw='flex-grow'
+                                                    size='sm'
+                                                    appearance='subtle'
                                                     onClick={() => (st.currentDraft = draft)}
                                                     startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
                                                 >
-                                                    {draft.data.title}
+                                                    draft #{ix}: {draft.data.title}
                                                 </Button>
-                                                <Button appearance='subtle' color='red'>
-                                                    <span className='material-symbols-outlined'>delete</span>
-                                                </Button>
-                                                <Button appearance='subtle' color='blue'>
-                                                    <span className='material-symbols-outlined'>open_in_new</span>
-                                                </Button>
+                                                <IconButton
+                                                    size='sm'
+                                                    icon={<span className='material-symbols-outlined'>delete</span>}
+                                                    appearance='subtle'
+                                                    color='red'
+                                                ></IconButton>
+                                                <IconButton
+                                                    size='sm'
+                                                    icon={<span className='material-symbols-outlined'>open_in_new</span>}
+                                                    appearance='subtle'
+                                                    color='blue'
+                                                ></IconButton>
                                             </div>
                                         ))}
                                     </div>
