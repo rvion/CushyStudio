@@ -123,7 +123,7 @@ export class GitManagedFolder {
         mkdirSync(parentFolder, { recursive: true })
 
         // 2. clone
-        const cmd = `git clone ${this.config.githubURL}`
+        const cmd = `git clone ${this.config.githubURL} --depth 1`
         console.log('[💝] actionpack: installing with cmd:', cmd)
         const success = await new Promise<boolean>((resolve, reject) => {
             // this.installK.isRunning = true
