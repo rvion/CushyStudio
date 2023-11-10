@@ -11,7 +11,11 @@ export const CushyUI = observer(function CushyUI_() {
         const current = appRef.current
         if (current == null) return
         function handleKeyDown(event: KeyboardEvent) {
-            if (!current!.contains(document.activeElement)) current?.focus()
+            if (document.activeElement == null) {
+                event.preventDefault()
+                event.stopPropagation()
+                current?.focus()
+            }
             if (event.key === 'w' && (event.ctrlKey || event.metaKey)) {
                 event.preventDefault()
                 event.stopPropagation()
