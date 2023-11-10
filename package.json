@@ -23,7 +23,7 @@
     "scripts": {
         "start": "concurrently --kill-others -n vite,electron -c yellow,blue \"npm run front:dev\" \"electron -i src/shell\"",
         "📌 CODEGEN": "",
-        "gen-assets": "bun src/assets/assets.gen.ts",
+        "gen-assets": "bun src/utils/assets/assets.gen.ts",
         "gen-schema": "bun src/cards/DeckManifestGen.ts",
         "gen-syms": "node src/syms/_.cjs",
         "📌 FRONT": "",

@@ -81,22 +81,29 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 icon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
                 label='Config'
             />
+            <MainNavEntryUI
+                soon
+                onClick={() => st.layout.addHosts()}
+                ix='8'
+                icon={<span className='material-symbols-outlined text-purple-500'>cloud</span>}
+                label='GPUs'
+            />
 
             {/* CIVITAI */}
             <MainNavEntryUI
-                onClick={() => st.layout.addCivitai()}
+                onClick={() => st.layout.addCivitai({})}
                 ix='7'
                 icon={<img style={{ width: '1em', height: '1em' }} src={assets.public_CivitaiLogo_png}></img>}
                 label='Civitai'
             />
 
             <MainNavEntryUI
-                soon
-                onClick={() => st.layout.addHosts()}
-                ix='8'
-                icon={<span className='material-symbols-outlined text-amber-800'>cloud</span>}
-                label='GPUs'
+                onClick={() => st.layout.addSquoosh({})}
+                ix='7'
+                icon={<img style={{ width: '1em', height: '1em' }} src={assets.public_logos_squoosh_png}></img>}
+                label='Squoosh'
             />
+
             <MainNavEntryUI
                 soon
                 onClick={() => st.theme.toggle()}

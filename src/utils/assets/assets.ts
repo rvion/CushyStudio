@@ -2,14 +2,13 @@
 import { cwd } from 'process'
 const mkFile = (relPath: string) => `file://${cwd()}/library/CushyStudio/${relPath}`
 export const assets = {
-    public_cards_cphjkhjk__jpg: mkFile("_public/cards/cphjkhjk_.jpg"),
-    public_cards_mc_jpg: mkFile("_public/cards/mc.jpg"),
     public_CivitaiLogo_png: mkFile("_public/CivitaiLogo.png"),
     public_ComfyUILogo_png: mkFile("_public/ComfyUILogo.png"),
     public_CushyLogo_512_png: mkFile("_public/CushyLogo-512.png"),
     public_CushyLogo_png: mkFile("_public/CushyLogo.png"),
     public_GithubLogo_png: mkFile("_public/GithubLogo.png"),
     public_GithubLogo2_png: mkFile("_public/GithubLogo2.png"),
+    public_logos_squoosh_png: mkFile("_public/logos/squoosh.png"),
     public_minipaint_images_favicon_png: mkFile("_public/minipaint/images/favicon.png"),
     public_minipaint_images_favicon_svg: mkFile("_public/minipaint/images/favicon.svg"),
     public_minipaint_images_icons_animation_svg: mkFile("_public/minipaint/images/icons/animation.svg"),
@@ -53,4 +52,13 @@ export const assets = {
     public_minipaint_images_manifest_96x96_png: mkFile("_public/minipaint/images/manifest/96x96.png"),
     public_sparkles_webp: mkFile("_public/sparkles.webp"),
     public_typescript_512_png: mkFile("_public/typescript-512.png"),
+    default__assets_symbol_club_png: mkFile("default/_assets/symbol-club.png"),
+    default__assets_symbol_diamond_png: mkFile("default/_assets/symbol-diamond.png"),
+    default__assets_symbol_heart_png: mkFile("default/_assets/symbol-heart.png"),
+    default__assets_symbol_spades_png: mkFile("default/_assets/symbol-spades.png"),
+    default__illustrations_cphjkhjk__jpg: mkFile("default/_illustrations/cphjkhjk_.jpg"),
+    default__illustrations_default_card_illustration_jpg: mkFile("default/_illustrations/default-card-illustration.jpg"),
+    default__illustrations_image_jpg: mkFile("default/_illustrations/image.jpg"),
+    default__illustrations_mc_jpg: mkFile("default/_illustrations/mc.jpg"),
+    default__illustrations_poker_card_generator_jpg: mkFile("default/_illustrations/poker-card-generator.jpg"),
 }

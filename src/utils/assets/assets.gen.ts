@@ -56,7 +56,7 @@ const moduleExports = [
 // const imports      = assets.map((i) => `import ${i.baseName}_ from '.${i.base}'`).join('\n')
 // const namedExports = assets.map((i) => ).join('\n')
 
-const targetPath = `src/assets/assets.ts`
+const targetPath = `src/utils/assets/assets.ts`
 writeFileSync(targetPath, moduleExports, 'utf-8')
 
 console.log(`🟢 done, ${targetPath}`)

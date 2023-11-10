@@ -148,15 +148,12 @@ export class CushyLayoutManager {
     })
 
     nextPaintIDx = 0
-    addMarketplace = () =>
-        this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: assets.public_CushyLogo_512_png })
-    addDisplacedImage = (p: PropsOf<typeof Panel_3dScene>) =>
-        this._AddWithProps(Widget.DisplacedImage, `/DisplacedImage`, { title: 'DisplacedImage', ...p })
-    addActionPicker = () =>
-        this._AddWithProps(Widget.FileList, `/Library`, { title: 'Library', icon: assets.public_CushyLogo_512_png })
-    addActionPickerTree = () =>
-        this._AddWithProps(Widget.FileList2, `/filetree`, { title: 'Library Files', icon: assets.public_CushyLogo_512_png })
-    addCivitai = () => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'CivitAI', icon: assets.public_CivitaiLogo_png })
+    addMarketplace = () => this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: assets.public_CushyLogo_512_png }) // prettier-ignore
+    addDisplacedImage = (p: PropsOf<typeof Panel_3dScene>) => this._AddWithProps(Widget.DisplacedImage, `/DisplacedImage`, { title: 'DisplacedImage', ...p }) // prettier-ignore
+    addActionPicker = () => this._AddWithProps(Widget.FileList, `/Library`, { title: 'Library', icon: assets.public_CushyLogo_512_png }) // prettier-ignore
+    addActionPickerTree = () => this._AddWithProps(Widget.FileList2, `/filetree`, { title: 'Library Files', icon: assets.public_CushyLogo_512_png }) // prettier-ignore
+    addCivitai = (p: PropsOf<typeof Panel_Civitai>) => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'CivitAI', icon: assets.public_CivitaiLogo_png }) // prettier-ignore
+    addSquoosh = (p: PropsOf<typeof Panel_Squoosh>) => this._AddWithProps(Widget.Squoosh, `/squoosh`, { title: 'Squoosh' /*icon: assets.public_CivitaiLogo_png*/ }) // prettier-ignore
     addConfig = () => this._AddWithProps(Widget.Config, `/config`, { title: 'Config' })
     addPaint = (imgID?: ImageID) => {
         const icon = assets.public_minipaint_images_logo_svg
