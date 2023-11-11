@@ -71,7 +71,17 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                     wrapperStyle={{ /* border: '5px solid #b53737', */ height: '100%', width: '100%' }}
                     contentStyle={{ /* border: '5px solid #38731f', */ height: '100%', width: '100%' }}
                 >
-                    <img style={{ width: '100%', height: '100%', objectFit: 'contain' }} src={url} alt='last generated image' />
+                    {url ? (
+                        <img //
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }}
+                            src={url}
+                            alt='last generated image'
+                        />
+                    ) : (
+                        <div tw='w-96 h-96 flex items-center justify-center'>
+                            <div>no image yet</div>
+                        </div>
+                    )}
                     {/* </div> */}
                 </TransformComponent>
             </TransformWrapper>
