@@ -340,6 +340,22 @@ export class CushyLayoutManager {
     build = (): IJsonModel => {
         const out: IJsonModel = {
             global: { tabSetEnableSingleTabStretch: true },
+            borders: [
+                {
+                    //
+                    type: 'border',
+                    location: 'left',
+                    children: [
+                        this._persistentTab({
+                            name: 'Library',
+                            widget: Widget.FileList,
+                            enableClose: false,
+                            id: '/Library',
+                            width: 300,
+                        }),
+                    ],
+                },
+            ],
             layout: {
                 id: 'rootRow',
                 type: 'row',
