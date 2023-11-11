@@ -142,7 +142,6 @@ export class CardFile {
 
     get illustrationPathWithFileProtocol() {
         const tmp = this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded
-        console.log('>>>', tmp, '<<<')
         if (tmp?.startsWith('data:')) return tmp
         if (tmp) return `file://${join(this.deck.folderAbs, tmp)}`
         // default illustration if none is provided
