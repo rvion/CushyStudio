@@ -119,7 +119,7 @@ export class CardFile {
             illustration: deckRelPath.endsWith('.png') //
                 ? deckRelPath
                 : generateAvatar(deckRelPath),
-            description: '<card not listed in manifest>',
+            description: '<no manifest>',
         }
     }
 

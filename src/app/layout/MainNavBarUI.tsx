@@ -17,12 +17,13 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 color='green'
                 appearance='primary'
                 onClick={() => st.openCardPicker()}
+                size='md'
                 ix='1'
-                icon={<span className='material-symbols-outlined'>play_circle</span>}
-                label='Actions'
+                icon={<span className='material-symbols-outlined'>view_list</span>}
+                label='Library'
                 tooltip={
                     <>
-                        Open the Action picker
+                        Open the Library, in a full-page popup.
                         <ComboUI combo='cmd+1' /> or <ComboUI combo='ctrl+1' />
                     </>
                 }
