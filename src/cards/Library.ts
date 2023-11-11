@@ -25,6 +25,7 @@ export class Library {
     // --------------------------
 
     query = ''
+    selectionCursor = 0
     /** flat list of all decks */
     decks: Deck[] = []
 

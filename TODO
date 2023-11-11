@@ -4,11 +4,11 @@ Misc:
     ☐ surrounded by card for ju and tu
     ✔ break node in rich prompt @done(23-11-11 09:57)
     ☐ click on rich prompt should
-    ☐ properly re-focus root on any blur (find some code I previously wrote for that)
+    ✔ properly re-focus root on any blur (find some code I previously wrote for that) @done(23-11-11 11:20)
     ☐ fix the "run" button not being disabled when it should
     ☐ finish autorun so it wait for nothing to be running an action change
     ☐ primitive to show that a custom node is required
-    ☐ fix remaining errors in the codebase
+    ✔ fix remaining errors in the codebase @done(23-11-11 11:18)
     ☐ proper model picker action
     ☐ proper size picker action
     ☐ cache action compilation

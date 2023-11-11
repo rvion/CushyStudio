@@ -1,20 +1,19 @@
 import { observer } from 'mobx-react-lite'
-import React from 'react'
-import { useSt } from 'src/state/stateContext'
 import { CardFile } from '../CardFile'
 
-export const CardIllustrationUI = observer(function CardIllustrationUI_(p: { card: CardFile; size: string }) {
-    const st = useSt()
+export const CardIllustrationUI = observer(function CardIllustrationUI_(p: {
+    onClick?: () => void
+    card: CardFile
+    size: string
+}) {
     return (
         <img
             loading='lazy'
-            tw='rounded m-2 '
+            tw={['rounded m-2', p.onClick ? 'cursor-pointer' : null]}
             style={{ width: p.size, height: p.size, objectFit: 'contain' }}
             src={p.card.illustrationPathWithFileProtocol}
             alt='card illustration'
-            onClick={() => {
-                st.currentDraft = p.card.getLastDraft()
-            }}
+            onClick={p.onClick}
         />
     )
 })

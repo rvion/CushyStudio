@@ -8,6 +8,7 @@ import { ActionFavoriteBtnUI } from '../CardPicker2UI'
 import { GithubUserUI } from '../GithubAvatarUI'
 import { CardIllustrationUI } from './CardIllustrationUI'
 import './FancyCard.css' // Assuming the CSS is written in this file
+import { useSt } from 'src/state/stateContext'
 
 export type CardStyle = 'A' | 'B' | 'C' | 'D'
 
@@ -19,14 +20,22 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     active?: boolean
 }) {
     const card = p.card
+    const st = useSt()
     return (
-        <div tw={['p-1 w-96', `card STYLE_${p.style}`, p.active ? 'active' : 'not-active']}>
+        <div
+            onClick={p.card.openLastDraftAsCurrent}
+            tw={['p-1 w-96', `card STYLE_${p.style}`, p.active ? 'active' : 'not-active', 'cursor-pointer']}
+        >
             <div tw='flex items-center font-bold flex-grow text-blue-300' style={{ fontSize: '1rem' }}>
                 <ActionFavoriteBtnUI card={card} />
                 <div tw='whitespace-nowrap overflow-hidden overflow-ellipsis pt-1'>{card.displayName}</div>
             </div>
             <div tw='flex'>
-                <CardIllustrationUI card={card} size='10rem' />
+                <CardIllustrationUI
+                    // onClick={() => (st.currentDraft = p.card.getLastDraft())}
+                    card={card}
+                    size='10rem'
+                />
                 <div tw='flex-grow flex flex-col ml-1'>
                     <div>
                         {(card.manifest.categories ?? []).map((i, ix) => (

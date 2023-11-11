@@ -46,6 +46,18 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                     <Input
                         value={library.query}
                         onChange={(v) => (library.query = v)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                const card = library.cardsFilteredSorted[library.selectionCursor]
+                                if (card == null) return
+                                card.openLastDraftAsCurrent()
+                                st.closeCardPicker()
+                            } else if (e.key === 'ArrowDown') {
+                                library.selectionCursor++
+                            } else if (e.key === 'ArrowUp') {
+                                library.selectionCursor--
+                            }
+                        }}
                         autoFocus
                         placeholder='search'
                         type='string'
@@ -66,9 +78,10 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                     <div tw='sticky top-0 z-50 bg-gray'></div>
 
                     <div tw='flex flex-wrap gap-2 p-3'>
-                        {st.library.cardsFilteredSorted.map((card) => (
+                        {st.library.cardsFilteredSorted.map((card, ix) => (
                             <div key={card.relPath}>
                                 <FancyCardUI //
+                                    active={st.library.selectionCursor === ix}
                                     deck={card.deck}
                                     style={card.style}
                                     card={card}

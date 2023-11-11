@@ -47,6 +47,10 @@ export class CardFile {
     get description(): string { return this.manifest.description ?? 'no description' } // prettier-ignore
     get style(): CardStyle { return this.manifest.style ?? 'A' } // prettier-ignore
 
+    openLastDraftAsCurrent = () => {
+        this.st.currentDraft = this.getLastDraft()
+    }
+
     /** true if card match current library search */
     matchesSearch = (search: string): boolean => {
         if (search === '') return true
