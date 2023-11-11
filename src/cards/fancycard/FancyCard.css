@@ -44,6 +44,7 @@
 
 /* FANCY BORDER AROUND THE CARD */
 /* prettier-ignore */
+.card.active,
 .card:hover {
     box-shadow:
         -5px -5px 15px 0 var(--color1),
