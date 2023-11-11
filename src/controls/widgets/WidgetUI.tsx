@@ -60,6 +60,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             if (req instanceof R.Widget_group) return true
             if (req instanceof R.Widget_groupOpt) return true
             if (req instanceof R.Widget_list) return true
+            if (req instanceof R.Widget_str && req.input.textarea) return true
             if (req instanceof R.Widget_prompt) return true
             if (req instanceof R.Widget_promptOpt) return true
             return false
