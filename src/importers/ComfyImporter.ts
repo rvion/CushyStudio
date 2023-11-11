@@ -209,21 +209,26 @@ export class ComfyImporter {
                             nameEscaped: escapeJSKey(inputName),
                             default: valueStr,
                         }
-                        uiStuff.push(`         ${uiVal.nameEscaped}: ${renderUIForInput(uiVal)} /* ${uiVal.schema?.type} */,`)
-                        piRun(`${name2}: ${renderAdapterForInput(uiVal)}, `)
+                        uiStuff.push(`${uiVal.nameEscaped}: ${renderUIForInput(uiVal)} /* ${uiVal.schema?.type} */,`)
+                        piRun(`${name2}: ${renderAdapterForInput(uiVal, inputGroupName)}, `)
                     } else {
                         piRun(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
                     }
                 }
             }
-            if (uiStuff.length > 0) {
+
+            if (uiStuff.length === 1) {
+                piUI(`        ${inputGroupName}: ui.group({`)
+                piUI(` items:() => ({ ${uiStuff[0]} })`)
+                piUI(`}),\n`)
+            } else if (uiStuff.length > 0) {
                 pUI(`        ${inputGroupName}: ui.group({`)
                 pUI(`           items:() => ({`)
                 for (const x of uiStuff) {
-                    pUI(x)
+                    pUI(`                ` + x)
                 }
+                pUI(`            }),`)
                 pUI(`        }),`)
-                pUI(`    }),`)
             }
 
             if (opts.preserveId || true) pRun(`}, '${nodeID}')`)
@@ -233,13 +238,15 @@ export class ComfyImporter {
         pRun('        await flow.PROMPT()')
         pRun('    },')
 
-        function renderAdapterForInput(x: UIVal) {
+        function renderAdapterForInput(x: UIVal, inputGroupName?: string) {
             const s = x.schema
             const inputName = x.name
+            const prefix = inputGroupName ? `p.${inputGroupName}` : 'p'
             if (s == null) return `null`
-            if (s.type === 'Enum_LoadImage_image') return `await flow.loadImageAnswerAsEnum(p${asJSAccessor(inputName)})`
-            return `p${asJSAccessor(inputName)}`
+            if (s.type === 'Enum_LoadImage_image') return `await flow.loadImageAnswerAsEnum(${prefix}${asJSAccessor(inputName)})`
+            return `${prefix}${asJSAccessor(inputName)}`
         }
+
         function renderUIForInput(x: UIVal) {
             const s = x.schema
             // no schema, let's try to infer the type from the value

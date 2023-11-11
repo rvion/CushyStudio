@@ -184,6 +184,7 @@ export class ComfyNode<
             if (opts?.default != null) return opts.default
             // console.log('def2=', field, schema.required)
             if (!schema.required) return undefined
+            console.error(this.json)
             throw new Error(
                 `🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}#${this.uid}) value is null`,
             )

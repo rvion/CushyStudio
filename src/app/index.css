@@ -357,3 +357,10 @@ hr {
     display: flex;
     flex-direction: column;
 }
+
+/* -------------- */
+/* disable mo */
+.rs-anim-in, .rs-animate {
+    animation-duration: 0s !important;
+    transition-duration: 0s !important;
+  }

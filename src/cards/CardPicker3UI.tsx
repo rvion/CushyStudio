@@ -9,7 +9,14 @@ import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
 export const CardsPickerModalUI = observer(function CardsPickerModalUI_(p: {}) {
     const st = useSt()
     return (
-        <Modal size='full' open={st.showCardPicker} onClose={st.closeCardPicker}>
+        <Modal
+            //
+            animationTimeout={0}
+            drawer
+            size='full'
+            open={st.showCardPicker}
+            onClose={st.closeCardPicker}
+        >
             <Modal.Body>
                 <CardPicker3UI />
             </Modal.Body>
@@ -58,7 +65,7 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
                 <ScrollablePaneUI tw='flex-grow'>
                     <div tw='sticky top-0 z-50 bg-gray'></div>
 
-                    <div tw='flex flex-wrap gap-2'>
+                    <div tw='flex flex-wrap gap-2 p-3'>
                         {st.library.cardsFilteredSorted.map((card) => (
                             <div key={card.relPath}>
                                 <FancyCardUI //

@@ -135,6 +135,10 @@ export class CardFile {
         return LoadStatus.FAILURE
     }
 
+    get name() {
+        return this.manifest.name
+    }
+
     /** action display name */
     get illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded(): Maybe<string> {
         return this.manifest.illustration
@@ -172,7 +176,7 @@ export class CardFile {
             graphID: pj.rootGraph.id,
             title: title,
         })
-        pj.st.layout.addDraft(draft.data.title, draft.id)
+        pj.st.layout.addDraft(this.name, draft.id)
         return draft
     }
     getLastDraft = (): DraftL => {

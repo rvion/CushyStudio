@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode } from 'react'
-import { Button, Popover, Whisper } from 'rsuite'
+import { Button, Popover, Tooltip, Whisper } from 'rsuite'
 import { TypeAttributes } from 'rsuite/esm/@types/common'
 
 export const MainNavEntryUI = observer(function UI_(p: {
@@ -29,7 +29,7 @@ export const MainNavEntryUI = observer(function UI_(p: {
     )
     if (p.tooltip)
         return (
-            <Whisper placement='bottomStart' speaker={<Popover>{p.tooltip}</Popover>}>
+            <Whisper delay={0} delayClose={0} delayOpen={0} placement='bottomStart' speaker={<Tooltip>{p.tooltip}</Tooltip>}>
                 {btn}
             </Whisper>
         )

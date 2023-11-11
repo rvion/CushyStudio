@@ -26,6 +26,7 @@
         "gen-assets": "bun src/utils/assets/assets.gen.ts",
         "gen-schema": "bun src/cards/DeckManifestGen.ts",
         "gen-syms": "node src/syms/_.cjs",
+        "gen-theme": "./node_modules/.bin/lessc src/theme/theme-rvion.less src/theme/theme-rvion.css",
         "📌 FRONT": "",
         "front:shell": "electron src/shell",
         "front:watch": "vite build --watch",

@@ -20,7 +20,7 @@ export const convertLiteGraphToPrompt = (
             if (widgetValues == null) {
                 ERR(`PrimitiveNode#${node.id} has no widget values`)
                 LOG(`skipping PrimitiveNode#${node.id} because it has no widget values`, node)
-                debugger
+                // debugger // 🔴
                 continue
             }
             LOG(`found primitive ${node.type}#${node.id} with value ${bang(node.widgets_values[0])}`)
