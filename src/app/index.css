@@ -357,10 +357,18 @@ hr {
     display: flex;
     flex-direction: column;
 }
+/* disable modal delay */
+/* .rs-modal-enter,
+.rs-modal-leave,
+.rs-modal-enter-active,
+.rs-modal-leave-active {
+  animation: none !important;
+  transition: none !important;
+} */
 
 /* -------------- */
 /* disable mo */
-.rs-anim-in, .rs-animate {
+.rs-anim-bounce-in, .rs-anim-in, .rs-animate {
     animation-duration: 0s !important;
     transition-duration: 0s !important;
-  }
+}

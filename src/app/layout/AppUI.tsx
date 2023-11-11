@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react'
 import { useSt } from 'src/state/stateContext'
 import { AppBarUI } from './AppBarUI'
 import { ProjectUI } from './ProjectUI'
+import { Trigger } from '../shortcuts/Trigger'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
@@ -11,12 +12,20 @@ export const CushyUI = observer(function CushyUI_() {
         const current = appRef.current
         if (current == null) return
         function handleKeyDown(event: KeyboardEvent) {
+            const x = st.shortcuts.processKeyDownEvent(event as any)
+
+            // no idea if this safety case is needed
             if (document.activeElement == null) {
                 event.preventDefault()
                 event.stopPropagation()
                 current?.focus()
             }
-            if (event.key === 'w' && (event.ctrlKey || event.metaKey)) {
+            // prevent accidental tab closing when pressing ctrl+w one too-many times
+            if (
+                x === Trigger.UNMATCHED_CONDITIONS && //
+                event.key === 'w' &&
+                (event.ctrlKey || event.metaKey)
+            ) {
                 event.preventDefault()
                 event.stopPropagation()
             }
@@ -27,14 +36,7 @@ export const CushyUI = observer(function CushyUI_() {
     }, [appRef.current])
 
     return (
-        <div
-            id='CushyStudio'
-            tabIndex={-1}
-            ref={appRef}
-            onKeyDown={st.shortcuts.processKeyDownEvent}
-            // global style
-            tw={['col grow h100', st.theme.theme]}
-        >
+        <div id='CushyStudio' tabIndex={-1} ref={appRef} tw={['col grow h100', st.theme.theme]}>
             <AppBarUI />
             <div className='flex flex-grow relative'>
                 <ProjectUI />
