@@ -125,12 +125,12 @@ export class ComfyImporter {
             nameEscaped: string
             default: string | number | boolean | null | undefined
         }
-        const uiVals: UIVal[] = []
 
-        p(`action('${opts.title}', { `)
-        p(`    author: '${opts.author}',`)
+        p   (`action('${opts.title}', { `) // prettier-ignore
+        p   (`    author: '${opts.author}',`) // prettier-ignore
         pRun(`    run: async (flow, p) => {`)
         pRun(`        const graph = flow.nodes`)
+        pUI (`    ui: (ui) => ({`) // prettier-ignore
         // p(`import { Comfy } from '../core/dsl'\n`)
         // p(`export const demo = new Comfy()`)
 
@@ -173,7 +173,9 @@ export class ComfyImporter {
             // will be added to the form
             const inputGroupName = pNamer.name(`${node.class_type}`)
 
-            for (const [name, value] of Object.entries(node.inputs) ?? []) {
+            const nodeInputs = Object.entries(node.inputs) ?? []
+            const uiStuff: string[] = []
+            for (const [name, value] of nodeInputs) {
                 const isValidJSIdentifier = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(name)
                 if (this.UI_ONLY_ATTRIBUTES.includes(name)) continue
 
@@ -199,7 +201,7 @@ export class ComfyImporter {
                     if (opts.autoUI) {
                         const inputSchema = schema.inputs.find((x) => x.nameInComfy === name)
                         // if (inputSchema == null) debugger
-                        const inputName = pNamer.name(`${node.class_type}_${name}`)
+                        const inputName = pNamer.name(name)
                         const uiVal: UIVal = {
                             typeofValue: valueStr == null ? typeof valueStr : 'strOpt',
                             name: inputName,
@@ -207,20 +209,29 @@ export class ComfyImporter {
                             nameEscaped: escapeJSKey(inputName),
                             default: valueStr,
                         }
-                        uiVals.push(uiVal)
+                        uiStuff.push(`         ${uiVal.nameEscaped}: ${renderUIForInput(uiVal)} /* ${uiVal.schema?.type} */,`)
                         piRun(`${name2}: ${renderAdapterForInput(uiVal)}, `)
                     } else {
                         piRun(`${name2}: ${jsEscapeStr(draft.valueStr)}, `)
                     }
                 }
             }
-            if (opts.preserveId && false) pRun(`}, '${nodeID}')`)
+            if (uiStuff.length > 0) {
+                pUI(`        ${inputGroupName}: ui.group({`)
+                pUI(`           items:() => ({`)
+                for (const x of uiStuff) {
+                    pUI(x)
+                }
+                pUI(`        }),`)
+                pUI(`    }),`)
+            }
+
+            if (opts.preserveId || true) pRun(`}, '${nodeID}')`)
             else pRun(`})`)
         }
 
         pRun('        await flow.PROMPT()')
         pRun('    },')
-        pUI(`    ui: (ui) => ({`)
 
         function renderAdapterForInput(x: UIVal) {
             const s = x.schema
@@ -247,9 +258,7 @@ export class ComfyImporter {
                 return `ui.${builderFnName}({default: ${jsEscapeStr(x.default)}})`
             }
         }
-        for (const x of uiVals) {
-            pUI(`         ${x.nameEscaped}: ${renderUIForInput(x)} /* ${x.schema?.type} */,`)
-        }
+
         pUI(`    }),`)
         p(bUI.content)
         p(bRun.content)
