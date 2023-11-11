@@ -2,7 +2,7 @@ Todo before release
 
 Misc:
     ☐ surrounded by card for ju and tu
-    ☐ break node in rich prompt
+    ✔ break node in rich prompt @done(23-11-11 09:57)
     ☐ click on rich prompt should
     ☐ properly re-focus root on any blur (find some code I previously wrote for that)
     ☐ fix the "run" button not being disabled when it should
