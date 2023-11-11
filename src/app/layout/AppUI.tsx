@@ -14,12 +14,18 @@ export const CushyUI = observer(function CushyUI_() {
         function handleKeyDown(event: KeyboardEvent) {
             const x = st.shortcuts.processKeyDownEvent(event as any)
 
+            if (x === Trigger.Success) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+
             // no idea if this safety case is needed
             if (document.activeElement == null) {
                 event.preventDefault()
                 event.stopPropagation()
                 current?.focus()
             }
+
             // prevent accidental tab closing when pressing ctrl+w one too-many times
             if (
                 x === Trigger.UNMATCHED_CONDITIONS && //
