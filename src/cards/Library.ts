@@ -161,7 +161,7 @@ export class Library {
         this.getDeck('library/featherice/cushy-actions' as DeckFolder)
         this.getDeck('library/noellealarie/comfy2cushy-examples' as DeckFolder)
         this.getDeck('library/CushyStudio/default' as DeckFolder)
-        this.getDeck('library/CushyStudio/tutorial' as DeckFolder)
+        // this.getDeck('library/CushyStudio/tutorial' as DeckFolder)
         // this.getDeck('library/rvion/cushy-example-deck' as DeckFolder)
         // this.getDeck('library/CushyStudio/cards' as DeckFolder)
     }
