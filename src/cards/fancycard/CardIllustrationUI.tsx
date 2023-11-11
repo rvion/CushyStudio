@@ -7,6 +7,7 @@ export const CardIllustrationUI = observer(function CardIllustrationUI_(p: { car
     const st = useSt()
     return (
         <img
+            loading='lazy'
             tw='rounded m-2 '
             style={{ width: p.size, height: p.size, objectFit: 'contain' }}
             src={p.card.illustrationPathWithFileProtocol}
