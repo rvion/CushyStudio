@@ -250,19 +250,31 @@ export class ComfyImporter {
         function renderUIForInput(x: UIVal) {
             const s = x.schema
             // no schema, let's try to infer the type from the value
-            if (s == null) {
-                return `ui.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`
-            }
-            if (s.type === 'Enum_LoadImage_image') {
-                return `ui.image({default: ${jsEscapeStr(x.default)}})`
-            }
-            if (s.type.startsWith('Enum_')) {
+            if (s == null) return `ui.${x.typeofValue}({default: ${jsEscapeStr(x.default)}})`
+
+            if (x.name === 'seed' && s.type === 'INT') return `ui.seed({default: ${jsEscapeStr(x.default)}})`
+            if (s.type === 'Enum_LoadImage_image') return `ui.image({default: ${jsEscapeStr(x.default)}})`
+            if (s.type.startsWith('Enum_'))
                 return `ui.enum({default: ${jsEscapeStr(x.default)}, enumName: ${JSON.stringify(s.type)}})`
-            }
+
             if (s.type in ComfyPrimitiveMapping) {
-                let builderFnName = ComfyPrimitiveMapping[s.type]
-                if (!s.required) builderFnName += 'Opt'
-                return `ui.${builderFnName}({default: ${jsEscapeStr(x.default)}})`
+                let builderFnName = (() => {
+                    const typeLower = s.type.toLowerCase()
+                    if (typeLower === 'boolean') return 'boolean'
+                    if (typeLower === 'float') return 'float'
+                    if (typeLower === 'int') return 'int'
+                    if (typeLower === 'integer') return 'int'
+                    if (typeLower === 'string') return 'string'
+                    return ComfyPrimitiveMapping[s.type] ?? 'str'
+                })()
+
+                if (!s.required && builderFnName != 'boolean') builderFnName += 'Opt'
+                const opts = typeof s.opts === 'object' ? s.opts : {}
+                const minP = opts.min != null ? `, min: ${opts.min}` : ''
+                const maxP = opts.max != null ? `, max: ${opts.max}` : ''
+                const stepP = opts.step != null ? `, step: ${opts.step}` : ''
+                const extraOpts = `${minP}${maxP}${stepP}`
+                return `ui.${builderFnName}({default: ${jsEscapeStr(x.default)}${extraOpts}})`
             }
         }
 
