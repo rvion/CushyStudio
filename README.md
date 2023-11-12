@@ -41,14 +41,15 @@
   - [2.7. Install custom cards](#27-install-custom-cards)
   - [2.8. create custom cards](#28-create-custom-cards)
 - [3. Features](#3-features)
-  - [3.1. support `Local`, `Remote`, and `Cloud` ComfyUI instances](#31-support-local-remote-and-cloud-comfyui-instances)
-  - [3.2. support multiple-ComfyUI support](#32-support-multiple-comfyui-support)
-  - [3.3. ComfyUI compatible: Convert workflow to Action.](#33-comfyui-compatible-convert-workflow-to-action)
-  - [3.4. Real-time enabled](#34-real-time-enabled)
-  - [3.5. CivitAI integration](#35-civitai-integration)
-  - [3.6. Built-in full-featured Image Editor](#36-built-in-full-featured-image-editor)
-  - [3.7. Easy to extend](#37-easy-to-extend)
-  - [3.8. Create your own Cards to streamline any image or video production](#38-create-your-own-cards-to-streamline-any-image-or-video-production)
+  - [3.1. First class ComfyUI support](#31-first-class-comfyui-support)
+    - [3.1.1. work with `Local`, `Remote`, and `Cloud` ComfyUI instances](#311-work-with-local-remote-and-cloud-comfyui-instances)
+    - [3.1.2. parallelize load across multiple ComfyUI instances](#312-parallelize-load-across-multiple-comfyui-instances)
+    - [3.1.3. support ComfyUI workflow natively](#313-support-comfyui-workflow-natively)
+  - [3.2. Real-time enabled](#32-real-time-enabled)
+  - [3.3. CivitAI integration](#33-civitai-integration)
+  - [3.4. Built-in full-featured Image Editor](#34-built-in-full-featured-image-editor)
+  - [3.5. Easy to extend](#35-easy-to-extend)
+  - [3.6. Create your own Cards to streamline any image or video production](#36-create-your-own-cards-to-streamline-any-image-or-video-production)
 - [4. Quickstart Guide For Action Creators](#4-quickstart-guide-for-action-creators)
   - [4.1. How does `CushySudio` Work](#41-how-does-cushysudio-work)
   - [4.2. What is an `Action` ?](#42-what-is-an-action-)
@@ -104,7 +105,7 @@ test</div>  -->
 
 ## 1.2. **Actions** are pleasant to make
 
--   🚀 CushyStudio comes with amakes it easy to build cards
+-   🚀 CushyStudio comes with amakes it easy to build actions
 
     -   Pre-configured ecosystem: NO SETUP NEEDED
     -   Built-in **_ComfyUI_** to **_Action_** converter
@@ -216,13 +217,16 @@ the top bar
 
 # 3. Features
 
-## 3.1. support `Local`, `Remote`, and `Cloud` ComfyUI instances
+
+## 3.1. First class ComfyUI support
+
+### 3.1.1. work with `Local`, `Remote`, and `Cloud` ComfyUI instances
 
 -   Automatically download images in your local outputs folder
 -   Automatically upload missing files
 -   powerfull image hashing system to avoid duplicate uploads
 
-## 3.2. support multiple-ComfyUI support
+### 3.1.2. parallelize load across multiple ComfyUI instances
 
 -   ✅ Quickly switch between various ComfyUI setups
 -   ✅ Parallelize work across multiple instances
@@ -233,15 +237,17 @@ Edit the list of ComfyUI setups in `CONFIG.json` or click the `HOSTS` button in 
 
 https://github.com/rvion/CushyStudio/assets/2150990/2121db07-c246-4523-ac0e-294572450b32
 
-## 3.3. ComfyUI compatible: Convert workflow to Action.
+### 3.1.3. support ComfyUI workflow natively
 
 **_🛋️ CushyStudio_** is directly compatible with **_ComfyUI_** workflow json format and images. Add them to the action folder to quickly use them inside CushyStudio.
 
-## 3.4. Real-time enabled
+you can convert them to actions in cone click t
+
+## 3.2. Real-time enabled
 
 https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852b17894dc
 
-## 3.5. CivitAI integration
+## 3.3. CivitAI integration
 
 ![](docs/static/img/screenshots/2023-10-19-00-31-02.png)
 
@@ -249,13 +255,13 @@ https://github.com/rvion/CushyStudio/assets/2150990/d71d7f9a-b0e9-415d-ab5a-7852
 -   ✅ Civitai custom ComfyUI Nodes support
 -   ✅ Dedicated Civitai input widgets to augment your allow your cards to select CivitAI models directly
 
-## 3.6. Built-in full-featured Image Editor
+## 3.4. Built-in full-featured Image Editor
 
 Layers, effects, masks, blending modes, ...and more. Always one click away
 
 ![](docs/static/img/screenshots/2023-10-18-22-51-22.png)
 
-## 3.7. Easy to extend
+## 3.5. Easy to extend
 
 👉 In case you have a problem, check the logs and report what you see
 
@@ -266,7 +272,7 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 
 </details>
 
-## 3.8. Create your own Cards to streamline any image or video production
+## 3.6. Create your own Cards to streamline any image or video production
 
 ![](docs/static/img/screenshots/2023-09-29-22-35-25.png)
 
