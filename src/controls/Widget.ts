@@ -11,7 +11,6 @@ import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/Cushy
 import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
 
 import { makeAutoObservable } from 'mobx'
-import { NumbericTheme } from 'src/controls/widgets/WidgetNumUI'
 import { bang } from 'src/utils/misc/bang'
 import { FormBuilder } from './FormBuilder'
 import { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
@@ -284,7 +283,7 @@ export class Widget_seed implements IRequest<'seed', Widget_seed_input, Widget_s
 }
 
 // 🅿️ int ==============================================================================
-export type Widget_int_input  = ReqInput<{ default?: number; min?: number; max?: number, step?: number, theme?: NumbericTheme }>
+export type Widget_int_input  = ReqInput<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
 export type Widget_int_serial = Widget_int_state
 export type Widget_int_state  = StateFields<{ type:'int', active: true; val: number }>
 export type Widget_int_output = number
@@ -309,7 +308,7 @@ export class Widget_int implements IRequest<'int', Widget_int_input, Widget_int_
 }
 
 // 🅿️ float ==============================================================================
-export type Widget_float_input  = ReqInput<{ default?: number; min?: number; max?: number, step?: number, theme?: NumbericTheme }>
+export type Widget_float_input  = ReqInput<{ default?: number; min?: number; max?: number, step?: number, hideSlider?: boolean }>
 export type Widget_float_serial = Widget_float_state
 export type Widget_float_state  = StateFields<{ type:'float', active: true; val: number }>
 export type Widget_float_output = number
@@ -359,7 +358,7 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_b
 }
 
 // 🅿️ intOpt ==============================================================================
-export type Widget_intOpt_input  = ReqInput<{ default?: number; min?: number; max?: number; step?: number, theme?: NumbericTheme }>
+export type Widget_intOpt_input  = ReqInput<{ default?: number; min?: number; max?: number; step?: number, hideSlider?: boolean }>
 export type Widget_intOpt_serial = Widget_intOpt_state
 export type Widget_intOpt_state  = StateFields<{ type: 'intOpt', active: boolean; val: number }>
 export type Widget_intOpt_output = Maybe<number>
@@ -392,7 +391,7 @@ export class Widget_intOpt implements IRequest<'intOpt', Widget_intOpt_input, Wi
 }
 
 // 🅿️ floatOpt ==============================================================================
-export type Widget_floatOpt_input  = ReqInput<{ default?: number; min?: number; max?: number; step?: number, theme?: NumbericTheme }>
+export type Widget_floatOpt_input  = ReqInput<{ default?: number; min?: number; max?: number; step?: number, hideSlider?: boolean }>
 export type Widget_floatOpt_serial = Widget_floatOpt_state
 export type Widget_floatOpt_state  = StateFields<{ type: 'floatOpt', active: boolean; val: number }>
 export type Widget_floatOpt_output = Maybe<number>

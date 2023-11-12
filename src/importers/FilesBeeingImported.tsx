@@ -86,7 +86,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
                     const x = st.importer.convertPromptToCode(promptJSON, {
                         title: 'file.name',
                         author: 'test',
-                        preserveId: false,
+                        preserveId: true,
                         autoUI: true,
                     })
                     setCode(x)

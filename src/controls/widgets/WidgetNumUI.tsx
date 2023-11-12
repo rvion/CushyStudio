@@ -9,16 +9,51 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
     const req = p.req
     const val = req.state.val
     const mode = req instanceof Widget_int ? 'int' : 'float'
-    const theme = req.input.theme ?? 'slider'
     const step = req.input.step ?? (mode === 'int' ? 1 : 0.1)
+    const valueIsValid = typeof val === 'number' && !isNaN(val)
 
-    const sliderUI =
-        theme === 'slider' ? (
-            <Slider //
-                style={{ width: '6rem' }}
+    return (
+        <div tw='relative flex items-center gap-2'>
+            {valueIsValid ? null : (
+                <div className='text-red-500'>
+                    Invalid value:
+                    <pre>{JSON.stringify(val)}</pre>
+                </div>
+            )}
+            {req.input.hideSlider ? null : (
+                <Slider //
+                    style={{ width: '6rem' }}
+                    value={val}
+                    min={req.input.min}
+                    max={req.input.max}
+                    step={step}
+                    onChange={(next) => {
+                        // parse value
+                        let num =
+                            typeof next === 'string' //
+                                ? mode == 'int'
+                                    ? parseInt(next, 10)
+                                    : parseFloatNoRoundingErr(next, 2)
+                                : next
+                        // ensure is a number
+                        if (isNaN(num) || typeof num != 'number') {
+                            return console.log(`${JSON.stringify(next)} is not a number`)
+                        }
+                        // ensure ints are ints
+                        if (mode == 'int') num = Math.round(num)
+                        req.state.val = num
+                    }}
+                />
+            )}
+            <InputNumber //
+                size='sm'
                 value={val}
-                min={req.input.min}
-                max={req.input.max}
+                style={{
+                    fontFamily: 'monospace',
+                    width: val.toString().length + 6 + 'ch',
+                }}
+                // min={req.input.min}
+                // max={req.input.max}
                 step={step}
                 onChange={(next) => {
                     // parse value
@@ -26,8 +61,9 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
                         typeof next === 'string' //
                             ? mode == 'int'
                                 ? parseInt(next, 10)
-                                : parseFloatNoRoundingErr(next, 2)
+                                : parseFloat(next)
                             : next
+
                     // ensure is a number
                     if (isNaN(num) || typeof num != 'number') {
                         return console.log(`${JSON.stringify(next)} is not a number`)
@@ -37,45 +73,6 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
                     req.state.val = num
                 }}
             />
-        ) : null
-
-    const inputUI = (
-        <InputNumber //
-            size='sm'
-            value={val}
-            style={{
-                fontFamily: 'monospace',
-                width: val.toString().length + 6 + 'ch',
-            }}
-            // min={req.input.min}
-            // max={req.input.max}
-            step={step}
-            onChange={(next) => {
-                // parse value
-                let num =
-                    typeof next === 'string' //
-                        ? mode == 'int'
-                            ? parseInt(next, 10)
-                            : parseFloat(next)
-                        : next
-
-                // ensure is a number
-                if (isNaN(num) || typeof num != 'number') {
-                    return console.log(`${JSON.stringify(next)} is not a number`)
-                }
-                // ensure ints are ints
-                if (mode == 'int') num = Math.round(num)
-                req.state.val = num
-            }}
-        />
+        </div>
     )
-
-    if (sliderUI)
-        return (
-            <div tw='relative flex items-center gap-2'>
-                <div tw='ml-2'>{sliderUI}</div>
-                {inputUI}
-            </div>
-        )
-    return inputUI
 })
