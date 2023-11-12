@@ -5,9 +5,10 @@ import { NativeTypes } from 'react-dnd-html5-backend'
 
 const style: CSSProperties = {
     border: '1px solid gray',
-    height: '8rem',
-    width: '8rem',
-    padding: '2rem',
+    // height: '8rem',
+    // width: '8rem',
+    background: 'linear-gradient(to left, #383422 0%, #371531 100%)',
+    padding: '1rem',
     textAlign: 'center',
 }
 
@@ -43,8 +44,8 @@ export const TargetBox = (props: { onDrop: (item: { files: any[] }) => void }) =
 
     const isActive = canDrop && isOver
     return (
-        <div ref={drop} style={style}>
-            {isActive ? 'Release to drop' : 'Drag file here'}
+        <div tw={[isActive ? 'animate-pulse' : null]} ref={drop} style={style}>
+            {isActive ? 'Release to drop' : 'Import files'}
         </div>
     )
 }

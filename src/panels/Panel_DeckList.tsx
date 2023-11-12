@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
-import { useSt } from '../state/stateContext'
+import { PanelImport } from 'src/importers/ImportWidget'
 import { ActionEntryUI, ActionPackUI } from '../cards/CardPicker2UI'
+import { useSt } from '../state/stateContext'
 
 export const Panel_DeckList = observer(function ActionPicker2UI_(p: {}) {
     const st = useSt()
@@ -8,6 +9,8 @@ export const Panel_DeckList = observer(function ActionPicker2UI_(p: {}) {
     return (
         <>
             {/* <CreateDeckBtnUI /> */}
+            <PanelImport />
+
             {/* FAVORITES */}
             {library.allFavorites.length ? (
                 <div
@@ -20,7 +23,7 @@ export const Panel_DeckList = observer(function ActionPicker2UI_(p: {}) {
                         </span>
                     </div>
                     <div tw='flex-grow'>
-                        <div>Favorite Actiosn</div>
+                        <div>Favorites</div>
                     </div>
                     <div>{library.favoritesFolded ? '▸' : '▿'}</div>
                 </div>

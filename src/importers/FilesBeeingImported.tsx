@@ -17,7 +17,8 @@ export interface FileListProps {
 
 export const FileList: FC<FileListProps> = ({ files }) => {
     if (files.length === 0) {
-        return <div>Nothing to display</div>
+        return null
+        // return <div>Nothing to display</div>
     }
     const fileList = useMemo(() => list(files), [files])
     return <div>{fileList}</div>
@@ -25,14 +26,12 @@ export const FileList: FC<FileListProps> = ({ files }) => {
 
 const label = (file: File) => `'${file.name}' of size '${file.size}' and type '${file.type}'`
 
-function list(files: File[]) {
-    return files.map((file) => (
-        <li key={file.name}>
-            {/*  */}
-            <ImportedFileUI file={file} />
-            {/* {label(file)} */}
-        </li>
-    ))
+const list = (files: File[]) => {
+    return files.map((file) => <ImportedFileUI key={file.name} file={file} />)
+    // // <li key={file.name}>
+    //     {/*  */}
+    //     {/* {label(file)} */}
+    // // </li>
 }
 
 export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File }) {
@@ -70,12 +69,16 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
     // const hasWorkflow = json?.workflow
 
     return (
-        <Panel className='m-2'>
-            <div className='text-gray-400 text-xs italic'>{label(file)}</div>
-            <div>metadata:</div>
-            <pre>{JSON.stringify(metadata)}</pre>
-            <div>workfow:</div>
-            <pre>{JSON.stringify(workflowJSON)}</pre>
+        <Panel className='m-2' bordered shaded>
+            {/* <div className='text-gray-400 text-xs italic'>{label(file)}</div> */}
+            <Field k='name' v={file.name} />
+            <Field k='size' v={file.size} />
+            <Field k='name' v={file.type} />
+            {/* ${file.name}' of size '${file.size}' and type '${file.type}'<div>metadata:</div> */}
+            <Field k='metadata' v={metadata} />
+            <Field k='workflowJSON' v={workflowJSON} />
+            {/* <div>workfow:</div> */}
+            {/* <pre>{JSON.stringify(workflowJSON)}</pre> */}
             <Button
                 appearance='primary'
                 onClick={async () => {
@@ -95,5 +98,14 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
             {/* {json ? <pre>{JSON.stringify(json.value, null, 4)}</pre> : null} */}
             {/* {Boolean(hasWorkflow) ? '🟢 has workflow' : `🔴 no workflow`} */}
         </Panel>
+    )
+})
+
+const Field = observer(function Field_(p: { k: string; v: string | number | object }) {
+    return (
+        <div className='flex items-start gap-1'>
+            <div className='text-gray-400 italic'>{p.k}:</div>
+            <div>{typeof p.v === 'object' ? <pre>{JSON.stringify(p.v)}</pre> : p.v}</div>
+        </div>
     )
 })

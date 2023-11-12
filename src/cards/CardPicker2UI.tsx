@@ -12,7 +12,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Deck }) {
         <div tw='my-0.5 flex-grow' key={deck.folderRel}>
             <DeckHeaderUI deck={deck} />
             {deck.folded ? null : (
-                <div>
+                <div tw='flex flex-col gap-0.5'>
                     {deck.cards.map((af) => (
                         <ActionEntryUI key={af.relPath} card={af} />
                     ))}
@@ -28,7 +28,7 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFil
     return (
         <div
             //
-            tw='pl-4 hover:bg-gray-900 flex gap-2 cursor-pointer'
+            tw='pl-8 hover:bg-gray-900 flex gap-2 cursor-pointer'
             // style={{ borderTop: '1px solid #161616' }}
             key={card.absPath}
             onClick={(ev) => {
@@ -39,8 +39,12 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFil
             }}
         >
             {/* <span className='material-symbols-outlined'>keyboard_arrow_right</span> */}
-            <img style={{ width: '2rem', height: '2rem' }} src={card.illustrationPathWithFileProtocol ?? pack?.logo ?? ''}></img>
-            <div>{card.displayName}</div>
+            <img
+                tw='rounded'
+                style={{ width: '2rem', height: '2rem' }}
+                src={card.illustrationPathWithFileProtocol ?? pack?.logo ?? ''}
+            ></img>
+            <div tw='overflow-hidden whitespace-nowrap overflow-ellipsis'>{card.displayName}</div>
             <div tw='ml-auto'>
                 <ActionFavoriteBtnUI card={card} />
             </div>

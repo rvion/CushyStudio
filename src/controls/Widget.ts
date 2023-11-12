@@ -16,6 +16,7 @@ import { bang } from 'src/utils/misc/bang'
 import { FormBuilder } from './FormBuilder'
 import { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
 import { nanoid } from 'nanoid'
+import { CleanedEnumResult } from 'src/types/EnumUtils'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -1175,12 +1176,13 @@ export class Widget_enum<T extends KnownEnumNames> implements IRequest<'enum', W
             type: 'enum',
             id: this.id,
             active: true,
-            val: input.default ?? (possibleValues[0] as any) /* 🔴 */,
+            val: input.default ?? (possibleValues[0] as any)
         }
         makeAutoObservable(this)
     }
+    get status(): CleanedEnumResult<any> { return this.schema.st.fixEnumValue(this.state.val as any, this.input.enumName, false) } // prettier-ignore
     get serial(): Widget_enum_serial<T> { return this.state }
-    get result(): Widget_enum_output<T> { return this.state.val }
+    get result(): Widget_enum_output<T> { return this.status.finalValue }
 }
 
 // 🅿️ enumOpt ==============================================================================
@@ -1210,9 +1212,10 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumO
         }
         makeAutoObservable(this)
     }
+    get status(): CleanedEnumResult<any> { return this.schema.st.fixEnumValue(this.state.val as any, this.input.enumName, true) } // prettier-ignore
     get serial(): Widget_enumOpt_serial<T> { return this.state }
     get result(): Widget_enumOpt_output<T> {
         if (!this.state.active) return undefined
-        return this.state.val
+        return this.status.finalValue
     }
 }

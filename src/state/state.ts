@@ -28,7 +28,7 @@ import { JsonFile } from '../core/JsonFile'
 import { LiveDB } from '../db/LiveDB'
 import { ComfyImporter } from '../importers/ComfyImporter'
 import { GraphL } from '../models/Graph'
-import { EmbeddingName, SchemaL } from '../models/Schema'
+import { EmbeddingName, EnumValue, SchemaL } from '../models/Schema'
 import { ComfySchemaJSON, ComfySchemaJSON_zod } from '../types/ComfySchemaJSON'
 import { FromExtension_CushyStatus } from '../types/MessageFromExtensionToWebview'
 import { exhaust } from '../utils/misc/ComfyUtils'
@@ -40,6 +40,8 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { DanbooruTags } from '../widgets/prompter/nodes/booru/BooruLoader'
 import { Uploader } from './Uploader'
+import { closest } from 'fastest-levenshtein'
+import { CleanedEnumResult } from 'src/types/EnumUtils'
 
 // prettier-ignore
 type HoveredAsset =
@@ -178,11 +180,47 @@ export class STATE {
     //     cardPath: asCardPath('library/CushyStudio/default/prompt.ts'),
     // }
 
-    // showAllMessageReceived: boolean = false // ❌ legacy
+    fixEnumValue = (
+        //
+        candidateValue: Maybe<EnumValue>,
+        enumName: string,
+        isOptional: boolean,
+    ): CleanedEnumResult<any> => {
+        // 0. retrieve enum dev
+        const possibleValues = this.schema.knownEnumsByName.get(enumName)?.values ?? []
+
+        // 1. when enum is empty
+        if (possibleValues.length == 0) {
+            if (isOptional) return { finalValue: null, isSubstitute: candidateValue != null, candidateValue }
+            return {
+                finalValue: candidateValue ?? '❌ no value',
+                ENUM_HAS_NO_VALUES: true,
+                isSubstitute: candidateValue != null,
+                candidateValue,
+            }
+        }
+
+        // 2. when value is null
+        if (candidateValue == null) {
+            if (isOptional) return { finalValue: null, isSubstitute: false, candidateValue }
+            return { finalValue: possibleValues[0], isSubstitute: true, candidateValue }
+        }
+
+        // 3. when value is correct
+        if (possibleValues.includes(candidateValue as any))
+            return { finalValue: candidateValue, isSubstitute: false, candidateValue }
+
+        // 4. when value is incorrect
+        const possibleValuesStr = possibleValues.map((v) => v.toString())
+        const closestMatch = closest(candidateValue.toString(), possibleValuesStr)
+        const ix = possibleValuesStr.indexOf(closestMatch)
+        if (ix === -1) throw new Error(`❌ THE IMPOSSIBLE HAPPENED IN 'FixEnumValue'`)
+        return { finalValue: possibleValues[ix], isSubstitute: true, candidateValue }
+    }
+
     comfyUIIframeRef = createRef<HTMLIFrameElement>()
     expandNodes: boolean = false
 
-    /**  */
     updateTsConfig = () => {
         const finalInclude = ['src', 'schema/global.d.ts']
         if (this.githubUsername) finalInclude.push(`library/${this.githubUsername}/**/*`)
