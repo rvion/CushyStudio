@@ -1,0 +1,377 @@
+{
+    "last_node_id": 109,
+    "last_link_id": 185,
+    "nodes": [
+        {
+            "id": 4,
+            "type": "CheckpointLoaderSimple",
+            "pos": [-733, 513],
+            "size": {
+                "0": 350,
+                "1": 100
+            },
+            "flags": {},
+            "order": 0,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "MODEL",
+                    "type": "MODEL",
+                    "links": [182],
+                    "slot_index": 0
+                },
+                {
+                    "name": "CLIP",
+                    "type": "CLIP",
+                    "links": [117],
+                    "slot_index": 1
+                },
+                {
+                    "name": "VAE",
+                    "type": "VAE",
+                    "links": [46],
+                    "slot_index": 2
+                }
+            ],
+            "title": "Load Checkpoint - BASE",
+            "properties": {
+                "Node name for S&R": "CheckpointLoaderSimple"
+            },
+            "widgets_values": ["epicphotogasm_xPlusPlus.safetensors"],
+            "color": "#323",
+            "bgcolor": "#535"
+        },
+        {
+            "id": 14,
+            "type": "PrimitiveNode",
+            "pos": [-583, 1355],
+            "size": {
+                "0": 624,
+                "1": 144
+            },
+            "flags": {},
+            "order": 1,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [174],
+                    "slot_index": 0,
+                    "widget": {
+                        "name": "text"
+                    }
+                }
+            ],
+            "title": "Negative Prompt (Text)",
+            "properties": {},
+            "widgets_values": [""],
+            "color": "#571a1a",
+            "bgcolor": "#6b2e2e"
+        },
+        {
+            "id": 106,
+            "type": "EmptyLatentImage",
+            "pos": [193, 1517],
+            "size": {
+                "0": 315,
+                "1": 106
+            },
+            "flags": {},
+            "order": 2,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "LATENT",
+                    "type": "LATENT",
+                    "links": [180],
+                    "shape": 3
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "EmptyLatentImage"
+            },
+            "widgets_values": [768, 512, 1]
+        },
+        {
+            "id": 63,
+            "type": "DPRandomGenerator",
+            "pos": [-556, 1110],
+            "size": {
+                "0": 580,
+                "1": 200
+            },
+            "flags": {},
+            "order": 3,
+            "mode": 0,
+            "outputs": [
+                {
+                    "name": "STRING",
+                    "type": "STRING",
+                    "links": [170],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "DPRandomGenerator"
+            },
+            "widgets_values": [
+                "the world's best burger: enormous well-prepared greasy american burger with a glass of irish brown ale with french fries, containing hot caramelized onion condiments and pickled cucumbers and delicious orange sauce, everything is seasoned perfectly, spices, herbs, aromatic food, masterchef, shot with fujixt3, extremely finely detailed, prepared by gordon ramsay, on a place in front of a beautiful landscape, quaint, rustic, wooden chair, sunset, at a rustic wooden castle outside terrace with the japanese mountains in the background, bokeh, photographed by award winning photographer, exaggerated food, extremely huge meal well-deserved for a programmer who fixed you, (ancient regal architecture:1.132)"
+            ]
+        },
+        {
+            "id": 58,
+            "type": "CLIPSetLastLayer",
+            "pos": [-350, 967],
+            "size": {
+                "0": 336,
+                "1": 58
+            },
+            "flags": {},
+            "order": 4,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "clip",
+                    "type": "CLIP",
+                    "link": 117,
+                    "slot_index": 0
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "CLIP",
+                    "type": "CLIP",
+                    "links": [183, 184],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "CLIPSetLastLayer"
+            },
+            "widgets_values": [-1]
+        },
+        {
+            "id": 107,
+            "type": "CLIPTextEncode",
+            "pos": [109, 968],
+            "size": {
+                "0": 400,
+                "1": 200
+            },
+            "flags": {
+                "collapsed": false
+            },
+            "order": 5,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "clip",
+                    "type": "CLIP",
+                    "link": 183,
+                    "slot_index": 0
+                },
+                {
+                    "name": "text",
+                    "type": "STRING",
+                    "link": 170,
+                    "widget": {
+                        "name": "text"
+                    }
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "CONDITIONING",
+                    "type": "CONDITIONING",
+                    "links": [176],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "CLIPTextEncode"
+            },
+            "widgets_values": [""]
+        },
+        {
+            "id": 108,
+            "type": "CLIPTextEncode",
+            "pos": [111, 1263],
+            "size": {
+                "0": 400,
+                "1": 200
+            },
+            "flags": {
+                "collapsed": false
+            },
+            "order": 6,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "clip",
+                    "type": "CLIP",
+                    "link": 184,
+                    "slot_index": 0
+                },
+                {
+                    "name": "text",
+                    "type": "STRING",
+                    "link": 174,
+                    "widget": {
+                        "name": "text"
+                    },
+                    "slot_index": 1
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "CONDITIONING",
+                    "type": "CONDITIONING",
+                    "links": [181],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "CLIPTextEncode"
+            },
+            "widgets_values": [""]
+        },
+        {
+            "id": 109,
+            "type": "KSampler",
+            "pos": [710, 1279],
+            "size": {
+                "0": 315,
+                "1": 474
+            },
+            "flags": {},
+            "order": 7,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "model",
+                    "type": "MODEL",
+                    "link": 182,
+                    "slot_index": 0
+                },
+                {
+                    "name": "positive",
+                    "type": "CONDITIONING",
+                    "link": 176,
+                    "slot_index": 1
+                },
+                {
+                    "name": "negative",
+                    "type": "CONDITIONING",
+                    "link": 181,
+                    "slot_index": 2
+                },
+                {
+                    "name": "latent_image",
+                    "type": "LATENT",
+                    "link": 180,
+                    "slot_index": 3
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "LATENT",
+                    "type": "LATENT",
+                    "links": [179],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "KSampler"
+            },
+            "widgets_values": [461073784287450, "fixed", 20, 4.5, "uni_pc", "normal", 1]
+        },
+        {
+            "id": 17,
+            "type": "VAEDecode",
+            "pos": [1071, 1012],
+            "size": {
+                "0": 200,
+                "1": 50
+            },
+            "flags": {
+                "collapsed": false
+            },
+            "order": 8,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "samples",
+                    "type": "LATENT",
+                    "link": 179,
+                    "slot_index": 0
+                },
+                {
+                    "name": "vae",
+                    "type": "VAE",
+                    "link": 46
+                }
+            ],
+            "outputs": [
+                {
+                    "name": "IMAGE",
+                    "type": "IMAGE",
+                    "links": [185],
+                    "shape": 3,
+                    "slot_index": 0
+                }
+            ],
+            "properties": {
+                "Node name for S&R": "VAEDecode"
+            },
+            "color": "#332922",
+            "bgcolor": "#593930"
+        },
+        {
+            "id": 19,
+            "type": "SaveImage",
+            "pos": [1417, 1014],
+            "size": {
+                "0": 565.774658203125,
+                "1": 596.3757934570312
+            },
+            "flags": {},
+            "order": 9,
+            "mode": 0,
+            "inputs": [
+                {
+                    "name": "images",
+                    "type": "IMAGE",
+                    "link": 185
+                }
+            ],
+            "properties": {},
+            "widgets_values": ["ComfyUI"],
+            "color": "#222",
+            "bgcolor": "#000"
+        }
+    ],
+    "links": [
+        [46, 4, 2, 17, 1, "VAE"],
+        [117, 4, 1, 58, 0, "CLIP"],
+        [170, 63, 0, 107, 1, "STRING"],
+        [174, 14, 0, 108, 1, "STRING"],
+        [176, 107, 0, 109, 1, "CONDITIONING"],
+        [179, 109, 0, 17, 0, "LATENT"],
+        [180, 106, 0, 109, 3, "LATENT"],
+        [181, 108, 0, 109, 2, "CONDITIONING"],
+        [182, 4, 0, 109, 0, "MODEL"],
+        [183, 58, 0, 107, 0, "CLIP"],
+        [184, 58, 0, 108, 0, "CLIP"],
+        [185, 17, 0, 19, 0, "IMAGE"]
+    ],
+    "groups": [],
+    "config": {},
+    "extra": {},
+    "version": 0.4
+}
