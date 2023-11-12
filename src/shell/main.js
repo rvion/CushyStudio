@@ -3,12 +3,12 @@ START()
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true'
 
 async function START() {
-    try {
-        const patchElectronIconAndName = require('./patch.js').default
-        patchElectronIconAndName()
-    } catch (error) {
-        console.log('❌ error patching electron icon and name', error)
-    }
+    // ⏸️ try {
+    // ⏸️     const patchElectronIconAndName = require('./patch.js').default
+    // ⏸️     patchElectronIconAndName()
+    // ⏸️ } catch (error) {
+    // ⏸️     console.log('❌ error patching electron icon and name', error)
+    // ⏸️ }
 
     const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron')
     ipcMain.on('toggle-devtools', (event, arg) => {
