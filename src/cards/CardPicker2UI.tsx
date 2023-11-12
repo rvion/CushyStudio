@@ -28,7 +28,7 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFil
     return (
         <div
             //
-            tw='pl-8 hover:bg-gray-900 flex gap-2 cursor-pointer'
+            tw='hover:bg-gray-900 flex gap-2 cursor-pointer'
             // style={{ borderTop: '1px solid #161616' }}
             key={card.absPath}
             onClick={(ev) => {
@@ -39,15 +39,15 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFil
             }}
         >
             {/* <span className='material-symbols-outlined'>keyboard_arrow_right</span> */}
+            <div tw='pl-3'>
+                <ActionFavoriteBtnUI card={card} />
+            </div>
             <img
                 tw='rounded'
                 style={{ width: '2rem', height: '2rem' }}
                 src={card.illustrationPathWithFileProtocol ?? pack?.logo ?? ''}
             ></img>
             <div tw='overflow-hidden whitespace-nowrap overflow-ellipsis'>{card.displayName}</div>
-            <div tw='ml-auto'>
-                <ActionFavoriteBtnUI card={card} />
-            </div>
         </div>
     )
 })
