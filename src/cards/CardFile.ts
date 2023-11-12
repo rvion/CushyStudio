@@ -114,10 +114,16 @@ export class CardFile {
     private mkDefaultManifest(): CardManifest {
         const deckRelPath = this.deckRelativeFilePath
         const baseName = path.basename(deckRelPath)
+        let cardName = baseName.endsWith('.ts') //
+            ? baseName.slice(0, -3)
+            : baseName
+
+        // support for https://comfyworkflows.com/ downloaded workflows
+        if (cardName.match(/comfyworkflows_[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}/)) {
+            cardName = `ComfyWorkflow ${cardName.slice(-12, -4)}`
+        }
         return {
-            name: baseName.endsWith('.ts') //
-                ? baseName.slice(0, -3)
-                : baseName,
+            name: cardName,
             deckRelativeFilePath: this.relPath,
             author: 'unknown', // this.deck.githubUserName,
             illustration: deckRelPath.endsWith('.png') //
