@@ -503,6 +503,10 @@ export class STATE {
             const comfySchemaTsFormatted = comfySchemaTs
             // console.log(this.nodesTSPath, comfySchemaTsFormatted)
             writeFileSync(this.nodesTSPath, comfySchemaTsFormatted, 'utf-8')
+            if (this.githubUsername === 'rvion') {
+                writeFileSync('docs/ex/a.md', '```ts\n' + comfySchemaTsFormatted + '\n```\n', 'utf-8')
+                writeFileSync('docs/ex/b.md', '```json\n' + comfyJSONBuffer + '\n```\n', 'utf-8')
+            }
             progress('[**** step 4/4] 🟢 schema updated')
         } catch (error) {
             console.error(error)
