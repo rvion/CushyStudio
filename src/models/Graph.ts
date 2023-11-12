@@ -10,7 +10,7 @@ import type { ComfyNodeSchema, SchemaL } from './Schema'
 import { marked } from 'marked'
 import { join } from 'pathe'
 import { ManualPromise } from 'src/utils/misc/ManualPromise'
-import { NodeBuilder } from '../back/NodeBuilder'
+import { GraphBuilder } from '../back/NodeBuilder'
 import { CytoJSON, runAutolayout } from '../core/AutolayoutV2'
 import { comfyColors } from '../core/Colors'
 import { LiteGraphJSON, convertFlowToLiteGraphJSON } from '../core/LiteGraph'
@@ -54,10 +54,15 @@ export class GraphL {
         return this.nodes.length
     }
 
-    private _builder: NodeBuilder | null = null
-    get builder(): NodeBuilder {
+    _problems: { title: string; data?: any }[] = []
+    recordProblem = (title: string, data?: any) => {
+        this._problems.push({ title, data })
+    }
+
+    private _builder: GraphBuilder | null = null
+    get builder(): GraphBuilder {
         if (this._builder) return this._builder
-        this._builder = new NodeBuilder(this)
+        this._builder = new GraphBuilder(this)
         return this._builder
     }
 

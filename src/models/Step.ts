@@ -67,6 +67,7 @@ export class StepL {
             this.update({ status: scriptExecutionStatus })
         }
     }
+
     prompts = new LiveCollection<PromptL>(this, 'stepID', 'prompts')
     parentGraph = new LiveRef<this, GraphL>(this, 'parentGraphID', 'graphs')
     outputGraph = new LiveRef<this, GraphL>(this, 'outputGraphID', 'graphs')
@@ -79,4 +80,10 @@ export class StepL {
 
     runtime: Maybe<Runtime> = null
     append = (output: StepOutput) => this.update({ outputs: [...(this.data.outputs ?? []), output] })
+
+    // UI expand/collapse state
+    get defaultExpanded(): boolean{ return this.data.status === Status.Running } // prettier-ignore
+    userDefinedExpanded: Maybe<boolean> = null
+    get expanded() { return this.userDefinedExpanded ?? this.defaultExpanded } // prettier-ignore
+    set expanded(next:boolean) { this.userDefinedExpanded=next } // prettier-ignore
 }

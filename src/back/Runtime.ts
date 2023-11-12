@@ -23,7 +23,7 @@ import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
 import { wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSentToComfyUI'
-import { NodeBuilder } from './NodeBuilder'
+import { GraphBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
 import { assets } from 'src/utils/assets/assets'
@@ -77,7 +77,7 @@ export class Runtime {
         })
     }
 
-    get nodes(): NodeBuilder {
+    get nodes(): GraphBuilder {
         return this.graph.builder
     }
 

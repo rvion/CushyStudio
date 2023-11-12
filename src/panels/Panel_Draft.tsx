@@ -15,6 +15,7 @@ import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { CardIllustrationUI } from 'src/cards/fancycard/CardIllustrationUI'
 import { ActionDraftListUI } from 'src/widgets/drafts/ActionDraftListUI'
+import { showItemInFolder } from 'src/app/layout/openExternal'
 
 /**
  * this is the root interraction widget
@@ -82,7 +83,11 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 style={toJS(containerStyle ?? defaultContainerStyle)}
                 tw='flex flex-col flex-grow h-full'
             >
-                <div tw='col font justify-between mb-2 w-full bg-blue-950'>
+                <div
+                    //
+                    // style={{ background }}
+                    tw='col font justify-between mb-2 pb-2 w-full bg-contrasted-gradient'
+                >
                     <ActionDraftListUI card={card} />
                     <div tw='gap-2 flex flex-grow'>
                         <CardIllustrationUI card={card} size='5rem' />
@@ -105,14 +110,22 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                             <div tw='italic'>{card.manifest.description}</div>
                             {card.liteGraphJSON && (
                                 <Button
-                                    size='sm'
+                                    size='xs'
                                     startIcon={<span className='material-symbols-outlined'>open_in_new</span>}
-                                    appearance='ghost'
+                                    appearance='link'
                                     onClick={() => st.layout.addComfy(card.liteGraphJSON)}
                                 >
                                     Open in Comfy
                                 </Button>
                             )}
+                            <Button
+                                startIcon={<span className='material-symbols-outlined'>folder</span>}
+                                size='xs'
+                                appearance='link'
+                                onClick={() => showItemInFolder(card.absPath)}
+                            >
+                                open folder
+                            </Button>
                             {Boolean(card.authorDefinedManifest) ? (
                                 <GithubUserUI //
                                     showName
@@ -154,8 +167,17 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     </div>
                 </div>
                 {/* <ActionDraftListUI card={card} /> */}
-                <hr />
                 <ScrollablePaneUI className='flex-grow'>
+                    <TabUI>
+                        <div>Form</div>
+                        <div></div>
+                        <div>Form result</div>
+                        <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
+                        <div>Form state</div>
+                        <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10000)} />
+                        <div>Action code</div>
+                        <TypescriptHighlightedCodeUI code={card.codeJS ?? ''} />
+                    </TabUI>
                     <form
                         tw='pb-80 pl-2'
                         onKeyUp={(ev) => {
@@ -181,16 +203,6 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         />
                     </form>
                 </ScrollablePaneUI>
-                <TabUI title='Debug:' tw='mt-auto'>
-                    <div>no</div>
-                    <div></div>
-                    <div>result</div>
-                    <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
-                    <div>state</div>
-                    <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10000)} />
-                    <div>code</div>
-                    <TypescriptHighlightedCodeUI code={card.codeJS ?? ''} />
-                </TabUI>
             </div>
         </draftContext.Provider>
     )

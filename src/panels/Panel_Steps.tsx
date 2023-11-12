@@ -1,12 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from '../state/stateContext'
 import { InView } from 'react-intersection-observer'
-import { StepUI } from '../widgets/workspace/StepUI'
+import { StepBodyUI, StepHeaderUI, StepUI } from '../widgets/workspace/StepUI'
 
 export const Panel_Steps = observer(function StepListUI_(p: {}) {
     const st = useSt()
     const steps = st.db.steps
-    const lastGraph = st.db.graphs.last()
     return (
         <div className='flex flex-col'>
             {/* </Panel> */}
@@ -17,6 +16,18 @@ export const Panel_Steps = observer(function StepListUI_(p: {}) {
                     </InView>
                 ))}
             </div>
+        </div>
+    )
+})
+
+export const Panel_LastStep = observer(function StepListUI_(p: {}) {
+    const st = useSt()
+    const lastStep = st.db.steps.last()
+    if (lastStep == null) return null
+    return (
+        <div className='flex flex-col'>
+            {/* <StepHeaderUI step={lastStep} /> */}
+            <StepBodyUI step={lastStep} />
         </div>
     )
 })

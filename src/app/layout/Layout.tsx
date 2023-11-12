@@ -31,7 +31,7 @@ import { Panel_MachineManager } from '../../panels/Panel_MachineManager'
 import { Panel_Marketplace } from '../../panels/Panel_Marketplace'
 import { Panel_Minipaint } from '../../panels/Panel_Minipaint'
 import { Panel_Squoosh } from '../../panels/Panel_Squoosh'
-import { Panel_Steps } from '../../panels/Panel_Steps'
+import { Panel_LastStep, Panel_Steps } from '../../panels/Panel_Steps'
 import { Panel_ViewImage } from '../../panels/Panel_ViewImage'
 import { Panel_3dScene } from 'src/panels/Panel_3dScene'
 
@@ -47,6 +47,7 @@ enum Widget {
     ComfyUINodeExplorer = 'ComfyUINodeExplorer', //: { 'ComfyUINodeExplorer',}
     FileList = 'FileList', //: { 'FileList',}
     FileList2 = 'FileList2', //: { 'FileList2',}
+    LastStep = 'LastStep', //: { 'Steps',}
     Steps = 'Steps', //: { 'Steps',}
     LastGraph = 'LastGraph', //: { 'LastGraph',}
     LastImage = 'LastImage', //: { 'LastIMage',}
@@ -164,7 +165,8 @@ export class CushyLayoutManager {
         }
     }
     addImage = (imgID: ImageID) => this._AddWithProps(Widget.Image, `/image/${imgID}`, { title: '🎇 Image', imgID })
-    addLastImage = () => this._AddWithProps(Widget.LastImage, `/lastImage`, { title: '🎇 Last Image' })
+    addLastStep = (p: PropsOf<typeof Panel_LastStep>) => this._AddWithProps(Widget.LastStep, `/lastStep`, { title: '⎏ Last Step' }) // prettier-ignore
+    addLastImage = (p: PropsOf<typeof Panel_ViewImage>) => this._AddWithProps(Widget.LastImage, `/lastImage`, { title: '🎇 Last Image' }) // prettier-ignore
     addGallery = () => this._AddWithProps(Widget.Gallery, `/gallery`, { title: 'Gallery' })
     addHosts = () => this._AddWithProps(Widget.Hosts, `/hosts`, { title: 'Hosts' })
     addComfy = (litegraphJson?: Maybe<LiteGraphJSON>) => {
@@ -294,6 +296,7 @@ export class CushyLayoutManager {
             if (component === Widget.Steps)               return <Panel_Steps />
             if (component === Widget.LastGraph)           return <Panel_LastGraph />
             if (component === Widget.LastImage)           return <Panel_ViewImage />
+            if (component === Widget.LastStep)            return <Panel_LastStep />
             if (component === Widget.Civitai)             return <Panel_Civitai />
             if (component === Widget.Squoosh)             return <Panel_Squoosh />
             if (component === Widget.Hosts)               return <Panel_MachineManager />
@@ -347,10 +350,12 @@ export class CushyLayoutManager {
         const out: IJsonModel = {
             global: { tabSetEnableSingleTabStretch: true },
             borders: [
+                // LEFT BORDER
                 {
-                    //
                     type: 'border',
                     location: 'left',
+                    // selected: 0,
+                    show: true,
                     children: [
                         this._persistentTab({
                             name: 'Library',
@@ -358,6 +363,21 @@ export class CushyLayoutManager {
                             enableClose: false,
                             id: '/Library',
                             width: 300,
+                        }),
+                    ],
+                },
+                // RIGHT BORDER
+                {
+                    type: 'border',
+                    location: 'right',
+                    show: true,
+                    // selected: 0,
+                    children: [
+                        this._persistentTab({
+                            name: 'Runs',
+                            id: '/steps',
+                            widget: Widget.Steps,
+                            enableClose: false,
                         }),
                     ],
                 },
@@ -384,6 +404,16 @@ export class CushyLayoutManager {
                                         enableClose: false,
                                         id: '/draft',
                                     }),
+                                ],
+                            },
+                            {
+                                type: 'tabset',
+                                height: 200,
+                                minWidth: 150,
+                                minHeight: 150,
+                                children: [
+                                    this._persistentTab({ name: '⎏ Last step', widget: Widget.LastStep, id: '/LastStep' }),
+                                    // this._persistentTab('Hosts', Widget.Hosts),
                                 ],
                             },
                         ],
@@ -415,17 +445,6 @@ export class CushyLayoutManager {
                                     this._persistentTab({ name: '🎆 Gallery', widget: Widget.Gallery, id: '/gallery' }),
                                     // this._persistentTab('Hosts', Widget.Hosts),
                                 ],
-                            },
-                        ],
-                    },
-                    {
-                        id: 'middlePane',
-                        type: 'row',
-                        children: [
-                            {
-                                type: 'tabset',
-                                width: 250,
-                                children: [this._persistentTab({ name: 'Runs', id: '/steps', widget: Widget.Steps })],
                             },
                         ],
                     },

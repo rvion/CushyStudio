@@ -2,10 +2,11 @@ import type { GraphL } from 'src/models/Graph'
 
 import { ComfyNode } from '../core/Node'
 
-export interface NodeBuilder extends ComfySetup {}
+export interface GraphBuilder extends ComfySetup {}
 
-export class NodeBuilder {
-    private nameCache = new Map<string, number>()
+export class GraphBuilder {
+    // private nameCache = new Map<string, number>()
+
     constructor(public graph: GraphL) {
         const schema = graph.st.schema
         // TODO: rewrite with a single defineProperties call
@@ -22,12 +23,28 @@ export class NodeBuilder {
             // console.log(`node: ${node.name}`)
             try {
                 Object.defineProperty(this, node.nameInCushy, {
-                    value: (inputs: any) => {
-                        // const nthForGivenNode = this.nameCache.get(node.nameInCushy) ?? 0
-                        // const practicalNameWithinGraph = `${node.nameInCushy}_${nthForGivenNode}`
-                        // this.nameCache.set(node.nameInCushy, nthForGivenNode + 1)
-                        const uidNumber = (this.graph._uidNumber++).toString()
-                        return new ComfyNode(graph, uidNumber, {
+                    value: (inputs: any, uidToPreserve?: Maybe<string>) => {
+                        // ⏸️ const nthForGivenNode = this.nameCache.get(node.nameInCushy) ?? 0
+                        // ⏸️ const practicalNameWithinGraph = `${node.nameInCushy}_${nthForGivenNode}`
+                        // ⏸️ this.nameCache.set(node.nameInCushy, nthForGivenNode + 1)
+
+                        // 1. allocate an id
+                        let uidString: string
+                        if (uidToPreserve != null && uidToPreserve !== '') {
+                            // console.log(`>>> trying to preserve id: ${uidToPreserve}`)
+                            // increment the graph _uiNumber, so if we modify this later
+                            // we won't reuse the same uid and have broken conflicts
+                            const uidNumber = parseInt(uidToPreserve, 10)
+                            if (!isNaN(uidNumber) && uidNumber > this.graph._uidNumber)
+                                this.graph._uidNumber = Math.round(uidNumber + 1)
+
+                            uidString = uidToPreserve
+                        } else {
+                            uidString = (this.graph._uidNumber++).toString()
+                        }
+
+                        // 2. instanciate the node
+                        return new ComfyNode(graph, uidString, {
                             class_type: node.nameInComfy as any,
                             inputs,
                         })

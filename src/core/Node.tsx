@@ -185,9 +185,13 @@ export class ComfyNode<
             // console.log('def2=', field, schema.required)
             if (!schema.required) return undefined
             console.error(this.json)
-            throw new Error(
-                `🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}#${this.uid}) value is null`,
+            this.graph.recordProblem(
+                `🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}#${this.uid}) value is null but field is not optional`,
             )
+            return undefined
+            // throw new Error(
+            //     `🔴 [serializeValue] field "${field}" (of node ${this.$schema.nameInCushy}#${this.uid}) value is null`,
+            // )
         }
         if (typeof value === 'function') {
             return this.serializeValue(field, value(this.graph.builder, this.graph))
