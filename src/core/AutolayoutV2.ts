@@ -41,7 +41,7 @@ export const runAutolayout = async (graph: GraphL): Promise<CytoJSON> => {
                 id: node.uidNumber,
                 width: node.width * 1.2,
                 height: node.height * 1.2,
-                color: node.color,
+                // color: node.color ?? 'gray',
             },
         })
         for (const edge of node._incomingEdges()) {
@@ -66,7 +66,7 @@ export const runAutolayout = async (graph: GraphL): Promise<CytoJSON> => {
                 shape: 'rectangle',
                 width: 'data(width)',
                 height: 'data(height)',
-                'background-color': 'data(color)',
+                // 'background-color': 'data(color)',
                 'font-size': 6,
             },
         },
