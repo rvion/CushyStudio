@@ -39,7 +39,7 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFil
             }}
         >
             {/* <span className='material-symbols-outlined'>keyboard_arrow_right</span> */}
-            <img style={{ width: '1rem', height: '1rem' }} src={pack?.logo ?? ''}></img>
+            <img style={{ width: '2rem', height: '2rem' }} src={card.illustrationPathWithFileProtocol ?? pack?.logo ?? ''}></img>
             <div>{card.displayName}</div>
             <div tw='ml-auto'>
                 <ActionFavoriteBtnUI card={card} />
