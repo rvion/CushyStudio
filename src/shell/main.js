@@ -10,7 +10,8 @@ async function START() {
     // ⏸️     console.log('❌ error patching electron icon and name', error)
     // ⏸️ }
 
-    const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron')
+    const { app, BrowserWindow, globalShortcut, ipcMain, session } = require('electron')
+
     ipcMain.on('toggle-devtools', (event, arg) => {
         const focusedWindow = BrowserWindow.getFocusedWindow()
         if (focusedWindow) focusedWindow.webContents.toggleDevTools()
@@ -63,7 +64,7 @@ async function START() {
         mainWindow.maximize()
 
         // Open DevTools automatically
-        // mainWindow.webContents.openDevTools()
+        mainWindow.webContents.openDevTools()
 
         // check if cushy is running
         let viteStarted = false
@@ -95,6 +96,13 @@ async function START() {
     }
 
     app.whenReady().then(() => {
+        session.defaultSession.clearStorageData(null, (error) => {
+            if (error) console.log(error)
+            // in our case we need to restart the application
+            // app.relaunch();
+            // app.exit();
+        })
+
         createWindow()
         app.on('activate', function () {
             if (BrowserWindow.getAllWindows().length === 0) createWindow()

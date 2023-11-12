@@ -20,6 +20,7 @@ export type NodeInputExt = {
     type: string
     opts?: ComfyInputOpts
     isPrimitive: boolean
+    // isEnum: boolean
     required: boolean
     index: number
 }

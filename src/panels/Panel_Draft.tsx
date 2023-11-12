@@ -108,6 +108,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                                 </Button>
                             </div>
                             <div tw='italic'>{card.manifest.description}</div>
+                            {card.successfullLoadStrategies}
                             {card.liteGraphJSON && (
                                 <Button
                                     size='xs'

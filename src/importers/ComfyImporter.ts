@@ -172,6 +172,7 @@ export class ComfyImporter {
             // name of the group of fields where primitive input for this node
             // will be added to the form
             const inputGroupName = pNamer.name(`${node.class_type}`)
+            // const inputGroupName = pNamer.name(`${node.class_type}_${nodeID}`)
 
             const nodeInputs = Object.entries(node.inputs) ?? []
             const uiStuff: string[] = []

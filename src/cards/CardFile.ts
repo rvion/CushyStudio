@@ -4,7 +4,7 @@ import type { STATE } from 'src/state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 
-import { readFileSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import { makeAutoObservable, observable } from 'mobx'
 import path, { relative } from 'pathe'
 import { generateName } from 'src/widgets/drafts/generateName'
@@ -32,8 +32,8 @@ export type LoadStrategy =
     | 'asA1111PngGenerated'
 
 enum LoadStatus {
-    SUCCESS,
-    FAILURE,
+    SUCCESS = 1,
+    FAILURE = 0,
 }
 
 export class CardFile {
@@ -213,6 +213,7 @@ export class CardFile {
     loadRequested = false
 
     /** load a file trying all compatible strategies */
+    successfullLoadStrategies: Maybe<LoadStrategy> = null
     load = async (p?: { force?: boolean }): Promise<true> => {
         if (this.loadRequested && !p?.force) return true
         this.loadRequested = true
@@ -220,7 +221,10 @@ export class CardFile {
         const strategies = this.findLoadStrategies()
         for (const strategy of strategies) {
             const res = await this.loadWithStrategy(strategy)
-            if (res) break
+            if (res === LoadStatus.SUCCESS) {
+                this.successfullLoadStrategies = strategy
+                break
+            }
         }
         // if (this.action) this.displayName = this.action.name
         // this.st.layout.renameTab(`/action/${this.relPath}`, this.displayName)
@@ -320,7 +324,9 @@ export class CardFile {
         if (result == null) return this.addError(`❌ [load_asComfyUIGeneratedPng] no metadata in png`, null)
         if (!result.success) return this.addError(`❌ [load_asComfyUIGeneratedPng] metadata extraction failed`, result.value)
         const metadata = result.value
-        const workflowStr = (metadata as { [key: string]: any }).workflow
+        const workflowStr: string = (metadata as { [key: string]: any }).workflow
+        const promptStr: string = (metadata as { [key: string]: any }).prompt
+
         if (workflowStr == null) return this.addError(`❌ [load_asComfyUIGeneratedPng] no workflow in metadata`, metadata)
         const res = await this.importWorkflowFromStr(workflowStr)
         return res
