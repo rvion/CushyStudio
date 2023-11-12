@@ -103,13 +103,15 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                                 </Button>
                             </div>
                             <div tw='italic'>{card.manifest.description}</div>
-                            <GithubUserUI //
-                                showName
-                                tw='text-gray-500'
-                                prefix='by'
-                                size='1rem'
-                                username={card.deck.githubUserName}
-                            />
+                            {Boolean(card.authorDefinedManifest) ? (
+                                <GithubUserUI //
+                                    showName
+                                    tw='text-gray-500'
+                                    prefix='by'
+                                    size='1rem'
+                                    username={card.deck.githubUserName}
+                                />
+                            ) : null}
                         </div>
                     </div>
                     <div tw='flex gap-2 items-center'>

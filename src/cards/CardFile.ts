@@ -101,7 +101,7 @@ export class CardFile {
         )
     }
 
-    private get authorDefinedManifest(): Maybe<CardManifest> {
+    get authorDefinedManifest(): Maybe<CardManifest> {
         const cards = this.deck.manifest.cards ?? []
         const match = cards.find((c) => {
             const absPath = path.join(this.deck.folderAbs, c.deckRelativeFilePath)
