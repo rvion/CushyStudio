@@ -34,6 +34,7 @@ import { Panel_Squoosh } from '../../panels/Panel_Squoosh'
 import { Panel_LastStep, Panel_Steps } from '../../panels/Panel_Steps'
 import { Panel_ViewImage } from '../../panels/Panel_ViewImage'
 import { Panel_3dScene } from 'src/panels/Panel_3dScene'
+import { Panel_ViewLatent } from 'src/panels/Panel_ViewLatent'
 
 // still on phone
 enum Widget {
@@ -51,6 +52,7 @@ enum Widget {
     Steps = 'Steps', //: { 'Steps',}
     LastGraph = 'LastGraph', //: { 'LastGraph',}
     LastImage = 'LastImage', //: { 'LastIMage',}
+    LastLatent = 'LastLatent', //: { 'LastIMage',}
     Civitai = 'Civitai', //: { 'Civitai',}
     Squoosh = 'Squoosh', //: { 'Squoosh',}
     Image = 'Image', //: { 'Image',}
@@ -296,6 +298,7 @@ export class CushyLayoutManager {
             if (component === Widget.Steps)               return <Panel_Steps />
             if (component === Widget.LastGraph)           return <Panel_LastGraph />
             if (component === Widget.LastImage)           return <Panel_ViewImage />
+            if (component === Widget.LastLatent)          return <Panel_ViewLatent />
             if (component === Widget.LastStep)            return <Panel_LastStep />
             if (component === Widget.Civitai)             return <Panel_Civitai />
             if (component === Widget.Squoosh)             return <Panel_Squoosh />
@@ -371,8 +374,14 @@ export class CushyLayoutManager {
                     type: 'border',
                     location: 'right',
                     show: true,
-                    // selected: 0,
+                    selected: 0,
                     children: [
+                        this._persistentTab({
+                            name: '⎏ Last step',
+                            widget: Widget.LastStep,
+                            id: '/LastStep',
+                            enableClose: false,
+                        }),
                         this._persistentTab({
                             name: 'Runs',
                             id: '/steps',
@@ -406,16 +415,16 @@ export class CushyLayoutManager {
                                     }),
                                 ],
                             },
-                            {
-                                type: 'tabset',
-                                height: 200,
-                                minWidth: 150,
-                                minHeight: 150,
-                                children: [
-                                    this._persistentTab({ name: '⎏ Last step', widget: Widget.LastStep, id: '/LastStep' }),
-                                    // this._persistentTab('Hosts', Widget.Hosts),
-                                ],
-                            },
+                            // {
+                            //     type: 'tabset',
+                            //     height: 200,
+                            //     minWidth: 150,
+                            //     minHeight: 150,
+                            //     children: [
+                            //         this._persistentTab({ name: '⎏ Last step', widget: Widget.LastStep, id: '/LastStep' }),
+                            //         // this._persistentTab('Hosts', Widget.Hosts),
+                            //     ],
+                            // },
                         ],
                     },
                     {
@@ -443,6 +452,7 @@ export class CushyLayoutManager {
                                 minHeight: 150,
                                 children: [
                                     this._persistentTab({ name: '🎆 Gallery', widget: Widget.Gallery, id: '/gallery' }),
+                                    this._persistentTab({ name: '🎆 Latent', widget: Widget.LastLatent, id: '/LastLatent' }),
                                     // this._persistentTab('Hosts', Widget.Hosts),
                                 ],
                             },
