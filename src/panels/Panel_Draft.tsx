@@ -44,13 +44,13 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     if (card == null)
         return (
             <Message type='error'>
-                <pre tw='bg-red-900'>❌ card file not found</pre>
+                <pre tw='bg-red-900'>❌ Action not found</pre>
             </Message>
         )
 
     // 3. get action
-    const action = card.getAction()
-    if (action == null)
+    const compiledAction = card.getCompiledAction()
+    if (compiledAction == null)
         return (
             <Message type='error'>
                 <pre tw='text-red-600'>❌ action not found</pre>
@@ -69,12 +69,10 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         )
 
     // 5. render form
-    const { containerClassName, containerStyle } = action ?? {}
+    const { containerClassName, containerStyle } = compiledAction ?? {}
     const defaultContainerStyle = {
-        // maxWidth: '40rem',
-        // width: 'fit-content',
         margin: '0 auto',
-        padding: '1rem',
+        // padding: '1rem',
     }
     return (
         <draftContext.Provider value={draft} key={draft.id}>
@@ -84,16 +82,17 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 style={toJS(containerStyle ?? defaultContainerStyle)}
                 tw='flex flex-col flex-grow h-full'
             >
-                <div tw='col font justify-between mb-2 w-full'>
+                <div tw='col font justify-between mb-2 w-full bg-blue-950'>
                     <ActionDraftListUI card={card} />
                     <div tw='gap-2 flex flex-grow'>
                         <CardIllustrationUI card={card} size='5rem' />
-                        <div tw='w-full'>
+                        <div tw='flex-grow overflow-hidden'>
                             <div tw='flex gap-2 items-center'>
-                                <b tw='flex-grow' style={{ fontSize: '1.3rem' }}>
+                                <b tw='overflow-hidden overflow-ellipsis whitespace-nowrap' style={{ fontSize: '1.3rem' }}>
                                     {card.displayName}
                                 </b>
                                 <Button
+                                    tw='flex-shrink-0'
                                     color='blue'
                                     size='xs'
                                     appearance='subtle'
@@ -143,9 +142,10 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     </div>
                 </div>
                 {/* <ActionDraftListUI card={card} /> */}
-                <ScrollablePaneUI className='flex-grow xxxxx'>
+                <hr />
+                <ScrollablePaneUI className='flex-grow'>
                     <form
-                        tw='pb-80'
+                        tw='pb-80 pl-2'
                         onKeyUp={(ev) => {
                             // submit on meta+enter
                             if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {

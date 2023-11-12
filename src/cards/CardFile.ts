@@ -193,7 +193,7 @@ export class CardFile {
             .filter((draft) => draft.data.actionPath === this.relPath)
     }
 
-    getAction() {
+    getCompiledAction() {
         this.load()
         return this.action
     }
