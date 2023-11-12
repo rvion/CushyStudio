@@ -14,6 +14,7 @@ import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../widgets/m
 import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { CardIllustrationUI } from 'src/cards/fancycard/CardIllustrationUI'
+import { ActionDraftListUI } from 'src/widgets/drafts/ActionDraftListUI'
 
 /**
  * this is the root interraction widget
@@ -21,10 +22,16 @@ import { CardIllustrationUI } from 'src/cards/fancycard/CardIllustrationUI'
  * of things it needs to know.
  */
 
-export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | DraftID }) {
+export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
     const st = useSt()
-    const draft = typeof p.draft === 'string' ? st.db.drafts.get(p.draft) : p.draft
+    const draft = typeof p.draftID === 'string' ? st.db.drafts.get(p.draftID) : p.draftID
+    return <DraftUI draft={draft} />
+})
+
+export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
+    const st = useSt()
+    const draft = p.draft
     if (draft == null)
         return (
             <Message type='error'>
@@ -78,6 +85,7 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draft: DraftL | D
                 tw='flex flex-col flex-grow h-full'
             >
                 <div tw='col font justify-between mb-2 w-full'>
+                    <ActionDraftListUI card={card} />
                     <div tw='gap-2 flex flex-grow'>
                         <CardIllustrationUI card={card} size='5rem' />
                         <div tw='w-full'>

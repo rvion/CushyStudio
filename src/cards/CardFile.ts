@@ -180,7 +180,7 @@ export class CardFile {
             graphID: pj.rootGraph.id,
             title: title,
         })
-        pj.st.layout.addDraft(this.name, draft.id)
+        pj.st.layout.addDraft({ draftID: draft.id })
         return draft
     }
     getLastDraft = (): DraftL => {

@@ -31,7 +31,7 @@ export const ActionDraftListUI = observer(function ActionDraftListUI_(p: { card:
                     <div key={draft.id} tw='cursor-pointer row'>
                         <InputGroup style={{ borderBottom: 'none', borderBottomRightRadius: 0, borderBottomLeftRadius: 0 }}>
                             <Input
-                                onClick={() => st.layout.addDraft(title, draft.id)}
+                                onClick={() => st.layout.addDraft({ draftID: draft.id })}
                                 tw={[active ? 'bg-gray-700' : null, 'font-mono']}
                                 onChange={(next) => draft.update({ title: next })}
                                 size='xs'

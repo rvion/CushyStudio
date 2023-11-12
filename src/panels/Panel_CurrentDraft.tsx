@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { Message } from 'rsuite'
 import { useSt } from 'src/state/stateContext'
-import { ComboUI } from '../app/shortcuts/ComboUI'
 import { MainNavEntryUI } from '../app/layout/MainNavEntryUI'
-import { Panel_Draft } from './Panel_Draft'
+import { ComboUI } from '../app/shortcuts/ComboUI'
+import { DraftUI } from './Panel_Draft'
 
 export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
     const st = useSt()
@@ -42,5 +42,5 @@ export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
             </Message>
         )
     // if (draft?.draftID == null) return <ActionDraftListUI card={card} />
-    return <Panel_Draft draft={draft} />
+    return <DraftUI draft={draft} />
 })

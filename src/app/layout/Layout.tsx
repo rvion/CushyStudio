@@ -19,7 +19,7 @@ import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 
 import { Panel_Draft } from '../../panels/Panel_Draft'
 import { Panel_FileTree } from '../../panels/Panel_FileTree'
-import { Panel_Card } from '../../panels/Panel_Card'
+// import { Panel_Card } from '../../panels/Panel_Card'
 import { Panel_Civitai } from '../../panels/Panel_Civitai'
 import { Panel_ComfyNodeExplorer } from '../../panels/Panel_ComfyNodeExplorer'
 import { Panel_ComfyUI } from '../../panels/Panel_ComfyUI'
@@ -41,7 +41,7 @@ enum Widget {
     DisplacedImage = 'DisplacedImage', //: { 'DisplacedImage',}
     Paint = 'Paint', //: { 'Paint',}
     CurrentDraft = 'CurrentDraft', //: { 'CurrentDraft',}
-    Card = 'Card', //: { 'Card',}
+    // Card = 'Card', //: { 'Card',}
     Draft = 'Draft', //: { 'Draft',}
     ComfyUI = 'ComfyUI', //: { 'ComfyUI',}
     ComfyUINodeExplorer = 'ComfyUINodeExplorer', //: { 'ComfyUINodeExplorer',}
@@ -182,18 +182,24 @@ export class CushyLayoutManager {
     }
 
     addCard = (actionPath: CardPath) => {
-        const af = this.st.library.getCard(actionPath)
-        const icon = af?.illustrationPathWithFileProtocol
-        this._AddWithProps(Widget.Card, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
+        const card = this.st.library.getCard(actionPath)
+        if (card == null) return null /* 🔴 add popup somewhere */
+        const draft = card.getLastDraft()
+        this.addDraft({ draftID: draft?.id ?? '❌' })
+        // const icon = af?.illustrationPathWithFileProtocol
+        // this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }
 
     addCurrentDraft = () => {
         this._AddWithProps(Widget.CurrentDraft, `/draft`, { title: 'Current Draft' })
     }
-    addDraft = (title: string, draftID: DraftID) => {
-        const draft = this.st.db.drafts.get(draftID)
-        const af = draft?.card
-        const icon = af?.illustrationPathWithFileProtocol
+
+    addDraft = (p: PropsOf<typeof Panel_Draft>) => {
+        const draftID = p.draftID
+        const draft = this.st.db.drafts.get(p.draftID)
+        const card = draft?.card
+        const icon = card?.illustrationPathWithFileProtocol
+        const title = card?.displayName ?? 'Draft'
         this._AddWithProps(Widget.Draft, `/draft/${draftID}`, { title, draftID, icon }, 'current')
     }
 
@@ -281,7 +287,7 @@ export class CushyLayoutManager {
             if (component === Widget.Gallery)             return <Panel_Gallery />
             if (component === Widget.Paint)               return <Panel_Minipaint {...extra} /> // You can now use imgID to instantiate your paint component properly
             if (component === Widget.Image)               return <Panel_ViewImage imageID={extra.imgID}></Panel_ViewImage> // You can now use imgID to instantiate your paint component properly
-            if (component === Widget.Card)                return <Panel_Card      actionPath={extra.actionPath} />
+            // if (component === Widget.Card)                return <Panel_Card      actionPath={extra.actionPath} />
             if (component === Widget.ComfyUI)             return <Panel_ComfyUI   litegraphJson={extra.litegraphJson} />
             if (component === Widget.FileList)            return <Panel_DeckList />
             if (component === Widget.FileList2)           return <Panel_FileTree />
@@ -293,7 +299,7 @@ export class CushyLayoutManager {
             if (component === Widget.Hosts)               return <Panel_MachineManager />
             if (component === Widget.Marketplace)         return <Panel_Marketplace />
             if (component === Widget.Config)              return <Panel_Config />
-            if (component === Widget.Draft)               return <Panel_Draft     draft={extra.draftID} />
+            if (component === Widget.Draft)               return <Panel_Draft     {...extra} />
             if (component === Widget.CurrentDraft)        return <Panel_CurrentDraft />
             if (component === Widget.ComfyUINodeExplorer) return <Panel_ComfyNodeExplorer />
             if (component === Widget.Deck)                return <div>🔴 todo: action pack page: show readme</div>
