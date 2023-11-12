@@ -792,7 +792,7 @@
 ,    "ControlNetLoader": {
         "input": {
             "required": {
-                "control_net_name": [["control-lora-canny-rank128.safetensors","control-lora-depth-rank128.safetensors","control-lora-depth-rank256.safetensors","control-lora-recolor-rank128.safetensors","control-lora-sketch-rank128-metadata.safetensors","control_depth-fp16.safetensors","control_openpose-fp16.safetensors","control_scribble-fp16.safetensors","control_v11p_sd15_canny_fp16.safetensors","control_v11p_sd15_lineart_fp16.safetensors","control_v11u_sd15_tile.pth","control_v11u_sd15_tile_fp16.safetensors","t2iadapter_canny_sd14v1.pth","t2iadapter_sketch_sd14v1.pth"]]
+                "control_net_name": [["control-lora-canny-rank128.safetensors","control-lora-canny-rank256.safetensors","control-lora-depth-rank128.safetensors","control-lora-depth-rank256.safetensors","control-lora-recolor-rank128.safetensors","control-lora-sketch-rank128-metadata.safetensors","control_depth-fp16.safetensors","control_openpose-fp16.safetensors","control_scribble-fp16.safetensors","control_v11p_sd15_canny_fp16.safetensors","control_v11p_sd15_lineart_fp16.safetensors","control_v11u_sd15_tile.pth","control_v11u_sd15_tile_fp16.safetensors","t2iadapter_canny_sd14v1.pth","t2iadapter_sketch_sd14v1.pth"]]
             }
         }
 ,        "output": ["CONTROL_NET"]
@@ -808,7 +808,7 @@
         "input": {
             "required": {
                 "model": ["MODEL"]
-,                "control_net_name": [["control-lora-canny-rank128.safetensors","control-lora-depth-rank128.safetensors","control-lora-depth-rank256.safetensors","control-lora-recolor-rank128.safetensors","control-lora-sketch-rank128-metadata.safetensors","control_depth-fp16.safetensors","control_openpose-fp16.safetensors","control_scribble-fp16.safetensors","control_v11p_sd15_canny_fp16.safetensors","control_v11p_sd15_lineart_fp16.safetensors","control_v11u_sd15_tile.pth","control_v11u_sd15_tile_fp16.safetensors","t2iadapter_canny_sd14v1.pth","t2iadapter_sketch_sd14v1.pth"]]
+,                "control_net_name": [["control-lora-canny-rank128.safetensors","control-lora-canny-rank256.safetensors","control-lora-depth-rank128.safetensors","control-lora-depth-rank256.safetensors","control-lora-recolor-rank128.safetensors","control-lora-sketch-rank128-metadata.safetensors","control_depth-fp16.safetensors","control_openpose-fp16.safetensors","control_scribble-fp16.safetensors","control_v11p_sd15_canny_fp16.safetensors","control_v11p_sd15_lineart_fp16.safetensors","control_v11u_sd15_tile.pth","control_v11u_sd15_tile_fp16.safetensors","t2iadapter_canny_sd14v1.pth","t2iadapter_sketch_sd14v1.pth"]]
             }
         }
 ,        "output": ["CONTROL_NET"]
@@ -15595,9 +15595,9 @@
 ,    "Cache Node": {
         "input": {
             "required": {
-                "latent_suffix": ["STRING",{"default":"84840941_cache","multiline":false}]
-,                "image_suffix": ["STRING",{"default":"56708040_cache","multiline":false}]
-,                "conditioning_suffix": ["STRING",{"default":"81931236_cache","multiline":false}]
+                "latent_suffix": ["STRING",{"default":"70928666_cache","multiline":false}]
+,                "image_suffix": ["STRING",{"default":"59437982_cache","multiline":false}]
+,                "conditioning_suffix": ["STRING",{"default":"31118551_cache","multiline":false}]
             }
 ,            "optional": {
                 "output_path": ["STRING",{"default":"C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache","multiline":false}]

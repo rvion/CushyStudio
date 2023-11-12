@@ -54,7 +54,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const compiledAction = card.getCompiledAction()
     if (compiledAction == null) {
         return (
-            <div>
+            <div style={{ background: '#210202' }}>
                 <h3 tw='text-red-600'>invalid action</h3>
                 <Message showIcon type='info'>
                     <div>loading strategies attempted:</div>

@@ -1,7 +1,8 @@
-import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode } from './LiteGraph'
+import type { LiteGraphJSON, LiteGraphLink, LiteGraphLinkID, LiteGraphNode, LiteGraphNodeInput } from './LiteGraph'
 import type { ComfyNodeJSON, ComfyPromptJSON } from 'src/types/ComfyPrompt'
-import type { ComfyNodeSchema, SchemaL } from '../models/Schema'
+import type { ComfyNodeSchema, NodeInputExt, SchemaL } from '../models/Schema'
 import { bang } from '../utils/misc/bang'
+import { howManyWidgetValuesForThisInputType, howManyWidgetValuesForThisSchemaType } from './Primitives'
 
 export const convertLiteGraphToPrompt = (
     //
@@ -77,47 +78,33 @@ export const convertLiteGraphToPrompt = (
             LOG(`❌ current prompt Step is:`, { prompt })
             throw new Error(`❌ node ${node.id}(${node.type}) has no schema`)
         }
-        const nodeInputs = nodeSchema.inputs
-        if (nodeInputs == null) throw new Error(`❌ node ${node.id}(${node.type}) has no input`)
+        const inputsInNodeSchema: NodeInputExt[] = nodeSchema.inputs
+        if (inputsInNodeSchema == null) throw new Error(`❌ node ${node.id}(${node.type}) has no input`)
 
         let offset = 0
         // new logic:
         // 1 insert all values found in the node, regardless of the schema
         // 2. then insert all values or default from the schema
 
-        // const shouldDebug = nodeTypeName === 'Evaluate Strings'
-        // if (shouldDebug) debugger
-
         // 2. By Schema -----------------------------------------------------
-        for (const field of nodeSchema.inputs) {
-            // seeds will require specific handling to offset their sidecard "randomize/fixed" stuff
-            const isSeed =
-                field.type === 'INT' && //
-                (field.nameInComfy === 'seed' || field.nameInComfy === 'noise_seed')
+        const inputsInNodeJSON: LiteGraphNodeInput[] = node?.inputs ?? []
+        for (const field of inputsInNodeSchema) {
+            const input = inputsInNodeJSON.find((i) => i.name === field.nameInComfy)
+            const MUST_CONSUME = input?.type //
+                ? howManyWidgetValuesForThisInputType(input.type, field.nameInComfy)
+                : howManyWidgetValuesForThisSchemaType(field)
 
-            // don't handle the links
-            if (fieldNamesWithLinks.has(field.nameInComfy)) {
+            // don't handle the non-primitive links
+            if (MUST_CONSUME) {
+                const _value = node.widgets_values[offset]
+                LOG(`${FIELD_PREFIX} 🟰 ${field.nameInComfy} = ${_value} [VALUE] (consume ${MUST_CONSUME} fields)`)
+                inputs[field.nameInComfy] = _value
+                offset += MUST_CONSUME
+            } else {
+                if (!fieldNamesWithLinks.has(field.nameInComfy))
+                    throw new Error(`🔴, ${field.type}, ${field.nameInComfy}, ${MUST_CONSUME}`)
                 LOG(`${FIELD_PREFIX} 👻 ${field.nameInComfy} [LINK] ${field.type}`)
-                const isEnum = field.type.startsWith('Enum_')
-                if (isEnum || field.isPrimitive) offset++ // for the value still present
-                if (isSeed) offset++ // for the weird 'randomize/fixed' stuff always present in standalone "primitives" nodes // 🔴
-                continue
             }
-
-            // assign the value, and increment offset
-
-            LOG(`${FIELD_PREFIX} 👉 offset is ${offset}`)
-            const _value = node.widgets_values[offset++]
-            LOG(`${FIELD_PREFIX} 🟰 ${field.nameInComfy} = ${_value} [VALUE]`)
-            inputs[field.nameInComfy] = _value
-
-            // if the field is a seed, increment offset again
-            // cause inlined primitives seeds take two spaces
-            if (isSeed) {
-                LOG(`${FIELD_PREFIX} 2️⃣ OFFSETTING SEED`)
-                offset++
-            }
-            // for (const val of node.widgets_values)
         }
 
         type ParentInfo = { node: LiteGraphNode; link: LiteGraphLink }
@@ -131,6 +118,10 @@ export const convertLiteGraphToPrompt = (
         }
 
         INPT: for (const ipt of node?.inputs ?? []) {
+            const isPrimitive = howManyWidgetValuesForThisInputType(ipt.type, ipt.name) > 0
+            // console.log(node.id, ipt.name, isPrimitive)
+            if (isPrimitive) continue
+
             let parent: Maybe<ParentInfo> = null
             let max = 100
             while ((parent == null || parent.node.type === 'Reroute') && max-- > 0) {
@@ -143,18 +134,10 @@ export const convertLiteGraphToPrompt = (
                 parent = getParentNode(linkId)
             }
 
-            if (parent == null) {
-                throw new Error(`no parent found for ${node.id}.${ipt.name})`)
-            }
+            if (parent == null) throw new Error(`no parent found for ${node.id}.${ipt.name})`)
 
-            if (parent.node.type === 'PrimitiveNode') {
-                const _value = PRIMITIVE_VALUES[parent.node.id]
-                LOG(`${FIELD_PREFIX} 🟰 ${ipt.name} = ${_value} [INLINING]`)
-                inputs[ipt.name] = _value
-            } else {
-                LOG(`${FIELD_PREFIX} 🟰 ${ipt.name} = [${String(parent.node.id)}, ${parent.link[2]}] [LINK ${parent.node.type}]`)
-                inputs[ipt.name] = [String(parent.node.id), parent.link[2]]
-            }
+            LOG(`${FIELD_PREFIX} 🟰 ${ipt.name} = [${String(parent.node.id)}, ${parent.link[2]}] [LINK ${parent.node.type}]`)
+            inputs[ipt.name] = [String(parent.node.id), parent.link[2]]
         }
 
         LOG(`    | [🟢 OK] node ${node.id}(${node.type}) => ${JSON.stringify(inputs)}`)

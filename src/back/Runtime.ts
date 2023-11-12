@@ -96,12 +96,11 @@ export class Runtime {
     pick = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
     run = async (): Promise<Status> => {
         // return Status.Success
-        // 1. ensure we have a tool
         const start = Date.now()
         const action = this.step.action
         const actionResult = this.step.data.formResult
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
-        console.log(`🔴 before: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
+        console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
         try {
             if (action == null) {
                 console.log(`❌ action not found`)
