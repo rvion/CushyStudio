@@ -167,7 +167,7 @@ export class CushyLayoutManager {
     addLastImage = () => this._AddWithProps(Widget.LastImage, `/lastImage`, { title: '🎇 Last Image' })
     addGallery = () => this._AddWithProps(Widget.Gallery, `/gallery`, { title: 'Gallery' })
     addHosts = () => this._AddWithProps(Widget.Hosts, `/hosts`, { title: 'Hosts' })
-    addComfy = (litegraphJson?: LiteGraphJSON) => {
+    addComfy = (litegraphJson?: Maybe<LiteGraphJSON>) => {
         const icon = assets.public_ComfyUILogo_png
         if (litegraphJson == null) {
             return this._AddWithProps(Widget.ComfyUI, `/litegraph/blank`, { title: 'Comfy', icon, litegraphJson: null })

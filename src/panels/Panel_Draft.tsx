@@ -103,6 +103,16 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                                 </Button>
                             </div>
                             <div tw='italic'>{card.manifest.description}</div>
+                            {card.liteGraphJSON && (
+                                <Button
+                                    size='sm'
+                                    startIcon={<span className='material-symbols-outlined'>open_in_new</span>}
+                                    appearance='ghost'
+                                    onClick={() => st.layout.addComfy(card.liteGraphJSON)}
+                                >
+                                    Open in Comfy
+                                </Button>
+                            )}
                             {Boolean(card.authorDefinedManifest) ? (
                                 <GithubUserUI //
                                     showName
