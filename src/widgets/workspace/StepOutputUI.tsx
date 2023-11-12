@@ -9,6 +9,7 @@ import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
 import { ButtonOpenInComfyUI } from './ButtonOpenInComfyUI'
 import { GraphSummaryUI } from './GraphSummaryUI'
 import { useSt } from 'src/state/stateContext'
+import { JsonViewUI } from './JsonViewUI'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
@@ -87,12 +88,11 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
     if (msg.type === 'runtimeError')
         return (
             <Panel
-                // collapsible
                 header={
-                    <div className='flex'>
-                        <div>❌ Runtime Error</div>
+                    <div className='flex items-center bg-red-950'>
+                        <div tw='flex-grow'>❌ Runtime Error: {msg.message}</div>
                         {msg.graphID ? (
-                            <div className='ml-auto'>
+                            <div tw='shrink-0'>
                                 <ButtonDownloadFilesUI graph={msg.graphID} />
                                 <ButtonOpenInComfyUI graph={outputGraph} />
                             </div>
@@ -100,11 +100,7 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
                     </div>
                 }
             >
-                <div>{msg.message}</div>
-
-                <pre>{JSON.stringify(msg.infos?.message, null, 3)}</pre>
-                <pre>{JSON.stringify(msg.infos?.message, null, 3)}</pre>
-                <pre>{JSON.stringify(msg.infos, null, 3)}</pre>
+                <JsonViewUI value={msg.infos} />
             </Panel>
         )
 

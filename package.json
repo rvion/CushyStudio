@@ -64,6 +64,7 @@
         "@sinclair/typebox": "^0.31.23",
         "@types/papaparse": "^5.3.11",
         "@types/three": "^0.158.2",
+        "@uiw/react-json-view": "^2.0.0-alpha.9",
         "chokidar": "^3.5.3",
         "concurrently": "^8.2.2",
         "cors": "^2.8.5",
