@@ -524,7 +524,7 @@ export class ComfyNodeSchema {
         let out = '/**'
         if (opts.default != null)
             out +=
-                this.nameInCushy === 'WASCacheNode' //
+                this.nameInComfy === 'Cache Node' //
                     ? ` default='<redacted>'`
                     : ` default=${JSON.stringify(opts.default)}`
         if (opts.min != null) out += ` min=${JSON.stringify(opts.max)}`

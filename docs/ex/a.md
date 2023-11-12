@@ -4078,14 +4078,8 @@ export type Embeddings = 'EasyNegative' | 'bad-artist-anime' | 'bad-artist' | 'b
 
 // 3. Suggestions -------------------------------
 export interface CanProduce_boolean {}
-export interface CanProduce_boolean {}
 export interface CanProduce_number {}
 export interface CanProduce_number {}
-export interface CanProduce_number {}
-export interface CanProduce_number {}
-export interface CanProduce_string {}
-export interface CanProduce_string {}
-export interface CanProduce_string {}
 export interface CanProduce_string {}
 export interface CanProduce_LATENT extends Pick<ComfySetup, 'KSampler' | 'VAEEncode' | 'VAEEncodeForInpaint' | 'EmptyLatentImage' | 'LatentUpscale' | 'LatentUpscaleBy' | 'LatentFromBatch' | 'RepeatLatentBatch' | 'KSamplerAdvanced' | 'SetLatentNoiseMask' | 'LatentComposite' | 'LatentBlend' | 'LatentRotate' | 'LatentFlip' | 'LatentCrop' | 'VAEEncodeTiled' | 'LoadLatent' | 'LatentAdd' | 'LatentSubtract' | 'LatentMultiply' | 'LatentCompositeMasked' | 'RebatchLatents' | 'SamplerCustom' | 'SamplerCustom' | 'LatentClamp' | 'ADE$_EmptyLatentImageLarge' | 'AnimateDiffLoaderV1' | 'ADE$_AnimateDiffLoaderV1Advanced' | 'LatentPixelScale' | 'IterativeLatentUpscale' | 'TwoSamplersForMask' | 'TwoAdvancedSamplersForMask' | 'LatentReceiver' | 'ImpactKSamplerBasicPipe' | 'ImpactKSamplerAdvancedBasicPipe' | 'ReencodeLatent' | 'ReencodeLatentPipe' | 'RegionalSampler' | 'RegionalSamplerAdvanced' | 'RemoveNoiseMask' | 'KSampler_$3$3Inspire' | 'KSamplerAdvanced_$3$3Inspire' | 'KSamplerProgress_$3$3Inspire' | 'KSamplerProgress_$3$3Inspire' | 'KSamplerAdvancedProgress_$3$3Inspire' | 'KSamplerAdvancedProgress_$3$3Inspire' | 'LatentUpscaleFactor_$_O' | 'LatentUpscaleFactorSimple_$_O' | 'selectLatentFromBatch_$_O' | 'LatentUpscaleMultiply' | 'CR_Latent_Batch_Size' | 'CR_Latent_Input_Switch' | 'CR_Img2Img_Process_Switch' | 'CR_Hires_Fix_Process_Switch' | 'CR_Module_Input' | 'BatchValueScheduleLatentInput' | 'BatchPromptScheduleSDXLLatentInput' | 'BatchPromptScheduleLatentInput' | 'Latent_Switch_$1JPS$2' | 'BNK$_NoisyLatentImage' | 'BNK$_SlerpLatent' | 'BNK$_InjectNoise' | 'BNK$_Unsampler' | 'BNK$_TiledKSamplerAdvanced' | 'BNK$_TiledKSampler' | 'ttN_pipeLoader' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_hiresfixScale' | 'Latent_Scale_by_ratio' | 'Latent_Scale_to_side' | 'LatentComposite_with_tuples' | 'LatentByRatio' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'SDXL_Empty_Latent_Image_$1rgthree$2' | 'SDXLMixSampler' | 'Blend_Latents' | 'Latent_Input_Switch' | 'Load_Cache' | 'KSampler_$1WAS$2' | 'KSampler_Cycle' | 'Latent_Noise_Injection' | 'Latent_Upscale_by_Factor_$1WAS$2' | 'Samples_Passthrough_$1Stat_System$2' | 'KSamplerAdvanced_$1WLSH$2' | 'Empty_Latent_by_Pixels_$1WLSH$2' | 'Empty_Latent_by_Ratio_$1WLSH$2' | 'Empty_Latent_by_Size_$1WLSH$2' | 'SDXL_Quick_Empty_Latent_$1WLSH$2' | 'VAE_Encode_for_Inpaint_w$3Padding_$1WLSH$2'> { }
 export interface CanProduce_MODEL extends Pick<ComfySetup, 'CheckpointLoaderSimple' | 'LoraLoader' | 'UNETLoader' | 'unCLIPCheckpointLoader' | 'CheckpointLoader' | 'DiffusersLoader' | 'HypernetworkLoader' | 'ModelMergeSimple' | 'ModelMergeBlocks' | 'ModelMergeSubtract' | 'ModelMergeAdd' | 'TomePatchModel' | 'FreeU' | 'FreeU$_V2' | 'HyperTile' | 'ModelSamplingDiscrete' | 'CivitAI$_Lora$_Loader' | 'CivitAI$_Checkpoint$_Loader' | 'ModelClamp' | 'ADE$_AnimateDiffLoaderWithContext' | 'ADE$_AnimateDiffUnload' | 'CheckpointLoaderSimpleWithNoiseSelect' | 'AnimateDiffLoaderV1' | 'ADE$_AnimateDiffLoaderV1Advanced' | 'LoraLoader$8pysssss' | 'CheckpointLoader$8pysssss' | 'FromDetailerPipe' | 'FromDetailerPipe$_v2' | 'FromDetailerPipeSDXL' | 'FromDetailerPipeSDXL' | 'FromBasicPipe' | 'FromBasicPipe$_v2' | 'ImpactWildcardEncode' | 'LoraLoaderBlockWeight_$3$3Inspire' | 'WildcardEncode_$3$3Inspire' | 'RegionalIPAdapterMask_$3$3Inspire' | 'RegionalIPAdapterColorMask_$3$3Inspire' | 'FromIPAdapterPipe_$3$3Inspire' | 'CR_Load_LoRA' | 'CR_Apply_LoRA_Stack' | 'CR_Model_Input_Switch' | 'CR_Switch_Model_and_CLIP' | 'CR_Apply_Model_Merge' | 'CR_Module_Input' | 'Lora_Loader_$1JPS$2' | 'Model_Switch_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'SDXL_Fundamentals_MultiPipe_$1JPS$2' | 'Images_Masks_MultiPipe_$1JPS$2' | 'ttN_pipeLoader' | 'ttN_pipeKSampler' | 'ttN_pipeKSamplerAdvanced' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeLoaderSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeKSamplerSDXL' | 'ttN_pipeOUT' | 'ttN_pipeEDIT' | 'ttN_multiModelMerge' | 'Context_Big_$1rgthree$2' | 'Context_$1rgthree$2' | 'Context_Switch_$1rgthree$2' | 'Context_Switch_Big_$1rgthree$2' | 'Lora_Loader_Stack_$1rgthree$2' | 'Power_Prompt_$1rgthree$2' | 'SDXL_Power_Prompt_$7_Positive_$1rgthree$2' | 'Bus_Node' | 'Checkpoint_Loader' | 'Checkpoint_Loader_$1Simple$2' | 'Diffusers_Model_Loader' | 'Diffusers_Hub_Model_Down$7Loader' | 'Lora_Loader' | 'Load_Lora' | 'Lora_Input_Switch' | 'Model_Input_Switch' | 'unCLIP_Checkpoint_Loader' | 'Checkpoint_Loader_w$3Name_$1WLSH$2'> { }
@@ -20034,13 +20028,13 @@ export interface Cache_Node_output {
     conditioning_filename: Slot<'STRING', 2>,
 }
 export interface Cache_Node_input {
-    /** default="10693017_cache" */
+    /** default='<redacted>' */
     latent_suffix?: _STRING
-    /** default="83487734_cache" */
+    /** default='<redacted>' */
     image_suffix?: _STRING
-    /** default="19696413_cache" */
+    /** default='<redacted>' */
     conditioning_suffix?: _STRING
-    /** default="C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache" */
+    /** default='<redacted>' */
     output_path?: _STRING
     latent?: _LATENT
     image?: _IMAGE
