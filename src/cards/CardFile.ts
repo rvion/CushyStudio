@@ -60,6 +60,7 @@ export class CardFile {
         return nameLower.includes(searchLower) || descriptionLower.includes(searchLower)
     }
 
+    strategies: LoadStrategy[]
     constructor(
         //
         public library: Library,
@@ -69,6 +70,7 @@ export class CardFile {
     ) {
         this.st = library.st
         this.defaultManifest = this.mkDefaultManifest()
+        this.strategies = this.findLoadStrategies()
         makeAutoObservable(this, { action: observable.ref })
     }
 
@@ -218,8 +220,7 @@ export class CardFile {
         if (this.loadRequested && !p?.force) return true
         this.loadRequested = true
         if (this.loaded.done && !p?.force) return true
-        const strategies = this.findLoadStrategies()
-        for (const strategy of strategies) {
+        for (const strategy of this.strategies) {
             const res = await this.loadWithStrategy(strategy)
             if (res === LoadStatus.SUCCESS) {
                 this.successfullLoadStrategies = strategy
@@ -242,7 +243,7 @@ export class CardFile {
         if (strategy === 'asComfyUIGeneratedPng') return this.load_asComfyUIGeneratedPng()
         if (strategy === 'asA1111PngGenerated') {
             if (this.png == null) this.png = this.absPath
-            this.addError('❌ asA1111 import currently broken', null)
+            this.addError('❌ can not import file as Automaric1111 image', { reason: 'not supported yet' })
             return LoadStatus.FAILURE
         }
 
@@ -348,7 +349,7 @@ export class CardFile {
             promptJSON = convertLiteGraphToPrompt(this.st.schema, workflowJSON)
         } catch (error) {
             console.error(error)
-            return this.addError(`❌ [importWorkflowFromStr] cannot convert LiteGraph To Prompt`, error)
+            return this.addError(`❌ failed to import workflow: cannot convert LiteGraph To Prompt`, error)
         }
         // at this point, we know the workflow is valid
         //  and we have both the prompt, and the workflow
@@ -369,7 +370,7 @@ export class CardFile {
             this.action = this.RUN_ACTION_FILE(this.codeJS)
             return LoadStatus.SUCCESS
         } catch (error) {
-            return this.addError(`❌ [importWorkflowFromStr] cannot convert LiteGraph To Prompt`, error)
+            return this.addError(`❌ failed to import workflow: cannot convert LiteGraph To Prompt`, error)
         }
     }
 

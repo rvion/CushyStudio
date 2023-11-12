@@ -15595,9 +15595,9 @@
 ,    "Cache Node": {
         "input": {
             "required": {
-                "latent_suffix": ["STRING",{"default":"23414905_cache","multiline":false}]
-,                "image_suffix": ["STRING",{"default":"61014797_cache","multiline":false}]
-,                "conditioning_suffix": ["STRING",{"default":"9937947_cache","multiline":false}]
+                "latent_suffix": ["STRING",{"default":"84840941_cache","multiline":false}]
+,                "image_suffix": ["STRING",{"default":"56708040_cache","multiline":false}]
+,                "conditioning_suffix": ["STRING",{"default":"81931236_cache","multiline":false}]
             }
 ,            "optional": {
                 "output_path": ["STRING",{"default":"C:\\Users\\user\\Downloads\\ComfyUI_windows_portable_nvidia_cu118_or_cpu\\ComfyUI_windows_portable\\ComfyUI\\custom_nodes\\was-node-suite-comfyui\\cache","multiline":false}]

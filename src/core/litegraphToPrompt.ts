@@ -68,7 +68,7 @@ export const convertLiteGraphToPrompt = (
         const inputs: ComfyNodeJSON['inputs'] = {}
         // const widgets = node.widgets
 
-        const viaInput = new Set((node?.inputs ?? []).map((i) => i.name))
+        const fieldNamesWithLinks = new Set((node?.inputs ?? []).map((i) => i.name))
         const nodeTypeName = node.type
         const nodeSchema: ComfyNodeSchema = schema.nodesByNameInComfy[nodeTypeName]
         if (nodeSchema == null) {
@@ -96,7 +96,7 @@ export const convertLiteGraphToPrompt = (
                 (field.nameInComfy === 'seed' || field.nameInComfy === 'noise_seed')
 
             // don't handle the links
-            if (viaInput.has(field.nameInComfy)) {
+            if (fieldNamesWithLinks.has(field.nameInComfy)) {
                 LOG(`${FIELD_PREFIX} 👻 ${field.nameInComfy} [LINK] ${field.type}`)
                 const isEnum = field.type.startsWith('Enum_')
                 if (isEnum || field.isPrimitive) offset++ // for the value still present
@@ -168,52 +168,3 @@ export const convertLiteGraphToPrompt = (
 
     return prompt
 }
-
-// LOG('link', ipt.link, 'to', parentId, 'slot', link?.[2])
-// let parent = link?.[1] // node.getInputNode(i)
-// !if (parent) {
-// !    let link = node.getInputLink(ipt)
-// !    while (parent && parent.isVirtualNode) {
-// !        link = parent.getInputLink(link.origin_slot)
-// !        if (link) {
-// !            parent = parent.getInputNode(link.origin_slot)
-// !        } else {
-// !            parent = null
-// !        }
-// !    }
-// !
-// !     if (link) {
-// !         inputs[node.inputs[ipt].name] = [String(link.origin_id), parseInt(link.origin_slot)]
-// !     }
-// ! }
-// 1. By value -----------------------------------------------------
-// ❓ const _done = new Set<string>()
-// ❓ for (const field of node.inputs ?? []) {
-// ❓     if (viaInput.has(field.name)) {
-// ❓         if (field.widget) {
-// ❓             LOG(`${FIELD_PREFIX} .${field.name} (viaInput canceleld) [OFFSET]`)
-// ❓             offset++
-// ❓         } else {
-// ❓             LOG(`${FIELD_PREFIX} .${field.name} (viaInput)`)
-// ❓         }
-// ❓         continue
-// ❓     }
-// ❓     _done.add(field.name)
-// ❓     inputs[field.name] = node.widgets_values[offset++]
-// ❓     const isSeed = field.type === 'INT' && (field.name === 'seed' || field.name === 'noise_seed')
-// ❓     if (isSeed) offset++
-// ❓     // for (const val of node.widgets_values)
-// ❓ }
-
-// Store all widget values
-// ! if (widgets) {
-// !     for (const i in widgets) {
-// !         const widget = widgets[i]
-// !         if (!widget.options || widget.options.serialize !== false) {
-// !             inputs[widget.name] = widget.serializeValue ? await widget.serializeValue(n, i) : widget.value
-// !         }
-// !     }
-// ! }
-
-// LOG(node)
-// Store all node links

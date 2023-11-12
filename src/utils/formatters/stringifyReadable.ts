@@ -22,7 +22,7 @@ export function readableStringify(obj: any, maxLevel = 3, level = 0) {
         }
         result += '\n'
     }
-    result += `${tab.repeat(Math.max(0, level - 1))}}`
+    result += `${tab.repeat(Math.max(0, level))}}`
 
     return result
 }

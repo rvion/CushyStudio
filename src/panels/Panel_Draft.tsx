@@ -16,6 +16,7 @@ import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { CardIllustrationUI } from 'src/cards/fancycard/CardIllustrationUI'
 import { ActionDraftListUI } from 'src/widgets/drafts/ActionDraftListUI'
 import { showItemInFolder } from 'src/app/layout/openExternal'
+import { isError } from 'src/utils/misc/isError'
 
 /**
  * this is the root interraction widget
@@ -51,14 +52,45 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
 
     // 3. get action
     const compiledAction = card.getCompiledAction()
-    if (compiledAction == null)
+    if (compiledAction == null) {
         return (
-            <Message type='error'>
-                <pre tw='text-red-600'>❌ action not found</pre>
-                <pre tw='text-red-600'>❌ errors: {JSON.stringify(card.errors, null, 2)}</pre>
-            </Message>
+            <div>
+                <h3 tw='text-red-600'>invalid action</h3>
+                <Message showIcon type='info'>
+                    <div>loading strategies attempted:</div>
+                    <ul>
+                        {card.strategies.map((u) => (
+                            <li key={u}>{u}</li>
+                        ))}
+                    </ul>
+                </Message>
+                {card.errors.map((e) => {
+                    return (
+                        <Message showIcon type='error' header={e.title}>
+                            {typeof e.details === 'string' ? (
+                                <pre tw='text-red-400'>{e.details}</pre>
+                            ) : isError(e.details) ? (
+                                <div>
+                                    <pre tw='text-red-400'>
+                                        <b>name</b> {e.details.name}
+                                    </pre>
+                                    <pre tw='text-red-400'>
+                                        <b>message</b> {e.details.message}
+                                    </pre>
+                                    <pre tw='text-red-400'>
+                                        <b>stack</b> {e.details.stack}
+                                    </pre>
+                                </div>
+                            ) : (
+                                <pre tw='text-red-400'>{JSON.stringify(e.details, null, 3)}</pre>
+                            )}
+                        </Message>
+                    )
+                })}
+                {/* <pre tw='text-red-600'>❌ errors: {JSON.stringify(card.errors, null, 2)}</pre> */}
+            </div>
         )
-
+    }
     // 4. get form
     const formR = draft.form
     if (!formR.success)
