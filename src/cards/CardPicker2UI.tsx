@@ -41,15 +41,15 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFil
             }}
         >
             <div tw='pl-3'>
-                <ActionFavoriteBtnUI card={card} />
+                <ActionFavoriteBtnUI card={card} size='1.3rem' />
             </div>
-            <CardIllustrationUI card={card} size={'2rem'} />
+            <CardIllustrationUI card={card} size='1.5rem' />
             <div tw='overflow-hidden whitespace-nowrap overflow-ellipsis'>{card.displayName}</div>
         </div>
     )
 })
 
-export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { card: CardFile }) {
+export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { size: string; card: CardFile }) {
     const af = p.card
     return (
         <Fragment>
@@ -61,7 +61,7 @@ export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { c
                         af.setFavorite(false)
                     }}
                     //
-                    style={{ fontSize: '1.5rem' }}
+                    style={{ fontSize: p.size }}
                     className='material-symbols-outlined text-yellow-500'
                 >
                     star
@@ -73,7 +73,7 @@ export const ActionFavoriteBtnUI = observer(function ActionFavoriteBtnUI_(p: { c
                         ev.stopPropagation()
                         af.setFavorite(true)
                     }}
-                    style={{ fontSize: '1.5rem' }}
+                    style={{ fontSize: p.size }}
                     tw='hover:text-yellow-500 text-gray-500'
                     className='material-symbols-outlined'
                 >

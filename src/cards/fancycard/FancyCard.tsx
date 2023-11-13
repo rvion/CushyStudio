@@ -22,13 +22,22 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     const card = p.card
     const st = useSt()
     // const importedFrom
+    // prettier-ignore
+    const color = (() => {
+        if (card.absPath.endsWith('.ts'))   return '#3b3903'
+        if (card.absPath.endsWith('.json')) return '#093544'
+        if (card.absPath.endsWith('.png'))  return '#290a48'
+    })()
+
     return (
         <div
             onClick={p.card.openLastDraftAsCurrent}
-            style={{ border: '1px solid #494949' }}
+            style={{
+                background: color,
+                border: '1px solid #494949',
+            }}
             tw={[
                 //
-
                 'p-1 w-96',
                 `card STYLE_${p.style}`,
                 p.active ? 'active' : 'not-active',
@@ -36,7 +45,7 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
             ]}
         >
             <div tw='flex items-center font-bold flex-grow text-blue-300' style={{ fontSize: '1rem' }}>
-                <ActionFavoriteBtnUI card={card} />
+                <ActionFavoriteBtnUI card={card} size={'1.5rem'} />
                 <div tw='whitespace-nowrap overflow-hidden overflow-ellipsis pt-1'>{card.displayName}</div>
             </div>
             <div tw='flex'>

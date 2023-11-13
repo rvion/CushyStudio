@@ -310,7 +310,7 @@ export class CushyLayoutManager {
                     type: 'border',
                     size: 300,
                     location: 'left',
-                    // selected: 0,
+                    selected: 0,
                     show: true,
                     children: [
                         this._persistentTab({

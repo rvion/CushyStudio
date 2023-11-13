@@ -3,7 +3,7 @@ import * as R from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Message, Toggle, Tooltip, Whisper } from 'rsuite'
+import { Checkbox, Message, Toggle, Tooltip, Whisper } from 'rsuite'
 import { LabelPos } from 'src/controls/IWidget'
 import { useSt } from 'src/state/stateContext'
 import { exhaust } from '../../utils/misc/ComfyUtils'
@@ -75,10 +75,18 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     })()
     const v = p.req
 
+    // const toogle = (
+    //     <Checkbox
+    //         //
+    //         // size='sm'
+    //         checked={req.state.active}
+    //         onChange={(_, t) => (req.state.active = t)}
+    //     />
+    // )
     const toogle = (
         <Toggle
             //
-            // size='sm'
+            // size='lg'
             checked={req.state.active}
             onChange={(t) => (req.state.active = t)}
         />
@@ -88,6 +96,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
     const LABEL = (
         <div
             // style={{ minWidth: '5rem' }}
+            // tw={[p.req instanceof R.Widget_group ? 'text-red-100' : undefined]}
             className={
                 vertical //
                     ? 'min-w-max shrink-0 self-start w-full'

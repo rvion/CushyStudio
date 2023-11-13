@@ -1,12 +1,12 @@
+import type { Deck } from './Deck'
+
 import { observer } from 'mobx-react-lite'
+import { Popover, Whisper } from 'rsuite'
 import { FolderKind } from 'src/cards/updater'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
-import type { Deck } from './Deck'
 import { ManifestError } from './DeckManifest'
 import { ActionPackStarsUI } from './DeckStarsUI'
 import { ActionPackStatusUI } from './DeckStatusUI'
-import { GithubUserUI } from './GithubAvatarUI'
-import { Popover, Whisper } from 'rsuite'
 
 export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Deck }) {
     const deck = p.deck
@@ -14,11 +14,11 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
         <>
             <div
                 style={{ borderTop: '1px solid #1d1d1d' }}
-                tw='cursor-pointer flex gap-1 hover:bg-gray-800 p-0.5'
+                tw='cursor-pointer flex gap-1 hover:bg-gray-800 bg-gray-800 p-0.5'
                 onClick={() => (deck.folded = !deck.folded)}
             >
                 <img //
-                    style={{ height: `3rem` }}
+                    style={{ height: `2rem` }}
                     src={deck.logo}
                     alt='pack logo'
                 />
@@ -32,16 +32,19 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                                 {/* by <div tw='text-gray-400 flex justify-between w-full'>{deck.githubUserName}</div> */}
                             </div>
                         </div>
-                        <GithubUserUI prefix='by' size='1rem' showName username={deck.githubUserName} />
-                        <div className='flex-grow self-start italic text-gray-500'>
-                            {/* <b>{deck.cards.length} cards</b> -  */}
+                        {/* <GithubUserUI prefix='by' size='1rem' showName username={deck.githubUserName} /> */}
+                        {/* <div className='flex-grow self-start italic text-gray-500'>
                             {deck.description}
-                        </div>
+                        </div> */}
                     </div>
                     {/* manifest */}
                     <div>
                         <div className='flex gap-1'>
-                            {deck.BUILT_IN ? <div tw='text-gray-600'>built-in</div> : <ActionPackStatusUI pack={deck} />}
+                            {deck.BUILT_IN ? ( //
+                                <div tw='text-gray-600'>built-in</div>
+                            ) : (
+                                <ActionPackStatusUI pack={deck} />
+                            )}
                             {deck.manifestError && (
                                 <Whisper
                                     speaker={

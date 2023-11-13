@@ -18,6 +18,7 @@ export const CushyUI = observer(function CushyUI_() {
             if (x === Trigger.Success) {
                 event.preventDefault()
                 event.stopPropagation()
+                return
             }
 
             // no idea if this safety case is needed

@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from 'src/state/stateContext'
 import { RenderPanelUI } from './RenderPanelUI'
+import { Animation } from 'rsuite'
 
 export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p: {}) {
     const st = useSt()
@@ -15,20 +16,19 @@ export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p:
             }}
             tw='absolute'
             style={{
-                // top: '2.5rem',
                 top: 0,
-                padding: '3rem',
-                // border: '1px solid white',
+                padding: '1rem',
                 left: '0',
                 height: '100%',
                 width: '100%',
-                // backgroundColor: 'black',
-                backgroundColor: '#4158D0',
-                backgroundImage: 'linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)',
+                backgroundColor: '#000000aa',
+                // backgroundColor: '#4158D0',
+                // backgroundImage: 'linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)',
                 zIndex: 100,
             }}
         >
             <div
+                // className='fade-in'
                 style={{
                     height: '100%', //'calc(100% - 4rem)',
                     boxShadow: '0 0 1rem black',

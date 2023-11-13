@@ -46,15 +46,8 @@
 /* prettier-ignore */
 .card.active,
 .card:hover {
-    box-shadow:
-        2px 2px 15px 0 var(--color1)
-        /* 5px 5px 15px 0 var(--color2) */
-
-        /* -7px -7px 10px -5px transparent, */
-        /* 7px 7px 10px -5px transparent, */
-        /* , 0 0 5px 0px rgba(255, 255, 255, 0) */
-        /* ,0 55px 35px -20px rgba(0, 0, 0, 0.5) */
-        ;
+    outline: 2px solid var(--color1) !important;
+    /* outline-radius: .5rem; */
     /* box-shadow:
         -20px -20px 30px -25px var(--color1),
         20px 20px 30px -25px var(--color2),

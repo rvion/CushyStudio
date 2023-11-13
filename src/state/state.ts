@@ -139,6 +139,8 @@ export class STATE {
         return this.configFile.value.favoriteCards ?? []
     }
 
+    droppedFiles: File[] = []
+
     // showCardPicker: boolean = false
     closeCardPicker = () => (this.layout.fullPageComp = null)
     openCardPicker = () => (this.layout.fullPageComp = { extra: {}, widget: Widget.CardPicker3UI })
