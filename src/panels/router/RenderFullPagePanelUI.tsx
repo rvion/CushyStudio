@@ -15,8 +15,9 @@ export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p:
             }}
             tw='absolute'
             style={{
-                top: '2.5rem',
-                padding: '1rem',
+                // top: '2.5rem',
+                top: 0,
+                padding: '3rem',
                 // border: '1px solid white',
                 left: '0',
                 height: '100%',
@@ -29,7 +30,7 @@ export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p:
         >
             <div
                 style={{
-                    height: 'calc(100% - 2.5rem)',
+                    height: '100%', //'calc(100% - 4rem)',
                     boxShadow: '0 0 1rem black',
                     padding: '1rem',
                     borderRadius: '.5rem',

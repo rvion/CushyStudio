@@ -21,12 +21,14 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
 }) {
     const card = p.card
     const st = useSt()
+    // const importedFrom
     return (
         <div
             onClick={p.card.openLastDraftAsCurrent}
             style={{ border: '1px solid #494949' }}
             tw={[
                 //
+
                 'p-1 w-96',
                 `card STYLE_${p.style}`,
                 p.active ? 'active' : 'not-active',
