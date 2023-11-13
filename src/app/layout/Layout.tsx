@@ -356,6 +356,7 @@ export class CushyLayoutManager {
                 // LEFT BORDER
                 {
                     type: 'border',
+                    size: 300,
                     location: 'left',
                     // selected: 0,
                     show: true,
