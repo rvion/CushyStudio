@@ -8,40 +8,28 @@ import { makeAutoObservable, runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { FC, createRef } from 'react'
-import { Message } from 'rsuite'
 import { CardPath } from 'src/cards/CardPath'
 import { LiteGraphJSON } from 'src/core/LiteGraph'
 import { ImageID } from 'src/models/Image'
-import { Panel_DeckList } from 'src/panels/Panel_DeckList'
 import { Trigger } from 'src/app/shortcuts/Trigger'
 import { assets } from 'src/utils/assets/assets'
-import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 
-import { Panel_Draft } from '../../panels/Panel_Draft'
-import { Panel_FileTree } from '../../panels/Panel_FileTree'
+import { Panel_Draft } from '../Panel_Draft'
 // import { Panel_Card } from '../../panels/Panel_Card'
-import { Panel_Civitai } from '../../panels/Panel_Civitai'
-import { Panel_ComfyNodeExplorer } from '../../panels/Panel_ComfyNodeExplorer'
-import { Panel_ComfyUI } from '../../panels/Panel_ComfyUI'
-import { Panel_Config } from '../../panels/Panel_Config'
-import { Panel_CurrentDraft } from '../../panels/Panel_CurrentDraft'
-import { Panel_Gallery } from '../../panels/Panel_Gallery'
-import { Panel_LastGraph } from '../../panels/Panel_LastGraph'
-import { Panel_MachineManager } from '../../panels/Panel_MachineManager'
-import { Panel_Marketplace } from '../../panels/Panel_Marketplace'
-import { Panel_Minipaint } from '../../panels/Panel_Minipaint'
-import { Panel_Squoosh } from '../../panels/Panel_Squoosh'
-import { Panel_LastStep, Panel_Steps } from '../../panels/Panel_Steps'
-import { Panel_ViewImage } from '../../panels/Panel_ViewImage'
+import { Panel_Civitai } from '../Panel_Civitai'
+import { Panel_Squoosh } from '../Panel_Squoosh'
+import { Panel_LastStep } from '../Panel_Steps'
+import { Panel_ViewImage } from '../Panel_ViewImage'
 import { Panel_3dScene } from 'src/panels/Panel_3dScene'
-import { Panel_ViewLatent } from 'src/panels/Panel_ViewLatent'
-import { CardPicker3UI } from 'src/cards/CardPicker3UI'
+import { Panel_CardPicker3UI } from 'src/panels/Panel_CardPicker3UI'
+import { RenderPanelUI } from './RenderPanelUI'
 
 // still on phone
-enum Widget {
+export enum Widget {
     Gallery = 'Gallery', //: { 'Gallery',}
     DisplacedImage = 'DisplacedImage', //: { 'DisplacedImage',}
     Paint = 'Paint', //: { 'Paint',}
+    CardPicker3UI = 'CardPicker3UI',
     CurrentDraft = 'CurrentDraft', //: { 'CurrentDraft',}
     // Card = 'Card', //: { 'Card',}
     Draft = 'Draft', //: { 'Draft',}
@@ -283,51 +271,12 @@ export class CushyLayoutManager {
         return prevTab
     }
 
-    fullPageCompm: Maybe<{ widget: Widget; extra: PropsOf<typeof CardPicker3UI> }> = null
+    fullPageComp: Maybe<{ widget: Widget; extra: PropsOf<typeof Panel_CardPicker3UI> }> = null
 
     factory = (node: FL.TabNode): React.ReactNode => {
         const component = node.getComponent() as Widget
         const extra = node.getConfig()
-
-        // prettier-ignore
-        try {
-            if (component === Widget.Gallery)             return <Panel_Gallery />
-            if (component === Widget.Paint)               return <Panel_Minipaint {...extra} /> // You can now use imgID to instantiate your paint component properly
-            if (component === Widget.Image)               return <Panel_ViewImage imageID={extra.imgID}></Panel_ViewImage> // You can now use imgID to instantiate your paint component properly
-            // if (component === Widget.Card)                return <Panel_Card      actionPath={extra.actionPath} />
-            if (component === Widget.ComfyUI)             return <Panel_ComfyUI   litegraphJson={extra.litegraphJson} />
-            if (component === Widget.FileList)            return <Panel_DeckList />
-            if (component === Widget.FileList2)           return <Panel_FileTree />
-            if (component === Widget.Steps)               return <Panel_Steps />
-            if (component === Widget.LastGraph)           return <Panel_LastGraph />
-            if (component === Widget.LastImage)           return <Panel_ViewImage />
-            if (component === Widget.LastLatent)          return <Panel_ViewLatent />
-            if (component === Widget.LastStep)            return <Panel_LastStep />
-            if (component === Widget.Civitai)             return <Panel_Civitai />
-            if (component === Widget.Squoosh)             return <Panel_Squoosh />
-            if (component === Widget.Hosts)               return <Panel_MachineManager />
-            if (component === Widget.Marketplace)         return <Panel_Marketplace />
-            if (component === Widget.Config)              return <Panel_Config />
-            if (component === Widget.Draft)               return <Panel_Draft     {...extra} />
-            if (component === Widget.CurrentDraft)        return <Panel_CurrentDraft />
-            if (component === Widget.ComfyUINodeExplorer) return <Panel_ComfyNodeExplorer />
-            if (component === Widget.Deck)                return <div>🔴 todo: action pack page: show readme</div>
-            if (component === Widget.DisplacedImage)      return <Panel_3dScene {...extra} />
-        } catch (e) {
-            return (
-                <pre tw='text-red-500'>
-                    <div>component "{component}" failed to render:</div>
-                    error: {stringifyUnknown(e)}
-                </pre>
-            )
-        }
-
-        exhaust(component)
-        return (
-            <Message type='error' showIcon>
-                unknown component
-            </Message>
-        )
+        return <RenderPanelUI widget={component} widgetProps={extra} />
     }
 
     // 🔴 todo: ensure we correctly pass ids there too

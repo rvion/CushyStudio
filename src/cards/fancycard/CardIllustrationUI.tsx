@@ -7,7 +7,7 @@ export const CardIllustrationUI = observer(function CardIllustrationUI_(p: {
     size: string
 }) {
     const x = p.card.illustrationPathWithFileProtocol
-
+    // return null
     if (x.startsWith('<svg'))
         return (
             <div

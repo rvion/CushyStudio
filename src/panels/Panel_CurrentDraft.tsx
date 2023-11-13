@@ -21,7 +21,7 @@ export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
                 size='lg'
                 color='green'
                 appearance='primary'
-                onClick={() => st.openCardPicker()}
+                onClick={() => st.toggleCardPicker()}
                 ix='1'
                 icon={<span className='material-symbols-outlined'>play_circle</span>}
                 label='Open Card Picker'

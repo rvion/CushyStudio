@@ -24,6 +24,7 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     return (
         <div
             onClick={p.card.openLastDraftAsCurrent}
+            style={{ border: '1px solid #494949' }}
             tw={[
                 //
                 'p-1 w-96',
@@ -37,11 +38,7 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
                 <div tw='whitespace-nowrap overflow-hidden overflow-ellipsis pt-1'>{card.displayName}</div>
             </div>
             <div tw='flex'>
-                <CardIllustrationUI
-                    // onClick={() => (st.currentDraft = p.card.getLastDraft())}
-                    card={card}
-                    size='10rem'
-                />
+                <CardIllustrationUI card={card} size='10rem' />
                 <div tw='flex-grow flex flex-col ml-1'>
                     <div>
                         {(card.manifest.categories ?? []).map((i, ix) => (

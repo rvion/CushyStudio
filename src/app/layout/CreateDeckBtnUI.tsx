@@ -9,7 +9,7 @@ export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
         <div>
             <Button
                 onClick={uist.handleOpen}
-                appearance='ghost'
+                appearance='primary'
                 color='green'
                 startIcon={<span className='material-symbols-outlined'>add</span>}
             >

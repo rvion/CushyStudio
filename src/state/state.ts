@@ -21,7 +21,7 @@ import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
 import { ThemeManager } from 'src/theme/layoutTheme'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
-import { CushyLayoutManager } from '../app/layout/Layout'
+import { CushyLayoutManager, Widget } from '../panels/router/Layout'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { GitManagedFolder } from '../cards/updater'
 import { JsonFile } from '../core/JsonFile'
@@ -139,9 +139,19 @@ export class STATE {
         return this.configFile.value.favoriteCards ?? []
     }
 
-    showCardPicker: boolean = false
-    closeCardPicker = () => (this.showCardPicker = false)
-    openCardPicker = () => (this.showCardPicker = true)
+    // showCardPicker: boolean = false
+    closeCardPicker = () => (this.layout.fullPageComp = null)
+    openCardPicker = () => (this.layout.fullPageComp = { extra: {}, widget: Widget.CardPicker3UI })
+    toggleCardPicker = () => {
+        if (
+            this.layout.fullPageComp == null || //
+            this.layout.fullPageComp.widget !== Widget.CardPicker3UI
+        ) {
+            this.layout.fullPageComp = { extra: {}, widget: Widget.CardPicker3UI }
+        } else {
+            this.layout.fullPageComp = null
+        }
+    }
 
     // 🔴 this is not the right way to go cause it will cause the action to stay
     // pending in the background: fix that LATER™️

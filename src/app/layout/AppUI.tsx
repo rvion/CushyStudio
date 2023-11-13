@@ -4,6 +4,7 @@ import { useSt } from 'src/state/stateContext'
 import { AppBarUI } from './AppBarUI'
 import { ProjectUI } from './ProjectUI'
 import { Trigger } from '../shortcuts/Trigger'
+import { RenderFullPagePanelUI } from 'src/panels/router/RenderFullPagePanelUI'
 
 export const CushyUI = observer(function CushyUI_() {
     const st = useSt()
@@ -44,6 +45,7 @@ export const CushyUI = observer(function CushyUI_() {
     return (
         <div id='CushyStudio' tabIndex={-1} ref={appRef} tw={['col grow h100', st.theme.theme]}>
             <AppBarUI />
+            <RenderFullPagePanelUI />
             <div className='flex flex-grow relative'>
                 <ProjectUI />
             </div>

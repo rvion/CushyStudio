@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Loader } from 'rsuite'
+import { Panel_Config } from '../../panels/Panel_Config'
 import { useSt } from '../../state/stateContext'
 import { GalleryHoveredPreviewUI } from '../../widgets/galleries/GalleryHoveredPreviewUI'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
-import { Panel_Config } from '../../panels/Panel_Config'
 
 export const ProjectUI = observer(function ProjectUI_(p: {}) {
     const st = useSt()

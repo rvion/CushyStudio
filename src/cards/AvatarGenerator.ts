@@ -18,7 +18,7 @@ type Rect = {
 
 export function generateAvatar(
     //
-    string: string,
+    string: string = 'test',
     optionOverrides: Partial<Options> = {},
 ): string {
     const isEmptyString = typeof string !== 'string' || !string.length || string === '[deleted]'

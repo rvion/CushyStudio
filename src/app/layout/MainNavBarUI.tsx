@@ -3,7 +3,6 @@ import { Button, ButtonGroup } from 'rsuite'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 import { DBHealthUI } from './AppBarUI'
-import { CardsPickerModalUI } from 'src/cards/CardPicker3UI'
 import { ComboUI } from '../shortcuts/ComboUI'
 import { MainNavEntryUI } from './MainNavEntryUI'
 
@@ -16,7 +15,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 // onClick={() => st.layout.addActionPicker()}
                 color='green'
                 appearance='primary'
-                onClick={() => st.openCardPicker()}
+                onClick={() => st.toggleCardPicker()}
                 size='md'
                 ix='1'
                 icon={<span className='material-symbols-outlined'>view_list</span>}
@@ -32,7 +31,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 {/* debug buttons */}
 
                 {/* COMFY */}
-                <CardsPickerModalUI />
+                {/* <CardsPickerModalUI /> */}
                 <MainNavEntryUI
                     onClick={() => st.layout.addPaint()}
                     ix='3'

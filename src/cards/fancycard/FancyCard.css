@@ -47,8 +47,8 @@
 .card.active,
 .card:hover {
     box-shadow:
-        -5px -5px 15px 0 var(--color1),
-        5px 5px 15px 0 var(--color2)
+        2px 2px 15px 0 var(--color1)
+        /* 5px 5px 15px 0 var(--color2) */
 
         /* -7px -7px 10px -5px transparent, */
         /* 7px 7px 10px -5px transparent, */
