@@ -20,8 +20,8 @@ import { Library } from './Library'
 import { CardManifest } from './DeckManifest'
 import { join } from 'pathe'
 import { CardStyle } from './fancycard/FancyCard'
-import { generateAvatar } from './AvatarGenerator'
 import { clamp } from 'three/src/math/MathUtils'
+import { generateAvatar } from './AvatarGenerator'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -152,13 +152,15 @@ export class CardFile {
     }
 
     /** action display name */
-    get illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded(): Maybe<string> {
+    get illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG(): Maybe<string> {
         return this.manifest.illustration
     }
 
     get illustrationPathWithFileProtocol() {
-        const tmp = this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded
+        const tmp = this.illustrationPath_eiter_RelativeToDeckRoot_or_Base64Encoded_or_SVG
         if (tmp?.startsWith('data:')) return tmp
+        if (tmp?.startsWith('http')) return tmp
+        if (tmp?.startsWith('<svg')) return tmp
         if (tmp) return `file://${join(this.deck.folderAbs, tmp)}`
         // default illustration if none is provided
         return `file://${join(this.st.rootPath, 'library/CushyStudio/default/_illustrations/default-card-illustration.jpg')}`

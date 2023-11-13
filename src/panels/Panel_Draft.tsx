@@ -17,12 +17,21 @@ import { CardIllustrationUI } from 'src/cards/fancycard/CardIllustrationUI'
 import { ActionDraftListUI } from 'src/widgets/drafts/ActionDraftListUI'
 import { showItemInFolder } from 'src/app/layout/openExternal'
 import { isError } from 'src/utils/misc/isError'
+import { useEffect, useMemo } from 'react'
 
 /**
  * this is the root interraction widget
  * if a workflow need user-supplied infos, it will send an 'ask' request with a list
  * of things it needs to know.
  */
+
+export const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactNode }) {
+    return (
+        <div tw='h-full' style={{ background: '#210202' }}>
+            {p.children}
+        </div>
+    )
+})
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -34,6 +43,10 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID 
 export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
     const st = useSt()
     const draft = p.draft
+    useEffect(() => {
+        return draft?.AWAKE()
+    }, [draft?.id])
+
     if (draft == null)
         return (
             <Message type='error'>
@@ -45,16 +58,18 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     const card = draft.card
     if (card == null)
         return (
-            <Message type='error'>
-                <pre tw='bg-red-900'>❌ Action not found</pre>
-            </Message>
+            <ErrorPanelUI>
+                <Message type='error'>
+                    <pre tw='bg-red-900'>❌ Action not found</pre>
+                </Message>
+            </ErrorPanelUI>
         )
 
     // 3. get action
     const compiledAction = card.getCompiledAction()
     if (compiledAction == null) {
         return (
-            <div style={{ background: '#210202' }}>
+            <ErrorPanelUI>
                 <h3 tw='text-red-600'>invalid action</h3>
                 <Message showIcon type='info'>
                     <div>loading strategies attempted:</div>
@@ -88,17 +103,19 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     )
                 })}
                 {/* <pre tw='text-red-600'>❌ errors: {JSON.stringify(card.errors, null, 2)}</pre> */}
-            </div>
+            </ErrorPanelUI>
         )
     }
     // 4. get form
     const formR = draft.form
     if (!formR.success)
         return (
-            <Message type='error'>
-                <div>❌ form failed</div>
-                <div tw='bg-red-900'>{stringifyUnknown(formR.error)}</div>
-            </Message>
+            <ErrorPanelUI>
+                <Message type='error' header={<b>App failed to load</b>}>
+                    <div>❌ {formR.message}</div>
+                    <div tw='bg-red-900'>{stringifyUnknown(formR.error)}</div>
+                </Message>
+            </ErrorPanelUI>
         )
 
     // 5. render form

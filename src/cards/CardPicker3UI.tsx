@@ -71,7 +71,7 @@ export const CardPicker3UI = observer(function CardPicker3UI_(p: {}) {
             </div>
 
             <div tw='flex flex-grow'>
-                <ScrollablePaneUI tw='w-96 shrink-0'>
+                <ScrollablePaneUI style={{ width: '300px' }} tw='shrink-0'>
                     <Panel_DeckList />
                 </ScrollablePaneUI>
                 <ScrollablePaneUI tw='flex-grow'>

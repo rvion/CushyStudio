@@ -98,10 +98,14 @@ export class DraftL {
     onHydrate = () => {
         let subState = { unsync: () => {} }
         console.log(`🦊 on hydrate`)
-        // reload action when it changes
-        // 🔴 dangerous
+    }
 
-        reaction(
+    isInitializing = false
+    isInitialized = false
+    AWAKE = () => {
+        if (this.isInitialized) return
+        this.isInitializing = true
+        const _1 = reaction(
             () => this.action,
             (action) => {
                 console.log(`🟢 -------- DRAFT LOADING ACTION --------- 🟢 `)
@@ -128,7 +132,7 @@ export class DraftL {
         )
 
         // 🔴 dangerous
-        autorun(() => {
+        const _2 = autorun(() => {
             const formValue = this.form.value
             if (formValue == null) return null
             const count = formValue.builder._cache.count // manual mobx invalidation
@@ -138,5 +142,14 @@ export class DraftL {
                 this.update({ actionParams: formValue.serial })
             })
         })
+
+        this.isInitialized = true
+        this.isInitializing = false
+        return () => {
+            _1()
+            _2()
+            this.isInitialized = false
+            this.form = __FAIL('not loaded yet')
+        }
     }
 }

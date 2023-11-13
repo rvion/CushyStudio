@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite'
 import { Fragment } from 'react'
 import { useSt } from '../state/stateContext'
 import { DeckHeaderUI } from './DeckHeaderUI'
+import { CardIllustrationUI } from './fancycard/CardIllustrationUI'
 
 export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Deck }) {
     const deck: Deck = p.deck
@@ -21,6 +22,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Deck }) {
         </div>
     )
 })
+
 export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFile }) {
     const st = useSt()
     const card = p.card
@@ -38,15 +40,10 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFil
                 st.layout.addCard(actionPath)
             }}
         >
-            {/* <span className='material-symbols-outlined'>keyboard_arrow_right</span> */}
             <div tw='pl-3'>
                 <ActionFavoriteBtnUI card={card} />
             </div>
-            <img
-                tw='rounded'
-                style={{ width: '2rem', height: '2rem' }}
-                src={card.illustrationPathWithFileProtocol ?? pack?.logo ?? ''}
-            ></img>
+            <CardIllustrationUI card={card} size={'2rem'} />
             <div tw='overflow-hidden whitespace-nowrap overflow-ellipsis'>{card.displayName}</div>
         </div>
     )

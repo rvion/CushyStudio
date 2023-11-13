@@ -24,7 +24,13 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     return (
         <div
             onClick={p.card.openLastDraftAsCurrent}
-            tw={['p-1 w-96', `card STYLE_${p.style}`, p.active ? 'active' : 'not-active', 'cursor-pointer']}
+            tw={[
+                //
+                'p-1 w-96',
+                `card STYLE_${p.style}`,
+                p.active ? 'active' : 'not-active',
+                'cursor-pointer',
+            ]}
         >
             <div tw='flex items-center font-bold flex-grow text-blue-300' style={{ fontSize: '1rem' }}>
                 <ActionFavoriteBtnUI card={card} />

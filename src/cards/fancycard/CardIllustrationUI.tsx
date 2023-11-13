@@ -6,11 +6,22 @@ export const CardIllustrationUI = observer(function CardIllustrationUI_(p: {
     card: CardFile
     size: string
 }) {
+    const x = p.card.illustrationPathWithFileProtocol
+
+    if (x.startsWith('<svg'))
+        return (
+            <div
+                //
+                style={{ height: p.size }}
+                dangerouslySetInnerHTML={{ __html: x }}
+            ></div>
+        )
+
     return (
         <img
             loading='lazy'
-            tw={['rounded m-2', p.onClick ? 'cursor-pointer' : null]}
-            style={{ width: p.size, height: p.size, objectFit: 'contain' }}
+            tw={['rounded', p.onClick ? 'cursor-pointer' : null]}
+            style={{ width: p.size, height: p.size, objectFit: 'contain', imageRendering: 'pixelated' }}
             src={p.card.illustrationPathWithFileProtocol}
             alt='card illustration'
             onClick={p.onClick}

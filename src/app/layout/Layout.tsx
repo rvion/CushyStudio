@@ -35,6 +35,7 @@ import { Panel_LastStep, Panel_Steps } from '../../panels/Panel_Steps'
 import { Panel_ViewImage } from '../../panels/Panel_ViewImage'
 import { Panel_3dScene } from 'src/panels/Panel_3dScene'
 import { Panel_ViewLatent } from 'src/panels/Panel_ViewLatent'
+import { CardPicker3UI } from 'src/cards/CardPicker3UI'
 
 // still on phone
 enum Widget {
@@ -281,6 +282,8 @@ export class CushyLayoutManager {
         this.model.doAction(Actions.updateNodeAttributes(tabID, p))
         return prevTab
     }
+
+    fullPageCompm: Maybe<{ widget: Widget; extra: PropsOf<typeof CardPicker3UI> }> = null
 
     factory = (node: FL.TabNode): React.ReactNode => {
         const component = node.getComponent() as Widget
