@@ -1,3 +1,7 @@
+/* TABS --------------------------------------- */
+#CushyStudio.dark .flexlayout__tabset-selected{
+    background: #152441;
+}
 /* BACKGROUND --------------------------------------- */
 #CushyStudio.dark .bg-contrasted-gradient {
     background: linear-gradient(337deg, #202020, #0c0c0c);

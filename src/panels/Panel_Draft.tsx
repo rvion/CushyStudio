@@ -18,6 +18,7 @@ import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
+import { CardFile } from 'src/cards/CardFile'
 
 /**
  * this is the root interraction widget
@@ -137,6 +138,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {/* NAME */}
                 <div tw='flex items-baseline justify-between'>
                     <b tw='font-bold p-1 overflow-hidden overflow-ellipsis whitespace-nowrap' style={{ fontSize: '1.6rem' }}>
+                        <CardIllustrationUI card={card} size='2rem' tw='mr-2' />
                         {card.displayName}
                     </b>
                     {Boolean(card.authorDefinedManifest) ? (
@@ -150,23 +152,19 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     ) : null}
                 </div>
                 {/* Action bar */}
-                <div tw='flex gap-2'>
-                    <FormLayoutPrefsUI />
-                    <Dropdown title='Menu' appearance='subtle'>
-                        <Dropdown.Item onClick={() => openInVSCode(cwd(), card.absPath)}>Edit</Dropdown.Item>
-                        <Dropdown.Item onClick={() => showItemInFolder(card.absPath)}>Show Item In Folder</Dropdown.Item>
-                        {card.liteGraphJSON && (
-                            <Dropdown.Item onClick={() => st.layout.addComfy(card.liteGraphJSON)}>Open in ComfyUI</Dropdown.Item>
-                        )}
-                    </Dropdown>
+                <div tw='flex gap-0.5'>
                     <div tw='flex-grow'></div>
+                    <FormLayoutPrefsUI />
+                    <CardActionsMenuUI card={card} />
                     <Button
                         //
                         tw='self-start'
                         startIcon={draft.shouldAutoStart ? <Loader /> : undefined}
+                        appearance='subtle'
                         active={draft.shouldAutoStart}
                         color={draft.shouldAutoStart ? 'green' : undefined}
                         onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
+                        size={size1}
                     >
                         Autorun
                     </Button>
@@ -177,6 +175,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         appearance='primary'
                         startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
                         onClick={() => draft.start()}
+                        size={size2}
                     >
                         Run
                     </Button>
@@ -253,77 +252,54 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { draft: Draf
     )
 })
 
-export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: {}) {
+export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card: CardFile }) {
+    const card = p.card
     const st = useSt()
-    // return <SelectPicker placeholder='Form layout' data={[]} />
     return (
-        <ButtonGroup>
-            <Button
-                // appearance={st.preferedFormLayout == 'dense' ? undefind : undefined}
-                onClick={() => (st.preferedFormLayout = 'dense')}
-                active={st.preferedFormLayout == 'dense'}
-            >
-                dense
-            </Button>
-            <Button
-                // appearance={st.preferedFormLayout == 'auto' ? undefind : undefined}
-                onClick={() => (st.preferedFormLayout = 'auto')}
-                active={st.preferedFormLayout == 'auto'}
-            >
-                auto
-            </Button>
-            <Button
-                // appearance={st.preferedFormLayout == 'mobile' ? undefind : undefined}
-                onClick={() => (st.preferedFormLayout = 'mobile')}
-                active={st.preferedFormLayout == 'mobile'}
-            >
-                mobile
-            </Button>
-        </ButtonGroup>
+        <Dropdown title='Menu' appearance='subtle' size={size1}>
+            <Dropdown.Item onClick={() => openInVSCode(cwd(), card.absPath)}>Edit</Dropdown.Item>
+            <Dropdown.Item onClick={() => showItemInFolder(card.absPath)}>Show Item In Folder</Dropdown.Item>
+            {card.liteGraphJSON && (
+                <Dropdown.Item onClick={() => st.layout.addComfy(card.liteGraphJSON)}>Open in ComfyUI</Dropdown.Item>
+            )}
+        </Dropdown>
     )
 })
 
-// {/* <div tw='text-xs text-gray-500'>Layout:</div> */}
-// {/* <div tw='flex gap-2 items-center'>
-//     <div className='flex-grow'></div>
+export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: {}) {
+    const st = useSt()
+    const layout = st.preferedFormLayout
+    return (
+        <Dropdown
+            //
+            size={size1}
+            appearance='subtle'
+            title={`Layout: ${layout}`}
+            // startIcon={<span className='material-symbols-outlined'>format_size</span>}
+        >
+            <Dropdown.Item onClick={() => (st.preferedFormLayout = 'dense')} active={layout == 'dense'}>
+                <div className='flex items-center gap-2'>
+                    <span className='material-symbols-outlined'>photo_size_select_small</span>
+                    Dense
+                </div>
+            </Dropdown.Item>
 
-//     <RunOrAutorunUI draft={draft} />
-// </div> */}
+            <Dropdown.Item onClick={() => (st.preferedFormLayout = 'auto')} active={layout == 'auto'}>
+                <div className='flex items-center gap-2'>
+                    <span className='material-symbols-outlined'>photo_size_select_large</span>
+                    Auto
+                </div>
+            </Dropdown.Item>
 
-// {/* <CardIllustrationUI card={card} size='3rem' /> */}
-// {/* <div tw='flex gap-2 items-center'>
-//         <b tw='overflow-hidden overflow-ellipsis whitespace-nowrap' style={{ fontSize: '1.3rem' }}>
-//             {card.displayName}
-//         </b>
-//         <Button
-//             tw='flex-shrink-0'
-//             color='blue'
-//             size='xs'
-//             appearance='subtle'
-//             startIcon={<span className='material-symbols-outlined'>edit</span>}
-//             onClick={() => openInVSCode(cwd(), card.absPath)}
-//         >
-//             Edit
-//         </Button>
-//     </div> */}
-// {/* <div tw='italic'>{card.manifest.description}</div> */}
-// {/* {card.successfullLoadStrategies} */}
+            <Dropdown.Item onClick={() => (st.preferedFormLayout = 'mobile')} active={layout == 'mobile'}>
+                <div className='flex items-center gap-2'>
+                    <span className='material-symbols-outlined'>photo_size_select_actual</span>
+                    Mobile
+                </div>
+            </Dropdown.Item>
+        </Dropdown>
+    )
+})
 
-// <Button
-//     size='xs'
-//     startIcon={<span className='material-symbols-outlined'>open_in_new</span>}
-//     appearance='subtle'
-//     onClick={() => st.layout.addComfy(card.liteGraphJSON)}
-// >
-//     Open in Comfy
-// </Button>
-
-// {/* {Boolean(card.authorDefinedManifest) ? (
-//     <GithubUserUI //
-//         showName
-//         tw='text-gray-500'
-//         prefix='by'
-//         size='1rem'
-//         username={card.deck.githubUserName}
-//     />
-// ) : null} */}
+const size1 = 'sm' as const
+const size2 = 'sm' as const

@@ -1,13 +1,8 @@
-import * as I from '@rsuite/icons'
 import * as R from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
-import { ErrorBoundary } from 'react-error-boundary'
-import { Checkbox, Message, Toggle, Tooltip, Whisper } from 'rsuite'
-import { LabelPos } from 'src/controls/IWidget'
-import { useSt } from 'src/state/stateContext'
+import { Message } from 'rsuite'
 import { exhaust } from '../../utils/misc/ComfyUtils'
-import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
 import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { WidgetBoolUI } from './WidgetBoolUI'
 import { WidgetChoiceUI } from './WidgetChoiceUI'
@@ -26,131 +21,6 @@ import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrUI } from './WidgetStrUI'
-
-const makeNicer = (s: string) => {
-    if (s == null) return ''
-    if (s.length === 0) return s
-    s = s.replace(/([a-z])([A-Z])/g, '$1 $2')
-    s = s.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
-    s = s.replace(/_/g, ' ')
-    s = s.replace(/([a-z])([A-Z])/g, '$1 $2')
-    s = s.replace(/([A-Z])([A-Z][a-z])/g, '$1 $2')
-    return s[0].toUpperCase() + s.slice(1)
-}
-
-export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
-    req: R.Widget
-    labelPos?: LabelPos
-    rootKey: string
-    vertical?: boolean
-}) {
-    const st = useSt()
-    const { rootKey, req } = p
-    let tooltip: Maybe<string>
-    let label: Maybe<string>
-    label = req.input.label ?? makeNicer(rootKey)
-    tooltip = req.input.tooltip
-
-    // const vertical = false // p.vertical
-    const vertical = (() => {
-        // 🔴 (do I want to let this configurable => probably not, or if so, only optionally)
-        // 🔴 if (p.vertical != null) return p.vertical
-        if (st.preferedFormLayout === 'auto') {
-            // if (req.isOptional) return true
-            if (req instanceof R.Widget_group) return true
-            if (req instanceof R.Widget_groupOpt) return true
-            if (req instanceof R.Widget_list) return true
-            if (req instanceof R.Widget_str && req.input.textarea) return true
-            if (req instanceof R.Widget_prompt) return true
-            if (req instanceof R.Widget_promptOpt) return true
-            return false
-        }
-        if (st.preferedFormLayout === 'mobile') {
-            return true
-        }
-        if (st.preferedFormLayout === 'dense') {
-            return false
-        }
-        // p.vertical ?? (st.preferedFormLayout ? false : true)
-    })()
-    const v = p.req
-
-    // const toogle = (
-    //     <Checkbox
-    //         //
-    //         // size='sm'
-    //         checked={req.state.active}
-    //         onChange={(_, t) => (req.state.active = t)}
-    //     />
-    // )
-    const toogle = (
-        <Toggle
-            //
-            // size='lg'
-            checked={req.state.active}
-            onChange={(t) => (req.state.active = t)}
-        />
-    )
-    const showToogle = req.isOptional || !req.state.active
-
-    const LABEL = (
-        <div
-            // style={{ minWidth: '5rem' }}
-            // tw={[p.req instanceof R.Widget_group ? 'text-red-100' : undefined]}
-            className={
-                vertical //
-                    ? '_WidgetLabel min-w-max shrink-0 self-start w-full'
-                    : '_WidgetLabel min-w-max shrink-0 self-start'
-            }
-        >
-            <div
-                tw='py-0.5 rounded hover:bg-blue-500 cursor-pointer'
-                onClick={() => (v.state.collapsed = !Boolean(v.state.collapsed))}
-            >
-                {tooltip && (
-                    <Whisper placement='topStart' speaker={<Tooltip>{tooltip}</Tooltip>}>
-                        <I.InfoOutline className='mr-2 cursor-pointer' />
-                    </Whisper>
-                )}
-                <span>{label || '...'}</span> {/* {req.constructor.name} */}
-                {showToogle ? toogle : null}
-                {/* {req.constructor.name} */}
-                <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>
-            </div>
-        </div>
-    )
-    let WIDGET = v.state.collapsed ? null : !v.state.active ? null : ( //
-        <ErrorBoundary FallbackComponent={ErrorBoundaryFallback} onReset={(details) => {}}>
-            <WidgetUI req={req} />
-        </ErrorBoundary>
-    )
-    const className = vertical //
-        ? '_WidgetWithLabelUI flex flex-col items-baseline'
-        : '_WidgetWithLabelUI flex flex-row items-baseline gap-1'
-
-    if (/*st.preferedFormLayout !== 'dense'*/ vertical) {
-        WIDGET = (
-            <div tw='w-full' style={{ padding: '0 1rem 0 2rem' }}>
-                {WIDGET}
-            </div>
-        )
-    }
-    if (p.labelPos === 'end') {
-        return (
-            <div className={className} key={rootKey}>
-                {WIDGET}
-                {LABEL}
-            </div>
-        )
-    } else {
-        return (
-            <div className={className} key={rootKey}>
-                {LABEL}
-                {WIDGET}
-            </div>
-        )
-    }
-})
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets

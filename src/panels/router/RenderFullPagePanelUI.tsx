@@ -14,7 +14,7 @@ export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p:
                     st.layout.fullPageComp = null
                 }
             }}
-            tw='absolute'
+            tw='absolute fade-in'
             style={{
                 top: 0,
                 padding: '1rem',

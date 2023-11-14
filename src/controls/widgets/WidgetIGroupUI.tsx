@@ -1,7 +1,7 @@
 import type { Widget, Widget_group, Widget_groupOpt } from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
-import { WidgetWithLabelUI } from './WidgetUI'
+import { WidgetWithLabelUI } from './WidgetWithLabelUI'
 
 export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     //
@@ -11,26 +11,28 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
 }) {
     const req = p.req
     const isTopLevel = req.input.topLevel
+    const groupFields = Object.entries(req.state.values)
+    const showAsCard = groupFields.length > 0 && !isTopLevel
     return (
         <div
-            // isTopLevel ? 'px-2' : 'px-2',
-            tw={['flex items-start w-full mb-2']}
+            tw={['flex items-start w-full', showAsCard ? 'mb-2' : undefined]}
             style={{
                 position: 'relative',
                 borderRadius: '0.5rem',
-                border: isTopLevel ? undefined : '1px solid #484848',
-                paddingLeft: isTopLevel ? undefined : '.2rem',
+                border: showAsCard ? '1px solid #484848' : undefined,
+                paddingLeft: showAsCard ? '.2rem' : undefined,
+                backgroundColor: showAsCard ? '#35353568' : undefined,
             }}
         >
-            {/* {isTopLevel ? '🟢' : '🔴'} */}
             {req.state.collapsed ? null : (
                 <div
                     // style={isTopLevel ? undefined : { border: '1px solid #262626' }}
                     tw={['_WidgetGroupUI w-full', req.input.layout === 'H' ? 'flex gap-2' : null]}
                     className={req.input.className}
                 >
-                    {Object.entries(req.state.values).map(([rootKey, sub], ix) => (
+                    {groupFields.map(([rootKey, sub], ix) => (
                         <WidgetWithLabelUI //
+                            isTopLevel
                             vertical={req.state.vertical}
                             key={rootKey}
                             labelPos={sub.input.labelPos}

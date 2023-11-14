@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { CardFile } from '../CardFile'
 
 export const CardIllustrationUI = observer(function CardIllustrationUI_(p: {
+    className?: string
     onClick?: () => void
     card: CardFile
     size: string
@@ -19,6 +20,7 @@ export const CardIllustrationUI = observer(function CardIllustrationUI_(p: {
 
     return (
         <img
+            className={p.className}
             loading='lazy'
             tw={['rounded', p.onClick ? 'cursor-pointer' : null]}
             style={{ width: p.size, height: p.size, objectFit: 'contain', imageRendering: 'pixelated' }}

@@ -11,7 +11,12 @@ export const ui_model = (form: FormBuilder) => {
                 default: 'revAnimated_v122.safetensors',
                 group: 'Model',
             }),
-            civtai_ckpt_air: form.stringOpt({ label: 'Civitai Ref', group: 'Model' }),
+            civtai_ckpt_air: form.stringOpt({
+                tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425',
+                label: 'Civitai Ref',
+                group: 'Model',
+                placeHolder: 'e.g. 43331@176425',
+            }),
             vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'Model' }),
             clipSkip: form.int({ label: 'Clip Skip', default: 0, group: 'model' }),
             freeU: form.bool({ default: false }),

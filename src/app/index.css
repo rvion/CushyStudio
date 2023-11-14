@@ -298,10 +298,7 @@ hr {
     width: 100%;
 }
 
-#CushyStudio.dark ._WidgetWithLabelUI {
-    background-color: #28282868;
-}
-#CushyStudio.light ._WidgetWithLabelUI {
+#CushyStudio.light ._WidgetWithLabelUI._isNotTopLevel {
     background-color: #eeeeee68;
 }
 
@@ -390,9 +387,27 @@ pre {
 
 /* -------------- */
 
-.fade-in{animation:fade-in .3s cubic-bezier(.39,.575,.565,1.000) both}
+.fade-in{animation:fade-in .2s cubic-bezier(.39,.575,.565,1.000) both}
 @keyframes fade-in{0%{opacity:0}100%{opacity:1}}
 
 .rs-dropdown-toggle, .rs-dropdown-toggle.rs-btn {
     display: inline-flex!important;
+}
+
+.rs-toggle-presentation {
+    background-color: #343434;
+}
+.rs-toggle-presentation:after {
+    background-color: gray;
+}
+.rs-toggle-checked .rs-toggle-presentation:after {
+    background-color: white;
+}
+/* .rs-toggle-checked .rs-toggle-presentation {
+    background-color: #34c234!important;
+} */
+
+.rs-slider-handle:before {
+    height: 1rem;
+    width: 1rem;
 }

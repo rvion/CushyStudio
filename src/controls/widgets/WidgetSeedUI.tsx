@@ -7,6 +7,44 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
     const val = req.state.val
     return (
         <div tw='w-96 flex'>
+            <ButtonGroup tw='flex' size='xs'>
+                <Button
+                    appearance='subtle'
+                    active={req.state.mode === 'randomize'}
+                    onClick={() => {
+                        req.state.mode = 'randomize'
+                        req.state.active = true
+                    }}
+                    startIcon={'🎲'}
+                >
+                    Rand
+                    {/* Each Time */}
+                </Button>
+                <Button
+                    appearance='subtle'
+                    active={req.state.mode === 'fixed'}
+                    onClick={() => {
+                        req.state.mode = 'fixed'
+                        req.state.active = true
+                        // req.state.val = Math.floor(Math.random() * 1000000)
+                    }}
+                    startIcon={'🎲'}
+                >
+                    Fixed
+                    {/* Random */}
+                </Button>
+                {/* <Button
+                    //
+                    appearance={req.state.mode === 'last' ? 'ghost' : 'subtle'}
+                    onClick={() => {
+                        req.state.mode = 'last'
+                        req.state.active = true
+                    }}
+                    startIcon={'♻️'}
+                >
+                    Use Last
+                </Button> */}
+            </ButtonGroup>
             <InputNumber //
                 style={{
                     fontFamily: 'monospace',
@@ -34,42 +72,18 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
                     req.state.val = num
                 }}
             />
-            <ButtonGroup tw='flex' size='xs'>
-                <Button
-                    appearance={req.state.mode === 'randomize' ? 'ghost' : 'subtle'}
-                    onClick={() => {
-                        req.state.mode = 'randomize'
-                        req.state.active = true
-                    }}
-                    startIcon={'🎲'}
-                >
-                    Rand
-                    {/* Each Time */}
-                </Button>
-                <Button
-                    appearance={req.state.mode === 'fixed' ? 'ghost' : 'subtle'}
-                    onClick={() => {
-                        req.state.mode = 'fixed'
-                        req.state.active = true
-                        req.state.val = Math.floor(Math.random() * 1000000)
-                    }}
-                    startIcon={'🎲'}
-                >
-                    New
-                    {/* Random */}
-                </Button>
-                {/* <Button
-                    //
-                    appearance={req.state.mode === 'last' ? 'ghost' : 'subtle'}
-                    onClick={() => {
-                        req.state.mode = 'last'
-                        req.state.active = true
-                    }}
-                    startIcon={'♻️'}
-                >
-                    Use Last
-                </Button> */}
-            </ButtonGroup>
+            <Button
+                appearance='subtle'
+                onClick={() => {
+                    req.state.mode = 'fixed'
+                    req.state.active = true
+                    req.state.val = Math.floor(Math.random() * 1000000)
+                }}
+                startIcon={'🎲'}
+            >
+                New
+                {/* Random */}
+            </Button>
         </div>
     )
 })
