@@ -13,7 +13,7 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
     const valueIsValid = typeof val === 'number' && !isNaN(val)
 
     return (
-        <div tw='relative flex items-center gap-2'>
+        <div tw='relative flex items-center'>
             {valueIsValid ? null : (
                 <div className='text-red-500'>
                     Invalid value:
@@ -27,6 +27,8 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
                     min={req.input.min}
                     max={req.input.max}
                     step={step}
+                    // handleStyle={{ height: '2rem' }}
+
                     onChange={(next) => {
                         // parse value
                         let num =
@@ -46,6 +48,7 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
                 />
             )}
             <InputNumber //
+                tw='ml-4'
                 size='sm'
                 value={val}
                 style={{

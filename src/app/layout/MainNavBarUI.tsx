@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, ButtonGroup } from 'rsuite'
+import { Button, ButtonGroup, Dropdown } from 'rsuite'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 import { DBHealthUI } from './AppBarUI'
@@ -9,34 +9,53 @@ import { MainNavEntryUI } from './MainNavEntryUI'
 export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: string }) {
     const st = useSt()
     const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
-    return (
-        <div tw='p-1 flex'>
-            <MainNavEntryUI
-                // onClick={() => st.layout.addActionPicker()}
-                color='green'
-                appearance='primary'
-                onClick={() => st.toggleCardPicker()}
-                size='md'
-                ix='1'
-                icon={<span className='material-symbols-outlined'>view_list</span>}
-                label='Library'
-                tooltip={
-                    <>
-                        Open the Library, in a full-page popup.
-                        <ComboUI combo='cmd+1' /> or <ComboUI combo='ctrl+1' />
-                    </>
-                }
-            />
-            <ButtonGroup id='main-navbar' tw='flex flex-wrap items-center' className={p.className}>
-                {/* debug buttons */}
 
-                {/* COMFY */}
-                {/* <CardsPickerModalUI /> */}
+    return (
+        <>
+            <Button
+                // onClick={() => st.layout.addActionPicker()}
+                // color='green'
+                appearance='subtle'
+                onClick={() => st.toggleCardPicker()}
+                // size='sm'
+                // ix='1'
+                startIcon={<span className='material-symbols-outlined text-green-600'>view_list</span>}
+                // label='Library'
+                // tooltip={
+                //     <>
+                //         Open the Library, in a full-page popup.
+                //         <ComboUI combo='cmd+1' /> or <ComboUI combo='ctrl+1' />
+                //     </>
+                // }
+            >
+                Library
+            </Button>
+            {/* <ButtonGroup id='main-navbar' tw='flex flex-wrap items-center' className={p.className}> */}
+            {/* debug buttons */}
+
+            {/* COMFY */}
+            {/* <CardsPickerModalUI /> */}
+            {/* <Dropdown.Item as={MyLink} href='/guide/introduction'>
+                        Guide
+                        </Dropdown.Item>
+                        <Dropdown.Item as={MyLink} href='/components/overview'>
+                        Components
+                        </Dropdown.Item>
+                        <Dropdown.Item as={MyLink} href='/resources/palette'>
+                        Resources
+                    </Dropdown.Item> */}
+            {/* <Dropdown title='Menu' appearance='subtle'></Dropdown> */}
+            <Dropdown
+                style={{ zIndex: 100 }}
+                startIcon={<span className='material-symbols-outlined text-red-400'>image</span>}
+                title='Images'
+                appearance='subtle'
+            >
                 <MainNavEntryUI
                     onClick={() => st.layout.addPaint()}
                     ix='3'
                     icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
-                    label='paint'
+                    label='paint - Minipaint'
                 />
                 <MainNavEntryUI
                     onClick={() => st.layout.addGallery()}
@@ -50,7 +69,13 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                     icon={<span className='material-symbols-outlined text-red-400'>history</span>}
                     label='Last'
                 />
-                {SEPARATOR}
+            </Dropdown>
+            <Dropdown
+                style={{ zIndex: 100 }}
+                startIcon={<span className='material-symbols-outlined text-blue-400'>account_tree</span>}
+                title='ComfyUI'
+                appearance='subtle'
+            >
                 <MainNavEntryUI
                     onClick={() => st.layout.addComfy()}
                     ix='4'
@@ -63,8 +88,15 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                     icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
                     label='Nodes'
                 />
+            </Dropdown>
+            <Dropdown
+                style={{ zIndex: 100 }}
+                startIcon={<span className='material-symbols-outlined text-green-400'>code</span>}
+                title='Utils'
+                appearance='subtle'
+            >
                 {/* <OpenComfyExternalUI /> */}
-                {SEPARATOR}
+                {/* {SEPARATOR} */}
                 {/* CIVITAI */}
                 <MainNavEntryUI
                     onClick={() => st.layout.addCivitai({})}
@@ -79,7 +111,14 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                     icon={<img style={{ width: '1em', height: '1em' }} src={assets.public_logos_squoosh_png}></img>}
                     label='Squoosh'
                 />
-                {SEPARATOR}
+            </Dropdown>
+            <Dropdown //
+                style={{ zIndex: 100 }}
+                startIcon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
+                title='Config'
+                appearance='subtle'
+            >
+                {/* {SEPARATOR} */}
                 {/* CONFIG */}
                 <MainNavEntryUI
                     onClick={() => st.layout.addConfig()}
@@ -101,7 +140,13 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                     icon={<span className='material-symbols-outlined text-purple-500'>{themeIcon}</span>}
                     label='Theme'
                 />
-                {SEPARATOR}
+                {/* {SEPARATOR} */}
+            </Dropdown>
+            <Dropdown
+                appearance='subtle'
+                startIcon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
+                title='Debug'
+            >
                 <Button
                     //
                     size='sm'
@@ -140,8 +185,9 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 save
             </Button> */}
                 <DBHealthUI />
-            </ButtonGroup>
-        </div>
+                {/* </ButtonGroup> */}
+            </Dropdown>
+        </>
     )
 })
 const SEPARATOR = <div style={{ flexShrink: 0, width: '2px', height: '1.4rem', border: '1px solid #6e6e6e' }}> </div>

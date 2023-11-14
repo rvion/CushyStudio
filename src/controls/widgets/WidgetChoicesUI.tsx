@@ -3,7 +3,7 @@ import type { Widget, Widget_choices } from 'src/controls/Widget'
 import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { TagPicker } from 'rsuite'
-import { WidgetWithLabelUI } from './WidgetUI'
+import { WidgetWithLabelUI } from './WidgetWithLabelUI'
 
 export const WidgetChoicesUI = observer(function WidgetChoicesUI_(p: { req: Widget_choices<{ [key: string]: Widget }> }) {
     const req = p.req

@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode } from 'react'
-import { Button, Popover, Tooltip, Whisper } from 'rsuite'
+import { Dropdown } from 'rsuite'
 import { TypeAttributes } from 'rsuite/esm/@types/common'
 
 export const MainNavEntryUI = observer(function UI_(p: {
@@ -16,22 +16,25 @@ export const MainNavEntryUI = observer(function UI_(p: {
     tooltip?: ReactNode
 }) {
     const btn = (
-        <Button //
+        <Dropdown.Item //
             className={p.className}
             color={p.color}
-            appearance={p.appearance ?? 'subtle'}
-            size={p.size ?? 'sm'}
-            startIcon={p.icon}
+            // appearance={p.appearance ?? 'subtle'}
+            // size={p.size ?? 'sm'}
+            // startIcon={p.icon}
             onClick={p.onClick}
         >
-            {p.label}
-        </Button>
+            <div className='flex items-center gap-2'>
+                {p.icon}
+                {p.label}
+            </div>
+        </Dropdown.Item>
     )
-    if (p.tooltip)
-        return (
-            <Whisper delay={0} delayClose={0} delayOpen={0} placement='bottomStart' speaker={<Tooltip>{p.tooltip}</Tooltip>}>
-                {btn}
-            </Whisper>
-        )
+    // if (p.tooltip)
+    //     return (
+    //         <Whisper delay={0} delayClose={0} delayOpen={0} placement='bottomStart' speaker={<Tooltip>{p.tooltip}</Tooltip>}>
+    //             {btn}
+    //         </Whisper>
+    //     )
     return btn
 })

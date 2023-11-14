@@ -20,6 +20,7 @@ export function generateAvatar(
     //
     string: string = 'test',
     optionOverrides: Partial<Options> = {},
+    mode: 'svg' | 'base64' = 'base64',
 ): string {
     const isEmptyString = typeof string !== 'string' || !string.length || string === '[deleted]'
     if (isEmptyString) {
@@ -131,7 +132,9 @@ export function generateAvatar(
     // <path fill="#fff" d="M2,10 h2 v2 h-2z"/>
     // Output:
     // <path fill="#fff" d="M2,2 h2 v2 h-2z M2,6 h2 v2 h-2z M2,10 h2 v2 h-2z"/>
-    return `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" style="background-color: ${backgroundCssValue};" viewBox="0 0 40 40"><path shape-rendering="crispEdges" style="fill: ${foregroundCssValue}; stroke: ${foregroundCssValue}; stroke-width: ${1}; max-width: 100%; max-height: 100%;" d="${draw}" /></svg>`
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" style="background-color: ${backgroundCssValue};" viewBox="0 0 40 40"><path shape-rendering="crispEdges" style="fill: ${foregroundCssValue}; stroke: ${foregroundCssValue}; stroke-width: ${1}; max-width: 100%; max-height: 100%;" d="${draw}" /></svg>`
+    if (mode === 'svg') return svg
+    return 'data:image/svg+xml;base64,' + btoa(svg)
 }
 
 function hsl2rgb(

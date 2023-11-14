@@ -49,7 +49,7 @@ export type Widget =
     | Widget_enumOpt<any>
 
 // 🅿️ str ==============================================================================
-export type Widget_str_input  = ReqInput<{ default?: string; textarea?: boolean }>
+export type Widget_str_input  = ReqInput<{ default?: string; textarea?: boolean, placeHolder?:string }>
 export type Widget_str_serial = StateFields<{ type: 'str', active: true; val: string }>
 export type Widget_str_state  = StateFields<{ type: 'str', active: true; val: string }>
 export type Widget_str_output = string
@@ -131,7 +131,7 @@ export class Widget_color implements IRequest<'color', Widget_color_input, Widge
 }
 
 // 🅿️ strOpt ==============================================================================
-export type Widget_strOpt_input  = ReqInput<{ default?: string; textarea?: boolean }>
+export type Widget_strOpt_input  = Widget_str_input
 export type Widget_strOpt_serial = Widget_strOpt_state
 export type Widget_strOpt_state  = StateFields<{ type:'strOpt', active: boolean; val: string }>
 export type Widget_strOpt_output = Maybe<string>

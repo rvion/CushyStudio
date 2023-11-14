@@ -8,6 +8,7 @@ import { asAbsolutePath } from '../../utils/fs/pathUtils'
 import { stContext, useSt } from '../../state/stateContext'
 import { STATE } from '../../state/state'
 import { CushyUI } from '../../app/layout/AppUI'
+import { TargetBox } from 'src/importers/TargetBox'
 
 const path = asAbsolutePath(process.cwd())
 
@@ -25,7 +26,9 @@ const MainUI = observer(function MainUI_(p: {}) {
     return (
         <CustomProvider theme={st.theme.theme}>
             <DndProvider backend={HTML5Backend}>
-                <CushyUI />
+                <TargetBox>
+                    <CushyUI />
+                </TargetBox>
             </DndProvider>
         </CustomProvider>
     )

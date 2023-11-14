@@ -191,7 +191,8 @@ export class CushyLayoutManager {
         const draftID = p.draftID
         const draft = this.st.db.drafts.get(p.draftID)
         const card = draft?.card
-        const icon = card?.illustrationPathWithFileProtocol
+        const _img = card?.illustrationPathWithFileProtocol
+        const icon = _img?.startsWith('<svg') ? undefined : _img
         const title = card?.displayName ?? 'Draft'
         this._AddWithProps(Widget.Draft, `/draft/${draftID}`, { title, draftID, icon }, 'current')
     }
@@ -310,7 +311,7 @@ export class CushyLayoutManager {
                     type: 'border',
                     size: 300,
                     location: 'left',
-                    // selected: 0,
+                    selected: 0,
                     show: true,
                     children: [
                         this._persistentTab({

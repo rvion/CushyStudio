@@ -15,24 +15,21 @@ export interface FileListProps {
     files: File[]
 }
 
-export const FileList: FC<FileListProps> = ({ files }) => {
+export const FileBeeingImportedUI: FC<FileListProps> = observer(function FileBeeingImportedUI_({ files }) {
     if (files.length === 0) {
         return null
         // return <div>Nothing to display</div>
     }
-    const fileList = useMemo(() => list(files), [files])
-    return <div>{fileList}</div>
-}
+    return (
+        <div>
+            {files.map((file) => (
+                <ImportedFileUI key={file.name} file={file} />
+            ))}
+        </div>
+    )
+})
 
-const label = (file: File) => `'${file.name}' of size '${file.size}' and type '${file.type}'`
-
-const list = (files: File[]) => {
-    return files.map((file) => <ImportedFileUI key={file.name} file={file} />)
-    // // <li key={file.name}>
-    //     {/*  */}
-    //     {/* {label(file)} */}
-    // // </li>
-}
+// const label = (file: File) => `'${file.name}' of size '${file.size}' and type '${file.type}'`
 
 export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File }) {
     const file = p.file
@@ -69,7 +66,7 @@ export const ImportedFileUI = observer(function ImportedFileUI_(p: { file: File 
     // const hasWorkflow = json?.workflow
 
     return (
-        <Panel className='m-2' bordered shaded>
+        <Panel tw='bg-gray-800' bordered shaded>
             {/* <div className='text-gray-400 text-xs italic'>{label(file)}</div> */}
             <Field k='name' v={file.name} />
             <Field k='size' v={file.size} />

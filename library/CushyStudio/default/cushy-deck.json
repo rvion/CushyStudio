@@ -6,7 +6,7 @@
     "cards": [
         //
         {
-            "name": "Kitchen Sink",
+            "name": "Cushy Diffusion UI",
             "deckRelativeFilePath": "./prompt.ts",
             "priority": 100,
             "style": "D",
@@ -14,7 +14,7 @@
             "description": "A card that contains all the features needed to play with stable diffusion"
         },
         {
-            "name": "An action to generate cards or decks",
+            "name": "Playing cards",
             "deckRelativeFilePath": "./pokerCards.ts",
             "illustration": "_illustrations/poker-card-generator.jpg",
             "description": "Few Cushy cards are about 'playing cards'. But this one is."

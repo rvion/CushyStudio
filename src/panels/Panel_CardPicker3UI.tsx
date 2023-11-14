@@ -5,6 +5,7 @@ import { useSt } from 'src/state/stateContext'
 import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
 import { Panel_DeckList } from './Panel_DeckList'
 import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
+import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
 
 export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
@@ -44,13 +45,12 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                 <CreateDeckBtnUI />
             </div>
             <div tw='flex flex-grow'>
-                <ScrollablePaneUI style={{ width: '300px' }} tw='shrink-0'>
+                {/* <ScrollablePaneUI style={{ width: '300px' }} tw='shrink-0'>
                     <Panel_DeckList />
-                </ScrollablePaneUI>
+                </ScrollablePaneUI> */}
                 <ScrollablePaneUI tw='flex-grow'>
-                    <div tw='sticky top-0 z-50 bg-gray'></div>
-
-                    <div tw='flex flex-wrap gap-2 p-3'>
+                    <div tw='flex flex-wrap  gap-3 p-3 justify-center'>
+                        <FileBeeingImportedUI files={st.droppedFiles} />
                         {st.library.cardsFilteredSorted.map((card, ix) => (
                             <div key={card.relPath}>
                                 <FancyCardUI //
@@ -63,16 +63,14 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                 {card.drafts.length > 0 ? (
                                     <div tw='flex flex-col'>
                                         {card.drafts.map((draft, ix) => (
-                                            <div tw='flex w-96' key={draft.id}>
-                                                <Button
-                                                    tw='flex-grow'
-                                                    size='sm'
-                                                    appearance='subtle'
+                                            <div tw='flex items-center w-80' key={draft.id}>
+                                                <span className='material-symbols-outlined'>play_arrow</span>
+                                                <div
+                                                    tw='flex-grow underline flex items-center'
                                                     onClick={() => (st.currentDraft = draft)}
-                                                    startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
                                                 >
                                                     draft #{ix}: {draft.data.title}
-                                                </Button>
+                                                </div>
                                                 <IconButton
                                                     size='sm'
                                                     icon={<span className='material-symbols-outlined'>delete</span>}
