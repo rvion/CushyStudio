@@ -2,7 +2,14 @@
 
 # 🛋️ CushyStudio
 
-## _The **easiest** and most **powerful** Generative Art platform_
+## _The **AI** and **Generative Art** platform for everyone_
+
+```
+Art blooms in bytes, vast,
+In Cushy realms, ideas soar,
+For all, art awakes.
+```
+
 
 <img height="25" alt="Build Status" src="https://img.shields.io/badge/build-passing-%20brightgreen" />
 <img height="25"  alt="Maturity"     src="https://img.shields.io/badge/status-BETA-yellow" />

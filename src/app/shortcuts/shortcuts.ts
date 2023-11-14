@@ -46,6 +46,17 @@ export const shortcutsDef: Shortcut<STATE>[] = [
         info: 'Tooggle Graph Monitor',
     },
 
+    {
+        combos: ['escape'],
+        validInInput: true,
+        action: (st) => {
+            if (st.layout.fullPageComp == null) return Trigger.UNMATCHED_CONDITIONS
+            st.layout.fullPageComp = null
+            return Trigger.Success
+        },
+        info: 'Close Full-Screen Panel if open',
+    },
+
     // G   - Go
     // G M - Go Messagerie
     // { combos: ['g m'], action: (st) => st.router.goTo('CHAT', { inbox: { filter: 'all' } }) }, // Messagerie   | Appbar
