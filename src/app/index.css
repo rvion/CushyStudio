@@ -407,6 +407,14 @@ pre {
     background-color: #34c234!important;
 } */
 
+/* RSUITE SLIDER ------------ */
+.rs-slider-bar {
+    height: .8rem;
+    border-radius: 1rem;
+}
+.rs-slider-handle {
+    top: calc(50% - .5rem);
+}
 .rs-slider-handle:before {
     height: 1rem;
     width: 1rem;
