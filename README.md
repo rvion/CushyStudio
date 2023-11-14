@@ -39,7 +39,7 @@ For all, art awakes.
 -   They make it super easy and fun to explore all generative art has to offer.
 -   CushyStudio allows you to run, create, and share **Apps** -->
 
-![](docs/static/img/screenshots/2023-11-14-21-40-51.png)
+![](docs/static/img/screenshots/2023-11-14-22-33-15.png)
 
 <!-- <div src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:49%'>
 test</div>  -->
