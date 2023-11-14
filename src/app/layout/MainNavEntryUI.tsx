@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode } from 'react'
-import { Button, Dropdown, Popover, Tooltip, Whisper } from 'rsuite'
+import { Dropdown } from 'rsuite'
 import { TypeAttributes } from 'rsuite/esm/@types/common'
 
 export const MainNavEntryUI = observer(function UI_(p: {
@@ -24,7 +24,10 @@ export const MainNavEntryUI = observer(function UI_(p: {
             // startIcon={p.icon}
             onClick={p.onClick}
         >
-            {p.label}
+            <div className='flex items-center gap-2'>
+                {p.icon}
+                {p.label}
+            </div>
         </Dropdown.Item>
     )
     // if (p.tooltip)

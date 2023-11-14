@@ -17,15 +17,13 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
                 style={{ borderBottom: '1px solid #2b2b2b' }}
                 tw='flex items-center gap-1 px-1 overflow-visible bg-contrasted-gradient'
             >
-                <div tw='flex p-2 gap-1 self-start'>
-                    <img style={{ width: '1rem' }} src={assets.public_CushyLogo_512_png} alt='' />
-                    <div tw='whitespace-nowrap'>Cushy Studio</div>
-                    <UpdateBtnUI updater={st.updater} />
-                </div>
+                {/* <img style={{ width: '1.6rem' }} src={assets.public_CushyLogo_512_png} alt='' /> */}
+                {/* <div tw='whitespace-nowrap px-2 text-xl'>Cushy</div> */}
                 <MainNavBarUI />
                 <div className='flex flex-grow'></div>
                 <WebsocketIndicatorUI />
                 <SchemaIndicatorUI />
+                <UpdateBtnUI updater={st.updater} />
                 <CushyStudioLinkUI />
             </div>
             {/* <MainNavBarUI /> */}

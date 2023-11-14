@@ -99,8 +99,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             // tw={[p.req instanceof R.Widget_group ? 'text-red-100' : undefined]}
             className={
                 vertical //
-                    ? 'min-w-max shrink-0 self-start w-full'
-                    : 'min-w-max shrink-0 self-start'
+                    ? '_WidgetLabel min-w-max shrink-0 self-start w-full'
+                    : '_WidgetLabel min-w-max shrink-0 self-start'
             }
         >
             <div
@@ -125,26 +125,26 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         </ErrorBoundary>
     )
     const className = vertical //
-        ? 'flex flex-col items-baseline'
-        : 'flex flex-row items-baseline gap-1'
+        ? '_WidgetWithLabelUI flex flex-col items-baseline'
+        : '_WidgetWithLabelUI flex flex-row items-baseline gap-1'
 
     if (/*st.preferedFormLayout !== 'dense'*/ vertical) {
         WIDGET = (
-            <div tw='w-full' style={{ paddingLeft: '2rem' }}>
+            <div tw='w-full' style={{ padding: '0 1rem 0 2rem' }}>
                 {WIDGET}
             </div>
         )
     }
     if (p.labelPos === 'end') {
         return (
-            <div tw='_WidgetWithLabelUI' className={className} key={rootKey}>
+            <div className={className} key={rootKey}>
                 {WIDGET}
                 {LABEL}
             </div>
         )
     } else {
         return (
-            <div tw='_WidgetWithLabelUI' className={className} key={rootKey}>
+            <div className={className} key={rootKey}>
                 {LABEL}
                 {WIDGET}
             </div>

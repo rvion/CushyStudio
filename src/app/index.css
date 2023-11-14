@@ -298,8 +298,11 @@ hr {
     width: 100%;
 }
 
-._WidgetWithLabelUI {
+#CushyStudio.dark ._WidgetWithLabelUI {
     background-color: #28282868;
+}
+#CushyStudio.light ._WidgetWithLabelUI {
+    background-color: #eeeeee68;
 }
 
 /* ._WidgetListUI {
@@ -389,3 +392,7 @@ pre {
 
 .fade-in{animation:fade-in .3s cubic-bezier(.39,.575,.565,1.000) both}
 @keyframes fade-in{0%{opacity:0}100%{opacity:1}}
+
+.rs-dropdown-toggle, .rs-dropdown-toggle.rs-btn {
+    display: inline-flex!important;
+}

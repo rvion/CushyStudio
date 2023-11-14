@@ -13,23 +13,20 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     const isTopLevel = req.input.topLevel
     return (
         <div
-            tw={[
-                //
-                'relative flex items-start w-full',
-                // isTopLevel ? 'px-2' : 'px-2',
-            ]}
+            // isTopLevel ? 'px-2' : 'px-2',
+            tw={['flex items-start w-full mb-2']}
             style={{
-                //
-                borderLeft: isTopLevel ? undefined : '1px solid #484848',
+                position: 'relative',
+                borderRadius: '0.5rem',
+                border: isTopLevel ? undefined : '1px solid #484848',
                 paddingLeft: isTopLevel ? undefined : '.2rem',
-                // borderRadius: isTopLevel ? undefined : '1rem',
             }}
         >
             {/* {isTopLevel ? '🟢' : '🔴'} */}
             {req.state.collapsed ? null : (
                 <div
                     // style={isTopLevel ? undefined : { border: '1px solid #262626' }}
-                    tw={['w-full', req.input.layout === 'H' ? 'flex gap-2' : null]}
+                    tw={['_WidgetGroupUI w-full', req.input.layout === 'H' ? 'flex gap-2' : null]}
                     className={req.input.className}
                 >
                     {Object.entries(req.state.values).map(([rootKey, sub], ix) => (

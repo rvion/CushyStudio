@@ -20,7 +20,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                 <img //
                     style={{ height: `2rem` }}
                     src={deck.logo}
-                    alt='pack logo'
+                    alt='logo'
                 />
 
                 <div tw='flex flex-grow'>
@@ -40,11 +40,6 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                     {/* manifest */}
                     <div>
                         <div className='flex gap-1'>
-                            {deck.BUILT_IN ? ( //
-                                <div tw='text-gray-600'>built-in</div>
-                            ) : (
-                                <ActionPackStatusUI pack={deck} />
-                            )}
                             {deck.manifestError && (
                                 <Whisper
                                     speaker={
@@ -56,6 +51,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                                     <span className='text-red-500 material-symbols-outlined'>error</span>
                                 </Whisper>
                             )}
+                            <ActionPackStatusUI pack={deck} />
                         </div>
                         {deck.updater.status === FolderKind.FolderWithGit ? ( //
                             <ActionPackStarsUI tw='float-right' pack={deck} />

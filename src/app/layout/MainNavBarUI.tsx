@@ -14,12 +14,12 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
         <>
             <Button
                 // onClick={() => st.layout.addActionPicker()}
-                color='green'
-                appearance='ghost'
+                // color='green'
+                appearance='subtle'
                 onClick={() => st.toggleCardPicker()}
-                size='sm'
+                // size='sm'
                 // ix='1'
-                startIcon={<span className='material-symbols-outlined'>view_list</span>}
+                startIcon={<span className='material-symbols-outlined text-green-600'>view_list</span>}
                 // label='Library'
                 // tooltip={
                 //     <>
@@ -46,7 +46,8 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                     </Dropdown.Item> */}
             {/* <Dropdown title='Menu' appearance='subtle'></Dropdown> */}
             <Dropdown
-                icon={<span className='material-symbols-outlined text-red-400'>😀</span>}
+                style={{ zIndex: 100 }}
+                startIcon={<span className='material-symbols-outlined text-red-400'>image</span>}
                 title='Images'
                 appearance='subtle'
             >
@@ -54,7 +55,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                     onClick={() => st.layout.addPaint()}
                     ix='3'
                     icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
-                    label='paint'
+                    label='paint - Minipaint'
                 />
                 <MainNavEntryUI
                     onClick={() => st.layout.addGallery()}
@@ -70,7 +71,8 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 />
             </Dropdown>
             <Dropdown
-                startIcon={<span className='material-symbols-outlined text-blue-400'>play_circle</span>}
+                style={{ zIndex: 100 }}
+                startIcon={<span className='material-symbols-outlined text-blue-400'>account_tree</span>}
                 title='ComfyUI'
                 appearance='subtle'
             >
@@ -88,6 +90,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 />
             </Dropdown>
             <Dropdown
+                style={{ zIndex: 100 }}
                 startIcon={<span className='material-symbols-outlined text-green-400'>code</span>}
                 title='Utils'
                 appearance='subtle'
@@ -109,7 +112,12 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                     label='Squoosh'
                 />
             </Dropdown>
-            <Dropdown title='Config'>
+            <Dropdown //
+                style={{ zIndex: 100 }}
+                startIcon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
+                title='Config'
+                appearance='subtle'
+            >
                 {/* {SEPARATOR} */}
                 {/* CONFIG */}
                 <MainNavEntryUI

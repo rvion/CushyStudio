@@ -63,7 +63,7 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                 {card.drafts.length > 0 ? (
                                     <div tw='flex flex-col'>
                                         {card.drafts.map((draft, ix) => (
-                                            <div tw='flex items-center w-96' key={draft.id}>
+                                            <div tw='flex items-center w-80' key={draft.id}>
                                                 <span className='material-symbols-outlined'>play_arrow</span>
                                                 <div
                                                     tw='flex-grow underline flex items-center'

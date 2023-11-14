@@ -38,7 +38,7 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
             }}
             tw={[
                 //
-                'p-1 w-96',
+                'p-1 w-80',
                 `card STYLE_${p.style}`,
                 p.active ? 'active' : 'not-active',
                 'cursor-pointer',

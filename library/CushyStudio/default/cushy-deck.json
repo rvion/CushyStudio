@@ -6,7 +6,7 @@
     "cards": [
         //
         {
-            "name": "Kitchen Sink",
+            "name": "Cushy Diffusion UI",
             "deckRelativeFilePath": "./prompt.ts",
             "priority": 100,
             "style": "D",
