@@ -25,6 +25,10 @@ export class Library {
     // --------------------------
 
     query = ''
+    showDescription = true
+    showDrafts = true
+    showFavorites = true
+    imageSize = '11rem'
     selectionCursor = 0
     /** flat list of all decks */
     decks: Deck[] = []

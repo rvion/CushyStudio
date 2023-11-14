@@ -13,7 +13,7 @@ export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
                 color='green'
                 startIcon={<span className='material-symbols-outlined'>add</span>}
             >
-                Create an action
+                Create App
             </Button>
             <CreateDeckModalUI uist={uist} />
         </div>

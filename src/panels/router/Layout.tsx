@@ -21,7 +21,7 @@ import { Panel_Squoosh } from '../Panel_Squoosh'
 import { Panel_LastStep } from '../Panel_Steps'
 import { Panel_ViewImage } from '../Panel_ViewImage'
 import { Panel_3dScene } from 'src/panels/Panel_3dScene'
-import { Panel_CardPicker3UI } from 'src/panels/Panel_CardPicker3UI'
+import { Panel_CardPicker3UI } from 'src/panels/Panel_FullScreenLibrary'
 import { RenderPanelUI } from './RenderPanelUI'
 
 // still on phone

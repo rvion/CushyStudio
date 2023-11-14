@@ -44,8 +44,7 @@ _image 1 - screenshot showcasing the **Framed Avatar Maker** app_
 - Apps are made to be used by **everyone**, from non-programmers to advanced users.
 
 _image 2 - Built-in **App library**_
-![](docs/static/img/screenshots/2023-11-14-23-08-04.png)
-![](docs/static/img/screenshots/2023-11-14-23-09-34.png)
+![](docs/static/img/screenshots/2023-11-15-00-05-54.png)
 
 <!-- <div src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:49%'>
 test</div>  -->

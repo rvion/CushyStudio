@@ -20,7 +20,7 @@ import { Panel_ViewImage } from '../Panel_ViewImage'
 import { Panel_3dScene } from 'src/panels/Panel_3dScene'
 import { Panel_ViewLatent } from 'src/panels/Panel_ViewLatent'
 import { Widget, exhaust } from './Layout'
-import { Panel_CardPicker3UI } from '../Panel_CardPicker3UI'
+import { Panel_CardPicker3UI } from '../Panel_FullScreenLibrary'
 
 export const RenderPanelUI = observer(function RenderPanelUI_(p: { widget: Widget; widgetProps?: any }) {
     const component = p.widget

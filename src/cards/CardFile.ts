@@ -80,6 +80,7 @@ export class CardFile {
         let score = 0
         // hardcoded rules
         if (this.relPath==='library/CushyStudio/default/prompt.ts') score+=1000
+        if (this.relPath.endsWith('.ts')) score+=90
         // malus
         if (this.deckManifestType === 'crash')            score -= 60
         if (this.deckManifestType === 'invalid manifest') score -= 50

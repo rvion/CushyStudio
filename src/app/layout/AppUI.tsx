@@ -41,7 +41,7 @@ export const CushyUI = observer(function CushyUI_() {
         window.addEventListener('keydown', handleKeyDown)
         if (document.activeElement === document.body) current.focus()
         return () => window.removeEventListener('keydown', handleKeyDown)
-    }, [appRef.current])
+    }, [appRef.current, st])
 
     return (
         <div id='CushyStudio' tabIndex={-1} ref={appRef} tw={['col grow h100', st.theme.theme]}>
