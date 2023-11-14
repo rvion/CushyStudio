@@ -29,17 +29,23 @@ For all, art awakes.
 
 # 1. Introducing `Cushy Apps`
 
-**Cushy Apps** are self-contained AI-augmented Generative AI.
+**Cushy Apps** are self-contained AI-augmented Generative Apps .
 
-- Apps are **Easy to run**, **Easy to create**, **Easy to share**.
-- Apps are **interactive** and **real-time** by design.
-- Apps are made to be used by **everyone**, from non-programmers to advanced users.
 
 <!-- -   CushyStudio **Apps** are interactive generative "apps" with dedicated UIs.
 -   They make it super easy and fun to explore all generative art has to offer.
 -   CushyStudio allows you to run, create, and share **Apps** -->
 
+_image 1 - screenshot showcasing the **Framed Avatar Maker** app_
 ![](docs/static/img/screenshots/2023-11-14-22-33-15.png)
+
+- Apps are **Easy to run**, **Easy to create**, **Easy to share**.
+- Apps are **interactive** and **real-time** by design.
+- Apps are made to be used by **everyone**, from non-programmers to advanced users.
+
+_image 2 - Built-in **App library**_
+![](docs/static/img/screenshots/2023-11-14-23-08-04.png)
+![](docs/static/img/screenshots/2023-11-14-23-09-34.png)
 
 <!-- <div src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:49%'>
 test</div>  -->
