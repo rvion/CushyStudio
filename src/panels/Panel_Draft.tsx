@@ -2,7 +2,7 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { useEffect } from 'react'
-import { Button, ButtonGroup, Dropdown, InputGroup, Loader, Message, SelectPicker } from 'rsuite'
+import { Button, ButtonGroup, Dropdown, IconButton, InputGroup, Loader, Message, SelectPicker } from 'rsuite'
 import { showItemInFolder } from 'src/app/layout/openExternal'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { CardIllustrationUI } from 'src/cards/fancycard/CardIllustrationUI'
@@ -131,54 +131,40 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 //
                 className={containerClassName}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw='flex flex-col flex-grow h-full p-3'
+                tw='flex flex-col flex-grow h-full'
             >
                 {/* <ActionDraftListUI card={card} /> */}
 
                 {/* NAME */}
-                <div tw='flex items-baseline justify-between'>
-                    <b tw='font-bold p-1 overflow-hidden overflow-ellipsis whitespace-nowrap' style={{ fontSize: '1.6rem' }}>
-                        <CardIllustrationUI card={card} size='2rem' tw='mr-2' />
-                        {card.displayName}
-                    </b>
-                    {Boolean(card.authorDefinedManifest) ? (
-                        <GithubUserUI //
-                            showName
-                            tw='text-gray-500'
-                            prefix='by'
-                            size='1rem'
-                            username={card.deck.githubUserName}
-                        />
-                    ) : null}
-                </div>
-                {/* Action bar */}
-                <div tw='flex gap-0.5'>
-                    <div tw='flex-grow'></div>
-                    <FormLayoutPrefsUI />
-                    <CardActionsMenuUI card={card} />
-                    <Button
-                        //
-                        tw='self-start'
-                        startIcon={draft.shouldAutoStart ? <Loader /> : undefined}
-                        appearance='subtle'
-                        active={draft.shouldAutoStart}
-                        color={draft.shouldAutoStart ? 'green' : undefined}
-                        onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
-                        size={size1}
-                    >
-                        Autorun
-                    </Button>
-                    {/* <Toggle size='sm' color='red' onChange={(t) => draft.setAutostart(t)} /> */}
-                    <Button
-                        className='self-start'
-                        color='green'
-                        appearance='primary'
-                        startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
-                        onClick={() => draft.start()}
-                        size={size2}
-                    >
-                        Run
-                    </Button>
+                <div
+                    //
+                    style={{ background: '#181818', borderBottom: '1px solid #2f2f2f' }}
+                    tw='flex p-1'
+                >
+                    <div tw='flex gap-0.5 flex-grow relative'>
+                        <CardIllustrationUI card={card} size='4rem' tw='p-1' />
+                        <div tw='px-1 flex-grow'>
+                            <b tw='font-boldoverflow-hidden overflow-ellipsis whitespace-nowrap' style={{ fontSize: '1.6rem' }}>
+                                {card.displayName}
+                            </b>
+                            <div className='flex items-center gap-0 5'>
+                                {Boolean(card.authorDefinedManifest) ? (
+                                    <GithubUserUI //
+                                        showName
+                                        tw='text-gray-500'
+                                        prefix='by'
+                                        size='1rem'
+                                        username={card.deck.githubUserName}
+                                    />
+                                ) : null}
+                                <div>
+                                    <FormLayoutPrefsUI />
+                                    <CardActionsMenuUI card={card} />
+                                </div>
+                            </div>
+                        </div>
+                        <RunOrAutorunUI tw='right-0 absolute' draft={draft} />
+                    </div>
                 </div>
 
                 {/* <hr /> */}
@@ -225,30 +211,39 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     )
 })
 
-export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { draft: DraftL }) {
+export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
     return (
-        <ButtonGroup size='sm'>
+        <div tw='flex flex-col' className={p.className}>
             <Button
                 //
-                startIcon={draft.shouldAutoStart ? <Loader /> : undefined}
+                tw='self-start'
+                startIcon={draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>autorenew</span>}
+                // appearance='subtle'
                 active={draft.shouldAutoStart}
                 color={draft.shouldAutoStart ? 'green' : undefined}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
+                size={size2}
             >
-                Autorun
+                Auto
             </Button>
-            {/* <Toggle size='sm' color='red' onChange={(t) => draft.setAutostart(t)} /> */}
             <Button
                 className='self-start'
                 color='green'
                 appearance='primary'
-                startIcon={<span className='material-symbols-outlined'>play_arrow</span>}
+                startIcon={
+                    draft.shouldAutoStart ? ( //
+                        <span className='material-symbols-outlined'>pause</span>
+                    ) : (
+                        <span className='material-symbols-outlined'>play_arrow</span>
+                    )
+                }
                 onClick={() => draft.start()}
+                size={size2}
             >
                 Run
             </Button>
-        </ButtonGroup>
+        </div>
     )
 })
 
@@ -274,7 +269,8 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: {}) {
             //
             size={size1}
             appearance='subtle'
-            title={`Layout: ${layout}`}
+            startIcon={<span className='material-symbols-outlined'>dynamic_form</span>}
+            title={`${layout}`}
             // startIcon={<span className='material-symbols-outlined'>format_size</span>}
         >
             <Dropdown.Item onClick={() => (st.preferedFormLayout = 'dense')} active={layout == 'dense'}>
@@ -301,5 +297,5 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: {}) {
     )
 })
 
-const size1 = 'sm' as const
+const size1 = 'xs' as const
 const size2 = 'sm' as const

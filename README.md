@@ -27,6 +27,24 @@ For all, art awakes.
 
 </div>
 
+# 1. Introducing `Cushy Apps`
+
+**Cushy Apps** are self-contained AI-augmented Generative AI.
+
+- Apps are **Easy to run**, **Easy to create**, **Easy to share**.
+- Apps are **interactive** and **real-time** by design.
+- Apps are made to be used by **everyone**, from non-programmers to advanced users.
+
+<!-- -   CushyStudio **Apps** are interactive generative "apps" with dedicated UIs.
+-   They make it super easy and fun to explore all generative art has to offer.
+-   CushyStudio allows you to run, create, and share **Apps** -->
+
+![](docs/static/img/screenshots/2023-11-14-21-40-51.png)
+
+<!-- <div src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:49%'>
+test</div>  -->
+
+
 <!-- ![GitHub Sponsors](https://img.shields.io/github/sponsors/rvion) -->
 <!-- ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio) -->
 <!-- [![CLA assistant](https://cla-assistant.io/readme/badge/rvion/CushyStudio)](https://cla-assistant.io/rvion/CushyStudio) -->
@@ -34,10 +52,12 @@ For all, art awakes.
 <!-- [![](https://img.shields.io/twitter/follow/_rvion?style=flat&logo=twitter)](https://twitter.com/_rvion) -->
 
 
-- [1. CushyStudio **Actions**: self-contained mini Stable diffusion apps](#1-cushystudio-actions-self-contained-mini-stable-diffusion-apps)
-  - [1.1. **Actions** are simple to use.](#11-actions-are-simple-to-use)
-  - [1.2. **Actions** are pleasant to make](#12-actions-are-pleasant-to-make)
-  - [1.3. **Actions** are easy to share](#13-actions-are-easy-to-share)
+# Table of contents
+- [1. Introducing `Cushy Apps`](#1-introducing-cushy-apps)
+- [Table of contents](#table-of-contents)
+  - [1.1. **Apps** are simple to use.](#11-apps-are-simple-to-use)
+  - [1.2. **Apps** are pleasant to make](#12-apps-are-pleasant-to-make)
+  - [1.3. **Apps** are easy to share](#13-apps-are-easy-to-share)
 - [2. Quickstart Guide](#2-quickstart-guide)
   - [2.1. Installation](#21-installation)
   - [2.2. Starting](#22-starting)
@@ -76,21 +96,10 @@ For all, art awakes.
   - [5.3. Q: Any plans for a paid version of **CushyStudio**?](#53-q-any-plans-for-a-paid-version-of-cushystudio)
 - [6. Theming](#6-theming)
 
-# 1. CushyStudio **Actions**: self-contained mini Stable diffusion apps
-
--   CushyStudio **Actions** are interactive generative "apps" with dedicated UIs.
--   They make it super easy and fun to explore all generative art has to offer.
--   CushyStudio allows you to run, create, and share **Actions**
-
-
-<img src='docs/static/img/screenshots/2023-10-18-22-12-01.png' style='width:60%'></img> <img src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:30%'></img>
-
-<!-- <div src='docs/static/img/screenshots/2023-10-18-22-13-26.png' style='width:49%'>
-test</div>  -->
 
 <!-- ---------------------------------------------- -->
 
-## 1.1. **Actions** are simple to use.
+## 1.1. **Apps** are simple to use.
 
 -   ✅ Non-technical **_Card_** interfaces
 
@@ -100,7 +109,7 @@ test</div>  -->
 -   🚂 Fast previews, real-time feedback
 
     -   Interactive at its core
-    -   Real-time **Actions** with continuous generations
+    -   Real-time **Apps** with continuous generations
 
 -   🖌️ Built-in commodities
 
@@ -110,7 +119,7 @@ test</div>  -->
 <!-- <img src='docs/static/img/screenshots/2023-10-23-19-04-01.png' style='width:100%'></img> -->
 
 
-## 1.2. **Actions** are pleasant to make
+## 1.2. **Apps** are pleasant to make
 
 -   🚀 CushyStudio comes with amakes it easy to build actions
 
@@ -137,7 +146,7 @@ test</div>  -->
     -   Share your deck/cards with the world
 
 
-## 1.3. **Actions** are easy to share
+## 1.3. **Apps** are easy to share
 
 -  📦 one-click create your custom `Deck`
 
@@ -298,7 +307,7 @@ Layers, effects, masks, blending modes, ...and more. Always one click away
 
 # 4. Quickstart Guide For Action Creators
 
-Creating **Actions** is easy.
+Creating **Apps** is easy.
 In this section, we will
 
 - understand how **CushyStudio** works,
@@ -312,7 +321,7 @@ In this section, we will
 
 2. **CushyStudio** then scan you `ComfyUI` install and generates whole **_TypeScript SDK_** supporting all your custom nodes, assets, models instaleld, etc.
 
-3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create **Actions** with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
+3. All your custom nodes, models, and images will be converted to `enums`, `classes`, `helpers`, etc, allowing you to create **Apps** with maximum type safety and completion. you can check the generated SDK at `schema/global.d.ts`.
     - 👉 this file is updated after each ComfyUI connection.
     - 👉 It means it will only be created after the first successful connection to your ComfyUI instance
 
@@ -341,7 +350,7 @@ card({
 
 A `Deck` is a folder containing
 
-  - a list of **Actions**
+  - a list of **Apps**
   - a list of `assets`
   - a list of `prefabs`
   - some `documentation` about how to use those cards
@@ -439,7 +448,7 @@ An `Card` is a file containing
 
 ## 4.5. `Prefabs` so you don't repeat yourself
 
-The simplest way to modularize your **Actions** is to build `prefabs`.
+The simplest way to modularize your **Apps** is to build `prefabs`.
 
 - `Prefabs` allow you to re-use parts of your cards in other cards.
 - `Prefabs` allow you to re-use parts of your cards multiple times in your card
