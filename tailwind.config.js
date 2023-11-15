@@ -9,4 +9,7 @@ module.exports = {
         require('tailwindcss-animate'),
         require('daisyui'),
     ],
+    daisyui: {
+        themes: ['light', 'dark', 'cupcake', 'aqua', 'valentine', 'wireframe'],
+    },
 }

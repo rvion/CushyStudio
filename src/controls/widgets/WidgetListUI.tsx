@@ -15,7 +15,7 @@ export const WidgetListUI = observer(function WidgetListUI_<T extends Widget>(p:
                 tw='mb-2'
                 disabled={max ? req.state.items.length >= max : undefined}
                 size='xs'
-                startIcon={<span className='material-symbols-outlined'>add</span>}
+                icon={<span className='material-symbols-outlined'>add</span>}
                 onClick={() => req.addItem()}
             >
                 Add

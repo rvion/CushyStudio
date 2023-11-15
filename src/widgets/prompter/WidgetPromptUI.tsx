@@ -104,6 +104,7 @@ export const WidgetPromptUI = observer((p: { req: Widget_prompt | Widget_promptO
         <LexicalComposer initialConfig={initialConfig}>
             <CopyPastePlugin />
             <CushyShortcutPlugin />
+            {/* <div>{req.state.tokens.map((t) => t.type)}</div> */}
             <PlainTextPlugin
                 contentEditable={
                     <ContentEditable

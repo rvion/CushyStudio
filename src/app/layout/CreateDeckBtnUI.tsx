@@ -11,7 +11,7 @@ export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {
                 onClick={uist.handleOpen}
                 appearance='primary'
                 color='green'
-                startIcon={<span className='material-symbols-outlined'>add</span>}
+                icon={<span className='material-symbols-outlined'>add</span>}
             >
                 Create App
             </Button>

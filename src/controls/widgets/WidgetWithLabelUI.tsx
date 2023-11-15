@@ -68,8 +68,8 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     : '_WidgetLabel ',
                 WIDGET == null ? 'w-full' : null,
                 'min-w-max shrink-0 self-start',
-                'flex items-center',
-                'py-0.5 hover:bg-gray-800 cursor-pointer',
+                'flex items-center gap-1',
+                'hover:bg-gray-800 cursor-pointer',
             ]}
             onClick={() => {
                 if (v.state.collapsed) {
@@ -90,7 +90,11 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 tw={[p.isTopLevel && vertical ? 'font-bold' : undefined]}
                 style={
                     true && !vertical //
-                        ? { minWidth: '5rem', display: 'inline-block', textAlign: 'right', marginRight: '.5rem' }
+                        ? {
+                              //   minWidth: '5rem',
+                              display: 'inline-block',
+                              //   textAlign: 'right' /*marginRight: '.5rem'*/,
+                          }
                         : {}
                 }
             >

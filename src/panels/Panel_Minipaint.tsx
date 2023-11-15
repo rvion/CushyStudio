@@ -144,7 +144,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID: ImageID })
             <ButtonGroup className='absolute top-1 right-2'>
                 <Button
                     size='sm'
-                    startIcon={<span className='material-symbols-outlined'>save</span>}
+                    icon={<span className='material-symbols-outlined'>save</span>}
                     appearance='primary'
                     color='green'
                     onClick={() => {

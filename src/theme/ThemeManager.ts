@@ -1,16 +1,17 @@
 import { makeAutoObservable } from 'mobx'
 import { STATE } from 'src/state/state'
 
-export type Theme = 'light' | 'dark'
+export type ThemeName = 'light' | 'dark' | 'cupcake' | 'aqua' | 'valentine' | 'wireframe'
 
 export class ThemeManager {
+    themes: ThemeName[] = ['light', 'dark', 'cupcake', 'aqua', 'valentine', 'wireframe']
     toggle() {
         this.theme = this.theme === 'dark' ? 'light' : 'dark'
     }
-    get theme(): Theme {
+    get theme(): ThemeName {
         return this.st.configFile.value.theme ?? 'dark'
     }
-    set theme(v: Theme) {
+    set theme(v: ThemeName) {
         this.st.configFile.update({ theme: v })
     }
 

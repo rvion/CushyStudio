@@ -33,7 +33,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
                             <div tw='join'>
                                 <Button
                                     tw='btn-neutral join-item '
-                                    startIcon={<span className='material-symbols-outlined'>format_color_reset</span>}
+                                    icon={<span className='material-symbols-outlined'>format_color_reset</span>}
                                     size='xs'
                                     onClick={() => st.configFile.update({ galleryBgColor: undefined })}
                                 />

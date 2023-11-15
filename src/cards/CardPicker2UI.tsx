@@ -10,12 +10,12 @@ import { CardIllustrationUI } from './fancycard/CardIllustrationUI'
 export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Deck }) {
     const deck: Deck = p.deck
     return (
-        <div tw='my-0.5 flex-grow' key={deck.folderRel}>
+        <div tw='flex-grow' key={deck.folderRel}>
             <DeckHeaderUI deck={deck} />
             {deck.folded ? null : (
                 <div tw='flex flex-col gap-0.5'>
                     {deck.cards.map((af) => (
-                        <ActionEntryUI key={af.relPath} card={af} />
+                        <AppEntryUI key={af.relPath} card={af} />
                     ))}
                 </div>
             )}
@@ -23,15 +23,13 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { deck: Deck }) {
     )
 })
 
-export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFile }) {
+export const AppEntryUI = observer(function ActionEntryUI_(p: { card: CardFile }) {
     const st = useSt()
     const card = p.card
-    const pack = card.deck
     return (
         <div
             //
-            tw='hover:bg-gray-900 flex gap-2 cursor-pointer'
-            // style={{ borderTop: '1px solid #161616' }}
+            tw='hover:bg-base-200 flex gap-2 cursor-pointer'
             key={card.absPath}
             onClick={(ev) => {
                 ev.preventDefault()
@@ -44,7 +42,7 @@ export const ActionEntryUI = observer(function ActionEntryUI_(p: { card: CardFil
                 <ActionFavoriteBtnUI card={card} size='1.3rem' />
             </div>
             <CardIllustrationUI card={card} size='1.5rem' />
-            <div tw='overflow-hidden whitespace-nowrap overflow-ellipsis'>{card.displayName}</div>
+            <div tw='overflow-hidden text-base-content whitespace-nowrap overflow-ellipsis'>{card.displayName}</div>
         </div>
     )
 })

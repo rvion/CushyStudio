@@ -1,4 +1,8 @@
 /* TABS --------------------------------------- */
+.flexlayout__tab,
+.flexlayout__tabset {
+    background: transparent;
+}
 #CushyStudio.dark .flexlayout__tabset-selected{
     background: #181818;
 }

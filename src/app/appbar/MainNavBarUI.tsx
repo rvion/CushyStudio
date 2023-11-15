@@ -1,46 +1,21 @@
 import { observer } from 'mobx-react-lite'
-import { Button, ButtonGroup, Dropdown, MenuBar } from 'src/rsuite/shims'
+import { Button, Dropdown } from 'src/rsuite/shims'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 import { DBHealthUI } from './AppBarUI'
-import { ComboUI } from '../shortcuts/ComboUI'
-import { MainNavEntryUI } from './MainNavEntryUI'
+import { MainNavEntryUI } from '../layout/MainNavEntryUI'
+import { ThemeName } from 'src/theme/ThemeManager'
 
 export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: string }) {
     const st = useSt()
-    const themeIcon = st.theme.theme === 'light' ? 'highlight' : 'nights_stay'
-
-    // onClick={() => st.layout.addActionPicker()}
-    // color='green'
-    // size='sm'
-    // label='Library'
-    // tooltip={
-    //     <>
-    //         Open the Library, in a full-page popup.
-    //         <ComboUI combo='cmd+1' /> or <ComboUI combo='ctrl+1' />
-    //     </>
-    // }
-    // {/* <ButtonGroup id='main-navbar' tw='flex flex-wrap items-center' className={p.className}> */}
-    // {/* debug buttons */}
-    // {/* COMFY */}
-    // {/* <CardsPickerModalUI /> */}
-    // {/* <DropdownItem as={MyLink} href='/guide/introduction'>
-    //             Guide
-    //             </DropdownItem>
-    //             <DropdownItem as={MyLink} href='/components/overview'>
-    //             Components
-    //             </DropdownItem>
-    //             <DropdownItem as={MyLink} href='/resources/palette'>
-    //             Resources
-    //         </DropdownItem> */}
-    // {/* <Dropdown title='Menu' appearance='subtle'></Dropdown> */}
+    const themeIcon = st.themeMgr.theme === 'light' ? 'highlight' : 'nights_stay'
     return (
         <>
             <Button
                 appearance='subtle'
                 size='sm'
                 onClick={() => st.toggleCardPicker()}
-                startIcon={<span className='material-symbols-outlined text-green-600'>view_list</span>}
+                icon={<span className='material-symbols-outlined text-green-600'>view_list</span>}
             >
                 Library
             </Button>
@@ -125,7 +100,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 />
                 <MainNavEntryUI
                     soon
-                    onClick={() => st.theme.toggle()}
+                    onClick={() => st.themeMgr.toggle()}
                     icon={<span className='material-symbols-outlined text-purple-500'>{themeIcon}</span>}
                     label='Theme'
                 />
@@ -138,14 +113,12 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
             >
                 <MainNavEntryUI
                     appearance='subtle'
-                    color='orange'
                     icon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
                     onClick={() => window.location.reload()}
                     label='Reload'
                 />
                 <MainNavEntryUI //
                     appearance='subtle'
-                    color='orange'
                     icon={<span className='text-orange-400 material-symbols-outlined'>bug_report</span>}
                     onClick={() => st.electronUtils.toggleDevTools()}
                     label='console'
@@ -153,7 +126,6 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 <MainNavEntryUI
                     size='sm'
                     appearance='subtle'
-                    color='orange'
                     icon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
                     onClick={() => st.layout.resetCurrent()}
                     label='Fix Layout'
@@ -170,25 +142,49 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 <DBHealthUI />
                 {/* </ButtonGroup> */}
             </Dropdown>
+            <Dropdown
+                appearance='subtle'
+                startIcon={<span className='text-primary material-symbols-outlined'>palette</span>}
+                title='Theme'
+            >
+                {st.themeMgr.themes.map((theme) => (
+                    <MainNavEntryUI
+                        appearance='subtle'
+                        // icon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
+                        onClick={() => (st.themeMgr.theme = theme)}
+                        label={<ThemePreviewUI theme={theme} />}
+                    />
+                ))}
+            </Dropdown>
+            {/* <ThemePickerUI /> */}
         </>
     )
 })
-const SEPARATOR = <div style={{ flexShrink: 0, width: '2px', height: '1.4rem', border: '1px solid #6e6e6e' }}> </div>
-// {/* <MainNavEntryUI
-//     onClick={() => st.layout.addActionPicker()}
-//     icon={<span className='material-symbols-outlined text-green-500'>play_circle</span>}
-//     label='Cards'
-// /> */}
-// {/* LEGACY MARKETPLACE */}
-// {/* <MainNavEntryUI
-//     onClick={() => st.layout.addMarketplace()}
-//     icon={<span className='material-symbols-outlined text-blue-500'>apps</span>}
-//     label='Apps'
-// /> */}
-// {/* <MainNavEntryUI
-//     onClick={() => st.layout.addActionPickerTree()}
-//     icon={<span className='material-symbols-outlined text-blue-500'>account_tree</span>}
-//     label='Files'
-// /> */}
 
-// {/* PAINT */}
+export const ThemePreviewUI = observer(function ThemePreviewUI_(p: { theme: ThemeName }) {
+    return (
+        <div data-theme={p.theme} className='bg-base-100 text-base-content w-full cursor-pointer font-sans'>
+            <div className='grid grid-cols-5 grid-rows-3'>
+                <div className='bg-base-200 col-start-1 row-span-2 row-start-1'></div>{' '}
+                <div className='bg-base-300 col-start-1 row-start-3'></div>{' '}
+                <div className='bg-base-100 col-span-4 col-start-2 row-span-3 row-start-1 flex flex-col gap-1 p-2'>
+                    <div className='font-bold'>{p.theme}</div>
+                    <div className='flex flex-wrap gap-1'>
+                        <div className='bg-primary flex aspect-square w-5 items-center justify-center rounded lg:w-6'>
+                            <div className='text-primary-content text-sm font-bold'>A</div>
+                        </div>{' '}
+                        <div className='bg-secondary flex aspect-square w-5 items-center justify-center rounded lg:w-6'>
+                            <div className='text-secondary-content text-sm font-bold'>A</div>
+                        </div>{' '}
+                        <div className='bg-accent flex aspect-square w-5 items-center justify-center rounded lg:w-6'>
+                            <div className='text-accent-content text-sm font-bold'>A</div>
+                        </div>{' '}
+                        <div className='bg-neutral flex aspect-square w-5 items-center justify-center rounded lg:w-6'>
+                            <div className='text-neutral-content text-sm font-bold'>A</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+})

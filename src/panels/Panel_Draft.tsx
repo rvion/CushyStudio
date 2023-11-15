@@ -137,8 +137,8 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 {/* NAME */}
                 <div
                     //
-                    style={{ background: '#181818', borderBottom: '1px solid #2f2f2f' }}
-                    tw='flex p-1'
+                    style={{ borderBottomWidth: '.2rem' }}
+                    tw='flex p-1 bg-base-200 border-b border-b-base-300'
                 >
                     <div tw='flex gap-0.5 flex-grow relative'>
                         <CardIllustrationUI card={card} size='4rem' tw='p-1' />
@@ -217,7 +217,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
             <Button
                 //
                 tw='self-start'
-                startIcon={draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>autorenew</span>}
+                icon={draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>autorenew</span>}
                 // appearance='subtle'
                 active={draft.shouldAutoStart}
                 color={draft.shouldAutoStart ? 'green' : undefined}
@@ -228,9 +228,9 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
             </Button>
             <Button
                 className='self-start'
-                color='green'
                 appearance='primary'
-                startIcon={
+                tw='btn-accent'
+                icon={
                     draft.shouldAutoStart ? ( //
                         <span className='material-symbols-outlined'>pause</span>
                     ) : (
@@ -238,7 +238,7 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
                     )
                 }
                 onClick={() => draft.start()}
-                size={size2}
+                // size={'sm'}
             >
                 Run
             </Button>

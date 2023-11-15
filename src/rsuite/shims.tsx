@@ -36,9 +36,11 @@ export const InputGroupAddon = (p: any) => <div {...p}></div>
 // inputs
 export const Button = (
     p: JSX.IntrinsicElements['button'] & {
-        startIcon?: Maybe<ReactNode>
+        icon?: Maybe<ReactNode>
         active?: Maybe<boolean>
         size?: Maybe<RSSize>
+        loading?: boolean
+        disabled?: boolean
         appearance?: Maybe<RSAppearance>
     },
 ) => (
@@ -46,6 +48,7 @@ export const Button = (
         {...p}
         tw={[
             'btn',
+            p.loading || p.disabled ? 'btn-disabled' : null,
             p.active ? 'btn-active' : null,
             p.appearance
                 ? (() => {
@@ -69,7 +72,7 @@ export const Button = (
             ...(p?.tw ?? []),
         ]}
     >
-        {p.startIcon}
+        {p.icon}
         {p.children}
     </button>
 )
@@ -90,7 +93,7 @@ export const Slider = (p: JSX.IntrinsicElements['input']) => (
     <input //
         type='range'
         {...p}
-        tw={[...(p.tw ?? []), 'range']}
+        tw={[...(p.tw ?? []), 'range range-info']}
     ></input>
 )
 export const Radio = (p: JSX.IntrinsicElements['input']) => (

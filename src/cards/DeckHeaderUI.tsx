@@ -13,8 +13,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
     return (
         <>
             <div
-                style={{ borderTop: '1px solid #1d1d1d' }}
-                tw='cursor-pointer flex gap-1 hover:bg-gray-800 bg-gray-800 p-0.5'
+                tw='cursor-pointer flex gap-1 hover:bg-base-300 bg-base-200 p-0.5 border-t border-t-base-300'
                 onClick={() => (deck.folded = !deck.folded)}
             >
                 <img //
@@ -25,19 +24,8 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
 
                 <div tw='flex flex-grow'>
                     <div tw='flex-grow'>
-                        {/* manifest */}
-                        <div>
-                            <div tw='flex gap-2 items-baseline'>
-                                <div tw='font-bold'>{deck.name}</div>
-                                {/* by <div tw='text-gray-400 flex justify-between w-full'>{deck.githubUserName}</div> */}
-                            </div>
-                        </div>
-                        {/* <GithubUserUI prefix='by' size='1rem' showName username={deck.githubUserName} /> */}
-                        {/* <div className='flex-grow self-start italic text-gray-500'>
-                            {deck.description}
-                        </div> */}
+                        <div tw='text-base-content font-bold'>{deck.name}</div>
                     </div>
-                    {/* manifest */}
                     <div>
                         <div className='flex gap-1'>
                             {deck.manifestError && (
@@ -58,9 +46,9 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                         ) : null}
                     </div>
                     {/* <Message showIcon type={deck.manifestError.}>
-                    {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
-                    <pre>{stringifyUnknown(deck.manifestError)}</pre>
-                </Message> */}
+                        {deck.manifestType === 'implicit' ? 'No Manifest found' : 'Manifest found'}
+                        <pre>{stringifyUnknown(deck.manifestError)}</pre>
+                    </Message> */}
                 </div>
             </div>
         </>

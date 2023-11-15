@@ -10,7 +10,7 @@ export const GitInitBtnUI = observer(function GitInitBtnUI_(p: { updater: GitMan
     return (
         <Button
             disabled={updater.currentAction != null}
-            startIcon={<span className='material-symbols-outlined'>track_changes</span>}
+            icon={<span className='material-symbols-outlined'>track_changes</span>}
             onClick={async () => {
                 await updater._gitInit()
             }}
@@ -29,7 +29,7 @@ export const GitInstallUI = observer(function GitInstallUI_(p: { udpater: GitMan
             loading={updater.currentAction != null}
             appearance='primary'
             size='xs'
-            startIcon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
+            icon={<span className='text-gray-700 material-symbols-outlined'>cloud_download</span>}
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()
@@ -82,7 +82,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                                 color='orange'
                                 appearance='ghost'
                                 onClick={() => updater.checkForUpdates()}
-                                startIcon={<span className='material-symbols-outlined'>refresh</span>}
+                                icon={<span className='material-symbols-outlined'>refresh</span>}
                             >
                                 FORCE REFRESH
                             </Button>
@@ -111,7 +111,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                                 color='red'
                                 size='xs'
                                 appearance='primary'
-                                startIcon={<span className='material-symbols-outlined'>update</span>}
+                                icon={<span className='material-symbols-outlined'>update</span>}
                                 onClick={async (ev) => {
                                     ev.stopPropagation()
                                     ev.preventDefault()
@@ -126,10 +126,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                         // <span className='text-green-400 material-symbols-outlined'>check_circle</span>
                     }
 
-                    <div
-                        tw='text-sm whitespace-nowrap'
-                        className={updater.updateAvailable ? 'text-orange-400' : 'text-green-300 '}
-                    >
+                    <div tw='text-sm whitespace-nowrap' className={updater.updateAvailable ? 'text-orange-400' : 'text-success '}>
                         {updater.currentVersion} - {updater.mainBranchName}
                         {/* {updater.headCommitsCount ? `v${updater.currentVersion}` : <Loader />} */}
                     </div>
@@ -171,7 +168,7 @@ export const UninstallUI = observer(function UninstallUI_(p: { updater: GitManag
             color='red'
             size='sm'
             appearance='ghost'
-            startIcon={<span className='material-symbols-outlined'>highlight_off</span>}
+            icon={<span className='material-symbols-outlined'>highlight_off</span>}
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()

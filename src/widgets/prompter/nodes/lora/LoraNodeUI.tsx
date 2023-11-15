@@ -1,11 +1,10 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { observer } from 'mobx-react-lite'
 import { openExternal } from 'src/app/layout/openExternal'
-import { Button, Input, InputNumberBase, Popover, Slider, Whisper } from 'src/rsuite/shims'
-import { useSt } from 'src/state/stateContext'
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
-import { LoraNode } from './LoraNode'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+import { Button, Input, Popover, Whisper } from 'src/rsuite/shims'
+import { useSt } from 'src/state/stateContext'
+import { LoraNode } from './LoraNode'
 
 export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
     const node = p.node
@@ -61,7 +60,8 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                                 //
                                 type='text'
                                 value={associatedText}
-                                onChange={(nextText) => {
+                                onChange={(ev) => {
+                                    const nextText = ev.target.value
                                     st.configFile.update((prev) => {
                                         // ensure prev.loraPrompts
                                         if (!prev.loraPrompts) prev.loraPrompts = {}
@@ -71,9 +71,8 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                                         if (!entry) entry = lp[def.name] = { text: '' }
                                         entry.text = nextText
                                     })
-                                    // init lora prompt if need be
                                 }}
-                            ></Input>
+                            />
                         </div>
 
                         <div>
@@ -81,15 +80,15 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                                 size='xs'
                                 onClick={() => openExternal(associatedUrl)}
                                 appearance='link'
-                                startIcon={<span className='material-symbols-outlined'>open_in_new</span>}
+                                icon={<span className='material-symbols-outlined'>open_in_new</span>}
                             >
                                 Associated URL
                             </Button>
                             <Input
-                                //
                                 type='text'
                                 value={associatedUrl}
-                                onChange={(nextURL) => {
+                                onChange={(ev) => {
+                                    const nextURL = ev.target.value
                                     st.configFile.update((prev) => {
                                         // ensure prev.loraPrompts
                                         if (!prev.loraPrompts) prev.loraPrompts = {}
@@ -99,9 +98,8 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                                         if (!entry) entry = lp[def.name] = { url: '' }
                                         entry.url = nextURL
                                     })
-                                    // init lora prompt if need be
                                 }}
-                            ></Input>
+                            />
                         </div>
                         <Button
                             size='xs'

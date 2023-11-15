@@ -1,4 +1,4 @@
-import type { Theme } from 'src/theme/layoutTheme'
+import type { ThemeName } from 'src/theme/ThemeManager'
 import type { IJsonModel } from 'flexlayout-react'
 
 import { JsonFile } from './JsonFile'
@@ -60,7 +60,7 @@ export type ConfigFile = {
         localPath?: string
     }[]
     /** 'light' or 'dark'; default to dark */
-    theme?: Theme
+    theme?: ThemeName
     /** defaults to 48px */
     galleryImageSize?: number
     /** defaults to 50 */

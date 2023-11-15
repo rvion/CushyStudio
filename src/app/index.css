@@ -254,3 +254,8 @@ pre {
 .range{
     background-color: #151515;
 }
+
+
+._WidgetPromptUI span {
+    display: inline-block !important;
+}

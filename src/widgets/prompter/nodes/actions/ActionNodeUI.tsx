@@ -33,7 +33,7 @@ export const ActionNodeUI = observer(function ActionNodeUI_(p: { node: ActionNod
                         />
                         <Button
                             size='xs'
-                            startIcon={<span className='material-symbols-outlined'>delete_forever</span>}
+                            icon={<span className='material-symbols-outlined'>delete_forever</span>}
                             onClick={() => editor.update(() => node.remove())}
                         />
                         <div className='shrink-0'>)</div>

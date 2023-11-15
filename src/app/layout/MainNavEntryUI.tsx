@@ -5,18 +5,16 @@ import { DropdownItem, TypeAttributes } from 'src/rsuite/shims'
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
     className?: string
-    color?: TypeAttributes['Color']
     size?: TypeAttributes['Size']
     appearance?: TypeAttributes['Appearance']
-    icon: React.ReactElement
+    icon?: React.ReactElement
     soon?: boolean
-    label: string
+    label: ReactNode
     tooltip?: ReactNode
 }) {
     return (
         <DropdownItem //
             className={p.className}
-            color={p.color}
             onClick={p.onClick}
         >
             <div className='flex items-center gap-2'>

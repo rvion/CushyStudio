@@ -50,7 +50,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                 {/* 3. OPEN OUTPUT FOLDER */}
                 {img?.localAbsolutePath && (
                     <Button
-                        startIcon={<span className='material-symbols-outlined'>folder</span>}
+                        icon={<span className='material-symbols-outlined'>folder</span>}
                         size='xs'
                         appearance='link'
                         onClick={() => showItemInFolder(img.localAbsolutePath)}
@@ -62,7 +62,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                 {/* 3. OPEN FILE ITSELF */}
                 {imgPathWithFileProtocol && (
                     <Button
-                        startIcon={<span className='material-symbols-outlined'>folder</span>}
+                        icon={<span className='material-symbols-outlined'>folder</span>}
                         size='xs'
                         appearance='link'
                         onClick={() => openExternal(imgPathWithFileProtocol)}

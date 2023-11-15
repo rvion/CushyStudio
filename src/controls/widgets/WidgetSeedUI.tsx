@@ -13,7 +13,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
                     size='sm'
                     appearance='subtle'
                     active={req.state.mode === 'randomize'}
-                    startIcon={'🎲'}
+                    icon={'🎲'}
                     onClick={() => {
                         req.state.mode = 'randomize'
                         req.state.active = true
@@ -26,7 +26,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
                     active={req.state.mode === 'fixed'}
                     tw='join-item'
                     size='sm'
-                    startIcon={'🎲'}
+                    icon={'🎲'}
                     onClick={() => {
                         req.state.mode = 'fixed'
                         req.state.active = true
@@ -72,7 +72,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
                     req.state.active = true
                     req.state.val = Math.floor(Math.random() * 1000000)
                 }}
-                startIcon={'🎲'}
+                icon={'🎲'}
             >
                 New
                 {/* Random */}
