@@ -1,7 +1,7 @@
 import type { ReleaseChannels } from 'src/core/ConfigFile'
 
 import { observer } from 'mobx-react-lite'
-import { RadioTile, RadioTileGroup } from 'rsuite'
+import { RadioTile, RadioTileGroup } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
 export const ReleaseChannelUI = observer(function ReleaseChannelUI_(p: {

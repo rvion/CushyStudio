@@ -1,33 +1,33 @@
-import hljs from 'highlight.js/lib/core'
-import json from 'highlight.js/lib/languages/json'
-import typescript from 'highlight.js/lib/languages/typescript'
-import { useLayoutEffect, useRef } from 'react'
-import { IconButton } from 'rsuite'
+// import hljs from 'highlight.js/lib/core'
+// import json from 'highlight.js/lib/languages/json'
+// import typescript from 'highlight.js/lib/languages/typescript'
+// import { useLayoutEffect, useRef } from 'react'
+import { Button } from 'src/rsuite/shims'
 
-hljs.registerLanguage('typescript', typescript)
-hljs.registerLanguage('json', json)
+// hljs.registerLanguage('typescript', typescript)
+// hljs.registerLanguage('json', json)
 
 export const TypescriptHighlightedCodeUI = (p: { className?: string; code: string; wrap?: boolean }) => {
-    const ref = useRef(null)
-    useLayoutEffect(() => {
-        const e = ref.current
-        if (e == null) return
-        hljs.highlightElement(e)
-    }, [ref, p.code])
+    // const ref = useRef(null)
+    // useLayoutEffect(() => {
+    //     const e = ref.current
+    //     if (e == null) return
+    //     hljs.highlightElement(e)
+    // }, [ref, p.code])
     return (
         <div className='relative'>
             <div className='absolute top-2 right-2'>
-                <IconButton
+                <Button
                     icon={<span className='material-symbols-outlined'>content_copy</span>}
                     onClick={() => {
                         navigator.clipboard.writeText(p.code)
                     }}
-                ></IconButton>
+                ></Button>
             </div>
             <code
                 className={'language-typescript text-xs ' + p.className}
                 style={{ whiteSpace: p.wrap ? 'pre-wrap' : 'pre' }}
-                ref={ref}
+                // ref={ref}
             >
                 {p.code}
             </code>
@@ -36,14 +36,20 @@ export const TypescriptHighlightedCodeUI = (p: { className?: string; code: strin
 }
 
 export const JSONHighlightedCodeUI = (p: { code: string }) => {
-    const ref = useRef(null)
-    useLayoutEffect(() => {
-        const e = ref.current
-        if (e == null) return
-        hljs.highlightElement(e)
-    }, [ref, p.code])
+    // const ref = useRef(null)
+    // useLayoutEffect(() => {
+    //     const e = ref.current
+    //     if (e == null) return
+    //     hljs.highlightElement(e)
+    // }, [ref, p.code])
     return (
-        <code key={p.code} className='language-json text-xs' style={{ whiteSpace: 'pre-wrap' }} ref={ref}>
+        <code
+            //
+            key={p.code}
+            className='language-json text-xs'
+            style={{ whiteSpace: 'pre-wrap' }}
+            // ref={ref}
+        >
             {p.code}
         </code>
     )

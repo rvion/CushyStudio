@@ -10,7 +10,7 @@ import { Slot } from './Slot'
 import { comfyColors } from './Colors'
 import { auto_ } from './autoValue'
 import { ReactNode } from 'react'
-import { Loader } from 'rsuite'
+import { Loader } from 'src/rsuite/shims'
 
 configure({ enforceActions: 'never' })
 

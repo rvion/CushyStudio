@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Message } from 'rsuite'
+import { Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { MainNavEntryUI } from '../app/layout/MainNavEntryUI'
 import { ComboUI } from '../app/shortcuts/ComboUI'

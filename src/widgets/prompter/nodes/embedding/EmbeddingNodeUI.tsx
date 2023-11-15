@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { EmbeddingNode } from './EmbeddingNode'
-import { Tooltip, Whisper } from 'rsuite'
+import { Tooltip, Whisper } from 'src/rsuite/shims'
 
 export const EmbeddingNodeUI = observer(function EmbeddingNodeUI_(p: { node: EmbeddingNode }) {
     const node = p.node as EmbeddingNode

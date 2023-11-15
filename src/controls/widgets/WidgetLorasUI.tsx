@@ -1,6 +1,5 @@
-import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { IconButton, Input, MultiCascader } from 'rsuite'
+import { Button, Input, MultiCascader } from 'src/rsuite/shims'
 import { Widget_loras } from 'src/controls/Widget'
 import { useSt } from '../../state/stateContext'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
@@ -80,9 +79,9 @@ export const WidgetLorasUI = observer(function LoraWidgetUI_(p: { req: Widget_lo
                             onChange={(v) => (sld.strength_model = parseFloatNoRoundingErr(v, 2))}
                             style={{ width: '3.5rem' }}
                         />
-                        <IconButton
+                        <Button
                             size='xs'
-                            icon={<I.Trash />}
+                            icon={<span className='material-symbols-outlined'>delete</span>}
                             onClick={() => {
                                 const next = values.filter((x) => x.name !== loraName)
                                 req.selectedLoras.delete(loraName)

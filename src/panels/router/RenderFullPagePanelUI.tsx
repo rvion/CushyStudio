@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { useSt } from 'src/state/stateContext'
 import { RenderPanelUI } from './RenderPanelUI'
-import { Animation } from 'rsuite'
 
 export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p: {}) {
     const st = useSt()

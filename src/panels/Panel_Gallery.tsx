@@ -1,7 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { IconButton, Input, Slider, Toggle } from 'rsuite'
+import { Button, Input, Slider, Toggle } from 'src/rsuite/shims'
 import { useSt } from '../state/stateContext'
 import { ImageUI } from '../widgets/galleries/ImageUI'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 
 export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const st = useSt()
@@ -16,60 +18,49 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
         >
             {/* MAIN IMAGE COLUMN */}
             <div className='flex flex-wrap items-start'>
-                <div tw='text-center w-full'>
-                    <div tw='flex gap-2'>
-                        {/* IMAGE SIZE === */}
-                        <div tw='self-start w-fit'>
-                            <div tw='text-gray-400'>Image size</div>
+                <div tw='w-full'>
+                    <div tw='flex gap-2 px-2'>
+                        <FieldAndLabelUI label='Image size'>
                             <Slider
-                                tw='m-2'
                                 style={{ width: '5rem' }}
                                 min={32}
                                 max={200}
-                                onChange={(v) => (st.gallerySize = v)}
+                                onChange={(ev) => (st.gallerySize = parseFloatNoRoundingErr(ev.target.value))}
                                 value={st.gallerySize}
-                            ></Slider>
-                        </div>
-                        <div tw='self-start w-fit'>
-                            <div tw='text-gray-400'>background</div>
-                            <div tw='flex'>
-                                <IconButton
-                                    tw='!px-1 !py-0'
-                                    icon={<span className='material-symbols-outlined'>format_color_reset</span>}
+                            />
+                        </FieldAndLabelUI>
+                        <FieldAndLabelUI label='background'>
+                            <div tw='join'>
+                                <Button
+                                    tw='btn-neutral join-item '
+                                    startIcon={<span className='material-symbols-outlined'>format_color_reset</span>}
                                     size='xs'
                                     onClick={() => st.configFile.update({ galleryBgColor: undefined })}
-                                ></IconButton>
+                                />
                                 <Input
+                                    tw='join-item input-xs'
                                     type='color'
-                                    tw='p-0 m-0 border'
-                                    style={{ width: '5rem' }}
                                     value={st.configFile.value.galleryBgColor ?? undefined}
-                                    onChange={(ev) => st.configFile.update({ galleryBgColor: ev })}
-                                ></Input>
-                            </div>
-                        </div>
-                        <div tw='self-start w-fit'>
-                            <div tw='text-gray-400'>
-                                <div>full-screen</div>
-                                <Toggle
-                                    size='sm'
-                                    checked={st.showPreviewInFullScreen ?? true}
-                                    onChange={(next) => (st.showPreviewInFullScreen = next)}
+                                    onChange={(ev) => st.configFile.update({ galleryBgColor: ev.target.value })}
                                 />
                             </div>
-                        </div>
-                        <div tw='self-start w-fit'>
-                            <div tw='text-gray-400'>hover opacity</div>
+                        </FieldAndLabelUI>
+                        <FieldAndLabelUI label='full-screen'>
+                            <Toggle
+                                checked={st.showPreviewInFullScreen ?? true}
+                                onChange={(ev) => (st.showPreviewInFullScreen = ev.target.checked)}
+                            />
+                        </FieldAndLabelUI>
+                        <FieldAndLabelUI label='hover opacity'>
                             <Slider
-                                tw='m-2'
                                 style={{ width: '5rem' }}
                                 step={0.01}
                                 min={0}
                                 max={1}
-                                onChange={(v) => (st.galleryHoverOpacity = v)}
+                                onChange={(ev) => (st.galleryHoverOpacity = parseFloatNoRoundingErr(ev.target.value))}
                                 value={st.galleryHoverOpacity}
-                            ></Slider>
-                        </div>
+                            />
+                        </FieldAndLabelUI>
                     </div>
                 </div>
                 {preview ? ( //

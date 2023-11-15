@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Button } from 'rsuite'
+import { Button } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { ErrorBoundaryFallback } from 'src/widgets/misc/ErrorBoundary'

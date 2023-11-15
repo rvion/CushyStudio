@@ -1,7 +1,7 @@
 import { CSSProperties, ReactElement, ReactNode, useState } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { Nav } from 'rsuite'
+import { Nav, NavItem } from 'src/rsuite/shims'
 
 type TabBody = () => ReactElement | null
 type Tab = {
@@ -27,10 +27,11 @@ export const TabsUI = observer(function Tabs_(p: {
             {p.tabs.map((tab, ix) => {
                 const active = ix === onIx
                 return (
-                    <Nav.Item
+                    <a
+                        tw={['tab tab-bordered tab', active && 'tab-active']}
                         // size='sm'
                         color={p.disabled ? undefined : 'blue'}
-                        active={active}
+                        // active={active}
                         key={ix}
                         onClick={() => {
                             // if (p.disabled) return
@@ -39,7 +40,7 @@ export const TabsUI = observer(function Tabs_(p: {
                         }}
                     >
                         {tab.title()}
-                    </Nav.Item>
+                    </a>
                 )
             })}
         </Nav>

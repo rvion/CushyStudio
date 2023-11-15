@@ -1,7 +1,7 @@
 import type { Widget, Widget_choice } from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
-import { SelectPicker } from 'rsuite'
+import { SelectPicker } from 'src/rsuite/shims'
 import { WidgetUI } from './WidgetUI'
 
 export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget_choice<{ [key: string]: Widget }> }) {

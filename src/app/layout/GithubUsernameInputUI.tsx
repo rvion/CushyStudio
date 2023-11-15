@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import { Input, InputGroup, Popover, Tag, Whisper } from 'rsuite'
+import { Input, InputGroup, InputGroupAddon, Popover, Tag, Whisper } from 'src/rsuite/shims'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 
@@ -13,7 +13,7 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
     const githubUsername = st.configFile.value.githubUsername || '<your-github-username>'
     return (
         <InputGroup tw='w-auto'>
-            <InputGroup.Addon>
+            <InputGroupAddon>
                 <img src={assets.public_GithubLogo2_png} alt='Github Logo' style={{ width: '1.4rem', height: '1.4rem' }} />
                 <Whisper
                     //
@@ -31,10 +31,10 @@ export const GithubUsernameInputUI = observer(function GithubUsernameInputUI_(p:
                 >
                     <div>your github:</div>
                 </Whisper>
-            </InputGroup.Addon>
+            </InputGroupAddon>
             <Input
-                onChange={(next) => {
-                    st.configFile.update({ githubUsername: next })
+                onChange={(ev) => {
+                    st.configFile.update({ githubUsername: ev.target.value })
                     st.updateTsConfig()
                 }}
                 value={githubUsername}

@@ -1,8 +1,8 @@
-import { Popover, Dropdown, IconButton, Whisper } from 'rsuite'
+import { Popover, Dropdown, Button, Whisper, DropdownMenu, DropdownItem } from 'src/rsuite/shims'
 
 export const PrompterConfigUI = () => (
     <Whisper placement='bottomStart' trigger='click' speaker={renderMenu}>
-        <IconButton size='xs' icon={<span className='material-symbols-outlined'>settings_input_component</span>} />
+        <Button size='xs' icon={<span className='material-symbols-outlined'>settings_input_component</span>} />
     </Whisper>
 )
 
@@ -13,17 +13,17 @@ const renderMenu = ({ onClose, left, top, className }: RsuiteRenderMenuProps, re
     }
     return (
         <Popover ref={ref} className={className} style={{ left, top }} full>
-            <Dropdown.Menu onSelect={handleSelect}>
-                <Dropdown.Menu title='New File'>
-                    <Dropdown.Item eventKey={1}>New File</Dropdown.Item>
-                    <Dropdown.Item eventKey={2}>New File with Current Profile</Dropdown.Item>
-                </Dropdown.Menu>
-                <Dropdown.Item eventKey={3}>Download As...</Dropdown.Item>
-                <Dropdown.Item eventKey={4}>Export PDF</Dropdown.Item>
-                <Dropdown.Item eventKey={5}>Export HTML</Dropdown.Item>
-                <Dropdown.Item eventKey={6}>Settings</Dropdown.Item>
-                <Dropdown.Item eventKey={7}>About</Dropdown.Item>
-            </Dropdown.Menu>
+            <DropdownMenu onSelect={handleSelect}>
+                <DropdownMenu title='New File'>
+                    <DropdownItem eventKey={1}>New File</DropdownItem>
+                    <DropdownItem eventKey={2}>New File with Current Profile</DropdownItem>
+                </DropdownMenu>
+                <DropdownItem eventKey={3}>Download As...</DropdownItem>
+                <DropdownItem eventKey={4}>Export PDF</DropdownItem>
+                <DropdownItem eventKey={5}>Export HTML</DropdownItem>
+                <DropdownItem eventKey={6}>Settings</DropdownItem>
+                <DropdownItem eventKey={7}>About</DropdownItem>
+            </DropdownMenu>
         </Popover>
     )
 }

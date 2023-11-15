@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { BreakNode } from './BreakNode'
-import { Tooltip, Whisper } from 'rsuite'
+import { Tooltip, Whisper } from 'src/rsuite/shims'
 
 export const BreakNodeUI = observer(function BreakNodeUI_(p: { node: BreakNode }) {
     const node = p.node as BreakNode

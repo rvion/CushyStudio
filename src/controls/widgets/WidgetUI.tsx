@@ -1,7 +1,7 @@
 import * as R from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
-import { Message } from 'rsuite'
+import { Message } from 'src/rsuite/shims'
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { WidgetPromptUI } from '../../widgets/prompter/WidgetPromptUI'
 import { WidgetBoolUI } from './WidgetBoolUI'

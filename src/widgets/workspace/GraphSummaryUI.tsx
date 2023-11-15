@@ -1,7 +1,7 @@
 import type { GraphL } from 'src/models/Graph'
 
 import { observer } from 'mobx-react-lite'
-import { Panel, Popover, Progress, Whisper } from 'rsuite'
+import { Panel, Popover, Progress, Whisper } from 'src/rsuite/shims'
 import { NodeRefUI } from '../misc/NodeRefUI'
 import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'

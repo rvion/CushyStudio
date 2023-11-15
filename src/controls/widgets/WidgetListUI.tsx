@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button } from 'rsuite'
+import { Button } from 'src/rsuite/shims'
 import { Widget, Widget_list } from 'src/controls/Widget'
 import { WidgetUI } from './WidgetUI'
 

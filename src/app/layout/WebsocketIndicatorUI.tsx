@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Loader, Message, Popover, Whisper } from 'rsuite'
+import { Button, Loader, Message, Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 
 export const WebsocketIndicatorUI = observer(function WebsocketIndicatorUI_(p: {}) {

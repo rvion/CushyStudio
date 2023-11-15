@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input, InputGroup } from 'rsuite'
+import { Button, Input, InputGroup } from 'src/rsuite/shims'
 import { CardFile } from 'src/cards/CardFile'
 import { useSt } from 'src/state/stateContext'
 

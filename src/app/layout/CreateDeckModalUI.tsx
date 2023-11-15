@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Button, Input, Modal } from 'rsuite'
+import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader, ModalTitle } from 'src/rsuite/shims'
 import { DeckFolder } from 'src/cards/Deck'
 import { useSt } from 'src/state/stateContext'
 import { GithubUsernameInputUI } from './GithubUsernameInputUI'
@@ -23,12 +23,12 @@ export const CreateDeckModalUI = observer(function CreateDeckModalUI_(p: { uist:
     const uist = p.uist
     return (
         <Modal open={uist.open} onClose={uist.handleClose}>
-            <Modal.Header>
-                <Modal.Title>
+            <ModalHeader>
+                <ModalTitle>
                     <b>Create your action pack !</b>
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+                </ModalTitle>
+            </ModalHeader>
+            <ModalBody>
                 <div tw='flex flex-col gap-3'>
                     <div>
                         <div>1. Make sure your github username is correct</div>
@@ -38,14 +38,14 @@ export const CreateDeckModalUI = observer(function CreateDeckModalUI_(p: { uist:
                         <div>2. Choose your action pack name</div>
                         <Input
                             //
-                            onChange={(next) => (uist.deckName = next)}
+                            onChange={(ev) => (uist.deckName = ev.target.value)}
                             value={uist.deckName}
                         ></Input>
                     </div>
                     {/* <Placeholder.Paragraph /> */}
                 </div>
-            </Modal.Body>
-            <Modal.Footer>
+            </ModalBody>
+            <ModalFooter>
                 <Button
                     //
                     // startIcon={}
@@ -64,7 +64,7 @@ export const CreateDeckModalUI = observer(function CreateDeckModalUI_(p: { uist:
                 <Button onClick={uist.handleClose} appearance='subtle'>
                     Cancel
                 </Button>
-            </Modal.Footer>
+            </ModalFooter>
         </Modal>
     )
 })

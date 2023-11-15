@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { IconButton, Input, InputGroup, Slider, Toggle } from 'rsuite'
+import { Button, Input, InputGroup, InputGroupAddon, Slider, Toggle } from 'src/rsuite/shims'
 import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
 import { FancyCardUI } from 'src/cards/fancycard/FancyCard'
 import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
@@ -19,9 +19,9 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                 <div tw='flex gap-1 items-center'>
                     <h3 tw='mr-2'>Library</h3>
                     <InputGroup>
-                        <InputGroup.Addon>
+                        <InputGroupAddon>
                             <span className='material-symbols-outlined'>search</span>
-                        </InputGroup.Addon>
+                        </InputGroupAddon>
                         <Input
                             value={library.query}
                             onChange={(v) => (library.query = v)}
@@ -53,13 +53,16 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                     </InputGroup> */}
                     <div>
                         <div>Descriptions</div>
-                        <Toggle onChange={(t) => (st.library.showDescription = t)} checked={st.library.showDescription} />
+                        <Toggle
+                            onChange={(t) => (st.library.showDescription = t.target.checked)}
+                            checked={st.library.showDescription}
+                        />
                     </div>
                     <div>
                         <div>Drafts</div>
                         <Toggle
                             //
-                            onChange={(t) => (st.library.showDrafts = t)}
+                            onChange={(t) => (st.library.showDrafts = t.target.checked)}
                             checked={st.library.showDrafts}
                         />
                     </div>
@@ -67,19 +70,19 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                         <div>Favorites</div>
                         <Toggle
                             //
-                            onChange={(t) => (st.library.showFavorites = t)}
+                            onChange={(t) => (st.library.showFavorites = t.target.checked)}
                             checked={st.library.showFavorites}
                         />
                     </div>
                     <div>
-                        Size
+                        <div>Size</div>
                         <Slider
                             //
                             min={3}
                             max={20}
-                            tw='py-1.5'
+                            // tw='py-1.5'
                             style={{ width: '5rem' }}
-                            onChange={(t) => (st.library.imageSize = `${t}rem`)}
+                            onChange={(t) => (st.library.imageSize = `${t.target.value}rem`)}
                             value={parseInt(st.library.imageSize.slice(0, -3), 10)}
                         />
                     </div>
@@ -105,18 +108,18 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                                     <div tw='flex flex-col'>
                                         {card.drafts.map((draft, ix) => (
                                             <div tw='flex items-center w-80' key={draft.id}>
-                                                <IconButton
+                                                <Button
                                                     size='sm'
                                                     icon={<span className='material-symbols-outlined'>delete</span>}
                                                     appearance='subtle'
                                                     color='red'
-                                                ></IconButton>
-                                                <IconButton
+                                                ></Button>
+                                                <Button
                                                     size='sm'
                                                     icon={<span className='material-symbols-outlined'>open_in_new</span>}
                                                     appearance='subtle'
                                                     color='blue'
-                                                ></IconButton>
+                                                ></Button>
                                                 {/* <span className='material-symbols-outlined'>play_arrow</span> */}
                                                 <div tw='underline flex items-center' onClick={() => (st.currentDraft = draft)}>
                                                     draft #{ix}: {draft.data.title}

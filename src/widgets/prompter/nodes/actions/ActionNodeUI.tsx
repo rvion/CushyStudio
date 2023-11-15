@@ -1,6 +1,6 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { observer } from 'mobx-react-lite'
-import { IconButton, Input, Popover, Whisper } from 'rsuite'
+import { Button, Input, Popover, Whisper } from 'src/rsuite/shims'
 import { ActionNode } from './ActionNode'
 
 export const ActionNodeUI = observer(function ActionNodeUI_(p: { node: ActionNode }) {
@@ -19,17 +19,21 @@ export const ActionNodeUI = observer(function ActionNodeUI_(p: { node: ActionNod
                     <div key={def.tag.key} className='flex items-start'>
                         <div className='shrink-0'>{def.tag.key}(</div>
                         <div className='flex-grow'></div>
-                        <Input
-                            size='xs'
+                        <input
+                            tw='input input-xs'
+                            // size='xs'
                             type='text'
                             value={def.param}
                             step={0.1}
-                            onChange={(v) => (def.param = v)}
+                            onChange={(ev) => {
+                                const next = ev.target.value
+                                def.param = next
+                            }}
                             style={{ width: '4.5rem' }}
                         />
-                        <IconButton
+                        <Button
                             size='xs'
-                            icon={<span className='material-symbols-outlined'>delete_forever</span>}
+                            startIcon={<span className='material-symbols-outlined'>delete_forever</span>}
                             onClick={() => editor.update(() => node.remove())}
                         />
                         <div className='shrink-0'>)</div>

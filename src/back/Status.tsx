@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import { exhaust } from '../utils/misc/ComfyUtils'
-import { Loader } from 'rsuite'
+import { Loader } from 'src/rsuite/shims'
 
 export enum Status {
     New = 'New',

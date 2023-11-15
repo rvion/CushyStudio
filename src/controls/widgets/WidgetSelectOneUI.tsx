@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { SelectPicker } from 'rsuite'
+import { SelectPicker } from 'src/rsuite/shims'
 import { Widget_selectOne } from 'src/controls/Widget'
 
 export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_(p: { req: Widget_selectOne<any> }) {

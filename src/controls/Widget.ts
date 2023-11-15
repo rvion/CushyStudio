@@ -2,7 +2,7 @@
  * this file is an attempt to centralize core widget definition in a single
  * file so it's easy to add any widget in the future
  */
-import type { ItemDataType } from 'rsuite/esm/@types/common'
+import type { ItemDataType } from 'src/rsuite/shims'
 import type { CELL } from 'src/controls/widgets/WidgetMatrixUI'
 import type { SchemaL } from 'src/models/Schema'
 import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'

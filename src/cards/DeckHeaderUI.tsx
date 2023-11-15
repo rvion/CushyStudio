@@ -1,7 +1,7 @@
 import type { Deck } from './Deck'
 
 import { observer } from 'mobx-react-lite'
-import { Popover, Whisper } from 'rsuite'
+import { Popover, Whisper } from 'src/rsuite/shims'
 import { FolderKind } from 'src/cards/updater'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { ManifestError } from './DeckManifest'

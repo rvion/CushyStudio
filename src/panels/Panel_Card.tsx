@@ -3,7 +3,7 @@
 // import { observer } from 'mobx-react-lite'
 // import { cwd } from 'process'
 // import { useEffect } from 'react'
-// import { Button, Message } from 'rsuite'
+// import { Button, Message } from 'src/rsuite/shims'
 // import { useSt } from 'src/state/stateContext'
 // import { openInVSCode } from 'src/utils/electron/openInVsCode'
 // import { ActionDraftListUI } from '../widgets/drafts/ActionDraftListUI'

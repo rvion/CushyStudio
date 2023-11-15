@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import { Popover, Whisper } from 'rsuite'
+import { Popover, Whisper } from 'src/rsuite/shims'
 
 export const TooltipUI = observer(function TooltipUI_(p: {
     //

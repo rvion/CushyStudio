@@ -2,7 +2,7 @@ import type { StepL, StepOutput } from 'src/models/Step'
 
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import { Button, Message, Panel } from 'rsuite'
+import { Button, Message, Panel } from 'src/rsuite/shims'
 import { exhaust } from '../../utils/misc/ComfyUtils'
 import { ImageUI } from '../galleries/ImageUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'

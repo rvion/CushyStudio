@@ -4,7 +4,7 @@
 // import { Text } from '../front/ui/Text'
 // import { useSt } from '../front/ui/WorkspaceContext'
 // import { Civitai } from './CivitaiSpec'
-// import { Panel } from 'rsuite'
+// import { Panel } from 'src/rsuite/shims'
 
 // export const CivitaiUI = observer(function CivitaiUI_() {
 //     const c = useMemo(() => new Civitai(), [])

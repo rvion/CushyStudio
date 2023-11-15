@@ -2,23 +2,22 @@ import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { cwd } from 'process'
 import { useEffect } from 'react'
-import { Button, ButtonGroup, Dropdown, IconButton, InputGroup, Loader, Message, SelectPicker } from 'rsuite'
 import { showItemInFolder } from 'src/app/layout/openExternal'
+import { CardFile } from 'src/cards/CardFile'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { CardIllustrationUI } from 'src/cards/fancycard/CardIllustrationUI'
 import { DraftID, DraftL } from 'src/models/Draft'
+import { Button, Dropdown, DropdownItem, Loader, Message } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
 import { isError } from 'src/utils/misc/isError'
-import { ActionDraftListUI } from 'src/widgets/drafts/ActionDraftListUI'
 import { TabUI } from '../app/layout/TabUI'
 import { WidgetUI } from '../controls/widgets/WidgetUI'
 import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
-import { CardFile } from 'src/cards/CardFile'
 
 /**
  * this is the root interraction widget
@@ -252,10 +251,10 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card:
     const st = useSt()
     return (
         <Dropdown title='Menu' appearance='subtle' size={size1}>
-            <Dropdown.Item onClick={() => openInVSCode(cwd(), card.absPath)}>Edit</Dropdown.Item>
-            <Dropdown.Item onClick={() => showItemInFolder(card.absPath)}>Show Item In Folder</Dropdown.Item>
+            <DropdownItem onClick={() => openInVSCode(cwd(), card.absPath)}>Edit</DropdownItem>
+            <DropdownItem onClick={() => showItemInFolder(card.absPath)}>Show Item In Folder</DropdownItem>
             {card.liteGraphJSON && (
-                <Dropdown.Item onClick={() => st.layout.addComfy(card.liteGraphJSON)}>Open in ComfyUI</Dropdown.Item>
+                <DropdownItem onClick={() => st.layout.addComfy(card.liteGraphJSON)}>Open in ComfyUI</DropdownItem>
             )}
         </Dropdown>
     )
@@ -273,26 +272,26 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: {}) {
             title={`${layout}`}
             // startIcon={<span className='material-symbols-outlined'>format_size</span>}
         >
-            <Dropdown.Item onClick={() => (st.preferedFormLayout = 'dense')} active={layout == 'dense'}>
+            <DropdownItem onClick={() => (st.preferedFormLayout = 'dense')} active={layout == 'dense'}>
                 <div className='flex items-center gap-2'>
                     <span className='material-symbols-outlined'>photo_size_select_small</span>
                     Dense
                 </div>
-            </Dropdown.Item>
+            </DropdownItem>
 
-            <Dropdown.Item onClick={() => (st.preferedFormLayout = 'auto')} active={layout == 'auto'}>
+            <DropdownItem onClick={() => (st.preferedFormLayout = 'auto')} active={layout == 'auto'}>
                 <div className='flex items-center gap-2'>
                     <span className='material-symbols-outlined'>photo_size_select_large</span>
                     Auto
                 </div>
-            </Dropdown.Item>
+            </DropdownItem>
 
-            <Dropdown.Item onClick={() => (st.preferedFormLayout = 'mobile')} active={layout == 'mobile'}>
+            <DropdownItem onClick={() => (st.preferedFormLayout = 'mobile')} active={layout == 'mobile'}>
                 <div className='flex items-center gap-2'>
                     <span className='material-symbols-outlined'>photo_size_select_actual</span>
                     Mobile
                 </div>
-            </Dropdown.Item>
+            </DropdownItem>
         </Dropdown>
     )
 })

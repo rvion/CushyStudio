@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Tree } from 'rsuite'
+import { Tree } from 'src/rsuite/shims'
 import { asCardPath } from 'src/cards/CardPath'
 import { asRelativePath } from 'src/utils/fs/pathUtils'
 import { useSt } from '../state/stateContext'

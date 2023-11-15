@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 
-import { Tag } from 'rsuite'
+import { Tag } from 'src/rsuite/shims'
 import { CardFile } from '../CardFile'
 import { Deck } from '../Deck'
 

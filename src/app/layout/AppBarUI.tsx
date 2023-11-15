@@ -1,11 +1,10 @@
-import * as I from '@rsuite/icons'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton } from 'rsuite'
+import { Button } from 'src/rsuite/shims'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
+import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { MainNavBarUI } from './MainNavBarUI'
 import { SchemaIndicatorUI } from './SchemaIndicatorUI'
-import { UpdateBtnUI } from '../updater/UpdateBtnUI'
 import { WebsocketIndicatorUI } from './WebsocketIndicatorUI'
 import { openExternal } from './openExternal'
 
@@ -73,7 +72,7 @@ export const DBHealthUI = observer(function DBHealthUI_(p: {}) {
 export const OpenComfyExternalUI = observer(function OpenComfyExternalUI_(p: {}) {
     const st = useSt()
     return (
-        <IconButton
+        <Button
             size='sm'
             appearance='subtle'
             className='self-start'
@@ -82,6 +81,6 @@ export const OpenComfyExternalUI = observer(function OpenComfyExternalUI_(p: {})
             // endIcon={}
         >
             {/* ComfyUI Web */}
-        </IconButton>
+        </Button>
     )
 })

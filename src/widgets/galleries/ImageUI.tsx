@@ -1,8 +1,7 @@
 import type { STATE } from 'src/state/state'
 
 import { observer } from 'mobx-react-lite'
-import { Dropdown, Popover, Whisper } from 'rsuite'
-import { PositionChildProps } from 'rsuite/esm/Picker'
+import { Dropdown, DropdownItem, DropdownMenu, Popover, PositionChildProps, Whisper } from 'src/rsuite/shims'
 import { ImageL } from 'src/models/Image'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
@@ -121,19 +120,19 @@ const renderSpeaker = (
     }
     return (
         <Popover ref={ref} className={className} style={{ left, top }} full>
-            <Dropdown.Menu onSelect={handleSelect}>
-                <Dropdown.Item eventKey={4}>Paint</Dropdown.Item>
-                <Dropdown.Item eventKey={4}>Mask</Dropdown.Item>
-                {/* <Dropdown.Menu title='Edit'>
-                    <Dropdown.Item eventKey={1}>New File</Dropdown.Item>
-                    <Dropdown.Item eventKey={2}>New File with Current Profile</Dropdown.Item>
-                </Dropdown.Menu> */}
-                {/* <Dropdown.Item eventKey={3}>Start Flow from this</Dropdown.Item> */}
-                {/* <Dropdown.Item eventKey={4}>Export PDF</Dropdown.Item>
-                <Dropdown.Item eventKey={5}>Export HTML</Dropdown.Item>
-                <Dropdown.Item eventKey={6}>Settings</Dropdown.Item>
-                <Dropdown.Item eventKey={7}>About</Dropdown.Item> */}
-            </Dropdown.Menu>
+            <DropdownMenu onSelect={handleSelect}>
+                <DropdownItem eventKey={4}>Paint</DropdownItem>
+                <DropdownItem eventKey={4}>Mask</DropdownItem>
+                {/* <DropdownMenu title='Edit'>
+                    <DropdownItem eventKey={1}>New File</DropdownItem>
+                    <DropdownItem eventKey={2}>New File with Current Profile</DropdownItem>
+                </DropdownMenu> */}
+                {/* <DropdownItem eventKey={3}>Start Flow from this</DropdownItem> */}
+                {/* <DropdownItem eventKey={4}>Export PDF</DropdownItem>
+                <DropdownItem eventKey={5}>Export HTML</DropdownItem>
+                <DropdownItem eventKey={6}>Settings</DropdownItem>
+                <DropdownItem eventKey={7}>About</DropdownItem> */}
+            </DropdownMenu>
         </Popover>
     )
 }

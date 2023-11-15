@@ -4,24 +4,22 @@ import type { STATE } from 'src/state/state'
 import type { ComfyPromptJSON } from '../types/ComfyPrompt'
 import type { AbsolutePath } from '../utils/fs/BrandedPaths'
 
-import { readFileSync, writeFileSync } from 'fs'
+import { readFileSync } from 'fs'
 import { makeAutoObservable, observable } from 'mobx'
-import path, { relative } from 'pathe'
-import { generateName } from 'src/widgets/drafts/generateName'
-import { Deck } from 'src/cards/Deck'
+import path, { join, relative } from 'pathe'
 import { CardPath } from 'src/cards/CardPath'
+import { Deck } from 'src/cards/Deck'
 import { DraftL } from 'src/models/Draft'
+import { clamp } from 'three/src/math/MathUtils'
 import { transpileCode } from '../back/transpiler'
 import { convertLiteGraphToPrompt } from '../core/litegraphToPrompt'
 import { getPngMetadataFromUint8Array } from '../importers/getPngMetadata'
 import { exhaust } from '../utils/misc/ComfyUtils'
 import { ManualPromise } from '../utils/misc/ManualPromise'
-import { Library } from './Library'
-import { CardManifest } from './DeckManifest'
-import { join } from 'pathe'
-import { CardStyle } from './fancycard/FancyCard'
-import { clamp } from 'three/src/math/MathUtils'
 import { generateAvatar } from './AvatarGenerator'
+import { CardManifest } from './DeckManifest'
+import { Library } from './Library'
+import { CardStyle } from './fancycard/FancyCard'
 
 // prettier-ignore
 export type LoadStrategy =
@@ -183,7 +181,7 @@ export class CardFile {
     }
 
     createDraft = (): DraftL => {
-        const title = generateName()
+        const title = this.name + ' ' + this.drafts.length + 1
         const pj = this.st.getProject()
         const draft = this.st.db.drafts.create({
             actionParams: {},

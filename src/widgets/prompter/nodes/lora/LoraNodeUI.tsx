@@ -1,11 +1,11 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext'
 import { observer } from 'mobx-react-lite'
-import { Button, IconButton, Input, Popover, Slider, Whisper } from 'rsuite'
-import { LoraNode } from './LoraNode'
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
-import { useSt } from 'src/state/stateContext'
-import { bang } from 'src/utils/misc/bang'
 import { openExternal } from 'src/app/layout/openExternal'
+import { Button, Input, InputNumberBase, Popover, Slider, Whisper } from 'src/rsuite/shims'
+import { useSt } from 'src/state/stateContext'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { LoraNode } from './LoraNode'
+import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 
 export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
     const node = p.node
@@ -29,42 +29,28 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                         <div>
                             <div>model strength</div>
                             <div tw='flex items-center'>
-                                <Slider //
-                                    style={{ width: '5rem' }}
-                                    value={def.strength_model}
-                                    onChange={(v) => (def.strength_model = parseFloatNoRoundingErr(v, 2))}
+                                <InputNumberUI
+                                    val={def.strength_model ?? 1}
                                     step={0.1}
                                     min={-2}
                                     max={2}
-                                />
-                                <Input
-                                    size='xs'
-                                    type='number'
-                                    value={def.strength_model}
-                                    step={0.1}
-                                    onChange={(v) => (def.strength_model = parseFloatNoRoundingErr(v, 2))}
+                                    onValueChange={(v) => (def.strength_model = v)}
                                     style={{ width: '4.5rem' }}
+                                    mode='float'
                                 />
                             </div>
                         </div>
                         <div>
                             <div>clip strength</div>
                             <div tw='flex items-center'>
-                                <Slider //
-                                    style={{ width: '5rem' }}
-                                    value={def.strength_clip}
-                                    onChange={(v) => (def.strength_clip = parseFloatNoRoundingErr(v, 2))}
+                                <InputNumberUI
+                                    val={def.strength_clip ?? 1}
                                     step={0.1}
                                     min={-2}
                                     max={2}
-                                />
-                                <Input
-                                    size='xs'
-                                    type='number'
-                                    value={def.strength_clip}
-                                    step={0.1}
-                                    onChange={(v) => (def.strength_clip = parseFloatNoRoundingErr(v, 2))}
+                                    onValueChange={(v) => (def.strength_clip = v)}
                                     style={{ width: '4.5rem' }}
+                                    mode='float'
                                 />
                             </div>
                         </div>
@@ -117,7 +103,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                                 }}
                             ></Input>
                         </div>
-                        <IconButton
+                        <Button
                             size='xs'
                             icon={<span className='material-symbols-outlined'>delete_forever</span>}
                             onClick={() => editor.update(() => node.remove())}

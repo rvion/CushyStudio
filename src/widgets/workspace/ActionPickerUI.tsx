@@ -14,7 +14,7 @@ export const ActionPickerUI = observer(function ToolPickerUI_(p: {}) {
             className='flex flex-col flex-grow h-full'
             style={{ borderRight: '1px solid #2d2d2d' }}
         >
-            <SectionTitleUI label='Cards' className='bg-gray-800 mb-2'>
+            <SectionTitleUI label='Apps' className='bg-gray-800 mb-2'>
                 <div onClick={() => st.library.discoverAllCards()} className='cursor-pointer'>
                     <span className='text-xs material-symbols-outlined'>sync</span>
                 </div>

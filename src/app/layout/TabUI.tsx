@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
-import { Nav } from 'rsuite'
+import { Nav, NavItem } from 'src/rsuite/shims'
 
 export const TabUI = observer(function TabUI_(p: {
     className?: string
@@ -20,15 +20,15 @@ export const TabUI = observer(function TabUI_(p: {
         <div className={'TabUI ' + p.className} style={p.style}>
             <Nav className='xs' appearance='tabs' activeKey={`${val}`} onSelect={(k: string) => setVal(parseInt(k, 10))}>
                 {p.title && (
-                    <Nav.Item disabled key={p.title} eventKey={`_`}>
+                    <NavItem disabled key={p.title} eventKey={`_`}>
                         {p.title}
-                    </Nav.Item>
+                    </NavItem>
                 )}
                 {headers.map((h, ix) => {
                     return (
-                        <Nav.Item key={ix} eventKey={`${ix}`}>
+                        <NavItem key={ix} eventKey={`${ix}`}>
                             {h}
-                        </Nav.Item>
+                        </NavItem>
                     )
                 })}
             </Nav>

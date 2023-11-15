@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, ButtonGroup, InputNumber } from 'rsuite'
+import { Button, ButtonGroup, InputNumberBase } from 'src/rsuite/shims'
 import { Widget_seed } from 'src/controls/Widget'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_seed }) {
@@ -7,8 +7,10 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
     const val = req.state.val
     return (
         <div tw='flex items-center'>
-            <ButtonGroup size='sm'>
+            <div tw='join'>
                 <Button
+                    tw='join-item'
+                    size='sm'
                     appearance='subtle'
                     active={req.state.mode === 'randomize'}
                     startIcon={'🎲'}
@@ -22,28 +24,31 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
                 <Button
                     appearance='subtle'
                     active={req.state.mode === 'fixed'}
+                    tw='join-item'
+                    size='sm'
+                    startIcon={'🎲'}
                     onClick={() => {
                         req.state.mode = 'fixed'
                         req.state.active = true
                         // req.state.val = Math.floor(Math.random() * 1000000)
                     }}
-                    startIcon={'🎲'}
                 >
                     Fixed
                 </Button>
-            </ButtonGroup>
-            <InputNumber //
+            </div>
+            <InputNumberBase //
                 style={{
                     fontFamily: 'monospace',
                     width: val.toString().length + 6 + 'ch',
                 }}
-                size='sm'
+                className='input-sm'
                 disabled={!(req.state.mode !== 'randomize' || !req.state.active)}
                 value={val}
                 min={req.input.min}
                 max={req.input.max}
                 step={1}
-                onChange={(next) => {
+                onChange={(ev) => {
+                    const next = ev.target.value
                     // parse value
                     let num =
                         typeof next === 'string' //
@@ -60,6 +65,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
                 }}
             />
             <Button
+                size='sm'
                 appearance='subtle'
                 onClick={() => {
                     req.state.mode = 'fixed'

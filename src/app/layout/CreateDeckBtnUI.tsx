@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { Button } from 'rsuite'
+import { Button } from 'src/rsuite/shims'
 import { CreateDeckModalState, CreateDeckModalUI } from './CreateDeckModalUI'
 
 export const CreateDeckBtnUI = observer(function CreateDeckBtnUI_(p: {}) {

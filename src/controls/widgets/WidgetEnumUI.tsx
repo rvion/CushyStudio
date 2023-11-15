@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { Popover, SelectPicker, Toggle, Tooltip, Whisper } from 'rsuite'
 import { Widget_enum, Widget_enumOpt } from 'src/controls/Widget'
+import { Popover, SelectPicker, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
-import type { EnumName, EnumValue } from '../../models/Schema'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
+import type { EnumName, EnumValue } from '../../models/Schema'
 
 type T = {
     label: EnumValue
@@ -19,7 +19,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
     const value = req.state.val as any
     return (
         <EnumSelectorUI
-            value={req.status}
+            value={value}
             disabled={!req.state.active}
             isOptional={isOptional}
             enumName={enumName}

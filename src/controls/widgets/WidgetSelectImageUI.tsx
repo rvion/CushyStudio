@@ -1,14 +1,14 @@
+import { runInAction } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Button, Toggle } from 'rsuite'
 import { Widget_image, Widget_imageOpt } from 'src/controls/Widget'
+import { Button } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { ImageUI } from '../../widgets/galleries/ImageUI'
 import { useImageDrop } from '../../widgets/galleries/dnd'
-import { useDraft } from '../../widgets/misc/useDraft'
-import { TabsUI } from '../../widgets/misc/TabUI'
-import { EnumSelectorUI } from './WidgetEnumUI'
 import { ScribbleCanvas } from '../../widgets/misc/ScribbleUI'
-import { runInAction } from 'mobx'
+import { TabsUI } from '../../widgets/misc/TabUI'
+import { useDraft } from '../../widgets/misc/useDraft'
+import { EnumSelectorUI } from './WidgetEnumUI'
 
 enum Tab {
     Cushy = 0,

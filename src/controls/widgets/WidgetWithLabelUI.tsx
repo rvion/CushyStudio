@@ -1,8 +1,7 @@
-import * as I from '@rsuite/icons'
 import * as R from 'src/controls/Widget'
 import { observer } from 'mobx-react-lite'
 import { ErrorBoundary } from 'react-error-boundary'
-import { Toggle, Tooltip, Whisper } from 'rsuite'
+import { Toggle, Tooltip, Whisper } from 'src/rsuite/shims'
 import { LabelPos } from 'src/controls/IWidget'
 import { useSt } from 'src/state/stateContext'
 import { ErrorBoundaryFallback } from '../../widgets/misc/ErrorBoundary'
@@ -50,7 +49,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         <Toggle //
             color='green'
             checked={req.state.active}
-            onChange={(t) => (req.state.active = t)}
+            onChange={(ev) => (req.state.active = ev.target.checked)}
         />
     )
     const showToogle = req.isOptional || !req.state.active
@@ -69,6 +68,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     : '_WidgetLabel ',
                 WIDGET == null ? 'w-full' : null,
                 'min-w-max shrink-0 self-start',
+                'flex items-center',
                 'py-0.5 hover:bg-gray-800 cursor-pointer',
             ]}
             onClick={() => {
@@ -82,7 +82,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
         >
             {tooltip && (
                 <Whisper placement='topStart' speaker={<Tooltip>{tooltip}</Tooltip>}>
-                    <I.InfoOutline className='mr-2 cursor-pointer' />
+                    <span className='material-symbols-outlined'>info</span>
                 </Whisper>
             )}
             <span

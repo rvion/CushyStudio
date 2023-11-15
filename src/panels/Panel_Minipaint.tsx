@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { useLayoutEffect, useMemo } from 'react'
-import { Button, ButtonGroup } from 'rsuite'
+import { Button, ButtonGroup } from 'src/rsuite/shims'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { useSt } from '../state/stateContext'
 

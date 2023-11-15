@@ -3,50 +3,6 @@
 {
     "version": "2.0.0",
     "tasks": [
-        // {
-        //     "label": "starts everything",
-        //     "dependsOn": [
-        //         // "⚛️ electron",
-        //         // "🛋️ vite",
-        //         "🛋️ Cushy",
-        //         "👁 TSC"
-        //     ],
-        //     "group": { "kind": "build", "isDefault": true },
-        //     "runOptions": { "runOn": "folderOpen", "instanceLimit": 1 }
-        // },
-        // {
-        //     "label": "🛋️ Cushy",
-        //     "detail": "start CushyStudio",
-        //     "type": "process",
-        //     "command": "npm",
-        //     "args": ["run", "start"],
-        //     "isBackground": true,
-        //     "presentation": { "reveal": "never", "close": false },
-        //     "group": "build",
-        //     "runOptions": { "instanceLimit": 1 }
-        // },
-        // {
-        //     "label": "⚛️ electron",
-        //     "detail": "start FRONTEND dev-server",
-        //     "type": "process",
-        //     "command": "npm",
-        //     "args": ["run", "front:shell"],
-        //     "isBackground": true,
-        //     "presentation": { "reveal": "never", "close": false },
-        //     "group": "build",
-        //     "runOptions": { "instanceLimit": 1 }
-        // },
-        // {
-        //     "label": "🛋️ vite",
-        //     "detail": "start FRONTEND dev-server",
-        //     "type": "process",
-        //     "command": "npm",
-        //     "args": ["run", "front:dev"],
-        //     "isBackground": true,
-        //     "presentation": { "reveal": "never", "close": false },
-        //     "group": "build",
-        //     "runOptions": { "instanceLimit": 1 }
-        // },
         {
             "label": "👁 TSC",
             "detail": "Get all typescript errors in problems pane",
@@ -57,9 +13,8 @@
             "isBackground": true,
             "problemMatcher": "$tsc-watch",
             "presentation": { "reveal": "never" },
-            // "group": "build",
             "group": { "kind": "build", "isDefault": true },
-            "runOptions": { "instanceLimit": 1 }
+            "runOptions": { "runOn": "folderOpen", "instanceLimit": 1 }
         }
     ]
 }

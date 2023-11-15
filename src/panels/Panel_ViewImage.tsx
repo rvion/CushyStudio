@@ -3,7 +3,7 @@ import type { ImageID, ImageL } from 'src/models/Image'
 
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { observer } from 'mobx-react-lite'
-import { Button, Rate, Toggle } from 'rsuite'
+import { Button, Rate, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 
@@ -24,18 +24,23 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
         >
             <div tw='flex items-center gap-2 p-0.5'>
                 {/* 1. RATER */}
-                {img && <Rate size='xs' onChange={(next) => img.update({ star: next })} value={img.data.star} />}
+                {img && (
+                    <Rate
+                        // tw='rating-sm'
+                        onChange={(next) => img.update({ star: next })}
+                        value={img.data.star}
+                    />
+                )}
 
                 {/* 2. LATENT PREVIEW TOOGLE */}
                 {/* (only on "last-image" mode; when p.imageID is null )  */}
                 {p.imageID == null ? (
-                    <div tw='flex gap-1 items-center'>
+                    <div>
+                        <div tw='text-light'>preview sampler</div>
                         <Toggle
-                            size='sm'
                             checked={st.showLatentPreviewInLastImagePanel}
-                            onChange={(next) => (st.showLatentPreviewInLastImagePanel = next)}
+                            onChange={(ev) => (st.showLatentPreviewInLastImagePanel = ev.target.checked)}
                         />
-                        <span tw='text-light'>include sampler preview</span>
                     </div>
                 ) : null}
 

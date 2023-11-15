@@ -1,12 +1,12 @@
 import type { STATE } from 'src/state/state'
 import type { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
+import type { ItemDataType } from 'src/rsuite/shims'
 
 import path, { join } from 'pathe'
 import Watcher from 'watcher'
 
 import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from 'fs'
 import { makeAutoObservable } from 'mobx'
-import { ItemDataType } from 'rsuite/esm/@types/common'
 import { CardPath, asCardPath } from 'src/cards/CardPath'
 import { Deck, DeckFolder } from 'src/cards/Deck'
 import { hasValidActionExtension } from '../back/ActionExtensions'

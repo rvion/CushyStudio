@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Input } from 'rsuite'
+import { Input } from 'src/rsuite/shims'
 import { Widget_str, Widget_strOpt } from 'src/controls/Widget'
 
 export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Widget_str | Widget_strOpt }) {

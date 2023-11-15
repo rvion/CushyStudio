@@ -4,7 +4,7 @@ import type { ComfyNodeSchema } from 'src/models/Schema'
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { Input, InputGroup } from 'rsuite'
+import { Input, InputGroup, InputGroupAddon } from 'src/rsuite/shims'
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from 'src/core/Colors'
 import { useSt } from 'src/state/stateContext'
 
@@ -39,14 +39,8 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
     const search = useMemo(() => new ComfyNodeExplorerState(pj), [])
 
     return (
-        <div className='_MD flex flex-col'>
-            {/* <InputGroup size='xs'>
-                <InputGroup.Addon>
-                    <span className='material-symbols-outlined'>search</span>
-                </InputGroup.Addon>
-                <Input value={search.name} onChange={(n) => (search.name = n)} />
-            </InputGroup> */}
-            <table cellPadding={0} cellSpacing={0}>
+        <div className='flex flex-col'>
+            <table cellPadding={0} cellSpacing={0} className='table table-zebra table-sm'>
                 <thead tw='sticky top-0 bg-gray-600 z-40'>
                     <tr>
                         <th>name</th>
@@ -57,34 +51,34 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
                     <tr>
                         <th>
                             <InputGroup size='xs'>
-                                <InputGroup.Addon>
+                                <InputGroupAddon>
                                     <span className='material-symbols-outlined'>search</span>
-                                </InputGroup.Addon>
-                                <Input value={search.name} onChange={(n) => (search.name = n)} />
+                                </InputGroupAddon>
+                                <Input value={search.name} onChange={(ev) => (search.name = ev.target.value)} />
                             </InputGroup>
                         </th>
                         <th>
                             <InputGroup size='xs'>
-                                <InputGroup.Addon>
+                                <InputGroupAddon>
                                     <span className='material-symbols-outlined'>search</span>
-                                </InputGroup.Addon>
-                                <Input value={search.input} onChange={(n) => (search.input = n)} />
+                                </InputGroupAddon>
+                                <Input value={search.input} onChange={(ev) => (search.input = ev.target.value)} />
                             </InputGroup>
                         </th>
                         <th>
                             <InputGroup size='xs'>
-                                <InputGroup.Addon>
+                                <InputGroupAddon>
                                     <span className='material-symbols-outlined'>search</span>
-                                </InputGroup.Addon>
-                                <Input value={search.output} onChange={(n) => (search.output = n)} />
+                                </InputGroupAddon>
+                                <Input value={search.output} onChange={(ev) => (search.output = ev.target.value)} />
                             </InputGroup>
                         </th>
                         <th>
                             <InputGroup size='xs'>
-                                <InputGroup.Addon>
+                                <InputGroupAddon>
                                     <span className='material-symbols-outlined'>search</span>
-                                </InputGroup.Addon>
-                                <Input value={search.category} onChange={(n) => (search.category = n)} />
+                                </InputGroupAddon>
+                                <Input value={search.category} onChange={(ev) => (search.category = ev.target.value)} />
                             </InputGroup>
                         </th>
                     </tr>
@@ -93,8 +87,8 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
                     {search.matches.map(([name, node]) => {
                         return (
                             <tr key={name}>
-                                <td tw='[max-width:10rem]'>{name}</td>
-                                <td tw='[max-width:10rem]'>
+                                <td tw='[max-width:10rem] whitespace-pre-wrap'>{name}</td>
+                                <td tw='[max-width:10rem] whitespace-pre-wrap'>
                                     <div tw='flex flex-wrap gap-0.5'>
                                         {node.inputs.map((i) => (
                                             <span
@@ -121,7 +115,6 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
                                 <td>{node.category}</td>
                             </tr>
                         )
-                        // <div key={name}>{name}</div>
                     })}
                 </tbody>
             </table>
