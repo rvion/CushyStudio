@@ -591,7 +591,7 @@ export class Widget_loras implements IRequest<'loras', Widget_loras_input, Widge
     }
     allLoras: string[]
     selectedLoras = new Map<string, SimplifiedLoraDef>()
-    FOLDER: ItemDataType<any>[] = []
+    FOLDER: ItemDataType[] = []
     private _insertLora = (rawPath: string) => {
         const path = rawPath.replace(/\\/g, '/')
         const segments = path.split('/')

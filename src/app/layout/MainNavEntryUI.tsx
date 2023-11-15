@@ -16,12 +16,9 @@ export const MainNavEntryUI = observer(function UI_(p: {
         <DropdownItem //
             className={p.className}
             onClick={p.onClick}
+            icon={p.icon}
         >
-            <div className='flex items-center gap-2'>
-                {/* {p.onClick ? '🟢' : '❌'} */}
-                {p.icon}
-                {p.label}
-            </div>
+            {p.label}
         </DropdownItem>
     )
     // if (p.tooltip)

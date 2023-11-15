@@ -15,13 +15,17 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
     const showAsCard = groupFields.length > 0 && !isTopLevel
     return (
         <div
-            tw={['flex items-start w-full', showAsCard ? 'mb-2' : undefined]}
+            tw={[
+                //
+                'flex rounded-box bg-opacity-95 items-start w-full text-base-content',
+                showAsCard ? 'mb-2' : undefined,
+                showAsCard ? 'bg-base-300' : undefined,
+            ]}
             style={{
                 position: 'relative',
-                borderRadius: '0.5rem',
+                // borderRadius: '0.5rem',
                 border: showAsCard ? '1px solid #484848' : undefined,
                 paddingLeft: showAsCard ? '.2rem' : undefined,
-                backgroundColor: showAsCard ? '#35353568' : undefined,
             }}
         >
             {req.state.collapsed ? null : (

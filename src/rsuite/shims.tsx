@@ -1,3 +1,4 @@
+import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
 
 export type PositionChildProps = {
@@ -7,7 +8,7 @@ export type PositionChildProps = {
 }
 export type ItemDataType = {
     value: string
-    children: ItemDataType[]
+    children?: ItemDataType[]
     label: string
 }
 
@@ -24,14 +25,9 @@ export const Form = (p: any) => <div {...p}></div>
 export const FormHelpText = (p: any) => <div {...p}></div>
 export const FormControlLabel = (p: JSX.IntrinsicElements['label']) => <label {...p}></label>
 export const FormControl = (p: JSX.IntrinsicElements['input']) => <input tw='input input-sm' {...p}></input>
-// input groups
-export const FormGroup = (p: {}) => <div tw='join' {...p}></div>
-export const InputGroup = (p: {}) => <div tw='join' {...p}></div>
-export const ButtonGroup = (p: {}) => <div tw='join' {...p}></div>
-export const RadioGroup = (p: {}) => <div tw='join' {...p}></div>
-export const RadioTileGroup = (p: {}) => <div tw='join' {...p}></div>
+export const Joined = (p: { children?: ReactNode }) => <div tw='join' {...p}></div>
 
-export const InputGroupAddon = (p: any) => <div {...p}></div>
+export const Addon = (p: any) => <div tw='bg-primary flex items-center px-2 join-item' {...p}></div>
 
 // inputs
 export const Button = (
@@ -93,7 +89,7 @@ export const Slider = (p: JSX.IntrinsicElements['input']) => (
     <input //
         type='range'
         {...p}
-        tw={[...(p.tw ?? []), 'range range-info']}
+        tw={[...(p.tw ?? []), 'range']}
     ></input>
 )
 export const Radio = (p: JSX.IntrinsicElements['input']) => (
@@ -113,13 +109,48 @@ export const SelectPicker = (p: any) => <select {...p}></select>
 export const TagPicker = (p: any) => <select multiple {...p}></select>
 export const MultiCascader = (p: any) => <select multiple {...p}></select>
 export const Tree = (p: any) => <div {...p}></div>
-export const Rate = (p: {}) => (
-    <div tw='rating rating-sm'>
-        <input type='radio' tw='mask mask-star fade-in-40' {...p}></input>
-        <input type='radio' tw='mask mask-star fade-in-40' {...p}></input>
-        <input type='radio' tw='mask mask-star fade-in-40' {...p}></input>
-        <input type='radio' tw='mask mask-star fade-in-40' {...p}></input>
-        <input type='radio' tw='mask mask-star fade-in-40' {...p}></input>
+export const Rate = (p: {
+    //
+    val?: number
+    name: string
+    onChange?: (value: number) => void
+}) => (
+    <div tw='rating rating-md rating-sm'>
+        <input
+            name={p.name}
+            checked={p.val === 1}
+            onChange={() => p.onChange?.(1)}
+            type='radio'
+            tw='mask mask-star fade-in-40'
+        ></input>
+        <input
+            name={p.name}
+            checked={p.val === 2}
+            onChange={() => p.onChange?.(2)}
+            type='radio'
+            tw='mask mask-star fade-in-40'
+        ></input>
+        <input
+            name={p.name}
+            checked={p.val === 3}
+            onChange={() => p.onChange?.(3)}
+            type='radio'
+            tw='mask mask-star fade-in-40'
+        ></input>
+        <input
+            name={p.name}
+            checked={p.val === 4}
+            onChange={() => p.onChange?.(4)}
+            type='radio'
+            tw='mask mask-star fade-in-40'
+        ></input>
+        <input
+            name={p.name}
+            checked={p.val === 5}
+            onChange={() => p.onChange?.(5)}
+            type='radio'
+            tw='mask mask-star fade-in-40'
+        ></input>
     </div>
 )
 
@@ -142,13 +173,15 @@ export const Menu = (p: any) => <div {...p}></div>
 export const MenuBar = (p: any) => <div {...p} />
 export const Dropdown = (p: {
     style?: React.CSSProperties
+    className?: string
     startIcon?: Maybe<ReactNode>
     title: ReactNode
     appearance?: Maybe<RSAppearance>
+    size?: Maybe<RSSize>
     children: ReactNode
 }) => (
-    <div className='dropdown'>
-        <label tabIndex={0} tw='btn btn-neutral btn-sm m-1'>
+    <div style={p.style} className='dropdown' tw={[p.className]}>
+        <label tabIndex={0} tw={[`btn btn-${p.size ?? 'sm'}`]}>
             {p.startIcon} {p.title}
         </label>
         <ul tabIndex={0} tw='p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52'>
@@ -157,7 +190,26 @@ export const Dropdown = (p: {
     </div>
 )
 export const DropdownMenu = (p: any) => <div {...p}></div>
-export const DropdownItem = (p: any) => <li {...p}></li>
+
+export const DropdownItem = observer(function DropdownItem_(p: {
+    onClick?: () => void
+    size?: RSSize
+    icon?: Maybe<ReactNode>
+    children?: ReactNode
+    active?: boolean
+    className?: string
+}) {
+    const { size, icon, children, active, ...rest } = p
+
+    return (
+        <li {...rest} tw={[active && 'bg-accent text-accent-content']}>
+            <div className='flex items-center gap-2'>
+                {p.icon ?? <span className='material-symbols-outlined'>spa</span>}
+                {p.children}
+            </div>
+        </li>
+    )
+})
 // misc
 export const Panel = (p: any) => (
     <div

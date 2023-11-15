@@ -1,10 +1,20 @@
 import { makeAutoObservable } from 'mobx'
 import { STATE } from 'src/state/state'
 
-export type ThemeName = 'light' | 'dark' | 'cupcake' | 'aqua' | 'valentine' | 'wireframe'
+export type ThemeName =
+    | 'light'
+    | 'dark'
+    | 'cupcake'
+    | 'aqua'
+    | 'valentine'
+    | 'wireframe'
+    | 'sunset'
+    | 'luxury'
+    | 'forest'
+    | 'business'
 
 export class ThemeManager {
-    themes: ThemeName[] = ['light', 'dark', 'cupcake', 'aqua', 'valentine', 'wireframe']
+    themes: ThemeName[] = ['light', 'dark', 'cupcake', 'aqua', 'valentine', 'wireframe', 'sunset', 'luxury', 'forest', 'business']
     toggle() {
         this.theme = this.theme === 'dark' ? 'light' : 'dark'
     }

@@ -31,7 +31,7 @@ card({
         sampler: form.enum({ enumName: 'Enum_KSampler_sampler_name', default: 'dpmpp_2m_sde', group: 'sampler' }),
         scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras', group: 'sampler' }),
         denoise: form.float({ default: 1, group: 'sampler' }),
-        steps: form.int({ default: 20, group: 'sampler' }),
+        steps: form.int({ default: 20, group: 'sampler', min: 5, max: 40 }),
         seed: form.seed({ group: 'sampler' }),
 
         // startImage

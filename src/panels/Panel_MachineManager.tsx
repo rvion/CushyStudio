@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input, InputGroup, Panel, Toggle } from 'src/rsuite/shims'
+import { Button, Input, Joined, Panel, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
 export const LabelUI = observer(function LabelUI_(p: { children: React.ReactNode }) {
@@ -17,7 +17,7 @@ export const Panel_MachineManager = observer(function HostListUI_(p: {}) {
                 return (
                     <Panel bordered tw='p-3 [min-width:20rem]'>
                         <div tw='flex flex-col gap-2'>
-                            <InputGroup key={ix}>
+                            <Joined key={ix}>
                                 {/* <InputGroupAddon>
                                 {isMain ? (
                                     <span className='text-green-500 material-symbols-outlined'>done</span>
@@ -48,7 +48,7 @@ export const Panel_MachineManager = observer(function HostListUI_(p: {}) {
                                         {isMain ? <span className='material-symbols-outlined'>star</span> : null}
                                     </div>
                                 </Button>
-                            </InputGroup>
+                            </Joined>
                             <div>
                                 <LabelUI>name</LabelUI>
                                 <Input

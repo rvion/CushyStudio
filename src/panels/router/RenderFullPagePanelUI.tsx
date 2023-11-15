@@ -16,23 +16,17 @@ export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p:
             tw='absolute fade-in'
             style={{
                 top: 0,
-                padding: '1rem',
                 left: '0',
                 height: '100%',
                 width: '100%',
-                backgroundColor: '#000000aa',
-                // backgroundColor: '#4158D0',
-                // backgroundImage: 'linear-gradient(43deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%)',
                 zIndex: 100,
             }}
         >
             <div
-                // className='fade-in'
                 style={{
                     height: '100%', //'calc(100% - 4rem)',
                     boxShadow: '0 0 1rem black',
                     padding: '1rem',
-                    borderRadius: '.5rem',
                     background: '#1e1e1e',
                 }}
             >

@@ -63,7 +63,7 @@ export const ui_latent = (form: FormBuilder) => {
             flip: form.bool({ default: false, group: 'latent' }),
             width: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
             height: form.int({ default: 768, group: 'latent', step: 128, min: 128, max: 4096 }),
-            batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 20 }),
+            batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 8 }),
         }),
     })
 }

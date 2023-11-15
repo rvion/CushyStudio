@@ -1,10 +1,12 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Input, InputGroup, InputGroupAddon, Slider, Toggle } from 'src/rsuite/shims'
+import { Button, Input, Joined, Addon, Slider, Toggle } from 'src/rsuite/shims'
 import { CreateDeckBtnUI } from 'src/app/layout/CreateDeckBtnUI'
 import { FancyCardUI } from 'src/cards/fancycard/FancyCard'
 import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
 import { useSt } from 'src/state/stateContext'
 import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
+import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
+import { Panel_DeckList } from './Panel_DeckList'
 
 export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
@@ -16,15 +18,24 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                 tw='mx-10'
                 // style={{ maxWidth: '40rem' }}
             >
+                <div tw='flex gap-2'>
+                    <CreateDeckBtnUI />
+                    <div tw='mr-2 text-2xl'>Library</div>
+                    <CreateDeckBtnUI />
+                </div>
                 <div tw='flex gap-1 items-center'>
-                    <h3 tw='mr-2'>Library</h3>
-                    <InputGroup>
-                        <InputGroupAddon>
+                    <Joined>
+                        <Addon>
                             <span className='material-symbols-outlined'>search</span>
-                        </InputGroupAddon>
-                        <Input
+                        </Addon>
+                        <input
+                            tw='join-item input-sm'
+                            type='string'
                             value={library.query}
-                            onChange={(v) => (library.query = v)}
+                            onChange={(ev) => {
+                                const next = ev.target.value
+                                library.query = next
+                            }}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
                                     const card = library.cardsFilteredSorted[library.selectionCursor]
@@ -39,11 +50,8 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                             }}
                             autoFocus
                             placeholder='search'
-                            type='string'
-                        ></Input>
-                        {/* ({library.query} - {library.query.length}) */}
-                    </InputGroup>
-                    <CreateDeckBtnUI />
+                        />
+                    </Joined>
                     {/* </div> */}
                     {/* <div tw='flex gap-2'> */}
                     {/* <InputGroup tw='self-start'>
@@ -51,41 +59,34 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                         <InputGroup.Button>Bar</InputGroup.Button>
                         <InputGroup.Button>Baz</InputGroup.Button>
                     </InputGroup> */}
-                    <div>
-                        <div>Descriptions</div>
+                    <FieldAndLabelUI label='Descriptions'>
                         <Toggle
                             onChange={(t) => (st.library.showDescription = t.target.checked)}
                             checked={st.library.showDescription}
                         />
-                    </div>
-                    <div>
-                        <div>Drafts</div>
-                        <Toggle
-                            //
+                    </FieldAndLabelUI>
+                    <FieldAndLabelUI label='Drafts'>
+                        <Toggle //
                             onChange={(t) => (st.library.showDrafts = t.target.checked)}
                             checked={st.library.showDrafts}
                         />
-                    </div>
-                    <div>
-                        <div>Favorites</div>
+                    </FieldAndLabelUI>
+                    <FieldAndLabelUI label='Favorites'>
                         <Toggle
                             //
                             onChange={(t) => (st.library.showFavorites = t.target.checked)}
                             checked={st.library.showFavorites}
                         />
-                    </div>
-                    <div>
-                        <div>Size</div>
+                    </FieldAndLabelUI>
+                    <FieldAndLabelUI label='size'>
                         <Slider
-                            //
                             min={3}
                             max={20}
-                            // tw='py-1.5'
                             style={{ width: '5rem' }}
                             onChange={(t) => (st.library.imageSize = `${t.target.value}rem`)}
                             value={parseInt(st.library.imageSize.slice(0, -3), 10)}
                         />
-                    </div>
+                    </FieldAndLabelUI>
                 </div>
             </div>
             <div tw='flex flex-grow'>

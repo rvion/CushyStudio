@@ -24,6 +24,7 @@ export const JsonViewUI = observer(function JsonViewUI_(p: { value?: object }) {
             shortenTextAfterLength={100}
             style={st.themeMgr.theme === 'light' ? lightTheme : (_githubDarkTheme as any)}
             value={p.value ?? example}
+            enableClipboard={false}
         />
     )
 })

@@ -44,7 +44,14 @@ export const CushyUI = observer(function CushyUI_() {
     }, [appRef.current, st])
 
     return (
-        <div data-theme={st.themeMgr.theme} id='CushyStudio' tabIndex={-1} ref={appRef} tw={['col grow h100']}>
+        <div
+            //
+            data-theme={st.themeMgr.theme}
+            id='CushyStudio'
+            tabIndex={-1}
+            ref={appRef}
+            tw={['col grow h100 text-base-content']}
+        >
             <AppBarUI />
             <RenderFullPagePanelUI />
             <div className='flex flex-grow relative'>

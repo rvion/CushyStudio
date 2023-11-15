@@ -4,7 +4,7 @@ import type { ComfyNodeSchema } from 'src/models/Schema'
 import { makeAutoObservable } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useMemo } from 'react'
-import { Input, InputGroup, InputGroupAddon } from 'src/rsuite/shims'
+import { Input, Joined, Addon } from 'src/rsuite/shims'
 import { getColorForInputNameInComfy, getColorForOutputNameInCushy } from 'src/core/Colors'
 import { useSt } from 'src/state/stateContext'
 
@@ -50,36 +50,36 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
                     </tr>
                     <tr>
                         <th>
-                            <InputGroup size='xs'>
-                                <InputGroupAddon>
+                            <Joined size='xs'>
+                                <Addon>
                                     <span className='material-symbols-outlined'>search</span>
-                                </InputGroupAddon>
+                                </Addon>
                                 <Input value={search.name} onChange={(ev) => (search.name = ev.target.value)} />
-                            </InputGroup>
+                            </Joined>
                         </th>
                         <th>
-                            <InputGroup size='xs'>
-                                <InputGroupAddon>
+                            <Joined size='xs'>
+                                <Addon>
                                     <span className='material-symbols-outlined'>search</span>
-                                </InputGroupAddon>
+                                </Addon>
                                 <Input value={search.input} onChange={(ev) => (search.input = ev.target.value)} />
-                            </InputGroup>
+                            </Joined>
                         </th>
                         <th>
-                            <InputGroup size='xs'>
-                                <InputGroupAddon>
+                            <Joined size='xs'>
+                                <Addon>
                                     <span className='material-symbols-outlined'>search</span>
-                                </InputGroupAddon>
+                                </Addon>
                                 <Input value={search.output} onChange={(ev) => (search.output = ev.target.value)} />
-                            </InputGroup>
+                            </Joined>
                         </th>
                         <th>
-                            <InputGroup size='xs'>
-                                <InputGroupAddon>
+                            <Joined size='xs'>
+                                <Addon>
                                     <span className='material-symbols-outlined'>search</span>
-                                </InputGroupAddon>
+                                </Addon>
                                 <Input value={search.category} onChange={(ev) => (search.category = ev.target.value)} />
-                            </InputGroup>
+                            </Joined>
                         </th>
                     </tr>
                 </thead>

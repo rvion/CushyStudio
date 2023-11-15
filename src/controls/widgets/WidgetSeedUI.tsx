@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Button, ButtonGroup, InputNumberBase } from 'src/rsuite/shims'
+import { Button, Joined, InputNumberBase } from 'src/rsuite/shims'
 import { Widget_seed } from 'src/controls/Widget'
 
 export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_seed }) {
@@ -8,33 +8,25 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
     return (
         <div tw='flex items-center'>
             <div tw='join'>
-                <Button
-                    tw='join-item'
-                    size='sm'
-                    appearance='subtle'
-                    active={req.state.mode === 'randomize'}
-                    icon={'🎲'}
+                <button
+                    tw={['join-item btn-sm btn-ghost', req.state.mode === 'randomize' && 'btn-active']}
                     onClick={() => {
                         req.state.mode = 'randomize'
                         req.state.active = true
                     }}
                 >
-                    Rand
-                </Button>
-                <Button
-                    appearance='subtle'
-                    active={req.state.mode === 'fixed'}
-                    tw='join-item'
-                    size='sm'
-                    icon={'🎲'}
+                    🎲 Rand
+                </button>
+                <button
+                    tw={['join-item btn-sm btn-ghost', req.state.mode === 'fixed' && 'btn-active']}
                     onClick={() => {
                         req.state.mode = 'fixed'
                         req.state.active = true
                         // req.state.val = Math.floor(Math.random() * 1000000)
                     }}
                 >
-                    Fixed
-                </Button>
+                    💎 Fixed
+                </button>
             </div>
             <InputNumberBase //
                 style={{

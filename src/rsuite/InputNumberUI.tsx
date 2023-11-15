@@ -18,7 +18,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     const step = p.step ?? (mode === 'int' ? 1 : 0.1)
     const valueIsValid = typeof val === 'number' && !isNaN(val)
     return (
-        <div tw='relative flex items-center'>
+        <div tw='relative flex items-center gap-1'>
             {valueIsValid ? null : (
                 <div className='text-red-500'>
                     Invalid value:
@@ -52,8 +52,9 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
                     }}
                 />
             )}
-            <InputNumberBase //
-                tw='ml-4'
+            <input //
+                type='number'
+                tw='input input-sm input-bordered'
                 value={val}
                 placeholder={p.placeholder}
                 style={{

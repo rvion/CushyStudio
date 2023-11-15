@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import { Form, FormControl, FormControlLabel, FormGroup, FormHelpText, Panel, Toggle } from 'src/rsuite/shims'
+import { Form, FormControl, FormControlLabel, Joined, FormHelpText, Panel, Toggle } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 import { useSt } from '../state/stateContext'
 import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'

@@ -7,23 +7,24 @@ export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Widget_str |
     const val = req.state.val
     if (req.input.textarea) {
         return (
-            <Input
+            <textarea
                 placeholder={req.input.placeHolder}
-                as='textarea'
                 rows={2}
                 value={val}
-                onChange={(next) => {
+                onChange={(ev) => {
+                    const next = ev.target.value
                     req.state.val = next
                 }}
             />
         )
     }
     return (
-        <Input
+        <input
+            tw='input input-bordered input-sm'
             placeholder={req.input.placeHolder}
-            size='sm'
             value={val}
-            onChange={(next) => {
+            onChange={(ev) => {
+                const next = ev.target.value
                 req.state.val = next
             }}
         />

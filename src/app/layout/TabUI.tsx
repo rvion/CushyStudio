@@ -1,11 +1,9 @@
 import { observer } from 'mobx-react-lite'
 import { useState } from 'react'
-import { Nav, NavItem } from 'src/rsuite/shims'
 
 export const TabUI = observer(function TabUI_(p: {
     className?: string
     style?: React.CSSProperties
-    title?: string
     children: React.ReactNode[]
 }) {
     const x = p.children
@@ -18,21 +16,16 @@ export const TabUI = observer(function TabUI_(p: {
     }
     return (
         <div className={'TabUI ' + p.className} style={p.style}>
-            <Nav className='xs' appearance='tabs' activeKey={`${val}`} onSelect={(k: string) => setVal(parseInt(k, 10))}>
-                {p.title && (
-                    <NavItem disabled key={p.title} eventKey={`_`}>
-                        {p.title}
-                    </NavItem>
-                )}
+            <div tw='tabs tabs-lifted tabs-sm'>
                 {headers.map((h, ix) => {
                     return (
-                        <NavItem key={ix} eventKey={`${ix}`}>
+                        <a onClick={() => setVal(ix)} className='tab' key={ix}>
                             {h}
-                        </NavItem>
+                        </a>
                     )
                 })}
-            </Nav>
-            <div>{contents[val]}</div>
+            </div>
+            <div tw='bg-base-100 text-base-content'>{contents[val]}</div>
         </div>
     )
 })

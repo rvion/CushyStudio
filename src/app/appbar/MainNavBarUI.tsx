@@ -149,6 +149,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
             >
                 {st.themeMgr.themes.map((theme) => (
                     <MainNavEntryUI
+                        key={theme}
                         appearance='subtle'
                         // icon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
                         onClick={() => (st.themeMgr.theme = theme)}

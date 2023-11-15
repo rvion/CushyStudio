@@ -53,7 +53,7 @@ function CompletionUI<T>(p: {
     )
 }
 
-const MAX_SUGGESTION_COUNT = 10
+const MAX_SUGGESTION_COUNT = 100
 
 // const PUNCTUATION = [',.']
 function useCustomTriggerMatch(/*trigger: string,*/ { minLength = 1, maxLength = 75 }) {

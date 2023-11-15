@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { useLayoutEffect, useMemo } from 'react'
-import { Button, ButtonGroup } from 'src/rsuite/shims'
+import { Button, Joined } from 'src/rsuite/shims'
 import { asRelativePath } from '../utils/fs/pathUtils'
 import { useSt } from '../state/stateContext'
 
@@ -141,7 +141,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID: ImageID })
 
     return (
         <div className='flex-grow flex flex-col h-full'>
-            <ButtonGroup className='absolute top-1 right-2'>
+            <Joined className='absolute top-1 right-2'>
                 <Button
                     size='sm'
                     icon={<span className='material-symbols-outlined'>save</span>}
@@ -177,7 +177,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID: ImageID })
                 >
                     Close
                 </Button> */}
-            </ButtonGroup>
+            </Joined>
             <iframe
                 style={{
                     border: 'none',

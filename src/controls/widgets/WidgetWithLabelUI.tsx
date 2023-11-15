@@ -69,7 +69,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 WIDGET == null ? 'w-full' : null,
                 'min-w-max shrink-0 self-start',
                 'flex items-center gap-1',
-                'hover:bg-gray-800 cursor-pointer',
+                'hover:bg-base-200 cursor-pointer',
             ]}
             onClick={() => {
                 if (v.state.collapsed) {

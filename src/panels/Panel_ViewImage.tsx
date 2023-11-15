@@ -27,8 +27,11 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                 {img && (
                     <Rate
                         // tw='rating-sm'
-                        onChange={(next) => img.update({ star: next })}
-                        value={img.data.star}
+                        onChange={(next) => {
+                            // const next = ev.target.value
+                            img.update({ star: next })
+                        }}
+                        val={img.data.star}
                     />
                 )}
 
@@ -45,7 +48,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                 ) : null}
 
                 <div tw='text-gray-500 text-sm'>
-                    W={img?.data.width ?? '?'} x H={img?.data.height ?? '?'}
+                    W={img?.data.width ?? '?'} H={img?.data.height ?? '?'}
                 </div>
                 {/* 3. OPEN OUTPUT FOLDER */}
                 {img?.localAbsolutePath && (

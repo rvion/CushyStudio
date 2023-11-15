@@ -18,6 +18,7 @@ import { ResultWrapperUI } from '../widgets/misc/ResultWrapperUI'
 import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../widgets/misc/TypescriptHighlightedCodeUI'
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
+import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
 /**
  * this is the root interraction widget
@@ -140,10 +141,14 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                     style={{ borderBottomWidth: '.2rem' }}
                     tw='flex p-1 bg-base-200 border-b border-b-base-300'
                 >
-                    <div tw='flex gap-0.5 flex-grow relative'>
+                    <div tw='flex gap-0.5 flex-grow relative text-base-content'>
                         <CardIllustrationUI card={card} size='4rem' tw='p-1' />
                         <div tw='px-1 flex-grow'>
-                            <b tw='font-boldoverflow-hidden overflow-ellipsis whitespace-nowrap' style={{ fontSize: '1.6rem' }}>
+                            <b
+                                //
+                                tw='font-bold overflow-hidden overflow-ellipsis whitespace-nowrap'
+                                style={{ fontSize: '1.6rem' }}
+                            >
                                 {card.displayName}
                             </b>
                             <div className='flex items-center gap-0 5'>
@@ -152,22 +157,20 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                                         showName
                                         tw='text-gray-500'
                                         prefix='by'
-                                        size='1rem'
+                                        size='1.5rem'
                                         username={card.deck.githubUserName}
                                     />
                                 ) : null}
-                                <div>
-                                    <FormLayoutPrefsUI />
-                                    <CardActionsMenuUI card={card} />
+                                <div tw='join'>
+                                    <FormLayoutPrefsUI tw='join-item' />
+                                    <CardActionsMenuUI tw='join-item' card={card} />
                                 </div>
                             </div>
                         </div>
                         <RunOrAutorunUI tw='right-0 absolute' draft={draft} />
                     </div>
                 </div>
-
                 {/* <hr /> */}
-
                 {/* <ActionDraftListUI card={card} /> */}
                 <ScrollablePaneUI className='flex-grow'>
                     <form
@@ -195,13 +198,13 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         />
                     </form>
                 </ScrollablePaneUI>
-                <TabUI tw='opacity-50 hover:opacity-100'>
+                <TabUI>
                     <div>Form</div>
                     <div></div>
                     <div>Form result</div>
-                    <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.result, null, 4)} />
+                    <JsonViewUI value={draft.form.value?.result} />
                     <div>Form state</div>
-                    <JSONHighlightedCodeUI code={JSON.stringify(draft.form.value?.serial, null, 4)?.slice(0, 10000)} />
+                    <JsonViewUI value={draft.form.value?.serial} />
                     <div>Action code</div>
                     <TypescriptHighlightedCodeUI code={card.codeJS ?? ''} />
                 </TabUI>
@@ -213,23 +216,22 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
 export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?: string; draft: DraftL }) {
     const draft = p.draft
     return (
-        <div tw='flex flex-col' className={p.className}>
+        <div tw='flex join' className={p.className}>
             <Button
                 //
-                tw='self-start'
+                tw='btn-sm self-start join-item btn-neutral'
                 icon={draft.shouldAutoStart ? <Loader /> : <span className='material-symbols-outlined'>autorenew</span>}
-                // appearance='subtle'
+                // appearance='primary'
                 active={draft.shouldAutoStart}
                 color={draft.shouldAutoStart ? 'green' : undefined}
                 onClick={() => draft.setAutostart(!draft.shouldAutoStart)}
-                size={size2}
+                // size={size2}
             >
-                Auto
+                {/* Auto */}
             </Button>
             <Button
+                tw='btn-sm join-item btn-primary'
                 className='self-start'
-                appearance='primary'
-                tw='btn-accent'
                 icon={
                     draft.shouldAutoStart ? ( //
                         <span className='material-symbols-outlined'>pause</span>
@@ -246,11 +248,17 @@ export const RunOrAutorunUI = observer(function RunOrAutorunUI_(p: { className?:
     )
 })
 
-export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card: CardFile }) {
+export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card: CardFile; className?: string }) {
     const card = p.card
     const st = useSt()
     return (
-        <Dropdown title='Menu' appearance='subtle' size={size1}>
+        <Dropdown
+            tw={[p.className]}
+            startIcon={<span className='material-symbols-outlined'>edit</span>}
+            title='Menu'
+            appearance='subtle'
+            size={size1}
+        >
             <DropdownItem onClick={() => openInVSCode(cwd(), card.absPath)}>Edit</DropdownItem>
             <DropdownItem onClick={() => showItemInFolder(card.absPath)}>Show Item In Folder</DropdownItem>
             {card.liteGraphJSON && (
@@ -260,41 +268,45 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card:
     )
 })
 
-export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: {}) {
+export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { className?: string }) {
     const st = useSt()
     const layout = st.preferedFormLayout
     return (
         <Dropdown
             //
+            tw={[p.className]}
             size={size1}
             appearance='subtle'
             startIcon={<span className='material-symbols-outlined'>dynamic_form</span>}
             title={`${layout}`}
             // startIcon={<span className='material-symbols-outlined'>format_size</span>}
         >
-            <DropdownItem onClick={() => (st.preferedFormLayout = 'dense')} active={layout == 'dense'}>
-                <div className='flex items-center gap-2'>
-                    <span className='material-symbols-outlined'>photo_size_select_small</span>
-                    Dense
-                </div>
+            <DropdownItem
+                icon={<span className='material-symbols-outlined'>photo_size_select_small</span>}
+                onClick={() => (st.preferedFormLayout = 'dense')}
+                active={layout == 'dense'}
+            >
+                Dense
             </DropdownItem>
 
-            <DropdownItem onClick={() => (st.preferedFormLayout = 'auto')} active={layout == 'auto'}>
-                <div className='flex items-center gap-2'>
-                    <span className='material-symbols-outlined'>photo_size_select_large</span>
-                    Auto
-                </div>
+            <DropdownItem
+                icon={<span className='material-symbols-outlined'>photo_size_select_large</span>}
+                onClick={() => (st.preferedFormLayout = 'auto')}
+                active={layout == 'auto'}
+            >
+                Auto
             </DropdownItem>
 
-            <DropdownItem onClick={() => (st.preferedFormLayout = 'mobile')} active={layout == 'mobile'}>
-                <div className='flex items-center gap-2'>
-                    <span className='material-symbols-outlined'>photo_size_select_actual</span>
-                    Mobile
-                </div>
+            <DropdownItem
+                icon={<span className='material-symbols-outlined'>photo_size_select_actual</span>}
+                onClick={() => (st.preferedFormLayout = 'mobile')}
+                active={layout == 'mobile'}
+            >
+                Mobile
             </DropdownItem>
         </Dropdown>
     )
 })
 
-const size1 = 'xs' as const
+const size1 = 'sm' as const
 const size2 = 'sm' as const

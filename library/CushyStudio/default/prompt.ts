@@ -6,6 +6,7 @@ import * as ui_model from './_prefabs/prefab_model'
 card({
     ui: (form) => ({
         model: ui_model.ui_model(form),
+        a: form.size({}),
         sampler: ui_sampler.ui_sampler(form),
         positive: form.prompt({
             default: {

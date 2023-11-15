@@ -1,7 +1,7 @@
 import type { ReleaseChannels } from 'src/core/ConfigFile'
 
 import { observer } from 'mobx-react-lite'
-import { RadioTile, RadioTileGroup } from 'src/rsuite/shims'
+import { RadioTile, Joined } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 
 export const ReleaseChannelUI = observer(function ReleaseChannelUI_(p: {
@@ -12,7 +12,7 @@ export const ReleaseChannelUI = observer(function ReleaseChannelUI_(p: {
     const config = st.configFile
     const value = config.value.checkUpdateEveryMinutes ?? 'stable'
     return (
-        <RadioTileGroup defaultValue={value} aria-label='Visibility Level'>
+        <Joined defaultValue={value} aria-label='Visibility Level'>
             <RadioTile icon={<span className='material-symbols-outlined'>looks</span>} label='Stable Version' value='stable'>
                 For cool people.
             </RadioTile>
@@ -20,6 +20,6 @@ export const ReleaseChannelUI = observer(function ReleaseChannelUI_(p: {
                 <div>For cool people too.</div>
                 <div>(but Possibly broken)</div>
             </RadioTile>
-        </RadioTileGroup>
+        </Joined>
     )
 })
