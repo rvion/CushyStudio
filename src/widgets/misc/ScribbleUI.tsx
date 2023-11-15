@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useMemo, CSSProperties } from 'react'
 import debounce from 'lodash/debounce'
-import { Input } from 'rsuite'
+import { Button, Input, Slider } from 'rsuite'
 
 export const ScribbleCanvas = (p: {
     style: CSSProperties
@@ -12,6 +12,7 @@ export const ScribbleCanvas = (p: {
     const [drawing, setDrawing] = useState(false)
     const [canvasWidth, setCanvasWidth] = useState(512)
     const [canvasHeight, setCanvasHeight] = useState(512)
+    const [canvasScale, setCanvasScale] = useState(0.5)
     const [position, setPosition] = useState({ x: 0, y: 0 })
 
     useEffect(() => {
@@ -65,38 +66,74 @@ export const ScribbleCanvas = (p: {
     }
     return (
         <div style={p.style}>
-            <div tw='flex gap-2 items-center'>
-                W:
-                <Input
-                    style={{
-                        fontFamily: 'monospace',
-                        width: canvasWidth.toString().length + 8 + 'ch',
+            <div tw='flex gap-2 items-start'>
+                <Button
+                    onClick={() => {
+                        const ctx = canvasRef.current?.getContext('2d')
+                        if (ctx) {
+                            ctx.fillStyle = p.fillStyle
+                            ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+                        }
                     }}
-                    type='number'
-                    value={canvasWidth}
-                    onChange={(e) => setCanvasWidth(Number(e))}
-                />
-                H:
-                <Input
-                    style={{
-                        fontFamily: 'monospace',
-                        width: canvasHeight.toString().length + 8 + 'ch',
-                    }}
-                    type='number'
-                    value={canvasHeight}
-                    onChange={(e) => setCanvasHeight(Number(e))}
-                />
+                >
+                    reset
+                </Button>
+                <div>
+                    Weight
+                    <Input
+                        size='xs'
+                        style={{
+                            fontFamily: 'monospace',
+                            width: canvasWidth.toString().length + 7 + 'ch',
+                        }}
+                        type='number'
+                        value={canvasWidth}
+                        onChange={(e) => setCanvasWidth(Number(e))}
+                    />
+                </div>
+                <div>
+                    Height
+                    <Input
+                        size='xs'
+                        style={{
+                            fontFamily: 'monospace',
+                            width: canvasHeight.toString().length + 7 + 'ch',
+                        }}
+                        type='number'
+                        value={canvasHeight}
+                        onChange={(e) => setCanvasHeight(Number(e))}
+                    />
+                </div>
+                <div>
+                    Scale
+                    <Slider
+                        step={0.1}
+                        min={0.5}
+                        max={2}
+                        style={{ width: '3rem' }}
+                        value={canvasScale}
+                        onChange={(e) => setCanvasScale(Number(e))}
+                    />
+                </div>
             </div>
-            <canvas
-                ref={canvasRef}
-                width={canvasWidth}
-                height={canvasHeight}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-                onMouseLeave={handleMouseUp}
-                style={{ border: '1px solid gray', display: 'block', marginTop: '10px' }}
-            ></canvas>
+            <div style={{ height: `${canvasScale * canvasHeight}px` }}>
+                <canvas
+                    ref={canvasRef}
+                    width={canvasWidth}
+                    height={canvasHeight}
+                    onMouseDown={handleMouseDown}
+                    onMouseMove={handleMouseMove}
+                    onMouseUp={handleMouseUp}
+                    onMouseLeave={handleMouseUp}
+                    style={{
+                        transformOrigin: 'top left',
+                        transform: `scale(${canvasScale})`,
+                        border: '1px solid gray',
+                        display: 'block',
+                        // marginTop: '10px',
+                    }}
+                ></canvas>
+            </div>
         </div>
     )
 }

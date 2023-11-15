@@ -6,19 +6,18 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
     const req = p.req
     const val = req.state.val
     return (
-        <div tw='w-96 flex'>
-            <ButtonGroup tw='flex' size='xs'>
+        <div tw='flex items-center'>
+            <ButtonGroup size='sm'>
                 <Button
                     appearance='subtle'
                     active={req.state.mode === 'randomize'}
+                    startIcon={'🎲'}
                     onClick={() => {
                         req.state.mode = 'randomize'
                         req.state.active = true
                     }}
-                    startIcon={'🎲'}
                 >
                     Rand
-                    {/* Each Time */}
                 </Button>
                 <Button
                     appearance='subtle'
@@ -31,19 +30,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
                     startIcon={'🎲'}
                 >
                     Fixed
-                    {/* Random */}
                 </Button>
-                {/* <Button
-                    //
-                    appearance={req.state.mode === 'last' ? 'ghost' : 'subtle'}
-                    onClick={() => {
-                        req.state.mode = 'last'
-                        req.state.active = true
-                    }}
-                    startIcon={'♻️'}
-                >
-                    Use Last
-                </Button> */}
             </ButtonGroup>
             <InputNumber //
                 style={{

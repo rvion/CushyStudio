@@ -32,15 +32,15 @@ card({
         scheduler: form.enum({ enumName: 'Enum_KSampler_scheduler', default: 'karras', group: 'sampler' }),
         denoise: form.float({ default: 1, group: 'sampler' }),
         steps: form.int({ default: 20, group: 'sampler' }),
-        seed: form.intOpt({ group: 'sampler' }),
+        seed: form.seed({ group: 'sampler' }),
 
         // startImage
         removeBG: form.bool({ default: false }),
         extra: form.groupOpt({
             items: () => ({
                 freeU: form.bool({ default: false }),
-                reverse: form.bool({ default: false }),
-                loras: form.loras({ default: [] }),
+                // reverse: form.bool({ default: false }),
+                // loras: form.loras({ default: [] }),
             }),
         }),
     }),
