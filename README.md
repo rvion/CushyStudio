@@ -32,6 +32,9 @@ For all, art awakes.
 
 </div>
 
+https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34dfe7bd2184
+
+
 # 1. Introduction
 
 To quote the header :
