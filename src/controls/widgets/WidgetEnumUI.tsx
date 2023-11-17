@@ -17,7 +17,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
     const req = p.req
     const enumName = req.input.enumName
     const isOptional = req instanceof Widget_enumOpt
-    const value = req.state.val as any
+    const value = req.status
     return (
         <EnumSelectorUI
             value={value}
@@ -46,36 +46,24 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
 }) {
     const project = useSt().getProject()
     const schema = project.schema
-    type T = { asOptionLabel: string; value: EnumValue }
-    const options: T[] = schema.getEnumOptionsForSelectPicker(p.enumName)
+    const options: EnumValue[] = schema.knownEnumsByName.get(p.enumName)?.values ?? [] // schema.getEnumOptionsForSelectPicker(p.enumName)
     // const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)
     const hasError = Boolean(p.value.isSubstitute || p.value.ENUM_HAS_NO_VALUES)
     return (
-        <div>
-            <div>
-                <AutoCompleteSelect //
-                    tw={[{ ['rsx-field-error']: hasError }]}
-                    size='sm'
-                    disabled={p.disabled}
-                    cleanable={p.isOptional}
-                    options={options}
-                    value={p.value.candidateValue}
-                    // rendierValue={(v) => {
-                    //     if (v === true) return '🟢 true'
-                    //     if (v === false) return '❌ false'
-                    //     return v
-                    // }}
-                    // renderMenuItem={(v) => {
-                    //     if (v === true) return '🟢 true'
-                    //     if (v === false) return '❌ false'
-                    //     return v
-                    // }}
-                    onChange={(e) => {
-                        if (e.selectedOption == null) return
-                        p.onChange(e.selectedOption.value)
-                    }}
-                />
-            </div>
+        <div tw='flex-1'>
+            <AutoCompleteSelect //
+                tw={[{ ['rsx-field-error']: hasError }]}
+                size='sm'
+                disabled={p.disabled}
+                cleanable={p.isOptional}
+                options={options}
+                getLabelText={(v) => v.toString()}
+                value={() => p.value.candidateValue}
+                onChange={(option) => {
+                    if (option == null) return
+                    p.onChange(option)
+                }}
+            />
             <div tw='flex flex-wrap gap-2'>
                 {p.value.isSubstitute ? ( //
                     <Whisper

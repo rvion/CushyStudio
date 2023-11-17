@@ -697,18 +697,19 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_inp
 }
 
 // 🅿️ selectOne ==============================================================================
-export type Widget_selectOne_input<T>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
-export type Widget_selectOne_serial<T> = Widget_selectOne_state<T>
-export type Widget_selectOne_state<T>  = StateFields<{ type:'selectOne', query: string; val: T }>
-export type Widget_selectOne_output<T> = T
+export type BaseSelectOneEntry = { type: string }
+export type Widget_selectOne_input <T extends BaseSelectOneEntry>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
+export type Widget_selectOne_serial<T extends BaseSelectOneEntry> = Widget_selectOne_state<T>
+export type Widget_selectOne_state <T extends BaseSelectOneEntry>  = StateFields<{ type:'selectOne', query: string; val: T }>
+export type Widget_selectOne_output<T extends BaseSelectOneEntry> = T
 export interface Widget_selectOne<T>  extends IWidget<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {}
-export class Widget_selectOne<T> implements IRequest<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
+export class Widget_selectOne<T extends BaseSelectOneEntry> implements IRequest<'selectOne', Widget_selectOne_input<T>, Widget_selectOne_serial<T>, Widget_selectOne_state<T>, Widget_selectOne_output<T>> {
     isOptional = false
     id: string
     type = 'selectOne' as const
     state: Widget_selectOne_state<T>
 
-    get choices(){
+    get choices():T[]{
         const _choices = this.input.choices
         return typeof _choices === 'function' //
             ? _choices(this.builder.ROOT)

@@ -9,14 +9,15 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
     const uist = useMemo(() => new ResolutionState(), [])
 
     return (
-        <div className='flex items-center space-x-2'>
+        <div className='flex items-center flex-wrap space-x-2'>
             <Joined>
                 <Addon>W</Addon>
                 <InputNumberUI
                     //
                     mode='int'
+                    size
                     tw='join-item'
-                    val={uist.width}
+                    value={uist.width}
                     onValueChange={(next) => uist.setWidth(next)}
                     hideSlider
                 />
@@ -27,7 +28,7 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
                     //
                     tw='join-item'
                     mode='int'
-                    val={uist.height}
+                    value={uist.height}
                     onValueChange={(next) => uist.setHeight(next)}
                     hideSlider
                 />
@@ -36,14 +37,14 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
             <Joined>
                 <button
                     type='button'
-                    tw={['btn btn-sm join-item btn-outline', uist.desiredModelType === 'xl' && 'btn-active']}
+                    tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === 'xl' && 'btn-active']}
                     onClick={() => uist.setModelType('xl')}
                 >
                     XL
                 </button>
                 <button
                     type='button'
-                    tw={['btn btn-sm join-item btn-outline', uist.desiredModelType === '1.5' && 'btn-active']}
+                    tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === '1.5' && 'btn-active']}
                     onClick={() => uist.setModelType('1.5')}
                 >
                     1.5
@@ -52,21 +53,21 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
             <Joined>
                 <button
                     type='button'
-                    tw={['btn btn-sm join-item btn-outline', uist.desiredAspectRatio === '1:1' && 'btn-active']}
+                    tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === '1:1' && 'btn-active']}
                     onClick={() => uist.setAspectRatio('1:1')}
                 >
                     1:1
                 </button>
                 <button
                     type='button'
-                    tw={['btn btn-sm join-item btn-outline', uist.desiredAspectRatio === '16:9' && 'btn-active']}
+                    tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === '16:9' && 'btn-active']}
                     onClick={() => uist.setAspectRatio('16:9')}
                 >
                     16:9
                 </button>
                 <button
                     type='button'
-                    tw={['btn btn-sm join-item btn-outline', uist.desiredAspectRatio === 'custom' && 'btn-active']}
+                    tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === 'custom' && 'btn-active']}
                     onClick={() => uist.setAspectRatio('custom')}
                 >
                     ?

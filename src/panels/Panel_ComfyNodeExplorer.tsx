@@ -40,46 +40,24 @@ export const Panel_ComfyNodeExplorer = observer(function ComfyNodeExplorerUI_(p:
 
     return (
         <div className='flex flex-col'>
-            <table cellPadding={0} cellSpacing={0} className='table table-zebra table-sm'>
-                <thead tw='sticky top-0 bg-gray-600 z-40'>
-                    <tr>
-                        <th>name</th>
-                        <th>input</th>
-                        <th>output</th>
-                        <th>category</th>
-                    </tr>
+            <table cellPadding={0} cellSpacing={0} className='table table-zebra-zebra table-zebra table-sm'>
+                <thead tw='sticky top-0 z-40'>
                     <tr>
                         <th>
-                            <Joined size='xs'>
-                                <Addon>
-                                    <span className='material-symbols-outlined'>search</span>
-                                </Addon>
-                                <Input value={search.name} onChange={(ev) => (search.name = ev.target.value)} />
-                            </Joined>
+                            <div>name</div>
+                            <Input value={search.name} onChange={(ev) => (search.name = ev.target.value)} />
                         </th>
                         <th>
-                            <Joined size='xs'>
-                                <Addon>
-                                    <span className='material-symbols-outlined'>search</span>
-                                </Addon>
-                                <Input value={search.input} onChange={(ev) => (search.input = ev.target.value)} />
-                            </Joined>
+                            <div>input</div>
+                            <Input value={search.input} onChange={(ev) => (search.input = ev.target.value)} />
                         </th>
                         <th>
-                            <Joined size='xs'>
-                                <Addon>
-                                    <span className='material-symbols-outlined'>search</span>
-                                </Addon>
-                                <Input value={search.output} onChange={(ev) => (search.output = ev.target.value)} />
-                            </Joined>
+                            <div>output</div>
+                            <Input value={search.output} onChange={(ev) => (search.output = ev.target.value)} />
                         </th>
                         <th>
-                            <Joined size='xs'>
-                                <Addon>
-                                    <span className='material-symbols-outlined'>search</span>
-                                </Addon>
-                                <Input value={search.category} onChange={(ev) => (search.category = ev.target.value)} />
-                            </Joined>
+                            <div>category</div>
+                            <Input value={search.category} onChange={(ev) => (search.category = ev.target.value)} />
                         </th>
                     </tr>
                 </thead>

@@ -70,7 +70,7 @@ export const Panel_Config = observer(function Panel_Config_() {
                             placeholder='48'
                             min={16}
                             max={256}
-                            val={config.value.galleryImageSize ?? 48}
+                            value={config.value.galleryImageSize ?? 48}
                             mode='int'
                             onValueChange={(val) => config.update({ galleryImageSize: val })}
                         />

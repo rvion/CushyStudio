@@ -7,9 +7,9 @@ import { observer } from 'mobx-react-lite'
 import { nanoid } from 'nanoid'
 import { join } from 'pathe'
 import { useLayoutEffect, useMemo } from 'react'
-import { Button, Joined } from 'src/rsuite/shims'
-import { asRelativePath } from '../utils/fs/pathUtils'
+import { Button } from 'src/rsuite/shims'
 import { useSt } from '../state/stateContext'
+import { asRelativePath } from '../utils/fs/pathUtils'
 
 // export type UIPagePaint = {
 //     type: 'paint'
@@ -141,7 +141,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID: ImageID })
 
     return (
         <div className='flex-grow flex flex-col h-full'>
-            <Joined className='absolute top-1 right-2'>
+            <div className='absolute top-1 right-2'>
                 <Button
                     size='sm'
                     icon={<span className='material-symbols-outlined'>save</span>}
@@ -155,29 +155,7 @@ export const Panel_Minipaint = observer(function PaintUI_(p: { imgID: ImageID })
                 >
                     Save
                 </Button>
-                {/* <Button
-                    size='sm'
-                    appearance='ghost'
-                    color='green'
-                    onClick={() => {
-                        runInAction(() => {
-                            minipaintState.saveImage()
-                        })
-                    }}
-                >
-                    OK (close)
-                </Button> */}
-                {/* <Button
-                    size='sm'
-                    appearance='ghost'
-                    color='red'
-                    onClick={() => {
-                        runInAction(() => {})
-                    }}
-                >
-                    Close
-                </Button> */}
-            </Joined>
+            </div>
             <iframe
                 style={{
                     border: 'none',

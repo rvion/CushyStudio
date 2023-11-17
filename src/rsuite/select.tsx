@@ -4,22 +4,21 @@ import React, { useMemo } from 'react'
 import { STATE } from 'src/state/state'
 import { useSt } from 'src/state/stateContext'
 import { searchMatches } from 'src/utils/misc/searchMatches'
-import { Addon, Joined, RSSize } from './shims'
+import { RSSize } from './shims'
 
-type OptionEntry = {
-    asOptionLabel: string
-}
-type PP<T extends OptionEntry> = {
-    onChange: (self: AutoCompleteSelectState<T>) => void
+type PP<T> = {
+    onChange: (next: T, self: AutoCompleteSelectState<T>) => void
+    getLabelText: (t: T) => string
+    getLabelUI?: (t: T) => React.ReactNode
     options?: T[]
+    value?: () => Maybe<T | T[]>
     multiple?: boolean
     size?: RSSize
     disabled?: boolean
     cleanable?: boolean
-    value?: Maybe<T>
 }
 
-class AutoCompleteSelectState<T extends OptionEntry> {
+class AutoCompleteSelectState<T> {
     constructor(
         //
         public st: STATE,
@@ -33,21 +32,29 @@ class AutoCompleteSelectState<T extends OptionEntry> {
         return this.p.options ?? [] // replace with actual options logic
     }
     get filteredOptions() {
-        return this.options.filter((p) => searchMatches(p.asOptionLabel, this.inputValue))
+        if (this.searchQuery === '') return this.options
+        return this.options.filter((p) => {
+            const label = this.p.getLabelText(p)
+            return searchMatches(label, this.searchQuery)
+        })
     }
-    inputValue = ''
+    searchQuery = ''
 
-    selectedOptions: T[] = []
-
-    get selectedOption(): Maybe<T> {
-        return this.selectedOptions[0] ?? null
+    get value() {
+        return this.p.value?.()
+    }
+    get displayValue(): string {
+        const sop = this.value
+        if (sop == null) return 'Select...'
+        if (Array.isArray(sop)) return sop.map(this.p.getLabelText).join(', ')
+        return this.p.getLabelText(sop)
     }
 
-    selectedIndex = -1
+    selectedIndex = 0
     showMenu = false
 
     filterOptions(inputValue: string) {
-        this.inputValue = inputValue
+        this.searchQuery = inputValue
         this.showMenu = true
         // Logic to filter options based on input value
         // Update this.filteredOptions accordingly
@@ -56,14 +63,8 @@ class AutoCompleteSelectState<T extends OptionEntry> {
     selectOption(index: number) {
         const selectedOption = this.filteredOptions[index]
         if (selectedOption) {
-            if (this.multiple) {
-                this.selectedOptions.push(selectedOption)
-                this.onChange(this) // Invoke the passed onChange prop
-            } else {
-                this.onChange(this) // Invoke the passed onChange prop
-                this.selectedOptions = [selectedOption]
-            }
-            this.inputValue = ''
+            this.onChange(selectedOption, this)
+            this.searchQuery = ''
             this.closeMenu()
         }
     }
@@ -82,7 +83,7 @@ class AutoCompleteSelectState<T extends OptionEntry> {
     }
 }
 
-export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T extends OptionEntry>(p: PP<T>) {
+export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T>(p: PP<T>) {
     const st = useSt()
     const uiSt = useMemo(() => new AutoCompleteSelectState(st, p), [p])
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -104,33 +105,53 @@ export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T extend
     }
 
     return (
-        <div className='relative'>
-            <span className='material-symbols-outlined'>search</span>
-            <input
-                tw='input input-sm'
-                placeholder={uiSt.selectedOption?.asOptionLabel ?? 'Select an option'}
-                type='text'
-                value={uiSt.inputValue}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                onBlur={handleBlur}
-                className='input input-bordered' // Tailwind CSS classes
-            />
-            {uiSt.showMenu && (
-                <ul className='absolute z-10 bg-white shadow-md max-h-60 overflow-auto'>
-                    {uiSt.filteredOptions.map((option, index) => (
-                        <li
-                            key={index}
-                            className={`p-2 hover:bg-gray-200 cursor-pointer ${
-                                index === uiSt.selectedIndex ? 'bg-gray-100' : ''
-                            }`}
-                            onMouseDown={() => uiSt.selectOption(index)}
-                        >
-                            {option.asOptionLabel}
-                        </li>
-                    ))}
-                </ul>
-            )}
+        <div tw='flex flex-1 items-center'>
+            {/* <span className='material-symbols-outlined'>search</span> */}
+            <div className='relative flex-1'>
+                <input
+                    tw='input input-sm input-bordered w-full'
+                    onFocus={() => (uiSt.showMenu = true)}
+                    value={uiSt.displayValue}
+                ></input>
+                {uiSt.showMenu && (
+                    <div tw='absolute top-8'>
+                        <input
+                            onKeyUp={(ev) => {
+                                if (ev.key === 'Escape') {
+                                    uiSt.closeMenu()
+                                }
+                            }}
+                            onFocus={() => {
+                                uiSt.showMenu = true
+                            }}
+                            autoFocus
+                            tw='input input-sm'
+                            placeholder={uiSt.displayValue}
+                            type='text'
+                            value={uiSt.searchQuery}
+                            onChange={handleInputChange}
+                            onKeyDown={handleKeyDown}
+                            onBlur={handleBlur}
+                            className={'input input-bordered '} // Tailwind CSS classes
+                        />
+                        <ul className='absolute z-10 bg-base-100 shadow-md max-h-60 overflow-auto'>
+                            {uiSt.filteredOptions.map((option, index) => (
+                                <li
+                                    key={index}
+                                    className={`p-2 hover:bg-base-300 cursor-pointer ${
+                                        index === uiSt.selectedIndex ? 'bg-gray-100' : ''
+                                    }`}
+                                    onMouseDown={() => uiSt.selectOption(index)}
+                                >
+                                    {uiSt.p.getLabelUI //
+                                        ? uiSt.p.getLabelUI(option)
+                                        : uiSt.p.getLabelText(option)}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </div>
         </div>
     )
 })

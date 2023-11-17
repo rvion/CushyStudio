@@ -32,7 +32,7 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
         {
             title: () => <>Drop</>,
             body: () => (
-                <div className='flex gap-2 bg-yellow-900 rounded p-1 self-center'>
+                <div className='flex gap-2 p-1 bg-base-100 border border-dashed border-neutral self-center'>
                     {req.state.cushy != null ? ( //
                         <div tw='flex items-start'>
                             <ImageUI img={draft.db.images.getOrThrow(req.state.cushy.imageID)} />

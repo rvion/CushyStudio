@@ -23,18 +23,20 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                 background: st.configFile.value.galleryBgColor,
             }}
         >
-            <div tw='flex items-center gap-2 p-0.5'>
+            <div tw='flex items-center gap-2 p-0.5 bg-base-200'>
                 {/* 1. RATER */}
                 {img && (
-                    <Rate
-                        name={img.id}
-                        // tw='rating-sm'
-                        onChange={(next) => {
-                            // const next = ev.target.value
-                            img.update({ star: next })
-                        }}
-                        value={img.data.star}
-                    />
+                    <FieldAndLabelUI label='Rating'>
+                        <Rate
+                            name={img.id}
+                            // tw='rating-sm'
+                            onChange={(next) => {
+                                // const next = ev.target.value
+                                img.update({ star: next })
+                            }}
+                            value={img.data.star}
+                        />
+                    </FieldAndLabelUI>
                 )}
 
                 {/* 2. LATENT PREVIEW TOOGLE */}
@@ -48,18 +50,15 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                     </FieldAndLabelUI>
                 ) : null}
 
-                <FieldAndLabelUI label='size'>
-                    <input
-                        tw='input-bordered input input-sm'
-                        value={`${img?.data.width ?? '?'} x ${img?.data.height ?? '?'}`}
-                    ></input>
+                <FieldAndLabelUI label='Size'>
+                    <input tw='input input-bordered input-xs' value={`${img?.data.width ?? '?'} x ${img?.data.height ?? '?'}`} />
                 </FieldAndLabelUI>
                 {/* 3. OPEN OUTPUT FOLDER */}
                 {img?.localAbsolutePath && (
                     <Button
                         icon={<span className='material-symbols-outlined'>folder</span>}
                         size='xs'
-                        appearance='link'
+                        appearance='subtle'
                         onClick={() => showItemInFolder(img.localAbsolutePath)}
                     >
                         open folder
@@ -71,7 +70,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                     <Button
                         icon={<span className='material-symbols-outlined'>folder</span>}
                         size='xs'
-                        appearance='link'
+                        appearance='subtle'
                         onClick={() => openExternal(imgPathWithFileProtocol)}
                     >
                         open

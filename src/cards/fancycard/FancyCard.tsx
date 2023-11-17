@@ -25,9 +25,9 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     const color = (() => {
         const tw='px-1 py-0.5 overflow-hidden text-ellipsis block whitespace-nowrap'
         const maxWidth= st.library.imageSize
-        if (card.absPath.endsWith('.ts'))   return <span tw={[tw]} style={{maxWidth, background: '#1976d2'}}>Cushy Action</span>
-        if (card.absPath.endsWith('.json')) return <span tw={[tw]} style={{maxWidth, background: '#8e24aa'}}>ComfyUI Workflow JSON</span>
-        if (card.absPath.endsWith('.png'))  return <span tw={[tw]} style={{maxWidth, background: '#3949ab'}}>ComfyUI Workflow Image</span>
+        if (card.absPath.endsWith('.ts'))   return <span tw={[tw, 'bg-primary text-primary-content']} style={{maxWidth}}>Cushy Action</span>
+        if (card.absPath.endsWith('.json')) return <span tw={[tw, 'bg-secondary text-secondary-content']} style={{maxWidth}}>ComfyUI Workflow JSON</span>
+        if (card.absPath.endsWith('.png'))  return <span tw={[tw, 'bg-accent text-accent-content']} style={{maxWidth}}>ComfyUI Workflow Image</span>
     })()
 
     return (

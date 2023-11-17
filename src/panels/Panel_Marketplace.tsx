@@ -34,7 +34,7 @@ export const ActionPackUI = observer(function ActionPackUI_(p: { actionPack: Dec
                 <div tw='flex-grow'>
                     <div tw='text-lg font-bold'>{pack.name}</div>
                     <GithubUserUI size='1.5rem' username={pack.githubUserName} showName />
-                    <div tw='text-gray-400'>{pack.description}</div>
+                    <div tw='text-neutral-content'>{pack.description}</div>
                 </div>
                 {pack.BUILT_IN ? null : <ActionPackStarsUI pack={pack} />}
             </div>

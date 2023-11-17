@@ -15,7 +15,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 appearance='subtle'
                 size='sm'
                 onClick={() => st.toggleCardPicker()}
-                icon={<span className='material-symbols-outlined text-green-600'>view_list</span>}
+                icon={<span className='material-symbols-outlined text-success'>view_list</span>}
             >
                 Library
             </Button>
@@ -108,25 +108,25 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
             </Dropdown>
             <Dropdown
                 appearance='subtle'
-                startIcon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
+                startIcon={<span className='text-warning material-symbols-outlined'>sync</span>}
                 title='Debug'
             >
                 <MainNavEntryUI
                     appearance='subtle'
-                    icon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
+                    icon={<span className='text-warning material-symbols-outlined'>sync</span>}
                     onClick={() => window.location.reload()}
                     label='Reload'
                 />
                 <MainNavEntryUI //
                     appearance='subtle'
-                    icon={<span className='text-orange-400 material-symbols-outlined'>bug_report</span>}
+                    icon={<span className='text-warning material-symbols-outlined'>bug_report</span>}
                     onClick={() => st.electronUtils.toggleDevTools()}
                     label='console'
                 />
                 <MainNavEntryUI
                     size='sm'
                     appearance='subtle'
-                    icon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
+                    icon={<span className='text-warning material-symbols-outlined'>sync</span>}
                     onClick={() => st.layout.resetCurrent()}
                     label='Fix Layout'
                 />

@@ -1,9 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { InputNumberBase, Slider } from 'src/rsuite/shims'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { clamp } from 'three/src/math/MathUtils'
 
 export const InputNumberUI = observer(function InputNumberUI_(p: {
-    val: number
+    value?: Maybe<number>
     mode: 'int' | 'float'
     onValueChange: (next: number) => void
     step?: number
@@ -13,7 +14,7 @@ export const InputNumberUI = observer(function InputNumberUI_(p: {
     style?: React.CSSProperties
     placeholder?: string
 }) {
-    const val = p.val
+    const val = p.value ?? clamp(1, p.min ?? -Infinity, p.max ?? Infinity)
     const mode = p.mode
     const step = p.step ?? (mode === 'int' ? 1 : 0.1)
     const valueIsValid = typeof val === 'number' && !isNaN(val)

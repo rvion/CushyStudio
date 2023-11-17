@@ -23,6 +23,8 @@ import { Panel_ViewImage } from '../Panel_ViewImage'
 import { Panel_3dScene } from 'src/panels/Panel_3dScene'
 import { Panel_CardPicker3UI } from 'src/panels/Panel_FullScreenLibrary'
 import { RenderPanelUI } from './RenderPanelUI'
+import { Panel_DraftJsonResult } from '../Panel_DraftJsonResult'
+import { Panel_DraftJsonSerial } from '../Panel_DraftJsonSerial'
 
 // still on phone
 export enum Widget {
@@ -33,10 +35,12 @@ export enum Widget {
     CurrentDraft = 'CurrentDraft', //: { 'CurrentDraft',}
     // Card = 'Card', //: { 'Card',}
     Draft = 'Draft', //: { 'Draft',}
+    DraftJsonResult = 'DraftJsonResult', //: { 'Draft',}
+    DraftJsonSerial = 'DraftJsonSerial', //: { 'Draft',}
     ComfyUI = 'ComfyUI', //: { 'ComfyUI',}
     ComfyUINodeExplorer = 'ComfyUINodeExplorer', //: { 'ComfyUINodeExplorer',}
     FileList = 'FileList', //: { 'FileList',}
-    FileList2 = 'FileList2', //: { 'FileList2',}
+    // FileList2 = 'FileList2', //: { 'FileList2',}
     LastStep = 'LastStep', //: { 'Steps',}
     Steps = 'Steps', //: { 'Steps',}
     LastGraph = 'LastGraph', //: { 'LastGraph',}
@@ -143,7 +147,7 @@ export class CushyLayoutManager {
     addMarketplace = () => this._AddWithProps(Widget.Marketplace, `/marketplace`, { title: 'Marketplace', icon: assets.public_CushyLogo_512_png }) // prettier-ignore
     addDisplacedImage = (p: PropsOf<typeof Panel_3dScene>) => this._AddWithProps(Widget.DisplacedImage, `/DisplacedImage`, { title: 'DisplacedImage', ...p }) // prettier-ignore
     addActionPicker = () => this._AddWithProps(Widget.FileList, `/Library`, { title: 'Library', icon: assets.public_CushyLogo_512_png }) // prettier-ignore
-    addActionPickerTree = () => this._AddWithProps(Widget.FileList2, `/filetree`, { title: 'Library Files', icon: assets.public_CushyLogo_512_png }) // prettier-ignore
+    // addActionPickerTree = () => this._AddWithProps(Widget.FileList2, `/filetree`, { title: 'Library Files', icon: assets.public_CushyLogo_512_png }) // prettier-ignore
     addCivitai = (p: PropsOf<typeof Panel_Civitai>) => this._AddWithProps(Widget.Civitai, `/civitai`, { title: 'CivitAI', icon: assets.public_CivitaiLogo_png }) // prettier-ignore
     addSquoosh = (p: PropsOf<typeof Panel_Squoosh>) => this._AddWithProps(Widget.Squoosh, `/squoosh`, { title: 'Squoosh' /*icon: assets.public_CivitaiLogo_png*/ }) // prettier-ignore
     addConfig = () => this._AddWithProps(Widget.Config, `/config`, { title: 'Config' })
@@ -183,9 +187,13 @@ export class CushyLayoutManager {
         // this._AddWithProps(Widget.Draft, `/action/${actionPath}`, { title: actionPath, actionPath, icon })
     }
 
-    addCurrentDraft = () => {
-        this._AddWithProps(Widget.CurrentDraft, `/draft`, { title: 'Current Draft' })
-    }
+    addCurrentDraft = () => this._AddWithProps(Widget.CurrentDraft, `/draft`, { title: 'Current Draft' })
+
+    addDraftJsonResult = (p: PropsOf<typeof Panel_DraftJsonResult>) =>
+        this._AddWithProps(Widget.DraftJsonResult, `/DraftJsonResult`, { title: 'Draft JSON Result' })
+
+    addDraftJsonSerial = (p: PropsOf<typeof Panel_DraftJsonSerial>) =>
+        this._AddWithProps(Widget.DraftJsonSerial, `/DraftJsonSerial`, { title: 'Draft JSON Serial' })
 
     addDraft = (p: PropsOf<typeof Panel_Draft>) => {
         const draftID = p.draftID

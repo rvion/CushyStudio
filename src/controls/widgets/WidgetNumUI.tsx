@@ -16,7 +16,7 @@ export const WidgetNumUI = observer(function WidgetNumUI_(p: { req: Widget_int |
         <InputNumberUI
             //
             mode={mode}
-            val={val}
+            value={val}
             hideSlider={req.input.hideSlider}
             max={req.input.max}
             min={req.input.min}

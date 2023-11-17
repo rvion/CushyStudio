@@ -53,7 +53,10 @@ export const Panel_MachineManager = observer(function HostListUI_(p: {}) {
                                 <LabelUI>name</LabelUI>
                                 <Input
                                     //
-                                    onChange={(next) => (m.name = next)}
+                                    onChange={(ev) => {
+                                        const next = ev.target.value
+                                        m.name = next
+                                    }}
                                     value={m.name ?? 'unnamed'}
                                 ></Input>
                             </div>

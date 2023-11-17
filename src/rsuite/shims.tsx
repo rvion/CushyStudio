@@ -76,7 +76,9 @@ export const Button = (
 )
 
 export const Input = (p: JSX.IntrinsicElements['input']) => (
-    <input //
+    <input
+        tw='input input-bordered input-sm'
+        //
         {...p}
     ></input>
 )
@@ -154,10 +156,10 @@ export const Rate = (p: {
 )
 
 // tooltips
-export const Whisper = (p: any) => <div {...p}></div>
-export const Speaker = (p: any) => <div {...p}></div>
-export const Popover = (p: any) => <div {...p}></div>
-export const Tooltip = (p: any) => <div {...p}></div>
+export const Whisper = (p: any) => <span {...p}></span>
+export const Speaker = (p: any) => <span {...p}></span>
+export const Popover = (p: any) => <span {...p}></span>
+export const Tooltip = (p: any) => <span {...p}></span>
 // modals
 export const Modal = (p: any) => <div {...p}></div>
 export const ModalHeader = (p: any) => <div {...p}></div>
@@ -219,9 +221,19 @@ export const Panel = (p: any) => (
 )
 export const Progress = (p: any) => <div {...p}></div>
 export const ProgressLine = (p: any) => <div {...p}></div>
+
+// ------------------------------------------------------------------------
+const messageIcon = (type: MessageType): ReactNode => {
+    if (type === 'error') return 'error'
+    if (type === 'info') return 'info'
+    if (type === 'warning') return 'warning'
+    exhaust(type)
+    return null
+}
+type MessageType = 'error' | 'info' | 'warning'
 export const Message = observer(function Message_(p: {
     //
-    type: 'error' | 'info'
+    type: MessageType
     header?: ReactNode
     showIcon?: boolean
     children?: ReactNode
@@ -236,6 +248,7 @@ export const Message = observer(function Message_(p: {
             {...p}
         >
             {p.header}
+            {messageIcon(p.type)}
             {p.children}
         </div>
     )

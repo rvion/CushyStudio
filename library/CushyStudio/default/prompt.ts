@@ -5,6 +5,11 @@ import * as ui_model from './_prefabs/prefab_model'
 
 card({
     ui: (form) => ({
+        // ckpt_name2: form.enum({
+        //     enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
+        //     default: 'revAnimated_v122.sdafetensors',
+        //     group: 'Model',
+        // }),
         model: ui_model.ui_model(form),
         latent: _.ui_latent(form),
         sampler: ui_sampler.ui_sampler(form),

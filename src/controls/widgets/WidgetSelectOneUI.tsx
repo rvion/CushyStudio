@@ -1,40 +1,31 @@
 import { observer } from 'mobx-react-lite'
-import { useMemo } from 'react'
-import { SelectPicker } from 'src/rsuite/shims'
-import { Widget_selectOne } from 'src/controls/Widget'
+import { BaseSelectOneEntry, Widget_selectOne } from 'src/controls/Widget'
+import { AutoCompleteSelect } from 'src/rsuite/select'
 
-export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_(p: { req: Widget_selectOne<any> }) {
+export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends BaseSelectOneEntry>(p: {
+    req: Widget_selectOne<T>
+}) {
     const req = p.req
-    const val = req.state.val
-
-    type Entry = { label: string; value: string }
-
-    // do some magic to adapt to user-submitted enums without crashing
-    const options: Entry[] = useMemo(() => {
-        return req.choices.map((choice) => {
-            const choice_ = choice as Record<string, unknown>
-            const label =
-                typeof choice_.label === 'string' && choice_.label.length > 0 //
-                    ? choice_.label
-                    : choice.type
-            const value = choice.type
-            return { label, value }
-        })
-    }, [req.choices])
-
+    const value = req.state.val
     return (
-        // <>
-        //     <pre>{JSON.stringify(options, null, 4)}</pre>
-        <SelectPicker
+        <AutoCompleteSelect<T>
             size='sm'
-            data={options}
-            value={val.type}
-            onSelect={(value, item) => {
-                const next = req.choices.find((c) => c.type === value)
-                if (next == null) return console.log(`❌ WidgetSelectOneUI: could not find choice for ${value}`)
+            getLabelText={(t) => t.type}
+            options={req.choices}
+            value={() => value}
+            onChange={(selectOption) => {
+                if (selectOption == null) {
+                    if (!req.isOptional) return
+                    req.state.active = false
+                    return
+                }
+                const next = req.choices.find((c) => c.type === selectOption.type)
+                if (next == null) {
+                    console.log(`❌ WidgetSelectOneUI: could not find choice for ${JSON.stringify(selectOption)}`)
+                    return
+                }
                 req.state.val = next
             }}
         />
-        // </>
     )
 })

@@ -29,7 +29,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                             <div>model strength</div>
                             <div tw='flex items-center'>
                                 <InputNumberUI
-                                    val={def.strength_model ?? 1}
+                                    value={def.strength_model ?? 1}
                                     step={0.1}
                                     min={-2}
                                     max={2}
@@ -43,7 +43,7 @@ export const LoraNodeUI = observer(function LoraNodeUI_(p: { node: LoraNode }) {
                             <div>clip strength</div>
                             <div tw='flex items-center'>
                                 <InputNumberUI
-                                    val={def.strength_clip ?? 1}
+                                    value={def.strength_clip ?? 1}
                                     step={0.1}
                                     min={-2}
                                     max={2}
