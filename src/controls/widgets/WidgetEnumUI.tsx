@@ -1,10 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import { Widget_enum, Widget_enumOpt } from 'src/controls/Widget'
-import { Popover, SelectPicker, Whisper } from 'src/rsuite/shims'
+import { AutoCompleteSelect } from 'src/rsuite/select'
+import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { EnumName, EnumValue } from '../../models/Schema'
-import { AutoCompleteSelect } from 'src/rsuite/select'
 
 type T = {
     label: EnumValue

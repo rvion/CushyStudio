@@ -340,13 +340,13 @@ export class Library {
         }
     }
 
-    debug = (at: ItemDataType = { children: this.fileTree, label: 'root' }, level = 0) => {
-        const indent = ' '.repeat(level * 2)
-        console.log(`|| ${indent}${at.label}`)
-        if (at.children) {
-            for (const child of at?.children ?? []) {
-                this.debug(child, level + 1)
-            }
-        }
-    }
+    // debug = (at: ItemDataType = { children: this.fileTree, label: 'root' }, level = 0) => {
+    //     const indent = ' '.repeat(level * 2)
+    //     console.log(`|| ${indent}${at.label}`)
+    //     if (at.children) {
+    //         for (const child of at?.children ?? []) {
+    //             this.debug(child, level + 1)
+    //         }
+    //     }
+    // }
 }

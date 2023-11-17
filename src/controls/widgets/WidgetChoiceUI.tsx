@@ -1,30 +1,26 @@
 import type { Widget, Widget_choice } from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
-import { SelectPicker } from 'src/rsuite/shims'
+import { AutoCompleteSelect } from 'src/rsuite/select'
 import { WidgetUI } from './WidgetUI'
 
 export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget_choice<{ [key: string]: Widget }> }) {
     const req = p.req
     const choicesStr: string[] = Object.keys(req.state.values)
-    const choices = choicesStr.map((v) => ({ label: v, value: v }))
     const choiceSubReq = req.state.values[req.state.pick]
     return (
         <div tw='_WidgetChoiceUI relative w-full'>
-            <div>
-                <SelectPicker
-                    //
-                    cleanable={false}
-                    size='sm'
-                    onChange={(v) => {
-                        if (v == null) return
-                        req.state.pick = v
-                        req.state.active = true
-                    }}
-                    data={choices}
-                    value={req.state.pick}
-                />
-            </div>
+            <AutoCompleteSelect
+                getLabelText={(v) => v}
+                cleanable={false}
+                options={choicesStr}
+                value={() => req.state.pick}
+                onChange={(v) => {
+                    if (v == null) return
+                    req.state.pick = v
+                    req.state.active = true
+                }}
+            />
 
             {req.state.collapsed ? null : (
                 <div

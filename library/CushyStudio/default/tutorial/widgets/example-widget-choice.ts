@@ -4,6 +4,12 @@ card({
             items: () => ({
                 a: form.int({}),
                 b: form.str({}),
+                c: form.group({
+                    items: () => ({
+                        c: form.int({}),
+                        d: form.str({}),
+                    }),
+                }),
             }),
         }),
     }),

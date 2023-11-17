@@ -105,7 +105,7 @@ export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T>(p: PP
                     value={uiSt.displayValue}
                 ></input>
                 {uiSt.showMenu && (
-                    <div tw='absolute top-8 left-0 right-0'>
+                    <div tw='absolute top-0 left-0 right-0 z-50'>
                         <input
                             onKeyUp={(ev) => {
                                 if (ev.key === 'Escape') uiSt.closeMenu()

@@ -1,7 +1,6 @@
 import { CSSProperties, ReactElement, ReactNode, useState } from 'react'
 
 import { observer } from 'mobx-react-lite'
-import { Nav, NavItem } from 'src/rsuite/shims'
 
 type TabBody = () => ReactElement | null
 type Tab = {
