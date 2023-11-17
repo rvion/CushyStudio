@@ -38,7 +38,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { req: Widget_ma
                         {cols.map((col, ix) => (
                             <th
                                 //
-                                className='bg-blue-700'
+                                className='bg-info'
                                 key={ix}
                                 onClick={() => req.setCol(col, !req.get(rows[0], col).value)}
                             >
@@ -53,7 +53,7 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { req: Widget_ma
                             <td
                                 //
                                 onClick={() => req.setRow(row, !req.get(row, cols[0]).value)}
-                                className='bg-yellow-700'
+                                className='bg-base-300'
                             >
                                 {row}
                             </td>
@@ -64,11 +64,11 @@ export const WidgetMatrixUI = observer(function WidgetStrUI_(p: { req: Widget_ma
                                         key={colIx}
                                         className='hover:bg-gray-400 cursor-pointer'
                                         onClick={() => req.set(row, col, !checked)}
+                                        tw={[checked ? 'bg-success' : 'bg-base-200']}
                                         style={{
                                             border: '1px solid #726767',
                                             height: '2rem',
                                             width: '2rem',
-                                            background: checked ? 'green' : '#1e1e1e',
                                         }}
                                     ></td>
                                 )

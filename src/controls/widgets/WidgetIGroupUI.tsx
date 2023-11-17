@@ -32,7 +32,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
             {req.state.collapsed ? null : (
                 <div
                     // style={isTopLevel ? undefined : { border: '1px solid #262626' }}
-                    tw={['_WidgetGroupUI w-full', req.input.layout === 'H' ? 'flex gap-2' : null]}
+                    tw={['_WidgetGroupUI w-full', req.input.layout === 'H' ? 'flex flex-wrap gap-2' : null]}
                     className={req.input.className}
                 >
                     {groupFields.map(([rootKey, sub], ix) => (

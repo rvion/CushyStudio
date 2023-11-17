@@ -21,7 +21,7 @@ export const WidgetStrUI = observer(function WidgetStrUI_(p: { req: Widget_str |
     }
     return (
         <input
-            tw='input input-bordered input-sm'
+            tw='input input-bordered input-sm w-full'
             placeholder={req.input.placeHolder}
             value={val}
             onChange={(ev) => {
