@@ -10,6 +10,28 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
 
     return (
         <div className='flex items-center space-x-2'>
+            <Joined>
+                <Addon>W</Addon>
+                <InputNumberUI
+                    //
+                    mode='int'
+                    tw='join-item'
+                    val={uist.width}
+                    onValueChange={(next) => uist.setWidth(next)}
+                    hideSlider
+                />
+            </Joined>
+            <Joined>
+                <Addon>H</Addon>
+                <InputNumberUI
+                    //
+                    tw='join-item'
+                    mode='int'
+                    val={uist.height}
+                    onValueChange={(next) => uist.setHeight(next)}
+                    hideSlider
+                />
+            </Joined>
             {/* {JSON.stringify(uist.width)}x{JSON.stringify(uist.height)} */}
             <Joined>
                 <button
@@ -57,26 +79,6 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
                 <option value='3:2'>3:2</option>
                 <option value='custom'>Custom</option>
             </select> */}
-            <Joined>
-                <Addon>W</Addon>
-                <InputNumberUI
-                    //
-                    mode='int'
-                    val={uist.width}
-                    onValueChange={(next) => uist.setWidth(next)}
-                    hideSlider
-                />
-            </Joined>
-            <Joined>
-                <Addon>H</Addon>
-                <InputNumberUI
-                    //
-                    mode='int'
-                    val={uist.height}
-                    onValueChange={(next) => uist.setHeight(next)}
-                    hideSlider
-                />
-            </Joined>
         </div>
     )
 })
@@ -134,8 +136,8 @@ class ResolutionState {
 
     setAspectRatio(aspectRatio: AspectRatio) {
         this.desiredAspectRatio = aspectRatio
-        if (aspectRatio === 'custom') return
-        this.updateWidthBasedOnAspectRatio()
+        if (aspectRatio !== 'custom') this.updateWidthBasedOnAspectRatio()
+        this.setModelType(this.desiredModelType)
     }
 
     private updateHeightBasedOnAspectRatio() {

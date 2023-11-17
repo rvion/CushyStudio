@@ -19,12 +19,13 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
                 //
                 'flex rounded-box bg-opacity-95 items-start w-full text-base-content',
                 showAsCard ? 'mb-2' : undefined,
-                showAsCard ? 'bg-base-300' : undefined,
+                showAsCard ? 'bg-base-300 bg-opacity-30' : undefined,
+                showAsCard ? 'border border-neutral' : undefined,
             ]}
             style={{
                 position: 'relative',
                 // borderRadius: '0.5rem',
-                border: showAsCard ? '1px solid #484848' : undefined,
+                // border: showAsCard ? 'solid' : undefined,
                 paddingLeft: showAsCard ? '.2rem' : undefined,
             }}
         >

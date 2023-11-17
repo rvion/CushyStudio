@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite'
 import { Button, Rate, Toggle } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
+import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
 
 export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?: ImageID | 'latent' }) {
     const st = useSt()
@@ -26,30 +27,33 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                 {/* 1. RATER */}
                 {img && (
                     <Rate
+                        name={img.id}
                         // tw='rating-sm'
                         onChange={(next) => {
                             // const next = ev.target.value
                             img.update({ star: next })
                         }}
-                        val={img.data.star}
+                        value={img.data.star}
                     />
                 )}
 
                 {/* 2. LATENT PREVIEW TOOGLE */}
                 {/* (only on "last-image" mode; when p.imageID is null )  */}
                 {p.imageID == null ? (
-                    <div>
-                        <div tw='text-light'>preview sampler</div>
+                    <FieldAndLabelUI label='Sampler'>
                         <Toggle
                             checked={st.showLatentPreviewInLastImagePanel}
                             onChange={(ev) => (st.showLatentPreviewInLastImagePanel = ev.target.checked)}
                         />
-                    </div>
+                    </FieldAndLabelUI>
                 ) : null}
 
-                <div tw='text-gray-500 text-sm'>
-                    W={img?.data.width ?? '?'} H={img?.data.height ?? '?'}
-                </div>
+                <FieldAndLabelUI label='size'>
+                    <input
+                        tw='input-bordered input input-sm'
+                        value={`${img?.data.width ?? '?'} x ${img?.data.height ?? '?'}`}
+                    ></input>
+                </FieldAndLabelUI>
                 {/* 3. OPEN OUTPUT FOLDER */}
                 {img?.localAbsolutePath && (
                     <Button

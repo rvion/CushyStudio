@@ -12,9 +12,9 @@ export type ItemDataType = {
     label: string
 }
 
-type RSColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue'
-type RSSize = 'sm' | 'xs' | 'md' | 'lg'
-type RSAppearance = 'default' | 'subtle' | 'ghost' | 'link' | 'primary'
+export type RSColor = 'red' | 'orange' | 'yellow' | 'green' | 'blue'
+export type RSSize = 'sm' | 'xs' | 'md' | 'lg'
+export type RSAppearance = 'default' | 'subtle' | 'ghost' | 'link' | 'primary'
 export type TypeAttributes = {
     Color: RSColor
     Size: RSSize
@@ -25,9 +25,11 @@ export const Form = (p: any) => <div {...p}></div>
 export const FormHelpText = (p: any) => <div {...p}></div>
 export const FormControlLabel = (p: JSX.IntrinsicElements['label']) => <label {...p}></label>
 export const FormControl = (p: JSX.IntrinsicElements['input']) => <input tw='input input-sm' {...p}></input>
-export const Joined = (p: { children?: ReactNode }) => <div tw='join' {...p}></div>
+export const Joined = (p: { children?: ReactNode }) => <div tw='border border-neutral join' {...p}></div>
 
-export const Addon = (p: any) => <div tw='bg-primary flex items-center px-2 join-item' {...p}></div>
+export const Addon = observer(function Addon_(p: any) {
+    return <div tw='flex items-center px-2 join-item' {...p}></div>
+})
 
 // inputs
 export const Button = (
@@ -78,79 +80,76 @@ export const Input = (p: JSX.IntrinsicElements['input']) => (
         {...p}
     ></input>
 )
-export const InputNumberBase = (p: JSX.IntrinsicElements['input']) => (
-    <input //
-        type='number'
-        {...p}
-        tw={['input input-sm', ...(p.tw ?? [])]}
-    ></input>
-)
-export const Slider = (p: JSX.IntrinsicElements['input']) => (
-    <input //
-        type='range'
-        {...p}
-        tw={[...(p.tw ?? []), 'range']}
-    ></input>
-)
-export const Radio = (p: JSX.IntrinsicElements['input']) => (
-    <input //
-        type='radio'
-        {...p}
-    ></input>
-)
-export const Toggle = (p: JSX.IntrinsicElements['input']) => (
-    <input //
-        type='checkbox'
-        {...p}
-        tw={[...(p.tw ?? []), 'toggle']}
-    ></input>
-)
+export const InputNumberBase = observer(function InputNumberBase_(
+    //
+    p: JSX.IntrinsicElements['input'] & { _size?: RSSize },
+) {
+    const sizeClass = p._size ? `input-${p._size}` : null
+    return (
+        <input //
+            type='number'
+            tw={['input input-sm', sizeClass]}
+            {...p}
+        ></input>
+    )
+})
+
+export const Slider = observer(function Slider_(p: JSX.IntrinsicElements['input']) {
+    return (
+        <input //
+            type='range'
+            {...p}
+            tw={['range range-secondary']}
+        ></input>
+    )
+})
+
+export const Radio = observer(function Radio_(p: JSX.IntrinsicElements['input']) {
+    return (
+        <input //
+            type='radio'
+            {...p}
+        ></input>
+    )
+})
+
+export const Toggle = observer(function Toggle_(p: JSX.IntrinsicElements['input']) {
+    return (
+        <input //
+            type='checkbox'
+            {...p}
+            tw={[
+                //
+                'toggle toggle-primary',
+                // p.checked && 'toggle-success',
+            ]}
+        ></input>
+    )
+})
+
 export const SelectPicker = (p: any) => <select {...p}></select>
 export const TagPicker = (p: any) => <select multiple {...p}></select>
 export const MultiCascader = (p: any) => <select multiple {...p}></select>
 export const Tree = (p: any) => <div {...p}></div>
+
+// https://daisyui.com/components/rating/#mask-star-2-with-warning-color
 export const Rate = (p: {
     //
-    val?: number
+    value?: number
     name: string
     onChange?: (value: number) => void
 }) => (
-    <div tw='rating rating-md rating-sm'>
-        <input
-            name={p.name}
-            checked={p.val === 1}
-            onChange={() => p.onChange?.(1)}
-            type='radio'
-            tw='mask mask-star fade-in-40'
-        ></input>
-        <input
-            name={p.name}
-            checked={p.val === 2}
-            onChange={() => p.onChange?.(2)}
-            type='radio'
-            tw='mask mask-star fade-in-40'
-        ></input>
-        <input
-            name={p.name}
-            checked={p.val === 3}
-            onChange={() => p.onChange?.(3)}
-            type='radio'
-            tw='mask mask-star fade-in-40'
-        ></input>
-        <input
-            name={p.name}
-            checked={p.val === 4}
-            onChange={() => p.onChange?.(4)}
-            type='radio'
-            tw='mask mask-star fade-in-40'
-        ></input>
-        <input
-            name={p.name}
-            checked={p.val === 5}
-            onChange={() => p.onChange?.(5)}
-            type='radio'
-            tw='mask mask-star fade-in-40'
-        ></input>
+    <div tw='rating rating-md rating-sm '>
+        {[1, 2, 3, 4, 5].map((ix) => (
+            <input
+                key={ix}
+                name={p.name}
+                checked={p.value === ix}
+                onChange={() => p.onChange?.(ix)}
+                type='radio'
+                tw='mask mask-star fade-in-40 bg-orange-400'
+            />
+        ))}
     </div>
 )
 
@@ -166,7 +165,6 @@ export const ModalTitle = (p: any) => <div {...p}></div>
 export const ModalBody = (p: any) => <div {...p}></div>
 export const ModalFooter = (p: any) => <div {...p}></div>
 // navs
-export const Nav = (p: any) => <div {...p}></div>
 export const NavItem = (p: any) => <div {...p}></div>
 // menus
 export const Menu = (p: any) => <div {...p}></div>
@@ -214,14 +212,43 @@ export const DropdownItem = observer(function DropdownItem_(p: {
 export const Panel = (p: any) => (
     <div
         //
-        style={{ border: '1px solid #404040' }}
-        tw='p-2'
+        // style={{ border: '1px solid #404040' }}
+        tw='p-2 input-bordered'
         {...p}
     ></div>
 )
 export const Progress = (p: any) => <div {...p}></div>
-export const Message = (p: any) => <div {...p}></div>
+export const ProgressLine = (p: any) => <div {...p}></div>
+export const Message = observer(function Message_(p: {
+    //
+    type: 'error' | 'info'
+    header?: ReactNode
+    showIcon?: boolean
+    children?: ReactNode
+}) {
+    return (
+        <div
+            tw={[
+                p.type === 'error' //
+                    ? 'bg-error text-error-content'
+                    : 'bg-base text-primary-content',
+            ]}
+            {...p}
+        >
+            {p.header}
+            {p.children}
+        </div>
+    )
+})
 export const Tag = (p: any) => <div {...p}></div>
-export const Loader = (p: any) => <div {...p}></div>
+
+export const Loader = observer((p: { size?: RSSize; className?: string }) => (
+    <span
+        //
+        className={p.className}
+        tw={[`loading loading-spinner loading-${p.size ?? 'sm'}`]}
+    ></span>
+))
+
 // misc 2
 export const RadioTile = (p: any) => <div {...p}></div>

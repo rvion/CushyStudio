@@ -6,20 +6,14 @@ import { FileBeeingImportedUI } from 'src/importers/FilesBeeingImported'
 import { useSt } from 'src/state/stateContext'
 import { ScrollablePaneUI } from 'src/widgets/misc/scrollableArea'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
-import { Panel_DeckList } from './Panel_DeckList'
 
 export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {}) {
     const st = useSt()
     const library = st.library
     return (
-        <div tw='relative h-full flex-grow flex flex-col '>
-            <div
-                //
-                tw='mx-10'
-                // style={{ maxWidth: '40rem' }}
-            >
+        <div tw='relative h-full flex-grow flex flex-col'>
+            <div tw='bg-base-200 p-4'>
                 <div tw='flex gap-2'>
-                    <CreateDeckBtnUI />
                     <div tw='mr-2 text-2xl'>Library</div>
                     <CreateDeckBtnUI />
                 </div>
@@ -89,12 +83,12 @@ export const Panel_CardPicker3UI = observer(function Panel_CardPicker3UI_(p: {})
                     </FieldAndLabelUI>
                 </div>
             </div>
-            <div tw='flex flex-grow'>
+            <div tw='flex flex-grow p-4'>
                 {/* <ScrollablePaneUI style={{ width: '300px' }} tw='shrink-0'>
                     <Panel_DeckList />
                 </ScrollablePaneUI> */}
                 <ScrollablePaneUI tw='flex-grow'>
-                    <div tw='flex flex-wrap  gap-1.5 p-3 justify-center'>
+                    <div tw='flex flex-wrap  gap-2'>
                         <FileBeeingImportedUI files={st.droppedFiles} />
                         {st.library.cardsFilteredSorted.map((card, ix) => (
                             <div key={card.relPath}>

@@ -6,29 +6,30 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
     const req = p.req
     const val = req.state.val
     return (
-        <div tw='flex items-center'>
-            <div tw='join'>
-                <button
-                    tw={['join-item btn-sm btn-ghost', req.state.mode === 'randomize' && 'btn-active']}
-                    onClick={() => {
-                        req.state.mode = 'randomize'
-                        req.state.active = true
-                    }}
-                >
-                    🎲 Rand
-                </button>
-                <button
-                    tw={['join-item btn-sm btn-ghost', req.state.mode === 'fixed' && 'btn-active']}
-                    onClick={() => {
-                        req.state.mode = 'fixed'
-                        req.state.active = true
-                        // req.state.val = Math.floor(Math.random() * 1000000)
-                    }}
-                >
-                    💎 Fixed
-                </button>
-            </div>
+        <div tw='flex items-center join border border-'>
+            <button
+                type='button'
+                tw={['join-item btn-xs btn-ghost', req.state.mode === 'randomize' && 'btn-active']}
+                onClick={() => {
+                    req.state.mode = 'randomize'
+                    req.state.active = true
+                }}
+            >
+                🎲 Rand
+            </button>
+            <button
+                type='button'
+                tw={['join-item btn-xs btn-ghost', req.state.mode === 'fixed' && 'btn-active']}
+                onClick={() => {
+                    req.state.mode = 'fixed'
+                    req.state.active = true
+                    // req.state.val = Math.floor(Math.random() * 1000000)
+                }}
+            >
+                💎 Fixed
+            </button>
             <InputNumberBase //
+                _size='xs'
                 style={{
                     fontFamily: 'monospace',
                     width: val.toString().length + 6 + 'ch',
@@ -57,7 +58,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
                 }}
             />
             <Button
-                size='sm'
+                size='xs'
                 appearance='subtle'
                 onClick={() => {
                     req.state.mode = 'fixed'

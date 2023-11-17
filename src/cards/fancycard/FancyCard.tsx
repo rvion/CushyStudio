@@ -7,7 +7,6 @@ import { Deck } from '../Deck'
 import { ActionFavoriteBtnUI } from '../CardPicker2UI'
 import { GithubUserUI } from '../GithubAvatarUI'
 import { CardIllustrationUI } from './CardIllustrationUI'
-import './FancyCard.css' // Assuming the CSS is written in this file
 import { useSt } from 'src/state/stateContext'
 
 export type CardStyle = 'A' | 'B' | 'C' | 'D'
@@ -34,14 +33,9 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     return (
         <div
             onClick={p.card.openLastDraftAsCurrent}
-            style={{
-                background: '#2d2d2d',
-                border: '1px solid #343434',
-                // width: '11rem',
-            }}
             tw={[
                 //
-                'p-0.5',
+                'p-0.5 bg-base-300 text-base-content shadow-xl border border-neutral',
                 `card STYLE_${p.style}`,
                 p.active ? 'active' : 'not-active',
                 'cursor-pointer',
@@ -70,7 +64,12 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
                         <div style={{ height: '5rem' }} tw='m-1 flex-grow text-sm'>
                             {card.description}
                         </div>
-                        <GithubUserUI username={card.deck.githubUserName} showName size='1.2rem' tw='text-gray-300' />
+                        <GithubUserUI
+                            //
+                            username={card.deck.githubUserName}
+                            showName
+                            size='1.2rem'
+                        />
                     </div>
                 ) : null}
             </div>

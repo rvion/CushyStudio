@@ -6,7 +6,6 @@ import { ReleaseChannelUI } from '../layout/ReleaseChannelUI'
 
 export const GitInitBtnUI = observer(function GitInitBtnUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater
-
     return (
         <Button
             disabled={updater.currentAction != null}
@@ -102,7 +101,7 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                     {
                         hasErrors ? (
                             <>
-                                <span className='text-orange-500 material-symbols-outlined'>error</span>
+                                <span className='text-error-content material-symbols-outlined'>error</span>
                                 version
                             </>
                         ) : updater.updateAvailable ? (
@@ -126,10 +125,10 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                         // <span className='text-green-400 material-symbols-outlined'>check_circle</span>
                     }
 
-                    <div tw='text-sm whitespace-nowrap' className={updater.updateAvailable ? 'text-orange-400' : 'text-success '}>
+                    <Button tw={[updater.updateAvailable ? 'btn-warning' : 'btn-ghost', 'btn-xs']}>
                         {updater.currentVersion} - {updater.mainBranchName}
                         {/* {updater.headCommitsCount ? `v${updater.currentVersion}` : <Loader />} */}
-                    </div>
+                    </Button>
                 </div>
             </div>
         </Whisper>

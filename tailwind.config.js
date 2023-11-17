@@ -10,6 +10,40 @@ module.exports = {
         require('daisyui'),
     ],
     daisyui: {
-        themes: ['light', 'dark', 'cupcake', 'aqua', 'valentine', 'wireframe', 'sunset', 'luxury', 'forest', 'business'],
+        themes: [
+            //
+            // 'light',
+            {
+                light: {
+                    ...require('daisyui/src/theming/themes')['[data-theme=light]'],
+                    primary: '#087ad1',
+                    secondary: '#8B60DF',
+                    // accent: '#86F159',
+                    // secondary: 'teal',
+                    // neutral: '#3d4451',
+                    // 'base-100': '#ffffff',
+                },
+            },
+            // 'dark',
+            {
+                dark: {
+                    ...require('daisyui/src/theming/themes')['[data-theme=dark]'],
+                    primary: '#087ad1',
+                    secondary: '#8B60DF',
+                    // accent: '#86F159',
+                    // secondary: 'teal',
+                    // neutral: '#3d4451',
+                    // 'base-100': '#ffffff',
+                },
+            },
+            'cupcake',
+            'aqua',
+            'valentine',
+            'wireframe',
+            'sunset',
+            'luxury',
+            'forest',
+            'business',
+        ],
     },
 }

@@ -10,7 +10,7 @@ export const Panel_DeckList = observer(function ActionPicker2UI_(p: {}) {
             {/* FAVORITES */}
             {library.allFavorites.length ? (
                 <div
-                    tw=' bg-base-200 cursor-pointer items-center gap-1  hover:bg-base-300  flex justify-between'
+                    tw='bg-base-200 cursor-pointer items-center gap-1  hover:bg-base-300  flex justify-between'
                     onClick={() => (library.favoritesFolded = !library.favoritesFolded)}
                 >
                     <div>

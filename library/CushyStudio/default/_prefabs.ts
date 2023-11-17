@@ -60,6 +60,7 @@ export const ui_latent = (form: FormBuilder) => {
     return form.group({
         items: () => ({
             image: form.imageOpt({ group: 'latent' }),
+            size: form.size({}),
             flip: form.bool({ default: false, group: 'latent' }),
             width: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
             height: form.int({ default: 768, group: 'latent', step: 128, min: 128, max: 4096 }),

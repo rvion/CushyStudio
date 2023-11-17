@@ -67,7 +67,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     ? '_WidgetLabel w-full'
                     : '_WidgetLabel ',
                 WIDGET == null ? 'w-full' : null,
-                'min-w-max shrink-0 self-start',
+                'min-w-max shrink-0',
                 'flex items-center gap-1',
                 'hover:bg-base-200 cursor-pointer',
             ]}

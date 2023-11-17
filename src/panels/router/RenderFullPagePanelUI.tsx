@@ -22,14 +22,7 @@ export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p:
                 zIndex: 100,
             }}
         >
-            <div
-                style={{
-                    height: '100%', //'calc(100% - 4rem)',
-                    boxShadow: '0 0 1rem black',
-                    padding: '1rem',
-                    background: '#1e1e1e',
-                }}
-            >
+            <div tw='bg-base-100 h-full'>
                 <RenderPanelUI widget={fpc.widget} widgetProps={fpc.extra} />
             </div>
         </div>

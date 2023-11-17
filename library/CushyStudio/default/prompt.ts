@@ -6,7 +6,7 @@ import * as ui_model from './_prefabs/prefab_model'
 card({
     ui: (form) => ({
         model: ui_model.ui_model(form),
-        a: form.size({}),
+        latent: _.ui_latent(form),
         sampler: ui_sampler.ui_sampler(form),
         positive: form.prompt({
             default: {
@@ -23,10 +23,7 @@ card({
                 ],
             },
         }),
-        negative: form.prompt({
-            default: 'nsfw, nude, girl, woman, human',
-        }),
-        latent: _.ui_latent(form),
+        negative: form.prompt({ default: 'nsfw, nude, girl, woman, human' }),
         seed: form.seed({}),
         highResFix: _.ui_highresfix(form),
         loop: form.groupOpt({

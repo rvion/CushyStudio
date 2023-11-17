@@ -39,10 +39,9 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
 export const CushyStudioLinkUI = observer(function CushyStudioLinkUI_(p: {}) {
     return (
         <Button
-            as='a'
             tw='self-start flex-shrink-0'
-            appearance='link'
-            href='#'
+            appearance='subtle'
+            size='sm'
             onClick={(ev) => {
                 ev.preventDefault()
                 ev.stopPropagation()

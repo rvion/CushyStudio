@@ -1,7 +1,7 @@
 import type { GraphL } from 'src/models/Graph'
 
 import { observer } from 'mobx-react-lite'
-import { Panel, Popover, Progress, Whisper } from 'src/rsuite/shims'
+import { Panel, Popover, Progress, ProgressLine, Whisper } from 'src/rsuite/shims'
 import { NodeRefUI } from '../misc/NodeRefUI'
 import { JSONHighlightedCodeUI } from '../misc/TypescriptHighlightedCodeUI'
 import { ButtonDownloadFilesUI } from './ButtonDownloadFilesUI'
@@ -53,7 +53,7 @@ export const NodeProgressUI = observer(function NodeProgressUI_(p: { graph: Grap
     if (node == null) return null
     const percent = node.status === 'done' ? 100 : node.progressRatio * 100
     const isDone = node.status === 'done'
-    return <Progress.Line showInfo={false} strokeWidth={4} status={isDone ? 'success' : 'active'} percent={percent} />
+    return <ProgressLine showInfo={false} strokeWidth={4} status={isDone ? 'success' : 'active'} percent={percent} />
 })
 
 export const GraphProgressUI = observer(function NodeProgressUI_(p: { graph: GraphL }) {
@@ -65,5 +65,5 @@ export const GraphProgressUI = observer(function NodeProgressUI_(p: { graph: Gra
     const score = (doneNodes + bonus) / totalNode
     const percent = graph.done ? 100 : score * 100
     const isDone = graph.done
-    return <Progress.Line showInfo={false} strokeWidth={8} status={isDone ? 'success' : 'active'} percent={percent} />
+    return <ProgressLine showInfo={false} strokeWidth={8} status={isDone ? 'success' : 'active'} percent={percent} />
 })

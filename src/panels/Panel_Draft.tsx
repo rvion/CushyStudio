@@ -51,7 +51,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
     if (draft == null)
         return (
             <Message type='error'>
-                <pre tw='bg-red-900'>❌ Draft not found</pre>
+                <pre>❌ Draft not found</pre>
             </Message>
         )
 
@@ -61,7 +61,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
         return (
             <ErrorPanelUI>
                 <Message type='error'>
-                    <pre tw='bg-red-900'>❌ Action not found</pre>
+                    <pre>❌ Action not found</pre>
                 </Message>
             </ErrorPanelUI>
         )
@@ -114,7 +114,7 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
             <ErrorPanelUI>
                 <Message type='error' header={<b>App failed to load</b>}>
                     <div>❌ {formR.message}</div>
-                    <div tw='bg-red-900'>{stringifyUnknown(formR.error)}</div>
+                    <div>{stringifyUnknown(formR.error)}</div>
                 </Message>
             </ErrorPanelUI>
         )

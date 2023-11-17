@@ -4,6 +4,7 @@ import { Popover, SelectPicker, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
 import type { EnumName, EnumValue } from '../../models/Schema'
+import { AutoCompleteSelect } from 'src/rsuite/select'
 
 type T = {
     label: EnumValue
@@ -45,31 +46,33 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
 }) {
     const project = useSt().getProject()
     const schema = project.schema
-    const options = schema.getEnumOptionsForSelectPicker(p.enumName)
+    type T = { asOptionLabel: string; value: EnumValue }
+    const options: T[] = schema.getEnumOptionsForSelectPicker(p.enumName)
     // const valueIsValid = (p.value != null || p.isOptional) && options.some((x) => x.value === p.value)
     const hasError = Boolean(p.value.isSubstitute || p.value.ENUM_HAS_NO_VALUES)
     return (
         <div>
             <div>
-                <SelectPicker //
+                <AutoCompleteSelect //
                     tw={[{ ['rsx-field-error']: hasError }]}
                     size='sm'
                     disabled={p.disabled}
                     cleanable={p.isOptional}
-                    data={options}
+                    options={options}
                     value={p.value.candidateValue}
-                    renderValue={(v) => {
-                        if (v === true) return '🟢 true'
-                        if (v === false) return '❌ false'
-                        return v
-                    }}
-                    renderMenuItem={(v) => {
-                        if (v === true) return '🟢 true'
-                        if (v === false) return '❌ false'
-                        return v
-                    }}
+                    // rendierValue={(v) => {
+                    //     if (v === true) return '🟢 true'
+                    //     if (v === false) return '❌ false'
+                    //     return v
+                    // }}
+                    // renderMenuItem={(v) => {
+                    //     if (v === true) return '🟢 true'
+                    //     if (v === false) return '❌ false'
+                    //     return v
+                    // }}
                     onChange={(e) => {
-                        p.onChange(e)
+                        if (e.selectedOption == null) return
+                        p.onChange(e.selectedOption.value)
                     }}
                 />
             </div>

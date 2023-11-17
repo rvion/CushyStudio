@@ -36,7 +36,7 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                                         </Popover>
                                     }
                                 >
-                                    <span className='text-red-500 material-symbols-outlined'>error</span>
+                                    <span className='text-error-content material-symbols-outlined'>error</span>
                                 </Whisper>
                             )}
                             <ActionPackStatusUI pack={deck} />
@@ -60,14 +60,14 @@ export const DeckManifestErrorUI = observer(function DeckManifestErrorUI_(p: { e
     if (err == null) return null
     if (err.type === 'crash')
         return (
-            <div tw='text-red-500'>
+            <div tw='text-error-content'>
                 <div>crash</div>
                 <pre>{stringifyUnknown(err)}</pre>
             </div>
         )
     if (err.type === 'no manifest')
         return (
-            <div tw='text-red-500 [width:fit-content]'>
+            <div tw='text-error-content [width:fit-content]'>
                 <div>manifest missing</div>
                 {/* <pre>{stringifyUnknown(err)}</pre> */}
             </div>
@@ -75,7 +75,7 @@ export const DeckManifestErrorUI = observer(function DeckManifestErrorUI_(p: { e
 
     if (err.type === 'invalid manifest')
         return (
-            <div tw='[width:fit-content] text-red-500'>
+            <div tw='[width:fit-content] text-error-content'>
                 <div>INVALID manifest</div>
                 <ul>
                     {err.errors.map((e, ix) => (

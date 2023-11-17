@@ -18,7 +18,7 @@ export const ui_model = (form: FormBuilder) => {
                 placeHolder: 'e.g. 43331@176425',
             }),
             vae: form.enumOpt({ enumName: 'Enum_VAELoader_vae_name', group: 'Model' }),
-            clipSkip: form.int({ label: 'Clip Skip', default: 0, min: 1, max: 5, group: 'model' }),
+            clipSkip: form.int({ label: 'Clip Skip', default: 0, min: 0, max: 5, group: 'model' }),
             freeU: form.bool({ default: false }),
         }),
     })

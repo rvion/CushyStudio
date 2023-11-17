@@ -455,6 +455,7 @@ export class Widget_size implements IRequest<'size', Widget_size_input, Widget_s
                 modelType,
                 height,
                 width,
+                active: true,
             }
         }
         makeAutoObservable(this)

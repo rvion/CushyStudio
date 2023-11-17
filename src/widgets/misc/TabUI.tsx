@@ -23,14 +23,14 @@ export const TabsUI = observer(function Tabs_(p: {
 }) {
     const [onIx, setIx] = useState(() => p.current ?? 0)
     const tabHeader = (
-        <Nav appearance='tabs'>
+        <div tw='tabs tabs-boxed'>
             {p.tabs.map((tab, ix) => {
                 const active = ix === onIx
                 return (
                     <a
-                        tw={['tab tab-bordered tab', active && 'tab-active']}
+                        tw={['tab tab-sm', active && 'tab-active', p.disabled && 'tab-disabled']}
                         // size='sm'
-                        color={p.disabled ? undefined : 'blue'}
+                        // color={p.disabled ? undefined : 'blue'}
                         // active={active}
                         key={ix}
                         onClick={() => {
@@ -43,7 +43,7 @@ export const TabsUI = observer(function Tabs_(p: {
                     </a>
                 )
             })}
-        </Nav>
+        </div>
     )
     const selectedTab = p.tabs[onIx]
     return (
@@ -52,6 +52,12 @@ export const TabsUI = observer(function Tabs_(p: {
             style={p.style}
             tw={['_TabsUI', p.className, p.grow && '_grow', 'relative', p.inline && 'flex']}
         >
+            {/* <div tw='tabs tabs-lifted'>
+                <a tw='tab'>Tab 1</a>
+                <a tw='tab tab-active'>Tab 2</a>
+                <a tw='tab'>Tab 3</a>
+            </div> */}
+
             {p.bottomTabs ? null : tabHeader}
             <div className='_tab_body'>
                 {selectedTab ? ( //

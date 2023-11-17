@@ -7,7 +7,7 @@ export const FieldAndLabelUI = observer(function SubtlePanelConfUI_(p: {
 }) {
     return (
         <div tw='opacity-50 hover:opacity-100'>
-            <div>{p.label}</div>
+            <div tw='text-base-content'>{p.label}</div>
             {p.children}
         </div>
     )
