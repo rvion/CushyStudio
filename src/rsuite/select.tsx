@@ -91,22 +91,13 @@ export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T>(p: PP
     }
 
     const handleKeyDown = (event: React.KeyboardEvent) => {
-        if (event.key === 'ArrowDown') {
-            uiSt.navigateSelection('down')
-        } else if (event.key === 'ArrowUp') {
-            uiSt.navigateSelection('up')
-        } else if (event.key === 'Enter') {
-            uiSt.selectOption(uiSt.selectedIndex)
-        }
-    }
-
-    const handleBlur = () => {
-        uiSt.closeMenu()
+        if (event.key === 'ArrowDown') uiSt.navigateSelection('down')
+        else if (event.key === 'ArrowUp') uiSt.navigateSelection('up')
+        else if (event.key === 'Enter') uiSt.selectOption(uiSt.selectedIndex)
     }
 
     return (
         <div tw='flex flex-1 items-center'>
-            {/* <span className='material-symbols-outlined'>search</span> */}
             <div className='relative flex-1'>
                 <input
                     tw='input input-sm input-bordered w-full'
@@ -117,13 +108,9 @@ export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T>(p: PP
                     <div tw='absolute top-8 left-0 right-0'>
                         <input
                             onKeyUp={(ev) => {
-                                if (ev.key === 'Escape') {
-                                    uiSt.closeMenu()
-                                }
+                                if (ev.key === 'Escape') uiSt.closeMenu()
                             }}
-                            onFocus={() => {
-                                uiSt.showMenu = true
-                            }}
+                            onFocus={() => (uiSt.showMenu = true)}
                             autoFocus
                             tw='input input-sm w-full'
                             placeholder={uiSt.displayValue}
@@ -131,7 +118,7 @@ export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T>(p: PP
                             value={uiSt.searchQuery}
                             onChange={handleInputChange}
                             onKeyDown={handleKeyDown}
-                            onBlur={handleBlur}
+                            onBlur={uiSt.closeMenu}
                             className={'input input-bordered '} // Tailwind CSS classes
                         />
                         <ul className='absolute z-10 bg-base-100 shadow-md max-h-60 overflow-auto'>
