@@ -15,7 +15,6 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
                 <InputNumberUI
                     //
                     mode='int'
-                    size
                     tw='join-item'
                     value={uist.width}
                     onValueChange={(next) => uist.setWidth(next)}

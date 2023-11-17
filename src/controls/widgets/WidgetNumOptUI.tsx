@@ -54,7 +54,7 @@ export const WidgetNumOptUI = observer(function WidgetNumOptUI_(p: { req: Widget
                     fontFamily: 'monospace',
                     width: val.toString().length + 6 + 'ch',
                 }}
-                size='sm'
+                _size='sm'
                 value={val}
                 onChange={(ev) => {
                     const next = ev.target.value
