@@ -114,7 +114,7 @@ export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T>(p: PP
                     value={uiSt.displayValue}
                 ></input>
                 {uiSt.showMenu && (
-                    <div tw='absolute top-8'>
+                    <div tw='absolute top-8 left-0 right-0'>
                         <input
                             onKeyUp={(ev) => {
                                 if (ev.key === 'Escape') {
@@ -125,7 +125,7 @@ export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T>(p: PP
                                 uiSt.showMenu = true
                             }}
                             autoFocus
-                            tw='input input-sm'
+                            tw='input input-sm w-full'
                             placeholder={uiSt.displayValue}
                             type='text'
                             value={uiSt.searchQuery}
@@ -138,8 +138,8 @@ export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T>(p: PP
                             {uiSt.filteredOptions.map((option, index) => (
                                 <li
                                     key={index}
-                                    className={`p-2 hover:bg-base-300 cursor-pointer ${
-                                        index === uiSt.selectedIndex ? 'bg-gray-100' : ''
+                                    className={`p-2 hover:bg-base-100 cursor-pointer ${
+                                        index === uiSt.selectedIndex ? 'bg-base-300' : ''
                                     }`}
                                     onMouseDown={() => uiSt.selectOption(index)}
                                 >

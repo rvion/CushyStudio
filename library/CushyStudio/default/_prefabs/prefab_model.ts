@@ -5,11 +5,13 @@ import { OutputFor } from '../_prefabs'
 // UI -----------------------------------------------------------
 export const ui_model = (form: FormBuilder) => {
     return form.group({
+        label: 'AI Model',
         items: () => ({
             ckpt_name: form.enum({
                 enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
                 default: 'revAnimated_v122.safetensors',
                 group: 'Model',
+                label: 'Checkpoint',
             }),
             civtai_ckpt_air: form.stringOpt({
                 tooltip: 'Civitai checkpoint Air, as found on the civitai Website. It should look like this: 43331@176425',

@@ -58,6 +58,7 @@ export const ui_themes = (form: FormBuilder) =>
 // UI PART
 export const ui_latent = (form: FormBuilder) => {
     return form.group({
+        label: 'Starting Point',
         items: () => ({
             image: form.imageOpt({ group: 'latent' }),
             size: form.size({}),
