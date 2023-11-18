@@ -139,6 +139,10 @@ export class STATE {
         return this.configFile.value.favoriteCards ?? []
     }
 
+    getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
+    setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
+    isConfigValueTrue = <K extends keyof ConfigFile>(k: K, val: ConfigFile[K]) => this.configFile.value[k] === val
+
     droppedFiles: File[] = []
 
     // showCardPicker: boolean = false
@@ -183,7 +187,7 @@ export class STATE {
         return this._currentDraft
     }
     set currentDraft(draft: DraftL) {
-        const card = draft.card
+        const card = draft.app
         card?.load()
         this.closeCardPicker()
         this._currentDraft = draft

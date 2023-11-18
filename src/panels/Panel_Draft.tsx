@@ -20,20 +20,6 @@ import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
 
-/**
- * this is the root interraction widget
- * if a workflow need user-supplied infos, it will send an 'ask' request with a list
- * of things it needs to know.
- */
-
-export const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactNode }) {
-    return (
-        <div tw='h-full' style={{ background: '#210202' }}>
-            {p.children}
-        </div>
-    )
-})
-
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
     const st = useSt()
@@ -42,171 +28,69 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID 
 })
 
 export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
-    const st = useSt()
     const draft = p.draft
-    useEffect(() => {
-        return draft?.AWAKE()
-    }, [draft?.id])
+    useEffect(() => draft?.AWAKE(), [draft?.id])
+    // 1. draft
+    if (draft == null) return <ErrorPanelUI>Draft not found</ErrorPanelUI>
+    // 2. app
+    const app = draft.app
+    if (app == null) return <ErrorPanelUI>Action not found</ErrorPanelUI>
+    // 3. compiled app
+    const compiledApp = app.getCompiledAction()
+    if (compiledApp == null) return <AppCompilationErrorUI card={app} />
 
-    if (draft == null)
-        return (
-            <Message type='error'>
-                <pre>❌ Draft not found</pre>
-            </Message>
-        )
-
-    // 2. get action file
-    const card = draft.card
-    if (card == null)
-        return (
-            <ErrorPanelUI>
-                <Message type='error'>
-                    <pre>❌ Action not found</pre>
-                </Message>
-            </ErrorPanelUI>
-        )
-
-    // 3. get action
-    const compiledAction = card.getCompiledAction()
-    if (compiledAction == null) {
-        return (
-            <ErrorPanelUI>
-                <h3 tw='text-red-600'>invalid action</h3>
-                <Message showIcon type='info'>
-                    <div>loading strategies attempted:</div>
-                    <ul>
-                        {card.strategies.map((u) => (
-                            <li key={u}>{u}</li>
-                        ))}
-                    </ul>
-                </Message>
-                {card.errors.map((e) => {
-                    return (
-                        <Message showIcon type='error' header={e.title}>
-                            {typeof e.details === 'string' ? (
-                                <pre tw='text-red-400'>{e.details}</pre>
-                            ) : isError(e.details) ? (
-                                <div>
-                                    <pre tw='text-red-400'>
-                                        <b>name</b> {e.details.name}
-                                    </pre>
-                                    <pre tw='text-red-400'>
-                                        <b>message</b> {e.details.message}
-                                    </pre>
-                                    <pre tw='text-red-400'>
-                                        <b>stack</b> {e.details.stack}
-                                    </pre>
-                                </div>
-                            ) : (
-                                <pre tw='text-red-400'>{JSON.stringify(e.details, null, 3)}</pre>
-                            )}
-                        </Message>
-                    )
-                })}
-                {/* <pre tw='text-red-600'>❌ errors: {JSON.stringify(card.errors, null, 2)}</pre> */}
-            </ErrorPanelUI>
-        )
-    }
     // 4. get form
-    const formR = draft.form
-    if (!formR.success)
+    const guiR = draft.gui
+    if (!guiR.success)
         return (
             <ErrorPanelUI>
-                <Message type='error' header={<b>App failed to load</b>}>
-                    <div>❌ {formR.message}</div>
-                    <div>{stringifyUnknown(formR.error)}</div>
-                </Message>
+                <b>App failed to load</b>
+                <div>❌ {guiR.message}</div>
+                <div>{stringifyUnknown(guiR.error)}</div>
             </ErrorPanelUI>
         )
 
     // 5. render form
-    const { containerClassName, containerStyle } = compiledAction ?? {}
-    const defaultContainerStyle = {
-        margin: '0 auto',
-        // padding: '1rem',
-    }
+    const { containerClassName, containerStyle } = compiledApp ?? {}
+    const defaultContainerStyle = { margin: '0 auto' }
+
+    // {/* <ActionDraftListUI card={card} /> */}
     return (
         <draftContext.Provider value={draft} key={draft.id}>
             <div
-                //
-                className={containerClassName}
                 style={toJS(containerStyle ?? defaultContainerStyle)}
-                tw='flex flex-col flex-grow h-full'
+                tw={['flex flex-col flex-grow h-full', containerClassName]}
             >
-                {/* <ActionDraftListUI card={card} /> */}
+                <DraftHeaderUI app={app} draft={draft} />
 
-                {/* NAME */}
-                <div
-                    //
-                    style={{ borderBottomWidth: '.2rem' }}
-                    tw='flex p-1 bg-base-200 border-b border-b-base-300'
-                >
-                    <div tw='flex gap-0.5 flex-grow relative text-base-content'>
-                        <CardIllustrationUI card={card} size='4rem' tw='p-1' />
-                        <div tw='px-1 flex-grow'>
-                            <b
-                                //
-                                tw='font-bold overflow-hidden overflow-ellipsis whitespace-nowrap'
-                                style={{ fontSize: '1.6rem' }}
-                            >
-                                {card.displayName}
-                            </b>
-                            <div className='flex items-center gap-0 5'>
-                                {Boolean(card.authorDefinedManifest) ? (
-                                    <GithubUserUI //
-                                        showName
-                                        tw='text-gray-500'
-                                        prefix='by'
-                                        size='1.5rem'
-                                        username={card.deck.githubUserName}
-                                    />
-                                ) : null}
-                                <div tw='join'>
-                                    <FormLayoutPrefsUI tw='join-item' />
-                                    <CardActionsMenuUI tw='join-item' card={card} />
-                                </div>
-                            </div>
-                        </div>
-                        <RunOrAutorunUI tw='right-0 absolute' draft={draft} />
-                    </div>
-                </div>
-                {/* <hr /> */}
-                {/* <ActionDraftListUI card={card} /> */}
                 <ScrollablePaneUI className='flex-grow'>
-                    <form
+                    <div
                         tw='pb-80 pl-2'
                         onKeyUp={(ev) => {
                             // submit on meta+enter
                             if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
-                                console.log('SUBMIT')
                                 ev.preventDefault()
                                 ev.stopPropagation()
                                 draft.start()
                             }
                         }}
-                        onSubmit={(ev) => {
-                            console.log('SUBMIT')
-                            ev.preventDefault()
-                            ev.stopPropagation()
-                            draft.start()
-                        }}
                     >
                         <ResultWrapperUI
                             //
-                            res={draft.form}
+                            res={draft.gui}
                             whenValid={(req) => <WidgetUI req={req} />}
                         />
-                    </form>
+                    </div>
                 </ScrollablePaneUI>
                 <TabUI>
                     <div>Form</div>
                     <div></div>
                     <div>Form result</div>
-                    <JsonViewUI value={draft.form.value?.result} />
+                    <JsonViewUI value={draft.gui.value?.result} />
                     <div>Form state</div>
-                    <JsonViewUI value={draft.form.value?.serial} />
+                    <JsonViewUI value={draft.gui.value?.serial} />
                     <div>Action code</div>
-                    <TypescriptHighlightedCodeUI code={card.codeJS ?? ''} />
+                    <TypescriptHighlightedCodeUI code={app.codeJS ?? ''} />
                 </TabUI>
             </div>
         </draftContext.Provider>
@@ -320,9 +204,108 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { class
             >
                 Mobile
             </DropdownItem>
+            <hr />
+            <DropdownItem
+                icon={<span className='material-symbols-outlined'>mobile_screen_share</span>}
+                onClick={() => st.setConfigValue('draft.mockup-mobile', !st.getConfigValue('draft.mockup-mobile'))}
+                active={st.isConfigValueTrue('draft.mockup-mobile', true)}
+            >
+                Mobile
+            </DropdownItem>
         </Dropdown>
     )
 })
 
 const size1 = 'sm' as const
 const size2 = 'sm' as const
+
+/**
+ * this is the root interraction widget
+ * if a workflow need user-supplied infos, it will send an 'ask' request with a list
+ * of things it needs to know.
+ */
+
+const ErrorPanelUI = observer(function ErrorPanelUI_(p: { children: React.ReactNode }) {
+    return (
+        <div tw='h-full' style={{ background: '#210202' }}>
+            <Message type='error'>{p.children}</Message>
+        </div>
+    )
+})
+
+export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p: { card: CardFile }) {
+    const card = p.card
+    return (
+        <ErrorPanelUI>
+            <h3 tw='text-red-600'>invalid action</h3>
+            <Message showIcon type='info'>
+                <div>loading strategies attempted:</div>
+                <ul>
+                    {card.strategies.map((u) => (
+                        <li key={u}>{u}</li>
+                    ))}
+                </ul>
+            </Message>
+            {card.errors.map((e) => {
+                return (
+                    <Message showIcon type='error' header={e.title}>
+                        {typeof e.details === 'string' ? (
+                            <pre tw='text-red-400'>{e.details}</pre>
+                        ) : isError(e.details) ? (
+                            <div>
+                                <pre tw='text-red-400'>
+                                    <b>name</b> {e.details.name}
+                                </pre>
+                                <pre tw='text-red-400'>
+                                    <b>message</b> {e.details.message}
+                                </pre>
+                                <pre tw='text-red-400'>
+                                    <b>stack</b> {e.details.stack}
+                                </pre>
+                            </div>
+                        ) : (
+                            <pre tw='text-red-400'>{JSON.stringify(e.details, null, 3)}</pre>
+                        )}
+                    </Message>
+                )
+            })}
+            {/* <pre tw='text-red-600'>❌ errors: {JSON.stringify(card.errors, null, 2)}</pre> */}
+        </ErrorPanelUI>
+    )
+})
+
+export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL; app: CardFile }) {
+    const { app, draft } = p
+    return (
+        <div tw='flex p-1 bg-base-200 border-b border-b-base-300'>
+            <div tw='flex gap-0.5 flex-grow relative text-base-content'>
+                <CardIllustrationUI card={app} size='4rem' tw='p-1' />
+                <div tw='px-1 flex-grow'>
+                    <b
+                        //
+                        tw='font-bold overflow-hidden overflow-ellipsis whitespace-nowrap'
+                        style={{ fontSize: '1.6rem' }}
+                    >
+                        {app.displayName}
+                    </b>
+                    <div className='flex items-center gap-0 5'>
+                        {Boolean(app.authorDefinedManifest) ? (
+                            <GithubUserUI //
+                                showName
+                                tw='text-gray-500'
+                                prefix='by'
+                                size='1.5rem'
+                                username={app.deck.githubUserName}
+                            />
+                        ) : null}
+                        <div tw='join'>
+                            <FormLayoutPrefsUI tw='join-item' />
+                            <CardActionsMenuUI tw='join-item' card={app} />
+                        </div>
+                    </div>
+                </div>
+                <RunOrAutorunUI tw='right-0 absolute' draft={draft} />
+            </div>
+        </div>
+    )
+})

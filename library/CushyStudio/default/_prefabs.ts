@@ -10,10 +10,8 @@
  * 🟢 import type {...} from '...'
  * ❌ import {...} from '...'`
  * */
-import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
 import type { ReqResult } from 'src/controls/IWidget'
-import type { Slot } from 'src/core/Slot'
 
 // this should be a default
 export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<ReturnType<UIFn>>
@@ -53,61 +51,6 @@ export const ui_themes = (form: FormBuilder) =>
                 }),
             }),
     })
-
-//-----------------------------------------------------------
-// UI PART
-export const ui_latent = (form: FormBuilder) => {
-    return form.group({
-        label: 'Starting Point',
-        items: () => ({
-            image: form.imageOpt({ group: 'latent' }),
-            size: form.size({}),
-            flip: form.bool({ default: false, group: 'latent' }),
-            width: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
-            height: form.int({ default: 768, group: 'latent', step: 128, min: 128, max: 4096 }),
-            batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 8 }),
-        }),
-    })
-}
-
-// RUN PART
-export const run_latent = async (p: {
-    //
-    flow: Runtime
-    opts: OutputFor<typeof ui_latent>
-    vae: _VAE
-}) => {
-    // init stuff
-    const graph = p.flow.nodes
-    const opts = p.opts
-
-    // misc calculatiosn
-    let width: number | Slot<'INT'>
-    let height: number | Slot<'INT'>
-    let latent: HasSingle_LATENT
-
-    // case 1. start form image
-    if (opts.image) {
-        const image = await p.flow.loadImageAnswer(opts.image)
-        latent = graph.VAEEncode({ pixels: image, vae: p.vae })
-        const size = graph.Image_Size_to_Number({ image: image })
-        width = size.outputs.width_int
-        height = size.outputs.height_int
-    }
-    // case 2. start form empty latent
-    else {
-        width = opts.flip ? opts.height : opts.width
-        height = opts.flip ? opts.width : opts.height
-        latent = graph.EmptyLatentImage({
-            batch_size: opts.batchSize ?? 1,
-            height: height,
-            width: width,
-        })
-    }
-
-    // return everything
-    return { latent, width, height }
-}
 
 // --------------------------------------------------------
 export const util_expandBrances = (str: string): string[] => {

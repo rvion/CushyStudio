@@ -198,7 +198,7 @@ export class CushyLayoutManager {
     addDraft = (p: PropsOf<typeof Panel_Draft>) => {
         const draftID = p.draftID
         const draft = this.st.db.drafts.get(p.draftID)
-        const card = draft?.card
+        const card = draft?.app
         const _img = card?.illustrationPathWithFileProtocol
         const icon = _img?.startsWith('<svg') ? undefined : _img
         const title = card?.displayName ?? 'Draft'

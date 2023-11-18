@@ -32,7 +32,7 @@ export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
             />
         )
     }
-    const card = draft.card
+    const card = draft.app
     if (card == null)
         return (
             <Message type='error' showIcon>

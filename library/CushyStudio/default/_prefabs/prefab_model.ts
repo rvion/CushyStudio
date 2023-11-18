@@ -27,29 +27,33 @@ export const ui_model = (form: FormBuilder) => {
 }
 
 // RUN -----------------------------------------------------------
-export const run_model = (flow: Runtime, p: OutputFor<typeof ui_model>) => {
+export const run_model = (
+    //
+    flow: Runtime,
+    otps: OutputFor<typeof ui_model>,
+) => {
     const graph = flow.nodes
 
     // 1. MODEL
-    const ckptSimple = p.civtai_ckpt_air
+    const ckptSimple = otps.civtai_ckpt_air
         ? graph.CivitAI$_Checkpoint$_Loader({
-              ckpt_name: p.ckpt_name,
-              ckpt_air: p.civtai_ckpt_air,
+              ckpt_name: otps.ckpt_name,
+              ckpt_air: otps.civtai_ckpt_air,
               download_path: 'models\\checkpoints',
           })
-        : graph.CheckpointLoaderSimple({ ckpt_name: p.ckpt_name })
+        : graph.CheckpointLoaderSimple({ ckpt_name: otps.ckpt_name })
     let ckpt: HasSingle_MODEL = ckptSimple
     let clip: HasSingle_CLIP = ckptSimple
 
     // 2. OPTIONAL CUSTOM VAE
     let vae: _VAE = ckptSimple._VAE
-    if (p.vae) vae = graph.VAELoader({ vae_name: p.vae })
+    if (otps.vae) vae = graph.VAELoader({ vae_name: otps.vae })
 
     // 3. OPTIONAL CLIP SKIP
-    if (p.clipSkip) clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(p.clipSkip) })
+    if (otps.clipSkip) clip = graph.CLIPSetLastLayer({ clip, stop_at_clip_layer: -Math.abs(otps.clipSkip) })
 
     // 4. Optional FreeU
-    if (p.freeU) ckpt = graph.FreeU({ model: ckpt })
+    if (otps.freeU) ckpt = graph.FreeU({ model: ckpt })
 
     return { ckpt, vae, clip }
 }

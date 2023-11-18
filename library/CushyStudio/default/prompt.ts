@@ -1,17 +1,13 @@
 import * as _ from './_prefabs'
+import * as ui_latent from './_prefabs/prefab_latent'
 import * as run_prompt from './_prefabs/prefab_prompt'
 import * as ui_sampler from './_prefabs/prefab_sampler'
 import * as ui_model from './_prefabs/prefab_model'
 
 card({
     ui: (form) => ({
-        // ckpt_name2: form.enum({
-        //     enumName: 'Enum_CheckpointLoaderSimple_ckpt_name',
-        //     default: 'revAnimated_v122.sdafetensors',
-        //     group: 'Model',
-        // }),
         model: ui_model.ui_model(form),
-        latent: _.ui_latent(form),
+        latent: ui_latent.ui_latent(form),
         sampler: ui_sampler.ui_sampler(form),
         positive: form.prompt({
             default: {
@@ -86,7 +82,7 @@ card({
         const negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
-        let { latent } = await _.run_latent({ flow, opts: p.latent, vae })
+        let { latent } = await ui_latent.run_latent({ flow, opts: p.latent, vae })
 
         // FIRST PASS --------------------------------------------------------------------------------
         const fstPass = ui_sampler.run_sampler({
@@ -135,8 +131,8 @@ card({
                 samples: latent,
                 crop: 'disabled',
                 upscale_method: 'nearest-exact',
-                height: p.latent.height * p.highResFix.scaleFactor,
-                width: p.latent.width * p.highResFix.scaleFactor,
+                height: p.latent.size.height * p.highResFix.scaleFactor,
+                width: p.latent.size.width * p.highResFix.scaleFactor,
             })
             const sndPass = ui_sampler.run_sampler({
                 ckpt: ckptPos,
@@ -212,9 +208,3 @@ card({
         }
     },
 })
-
-// patch
-// if (p.tomeRatio != null && p.tomeRatio !== false) {
-//     const tome = graph.TomePatchModel({ model, ratio: p.tomeRatio })
-//     model = tome.MODEL
-// }

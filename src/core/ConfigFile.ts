@@ -39,6 +39,7 @@ export type ConfigFile = {
 
     /** prefer dense form */
     preferedFormLayout?: PreferedFormLayout
+    ['draft.mockup-mobile']?: boolean
 
     favoriteCards?: CardPath[]
     /** list of all comfyUI setup available */

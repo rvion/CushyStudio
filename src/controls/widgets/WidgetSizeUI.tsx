@@ -6,72 +6,80 @@ import { InputNumberUI } from 'src/rsuite/InputNumberUI'
 import { Addon, Joined } from 'src/rsuite/shims'
 
 export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size }) {
-    const uist = useMemo(() => new ResolutionState(), [])
+    const uist = useMemo(() => new ResolutionState(p.req), [])
 
     return (
         <div className='flex items-center flex-wrap space-x-2'>
-            <Joined>
-                <Addon>W</Addon>
-                <InputNumberUI
-                    //
-                    mode='int'
-                    tw='join-item'
-                    value={uist.width}
-                    onValueChange={(next) => uist.setWidth(next)}
-                    hideSlider
-                />
-            </Joined>
-            <Joined>
-                <Addon>H</Addon>
-                <InputNumberUI
-                    //
-                    tw='join-item'
-                    mode='int'
-                    value={uist.height}
-                    onValueChange={(next) => uist.setHeight(next)}
-                    hideSlider
-                />
-            </Joined>
+            <div className='flex flex-col'>
+                <div tw='flex'>
+                    <div tw='w-12'>Width</div>
+                    <InputNumberUI
+                        //
+                        min={128}
+                        max={4096}
+                        mode='int'
+                        tw='join-item'
+                        value={uist.width}
+                        onValueChange={(next) => uist.setWidth(next)}
+                        // hideSlider
+                    />
+                </div>
+                <div tw='flex'>
+                    <div tw='w-12'>Height</div>
+                    <InputNumberUI
+                        //
+                        tw='join-item'
+                        min={128}
+                        max={4096}
+                        mode='int'
+                        value={uist.height}
+                        onValueChange={(next) => uist.setHeight(next)}
+                        // hideSlider
+                    />
+                </div>
+            </div>
             {/* {JSON.stringify(uist.width)}x{JSON.stringify(uist.height)} */}
-            <Joined>
-                <button
-                    type='button'
-                    tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === 'xl' && 'btn-active']}
-                    onClick={() => uist.setModelType('xl')}
-                >
-                    XL
-                </button>
-                <button
-                    type='button'
-                    tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === '1.5' && 'btn-active']}
-                    onClick={() => uist.setModelType('1.5')}
-                >
-                    1.5
-                </button>
-            </Joined>
-            <Joined>
-                <button
-                    type='button'
-                    tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === '1:1' && 'btn-active']}
-                    onClick={() => uist.setAspectRatio('1:1')}
-                >
-                    1:1
-                </button>
-                <button
-                    type='button'
-                    tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === '16:9' && 'btn-active']}
-                    onClick={() => uist.setAspectRatio('16:9')}
-                >
-                    16:9
-                </button>
-                <button
-                    type='button'
-                    tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === 'custom' && 'btn-active']}
-                    onClick={() => uist.setAspectRatio('custom')}
-                >
-                    ?
-                </button>
-            </Joined>
+            <div tw='flex flex-col'>
+                <Joined>
+                    <button
+                        type='button'
+                        tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === 'xl' && 'btn-active']}
+                        onClick={() => uist.setModelType('xl')}
+                    >
+                        XL
+                    </button>
+                    <button
+                        type='button'
+                        tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === '1.5' && 'btn-active']}
+                        onClick={() => uist.setModelType('1.5')}
+                    >
+                        1.5
+                    </button>
+                </Joined>
+                <Joined>
+                    <button
+                        type='button'
+                        tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === '1:1' && 'btn-active']}
+                        onClick={() => uist.setAspectRatio('1:1')}
+                    >
+                        1:1
+                    </button>
+                    <button
+                        type='button'
+                        tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === '16:9' && 'btn-active']}
+                        onClick={() => uist.setAspectRatio('16:9')}
+                    >
+                        16:9
+                    </button>
+                    <button
+                        type='button'
+                        tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === 'custom' && 'btn-active']}
+                        onClick={() => uist.setAspectRatio('custom')}
+                    >
+                        ?
+                    </button>
+                </Joined>
+            </div>
             {/* <select value={uist.desiredAspectRatio} onChange={(e) => uist.setAspectRatio(e.target.value as AspectRatio)}>
                 <option value='1:1'>1:1</option>
                 <option value='16:9'>16:9</option>
@@ -94,12 +102,22 @@ class ResolutionState {
         if (model === '1.4') return { width: 512, height: 512 }
         return { width: this.width, height: this.height }
     }
-    width: number = 1920
-    height: number = 1080
+    get width(): number {
+        return this.req.state.width
+    }
+    get height(): number {
+        return this.req.state.height
+    }
+    set width(next: number) {
+        this.req.state.width = next
+    }
+    set height(next: number) {
+        this.req.state.height = next
+    }
     desiredModelType: ModelType = 'xl'
     desiredAspectRatio: AspectRatio = '16:9'
 
-    constructor() {
+    constructor(public req: Widget_size) {
         makeAutoObservable(this)
     }
 

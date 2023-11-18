@@ -12,10 +12,10 @@ const ui = (form: FormBuilder) => ({
         default: 'revAnimated_v122.safetensors',
         group: 'model',
     }),
-    foo: form.selectOne({
-        choices: [{ type: 'foo' }, { type: 'bar' }],
-        group: 'model',
-    }),
+    // foo: form.selectOne({
+    //     choices: [{ type: 'foo' }, { type: 'bar' }],
+    //     group: 'model',
+    // }),
 
     // [UI] CARD ---------------------------------------
     cards: form.matrix({
