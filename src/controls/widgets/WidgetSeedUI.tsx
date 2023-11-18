@@ -9,7 +9,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
         <div tw='flex items-center join border border-'>
             <button
                 type='button'
-                tw={['join-item btn-xs btn-ghost', req.state.mode === 'randomize' && 'btn-active']}
+                tw={['join-item btn-sm btn-ghost', req.state.mode === 'randomize' && 'btn-active']}
                 onClick={() => {
                     req.state.mode = 'randomize'
                     req.state.active = true
@@ -19,7 +19,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
             </button>
             <button
                 type='button'
-                tw={['join-item btn-xs btn-ghost', req.state.mode === 'fixed' && 'btn-active']}
+                tw={['join-item btn-sm btn-ghost', req.state.mode === 'fixed' && 'btn-active']}
                 onClick={() => {
                     req.state.mode = 'fixed'
                     req.state.active = true
@@ -29,7 +29,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
                 💎 Fixed
             </button>
             <InputNumberBase //
-                _size='xs'
+                _size='sm'
                 style={{
                     fontFamily: 'monospace',
                     width: val.toString().length + 6 + 'ch',

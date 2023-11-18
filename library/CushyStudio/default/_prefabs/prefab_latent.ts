@@ -5,7 +5,7 @@ import type { OutputFor } from '../_prefabs'
 
 export const ui_latent = (form: FormBuilder) => {
     return form.group({
-        label: 'Starting image',
+        label: 'Start from',
         items: () => ({
             image: form.imageOpt({ group: 'latent' }),
             size: form.size({}),

@@ -14,16 +14,26 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
     const resoBtn = (ar: AspectRatio) => (
         <button
             type='button'
-            tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === ar && 'btn-active']}
+            tw={['btn btn-sm join-item btn-outline', uist.desiredAspectRatio === ar && 'btn-active']}
             onClick={() => uist.setAspectRatio(ar)}
         >
             {ar}
         </button>
     )
 
+    const modelBtn = (model: ModelType) => (
+        <button
+            type='button'
+            tw={['btn btn-sm join-item btn-outline', uist.desiredModelType === model && 'btn-active']}
+            onClick={() => uist.setModelType(model)}
+        >
+            {model}
+        </button>
+    )
+
     return (
         <div className='flex items-center flex-wrap space-x-2'>
-            <div className='flex flex-col'>
+            <div className='flex flex-col gap-1'>
                 <div tw='flex'>
                     <div tw='w-12'>Width</div>
                     <InputNumberUI
@@ -52,23 +62,11 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
                 </div>
             </div>
             {/* {JSON.stringify(uist.width)}x{JSON.stringify(uist.height)} */}
-            <div tw='flex flex-col'>
-                <div tw='flex items-centered gap-2'>
+            <div tw='flex flex-col gap-1'>
+                <div tw='flex items-centered gap-1'>
                     <Joined>
-                        <button
-                            type='button'
-                            tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === '1.5' && 'btn-active']}
-                            onClick={() => uist.setModelType('1.5')}
-                        >
-                            1.5
-                        </button>
-                        <button
-                            type='button'
-                            tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === 'xl' && 'btn-active']}
-                            onClick={() => uist.setModelType('xl')}
-                        >
-                            XL
-                        </button>
+                        {modelBtn('1.5')}
+                        {modelBtn('xl')}
                     </Joined>
 
                     <div tw='flex items-center'>
@@ -87,7 +85,7 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
                     {resoBtn('3:2')}
                     <button
                         type='button'
-                        tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === 'custom' && 'btn-active']}
+                        tw={['btn btn-sm join-item btn-outline', uist.desiredAspectRatio === 'custom' && 'btn-active']}
                         onClick={() => uist.setAspectRatio('custom')}
                     >
                         ?

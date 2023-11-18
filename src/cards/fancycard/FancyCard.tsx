@@ -23,8 +23,8 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
     // const importedFrom
     // prettier-ignore
     const color = (() => {
-        const tw='px-1 py-0.5 overflow-hidden text-ellipsis block whitespace-nowrap'
-        const maxWidth= st.library.imageSize
+        const tw='px-1 py-0.5 overflow-hidden text-ellipsis block whitespace-nowrap self-stretch'
+        const maxWidth = undefined // st.library.imageSize
         if (card.absPath.endsWith('.ts'))   return <span tw={[tw, 'bg-primary text-primary-content']} style={{maxWidth}}>Cushy Action</span>
         if (card.absPath.endsWith('.json')) return <span tw={[tw, 'bg-secondary text-secondary-content']} style={{maxWidth}}>ComfyUI Workflow JSON</span>
         if (card.absPath.endsWith('.png'))  return <span tw={[tw, 'bg-accent text-accent-content']} style={{maxWidth}}>ComfyUI Workflow Image</span>
@@ -35,7 +35,8 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
             onClick={p.card.openLastDraftAsCurrent}
             tw={[
                 //
-                'p-0.5 bg-base-300 text-base-content shadow-xl border border-neutral',
+                'flex flex-col',
+                'p-0.5 bg-base-300 text-base-content shadow-xl border border-neutral border-opacity-25',
                 `card STYLE_${p.style}`,
                 p.active ? 'active' : 'not-active',
                 'cursor-pointer',
@@ -51,7 +52,6 @@ export const FancyCardUI = observer(function FancyCardUI_(p: {
                     {card.displayName}
                 </div>
             </div>
-
             <div tw='flex'>
                 <CardIllustrationUI card={card} size={st.library.imageSize} />
                 {st.library.showDescription ? (

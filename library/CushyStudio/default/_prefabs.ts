@@ -24,9 +24,9 @@ export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<Retur
 export const ui_highresfix = (form: FormBuilder) =>
     form.groupOpt({
         items: () => ({
-            scaleFactor: form.int({ default: 1 }),
+            scaleFactor: form.int({ default: 2, min: 1, max: 8 }),
             steps: form.int({ default: 15 }),
-            denoise: form.float({ min: 0, default: 0.5, max: 1, step: 0.01 }),
+            denoise: form.float({ min: 0, default: 0.6, max: 1, step: 0.01 }),
             saveIntermediaryImage: form.bool({ default: true }),
         }),
     })

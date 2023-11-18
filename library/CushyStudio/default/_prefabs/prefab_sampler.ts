@@ -1,6 +1,6 @@
 import type { Runtime } from 'src/back/Runtime'
 import type { FormBuilder } from 'src/controls/FormBuilder'
-import { OutputFor } from '../_prefabs'
+import type { OutputFor } from '../_prefabs'
 
 // UI -----------------------------------------------------------
 export const ui_sampler = (form: FormBuilder) => {
@@ -25,36 +25,46 @@ export const ui_sampler = (form: FormBuilder) => {
     })
 }
 
-// RUN -----------------------------------------------------------
-export const run_sampler = (p: {
-    //
-    flow: Runtime
+// CTX -----------------------------------------------------------
+export type Ctx_sampler = {
     ckpt: _MODEL
     clip: _CLIP
     latent: HasSingle_LATENT
     positive: string | _CONDITIONING
     negative: string | _CONDITIONING
-    model: OutputFor<typeof ui_sampler>
     preview?: boolean
     vae: _VAE
-}): { image: VAEDecode; latent: HasSingle_LATENT } => {
-    const graph = p.flow.nodes
-    const latent: HasSingle_LATENT = graph.KSampler({
-        model: p.ckpt,
-        seed: p.flow.randomSeed(),
-        latent_image: p.latent,
-        cfg: p.model.cfg,
-        steps: p.model.steps,
-        sampler_name: p.model.sampler_name,
-        scheduler: p.model.scheduler,
-        denoise: p.model.denoise,
-        positive: typeof p.positive === 'string' ? graph.CLIPTextEncode({ clip: p.clip, text: p.positive }) : p.positive,
-        negative: typeof p.negative === 'string' ? graph.CLIPTextEncode({ clip: p.clip, text: p.negative }) : p.negative,
+}
+
+// RUN -----------------------------------------------------------
+export const run_sampler = (
+    flow: Runtime,
+    opts: OutputFor<typeof ui_sampler>,
+    ctx: Ctx_sampler,
+): { image: VAEDecode; latent: KSampler } => {
+    const graph = flow.nodes
+    const latent = graph.KSampler({
+        model: ctx.ckpt,
+        seed: flow.randomSeed(),
+        latent_image: ctx.latent,
+        cfg: opts.cfg,
+        steps: opts.steps,
+        sampler_name: opts.sampler_name,
+        scheduler: opts.scheduler,
+        denoise: opts.denoise,
+        positive:
+            typeof ctx.positive === 'string' //
+                ? graph.CLIPTextEncode({ clip: ctx.clip, text: ctx.positive })
+                : ctx.positive,
+        negative:
+            typeof ctx.negative === 'string' //
+                ? graph.CLIPTextEncode({ clip: ctx.clip, text: ctx.negative })
+                : ctx.negative,
     })
     const image = graph.VAEDecode({
-        vae: p.vae,
+        vae: ctx.vae,
         samples: latent,
     })
-    if (p.preview) graph.PreviewImage({ images: image })
+    if (ctx.preview) graph.PreviewImage({ images: image })
     return { image, latent }
 }

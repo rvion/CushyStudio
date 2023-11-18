@@ -1,14 +1,12 @@
 import * as _ from './_prefabs'
-import * as ui_latent from './_prefabs/prefab_latent'
-import * as run_prompt from './_prefabs/prefab_prompt'
-import * as ui_sampler from './_prefabs/prefab_sampler'
-import * as ui_model from './_prefabs/prefab_model'
+import { run_latent, ui_latent } from './_prefabs/prefab_latent'
+import { run_model, ui_model } from './_prefabs/prefab_model'
+import { run_prompt } from './_prefabs/prefab_prompt'
+import { ui_recursive } from './_prefabs/prefab_recursive'
+import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
 
 card({
     ui: (form) => ({
-        model: ui_model.ui_model(form),
-        latent: ui_latent.ui_latent(form),
-        sampler: ui_sampler.ui_sampler(form),
         positive: form.prompt({
             default: {
                 tokens: [
@@ -26,6 +24,10 @@ card({
         }),
         negative: form.prompt({ default: 'nsfw, nude, girl, woman, human' }),
         seed: form.seed({}),
+        model: ui_model(form),
+        latent: ui_latent(form),
+        sampler: ui_sampler(form),
+        recursiveImgToImg: ui_recursive(form),
         highResFix: _.ui_highresfix(form),
         loop: form.groupOpt({
             items: () => ({
@@ -34,13 +36,6 @@ card({
                     tooltip: 'in ms',
                     default: 0,
                 }),
-            }),
-        }),
-        recursiveImgToImg: form.groupOpt({
-            items: () => ({
-                loops: form.int({ default: 5, min: 2, max: 20 }),
-                denoise: form.float({ min: 0, max: 1, step: 0.01, default: 0.3 }),
-                steps: form.int({ default: 2, min: 2, max: 20 }),
             }),
         }),
         // startImage
@@ -67,58 +62,50 @@ card({
     run: async (flow, p) => {
         const graph = flow.nodes
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
-        let { ckpt, vae, clip } = ui_model.run_model(flow, p.model)
+        let { ckpt, vae, clip } = run_model(flow, p.model)
 
         const posPrompt = p.extra.reversePositiveAndNegative ? p.negative : p.positive
         const negPrompt = p.extra.reversePositiveAndNegative ? p.positive : p.negative
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
-        const x = run_prompt.run_prompt(flow, { richPrompt: posPrompt, clip, ckpt })
+        const x = run_prompt(flow, { richPrompt: posPrompt, clip, ckpt })
         const clipPos = x.clip
         const ckptPos = x.ckpt
         const positive = x.conditionning
 
-        const y = run_prompt.run_prompt(flow, { richPrompt: negPrompt, clip, ckpt })
+        const y = run_prompt(flow, { richPrompt: negPrompt, clip, ckpt })
         const negative = y.conditionning
 
         // START IMAGE -------------------------------------------------------------------------------
-        let { latent } = await ui_latent.run_latent({ flow, opts: p.latent, vae })
+        let { latent } = await run_latent({ flow, opts: p.latent, vae })
 
         // FIRST PASS --------------------------------------------------------------------------------
-        const fstPass = ui_sampler.run_sampler({
+        const ctx_sampler: Ctx_sampler = {
             ckpt: ckptPos,
             clip: clipPos,
             vae,
-            flow,
             latent,
-            model: p.sampler,
             positive: positive,
             negative: negative,
             preview: false,
-        })
-        latent = fstPass.latent
+        }
+        const firstPass = run_sampler(flow, p.sampler, ctx_sampler)
+        latent = firstPass.latent
 
+        // RECURSIVE PASS ----------------------------------------------------------------------------
         if (p.recursiveImgToImg) {
             for (let i = 0; i < p.recursiveImgToImg.loops; i++) {
-                latent = ui_sampler.run_sampler({
-                    ckpt: ckptPos,
-                    clip: clipPos,
-                    vae,
+                latent = run_sampler(
                     flow,
-                    latent,
-                    model: {
-                        // reuse model stuff
-                        cfg: p.sampler.cfg,
+                    {
+                        cfg: p.recursiveImgToImg.cfg,
+                        steps: p.recursiveImgToImg.steps,
+                        denoise: p.recursiveImgToImg.denoise,
                         sampler_name: 'ddim',
                         scheduler: 'ddim_uniform',
-                        // override the snd pass specific stuff
-                        denoise: p.recursiveImgToImg.denoise,
-                        steps: p.recursiveImgToImg.steps,
                     },
-                    positive: positive,
-                    negative: negative,
-                    preview: true,
-                }).latent
+                    { ...ctx_sampler, latent, preview: true },
+                ).latent
             }
         }
 
@@ -134,26 +121,17 @@ card({
                 height: p.latent.size.height * p.highResFix.scaleFactor,
                 width: p.latent.size.width * p.highResFix.scaleFactor,
             })
-            const sndPass = ui_sampler.run_sampler({
-                ckpt: ckptPos,
-                clip: clipPos,
-                vae,
+            latent = latent = run_sampler(
                 flow,
-                latent,
-                model: {
-                    // reuse model stuff
+                {
                     cfg: p.sampler.cfg,
+                    steps: p.highResFix.steps,
+                    denoise: p.highResFix.denoise,
                     sampler_name: 'ddim',
                     scheduler: 'ddim_uniform',
-                    // override the snd pass specific stuff
-                    denoise: p.highResFix.denoise,
-                    steps: p.highResFix.steps,
                 },
-                positive: positive,
-                negative: negative,
-                preview: true,
-            })
-            latent = sndPass.latent
+                { ...ctx_sampler, latent, preview: false },
+            ).latent
         }
 
         let finalImage: HasSingle_IMAGE = graph.VAEDecode({ samples: latent, vae })

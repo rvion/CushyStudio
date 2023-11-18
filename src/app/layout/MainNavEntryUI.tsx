@@ -6,7 +6,8 @@ export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
     className?: string
     icon?: React.ReactElement
-    label: ReactNode
+    label?: ReactNode
+    children?: ReactNode
 
     // size?: TypeAttributes['Size']
     // appearance?: TypeAttributes['Appearance']
@@ -20,6 +21,7 @@ export const MainNavEntryUI = observer(function UI_(p: {
             icon={p.icon}
         >
             {p.label}
+            {p.children}
         </MenuItem>
     )
     // if (p.tooltip)
