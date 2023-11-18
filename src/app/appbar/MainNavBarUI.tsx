@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Dropdown, DropdownItem } from 'src/rsuite/shims'
+import { Button } from 'src/rsuite/shims'
+import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { assets } from 'src/utils/assets/assets'
 import { useSt } from '../../state/stateContext'
 import { DBHealthUI } from './AppBarUI'
@@ -19,79 +20,75 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 Library
             </Button>
             <Dropdown
-                style={{ zIndex: 100 }}
                 startIcon={<span className='material-symbols-outlined text-red-400'>image</span>}
                 title='Images'
                 appearance='subtle'
             >
-                <DropdownItem
+                <MenuItem
                     onClick={() => st.layout.addPaint()}
                     icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
                     label='paint - Minipaint'
                 />
-                <DropdownItem
+                <MenuItem
                     onClick={() => st.layout.addGallery()}
                     icon={<span className='material-symbols-outlined text-red-400'>image_search</span>}
                     label='Gallery'
                 />
-                <DropdownItem
+                <MenuItem
                     onClick={() => st.layout.addLastImage({})}
                     icon={<span className='material-symbols-outlined text-red-400'>history</span>}
                     label='Last'
                 />
             </Dropdown>
             <Dropdown
-                style={{ zIndex: 100 }}
                 startIcon={<span className='material-symbols-outlined text-blue-400'>account_tree</span>}
                 title='ComfyUI'
                 appearance='subtle'
             >
-                <DropdownItem
+                <MenuItem
                     onClick={() => st.layout.addComfy()}
                     label='Comfy'
                     icon={<span className='material-symbols-outlined text-cyan-400'>account_tree</span>}
                 />
-                <DropdownItem
+                <MenuItem
                     onClick={() => st.layout.addComfyNodeExplorer()}
                     icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
                     label='Nodes'
                 />
             </Dropdown>
             <Dropdown
-                style={{ zIndex: 100 }}
                 startIcon={<span className='material-symbols-outlined text-green-400'>code</span>}
                 title='Utils'
                 appearance='subtle'
             >
-                <DropdownItem
+                <MenuItem
                     onClick={() => st.layout.addCivitai({})}
                     icon={<img style={{ width: '1em', height: '1em' }} src={assets.public_CivitaiLogo_png}></img>}
                     label='Civitai'
                 />
 
-                <DropdownItem
+                <MenuItem
                     onClick={() => st.layout.addSquoosh({})}
                     icon={<img style={{ width: '1em', height: '1em' }} src={assets.public_logos_squoosh_png}></img>}
                     label='Squoosh'
                 />
             </Dropdown>
             <Dropdown //
-                style={{ zIndex: 100 }}
                 startIcon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
                 title='Config'
                 appearance='subtle'
             >
-                <DropdownItem
+                <MenuItem
                     onClick={() => st.layout.addConfig()}
                     icon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
                     label='Config'
                 />
-                <DropdownItem
+                <MenuItem
                     onClick={() => st.layout.addHosts()}
                     icon={<span className='material-symbols-outlined text-purple-500'>cloud</span>}
                     label='GPUs'
                 />
-                <DropdownItem
+                <MenuItem
                     onClick={() => st.themeMgr.toggle()}
                     icon={<span className='material-symbols-outlined text-purple-500'>{themeIcon}</span>}
                     label='Theme'
@@ -102,17 +99,17 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 startIcon={<span className='text-warning material-symbols-outlined'>sync</span>}
                 title='Debug'
             >
-                <DropdownItem
+                <MenuItem
                     icon={<span className='text-warning material-symbols-outlined'>sync</span>}
                     onClick={() => window.location.reload()}
                     label='Reload'
                 />
-                <DropdownItem //
+                <MenuItem //
                     icon={<span className='text-warning material-symbols-outlined'>bug_report</span>}
                     onClick={() => st.electronUtils.toggleDevTools()}
                     label='console'
                 />
-                <DropdownItem
+                <MenuItem
                     icon={<span className='text-warning material-symbols-outlined'>sync</span>}
                     onClick={() => st.layout.resetCurrent()}
                     label='Fix Layout'
@@ -125,7 +122,7 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 title='Theme'
             >
                 {st.themeMgr.themes.map((theme) => (
-                    <DropdownItem
+                    <MenuItem
                         key={theme}
                         // icon={<span className='text-orange-400 material-symbols-outlined'>sync</span>}
                         onClick={() => (st.themeMgr.theme = theme)}

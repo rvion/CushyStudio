@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode } from 'react'
-import { DropdownItem } from 'src/rsuite/shims'
+import { MenuItem } from 'src/rsuite/Dropdown'
 
 export const MainNavEntryUI = observer(function UI_(p: {
     onClick: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
@@ -14,13 +14,13 @@ export const MainNavEntryUI = observer(function UI_(p: {
     // tooltip?: ReactNode
 }) {
     return (
-        <DropdownItem //
+        <MenuItem //
             className={p.className}
             onClick={p.onClick}
             icon={p.icon}
         >
             {p.label}
-        </DropdownItem>
+        </MenuItem>
     )
     // if (p.tooltip)
     //     return (

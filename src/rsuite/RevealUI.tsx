@@ -24,6 +24,24 @@ class TooltipState {
         makeAutoObservable(this)
     }
 
+    leaveAnchorNow = () => {
+        // cancer enter
+        if (this.enterAnchorTimeoutId) {
+            clearTimeout(this.enterAnchorTimeoutId)
+            this.enterAnchorTimeoutId = null
+        }
+        this.inAnchor = false
+    }
+
+    enterAnchorNow = () => {
+        // cancel leave
+        if (this.leaveTooltipTimeoutId) {
+            clearTimeout(this.leaveTooltipTimeoutId)
+            this.leaveTooltipTimeoutId = null
+        }
+        this.inAnchor = true
+    }
+
     // anchor --------------------------------------------
     enterAnchor = () => {
         // cancel leaave
@@ -47,14 +65,6 @@ class TooltipState {
     }
 
     // tooltip --------------------------------------------
-    enterTooltipNow = () => {
-        // cancel leave
-        if (this.leaveTooltipTimeoutId) {
-            clearTimeout(this.leaveTooltipTimeoutId)
-            this.leaveTooltipTimeoutId = null
-        }
-        this.inTooltip = true
-    }
     enterTooltip = () => {
         // cancel leave
         if (this.leaveTooltipTimeoutId) {
@@ -136,7 +146,8 @@ export const RevealUI = observer(function Tooltip_(p: {
             onClick={(ev) => {
                 ev.stopPropagation()
                 ev.preventDefault()
-                uist.enterTooltipNow()
+                if (uist.visible) uist.leaveAnchorNow()
+                else uist.enterAnchorNow()
             }}
         >
             {p.children[0]}

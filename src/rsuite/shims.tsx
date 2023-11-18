@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import { RevealUI } from './Tooltip'
+import { RevealUI } from './RevealUI'
 
 export type PositionChildProps = {
     top: number
@@ -184,56 +184,8 @@ export const NavItem = (p: any) => <div {...p}></div>
 // menus
 export const Menu = (p: any) => <div {...p}></div>
 export const MenuBar = (p: any) => <div {...p} />
-export const Dropdown = (p: {
-    style?: React.CSSProperties
-    className?: string
-    startIcon?: Maybe<ReactNode>
-    title: ReactNode
-    appearance?: Maybe<RSAppearance>
-    size?: Maybe<RSSize>
-    children: ReactNode
-}) => (
-    <div style={p.style} className='dropdown' tw={[p.className]}>
-        <label tabIndex={0} tw={[`flex-nowrap btn btn-${p.size ?? 'sm'}`]}>
-            <span tw='hidden lg:inline-block'>{p.startIcon}</span>
-            {p.title}
-        </label>
-        <ul tabIndex={0} tw='p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52'>
-            {p.children}
-        </ul>
-    </div>
-)
 export const DropdownMenu = (p: any) => <div {...p}></div>
 
-export const DropdownItem = observer(function DropdownItem_(p: {
-    onClick: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
-    size?: RSSize
-    icon?: Maybe<ReactNode>
-    disabled?: boolean
-    active?: boolean
-    className?: string
-    children?: ReactNode
-    label?: ReactNode
-}) {
-    const { size, label, disabled, icon, children, active, ...rest } = p
-
-    return (
-        <li
-            tw={[
-                //
-                active && 'bg-accent text-accent-content',
-                disabled && 'text-neutral-content',
-            ]}
-            {...rest}
-        >
-            <div className='flex items-center gap-2'>
-                {icon ?? <span className='material-symbols-outlined'>spa</span>}
-                {children}
-                {label}
-            </div>
-        </li>
-    )
-})
 // misc
 export const Panel = (p: any) => (
     <div

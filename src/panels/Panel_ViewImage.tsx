@@ -3,7 +3,8 @@ import type { ImageID, ImageL } from 'src/models/Image'
 
 import { TransformComponent, TransformWrapper } from 'react-zoom-pan-pinch'
 import { observer } from 'mobx-react-lite'
-import { Button, Dropdown, DropdownItem, Rate, Toggle } from 'src/rsuite/shims'
+import { Button, Rate, Toggle } from 'src/rsuite/shims'
+import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from 'src/state/stateContext'
 import { openExternal, showItemInFolder } from '../app/layout/openExternal'
 import { FieldAndLabelUI } from 'src/widgets/misc/FieldAndLabelUI'
@@ -55,7 +56,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                 </FieldAndLabelUI>
                 {/* 3. OPEN OUTPUT FOLDER */}
                 <Dropdown title='Actions'>
-                    <DropdownItem
+                    <MenuItem
                         icon={<span className='material-symbols-outlined'>folder</span>}
                         size='xs'
                         // appearance='subtle'
@@ -66,9 +67,9 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                         }}
                     >
                         open folder
-                    </DropdownItem>
+                    </MenuItem>
                     {/* 3. OPEN FILE ITSELF */}
-                    <DropdownItem
+                    <MenuItem
                         icon={<span className='material-symbols-outlined'>folder</span>}
                         size='xs'
                         // appearance='subtle'
@@ -79,7 +80,7 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
                         }}
                     >
                         open
-                    </DropdownItem>
+                    </MenuItem>
                 </Dropdown>
             </div>
             <TransformWrapper centerZoomedOut centerOnInit>

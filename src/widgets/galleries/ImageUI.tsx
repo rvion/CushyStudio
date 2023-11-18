@@ -2,7 +2,8 @@ import type { STATE } from 'src/state/state'
 
 import { observer } from 'mobx-react-lite'
 import { ImageL } from 'src/models/Image'
-import { DropdownItem, DropdownMenu, Popover, PositionChildProps, Whisper } from 'src/rsuite/shims'
+import { DropdownMenu, Popover, PositionChildProps, Whisper } from 'src/rsuite/shims'
+import { MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
 
@@ -120,8 +121,8 @@ const renderSpeaker = (
     return (
         <Popover ref={ref} className={className} style={{ left, top }} full>
             <DropdownMenu onSelect={handleSelect}>
-                <DropdownItem eventKey={4}>Paint</DropdownItem>
-                <DropdownItem eventKey={4}>Mask</DropdownItem>
+                <MenuItem eventKey={4}>Paint</MenuItem>
+                <MenuItem eventKey={4}>Mask</MenuItem>
                 {/* <DropdownMenu title='Edit'>
                     <DropdownItem eventKey={1}>New File</DropdownItem>
                     <DropdownItem eventKey={2}>New File with Current Profile</DropdownItem>

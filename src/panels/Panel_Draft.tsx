@@ -7,7 +7,8 @@ import { CardFile } from 'src/cards/CardFile'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { CardIllustrationUI } from 'src/cards/fancycard/CardIllustrationUI'
 import { DraftID, DraftL } from 'src/models/Draft'
-import { Button, Dropdown, DropdownItem, Loader, Message } from 'src/rsuite/shims'
+import { Button, Loader, Message } from 'src/rsuite/shims'
+import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
 import { stringifyUnknown } from 'src/utils/formatters/stringifyUnknown'
@@ -152,27 +153,22 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card:
             appearance='subtle'
             size={size1}
         >
-            <DropdownItem
+            <MenuItem
                 icon={<span className='material-symbols-outlined'></span>}
                 onClick={() => openInVSCode(cwd(), card.absPath)}
             >
                 Edit App Definition
-            </DropdownItem>
-            <DropdownItem
+            </MenuItem>
+            <MenuItem
                 icon={<span className='material-symbols-outlined'></span>}
                 onClick={() => openInVSCode(cwd(), card.deck.manifestPath)}
             >
                 Edit App Manifest
-            </DropdownItem>
-            <DropdownItem
-                icon={<span className='material-symbols-outlined'></span>}
-                onClick={() => showItemInFolder(card.absPath)}
-            >
+            </MenuItem>
+            <MenuItem icon={<span className='material-symbols-outlined'></span>} onClick={() => showItemInFolder(card.absPath)}>
                 Show Item In Folder
-            </DropdownItem>
-            {card.liteGraphJSON && (
-                <DropdownItem onClick={() => st.layout.addComfy(card.liteGraphJSON)}>Open in ComfyUI</DropdownItem>
-            )}
+            </MenuItem>
+            {card.liteGraphJSON && <MenuItem onClick={() => st.layout.addComfy(card.liteGraphJSON)}>Open in ComfyUI</MenuItem>}
         </Dropdown>
     )
 })
@@ -190,37 +186,37 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { class
             title={`${layout}`}
             // startIcon={<span className='material-symbols-outlined'>format_size</span>}
         >
-            <DropdownItem
+            <MenuItem
                 icon={<span className='material-symbols-outlined'>photo_size_select_small</span>}
                 onClick={() => (st.preferedFormLayout = 'dense')}
                 active={layout == 'dense'}
             >
                 Dense
-            </DropdownItem>
+            </MenuItem>
 
-            <DropdownItem
+            <MenuItem
                 icon={<span className='material-symbols-outlined'>photo_size_select_large</span>}
                 onClick={() => (st.preferedFormLayout = 'auto')}
                 active={layout == 'auto'}
             >
                 Auto
-            </DropdownItem>
+            </MenuItem>
 
-            <DropdownItem
+            <MenuItem
                 icon={<span className='material-symbols-outlined'>photo_size_select_actual</span>}
                 onClick={() => (st.preferedFormLayout = 'mobile')}
                 active={layout == 'mobile'}
             >
                 Mobile
-            </DropdownItem>
+            </MenuItem>
             <hr />
-            <DropdownItem
+            <MenuItem
                 icon={<span className='material-symbols-outlined'>mobile_screen_share</span>}
                 onClick={() => st.setConfigValue('draft.mockup-mobile', !st.getConfigValue('draft.mockup-mobile'))}
                 active={st.isConfigValueEq('draft.mockup-mobile', true)}
             >
                 Mobile
-            </DropdownItem>
+            </MenuItem>
         </Dropdown>
     )
 })
@@ -300,9 +296,9 @@ export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL
                     <div className='flex items-center gap-0 5'>
                         {Boolean(app.authorDefinedManifest) ? (
                             <GithubUserUI //
-                                showName
+                                // showName
                                 tw='text-gray-500'
-                                prefix='by'
+                                // prefix='by'
                                 size='1.5rem'
                                 username={app.deck.githubUserName}
                             />

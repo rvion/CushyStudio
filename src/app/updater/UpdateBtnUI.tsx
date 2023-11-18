@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite'
 import { FolderKind, GitManagedFolder } from 'src/cards/updater'
 import { Button, Loader, Message } from 'src/rsuite/shims'
 import { ReleaseChannelUI } from '../layout/ReleaseChannelUI'
-import { RevealUI } from 'src/rsuite/Tooltip'
+import { RevealUI } from 'src/rsuite/RevealUI'
 
 export const GitInitBtnUI = observer(function GitInitBtnUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater

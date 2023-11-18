@@ -12,7 +12,7 @@ export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
     return (
         <div
-            // tw='overflow-auto'
+            tw='overflow-auto'
             id='CushyAppBar'
             // style={{ borderBottom: '1px solid #2b2b2b' }}
         >
