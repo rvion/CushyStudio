@@ -22,13 +22,13 @@ export const joinCls = (tw /*: ClassLike[]*/) /*: string[]*/ => {
 
 export function jsxDEV(type, props, key, isStaticChildren, source, self) {
     if (
-        !hasOwnProperty.call(props, 'tw') && //
-        !hasOwnProperty.call(props, 'x')
+        !hasOwnProperty.call(props, 'tw') // && //
+        // !hasOwnProperty.call(props, 'x')
     )
         return jsxDEV_(type, props, key, isStaticChildren, source, self)
     let className = props.className ?? ''
     if (props.tw) className += ' ' + joinCls(props.tw)
-    if (props.x) className += ' ' + joinCls(props.x)
+    // if (props.x) className += ' ' + joinCls(props.x)
     const newProps = { ...props, className, tw: undefined, x: undefined }
     return jsxDEV_(type, newProps, key, isStaticChildren, source, self)
 }
