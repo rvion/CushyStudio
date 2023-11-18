@@ -85,6 +85,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                     <span className='material-symbols-outlined'>info</span>
                 </Whisper>
             )}
+            {showToogle ? toogle : null}
             <span
                 //
                 tw={[p.isTopLevel /* && vertical */ ? 'font-bold' : undefined]}
@@ -101,7 +102,6 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
                 {label || '...'}
             </span>{' '}
             {/* {req.constructor.name} */}
-            {showToogle ? toogle : null}
             {/* {req.constructor.name} */}
             <span tw='opacity-30 hover:opacity-100'>{v.state.collapsed ? '▸ {...}' : /*'▿'*/ ''}</span>
         </div>

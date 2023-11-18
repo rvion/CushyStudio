@@ -23,6 +23,7 @@ export type OutputFor<UIFn extends (form: FormBuilder) => any> = ReqResult<Retur
 
 export const ui_highresfix = (form: FormBuilder) =>
     form.groupOpt({
+        label: 'Second Pass with latent Upscale (a.k.a. High Res Fix)',
         items: () => ({
             scaleFactor: form.int({ default: 2, min: 1, max: 8 }),
             steps: form.int({ default: 15 }),
