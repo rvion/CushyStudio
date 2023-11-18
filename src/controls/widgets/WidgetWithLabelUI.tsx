@@ -87,7 +87,7 @@ export const WidgetWithLabelUI = observer(function WidgetWithLabelUI_(p: {
             )}
             <span
                 //
-                tw={[p.isTopLevel && vertical ? 'font-bold' : undefined]}
+                tw={[p.isTopLevel /* && vertical */ ? 'font-bold' : undefined]}
                 style={
                     true && !vertical //
                         ? {
