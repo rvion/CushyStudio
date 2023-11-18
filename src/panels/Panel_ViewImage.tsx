@@ -18,12 +18,12 @@ export const Panel_ViewImage = observer(function Panel_ViewImage_(p: { imageID?:
     // if (img == null) return null
     return (
         <div
-            tw='w-full h-full flex flex-col'
+            tw='w-full h-full flex flex-col bg-base-200'
             style={{
                 background: st.configFile.value.galleryBgColor,
             }}
         >
-            <div tw='flex items-start gap-2 p-0.5 bg-base-200'>
+            <div tw='flex items-start gap-2 p-0.5 bg-base-300'>
                 {/* 1. RATER */}
 
                 <FieldAndLabelUI label='Rating'>

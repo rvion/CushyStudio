@@ -19,6 +19,7 @@ import { JSONHighlightedCodeUI, TypescriptHighlightedCodeUI } from '../widgets/m
 import { ScrollablePaneUI } from '../widgets/misc/scrollableArea'
 import { draftContext } from '../widgets/misc/useDraft'
 import { JsonViewUI } from 'src/widgets/workspace/JsonViewUI'
+import { PhoneWrapperUI } from 'src/rsuite/PhoneWrapperUI'
 
 export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID }) {
     // 1. get draft
@@ -28,6 +29,7 @@ export const Panel_Draft = observer(function Panel_Draft_(p: { draftID: DraftID 
 })
 
 export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> }) {
+    const st = useSt()
     const draft = p.draft
     useEffect(() => draft?.AWAKE(), [draft?.id])
     // 1. draft
@@ -60,28 +62,35 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
             <div
                 style={toJS(containerStyle ?? defaultContainerStyle)}
                 tw={['flex flex-col flex-grow h-full', containerClassName]}
+                onKeyUp={(ev) => {
+                    // submit on meta+enter
+                    if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
+                        ev.preventDefault()
+                        ev.stopPropagation()
+                        draft.start()
+                    }
+                }}
             >
                 <DraftHeaderUI app={app} draft={draft} />
-
-                <ScrollablePaneUI className='flex-grow'>
-                    <div
-                        tw='pb-80 pl-2'
-                        onKeyUp={(ev) => {
-                            // submit on meta+enter
-                            if (ev.key === 'Enter' && (ev.metaKey || ev.ctrlKey)) {
-                                ev.preventDefault()
-                                ev.stopPropagation()
-                                draft.start()
-                            }
-                        }}
-                    >
+                {st.isConfigValueEq('draft.mockup-mobile', false) ? (
+                    <ScrollablePaneUI className='flex-grow'>
+                        <div tw='pb-80 pl-2'>
+                            <ResultWrapperUI
+                                //
+                                res={draft.gui}
+                                whenValid={(req) => <WidgetUI req={req} />}
+                            />
+                        </div>
+                    </ScrollablePaneUI>
+                ) : (
+                    <PhoneWrapperUI>
                         <ResultWrapperUI
                             //
                             res={draft.gui}
                             whenValid={(req) => <WidgetUI req={req} />}
                         />
-                    </div>
-                </ScrollablePaneUI>
+                    </PhoneWrapperUI>
+                )}
                 <TabUI>
                     <div>Form</div>
                     <div></div>
@@ -208,7 +217,7 @@ export const FormLayoutPrefsUI = observer(function FormLayoutPrefsUI_(p: { class
             <DropdownItem
                 icon={<span className='material-symbols-outlined'>mobile_screen_share</span>}
                 onClick={() => st.setConfigValue('draft.mockup-mobile', !st.getConfigValue('draft.mockup-mobile'))}
-                active={st.isConfigValueTrue('draft.mockup-mobile', true)}
+                active={st.isConfigValueEq('draft.mockup-mobile', true)}
             >
                 Mobile
             </DropdownItem>

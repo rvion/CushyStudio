@@ -141,7 +141,7 @@ export class STATE {
 
     getConfigValue = <K extends keyof ConfigFile>(k: K) => this.configFile.value[k]
     setConfigValue = <K extends keyof ConfigFile>(k: K, v: ConfigFile[K]) => this.configFile.update({ [k]: v })
-    isConfigValueTrue = <K extends keyof ConfigFile>(k: K, val: ConfigFile[K]) => this.configFile.value[k] === val
+    isConfigValueEq = <K extends keyof ConfigFile>(k: K, val: ConfigFile[K]) => this.configFile.value[k] === val
 
     droppedFiles: File[] = []
 
