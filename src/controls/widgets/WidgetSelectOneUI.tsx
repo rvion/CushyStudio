@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { BaseSelectOneEntry, Widget_selectOne } from 'src/controls/Widget'
-import { AutoCompleteSelect } from 'src/rsuite/select'
+import { SelectUI } from 'src/rsuite/SelectUI'
 
 export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends BaseSelectOneEntry>(p: {
     req: Widget_selectOne<T>
@@ -8,7 +8,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
     const req = p.req
     const value = req.state.val
     return (
-        <AutoCompleteSelect<T>
+        <SelectUI<T>
             size='sm'
             getLabelText={(t) => t.type}
             options={req.choices}

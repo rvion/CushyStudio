@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-import * as DU from 'react-daisyui'
+import { RevealUI } from './Tooltip'
+
 export type PositionChildProps = {
     top: number
     left: number
@@ -21,7 +22,6 @@ export type TypeAttributes = {
     Appearance: RSAppearance
 }
 // form
-export const Form = (p: any) => <div {...p}></div>
 export const FormHelpText = (p: any) => <div {...p}></div>
 export const FormControlLabel = (p: JSX.IntrinsicElements['label']) => <label {...p}></label>
 export const FormControl = (p: JSX.IntrinsicElements['input']) => <input tw='input input-bordered input-sm' {...p}></input>
@@ -157,7 +157,19 @@ export const Rate = (p: {
 )
 
 // tooltips
-export const Whisper = (p: any) => <span {...p}></span>
+export const Whisper = (p: {
+    /** @deprecated */
+    enterable?: boolean
+    /** @deprecated */
+    placement?: string
+    speaker: ReactNode
+    children: ReactNode
+}) => (
+    <RevealUI>
+        {p.children}
+        {p.speaker}
+    </RevealUI>
+)
 export const Speaker = (p: any) => <span {...p}></span>
 export const Popover = (p: any) => <span {...p}></span>
 export const Tooltip = (p: any) => <span {...p}></span>
@@ -182,8 +194,9 @@ export const Dropdown = (p: {
     children: ReactNode
 }) => (
     <div style={p.style} className='dropdown' tw={[p.className]}>
-        <label tabIndex={0} tw={[`btn btn-${p.size ?? 'sm'}`]}>
-            {p.startIcon} {p.title}
+        <label tabIndex={0} tw={[`flex-nowrap btn btn-${p.size ?? 'sm'}`]}>
+            <span tw='hidden lg:inline-block'>{p.startIcon}</span>
+            {p.title}
         </label>
         <ul tabIndex={0} tw='p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52'>
             {p.children}
@@ -193,15 +206,16 @@ export const Dropdown = (p: {
 export const DropdownMenu = (p: any) => <div {...p}></div>
 
 export const DropdownItem = observer(function DropdownItem_(p: {
-    onClick?: () => void
+    onClick: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
     size?: RSSize
     icon?: Maybe<ReactNode>
     disabled?: boolean
-    children?: ReactNode
     active?: boolean
     className?: string
+    children?: ReactNode
+    label?: ReactNode
 }) {
-    const { size, disabled, icon, children, active, ...rest } = p
+    const { size, label, disabled, icon, children, active, ...rest } = p
 
     return (
         <li
@@ -213,8 +227,9 @@ export const DropdownItem = observer(function DropdownItem_(p: {
             {...rest}
         >
             <div className='flex items-center gap-2'>
-                {p.icon ?? <span className='material-symbols-outlined'>spa</span>}
-                {p.children}
+                {icon ?? <span className='material-symbols-outlined'>spa</span>}
+                {children}
+                {label}
             </div>
         </li>
     )

@@ -11,10 +11,14 @@ import { openExternal } from '../layout/openExternal'
 export const AppBarUI = observer(function AppBarUI_(p: {}) {
     const st = useSt()
     return (
-        <div id='CushyAppBar' style={{ borderBottom: '1px solid #2b2b2b' }}>
+        <div
+            // tw='overflow-auto'
+            id='CushyAppBar'
+            // style={{ borderBottom: '1px solid #2b2b2b' }}
+        >
             <div
-                style={{ borderBottom: '1px solid #2b2b2b' }}
-                tw='flex items-center gap-1 px-1 overflow-visible bg-contrasted-gradient'
+                // style={{ borderBottom: '1px solid #2b2b2b' }}
+                tw='flex items-center gap-0.5 px-1 overflow-visible bg-contrasted-gradient'
             >
                 <img style={{ width: '1.6rem' }} src={assets.public_CushyLogo_512_png} alt='' />
                 <div tw='whitespace-nowrap px-2 text-xl'>CushyStudio</div>

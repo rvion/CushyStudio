@@ -9,7 +9,6 @@ export const ui_latent = (form: FormBuilder) => {
         items: () => ({
             image: form.imageOpt({ group: 'latent' }),
             size: form.size({}),
-            flip: form.bool({ default: false, group: 'latent' }),
             // width: form.int({ default: 512, group: 'latent', step: 128, min: 128, max: 4096 }),
             // height: form.int({ default: 768, group: 'latent', step: 128, min: 128, max: 4096 }),
             batchSize: form.int({ default: 1, group: 'latent', min: 1, max: 8 }),
@@ -43,8 +42,8 @@ export const run_latent = async (p: {
 
     // case 2. start form empty latent
     else {
-        width = opts.flip ? opts.size.height : opts.size.width
-        height = opts.flip ? opts.size.width : opts.size.height
+        width = /* opts.flip ? opts.size.height : */ opts.size.width
+        height = /* opts.flip ? opts.size.width : */ opts.size.height
         latent = graph.EmptyLatentImage({
             batch_size: opts.batchSize ?? 1,
             height: height,

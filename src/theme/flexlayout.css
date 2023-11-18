@@ -29,7 +29,7 @@
   /* --font-size: 1rem; */
   /* --font-family: 'Roboto', 'Arial', sans-serif; */
   --color-overflow: hsl(var(--n)); /* Neutral color for overflow */
-  --color-icon: hsl(var(--n)); /* Neutral color for icons */
+  --color-icon: hsl(var(--bc)); /* Neutral color for icons */
   --color-tabset-background: hsl(var(--b3));
   --color-tabset-background-selected: hsl(var(--b1));
   --color-tabset-background-maximized: hsl(var(--b3));
@@ -38,8 +38,8 @@
   --color-tabset-header: hsl(var(--b1));
   --color-border-background: hsl(var(--b3));
   --color-border-divider-line: hsl(var(--b3));
-  /* --color-tab-selected: hsl(var(--b1)); */
-  --color-tab-selected-background: transparent;
+  --color-tab-selected: hsl(var(--sc));
+  --color-tab-selected-background: hsl(var(--s));
   /* --color-tab-unselected: hsl(var(--n)); */
   --color-tab-unselected-background: transparent;
   /* --color-tab-textbox: hsl(var(--b1)); */

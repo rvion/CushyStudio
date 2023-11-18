@@ -1,16 +1,17 @@
 import { observer } from 'mobx-react-lite'
 import React, { ReactNode } from 'react'
-import { DropdownItem, TypeAttributes } from 'src/rsuite/shims'
+import { DropdownItem } from 'src/rsuite/shims'
 
 export const MainNavEntryUI = observer(function UI_(p: {
-    onClick: (ev: React.MouseEvent<HTMLDivElement, MouseEvent>) => void
+    onClick: (ev: React.MouseEvent<HTMLElement, MouseEvent>) => void
     className?: string
-    size?: TypeAttributes['Size']
-    appearance?: TypeAttributes['Appearance']
     icon?: React.ReactElement
-    soon?: boolean
     label: ReactNode
-    tooltip?: ReactNode
+
+    // size?: TypeAttributes['Size']
+    // appearance?: TypeAttributes['Appearance']
+    // soon?: boolean
+    // tooltip?: ReactNode
 }) {
     return (
         <DropdownItem //

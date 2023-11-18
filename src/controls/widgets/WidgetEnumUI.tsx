@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { Widget_enum, Widget_enumOpt } from 'src/controls/Widget'
-import { AutoCompleteSelect } from 'src/rsuite/select'
+import { SelectUI } from 'src/rsuite/SelectUI'
 import { Popover, Whisper } from 'src/rsuite/shims'
 import { useSt } from 'src/state/stateContext'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
@@ -51,7 +51,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     const hasError = Boolean(p.value.isSubstitute || p.value.ENUM_HAS_NO_VALUES)
     return (
         <div tw='flex-1'>
-            <AutoCompleteSelect //
+            <SelectUI //
                 tw={[{ ['rsx-field-error']: hasError }]}
                 size='sm'
                 disabled={p.disabled}

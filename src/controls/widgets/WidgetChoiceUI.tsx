@@ -1,7 +1,7 @@
 import type { Widget, Widget_choice } from 'src/controls/Widget'
 
 import { observer } from 'mobx-react-lite'
-import { AutoCompleteSelect } from 'src/rsuite/select'
+import { SelectUI } from 'src/rsuite/SelectUI'
 import { WidgetUI } from './WidgetUI'
 
 export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget_choice<{ [key: string]: Widget }> }) {
@@ -10,7 +10,7 @@ export const WidgetChoiceUI = observer(function WidgetChoiceUI_(p: { req: Widget
     const choiceSubReq = req.state.values[req.state.pick]
     return (
         <div tw='_WidgetChoiceUI relative w-full'>
-            <AutoCompleteSelect
+            <SelectUI
                 getLabelText={(v) => v}
                 cleanable={false}
                 options={choicesStr}

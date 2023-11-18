@@ -312,7 +312,10 @@ export class CushyLayoutManager {
     }
     build = (): IJsonModel => {
         const out: IJsonModel = {
-            global: { tabSetEnableSingleTabStretch: true },
+            global: {
+                //
+                // tabSetEnableSingleTabStretch: true,
+            },
             borders: [
                 // LEFT BORDER
                 {
@@ -364,7 +367,7 @@ export class CushyLayoutManager {
                         children: [
                             {
                                 type: 'tabset',
-                                enableSingleTabStretch: true,
+                                // enableSingleTabStretch: true,
                                 id: 'MAINTYPESET',
                                 enableClose: false,
                                 enableDeleteWhenEmpty: false,

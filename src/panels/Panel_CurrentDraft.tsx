@@ -18,7 +18,6 @@ export const Panel_CurrentDraft = observer(function CurrentDraftUI_(p: {}) {
         return (
             <MainNavEntryUI
                 tw='m-2'
-                size='lg'
                 appearance='primary'
                 onClick={() => st.toggleCardPicker()}
                 icon={<span className='material-symbols-outlined'>play_circle</span>}

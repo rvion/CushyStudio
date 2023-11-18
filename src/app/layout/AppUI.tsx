@@ -52,6 +52,7 @@ export const CushyUI = observer(function CushyUI_() {
             ref={appRef}
             tw={['col grow h100 text-base-content']}
         >
+            <div id='tooltip-root' tw='pointer-events-none absolute inset-0 w-full h-full'></div>
             <AppBarUI />
             <RenderFullPagePanelUI />
             <div className='flex flex-grow relative'>

@@ -1,8 +1,8 @@
 import { observer } from 'mobx-react-lite'
-import { Button, Loader, Message, Popover, Whisper } from 'src/rsuite/shims'
 import { FolderKind, GitManagedFolder } from 'src/cards/updater'
-import { _formatPreviewDate } from 'src/utils/formatters/_formatPreviewDate'
+import { Button, Loader, Message } from 'src/rsuite/shims'
 import { ReleaseChannelUI } from '../layout/ReleaseChannelUI'
+import { RevealUI } from 'src/rsuite/Tooltip'
 
 export const GitInitBtnUI = observer(function GitInitBtnUI_(p: { updater: GitManagedFolder }) {
     const updater = p.updater
@@ -48,55 +48,8 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
     if (updater.status === FolderKind.NotADirectory) return <div>❓ unespected file</div>
     if (updater.status === FolderKind.FolderWithoutGit) return <GitInitBtnUI updater={updater} />
     return (
-        <Whisper
-            placement='bottomStart'
-            enterable
-            speaker={
-                <Popover>
-                    <div>
-                        {updater.config.betaBranch ? <ReleaseChannelUI onChange={(e) => console.log(e)} /> : null}
-                        <UpdaterErrorUI updater={updater} />
-                        <div tw='flex items-center'>
-                            <span className='material-symbols-outlined'>folder</span> <div>{updater.relPath || 'root'}</div>
-                        </div>
-                        <div>
-                            {updater.lastFetchAt ? (
-                                <div>
-                                    <div>
-                                        <span className='material-symbols-outlined'>history</span> prev update :{' '}
-                                        {getRelativeTimeString(updater.lastFetchAt)}
-                                    </div>
-                                    <div>
-                                        <span className='material-symbols-outlined'>schedule</span> next update :{' '}
-                                        {getRelativeTimeString(updater.nextFetchAt)}
-                                    </div>
-                                </div>
-                            ) : (
-                                <>no update done</>
-                            )}
-                        </div>
-                        <div>
-                            <Button
-                                size='sm'
-                                color='orange'
-                                appearance='ghost'
-                                onClick={() => updater.checkForUpdates()}
-                                icon={<span className='material-symbols-outlined'>refresh</span>}
-                            >
-                                FORCE REFRESH
-                            </Button>
-                        </div>
-                        <div>
-                            {updater.config.canBeUninstalled ? ( //
-                                <UninstallUI updater={updater} />
-                            ) : null}
-                        </div>
-                    </div>
-                </Popover>
-            }
-        >
+        <RevealUI>
             <div tw={['flex gap-1 cursor-help']}>
-                {/* // hasErrors ? 'bg-red-900' : 'bg-green-900 ', */}
                 <div tw='flex gap-1'>
                     {
                         hasErrors ? (
@@ -131,7 +84,52 @@ export const UpdateBtnUI = observer(function UpdateBtnUI_(p: { updater: GitManag
                     </Button>
                 </div>
             </div>
-        </Whisper>
+            {/* // placement='bottomStart' */}
+            {/* // enterable */}
+            {/* // speaker={ */}
+            {/* <Popover> */}
+            <div>
+                {updater.config.betaBranch ? <ReleaseChannelUI onChange={(e) => console.log(e)} /> : null}
+                <UpdaterErrorUI updater={updater} />
+                <div tw='flex items-center'>
+                    <span className='material-symbols-outlined'>folder</span> <div>{updater.relPath || 'root'}</div>
+                </div>
+                <div>
+                    {updater.lastFetchAt ? (
+                        <div>
+                            <div>
+                                <span className='material-symbols-outlined'>history</span> prev update :{' '}
+                                {getRelativeTimeString(updater.lastFetchAt)}
+                            </div>
+                            <div>
+                                <span className='material-symbols-outlined'>schedule</span> next update :{' '}
+                                {getRelativeTimeString(updater.nextFetchAt)}
+                            </div>
+                        </div>
+                    ) : (
+                        <>no update done</>
+                    )}
+                </div>
+                <div>
+                    <Button
+                        size='sm'
+                        color='orange'
+                        appearance='ghost'
+                        onClick={() => updater.checkForUpdates()}
+                        icon={<span className='material-symbols-outlined'>refresh</span>}
+                    >
+                        FORCE REFRESH
+                    </Button>
+                </div>
+                <div>
+                    {updater.config.canBeUninstalled ? ( //
+                        <UninstallUI updater={updater} />
+                    ) : null}
+                </div>
+            </div>
+            {/* </Popover> */}
+            {/* // } */}
+        </RevealUI>
     )
 })
 

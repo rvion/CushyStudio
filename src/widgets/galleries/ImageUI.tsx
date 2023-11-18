@@ -1,8 +1,8 @@
 import type { STATE } from 'src/state/state'
 
 import { observer } from 'mobx-react-lite'
-import { Dropdown, DropdownItem, DropdownMenu, Popover, PositionChildProps, Whisper } from 'src/rsuite/shims'
 import { ImageL } from 'src/models/Image'
+import { DropdownItem, DropdownMenu, Popover, PositionChildProps, Whisper } from 'src/rsuite/shims'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
 
@@ -29,7 +29,6 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
             ></video>
         ) : (
             <img
-                // className='scale-in-center'
                 src={image.url}
                 ref={dragRef}
                 loading='lazy'

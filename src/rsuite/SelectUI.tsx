@@ -77,13 +77,17 @@ class AutoCompleteSelectState<T> {
         }
     }
 
+    onBlur = () => {
+        this.closeMenu()
+    }
+
     closeMenu() {
         this.showMenu = false
         this.selectedIndex = -1
     }
 }
 
-export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T>(p: PP<T>) {
+export const SelectUI = observer(function SelectUI_<T>(p: PP<T>) {
     const st = useSt()
     const uiSt = useMemo(() => new AutoCompleteSelectState(st, p), [p])
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,6 +106,7 @@ export const AutoCompleteSelect = observer(function AutoCompleteSelect_<T>(p: PP
                 <input
                     tw='input input-sm input-bordered w-full'
                     onFocus={() => (uiSt.showMenu = true)}
+                    onBlur={uiSt.onBlur}
                     value={uiSt.displayValue}
                 ></input>
                 {uiSt.showMenu && (

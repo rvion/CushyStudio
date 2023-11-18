@@ -1,12 +1,25 @@
 import { makeAutoObservable } from 'mobx'
-import { useMemo } from 'react'
 import { observer } from 'mobx-react-lite'
+import { useMemo } from 'react'
 import { Widget_size } from 'src/controls/Widget'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
-import { Addon, Joined } from 'src/rsuite/shims'
+import { Joined, Toggle } from 'src/rsuite/shims'
+
+type ModelType = 'xl' | '1.5' | 'custom'
+type AspectRatio = '1:1' | '16:9' | '4:3' | '3:2' | 'custom'
 
 export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size }) {
     const uist = useMemo(() => new ResolutionState(p.req), [])
+
+    const resoBtn = (ar: AspectRatio) => (
+        <button
+            type='button'
+            tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === ar && 'btn-active']}
+            onClick={() => uist.setAspectRatio(ar)}
+        >
+            {ar}
+        </button>
+    )
 
     return (
         <div className='flex items-center flex-wrap space-x-2'>
@@ -40,37 +53,38 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
             </div>
             {/* {JSON.stringify(uist.width)}x{JSON.stringify(uist.height)} */}
             <div tw='flex flex-col'>
+                <div tw='flex items-centered gap-2'>
+                    <Joined>
+                        <button
+                            type='button'
+                            tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === '1.5' && 'btn-active']}
+                            onClick={() => uist.setModelType('1.5')}
+                        >
+                            1.5
+                        </button>
+                        <button
+                            type='button'
+                            tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === 'xl' && 'btn-active']}
+                            onClick={() => uist.setModelType('xl')}
+                        >
+                            XL
+                        </button>
+                    </Joined>
+
+                    <div tw='flex items-center'>
+                        filp:
+                        <Toggle
+                            //
+                            checked={uist.flip}
+                            onChange={(ev) => (uist.flip = ev.target.checked)}
+                        />
+                    </div>
+                </div>
                 <Joined>
-                    <button
-                        type='button'
-                        tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === 'xl' && 'btn-active']}
-                        onClick={() => uist.setModelType('xl')}
-                    >
-                        XL
-                    </button>
-                    <button
-                        type='button'
-                        tw={['btn btn-xs join-item btn-outline', uist.desiredModelType === '1.5' && 'btn-active']}
-                        onClick={() => uist.setModelType('1.5')}
-                    >
-                        1.5
-                    </button>
-                </Joined>
-                <Joined>
-                    <button
-                        type='button'
-                        tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === '1:1' && 'btn-active']}
-                        onClick={() => uist.setAspectRatio('1:1')}
-                    >
-                        1:1
-                    </button>
-                    <button
-                        type='button'
-                        tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === '16:9' && 'btn-active']}
-                        onClick={() => uist.setAspectRatio('16:9')}
-                    >
-                        16:9
-                    </button>
+                    {resoBtn('1:1')}
+                    {resoBtn('16:9')}
+                    {resoBtn('4:3')}
+                    {resoBtn('3:2')}
                     <button
                         type='button'
                         tw={['btn btn-xs join-item btn-outline', uist.desiredAspectRatio === 'custom' && 'btn-active']}
@@ -80,6 +94,7 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
                     </button>
                 </Joined>
             </div>
+            <div tw='bg-primary' style={{ width: '2rem', height: `${(uist.height / uist.width) * 2}rem` }}></div>
             {/* <select value={uist.desiredAspectRatio} onChange={(e) => uist.setAspectRatio(e.target.value as AspectRatio)}>
                 <option value='1:1'>1:1</option>
                 <option value='16:9'>16:9</option>
@@ -91,8 +106,6 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
     )
 })
 
-type ModelType = 'xl' | '1.5' | 'custom'
-type AspectRatio = '1:1' | '16:9' | '4:3' | '3:2' | 'custom'
 class ResolutionState {
     private idealSizeforModelType = (model: ModelType | string) => {
         if (model === 'xl') return { width: 1024, height: 1024 }
@@ -101,6 +114,19 @@ class ResolutionState {
         if (model === '1.5') return { width: 512, height: 512 }
         if (model === '1.4') return { width: 512, height: 512 }
         return { width: this.width, height: this.height }
+    }
+    _flip: boolean = false
+    get flip(): boolean {
+        return this._flip
+    }
+    set flip(next: boolean) {
+        const same = this._flip === next
+        if (same) return
+        this._flip = next
+        const prevWidth = this.width
+        const prevHeight = this.height
+        this.width = prevHeight
+        this.height = prevWidth
     }
     get width(): number {
         return this.req.state.width

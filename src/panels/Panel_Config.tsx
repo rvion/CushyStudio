@@ -1,9 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import { Form, FormControl, FormControlLabel, Joined, FormHelpText, Panel, Toggle } from 'src/rsuite/shims'
-import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
-import { useSt } from '../state/stateContext'
-import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
 import { InputNumberUI } from 'src/rsuite/InputNumberUI'
+import { FormControl, FormControlLabel, FormHelpText, Panel, Toggle } from 'src/rsuite/shims'
+import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
+import { SectionTitleUI } from 'src/widgets/workspace/SectionTitle'
+import { useSt } from '../state/stateContext'
 
 export const Panel_Config = observer(function Panel_Config_() {
     const st = useSt()
