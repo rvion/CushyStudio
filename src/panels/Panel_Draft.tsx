@@ -259,8 +259,24 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card:
             appearance='subtle'
             size={size1}
         >
-            <DropdownItem onClick={() => openInVSCode(cwd(), card.absPath)}>Edit</DropdownItem>
-            <DropdownItem onClick={() => showItemInFolder(card.absPath)}>Show Item In Folder</DropdownItem>
+            <DropdownItem
+                icon={<span className='material-symbols-outlined'></span>}
+                onClick={() => openInVSCode(cwd(), card.absPath)}
+            >
+                Edit App Definition
+            </DropdownItem>
+            <DropdownItem
+                icon={<span className='material-symbols-outlined'></span>}
+                onClick={() => openInVSCode(cwd(), card.deck.manifestPath)}
+            >
+                Edit App Manifest
+            </DropdownItem>
+            <DropdownItem
+                icon={<span className='material-symbols-outlined'></span>}
+                onClick={() => showItemInFolder(card.absPath)}
+            >
+                Show Item In Folder
+            </DropdownItem>
             {card.liteGraphJSON && (
                 <DropdownItem onClick={() => st.layout.addComfy(card.liteGraphJSON)}>Open in ComfyUI</DropdownItem>
             )}

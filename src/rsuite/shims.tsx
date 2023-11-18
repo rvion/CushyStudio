@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { ReactNode } from 'react'
-
+import * as DU from 'react-daisyui'
 export type PositionChildProps = {
     top: number
     left: number
@@ -24,7 +24,7 @@ export type TypeAttributes = {
 export const Form = (p: any) => <div {...p}></div>
 export const FormHelpText = (p: any) => <div {...p}></div>
 export const FormControlLabel = (p: JSX.IntrinsicElements['label']) => <label {...p}></label>
-export const FormControl = (p: JSX.IntrinsicElements['input']) => <input tw='input input-sm' {...p}></input>
+export const FormControl = (p: JSX.IntrinsicElements['input']) => <input tw='input input-bordered input-sm' {...p}></input>
 export const Joined = (p: { children?: ReactNode }) => <div tw='border border-neutral join' {...p}></div>
 
 export const Addon = observer(function Addon_(p: any) {
@@ -139,9 +139,10 @@ export const Rate = (p: {
     //
     value?: number
     name: string
+    disabled?: boolean
     onChange?: (value: number) => void
 }) => (
-    <div tw='rating rating-md rating-sm '>
+    <div tw='rating rating-md rating-sm'>
         {[1, 2, 3, 4, 5].map((ix) => (
             <input
                 key={ix}
@@ -149,7 +150,7 @@ export const Rate = (p: {
                 checked={p.value === ix}
                 onChange={() => p.onChange?.(ix)}
                 type='radio'
-                tw='mask mask-star fade-in-40 bg-orange-400'
+                tw={['mask mask-star fade-in-40', p.disabled ? 'bg-base-300' : 'bg-orange-400']}
             />
         ))}
     </div>
@@ -195,14 +196,22 @@ export const DropdownItem = observer(function DropdownItem_(p: {
     onClick?: () => void
     size?: RSSize
     icon?: Maybe<ReactNode>
+    disabled?: boolean
     children?: ReactNode
     active?: boolean
     className?: string
 }) {
-    const { size, icon, children, active, ...rest } = p
+    const { size, disabled, icon, children, active, ...rest } = p
 
     return (
-        <li {...rest} tw={[active && 'bg-accent text-accent-content']}>
+        <li
+            tw={[
+                //
+                active && 'bg-accent text-accent-content',
+                disabled && 'text-neutral-content',
+            ]}
+            {...rest}
+        >
             <div className='flex items-center gap-2'>
                 {p.icon ?? <span className='material-symbols-outlined'>spa</span>}
                 {p.children}
@@ -215,12 +224,27 @@ export const Panel = (p: any) => (
     <div
         //
         // style={{ border: '1px solid #404040' }}
-        tw='p-2 input-bordered'
+        tw='p-2 border border-opacity-25 bg-base-200 bg-opacity-50 border-base-content input-bordered rounded-btn'
         {...p}
     ></div>
 )
-export const Progress = (p: any) => <div {...p}></div>
-export const ProgressLine = (p: any) => <div {...p}></div>
+
+export const ProgressLine = observer(function ProgressLine_(p: {
+    //
+    className?: string
+    percent?: number
+    status: 'success' | 'active'
+}) {
+    const status = p.status === 'success' ? 'progress-success' : 'progress-info'
+    return (
+        <progress
+            //
+            tw={[status, 'm-0 progress', p.className]}
+            value={p.percent}
+            max={100}
+        ></progress>
+    )
+})
 
 // ------------------------------------------------------------------------
 const messageIcon = (type: MessageType): ReactNode => {

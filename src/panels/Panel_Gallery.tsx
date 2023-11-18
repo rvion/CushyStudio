@@ -12,13 +12,13 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
         <div //
             className='flex flex-wrap col-folder'
             style={{
-                borderRight: '1px solid #383838',
+                // borderRight: '1px solid #383838',
                 background: st.configFile.value.galleryBgColor,
             }}
         >
             {/* MAIN IMAGE COLUMN */}
             <div className='flex flex-wrap items-start'>
-                <div tw='w-full'>
+                <div tw='w-full bg-base-200'>
                     <div tw='flex gap-2 px-2'>
                         <FieldAndLabelUI label='Image size'>
                             <Slider

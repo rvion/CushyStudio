@@ -59,6 +59,7 @@ export class Deck {
 
     //
     manifestError: Maybe<ManifestError> = null
+    manifestPath: AbsolutePath
     manifest!: DeckManifest
     cards: CardFile[] = []
 
@@ -96,6 +97,7 @@ export class Deck {
         this.authorFolderRel = asRelativePath(join(this.st.actionsFolderPathRel, parts[0])) as AuthorFolder
         this.folderAbs = asAbsolutePath(join(this.st.actionsFolderPathAbs, this.github))
         this.folderRel = asRelativePath(join(this.st.actionsFolderPathRel, this.github)) as DeckFolder
+        this.manifestPath = asAbsolutePath(join(this.folderAbs, 'cushy-deck.json'))
         this.updater = new GitManagedFolder(this.library.st, {
             absFolderPath: this.folderAbs,
             shouldAutoUpdate: false,
@@ -123,15 +125,14 @@ export class Deck {
      *  - manifest
      * */
     private loadManifest = () => {
-        const manifestPath = join(this.folderAbs, 'cushy-deck.json')
         try {
             // case 1 - missing ----------------------------------------------- ❌
-            const manifestIsHere = existsSync(manifestPath)
+            const manifestIsHere = existsSync(this.manifestPath)
             if (!manifestIsHere) {
                 return this._setDefaultManifest({ type: 'no manifest' })
             }
 
-            const manifestStr = readFileSync(manifestPath, 'utf8')
+            const manifestStr = readFileSync(this.manifestPath, 'utf8')
             const manifestJSON_ = JSON5.parse(manifestStr)
             const parsedManifest = parseDeckManifest(manifestJSON_)
             // case 2 - valid ------------------------------------------------- 🟢
@@ -151,7 +152,7 @@ export class Deck {
             }
         } catch (error) {
             // case 4 - crash ------------------------------------------------ ❌
-            console.log(`❌ failed to read ${manifestPath}`, error)
+            console.log(`❌ failed to read ${this.manifestPath}`, error)
             return this._setDefaultManifest({ type: 'crash', error })
         }
     }

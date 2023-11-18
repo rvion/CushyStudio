@@ -10,10 +10,14 @@ export const Panel_Config = observer(function Panel_Config_() {
     const config = st.configFile
     return (
         <div className='flex flex-col items-start p-2'>
-            <Panel header={<SectionTitleUI label='CONFIG' className='block' />} className='col flex-grow'>
+            <Panel
+                //
+                header={<SectionTitleUI label='CONFIG' className='block' />}
+                className='col flex-grow'
+            >
                 <div tw='flex flex-col gap-1'>
                     <FieldUI label='Comfig file path'>
-                        <pre tw='bg-gray-700'>{config.path}</pre>
+                        <pre tw='bg-base-200 rounded-btn px-2'>{config.path}</pre>
                         {/* <FormControl //
                             value={config.value.githubUsername}
                             onChange={(v) => config.update({ githubUsername: v })}
