@@ -31,14 +31,14 @@ export const Panel_Config = observer(function Panel_Config_() {
                             name='githubUsername'
                         />
                     </FieldUI>
-                    <FieldUI label='use Https?'>
-                        <Toggle //
-                            checked={config.value.useHttps}
-                            onChange={(ev) => config.update({ useHttps: ev.target.checked })}
-                            name='useHttps'
-                        />
-                    </FieldUI>
                     <Panel>
+                        <FieldUI label='use Https?'>
+                            <Toggle //
+                                checked={config.value.useHttps}
+                                onChange={(ev) => config.update({ useHttps: ev.target.checked })}
+                                name='useHttps'
+                            />
+                        </FieldUI>
                         <FieldUI label='comfy host'>
                             <FormControl
                                 //

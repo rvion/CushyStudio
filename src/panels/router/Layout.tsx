@@ -190,10 +190,10 @@ export class CushyLayoutManager {
     addCurrentDraft = () => this._AddWithProps(Widget.CurrentDraft, `/draft`, { title: 'Current Draft' })
 
     addDraftJsonResult = (p: PropsOf<typeof Panel_DraftJsonResult>) =>
-        this._AddWithProps(Widget.DraftJsonResult, `/DraftJsonResult`, { title: 'Draft JSON Result' })
+        this._AddWithProps(Widget.DraftJsonResult, `/DraftJsonResult`, { title: 'Draft JSON Result', ...p })
 
     addDraftJsonSerial = (p: PropsOf<typeof Panel_DraftJsonSerial>) =>
-        this._AddWithProps(Widget.DraftJsonSerial, `/DraftJsonSerial`, { title: 'Draft JSON Serial' })
+        this._AddWithProps(Widget.DraftJsonSerial, `/DraftJsonSerial`, { title: 'Draft JSON Serial', ...p })
 
     addDraft = (p: PropsOf<typeof Panel_Draft>) => {
         const draftID = p.draftID
@@ -363,7 +363,7 @@ export class CushyLayoutManager {
                     {
                         id: 'leftPane',
                         type: 'row',
-                        weight: 100,
+                        weight: 50,
                         children: [
                             {
                                 type: 'tabset',

@@ -10,16 +10,16 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const preview = st.preview
     return (
         <div //
-            className='col-folder bg-base-200 h-full'
+            className='flex flex-col bg-base-200 h-full'
             style={{
                 // borderRight: '1px solid #383838',
                 background: st.configFile.value.galleryBgColor,
             }}
         >
-            <div tw='flex overflow-auto gap-2 px-2 bg-base-300 w-full'>
-                <FieldAndLabelUI label='Image size'>
+            <div tw='flex overflow-auto gap-2 px-2 bg-base-300 w-full flex-shrink-0'>
+                <FieldAndLabelUI label='Size'>
                     <Slider
-                        style={{ width: '5rem' }}
+                        style={{ width: '3rem' }}
                         min={32}
                         max={200}
                         onChange={(ev) => (st.gallerySize = parseFloatNoRoundingErr(ev.target.value))}
@@ -48,6 +48,12 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
                         onChange={(ev) => (st.showPreviewInFullScreen = ev.target.checked)}
                     />
                 </FieldAndLabelUI>
+                <FieldAndLabelUI label='in-panel'>
+                    <Toggle
+                        checked={st.isConfigValueEq('showPreviewInPanel', true)}
+                        onChange={(ev) => st.setConfigValue('showPreviewInPanel', ev.target.checked)}
+                    />
+                </FieldAndLabelUI>
                 <FieldAndLabelUI label='hover opacity'>
                     <Slider
                         style={{ width: '5rem' }}
@@ -60,7 +66,7 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
                 </FieldAndLabelUI>
             </div>
             {/* MAIN IMAGE COLUMN */}
-            <div className='flex flex-wrap items-start'>
+            <div className='flex flex-wrap overflow-auto'>
                 {preview ? ( //
                     <img
                         //

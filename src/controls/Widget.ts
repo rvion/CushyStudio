@@ -339,7 +339,7 @@ export type Widget_bool_state  = StateFields<{ type:'bool', active: true; val: b
 export type Widget_bool_output = boolean
 export interface Widget_bool extends IWidget<'bool', Widget_bool_input, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {}
 export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_bool_serial, Widget_bool_state, Widget_bool_output> {
-    isOptional = false
+    isOptional = true
     id: string
     type = 'bool' as const
     state: Widget_bool_state
@@ -354,7 +354,7 @@ export class Widget_bool implements IRequest<'bool', Widget_bool_input, Widget_b
         makeAutoObservable(this)
     }
     get serial(): Widget_bool_serial { return this.state }
-    get result(): Widget_bool_output { return this.state.val }
+    get result(): Widget_bool_output { return this.state.active ? this.state.val : false}
 }
 
 // 🅿️ intOpt ==============================================================================

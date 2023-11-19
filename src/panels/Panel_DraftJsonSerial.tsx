@@ -7,5 +7,9 @@ export const Panel_DraftJsonSerial = observer(function Panel_DraftJsonSerial_(p:
     const st = useSt()
     const draft = typeof p.draftID === 'string' ? st.db.drafts.get(p.draftID) : p.draftID
     if (draft == null) return null
-    return <JsonViewUI value={draft.gui.value?.serial} />
+    return (
+        <div>
+            <JsonViewUI value={draft.gui.value?.serial} />
+        </div>
+    )
 })

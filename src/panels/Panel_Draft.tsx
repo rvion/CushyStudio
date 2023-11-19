@@ -7,7 +7,7 @@ import { CardFile } from 'src/cards/CardFile'
 import { GithubUserUI } from 'src/cards/GithubAvatarUI'
 import { CardIllustrationUI } from 'src/cards/fancycard/CardIllustrationUI'
 import { DraftID, DraftL } from 'src/models/Draft'
-import { Button, Loader, Message } from 'src/rsuite/shims'
+import { Button, Joined, Loader, Message } from 'src/rsuite/shims'
 import { Dropdown, MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from 'src/state/stateContext'
 import { openInVSCode } from 'src/utils/electron/openInVsCode'
@@ -92,16 +92,26 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                         />
                     </PhoneWrapperUI>
                 )}
-                <TabUI>
-                    <div>Form</div>
-                    <div></div>
-                    <div>Form result</div>
-                    <JsonViewUI value={draft.gui.value?.result} />
-                    <div>Form state</div>
-                    <JsonViewUI value={draft.gui.value?.serial} />
-                    <div>Action code</div>
-                    <TypescriptHighlightedCodeUI code={app.codeJS ?? ''} />
-                </TabUI>
+                <Joined>
+                    <Button
+                        onClick={() => {
+                            st.layout.addDraftJsonResult({ draftID: draft.id })
+                        }}
+                        size='sm'
+                        tw='tab btn-ghost join-item'
+                    >
+                        Form result
+                    </Button>
+                    {/* <JsonViewUI value={draft.gui.value?.result} /> */}
+                    <Button size='sm' tw='tab btn-ghost join-item'>
+                        Form state
+                    </Button>
+                    {/* <JsonViewUI value={draft.gui.value?.serial} /> */}
+                    <Button size='sm' tw='tab btn-ghost join-item'>
+                        Action code
+                    </Button>
+                    {/* <TypescriptHighlightedCodeUI code={app.codeJS ?? ''} /> */}
+                </Joined>
             </div>
         </draftContext.Provider>
     )

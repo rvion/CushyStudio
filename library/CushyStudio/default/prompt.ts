@@ -40,21 +40,17 @@ card({
         }),
         // startImage
         removeBG: form.bool({ default: false }),
-        extra: form.group({
+        reversePositiveAndNegative: form.bool({ default: false }),
+        makeAVideo: form.bool({ default: false }),
+        show3d: form.groupOpt({
             items: () => ({
-                reversePositiveAndNegative: form.bool({ default: false }),
-                makeAVideo: form.bool({ default: false }),
-                show3d: form.groupOpt({
-                    items: () => ({
-                        normal: form.selectOne({
-                            default: { type: 'MiDaS' },
-                            choices: [{ type: 'MiDaS' }, { type: 'BAE' }],
-                        }),
-                        depth: form.selectOne({
-                            default: { type: 'Zoe' },
-                            choices: [{ type: 'MiDaS' }, { type: 'Zoe' }, { type: 'LeReS' }],
-                        }),
-                    }),
+                normal: form.selectOne({
+                    default: { type: 'MiDaS' },
+                    choices: [{ type: 'MiDaS' }, { type: 'BAE' }],
+                }),
+                depth: form.selectOne({
+                    default: { type: 'Zoe' },
+                    choices: [{ type: 'MiDaS' }, { type: 'Zoe' }, { type: 'LeReS' }],
                 }),
             }),
         }),
@@ -65,8 +61,8 @@ card({
         // MODEL, clip skip, vae, etc. ---------------------------------------------------------------
         let { ckpt, vae, clip } = run_model(flow, p.model)
 
-        const posPrompt = p.extra.reversePositiveAndNegative ? p.negative : p.positive
-        const negPrompt = p.extra.reversePositiveAndNegative ? p.positive : p.negative
+        const posPrompt = p.reversePositiveAndNegative ? p.negative : p.positive
+        const negPrompt = p.reversePositiveAndNegative ? p.positive : p.negative
 
         // RICH PROMPT ENGINE -------- ---------------------------------------------------------------
         const x = run_prompt(flow, { richPrompt: posPrompt, clip, ckpt })
@@ -150,7 +146,7 @@ card({
         }
 
         // SHOW 3D --------------------------------------------------------------------------------
-        const show3d = p.extra?.show3d
+        const show3d = p.show3d
         if (show3d) {
             flow.add_saveImage(finalImage, 'base')
 
@@ -186,7 +182,7 @@ card({
             }
         }
 
-        if (p.extra.makeAVideo) {
+        if (p.makeAVideo) {
             await flow.createAnimation()
         }
     },

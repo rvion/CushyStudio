@@ -1,8 +1,7 @@
-import { wildcards } from './wildcards'
-import { WildcardNode } from './WildcardNode'
 import { observer } from 'mobx-react-lite'
-import { Tooltip, Whisper } from 'src/rsuite/shims'
 import { RevealUI } from 'src/rsuite/RevealUI'
+import { WildcardNode } from './WildcardNode'
+import { wildcards } from './wildcards'
 
 export const WildcardNodeUI = observer(function WildcardNodeUI_(p: { node: WildcardNode }) {
     const node = p.node

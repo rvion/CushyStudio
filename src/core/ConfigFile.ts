@@ -89,6 +89,7 @@ export type ConfigFile = {
      * base size
      */
     showPreviewInFullScreen?: boolean
+    showPreviewInPanel?: boolean
 
     /** named perspectives */
     layouts_2?: { [perspectiveName: string]: IJsonModel }

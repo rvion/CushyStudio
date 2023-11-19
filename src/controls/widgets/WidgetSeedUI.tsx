@@ -6,7 +6,7 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
     const req = p.req
     const val = req.state.val
     return (
-        <div tw='flex items-center join border border-'>
+        <div tw='flex items-center join virtualBorder'>
             <button
                 type='button'
                 tw={['join-item btn-sm btn-ghost', req.state.mode === 'randomize' && 'btn-active']}
@@ -58,14 +58,14 @@ export const WidgetSeedUI = observer(function WidgetSeedUI_(p: { req: Widget_see
                 }}
             />
             <Button
-                size='xs'
+                size='sm'
                 appearance='subtle'
                 onClick={() => {
                     req.state.mode = 'fixed'
                     req.state.active = true
                     req.state.val = Math.floor(Math.random() * 1000000)
                 }}
-                icon={'🎲'}
+                icon={<span className='material-symbols-outlined'>autorenew</span>}
             >
                 New
                 {/* Random */}

@@ -1,3 +1,6 @@
+.virtualBorder {
+    border: 1px solid var(--fallback-bc,oklch(var(--bc)/0.2));
+}
 /* COMFY NODES ------------------------------------ */
 #CushyStudio.light {
     --comfy-default: #d6d6d6;

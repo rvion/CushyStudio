@@ -121,6 +121,9 @@ const getPreviewType = (
     }
     if (imageID == null) {
         if (st.showLatentPreviewInLastImagePanel) {
+            if (st.getConfigValue('showPreviewInPanel')) {
+                if (st.hovered) return { url: st.hovered.url }
+            }
             const lastImage = st.db.images.last()
             const latent = st.preview
             if (latent == null) return { url: lastImage?.url ?? errorURL, img: lastImage }

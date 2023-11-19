@@ -102,6 +102,7 @@ export const RevealUI = observer(function Tooltip_(p: {
     className?: string
     showDelay?: number
     hideDelay?: number
+    enableRightClick?: boolean
 }) {
     const showDelay = p.showDelay ?? 300
     const hideDelay = p.hideDelay ?? 300
@@ -121,6 +122,7 @@ export const RevealUI = observer(function Tooltip_(p: {
                   tw={['card card-bordered bg-base-100 shadow-xl pointer-events-auto', ...(p.tooltipWrapperClassName ?? [])]}
                   onMouseEnter={uist.enterTooltip}
                   onMouseLeave={uist.leaveTooltip}
+                  onContextMenu={uist.enterAnchorNow}
                   style={{
                       position: 'absolute',
                       zIndex: 99999999,
