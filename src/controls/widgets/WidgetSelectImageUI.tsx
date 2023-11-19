@@ -28,70 +28,90 @@ export const WidgetSelectImageUI = observer(function WidgetSelectImageUI_(p: { r
         })
     })
     const draft = useDraft()
+
+    const comfyImage = (
+        <img
+            style={{ width: '7rem', height: '7rem' }}
+            src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(req.state.comfy.imageName)}&type=input&subfolder=`}
+            alt=''
+        />
+    )
+    const droppedImage = req.state.cushy ? <ImageUI img={draft.db.images.getOrThrow(req.state.cushy.imageID)} /> : null
+
     const tabs = [
         {
-            title: () => <>Drop</>,
+            title: () => <>Image</>,
             body: () => (
-                <div className='flex gap-2 p-1 bg-base-100 border border-dashed border-neutral self-center'>
-                    {req.state.cushy != null ? ( //
-                        <div tw='flex items-start'>
-                            <ImageUI img={draft.db.images.getOrThrow(req.state.cushy.imageID)} />
-                            {req instanceof Widget_imageOpt ? (
-                                <Button size='sm' onClick={() => (req.state.active = false)}>
-                                    X
-                                </Button>
-                            ) : null}
+                <div tw='flex flex-row gap-1'>
+                    {req.state.pick !== 'comfy' ? comfyImage : droppedImage}
+                    <div className='flex flex-col gap-2 bg-base-100'>
+                        {req.state.cushy != null ? ( //
+                            <div tw='flex items-start'>
+                                Drop:
+                                <ImageUI img={draft.db.images.getOrThrow(req.state.cushy.imageID)} />
+                                {req instanceof Widget_imageOpt ? (
+                                    <Button size='sm' onClick={() => (req.state.active = false)}>
+                                        X
+                                    </Button>
+                                ) : null}
+                            </div>
+                        ) : (
+                            <span>drop image here</span>
+                        )}
+                        <div tw='flex gap-1 items-center'>
+                            ComfyUI:
+                            <EnumSelectorUI
+                                enumName='Enum_LoadImage_image'
+                                // value={req.state.comfy?.imageName ?? null}
+                                hideValue={req.state.pick !== 'comfy'}
+                                value={st.fixEnumValue(req.state.comfy?.imageName, 'Enum_LoadImage_image', req.isOptional)}
+                                isOptional={req.state.pick !== 'comfy' || !req.state.active}
+                                onChange={(t) => {
+                                    // handle nullability for Widget_imageOpt
+                                    if (
+                                        t == null &&
+                                        (req instanceof Widget_imageOpt || req instanceof Widget_image) &&
+                                        req.state.active &&
+                                        req.state.pick === 'comfy'
+                                    ) {
+                                        req.state.active = false
+                                    }
+                                    if (t == null) return
+                                    // handle value
+                                    req.state.comfy.imageName = t as Enum_LoadImage_image
+                                    req.state.pick = 'comfy'
+                                }}
+                            />
+                            <Button size='sm' onClick={() => (req.state.active = false)}>
+                                X
+                            </Button>
                         </div>
-                    ) : (
-                        <span>drop image here</span>
-                    )}
+                    </div>
                 </div>
             ),
         },
-        {
-            title: () => <>Pick</>,
-            body: () => (
-                <>
-                    {req.state.comfy && (
-                        <img
-                            style={{ width: '7rem', height: '7rem' }}
-                            src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(
-                                req.state.comfy.imageName,
-                            )}&type=input&subfolder=`}
-                            alt=''
-                        />
-                    )}
-
-                    <EnumSelectorUI
-                        enumName='Enum_LoadImage_image'
-                        // value={req.state.comfy?.imageName ?? null}
-                        value={st.fixEnumValue(req.state.comfy?.imageName, 'Enum_LoadImage_image', req.isOptional)}
-                        isOptional={req.state.pick !== 'comfy' || !req.state.active}
-                        onChange={(t) => {
-                            // handle nullability for Widget_imageOpt
-                            if (
-                                t == null &&
-                                (req instanceof Widget_imageOpt || req instanceof Widget_image) &&
-                                req.state.active &&
-                                req.state.pick === 'comfy'
-                            ) {
-                                req.state.active = false
-                            }
-
-                            if (t == null) return
-                            // handle value
-                            req.state.comfy.imageName = t as Enum_LoadImage_image
-                            req.state.pick = 'comfy'
-                        }}
-                    />
-                </>
-            ),
-        },
+        // {
+        //     title: () => <>Pick</>,
+        //     body: () => (
+        //         <>
+        //             {req.state.comfy && (
+        //                 <img
+        //                     style={{ width: '7rem', height: '7rem' }}
+        //                     src={`${st.getServerHostHTTP()}/view?filename=${encodeURIComponent(
+        //                         req.state.comfy.imageName,
+        //                     )}&type=input&subfolder=`}
+        //                     alt=''
+        //                 />
+        //             )}
+        //         </>
+        //     ),
+        // },
         {
             title: () => <>Scribble</>,
             body: () => (
                 <ScribbleCanvas
-                    style={{ border: '1px solid black' }}
+                    tw='p-2'
+                    // style={{ border: '1px solid black' }}
                     fillStyle='black'
                     strokeStyle='white'
                     onChange={(base64: string) => {

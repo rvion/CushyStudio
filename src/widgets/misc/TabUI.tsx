@@ -22,7 +22,7 @@ export const TabsUI = observer(function Tabs_(p: {
 }) {
     const [onIx, setIx] = useState(() => p.current ?? 0)
     const tabHeader = (
-        <div tw='tabs tabs-boxed'>
+        <div style={{ width: 'fit-content' }} tw='tabs tabs-lifted '>
             {p.tabs.map((tab, ix) => {
                 const active = ix === onIx
                 return (
@@ -51,14 +51,8 @@ export const TabsUI = observer(function Tabs_(p: {
             style={p.style}
             tw={['_TabsUI', p.className, p.grow && '_grow', 'relative', p.inline && 'flex']}
         >
-            {/* <div tw='tabs tabs-lifted'>
-                <a tw='tab'>Tab 1</a>
-                <a tw='tab tab-active'>Tab 2</a>
-                <a tw='tab'>Tab 3</a>
-            </div> */}
-
             {p.bottomTabs ? null : tabHeader}
-            <div className='_tab_body'>
+            <div className='_tab_body bg-base-100 tab-content block'>
                 {selectedTab ? ( //
                     <TabBodyWrapperUI key={onIx} fn={selectedTab.body} />
                 ) : (

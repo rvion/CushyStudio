@@ -2,7 +2,7 @@ import type { STATE } from 'src/state/state'
 
 import { observer } from 'mobx-react-lite'
 import { ImageL } from 'src/models/Image'
-import { DropdownMenu, Popover, PositionChildProps, Whisper } from 'src/rsuite/shims'
+import { Button, DropdownMenu, Popover, PositionChildProps, Whisper } from 'src/rsuite/shims'
 import { MenuItem } from 'src/rsuite/Dropdown'
 import { useSt } from '../../state/stateContext'
 import { useImageDrag } from './dnd'
@@ -65,9 +65,14 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
                 //
             >
                 <div>{IMG}</div>
-                <DropdownMenu>
-                    <MenuItem onClick={() => st.layout.addPaint(image.id)}>Paint</MenuItem>
-                    <MenuItem onClick={() => st.layout.addPaint(image.id)}>Mask</MenuItem>
+                <div>
+                    <Button
+                        icon={<span className='material-symbols-outlined'>edit</span>}
+                        onClick={() => st.layout.addPaint(image.id)}
+                    >
+                        Paint
+                    </Button>
+                    {/* <MenuItem onClick={() => st.layout.addPaint(image.id)}>Mask</MenuItem> */}
                     {/* <DropdownMenu title='Edit'>
                     <DropdownItem eventKey={1}>New File</DropdownItem>
                     <DropdownItem eventKey={2}>New File with Current Profile</DropdownItem>
@@ -77,7 +82,7 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
                     <DropdownItem eventKey={5}>Export HTML</DropdownItem>
                     <DropdownItem eventKey={6}>Settings</DropdownItem>
                     <DropdownItem eventKey={7}>About</DropdownItem> */}
-                </DropdownMenu>
+                </div>
             </RevealUI>
             {/* {IMG} */}
         </>

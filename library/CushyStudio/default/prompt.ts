@@ -1,9 +1,10 @@
-import * as _ from './_prefabs'
+import type { RelativePath } from 'src/utils/fs/BrandedPaths'
 import { run_latent, ui_latent } from './_prefabs/prefab_latent'
 import { run_model, ui_model } from './_prefabs/prefab_model'
 import { run_prompt } from './_prefabs/prefab_prompt'
 import { ui_recursive } from './_prefabs/prefab_recursive'
 import { Ctx_sampler, run_sampler, ui_sampler } from './_prefabs/prefab_sampler'
+import { ui_highresfix } from './_prefabs'
 
 card({
     ui: (form) => ({
@@ -27,8 +28,23 @@ card({
         model: ui_model(form),
         latent: ui_latent(form),
         sampler: ui_sampler(form),
+        cnets: form.groupOpt({
+            items: () => ({
+                pose: form.list({
+                    //
+                    element: () =>
+                        form.group({
+                            items: () => ({
+                                pose: form.image({
+                                    assetSuggested: 'library/CushyStudio/default/_poses/' as RelativePath,
+                                }),
+                            }),
+                        }),
+                }),
+            }),
+        }),
         recursiveImgToImg: ui_recursive(form),
-        highResFix: _.ui_highresfix(form),
+        highResFix: ui_highresfix(form),
         loop: form.groupOpt({
             items: () => ({
                 batchCount: form.int({ default: 1 }),
@@ -43,16 +59,18 @@ card({
         reversePositiveAndNegative: form.bool({ default: false }),
         makeAVideo: form.bool({ default: false }),
         show3d: form.groupOpt({
-            items: () => ({
-                normal: form.selectOne({
-                    default: { type: 'MiDaS' },
-                    choices: [{ type: 'MiDaS' }, { type: 'BAE' }],
-                }),
-                depth: form.selectOne({
-                    default: { type: 'Zoe' },
-                    choices: [{ type: 'MiDaS' }, { type: 'Zoe' }, { type: 'LeReS' }],
-                }),
-            }),
+            items: () => {
+                return {
+                    normal: form.selectOne({
+                        default: { id: 'MiDaS' },
+                        choices: [{ id: 'MiDaS' }, { id: 'BAE' }],
+                    }),
+                    depth: form.selectOne({
+                        default: { id: 'Zoe' },
+                        choices: [{ id: 'MiDaS' }, { id: 'Zoe' }, { id: 'LeReS' }],
+                    }),
+                }
+            },
         }),
     }),
 
@@ -151,16 +169,16 @@ card({
             flow.add_saveImage(finalImage, 'base')
 
             const depth = (() => {
-                if (show3d.depth.type === 'MiDaS') return graph.MiDaS$7DepthMapPreprocessor({ image: finalImage })
-                if (show3d.depth.type === 'Zoe') return graph.Zoe$7DepthMapPreprocessor({ image: finalImage })
-                if (show3d.depth.type === 'LeReS') return graph.LeReS$7DepthMapPreprocessor({ image: finalImage })
+                if (show3d.depth.id === 'MiDaS') return graph.MiDaS$7DepthMapPreprocessor({ image: finalImage })
+                if (show3d.depth.id === 'Zoe') return graph.Zoe$7DepthMapPreprocessor({ image: finalImage })
+                if (show3d.depth.id === 'LeReS') return graph.LeReS$7DepthMapPreprocessor({ image: finalImage })
                 return exhaust(show3d.depth)
             })()
             flow.add_saveImage(depth, 'depth')
 
             const normal = (() => {
-                if (show3d.normal.type === 'MiDaS') return graph.MiDaS$7NormalMapPreprocessor({ image: finalImage })
-                if (show3d.normal.type === 'BAE') return graph.BAE$7NormalMapPreprocessor({ image: finalImage })
+                if (show3d.normal.id === 'MiDaS') return graph.MiDaS$7NormalMapPreprocessor({ image: finalImage })
+                if (show3d.normal.id === 'BAE') return graph.BAE$7NormalMapPreprocessor({ image: finalImage })
                 return exhaust(show3d.normal)
             })()
             flow.add_saveImage(normal, 'normal')

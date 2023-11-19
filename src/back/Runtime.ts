@@ -34,9 +34,43 @@ export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 /** script exeuction instance */
 export class Runtime {
     st: STATE
+
+    /**
+     * filesystem library.
+     * your app can do IO.
+     * with great power comes great responsibility.
+     */
     fs = fs
+
+    /**
+     * path manifulation library;
+     * avoid concateing paths yourself if you want your app
+     */
     path = path
 
+    /**
+     * get the configured trigger words for the given lora
+     * (those are user defined; hover your lora in any rich text prompt to edit them)
+     */
+    getLoraAssociatedTriggerWords = (loraName: string): Maybe<string> => {
+        return this.st.configFile.value?.loraPrompts?.[loraName]?.text
+    }
+
+    /**
+     * get yoru configured lora metada
+     * (those are user defined; hover your lora in any rich text prompt to edit them)
+     */
+    getLoraAssociatedMetadata = (
+        loraName: string,
+    ): Maybe<{
+        text?: string | undefined
+        url?: string | undefined
+    }> => {
+        return this.st.configFile.value?.loraPrompts?.[loraName]
+    }
+
+    get schema() { return this.st.schema } // prettier-ignore
+    get flow() { return this } // prettier-ignore
     get graph(): GraphL {
         return this.step.outputGraph.item
     }
@@ -127,8 +161,8 @@ export class Runtime {
         }
     }
 
-    hasLora = (loraName: string): boolean => this.st.schema.hasLora(loraName)
-    hasCheckpoint = (loraName: string): boolean => this.st.schema.hasLora(loraName)
+    hasLora = (loraName: string): boolean => this.schema.hasLora(loraName)
+    hasCheckpoint = (loraName: string): boolean => this.schema.hasLora(loraName)
 
     /** run an imagemagick convert action */
     imagemagicConvert = (img: ImageL, partialCmd: string, suffix: string): string => {

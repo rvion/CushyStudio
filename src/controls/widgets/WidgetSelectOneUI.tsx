@@ -10,7 +10,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
     return (
         <SelectUI<T>
             size='sm'
-            getLabelText={(t) => t.type}
+            getLabelText={(t) => t.label ?? t.id}
             options={req.choices}
             value={() => value}
             onChange={(selectOption) => {
@@ -19,7 +19,7 @@ export const WidgetSelectOneUI = observer(function WidgetSelectOneUI_<T extends 
                     req.state.active = false
                     return
                 }
-                const next = req.choices.find((c) => c.type === selectOption.type)
+                const next = req.choices.find((c) => c.id === selectOption.id)
                 if (next == null) {
                     console.log(`❌ WidgetSelectOneUI: could not find choice for ${JSON.stringify(selectOption)}`)
                     return

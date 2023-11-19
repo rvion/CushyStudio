@@ -188,6 +188,11 @@ hr {
 }
 
 
+._MD h1 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    /* margin: 1rem 0; */
+}
 ._MD {
     border-left: 3px solid #266d9a;
     padding-left: .2rem

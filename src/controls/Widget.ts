@@ -16,6 +16,7 @@ import { FormBuilder } from './FormBuilder'
 import { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
 import { nanoid } from 'nanoid'
 import { CleanedEnumResult } from 'src/types/EnumUtils'
+import { RelativePath } from 'src/utils/fs/BrandedPaths'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -621,6 +622,7 @@ export type Widget_image_input  = ReqInput<{
     defaultPaint?: PaintImageAnswer,
     scribbleStrokeColor?: string,
     scribbleFillColor?: string
+    assetSuggested?: RelativePath
 }>
 export type Widget_image_serial = Widget_image_state
 export type Widget_image_state  = StateFields<ImageAnswerForm<'image', true>>
@@ -697,7 +699,7 @@ export class Widget_imageOpt implements IRequest<'imageOpt', Widget_imageOpt_inp
 }
 
 // 🅿️ selectOne ==============================================================================
-export type BaseSelectOneEntry = { type: string }
+export type BaseSelectOneEntry = { id: string, label?: string }
 export type Widget_selectOne_input <T extends BaseSelectOneEntry>  = ReqInput<{ default?: T; choices: T[] | ((formRoot:Widget_group<any>) => T[]) }>
 export type Widget_selectOne_serial<T extends BaseSelectOneEntry> = Widget_selectOne_state<T>
 export type Widget_selectOne_state <T extends BaseSelectOneEntry>  = StateFields<{ type:'selectOne', query: string; val: T }>
@@ -885,6 +887,17 @@ export class Widget_list<T extends Widget> implements IRequest<'list', Widget_li
             }
         }
         makeAutoObservable(this)
+    }
+    removemAllItems = () => {
+        this.state.items = []
+    }
+    collapseAllItems = () => {
+        for (const item of this.state.items)
+            item.state.collapsed = true
+    }
+    expandAllItems = () => {
+        for (const item of this.state.items)
+            item.state.collapsed = false
     }
     removeItem = (item: T) => {
         const i = this.state.items.indexOf(item)

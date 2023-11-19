@@ -21,6 +21,7 @@ import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrUI } from './WidgetStrUI'
+import { WidgetDI } from './WidgetDI'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets
@@ -68,3 +69,5 @@ export const WidgetUI = observer(function WidgetUI_(p: { req: R.Widget; focus?: 
         not supported
      </Message>
 })
+
+WidgetDI.WidgetUI = WidgetUI

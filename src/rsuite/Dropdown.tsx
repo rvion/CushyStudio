@@ -10,9 +10,11 @@ export const Dropdown = (p: {
     appearance?: Maybe<RSAppearance>
     size?: Maybe<RSSize>
     children: ReactNode
+    enableRightClick?: boolean
 }) => (
     <RevealUI
         //
+        enableRightClick={p.enableRightClick}
         showDelay={1000}
         hideDelay={1000}
         className='dropdown'

@@ -84,15 +84,15 @@ export const ui_resolutionPicker = (form: FormBuilder) =>
     form.selectOne({
         label: 'Resolution',
         choices: [
-            { type: '1024x1024' },
-            { type: '896x1152' },
-            { type: '832x1216' },
-            { type: '768x1344' },
-            { type: '640x1536' },
-            { type: '1152x862' },
-            { type: '1216x832' },
-            { type: '1344x768' },
-            { type: '1536x640' },
+            { id: '1024x1024' },
+            { id: '896x1152' },
+            { id: '832x1216' },
+            { id: '768x1344' },
+            { id: '640x1536' },
+            { id: '1152x862' },
+            { id: '1216x832' },
+            { id: '1344x768' },
+            { id: '1536x640' },
         ],
         tooltip: 'Width x Height',
     })
@@ -101,7 +101,7 @@ export const ui_resolutionPicker = (form: FormBuilder) =>
 export const ui_shapePickerBasic = (form: FormBuilder) => {
     return form.selectOne({
         label: 'Shape',
-        choices: [{ type: 'round' }, { type: 'square' }],
+        choices: [{ id: 'round' }, { id: 'square' }],
     })
 }
 
@@ -109,6 +109,6 @@ export const ui_shapePickerBasic = (form: FormBuilder) => {
 export const ui_shapePickerExt = <const T extends string>(form: FormBuilder, values: T[]) => {
     return form.selectOne({
         label: 'Shape',
-        choices: values.map((t) => ({ type: t })),
+        choices: values.map((t) => ({ id: t })),
     })
 }

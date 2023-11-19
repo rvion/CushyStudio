@@ -94,16 +94,19 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 )}
                 <Joined>
                     <Button
-                        onClick={() => {
-                            st.layout.addDraftJsonResult({ draftID: draft.id })
-                        }}
+                        onClick={() => st.layout.addDraftJsonResult({ draftID: draft.id })}
                         size='sm'
                         tw='tab btn-ghost join-item'
                     >
                         Form result
                     </Button>
                     {/* <JsonViewUI value={draft.gui.value?.result} /> */}
-                    <Button size='sm' tw='tab btn-ghost join-item'>
+                    <Button
+                        //
+                        onClick={() => st.layout.addDraftJsonSerial({ draftID: draft.id })}
+                        size='sm'
+                        tw='tab btn-ghost join-item'
+                    >
                         Form state
                     </Button>
                     {/* <JsonViewUI value={draft.gui.value?.serial} /> */}

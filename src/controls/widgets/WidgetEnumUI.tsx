@@ -39,6 +39,7 @@ export const WidgetEnumUI = observer(function WidgetEnumUI_<K extends KnownEnumN
 export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
     isOptional: boolean
     value: CleanedEnumResult<any>
+    hideValue?: boolean
     // substituteValue?: EnumValue | null
     onChange: (v: EnumValue | null) => void
     disabled?: boolean
@@ -59,6 +60,7 @@ export const EnumSelectorUI = observer(function EnumSelectorUI_(p: {
                 options={options}
                 getLabelText={(v) => v.toString()}
                 value={() => p.value.candidateValue}
+                hideValue={p.hideValue}
                 onChange={(option) => {
                     if (option == null) return
                     p.onChange(option)

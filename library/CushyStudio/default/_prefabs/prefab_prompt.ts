@@ -1,7 +1,6 @@
 import type { Runtime } from 'src/back/Runtime'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 
-// --------------------------------------------------------
 export const run_prompt = (
     flow: Runtime,
     p: {
@@ -38,7 +37,7 @@ export const run_prompt = (
                     strength_model: tok.loraDef.strength_model,
                 })
 
-                const associatedText = flow.st.configFile.value?.loraPrompts?.[tok.loraDef.name]?.text
+                const associatedText = flow.getLoraAssociatedTriggerWords(tok.loraDef.name)
                 if (associatedText) text += ` ${associatedText}`
 
                 clip = next._CLIP

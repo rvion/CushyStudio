@@ -6,10 +6,11 @@ import { FieldAndLabelUI } from './FieldAndLabelUI'
 import { parseFloatNoRoundingErr } from 'src/utils/misc/parseFloatNoRoundingErr'
 
 export const ScribbleCanvas = (p: {
-    style: CSSProperties
     fillStyle: string
     strokeStyle: string
     onChange: (base64: string) => void
+    style?: CSSProperties
+    className?: string
 }) => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null)
     const [drawing, setDrawing] = useState(false)
@@ -68,9 +69,10 @@ export const ScribbleCanvas = (p: {
         debouncedOnChange()
     }
     return (
-        <div style={p.style}>
+        <div style={p.style} className={p.className}>
             <div tw='flex gap-2 items-start'>
                 <Button
+                    size='sm'
                     onClick={() => {
                         const ctx = canvasRef.current?.getContext('2d')
                         if (ctx) {

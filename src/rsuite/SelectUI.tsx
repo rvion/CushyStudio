@@ -16,6 +16,7 @@ type PP<T> = {
     size?: RSSize
     disabled?: boolean
     cleanable?: boolean
+    hideValue?: boolean
 }
 
 class AutoCompleteSelectState<T> {
@@ -44,6 +45,7 @@ class AutoCompleteSelectState<T> {
         return this.p.value?.()
     }
     get displayValue(): string {
+        if (this.p.hideValue) return ''
         const sop = this.value
         if (sop == null) return 'Select...'
         if (Array.isArray(sop)) return sop.map(this.p.getLabelText).join(', ')
