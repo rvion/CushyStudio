@@ -23,8 +23,11 @@
 
 🖥️ **Cushy Studio**: a modern and cross-platform software to **Play** and **Work** with Generative AI Art (**Image**, **Video**, **3d**)
 
+![](docs/static/img/screenshots/2023-11-20-00-20-41.png)
+
 💎 **Cushy Apps**: self-contained, use-case centric interfaces that makes generative art simple for everyone. Find the app for you need in the **Cushy Library**, from gerenal-purpose Apps to very specific ones for dedicated use-cases.
 
+![](docs/static/img/screenshots/2023-11-20-00-16-19.png)
 🚀 **Cushy SDK**: Automate your work or tackle specific use-cases by building your own **App**. CushyStudio is packed with power-user tools to support you building the "app" of your dream. Once ready, share it with the world though the cushy app library.
 
 ☀️ **Cushy Cloud**: A cloud GPU renting service is launching soon so you can play with any demanding app, even on mobile devices. Fair prices to fund the CushyStudio growth, and grow the community. Growing the community includes revenues sharing with app creators when users rent GPU to use their app.
@@ -47,12 +50,7 @@ For all, art awakes.
 </div>
 
 
-## 1.1. Cushy Apps: generative AI workflows made simple and fun
-
-- **Cushy Apps** are self-contained applications empowering everyone to experience what AI has to offer in art and asset production.
-- Anyone can make Cushy apps to solve a particular need: By showing only showing you the right control that make sense for yout task, they are very easy to use. The philosophy behind Cushy apps is to empower you to simply express what you want.
-- CushyApps core are powered by battle-tested tools like `ComfyUI`, `Konva`, `ffmpeg`, `imagemagik`, and more.
-- For more advances users, or companies, Cushy Apps make it simple to automate any creation process, from game asset production, image post-processing, image generation, and even video generation. Developpers, dev citizens, or just advanced users can use the built-in TypeScript SDK to create their own **Cushy Apps**. streamline production workflow. They come with a nice and simple interface to make it easy to play experiment and play with those workflows.
+## 1.1. Screenshots
 
 _image 1 - screenshot showcasing the **Framed Avatar Maker** app_
 ![](docs/static/img/screenshots/2023-11-14-22-33-15.png)
