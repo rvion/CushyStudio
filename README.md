@@ -7,7 +7,7 @@
 <img height="21"  alt="Maturity"     src="https://img.shields.io/badge/status-BETA-yellow" />
 <img height="21" alt="Build Status" src="https://img.shields.io/badge/build-passing-%20brightgreen" />
 <img height="21"  alt="Activity"     src="https://img.shields.io/github/commit-activity/y/rvion/cushystudio" />
-<img height="21"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" />
+<!-- <img height="21"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" /> -->
 
 <br />
 <a href="https://discord.gg/GfAN6hF2ad">
