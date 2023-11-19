@@ -33,6 +33,9 @@
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/rvion)
 
 
+https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34dfe7bd2184
+
+
 <div align="center">
 
 ```
@@ -42,9 +45,6 @@ For all, art awakes.
 ```
 
 </div>
-
-
-https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34dfe7bd2184
 
 
 ## 1.1. Cushy Apps: generative AI workflows made simple and fun
