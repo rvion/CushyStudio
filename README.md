@@ -23,11 +23,12 @@
 
 🖥️ **Cushy Studio**: a modern and cross-platform software to **Play** and **Work** with Generative AI Art (**Image**, **Video**, **3d**)
 
-![](docs/static/img/screenshots/2023-11-20-00-20-41.png)
-
 💎 **Cushy Apps**: self-contained, use-case centric interfaces that makes generative art simple for everyone. Find the app for you need in the **Cushy Library**, from gerenal-purpose Apps to very specific ones for dedicated use-cases.
 
+![](docs/static/img/screenshots/2023-11-20-00-20-41.png)
+
 ![](docs/static/img/screenshots/2023-11-20-00-16-19.png)
+
 🚀 **Cushy SDK**: Automate your work or tackle specific use-cases by building your own **App**. CushyStudio is packed with power-user tools to support you building the "app" of your dream. Once ready, share it with the world though the cushy app library.
 
 ☀️ **Cushy Cloud**: A cloud GPU renting service is launching soon so you can play with any demanding app, even on mobile devices. Fair prices to fund the CushyStudio growth, and grow the community. Growing the community includes revenues sharing with app creators when users rent GPU to use their app.
