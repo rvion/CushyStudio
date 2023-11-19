@@ -1,67 +1,46 @@
 .flexlayout__layout {
-  /* Assuming black text is similar to your base color */
-  /* --color-text: hsl(var(--b1)); */
-  /* White background equivalent */
-  --color-background: hsl(var(--b3));
-  /* Base color */
-  --color-base: hsl(var(--b3));
-  /* Slightly off-white */
-  --color-1: hsl(var(--b1));
-  /* Whitesmoke equivalent */
-  --color-2: hsl(var(--b2));
-  /* Light gray equivalent */
-  --color-3: hsl(var(--b3));
-  /* Placeholder for non-existing base-400 */
-  --color-4: hsl(var(--b3));
-  /* Slightly darker than --color-3 */
-  --color-5: hsl(var(--b3));
-  /* Placeholder for a color a bit darker than --color-5 */
-  --color-6: hsl(var(--b3));
-  /* Primary color for dragging */
-  --color-drag1: hsl(var(--p));
-  /* Secondary color for dragging */
-  --color-drag2: hsl(var(--s));
-  /* Primary color background with lowered opacity */
-  --color-drag1-background: hsl(var(--p));
-  /* Secondary color background with lowered opacity */
-  --color-drag2-background: hsl(var(--s));
-  /* Default medium size */
-  /* --font-size: 1rem; */
-  /* --font-family: 'Roboto', 'Arial', sans-serif; */
-  --color-overflow: hsl(var(--n)); /* Neutral color for overflow */
-  --color-icon: hsl(var(--bc)); /* Neutral color for icons */
-  --color-tabset-background: hsl(var(--b3));
-  --color-tabset-background-selected: hsl(var(--b1));
-  --color-tabset-background-maximized: hsl(var(--b3));
-  --color-tabset-divider-line: hsl(var(--b3));
-  --color-tabset-header-background: hsl(var(--b3));
-  --color-tabset-header: hsl(var(--b1));
-  --color-border-background: hsl(var(--b3));
-  --color-border-divider-line: hsl(var(--b3));
-  --color-tab-selected: hsl(var(--sc));
-  --color-tab-selected-background: hsl(var(--s));
-  /* --color-tab-unselected: hsl(var(--n)); */
+  --color-background: oklch(var(--b1)); /* White background equivalent */
+  --color-base: oklch(var(--b1)); /* Base color */
+  --color-1: oklch(var(--b1)); /* Slightly off-white */
+  --color-2: oklch(var(--b2)); /* Whitesmoke equivalent */
+  --color-3: oklch(var(--b3)); /* Light gray equivalent */
+  --color-4: oklch(var(--b3)); /* Placeholder for non-existing base-400 */
+  --color-5: oklch(var(--b3)); /* Slightly darker than --color-3 */
+  --color-6: oklch(var(--b3)); /* Placeholder for a color a bit darker than --color-5 */
+  --color-drag1: oklch(var(--p)); /* Primary color for dragging */
+  --color-drag2: oklch(var(--s)); /* Secondary color for dragging */
+  --color-drag1-background: oklch(var(--p)); /* Primary color background with lowered opacity */
+  --color-drag2-background: oklch(var(--s)); /* Secondary color background with lowered opacity */
+  --color-overflow: oklch(var(--n)); /* Neutral color for overflow */
+  --color-icon: oklch(var(--n)); /* Neutral color for icons, assuming this is meant to be neutral */
+  --color-tabset-background: oklch(var(--b3));
+  --color-tabset-background-selected: oklch(var(--b1));
+  --color-tabset-background-maximized: oklch(var(--b3));
+  --color-tabset-divider-line: oklch(var(--b3));
+  --color-tabset-header-background: oklch(var(--b3));
+  --color-tabset-header: oklch(var(--b1));
+  --color-border-background: oklch(var(--b3));
+  --color-border-divider-line: oklch(var(--b3));
+  --color-tab-selected: oklch(var(--sc)); /* Assuming --sc is a valid variable for selected content */
+  --color-tab-selected-background: oklch(var(--s));
   --color-tab-unselected-background: transparent;
-  /* --color-tab-textbox: hsl(var(--b1)); */
-  --color-tab-textbox-background: hsl(var(--b3));
-  /* --color-border-tab-selected: hsl(var(--b1)); */
+  --color-tab-textbox-background: oklch(var(--b3));
   --color-border-tab-selected-background: transparent;
-  /* --color-border-tab-unselected: hsl(var(--n)); */
   --color-border-tab-unselected-background: transparent;
-  --color-splitter: hsl(var(--b3));
-  --color-splitter-hover: hsl(var(--b3));
-  --color-splitter-drag: hsl(var(--b3));
-  --color-drag-rect-border: hsl(var(--b3));
-  --color-drag-rect-background: hsl(var(--b3));
-  --color-drag-rect: hsl(var(--b1));
-  --color-popup-border: hsl(var(--b3));
-  --color-popup-unselected: hsl(var(--b1));
-  --color-popup-unselected-background: hsl(var(--b3));
-  --color-popup-selected: hsl(var(--b1));
-  --color-popup-selected-background: hsl(var(--b3));
-  --color-edge-marker: hsl(var(--n));
-  --color-underline: hsl(var(--i)); /* Info color for underline */
-  --color-underline-hover: hsl(var(--n)); /* Neutral color for hover state */
+  --color-splitter: oklch(var(--b3));
+  --color-splitter-hover: oklch(var(--b3));
+  --color-splitter-drag: oklch(var(--b3));
+  --color-drag-rect-border: oklch(var(--b3));
+  --color-drag-rect-background: oklch(var(--b3));
+  --color-drag-rect: oklch(var(--b1));
+  --color-popup-border: oklch(var(--b3));
+  --color-popup-unselected: oklch(var(--b1));
+  --color-popup-unselected-background: oklch(var(--b3));
+  --color-popup-selected: oklch(var(--b1));
+  --color-popup-selected-background: oklch(var(--b3));
+  --color-edge-marker: oklch(var(--n));
+  --color-underline: oklch(var(--i)); /* Info color for underline */
+  --color-underline-hover: oklch(var(--n)); /* Neutral color for hover state */
   --underline_height: 3px;
 }
 
@@ -590,5 +569,3 @@
   font-size: var(--font-size);
   font-family: var(--font-family);
 }
-
-/*# sourceMappingURL=dark.css.map */

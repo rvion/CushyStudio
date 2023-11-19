@@ -43,6 +43,7 @@ card({
         extra: form.group({
             items: () => ({
                 reversePositiveAndNegative: form.bool({ default: false }),
+                makeAVideo: form.bool({ default: false }),
                 show3d: form.groupOpt({
                     items: () => ({
                         normal: form.selectOne({
@@ -183,6 +184,10 @@ card({
                 await new Promise((r) => setTimeout(r, loop.delayBetween))
                 await flow.PROMPT()
             }
+        }
+
+        if (p.extra.makeAVideo) {
+            await flow.createAnimation()
         }
     },
 })

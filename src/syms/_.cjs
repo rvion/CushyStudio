@@ -24,5 +24,5 @@ for (const x of modulesToCache) {
     for (const x of symbols) {
         output += `export const ${x} = _.${x}\n`
     }
-    fs.writeFileSync(`src/syms/${x}`, output)
+    fs.writeFileSync(`src/syms/${x}.js`, output)
 }

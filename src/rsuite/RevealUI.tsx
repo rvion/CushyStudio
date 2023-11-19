@@ -5,7 +5,6 @@ import { createPortal } from 'react-dom'
 
 class TooltipState {
     get visible() {
-        console.log({ inAnchor: this.inAnchor, inTooltip: this.inTooltip })
         return this.inAnchor || this.inTooltip
     }
 

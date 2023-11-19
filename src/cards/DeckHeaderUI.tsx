@@ -21,7 +21,6 @@ export const DeckHeaderUI = observer(function ActionPackHeaderUI_(p: { deck: Dec
                     src={deck.logo}
                     alt='logo'
                 />
-
                 <div tw='flex flex-grow'>
                     <div tw='flex-grow'>
                         <div tw='text-base-content font-bold'>{deck.name}</div>
