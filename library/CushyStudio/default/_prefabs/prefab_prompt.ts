@@ -27,7 +27,7 @@ export const run_prompt = (
             else if (tok.type === 'embedding') text += `${_space}embedding:${tok.embeddingName}`
             else if (tok.type === 'wildcard') {
                 const options = (flow.wildcards as any)[tok.payload]
-                if (Array.isArray(options)) text += ` ${flow.pick(options)}`
+                if (Array.isArray(options)) text += ` ${flow.chooseRandomly(options)}`
             } else if (tok.type === 'lora') {
                 const next = flow.nodes.LoraLoader({
                     model: ckpt,

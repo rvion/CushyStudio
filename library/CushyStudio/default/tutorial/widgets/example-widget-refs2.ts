@@ -58,7 +58,7 @@ card({
         //     },
         // }),    }),
     }),
-    run: async ({ flow, form }) => {
+    run: async (flow, form) => {
         flow.print('hello')
         flow.print(JSON.stringify(form.dynamicSelectTwo))
         flow.print(form.dynamicSelectTwo)

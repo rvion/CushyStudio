@@ -2,12 +2,38 @@
 
 # 🛋️ CushyStudio
 
-<img height="25"  alt="Maturity"     src="https://img.shields.io/badge/status-BETA-yellow" />
-
 ## _The **AI** and **Generative Art** platform for everyone_
 
-Cushy Studio is a cross-platform application allowing you to **Discover**, **Run**, **Create** and **Share** Generative workflows called **Apps**. It offers a complete suit of tools allowing you explore all of what generative art has to offer, have fun, or automate your work. It builds uppon proven technologies like `ComfyUI`, `Stable Diffusion`, `ffmpeg`, `imagemagik`, and many more. It features a professional UI with dockable panes, tabs, and a power-user tools to be efficient **Cushy Apps**.
+<img height="21"  alt="Maturity"     src="https://img.shields.io/badge/status-BETA-yellow" />
+<img height="21" alt="Build Status" src="https://img.shields.io/badge/build-passing-%20brightgreen" />
+<img height="21"  alt="Activity"     src="https://img.shields.io/github/commit-activity/y/rvion/cushystudio" />
+<img height="21"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" />
 
+<br />
+<a href="https://discord.gg/GfAN6hF2ad">
+    <img height="21" alt="Join our Discord" src="https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat">
+</a>
+<a href="https://twitter.com/_rvion_">
+    <img height="21" alt="Follow _rvion on Twitter" src="https://img.shields.io/badge/%40__rvion-666666?style=flat&logo=twitter&labelColor=555&label=Follow">
+</a>
+
+</div>
+
+---
+
+🖥️ **Cushy Studio**: a modern and cross-platform software to **Play** and **Work** with Generative AI Art (**Image**, **Video**, **3d**)
+
+💎 **Cushy Apps**: self-contained, use-case centric interfaces that makes generative art simple for everyone. Find the app for you need in the **Cushy Library**, from gerenal-purpose Apps to very specific ones for dedicated use-cases.
+
+🚀 **Cushy SDK**: Automate your work or tackle specific use-cases by building your own **App**. CushyStudio is packed with power-user tools to support you building the "app" of your dream. Once ready, share it with the world though the cushy app library.
+
+☀️ **Cushy Cloud**: A cloud GPU renting service is launching soon so you can play with any demanding app, even on mobile devices. Fair prices to fund the CushyStudio growth, and grow the community. Growing the community includes revenues sharing with app creators when users rent GPU to use their app.
+
+🎓 **Cushy Foundation**: Cushy is made for the future. Free and Open soruce. it builds uppon proven technologies like ComfyUI, Stable Diffusion, FFmpeg or ImageMagick. It features an extensible core, a professional UI with dockable panes. It is LLM-friendly. The project is early, but I'm (rvion) commited to growing this. If you like this, please, sponsor my work:
+[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/rvion)
+
+
+<div align="center">
 
 ```
 Art blooms in bytes, vast,
@@ -15,31 +41,11 @@ In Cushy realms, ideas soar,
 For all, art awakes.
 ```
 
-
-<!-- <img height="25"  alt="Maturity"     src="https://img.shields.io/badge/status-BETA-yellow" /> -->
-<img height="25" alt="Build Status" src="https://img.shields.io/badge/build-passing-%20brightgreen" />
-<img height="25"  alt="Activity"     src="https://img.shields.io/github/commit-activity/y/rvion/cushystudio" />
-<img height="25"  alt="Sponsors"     src="https://img.shields.io/github/sponsors/rvion" />
-
-<br />
-<a href="https://discord.gg/GfAN6hF2ad">
-    <img height="25" alt="Join our Discord" src="https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat">
-</a>
-<a href="https://twitter.com/_rvion_">
-    <img height="25" alt="Follow _rvion on Twitter" src="https://img.shields.io/badge/%40__rvion-666666?style=flat&logo=twitter&labelColor=555&label=Follow">
-</a>
-
-
 </div>
+
 
 https://github.com/rvion/CushyStudio/assets/2150990/776b00f5-687e-4043-8dac-34dfe7bd2184
 
-
-# 1. Introduction
-
-To quote the header :
-
-> Cushy Studio is a cross-platform application allowing you to **Discover**, **Run**, **Create** and **Share** Generative workflows called **Apps**. It offers a complete suit of tools allowing you explore all of what generative art has to offer, have fun, or automate your work. It builds uppon proven technologies like `ComfyUI`, `Stable Diffusion`, `ffmpeg`, `imagemagik`, and many more. It features a professional UI with dockable panes, tabs, and a power-user tools to be efficient **Cushy Apps**.
 
 ## 1.1. Cushy Apps: generative AI workflows made simple and fun
 
@@ -83,7 +89,6 @@ It doesn't exist yet, but it will be a simple companion web app made to allow yo
 test</div>  -->
 
 
-<!-- ![GitHub Sponsors](https://img.shields.io/github/sponsors/rvion) -->
 <!-- ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/y/rvion/cushystudio) -->
 <!-- [![CLA assistant](https://cla-assistant.io/readme/badge/rvion/CushyStudio)](https://cla-assistant.io/rvion/CushyStudio) -->
 <!-- [![](https://dcbadge.vercel.app/api/server/GfAN6hF2ad?style=flat)](https://discord.gg/GfAN6hF2ad) -->
@@ -92,11 +97,6 @@ test</div>  -->
 
 # 2. Table of contents
 
-- [1. Introduction](#1-introduction)
-  - [1.1. Cushy Apps: generative AI workflows made simple and fun](#11-cushy-apps-generative-ai-workflows-made-simple-and-fun)
-  - [1.2. The Cushy library](#12-the-cushy-library)
-  - [1.3. Creator tools](#13-creator-tools)
-  - [1.4. The Cushy WebApp](#14-the-cushy-webapp)
 - [2. Table of contents](#2-table-of-contents)
   - [2.1. **Apps** are simple to use.](#21-apps-are-simple-to-use)
   - [2.2. **Apps** are pleasant to make](#22-apps-are-pleasant-to-make)
@@ -679,3 +679,8 @@ Thank you for your understanding and patience in going through this agreement. T
 
 
 # 7. Theming
+
+
+Full theming capabilities using **DaisyUI** themes.
+
+TODO: add screenshots here.
