@@ -26,7 +26,7 @@ export type Action<FIELDS extends WidgetDict> = {
 
     // EXECUTION PART ============================================================
     /** the code to run */
-    run: (f: Runtime, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
+    run: (f: Runtime<FIELDS>, r: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }) => void | Promise<void>
 
     // HELP ============================================================
     /** dependencies of your action */

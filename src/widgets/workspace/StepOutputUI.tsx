@@ -13,11 +13,15 @@ import { JsonViewUI } from './JsonViewUI'
 
 export const OutputWrapperUI = observer(function OutputWrapperUI_(p: { label: string; children: ReactNode }) {
     return (
-        <div className='flex flex-rowcol-info'>
-            <div className='flex items-baseline'>
-                <div className='font-bold'>{p.label}</div>
-                <div>{p.children}</div>
-            </div>
+        <div className='flex flex-rowcol-info virtualBorder'>
+            {p.label ? (
+                <div className='flex items-baseline'>
+                    <div className='font-bold'>{p.label}</div>
+                    <div>{p.children}</div>
+                </div>
+            ) : (
+                p.children
+            )}
         </div>
     )
 })
@@ -30,7 +34,7 @@ export const StepOutputUI = observer(function StepOutputUI_(p: { step: StepL; ou
     if (msg.type === 'print') {
         return (
             <OutputWrapperUI label=''>
-                <div className='text-gray-400'>{msg.message}</div>
+                <div className='text-base'>{msg.message}</div>
             </OutputWrapperUI>
         )
     }

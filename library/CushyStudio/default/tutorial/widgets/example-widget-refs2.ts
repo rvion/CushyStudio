@@ -1,9 +1,7 @@
 /**
- *
  * 🔶 This example is pretty complex and very advanced.
  * 🔶 don't' copy what is in this file unless you know what you are doing
  * 🔶 and really need this.
- *
  */
 card({
     ui: (form) => ({
@@ -11,16 +9,17 @@ card({
         // 🔶 problem: this needs the referenced items to have some kind of `name` property
         // 🔶 problem 2: no id to keep things stable
         // 🔶 problem 3: please don't use this, skip to the example below
-        dynamicSelectOne: form.selectOne({
-            choices: (form) => {
-                const formResult = form?.result
-                if (formResult == null) return []
-                return (formResult as any).foos.map((i: { name: string }, index: number) => ({
-                    id: index,
-                    label: `#${index}: ${i.name}`,
-                }))
-            },
-        }),
+        // dynamicSelectOne: form.selectOne({
+        //     choices: (form) => {
+        //         const formResult = form?.result
+        //         if (formResult == null) return []
+        //         return (formResult as any).foos.map((i: { name: string }, index: number) => ({
+        //             id: index,
+        //             label: `#${index}: ${i.name}`,
+        //         }))
+        //     },
+        // }),
+        // ------------------------------------------------------------------------------------
         // second way to do: build the list of choice from the form serial
         // 🔶 problem: serial is
         dynamicSelectTwo: form.selectOne({
@@ -34,6 +33,7 @@ card({
                 }))
             },
         }),
+        // ------------------------------------------------------------------------------------
         // third way to do: build the list of choice from the form serial
         // TODO
         foos: form.list({
@@ -58,10 +58,19 @@ card({
         //     },
         // }),    }),
     }),
-    run: async (flow, form) => {
-        flow.print('hello')
-        flow.print(JSON.stringify(form.dynamicSelectTwo))
-        flow.print(form.dynamicSelectTwo)
-        //
+    run: async ({ print, form, formSerial }) => {
+        print('A: ' + 'Hello.')
+        print('B: ' + JSON.stringify(form.dynamicSelectTwo))
+        const itemSelected = formSerial.foos.items_.find((i) => i.id === form.dynamicSelectTwo.id)
+        print('C: ' + JSON.stringify(itemSelected))
+        print(
+            'D: ' +
+                JSON.stringify({
+                    a: itemSelected?.values_.a.val,
+                    b: itemSelected?.values_.b.val,
+                    c: itemSelected?.values_.c.val,
+                }),
+        )
+        print('E: ' + 'Bye.')
     },
 })

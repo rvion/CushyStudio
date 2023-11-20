@@ -1,3 +1,4 @@
+import type { WidgetDict } from 'src/cards/Card'
 import type { Printable } from '../core/Printable'
 
 import * as path from 'pathe'
@@ -32,7 +33,7 @@ import { Status } from './Status'
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
 /** script exeuction instance */
-export class Runtime {
+export class Runtime<FIELDS extends WidgetDict = any> {
     /**
      * the global CushyStudio app state
      * Apps should probably never touch this directly.
@@ -70,6 +71,9 @@ export class Runtime {
     getLoraAssociatedTriggerWords = (loraName: string): Maybe<string> => {
         return this.st.configFile.value?.loraPrompts?.[loraName]?.text
     }
+
+    form!: { [k in keyof FIELDS]: FIELDS[k]['$Output'] }
+    formSerial!: { [k in keyof FIELDS]: FIELDS[k]['$Serial'] }
 
     /**
      * get your configured lora metada
@@ -153,9 +157,9 @@ export class Runtime {
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
 
-    input: object = {}
-    inputExt: object = {}
-    inputInst: object = {}
+    // input: object = {}
+    // inputExt: object = {}
+    // inputInst: object = {}
 
     /** execute the ComfyUI  */
     run = async (): Promise<Status> => {
@@ -163,6 +167,9 @@ export class Runtime {
         const start = Date.now()
         const action = this.step.action
         const actionResult = this.step.data.formResult
+        const actionSerial = this.step.data.formSerial.values_
+        this.form = actionResult
+        this.formSerial = actionSerial
         // console.log(`🔴 before: size=${this.graph.nodes.length}`)
         console.log(`FORM RESULT: data=${JSON.stringify(this.step.data.formResult, null, 3)}`)
         try {
