@@ -51,7 +51,7 @@ export type StepT = {
     status: Status
 }
 
-/** a thin wrapper around a single Step / execution */
+/** a thin wrapper around an app execution */
 export interface StepL extends LiveInstance<StepT, StepL> {}
 export class StepL {
     start = async () => {

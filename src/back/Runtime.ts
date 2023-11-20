@@ -33,6 +33,11 @@ export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
 /** script exeuction instance */
 export class Runtime {
+    /**
+     * the global CushyStudio app state
+     * Apps should probably never touch this directly.
+     * But also, do what you want. you're a grown up.
+     * */
     st: STATE
 
     constructor(public step: StepL) {
@@ -147,6 +152,10 @@ export class Runtime {
 
     /** helper to chose radomly any item from a list */
     chooseRandomly = <T>(arr: T[]): T => arr[Math.floor(Math.random() * arr.length)]
+
+    input: object = {}
+    inputExt: object = {}
+    inputInst: object = {}
 
     /** execute the ComfyUI  */
     run = async (): Promise<Status> => {
@@ -477,16 +486,16 @@ export class Runtime {
     /** upload an image present on disk to ComfyUI */
     upload_FileAtAbsolutePath: Uploader['upload_FileAtAbsolutePath']
 
-    // /** upload an image that can be downloaded form a given URL to ComfyUI */
+    /** upload an image that can be downloaded form a given URL to ComfyUI */
     upload_ImageAtURL: Uploader['upload_ImageAtURL']
 
-    // /** upload an image from dataURL */
+    /** upload an image from dataURL */
     upload_dataURL: Uploader['upload_dataURL']
 
-    // /** upload a deck asset to ComfyUI */
+    /** upload a deck asset to ComfyUI */
     upload_Asset: Uploader['upload_Asset']
 
-    // /** upload a Blob */
+    /** upload a Blob */
     upload_Blob: Uploader['upload_Blob']
 
     // LOAD IMAGE --------------------------------------------------------------------------------------
@@ -495,6 +504,7 @@ export class Runtime {
         const res = await this.st.uploader.upload_FileAtAbsolutePath(absPath)
         return this.loadImageAnswer({ type: 'ComfyImage', imageName: res.name })
     }
+
     /** load an image that can be downloaded form a given URL to ComfyUI */
     load_ImageAtURL = async (url: string): Promise<ImageAndMask> => {
         const res = await this.st.uploader.upload_ImageAtURL(url)
@@ -602,27 +612,4 @@ export class Runtime {
         // await sleep(1000)
         // return step
     }
-
-    /** outputs are both stored in ScriptStep_prompt, and on ScriptExecution */
-    outputs: WsMsgExecuted[] = []
-
-    // ctx = {}
 }
-
-/** upload an image present on disk to ComfyServer */
-// uploadWorkspaceFile = async (path: RelativePath): Promise<ComfyUploadImageResult> => {
-//     const absPath = this.st.resolveFromRoot(path)
-//     return this.uploadAnyFile(absPath)
-//     // const ui8arr: Uint8Array = readFileSync(absPath)
-//     // return await this.uploadUIntArrToComfy(ui8arr)
-// }
-/**
- * [alpha]
- * as of 2023-09-24: ❓
- * as of 2023-09-25? ...
- */
-// uploadWorkspaceFileAndLoad = async (path: RelativePath): Promise<LoadImage> => {
-//     const upload = await this.uploadWorkspaceFile(path)
-//     const img = (this.graph as any).LoadImage({ image: upload.name })
-//     return img
-// }
