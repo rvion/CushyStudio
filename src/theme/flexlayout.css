@@ -12,7 +12,7 @@
   --color-drag1-background: oklch(var(--p)); /* Primary color background with lowered opacity */
   --color-drag2-background: oklch(var(--s)); /* Secondary color background with lowered opacity */
   --color-overflow: oklch(var(--n)); /* Neutral color for overflow */
-  --color-icon: oklch(var(--n)); /* Neutral color for icons, assuming this is meant to be neutral */
+  --color-icon: oklch(var(--bc)); /* Neutral color for icons, assuming this is meant to be neutral */
   --color-tabset-background: oklch(var(--b3));
   --color-tabset-background-selected: oklch(var(--b1));
   --color-tabset-background-maximized: oklch(var(--b3));

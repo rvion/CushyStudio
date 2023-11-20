@@ -295,7 +295,7 @@ export const AppCompilationErrorUI = observer(function AppCompilationErrorUI_(p:
 export const DraftHeaderUI = observer(function DraftHeaderUI_(p: { draft: DraftL; app: CardFile }) {
     const { app, draft } = p
     return (
-        <div tw='flex p-1 bg-base-200 border-b border-b-base-300'>
+        <div tw='flex p-1 bg-base-300 border-b border-b-base-300'>
             <div tw='flex gap-0.5 flex-grow relative text-base-content'>
                 <CardIllustrationUI card={app} size='4rem' tw='p-1' />
                 <div tw='px-1 flex-grow'>

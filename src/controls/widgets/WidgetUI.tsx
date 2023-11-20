@@ -21,7 +21,7 @@ import { WidgetSelectImageUI } from './WidgetSelectImageUI'
 import { WidgetSelectOneUI } from './WidgetSelectOneUI'
 import { WigetSizeUI } from './WidgetSizeUI'
 import { WidgetStrUI } from './WidgetStrUI'
-import { WidgetDI } from './WidgetDI'
+import { WidgetDI } from './WidgetUI.DI'
 
 /**
  * this widget will then dispatch the individual requests to the appropriate sub-widgets

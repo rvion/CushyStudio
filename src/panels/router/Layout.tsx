@@ -363,7 +363,7 @@ export class CushyLayoutManager {
                     {
                         id: 'leftPane',
                         type: 'row',
-                        weight: 50,
+                        weight: 100,
                         children: [
                             {
                                 type: 'tabset',

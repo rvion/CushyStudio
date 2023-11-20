@@ -1,4 +1,4 @@
-import { CSSProperties, ReactElement, ReactNode, useState } from 'react'
+import { CSSProperties, ReactElement, ReactNode, useEffect, useState } from 'react'
 
 import { observer } from 'mobx-react-lite'
 
@@ -21,6 +21,9 @@ export const TabsUI = observer(function Tabs_(p: {
     disabled?: boolean
 }) {
     const [onIx, setIx] = useState(() => p.current ?? 0)
+    useEffect(() => {
+        if (p.current != null) setIx(p.current)
+    })
     const tabHeader = (
         <div style={{ width: 'fit-content' }} tw='tabs tabs-lifted '>
             {p.tabs.map((tab, ix) => {

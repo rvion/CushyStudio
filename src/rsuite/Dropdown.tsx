@@ -15,8 +15,8 @@ export const Dropdown = (p: {
     <RevealUI
         //
         enableRightClick={p.enableRightClick}
-        showDelay={1000}
-        hideDelay={1000}
+        showDelay={300}
+        hideDelay={300}
         className='dropdown'
         tw={[p.className]}
     >

@@ -9,14 +9,15 @@ import type { SimplifiedLoraDef } from 'src/presets/SimplifiedLoraDef'
 import type { WidgetPromptOutput } from 'src/widgets/prompter/WidgetPromptUI'
 import type { PossibleSerializedNodes } from 'src/widgets/prompter/plugins/CushyDebugPlugin'
 import type { AspectRatio, ComfyImageAnswer, CushyImageAnswer, CushySize, CushySizeByRatio, ImageAnswer, ImageAnswerForm, PaintImageAnswer, SDModelType } from './misc/InfoAnswer'
+import type { CleanedEnumResult } from 'src/types/EnumUtils'
+import type { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
+import type { RelativePath } from 'src/utils/fs/BrandedPaths'
 
 import { makeAutoObservable } from 'mobx'
 import { bang } from 'src/utils/misc/bang'
 import { FormBuilder } from './FormBuilder'
-import { IRequest, IWidget, ReqInput, ReqResult, StateFields } from './IWidget'
 import { nanoid } from 'nanoid'
-import { CleanedEnumResult } from 'src/types/EnumUtils'
-import { RelativePath } from 'src/utils/fs/BrandedPaths'
+import { WidgetDI } from './widgets/WidgetUI.DI'
 
 // Widget is a closed union for added type safety
 export type Widget =
@@ -1233,3 +1234,34 @@ export class Widget_enumOpt<T extends KnownEnumNames> implements IRequest<'enumO
         return this.status.finalValue
     }
 }
+
+
+
+WidgetDI.Widget_color=Widget_color
+WidgetDI.Widget_str=Widget_str
+WidgetDI.Widget_strOpt=Widget_strOpt
+WidgetDI.Widget_prompt=Widget_prompt
+WidgetDI.Widget_promptOpt=Widget_promptOpt
+WidgetDI.Widget_seed=Widget_seed
+WidgetDI.Widget_int=Widget_int
+WidgetDI.Widget_float=Widget_float
+WidgetDI.Widget_bool=Widget_bool
+WidgetDI.Widget_intOpt=Widget_intOpt
+WidgetDI.Widget_floatOpt=Widget_floatOpt
+WidgetDI.Widget_markdown=Widget_markdown
+WidgetDI.Widget_size=Widget_size
+WidgetDI.Widget_matrix=Widget_matrix
+WidgetDI.Widget_loras=Widget_loras
+WidgetDI.Widget_image=Widget_image
+WidgetDI.Widget_imageOpt=Widget_imageOpt
+WidgetDI.Widget_selectOneOrCustom=Widget_selectOneOrCustom
+WidgetDI.Widget_selectMany=Widget_selectMany
+WidgetDI.Widget_selectManyOrCustom=Widget_selectManyOrCustom
+WidgetDI.Widget_selectOne=Widget_selectOne
+WidgetDI.Widget_list=Widget_list
+WidgetDI.Widget_group=Widget_group
+WidgetDI.Widget_groupOpt=Widget_groupOpt
+WidgetDI.Widget_choice=Widget_choice
+WidgetDI.Widget_choices=Widget_choices
+WidgetDI.Widget_enum=Widget_enum
+WidgetDI.Widget_enumOpt=Widget_enumOpt

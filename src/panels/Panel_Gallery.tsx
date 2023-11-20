@@ -10,16 +10,16 @@ export const Panel_Gallery = observer(function VerticalGalleryUI_(p: {}) {
     const preview = st.preview
     return (
         <div //
-            className='flex flex-col bg-base-200 h-full'
+            className='flex flex-col bg-base-100 h-full'
             style={{
                 // borderRight: '1px solid #383838',
                 background: st.configFile.value.galleryBgColor,
             }}
         >
-            <div tw='flex overflow-auto gap-2 px-2 bg-base-300 w-full flex-shrink-0'>
+            <div tw='flex overflow-auto gap-2 px-2 bg-base-200 w-full flex-shrink-0'>
                 <FieldAndLabelUI label='Size'>
                     <Slider
-                        style={{ width: '3rem' }}
+                        style={{ width: '5rem' }}
                         min={32}
                         max={200}
                         onChange={(ev) => (st.gallerySize = parseFloatNoRoundingErr(ev.target.value))}

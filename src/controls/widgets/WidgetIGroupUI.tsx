@@ -20,7 +20,7 @@ export const WidgetGroupUI = observer(function WidgetItemsUI_(p: {
                 'flex rounded-box bg-opacity-95 items-start w-full text-base-content',
                 showAsCard ? 'mb-2' : undefined,
                 showAsCard ? 'bg-base-300 bg-opacity-30' : undefined,
-                showAsCard ? 'border border-neutral border-opacity-25' : undefined,
+                showAsCard ? 'virtualBorder' : undefined,
             ]}
             style={{
                 position: 'relative',

@@ -14,7 +14,7 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
     const resoBtn = (ar: AspectRatio) => (
         <button
             type='button'
-            tw={['btn btn-sm join-item btn-outline', uist.desiredAspectRatio === ar && 'btn-active']}
+            tw={['btn btn-sm join-item btn-ghost', uist.desiredAspectRatio === ar && 'btn-active']}
             onClick={() => uist.setAspectRatio(ar)}
         >
             {ar}
@@ -24,7 +24,7 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
     const modelBtn = (model: ModelType) => (
         <button
             type='button'
-            tw={['btn btn-sm join-item btn-outline', uist.desiredModelType === model && 'btn-active']}
+            tw={['btn btn-sm join-item', uist.desiredModelType === model && 'btn-active']}
             onClick={() => uist.setModelType(model)}
         >
             {model}
@@ -85,7 +85,7 @@ export const WigetSizeUI = observer(function WigetSizeUI_(p: { req: Widget_size 
                     {resoBtn('3:2')}
                     <button
                         type='button'
-                        tw={['btn btn-sm join-item btn-outline', uist.desiredAspectRatio === 'custom' && 'btn-active']}
+                        tw={['btn btn-sm join-item', uist.desiredAspectRatio === 'custom' && 'btn-active']}
                         onClick={() => uist.setAspectRatio('custom')}
                     >
                         ?

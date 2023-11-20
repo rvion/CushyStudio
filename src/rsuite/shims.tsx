@@ -25,7 +25,7 @@ export type TypeAttributes = {
 export const FormHelpText = (p: any) => <div {...p}></div>
 export const FormControlLabel = (p: JSX.IntrinsicElements['label']) => <label {...p}></label>
 export const FormControl = (p: JSX.IntrinsicElements['input']) => <input tw='input input-bordered input-sm' {...p}></input>
-export const Joined = (p: { children?: ReactNode }) => <div tw='join' {...p}></div>
+export const Joined = (p: { children?: ReactNode }) => <div tw='join virtualBorder' {...p}></div>
 
 export const Addon = observer(function Addon_(p: any) {
     return <div tw='flex items-center px-2 join-item' {...p}></div>
@@ -140,10 +140,11 @@ export const Rate = (p: {
     value?: number
     name: string
     disabled?: boolean
+    max?: number
     onChange?: (value: number) => void
 }) => (
     <div tw='rating rating-md rating-sm'>
-        {[1, 2, 3, 4, 5].map((ix) => (
+        {new Array(p.max ?? 1).fill(0).map((_, ix) => (
             <input
                 key={ix}
                 name={p.name}
