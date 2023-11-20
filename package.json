@@ -57,8 +57,8 @@
     "dependencies": {
         "@lexical/clipboard": "^0.12.4",
         "@lexical/plain-text": "^0.12.4",
-        "@lexical/rich-text": "^0.12.4",
         "@lexical/react": "^0.12.4",
+        "@lexical/rich-text": "^0.12.4",
         "@sinclair/typebox": "^0.31.26",
         "@uiw/react-json-view": "^2.0.0-alpha.9",
         "@vitejs/plugin-react": "^4.2.0",
@@ -93,6 +93,7 @@
         "simple-git": "^3.20.0",
         "tailwindcss-animate": "^1.0.7",
         "three": "^0.158.0",
+        "typedoc": "^0.25.3",
         "typescript": "^5.2.2",
         "watcher": "^2.3.0",
         "xml2js": "^0.6.2",
