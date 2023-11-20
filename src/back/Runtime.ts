@@ -67,7 +67,7 @@ export class Runtime {
     }
 
     /**
-     * get yoru configured lora metada
+     * get your configured lora metada
      * (those are user defined; hover your lora in any rich text prompt to edit them)
      */
     getLoraAssociatedMetadata = (

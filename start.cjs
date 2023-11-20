@@ -2,6 +2,15 @@ const { spawn } = require('child_process')
 const path = require('path')
 const os = require('os')
 
+// ensure tsconfig.custom.json exists
+const fs = require('fs')
+const tsconfigPath = path.join(__dirname, 'tsconfig.custom.json')
+if (!fs.existsSync(tsconfigPath)) {
+    const defaultTsconfigJSON = { include: ['src', 'schema/global.d.ts'], exclude: [] }
+    fs.writeFileSync(tsconfigPath, JSON.stringify(defaultTsconfigJSON, null, 4))
+}
+
+// cross platform run command
 const runCommand = (command, args) => {
     const cmd = os.platform() === 'win32' ? `${command}.cmd` : command
     const cmdPath = path.join('.', 'node_modules', '.bin', cmd)
