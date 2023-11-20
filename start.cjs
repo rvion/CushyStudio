@@ -1,21 +1,24 @@
 const { spawn } = require('child_process')
+const path = require('path')
+const os = require('os')
 
 const runCommand = (command, args) => {
-    const spawnedProcess = spawn(command, args, { shell: true, stdio: 'inherit' })
+    const cmd = os.platform() === 'win32' ? `${command}.cmd` : command
+    const cmdPath = path.join('.', 'node_modules', '.bin', cmd)
+    const spawnedProcess = spawn(cmdPath, args, { shell: true, stdio: 'inherit' })
 
     spawnedProcess.on('error', (err) => {
-        console.error(`Error starting process: ${command}`, err)
+        console.error(`Error starting process: ${cmdPath}`, err)
         process.exit(1)
     })
 
     return spawnedProcess
 }
-
 console.log('Starting vite...')
-const vite = runCommand('./node_modules/.bin/vite', ['dev'])
+const vite = runCommand('vite', ['dev'])
 
 console.log('Starting electron...')
-const electron = runCommand('./node_modules/.bin/electron', ['-i', 'src/shell'])
+const electron = runCommand('electron', ['-i', 'src/shell'])
 
 const cleanup = () => {
     console.log('Killing processes...')
