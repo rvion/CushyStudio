@@ -94,22 +94,20 @@ export const DraftUI = observer(function Panel_Draft_(p: { draft: Maybe<DraftL> 
                 )}
                 <Joined>
                     <Button
-                        onClick={() => st.layout.addDraftJsonResult({ draftID: draft.id })}
+                        onClick={() => st.layout.GO_TO('DraftJsonResult', { draftID: draft.id })}
                         size='sm'
                         tw='tab btn-ghost join-item'
                     >
                         Form result
                     </Button>
-                    {/* <JsonViewUI value={draft.gui.value?.result} /> */}
                     <Button
                         //
-                        onClick={() => st.layout.addDraftJsonSerial({ draftID: draft.id })}
+                        onClick={() => st.layout.GO_TO('DraftJsonSerial', { draftID: draft.id })}
                         size='sm'
                         tw='tab btn-ghost join-item'
                     >
                         Form state
                     </Button>
-                    {/* <JsonViewUI value={draft.gui.value?.serial} /> */}
                     <Button size='sm' tw='tab btn-ghost join-item'>
                         Action code
                     </Button>
@@ -181,7 +179,11 @@ export const CardActionsMenuUI = observer(function CardActionsMenuUI_(p: { card:
             <MenuItem icon={<span className='material-symbols-outlined'></span>} onClick={() => showItemInFolder(card.absPath)}>
                 Show Item In Folder
             </MenuItem>
-            {card.liteGraphJSON && <MenuItem onClick={() => st.layout.addComfy(card.liteGraphJSON)}>Open in ComfyUI</MenuItem>}
+            {card.liteGraphJSON && (
+                <MenuItem onClick={() => st.layout.GO_TO('ComfyUI', { litegraphJson: card.liteGraphJSON })}>
+                    Open in ComfyUI
+                </MenuItem>
+            )}
         </Dropdown>
     )
 })

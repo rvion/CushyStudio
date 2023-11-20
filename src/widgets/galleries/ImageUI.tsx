@@ -50,41 +50,23 @@ export const ImageUI = observer(function ImageUI_(p: { img: ImageL }) {
                 //     st.hovered = null
                 //     st.currentAction = { type: 'paint', imageID: image.id }
                 // }}
-                onClick={() => {
-                    st.layout.addImage(image.id)
-                    // st.lightBox.opened = true
-                    // st.lightBox.getImgs
-                }}
+                onClick={() => st.layout.GO_TO('Image', { imageID: image.id })}
             />
         )
     return (
         <>
             {/* right click logic 👇 */}
-            <RevealUI
-                enableRightClick
-                //
-            >
+            <RevealUI enableRightClick>
                 <div>{IMG}</div>
                 <div>
                     <Button
                         icon={<span className='material-symbols-outlined'>edit</span>}
-                        onClick={() => st.layout.addPaint(image.id)}
+                        onClick={() => st.layout.GO_TO('Paint', { imgID: image.id })}
                     >
                         Paint
                     </Button>
-                    {/* <MenuItem onClick={() => st.layout.addPaint(image.id)}>Mask</MenuItem> */}
-                    {/* <DropdownMenu title='Edit'>
-                    <DropdownItem eventKey={1}>New File</DropdownItem>
-                    <DropdownItem eventKey={2}>New File with Current Profile</DropdownItem>
-                    </DropdownMenu> */}
-                    {/* <DropdownItem eventKey={3}>Start Flow from this</DropdownItem> */}
-                    {/* <DropdownItem eventKey={4}>Export PDF</DropdownItem>
-                    <DropdownItem eventKey={5}>Export HTML</DropdownItem>
-                    <DropdownItem eventKey={6}>Settings</DropdownItem>
-                    <DropdownItem eventKey={7}>About</DropdownItem> */}
                 </div>
             </RevealUI>
-            {/* {IMG} */}
         </>
     )
 })

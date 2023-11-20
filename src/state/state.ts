@@ -21,7 +21,8 @@ import { ShortcutWatcher } from 'src/app/shortcuts/ShortcutManager'
 import { shortcutsDef } from 'src/app/shortcuts/shortcuts'
 import { ThemeManager } from 'src/theme/ThemeManager'
 import { UserTags } from 'src/widgets/prompter/nodes/usertags/UserLoader'
-import { CushyLayoutManager, Widget } from '../panels/router/Layout'
+import { CushyLayoutManager } from '../panels/router/Layout'
+import { panels } from 'src/panels/router/PANELS'
 import { ResilientWebSocketClient } from '../back/ResilientWebsocket'
 import { GitManagedFolder } from '../cards/updater'
 import { JsonFile } from '../core/JsonFile'
@@ -147,13 +148,13 @@ export class STATE {
 
     // showCardPicker: boolean = false
     closeCardPicker = () => (this.layout.fullPageComp = null)
-    openCardPicker = () => (this.layout.fullPageComp = { extra: {}, widget: Widget.CardPicker3UI })
+    openCardPicker = () => (this.layout.fullPageComp = { props: {}, panel: 'CardPicker3UI' })
     toggleCardPicker = () => {
         if (
             this.layout.fullPageComp == null || //
-            this.layout.fullPageComp.widget !== Widget.CardPicker3UI
+            this.layout.fullPageComp.panel !== 'CardPicker3UI'
         ) {
-            this.layout.fullPageComp = { extra: {}, widget: Widget.CardPicker3UI }
+            this.layout.fullPageComp = { props: {}, panel: 'CardPicker3UI' }
         } else {
             this.layout.fullPageComp = null
         }

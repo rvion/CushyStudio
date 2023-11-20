@@ -25,33 +25,39 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 appearance='subtle'
             >
                 <MenuItem
-                    onClick={() => st.layout.addPaint()}
+                    onClick={() => st.layout.GO_TO('Paint', {})}
                     icon={<span className='material-symbols-outlined text-red-400'>brush</span>}
                     label='paint - Minipaint'
                 />
                 <MenuItem
-                    onClick={() => st.layout.addGallery()}
+                    onClick={() => st.layout.GO_TO('Gallery', {})}
                     icon={<span className='material-symbols-outlined text-red-400'>image_search</span>}
                     label='Gallery'
                 />
                 <MenuItem
-                    onClick={() => st.layout.addLastImage({})}
+                    onClick={() => st.layout.GO_TO('LastImage', {})}
                     icon={<span className='material-symbols-outlined text-red-400'>history</span>}
-                    label='Last'
+                    label='Last IMAGE'
+                />
+                <MenuItem
+                    onClick={() => st.layout.GO_TO('LastStep', {})}
+                    icon={<span className='material-symbols-outlined text-red-400'>history</span>}
+                    label='Last STEP'
                 />
             </Dropdown>
+
             <Dropdown
                 startIcon={<span className='material-symbols-outlined text-blue-400'>account_tree</span>}
                 title='ComfyUI'
                 appearance='subtle'
             >
                 <MenuItem
-                    onClick={() => st.layout.addComfy()}
+                    onClick={() => st.layout.GO_TO('ComfyUI', {})}
                     label='Comfy'
                     icon={<span className='material-symbols-outlined text-cyan-400'>account_tree</span>}
                 />
                 <MenuItem
-                    onClick={() => st.layout.addComfyNodeExplorer()}
+                    onClick={() => st.layout.GO_TO('ComfyUINodeExplorer', {})}
                     icon={<span className='material-symbols-outlined text-cyan-400'>explore</span>}
                     label='Nodes'
                 />
@@ -62,13 +68,13 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 appearance='subtle'
             >
                 <MenuItem
-                    onClick={() => st.layout.addCivitai({})}
+                    onClick={() => st.layout.GO_TO('Civitai', {})}
                     icon={<img style={{ width: '1em', height: '1em' }} src={assets.public_CivitaiLogo_png}></img>}
                     label='Civitai'
                 />
 
                 <MenuItem
-                    onClick={() => st.layout.addSquoosh({})}
+                    onClick={() => st.layout.GO_TO('Squoosh', {})}
                     icon={<img style={{ width: '1em', height: '1em' }} src={assets.public_logos_squoosh_png}></img>}
                     label='Squoosh'
                 />
@@ -79,12 +85,12 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                 appearance='subtle'
             >
                 <MenuItem
-                    onClick={() => st.layout.addConfig()}
+                    onClick={() => st.layout.GO_TO('Config', {})}
                     icon={<span className='material-symbols-outlined text-purple-500'>settings</span>}
                     label='Config'
                 />
                 <MenuItem
-                    onClick={() => st.layout.addHosts()}
+                    onClick={() => st.layout.GO_TO('Hosts', {})}
                     icon={<span className='material-symbols-outlined text-purple-500'>cloud</span>}
                     label='GPUs'
                 />
@@ -115,6 +121,22 @@ export const MainNavBarUI = observer(function MainNavBarUI_(p: { className?: str
                     label='Fix Layout'
                 />
                 <DBHealthUI />
+            </Dropdown>
+            <Dropdown
+                startIcon={<span className='material-symbols-outlined text-pink-400'>help_center</span>}
+                title='Docs'
+                appearance='subtle'
+            >
+                <MenuItem
+                    onClick={() => st.layout.GO_TO('Paint', {})}
+                    icon={<span className='material-symbols-outlined text-pink-400'>help_outline</span>}
+                    label='Open doc (panel)'
+                />
+                <MenuItem
+                    onClick={() => st.layout.GO_TO('Paint', {})}
+                    icon={<span className='material-symbols-outlined text-pink-400'>help</span>}
+                    label='Open doc (full page)'
+                />
             </Dropdown>
             <Dropdown
                 appearance='subtle'

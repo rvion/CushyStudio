@@ -127,7 +127,7 @@ class MinipaintState {
     }
 }
 // https://github.com/devforth/painterro
-export const Panel_Minipaint = observer(function PaintUI_(p: { imgID: ImageID }) {
+export const Panel_Minipaint = observer(function PaintUI_(p: { imgID?: ImageID }) {
     // const action = p.action
     const st = useSt()
     const minipaintState = useMemo(() => new MinipaintState(st), [])

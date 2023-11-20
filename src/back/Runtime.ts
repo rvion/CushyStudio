@@ -5,29 +5,29 @@ import * as path from 'pathe'
 import { execSync } from 'child_process'
 import fs, { writeFileSync } from 'fs'
 import { marked } from 'marked'
+import { CardPath } from 'src/cards/CardPath'
 import { Uploader } from 'src/state/Uploader'
 import { STATE } from 'src/state/state'
+import { assets } from 'src/utils/assets/assets'
 import { braceExpansion } from 'src/utils/misc/expansion'
 import { ImageAnswer } from '../controls/misc/InfoAnswer'
 import { Slot } from '../core/Slot'
 import { auto } from '../core/autoValue'
-import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
 import { GraphL } from '../models/Graph'
 import { ImageL } from '../models/Image'
 import { PromptL } from '../models/Prompt'
 import { StepL } from '../models/Step'
-import { ApiPromptInput, PromptInfo, WsMsgExecuted } from '../types/ComfyWsApi'
-import { deepCopyNaive, exhaust } from '../utils/misc/ComfyUtils'
+import { ApiPromptInput, PromptInfo } from '../types/ComfyWsApi'
+import { createMP4FromImages } from '../utils/ffmpeg/ffmpegScripts'
 import { AbsolutePath, RelativePath } from '../utils/fs/BrandedPaths'
 import { asAbsolutePath, asRelativePath } from '../utils/fs/pathUtils'
+import { deepCopyNaive, exhaust } from '../utils/misc/ComfyUtils'
 import { wildcards } from '../widgets/prompter/nodes/wildcards/wildcards'
 import { IDNaminScheemeInPromptSentToComfyUI } from './IDNaminScheemeInPromptSentToComfyUI'
+import { ImageSDK } from './ImageSDK'
 import { GraphBuilder } from './NodeBuilder'
 import { InvalidPromptError } from './RuntimeError'
 import { Status } from './Status'
-import { assets } from 'src/utils/assets/assets'
-import { CardPath } from 'src/cards/CardPath'
-import { ImageSDK } from './ImageSDK'
 
 export type ImageAndMask = HasSingle_IMAGE & HasSingle_MASK
 
@@ -138,7 +138,7 @@ export class Runtime {
         if (image == null) throw new Error(`image not found: ${p.image}`)
         if (depth == null) throw new Error(`image not found: ${p.image}`)
         if (normal == null) throw new Error(`image not found: ${p.image}`)
-        this.st.layout.addDisplacedImage({
+        this.st.layout.GO_TO('DisplacedImage', {
             width: image.data.width ?? 512,
             height: image.data.height ?? 512,
             image: image.url,

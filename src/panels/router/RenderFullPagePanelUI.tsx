@@ -23,7 +23,7 @@ export const RenderFullPagePanelUI = observer(function RenderFullPagePanelUI_(p:
             }}
         >
             <div tw='bg-base-100 h-full'>
-                <RenderPanelUI widget={fpc.widget} widgetProps={fpc.extra} />
+                <RenderPanelUI panel={fpc.panel} panelProps={fpc.props} />
             </div>
         </div>
     )
