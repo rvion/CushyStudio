@@ -6,7 +6,7 @@ export type ThemeName =
     | 'light'
     | 'dark'
     | 'cupcake'
-    | 'aqua'
+    // | 'aqua'
     | 'valentine'
     | 'wireframe'
 // | 'sunset'
@@ -20,7 +20,7 @@ export class ThemeManager {
         'light',
         'dark',
         'cupcake',
-        'aqua',
+        // 'aqua',
         'valentine',
         'wireframe',
         // 'sunset',
